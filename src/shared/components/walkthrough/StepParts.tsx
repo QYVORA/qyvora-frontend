@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Copy } from 'lucide-react';
+import { Copy, Terminal } from 'lucide-react';
 import { IconCheck } from '@/shared/components/icons';
 import { cn } from '@/shared/utils/cn';
 
@@ -12,14 +12,32 @@ export function CommandBlock({ command, labId }: { command: string; labId: strin
   };
   return (
     <div className="space-y-2">
-      <span className="text-[10px] font-black uppercase tracking-widest text-text-muted">Run in terminal</span>
-      <div className="flex items-center gap-2 rounded-xl border border-border/30 bg-bg-card px-4 py-3">
-        <code className="flex-1 text-base font-mono text-accent break-all">$ {command}</code>
-        <button type="button" onClick={handleCopy} className="shrink-0 rounded-lg p-1.5 text-text-muted hover:text-text-primary hover:bg-bg-elevated" aria-label="Copy">
-          {copied ? <IconCheck size={16} className="text-accent" /> : <Copy className="h-4 w-4" />}
-        </button>
+      <div className="flex items-center gap-2">
+        <Terminal size={12} className="text-accent" />
+        <span className="text-[10px] font-black uppercase tracking-widest text-text-muted">Run in terminal</span>
       </div>
-      <p className="text-sm text-text-muted font-mono">Terminal: <span className="text-accent">qyvora connect {labId}</span></p>
+      <div className="rounded-xl border border-border/30 bg-bg-card overflow-hidden">
+        <div className="flex items-center justify-between px-4 py-2 border-b border-border/20 bg-bg-elevated">
+          <div className="flex items-center gap-2">
+            <span className="text-[9px] font-black uppercase tracking-widest text-accent">Terminal</span>
+          </div>
+          <button
+            type="button"
+            onClick={handleCopy}
+            className="rounded-lg p-1.5 text-text-muted hover:text-text-primary hover:bg-bg-elevated transition-colors"
+            aria-label="Copy"
+          >
+            {copied ? <IconCheck size={14} className="text-accent" /> : <Copy size={14} />}
+          </button>
+        </div>
+        <div className="p-4 font-mono">
+          <div className="flex items-center gap-2">
+            <span className="text-accent">$</span>
+            <code className="text-base text-accent break-all">{command}</code>
+          </div>
+        </div>
+      </div>
+      <p className="text-xs text-text-muted font-mono">Connect: <span className="text-accent">qyvora connect {labId}</span></p>
     </div>
   );
 }

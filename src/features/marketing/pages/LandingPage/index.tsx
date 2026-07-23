@@ -15,6 +15,7 @@ import LandingBlogsSection from '@/features/marketing/components/landing/Landing
 import LandingMarketSection from '@/features/marketing/components/landing/LandingMarketSection';
 import LandingLeaderboardSection from '@/features/marketing/components/landing/LandingLeaderboardSection';
 import LandingServicesSection from '@/features/marketing/components/landing/LandingServicesSection';
+import LandingAnansiSection from '@/features/marketing/components/landing/LandingAnansiSection';
 import LandingFinalCtaSection from '@/features/marketing/components/landing/LandingFinalCtaSection';
 
 import { Footer } from '@/shared/components/layout';
@@ -33,6 +34,7 @@ const Landing: React.FC = () => {
     { id: 'bootcamp',   label: t('nav.bootcamp') },
     { id: 'team',       label: 'Team' },
     { id: 'quiteroot',  label: 'QuiteRoot' },
+    { id: 'anansi',     label: 'Anansi' },
     { id: 'blogs',      label: 'Blogs' },
     { id: 'market',     label: 'Market' },
     { id: 'leaderboard', label: t('nav.leaderboard') },
@@ -159,7 +161,12 @@ const Landing: React.FC = () => {
         <LandingQuiteRootSection />
       </section>
 
-      {/* 8. Blogs — accent */}
+      {/* 8. Anansi — accent */}
+      <section id="anansi" className="relative w-full min-h-dvh md:h-dvh snap-section">
+        <LandingAnansiSection />
+      </section>
+
+      {/* 9. Blogs — accent */}
       <section id="blogs" className="relative w-full min-h-dvh md:h-dvh snap-section">
         <LandingBlogsSection />
       </section>
@@ -185,7 +192,7 @@ const Landing: React.FC = () => {
       </section>
 
       {/* 13. Footer */}
-      <section id="footer" className="w-full bg-bg pt-10 md:pt-0">
+      <section id="footer" className="w-full bg-bg pt-10 md:pt-0 snap-section">
         <Footer />
       </section>
     </div>

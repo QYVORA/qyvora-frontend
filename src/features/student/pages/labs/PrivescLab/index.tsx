@@ -11,6 +11,7 @@ import { verifyLabFlag } from '../../../services/lab.service';
 import { getRelatedContentForLab } from '@/shared/constants/topicMap';
 import RelatedContent from '@/shared/components/RelatedContent';
 import LabHeroSection from '@/shared/components/LabHeroSection';
+import { FlowDiagram } from '@/shared/components/diagrams/FlowDiagram';
 
 
 const DIFFICULTY_STYLES: Record<string, string> = {
@@ -18,6 +19,19 @@ const DIFFICULTY_STYLES: Record<string, string> = {
   intermediate: 'bg-yellow-400/10 text-yellow-400 border-yellow-400/20',
   advanced: 'bg-red-400/10 text-red-400 border-red-400/20',
 };
+
+const PRIVESC_FLOW_NODES = [
+  { id: 'you', label: 'You', icon: '👤', status: 'active' as const },
+  { id: 'filesystem', label: 'Filesystem', icon: '📁', status: 'default' as const },
+  { id: 'suid', label: 'SUID Binary', icon: '⚙️', status: 'warning' as const },
+  { id: 'root', label: 'Root', icon: '👑', status: 'success' as const },
+];
+
+const PRIVESC_FLOW_ARROWS = [
+  { from: 'you', to: 'filesystem', label: 'ls', type: 'solid' as const },
+  { from: 'filesystem', to: 'suid', label: 'identify', type: 'dashed' as const },
+  { from: 'suid', to: 'root', label: 'exploit', type: 'solid' as const },
+];
 
 const PrivescLab = () => {
   const [selectedScenario, setSelectedScenario] =
@@ -151,7 +165,15 @@ const PrivescLab = () => {
               labId="privesc"
               onFlagSubmit={handleFlagSubmit}
               onComplete={handleComplete}
-            />
+            >
+              {i === 0 && (
+                <FlowDiagram
+                  nodes={PRIVESC_FLOW_NODES}
+                  arrows={PRIVESC_FLOW_ARROWS}
+                  direction="horizontal"
+                />
+              )}
+            </WalkthroughStep>
           );
         })}
 

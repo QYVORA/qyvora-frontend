@@ -43,7 +43,7 @@ const SkillMatrix = ({ modules }: SkillMatrixProps) => {
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-2">
       {/* Radar Chart Card */}
-      <div className="rounded-2xl border border-border/30 bg-bg-card p-2.5 flex flex-col">
+      <div className="rounded-2xl border border-border/30 bg-bg-card p-2 md:p-3 flex flex-col">
         <div className="flex items-center justify-between mb-1.5">
           <h3 className="text-[9px] font-black uppercase tracking-widest text-text-primary">
             {t('student.dashboard.skillMatrix', 'Skill Matrix')}
@@ -59,7 +59,7 @@ const SkillMatrix = ({ modules }: SkillMatrixProps) => {
       </div>
 
       {/* Skill Stats Card */}
-      <div className="rounded-2xl border border-border/30 bg-bg-card p-2.5 flex flex-col">
+      <div className="rounded-2xl border border-border/30 bg-bg-card p-2 md:p-3 flex flex-col">
         <div className="flex items-center justify-between mb-1.5">
           <h3 className="text-[9px] font-black uppercase tracking-widest text-text-primary">
             {t('student.dashboard.skillStats', 'Skill Progress')}

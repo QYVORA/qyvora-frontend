@@ -4,6 +4,7 @@ import { motion, useReducedMotion, AnimatePresence } from 'motion/react';
 import { GraduationCap, Globe, Wifi, Wrench, ChevronLeft, ChevronRight, Search } from 'lucide-react';
 import { IconArrowRight, IconTerminal, IconNetwork, IconCode, IconSearch } from '@/shared/components/icons';
 import { useTranslation } from 'react-i18next';
+import { GridBoxedBackground } from '@/shared/components/backgrounds';
 
 const CATEGORY_ICONS: Record<string, React.ElementType> = {
   terminal: IconTerminal,
@@ -114,8 +115,9 @@ const LandingCoursesSection: React.FC = () => {
   const ActiveCatIcon = pageCourses[0] ? CATEGORY_ICONS[pageCourses[0].category] : GraduationCap;
 
   return (
-    <div className="relative overflow-hidden min-h-dvh md:h-dvh flex flex-col">
-      <div className="relative w-full h-full px-6 md:px-16 lg:px-24 py-6 md:py-8 lg:py-10 flex flex-col">
+    <div className="relative overflow-hidden min-h-dvh md:h-dvh flex flex-col" data-nav-invert>
+      <GridBoxedBackground opacity={0.4} blur={0} mask="right" />
+      <div className="relative z-10 w-full h-full px-6 md:px-16 lg:px-24 py-6 md:py-8 lg:py-10 flex flex-col">
         <div className="w-full lg:max-w-6xl lg:mx-auto flex-1 flex flex-col min-h-0">
           {/* Heading */}
           <motion.div
@@ -126,7 +128,7 @@ const LandingCoursesSection: React.FC = () => {
             className="mb-4 md:mb-8 shrink-0"
           >
 
-            <h2 className="text-3xl md:text-5xl lg:text-6xl font-black text-text-primary tracking-tighter leading-none mb-2">
+            <h2 className="text-2xl md:text-4xl lg:text-5xl font-black text-text-primary tracking-tighter leading-none mb-2">
               {t('landing.courses.heading')}
             </h2>
             <p className="text-xs md:text-sm text-text-secondary leading-relaxed max-w-lg mb-4">

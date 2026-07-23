@@ -77,7 +77,7 @@ export function WalkthroughLayout({
   };
 
   return (
-    <div className="w-full font-mono">
+    <div className="w-full">
       {/* Desktop Toolbar (right side) */}
       {toolbar && (
         <div className="hidden lg:block">

@@ -65,7 +65,7 @@ const SkillStats = ({ modules }: SkillStatsProps) => {
           <span className="text-[10px] font-black uppercase tracking-widest text-text-muted min-w-[80px] truncate">
             {skill.shortLabel}
           </span>
-          <div className="flex-1 h-2.5 rounded-full bg-accent-dim/20 overflow-hidden">
+          <div className="flex-1 h-3 md:h-3.5 rounded-full bg-accent-dim/20 overflow-hidden">
             <div
               className="h-full rounded-full transition-all duration-700"
               style={{ width: `${skill.level}%`, backgroundColor: skill.color }}
