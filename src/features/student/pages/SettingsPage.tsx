@@ -105,7 +105,7 @@ const Settings: React.FC = () => {
         setRecoveryAcked(Boolean(res.data?.acknowledgedAt));
         setRecoveryCreatedAt(res.data?.createdAt || null);
       })
-      .catch(() => {})
+      .catch((err) => { console.warn('[Settings] recovery token failed:', err?.response?.status || err?.message); })
       .finally(() => { if (mounted) setLoadingRecovery(false); });
     return () => { mounted = false; };
   }, []);
@@ -114,7 +114,7 @@ const Settings: React.FC = () => {
     let mounted = true;
     api.get('/profile/sessions')
       .then((res) => { if (mounted) setSessions(res.data?.sessions || []); })
-      .catch(() => {})
+      .catch((err) => { console.warn('[Settings] sessions failed:', err?.response?.status || err?.message); })
       .finally(() => { if (mounted) setLoadingSessions(false); });
     return () => { mounted = false; };
   }, []);

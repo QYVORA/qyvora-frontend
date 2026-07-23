@@ -349,9 +349,9 @@ const Dashboard = () => {
     const load = async () => {
       try {
         const [ovRes, bcRes, prodRes] = await Promise.all([
-          api.get('/student/overview').catch(() => null),
-          api.get('/public/bootcamps').catch(() => null),
-          api.get('/public/cp-products').catch(() => null),
+          api.get('/student/overview').catch((err) => { console.warn('[Dashboard] overview failed:', err?.response?.status || err?.message); return null; }),
+          api.get('/public/bootcamps').catch((err) => { console.warn('[Dashboard] bootcamps failed:', err?.response?.status || err?.message); return null; }),
+          api.get('/public/cp-products').catch((err) => { console.warn('[Dashboard] products failed:', err?.response?.status || err?.message); return null; }),
         ]);
         if (!mounted) return;
         setOverview(ovRes?.data || null);

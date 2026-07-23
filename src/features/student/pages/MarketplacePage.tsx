@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { ShoppingBag, Search, Loader2, Download, BookOpen, Zap, ArrowDownLeft, ArrowUpRight } from 'lucide-react';
 import { motion } from 'motion/react';
 import ScrollReveal from '../../../shared/components/ScrollReveal';
-import api from '../../../core/services/api';
+import api, { getAccessToken } from '../../../core/services/api';
 import { useAuth } from '../../../core/contexts/AuthContext';
 import { useToast } from '../../../core/contexts/ToastContext';
 import SEO from '../../../shared/components/SEO';
@@ -90,7 +90,11 @@ const Marketplace: React.FC = () => {
     setDownloading(id);
     try {
       const base = String(import.meta.env.VITE_API_BASE_URL || '/api');
-      const res = await fetch(`${base}/cp/products/${id}/download`, { credentials: 'include' });
+      const token = getAccessToken();
+      const res = await fetch(`${base}/cp/products/${id}/download`, {
+        credentials: 'include',
+        headers: token ? { Authorization: `Bearer ${token}` } : {},
+      });
       if (!res.ok) { addToast(t('toast.downloadFailed'), 'error'); return; }
       const blob = await res.blob();
       const link = document.createElement('a');
