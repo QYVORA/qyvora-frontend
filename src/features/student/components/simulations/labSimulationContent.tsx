@@ -4,7 +4,7 @@ import type { TerminalContext } from '@/features/student/components/SimulatedTer
 import type { SimulationType } from './types';
 import type { SqlTable } from './types';
 
-export type SimulationContent = { type: SimulationType; content: React.ReactNode };
+export type SimulationContent = { type: SimulationType; content: React.ReactNode; breakout?: boolean };
 
 // ── Terminal Simulation Content ──────────────────────────────────────────────
 // Wraps SimulatedTerminal in inline mode. Watches parent data-active attribute
@@ -43,6 +43,7 @@ function TerminalSimulationContent({ context }: { context: TerminalContext }) {
         onOpenChange={handleOpenChange}
         context={context}
         mode="inline"
+        size="normal"
       />
     </div>
   );
@@ -53,6 +54,7 @@ export function createTerminalSimulation(context: TerminalContext): SimulationCo
   return {
     type: 'terminal',
     content: <TerminalSimulationContent context={context} />,
+    breakout: true,
   };
 }
 
