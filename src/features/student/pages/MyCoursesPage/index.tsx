@@ -32,7 +32,7 @@ const MyCoursesPage: React.FC = () => {
         return tx.metadata?.slug || tx.metadata?.courseId || String(tx.productId);
       });
       setPurchased(new Set(purchasedIds));
-    }).catch(() => {}).finally(() => setLoading(false));
+    }).catch((err) => { console.warn('[MyCourses] transactions failed:', err?.response?.status || err?.message); }).finally(() => setLoading(false));
 
     const progressData: Record<string, { completed: number; total: number; lastLesson: number }> = {};
     for (const course of COURSES) {

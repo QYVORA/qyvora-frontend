@@ -106,7 +106,7 @@ const StudentTopbar = () => {
       const overview = res.data || null;
       const cp = extractCpBalance(overview?.xpSummary) ?? user?.cp ?? 0;
       setCpBalance(cp);
-    }).catch(() => {});
+    }).catch((err) => { console.warn('[Topbar] overview failed:', err?.response?.status || err?.message); });
     return () => { mounted = false; };
   }, [user?.uid]);
 

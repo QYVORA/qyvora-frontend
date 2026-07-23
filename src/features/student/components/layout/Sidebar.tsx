@@ -53,7 +53,7 @@ const DashboardOverviewPanel = () => {
     api.get('/student/overview').then((res) => {
       if (!mounted) return;
       setOverview(res.data || null);
-    }).catch(() => {});
+    }).catch((err) => { console.warn('[Sidebar] overview failed:', err?.response?.status || err?.message); });
     return () => { mounted = false; };
   }, [user?.uid]);
 
@@ -136,7 +136,7 @@ const CourseProgressPanel = () => {
       if (!mounted) return;
       setOverview(ovRes.data || null);
       if (courseRes?.data) setCourse(courseRes.data);
-    }).catch(() => {});
+    }).catch((err) => { console.warn('[Sidebar] course overview failed:', err?.response?.status || err?.message); });
     return () => { mounted = false; };
   }, [bootcampId, user?.uid]);
 
@@ -201,7 +201,7 @@ const CoursesListPanel = () => {
       if (!mounted) return;
       const items = Array.isArray(res.data?.items) ? res.data.items : [];
       setCourses(items);
-    }).catch(() => {});
+    }).catch((err) => { console.warn('[Sidebar] courses list failed:', err?.response?.status || err?.message); });
     return () => { mounted = false; };
   }, [user?.uid]);
 
@@ -248,7 +248,7 @@ const LessonNavPanel = () => {
     api.get(`/student/course?courseId=${encodeURIComponent(courseId)}`).then((res) => {
       if (!mounted) return;
       setLessons(Array.isArray(res.data?.lessons) ? res.data.lessons : []);
-    }).catch(() => {});
+    }).catch((err) => { console.warn('[Sidebar] lessons list failed:', err?.response?.status || err?.message); });
     return () => { mounted = false; };
   }, [courseId]);
 
@@ -287,7 +287,7 @@ const MarketBalancePanel = () => {
     api.get('/cp/balance').then((res) => {
       if (!mounted) return;
       setBalance(res.data?.balance ?? null);
-    }).catch(() => {});
+    }).catch((err) => { console.warn('[Sidebar] balance failed:', err?.response?.status || err?.message); });
     return () => { mounted = false; };
   }, []);
 
@@ -364,7 +364,7 @@ const RoomCurriculumPanel = () => {
       if (!mounted) return;
       setOverview(ovRes.data);
       if (courseRes?.data) setApiCourse(courseRes.data);
-    }).catch(() => {}).finally(() => { if (mounted) setLoading(false); });
+    }).catch((err) => { console.warn('[Sidebar] room curriculum failed:', err?.response?.status || err?.message); }).finally(() => { if (mounted) setLoading(false); });
     return () => { mounted = false; };
   }, [bootcampId, user?.uid]);
 
