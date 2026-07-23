@@ -1,6 +1,7 @@
 import wsuits6Img from '@/assets/team/wsuits6.webp';
 import sopt4Img from '@/assets/team/sopt4.webp';
 import rafiqImg from '@/assets/team/mohammed_rafiq.webp';
+import ghostImg from '@/assets/quiteRoot/WhatsApp Image 2026-07-16 at 10.45.41 PM.jpeg';
 
 export interface TeamSocials {
   youtube?: string;
@@ -61,6 +62,16 @@ export const teamData: TeamMember[] = [
       twitter: 'https://x.com/nyabubiyoona1?s=11',
       facebook: 'https://www.facebook.com/share/1E1NGivdg1/?mibextid=wwXIfr',
       website: 'https://msiieautel.com/reg?code=y64x7d',
+    },
+  },
+  {
+    id: 'ghostVenom',
+    name: 'Ghost Venom',
+    role: 'CM',
+    bio: 'I am curious to know how things work in building my skills in cybersecurity .',
+    image: ghostImg,
+    socials: {
+      linkedin: 'https://www.linkedin.com/in/ghost-malware-222ab4285/',
     },
   },
 ];
