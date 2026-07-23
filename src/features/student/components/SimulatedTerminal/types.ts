@@ -103,5 +103,6 @@ export interface SimulatedTerminalProps {
   context?: TerminalContext;
   initialCommands?: string[];
   mode?: 'modal' | 'inline';
+  size?: 'normal' | 'compact';
   title?: string;
 }

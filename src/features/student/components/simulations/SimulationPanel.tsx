@@ -6,6 +6,7 @@ interface SimulationPanelProps {
   simulations: {
     type: SimulationType;
     content: React.ReactNode;
+    breakout?: boolean;
   }[];
   defaultHeight?: string;
 }
@@ -16,8 +17,11 @@ export function SimulationPanel({ simulations, defaultHeight = 'h-[400px]' }: Si
 
   if (simulations.length === 0) return null;
 
+  const activeSimulation = simulations.find(sim => sim.type === activeTab);
+  const hasBreakout = activeSimulation?.breakout ?? false;
+
   return (
-    <div className={`rounded-2xl border border-border/30 bg-bg-card overflow-hidden ${expanded ? 'fixed inset-4 z-[200]' : defaultHeight}`}>
+    <div className={`rounded-2xl border border-border/30 bg-bg-card ${hasBreakout ? '' : 'overflow-hidden'} ${expanded ? 'fixed inset-4 z-[200]' : defaultHeight}`}>
       {/* Content — each simulation rendered with data-active attribute */}
       <div className="h-full min-h-0">
         {simulations.map(sim => (

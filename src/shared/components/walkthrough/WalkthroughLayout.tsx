@@ -20,7 +20,7 @@ export interface WalkthroughLayoutProps {
   completedCount?: number;
   totalSteps?: number;
   showConnectionGuide?: boolean;
-  simulations?: { type: SimulationType; content: React.ReactNode }[];
+  simulations?: { type: SimulationType; content: React.ReactNode; breakout?: boolean }[];
   headerMetadata?: React.ReactNode;
   headerActions?: React.ReactNode;
   sidebar?: React.ReactNode;

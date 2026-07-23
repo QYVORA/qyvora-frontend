@@ -10,6 +10,7 @@ export const SimulatedTerminal: React.FC<SimulatedTerminalProps> = ({
   context,
   initialCommands,
   mode = 'modal',
+  size = 'compact',
 }) => {
   const [isFullscreen, setIsFullscreen] = useState(false);
 
@@ -61,6 +62,20 @@ export const SimulatedTerminal: React.FC<SimulatedTerminalProps> = ({
   }
 
   if (!open) return null;
+
+  if (size === 'normal') {
+    return (
+      <div className={isFullscreen ? 'fixed inset-0 z-50' : 'relative -mx-[calc(50vw-50%)] w-[100vw]'}>
+        <div className={cn(
+          'mx-auto',
+          isFullscreen ? 'h-screen' : 'w-[calc(100vw-2rem)] sm:w-[calc(100vw-3rem)] max-w-5xl h-[75vh] max-h-[90vh]',
+          !isFullscreen && 'rounded-2xl overflow-hidden',
+        )}>
+          {shell}
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className={isFullscreen ? 'fixed inset-0 z-50' : 'w-full'}>
