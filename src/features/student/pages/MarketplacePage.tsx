@@ -8,7 +8,7 @@ import { useAuth } from '../../../core/contexts/AuthContext';
 import { useToast } from '../../../core/contexts/ToastContext';
 import SEO from '../../../shared/components/SEO';
 import CpLogo from '../../../shared/components/CpLogo';
-import { resolveImg } from '../../../shared/utils/resolveImg';
+import { AuthImage } from '../../../shared/components/ui';
 import productFallbackImg from '@/assets/sections/stats/cp-earned-bg.webp';
 import { extractCpBalance } from '../../../shared/utils/cpBalance';
 import { formatNumber } from '../../../shared/utils/formatNumber';
@@ -182,7 +182,7 @@ const Marketplace: React.FC = () => {
                     <motion.div key={id || idx} initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.45, delay: idx * 0.08, ease: [0.16, 1, 0.3, 1] }}>
                       <div className="group overflow-hidden flex flex-col w-full border border-border/30 bg-bg-card rounded-2xl transition-all duration-300 hover:border-accent/30 hover:scale-[1.01]">
                         <div className="relative aspect-video overflow-hidden rounded-t-2xl shadow-sm">
-                          <img src={resolveImg(prod.coverUrl, productFallbackImg)} alt={prod.title} width={1200} height={675} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy" />
+                          <AuthImage src={prod.coverUrl} fallback={productFallbackImg} alt={prod.title} width={1200} height={675} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy" />
                           <div className="absolute top-4 left-4 flex items-center gap-2">
                             {hasPurchased && <span className="px-2.5 py-1 bg-accent text-bg rounded text-[9px] font-black uppercase tracking-widest shadow-md">{t('student.marketplace.owned')}</span>}
                             {prod.isFree && !hasPurchased && <span className="px-2.5 py-1 bg-accent text-bg rounded text-[9px] font-black uppercase tracking-widest shadow-md">{t('student.marketplace.public')}</span>}

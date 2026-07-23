@@ -46,7 +46,7 @@ const LABS = [
 ];
 import CpLogo from '@/shared/components/CpLogo';
 import { Link, useNavigate } from 'react-router-dom';
-import { resolveImg } from '@/shared/utils/resolveImg';
+import { AuthImage } from '@/shared/components/ui';
 import { COURSES, getCategoryById } from '@/features/student/data/courses/courseData';
 import type { SkillLevel } from '@/features/student/data/courses/types';
 import {
@@ -251,19 +251,17 @@ const DashboardProductCard = ({ product }: { product: any }) => {
   const id = String(product?.id || '');
   const title = String(product?.title || t('student.dashboard.intelligenceAsset'));
   const description = String(product?.description || t('student.dashboard.intelligenceDesc'));
-  const coverUrl = resolveImg(product?.coverUrl, productFallbackImg);
-
   return (
     <div className="group flex flex-col h-full overflow-hidden rounded-2xl border border-border/30 bg-bg-card transition-all duration-300 hover:border-accent/30">
       <div className="relative aspect-video overflow-hidden rounded-t-2xl shadow-sm">
-        <img
-          src={coverUrl}
+        <AuthImage
+          src={product?.coverUrl}
+          fallback={productFallbackImg}
           alt={title}
           width={1200}
           height={675}
           loading="lazy"
           className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
-          onError={(e) => { e.currentTarget.src = productFallbackImg; }}
         />
         <div className="absolute top-2.5 left-2.5 flex items-center gap-1.5">
                         <span className="px-2 py-0.5 bg-bg/85 backdrop-blur-sm rounded-lg text-[10px] font-black uppercase text-accent tracking-widest shadow-sm flex items-center gap-1">

@@ -8,7 +8,7 @@ import StickySidebarLayout from '@/shared/components/layout/StickySidebarLayout'
 import ScrollReveal from '@/shared/components/ScrollReveal';
 import api from '@/core/services/api';
 import productFallbackImg from '@/assets/sections/stats/cp-earned-bg.webp';
-import { resolveImg } from '@/shared/utils/resolveImg';
+import { AuthImage } from '@/shared/components/ui';
 
 interface ProductItem {
   id: string;
@@ -79,8 +79,9 @@ const LandingMarketSection = () => {
               renderCard={(prod) => (
                 <div className="group overflow-hidden flex flex-col w-full border border-border/40 bg-bg-card rounded-2xl transition-all duration-300">
                   <div className="relative aspect-video overflow-hidden rounded-t-2xl shadow-sm">
-                    <img
-                      src={resolveImg(prod.coverUrl, productFallbackImg)}
+                    <AuthImage
+                      src={prod.coverUrl}
+                      fallback={productFallbackImg}
                       alt={prod.title}
                       width={1200}
                       height={675}
