@@ -25,12 +25,7 @@ import NotFoundPage from '../shared/pages/NotFoundPage';
 
 // ─── Lazy page imports ────────────────────────────────────────────────────────
 const LandingPage       = lazy(() => import('../features/marketing/pages/LandingPage'));
-const ServicesPage      = lazy(() => import('../features/marketing/pages/ServicesPage'));
 const TermsPage         = lazy(() => import('../features/marketing/pages/TermsPage'));
-const AnansiPage        = lazy(() => import('../features/marketing/pages/AnansiPage'));
-const LearnPage         = lazy(() => import('../features/marketing/pages/LearnPage'));
-const LeaderboardPage   = lazy(() => import('../features/marketing/pages/LeaderboardPage'));
-const LeaderboardAllPage = lazy(() => import('../features/marketing/pages/LeaderboardAllPage'));
 const BlogPostPage      = lazy(() => import('../features/marketing/pages/BlogsPage/BlogPostPage'));
 
 // Auth pages
@@ -127,14 +122,16 @@ export const AppRouter = () => {
         <Route element={<LandingLayout />}>
           <Route path="/" element={<Wrap scope="Landing"><LandingPage /></Wrap>} />
           <Route path="/terms" element={<Wrap scope="Terms of Service"><TermsPage /></Wrap>} />
-          <Route path="/anansi" element={<Wrap scope="Anansi CLI"><AnansiPage /></Wrap>} />
-          <Route path="/services" element={<Wrap scope="Services"><ServicesPage /></Wrap>} />
-          <Route path="/hpb" element={<Wrap scope="HPB"><LearnPage /></Wrap>} />
-          <Route path="/learn" element={<Navigate to="/hpb" replace />} />
-          <Route path="/leaderboard" element={<Wrap scope="Leaderboard"><LeaderboardPage /></Wrap>} />
-          <Route path="/leaderboard/all" element={<Wrap scope="Leaderboard"><LeaderboardAllPage /></Wrap>} />
-          <Route path="/courses" element={<Navigate to="/#courses" replace />} />
           <Route path="/courses/:courseId" element={<Wrap scope="Course"><CourseInfoPage /></Wrap>} />
+          
+          {/* Redirects to landing page sections */}
+          <Route path="/anansi" element={<Navigate to="/#anansi" replace />} />
+          <Route path="/services" element={<Navigate to="/#services" replace />} />
+          <Route path="/hpb" element={<Navigate to="/#bootcamp" replace />} />
+          <Route path="/learn" element={<Navigate to="/#bootcamp" replace />} />
+          <Route path="/leaderboard" element={<Navigate to="/#leaderboard" replace />} />
+          <Route path="/leaderboard/all" element={<Navigate to="/#leaderboard" replace />} />
+          <Route path="/courses" element={<Navigate to="/#courses" replace />} />
           
           {/* Redirects for merged pages */}
           <Route path="/team" element={<Navigate to="/#team" replace />} />

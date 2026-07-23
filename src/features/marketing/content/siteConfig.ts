@@ -87,32 +87,33 @@ export const SITE_CONFIG = {
   nav: {
     groups: [
       {
-        key: 'learn',
-        label: 'Learn',
+        key: 'platform',
+        label: 'Platform',
         items: [
-          { key: 'hpb', label: 'HPB', path: '/hpb', desc: 'Hacker Protocol Bootcamp' },
-          { key: 'services', label: 'Services', path: '/services', desc: 'Pentesting services' },
+          { key: 'courses', label: 'Courses', path: '/#courses', desc: 'Security courses' },
+          { key: 'bootcamp', label: 'Bootcamp', path: '/#bootcamp', desc: 'Hacker Protocol Bootcamp' },
+          { key: 'labs', label: 'Labs', path: '/#labs', desc: 'Attack labs' },
         ],
       },
       {
-        key: 'research',
-        label: 'Research',
+        key: 'resources',
+        label: 'Resources',
         items: [
-          { key: 'anansi', label: 'Anansi', path: '/anansi', desc: 'Attack Surface Intelligence' },
-          { key: 'leaderboard', label: 'Leaderboard', path: '/leaderboard', desc: 'Top operators ranking' },
+          { key: 'anansi', label: 'Anansi', path: '/#anansi', desc: 'Attack Surface Intelligence' },
+          { key: 'leaderboard', label: 'Leaderboard', path: '/#leaderboard', desc: 'Top operators ranking' },
+          { key: 'blogs', label: 'Blogs', path: '/#blogs', desc: 'Security articles' },
         ],
       },
     ],
     platform: [
-      { key: 'hpb', label: 'HPB', path: '/hpb', desc: 'Hacker Protocol Bootcamp' },
-      { key: 'anansi', label: 'Anansi', path: '/anansi', desc: 'Attack Surface Intelligence' },
-      { key: 'leaderboard', label: 'Leaderboard', path: '/leaderboard', desc: 'Top operators ranking' },
-      { key: 'services', label: 'Services', path: '/services', desc: 'Pentesting services' },
+      { key: 'courses', label: 'Courses', path: '/#courses', desc: 'Security courses' },
+      { key: 'bootcamp', label: 'Bootcamp', path: '/#bootcamp', desc: 'Hacker Protocol Bootcamp' },
+      { key: 'labs', label: 'Labs', path: '/#labs', desc: 'Attack labs' },
+      { key: 'anansi', label: 'Anansi', path: '/#anansi', desc: 'Attack Surface Intelligence' },
+      { key: 'leaderboard', label: 'Leaderboard', path: '/#leaderboard', desc: 'Top operators ranking' },
     ],
     company: [
-      { key: 'hpb', label: 'HPB', path: '/hpb', desc: 'Bootcamp phases' },
-      { key: 'anansi', label: 'Anansi', path: '/anansi', desc: 'Attack Surface Intelligence' },
-      { key: 'leaderboard', label: 'Leaderboard', path: '/leaderboard', desc: 'Top operators ranking' },
+      { key: 'team', label: 'Team', path: '/#team', desc: 'Our team' },
       { key: 'contact', label: 'Contact', path: '/contact', desc: 'Open secure contact modal', modal: true }
     ],
   },
@@ -120,11 +121,11 @@ export const SITE_CONFIG = {
   footer: {
     links: [
       { label: 'Terms of Service', path: '/terms' },
-      { label: 'Courses', path: '/courses' },
-      { label: 'Anansi', path: '/anansi' },
-      { label: 'Learn', path: '/hpb' },
-      { label: 'Leaderboard', path: '/leaderboard' },
-      { label: 'Services', path: '/services' }
+      { label: 'Courses', path: '/#courses' },
+      { label: 'Bootcamp', path: '/#bootcamp' },
+      { label: 'Labs', path: '/#labs' },
+      { label: 'Anansi', path: '/#anansi' },
+      { label: 'Leaderboard', path: '/#leaderboard' },
     ],
   },
 } as const;

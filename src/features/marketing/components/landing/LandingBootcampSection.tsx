@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, useReducedMotion } from 'motion/react';
 import { IconArrowRight } from '@/shared/components/icons';
-import { PHASES } from '@/features/marketing/pages/LearnPage/learnData';
+import { PHASES } from '@/features/marketing/data/learnData';
 import { BOOTCAMP_CONFIG } from '@/features/student/constants/bootcampConfig';
 import { GridBoxedBackground } from '@/shared/components/backgrounds';
 import { useTranslation } from 'react-i18next';
@@ -53,7 +53,7 @@ const LandingBootcampSection: React.FC = () => {
             transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
             className="mb-4 md:mb-8 shrink-0"
           >
-            <h2 className="text-3xl md:text-5xl lg:text-6xl font-black text-text-primary tracking-tighter leading-none mb-2">
+            <h2 className="text-2xl md:text-4xl lg:text-5xl font-black text-text-primary tracking-tighter leading-none mb-2">
               {t('landing2.bootcamp.heading1')} <span className="text-text-primary">{t('landing2.bootcamp.heading2')}</span>
             </h2>
             <p className="text-xs md:text-sm text-text-secondary leading-relaxed max-w-xl">

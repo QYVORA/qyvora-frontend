@@ -20,37 +20,43 @@ export function LabHeroSection({ icon, title, accentWord, description, villain, 
       <GridBoxedBackground opacity={0.3} blur={0} mask="none" />
 
       <div className="relative z-10 px-4 sm:px-10 md:px-12 lg:pl-16 xl:pl-20 lg:pr-8 xl:pr-12 pt-24 pb-16">
-        <div className="max-w-4xl space-y-8">
-          <div className="flex items-center gap-4">
-            <div className="w-16 h-16 rounded-2xl bg-accent/10 border border-accent/20 flex items-center justify-center shrink-0">
-              {icon}
-            </div>
-          </div>
-
-          <h1 className="text-5xl md:text-7xl lg:text-8xl font-black text-text-primary tracking-tight leading-[1.05]">
-            {title}{' '}
-            <span className="text-accent">{accentWord}</span>
-          </h1>
-
-          <p className="text-base sm:text-lg text-text-secondary font-mono max-w-2xl leading-relaxed">
-            {description}
-          </p>
-
-          {villain && (
-            <div className="max-w-xl rounded-2xl border border-red-400/20 bg-red-400/5 p-6 mt-8">
-              <div className="flex items-start gap-4">
-                <span className="text-3xl shrink-0 mt-1">{villain.avatar}</span>
-                <div className="flex-1 min-w-0">
-                  <p className="text-[9px] font-black uppercase tracking-widest text-red-400 mb-1">Target Villain</p>
-                  <p className="text-lg font-black text-text-primary">{villain.name}</p>
-                  <p className="text-sm font-mono text-red-400/70 italic mt-0.5">"{villain.alias}"</p>
-                  <p className="text-sm font-mono text-text-muted/70 mt-2 leading-relaxed">{villain.description}</p>
+        <div className="max-w-6xl space-y-8">
+          <div className="flex flex-col lg:flex-row gap-8 lg:gap-12 items-start">
+            {/* Hero Content */}
+            <div className="flex-1 space-y-8">
+              <div className="flex items-center gap-4">
+                <div className="w-16 h-16 rounded-2xl bg-accent/10 border border-accent/20 flex items-center justify-center shrink-0">
+                  {icon}
                 </div>
               </div>
-            </div>
-          )}
 
-          {children}
+              <h1 className="text-5xl md:text-7xl lg:text-8xl font-black text-text-primary tracking-tight leading-[1.05]">
+                {title}{' '}
+                <span className="text-accent">{accentWord}</span>
+              </h1>
+
+              <p className="text-base sm:text-lg text-text-secondary font-mono max-w-2xl leading-relaxed">
+                {description}
+              </p>
+
+              {children}
+            </div>
+
+            {/* Villain Card - alongside hero on desktop */}
+            {villain && (
+              <div className="w-full lg:w-[380px] shrink-0 rounded-2xl border border-red-400/20 bg-red-400/5 p-6">
+                <div className="flex items-start gap-4">
+                  <span className="text-3xl shrink-0 mt-1">{villain.avatar}</span>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-[9px] font-black uppercase tracking-widest text-red-400 mb-1">Target Villain</p>
+                    <p className="text-lg font-black text-text-primary">{villain.name}</p>
+                    <p className="text-sm font-mono text-red-400/70 italic mt-0.5">"{villain.alias}"</p>
+                    <p className="text-sm font-mono text-text-muted/70 mt-2 leading-relaxed">{villain.description}</p>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </div>

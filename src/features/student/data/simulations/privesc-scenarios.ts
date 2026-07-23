@@ -29,9 +29,6 @@ export const PRIVESC_SCENARIOS: PrivescScenario[] = [
 
 Dr. Elena Vasquez — The Architect of Chaos — was NovaCorp's lead sysadmin. She deliberately weakened security to create backdoors for her hacking group. Let's trace her steps.
 
-🗺️ Attack Flow:
-[You] ──ls──> [Filesystem] ──identify──> [SUID Binary] ──exploit──> [root]
-
 Start by listing files and checking where you are. The filesystem tells the story if you know how to read it.`,
           triggers: [{ type: 'command', value: 'ls' }, { type: 'command', value: 'pwd' }],
           hint: 'Start by exploring your surroundings with ls -la',
@@ -54,11 +51,9 @@ Dr. Vasquez was clever — she used a legitimate tool as her backdoor. SUID bina
           title: 'Chapter 3: Exploitation',
           narrative: `💀 "Bingo! find has SUID bit set (mode 4755). Here's the exploit chain:
 
-  find /tmp -exec /bin/bash -p \\
-    │
-    ├── find runs as root (SUID)
-    ├── -exec executes /bin/bash -p
-    └── -p preserves the elevated UID → root shell!
+  find /tmp -exec /bin/bash -p \\;
+
+The find binary runs as root (SUID), so -exec executes /bin/bash -p, and -p preserves the elevated UID giving us a root shell!
 
 Dr. Vasquez thought she was clever with this backdoor. But we've turned her own weapon against her.
 

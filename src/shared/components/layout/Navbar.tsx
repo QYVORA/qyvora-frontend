@@ -14,22 +14,17 @@ import LanguageSwitcher from '@/shared/components/LanguageSwitcher';
 import Identicon from '@/shared/components/Identicon';
 
 const NAV_GROUP_LABELS: Record<string, string> = {
-  learn: 'nav.learn',
-  research: 'nav.research',
+  platform: 'nav.platform',
   resources: 'nav.resources',
-  company: 'nav.company',
 };
 
 const NAV_ITEM_LABELS: Record<string, string> = {
-  hpb: 'nav.hpb',
-  events: 'nav.events',
-  services: 'nav.services',
+  courses: 'nav.courses',
+  bootcamp: 'nav.bootcamp',
+  labs: 'nav.labs',
   anansi: 'nav.anansi',
-  quiteroot: 'nav.quiteroot',
-  market: 'nav.market',
-  blogs: 'nav.blogs',
-  news: 'nav.news',
   leaderboard: 'nav.leaderboard',
+  blogs: 'nav.blogs',
   team: 'nav.team',
   contact: 'nav.contact',
 };
@@ -44,8 +39,6 @@ const Navbar: React.FC = React.memo(() => {
   const location                                 = useLocation();
   const hoverTimeoutRef                          = useRef<ReturnType<typeof setTimeout> | null>(null);
   const inverted                                 = useNavInvert();
-
-  const isAnansiPage = location.pathname === '/anansi';
 
   // Hide navbar on scroll down, show on scroll up (desktop only, snap-scroll pages)
   useEffect(() => {

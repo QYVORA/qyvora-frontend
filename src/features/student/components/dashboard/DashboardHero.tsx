@@ -62,7 +62,7 @@ const DashboardHero = ({
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.4, delay: 0.5, type: 'spring', stiffness: 200, damping: 20 }}
           >
-            <Link to={continuePath} className="hero-cta btn-primary shrink-0 !text-xs w-full sm:w-auto text-center relative z-10" aria-label={t('student.dashboard.hero.reviewCurriculum')}>
+            <Link to={continuePath} className="hero-cta btn-primary shrink-0 !text-xs w-full sm:w-auto text-center relative z-10 whitespace-nowrap" aria-label={t('student.dashboard.hero.reviewCurriculum')}>
               {t('student.dashboard.hero.reviewCurriculum')} <IconArrowRight size={14} className="inline" />
             </Link>
           </motion.div>
@@ -112,7 +112,7 @@ const DashboardHero = ({
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.4, delay: 0.5, type: 'spring', stiffness: 200, damping: 20 }}
           >
-            <Link to={continuePath} className="hero-cta btn-primary shrink-0 !text-xs w-full sm:w-auto text-center relative z-10" aria-label={t('student.dashboard.hero.continueTraining')}>
+            <Link to={continuePath} className="hero-cta btn-primary shrink-0 !text-xs w-full sm:w-auto text-center relative z-10 whitespace-nowrap" aria-label={t('student.dashboard.hero.continueTraining')}>
               {t('student.dashboard.hero.continue')} <IconArrowRight size={14} className="inline" />
             </Link>
           </motion.div>
@@ -161,7 +161,7 @@ const DashboardHero = ({
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.4, delay: 0.5, type: 'spring', stiffness: 200, damping: 20 }}
         >
-            <Link to={continuePath} className="hero-cta btn-primary shrink-0 !text-xs w-full sm:w-auto text-center relative z-10" aria-label={t('student.dashboard.hero.startTraining')}>
+            <Link to={continuePath} className="hero-cta btn-primary shrink-0 !text-xs w-full sm:w-auto text-center relative z-10 whitespace-nowrap" aria-label={t('student.dashboard.hero.startTraining')}>
               {t('student.dashboard.hero.startTraining')} <IconArrowRight size={14} className="inline" />
           </Link>
         </motion.div>
