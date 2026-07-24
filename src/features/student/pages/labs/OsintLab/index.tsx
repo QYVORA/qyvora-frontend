@@ -165,7 +165,7 @@ const OsintLab = () => {
         })}
 
         {flagStatus === 'correct' && (
-          <div className="rounded-2xl border border-accent/30 bg-accent/5 p-6 flex items-center gap-4">
+          <div className="rounded-2xl border border-accent/30 bg-accent/5 p-4 md:p-6 flex flex-col sm:flex-row items-start sm:items-center gap-4">
             <div className="w-12 h-12 rounded-xl bg-accent/20 flex items-center justify-center shrink-0">
               <CheckCircle className="w-6 h-6 text-accent" />
             </div>

@@ -11,7 +11,7 @@ interface SimulationPanelProps {
   defaultHeight?: string;
 }
 
-export function SimulationPanel({ simulations, defaultHeight = 'h-[400px]' }: SimulationPanelProps) {
+export function SimulationPanel({ simulations, defaultHeight = 'h-[300px] md:h-[400px]' }: SimulationPanelProps) {
   const [activeTab, setActiveTab] = useState<SimulationType | null>(simulations[0]?.type || null);
   const [expanded, setExpanded] = useState(false);
 
