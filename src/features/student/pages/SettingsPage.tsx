@@ -523,7 +523,7 @@ const Settings: React.FC = () => {
                             <p className="text-[10px] font-bold text-accent uppercase tracking-widest mb-2">{t('student.settings.recovery.copyNowWarning')}</p>
                             <div className="relative">
                               <input id="settings-recovery-token" type="text" readOnly value={liveToken} className={`${INPUT_CLS} pr-12 select-all cursor-text bg-bg`} onFocus={(e) => e.target.select()} />
-                              <button type="button" onClick={copyToken} aria-label={t('aria.copyToken')} className="absolute right-3 top-1/2 -translate-y-1/2 text-text-muted hover:text-accent transition-colors">
+                              <button type="button" onClick={copyToken} aria-label={t('aria.copyToken')} className="absolute right-3 top-1/2 -translate-y-1/2 text-text-muted hover:text-accent active:scale-95 transition-colors">
                                 {copied ? <CheckCircle2 className="w-4 h-4 text-accent" /> : <Copy className="w-4 h-4" />}
                               </button>
                             </div>
@@ -542,15 +542,15 @@ const Settings: React.FC = () => {
                             </div>
                           </div>
                           {!confirmRegenerate ? (
-                            <button onClick={() => setConfirmRegenerate(true)} className="w-full flex items-center justify-center gap-2 px-4 py-2.5 border border-border rounded-xl text-sm text-text-muted hover:border-accent/30 hover:text-accent transition-colors">
+                            <button onClick={() => setConfirmRegenerate(true)} className="w-full flex items-center justify-center gap-2 px-4 py-2.5 border border-border rounded-xl text-sm text-text-muted hover:border-accent/30 hover:text-accent active:scale-[0.98] transition-colors">
                               <RefreshCw className="w-4 h-4" /> {t('student.settings.recovery.generate')}
                             </button>
                           ) : (
                             <div className="p-4 border border-yellow-500/30 rounded-xl bg-yellow-500/5 space-y-3">
                               <p className="text-xs text-yellow-400 font-bold">{t('student.settings.recovery.invalidateWarning')}</p>
                               <div className="flex gap-2">
-                                <button onClick={() => setConfirmRegenerate(false)} className="flex-1 px-3 py-2 border border-border rounded-xl text-xs text-text-muted hover:border-accent/30 transition-colors">{t('button.cancel')}</button>
-                                <button onClick={() => void regenerateToken()} disabled={regenerating} className="flex-1 px-3 py-2 border border-yellow-500/40 rounded-xl text-xs text-yellow-400 hover:bg-yellow-500/10 transition-colors disabled:opacity-50 flex items-center justify-center gap-1.5">
+                                <button onClick={() => setConfirmRegenerate(false)} className="flex-1 px-3 py-2 border border-border rounded-xl text-xs text-text-muted hover:border-accent/30 active:scale-[0.98] transition-colors">{t('button.cancel')}</button>
+                                <button onClick={() => void regenerateToken()} disabled={regenerating} className="flex-1 px-3 py-2 border border-yellow-500/40 rounded-xl text-xs text-yellow-400 hover:bg-yellow-500/10 active:scale-[0.98] transition-colors disabled:opacity-50 flex items-center justify-center gap-1.5">
                                   {regenerating ? <><Loader2 className="w-3.5 h-3.5 animate-spin" /> {t('student.settings.recovery.generating')}</> : <><RefreshCw className="w-3.5 h-3.5" /> {t('student.settings.recovery.regenerate')}</>}
                                 </button>
                               </div>
@@ -578,7 +578,7 @@ const Settings: React.FC = () => {
                         <h2 className="text-base font-black uppercase tracking-widest">{t('student.settings.sessions.title')}</h2>
                       </div>
                       {sessions.length > 1 && (
-                        <button onClick={handleRevokeAll} className="text-[10px] font-bold uppercase tracking-widest text-yellow-400 hover:text-yellow-300 transition-colors">
+                        <button onClick={handleRevokeAll} className="text-[10px] font-bold uppercase tracking-widest text-yellow-400 hover:text-yellow-300 active:opacity-70 transition-colors">
                           {t('student.settings.sessions.revokeAll')}
                         </button>
                       )}
@@ -600,7 +600,7 @@ const Settings: React.FC = () => {
                                 <p className="text-[10px] text-text-muted font-mono mt-0.5">{session.ipAddress} · {new Date(session.createdAt).toLocaleDateString()}</p>
                               </div>
                               {!session.isCurrent && (
-                                <button onClick={() => handleRevokeSession(session.id)} className="text-[10px] font-bold uppercase tracking-widest text-yellow-400 hover:text-yellow-300 transition-colors shrink-0">
+                                <button onClick={() => handleRevokeSession(session.id)} className="text-[10px] font-bold uppercase tracking-widest text-yellow-400 hover:text-yellow-300 active:opacity-70 transition-colors shrink-0">
                                   {t('student.settings.sessions.revoke')}
                                 </button>
                               )}
@@ -631,7 +631,7 @@ const Settings: React.FC = () => {
                       <div className="p-4 border border-red-500/30 rounded-xl bg-red-500/5 space-y-3">
                         <p className="text-xs text-red-400 font-bold">{t('student.settings.dangerZone.deleteConfirmDesc')}</p>
                         <div className="flex gap-2">
-                          <button onClick={() => setConfirmDelete(false)} className="flex-1 px-3 py-2 border border-border rounded-xl text-xs text-text-muted hover:border-accent/30 transition-colors">{t('button.cancel')}</button>
+                          <button onClick={() => setConfirmDelete(false)} className="flex-1 px-3 py-2 border border-border rounded-xl text-xs text-text-muted hover:border-accent/30 active:scale-[0.98] transition-colors">{t('button.cancel')}</button>
                           <button onClick={handleDeleteAccount} disabled={deleting} className="flex-1 px-3 py-2 btn-danger !text-xs disabled:opacity-50 flex items-center justify-center gap-1.5">
                             {deleting ? <><Loader2 className="w-3.5 h-3.5 animate-spin" /> {t('student.settings.dangerZone.deleting')}</> : <><Trash2 className="w-3.5 h-3.5" /> {t('student.settings.dangerZone.confirmDelete')}</>}
                           </button>

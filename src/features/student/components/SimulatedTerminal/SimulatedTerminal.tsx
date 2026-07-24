@@ -68,7 +68,7 @@ export const SimulatedTerminal: React.FC<SimulatedTerminalProps> = ({
       <div className={isFullscreen ? 'fixed inset-0 z-50' : 'relative -mx-[calc(50vw-50%)] w-[100vw]'}>
         <div className={cn(
           'mx-auto',
-          isFullscreen ? 'h-screen' : 'w-[calc(100vw-2rem)] sm:w-[calc(100vw-3rem)] max-w-5xl h-[75vh] max-h-[90vh]',
+          isFullscreen ? 'h-dvh' : 'w-[calc(100vw-2rem)] sm:w-[calc(100vw-3rem)] max-w-5xl h-[75vh] max-h-[90vh]',
           !isFullscreen && 'rounded-2xl overflow-hidden',
         )}>
           {shell}
@@ -80,7 +80,7 @@ export const SimulatedTerminal: React.FC<SimulatedTerminalProps> = ({
   return (
     <div className={isFullscreen ? 'fixed inset-0 z-50' : 'w-full'}>
       <div className={cn(
-        isFullscreen ? 'h-screen' : 'h-[50vh] min-h-[300px] max-h-[80vh]',
+        isFullscreen ? 'h-dvh' : 'h-[50vh] min-h-[300px] max-h-[80vh]',
         !isFullscreen && 'rounded-2xl overflow-hidden',
       )}>
         {shell}

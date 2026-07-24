@@ -165,6 +165,8 @@ Pass icons at `w-10 h-10` or `w-12 h-12` to the shared `EmptyState` component.
 
 | Layer | Z-Index |
 |-------|---------|
+| Mobile drawer backdrop | `z-[60]` |
+| Mobile drawer content | `z-[70]` |
 | Dropdowns (notifications) | `z-[80]` |
 | Mobile nav overlay | `z-[90]` |
 | Navbar / bottom nav | `z-[100]` |
@@ -176,6 +178,9 @@ Pass icons at `w-10 h-10` or `w-12 h-12` to the shared `EmptyState` component.
 | ConsentBanner | `z-[150]` |
 | Dialog overlay | `z-[200]` |
 | Dialog content | `z-[201]` |
+| Stacked dialog overlay | `z-[210]` |
+| Stacked dialog content | `z-[211]` |
+| Context menu (network tool) | `z-[220]` |
 | Tooltip | `z-[300]` |
 | Toast | `z-[500]` |
 | Page loader / fullscreen overlay | `z-[9999]` |

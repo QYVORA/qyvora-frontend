@@ -33,7 +33,7 @@ const StepNotes: React.FC<StepNotesProps> = ({ storageKey, className = '' }) => 
     <div className={`border border-border rounded-xl overflow-hidden ${className} ${expanded ? '' : ''}`}>
       <button
         onClick={() => setExpanded(!expanded)}
-        className="w-full flex items-center gap-2 px-4 py-3 bg-bg-card text-text-muted hover:text-accent transition-colors text-xs font-black uppercase tracking-widest"
+        className="w-full flex items-center gap-2 px-4 py-3 bg-bg-card text-text-muted hover:text-accent active:opacity-70 transition-colors text-xs font-black uppercase tracking-widest"
       >
         <StickyNote className="h-3.5 w-3.5" />
         {expanded ? t('components.stepNotes.hideNotes') : t('components.stepNotes.myNotes')}

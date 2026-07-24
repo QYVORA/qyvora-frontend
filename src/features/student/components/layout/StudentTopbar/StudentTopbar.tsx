@@ -130,7 +130,7 @@ const StudentTopbar = () => {
         {t('aria.skipToContent')}
       </a>
 
-      <header className="fixed top-0 left-0 w-full z-40 bg-bg border-b border-border">
+      <header className="fixed top-0 left-0 w-full z-40 bg-bg border-b border-border pt-[env(safe-area-inset-top)]">
         {isRoomPage ? (
           isCoursePage ? (
             /* ══ COURSE MODE ══ */
@@ -138,20 +138,20 @@ const StudentTopbar = () => {
               <div className="flex-1 flex items-center gap-1.5 md:gap-3 min-w-0">
                 <button
                   onClick={() => navigate('/dashboard/courses')}
-                  className={`flex h-10 w-10 md:h-12 md:w-12 shrink-0 items-center justify-center rounded-xl transition-colors text-text-muted hover:text-accent`}
+                  className={`flex h-10 w-10 md:h-12 md:w-12 shrink-0 items-center justify-center rounded-xl transition-colors text-text-muted hover:text-accent active:scale-95`}
                   aria-label={t('aria.backToCourses')}
                 >
                   <IconArrowLeft size={20} />
                 </button>
                 <button
                   onClick={openSidebar}
-                  className={`md:hidden flex h-10 w-10 shrink-0 items-center justify-center rounded-xl transition-colors text-text-muted hover:text-accent`}
+                  className={`md:hidden flex h-10 w-10 shrink-0 items-center justify-center rounded-xl transition-colors text-text-muted hover:text-accent active:scale-95`}
                   aria-label={t('aria.toggleLessons')}
                 >
                   <IconMenu size={20} />
                 </button>
                 <div className={`hidden sm:flex items-center gap-1.5 text-xs font-bold uppercase tracking-widest min-w-0 flex-1 text-text-muted`}>
-                  <Link to="/dashboard/courses" className={`transition-colors shrink-0 hover:text-accent`}>
+                  <Link to="/dashboard/courses" className={`transition-colors shrink-0 hover:text-accent active:opacity-70`}>
                     {t('student.topbar.breadcrumb.courses')}
                   </Link>
                   {courseConfig && (
@@ -233,20 +233,20 @@ const StudentTopbar = () => {
             <div className="px-4 md:px-6 h-20 md:h-24 flex items-center gap-1.5 md:gap-3">
               <button
                 onClick={() => navigate(`/dashboard/bootcamps/${roomBootcampId}`)}
-                className={`flex h-10 w-10 md:h-12 md:w-12 shrink-0 items-center justify-center rounded-xl transition-colors text-text-muted hover:text-accent`}
+                className={`flex h-10 w-10 md:h-12 md:w-12 shrink-0 items-center justify-center rounded-xl transition-colors text-text-muted hover:text-accent active:scale-95`}
                 aria-label={t('aria.backToCurriculum')}
               >
                 <IconArrowLeft size={20} />
               </button>
               <button
                 onClick={openSidebar}
-                className={`md:hidden flex h-10 w-10 shrink-0 items-center justify-center rounded-xl transition-colors text-text-muted hover:text-accent`}
+                className={`md:hidden flex h-10 w-10 shrink-0 items-center justify-center rounded-xl transition-colors text-text-muted hover:text-accent active:scale-95`}
                 aria-label={t('aria.toggleCurriculum')}
               >
                 <IconMenu size={16} />
               </button>
               <div className={`hidden sm:flex items-center gap-1.5 text-xs font-bold uppercase tracking-widest min-w-0 flex-1 text-text-muted`}>
-                <Link to={`/dashboard/bootcamps/${roomBootcampId}`} className="hover:text-accent transition-colors shrink-0">
+                <Link to={`/dashboard/bootcamps/${roomBootcampId}`} className="hover:text-accent active:opacity-70 transition-colors shrink-0">
                   {t('student.topbar.breadcrumb.curriculum')}
                 </Link>
                 {roomPhaseConfig && (
@@ -310,13 +310,13 @@ const StudentTopbar = () => {
           <div className="px-4 md:px-6 h-20 md:h-24 flex items-center gap-1.5 md:gap-3">
             <button
               onClick={() => navigate('/dashboard/labs')}
-              className={`flex h-10 w-10 md:h-12 md:w-12 shrink-0 items-center justify-center rounded-xl transition-colors text-text-muted hover:text-accent`}
+              className={`flex h-10 w-10 md:h-12 md:w-12 shrink-0 items-center justify-center rounded-xl transition-colors text-text-muted hover:text-accent active:scale-95`}
               aria-label={t('aria.backToLabs')}
             >
               <IconArrowLeft size={20} />
             </button>
             <div className={`hidden sm:flex items-center gap-1.5 text-xs font-bold uppercase tracking-widest min-w-0 flex-1 text-text-muted`}>
-              <Link to="/dashboard/labs" className="hover:text-accent transition-colors shrink-0">
+              <Link to="/dashboard/labs" className="hover:text-accent active:opacity-70 transition-colors shrink-0">
                 {t('student.topbar.breadcrumb.labs')}
               </Link>
               <IconChevronRight size={12} className="opacity-40 shrink-0" />
@@ -389,7 +389,7 @@ const StudentTopbar = () => {
                   <Link
                     key={item.path}
                     to={item.path}
-                    className="relative flex flex-col items-center gap-1.5 px-5 py-2 text-[10px] font-black uppercase tracking-widest transition-colors shrink-0 text-text-muted hover:text-text-primary"
+                    className="relative flex flex-col items-center gap-1.5 px-5 py-2 text-[10px] font-black uppercase tracking-widest transition-colors shrink-0 text-text-muted hover:text-text-primary active:opacity-70"
                   >
                     <item.icon size={32} />
                     <span>{item.label}</span>

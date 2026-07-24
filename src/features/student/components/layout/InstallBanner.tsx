@@ -38,7 +38,7 @@ const InstallBanner = () => {
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: 30 }}
           transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-          className="fixed bottom-20 md:bottom-6 left-4 right-4 md:left-auto md:right-6 md:max-w-sm z-[140]"
+          className="fixed bottom-20 md:bottom-6 left-4 right-4 md:left-auto md:right-6 md:max-w-sm z-[140] pb-[env(safe-area-inset-bottom,0px)]"
         >
           <div className="bg-bg-card/95 backdrop-blur-xl border border-border/30 rounded-2xl p-4 shadow-2xl">
             <div className="flex items-start gap-3">

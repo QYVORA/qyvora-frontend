@@ -107,7 +107,7 @@ export const ToastProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         restored on each individual toast so they remain interactive.
       */}
       <div
-        className="fixed top-20 right-4 md:top-24 md:right-8 z-[500] flex flex-col gap-3 pointer-events-none w-[calc(100vw-2rem)] sm:max-w-lg md:w-[32rem]"
+        className="fixed top-20 right-4 md:top-24 md:right-8 z-[500] flex flex-col gap-3 pointer-events-none w-[calc(100vw-2rem)] sm:max-w-lg md:w-[32rem] overflow-hidden"
         aria-live="polite"
         aria-atomic="true"
       >

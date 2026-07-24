@@ -16,7 +16,7 @@ const DIFFICULTY_STYLES: Record<string, string> = {
 const ScenarioCard = ({ title, difficulty, description, cpReward, subtitle, onStart }: ScenarioCardProps) => (
   <button
     onClick={onStart}
-    className="group flex flex-col aspect-square rounded-2xl border border-border/30 bg-bg-card overflow-hidden transition-all duration-300 hover:border-accent/30 hover:shadow-lg hover:shadow-accent/5 text-left w-full"
+    className="group flex flex-col aspect-square rounded-2xl border border-border/30 bg-bg-card overflow-hidden transition-all duration-300 hover:border-accent/30 hover:shadow-lg hover:shadow-accent/5 active:scale-[0.98] text-left w-full"
   >
     <div className="flex flex-col gap-2 p-3 sm:p-4 md:p-5 lg:p-6 flex-1">
       <div className="flex items-center gap-2 flex-wrap">
