@@ -25,7 +25,7 @@ const BlogPostPage: React.FC = () => {
   if (!post) {
     return (
       <div className="relative min-h-screen w-full bg-bg flex items-center justify-center pt-32">
-        <div className="text-center">
+        <div className="flex flex-col items-start">
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-black uppercase tracking-tight mb-4">Blog Not Found</h1>
           <Link to="/blogs" className="btn-primary mt-4 inline-flex items-center gap-2">
             <IconArrowLeft size={14} /> Back to Blogs
@@ -161,8 +161,8 @@ const BlogPostPage: React.FC = () => {
       {otherPosts.length > 0 && (
         <section className="border-t border-border/50">
           <div className="w-full px-3 sm:px-6 md:px-10 lg:px-16 xl:px-20 py-16 md:py-24">
-            <h2 className="text-2xl md:text-3xl font-black uppercase tracking-tight mb-10 text-center">
-              Keep Reading 📖
+            <h2 className="text-2xl md:text-3xl font-black uppercase tracking-tight mb-10">
+              Keep Reading
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               {otherPosts.map((other) => (

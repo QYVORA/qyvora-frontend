@@ -29,7 +29,7 @@ const ForgotPasswordForm: React.FC<ForgotPasswordFormProps> = ({
         <p className="text-text-muted text-sm">{t('auth2.forgot.description')}</p>
       </div>
 
-      <form className="space-y-5" onSubmit={onSubmit}>
+      <form className="space-y-6" onSubmit={onSubmit}>
         <div className="space-y-2">
           <label htmlFor="forgot-email" className="text-[10px] font-black text-text-muted uppercase tracking-widest">{t('auth2.forgot.emailLabel')}</label>
           <Input id="forgot-email" type="email" name="email" required autoComplete="email" inputMode="email" placeholder={t('auth.emailPlaceholder')}

@@ -28,7 +28,7 @@ const ChangePasswordForm: React.FC<ChangePasswordFormProps> = ({
         </div>
         <p className="text-text-muted text-sm">{t('auth2.changePassword.description')}</p>
       </div>
-      <form className="space-y-5" onSubmit={onSubmit}>
+      <form className="space-y-6" onSubmit={onSubmit}>
         {!token && (
           <div className="space-y-2">
             <label htmlFor="change-token" className="text-[10px] font-black text-text-muted uppercase tracking-widest">{t('auth2.changePassword.tokenLabel')}</label>

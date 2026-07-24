@@ -176,11 +176,11 @@ export const HackerProtocolBookBlog: React.FC = () => {
 
       {/* ── CTA ── */}
       <Section>
-        <div className="p-8 md:p-12 rounded-2xl border border-accent/20 bg-accent/5 text-center">
+        <div className="p-8 md:p-12 rounded-2xl border border-accent/20 bg-accent/5">
           <h2 className="text-3xl md:text-5xl font-black uppercase tracking-tight mb-6">
             Ready for the 2026 Cohort?
           </h2>
-          <p className="text-base md:text-lg text-text-secondary font-mono max-w-2xl mx-auto leading-relaxed mb-8">
+          <p className="text-base md:text-lg text-text-secondary font-mono max-w-2xl leading-relaxed mb-8">
             Hacker Protocol Bootcamp — 2026 Cohort is live now. Phase 01 is open to everyone. No prerequisites, no application, no cost.
           </p>
           <a
