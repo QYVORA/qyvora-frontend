@@ -11,6 +11,7 @@ import { COURSES, getCategoryById } from '@/features/student/data/courses/course
 import api from '@/core/services/api';
 import { MyCoursesSkeleton } from '@/features/student/components/StudentSkeletons';
 import { LearningOverviewCard, LearningFilterStrip } from '@/features/student/components/learning';
+import CoursePurchaseModal from '@/shared/components/CoursePurchaseModal';
 
 const STORAGE_KEY = 'qyvora_course_progress';
 
@@ -22,6 +23,7 @@ const MyCoursesPage: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState<CourseTab>('all');
   const [searchQuery, setSearchQuery] = useState('');
+  const [selectedCourseId, setSelectedCourseId] = useState<string | null>(null);
 
   const [courseProgress, setCourseProgress] = useState<Record<string, { completed: number; total: number; lastLesson: number }>>({});
 
@@ -268,12 +270,12 @@ const MyCoursesPage: React.FC = () => {
                        <h3 className="text-base font-black text-text-muted leading-tight break-words">
                          {course.title}
                        </h3>
-                      <Link
-                        to={`/courses/${course.id}`}
+                      <button
+                        onClick={() => setSelectedCourseId(course.id)}
                         className="inline-flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest text-accent hover:gap-2 transition-all"
                       >
                         View Details <ArrowRight className="h-3 w-3" />
-                      </Link>
+                      </button>
                     </div>
                   </div>
                 );
@@ -287,7 +289,7 @@ const MyCoursesPage: React.FC = () => {
             <GraduationCap className="h-16 w-16 text-text-muted/20 mx-auto" />
             <p className="text-text-muted">{t('student.myCourses.empty.enrolled')}</p>
             <Link
-              to="/courses"
+              to="/dashboard"
               className="inline-flex items-center gap-2 px-6 py-3 bg-accent text-bg rounded-xl text-[10px] font-black uppercase tracking-widest transition-all hover:brightness-110"
             >
               {t('student.myCourses.action.browse')} <ArrowRight className="h-3 w-3" />
@@ -295,6 +297,14 @@ const MyCoursesPage: React.FC = () => {
           </div>
         )}
       </div>
+
+      {selectedCourseId && (
+        <CoursePurchaseModal
+          open={!!selectedCourseId}
+          onOpenChange={(open) => { if (!open) setSelectedCourseId(null); }}
+          courseId={selectedCourseId}
+        />
+      )}
     </div>
   );
 };

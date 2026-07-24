@@ -35,9 +35,6 @@ const ForgotPasswordPage = lazy(() => import('../features/auth/pages/ForgotPassw
 const VerifyEmailPage    = lazy(() => import('../features/auth/pages/VerifyEmailPage'));
 const ChangePasswordPage = lazy(() => import('../features/auth/pages/ChangePasswordPage'));
 
-// Courses pages
-const CourseInfoPage    = lazy(() => import('../features/marketing/pages/CourseInfoPage'));
-
 // Student pages
 const DashboardPage     = lazy(() => import('../features/student/pages/DashboardPage'));
 const MarketplacePage   = lazy(() => import('../features/student/pages/MarketplacePage'));
@@ -122,7 +119,6 @@ export const AppRouter = () => {
         <Route element={<LandingLayout />}>
           <Route path="/" element={<Wrap scope="Landing"><LandingPage /></Wrap>} />
           <Route path="/terms" element={<Wrap scope="Terms of Service"><TermsPage /></Wrap>} />
-          <Route path="/courses/:courseId" element={<Wrap scope="Course"><CourseInfoPage /></Wrap>} />
           
           {/* Redirects to landing page sections */}
           <Route path="/anansi" element={<Navigate to="/#anansi" replace />} />
@@ -186,6 +182,7 @@ export const AppRouter = () => {
           <Route path="/profile"          element={<Navigate to="/dashboard/profile" replace />} />
           <Route path="/notifications"    element={<Navigate to="/dashboard/notifications" replace />} />
           <Route path="/settings"         element={<Navigate to="/dashboard/settings" replace />} />
+          <Route path="/courses/:courseId" element={<Navigate to="/courses" replace />} />
         </Route>
 
         {/* ── Tool full-screen pages (no layout chrome) ──────── */}
