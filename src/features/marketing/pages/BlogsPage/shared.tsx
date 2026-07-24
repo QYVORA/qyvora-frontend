@@ -93,11 +93,11 @@ export const BulletList = ({ items }: { items: { icon: React.ReactNode; text: Re
 );
 
 export const CTA = ({ title, desc, href, label }: { title: string; desc: string; href: string; label: string }) => (
-  <div className="p-8 md:p-14 rounded-2xl border border-border/30 bg-bg-card text-center">
+  <div className="p-8 md:p-14 rounded-2xl border border-border/30 bg-bg-card">
     <h2 className="text-3xl md:text-5xl font-black uppercase tracking-tight mb-6">
       {title}
     </h2>
-    <p className="text-sm md:text-lg text-text-secondary font-mono max-w-2xl mx-auto leading-relaxed md:leading-[2] mb-8 md:mb-10">
+    <p className="text-sm md:text-lg text-text-secondary font-mono max-w-2xl leading-relaxed md:leading-[2] mb-8 md:mb-10">
       {desc}
     </p>
     <a

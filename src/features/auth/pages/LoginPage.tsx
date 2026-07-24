@@ -140,7 +140,7 @@ const LoginPage: React.FC = () => {
                 <p className="text-sm text-text-muted">{t('auth.enterCredentials')}</p>
               </div>
 
-              <form className="space-y-5" onSubmit={handleLoginSubmit} noValidate>
+            <form className="space-y-6" onSubmit={handleLoginSubmit} noValidate>
                 <div className="space-y-2">
                   <label htmlFor="login-email" className="text-[10px] font-black text-text-muted uppercase tracking-widest">{t('form.email')}</label>
                   <Input
@@ -225,7 +225,7 @@ const LoginPage: React.FC = () => {
             transition={{ duration: 0.2 }}
             className="rounded-2xl bg-bg/90 backdrop-blur-sm p-6 lg:p-8"
           >
-            <form className="space-y-5" onSubmit={handleLoginSubmit} noValidate>
+              <form className="space-y-6" onSubmit={handleLoginSubmit} noValidate>
               <div className="space-y-2">
                 <label htmlFor="login-email" className="text-[10px] font-black text-text-muted uppercase tracking-widest">{t('form.email')}</label>
                 <Input
@@ -288,7 +288,7 @@ const LoginPage: React.FC = () => {
             transition={{ duration: 0.2 }}
             className="rounded-2xl bg-bg/90 backdrop-blur-sm p-6 lg:p-8"
           >
-            <form className="space-y-5" onSubmit={handleRegisterSubmit}>
+            <form className="space-y-6" onSubmit={handleRegisterSubmit}>
               <div className="space-y-2">
                 <label htmlFor="register-handle" className="text-[10px] font-black text-text-muted uppercase tracking-widest">{t('form.operatorHandle')}</label>
                 <Input 

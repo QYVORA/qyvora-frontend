@@ -33,7 +33,7 @@ const VerifyEmailForm: React.FC<VerifyEmailFormProps> = ({
           {email ? t('auth2.verify.description', { email }) : t('auth2.verify.descriptionFallback')}
         </p>
       </div>
-      <form className="space-y-5" onSubmit={onSubmit}>
+      <form className="space-y-6" onSubmit={onSubmit}>
         <div className="space-y-2">
           <label htmlFor="verify-token" className="text-[10px] font-black text-text-muted uppercase tracking-widest">{t('auth2.verify.tokenLabel')}</label>
           <Input id="verify-token" type="text" name="token" required defaultValue={token} placeholder={t('auth2.verify.tokenPlaceholder')}

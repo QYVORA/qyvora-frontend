@@ -236,11 +236,11 @@ export const Hpb2026CaseStudy: React.FC = () => {
 
       {/* ── CTA ── */}
       <Section>
-        <div className="p-8 md:p-12 rounded-2xl border border-accent/20 bg-accent/5 text-center">
+        <div className="p-8 md:p-12 rounded-2xl border border-accent/20 bg-accent/5">
           <h2 className="text-3xl md:text-5xl font-black uppercase tracking-tight mb-6">
             Ready for the Next Cohort?
           </h2>
-          <p className="text-base md:text-lg text-text-secondary font-mono max-w-2xl mx-auto leading-relaxed mb-8">
+          <p className="text-base md:text-lg text-text-secondary font-mono max-w-2xl leading-relaxed mb-8">
             Hacker Protocol Bootcamp is open to everyone. No prerequisites, no application, no cost. Start Phase 01 today.
           </p>
           <a

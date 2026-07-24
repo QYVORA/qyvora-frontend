@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { IconArrowRight } from '@/shared/components/icons';
+import { IconArrowRight, BrandGithubIcon, BrandLinkedinIcon, BrandXIcon } from '@/shared/components/icons';
 import ScrollReveal from '@/shared/components/ScrollReveal';
 import { teamData } from '@/features/marketing/content/teamData';
 
@@ -54,20 +54,20 @@ const LandingTeamSection = () => {
                     {member.bio}
                   </p>
                   {Object.keys(member.socials).length > 0 && (
-                    <div className="flex items-center gap-2 mt-4 pt-4 border-t border-border/20">
+                    <div className="flex items-center gap-3 mt-4 pt-4 border-t border-border/20">
                       {member.socials.github && (
-                        <span className="text-[9px] font-black uppercase tracking-widest text-text-muted hover:text-accent transition-colors">
-                          GitHub
+                        <span className="text-text-muted hover:text-accent transition-colors">
+                          <BrandGithubIcon className="w-4 h-4" />
                         </span>
                       )}
                       {member.socials.linkedin && (
-                        <span className="text-[9px] font-black uppercase tracking-widest text-text-muted hover:text-accent transition-colors">
-                          LinkedIn
+                        <span className="text-text-muted hover:text-accent transition-colors">
+                          <BrandLinkedinIcon className="w-4 h-4" />
                         </span>
                       )}
                       {member.socials.twitter && (
-                        <span className="text-[9px] font-black uppercase tracking-widest text-text-muted hover:text-accent transition-colors">
-                          X
+                        <span className="text-text-muted hover:text-accent transition-colors">
+                          <BrandXIcon className="w-4 h-4" />
                         </span>
                       )}
                     </div>

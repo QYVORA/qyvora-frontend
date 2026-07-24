@@ -32,7 +32,7 @@ const ResetPasswordConfirmForm: React.FC<ResetPasswordConfirmFormProps> = ({
         <h1 className="text-3xl md:text-4xl lg:text-5xl font-black text-text-primary uppercase tracking-tighter mb-1">{t('auth2.reset.title')}</h1>
         <p className="text-text-muted text-sm">{t('auth2.reset.description')}</p>
       </div>
-      <form className="space-y-5" onSubmit={onSubmit}>
+      <form className="space-y-6" onSubmit={onSubmit}>
         <div className="space-y-2">
           <label htmlFor="reset-email" className="text-[10px] font-black text-text-muted uppercase tracking-widest">{t('form.email')}</label>
           <Input id="reset-email" type="email" name="email" required autoComplete="email" inputMode="email" defaultValue={email} placeholder={t('auth.emailPlaceholder')}

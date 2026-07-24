@@ -203,14 +203,14 @@ anansi target.com`} />
 
       {/* ── CTA ── */}
       <Section>
-        <div className="p-8 md:p-12 rounded-2xl border border-accent/20 bg-accent/5 text-center">
+        <div className="p-8 md:p-12 rounded-2xl border border-accent/20 bg-accent/5">
           <h2 className="text-3xl md:text-5xl font-black uppercase tracking-tight mb-6">
             Own the Perimeter
           </h2>
-          <p className="text-base md:text-lg text-text-secondary font-mono max-w-2xl mx-auto leading-relaxed mb-8">
+          <p className="text-base md:text-lg text-text-secondary font-mono max-w-2xl leading-relaxed mb-8">
             Download Anansi CLI, scan your first target, and see what six phases of intelligence look like in under two minutes. No sign-up required.
           </p>
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+          <div className="flex flex-col sm:flex-row items-start gap-4">
             <a
               href="https://github.com/QYVORA/qyvora-anansi-cli"
               target="_blank"
