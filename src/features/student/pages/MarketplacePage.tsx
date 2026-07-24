@@ -13,7 +13,7 @@ import productFallbackImg from '@/assets/sections/stats/cp-earned-bg.webp';
 import { extractCpBalance } from '../../../shared/utils/cpBalance';
 import { formatNumber } from '../../../shared/utils/formatNumber';
 import { MarketplaceSkeleton } from '../components/StudentSkeletons';
-import LearningOverviewCard from '../components/learning/LearningOverviewCard';
+import StudentHeroSection from '@/shared/components/StudentHeroSection';
 
 const CACHE_KEY = 'qyvora_marketplace_cache_v2';
 const PAGE_SIZE = 10;
@@ -128,8 +128,8 @@ const Marketplace: React.FC = () => {
       <SEO title={t('student.marketplace.seoTitle')} description={t('student.marketplace.seoDesc')} noindex />
       <div className=" px-3 md:px-4 lg:px-6 pt-8 pb-20 lg:pb-24 space-y-6">
         <div className="pt-6 pb-8 md:px-6 lg:px-10 space-y-6">
-          <LearningOverviewCard
-            icon={<ShoppingBag className="w-6 h-6 text-bg" />}
+          <StudentHeroSection
+            icon={<ShoppingBag className="w-8 h-8 text-accent" />}
             title={t('student.marketplace.title')}
             description={t('student.marketplace.description')}
             stats={balance !== null ? [{ label: t('student.marketplace.cpBalance'), value: formatNumber(balance), accent: true }] : undefined}

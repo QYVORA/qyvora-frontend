@@ -3,7 +3,9 @@ import { useTranslation } from 'react-i18next';
 import { FlaskConical, Search } from 'lucide-react';
 import SEO from '@/shared/components/SEO';
 import LabCard from './LabCard';
-import { LearningOverviewCard, LearningFilterStrip } from '@/features/student/components/learning';
+import StudentHeroSection from '@/shared/components/StudentHeroSection';
+import { LearningFilterStrip } from '@/features/student/components/learning';
+import { Link } from 'react-router-dom';
 
 const LABS_IDS = ['privesc', 'passwords', 'sqli', 'osint', 'killchain'] as const;
 
@@ -68,19 +70,22 @@ const LabsPage = () => {
       <SEO title={t('student.labs.seoTitle')} description={t('student.labs.seoDesc')} noindex />
       <div className=" px-3 md:px-4 lg:px-6 pt-8 pb-20 lg:pb-24 space-y-8">
 
-        <LearningOverviewCard
-          icon={<FlaskConical className="w-6 h-6 text-bg" />}
+        <StudentHeroSection
+          icon={<FlaskConical className="w-8 h-8 text-accent" />}
           title={t('student.labs.title')}
           description={t('student.labs.description')}
           stats={[
             { label: t('stat.labs'), value: LABS.length },
             { label: t('stat.cpRange'), value: `${totalCpMin}-${totalCpMax}` },
           ]}
-          action={{
-            label: t('button.startFirstLab'),
-            to: LABS[0]?.route,
-          }}
-        />
+        >
+          <Link
+            to={LABS[0]?.route || '/dashboard/labs'}
+            className="btn-primary inline-flex items-center gap-2 px-6 py-2.5"
+          >
+            {t('button.startFirstLab')}
+          </Link>
+        </StudentHeroSection>
 
         <LearningFilterStrip
           filters={difficultyFilters}

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Shield, Key, Eye, EyeOff, Loader2, Save, Copy, CheckCircle2, AlertTriangle, RefreshCw, Settings as SettingsIcon, User, Palette, Bell, BookOpen, Code, Database, Accessibility, Trash2, Monitor, Smartphone, Moon, Sun } from 'lucide-react';
 import ScrollReveal from '../../../shared/components/ScrollReveal';
@@ -7,7 +8,7 @@ import { useToast } from '../../../core/contexts/ToastContext';
 import { getDataSaverEnabled, setDataSaverEnabled } from '../utils/studentExperience';
 import SEO from '../../../shared/components/SEO';
 import { SettingsSkeleton } from '../components/StudentSkeletons';
-import LearningOverviewCard from '../components/learning/LearningOverviewCard';
+import StudentHeroSection from '@/shared/components/StudentHeroSection';
 import { usePreferences } from '../../../shared/hooks/usePreferences';
 import { useThemeContext } from '../../../core/contexts/ThemeContext';
 import { useAuth } from '../../../core/contexts/AuthContext';
@@ -256,12 +257,19 @@ const Settings: React.FC = () => {
     <div className="bg-bg">
       <SEO title={t('student.settings.seoTitle')} description={t('student.settings.seoDesc')} noindex />
       <div className="px-3 md:px-4 lg:px-6 pt-8 pb-20 lg:pb-24 space-y-6">
-        <LearningOverviewCard
-          icon={<SettingsIcon className="w-6 h-6 text-bg" />}
+        <StudentHeroSection
+          icon={<SettingsIcon className="w-8 h-8 text-accent" />}
           title={t('student.settings.title')}
           description={t('student.settings.description')}
-          action={{ label: t('student.profile.edit'), to: '/dashboard/profile', icon: <User className="w-4 h-4" /> }}
-        />
+        >
+          <Link
+            to="/dashboard/profile"
+            className="btn-primary inline-flex items-center gap-2 px-6 py-2.5"
+          >
+            <User className="w-4 h-4" />
+            {t('student.profile.edit')}
+          </Link>
+        </StudentHeroSection>
 
         <div className="flex flex-col lg:flex-row gap-6">
           {/* Sidebar tabs */}

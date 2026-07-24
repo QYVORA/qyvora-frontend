@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
-import { ArrowLeft, ArrowRight, CheckCircle2, ChevronLeft, ChevronRight, X, Lock, Loader2, Target, Zap } from 'lucide-react';
+import { ArrowLeft, ArrowRight, CheckCircle2, ChevronLeft, ChevronRight, X, Lock, Loader2, Target, Zap, BookOpen } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import SEO from '@/shared/components/SEO';
 import { getCourseById } from '@/features/student/data/courses/courseData';
@@ -8,6 +8,7 @@ import CodeBlockRenderer from '@/features/student/components/bootcamp-room/CodeB
 import InlineQuiz from '@/shared/components/courses/InlineQuiz';
 import { SimulatedTerminal } from '@/features/student/components/SimulatedTerminal';
 import CodePlayground from '@/shared/components/courses/CodePlayground';
+import StudentHeroSection from '@/shared/components/StudentHeroSection';
 import api from '@/core/services/api';
 import { useScrollLock } from '@/core/hooks/useScrollLock';
 import type { Lesson } from '@/features/student/data/courses/types';
@@ -315,20 +316,15 @@ const CourseLessonPage: React.FC = () => {
       </AnimatePresence>
 
       <div className=" px-3 md:px-4 lg:px-6 pt-8 pb-20 lg:pb-24 space-y-8">
-            <div className="mb-8 rounded-2xl border border-border bg-bg-card p-5 md:p-6">
-              <div className="mb-3 flex items-center justify-between gap-2">
-                <span className="text-xs font-black uppercase tracking-[0.2em] text-text-muted">Progress</span>
-                <span className="font-mono text-base font-black text-accent">
-                  {completedCount} / {totalLessons} lessons
-                </span>
-              </div>
-              <div className="h-3 overflow-hidden rounded-lg bg-accent-dim border border-border/40">
-                <div
-                  className="h-full bg-accent transition-all duration-700 ease-out"
-                  style={{ width: `${progress}%` }}
-                />
-              </div>
-            </div>
+            <StudentHeroSection
+              icon={<BookOpen className="w-8 h-8 text-accent" />}
+              title={course.title}
+              description={`${completedCount} of ${totalLessons} lessons completed`}
+              stats={[
+                { label: 'Progress', value: `${progress}%`, accent: true },
+                { label: 'Lessons', value: `${completedCount}/${totalLessons}` },
+              ]}
+            />
 
             <LessonViewer lesson={lesson} number={currentLessonIdx + 1} courseId={courseId} />
 

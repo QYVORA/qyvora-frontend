@@ -7,7 +7,8 @@ import { ScrollReveal } from '@/shared/components';
 import { LeaderboardRow, useLeaderboard, PERIODS } from '@/shared/components/leaderboard';
 import SEO from '@/shared/components/SEO';
 import { CompetitiveSkeleton } from '@/features/student/components/StudentSkeletons';
-import LearningOverviewCard from '@/features/student/components/learning/LearningOverviewCard';
+import StudentHeroSection from '@/shared/components/StudentHeroSection';
+import { Link } from 'react-router-dom';
 import type { Period } from '@/shared/components/leaderboard';
 
 const CompetitivePage = () => {
@@ -38,17 +39,21 @@ const CompetitivePage = () => {
 
       <div className=" px-3 md:px-4 lg:px-6 pt-8 pb-20 lg:pb-24 space-y-6">
         {/* Header */}
-        <LearningOverviewCard
-          icon={<Trophy className="w-6 h-6 text-bg" />}
+        <StudentHeroSection
+          icon={<Trophy className="w-8 h-8 text-accent" />}
           title={t('student.competitive.title')}
+          accentWord={t('student.competitive.title').split(' ').pop()}
           description={t('student.competitive.description', { count: total })}
           stats={[{ label: t('stat.operators'), value: Number(total).toLocaleString() }]}
-          action={{
-            label: t('button.viewPublicBoard'),
-            to: '/leaderboard',
-            icon: <Trophy className="w-4 h-4" />,
-          }}
-        />
+        >
+          <Link
+            to="/leaderboard"
+            className="btn-primary inline-flex items-center gap-2 px-6 py-2.5"
+          >
+            <Trophy className="w-4 h-4" />
+            {t('button.viewPublicBoard')}
+          </Link>
+        </StudentHeroSection>
 
         {/* Period tabs */}
         <div className="flex items-center gap-2 flex-wrap">
