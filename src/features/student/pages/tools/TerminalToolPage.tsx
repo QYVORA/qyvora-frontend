@@ -9,7 +9,7 @@ const TerminalToolPage = () => {
 
   return (
     <SimulationProvider>
-      <div className="h-screen w-screen overflow-hidden bg-[#0c0c0c]">
+      <div className="h-dvh w-screen overflow-hidden bg-[#0c0c0c]">
         <TerminalShell context={{ type: 'dashboard' }} />
       </div>
     </SimulationProvider>

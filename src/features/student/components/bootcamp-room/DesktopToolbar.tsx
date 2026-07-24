@@ -44,7 +44,7 @@ const DesktopToolbar: React.FC<DesktopToolbarProps> = ({
       <button
         onClick={() => setJumpMenuOpen(true)}
         title={t('student.bootcampRoom.desktopToolbar.jump')}
-        className="flex h-9 w-9 items-center justify-center rounded-lg bg-bg-card border border-border text-text-muted hover:text-accent hover:border-accent/30 transition-colors"
+        className="flex h-9 w-9 items-center justify-center rounded-lg bg-bg-card border border-border text-text-muted hover:text-accent hover:border-accent/30 active:scale-95 transition-colors"
       >
         <List className="h-4 w-4" />
       </button>
@@ -52,7 +52,7 @@ const DesktopToolbar: React.FC<DesktopToolbarProps> = ({
       <button
         onClick={toggleFullscreen}
         title={fullscreen ? t('student.bootcampRoom.desktopToolbar.exitFullscreen') : t('student.bootcampRoom.desktopToolbar.enterFullscreen')}
-        className="flex h-9 w-9 items-center justify-center rounded-lg bg-bg-card border border-border text-text-muted hover:text-accent hover:border-accent/30 transition-colors"
+        className="flex h-9 w-9 items-center justify-center rounded-lg bg-bg-card border border-border text-text-muted hover:text-accent hover:border-accent/30 active:scale-95 transition-colors"
       >
         {fullscreen ? <Minimize2 className="h-4 w-4" /> : <Maximize2 className="h-4 w-4" />}
       </button>
@@ -81,8 +81,8 @@ const DesktopToolbar: React.FC<DesktopToolbarProps> = ({
         }
         className={`flex h-9 w-9 items-center justify-center rounded-lg border transition-colors ${
           isLastStep
-            ? 'bg-accent border-accent text-bg hover:brightness-110'
-            : 'bg-bg-card border-border text-text-muted hover:text-accent hover:border-accent/30'
+            ? 'bg-accent border-accent text-bg hover:brightness-110 active:scale-95'
+            : 'bg-bg-card border-border text-text-muted hover:text-accent hover:border-accent/30 active:scale-95'
         } ${completing ? 'opacity-50 cursor-not-allowed' : ''}`}
       >
         {completing ? (

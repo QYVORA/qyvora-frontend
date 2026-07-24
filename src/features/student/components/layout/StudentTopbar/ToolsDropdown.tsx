@@ -111,7 +111,7 @@ const ToolsDropdown: React.FC<ToolsDropdownProps> = ({
       <div ref={dropdownRef} className="relative hidden md:block">
         <button
           onClick={() => setOpen(prev => !prev)}
-          className="w-12 h-12 md:w-13 md:h-13 flex items-center justify-center transition-colors rounded-xl text-text-muted hover:text-accent hover:bg-accent-dim/50"
+          className="w-12 h-12 md:w-13 md:h-13 flex items-center justify-center transition-colors rounded-xl text-text-muted hover:text-accent hover:bg-accent-dim/50 active:scale-95"
           aria-label={t('aria.openTools')}
           aria-expanded={open}
         >
@@ -131,7 +131,7 @@ const ToolsDropdown: React.FC<ToolsDropdownProps> = ({
       {/* Mobile trigger */}
       <button
         onClick={() => setMobileOpen(true)}
-        className="md:hidden w-9 h-9 md:w-11 md:h-11 flex items-center justify-center text-text-muted hover:text-accent transition-colors rounded-xl hover:bg-accent-dim/50"
+        className="md:hidden w-9 h-9 md:w-11 md:h-11 flex items-center justify-center text-text-muted hover:text-accent active:scale-95 transition-colors rounded-xl hover:bg-accent-dim/50"
         aria-label="Open tools"
       >
         <Wrench size={20} />

@@ -97,10 +97,10 @@ const CodePlayground: React.FC<CodePlaygroundProps> = ({
           )}
         </div>
         <div className="flex items-center gap-2">
-          <button onClick={handleCopy} className="text-text-muted hover:text-accent transition-colors p-1" title="Copy code" aria-label="Copy code">
+          <button onClick={handleCopy} className="text-text-muted hover:text-accent active:scale-95 transition-colors p-1" title="Copy code" aria-label="Copy code">
             {copied ? <IconCheck size={14} className="text-accent" /> : <Copy className="h-3.5 w-3.5" />}
           </button>
-          <button onClick={handleReset} className="text-text-muted hover:text-accent transition-colors p-1" title="Reset" aria-label="Reset code">
+          <button onClick={handleReset} className="text-text-muted hover:text-accent active:scale-95 transition-colors p-1" title="Reset" aria-label="Reset code">
             <RotateCcw className="h-3.5 w-3.5" />
           </button>
         </div>
@@ -121,7 +121,7 @@ const CodePlayground: React.FC<CodePlaygroundProps> = ({
           <IconPlay size={12} /> {t('components.playground.run')}
         </button>
         {expectedOutput && (
-          <button onClick={() => setShowHint(!showHint)} className="text-[10px] font-mono text-text-muted hover:text-accent transition-colors">
+          <button onClick={() => setShowHint(!showHint)} className="text-[10px] font-mono text-text-muted hover:text-accent active:opacity-70 transition-colors">
             {showHint ? t('components.playground.hideHint') : t('components.playground.showHint')}
           </button>
         )}

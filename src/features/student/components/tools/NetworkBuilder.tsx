@@ -423,7 +423,7 @@ const NetworkBuilder: React.FC<NetworkBuilderProps> = ({ open, onOpenChange, sta
   );
 
   if (!open) return null;
-  if (standalone) return <div className="h-screen w-screen overflow-hidden">{shell}</div>;
+  if (standalone) return <div className="h-dvh w-screen overflow-hidden">{shell}</div>;
   if (isFullscreen) {
     return <div className="fixed inset-0 z-[201]">{shell}</div>;
   }

@@ -114,7 +114,7 @@ const Footer: React.FC = React.memo(() => {
                     target="_blank"
                     rel="noopener noreferrer"
                     aria-label={label}
-                    className="flex h-11 w-11 items-center justify-center rounded-xl border border-border text-text-muted transition-colors hover:border-accent/40 hover:text-accent focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+                    className="flex h-11 w-11 items-center justify-center rounded-xl border border-border text-text-muted transition-colors hover:border-accent/40 hover:text-accent active:scale-95 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
                   >
                     <Icon className="h-4 w-4" />
                   </a>
@@ -134,7 +134,7 @@ const Footer: React.FC = React.memo(() => {
                       <li key={link.key}>
                         <Link
                           to={link.path}
-                          className="text-sm font-bold text-text-primary transition-colors hover:text-accent focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+                          className="text-sm font-bold text-text-primary transition-colors hover:text-accent active:opacity-70 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
                         >
                           {t(FOOTER_LINK_KEYS[link.key] || link.label)}
                         </Link>

@@ -56,7 +56,7 @@ const LoginForm: React.FC<LoginFormProps> = ({
           <div className="flex justify-between items-center">
             <label htmlFor="login-password" className="text-[10px] font-black text-text-muted uppercase tracking-widest">{t('form.password')}</label>
             {!isAdminLoginRoute && (
-              <button type="button" onClick={onForgotPassword} className="text-accent hover:underline transition-colors">{t('button.forgot')}</button>
+              <button type="button" onClick={onForgotPassword} className="text-accent hover:underline active:opacity-70 transition-colors">{t('button.forgot')}</button>
             )}
           </div>
           <PasswordInput
@@ -84,7 +84,7 @@ const LoginForm: React.FC<LoginFormProps> = ({
       {!isAdminLoginRoute && (
         <p className="mt-8 text-center text-sm text-text-muted">
           {t('auth.newHere')}{' '}
-          <button onClick={onRegister} className="text-accent font-bold hover:underline">{t('button.createAccountLower')}</button>
+          <button onClick={onRegister} className="text-accent font-bold hover:underline active:opacity-70">{t('button.createAccountLower')}</button>
         </p>
       )}
     </div>

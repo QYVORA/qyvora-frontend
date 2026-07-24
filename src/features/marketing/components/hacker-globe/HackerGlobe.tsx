@@ -382,7 +382,7 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88, offset = [0, 0,
   return (
     <div
       ref={mountRef}
-      className="relative z-0 h-full w-full pointer-events-none"
+      className="relative z-0 h-full w-full pointer-events-none overflow-hidden"
       style={{ cursor: 'default', willChange: 'transform' }}
     >
       <div

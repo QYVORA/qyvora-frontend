@@ -336,7 +336,7 @@ const CourseLessonPage: React.FC = () => {
               {currentLessonIdx > 0 && (
                 <button
                   onClick={goPrev}
-                  className="md:hidden bg-bg-card border border-border text-text-muted hover:text-accent hover:border-accent/30 font-semibold uppercase tracking-[0.08em] rounded-lg px-3.5 py-2 transition-colors inline-flex flex-1 items-center justify-center gap-1.5 sm:flex-none text-xs"
+                  className="md:hidden bg-bg-card border border-border text-text-muted hover:text-accent hover:border-accent/30 active:scale-95 font-semibold uppercase tracking-[0.08em] rounded-lg px-3.5 py-2 transition-colors inline-flex flex-1 items-center justify-center gap-1.5 sm:flex-none text-xs"
                 >
                   <ChevronLeft className="h-3.5 w-3.5 shrink-0" />
                   <span>Prev</span>
@@ -350,7 +350,7 @@ const CourseLessonPage: React.FC = () => {
               {!isCompleted && !allComplete && (
                 <button
                   onClick={markComplete}
-                  className="inline-flex items-center gap-1.5 bg-bg-card border border-border text-text-muted hover:text-accent hover:border-accent/30 font-semibold uppercase tracking-[0.08em] rounded-lg px-3.5 py-2 transition-colors text-xs"
+                  className="inline-flex items-center gap-1.5 bg-bg-card border border-border text-text-muted hover:text-accent hover:border-accent/30 active:scale-95 font-semibold uppercase tracking-[0.08em] rounded-lg px-3.5 py-2 transition-colors text-xs"
                 >
                   <CheckCircle2 className="h-3.5 w-3.5" />
                   <span className="hidden sm:inline">Complete</span>

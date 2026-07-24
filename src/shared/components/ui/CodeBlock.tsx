@@ -34,7 +34,7 @@ export function CodeBlock({ code, language, title, showCopy = true, className }:
             <button
               type="button"
               onClick={handleCopy}
-              className="rounded-lg p-1.5 text-text-muted hover:text-text-primary hover:bg-bg-card transition-colors"
+              className="rounded-lg p-1.5 text-text-muted hover:text-text-primary hover:bg-bg-card active:scale-95 transition-colors"
               aria-label="Copy"
             >
               {copied ? <IconCheck size={12} className="text-accent" /> : <Copy size={12} />}
@@ -99,7 +99,7 @@ export function TerminalBlock({ command, output, title = 'Terminal', className }
         <button
           type="button"
           onClick={handleCopy}
-          className="rounded-lg p-1.5 text-text-muted hover:text-text-primary hover:bg-bg-card transition-colors"
+          className="rounded-lg p-1.5 text-text-muted hover:text-text-primary hover:bg-bg-card active:scale-95 transition-colors"
           aria-label="Copy"
         >
           {copied ? <IconCheck size={12} className="text-accent" /> : <Copy size={12} />}

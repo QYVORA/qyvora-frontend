@@ -107,7 +107,7 @@ const AdminTopbar = () => {
         {t('aria.skipToMain')}
       </a>
 
-      <header className="fixed top-0 left-0 w-full z-40 bg-bg border-b border-border">
+      <header className="fixed top-0 left-0 w-full z-40 bg-bg border-b border-border pt-[env(safe-area-inset-top)]">
           <div className="px-3 md:px-4 lg:px-6 h-20 md:h-24 flex items-center justify-between">
           <div className="flex items-center gap-6 lg:gap-8">
             <div className="flex items-center gap-3">
@@ -121,7 +121,7 @@ const AdminTopbar = () => {
             <nav className="hidden md:flex items-center gap-1">
               <Link
                 to="/dashboard"
-                className="flex items-center gap-1.5 px-4 py-2.5 rounded-lg text-sm font-bold uppercase tracking-wider transition-colors text-text-muted hover:text-text-primary hover:bg-accent-dim/50"
+                className="flex items-center gap-1.5 px-4 py-2.5 rounded-lg text-sm font-bold uppercase tracking-wider transition-colors text-text-muted hover:text-text-primary hover:bg-accent-dim/50 active:scale-[0.98]"
               >
                 <IconDashboard size={16} />
                 {t('nav.operator')}

@@ -61,7 +61,7 @@ const ToolChooserModal: React.FC<ToolChooserModalProps> = ({
               </div>
             </div>
             <RadixDialog.Close asChild>
-              <button className="p-2 text-text-muted hover:text-accent transition-colors rounded-lg hover:bg-accent-dim/50" aria-label="Close">
+              <button className="p-2 text-text-muted hover:text-accent active:scale-95 transition-colors rounded-lg hover:bg-accent-dim/50" aria-label="Close">
                 <X size={16} />
               </button>
             </RadixDialog.Close>
@@ -88,7 +88,7 @@ const ToolChooserModal: React.FC<ToolChooserModalProps> = ({
 
             <button
               onClick={handleFullscreen}
-              className="w-full flex items-center gap-4 p-4 rounded-xl border border-border/30 hover:border-accent/40 bg-bg-elevated hover:bg-accent-dim/30 transition-all text-left group"
+              className="w-full flex items-center gap-4 p-4 rounded-xl border border-border/30 hover:border-accent/40 bg-bg-elevated hover:bg-accent-dim/30 active:scale-[0.98] transition-all text-left group"
             >
               <div className="w-12 h-12 rounded-xl bg-bg border border-border/30 flex items-center justify-center shrink-0 group-hover:border-accent/30 group-hover:bg-accent/10 transition-colors">
                 <Maximize2 size={22} className="text-text-muted group-hover:text-accent transition-colors" />
