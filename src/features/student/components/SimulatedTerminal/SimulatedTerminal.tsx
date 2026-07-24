@@ -50,7 +50,7 @@ export const SimulatedTerminal: React.FC<SimulatedTerminalProps> = ({
               'duration-150',
               isFullscreen
                 ? 'inset-4 rounded-2xl'
-                : 'left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[calc(100vw-2rem)] sm:w-[calc(100vw-3rem)] max-w-5xl h-[75vh] max-h-[90vh]',
+                : 'left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[calc(100vw-2rem)] sm:w-[calc(100vw-3rem)] max-w-5xl h-[60vh] md:h-[75vh] max-h-[90vh]',
             )}
           >
             <RadixDialog.Title className="sr-only">Terminal</RadixDialog.Title>
@@ -65,10 +65,10 @@ export const SimulatedTerminal: React.FC<SimulatedTerminalProps> = ({
 
   if (size === 'normal') {
     return (
-      <div className={isFullscreen ? 'fixed inset-0 z-50' : 'relative -mx-[calc(50vw-50%)] w-[100vw]'}>
+      <div className={isFullscreen ? 'fixed inset-0 z-50' : 'relative w-full'}>
         <div className={cn(
           'mx-auto',
-          isFullscreen ? 'h-dvh' : 'w-[calc(100vw-2rem)] sm:w-[calc(100vw-3rem)] max-w-5xl h-[75vh] max-h-[90vh]',
+          isFullscreen ? 'h-dvh' : 'w-[calc(100%-2rem)] sm:w-[calc(100%-3rem)] max-w-5xl h-[40vh] md:h-[50vh] min-h-[250px] max-h-[80vh]',
           !isFullscreen && 'rounded-2xl overflow-hidden',
         )}>
           {shell}
@@ -78,9 +78,9 @@ export const SimulatedTerminal: React.FC<SimulatedTerminalProps> = ({
   }
 
   return (
-    <div className={isFullscreen ? 'fixed inset-0 z-50' : 'w-full'}>
+    <div className={isFullscreen ? 'fixed inset-0 z-50' : 'w-full px-4 md:px-0'}>
       <div className={cn(
-        isFullscreen ? 'h-dvh' : 'h-[50vh] min-h-[300px] max-h-[80vh]',
+        isFullscreen ? 'h-dvh' : 'h-[40vh] md:h-[50vh] min-h-[250px] max-h-[80vh]',
         !isFullscreen && 'rounded-2xl overflow-hidden',
       )}>
         {shell}

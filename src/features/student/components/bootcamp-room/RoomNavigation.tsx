@@ -36,7 +36,7 @@ const RoomNavigation: React.FC<RoomNavigationProps> = ({
 }) => {
   const { t } = useTranslation();
   return (
-    <div className={`flex flex-wrap items-center gap-3 pb-16 ${totalSteps <= 5 ? 'md:justify-end' : ''}`}>
+    <div className={`flex flex-col sm:flex-row flex-wrap items-stretch sm:items-center gap-3 pb-16 ${totalSteps <= 5 ? 'md:justify-end' : ''}`}>
       <button
         onClick={() => setJumpMenuOpen(true)}
         className="btn-secondary inline-flex items-center gap-1.5 !rounded-xl !text-[10px] !font-black !uppercase !tracking-widest px-3.5 py-2"

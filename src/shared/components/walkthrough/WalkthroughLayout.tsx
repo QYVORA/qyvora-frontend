@@ -137,7 +137,7 @@ export function WalkthroughLayout({
 
         {/* Connection Panel */}
         {scenarioId && showConnectionGuide && (
-          <div className="mb-10 rounded-2xl border border-border/20 bg-bg-card p-6">
+          <div className="mb-10 rounded-2xl border border-border/20 bg-bg-card p-4 md:p-6">
             <div className="flex items-center gap-3 mb-3">
               <IconTerminal size={16} className="text-accent" />
               <h3 className="text-[10px] font-black uppercase tracking-widest text-accent">
@@ -150,11 +150,11 @@ export function WalkthroughLayout({
                 <p className="text-sm text-text-muted font-mono leading-relaxed">
                   Connect to a live lab machine to run commands and complete this walkthrough.
                 </p>
-                <div className="flex items-center gap-3">
+                <div className="flex flex-col sm:flex-row sm:items-center gap-3">
                   <button
                     onClick={handleConnect}
                     disabled={isLoading}
-                    className="flex items-center gap-1.5 px-4 py-2 rounded-xl border border-accent/30 bg-accent/10 text-[10px] font-black uppercase tracking-widest text-accent hover:bg-accent/20 transition-colors disabled:opacity-50"
+                    className="flex items-center gap-1.5 px-4 py-2 rounded-xl border border-accent/30 bg-accent/10 text-[10px] font-black uppercase tracking-widest text-accent hover:bg-accent/20 transition-colors disabled:opacity-50 w-fit"
                   >
                     {isLoading ? <Loader2 className="w-3 h-3 animate-spin" /> : <IconTerminal size={12} />}
                     {isLoading ? 'Connecting...' : 'Connect to Lab'}
@@ -163,8 +163,8 @@ export function WalkthroughLayout({
                 </div>
               </div>
             ) : (
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-3">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+                <div className="flex flex-wrap items-center gap-3">
                   <span className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-green-500/10 text-[9px] font-black uppercase tracking-widest text-green-400">
                     <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" />
                     Connected
@@ -200,7 +200,7 @@ export function WalkthroughLayout({
 
         {/* Progress */}
         {progressContent || (
-          <div className="mt-10 rounded-2xl border border-border/20 bg-bg-card px-6 py-5 flex items-center justify-between">
+          <div className="mt-10 rounded-2xl border border-border/20 bg-bg-card px-4 py-4 md:px-6 md:py-5 flex items-center justify-between">
             <span className="text-[10px] font-black uppercase tracking-widest text-text-muted">
               Progress
             </span>

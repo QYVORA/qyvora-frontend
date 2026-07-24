@@ -30,10 +30,10 @@ export function CommandBlock({ command, labId }: { command: string; labId: strin
             {copied ? <IconCheck size={14} className="text-accent" /> : <Copy size={14} />}
           </button>
         </div>
-        <div className="p-4 font-mono">
-          <div className="flex items-center gap-2">
-            <span className="text-accent">$</span>
-            <code className="text-base text-accent break-all">{command}</code>
+        <div className="p-4 font-mono overflow-x-auto">
+          <div className="flex items-center gap-2 min-w-0">
+            <span className="text-accent shrink-0">$</span>
+            <code className="text-xs md:text-base text-accent break-all whitespace-pre-wrap">{command}</code>
           </div>
         </div>
       </div>
@@ -66,13 +66,13 @@ export function FlagInput({ flagId, disabled, onFlagSubmit, onCorrect }: FlagInp
   return (
     <div className="space-y-2">
       <label htmlFor={`flag-input-${flagId}`} className="text-[10px] font-black uppercase tracking-widest text-text-muted">Submit flag</label>
-      <div className="flex items-center gap-2">
+      <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
         <input id={`flag-input-${flagId}`} type="text" value={flag} onChange={(e) => { setFlag(e.target.value); setError(''); }}
           onKeyDown={(e) => e.key === 'Enter' && handleSubmit()} placeholder="QYVORA{...}" disabled={disabled || submitting}
-          className={cn('flex-1 rounded-xl border bg-bg px-4 py-3 font-mono text-base text-text-primary placeholder:text-text-muted outline-none transition-colors',
+          className={cn('w-full sm:flex-1 rounded-xl border bg-bg px-4 py-3 font-mono text-base text-text-primary placeholder:text-text-muted outline-none transition-colors',
             error ? 'border-red-500/50 focus:border-red-500' : 'border-border focus:border-accent', 'disabled:opacity-50')} />
         <button type="button" onClick={handleSubmit} disabled={disabled || submitting || !flag.trim()}
-          className="btn-primary !rounded-xl !text-xs !px-5 !py-3 disabled:opacity-50">
+          className="btn-primary !rounded-xl !text-xs !px-5 !py-3 disabled:opacity-50 w-full sm:w-auto">
           {submitting ? '...' : 'Submit'}
         </button>
       </div>

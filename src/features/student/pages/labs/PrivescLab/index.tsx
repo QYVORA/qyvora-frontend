@@ -178,7 +178,7 @@ const PrivescLab = () => {
         })}
 
         {allDone && (
-          <div className="mt-6 rounded-xl border border-accent/20 bg-accent/5 p-6 text-center">
+          <div className="mt-6 rounded-xl border border-accent/20 bg-accent/5 p-4 md:p-6 text-center">
             <p className="text-sm font-black text-accent uppercase tracking-widest">
               Scenario Complete
             </p>
