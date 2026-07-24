@@ -209,8 +209,8 @@ features/
 | `components/ui/` | Dialog, BottomSheet, Tooltip, Card, Skeleton, SimpleHeading, StatCounter | All features |
 | `components/layout/` | Navbar, Footer, PublicBottomNav | Layouts |
 | `components/brand/` | Logo, QyvoraLogotype, QyvoraMark | All features |
-| `components/backgrounds/` | HeroBackground, AdinkraBackground | All features |
-| `layouts/` | LandingLayout, BlogsLayout, StudentLayout, AdminLayout | Router only |
+| `components/backgrounds/` | GridBoxedBackground, AdinkraBackground | All features |
+| `layouts/` | LandingLayout, BlogsLayout | Router only |
 | `utils/` | cn, cpBalance, formatNumber, resolveImg, etc. | All features |
 
 **Anti-pattern:** Do not put domain-specific components in `shared/`. If a component is only used by one feature, keep it in that feature. If it is used by two or more features, put it in `shared/`.
@@ -235,8 +235,8 @@ Four layouts, each with different chrome:
 
 | Layout | Navbar | Footer | Bottom Nav | Used For |
 |--------|--------|--------|------------|----------|
-| `LandingLayout` | Fixed top | Embedded in last scroll section | None | Marketing homepage |
-| `BlogsLayout` | Fixed top | Blog post detail only | None | Blog pages |
+| `LandingLayout` | Fixed top (with nav invert support) | Embedded in last scroll section | None | Marketing homepage |
+| `BlogsLayout` | Fixed top | None | None | Blog post detail |
 | `StudentLayout` | `StudentTopbar` (fixed) | None | Student mobile nav | Authenticated student pages |
 | `AdminLayout` | `AdminTopbar` (fixed) | None | Admin mobile nav | Admin dashboard |
 

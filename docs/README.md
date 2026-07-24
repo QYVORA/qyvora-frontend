@@ -20,7 +20,7 @@ Welcome to the QYVORA Frontend documentation. This guide helps you navigate all 
 - **[ERROR_HANDLING.md](ERROR_HANDLING.md)** - Error boundaries, toasts, API errors
 
 ### Learning Systems
-- **[SIMULATIONS.md](SIMULATIONS.md)** - Complete simulation system reference (20 types)
+- **[SIMULATIONS.md](SIMULATIONS.md)** - Complete simulation system reference (13 component types, 5 labs)
 - **[LEARNING_SYSTEM.md](LEARNING_SYSTEM.md)** - Labs, courses, bootcamp overview
 - **[BOOTCAMP.md](BOOTCAMP.md)** - Hacker Protocol Bootcamp details + recent room features
 
@@ -31,7 +31,7 @@ Welcome to the QYVORA Frontend documentation. This guide helps you navigate all 
 
 ### Development
 - **[BUILD_PIPELINE.md](BUILD_PIPELINE.md)** - Vite 6, TypeScript, ESLint setup
-- **[TESTING.md](TESTING.md)** - Vitest, React Testing Library (192 tests)
+- **[TESTING.md](TESTING.md)** - Vitest, React Testing Library
 - **[PERFORMANCE.md](PERFORMANCE.md)** - Bundle optimization, lazy loading
 - **[DEPLOYMENT.md](DEPLOYMENT.md)** - Netlify configuration, security headers
 
@@ -41,6 +41,7 @@ Welcome to the QYVORA Frontend documentation. This guide helps you navigate all 
 ### Planned Features
 - **[LEARNING_PATHS.md](LEARNING_PATHS.md)** - 5 guided learning tracks (not yet implemented)
 - **[CTF_PLAN.md](CTF_PLAN.md)** - CTF platform implementation plan (not yet implemented)
+- **[PLATFORM_ILLUSTRATION_SYSTEM.md](PLATFORM_ILLUSTRATION_SYSTEM.md)** - Unified visual identity with SVG illustrations and platform entities
 
 ### Archive
 - **[archive/](archive/)** - Historical audit docs and command reference (read-only)
@@ -112,7 +113,8 @@ docs/
 │
 ├── Planned Features
 │   ├── LEARNING_PATHS.md        # Not yet implemented
-│   └── CTF_PLAN.md              # Not yet implemented
+│   ├── CTF_PLAN.md              # Not yet implemented
+│   └── PLATFORM_ILLUSTRATION_SYSTEM.md  # Not yet implemented
 │
 └── archive/                     # Historical reference (read-only)
     └── (empty - audits cleaned up)

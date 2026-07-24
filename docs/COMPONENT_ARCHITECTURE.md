@@ -104,7 +104,7 @@ graph TD
 
 | Directory | Contents |
 |-----------|----------|
-| `backgrounds/` | GridBoxedBackground decorative patterns |
+| `backgrounds/` | GridBoxedBackground, AdinkraBackground decorative patterns |
 | `blog/` | Blog content renderer |
 | `brand/` | Logo component |
 | `card-grid/` | CardGrid layout wrapper |
