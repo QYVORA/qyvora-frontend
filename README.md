@@ -84,7 +84,7 @@ If a component is imported by **two or more features** (e.g., used across `auth/
 - **Shared UI primitives** go in `src/shared/components/ui/` (e.g., Dialog, BottomSheet, Card, Tooltip)
 - **Shared layout components** go in `src/shared/components/layout/` (e.g., Navbar, Footer, BlogsNavbar)
 - **Shared brand components** go in `src/shared/components/brand/` (e.g., Logo)
-- **Shared backgrounds** go in `src/shared/components/backgrounds/` (e.g., HeroBackground)
+- **Shared backgrounds** go in `src/shared/components/backgrounds/` (e.g., GridBoxedBackground)
 
 Components that depend on feature-specific data (e.g., importing from `features/marketing/content/`) should stay in their feature directory and be imported via the `@/` path alias.
 
@@ -166,24 +166,22 @@ src/
 │       └── types/
 ├── shared/
 │   ├── components/
-│   │   ├── backgrounds/            # AdinkraBackground, HeroBackground
+│   │   ├── backgrounds/            # AdinkraBackground, GridBoxedBackground
 │   │   ├── brand/                  # Logo
 │   │   ├── icons/                  # Brand social icons (Github, LinkedIn, etc.)
-│   │   ├── layout/                 # Navbar, Footer, BlogsNavbar, PublicBottomNav
+│   │   ├── layout/                 # Navbar, Footer, PublicBottomNav
 │   │   ├── ui/                     # BottomSheet, Card, Dialog, SimpleHeading, StatCounter, Tooltip
 │   │   ├── AdaptiveMode.tsx
 │   │   ├── ChainLogo.tsx
 │   │   ├── CommunityPopup.tsx
-│   │   ├── CookieConsent.tsx
+│   │   ├── ConsentBanner.tsx
 │   │   ├── CpLogo.tsx
 │   │   ├── ErrorBoundary.tsx
-│   │   ├── OptionalDecorImage.tsx
 │   │   ├── PageLoader.tsx
 │   │   ├── ScrollReveal.tsx
 │   │   ├── ScrollToTop.tsx
-│   │   ├── SEO.tsx
-│   │   └── SnapSection.tsx
-│   ├── layouts/                    # PublicLayout, SnapPublicLayout, BlogsLayout, LandingLayout
+│   │   └── SEO.tsx
+│   ├── layouts/                    # LandingLayout, BlogsLayout
 │   ├── pages/                      # NotFoundPage
 │   └── utils/                      # cn, cpBalance, formatNumber, resolveImg, storageConsent
 ├── styles/
@@ -274,21 +272,21 @@ src/
 │       └── pages/AdminDashboardPage.tsx
 └── shared/
     ├── components/
-    │   ├── backgrounds/         # AdinkraBackground, HeroBackground
-    │   ├── brand/Logo.tsx
-    │   ├── icons/               # Brand social icons
-    │   ├── layout/              # Navbar, Footer, BlogsNavbar, PublicBottomNav
-    │   ├── ui/                  # BottomSheet, Card, Dialog, Tooltip, etc.
-    │   ├── ChainLogo.tsx
-    │   ├── CpLogo.tsx
-    │   ├── CookieConsent.tsx
-    │   ├── ErrorBoundary.tsx
-    │   ├── PageLoader.tsx
-    │   ├── ScrollReveal.tsx
-    │   ├── ScrollToTop.tsx
-    │   ├── SEO.tsx
-    │   └── SnapSection.tsx
-    ├── layouts/                 # PublicLayout, SnapPublicLayout, BlogsLayout, LandingLayout
+│   ├── backgrounds/         # AdinkraBackground, GridBoxedBackground
+│   ├── brand/Logo.tsx
+│   ├── icons/               # Brand social icons
+│   ├── layout/              # Navbar, Footer, PublicBottomNav
+│   ├── ui/                  # BottomSheet, Card, Dialog, Tooltip, etc.
+│   ├── ChainLogo.tsx
+│   ├── CommunityPopup.tsx
+│   ├── ConsentBanner.tsx
+│   ├── CpLogo.tsx
+│   ├── ErrorBoundary.tsx
+│   ├── PageLoader.tsx
+│   ├── ScrollReveal.tsx
+│   ├── ScrollToTop.tsx
+│   └── SEO.tsx
+├── layouts/                 # LandingLayout, BlogsLayout
     └── utils/
         ├── cn.ts
         ├── cpBalance.ts
@@ -318,30 +316,41 @@ docs/
 
 | Path | Access | Page |
 |---|---|---|
-| `/` | Public | Landing page |
-| `/hpb` | Public | Hacker Protocol Bootcamp |
-| `/services` | Public | Services page |
-| `/courses` | Public | Course catalog |
-| `/blogs` | Public | Blog listing |
-| `/leaderboard` | Public | Operator leaderboard |
-| `/zero-day-market` | Public | Marketplace preview |
-| `/anansi` | Public | Anansi CLI |
-| `/quiteroot` | Public | QuiteRoot |
-| `/team` | Public | Team page |
-| `/events` | Public | Events page |
-| `/news` | Public | Cyber Feed |
+| `/` | Public | Landing page (scroll-snap sections) |
 | `/terms` | Public | Terms of Service |
+| `/courses/:courseId` | Public | Individual course info |
+| `/blogs/:slug` | Public | Individual blog post |
+| `/anansi` | Public | Redirects to `/#anansi` (landing section) |
+| `/services` | Public | Redirects to `/#services` (landing section) |
+| `/hpb` | Public | Redirects to `/#bootcamp` (landing section) |
+| `/courses` | Public | Redirects to `/#courses` (landing section) |
+| `/team` | Public | Redirects to `/#team` (landing section) |
+| `/quiteroot` | Public | Redirects to `/#quiteroot` (landing section) |
+| `/blogs` | Public | Redirects to `/#blogs` (landing section) |
+| `/leaderboard` | Public | Redirects to `/#leaderboard` (landing section) |
+| `/zero-day-market` | Public | Redirects to `/#market` (landing section) |
 | `/login` | Public | Login |
 | `/register` | Public | Register |
+| `/forgot-password` | Public | Password reset request |
+| `/verify-email` | Public | Email verification |
+| `/change-password` | Auth | Password change |
 | `/dashboard` | Student | Main dashboard |
 | `/dashboard/bootcamps/:bootcampId` | Student | Curriculum map |
 | `/dashboard/bootcamps/:bootcampId/phases/:phaseId/rooms/:roomId` | Student | Room walkthrough |
+| `/dashboard/courses` | Student | Enrolled courses |
 | `/dashboard/courses/:courseId` | Student | Course lesson |
-| `/dashboard/labs` | Student | Attack Labs overview |
-| `/dashboard/labs/:labId` | Student | Individual lab |
-| `/dashboard/marketplace` | Student | Marketplace |
+| `/dashboard/labs` | Student | Attack Labs overview (5 labs) |
+| `/dashboard/labs/privesc` | Student | Privilege escalation lab |
+| `/dashboard/labs/passwords` | Student | Password cracking lab |
+| `/dashboard/labs/sql-injection` | Student | SQL injection lab |
+| `/dashboard/labs/osint` | Student | OSINT lab |
+| `/dashboard/labs/kill-chain` | Student | Kill chain lab |
+| `/dashboard/marketplace` | Student | CP marketplace |
 | `/dashboard/profile` | Student | Operator profile |
 | `/dashboard/settings` | Student | Settings |
+| `/dashboard/networks` | Student | Network lab |
+| `/dashboard/tools/ide` | Student | Full-screen IDE |
+| `/dashboard/tools/terminal` | Student | Full-screen terminal |
 | `/mr-robot/dashboard` | Admin | Admin dashboard |
 | `/:handle` | Public | Public profile |
 | `/*` | Public | Catch-all 404 |

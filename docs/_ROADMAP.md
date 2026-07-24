@@ -15,13 +15,12 @@ This document tracks the implementation status of all features in the QYVORA pla
 - ✅ **Session Management** - Secure session handling with httpOnly cookies
 
 ### Learning Systems
-- ✅ **Attack Labs (10 labs)** - Fully interactive penetration testing labs
-  - Privilege Escalation, Password Cracking, Web Exploitation, SQL Injection
-  - Phishing Analysis, Web Proxy, Traffic Analysis, OSINT, Wireless, Kill Chain
-- ✅ **Simulated Terminal** - ~149 commands, Kali Linux emulation, virtual filesystem
-- ✅ **20 Simulation Components** - Browser, HTTP Inspector, SQL Console, Email Client, etc.
-- ✅ **Course System (12 courses)** - Structured lessons with quizzes and code playgrounds
-- ✅ **Bootcamp System** - Hacker Protocol Bootcamp with multi-phase progression
+- ✅ **Attack Labs (5 labs)** — All terminal-based with flag verification
+  - Privilege Escalation, Password Cracking, SQL Injection, OSINT, Kill Chain
+- ✅ **Simulated Terminal** — 114+ commands, Kali Linux emulation, virtual filesystem
+- ✅ **13 Simulation Components** — Browser, HTTP Inspector, SQL Console, etc. (available for future labs)
+- ✅ **Course System (12 courses)** — Structured lessons with quizzes and code playgrounds
+- ✅ **Bootcamp System** — Hacker Protocol Bootcamp with 5 phases, 18 rooms
 - ✅ **Code Playground** - In-browser code execution for Python, Bash, JavaScript
 - ✅ **Quiz System** - Inline quizzes and bootcamp room quizzes
 
@@ -48,12 +47,11 @@ This document tracks the implementation status of all features in the QYVORA pla
 - ✅ **CP Management** - Mint/burn CP tokens
 
 ### Marketing/Public
-- ✅ **Landing Page** - Hero sections, feature showcase
-- ✅ **Blog System** - Blog posts with markdown rendering
-- ✅ **Events System** - Event listings and access management
-- ✅ **News Feed** - Cybersecurity news aggregation
-- ✅ **Team Page** - Team member profiles
+- ✅ **Landing Page** - Hero sections, feature showcase (scroll-snap sections)
+- ✅ **Blog System** - Blog posts with individual post pages at `/blogs/:slug`
+- ✅ **Team Section** - Team member profiles (section on landing page)
 - ✅ **Public Profiles** - Student profile viewing by handle
+- ✅ **Course Info Pages** - Individual course info at `/courses/:courseId`
 
 ---
 

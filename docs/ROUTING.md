@@ -12,30 +12,23 @@ Routes are defined in `src/app/router.tsx` — the single source of truth for al
 
 ### Public Routes (LandingLayout)
 
-| Path | Component | Description |
-|------|-----------|-------------|
-| `/` | LandingPage | Marketing landing page |
-| `/terms` | TermsPage | Terms of service |
-| `/anansi` | AnansiPage | Anansi product page |
-| `/quiteroot` | QuiteRootPage | QuiteRoot page |
-| `/team` | TeamPage | Team page |
-| `/services` | ServicesPage | Services page |
-| `/hpb` | LearnPage | HPB overview |
-| `/learn` | Redirect → `/hpb` | Legacy redirect |
-| `/news` | PublicNewsPage | Public news feed |
-| `/leaderboard` | LeaderboardPage | Top users |
-| `/leaderboard/all` | FullLeaderboardPage | Complete leaderboard |
-| `/events` | EventsPage | Upcoming events |
-| `/courses` | CoursesPage | Course catalog |
-| `/courses/:courseId` | CourseDetailPage | Individual course |
-| `/zero-day-market` | ZeroDayMarketPage | Zero-day marketplace |
-
-### Blog Routes (BlogsLayout)
-
-| Path | Component | Description |
-|------|-----------|-------------|
-| `/blogs` | BlogListPage | Blog listing |
-| `/blogs/:slug` | BlogPostPage | Individual blog post |
+| Path | Type | Component | Description |
+|------|------|-----------|-------------|
+| `/` | Page | LandingPage | Marketing landing page (scroll-snap sections) |
+| `/terms` | Page | TermsPage | Terms of service |
+| `/courses/:courseId` | Page | CourseInfoPage | Individual course info/purchase |
+| `/blogs/:slug` | Page | BlogPostPage | Individual blog post |
+| `/anansi` | Redirect | `→ /#anansi` | Redirects to landing Anansi section |
+| `/services` | Redirect | `→ /#services` | Redirects to landing Services section |
+| `/hpb` | Redirect | `→ /#bootcamp` | Redirects to landing Bootcamp section |
+| `/learn` | Redirect | `→ /#bootcamp` | Legacy redirect to Bootcamp section |
+| `/leaderboard` | Redirect | `→ /#leaderboard` | Redirects to landing Leaderboard section |
+| `/leaderboard/all` | Redirect | `→ /#leaderboard` | Redirects to landing Leaderboard section |
+| `/courses` | Redirect | `→ /#courses` | Redirects to landing Courses section |
+| `/team` | Redirect | `→ /#team` | Redirects to landing Team section |
+| `/quiteroot` | Redirect | `→ /#quiteroot` | Redirects to landing QuiteRoot section |
+| `/blogs` | Redirect | `→ /#blogs` | Redirects to landing Blogs section |
+| `/zero-day-market` | Redirect | `→ /#market` | Redirects to landing Market section |
 
 ### Auth Routes (Standalone)
 
@@ -44,39 +37,53 @@ Routes are defined in `src/app/router.tsx` — the single source of truth for al
 | `/login` | LoginPage | Email/password login |
 | `/register` | RegisterPage | Account registration |
 | `/forgot-password` | ForgotPasswordPage | Password reset request |
-| `/reset-password` | ResetPasswordPage | Password reset form |
+| `/reset-password` | ForgotPasswordPage | Password reset form (reuses ForgotPasswordPage) |
 | `/verify-email` | VerifyEmailPage | Email verification |
 | `/change-password` | ChangePasswordPage | Password change |
+| `{ADMIN_PATH}` | LoginPage | Admin login (base64-encoded `/mr-robot`) |
 
 ### Student Routes (StudentLayout)
 
 | Path | Component | Description |
 |------|-----------|-------------|
 | `/dashboard` | DashboardPage | Student dashboard |
-| `/dashboard/bootcamps` | BootcampCoursePage | Bootcamp curriculum |
-| `/dashboard/bootcamps/:bootcampId` | BootcampCoursePage | Specific bootcamp |
-| `/dashboard/bootcamps/:bootcampId/phases/:phaseId/rooms/:roomId` | BootcampRoomPage | Walkthrough room |
-| `/dashboard/courses` | MyCoursesPage | Enrolled courses |
-| `/dashboard/courses/:courseId` | CourseLessonPage | Course lesson view |
+| `/dashboard/bootcamps` | Redirect | Redirects to specific bootcamp |
+| `/dashboard/bootcamps/:bootcampId` | BootcampCoursePage | Bootcamp curriculum browser |
+| `/dashboard/bootcamps/:bootcampId/modules/:moduleId/rooms/:roomId` | BootcampRoomPage | Bootcamp room (module-based) |
+| `/dashboard/bootcamps/:bootcampId/phases/:phaseId/rooms/:roomId` | BootcampRoomPage | Bootcamp room (phase-based) |
+| `/dashboard/courses` | MyCoursesPage | Enrolled courses listing |
+| `/dashboard/courses/:courseId` | CourseLessonPage | Course lesson viewer |
 | `/dashboard/marketplace` | MarketplacePage | CP marketplace |
 | `/dashboard/profile` | ProfilePage | Own profile |
-| `/dashboard/profile/:username` | ProfilePage | User profile |
-| `/dashboard/news` | StudentNewsFeed | Student news |
+| `/dashboard/profile/:username` | ProfilePage | User profile by username |
 | `/dashboard/notifications` | NotificationsPage | Notifications |
 | `/dashboard/settings` | SettingsPage | Account settings |
 | `/dashboard/competitive` | CompetitivePage | Competitive features |
 | `/dashboard/networks` | NetworksPage | Network lab |
 | `/dashboard/labs` | LabsPage | Lab selection grid |
-| `/dashboard/labs/privesc` | PrivescLab | Privilege escalation |
-| `/dashboard/labs/passwords` | PasswordLab | Password cracking |
-| `/dashboard/labs/web-exploitation` | WebExploitationLab | Web exploitation |
-| `/dashboard/labs/sql-injection` | SqlInjectionLab | SQL injection |
-| `/dashboard/labs/phishing` | PhishingLab | Phishing analysis |
-| `/dashboard/labs/proxy` | ProxyLab | Web proxy |
-| `/dashboard/labs/traffic` | TrafficLab | Traffic analysis |
-| `/dashboard/labs/osint` | OsintLab | OSINT reconnaissance |
-| `/dashboard/labs/wireless` | WirelessLab | Wireless security |
-| `/dashboard/labs/kill-chain` | KillChainLab | Kill chain analysis |
+| `/dashboard/labs/privesc` | PrivescLab | Privilege escalation lab |
+| `/dashboard/labs/passwords` | PasswordLab | Password cracking lab |
+| `/dashboard/labs/sql-injection` | SqlInjectionLab | SQL injection lab |
+| `/dashboard/labs/osint` | OsintLab | OSINT reconnaissance lab |
+| `/dashboard/labs/kill-chain` | KillChainLab | Kill chain analysis lab |
+
+### Legacy Redirects (Student)
+
+| Path | Redirects To |
+|------|-------------|
+| `/bootcamps` | `/dashboard/bootcamps/bc_1775270338500` |
+| `/marketplace` | `/dashboard/marketplace` |
+| `/profile` | `/dashboard/profile` |
+| `/notifications` | `/dashboard/notifications` |
+| `/settings` | `/dashboard/settings` |
+
+### Tool Full-Screen Routes (StudentOnly, no layout chrome)
+
+| Path | Component | Description |
+|------|-----------|-------------|
+| `/dashboard/tools/ide` | IdeToolPage | Full-screen IDE |
+| `/dashboard/tools/terminal` | TerminalToolPage | Full-screen terminal |
+| `/dashboard/tools/network-visualizer` | NetworkVizToolPage | Full-screen network visualizer |
 
 ### Admin Routes (AdminLayout)
 
@@ -88,7 +95,7 @@ Routes are defined in `src/app/router.tsx` — the single source of truth for al
 
 | Path | Component | Description |
 |------|-----------|-------------|
-| `/:handle` | PublicProfilePage | User public profile |
+| `/:handle` | PublicProfilePage | User public profile by handle |
 | `*` | NotFoundPage | 404 page |
 
 ## Route Guards
@@ -104,7 +111,9 @@ graph TD
     G -->|Yes| D
     G -->|No| H[Redirect /dashboard]
     F -->|No| I{Student route?}
-    I -->|Yes| D
+    I -->|Yes| J{isAdmin?}
+    J -->|Yes| K[Redirect admin path]
+    J -->|No| D
     I -->|No| D
 ```
 
@@ -117,7 +126,7 @@ const DashboardPage = lazy(() => import('../features/student/pages/DashboardPage
 const LabsPage = lazy(() => import('../features/student/pages/labs/LabsPage'));
 ```
 
-Wrapped in `<Suspense fallback={<PageLoader />}>` for loading states.
+Wrapped in `<Suspense fallback={<PageLoader />}>` for loading states via the `Wrap` component.
 
 ## Page Transitions
 
