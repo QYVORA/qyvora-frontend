@@ -221,7 +221,7 @@ const LandingCoursesSection: React.FC = () => {
           </motion.div>
 
           {/* Carousel — fills remaining space */}
-          <div className="flex-1 flex flex-col justify-center">
+          <div className="flex-1 flex flex-col lg:justify-center">
             <AnimatePresence mode="wait" custom={dir}>
               <motion.div
                 key={`${activeCategory}-${page}`}

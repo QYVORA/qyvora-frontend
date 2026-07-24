@@ -10,7 +10,7 @@ const LandingBlogsSection = () => {
   return (
     <div className="relative bg-bg min-h-dvh md:h-dvh flex flex-col overflow-hidden" data-nav-invert>
       <GridBoxedBackground opacity={0.4} blur={0} mask="right" />
-      <div className="relative z-10 w-full h-full px-5 sm:px-6 md:px-16 lg:px-24 py-10 sm:py-8 md:py-12 lg:py-16 flex flex-col justify-center">
+      <div className="relative z-10 w-full h-full px-5 sm:px-6 md:px-16 lg:px-24 py-10 sm:py-8 md:py-12 lg:py-16 flex flex-col lg:justify-center">
         <StickySidebarLayout
           heading={
             <div>

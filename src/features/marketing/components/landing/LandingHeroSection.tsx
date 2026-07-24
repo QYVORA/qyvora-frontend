@@ -142,14 +142,14 @@ const LandingHeroSection: React.FC<LandingHeroSectionProps> = ({
           relative z-10 w-full flex-1 mx-auto
           grid grid-cols-1 lg:grid-cols-2
           text-left
-          items-center
+          lg:items-center
           h-full
         "
       >
 
         {/* ── Left column - Hero Text Area ── */}
         <div className="
-          flex flex-col items-start justify-center
+          flex flex-col items-start lg:justify-center
           px-4 sm:px-10 md:px-12 lg:pl-16 xl:pl-20 lg:pr-8 xl:pr-12
           pt-20 sm:pt-20 lg:pt-24
           pb-14 sm:pb-16 lg:pb-16

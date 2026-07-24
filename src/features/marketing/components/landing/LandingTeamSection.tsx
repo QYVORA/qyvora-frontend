@@ -24,7 +24,7 @@ const LandingTeamSection = () => {
         </div>
 
         {/* Responsive Grid */}
-        <div className="relative flex-1 min-h-0 min-w-0 overflow-hidden flex items-start justify-center">
+        <div className="relative flex-1 min-h-0 min-w-0 overflow-hidden flex items-start lg:justify-center">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 w-full">
             {teamData.map((member, idx) => (
               <ScrollReveal key={member.id} direction="up" delay={idx * 0.1}>
