@@ -44,7 +44,6 @@ export interface Course {
   categoryId: CourseCategoryId;
   description: string;
   overview: string;
-  coverSvg: string;
   estimatedMinutes: number;
   cpCost: number;
   lessons: Lesson[];

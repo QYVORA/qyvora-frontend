@@ -16,7 +16,6 @@ Routes are defined in `src/app/router.tsx` — the single source of truth for al
 |------|------|-----------|-------------|
 | `/` | Page | LandingPage | Marketing landing page (scroll-snap sections) |
 | `/terms` | Page | TermsPage | Terms of service |
-| `/courses/:courseId` | Page | CourseInfoPage | Individual course info/purchase |
 | `/blogs/:slug` | Page | BlogPostPage | Individual blog post |
 | `/anansi` | Redirect | `→ /#anansi` | Redirects to landing Anansi section |
 | `/services` | Redirect | `→ /#services` | Redirects to landing Services section |
@@ -76,6 +75,7 @@ Routes are defined in `src/app/router.tsx` — the single source of truth for al
 | `/profile` | `/dashboard/profile` |
 | `/notifications` | `/dashboard/notifications` |
 | `/settings` | `/dashboard/settings` |
+| `/courses/:courseId` | `/courses` (which redirects to `/#courses`) |
 
 ### Tool Full-Screen Routes (StudentOnly, no layout chrome)
 

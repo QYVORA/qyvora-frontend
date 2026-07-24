@@ -318,7 +318,6 @@ docs/
 |---|---|---|
 | `/` | Public | Landing page (scroll-snap sections) |
 | `/terms` | Public | Terms of Service |
-| `/courses/:courseId` | Public | Individual course info |
 | `/blogs/:slug` | Public | Individual blog post |
 | `/anansi` | Public | Redirects to `/#anansi` (landing section) |
 | `/services` | Public | Redirects to `/#services` (landing section) |

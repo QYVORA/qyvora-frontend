@@ -5,6 +5,7 @@ import { GraduationCap, Globe, Wifi, Wrench, ChevronLeft, ChevronRight, Search }
 import { IconArrowRight, IconTerminal, IconNetwork, IconCode, IconSearch } from '@/shared/components/icons';
 import { useTranslation } from 'react-i18next';
 import { GridBoxedBackground } from '@/shared/components/backgrounds';
+import CoursePurchaseModal from '@/shared/components/CoursePurchaseModal';
 
 const CATEGORY_ICONS: Record<string, React.ElementType> = {
   terminal: IconTerminal,
@@ -53,6 +54,7 @@ const LandingCoursesSection: React.FC = () => {
   const scrollRef = useRef<HTMLDivElement>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
+  const [selectedCourseId, setSelectedCourseId] = useState<string | null>(null);
 
   const filteredCourses = useMemo(() => {
     let result = activeCategory ? COURSES.filter((c) => c.category === activeCategory) : COURSES;
@@ -233,10 +235,10 @@ const LandingCoursesSection: React.FC = () => {
                 {pageCourses.map((course) => {
                   const CatIc = CATEGORY_ICONS[course.category];
                   return (
-                    <Link
+                    <button
                       key={course.id}
-                      to={`/courses/${course.id}`}
-                      className="group/card relative rounded-2xl border border-border/30 bg-bg-card p-3 md:p-5 transition-all duration-300 hover:border-accent/30 flex flex-col"
+                      onClick={() => setSelectedCourseId(course.id)}
+                      className="group/card relative rounded-2xl border border-border/30 bg-bg-card p-3 md:p-5 transition-all duration-300 hover:border-accent/30 flex flex-col text-left"
                     >
                       <div className="flex items-center gap-2 mb-2">
                         <div className="w-8 h-8 rounded-xl flex items-center justify-center shrink-0 bg-accent/10 border border-accent/20">
@@ -265,7 +267,7 @@ const LandingCoursesSection: React.FC = () => {
                         </div>
                         <IconArrowRight size={14} className="text-text-muted/40 group-hover/card:text-accent transition-colors" />
                       </div>
-                    </Link>
+                    </button>
                   );
                 })}
               </motion.div>
@@ -293,6 +295,14 @@ const LandingCoursesSection: React.FC = () => {
           </div>
         </div>
       </div>
+
+      {selectedCourseId && (
+        <CoursePurchaseModal
+          open={!!selectedCourseId}
+          onOpenChange={(open) => { if (!open) setSelectedCourseId(null); }}
+          courseId={selectedCourseId}
+        />
+      )}
     </div>
   );
 };
