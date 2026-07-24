@@ -24,7 +24,7 @@ const LandingQuiteRootSection = () => {
       <GridBoxedBackground opacity={0.4} blur={0} mask="right" />
       <div className="relative z-10 w-full h-full px-5 sm:px-6 md:px-16 lg:px-24 py-12 sm:py-10 md:py-16 lg:py-20 flex flex-col lg:flex-row gap-10 sm:gap-10 lg:gap-16 lg:items-stretch">
         {/* Header column */}
-        <div className="shrink-0 lg:w-[420px] xl:w-[480px] flex flex-col justify-center">
+        <div className="shrink-0 lg:w-[420px] xl:w-[480px] flex flex-col lg:justify-center">
           <img
             src={quiteRootLogo}
             alt="QuiteRoot Logo"
@@ -45,7 +45,7 @@ const LandingQuiteRootSection = () => {
         </div>
 
         {/* Content column */}
-        <div className="relative flex-1 min-h-0 min-w-0 overflow-hidden flex flex-col gap-6 justify-center">
+        <div className="relative flex-1 min-h-0 min-w-0 overflow-hidden flex flex-col gap-6 lg:justify-center">
           {/* Capabilities carousel */}
           <ScrollReveal direction="up">
             <Carousel

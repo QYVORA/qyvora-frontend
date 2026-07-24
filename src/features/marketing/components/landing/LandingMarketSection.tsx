@@ -48,7 +48,7 @@ const LandingMarketSection = () => {
       <GridBoxedBackground opacity={0.4} blur={0} mask="right" />
       <div className="relative z-10 w-full h-full px-5 sm:px-6 md:px-16 lg:px-24 py-10 sm:py-8 md:py-12 lg:py-16 flex flex-col lg:flex-row gap-10 sm:gap-10 lg:gap-16 lg:items-stretch">
         {/* Header column */}
-        <div className="shrink-0 lg:w-[420px] xl:w-[480px] flex flex-col justify-center">
+        <div className="shrink-0 lg:w-[420px] xl:w-[480px] flex flex-col lg:justify-center">
           <h2 className="text-3xl md:text-5xl lg:text-6xl font-black text-text-primary tracking-tighter leading-none mb-2">
             Zero-Day <span className="text-text-secondary">Market</span>
           </h2>
