@@ -10,7 +10,8 @@ import SEO from '@/shared/components/SEO';
 import { COURSES, getCategoryById } from '@/features/student/data/courses/courseData';
 import api from '@/core/services/api';
 import { MyCoursesSkeleton } from '@/features/student/components/StudentSkeletons';
-import { LearningOverviewCard, LearningFilterStrip } from '@/features/student/components/learning';
+import { LearningFilterStrip } from '@/features/student/components/learning';
+import StudentHeroSection from '@/shared/components/StudentHeroSection';
 import CoursePurchaseModal from '@/shared/components/CoursePurchaseModal';
 
 const STORAGE_KEY = 'qyvora_course_progress';
@@ -130,8 +131,8 @@ const MyCoursesPage: React.FC = () => {
 
       <div className=" px-3 md:px-4 lg:px-6 pt-8 pb-20 lg:pb-24 space-y-8">
 
-        <LearningOverviewCard
-          icon={<GraduationCap className="w-6 h-6 text-bg" />}
+        <StudentHeroSection
+          icon={<GraduationCap className="w-8 h-8 text-accent" />}
           title={t('student.myCourses.title')}
           description={t('student.myCourses.description')}
           stats={[
@@ -139,12 +140,14 @@ const MyCoursesPage: React.FC = () => {
             { label: 'In Progress', value: inProgressCourses },
             { label: 'Completed', value: completedCourses },
           ]}
-          action={{
-            label: totalCourses > 0 ? t('student.myCourses.continue') : t('student.myCourses.action.browse'),
-            to: continuePath,
-          }}
-          progress={overallPct}
-        />
+        >
+          <Link
+            to={continuePath}
+            className="btn-primary inline-flex items-center gap-2 px-6 py-2.5"
+          >
+            {totalCourses > 0 ? t('student.myCourses.continue') : t('student.myCourses.action.browse')}
+          </Link>
+        </StudentHeroSection>
 
         {!loading && availableCourses.length > 0 && (
           <LearningFilterStrip

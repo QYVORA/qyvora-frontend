@@ -10,7 +10,7 @@ import {
   getHiddenIps,
 } from '@/features/student/data/fakeNetwork';
 import { useSimulation } from '@/features/student/components/simulations';
-import LearningOverviewCard from '@/features/student/components/learning/LearningOverviewCard';
+import StudentHeroSection from '@/shared/components/StudentHeroSection';
 
 const SubnetBadge = () => (
   <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-accent/30 bg-accent-dim/20 text-accent text-xs font-mono font-bold">
@@ -71,17 +71,20 @@ const NetworksPage = () => {
 
       <div className=" px-3 md:px-4 lg:px-6 pt-8 pb-20 lg:pb-24 space-y-6">
         {/* Header */}
-        <LearningOverviewCard
-          icon={<Network className="w-6 h-6 text-bg" />}
+        <StudentHeroSection
+          icon={<Network className="w-8 h-8 text-accent" />}
           title="Network Lab"
           description="Simulated corporate network environment for terminal practice"
           stats={[{ label: 'Subnet', value: `${NETWORK_CONFIG.subnet}/${NETWORK_CONFIG.cidr}` }]}
-          action={{
-            label: 'Open Terminal',
-            onClick: () => setTerminalOpen(true),
-            icon: <Terminal className="w-4 h-4" />,
-          }}
-        />
+        >
+          <button
+            onClick={() => setTerminalOpen(true)}
+            className="btn-primary inline-flex items-center gap-2 px-6 py-2.5"
+          >
+            <Terminal className="w-4 h-4" />
+            Open Terminal
+          </button>
+        </StudentHeroSection>
 
         {/* Simulation notice */}
         <div className="flex items-start gap-3 px-5 py-4 rounded-2xl border border-yellow-400/20 bg-yellow-400/5">

@@ -6,7 +6,7 @@ import api from '../../../core/services/api';
 import { useToast } from '../../../core/contexts/ToastContext';
 import SEO from '../../../shared/components/SEO';
 import { NotificationsSkeleton } from '../components/StudentSkeletons';
-import LearningOverviewCard from '../components/learning/LearningOverviewCard';
+import StudentHeroSection from '@/shared/components/StudentHeroSection';
 
 interface Notification {
   id: string;
@@ -101,17 +101,22 @@ const Notifications: React.FC = () => {
           <div className="px-2 sm:px-6 md:px-8 pb-16 lg:px-8 lg:py-6 space-y-6">
 
             {/* Page header */}
-            <LearningOverviewCard
-              icon={<Bell className="w-6 h-6 text-bg" />}
+            <StudentHeroSection
+              icon={<Bell className="w-8 h-8 text-accent" />}
               title={t('student.notificationsPage.title')}
               description={t('student.notificationsPage.description')}
               stats={[{ label: t('student.notificationsPage.unread'), value: unreadCount }]}
-              action={unreadCount > 0 ? {
-                label: t('student.notificationsPage.markAllRead'),
-                onClick: markAllRead,
-                icon: <CheckCheck className="w-4 h-4" />,
-              } : undefined}
-            />
+            >
+              {unreadCount > 0 && (
+                <button
+                  onClick={markAllRead}
+                  className="btn-primary inline-flex items-center gap-2 px-6 py-2.5"
+                >
+                  <CheckCheck className="w-4 h-4" />
+                  {t('student.notificationsPage.markAllRead')}
+                </button>
+              )}
+            </StudentHeroSection>
             {displayed.length === 0 ? (
               <div className="relative overflow-hidden rounded-2xl border-2 border-dashed border-border py-16 text-center">
                 <BellOff className="mx-auto mb-4 h-12 w-12 text-text-muted opacity-40" />

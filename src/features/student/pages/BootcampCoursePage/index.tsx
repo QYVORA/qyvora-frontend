@@ -15,7 +15,8 @@ import { formatSyncLabel, getLastSync, resolveNextRoomPath, setLastSyncNow } fro
 import SEO from '@/shared/components/SEO';
 import { BootcampCourseSkeleton } from '@/features/student/components/StudentSkeletons';
 import PhaseSection from '@/features/student/components/bootcamp-course/PhaseSection';
-import { LearningOverviewCard, LearningFilterStrip } from '@/features/student/components/learning';
+import { LearningFilterStrip } from '@/features/student/components/learning';
+import StudentHeroSection from '@/shared/components/StudentHeroSection';
 import type { Course } from '@/features/student/components/bootcamp-course/types';
 
 const BootcampCourse: React.FC = () => {
@@ -144,24 +145,24 @@ const BootcampCourse: React.FC = () => {
 
       <div className=" px-3 md:px-4 lg:px-6 pt-8 pb-20 lg:pb-24 space-y-8">
 
-        <LearningOverviewCard
-          icon={<BookOpen className="w-6 h-6 text-bg" />}
+        <StudentHeroSection
+          icon={<BookOpen className="w-8 h-8 text-accent" />}
           title={course?.title || 'Bootcamp'}
           description={syncError || `Track your progress through ${course?.title || 'the bootcamp'}. ${formatSyncLabel(lastSync)}`}
           stats={[
             { label: 'Modules', value: `${doneModules}/${totalModules}` },
             { label: 'Rooms', value: `${doneRooms}/${totalRooms}` },
           ]}
-          action={nextRoomPath ? {
-            label: 'Continue Training',
-            to: nextRoomPath,
-          } : undefined}
-          progress={progressNum}
-          breadcrumbs={[
-            { label: 'Bootcamps', to: '/dashboard/bootcamps' },
-            { label: course?.title || 'Course' },
-          ]}
-        />
+        >
+          {nextRoomPath && (
+            <Link
+              to={nextRoomPath}
+              className="btn-primary inline-flex items-center gap-2 px-6 py-2.5"
+            >
+              Continue Training
+            </Link>
+          )}
+        </StudentHeroSection>
 
         <LearningFilterStrip
           filters={phaseFilters}
