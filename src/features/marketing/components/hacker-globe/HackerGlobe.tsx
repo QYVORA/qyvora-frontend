@@ -67,7 +67,7 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88, offset = [0, 0,
       const outlineMat = new THREE.MeshBasicMaterial({
         color: ACCENT_COLOR,
         transparent: true,
-        opacity: isLight ? 0.05 : 0.08,
+        opacity: 0,
         side: THREE.BackSide,
         depthWrite: false,
       });
