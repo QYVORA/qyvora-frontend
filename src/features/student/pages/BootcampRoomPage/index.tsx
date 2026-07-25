@@ -322,7 +322,7 @@ const BootcampRoomPage: React.FC = () => {
             </div>
           ) : (
             <>
-              <RoomHeader phase={phase} room={room} timeSpent={timeSpent} formatTime={formatTime} isRoomComplete={isRoomComplete} />
+              <RoomHeader phase={phase} room={room} timeSpent={timeSpent} formatTime={formatTime} isRoomComplete={isRoomComplete} backUrl={`/dashboard/bootcamps/${bootcampId}`} backLabel={t('student.bootcampRoom.backToBootcamp')} />
               <RoomProgress viewedStepsCount={viewedSteps.size} totalStepsCount={room.steps.length} timeSpent={timeSpent} formatTime={formatTime} currentStepIdx={currentStepIdx} goToStep={goToStep} steps={room.steps} viewedSteps={viewedSteps} />
               {room.steps.length === 0 && !apiLoading ? (
                 <div className="flex flex-col items-center justify-center py-20 text-center">
