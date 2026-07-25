@@ -11,7 +11,7 @@ interface SimulationPanelProps {
   defaultHeight?: string;
 }
 
-export function SimulationPanel({ simulations, defaultHeight = 'h-[300px] md:h-[400px]' }: SimulationPanelProps) {
+export function SimulationPanel({ simulations, defaultHeight = 'h-[50vh] md:h-[60vh] max-h-[80vh]' }: SimulationPanelProps) {
   const [activeTab, setActiveTab] = useState<SimulationType | null>(simulations[0]?.type || null);
   const [expanded, setExpanded] = useState(false);
 
@@ -21,9 +21,9 @@ export function SimulationPanel({ simulations, defaultHeight = 'h-[300px] md:h-[
   const hasBreakout = activeSimulation?.breakout ?? false;
 
   return (
-    <div className={`rounded-2xl border border-border/30 bg-bg-card ${hasBreakout ? '' : 'overflow-hidden'} ${expanded ? 'fixed inset-4 z-[200]' : defaultHeight}`}>
+    <div className={`rounded-2xl border border-border/30 bg-bg-card overflow-hidden ${expanded ? 'fixed inset-4 z-[200]' : defaultHeight}`}>
       {/* Content — each simulation rendered with data-active attribute */}
-      <div className="h-full min-h-0">
+      <div className="h-full min-h-0 overflow-hidden">
         {simulations.map(sim => (
           <div
             key={sim.type}
