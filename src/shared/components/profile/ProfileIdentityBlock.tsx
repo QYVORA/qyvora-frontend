@@ -87,18 +87,15 @@ const ProfileIdentityBlock: React.FC<ProfileIdentityBlockProps> = ({
     ? new Date(joinDate).toLocaleDateString('en-US', { month: 'short', year: 'numeric' })
     : null;
 
-  const identiconCard = (
+  const identiconBlock = (
     <motion.div
       initial={prefersReduced ? false : { opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: prefersReduced ? 0 : 0.45 }}
-      className={`rounded-2xl border border-border/30 bg-bg-card overflow-hidden ${className}`}
+      className="hidden lg:flex items-center justify-center self-stretch rounded-2xl border border-border/30 overflow-hidden"
     >
-      <div className="h-1 w-full bg-accent" />
-      <div className="p-5 sm:p-6 flex items-center justify-center min-h-[160px] sm:min-h-[200px]">
-        <div className="w-28 h-28 sm:w-36 sm:h-36 rounded-2xl overflow-hidden">
-          <Identicon value={handle || id} size={256} className="w-full h-full" />
-        </div>
+      <div className="w-36 h-36 xl:w-44 xl:h-44 rounded-2xl overflow-hidden">
+        <Identicon value={handle || id} size={256} className="w-full h-full" />
       </div>
     </motion.div>
   );
@@ -231,9 +228,29 @@ const ProfileIdentityBlock: React.FC<ProfileIdentityBlockProps> = ({
   );
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-4 sm:gap-5 items-start">
-      {identiconCard}
-      {profileInfoCard}
+    <div className="space-y-4 sm:space-y-5">
+      {/* Mobile: identicon above the card */}
+      <motion.div
+        initial={prefersReduced ? false : { opacity: 0, y: 12 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: prefersReduced ? 0 : 0.45 }}
+        className="lg:hidden flex justify-center"
+      >
+        <div className="w-28 h-28 sm:w-32 sm:h-32 rounded-2xl overflow-hidden border border-border/30">
+          <Identicon value={handle || id} size={256} className="w-full h-full" />
+        </div>
+      </motion.div>
+
+      {/* Desktop: identicon beside the card */}
+      <div className="hidden lg:grid grid-cols-[280px_1fr] gap-4 sm:gap-5 items-stretch">
+        {identiconBlock}
+        {profileInfoCard}
+      </div>
+
+      {/* Mobile: just the card */}
+      <div className="lg:hidden">
+        {profileInfoCard}
+      </div>
     </div>
   );
 };
