@@ -174,7 +174,7 @@ const MyCoursesPage: React.FC = () => {
         {loading && <MyCoursesSkeleton />}
 
         {!loading && filteredAvailable.length > 0 && (
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
             {filteredAvailable.map((course, i) => {
               const category = getCategoryById(course.categoryId);
               const progress = courseProgress[course.id];
@@ -185,30 +185,30 @@ const MyCoursesPage: React.FC = () => {
                 <ScrollReveal key={course.id} direction="up" amount={0.1} delay={i * 0.05}>
                   <Link
                     to={`/dashboard/courses/${course.id}${canResume ? `?lesson=${progress.lastLesson}` : ''}`}
-                    className="group block overflow-hidden rounded-2xl border border-border/30 bg-bg-card transition-all hover:border-accent/30 hover:scale-[1.01]"
+                    className="group flex flex-col rounded-2xl border border-border/30 bg-bg-card overflow-hidden transition-all duration-300 hover:border-accent/30"
                   >
-                    <div className="p-5 space-y-3">
+                    <div className="flex flex-col gap-2 p-4 sm:p-5 md:p-6 lg:p-7 flex-1">
                       <div className="flex items-center justify-between">
                         <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-lg bg-accent/10 text-[9px] font-black uppercase tracking-widest text-accent border border-accent/20">
                           {category?.name}
                         </span>
-                        <span className="flex items-center gap-1 text-[10px] text-text-muted font-mono">
-                          <Clock className="h-3 w-3" /> {course.estimatedMinutes} min
+                        <span className="flex items-center gap-1 text-[9px] text-text-muted font-mono">
+                          <Clock className="h-2.5 w-2.5" /> {course.estimatedMinutes} min
                         </span>
                       </div>
-                      <h3 className="text-base font-black text-text-primary group-hover:text-accent transition-colors leading-tight break-words">
+                      <h3 className="text-sm sm:text-base md:text-lg font-black text-text-primary group-hover:text-accent transition-colors leading-snug break-words">
                         {course.title}
                       </h3>
-                      <p className="text-xs text-text-muted leading-relaxed line-clamp-2">
+                      <p className="text-xs sm:text-sm text-text-muted leading-relaxed line-clamp-3 flex-1">
                         {course.description}
                       </p>
 
-                      <div className="space-y-1.5">
+                      <div className="space-y-1 mt-auto pt-2 border-t border-border/20">
                         <div className="flex items-center justify-between">
-                          <span className="text-[9px] font-mono text-text-muted">
+                          <span className="text-[8px] font-mono text-text-muted">
                             {progress?.completed || 0}/{progress?.total || course.lessons.length} lessons
                           </span>
-                          <span className="text-[9px] font-mono text-accent">{pct}%</span>
+                          <span className="text-[8px] font-mono text-accent">{pct}%</span>
                         </div>
                         <div className="h-1.5 bg-bg-elevated rounded-full overflow-hidden">
                           <div className="h-full bg-accent transition-all duration-700" style={{ width: `${pct}%` }} />
@@ -217,16 +217,16 @@ const MyCoursesPage: React.FC = () => {
 
                       <div className="pt-1">
                         {isComplete ? (
-                          <span className="inline-flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest text-accent/60">
-                            <CheckCircle2 className="h-3 w-3" /> {t('student.myCourses.completed')}
+                          <span className="inline-flex items-center gap-1.5 text-[9px] sm:text-[10px] font-black uppercase tracking-widest text-accent/60">
+                            <CheckCircle2 className="h-2.5 w-2.5" /> {t('student.myCourses.completed')}
                           </span>
                         ) : canResume ? (
-                          <span className="inline-flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest text-accent group-hover:gap-2.5 transition-all">
-                            <Play className="h-3 w-3" /> {t('student.myCourses.continue')} Lesson {progress.lastLesson + 1} <ArrowRight className="h-3 w-3" />
+                          <span className="px-3 py-1.5 rounded-lg text-[9px] sm:text-[10px] font-black uppercase tracking-widest bg-accent text-bg transition-all duration-200 group-hover:brightness-110 group-active:scale-95 inline-flex items-center gap-1.5">
+                            <Play className="h-2.5 w-2.5" /> {t('student.myCourses.continue')} <ArrowRight className="h-2.5 w-2.5" />
                           </span>
                         ) : (
-                          <span className="inline-flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest text-accent group-hover:gap-2.5 transition-all">
-                            <BarChart3 className="h-3 w-3" /> {t('student.myCourses.start')} <ArrowRight className="h-3 w-3" />
+                          <span className="px-3 py-1.5 rounded-lg text-[9px] sm:text-[10px] font-black uppercase tracking-widest bg-accent text-bg transition-all duration-200 group-hover:brightness-110 group-active:scale-95 inline-flex items-center gap-1.5">
+                            <BarChart3 className="h-2.5 w-2.5" /> {t('student.myCourses.start')} <ArrowRight className="h-2.5 w-2.5" />
                           </span>
                         )}
                       </div>
@@ -253,32 +253,34 @@ const MyCoursesPage: React.FC = () => {
             <h2 className="text-sm font-black text-text-muted uppercase tracking-widest mb-4">
               Locked Courses
             </h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
               {lockedCourses.map((course) => {
                 const category = getCategoryById(course.categoryId);
                 return (
                   <div
                     key={course.id}
-                    className="group block overflow-hidden rounded-2xl border border-border/30 bg-bg-card/50 opacity-60"
+                    className="group flex flex-col rounded-2xl border border-border/30 bg-bg-card/50 opacity-60 overflow-hidden"
                   >
-                    <div className="p-5 space-y-3">
+                    <div className="flex flex-col gap-2 p-4 sm:p-5 md:p-6 lg:p-7 flex-1">
                       <div className="flex items-center justify-between">
                         <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-lg bg-bg-elevated text-[9px] font-black uppercase tracking-widest text-text-muted border border-border/20">
                           {category?.name}
                         </span>
-                        <span className="flex items-center gap-1.5 px-2 py-0.5 rounded-lg bg-accent/10 text-[9px] font-black text-accent">
+                        <span className="flex items-center gap-1 px-2 py-0.5 rounded-lg bg-accent/10 text-[9px] font-black text-accent">
                           <Zap className="h-2.5 w-2.5" /> {course.cpCost} CP
                         </span>
                       </div>
-                       <h3 className="text-base font-black text-text-muted leading-tight break-words">
+                       <h3 className="text-sm sm:text-base md:text-lg font-black text-text-muted leading-snug break-words">
                          {course.title}
                        </h3>
-                      <button
-                        onClick={() => setSelectedCourseId(course.id)}
-                        className="inline-flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest text-accent hover:gap-2 transition-all"
-                      >
-                        View Details <ArrowRight className="h-3 w-3" />
-                      </button>
+                      <div className="mt-auto pt-2 border-t border-border/20">
+                        <button
+                          onClick={() => setSelectedCourseId(course.id)}
+                          className="inline-flex items-center gap-1.5 text-[9px] sm:text-[10px] font-black uppercase tracking-widest text-accent hover:gap-2 transition-all"
+                        >
+                          View Details <ArrowRight className="h-2.5 w-2.5" />
+                        </button>
+                      </div>
                     </div>
                   </div>
                 );
