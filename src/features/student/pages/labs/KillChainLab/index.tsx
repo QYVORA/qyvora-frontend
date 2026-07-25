@@ -9,7 +9,7 @@ import { verifyLabFlag } from '../../../services/lab.service';
 import { getRelatedContentForLab } from '@/shared/constants/topicMap';
 import RelatedContent from '@/shared/components/RelatedContent';
 import { KillChainDiagramSimple } from '@/shared/components/diagrams/KillChainDiagram';
-import LabHeroSection from '@/shared/components/LabHeroSection';
+import StudentHeroSection from '@/shared/components/StudentHeroSection';
 
 
 const DIFFICULTY_STYLES: Record<string, string> = {
@@ -81,7 +81,7 @@ const KillChainLab = () => {
       <div className="bg-bg min-h-full">
         <SEO title="Kill Chain Lab" description="Execute full penetration test simulations." noindex />
 
-        <LabHeroSection
+        <StudentHeroSection
           icon={<Target className="w-8 h-8 text-accent" />}
           title="Kill"
           accentWord="Chain"

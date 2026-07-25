@@ -8,7 +8,7 @@ import ScenarioCard from '@/shared/components/ScenarioCard';
 import { verifyLabFlag } from '../../../services/lab.service';
 import { getRelatedContentForLab } from '@/shared/constants/topicMap';
 import RelatedContent from '@/shared/components/RelatedContent';
-import LabHeroSection from '@/shared/components/LabHeroSection';
+import StudentHeroSection from '@/shared/components/StudentHeroSection';
 import { FlowDiagram, type FlowNode, type FlowArrow } from '@/shared/components/diagrams/FlowDiagram';
 
 
@@ -126,7 +126,7 @@ const PasswordLab = () => {
       <div className="bg-bg min-h-full">
         <SEO title="Password Cracking Lab" description="Crack password hashes using John the Ripper and Hashcat." noindex />
 
-        <LabHeroSection
+        <StudentHeroSection
           icon={<Key className="w-8 h-8 text-accent" />}
           title="Password"
           accentWord="Cracking"
