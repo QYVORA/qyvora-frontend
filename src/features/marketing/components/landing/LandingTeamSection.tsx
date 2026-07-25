@@ -2,24 +2,26 @@ import { Link } from 'react-router-dom';
 import { IconArrowRight, BrandGithubIcon, BrandLinkedinIcon, BrandXIcon } from '@/shared/components/icons';
 import ScrollReveal from '@/shared/components/ScrollReveal';
 import { teamData } from '@/features/marketing/content/teamData';
+import { useTranslation } from 'react-i18next';
 
 const LandingTeamSection = () => {
+  const { t } = useTranslation();
   return (
     <div className="relative bg-bg min-h-dvh md:h-dvh flex flex-col overflow-hidden">
       <div className="relative z-10 w-full h-full px-5 sm:px-6 md:px-16 lg:px-24 py-12 sm:py-10 md:py-16 lg:py-20 flex flex-col gap-8 sm:gap-10 lg:gap-12">
         {/* Header */}
         <div className="flex flex-col">
           <h2 className="text-2xl md:text-4xl lg:text-5xl font-black text-text-primary tracking-tighter leading-none mb-2">
-            Meet The <span className="text-accent">Operators</span>
+            {t('landing.teamLanding.title')} <span className="text-accent">{t('landing.teamLanding.titleAccent')}</span>
           </h2>
           <p className="text-xs md:text-sm text-text-muted leading-relaxed max-w-xl mb-4">
-            The core team behind QYVORA — building Africa's offensive security platform from the ground up.
+            {t('landing.teamLanding.description')}
           </p>
           <Link
             to="/team"
             className="btn-secondary inline-flex items-center gap-2.5 w-fit"
           >
-            View Full Team <IconArrowRight size={14} />
+            {t('landing.teamLanding.viewAll')} <IconArrowRight size={14} />
           </Link>
         </div>
 

@@ -580,9 +580,66 @@
       "anonFallback": "Anon"
     },
     "quiteroot": {
-      "description": "The research and engineering collective behind QYVORA's offensive tooling, intelligence, and operator-focused security experiments.",
+      "title": "Quite",
+      "titleAccent": "Root",
+      "description": "The offensive security research and engineering collective behind QYVORA. Building tools, intelligence, and production-ready security capabilities.",
       "explore": "Explore QuiteRoot",
-      "research": "Research"
+      "research": "Research",
+      "capabilities": {
+        "research": "Vulnerability Research",
+        "researchDesc": "Discovering and analyzing security vulnerabilities in software, hardware, and protocols.",
+        "toolDev": "Tool Development",
+        "toolDevDesc": "Building offensive security tools, frameworks, and automation for penetration testing.",
+        "threatIntel": "Threat Intelligence",
+        "threatIntelDesc": "Collecting and analyzing threat actor TTPs, indicators of compromise, and attack patterns.",
+        "redTeam": "Red Team Operations",
+        "redTeamDesc": "Advanced adversary simulation and red team engagements for enterprise clients.",
+        "detection": "Detection Engineering",
+        "detectionDesc": "Building detection rules, SIEM pipelines, and automated response systems.",
+        "infra": "Infrastructure Security",
+        "infraDesc": "Securing cloud environments, networks, and critical infrastructure.",
+        "ai": "AI Security",
+        "aiDesc": "Researching AI/ML vulnerabilities, adversarial attacks, and model security.",
+        "education": "Security Education",
+        "educationDesc": "Training the next generation of offensive security professionals in Africa."
+      }
+    },
+    "market": {
+      "title": "Zero-Day",
+      "titleAccent": "Market",
+      "description": "A classified digital exchange where offensive security operators access high-value intelligence assets.",
+      "featureGuides": "Exploitation Guides",
+      "featureGuidesDesc": "Operational procedures for weaponizing CVEs and writing custom payloads.",
+      "featurePapers": "Research Papers",
+      "featurePapersDesc": "Whitepapers covering novel attack vectors and cryptographic weaknesses.",
+      "featureTools": "Tooling & Payloads",
+      "featureToolsDesc": "Privately developed implants and post-exploitation modules.",
+      "accessMarket": "Access the Market",
+      "intelligenceAsset": "Intelligence Asset",
+      "defaultDesc": "Secure intelligence report for offensive security operatives.",
+      "viewAll": "View All",
+      "emptyState": "No assets currently published."
+    },
+    "anansi": {
+      "title": "Anansi",
+      "titleAccent": "CLI",
+      "description": "Terminal-first attack surface intelligence engine. Automate discovery, probing, and takeover detection.",
+      "explore": "Explore Anansi",
+      "phaseLabel": "Phase",
+      "quickInstall": "Quick Install"
+    },
+    "blogs": {
+      "title": "Intelligence",
+      "titleAccent": "Reports",
+      "description": "Field notes, tool philosophy, and the thinking behind Africa's offensive security ecosystem.",
+      "viewAll": "View All Posts",
+      "read": "Read"
+    },
+    "teamLanding": {
+      "title": "Meet The",
+      "titleAccent": "Operators",
+      "description": "The core team behind QYVORA — building Africa's offensive security platform from the ground up.",
+      "viewAll": "View Full Team"
     },
     "services": {
       "badge": "Enterprise Services",
@@ -621,6 +678,13 @@
           "phishing": "Phishing & Social Engineering Drills",
           "progress": "Progress Tracking & Reporting"
         }
+      },
+      "customInquiry": {
+        "label": "Custom Inquiry",
+        "badge": "Contact Us",
+        "title": "Red Team, Compliance, or Custom Engagement",
+        "description": "Bespoke security assessments tailored to your infrastructure, compliance requirements, and threat model.",
+        "send": "Send Inquiry"
       }
     },
     "stats": {
