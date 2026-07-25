@@ -92,10 +92,10 @@ const ProfileIdentityBlock: React.FC<ProfileIdentityBlockProps> = ({
       initial={prefersReduced ? false : { opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: prefersReduced ? 0 : 0.45 }}
-      className="hidden lg:flex items-center justify-center self-stretch rounded-2xl border border-border/30 overflow-hidden"
+      className="hidden lg:block self-stretch rounded-2xl border border-border/30 overflow-hidden"
     >
-      <div className="w-36 h-36 xl:w-44 xl:h-44 rounded-2xl overflow-hidden">
-        <Identicon value={handle || id} size={256} className="w-full h-full" />
+      <div className="w-full h-full min-h-0">
+        <Identicon value={handle || id} size={256} className="w-full h-full object-cover" />
       </div>
     </motion.div>
   );
