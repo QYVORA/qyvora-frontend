@@ -62,9 +62,9 @@ const Profile: React.FC = () => {
         noindex
       />
 
-      <div className="max-w-6xl mx-auto px-4 md:px-6 lg:px-8 pt-8 pb-20 lg:pb-24">
+      <div className="px-3 md:px-4 lg:px-6 pt-8 pb-20 lg:pb-24">
           {/* Main content */}
-          <div className="space-y-6">
+          <div className="space-y-10">
             {/* ── Identity Section ── */}
             <section id="profile-section-identity">
               <ProfileIdentityBlock
