@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { LogOut, User, Terminal, Code2, Network, Wrench, Settings, Globe } from 'lucide-react';
+import { LogOut, Terminal, Code2, Network, Wrench, Settings, Globe } from 'lucide-react';
 import { IconX } from '@/shared/components/icons';
 import { BottomSheet, BottomSheetClose, BottomSheetContent } from '../../../../../shared/components/ui/BottomSheet';
 import Identicon from '../../../../../shared/components/Identicon';
@@ -71,8 +71,12 @@ const MobileProfileSheet: React.FC<MobileProfileSheetProps> = ({
             <div className="w-10 h-1 rounded-full bg-border" />
           </div>
 
-          {/* Header */}
-          <div className="flex items-center justify-between px-5 py-4 border-b border-border/50 flex-none">
+          {/* Header — clickable, navigates to profile */}
+          <Link
+            to="/dashboard/profile"
+            onClick={() => onOpenChange(false)}
+            className="flex items-center justify-between px-5 py-4 border-b border-border/50 flex-none hover:bg-accent-dim/50 transition-colors"
+          >
             <div className="flex items-center gap-3">
               <div className="w-12 h-12 shrink-0 rounded-xl overflow-hidden flex items-center justify-center">
                 <Identicon value={user?.username || '?'} size={48} className="w-full h-full" />
@@ -92,7 +96,7 @@ const MobileProfileSheet: React.FC<MobileProfileSheetProps> = ({
             <BottomSheetClose className="p-2 text-text-muted hover:text-accent transition-colors" aria-label="Close menu">
               <IconX size={20} />
             </BottomSheetClose>
-          </div>
+          </Link>
 
           {/* Menu items */}
           <div className="flex-1 overflow-y-auto p-4 space-y-2">
@@ -155,22 +159,6 @@ const MobileProfileSheet: React.FC<MobileProfileSheetProps> = ({
                 })}
               </div>
             </div>
-
-            {/* Profile link */}
-            <Link
-              to="/dashboard/profile"
-              onClick={() => onOpenChange(false)}
-              className="flex items-center gap-3 px-4 py-3 rounded-xl border border-border text-left transition-all active:scale-[0.98] hover:border-accent/30"
-            >
-              <div className="w-10 h-10 rounded-xl bg-bg-elevated border border-border/30 flex items-center justify-center shrink-0">
-                <User size={16} className="text-text-muted" />
-              </div>
-              <div className="flex-1 min-w-0">
-                <div className="text-xs font-black uppercase tracking-widest text-text-primary">
-                  {t('nav.profile') || 'Profile'}
-                </div>
-              </div>
-            </Link>
 
             {/* Network Lab */}
             <Link
