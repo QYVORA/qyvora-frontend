@@ -87,81 +87,86 @@ const ProfileIdentityBlock: React.FC<ProfileIdentityBlockProps> = ({
     ? new Date(joinDate).toLocaleDateString('en-US', { month: 'short', year: 'numeric' })
     : null;
 
-  return (
+  const identiconCard = (
     <motion.div
       initial={prefersReduced ? false : { opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: prefersReduced ? 0 : 0.45 }}
       className={`rounded-2xl border border-border/30 bg-bg-card overflow-hidden ${className}`}
     >
-      {/* Accent stripe at top */}
+      <div className="h-1 w-full bg-accent" />
+      <div className="p-5 sm:p-6 flex items-center justify-center min-h-[160px] sm:min-h-[200px]">
+        <div className="w-28 h-28 sm:w-36 sm:h-36 rounded-2xl overflow-hidden">
+          <Identicon value={handle || id} size={256} className="w-full h-full" />
+        </div>
+      </div>
+    </motion.div>
+  );
+
+  const profileInfoCard = (
+    <motion.div
+      initial={prefersReduced ? false : { opacity: 0, y: 12 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: prefersReduced ? 0 : 0.45, delay: prefersReduced ? 0 : 0.05 }}
+      className={`rounded-2xl border border-border/30 bg-bg-card overflow-hidden ${className}`}
+    >
       <div className="h-1 w-full bg-accent" />
 
       <div className="p-5 sm:p-6">
-        {/* Top row: Avatar + Identity */}
-        <div className="flex items-start gap-4 sm:gap-5">
-          {/* Circular avatar */}
-          <div className="w-20 h-20 sm:w-24 sm:h-24 shrink-0 rounded-2xl overflow-hidden flex items-center justify-center">
-            <Identicon value={handle || id} size={256} className="w-full h-full" />
-          </div>
-
-          {/* Name + handle + badges */}
-          <div className="min-w-0 flex-1">
-            <div className="flex flex-wrap items-center gap-2 mb-1">
-              {name && (
-                <h2 className="text-lg sm:text-xl font-black text-text-primary truncate">
-                  {name}
-                </h2>
-              )}
-              <span className="px-2 py-0.5 rounded-lg bg-bg-elevated border border-border/30 text-[10px] font-black uppercase tracking-widest text-accent font-mono">
-                @{handle}
-              </span>
-              {rank && (
-                <span className="px-2 py-0.5 rounded-lg bg-accent/10 border border-accent/20 text-[10px] font-black uppercase tracking-widest text-accent">
-                  {rank}
-                </span>
-              )}
-            </div>
-
-            {/* Bio */}
-            {bio && (
-              <p className="text-sm text-text-secondary leading-relaxed mt-1.5 line-clamp-2">
-                {bio}
-              </p>
-            )}
-
-            {/* Meta line: org + email + join date + country */}
-            <div className="flex flex-wrap items-center gap-3 mt-2 text-xs text-text-muted">
-              {organization && <span>{organization}</span>}
-              {email && <span className="hidden sm:inline">{email}</span>}
-              {formattedJoinDate && (
-                <span className="inline-flex items-center gap-1">
-                  <Calendar className="w-3 h-3" />
-                  Joined {formattedJoinDate}
-                </span>
-              )}
-              {country && <span>{country}</span>}
-            </div>
-
-            {/* Social links */}
-            {socialLinks.length > 0 && (
-              <div className="flex items-center gap-2 mt-2">
-                {socialLinks.map((link) => (
-                  <a
-                    key={link.label}
-                    href={link.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="w-7 h-7 rounded-lg bg-bg-elevated border border-border/30 flex items-center justify-center text-text-muted hover:text-accent hover:border-accent/30 transition-colors"
-                    aria-label={link.label}
-                  >
-                    {link.icon}
-                  </a>
-                ))}
-              </div>
-            )}
-          </div>
+        {/* Name + handle + badges */}
+        <div className="flex flex-wrap items-center gap-2 mb-1">
+          {name && (
+            <h2 className="text-lg sm:text-xl font-black text-text-primary truncate">
+              {name}
+            </h2>
+          )}
+          <span className="px-2 py-0.5 rounded-lg bg-bg-elevated border border-border/30 text-[10px] font-black uppercase tracking-widest text-accent font-mono">
+            @{handle}
+          </span>
+          {rank && (
+            <span className="px-2 py-0.5 rounded-lg bg-accent/10 border border-accent/20 text-[10px] font-black uppercase tracking-widest text-accent">
+              {rank}
+            </span>
+          )}
         </div>
+
+        {/* Bio */}
+        {bio && (
+          <p className="text-sm text-text-secondary leading-relaxed mt-1.5 line-clamp-2">
+            {bio}
+          </p>
+        )}
+
+        {/* Meta line: org + email + join date + country */}
+        <div className="flex flex-wrap items-center gap-3 mt-2 text-xs text-text-muted">
+          {organization && <span>{organization}</span>}
+          {email && <span className="hidden sm:inline">{email}</span>}
+          {formattedJoinDate && (
+            <span className="inline-flex items-center gap-1">
+              <Calendar className="w-3 h-3" />
+              Joined {formattedJoinDate}
+            </span>
+          )}
+          {country && <span>{country}</span>}
+        </div>
+
+        {/* Social links */}
+        {socialLinks.length > 0 && (
+          <div className="flex items-center gap-2 mt-2">
+            {socialLinks.map((link) => (
+              <a
+                key={link.label}
+                href={link.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-7 h-7 rounded-lg bg-bg-elevated border border-border/30 flex items-center justify-center text-text-muted hover:text-accent hover:border-accent/30 transition-colors"
+                aria-label={link.label}
+              >
+                {link.icon}
+              </a>
+            ))}
+          </div>
+        )}
 
         {/* XP Progress Bar */}
         {xpLevel != null && xpToNext != null && xpToNext > 0 && (
@@ -223,6 +228,13 @@ const ProfileIdentityBlock: React.FC<ProfileIdentityBlockProps> = ({
         </div>
       </div>
     </motion.div>
+  );
+
+  return (
+    <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-4 sm:gap-5 items-start">
+      {identiconCard}
+      {profileInfoCard}
+    </div>
   );
 };
 
