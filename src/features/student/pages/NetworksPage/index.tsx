@@ -20,12 +20,12 @@ const SubnetBadge = () => (
 );
 
 const InfoCard = ({ icon, label, value }: { icon: React.ReactNode; label: string; value: string }) => (
-  <div className="flex items-center gap-3 px-4 py-3 rounded-2xl border border-border/30 bg-bg-card">
-    <div className="w-8 h-8 rounded-lg bg-accent-dim/30 flex items-center justify-center text-accent shrink-0">
+  <div className="flex items-center gap-3 p-5 rounded-2xl border border-border/30 bg-bg-card">
+    <div className="w-10 h-10 rounded-xl bg-accent/10 flex items-center justify-center text-accent shrink-0">
       {icon}
     </div>
     <div className="min-w-0">
-      <p className="text-[9px] font-black uppercase tracking-widest text-text-muted">{label}</p>
+      <p className="text-[10px] font-black uppercase tracking-widest text-text-muted">{label}</p>
       <p className="text-sm font-mono font-bold text-text-primary truncate">{value}</p>
     </div>
   </div>
@@ -41,7 +41,7 @@ const OSIcon = ({ os }: { os: string }) => {
 
 const DeviceRow = ({ device, index, discovered }: { device: typeof DEVICES[0]; index: number; discovered: boolean }) => (
   <div className={`grid grid-cols-[24px_1fr_auto] md:grid-cols-[24px_1fr_140px] gap-2 md:gap-4 px-4 py-3 rounded-2xl border transition-all items-center ${
-    discovered ? 'border-border/30 bg-bg-card hover:border-accent/20' : 'border-border/10 bg-bg-card/50 opacity-50'
+    discovered ? 'border-border/30 bg-bg-card hover:border-accent/30' : 'border-border/10 bg-bg-card/50 opacity-50'
   }`}>
     <span className="text-[10px] font-mono font-bold text-text-muted/40">{index + 1}</span>
     <div className="flex items-center gap-2 min-w-0">
@@ -69,7 +69,7 @@ const NetworksPage = () => {
     <div className="bg-bg min-h-full">
       <SEO title="Network Lab" description="Simulated corporate network environment for terminal practice." noindex />
 
-      <div className=" px-3 md:px-4 lg:px-6 pt-8 pb-20 lg:pb-24 space-y-6">
+      <div className="px-3 md:px-4 lg:px-6 pt-8 pb-20 lg:pb-24 space-y-10">
         {/* Header */}
         <StudentHeroSection
           icon={<Network className="w-8 h-8 text-accent" />}
@@ -87,7 +87,7 @@ const NetworksPage = () => {
         </StudentHeroSection>
 
         {/* Simulation notice */}
-        <div className="flex items-start gap-3 px-5 py-4 rounded-2xl border border-yellow-400/20 bg-yellow-400/5">
+        <div className="flex items-start gap-3 px-5 py-4 rounded-2xl border border-border/30 bg-bg-card">
           <Shield className="w-5 h-5 text-yellow-400 shrink-0 mt-0.5" />
           <div>
             <p className="text-sm font-bold text-yellow-400">Simulated Environment</p>
@@ -100,7 +100,7 @@ const NetworksPage = () => {
         </div>
 
         {/* Network info cards */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-3 lg:gap-4">
           <InfoCard icon={<Globe className="w-4 h-4" />} label="Subnet" value={`${NETWORK_CONFIG.subnet}/${NETWORK_CONFIG.cidr}`} />
           <InfoCard icon={<Router className="w-4 h-4" />} label="Gateway" value={NETWORK_CONFIG.gateway} />
           <InfoCard icon={<Wifi className="w-4 h-4" />} label="DNS" value={NETWORK_CONFIG.dns.join(', ')} />
@@ -108,12 +108,12 @@ const NetworksPage = () => {
         </div>
 
         {/* Your machine card */}
-        <div className="rounded-2xl border border-accent/30 bg-accent-dim/10 p-5">
-          <div className="flex items-center gap-2 mb-3">
+        <div className="rounded-2xl border border-border/30 bg-bg-card p-5 md:p-6">
+          <div className="flex items-center gap-2 mb-4">
             <Monitor className="w-4 h-4 text-accent" />
-            <span className="text-[9px] font-black uppercase tracking-widest text-accent">Your Machine (Kali)</span>
+            <span className="text-[10px] font-black uppercase tracking-widest text-accent">Your Machine (Kali)</span>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-3 text-sm">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
             <div>
               <span className="text-[9px] font-black uppercase tracking-widest text-text-muted block">IP Address</span>
               <span className="font-mono font-bold text-text-primary">{STUDENT_IP}</span>
@@ -148,16 +148,16 @@ const NetworksPage = () => {
         </div>
 
         {/* Device list header */}
-        <div className="hidden md:grid grid-cols-[24px_1fr_140px] gap-4 px-4 py-2 text-[9px] font-black uppercase tracking-widest text-text-muted/50 border-b border-border/40">
+        <div className="hidden md:grid grid-cols-[24px_1fr_140px] gap-4 px-4 py-3 text-[9px] font-black uppercase tracking-widest text-text-muted/50 border-b border-border/30">
           <span>#</span>
           <span>Hostname</span>
           <span className="text-right">IP</span>
         </div>
 
         {/* Device rows — only show discovered devices */}
-        <div className="space-y-1.5">
+        <div className="space-y-2">
           {discoveredCount === 0 ? (
-            <div className="px-4 py-6 text-center text-xs text-text-muted font-mono border border-dashed border-border/40 rounded-xl">
+            <div className="px-4 py-6 text-center text-xs text-text-muted font-mono border border-dashed border-border/30 rounded-2xl">
               No hosts discovered yet. Open the terminal and run <span className="text-accent">nmap -sn 10.0.0.0/24</span> to start scanning.
             </div>
           ) : (
@@ -176,12 +176,12 @@ const NetworksPage = () => {
         </div>
 
         {/* Tip box */}
-        <div className="rounded-2xl border border-accent/20 bg-accent-dim/5 p-5">
+        <div className="rounded-2xl border border-border/30 bg-bg-card p-5 md:p-6">
           <div className="flex items-start gap-3">
             <Terminal className="w-5 h-5 text-accent shrink-0 mt-0.5" />
             <div>
-              <p className="text-sm font-bold text-accent">Try it yourself</p>
-              <p className="text-xs text-text-muted mt-1 space-y-1">
+              <p className="text-[10px] font-black uppercase tracking-widest text-accent mb-2">Try it yourself</p>
+              <p className="text-xs text-text-muted font-mono leading-relaxed">
                 Open the terminal and practice network scanning techniques:
               </p>
               <ul className="text-xs text-text-muted mt-2 space-y-1 list-disc list-inside font-mono">
