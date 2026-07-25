@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { IconMenu, IconX, IconChevronRight } from '@/shared/components/icons';
-import { LogIn, UserPlus, ChevronDown } from 'lucide-react';
+import { LogIn, ChevronDown } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { useTranslation } from 'react-i18next';
 import { useScrollLock } from '@/core/hooks/useScrollLock';
@@ -344,11 +344,6 @@ const Navbar: React.FC = React.memo(() => {
 
               {/* Separator */}
               <div className="my-6 h-px bg-border/20" />
-
-              {/* Language switcher */}
-              <div className="mb-4">
-                <LanguageSwitcher inverted={false} />
-              </div>
 
               {/* Auth buttons */}
               <div className="flex flex-col gap-3">
