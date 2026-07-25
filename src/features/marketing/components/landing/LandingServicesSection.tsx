@@ -209,22 +209,22 @@ const LandingServicesSection: React.FC = () => {
               </div>
               <div className="flex-1">
                 <div className="flex items-center gap-2 mb-1">
-                  <span className="text-[9px] font-black uppercase tracking-widest text-text-muted">Custom Inquiry</span>
+                  <span className="text-[9px] font-black uppercase tracking-widest text-text-muted">{t('landing.services.customInquiry.label')}</span>
                   <span className="text-[9px] font-black uppercase tracking-widest px-2 py-0.5 rounded-full border border-accent/20 bg-accent/10 text-accent">
-                    Contact Us
+                    {t('landing.services.customInquiry.badge')}
                   </span>
                 </div>
                 <h3 className="text-sm sm:text-base font-black text-text-primary tracking-tight mb-1">
-                  Red Team, Compliance, or Custom Engagement
+                  {t('landing.services.customInquiry.title')}
                 </h3>
                 <p className="text-[10px] sm:text-xs text-text-muted leading-relaxed">
-                  Bespoke security assessments tailored to your infrastructure, compliance requirements, and threat model.
+                  {t('landing.services.customInquiry.description')}
                 </p>
               </div>
               <div className="flex items-center gap-2 text-accent/60 shrink-0">
                 <Send className="w-3 h-3" />
                 <span className="font-mono text-[10px] uppercase tracking-widest font-bold">
-                  Send Inquiry
+                  {t('landing.services.customInquiry.send')}
                 </span>
                 <IconArrowRight className="w-3 h-3" />
               </div>

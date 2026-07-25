@@ -5,8 +5,10 @@ import { Carousel } from '@/shared/components/carousel';
 import { GridBoxedBackground } from '@/shared/components/backgrounds';
 import StickySidebarLayout from '@/shared/components/layout/StickySidebarLayout';
 import { BLOG_POSTS } from '@/features/marketing/pages/BlogsPage/blogContent';
+import { useTranslation } from 'react-i18next';
 
 const LandingBlogsSection = () => {
+  const { t } = useTranslation();
   return (
     <div className="relative bg-bg min-h-dvh md:h-dvh flex flex-col overflow-hidden" data-nav-invert>
       <GridBoxedBackground opacity={0.4} blur={0} mask="right" />
@@ -15,16 +17,16 @@ const LandingBlogsSection = () => {
           heading={
             <div>
               <h2 className="text-3xl md:text-5xl lg:text-6xl font-black text-text-primary tracking-tighter leading-none mb-2">
-                Intelligence <span className="text-text-secondary">Reports</span>
+                {t('landing.blogs.title')} <span className="text-text-secondary">{t('landing.blogs.titleAccent')}</span>
               </h2>
               <p className="text-xs md:text-sm text-text-muted leading-relaxed max-w-xl mb-4">
-                Field notes, tool philosophy, and the thinking behind Africa's offensive security ecosystem.
+                {t('landing.blogs.description')}
               </p>
               <Link
                 to="/blogs"
                 className="inline-flex items-center gap-2.5 px-6 py-3 rounded-xl border border-border/30 bg-bg-elevated text-text-primary text-[10px] font-black uppercase tracking-widest hover:bg-bg-card transition-colors"
               >
-                View All Posts <IconArrowRight size={14} />
+                {t('landing.blogs.viewAll')} <IconArrowRight size={14} />
               </Link>
             </div>
           }
@@ -80,7 +82,7 @@ const LandingBlogsSection = () => {
                         <IconClock size={12} className="sm:w-3.5 sm:h-3.5 shrink-0" /> {post.readTime}
                       </span>
                       <span className="flex items-center gap-1 text-accent group-hover:gap-1.5 transition-all whitespace-nowrap">
-                        Read <IconArrowRight size={12} className="sm:w-3.5 sm:h-3.5 shrink-0" />
+                        {t('landing.blogs.read')} <IconArrowRight size={12} className="sm:w-3.5 sm:h-3.5 shrink-0" />
                       </span>
                     </div>
                   </div>

@@ -60,10 +60,10 @@ const LanguageSwitcher: React.FC<LanguageSwitcherProps> = ({ inverted = false })
     <div ref={ref} className="relative">
       <button
         onClick={() => setOpen(!open)}
-        className={`w-8 h-8 flex items-center justify-center rounded-lg border transition-all ${
+        className={`w-8 h-8 flex items-center justify-center rounded-lg transition-all ${
           inverted
-            ? 'border-border text-text-primary hover:text-accent hover:border-accent/40'
-            : 'border-border text-text-muted hover:text-accent hover:border-accent/40'
+            ? 'text-text-primary hover:text-accent'
+            : 'text-text-muted hover:text-accent'
         }`}
         aria-label="Change language"
       >

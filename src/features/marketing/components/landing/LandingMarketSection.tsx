@@ -9,6 +9,7 @@ import ScrollReveal from '@/shared/components/ScrollReveal';
 import api from '@/core/services/api';
 import productFallbackImg from '@/assets/sections/stats/cp-earned-bg.webp';
 import { AuthImage } from '@/shared/components/ui';
+import { useTranslation } from 'react-i18next';
 
 interface ProductItem {
   id: string;
@@ -19,13 +20,14 @@ interface ProductItem {
   type: string;
 }
 
-const FEATURES: { icon: React.ElementType; label: string; desc: string }[] = [
-  { icon: FileText, label: 'Exploitation Guides', desc: 'Operational procedures for weaponizing CVEs and writing custom payloads.' },
-  { icon: BookOpen, label: 'Research Papers', desc: 'Whitepapers covering novel attack vectors and cryptographic weaknesses.' },
-  { icon: Cpu, label: 'Tooling & Payloads', desc: 'Privately developed implants and post-exploitation modules.' },
+const FEATURES: { icon: React.ElementType; tKey: string }[] = [
+  { icon: FileText, tKey: 'featureGuides' },
+  { icon: BookOpen, tKey: 'featurePapers' },
+  { icon: Cpu, tKey: 'featureTools' },
 ];
 
 const LandingMarketSection = () => {
+  const { t } = useTranslation();
   const [products, setProducts] = useState<ProductItem[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -50,16 +52,16 @@ const LandingMarketSection = () => {
         {/* Header column */}
         <div className="shrink-0 lg:w-[420px] xl:w-[480px] flex flex-col lg:justify-center">
           <h2 className="text-3xl md:text-5xl lg:text-6xl font-black text-text-primary tracking-tighter leading-none mb-2">
-            Zero-Day <span className="text-text-secondary">Market</span>
+            {t('landing.market.title')} <span className="text-text-secondary">{t('landing.market.titleAccent')}</span>
           </h2>
           <p className="text-xs md:text-sm text-text-muted leading-relaxed max-w-xl mb-4">
-            A classified digital exchange where offensive security operators access high-value intelligence assets.
+            {t('landing.market.description')}
           </p>
           <div className="flex flex-wrap gap-3 mb-6">
             {FEATURES.map((f) => (
-              <div key={f.label} className="flex items-center gap-2 px-3 py-2 rounded-lg border border-bg/20 bg-bg/10">
+              <div key={f.tKey} className="flex items-center gap-2 px-3 py-2 rounded-lg border border-bg/20 bg-bg/10">
                 <f.icon className="h-4 w-4 text-accent" />
-                <span className="text-[9px] font-black uppercase tracking-widest text-text-muted">{f.label}</span>
+                <span className="text-[9px] font-black uppercase tracking-widest text-text-muted">{t(`landing.market.${f.tKey}`)}</span>
               </div>
             ))}
           </div>
@@ -67,7 +69,7 @@ const LandingMarketSection = () => {
             to="/zero-day-market"
             className="inline-flex items-center gap-2.5 px-6 py-3 rounded-xl border border-border/30 bg-bg-elevated text-text-primary text-[10px] font-black uppercase tracking-widest hover:bg-bg-card transition-colors"
           >
-            <IconMarketplace className="h-4 w-4" /> Access the Market <IconArrowRight size={14} />
+            <IconMarketplace className="h-4 w-4" /> {t('landing.market.accessMarket')} <IconArrowRight size={14} />
           </Link>
         </div>
 
@@ -90,7 +92,7 @@ const LandingMarketSection = () => {
                     />
                     <div className="absolute bottom-4 left-4">
                       <span className="inline-flex items-center gap-2 px-3 py-1 bg-bg/85 backdrop-blur-md rounded-lg text-[9px] font-black uppercase text-text-primary tracking-widest shadow-sm">
-                        <IconMarketplace className="h-3 w-3 text-accent" /> Intelligence Asset
+                        <IconMarketplace className="h-3 w-3 text-accent" /> {t('landing.market.intelligenceAsset')}
                       </span>
                     </div>
                   </div>
@@ -99,12 +101,12 @@ const LandingMarketSection = () => {
                       {prod.title}
                     </h3>
                     <p className="text-xs text-text-muted/70 mb-6 line-clamp-2 leading-relaxed font-mono">
-                      {prod.description || 'Secure intelligence report for offensive security operatives.'}
+                      {prod.description || t('landing.market.defaultDesc')}
                     </p>
                     <div className="mt-auto flex items-center justify-between">
                       <span className="text-sm font-black text-accent uppercase tracking-widest">{prod.cpPrice} CP</span>
                       <Link to="/zero-day-market" className="text-[10px] font-black uppercase tracking-widest text-accent hover:underline">
-                        View All
+                        {t('landing.market.viewAll')}
                       </Link>
                     </div>
                   </div>
@@ -114,7 +116,7 @@ const LandingMarketSection = () => {
           ) : (
             <div className="text-center py-16 space-y-4 border-2 border-dashed border-bg/20 rounded-3xl w-full">
               <IconLock className="h-12 w-12 text-text-muted/20 mx-auto" />
-              <p className="text-text-muted/40 text-sm font-mono">No assets currently published.</p>
+              <p className="text-text-muted/40 text-sm font-mono">{t('landing.market.emptyState')}</p>
             </div>
           )}
         </div>

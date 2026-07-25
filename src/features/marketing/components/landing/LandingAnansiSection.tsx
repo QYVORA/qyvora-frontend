@@ -5,8 +5,10 @@ import ScrollReveal from '@/shared/components/ScrollReveal';
 import { PHASES } from '@/features/marketing/data/anansiData';
 import { Carousel } from '@/shared/components/carousel';
 import anansiLogo from '@/assets/anansi/anansi-main-logo.webp';
+import { useTranslation } from 'react-i18next';
 
 const LandingAnansiSection = () => {
+  const { t } = useTranslation();
   return (
     <div className="relative bg-bg min-h-dvh md:h-dvh flex flex-col overflow-hidden" data-nav-invert>
       <GridBoxedBackground opacity={0.4} blur={0} mask="right" />
@@ -17,16 +19,16 @@ const LandingAnansiSection = () => {
             <img src={anansiLogo} alt="Anansi logo" className="w-full h-full object-contain" />
           </div>
           <h2 className="text-2xl md:text-4xl lg:text-5xl font-black text-text-primary tracking-tighter leading-none mb-2">
-            Anansi <span className="text-accent">CLI</span>
+            {t('landing.anansi.title')} <span className="text-accent">{t('landing.anansi.titleAccent')}</span>
           </h2>
           <p className="text-xs md:text-sm text-text-muted leading-relaxed max-w-xl mb-4">
-            Terminal-first attack surface intelligence engine. Automate discovery, probing, and takeover detection.
+            {t('landing.anansi.description')}
           </p>
           <Link
             to="/anansi"
             className="inline-flex items-center gap-2.5 px-6 py-3 rounded-xl border border-border/30 bg-bg-elevated text-text-primary text-[10px] font-black uppercase tracking-widest hover:bg-bg-card transition-colors w-fit"
           >
-            Explore Anansi <IconArrowRight size={14} />
+            {t('landing.anansi.explore')} <IconArrowRight size={14} />
           </Link>
         </div>
 
@@ -43,7 +45,7 @@ const LandingAnansiSection = () => {
                       <item.icon className="w-5 h-5 text-accent" />
                     </div>
                     <span className="text-[9px] font-black uppercase tracking-widest text-accent">
-                      Phase {item.id}
+                      {t('landing.anansi.phaseLabel')} {item.id}
                     </span>
                   </div>
                   <h3 className="mb-2 text-sm md:text-base font-black uppercase tracking-tight text-text-primary">
@@ -61,7 +63,7 @@ const LandingAnansiSection = () => {
           <ScrollReveal direction="up" delay={0.2}>
             <div className="rounded-2xl border border-border/20 bg-bg-elevated p-4">
               <div className="flex items-center gap-2 mb-2">
-                <span className="text-[9px] font-black uppercase tracking-widest text-accent">Quick Install</span>
+                <span className="text-[9px] font-black uppercase tracking-widest text-accent">{t('landing.anansi.quickInstall')}</span>
               </div>
               <code className="block text-xs md:text-sm font-mono text-text-secondary">
                 curl -L https://github.com/QYVORA/qyvora-anansi-cli/releases/latest/download/anansi-linux-amd64 -o anansi
