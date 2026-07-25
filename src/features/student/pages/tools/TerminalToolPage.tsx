@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { SimulationProvider } from '@/features/student/components/simulations';
-import { TerminalShell } from '@/features/student/components/SimulatedTerminal/TerminalShell';
+import { TerminalWrapper } from '@/shared/components/learning/TerminalWrapper';
 
 const TerminalToolPage = () => {
   useEffect(() => {
@@ -10,7 +10,12 @@ const TerminalToolPage = () => {
   return (
     <SimulationProvider>
       <div className="h-dvh w-screen overflow-hidden bg-[#0c0c0c]">
-        <TerminalShell context={{ type: 'dashboard' }} />
+        <TerminalWrapper
+          open
+          onOpenChange={() => {}}
+          context={{ type: 'dashboard' }}
+          mode="raw"
+        />
       </div>
     </SimulationProvider>
   );

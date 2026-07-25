@@ -8,7 +8,7 @@ import ScenarioCard from '@/shared/components/ScenarioCard';
 import { verifyLabFlag } from '../../../services/lab.service';
 import { getRelatedContentForLab } from '@/shared/constants/topicMap';
 import RelatedContent from '@/shared/components/RelatedContent';
-import LabHeroSection from '@/shared/components/LabHeroSection';
+import StudentHeroSection from '@/shared/components/StudentHeroSection';
 
 
 const DIFFICULTY_STYLES: Record<string, string> = {
@@ -83,7 +83,7 @@ const OsintLab = () => {
       <div className="bg-bg min-h-full">
         <SEO title="OSINT Recon Lab" description="Master open-source intelligence gathering techniques." noindex />
 
-        <LabHeroSection
+        <StudentHeroSection
           icon={<Globe className="w-8 h-8 text-accent" />}
           title="OSINT Recon"
           accentWord="Challenge"

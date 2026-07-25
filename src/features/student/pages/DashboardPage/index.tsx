@@ -253,7 +253,7 @@ const DashboardProductCard = ({ product }: { product: any }) => {
   const description = String(product?.description || t('student.dashboard.intelligenceDesc'));
   return (
     <div className="group flex flex-col h-full overflow-hidden rounded-2xl border border-border/30 bg-bg-card transition-all duration-300 hover:border-accent/30">
-      <div className="relative aspect-video overflow-hidden rounded-t-2xl shadow-sm">
+      <div className="relative aspect-[16/9] overflow-hidden rounded-t-2xl shadow-sm">
         <AuthImage
           src={product?.coverUrl}
           fallback={productFallbackImg}
@@ -263,27 +263,27 @@ const DashboardProductCard = ({ product }: { product: any }) => {
           loading="lazy"
           className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
         />
-        <div className="absolute top-2.5 left-2.5 flex items-center gap-1.5">
-                        <span className="px-2 py-0.5 bg-bg/85 backdrop-blur-sm rounded-lg text-[10px] font-black uppercase text-accent tracking-widest shadow-sm flex items-center gap-1">
-            <IconMarketplace size={10} /> {t('student.dashboard.intelligenceAsset')}
+        <div className="absolute top-2 left-2 flex items-center gap-1.5">
+                        <span className="px-1.5 py-0.5 bg-bg/85 backdrop-blur-sm rounded-lg text-[9px] font-black uppercase text-accent tracking-widest shadow-sm flex items-center gap-1">
+            <IconMarketplace size={9} /> {t('student.dashboard.intelligenceAsset')}
           </span>
         </div>
       </div>
-      <div className="flex flex-1 flex-col p-5">
-        <h3 className="mb-1.5 text-base font-black leading-snug text-text-primary group-hover:text-accent transition-colors line-clamp-1">
+      <div className="flex flex-1 flex-col p-3 md:p-4">
+        <h3 className="mb-1 text-sm font-black leading-snug text-text-primary group-hover:text-accent transition-colors line-clamp-1">
           {title}
         </h3>
-        <p className="mb-4 text-xs leading-relaxed text-text-muted/70 font-mono line-clamp-2">
+        <p className="mb-3 text-[10px] leading-relaxed text-text-muted/70 font-mono line-clamp-2">
           {description}
         </p>
         <div className="mt-auto flex items-center justify-between">
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1.5">
             {product?.isFree ? (
-              <span className="text-xs font-black text-accent uppercase tracking-widest">{t('student.dashboard.free')}</span>
+              <span className="text-[10px] font-black text-accent uppercase tracking-widest">{t('student.dashboard.free')}</span>
             ) : (
               <>
-                <CpLogo className="w-4 h-4" />
-                <span className="font-mono text-sm font-black text-text-primary">
+                <CpLogo className="w-3.5 h-3.5" />
+                <span className="font-mono text-xs font-black text-text-primary">
                   {Number(product?.cpPrice || 0).toLocaleString()}
                 </span>
               </>
@@ -291,9 +291,9 @@ const DashboardProductCard = ({ product }: { product: any }) => {
           </div>
           <Link
             to="/dashboard/marketplace"
-            className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-accent/10 text-accent text-[10px] font-black uppercase tracking-widest hover:bg-accent/20 transition-colors"
+            className="flex items-center gap-1 px-2.5 py-1.5 rounded-xl bg-accent/10 text-accent text-[9px] font-black uppercase tracking-widest hover:bg-accent/20 transition-colors"
           >
-            {t('student.dashboard.view')} <IconArrowRight size={12} />
+            {t('student.dashboard.view')} <IconArrowRight size={10} />
           </Link>
         </div>
       </div>
@@ -553,7 +553,7 @@ const Dashboard = () => {
                 {t('student.dashboard.viewAll')} <IconArrowRight size={12} className="inline-block ml-1" />
               </Link>
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
               {COURSES.slice(0, 6).map((course) => {
                 const category = getCategoryById(course.categoryId);
                 const SKILL_CONFIG: Record<SkillLevel, { label: string; color: string; icon: React.ElementType }> = {
@@ -567,34 +567,34 @@ const Dashboard = () => {
                   <Link
                     key={course.id}
                     to={`/courses/${course.id}`}
-                    className="group block overflow-hidden rounded-2xl border border-border/30 bg-bg-card transition-all hover:border-accent/30"
+                    className="group flex flex-col rounded-2xl border border-border/30 bg-bg-card overflow-hidden transition-all duration-300 hover:border-accent/30"
                   >
-                    <div className="p-5 space-y-3">
+                    <div className="flex flex-col gap-2 p-4 sm:p-5 md:p-6 lg:p-7 flex-1">
                       <div className="flex items-center justify-between">
                         <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-lg bg-accent/10 text-[9px] font-black uppercase tracking-widest text-accent border border-accent/20">
                           {category?.name}
                         </span>
-                        <span className="flex items-center gap-1 text-[10px] text-text-muted font-mono">
+                        <span className="flex items-center gap-1 text-[9px] text-text-muted font-mono">
                           {course.estimatedMinutes}min
                         </span>
                       </div>
-                      <h3 className="text-sm font-black text-text-primary group-hover:text-accent transition-colors leading-tight break-words">
+                      <h3 className="text-sm sm:text-base md:text-lg font-black text-text-primary group-hover:text-accent transition-colors leading-snug break-words">
                         {course.title}
                       </h3>
-                      <p className="text-[10px] text-text-muted leading-relaxed line-clamp-2 break-words">
+                      <p className="text-xs sm:text-sm text-text-muted leading-relaxed line-clamp-3 break-words flex-1">
                         {course.description}
                       </p>
-                      <div className="flex items-center justify-between pt-2">
+                      <div className="flex items-center justify-between mt-auto pt-2 border-t border-border/20">
                         <div className="flex items-center gap-2">
                           <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-lg text-[9px] font-black uppercase tracking-widest ${skillCfg.color}`}>
                             <SkillIcon className="h-2.5 w-2.5" /> {skillCfg.label}
                           </span>
-                          <span className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-accent/10 text-[10px] font-black text-accent">
-                            <Zap className="h-3 w-3" /> {course.cpCost} CP
+                          <span className="flex items-center gap-1 text-[9px] sm:text-[10px] font-black uppercase tracking-widest text-accent">
+                            <Zap className="h-2.5 w-2.5" /> {course.cpCost} CP
                           </span>
                         </div>
-                        <span className="flex items-center gap-1 text-[10px] font-black uppercase tracking-widest text-accent opacity-0 group-hover:opacity-100 transition-opacity">
-                          {t('student.dashboard.view')} <IconArrowRight className="h-3 w-3" />
+                        <span className="px-3 py-1.5 rounded-lg text-[9px] sm:text-[10px] font-black uppercase tracking-widest bg-accent text-bg transition-all duration-200 group-hover:brightness-110 group-active:scale-95">
+                          {t('student.dashboard.view')}
                         </span>
                       </div>
                     </div>

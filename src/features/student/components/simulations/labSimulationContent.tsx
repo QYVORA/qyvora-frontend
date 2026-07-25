@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
-import { SimulatedTerminal } from '@/features/student/components/SimulatedTerminal';
+import { TerminalWrapper } from '@/shared/components/learning/TerminalWrapper';
 import type { TerminalContext } from '@/features/student/components/SimulatedTerminal/types';
 import type { SimulationType } from './types';
 import type { SqlTable } from './types';
@@ -7,7 +7,7 @@ import type { SqlTable } from './types';
 export type SimulationContent = { type: SimulationType; content: React.ReactNode; breakout?: boolean };
 
 // ── Terminal Simulation Content ──────────────────────────────────────────────
-// Wraps SimulatedTerminal in inline mode. Watches parent data-active attribute
+// Wraps TerminalWrapper in inline mode. Watches parent data-active attribute
 // to open/close the terminal when tabs change. Terminal state persists across
 // tab switches (component stays mounted, just hidden).
 function TerminalSimulationContent({ context }: { context: TerminalContext }) {
@@ -38,12 +38,11 @@ function TerminalSimulationContent({ context }: { context: TerminalContext }) {
 
   return (
     <div ref={wrapperRef} className="h-full">
-      <SimulatedTerminal
+      <TerminalWrapper
         open={open}
         onOpenChange={handleOpenChange}
         context={context}
         mode="inline"
-        size="normal"
       />
     </div>
   );

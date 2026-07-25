@@ -41,10 +41,10 @@ const SkillMatrix = ({ modules }: SkillMatrixProps) => {
   }, [modules]);
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-2 gap-2">
+    <div className="grid grid-cols-1 lg:grid-cols-2 gap-2 md:gap-3">
       {/* Radar Chart Card */}
-      <div className="rounded-2xl border border-border/30 bg-bg-card p-2 md:p-3 flex flex-col">
-        <div className="flex items-center justify-between mb-1.5">
+      <div className="rounded-2xl border border-border/30 bg-bg-card p-2 md:p-3 flex flex-col max-h-[320px] lg:max-h-[280px]">
+        <div className="flex items-center justify-between mb-1">
           <h3 className="text-[9px] font-black uppercase tracking-widest text-text-primary">
             {t('student.dashboard.skillMatrix', 'Skill Matrix')}
           </h3>
@@ -53,14 +53,14 @@ const SkillMatrix = ({ modules }: SkillMatrixProps) => {
             <span className="text-accent">{average}%</span>
           </span>
         </div>
-        <div className="flex-1 min-h-0">
+        <div className="flex-1 min-h-0 overflow-hidden">
           <SkillRadarChart data={radarData} />
         </div>
       </div>
 
       {/* Skill Stats Card */}
-      <div className="rounded-2xl border border-border/30 bg-bg-card p-2 md:p-3 flex flex-col">
-        <div className="flex items-center justify-between mb-1.5">
+      <div className="rounded-2xl border border-border/30 bg-bg-card p-2 md:p-3 flex flex-col max-h-[320px] lg:max-h-[280px]">
+        <div className="flex items-center justify-between mb-1">
           <h3 className="text-[9px] font-black uppercase tracking-widest text-text-primary">
             {t('student.dashboard.skillStats', 'Skill Progress')}
           </h3>

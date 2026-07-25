@@ -10,7 +10,7 @@ import type { PrivescScenario } from '@/features/student/data/simulations/types'
 import { verifyLabFlag } from '../../../services/lab.service';
 import { getRelatedContentForLab } from '@/shared/constants/topicMap';
 import RelatedContent from '@/shared/components/RelatedContent';
-import LabHeroSection from '@/shared/components/LabHeroSection';
+import StudentHeroSection from '@/shared/components/StudentHeroSection';
 import { FlowDiagram } from '@/shared/components/diagrams/FlowDiagram';
 
 
@@ -92,7 +92,7 @@ const PrivescLab = () => {
           noindex
         />
 
-        <LabHeroSection
+        <StudentHeroSection
           icon={<Shield className="w-8 h-8 text-accent" />}
           title="Privilege"
           accentWord="Escalation"
