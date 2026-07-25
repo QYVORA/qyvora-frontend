@@ -31,7 +31,7 @@ const LandingTeamSection = () => {
             {teamData.map((member, idx) => (
               <ScrollReveal key={member.id} direction="up" delay={idx * 0.1}>
                 <Link
-                  to={`/ @${member.handle || member.name}`}
+                  to={member.handle ? `/@${member.handle}` : undefined}
                   className="group relative flex flex-col rounded-2xl border border-border/30 bg-bg-card p-5 transition-all duration-300 hover:border-accent/30 h-full"
                 >
                   <div className="flex items-center gap-4 mb-4">
