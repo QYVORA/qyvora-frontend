@@ -82,10 +82,10 @@ export const TerminalWrapper: React.FC<TerminalWrapperProps> = ({
   if (!open) return null;
 
   return (
-    <div className="w-full px-4 md:px-0">
+    <div className="w-full h-full">
       <div
         className={cn(
-          isFullscreen ? 'h-dvh' : 'w-full sm:w-[600px] md:w-[700px] max-h-[85vh]',
+          'w-full h-full',
           !isFullscreen && 'rounded-2xl overflow-hidden',
         )}
       >
