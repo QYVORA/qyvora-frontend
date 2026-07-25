@@ -1,16 +1,27 @@
-import React, { useState, useCallback } from 'react';
-import { IconTerminal } from '@/shared/components/icons';
+import React, { useState, useCallback, useEffect } from 'react';
 import * as RadixDialog from '@radix-ui/react-dialog';
-import { TerminalShell } from './TerminalShell';
-import type { SimulatedTerminalProps } from './types';
+import { TerminalShell } from '@/features/student/components/SimulatedTerminal/TerminalShell';
+import type { TerminalContext } from '@/features/student/components/SimulatedTerminal/types';
 
-export const SimulatedTerminal: React.FC<SimulatedTerminalProps> = ({
+export interface TerminalWrapperProps {
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+  context?: TerminalContext;
+  initialCommands?: string[];
+  mode?: 'modal' | 'inline' | 'raw';
+  title?: string;
+}
+
+function cn(...classes: (string | boolean | undefined | null)[]): string {
+  return classes.filter(Boolean).join(' ');
+}
+
+export const TerminalWrapper: React.FC<TerminalWrapperProps> = ({
   open,
   onOpenChange,
   context,
   initialCommands,
   mode = 'modal',
-  size = 'compact',
 }) => {
   const [isFullscreen, setIsFullscreen] = useState(false);
 
@@ -29,6 +40,7 @@ export const SimulatedTerminal: React.FC<SimulatedTerminalProps> = ({
       onClose={handleClose}
       onToggleFullscreen={handleToggleFullscreen}
       isFullscreen={isFullscreen}
+      showChrome={mode !== 'raw'}
     />
   );
 
@@ -61,51 +73,26 @@ export const SimulatedTerminal: React.FC<SimulatedTerminalProps> = ({
     );
   }
 
-  if (!open) return null;
-
-  if (size === 'normal') {
-    return (
-      <div className={isFullscreen ? 'fixed inset-0 z-50' : 'relative w-full'}>
-        <div className={cn(
-          'mx-auto',
-          isFullscreen ? 'h-dvh' : 'w-[calc(100%-2rem)] sm:w-[calc(100%-3rem)] max-w-5xl h-[40vh] md:h-[50vh] min-h-[250px] max-h-[80vh]',
-          !isFullscreen && 'rounded-2xl overflow-hidden',
-        )}>
-          {shell}
-        </div>
-      </div>
-    );
+  if (mode === 'raw') {
+    if (!open) return null;
+    return shell;
   }
 
+  // mode === 'inline'
+  if (!open) return null;
+
   return (
-    <div className={isFullscreen ? 'fixed inset-0 z-50' : 'w-full px-4 md:px-0'}>
-      <div className={cn(
-        isFullscreen ? 'h-dvh' : 'h-[40vh] md:h-[50vh] min-h-[250px] max-h-[80vh]',
-        !isFullscreen && 'rounded-2xl overflow-hidden',
-      )}>
+    <div className="w-full px-4 md:px-0">
+      <div
+        className={cn(
+          isFullscreen ? 'h-dvh' : 'w-full sm:w-[600px] md:w-[700px] max-h-[85vh]',
+          !isFullscreen && 'rounded-2xl overflow-hidden',
+        )}
+      >
         {shell}
       </div>
     </div>
   );
 };
 
-function cn(...classes: (string | boolean | undefined | null)[]): string {
-  return classes.filter(Boolean).join(' ');
-}
-
-export const TerminalButton: React.FC<{
-  onClick: () => void;
-  label?: string;
-}> = ({ onClick, label }) => (
-  <button
-    onClick={onClick}
-    className="flex items-center gap-2 px-4 py-2.5 bg-black/80 border border-white/10 rounded-xl
-      hover:border-accent/30 hover:bg-black transition-all duration-200
-      text-xs font-mono text-white/70 hover:text-accent uppercase tracking-wider"
-  >
-    <IconTerminal size={16} />
-    {label || '_terminal'}
-  </button>
-);
-
-export default SimulatedTerminal;
+export default TerminalWrapper;

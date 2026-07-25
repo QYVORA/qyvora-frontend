@@ -1,12 +1,13 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
-import { ArrowLeft, ArrowRight, CheckCircle2, ChevronLeft, ChevronRight, X, Lock, Loader2, Target, Zap, BookOpen } from 'lucide-react';
-import { motion, AnimatePresence } from 'motion/react';
+import { ArrowLeft, ArrowRight, CheckCircle2, ChevronLeft, ChevronRight, Lock, Loader2, Target, Zap, BookOpen } from 'lucide-react';
 import SEO from '@/shared/components/SEO';
 import { getCourseById } from '@/features/student/data/courses/courseData';
-import CodeBlockRenderer from '@/features/student/components/bootcamp-room/CodeBlockRenderer';
+import CodeBlockRenderer from '@/shared/components/courses/CodeBlockRenderer';
 import InlineQuiz from '@/shared/components/courses/InlineQuiz';
-import { SimulatedTerminal } from '@/features/student/components/SimulatedTerminal';
+import { TerminalWrapper } from '@/shared/components/learning/TerminalWrapper';
+import { StepNumberHeader } from '@/shared/components/learning/StepNumberHeader';
+import { WalkthroughSidebar } from '@/shared/components/walkthrough/WalkthroughSidebar';
 import CodePlayground from '@/shared/components/courses/CodePlayground';
 import StudentHeroSection from '@/shared/components/StudentHeroSection';
 import api from '@/core/services/api';
@@ -15,28 +16,29 @@ import type { Lesson } from '@/features/student/data/courses/types';
 
 const STORAGE_KEY = 'qyvora_course_progress';
 
-const LessonViewer: React.FC<{ lesson: Lesson; number: number; courseId?: string }> = ({ lesson, number, courseId }) => {
+const LessonViewer: React.FC<{ lesson: Lesson; number: number; courseId?: string; backUrl?: string }> = ({ lesson, number, courseId, backUrl }) => {
   return (
     <div className="w-full border-t border-border/10 first:border-t-0 py-12 md:py-16">
-      <div className="mb-8 md:mb-12 flex items-center gap-4">
-        <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl border font-mono text-lg font-black bg-accent border-accent text-bg">
-          {String(number).padStart(2, '0')}
-        </div>
-        <div className="flex-1 min-w-0 flex items-center gap-3 flex-wrap">
-          <span className="block font-black uppercase tracking-[0.25em] text-accent text-xs truncate">
-            {lesson.title}
-          </span>
-          {lesson.hasQuiz && (
-            <span className="px-1.5 py-0.5 rounded-lg bg-accent/10 text-[8px] font-black uppercase tracking-widest text-accent">QUIZ</span>
-          )}
-          {lesson.hasTerminal && (
-            <span className="px-1.5 py-0.5 rounded-lg bg-accent/10 text-[8px] font-black uppercase tracking-widest text-accent">TERM</span>
-          )}
-          {lesson.hasCodePlayground && (
-            <span className="px-1.5 py-0.5 rounded-lg bg-accent/10 text-[8px] font-black uppercase tracking-widest text-accent">CODE</span>
-          )}
-        </div>
-      </div>
+      <StepNumberHeader
+        stepNumber={number}
+        title={lesson.title}
+        isActive
+        backUrl={backUrl}
+        backLabel="Back to Courses"
+        badges={
+          <>
+            {lesson.hasQuiz && (
+              <span className="px-1.5 py-0.5 rounded-lg bg-accent/10 text-[8px] font-black uppercase tracking-widest text-accent">QUIZ</span>
+            )}
+            {lesson.hasTerminal && (
+              <span className="px-1.5 py-0.5 rounded-lg bg-accent/10 text-[8px] font-black uppercase tracking-widest text-accent">TERM</span>
+            )}
+            {lesson.hasCodePlayground && (
+              <span className="px-1.5 py-0.5 rounded-lg bg-accent/10 text-[8px] font-black uppercase tracking-widest text-accent">CODE</span>
+            )}
+          </>
+        }
+      />
 
       <div className="text-sm sm:text-base leading-relaxed whitespace-pre-wrap overflow-x-auto text-text-primary w-full mb-10 md:mb-14">
         <CodeBlockRenderer text={lesson.instruction} />
@@ -48,7 +50,7 @@ const LessonViewer: React.FC<{ lesson: Lesson; number: number; courseId?: string
             <Zap className="h-4 w-4 text-accent" />
             <span className="text-[10px] font-black uppercase tracking-widest text-accent">Try It Yourself</span>
           </div>
-          <SimulatedTerminal
+          <TerminalWrapper
             open
             onOpenChange={() => {}}
             mode="inline"
@@ -227,93 +229,29 @@ const CourseLessonPage: React.FC = () => {
   const isLastLesson = currentLessonIdx === totalLessons - 1;
   const allComplete = completedCount === totalLessons;
 
-  const lessonsList = (
-    <nav className="flex flex-col gap-1 p-3 pb-6">
-      <div className="mb-3 px-1">
-        <Link
-          to="/dashboard/courses"
-          className="inline-flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest text-text-muted hover:text-accent transition-colors"
-        >
-          <ArrowLeft className="h-3 w-3" /> Back to Courses
-        </Link>
-      </div>
-      {course.lessons.map((l, i) => {
-        const isActive = i === currentLessonIdx;
-        const isComp = completedLessons.has(l.id);
-        return (
-          <button
-            key={l.id}
-            onClick={() => {
-              setCurrentLessonIdx(i);
-              setSidebarOpen(false);
-            }}
-            className={`w-full flex items-center gap-2 rounded-lg px-2 py-1.5 text-left text-sm transition-colors ${
-              isActive
-                ? 'text-accent font-semibold bg-accent-dim/20'
-                : 'text-text-secondary hover:text-accent hover:bg-accent-dim/10'
-            }`}
-          >
-            <span className={`flex h-4 w-4 shrink-0 items-center justify-center rounded border text-[8px] font-bold font-mono ${
-              isComp
-                ? 'border-accent/40 text-accent'
-                : isActive
-                ? 'border-accent/40 text-accent'
-                : 'border-border text-text-muted'
-            }`}>
-              {isComp ? (
-                <CheckCircle2 className="h-2 w-2" />
-              ) : null}
-              {!isComp && String(i + 1).padStart(2, '0')}
-            </span>
-            <span className="truncate text-xs flex-1">{l.title}</span>
-          </button>
-        );
-      })}
-    </nav>
-  );
-
   return (
     <div className="bg-bg">
       <SEO title={`${course.title} — ${lesson.title}`} description={course.description} noindex />
 
-      <AnimatePresence>
-        {sidebarOpen && (
-          <>
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.2 }}
-              onClick={() => setSidebarOpen(false)}
-              className="fixed inset-0 z-[60] bg-black/65 backdrop-blur-sm md:hidden"
-            />
-            <motion.aside
-              initial={{ x: '-100%' }}
-              animate={{ x: 0 }}
-              exit={{ x: '-100%' }}
-              transition={{ type: 'spring', damping: 28, stiffness: 240 }}
-              className="fixed left-0 top-0 bottom-0 z-[70] w-[92vw] max-w-[360px] flex flex-col bg-bg md:hidden overflow-y-auto"
-            >
-              <div className="flex items-center justify-between border-b border-border px-4 py-3.5 bg-bg/95 backdrop-blur-md shrink-0">
-                <div>
-                  <p className="text-[9px] font-black uppercase tracking-[0.3em] text-accent">Course</p>
-                  <p className="text-xs font-black text-text-primary">Lesson Navigator</p>
-                </div>
-                <button
-                  onClick={() => setSidebarOpen(false)}
-                  className="flex h-8 w-8 items-center justify-center rounded-lg text-text-muted hover:text-accent hover:bg-accent-dim/10 transition-colors"
-                  aria-label="Close sidebar"
-                >
-                  <X className="h-4 w-4" />
-                </button>
-              </div>
-              <div className="flex-1 overflow-y-auto scroll-hover">
-                {lessonsList}
-              </div>
-            </motion.aside>
-          </>
-        )}
-      </AnimatePresence>
+      <WalkthroughSidebar
+        sections={[{
+          label: 'Lessons',
+          items: course.lessons.map((l, i) => ({
+            id: l.id,
+            title: l.title,
+            isActive: i === currentLessonIdx,
+            isCompleted: completedLessons.has(l.id),
+            isLocked: false,
+            onClick: () => setCurrentLessonIdx(i),
+          })),
+        }]}
+        backHref="/dashboard/courses"
+        backLabel="Back to Courses"
+        mobileOpen={sidebarOpen}
+        onMobileClose={() => setSidebarOpen(false)}
+        title="Lesson Navigator"
+        subtitle="Course"
+      />
 
       <div className=" px-3 md:px-4 lg:px-6 pt-8 pb-20 lg:pb-24 space-y-8">
             <StudentHeroSection
@@ -326,7 +264,7 @@ const CourseLessonPage: React.FC = () => {
               ]}
             />
 
-            <LessonViewer lesson={lesson} number={currentLessonIdx + 1} courseId={courseId} />
+            <LessonViewer lesson={lesson} number={currentLessonIdx + 1} courseId={courseId} backUrl="/dashboard/courses" />
 
             <div className="flex flex-col sm:flex-row flex-wrap items-stretch sm:items-center gap-3 pb-16 mt-10 md:mt-14 border-t border-border/5 pt-6">
               {currentLessonIdx > 0 && (

@@ -1,7 +1,8 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { BookOpen, Timer } from 'lucide-react';
-import { IconClock, IconCheck } from '@/shared/components/icons';
+import { IconArrowLeft, IconClock, IconCheck } from '@/shared/components/icons';
 import type { BootcampPhase, BootcampRoom } from '../../constants/bootcampConfig';
 
 interface RoomHeaderProps {
@@ -10,6 +11,8 @@ interface RoomHeaderProps {
   timeSpent: number;
   formatTime: (ms: number) => string;
   isRoomComplete: boolean;
+  backUrl?: string;
+  backLabel?: string;
 }
 
 const RoomHeader: React.FC<RoomHeaderProps> = ({
@@ -18,10 +21,21 @@ const RoomHeader: React.FC<RoomHeaderProps> = ({
   timeSpent,
   formatTime,
   isRoomComplete,
+  backUrl,
+  backLabel = 'Back to Bootcamp',
 }) => {
   const { t } = useTranslation();
   return (
     <header className="mb-8">
+      {backUrl && (
+        <Link
+          to={backUrl}
+          className="group mb-6 flex items-center gap-2 text-text-muted transition-colors hover:text-text-primary min-h-[44px] min-w-[44px]"
+        >
+          <IconArrowLeft size={16} className="transition-transform group-hover:-translate-x-0.5" />
+          <span className="text-[10px] font-black uppercase tracking-widest">{backLabel}</span>
+        </Link>
+      )}
       <div className="mb-2 text-xs font-black uppercase tracking-[0.3em] text-accent">
         {t('student.bootcampRoom.header.phaseLabel', { codename: phase.codename, phase: phase.title })}
       </div>

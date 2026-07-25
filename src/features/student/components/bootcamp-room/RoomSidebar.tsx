@@ -1,10 +1,6 @@
-import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { motion, AnimatePresence } from 'motion/react';
-import { Github } from 'lucide-react';
-import { IconArrowLeft, IconCheck, IconLock, IconX } from '@/shared/components/icons';
+import { WalkthroughSidebar } from '@/shared/components/walkthrough/WalkthroughSidebar';
 import type { BootcampPhase } from '../../constants/bootcampConfig';
-import { useScrollLock } from '../../../../core/hooks/useScrollLock';
 
 interface Props {
   phases: BootcampPhase[];
@@ -23,102 +19,33 @@ const RoomSidebar: React.FC<Props> = ({
   completedRooms, lockedRooms, bootcampId,
   onNavigate, mobileOpen, onMobileClose,
 }) => {
-  useScrollLock(mobileOpen);
   const { t } = useTranslation();
-  const content = (
-    <nav className="flex flex-col gap-1 p-3 pb-6">
-      <div className="mb-3 px-1">
-        <Link
-          to={`/dashboard/bootcamps/${bootcampId}`}
-          className="inline-flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest text-text-muted hover:text-accent transition-colors"
-          onClick={onMobileClose}
-        >
-          <IconArrowLeft size={12} /> {t('student.bootcampRoom.backToCurriculum')}
-        </Link>
-      </div>
 
-      {phases.map((phase) => (
-        <div key={phase.id} className="mb-3">
-          <p className="mb-1.5 px-2 text-[9px] font-black uppercase tracking-[0.3em] text-accent">
-            {phase.codename} — {phase.title}
-          </p>
-          <div className="space-y-0.5 border-l border-border/50 ml-2 pl-2">
-            {phase.rooms.map((room) => {
-              const key = `${phase.id}:${room.id}`;
-              const isActive = phase.id === activePhaseId && room.id === activeRoomId;
-              const isCompleted = completedRooms.has(key);
-              const isLocked = lockedRooms.has(key);
-              return (
-                <button
-                  key={key}
-                  onClick={() => {
-                    if (!isLocked) { onNavigate(phase.id, room.id); onMobileClose(); }
-                  }}
-                  disabled={isLocked}
-                  className={`w-full flex items-center gap-2 rounded-lg px-2 py-1.5 text-left text-sm transition-colors ${
-                    isActive
-                      ? 'text-accent font-semibold bg-accent-dim/20'
-                      : isLocked
-                      ? 'opacity-40 cursor-not-allowed text-text-muted'
-                      : 'text-text-secondary hover:text-accent hover:bg-accent-dim/10'
-                  }`}
-                >
-                  <span
-                    className={`flex h-4 w-4 shrink-0 items-center justify-center rounded border text-[8px] font-bold font-mono ${
-                      isCompleted
-                        ? isActive ? 'border-accent/40 text-accent' : 'border-accent/40 text-accent'
-                        : isActive
-                        ? 'border-accent/40 text-accent'
-                        : 'border-border text-text-muted'
-                    }`}
-                  >
-                    {isCompleted ? <IconCheck size={8} /> : isLocked ? <IconLock size={8} /> : null}
-                  </span>
-                  <span className="truncate text-xs flex-1">{room.title}</span>
-                </button>
-              );
-            })}
-          </div>
-        </div>
-      ))}
-    </nav>
-  );
+  const sections = phases.map((phase) => ({
+    label: `${phase.codename} — ${phase.title}`,
+    items: phase.rooms.map((room) => {
+      const key = `${phase.id}:${room.id}`;
+      return {
+        id: key,
+        title: room.title,
+        isActive: phase.id === activePhaseId && room.id === activeRoomId,
+        isCompleted: completedRooms.has(key),
+        isLocked: lockedRooms.has(key),
+        onClick: () => onNavigate(phase.id, room.id),
+      };
+    }),
+  }));
 
   return (
-    <>
-      <AnimatePresence>
-        {mobileOpen && (
-          <>
-            <motion.div
-              initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-              transition={{ duration: 0.2 }}
-              className="fixed inset-0 z-[60] bg-black/65 backdrop-blur-sm md:hidden"
-              onClick={onMobileClose}
-            />
-            <motion.aside
-              initial={{ x: '-100%' }} animate={{ x: 0 }} exit={{ x: '-100%' }}
-              transition={{ type: 'spring', damping: 28, stiffness: 240 }}
-              className="fixed left-0 top-0 bottom-0 z-[70] w-[92vw] max-w-[360px] flex flex-col bg-bg md:hidden overflow-y-auto"
-            >
-              <div className="flex items-center justify-between border-b border-border px-4 py-3.5 bg-bg/95 backdrop-blur-md shrink-0">
-                <div>
-                  <p className="text-[9px] font-black uppercase tracking-[0.3em] text-accent">{t('student.bootcampRoom.sidebar.curriculum')}</p>
-                  <p className="text-xs font-black text-text-primary">{t('student.bootcampRoom.sidebar.roomNavigator')}</p>
-                </div>
-                <button
-                  onClick={onMobileClose}
-                  className="flex h-8 w-8 items-center justify-center rounded-lg text-text-muted hover:text-accent hover:bg-accent-dim/10 transition-colors"
-                  aria-label={t('student.bootcampRoom.sidebar.closeCurriculum')}
-                >
-                  <IconX size={16} />
-                </button>
-              </div>
-              <div className="flex-1">{content}</div>
-            </motion.aside>
-          </>
-        )}
-      </AnimatePresence>
-    </>
+    <WalkthroughSidebar
+      sections={sections}
+      backHref={`/dashboard/bootcamps/${bootcampId}`}
+      backLabel={t('student.bootcampRoom.backToCurriculum')}
+      mobileOpen={mobileOpen}
+      onMobileClose={onMobileClose}
+      title={t('student.bootcampRoom.sidebar.roomNavigator')}
+      subtitle={t('student.bootcampRoom.sidebar.curriculum')}
+    />
   );
 };
 

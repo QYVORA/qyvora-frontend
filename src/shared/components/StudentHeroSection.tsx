@@ -13,6 +13,12 @@ interface StudentHeroSectionProps {
   description: string;
   stats?: StudentHeroStat[];
   children?: React.ReactNode;
+  villain?: {
+    name: string;
+    alias: string;
+    description: string;
+    avatar: string;
+  };
 }
 
 export function StudentHeroSection({ icon, title, accentWord, description, stats, children }: StudentHeroSectionProps) {
