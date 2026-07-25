@@ -4,7 +4,7 @@ import {
   Network, Router, HardDrive, Terminal,
 } from 'lucide-react';
 import SEO from '@/shared/components/SEO';
-import { SimulatedTerminal } from '@/features/student/components/SimulatedTerminal';
+import { TerminalWrapper } from '@/shared/components/learning/TerminalWrapper';
 import {
   NETWORK_CONFIG, DEVICES, STUDENT_IP, STUDENT_MAC, STUDENT_HOSTNAME,
   getHiddenIps,
@@ -198,7 +198,7 @@ const NetworksPage = () => {
       </div>
 
       {/* Simulated Terminal */}
-      <SimulatedTerminal
+      <TerminalWrapper
         open={terminalOpen}
         onOpenChange={setTerminalOpen}
         context={{ type: 'dashboard' }}

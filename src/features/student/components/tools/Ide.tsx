@@ -5,7 +5,7 @@ import {
   Search, GitBranch, Puzzle, ChevronDown, ChevronRight,
   Settings, Files, TerminalSquare, Save, PanelLeftClose, PanelLeftOpen,
 } from 'lucide-react';
-import { TerminalShell } from '@/features/student/components/SimulatedTerminal/TerminalShell';
+import { TerminalWrapper } from '@/shared/components/learning/TerminalWrapper';
 import type { TerminalContext } from '@/features/student/components/SimulatedTerminal/types';
 
 export type IdeLanguage = 'python' | 'bash' | 'javascript';
@@ -552,8 +552,13 @@ const Ide: React.FC<IdeProps> = ({ files, context, terminalContext, title = 'IDE
                     )}
                   </div>
                 ) : (
-                  <div className="h-full [&>div:first-child]:hidden">
-                    <TerminalShell context={terminalContext} onClose={() => setBottomPanelOpen(false)} />
+                  <div className="h-full">
+                    <TerminalWrapper
+                      open
+                      onOpenChange={() => setBottomPanelOpen(false)}
+                      context={terminalContext}
+                      mode="raw"
+                    />
                   </div>
                 )}
               </div>

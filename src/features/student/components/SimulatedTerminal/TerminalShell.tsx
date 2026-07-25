@@ -86,6 +86,7 @@ interface TerminalShellProps {
   onClose?: () => void;
   onToggleFullscreen?: () => void;
   isFullscreen?: boolean;
+  showChrome?: boolean;
 }
 
 const KALI_BG = '#0c0c0c';
@@ -105,6 +106,7 @@ export const TerminalShell: React.FC<TerminalShellProps> = ({
   onClose,
   onToggleFullscreen,
   isFullscreen,
+  showChrome = true,
 }) => {
   const savedLines = useRef<TerminalLine[] | null>(loadTerminalLines());
   const savedState = useRef<TerminalState | null>(savedLines.current ? loadTerminalState() : null);
@@ -532,28 +534,30 @@ export const TerminalShell: React.FC<TerminalShellProps> = ({
 
   return (
     <div className="flex flex-col h-full" style={{ background: KALI_BG }}>
-      <div
-        className="flex items-center justify-between px-2.5 py-1 shrink-0 border-b"
-        style={{ background: KALI_TITLE_BG, borderColor: KALI_BORDER }}
-      >
-        <span className="text-[10px] font-mono text-white/30 tracking-[0.12em] select-none truncate">_terminal <span className="text-white/20">v2.0 — type "help"</span></span>
-        <div className="flex items-center gap-1">
-          <button
-            onClick={onToggleFullscreen}
-            className="flex items-center justify-center h-8 w-8 md:h-5 md:w-5 rounded-lg hover:bg-white/5 transition-all focus:outline-none text-white/30 hover:text-white/60"
-            aria-label={isFullscreen ? 'Minimize' : 'Maximize'}
-          >
-            {isFullscreen ? <Minimize2 size={14} /> : <Maximize2 size={14} />}
-          </button>
-          <button
-            onClick={() => { saveTerminalData(lines, stateRef.current); onClose?.(); }}
-            className="flex items-center justify-center h-8 w-8 md:h-5 md:w-5 rounded-lg hover:bg-white/5 transition-all focus:outline-none text-white/30 hover:text-red-400"
-            aria-label="Close terminal"
-          >
-            <IconX size={14} />
-          </button>
+      {showChrome && (
+        <div
+          className="flex items-center justify-between px-2.5 py-1 shrink-0 border-b"
+          style={{ background: KALI_TITLE_BG, borderColor: KALI_BORDER }}
+        >
+          <span className="text-[10px] font-mono text-white/30 tracking-[0.12em] select-none truncate">_terminal <span className="text-white/20">v2.0 — type "help"</span></span>
+          <div className="flex items-center gap-1">
+            <button
+              onClick={onToggleFullscreen}
+              className="flex items-center justify-center h-8 w-8 md:h-5 md:w-5 rounded-lg hover:bg-white/5 transition-all focus:outline-none text-white/30 hover:text-white/60"
+              aria-label={isFullscreen ? 'Minimize' : 'Maximize'}
+            >
+              {isFullscreen ? <Minimize2 size={14} /> : <Maximize2 size={14} />}
+            </button>
+            <button
+              onClick={() => { saveTerminalData(lines, stateRef.current); onClose?.(); }}
+              className="flex items-center justify-center h-8 w-8 md:h-5 md:w-5 rounded-lg hover:bg-white/5 transition-all focus:outline-none text-white/30 hover:text-red-400"
+              aria-label="Close terminal"
+            >
+              <IconX size={14} />
+            </button>
+          </div>
         </div>
-      </div>
+      )}
 
       <div
         ref={containerRef}

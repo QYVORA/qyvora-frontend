@@ -5,7 +5,7 @@ import Sidebar from '@/features/student/components/layout/Sidebar';
 import InstallBanner from '@/features/student/components/layout/InstallBanner';
 import UsernameChangeModal from '@/features/student/components/UsernameChangeModal';
 import ConsentBanner from '@/shared/components/ConsentBanner';
-import { SimulatedTerminal } from '@/features/student/components/SimulatedTerminal';
+import { TerminalWrapper } from '@/shared/components/learning/TerminalWrapper';
 import { SimulationProvider } from '@/features/student/components/simulations';
 import Ide from '@/features/student/components/tools/Ide';
 import NetworkBuilder from '@/features/student/components/tools/NetworkBuilder';
@@ -77,7 +77,7 @@ const StudentLayout = () => {
         <InstallBanner />
         <UsernameChangeModal />
 
-        <SimulatedTerminal
+        <TerminalWrapper
           open={terminalOpen}
           onOpenChange={setTerminalOpen}
           context={terminalContext}
