@@ -4,9 +4,10 @@ import { Bookmark, Flag } from 'lucide-react';
 import { IconCheck } from '@/shared/components/icons';
 import type { BootcampStep } from '../../constants/bootcampConfig';
 import { buildStepImagePath } from '../../constants/bootcampConfig';
-import CodeBlockRenderer from './CodeBlockRenderer';
+import CodeBlockRenderer from '@/shared/components/courses/CodeBlockRenderer';
 import StepImage from './StepImage';
 import StepNotes from '@/shared/components/courses/StepNotes';
+import { StepNumberHeader } from '@/shared/components/learning/StepNumberHeader';
 
 interface Props {
   step: BootcampStep;
@@ -72,33 +73,13 @@ const StepCard: React.FC<Props> = ({
     </button>
 
     <div className="mb-8 md:mb-12 flex items-center gap-4">
-      <div
-        className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-xl border font-mono text-lg font-black ${
-          isActive
-            ? 'bg-accent border-accent text-bg'
-            : isViewed
-            ? 'bg-accent-dim border-accent/20 text-accent/60'
-            : 'bg-bg-elevated border-border text-text-muted'
-        }`}
-      >
-        {isViewed && !isActive ? (
-          <IconCheck size={24} />
-        ) : (
-          String(stepNum).padStart(2, '0')
-        )}
-      </div>
-      <div className="flex-1 min-w-0">
-        <span className={`block font-black uppercase tracking-[0.25em] transition-colors duration-300 ${
-          isActive ? 'text-accent text-xs' : 'text-text-muted text-[10px]'
-        }`}>
-          {step.title}
-        </span>
-      </div>
-      {isActive && (
-        <span className="shrink-0 text-accent text-[9px] font-black uppercase tracking-widest px-2 py-1">
-          {t('student.bootcampRoom.stepCard.currentFocus')}
-        </span>
-      )}
+      <StepNumberHeader
+        stepNumber={stepNum}
+        title={step.title}
+        isActive={isActive}
+        isCompleted={isViewed && !isActive}
+        statusLabel={isActive ? t('student.bootcampRoom.stepCard.currentFocus') : undefined}
+      />
     </div>
 
     <div className={`text-sm sm:text-base leading-relaxed whitespace-pre-wrap overflow-x-auto transition-colors ${isActive ? 'text-text-primary' : 'text-text-secondary'} w-full mb-10 md:mb-14`}>
