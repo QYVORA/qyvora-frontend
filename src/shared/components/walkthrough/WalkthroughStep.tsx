@@ -3,6 +3,7 @@ import { Lightbulb, Target, ClipboardList, Search, MessageSquare } from 'lucide-
 import { IconCheck } from '@/shared/components/icons';
 import { cn } from '@/shared/utils/cn';
 import { CommandBlock, FlagInput, StepComplete } from './StepParts';
+import { StepNumberHeader } from '@/shared/components/learning/StepNumberHeader';
 
 export interface ProgressiveHintLevel {
   level: 1 | 2 | 3 | 4;
@@ -51,39 +52,12 @@ export function WalkthroughStep({
       )}
     >
       {/* Step Header */}
-      <div className="flex items-center gap-3 py-8 md:py-12">
-        <span
-          className={cn(
-            'flex h-12 w-12 shrink-0 items-center justify-center rounded-xl border font-mono text-lg font-black',
-            isCompleted
-              ? 'bg-accent-dim border-accent/20 text-accent'
-              : isActive
-                ? 'bg-accent border-accent text-bg'
-                : 'bg-bg-elevated border-border text-text-muted',
-          )}
-        >
-          {isCompleted ? (
-            <IconCheck size={24} />
-          ) : (
-            String(stepIndex + 1).padStart(2, '0')
-          )}
-        </span>
-        <div className="flex-1 min-w-0">
-          <span
-            className={cn(
-              'block font-black uppercase tracking-[0.25em] transition-colors duration-300',
-              isCompleted ? 'text-accent text-xs' : isActive ? 'text-accent text-xs' : 'text-text-muted text-[10px]',
-            )}
-          >
-            {title}
-          </span>
-        </div>
-        {isCompleted && (
-          <span className="text-[9px] font-black uppercase tracking-widest text-accent">
-            Done
-          </span>
-        )}
-      </div>
+      <StepNumberHeader
+        stepNumber={stepIndex + 1}
+        title={title}
+        isActive={isActive}
+        isCompleted={isCompleted}
+      />
 
       {/* Step Content — always visible */}
       <div className="space-y-6 pb-12 md:pb-16">
