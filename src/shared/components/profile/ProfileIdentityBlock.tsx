@@ -229,14 +229,14 @@ const ProfileIdentityBlock: React.FC<ProfileIdentityBlockProps> = ({
 
   return (
     <div className="space-y-4 sm:space-y-5">
-      {/* Mobile: identicon above the card */}
+      {/* Mobile: bare identicon above the card */}
       <motion.div
         initial={prefersReduced ? false : { opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: prefersReduced ? 0 : 0.45 }}
         className="lg:hidden flex justify-center"
       >
-        <div className="w-28 h-28 sm:w-32 sm:h-32 rounded-2xl overflow-hidden border border-border/30">
+        <div className="w-28 h-28 sm:w-32 sm:h-32 rounded-2xl overflow-hidden">
           <Identicon value={handle || id} size={256} className="w-full h-full" />
         </div>
       </motion.div>
