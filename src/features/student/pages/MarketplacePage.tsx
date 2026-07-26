@@ -184,15 +184,25 @@ const Marketplace: React.FC = () => {
                   const hasPurchased = purchased.has(id);
                   return (
                     <motion.div key={id || idx} initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.45, delay: idx * 0.08, ease: [0.16, 1, 0.3, 1] }}>
-                      <div className="group flex flex-col aspect-square overflow-hidden w-full border border-border/30 bg-bg-card rounded-2xl transition-all duration-300 hover:border-accent/30">
-                        <div className="flex flex-col gap-2 p-4 sm:p-5 md:p-6 lg:p-7 flex-1">
-                          <div className="flex items-center gap-2">
+                      <div className="group flex flex-col overflow-hidden w-full border border-border/30 bg-bg-card rounded-2xl transition-all duration-300 hover:border-accent/30">
+                        <div className="relative aspect-[16/9] overflow-hidden bg-accent/5 border-b border-border/30">
+                          <AuthImage
+                            src={prod.coverUrl}
+                            fallback={productFallbackImg}
+                            alt={prod.title}
+                            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                            loading="lazy"
+                          />
+                          <div className="absolute inset-0 bg-gradient-to-t from-bg-card via-transparent to-transparent" />
+                          <div className="absolute top-3 left-3 flex items-center gap-2">
                             <span className="px-2 py-0.5 bg-bg/85 backdrop-blur-sm rounded-lg text-[9px] font-black uppercase text-accent tracking-widest border border-accent/20 flex items-center gap-1">
                               <ShoppingBag className="h-2.5 w-2.5" /> {t('student.marketplace.intelligenceAsset')}
                             </span>
                             {hasPurchased && <span className="px-2 py-0.5 bg-accent text-bg rounded-lg text-[9px] font-black uppercase tracking-widest">{t('student.marketplace.owned')}</span>}
                             {prod.isFree && !hasPurchased && <span className="px-2 py-0.5 bg-accent text-bg rounded-lg text-[9px] font-black uppercase tracking-widest">{t('student.marketplace.public')}</span>}
                           </div>
+                        </div>
+                        <div className="flex flex-col gap-2 p-4 flex-1">
                           <h3 className="text-sm sm:text-base md:text-lg lg:text-xl font-black leading-snug text-text-primary group-hover:text-accent transition-colors tracking-tight line-clamp-2">
                             {prod.title}
                           </h3>
