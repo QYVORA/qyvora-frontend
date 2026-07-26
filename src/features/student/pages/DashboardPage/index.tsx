@@ -200,8 +200,18 @@ const DashboardProductCard = ({ product }: { product: any }) => {
   const title = String(product?.title || t('student.dashboard.intelligenceAsset'));
   const description = String(product?.description || t('student.dashboard.intelligenceDesc'));
   return (
-    <div className="group flex flex-col aspect-square overflow-hidden rounded-2xl border border-border/30 bg-bg-card transition-all duration-300 hover:border-accent/30">
-      <div className="flex flex-col gap-2 p-4 sm:p-5 md:p-6 lg:p-7 flex-1">
+    <div className="group flex flex-col overflow-hidden rounded-2xl border border-border/30 bg-bg-card transition-all duration-300 hover:border-accent/30">
+      <div className="relative aspect-[16/9] overflow-hidden bg-accent/5 border-b border-border/30">
+        <AuthImage
+          src={product?.coverUrl}
+          fallback={productFallbackImg}
+          alt={title}
+          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+          loading="lazy"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-bg-card via-transparent to-transparent" />
+      </div>
+      <div className="flex flex-col gap-2 p-4 flex-1">
         <div className="flex items-center gap-2">
           <span className="px-2 py-0.5 bg-bg/85 backdrop-blur-sm rounded-lg text-[9px] font-black uppercase text-accent tracking-widest border border-accent/20 flex items-center gap-1">
             <IconMarketplace size={9} /> {t('student.dashboard.intelligenceAsset')}
