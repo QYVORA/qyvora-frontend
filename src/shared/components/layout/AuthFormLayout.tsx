@@ -34,7 +34,7 @@ const AuthFormLayout: React.FC<AuthFormLayoutProps> = ({ children }) => (
           </Link>
         </div>
 
-        <div className="relative z-10 flex flex-col gap-8 pt-16 w-full max-w-lg mx-auto">
+        <div className="relative z-10 flex flex-col gap-8 pt-16 w-full">
           <div className="flex flex-col gap-5">
             <Logo size="md" variant="full" />
             <p className="text-text-secondary text-sm font-bold leading-relaxed max-w-sm">
