@@ -97,7 +97,7 @@ const PhaseSection: React.FC<PhaseSectionProps> = ({
               </div>
             </div>
           ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-5">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
               {(mod.rooms || []).map((room: any, roomIdx: number) => {
                 const configRoom = configPhase?.rooms.find(
                   (r) => r.title.toLowerCase() === String(room.title || '').toLowerCase()
@@ -107,15 +107,16 @@ const PhaseSection: React.FC<PhaseSectionProps> = ({
 
                   : hpbCoverImg;
                 return (
-                  <RoomCard
-                    key={room.roomId}
-                    bootcampId={bootcampId}
-                    room={room}
-                    roomIdx={roomIdx}
-                    configPhase={configPhase}
-                    configRoom={configRoom}
-                    roomImg={roomImg}
-                  />
+                  <div key={room.roomId} className="aspect-square">
+                    <RoomCard
+                      bootcampId={bootcampId}
+                      room={room}
+                      roomIdx={roomIdx}
+                      configPhase={configPhase}
+                      configRoom={configRoom}
+                      roomImg={roomImg}
+                    />
+                  </div>
                 );
               })}
             </div>

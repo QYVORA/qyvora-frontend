@@ -112,10 +112,10 @@ const RoomCard: React.FC<RoomCardProps> = ({
 
   const inner = (
     <div
-      className={`group relative flex w-full flex-col overflow-hidden rounded-2xl border border-border/30 bg-bg-card transition-all duration-300 ${
+      className={`group relative flex w-full h-full flex-col overflow-hidden rounded-2xl border border-border/30 bg-bg-card transition-all duration-300 ${
         isRoomLocked
           ? 'opacity-40 cursor-not-allowed pointer-events-none'
-          : 'hover:border-accent/30 hover:scale-[1.01]'
+          : 'hover:border-accent/30'
       }`}
     >
       <div className="relative aspect-video overflow-hidden rounded-t-2xl shadow-sm">
@@ -154,25 +154,25 @@ const RoomCard: React.FC<RoomCardProps> = ({
         />
 
         {roomDone && (
-          <div className="room-completed-overlay absolute inset-0 flex flex-col items-center justify-center gap-2 bg-bg/60 backdrop-blur-[2px] rounded-t-2xl">
-            <div className="w-12 h-12 rounded-2xl bg-accent flex items-center justify-center shadow-lg">
+          <div className="room-completed-overlay absolute inset-0 flex flex-col items-center justify-center gap-2 bg-bg/60 backdrop-blur-[2px]">
+            <div className="w-12 h-12 rounded-2xl bg-accent flex items-center justify-center">
               <IconCheck size={24} className="text-bg" />
             </div>
-            <span className="text-[10px] font-black uppercase tracking-widest text-accent">Completed</span>
+            <span className="text-[9px] font-black uppercase tracking-widest text-accent">Completed</span>
           </div>
         )}
 
         {/* Room number badge */}
         {!roomDone && !isRoomLocked && (
           <div className="absolute top-2.5 left-2.5">
-            <div className="flex h-6 w-6 items-center justify-center rounded-lg border border-accent/25 bg-bg/80 backdrop-blur-sm font-mono text-[10px] font-black text-accent">
+            <div className="flex h-6 w-6 items-center justify-center rounded-lg border border-accent/20 bg-bg/85 backdrop-blur-sm font-mono text-[9px] font-black text-accent">
               {String(roomIdx + 1).padStart(2, '0')}
             </div>
           </div>
         )}
         {isRoomLocked && (
           <div className="absolute top-2.5 left-2.5">
-            <div className="flex h-6 w-6 items-center justify-center rounded-lg border border-border bg-bg/80 font-mono text-[10px] font-black text-text-muted">
+            <div className="flex h-6 w-6 items-center justify-center rounded-lg border border-border/30 bg-bg/85 backdrop-blur-sm font-mono text-[9px] font-black text-text-muted">
               <IconLock size={10} />
             </div>
           </div>
@@ -186,7 +186,7 @@ const RoomCard: React.FC<RoomCardProps> = ({
               className={`rounded-lg px-2 py-1 text-[9px] font-black uppercase tracking-widest transition-all flex items-center gap-1 ${
                 annotateMode
                   ? 'bg-accent text-bg'
-                  : 'bg-bg/80 backdrop-blur-md text-text-muted hover:text-accent border border-border/30'
+                  : 'bg-bg/85 backdrop-blur-sm text-text-muted hover:text-accent border border-border/30'
               }`}
             >
               <Pencil className="h-2.5 w-2.5" />
@@ -205,13 +205,13 @@ const RoomCard: React.FC<RoomCardProps> = ({
         )}
 
         {configRoom && !roomDone && (
-          <div className="absolute bottom-2.5 right-2.5 rounded-lg bg-bg/80 backdrop-blur-md px-2 py-0.5 text-[9px] font-black uppercase tracking-widest text-text-muted shadow-sm">
+          <div className="absolute bottom-2.5 right-2.5 rounded-lg bg-bg/85 backdrop-blur-sm px-2 py-0.5 text-[9px] font-black uppercase tracking-widest text-text-muted border border-border/30">
             {configRoom.steps.length} steps
           </div>
         )}
       </div>
-      <div className="flex flex-1 flex-col pt-5 px-6 pb-5">
-        <h3 className={`mb-1 text-base font-black leading-snug transition-colors ${
+      <div className="flex flex-col gap-2 p-4 sm:p-5 md:p-6 lg:p-7 flex-1">
+        <h3 className={`text-sm sm:text-base md:text-lg font-black leading-snug transition-colors ${
           isRoomLocked ? 'text-text-muted'
             : roomDone ? 'text-accent'
               : 'text-text-primary group-hover:text-accent'
@@ -219,19 +219,28 @@ const RoomCard: React.FC<RoomCardProps> = ({
           {configRoom?.title || room.title || `Room ${roomIdx + 1}`}
         </h3>
         {(configRoom?.overview || room.overview) && (
-          <p className="line-clamp-2 text-[11px] leading-relaxed text-text-muted/70 font-mono">
+          <p className="text-xs sm:text-sm text-text-muted line-clamp-3 leading-relaxed flex-1">
             {configRoom?.overview || room.overview}
           </p>
         )}
-        {roomDone ? (
-          <div className="mt-auto pt-3 flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest text-accent/60">
-            Review room <IconArrowRight size={12} />
-          </div>
-        ) : !isRoomLocked && (
-          <div className="mt-auto pt-3 flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest text-accent opacity-0 transition-all duration-300 transform translate-x-[-4px] group-hover:opacity-100 group-hover:translate-x-0">
-            Enter room <IconArrowRight size={12} />
-          </div>
-        )}
+        <div className="flex items-center justify-between mt-auto pt-2">
+          {roomDone ? (
+            <span className="flex items-center gap-1.5 text-[9px] sm:text-[10px] font-black uppercase tracking-widest text-accent">
+              Review room <IconArrowRight size={12} />
+            </span>
+          ) : !isRoomLocked ? (
+            <span className="flex items-center gap-1.5 text-[9px] sm:text-[10px] font-black uppercase tracking-widest text-accent opacity-0 transition-all duration-300 transform translate-x-[-4px] group-hover:opacity-100 group-hover:translate-x-0">
+              Enter room <IconArrowRight size={12} />
+            </span>
+          ) : (
+            <span />
+          )}
+          {configRoom && !roomDone && (
+            <span className="text-[9px] sm:text-[10px] font-black uppercase tracking-widest text-text-muted">
+              {configRoom.steps.length} steps
+            </span>
+          )}
+        </div>
       </div>
     </div>
   );
