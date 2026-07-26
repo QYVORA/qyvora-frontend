@@ -10,77 +10,62 @@ import {
   Bluetooth,
 } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
+import type { DeviceType, DeviceCategory, DeviceDefinition, DeviceShape, InterfaceType, InterfaceTemplate } from './types';
+import { getDefaultInterfaceTemplates } from './interfaces';
 
-export type DeviceType =
-  | 'router' | 'switch' | 'layer3-switch' | 'hub' | 'firewall'
-  | 'server' | 'workstation' | 'laptop' | 'smartphone' | 'printer' | 'iot'
-  | 'wireless-router' | 'access-point' | 'load-balancer' | 'vpn-gateway'
-  | 'ids' | 'ips' | 'reverse-proxy' | 'modem' | 'wireless-controller'
-  | 'web-server' | 'dns-server' | 'dhcp-server' | 'smtp-server' | 'ftp-server'
-  | 'database-server' | 'file-server' | 'proxy-server' | 'ldap-server'
-  | 'domain-controller' | 'ca-server' | 'ntp-server' | 'syslog-server'
-  | 'siem-server' | 'vpn-server' | 'container-host' | 'virtualization-host'
-  | 'camera' | 'tablet';
+export type { DeviceType, DeviceCategory, DeviceDefinition };
 
-export type DeviceCategory = 'infrastructure' | 'endpoint' | 'server' | 'wireless' | 'security';
-
-export interface DeviceDefinition {
-  type: DeviceType;
-  label: string;
-  icon: LucideIcon;
-  color: string;
-  category: DeviceCategory;
+function def(
+  type: DeviceType,
+  label: string,
+  icon: LucideIcon,
+  color: string,
+  category: DeviceCategory,
+  shape: DeviceShape,
+): DeviceDefinition {
+  return { type, label, icon, color, category, shape, defaultInterfaces: getDefaultInterfaceTemplates(type) };
 }
 
 export const DEVICE_REGISTRY: Record<DeviceType, DeviceDefinition> = {
-  // Infrastructure
-  router:              { type: 'router',              label: 'Router',              icon: Router,            color: '#f59e0b', category: 'infrastructure' },
-  switch:              { type: 'switch',              label: 'L2 Switch',           icon: Wifi,              color: '#3b82f6', category: 'infrastructure' },
-  'layer3-switch':     { type: 'layer3-switch',       label: 'L3 Switch',           icon: Wifi,              color: '#6366f1', category: 'infrastructure' },
-  hub:                 { type: 'hub',                  label: 'Hub',                 icon: Network,           color: '#64748b', category: 'infrastructure' },
-  modem:               { type: 'modem',                label: 'Modem',              icon: Globe,             color: '#78716c', category: 'infrastructure' },
-
-  // Security
-  firewall:            { type: 'firewall',             label: 'Firewall',           icon: Shield,            color: '#ef4444', category: 'security' },
-  ids:                 { type: 'ids',                  label: 'IDS',                icon: Eye,               color: '#f97316', category: 'security' },
-  ips:                 { type: 'ips',                  label: 'IPS',                icon: Eye,               color: '#dc2626', category: 'security' },
-  'vpn-gateway':       { type: 'vpn-gateway',          label: 'VPN Gateway',        icon: Lock,              color: '#8b5cf6', category: 'security' },
-  'reverse-proxy':     { type: 'reverse-proxy',        label: 'Reverse Proxy',      icon: Shield,            color: '#a855f7', category: 'security' },
-  'load-balancer':     { type: 'load-balancer',        label: 'Load Balancer',      icon: Scale,             color: '#06b66f', category: 'security' },
-
-  // Wireless
-  'wireless-router':   { type: 'wireless-router',      label: 'Wireless Router',    icon: Radio,             color: '#0ea5e9', category: 'wireless' },
-  'access-point':      { type: 'access-point',         label: 'Access Point',       icon: Radio,             color: '#38bdf8', category: 'wireless' },
-  'wireless-controller': { type: 'wireless-controller', label: 'Wireless Controller', icon: Radio,           color: '#0284c7', category: 'wireless' },
-
-  // Endpoints
-  workstation:         { type: 'workstation',          label: 'Workstation',        icon: Monitor,           color: '#a855f7', category: 'endpoint' },
-  laptop:              { type: 'laptop',               label: 'Laptop',             icon: Laptop,            color: '#c084fc', category: 'endpoint' },
-  smartphone:          { type: 'smartphone',           label: 'Smartphone',         icon: Smartphone,        color: '#e879f9', category: 'endpoint' },
-  tablet:              { type: 'tablet',               label: 'Tablet',             icon: Tablet,            color: '#d946ef', category: 'endpoint' },
-  printer:             { type: 'printer',              label: 'Printer',            icon: Printer,           color: '#f97316', category: 'endpoint' },
-  iot:                 { type: 'iot',                  label: 'IoT Device',         icon: Cpu,               color: '#06b6d6', category: 'endpoint' },
-  camera:              { type: 'camera',               label: 'Security Camera',    icon: Camera,            color: '#f43f5e', category: 'endpoint' },
-
-  // Servers
-  server:              { type: 'server',               label: 'Server',             icon: Server,            color: '#06b66f', category: 'server' },
-  'web-server':        { type: 'web-server',           label: 'Web Server',         icon: Globe,             color: '#10b981', category: 'server' },
-  'dns-server':        { type: 'dns-server',           label: 'DNS Server',         icon: Globe,             color: '#34d399', category: 'server' },
-  'dhcp-server':       { type: 'dhcp-server',          label: 'DHCP Server',        icon: Network,           color: '#6ee7b7', category: 'server' },
-  'smtp-server':       { type: 'smtp-server',          label: 'SMTP Server',        icon: Mail,              color: '#a7f3d0', category: 'server' },
-  'ftp-server':        { type: 'ftp-server',           label: 'FTP Server',         icon: FolderOpen,        color: '#059669', category: 'server' },
-  'database-server':   { type: 'database-server',      label: 'Database Server',    icon: Database,          color: '#047857', category: 'server' },
-  'file-server':       { type: 'file-server',          label: 'File Server',        icon: HardDrive,         color: '#065f46', category: 'server' },
-  'proxy-server':      { type: 'proxy-server',         label: 'Proxy Server',       icon: Shield,            color: '#6d28d9', category: 'server' },
-  'ldap-server':       { type: 'ldap-server',          label: 'LDAP Server',        icon: Users,             color: '#7c3aed', category: 'server' },
-  'domain-controller': { type: 'domain-controller',    label: 'Domain Controller',  icon: Users,             color: '#5b21b6', category: 'server' },
-  'ca-server':         { type: 'ca-server',            label: 'Certificate Auth',   icon: KeyRound,          color: '#4c1d95', category: 'server' },
-  'ntp-server':        { type: 'ntp-server',           label: 'NTP Server',         icon: Clock,             color: '#8b5cf6', category: 'server' },
-  'syslog-server':     { type: 'syslog-server',        label: 'Syslog Server',      icon: Activity,          color: '#a78bfa', category: 'server' },
-  'siem-server':       { type: 'siem-server',          label: 'SIEM Server',        icon: Activity,          color: '#c4b5fd', category: 'server' },
-  'vpn-server':        { type: 'vpn-server',           label: 'VPN Server',         icon: Lock,              color: '#7e22ce', category: 'server' },
-  'container-host':    { type: 'container-host',       label: 'Container Host',     icon: Box,               color: '#2563eb', category: 'server' },
-  'virtualization-host': { type: 'virtualization-host', label: 'Virtualization Host', icon: Container,       color: '#1d4ed8', category: 'server' },
+  router:              def('router',              'Router',              Router,            '#f59e0b', 'infrastructure', 'router-appliance'),
+  switch:              def('switch',              'L2 Switch',           Wifi,              '#3b82f6', 'infrastructure', 'rack-switch'),
+  'layer3-switch':     def('layer3-switch',       'L3 Switch',           Wifi,              '#6366f1', 'infrastructure', 'rack-switch'),
+  hub:                 def('hub',                  'Hub',                 Network,           '#64748b', 'infrastructure', 'rack-switch'),
+  modem:               def('modem',                'Modem',              Globe,             '#78716c', 'infrastructure', 'embedded-device'),
+  firewall:            def('firewall',             'Firewall',           Shield,            '#ef4444', 'security',       'firewall-appliance'),
+  ids:                 def('ids',                  'IDS',                Eye,               '#f97316', 'security',       'rack-server'),
+  ips:                 def('ips',                  'IPS',                Eye,               '#dc2626', 'security',       'rack-server'),
+  'vpn-gateway':       def('vpn-gateway',          'VPN Gateway',        Lock,              '#8b5cf6', 'security',       'firewall-appliance'),
+  'reverse-proxy':     def('reverse-proxy',        'Reverse Proxy',      Shield,            '#a855f7', 'security',       'rack-server'),
+  'load-balancer':     def('load-balancer',        'Load Balancer',      Scale,             '#06b66f', 'security',       'rack-server'),
+  'wireless-router':   def('wireless-router',      'Wireless Router',    Radio,             '#0ea5e9', 'wireless',       'router-appliance'),
+  'access-point':      def('access-point',         'Access Point',       Radio,             '#38bdf8', 'wireless',       'access-point-round'),
+  'wireless-controller': def('wireless-controller', 'Wireless Controller', Radio,           '#0284c7', 'wireless',       'rack-server'),
+  workstation:         def('workstation',          'Workstation',        Monitor,           '#a855f7', 'endpoint',       'desktop-tower'),
+  laptop:              def('laptop',               'Laptop',             Laptop,            '#c084fc', 'endpoint',       'laptop-silhouette'),
+  smartphone:          def('smartphone',           'Smartphone',         Smartphone,        '#e879f9', 'endpoint',       'phone-device'),
+  tablet:              def('tablet',               'Tablet',             Tablet,            '#d946ef', 'endpoint',       'phone-device'),
+  printer:             def('printer',              'Printer',            Printer,           '#f97316', 'endpoint',       'embedded-device'),
+  iot:                 def('iot',                  'IoT Device',         Cpu,               '#06b6d6', 'endpoint',       'embedded-device'),
+  camera:              def('camera',               'Security Camera',    Camera,            '#f43f5e', 'endpoint',       'camera-device'),
+  server:              def('server',               'Server',             Server,            '#06b66f', 'server',         'rack-server'),
+  'web-server':        def('web-server',           'Web Server',         Globe,             '#10b981', 'server',         'rack-server'),
+  'dns-server':        def('dns-server',           'DNS Server',         Globe,             '#34d399', 'server',         'rack-server'),
+  'dhcp-server':       def('dhcp-server',          'DHCP Server',        Network,           '#6ee7b7', 'server',         'rack-server'),
+  'smtp-server':       def('smtp-server',          'SMTP Server',        Mail,              '#a7f3d0', 'server',         'rack-server'),
+  'ftp-server':        def('ftp-server',           'FTP Server',         FolderOpen,        '#059669', 'server',         'rack-server'),
+  'database-server':   def('database-server',      'Database Server',    Database,          '#047857', 'server',         'rack-server'),
+  'file-server':       def('file-server',          'File Server',        HardDrive,         '#065f46', 'server',         'rack-server'),
+  'proxy-server':      def('proxy-server',         'Proxy Server',       Shield,            '#6d28d9', 'server',         'rack-server'),
+  'ldap-server':       def('ldap-server',          'LDAP Server',        Users,             '#7c3aed', 'server',         'rack-server'),
+  'domain-controller': def('domain-controller',    'Domain Controller',  Users,             '#5b21b6', 'server',         'rack-server'),
+  'ca-server':         def('ca-server',            'Certificate Auth',   KeyRound,          '#4c1d95', 'server',         'rack-server'),
+  'ntp-server':        def('ntp-server',           'NTP Server',         Clock,             '#8b5cf6', 'server',         'rack-server'),
+  'syslog-server':     def('syslog-server',        'Syslog Server',      Activity,          '#a78bfa', 'server',         'rack-server'),
+  'siem-server':       def('siem-server',          'SIEM Server',        Activity,          '#c4b5fd', 'server',         'rack-server'),
+  'vpn-server':        def('vpn-server',           'VPN Server',         Lock,              '#7e22ce', 'server',         'rack-server'),
+  'container-host':    def('container-host',       'Container Host',     Box,               '#2563eb', 'server',         'cloud-appliance'),
+  'virtualization-host': def('virtualization-host', 'Virtualization Host', Container,       '#1d4ed8', 'server',         'cloud-appliance'),
 };
 
 export const DEVICE_CATEGORIES: { id: DeviceCategory; label: string; types: DeviceType[] }[] = [
@@ -116,7 +101,7 @@ export const DEVICE_CATEGORIES: { id: DeviceCategory; label: string; types: Devi
   },
 ];
 
-export const CONNECTION_MEDIA: { category: string; items: { id: string; label: string; icon: LucideIcon }[] }[] = [
+export const CONNECTION_MEDIUM: { category: string; items: { id: string; label: string; icon: LucideIcon }[] }[] = [
   {
     category: 'Copper',
     items: [
@@ -150,14 +135,44 @@ export const CONNECTION_MEDIA: { category: string; items: { id: string; label: s
   },
 ];
 
-export function getDeviceDef(type: DeviceType): DeviceDefinition {
-  return DEVICE_REGISTRY[type];
+export const CONNECTION_MEDIA = CONNECTION_MEDIUM;
+
+// ── Medium ↔ Interface compatibility ─────────────────────────────────────────
+
+export const MEDIUM_INTERFACE_COMPAT: Record<string, InterfaceType[]> = {
+  'ethernet':        ['ethernet', 'fast-ethernet', 'gigabit-ethernet', '10g-ethernet'],
+  'rj45':            ['ethernet', 'fast-ethernet', 'gigabit-ethernet'],
+  'straight-through': ['ethernet', 'fast-ethernet', 'gigabit-ethernet'],
+  'crossover':       ['ethernet', 'fast-ethernet', 'gigabit-ethernet'],
+  'single-mode':     ['fiber-single'],
+  'multi-mode':      ['fiber-multi'],
+  'serial':          ['serial', 'console'],
+  'mpls':            ['wan'],
+  'leased-line':     ['wan'],
+  'wifi':            ['wifi-2.4', 'wifi-5', 'wifi-6'],
+  'bluetooth':       ['bluetooth'],
+};
+
+export function isMediumCompatibleWithInterface(mediumId: string, ifaceType: InterfaceType): boolean {
+  const allowed = MEDIUM_INTERFACE_COMPAT[mediumId];
+  if (!allowed) return false;
+  return allowed.includes(ifaceType);
 }
 
-export function getIcon(type: DeviceType): LucideIcon {
-  return DEVICE_REGISTRY[type].icon;
+// ── Helpers ──────────────────────────────────────────────────────────────────
+
+export function getDeviceDef(type: string): DeviceDefinition {
+  return DEVICE_REGISTRY[type as DeviceType] ?? DEVICE_REGISTRY.server;
 }
 
-export function getColor(type: DeviceType): string {
-  return DEVICE_REGISTRY[type].color;
+export function getIcon(type: string): LucideIcon {
+  return getDeviceDef(type).icon;
+}
+
+export function getColor(type: string): string {
+  return getDeviceDef(type).color;
+}
+
+export function getShape(type: string): DeviceShape {
+  return getDeviceDef(type).shape;
 }

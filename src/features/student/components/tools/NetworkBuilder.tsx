@@ -9,6 +9,7 @@ import {
   useNodesState,
   useEdgesState,
   BackgroundVariant,
+  useReactFlow,
   type Connection,
   type Edge,
   type Node,
@@ -20,8 +21,13 @@ import {
   MarkerType,
   Panel,
 } from '@xyflow/react';
-import { X, Maximize2, Minimize2, Trash2, Wifi, ChevronDown, ChevronRight } from 'lucide-react';
-import DeviceNode, { type DeviceNodeData } from './network/DeviceNode';
+import {
+  X, Maximize2, Minimize2, Trash2, Wifi, ChevronDown, ChevronRight,
+  Play, Pause, Tag, Radio,
+} from 'lucide-react';
+import { TopologyProvider, useTopology } from './network/topologyStore';
+import DeviceNodeComponent from './network/DeviceNode';
+import NetworkEdgeComponent from './network/NetworkEdge';
 import ConnectionMediumModal from './network/ConnectionMediumModal';
 import ContextMenu, {
   buildCanvasContextMenu,
@@ -32,8 +38,12 @@ import ContextMenu, {
 import {
   DEVICE_CATEGORIES,
   getDeviceDef,
-  type DeviceType,
 } from './network/devices';
+import {
+  createDefaultInterfaces,
+} from './network/interfaces';
+import { useTrafficSimulation } from './network/useTrafficSimulation';
+import type { DeviceNodeData, NetworkLinkData, DeviceType, TrafficLevel, LinkState } from './network/types';
 
 interface NetworkBuilderProps {
   open: boolean;
@@ -44,7 +54,8 @@ interface NetworkBuilderProps {
 let nodeIdCounter = 0;
 let edgeIdCounter = 0;
 
-const nodeTypes: NodeTypes = { device: DeviceNode };
+const nodeTypes: NodeTypes = { device: DeviceNodeComponent };
+const edgeTypes: EdgeTypes = { network: NetworkEdgeComponent };
 
 const minimapStyle = {
   height: 120,
@@ -54,7 +65,12 @@ const minimapStyle = {
   borderRadius: 12,
 };
 
-const NetworkBuilder: React.FC<NetworkBuilderProps> = ({ open, onOpenChange, standalone }) => {
+// ── Inner Builder (must be inside TopologyProvider) ──────────────────────────
+
+const NetworkBuilderInner: React.FC<NetworkBuilderProps> = ({ open, onOpenChange, standalone }) => {
+  const { state: topo, addNode: topoAddNode, removeNode: topoRemoveNode, addEdge: topoAddEdge, removeEdge: topoRemoveEdge, updateNode, selectNode, selectEdge, dispatch } = useTopology();
+  const { level: trafficLevel, running: trafficRunning, setLevel: setTrafficLevel, start: startTraffic, stop: stopTraffic, setEdgeProvider } = useTrafficSimulation();
+
   const [nodes, setNodes, onNodesChange] = useNodesState([]);
   const [edges, setEdges, onEdgesChange] = useEdgesState([]);
   const [isFullscreen, setIsFullscreen] = useState(false);
@@ -69,91 +85,129 @@ const NetworkBuilder: React.FC<NetworkBuilderProps> = ({ open, onOpenChange, sta
   const [selectedEdge, setSelectedEdge] = useState<Edge | null>(null);
   const [mediumModalOpen, setMediumModalOpen] = useState(false);
   const [pendingConnection, setPendingConnection] = useState<Connection | null>(null);
+  const [pendingCompatibleMedia, setPendingCompatibleMedia] = useState<string[] | undefined>(undefined);
   const [contextMenu, setContextMenu] = useState<ContextMenuState>({
     open: false, x: 0, y: 0, items: [],
   });
   const [labelInput, setLabelInput] = useState<{ id: string; field: 'label' | 'ip'; value: string } | null>(null);
   const reactFlowWrapper = useRef<HTMLDivElement>(null);
+  const [showInterfaces, setShowInterfaces] = useState(false);
+  const [showLabels, setShowLabels] = useState(true);
 
-  // Handle connection creation — open medium picker
+  // Provide edge data to traffic engine
+  useEffect(() => {
+    setEdgeProvider(() =>
+      edges.map(e => ({
+        id: e.id,
+        data: (e.data ?? {}) as unknown as NetworkLinkData,
+      })),
+    );
+  }, [edges, setEdgeProvider]);
+
+  // ── Connection handling ──────────────────────────────────────────────────
+
   const onConnect: OnConnect = useCallback((connection) => {
+    if (!connection.source || !connection.target) return;
     setPendingConnection(connection);
+    setPendingCompatibleMedia(undefined); // show all media
     setMediumModalOpen(true);
   }, []);
 
-  // After medium is selected, create the edge
   const handleMediumSelect = useCallback((_mediumId: string, mediumLabel: string) => {
     if (!pendingConnection) return;
     const id = `edge-${++edgeIdCounter}`;
+    const linkData: NetworkLinkData = {
+      mediumId: _mediumId,
+      mediumLabel,
+      state: 'connected',
+      bandwidth: 1000,
+      latency: 1,
+      sourceInterface: pendingConnection.sourceHandle as string ?? '',
+      targetInterface: pendingConnection.targetHandle as string ?? '',
+      trafficLevel: 'idle',
+    };
     const newEdge: Edge = {
       ...pendingConnection,
       id,
-      type: 'default',
-      label: mediumLabel,
+      type: 'network',
+      data: linkData as unknown as Record<string, unknown>,
       markerEnd: { type: MarkerType.ArrowClosed, color: '#334155' },
-      style: { stroke: '#334155', strokeWidth: 1.5 },
       selected: false,
     };
     setEdges((eds) => addEdge(newEdge, eds));
+    topoAddEdge(id, linkData, pendingConnection.source, pendingConnection.target);
     setPendingConnection(null);
-  }, [pendingConnection, setEdges]);
+    setPendingCompatibleMedia(undefined);
+  }, [pendingConnection, setEdges, topoAddEdge]);
 
-  // Handle node selection
+  // ── Node/Edge selection ──────────────────────────────────────────────────
+
   const onNodeClick = useCallback((_: React.MouseEvent, node: Node) => {
     setSelectedNode(node);
     setSelectedEdge(null);
-  }, []);
+    selectNode(node.id);
+  }, [selectNode]);
 
   const onEdgeClick = useCallback((_: React.MouseEvent, edge: Edge) => {
     setSelectedEdge(edge);
     setSelectedNode(null);
-  }, []);
+    selectEdge(edge.id);
+  }, [selectEdge]);
 
   const onPaneClick = useCallback(() => {
     setSelectedNode(null);
     setSelectedEdge(null);
-  }, []);
+    selectNode(null);
+    selectEdge(null);
+  }, [selectNode, selectEdge]);
 
-  // Add a device node to canvas
+  // ── Add Node ─────────────────────────────────────────────────────────────
+
   const addNode = useCallback((type: DeviceType, x?: number, y?: number) => {
     const def = getDeviceDef(type);
     const id = `node-${++nodeIdCounter}`;
-    const newNode: Node<DeviceNodeData> = {
-      id,
-      type: 'device',
-      position: {
-        x: x ?? 300 + Math.random() * 200 - 100,
-        y: y ?? 200 + Math.random() * 200 - 100,
-      },
-      data: {
-        deviceType: type,
-        label: def.label,
-        ip: `10.0.0.${nodeIdCounter}`,
-      },
+    const interfaces = createDefaultInterfaces(type);
+    const data: DeviceNodeData = {
+      deviceType: type,
+      label: def.label,
+      ip: `10.0.0.${nodeIdCounter}`,
+      interfaces,
+      shape: def.shape,
+      status: 'online',
+      traffic: 'idle',
     };
+    const position = {
+      x: x ?? 300 + Math.random() * 200 - 100,
+      y: y ?? 200 + Math.random() * 200 - 100,
+    };
+    const newNode: Node = { id, type: 'device', position, data: data as unknown as Record<string, unknown> };
     setNodes((nds) => [...nds, newNode]);
-  }, [setNodes]);
+    topoAddNode(id, data, position);
+  }, [setNodes, topoAddNode]);
 
-  // Delete selected node or edge
+  // ── Delete ───────────────────────────────────────────────────────────────
+
   const deleteSelected = useCallback(() => {
     if (selectedNode) {
       setNodes((nds) => nds.filter((n) => n.id !== selectedNode.id));
       setEdges((eds) => eds.filter((e) => e.source !== selectedNode.id && e.target !== selectedNode.id));
+      topoRemoveNode(selectedNode.id);
       setSelectedNode(null);
     } else if (selectedEdge) {
       setEdges((eds) => eds.filter((e) => e.id !== selectedEdge.id));
+      topoRemoveEdge(selectedEdge.id);
       setSelectedEdge(null);
     }
-  }, [selectedNode, selectedEdge, setNodes, setEdges]);
+  }, [selectedNode, selectedEdge, setNodes, setEdges, topoRemoveNode, topoRemoveEdge]);
 
-  // Duplicate selected node
   const duplicateNode = useCallback(() => {
     if (!selectedNode) return;
     const data = selectedNode.data as DeviceNodeData;
-    addNode(data.deviceType, selectedNode.position.x + 40, selectedNode.position.y + 40);
+    addNode(data.deviceType as DeviceType, selectedNode.position.x + 40, selectedNode.position.y + 40);
   }, [selectedNode, addNode]);
 
-  // Keyboard shortcuts
+  // ── Keyboard shortcuts ───────────────────────────────────────────────────
+
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
       const tag = document.activeElement?.tagName;
@@ -167,18 +221,20 @@ const NetworkBuilder: React.FC<NetworkBuilderProps> = ({ open, onOpenChange, sta
     return () => window.removeEventListener('keydown', handler);
   }, [deleteSelected]);
 
-  // Update node data when label/ip inputs change
+  // ── Label/IP sync ────────────────────────────────────────────────────────
+
   useEffect(() => {
     if (!labelInput) return;
     setNodes((nds) =>
       nds.map((n) => {
         if (n.id !== labelInput.id) return n;
         return { ...n, data: { ...n.data, [labelInput.field]: labelInput.value } };
-      })
+      }),
     );
   }, [labelInput, setNodes]);
 
-  // Context menu handlers
+  // ── Context menus ────────────────────────────────────────────────────────
+
   const handleCanvasContextMenu = useCallback((e: React.MouseEvent) => {
     e.preventDefault();
     const items = buildCanvasContextMenu((type) => addNode(type, e.clientX - 200, e.clientY - 100));
@@ -193,7 +249,9 @@ const NetworkBuilder: React.FC<NetworkBuilderProps> = ({ open, onOpenChange, sta
     const items = buildNodeContextMenu(
       () => { setSelectedNode(node); duplicateNode(); },
       () => { setSelectedNode(node); deleteSelected(); },
-      () => { /* edit — handled by sidebar */ },
+      () => { /* edit */ },
+      () => { /* toggle interfaces */ },
+      () => { /* refresh interfaces */ },
     );
     setContextMenu({ open: true, x: e.clientX, y: e.clientY, items });
   }, [duplicateNode, deleteSelected]);
@@ -204,14 +262,32 @@ const NetworkBuilder: React.FC<NetworkBuilderProps> = ({ open, onOpenChange, sta
     setSelectedEdge(edge);
     setSelectedNode(null);
     const items = buildEdgeContextMenu(
-      () => { /* change medium */ },
-      () => { setEdges((eds) => eds.filter((ed) => ed.id !== edge.id)); setSelectedEdge(null); },
+      () => { setPendingConnection({ source: edge.source, target: edge.target, sourceHandle: edge.sourceHandle, targetHandle: edge.targetHandle } as Connection); setPendingCompatibleMedia(undefined); setMediumModalOpen(true); },
+      () => { setEdges((eds) => eds.filter((ed) => ed.id !== edge.id)); topoRemoveEdge(edge.id); setSelectedEdge(null); },
+      () => {
+        // Toggle link state
+        const linkData = edge.data as unknown as NetworkLinkData | undefined;
+        const currentState = linkData?.state ?? 'connected';
+        const nextState: LinkState = currentState === 'connected' ? 'disconnected' : 'connected';
+        setEdges((eds) => eds.map(ed => ed.id === edge.id ? { ...ed, data: { ...ed.data, state: nextState } } : ed));
+      },
     );
     setContextMenu({ open: true, x: e.clientX, y: e.clientY, items });
-  }, [setEdges]);
+  }, [setEdges, topoRemoveEdge]);
 
-  // Selected node/edge for sidebar
+  // ── Derived ──────────────────────────────────────────────────────────────
+
   const selectedDeviceNode = selectedNode && selectedNode.type === 'device' ? selectedNode : null;
+  const selectedDeviceData = selectedDeviceNode ? (selectedDeviceNode.data as DeviceNodeData) : null;
+
+  // ── Zoom adaptive detail ─────────────────────────────────────────────────
+
+  const zoomDisplay = useMemo(() => {
+    const zoom = 1; // placeholder — actual zoom from ReactFlow viewport
+    return zoom < 0.3 ? 'low' : zoom < 0.6 ? 'medium' : zoom < 0.9 ? 'high' : 'very-high';
+  }, []);
+
+  // ── Shell ────────────────────────────────────────────────────────────────
 
   const shell = (
     <div className="flex flex-col h-full bg-bg">
@@ -225,6 +301,47 @@ const NetworkBuilder: React.FC<NetworkBuilderProps> = ({ open, onOpenChange, sta
           </span>
         </div>
         <div className="flex items-center gap-1">
+          {/* Traffic controls */}
+          <div className="flex items-center gap-0.5 mr-2 border border-border/20 rounded-lg px-1 py-0.5">
+            <button
+              onClick={trafficRunning ? stopTraffic : startTraffic}
+              className="flex items-center justify-center h-5 w-5 rounded hover:bg-white/5 transition-colors"
+              title={trafficRunning ? 'Stop simulation' : 'Start simulation'}
+            >
+              {trafficRunning
+                ? <Pause size={10} className="text-accent" />
+                : <Play size={10} className="text-text-muted" />
+              }
+            </button>
+            <select
+              value={trafficLevel}
+              onChange={(e) => setTrafficLevel(e.target.value as TrafficLevel)}
+              className="text-[8px] font-mono bg-transparent text-text-muted border-none outline-none cursor-pointer"
+            >
+              <option value="idle">Idle</option>
+              <option value="low">Low</option>
+              <option value="medium">Med</option>
+              <option value="high">High</option>
+              <option value="saturated">Max</option>
+            </select>
+          </div>
+
+          {/* View toggles */}
+          <button
+            onClick={() => setShowInterfaces(p => !p)}
+            className={`flex items-center justify-center h-5 w-5 rounded hover:bg-white/5 transition-colors ${showInterfaces ? 'text-accent' : 'text-text-muted/40'}`}
+            title="Toggle interfaces"
+          >
+            <Radio size={10} />
+          </button>
+          <button
+            onClick={() => setShowLabels(p => !p)}
+            className={`flex items-center justify-center h-5 w-5 rounded hover:bg-white/5 transition-colors ${showLabels ? 'text-accent' : 'text-text-muted/40'}`}
+            title="Toggle labels"
+          >
+            <Tag size={10} />
+          </button>
+
           <button
             onClick={() => setIsFullscreen((p) => !p)}
             className="flex items-center justify-center h-7 w-7 rounded-lg hover:bg-white/5 transition-all text-text-muted hover:text-text-primary"
@@ -295,59 +412,89 @@ const NetworkBuilder: React.FC<NetworkBuilderProps> = ({ open, onOpenChange, sta
             </button>
           </div>
 
-          {/* Selection info */}
-          {selectedDeviceNode && (
+          {/* Selected device info */}
+          {selectedDeviceNode && selectedDeviceData && (
             <div className="px-3 pt-3 mt-3 border-t border-border/20">
-              <p className="text-[9px] font-black uppercase tracking-widest text-accent mb-2">Selected</p>
+              <p className="text-[9px] font-black uppercase tracking-widest text-accent mb-2">Device</p>
               <div className="space-y-2">
                 <div>
                   <label className="text-[9px] text-text-muted block mb-1">Label</label>
                   <input
-                    value={(selectedDeviceNode.data as DeviceNodeData).label}
-                    onChange={(e) => {
-                      const val = e.target.value;
-                      setLabelInput({ id: selectedDeviceNode.id, field: 'label', value: val });
-                    }}
+                    value={selectedDeviceData.label}
+                    onChange={(e) => setLabelInput({ id: selectedDeviceNode.id, field: 'label', value: e.target.value })}
                     className="w-full px-2 py-1.5 rounded-lg bg-bg border border-border/30 text-xs text-text-primary font-mono outline-none focus:border-accent"
                   />
                 </div>
                 <div>
                   <label className="text-[9px] text-text-muted block mb-1">IP Address</label>
                   <input
-                    value={(selectedDeviceNode.data as DeviceNodeData).ip}
-                    onChange={(e) => {
-                      const val = e.target.value;
-                      setLabelInput({ id: selectedDeviceNode.id, field: 'ip', value: val });
-                    }}
+                    value={selectedDeviceData.ip}
+                    onChange={(e) => setLabelInput({ id: selectedDeviceNode.id, field: 'ip', value: e.target.value })}
                     className="w-full px-2 py-1.5 rounded-lg bg-bg border border-border/30 text-xs text-text-primary font-mono outline-none focus:border-accent"
                   />
                 </div>
                 <div>
                   <label className="text-[9px] text-text-muted block mb-1">Type</label>
                   <div className="text-[10px] font-mono text-text-primary">
-                    {getDeviceDef((selectedDeviceNode.data as DeviceNodeData).deviceType).label}
+                    {getDeviceDef(selectedDeviceData.deviceType).label}
                   </div>
                 </div>
+                {/* Interface list */}
+                {selectedDeviceData.interfaces && selectedDeviceData.interfaces.length > 0 && (
+                  <div>
+                    <label className="text-[9px] text-text-muted block mb-1">
+                      Interfaces ({selectedDeviceData.interfaces.filter(i => i.operationalState === 'up').length}/{selectedDeviceData.interfaces.length} up)
+                    </label>
+                    <div className="max-h-32 overflow-y-auto space-y-0.5">
+                      {selectedDeviceData.interfaces.map(iface => (
+                        <div
+                          key={iface.id}
+                          className="flex items-center gap-1.5 px-1.5 py-1 rounded bg-bg/50 text-[8px] font-mono"
+                        >
+                          <svg width="4" height="4">
+                            <circle cx="2" cy="2" r="2" fill={iface.operationalState === 'up' ? '#22c55e' : '#333'} />
+                          </svg>
+                          <span className="text-text-muted truncate flex-1">{iface.name}</span>
+                          <span className="text-text-muted/40">{iface.speed > 0 ? `${iface.speed}M` : ''}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
           )}
 
+          {/* Selected edge info */}
           {selectedEdge && !selectedDeviceNode && (
             <div className="px-3 pt-3 mt-3 border-t border-border/20">
               <p className="text-[9px] font-black uppercase tracking-widest text-accent mb-2">Link</p>
               <div className="space-y-2">
                 <div>
-                  <label className="text-[9px] text-text-muted block mb-1">Label</label>
-                  <input
-                    value={selectedEdge.label as string || ''}
-                    onChange={(e) => {
-                      const val = e.target.value;
-                      setEdges((eds) =>
-                        eds.map((ed) => ed.id === selectedEdge.id ? { ...ed, label: val } : ed)
-                      );
-                    }}
-                    className="w-full px-2 py-1.5 rounded-lg bg-bg border border-border/30 text-xs text-text-primary font-mono outline-none focus:border-accent"
-                  />
+                  <label className="text-[9px] text-text-muted block mb-1">Medium</label>
+                  <div className="text-[10px] font-mono text-text-primary">
+                    {(selectedEdge.data as unknown as NetworkLinkData)?.mediumLabel ?? 'Ethernet'}
+                  </div>
+                </div>
+                <div>
+                  <label className="text-[9px] text-text-muted block mb-1">State</label>
+                  <div className="flex gap-1">
+                    {(['connected', 'disconnected', 'negotiating', 'blocked', 'error'] as LinkState[]).map(s => (
+                      <button
+                        key={s}
+                        onClick={() => {
+                          setEdges(eds => eds.map(e => e.id === selectedEdge.id ? { ...e, data: { ...e.data, state: s } } : e));
+                        }}
+                        className={`px-1.5 py-0.5 rounded text-[7px] font-mono border transition-colors ${
+                          (selectedEdge.data as unknown as NetworkLinkData)?.state === s
+                            ? 'border-accent text-accent'
+                            : 'border-border/20 text-text-muted hover:border-border/40'
+                        }`}
+                      >
+                        {s}
+                      </button>
+                    ))}
+                  </div>
                 </div>
               </div>
             </div>
@@ -372,6 +519,7 @@ const NetworkBuilder: React.FC<NetworkBuilderProps> = ({ open, onOpenChange, sta
             onNodeContextMenu={handleNodeContextMenu as any}
             onEdgeContextMenu={handleEdgeContextMenu as any}
             nodeTypes={nodeTypes}
+            edgeTypes={edgeTypes}
             fitView
             snapToGrid
             snapGrid={[15, 15]}
@@ -380,11 +528,11 @@ const NetworkBuilder: React.FC<NetworkBuilderProps> = ({ open, onOpenChange, sta
             panOnDrag
             zoomOnDoubleClick={false}
             defaultEdgeOptions={{
-              type: 'default',
+              type: 'network',
               markerEnd: { type: MarkerType.ArrowClosed, color: '#334155' },
-              style: { stroke: '#334155', strokeWidth: 1.5 },
             }}
             proOptions={{ hideAttribution: true }}
+            onlyRenderVisibleElements
           >
             <Background variant={BackgroundVariant.Cross} gap={15} size={1} color="rgba(255,255,255,0.06)" />
             <MiniMap style={minimapStyle} nodeColor={(n) => {
@@ -397,12 +545,11 @@ const NetworkBuilder: React.FC<NetworkBuilderProps> = ({ open, onOpenChange, sta
               className="!bg-bg-card !border-border/30 !rounded-xl !shadow-xl !shadow-black/40 [&>button]:!bg-bg-card [&>button]:!border-border/20 [&>button]:!text-text-muted hover:[&>button]:!text-accent"
             />
 
-            {/* Empty state */}
             {nodes.length === 0 && (
               <Panel position="top-center" className="pointer-events-none mt-20">
                 <div className="text-center">
                   <div className="text-text-muted/20 text-sm font-mono">Add devices from the palette to start building your network</div>
-                  <div className="text-text-muted/10 text-[10px] font-mono mt-1">Drag between nodes to connect them</div>
+                  <div className="text-text-muted/10 text-[10px] font-mono mt-1">Drag from device interfaces to connect them</div>
                 </div>
               </Panel>
             )}
@@ -418,6 +565,7 @@ const NetworkBuilder: React.FC<NetworkBuilderProps> = ({ open, onOpenChange, sta
         open={mediumModalOpen}
         onOpenChange={setMediumModalOpen}
         onSelect={handleMediumSelect}
+        compatibleMedia={pendingCompatibleMedia}
       />
     </div>
   );
@@ -442,6 +590,16 @@ const NetworkBuilder: React.FC<NetworkBuilderProps> = ({ open, onOpenChange, sta
         </RadixDialog.Content>
       </RadixDialog.Portal>
     </RadixDialog.Root>
+  );
+};
+
+// ── Outer wrapper (provides TopologyProvider) ────────────────────────────────
+
+const NetworkBuilder: React.FC<NetworkBuilderProps> = (props) => {
+  return (
+    <TopologyProvider>
+      <NetworkBuilderInner {...props} />
+    </TopologyProvider>
   );
 };
 

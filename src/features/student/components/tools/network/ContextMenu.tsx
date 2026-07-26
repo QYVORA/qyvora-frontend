@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import { Trash2, Copy, Clipboard, Edit3, Settings, Plus } from 'lucide-react';
+import { Trash2, Copy, Edit3, Settings, Plus, Power, PowerOff, Eye, RefreshCw } from 'lucide-react';
 import { DEVICE_CATEGORIES, type DeviceType } from './devices';
 
 export interface ContextMenuItem {
@@ -78,7 +78,6 @@ export function buildCanvasContextMenu(
 ): ContextMenuItem[] {
   const items: ContextMenuItem[] = [];
 
-  // Add device submenu items
   DEVICE_CATEGORIES.forEach((cat) => {
     cat.types.slice(0, 3).forEach((type) => {
       items.push({
@@ -96,22 +95,42 @@ export function buildNodeContextMenu(
   onDuplicate: () => void,
   onDelete: () => void,
   onEdit: () => void,
+  onToggleInterface?: () => void,
+  onRefreshInterfaces?: () => void,
 ): ContextMenuItem[] {
-  return [
+  const items: ContextMenuItem[] = [
     { label: 'Edit', icon: <Edit3 size={12} />, action: onEdit },
     { label: 'Duplicate', icon: <Copy size={12} />, action: onDuplicate },
-    { label: 'Delete', icon: <Trash2 size={12} />, action: onDelete, danger: true },
   ];
+
+  if (onToggleInterface) {
+    items.push({ label: 'Toggle Interfaces', icon: <Power size={12} />, action: onToggleInterface });
+  }
+  if (onRefreshInterfaces) {
+    items.push({ label: 'Reset Interfaces', icon: <RefreshCw size={12} />, action: onRefreshInterfaces });
+  }
+
+  items.push({ label: 'Delete', icon: <Trash2 size={12} />, action: onDelete, danger: true });
+
+  return items;
 }
 
 export function buildEdgeContextMenu(
   onChangeMedium: () => void,
   onDelete: () => void,
+  onToggleState?: () => void,
 ): ContextMenuItem[] {
-  return [
+  const items: ContextMenuItem[] = [
     { label: 'Change Medium', icon: <Settings size={12} />, action: onChangeMedium },
-    { label: 'Delete', icon: <Trash2 size={12} />, action: onDelete, danger: true },
   ];
+
+  if (onToggleState) {
+    items.push({ label: 'Toggle Link State', icon: <Power size={12} />, action: onToggleState });
+  }
+
+  items.push({ label: 'Delete', icon: <Trash2 size={12} />, action: onDelete, danger: true });
+
+  return items;
 }
 
 export default ContextMenu;
