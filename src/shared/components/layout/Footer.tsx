@@ -94,8 +94,8 @@ const Footer: React.FC = React.memo(() => {
 
   return (
     <footer className="relative w-full overflow-hidden select-none bg-bg">
-      <div className="px-3 py-10 md:px-12 md:py-20 lg:px-20">
-        <div className="mx-auto max-w-[1600px]">
+      <div className="px-3 py-10 md:px-4 md:py-20 lg:px-6">
+        <div className="w-full">
 
           {/* ── Top: Brand | Nav grid ─────────────────────────────────────── */}
           <div className="grid grid-cols-1 gap-12 lg:grid-cols-[minmax(0,340px)_1fr] lg:gap-20 xl:gap-32">
