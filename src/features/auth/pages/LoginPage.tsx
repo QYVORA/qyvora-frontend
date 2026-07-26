@@ -395,7 +395,7 @@ const LoginPage: React.FC = () => {
           </button>
         </div>
         
-        <div className="relative z-10 flex items-center justify-center min-h-dvh px-4 pt-24 pb-12 overflow-y-auto">
+        <div className="relative z-10 flex items-center justify-center min-h-dvh px-3 pt-24 pb-12 overflow-y-auto">
           <div className="w-full max-w-md my-auto">
             <AuthForm />
           </div>
@@ -434,7 +434,7 @@ const LoginPage: React.FC = () => {
           </ul>
 
           {/* Right column form - positioned absolutely to overlay */}
-          <div className="absolute right-0 top-0 h-full w-1/2 flex items-center justify-center px-16 xl:px-20 py-24 overflow-y-auto">
+          <div className="absolute right-0 top-0 h-full w-1/2 flex items-center justify-center px-3 md:px-4 lg:px-6 py-24 overflow-y-auto">
             <div className="w-full max-w-md my-auto">
               <AuthForm />
             </div>
