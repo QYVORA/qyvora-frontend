@@ -2,11 +2,11 @@ import React, { useEffect, useRef, useState, useMemo } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import {
   ArrowLeft, ChevronRight, Lock, CheckCircle2,
-  BookOpen, Loader2, ArrowRight, Play, ListChecks,
-  BarChart3, Layers, Trophy, Github, FileText, TrendingUp, MapIcon,
+  Loader2, ArrowRight, Play, ListChecks,
+  BarChart3, Layers, Trophy, Github, FileText, TrendingUp,
 } from 'lucide-react';
 import { AnimatePresence, motion } from 'motion/react';
-import { BOOTCAMP_CONFIG, PHASE_COLORS } from '@/features/student/constants/bootcampConfig';
+import { BOOTCAMP_CONFIG } from '@/features/student/constants/bootcampConfig';
 import ScrollReveal from '@/shared/components/ScrollReveal';
 import api from '@/core/services/api';
 import { useToast } from '@/core/contexts/ToastContext';
@@ -146,7 +146,6 @@ const BootcampCourse: React.FC = () => {
       <div className=" px-3 md:px-4 lg:px-6 pt-8 pb-20 lg:pb-24 space-y-8">
 
         <StudentHeroSection
-          icon={<BookOpen className="w-8 h-8 text-accent" />}
           title={course?.title || 'Bootcamp'}
           description={syncError || `Track your progress through ${course?.title || 'the bootcamp'}. ${formatSyncLabel(lastSync)}`}
           stats={[
@@ -169,43 +168,6 @@ const BootcampCourse: React.FC = () => {
           activeFilter={activePhase}
           onFilterChange={setActivePhase}
         />
-
-        <div className="border border-border/30 rounded-2xl bg-bg-card p-5 md:p-6">
-          <div className="flex items-center gap-2 mb-5">
-            <MapIcon className="h-4 w-4 text-accent" />
-            <span className="text-[10px] font-black uppercase tracking-widest text-accent">Journey Map</span>
-          </div>
-          <div className="flex flex-wrap gap-3">
-            {BOOTCAMP_CONFIG.phases.map((phase, idx) => {
-              const color = PHASE_COLORS[phase.id] || 'var(--color-accent)';
-              const modProgress = moduleProgressMap.get(idx + 1);
-              const isComplete = modProgress && Number(modProgress.progress) === 100;
-              const isCurrent = !isComplete && (!moduleProgressMap.get(idx) || Number(moduleProgressMap.get(idx)?.progress) === 100);
-              return (
-                <div key={phase.id} className="flex-1 min-w-[120px]">
-                  <div
-                    className={`rounded-lg border px-3 py-2.5 transition-all ${
-                      isComplete ? 'border-accent/30 bg-accent-dim' :
-                      isCurrent ? 'border-accent/50 bg-accent-dim/30' :
-                      'border-border/20 bg-bg-elevated'
-                    }`}
-                  >
-                    <div className="flex items-center gap-2 mb-1">
-                      <div className="w-2 h-2 rounded-full" style={{ backgroundColor: color }} />
-                      <span className="text-[9px] font-black uppercase tracking-widest text-text-muted">{phase.codename}</span>
-                    </div>
-                    <p className="text-xs font-bold text-text-primary truncate">{phase.title}</p>
-                    {modProgress && (
-                      <div className="mt-1.5 h-1 bg-bg-elevated rounded-full overflow-hidden">
-                        <div className="h-full transition-all duration-700 rounded-full" style={{ width: `${modProgress.progress}%`, backgroundColor: color }} />
-                      </div>
-                    )}
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        </div>
 
         {nextRoomLabel && nextRoomLabel.path && !nextRoomLabel.path.includes('undefined') && (
           <div className="border border-accent/20 rounded-2xl bg-accent-dim/20 p-5">
