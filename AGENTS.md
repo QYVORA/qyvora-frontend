@@ -98,8 +98,10 @@ All public/marketing page heroes use the `PublicHeroSection` wrapper from `@/sha
 - `GridBoxedBackground` with dark bg (`bg-bg`)
 - Optional `HackerGlobe` (hidden on mobile via `hidden md:flex`)
 - 2-column grid on `lg:`, single-column on mobile
-- Left column padding: `px-4 sm:px-10 md:px-12 lg:pl-16 xl:pl-20 lg:pr-8 xl:pr-12 pt-20 sm:pt-20 lg:pt-24 pb-14 sm:pb-16 lg:pb-16`
+- Left column padding: `px-3 md:px-4 lg:px-6 pt-20 sm:pt-20 lg:pt-24 pb-14 sm:pb-16 lg:pb-16`
 - Inner text wrapper: `space-y-5 sm:space-y-6`
+- **Desktop view must not be modified** — keep `lg:grid-cols-2`, `lg:items-center`, `md:h-dvh`
+- **CTA buttons on mobile**: use `mt-auto` to push them to the bottom of the flex column
 
 **Text color convention on dark hero backgrounds:**
 
@@ -143,12 +145,15 @@ flex flex-col sm:flex-row items-stretch sm:items-center gap-4 pt-2
 
 ## Container Widths
 
-| Context | Max Width |
-|---------|-----------|
-| Full page (marketing) | `max-w-[1600px]` |
-| Dashboard / admin | `max-w-6xl` |
-| Auth forms | `max-w-lg` |
-| Modals | `max-w-xl` to `max-w-2xl` |
+The entire site uses a **unified stretched layout** — no max-width constraints on page containers. Content fills the viewport width with consistent side padding.
+
+| Context | Max Width | Side Padding |
+|---------|-----------|--------------|
+| All pages (landing, public, auth, dashboard) | **None** (full width) | `px-3 md:px-4 lg:px-6` |
+| Auth form wrappers | `max-w-lg` / `max-w-md` (form only) | Inherited from parent |
+| Modals | `max-w-xl` to `max-w-2xl` | Modal handles own padding |
+
+**Rule: Never add `max-w-[1600px]`, `max-w-6xl`, or similar constraints to page-level containers.** Content should stretch edge-to-edge with only the standard `px-3 md:px-4 lg:px-6` side padding. The student dashboard is the reference — all pages follow its pattern.
 
 ## Empty State Icons
 
@@ -208,3 +213,92 @@ Pass icons at `w-10 h-10` or `w-12 h-12` to the shared `EmptyState` component.
 - Auth: `Authorization: Bearer <token>` header
 - CSRF: Double-submit cookie (`csrf_token` cookie + `X-CSRF-Token` header)
 - All requests go through `src/core/services/api.ts` (Axios instance)
+
+## Layout System (Unified Stretched Layout)
+
+All pages across the site use the same stretched layout pattern, matching the student dashboard. This ensures a uniform UI with minimal side spacing.
+
+**Standard side padding (applied everywhere):**
+```
+px-3 md:px-4 lg:px-6
+```
+
+**Reference: Student Dashboard** — `px-3 md:px-4 lg:px-6` with no max-width. All other pages follow this.
+
+### Navbar
+
+- File: `src/shared/components/layout/Navbar.tsx`
+- Padding: `px-3 md:px-4 lg:px-6` (matches dashboard)
+- **Scroll hide/show behavior**: Works on ALL screen sizes (mobile + desktop)
+  - Hides on scroll down, reappears on scroll up
+  - Attached to `.snap-container` if present, otherwise `window`
+- Height: `h-[80px]`
+
+### Footer
+
+- File: `src/shared/components/layout/Footer.tsx`
+- Outer padding: `px-3 py-10 md:px-4 md:py-20 lg:px-6`
+- No max-width constraint on inner container
+
+### Landing Page Sections
+
+All snap sections (`min-h-dvh md:h-dvh`) use:
+- Side padding: `px-3 md:px-4 lg:px-6`
+- No `max-w-6xl` or `max-w-[1600px]` on inner containers
+
+**Sections with bento grids (Labs, Bootcamp, Courses, Pillars, Services):**
+- Top padding: `pt-24 md:pt-28 lg:pt-32` (clears 80px fixed navbar)
+- Bottom padding: `pb-6 md:pb-8 lg:pb-10`
+- Compact section headers: `text-lg md:text-xl lg:text-2xl font-black` with `mb-2 md:mb-3`
+- No section descriptions — title only
+
+**Sections with sidebar layouts (Team, QuiteRoot, Anansi, Blogs, Market, Leaderboard):**
+- Padding: `py-12 sm:py-10 md:py-16 lg:py-20`
+
+### Auth Pages
+
+- `AuthFormLayout`: form column uses `px-3 md:px-4 lg:px-6 py-12 md:py-16`
+- `LoginPage` desktop: form overlay uses `px-3 md:px-4 lg:px-6`
+- `LoginPage` mobile: uses `px-3`
+- Auth form wrappers keep `max-w-lg` / `max-w-md` for the form itself
+
+### Public Pages
+
+- `PublicProfilePage`: `px-3 md:px-4 lg:px-6` (no max-width)
+- `BlogPostPage`: all containers use `px-3 md:px-4 lg:px-6`
+- `BlogsPage`: `px-3 md:px-4 lg:px-6`
+- `TermsContentSection`: `px-3 md:px-4 lg:px-6`
+
+## Product Cards (Marketplace / Dashboard)
+
+Product cards use a consistent pattern across the site:
+
+**Card structure:**
+```
+border border-border/30 bg-bg-card rounded-2xl overflow-hidden
+  ├── Cover image area: aspect-[16/9] with AuthImage + gradient overlay
+  └── Content area: p-4 with title, description, price, actions
+```
+
+**Key rules:**
+- **Never use `aspect-square`** on product cards — use `aspect-[16/9]` for the cover image
+- Use `AuthImage` component (from `@/shared/components/ui`) for product images — they are behind auth (`/uploads/cp-products/`, `/uploads/bootcamps/`)
+- Fallback image: `import productFallbackImg from '@/assets/sections/stats/cp-earned-bg.webp'`
+- Cover image gradient: `bg-gradient-to-t from-bg-card via-transparent to-transparent`
+- Hover effect: `group-hover:scale-105` on the image with `transition-transform duration-500`
+
+**Files:**
+- Marketplace: `src/features/student/pages/MarketplacePage.tsx`
+- Dashboard: `src/features/student/pages/DashboardPage/index.tsx` (`DashboardProductCard`)
+
+## Terms Page Layout
+
+- Desktop: horizontal accordion strips (expand/collapse on click)
+- Mobile: stacked terminal-style cards (always expanded)
+- Uses `AnimatePresence` from `motion/react` for expand/collapse animation
+- Each strip has: section number (`text-accent/60`), title, chevron indicator
+- Content padding: `px-5 pb-5 pl-15` inside expanded strips
+
+## Removed Components
+
+- **CardGrid** (`src/shared/components/card-grid/`) — removed, was unused. Never add it back.
