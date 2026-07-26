@@ -132,7 +132,6 @@ const MyCoursesPage: React.FC = () => {
       <div className=" px-3 md:px-4 lg:px-6 pt-8 pb-20 lg:pb-24 space-y-8">
 
         <StudentHeroSection
-          icon={<GraduationCap className="w-8 h-8 text-accent" />}
           title={t('student.myCourses.title')}
           description={t('student.myCourses.description')}
           stats={[

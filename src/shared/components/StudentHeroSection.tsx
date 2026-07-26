@@ -7,7 +7,7 @@ interface StudentHeroStat {
 }
 
 interface StudentHeroSectionProps {
-  icon: React.ReactNode;
+  icon?: React.ReactNode;
   title: string;
   accentWord?: string;
   description: string;
@@ -21,19 +21,13 @@ interface StudentHeroSectionProps {
   };
 }
 
-export function StudentHeroSection({ icon, title, accentWord, description, stats, children }: StudentHeroSectionProps) {
+export function StudentHeroSection({ title, accentWord, description, stats, children }: StudentHeroSectionProps) {
   return (
     <div className="relative h-[calc(100dvh-5rem)] md:h-[calc(100dvh-6rem)] flex flex-col justify-center overflow-hidden">
       <GridBoxedBackground opacity={0.3} blur={0} mask="none" />
 
       <div className="relative z-10 px-3 md:px-4 lg:px-6 py-12 md:py-16">
         <div className="w-full space-y-8">
-          <div className="flex items-center gap-4">
-            <div className="w-16 h-16 rounded-2xl bg-accent/10 border border-accent/20 flex items-center justify-center shrink-0">
-              {icon}
-            </div>
-          </div>
-
           <h1 className="text-5xl md:text-7xl lg:text-8xl font-black text-text-primary tracking-tight leading-[1.05]">
             {title}{' '}
             {accentWord && <span className="text-accent">{accentWord}</span>}

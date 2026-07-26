@@ -1,6 +1,6 @@
 import { useState, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { FlaskConical, Search } from 'lucide-react';
+import { Search } from 'lucide-react';
 import SEO from '@/shared/components/SEO';
 import LabCard from './LabCard';
 import StudentHeroSection from '@/shared/components/StudentHeroSection';
@@ -71,7 +71,6 @@ const LabsPage = () => {
       <div className=" px-3 md:px-4 lg:px-6 pt-8 pb-20 lg:pb-24 space-y-8">
 
         <StudentHeroSection
-          icon={<FlaskConical className="w-8 h-8 text-accent" />}
           title={t('student.labs.title')}
           description={t('student.labs.description')}
           stats={[
