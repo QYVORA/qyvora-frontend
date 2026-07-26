@@ -238,7 +238,7 @@ const LandingCoursesSection: React.FC = () => {
                     <button
                       key={course.id}
                       onClick={() => setSelectedCourseId(course.id)}
-                      className="group/card relative rounded-2xl border border-border/30 bg-bg-card p-3 md:p-5 transition-all duration-300 hover:border-accent/30 flex flex-col text-left"
+                      className="group/card relative aspect-square rounded-2xl border border-border/30 bg-bg-card p-3 md:p-5 transition-all duration-300 hover:border-accent/30 flex flex-col text-left"
                     >
                       <div className="flex items-center gap-2 mb-2">
                         <div className="w-8 h-8 rounded-xl flex items-center justify-center shrink-0 bg-accent/10 border border-accent/20">
@@ -251,21 +251,23 @@ const LandingCoursesSection: React.FC = () => {
                         )}
                       </div>
 
-                      <h4 className="text-sm font-black text-text-primary tracking-tight mb-1 leading-snug">
+                      <h4 className="text-sm sm:text-base md:text-lg lg:text-xl font-black text-text-primary tracking-tight mb-1 leading-snug">
                         {t(`landing.courses.list.${course.tKey}.title`)}
                       </h4>
-                      <p className="text-xs text-text-muted leading-relaxed mb-2 line-clamp-2 flex-1">
+                      <p className="text-xs sm:text-sm md:text-base text-text-muted leading-relaxed mb-2 line-clamp-3 flex-1">
                         {t(`landing.courses.list.${course.tKey}.desc`)}
                       </p>
 
                       <div className="flex items-center justify-between mt-auto pt-2 border-t border-border/20">
                         <div className="flex items-center gap-2">
-                          <span className="text-[9px] font-black uppercase tracking-widest px-2 py-0.5 rounded-full border border-accent/20 bg-accent/10 text-accent">
+                          <span className="text-[9px] sm:text-[10px] font-black uppercase tracking-widest px-2 py-0.5 rounded-lg border border-accent/20 bg-accent/10 text-accent">
                             {t(`landing.courses.level.${course.level}`)}
                           </span>
-                          <span className="text-[9px] text-text-muted/60 font-mono">{course.minutes}m</span>
+                          <span className="text-[9px] sm:text-[10px] font-black uppercase tracking-widest text-text-muted">{course.minutes}m</span>
                         </div>
-                        <IconArrowRight size={14} className="text-text-muted/40 group-hover/card:text-accent transition-colors" />
+                        <span className="px-3 py-1.5 rounded-lg text-[9px] sm:text-[10px] md:text-xs font-black uppercase tracking-widest bg-accent text-bg transition-all duration-200 group-hover/card:brightness-110 group-active:scale-95">
+                          {t('landing.courses.viewCourse', { defaultValue: 'View' })}
+                        </span>
                       </div>
                     </button>
                   );
