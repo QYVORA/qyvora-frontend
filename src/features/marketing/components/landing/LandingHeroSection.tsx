@@ -150,7 +150,7 @@ const LandingHeroSection: React.FC<LandingHeroSectionProps> = ({
         {/* ── Left column - Hero Text Area ── */}
         <div className="
           flex flex-col items-start lg:justify-center
-          px-4 sm:px-10 md:px-12 lg:pl-16 xl:pl-20 lg:pr-8 xl:pr-12
+          px-3 md:px-4 lg:px-6
           pt-20 sm:pt-20 lg:pt-24
           pb-14 sm:pb-16 lg:pb-16
           space-y-0
@@ -215,7 +215,7 @@ const LandingHeroSection: React.FC<LandingHeroSectionProps> = ({
             initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={minimizeEffects ? { duration: 0.2 } : { duration: 0.5, delay: 0.85, ease: [0.16, 1, 0.3, 1] }}
-            className="flex flex-col sm:flex-row w-full sm:w-auto items-stretch sm:items-center gap-4 mt-16 sm:mt-12 lg:mt-9"
+            className="flex flex-col sm:flex-row w-full sm:w-auto items-stretch sm:items-center gap-4 mt-auto sm:mt-12 lg:mt-9"
           >
             {user ? (
               <Link to="/dashboard" className="btn-primary flex items-center justify-center gap-2.5 !px-8 sm:!px-10 !py-3 sm:!py-4">
