@@ -172,7 +172,7 @@ const Marketplace: React.FC = () => {
           </div>
 
           {tab === 'market' ? (
-            <div className="grid grid-cols-1 gap-4 lg:grid-cols-2 px-1 md:px-0">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 px-1 md:px-0">
               {filtered.length === 0 ? (
                 <div className="col-span-full relative overflow-hidden py-20 text-center rounded-3xl border-2 border-dashed border-border/20 bg-transparent">
                   <BookOpen className="w-12 h-12 text-text-muted mx-auto mb-4 opacity-40" />
@@ -184,26 +184,29 @@ const Marketplace: React.FC = () => {
                   const hasPurchased = purchased.has(id);
                   return (
                     <motion.div key={id || idx} initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.45, delay: idx * 0.08, ease: [0.16, 1, 0.3, 1] }}>
-                      <div className="group overflow-hidden flex flex-col w-full border border-border/30 bg-bg-card rounded-2xl transition-all duration-300 hover:border-accent/30 hover:scale-[1.01]">
-                        <div className="relative aspect-video overflow-hidden rounded-t-2xl shadow-sm">
-                          <AuthImage src={prod.coverUrl} fallback={productFallbackImg} alt={prod.title} width={1200} height={675} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy" />
-                          <div className="absolute top-4 left-4 flex items-center gap-2">
-                            {hasPurchased && <span className="px-2.5 py-1 bg-accent text-bg rounded text-[9px] font-black uppercase tracking-widest shadow-md">{t('student.marketplace.owned')}</span>}
-                            {prod.isFree && !hasPurchased && <span className="px-2.5 py-1 bg-accent text-bg rounded text-[9px] font-black uppercase tracking-widest shadow-md">{t('student.marketplace.public')}</span>}
+                      <div className="group flex flex-col aspect-square overflow-hidden w-full border border-border/30 bg-bg-card rounded-2xl transition-all duration-300 hover:border-accent/30">
+                        <div className="flex flex-col gap-2 p-4 sm:p-5 md:p-6 lg:p-7 flex-1">
+                          <div className="flex items-center gap-2">
+                            <span className="px-2 py-0.5 bg-bg/85 backdrop-blur-sm rounded-lg text-[9px] font-black uppercase text-accent tracking-widest border border-accent/20 flex items-center gap-1">
+                              <ShoppingBag className="h-2.5 w-2.5" /> {t('student.marketplace.intelligenceAsset')}
+                            </span>
+                            {hasPurchased && <span className="px-2 py-0.5 bg-accent text-bg rounded-lg text-[9px] font-black uppercase tracking-widest">{t('student.marketplace.owned')}</span>}
+                            {prod.isFree && !hasPurchased && <span className="px-2 py-0.5 bg-accent text-bg rounded-lg text-[9px] font-black uppercase tracking-widest">{t('student.marketplace.public')}</span>}
                           </div>
-                          <div className="absolute bottom-4 left-4"><span className="inline-flex items-center gap-2 px-3 py-1 bg-bg/85 backdrop-blur-md rounded-lg text-[9px] font-black uppercase text-text-primary tracking-widest shadow-sm"><ShoppingBag className="h-3 w-3 text-accent" /> {t('student.marketplace.intelligenceAsset')}</span></div>
-                        </div>
-                        <div className="flex flex-1 flex-col p-4 sm:p-5">
-                          <h3 className="mb-1.5 text-sm sm:text-base font-black leading-snug text-text-primary group-hover:text-accent transition-colors tracking-tight line-clamp-1">{prod.title}</h3>
-                          <p className="text-[11px] text-text-muted/70 mb-4 line-clamp-2 leading-relaxed font-mono">{prod.description || t('student.marketplace.defaultDescription')}</p>
-                          <div className="mt-auto flex items-center justify-between gap-4">
+                          <h3 className="text-sm sm:text-base md:text-lg lg:text-xl font-black leading-snug text-text-primary group-hover:text-accent transition-colors tracking-tight line-clamp-2">
+                            {prod.title}
+                          </h3>
+                          <p className="text-xs sm:text-sm md:text-base text-text-muted leading-relaxed line-clamp-3 flex-1">
+                            {prod.description || t('student.marketplace.defaultDescription')}
+                          </p>
+                          <div className="flex items-center justify-between mt-auto pt-2">
                             <div className="flex items-center gap-1.5">
-                               {prod.isFree ? <span className="text-[11px] font-black text-accent uppercase tracking-widest">{t('student.marketplace.freeAccess')}</span> : <><CpLogo className="h-4 w-4" /><span className="font-mono text-sm font-black text-text-primary">{Number(prod.cpPrice || 0).toLocaleString()}</span></>}
+                               {prod.isFree ? <span className="text-[9px] sm:text-[10px] font-black uppercase tracking-widest text-accent">{t('student.marketplace.freeAccess')}</span> : <><CpLogo className="h-4 w-4" /><span className="font-mono text-sm font-black text-text-primary">{Number(prod.cpPrice || 0).toLocaleString()}</span></>}
                             </div>
                             {(hasPurchased || prod.isFree) ? (
-                              <button onClick={() => handleDownload(prod)} disabled={downloading === id} className="bg-accent text-bg px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest shadow-lg shadow-accent/20 transition-all hover:brightness-110 active:scale-[0.98] disabled:opacity-50 flex items-center gap-1.5">{downloading === id ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Download className="h-3.5 w-3.5" />} {t('student.marketplace.download')}</button>
+                              <button onClick={() => handleDownload(prod)} disabled={downloading === id} className="px-3 py-1.5 rounded-lg text-[9px] sm:text-[10px] md:text-xs font-black uppercase tracking-widest bg-accent text-bg transition-all duration-200 hover:brightness-110 active:scale-95 disabled:opacity-50 flex items-center gap-1.5">{downloading === id ? <Loader2 className="h-3 w-3 animate-spin" /> : <Download className="h-3 w-3" />} {t('student.marketplace.download')}</button>
                             ) : (
-                              <button onClick={() => handlePurchase(prod)} disabled={purchasing === id} className={`bg-accent text-bg px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest shadow-lg shadow-accent/20 transition-all hover:brightness-110 active:scale-[0.98] disabled:opacity-50 flex items-center gap-1.5 ${shakePurchase === id ? 'animate-shake-x' : ''}`} onAnimationEnd={() => setShakePurchase(null)}>{purchasing === id ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <><ShoppingBag className="h-3.5 w-3.5" /> {t('student.marketplace.unlock')}</>}</button>
+                              <button onClick={() => handlePurchase(prod)} disabled={purchasing === id} className={`px-3 py-1.5 rounded-lg text-[9px] sm:text-[10px] md:text-xs font-black uppercase tracking-widest bg-accent text-bg transition-all duration-200 hover:brightness-110 active:scale-95 disabled:opacity-50 flex items-center gap-1.5 ${shakePurchase === id ? 'animate-shake-x' : ''}`} onAnimationEnd={() => setShakePurchase(null)}>{purchasing === id ? <Loader2 className="h-3 w-3 animate-spin" /> : <><ShoppingBag className="h-3 w-3" /> {t('student.marketplace.unlock')}</>}</button>
                             )}
                           </div>
                         </div>
