@@ -395,8 +395,8 @@ const LoginPage: React.FC = () => {
           </button>
         </div>
         
-        <div className="relative z-10 flex items-center justify-center min-h-dvh px-3 pt-24 pb-12 overflow-y-auto">
-          <div className="w-full max-w-md my-auto">
+        <div className="relative z-10 flex flex-col min-h-dvh px-3 pt-24 pb-12 overflow-y-auto">
+          <div className="w-full my-auto">
             <AuthForm />
           </div>
         </div>
