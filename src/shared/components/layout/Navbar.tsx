@@ -40,11 +40,8 @@ const Navbar: React.FC = React.memo(() => {
   const hoverTimeoutRef                          = useRef<ReturnType<typeof setTimeout> | null>(null);
   const inverted                                 = useNavInvert();
 
-  // Hide navbar on scroll down, show on scroll up (desktop only, snap-scroll pages)
+  // Hide navbar on scroll down, show on scroll up (snap-scroll pages)
   useEffect(() => {
-    const mq = window.matchMedia('(min-width: 768px)');
-    if (!mq.matches) return;
-
     let scrollEl: Element | null = null;
     let lastY = 0;
 
