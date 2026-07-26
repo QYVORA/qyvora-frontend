@@ -825,7 +825,11 @@ This lesson wraps up the Linux Terminal 101 course. You now have the essential s
 
   'windows-cmd-101': [
     l('wc-1', 'Command Prompt vs PowerShell',
-      `Windows has two command-line interfaces: **Command Prompt (CMD)** and **PowerShell**. CMD is the traditional tool, while PowerShell is more modern and powerful.
+      `Windows has two command-line interfaces: **Command Prompt (CMD)** and **PowerShell**. CMD is the traditional tool, while PowerShell is more modern and powerful. Understanding both is essential — the vast majority of enterprise environments run Windows, from corporate offices to government agencies. If you want to work in cybersecurity or IT, Windows command-line skills are non-negotiable.
+
+**Why the command line matters for security:** GUIs are great for everyday tasks, but the command line gives you direct access to the operating system's internals. Many security tools, penetration testing frameworks, and automation scripts operate through the command line. When you're doing incident response or forensics, you often can't rely on a graphical interface — you need to know the commands by heart.
+
+**Key differences from Linux:** If you've used Linux, you'll notice some important differences right away. Windows uses **drive letters** (like \`C:\`, \`D:\`) instead of a single root directory \`/\`. Paths use **backslashes** (\`\\\`) instead of forward slashes (\`/\`). For example, a file path on Windows looks like \`C:\\Users\\YourName\\Desktop\\file.txt\` while on Linux it would be \`/home/user/Desktop/file.txt\`.
 
 Open CMD by pressing \`Win + R\`, typing \`cmd\`, and pressing Enter. You'll see:
 
@@ -833,7 +837,10 @@ Open CMD by pressing \`Win + R\`, typing \`cmd\`, and pressing Enter. You'll see
 C:\\Users\\YourName>
 \`\`\`
 
-This is the prompt. Your current directory is \`C:\\Users\\YourName\`. The \`>\` waits for your command.
+This is the **command prompt**. It tells you:
+- **C:** — the current drive (usually the system drive)
+- **\\Users\\YourName** — your current directory (working folder)
+- **>** — indicates the shell is waiting for your command
 
 Try your first command:
 
@@ -841,10 +848,16 @@ Try your first command:
 echo Hello, Hacker!
 \`\`\`
 
-**PowerShell** has a blue background and uses different commands (\`Get-ChildItem\` instead of \`dir\`). For this course, we'll focus on CMD since it's universal on Windows.`),
+The \`echo\` command prints text back to you — it's the simplest way to verify that the command line is working. This is the Windows equivalent of the Linux terminal's first lesson.
+
+**PowerShell** has a blue background and uses different commands (\`Get-ChildItem\` instead of \`dir\`). PowerShell is more powerful because it works with **objects** rather than plain text, making it easier to filter, sort, and process data programmatically. For this course, we'll focus on CMD since it's universal on Windows and provides the foundational skills you need before moving to PowerShell.`),
 
     l('wc-2', 'Navigation & File Management',
-      `Navigating Windows from the command line is similar to Linux but uses different commands.
+      `Navigating Windows from the command line is similar to Linux but uses different commands and path conventions. Before you can manage files, you need to understand the concept of a **working directory** — the folder you're currently "in" when you type a command. Every command you run operates relative to this directory unless you specify a full path.
+
+**Why path separators matter:** One of the first things you'll notice is that Windows uses **backslashes** (\`\\\`) to separate directories in a path, while Linux uses **forward slashes** (\`/\`). This matters because using the wrong separator will break your commands. A Windows path looks like \`C:\\Users\\Admin\\Desktop\` while a Linux path looks like \`/home/admin/Desktop\`. Getting this wrong is one of the most common mistakes when switching between systems.
+
+**Understanding drive letters:** Unlike Linux, which has a single root directory (\`/\`), Windows organizes storage into **drive letters** like \`C:\` (typically the system drive), \`D:\` (often a secondary data drive or optical drive), and so on. Each drive has its own directory tree. This is important for forensics and penetration testing because evidence or target files might be on different drives.
 
 \`\`\`cmd
 dir                    List files and folders
@@ -860,26 +873,34 @@ rmdir /s folder        Remove folder and contents
 type file.txt          Display file contents
 \`\`\`
 
-Unlike Linux, Windows uses backslashes (\`\\\`) for paths and drive letters (\`C:\`, \`D:\`).
+The \`dir\` command lists the contents of your current directory — it's the Windows equivalent of Linux's \`ls\`. The \`cd\` command changes your working directory, and \`cd ..\` moves up one level. The \`type\` command displays a file's contents, similar to \`cat\` on Linux.
+
+Unlike Linux, Windows uses backslashes (\`\\\`) for paths and drive letters (\`C:\`, \`D:\`). Switching between drives requires a special command because each drive has its own current directory:
 
 \`\`\`cmd
 C:> D:          Switch to D: drive
 C:> cd /D E:\\projects    Switch to a different drive and folder
-\`\`\``),
+\`\`\`
+
+The \`/D\` flag with \`cd\` lets you switch both the drive and directory in one command. Without it, \`cd E:\\projects\` would change the directory on the current drive instead.`),
 
     l('wc-3', 'System Information',
-      `Windows provides powerful commands to inspect system configuration.
+      `Windows provides powerful commands to inspect system configuration. System reconnaissance — gathering information about a target system — is one of the first steps in both penetration testing and incident response. You need to know what you're working with before you can find vulnerabilities or investigate an breach.
+
+**Why system information matters for security:** Knowing the operating system version tells you which exploits might work. Knowing the installed patches tells you which vulnerabilities have been fixed. Knowing the running processes reveals what software is active and potentially vulnerable. Knowing user accounts shows you who has access and what privilege levels exist. This information helps you understand the attack surface of a system.
 
 \`\`\`cmd
 systeminfo          Detailed system information (OS, RAM, BIOS)
 \`\`\`
 
-This shows your Windows version, install date, memory, network adapters, and more.
+The \`systeminfo\` command is a goldmine of information. It shows your Windows version, installation date, available memory, network adapters, installed hotfixes (security patches), and BIOS version. Each piece of this tells you something important — for example, missing hotfixes indicate unpatched vulnerabilities.
 
 \`\`\`cmd
 tasklist            List all running processes
 tasklist /SVC       Show services behind each process
 \`\`\`
+
+Running processes tell you what software is active on the system. The \`/SVC\` flag reveals which Windows services are hosted inside each process — this is useful for identifying suspicious processes that might be malware masquerading as legitimate services.
 
 Stop a process:
 
@@ -888,30 +909,42 @@ taskkill /PID 1234        Stop by process ID
 taskkill /IM notepad.exe  Stop by image name
 \`\`\`
 
+The \`/PID\` flag targets a process by its unique ID number, while \`/IM\` targets by the executable name. In incident response, you might use this to terminate a malicious process. In penetration testing, you might stop a security service temporarily.
+
 \`\`\`cmd
 whoami              Your current username
 net user            List all user accounts on the system
 hostname            The computer's network name
 \`\`\`
 
+These identity commands are critical. \`whoami\` shows your current user and privileges — this tells you what you can access. \`net user\` reveals all user accounts on the system, including hidden or administrative accounts that might indicate compromise. \`hostname\` identifies the machine on the network, which is essential when you're working across multiple systems.
+
 These commands help you understand the Windows system you're working on — essential for both defense and offense.`),
 
     l('wc-4', 'Network Commands',
-      `Windows has built-in network commands for troubleshooting and reconnaissance.
+      `Windows has built-in network commands for troubleshooting and reconnaissance. Network reconnaissance is a critical skill in cybersecurity — it's how you discover what's on a network, how it's connected, and where potential vulnerabilities might exist.
+
+**Why network reconnaissance matters:** Before you can test a system's security, you need to understand its network footprint. What IP address does it use? What ports are open? What services are running? What DNS servers does it use? These answers help you map out the attack surface and identify the best points of entry.
 
 \`\`\`cmd
 ipconfig            Show IP configuration
 ipconfig /all       Detailed info (MAC address, DNS, DHCP)
 \`\`\`
 
+The \`ipconfig\` command shows your network interface details — your IP address, subnet mask, and default gateway. The \`/all\` flag adds your MAC address, DNS servers, and DHCP server information. This is your starting point for understanding your position on the network. The DNS server reveals where your domain queries go, and the DHCP server tells you which device分配s IP addresses on the network.
+
 \`\`\`cmd
 ping 8.8.8.8        Test connectivity to a host
 ping -n 10 google.com    Send 10 pings
 \`\`\`
 
+The \`ping\` command tests whether a remote host is reachable by sending ICMP echo requests. The \`-n\` flag controls how many packets to send. In penetration testing, ping is used to determine which hosts are alive on a network before scanning them for open ports and services.
+
 \`\`\`cmd
 tracert google.com  Trace the route packets take
 \`\`\`
+
+The \`tracert\` command shows every router (hop) your packets pass through to reach a destination. Each hop reveals a network device along the path. This helps you understand the network topology and identify potential points where traffic could be intercepted or filtered.
 
 Each hop shows a router along the path between you and the destination.
 
@@ -919,16 +952,24 @@ Each hop shows a router along the path between you and the destination.
 nslookup google.com     DNS lookup — find IP address of a domain
 \`\`\`
 
+The \`nslookup\` command queries DNS servers to translate domain names into IP addresses. This is essential for reconnaissance — you need to know a target's IP address before you can scan or attack it. It also reveals the DNS infrastructure, which can be a target itself.
+
 \`\`\`cmd
 netstat -an             Show all active network connections and listening ports
 netstat -an | findstr "LISTEN"    Show only listening ports
 netstat -an | findstr ":80"       Show connections on port 80
 \`\`\`
 
-The \`| findstr\` command is CMD's equivalent of \`grep\`. It filters text.`),
+The \`netstat\` command is one of the most important networking tools. It shows all active network connections and which ports are listening for incoming connections. Open ports indicate running services — and each service is a potential entry point. The \`-a\` flag shows all connections and listening ports, while \`-n\` displays addresses and port numbers in numeric format (faster and clearer than DNS names).
+
+The \`| findstr\` command is CMD's equivalent of \`grep\`. It filters text output, letting you search for specific patterns in command results — an essential skill when dealing with large amounts of data.`),
 
     l('wc-5', 'Scripting Basics',
-      `Batch files (.bat) let you chain multiple CMD commands into a reusable script.
+      `Batch files (.bat) let you chain multiple CMD commands into a reusable script. Automation is a core skill in cybersecurity — whether you're running a series of reconnaissance commands, deploying a tool across multiple machines, or creating a quick incident response checklist, scripting saves time and ensures consistency.
+
+**Why automation matters in security:** When you're performing a penetration test or responding to an incident, you often need to run the same sequence of commands repeatedly. Writing them into a script ensures you don't forget a step, can reproduce your actions for documentation, and can execute them quickly under pressure.
+
+**Understanding batch file structure:** A batch file is simply a text file with a \`.bat\` extension containing CMD commands that execute in order, line by line. The \`@echo off\` line at the top prevents the commands themselves from being printed — only the output shows. This makes the script output cleaner and easier to read.
 
 Create a file called \`scan.bat\`:
 
@@ -945,9 +986,9 @@ ipconfig /displaydns
 pause
 \`\`\`
 
-Run it by double-clicking or typing \`scan.bat\` in CMD.
+Run it by double-clicking or typing \`scan.bat\` in CMD. The \`pause\` command at the end keeps the window open so you can read the output before it closes.
 
-**PowerShell one-liners** are more powerful:
+**PowerShell one-liners** are more powerful because PowerShell works with objects instead of text. This means you can filter, sort, and process data in ways that are impossible with plain text:
 
 \`\`\`powershell
 Get-Process | Where-Object CPU -gt 10
@@ -960,6 +1001,8 @@ Get-Service | Where-Object Status -eq "Running"
 # List all running services
 \`\`\`
 
+The pipe operator (\`|\`) sends the output of one command into the next, building complex operations from simple building blocks. This object-oriented approach is what makes PowerShell significantly more capable than CMD for complex automation tasks.
+
 Scripting turns manual tasks into automated workflows — a core skill for any Windows operator.`, { hasQuiz: true, quiz: [
         { id: 'wc-5-q1', question: 'How do you create a reusable batch script on Windows?', options: ['Save commands in a .bat file', 'Save commands in a .exe file', 'Save commands in a .ps1 file', 'Save commands in a .cmd file'], correctIndex: 0, explanation: 'Batch files use the .bat extension and contain CMD commands that execute sequentially.' },
         { id: 'wc-5-q2', question: 'What is the PowerShell equivalent of `dir`?', options: ['ls', 'Get-ChildItem', 'List-Files', 'Show-Directory'], correctIndex: 1, explanation: 'PowerShell uses Get-ChildItem (or its aliases: ls, dir) to list directory contents.' },
@@ -967,7 +1010,9 @@ Scripting turns manual tasks into automated workflows — a core skill for any W
       ] }),
 
     l('wc-6', 'PowerShell Deep Dive',
-      `PowerShell is far more powerful than CMD. It works with objects, not just text. Start simple, then build up.
+      `PowerShell is far more powerful than CMD because it works with **objects** instead of plain text. When CMD gives you a line of text, PowerShell gives you a structured object with properties and methods that you can filter, sort, and manipulate programmatically. This makes PowerShell the preferred tool for system administration, automation, and security operations.
+
+**When to use PowerShell vs CMD:** Use CMD for quick, simple commands where you just need text output. Use PowerShell when you need to process data — filtering lists, generating reports, or automating complex tasks. In security work, PowerShell is essential for log analysis, incident response, and building sophisticated tools.
 
 **The basics — CMD compatibility:**
 \`\`\`powershell
@@ -976,6 +1021,8 @@ dir
 cd
 echo "Hello"
 \`\`\`
+
+PowerShell maintains backward compatibility with many CMD commands, so your existing skills transfer directly.
 
 **PowerShell-native commands (cmdlets):**
 \`\`\`powershell
@@ -990,6 +1037,8 @@ Get-ChildItem        # Also: dir, ls
 Set-Location         # Also: cd, sl
 Get-Content          # Also: cat, type
 \`\`\`
+
+The **Verb-Noun naming convention** is PowerShell's signature feature. Every cmdlet follows the pattern \`Verb-Noun\` — the verb tells you what action is being performed (Get, Set, Start, Stop), and the noun tells you what object it acts on (Process, Service, ChildItem). Once you learn this pattern, you can predict the name of commands you've never used before. For example, if you know \`Get-Service\` lists services, you can guess that \`Stop-Service\` stops them.
 
 **Working with objects — PowerShell's superpower:**
 \`\`\`powershell
@@ -1067,7 +1116,11 @@ Import-Csv big-processes.csv
 \`\`\``),
 
     l('wc-7', 'Windows Service & Process Management',
-      `Managing services and processes is critical for understanding what's running on a Windows system.
+      `Managing services and processes is critical for understanding what's running on a Windows system. Every program that executes on Windows is a process, and many of those processes are Windows services — background programs that start with the system and run without user interaction.
+
+**Why understanding processes matters for security:** Malware often hides among legitimate processes or registers itself as a Windows service to maintain persistence — meaning it automatically restarts after a reboot. By understanding how processes and services work, you can identify suspicious activity, detect unauthorized software, and understand how an attacker might maintain access to a compromised system.
+
+**Persistence mechanisms:** Attackers use several techniques to survive system reboots: registering malicious Windows services, creating scheduled tasks, modifying startup registry keys, and exploiting legitimate services by injecting code into them. Learning to audit services and processes is your first line of defense against these techniques.
 
 **View and manage processes with Tasklist:**
 \`\`\`cmd
@@ -1176,9 +1229,58 @@ schtasks /QUERY /FO TABLE | findstr "Daily"
 \`\`\``),
 
     l('wc-8', 'Registry & System Configuration',
-      `The Windows Registry is a database of system and application settings. Understanding it is essential for both configuration and forensics.
+      `The Windows Registry is a hierarchical database that stores configuration settings for the operating system, hardware, installed software, and user preferences. Understanding it is essential for both system configuration and digital forensics.
 
-**Registry structure basics:**
+**Why the registry matters for forensics:** The registry records a massive amount of activity on a Windows system — what programs have been installed, what files have been opened, what USB devices have been connected, what network drives have been mapped, and what programs run automatically at startup. For a forensic investigator, the registry is one of the most valuable sources of evidence on a compromised system.
+
+**Common attack vectors through the registry:** Attackers frequently abuse the registry to gain persistence (surviving reboots), escalate privileges, disable security features, and hide their activity. The \`Run\` and \`RunOnce\` keys are especially popular because any program listed there starts automatically when a user logs in. Attackers also modify file associations to launch malicious programs when you open common file types.
+
+\`\`\`
+HKEY_LOCAL_MACHINE (HKLM) — System-wide settings
+HKEY_CURRENT_USER (HKCU) — Current user settings
+HKEY_USERS (HKU)         — All user profiles
+HKEY_CLASSES_ROOT (HKCR) — File associations
+HKEY_CURRENT_CONFIG (HKCC) — Hardware profile
+\`\`\`
+
+Each hive contains a tree of keys and values — think of it like a file system where folders are keys and files are values.
+
+**View registry from command line with REG:**
+\`\`\`cmd
+# Query a registry key
+reg query HKLM\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion
+
+# Query a specific value
+reg query "HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion" /v ProductName
+
+# Query with recursive (all subkeys)
+reg query HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Run /s
+
+# Export a registry key to a file
+reg export "HKCU\\Software\\Microsoft" my-settings.reg
+
+# Import registry settings
+reg import my-settings.reg
+\`\`\`
+
+**Common forensic registry locations:**
+\`\`\`cmd
+# Startup programs (autoruns)
+reg query HKLM\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run
+reg query HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Run
+
+# Recently opened files
+reg query "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\RecentDocs"
+
+# Network history
+reg query "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\MapNetworkDrive" /s
+
+# USB device history
+reg query HKLM\\SYSTEM\\CurrentControlSet\\Enum\\USBSTOR /s
+
+# Installed programs
+reg query "HKLM\\Software\\Microsoft\\Windows\\CurrentVersion\\Uninstall" /s
+\`\`\`
 \`\`\`
 HKEY_LOCAL_MACHINE (HKLM) — System-wide settings
 HKEY_CURRENT_USER (HKCU) — Current user settings
@@ -1275,6 +1377,8 @@ wmic qfe get HotFixID,InstalledOn
 wmic bios get SerialNumber,Manufacturer
 \`\`\`
 
+**Important note about WMIC:** Microsoft has deprecated the WMIC command-line tool in recent versions of Windows, and it may be removed entirely in future releases. However, it still works on most systems in use today, and you'll encounter it in existing scripts and documentation. For new work, Microsoft recommends using **PowerShell cmdlets** (like \`Get-CimInstance\`) or the **CIM cmdlets** which provide the same functionality in a modern, object-oriented way. In security contexts, WMIC is still valuable because many legacy systems and tools still use it, and understanding it helps you read older scripts and documentation.
+
 **Practical progression:**
 \`\`\`cmd
 # 1. Check your Windows version
@@ -1295,7 +1399,9 @@ echo %TEMP%
 
   'networking-101': [
     l('net-1', 'What is a Network?',
-      `A **network** is two or more computers connected together to share data. The **internet** is just a massive network of networks.
+      `A **network** is two or more computers connected together to share data. The **internet** is just a massive network of networks — millions of smaller networks linked together across the globe.
+
+Think of a network like a postal system. Each house (computer) has an address, and mail (data) travels between houses through a series of roads and post offices (routers and switches). Just like you need an address to receive mail, every device on a network needs an identifier so other devices know where to send data.
 
 Every device on a network has an **IP address** — like a street address for your computer. IP addresses look like this:
 
@@ -1303,15 +1409,21 @@ Every device on a network has an **IP address** — like a street address for yo
 192.168.1.42
 \`\`\`
 
-There are two types:
-- **Public IP** — your address on the internet (unique worldwide)
-- **Private IP** — your address on your local network (e.g., 192.168.x.x)
+There are two main types:
+- **Public IP** — your address on the internet, assigned by your ISP, unique worldwide. When you visit a website, the server sees your public IP. Think of it as your home's address visible to the entire world.
+- **Private IP** — your address on your local network (e.g., 192.168.x.x, 10.x.x.x). Every device in your house shares one public IP but each has its own private IP. It's like an apartment number inside a building — only people inside the building know which unit is which.
 
-A **port** is like a door on a computer. Each service listens on a specific port:
-- Port 80 → HTTP (websites)
-- Port 443 → HTTPS (secure websites)
-- Port 22 → SSH (remote login)
-- Port 53 → DNS (domain resolution)
+Private IPs are not routable on the internet. Your router translates between private IPs (inside your network) and your public IP (outside) using a technique called NAT (Network Address Translation). This is why your phone and laptop can both browse the web at the same time through a single internet connection.
+
+Why do hackers need to understand networking? Because every attack travels over a network. To intercept traffic, you need to understand how data moves. To scan targets, you need to know about IP ranges and ports. To exploit services, you need to understand which ports are open and what protocols they speak. Networking is the foundation of everything in cybersecurity.
+
+A **port** is like a door on a computer. Each service listens on a specific port — imagine an office building where different departments have different room numbers. Port 80 is the "web department," port 22 is the "remote access department," and so on. When you connect to a server, you're not just connecting to the IP — you're connecting to a specific port where a specific service is waiting:
+- Port 80 → HTTP (websites — the unencrypted web)
+- Port 443 → HTTPS (secure websites — encrypted web traffic)
+- Port 22 → SSH (remote login — how admins manage servers)
+- Port 53 → DNS (domain resolution — translating names to IPs)
+- Port 21 → FTP (file transfers)
+- Port 3306 → MySQL (database access)
 
 \`\`\`bash
 # See your own IP address on Linux/Mac
@@ -1322,22 +1434,37 @@ curl ifconfig.me
 \`\`\``),
 
     l('net-2', 'The OSI Model',
-      `The **OSI model** breaks network communication into 7 layers. Think of it like sending a package:
+      `The **OSI model** breaks network communication into 7 layers. Think of it like sending a package through a postal system — each layer handles a specific part of the journey:
 
-1. **Physical** — the actual cables and radio waves
-2. **Data Link** — MAC addresses, switches (Ethernet, Wi-Fi)
-3. **Network** — IP addresses, routing (your internet router works here)
-4. **Transport** — TCP/UDP ports (ensures data arrives correctly)
-5. **Session** — manages connections between apps
-6. **Presentation** — translates data formats (encryption, compression)
-7. **Application** — what you interact with (HTTP, DNS, SSH)
+1. **Physical (Layer 1)** — the actual cables, radio waves, and electrical signals. This is the road your mail truck drives on. If you unplug an Ethernet cable, you've broken Layer 1. Think fiber optic cables, Wi-Fi signals, and the physical hardware that carries bits as electrical pulses or light.
 
-The practical layers you need to remember:
+2. **Data Link (Layer 2)** — MAC addresses, switches, Ethernet, Wi-Fi. This is like the local post office that knows which house on the street gets the mail. MAC addresses are unique hardware identifiers burned into your network card. Switches use MAC addresses to deliver frames to the right device on a local network.
+
+3. **Network (Layer 3)** — IP addresses and routing. This is the highway system that figures out the best route between cities. Your internet router operates here, deciding whether to send data to another device on your LAN or out to the internet. IP addresses live here, and so do routing protocols.
+
+4. **Transport (Layer 4)** — TCP/UDP ports. This is like the shipping method — registered mail (TCP, reliable, tracked) or regular mail (UDP, fast but no guarantee of delivery). TCP guarantees data arrives intact and in order. UDP is faster but doesn't check. Ports tell the computer which application should receive the data — like which department in the office building opens the envelope.
+
+5. **Session (Layer 5)** — manages connections between apps. This is like the conversation protocol between sender and receiver — "I'll talk, then you talk, then we'll hang up." It establishes, maintains, and terminates sessions. Think of it as the etiquette layer that keeps a conversation flowing smoothly.
+
+6. **Presentation (Layer 6)** — translates data formats, handles encryption and compression. This is like the translator and packer — converting languages (data formats), compressing items to fit in a smaller box, and encrypting the contents so only the recipient can read them. SSL/TLS encryption happens conceptually at this layer.
+
+7. **Application (Layer 7)** — what you interact with: HTTP, DNS, SSH, SMTP. This is the letter itself — the actual message you're sending. Web browsers, email clients, and terminal applications all operate here.
+
+Why does this matter for security? Different attacks target different layers:
+- **Layer 2**: MAC flooding, ARP spoofing, VLAN hopping — attacks on local network hardware
+- **Layer 3**: IP spoofing, ICMP floods, routing manipulation — attacks on the addressing system
+- **Layer 4**: SYN floods, port scanning, TCP hijacking — attacks on connections and ports
+- **Layer 7**: SQL injection, XSS, HTTP floods — attacks on the application itself
+
+When someone says "layer 7 attack," they mean attacking the application level (like HTTP), not the network level. Understanding the OSI model helps you identify where an attack is happening and which tools to use at each layer.
+
+The practical layers you need to remember most:
+- **Layer 2 (Data Link)** — MAC addresses and local switching
 - **Layer 3 (Network)** — IP addresses and routing
 - **Layer 4 (Transport)** — TCP/UDP and ports
 - **Layer 7 (Application)** — the protocols you use daily
 
-When someone says "layer 7 attack," they mean attacking the application level (like HTTP), not the network level.`),
+Each layer adds its own header to the data as it travels down, like nesting envelopes inside envelopes. The receiving end strips them off layer by layer to reconstruct the original message.`),
 
     l('net-3', 'TCP/IP & UDP',
       `**TCP** and **UDP** are the two main transport protocols. They sit on top of IP.
@@ -1771,7 +1898,7 @@ nmap -sV --script vuln 192.168.1.1
 
   'python-for-hackers-101': [
     l('py-1', 'Your First Python Script',
-      `Python is the most popular language for security tools. It's readable and powerful.
+      `Python is the most popular language for security tools. It's readable, has a massive ecosystem of libraries, and is the language behind tools like Nmap scripts, Metasploit modules, Burp extensions, and countless exploit frameworks. If you're going to work in cybersecurity, Python is the language you need to know first.
 
 Print to the screen:
 
@@ -1781,7 +1908,7 @@ print("Hello, Hacker!")
 
 Save this as \`hello.py\` and run: \`python3 hello.py\`
 
-**Variables** store data:
+**Variables** store data — and in security, you'll use them to hold targets, credentials, and scan results:
 
 \`\`\`python
 name = "Alice"
@@ -1792,7 +1919,17 @@ is_vulnerable = True
 print(f"Scanning {target_ip} on port {port}")
 \`\`\`
 
-The \`f\` before the string makes it an **f-string** — you can embed variables inside \`{}\`.
+Variables are like labeled boxes. \`target_ip\` holds a string (text in quotes), \`port\` holds an integer (a whole number), and \`is_vulnerable\` holds a boolean (True or False). Python figures out the type automatically — you don't need to declare it.
+
+The \`f\` before the string makes it an **f-string** — short for "formatted string literal." Inside the curly braces \`{}\`, you can put any variable or expression, and Python will convert it to text and insert it into the string. It's the easiest way to build dynamic output:
+
+\`\`\`python
+port = 443
+print(f"Port {port} is {'open' if port < 1024 else 'closed'}")
+# "Port 443 is closed"
+\`\`\`
+
+F-strings work with any data type — numbers, booleans, even function calls inside the braces.
 
 **Comments** explain your code:
 
@@ -1806,32 +1943,49 @@ use triple quotes
 """
 \`\`\`
 
-Comments won't affect execution but help others (and your future self) understand your code.`,
+Comments won't affect execution but help others (and your future self) understand your code. In security scripts, comments are especially important because you'll often revisit tools months later and need to remember what they do.
+
+In real-world hacking, Python scripts automate repetitive tasks. A port scanner is a Python script. A brute-forcer is a Python script. A tool that parses Nmap XML output and finds vulnerabilities is a Python script. Learning to write these yourself means you can build custom tools tailored to any engagement.`,
       { hasCodePlayground: true, codePlaygroundInitial: 'print("Hello, Hacker!")\n\nname = "target"\nprint(f"Scanning {name}")', codePlaygroundLanguage: 'python', codePlaygroundExpectedOutput: 'Hello, Hacker!\nScanning target' }),
 
     l('py-2', 'Strings & Data Types',
-      `Python has several built-in data types. Understanding them is crucial.
+      `Python has several built-in data types. Understanding them is crucial because security tools deal with many different types of data — IPs as strings, ports as integers, scan results as booleans, and tool output that needs to be parsed and converted.
 
 \`\`\`python
-# Strings — text
+# Strings — text (anything in quotes)
 name = "target.com"
 domain = 'example.com'
 combined = name + "/" + domain   # "target.com/example.com"
 
 # Numbers
-port = 80              # integer
-timeout = 1.5          # float (decimal)
+port = 80              # integer (whole number)
+timeout = 1.5          # float (decimal number)
 
 # Boolean
 is_alive = True
 has_scan = False
 
 # Type conversion
-port_str = str(80)     # "80"
-port_int = int("80")   # 80
+port_str = str(80)     # "80" — converts number to string
+port_int = int("80")   # 80 — converts string to number
 \`\`\`
 
-**String operations** are useful for parsing data:
+Why do data types matter? Because many security tools return text (strings) even when the data is really numbers. Nmap output gives you "80" as a string, not 80 as an integer. If you try to do math on a string, Python will throw an error. You need to convert it first with \`int()\` or \`float()\`.
+
+Type conversion is something you'll use constantly:
+- \`str()\` — convert to string (useful when building output or joining text with numbers)
+- \`int()\` — convert to integer (useful when parsing port numbers from tool output)
+- \`float()\` — convert to decimal (useful for timeout values or measurements)
+- \`bool()\` — convert to boolean (useful for checking if a value is truthy)
+
+\`\`\`python
+# Common scenario: parsing tool output
+raw_port = "443"            # This is a string from tool output
+port_number = int(raw_port) # Now it's an integer
+print(f"Scanning port {port_number + 1}")  # 444 — math works!
+\`\`\`
+
+**String operations** are essential for parsing tool output and building custom scripts:
 
 \`\`\`python
 url = "https://target.com/login"
@@ -1839,13 +1993,22 @@ print(url.upper())        # "HTTPS://TARGET.COM/LOGIN"
 print(url.split("/"))     # ['https:', '', 'target.com', 'login']
 print(url.startswith("https"))  # True
 print(url.replace("login", "admin"))  # "https://target.com/admin"
-
-# Slicing — extract parts of a string
-print(url[0:5])           # "https"
-print(url[-5:])           # "login"
 \`\`\`
 
-\`f-strings\` make formatting easy:
+The \`split()\` method is especially powerful for parsing — it breaks a string into a list wherever it finds the delimiter. The \`replace()\` method lets you swap parts of strings, which is useful for building URLs or modifying tool output.
+
+**Slicing** lets you extract specific parts of a string by position:
+
+\`\`\`python
+url = "https://target.com/login"
+print(url[0:5])           # "https" — characters 0 through 4
+print(url[-5:])           # "login" — last 5 characters
+print(url[8:])            # "target.com/login" — everything from index 8
+\`\`\`
+
+Think of slicing like cutting a piece of tape: \`string[start:end]\` gives you everything from the start index up to (but not including) the end index. Negative indices count from the end of the string. This is incredibly useful when parsing IP addresses, extracting file extensions, or pulling specific fields from log output.
+
+**f-strings** make formatting easy — they're the modern way to build strings with embedded variables:
 
 \`\`\`python
 host = "192.168.1.1"
@@ -3007,25 +3170,38 @@ git checkout -b my-custom-list
 
   'web-technologies-101': [
     l('web-1', 'How the Web Works',
-      `When you visit a website, your browser (the **client**) sends a request to a **server**, and the server sends back a response.
+      `When you visit a website, your browser (the **client**) sends a request to a **server**, and the server sends back a response. But there's a lot happening behind the scenes at every step.
 
-The full process:
-1. You type \`https://example.com\` into your browser
-2. Browser asks DNS: "What's the IP of example.com?"
-3. DNS responds: "93.184.216.34"
-4. Browser connects to that IP on port 443 (HTTPS)
-5. Browser sends an HTTP request: "Give me /"
-6. Server sends back HTML, CSS, and JavaScript
-7. Browser renders the page
+Here's the full process, broken down:
 
-Every piece of this chain can be inspected, intercepted, or attacked.
+1. You type \`https://example.com\` into your browser. The browser first checks its cache — if it recently visited this site, it might already know the IP address and can skip the next step.
+
+2. Browser asks DNS: "What's the IP of example.com?" DNS (Domain Name System) is the internet's phonebook. Your browser first checks your local DNS cache, then your operating system's cache, then asks your configured DNS server (usually your router or ISP). If that server doesn't know, it queries root DNS servers, then .com TLD servers, then the authoritative nameserver for example.com. This cascade typically takes milliseconds.
+
+3. DNS responds: "93.184.216.34". Now your browser knows exactly which server to talk to.
+
+4. Browser connects to that IP on port 443 (HTTPS). This involves a TCP three-way handshake (SYN, SYN-ACK, ACK) to establish a reliable connection, followed by a TLS handshake to negotiate encryption. Only after both handshakes complete can data flow securely.
+
+5. Browser sends an HTTP request: "Give me /". The request includes headers telling the server things like which browser you're using, what content types you accept, and cookies for authentication.
+
+6. Server processes the request and sends back HTML, CSS, and JavaScript. The response includes a status code (200 for success, 404 for not found, etc.) and the actual content.
+
+7. Browser renders the page. It parses the HTML to build the DOM tree, fetches CSS to style it, executes JavaScript to make it interactive, and displays the final result.
+
+What can go wrong at each step?
+- **DNS step**: DNS poisoning can redirect you to a malicious server. DNS hijacking can intercept your queries.
+- **Connection step**: Man-in-the-middle attacks can intercept the TLS handshake. Downgrade attacks can force weaker encryption.
+- **HTTP request step**: Session hijacking can steal your cookies. SQL injection can exploit form inputs.
+- **Response step**: XSS attacks can inject malicious JavaScript into the response. Content injection can modify what you see.
+
+Every piece of this chain can be inspected, intercepted, or attacked — and that's exactly why understanding this process is essential for web security.
 
 \`\`\`bash
 # See the raw HTTP conversation
 curl -v https://example.com
 \`\`\`
 
-The \`-v\` (verbose) flag shows the full request and response headers, not just the body.`),
+The \`-v\` (verbose) flag shows the full request and response headers, not just the body. This is one of the simplest ways to see the HTTP layer in action and is a habit you should build early.`),
 
     l('web-2', 'HTTP Deep Dive',
       `HTTP is a text-based protocol. You can read and write HTTP by hand.
