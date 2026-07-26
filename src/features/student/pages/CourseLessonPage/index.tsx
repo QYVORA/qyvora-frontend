@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { ArrowLeft, ArrowRight, CheckCircle2, ChevronLeft, ChevronRight, Lock, Loader2, Target, Zap, BookOpen } from 'lucide-react';
 import SEO from '@/shared/components/SEO';
-import { getCourseById } from '@/features/student/data/courses/courseData';
+import { getCourseById } from '@/features/student/data/courses';
 import CodeBlockRenderer from '@/shared/components/courses/CodeBlockRenderer';
 import InlineQuiz from '@/shared/components/courses/InlineQuiz';
 import { TerminalWrapper } from '@/shared/components/learning/TerminalWrapper';
@@ -12,7 +12,7 @@ import CodePlayground from '@/shared/components/courses/CodePlayground';
 import StudentHeroSection from '@/shared/components/StudentHeroSection';
 import api from '@/core/services/api';
 import { useScrollLock } from '@/core/hooks/useScrollLock';
-import type { Lesson } from '@/features/student/data/courses/types';
+import type { Lesson } from '@/features/student/data/courses';
 
 const STORAGE_KEY = 'qyvora_course_progress';
 

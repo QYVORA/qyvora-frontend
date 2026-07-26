@@ -5,8 +5,8 @@ import { IconCode, IconShield, IconCheck, IconLock } from '@/shared/components/i
 import { Dialog, DialogContent, DialogClose } from '@/shared/components/ui/Dialog';
 import { useAuth } from '@/core/contexts/AuthContext';
 import { useToast } from '@/core/contexts/ToastContext';
-import { getCourseById, getCategoryById } from '@/features/student/data/courses/courseData';
-import type { CourseCategoryId, SkillLevel } from '@/features/student/data/courses/types';
+import { getCourseById, getCategoryById } from '@/features/student/data/courses';
+import type { CourseCategoryId, SkillLevel } from '@/features/student/data/courses';
 import api from '@/core/services/api';
 import { extractCpBalance } from '@/shared/utils/cpBalance';
 

@@ -1,4 +1,4 @@
-import type { Difficulty } from '../../data/simulations/types';
+import type { Difficulty } from '../../data/simulations';
 
 // ── Simulation Registry ─────────────────────────────────────────────────────
 export type SimulationType =

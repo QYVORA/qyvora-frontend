@@ -1,6 +1,6 @@
 import { useState, useCallback, useEffect, useRef } from 'react';
 import api from '../../../core/services/api';
-import type { LabConnectionState } from '../data/simulations/types';
+import type { LabConnectionState } from '../data/simulations';
 
 interface UseLabConnectionReturn {
   connection: LabConnectionState | null;

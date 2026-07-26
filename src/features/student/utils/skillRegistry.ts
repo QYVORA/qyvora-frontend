@@ -11,7 +11,7 @@
  * No changes to SkillMatrix.tsx needed when adding new content.
  */
 
-import { COURSES } from '@/features/student/data/courses/courseData';
+import { COURSES } from '@/features/student/data/courses';
 import { BOOTCAMP_CONFIG } from '@/features/student/constants/bootcampConfig';
 
 // ── Types ──────────────────────────────────────────────────────────────────────
