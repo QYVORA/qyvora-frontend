@@ -24,7 +24,7 @@ const LandingQuiteRootSection = () => {
   return (
     <div className="relative bg-bg min-h-dvh md:h-dvh flex flex-col overflow-hidden" data-nav-invert>
       <GridBoxedBackground opacity={0.4} blur={0} mask="right" />
-      <div className="relative z-10 w-full h-full px-5 sm:px-6 md:px-16 lg:px-24 py-12 sm:py-10 md:py-16 lg:py-20 flex flex-col gap-8 sm:gap-10 lg:gap-12">
+      <div className="relative z-10 w-full h-full px-3 md:px-4 lg:px-6 py-12 sm:py-10 md:py-16 lg:py-20 flex flex-col gap-8 sm:gap-10 lg:gap-12">
         {/* Header */}
         <div className="flex flex-col">
           <div className="flex items-center gap-4 mb-4">

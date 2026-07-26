@@ -49,8 +49,8 @@ const LandingServicesSection: React.FC = () => {
 
   return (
     <div className="relative overflow-hidden min-h-dvh md:h-dvh flex flex-col">
-      <div className="relative w-full h-full px-6 md:px-16 lg:px-24 py-6 md:py-8 lg:py-10 flex flex-col">
-        <div className="w-full lg:max-w-6xl lg:mx-auto flex-1 flex flex-col min-h-0">
+      <div className="relative w-full h-full px-3 md:px-4 lg:px-6 py-6 md:py-8 lg:py-10 flex flex-col">
+        <div className="w-full flex-1 flex flex-col min-h-0">
           {/* Heading — left aligned */}
           <motion.div
             initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 30 }}

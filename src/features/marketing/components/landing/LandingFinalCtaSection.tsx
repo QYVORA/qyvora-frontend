@@ -18,7 +18,7 @@ const LandingFinalCtaSection: React.FC<LandingFinalCtaSectionProps> = ({ user })
   return (
     <div className="relative w-full min-h-dvh md:h-dvh bg-bg flex lg:items-center overflow-hidden" data-nav-invert>
       <GridBoxedBackground opacity={0.4} blur={0} mask="right" />
-      <div className="relative z-10 w-full max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-12 xl:px-16 flex flex-col lg:flex-row lg:items-center justify-between gap-8 lg:gap-16 pt-20 pb-12 lg:pt-0 lg:pb-0">
+      <div className="relative z-10 w-full px-3 md:px-4 lg:px-6 flex flex-col lg:flex-row lg:items-center justify-between gap-8 lg:gap-16 pt-20 pb-12 lg:pt-0 lg:pb-0">
 
         {/* Content */}
         <motion.div
