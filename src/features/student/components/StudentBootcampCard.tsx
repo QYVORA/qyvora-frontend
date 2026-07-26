@@ -5,7 +5,6 @@ import {
   IconPlay,
   IconCheck,
   IconLock,
-  IconArrowRight,
   IconClock,
   IconDashboard,
 } from '@/shared/components/icons';
@@ -44,13 +43,13 @@ const StudentBootcampCard: React.FC<Props> = ({ data, index = 0, onEnroll, onLoc
   const cardClasses = `group relative flex flex-col h-full overflow-hidden rounded-2xl border border-border/30 bg-bg-card transition-all duration-300 ${
     isLocked
       ? 'opacity-40 cursor-default'
-      : 'hover:border-accent/30 hover:scale-[1.01]'
+      : 'hover:border-accent/30'
   }`;
 
   const inner = (
     <>
       {/* ── Cover image ─────────────────────────────────────────────── */}
-      <div className="relative aspect-video overflow-hidden rounded-t-2xl shadow-sm">
+      <div className="relative aspect-video overflow-hidden">
         <img
           src={img}
           alt={title}
@@ -69,31 +68,25 @@ const StudentBootcampCard: React.FC<Props> = ({ data, index = 0, onEnroll, onLoc
           }}
         />
 
-        {/* Subtle overlay instead of gradient */}
-        <div
-          aria-hidden
-          className="pointer-events-none absolute inset-0 hidden dark:block dark:bg-black/10"
-        />
-
         {/* Top-left badges */}
         <div className="absolute top-2.5 left-2.5 flex items-center gap-1.5 flex-wrap">
           {level && (
-            <span className="px-2 py-0.5 bg-bg/85 backdrop-blur-sm rounded text-[9px] font-black uppercase text-accent tracking-widest shadow-sm">
+            <span className="px-2 py-0.5 bg-bg/85 backdrop-blur-sm rounded-lg text-[9px] font-black uppercase text-accent tracking-widest border border-accent/20">
               {level}
             </span>
           )}
           {isLocked && (
-            <span className="px-2 py-0.5 bg-black/75 rounded text-[9px] font-black uppercase text-text-muted tracking-widest flex items-center gap-1 shadow-sm">
+            <span className="px-2 py-0.5 bg-bg/85 backdrop-blur-sm rounded-lg text-[9px] font-black uppercase text-text-muted tracking-widest flex items-center gap-1 border border-border/30">
               <IconLock size={10} /> {t('student.studentBootcampCard.comingSoon')}
             </span>
           )}
           {isComplete && !isLocked && (
-            <span className="px-2 py-0.5 bg-accent text-bg rounded text-[9px] font-black uppercase tracking-widest flex items-center gap-1 shadow-md">
+            <span className="px-2 py-0.5 bg-accent text-bg rounded-lg text-[9px] font-black uppercase tracking-widest flex items-center gap-1">
               <IconCheck size={10} /> {t('badge.completed')}
             </span>
           )}
           {isEnrolled && !isComplete && !isLocked && (
-            <span className="px-2 py-0.5 bg-accent/20 text-accent rounded text-[9px] font-black uppercase tracking-widest flex items-center gap-1 shadow-sm">
+            <span className="px-2 py-0.5 bg-accent/20 text-accent rounded-lg text-[9px] font-black uppercase tracking-widest flex items-center gap-1">
               <IconPlay size={8} /> {t('badge.active')}
             </span>
           )}
@@ -103,7 +96,7 @@ const StudentBootcampCard: React.FC<Props> = ({ data, index = 0, onEnroll, onLoc
         {progress > 0 && !isLocked && (
           <div className="absolute bottom-0 left-0 right-0 h-[3px] bg-bg/40">
             <div
-              className="h-full bg-accent transition-all duration-700 shadow-[0_0_8px_var(--color-accent)]"
+              className="h-full bg-accent transition-all duration-700"
               style={{ width: `${progress}%` }}
             />
           </div>
@@ -111,65 +104,58 @@ const StudentBootcampCard: React.FC<Props> = ({ data, index = 0, onEnroll, onLoc
       </div>
 
       {/* ── Card body ───────────────────────────────────────────────── */}
-      <div className="flex flex-1 flex-col pt-6 px-6 pb-6">
-        <h3 className={`mb-1.5 text-lg font-black leading-snug break-words transition-colors ${
+      <div className="flex flex-col gap-2 p-4 sm:p-5 md:p-6 lg:p-7 flex-1">
+        <h3 className={`text-sm sm:text-base md:text-lg font-black leading-snug break-words transition-colors ${
           isLocked ? 'text-text-muted' : 'text-text-primary group-hover:text-accent'
         }`}>
           {title}
         </h3>
 
         {description && (
-          <p className="mb-4 line-clamp-2 text-xs leading-relaxed text-text-muted/70 font-mono">{description}</p>
+          <p className="text-xs sm:text-sm text-text-muted line-clamp-3 leading-relaxed flex-1">{description}</p>
         )}
 
-        <div className="mb-5 flex flex-wrap items-center gap-x-4 gap-y-1 text-[10px] font-black uppercase text-text-muted/60 tracking-widest">
+        <div className="flex flex-wrap items-center gap-x-3 gap-y-1 mt-auto pt-2">
           {duration && (
-            <span className="flex items-center gap-1.5">
-              <IconClock size={14} className="opacity-60" /> {duration}
+            <span className="flex items-center gap-1.5 text-[9px] sm:text-[10px] font-black uppercase tracking-widest text-text-muted">
+              <IconClock size={12} /> {duration}
             </span>
           )}
-          {duration && priceLabel && <span className="opacity-30">·</span>}
-          {priceLabel && <span className="text-accent">{priceLabel}</span>}
-          <span className="flex items-center gap-1.5 ml-auto">
-            <IconDashboard size={14} className="opacity-60" /> {t('student.studentBootcampCard.phasesCount')}
-          </span>
+          {priceLabel && (
+            <span className="text-[9px] sm:text-[10px] font-black uppercase tracking-widest text-accent">{priceLabel}</span>
+          )}
         </div>
 
         {/* CTA */}
-        <div className="mt-auto space-y-2.5">
+        <div className="flex items-center justify-between mt-auto pt-2">
+          <span className="flex items-center gap-1.5 text-[9px] sm:text-[10px] font-black uppercase tracking-widest text-text-muted">
+            <IconDashboard size={12} /> {t('student.studentBootcampCard.phasesCount')}
+          </span>
           {isLocked ? (
-            <button
-              className="w-full flex items-center justify-center gap-2 py-3.5 rounded-xl bg-bg-elevated text-text-muted text-xs font-black uppercase tracking-widest opacity-60 cursor-default"
-            >
-              <IconLock size={14} /> {t('student.studentBootcampCard.comingSoon')}
-            </button>
+            <span className="px-3 py-1.5 rounded-lg text-[9px] sm:text-[10px] font-black uppercase tracking-widest bg-bg-elevated text-text-muted border border-border/30">
+              {t('student.studentBootcampCard.comingSoon')}
+            </span>
           ) : isEnrolled ? (
             <Link
               to={`/dashboard/bootcamps/${id}`}
-              className="btn-primary w-full flex items-center justify-center gap-3 !text-xs !py-3.5"
+              className="px-3 py-1.5 rounded-lg text-[9px] sm:text-[10px] font-black uppercase tracking-widest bg-accent text-bg transition-all duration-200 group-hover:brightness-110 group-active:scale-95"
             >
-              {isComplete ? (
-                <><IconCheck size={16} /> {t('student.studentBootcampCard.reviewCurriculum')}</>
-              ) : (
-                <><IconPlay size={16} /> {t('student.studentBootcampCard.continueTraining')}</>
-              )}
+              {isComplete ? t('student.studentBootcampCard.reviewCurriculum') : t('student.studentBootcampCard.continueTraining')}
             </Link>
+          ) : onEnroll ? (
+            <button
+              onClick={() => onEnroll(data)}
+              className="px-3 py-1.5 rounded-lg text-[9px] sm:text-[10px] font-black uppercase tracking-widest bg-accent text-bg transition-all duration-200 group-hover:brightness-110 group-active:scale-95"
+            >
+              {t('student.studentBootcampCard.enrollNow')}
+            </button>
           ) : (
-            onEnroll ? (
-              <button
-                onClick={() => onEnroll(data)}
-                className="btn-primary w-full flex items-center justify-center gap-3 !text-xs !py-3.5"
-              >
-                {t('student.studentBootcampCard.enrollNow')} <IconArrowRight size={16} />
-              </button>
-            ) : (
-              <Link
-                to={`/dashboard/bootcamps/${id}`}
-                className="btn-primary w-full flex items-center justify-center gap-3 !text-xs !py-3.5"
-              >
-                {t('student.studentBootcampCard.enrollNow')} <IconArrowRight size={16} />
-              </Link>
-            )
+            <Link
+              to={`/dashboard/bootcamps/${id}`}
+              className="px-3 py-1.5 rounded-lg text-[9px] sm:text-[10px] font-black uppercase tracking-widest bg-accent text-bg transition-all duration-200 group-hover:brightness-110 group-active:scale-95"
+            >
+              {t('student.studentBootcampCard.enrollNow')}
+            </Link>
           )}
         </div>
       </div>
