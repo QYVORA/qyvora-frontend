@@ -37,16 +37,20 @@ const AuthFormLayout: React.FC<AuthFormLayoutProps> = ({ children }) => (
         <div className="relative z-10 flex flex-col gap-8 pt-16 w-full">
           <div className="flex flex-col gap-5">
             <Logo size="md" variant="full" />
-            <p className="text-text-secondary text-sm font-bold leading-relaxed max-w-sm">
+            <h1 className="font-black text-text-primary leading-[1.08] tracking-tight w-full text-3xl sm:text-4xl">
+              Train like a <span className="text-accent">hacker</span>.<br />
+              Become one.
+            </h1>
+            <p className="text-text-secondary text-base sm:text-lg leading-relaxed max-w-xl">
               Africa&apos;s offensive security platform built to sharpen your skills from the ground up.
             </p>
-            <ul className="flex flex-col gap-3">
+            <ul className="flex flex-col gap-4">
               {bullets.map(({ icon: Icon, text }) => (
                 <li key={text} className="flex items-center gap-3">
-                  <span className="flex-none w-8 h-8 rounded-xl bg-white/5 flex items-center justify-center">
-                    <Icon className="w-4 h-4 text-accent" />
+                  <span className="flex-none w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center">
+                    <Icon className="w-5 h-5 text-accent" />
                   </span>
-                  <span className="text-text-primary text-xs font-bold">{text}</span>
+                  <span className="text-text-primary text-sm sm:text-base font-bold">{text}</span>
                 </li>
               ))}
             </ul>

@@ -27,10 +27,15 @@ const AuthHero: React.FC = () => (
     {/* Grid content */}
     <div className="relative z-10 w-full flex-1 mx-auto grid grid-cols-1 lg:grid-cols-2 text-left items-center h-full">
       <div className="flex flex-col items-start justify-center px-3 md:px-4 lg:px-6 pt-20 sm:pt-20 lg:pt-24 pb-14 sm:pb-16 lg:pb-16 space-y-0 w-full h-full">
-        <div className="flex flex-col items-start w-full space-y-5 sm:space-y-6">
+        <div className="flex flex-col items-start w-full space-y-6 sm:space-y-8">
           <Logo size="md" variant="full" />
 
-          <p className="text-text-secondary text-sm font-bold leading-relaxed max-w-sm">
+          <h1 className="font-black text-text-primary leading-[1.08] tracking-tight w-full text-3xl sm:text-4xl md:text-5xl lg:text-[2.5rem] xl:text-[3rem]">
+            Train like a <span className="text-accent">hacker</span>.<br />
+            Become one.
+          </h1>
+
+          <p className="text-text-secondary text-base sm:text-lg lg:text-base xl:text-lg leading-relaxed max-w-xl">
             Africa&apos;s offensive security platform built to sharpen your skills
             from the ground up.
           </p>
@@ -38,10 +43,10 @@ const AuthHero: React.FC = () => (
           <ul className="flex flex-col gap-4">
             {bullets.map(({ icon: Icon, text }) => (
               <li key={text} className="flex items-center gap-3">
-                <span className="flex-none w-9 h-9 rounded-xl bg-white/5 flex items-center justify-center">
-                  <Icon className="w-4.5 h-4.5 text-accent" />
+                <span className="flex-none w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center">
+                  <Icon className="w-5 h-5 text-accent" />
                 </span>
-                <span className="text-text-primary text-sm font-bold">{text}</span>
+                <span className="text-text-primary text-sm sm:text-base font-bold">{text}</span>
               </li>
             ))}
           </ul>
