@@ -10,12 +10,19 @@ interface Cell {
   prevDrawnOpacity: number;
   phase: number;
   speed: number;
+  glitchTimer: number;
+  glitchActive: boolean;
+  glitchOffset: number;
 }
 
 const ACCENT: [number, number, number] = [6, 182, 111];
 const REDRAW_THRESHOLD = 0.008;
 const TARGET_FPS = 18;
 const FRAME_INTERVAL = 1000 / TARGET_FPS;
+const CORNER_RADIUS = 3;
+const GLITCH_INTERVAL_MIN = 3000;
+const GLITCH_INTERVAL_MAX = 9000;
+const GLITCH_DURATION = 120;
 
 function createCells(cols: number, rows: number, cellSize: number): Cell[] {
   const cells: Cell[] = [];
@@ -51,10 +58,34 @@ function createCells(cols: number, rows: number, cellSize: number): Cell[] {
         prevDrawnOpacity: baseOpacity,
         phase: Math.random() * Math.PI * 2,
         speed: 0.00003 + Math.random() * 0.0001,
+        glitchTimer: Math.random() * GLITCH_INTERVAL_MAX + GLITCH_INTERVAL_MIN,
+        glitchActive: false,
+        glitchOffset: 0,
       });
     }
   }
   return cells;
+}
+
+function drawRoundedRect(
+  ctx: CanvasRenderingContext2D,
+  x: number,
+  y: number,
+  w: number,
+  h: number,
+  r: number,
+) {
+  ctx.beginPath();
+  ctx.moveTo(x + r, y);
+  ctx.lineTo(x + w - r, y);
+  ctx.quadraticCurveTo(x + w, y, x + w, y + r);
+  ctx.lineTo(x + w, y + h - r);
+  ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+  ctx.lineTo(x + r, y + h);
+  ctx.quadraticCurveTo(x, y + h, x, y + h - r);
+  ctx.lineTo(x, y + r);
+  ctx.quadraticCurveTo(x, y, x + r, y);
+  ctx.closePath();
 }
 
 interface HeroGridAnimationProps {
@@ -99,7 +130,8 @@ const HeroGridAnimation: React.FC<HeroGridAnimationProps> = ({ className = '', r
       ctx.clearRect(0, 0, canvas.width / dpr, canvas.height / dpr);
       for (const cell of cellsRef.current) {
         ctx.fillStyle = `rgba(${cell.color[0]},${cell.color[1]},${cell.color[2]},${cell.baseOpacity * 0.5})`;
-        ctx.fillRect(cell.x + 1, cell.y + 1, cell.size - 2, cell.size - 2);
+        drawRoundedRect(ctx, cell.x + 1, cell.y + 1, cell.size - 2, cell.size - 2, CORNER_RADIUS);
+        ctx.fill();
       }
       return () => window.removeEventListener('resize', resize);
     }
@@ -127,32 +159,56 @@ const HeroGridAnimation: React.FC<HeroGridAnimationProps> = ({ className = '', r
         const cell = cells[i];
         cell.phase += cell.speed * FRAME_INTERVAL;
         const wave = (Math.sin(cell.phase) + 1) / 2;
-        const target = cell.baseOpacity * (0.08 + wave * 0.92);
+        let target = cell.baseOpacity * (0.08 + wave * 0.92);
+
+        cell.glitchTimer -= FRAME_INTERVAL;
+        if (cell.glitchTimer <= 0 && !cell.glitchActive) {
+          cell.glitchActive = true;
+          cell.glitchTimer = GLITCH_DURATION;
+          cell.glitchOffset = (Math.random() - 0.5) * 6;
+        }
+        if (cell.glitchActive) {
+          cell.glitchTimer -= FRAME_INTERVAL;
+          const glitchProgress = 1 - Math.max(0, cell.glitchTimer) / GLITCH_DURATION;
+          const flicker = Math.sin(glitchProgress * Math.PI * 4) * 0.4;
+          target = Math.max(0, Math.min(1, target + flicker));
+          if (cell.glitchTimer <= 0) {
+            cell.glitchActive = false;
+            cell.glitchTimer = GLITCH_INTERVAL_MIN + Math.random() * (GLITCH_INTERVAL_MAX - GLITCH_INTERVAL_MIN);
+            cell.glitchOffset = 0;
+          }
+        }
+
         cell.currentOpacity += (target - cell.currentOpacity) * 0.008;
 
         const delta = cell.currentOpacity - cell.prevDrawnOpacity;
-        if (delta > -REDRAW_THRESHOLD && delta < REDRAW_THRESHOLD) continue;
+        if (delta > -REDRAW_THRESHOLD && delta < REDRAW_THRESHOLD && !cell.glitchActive) continue;
 
         const prevVis = cell.prevDrawnOpacity >= 0.01;
         const currVis = cell.currentOpacity >= 0.01;
+        const dx = cell.glitchActive ? cell.glitchOffset * (1 - Math.max(0, cell.glitchTimer) / GLITCH_DURATION) : 0;
 
         if (prevVis) {
           ctx!.clearRect(
-            cell.x + inset,
-            cell.y + inset,
-            cell.size - gap,
-            cell.size - gap,
+            cell.x + inset - 1,
+            cell.y + inset - 1,
+            cell.size - gap + 2,
+            cell.size - gap + 2,
           );
         }
 
         if (currVis) {
-          ctx!.fillStyle = `rgba(${cell.color[0]},${cell.color[1]},${cell.color[2]},${cell.currentOpacity})`;
-          ctx!.fillRect(
-            cell.x + inset,
+          const jitter = cell.glitchActive ? (Math.random() - 0.5) * 0.8 : 0;
+          ctx!.fillStyle = `rgba(${cell.color[0]},${cell.color[1]},${cell.color[2]},${cell.currentOpacity + jitter * 0.1})`;
+          drawRoundedRect(
+            ctx!,
+            cell.x + inset + dx,
             cell.y + inset,
             cell.size - gap,
             cell.size - gap,
+            CORNER_RADIUS,
           );
+          ctx!.fill();
         }
 
         cell.prevDrawnOpacity = cell.currentOpacity;
