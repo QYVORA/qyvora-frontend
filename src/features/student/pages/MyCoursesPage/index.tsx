@@ -185,7 +185,7 @@ const MyCoursesPage: React.FC = () => {
                 <ScrollReveal key={course.id} direction="up" amount={0.1} delay={i * 0.05}>
                   <Link
                     to={`/dashboard/courses/${course.id}${canResume ? `?lesson=${progress.lastLesson}` : ''}`}
-                    className="group flex flex-col rounded-2xl border border-border/30 bg-bg-card overflow-hidden transition-all duration-300 hover:border-accent/30"
+                    className="group flex flex-col aspect-square rounded-2xl border border-border/30 bg-bg-card overflow-hidden transition-all duration-300 hover:border-accent/30"
                   >
                     <div className="flex flex-col gap-2 p-4 sm:p-5 md:p-6 lg:p-7 flex-1">
                       <div className="flex items-center justify-between">
@@ -196,10 +196,10 @@ const MyCoursesPage: React.FC = () => {
                           <Clock className="h-2.5 w-2.5" /> {course.estimatedMinutes} min
                         </span>
                       </div>
-                      <h3 className="text-sm sm:text-base md:text-lg font-black text-text-primary group-hover:text-accent transition-colors leading-snug break-words">
+                      <h3 className="text-sm sm:text-base md:text-lg lg:text-xl font-black text-text-primary group-hover:text-accent transition-colors leading-snug break-words">
                         {course.title}
                       </h3>
-                      <p className="text-xs sm:text-sm text-text-muted leading-relaxed line-clamp-3 flex-1">
+                      <p className="text-xs sm:text-sm md:text-base text-text-muted leading-relaxed line-clamp-3 flex-1">
                         {course.description}
                       </p>
 
@@ -221,11 +221,11 @@ const MyCoursesPage: React.FC = () => {
                             <CheckCircle2 className="h-2.5 w-2.5" /> {t('student.myCourses.completed')}
                           </span>
                         ) : canResume ? (
-                          <span className="px-3 py-1.5 rounded-lg text-[9px] sm:text-[10px] font-black uppercase tracking-widest bg-accent text-bg transition-all duration-200 group-hover:brightness-110 group-active:scale-95 inline-flex items-center gap-1.5">
+                          <span className="px-3 py-1.5 rounded-lg text-[9px] sm:text-[10px] md:text-xs font-black uppercase tracking-widest bg-accent text-bg transition-all duration-200 group-hover:brightness-110 group-active:scale-95 inline-flex items-center gap-1.5">
                             <Play className="h-2.5 w-2.5" /> {t('student.myCourses.continue')} <ArrowRight className="h-2.5 w-2.5" />
                           </span>
                         ) : (
-                          <span className="px-3 py-1.5 rounded-lg text-[9px] sm:text-[10px] font-black uppercase tracking-widest bg-accent text-bg transition-all duration-200 group-hover:brightness-110 group-active:scale-95 inline-flex items-center gap-1.5">
+                          <span className="px-3 py-1.5 rounded-lg text-[9px] sm:text-[10px] md:text-xs font-black uppercase tracking-widest bg-accent text-bg transition-all duration-200 group-hover:brightness-110 group-active:scale-95 inline-flex items-center gap-1.5">
                             <BarChart3 className="h-2.5 w-2.5" /> {t('student.myCourses.start')} <ArrowRight className="h-2.5 w-2.5" />
                           </span>
                         )}
@@ -259,7 +259,7 @@ const MyCoursesPage: React.FC = () => {
                 return (
                   <div
                     key={course.id}
-                    className="group flex flex-col rounded-2xl border border-border/30 bg-bg-card/50 opacity-60 overflow-hidden"
+                    className="group flex flex-col aspect-square rounded-2xl border border-border/30 bg-bg-card/50 opacity-60 overflow-hidden"
                   >
                     <div className="flex flex-col gap-2 p-4 sm:p-5 md:p-6 lg:p-7 flex-1">
                       <div className="flex items-center justify-between">
@@ -270,7 +270,7 @@ const MyCoursesPage: React.FC = () => {
                           <Zap className="h-2.5 w-2.5" /> {course.cpCost} CP
                         </span>
                       </div>
-                       <h3 className="text-sm sm:text-base md:text-lg font-black text-text-muted leading-snug break-words">
+                       <h3 className="text-sm sm:text-base md:text-lg lg:text-xl font-black text-text-muted leading-snug break-words">
                          {course.title}
                        </h3>
                       <div className="mt-auto pt-2 border-t border-border/20">
