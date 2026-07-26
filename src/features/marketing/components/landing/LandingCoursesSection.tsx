@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react'
 import { Link } from 'react-router-dom';
 import { motion, useReducedMotion, AnimatePresence } from 'motion/react';
 import { GraduationCap, Globe, Wifi, Wrench, ChevronLeft, ChevronRight, Search } from 'lucide-react';
-import { IconArrowRight, IconTerminal, IconNetwork, IconCode, IconSearch } from '@/shared/components/icons';
+import { IconArrowRight, IconTerminal, IconNetwork, IconCode } from '@/shared/components/icons';
 import { useTranslation } from 'react-i18next';
 import { GridBoxedBackground } from '@/shared/components/backgrounds';
 import CoursePurchaseModal from '@/shared/components/CoursePurchaseModal';
@@ -48,7 +48,6 @@ const LandingCoursesSection: React.FC = () => {
   const { t } = useTranslation();
   const shouldReduceMotion = useReducedMotion();
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
-  const [searchQuery, setSearchQuery] = useState('');
   const [page, setPage] = useState(0);
   const [dir, setDir] = useState(1);
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -57,16 +56,8 @@ const LandingCoursesSection: React.FC = () => {
   const [selectedCourseId, setSelectedCourseId] = useState<string | null>(null);
 
   const filteredCourses = useMemo(() => {
-    let result = activeCategory ? COURSES.filter((c) => c.category === activeCategory) : COURSES;
-    if (searchQuery.trim()) {
-      const q = searchQuery.toLowerCase();
-      result = result.filter((c) =>
-        t(`landing.courses.list.${c.tKey}.title`).toLowerCase().includes(q) ||
-        t(`landing.courses.list.${c.tKey}.desc`).toLowerCase().includes(q)
-      );
-    }
-    return result;
-  }, [activeCategory, searchQuery, t]);
+    return activeCategory ? COURSES.filter((c) => c.category === activeCategory) : COURSES;
+  }, [activeCategory, t]);
 
   const totalPages = Math.max(1, Math.ceil(filteredCourses.length / PER_PAGE));
 
@@ -119,36 +110,8 @@ const LandingCoursesSection: React.FC = () => {
   return (
     <div className="relative overflow-hidden min-h-dvh md:h-dvh flex flex-col" data-nav-invert>
       <GridBoxedBackground opacity={0.4} blur={0} mask="right" />
-      <div className="relative z-10 w-full h-full px-6 md:px-16 lg:px-24 py-6 md:py-8 lg:py-10 flex flex-col">
-        <div className="w-full lg:max-w-6xl lg:mx-auto flex-1 flex flex-col min-h-0">
-          {/* Heading */}
-          <motion.div
-            initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: '-80px' }}
-            transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-            className="mb-4 md:mb-8 shrink-0"
-          >
-
-            <h2 className="text-2xl md:text-4xl lg:text-5xl font-black text-text-primary tracking-tighter leading-none mb-2">
-              {t('landing.courses.heading')}
-            </h2>
-            <p className="text-xs md:text-sm text-text-secondary leading-relaxed max-w-lg mb-4">
-              {t('landing.courses.description')}
-            </p>
-            <div className="relative max-w-md">
-              <IconSearch className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-text-muted" />
-              <input
-                type="text"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder={t('coursesPage.searchPlaceholder')}
-                aria-label={t('coursesPage.searchPlaceholder')}
-                className="w-full bg-bg-elevated border border-border rounded-xl pl-9 pr-4 py-2.5 text-sm font-mono text-text-primary placeholder:text-text-muted/30 outline-none focus:border-accent/40 transition-colors caret-accent"
-              />
-            </div>
-          </motion.div>
-
+      <div className="relative z-10 w-full h-full px-3 md:px-4 lg:px-6 py-6 md:py-8 lg:py-10 flex flex-col">
+        <div className="w-full flex-1 flex flex-col min-h-0">
           {/* Category tabs — horizontal carousel on mobile, wrapping on desktop */}
           <motion.div
             initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 15 }}

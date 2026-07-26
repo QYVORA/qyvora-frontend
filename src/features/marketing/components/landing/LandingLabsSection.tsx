@@ -50,23 +50,8 @@ const LandingLabsSection: React.FC = () => {
   return (
     <div className="relative bg-bg min-h-dvh md:h-dvh flex flex-col overflow-hidden" data-nav-invert>
       <GridBoxedBackground opacity={0.4} blur={0} mask="right" />
-      <div className="relative z-10 w-full h-full px-6 md:px-16 lg:px-24 py-6 md:py-8 lg:py-10 flex flex-col">
-        <div className="w-full lg:max-w-6xl lg:mx-auto flex-1 flex flex-col min-h-0">
-          {/* Heading */}
-          <motion.div
-            initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: '-80px' }}
-            transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-            className="mb-4 md:mb-8 shrink-0"
-          >
-            <h2 className="text-2xl md:text-4xl lg:text-5xl font-black text-text-primary tracking-tighter leading-none mb-2">
-              {t('landing.labs.heading')}
-            </h2>
-            <p className="text-xs md:text-sm text-text-secondary leading-relaxed max-w-xl">
-              {t('landing.labs.description')}
-            </p>
-          </motion.div>
+      <div className="relative z-10 w-full h-full px-3 md:px-4 lg:px-6 py-6 md:py-8 lg:py-10 flex flex-col">
+        <div className="w-full flex-1 flex flex-col min-h-0">
 
           {/* Bento grid: 3 columns on desktop — 1 featured + 2 supporting */}
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-2 md:gap-4 flex-1 auto-rows-fr">
