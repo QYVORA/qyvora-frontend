@@ -1,7 +1,7 @@
 import { useState, useCallback, useMemo } from 'react';
 import { Key, CheckCircle } from 'lucide-react';
 import { WalkthroughLayout, WalkthroughStep } from '@/shared/components/walkthrough/';
-import { PASSWORD_EXERCISES } from '@/features/student/data/simulations/password-exercises';
+import { PASSWORD_EXERCISES } from '@/features/student/data/simulations';
 import { createPasswordSimulations } from '@/features/student/components/simulations/labSimulationContent';
 import SEO from '@/shared/components/SEO';
 import ScenarioCard from '@/shared/components/ScenarioCard';
