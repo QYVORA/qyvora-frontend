@@ -1,23 +1,10 @@
 import { Link } from 'react-router-dom';
-import { BookOpen, Cpu, Globe2, LockKeyhole, Rocket, Wrench, Brain, Cctv, Cloud } from 'lucide-react';
-import { IconArrowRight, IconSearch, IconShield } from '@/shared/components/icons';
+import { IconArrowRight } from '@/shared/components/icons';
 import { GridBoxedBackground } from '@/shared/components/backgrounds';
 import ScrollReveal from '@/shared/components/ScrollReveal';
 import { researchersData } from '@/features/marketing/content/researchersData';
 import quiteRootLogo from '@/assets/quiteRoot/ChatGPT Image Jul 3, 2026, 02_45_59 AM.webp';
 import { useTranslation } from 'react-i18next';
-
-const CAPABILITY_KEYS = ['research', 'toolDev', 'threatIntel', 'redTeam', 'detection', 'infra', 'ai', 'education'] as const;
-const CAPABILITY_ICONS: Record<string, React.ElementType> = {
-  research: IconSearch,
-  toolDev: Wrench,
-  threatIntel: IconShield,
-  redTeam: Brain,
-  detection: Cctv,
-  infra: Cloud,
-  ai: Cpu,
-  education: BookOpen,
-};
 
 const LandingQuiteRootSection = () => {
   const { t } = useTranslation();
@@ -48,32 +35,6 @@ const LandingQuiteRootSection = () => {
           >
             {t('landing.quiteroot.explore')} <IconArrowRight size={14} />
           </Link>
-        </div>
-
-        {/* Capability cards — 2 col grid like team section */}
-        <div className="relative flex-1 min-h-0 min-w-0 overflow-hidden flex items-start lg:justify-center">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 w-full">
-            {CAPABILITY_KEYS.map((key, idx) => {
-              const Icon = CAPABILITY_ICONS[key];
-              return (
-                <ScrollReveal key={key} direction="up" delay={idx * 0.1}>
-                  <div className="group relative flex flex-col rounded-2xl border border-border/30 bg-bg-card p-5 transition-all duration-300 hover:border-accent/30 h-full">
-                    <div className="flex items-center gap-4 mb-4">
-                      <div className="w-12 h-12 rounded-2xl bg-accent/10 flex items-center justify-center shrink-0 border border-accent/20">
-                        <Icon className="h-5 w-5 text-accent" />
-                      </div>
-                      <h3 className="text-sm font-black uppercase tracking-tight text-text-primary group-hover:text-accent transition-colors">
-                        {t(`landing.quiteroot.capabilities.${key}`)}
-                      </h3>
-                    </div>
-                    <p className="text-xs text-text-muted line-clamp-3 leading-relaxed">
-                      {t(`landing.quiteroot.capabilities.${key}Desc`)}
-                    </p>
-                  </div>
-                </ScrollReveal>
-              );
-            })}
-          </div>
         </div>
 
         {/* Researchers grid — styled like team member cards */}
