@@ -76,7 +76,7 @@ const BlogPostPage: React.FC = () => {
 
       {/* ── Article Header ── */}
       <header className="pt-[120px] pb-12 md:pt-[136px] md:pb-16">
-        <div className="max-w-[1200px] mx-auto px-4">
+        <div className="w-full px-3 md:px-4 lg:px-6">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -117,7 +117,7 @@ const BlogPostPage: React.FC = () => {
       </header>
 
       {/* ── Featured Image ── */}
-      <div className="max-w-[1200px] mx-auto px-4 mb-12 md:mb-20">
+      <div className="w-full px-3 md:px-4 lg:px-6 mb-12 md:mb-20">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
@@ -136,7 +136,7 @@ const BlogPostPage: React.FC = () => {
       </div>
 
       {/* ── Article Body ── */}
-      <div className="w-full px-3 sm:px-6 md:px-10 lg:px-16 xl:px-20 pb-32">
+      <div className="w-full px-3 md:px-4 lg:px-6 pb-32">
         <article className="prose-custom max-w-none">
           <Suspense fallback={<div className="animate-pulse h-40 bg-border/20 rounded-2xl" />}>
             {renderContent()}
@@ -160,7 +160,7 @@ const BlogPostPage: React.FC = () => {
       {/* ── Read Next ── */}
       {otherPosts.length > 0 && (
         <section className="border-t border-border/50">
-          <div className="w-full px-3 sm:px-6 md:px-10 lg:px-16 xl:px-20 py-16 md:py-24">
+          <div className="w-full px-3 md:px-4 lg:px-6 py-16 md:py-24">
             <h2 className="text-2xl md:text-3xl font-black uppercase tracking-tight mb-10">
               Keep Reading
             </h2>

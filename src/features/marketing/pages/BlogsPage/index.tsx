@@ -44,8 +44,8 @@ const BlogsPage: React.FC = () => {
 
       {/* ── Blog Card Carousel ── */}
       <section className="relative w-full bg-bg py-20 md:py-28 lg:py-36">
-        <div className="w-full px-4 md:px-10 lg:px-12 xl:px-16">
-          <div className="max-w-[1600px] mx-auto w-full">
+        <div className="w-full px-3 md:px-4 lg:px-6">
+          <div className="w-full">
             <StickySidebarLayout
               heading={
                 <h2 className="text-3xl md:text-5xl lg:text-6xl font-black text-text-primary tracking-tighter leading-none">

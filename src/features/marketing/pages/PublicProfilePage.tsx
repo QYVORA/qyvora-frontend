@@ -119,7 +119,7 @@ const PublicProfile: React.FC = () => {
         ]}
       />
 
-      <div className="max-w-[1600px] mx-auto px-4 md:px-12 lg:px-16 pt-28 md:pt-24 pb-20 lg:pb-24">
+      <div className="w-full px-3 md:px-4 lg:px-6 pt-28 md:pt-24 pb-20 lg:pb-24">
           {/* Main content */}
           <div className="space-y-6">
             {/* ── Identity Section ── */}
