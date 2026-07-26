@@ -7,7 +7,7 @@ import {
 } from 'lucide-react';
 import ScrollReveal from '@/shared/components/ScrollReveal';
 import SEO from '@/shared/components/SEO';
-import { COURSES, getCategoryById } from '@/features/student/data/courses/courseData';
+import { COURSES, getCategoryById } from '@/features/student/data/courses';
 import api from '@/core/services/api';
 import { MyCoursesSkeleton } from '@/features/student/components/StudentSkeletons';
 import { LearningFilterStrip } from '@/features/student/components/learning';

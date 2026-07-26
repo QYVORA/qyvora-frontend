@@ -12,7 +12,7 @@ import {
 import ProfileDropdown from './ProfileDropdown';
 import MobileProfileSheet from './MobileProfileSheet';
 import { BOOTCAMP_CONFIG } from '../../../constants/bootcampConfig';
-import { getCourseById } from '../../../data/courses/courseData';
+import { getCourseById } from '../../../data/courses';
 import { useAuth } from '../../../../../core/contexts/AuthContext';
 import { useToast } from '../../../../../core/contexts/ToastContext';
 import Logo from '../../../../../shared/components/brand/Logo';
