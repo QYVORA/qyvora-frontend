@@ -112,6 +112,9 @@ const LandingCoursesSection: React.FC = () => {
       <GridBoxedBackground opacity={0.4} blur={0} mask="right" />
       <div className="relative z-10 w-full h-full px-3 md:px-4 lg:px-6 pt-24 md:pt-28 lg:pt-32 pb-6 md:pb-8 lg:pb-10 flex flex-col">
         <div className="w-full flex-1 flex flex-col min-h-0">
+          <h2 className="text-lg md:text-xl lg:text-2xl font-black text-text-primary tracking-tighter leading-none mb-2 md:mb-3 shrink-0">
+            {t('landing.courses.heading')}
+          </h2>
           {/* Category tabs — horizontal carousel on mobile, wrapping on desktop */}
           <motion.div
             initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 15 }}

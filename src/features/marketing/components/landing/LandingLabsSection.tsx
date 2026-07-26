@@ -52,6 +52,9 @@ const LandingLabsSection: React.FC = () => {
       <GridBoxedBackground opacity={0.4} blur={0} mask="right" />
       <div className="relative z-10 w-full h-full px-3 md:px-4 lg:px-6 pt-24 md:pt-28 lg:pt-32 pb-6 md:pb-8 lg:pb-10 flex flex-col">
         <div className="w-full flex-1 flex flex-col min-h-0">
+          <h2 className="text-lg md:text-xl lg:text-2xl font-black text-text-primary tracking-tighter leading-none mb-2 md:mb-3 shrink-0">
+            {t('landing.labs.heading')}
+          </h2>
 
           {/* Bento grid: 3 columns on desktop — 1 featured + 2 supporting */}
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-2 md:gap-4 flex-1 auto-rows-fr">
