@@ -65,9 +65,11 @@ export const PASSWORD_EXERCISES: PasswordExercise[] = [
       description: 'A low-level hacker who relies on pre-made tools and weak passwords. His MD5 hashes are trivial to crack.',
       avatar: '👦',
     },
-    narrative: `🔐 Valkyrie: "Marcus Chen — The Script Kiddie — left this MD5 hash in a config file. He thought MD5 was secure. Let's prove him wrong."
+    narrative: `🔐 Valkyrie: "Marcus Chen — The Script Kiddie — left this MD5 hash in a config file. He thought MD5 was secure because 'everyone uses it.' Let's prove him wrong in seconds."
 
-MD5 is ancient — it's fast to compute and even faster to crack. Marcus used 'password' as his admin password. Classic mistake.
+Marcus Chen is the kind of developer who copy-pastes security advice from 2005. He used MD5 to hash his admin password because 'it's the standard.' But MD5 was broken decades ago — it's not just weak, it's cryptographically broken. A modern GPU can compute 100 billion MD5 hashes per second. Marcus's password 'password' — yes, literally the word 'password' — will be cracked before he finishes reading this narrative.
+
+MD5 is unsalted, meaning identical passwords produce identical hashes. If two users both have 'password' as their password, their hashes are the same. This allows rainbow table attacks — precomputed tables of billions of common password hashes. Marcus didn't just choose a weak hash type; he chose the weakest hash type and paired it with the weakest possible password. This exercise demonstrates why MD5 should never be used for password storage in 2024.
 
 🔑 Cracking Strategy:
 [Hash File] ──> [Identify Type] ──> [Dictionary Attack] ──> [Plaintext]`,
@@ -95,9 +97,11 @@ MD5 is ancient — it's fast to compute and even faster to crack. Marcus used 'p
       description: 'A database admin who stored passwords in SHA-256 without salt. Her hashes are vulnerable to dictionary attacks.',
       avatar: '👩‍💻',
     },
-    narrative: `🔓 Valkyrie: "Sarah O'Brien — The Hash Hoarder — stored user passwords in SHA-256 without salt. She thought SHA-256 was enough. It's not."
+    narrative: `🔓 Valkyrie: "Sarah O'Brien — The Hash Hoarder — stored user passwords in SHA-256 without salt. She thought SHA-256 was enough because 'it's what Bitcoin uses.' It's not."
 
-SHA-256 is better than MD5, but without salt, it's still vulnerable to rainbow tables and dictionary attacks. Sarah's users are about to have a bad day.
+Sarah's reasoning is common but fatally flawed. SHA-256 is a cryptographic hash function designed for integrity verification, not password storage. Without salt, identical passwords produce identical hashes — enabling rainbow table attacks. Sarah's users chose 'password' as their password (because users always do), and the SHA-256 hash of 'password' is one of the most well-known hashes in existence. A dictionary attack cracks it in under a second.
+
+The key lesson here is that hash algorithm choice alone doesn't make passwords secure. Salt (random data unique to each password) is essential because it prevents precomputed attacks. Even SHA-512 without salt is vulnerable to dictionary attacks. Sarah should have used bcrypt, scrypt, or Argon2 — algorithms specifically designed for password storage with built-in salting and key stretching. Her mistake is a cautionary tale for every developer who thinks 'strong hash = secure passwords.'
 
 🔑 Attack Vector:
 [SHA-256 Hash] ──> [Dictionary Attack] ──> [Plaintext Password]`,
@@ -125,9 +129,11 @@ SHA-256 is better than MD5, but without salt, it's still vulnerable to rainbow t
       description: 'A security consultant who used bcrypt but chose a weak password. His "expert" reputation is about to crumble.',
       avatar: '🧑‍🔬',
     },
-    narrative: `🛡️ Valkyrie: "Viktor Petrov — The Encryption Expert — used bcrypt, which is good. But his password 's3cur3P@ss' is in every dictionary. His expertise is questionable."
+    narrative: `🛡️ Valkyrie: "Viktor Petrov — The Encryption Expert — used bcrypt, which is good. But his password 's3cur3P@ss' is in every dictionary. His expertise is about to crumble."
 
-Bcrypt is slow by design — it's meant to resist brute-force attacks. But dictionary attacks still work if the password is common. Viktor's ego was his downfall.
+Viktor is a security consultant who actually chose the right algorithm — bcrypt with a cost factor of 10. That's commendable. But he made the classic mistake: choosing a 'clever' password that's actually a common dictionary word with leet-speak substitutions. 's3cur3P@ss' appears in virtually every password dictionary because it's the kind of password that security-conscious people choose. It's on every 'top 10000 passwords' list.
+
+Bcrypt is designed to be slow — each hash takes about 100ms to compute, making brute-force attacks 10,000x slower than MD5. But slow doesn't mean impossible. With a targeted dictionary attack and a modern GPU, Viktor's bcrypt hash falls in minutes. The lesson: strong algorithms can't compensate for weak passwords. A random 16-character passphrase would have made Viktor's bcrypt hash effectively uncrackable.
 
 ⏱️ Bcrypt Challenge:
 [Bcrypt Hash] ──> [Slow Dictionary Attack] ──> [Patience] ──> [Plaintext]`,
@@ -157,7 +163,9 @@ Bcrypt is slow by design — it's meant to resist brute-force attacks. But dicti
     },
     narrative: `🪟 Valkyrie: "James Wilson — The Windows Whisperer — stored his admin password in NTLM format. He used 'password123' across all his accounts. One password to rule them all."
 
-NTLM is fast to compute and fast to crack. James thought complexity rules made his password secure. They don't.
+James is a Windows sysadmin who should know better but fell into the convenience trap. NTLM is Microsoft's legacy authentication protocol, and it's fast — dangerously fast. An NTLM hash can be computed in nanoseconds, making brute-force attacks trivially fast on modern hardware. James added a number ('123') to 'password' and thought that made it secure. It doesn't. 'password123' is the second most common password in the world.
+
+The real danger here is credential reuse. James didn't just use this password for his Windows login — he used it for email, VPN, GitHub, and the company admin panel. Cracking one NTLM hash gives an attacker access to everything James touches. This is why credential reuse is the number one attack vector in corporate breaches. A single weak password, reused across services, can bring down an entire organization.
 
 🔑 Windows Attack:
 [NTLM Hash] ──> [Fast Dictionary Attack] ──> [Credential Reuse] ──> [Domain Access]`,
@@ -185,9 +193,11 @@ NTLM is fast to compute and fast to crack. James thought complexity rules made h
       description: 'A Linux security researcher who stored weak passwords in /etc/shadow. Her SHA-512 hashes with weak salts are vulnerable.',
       avatar: '🕵️',
     },
-    narrative: `🕵️ Valkyrie: "Dr. Amara Osei — The Shadow Broker — stored her passwords in /etc/shadow with weak salts. She's a security researcher who should know better."
+    narrative: `🕵️ Valkyrie: "Dr. Amara Osei — The Shadow Broker — stored her passwords in /etc/shadow with weak salts. She's a security researcher who should know better. Her hypocrisy is our opportunity."
 
-Linux shadow files contain password hashes, but without proper salting and strong passwords, they're vulnerable. Dr. Osei's hypocrisy is our opportunity.
+Dr. Osei writes papers about password security. She lectures at conferences about the importance of strong hashing. And yet, when she set up her own server, she used weak passwords with predictable salts. The /etc/shadow file contains password hashes for every user on a Linux system — it's one of the most sensitive files on any Unix machine. Dr. Osei's shadow file contains multiple hash types: SHA-512 ($6$), bcrypt ($2y$), MD5 ($1$), and SHA-256 ($5$). This variety tells a story — different users chose different hashing methods, and some chose weaker ones.
+
+The shadow file also reveals which accounts are locked (marked with '!' or '*') and which have passwords. The deploy account uses MD5 ($1$) — the weakest hash in the file. The admin account uses bcrypt ($2y$) — better, but paired with the weak password 'summer'. The appuser uses SHA-512 ($6$) — the strongest hash, but 'sunshine' is a dictionary word. This exercise demonstrates real-world password cracking where you encounter multiple hash types and must prioritize which to crack first.
 
 🐧 Linux Attack:
 [Shadow File] ──> [Unshadow] ──> [John the Ripper] ──> [Plaintext Credentials]`,
@@ -225,7 +235,9 @@ Linux shadow files contain password hashes, but without proper salting and stron
     },
     narrative: `👥 Valkyrie: "The Hash Syndicate — a group of developers — used different hash types across their applications. Their inconsistency is our opportunity."
 
-Multiple hash types mean multiple attack vectors. The Collective thought diversity would protect them. Instead, it gave us more entry points.
+The Collective represents a common real-world scenario: different developers joined the company at different times, each implementing their own 'secure' password hashing. One uses MD5 (the 2005 approach), another uses SHA-1 (the 2010 approach), a third uses SHA-256 (the 2015 approach), and the last uses SHA-512 with salt (the modern approach). The problem is that inconsistency creates multiple attack vectors. An attacker doesn't need to find the 'best' hash — they just need to find the weakest one.
+
+Each hash type has different attack speeds on modern GPUs: MD5 at 100 billion/sec, SHA-1 at 40 billion/sec, SHA-256 at 20 billion/sec, and SHA-512 with salt at 1 million/sec. The MD5 and SHA-1 hashes fall in seconds. The SHA-256 falls in minutes. The SHA-512 with salt takes hours. This exercise demonstrates why organizations need a unified, modern hashing standard — and why 'diversity' in security implementations is a liability, not a strength.
 
 🎯 Multi-Vector Attack:
 [Hash List] ──> [Type Identification] ──> [Parallel Cracking] ──> [Full Credential Dump]`,
