@@ -1,7 +1,7 @@
 import { useState, useCallback, useMemo } from 'react';
 import { Database, CheckCircle } from 'lucide-react';
 import { WalkthroughLayout, WalkthroughStep } from '@/shared/components/walkthrough/';
-import { SQL_INJECTION_TARGETS } from '@/features/student/data/simulations/sql-injection-data';
+import { SQL_INJECTION_TARGETS } from '@/features/student/data/simulations';
 import { createSqlInjectionSimulations } from '@/features/student/components/simulations/labSimulationContent';
 import SEO from '@/shared/components/SEO';
 import ScenarioCard from '@/shared/components/ScenarioCard';

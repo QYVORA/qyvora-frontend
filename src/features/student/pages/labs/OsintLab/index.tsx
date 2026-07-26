@@ -1,7 +1,7 @@
 import { useState, useCallback, useMemo } from 'react';
 import { Globe, CheckCircle } from 'lucide-react';
 import { WalkthroughLayout, WalkthroughStep } from '@/shared/components/walkthrough/';
-import { OSINT_CHALLENGES } from '@/features/student/data/simulations/osint-data';
+import { OSINT_CHALLENGES } from '@/features/student/data/simulations';
 import { createOsintSimulations } from '@/features/student/components/simulations/labSimulationContent';
 import SEO from '@/shared/components/SEO';
 import ScenarioCard from '@/shared/components/ScenarioCard';

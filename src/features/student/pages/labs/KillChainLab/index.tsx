@@ -3,7 +3,7 @@ import { Target, CheckCircle, Radar } from 'lucide-react';
 import { WalkthroughLayout, WalkthroughStep } from '@/shared/components/walkthrough/';
 import SEO from '@/shared/components/SEO';
 import ScenarioCard from '@/shared/components/ScenarioCard';
-import { KILL_CHAIN_SCENARIOS } from '@/features/student/data/simulations/kill-chain-data';
+import { KILL_CHAIN_SCENARIOS } from '@/features/student/data/simulations';
 import { createKillChainSimulations } from '@/features/student/components/simulations/labSimulationContent';
 import { verifyLabFlag } from '../../../services/lab.service';
 import { getRelatedContentForLab } from '@/shared/constants/topicMap';
