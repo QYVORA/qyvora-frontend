@@ -79,8 +79,8 @@ const LandingMarketSection = () => {
             <Carousel
               slides={products.map((p, i) => ({ ...p, id: p.id || `prod-${i}` }))}
               renderCard={(prod) => (
-                <div className="group overflow-hidden flex flex-col w-full border border-border/40 bg-bg-card rounded-2xl transition-all duration-300">
-                  <div className="relative aspect-video overflow-hidden rounded-t-2xl shadow-sm">
+                <div className="group overflow-hidden flex flex-col w-full border border-border/30 bg-bg-card rounded-2xl transition-all duration-300 hover:border-accent/30">
+                  <div className="relative aspect-[16/9] overflow-hidden bg-accent/5">
                     <AuthImage
                       src={prod.coverUrl}
                       fallback={productFallbackImg}
@@ -90,21 +90,22 @@ const LandingMarketSection = () => {
                       className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                       loading="lazy"
                     />
-                    <div className="absolute bottom-4 left-4">
-                      <span className="inline-flex items-center gap-2 px-3 py-1 bg-bg/85 backdrop-blur-md rounded-lg text-[9px] font-black uppercase text-text-primary tracking-widest shadow-sm">
-                        <IconMarketplace className="h-3 w-3 text-accent" /> {t('landing.market.intelligenceAsset')}
+                    <div className="absolute inset-0 bg-gradient-to-t from-bg-card via-transparent to-transparent" />
+                    <div className="absolute bottom-3 left-3">
+                      <span className="inline-flex items-center gap-1.5 px-2 py-0.5 bg-bg/85 backdrop-blur-md rounded-lg text-[9px] font-black uppercase text-accent tracking-widest shadow-sm border border-accent/20">
+                        <IconMarketplace className="h-2.5 w-2.5" /> {t('landing.market.intelligenceAsset')}
                       </span>
                     </div>
                   </div>
-                  <div className="flex flex-1 flex-col p-6">
-                    <h3 className="mb-2 text-lg font-black leading-snug text-text-primary group-hover:text-accent transition-colors tracking-tight line-clamp-1">
+                  <div className="flex flex-1 flex-col p-4 gap-2">
+                    <h3 className="text-sm sm:text-base font-black leading-snug text-text-primary group-hover:text-accent transition-colors tracking-tight line-clamp-2">
                       {prod.title}
                     </h3>
-                    <p className="text-xs text-text-muted/70 mb-6 line-clamp-2 leading-relaxed font-mono">
+                    <p className="text-xs text-text-muted/70 line-clamp-2 leading-relaxed font-mono flex-1">
                       {prod.description || t('landing.market.defaultDesc')}
                     </p>
-                    <div className="mt-auto flex items-center justify-between">
-                      <span className="text-sm font-black text-accent uppercase tracking-widest">{prod.cpPrice} CP</span>
+                    <div className="mt-auto flex items-center justify-between pt-2">
+                      <span className="text-xs font-black text-accent uppercase tracking-widest">{prod.cpPrice} CP</span>
                       <Link to="/zero-day-market" className="text-[10px] font-black uppercase tracking-widest text-accent hover:underline">
                         {t('landing.market.viewAll')}
                       </Link>
