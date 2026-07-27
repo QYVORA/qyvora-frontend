@@ -23,27 +23,30 @@ const AuthFormLayout: React.FC<AuthFormLayoutProps> = ({ children }) => (
       <GridBoxedBackground opacity={0.5} blur={0} mask="none" />
     </div>
 
-    <div className="min-h-screen relative md:grid md:grid-cols-2">
+    <div className="min-h-dvh relative md:grid md:grid-cols-2">
       <AuthHero />
 
       {/* Mobile: hero + form stacked */}
-      <div className="md:hidden flex flex-col px-3 py-12 relative min-h-screen overflow-y-auto">
+      <div className="md:hidden relative w-full min-h-dvh overflow-hidden flex flex-col bg-bg" data-nav-invert>
         <div className="absolute top-6 left-6 z-20">
           <Link to="/" className="inline-flex items-center gap-2 px-4 py-2 text-text-primary rounded-lg text-[10px] font-black uppercase tracking-[0.2em] transition-all hover:opacity-70 active:scale-95">
             <IconArrowLeft size={16} /> Back to Home
           </Link>
         </div>
 
-        <div className="relative z-10 flex flex-col gap-8 pt-16 w-full">
-          <div className="flex flex-col gap-5">
+        <div className="relative z-10 w-full flex-1 grid grid-cols-1 text-left items-center h-full">
+          <div className="flex flex-col items-start justify-center px-3 md:px-4 lg:px-6 pt-20 sm:pt-20 pb-14 sm:pb-16 space-y-5 sm:space-y-6 w-full h-full overflow-y-auto">
             <Logo size="md" variant="full" />
+
             <h1 className="font-black text-text-primary leading-[1.08] tracking-tight w-full text-3xl sm:text-4xl">
               Train like a <span className="text-accent">hacker</span>.<br />
               Become one.
             </h1>
+
             <p className="text-text-secondary text-base sm:text-lg leading-relaxed max-w-xl">
               Africa&apos;s offensive security platform built to sharpen your skills from the ground up.
             </p>
+
             <ul className="flex flex-col gap-4">
               {bullets.map(({ icon: Icon, text }) => (
                 <li key={text} className="flex items-center gap-3">
@@ -54,16 +57,16 @@ const AuthFormLayout: React.FC<AuthFormLayoutProps> = ({ children }) => (
                 </li>
               ))}
             </ul>
-          </div>
 
-          <div className="w-full">
-            {children}
+            <div className="w-full">
+              {children}
+            </div>
           </div>
         </div>
       </div>
 
       {/* Desktop: form column */}
-      <div className="hidden md:flex flex-col items-center px-3 md:px-4 lg:px-6 py-12 md:py-16 relative md:backdrop-blur-xl min-h-screen md:h-screen md:overflow-y-auto">
+      <div className="hidden md:flex flex-col items-center px-3 md:px-4 lg:px-6 py-12 md:py-16 relative md:backdrop-blur-xl min-h-dvh md:h-dvh md:overflow-y-auto">
         <div className="w-full max-w-lg relative z-10 py-12 md:py-16 my-auto">
           {children}
         </div>
