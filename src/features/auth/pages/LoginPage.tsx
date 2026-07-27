@@ -183,11 +183,11 @@ const LoginPage: React.FC = () => {
 
   // Student auth - shared form component
   const AuthForm = () => (
-    <div className="space-y-6">
+    <div className="w-full space-y-6">
       <p className="sr-only" aria-live="polite">{formMessage}</p>
 
       {/* Toggle between login and register */}
-      <div className="flex bg-bg/90 border border-bg/50 p-1.5 rounded-xl backdrop-blur-sm">
+      <div className="w-full flex bg-bg/90 border border-bg/50 p-1.5 rounded-xl backdrop-blur-sm">
         <button
           type="button"
           onClick={() => setMode('login')}
@@ -223,7 +223,7 @@ const LoginPage: React.FC = () => {
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: 20 }}
             transition={{ duration: 0.2 }}
-            className="rounded-2xl bg-bg/90 backdrop-blur-sm p-6 lg:p-8"
+            className="w-full rounded-2xl bg-bg/90 backdrop-blur-sm p-6 lg:p-8"
           >
               <form className="space-y-6" onSubmit={handleLoginSubmit} noValidate>
               <div className="space-y-2">
@@ -286,7 +286,7 @@ const LoginPage: React.FC = () => {
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: -20 }}
             transition={{ duration: 0.2 }}
-            className="rounded-2xl bg-bg/90 backdrop-blur-sm p-6 lg:p-8"
+            className="w-full rounded-2xl bg-bg/90 backdrop-blur-sm p-6 lg:p-8"
           >
             <form className="space-y-6" onSubmit={handleRegisterSubmit}>
               <div className="space-y-2">
@@ -382,7 +382,7 @@ const LoginPage: React.FC = () => {
       />
       
       {/* Mobile: Form with accent background */}
-      <div className="lg:hidden relative w-full min-h-dvh overflow-hidden flex flex-col bg-bg">
+      <div className="lg:hidden relative w-full min-h-dvh overflow-hidden flex flex-col bg-bg" data-nav-invert>
         <GridBoxedBackground opacity={0.5} blur={0} mask="none" />
         
         {/* Back to Home button - Mobile */}
@@ -395,8 +395,8 @@ const LoginPage: React.FC = () => {
           </button>
         </div>
         
-        <div className="relative z-10 flex flex-col min-h-dvh px-3 pt-24 pb-12 overflow-y-auto">
-          <div className="w-full my-auto">
+        <div className="relative z-10 w-full flex-1 grid grid-cols-1 text-left items-center h-full">
+          <div className="flex flex-col items-start justify-center px-3 md:px-4 lg:px-6 pt-20 sm:pt-20 pb-14 sm:pb-16 space-y-5 sm:space-y-6 w-full h-full overflow-y-auto">
             <AuthForm />
           </div>
         </div>
