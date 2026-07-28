@@ -2,13 +2,12 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Cloud, FileText, BookOpen, Cpu } from 'lucide-react';
 import { IconArrowRight, IconMarketplace, IconLock } from '@/shared/components/icons';
-import { Carousel } from '@/shared/components/carousel';
 import { GridBoxedBackground } from '@/shared/components/backgrounds';
 import StickySidebarLayout from '@/shared/components/layout/StickySidebarLayout';
 import ScrollReveal from '@/shared/components/ScrollReveal';
 import api from '@/core/services/api';
 import productFallbackImg from '@/assets/sections/stats/cp-earned-bg.webp';
-import { AuthImage } from '@/shared/components/ui';
+import { AuthImage, Skeleton, ErrorState } from '@/shared/components/ui';
 import { useTranslation } from 'react-i18next';
 
 interface ProductItem {
@@ -30,20 +29,27 @@ const LandingMarketSection = () => {
   const { t } = useTranslation();
   const [products, setProducts] = useState<ProductItem[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
 
   useEffect(() => {
     let mounted = true;
+    setLoading(true);
+    setError('');
     api.get('/public/cp-products').then((r) => {
       if (!mounted) return;
       const items = Array.isArray(r.data?.items) ? r.data.items : [];
-      setProducts(items.slice(0, 4));
-    }).catch(() => {}).finally(() => {
+      if (items.length === 0) {
+        setError('No products available.');
+      } else {
+        setProducts(items.slice(0, 4));
+      }
+    }).catch(() => {
+      if (mounted) setError('Failed to load marketplace products.');
+    }).finally(() => {
       if (mounted) setLoading(false);
     });
     return () => { mounted = false; };
   }, []);
-
-  if (loading) return null;
 
   return (
     <div className="relative bg-bg min-h-dvh md:h-dvh flex flex-col overflow-hidden" data-nav-invert>
@@ -75,11 +81,29 @@ const LandingMarketSection = () => {
 
         {/* Products column */}
         <div className="relative flex-1 min-h-0 min-w-0 overflow-hidden flex items-center">
-          {products.length > 0 ? (
-            <Carousel
-              slides={products.map((p, i) => ({ ...p, id: p.id || `prod-${i}` }))}
-              renderCard={(prod) => (
-                <div className="group overflow-hidden flex flex-col w-full border border-border/30 bg-bg-card rounded-2xl transition-all duration-300 hover:border-accent/30">
+          {loading ? (
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-6 w-full">
+              {Array.from({ length: 4 }).map((_, i) => (
+                <div key={i} className="rounded-2xl border border-border/30 bg-bg-card overflow-hidden">
+                  <Skeleton variant="image" className="aspect-[16/9] w-full !rounded-none" />
+                  <div className="flex flex-col gap-2 p-4">
+                    <Skeleton className="h-5 w-3/4 !rounded" />
+                    <Skeleton className="h-3 w-full !rounded" />
+                    <Skeleton className="h-3 w-2/3 !rounded" />
+                    <div className="flex items-center justify-between mt-auto pt-2">
+                      <Skeleton className="h-4 w-16 !rounded" />
+                      <Skeleton className="h-4 w-16 !rounded" />
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : error ? (
+            <ErrorState message={error} title="Marketplace Unavailable" className="w-full" />
+          ) : products.length > 0 ? (
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-6 w-full">
+              {products.map((prod) => (
+                <div key={prod.id} className="group overflow-hidden flex flex-col border border-border/30 bg-bg-card rounded-2xl transition-all duration-300 hover:border-accent/30">
                   <div className="relative aspect-[16/9] overflow-hidden bg-accent/5">
                     <AuthImage
                       src={prod.coverUrl}
@@ -112,8 +136,8 @@ const LandingMarketSection = () => {
                     </div>
                   </div>
                 </div>
-              )}
-            />
+              ))}
+            </div>
           ) : (
             <div className="text-center py-16 space-y-4 border-2 border-dashed border-bg/20 rounded-3xl w-full">
               <IconLock className="h-12 w-12 text-text-muted/20 mx-auto" />
