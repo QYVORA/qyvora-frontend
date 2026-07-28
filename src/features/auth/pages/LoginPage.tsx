@@ -9,8 +9,7 @@ import { useToast } from '../../../core/contexts/ToastContext';
 import SEO from '@/shared/components/SEO';
 import PublicHeroSection from '@/shared/components/PublicHeroSection';
 import { GridBoxedBackground } from '@/shared/components/backgrounds';
-import { IconShield, IconTerminal, IconTarget, IconArrowLeft } from '@/shared/components/icons';
-import { Logo } from '@/shared/components/brand';
+import { IconArrowLeft } from '@/shared/components/icons';
 import Dobia from '@/shared/components/Dobia';
 import PasswordInput from '../components/PasswordInput';
 import HandleSuggestions from '../../../shared/components/HandleSuggestions';
@@ -365,12 +364,6 @@ const LoginPage: React.FC = () => {
     </div>
   );
 
-  const bullets = [
-    { icon: IconTerminal, text: 'Hands-on penetration testing labs' },
-    { icon: IconShield, text: 'Real-world offensive security scenarios' },
-    { icon: IconTarget, text: 'Capture the flag challenges & rankings' },
-  ];
-
   return (
     <>
       <SEO 
@@ -416,30 +409,12 @@ const LoginPage: React.FC = () => {
             </button>
           </div>
 
-          {/* Left column hero content */}
-          <Logo size="md" variant="full" />
-
-          <h1 className="font-black text-text-primary leading-[1.08] tracking-tight w-full text-3xl sm:text-4xl md:text-5xl lg:text-[2.5rem] xl:text-[3rem]">
-            Train like a <span className="text-accent">hacker</span>.<br />
-            Become one.
-          </h1>
-
-          <p className="text-text-secondary text-base sm:text-lg lg:text-base xl:text-lg leading-relaxed max-w-xl animate-fade-in font-mono">
-            Africa&apos;s offensive security platform built to sharpen your skills from the ground up.
-          </p>
-
-          <ul className="flex flex-col gap-4">
-            {bullets.map(({ icon: Icon, text }) => (
-              <li key={text} className="flex items-center gap-3">
-                <span className="flex-none w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center">
-                  <Icon className="w-5 h-5 text-accent" />
-                </span>
-                <span className="text-text-primary text-sm sm:text-base font-bold">{text}</span>
-              </li>
-            ))}
-          </ul>
-
-          <Dobia expression="greeting" size="hero" />
+          {/* Dobia avatar */}
+          <div className="flex items-center justify-center w-full pt-6 md:pt-12">
+            <div className="scale-[2] lg:scale-[2.5]">
+              <Dobia expression="greeting" size="hero" />
+            </div>
+          </div>
 
           {/* Right column form - positioned absolutely to overlay */}
           <div className="absolute right-0 top-0 h-full w-1/2 flex items-center justify-center px-3 md:px-4 lg:px-6 py-24 overflow-y-auto">
