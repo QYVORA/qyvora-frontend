@@ -2,7 +2,6 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { IconArrowLeft } from '@/shared/components/icons';
 import { GridBoxedBackground } from '@/shared/components/backgrounds';
-import Dobia from '@/shared/components/Dobia';
 
 const AuthHero: React.FC = () => (
   <div className="hidden md:flex relative w-full min-h-dvh md:h-dvh flex-col bg-bg" data-nav-invert>
@@ -18,12 +17,6 @@ const AuthHero: React.FC = () => (
       </Link>
     </div>
 
-    {/* Dobia avatar */}
-    <div className="relative z-10 w-full flex-1 flex items-center justify-center pt-6 md:pt-12 lg:pt-16">
-      <div className="scale-[2] lg:scale-[2.5]">
-        <Dobia expression="greeting" size="hero" />
-      </div>
-    </div>
   </div>
 );
 

@@ -409,13 +409,6 @@ const LoginPage: React.FC = () => {
             </button>
           </div>
 
-          {/* Dobia avatar */}
-          <div className="flex items-center justify-center w-full pt-6 md:pt-12">
-            <div className="scale-[2] lg:scale-[2.5]">
-              <Dobia expression="greeting" size="hero" />
-            </div>
-          </div>
-
           {/* Right column form - positioned absolutely to overlay */}
           <div className="absolute right-0 top-0 h-full w-1/2 flex items-center justify-center px-3 md:px-4 lg:px-6 py-24 overflow-y-auto">
             <div className="w-full max-w-md my-auto">
