@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { IconArrowRight } from '@/shared/components/icons';
 import { GridBoxedBackground } from '@/shared/components/backgrounds';
 import { motion } from 'motion/react';
+import Dobia from '@/shared/components/Dobia';
 
 interface DashboardHeroProps {
   isEnrolled: boolean;
@@ -66,6 +67,14 @@ const DashboardHero = ({
               {t('student.dashboard.hero.reviewCurriculum')} <IconArrowRight size={14} className="inline" />
             </Link>
           </motion.div>
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.4, delay: 0.6, type: 'spring', stiffness: 200, damping: 20 }}
+            className="hidden sm:flex shrink-0"
+          >
+            <Dobia expression="success" size="xl" />
+          </motion.div>
         </motion.div>
       </div>
     );
@@ -116,6 +125,14 @@ const DashboardHero = ({
               {t('student.dashboard.hero.continue')} <IconArrowRight size={14} className="inline" />
             </Link>
           </motion.div>
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.4, delay: 0.6, type: 'spring', stiffness: 200, damping: 20 }}
+            className="hidden sm:flex shrink-0"
+          >
+            <Dobia expression="idle" size="xl" />
+          </motion.div>
         </motion.div>
       </div>
     );
@@ -157,14 +174,22 @@ const DashboardHero = ({
           </motion.p>
         </div>
         <motion.div
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.4, delay: 0.5, type: 'spring', stiffness: 200, damping: 20 }}
-        >
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.4, delay: 0.5, type: 'spring', stiffness: 200, damping: 20 }}
+          >
             <Link to={continuePath} className="hero-cta btn-primary shrink-0 !text-xs w-full sm:w-auto text-center relative z-10 whitespace-nowrap" aria-label={t('student.dashboard.hero.startTraining')}>
               {t('student.dashboard.hero.startTraining')} <IconArrowRight size={14} className="inline" />
           </Link>
         </motion.div>
+        <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.4, delay: 0.6, type: 'spring', stiffness: 200, damping: 20 }}
+            className="hidden sm:flex shrink-0"
+          >
+            <Dobia expression="greeting" size="xl" />
+          </motion.div>
       </motion.div>
     </div>
   );
