@@ -8,7 +8,7 @@ import { BrandYoutubeIcon } from '@/shared/components/icons';
 import { BrandGithubIcon } from '@/shared/components/icons';
 import { BrandXIcon } from '@/shared/components/icons';
 import { ContactTrigger } from '@/features/marketing/components/ContactModal';
-import { Logo } from '@/shared/components/brand';
+import { Logo, QyvoraLogotype } from '@/shared/components/brand';
 import LanguageSwitcher from '@/shared/components/LanguageSwitcher';
 
 const FOOTER_COLS = [
@@ -93,9 +93,21 @@ const Footer: React.FC = React.memo(() => {
   const { t } = useTranslation();
 
   return (
-    <footer className="relative w-full overflow-hidden select-none bg-bg">
-      <div className="px-3 py-10 md:px-4 md:py-20 lg:px-6">
-        <div className="w-full">
+    <footer className="relative w-full overflow-hidden select-none bg-bg min-h-dvh md:h-dvh flex flex-col">
+      {/* ── Desktop: QYVORA logotype banner at bottom ─────────────────── */}
+      <div className="hidden lg:block absolute inset-x-0 bottom-0 pointer-events-none select-none overflow-hidden" style={{ height: '45%', maxHeight: '450px' }}>
+        <div className="w-full h-full flex items-end justify-center">
+          <QyvoraLogotype
+            className="w-[180%] h-auto max-w-none block"
+            color="#06B66F"
+            style={{ opacity: 0.07, transform: 'translateY(18%)' }}
+          />
+        </div>
+      </div>
+
+      {/* ── Content ──────────────────────────────────────────────────────── */}
+      <div className="relative z-10 flex-1 w-full h-full px-3 py-10 md:px-4 md:py-20 lg:px-6 flex flex-col">
+        <div className="w-full flex-1 flex flex-col">
 
           {/* ── Top: Brand | Nav grid ─────────────────────────────────────── */}
           <div className="grid grid-cols-1 gap-12 lg:grid-cols-[minmax(0,340px)_1fr] lg:gap-20 xl:gap-32">
@@ -146,8 +158,11 @@ const Footer: React.FC = React.memo(() => {
             </nav>
           </div>
 
+          {/* ── Spacer pushes legal + utility to bottom ─────────────────── */}
+          <div className="flex-1 min-h-6" />
+
           {/* ── Legal / secondary links row ──────────────────────────────── */}
-          <div className="mt-12 flex flex-wrap gap-x-6 gap-y-2 border-t border-border/40 pt-8 md:mt-16">
+          <div className="flex flex-wrap gap-x-6 gap-y-2 border-t border-border/40 pt-8">
             {SITE_CONFIG.footer.links.map((link, idx) => (
               <Link
                 key={idx}
