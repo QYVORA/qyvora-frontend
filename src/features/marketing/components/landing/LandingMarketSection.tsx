@@ -54,7 +54,7 @@ const LandingMarketSection = () => {
   return (
     <div className="relative bg-bg min-h-dvh md:h-dvh flex flex-col overflow-hidden" data-nav-invert>
       <GridBoxedBackground opacity={0.4} blur={0} mask="right" />
-      <div className="relative z-10 w-full h-full px-3 md:px-4 lg:px-6 py-10 sm:py-8 md:py-12 lg:py-16 flex flex-col lg:flex-row gap-10 sm:gap-10 lg:gap-16 lg:items-stretch">
+      <div className="relative z-10 w-full h-full px-3 md:px-4 lg:px-6 py-10 sm:py-8 md:py-12 lg:py-16 flex flex-col lg:flex-row gap-10 sm:gap-10 lg:gap-24 lg:items-stretch">
         {/* Header column */}
         <div className="shrink-0 lg:w-[420px] xl:w-[480px] flex flex-col lg:justify-center">
           <h2 className="text-3xl md:text-5xl lg:text-6xl font-black text-text-primary tracking-tighter leading-none mb-2">
@@ -101,7 +101,7 @@ const LandingMarketSection = () => {
           ) : error ? (
             <ErrorState message={error} title="Marketplace Unavailable" className="w-full" />
           ) : products.length > 0 ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-6 w-full">
+            <div className={`grid gap-4 md:gap-6 w-full ${products.length === 1 ? 'grid-cols-1 max-w-lg' : 'grid-cols-1 sm:grid-cols-2'}`}>
               {products.map((prod) => (
                 <div key={prod.id} className="group overflow-hidden flex flex-col border border-border/30 bg-bg-card rounded-2xl transition-all duration-300 hover:border-accent/30">
                   <div className="relative aspect-[16/9] overflow-hidden bg-accent/5">
