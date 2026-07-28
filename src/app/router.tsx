@@ -12,6 +12,7 @@ import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { AnimatePresence, motion } from 'motion/react';
 import { useAuth } from '../core/contexts/AuthContext';
 import ErrorBoundary from '../shared/components/ErrorBoundary';
+import Dobia from '../shared/components/Dobia';
 
 // ─── Layouts (lazy-loaded) ─────────────────────────────────────────────────────
 
@@ -122,6 +123,15 @@ const AdminOnly = ({ children }: { children: ReactNode }) => {
 export const AppRouter = () => {
   const location = useLocation();
 
+  const noDobiaRoutes = [
+    '/login', '/register', '/forgot-password', '/reset-password',
+    '/verify-email', '/change-password',
+  ];
+  const hideDobia =
+    noDobiaRoutes.includes(location.pathname) ||
+    location.pathname === ADMIN_PATH ||
+    location.pathname.startsWith(`${ADMIN_PATH}/`);
+
   return (
     <div className="min-h-screen flex flex-col relative">
       <AnimatePresence mode="wait">
@@ -215,6 +225,13 @@ export const AppRouter = () => {
       </Routes>
     </AnimatePresence>
     <MotionCommunityPopup />
+    {!hideDobia && (
+      <div className="fixed bottom-[-30px] sm:bottom-[-50px] md:bottom-[-70px] lg:bottom-[-90px] xl:bottom-[-105px] right-0 sm:right-1 lg:right-1 z-[9999] pointer-events-none">
+        <div className="scale-[0.3] min-[400px]:scale-[0.4] sm:scale-[0.5] md:scale-[0.7] lg:scale-[0.85] xl:scale-100 origin-bottom-right">
+          <Dobia expression="greeting" size="hero" />
+        </div>
+      </div>
+    )}
   </div>
   );
 };
@@ -224,3 +241,5 @@ const MotionCommunityPopup = () => (
     <CommunityPopup />
   </Suspense>
 );
+
+
