@@ -4,7 +4,7 @@ import { useReducedMotion } from 'motion/react';
 import { useAdaptiveUi } from '../../../../core/hooks/useAdaptiveUi';
 import { TARGETS, ARC_PAIRS, ACCENT_COLOR } from './data';
 import { latLngToVec3, buildDotMapTexture } from './helpers';
-import { Ping, Arc, Satellite, Label } from './types';
+import { Ping, Arc, Label } from './types';
 
 interface HackerGlobeProps { scale?: number; offset?: [number, number, number] }
 
@@ -27,7 +27,6 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88, offset = [0, 0,
     let globe: THREE.Group | null = null;
     let pings: Ping[] = [];
     let arcs: Arc[] = [];
-    let sats: Satellite[] = [];
     let persistentLabels: Label[] = [];
     let w = 0, h = 0;
     let isInView = false;
@@ -107,35 +106,6 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88, offset = [0, 0,
       globeFront.renderOrder = 2;
       globe.add(globeFront);
 
-      {
-        const graticuleColor = ACCENT_COLOR;
-        const graticuleOpacity = isLight ? 0.08 : 0.12;
-        const lineStep = isSimplified ? 60 : 30;
-        const latStep = isSimplified ? 4 : 2;
-        const meridianStep = isSimplified ? 60 : 30;
-        const lngStep = isSimplified ? 4 : 2;
-        const graticuleGeo = new THREE.BufferGeometry();
-        const graticuleVerts: number[] = [];
-        for (let lng = -180; lng < 180; lng += lineStep) {
-          for (let lat = -88; lat <= 88; lat += latStep) {
-            const v1 = latLngToVec3(lat,   lng, 1.003);
-            const v2 = latLngToVec3(lat+latStep, lng, 1.003);
-            graticuleVerts.push(v1.x,v1.y,v1.z, v2.x,v2.y,v2.z);
-          }
-        }
-        for (let lat = -60; lat <= 60; lat += meridianStep) {
-          for (let lng = -180; lng < 180; lng += lngStep) {
-            const v1 = latLngToVec3(lat, lng,   1.003);
-            const v2 = latLngToVec3(lat, lng+lngStep, 1.003);
-            graticuleVerts.push(v1.x,v1.y,v1.z, v2.x,v2.y,v2.z);
-          }
-        }
-        graticuleGeo.setAttribute('position', new THREE.Float32BufferAttribute(graticuleVerts, 3));
-        globe.add(new THREE.LineSegments(graticuleGeo, new THREE.LineBasicMaterial({
-          color: graticuleColor, transparent: true, opacity: graticuleOpacity,
-        })));
-      }
-
       TARGETS.forEach(({ lat, lng, status, region }, i) => {
         if (isSimplified && i % 2 !== 0 && status !== 'home') return;
 
@@ -194,37 +164,6 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88, offset = [0, 0,
         })));
         arcs.push({ geo, progress: Math.random(), speed: 0.001 + Math.random() * 0.002 });
       });
-
-      const SATS_COUNT = isSimplified ? 4 : 12;
-      const satsObjs = Array.from({ length: SATS_COUNT }).map((_, i) => {
-        const radius = 1.35 + i * 0.12;
-        const incl   = (Math.PI / 4) + (i * Math.PI / 6);
-        const speed  = 0.0025 + (i * 0.0008);
-        const phase  = i * (Math.PI * 0.5);
-
-        const startPos = new THREE.Vector3(
-          radius * Math.cos(phase),
-          radius * Math.sin(phase) * Math.sin(incl),
-          radius * Math.sin(phase) * Math.cos(incl)
-        );
-
-        const dot = new THREE.Mesh(
-          new THREE.SphereGeometry(0.003, 4, 4),
-          new THREE.MeshBasicMaterial({ color: ACCENT_COLOR, transparent: true, opacity: 0.5 }),
-        );
-        dot.position.copy(startPos);
-        scene!.add(dot);
-
-        const trailLen = isSimplified ? 10 : 28;
-        const trailPts = Array.from({ length: trailLen }, () => startPos.clone());
-        const trailGeo = new THREE.BufferGeometry().setFromPoints(trailPts);
-        const trailLine = new THREE.Line(trailGeo, new THREE.LineBasicMaterial({
-          color: ACCENT_COLOR, transparent: true, opacity: 0.15,
-        }));
-        scene!.add(trailLine);
-        return { dot, trailLine, trailPts, trailHead: 0, radius, incl, speed, phase };
-      });
-      sats.push(...satsObjs);
 
       labelContainer = document.createElement('div');
       labelContainer.style.cssText = 'position:absolute;inset:0;pointer-events:none;z-index:0;';
@@ -290,18 +229,6 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88, offset = [0, 0,
         });
 
         if (!isSimplified || frameCount % 2 === 0) {
-          sats.forEach(sat => {
-            const angle = sat.phase + tick * sat.speed * 60;
-            sat.dot.position.set(sat.radius * Math.cos(angle), sat.radius * Math.sin(angle) * Math.sin(sat.incl), sat.radius * Math.sin(angle) * Math.cos(sat.incl));
-            sat.trailPts[sat.trailHead % sat.trailPts.length].copy(sat.dot.position);
-            sat.trailHead++;
-            if (!isSimplified || frameCount % 4 === 0) {
-              sat.trailLine.geometry.setFromPoints(sat.trailPts);
-            }
-          });
-        }
-
-        if (!isSimplified || frameCount % 2 === 0) {
           persistentLabels.forEach((l) => {
             if (!globe || !camera) return;
 
@@ -346,7 +273,7 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88, offset = [0, 0,
         if (el.contains(renderer.domElement)) el.removeChild(renderer.domElement);
         renderer.dispose();
       }
-      renderer = null; scene = null; camera = null; globe = null; pings = []; arcs = []; sats = []; persistentLabels = [];
+      renderer = null; scene = null; camera = null; globe = null; pings = []; arcs = []; persistentLabels = [];
     };
 
     const viewObserver = new IntersectionObserver((entries) => {

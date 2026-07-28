@@ -13,17 +13,6 @@ export interface Arc {
   speed: number;
 }
 
-export interface Satellite {
-  dot: THREE.Mesh;
-  trailLine: THREE.Line;
-  trailPts: THREE.Vector3[];
-  trailHead: number;
-  radius: number;
-  incl: number;
-  speed: number;
-  phase: number;
-}
-
 export interface Label {
   div: HTMLDivElement;
   pos: THREE.Vector3;
