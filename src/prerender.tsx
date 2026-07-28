@@ -30,6 +30,10 @@ const routeMetadata: Record<string, { title: string; description: string }> = {
     title: 'Blog | QYVORA',
     description: 'Latest insights on cybersecurity, ethical hacking, and offensive security in Africa.',
   },
+  '/labs': {
+    title: 'Labs | QYVORA',
+    description: 'Hands-on penetration testing labs and offensive security challenges.',
+  },
   '/courses': {
     title: 'Courses | QYVORA',
     description: 'Cybersecurity courses and training programs for aspiring security professionals.',
