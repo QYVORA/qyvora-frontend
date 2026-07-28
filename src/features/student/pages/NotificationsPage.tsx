@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Bell, CheckCheck, Loader2, BellOff } from 'lucide-react';
+import { Bell, CheckCheck, Loader2 } from 'lucide-react';
 import ScrollReveal from '../../../shared/components/ScrollReveal';
 import api from '../../../core/services/api';
 import { useToast } from '../../../core/contexts/ToastContext';
 import SEO from '../../../shared/components/SEO';
 import { NotificationsSkeleton } from '../components/StudentSkeletons';
 import StudentHeroSection from '@/shared/components/StudentHeroSection';
+import Dobia from '@/shared/components/Dobia';
 
 interface Notification {
   id: string;
@@ -119,7 +120,9 @@ const Notifications: React.FC = () => {
             </StudentHeroSection>
             {displayed.length === 0 ? (
               <div className="relative overflow-hidden rounded-2xl border-2 border-dashed border-border py-16 text-center">
-                <BellOff className="mx-auto mb-4 h-12 w-12 text-text-muted opacity-40" />
+                <div className="mx-auto mb-4">
+                  <Dobia expression="confused" size="lg" />
+                </div>
                 <p className="text-base text-text-muted">
                   {filter === 'unread' ? t('student.notificationsPage.empty.unread') : t('student.notificationsPage.empty.all')}
                 </p>
