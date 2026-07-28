@@ -6,6 +6,7 @@ import { IconArrowRight, IconTerminal, IconNetwork, IconCode } from '@/shared/co
 import { useTranslation } from 'react-i18next';
 import { GridBoxedBackground } from '@/shared/components/backgrounds';
 import CoursePurchaseModal from '@/shared/components/CoursePurchaseModal';
+import Dobia from '@/shared/components/Dobia';
 
 const CATEGORY_ICONS: Record<string, React.ElementType> = {
   terminal: IconTerminal,
@@ -215,6 +216,9 @@ const LandingCoursesSection: React.FC = () => {
                             {t('badge.popular')}
                           </span>
                         )}
+                        <div className="ml-auto opacity-0 group-hover/card:opacity-100 transition-opacity duration-300">
+                          <Dobia expression="idle" size="xs" />
+                        </div>
                       </div>
 
                       <h4 className="text-sm sm:text-base md:text-lg lg:text-xl font-black text-text-primary tracking-tight mb-1 leading-snug">
