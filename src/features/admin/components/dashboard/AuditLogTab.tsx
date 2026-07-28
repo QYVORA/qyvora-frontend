@@ -3,13 +3,14 @@ import { Filter } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { IconClock } from '@/shared/components/icons';
 import api from '@/core/services/api';
-import { Skeleton } from '@/shared/components/ui';
+import { Skeleton, ErrorState } from '@/shared/components/ui';
 import type { AuditLogEntry } from '@/features/admin/types/admin.types';
 
 const AuditLogTab = () => {
   const { t } = useTranslation();
   const [entries, setEntries] = useState<AuditLogEntry[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
   const [page, setPage] = useState(1);
   const [total, setTotal] = useState(0);
   const [actionFilter, setActionFilter] = useState('');
@@ -20,6 +21,7 @@ const AuditLogTab = () => {
 
   const fetchLogs = async (p = 1) => {
     setLoading(true);
+    setError('');
     try {
       const params = new URLSearchParams({ limit: String(limit), page: String(p) });
       if (actionFilter) params.set('action', actionFilter);
@@ -30,7 +32,7 @@ const AuditLogTab = () => {
       setTotal(res.data?.total || 0);
       if (res.data?.availableActions) setAvailableActions(res.data.availableActions);
     } catch {
-      // silent
+      setError('Failed to load audit log entries.');
     } finally {
       setLoading(false);
     }
@@ -79,6 +81,8 @@ const AuditLogTab = () => {
 
       {loading ? (
         <div className="space-y-2">{Array.from({ length: 10 }).map((_, i) => <div key={i} className="h-12 rounded-xl bg-bg-card border border-border animate-pulse" />)}</div>
+      ) : error ? (
+        <ErrorState message={error} title="Audit Log Unavailable" />
       ) : entries.length === 0 ? (
         <div className="rounded-2xl border border-dashed border-border/30 py-12 text-center">
           <IconClock size={40} className="mx-auto mb-3 text-text-muted opacity-30" />
