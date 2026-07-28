@@ -10,8 +10,6 @@ import LandingFinalCtaSection from '@/features/marketing/components/landing/Land
 import { Footer } from '@/shared/components/layout';
 import PublicHeroSection from '@/shared/components/PublicHeroSection';
 import StickySidebarLayout from '@/shared/components/layout/StickySidebarLayout';
-import Dobia from '@/shared/components/Dobia';
-
 const BlogsPage: React.FC = () => {
   const { user } = useAuth();
 
@@ -27,7 +25,7 @@ const BlogsPage: React.FC = () => {
       />
 
       {/* ── Hero Section ── */}
-      <PublicHeroSection showGlobe mask="right" rightContent={<Dobia expression="idle" size="hero" />}>
+      <PublicHeroSection showGlobe mask="right">
         <h1 className="font-black text-text-primary leading-[1.08] tracking-tight w-full relative">
           <span className="block whitespace-normal lg:whitespace-nowrap text-[2rem] min-[400px]:text-[2.25rem] sm:text-[2.5rem] md:text-[3rem] lg:text-[2.5rem] xl:text-[3rem] lg:leading-[1.1] xl:leading-[1.05] uppercase">
             Intelligence <span className="text-accent">Reports</span>
