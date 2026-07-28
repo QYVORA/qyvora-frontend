@@ -6,7 +6,6 @@ import SimpleHeading from '../../../../shared/components/ui/SimpleHeading';
 import { QyvoraMark } from '../../../../shared/components/brand/QyvoraMark';
 import { GridBoxedBackground } from '@/shared/components/backgrounds';
 import { useTranslation } from 'react-i18next';
-import Dobia from '@/shared/components/Dobia';
 
 interface LandingFinalCtaSectionProps {
   user: { isAdmin?: boolean } | null;
@@ -17,71 +16,72 @@ const LandingFinalCtaSection: React.FC<LandingFinalCtaSectionProps> = ({ user })
   const shouldReduceMotion = useReducedMotion();
 
   return (
-    <div className="relative w-full min-h-dvh md:h-dvh bg-bg flex lg:items-center overflow-hidden" data-nav-invert>
+    <div className="relative w-full min-h-dvh md:h-dvh bg-bg flex flex-col lg:flex-row overflow-hidden" data-nav-invert>
       <GridBoxedBackground opacity={0.4} blur={0} mask="right" />
-      <div className="relative z-10 w-full px-3 md:px-4 lg:px-6 flex flex-col lg:flex-row lg:items-center justify-between gap-8 lg:gap-16 pt-20 pb-12 lg:pt-0 lg:pb-0">
+      <div className="relative z-10 w-full h-full px-3 md:px-4 lg:px-6 flex flex-col lg:flex-row lg:items-stretch gap-8 lg:gap-16 pt-20 pb-12 lg:pt-0 lg:pb-0">
 
         {/* Content */}
-        <motion.div
-          initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-          className="flex-1 max-w-xl"
-        >
-          <SimpleHeading
-            text={user ? t('landing.finalCta.headingReturning') : t('landing.finalCta.headingNew')}
-            align="left"
-            variant="default"
-            className="mb-4"
-          />
-
+        <div className="flex items-center">
           <motion.div
-            initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 12 }}
+            initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-            className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4"
+            transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+            className="max-w-xl"
           >
-            {user ? (
-              <Link
-                to="/dashboard"
-                className="btn-primary !px-8 !py-4 inline-flex items-center justify-center gap-2.5"
-              >
-                <IconDashboard size={20} /> {t('landing.finalCta.goToDashboard')}
-              </Link>
-            ) : (
-              <>
+            <SimpleHeading
+              text={user ? t('landing.finalCta.headingReturning') : t('landing.finalCta.headingNew')}
+              align="left"
+              variant="default"
+              className="mb-4"
+            />
+
+            <motion.div
+              initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 12 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+              className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4"
+            >
+              {user ? (
                 <Link
-                  to="/register"
+                  to="/dashboard"
                   className="btn-primary !px-8 !py-4 inline-flex items-center justify-center gap-2.5"
                 >
-                  {t('landing.finalCta.startTraining')} <IconArrowRight size={20} />
+                  <IconDashboard size={20} /> {t('landing.finalCta.goToDashboard')}
                 </Link>
-                <Link
-                  to="/login"
-                  className="btn-secondary !px-8 !py-4 inline-flex items-center justify-center"
-                >
-                  {t('landing.finalCta.logIn')}
-                </Link>
-              </>
-            )}
+              ) : (
+                <>
+                  <Link
+                    to="/register"
+                    className="btn-primary !px-8 !py-4 inline-flex items-center justify-center gap-2.5"
+                  >
+                    {t('landing.finalCta.startTraining')} <IconArrowRight size={20} />
+                  </Link>
+                  <Link
+                    to="/login"
+                    className="btn-secondary !px-8 !py-4 inline-flex items-center justify-center"
+                  >
+                    {t('landing.finalCta.logIn')}
+                  </Link>
+                </>
+              )}
+            </motion.div>
           </motion.div>
-        </motion.div>
+        </div>
 
-        {/* Logo + Dobia */}
+        {/* Logo — full section height on desktop */}
         <motion.div
           initial={{ opacity: 0, scale: shouldReduceMotion ? 1 : 0.9 }}
           whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-          className="flex-1 flex items-center justify-center lg:justify-end gap-6"
+          className="hidden lg:flex items-center justify-end shrink-0"
         >
-          <Dobia expression="greeting" size="hero" />
-          <div className="relative w-full max-w-[500px] lg:max-w-[700px] xl:max-w-[900px]">
+          <div className="h-full py-12 flex items-center">
             <QyvoraMark
               aria-label="QYVORA Offensive Security Platform"
-              className="relative z-10 w-full h-auto block"
+              className="h-full w-auto block"
               color="#06B66F"
             />
           </div>
