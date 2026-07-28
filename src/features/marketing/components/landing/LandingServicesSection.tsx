@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { motion, useReducedMotion } from 'motion/react';
 import { Sparkles, Building2, Send } from 'lucide-react';
 import { IconShield, IconCheck, IconArrowRight, IconLock } from '@/shared/components/icons';
@@ -239,12 +240,12 @@ const LandingServicesSection: React.FC = () => {
             transition={{ duration: 0.5, delay: 0.4 }}
             className="mt-4 shrink-0"
           >
-            <a
-              href="/services"
+            <Link
+              to="/services"
               className="inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-text-muted hover:text-accent transition-colors"
             >
                {t('landing.services.viewAll')} <IconArrowRight size={14} />
-            </a>
+            </Link>
           </motion.div>
         </div>
       </div>

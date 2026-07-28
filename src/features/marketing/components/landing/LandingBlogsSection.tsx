@@ -34,8 +34,8 @@ const LandingBlogsSection = () => {
           <Carousel
             slides={BLOG_POSTS}
             renderCard={(post) => (
-              <a
-                href={`/blogs/${post.slug}`}
+              <Link
+                to={`/blogs/${post.slug}`}
                 className="block relative min-h-[260px] md:min-h-[360px] group"
               >
                 <div
@@ -87,7 +87,7 @@ const LandingBlogsSection = () => {
                     </div>
                   </div>
                 </div>
-              </a>
+              </Link>
             )}
           />
         </StickySidebarLayout>
