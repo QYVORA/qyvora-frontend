@@ -5,7 +5,7 @@ import { IconArrowRight } from '@/shared/components/icons';
 import api from '@/core/services/api';
 import { Identicon } from '@/shared/components';
 import { useTranslation } from 'react-i18next';
-import { FilterTabs } from '@/shared/components/ui';
+import { FilterTabs, ErrorState } from '@/shared/components/ui';
 
 interface LeaderboardEntry {
   rank: number;
@@ -43,6 +43,7 @@ const LandingLeaderboardSection = () => {
   const [entries, setEntries] = useState<LeaderboardEntry[]>([]);
   const [total, setTotal] = useState(0);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
   const [hoveredIdx, setHoveredIdx] = useState<number | null>(null);
   const [isDesktop, setIsDesktop] = useState(false);
   const [period, setPeriod] = useState<Period>('all');
@@ -59,15 +60,18 @@ const LandingLeaderboardSection = () => {
 
   const fetchLeaderboard = useCallback(async (p: Period) => {
     setLoading(true);
+    setError('');
     try {
       const res = await api.get(`/public/leaderboard?period=${p}&limit=40`);
       const data = res.data;
       if (data.success) {
         setEntries(data.entries || []);
         setTotal(data.total || 0);
+      } else {
+        setError('Failed to load leaderboard.');
       }
     } catch {
-      // silently fail on landing
+      setError('Failed to load leaderboard. Check connection.');
     } finally {
       setLoading(false);
     }
@@ -138,6 +142,8 @@ const LandingLeaderboardSection = () => {
                 />
               ))}
             </div>
+          ) : error ? (
+            <ErrorState message={error} title="Leaderboard Unavailable" className="w-full max-w-md mx-auto" />
           ) : entries.length === 0 ? null : (
             <div
               className="flex flex-wrap content-start"
