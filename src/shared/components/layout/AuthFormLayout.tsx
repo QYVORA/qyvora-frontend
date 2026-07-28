@@ -1,15 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { IconArrowLeft, IconTerminal, IconShield, IconTarget } from '@/shared/components/icons';
+import { IconArrowLeft } from '@/shared/components/icons';
 import { GridBoxedBackground } from '@/shared/components/backgrounds';
 import AuthHero from '@/features/auth/components/AuthHero';
-import { Logo } from '@/shared/components/brand';
-
-const bullets = [
-  { icon: IconTerminal, text: 'Hands-on penetration testing labs' },
-  { icon: IconShield, text: 'Real-world offensive security scenarios' },
-  { icon: IconTarget, text: 'Capture the flag challenges & rankings' },
-];
 
 interface AuthFormLayoutProps {
   children: React.ReactNode;
@@ -36,28 +29,6 @@ const AuthFormLayout: React.FC<AuthFormLayoutProps> = ({ children }) => (
 
         <div className="relative z-10 w-full flex-1 grid grid-cols-1 text-left items-center h-full">
           <div className="flex flex-col items-start justify-center px-3 md:px-4 lg:px-6 pt-20 sm:pt-20 pb-14 sm:pb-16 space-y-5 sm:space-y-6 w-full h-full overflow-y-auto">
-            <Logo size="md" variant="full" />
-
-            <h1 className="font-black text-text-primary leading-[1.08] tracking-tight w-full text-3xl sm:text-4xl">
-              Train like a <span className="text-accent">hacker</span>.<br />
-              Become one.
-            </h1>
-
-            <p className="text-text-secondary text-base sm:text-lg leading-relaxed max-w-xl">
-              Africa&apos;s offensive security platform built to sharpen your skills from the ground up.
-            </p>
-
-            <ul className="flex flex-col gap-4">
-              {bullets.map(({ icon: Icon, text }) => (
-                <li key={text} className="flex items-center gap-3">
-                  <span className="flex-none w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center">
-                    <Icon className="w-5 h-5 text-accent" />
-                  </span>
-                  <span className="text-text-primary text-sm sm:text-base font-bold">{text}</span>
-                </li>
-              ))}
-            </ul>
-
             <div className="w-full">
               {children}
             </div>
