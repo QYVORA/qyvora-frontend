@@ -1,9 +1,9 @@
 import { Link } from 'react-router-dom';
-import { BookOpen } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { IconArrowRight } from '@/shared/components/icons';
 import type { StudentBootcampCardData } from '@/features/student/components/StudentBootcampCard';
 import StudentBootcampCard from '@/features/student/components/StudentBootcampCard';
+import Dobia from '@/shared/components/Dobia';
 
 interface ActiveDeploymentsProps {
   bootcamps: StudentBootcampCardData[];
@@ -14,7 +14,9 @@ const EmptyDeployments = () => {
   const { t } = useTranslation();
   return (
     <div className="relative overflow-hidden rounded-2xl border-2 border-dashed border-border/20 py-12 text-center h-full min-h-[220px] flex flex-col items-center justify-center bg-transparent mx-1">
-      <BookOpen className="mx-auto mb-3 h-8 w-8 text-text-muted opacity-40" />
+      <div className="mx-auto mb-3">
+        <Dobia expression="confused" size="xl" />
+      </div>
       <p className="mb-4 text-sm text-text-muted">{t('student.dashboard.activeDeployments.empty')}</p>
       <Link
         to="/dashboard/bootcamps"

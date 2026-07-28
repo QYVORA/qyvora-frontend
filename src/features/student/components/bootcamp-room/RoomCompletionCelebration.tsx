@@ -2,9 +2,9 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { motion, AnimatePresence } from 'motion/react';
 import { Zap } from 'lucide-react';
-import { IconCheck } from '@/shared/components/icons';
 import CpLogo from '../../../../shared/components/CpLogo';
 import { useScrollLock } from '../../../../core/hooks/useScrollLock';
+import Dobia from '@/shared/components/Dobia';
 
 interface Props {
   show: boolean;
@@ -45,9 +45,9 @@ const RoomCompletionCelebration: React.FC<Props> = ({ show, roomTitle, cpEarned,
             <div className="relative overflow-hidden rounded-2xl border-2 border-accent bg-bg-card p-8 text-center">
               {/* Content */}
               <div className="relative z-10">
-                {/* Icon */}
-                <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-2xl bg-accent">
-                  <IconCheck size={32} className="text-bg" />
+                {/* Dobia mascot */}
+                <div className="mx-auto mb-6 flex items-center justify-center">
+                  <Dobia expression="success" size="lg" />
                 </div>
 
                 {/* Title */}

@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { IconArrowRight } from '@/shared/components/icons';
 import hpbCoverImg from '@/assets/bootcamp/hpb-cover.webp';
+import Dobia from '@/shared/components/Dobia';
 
 export type BootcampLevel = 'Novice' | 'Operator' | 'Specialist' | 'Elite';
 
@@ -45,6 +46,11 @@ const BootcampCard: React.FC<BootcampCardProps> = ({ image, level, title, descri
             {level}
           </span>
         </div>
+        {level === 'Elite' && (
+          <div className="absolute bottom-2.5 right-2.5">
+            <Dobia expression="idle" size="xs" />
+          </div>
+        )}
       </div>
       <div className="flex flex-col gap-2 p-4 sm:p-5 md:p-6 lg:p-7 flex-1">
         <h3 className="text-sm sm:text-base md:text-lg font-black text-text-primary group-hover:text-accent transition-colors leading-snug">
