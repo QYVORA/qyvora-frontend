@@ -9,7 +9,7 @@ import {
   getBootcampProgressMap,
   resolveNextRoomPath,
 } from '@/features/student/utils/studentExperience';
-import { Skeleton } from '@/shared/components/ui';
+import { Skeleton, ErrorState } from '@/shared/components/ui';
 import SEO from '@/shared/components/SEO';
 import OnboardingWizard from '@/features/student/components/OnboardingWizard';
 import type { StudentBootcampCardData } from '@/features/student/components/StudentBootcampCard';
@@ -377,6 +377,10 @@ const Dashboard = () => {
       <SEO title={t('student.dashboard.seoTitle')} description={t('student.dashboard.seoDesc')} noindex />
       <OnboardingWizard />
       <div className=" px-3 md:px-4 lg:px-6 pt-8 pb-20 lg:pb-24 space-y-10">
+
+        {syncError && (
+          <ErrorState message={syncError} title="Sync Failed" />
+        )}
 
         {/* 1. Welcome Banner */}
         <div ref={heroRef}>
