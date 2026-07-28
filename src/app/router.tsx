@@ -28,6 +28,18 @@ const LandingPage       = lazy(() => import('../features/marketing/pages/Landing
 const TermsPage         = lazy(() => import('../features/marketing/pages/TermsPage'));
 const BlogPostPage      = lazy(() => import('../features/marketing/pages/BlogsPage/BlogPostPage'));
 
+// Public marketing pages
+const CoursesPage       = lazy(() => import('../features/marketing/pages/public/CoursesPage'));
+const HpbPage           = lazy(() => import('../features/marketing/pages/public/HpbPage'));
+const PublicLabsPage     = lazy(() => import('../features/marketing/pages/public/LabsPage'));
+const ServicesPage      = lazy(() => import('../features/marketing/pages/public/ServicesPage'));
+const LeaderboardPage   = lazy(() => import('../features/marketing/pages/public/LeaderboardPage'));
+const MarketPage        = lazy(() => import('../features/marketing/pages/public/MarketPage'));
+const AnansiPage        = lazy(() => import('../features/marketing/pages/public/AnansiPage'));
+const BlogsPage         = lazy(() => import('../features/marketing/pages/public/BlogsPage'));
+const TeamPage          = lazy(() => import('../features/marketing/pages/public/TeamPage'));
+const QuiteRootPage     = lazy(() => import('../features/marketing/pages/public/QuiteRootPage'));
+
 // Auth pages
 const LoginPage         = lazy(() => import('../features/auth/pages/LoginPage'));
 const RegisterPage      = lazy(() => import('../features/auth/pages/RegisterPage'));
@@ -120,20 +132,19 @@ export const AppRouter = () => {
           <Route path="/" element={<Wrap scope="Landing"><LandingPage /></Wrap>} />
           <Route path="/terms" element={<Wrap scope="Terms of Service"><TermsPage /></Wrap>} />
           
-          {/* Redirects to landing page sections */}
-          <Route path="/anansi" element={<Navigate to="/#anansi" replace />} />
-          <Route path="/services" element={<Navigate to="/#services" replace />} />
-          <Route path="/hpb" element={<Navigate to="/#bootcamp" replace />} />
-          <Route path="/learn" element={<Navigate to="/#bootcamp" replace />} />
-          <Route path="/leaderboard" element={<Navigate to="/#leaderboard" replace />} />
-          <Route path="/leaderboard/all" element={<Navigate to="/#leaderboard" replace />} />
-          <Route path="/courses" element={<Navigate to="/#courses" replace />} />
-          
-          {/* Redirects for merged pages */}
-          <Route path="/team" element={<Navigate to="/#team" replace />} />
-          <Route path="/quiteroot" element={<Navigate to="/#quiteroot" replace />} />
-          <Route path="/blogs" element={<Navigate to="/#blogs" replace />} />
-          <Route path="/zero-day-market" element={<Navigate to="/#market" replace />} />
+          {/* Public marketing pages (formerly redirects to landing sections) */}
+          <Route path="/courses" element={<Wrap scope="Courses"><CoursesPage /></Wrap>} />
+          <Route path="/hpb" element={<Wrap scope="HPB"><HpbPage /></Wrap>} />
+          <Route path="/learn" element={<Navigate to="/hpb" replace />} />
+          <Route path="/labs" element={<Wrap scope="Labs"><PublicLabsPage /></Wrap>} />
+          <Route path="/services" element={<Wrap scope="Services"><ServicesPage /></Wrap>} />
+          <Route path="/leaderboard" element={<Wrap scope="Leaderboard"><LeaderboardPage /></Wrap>} />
+          <Route path="/leaderboard/all" element={<Navigate to="/leaderboard" replace />} />
+          <Route path="/zero-day-market" element={<Wrap scope="Market"><MarketPage /></Wrap>} />
+          <Route path="/anansi" element={<Wrap scope="Anansi"><AnansiPage /></Wrap>} />
+          <Route path="/blogs" element={<Wrap scope="Blogs"><BlogsPage /></Wrap>} />
+          <Route path="/team" element={<Wrap scope="Team"><TeamPage /></Wrap>} />
+          <Route path="/quiteroot" element={<Wrap scope="QuiteRoot"><QuiteRootPage /></Wrap>} />
           
           {/* Blog post route (individual posts still accessible) */}
           <Route path="/blogs/:slug" element={<Wrap scope="Blog"><BlogPostPage /></Wrap>} />
