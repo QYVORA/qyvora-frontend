@@ -8,7 +8,6 @@ import type { BackendStats } from './types';
 import { useAdaptiveUi } from '../../../../core/hooks/useAdaptiveUi';
 import ErrorBoundary from '../../../../shared/components/ErrorBoundary';
 import { GridBoxedBackground } from '@/shared/components/backgrounds';
-import Dobia from '@/shared/components/Dobia';
 
 const HackerGlobe = lazy(() => import('@/features/marketing/components/HackerGlobe'));
 
@@ -235,19 +234,11 @@ const LandingHeroSection: React.FC<LandingHeroSectionProps> = ({
           </motion.div>
         </div>
 
-        {/* ── Right column: empty (Dobia positioned below) ── */}
+        {/* ── Right column: empty ── */}
         <div className="hidden lg:block" />
 
       </div>
 
-      {/* ── Dobia mascot — standing at viewport baseline, right side ── */}
-      <div className="absolute bottom-0 right-8 z-[2] hidden lg:flex items-end pointer-events-none">
-        <Dobia expression="greeting" size="hero" className="block" />
-      </div>
-      {/* ── Mobile Dobia — behind content, bottom-right corner ── */}
-      <div className="absolute bottom-0 right-0 z-[0] flex lg:hidden items-end pointer-events-none opacity-30">
-        <Dobia expression="greeting" size="xl" className="block" />
-      </div>
     </div>
   );
 };
