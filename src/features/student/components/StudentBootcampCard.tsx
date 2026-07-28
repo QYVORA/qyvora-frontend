@@ -10,6 +10,7 @@ import {
 } from '@/shared/components/icons';
 import ScrollReveal from '../../../shared/components/ScrollReveal';
 import hpbCoverImg from '@/assets/bootcamp/hpb-cover.webp';
+import Dobia from '@/shared/components/Dobia';
 
 export interface StudentBootcampCardData {
   id: string;
@@ -99,6 +100,13 @@ const StudentBootcampCard: React.FC<Props> = ({ data, index = 0, onEnroll, onLoc
               className="h-full bg-accent transition-all duration-700"
               style={{ width: `${progress}%` }}
             />
+          </div>
+        )}
+
+        {/* Dobia progress indicator */}
+        {progress > 0 && !isLocked && (
+          <div className="absolute bottom-1 right-1">
+            <Dobia expression={isComplete ? 'success' : 'scanning'} size="xs" />
           </div>
         )}
       </div>

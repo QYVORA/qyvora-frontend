@@ -1,8 +1,8 @@
 import { Component, type ErrorInfo, type ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
-import { IconTerminal } from '@/shared/components/icons';
 import { Button } from '@/shared/components/ui';
 import { RefreshCw, Home } from 'lucide-react';
+import Dobia from './Dobia';
 
 interface Props {
   children: ReactNode;
@@ -80,9 +80,9 @@ class ErrorBoundaryInner extends Component<Props, State> {
       <div className="min-h-[60vh] flex items-center justify-center px-4 py-16">
         <div className="terminal-card w-full max-w-md text-center space-y-6 p-8 border border-border">
 
-          {/* Icon */}
-          <div className="flex items-center justify-center w-16 h-16 rounded-2xl bg-red-500/10 border border-red-500/20 mx-auto">
-            <IconTerminal size={28} className="text-red-400" />
+          {/* Dobia mascot */}
+          <div className="flex items-center justify-center mx-auto">
+            <Dobia expression="surprised" size="lg" />
           </div>
 
           {/* Heading */}

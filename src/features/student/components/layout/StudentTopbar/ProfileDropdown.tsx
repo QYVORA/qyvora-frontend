@@ -5,6 +5,7 @@ import { AnimatePresence, motion } from 'motion/react';
 import { LogOut, ChevronRight, Terminal, Code2, Network, Wrench, Settings, Globe } from 'lucide-react';
 import Identicon from '../../../../../shared/components/Identicon';
 import ToolChooserModal from '@/features/student/components/tools/ToolChooserModal';
+import Dobia from '@/shared/components/Dobia';
 
 interface ProfileDropdownProps {
   user: {
@@ -114,7 +115,7 @@ const ProfileDropdown: React.FC<ProfileDropdownProps> = ({
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -6, scale: 0.95 }}
             transition={{ duration: 0.15 }}
-            className="absolute right-0 top-full mt-2 w-72 rounded-2xl border border-border/30 bg-bg-card shadow-2xl shadow-black/40 z-[80] overflow-hidden"
+            className="absolute right-0 top-full mt-2 w-72 rounded-2xl border border-border/30 bg-bg-card shadow-2xl shadow-black/40 z-[80]"
             role="menu"
           >
             {/* User header — clickable, navigates to profile */}
@@ -161,6 +162,11 @@ const ProfileDropdown: React.FC<ProfileDropdownProps> = ({
                     </span>
                   )}
                 </div>
+                {unreadCount > 0 && (
+                  <div className="absolute -top-2 -right-2">
+                    <Dobia expression="alert" size="xs" />
+                  </div>
+                )}
                 <div className="flex-1 min-w-0">
                   <div className="text-[10px] font-bold uppercase tracking-widest text-text-muted group-hover:text-text-primary transition-colors">
                     {t('student.topbar.notifications.title')}

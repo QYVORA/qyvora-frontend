@@ -2,9 +2,10 @@ import { Link } from 'react-router-dom';
 import { IconTerminal } from '@/shared/components/icons';
 import SEO from '../components/SEO';
 import PublicHeroSection from '@/shared/components/PublicHeroSection';
+import Dobia from '@/shared/components/Dobia';
 
 const NotFoundPage = () => (
-  <div className="min-h-screen bg-bg">
+  <div className="min-h-screen bg-bg relative">
     <SEO
       title="404 - Node Not Found"
       description="The requested page could not be located on the QYVORA network."
@@ -28,6 +29,14 @@ const NotFoundPage = () => (
         </Link>
       </div>
     </PublicHeroSection>
+    {/* ── Dobia mascot — standing at viewport baseline, right side ── */}
+    <div className="absolute bottom-0 right-8 z-[2] hidden lg:flex items-end pointer-events-none">
+      <Dobia expression="confused" size="hero" />
+    </div>
+    {/* ── Mobile Dobia — behind content, bottom-right corner ── */}
+    <div className="absolute bottom-0 right-0 z-[0] flex lg:hidden items-end pointer-events-none opacity-30">
+      <Dobia expression="confused" size="xl" />
+    </div>
   </div>
 );
 
