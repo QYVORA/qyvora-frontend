@@ -242,11 +242,11 @@ const LandingHeroSection: React.FC<LandingHeroSectionProps> = ({
 
       {/* ── Dobia mascot — standing at viewport baseline, right side ── */}
       <div className="absolute bottom-0 right-8 z-[2] hidden lg:flex items-end pointer-events-none">
-        <Dobia expression="greeting" size="hero" />
+        <Dobia expression="greeting" size="hero" className="block" />
       </div>
       {/* ── Mobile Dobia — behind content, bottom-right corner ── */}
       <div className="absolute bottom-0 right-0 z-[0] flex lg:hidden items-end pointer-events-none opacity-30">
-        <Dobia expression="greeting" size="xl" />
+        <Dobia expression="greeting" size="xl" className="block" />
       </div>
     </div>
   );

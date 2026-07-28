@@ -63,7 +63,7 @@ const Dobia: React.FC<DobiaProps> = ({
 
   return (
     <span
-      className={`inline-flex items-center justify-center ${className}`}
+      className={`inline-flex items-end justify-center ${className}`}
       style={style}
     >
       <Component size={pxSize} />
