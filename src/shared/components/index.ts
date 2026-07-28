@@ -11,4 +11,5 @@ export { default as ScrollToTop } from './ScrollToTop'
 export { default as SEO } from './SEO'
 
 export { default as BootcampBadge } from './BootcampBadge'
+export { default as Dobia } from './Dobia'
 export { default as StreakIcon, getStreakLevel } from './StreakIcon'

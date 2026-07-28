@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'motion/react';
-import { User, Mail, LogIn, Loader2 } from 'lucide-react';
+import { User, Mail, LogIn } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { cn } from '@/shared/utils/cn';
 import { useAuth } from '../../../core/contexts/AuthContext';
@@ -11,6 +11,7 @@ import PublicHeroSection from '@/shared/components/PublicHeroSection';
 import { GridBoxedBackground } from '@/shared/components/backgrounds';
 import { IconShield, IconTerminal, IconTarget, IconArrowLeft } from '@/shared/components/icons';
 import { Logo } from '@/shared/components/brand';
+import Dobia from '@/shared/components/Dobia';
 import PasswordInput from '../components/PasswordInput';
 import HandleSuggestions from '../../../shared/components/HandleSuggestions';
 import api from '../../../core/services/api';
@@ -267,7 +268,7 @@ const LoginPage: React.FC = () => {
               >
                 {isLoading ? (
                   <>
-                    <Loader2 className="w-5 h-5 animate-spin" />
+                    <Dobia expression="loading" size="xs" />
                     <span className="text-[10px]">{t('button.signingIn')}</span>
                   </>
                 ) : (
@@ -437,6 +438,8 @@ const LoginPage: React.FC = () => {
               </li>
             ))}
           </ul>
+
+          <Dobia expression="greeting" size="hero" />
 
           {/* Right column form - positioned absolutely to overlay */}
           <div className="absolute right-0 top-0 h-full w-1/2 flex items-center justify-center px-3 md:px-4 lg:px-6 py-24 overflow-y-auto">

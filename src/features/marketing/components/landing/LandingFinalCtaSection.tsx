@@ -6,6 +6,7 @@ import SimpleHeading from '../../../../shared/components/ui/SimpleHeading';
 import { QyvoraMark } from '../../../../shared/components/brand/QyvoraMark';
 import { GridBoxedBackground } from '@/shared/components/backgrounds';
 import { useTranslation } from 'react-i18next';
+import Dobia from '@/shared/components/Dobia';
 
 interface LandingFinalCtaSectionProps {
   user: { isAdmin?: boolean } | null;
@@ -68,14 +69,15 @@ const LandingFinalCtaSection: React.FC<LandingFinalCtaSectionProps> = ({ user })
           </motion.div>
         </motion.div>
 
-        {/* Logo */}
+        {/* Logo + Dobia */}
         <motion.div
           initial={{ opacity: 0, scale: shouldReduceMotion ? 1 : 0.9 }}
           whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-          className="flex-1 flex items-center justify-center lg:justify-end"
+          className="flex-1 flex items-center justify-center lg:justify-end gap-6"
         >
+          <Dobia expression="greeting" size="hero" />
           <div className="relative w-full max-w-[500px] lg:max-w-[700px] xl:max-w-[900px]">
             <QyvoraMark
               aria-label="QYVORA Offensive Security Platform"
