@@ -1,7 +1,7 @@
 import giantImg from '@/assets/quiteRoot/711f362b-0f9e-4030-8602-640d4626e903.webp';
-import awalImg from '@/assets/quiteRoot/197788-entenda-a-importancia-do-suporte-tecnico-para-software-financeiro.jpg';
+import awalImg from '@/assets/quiteRoot/197788-entenda-a-importancia-do-suporte-tecnico-para-software-financeiro.webp';
 import zeroImg from '@/assets/quiteRoot/WhatsApp Image 2026-07-09 at 9.23.16 PM.webp';
-import ghostImg from '@/assets/quiteRoot/WhatsApp Image 2026-07-16 at 10.45.41 PM.jpeg';
+import ghostImg from '@/assets/quiteRoot/WhatsApp Image 2026-07-16 at 10.45.41 PM.webp';
 
 export interface Researcher {
   id: string;

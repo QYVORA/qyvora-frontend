@@ -1,7 +1,7 @@
 import wsuits6Img from '@/assets/team/wsuits6.webp';
 import sopt4Img from '@/assets/team/sopt4.webp';
 import rafiqImg from '@/assets/team/mohammed_rafiq.webp';
-import ghostImg from '@/assets/quiteRoot/WhatsApp Image 2026-07-16 at 10.45.41 PM.jpeg';
+import ghostImg from '@/assets/quiteRoot/WhatsApp Image 2026-07-16 at 10.45.41 PM.webp';
 
 export interface TeamSocials {
   youtube?: string;
