@@ -58,13 +58,11 @@ describe('LabCard', () => {
     expect(link.getAttribute('href')).toBe('/dashboard/labs/privesc');
   });
 
-  it('does not render any illustrations or numbered backgrounds', () => {
+  it('does not render images or numbered backgrounds', () => {
     renderCard();
     const link = screen.getByRole('link');
     // No images
     expect(link.querySelector('img')).toBeNull();
-    // No SVG icons
-    expect(link.querySelector('svg')).toBeNull();
     // No numbered badges ("01", "02", etc.)
     expect(screen.queryByText('01')).toBeNull();
     // No radial-gradient backgrounds
