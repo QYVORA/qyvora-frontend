@@ -247,23 +247,13 @@ const LandingCoursesSection: React.FC = () => {
           </div>
 
           {/* Footer */}
-          <div className="mt-3 md:mt-4 flex items-center justify-between shrink-0">
+          <div className="mt-3 md:mt-4 shrink-0">
             <Link
               to="/courses"
               className="inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-text-muted hover:text-accent transition-colors"
             >
                {t('landing.courses.viewAll', { count: COURSES.length })} <IconArrowRight size={14} />
             </Link>
-            <div className="flex items-center gap-1.5">
-              {Array.from({ length: totalPages }).map((_, i) => (
-                <div
-                  key={i}
-                  className={`h-1.5 rounded-full transition-all duration-300 ${
-                    i === page ? 'bg-accent w-5' : 'bg-border/40 w-1.5'
-                  }`}
-                />
-              ))}
-            </div>
           </div>
         </div>
       </div>
