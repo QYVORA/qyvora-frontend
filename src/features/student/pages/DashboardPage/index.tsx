@@ -23,15 +23,13 @@ import {
   FlaskConical,
   Briefcase,
   ShoppingBag,
+  Globe,
+  Wifi,
+  Wrench,
 } from 'lucide-react';
 import {
-  IconRank,
-  IconFire,
-  IconDashboard,
-  IconCode,
-  IconMarketplace,
-  IconArrowRight,
-  IconDownload,
+  IconTerminal, IconNetwork, IconCode, IconRank, IconFire, IconDashboard,
+  IconMarketplace, IconArrowRight, IconDownload,
 } from '@/shared/components/icons';
 
 const LABS = [
@@ -153,22 +151,26 @@ const DashboardRoomCard = ({ room }: { room: any }) => {
     <Link
       ref={hoverRef}
       to={`/dashboard/bootcamps/bc_1775270338500/phases/${room.id.split('-')[0]}/rooms/${room.id}`}
-      className="group flex flex-col rounded-2xl border border-border/30 bg-bg-card overflow-hidden transition-all duration-300 hover:border-accent/30 h-full"
+      className="group/card relative aspect-square rounded-2xl border border-border/30 bg-bg-card p-3 md:p-5 transition-all duration-300 hover:border-accent/30 flex flex-col text-left"
     >
-      <div className="flex flex-col gap-2 p-4 sm:p-5 md:p-6 lg:p-7 flex-1">
-        <div className="flex items-center gap-2 mb-1">
-          <span className="text-[9px] font-black uppercase tracking-widest text-accent">{t('stat.room')}</span>
+      <div className="flex items-center gap-2 mb-2">
+        <div className="w-8 h-8 rounded-xl flex items-center justify-center shrink-0 bg-accent/10 border border-accent/20">
+          <IconCode size={16} className="text-accent" />
         </div>
-        <h3 className="text-sm sm:text-base md:text-lg font-black text-text-primary group-hover:text-accent transition-colors leading-snug break-words">{room.title}</h3>
-        <div className="flex items-center justify-between mt-auto pt-2">
-          <span className="text-[9px] sm:text-[10px] font-black uppercase tracking-widest text-text-muted">
-            <IconCode size={12} className="inline mr-1" />
-            Active
-          </span>
-          <span className="px-3 py-1.5 rounded-lg text-[9px] sm:text-[10px] font-black uppercase tracking-widest bg-accent text-bg transition-all duration-200 group-hover:brightness-110 group-active:scale-95">
-            <IconArrowRight size={12} />
-          </span>
-        </div>
+        <span className="px-2 py-0.5 rounded-lg text-[9px] font-black uppercase tracking-widest bg-accent/10 text-accent border border-accent/20">
+          {t('stat.room')}
+        </span>
+      </div>
+
+      <h3 className="text-sm sm:text-base md:text-lg lg:text-xl font-black text-text-primary group-hover/card:text-accent transition-colors leading-snug break-words mb-1">{room.title}</h3>
+
+      <div className="flex items-center justify-between mt-auto pt-2 border-t border-border/20">
+        <span className="text-[9px] sm:text-[10px] font-black uppercase tracking-widest text-text-muted">
+          Active
+        </span>
+        <span className="px-3 py-1.5 rounded-lg text-[9px] sm:text-[10px] font-black uppercase tracking-widest bg-accent text-bg transition-all duration-200 group-hover/card:brightness-110 group-active:scale-95">
+          <IconArrowRight size={12} />
+        </span>
       </div>
     </Link>
   );
@@ -506,6 +508,15 @@ const Dashboard = () => {
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
               {COURSES.slice(0, 6).map((course) => {
+                const DASH_CATEGORY_ICONS: Record<string, React.ElementType> = {
+                  terminal: IconTerminal,
+                  networking: IconNetwork,
+                  programming: IconCode,
+                  'web-security': Globe,
+                  wireless: Wifi,
+                  tools: Wrench,
+                };
+                const CatIc = DASH_CATEGORY_ICONS[course.categoryId];
                 const category = getCategoryById(course.categoryId);
                 const SKILL_CONFIG: Record<SkillLevel, { label: string; color: string; icon: React.ElementType }> = {
                   beginner: { label: t('student.courses.levels.beginner'), color: 'text-accent border-accent/30 bg-accent/10', icon: Sparkles },
@@ -518,36 +529,37 @@ const Dashboard = () => {
                   <Link
                     key={course.id}
                     to={`/courses/${course.id}`}
-                    className="group flex flex-col aspect-square rounded-2xl border border-border/30 bg-bg-card overflow-hidden transition-all duration-300 hover:border-accent/30"
+                    className="group/card relative aspect-square rounded-2xl border border-border/30 bg-bg-card p-3 md:p-5 transition-all duration-300 hover:border-accent/30 flex flex-col text-left"
                   >
-                    <div className="flex flex-col gap-2 p-4 sm:p-5 md:p-6 lg:p-7 flex-1">
-                      <div className="flex items-center justify-between">
-                        <span className="px-2 py-0.5 rounded-lg bg-accent/10 text-[9px] font-black uppercase tracking-widest text-accent border border-accent/20">
-                          {category?.name}
+                    <div className="flex items-center gap-2 mb-2">
+                      <div className="w-8 h-8 rounded-xl flex items-center justify-center shrink-0 bg-accent/10 border border-accent/20">
+                        {CatIc && <CatIc className="w-4 h-4 text-accent" />}
+                      </div>
+                      <span className="px-2 py-0.5 rounded-lg bg-accent/10 text-[9px] font-black uppercase tracking-widest text-accent border border-accent/20">
+                        {category?.name}
+                      </span>
+                    </div>
+
+                    <h3 className="text-sm sm:text-base md:text-lg lg:text-xl font-black text-text-primary group-hover/card:text-accent transition-colors leading-snug break-words mb-1">
+                      {course.title}
+                    </h3>
+
+                    <p className="text-xs sm:text-sm md:text-base text-text-muted leading-relaxed line-clamp-3 break-words flex-1 mb-2">
+                      {course.description}
+                    </p>
+
+                    <div className="flex items-center justify-between mt-auto pt-2 border-t border-border/20">
+                      <div className="flex items-center gap-2">
+                        <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-lg text-[9px] font-black uppercase tracking-widest ${skillCfg.color}`}>
+                          <SkillIcon className="h-2.5 w-2.5" /> {skillCfg.label}
                         </span>
-                        <span className="text-[9px] font-black uppercase tracking-widest text-text-muted">
-                          {course.estimatedMinutes}min
+                        <span className="text-[9px] sm:text-[10px] font-black uppercase tracking-widest text-accent">
+                          {course.cpCost} CP
                         </span>
                       </div>
-                      <h3 className="text-sm sm:text-base md:text-lg lg:text-xl font-black text-text-primary group-hover:text-accent transition-colors leading-snug break-words">
-                        {course.title}
-                      </h3>
-                      <p className="text-xs sm:text-sm md:text-base text-text-muted leading-relaxed line-clamp-3 break-words flex-1">
-                        {course.description}
-                      </p>
-                      <div className="flex items-center justify-between mt-auto pt-2">
-                        <div className="flex items-center gap-2">
-                          <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-lg text-[9px] font-black uppercase tracking-widest ${skillCfg.color}`}>
-                            <SkillIcon className="h-2.5 w-2.5" /> {skillCfg.label}
-                          </span>
-                          <span className="text-[9px] sm:text-[10px] font-black uppercase tracking-widest text-accent">
-                            {course.cpCost} CP
-                          </span>
-                        </div>
-                        <span className="px-3 py-1.5 rounded-lg text-[9px] sm:text-[10px] md:text-xs font-black uppercase tracking-widest bg-accent text-bg transition-all duration-200 group-hover:brightness-110 group-active:scale-95">
-                          {t('student.dashboard.view')}
-                        </span>
-                      </div>
+                      <span className="px-3 py-1.5 rounded-lg text-[9px] sm:text-[10px] md:text-xs font-black uppercase tracking-widest bg-accent text-bg transition-all duration-200 group-hover/card:brightness-110 group-active:scale-95">
+                        {t('student.dashboard.view')}
+                      </span>
                     </div>
                   </Link>
                 );
