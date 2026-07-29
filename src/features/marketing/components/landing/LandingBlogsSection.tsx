@@ -56,7 +56,7 @@ const LandingBlogsSection = () => {
                   <p className="text-[10px] font-bold uppercase tracking-widest text-accent/80 mt-1">
                     {post.subtitle}
                   </p>
-                  <p className="text-xs sm:text-sm text-text-secondary leading-relaxed font-mono opacity-90 border-l-2 border-accent/40 pl-3 py-1.5 mt-3 line-clamp-3">
+                  <p className="text-xs sm:text-sm text-text-secondary leading-relaxed font-mono border-l-2 border-accent/40 pl-3 py-1.5 mt-3 line-clamp-3">
                     {post.excerpt}
                   </p>
                   <div className="flex items-center justify-between gap-3 mt-auto w-full">

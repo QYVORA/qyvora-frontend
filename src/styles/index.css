@@ -2,6 +2,8 @@
 @import "tailwindcss";
 @import '@xyflow/react/dist/style.css';
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 @property --beam-angle {
   syntax: '<angle>';
   inherits: false;
@@ -92,9 +94,8 @@
     height: 100%;
   }
 
-  /* ── Force all headings to white in dark mode ── */
   h1, h2, h3, h4, h5, h6, pre[role="heading"] {
-    color: #FFFFFF;
+    color: var(--color-text-primary);
   }
 
   h1 *, h2 *, h3 *, h4 *, h5 *, h6 *, pre[role="heading"] * {
@@ -169,7 +170,9 @@
   }
 
   .glass-effect {
-    @apply backdrop-blur-md bg-white/5 border border-white/10;
+    @apply backdrop-blur-md;
+    background-color: color-mix(in srgb, var(--color-text-primary) 5%, transparent);
+    border: 1px solid color-mix(in srgb, var(--color-text-primary) 10%, transparent);
   }
   .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
   .no-scrollbar::-webkit-scrollbar { display: none; }
@@ -482,7 +485,8 @@
   }
 
   .btn-secondary {
-    @apply bg-bg-elevated text-accent font-black uppercase tracking-[0.08em] rounded-xl px-7 py-3 cursor-pointer hover:bg-bg-card active:scale-95 border border-white/5;
+    @apply bg-bg-elevated text-accent font-black uppercase tracking-[0.08em] rounded-xl px-7 py-3 cursor-pointer hover:bg-bg-card active:scale-95 border;
+    border-color: var(--color-border);
     transition-property: filter, transform, background-color, color, border-color, box-shadow;
     transition-duration: var(--dur-base);
     transition-timing-function: var(--ease-smooth);
@@ -597,4 +601,70 @@
 [data-saver="true"] * {
   animation-duration: 0s !important;
   transition-duration: 0s !important;
+}
+
+/* ── Light theme overrides ──────────────────────────────────────────────── */
+[data-theme="light"] {
+  color-scheme: light;
+  --color-bg: #F4F5F7;
+  --color-bg-card: #FFFFFF;
+  --color-bg-elevated: #EEF0EE;
+  --color-text-primary: #1A1D1A;
+  --color-text-secondary: rgba(26, 29, 26, 0.65);
+  --color-text-muted: rgba(26, 29, 26, 0.40);
+  --color-border: rgba(26, 29, 26, 0.08);
+  --color-border-strong: rgba(6, 182, 111, 0.20);
+  --dot-color: rgba(6, 182, 111, 0.04);
+  --color-hero-right-bg: #f0fdf6;
+  --color-hero-glow: rgba(6, 182, 111, 0.06);
+  --color-code-bg: #EEF0EE;
+  --color-code-string: #059669;
+  --color-code-number: #d97706;
+  --color-code-flag: #2563eb;
+  --color-code-path: #7c3aed;
+  --card-shimmer: inset 0 1px 0 rgba(255, 255, 255, 0.6);
+  --card-shadow: 0 12px 40px rgba(0, 0, 0, 0.06);
+}
+
+[data-theme="light"] ::-webkit-scrollbar-track {
+  background: var(--color-bg);
+}
+[data-theme="light"] ::-webkit-scrollbar-thumb {
+  background: var(--color-accent);
+  border: 2px solid var(--color-bg);
+}
+[data-theme="light"] ::-webkit-scrollbar-corner {
+  background: var(--color-bg);
+}
+[data-theme="light"] .btn-primary {
+  color: #FFFFFF;
+  border-color: #FFFFFF;
+}
+
+/* ── Admin dark-theme isolation ─────────────────────────────────────────── */
+[data-theme-persist="dark"] {
+  --color-bg: #000000;
+  --color-bg-card: #050505;
+  --color-bg-elevated: #0b0b0b;
+  --color-accent: #06B66F;
+  --color-accent-rgb: 6, 182, 111;
+  --color-accent-dim: rgba(6, 182, 111, 0.05);
+  --color-accent-glow: rgba(6, 182, 111, 0.12);
+  --color-text-primary: #EEF0EE;
+  --color-text-secondary: rgba(238, 240, 238, 0.70);
+  --color-text-muted: rgba(238, 240, 238, 0.40);
+  --color-border: rgba(171, 181, 192, 0.12);
+  --color-border-strong: rgba(6, 182, 111, 0.18);
+  --dot-color: rgba(6, 182, 111, 0.05);
+  --color-hero-right-bg: #000e08;
+  --color-hero-glow: rgba(6, 182, 111, 0.15);
+  --color-hero-dots: #06B66F;
+  --color-code-bg: #0d0d0d;
+  --color-code-keyword: #06B66F;
+  --color-code-string: #34d399;
+  --color-code-number: #fbbf24;
+  --color-code-flag: #60a5fa;
+  --color-code-path: #a78bfa;
+  --card-shimmer: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  --card-shadow: 0 12px 40px rgba(0, 0, 0, 0.30);
 }
