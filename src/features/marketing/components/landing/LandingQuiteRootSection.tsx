@@ -38,13 +38,10 @@ const LandingQuiteRootSection = () => {
         </div>
 
         {/* Researchers grid — styled like team member cards */}
-        <ScrollReveal direction="up" delay={0.2}>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            {researchersData.map((researcher) => (
-              <div
-                key={researcher.id}
-                className="group relative flex flex-col rounded-2xl border border-border/30 bg-bg-card p-5 transition-all duration-300 hover:border-accent/30"
-              >
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          {researchersData.map((researcher, idx) => (
+            <ScrollReveal key={researcher.id} direction="up" delay={idx * 0.1}>
+              <div className="group relative flex flex-col rounded-2xl border border-border/30 bg-bg-card p-5 transition-all duration-300 hover:border-accent/30 h-full">
                 <div className="flex items-center gap-4 mb-4">
                   <div className="w-16 h-16 rounded-2xl overflow-hidden border border-border/30 shrink-0">
                     <img
@@ -67,9 +64,9 @@ const LandingQuiteRootSection = () => {
                   {researcher.bio}
                 </p>
               </div>
-            ))}
-          </div>
-        </ScrollReveal>
+            </ScrollReveal>
+          ))}
+        </div>
       </div>
     </div>
   );
