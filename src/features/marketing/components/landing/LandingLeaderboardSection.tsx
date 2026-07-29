@@ -96,13 +96,13 @@ const LandingLeaderboardSection = () => {
       <div className="relative z-10 w-full h-full px-3 md:px-4 lg:px-6 py-12 sm:py-10 md:py-16 lg:py-20 flex flex-col lg:flex-row gap-10 sm:gap-10 lg:gap-16 lg:items-stretch">
         {/* Header column — same height as grid on desktop */}
         <div className="shrink-0 lg:w-[420px] xl:w-[480px] flex flex-col lg:justify-center">
-            <h2 className="text-2xl md:text-4xl lg:text-5xl font-black text-text-primary tracking-tighter leading-none mb-2">
+            <h2 className="text-2xl md:text-4xl lg:text-5xl font-black text-text-primary tracking-tighter leading-none mb-4">
               {t('landing.leaderboard.heading')}
             </h2>
-            <p className="text-xs md:text-sm text-text-muted leading-relaxed max-w-xl mb-4">
+            <p className="text-xs md:text-sm text-text-muted leading-relaxed max-w-xl mb-6">
               {t('landing.leaderboard.description')}
             </p>
-            <div className="mb-4">
+            <div className="mb-6">
               <FilterTabs
                 tabs={[
                   { key: 'all', label: t('leaderboardPage.periods.all') },

@@ -18,10 +18,10 @@ const LandingAnansiSection = () => {
           <div className="w-16 h-16 md:w-20 md:h-20 flex items-center justify-center mb-4 overflow-hidden">
             <img src={anansiLogo} alt="Anansi logo" className="w-full h-full object-contain" />
           </div>
-          <h2 className="text-2xl md:text-4xl lg:text-5xl font-black text-text-primary tracking-tighter leading-none mb-2">
+          <h2 className="text-2xl md:text-4xl lg:text-5xl font-black text-text-primary tracking-tighter leading-none mb-4">
             {t('landing.anansi.title')} <span className="text-accent">{t('landing.anansi.titleAccent')}</span>
           </h2>
-          <p className="text-xs md:text-sm text-text-muted leading-relaxed max-w-xl mb-4">
+          <p className="text-xs md:text-sm text-text-muted leading-relaxed max-w-xl mb-6">
             {t('landing.anansi.description')}
           </p>
           <Link

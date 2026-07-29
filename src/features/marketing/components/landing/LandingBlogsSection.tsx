@@ -16,10 +16,10 @@ const LandingBlogsSection = () => {
         <StickySidebarLayout
           heading={
             <div>
-              <h2 className="text-3xl md:text-5xl lg:text-6xl font-black text-text-primary tracking-tighter leading-none mb-2">
+              <h2 className="text-3xl md:text-5xl lg:text-6xl font-black text-text-primary tracking-tighter leading-none mb-4">
                 {t('landing.blogs.title')} <span className="text-text-secondary">{t('landing.blogs.titleAccent')}</span>
               </h2>
-              <p className="text-xs md:text-sm text-text-muted leading-relaxed max-w-xl mb-4">
+              <p className="text-xs md:text-sm text-text-muted leading-relaxed max-w-xl mb-6">
                 {t('landing.blogs.description')}
               </p>
               <Link
