@@ -203,7 +203,7 @@ const DashboardProductCard = ({ product }: { product: any }) => {
   const description = String(product?.description || t('student.dashboard.intelligenceDesc'));
   return (
     <div className="group flex flex-col overflow-hidden rounded-2xl border border-border/30 bg-bg-card transition-all duration-300 hover:border-accent/30">
-      <div className="relative aspect-[16/9] overflow-hidden bg-accent/5 border-b border-border/30">
+      <div className="relative aspect-[16/9] overflow-hidden bg-accent/5">
         <AuthImage
           src={product?.coverUrl}
           fallback={productFallbackImg}
@@ -548,7 +548,7 @@ const Dashboard = () => {
                       {course.description}
                     </p>
 
-                    <div className="flex items-center justify-between mt-auto pt-2 border-t border-border/20">
+      <div className="flex items-center justify-between mt-auto">
                       <div className="flex items-center gap-2">
                         <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-lg text-[9px] font-black uppercase tracking-widest ${skillCfg.color}`}>
                           <SkillIcon className="h-2.5 w-2.5" /> {skillCfg.label}

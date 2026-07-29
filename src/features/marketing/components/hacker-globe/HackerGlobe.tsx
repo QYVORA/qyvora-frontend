@@ -72,15 +72,7 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88, offset = [0, 0,
       });
       globe.add(new THREE.Mesh(outlineGeo, outlineMat));
 
-      const equatorGeo = new THREE.TorusGeometry(1.002, 0.001, 8, isSimplified ? 64 : 128);
-      const equatorMat = new THREE.MeshBasicMaterial({
-        color: ACCENT_COLOR,
-        transparent: true,
-        opacity: isLight ? 0.15 : 0.25,
-      });
-      const equator = new THREE.Mesh(equatorGeo, equatorMat);
-      equator.rotation.x = Math.PI / 2;
-      globe.add(equator);
+
 
       const step = isSimplified ? 1.4 : 1.0;
       const dotTex = buildDotMapTexture(isLight, step);
