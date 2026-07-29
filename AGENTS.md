@@ -192,7 +192,7 @@ Pass icons at `w-10 h-10` or `w-12 h-12` to the shared `EmptyState` component.
 
 ## PWA
 
-- `manifest.webmanifest` icons use `/favicon.png`
+- `manifest.webmanifest` icons use `/favicon.webp`
 - `theme_color` must match accent: `#06B66F`
 - Install prompt managed by `src/features/student/services/pwa.ts`
 - Install banner uses `usePopupManager('install', 5)` (highest priority)

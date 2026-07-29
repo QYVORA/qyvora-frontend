@@ -18,8 +18,11 @@ Catches JavaScript errors in the component tree. Each boundary has a `scope` pro
 
 When an error is caught:
 1. Logs the error with scope to console
-2. Renders a fallback UI with "Something went wrong" message
-3. Offers a "Reload page" button
+2. Renders a fallback UI with Dobia mascot, "Something went wrong" message, and dev-only error details
+3. Offers three buttons:
+   - **"Try Again"** — remounts the errored subtree
+   - **"Refresh Page"** — calls `window.location.reload()`
+   - **"Dashboard"** — navigates to `/dashboard`
 
 ## Toast Notifications
 
@@ -43,6 +46,34 @@ The Axios response interceptor handles:
 - **401:** Silent token refresh + retry
 - **403:** CSRF token recovery + retry
 - **Other errors:** Passed through to caller
+
+### Error Message Sanitization
+
+**Source:** `src/shared/utils/sanitizeError.ts`
+
+Before displaying error messages to users, pass them through `sanitizeError()` to strip technical information:
+
+```tsx
+import { sanitizeError } from '@/shared/utils/sanitizeError';
+
+try {
+  const res = await api.post('/auth/login', data);
+  // ...
+} catch (err) {
+  setError(sanitizeError(err, 'login'));
+}
+```
+
+The utility filters:
+- CSRF token values (patterns like `csrf_token=`)
+- Token/bearer references
+- Stack traces and long messages
+- Internal implementation details
+
+When filtered, it returns a context-appropriate fallback message:
+- `'login'` — "An error occurred during sign in. Please try again."
+- `'register'` — "Registration failed. Please try again."
+- `'default'` — "Something went wrong. Please try again."
 
 ### Component-Level
 
