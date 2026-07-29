@@ -397,8 +397,8 @@ const LoginPage: React.FC = () => {
         
         <div className="relative z-10 w-full flex-1 grid grid-cols-1 text-left items-center h-full">
           <div className="flex flex-col items-start justify-center px-3 md:px-4 lg:px-6 pt-20 sm:pt-20 pb-14 sm:pb-16 space-y-5 sm:space-y-6 w-full h-full overflow-y-auto">
-            <div className="flex items-center gap-3 mb-2">
-              <Dobia expression={dobiaExpression} size="md" />
+            <div className="flex flex-col items-start gap-4 mb-2">
+              <Dobia expression={dobiaExpression} size="lg" />
               <div>
                 <h2 className="text-xl font-black text-text-primary tracking-tight">
                   {mode === 'login' ? 'Welcome Back' : 'Join QYVORA'}
@@ -416,17 +416,15 @@ const LoginPage: React.FC = () => {
       {/* Desktop: PublicHeroSection with left hero and right form */}
       <div className="hidden lg:block">
         <PublicHeroSection mask="right" showGlobe={false}>
-          <div className="flex flex-col items-start gap-4 w-full">
-            <div className="flex items-center gap-4">
-              <Dobia expression={dobiaExpression} size="xl" />
-              <div>
-                <h2 className="text-3xl md:text-4xl font-black text-text-primary tracking-tighter leading-none">
-                  {mode === 'login' ? 'Welcome Back' : 'Join QYVORA'}
-                </h2>
-                <p className="text-sm text-text-muted mt-1">
-                  {mode === 'login' ? 'Sign in to continue your training.' : 'Start your offensive security journey.'}
-                </p>
-              </div>
+          <div className="flex flex-col items-start gap-6 w-full">
+            <Dobia expression={dobiaExpression} size="hero" />
+            <div>
+              <h2 className="text-4xl md:text-5xl font-black text-text-primary tracking-tighter leading-none">
+                {mode === 'login' ? 'Welcome Back' : 'Join QYVORA'}
+              </h2>
+              <p className="text-base text-text-muted mt-2">
+                {mode === 'login' ? 'Sign in to continue your training.' : 'Start your offensive security journey.'}
+              </p>
             </div>
           </div>
           {/* Back to Home button - Desktop */}
