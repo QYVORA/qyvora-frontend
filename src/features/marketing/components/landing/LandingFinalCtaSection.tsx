@@ -76,7 +76,7 @@ const LandingFinalCtaSection: React.FC<LandingFinalCtaSectionProps> = ({ user })
           whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-          className="hidden lg:flex items-center justify-end shrink-0"
+          className="hidden lg:flex items-center justify-end shrink-0 lg:mr-6 xl:mr-10"
         >
           <div className="h-full py-12 flex items-center">
             <QyvoraMark
