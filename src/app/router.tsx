@@ -134,7 +134,12 @@ export const AppRouter = () => {
     return () => window.removeEventListener('dobia-expression', handler);
   }, []);
 
+  const noDobiaRoutes = [
+    '/login', '/register', '/forgot-password', '/reset-password',
+    '/verify-email', '/change-password',
+  ];
   const hideDobia =
+    noDobiaRoutes.includes(location.pathname) ||
     location.pathname === ADMIN_PATH ||
     location.pathname.startsWith(`${ADMIN_PATH}/`);
 
