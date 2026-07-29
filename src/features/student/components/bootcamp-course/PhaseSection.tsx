@@ -4,20 +4,9 @@ import { IconCheck, IconLock } from '@/shared/components/icons';
 import ScrollReveal from '../../../../shared/components/ScrollReveal';
 import RoomCard from './RoomCard';
 import { BOOTCAMP_CONFIG } from '../../constants/bootcampConfig';
-import phaseOneImg from '@/assets/bootcamp/rooms/phaseOne.webp';
-import phaseTwoImg from '@/assets/bootcamp/rooms/phaseTwo.webp';
-import phaseThreeImg from '@/assets/bootcamp/rooms/phaseThree.webp';
-import phaseFourImg from '@/assets/bootcamp/rooms/phaseFour.webp';
-import phaseFiveImg from '@/assets/bootcamp/rooms/phaseFive.webp';
 import hpbCoverImg from '@/assets/bootcamp/hpb-cover.webp';
 
-const PHASE_ROOM_IMAGES: Record<string, string> = {
-  phase1: phaseOneImg,
-  phase2: phaseTwoImg,
-  phase3: phaseThreeImg,
-  phase4: phaseFourImg,
-  phase5: phaseFiveImg,
-};
+const PHASE_ROOM_IMAGES: Record<string, string> = {};
 
 interface PhaseSectionProps {
   bootcampId: string;
