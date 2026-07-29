@@ -18,7 +18,7 @@ const TeamPage = () => {
 
   return (
     <div className="bg-bg min-h-full">
-      <SEO title="Team - QYVORA" description="The team behind QYVORA — operators, engineers, and security researchers." noindex />
+      <SEO title="Team - QYVORA" description="The team behind QYVORA — operators, engineers, and security researchers." />
       <div className="px-3 md:px-4 lg:px-6 pt-8 pb-20 lg:pb-24 space-y-8">
         <StudentHeroSection
           icon={<Users className="w-8 h-8 text-accent" />}

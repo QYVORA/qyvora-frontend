@@ -1,18 +1,8 @@
-/**
- * prerender.tsx
- *
- * Prerender script for vite-prerender-plugin.
- * Returns SEO-optimized meta tags for each route to improve crawlability.
- *
- * This runs in Node.js after the build. The HTML content is intentionally minimal
- * because many React components depend on browser APIs (window, document, etc.).
- * Search engines will index the meta tags (title, description, og:*) injected
- * into the <head> of each prerendered page.
- */
-
 import type { PrerenderArguments, PrerenderResult } from 'vite-prerender-plugin';
 
-// Route metadata for SEO - titles and descriptions for each public route
+const SITE_URL = 'https://qyvora.netlify.app';
+const DEFAULT_OG_IMAGE = `${SITE_URL}/og-image.svg`;
+
 const routeMetadata: Record<string, { title: string; description: string }> = {
   '/': {
     title: 'QYVORA | Africa\'s Offensive Security Platform',
@@ -54,21 +44,9 @@ const routeMetadata: Record<string, { title: string; description: string }> = {
     title: 'Team | QYVORA',
     description: 'Meet the team behind QYVORA - cybersecurity experts building Africa\'s security ecosystem.',
   },
-  '/events': {
-    title: 'Events | QYVORA',
-    description: 'Cybersecurity events, workshops, and conferences in Africa.',
-  },
   '/leaderboard': {
     title: 'Leaderboard | QYVORA',
     description: 'Top cybersecurity talent and contributors in the QYVORA community.',
-  },
-  '/leaderboard/all': {
-    title: 'Full Leaderboard | QYVORA',
-    description: 'Complete leaderboard of all QYVORA community members.',
-  },
-  '/news': {
-    title: 'Cyber Feed | QYVORA',
-    description: 'Latest cybersecurity news and updates from Africa and beyond.',
   },
   '/terms': {
     title: 'Terms of Service | QYVORA',
@@ -108,23 +86,16 @@ const routeMetadata: Record<string, { title: string; description: string }> = {
   },
 };
 
-/**
- * Prerender function called by vite-prerender-plugin for each route.
- * Returns minimal HTML that search engines can crawl.
- */
 export async function prerender(data: PrerenderArguments): Promise<PrerenderResult> {
   const { url } = data;
 
-  // Get metadata for this route (fallback to generic)
   const meta = routeMetadata[url] || {
     title: 'QYVORA | Africa\'s Offensive Security Platform',
     description: 'Building a strong cybersecurity ecosystem in Africa through offensive security training.',
   };
 
-  // Render minimal HTML shell
-  // This is intentionally simple - we don't render the full React tree
-  // because many components depend on browser APIs (window, document, etc.)
-  // Search engines will see the meta tags from index.html plus this minimal content
+  const canonical = `${SITE_URL}${url}`;
+
   const html = `
     <div data-prerender="true">
       <noscript>
@@ -142,9 +113,40 @@ export async function prerender(data: PrerenderArguments): Promise<PrerenderResu
       title: meta.title,
       elements: new Set([
         { type: 'meta', props: { name: 'description', content: meta.description } },
+        { type: 'meta', props: { name: 'robots', content: 'index, follow, max-image-preview:large' } },
+        { type: 'link', props: { rel: 'canonical', href: canonical } },
+        { type: 'meta', props: { property: 'og:type', content: 'website' } },
         { type: 'meta', props: { property: 'og:title', content: meta.title } },
         { type: 'meta', props: { property: 'og:description', content: meta.description } },
-        { type: 'meta', props: { property: 'og:url', content: `https://qyvora.netlify.app${url}` } },
+        { type: 'meta', props: { property: 'og:url', content: canonical } },
+        { type: 'meta', props: { property: 'og:image', content: DEFAULT_OG_IMAGE } },
+        { type: 'meta', props: { property: 'og:image:width', content: '1200' } },
+        { type: 'meta', props: { property: 'og:image:height', content: '630' } },
+        { type: 'meta', props: { property: 'og:image:alt', content: meta.title } },
+        { type: 'meta', props: { property: 'og:site_name', content: 'QYVORA' } },
+        { type: 'meta', props: { name: 'twitter:card', content: 'summary_large_image' } },
+        { type: 'meta', props: { name: 'twitter:site', content: '@qyvorasec' } },
+        { type: 'meta', props: { name: 'twitter:title', content: meta.title } },
+        { type: 'meta', props: { name: 'twitter:description', content: meta.description } },
+        { type: 'meta', props: { name: 'twitter:image', content: DEFAULT_OG_IMAGE } },
+        {
+          type: 'script',
+          props: {
+            type: 'application/ld+json',
+            innerHTML: JSON.stringify({
+              '@context': 'https://schema.org',
+              '@type': 'WebPage',
+              name: meta.title,
+              description: meta.description,
+              url: canonical,
+              isPartOf: {
+                '@type': 'WebSite',
+                name: 'QYVORA',
+                url: SITE_URL,
+              },
+            }),
+          },
+        },
       ]),
     },
   };

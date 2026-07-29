@@ -1,13 +1,10 @@
-import { useEffect } from 'react';
 import { SimulationProvider } from '@/features/student/components/simulations';
 import { TerminalWrapper } from '@/shared/components/learning/TerminalWrapper';
+import SEO from '@/shared/components/SEO';
 
-const TerminalToolPage = () => {
-  useEffect(() => {
-    document.title = 'Terminal — QYVORA Tools';
-  }, []);
-
-  return (
+const TerminalToolPage = () => (
+  <>
+    <SEO title="Terminal — QYVORA Tools" description="Full-screen terminal for CLI-based exercises and raw command execution." noindex />
     <SimulationProvider>
       <div className="h-dvh w-screen overflow-hidden bg-[#0c0c0c]">
         <TerminalWrapper
@@ -18,7 +15,7 @@ const TerminalToolPage = () => {
         />
       </div>
     </SimulationProvider>
-  );
-};
+  </>
+);
 
 export default TerminalToolPage;

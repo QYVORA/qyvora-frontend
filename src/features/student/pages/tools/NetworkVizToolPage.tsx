@@ -1,13 +1,10 @@
-import { useEffect } from 'react';
 import { SimulationProvider } from '@/features/student/components/simulations';
 import NetworkBuilder from '@/features/student/components/tools/NetworkBuilder';
+import SEO from '@/shared/components/SEO';
 
-const NetworkVizToolPage = () => {
-  useEffect(() => {
-    document.title = 'Network Visualizer — QYVORA Tools';
-  }, []);
-
-  return (
+const NetworkVizToolPage = () => (
+  <>
+    <SEO title="Network Visualizer — QYVORA Tools" description="Interactive network topology visualizer for mapping and analyzing network infrastructure." noindex />
     <SimulationProvider>
       <NetworkBuilder
         open={true}
@@ -15,7 +12,7 @@ const NetworkVizToolPage = () => {
         standalone
       />
     </SimulationProvider>
-  );
-};
+  </>
+);
 
 export default NetworkVizToolPage;

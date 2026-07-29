@@ -19,7 +19,7 @@ const ServicesPage = () => {
 
   return (
     <div className="bg-bg min-h-full">
-      <SEO title="Services - QYVORA" description="Enterprise-grade penetration testing, security assessments, and offensive security training." noindex />
+      <SEO title="Services - QYVORA" description="Enterprise-grade penetration testing, security assessments, and offensive security training." />
       <div className="px-3 md:px-4 lg:px-6 pt-8 pb-20 lg:pb-24 space-y-8">
         <StudentHeroSection
           icon={<ShieldCheck className="w-8 h-8 text-accent" />}

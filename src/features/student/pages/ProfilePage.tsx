@@ -58,7 +58,7 @@ const Profile: React.FC = () => {
       <SEO
         title={`@${profile.username}'s Profile`}
         description={`View the operator profile, rank, and accomplishments of @${profile.username} on QYVORA. — ${profile.rank} — ${profile.cp.toLocaleString()} CP earned.`}
-        image="https://qyvora.netlify.app/favicon.png"
+        image="https://qyvora.netlify.app/og-image.svg"
         noindex
       />
 

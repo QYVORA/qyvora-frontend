@@ -61,15 +61,14 @@ const SEO: React.FC<SEOProps> = ({
   const imagePath = image || ogImageSrc;
   const seoImage = imagePath.startsWith('http') ? imagePath : `${siteUrl}${imagePath}`;
   
-  const seoCanonical = canonical || `${siteUrl}${location.pathname}${location.search}`;
+  const seoCanonical = canonical || `${siteUrl}${location.pathname}`;
 
   const defaultOrganizationSchema = {
     '@context': 'https://schema.org',
     '@type': 'Organization',
     'name': defaultTitle,
     'url': siteUrl,
-    'logo': `${siteUrl}/favicon.png`,
-    // favicon.png kept in public/ for stable OG URL
+    'logo': `${siteUrl}/favicon.webp`,
     'description': SITE_CONFIG.brand.description,
     'sameAs': SITE_CONFIG.social.map(s => s.href)
   };

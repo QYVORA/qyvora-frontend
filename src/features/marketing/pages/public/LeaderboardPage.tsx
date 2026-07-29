@@ -35,7 +35,7 @@ const LeaderboardPage = () => {
 
   return (
     <div className="bg-bg min-h-full">
-      <SEO title="Leaderboard - QYVORA" description="Top offensive security operators ranked by CP earnings." noindex />
+      <SEO title="Leaderboard - QYVORA" description="Top offensive security operators ranked by CP earnings." />
       <div className="px-3 md:px-4 lg:px-6 pt-8 pb-20 lg:pb-24 space-y-6">
         <StudentHeroSection
           icon={<Trophy className="w-8 h-8 text-accent" />}

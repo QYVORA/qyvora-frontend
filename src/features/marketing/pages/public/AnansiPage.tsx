@@ -14,7 +14,7 @@ const AnansiPage = () => {
 
   return (
     <div className="bg-bg min-h-full">
-      <SEO title="Anansi - QYVORA" description="Anansi — Attack Surface Intelligence CLI for reconnaissance and surface mapping." noindex />
+      <SEO title="Anansi - QYVORA" description="Anansi — Attack Surface Intelligence CLI for reconnaissance and surface mapping." />
       <div className="px-3 md:px-4 lg:px-6 pt-8 pb-20 lg:pb-24 space-y-8">
         <StudentHeroSection
           icon={<img src={anansiLogo} alt="Anansi" className="w-10 h-10 object-contain" />}

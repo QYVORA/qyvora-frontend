@@ -1,6 +1,6 @@
-import { useEffect } from 'react';
 import { SimulationProvider } from '@/features/student/components/simulations';
 import Ide from '@/features/student/components/tools/Ide';
+import SEO from '@/shared/components/SEO';
 
 const TOOL_PYTHON_CONTENT = `# QYVORA — Python Exercise
 # Complete the function below and run the code.
@@ -49,12 +49,9 @@ echo "Current dir: $(pwd)"
 # TODO: Save the system info to a file
 `;
 
-const IdeToolPage = () => {
-  useEffect(() => {
-    document.title = 'IDE — QYVORA Tools';
-  }, []);
-
-  return (
+const IdeToolPage = () => (
+  <>
+    <SEO title="IDE — QYVORA Tools" description="Browser-based IDE for hands-on exercises and exploit development." noindex />
     <SimulationProvider>
       <Ide
         open={true}
@@ -69,7 +66,7 @@ const IdeToolPage = () => {
         ]}
       />
     </SimulationProvider>
-  );
-};
+  </>
+);
 
 export default IdeToolPage;
