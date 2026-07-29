@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import { useToast } from '../../../core/contexts/ToastContext';
 import SEO from '@/shared/components/SEO';
 import { AuthFormLayout } from '@/shared/components/layout';
+import { sanitizeError } from '../../../shared/utils/sanitizeError';
 import api from '../../../core/services/api';
 import ForgotPasswordForm from '../components/ForgotPasswordForm';
 import ResetPasswordConfirmForm from '../components/ResetPasswordConfirmForm';
@@ -50,7 +51,7 @@ const ForgotPasswordPage: React.FC = () => {
         navigate('/login');
       }
     } catch (err: any) {
-      const msg = err?.response?.data?.error || 'Password reset request failed.';
+      const msg = sanitizeError(err, 'reset');
       addToast(msg, 'error');
     } finally {
       setIsLoading(false);

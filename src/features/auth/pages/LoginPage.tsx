@@ -11,6 +11,7 @@ import PublicHeroSection from '@/shared/components/PublicHeroSection';
 import { GridBoxedBackground } from '@/shared/components/backgrounds';
 import { IconArrowLeft } from '@/shared/components/icons';
 import Dobia from '@/shared/components/Dobia';
+import { sanitizeError } from '../../../shared/utils/sanitizeError';
 import PasswordInput from '../components/PasswordInput';
 import HandleSuggestions from '../../../shared/components/HandleSuggestions';
 import api from '../../../core/services/api';
@@ -79,11 +80,12 @@ const LoginPage: React.FC = () => {
       setFormMessage('Login successful.');
       navigate('/dashboard');
     } catch (err: any) {
-      const msg = err?.response?.data?.error || 'Authentication failed. Check credentials.';
+      const msg = sanitizeError(err, 'login');
       setFormMessage(msg);
       setShakePassword(true);
       addToast(msg, 'error');
       setIsLoading(false);
+      window.dispatchEvent(new CustomEvent('dobia-expression', { detail: 'confused' }));
     }
   };
 
@@ -116,9 +118,10 @@ const LoginPage: React.FC = () => {
       setFormMessage('Account created successfully.');
       navigate('/dashboard');
     } catch (err: any) {
-      const msg = err?.response?.data?.error || 'Registration failed.';
+      const msg = sanitizeError(err, 'register');
       setFormMessage(msg);
       addToast(msg, 'error');
+      window.dispatchEvent(new CustomEvent<'confused'>('dobia-expression', { detail: 'confused' }));
     } finally {
       setIsLoading(false);
     }
