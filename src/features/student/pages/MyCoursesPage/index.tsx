@@ -207,7 +207,7 @@ const MyCoursesPage: React.FC = () => {
                       {course.description}
                     </p>
 
-                    <div className="space-y-1 mt-auto pt-2 border-t border-border/20">
+                    <div className="space-y-1 mt-auto">
                       <div className="flex items-center justify-between">
                         <span className="text-[8px] font-mono text-text-muted">
                           {progress?.completed || 0}/{progress?.total || course.lessons.length} lessons

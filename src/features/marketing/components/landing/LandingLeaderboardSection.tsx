@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { Medal } from 'lucide-react';
 import { IconArrowRight } from '@/shared/components/icons';
 import api from '@/core/services/api';
-import { Identicon } from '@/shared/components';
+
 import { useTranslation } from 'react-i18next';
 import { FilterTabs, ErrorState } from '@/shared/components/ui';
 
@@ -182,8 +182,10 @@ const LandingLeaderboardSection = () => {
                     ].join(' ')}
                     style={{ width: `${cellSize}px`, height: `${cellSize}px` }}
                   >
-                    <div className="flex items-center justify-center [&_svg]:w-full [&_svg]:h-full">
-                      <Identicon value={entry!.hackerHandle || entry!.name} size={cellSize} className={isTopThree ? 'border-0' : ''} />
+                    <div className="flex items-center justify-center w-full h-full bg-accent/10">
+                      <span className="text-[10px] font-black uppercase tracking-widest text-accent/60 select-none">
+                        {(entry!.hackerHandle || entry!.name || '?').charAt(0).toUpperCase()}
+                      </span>
                     </div>
 
                     <div className="absolute top-[3px] left-[3px] z-10">
