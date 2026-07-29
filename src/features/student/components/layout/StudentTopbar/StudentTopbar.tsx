@@ -205,7 +205,7 @@ const StudentTopbar = () => {
                 {/* Mobile profile trigger */}
                 <button
                   onClick={() => setProfileSheetOpen(true)}
-                  className="md:hidden w-9 h-9 flex-none rounded-lg overflow-hidden transition-colors"
+                  className="md:hidden w-9 h-9 flex-none rounded-lg overflow-hidden transition-colors border-2 border-accent"
                   aria-label="Open profile menu"
                 >
                   <Identicon value={user?.username || '?'} size={36} className="w-full h-full border-transparent bg-transparent" />
@@ -287,7 +287,7 @@ const StudentTopbar = () => {
               {/* Mobile profile trigger */}
               <button
                 onClick={() => setProfileSheetOpen(true)}
-                className="md:hidden w-9 h-9 flex-none rounded-lg overflow-hidden transition-colors"
+                className="md:hidden w-9 h-9 flex-none rounded-lg overflow-hidden transition-colors border-2 border-accent"
                 aria-label="Open profile menu"
               >
                 <Identicon value={user?.username || '?'} size={36} className="w-full h-full border-transparent bg-transparent" />
@@ -345,25 +345,25 @@ const StudentTopbar = () => {
             {/* Mobile profile trigger */}
             <button
               onClick={() => setProfileSheetOpen(true)}
-              className="md:hidden w-9 h-9 flex-none rounded-lg overflow-hidden transition-colors"
-              aria-label="Open profile menu"
-            >
-              <Identicon value={user?.username || '?'} size={36} className="w-full h-full border-transparent bg-transparent" />
-            </button>
+                className="md:hidden w-9 h-9 flex-none rounded-lg overflow-hidden transition-colors border-2 border-accent"
+                aria-label="Open profile menu"
+              >
+                <Identicon value={user?.username || '?'} size={36} className="w-full h-full border-transparent bg-transparent" />
+              </button>
 
-            <MobileProfileSheet
-              open={profileSheetOpen}
-              onOpenChange={setProfileSheetOpen}
-              user={user}
-              unreadCount={unreadCount}
-              onOpenTerminal={() => window.dispatchEvent(new CustomEvent('qyvora:open-terminal'))}
-              onOpenIDE={() => window.dispatchEvent(new CustomEvent('qyvora:open-ide'))}
-              onOpenNetworkVisualizer={() => window.dispatchEvent(new CustomEvent('qyvora:open-network-visualizer'))}
-              handleLogout={handleLogout}
-            />
-          </div>
+              <MobileProfileSheet
+                open={profileSheetOpen}
+                onOpenChange={setProfileSheetOpen}
+                user={user}
+                unreadCount={unreadCount}
+                onOpenTerminal={() => window.dispatchEvent(new CustomEvent('qyvora:open-terminal'))}
+                onOpenIDE={() => window.dispatchEvent(new CustomEvent('qyvora:open-ide'))}
+                onOpenNetworkVisualizer={() => window.dispatchEvent(new CustomEvent('qyvora:open-network-visualizer'))}
+                handleLogout={handleLogout}
+              />
+            </div>
 
-        ) : (
+          ) : (
           /* ══ DASHBOARD MODE ══ */
           <div className=" px-3 md:px-4 lg:px-6 h-20 md:h-24 flex items-center gap-2 md:gap-3">
 
@@ -423,7 +423,7 @@ const StudentTopbar = () => {
             {/* Mobile profile trigger */}
             <button
               onClick={() => setProfileSheetOpen(true)}
-              className="md:hidden w-9 h-9 md:w-11 md:h-11 flex-none rounded-lg overflow-hidden transition-colors"
+              className="md:hidden w-9 h-9 md:w-11 md:h-11 flex-none rounded-lg overflow-hidden transition-colors border-2 border-accent"
               aria-label="Open profile menu"
             >
               <Identicon value={user?.username || '?'} size={44} className="w-full h-full border-transparent bg-transparent" />

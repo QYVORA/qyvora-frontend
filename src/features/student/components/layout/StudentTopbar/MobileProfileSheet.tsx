@@ -78,7 +78,7 @@ const MobileProfileSheet: React.FC<MobileProfileSheetProps> = ({
             className="flex items-center justify-between px-5 py-4 border-b border-border/50 flex-none hover:bg-accent-dim/50 transition-colors"
           >
             <div className="flex items-center gap-3">
-              <div className="w-12 h-12 shrink-0 rounded-xl overflow-hidden flex items-center justify-center">
+              <div className="w-12 h-12 shrink-0 rounded-xl overflow-hidden flex items-center justify-center border-2 border-accent">
                 <Identicon value={user?.username || '?'} size={48} className="w-full h-full" />
               </div>
               <div>

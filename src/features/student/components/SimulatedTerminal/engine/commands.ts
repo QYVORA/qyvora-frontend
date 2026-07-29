@@ -2,6 +2,7 @@ import type { CommandHandler, TerminalState, CommandResult, PipelineStage, Inter
 import * as handlers from './handlers';
 import { findNode } from './filesystem';
 import { expandVars, applyGlobbing } from './parser';
+import { helpTexts } from './handlers/helpTexts';
 
 const commandMap: Record<string, CommandHandler> = {
   ls: handlers.ls,
@@ -187,6 +188,13 @@ export function executeCommandInternal(
   if (!cmd) return { output: '', exitCode: 0 };
 
   args = args.map(a => expandVars(a, state));
+
+  if (args.includes('--help') || args.includes('-h') && !['ls', 'df', 'du', 'sort', 'free', 'grep', 'find', 'tree'].includes(cmd)) {
+    const helpText = helpTexts[cmd];
+    if (helpText) {
+      return { output: helpText, exitCode: 0 };
+    }
+  }
 
   const handler = commandMap[cmd];
   if (!handler) {

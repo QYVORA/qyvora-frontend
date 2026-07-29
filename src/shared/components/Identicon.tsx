@@ -32,7 +32,7 @@ const Identicon = ({ value, size = 40, className }: IdenticonProps) => {
   return (
     <div
       dangerouslySetInnerHTML={{ __html: svg }}
-      className={cn('bg-black border-accent/30 rounded-xl', className)}
+      className={cn('border-accent/30 rounded-xl', className)}
     />
   );
 };

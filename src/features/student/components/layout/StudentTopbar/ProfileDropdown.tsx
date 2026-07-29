@@ -100,7 +100,7 @@ const ProfileDropdown: React.FC<ProfileDropdownProps> = ({
       <button
         ref={triggerRef}
         onClick={() => setOpen(prev => !prev)}
-        className="w-11 h-11 md:w-12 md:h-12 flex-none rounded-xl overflow-hidden transition-colors focus:outline-none"
+        className="w-11 h-11 md:w-12 md:h-12 flex-none rounded-xl overflow-hidden transition-colors focus:outline-none border-2 border-accent"
         aria-label="Profile menu"
         aria-expanded={open}
         aria-haspopup="true"
@@ -126,7 +126,7 @@ const ProfileDropdown: React.FC<ProfileDropdownProps> = ({
               role="menuitem"
             >
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 shrink-0 rounded-xl overflow-hidden flex items-center justify-center">
+                <div className="w-10 h-10 shrink-0 rounded-xl overflow-hidden flex items-center justify-center border-2 border-accent">
                   <Identicon value={user?.username || '?'} size={40} className="w-full h-full" />
                 </div>
                 <div className="min-w-0">

@@ -44,7 +44,22 @@ export function buildDefaultFilesystem(): VFSNode {
     createNode('usr', 'dir', { permissions: 'drwxr-xr-x', owner: 'root', group: 'root' }),
     createNode('var', 'dir', { permissions: 'drwxr-xr-x', owner: 'root', group: 'root' }),
     createNode('tmp', 'dir', { permissions: 'drwxrwxrwt', owner: 'root', group: 'root', size: 4096 }),
-    createNode('root', 'dir', { permissions: 'drwx------', owner: 'root', group: 'root', size: 4096 }),
+    (() => {
+      const rootDir = createNode('root', 'dir', { permissions: 'drwx------', owner: 'root', group: 'root', size: 4096 });
+      rootDir.children = [
+        createNode('.bashrc', 'file', {
+          content: '# ~/.bashrc: executed by bash(1) for non-login shells.\nalias ll="ls -la"\n',
+          permissions: '-rw-r--r--',
+          owner: 'root', group: 'root', size: 72,
+        }),
+        createNode('root.txt', 'file', {
+          content: 'Welcome, root.\nThis is the superuser home directory.\n',
+          permissions: '-rw-r--r--',
+          owner: 'root', group: 'root', size: 52,
+        }),
+      ];
+      return rootDir;
+    })(),
     createNode('bin', 'dir', { permissions: 'drwxr-xr-x', owner: 'root', group: 'root', size: 4096 }),
     createNode('sbin', 'dir', { permissions: 'drwxr-xr-x', owner: 'root', group: 'root', size: 4096 }),
     createNode('lib', 'dir', { permissions: 'drwxr-xr-x', owner: 'root', group: 'root', size: 4096 }),
