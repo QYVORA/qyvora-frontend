@@ -68,7 +68,7 @@ export const teamData: TeamMember[] = [
     id: 'ghostVenom',
     name: 'Ghost Venom',
     role: 'CM',
-    bio: 'I am curious to know how things work in building my skills in cybersecurity .',
+    bio: 'I am the whisper in the code, the Shadow in the system, the ghost no firewall can forget.',
     image: ghostImg,
     socials: {
       linkedin: 'https://www.linkedin.com/in/ghost-malware-222ab4285/',
