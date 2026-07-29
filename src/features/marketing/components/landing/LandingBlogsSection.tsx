@@ -38,17 +38,13 @@ const LandingBlogsSection = () => {
                 to={`/blogs/${post.slug}`}
                 className="block relative min-h-[260px] md:min-h-[360px] group"
               >
-                <div
-                  className="absolute inset-0 bg-cover bg-center hidden dark:block"
-                  style={{ backgroundImage: `url(${post.image})` }}
-                />
-                <div className="absolute inset-0 bg-gradient-to-r from-bg-card via-bg-card to-transparent dark:from-bg-card dark:via-bg-card/60 dark:to-transparent" />
+                <div className="absolute inset-0 bg-bg-card rounded-2xl border border-border/20" />
                 <div className="relative z-10 p-6 sm:p-8 md:p-6 lg:p-8 flex flex-col items-start text-left h-full min-h-[260px] md:min-h-[360px]">
                   <div className="flex flex-wrap gap-1.5 mb-3">
                     {post.tags.map((tag) => (
                       <span
                         key={tag}
-                        className="px-2.5 py-1 text-[9px] font-black uppercase tracking-widest bg-bg/80 backdrop-blur-sm border border-accent/20 rounded-full text-accent"
+                        className="px-2.5 py-1 text-[9px] font-black uppercase tracking-widest bg-accent/10 border border-accent/20 rounded-full text-accent"
                       >
                         {tag}
                       </span>
