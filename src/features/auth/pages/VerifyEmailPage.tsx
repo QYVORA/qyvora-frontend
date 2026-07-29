@@ -4,6 +4,7 @@ import { motion } from 'motion/react';
 import { useToast } from '../../../core/contexts/ToastContext';
 import SEO from '@/shared/components/SEO';
 import { AuthFormLayout } from '@/shared/components/layout';
+import { sanitizeError } from '../../../shared/utils/sanitizeError';
 import api from '../../../core/services/api';
 import VerifyEmailForm from '../components/VerifyEmailForm';
 
@@ -29,7 +30,7 @@ const VerifyEmailPage: React.FC = () => {
       addToast('Email verified. You can now log in.', 'success');
       navigate('/login');
     } catch (err: any) {
-      const msg = err?.response?.data?.error || 'Verification failed.';
+      const msg = sanitizeError(err, 'verify');
       addToast(msg, 'error');
     } finally {
       setIsLoading(false);

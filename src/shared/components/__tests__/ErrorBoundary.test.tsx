@@ -89,7 +89,7 @@ describe('ErrorBoundary', () => {
     expect(screen.getByText('Something went wrong')).toBeInTheDocument();
 
     shouldFail = false;
-    await user.click(screen.getByText('Try Again'));
+    await user.click(screen.getByRole('button', { name: /try again/i }));
 
     rerender(
       <ErrorBoundary>

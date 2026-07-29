@@ -9,6 +9,7 @@ import { getCourseById, getCategoryById } from '@/features/student/data/courses'
 import type { CourseCategoryId, SkillLevel } from '@/features/student/data/courses';
 import api from '@/core/services/api';
 import { extractCpBalance } from '@/shared/utils/cpBalance';
+import { sanitizeError } from '@/shared/utils/sanitizeError';
 
 const CATEGORY_ICONS: Record<CourseCategoryId, React.ElementType> = {
   terminal: Terminal,
@@ -78,13 +79,12 @@ const CoursePurchaseModal: React.FC<CoursePurchaseModalProps> = ({ open, onOpenC
       setBalance(extractCpBalance(balRes?.data) ?? 0);
     } catch (err: any) {
       const status = err?.response?.status;
-      const msg = err?.response?.data?.error || '';
-      if (status === 401 || (status === 403 && msg === 'Invalid CSRF token')) {
+      if (status === 401) {
         addToast('Session expired. Please log in again.', 'error');
         onOpenChange(false);
         navigate('/login');
       } else {
-        addToast(msg || 'Purchase failed. Please ensure you have enough CP.', 'error');
+        addToast(sanitizeError(err, 'purchase'), 'error');
       }
     } finally {
       setPurchasing(false);

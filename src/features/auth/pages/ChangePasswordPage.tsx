@@ -4,6 +4,7 @@ import { motion } from 'motion/react';
 import { useToast } from '../../../core/contexts/ToastContext';
 import SEO from '@/shared/components/SEO';
 import { AuthFormLayout } from '@/shared/components/layout';
+import { sanitizeError } from '../../../shared/utils/sanitizeError';
 import api from '../../../core/services/api';
 import ChangePasswordForm from '../components/ChangePasswordForm';
 
@@ -47,7 +48,7 @@ const ChangePasswordPage: React.FC = () => {
         navigate('/dashboard');
       }
     } catch (err: any) {
-      const msg = err?.response?.data?.error || 'Password change failed.';
+      const msg = sanitizeError(err, 'password');
       addToast(msg, 'error');
     } finally {
       setIsLoading(false);
