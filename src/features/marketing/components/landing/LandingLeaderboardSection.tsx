@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { Medal } from 'lucide-react';
 import { IconArrowRight } from '@/shared/components/icons';
+import Identicon from '@/shared/components/Identicon';
 import api from '@/core/services/api';
 
 import { useTranslation } from 'react-i18next';
@@ -182,10 +183,8 @@ const LandingLeaderboardSection = () => {
                     ].join(' ')}
                     style={{ width: `${cellSize}px`, height: `${cellSize}px` }}
                   >
-                    <div className="flex items-center justify-center w-full h-full bg-accent/10">
-                      <span className="text-[10px] font-black uppercase tracking-widest text-accent/60 select-none">
-                        {(entry!.hackerHandle || entry!.name || '?').charAt(0).toUpperCase()}
-                      </span>
+                    <div className="flex items-center justify-center w-full h-full bg-black/40">
+                      <Identicon value={entry!.hackerHandle || entry!.name || '?'} size={cellSize} className="w-full h-full" />
                     </div>
 
                     <div className="absolute top-[3px] left-[3px] z-10">
