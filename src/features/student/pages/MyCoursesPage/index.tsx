@@ -3,8 +3,9 @@ import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import {
   Clock, ArrowRight, Zap, GraduationCap, Search, BookOpen, CheckCircle2,
-  Play, BarChart3, Layers, Trophy,
+  Play, BarChart3, Layers, Trophy, Globe, Wifi, Wrench,
 } from 'lucide-react';
+import { IconTerminal, IconNetwork, IconCode } from '@/shared/components/icons';
 import ScrollReveal from '@/shared/components/ScrollReveal';
 import SEO from '@/shared/components/SEO';
 import { COURSES, getCategoryById } from '@/features/student/data/courses';
@@ -184,51 +185,54 @@ const MyCoursesPage: React.FC = () => {
                 <ScrollReveal key={course.id} direction="up" amount={0.1} delay={i * 0.05}>
                   <Link
                     to={`/dashboard/courses/${course.id}${canResume ? `?lesson=${progress.lastLesson}` : ''}`}
-                    className="group flex flex-col aspect-square rounded-2xl border border-border/30 bg-bg-card overflow-hidden transition-all duration-300 hover:border-accent/30"
+                    className="group/card relative aspect-square rounded-2xl border border-border/30 bg-bg-card p-3 md:p-5 transition-all duration-300 hover:border-accent/30 flex flex-col text-left"
                   >
-                    <div className="flex flex-col gap-2 p-4 sm:p-5 md:p-6 lg:p-7 flex-1">
+                    <div className="flex items-center gap-2 mb-2">
+                      <div className="w-8 h-8 rounded-xl flex items-center justify-center shrink-0 bg-accent/10 border border-accent/20">
+                        <BookOpen className="w-4 h-4 text-accent" />
+                      </div>
+                      <span className="px-2 py-0.5 rounded-lg bg-accent/10 text-[9px] font-black uppercase tracking-widest text-accent border border-accent/20">
+                        {category?.name}
+                      </span>
+                      <span className="ml-auto flex items-center gap-1 text-[9px] text-text-muted font-mono">
+                        <Clock className="h-2.5 w-2.5" /> {course.estimatedMinutes} min
+                      </span>
+                    </div>
+
+                    <h3 className="text-sm sm:text-base md:text-lg lg:text-xl font-black text-text-primary group-hover/card:text-accent transition-colors leading-snug break-words mb-1">
+                      {course.title}
+                    </h3>
+
+                    <p className="text-xs sm:text-sm md:text-base text-text-muted leading-relaxed line-clamp-3 flex-1 mb-2">
+                      {course.description}
+                    </p>
+
+                    <div className="space-y-1 mt-auto pt-2 border-t border-border/20">
                       <div className="flex items-center justify-between">
-                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-lg bg-accent/10 text-[9px] font-black uppercase tracking-widest text-accent border border-accent/20">
-                          {category?.name}
+                        <span className="text-[8px] font-mono text-text-muted">
+                          {progress?.completed || 0}/{progress?.total || course.lessons.length} lessons
                         </span>
-                        <span className="flex items-center gap-1 text-[9px] text-text-muted font-mono">
-                          <Clock className="h-2.5 w-2.5" /> {course.estimatedMinutes} min
+                        <span className="text-[8px] font-mono text-accent">{pct}%</span>
+                      </div>
+                      <div className="h-1.5 bg-bg-elevated rounded-full overflow-hidden">
+                        <div className="h-full bg-accent transition-all duration-700" style={{ width: `${pct}%` }} />
+                      </div>
+                    </div>
+
+                    <div className="pt-1">
+                      {isComplete ? (
+                        <span className="inline-flex items-center gap-1.5 text-[9px] sm:text-[10px] font-black uppercase tracking-widest text-accent/60">
+                          <CheckCircle2 className="h-2.5 w-2.5" /> {t('student.myCourses.completed')}
                         </span>
-                      </div>
-                      <h3 className="text-sm sm:text-base md:text-lg lg:text-xl font-black text-text-primary group-hover:text-accent transition-colors leading-snug break-words">
-                        {course.title}
-                      </h3>
-                      <p className="text-xs sm:text-sm md:text-base text-text-muted leading-relaxed line-clamp-3 flex-1">
-                        {course.description}
-                      </p>
-
-                      <div className="space-y-1 mt-auto pt-2 border-t border-border/20">
-                        <div className="flex items-center justify-between">
-                          <span className="text-[8px] font-mono text-text-muted">
-                            {progress?.completed || 0}/{progress?.total || course.lessons.length} lessons
-                          </span>
-                          <span className="text-[8px] font-mono text-accent">{pct}%</span>
-                        </div>
-                        <div className="h-1.5 bg-bg-elevated rounded-full overflow-hidden">
-                          <div className="h-full bg-accent transition-all duration-700" style={{ width: `${pct}%` }} />
-                        </div>
-                      </div>
-
-                      <div className="pt-1">
-                        {isComplete ? (
-                          <span className="inline-flex items-center gap-1.5 text-[9px] sm:text-[10px] font-black uppercase tracking-widest text-accent/60">
-                            <CheckCircle2 className="h-2.5 w-2.5" /> {t('student.myCourses.completed')}
-                          </span>
-                        ) : canResume ? (
-                          <span className="px-3 py-1.5 rounded-lg text-[9px] sm:text-[10px] md:text-xs font-black uppercase tracking-widest bg-accent text-bg transition-all duration-200 group-hover:brightness-110 group-active:scale-95 inline-flex items-center gap-1.5">
-                            <Play className="h-2.5 w-2.5" /> {t('student.myCourses.continue')} <ArrowRight className="h-2.5 w-2.5" />
-                          </span>
-                        ) : (
-                          <span className="px-3 py-1.5 rounded-lg text-[9px] sm:text-[10px] md:text-xs font-black uppercase tracking-widest bg-accent text-bg transition-all duration-200 group-hover:brightness-110 group-active:scale-95 inline-flex items-center gap-1.5">
-                            <BarChart3 className="h-2.5 w-2.5" /> {t('student.myCourses.start')} <ArrowRight className="h-2.5 w-2.5" />
-                          </span>
-                        )}
-                      </div>
+                      ) : canResume ? (
+                        <span className="px-3 py-1.5 rounded-lg text-[9px] sm:text-[10px] md:text-xs font-black uppercase tracking-widest bg-accent text-bg transition-all duration-200 group-hover/card:brightness-110 group-active:scale-95 inline-flex items-center gap-1.5">
+                          <Play className="h-2.5 w-2.5" /> {t('student.myCourses.continue')} <ArrowRight className="h-2.5 w-2.5" />
+                        </span>
+                      ) : (
+                        <span className="px-3 py-1.5 rounded-lg text-[9px] sm:text-[10px] md:text-xs font-black uppercase tracking-widest bg-accent text-bg transition-all duration-200 group-hover/card:brightness-110 group-active:scale-95 inline-flex items-center gap-1.5">
+                          <BarChart3 className="h-2.5 w-2.5" /> {t('student.myCourses.start')} <ArrowRight className="h-2.5 w-2.5" />
+                        </span>
+                      )}
                     </div>
                   </Link>
                 </ScrollReveal>
@@ -258,28 +262,29 @@ const MyCoursesPage: React.FC = () => {
                 return (
                   <div
                     key={course.id}
-                    className="group flex flex-col aspect-square rounded-2xl border border-border/30 bg-bg-card/50 opacity-60 overflow-hidden"
+                    className="relative aspect-square rounded-2xl border border-border/30 bg-bg-card/50 opacity-60 p-3 md:p-5 flex flex-col"
                   >
-                    <div className="flex flex-col gap-2 p-4 sm:p-5 md:p-6 lg:p-7 flex-1">
-                      <div className="flex items-center justify-between">
-                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-lg bg-bg-elevated text-[9px] font-black uppercase tracking-widest text-text-muted border border-border/20">
-                          {category?.name}
-                        </span>
-                        <span className="flex items-center gap-1 px-2 py-0.5 rounded-lg bg-accent/10 text-[9px] font-black text-accent">
-                          <Zap className="h-2.5 w-2.5" /> {course.cpCost} CP
-                        </span>
+                    <div className="flex items-center gap-2 mb-2">
+                      <div className="w-8 h-8 rounded-xl flex items-center justify-center shrink-0 bg-bg-elevated">
+                        <BookOpen className="w-4 h-4 text-text-muted" />
                       </div>
-                       <h3 className="text-sm sm:text-base md:text-lg lg:text-xl font-black text-text-muted leading-snug break-words">
-                         {course.title}
-                       </h3>
-                      <div className="mt-auto pt-2 border-t border-border/20">
-                        <button
-                          onClick={() => setSelectedCourseId(course.id)}
-                          className="inline-flex items-center gap-1.5 text-[9px] sm:text-[10px] font-black uppercase tracking-widest text-accent hover:gap-2 transition-all"
-                        >
-                          View Details <ArrowRight className="h-2.5 w-2.5" />
-                        </button>
-                      </div>
+                      <span className="px-2 py-0.5 rounded-lg bg-bg-elevated text-[9px] font-black uppercase tracking-widest text-text-muted border border-border/20">
+                        {category?.name}
+                      </span>
+                      <span className="ml-auto flex items-center gap-1 px-2 py-0.5 rounded-lg bg-accent/10 text-[9px] font-black text-accent">
+                        <Zap className="h-2.5 w-2.5" /> {course.cpCost} CP
+                      </span>
+                    </div>
+                     <h3 className="text-sm sm:text-base md:text-lg lg:text-xl font-black text-text-muted leading-snug break-words mb-1">
+                        {course.title}
+                     </h3>
+                    <div className="mt-auto pt-2 border-t border-border/20">
+                      <button
+                        onClick={() => setSelectedCourseId(course.id)}
+                        className="inline-flex items-center gap-1.5 text-[9px] sm:text-[10px] font-black uppercase tracking-widest text-accent hover:gap-2 transition-all"
+                      >
+                        View Details <ArrowRight className="h-2.5 w-2.5" />
+                      </button>
                     </div>
                   </div>
                 );
