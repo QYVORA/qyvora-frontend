@@ -112,81 +112,50 @@ const RoomCard: React.FC<RoomCardProps> = ({
 
   const inner = (
     <div
-      className={`group relative flex w-full h-full flex-col overflow-hidden rounded-2xl border border-border/30 bg-bg-card transition-all duration-300 ${
+      className={`group/card relative aspect-square rounded-2xl border border-border/30 bg-bg-card p-3 md:p-5 transition-all duration-300 flex flex-col text-left ${
         isRoomLocked
           ? 'opacity-40 cursor-not-allowed pointer-events-none'
           : 'hover:border-accent/30'
       }`}
     >
-      <div className="relative aspect-video overflow-hidden rounded-t-2xl shadow-sm">
-        <img
-          src={roomImg}
-          alt={room.title}
-          width={1200}
-          height={675}
-          loading="lazy"
-          className={`w-full h-full object-cover transition-transform duration-500 ${
-            isRoomLocked ? 'grayscale brightness-50'
-              : roomDone ? 'brightness-50'
-                : 'group-hover:scale-[1.03]'
-          }`}
-          onError={(e) => {
-            const el = e.currentTarget;
-            if (!el.dataset.fallbackApplied) {
-              el.dataset.fallbackApplied = '1';
-              el.src = hpbCoverImg;
-            }
-          }}
-        />
-        <canvas
-          ref={canvasRef}
-          width={640}
-          height={360}
-          onMouseDown={startDraw}
-          onMouseMove={draw}
-          onMouseUp={endDraw}
-          onMouseLeave={endDraw}
-          onTouchStart={startDraw}
-          onTouchMove={draw}
-          onTouchEnd={endDraw}
-          className={`absolute inset-0 w-full h-full transition-opacity ${annotateMode ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}
-          style={{ touchAction: annotateMode ? 'none' : 'auto' }}
-        />
+      <div className="flex items-center gap-2 mb-2">
+        <div className="relative w-8 h-8 rounded-xl flex items-center justify-center shrink-0 bg-accent/10 border border-accent/20 overflow-hidden">
+          {roomDone ? (
+            <IconCheck size={16} className="text-accent" />
+          ) : (
+            <span className="text-[9px] font-black text-accent">{String(roomIdx + 1).padStart(2, '0')}</span>
+          )}
+          <canvas
+            ref={canvasRef}
+            width={80}
+            height={80}
+            onMouseDown={startDraw}
+            onMouseMove={draw}
+            onMouseUp={endDraw}
+            onMouseLeave={endDraw}
+            onTouchStart={startDraw}
+            onTouchMove={draw}
+            onTouchEnd={endDraw}
+            className={`absolute inset-0 w-full h-full transition-opacity ${annotateMode ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}
+            style={{ touchAction: annotateMode ? 'none' : 'auto' }}
+          />
+        </div>
 
-        {roomDone && (
-          <div className="room-completed-overlay absolute inset-0 flex flex-col items-center justify-center gap-2 bg-bg/60 backdrop-blur-[2px]">
-            <div className="w-12 h-12 rounded-2xl bg-accent flex items-center justify-center">
-              <IconCheck size={24} className="text-bg" />
-            </div>
-            <span className="text-[9px] font-black uppercase tracking-widest text-accent">Completed</span>
-          </div>
-        )}
-
-        {/* Room number badge */}
-        {!roomDone && !isRoomLocked && (
-          <div className="absolute top-2.5 left-2.5">
-            <div className="flex h-6 w-6 items-center justify-center rounded-lg border border-accent/20 bg-bg/85 backdrop-blur-sm font-mono text-[9px] font-black text-accent">
-              {String(roomIdx + 1).padStart(2, '0')}
-            </div>
-          </div>
-        )}
         {isRoomLocked && (
-          <div className="absolute top-2.5 left-2.5">
-            <div className="flex h-6 w-6 items-center justify-center rounded-lg border border-border/30 bg-bg/85 backdrop-blur-sm font-mono text-[9px] font-black text-text-muted">
-              <IconLock size={10} />
-            </div>
-          </div>
+          <span className="px-2 py-0.5 rounded-lg text-[9px] font-black uppercase tracking-widest bg-bg-elevated text-text-muted border border-border/30 flex items-center gap-1">
+            <IconLock size={10} /> Locked
+          </span>
         )}
 
         {/* Annotation controls */}
         {!isRoomLocked && !roomDone && (
-          <div className="absolute bottom-2.5 left-2.5 flex items-center gap-1.5">
+          <div className="ml-auto flex items-center gap-1">
             <button
               onClick={toggleAnnotate}
               className={`rounded-lg px-2 py-1 text-[9px] font-black uppercase tracking-widest transition-all flex items-center gap-1 ${
                 annotateMode
                   ? 'bg-accent text-bg'
-                  : 'bg-bg/85 backdrop-blur-sm text-text-muted hover:text-accent border border-border/30'
+                  : 'bg-bg-elevated text-text-muted hover:text-accent border border-border/30'
               }`}
             >
               <Pencil className="h-2.5 w-2.5" />
@@ -198,49 +167,43 @@ const RoomCard: React.FC<RoomCardProps> = ({
                 className="rounded-lg px-2 py-1 bg-red-500/20 text-red-400 text-[9px] font-black uppercase tracking-widest flex items-center gap-1 hover:bg-red-500/30 transition-all"
               >
                 <Trash2 className="h-2.5 w-2.5" />
-                Clear
               </button>
             )}
           </div>
         )}
-
-        {configRoom && !roomDone && (
-          <div className="absolute bottom-2.5 right-2.5 rounded-lg bg-bg/85 backdrop-blur-sm px-2 py-0.5 text-[9px] font-black uppercase tracking-widest text-text-muted border border-border/30">
-            {configRoom.steps.length} steps
-          </div>
-        )}
       </div>
-      <div className="flex flex-col gap-2 p-4 sm:p-5 md:p-6 lg:p-7 flex-1">
-        <h3 className={`text-sm sm:text-base md:text-lg font-black leading-snug transition-colors ${
-          isRoomLocked ? 'text-text-muted'
-            : roomDone ? 'text-accent'
-              : 'text-text-primary group-hover:text-accent'
-        }`}>
-          {configRoom?.title || room.title || `Room ${roomIdx + 1}`}
-        </h3>
-        {(configRoom?.overview || room.overview) && (
-          <p className="text-xs sm:text-sm text-text-muted line-clamp-3 leading-relaxed flex-1">
-            {configRoom?.overview || room.overview}
-          </p>
+
+      <h3 className={`text-sm sm:text-base md:text-lg lg:text-xl font-black leading-snug break-words transition-colors mb-1 ${
+        isRoomLocked ? 'text-text-muted'
+          : roomDone ? 'text-accent'
+            : 'text-text-primary group-hover/card:text-accent'
+      }`}>
+        {configRoom?.title || room.title || `Room ${roomIdx + 1}`}
+      </h3>
+
+      {(configRoom?.overview || room.overview) && (
+        <p className="text-xs sm:text-sm text-text-muted line-clamp-3 leading-relaxed flex-1 mb-2">
+          {configRoom?.overview || room.overview}
+        </p>
+      )}
+
+      <div className="flex items-center justify-between mt-auto pt-2 border-t border-border/20">
+        {roomDone ? (
+          <span className="flex items-center gap-1.5 text-[9px] sm:text-[10px] font-black uppercase tracking-widest text-accent">
+            Review room <IconArrowRight size={12} />
+          </span>
+        ) : !isRoomLocked ? (
+          <span className="flex items-center gap-1.5 text-[9px] sm:text-[10px] font-black uppercase tracking-widest text-accent">
+            Enter room <IconArrowRight size={12} />
+          </span>
+        ) : (
+          <span />
         )}
-        <div className="flex items-center justify-between mt-auto pt-2">
-          {roomDone ? (
-            <span className="flex items-center gap-1.5 text-[9px] sm:text-[10px] font-black uppercase tracking-widest text-accent">
-              Review room <IconArrowRight size={12} />
-            </span>
-          ) : !isRoomLocked ? (
-            <span className="flex items-center gap-1.5 text-[9px] sm:text-[10px] font-black uppercase tracking-widest text-accent opacity-0 transition-all duration-300 transform translate-x-[-4px] group-hover:opacity-100 group-hover:translate-x-0">
-              Enter room <IconArrowRight size={12} />
-            </span>
-          ) : (
-            <span />
-          )}
-          {configRoom && !roomDone && (
-            <span className="text-[9px] sm:text-[10px] font-black uppercase tracking-widest text-text-muted">
-              {configRoom.steps.length} steps
-            </span>
-          )}
-        </div>
+        {configRoom && !roomDone && (
+          <span className="text-[9px] sm:text-[10px] font-black uppercase tracking-widest text-text-muted">
+            {configRoom.steps.length} steps
+          </span>
+        )}
       </div>
     </div>
   );
