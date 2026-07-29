@@ -28,7 +28,7 @@ const CoursesPage = () => {
 
   return (
     <div className="bg-bg min-h-full">
-      <SEO title="Courses - QYVORA" description="Master offensive security with QYVORA's structured courses." noindex />
+      <SEO title="Courses - QYVORA" description="Master offensive security with QYVORA's structured courses." />
       <div className="px-3 md:px-4 lg:px-6 pt-8 pb-20 lg:pb-24 space-y-8">
         <StudentHeroSection
           title="Courses"

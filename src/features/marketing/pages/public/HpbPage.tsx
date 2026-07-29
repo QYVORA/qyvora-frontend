@@ -14,7 +14,7 @@ const HpbPage = () => {
 
   return (
     <div className="bg-bg min-h-full">
-      <SEO title="HPB - QYVORA" description="Hacker Protocol Bootcamp — Africa's most intensive offensive security training." noindex />
+      <SEO title="HPB - QYVORA" description="Hacker Protocol Bootcamp — Africa's most intensive offensive security training." />
       <div className="px-3 md:px-4 lg:px-6 pt-8 pb-20 lg:pb-24 space-y-8">
         <StudentHeroSection
           icon={<Shield className="w-8 h-8 text-accent" />}

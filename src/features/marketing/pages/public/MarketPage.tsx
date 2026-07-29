@@ -51,7 +51,7 @@ const MarketPage = () => {
 
   return (
     <div className="bg-bg min-h-full">
-      <SEO title="Zero Day Market - QYVORA" description="Intelligence assets, guides, papers, and tools available for CP." noindex />
+      <SEO title="Zero Day Market - QYVORA" description="Intelligence assets, guides, papers, and tools available for CP." />
       <div className="px-3 md:px-4 lg:px-6 pt-8 pb-20 lg:pb-24 space-y-8">
         <StudentHeroSection
           icon={<ShoppingBag className="w-8 h-8 text-accent" />}

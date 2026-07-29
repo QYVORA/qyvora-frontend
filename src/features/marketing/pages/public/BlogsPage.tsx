@@ -32,7 +32,7 @@ const BlogsPage = () => {
 
   return (
     <div className="bg-bg min-h-full">
-      <SEO title="Blogs - QYVORA" description="Security research, tutorials, and updates from the QYVORA team." noindex />
+      <SEO title="Blogs - QYVORA" description="Security research, tutorials, and updates from the QYVORA team." />
       <div className="px-3 md:px-4 lg:px-6 pt-8 pb-20 lg:pb-24 space-y-8">
         <StudentHeroSection
           title="Blogs"
