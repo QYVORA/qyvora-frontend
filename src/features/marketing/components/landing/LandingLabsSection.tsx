@@ -71,9 +71,6 @@ const LandingLabsSection: React.FC = () => {
               >
                 <div className="relative h-full flex flex-col">
                   <div className="flex items-center justify-between mb-3 sm:mb-6">
-                    <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-accent/10 overflow-hidden flex items-center justify-center shrink-0">
-                      <Zap className="w-8 h-8 sm:w-10 sm:h-10 text-accent" />
-                    </div>
                     <span className="text-[9px] font-black uppercase tracking-widest px-3 py-1.5 rounded-full border border-border/30 bg-bg-elevated text-text-muted">
                       {t(`landing.labs.list.${featured.id}.cp`)}
                     </span>
@@ -111,9 +108,6 @@ const LandingLabsSection: React.FC = () => {
                 >
                   <div className="relative h-full flex flex-col">
                     <div className="flex items-center justify-between mb-2 sm:mb-3">
-                      <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl bg-accent/10 overflow-hidden flex items-center justify-center shrink-0">
-                        <Zap className="w-5 h-5 sm:w-6 sm:h-6 text-accent" />
-                      </div>
                       <span className="text-[8px] font-black uppercase tracking-widest px-2 py-1 rounded-full border border-border/30 bg-bg-elevated text-text-muted">
                         {t(`landing.labs.list.${lab.id}.cp`)}
                       </span>
