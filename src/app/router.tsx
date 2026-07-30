@@ -255,10 +255,10 @@ export const AppRouter = () => {
     </AnimatePresence>
     <MotionCommunityPopup />
     {!hideDobia && (
-      <div className="fixed bottom-0 right-0 z-[9999] pointer-events-none flex flex-col items-end">
+      <div className="fixed bottom-0 right-0 z-[9999] pointer-events-none flex flex-col items-end overflow-x-hidden">
 
         {/* 128px – mobile */}
-        <div className="block min-[420px]:hidden">
+        <div className="block min-[420px]:hidden" style={{ marginRight: -26 }}>
           <div className="flex flex-col items-end">
             <div key={msgIdx} className="animate-fade-in mr-1.5" style={{ marginBottom: -7 }}>
               <span className="block px-2 py-1 rounded-xl bg-bg-card border border-border/30 text-[8px] font-mono text-text-secondary leading-relaxed shadow-lg max-w-[120px] text-right whitespace-nowrap">{DOBIA_TIPS[msgIdx]}</span>
@@ -269,7 +269,7 @@ export const AppRouter = () => {
         </div>
 
         {/* 160px – min-[420px] */}
-        <div className="hidden min-[420px]:block sm:hidden">
+        <div className="hidden min-[420px]:block sm:hidden" style={{ marginRight: -33 }}>
           <div className="flex flex-col items-end">
             <div key={msgIdx} className="animate-fade-in mr-2" style={{ marginBottom: -9 }}>
               <span className="block px-2.5 py-1 rounded-xl bg-bg-card border border-border/30 text-[8px] font-mono text-text-secondary leading-relaxed shadow-lg max-w-[140px] text-right whitespace-nowrap">{DOBIA_TIPS[msgIdx]}</span>
@@ -280,7 +280,7 @@ export const AppRouter = () => {
         </div>
 
         {/* 192px – sm */}
-        <div className="hidden sm:block md:hidden">
+        <div className="hidden sm:block md:hidden" style={{ marginRight: -40 }}>
           <div className="flex flex-col items-end">
             <div key={msgIdx} className="animate-fade-in mr-2.5" style={{ marginBottom: -11 }}>
               <span className="block px-2.5 py-1.5 rounded-xl bg-bg-card border border-border/30 text-[9px] font-mono text-text-secondary leading-relaxed shadow-lg max-w-[160px] text-right whitespace-nowrap">{DOBIA_TIPS[msgIdx]}</span>
@@ -291,7 +291,7 @@ export const AppRouter = () => {
         </div>
 
         {/* 256px – md */}
-        <div className="hidden md:block lg:hidden">
+        <div className="hidden md:block lg:hidden" style={{ marginRight: -53 }}>
           <div className="flex flex-col items-end">
             <div key={msgIdx} className="animate-fade-in mr-3" style={{ marginBottom: -14 }}>
               <span className="block px-3 py-1.5 rounded-xl bg-bg-card border border-border/30 text-[10px] font-mono text-text-secondary leading-relaxed shadow-lg max-w-[200px] text-right whitespace-nowrap">{DOBIA_TIPS[msgIdx]}</span>
@@ -302,7 +302,7 @@ export const AppRouter = () => {
         </div>
 
         {/* 320px – lg */}
-        <div className="hidden lg:block xl:hidden">
+        <div className="hidden lg:block xl:hidden" style={{ marginRight: -66 }}>
           <div className="flex flex-col items-end">
             <div key={msgIdx} className="animate-fade-in mr-4" style={{ marginBottom: -18 }}>
               <span className="block px-3 py-1.5 rounded-xl bg-bg-card border border-border/30 text-[10px] font-mono text-text-secondary leading-relaxed shadow-lg max-w-[240px] text-right whitespace-nowrap">{DOBIA_TIPS[msgIdx]}</span>
@@ -313,7 +313,7 @@ export const AppRouter = () => {
         </div>
 
         {/* 400px – xl */}
-        <div className="hidden xl:block 2xl:hidden">
+        <div className="hidden xl:block 2xl:hidden" style={{ marginRight: -83 }}>
           <div className="flex flex-col items-end">
             <div key={msgIdx} className="animate-fade-in mr-5" style={{ marginBottom: -22 }}>
               <span className="block px-4 py-2 rounded-xl bg-bg-card border border-border/30 text-[11px] font-mono text-text-secondary leading-relaxed shadow-lg max-w-[280px] text-right whitespace-nowrap">{DOBIA_TIPS[msgIdx]}</span>
@@ -324,7 +324,7 @@ export const AppRouter = () => {
         </div>
 
         {/* 480px – 2xl+ */}
-        <div className="hidden 2xl:block">
+        <div className="hidden 2xl:block" style={{ marginRight: -99 }}>
           <div className="flex flex-col items-end">
             <div key={msgIdx} className="animate-fade-in mr-6" style={{ marginBottom: -27 }}>
               <span className="block px-4 py-2 rounded-xl bg-bg-card border border-border/30 text-[12px] font-mono text-text-secondary leading-relaxed shadow-lg max-w-[320px] text-right whitespace-nowrap">{DOBIA_TIPS[msgIdx]}</span>
