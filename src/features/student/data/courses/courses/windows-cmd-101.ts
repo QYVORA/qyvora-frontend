@@ -281,6 +281,10 @@ Set-Content -Path C:\\temp\\targets.txt -Value "192.168.1.1"
 Add-Content -Path C:\\temp\\targets.txt -Value "192.168.1.2"
 \`\`\`
 
+> **Why this matters for hacking:** PowerShell's object-oriented nature makes it far more powerful than CMD for security operations. Where CMD gives you text that you must parse with \`findstr\`, PowerShell gives you objects you can filter, sort, and export with built-in cmdlets. The \`Get-Process | Where-Object\` pattern is the equivalent of \`tasklist | findstr\` but with structured data — you can sort by memory, filter by CPU, and export to CSV or HTML for reports. The Remote PowerShell (\`Enter-PSSession\`) capability allows managing remote machines, which is essential for incident response across an enterprise network. Understanding PowerShell is a prerequisite for modern Windows security work.
+
+**Mini-challenge:** (Conceptual — requires Windows.) The Verb-Noun naming convention (\`Get-Process\`, \`Stop-Service\`, \`Set-Location\`) lets you predict command names. Try: if \`Get-Service\` lists services and \`Stop-Service\` stops one, what do you think \`Start-Service\` does? This pattern recognition accelerates learning PowerShell. On Linux, install PowerShell Core: \`sudo apt install powershell\`.
+
 **Practical progression:**
 \`\`\`powershell
 # 1. List all running services
@@ -406,7 +410,11 @@ tasklist /FI "MEMUSAGE gt 10000" /V
 sc query wuauserv | findstr STATE
 
 # 3. View scheduled tasks
-schtasks /QUERY /FO TABLE | findstr "Daily"
+> **Why this matters for hacking:** Process and service management is critical for identifying malicious activity. Suspicious processes often have unusual names, high CPU/memory usage, or are running from unexpected locations (e.g., \`C:\\Users\\Public\\\` instead of \`C:\\Program Files\\\`). The \`tasklist /SVC\` flag shows services hosted in each process — malware often runs as a service to maintain persistence. \`sc query\` lists all services; look for services with unusual names or descriptions. Scheduled tasks (\`schtasks\`) are another common persistence mechanism — attackers create tasks that run malicious scripts on a schedule or at login.
+
+**Mini-challenge:** On Windows: \`tasklist /FI "MEMUSAGE gt 50000"\` finds processes using >50MB RAM. \`sc query state= running\` lists running services. \`schtasks /QUERY /FO LIST /V\` shows all scheduled tasks with detailed information. Practice filtering: \`schtasks /QUERY /FO TABLE | findstr "Daily"\` finds daily tasks.
+
+            schtasks /QUERY /FO TABLE | findstr "Daily"
 \`\`\``),
 
     l('wc-8', 'Registry & System Configuration',
@@ -557,6 +565,10 @@ wmic qfe get HotFixID,InstalledOn
 # Get BIOS info
 wmic bios get SerialNumber,Manufacturer
 \`\`\`
+
+> **Why this matters for hacking:** Windows Registry forensics is one of the most valuable skills in incident response. The \`Run\` keys (HKLM\\...\\Run, HKCU\\...\\Run) show startup programs — malware often adds itself here for persistence. The \`USBSTOR\` key lists every USB device ever connected — evidence of data exfiltration. The \`Uninstall\` key lists installed software — useful for identifying unauthorized tools. The \`RecentDocs\` key shows recently opened files. \`WMI\` queries (\`wmic os get Caption,Version\`) are powerful for system reconnaissance. Understanding these locations helps both attackers find persistence and defenders detect it.
+
+**Mini-challenge:** (Conceptual — requires Windows.) On a Windows machine, run \`reg query HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Run\` to see what starts automatically. Then \`wmic os get Caption,Version\` to see OS info. If you don't have Windows, study the command structure: \`reg query <key>\` queries registry, \`reg query <key> /s\` recurses subkeys, \`reg export <key> file.reg\` exports.
 
 **Important note about WMIC:** Microsoft has deprecated the WMIC command-line tool in recent versions of Windows, and it may be removed entirely in future releases. However, it still works on most systems in use today, and you'll encounter it in existing scripts and documentation. For new work, Microsoft recommends using **PowerShell cmdlets** (like \`Get-CimInstance\`) or the **CIM cmdlets** which provide the same functionality in a modern, object-oriented way. In security contexts, WMIC is still valuable because many legacy systems and tools still use it, and understanding it helps you read older scripts and documentation.
 

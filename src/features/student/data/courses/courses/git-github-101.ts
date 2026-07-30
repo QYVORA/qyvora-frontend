@@ -26,7 +26,9 @@ git --version
 # Check if Git is installed
 \`\`\`
 
-If you don't have Git, install it: \`sudo apt install git\` (Linux) or download from git-scm.com.`),
+> **Why this matters for hacking:** Version control isn't just for code — it's essential for security tool development, collaboration on open-source exploits, and tracking changes during engagements. Every major security framework (Metasploit, Burp extensions, Nmap scripts) lives on GitHub. Understanding Git lets you clone, modify, and contribute to the tools you'll use daily. In incident response, Git history can reveal what changed and when — crucial evidence in a breach investigation.
+
+**Mini-challenge:** Run \`git --version\` to confirm Git is installed. Then \`git config --global user.name "Your Name"\` and \`git config --global user.email "your@email.com"\` to set up your identity. These are the first steps before any Git workflow.`),
 
     l('git-2', 'Your First Repository',
       `A **repository** (or "repo") is a folder that Git is watching. Let's create one.
@@ -68,7 +70,9 @@ The **commit** saves your changes permanently. The \`-m\` flag adds a message de
 git log --oneline
 \`\`\`
 
-The workflow: **edit → git add → git commit**. Repeat.`),
+> **Why this matters for hacking:** The \`git init\` → \`add\` → \`commit\` workflow is the foundation. Every commit creates a snapshot you can return to. In security tool development, this means you can experiment freely — if you break something, just \`git checkout\` a previous commit. The \`git log --oneline\` command shows your history at a glance. The \`.git\` folder is also a target in CTF challenges — if a website exposes its \`.git\` directory, you can download the entire repository, including commit history, credentials, and secrets.
+
+**Mini-challenge:** Run \`mkdir /tmp/test-repo && cd /tmp/test-repo && git init && echo "# Test" > README.md && git add README.md && git commit -m "initial"\` then \`git log --oneline\`. This is the exact repo initialization workflow used for every project.`),
 
     l('git-3', 'Branching & Merging',
       `**Branches** let you work on different versions of your code simultaneously. The default branch is called \`main\` (or \`master\`).
@@ -113,6 +117,10 @@ git add file.txt
 git commit -m "Resolve merge conflict"
 \`\`\`
 
+> **Why this matters for hacking:** Branching is how open-source security tools are developed. The \`main\` branch holds stable code while feature branches contain experimental changes. Merge conflicts are common when multiple people edit the same file — resolving them correctly is a critical skill. In security research, you'll often work on branches to test exploit variants without affecting the main codebase. The \`git stash\` command is invaluable when you need to temporarily set aside changes to work on something urgent.
+
+**Mini-challenge:** Create a branch, make a change, and merge it: \`cd /tmp/test-repo && git checkout -b feature && echo "change" >> README.md && git add README.md && git commit -m "feature change" && git checkout main && git merge feature\`. This is the exact branching workflow used in every Git project.
+
 Branches are the superpower of Git — they let you experiment freely without fear.`),
 
     l('git-4', 'Working with GitHub',
@@ -143,6 +151,10 @@ git pull
 \`\`\`bash
 git clone https://github.com/username/repo.git
 \`\`\`
+
+> **Why this matters for hacking:** GitHub is where the security community lives. Every Proof of Concept (PoC) exploit, every security tool, and every vulnerability disclosure ends up on GitHub. Knowing how to \`git clone\` a tool, \`git pull\` updates, and \`git push\` your changes is essential. The \`git remote -v\` command shows which remotes are configured. In bug bounty hunting, you'll clone targets' repositories to look for hardcoded credentials, API keys, and vulnerabilities in publicly accessible code.
+
+**Mini-challenge:** Run \`git clone https://github.com/danielmiessler/SecLists.git /tmp/seclists && cd /tmp/seclists && git log --oneline -5 && ls\` to clone a real security tool repository. SecLists is the standard wordlist collection used in every penetration test.
 
 The standard collaboration flow:
 
@@ -199,6 +211,10 @@ git stash pop         # Restore stashed changes
 git reset HEAD file   # Unstage a file
 git checkout -- file  # Discard local changes to a file
 \`\`\`
+
+> **Why this matters for hacking:** Pull Requests are how the open-source security ecosystem improves. When you find a bug in a tool like Nmap or Burp, you fork the repo, fix the bug, and submit a PR. The \`git remote add upstream\` pattern keeps your fork synced with the original. In CTF competitions, forks of popular repositories often contain modified versions with hidden vulnerabilities or flags.
+
+**Mini-challenge:** Fork a repository on GitHub (any public repo), clone your fork, add the original as upstream with \`git remote add upstream <original-url>\`, and practice syncing with \`git fetch upstream && git merge upstream/main\`. This is the standard open-source contribution workflow.
 
 Git and GitHub are essential tools for any developer or hacker. Every security tool, exploit, and framework lives on GitHub.`, { hasQuiz: true, quiz: [
         { id: 'git-5-q1', question: 'What is a Pull Request?', options: ['A request to download code', 'A proposal to merge changes from one branch to another', 'A command to pull latest changes', 'A request to delete a repository'], correctIndex: 1, explanation: 'A Pull Request proposes changes from one branch to another, allowing code review before merging.' },
@@ -277,8 +293,12 @@ echo "Thumbs.db" >> ~/.gitignore_global
 # Git doesn't track empty directories
 # Place a .gitkeep file to force tracking
 touch logs/.gitkeep
-git add logs/.gitkeep
-\`\`\``),
+            git add logs/.gitkeep
+\`\`\`
+
+> **Why this matters for hacking:** A well-configured \`.gitignore\` prevents accidentally committing sensitive files. Security professionals often need to check existing \`.gitignore\` files to see what developers were trying to hide — sometimes the ignored files contain credentials, API keys, or configuration secrets. The \`git check-ignore -v\` command reveals which ignore rule is blocking a file, helping debug tracking issues. In CTFs, finding a \`.gitignore\` that references \`secrets.txt\` or \`*.key\` is a hint that those files exist on the server.
+
+**Mini-challenge:** Create a \`.gitignore\` file with \`echo "secrets.txt" > .gitignore\`, then \`echo "API_KEY=secret" > secrets.txt && git add secrets.txt 2>&1\` — observe that Git refuses to track it. Then verify with \`git check-ignore -v secrets.txt\`. This is the exact workflow for protecting sensitive files.`),
 
     l('git-7', 'Rebasing & History Management',
       `Rebasing rewrites history for a cleaner commit log. Use it to maintain a linear project history.
@@ -336,6 +356,10 @@ git reset --soft HEAD~1    # Keep changes staged
 git reset --mixed HEAD~1   # Keep changes unstaged (default)
 git reset --hard HEAD~1    # Discard changes completely!
 \`\`\`
+
+> **Why this matters for hacking:** Rebasing is a superpower for keeping a clean commit history, especially when developing security tools. Squashing WIP (\`git rebase -i\`) combines messy development commits into clean, meaningful ones before pushing. Cherry-picking (\`git cherry-pick\`) lets you pull specific fixes from one branch to another without merging everything. Understanding \`git revert\` vs \`git reset\` is critical — \`revert\` is safe for shared branches, \`reset --hard\` destroys history and should only be used on local branches.
+
+**Mini-challenge:** Create 3 test commits, then squash them: \`cd /tmp/test-repo && echo "a" > a.txt && git add a.txt && git commit -m "a"\`, repeat for b and c, then \`git rebase -i HEAD~3\` and change the last two "pick" to "squash". This is the standard workflow for cleaning up commits before opening a pull request.
 
 **When NOT to rebase:**
 - Never rebase commits that have been pushed to a shared branch
@@ -440,7 +464,11 @@ git checkout -b my-custom-list
 
 # 4. Make changes, commit, push
 # (This is how you contribute to open source!)
-\`\`\``),
+\`\`\`
+
+> **Why this matters for hacking:** The GitHub Flow is the standard collaboration model for security tools. Every tool you'll use — from Metasploit to Burp to Nmap — follows this workflow. Git hooks (\`.git/hooks/pre-commit\`) can automatically check for secrets, run tests, or enforce code style before commits are created. Understanding hooks lets you both implement them as a defense and recognize how other projects enforce quality. The \`git lg\` alias visualizes the entire branch structure, essential for understanding complex repositories.
+
+**Mini-challenge:** Install a real security tool via Git: \`git clone https://github.com/danielmiessler/SecLists.git /tmp/wordlists && cd /tmp/wordlists && git lg | head -20\`. Then check what hooks exist: \`ls -la .git/hooks/\`. This mirrors how professionals maintain their tool arsenal — always pulling the latest versions from GitHub.`),
 ];
 
 export const COURSE: Course = {
