@@ -152,12 +152,14 @@ const CourseLessonPage: React.FC = () => {
   const goNext = useCallback(() => {
     if (currentLessonIdx < totalLessons - 1) {
       setCurrentLessonIdx((i) => i + 1);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   }, [currentLessonIdx, totalLessons]);
 
   const goPrev = useCallback(() => {
     if (currentLessonIdx > 0) {
       setCurrentLessonIdx((i) => i - 1);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   }, [currentLessonIdx]);
 
@@ -242,7 +244,10 @@ const CourseLessonPage: React.FC = () => {
             isActive: i === currentLessonIdx,
             isCompleted: completedLessons.has(l.id),
             isLocked: false,
-            onClick: () => setCurrentLessonIdx(i),
+            onClick: () => {
+              setCurrentLessonIdx(i);
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            },
           })),
         }]}
         backHref="/dashboard/courses"
@@ -254,15 +259,17 @@ const CourseLessonPage: React.FC = () => {
       />
 
       <div className=" px-3 md:px-4 lg:px-6 pt-8 pb-20 lg:pb-24 space-y-8">
-            <StudentHeroSection
-              icon={<BookOpen className="w-8 h-8 text-accent" />}
-              title={course.title}
-              description={`${completedCount} of ${totalLessons} lessons completed`}
-              stats={[
-                { label: 'Progress', value: `${progress}%`, accent: true },
-                { label: 'Lessons', value: `${completedCount}/${totalLessons}` },
-              ]}
-            />
+            {currentLessonIdx === 0 && (
+              <StudentHeroSection
+                icon={<BookOpen className="w-8 h-8 text-accent" />}
+                title={course.title}
+                description={`${completedCount} of ${totalLessons} lessons completed`}
+                stats={[
+                  { label: 'Progress', value: `${progress}%`, accent: true },
+                  { label: 'Lessons', value: `${completedCount}/${totalLessons}` },
+                ]}
+              />
+            )}
 
             <LessonViewer lesson={lesson} number={currentLessonIdx + 1} courseId={courseId} backUrl="/dashboard/courses" />
 
