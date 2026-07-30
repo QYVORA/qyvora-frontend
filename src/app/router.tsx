@@ -255,7 +255,7 @@ export const AppRouter = () => {
     </AnimatePresence>
     <MotionCommunityPopup />
     {!hideDobia && (
-      <div className="fixed bottom-0 right-0 sm:right-1 lg:right-1 z-[9999] pointer-events-none flex flex-col items-end">
+      <div className="fixed bottom-0 right-0 z-[9999] pointer-events-none flex flex-col items-end">
 
         {/* 96px – mobile */}
         <div className="block min-[420px]:hidden">
