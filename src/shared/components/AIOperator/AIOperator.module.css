@@ -1,0 +1,127 @@
+/**
+ * AIOperator.module.css
+ *
+ * CSS animations and styles for the QYVORA AI Operator.
+ * These CSS-based animations run only when Framer Motion is not available
+ * or for simple decorative effects. The core animations use Framer Motion.
+ */
+
+/* ─── Container ───────────────────────────────────────────────────────── */
+.container {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 9998;
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+}
+
+@media (min-width: 768px) {
+  .container {
+    bottom: 32px;
+    right: 32px;
+  }
+}
+
+/* ─── Focus visible ───────────────────────────────────────────────────── */
+.container:focus-visible {
+  outline: 2px solid var(--color-accent, #06B66F);
+  outline-offset: 4px;
+  border-radius: 9999px;
+}
+
+/* ─── SVG wrapper ─────────────────────────────────────────────────────── */
+.svgWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 96px;
+  height: 96px;
+  filter: drop-shadow(0 8px 32px rgba(6, 182, 111, 0.15));
+  transition: filter 0.3s var(--ease-smooth, cubic-bezier(0.22, 1, 0.36, 1));
+}
+
+@media (min-width: 768px) {
+  .svgWrapper {
+    width: 120px;
+    height: 120px;
+  }
+}
+
+@media (min-width: 1280px) {
+  .svgWrapper {
+    width: 140px;
+    height: 140px;
+  }
+}
+
+/* ─── Hover state ─────────────────────────────────────────────────────── */
+.container:hover .svgWrapper {
+  filter: drop-shadow(0 8px 40px rgba(6, 182, 111, 0.3));
+}
+
+/* ─── Tooltip label ───────────────────────────────────────────────────── */
+.tooltip {
+  position: absolute;
+  bottom: calc(100% + 12px);
+  right: 0;
+  padding: 6px 14px;
+  background: var(--color-bg-elevated, #0b0b0b);
+  border: 1px solid var(--color-border, rgba(171, 181, 192, 0.12));
+  border-radius: 8px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--color-text-muted, rgba(238, 240, 238, 0.4));
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  white-space: nowrap;
+  opacity: 0;
+  transform: translateY(4px);
+  pointer-events: none;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.container:hover .tooltip,
+.container:focus-visible .tooltip {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ─── Responsive sizing ───────────────────────────────────────────────── */
+@media (max-width: 480px) {
+  .svgWrapper {
+    width: 72px;
+    height: 72px;
+  }
+
+  .container {
+    bottom: 16px;
+    right: 16px;
+  }
+
+  .tooltip {
+    display: none;
+  }
+}
+
+/* ─── Safe area padding (notch phones) ────────────────────────────────── */
+@supports (padding: max(0px)) {
+  .container {
+    bottom: max(16px, env(safe-area-inset-bottom, 16px));
+    right: max(16px, env(safe-area-inset-right, 16px));
+  }
+}
+
+/* ─── Reduced motion ──────────────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  .container {
+    animation: none !important;
+  }
+
+  .svgWrapper {
+    filter: drop-shadow(0 4px 16px rgba(6, 182, 111, 0.1));
+  }
+}
