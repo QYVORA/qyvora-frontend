@@ -53,6 +53,10 @@ use triple quotes
 
 Comments won't affect execution but help others (and your future self) understand your code. In security scripts, comments are especially important because you'll often revisit tools months later and need to remember what they do.
 
+> **Why this matters for hacking:** Python is the lingua franca of cybersecurity. Most exploit frameworks, recon tools, and automation scripts are written in Python. Languages like Go or Rust might be faster, but Python's readability and library ecosystem make it the go-to for prototyping exploits and building custom tools. Every penetration tester writes Python — from simple one-liners to full exploitation frameworks. If you're in security, Python is non-negotiable.
+
+**Mini-challenge:** Run \`python3 --version\` to confirm Python 3 is installed. Then create a script: \`echo 'import sys; print(f"Python {sys.version}")' > /tmp/test.py && python3 /tmp/test.py\`. This confirms your environment is ready for the course exercises.
+
 In real-world hacking, Python scripts automate repetitive tasks. A port scanner is a Python script. A brute-forcer is a Python script. A tool that parses Nmap XML output and finds vulnerabilities is a Python script. Learning to write these yourself means you can build custom tools tailored to any engagement.`,
       { hasCodePlayground: true, codePlaygroundInitial: 'print("Hello, Hacker!")\n\nname = "target"\nprint(f"Scanning {name}")', codePlaygroundLanguage: 'python', codePlaygroundExpectedOutput: 'Hello, Hacker!\nScanning target' }),
 
@@ -104,6 +108,10 @@ print(url.replace("login", "admin"))  # "https://target.com/admin"
 \`\`\`
 
 The \`split()\` method is especially powerful for parsing — it breaks a string into a list wherever it finds the delimiter. The \`replace()\` method lets you swap parts of strings, which is useful for building URLs or modifying tool output.
+
+> **Why this matters for hacking:** String manipulation is the most common Python operation in security scripting. Parsing Nmap output, extracting IPs from logs, decoding Base64 tokens, and building HTTP payloads all require string operations. The \`split()\` method parses CSV-like tool output. \`replace()\` builds injection payloads. F-strings dynamically construct URLs, headers, and data. Type conversion (\`int()\`, \`str()\`) is essential because tool output is always text — you must convert port numbers from "80" (string) to 80 (int) before using them in socket connections.
+
+**Mini-challenge:** Run \`python3 -c "import re; url='https://target.com:8080/admin'; print(re.split('[/:]', url)[2:4])\` to extract host and port from a URL. This style of string parsing mirrors how real security tools extract data from raw input.
 
 **Slicing** lets you extract specific parts of a string by position:
 
@@ -170,6 +178,10 @@ scan_results = [
 ]
 
 for result in scan_results:
+> **Why this matters for hacking:** Lists and dictionaries are the data structures behind every security tool. Scan results are lists of dictionaries. Target configurations are dictionaries. Wordlists are lists of strings. Understanding \`for\` loops to iterate, \`.append()\` to build results, and \`.get()\` for safe dictionary access is essential. The \`len()\` function tells you how many items you've collected — used in every tool that counts open ports, found directories, or cracked passwords.
+
+**Mini-challenge:** Run \`python3 -c "targets=[{'ip':'192.168.1.1','ports':[22,80]},{'ip':'10.0.0.1','ports':[443]}]; [print(t['ip'], '→ ports:', ','.join(map(str,t['ports']))) for t in targets]"\` to practice building and iterating a list of target dictionaries — the exact data structure used in real recon tools.
+
     if result["state"] == "open":
         print(f"Port {result['port']} is OPEN — {result['service']}")
 \`\`\``),
@@ -223,7 +235,11 @@ for port in range(1, 1024):
 for port in range(1, 10):
     if port == 5:
         continue   # skip port 5
-    print(f"Checking port {port}")
+> **Why this matters for hacking:** Conditionals implement your testing logic — "if port is open, check version; elif port is filtered, skip; else note closed." Loops iterate over targets, ports, passwords, and endpoints. The \`range()\` function generates sequences for scanning port ranges (\`range(1, 1024)\` for all privileged ports). \`break\` exits early when you find what you need. \`continue\` skips irrelevant items. Together, these control the flow of every automated security tool.
+
+**Mini-challenge:** Run \`python3 -c "for port in range(1, 1024):\\n    if port == 22 or port == 80 or port == 443:\\n        print(f'{port}: common web/admin port')\\n    elif port > 100 and port < 110:\\n        continue\\n    elif port > 500:\\n        break"\` to practice conditional scanning logic — this mirrors how real port scanners prioritize and filter results.
+
+            print(f"Checking port {port}")
 \`\`\``),
 
     l('py-5', 'Functions & Modules',
@@ -277,7 +293,11 @@ print(response.headers)          # response headers
 # POST request
 data = {"username": "admin", "password": "test"}
 r = requests.post("https://httpbin.org/post", data=data)
-print(r.text)
+> **Why this matters for hacking:** Functions are how you build modular, reusable security tools. A \`scan_port()\` function can be reused in a single-port checker, multi-port scanner, or threaded mass scanner. The \`requests\` library handles HTTP — the foundation for web recon tools, API enumeration, and brute-forcing. The \`socket\` library provides low-level network access for building custom TCP/UDP tools. The \`json\` module parses API responses. Every security tool is built from these same building blocks.
+
+**Mini-challenge:** Run \`python3 -c "def test_connect(host, port):\\n    import socket\\n    s = socket.socket()\\n    s.settimeout(2)\\n    return s.connect_ex((host, port)) == 0\\n\\nprint('Port 80 on google.com:', test_connect('google.com', 80))"\` to test a socket connection. This is the core function used in every custom port scanner.\`
+
+            print(r.text)
 \`\`\``),
 
     l('py-6', 'Building a Port Scanner',
@@ -458,6 +478,10 @@ def parse_auth_log(log_path):
 parse_auth_log("/var/log/auth.log")
 \`\`\`
 
+> **Why this matters for hacking:** File I/O and error handling are what separate prototype scripts from production-ready tools. Reading wordlists (\`rockyou.txt\` is 14GB — you need to stream it line by line) is how brute-forcers work. Writing results to files creates your engagement reports. Exception handling prevents your scanner from crashing on the first error. The \`with\` statement ensures files are properly closed even if an error occurs. The \`encoding="latin-1"\` parameter is essential for wordlists that contain non-UTF-8 characters.
+
+**Mini-challenge:** Create and read a test file: \`echo "target1.com\\ntarget2.com\\ntarget3.com" > /tmp/targets.txt && python3 -c "with open('/tmp/targets.txt') as f: targets=[l.strip() for l in f]; print(f'Loaded {len(targets)} targets: {targets}')\`". This is the exact wordlist-loading pattern used in directory busters, password crackers, and subdomain enumerators.
+
 Always handle file and network errors — your scripts will run unattended and WILL encounter edge cases.`),
 
     l('py-8', 'Web Scraping & HTTP Requests',
@@ -561,6 +585,10 @@ for link in soup.find_all("a"):
 # Extract all text
 text = soup.get_text()
 \`\`\`
+
+> **Why this matters for hacking:** The \`requests\` library is the most important Python library for web security testing. Session objects persist cookies across requests — essential for authenticated scanning. The \`json\` parameter automatically serializes and sets Content-Type. Custom headers let you spoof User-Agent, add Authorization tokens, or bypass simple WAF rules. BeautifulSoup parses HTML to extract links, forms, and hidden inputs — the building blocks of web reconnaissance tools.
+
+**Mini-challenge:** Run \`python3 -c "import requests; r=requests.get('https://httpbin.org/headers', headers={'User-Agent':'Mozilla/5.0'}); print(r.json()['headers']['User-Agent'])"\` to verify User-Agent spoofing. This is the same technique used to evade basic bot detection in web scraping and recon.
 
 **Practical build-up — a simple recon tool:**
 \`\`\`python
@@ -698,6 +726,10 @@ results = enumerate_api("https://httpbin.org", endpoints)
 for url, status, note in results:
     print(f"[{status}] {url} ({note})")
 \`\`\`
+
+> **Why this matters for hacking:** API enumeration is a core recon technique. The \`enumerate_api()\` function above checks for common API endpoints — \`/api/users\`, \`/api/admin\`, \`/swagger.json\`, \`/graphql\`. Finding an undocumented API endpoint often reveals functionality not exposed through the frontend. The \`json.dumps(indent=2)\` function pretty-prints API responses for readability. Error handling for rate limiting (HTTP 429) and retries is essential for reliable API testing.
+
+**Mini-challenge:** Run \`python3 -c "import requests; endpoints=['api/users','api/admin','.env','swagger.json']; [print(e, requests.get(f'https://httpbin.org/{e}').status_code) for e in endpoints]"\` to simulate API endpoint enumeration. This is the starting point for discovering hidden API surfaces in web applications.
 
 APIs are everywhere in modern web applications. Mastering them gives you access to the backend logic of almost any service.`),
 
