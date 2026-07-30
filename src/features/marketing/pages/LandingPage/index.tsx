@@ -142,7 +142,12 @@ const Landing: React.FC = () => {
 
       {/* ── ACT II: THE WORK ──────────────────────────────────────────── */}
       <section id="act-ii" className="relative w-full min-h-dvh md:h-dvh snap-section bg-bg">
-        <ActDividerSection number="II" title="The Work" />
+        <ActDividerSection
+          number="II"
+          title="The Work"
+          tagline="ACT II"
+          description="Hands-on labs, courses, and bootcamps that build real offensive security skills through practice."
+        />
       </section>
 
       {/* 3. Labs */}
@@ -162,7 +167,12 @@ const Landing: React.FC = () => {
 
       {/* ── ACT III: THE WORLD ──────────────────────────────────────────── */}
       <section id="act-iii" className="relative w-full min-h-dvh md:h-dvh snap-section bg-bg-alt">
-        <ActDividerSection number="III" title="The World" />
+        <ActDividerSection
+          number="III"
+          title="The World"
+          tagline="ACT III"
+          description="Join a community of cybersecurity professionals, ethical hackers, and researchers shaping Africa's digital future."
+        />
       </section>
 
       {/* 6. Team */}
