@@ -375,16 +375,18 @@ const Dashboard = () => {
   if (loading) return <DashboardSkeleton />;
 
   return (
-    <div className="bg-bg">
+    <div>
       <SEO title={t('student.dashboard.seoTitle')} description={t('student.dashboard.seoDesc')} noindex />
       <OnboardingWizard />
-      <div className=" px-3 md:px-4 lg:px-6 pt-8 pb-20 lg:pb-24 space-y-10">
 
-        {syncError && (
+      {syncError && (
+        <div className="bg-bg px-3 md:px-4 lg:px-6 pt-8">
           <ErrorState message={syncError} title="Sync Failed" />
-        )}
+        </div>
+      )}
 
-        {/* 1. Welcome Banner */}
+      {/* 1. Welcome Banner */}
+      <div className="bg-bg px-3 md:px-4 lg:px-6 pt-8 pb-10">
         <div ref={heroRef}>
           <DashboardHero
             isEnrolled={isEnrolled}
@@ -395,8 +397,10 @@ const Dashboard = () => {
             username={user?.username}
           />
         </div>
+      </div>
 
-        {/* 2. Navigation Buttons */}
+      {/* 2. Navigation Buttons */}
+      <div className="bg-bg-alt px-3 md:px-4 lg:px-6 py-10">
         <div ref={statsRef}>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 md:gap-4 lg:gap-5">
             <SectionButton
@@ -428,7 +432,7 @@ const Dashboard = () => {
 
         {/* 2.5 PWA Install */}
         {canInstall && (
-          <div className="flex flex-col sm:flex-row sm:items-center gap-4 p-5 md:p-6 rounded-2xl border border-accent/20 bg-accent/5">
+          <div className="mt-10 flex flex-col sm:flex-row sm:items-center gap-4 p-5 md:p-6 rounded-2xl border border-accent/20 bg-accent/5">
             <div className="flex items-center gap-3">
               <div className="w-14 h-14 rounded-2xl flex items-center justify-center shrink-0 bg-accent/10">
                 <IconDownload size={28} className="text-accent" />
@@ -448,55 +452,82 @@ const Dashboard = () => {
             </button>
           </div>
         )}
+      </div>
 
-        {/* 3. Achievement Stats — always visible */}
+      {/* 3. Achievement Stats — always visible */}
+      <div className="bg-bg px-3 md:px-4 lg:px-6 py-10">
         <div ref={roomsRef}>
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 md:gap-3 lg:gap-4">
-            <div className="flex flex-col items-center gap-2 p-3 md:p-5 lg:p-6 min-h-[100px] md:min-h-[120px] rounded-2xl border border-border/30 bg-bg-card text-center">
-              <div className="w-10 h-10 md:w-14 md:h-14 lg:w-16 lg:h-16 rounded-xl md:rounded-2xl flex items-center justify-center shrink-0 bg-bg-elevated text-text-primary">
-                <IconRank size={20} className="text-accent md:w-6 md:h-6 lg:w-8 lg:h-8" />
-              </div>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-10">
+            {/* Left: Overview */}
+            <div className="flex flex-col justify-center gap-4">
               <div>
-                <p className="hidden md:block text-[10px] font-black uppercase tracking-widest text-text-muted mb-1">{t('student.dashboard.rank')}</p>
-                <p className="text-xs md:text-sm font-black text-text-primary">{rankName}</p>
+                <h2 className="text-xl md:text-2xl lg:text-3xl font-black text-text-primary">
+                  Overview
+                </h2>
+                <p className="text-base md:text-lg text-text-muted font-mono leading-relaxed mt-1">
+                  {t('student.dashboard.overviewDesc')}
+                </p>
               </div>
+              <Link
+                to="/dashboard/bootcamps"
+                className="inline-flex items-center gap-2 self-start px-5 py-2.5 rounded-xl bg-accent text-bg text-[10px] font-black uppercase tracking-widest hover:bg-accent/90 transition-colors"
+              >
+                {t('student.dashboard.action.startLearning')} <IconArrowRight size={14} />
+              </Link>
             </div>
-            <div className="flex flex-col items-center gap-2 p-3 md:p-5 lg:p-6 min-h-[100px] md:min-h-[120px] rounded-2xl border border-border/30 bg-bg-card text-center">
-              <div className="w-10 h-10 md:w-14 md:h-14 lg:w-16 lg:h-16 rounded-xl md:rounded-2xl flex items-center justify-center shrink-0 bg-bg-elevated">
-                <CpLogo className="w-5 h-5 md:w-7 md:h-7 lg:w-8 lg:h-8" />
+
+            {/* Right: Stats Cards */}
+            <div className="grid grid-cols-2 gap-3">
+              <div className="flex flex-col items-center gap-2 p-4 md:p-5 lg:p-6 rounded-2xl border border-border/30 bg-bg-card text-center">
+                <div className="w-12 h-12 md:w-14 md:h-14 lg:w-16 lg:h-16 rounded-xl md:rounded-2xl flex items-center justify-center shrink-0 bg-bg-elevated text-text-primary">
+                  <IconRank size={24} className="text-accent md:w-7 md:h-7 lg:w-8 lg:h-8" />
+                </div>
+                <div>
+                  <p className="text-[9px] md:text-[10px] font-black uppercase tracking-widest text-text-muted">{t('student.dashboard.rank')}</p>
+                  <p className="text-base md:text-lg lg:text-xl font-black text-text-primary">{rankName}</p>
+                </div>
               </div>
-              <div>
-                <p className="hidden md:block text-[10px] font-black uppercase tracking-widest text-text-muted mb-1">{t('student.dashboard.cp')}</p>
-                <p className="text-xs md:text-sm font-black text-text-primary">{cpBalance.toLocaleString()}</p>
+              <div className="flex flex-col items-center gap-2 p-4 md:p-5 lg:p-6 rounded-2xl border border-border/30 bg-bg-card text-center">
+                <div className="w-12 h-12 md:w-14 md:h-14 lg:w-16 lg:h-16 rounded-xl md:rounded-2xl flex items-center justify-center shrink-0 bg-bg-elevated">
+                  <CpLogo className="w-6 h-6 md:w-7 md:h-7 lg:w-8 lg:h-8" />
+                </div>
+                <div>
+                  <p className="text-[9px] md:text-[10px] font-black uppercase tracking-widest text-text-muted">{t('student.dashboard.cp')}</p>
+                  <p className="text-base md:text-lg lg:text-xl font-black text-text-primary">{cpBalance.toLocaleString()}</p>
+                </div>
               </div>
-            </div>
-            <div className="flex flex-col items-center gap-2 p-3 md:p-5 lg:p-6 min-h-[100px] md:min-h-[120px] rounded-2xl border border-border/30 bg-bg-card text-center">
-              <div className="w-10 h-10 md:w-14 md:h-14 lg:w-16 lg:h-16 rounded-xl md:rounded-2xl flex items-center justify-center shrink-0 bg-bg-elevated text-text-primary">
-                <IconFire size={20} className="text-orange-400 md:w-6 md:h-6 lg:w-8 lg:h-8" />
+              <div className="flex flex-col items-center gap-2 p-4 md:p-5 lg:p-6 rounded-2xl border border-border/30 bg-bg-card text-center">
+                <div className="w-12 h-12 md:w-14 md:h-14 lg:w-16 lg:h-16 rounded-xl md:rounded-2xl flex items-center justify-center shrink-0 bg-bg-elevated text-text-primary">
+                  <IconFire size={24} className="text-orange-400 md:w-7 md:h-7 lg:w-8 lg:h-8" />
+                </div>
+                <div>
+                  <p className="text-[9px] md:text-[10px] font-black uppercase tracking-widest text-text-muted">{t('student.dashboard.streak.title')}</p>
+                  <p className="text-base md:text-lg lg:text-xl font-black text-text-primary">{streakDays ?? 0}d</p>
+                </div>
               </div>
-              <div>
-                <p className="hidden md:block text-[10px] font-black uppercase tracking-widest text-text-muted mb-1">{t('student.dashboard.streak.title')}</p>
-                <p className="text-xs md:text-sm font-black text-text-primary">{streakDays ?? 0}d</p>
-              </div>
-            </div>
-            <div className="flex flex-col items-center gap-2 p-3 md:p-5 lg:p-6 min-h-[100px] md:min-h-[120px] rounded-2xl border border-border/30 bg-bg-card text-center">
-              <div className="w-10 h-10 md:w-14 md:h-14 lg:w-16 lg:h-16 rounded-xl md:rounded-2xl flex items-center justify-center shrink-0 bg-bg-elevated text-text-primary">
-                <IconCode size={20} className="text-accent md:w-6 md:h-6 lg:w-8 lg:h-8" />
-              </div>
-              <div>
-                <p className="hidden md:block text-[10px] font-black uppercase tracking-widest text-text-muted mb-1">{t('student.dashboard.roomsDone')}</p>
-                <p className="text-xs md:text-sm font-black text-text-primary">{totalRoomsDone}</p>
+              <div className="flex flex-col items-center gap-2 p-4 md:p-5 lg:p-6 rounded-2xl border border-border/30 bg-bg-card text-center">
+                <div className="w-12 h-12 md:w-14 md:h-14 lg:w-16 lg:h-16 rounded-xl md:rounded-2xl flex items-center justify-center shrink-0 bg-bg-elevated text-text-primary">
+                  <IconCode size={24} className="text-accent md:w-7 md:h-7 lg:w-8 lg:h-8" />
+                </div>
+                <div>
+                  <p className="text-[9px] md:text-[10px] font-black uppercase tracking-widest text-text-muted">{t('student.dashboard.roomsDone')}</p>
+                  <p className="text-base md:text-lg lg:text-xl font-black text-text-primary">{totalRoomsDone}</p>
+                </div>
               </div>
             </div>
           </div>
         </div>
+      </div>
 
-        {/* 3b. Skill Matrix — always visible */}
+      {/* 3b. Skill Matrix — always visible */}
+      <div className="bg-bg-alt px-3 md:px-4 lg:px-6 py-10">
         <SkillMatrix
           modules={overviewModules}
         />
+      </div>
 
-        {/* 4. Section Content — appears below stats when a button is toggled */}
+      {/* 4. Section Content — appears below stats when a button is toggled */}
+      <div className="bg-bg px-3 md:px-4 lg:px-6 py-10">
         <div ref={sectionContentRef}>
         {activeSection === 'courses' && (
           <div>
@@ -622,8 +653,10 @@ const Dashboard = () => {
           </div>
         )}
         </div>
+      </div>
 
-        {/* 5. Next Rank Progress */}
+      {/* 5. Next Rank Progress */}
+      <div className="bg-bg-alt px-3 md:px-4 lg:px-6 py-10 pb-20 lg:pb-24">
         {nextRank && (
           <div ref={rankRef}>
             <div ref={progressRef} className="rounded-2xl border border-accent/20 bg-bg-card p-6 md:p-8 lg:p-10">
