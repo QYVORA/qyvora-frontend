@@ -1661,7 +1661,7 @@
   },
   "components": {
     "errorBoundary": {
-      "renderError": "// {{scope}} — Render Error",
+      "renderError": "Error",
       "title": "Something went wrong",
       "description": "This section crashed unexpectedly. The rest of the app is still running.",
       "tryAgain": "Try Again",
