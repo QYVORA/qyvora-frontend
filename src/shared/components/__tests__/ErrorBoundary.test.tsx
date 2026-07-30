@@ -7,7 +7,7 @@ vi.mock('react-i18next', () => ({
   useTranslation: () => ({
     t: (key: string) => {
       const map: Record<string, string> = {
-        'components.errorBoundary.renderError': 'Render Error',
+        'components.errorBoundary.renderError': 'Error',
         'components.errorBoundary.title': 'Something went wrong',
         'components.errorBoundary.description': 'This section crashed unexpectedly. The rest of the app is still running.',
         'components.errorBoundary.tryAgain': 'Try Again',
@@ -49,7 +49,7 @@ describe('ErrorBoundary', () => {
     );
 
     expect(screen.getByText('Something went wrong')).toBeInTheDocument();
-    expect(screen.getByText(/Render Error/)).toBeInTheDocument();
+    expect(screen.getByText(/Error/)).toBeInTheDocument();
     expect(screen.queryByText('Child content')).not.toBeInTheDocument();
 
     consoleSpy.mockRestore();

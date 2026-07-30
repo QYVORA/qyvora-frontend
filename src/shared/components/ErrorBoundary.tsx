@@ -62,7 +62,7 @@ class ErrorBoundaryInner extends Component<Props, State> {
   };
 
   render() {
-    const { hasError, error, resetKey } = this.state;
+    const { hasError, resetKey } = this.state;
     const { children, fallback, scope, t } = this.props;
 
     if (!hasError) {
@@ -82,28 +82,19 @@ class ErrorBoundaryInner extends Component<Props, State> {
 
           {/* Dobia mascot */}
           <div className="flex items-center justify-center mx-auto">
-            <Dobia expression="surprised" size="lg" />
+            <Dobia expression="angry" size="lg" />
           </div>
 
           {/* Heading */}
           <div className="space-y-2">
             <p className="text-[10px] font-bold text-red-400 uppercase tracking-[0.3em]">
-              {t?.('components.errorBoundary.renderError') ?? 'Something went wrong'}
+              {t?.('components.errorBoundary.renderError') ?? 'Error'}
             </p>
             <h2 className="text-xl font-black text-text-primary">{t?.('components.errorBoundary.title') ?? 'Something went wrong'}</h2>
             <p className="text-sm text-text-muted leading-relaxed">
               {t?.('components.errorBoundary.description') ?? 'This section crashed unexpectedly. The rest of the app is still running.'}
             </p>
           </div>
-
-          {/* Error message — dev only */}
-          {import.meta.env.DEV && error && (
-            <div className="terminal-card text-left p-4 bg-bg-card border border-red-500/20 rounded-xl overflow-auto max-h-40">
-              <p className="text-[11px] font-mono text-red-400 break-all whitespace-pre-wrap">
-                {error.message}
-              </p>
-            </div>
-          )}
 
           {/* Actions */}
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
