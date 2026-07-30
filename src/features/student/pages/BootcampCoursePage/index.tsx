@@ -136,15 +136,14 @@ const BootcampCourse: React.FC = () => {
   if (loading) return <BootcampCourseSkeleton />;
 
   return (
-    <div className="bg-bg">
+    <div>
       <SEO
         title={course?.title || 'Bootcamp Course'}
         description={`Track your progress through ${course?.title || 'the bootcamp'} on QYVORA — ${progressValue} complete.`}
         noindex
       />
 
-      <div className=" px-3 md:px-4 lg:px-6 pt-8 pb-20 lg:pb-24 space-y-8">
-
+      <div className="bg-bg px-3 md:px-4 lg:px-6 pt-8 pb-10">
         <StudentHeroSection
           title={course?.title || 'Bootcamp'}
           description={syncError || `Track your progress through ${course?.title || 'the bootcamp'}. ${formatSyncLabel(lastSync)}`}
@@ -162,6 +161,9 @@ const BootcampCourse: React.FC = () => {
             </Link>
           )}
         </StudentHeroSection>
+      </div>
+
+      <div className="bg-bg-alt px-3 md:px-4 lg:px-6 py-10 pb-20 lg:pb-24 space-y-8">
 
         <LearningFilterStrip
           filters={phaseFilters}
