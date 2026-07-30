@@ -3242,7 +3242,7 @@ if (req.body.csrf_token !== req.session.csrf_token) {
           id: 'room5',
           title: 'Authentication Attacks',
           overview:
-            'Authentication is the front door of every application — and it is often left unlocked. This room covers brute force, session attacks, and the full range of authentication weaknesses you will encounter in real engagements.',
+            "Authentication is the front door of every application — and it is often left unlocked. To become an Qyvora operative, you must learn to pick that lock without leaving a scratch. This room covers brute force, session attacks, token analysis, and the full range of authentication weaknesses that separate a hardened target from a compromised one.",
           estimatedMinutes: 30,
           steps: [
             {
@@ -3282,7 +3282,9 @@ hydra -L users.txt -p "Password123!" http-post-form \
 - Does it do nothing? (vulnerable to brute force)
 - Does it reveal whether the username exists? (username enumeration)
 
-Attempt a brute force on the demo login. Document the application's response to repeated failures.`,
+**Hacker's Insight:** In real engagements, rate limiting is your biggest enemy. If you see a 429 (Too Many Requests) or progressively slower responses, the target has countermeasures. Rotate your IPs using a proxy chain to bypass IP-based throttling — a simple \`--proxy\` flag in Hydra can keep you in the game.
+
+Attempt a brute force on the demo login. Document the application's response to repeated failures. What countermeasures does it have, and how would you bypass them?`,
               image: 'step-01.webp',
             },
             {
@@ -3398,7 +3400,22 @@ Remediation: Invalidate session tokens server-side on logout.
              Implement session expiry (e.g. 30 minutes of inactivity).
 \`\`\`
 
-Write findings for every authentication weakness you discovered. Be specific — include the exact evidence, the HTTP requests and responses, and concrete remediation steps.`,
+Write findings for every authentication weakness you discovered. Be specific — include the exact evidence, the HTTP requests and responses, and concrete remediation steps.
+
+**Mini-Challenge: Chain the Weaknesses**
+
+Combine everything you've learned into a single real-world attack scenario:
+
+\`\`\`bash
+# 1. Enumerate valid usernames by observing login error messages
+# 2. Password spray the discovered users with 'Spring2026!'
+# 3. Capture the session token of a successful login
+# 4. Decode the token to inspect its contents
+# 5. Test if the token survives logout
+# 6. Attempt to access the admin endpoint with the still-valid token
+\`\`\`
+
+Document each step with the actual commands you ran. If any step fails, explain *why* — understanding the defense is as important as understanding the attack.`,
               image: 'step-04.webp',
             },
           ],
@@ -3585,7 +3602,25 @@ If users use password managers, they are less likely to type their password into
 **6. Reporting Procedures:**
 Establish a 'One-Click' reporting system where users can flag suspicious emails directly to the Qyvora security team.
 
-*Final Insight:* Social engineering is the only attack that works on every platform. Whether it's Linux, Windows, or Cloud, the human is always the weakest link. Congratulations on completing this unit of the Qyvora Operative program.`,
+*Final Insight:* Social engineering is the only attack that works on every platform. Whether it's Linux, Windows, or Cloud, the human is always the weakest link. Congratulations on completing this unit of the Qyvora Operative program.
+
+**Mini-Challenge: Build a Phishing Simulation**
+
+Design a complete phishing scenario from reconnaissance to payload delivery:
+
+\`\`\`bash
+# Step 1: Find an employee's email address using OSINT
+# Step 2: Check if the target domain is vulnerable to spoofing
+dig <target_domain> TXT | grep "v=spf1"
+# Step 3: Find a relevant pretext from recent company news
+# Step 4: Clone the target's login page
+httrack "http://<target_ip>/login" -O "./clone"
+# Step 5: Write the email subject and body using urgency + authority
+# Step 6: Deploy a Netcat listener to capture credentials
+nc -lvnp 80
+\`\`\`
+
+Document your scenario with a diagram of the attack chain. What countermeasure would stop each step?`,
               image: 'step-04.webp',
             },
           ],
@@ -3819,7 +3854,28 @@ unset HS_API_KEY
 history -c
 \`\`\`
 
-*Final Training Insight:* OSINT is the foundation of everything that follows. A well-researched engagement takes 5 minutes; a poorly researched one takes 5 days. You have now mastered the art of the 'Invisible Operative.' Congratulations on completing Phase 5.`,
+*Final Training Insight:* OSINT is the foundation of everything that follows. A well-researched engagement takes 5 minutes; a poorly researched one takes 5 days. You have now mastered the art of the 'Invisible Operative.' Congratulations on completing Phase 5.
+
+**Final Challenge: Full OSINT Profile**
+
+Conduct a complete OSINT assessment against a target domain using only the command line:
+
+\`\`\`bash
+# 1. DNS recon - map all subdomains and mail servers
+dig <target_domain> ANY +noall +answer
+# 2. WHOIS - identify registrar and nameservers
+whois <target_domain> | grep -E "Registrar|Name Server"
+# 3. Certificate transparency - find subdomains
+curl -s "https://crt.sh/?q=<target_domain>&output=json" | jq -r '.[].name_value'
+# 4. Web tech fingerprinting
+whatweb http://<target_ip>
+# 5. Employee discovery via Google Dorking
+# site:linkedin.com/in "<target_domain>" || site:github.com "<target_domain>"
+# 6. OPSEC - clear your traces
+unset TARGET_DOMAIN && history -c
+\`\`\`
+
+Compile your findings into a single \`OSINT_PROFILE.txt\` file organized by category (Infrastructure, People, Technology, Leaks). This is your blueprint for the entire engagement.`,
               image: 'step-04.webp',
             },
           ],
@@ -4016,7 +4072,39 @@ dd if=/dev/zero of=/tmp/wipe.tmp bs=1M; rm /tmp/wipe.tmp
 **6. Tactical Communication:**
 Use silent signals or coded messages with your team if they are monitoring your 'Body-Cam' or audio feed.
 
-*Final Training Insight:* Physical security is the bridge between the digital and the real world. By mastering these techniques, you have become a 'Full-Stack Operative,' capable of compromising a target from the sidewalk to the database. Congratulations on completing the Hacker Protocol Bootcamp.`,
+*Final Training Insight:* Physical security is the bridge between the digital and the real world. By mastering these techniques, you have become a 'Full-Stack Operative,' capable of compromising a target from the sidewalk to the database. Congratulations on completing the Hacker Protocol Bootcamp.
+
+**Capstone Challenge: The Full Physical Engagement**
+
+Plan a complete physical penetration test from reconnaissance to exit:
+
+\`\`\`bash
+# Phase 1: Reconnaissance (Remote)
+# - Google Maps the target facility for entry/exit points
+# - LinkedIn to identify employees and their roles
+# - Shodan/search for publicly exposed building management systems
+
+# Phase 2: Approach
+# - Identify the badge type (125kHz HID? 13.56MHz MiFare?) from lobby observations
+# - Capture badge data with proxmark from a distance
+# - Clone to a blank card
+
+# Phase 3: Entry
+# - Tailgating strategy: coffee + laptop bag + "Forgot my badge" pretext
+# - If challenged: Present authorization letter
+
+# Phase 4: On-Site Operations
+# - Plant a Raspberry Pi Zero configured as a reverse VPN bridge
+# - Document server room layout, rack labels, and network drops
+
+# Phase 5: Exfiltration & Cleanup
+# - Retrieve any planted devices or confirm they've been destroyed
+# - Wipe all logs from your field laptop
+dd if=/dev/zero of=/tmp/wipe bs=1M; rm /tmp/wipe
+# - Review building CCTV blind spots — were you captured?
+\`\`\`
+
+Write a one-page engagement plan and identify the three most likely points of failure in your scenario. This is your final exercise as an Qyvora operative.`,
               image: 'step-04.webp',
             },
           ],
