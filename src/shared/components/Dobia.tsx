@@ -1,4 +1,4 @@
-import { useMemo, type CSSProperties } from 'react';
+import { useMemo } from 'react';
 import { DobiaIdle } from './dobia/DobiaIdle';
 import { DobiaSuccess } from './dobia/DobiaSuccess';
 import { DobiaAlert } from './dobia/DobiaAlert';
@@ -12,7 +12,7 @@ import { DobiaSurprised } from './dobia/DobiaSurprised';
 
 type DobiaExpression =
   | 'idle' | 'success' | 'alert' | 'scanning' | 'loading'
-  | 'greeting' | 'angry' | 'thinking' | 'confused' | 'surprised';
+  | 'greeting' | 'angry' | 'thinking' | 'confused' | 'surprised' | 'waving';
 
 type DobiaSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'hero';
 
@@ -43,7 +43,12 @@ const EXPRESSION_MAP: Record<DobiaExpression, React.ComponentType<{ size: number
   thinking: DobiaThinking,
   confused: DobiaConfused,
   surprised: DobiaSurprised,
+  waving: DobiaGreeting,
 };
+
+const IDLE_ANIMATION = {
+  y: [0, -6, 0, 3, 0],
+} as const;
 
 const Dobia: React.FC<DobiaProps> = ({
   expression = 'idle',
@@ -54,17 +59,15 @@ const Dobia: React.FC<DobiaProps> = ({
   const pxSize = SIZE_MAP[size];
   const Component = EXPRESSION_MAP[expression];
 
-  const style: CSSProperties | undefined = useMemo(() => {
-    if (!animated) return undefined;
-    return {
-      transition: 'opacity 0.3s ease, transform 0.3s ease',
-    };
-  }, [animated]);
+  const animClass = useMemo(() => {
+    if (!animated) return '';
+    if (expression === 'waving') return 'dobia-wave';
+    return 'dobia-float';
+  }, [animated, expression]);
 
   return (
     <span
-      className={`inline-flex items-end justify-center ${className}`}
-      style={style}
+      className={`inline-flex items-end justify-center ${animClass} ${className}`}
     >
       <Component size={pxSize} />
     </span>
