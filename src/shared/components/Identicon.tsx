@@ -19,9 +19,9 @@ const Identicon = ({ value, size = 40, className }: IdenticonProps) => {
       if (cancelled) return;
       const raw = jdenticon.toSvg(value, size);
       const cleaned = raw
-        .replace(`viewBox="0 0 ${size} ${size}"`, `viewBox="0 0 ${size} ${size}"`)
-        .replace(/width="\d+"/, 'width="100%"')
-        .replace(/height="\d+"/, 'height="100%"');
+        .replace(/width="\d+"/g, '')
+        .replace(/height="\d+"/g, '')
+        .replace('<svg', '<svg preserveAspectRatio="xMidYMid meet" style="display:block;width:100%;height:100%"');
       setSvg(DOMPurify.default.sanitize(cleaned, { USE_PROFILES: { svg: true } }));
     });
     return () => { cancelled = true; };
@@ -32,7 +32,7 @@ const Identicon = ({ value, size = 40, className }: IdenticonProps) => {
   return (
     <div
       dangerouslySetInnerHTML={{ __html: svg }}
-      className={cn('border-accent/30 rounded-xl', className)}
+      className={cn('rounded-xl overflow-hidden', className)}
     />
   );
 };

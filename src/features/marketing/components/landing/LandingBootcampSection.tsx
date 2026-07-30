@@ -61,12 +61,9 @@ const LandingBootcampSection: React.FC = () => {
             >
               <Link
                 to="/hpb"
-                className="group relative block h-full rounded-2xl border border-border/20 bg-bg/90 transition-all duration-300 hover:border-accent/30 overflow-hidden"
+                className="group relative block h-full rounded-2xl border border-border/20 bg-bg-card transition-all duration-300 hover:border-accent/30 overflow-hidden"
               >
-                <div className="absolute inset-0">
-                  <div className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105" style={{ backgroundImage: `url(${featured.image})` }} />
-                  <div className="absolute inset-0 bg-gradient-to-t from-bg-card via-bg-card/80 to-bg-card/40" />
-                </div>
+                <div className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105" style={{ backgroundImage: `url(${featured.image})` }} />
                 <div className="relative h-full flex flex-col p-4 sm:p-8">
                   <div className="flex items-center justify-between mb-3 sm:mb-6">
                     <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-2xl border border-accent/30 bg-accent/15 flex items-center justify-center shrink-0">
@@ -108,7 +105,7 @@ const LandingBootcampSection: React.FC = () => {
                 >
                   <Link
                     to="/hpb"
-                    className="group relative block h-full rounded-2xl border border-border/20 bg-bg/90 p-3 sm:p-5 transition-all duration-300 hover:border-accent/30"
+                    className="group relative block h-full rounded-2xl border border-border/20 bg-bg-card p-3 sm:p-5 transition-all duration-300 hover:border-accent/30"
                   >
                     <div className="relative h-full flex flex-col">
                       <div className="flex items-center justify-between mb-2 sm:mb-3">

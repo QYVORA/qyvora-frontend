@@ -606,24 +606,24 @@
 /* ── Light theme overrides ──────────────────────────────────────────────── */
 [data-theme="light"] {
   color-scheme: light;
-  --color-bg: #F4F5F7;
-  --color-bg-card: #FFFFFF;
-  --color-bg-elevated: #EEF0EE;
-  --color-text-primary: #1A1D1A;
-  --color-text-secondary: rgba(26, 29, 26, 0.65);
-  --color-text-muted: rgba(26, 29, 26, 0.40);
-  --color-border: rgba(26, 29, 26, 0.08);
-  --color-border-strong: rgba(6, 182, 111, 0.20);
+  --color-bg: #E8EAE8;
+  --color-bg-card: #F0F1F0;
+  --color-bg-elevated: #E2E4E2;
+  --color-text-primary: #2C2F2C;
+  --color-text-secondary: rgba(44, 47, 44, 0.60);
+  --color-text-muted: rgba(44, 47, 44, 0.35);
+  --color-border: rgba(44, 47, 44, 0.06);
+  --color-border-strong: rgba(6, 182, 111, 0.18);
   --dot-color: rgba(6, 182, 111, 0.04);
-  --color-hero-right-bg: #f0fdf6;
+  --color-hero-right-bg: #eaf1ec;
   --color-hero-glow: rgba(6, 182, 111, 0.06);
-  --color-code-bg: #EEF0EE;
+  --color-code-bg: #E2E4E2;
   --color-code-string: #059669;
   --color-code-number: #d97706;
   --color-code-flag: #2563eb;
   --color-code-path: #7c3aed;
-  --card-shimmer: inset 0 1px 0 rgba(255, 255, 255, 0.6);
-  --card-shadow: 0 12px 40px rgba(0, 0, 0, 0.06);
+  --card-shimmer: inset 0 1px 0 rgba(255, 255, 255, 0.5);
+  --card-shadow: 0 12px 40px rgba(0, 0, 0, 0.05);
 }
 
 [data-theme="light"] ::-webkit-scrollbar-track {

@@ -17,3 +17,5 @@ export {
 } from './courseData';
 
 export { ALL_LESSONS } from './lessons';
+
+export { COURSE_ICON_MAP, getCourseIconConfig } from './courseIcons';

@@ -2,13 +2,13 @@ import React, { useEffect, useState, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import {
-  Clock, ArrowRight, Zap, GraduationCap, Search, BookOpen, CheckCircle2,
-  Play, BarChart3, Layers, Trophy, Globe, Wifi, Wrench,
+  Clock, ArrowRight, Zap, GraduationCap, Search, CheckCircle2,
+  Play, BarChart3,
 } from 'lucide-react';
-import { IconTerminal, IconNetwork, IconCode } from '@/shared/components/icons';
 import ScrollReveal from '@/shared/components/ScrollReveal';
 import SEO from '@/shared/components/SEO';
 import { COURSES, getCategoryById } from '@/features/student/data/courses';
+import CourseAvatar from '@/features/student/components/CourseAvatar';
 import api from '@/core/services/api';
 import { MyCoursesSkeleton } from '@/features/student/components/StudentSkeletons';
 import { LearningFilterStrip } from '@/features/student/components/learning';
@@ -187,14 +187,12 @@ const MyCoursesPage: React.FC = () => {
                     to={`/dashboard/courses/${course.id}${canResume ? `?lesson=${progress.lastLesson}` : ''}`}
                     className="group/card relative aspect-square rounded-2xl border border-border/30 bg-bg-card p-3 md:p-5 transition-all duration-300 hover:border-accent/30 flex flex-col text-left"
                   >
-                    <div className="flex items-center gap-2 mb-2">
-                      <div className="w-8 h-8 rounded-xl flex items-center justify-center shrink-0 bg-accent/10 border border-accent/20">
-                        <BookOpen className="w-4 h-4 text-accent" />
-                      </div>
+                    <div className="flex items-start gap-2 mb-2">
+                      <CourseAvatar courseId={course.id} variant="badge" />
                       <span className="px-2 py-0.5 rounded-lg bg-accent/10 text-[9px] font-black uppercase tracking-widest text-accent border border-accent/20">
                         {category?.name}
                       </span>
-                      <span className="ml-auto flex items-center gap-1 text-[9px] text-text-muted font-mono">
+                      <span className="ml-auto flex items-center gap-1 text-[9px] text-text-muted font-mono whitespace-nowrap">
                         <Clock className="h-2.5 w-2.5" /> {course.estimatedMinutes} min
                       </span>
                     </div>
@@ -264,14 +262,12 @@ const MyCoursesPage: React.FC = () => {
                     key={course.id}
                     className="relative aspect-square rounded-2xl border border-border/30 bg-bg-card/50 opacity-60 p-3 md:p-5 flex flex-col"
                   >
-                    <div className="flex items-center gap-2 mb-2">
-                      <div className="w-8 h-8 rounded-xl flex items-center justify-center shrink-0 bg-bg-elevated">
-                        <BookOpen className="w-4 h-4 text-text-muted" />
-                      </div>
+                    <div className="flex items-start gap-2 mb-2">
+                      <CourseAvatar courseId={course.id} variant="badge" />
                       <span className="px-2 py-0.5 rounded-lg bg-bg-elevated text-[9px] font-black uppercase tracking-widest text-text-muted border border-border/20">
                         {category?.name}
                       </span>
-                      <span className="ml-auto flex items-center gap-1 px-2 py-0.5 rounded-lg bg-accent/10 text-[9px] font-black text-accent">
+                      <span className="ml-auto flex items-center gap-1 px-2 py-0.5 rounded-lg bg-accent/10 text-[9px] font-black text-accent whitespace-nowrap">
                         <Zap className="h-2.5 w-2.5" /> {course.cpCost} CP
                       </span>
                     </div>
