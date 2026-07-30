@@ -54,7 +54,7 @@ const Profile: React.FC = () => {
   if (loading || !profile) return <ProfileSkeleton />;
 
   return (
-    <div className="bg-bg">
+    <div>
       <SEO
         title={`@${profile.username}'s Profile`}
         description={`View the operator profile, rank, and accomplishments of @${profile.username} on QYVORA. — ${profile.rank} — ${profile.cp.toLocaleString()} CP earned.`}
@@ -62,123 +62,122 @@ const Profile: React.FC = () => {
         noindex
       />
 
-      <div className="px-3 md:px-4 lg:px-6 pt-8 pb-20 lg:pb-24">
-          {/* Main content */}
-          <div className="space-y-10">
-            {/* ── Identity Section ── */}
-            <section id="profile-section-identity">
-              <ProfileIdentityBlock
-                id={profile.id}
-                handle={profile.username}
-                name={profile.displayName || undefined}
-                bio={profile.bio || undefined}
-                rank={profile.rank}
-                organization={profile.organization || undefined}
-                email={isOwnProfile ? profile.email : undefined}
-                actions={isOwnProfile ? [
-                  { label: t('student.profile.edit'), onClick: () => setEditOpen(true), icon: <Edit3 className="w-3.5 h-3.5" /> },
-                ] : []}
-                showShare
-                showPublicView={isOwnProfile}
-                publicViewPath={`/@${profile.username}`}
-                xpLevel={profile.xpLevel}
-                xpCurrent={profile.xpCurrent}
-                xpToNext={profile.xpToNext}
-                joinDate={profile.joinDate || undefined}
-                country={profile.country || undefined}
-                website={profile.website || undefined}
-                github={profile.github || undefined}
-                linkedin={profile.linkedin || undefined}
-                twitter={profile.twitter || undefined}
-              />
-            </section>
+      <div className="bg-bg px-3 md:px-4 lg:px-6 pt-8 pb-10">
+        <section id="profile-section-identity">
+          <ProfileIdentityBlock
+            id={profile.id}
+            handle={profile.username}
+            name={profile.displayName || undefined}
+            bio={profile.bio || undefined}
+            rank={profile.rank}
+            organization={profile.organization || undefined}
+            email={isOwnProfile ? profile.email : undefined}
+            actions={isOwnProfile ? [
+              { label: t('student.profile.edit'), onClick: () => setEditOpen(true), icon: <Edit3 className="w-3.5 h-3.5" /> },
+            ] : []}
+            showShare
+            showPublicView={isOwnProfile}
+            publicViewPath={`/@${profile.username}`}
+            xpLevel={profile.xpLevel}
+            xpCurrent={profile.xpCurrent}
+            xpToNext={profile.xpToNext}
+            joinDate={profile.joinDate || undefined}
+            country={profile.country || undefined}
+            website={profile.website || undefined}
+            github={profile.github || undefined}
+            linkedin={profile.linkedin || undefined}
+            twitter={profile.twitter || undefined}
+          />
+        </section>
+      </div>
 
-            {/* ── Stats Section ── */}
-            <section id="profile-section-stats">
-              <div className="grid grid-cols-2 gap-4">
-                <ProfileStatCard
-                  icon={<Trophy className="w-5 h-5 text-accent" />}
-                  label={t('student.profile.stats.cp')}
-                  value={profile.cp.toLocaleString()}
-                  accent
-                />
-                <ProfileStatCard
-                  icon={<User className="w-5 h-5 text-text-muted" />}
-                  label={t('student.profile.rank')}
-                  value={profile.rank}
-                />
-                <ProfileStatCard
-                  icon={<FlaskConical className="w-5 h-5 text-text-muted" />}
-                  label={t('student.profile.stats.labs')}
-                  value={profile.labsCompleted || profile.completedRooms.length}
-                />
-                <ProfileStatCard
-                  icon={<GraduationCap className="w-5 h-5 text-text-muted" />}
-                  label={t('student.profile.stats.courses')}
-                  value={profile.coursesCompleted}
-                />
-                <ProfileStatCard
-                  icon={<Flame className="w-5 h-5 text-text-muted" />}
-                  label={t('student.profile.stats.streak', 'Streak')}
-                  value={`${profile.xpLevel}`}
-                />
-                <ProfileStatCard
-                  icon={<Zap className="w-5 h-5 text-text-muted" />}
-                  label={t('student.profile.stats.xp', 'XP Level')}
-                  value={`Lv.${profile.xpLevel}`}
-                />
-              </div>
-            </section>
-
-            {/* ── Activity Section ── */}
-            {visibleSections.includes('activity') && (
-              <section id="profile-section-activity">
-                <div className="flex flex-col gap-6">
-                  {/* Contribution Calendar */}
-                  {Object.keys(activityDates).length > 0 && (
-                    <div className="rounded-2xl border border-border/30 bg-bg-card p-5">
-                      <ContributionCalendar activityDates={activityDates} />
-                    </div>
-                  )}
-
-                  {/* Activity Timeline */}
-                  <ActivityTimeline profile={profile} />
-                </div>
-              </section>
-            )}
-
-            {/* ── Achievements Section ── */}
-            <section id="profile-section-achievements">
-              <AchievementsSection
-                rooms={profile.completedRooms}
-                bootcampCompleted={profile.bootcampCompleted}
-                labsCompleted={profile.labsCompleted}
-                coursesCompleted={profile.coursesCompleted}
-              />
-            </section>
-
-            {/* ── Labs Section ── */}
-            {visibleSections.includes('labs') && (
-              <section id="profile-section-labs">
-                <LabsModule
-                  completedRooms={profile.completedRooms}
-                  labsCompleted={profile.labsCompleted}
-                />
-              </section>
-            )}
-
-            {/* ── Courses Section ── */}
-            {visibleSections.includes('courses') && (
-              <section id="profile-section-courses">
-                <CoursesModule coursesCompleted={profile.coursesCompleted} />
-              </section>
-            )}
-
-            {/* ── Trophy Cabinet Section ── */}
-            <section id="profile-section-trophy">
-              <TrophyCabinet profile={profile} />
-            </section>
+      <div className="bg-bg-alt px-3 md:px-4 lg:px-6 py-10">
+        <section id="profile-section-stats">
+          <div className="grid grid-cols-2 gap-4">
+            <ProfileStatCard
+              icon={<Trophy className="w-5 h-5 text-accent" />}
+              label={t('student.profile.stats.cp')}
+              value={profile.cp.toLocaleString()}
+              accent
+            />
+            <ProfileStatCard
+              icon={<User className="w-5 h-5 text-text-muted" />}
+              label={t('student.profile.rank')}
+              value={profile.rank}
+            />
+            <ProfileStatCard
+              icon={<FlaskConical className="w-5 h-5 text-text-muted" />}
+              label={t('student.profile.stats.labs')}
+              value={profile.labsCompleted || profile.completedRooms.length}
+            />
+            <ProfileStatCard
+              icon={<GraduationCap className="w-5 h-5 text-text-muted" />}
+              label={t('student.profile.stats.courses')}
+              value={profile.coursesCompleted}
+            />
+            <ProfileStatCard
+              icon={<Flame className="w-5 h-5 text-text-muted" />}
+              label={t('student.profile.stats.streak', 'Streak')}
+              value={`${profile.xpLevel}`}
+            />
+            <ProfileStatCard
+              icon={<Zap className="w-5 h-5 text-text-muted" />}
+              label={t('student.profile.stats.xp', 'XP Level')}
+              value={`Lv.${profile.xpLevel}`}
+            />
           </div>
+        </section>
+      </div>
+
+      <div className="bg-bg px-3 md:px-4 lg:px-6 py-10">
+        {visibleSections.includes('activity') && (
+          <section id="profile-section-activity">
+            <div className="flex flex-col gap-6">
+              {Object.keys(activityDates).length > 0 && (
+                <div className="rounded-2xl border border-border/30 bg-bg-card p-5">
+                  <ContributionCalendar activityDates={activityDates} />
+                </div>
+              )}
+              <ActivityTimeline profile={profile} />
+            </div>
+          </section>
+        )}
+      </div>
+
+      <div className="bg-bg-alt px-3 md:px-4 lg:px-6 py-10">
+        <section id="profile-section-achievements">
+          <AchievementsSection
+            rooms={profile.completedRooms}
+            bootcampCompleted={profile.bootcampCompleted}
+            labsCompleted={profile.labsCompleted}
+            coursesCompleted={profile.coursesCompleted}
+          />
+        </section>
+      </div>
+
+      <div className="bg-bg px-3 md:px-4 lg:px-6 py-10">
+        {visibleSections.includes('labs') && (
+          <section id="profile-section-labs">
+            <LabsModule
+              completedRooms={profile.completedRooms}
+              labsCompleted={profile.labsCompleted}
+            />
+          </section>
+        )}
+      </div>
+
+      <div className="bg-bg-alt px-3 md:px-4 lg:px-6 py-10">
+        {visibleSections.includes('courses') && (
+          <section id="profile-section-courses">
+            <CoursesModule coursesCompleted={profile.coursesCompleted} />
+          </section>
+        )}
+      </div>
+
+      <div className="bg-bg px-3 md:px-4 lg:px-6 py-10 pb-20 lg:pb-24">
+        <section id="profile-section-trophy">
+          <TrophyCabinet profile={profile} />
+        </section>
       </div>
 
       {isOwnProfile && (
