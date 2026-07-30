@@ -4,7 +4,6 @@ import { motion } from 'motion/react';
 import { useTranslation } from 'react-i18next';
 import { useReducedMotion } from '@/shared/hooks/useReducedMotion';
 import { Globe, Github, Linkedin, Calendar, Flame } from 'lucide-react';
-import Identicon from '@/shared/components/Identicon';
 import ShareProfile from '@/shared/components/ShareProfile';
 
 interface IdentityAction {
@@ -86,19 +85,6 @@ const ProfileIdentityBlock: React.FC<ProfileIdentityBlockProps> = ({
   const formattedJoinDate = joinDate
     ? new Date(joinDate).toLocaleDateString('en-US', { month: 'short', year: 'numeric' })
     : null;
-
-  const identiconBlock = (
-    <motion.div
-      initial={prefersReduced ? false : { opacity: 0, y: 12 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: prefersReduced ? 0 : 0.45 }}
-      className="hidden lg:block self-stretch rounded-2xl border border-border/30 overflow-hidden"
-    >
-      <div className="w-full h-full min-h-0">
-        <Identicon value={handle || id} size={256} className="w-full h-full object-cover" />
-      </div>
-    </motion.div>
-  );
 
   const profileInfoCard = (
     <motion.div
@@ -229,28 +215,7 @@ const ProfileIdentityBlock: React.FC<ProfileIdentityBlockProps> = ({
 
   return (
     <div className="space-y-4 sm:space-y-5">
-      {/* Mobile: bare identicon above the card */}
-      <motion.div
-        initial={prefersReduced ? false : { opacity: 0, y: 12 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: prefersReduced ? 0 : 0.45 }}
-        className="lg:hidden flex justify-center"
-      >
-        <div className="w-28 h-28 sm:w-32 sm:h-32 rounded-2xl overflow-hidden">
-          <Identicon value={handle || id} size={256} className="w-full h-full" />
-        </div>
-      </motion.div>
-
-      {/* Desktop: identicon beside the card */}
-      <div className="hidden lg:grid grid-cols-[280px_1fr] gap-4 sm:gap-5 items-stretch">
-        {identiconBlock}
-        {profileInfoCard}
-      </div>
-
-      {/* Mobile: just the card */}
-      <div className="lg:hidden">
-        {profileInfoCard}
-      </div>
+      {profileInfoCard}
     </div>
   );
 };

@@ -100,7 +100,7 @@ const Footer: React.FC = React.memo(() => {
           <QyvoraLogotype
             className="w-[180%] h-auto max-w-none block"
             color="#06B66F"
-            style={{ opacity: 0.07, transform: 'translateY(18%)' }}
+            style={{ opacity: 0.07, transform: 'translateY(30%)' }}
           />
         </div>
       </div>

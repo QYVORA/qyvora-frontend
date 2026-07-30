@@ -183,7 +183,7 @@ const LandingLeaderboardSection = () => {
                     ].join(' ')}
                     style={{ width: `${cellSize}px`, height: `${cellSize}px` }}
                   >
-                    <div className="flex items-center justify-center w-full h-full bg-black/40">
+                    <div className="flex items-center justify-center w-full h-full bg-black">
                       <Identicon value={entry!.hackerHandle || entry!.name || '?'} size={cellSize} className="w-full h-full" />
                     </div>
 

@@ -24,7 +24,7 @@ const GLITCH_INTERVAL_MIN = 3000;
 const GLITCH_INTERVAL_MAX = 9000;
 const GLITCH_DURATION = 120;
 
-function createCells(cols: number, rows: number, cellSize: number): Cell[] {
+function createCells(cols: number, rows: number, cellSize: number, isLight: boolean): Cell[] {
   const cells: Cell[] = [];
   for (let r = 0; r < rows; r++) {
     for (let c = 0; c < cols; c++) {
@@ -34,18 +34,18 @@ function createCells(cols: number, rows: number, cellSize: number): Cell[] {
 
       if (rand < 0.08) {
         color = ACCENT;
-        baseOpacity = 0.15 + Math.random() * 0.35;
+        baseOpacity = isLight ? 1 : 0.15 + Math.random() * 0.35;
       } else if (rand < 0.18) {
-        const shade = Math.floor(Math.random() * 12);
+        const shade = isLight ? 180 + Math.floor(Math.random() * 50) : Math.floor(Math.random() * 12);
         color = [shade, shade, shade];
-        baseOpacity = 0.3 + Math.random() * 0.5;
+        baseOpacity = isLight ? 1 : 0.3 + Math.random() * 0.5;
       } else if (rand < 0.35) {
-        const g = Math.floor(40 + Math.random() * 30);
-        color = [0, g, Math.floor(g * 0.5)];
-        baseOpacity = 0.15 + Math.random() * 0.3;
+        const g = isLight ? 160 + Math.floor(Math.random() * 60) : Math.floor(40 + Math.random() * 30);
+        color = isLight ? [g, g, g] : [0, g, Math.floor(g * 0.5)];
+        baseOpacity = isLight ? 1 : 0.15 + Math.random() * 0.3;
       } else {
-        color = [0, 0, 0];
-        baseOpacity = 0.4 + Math.random() * 0.6;
+        color = isLight ? ACCENT : [0, 0, 0];
+        baseOpacity = isLight ? 1 : 0.4 + Math.random() * 0.6;
       }
 
       cells.push({
@@ -109,6 +109,7 @@ const HeroGridAnimation: React.FC<HeroGridAnimationProps> = ({ className = '', r
 
     const dpr = Math.min(window.devicePixelRatio || 1, 2);
     const cellSize = reduced ? 56 : 42;
+    const isLight = document.documentElement.getAttribute('data-theme') === 'light';
 
     function resize() {
       const rect = canvas!.parentElement!.getBoundingClientRect();
@@ -120,10 +121,24 @@ const HeroGridAnimation: React.FC<HeroGridAnimationProps> = ({ className = '', r
 
       const cols = Math.ceil(rect.width / cellSize) + 1;
       const rows = Math.ceil(rect.height / cellSize) + 1;
-      cellsRef.current = createCells(cols, rows, cellSize);
+      cellsRef.current = createCells(cols, rows, cellSize, isLight);
     }
 
     resize();
+
+    const themeObserver = new MutationObserver(() => {
+      const newIsLight = document.documentElement.getAttribute('data-theme') === 'light';
+      if (newIsLight !== isLight) {
+        cellsRef.current = createCells(
+          Math.ceil(canvas!.parentElement!.getBoundingClientRect().width / cellSize) + 1,
+          Math.ceil(canvas!.parentElement!.getBoundingClientRect().height / cellSize) + 1,
+          cellSize,
+          newIsLight,
+        );
+      }
+    });
+    themeObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+
     window.addEventListener('resize', resize);
 
     if (reduced) {
@@ -133,7 +148,10 @@ const HeroGridAnimation: React.FC<HeroGridAnimationProps> = ({ className = '', r
         drawRoundedRect(ctx, cell.x + 1, cell.y + 1, cell.size - 2, cell.size - 2, CORNER_RADIUS);
         ctx.fill();
       }
-      return () => window.removeEventListener('resize', resize);
+      return () => {
+        themeObserver.disconnect();
+        window.removeEventListener('resize', resize);
+      };
     }
 
     let lastFrameTime = 0;
@@ -219,6 +237,7 @@ const HeroGridAnimation: React.FC<HeroGridAnimationProps> = ({ className = '', r
 
     return () => {
       observer.disconnect();
+      themeObserver.disconnect();
       window.removeEventListener('resize', resize);
       cancelAnimationFrame(rafRef.current);
     };
