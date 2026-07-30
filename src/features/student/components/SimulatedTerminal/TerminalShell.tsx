@@ -197,7 +197,7 @@ export const TerminalShell: React.FC<TerminalShellProps> = ({
   const [promptTop] = useState('');
 
   const focusInput = useCallback(() => {
-    inputRef.current?.focus();
+    inputRef.current?.focus({ preventScroll: true });
   }, []);
 
   useEffect(() => {
@@ -626,7 +626,6 @@ export const TerminalShell: React.FC<TerminalShellProps> = ({
               style={{ color: KALI_GREEN, caretColor: KALI_CURSOR }}
               spellCheck={false}
               autoComplete="off"
-              autoFocus
               aria-label="Terminal input"
             />
           </div>
