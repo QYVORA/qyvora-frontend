@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import { User, Mail, LogIn } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { cn } from '@/shared/utils/cn';
-import { useAuth } from '../../../core/contexts/AuthContext';
+import { useAuth, MustChangePasswordError } from '../../../core/contexts/AuthContext';
 import { useToast } from '../../../core/contexts/ToastContext';
 import SEO from '@/shared/components/SEO';
 import PublicHeroSection from '@/shared/components/PublicHeroSection';
@@ -81,6 +81,15 @@ const LoginPage: React.FC = () => {
       setFormMessage('Login successful.');
       navigate('/dashboard');
     } catch (err: any) {
+      // Handle MustChangePasswordError separately — redirect to the
+      // password change flow instead of showing a generic error.
+      if (err instanceof MustChangePasswordError) {
+        console.info('[LoginPage] Password change required, redirecting to change-password flow.');
+        addToast('Password change required. Please set a new password.', 'info');
+        navigate(`/change-password?token=${encodeURIComponent(err.passwordChangeToken)}`);
+        return;
+      }
+
       const msg = sanitizeError(err, 'login');
       setFormMessage(msg);
       setShakePassword(true);
