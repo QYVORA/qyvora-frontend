@@ -12,6 +12,7 @@
 
 @theme {
   --font-mono: 'JetBrains Mono', monospace;
+  --font-display: 'Space Grotesk', sans-serif;
   --ease-smooth: cubic-bezier(0.22, 1, 0.36, 1);
   --dur-fast: 160ms;
   --dur-base: 260ms;
@@ -20,6 +21,7 @@
   --color-bg:             #000000;
   --color-bg-card:        #050505;
   --color-bg-elevated:    #0b0b0b;
+  --color-bg-alt:         #080808;
   --color-accent:         #06B66F;
   --color-accent-rgb:     6, 182, 111;
   --color-accent-dim:     rgba(6, 182, 111, 0.05);
@@ -96,6 +98,7 @@
 
   h1, h2, h3, h4, h5, h6, pre[role="heading"] {
     color: var(--color-text-primary);
+    font-family: var(--font-display);
   }
 
   h1 *, h2 *, h3 *, h4 *, h5 *, h6 *, pre[role="heading"] * {
@@ -609,6 +612,7 @@
   --color-bg: #E8EAE8;
   --color-bg-card: #F0F1F0;
   --color-bg-elevated: #E2E4E2;
+  --color-bg-alt: #E4E6E4;
   --color-text-primary: #2C2F2C;
   --color-text-secondary: rgba(44, 47, 44, 0.60);
   --color-text-muted: rgba(44, 47, 44, 0.35);
