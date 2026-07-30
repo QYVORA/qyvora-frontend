@@ -85,6 +85,16 @@ import CommunityPopup from '../shared/components/CommunityPopup';
 
 import ADMIN_PATH from '@/shared/utils/adminPath';
 
+const DOBIA_TIPS = [
+  'Check out the attack labs',
+  'Try the bootcamp',
+  'Explore courses',
+  'Join the leaderboard',
+  'Visit Zero Day Market',
+];
+
+const MSG_INTERVAL = 8000;
+
 // ─── Route wrapper ────────────────────────────────────────────────────────────
 const Wrap = ({ children, scope }: { children: ReactNode; scope?: string }) => (
   <ErrorBoundary scope={scope}>
@@ -124,6 +134,7 @@ export const AppRouter = () => {
   const location = useLocation();
 
   const [dobiaExpr, setDobiaExpr] = useState<'greeting' | 'confused' | 'alert' | 'waving'>('waving');
+  const [msgIdx, setMsgIdx] = useState(0);
 
   useEffect(() => {
     const handler = (e: Event) => {
@@ -132,6 +143,13 @@ export const AppRouter = () => {
     };
     window.addEventListener('dobia-expression', handler);
     return () => window.removeEventListener('dobia-expression', handler);
+  }, []);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setMsgIdx((prev) => (prev + 1) % DOBIA_TIPS.length);
+    }, MSG_INTERVAL);
+    return () => clearInterval(interval);
   }, []);
 
   const noDobiaRoutes = [
@@ -238,6 +256,15 @@ export const AppRouter = () => {
     <MotionCommunityPopup />
     {!hideDobia && (
       <div className="fixed bottom-[-30px] sm:bottom-[-50px] md:bottom-[-70px] lg:bottom-[-90px] xl:bottom-[-105px] right-0 sm:right-1 lg:right-1 z-[9999] pointer-events-none">
+        <div className="flex flex-col items-end mb-4 sm:mb-6 md:mb-8 lg:mb-10 xl:mb-12 mr-1 sm:mr-2">
+          <span
+            key={msgIdx}
+            className="inline-block px-3 py-1.5 rounded-xl bg-bg-card border border-border/30 text-[9px] sm:text-[10px] font-mono text-text-secondary leading-relaxed shadow-lg animate-fade-in max-w-[180px] sm:max-w-[220px] text-right"
+          >
+            {DOBIA_TIPS[msgIdx]}
+          </span>
+          <div className="w-2 h-2 rotate-45 bg-bg-card border-r border-b border-border/30 -mt-1 mr-3" />
+        </div>
         <div className="scale-[0.3] min-[400px]:scale-[0.4] sm:scale-[0.5] md:scale-[0.7] lg:scale-[0.85] xl:scale-100 origin-bottom-right">
           <Dobia expression={dobiaExpr} size="hero" />
         </div>
