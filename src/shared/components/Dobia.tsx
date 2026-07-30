@@ -18,7 +18,7 @@ type DobiaSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'hero';
 
 interface DobiaProps {
   expression?: DobiaExpression;
-  size?: DobiaSize;
+  size?: DobiaSize | number;
   className?: string;
   animated?: boolean;
 }
@@ -56,7 +56,7 @@ const Dobia: React.FC<DobiaProps> = ({
   className = '',
   animated = true,
 }) => {
-  const pxSize = SIZE_MAP[size];
+  const pxSize = typeof size === 'number' ? size : SIZE_MAP[size];
   const Component = EXPRESSION_MAP[expression];
 
   const animClass = useMemo(() => {
