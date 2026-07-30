@@ -254,9 +254,9 @@ const Settings: React.FC = () => {
   };
 
   return (
-    <div className="bg-bg">
+    <div>
       <SEO title={t('student.settings.seoTitle')} description={t('student.settings.seoDesc')} noindex />
-      <div className="px-3 md:px-4 lg:px-6 pt-8 pb-20 lg:pb-24 space-y-6">
+      <div className="bg-bg px-3 md:px-4 lg:px-6 pt-8 pb-10">
         <StudentHeroSection
           icon={<SettingsIcon className="w-8 h-8 text-accent" />}
           title={t('student.settings.title')}
@@ -270,7 +270,9 @@ const Settings: React.FC = () => {
             {t('student.profile.edit')}
           </Link>
         </StudentHeroSection>
+      </div>
 
+      <div className="bg-bg-alt px-3 md:px-4 lg:px-6 py-10 pb-20 lg:pb-24">
         <div className="flex flex-col lg:flex-row gap-6">
           {/* Sidebar tabs */}
           <div className="lg:w-56 shrink-0">

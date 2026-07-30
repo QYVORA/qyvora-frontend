@@ -66,10 +66,9 @@ const LabsPage = () => {
   const totalCpMax = LABS.reduce((sum, lab) => sum + parseInt(lab.cpReward.split('-')[1]), 0);
 
   return (
-    <div className="bg-bg min-h-full">
+    <div className="min-h-full">
       <SEO title={t('student.labs.seoTitle')} description={t('student.labs.seoDesc')} noindex />
-      <div className=" px-3 md:px-4 lg:px-6 pt-8 pb-20 lg:pb-24 space-y-8">
-
+      <div className="bg-bg px-3 md:px-4 lg:px-6 pt-8 pb-10">
         <StudentHeroSection
           title={t('student.labs.title')}
           description={t('student.labs.description')}
@@ -85,6 +84,9 @@ const LabsPage = () => {
             {t('button.startFirstLab')}
           </Link>
         </StudentHeroSection>
+      </div>
+
+      <div className="bg-bg-alt px-3 md:px-4 lg:px-6 py-10 pb-20 lg:pb-24 space-y-8">
 
         <LearningFilterStrip
           filters={difficultyFilters}

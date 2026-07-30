@@ -34,11 +34,10 @@ const CompetitivePage = () => {
   };
 
   return (
-    <div className="bg-bg min-h-full">
+    <div className="min-h-full">
       <SEO title={t('student.competitive.seoTitle')} description={t('student.competitive.seoDesc')} noindex />
 
-      <div className=" px-3 md:px-4 lg:px-6 pt-8 pb-20 lg:pb-24 space-y-6">
-        {/* Header */}
+      <div className="bg-bg px-3 md:px-4 lg:px-6 pt-8 pb-10">
         <StudentHeroSection
           icon={<Trophy className="w-8 h-8 text-accent" />}
           title={t('student.competitive.title')}
@@ -54,6 +53,9 @@ const CompetitivePage = () => {
             {t('button.viewPublicBoard')}
           </Link>
         </StudentHeroSection>
+      </div>
+
+      <div className="bg-bg-alt px-3 md:px-4 lg:px-6 py-10 pb-20 lg:pb-24 space-y-6">
 
         {/* Period tabs */}
         <div className="flex items-center gap-2 flex-wrap">
