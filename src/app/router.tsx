@@ -123,12 +123,12 @@ const AdminOnly = ({ children }: { children: ReactNode }) => {
 export const AppRouter = () => {
   const location = useLocation();
 
-  const [dobiaExpr, setDobiaExpr] = useState<'greeting' | 'confused' | 'alert'>('greeting');
+  const [dobiaExpr, setDobiaExpr] = useState<'greeting' | 'confused' | 'alert' | 'waving'>('waving');
 
   useEffect(() => {
     const handler = (e: Event) => {
-      const detail = (e as CustomEvent<'confused' | 'alert' | 'greeting'>).detail;
-      setDobiaExpr(detail || 'confused');
+      const detail = (e as CustomEvent<'confused' | 'alert' | 'greeting' | 'waving'>).detail;
+      setDobiaExpr(detail || 'waving');
     };
     window.addEventListener('dobia-expression', handler);
     return () => window.removeEventListener('dobia-expression', handler);
