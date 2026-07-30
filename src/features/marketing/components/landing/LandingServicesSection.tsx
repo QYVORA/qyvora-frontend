@@ -52,17 +52,6 @@ const LandingServicesSection: React.FC = () => {
     <div className="relative overflow-hidden min-h-dvh md:h-dvh flex flex-col">
       <div className="relative w-full h-full px-3 md:px-4 lg:px-6 py-6 md:py-8 lg:py-10 flex flex-col">
         <div className="w-full flex-1 flex flex-col min-h-0">
-          {/* Heading — left aligned */}
-          <motion.div
-            initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: '-80px' }}
-            transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-            className="mb-3 md:mb-5 shrink-0"
-          >
-
-          </motion.div>
-
           {/* Bento grid: 4 columns on desktop — same structure as pillars */}
           <div className="grid grid-cols-1 lg:grid-cols-4 gap-2 md:gap-4 flex-1 auto-rows-fr">
             {/* Featured card — Standard tier, 2 cols, 2 rows */}

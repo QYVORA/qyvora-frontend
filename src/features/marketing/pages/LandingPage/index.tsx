@@ -17,6 +17,7 @@ import LandingLeaderboardSection from '@/features/marketing/components/landing/L
 import LandingServicesSection from '@/features/marketing/components/landing/LandingServicesSection';
 import LandingAnansiSection from '@/features/marketing/components/landing/LandingAnansiSection';
 import LandingFinalCtaSection from '@/features/marketing/components/landing/LandingFinalCtaSection';
+import ActDividerSection from '@/features/marketing/components/landing/ActDividerSection';
 
 import { Footer } from '@/shared/components/layout';
 import { useAdaptiveUi } from '@/core/hooks/useAdaptiveUi';
@@ -29,9 +30,11 @@ const Landing: React.FC = () => {
   const SECTIONS = [
     { id: 'hero',       label: t('nav.home') },
     { id: 'pillars',    label: t('landing2.platform') },
+    { id: 'act-ii',     label: 'Act II' },
     { id: 'labs',       label: t('nav.labs') },
     { id: 'courses',    label: t('nav.courses') },
     { id: 'bootcamp',   label: t('nav.bootcamp') },
+    { id: 'act-iii',    label: 'Act III' },
     { id: 'team',       label: 'Team' },
     { id: 'quiteroot',  label: 'QuiteRoot' },
     { id: 'anansi',     label: 'Anansi' },
@@ -126,72 +129,83 @@ const Landing: React.FC = () => {
         }}
       />
 
-      {/* 1. Hero — accent */}
-      <section id="hero" className="relative w-full min-h-dvh md:h-dvh snap-section">
+      {/* ── ACT I: VISION ──────────────────────────────────────────────── */}
+      {/* 1. Hero */}
+      <section id="hero" className="relative w-full min-h-dvh md:h-dvh snap-section bg-bg">
         <LandingHeroSection heroRef={heroRef} user={user} stats={stats} totalCp={totalCp} />
       </section>
 
-      {/* 2. Platform — dark */}
-      <section id="pillars" className="relative w-full min-h-dvh md:h-dvh snap-section">
+      {/* 2. Platform */}
+      <section id="pillars" className="relative w-full min-h-dvh md:h-dvh snap-section bg-bg-alt">
         <LandingPillarsSection />
       </section>
 
-      {/* 3. Labs — accent */}
-      <section id="labs" className="relative w-full min-h-dvh md:h-dvh snap-section">
+      {/* ── ACT II: THE WORK ──────────────────────────────────────────── */}
+      <section id="act-ii" className="relative w-full min-h-dvh md:h-dvh snap-section bg-bg">
+        <ActDividerSection number="II" title="The Work" />
+      </section>
+
+      {/* 3. Labs */}
+      <section id="labs" className="relative w-full min-h-dvh md:h-dvh snap-section bg-bg">
         <LandingLabsSection />
       </section>
 
-      {/* 4. Courses — dark */}
-      <section id="courses" className="relative w-full min-h-dvh md:h-dvh snap-section">
+      {/* 4. Courses */}
+      <section id="courses" className="relative w-full min-h-dvh md:h-dvh snap-section bg-bg-alt">
         <LandingCoursesSection />
       </section>
 
-      {/* 5. Bootcamp — accent */}
-      <section id="bootcamp" className="relative w-full min-h-dvh md:h-dvh snap-section">
+      {/* 5. Bootcamp */}
+      <section id="bootcamp" className="relative w-full min-h-dvh md:h-dvh snap-section bg-bg">
         <LandingBootcampSection />
       </section>
 
-      {/* 6. Team — dark */}
-      <section id="team" className="relative w-full min-h-dvh md:h-dvh snap-section">
+      {/* ── ACT III: THE WORLD ──────────────────────────────────────────── */}
+      <section id="act-iii" className="relative w-full min-h-dvh md:h-dvh snap-section bg-bg-alt">
+        <ActDividerSection number="III" title="The World" />
+      </section>
+
+      {/* 6. Team */}
+      <section id="team" className="relative w-full min-h-dvh md:h-dvh snap-section bg-bg">
         <LandingTeamSection />
       </section>
 
-      {/* 7. QuiteRoot — accent */}
-      <section id="quiteroot" className="relative w-full min-h-dvh md:h-dvh snap-section">
+      {/* 7. QuiteRoot */}
+      <section id="quiteroot" className="relative w-full min-h-dvh md:h-dvh snap-section bg-bg-alt">
         <LandingQuiteRootSection />
       </section>
 
-      {/* 8. Anansi — accent */}
-      <section id="anansi" className="relative w-full min-h-dvh md:h-dvh snap-section">
+      {/* 8. Anansi */}
+      <section id="anansi" className="relative w-full min-h-dvh md:h-dvh snap-section bg-bg">
         <LandingAnansiSection />
       </section>
 
-      {/* 9. Blogs — accent */}
-      <section id="blogs" className="relative w-full min-h-dvh md:h-dvh snap-section">
+      {/* 9. Blogs */}
+      <section id="blogs" className="relative w-full min-h-dvh md:h-dvh snap-section bg-bg-alt">
         <LandingBlogsSection />
       </section>
 
-      {/* 9. Market — accent */}
-      <section id="market" className="relative w-full min-h-dvh md:h-dvh snap-section">
+      {/* 10. Market */}
+      <section id="market" className="relative w-full min-h-dvh md:h-dvh snap-section bg-bg">
         <LandingMarketSection />
       </section>
 
-      {/* 10. Leaderboard — dark */}
-      <section id="leaderboard" className="relative w-full min-h-dvh md:h-dvh snap-section">
+      {/* 11. Leaderboard */}
+      <section id="leaderboard" className="relative w-full min-h-dvh md:h-dvh snap-section bg-bg-alt">
         <LandingLeaderboardSection />
       </section>
 
-      {/* 11. Services — dark */}
-      <section id="services" className="relative w-full min-h-dvh md:h-dvh snap-section">
+      {/* 12. Services */}
+      <section id="services" className="relative w-full min-h-dvh md:h-dvh snap-section bg-bg">
         <LandingServicesSection />
       </section>
 
-      {/* 12. CTA — accent */}
-      <section id="cta" className="relative w-full min-h-dvh md:h-dvh snap-section">
+      {/* 13. CTA */}
+      <section id="cta" className="relative w-full min-h-dvh md:h-dvh snap-section bg-bg-alt">
         <LandingFinalCtaSection user={user} />
       </section>
 
-      {/* 13. Footer */}
+      {/* 14. Footer */}
       <section id="footer" className="w-full bg-bg pt-10 md:pt-0 snap-section">
         <Footer />
       </section>
