@@ -264,7 +264,7 @@ export const AppRouter = () => {
               <span className="block px-2 py-1 rounded-xl bg-bg-card border border-border/30 text-[8px] font-mono text-text-secondary leading-relaxed shadow-lg max-w-[120px] text-right whitespace-nowrap">{DOBIA_TIPS[msgIdx]}</span>
               <div className="flex justify-end -mt-px"><div className="w-1.5 h-1.5 rotate-45 bg-bg-card border-r border-b border-border/30 mr-3" /></div>
             </div>
-            <div style={{ marginBottom: -21 }}><Dobia expression={dobiaExpr} size={128} /></div>
+            <div style={{ marginBottom: -38 }}><Dobia expression={dobiaExpr} size={128} /></div>
           </div>
         </div>
 
@@ -275,7 +275,7 @@ export const AppRouter = () => {
               <span className="block px-2.5 py-1 rounded-xl bg-bg-card border border-border/30 text-[8px] font-mono text-text-secondary leading-relaxed shadow-lg max-w-[140px] text-right whitespace-nowrap">{DOBIA_TIPS[msgIdx]}</span>
               <div className="flex justify-end -mt-px"><div className="w-1.5 h-1.5 rotate-45 bg-bg-card border-r border-b border-border/30 mr-3.5" /></div>
             </div>
-            <div style={{ marginBottom: -27 }}><Dobia expression={dobiaExpr} size={160} /></div>
+            <div style={{ marginBottom: -47 }}><Dobia expression={dobiaExpr} size={160} /></div>
           </div>
         </div>
 
@@ -286,7 +286,7 @@ export const AppRouter = () => {
               <span className="block px-2.5 py-1.5 rounded-xl bg-bg-card border border-border/30 text-[9px] font-mono text-text-secondary leading-relaxed shadow-lg max-w-[160px] text-right whitespace-nowrap">{DOBIA_TIPS[msgIdx]}</span>
               <div className="flex justify-end -mt-px"><div className="w-2 h-2 rotate-45 bg-bg-card border-r border-b border-border/30 mr-4" /></div>
             </div>
-            <div style={{ marginBottom: -32 }}><Dobia expression={dobiaExpr} size={192} /></div>
+            <div style={{ marginBottom: -57 }}><Dobia expression={dobiaExpr} size={192} /></div>
           </div>
         </div>
 
@@ -297,7 +297,7 @@ export const AppRouter = () => {
               <span className="block px-3 py-1.5 rounded-xl bg-bg-card border border-border/30 text-[10px] font-mono text-text-secondary leading-relaxed shadow-lg max-w-[200px] text-right whitespace-nowrap">{DOBIA_TIPS[msgIdx]}</span>
               <div className="flex justify-end -mt-px"><div className="w-2 h-2 rotate-45 bg-bg-card border-r border-b border-border/30 mr-5" /></div>
             </div>
-            <div style={{ marginBottom: -43 }}><Dobia expression={dobiaExpr} size={256} /></div>
+            <div style={{ marginBottom: -75 }}><Dobia expression={dobiaExpr} size={256} /></div>
           </div>
         </div>
 
@@ -308,7 +308,7 @@ export const AppRouter = () => {
               <span className="block px-3 py-1.5 rounded-xl bg-bg-card border border-border/30 text-[10px] font-mono text-text-secondary leading-relaxed shadow-lg max-w-[240px] text-right whitespace-nowrap">{DOBIA_TIPS[msgIdx]}</span>
               <div className="flex justify-end -mt-px"><div className="w-2 h-2 rotate-45 bg-bg-card border-r border-b border-border/30 mr-6" /></div>
             </div>
-            <div style={{ marginBottom: -53 }}><Dobia expression={dobiaExpr} size={320} /></div>
+            <div style={{ marginBottom: -94 }}><Dobia expression={dobiaExpr} size={320} /></div>
           </div>
         </div>
 
@@ -319,7 +319,7 @@ export const AppRouter = () => {
               <span className="block px-4 py-2 rounded-xl bg-bg-card border border-border/30 text-[11px] font-mono text-text-secondary leading-relaxed shadow-lg max-w-[280px] text-right whitespace-nowrap">{DOBIA_TIPS[msgIdx]}</span>
               <div className="flex justify-end -mt-px"><div className="w-2.5 h-2.5 rotate-45 bg-bg-card border-r border-b border-border/30 mr-7" /></div>
             </div>
-            <div style={{ marginBottom: -67 }}><Dobia expression={dobiaExpr} size={400} /></div>
+            <div style={{ marginBottom: -118 }}><Dobia expression={dobiaExpr} size={400} /></div>
           </div>
         </div>
 
@@ -330,7 +330,7 @@ export const AppRouter = () => {
               <span className="block px-4 py-2 rounded-xl bg-bg-card border border-border/30 text-[12px] font-mono text-text-secondary leading-relaxed shadow-lg max-w-[320px] text-right whitespace-nowrap">{DOBIA_TIPS[msgIdx]}</span>
               <div className="flex justify-end -mt-px"><div className="w-2.5 h-2.5 rotate-45 bg-bg-card border-r border-b border-border/30 mr-8" /></div>
             </div>
-            <div style={{ marginBottom: -80 }}><Dobia expression={dobiaExpr} size={480} /></div>
+            <div style={{ marginBottom: -141 }}><Dobia expression={dobiaExpr} size={480} /></div>
           </div>
         </div>
 
