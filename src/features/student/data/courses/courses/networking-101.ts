@@ -94,11 +94,13 @@ UDP is used for: video streaming, DNS queries, VoIP, online gaming.
 
 \`\`\`bash
 # Check which ports are listening on your machine
-netstat -tlnp   # TCP ports
+            netstat -tlnp   # TCP ports
 netstat -ulnp   # UDP ports
 \`\`\`
 
-The \`-t\` flag filters TCP, \`-u\` for UDP, \`-l\` for listening, \`-n\` for numeric addresses, \`-p\` shows the program.`),
+> **Why this matters for hacking:** The TCP three-way handshake (SYN → SYN-ACK → ACK) is the foundation of reliable network communication — and the basis for SYN flooding as a DoS attack. Understanding TCP flags lets you interpret packet captures, configure firewalls, and craft custom packets. UDP's connectionless nature makes it ideal for DNS and VoIP but also makes it spoofable. In port scanning, the difference between a SYN scan (\`-sS\`, stealthy, half-open) and a TCP connect scan (\`-sT\`, complete handshake, logged) is critical for evasion.
+
+**Mini-challenge:** Run \`ping -c 4 google.com\` to see round-trip times, then \`traceroute -n google.com | head -10\` to see the path. Each hop is a router forwarding your packets — visualizing this path is essential for understanding network topology and identifying where slowdowns or blocks occur.`),
 
     l('net-4', 'DNS Explained',
       `**DNS (Domain Name System)** translates human-readable domain names into IP addresses. When you type \`google.com\`, DNS finds the IP address so your computer knows where to connect.
@@ -127,6 +129,10 @@ Address: 142.250.80.46
 \`\`\`
 
 DNS uses UDP on port 53. The query goes to your configured DNS server (usually your router or an ISP), which finds the answer by asking other DNS servers.
+
+> **Why this matters for hacking:** DNS is the backbone of internet navigation — and a frequent attack vector. DNS poisoning redirects users to malicious sites. DNS tunneling exfiltrates data by encoding it in subdomain queries. Zone transfers (\`dig axfr\`) reveal every DNS record for a domain if misconfigured — a goldmine for recon. The \`dig any\` query returns all record types, often revealing subdomains and services not otherwise visible.
+
+**Mini-challenge:** Run \`dig google.com ANY +short\` to see all DNS record types for a domain. Then \`dig google.com MX +short\` to find mail servers. Finally \`dig axfr @ns1.google.com google.com\` (this will fail — Google blocks zone transfers). Understanding which queries succeed vs fail teaches you DNS security posture.
 
 **Common DNS records:**
 - **A** — maps domain to IPv4 address
@@ -184,8 +190,12 @@ Content-Length: 1234
 curl -I https://example.com
 
 # See full response
-curl -v https://example.com
-\`\`\``),
+            curl -v https://example.com
+\`\`\`
+
+> **Why this matters for hacking:** HTTP headers reveal server information (Apache vs Nginx, PHP version, cookies), which guides your attack strategy. Status codes tell you what's accessible — 200 (OK), 403 (forbidden but exists), 404 (not found), 500 (server error). The \`Host\` header is used for virtual hosting — modifying it can access different sites on the same server. Understanding HTTPS (TLS handshake, certificate validation) is essential for intercepting encrypted traffic, a core skill in penetration testing.
+
+**Mini-challenge:** Run \`curl -I https://example.com\` to see response headers. Identify the server type, content type, and any security headers. Then \`curl -v https://example.com 2>&1 | grep -iE "ssl|tls|certificate"\` to examine the TLS handshake details — you'll see the certificate chain and cipher negotiation.`),
 
     l('net-6', 'Troubleshooting Tools',
       `The best way to learn networking is by doing. Here are the essential troubleshooting tools.
@@ -221,6 +231,10 @@ curl -X POST -d "user=admin&pass=test" https://example.com/login
 # nmap (if installed) — scan a host for open ports
 nmap -p 22,80,443 scanme.nmap.org
 \`\`\`
+
+> **Why this matters for hacking:** Ping, traceroute, curl, and nmap are the essential four tools every hacker must know. Ping tells you if a host is alive (\`-c\` limits packets). Traceroute maps the network path and reveals routers. Curl is your HTTP Swiss Army knife for testing endpoints, headers, and methods. Nmap discovers open ports and services. Together, they form the foundation of network reconnaissance — the first phase of any penetration test.
+
+**Mini-challenge:** Run the complete recon sequence on scanme.nmap.org: \`ping -c 2 scanme.nmap.org && traceroute -n scanme.nmap.org | tail -5 && curl -I scanme.nmap.org 2>/dev/null\`. This single command chain covers host discovery, path mapping, and service identification — the three pillars of network recon.
 
 Practice on \`scanme.nmap.org\` (a legal test target provided by the Nmap project).`, { hasQuiz: true, quiz: [
         { id: 'net-6-q1', question: 'What does the `-c` flag do in the ping command?', options: ['Set packet size', 'Specify count of pings', 'Set timeout', 'Enable flood mode'], correctIndex: 1, explanation: 'ping -c N sends N packets and stops. Without -c, ping runs forever on Linux.' },
@@ -308,7 +322,11 @@ nmap -sn 192.168.1.0/24
 /26 = 64 addresses  (4 subnets)
 /27 = 32 addresses  (8 subnets)
 /28 = 16 addresses  (16 subnets)
-\`\`\``),
+\`\`\`
+
+> **Why this matters for hacking:** Subnetting knowledge directly impacts scanning efficiency. A /24 (254 hosts) can be scanned quickly with \`nmap -sn 192.168.1.0/24\`. But scanning a /16 (65,534 hosts) requires strategic targeting. Understanding CIDR tells you how many IPs are in a range, what addresses are reserved, and how networks are segmented. In CTFs, finding a /32 (single host) or /30 (2 hosts) tells you something about the network architecture — these are often point-to-point links or specific targets.
+
+**Mini-challenge:** Run \`ipcalc 192.168.1.0/24\` (install with \`sudo apt install ipcalc\`) to see subnet breakdown. If unavailable, compute manually: a /24 has 254 usable hosts (256 - 2). For /28: 16 addresses - 2 (network + broadcast) = 14 usable. Practice converting between CIDR and decimal subnet masks — \`/24 = 255.255.255.0\`, \`/16 = 255.255.0.0\`, \`/8 = 255.0.0.0\`. This mental math saves time during scans.`),
 
     l('net-8', 'DHCP & NAT',
       `DHCP assigns IP addresses automatically. NAT allows many devices to share one public IP.
@@ -360,6 +378,10 @@ curl -s icanhazip.com
 hostname -I   # Linux
 # ipconfig     # Windows
 \`\`\`
+
+> **Why this matters for hacking:** DHCP and NAT are fundamental to how networks operate — and both have security implications. A rogue DHCP server can hijack all traffic on a network (DHCP spoofing). NAT obscures internal IP structures, which is why internal recon often starts with identifying the local subnet. Port forwarding through NAT enables external access to internal services — a common misconfiguration. The \`dhclient -r\` command releases your lease, which can be useful when changing networks or troubleshooting.
+
+**Mini-challenge:** Run \`hostname -I\` to see your private IP, then \`curl -s ifconfig.me\` to see your public IP. Compare them — they should differ. Then \`ip route | grep default\` to see your gateway (typically your router's IP). This reveals your network's NAT architecture: private IP → router → public IP.
 
 **Check NAT and connection tracking:**
 \`\`\`bash
@@ -499,8 +521,12 @@ curl -s ifconfig.me
 openssl s_client -connect example.com:443 < /dev/null 2>/dev/null | openssl x509 -text | grep "Subject:"
 
 # 4. Scan for vulnerabilities in a router
-nmap -sV --script vuln 192.168.1.1
-\`\`\``),
+            nmap -sV --script vuln 192.168.1.1
+\`\`\`
+
+> **Why this matters for hacking:** Firewalls are the first line of defense — understanding their behavior determines your attack approach. A "filtered" port (DROP) tells you a firewall exists. A "closed" port (REJECT) tells you the service isn't running. VPNs encrypt traffic and change your apparent location — essential for operational security. TLS certificate inspection reveals domain ownership, expiration, and issuing authority — useful for identifying phishing sites. The \`ss -tulnp\` command shows every listening service, critical for identifying exposed services on a system.
+
+**Mini-challenge:** Check your firewall: \`sudo ufw status 2>/dev/null || echo "ufw not installed"\`. Then inspect your TLS connections: \`openssl s_client -connect example.com:443 -servername example.com < /dev/null 2>/dev/null | openssl x509 -noout -subject -dates\`. This shows the certificate subject (who it's issued to) and validity dates — essential for verifying TLS configuration.`),
 ];
 
 export const COURSE: Course = {
