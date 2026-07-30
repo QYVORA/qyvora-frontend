@@ -369,7 +369,7 @@ const StudentTopbar = () => {
 
             {/* Logo */}
             <Link to="/dashboard" className="flex-none shrink-0">
-              <Logo size="md" variant="mark" />
+              <Logo size="xl" variant="mark" />
             </Link>
 
             {/* Hamburger — visible on mobile only */}
