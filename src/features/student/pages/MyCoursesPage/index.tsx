@@ -127,11 +127,10 @@ const MyCoursesPage: React.FC = () => {
   ], [totalCourses, inProgressCourses, completedCourses]);
 
   return (
-    <div className="bg-bg min-h-screen">
+    <div className="min-h-screen">
       <SEO title="My Courses" description="Your purchased courses." noindex />
 
-      <div className=" px-3 md:px-4 lg:px-6 pt-8 pb-20 lg:pb-24 space-y-8">
-
+      <div className="bg-bg px-3 md:px-4 lg:px-6 pt-8 pb-10">
         <StudentHeroSection
           title={t('student.myCourses.title')}
           description={t('student.myCourses.description')}
@@ -148,6 +147,9 @@ const MyCoursesPage: React.FC = () => {
             {totalCourses > 0 ? t('student.myCourses.continue') : t('student.myCourses.action.browse')}
           </Link>
         </StudentHeroSection>
+      </div>
+
+      <div className="bg-bg-alt px-3 md:px-4 lg:px-6 py-10 pb-20 lg:pb-24 space-y-8">
 
         {!loading && availableCourses.length > 0 && (
           <LearningFilterStrip

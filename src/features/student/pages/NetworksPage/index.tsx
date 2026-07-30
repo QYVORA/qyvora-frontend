@@ -66,11 +66,10 @@ const NetworksPage = () => {
   const discoveredCount = knownDevices.filter(d => discovery.discoveredIps.includes(d.ip)).length;
 
   return (
-    <div className="bg-bg min-h-full">
+    <div className="min-h-full">
       <SEO title="Network Lab" description="Simulated corporate network environment for terminal practice." noindex />
 
-      <div className="px-3 md:px-4 lg:px-6 pt-8 pb-20 lg:pb-24 space-y-10">
-        {/* Header */}
+      <div className="bg-bg px-3 md:px-4 lg:px-6 pt-8 pb-10">
         <StudentHeroSection
           icon={<Network className="w-8 h-8 text-accent" />}
           title="Network Lab"
@@ -85,6 +84,9 @@ const NetworksPage = () => {
             Open Terminal
           </button>
         </StudentHeroSection>
+      </div>
+
+      <div className="bg-bg-alt px-3 md:px-4 lg:px-6 py-10 pb-20 lg:pb-24 space-y-10">
 
         {/* Simulation notice */}
         <div className="flex items-start gap-3 px-5 py-4 rounded-2xl border border-border/30 bg-bg-card">

@@ -91,17 +91,12 @@ const Notifications: React.FC = () => {
   if (loading) return <NotificationsSkeleton />;
 
   return (
-    <div className="bg-bg">
+    <div>
       <SEO title={t('student.notificationsPage.seoTitle')} description={t('student.notificationsPage.seoDesc')} noindex />
 
-      {/* Fixed two-column container below topbar */}
-      <div className=" px-3 md:px-4 lg:px-6 pt-8 pb-20 lg:pb-24 space-y-6">
-
-        {/* RIGHT MAIN */}
+      <div className="bg-bg px-3 md:px-4 lg:px-6 pt-8 pb-10">
         <div className="w-full flex-1 min-w-0">
-          <div className="px-2 sm:px-6 md:px-8 pb-16 lg:px-8 lg:py-6 space-y-6">
-
-            {/* Page header */}
+          <div className="px-2 sm:px-6 md:px-8 lg:px-8 lg:py-6">
             <StudentHeroSection
               icon={<Bell className="w-8 h-8 text-accent" />}
               title={t('student.notificationsPage.title')}
@@ -118,6 +113,13 @@ const Notifications: React.FC = () => {
                 </button>
               )}
             </StudentHeroSection>
+          </div>
+        </div>
+      </div>
+
+      <div className="bg-bg-alt px-3 md:px-4 lg:px-6 py-10 pb-20 lg:pb-24">
+        <div className="w-full flex-1 min-w-0">
+          <div className="px-2 sm:px-6 md:px-8 lg:px-8 space-y-6">
             {displayed.length === 0 ? (
               <div className="relative overflow-hidden rounded-2xl border-2 border-dashed border-border py-16 text-center">
                 <div className="mx-auto mb-4">
