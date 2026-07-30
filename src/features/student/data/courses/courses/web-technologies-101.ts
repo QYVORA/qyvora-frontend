@@ -37,6 +37,10 @@ Every piece of this chain can be inspected, intercepted, or attacked — and tha
 curl -v https://example.com
 \`\`\`
 
+> **Why this matters for hacking:** Understanding the full request flow (DNS → TCP → TLS → HTTP) is essential for identifying where attacks can occur. DNS poisoning redirects to malicious servers. MITM attacks intercept the TLS handshake. Session hijacking steals cookies from the HTTP layer. XSS injects malicious content into the response. Each layer is a potential attack surface, and understanding how they interact lets you identify and exploit the weakest link.
+
+**Mini-challenge:** Run \`curl -v https://example.com 2>&1\` and observe every stage: DNS resolution (\`Trying 93.184.216.34\`), TCP connection (\`Connected to\`), TLS handshake (\`SSL connection using\`), HTTP request, and response. Count how many steps happen before you see any content — this is the web request pipeline that every attack must navigate.
+
 The \`-v\` (verbose) flag shows the full request and response headers, not just the body. This is one of the simplest ways to see the HTTP layer in action and is a habit you should build early.`),
 
     l('web-2', 'HTTP Deep Dive',
@@ -76,7 +80,11 @@ Set-Cookie: session=xyz789; HttpOnly
 curl -I https://example.com
 
 # See everything
-curl -v https://example.com
+> **Why this matters for hacking:** HTTP headers are the front line of web security. The \`Host\` header enables virtual hosting but also Host header injection attacks. \`Cookie\` headers carry session tokens — if not marked \`HttpOnly\` and \`Secure\`, they're vulnerable to theft. \`Authorization\` headers expose credentials if sent over HTTP. \`Content-Type\` dictates how the server parses the body — mismatches can lead to parser confusion. Every header is a potential attack vector or defensive control.
+
+**Mini-challenge:** Run \`curl -v -X POST https://httpbin.org/post -H "Content-Type: application/json" -d '{"test":"value"}' 2>&1\` and examine the full request/response. Note how the \`Content-Type\` header tells the server to interpret the body as JSON. Try without headers to see the difference — this teaches you how header manipulation affects server behavior.
+
+            curl -v https://example.com
 \`\`\``),
 
     l('web-3', 'HTML & Forms',
@@ -112,6 +120,10 @@ username=admin&password=secret123
 <input type="hidden" name="price" value="19.99">
 \`\`\`
 
+> **Why this matters for hacking:** HTML forms are the primary way web applications collect user input — every login, search, and comment form is a potential injection point. Hidden fields (\`<input type="hidden">\`) are invisible to users but sent with every form submission. Developers often put sensitive data in hidden fields like \`role=user\` or \`price=19.99\`. These can be trivially modified before submission using browser DevTools or Burp Suite — a classic privilege escalation or price manipulation attack.
+
+**Mini-challenge:** Open any website with a form, right-click → Inspect, and look for hidden input fields. Try modifying a search query parameter using DevTools before submitting. Understanding how form data is constructed client-side is the prerequisite for intercepting and modifying it with Burp Suite.
+
 These can be modified by the client before submission — never trust hidden fields on the server.`),
 
     l('web-4', 'Sessions & Authentication',
@@ -139,7 +151,11 @@ Set-Cookie: session=abc123; HttpOnly; Secure; SameSite=Lax
 
 \`\`\`bash
 # Check if a site uses secure cookies
-curl -I https://example.com | grep -i set-cookie
+> **Why this matters for hacking:** Session management is at the core of web application security. HttpOnly cookies prevent JavaScript from reading the token (protecting against XSS). Secure cookies ensure the token is only sent over HTTPS. SameSite cookies prevent CSRF attacks where another site forges requests on your behalf. If a session cookie is missing any of these flags, it's a vulnerability. The \`Set-Cookie\` header in the response reveals the session mechanism — analyze it to understand how authentication works.
+
+**Mini-challenge:** Run \`curl -sI https://github.com 2>/dev/null | grep -i "set-cookie" | head -3\`. Examine the cookie flags: are they HttpOnly? Secure? SameSite? This is exactly how you'd assess session security during a penetration test.\`
+
+            curl -I https://example.com | grep -i set-cookie
 \`\`\``),
 
     l('web-5', 'REST APIs',
@@ -177,6 +193,10 @@ curl -X POST https://api.example.com/users \\
 curl -H "Authorization: Bearer YOUR_TOKEN" \\
   https://api.example.com/protected
 \`\`\`
+
+> **Why this matters for hacking:** REST APIs expose the backend logic of web applications. Discovering an API endpoint like \`/api/users\` with no authentication reveals all user data. IDOR vulnerabilities occur when \`/api/users/1\` can be changed to \`/api/users/2\` to access another user's data. API keys in JavaScript source code or network traffic are a common finding in bug bounties. The \`Authorization: Bearer\` header pattern is used by JWT tokens — forgable if the secret is weak.
+
+**Mini-challenge:** Run \`curl -s https://api.github.com/users/octocat | python3 -c "import sys,json; d=json.load(sys.stdin); print(f\\"User: {d['login']}\\nRepos: {d['public_repos']}\\nBio: {d.get('bio','N/A')}\\")"\` to fetch and parse a real API response. Then try \`curl -s -o /dev/null -w "%{http_code}" https://api.github.com/users/nonexistent12345\` to see how APIs handle 404s — understanding error handling is key for API testing.
 
 **API keys** and tokens are how services authenticate API requests. If you find an exposed API key in JavaScript code or network traffic, you can impersonate that user.`, { hasQuiz: true, quiz: [
         { id: 'web-5-q1', question: 'What format do REST APIs typically return data in?', options: ['XML', 'HTML', 'JSON', 'CSV'], correctIndex: 2, explanation: 'REST APIs typically return JSON (JavaScript Object Notation) as the data format.' },
@@ -261,6 +281,10 @@ fetch('https://example.com/api/user', {credentials: 'include'})
 - Never use \`Access-Control-Allow-Origin: *\` with credentials
 - Whitelist specific origins, don't reflect the Origin header
 - Use \`Vary: Origin\` header for dynamic CORS
+> **Why this matters for hacking:** CORS misconfiguration is a common and critical vulnerability. Reflecting the \`Origin\` header in \`Access-Control-Allow-Origin\` with \`Access-Control-Allow-Credentials: true\` allows any website to make authenticated requests and read the response. This means evil.com can fetch \`bank.com/api/balance\` and exfiltrate the response. The \`OPTIONS\` preflight request reveals what methods and headers are allowed — important for understanding the full attack surface.
+
+**Mini-challenge:** Test CORS on any public API: \`curl -H "Origin: https://evil.com" -sI https://api.github.com 2>/dev/null | grep -i "access-control"\`. Then test with \`-H "Origin: null"\` — some servers reflect the null origin, which is exploitable from sandboxed iframes. This is the exact technique used to discover CORS vulnerabilities.
+
 - Don't rely on CORS alone for security — use proper auth`),
 
     l('web-7', 'Browser Storage & Client-Side Security',
@@ -338,6 +362,10 @@ curl -I https://example.com | grep "Set-Cookie"
 curl -s -I https://example.com | grep -i "HttpOnly|Secure|SameSite"
 \`\`\`
 
+> **Why this matters for hacking:** Client-side storage is a common target for XSS attacks. If an application stores JWT tokens in \`localStorage\`, a single XSS vulnerability gives the attacker access to every authenticated API endpoint. Cookies with \`HttpOnly\` flag protect against this — JavaScript can't read them. The \`document.cookie\` API in the browser console lets you inspect cookies on any page. Understanding the difference between storage mechanisms is essential for both finding and fixing client-side vulnerabilities.
+
+**Mini-challenge:** Open your browser's DevTools (F12) → Console and run: \`console.log('localStorage:', JSON.stringify(localStorage)); console.log('sessionStorage:', JSON.stringify(sessionStorage)); console.log('Cookies:', document.cookie);\` on any site. This reveals what the site stores client-side — you might find API tokens, user data, or session identifiers exposed in JavaScript-accessible storage.
+
 The rule: tokens in httpOnly cookies (protected from XSS), non-sensitive prefs in localStorage, and never store secrets in client-side storage.`),
 
     l('web-8', 'Browser Security Features',
@@ -413,6 +441,10 @@ openssl dgst -sha384 -binary jquery.min.js | openssl base64 -A
 4. HSTS bypass via HTTP downgrade (rare)
 5. Iframe sandbox escape via plugin vulnerabilities
 \`\`\`
+
+> **Why this matters for hacking:** Browser security features are your guide to finding XSS vulnerabilities. A weak CSP (\`script-src 'self' 'unsafe-inline'\`) allows inline script execution — defeating the purpose of CSP. Missing \`X-Frame-Options\` enables clickjacking. Missing \`X-Content-Type-Options\` allows MIME-type confusion attacks. Checking these headers (\`curl -I\`) is one of the first steps in any web security assessment. The CSP Evaluator tool (csp-evaluator.withgoogle.com) automatically identifies CSP weaknesses.
+
+**Mini-challenge:** Run \`curl -sI https://securityheaders.com 2>/dev/null | grep -iE "strict-transport|content-security|x-frame|x-content|referrer|permissions"\` to check security headers. Each missing header is a potential finding. Then check \`https://example.com\` and compare — this teaches you to audit security posture from a single curl command.
 
 Understanding browser security is essential for both finding XSS and preventing it. Every missing header is a potential vulnerability.`),
 ];
