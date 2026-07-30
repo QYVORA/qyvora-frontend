@@ -1,6 +1,6 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { IconLock } from '@/shared/components/icons';
+import Dobia from '@/shared/components/Dobia';
 import { Dialog, DialogContent } from '../../../../shared/components/ui/Dialog';
 
 interface QuizGateModalProps {
@@ -15,7 +15,7 @@ const QuizGateModal: React.FC<QuizGateModalProps> = ({ onClose, onTakeQuiz }) =>
       <DialogContent title={t('student.bootcampRoom.quizGate.title')} maxWidth="max-w-lg" className="shadow-none">
         <div className="text-center py-2">
         <div className="mb-4 flex justify-center">
-          <IconLock size={40} className="text-accent" />
+          <Dobia expression="thinking" size="lg" />
         </div>
         <h2 className="mb-2 text-lg font-black text-text-primary">{t('student.bootcampRoom.quizGate.heading')}</h2>
         <p className="mb-6 text-sm text-text-muted leading-relaxed">

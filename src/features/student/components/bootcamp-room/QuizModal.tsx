@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Loader2, ClipboardList, XCircle } from 'lucide-react';
 import { IconX, IconCheck } from '@/shared/components/icons';
+import Dobia from '@/shared/components/Dobia';
 import api from '../../../../core/services/api';
 import { useToast } from '../../../../core/contexts/ToastContext';
 import { Dialog, DialogContent } from '../../../../shared/components/ui/Dialog';
@@ -130,6 +131,9 @@ const QuizModal: React.FC<QuizModalProps> = ({ moduleId, roomId, courseId, onClo
                 </div>
               ) : (
                 <>
+                  <div className="flex justify-center mb-6">
+                    <Dobia expression="angry" size="lg" />
+                  </div>
                   <div className="space-y-5">
                     {result.questions.map((q, idx) => {
                       const chosen  = answers[q.id];
