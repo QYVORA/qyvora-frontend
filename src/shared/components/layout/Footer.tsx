@@ -93,7 +93,7 @@ const Footer: React.FC = React.memo(() => {
   const { t } = useTranslation();
 
   return (
-    <footer className="relative w-full overflow-hidden select-none bg-bg min-h-dvh md:h-dvh flex flex-col">
+    <footer className="relative w-full overflow-hidden select-none bg-bg flex flex-col">
       {/* ── Desktop: QYVORA logotype banner at bottom ─────────────────── */}
       <div className="hidden lg:block absolute inset-x-0 bottom-0 pointer-events-none select-none overflow-hidden" style={{ height: '45%', maxHeight: '450px' }}>
         <div className="w-full h-full flex items-end justify-center">
