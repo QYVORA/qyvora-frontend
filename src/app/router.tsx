@@ -255,19 +255,75 @@ export const AppRouter = () => {
     </AnimatePresence>
     <MotionCommunityPopup />
     {!hideDobia && (
-      <div className="fixed bottom-[-30px] sm:bottom-[-50px] md:bottom-[-70px] lg:bottom-[-90px] xl:bottom-[-105px] right-0 sm:right-1 lg:right-1 z-[9999] pointer-events-none">
-        <div className="flex flex-col items-end mb-4 sm:mb-6 md:mb-8 lg:mb-10 xl:mb-12 mr-1 sm:mr-2">
-          <span
-            key={msgIdx}
-            className="inline-block px-3 py-1.5 rounded-xl bg-bg-card border border-border/30 text-[9px] sm:text-[10px] font-mono text-text-secondary leading-relaxed shadow-lg animate-fade-in max-w-[180px] sm:max-w-[220px] text-right"
-          >
-            {DOBIA_TIPS[msgIdx]}
-          </span>
-          <div className="w-2 h-2 rotate-45 bg-bg-card border-r border-b border-border/30 -mt-1 mr-3" />
+      <div className="fixed bottom-0 right-0 sm:right-1 lg:right-1 z-[9999] pointer-events-none flex flex-col items-end">
+
+        {/* Make one Dobia visible per breakpoint, each with its own bubble at the right offset */}
+        {/* 96px – mobile */}
+        <div className="block min-[420px]:hidden">
+          <div className="flex flex-col items-end">
+            <div key={msgIdx} className="animate-fade-in mr-2" style={{ marginBottom: -4 }}>
+              <span className="block px-3 py-1.5 rounded-xl bg-bg-card border border-border/30 text-[9px] font-mono text-text-secondary leading-relaxed shadow-lg max-w-[180px] text-right whitespace-nowrap">{DOBIA_TIPS[msgIdx]}</span>
+              <div className="flex justify-end -mt-px"><div className="w-2 h-2 rotate-45 bg-bg-card border-r border-b border-border/30 mr-4" /></div>
+            </div>
+            <Dobia expression={dobiaExpr} size={96} />
+          </div>
         </div>
-        <div className="scale-[0.3] min-[400px]:scale-[0.4] sm:scale-[0.5] md:scale-[0.7] lg:scale-[0.85] xl:scale-100 origin-bottom-right">
-          <Dobia expression={dobiaExpr} size="hero" />
+
+        {/* 128px – min-[420px] */}
+        <div className="hidden min-[420px]:block sm:hidden">
+          <div className="flex flex-col items-end">
+            <div key={msgIdx} className="animate-fade-in mr-2" style={{ marginBottom: -6 }}>
+              <span className="block px-3 py-1.5 rounded-xl bg-bg-card border border-border/30 text-[9px] font-mono text-text-secondary leading-relaxed shadow-lg max-w-[180px] text-right whitespace-nowrap">{DOBIA_TIPS[msgIdx]}</span>
+              <div className="flex justify-end -mt-px"><div className="w-2 h-2 rotate-45 bg-bg-card border-r border-b border-border/30 mr-4" /></div>
+            </div>
+            <Dobia expression={dobiaExpr} size={128} />
+          </div>
         </div>
+
+        {/* 160px – sm */}
+        <div className="hidden sm:block md:hidden">
+          <div className="flex flex-col items-end">
+            <div key={msgIdx} className="animate-fade-in mr-3" style={{ marginBottom: -7 }}>
+              <span className="block px-3 py-1.5 rounded-xl bg-bg-card border border-border/30 text-[10px] font-mono text-text-secondary leading-relaxed shadow-lg max-w-[200px] text-right whitespace-nowrap">{DOBIA_TIPS[msgIdx]}</span>
+              <div className="flex justify-end -mt-px"><div className="w-2 h-2 rotate-45 bg-bg-card border-r border-b border-border/30 mr-5" /></div>
+            </div>
+            <Dobia expression={dobiaExpr} size={160} />
+          </div>
+        </div>
+
+        {/* 224px – md */}
+        <div className="hidden md:block lg:hidden">
+          <div className="flex flex-col items-end">
+            <div key={msgIdx} className="animate-fade-in mr-4" style={{ marginBottom: -10 }}>
+              <span className="block px-3 py-1.5 rounded-xl bg-bg-card border border-border/30 text-[10px] font-mono text-text-secondary leading-relaxed shadow-lg max-w-[220px] text-right whitespace-nowrap">{DOBIA_TIPS[msgIdx]}</span>
+              <div className="flex justify-end -mt-px"><div className="w-2 h-2 rotate-45 bg-bg-card border-r border-b border-border/30 mr-6" /></div>
+            </div>
+            <Dobia expression={dobiaExpr} size={224} />
+          </div>
+        </div>
+
+        {/* 272px – lg */}
+        <div className="hidden lg:block xl:hidden">
+          <div className="flex flex-col items-end">
+            <div key={msgIdx} className="animate-fade-in mr-4" style={{ marginBottom: -12 }}>
+              <span className="block px-3 py-1.5 rounded-xl bg-bg-card border border-border/30 text-[10px] font-mono text-text-secondary leading-relaxed shadow-lg max-w-[220px] text-right whitespace-nowrap">{DOBIA_TIPS[msgIdx]}</span>
+              <div className="flex justify-end -mt-px"><div className="w-2 h-2 rotate-45 bg-bg-card border-r border-b border-border/30 mr-6" /></div>
+            </div>
+            <Dobia expression={dobiaExpr} size={272} />
+          </div>
+        </div>
+
+        {/* 320px – xl+ */}
+        <div className="hidden xl:block">
+          <div className="flex flex-col items-end">
+            <div key={msgIdx} className="animate-fade-in mr-5" style={{ marginBottom: -14 }}>
+              <span className="block px-3 py-1.5 rounded-xl bg-bg-card border border-border/30 text-[10px] font-mono text-text-secondary leading-relaxed shadow-lg max-w-[240px] text-right whitespace-nowrap">{DOBIA_TIPS[msgIdx]}</span>
+              <div className="flex justify-end -mt-px"><div className="w-2 h-2 rotate-45 bg-bg-card border-r border-b border-border/30 mr-7" /></div>
+            </div>
+            <Dobia expression={dobiaExpr} size={320} />
+          </div>
+        </div>
+
       </div>
     )}
   </div>
