@@ -97,13 +97,13 @@ const LandingLeaderboardSection = () => {
       <div className="relative z-10 w-full h-full px-3 md:px-4 lg:px-6 py-12 sm:py-10 md:py-16 lg:py-20 flex flex-col lg:flex-row gap-10 sm:gap-10 lg:gap-16 lg:items-stretch">
         {/* Header column — same height as grid on desktop */}
         <div className="shrink-0 lg:w-[420px] xl:w-[480px] flex flex-col lg:justify-center">
-            <h2 className="text-2xl md:text-4xl lg:text-5xl font-black text-text-primary tracking-tighter leading-none mb-4">
+            <h2 className="text-2xl md:text-4xl lg:text-5xl font-black text-text-primary tracking-tighter leading-none mb-8">
               {t('landing.leaderboard.heading')}
             </h2>
-            <p className="text-xs md:text-sm text-text-muted leading-relaxed max-w-xl mb-6">
+            <p className="text-xs md:text-sm text-text-muted leading-relaxed max-w-xl mb-10">
               {t('landing.leaderboard.description')}
             </p>
-            <div className="mb-6">
+            <div className="mb-8">
               <FilterTabs
                 tabs={[
                   { key: 'all', label: t('leaderboardPage.periods.all') },
@@ -126,9 +126,19 @@ const LandingLeaderboardSection = () => {
 
         {/* Grid column — fills same height as header */}
         <div className="relative flex-1 min-h-0 min-w-0 overflow-hidden flex items-center lg:justify-center">
+          {/* Desktop grid frame — 7 grid lines + 1 top line (8 total) */}
+          <div aria-hidden="true" className="hidden lg:block absolute inset-0 pointer-events-none select-none">
+            {Array.from({ length: 8 }).map((_, i) => (
+              <div
+                key={i}
+                className="absolute inset-x-0 border-t border-text-primary/10"
+                style={{ top: `${i * 76}px` }}
+              />
+            ))}
+          </div>
           {loading ? (
             <div
-              className="flex flex-wrap content-start"
+              className="relative flex flex-wrap content-start"
               style={{ gap: `${GAP}px` }}
             >
               {Array.from({ length: 40 }).map((_, i) => (
@@ -147,7 +157,7 @@ const LandingLeaderboardSection = () => {
             <ErrorState message={error} title="Leaderboard Unavailable" className="w-full max-w-md mx-auto" />
           ) : entries.length === 0 ? null : (
             <div
-              className="flex flex-wrap content-start"
+              className="relative flex flex-wrap content-start"
               style={{ gap: `${GAP}px` }}
             >
               {cells.map(({ entry, idx }) => {
