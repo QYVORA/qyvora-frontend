@@ -57,13 +57,13 @@ const LandingMarketSection = () => {
       <div className="relative z-10 w-full h-full px-3 md:px-4 lg:px-6 py-10 sm:py-8 md:py-12 lg:py-16 flex flex-col lg:flex-row gap-10 sm:gap-10 lg:gap-24 lg:items-stretch">
         {/* Header column */}
         <div className="shrink-0 lg:w-[420px] xl:w-[480px] flex flex-col lg:justify-center">
-          <h2 className="text-3xl md:text-5xl lg:text-6xl font-black text-text-primary tracking-tighter leading-none mb-4">
-            {t('landing.market.title')} <span className="text-text-secondary">{t('landing.market.titleAccent')}</span>
+          <h2 className="text-3xl md:text-5xl lg:text-6xl font-black text-text-primary tracking-tighter leading-none mb-8">
+            {t('landing.market.title')} <span className="text-text-primary">{t('landing.market.titleAccent')}</span>
           </h2>
-          <p className="text-xs md:text-sm text-text-muted leading-relaxed max-w-xl mb-6">
+          <p className="text-xs md:text-sm text-text-muted leading-relaxed max-w-xl mb-10">
             {t('landing.market.description')}
           </p>
-          <div className="flex flex-wrap gap-3 mb-8">
+          <div className="flex flex-wrap gap-3 mb-10">
             {FEATURES.map((f) => (
               <div key={f.tKey} className="flex items-center gap-2 px-3 py-2 rounded-lg border border-bg/20 bg-bg/10">
                 <f.icon className="h-4 w-4 text-accent" />
@@ -80,7 +80,7 @@ const LandingMarketSection = () => {
         </div>
 
         {/* Products column */}
-        <div className="relative flex-1 min-h-0 min-w-0 overflow-hidden flex items-center lg:pl-12 xl:pl-16">
+        <div className="relative flex-1 min-h-0 min-w-0 overflow-hidden flex items-center lg:pl-12 xl:pl-16 lg:justify-end">
           {loading ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-6 w-full">
               {Array.from({ length: 4 }).map((_, i) => (
