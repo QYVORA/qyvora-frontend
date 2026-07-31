@@ -93,14 +93,14 @@ const Footer: React.FC = React.memo(() => {
   const { t } = useTranslation();
 
   return (
-    <footer className="relative w-full overflow-hidden select-none bg-bg flex flex-col">
+    <footer className="relative w-full min-h-dvh overflow-hidden select-none bg-bg flex flex-col">
       {/* ── Desktop: QYVORA logotype banner at bottom ─────────────────── */}
-      <div className="hidden lg:block absolute inset-x-0 bottom-0 pointer-events-none select-none overflow-hidden" style={{ height: '45%', maxHeight: '450px' }}>
+      <div className="hidden lg:block absolute inset-x-0 bottom-0 pointer-events-none select-none overflow-hidden" style={{ height: '40%', maxHeight: '400px' }}>
         <div className="w-full h-full flex items-end justify-center">
           <QyvoraLogotype
             className="w-[180%] h-auto max-w-none block"
             color="#06B66F"
-            style={{ opacity: 0.07, transform: 'translateY(30%)' }}
+            style={{ opacity: 0.05 }}
           />
         </div>
       </div>
