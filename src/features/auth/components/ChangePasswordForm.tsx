@@ -24,7 +24,7 @@ const ChangePasswordForm: React.FC<ChangePasswordFormProps> = ({
           <div className="w-10 h-10 rounded-lg bg-yellow-500/10 border border-yellow-500/30 flex items-center justify-center">
             <IconShield size={20} className="text-yellow-500" />
           </div>
-          <h1 className="text-3xl md:text-4xl lg:text-5xl font-black text-text-primary uppercase tracking-tighter">{t('auth2.changePassword.title')}</h1>
+          <h1 className="text-3xl md:text-4xl lg:text-5xl font-black text-text-primary uppercase tracking-tighter">{t('auth2.changePassword.title1')} <span className="text-accent">{t('auth2.changePassword.title2')}</span></h1>
         </div>
         <p className="text-text-muted text-sm">{t('auth2.changePassword.description')}</p>
       </div>

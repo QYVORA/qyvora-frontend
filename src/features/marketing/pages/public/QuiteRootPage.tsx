@@ -17,7 +17,8 @@ const QuiteRootPage = () => {
       <div className="px-3 md:px-4 lg:px-6 pt-8 pb-20 lg:pb-24 space-y-8">
         <StudentHeroSection
           icon={<img src={quiteRootLogo} alt="QuiteRoot" className="w-10 h-10 object-contain" />}
-          title="QuiteRoot"
+          title="Quite"
+          accentWord="Root"
           description="A network of independent security researchers pushing the boundaries of offensive security research and tooling."
           stats={[{ label: 'Researchers', value: researchersData.length }]}
         >

@@ -144,7 +144,8 @@ const Landing: React.FC = () => {
       <section id="act-ii" className="relative w-full min-h-dvh md:h-dvh snap-section bg-bg">
         <ActDividerSection
           number="II"
-          title="The Work"
+          title="The"
+          accentWord="Work"
           tagline="ACT II"
           description="Hands-on labs, courses, and bootcamps that build real offensive security skills through practice."
         />
@@ -169,7 +170,8 @@ const Landing: React.FC = () => {
       <section id="act-iii" className="relative w-full min-h-dvh md:h-dvh snap-section bg-bg-alt">
         <ActDividerSection
           number="III"
-          title="The World"
+          title="The"
+          accentWord="World"
           tagline="ACT III"
           description="Join a community of cybersecurity professionals, ethical hackers, and researchers shaping Africa's digital future."
         />

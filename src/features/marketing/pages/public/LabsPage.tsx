@@ -29,7 +29,8 @@ const LabsPage = () => {
       <div className="px-3 md:px-4 lg:px-6 pt-8 pb-20 lg:pb-24 space-y-8">
         <StudentHeroSection
           icon={<FlaskConical className="w-8 h-8 text-accent" />}
-          title="Attack Labs"
+          title="Attack"
+          accentWord="Labs"
           description="Real-world offensive security labs in a sandboxed environment. Practice privilege escalation, password attacks, SQL injection, OSINT, and full kill-chain operations."
           stats={[
             { label: 'Labs', value: LABS.length },

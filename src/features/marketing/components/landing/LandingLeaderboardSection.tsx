@@ -98,7 +98,7 @@ const LandingLeaderboardSection = () => {
         {/* Header column — same height as grid on desktop */}
         <div className="shrink-0 lg:w-[420px] xl:w-[480px] flex flex-col lg:justify-center">
             <h2 className="text-2xl md:text-4xl lg:text-5xl font-black text-text-primary tracking-tighter leading-none mb-8">
-              {t('landing.leaderboard.heading')}
+              {t('landing.leaderboard.heading1')} <span className="text-accent">{t('landing.leaderboard.heading2')}</span>
             </h2>
             <p className="text-xs md:text-sm text-text-muted leading-relaxed max-w-xl mb-10">
               {t('landing.leaderboard.description')}

@@ -32,7 +32,6 @@ const CoursesPage = () => {
       <div className="px-3 md:px-4 lg:px-6 pt-8 pb-20 lg:pb-24 space-y-8">
         <StudentHeroSection
           title="Courses"
-          accentWord="Courses"
           description="Structured offensive security courses from terminal mastery to web exploitation."
         />
 

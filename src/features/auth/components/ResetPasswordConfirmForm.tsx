@@ -29,7 +29,7 @@ const ResetPasswordConfirmForm: React.FC<ResetPasswordConfirmFormProps> = ({
         <IconArrowLeft size={16} /> {t('button.back')}
       </button>
       <div className="mb-8">
-        <h1 className="text-3xl md:text-4xl lg:text-5xl font-black text-text-primary uppercase tracking-tighter mb-1">{t('auth2.reset.title')}</h1>
+        <h1 className="text-3xl md:text-4xl lg:text-5xl font-black text-text-primary uppercase tracking-tighter mb-1">{t('auth2.reset.title1')} <span className="text-accent">{t('auth2.reset.title2')}</span></h1>
         <p className="text-text-muted text-sm">{t('auth2.reset.description')}</p>
       </div>
       <form className="space-y-6" onSubmit={onSubmit}>

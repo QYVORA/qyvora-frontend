@@ -146,7 +146,9 @@
     "recoveryToken": "Recovery Token",
     "notificationPreferences": "Notification Preferences",
     "dangerZone": "Danger Zone",
-    "courseProgress": "Course Progress"
+    "courseProgress": "Course Progress",
+    "workspaceAccess1": "Workspace",
+    "workspaceAccess2": "Access"
   },
   "form": {
     "email": "ኢሜይል",
@@ -451,7 +453,9 @@
           "desc": "Full pentest from recon to exploitation — chain every skill into a complete attack narrative",
           "cp": "500-600 CP"
         }
-      }
+      },
+      "heading1": "Attack",
+      "heading2": "Labs"
     },
     "courses": {
       "badge": "Self-Paced",
@@ -604,7 +608,9 @@
       "description": "Ranked by CyberPoints earned. All balances verified on the QYVORA Chain.",
       "viewFull": "View Full Leaderboard",
       "cpSuffix": "CP",
-      "anonFallback": "Anon"
+      "anonFallback": "Anon",
+      "heading1": "Top",
+      "heading2": "Operators"
     },
     "quiteroot": {
       "description": "The research and engineering collective behind QYVORA's offensive tooling, intelligence, and operator-focused security experiments.",
@@ -1582,7 +1588,9 @@
       "submitting": "Submitting...",
       "sendInstructions": "Send Reset Instructions",
       "alreadyHaveToken": "Already have a reset token?",
-      "enterToken": "Enter token"
+      "enterToken": "Enter token",
+      "title1": "Reset",
+      "title2": "Password"
     },
     "reset": {
       "title": "Set New Password",
@@ -1591,7 +1599,9 @@
       "tokenPlaceholder": "Paste reset token here",
       "minLength": "Min 8 characters",
       "resetting": "Resetting...",
-      "resetPassword": "Reset Password"
+      "resetPassword": "Reset Password",
+      "title1": "Set New",
+      "title2": "Password"
     },
     "changePassword": {
       "title": "Password Change Required",
@@ -1600,7 +1610,9 @@
       "tokenPlaceholder": "Paste token from login response",
       "minLength": "Min 8 characters",
       "updating": "Updating...",
-      "setNewPassword": "Set New Password"
+      "setNewPassword": "Set New Password",
+      "title1": "Password Change",
+      "title2": "Required"
     },
     "verify": {
       "title": "Verify Email",
@@ -1611,7 +1623,9 @@
       "verifying": "Verifying...",
       "verifyEmail": "Verify Email",
       "didNotGetToken": "Didn't get a token?",
-      "resendToken": "Resend token"
+      "resendToken": "Resend token",
+      "title1": "Verify",
+      "title2": "Email"
     },
     "registerDescription": "Create your account to start learning."
   },

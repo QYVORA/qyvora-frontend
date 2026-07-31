@@ -35,7 +35,7 @@ const LandingHeroSection: React.FC<LandingHeroSectionProps> = ({
     offset: ['start start', 'end start'],
   });
 
-  const rawGlobeScale = isMobile ? 0.55 : 1.0;
+  const rawGlobeScale = isMobile ? 0.8 : 1.0;
   const globeScaleValue = useTransform(scrollYProgress, [0, 1], [rawGlobeScale, 2.5]);
   const globeOpacityValue = useTransform(scrollYProgress, [0, 0.6, 1], [1, 0.8, 0]);
 
@@ -51,7 +51,7 @@ const LandingHeroSection: React.FC<LandingHeroSectionProps> = ({
   ], [t]);
 
   const globeOffset = React.useMemo<[number, number, number]>(() => {
-    if (isMobile) return [0.35, -0.2, 0];
+    if (isMobile) return [0.6, -0.3, 0];
     if (constrainedDevice) return [0.45, -0.45, 0];
     return [0.9, -0.7, 0];
   }, [isMobile, constrainedDevice]);
@@ -191,9 +191,9 @@ const LandingHeroSection: React.FC<LandingHeroSectionProps> = ({
                 </span>
                 <span className="relative block whitespace-normal lg:whitespace-nowrap text-[2.5rem] min-[400px]:text-[3rem] sm:text-[3.25rem] md:text-[3.75rem] lg:text-[3.25rem] xl:text-[3.75rem] lg:leading-[1.1] xl:leading-[1.05]">
                   <span ref={line2PlaceholderRef} className="invisible" aria-hidden="true">{steps[0].line2}</span>
-                  <span className="absolute left-0 top-0 text-text-primary">
+                  <span className="absolute left-0 top-0 text-accent">
                     <span ref={line2DisplayRef}></span>
-                    <span className="text-text-primary ml-1 font-extralight select-none animate-pulse">|</span>
+                    <span className="ml-1 font-extralight select-none animate-pulse">|</span>
                   </span>
                 </span>
               </span>

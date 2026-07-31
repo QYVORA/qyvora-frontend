@@ -22,7 +22,8 @@ const TeamPage = () => {
       <div className="px-3 md:px-4 lg:px-6 pt-8 pb-20 lg:pb-24 space-y-8">
         <StudentHeroSection
           icon={<Users className="w-8 h-8 text-accent" />}
-          title="Our Team"
+          title="Our"
+          accentWord="Team"
           description="Operators, engineers, and researchers building Africa's offensive security ecosystem."
           stats={[{ label: 'Members', value: teamData.length }]}
         />

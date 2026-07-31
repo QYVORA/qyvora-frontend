@@ -25,7 +25,7 @@ const ForgotPasswordForm: React.FC<ForgotPasswordFormProps> = ({
       </button>
 
       <div className="mb-8">
-        <h1 className="text-3xl md:text-4xl lg:text-5xl font-black text-text-primary uppercase tracking-tighter mb-1">{t('auth2.forgot.title')}</h1>
+        <h1 className="text-3xl md:text-4xl lg:text-5xl font-black text-text-primary uppercase tracking-tighter mb-1">{t('auth2.forgot.title1')} <span className="text-accent">{t('auth2.forgot.title2')}</span></h1>
         <p className="text-text-muted text-sm">{t('auth2.forgot.description')}</p>
       </div>
 

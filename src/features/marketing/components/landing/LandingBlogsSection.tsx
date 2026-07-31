@@ -17,7 +17,7 @@ const LandingBlogsSection = () => {
           heading={
             <div>
               <h2 className="text-3xl md:text-5xl lg:text-6xl font-black text-text-primary tracking-tighter leading-none mb-8">
-                {t('landing.blogs.title')} <span className="text-text-primary">{t('landing.blogs.titleAccent')}</span>
+                {t('landing.blogs.title')} <span className="text-accent">{t('landing.blogs.titleAccent')}</span>
               </h2>
               <p className="text-xs md:text-sm text-text-muted leading-relaxed max-w-xl mb-10">
                 {t('landing.blogs.description')}
