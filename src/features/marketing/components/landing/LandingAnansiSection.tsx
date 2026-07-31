@@ -40,7 +40,7 @@ const LandingAnansiSection = () => {
               slides={PHASES}
               showArrows={false}
               renderCard={(item) => (
-                <div className="relative min-h-[160px] md:min-h-[200px] overflow-hidden p-5 sm:p-6 bg-bg rounded-2xl border border-border/30">
+                <div className="relative min-h-[300px] md:min-h-[440px] overflow-hidden p-5 sm:p-6 bg-bg rounded-2xl border border-border/30">
                   <div className="flex items-center gap-3 mb-3">
                     <div className="w-10 h-10 rounded-xl bg-accent/10 border border-accent/20 flex items-center justify-center">
                       <item.icon className="w-5 h-5 text-accent" />
