@@ -33,10 +33,12 @@ const TrendIcon = ({ direction }: { direction: TrendData['direction'] }) => {
 };
 
 export const StatCardSkeleton = () => (
-  <div className="rounded-2xl border border-border/30 bg-bg-card p-5 space-y-3">
-    <Skeleton className="h-4 w-24 bg-border/30" />
-    <Skeleton className="h-8 w-20 bg-border/30" />
-    <Skeleton className="h-3 w-32 bg-border/30" />
+  <div className="rounded-2xl border border-border/30 bg-bg-card p-5 space-y-4">
+    <div className="flex items-center gap-3">
+      <Skeleton className="w-10 h-10 rounded-xl bg-bg-elevated shrink-0" />
+      <Skeleton className="h-3 w-24 bg-border/30 rounded" />
+    </div>
+    <Skeleton className="h-8 w-16 bg-border/30 rounded" />
   </div>
 );
 

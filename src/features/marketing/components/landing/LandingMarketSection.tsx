@@ -85,14 +85,13 @@ const LandingMarketSection = () => {
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-6 w-full">
               {Array.from({ length: 4 }).map((_, i) => (
                 <div key={i} className="rounded-2xl border border-border/30 bg-bg-card overflow-hidden">
-                  <Skeleton variant="image" className="aspect-[16/9] w-full !rounded-none" />
-                  <div className="flex flex-col gap-2 p-4">
-                    <Skeleton className="h-5 w-3/4 !rounded" />
-                    <Skeleton className="h-3 w-full !rounded" />
-                    <Skeleton className="h-3 w-2/3 !rounded" />
-                    <div className="flex items-center justify-between mt-auto pt-2">
-                      <Skeleton className="h-4 w-16 !rounded" />
-                      <Skeleton className="h-4 w-16 !rounded" />
+                  <Skeleton className="aspect-[16/9] w-full rounded-none" />
+                  <div className="flex flex-col gap-2.5 p-4">
+                    <Skeleton className="h-5 w-3/4 rounded" />
+                    <Skeleton className="h-3 w-full rounded bg-border/20" />
+                    <div className="flex items-center justify-between pt-2">
+                      <Skeleton className="h-4 w-16 rounded" />
+                      <Skeleton className="h-4 w-16 rounded bg-border/20" />
                     </div>
                   </div>
                 </div>
