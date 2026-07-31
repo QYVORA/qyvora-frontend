@@ -124,8 +124,6 @@ export const SITE_CONFIG = {
       { label: 'Courses', path: '/courses' },
       { label: 'Bootcamp', path: '/hpb' },
       { label: 'Labs', path: '/labs' },
-      { label: 'Anansi', path: '/anansi' },
-      { label: 'Leaderboard', path: '/leaderboard' },
     ],
   },
 } as const;
