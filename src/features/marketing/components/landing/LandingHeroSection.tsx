@@ -35,7 +35,7 @@ const LandingHeroSection: React.FC<LandingHeroSectionProps> = ({
     offset: ['start start', 'end start'],
   });
 
-  const rawGlobeScale = isMobile ? 0.5 : 1.0;
+  const rawGlobeScale = isMobile ? 0.55 : 1.0;
   const globeScaleValue = useTransform(scrollYProgress, [0, 1], [rawGlobeScale, 2.5]);
   const globeOpacityValue = useTransform(scrollYProgress, [0, 0.6, 1], [1, 0.8, 0]);
 
@@ -51,7 +51,7 @@ const LandingHeroSection: React.FC<LandingHeroSectionProps> = ({
   ], [t]);
 
   const globeOffset = React.useMemo<[number, number, number]>(() => {
-    if (isMobile) return [0.3, -0.5, 0];
+    if (isMobile) return [0.35, -0.2, 0];
     if (constrainedDevice) return [0.45, -0.45, 0];
     return [0.9, -0.7, 0];
   }, [isMobile, constrainedDevice]);
