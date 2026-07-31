@@ -11,10 +11,10 @@ const LandingTeamSection = () => {
       <div className="relative z-10 w-full h-full px-3 md:px-4 lg:px-6 py-12 sm:py-10 md:py-16 lg:py-20 flex flex-col gap-8 sm:gap-10 lg:gap-12">
         {/* Header */}
         <div className="flex flex-col">
-          <h2 className="text-2xl md:text-4xl lg:text-5xl font-black text-text-primary tracking-tighter leading-none mb-2">
-            {t('landing.teamLanding.title')} <span className="text-accent">{t('landing.teamLanding.titleAccent')}</span>
+          <h2 className="text-2xl md:text-4xl lg:text-5xl font-black text-text-primary tracking-tighter leading-none mb-6">
+            {t('landing.teamLanding.title')} <span className="text-text-primary">{t('landing.teamLanding.titleAccent')}</span>
           </h2>
-          <p className="text-xs md:text-sm text-text-muted leading-relaxed max-w-xl mb-4">
+          <p className="text-xs md:text-sm text-text-muted leading-relaxed max-w-xl mb-8">
             {t('landing.teamLanding.description')}
           </p>
           <Link

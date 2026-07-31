@@ -9,7 +9,7 @@ const TermsHeroSection: React.FC = () => {
     <PublicHeroSection showGlobe mask="right">
       <h1 className="font-black text-text-primary leading-[1.08] tracking-tight w-full relative">
         <span className="block whitespace-normal lg:whitespace-nowrap text-[2rem] min-[400px]:text-[2.25rem] sm:text-[2.5rem] md:text-[3rem] lg:text-[2.5rem] xl:text-[3rem] lg:leading-[1.1] xl:leading-[1.05] uppercase">
-          TERMS <span className="text-accent">OF SERVICE</span>
+          TERMS <span className="text-text-primary">OF SERVICE</span>
         </span>
       </h1>
       <p className="text-text-secondary text-base sm:text-lg lg:text-base xl:text-lg leading-relaxed max-w-xl animate-fade-in font-mono">
