@@ -31,6 +31,7 @@ const AnansiPage = () => {
         <StudentHeroSection
           icon={<img src={anansiLogo} alt="Anansi" className="w-10 h-10 object-contain" />}
           title="Anansi"
+          accentWord="CLI"
           description="Attack Surface Intelligence CLI — discover, probe, and map attack surfaces from the terminal."
           stats={[
             { label: 'Modules', value: PHASES.length },

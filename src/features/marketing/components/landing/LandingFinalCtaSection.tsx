@@ -33,6 +33,8 @@ const LandingFinalCtaSection: React.FC<LandingFinalCtaSectionProps> = ({ user })
               text={user ? t('landing.finalCta.headingReturning') : t('landing.finalCta.headingNew')}
               align="left"
               variant="default"
+              accentWords={1}
+              accentPlacement="end"
               className="mb-4"
             />
 

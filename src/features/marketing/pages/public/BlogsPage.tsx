@@ -35,7 +35,8 @@ const BlogsPage = () => {
       <SEO title="Blogs - QYVORA" description="Security research, tutorials, and updates from the QYVORA team." />
       <div className="px-3 md:px-4 lg:px-6 pt-8 pb-20 lg:pb-24 space-y-8">
         <StudentHeroSection
-          title="Blogs"
+          title="Intelligence"
+          accentWord="Reports"
           description="Security research, walkthroughs, and platform updates from the QYVORA team."
           stats={[{ label: 'Articles', value: BLOG_POSTS.length }]}
         />

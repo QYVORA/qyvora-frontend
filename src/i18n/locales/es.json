@@ -146,7 +146,9 @@
     "recoveryToken": "Recovery Token",
     "notificationPreferences": "Notification Preferences",
     "dangerZone": "Danger Zone",
-    "courseProgress": "Course Progress"
+    "courseProgress": "Course Progress",
+    "workspaceAccess1": "Workspace",
+    "workspaceAccess2": "Access"
   },
   "form": {
     "email": "Correo electrónico",
@@ -450,7 +452,9 @@
           "desc": "Full pentest from recon to exploitation — chain every skill into a complete attack narrative",
           "cp": "500-600 CP"
         }
-      }
+      },
+      "heading1": "Attack",
+      "heading2": "Labs"
     },
     "courses": {
       "badge": "Self-Paced",
@@ -603,7 +607,9 @@
       "description": "Ranked by CyberPoints earned. All balances verified on the QYVORA Chain.",
       "viewFull": "View Full Leaderboard",
       "cpSuffix": "CP",
-      "anonFallback": "Anon"
+      "anonFallback": "Anon",
+      "heading1": "Top",
+      "heading2": "Operators"
     },
     "quiteroot": {
       "description": "The research and engineering collective behind QYVORA's offensive tooling, intelligence, and operator-focused security experiments.",
@@ -1601,5 +1607,23 @@
     },
     "platform": "Platform",
     "footer": "Footer"
+  },
+  "auth2": {
+    "forgot": {
+      "title1": "Reset",
+      "title2": "Password"
+    },
+    "verify": {
+      "title1": "Verify",
+      "title2": "Email"
+    },
+    "reset": {
+      "title1": "Set New",
+      "title2": "Password"
+    },
+    "changePassword": {
+      "title1": "Password Change",
+      "title2": "Required"
+    }
   }
 }

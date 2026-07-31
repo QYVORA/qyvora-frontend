@@ -17,7 +17,8 @@ const HpbPage = () => {
       <div className="px-3 md:px-4 lg:px-6 pt-8 pb-20 lg:pb-24 space-y-8">
         <StudentHeroSection
           icon={<Shield className="w-8 h-8 text-accent" />}
-          title="Hacker Protocol Bootcamp"
+          title="Hacker Protocol"
+          accentWord="Bootcamp"
           description="A phased offensive security curriculum designed to take you from operator to expert."
           stats={[
             { label: 'Phases', value: phases.length },

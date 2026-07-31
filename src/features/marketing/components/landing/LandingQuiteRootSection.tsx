@@ -22,7 +22,7 @@ const LandingQuiteRootSection = () => {
             />
             <div>
               <h2 className="text-2xl md:text-4xl lg:text-5xl font-black text-text-primary tracking-tighter leading-none mb-3">
-                {t('landing.quiteroot.title')}<span className="text-text-primary">{t('landing.quiteroot.titleAccent')}</span>
+                {t('landing.quiteroot.title')}<span className="text-accent">{t('landing.quiteroot.titleAccent')}</span>
               </h2>
               <p className="text-xs md:text-sm text-text-muted leading-relaxed max-w-xl">
                 {t('landing.quiteroot.description')}

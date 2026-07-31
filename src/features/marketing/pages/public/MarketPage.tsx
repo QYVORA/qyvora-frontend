@@ -55,7 +55,8 @@ const MarketPage = () => {
       <div className="px-3 md:px-4 lg:px-6 pt-8 pb-20 lg:pb-24 space-y-8">
         <StudentHeroSection
           icon={<ShoppingBag className="w-8 h-8 text-accent" />}
-          title="Zero Day Market"
+          title="Zero Day"
+          accentWord="Market"
           description="Intelligence assets, research papers, guides, and offensive security tools. Available for CP."
         >
           {!user && (

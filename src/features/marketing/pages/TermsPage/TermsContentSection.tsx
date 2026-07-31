@@ -28,7 +28,7 @@ const TermsContentSection: React.FC = () => {
           <div className="flex items-center gap-3 mb-3">
             <span className="text-[10px] font-black text-accent uppercase tracking-[0.35em]">Legal Framework</span>
           </div>
-          <SimpleHeading text="Terms of Service" align="left" compact className="mb-4" />
+          <SimpleHeading text="Terms of Service" align="left" compact accentWords={1} accentPlacement="end" className="mb-4" />
           <p className="text-text-secondary text-sm leading-relaxed max-w-2xl">
             These terms govern your use of all QYVORA platforms, training programs, and professional services.
             Effective: {termsData.effectiveDate} &middot; Jurisdiction: {termsData.jurisdiction}

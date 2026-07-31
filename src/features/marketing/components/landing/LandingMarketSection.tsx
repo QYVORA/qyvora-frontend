@@ -58,7 +58,7 @@ const LandingMarketSection = () => {
         {/* Header column */}
         <div className="shrink-0 lg:w-[420px] xl:w-[480px] flex flex-col lg:justify-center">
           <h2 className="text-3xl md:text-5xl lg:text-6xl font-black text-text-primary tracking-tighter leading-none mb-8">
-            {t('landing.market.title')} <span className="text-text-primary">{t('landing.market.titleAccent')}</span>
+            {t('landing.market.title')} <span className="text-accent">{t('landing.market.titleAccent')}</span>
           </h2>
           <p className="text-xs md:text-sm text-text-muted leading-relaxed max-w-xl mb-10">
             {t('landing.market.description')}

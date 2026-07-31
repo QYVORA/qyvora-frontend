@@ -96,7 +96,8 @@ const ServicesPage = () => {
       <div className="px-3 md:px-4 lg:px-6 pt-8 pb-20 lg:pb-24 space-y-8">
         <StudentHeroSection
           icon={<ShieldCheck className="w-8 h-8 text-accent" />}
-          title="Security Services"
+          title="Security"
+          accentWord="Services"
           description="Enterprise penetration testing, vulnerability assessments, and custom security training for your organization."
         />
 
