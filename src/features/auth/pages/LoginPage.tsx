@@ -1,24 +1,19 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef, useCallback } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { motion, AnimatePresence } from 'motion/react';
-import { User, Mail, LogIn } from 'lucide-react';
+import { Mail, LogIn, Terminal, Shield, Trophy } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import { cn } from '@/shared/utils/cn';
 import { useAuth } from '../../../core/contexts/AuthContext';
 import { useToast } from '../../../core/contexts/ToastContext';
 import SEO from '@/shared/components/SEO';
 import PublicHeroSection from '@/shared/components/PublicHeroSection';
 import { GridBoxedBackground } from '@/shared/components/backgrounds';
 import { IconArrowLeft } from '@/shared/components/icons';
-import Dobia from '@/shared/components/Dobia';
 import { sanitizeError } from '../../../shared/utils/sanitizeError';
 import PasswordInput from '../components/PasswordInput';
-import HandleSuggestions from '../../../shared/components/HandleSuggestions';
 import api from '../../../core/services/api';
 import ADMIN_PATH from '@/shared/utils/adminPath';
 import Input from '@/shared/components/ui/Input';
-
-type AuthMode = 'login' | 'register';
+import AuthForm, { type AuthMode } from '../components/AuthForm';
 
 const LoginPage: React.FC = () => {
   const { t } = useTranslation();
@@ -29,13 +24,14 @@ const LoginPage: React.FC = () => {
 
   const isAdminLoginRoute = location.pathname === ADMIN_PATH;
   
-  const [mode, setMode] = useState<AuthMode>('login');
+  const [mode, setMode] = useState<AuthMode>(() =>
+    (location.state as { authMode?: AuthMode } | null)?.authMode === 'register' ? 'register' : 'login'
+  );
   const [isLoading, setIsLoading] = useState(false);
   const [formMessage, setFormMessage] = useState('');
   const [shakePassword, setShakePassword] = useState(false);
   const [fullName, setFullName] = useState('');
   const [selectedHandle, setSelectedHandle] = useState('');
-  const [dobiaExpression, setDobiaExpression] = useState<'greeting' | 'confused'>('greeting');
   const handleRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -45,12 +41,17 @@ const LoginPage: React.FC = () => {
     }
   }, [sessionLoading, sessionUser, isAdminLoginRoute, navigate]);
 
-  const handleSuggestionSelect = (handle: string) => {
+  const handleSuggestionSelect = useCallback((handle: string) => {
     setSelectedHandle(handle);
     if (handleRef.current) {
       handleRef.current.value = handle;
     }
-  };
+  }, []);
+
+  const handleFullNameChange = useCallback((value: string) => {
+    setFullName(value);
+    setSelectedHandle('');
+  }, []);
 
   const handleLoginSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -86,8 +87,6 @@ const LoginPage: React.FC = () => {
       setShakePassword(true);
       addToast(msg, 'error');
       setIsLoading(false);
-      setDobiaExpression('confused');
-      window.dispatchEvent(new CustomEvent('dobia-expression', { detail: 'confused' }));
     }
   };
 
@@ -123,8 +122,6 @@ const LoginPage: React.FC = () => {
       const msg = sanitizeError(err, 'register');
       setFormMessage(msg);
       addToast(msg, 'error');
-      setDobiaExpression('confused');
-      window.dispatchEvent(new CustomEvent('dobia-expression', { detail: 'confused' }));
     } finally {
       setIsLoading(false);
     }
@@ -141,7 +138,7 @@ const LoginPage: React.FC = () => {
             <div className="rounded-2xl border border-border/30 bg-bg-card p-6 md:p-8">
               <div className="mb-8">
                 <h1 className="text-3xl md:text-4xl lg:text-5xl font-black uppercase tracking-tighter mb-1 text-text-primary">
-                  {t('heading.workspaceAccess')}
+                  {t('heading.workspaceAccess1')} <span className="text-accent">{t('heading.workspaceAccess2')}</span>
                 </h1>
                 <p className="text-sm text-text-muted">{t('auth.enterCredentials')}</p>
               </div>
@@ -157,7 +154,8 @@ const LoginPage: React.FC = () => {
                       autoComplete="email"
                       inputMode="email"
                       placeholder={t('auth.emailPlaceholder')}
-                      icon={<Mail className="w-4 h-4" />}
+                      icon={<Mail className="w-4 h-4 lg:w-5 lg:h-5" />}
+                      className="lg:py-4"
                     />
                 </div>
 
@@ -169,6 +167,7 @@ const LoginPage: React.FC = () => {
                     autoComplete="current-password"
                     shake={shakePassword}
                     onAnimationEnd={() => setShakePassword(false)}
+                    className="lg:py-4"
                   />
                 </div>
 
@@ -187,188 +186,30 @@ const LoginPage: React.FC = () => {
     );
   }
 
-  // Student auth - shared form component
-  const AuthForm = () => (
-    <div className="w-full space-y-6">
-      <p className="sr-only" aria-live="polite">{formMessage}</p>
+  // Student auth - shared form (AuthForm lives at module level so React
+  // never remounts it on parent re-renders, which would wipe typed input).
+  const authFormProps = {
+    mode,
+    onModeChange: setMode,
+    isLoading,
+    shakePassword,
+    onShakeEnd: () => setShakePassword(false),
+    formMessage,
+    fullName,
+    selectedHandle,
+    onFullNameChange: handleFullNameChange,
+    onSuggestionSelect: handleSuggestionSelect,
+    handleRef,
+    onLoginSubmit: handleLoginSubmit,
+    onRegisterSubmit: handleRegisterSubmit,
+    onForgotPassword: () => navigate('/forgot-password'),
+  };
 
-      {/* Toggle between login and register */}
-      <div className="w-full flex bg-bg/90 border border-bg/50 p-1.5 rounded-xl backdrop-blur-sm">
-        <button
-          type="button"
-          onClick={() => setMode('login')}
-          className={cn(
-            'flex-1 py-2.5 rounded-lg text-[10px] font-bold uppercase tracking-wider transition-all',
-            mode === 'login'
-              ? 'bg-accent text-bg shadow-[0_0_12px_var(--color-accent-glow)] font-black'
-              : 'text-text-muted hover:text-text-primary'
-          )}
-        >
-          {t('button.logIn')}
-        </button>
-        <button
-          type="button"
-          onClick={() => setMode('register')}
-          className={cn(
-            'flex-1 py-2.5 rounded-lg text-[10px] font-bold uppercase tracking-wider transition-all',
-            mode === 'register'
-              ? 'bg-accent text-bg shadow-[0_0_12px_var(--color-accent-glow)] font-black'
-              : 'text-text-muted hover:text-text-primary'
-          )}
-        >
-          {t('button.createAccount')}
-        </button>
-      </div>
-
-      {/* Forms */}
-      <AnimatePresence mode="wait">
-        {mode === 'login' ? (
-          <motion.div
-            key="login"
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: 20 }}
-            transition={{ duration: 0.2 }}
-            className="w-full rounded-2xl bg-bg/90 backdrop-blur-sm p-6 lg:p-8"
-          >
-              <form className="space-y-6" onSubmit={handleLoginSubmit} noValidate>
-              <div className="space-y-2">
-                <label htmlFor="login-email" className="text-[10px] font-black text-text-muted uppercase tracking-widest">{t('form.email')}</label>
-                <Input
-                    id="login-email"
-                    type="email"
-                    name="email"
-                    required
-                    autoComplete="email"
-                    inputMode="email"
-                    placeholder={t('auth.emailPlaceholder')}
-                    icon={<Mail className="w-4 h-4" />}
-                  />
-              </div>
-
-              <div className="space-y-2">
-                <div className="flex justify-between items-center">
-                  <label htmlFor="login-password" className="text-[10px] font-black text-text-muted uppercase tracking-widest">{t('form.password')}</label>
-                  <button 
-                    type="button" 
-                    onClick={() => navigate('/forgot-password')} 
-                    className="text-accent hover:text-accent/70 hover:underline transition-colors text-xs font-bold"
-                  >
-                    {t('button.forgot')}
-                  </button>
-                </div>
-                <PasswordInput
-                  id="login-password"
-                  name="password"
-                  autoComplete="current-password"
-                  shake={shakePassword}
-                  onAnimationEnd={() => setShakePassword(false)}
-                />
-              </div>
-
-              <button
-                type="submit"
-                disabled={isLoading}
-                className="w-full btn-primary !py-4 flex items-center justify-center gap-3 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
-              >
-                {isLoading ? (
-                  <>
-                    <Dobia expression="loading" size="xs" />
-                    <span className="text-[10px]">{t('button.signingIn')}</span>
-                  </>
-                ) : (
-                  <>
-                    <span className="text-[10px]">{t('button.signIn')}</span>
-                    <LogIn className="w-5 h-5" />
-                  </>
-                )}
-              </button>
-            </form>
-          </motion.div>
-        ) : (
-          <motion.div
-            key="register"
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: -20 }}
-            transition={{ duration: 0.2 }}
-            className="w-full rounded-2xl bg-bg/90 backdrop-blur-sm p-6 lg:p-8"
-          >
-            <form className="space-y-6" onSubmit={handleRegisterSubmit}>
-              <div className="space-y-2">
-                <label htmlFor="register-handle" className="text-[10px] font-black text-text-muted uppercase tracking-widest">{t('form.operatorHandle')}</label>
-                <Input 
-                    ref={handleRef} 
-                    id="register-handle" 
-                    type="text" 
-                    name="handle" 
-                    required 
-                    autoComplete="username"
-                    pattern="^[a-zA-Z0-9][a-zA-Z0-9\-]{0,38}[a-zA-Z0-9]$"
-                    title={t('validation.handleRules')}
-                    placeholder={t('auth.handlePlaceholder')}
-                    icon={<User className="w-4 h-4" />}
-                  />
-                <HandleSuggestions
-                  name={fullName}
-                  onSelect={handleSuggestionSelect}
-                  selectedHandle={selectedHandle}
-                />
-                <p className="text-[10px] text-text-muted/70 mt-1">{t('validation.handleRules')}</p>
-              </div>
-
-              <div className="space-y-2">
-                <label htmlFor="register-full-name" className="text-[10px] font-black text-text-muted uppercase tracking-widest">{t('form.fullName')}</label>
-                <Input 
-                    id="register-full-name" 
-                    type="text" 
-                    name="full_name" 
-                    required 
-                    autoComplete="name" 
-                    placeholder={t('auth.namePlaceholder')}
-                    value={fullName}
-                    onChange={(e) => { setFullName(e.target.value); setSelectedHandle(''); }}
-                    icon={<User className="w-4 h-4" />}
-                  />
-              </div>
-
-              <div className="space-y-2">
-                <label htmlFor="register-email" className="text-[10px] font-black text-text-muted uppercase tracking-widest">{t('form.email')}</label>
-                <Input 
-                    id="register-email" 
-                    type="email" 
-                    name="email" 
-                    required 
-                    autoComplete="email" 
-                    inputMode="email" 
-                    placeholder={t('auth.emailPlaceholder')}
-                    icon={<Mail className="w-4 h-4" />}
-                  />
-              </div>
-
-              <div className="space-y-2">
-                <label htmlFor="register-password" className="text-[10px] font-black text-text-muted uppercase tracking-widest">{t('form.password')}</label>
-                <PasswordInput id="register-password" name="password" autoComplete="new-password" />
-              </div>
-
-              <div className="space-y-2">
-                <label htmlFor="register-confirm-password" className="text-[10px] font-black text-text-muted uppercase tracking-widest">{t('form.confirmPassword')}</label>
-                <PasswordInput id="register-confirm-password" name="confirm_password" autoComplete="new-password" />
-              </div>
-
-              <button 
-                type="submit" 
-                disabled={isLoading}
-                className="w-full btn-primary !py-4 flex items-center justify-center gap-3 disabled:opacity-50"
-              >
-                <span className="text-[10px]">{isLoading ? t('button.creatingAccount') : t('button.createAccount')}</span> <LogIn className="w-5 h-5" />
-              </button>
-            </form>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </div>
-  );
+  const authBullets = [
+    { icon: Terminal, text: t('auth.bullets.labs') },
+    { icon: Shield, text: t('auth.bullets.scenarios') },
+    { icon: Trophy, text: t('auth.bullets.ctf') },
+  ];
 
   return (
     <>
@@ -381,8 +222,8 @@ const LoginPage: React.FC = () => {
         noindex 
       />
       
-      {/* Mobile: Form with accent background */}
-      <div className="lg:hidden relative w-full min-h-dvh overflow-hidden flex flex-col bg-bg" data-nav-invert>
+      {/* Mobile: form only, centered */}
+      <div className="lg:hidden relative w-full min-h-dvh flex flex-col bg-bg" data-nav-invert>
         <GridBoxedBackground opacity={0.5} blur={0} mask="none" />
         
         {/* Back to Home button - Mobile */}
@@ -395,37 +236,53 @@ const LoginPage: React.FC = () => {
           </button>
         </div>
         
-        <div className="relative z-10 w-full flex-1 grid grid-cols-1 text-left items-center h-full">
-          <div className="flex flex-col items-start justify-center px-3 md:px-4 lg:px-6 pt-20 sm:pt-20 pb-14 sm:pb-16 space-y-5 sm:space-y-6 w-full h-full overflow-y-auto">
-            <div className="flex flex-col items-start gap-4 mb-2">
-              <Dobia expression={dobiaExpression} size="lg" />
-              <div>
-                <h2 className="text-xl font-black text-text-primary tracking-tight">
-                  {mode === 'login' ? 'Welcome Back' : 'Join QYVORA'}
-                </h2>
-                <p className="text-xs text-text-muted">
-                  {mode === 'login' ? 'Sign in to continue.' : 'Start your journey.'}
-                </p>
-              </div>
-            </div>
-            <AuthForm />
+        <div className="relative z-10 w-full flex-1 flex flex-col px-3 md:px-4 lg:px-6 pt-24 pb-10">
+          <div className="my-auto w-full">
+            <AuthForm {...authFormProps} />
           </div>
         </div>
       </div>
 
-      {/* Desktop: PublicHeroSection with left hero and right form */}
+      {/* Desktop: PublicHeroSection with left hero and right form (page scrolls) */}
       <div className="hidden lg:block">
-        <PublicHeroSection mask="right" showGlobe={false}>
+        <PublicHeroSection
+          mask="right"
+          showGlobe
+          scrollable
+          rightContent={
+            <div className="flex items-center justify-center h-full w-full py-8">
+              <div className="w-full max-w-md">
+                <AuthForm {...authFormProps} />
+              </div>
+            </div>
+          }
+        >
           <div className="flex flex-col items-start gap-6 w-full">
-            <Dobia expression={dobiaExpression} size="hero" />
+            <div className="inline-flex items-center gap-2 px-4 py-2.5 border border-border/30 bg-bg-elevated/50 rounded-lg">
+              <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse flex-none" />
+              <span className="font-mono text-[10px] sm:text-[11px] font-black uppercase tracking-[0.3em] text-text-muted">
+                {t('hero.tagline')}
+              </span>
+            </div>
             <div>
               <h2 className="text-4xl md:text-5xl font-black text-text-primary tracking-tighter leading-none">
-                {mode === 'login' ? 'Welcome Back' : 'Join QYVORA'}
+                {mode === 'login' ? (
+                  <>{t('hero.welcomeBack')} <span className="text-accent">{t('hero.operator')}</span></>
+                ) : (
+                  <>Join <span className="text-accent">QYVORA</span></>
+                )}
               </h2>
-              <p className="text-base text-text-muted mt-2">
-                {mode === 'login' ? 'Sign in to continue your training.' : 'Start your offensive security journey.'}
+              <p className="text-base text-text-muted mt-3 max-w-xl leading-relaxed">
+                {mode === 'login' ? t('auth.signIntoContinue') : t('hero.authDescription')}
               </p>
             </div>
+            <ul className="grid gap-2.5">
+              {authBullets.map(({ icon: Icon, text }) => (
+                <li key={text} className="flex items-center gap-2.5 text-sm text-text-muted font-mono leading-tight">
+                  <Icon className="w-4 h-4 text-accent flex-none" /> {text}
+                </li>
+              ))}
+            </ul>
           </div>
           {/* Back to Home button - Desktop */}
           <div className="absolute top-6 left-6 z-20">
@@ -435,13 +292,6 @@ const LoginPage: React.FC = () => {
             >
               <IconArrowLeft size={16} /> Back to Home
             </button>
-          </div>
-
-          {/* Right column form - positioned absolutely to overlay */}
-          <div className="absolute right-0 top-0 h-full w-1/2 flex items-center justify-center px-3 md:px-4 lg:px-6 py-24 overflow-y-auto">
-            <div className="w-full max-w-md my-auto">
-              <AuthForm />
-            </div>
           </div>
         </PublicHeroSection>
       </div>
