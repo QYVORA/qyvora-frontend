@@ -14,15 +14,15 @@ const LandingQuiteRootSection = () => {
       <div className="relative z-10 w-full h-full px-3 md:px-4 lg:px-6 py-12 sm:py-10 md:py-16 lg:py-20 flex flex-col gap-8 sm:gap-10 lg:gap-12">
         {/* Header */}
         <div className="flex flex-col">
-          <div className="flex items-center gap-4 mb-4">
+          <div className="flex items-center gap-4 mb-6">
             <img
               src={quiteRootLogo}
               alt="QuiteRoot Logo"
               className="w-12 h-12 md:w-16 md:h-16 object-contain"
             />
             <div>
-              <h2 className="text-2xl md:text-4xl lg:text-5xl font-black text-text-primary tracking-tighter leading-none mb-2">
-                {t('landing.quiteroot.title')}<span className="text-accent">{t('landing.quiteroot.titleAccent')}</span>
+              <h2 className="text-2xl md:text-4xl lg:text-5xl font-black text-text-primary tracking-tighter leading-none mb-3">
+                {t('landing.quiteroot.title')}<span className="text-text-primary">{t('landing.quiteroot.titleAccent')}</span>
               </h2>
               <p className="text-xs md:text-sm text-text-muted leading-relaxed max-w-xl">
                 {t('landing.quiteroot.description')}
