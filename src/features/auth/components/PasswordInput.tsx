@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { IconLock, IconEye, IconEyeOff } from '@/shared/components/icons';
+import { cn } from '@/shared/utils/cn';
 
 const INPUT_BASE = 'w-full bg-bg-card border border-border rounded-xl py-3 pl-12 pr-12 text-text-primary placeholder:text-text-muted focus:border-accent outline-none transition-all font-mono text-sm';
 
@@ -11,6 +12,7 @@ interface PasswordInputProps {
   shake?: boolean;
   onAnimationEnd?: () => void;
   autoComplete?: string;
+  className?: string;
 }
 
 const PasswordInput: React.FC<PasswordInputProps> = ({
@@ -21,6 +23,7 @@ const PasswordInput: React.FC<PasswordInputProps> = ({
   shake = false,
   onAnimationEnd,
   autoComplete,
+  className,
 }) => {
   const [show, setShow] = useState(false);
   return (
@@ -35,7 +38,7 @@ const PasswordInput: React.FC<PasswordInputProps> = ({
         required={required}
         placeholder={placeholder}
         autoComplete={autoComplete}
-        className={`${INPUT_BASE}${shake ? ' input-error' : ''}`}
+        className={cn(INPUT_BASE, className, shake && 'input-error')}
       />
       <IconLock size={20} className="absolute left-4 top-1/2 -translate-y-1/2 text-text-muted pointer-events-none" />
       <button

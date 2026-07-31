@@ -20,18 +20,16 @@ const AuthFormLayout: React.FC<AuthFormLayoutProps> = ({ children }) => (
       <AuthHero />
 
       {/* Mobile: hero + form stacked */}
-      <div className="md:hidden relative w-full min-h-dvh overflow-hidden flex flex-col bg-bg" data-nav-invert>
+      <div className="md:hidden relative w-full min-h-dvh flex flex-col bg-bg" data-nav-invert>
         <div className="absolute top-6 left-6 z-20">
           <Link to="/" className="inline-flex items-center gap-2 px-4 py-2 text-text-primary rounded-lg text-[10px] font-black uppercase tracking-[0.2em] transition-all hover:opacity-70 active:scale-95">
             <IconArrowLeft size={16} /> Back to Home
           </Link>
         </div>
 
-        <div className="relative z-10 w-full flex-1 grid grid-cols-1 text-left items-center h-full">
-          <div className="flex flex-col items-start justify-center px-3 md:px-4 lg:px-6 pt-20 sm:pt-20 pb-14 sm:pb-16 space-y-5 sm:space-y-6 w-full h-full overflow-y-auto">
-            <div className="w-full">
-              {children}
-            </div>
+        <div className="relative z-10 w-full flex-1 flex flex-col items-start justify-center px-3 md:px-4 lg:px-6 pt-20 sm:pt-20 pb-14 sm:pb-16">
+          <div className="my-auto w-full">
+            {children}
           </div>
         </div>
       </div>

@@ -9,7 +9,7 @@ const RegisterPage: React.FC = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    navigate('/login', { replace: true });
+    navigate('/login', { replace: true, state: { authMode: 'register' } });
   }, [navigate]);
 
   return null;

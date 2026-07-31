@@ -10,6 +10,7 @@ interface PublicHeroSectionProps {
   rightContent?: React.ReactNode;
   mask?: 'right' | 'none';
   showGlobe?: boolean;
+  scrollable?: boolean;
 }
 
 const PublicHeroSection: React.FC<PublicHeroSectionProps> = ({
@@ -17,12 +18,16 @@ const PublicHeroSection: React.FC<PublicHeroSectionProps> = ({
   rightContent,
   mask = 'right',
   showGlobe = false,
+  scrollable = false,
 }) => {
   const { isMobile } = useAdaptiveUi();
-  const globeScale = isMobile ? 0.5 : 1.0;
-  const globeOffset: [number, number, number] = isMobile ? [0.35, -0.2, 0] : [0.9, -0.7, 0];
+  const globeScale = isMobile ? 0.8 : 1.0;
+  const globeOffset: [number, number, number] = isMobile ? [0.6, -0.3, 0] : [0.9, -0.7, 0];
   return (
-    <div className="relative w-full min-h-dvh md:h-dvh overflow-hidden flex flex-col bg-bg" data-nav-invert>
+    <div
+      className={`relative w-full ${scrollable ? 'min-h-dvh' : 'min-h-dvh md:h-dvh overflow-hidden'} flex flex-col bg-bg`}
+      data-nav-invert
+    >
       <GridBoxedBackground opacity={0.5} blur={0} mask={mask} />
 
       {showGlobe && (
