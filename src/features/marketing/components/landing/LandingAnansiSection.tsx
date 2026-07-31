@@ -15,13 +15,13 @@ const LandingAnansiSection = () => {
       <div className="relative z-10 w-full h-full px-3 md:px-4 lg:px-6 py-12 sm:py-10 md:py-16 lg:py-20 flex flex-col lg:flex-row gap-10 sm:gap-10 lg:gap-16 lg:items-stretch">
         {/* Header column */}
         <div className="shrink-0 lg:w-[420px] xl:w-[480px] flex flex-col lg:justify-center">
-          <div className="w-16 h-16 md:w-20 md:h-20 flex items-center justify-center mb-4 overflow-hidden">
+          <div className="w-16 h-16 md:w-20 md:h-20 flex items-center justify-center mb-6 overflow-hidden">
             <img src={anansiLogo} alt="Anansi logo" className="w-full h-full object-contain" />
           </div>
-          <h2 className="text-2xl md:text-4xl lg:text-5xl font-black text-text-primary tracking-tighter leading-none mb-4">
-            {t('landing.anansi.title')} <span className="text-accent">{t('landing.anansi.titleAccent')}</span>
+          <h2 className="text-2xl md:text-4xl lg:text-5xl font-black text-text-primary tracking-tighter leading-none mb-6">
+            {t('landing.anansi.title')} <span className="text-text-primary">{t('landing.anansi.titleAccent')}</span>
           </h2>
-          <p className="text-xs md:text-sm text-text-muted leading-relaxed max-w-xl mb-6">
+          <p className="text-xs md:text-sm text-text-muted leading-relaxed max-w-xl mb-8">
             {t('landing.anansi.description')}
           </p>
           <Link
@@ -38,6 +38,7 @@ const LandingAnansiSection = () => {
           <ScrollReveal direction="up">
             <Carousel
               slides={PHASES}
+              showArrows={false}
               renderCard={(item) => (
                 <div className="relative min-h-[160px] md:min-h-[200px] overflow-hidden p-5 sm:p-6 bg-bg rounded-2xl border border-border/30">
                   <div className="flex items-center gap-3 mb-3">
@@ -57,18 +58,6 @@ const LandingAnansiSection = () => {
                 </div>
               )}
             />
-          </ScrollReveal>
-
-          {/* Quick install */}
-          <ScrollReveal direction="up" delay={0.2}>
-            <div className="rounded-2xl border border-border/20 bg-bg-elevated p-4">
-              <div className="flex items-center gap-2 mb-2">
-                <span className="text-[9px] font-black uppercase tracking-widest text-accent">{t('landing.anansi.quickInstall')}</span>
-              </div>
-              <code className="block text-xs md:text-sm font-mono text-text-secondary">
-                curl -L https://github.com/QYVORA/qyvora-anansi-cli/releases/latest/download/anansi-linux-amd64 -o anansi
-              </code>
-            </div>
           </ScrollReveal>
         </div>
       </div>
