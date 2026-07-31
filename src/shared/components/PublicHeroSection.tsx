@@ -19,8 +19,8 @@ const PublicHeroSection: React.FC<PublicHeroSectionProps> = ({
   showGlobe = false,
 }) => {
   const { isMobile } = useAdaptiveUi();
-  const globeScale = isMobile ? 0.45 : 1.0;
-  const globeOffset: [number, number, number] = isMobile ? [0.3, -0.5, 0] : [0.9, -0.7, 0];
+  const globeScale = isMobile ? 0.5 : 1.0;
+  const globeOffset: [number, number, number] = isMobile ? [0.35, -0.2, 0] : [0.9, -0.7, 0];
   return (
     <div className="relative w-full min-h-dvh md:h-dvh overflow-hidden flex flex-col bg-bg" data-nav-invert>
       <GridBoxedBackground opacity={0.5} blur={0} mask={mask} />
