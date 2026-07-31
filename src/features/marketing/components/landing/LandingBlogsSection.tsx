@@ -16,10 +16,10 @@ const LandingBlogsSection = () => {
         <StickySidebarLayout
           heading={
             <div>
-              <h2 className="text-3xl md:text-5xl lg:text-6xl font-black text-text-primary tracking-tighter leading-none mb-4">
-                {t('landing.blogs.title')} <span className="text-text-secondary">{t('landing.blogs.titleAccent')}</span>
+              <h2 className="text-3xl md:text-5xl lg:text-6xl font-black text-text-primary tracking-tighter leading-none mb-8">
+                {t('landing.blogs.title')} <span className="text-text-primary">{t('landing.blogs.titleAccent')}</span>
               </h2>
-              <p className="text-xs md:text-sm text-text-muted leading-relaxed max-w-xl mb-6">
+              <p className="text-xs md:text-sm text-text-muted leading-relaxed max-w-xl mb-10">
                 {t('landing.blogs.description')}
               </p>
               <Link
@@ -33,13 +33,16 @@ const LandingBlogsSection = () => {
         >
           <Carousel
             slides={BLOG_POSTS}
+            showArrows={false}
+            className="lg:w-[96%]"
             renderCard={(post) => (
               <Link
                 to={`/blogs/${post.slug}`}
-                className="block relative min-h-[260px] md:min-h-[360px] group"
+                className="block relative min-h-[300px] md:min-h-[440px] group"
               >
-                <div className="absolute inset-0 bg-bg-card rounded-2xl border border-border/20" />
-                <div className="relative z-10 p-6 sm:p-8 md:p-6 lg:p-8 flex flex-col items-start text-left h-full min-h-[260px] md:min-h-[360px]">
+                <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: `url(${post.image})` }} />
+                <div className="absolute inset-0 bg-gradient-to-r from-bg-card via-bg-card/90 to-bg-card/40" />
+                <div className="relative z-10 p-6 sm:p-8 md:p-6 lg:p-8 flex flex-col items-start text-left h-full min-h-[300px] md:min-h-[440px]">
                   <div className="flex flex-wrap gap-1.5 mb-3">
                     {post.tags.map((tag) => (
                       <span

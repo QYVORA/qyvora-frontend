@@ -9,6 +9,7 @@ export interface CarouselProps<T extends { id: string }> {
   renderCard: (slide: T, index: number) => React.ReactNode;
   className?: string;
   autoPlayInterval?: number;
+  showArrows?: boolean;
 }
 
 function Carousel<T extends { id: string }>({
@@ -16,6 +17,7 @@ function Carousel<T extends { id: string }>({
   renderCard,
   className = '',
   autoPlayInterval = 5000,
+  showArrows = true,
 }: CarouselProps<T>) {
   const [current, setCurrent] = useState(0);
   const [direction, setDirection] = useState(0);
@@ -64,7 +66,7 @@ function Carousel<T extends { id: string }>({
         </AnimatePresence>
       </div>
 
-      {total > 1 && (
+      {total > 1 && showArrows && (
         <>
           <button
             onClick={prev}
