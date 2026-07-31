@@ -28,7 +28,7 @@ const BlogsPage: React.FC = () => {
       <PublicHeroSection showGlobe mask="right">
         <h1 className="font-black text-text-primary leading-[1.08] tracking-tight w-full relative">
           <span className="block whitespace-normal lg:whitespace-nowrap text-[2rem] min-[400px]:text-[2.25rem] sm:text-[2.5rem] md:text-[3rem] lg:text-[2.5rem] xl:text-[3rem] lg:leading-[1.1] xl:leading-[1.05] uppercase">
-            Intelligence <span className="text-accent">Reports</span>
+            Intelligence <span className="text-text-primary">Reports</span>
           </span>
         </h1>
         <p className="text-text-secondary text-base sm:text-lg lg:text-base xl:text-lg leading-relaxed max-w-xl animate-fade-in font-mono">
@@ -60,10 +60,10 @@ const BlogsPage: React.FC = () => {
                     className="block relative min-h-[260px] md:min-h-[360px] group"
                   >
                     <div
-                      className="absolute inset-0 bg-cover bg-center hidden dark:block"
+                      className="absolute inset-0 bg-cover bg-center"
                       style={{ backgroundImage: `url(${post.image})` }}
                     />
-                    <div className="absolute inset-0 bg-gradient-to-r from-bg-card via-bg-card to-transparent dark:from-bg-card dark:via-bg-card/60 dark:to-transparent" />
+                    <div className="absolute inset-0 bg-gradient-to-r from-bg-card via-bg-card/90 to-bg-card/40" />
                     <div className="relative z-10 p-6 sm:p-8 md:p-6 lg:p-8 flex flex-col items-start text-left h-full min-h-[260px] md:min-h-[360px]">
                       <div className="flex flex-wrap gap-1.5 mb-3">
                         {post.tags.map((tag) => (
