@@ -1,6 +1,6 @@
 # QYVORA Frontend Documentation
 
-> **Last Updated:** 2026-07-22
+> **Last Updated:** 2026-07-31
 
 Welcome to the QYVORA Frontend documentation. This guide helps you navigate all available documentation.
 
@@ -100,7 +100,8 @@ docs/
 │
 ├── UI/UX Docs
 │   ├── DESIGN_SYSTEM.md
-│   └── ACCESSIBILITY.md
+│   ├── ACCESSIBILITY.md
+│   └── PROFILE_PAGE_UI.md       # Profile page UI design and layout
 │
 ├── Development Docs
 │   ├── BUILD_PIPELINE.md
@@ -116,15 +117,13 @@ docs/
 │   ├── CTF_PLAN.md              # Not yet implemented
 │   └── PLATFORM_ILLUSTRATION_SYSTEM.md  # Not yet implemented
 │
-└── archive/                     # Historical reference (read-only)
-    └── (empty - audits cleaned up)
+└── archive/                     # (not created yet - reserved for historical reference)
 ```
 
 Root-level docs (outside `docs/`):
 - `README.md` - Project README with stack, quick start, routes
 - `ROADMAP.md` - Product roadmap with future priorities
-- `UIB.md` - Mobile-first UI behavior guidelines
-- `PROFILE_PAGE_UI.md` - Profile page UI design and layout
+- `AGENTS.md` - Design conventions (source of truth for UI patterns)
 
 ---
 
