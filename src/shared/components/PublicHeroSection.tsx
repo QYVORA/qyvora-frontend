@@ -1,6 +1,7 @@
 import React, { lazy, Suspense } from 'react';
 import ErrorBoundary from '@/shared/components/ErrorBoundary';
 import { GridBoxedBackground } from '@/shared/components/backgrounds';
+import { useAdaptiveUi } from '@/core/hooks/useAdaptiveUi';
 
 const HackerGlobe = lazy(() => import('@/features/marketing/components/HackerGlobe'));
 
@@ -17,6 +18,9 @@ const PublicHeroSection: React.FC<PublicHeroSectionProps> = ({
   mask = 'right',
   showGlobe = false,
 }) => {
+  const { isMobile } = useAdaptiveUi();
+  const globeScale = isMobile ? 0.55 : 1.0;
+  const globeOffset: [number, number, number] = isMobile ? [0.5, -0.3, 0] : [0.9, -0.7, 0];
   return (
     <div className="relative w-full min-h-dvh md:h-dvh overflow-hidden flex flex-col bg-bg" data-nav-invert>
       <GridBoxedBackground opacity={0.5} blur={0} mask={mask} />
@@ -26,7 +30,7 @@ const PublicHeroSection: React.FC<PublicHeroSectionProps> = ({
           <div className="relative w-full h-full flex items-end justify-end">
             <ErrorBoundary scope="HackerGlobe" fallback={null}>
               <Suspense fallback={null}>
-                <HackerGlobe scale={1.0} offset={[0.9, -0.7, 0]} />
+                <HackerGlobe scale={globeScale} offset={globeOffset} />
               </Suspense>
             </ErrorBoundary>
           </div>
