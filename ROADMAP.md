@@ -1,7 +1,7 @@
 # QYVORA Product Roadmap
 
 **Status:** Live · 170+ users · Social channels active  
-**Last updated:** July 2026
+**Last updated:** July 2026 (housekeeping cleanup)
 
 ---
 
@@ -27,15 +27,11 @@
   - Auto-post opt-in after bootcamp completion
 - **Files affected:** `RoomCompletionCelebration.tsx`, new `ShareBadge` component, profile page
 
-### 3. Mobile PWA
-- **Problem:** Mobile web has layout issues (being fixed); no install prompt.
-- **Strategy:** Convert the student dashboard into a Progressive Web App.
-- **Actions:**
-  - Add manifest.json and service worker
+### 3. Mobile PWA (Baseline Done)
+- **Status:** Manifest, service worker, install banner shipped. See `docs/PWA.md` for details.
+- **Remaining:**
   - Push notification support for reminders and new room alerts
   - Offline support for room content (cached walkthroughs)
-  - Install prompt banner on mobile
-- **Files affected:** `public/`, `StudentLayout.tsx`, new service worker
 
 ### 4. Phase Drop-off Analytics
 - **Problem:** No visibility into where users stall in the pipeline.
@@ -75,7 +71,7 @@
 
 | Principle | Rule |
 |-----------|------|
-| **Mobile-first** | All new components must use `flex-col` on mobile; container padding is `px-3` on small screens. See `UIB.md`. |
+| **Mobile-first** | All new components must use `flex-col` on mobile; container padding is `px-3` on small screens. See `AGENTS.md`. |
 | **Retention over acquisition** | A user who finishes Phase 01 is worth more than 10 signups. Optimise for completion. |
 | **Verifiable credentials** | Every achievement must be on-chain and independently verifiable. CP is not a score — it's a credential. |
 | **Community as moat** | The network effect of users helping users is harder to replicate than the curriculum. Invest in it early. |
