@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
-import { Search, Users } from 'lucide-react';
+import { Users } from 'lucide-react';
 import { IconArrowRight } from '@/shared/components/icons';
 import { ScrollReveal } from '@/shared/components';
 import SEO from '@/shared/components/SEO';
@@ -14,13 +14,21 @@ const QuiteRootPage = () => {
   return (
     <div className="bg-bg min-h-full">
       <SEO title="QuiteRoot - QYVORA" description="QuiteRoot — a network of security researchers pushing the boundaries of offensive security." />
-      <div className="px-3 md:px-4 lg:px-6 pt-8 pb-20 lg:pb-24 space-y-8">
+      <div className="px-3 md:px-4 lg:px-6">
         <StudentHeroSection
-          icon={<img src={quiteRootLogo} alt="QuiteRoot" className="w-10 h-10 object-contain" />}
           title="Quite"
           accentWord="Root"
           description="A network of independent security researchers pushing the boundaries of offensive security research and tooling."
           stats={[{ label: 'Researchers', value: researchersData.length }]}
+          rightContent={
+            <div className="relative hidden lg:flex items-center justify-center w-full h-full">
+              <img
+                src={quiteRootLogo}
+                alt="QuiteRoot"
+                className="w-[72%] xl:w-[64%] 2xl:w-[56%] max-h-[68vh] object-contain drop-shadow-[0_0_50px_rgba(6,182,111,0.35)]"
+              />
+            </div>
+          }
         >
           <Link
             to="/register"
@@ -30,27 +38,46 @@ const QuiteRootPage = () => {
           </Link>
         </StudentHeroSection>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
-          {researchersData.map((researcher) => (
+        <div className="min-h-dvh flex flex-col justify-center py-16 md:py-20">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+          {researchersData.map((researcher, idx) => (
             <ScrollReveal key={researcher.id} amount={0.05}>
-              <div className="rounded-2xl border border-border/30 bg-bg-card p-5 flex flex-col gap-3 hover:border-accent/30 transition-colors h-full">
-                <div className="flex items-center gap-3">
-                  <div className="w-14 h-14 rounded-xl bg-accent/10 flex items-center justify-center shrink-0 overflow-hidden">
-                    {researcher.image ? (
-                      <img src={researcher.image} alt={researcher.name} className="w-full h-full object-cover" />
-                    ) : (
-                      <Search className="w-6 h-6 text-accent" />
-                    )}
+              <div className="group relative flex flex-col rounded-2xl border border-border/30 bg-bg-card p-5 transition-all duration-300 hover:border-accent/40 h-full overflow-hidden">
+                <span className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-accent/60 to-transparent opacity-60 group-hover:opacity-100 transition-opacity" />
+                <span className="absolute top-4 right-5 font-mono text-sm font-black text-accent/25 group-hover:text-accent/60 transition-colors">
+                  {String(idx + 1).padStart(2, '0')}
+                </span>
+
+                <div className="flex items-center gap-4 mb-4 pr-12">
+                  <div className="relative w-16 h-16 rounded-2xl overflow-hidden border border-border/30 shrink-0">
+                    <img src={researcher.image} alt={researcher.name} className="w-full h-full object-cover" loading="lazy" />
+                    <span className="absolute inset-0 ring-1 ring-inset ring-black/40" />
                   </div>
                   <div className="min-w-0">
-                    <h3 className="text-sm font-black text-text-primary truncate">{researcher.name}</h3>
-                    <p className="text-[10px] font-mono text-text-muted truncate">{researcher.role}</p>
+                    <h3 className="text-sm font-black uppercase tracking-tight text-text-primary group-hover:text-accent transition-colors truncate">
+                      {researcher.name}
+                    </h3>
+                    <span className="inline-block px-2 py-0.5 rounded-lg bg-accent/10 text-[10px] font-black uppercase tracking-widest text-accent mt-1">
+                      {researcher.role}
+                    </span>
                   </div>
                 </div>
-                <p className="text-xs text-text-muted leading-relaxed flex-1 line-clamp-3">{researcher.bio}</p>
+
+                <p className="text-xs text-text-muted line-clamp-3 leading-relaxed flex-1">{researcher.bio}</p>
+
+                <div className="mt-4 pt-4 border-t border-border/20 flex items-center gap-3">
+                  <span className="font-mono text-[10px] font-black uppercase tracking-widest text-accent/80">
+                    &gt; {researcher.id.toUpperCase()}
+                  </span>
+                  <span className="ml-auto inline-flex items-center gap-1.5 text-[9px] font-black uppercase tracking-widest text-text-muted">
+                    <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />
+                    Active
+                  </span>
+                </div>
               </div>
             </ScrollReveal>
           ))}
+          </div>
         </div>
       </div>
     </div>
