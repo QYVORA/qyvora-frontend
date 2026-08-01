@@ -2,13 +2,21 @@ import React, { useRef, useEffect } from 'react';
 import * as THREE from 'three';
 import { useAdaptiveUi } from '../../../../core/hooks/useAdaptiveUi';
 import { buildDotMapTexture } from './helpers';
+import { useFluidGlobe } from './useFluidGlobe';
 
-interface HackerGlobeProps { scale?: number; offset?: [number, number, number] }
+interface HackerGlobeProps {
+  scale?: number;
+  offset?: [number, number, number];
+  fluid?: boolean;
+}
 
-const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88, offset = [0, 0, 0] }) => {
+const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88, offset = [0, 0, 0], fluid = false }) => {
   const mountRef   = useRef<HTMLDivElement>(null);
   const { constrainedDevice, isMobile } = useAdaptiveUi();
   const isSimplified = constrainedDevice || isMobile;
+  const fluidGlobe = useFluidGlobe();
+  const effectiveScale = fluid ? fluidGlobe.scale : scale;
+  const effectiveOffset = fluid ? fluidGlobe.offset : offset;
 
   useEffect(() => {
     const el = mountRef.current;
@@ -48,13 +56,13 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88, offset = [0, 0,
       camera.position.z = 2.1;
 
       globe = new THREE.Group();
-      globe.scale.setScalar(scale);
-      globe.position.set(offset[0], offset[1], offset[2]);
+      globe.scale.setScalar(effectiveScale);
+      globe.position.set(effectiveOffset[0], effectiveOffset[1], effectiveOffset[2]);
       globe.rotation.y = -1.9;
       scene.add(globe);
 
       const sphereSegments = isSimplified ? 32 : 64;
-      const step = isSimplified ? 1.8 : 1.0;
+      const step = 1.6;
       const dotTex = buildDotMapTexture(isLight, step);
 
       const globeBack = new THREE.Mesh(
@@ -160,7 +168,7 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88, offset = [0, 0,
       observer.disconnect();
       cleanup();
     };
-  }, [scale, isSimplified, offset]);
+  }, [effectiveScale, isSimplified, effectiveOffset]);
 
   return (
     <div

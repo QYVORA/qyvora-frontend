@@ -6,6 +6,7 @@ import { lazy, Suspense } from 'react';
 import { useTranslation } from 'react-i18next';
 import type { BackendStats } from './types';
 import { useAdaptiveUi } from '../../../../core/hooks/useAdaptiveUi';
+import { useFluidGlobe } from '../hacker-globe/useFluidGlobe';
 import ErrorBoundary from '../../../../shared/components/ErrorBoundary';
 import { GridBoxedBackground } from '@/shared/components/backgrounds';
 
@@ -35,7 +36,7 @@ const LandingHeroSection: React.FC<LandingHeroSectionProps> = ({
     offset: ['start start', 'end start'],
   });
 
-  const rawGlobeScale = isMobile ? 0.8 : 1.0;
+  const { scale: rawGlobeScale, offset: globeOffset } = useFluidGlobe();
   const globeScaleValue = useTransform(scrollYProgress, [0, 1], [rawGlobeScale, 2.5]);
   const globeOpacityValue = useTransform(scrollYProgress, [0, 0.6, 1], [1, 0.8, 0]);
 
@@ -49,12 +50,6 @@ const LandingHeroSection: React.FC<LandingHeroSectionProps> = ({
     { line1: t('typewriter.securingAfricas'), line2: t('typewriter.digitalFuture') },
     { line1: t('typewriter.creating100k'), line2: t('typewriter.cyberProfessionals') }
   ], [t]);
-
-  const globeOffset = React.useMemo<[number, number, number]>(() => {
-    if (isMobile) return [0.6, -0.3, 0];
-    if (constrainedDevice) return [0.45, -0.45, 0];
-    return [0.9, -0.7, 0];
-  }, [isMobile, constrainedDevice]);
 
   React.useEffect(() => {
     const l1 = line1Ref.current;

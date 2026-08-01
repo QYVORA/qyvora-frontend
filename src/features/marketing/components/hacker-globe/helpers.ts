@@ -159,18 +159,18 @@ function isLand(lat: number, lng: number): boolean {
 
 const TEXTURE_CACHE = new Map<string, THREE.CanvasTexture>();
 
-export function buildDotMapTexture(isLight: boolean, step = 1.8): THREE.CanvasTexture {
+export function buildDotMapTexture(isLight: boolean, step = 1.6): THREE.CanvasTexture {
   const cacheKey = `${isLight}-${step}`;
   if (TEXTURE_CACHE.has(cacheKey)) return TEXTURE_CACHE.get(cacheKey)!;
 
-  const W = step > 2 ? 1024 : 2048, H = step > 2 ? 512 : 1024;
+  const W = 2048, H = 1024;
   const canvas = document.createElement('canvas');
   canvas.width = W; canvas.height = H;
   const ctx = canvas.getContext('2d')!;
 
   ctx.clearRect(0, 0, W, H);
 
-  const dotR      = (step / 180) * H * (step > 2 ? 0.50 : 0.38);
+  const dotR      = (step / 180) * H * 0.42;
   const landFill  = ACCENT_COLOR_HEX;
 
   for (let lat = 89; lat >= -89; lat -= step) {
