@@ -14,7 +14,7 @@ const HpbPage = () => {
   return (
     <div className="bg-bg min-h-full">
       <SEO title="HPB - QYVORA" description="Hacker Protocol Bootcamp — Africa's most intensive offensive security training." />
-      <div className="px-3 md:px-4 lg:px-6 pt-8 pb-20 lg:pb-24 space-y-8">
+      <div className="px-3 md:px-4 lg:px-6">
         <StudentHeroSection
           icon={<Shield className="w-8 h-8 text-accent" />}
           title="Hacker Protocol"
@@ -33,12 +33,13 @@ const HpbPage = () => {
           </Link>
         </StudentHeroSection>
 
-        <div className="space-y-4">
-          <h3 className="text-xs font-black uppercase tracking-[0.3em] text-text-muted">Curriculum</h3>
+        <div className="min-h-dvh flex flex-col justify-center py-16 md:py-20">
+          <div className="space-y-4">
+            <h3 className="text-xs font-black uppercase tracking-[0.3em] text-text-muted">Curriculum</h3>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 md:gap-4">
             {phases.map((phase, idx) => (
               <ScrollReveal key={phase.id} amount={0.05}>
-                <div className="group/card relative rounded-2xl border border-border/30 bg-bg-card p-3 md:p-5 transition-all duration-300 hover:border-accent/30 flex flex-col">
+                <div className="group/card relative aspect-square rounded-2xl border border-border/30 bg-bg-card p-3 md:p-5 transition-all duration-300 hover:border-accent/30 flex flex-col">
                   <div className="flex items-center gap-2 mb-2">
                     <div className="w-8 h-8 rounded-xl flex items-center justify-center shrink-0 bg-accent/10 border border-accent/20">
                       <BookOpen className="w-4 h-4 text-accent" />
@@ -67,6 +68,7 @@ const HpbPage = () => {
                 </div>
               </ScrollReveal>
             ))}
+          </div>
           </div>
         </div>
       </div>

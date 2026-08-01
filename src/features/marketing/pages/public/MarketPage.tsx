@@ -52,7 +52,7 @@ const MarketPage = () => {
   return (
     <div className="bg-bg min-h-full">
       <SEO title="Zero Day Market - QYVORA" description="Intelligence assets, guides, papers, and tools available for CP." />
-      <div className="px-3 md:px-4 lg:px-6 pt-8 pb-20 lg:pb-24 space-y-8">
+      <div className="px-3 md:px-4 lg:px-6">
         <StudentHeroSection
           icon={<ShoppingBag className="w-8 h-8 text-accent" />}
           title="Zero Day"
@@ -69,6 +69,8 @@ const MarketPage = () => {
           )}
         </StudentHeroSection>
 
+        <div className="min-h-dvh flex flex-col justify-center py-16 md:py-20">
+          <div className="space-y-8">
         <div className="relative w-full sm:w-72">
           <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-text-muted" />
           <input
@@ -158,7 +160,9 @@ const MarketPage = () => {
               </ScrollReveal>
             ))}
           </div>
-        )}
+          )}
+          </div>
+        </div>
       </div>
     </div>
   );

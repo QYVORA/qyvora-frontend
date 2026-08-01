@@ -93,7 +93,7 @@ const ServicesPage = () => {
   return (
     <div className="bg-bg min-h-full">
       <SEO title="Services - QYVORA" description="Enterprise-grade penetration testing, security assessments, and offensive security training." />
-      <div className="px-3 md:px-4 lg:px-6 pt-8 pb-20 lg:pb-24 space-y-8">
+      <div className="px-3 md:px-4 lg:px-6">
         <StudentHeroSection
           icon={<ShieldCheck className="w-8 h-8 text-accent" />}
           title="Security"
@@ -101,13 +101,16 @@ const ServicesPage = () => {
           description="Enterprise penetration testing, vulnerability assessments, and custom security training for your organization."
         />
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6">
-          {SERVICES.map((svc, idx) => (
-            <ServiceCard key={svc.id} svc={svc} t={t} index={idx} />
-          ))}
+        <div className="min-h-dvh flex flex-col justify-center py-16 md:py-20">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6">
+            {SERVICES.map((svc, idx) => (
+              <ServiceCard key={svc.id} svc={svc} t={t} index={idx} />
+            ))}
+          </div>
         </div>
 
         {/* Custom inquiries */}
+        <div className="min-h-dvh flex flex-col justify-center py-16 md:py-20">
         <motion.div
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -145,6 +148,7 @@ const ServicesPage = () => {
             </div>
           </div>
         </motion.div>
+        </div>
       </div>
     </div>
   );

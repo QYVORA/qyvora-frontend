@@ -26,7 +26,7 @@ const LabsPage = () => {
   return (
     <div className="bg-bg min-h-full">
       <SEO title="Attack Labs - QYVORA" description="Hands-on offensive security labs covering privilege escalation, password cracking, SQL injection, OSINT, and the full kill chain." />
-      <div className="px-3 md:px-4 lg:px-6 pt-8 pb-20 lg:pb-24 space-y-8">
+      <div className="px-3 md:px-4 lg:px-6">
         <StudentHeroSection
           icon={<FlaskConical className="w-8 h-8 text-accent" />}
           title="Attack"
@@ -45,7 +45,8 @@ const LabsPage = () => {
           </Link>
         </StudentHeroSection>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+        <div className="min-h-dvh flex flex-col justify-center py-16 md:py-20">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
           {LABS.map((lab) => {
             const baseDiff = lab.difficulty.split('-')[0];
             const diffColor = DIFFICULTY_COLORS[baseDiff] || DIFFICULTY_COLORS.beginner;
@@ -53,33 +54,38 @@ const LabsPage = () => {
               <ScrollReveal key={lab.id} amount={0.05}>
                 <Link
                   to={lab.route}
-                  className="group flex flex-col rounded-2xl border border-border/30 bg-bg-card overflow-hidden transition-all duration-300 hover:border-accent/30 h-full"
+                  className="group/card relative aspect-square rounded-2xl border border-border/30 bg-bg-card p-3 md:p-5 transition-all duration-300 hover:border-accent/30 flex flex-col text-left"
                 >
-                  <div className="flex flex-col gap-2 p-4 sm:p-5 md:p-6 lg:p-7 flex-1">
-                    <div className="flex items-center justify-between">
-                      <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-lg text-[9px] font-black uppercase tracking-widest ${diffColor}`}>
-                        <Star className="h-2.5 w-2.5" /> {baseDiff}
-                      </span>
+                  <div className="flex items-center justify-between mb-2">
+                    <div className="w-8 h-8 rounded-xl flex items-center justify-center shrink-0 bg-accent/10 border border-accent/20">
+                      <FlaskConical className="w-4 h-4 text-accent" />
                     </div>
-                    <h3 className="text-sm sm:text-base md:text-lg lg:text-xl font-black text-text-primary group-hover:text-accent transition-colors leading-snug break-words">
-                      {t(`student.labs.list.${lab.id}.title`)}
-                    </h3>
-                    <p className="text-xs sm:text-sm md:text-base text-text-muted leading-relaxed line-clamp-3 flex-1">
-                      {t(`student.labs.list.${lab.id}.description`)}
-                    </p>
-                    <div className="flex items-center justify-between mt-auto pt-2">
-                      <span className="text-[9px] font-black uppercase tracking-widest text-accent">
-                        {lab.cpReward} CP
-                      </span>
-                      <span className="px-3 py-1.5 rounded-lg text-[9px] sm:text-[10px] font-black uppercase tracking-widest bg-accent text-bg transition-all duration-200 group-hover:brightness-110 group-active:scale-95">
-                        Launch <IconArrowRight size={12} className="inline-block ml-1" />
-                      </span>
-                    </div>
+                    <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-lg text-[9px] font-black uppercase tracking-widest ${diffColor}`}>
+                      <Star className="h-2.5 w-2.5" /> {baseDiff}
+                    </span>
+                  </div>
+
+                  <h3 className="text-sm sm:text-base md:text-lg lg:text-xl font-black text-text-primary group-hover/card:text-accent transition-colors leading-snug break-words mb-1">
+                    {t(`student.labs.list.${lab.id}.title`)}
+                  </h3>
+
+                  <p className="text-xs sm:text-sm md:text-base text-text-muted leading-relaxed line-clamp-3 flex-1 mb-2">
+                    {t(`student.labs.list.${lab.id}.description`)}
+                  </p>
+
+                  <div className="flex items-center justify-between mt-auto pt-2">
+                    <span className="text-[9px] sm:text-[10px] md:text-xs font-black uppercase tracking-widest text-accent">
+                      {lab.cpReward} CP
+                    </span>
+                    <span className="px-3 py-1.5 rounded-lg text-[9px] sm:text-[10px] md:text-xs font-black uppercase tracking-widest bg-accent text-bg transition-all duration-200 group-hover/card:brightness-110 group-active:scale-95">
+                      Launch <IconArrowRight size={12} className="inline-block ml-1" />
+                    </span>
                   </div>
                 </Link>
               </ScrollReveal>
             );
           })}
+          </div>
         </div>
       </div>
     </div>

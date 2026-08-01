@@ -33,7 +33,7 @@ const BlogsPage = () => {
   return (
     <div className="bg-bg min-h-full">
       <SEO title="Blogs - QYVORA" description="Security research, tutorials, and updates from the QYVORA team." />
-      <div className="px-3 md:px-4 lg:px-6 pt-8 pb-20 lg:pb-24 space-y-8">
+      <div className="px-3 md:px-4 lg:px-6">
         <StudentHeroSection
           title="Intelligence"
           accentWord="Reports"
@@ -41,7 +41,9 @@ const BlogsPage = () => {
           stats={[{ label: 'Articles', value: BLOG_POSTS.length }]}
         />
 
-        <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
+        <div className="min-h-dvh flex flex-col justify-center py-16 md:py-20">
+          <div className="space-y-8">
+          <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
           <div className="flex items-center gap-2 flex-wrap">
             <button
               onClick={() => setActiveTag('')}
@@ -124,7 +126,9 @@ const BlogsPage = () => {
               </ScrollReveal>
             ))}
           </div>
-        )}
+          )}
+          </div>
+        </div>
       </div>
     </div>
   );

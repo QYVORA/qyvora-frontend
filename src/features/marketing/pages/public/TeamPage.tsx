@@ -19,7 +19,7 @@ const TeamPage = () => {
   return (
     <div className="bg-bg min-h-full">
       <SEO title="Team - QYVORA" description="The team behind QYVORA — operators, engineers, and security researchers." />
-      <div className="px-3 md:px-4 lg:px-6 pt-8 pb-20 lg:pb-24 space-y-8">
+      <div className="px-3 md:px-4 lg:px-6">
         <StudentHeroSection
           icon={<Users className="w-8 h-8 text-accent" />}
           title="Our"
@@ -28,7 +28,8 @@ const TeamPage = () => {
           stats={[{ label: 'Members', value: teamData.length }]}
         />
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+        <div className="min-h-dvh flex flex-col justify-center py-16 md:py-20">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
           {teamData.map((member) => (
             <ScrollReveal key={member.id} amount={0.05}>
               <div className="group relative flex flex-col rounded-2xl border border-border/30 bg-bg-card p-5 transition-all duration-300 hover:border-accent/30 h-full">
@@ -85,6 +86,7 @@ const TeamPage = () => {
               </div>
             </ScrollReveal>
           ))}
+          </div>
         </div>
       </div>
     </div>
