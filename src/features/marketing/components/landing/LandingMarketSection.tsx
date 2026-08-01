@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import { Cloud, FileText, BookOpen, Cpu } from 'lucide-react';
 import { IconArrowRight, IconMarketplace, IconLock } from '@/shared/components/icons';
 import { GridBoxedBackground } from '@/shared/components/backgrounds';
-import StickySidebarLayout from '@/shared/components/layout/StickySidebarLayout';
 import ScrollReveal from '@/shared/components/ScrollReveal';
 import api from '@/core/services/api';
 import productFallbackImg from '@/assets/sections/stats/cp-earned-bg.webp';
