@@ -27,9 +27,8 @@ const AnansiPage = () => {
   return (
     <div className="bg-bg min-h-full">
       <SEO title="Anansi - QYVORA" description="Anansi — Attack Surface Intelligence CLI for reconnaissance and surface mapping." />
-      <div className="px-3 md:px-4 lg:px-6 pt-8 pb-20 lg:pb-24 space-y-8">
+      <div className="px-3 md:px-4 lg:px-6">
         <StudentHeroSection
-          icon={<img src={anansiLogo} alt="Anansi" className="w-10 h-10 object-contain" />}
           title="Anansi"
           accentWord="CLI"
           description="Attack Surface Intelligence CLI — discover, probe, and map attack surfaces from the terminal."
@@ -37,6 +36,15 @@ const AnansiPage = () => {
             { label: 'Modules', value: PHASES.length },
             { label: 'Platform', value: 'CLI' },
           ]}
+          rightContent={
+            <div className="relative hidden lg:flex items-center justify-center w-full h-full">
+              <img
+                src={anansiLogo}
+                alt="Anansi"
+                className="w-[72%] xl:w-[64%] 2xl:w-[56%] max-h-[68vh] object-contain drop-shadow-[0_0_50px_rgba(6,182,111,0.35)]"
+              />
+            </div>
+          }
         >
           <a
             href="#install"
@@ -46,7 +54,8 @@ const AnansiPage = () => {
           </a>
         </StudentHeroSection>
 
-        <div className="space-y-4">
+        <div className="min-h-dvh flex flex-col justify-center py-16 md:py-20">
+          <div className="space-y-4">
           <h3 className="text-xs font-black uppercase tracking-[0.3em] text-text-muted">Modules</h3>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
             {PHASES.map((phase) => (
@@ -65,12 +74,14 @@ const AnansiPage = () => {
               </ScrollReveal>
             ))}
           </div>
+          </div>
         </div>
 
         {/* ── Install ─────────────────────────────────────────────────────── */}
-        <div id="install" className="space-y-4 scroll-mt-28">
-          <h3 className="text-xs font-black uppercase tracking-[0.3em] text-text-muted">Install</h3>
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6">
+        <div className="min-h-dvh flex flex-col justify-center py-16 md:py-20">
+          <div id="install" className="space-y-4 scroll-mt-28">
+            <h3 className="text-xs font-black uppercase tracking-[0.3em] text-text-muted">Install</h3>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6">
 
             {/* Option 1 — Download binary */}
             <div className="rounded-2xl border border-border/30 bg-bg-card p-6 space-y-4 h-full">
@@ -140,10 +151,12 @@ const AnansiPage = () => {
               </a>
             </div>
           </div>
-        </div>
+            </div>
+          </div>
 
         {/* ── Quick Start ─────────────────────────────────────────────────── */}
-        <div className="rounded-2xl border border-border/30 bg-bg-card p-6 space-y-4">
+        <div className="min-h-dvh flex flex-col justify-center py-16 md:py-20">
+          <div className="rounded-2xl border border-border/30 bg-bg-card p-6 space-y-4">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-xl bg-accent/10 flex items-center justify-center shrink-0">
               <Terminal className="w-5 h-5 text-accent" />
@@ -163,6 +176,7 @@ const AnansiPage = () => {
           <p className="text-[10px] font-mono text-text-muted leading-relaxed">
             Only scan targets you own or have explicit written permission to test.
           </p>
+          </div>
         </div>
       </div>
     </div>
