@@ -29,13 +29,14 @@ const CoursesPage = () => {
   return (
     <div className="bg-bg min-h-full">
       <SEO title="Courses - QYVORA" description="Master offensive security with QYVORA's structured courses." />
-      <div className="px-3 md:px-4 lg:px-6 pt-8 pb-20 lg:pb-24 space-y-8">
+      <div className="px-3 md:px-4 lg:px-6">
         <StudentHeroSection
           title="Courses"
           description="Structured offensive security courses from terminal mastery to web exploitation."
         />
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+        <div className="min-h-dvh flex flex-col justify-center py-16 md:py-20">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
           {COURSES.map((course) => {
             const category = getCategoryById(course.categoryId);
             const skillCfg = SKILL_CONFIG[course.skillLevel];
@@ -75,6 +76,7 @@ const CoursesPage = () => {
               </ScrollReveal>
             );
           })}
+          </div>
         </div>
       </div>
     </div>
