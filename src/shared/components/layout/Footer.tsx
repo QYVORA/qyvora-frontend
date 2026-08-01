@@ -95,12 +95,20 @@ const Footer: React.FC = React.memo(() => {
   return (
     <footer className="relative w-full min-h-dvh overflow-hidden select-none bg-bg flex flex-col">
       {/* ── Desktop: QYVORA logotype banner at bottom ─────────────────── */}
-      <div className="hidden lg:block absolute inset-x-0 bottom-0 pointer-events-none select-none overflow-hidden" style={{ height: '40%', maxHeight: '400px' }}>
-        <div className="w-full h-full flex items-end justify-center">
+      <div
+        className="hidden lg:block absolute inset-x-0 bottom-0 pointer-events-none select-none overflow-hidden"
+        style={{ height: '45%', maxHeight: '440px' }}
+      >
+        <div
+          className="w-full h-full flex items-end justify-center"
+          style={{
+            background: 'radial-gradient(ellipse 90% 70% at 50% 100%, rgba(6,182,111,0.10), transparent 70%)',
+          }}
+        >
           <QyvoraLogotype
-            className="w-[180%] h-auto max-w-none block"
+            className="w-[200%] h-auto max-w-none block"
             color="#06B66F"
-            style={{ opacity: 0.05 }}
+            style={{ opacity: 0.12 }}
           />
         </div>
       </div>
@@ -162,7 +170,7 @@ const Footer: React.FC = React.memo(() => {
           <div className="flex-1 min-h-6" />
 
           {/* ── Legal / secondary links row ──────────────────────────────── */}
-          <div className="flex flex-wrap gap-x-6 gap-y-2 border-t border-border/40 pt-8">
+          <div className="flex flex-wrap gap-x-6 gap-y-2 pt-8">
             {SITE_CONFIG.footer.links.map((link, idx) => (
               <Link
                 key={idx}
@@ -190,7 +198,7 @@ const Footer: React.FC = React.memo(() => {
 
             <div className="flex items-center gap-4">
               <LanguageSwitcher />
-              <ContactTrigger type="button" className="btn-primary">
+              <ContactTrigger type="button" className="btn-primary !bg-amber-400 !text-accent">
                 {t('button.contactUs')}
               </ContactTrigger>
             </div>
