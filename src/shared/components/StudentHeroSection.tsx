@@ -13,6 +13,7 @@ interface StudentHeroSectionProps {
   description: string;
   stats?: StudentHeroStat[];
   children?: React.ReactNode;
+  rightContent?: React.ReactNode;
   villain?: {
     name: string;
     alias: string;
@@ -21,13 +22,14 @@ interface StudentHeroSectionProps {
   };
 }
 
-export function StudentHeroSection({ title, accentWord, description, stats, children }: StudentHeroSectionProps) {
+export function StudentHeroSection({ title, accentWord, description, stats, children, rightContent }: StudentHeroSectionProps) {
   return (
-    <div className="relative h-[calc(100dvh-5rem)] md:h-[calc(100dvh-6rem)] flex flex-col justify-center overflow-hidden">
+    <div className="relative min-h-dvh md:h-dvh flex flex-col justify-center overflow-hidden">
       <GridBoxedBackground opacity={0.3} blur={0} mask="none" />
 
-      <div className="relative z-10 px-3 md:px-4 lg:px-6 py-12 md:py-16">
-        <div className="w-full space-y-8">
+      <div className="relative z-10 w-full flex-1 mx-auto grid grid-cols-1 lg:grid-cols-2 text-left items-center h-full">
+        <div className="flex flex-col items-start justify-center px-3 md:px-4 lg:px-6 py-16 md:py-24">
+          <div className="w-full space-y-8">
           <h1 className="text-5xl md:text-7xl lg:text-8xl font-black text-text-primary tracking-tight leading-[1.05]">
             {title}{' '}
             {accentWord && <span className="text-accent">{accentWord}</span>}
@@ -53,7 +55,9 @@ export function StudentHeroSection({ title, accentWord, description, stats, chil
           )}
 
           {children}
+          </div>
         </div>
+        {rightContent ?? <div className="hidden lg:block" />}
       </div>
     </div>
   );
