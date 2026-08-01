@@ -126,16 +126,6 @@ const LandingLeaderboardSection = () => {
 
         {/* Grid column — fills same height as header */}
         <div className="relative flex-1 min-h-0 min-w-0 overflow-hidden flex items-center lg:justify-center">
-          {/* Desktop grid frame — 7 grid lines + 1 top line (8 total) */}
-          <div aria-hidden="true" className="hidden lg:block absolute inset-0 pointer-events-none select-none">
-            {Array.from({ length: 8 }).map((_, i) => (
-              <div
-                key={i}
-                className="absolute inset-x-0 border-t border-text-primary/10"
-                style={{ top: `${i * 76}px` }}
-              />
-            ))}
-          </div>
           {loading ? (
             <div
               className="relative flex flex-wrap content-start"
