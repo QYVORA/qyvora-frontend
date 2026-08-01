@@ -40,19 +40,19 @@ const LandingAnansiSection = () => {
               slides={PHASES}
               showArrows={false}
               renderCard={(item) => (
-                <div className="relative min-h-[300px] md:min-h-[440px] overflow-hidden p-5 sm:p-6 bg-bg rounded-2xl border border-border/30">
-                  <div className="flex items-center gap-3 mb-3">
-                    <div className="w-10 h-10 rounded-xl bg-accent/10 border border-accent/20 flex items-center justify-center">
-                      <item.icon className="w-5 h-5 text-accent" />
+                <div className="relative min-h-[300px] md:min-h-[440px] overflow-hidden p-5 sm:p-6 md:p-8 lg:p-10 bg-bg rounded-2xl border border-border/30">
+                  <div className="flex items-center gap-3 mb-4 md:mb-6">
+                    <div className="w-10 h-10 md:w-12 md:h-12 rounded-xl bg-accent/10 border border-accent/20 flex items-center justify-center">
+                      <item.icon className="w-5 h-5 md:w-6 md:h-6 text-accent" />
                     </div>
-                    <span className="text-[9px] font-black uppercase tracking-widest text-accent">
+                    <span className="text-[10px] md:text-xs font-black uppercase tracking-widest text-accent">
                       {t('landing.anansi.phaseLabel')} {item.id}
                     </span>
                   </div>
-                  <h3 className="mb-2 text-sm md:text-base font-black uppercase tracking-tight text-text-primary">
+                  <h3 className="mb-3 md:mb-4 text-xl md:text-2xl lg:text-3xl font-black uppercase tracking-tight text-text-primary">
                     {item.name}
                   </h3>
-                  <p className="max-w-xl text-[10px] md:text-xs text-text-muted leading-relaxed">
+                  <p className="max-w-xl text-xs sm:text-sm md:text-base text-text-muted leading-relaxed">
                     {item.desc}
                   </p>
                 </div>
