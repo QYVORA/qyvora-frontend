@@ -108,7 +108,7 @@ const LandingHeroSection: React.FC<LandingHeroSectionProps> = ({
   }, [disableTypewriter, steps]);
 
   return (
-    <div ref={heroRef} className="relative w-full h-full md:h-dvh min-h-dvh overflow-hidden flex flex-col bg-bg" data-nav-invert>
+    <div ref={heroRef} className="relative w-full h-full lg:h-dvh min-h-dvh overflow-hidden flex flex-col bg-bg" data-nav-invert>
 
       {/* ── Animated grid background — fades in from globe side ── */}
       <GridBoxedBackground reduced={shouldReduceMotion || constrainedDevice} blur={0} mask="right" />
@@ -172,19 +172,19 @@ const LandingHeroSection: React.FC<LandingHeroSectionProps> = ({
             <h1 className="font-black text-text-primary leading-[1.08] tracking-tight w-full relative">
               {/* Hidden placeholder — sets fixed height for tallest text so nothing shifts */}
               <span className="invisible pointer-events-none select-none" aria-hidden="true">
-                <span className="block whitespace-normal lg:whitespace-nowrap text-[2.5rem] min-[400px]:text-[3rem] sm:text-[3.25rem] md:text-[3.75rem] lg:text-[3.25rem] xl:text-[3.75rem] lg:leading-[1.1] xl:leading-[1.05]">
+                <span className="block whitespace-normal lg:whitespace-nowrap text-[2rem] min-[400px]:text-[2.25rem] sm:text-[2.5rem] md:text-[3rem] lg:text-[2.5rem] xl:text-[3rem] lg:leading-[1.1] xl:leading-[1.05]">
                   {t('typewriter.trainLikeAHacker')}
                 </span>
-                <span className="block whitespace-normal lg:whitespace-nowrap text-[2.5rem] min-[400px]:text-[3rem] sm:text-[3.25rem] md:text-[3.75rem] lg:text-[3.25rem] xl:text-[3.75rem] lg:leading-[1.1] xl:leading-[1.05]">
+                <span className="block whitespace-normal lg:whitespace-nowrap text-[2rem] min-[400px]:text-[2.25rem] sm:text-[2.5rem] md:text-[3rem] lg:text-[2.5rem] xl:text-[3rem] lg:leading-[1.1] xl:leading-[1.05]">
                   {t('typewriter.cyberProfessionals')}
                 </span>
               </span>
               {/* Visible animated text — absolute overlay */}
               <span className="absolute inset-0">
-                <span ref={line1Ref} className="block whitespace-normal lg:whitespace-nowrap text-[2.5rem] min-[400px]:text-[3rem] sm:text-[3.25rem] md:text-[3.75rem] lg:text-[3.25rem] xl:text-[3.75rem] lg:leading-[1.1] xl:leading-[1.05]">
+                <span ref={line1Ref} className="block whitespace-normal lg:whitespace-nowrap text-[2rem] min-[400px]:text-[2.25rem] sm:text-[2.5rem] md:text-[3rem] lg:text-[2.5rem] xl:text-[3rem] lg:leading-[1.1] xl:leading-[1.05]">
                   {steps[0].line1}
                 </span>
-                <span className="relative block whitespace-normal lg:whitespace-nowrap text-[2.5rem] min-[400px]:text-[3rem] sm:text-[3.25rem] md:text-[3.75rem] lg:text-[3.25rem] xl:text-[3.75rem] lg:leading-[1.1] xl:leading-[1.05]">
+                <span className="relative block whitespace-normal lg:whitespace-nowrap text-[2rem] min-[400px]:text-[2.25rem] sm:text-[2.5rem] md:text-[3rem] lg:text-[2.5rem] xl:text-[3rem] lg:leading-[1.1] xl:leading-[1.05]">
                   <span ref={line2PlaceholderRef} className="invisible" aria-hidden="true">{steps[0].line2}</span>
                   <span className="absolute left-0 top-0 text-accent">
                     <span ref={line2DisplayRef}></span>
@@ -210,7 +210,7 @@ const LandingHeroSection: React.FC<LandingHeroSectionProps> = ({
             initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={minimizeEffects ? { duration: 0.2 } : { duration: 0.5, delay: 0.85, ease: [0.16, 1, 0.3, 1] }}
-            className="flex flex-col sm:flex-row w-full sm:w-auto items-stretch sm:items-center gap-4 mt-auto sm:mt-12 lg:mt-9"
+            className="flex flex-col sm:flex-row w-full sm:w-auto items-stretch sm:items-center gap-4 mt-8 sm:mt-12 lg:mt-9"
           >
             {user ? (
               <Link to="/dashboard" className="btn-primary flex items-center justify-center gap-2.5 !px-8 sm:!px-10 !py-3 sm:!py-4">
