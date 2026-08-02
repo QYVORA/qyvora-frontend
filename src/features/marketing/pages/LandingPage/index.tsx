@@ -131,17 +131,17 @@ const Landing: React.FC = () => {
 
       {/* ── ACT I: VISION ──────────────────────────────────────────────── */}
       {/* 1. Hero */}
-      <section id="hero" className="relative w-full min-h-dvh md:h-dvh snap-section bg-bg">
+      <section id="hero" className="relative w-full min-h-dvh lg:h-dvh snap-section bg-bg">
         <LandingHeroSection heroRef={heroRef} user={user} stats={stats} totalCp={totalCp} />
       </section>
 
       {/* 2. Platform */}
-      <section id="pillars" className="relative w-full min-h-dvh md:h-dvh snap-section bg-bg-alt">
+      <section id="pillars" className="relative w-full min-h-dvh lg:h-dvh snap-section bg-bg-alt">
         <LandingPillarsSection />
       </section>
 
       {/* ── ACT II: THE WORK ──────────────────────────────────────────── */}
-      <section id="act-ii" className="relative w-full min-h-dvh md:h-dvh snap-section bg-bg">
+      <section id="act-ii" className="relative w-full min-h-dvh lg:h-dvh snap-section bg-bg">
         <ActDividerSection
           number="II"
           title="The"
@@ -152,22 +152,22 @@ const Landing: React.FC = () => {
       </section>
 
       {/* 3. Labs */}
-      <section id="labs" className="relative w-full min-h-dvh md:h-dvh snap-section bg-bg">
+      <section id="labs" className="relative w-full min-h-dvh lg:h-dvh snap-section bg-bg">
         <LandingLabsSection />
       </section>
 
       {/* 4. Courses */}
-      <section id="courses" className="relative w-full min-h-dvh md:h-dvh snap-section bg-bg-alt">
+      <section id="courses" className="relative w-full min-h-dvh lg:h-dvh snap-section bg-bg-alt">
         <LandingCoursesSection />
       </section>
 
       {/* 5. Bootcamp */}
-      <section id="bootcamp" className="relative w-full min-h-dvh md:h-dvh snap-section bg-bg">
+      <section id="bootcamp" className="relative w-full min-h-dvh lg:h-dvh snap-section bg-bg">
         <LandingBootcampSection />
       </section>
 
       {/* ── ACT III: THE WORLD ──────────────────────────────────────────── */}
-      <section id="act-iii" className="relative w-full min-h-dvh md:h-dvh snap-section bg-bg-alt">
+      <section id="act-iii" className="relative w-full min-h-dvh lg:h-dvh snap-section bg-bg-alt">
         <ActDividerSection
           number="III"
           title="The"
@@ -178,42 +178,42 @@ const Landing: React.FC = () => {
       </section>
 
       {/* 6. Team */}
-      <section id="team" className="relative w-full min-h-dvh md:h-dvh snap-section bg-bg">
+      <section id="team" className="relative w-full min-h-dvh lg:h-dvh snap-section bg-bg">
         <LandingTeamSection />
       </section>
 
       {/* 7. QuiteRoot */}
-      <section id="quiteroot" className="relative w-full min-h-dvh md:h-dvh snap-section bg-bg-alt">
+      <section id="quiteroot" className="relative w-full min-h-dvh lg:h-dvh snap-section bg-bg-alt">
         <LandingQuiteRootSection />
       </section>
 
       {/* 8. Anansi */}
-      <section id="anansi" className="relative w-full min-h-dvh md:h-dvh snap-section bg-bg">
+      <section id="anansi" className="relative w-full min-h-dvh lg:h-dvh snap-section bg-bg">
         <LandingAnansiSection />
       </section>
 
       {/* 9. Blogs */}
-      <section id="blogs" className="relative w-full min-h-dvh md:h-dvh snap-section bg-bg-alt">
+      <section id="blogs" className="relative w-full min-h-dvh lg:h-dvh snap-section bg-bg-alt">
         <LandingBlogsSection />
       </section>
 
       {/* 10. Market */}
-      <section id="market" className="relative w-full min-h-dvh md:h-dvh snap-section bg-bg">
+      <section id="market" className="relative w-full min-h-dvh lg:h-dvh snap-section bg-bg">
         <LandingMarketSection />
       </section>
 
       {/* 11. Leaderboard */}
-      <section id="leaderboard" className="relative w-full min-h-dvh md:h-dvh snap-section bg-bg-alt">
+      <section id="leaderboard" className="relative w-full min-h-dvh lg:h-dvh snap-section bg-bg-alt">
         <LandingLeaderboardSection />
       </section>
 
       {/* 12. Services */}
-      <section id="services" className="relative w-full min-h-dvh md:h-dvh snap-section bg-bg">
+      <section id="services" className="relative w-full min-h-dvh lg:h-dvh snap-section bg-bg">
         <LandingServicesSection />
       </section>
 
       {/* 13. CTA */}
-      <section id="cta" className="relative w-full min-h-dvh md:h-dvh snap-section bg-bg-alt">
+      <section id="cta" className="relative w-full min-h-dvh lg:h-dvh snap-section bg-bg-alt">
         <LandingFinalCtaSection user={user} />
       </section>
 

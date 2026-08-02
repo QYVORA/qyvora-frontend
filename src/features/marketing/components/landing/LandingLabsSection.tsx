@@ -47,7 +47,7 @@ const LandingLabsSection: React.FC = () => {
   const supporting = group.slice(1);
 
   return (
-    <div className="relative bg-bg min-h-dvh md:h-dvh flex flex-col overflow-hidden" data-nav-invert>
+    <div className="relative bg-bg min-h-dvh lg:h-dvh flex flex-col overflow-hidden" data-nav-invert>
       <GridBoxedBackground opacity={0.4} blur={0} mask="right" />
       <div className="relative z-10 w-full h-full px-3 md:px-4 lg:px-6 pt-24 md:pt-28 lg:pt-32 pb-6 md:pb-8 lg:pb-10 flex flex-col">
         <div className="w-full flex-1 flex flex-col min-h-0">
