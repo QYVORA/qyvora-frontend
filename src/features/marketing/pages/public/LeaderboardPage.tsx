@@ -6,7 +6,8 @@ import { useAuth } from '@/core/contexts/AuthContext';
 import { ScrollReveal } from '@/shared/components';
 import { LeaderboardRow, PodiumCard, useLeaderboard, PERIODS } from '@/shared/components/leaderboard';
 import SEO from '@/shared/components/SEO';
-import StudentHeroSection from '@/shared/components/StudentHeroSection';
+import PublicSnapLayout from '@/shared/components/PublicSnapLayout';
+import StudentHeroSection, { PUBLIC_HERO_TITLE_CLASS } from '@/shared/components/StudentHeroSection';
 import { ErrorState } from '@/shared/components/ui';
 import type { Period } from '@/shared/components/leaderboard';
 
@@ -48,16 +49,18 @@ const LeaderboardPage = () => {
   return (
     <div className="bg-bg min-h-full">
       <SEO title="Leaderboard - QYVORA" description="Top offensive security operators ranked by CP earnings." />
-      <div className="px-3 md:px-4 lg:px-6">
+      <PublicSnapLayout>
         <StudentHeroSection
           icon={<Trophy className="w-8 h-8 text-accent" />}
           title="Leaderboard"
+          titleClassName={PUBLIC_HERO_TITLE_CLASS}
           description="Top operators ranked by CP earnings. The leaderboard is verified by the QYVORA Chain."
           stats={[{ label: 'Operators', value: Number(total).toLocaleString() }]}
         />
 
         {/* ── Period + Podium ─────────────────────────────────────────── */}
-        <div className="min-h-dvh flex flex-col justify-center py-16 md:py-20">
+        <div className="min-h-dvh md:h-dvh md:overflow-y-auto px-3 md:px-4 lg:px-6">
+          <div className="min-h-full flex flex-col justify-center py-16 md:py-20">
           <div className="flex items-center gap-2 flex-wrap mb-8 md:mb-12">
             {PERIODS.map((p) => (
               <button
@@ -102,11 +105,13 @@ const LeaderboardPage = () => {
               })}
             </div>
           )}
+          </div>
         </div>
 
         {/* ── Remaining list ──────────────────────────────────────────── */}
         {rest.length > 0 && (
-          <div className="min-h-dvh flex flex-col justify-center py-16 md:py-20">
+          <div className="min-h-dvh md:h-dvh md:overflow-y-auto px-3 md:px-4 lg:px-6">
+          <div className="min-h-full flex flex-col justify-center py-16 md:py-20">
             <div>
               <div className="hidden md:grid grid-cols-[48px_1fr_140px_100px_80px] gap-4 px-6 py-3 text-[10px] font-black uppercase tracking-widest text-text-muted/50 border-b border-border/40">
                 <span>Rank</span>
@@ -147,8 +152,9 @@ const LeaderboardPage = () => {
               </div>
             </div>
           </div>
+          </div>
         )}
-      </div>
+      </PublicSnapLayout>
     </div>
   );
 };

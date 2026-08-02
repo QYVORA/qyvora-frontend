@@ -8,7 +8,8 @@ import api from '@/core/services/api';
 import productFallbackImg from '@/assets/sections/stats/cp-earned-bg.webp';
 import { AuthImage, Skeleton, ErrorState } from '@/shared/components/ui';
 import SEO from '@/shared/components/SEO';
-import StudentHeroSection from '@/shared/components/StudentHeroSection';
+import PublicSnapLayout from '@/shared/components/PublicSnapLayout';
+import StudentHeroSection, { PUBLIC_HERO_TITLE_CLASS } from '@/shared/components/StudentHeroSection';
 import CpLogo from '@/shared/components/CpLogo';
 import { useAuth } from '@/core/contexts/AuthContext';
 
@@ -52,11 +53,12 @@ const MarketPage = () => {
   return (
     <div className="bg-bg min-h-full">
       <SEO title="Zero Day Market - QYVORA" description="Intelligence assets, guides, papers, and tools available for CP." />
-      <div className="px-3 md:px-4 lg:px-6">
+      <PublicSnapLayout>
         <StudentHeroSection
           icon={<ShoppingBag className="w-8 h-8 text-accent" />}
           title="Zero Day"
           accentWord="Market"
+          titleClassName={PUBLIC_HERO_TITLE_CLASS}
           description="Intelligence assets, research papers, guides, and offensive security tools. Available for CP."
         >
           {!user && (
@@ -69,7 +71,8 @@ const MarketPage = () => {
           )}
         </StudentHeroSection>
 
-        <div className="min-h-dvh flex flex-col justify-center py-16 md:py-20">
+        <div className="min-h-dvh md:h-dvh md:overflow-y-auto px-3 md:px-4 lg:px-6">
+          <div className="min-h-full flex flex-col justify-center py-16 md:py-20">
           <div className="space-y-8">
         <div className="relative w-full sm:w-72">
           <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-text-muted" />
@@ -162,8 +165,9 @@ const MarketPage = () => {
           </div>
           )}
           </div>
+          </div>
         </div>
-      </div>
+      </PublicSnapLayout>
     </div>
   );
 };

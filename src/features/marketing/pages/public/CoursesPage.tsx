@@ -4,7 +4,8 @@ import { GraduationCap, Sparkles, TrendingUp } from 'lucide-react';
 import { IconArrowRight, IconTerminal, IconNetwork, IconCode } from '@/shared/components/icons';
 import { ScrollReveal } from '@/shared/components';
 import SEO from '@/shared/components/SEO';
-import StudentHeroSection from '@/shared/components/StudentHeroSection';
+import PublicSnapLayout from '@/shared/components/PublicSnapLayout';
+import StudentHeroSection, { PUBLIC_HERO_TITLE_CLASS } from '@/shared/components/StudentHeroSection';
 import { COURSES, getCategoryById } from '@/features/student/data/courses';
 import type { SkillLevel } from '@/features/student/data/courses';
 
@@ -29,13 +30,15 @@ const CoursesPage = () => {
   return (
     <div className="bg-bg min-h-full">
       <SEO title="Courses - QYVORA" description="Master offensive security with QYVORA's structured courses." />
-      <div className="px-3 md:px-4 lg:px-6">
+      <PublicSnapLayout>
         <StudentHeroSection
           title="Courses"
+          titleClassName={PUBLIC_HERO_TITLE_CLASS}
           description="Structured offensive security courses from terminal mastery to web exploitation."
         />
 
-        <div className="min-h-dvh flex flex-col justify-center py-16 md:py-20">
+        <div className="min-h-dvh md:h-dvh md:overflow-y-auto px-3 md:px-4 lg:px-6">
+          <div className="min-h-full flex flex-col justify-center py-16 md:py-20">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
           {COURSES.map((course) => {
             const category = getCategoryById(course.categoryId);
@@ -77,8 +80,9 @@ const CoursesPage = () => {
             );
           })}
           </div>
+          </div>
         </div>
-      </div>
+      </PublicSnapLayout>
     </div>
   );
 };
