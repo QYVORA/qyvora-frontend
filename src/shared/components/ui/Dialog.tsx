@@ -172,14 +172,14 @@ export const ConfirmDialog: React.FC<ConfirmDialogProps> = (props) => {
       <p className="text-sm text-text-secondary mb-6 -mt-1">{description}</p>
       <div className="flex gap-3">
         <DialogClose asChild>
-          <button className="flex-1 btn-secondary !py-2.5 !rounded-2xl text-xs">
+          <button className="flex-1 btn-secondary !py-2.5 !rounded-xl text-xs">
             {cancelLabel}
           </button>
         </DialogClose>
         <button
           onClick={() => { onConfirm(); onOpenChange(false); }}
           className={cn(
-            'flex-1 !py-2.5 !rounded-2xl text-xs font-bold uppercase tracking-wide transition-all',
+            'flex-1 !py-2.5 !rounded-xl text-xs font-bold uppercase tracking-wide transition-all',
             destructive
               ? 'bg-red-500/10 border border-red-500/40 text-red-400 hover:bg-red-500/20'
               : 'btn-primary',
