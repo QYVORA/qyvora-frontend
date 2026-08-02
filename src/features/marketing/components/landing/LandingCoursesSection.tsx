@@ -108,7 +108,7 @@ const LandingCoursesSection: React.FC = () => {
   const ActiveCatIcon = pageCourses[0] ? CATEGORY_ICONS[pageCourses[0].category] : GraduationCap;
 
   return (
-    <div className="relative overflow-hidden min-h-dvh md:h-dvh flex flex-col" data-nav-invert>
+    <div className="relative overflow-hidden min-h-dvh lg:h-dvh flex flex-col" data-nav-invert>
       <GridBoxedBackground opacity={0.4} blur={0} mask="right" />
       <div className="relative z-10 w-full h-full px-3 md:px-4 lg:px-6 pt-20 md:pt-24 lg:pt-28 pb-14 md:pb-20 lg:pb-28 flex flex-col">
         <div className="w-full flex-1 flex flex-col min-h-0">

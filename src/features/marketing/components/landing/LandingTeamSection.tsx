@@ -7,7 +7,7 @@ import { useTranslation } from 'react-i18next';
 const LandingTeamSection = () => {
   const { t } = useTranslation();
   return (
-    <div className="relative bg-bg min-h-dvh md:h-dvh flex flex-col overflow-hidden">
+    <div className="relative bg-bg min-h-dvh lg:h-dvh flex flex-col overflow-hidden">
       <div className="relative z-10 w-full h-full px-3 md:px-4 lg:px-6 py-12 sm:py-10 md:py-16 lg:py-20 flex flex-col gap-8 sm:gap-10 lg:gap-12">
         {/* Header */}
         <div className="flex flex-col">

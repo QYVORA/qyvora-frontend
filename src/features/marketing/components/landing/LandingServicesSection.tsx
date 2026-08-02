@@ -49,7 +49,7 @@ const LandingServicesSection: React.FC = () => {
   }));
 
   return (
-    <div className="relative overflow-hidden min-h-dvh md:h-dvh flex flex-col">
+    <div className="relative overflow-hidden min-h-dvh lg:h-dvh flex flex-col">
       <div className="relative w-full h-full px-3 md:px-4 lg:px-6 pt-20 md:pt-24 lg:pt-28 pb-6 md:pb-8 lg:pb-10 flex flex-col">
         <div className="w-full flex-1 flex flex-col min-h-0">
           {/* Bento grid: 4 columns on desktop — same structure as pillars */}
