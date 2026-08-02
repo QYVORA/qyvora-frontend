@@ -42,17 +42,22 @@ const Toggle: React.FC<{ checked: boolean; onChange: (v: boolean) => void; disab
     aria-checked={checked}
     onClick={() => onChange(!checked)}
     disabled={disabled}
-    className={`relative inline-flex shrink-0 items-center rounded-full transition-colors duration-200 focus:outline-none disabled:opacity-50 ${
-      checked ? 'bg-accent' : 'bg-border'
-    }`}
-    style={{ width: '44px', height: '24px', minWidth: '44px', minHeight: '24px' }}
+    className="relative inline-flex shrink-0 items-center justify-center rounded-full transition-transform duration-200 focus:outline-none disabled:opacity-50 active:scale-95"
+    style={{ width: '44px', height: '44px', minWidth: '44px', minHeight: '44px' }}
   >
     <span
-      className={`pointer-events-none inline-block rounded-full bg-bg shadow-lg transition-transform duration-200 ${
-        checked ? 'translate-x-[22px]' : 'translate-x-[2px]'
+      className={`pointer-events-none inline-flex items-center rounded-full transition-colors duration-200 ${
+        checked ? 'bg-accent' : 'bg-border'
       }`}
-      style={{ width: '20px', height: '20px' }}
-    />
+      style={{ width: '44px', height: '24px' }}
+    >
+      <span
+        className={`inline-block rounded-full bg-bg shadow-lg transition-transform duration-200 ${
+          checked ? 'translate-x-[22px]' : 'translate-x-[2px]'
+        }`}
+        style={{ width: '20px', height: '20px' }}
+      />
+    </span>
   </button>
 );
 
@@ -281,7 +286,7 @@ const Settings: React.FC = () => {
                 <button
                   key={tab}
                   onClick={() => setActiveTab(tab)}
-                  className={`flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-bold uppercase tracking-widest whitespace-nowrap transition-colors ${
+                  className={`flex items-center gap-2 px-3 min-h-[44px] rounded-xl text-xs font-bold uppercase tracking-widest whitespace-nowrap transition-colors ${
                     activeTab === tab ? 'bg-accent text-bg' : 'text-text-muted hover:text-text-primary hover:bg-accent/5'
                   }`}
                 >
