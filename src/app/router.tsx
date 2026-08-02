@@ -34,6 +34,9 @@ const CoursesPage       = lazy(() => import('../features/marketing/pages/public/
 const HpbPage           = lazy(() => import('../features/marketing/pages/public/HpbPage'));
 const PublicLabsPage     = lazy(() => import('../features/marketing/pages/public/LabsPage'));
 const ServicesPage      = lazy(() => import('../features/marketing/pages/public/ServicesPage'));
+const BasicPentestPage  = lazy(() => import('../features/marketing/pages/public/services/BasicPentestPage'));
+const StandardPentestPage = lazy(() => import('../features/marketing/pages/public/services/StandardPentestPage'));
+const EmployeeBootcampPage = lazy(() => import('../features/marketing/pages/public/services/EmployeeBootcampPage'));
 const LeaderboardPage   = lazy(() => import('../features/marketing/pages/public/LeaderboardPage'));
 const MarketPage        = lazy(() => import('../features/marketing/pages/public/MarketPage'));
 const AnansiPage        = lazy(() => import('../features/marketing/pages/public/AnansiPage'));
@@ -177,6 +180,9 @@ export const AppRouter = () => {
           <Route path="/learn" element={<Navigate to="/hpb" replace />} />
           <Route path="/labs" element={<Wrap scope="Labs"><PublicLabsPage /></Wrap>} />
           <Route path="/services" element={<Wrap scope="Services"><ServicesPage /></Wrap>} />
+          <Route path="/services/basic-web-application-pentest" element={<Wrap scope="Basic Pentest"><BasicPentestPage /></Wrap>} />
+          <Route path="/services/standard-web-application-pentest" element={<Wrap scope="Standard Pentest"><StandardPentestPage /></Wrap>} />
+          <Route path="/services/employee-cybersecurity-bootcamp" element={<Wrap scope="Employee Bootcamp"><EmployeeBootcampPage /></Wrap>} />
           <Route path="/leaderboard" element={<Wrap scope="Leaderboard"><LeaderboardPage /></Wrap>} />
           <Route path="/leaderboard/all" element={<Navigate to="/leaderboard" replace />} />
           <Route path="/zero-day-market" element={<Wrap scope="Market"><MarketPage /></Wrap>} />
