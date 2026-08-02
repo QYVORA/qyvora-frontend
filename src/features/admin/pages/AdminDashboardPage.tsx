@@ -173,7 +173,7 @@ const AdminDashboardPage: React.FC = () => {
         className="scroll-hover lg:fixed lg:left-0 lg:right-20 lg:bottom-0 lg:top-24 lg:overflow-y-auto lg:overscroll-contain"
         style={{ scrollBehavior: 'smooth' }}
       >
-        <div className="px-4 md:px-6 pt-8 pb-20 lg:pb-24 space-y-6">
+        <div className="px-3 md:px-4 lg:px-6 pt-8 pb-20 lg:pb-24 space-y-6">
 
           <LearningOverviewCard
             icon={<Shield className="w-6 h-6 text-bg" />}

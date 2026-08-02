@@ -71,6 +71,18 @@ const OverviewTab = () => {
     { key: 'createdAt', header: t('common2.date'), render: (u) => <span className="text-[10px] text-text-muted font-mono">{new Date(u.createdAt).toLocaleDateString()}</span>, className: 'text-right' },
   ];
 
+  const signupMobileCard = (u: { id: string; name: string; email: string; createdAt: string }) => (
+    <div className="bg-bg-card border border-border/30 rounded-2xl p-4 space-y-2">
+      <div className="flex items-center justify-between gap-4">
+        <div className="min-w-0">
+          <div className="text-sm font-bold text-text-primary truncate">{u.name || t('common2.unknown')}</div>
+          <div className="text-xs text-text-muted font-mono truncate">{u.email}</div>
+        </div>
+        <span className="text-[10px] text-text-muted font-mono whitespace-nowrap shrink-0">{new Date(u.createdAt).toLocaleDateString()}</span>
+      </div>
+    </div>
+  );
+
   return (
     <div className="space-y-6">
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -88,6 +100,7 @@ const OverviewTab = () => {
           columns={signupColumns}
           keyExtractor={(u) => u.id}
           loading={loading}
+          mobileCard={signupMobileCard}
           emptyTitle={t('admin.overview.noRecentSignups')}
           pageSize={5}
           minWidth="min-w-[400px]"

@@ -49,7 +49,7 @@ const SecurityTab: React.FC<SecurityTabProps> = ({ securitySummary, securityEven
         mobileCard={mobileCard}
         emptyTitle={t('admin.security.empty')}
         pageSize={25}
-        minWidth="min-w-[860px]"
+        minWidth="min-w-[720px]"
       />
     </div>
   );
