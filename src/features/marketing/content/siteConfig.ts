@@ -90,6 +90,7 @@ export const SITE_CONFIG = {
         key: 'platform',
         label: 'Platform',
         items: [
+          { key: 'services', label: 'Services', path: '/services', desc: 'Enterprise security services' },
           { key: 'courses', label: 'Courses', path: '/courses', desc: 'Security courses' },
           { key: 'bootcamp', label: 'Bootcamp', path: '/hpb', desc: 'Hacker Protocol Bootcamp' },
           { key: 'labs', label: 'Labs', path: '/labs', desc: 'Attack labs' },
@@ -106,6 +107,7 @@ export const SITE_CONFIG = {
       },
     ],
     platform: [
+      { key: 'services', label: 'Services', path: '/services', desc: 'Enterprise security services' },
       { key: 'courses', label: 'Courses', path: '/courses', desc: 'Security courses' },
       { key: 'bootcamp', label: 'Bootcamp', path: '/hpb', desc: 'Hacker Protocol Bootcamp' },
       { key: 'labs', label: 'Labs', path: '/labs', desc: 'Attack labs' },
