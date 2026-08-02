@@ -4,7 +4,8 @@ import { Users } from 'lucide-react';
 import { IconArrowRight, BrandGithubIcon, BrandLinkedinIcon, BrandXIcon } from '@/shared/components/icons';
 import { ScrollReveal } from '@/shared/components';
 import SEO from '@/shared/components/SEO';
-import StudentHeroSection from '@/shared/components/StudentHeroSection';
+import PublicSnapLayout from '@/shared/components/PublicSnapLayout';
+import StudentHeroSection, { PUBLIC_HERO_TITLE_CLASS } from '@/shared/components/StudentHeroSection';
 import { teamData } from '@/features/marketing/content/teamData';
 
 const SOCIAL_ICONS: Record<string, React.ElementType> = {
@@ -19,16 +20,18 @@ const TeamPage = () => {
   return (
     <div className="bg-bg min-h-full">
       <SEO title="Team - QYVORA" description="The team behind QYVORA — operators, engineers, and security researchers." />
-      <div className="px-3 md:px-4 lg:px-6">
+      <PublicSnapLayout>
         <StudentHeroSection
           icon={<Users className="w-8 h-8 text-accent" />}
           title="Our"
           accentWord="Team"
+          titleClassName={PUBLIC_HERO_TITLE_CLASS}
           description="Operators, engineers, and researchers building Africa's offensive security ecosystem."
           stats={[{ label: 'Members', value: teamData.length }]}
         />
 
-        <div className="min-h-dvh flex flex-col justify-center py-16 md:py-20">
+        <div className="min-h-dvh md:h-dvh md:overflow-y-auto px-3 md:px-4 lg:px-6">
+          <div className="min-h-full flex flex-col justify-center py-16 md:py-20">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
           {teamData.map((member) => (
             <ScrollReveal key={member.id} amount={0.05}>
@@ -87,8 +90,9 @@ const TeamPage = () => {
             </ScrollReveal>
           ))}
           </div>
+          </div>
         </div>
-      </div>
+      </PublicSnapLayout>
     </div>
   );
 };

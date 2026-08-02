@@ -5,7 +5,8 @@ import { User, Search } from 'lucide-react';
 import { IconArrowRight, IconClock } from '@/shared/components/icons';
 import { ScrollReveal } from '@/shared/components';
 import SEO from '@/shared/components/SEO';
-import StudentHeroSection from '@/shared/components/StudentHeroSection';
+import PublicSnapLayout from '@/shared/components/PublicSnapLayout';
+import StudentHeroSection, { PUBLIC_HERO_TITLE_CLASS } from '@/shared/components/StudentHeroSection';
 import { BLOG_POSTS } from '@/features/marketing/pages/BlogsPage/blogContent';
 
 const BlogsPage = () => {
@@ -33,15 +34,17 @@ const BlogsPage = () => {
   return (
     <div className="bg-bg min-h-full">
       <SEO title="Blogs - QYVORA" description="Security research, tutorials, and updates from the QYVORA team." />
-      <div className="px-3 md:px-4 lg:px-6">
+      <PublicSnapLayout>
         <StudentHeroSection
           title="Intelligence"
           accentWord="Reports"
+          titleClassName={PUBLIC_HERO_TITLE_CLASS}
           description="Security research, walkthroughs, and platform updates from the QYVORA team."
           stats={[{ label: 'Articles', value: BLOG_POSTS.length }]}
         />
 
-        <div className="min-h-dvh flex flex-col justify-center py-16 md:py-20">
+        <div className="min-h-dvh md:h-dvh md:overflow-y-auto px-3 md:px-4 lg:px-6">
+          <div className="min-h-full flex flex-col justify-center py-16 md:py-20">
           <div className="space-y-8">
           <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
           <div className="flex items-center gap-2 flex-wrap">
@@ -128,8 +131,9 @@ const BlogsPage = () => {
           </div>
           )}
           </div>
+          </div>
         </div>
-      </div>
+      </PublicSnapLayout>
     </div>
   );
 };

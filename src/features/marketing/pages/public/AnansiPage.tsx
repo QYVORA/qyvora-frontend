@@ -2,7 +2,8 @@ import { Terminal, Download, ChevronRight, GitBranch } from 'lucide-react';
 import { IconArrowRight } from '@/shared/components/icons';
 import { ScrollReveal } from '@/shared/components';
 import SEO from '@/shared/components/SEO';
-import StudentHeroSection from '@/shared/components/StudentHeroSection';
+import PublicSnapLayout from '@/shared/components/PublicSnapLayout';
+import StudentHeroSection, { PUBLIC_HERO_TITLE_CLASS } from '@/shared/components/StudentHeroSection';
 import { PHASES } from '@/features/marketing/data/anansiData';
 import anansiLogo from '@/assets/anansi/anansi-main-logo.webp';
 
@@ -27,10 +28,11 @@ const AnansiPage = () => {
   return (
     <div className="bg-bg min-h-full">
       <SEO title="Anansi - QYVORA" description="Anansi — Attack Surface Intelligence CLI for reconnaissance and surface mapping." />
-      <div className="px-3 md:px-4 lg:px-6">
+      <PublicSnapLayout>
         <StudentHeroSection
           title="Anansi"
           accentWord="CLI"
+          titleClassName={PUBLIC_HERO_TITLE_CLASS}
           description="Attack Surface Intelligence CLI — discover, probe, and map attack surfaces from the terminal."
           stats={[
             { label: 'Modules', value: PHASES.length },
@@ -54,7 +56,8 @@ const AnansiPage = () => {
           </a>
         </StudentHeroSection>
 
-        <div className="min-h-dvh flex flex-col justify-center py-16 md:py-20">
+        <div className="min-h-dvh md:h-dvh md:overflow-y-auto px-3 md:px-4 lg:px-6">
+          <div className="min-h-full flex flex-col justify-center py-16 md:py-20">
           <div className="space-y-4">
           <h3 className="text-xs font-black uppercase tracking-[0.3em] text-text-muted">Modules</h3>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
@@ -75,10 +78,12 @@ const AnansiPage = () => {
             ))}
           </div>
           </div>
+          </div>
         </div>
 
         {/* ── Install ─────────────────────────────────────────────────────── */}
-        <div className="min-h-dvh flex flex-col justify-center py-16 md:py-20">
+        <div className="min-h-dvh md:h-dvh md:overflow-y-auto px-3 md:px-4 lg:px-6">
+          <div className="min-h-full flex flex-col justify-center py-16 md:py-20">
           <div id="install" className="space-y-4 scroll-mt-28">
             <h3 className="text-xs font-black uppercase tracking-[0.3em] text-text-muted">Install</h3>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6">
@@ -153,9 +158,11 @@ const AnansiPage = () => {
           </div>
             </div>
           </div>
+        </div>
 
         {/* ── Quick Start ─────────────────────────────────────────────────── */}
-        <div className="min-h-dvh flex flex-col justify-center py-16 md:py-20">
+        <div className="min-h-dvh md:h-dvh md:overflow-y-auto px-3 md:px-4 lg:px-6">
+          <div className="min-h-full flex flex-col justify-center py-16 md:py-20">
           <div className="rounded-2xl border border-border/30 bg-bg-card p-6 space-y-4">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-xl bg-accent/10 flex items-center justify-center shrink-0">
@@ -177,8 +184,9 @@ const AnansiPage = () => {
             Only scan targets you own or have explicit written permission to test.
           </p>
           </div>
+          </div>
         </div>
-      </div>
+      </PublicSnapLayout>
     </div>
   );
 };

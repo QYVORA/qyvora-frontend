@@ -4,7 +4,8 @@ import { FlaskConical, Zap, Star } from 'lucide-react';
 import { IconArrowRight } from '@/shared/components/icons';
 import { ScrollReveal } from '@/shared/components';
 import SEO from '@/shared/components/SEO';
-import StudentHeroSection from '@/shared/components/StudentHeroSection';
+import PublicSnapLayout from '@/shared/components/PublicSnapLayout';
+import StudentHeroSection, { PUBLIC_HERO_TITLE_CLASS } from '@/shared/components/StudentHeroSection';
 
 const LABS = [
   { id: 'privesc', route: '/dashboard/labs/privesc', accentColor: '#FBBF24', difficulty: 'beginner-advanced', cpReward: '50-400' },
@@ -26,11 +27,12 @@ const LabsPage = () => {
   return (
     <div className="bg-bg min-h-full">
       <SEO title="Attack Labs - QYVORA" description="Hands-on offensive security labs covering privilege escalation, password cracking, SQL injection, OSINT, and the full kill chain." />
-      <div className="px-3 md:px-4 lg:px-6">
+      <PublicSnapLayout>
         <StudentHeroSection
           icon={<FlaskConical className="w-8 h-8 text-accent" />}
           title="Attack"
           accentWord="Labs"
+          titleClassName={PUBLIC_HERO_TITLE_CLASS}
           description="Real-world offensive security labs in a sandboxed environment. Practice privilege escalation, password attacks, SQL injection, OSINT, and full kill-chain operations."
           stats={[
             { label: 'Labs', value: LABS.length },
@@ -45,7 +47,8 @@ const LabsPage = () => {
           </Link>
         </StudentHeroSection>
 
-        <div className="min-h-dvh flex flex-col justify-center py-16 md:py-20">
+        <div className="min-h-dvh md:h-dvh md:overflow-y-auto px-3 md:px-4 lg:px-6">
+          <div className="min-h-full flex flex-col justify-center py-16 md:py-20">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
           {LABS.map((lab) => {
             const baseDiff = lab.difficulty.split('-')[0];
@@ -86,8 +89,9 @@ const LabsPage = () => {
             );
           })}
           </div>
+          </div>
         </div>
-      </div>
+      </PublicSnapLayout>
     </div>
   );
 };
