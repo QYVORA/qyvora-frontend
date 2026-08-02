@@ -24,8 +24,11 @@ export function useNavInvert(options?: UseNavInvertOptions): boolean {
 
   useEffect(() => {
     let lastResult = false;
+    let container: Element | null = null;
+    let disposed = false;
 
     const check = () => {
+      if (disposed) return;
       const els = document.querySelectorAll<HTMLElement>('[data-nav-invert]');
       let found = false;
 
@@ -52,10 +55,23 @@ export function useNavInvert(options?: UseNavInvertOptions): boolean {
       rafId.current = requestAnimationFrame(check);
     };
 
+    const attachContainer = () => {
+      if (container || disposed) return false;
+      container = document.querySelector('.snap-container');
+      if (container) {
+        container.addEventListener('scroll', scheduleCheck, { passive: true });
+        return true;
+      }
+      return false;
+    };
+
     // Run once synchronously on mount to avoid flash
     check();
 
-    const observer = new MutationObserver(scheduleCheck);
+    const observer = new MutationObserver(() => {
+      attachContainer();
+      scheduleCheck();
+    });
 
     observer.observe(document.body, {
       childList: true,
@@ -65,13 +81,19 @@ export function useNavInvert(options?: UseNavInvertOptions): boolean {
     window.addEventListener('scroll', scheduleCheck, { passive: true });
     window.addEventListener('resize', scheduleCheck, { passive: true });
 
+    // Snap-container pages scroll inside the container, not the window,
+    // so listen to it directly (it may render after this effect runs).
+    attachContainer();
+
     return () => {
+      disposed = true;
       if (rafId.current) {
         cancelAnimationFrame(rafId.current);
       }
       observer.disconnect();
       window.removeEventListener('scroll', scheduleCheck);
       window.removeEventListener('resize', scheduleCheck);
+      if (container) container.removeEventListener('scroll', scheduleCheck);
     };
   }, [navHeight]);
 
