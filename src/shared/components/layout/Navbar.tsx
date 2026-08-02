@@ -19,6 +19,7 @@ const NAV_GROUP_LABELS: Record<string, string> = {
 };
 
 const NAV_ITEM_LABELS: Record<string, string> = {
+  services: 'nav.services',
   courses: 'nav.courses',
   bootcamp: 'nav.bootcamp',
   labs: 'nav.labs',
@@ -42,8 +43,10 @@ const Navbar: React.FC = React.memo(() => {
 
   // Hide navbar on scroll down, show on scroll up (all screen sizes)
   useEffect(() => {
+    setHidden(false);
     let scrollEl: Element | null = null;
     let lastY = 0;
+    let disposed = false;
 
     const handleScroll = () => {
       const y = scrollEl ? (scrollEl as HTMLElement).scrollTop : window.scrollY;
@@ -57,23 +60,34 @@ const Navbar: React.FC = React.memo(() => {
       lastY = y;
     };
 
-    // Wait one frame for Outlet to render the snap container
-    const raf = requestAnimationFrame(() => {
+    const attachContainer = () => {
+      if (scrollEl || disposed) return false;
       scrollEl = document.querySelector('.snap-container');
       if (scrollEl) {
         scrollEl.addEventListener('scroll', handleScroll, { passive: true });
-      } else {
-        window.addEventListener('scroll', handleScroll, { passive: true });
+        return true;
       }
-    });
+      return false;
+    };
+
+    // Window listener always (mobile / non-snap pages scroll the window).
+    window.addEventListener('scroll', handleScroll, { passive: true });
+
+    // The Outlet may render the snap container after this effect runs
+    // (lazy route chunks), so watch for it to appear and attach to it too.
+    let observer: MutationObserver | null = null;
+    if (!attachContainer()) {
+      observer = new MutationObserver(() => {
+        if (attachContainer() && observer) observer.disconnect();
+      });
+      observer.observe(document.body, { childList: true, subtree: true });
+    }
 
     return () => {
-      cancelAnimationFrame(raf);
-      if (scrollEl) {
-        scrollEl.removeEventListener('scroll', handleScroll);
-      } else {
-        window.removeEventListener('scroll', handleScroll);
-      }
+      disposed = true;
+      if (observer) observer.disconnect();
+      window.removeEventListener('scroll', handleScroll);
+      if (scrollEl) scrollEl.removeEventListener('scroll', handleScroll);
     };
   }, [location.pathname]);
 
