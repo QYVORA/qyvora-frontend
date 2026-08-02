@@ -18,7 +18,7 @@ const LearningFilterStrip: React.FC<LearningFilterStripProps> = ({
   if (!filters || filters.length === 0) return null;
 
   return (
-    <div className="border border-border/30 rounded-xl bg-bg-card p-1.5 flex items-center gap-1">
+    <div className="border border-border/30 rounded-xl bg-bg-card p-1.5 flex items-center gap-1 overflow-x-auto no-scrollbar flex-nowrap">
       {filters.map((filter) => {
         const isActive = activeFilter === filter.id;
         return (
