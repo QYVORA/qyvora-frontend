@@ -9,30 +9,31 @@ import { useTranslation } from 'react-i18next';
 const LandingBlogsSection = () => {
   const { t } = useTranslation();
   return (
-    <div className="relative bg-bg min-h-dvh md:h-dvh flex flex-col overflow-hidden" data-nav-invert>
+    <div className="relative bg-bg min-h-dvh lg:h-dvh flex flex-col overflow-hidden" data-nav-invert>
       <GridBoxedBackground opacity={0.4} blur={0} mask="right" />
-      <div className="relative z-10 w-full h-full px-3 md:px-4 lg:px-6 py-8 sm:py-8 md:py-12 lg:py-14 flex flex-col justify-center gap-6 md:gap-10">
-        <div className="flex flex-col items-start md:items-center text-left md:text-center">
-          <h2 className="text-3xl md:text-5xl lg:text-6xl font-black text-text-primary tracking-tighter leading-none mb-4 md:mb-6">
+      <div className="relative z-10 w-full h-full px-3 md:px-4 lg:px-6 py-12 sm:py-10 md:py-16 lg:py-20 flex flex-col lg:flex-row gap-10 sm:gap-10 lg:gap-16 lg:items-stretch">
+        {/* Header column */}
+        <div className="shrink-0 lg:w-[420px] xl:w-[480px] flex flex-col lg:justify-center">
+          <h2 className="text-3xl md:text-5xl lg:text-5xl font-black text-text-primary tracking-tighter leading-none mb-8">
             {t('landing.blogs.title')} <span className="text-accent">{t('landing.blogs.titleAccent')}</span>
           </h2>
-          <p className="text-xs md:text-sm text-text-muted leading-relaxed max-w-xl mb-6 md:mb-8">
+          <p className="text-xs md:text-sm text-text-muted leading-relaxed max-w-xl mb-10">
             {t('landing.blogs.description')}
           </p>
           <Link
             to="/blogs"
-            className="inline-flex items-center gap-2.5 px-6 py-3 rounded-xl border border-border/30 bg-bg-elevated text-text-primary text-[10px] font-black uppercase tracking-widest hover:bg-bg-card transition-colors"
+            className="btn-secondary inline-flex items-center gap-2.5 self-start"
           >
             {t('landing.blogs.viewAll')} <IconArrowRight size={14} />
           </Link>
         </div>
 
-        <div className="w-full flex justify-center">
-          <div className="w-full lg:w-[82%] xl:w-[74%]">
-            <Carousel
-              slides={BLOG_POSTS}
-              showArrows={false}
-              className="w-full"
+        {/* Carousel column */}
+        <div className="relative flex-1 min-h-0 min-w-0 overflow-hidden flex items-center">
+          <Carousel
+            slides={BLOG_POSTS}
+            showArrows={false}
+            className="w-full"
               renderCard={(post) => (
                 <Link
                   to={`/blogs/${post.slug}`}
@@ -87,7 +88,6 @@ const LandingBlogsSection = () => {
                 </Link>
               )}
             />
-          </div>
         </div>
       </div>
     </div>
