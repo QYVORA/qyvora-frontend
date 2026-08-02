@@ -150,14 +150,14 @@ const InboxTab = () => {
                   {isContact ? <Mail className="w-4 h-4 text-blue-400" /> : <IconShield size={16} className="text-accent" />}
                 </div>
                 <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-2">
-                    <span className="text-sm font-bold text-text-primary truncate">{d.name}</span>
-                    <span className={`px-2.5 py-1 rounded-lg text-[9px] font-black uppercase tracking-widest ${
+                  <div className="flex items-center gap-2 min-w-0">
+                    <span className="text-sm font-bold text-text-primary truncate flex-1 min-w-0">{d.name}</span>
+                    <span className={`px-2.5 py-1 rounded-lg text-[9px] font-black uppercase tracking-widest shrink-0 whitespace-nowrap ${
                       isContact ? 'bg-blue-500/10 text-blue-400' : 'bg-accent/10 text-accent'
                     }`}>
                       {isContact ? t('admin.inbox.contact') : t('admin.inbox.service')}
                     </span>
-                    <span className={`px-2.5 py-1 rounded-lg text-[9px] font-black uppercase tracking-widest ${
+                    <span className={`px-2.5 py-1 rounded-lg text-[9px] font-black uppercase tracking-widest shrink-0 whitespace-nowrap ${
                       d.status === 'new' ? 'bg-accent/10 text-accent' :
                       d.status === 'archived' ? 'bg-zinc-500/10 text-zinc-400' :
                       'bg-amber-500/10 text-amber-400'

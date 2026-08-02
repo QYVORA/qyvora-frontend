@@ -125,7 +125,7 @@ const UsersTab: React.FC<UsersTabProps> = ({
           <Tooltip content={isUserBlocked(item) ? t('admin.users.unblockUser') : t('admin.users.blockUser')} side="left">
             <button
               onClick={() => void handleUserBlockToggle(item)}
-              className="inline-flex items-center justify-center w-10 h-10 rounded-xl bg-bg-elevated text-text-muted hover:text-accent transition-all active:scale-90 shadow-sm"
+              className="inline-flex items-center justify-center w-11 h-11 rounded-xl bg-bg-elevated text-text-muted hover:text-accent transition-all active:scale-90 shadow-sm"
             >
               {isUserBlocked(item) ? <Unlock className="w-4.5 h-4.5" /> : <Ban className="w-4.5 h-4.5" />}
             </button>
@@ -133,7 +133,7 @@ const UsersTab: React.FC<UsersTabProps> = ({
           <Tooltip content={t('admin.users.permanentlyDelete')} side="left">
             <button
               onClick={() => void handleDeleteUser(item)}
-              className="inline-flex items-center justify-center w-10 h-10 rounded-xl bg-red-500/5 text-red-400/60 hover:bg-red-500/10 hover:text-red-400 transition-all active:scale-90 shadow-sm"
+              className="inline-flex items-center justify-center w-11 h-11 rounded-xl bg-red-500/5 text-red-400/60 hover:bg-red-500/10 hover:text-red-400 transition-all active:scale-90 shadow-sm"
             >
               <Trash2 className="w-4.5 h-4.5" />
             </button>
