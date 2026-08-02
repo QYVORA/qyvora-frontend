@@ -198,7 +198,7 @@ const Footer: React.FC = React.memo(() => {
 
             <div className="flex items-center gap-4">
               <LanguageSwitcher />
-              <ContactTrigger type="button" className="btn-primary !bg-amber-400 !text-accent">
+              <ContactTrigger type="button" className="btn-primary">
                 {t('button.contactUs')}
               </ContactTrigger>
             </div>
