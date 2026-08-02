@@ -223,7 +223,7 @@ const LoginPage: React.FC = () => {
       />
       
       {/* Mobile: form only, centered */}
-      <div className="lg:hidden relative w-full min-h-dvh flex flex-col bg-bg" data-nav-invert>
+      <div className="md:hidden relative w-full min-h-dvh flex flex-col bg-bg" data-nav-invert>
         <GridBoxedBackground opacity={0.5} blur={0} mask="none" />
         
         {/* Back to Home button - Mobile */}
@@ -244,11 +244,12 @@ const LoginPage: React.FC = () => {
       </div>
 
       {/* Desktop: PublicHeroSection with left hero and right form (page scrolls) */}
-      <div className="hidden lg:block">
+      <div className="hidden md:block">
         <PublicHeroSection
           mask="right"
           showGlobe
           scrollable
+          splitAt="md"
           rightContent={
             <div className="flex items-center justify-center h-full w-full py-8">
               <div className="w-full max-w-md">
