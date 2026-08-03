@@ -29,6 +29,7 @@ import type {
 } from '../components/landing/types';
 import { resolveImg } from '../components/landing/helpers';
 import { getAccessToken } from '../../../core/services/api';
+import { AUTH_PATHS } from '../../../shared/components/ui/AuthImage';
 
 // ─── Storage keys ─────────────────────────────────────────────────────────────
 
@@ -221,13 +222,19 @@ export const warmLandingImageCache = async (snapshot: LandingSnapshot): Promise<
     await Promise.allSettled(
       imageUrls.map(async (url) => {
         const absoluteUrl = toAbsoluteUrl(url);
+        const token = getAccessToken();
+
+        // Protected uploads 401 for anonymous visitors; prefetching them on
+        // public pages floods the backend with 401s. Only cache them when
+        // the visitor has a session token.
+        const isProtected = AUTH_PATHS.some((path) => absoluteUrl.includes(path));
+        if (isProtected && !token) return;
 
         // Skip if this image is already in the cache
         const existing = await imageCache.match(absoluteUrl);
         if (existing) return;
 
         const authHeaders: Record<string, string> = {};
-        const token = getAccessToken();
         if (token) authHeaders['Authorization'] = `Bearer ${token}`;
         const response = await fetch(absoluteUrl, { credentials: 'include', headers: authHeaders });
         if (response.ok) {

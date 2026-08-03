@@ -2,7 +2,9 @@ import { useEffect, useRef, useState } from 'react';
 import { resolveImg } from '@/shared/utils/resolveImg';
 import { getAccessToken } from '@/core/services/api';
 
-const AUTH_PATHS = ['/uploads/bootcamps/', '/uploads/cp-products/'];
+export const AUTH_PATHS = ['/uploads/bootcamps/', '/uploads/cp-products/'];
+
+const inFlight = new Map<string, Promise<Blob>>();
 
 interface AuthImageProps extends React.ImgHTMLAttributes<HTMLImageElement> {
   src?: string;
@@ -39,22 +41,38 @@ export const AuthImage: React.FC<AuthImageProps> = ({
       try {
         setLoading(true);
         const token = getAccessToken();
-        const headers: Record<string, string> = {};
-        if (token) headers['Authorization'] = `Bearer ${token}`;
 
-        const res = await fetch(resolved, {
-          headers,
-          credentials: 'include',
-        });
-        if (!res.ok) throw new Error(`${res.status}`);
+        if (!token) {
+          // Unauthenticated visitor: the backend 401s protected uploads, and
+          // the resulting 401 bursts from public pages take the deployment
+          // down. Skip the request and render the fallback directly.
+          if (!cancelled) setObjectUrl(resolveImg(fallback, ''));
+          return;
+        }
 
-        const blob = await res.blob();
+        const headers: Record<string, string> = { Authorization: `Bearer ${token}` };
+
+        const key = `${token}:${resolved}`;
+        let request = inFlight.get(key);
+        if (!request) {
+          request = fetch(resolved, {
+            headers,
+            credentials: 'include',
+          }).then(async (res) => {
+            if (!res.ok) throw new Error(`${res.status}`);
+            return res.blob();
+          });
+          inFlight.set(key, request);
+        }
+
+        const blob = await request;
         if (cancelled) return;
 
         const url = URL.createObjectURL(blob);
         blobRef.current = url;
         setObjectUrl(url);
       } catch {
+        inFlight.delete(`${getAccessToken()}:${resolved}`);
         if (!cancelled) setObjectUrl(resolveImg(fallback, ''));
       } finally {
         if (!cancelled) setLoading(false);
