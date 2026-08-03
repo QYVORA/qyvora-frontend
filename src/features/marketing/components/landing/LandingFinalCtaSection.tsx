@@ -2,7 +2,7 @@ import React from 'react';
 import { motion, useReducedMotion } from 'motion/react';
 import { Link } from 'react-router-dom';
 import { IconDashboard, IconArrowRight } from '@/shared/components/icons';
-import { QyvoraMark } from '../../../../shared/components/brand/QyvoraMark';
+import { Logo } from '@/shared/components/brand';
 import { GridBoxedBackground } from '@/shared/components/backgrounds';
 import { useTranslation } from 'react-i18next';
 
@@ -91,13 +91,12 @@ const LandingFinalCtaSection: React.FC<LandingFinalCtaSectionProps> = ({ user })
           transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
           className="flex items-center justify-center lg:justify-end shrink-0 lg:ml-4 xl:ml-6 lg:mr-10 xl:mr-14 2xl:mr-16"
         >
-          <div className="h-28 sm:h-36 lg:h-[min(42vh,314px)] xl:h-[min(33vh,291px)] 2xl:h-[min(28vh,291px)] flex items-center">
-            <QyvoraMark
-              aria-label="QYVORA Offensive Security Platform"
-              className="h-full w-auto block"
-              color="#06B66F"
-            />
-          </div>
+          <Logo
+            variant="mark"
+            size="3xl"
+            color="#06B66F"
+            className="!w-[300px] sm:!w-[400px] lg:!w-[480px] xl:!w-[520px] 2xl:!w-[600px]"
+          />
         </motion.div>
       </div>
     </div>
