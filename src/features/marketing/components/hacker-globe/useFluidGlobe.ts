@@ -49,12 +49,13 @@ export function useFluidGlobe(): GlobeFluid {
     const aspect = vp.w / vp.h;
     const halfW = HALF_H * aspect;
 
-    // On-screen centre of the globe as viewport fractions. The horizontal
-    // offset is computed from the aspect ratio so the globe stays anchored in
-    // the bottom-right area on every screen instead of being pushed off-screen
-    // on narrow viewports.
-    const centerX = 0.72 + t * 0.12;
-    const centerY = 0.72 + t * 0.26;
+    // On-screen centre of the globe as viewport fractions, pinned in the
+    // bottom-right corner on every screen size. Keeping these constant means
+    // the world offset scales with the aspect ratio so the big sphere's arc
+    // hugs the corner at all widths instead of drifting toward the middle of
+    // the page when the window is minimized.
+    const centerX = 0.84;
+    const centerY = 0.98;
 
     const offsetX = (2 * centerX - 1) * halfW;
     const offsetY = (1 - 2 * centerY) * HALF_H;
