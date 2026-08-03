@@ -51,7 +51,7 @@ const LandingBootcampSection: React.FC = () => {
           </h2>
 
           {/* Bento grid: 3 columns on desktop — 1 featured + 2 supporting */}
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-2 md:gap-4 flex-1 auto-rows-fr">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-2 md:gap-4 flex-1 auto-rows-fr min-h-0">
             {/* Featured card — 2 cols, 2 rows */}
             <motion.div
               key={`featured-${groupIndex}`}
@@ -84,7 +84,7 @@ const LandingBootcampSection: React.FC = () => {
                   <div className="flex-1 min-h-0 my-3 sm:my-5 w-full flex items-center justify-center">
                     <HpbAvatar
                       variant={`phase${Number(featured.id)}` as HpbVariant}
-                      className="h-full w-auto max-h-full max-w-full"
+                      className="h-full w-auto max-w-full max-h-[160px] sm:max-h-[220px] xl:max-h-[260px]"
                     />
                   </div>
 
@@ -134,7 +134,7 @@ const LandingBootcampSection: React.FC = () => {
                       <div className="flex-1 min-h-0 my-2 sm:my-3 w-full flex items-center justify-center">
                         <HpbAvatar
                           variant={`phase${Number(phase.id)}` as HpbVariant}
-                          className="h-full w-auto max-h-full max-w-full"
+                          className="h-full w-auto max-w-full max-h-[110px] sm:max-h-[140px]"
                         />
                       </div>
 
