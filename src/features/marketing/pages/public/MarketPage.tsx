@@ -59,6 +59,8 @@ const MarketPage = () => {
           title="Zero Day"
           accentWord="Market"
           titleClassName={PUBLIC_HERO_TITLE_CLASS}
+          showGlobe
+          typewrite
           description="Intelligence assets, research papers, guides, and offensive security tools. Available for CP."
         >
           {!user && (

@@ -54,6 +54,8 @@ const LeaderboardPage = () => {
           icon={<Trophy className="w-8 h-8 text-accent" />}
           title="Leaderboard"
           titleClassName={PUBLIC_HERO_TITLE_CLASS}
+          showGlobe
+          typewrite
           description="Top operators ranked by CP earnings. The leaderboard is verified by the QYVORA Chain."
           stats={[{ label: 'Operators', value: Number(total).toLocaleString() }]}
         />

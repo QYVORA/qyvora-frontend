@@ -20,6 +20,8 @@ const QuiteRootPage = () => {
           title="Quite"
           accentWord="Root"
           titleClassName={PUBLIC_HERO_TITLE_CLASS}
+          showGlobe
+          typewrite
           description="A network of independent security researchers pushing the boundaries of offensive security research and tooling."
           stats={[{ label: 'Researchers', value: researchersData.length }]}
           rightContent={

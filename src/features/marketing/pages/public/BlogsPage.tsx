@@ -39,6 +39,8 @@ const BlogsPage = () => {
           title="Intelligence"
           accentWord="Reports"
           titleClassName={PUBLIC_HERO_TITLE_CLASS}
+          showGlobe
+          typewrite
           description="Security research, walkthroughs, and platform updates from the QYVORA team."
           stats={[{ label: 'Articles', value: BLOG_POSTS.length }]}
         />

@@ -26,6 +26,8 @@ const TeamPage = () => {
           title="Our"
           accentWord="Team"
           titleClassName={PUBLIC_HERO_TITLE_CLASS}
+          showGlobe
+          typewrite
           description="Operators, engineers, and researchers building Africa's offensive security ecosystem."
           stats={[{ label: 'Members', value: teamData.length }]}
         />

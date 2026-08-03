@@ -34,6 +34,8 @@ const CoursesPage = () => {
         <StudentHeroSection
           title="Courses"
           titleClassName={PUBLIC_HERO_TITLE_CLASS}
+          showGlobe
+          typewrite
           description="Structured offensive security courses from terminal mastery to web exploitation."
         />
 

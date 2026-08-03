@@ -33,6 +33,8 @@ const LabsPage = () => {
           title="Attack"
           accentWord="Labs"
           titleClassName={PUBLIC_HERO_TITLE_CLASS}
+          showGlobe
+          typewrite
           description="Real-world offensive security labs in a sandboxed environment. Practice privilege escalation, password attacks, SQL injection, OSINT, and full kill-chain operations."
           stats={[
             { label: 'Labs', value: LABS.length },
