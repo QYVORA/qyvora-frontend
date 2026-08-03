@@ -1,14 +1,13 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'motion/react';
-import { Building2, Send, Target, Lock } from 'lucide-react';
+import { Building2, Target, Lock } from 'lucide-react';
 import { IconCheck, IconArrowRight } from '@/shared/components/icons';
 import { openServiceRequestModal } from '@/features/marketing/components/ServiceRequestModal';
-import { getDottedMapBg } from '@/shared/utils/dottedMap';
 import SEO from '@/shared/components/SEO';
 import PublicSnapLayout from '@/shared/components/PublicSnapLayout';
 import StudentHeroSection, { PUBLIC_HERO_TITLE_CLASS } from '@/shared/components/StudentHeroSection';
-import { SERVICES, PENTEST_PHILOSOPHY, REQUEST_ASSESSMENT_LABEL, LEARN_MORE_LABEL, type ServiceConfig } from '@/features/marketing/content/servicesConfig';
+import { SERVICES, REQUEST_ASSESSMENT_LABEL, LEARN_MORE_LABEL, type ServiceConfig } from '@/features/marketing/content/servicesConfig';
 
 const ServiceSection: React.FC<{ svc: ServiceConfig; index: number }> = ({ svc, index }) => {
   const Icon = svc.icon;
@@ -118,76 +117,14 @@ const ServicesPage = () => {
           title="Security"
           accentWord="Services"
           titleClassName={PUBLIC_HERO_TITLE_CLASS}
+          showGlobe
+          typewrite
           description="Enterprise penetration testing, vulnerability assessments, and custom security training for your organization."
         />
 
         {SERVICES.map((svc, idx) => (
           <ServiceSection key={svc.id} svc={svc} index={idx} />
         ))}
-
-        {/* Philosophy */}
-        <div className="min-h-dvh md:h-dvh md:overflow-y-auto px-3 md:px-4 lg:px-6">
-          <div className="min-h-full flex flex-col justify-center py-16 md:py-20">
-          <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: '-60px' }}
-            transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-            className="relative overflow-hidden rounded-2xl border border-border/30 bg-bg-card p-6 sm:p-10 lg:p-14"
-          >
-            <div className="absolute inset-0 opacity-[0.04] text-accent rounded-2xl overflow-hidden pointer-events-none" style={{ backgroundImage: getDottedMapBg(), backgroundSize: '360px 180px', backgroundRepeat: 'repeat' }} />
-            <div className="relative flex flex-col lg:flex-row items-start gap-6 lg:gap-12">
-              <span className="flex items-center gap-2 px-3 py-1 rounded-full bg-accent/10 border border-accent/30 text-[9px] font-black uppercase tracking-widest text-accent shrink-0">
-                <Target className="w-3 h-3" /> {PENTEST_PHILOSOPHY.heading}
-              </span>
-              <p className="text-sm sm:text-base text-text-secondary leading-relaxed font-mono max-w-3xl">
-                {PENTEST_PHILOSOPHY.body}
-              </p>
-            </div>
-          </motion.div>
-          </div>
-        </div>
-
-        {/* Custom inquiries */}
-        <div className="min-h-dvh md:h-dvh md:overflow-y-auto px-3 md:px-4 lg:px-6">
-          <div className="min-h-full flex flex-col justify-center py-16 md:py-20">
-          <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: '-60px' }}
-            transition={{ duration: 0.5, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
-          >
-            <div
-              role="button"
-              tabIndex={0}
-              onClick={() => openServiceRequestModal('Custom Inquiry')}
-              onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openServiceRequestModal('Custom Inquiry'); } }}
-              className="group relative flex flex-col sm:flex-row items-start gap-4 p-5 sm:p-7 rounded-2xl border border-border/30 bg-bg-card cursor-pointer hover:border-accent/30 transition-all"
-            >
-              <div className="absolute inset-0 opacity-[0.04] text-accent rounded-2xl overflow-hidden pointer-events-none" style={{ backgroundImage: getDottedMapBg(), backgroundSize: '360px 180px', backgroundRepeat: 'repeat' }} />
-              <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl border border-accent/20 bg-accent/10">
-                <Building2 className="h-6 w-6 text-accent group-hover:text-accent/80 transition-colors" />
-              </div>
-              <div className="flex-1">
-                <div className="flex items-center gap-2 mb-1">
-                  <span className="text-[9px] font-black uppercase tracking-widest text-text-muted">Custom Inquiry</span>
-                </div>
-                <h3 className="text-base sm:text-lg font-black text-text-primary tracking-tight mb-1">
-                  Red Team, Compliance, or Custom Engagement
-                </h3>
-                <p className="text-xs sm:text-sm text-text-muted leading-relaxed">
-                  Bespoke security assessments tailored to your infrastructure, compliance requirements, and threat model.
-                </p>
-              </div>
-              <div className="flex items-center gap-2 text-accent/60 shrink-0 self-end sm:self-center mt-2 sm:mt-0">
-                <Send className="w-3.5 h-3.5" />
-                <span className="font-mono text-[10px] uppercase tracking-widest font-bold">Send Inquiry</span>
-                <IconArrowRight className="w-3.5 h-3.5" />
-              </div>
-            </div>
-            </motion.div>
-          </div>
-        </div>
       </PublicSnapLayout>
     </div>
   );
