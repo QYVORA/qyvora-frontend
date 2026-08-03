@@ -191,6 +191,9 @@ export const AppRouter = () => {
           <Route path="/team" element={<Wrap scope="Team"><TeamPage /></Wrap>} />
           <Route path="/quiteroot" element={<Wrap scope="QuiteRoot"><QuiteRootPage /></Wrap>} />
           
+          {/* Legacy slug redirect — "hacker-protocol-book" → "hacker-protocol-bootcamp" */}
+          <Route path="/blogs/hacker-protocol-book" element={<Navigate to="/blogs/hacker-protocol-bootcamp" replace />} />
+
           {/* Blog post route (individual posts still accessible) */}
           <Route path="/blogs/:slug" element={<Wrap scope="Blog"><BlogPostPage /></Wrap>} />
         </Route>

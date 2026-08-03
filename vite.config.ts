@@ -31,7 +31,7 @@ export default defineConfig(() => ({
         '/news',
         '/terms',
         '/blogs/hpb-2026-cohort-case-study',
-        '/blogs/hacker-protocol-book',
+        '/blogs/hacker-protocol-bootcamp',
         '/blogs/anansi-cli',
         '/blogs/africa-cybersecurity-ecosystem',
         '/blogs/attackers-discover-companies',

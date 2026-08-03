@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, useReducedMotion } from 'motion/react';
 import { IconArrowRight } from '@/shared/components/icons';
+import HpbAvatar, { type HpbVariant } from '@/shared/components/HpbAvatar';
 import { PHASES } from '@/features/marketing/data/learnData';
 import { BOOTCAMP_CONFIG } from '@/features/student/constants/bootcampConfig';
 import { GridBoxedBackground } from '@/shared/components/backgrounds';
@@ -63,7 +64,6 @@ const LandingBootcampSection: React.FC = () => {
                 to="/hpb"
                 className="group relative block h-full rounded-2xl border border-border/20 bg-bg-card transition-all duration-300 hover:border-accent/30 overflow-hidden"
               >
-                <div className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105" style={{ backgroundImage: `url(${featured.image})` }} />
                 <div className="relative h-full flex flex-col p-4 sm:p-8">
                   <div className="flex items-center justify-between mb-3 sm:mb-6">
                     <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-2xl border border-accent/30 bg-accent/15 flex items-center justify-center shrink-0">
@@ -74,14 +74,21 @@ const LandingBootcampSection: React.FC = () => {
                     </span>
                   </div>
 
-                  <h3 className="text-2xl md:text-3xl lg:text-4xl font-black text-text-primary tracking-tighter leading-none mb-3">
+                  <h3 className="text-2xl md:text-3xl lg:text-4xl font-black text-text-primary tracking-tighter leading-none mb-2 sm:mb-3">
                     {t(`landing.bootcamp.phases.${featured.id}.name`)}
                   </h3>
-                  <p className="text-xs md:text-sm text-text-secondary leading-relaxed max-w-lg mb-3 sm:mb-6 line-clamp-3">
+                  <p className="text-xs md:text-sm text-text-secondary leading-relaxed max-w-lg line-clamp-3">
                     {t(`landing.bootcamp.phases.${featured.id}.desc`)}
                   </p>
 
-                  <div className="mt-auto flex items-center gap-3">
+                  <div className="flex-1 min-h-0 my-3 sm:my-5 w-full flex items-center justify-center">
+                    <HpbAvatar
+                      variant={`phase${Number(featured.id)}` as HpbVariant}
+                      className="h-full w-auto max-h-full max-w-full"
+                    />
+                  </div>
+
+                  <div className="flex items-center gap-3">
                     <span className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-bg text-[10px] font-black uppercase tracking-widest text-accent transition-all group-hover:gap-3">
                       {t('landing.bootcamp.startPhase')} {featured.id}
                       <IconArrowRight size={14} />
@@ -120,11 +127,18 @@ const LandingBootcampSection: React.FC = () => {
                       <h3 className="text-sm sm:text-base font-black text-text-primary tracking-tight mb-1 sm:mb-1.5">
                         {t(`landing.bootcamp.phases.${phase.id}.name`)}
                       </h3>
-                      <p className="text-[10px] sm:text-[11px] text-text-muted leading-relaxed mb-2 sm:mb-3 line-clamp-2">
+                      <p className="text-[10px] sm:text-[11px] text-text-muted leading-relaxed line-clamp-2">
                         {t(`landing.bootcamp.phases.${phase.id}.desc`)}
                       </p>
 
-                      <div className="mt-auto flex items-center gap-2 text-text-muted group-hover:text-accent transition-colors">
+                      <div className="flex-1 min-h-0 my-2 sm:my-3 w-full flex items-center justify-center">
+                        <HpbAvatar
+                          variant={`phase${Number(phase.id)}` as HpbVariant}
+                          className="h-full w-auto max-h-full max-w-full"
+                        />
+                      </div>
+
+                      <div className="flex items-center gap-2 text-text-muted group-hover:text-accent transition-colors">
                         <span className="text-[10px] font-black uppercase tracking-widest">{t('landing.bootcamp.startPhase')} {phase.id}</span>
                         <IconArrowRight size={14} className="transition-transform group-hover:translate-x-1" />
                       </div>

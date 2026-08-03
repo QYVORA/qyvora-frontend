@@ -8,7 +8,7 @@ import { useAuth } from '@/core/contexts/AuthContext';
 import LandingFinalCtaSection from '@/features/marketing/components/landing/LandingFinalCtaSection';
 import { BLOG_POSTS } from './blogContent';
 
-const HackerProtocolBookBlog = lazy(() => import('./HackerProtocolBookBlog').then(m => ({ default: m.HackerProtocolBookBlog })));
+const HackerProtocolBootcampBlog = lazy(() => import('./HackerProtocolBootcampBlog').then(m => ({ default: m.HackerProtocolBootcampBlog })));
 const AnansiCliBlog = lazy(() => import('./AnansiCliBlog').then(m => ({ default: m.AnansiCliBlog })));
 const AfricaCybersecurityEcosystemBlog = lazy(() => import('./AfricaCybersecurityEcosystemBlog').then(m => ({ default: m.AfricaCybersecurityEcosystemBlog })));
 const AttackersDiscoverCompaniesBlog = lazy(() => import('./AttackersDiscoverCompaniesBlog').then(m => ({ default: m.AttackersDiscoverCompaniesBlog })));
@@ -39,8 +39,8 @@ const BlogPostPage: React.FC = () => {
 
   const renderContent = () => {
     switch (post.slug) {
-      case 'hacker-protocol-book':
-        return <HackerProtocolBookBlog />;
+      case 'hacker-protocol-bootcamp':
+        return <HackerProtocolBootcampBlog />;
       case 'anansi-cli':
         return <AnansiCliBlog />;
       case 'africa-cybersecurity-ecosystem':

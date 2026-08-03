@@ -1,6 +1,7 @@
 import React from 'react';
 import { Globe, Users, Lightbulb, TrendingUp } from 'lucide-react';
 import { IconShield, IconTerminal, IconNetwork, IconTarget } from '@/shared/components/icons';
+import HpbAvatar, { type HpbVariant } from '@/shared/components/HpbAvatar';
 import { Section, Heading, Body, Highlight, CodeBlock } from './shared';
 
 const StatRow = ({ icon, label, value }: { icon: React.ReactNode; label: string; value: string }) => (
@@ -15,7 +16,79 @@ const StatRow = ({ icon, label, value }: { icon: React.ReactNode; label: string;
   </div>
 );
 
-export const HackerProtocolBookBlog: React.FC = () => {
+// Phase detail — titles/room coverage mirror BOOTCAMP_CONFIG in
+// src/features/student/constants/bootcampConfig.ts; colors mirror PHASE_COLORS.
+const FIVE_PHASES: {
+  variant: HpbVariant;
+  phase: string;
+  title: string;
+  rooms: number;
+  color: string;
+  desc: React.ReactNode;
+}[] = [
+  {
+    variant: 'phase1',
+    phase: '01',
+    title: 'Hacker Mindset',
+    rooms: 3,
+    color: '#06B66F',
+    desc: (
+      <>
+        Before a single tool is opened, this phase installs the <Highlight>operating discipline</Highlight> behind offensive security. You map the field — penetration testing, red teaming, bug bounties, vulnerability research — then train the three core traits of an operator: curiosity, persistence, and lateral thinking. It closes on the non-negotiables: <Highlight>legal frameworks, scope and authorisation</Highlight>, and responsible disclosure.
+      </>
+    ),
+  },
+  {
+    variant: 'phase2',
+    phase: '02',
+    title: 'Linux Foundations',
+    rooms: 4,
+    color: '#60A5FA',
+    desc: (
+      <>
+        The terminal becomes your cockpit. You build <Highlight>navigation and file-search fluency</Highlight>, then master identity — users, groups, the <code className="text-accent">passwd</code> and <code className="text-accent">shadow</code> vaults, and SUID/SGID escalation paths. You read the machine's heartbeat through processes and open ports, and finish by scripting, turning one-off commands into <Highlight>reusable automation</Highlight>.
+      </>
+    ),
+  },
+  {
+    variant: 'phase3',
+    phase: '03',
+    title: 'Networking',
+    rooms: 4,
+    color: '#A78BFA',
+    desc: (
+      <>
+        Every attack travels across a wire, so this phase demands <Highlight>total visibility over the stack</Highlight>. You map the OSI model down to the TCP three-way handshake, dissect DNS and HTTP, then weaponise that knowledge with nmap-driven scanning and enumeration. It culminates in raw <Highlight>packet analysis</Highlight> — Wireshark display filters, stream reconstruction, and exfiltration detection.
+      </>
+    ),
+  },
+  {
+    variant: 'phase4',
+    phase: '04',
+    title: 'Web & Backend Systems',
+    rooms: 5,
+    color: '#F59E0B',
+    desc: (
+      <>
+        The modern attack surface is web-first. You start with how the web actually works — DevTools, HTTP headers, cookies and sessions — and move through the <Highlight>OWASP Top 10</Highlight> before diving into the highest-value bug classes: <Highlight>SQL injection</Highlight> and XSS/CSRF. The phase ends with authentication attacks: brute force, session token analysis, fixation, and hijacking.
+      </>
+    ),
+  },
+  {
+    variant: 'phase5',
+    phase: '05',
+    title: 'Social Engineering',
+    rooms: 3,
+    color: '#EF4444',
+    desc: (
+      <>
+        The human layer is the weakest boundary. You study the <Highlight>psychology of influence</Highlight>, then build convincing pretexts and vishing engagements. From there it is OSINT — Google dorking, theHarvester, Shodan, social media mapping — and finally physical security: tailgating, RFID badge cloning, and <Highlight>OPSEC</Highlight> for engagements that leave the keyboard.
+      </>
+    ),
+  },
+];
+
+export const HackerProtocolBootcampBlog: React.FC = () => {
   return (
     <div className="space-y-0">
       {/* ── Introduction ── */}
@@ -77,6 +150,44 @@ export const HackerProtocolBookBlog: React.FC = () => {
         <Body>
           <Highlight>Phase 05 — Social Engineering:</Highlight> The human layer is the weakest link. You study pretexting, psychological manipulation vectors, trust exploitation, and spoofing. Because the most sophisticated technical exploit is useless if the front door is already open.
         </Body>
+      </Section>
+
+      {/* ── The Five Phases (avatar showcase) ── */}
+      <Section>
+        <Heading>The Five Phases</Heading>
+        <Body>
+          Every operator has a face, and so does every layer of the bootcamp. These are the phases you train through in order — each one gated behind the last, each one earning its place in the pipeline above.
+        </Body>
+
+        <div className="space-y-4 md:space-y-6 my-8 md:my-10">
+          {FIVE_PHASES.map((p) => (
+            <div
+              key={p.variant}
+              className="p-5 md:p-6 rounded-xl border border-border/30 bg-bg-card flex flex-col sm:flex-row gap-5 md:gap-6 items-start hover:border-accent/30 transition-colors"
+            >
+              <div className="w-28 h-28 md:w-36 md:h-36 shrink-0 rounded-xl border border-border/30 bg-bg-elevated flex items-center justify-center overflow-hidden">
+                <HpbAvatar variant={p.variant} className="h-full w-auto max-h-full max-w-full" />
+              </div>
+              <div className="min-w-0 flex-1">
+                <div className="flex items-center gap-3 mb-2 flex-wrap">
+                  <span className="text-[9px] font-black uppercase tracking-widest px-2.5 py-1 rounded-lg border border-accent/20 bg-accent/10 text-accent">
+                    Phase {p.phase}
+                  </span>
+                  <span className="text-[9px] font-black uppercase tracking-widest text-text-muted">
+                    {p.rooms} rooms
+                  </span>
+                  <span className="w-2 h-2 rounded-full shrink-0" style={{ backgroundColor: p.color }} aria-hidden="true" />
+                </div>
+                <h3 className="text-lg md:text-xl font-black uppercase tracking-tight text-text-primary mb-3">
+                  {p.title}
+                </h3>
+                <p className="text-xs md:text-sm font-mono text-text-secondary leading-[2] md:leading-[2.2] break-words">
+                  {p.desc}
+                </p>
+              </div>
+            </div>
+          ))}
+        </div>
       </Section>
 
       {/* ── The Room-Based Architecture ── */}

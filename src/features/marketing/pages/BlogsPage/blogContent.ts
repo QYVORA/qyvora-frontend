@@ -22,8 +22,8 @@ export interface BlogPost {
 
 export const BLOG_POSTS: BlogPost[] = [
   {
-    id: 'hacker-protocol-book',
-    slug: 'hacker-protocol-book',
+    id: 'hacker-protocol-bootcamp',
+    slug: 'hacker-protocol-bootcamp',
     title: 'Hacker Protocol Bootcamp — 2026 Cohort',
     subtitle: 'Building Africa\'s Cybersecurity Pipeline From the Ground Up',
     excerpt: 'How we designed a bootcamp that turns curious minds into offensive security operators — one phase at a time.',
