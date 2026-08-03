@@ -21,6 +21,8 @@ const HpbPage = () => {
           title="Hacker Protocol"
           accentWord="Bootcamp"
           titleClassName={PUBLIC_HERO_TITLE_CLASS}
+          showGlobe
+          typewrite
           description="A phased offensive security curriculum designed to take you from operator to expert."
           stats={[
             { label: 'Phases', value: phases.length },

@@ -33,6 +33,8 @@ const AnansiPage = () => {
           title="Anansi"
           accentWord="CLI"
           titleClassName={PUBLIC_HERO_TITLE_CLASS}
+          showGlobe
+          typewrite
           description="Attack Surface Intelligence CLI — discover, probe, and map attack surfaces from the terminal."
           stats={[
             { label: 'Modules', value: PHASES.length },
