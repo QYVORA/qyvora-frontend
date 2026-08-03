@@ -9,6 +9,7 @@ import {
   IconDashboard,
 } from '@/shared/components/icons';
 import { Briefcase } from 'lucide-react';
+import HpbAvatar from '@/shared/components/HpbAvatar';
 import ScrollReveal from '../../../shared/components/ScrollReveal';
 
 export interface StudentBootcampCardData {
@@ -80,9 +81,14 @@ const StudentBootcampCard: React.FC<Props> = ({ data, index = 0, onEnroll, onLoc
         {title}
       </h3>
 
-      {description && (
-        <p className="text-xs sm:text-sm text-text-muted line-clamp-3 leading-relaxed flex-1 mb-2">{description}</p>
-      )}
+      <div className="flex-1 min-h-0 mb-2 flex flex-col">
+        {description && (
+          <p className="text-xs sm:text-sm text-text-muted line-clamp-3 leading-relaxed">{description}</p>
+        )}
+        <div className="flex-1 min-h-[64px] w-full flex items-center justify-center">
+          <HpbAvatar variant="phase1" className="h-full w-auto max-h-full max-w-full" />
+        </div>
+      </div>
 
       {/* Progress bar */}
       {progress > 0 && !isLocked && (

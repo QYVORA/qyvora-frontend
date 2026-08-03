@@ -2,6 +2,7 @@ import React, { useRef, useState, useEffect, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { Pencil, Undo2, Trash2 } from 'lucide-react';
 import { IconCheck, IconLock, IconArrowRight } from '@/shared/components/icons';
+import HpbAvatar, { type HpbVariant } from '@/shared/components/HpbAvatar';
 import hpbCoverImg from '@/assets/bootcamp/hpb-cover.webp';
 
 interface RoomCardProps {
@@ -181,11 +182,19 @@ const RoomCard: React.FC<RoomCardProps> = ({
         {configRoom?.title || room.title || `Room ${roomIdx + 1}`}
       </h3>
 
-      {(configRoom?.overview || room.overview) && (
-        <p className="text-xs sm:text-sm text-text-muted line-clamp-3 leading-relaxed flex-1 mb-2">
-          {configRoom?.overview || room.overview}
-        </p>
-      )}
+      <div className="flex-1 min-h-0 mb-2 flex flex-col">
+        {(configRoom?.overview || room.overview) && (
+          <p className="text-xs sm:text-sm text-text-muted line-clamp-3 leading-relaxed">
+            {configRoom?.overview || room.overview}
+          </p>
+        )}
+        <div className="flex-1 min-h-[64px] w-full flex items-center justify-center">
+          <HpbAvatar
+            variant={configPhase?.id as HpbVariant}
+            className="h-full w-auto max-h-full max-w-full"
+          />
+        </div>
+      </div>
 
       <div className="flex items-center justify-between mt-auto pt-2 border-t border-border/20">
         {roomDone ? (
