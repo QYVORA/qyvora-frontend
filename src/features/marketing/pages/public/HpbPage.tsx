@@ -6,6 +6,7 @@ import { ScrollReveal } from '@/shared/components';
 import SEO from '@/shared/components/SEO';
 import PublicSnapLayout from '@/shared/components/PublicSnapLayout';
 import StudentHeroSection, { PUBLIC_HERO_TITLE_CLASS } from '@/shared/components/StudentHeroSection';
+import HpbAvatar, { type HpbVariant } from '@/shared/components/HpbAvatar';
 import { BOOTCAMP_CONFIG } from '@/features/student/constants/bootcampConfig';
 
 const HpbPage = () => {
@@ -58,9 +59,17 @@ const HpbPage = () => {
                     {phase.title}
                   </h4>
 
-                  <p className="text-xs sm:text-sm md:text-base text-text-muted leading-relaxed mb-2 line-clamp-3 flex-1">
-                    {phase.codename}
-                  </p>
+                  <div className="flex-1 min-h-0 mb-2 flex flex-col">
+                    <div className="flex-1 min-h-[72px] w-full flex items-center justify-center">
+                      <HpbAvatar
+                        variant={phase.id as HpbVariant}
+                        className="h-full w-auto max-h-full max-w-full"
+                      />
+                    </div>
+                    <p className="text-xs sm:text-sm md:text-base text-text-muted leading-relaxed line-clamp-3">
+                      {phase.codename}
+                    </p>
+                  </div>
 
                   <div className="flex items-center justify-between mt-auto">
                     <span className="text-[9px] sm:text-[10px] font-black uppercase tracking-widest text-text-muted flex items-center gap-1.5">

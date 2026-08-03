@@ -1,8 +1,8 @@
 import React from 'react';
-import { ListChecks } from 'lucide-react';
-import { IconCheck, IconLock } from '@/shared/components/icons';
+import { IconLock } from '@/shared/components/icons';
 import ScrollReveal from '../../../../shared/components/ScrollReveal';
 import RoomCard from './RoomCard';
+import PhaseHeroSection from './PhaseHeroSection';
 import { BOOTCAMP_CONFIG } from '../../constants/bootcampConfig';
 import hpbCoverImg from '@/assets/bootcamp/hpb-cover.webp';
 
@@ -35,43 +35,18 @@ const PhaseSection: React.FC<PhaseSectionProps> = ({
   return (
     <ScrollReveal delay={modIdx * 0.04}>
       <div className="w-full bg-transparent">
-        {/* Phase header */}
-        <div className="flex flex-wrap items-center justify-between gap-3 px-5 py-6 sm:py-8">
-          <div className="flex items-center gap-4">
-            <div className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl font-mono text-lg font-black transition-all duration-300 ${
-              isComplete
-                ? 'bg-accent text-bg shadow-lg shadow-accent/20'
-                : isLocked
-                  ? 'bg-bg-elevated text-text-muted opacity-50'
-                  : 'bg-accent-dim text-accent'
-            }`}>
-              {isComplete
-                ? <IconCheck size={20} />
-                : isLocked
-                  ? <IconLock size={16} />
-                  : String(modIdx + 1).padStart(2, '0')}
-            </div>
-            <div>
-              <p className="text-[10px] font-black uppercase tracking-[0.3em] text-accent/70 mb-0.5">
-                {configPhase?.codename || `Phase ${modIdx + 1}`}
-              </p>
-              <h3 className="mb-0 text-xl font-black text-text-primary tracking-tight">
-                {mod.title}
-              </h3>
-            </div>
-          </div>
-          <div className="flex items-center gap-3">
-            <span className="flex items-center gap-1.5 text-[11px] font-black uppercase tracking-widest text-text-muted/60">
-              <ListChecks className="h-4 w-4" />
-              {roomsDone}/{roomsTotal} <span className="hidden sm:inline">Modules</span>
-            </span>
-            {progress > 0 && (
-              <span className="rounded-xl bg-accent-dim px-3 py-1 font-mono text-xs font-black text-accent shadow-sm">
-                {progress}%
-              </span>
-            )}
-          </div>
-        </div>
+        <PhaseHeroSection
+          phaseId={configPhase?.id || `phase${modIdx + 1}`}
+          phaseNumber={modIdx + 1}
+          codename={configPhase?.codename || `Phase ${modIdx + 1}`}
+          title={mod.title}
+          description={mod.description}
+          roomsDone={roomsDone}
+          roomsTotal={roomsTotal}
+          progress={progress}
+          isLocked={isLocked}
+          isComplete={isComplete}
+        />
 
         {/* Room cards */}
         <div className="px-0 pb-12">
