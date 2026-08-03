@@ -9,8 +9,8 @@ const routeMetadata: Record<string, { title: string; description: string }> = {
     description: 'Building a strong cybersecurity ecosystem in Africa through offensive security training, penetration testing, and advanced intelligence tools.',
   },
   '/hpb': {
-    title: 'Hacker Protocol Book | QYVORA',
-    description: 'Learn offensive security techniques with the Hacker Protocol Book - comprehensive training for cybersecurity professionals.',
+    title: 'Hacker Protocol Bootcamp | QYVORA',
+    description: 'Learn offensive security techniques with the Hacker Protocol Bootcamp - comprehensive training for cybersecurity professionals.',
   },
   '/services': {
     title: 'Services | QYVORA',
@@ -54,11 +54,11 @@ const routeMetadata: Record<string, { title: string; description: string }> = {
   },
   '/blogs/hpb-2026-cohort-case-study': {
     title: 'HPB 2026 Cohort Case Study | QYVORA Blog',
-    description: 'Case study of the Hacker Protocol Book 2026 cohort achievements.',
+    description: 'Case study of the Hacker Protocol Bootcamp 2026 cohort achievements.',
   },
-  '/blogs/hacker-protocol-book': {
-    title: 'Hacker Protocol Book | QYVORA Blog',
-    description: 'Introduction to the Hacker Protocol Book - offensive security training.',
+  '/blogs/hacker-protocol-bootcamp': {
+    title: 'Hacker Protocol Bootcamp | QYVORA Blog',
+    description: 'Introduction to the Hacker Protocol Bootcamp - offensive security training.',
   },
   '/blogs/anansi-cli': {
     title: 'Anansi CLI | QYVORA Blog',
