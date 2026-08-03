@@ -9,7 +9,6 @@ import { useAuth } from '@/core/contexts/AuthContext';
 import { Logo } from '@/shared/components/brand';
 import { SITE_CONFIG } from '@/features/marketing/content/siteConfig';
 import { ContactTrigger } from '@/features/marketing/components/ContactModal';
-import { useNavInvert } from '@/shared/hooks/useNavInvert';
 import LanguageSwitcher from '@/shared/components/LanguageSwitcher';
 import Identicon from '@/shared/components/Identicon';
 
@@ -36,60 +35,8 @@ const Navbar: React.FC = React.memo(() => {
   const [isMenuOpen, setIsMenuOpen]             = useState(false);
   const [openDropdown, setOpenDropdown]         = useState<string | null>(null);
   const [openMobileGroup, setOpenMobileGroup]   = useState<string | null>(null);
-  const [hidden, setHidden]                     = useState(false);
   const location                                 = useLocation();
   const hoverTimeoutRef                          = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const inverted                                 = useNavInvert();
-
-  // Hide navbar on scroll down, show on scroll up (all screen sizes)
-  useEffect(() => {
-    setHidden(false);
-    let scrollEl: Element | null = null;
-    let lastY = 0;
-    let disposed = false;
-
-    const handleScroll = () => {
-      const y = scrollEl ? (scrollEl as HTMLElement).scrollTop : window.scrollY;
-      if (y < 80) {
-        setHidden(false);
-      } else if (y > lastY + 5) {
-        setHidden(true);
-      } else if (y < lastY - 5) {
-        setHidden(false);
-      }
-      lastY = y;
-    };
-
-    const attachContainer = () => {
-      if (scrollEl || disposed) return false;
-      scrollEl = document.querySelector('.snap-container');
-      if (scrollEl) {
-        scrollEl.addEventListener('scroll', handleScroll, { passive: true });
-        return true;
-      }
-      return false;
-    };
-
-    // Window listener always (mobile / non-snap pages scroll the window).
-    window.addEventListener('scroll', handleScroll, { passive: true });
-
-    // The Outlet may render the snap container after this effect runs
-    // (lazy route chunks), so watch for it to appear and attach to it too.
-    let observer: MutationObserver | null = null;
-    if (!attachContainer()) {
-      observer = new MutationObserver(() => {
-        if (attachContainer() && observer) observer.disconnect();
-      });
-      observer.observe(document.body, { childList: true, subtree: true });
-    }
-
-    return () => {
-      disposed = true;
-      if (observer) observer.disconnect();
-      window.removeEventListener('scroll', handleScroll);
-      if (scrollEl) scrollEl.removeEventListener('scroll', handleScroll);
-    };
-  }, [location.pathname]);
 
   // Close menu/dropdowns on route change
   useEffect(() => {
@@ -133,7 +80,6 @@ const Navbar: React.FC = React.memo(() => {
           'fixed top-0 left-0 w-full z-[100] overflow-visible',
           'h-[80px] flex items-center',
           'transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)]',
-          hidden ? '-translate-y-full' : 'translate-y-0',
           isMenuOpen ? 'bg-bg/95 backdrop-blur-xl' : 'bg-transparent',
         ].join(' ')}
       >
@@ -141,8 +87,8 @@ const Navbar: React.FC = React.memo(() => {
 
           {/* ── Logo ─────────────────────────────────────────────── */}
           <Link to="/" aria-label="QYVORA - Africa's Offensive Security Platform" className="flex items-center shrink-0 transition-transform hover:scale-105 duration-300 relative z-[110]">
-            <Logo size="md" className="hidden md:block" color={inverted ? '#06B66F' : '#06B66F'} />
-            <Logo size="md" variant="mark" className="md:hidden" color={inverted ? '#06B66F' : '#06B66F'} />
+            <Logo size="md" className="hidden md:block" color="#06B66F" />
+            <Logo size="md" variant="mark" className="md:hidden" color="#06B66F" />
           </Link>
 
           {/* ── Desktop Navigation (centered, hover dropdowns) ──── */}
@@ -157,8 +103,8 @@ const Navbar: React.FC = React.memo(() => {
                 <button
                   className={`flex items-center gap-1.5 px-4 py-2 text-sm font-black uppercase tracking-widest transition-colors rounded-xl ${
                     group.items.some((item) => isActive(item.path))
-                      ? inverted ? 'text-accent hover:text-accent/80' : 'text-accent hover:text-accent/80'
-                      : inverted ? 'text-text-primary/70 hover:text-text-primary' : 'text-text-primary/70 hover:text-accent'
+                      ? 'text-accent hover:text-accent/80'
+                      : 'text-text-primary/70 hover:text-accent'
                   }`}
                 >
                   {t(NAV_GROUP_LABELS[group.key] || group.label)}
@@ -221,14 +167,10 @@ const Navbar: React.FC = React.memo(() => {
 
           {/* ── Right controls ──────────────────────────────────── */}
           <div className="flex items-center gap-3 shrink-0 relative z-[110]">
-            <LanguageSwitcher inverted={inverted} />
+            <LanguageSwitcher inverted={false} />
             <div className="hidden md:flex items-center gap-3">
               <ContactTrigger
-                className={`font-bold uppercase tracking-widest rounded-xl px-5 py-3.5 transition-[filter,transform] duration-200 active:scale-95 flex items-center justify-center gap-2 text-sm ${
-                  inverted
-                    ? 'bg-bg text-text-primary hover:brightness-110'
-                    : 'bg-accent text-bg hover:brightness-110'
-                }`}
+                className={`font-bold uppercase tracking-widest rounded-xl px-5 py-3.5 transition-[filter,transform] duration-200 active:scale-95 flex items-center justify-center gap-2 text-sm bg-accent text-bg hover:brightness-110`}
               >
                 {t('nav.contact')}
               </ContactTrigger>
@@ -250,7 +192,7 @@ const Navbar: React.FC = React.memo(() => {
             {/* ── Mobile hamburger (far right edge) ────────────── */}
             <button
               onClick={handleMenuToggle}
-              className={`md:hidden p-2 -mr-2 transition-colors relative z-[110] ${inverted ? 'text-text-primary hover:text-accent' : 'text-text-primary hover:text-accent'}`}
+              className={`md:hidden p-2 -mr-2 transition-colors relative z-[110] text-text-primary hover:text-accent`}
               aria-label={isMenuOpen ? t('aria.closeMenu') : t('aria.openMenu')}
             >
               {isMenuOpen ? <IconX size={24} /> : <IconMenu size={24} />}
