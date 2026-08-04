@@ -65,6 +65,22 @@ All imports use `@/` prefix: `import X from '@/shared/components/X'`
 - No sourcemaps
 - Chunk size warning: 800KB
 
+## Prerendering (Static SEO)
+
+Public routes are prerendered to static `dist/<route>/index.html` files by `vite-prerender-plugin`.
+
+**Sources:**
+- `vite.config.ts` → `vitePrerenderPlugin({ additionalPrerenderRoutes })` — the route list.
+- `src/prerender.tsx` → exports `prerender()` — injects per-route `<title>`, description, canonical, OG/Twitter, JSON-LD, and a `<noscript>` shell into each route's HTML.
+
+**Rules:**
+- Keep `additionalPrerenderRoutes` (vite.config.ts), `routeMetadata` (prerender.tsx), and `public/sitemap.xml` in sync.
+- Only prerender indexable public pages — never auth/dashboard/admin routes.
+- JSON-LD scripts must use the `children` field, not `props.innerHTML` (the plugin serializes props as literal attributes).
+- `index.html` must stay thin — no fallback title/description/OG/Twitter (they duplicate the prerendered head and win as "first" tags).
+
+See **[SEO.md](SEO.md)** for the full SEO architecture.
+
 ## TypeScript
 
 **Source:** `tsconfig.json`

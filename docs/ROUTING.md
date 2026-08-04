@@ -81,7 +81,7 @@ Routes are defined in `src/app/router.tsx` — the single source of truth for al
 | `/profile` | `/dashboard/profile` |
 | `/notifications` | `/dashboard/notifications` |
 | `/settings` | `/dashboard/settings` |
-| `/courses/:courseId` | `/courses` |
+| `/courses/:courseId` | `/dashboard/courses/:courseId` |
 
 ### Tool Full-Screen Routes (StudentOnly, no layout chrome)
 

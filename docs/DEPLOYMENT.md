@@ -81,6 +81,25 @@ form-action 'self'
 
 Service worker and manifest served with `no-cache` to ensure updates propagate.
 
+## SEO Assets
+
+Public indexable routes are prerendered at build time (see **[BUILD_PIPELINE.md](BUILD_PIPELINE.md)** and **[SEO.md](SEO.md)**). Netlify serves these static files before applying the `/*` SPA rewrite.
+
+| Asset | Purpose |
+|-------|---------|
+| `public/robots.txt` | Crawl rules + sitemap declaration |
+| `public/sitemap.xml` | Indexable public URLs (keep in sync with prerender routes) |
+| `public/404.html` | Static branded 404 page (served at `/404`) |
+| `public/og-image.png` | 1200×630 social preview (SVG is not supported by social scrapers) |
+
+**Note:** the catch-all `/* → /index.html 200` returns HTTP 200 for unmatched URLs (soft 404). A true 404 status needs a Netlify function or an explicit `_redirects` route whitelist.
+
+## Google Search Console Verification
+
+Place the GSC-provided `googlexxxxxxxx.html` in `public/`. Vite copies it to the build root (`dist/googlexxxxxxxx.html` = publish directory), and Netlify serves existing files before the `/*` rewrite, so it resolves at `https://qyvora.netlify.app/googlexxxxxxxx.html`.
+
+Alternatives: `<meta name="google-site-verification">` in `index.html`, or a DNS TXT record.
+
 ## Deployment Process
 
 1. Push to `master` branch

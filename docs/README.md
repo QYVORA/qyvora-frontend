@@ -1,6 +1,6 @@
 # QYVORA Frontend Documentation
 
-> **Last Updated:** 2026-07-31
+> **Last Updated:** 2026-08-04
 
 Welcome to the QYVORA Frontend documentation. This guide helps you navigate all available documentation.
 
@@ -34,6 +34,7 @@ Welcome to the QYVORA Frontend documentation. This guide helps you navigate all 
 - **[TESTING.md](TESTING.md)** - Vitest, React Testing Library
 - **[PERFORMANCE.md](PERFORMANCE.md)** - Bundle optimization, lazy loading
 - **[DEPLOYMENT.md](DEPLOYMENT.md)** - Netlify configuration, security headers
+- **[SEO.md](SEO.md)** - Prerendering, meta tags, structured data, GSC verification
 
 ### Advanced Features
 - **[PWA.md](PWA.md)** - Progressive Web App setup, offline support
@@ -107,7 +108,8 @@ docs/
 │   ├── BUILD_PIPELINE.md
 │   ├── TESTING.md
 │   ├── PERFORMANCE.md
-│   └── DEPLOYMENT.md
+│   ├── DEPLOYMENT.md
+│   └── SEO.md
 │
 ├── Advanced Features
 │   └── PWA.md
@@ -156,6 +158,7 @@ Root-level docs (outside `docs/`):
 - Build configuration: **[BUILD_PIPELINE.md](BUILD_PIPELINE.md)**
 - Performance optimization: **[PERFORMANCE.md](PERFORMANCE.md)**
 - Deployment process: **[DEPLOYMENT.md](DEPLOYMENT.md)**
+- SEO / prerendering / GSC: **[SEO.md](SEO.md)**
 - Testing: **[TESTING.md](TESTING.md)**
 
 ---
