@@ -94,9 +94,12 @@ const HpbPhasePage: React.FC = () => {
                         <span className="text-[9px] sm:text-[10px] font-black uppercase tracking-widest text-text-muted flex items-center gap-1.5">
                           <Clock className="w-3 h-3" /> {room.estimatedMinutes} min
                         </span>
-                        <span className="px-3 py-1.5 rounded-lg text-[9px] sm:text-[10px] md:text-xs font-black uppercase tracking-widest bg-accent text-on-accent">
+                        <Link
+                          to="/register"
+                          className="px-3 py-1.5 rounded-lg text-[9px] sm:text-[10px] md:text-xs font-black uppercase tracking-widest bg-accent text-on-accent transition-all duration-200 group-hover/card:brightness-110 group-active:scale-95"
+                        >
                           {t('landing.bootcamp.startPhase')}
-                        </span>
+                        </Link>
                       </div>
                     </div>
                   </ScrollReveal>
