@@ -561,7 +561,7 @@ const Dashboard = () => {
           <div>
             <div className="flex items-center justify-between mb-4">
               <h3 className="text-xs font-black uppercase tracking-[0.3em] text-text-muted">{t('student.dashboard.courses')}</h3>
-              <Link to="/courses" className="text-[10px] font-black uppercase tracking-widest text-accent hover:underline">
+              <Link to="/dashboard/courses" className="text-[10px] font-black uppercase tracking-widest text-accent hover:underline">
                 {t('student.dashboard.viewAll')} <IconArrowRight size={12} className="inline-block ml-1" />
               </Link>
             </div>
@@ -587,7 +587,7 @@ const Dashboard = () => {
                 return (
                   <Link
                     key={course.id}
-                    to={`/courses/${course.id}`}
+                    to={`/dashboard/courses/${course.id}`}
                     className="group/card relative aspect-square rounded-2xl border border-border/30 bg-bg-card p-3 md:p-5 transition-all duration-300 hover:border-accent/30 flex flex-col text-left"
                   >
                     <div className="flex items-center gap-2 mb-2">
@@ -611,9 +611,6 @@ const Dashboard = () => {
                       <div className="flex items-center gap-2">
                         <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-lg text-[9px] font-black uppercase tracking-widest ${skillCfg.color}`}>
                           <SkillIcon className="h-2.5 w-2.5" /> {skillCfg.label}
-                        </span>
-                        <span className="text-[9px] sm:text-[10px] font-black uppercase tracking-widest text-accent">
-                          {course.cpCost} CP
                         </span>
                       </div>
                       <span className="px-3 py-1.5 rounded-lg text-[9px] sm:text-[10px] md:text-xs font-black uppercase tracking-widest bg-accent text-on-accent transition-all duration-200 group-hover/card:brightness-110 group-active:scale-95">

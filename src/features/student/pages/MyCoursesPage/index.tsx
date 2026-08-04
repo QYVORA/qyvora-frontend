@@ -2,7 +2,7 @@ import React, { useEffect, useState, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import {
-  Clock, ArrowRight, Zap, GraduationCap, Search, CheckCircle2,
+  Clock, ArrowRight, GraduationCap, Search, CheckCircle2,
   Play, BarChart3,
 } from 'lucide-react';
 import ScrollReveal from '@/shared/components/ScrollReveal';
@@ -117,7 +117,7 @@ const MyCoursesPage: React.FC = () => {
     if (availableCourses.length > 0) {
       return `/dashboard/courses/${availableCourses[0].id}`;
     }
-    return '/courses';
+    return '/dashboard/courses';
   }, [availableCourses, courseProgress]);
 
   const filterTabs = useMemo(() => [
@@ -268,9 +268,6 @@ const MyCoursesPage: React.FC = () => {
                       <CourseAvatar courseId={course.id} variant="badge" />
                       <span className="px-2 py-0.5 rounded-lg bg-bg-elevated text-[9px] font-black uppercase tracking-widest text-text-muted border border-border/20">
                         {category?.name}
-                      </span>
-                      <span className="ml-auto flex items-center gap-1 px-2 py-0.5 rounded-lg bg-accent/10 text-[9px] font-black text-accent whitespace-nowrap">
-                        <Zap className="h-2.5 w-2.5" /> {course.cpCost} CP
                       </span>
                     </div>
                      <h3 className="text-sm sm:text-base md:text-lg lg:text-xl font-black text-text-muted leading-snug break-words mb-1">
