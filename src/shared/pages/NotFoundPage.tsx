@@ -8,6 +8,7 @@ const NotFoundPage = () => (
     <SEO
       title="404 - Node Not Found"
       description="The requested page could not be located on the QYVORA network."
+      noindex
     />
     <PublicHeroSection mask="none" showGlobe={false}>
       <div className="flex items-center gap-2 text-[11px] font-bold uppercase tracking-widest text-text-muted mb-2">
