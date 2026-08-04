@@ -109,7 +109,7 @@ const LandingCoursesSection: React.FC = () => {
 
   return (
     <div className="relative overflow-hidden min-h-dvh lg:h-dvh flex flex-col" data-nav-invert>
-      <GridBoxedBackground opacity={0.4} blur={0} mask="right" />
+      <GridBoxedBackground blur={0} mask="right" />
       <div className="relative z-10 w-full h-full px-3 md:px-4 lg:px-6 pt-20 md:pt-24 lg:pt-28 pb-14 md:pb-20 lg:pb-28 flex flex-col">
         <div className="w-full flex-1 flex flex-col min-h-0">
           <h2 className="text-lg md:text-xl lg:text-2xl font-black text-text-primary tracking-tighter leading-none mb-2 md:mb-3 shrink-0">
