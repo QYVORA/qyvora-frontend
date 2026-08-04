@@ -6,6 +6,7 @@ import { IconArrowLeft, IconArrowRight, IconClock } from '@/shared/components/ic
 import SEO from '@/shared/components/SEO';
 import { useAuth } from '@/core/contexts/AuthContext';
 import LandingFinalCtaSection from '@/features/marketing/components/landing/LandingFinalCtaSection';
+import { Footer } from '@/shared/components/layout';
 import { BLOG_POSTS } from './blogContent';
 
 const HackerProtocolBootcampBlog = lazy(() => import('./HackerProtocolBootcampBlog').then(m => ({ default: m.HackerProtocolBootcampBlog })));
@@ -207,6 +208,11 @@ const BlogPostPage: React.FC = () => {
 
       <section className="relative w-full min-h-dvh md:h-dvh md:overflow-hidden">
         <LandingFinalCtaSection user={user} />
+      </section>
+
+      {/* ── Footer ── */}
+      <section className="relative w-full bg-bg">
+        <Footer />
       </section>
     </div>
   );
