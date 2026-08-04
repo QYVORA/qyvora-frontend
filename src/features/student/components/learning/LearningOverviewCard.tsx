@@ -60,7 +60,7 @@ const LearningOverviewCard: React.FC<LearningOverviewCardProps> = ({
         transition={{ duration: 0.5 }}
         className="relative rounded-2xl border border-border/30 bg-bg-card p-6 sm:p-8 lg:p-12 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 sm:gap-6 overflow-hidden"
       >
-        <GridBoxedBackground opacity={0.3} blur={0} mask="none" />
+        <GridBoxedBackground blur={0} mask="right" />
         <div className="relative z-10 w-full sm:w-auto min-w-0">
           <motion.div
             initial={{ opacity: 0, y: 8 }}

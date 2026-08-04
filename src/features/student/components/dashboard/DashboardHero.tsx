@@ -31,7 +31,7 @@ const DashboardHero = ({
           transition={{ duration: 0.5 }}
           className={cardClass}
         >
-          <GridBoxedBackground opacity={0.3} blur={0} mask="none" />
+          <GridBoxedBackground blur={0} mask="right" />
           <div className="relative z-10 w-full sm:w-auto flex flex-col sm:self-stretch gap-4 sm:gap-6">
             <div>
               <motion.div
@@ -92,7 +92,7 @@ const DashboardHero = ({
           transition={{ duration: 0.5 }}
           className={cardClass}
         >
-          <GridBoxedBackground opacity={0.3} blur={0} mask="none" />
+          <GridBoxedBackground blur={0} mask="right" />
           <div className="relative z-10 w-full sm:w-auto flex flex-col sm:self-stretch gap-4 sm:gap-6">
             <div>
               <motion.div
@@ -152,7 +152,7 @@ const DashboardHero = ({
         transition={{ duration: 0.5 }}
         className={cardClass}
       >
-        <GridBoxedBackground opacity={0.3} blur={0} mask="none" />
+        <GridBoxedBackground blur={0} mask="right" />
         <div className="relative z-10 w-full sm:w-auto flex flex-col sm:self-stretch gap-4 sm:gap-6">
           <div>
             <motion.div
