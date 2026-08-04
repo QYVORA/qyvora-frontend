@@ -19,7 +19,14 @@ const HpbPage = () => {
 
   return (
     <div className="bg-bg min-h-full">
-      <SEO title="HPB - QYVORA" description="Hacker Protocol Bootcamp — Africa's most intensive offensive security training." />
+      <SEO
+        title="Hacker Protocol Bootcamp"
+        description="Train as an offensive security operator across 5 phases — hacker mindset, Linux foundations, networking, web & backend, and social engineering."
+        breadcrumbs={[
+          { name: 'Home', item: '/' },
+          { name: 'Hacker Protocol Bootcamp', item: '/hpb' },
+        ]}
+      />
       <PublicSnapLayout>
         <StudentHeroSection
           title="Hacker Protocol"
