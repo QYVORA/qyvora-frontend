@@ -37,7 +37,7 @@ const LandingHeroSection: React.FC<LandingHeroSectionProps> = ({
   });
 
   const { scale: rawGlobeScale, offset: globeOffset } = useFluidGlobe();
-  const globeScaleValue = useTransform(scrollYProgress, [0, 1], [rawGlobeScale, 2.5]);
+  const globeScaleValue = useTransform(scrollYProgress, [0, 1], [1, 2.5]);
   const globeOpacityValue = useTransform(scrollYProgress, [0, 0.6, 1], [1, 0.8, 0]);
 
   const line1Ref = React.useRef<HTMLSpanElement>(null);
