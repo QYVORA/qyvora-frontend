@@ -1,7 +1,7 @@
 import type { PrerenderArguments, PrerenderResult } from 'vite-prerender-plugin';
 
 const SITE_URL = 'https://qyvora.netlify.app';
-const DEFAULT_OG_IMAGE = `${SITE_URL}/og-image.svg`;
+const DEFAULT_OG_IMAGE = `${SITE_URL}/og-image.png`;
 
 const routeMetadata: Record<string, { title: string; description: string }> = {
   '/': {
@@ -15,6 +15,38 @@ const routeMetadata: Record<string, { title: string; description: string }> = {
   '/services': {
     title: 'Services | QYVORA',
     description: 'Professional penetration testing, security auditing, and cybersecurity consulting services.',
+  },
+  '/services/basic-web-application-pentest': {
+    title: 'Basic Web Application Penetration Testing | QYVORA',
+    description: 'A focused assessment of your application\u2019s most critical pages \u2014 fast, thorough, and built around the OWASP Top 10.',
+  },
+  '/services/standard-web-application-pentest': {
+    title: 'Standard Web Application Penetration Testing | QYVORA',
+    description: 'A deep, full-application assessment covering authentication, authorization, business logic, and everything in between.',
+  },
+  '/services/employee-cybersecurity-bootcamp': {
+    title: 'Employee Cybersecurity Bootcamp | QYVORA',
+    description: 'Build a security-aware workforce with hands-on training your employees will actually retain.',
+  },
+  '/hpb/phase1': {
+    title: 'Hacker Mindset - Hacker Protocol Bootcamp | QYVORA',
+    description: 'Train to find weaknesses before adversaries do by understanding the legal boundaries, scopes, and coordinator rules.',
+  },
+  '/hpb/phase2': {
+    title: 'Linux Foundations - Hacker Protocol Bootcamp | QYVORA',
+    description: 'Master navigation, user privilege escalation, file permissions, and directory structures on the Linux terminal.',
+  },
+  '/hpb/phase3': {
+    title: 'Networking - Hacker Protocol Bootcamp | QYVORA',
+    description: 'Establish total visibility over the network stack. Audit TCP/IP, OSI layers, routing protocols, and intercept packets at the raw bytecode level.',
+  },
+  '/hpb/phase4': {
+    title: 'Web & Backend Systems - Hacker Protocol Bootcamp | QYVORA',
+    description: 'Analyze web server frameworks, dissect HTTP protocol traffic, manipulate REST APIs, and compromise backend database persistence layers.',
+  },
+  '/hpb/phase5': {
+    title: 'Social Engineering - Hacker Protocol Bootcamp | QYVORA',
+    description: 'Learn the human element of security through persuasion, pretexting, and awareness-building techniques.',
   },
   '/blogs': {
     title: 'Blog | QYVORA',
@@ -120,6 +152,7 @@ export async function prerender(data: PrerenderArguments): Promise<PrerenderResu
         { type: 'meta', props: { property: 'og:description', content: meta.description } },
         { type: 'meta', props: { property: 'og:url', content: canonical } },
         { type: 'meta', props: { property: 'og:image', content: DEFAULT_OG_IMAGE } },
+        { type: 'meta', props: { property: 'og:image:type', content: 'image/png' } },
         { type: 'meta', props: { property: 'og:image:width', content: '1200' } },
         { type: 'meta', props: { property: 'og:image:height', content: '630' } },
         { type: 'meta', props: { property: 'og:image:alt', content: meta.title } },
@@ -133,19 +166,19 @@ export async function prerender(data: PrerenderArguments): Promise<PrerenderResu
           type: 'script',
           props: {
             type: 'application/ld+json',
-            innerHTML: JSON.stringify({
-              '@context': 'https://schema.org',
-              '@type': 'WebPage',
-              name: meta.title,
-              description: meta.description,
-              url: canonical,
-              isPartOf: {
-                '@type': 'WebSite',
-                name: 'QYVORA',
-                url: SITE_URL,
-              },
-            }),
           },
+          children: JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'WebPage',
+            name: meta.title,
+            description: meta.description,
+            url: canonical,
+            isPartOf: {
+              '@type': 'WebSite',
+              name: 'QYVORA',
+              url: SITE_URL,
+            },
+          }),
         },
       ]),
     },
