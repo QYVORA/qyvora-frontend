@@ -91,11 +91,16 @@ const ServiceSection: React.FC<{ svc: ServiceConfig; index: number }> = ({ svc, 
         <span className="text-[9px] font-black uppercase tracking-widest text-text-muted mb-3">
           What's Included
         </span>
-        <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3 md:gap-4">
+        <ul className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 md:gap-3">
           {svc.included.map((item) => (
-            <li key={item} className="flex items-start gap-2.5 rounded-xl border border-border/30 bg-bg-card px-4 py-3">
-              <IconCheck size={15} className="text-accent mt-0.5 shrink-0" />
-              <span className="text-xs sm:text-sm text-text-secondary leading-relaxed">{item}</span>
+            <li
+              key={item}
+              className="relative flex flex-col items-start justify-between gap-2 aspect-square rounded-xl border border-border/30 bg-bg-card p-3 md:p-3.5"
+            >
+              <span className="w-7 h-7 md:w-8 md:h-8 rounded-lg bg-accent/10 flex items-center justify-center shrink-0">
+                <IconCheck size={15} className="text-accent" />
+              </span>
+              <span className="text-[11px] md:text-xs text-text-secondary leading-snug font-mono">{item}</span>
             </li>
           ))}
         </ul>
