@@ -2,25 +2,73 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://qyvora.netlify.app/</loc>
-    <lastmod>2026-07-29</lastmod>
+    <lastmod>2026-08-04</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.00</priority>
   </url>
   <url>
     <loc>https://qyvora.netlify.app/hpb</loc>
-    <lastmod>2026-07-29</lastmod>
+    <lastmod>2026-08-04</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.90</priority>
   </url>
   <url>
+    <loc>https://qyvora.netlify.app/hpb/phase1</loc>
+    <lastmod>2026-08-04</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.80</priority>
+  </url>
+  <url>
+    <loc>https://qyvora.netlify.app/hpb/phase2</loc>
+    <lastmod>2026-08-04</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.80</priority>
+  </url>
+  <url>
+    <loc>https://qyvora.netlify.app/hpb/phase3</loc>
+    <lastmod>2026-08-04</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.80</priority>
+  </url>
+  <url>
+    <loc>https://qyvora.netlify.app/hpb/phase4</loc>
+    <lastmod>2026-08-04</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.80</priority>
+  </url>
+  <url>
+    <loc>https://qyvora.netlify.app/hpb/phase5</loc>
+    <lastmod>2026-08-04</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.80</priority>
+  </url>
+  <url>
     <loc>https://qyvora.netlify.app/services</loc>
-    <lastmod>2026-07-29</lastmod>
+    <lastmod>2026-08-04</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.80</priority>
   </url>
   <url>
+    <loc>https://qyvora.netlify.app/services/basic-web-application-pentest</loc>
+    <lastmod>2026-08-04</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.70</priority>
+  </url>
+  <url>
+    <loc>https://qyvora.netlify.app/services/standard-web-application-pentest</loc>
+    <lastmod>2026-08-04</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.70</priority>
+  </url>
+  <url>
+    <loc>https://qyvora.netlify.app/services/employee-cybersecurity-bootcamp</loc>
+    <lastmod>2026-08-04</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.70</priority>
+  </url>
+  <url>
     <loc>https://qyvora.netlify.app/blogs</loc>
-    <lastmod>2026-07-29</lastmod>
+    <lastmod>2026-08-04</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.80</priority>
   </url>
@@ -74,49 +122,49 @@
   </url>
   <url>
     <loc>https://qyvora.netlify.app/zero-day-market</loc>
-    <lastmod>2026-07-29</lastmod>
+    <lastmod>2026-08-04</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.70</priority>
   </url>
   <url>
     <loc>https://qyvora.netlify.app/quiteroot</loc>
-    <lastmod>2026-07-29</lastmod>
+    <lastmod>2026-08-04</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.60</priority>
   </url>
   <url>
     <loc>https://qyvora.netlify.app/anansi</loc>
-    <lastmod>2026-07-29</lastmod>
+    <lastmod>2026-08-04</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.60</priority>
   </url>
   <url>
     <loc>https://qyvora.netlify.app/team</loc>
-    <lastmod>2026-07-29</lastmod>
+    <lastmod>2026-08-04</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.50</priority>
   </url>
   <url>
     <loc>https://qyvora.netlify.app/labs</loc>
-    <lastmod>2026-07-29</lastmod>
+    <lastmod>2026-08-04</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.70</priority>
   </url>
   <url>
     <loc>https://qyvora.netlify.app/courses</loc>
-    <lastmod>2026-07-29</lastmod>
+    <lastmod>2026-08-04</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.70</priority>
   </url>
   <url>
     <loc>https://qyvora.netlify.app/leaderboard</loc>
-    <lastmod>2026-07-29</lastmod>
+    <lastmod>2026-08-04</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.70</priority>
   </url>
   <url>
     <loc>https://qyvora.netlify.app/terms</loc>
-    <lastmod>2026-07-29</lastmod>
+    <lastmod>2026-08-04</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.30</priority>
   </url>
