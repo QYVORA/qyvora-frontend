@@ -40,7 +40,7 @@ export const ProfileSkeleton = () => (
         <div className="h-1 w-full bg-accent/30" />
         <div className="p-5 sm:p-6 space-y-5">
           <div className="flex items-start gap-4 sm:gap-5">
-            <Skeleton className="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl shrink-0" />
+            <Skeleton className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl shrink-0" />
             <div className="flex-1 space-y-3 pt-2">
               <Skeleton className="h-6 w-40 rounded" />
               <Skeleton className="h-4 w-56 rounded bg-border/20" />
