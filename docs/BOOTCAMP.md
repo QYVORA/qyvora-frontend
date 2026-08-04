@@ -2,7 +2,7 @@
 
 > **Status:** ✅ FULLY IMPLEMENTED  
 > **Config:** `src/features/student/constants/bootcampConfig.ts` (4028 lines)  
-> **Pages:** `BootcampCoursePage`, `BootcampRoomPage`
+> **Pages:** `HpbPage`, `HpbPhasePage` (public) · `BootcampCoursePage`, `BootcampRoomPage` (student)
 
 ## Overview
 
@@ -130,10 +130,16 @@ Renders individual steps within a room:
 
 ## Navigation
 
+- **Public overview:** `/hpb` (`HpbPage`) — phase cards with `Explore` buttons linking to each phase page
+- **Public phase page:** `/hpb/:phaseId` (`HpbPhasePage`) — phase hero + room cards (`Start Phase` → `/register`)
 - **Curriculum browser:** `/dashboard/bootcamps/:bootcampId`
 - **Room view:** `/dashboard/bootcamps/:bootcampId/phases/:phaseId/rooms/:roomId`
 - **Sidebar:** Phase/room tree navigation (desktop + mobile)
 - **Jump menu:** Quick step navigation overlay
+
+## Public Phase/Room Cards
+
+The landing page's bootcamp section renders a mobile-only static list of all 5 phases (featured-card styling: text left, avatar right, no switching) and the desktop cycling bento. All public HPB phase/room cards follow the [Learning Card Rule](DESIGN_SYSTEM.md#learning-card-rule).
 
 ## Recent Room Features (Implemented)
 

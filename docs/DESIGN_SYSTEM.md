@@ -88,6 +88,34 @@ px-2.5 py-1 rounded-lg text-[9px] font-black uppercase tracking-widest
 | Hover | `border-accent/30` |
 | Elevated | `border-border/50` |
 
+## Learning Card Rule
+
+All learning cards — courses, labs, bootcamp phases and rooms (public pages **and** student dashboard) — must follow the same pattern. Reference: `CoursesPage`, `LabsPage`, `DashboardPage`.
+
+**Card shell:**
+```
+group/card relative aspect-square rounded-2xl border border-border/30 bg-bg-card
+p-3 md:p-5 transition-all duration-300 hover:border-accent/30 flex flex-col text-left
+```
+
+**Slots (top → bottom):**
+
+| Slot | Classes |
+|------|---------|
+| Icon chip | `w-8 h-8 rounded-xl flex items-center justify-center shrink-0 bg-accent/10 border border-accent/20` + `w-4 h-4 text-accent` icon |
+| Badge pill | `px-2 py-0.5 rounded-lg bg-accent/10 text-[9px] font-black uppercase tracking-widest text-accent border border-accent/20` |
+| Title | `text-sm sm:text-base md:text-lg lg:text-xl font-black text-text-primary group-hover/card:text-accent transition-colors leading-snug break-words mb-1` |
+| Description | `text-xs sm:text-sm md:text-base text-text-muted leading-relaxed line-clamp-3 break-words flex-1 mb-2` |
+| Meta + CTA row | `flex items-center justify-between mt-auto` — meta left, accent pill (`px-3 py-1.5 rounded-lg ... bg-accent text-on-accent group-hover/card:brightness-110 group-active:scale-95`) right |
+
+**Grid wrapper:** `grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6`
+
+**Media variant (bootcamp phases):** a centered `HpbAvatar` fills the `flex-1` area instead of an icon chip (`HpbPage`).
+
+## Public Hero Right Column (Avatars)
+
+`StudentHeroSection` renders `rightContent` as a grid column. On mobile the avatar/image must remain visible — use `md:hidden lg:flex` on the wrapper (never `hidden lg:flex`) so it shows below the hero text on phones and on the right column from `lg` up. Keep the image bounded on mobile (e.g. `max-w-[220px] sm:max-w-[260px] lg:max-w-[80%]`).
+
 ## Z-Index Scale
 
 | Layer | Z-Index |
