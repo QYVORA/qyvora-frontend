@@ -200,6 +200,7 @@
   },
   "hero": {
     "welcomeBack": "Bienvenido de nuevo,",
+    "welcomeTo": "Bienvenido a",
     "welcome": "Bienvenido,",
     "operator": "Operador",
     "tagline": "La plataforma de seguridad ofensiva de África",

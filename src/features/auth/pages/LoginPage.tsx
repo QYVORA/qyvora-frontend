@@ -1,18 +1,17 @@
 import React, { useEffect, useState, useRef, useCallback } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { Mail, LogIn, Terminal, Shield, Trophy } from 'lucide-react';
+import { Mail, LogIn } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '../../../core/contexts/AuthContext';
 import { useToast } from '../../../core/contexts/ToastContext';
 import SEO from '@/shared/components/SEO';
-import PublicHeroSection from '@/shared/components/PublicHeroSection';
-import { GridBoxedBackground } from '@/shared/components/backgrounds';
-import { IconArrowLeft } from '@/shared/components/icons';
+import { AuthFormLayout } from '@/shared/components/layout';
 import { sanitizeError } from '../../../shared/utils/sanitizeError';
 import PasswordInput from '../components/PasswordInput';
 import api from '../../../core/services/api';
 import ADMIN_PATH from '@/shared/utils/adminPath';
 import Input from '@/shared/components/ui/Input';
+import AthenaBoxes from '@/shared/components/AthenaBoxes';
 import AuthForm, { type AuthMode } from '../components/AuthForm';
 
 const LoginPage: React.FC = () => {
@@ -176,7 +175,16 @@ const LoginPage: React.FC = () => {
                   disabled={isLoading}
                   className="w-full bg-bg-card border border-border text-text-primary hover:border-accent/40 active:scale-[0.98] !rounded-xl !py-4 flex items-center justify-center gap-3 disabled:opacity-50 text-[10px] font-black uppercase tracking-widest transition-all"
                 >
-                  <span className="text-[10px]">{isLoading ? t('button.signingIn') : t('button.signIn')}</span> <LogIn className="w-5 h-5" />
+                  {isLoading ? (
+                    <>
+                      <AthenaBoxes />
+                      <span className="text-[10px]">{t('button.signingIn')}</span>
+                    </>
+                  ) : (
+                    <>
+                      <span className="text-[10px]">{t('button.signIn')}</span> <LogIn className="w-5 h-5" />
+                    </>
+                  )}
                 </button>
               </form>
             </div>
@@ -205,14 +213,8 @@ const LoginPage: React.FC = () => {
     onForgotPassword: () => navigate('/forgot-password'),
   };
 
-  const authBullets = [
-    { icon: Terminal, text: t('auth.bullets.labs') },
-    { icon: Shield, text: t('auth.bullets.scenarios') },
-    { icon: Trophy, text: t('auth.bullets.ctf') },
-  ];
-
   return (
-    <>
+    <AuthFormLayout>
       <SEO 
         title={mode === 'login' ? 'Login' : 'Register'} 
         description={mode === 'login' 
@@ -221,82 +223,8 @@ const LoginPage: React.FC = () => {
         } 
         noindex 
       />
-      
-      {/* Mobile: form only, centered */}
-      <div className="md:hidden relative w-full min-h-dvh flex flex-col bg-bg" data-nav-invert>
-        <GridBoxedBackground blur={0} mask="right" />
-        
-        {/* Back to Home button - Mobile */}
-        <div className="absolute top-6 left-6 z-20">
-          <button 
-            onClick={() => navigate('/')} 
-            className="inline-flex items-center gap-2 px-4 py-2 text-text-primary rounded-lg text-[10px] font-black uppercase tracking-[0.2em] transition-all hover:opacity-70 active:scale-95"
-          >
-            <IconArrowLeft size={16} /> Back to Home
-          </button>
-        </div>
-        
-        <div className="relative z-10 w-full flex-1 flex flex-col px-3 md:px-4 lg:px-6 pt-24 pb-10">
-          <div className="my-auto w-full">
-            <AuthForm {...authFormProps} />
-          </div>
-        </div>
-      </div>
-
-      {/* Desktop: PublicHeroSection with left hero and right form (page scrolls) */}
-      <div className="hidden md:block">
-        <PublicHeroSection
-          mask="right"
-          showGlobe
-          scrollable
-          splitAt="md"
-          rightContent={
-            <div className="flex items-center justify-center h-full w-full py-8">
-              <div className="w-full max-w-md">
-                <AuthForm {...authFormProps} />
-              </div>
-            </div>
-          }
-        >
-          <div className="flex flex-col items-start gap-6 w-full">
-            <div className="inline-flex items-center gap-2 px-4 py-2.5 border border-border/30 bg-bg-elevated/50 rounded-lg">
-              <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse flex-none" />
-              <span className="font-mono text-[10px] sm:text-[11px] font-black uppercase tracking-[0.3em] text-text-muted">
-                {t('hero.tagline')}
-              </span>
-            </div>
-            <div>
-              <h2 className="text-4xl md:text-5xl font-black text-text-primary tracking-tighter leading-none">
-                {mode === 'login' ? (
-                  <>{t('hero.welcomeBack')} <span className="text-accent">{t('hero.operator')}</span></>
-                ) : (
-                  <>Join <span className="text-accent">QYVORA</span></>
-                )}
-              </h2>
-              <p className="text-base text-text-muted mt-3 max-w-xl leading-relaxed">
-                {mode === 'login' ? t('auth.signIntoContinue') : t('hero.authDescription')}
-              </p>
-            </div>
-            <ul className="grid gap-2.5">
-              {authBullets.map(({ icon: Icon, text }) => (
-                <li key={text} className="flex items-center gap-2.5 text-sm text-text-muted font-mono leading-tight">
-                  <Icon className="w-4 h-4 text-accent flex-none" /> {text}
-                </li>
-              ))}
-            </ul>
-          </div>
-          {/* Back to Home button - Desktop */}
-          <div className="absolute top-6 left-6 z-20">
-            <button 
-              onClick={() => navigate('/')} 
-              className="inline-flex items-center gap-2 px-4 py-2 text-text-primary rounded-lg text-[10px] font-black uppercase tracking-[0.2em] transition-all hover:opacity-70 active:scale-95"
-            >
-              <IconArrowLeft size={16} /> Back to Home
-            </button>
-          </div>
-        </PublicHeroSection>
-      </div>
-    </>
+      <AuthForm {...authFormProps} />
+    </AuthFormLayout>
   );
 };
 

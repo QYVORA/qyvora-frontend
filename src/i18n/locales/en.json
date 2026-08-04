@@ -215,6 +215,7 @@
   },
   "hero": {
     "welcomeBack": "Welcome back,",
+    "welcomeTo": "Welcome to",
     "welcome": "Welcome,",
     "operator": "Operator",
     "tagline": "Africa's Offensive Security Platform",

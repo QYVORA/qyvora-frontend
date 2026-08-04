@@ -4,6 +4,7 @@ import { KeyRound } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import PasswordInput from './PasswordInput';
 import Input from '@/shared/components/ui/Input';
+import AthenaBoxes from '@/shared/components/AthenaBoxes';
 
 interface ChangePasswordFormProps {
   onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
@@ -46,7 +47,16 @@ const ChangePasswordForm: React.FC<ChangePasswordFormProps> = ({
         </div>
         <button type="submit" disabled={isLoading}
           className="w-full btn-primary !py-4 flex items-center justify-center gap-3 disabled:opacity-50">
-          <span className="text-[10px]">{isLoading ? t('auth2.changePassword.updating') : t('auth2.changePassword.setNewPassword')}</span> <IconCheck size={20} />
+          {isLoading ? (
+            <>
+              <AthenaBoxes />
+              <span className="text-[10px]">{t('auth2.changePassword.updating')}</span>
+            </>
+          ) : (
+            <>
+              <span className="text-[10px]">{t('auth2.changePassword.setNewPassword')}</span> <IconCheck size={20} />
+            </>
+          )}
         </button>
       </form>
     </div>

@@ -200,6 +200,7 @@
   },
   "hero": {
     "welcomeBack": "おかえりなさい、",
+    "welcomeTo": "ようこそ、",
     "welcome": "ようこそ、",
     "operator": "オペレーター",
     "tagline": "アフリカのオフェンシブセキュリティプラットフォーム",
