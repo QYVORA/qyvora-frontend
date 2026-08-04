@@ -224,7 +224,7 @@ const LoginPage: React.FC = () => {
       
       {/* Mobile: form only, centered */}
       <div className="md:hidden relative w-full min-h-dvh flex flex-col bg-bg" data-nav-invert>
-        <GridBoxedBackground opacity={0.5} blur={0} mask="none" />
+        <GridBoxedBackground blur={0} mask="right" />
         
         {/* Back to Home button - Mobile */}
         <div className="absolute top-6 left-6 z-20">

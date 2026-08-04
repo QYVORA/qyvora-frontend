@@ -5,7 +5,7 @@ import { GridBoxedBackground } from '@/shared/components/backgrounds';
 
 const AuthHero: React.FC = () => (
   <div className="hidden md:flex relative w-full min-h-dvh md:h-dvh flex-col bg-bg" data-nav-invert>
-    <GridBoxedBackground opacity={0.5} blur={0} mask="right" />
+    <GridBoxedBackground blur={0} mask="right" />
 
     {/* Back to Home — top-left */}
     <div className="absolute top-6 left-6 z-20">
