@@ -199,7 +199,7 @@ export function RoomTopBar({
                 to={profileHref}
                 className="w-9 h-9 md:w-11 md:h-11 flex-none transition-colors"
               >
-                <Identicon value={username} size={44} className="w-full h-full rounded-lg overflow-hidden bg-black" />
+                <Identicon value={username} size={44} className="w-full h-full rounded-lg overflow-hidden bg-black border border-accent/40" />
               </Link>
             )}
           </div>

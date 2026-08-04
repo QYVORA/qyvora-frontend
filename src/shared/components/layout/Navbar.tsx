@@ -177,7 +177,7 @@ const Navbar: React.FC = React.memo(() => {
               {user && (
                 <Link
                   to="/dashboard/profile"
-                  className={`w-11 h-11 flex-none rounded-xl overflow-hidden bg-black transition-colors`}
+                  className={`w-11 h-11 flex-none rounded-xl overflow-hidden bg-black border border-accent/40 transition-colors`}
                   aria-label={t('nav.profile')}
                 >
                   <Identicon
