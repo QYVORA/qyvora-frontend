@@ -60,7 +60,7 @@ const PodiumCard = ({ entry, rank, className = '' }: PodiumCardProps) => {
         Rank #{rank}
       </span>
 
-      <div className={`${s.avatarSize} rounded-full overflow-hidden bg-black shrink-0`}>
+      <div className={`${s.avatarSize} rounded-full overflow-hidden bg-black shrink-0 border border-accent/40`}>
         <Identicon
           value={entry.hackerHandle || entry.name}
           size={96}
