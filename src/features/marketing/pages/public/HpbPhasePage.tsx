@@ -20,7 +20,7 @@ const HpbPhasePage: React.FC = () => {
   const { phaseId } = useParams<{ phaseId: string }>();
 
   const phase = BOOTCAMP_CONFIG.phases.find((p) => p.id === phaseId);
-  const learnPhase = PHASES.find((p) => p.id === phaseId?.replace('phase', ''));
+  const learnPhase = PHASES.find((p) => p.id === phaseId?.replace('phase', '').padStart(2, '0'));
 
   if (!phase) return <Navigate to="/hpb" replace />;
 
