@@ -49,8 +49,8 @@ const LandingBootcampSection: React.FC = () => {
             {t('landing2.bootcamp.heading1')} <span className="text-accent">{t('landing2.bootcamp.heading2')}</span>
           </h2>
 
-          {/* Bento grid: 3 columns on desktop — 1 featured + 2 supporting */}
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-2 md:gap-4 flex-1 auto-rows-fr min-h-0">
+          {/* Desktop bento — 3 columns, 1 featured + 2 supporting (desktop only) */}
+          <div className="hidden lg:grid grid-cols-3 gap-2 md:gap-4 flex-1 auto-rows-fr min-h-0">
             {/* Featured card — 2 cols, 2 rows */}
             <motion.div
               key={`featured-${groupIndex}`}
@@ -141,6 +141,51 @@ const LandingBootcampSection: React.FC = () => {
                     </div>
                   </Link>
                 </motion.div>
+              );
+            })}
+          </div>
+
+          {/* Mobile — static list of all 5 phases, styled like the featured card (no switching) */}
+          <div className="lg:hidden w-full flex-1 min-h-0 mt-2 md:mt-3 overflow-y-auto no-scrollbar flex flex-col gap-2 md:gap-3">
+            {PHASES.map((phase) => {
+              const phaseIdx = PHASES.indexOf(phase);
+              const config = BOOTCAMP_CONFIG.phases[phaseIdx];
+              const roomCount = config?.rooms?.length || 0;
+              const href = config ? `/hpb/${config.id}` : '/hpb';
+              return (
+                <Link
+                  key={phase.id}
+                  to={href}
+                  className="group relative block w-full shrink-0 rounded-2xl border border-border/20 bg-bg-card overflow-hidden transition-all duration-300 hover:border-accent/30"
+                >
+                  <div className="relative w-full flex flex-row items-stretch gap-3 md:gap-4 p-3 md:p-4">
+                    <div className="flex-1 min-w-0 flex flex-col">
+                      <div className="flex items-center justify-end mb-1.5 md:mb-2">
+                        <span className="text-[8px] md:text-[9px] font-black uppercase tracking-widest px-2.5 py-1 rounded-full border border-border/30 bg-bg-elevated text-text-muted">
+                          {t('landing.bootcamp.roomCount', { count: roomCount })}
+                        </span>
+                      </div>
+                      <h3 className="text-base md:text-lg font-black text-text-primary tracking-tighter leading-none mb-1 md:mb-1.5">
+                        {t(`landing.bootcamp.phases.${phase.id}.name`)}
+                      </h3>
+                      <p className="text-[10px] md:text-[11px] text-text-secondary leading-relaxed line-clamp-2">
+                        {t(`landing.bootcamp.phases.${phase.id}.desc`)}
+                      </p>
+                      <div className="mt-auto pt-2 md:pt-2.5">
+                        <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-bg text-[9px] font-black uppercase tracking-widest text-accent transition-all group-hover:gap-2.5">
+                          {t('landing.bootcamp.startPhase')} {phase.id}
+                          <IconArrowRight size={12} />
+                        </span>
+                      </div>
+                    </div>
+                    <div className="w-[34%] md:w-[36%] shrink-0 min-h-0 flex items-center justify-center">
+                      <HpbAvatar
+                        variant={`phase${Number(phase.id)}` as HpbVariant}
+                        className="w-full h-auto max-w-full max-h-[110px] md:max-h-[140px]"
+                      />
+                    </div>
+                  </div>
+                </Link>
               );
             })}
           </div>
