@@ -3,6 +3,7 @@ import { IconArrowLeft, IconCheck } from '@/shared/components/icons';
 import { KeyRound } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import Input from '@/shared/components/ui/Input';
+import AthenaBoxes from '@/shared/components/AthenaBoxes';
 
 interface VerifyEmailFormProps {
   onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
@@ -41,7 +42,16 @@ const VerifyEmailForm: React.FC<VerifyEmailFormProps> = ({
         </div>
         <button type="submit" disabled={isLoading}
           className="w-full btn-primary !py-4 flex items-center justify-center gap-3 disabled:opacity-50">
-          <span className="text-[10px]">{isLoading ? t('auth2.verify.verifying') : t('auth2.verify.verifyEmail')}</span> <IconCheck size={20} />
+          {isLoading ? (
+            <>
+              <AthenaBoxes />
+              <span className="text-[10px]">{t('auth2.verify.verifying')}</span>
+            </>
+          ) : (
+            <>
+              <span className="text-[10px]">{t('auth2.verify.verifyEmail')}</span> <IconCheck size={20} />
+            </>
+          )}
         </button>
       </form>
       {email && (

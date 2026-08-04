@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { motion, AnimatePresence } from 'motion/react';
 import { User, Mail, LogIn } from 'lucide-react';
 import { cn } from '@/shared/utils/cn';
-import Dobia from '@/shared/components/Dobia';
+import AthenaBoxes from '@/shared/components/AthenaBoxes';
 import PasswordInput from './PasswordInput';
 import HandleSuggestions from '@/shared/components/HandleSuggestions';
 import Input from '@/shared/components/ui/Input';
@@ -90,6 +90,13 @@ const AuthForm: React.FC<AuthFormProps> = ({
             transition={{ duration: 0.2 }}
             className="w-full rounded-2xl border border-border/30 bg-bg/90 backdrop-blur-sm p-6 lg:p-8"
           >
+              <div className="mb-8">
+                <h1 className="text-3xl md:text-4xl lg:text-5xl font-black text-text-primary uppercase tracking-tighter mb-1">
+                  {t('hero.welcomeBack')} <span className="text-accent">{t('hero.operator')}</span>
+                </h1>
+                <p className="text-text-muted text-sm">{t('auth.signIntoContinue')}</p>
+              </div>
+
               <form className="space-y-4" onSubmit={onLoginSubmit} noValidate>
               <div className="space-y-2">
                 <label htmlFor="login-email" className="text-[10px] font-black text-text-muted uppercase tracking-widest">{t('form.email')}</label>
@@ -134,7 +141,7 @@ const AuthForm: React.FC<AuthFormProps> = ({
               >
                 {isLoading ? (
                   <>
-                    <Dobia expression="loading" size="xs" />
+                    <AthenaBoxes />
                     <span className="text-[10px]">{t('button.signingIn')}</span>
                   </>
                 ) : (
@@ -155,6 +162,13 @@ const AuthForm: React.FC<AuthFormProps> = ({
             transition={{ duration: 0.2 }}
             className="w-full rounded-2xl border border-border/30 bg-bg/90 backdrop-blur-sm p-6 lg:p-8"
           >
+            <div className="mb-8">
+              <h1 className="text-3xl md:text-4xl lg:text-5xl font-black text-text-primary uppercase tracking-tighter mb-1">
+                {t('button.join')} <span className="text-accent">QYVORA</span>
+              </h1>
+              <p className="text-text-muted text-sm">{t('auth2.registerDescription')}</p>
+            </div>
+
             <form className="space-y-4" onSubmit={onRegisterSubmit}>
               <div className="space-y-2">
                 <label htmlFor="register-handle" className="text-[10px] font-black text-text-muted uppercase tracking-widest">{t('form.operatorHandle')}</label>
@@ -230,7 +244,16 @@ const AuthForm: React.FC<AuthFormProps> = ({
                 disabled={isLoading}
                 className="w-full btn-primary !py-4 flex items-center justify-center gap-3 disabled:opacity-50"
               >
-                <span className="text-[10px]">{isLoading ? t('button.creatingAccount') : t('button.createAccount')}</span> <LogIn className="w-5 h-5" />
+                {isLoading ? (
+                  <>
+                    <AthenaBoxes />
+                    <span className="text-[10px]">{t('button.creatingAccount')}</span>
+                  </>
+                ) : (
+                  <>
+                    <span className="text-[10px]">{t('button.createAccount')}</span> <LogIn className="w-5 h-5" />
+                  </>
+                )}
               </button>
             </form>
           </motion.div>

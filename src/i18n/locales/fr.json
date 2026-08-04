@@ -200,6 +200,7 @@
   },
   "hero": {
     "welcomeBack": "Bon retour,",
+    "welcomeTo": "Bienvenue sur",
     "welcome": "Bienvenue,",
     "operator": "Opérateur",
     "tagline": "La plateforme de sécurité offensive de l'Afrique",

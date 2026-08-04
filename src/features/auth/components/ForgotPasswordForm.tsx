@@ -3,6 +3,7 @@ import { IconArrowLeft } from '@/shared/components/icons';
 import { Mail, Send } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import Input from '@/shared/components/ui/Input';
+import AthenaBoxes from '@/shared/components/AthenaBoxes';
 
 interface ForgotPasswordFormProps {
   onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
@@ -38,7 +39,16 @@ const ForgotPasswordForm: React.FC<ForgotPasswordFormProps> = ({
 
         <button type="submit" disabled={isLoading}
           className="w-full btn-primary !py-4 flex items-center justify-center gap-3 disabled:opacity-50">
-          <span className="text-[10px]">{isLoading ? t('auth2.forgot.submitting') : t('auth2.forgot.sendInstructions')}</span> <Send className="w-5 h-5" />
+          {isLoading ? (
+            <>
+              <AthenaBoxes />
+              <span className="text-[10px]">{t('auth2.forgot.submitting')}</span>
+            </>
+          ) : (
+            <>
+              <span className="text-[10px]">{t('auth2.forgot.sendInstructions')}</span> <Send className="w-5 h-5" />
+            </>
+          )}
         </button>
       </form>
 
