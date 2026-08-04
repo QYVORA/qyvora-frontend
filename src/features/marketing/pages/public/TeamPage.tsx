@@ -44,7 +44,7 @@ const TeamPage = () => {
                 <div className="flex items-center gap-4 mb-4">
                   <div className="w-16 h-16 rounded-2xl overflow-hidden border border-border/30 shrink-0">
                     {member.image ? (
-                      <img src={member.image} alt={member.name} className="w-full h-full object-cover" loading="lazy" />
+                      <img src={member.image} alt={member.name} width={member.width} height={member.height} className="w-full h-full object-cover" loading="lazy" />
                     ) : (
                       <div className="w-full h-full flex items-center justify-center bg-accent/10">
                         <Users className="w-6 h-6 text-accent" />

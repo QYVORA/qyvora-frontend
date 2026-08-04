@@ -18,6 +18,8 @@ const LandingQuiteRootSection = () => {
             <img
               src={quiteRootLogo}
               alt="QuiteRoot Logo"
+              width={793}
+              height={787}
               className="w-12 h-12 md:w-16 md:h-16 object-contain"
             />
             <div>
@@ -47,6 +49,8 @@ const LandingQuiteRootSection = () => {
                     <img
                       src={researcher.image}
                       alt={researcher.name}
+                      width={researcher.width}
+                      height={researcher.height}
                       className="w-full h-full object-cover"
                       loading="lazy"
                     />

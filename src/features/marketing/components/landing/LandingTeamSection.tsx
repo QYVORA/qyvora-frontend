@@ -39,6 +39,8 @@ const LandingTeamSection = () => {
                       <img
                         src={member.image}
                         alt={member.name}
+                        width={member.width}
+                        height={member.height}
                         className="w-full h-full object-cover"
                         loading="lazy"
                       />

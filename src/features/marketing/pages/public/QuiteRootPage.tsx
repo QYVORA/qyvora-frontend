@@ -33,6 +33,8 @@ const QuiteRootPage = () => {
               <img
                 src={quiteRootLogo}
                 alt="QuiteRoot"
+                width={793}
+                height={787}
                 className="w-[72%] xl:w-[64%] 2xl:w-[56%] max-h-[68vh] object-contain drop-shadow-[0_0_50px_rgba(6,182,111,0.35)]"
               />
             </div>
@@ -59,7 +61,7 @@ const QuiteRootPage = () => {
 
                 <div className="flex items-center gap-4 mb-4 pr-12">
                   <div className="relative w-16 h-16 rounded-2xl overflow-hidden border border-border/30 shrink-0">
-                    <img src={researcher.image} alt={researcher.name} className="w-full h-full object-cover" loading="lazy" />
+                    <img src={researcher.image} alt={researcher.name} width={researcher.width} height={researcher.height} className="w-full h-full object-cover" loading="lazy" />
                     <span className="absolute inset-0 ring-1 ring-inset ring-black/40" />
                   </div>
                   <div className="min-w-0">

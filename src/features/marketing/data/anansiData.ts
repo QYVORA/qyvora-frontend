@@ -13,15 +13,17 @@ export interface AnansiPhase {
   icon: LucideIcon | React.FC<{ size?: number | string; className?: string }>;
   desc: string;
   image: string;
+  width: number;
+  height: number;
 }
 
 export const PHASES: AnansiPhase[] = [
-  { id: '01', name: 'DISCOVERY', icon: IconSearch, desc: 'Subdomains via crt.sh CT logs + DNS brute-force', image: discoveryImg },
-  { id: '02', name: 'PROBE', icon: Globe, desc: 'Live HTTP/HTTPS hosts, status codes, and titles', image: probeImg },
-  { id: '03', name: 'TLS', icon: IconLock, desc: 'Certificate analysis, SANs, and protocol audit', image: tlsImg },
-  { id: '04', name: 'HEADERS', icon: IconShield, desc: 'Security headers and CORS misconfigurations', image: headersImg },
-  { id: '05', name: 'PATHS', icon: FileCode, desc: 'Exposed files (.env, .git), admin panels, and backups', image: pathsImg },
-  { id: '06', name: 'TAKEOVER', icon: IconWarning, desc: 'Dangling CNAME detection for cloud services', image: takeoverImg },
+  { id: '01', name: 'DISCOVERY', icon: IconSearch, desc: 'Subdomains via crt.sh CT logs + DNS brute-force', image: discoveryImg, width: 1536, height: 1024 },
+  { id: '02', name: 'PROBE', icon: Globe, desc: 'Live HTTP/HTTPS hosts, status codes, and titles', image: probeImg, width: 1254, height: 1254 },
+  { id: '03', name: 'TLS', icon: IconLock, desc: 'Certificate analysis, SANs, and protocol audit', image: tlsImg, width: 1254, height: 1254 },
+  { id: '04', name: 'HEADERS', icon: IconShield, desc: 'Security headers and CORS misconfigurations', image: headersImg, width: 1536, height: 1024 },
+  { id: '05', name: 'PATHS', icon: FileCode, desc: 'Exposed files (.env, .git), admin panels, and backups', image: pathsImg, width: 1536, height: 1024 },
+  { id: '06', name: 'TAKEOVER', icon: IconWarning, desc: 'Dangling CNAME detection for cloud services', image: takeoverImg, width: 1535, height: 1024 },
 ];
 
 export interface AnansiRelease {
