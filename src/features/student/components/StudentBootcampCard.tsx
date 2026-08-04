@@ -8,7 +8,6 @@ import {
   IconClock,
   IconDashboard,
 } from '@/shared/components/icons';
-import { Briefcase } from 'lucide-react';
 import HpbAvatar from '@/shared/components/HpbAvatar';
 import ScrollReveal from '../../../shared/components/ScrollReveal';
 
@@ -45,14 +44,11 @@ const StudentBootcampCard: React.FC<Props> = ({ data, index = 0, onEnroll, onLoc
       : 'hover:border-accent/30'
   }`;
 
-  const BtnBase = 'px-3 py-1.5 rounded-lg text-[9px] sm:text-[10px] md:text-xs font-black uppercase tracking-widest bg-accent text-bg transition-all duration-200 group-hover/card:brightness-110 group-active:scale-95';
+  const BtnBase = 'px-3 py-1.5 rounded-lg text-[9px] sm:text-[10px] md:text-xs font-black uppercase tracking-widest bg-accent text-on-accent transition-all duration-200 group-hover/card:brightness-110 group-active:scale-95';
 
   const inner = (
     <>
       <div className="flex items-center gap-2 mb-2">
-        <div className="w-8 h-8 rounded-xl flex items-center justify-center shrink-0 bg-accent/10 border border-accent/20">
-          <Briefcase className="w-4 h-4 text-accent" />
-        </div>
         {level && (
           <span className="px-2 py-0.5 rounded-lg text-[9px] font-black uppercase tracking-widest border border-accent/20 bg-accent/10 text-accent">
             {level}
@@ -64,7 +60,7 @@ const StudentBootcampCard: React.FC<Props> = ({ data, index = 0, onEnroll, onLoc
           </span>
         )}
         {isComplete && !isLocked && (
-          <span className="px-2 py-0.5 rounded-lg bg-accent text-bg text-[9px] font-black uppercase tracking-widest flex items-center gap-1">
+          <span className="px-2 py-0.5 rounded-lg bg-accent text-on-accent text-[9px] font-black uppercase tracking-widest flex items-center gap-1">
             <IconCheck size={10} /> {t('badge.completed')}
           </span>
         )}

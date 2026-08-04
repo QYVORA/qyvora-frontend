@@ -64,10 +64,7 @@ const LandingBootcampSection: React.FC = () => {
               >
                 <div className="relative h-full flex flex-col sm:flex-row p-4 sm:p-8 gap-5 sm:gap-6">
                   <div className="flex-1 min-w-0 flex flex-col">
-                    <div className="flex items-center justify-between mb-3 sm:mb-6">
-                      <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-2xl border border-accent/30 bg-accent/15 flex items-center justify-center shrink-0">
-                        {featured.icon && <featured.icon className="w-7 h-7 sm:w-9 sm:h-9 text-accent" />}
-                      </div>
+                    <div className="flex items-center justify-end mb-3 sm:mb-6">
                       <span className="text-[9px] font-black uppercase tracking-widest px-3 py-1.5 rounded-full border border-border/30 bg-bg-elevated text-text-muted">
                         {t('landing.bootcamp.roomCount', { count: featuredRoomCount })}
                       </span>
@@ -115,10 +112,7 @@ const LandingBootcampSection: React.FC = () => {
                     className="group relative block h-full rounded-2xl border border-border/20 bg-bg-card p-3 sm:p-5 transition-all duration-300 hover:border-accent/30"
                   >
                     <div className="relative h-full flex flex-col">
-                      <div className="flex items-center justify-between mb-2 sm:mb-3">
-                        <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl border border-accent/30 bg-accent/15 flex items-center justify-center shrink-0">
-                          {phase.icon && <phase.icon className="w-6 h-6 sm:w-7 sm:h-7 text-accent" />}
-                        </div>
+                      <div className="flex items-center justify-end mb-2 sm:mb-3">
                         <span className="text-[8px] font-black uppercase tracking-widest px-2 py-1 rounded-full border border-border/30 bg-bg-elevated text-text-muted">
                           {t('landing.bootcamp.roomCount', { count: roomCount })}
                         </span>
