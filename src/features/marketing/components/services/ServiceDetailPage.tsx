@@ -9,6 +9,7 @@ import SEO from '@/shared/components/SEO';
 import PublicHeroSection from '@/shared/components/PublicHeroSection';
 import { Footer } from '@/shared/components/layout';
 import { REQUEST_ASSESSMENT_LABEL, PENTEST_PHILOSOPHY, type ServiceConfig } from '@/features/marketing/content/servicesConfig';
+import { buildService } from '@/shared/seo/schema';
 
 const reveal = {
   initial: { opacity: 0, y: 40 },
@@ -43,7 +44,12 @@ const ServiceDetailPage: React.FC<{ svc: ServiceConfig }> = ({ svc }) => {
 
   return (
     <div className="bg-bg min-h-full" data-nav-invert>
-      <SEO title={`${svc.title} - QYVORA`} description={svc.overview} />
+      <SEO
+        title={`${svc.title} - QYVORA`}
+        description={svc.overview}
+        breadcrumbName={svc.title}
+        schemaData={buildService(svc)}
+      />
 
       <PublicHeroSection mask="none">
         <span className={`flex items-center gap-2 px-3 py-1 rounded-full border text-[9px] font-black uppercase tracking-widest ${

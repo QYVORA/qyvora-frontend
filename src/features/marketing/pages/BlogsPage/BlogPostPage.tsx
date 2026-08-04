@@ -8,6 +8,7 @@ import { useAuth } from '@/core/contexts/AuthContext';
 import LandingFinalCtaSection from '@/features/marketing/components/landing/LandingFinalCtaSection';
 import { Footer } from '@/shared/components/layout';
 import { BLOG_POSTS } from './blogContent';
+import { buildBlogPosting } from '@/shared/seo/schema';
 
 const HackerProtocolBootcampBlog = lazy(() => import('./HackerProtocolBootcampBlog').then(m => ({ default: m.HackerProtocolBootcampBlog })));
 const AnansiCliBlog = lazy(() => import('./AnansiCliBlog').then(m => ({ default: m.AnansiCliBlog })));
@@ -68,11 +69,8 @@ const BlogPostPage: React.FC = () => {
         description={post.excerpt}
         image={post.image}
         article
-        breadcrumbs={[
-          { name: 'Home', item: '/' },
-          { name: 'Blogs', item: '/blogs' },
-          { name: post.title, item: `/blogs/${post.slug}` },
-        ]}
+        breadcrumbName={post.title}
+        schemaData={buildBlogPosting(post)}
       />
 
       {/* ── Article Header ── */}
@@ -128,9 +126,10 @@ const BlogPostPage: React.FC = () => {
           <img
             src={post.image}
             alt={post.title}
-            width={1200}
-            height={630}
+            width={1536}
+            height={1024}
             className="w-full h-full object-cover"
+            fetchPriority="high"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-bg via-bg/5 to-transparent" />
         </motion.div>
@@ -177,8 +176,8 @@ const BlogPostPage: React.FC = () => {
                     <img
                       src={other.image}
                       alt={other.title}
-                      width={1200}
-                      height={675}
+                      width={1536}
+                      height={1024}
                       className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                       loading="lazy"
                     />
