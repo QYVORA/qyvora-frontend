@@ -16,18 +16,24 @@ Routes are defined in `src/app/router.tsx` — the single source of truth for al
 |------|------|-----------|-------------|
 | `/` | Page | LandingPage | Marketing landing page (scroll-snap sections) |
 | `/terms` | Page | TermsPage | Terms of service |
+| `/courses` | Page | CoursesPage | Public courses listing |
+| `/hpb` | Page | HpbPage | Hacker Protocol Bootcamp overview |
+| `/hpb/:phaseId` | Page | HpbPhasePage | Bootcamp phase page (rooms curriculum) |
+| `/labs` | Page | PublicLabsPage | Public attack labs listing |
+| `/services` | Page | ServicesPage | Enterprise services overview |
+| `/services/basic-web-application-pentest` | Page | BasicPentestPage | Basic pentest service detail |
+| `/services/standard-web-application-pentest` | Page | StandardPentestPage | Standard pentest service detail |
+| `/services/employee-cybersecurity-bootcamp` | Page | EmployeeBootcampPage | Employee training service detail |
+| `/leaderboard` | Page | LeaderboardPage | Public leaderboard |
+| `/leaderboard/all` | Redirect | `→ /leaderboard` | Redirect to leaderboard |
+| `/zero-day-market` | Page | MarketPage | Public marketplace |
+| `/anansi` | Page | AnansiPage | Anansi CLI product page |
+| `/blogs` | Page | BlogsPage | Blog listing |
 | `/blogs/:slug` | Page | BlogPostPage | Individual blog post |
-| `/anansi` | Redirect | `→ /#anansi` | Redirects to landing Anansi section |
-| `/services` | Redirect | `→ /#services` | Redirects to landing Services section |
-| `/hpb` | Redirect | `→ /#bootcamp` | Redirects to landing Bootcamp section |
-| `/learn` | Redirect | `→ /#bootcamp` | Legacy redirect to Bootcamp section |
-| `/leaderboard` | Redirect | `→ /#leaderboard` | Redirects to landing Leaderboard section |
-| `/leaderboard/all` | Redirect | `→ /#leaderboard` | Redirects to landing Leaderboard section |
-| `/courses` | Redirect | `→ /#courses` | Redirects to landing Courses section |
-| `/team` | Redirect | `→ /#team` | Redirects to landing Team section |
-| `/quiteroot` | Redirect | `→ /#quiteroot` | Redirects to landing QuiteRoot section |
-| `/blogs` | Redirect | `→ /#blogs` | Redirects to landing Blogs section |
-| `/zero-day-market` | Redirect | `→ /#market` | Redirects to landing Market section |
+| `/blogs/hacker-protocol-book` | Redirect | `→ /blogs/hacker-protocol-bootcamp` | Legacy redirect |
+| `/team` | Page | TeamPage | Team page |
+| `/quiteroot` | Page | QuiteRootPage | QuiteRoot researchers page |
+| `/learn` | Redirect | `→ /hpb` | Legacy redirect to bootcamp |
 
 ### Auth Routes (Standalone)
 
@@ -75,7 +81,7 @@ Routes are defined in `src/app/router.tsx` — the single source of truth for al
 | `/profile` | `/dashboard/profile` |
 | `/notifications` | `/dashboard/notifications` |
 | `/settings` | `/dashboard/settings` |
-| `/courses/:courseId` | `/courses` (which redirects to `/#courses`) |
+| `/courses/:courseId` | `/courses` |
 
 ### Tool Full-Screen Routes (StudentOnly, no layout chrome)
 
