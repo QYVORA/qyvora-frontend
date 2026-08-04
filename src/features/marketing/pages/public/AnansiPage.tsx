@@ -64,7 +64,7 @@ const AnansiPage = () => {
             { label: 'Platform', value: 'CLI' },
           ]}
           rightContent={
-            <div className="relative hidden lg:flex items-center justify-center w-full h-full">
+            <div className="relative md:hidden lg:flex items-center justify-center w-full h-full py-6 lg:py-0">
               <img
                 src={anansiLogo}
                 alt="Anansi"
