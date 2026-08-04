@@ -214,13 +214,13 @@ const CourseLessonPage: React.FC = () => {
           <Lock className="h-12 w-12 text-text-muted/30 mx-auto" />
           <h1 className="text-3xl font-black text-text-primary font-mono">Course Not Unlocked</h1>
           <p className="text-sm text-text-muted leading-relaxed">
-            You haven't unlocked {course.title} yet. Purchase it from the course page to start learning.
+            You haven't unlocked {course.title} yet. Unlock it from the marketplace to start learning.
           </p>
           <Link
-            to={`/courses/${course.id}`}
+            to="/dashboard/marketplace"
             className="inline-flex items-center gap-2 px-6 py-3 bg-accent text-on-accent rounded-xl text-[10px] font-black uppercase tracking-widest transition-all hover:brightness-110 font-mono"
           >
-            View Course Details <ArrowRight className="h-3.5 w-3.5" />
+            Unlock Course <ArrowRight className="h-3.5 w-3.5" />
           </Link>
         </div>
       </div>

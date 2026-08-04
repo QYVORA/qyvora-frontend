@@ -8,7 +8,7 @@
 
 import { useEffect, useState, Suspense, lazy } from 'react';
 import type { ReactNode } from 'react';
-import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
+import { Routes, Route, Navigate, useLocation, useParams } from 'react-router-dom';
 import { AnimatePresence, motion } from 'motion/react';
 import { useAuth } from '../core/contexts/AuthContext';
 import ErrorBoundary from '../shared/components/ErrorBoundary';
@@ -133,6 +133,12 @@ const AdminOnly = ({ children }: { children: ReactNode }) => {
   return <>{children}</>;
 };
 
+// Legacy /courses/:courseId links stay inside the student dashboard.
+const LegacyCourseRedirect = () => {
+  const { courseId } = useParams();
+  return <Navigate to={`/dashboard/courses/${courseId ?? ''}`} replace />;
+};
+
 // ─── Router ───────────────────────────────────────────────────────────────────
 export const AppRouter = () => {
   const location = useLocation();
@@ -243,7 +249,7 @@ export const AppRouter = () => {
           <Route path="/profile"          element={<Navigate to="/dashboard/profile" replace />} />
           <Route path="/notifications"    element={<Navigate to="/dashboard/notifications" replace />} />
           <Route path="/settings"         element={<Navigate to="/dashboard/settings" replace />} />
-          <Route path="/courses/:courseId" element={<Navigate to="/courses" replace />} />
+          <Route path="/courses/:courseId" element={<LegacyCourseRedirect />} />
         </Route>
 
         {/* ── Tool full-screen pages (no layout chrome) ──────── */}
