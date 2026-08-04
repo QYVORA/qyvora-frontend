@@ -74,7 +74,7 @@ export function StudentHeroSection({
 
   return (
     <div className="relative min-h-dvh md:h-dvh flex flex-col justify-center overflow-hidden">
-      <GridBoxedBackground opacity={0.3} blur={0} mask="none" />
+      <GridBoxedBackground blur={0} mask="right" />
 
       {showGlobe && (
         <div className="absolute inset-0 z-0 flex items-end justify-end overflow-hidden">

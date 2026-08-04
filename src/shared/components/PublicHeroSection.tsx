@@ -26,7 +26,7 @@ const PublicHeroSection: React.FC<PublicHeroSectionProps> = ({
       className={`relative w-full ${scrollable ? 'min-h-dvh' : 'min-h-dvh lg:h-dvh overflow-hidden'} flex flex-col bg-bg`}
       data-nav-invert
     >
-      <GridBoxedBackground opacity={0.5} blur={0} mask={mask} />
+      <GridBoxedBackground blur={0} mask={mask} />
 
       {showGlobe && (
         <div className="absolute inset-0 z-0 flex items-end justify-end overflow-hidden">
