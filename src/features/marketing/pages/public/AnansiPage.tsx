@@ -283,17 +283,9 @@ const AnansiPage = () => {
             </div>
           </div>
         </div>
-      </PublicSnapLayout>
-
-      {/* ── Final CTA ── */}
-      <section className="relative w-full min-h-dvh md:h-dvh md:overflow-hidden">
         <LandingFinalCtaSection user={user} />
-      </section>
-
-      {/* ── Footer ── */}
-      <section className="relative w-full bg-bg">
         <Footer />
-      </section>
+      </PublicSnapLayout>
     </div>
   );
 };

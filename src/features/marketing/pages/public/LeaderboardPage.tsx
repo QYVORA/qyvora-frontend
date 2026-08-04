@@ -53,8 +53,8 @@ const LeaderboardPage = () => {
       <SEO title="Leaderboard - QYVORA" description="Top offensive security operators ranked by CP earnings." />
       <PublicSnapLayout>
         <StudentHeroSection
-          icon={<Trophy className="w-8 h-8 text-accent" />}
-          title="Leaderboard"
+          title="Operator"
+          accentWord="Leaderboard"
           titleClassName={PUBLIC_HERO_TITLE_CLASS}
           showGlobe
           typewrite
@@ -158,17 +158,9 @@ const LeaderboardPage = () => {
           </div>
           </div>
           )}
-      </PublicSnapLayout>
-
-      {/* ── Final CTA ── */}
-      <section className="relative w-full min-h-dvh md:h-dvh md:overflow-hidden">
         <LandingFinalCtaSection user={user} />
-      </section>
-
-      {/* ── Footer ── */}
-      <section className="relative w-full bg-bg">
         <Footer />
-      </section>
+      </PublicSnapLayout>
     </div>
   );
 };

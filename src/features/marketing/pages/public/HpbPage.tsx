@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
-import { Shield, Zap, Users } from 'lucide-react';
+import { Zap, Users } from 'lucide-react';
 import { IconArrowRight } from '@/shared/components/icons';
 import { ScrollReveal } from '@/shared/components';
 import SEO from '@/shared/components/SEO';
@@ -22,7 +22,6 @@ const HpbPage = () => {
       <SEO title="HPB - QYVORA" description="Hacker Protocol Bootcamp — Africa's most intensive offensive security training." />
       <PublicSnapLayout>
         <StudentHeroSection
-          icon={<Shield className="w-8 h-8 text-accent" />}
           title="Hacker Protocol"
           accentWord="Bootcamp"
           titleClassName={PUBLIC_HERO_TITLE_CLASS}
@@ -76,9 +75,12 @@ const HpbPage = () => {
                     <span className="text-[9px] sm:text-[10px] font-black uppercase tracking-widest text-text-muted flex items-center gap-1.5">
                       <Users className="w-3 h-3" /> {phase.rooms?.length || 0} rooms
                     </span>
-                    <span className="px-3 py-1.5 rounded-lg text-[9px] sm:text-[10px] md:text-xs font-black uppercase tracking-widest bg-accent text-on-accent transition-all duration-200 group-hover/card:brightness-110 group-active:scale-95">
+                    <Link
+                      to={`/hpb/${phase.id}`}
+                      className="px-3 py-1.5 rounded-lg text-[9px] sm:text-[10px] md:text-xs font-black uppercase tracking-widest bg-accent text-on-accent transition-all duration-200 group-hover/card:brightness-110 group-active:scale-95"
+                    >
                       Explore
-                    </span>
+                    </Link>
                   </div>
                 </div>
               </ScrollReveal>
@@ -87,17 +89,9 @@ const HpbPage = () => {
           </div>
           </div>
         </div>
-      </PublicSnapLayout>
-
-      {/* ── Final CTA ── */}
-      <section className="relative w-full min-h-dvh md:h-dvh md:overflow-hidden">
         <LandingFinalCtaSection user={user} />
-      </section>
-
-      {/* ── Footer ── */}
-      <section className="relative w-full bg-bg">
         <Footer />
-      </section>
+      </PublicSnapLayout>
     </div>
   );
 };

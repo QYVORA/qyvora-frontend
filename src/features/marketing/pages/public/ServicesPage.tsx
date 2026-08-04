@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'motion/react';
-import { Building2, Target, Lock } from 'lucide-react';
+import { Target, Lock } from 'lucide-react';
 import { IconCheck, IconArrowRight } from '@/shared/components/icons';
 import { openServiceRequestModal } from '@/features/marketing/components/ServiceRequestModal';
 import SEO from '@/shared/components/SEO';
@@ -117,7 +117,6 @@ const ServicesPage = () => {
       <SEO title="Services - QYVORA" description="Enterprise-grade penetration testing, security assessments, and offensive security training." />
       <PublicSnapLayout>
         <StudentHeroSection
-          icon={<Building2 className="w-8 h-8 text-accent" />}
           title="Security"
           accentWord="Services"
           titleClassName={PUBLIC_HERO_TITLE_CLASS}
@@ -129,17 +128,9 @@ const ServicesPage = () => {
         {SERVICES.map((svc, idx) => (
           <ServiceSection key={svc.id} svc={svc} index={idx} />
         ))}
-      </PublicSnapLayout>
-
-      {/* ── Final CTA ── */}
-      <section className="relative w-full min-h-dvh md:h-dvh md:overflow-hidden">
         <LandingFinalCtaSection user={user} />
-      </section>
-
-      {/* ── Footer ── */}
-      <section className="relative w-full bg-bg">
         <Footer />
-      </section>
+      </PublicSnapLayout>
     </div>
   );
 };

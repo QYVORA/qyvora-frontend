@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
-import { ShoppingBag, BookOpen, Cpu, FileText, Search } from 'lucide-react';
+import { BookOpen, Cpu, FileText, Search } from 'lucide-react';
 import { IconMarketplace, IconLock } from '@/shared/components/icons';
 import { ScrollReveal } from '@/shared/components';
 import api from '@/core/services/api';
@@ -57,7 +57,6 @@ const MarketPage = () => {
       <SEO title="Zero Day Market - QYVORA" description="Intelligence assets, guides, papers, and tools available for CP." />
       <PublicSnapLayout>
         <StudentHeroSection
-          icon={<ShoppingBag className="w-8 h-8 text-accent" />}
           title="Zero Day"
           accentWord="Market"
           titleClassName={PUBLIC_HERO_TITLE_CLASS}
@@ -171,17 +170,9 @@ const MarketPage = () => {
           </div>
           </div>
         </div>
-      </PublicSnapLayout>
-
-      {/* ── Final CTA ── */}
-      <section className="relative w-full min-h-dvh md:h-dvh md:overflow-hidden">
         <LandingFinalCtaSection user={user} />
-      </section>
-
-      {/* ── Footer ── */}
-      <section className="relative w-full bg-bg">
         <Footer />
-      </section>
+      </PublicSnapLayout>
     </div>
   );
 };

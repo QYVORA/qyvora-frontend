@@ -1,5 +1,7 @@
 import React from 'react';
 import { GridBoxedBackground } from '@/shared/components/backgrounds';
+import { Footer } from '@/shared/components/layout';
+import LandingFinalCtaSection from '@/features/marketing/components/landing/LandingFinalCtaSection';
 
 interface PublicSnapLayoutProps {
   children: React.ReactNode;
@@ -20,15 +22,26 @@ const PublicSnapLayout: React.FC<PublicSnapLayoutProps> = ({ children }) => {
 
   return (
     <div className="relative w-full bg-bg snap-container no-scrollbar">
-      {sections.map((child, i) => (
-        <section
-          key={i}
-          className={`relative w-full min-h-dvh snap-section ${i % 2 === 0 ? 'bg-bg' : 'bg-bg-alt'}`}
-        >
-          {i % 2 === 0 && i !== 0 && <GridBoxedBackground blur={0} mask="right" />}
-          <div className="relative z-10 w-full">{child}</div>
-        </section>
-      ))}
+      {sections.map((child, i) => {
+        const isFooter = child.type === Footer;
+        const carriesOwnGrid =
+          i === 0 || isFooter || child.type === LandingFinalCtaSection;
+        return (
+          <section
+            key={i}
+            className={`relative w-full snap-section ${
+              isFooter
+                ? 'bg-bg pt-10 md:pt-0'
+                : `min-h-dvh ${i % 2 === 0 ? 'bg-bg' : 'bg-bg-alt'}`
+            }`}
+          >
+            {!carriesOwnGrid && i % 2 === 0 && (
+              <GridBoxedBackground blur={0} mask="right" />
+            )}
+            <div className="relative z-10 w-full">{child}</div>
+          </section>
+        );
+      })}
     </div>
   );
 };
