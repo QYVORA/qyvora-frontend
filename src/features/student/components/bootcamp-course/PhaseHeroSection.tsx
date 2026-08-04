@@ -34,7 +34,7 @@ const PhaseHeroSection: React.FC<PhaseHeroSectionProps> = ({
         <div className="flex items-center gap-3">
           <div className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl font-mono text-lg font-black transition-all duration-300 ${
             isComplete
-              ? 'bg-accent text-bg shadow-lg shadow-accent/20'
+              ? 'bg-accent text-on-accent shadow-lg shadow-accent/20'
               : isLocked
                 ? 'bg-bg-elevated text-text-muted opacity-50'
                 : 'bg-accent-dim text-accent'

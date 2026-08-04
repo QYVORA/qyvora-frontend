@@ -112,7 +112,7 @@ const MobileProfileSheet: React.FC<MobileProfileSheetProps> = ({
                   <path d="M10.3 21a1.94 1.94 0 0 0 3.4 0" />
                 </svg>
                 {unreadCount > 0 && (
-                  <span className="absolute -top-1 -right-1 min-w-4 h-4 px-1 bg-accent text-bg text-[8px] font-black rounded-full flex items-center justify-center leading-none">
+                  <span className="absolute -top-1 -right-1 min-w-4 h-4 px-1 bg-accent text-on-accent text-[8px] font-black rounded-full flex items-center justify-center leading-none">
                     {unreadCount > 9 ? '9+' : unreadCount}
                   </span>
                 )}

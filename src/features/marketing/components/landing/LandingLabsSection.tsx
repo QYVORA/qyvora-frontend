@@ -82,7 +82,7 @@ const LandingLabsSection: React.FC = () => {
                   </p>
 
                   <div className="mt-auto flex items-center gap-3">
-                    <span className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-accent text-[10px] font-black uppercase tracking-widest text-bg transition-all group-hover:gap-3">
+                    <span className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-accent text-[10px] font-black uppercase tracking-widest text-on-accent transition-all group-hover:gap-3">
                       <Zap className="w-3.5 h-3.5" />
                       {t('landing.labs.launchLab')}
                       <IconArrowRight size={14} />

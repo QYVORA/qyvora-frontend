@@ -107,7 +107,7 @@ const OnboardingWizard: React.FC = () => {
             )}
             <button
               onClick={handleNext}
-              className="px-5 py-2.5 rounded-2xl bg-accent text-bg text-xs font-black uppercase tracking-widest shadow-lg shadow-accent/20 transition-all hover:brightness-110"
+              className="px-5 py-2.5 rounded-2xl bg-accent text-on-accent text-xs font-black uppercase tracking-widest shadow-lg shadow-accent/20 transition-all hover:brightness-110"
             >
               {step < STEPS.length - 1 ? t('student.onboarding.next') : t('student.onboarding.complete.cta')}
             </button>

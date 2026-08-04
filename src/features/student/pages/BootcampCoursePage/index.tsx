@@ -185,7 +185,7 @@ const BootcampCourse: React.FC = () => {
               </div>
               <Link
                 to={nextRoomLabel.path}
-                className="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl bg-accent text-bg text-[10px] font-black uppercase tracking-widest transition-all hover:brightness-110 shrink-0"
+                className="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl bg-accent text-on-accent text-[10px] font-black uppercase tracking-widest transition-all hover:brightness-110 shrink-0"
               >
                 Continue <Play className="h-3 w-3" />
               </Link>

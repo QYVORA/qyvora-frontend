@@ -61,7 +61,7 @@ export const NavCard: React.FC<NavCardProps> = ({
     >
       {/* Badge (notifications, counts, etc.) */}
       {badge !== undefined && (
-        <div className="absolute top-3 right-3 min-w-[24px] h-6 px-2 flex items-center justify-center bg-accent text-bg text-xs font-bold rounded-full">
+        <div className="absolute top-3 right-3 min-w-[24px] h-6 px-2 flex items-center justify-center bg-accent text-on-accent text-xs font-bold rounded-full">
           {badge}
         </div>
       )}

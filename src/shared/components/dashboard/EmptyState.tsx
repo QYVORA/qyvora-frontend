@@ -21,7 +21,7 @@ const EmptyState = ({ icon, title, description, action }: EmptyStateProps) => (
     {action && action.to && (
       <Link
         to={action.to}
-        className="bg-accent text-bg px-6 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all hover:brightness-110 inline-flex items-center gap-1.5"
+        className="bg-accent text-on-accent px-6 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all hover:brightness-110 inline-flex items-center gap-1.5"
       >
         {action.label}
       </Link>

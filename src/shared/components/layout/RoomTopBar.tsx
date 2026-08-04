@@ -67,7 +67,7 @@ export function RoomTopBar({
     <>
       <a
         href="#main-content"
-        className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-[100] focus:px-4 focus:py-2 focus:bg-accent focus:text-bg focus:rounded-lg focus:text-sm focus:font-bold focus:outline-none"
+        className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-[100] focus:px-4 focus:py-2 focus:bg-accent focus:text-on-accent focus:rounded-lg focus:text-sm focus:font-bold focus:outline-none"
       >
         Skip to main content
       </a>
@@ -142,7 +142,7 @@ export function RoomTopBar({
                 <>
                   {action.icon}
                   {action.badge && (
-                    <span className="absolute top-1 right-1 min-w-3 h-3 px-0.5 bg-accent text-bg text-[7px] font-black rounded-full flex items-center justify-center leading-none">
+                    <span className="absolute top-1 right-1 min-w-3 h-3 px-0.5 bg-accent text-on-accent text-[7px] font-black rounded-full flex items-center justify-center leading-none">
                       {action.badge}
                     </span>
                   )}
@@ -156,7 +156,7 @@ export function RoomTopBar({
                     to={action.href}
                     className={`relative w-9 h-9 md:w-11 md:h-11 flex items-center justify-center transition-colors rounded-xl ${
                       action.variant === 'primary'
-                        ? 'bg-accent text-bg hover:brightness-110'
+                        ? 'bg-accent text-on-accent hover:brightness-110'
                         : 'text-text-muted hover:text-accent hover:bg-accent-dim/50'
                     } ${action.hideOnMobile ? 'hidden md:flex' : 'flex'}`}
                     aria-label={action.label}
@@ -172,7 +172,7 @@ export function RoomTopBar({
                   onClick={action.onClick}
                   className={`relative w-9 h-9 md:w-11 md:h-11 flex items-center justify-center transition-colors rounded-xl ${
                     action.variant === 'primary'
-                      ? 'bg-accent text-bg hover:brightness-110'
+                      ? 'bg-accent text-on-accent hover:brightness-110'
                       : 'text-text-muted hover:text-accent hover:bg-accent-dim/50'
                   } ${action.hideOnMobile ? 'hidden md:flex' : 'flex'}`}
                   aria-label={action.label}

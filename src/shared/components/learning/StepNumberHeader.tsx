@@ -54,7 +54,7 @@ export function StepNumberHeader({
           className={cn(
             'flex h-12 w-12 shrink-0 items-center justify-center rounded-xl border font-mono text-lg font-black',
             isActive
-              ? 'bg-accent border-accent text-bg'
+              ? 'bg-accent border-accent text-on-accent'
               : isCompleted
               ? 'bg-accent-dim border-accent/20 text-accent'
               : 'bg-bg-elevated border-border text-text-muted',

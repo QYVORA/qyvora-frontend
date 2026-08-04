@@ -218,7 +218,7 @@ const CourseLessonPage: React.FC = () => {
           </p>
           <Link
             to={`/courses/${course.id}`}
-            className="inline-flex items-center gap-2 px-6 py-3 bg-accent text-bg rounded-xl text-[10px] font-black uppercase tracking-widest transition-all hover:brightness-110 font-mono"
+            className="inline-flex items-center gap-2 px-6 py-3 bg-accent text-on-accent rounded-xl text-[10px] font-black uppercase tracking-widest transition-all hover:brightness-110 font-mono"
           >
             View Course Details <ArrowRight className="h-3.5 w-3.5" />
           </Link>

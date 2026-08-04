@@ -20,7 +20,7 @@ const LEVEL_STYLES: Record<string, string> = {
   Novice: 'text-accent border-accent/20 bg-accent/10',
   Operator: 'text-blue-400 border-blue-400/20 bg-blue-400/10',
   Specialist: 'text-purple-400 border-purple-400/20 bg-purple-400/10',
-  Elite: 'bg-accent text-bg border-accent',
+  Elite: 'bg-accent text-on-accent border-accent',
 };
 
 const BootcampCard: React.FC<BootcampCardProps> = ({ level, title, description, duration, price, href = '/register' }) => {
@@ -48,7 +48,7 @@ const BootcampCard: React.FC<BootcampCardProps> = ({ level, title, description, 
         <span className="text-[9px] sm:text-[10px] md:text-xs font-black uppercase tracking-widest text-text-muted">
           {duration} · {price}
         </span>
-        <span className="px-3 py-1.5 rounded-lg text-[9px] sm:text-[10px] md:text-xs font-black uppercase tracking-widest bg-accent text-bg transition-all duration-200 group-hover/card:brightness-110 group-active:scale-95">
+        <span className="px-3 py-1.5 rounded-lg text-[9px] sm:text-[10px] md:text-xs font-black uppercase tracking-widest bg-accent text-on-accent transition-all duration-200 group-hover/card:brightness-110 group-active:scale-95">
           {t('button.enrollNow')}
         </span>
       </div>

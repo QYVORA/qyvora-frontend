@@ -68,7 +68,7 @@ const LeaderboardRow = ({
               <BootcampBadge completed={bootcampCompleted} className="w-5 h-5 md:w-6 md:h-6 shrink-0" />
             </span>
             {isCurrentUser && (
-              <span className="px-1.5 py-0.5 text-[8px] font-black uppercase tracking-wider rounded bg-accent text-bg">
+              <span className="px-1.5 py-0.5 text-[8px] font-black uppercase tracking-wider rounded bg-accent text-on-accent">
                 {youLabel}
               </span>
             )}

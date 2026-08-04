@@ -175,7 +175,7 @@ const PublicBottomNav: React.FC = () => {
                     <Link
                       to="/dashboard"
                       onClick={closeMore}
-                      className="w-full flex items-center justify-center gap-2 bg-accent text-bg rounded-xl py-3.5 text-sm font-bold uppercase tracking-widest hover:brightness-110 transition-all shadow-lg shadow-black/10 active:scale-95"
+                      className="w-full flex items-center justify-center gap-2 bg-accent text-on-accent rounded-xl py-3.5 text-sm font-bold uppercase tracking-widest hover:brightness-110 transition-all shadow-lg shadow-black/10 active:scale-95"
                     >
                       <IconDashboard size={16} /> {t('components.bottomNav.dashboard')}
                     </Link>
@@ -192,7 +192,7 @@ const PublicBottomNav: React.FC = () => {
                     <Link
                       to="/register"
                       onClick={closeMore}
-                      className="flex items-center justify-center gap-2 bg-accent text-bg rounded-xl py-3.5 text-sm font-bold uppercase tracking-widest hover:brightness-110 transition-all shadow-lg shadow-black/10 active:scale-95"
+                      className="flex items-center justify-center gap-2 bg-accent text-on-accent rounded-xl py-3.5 text-sm font-bold uppercase tracking-widest hover:brightness-110 transition-all shadow-lg shadow-black/10 active:scale-95"
                     >
                       <UserPlus className="w-4 h-4" /> {t('components.bottomNav.signUp')}
                     </Link>

@@ -19,7 +19,7 @@ export interface PageHeaderProps {
 }
 
 const variantStyles: Record<string, string> = {
-  primary: 'bg-accent text-bg hover:brightness-110 shadow-lg shadow-accent/20',
+  primary: 'bg-accent text-on-accent hover:brightness-110 shadow-lg shadow-accent/20',
   secondary: 'bg-bg-elevated text-text-muted hover:text-accent border border-border/60',
   danger: 'bg-red-500/10 text-red-400 hover:bg-red-500/20 border border-red-500/20',
 };

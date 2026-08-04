@@ -65,7 +65,7 @@ const CompetitivePage = () => {
               onClick={() => handlePeriodChange(p.key)}
               className={`px-5 py-2.5 rounded-xl text-xs font-black uppercase tracking-wider transition-all duration-300 ${
                 period === p.key
-                  ? 'bg-accent text-bg'
+                  ? 'bg-accent text-on-accent'
                   : 'bg-bg-card border border-border text-text-muted hover:border-accent/30 hover:text-accent'
               }`}
             >

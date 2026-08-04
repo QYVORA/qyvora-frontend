@@ -196,7 +196,7 @@ const DashboardRoomCard = ({ room }: { room: any }) => {
         <span className="text-[9px] sm:text-[10px] font-black uppercase tracking-widest text-text-muted">
           Active
         </span>
-        <span className="px-3 py-1.5 rounded-lg text-[9px] sm:text-[10px] font-black uppercase tracking-widest bg-accent text-bg transition-all duration-200 group-hover/card:brightness-110 group-active:scale-95">
+        <span className="px-3 py-1.5 rounded-lg text-[9px] sm:text-[10px] font-black uppercase tracking-widest bg-accent text-on-accent transition-all duration-200 group-hover/card:brightness-110 group-active:scale-95">
           <IconArrowRight size={12} />
         </span>
       </div>
@@ -214,7 +214,7 @@ const SectionButton = ({ icon, label, active, onClick }: { icon: React.ReactNode
     }`}
   >
     <div className={`w-10 h-10 md:w-14 md:h-14 lg:w-16 lg:h-16 rounded-xl md:rounded-2xl flex items-center justify-center shrink-0 ${
-      active ? 'bg-accent text-bg' : 'bg-bg-elevated text-text-primary'
+      active ? 'bg-accent text-on-accent' : 'bg-bg-elevated text-text-primary'
     }`}>
       {icon}
     </div>
@@ -268,7 +268,7 @@ const DashboardProductCard = ({ product }: { product: any }) => {
           </div>
           <Link
             to="/dashboard/marketplace"
-            className="px-3 py-1.5 rounded-lg text-[9px] sm:text-[10px] md:text-xs font-black uppercase tracking-widest bg-accent text-bg transition-all duration-200 group-hover:brightness-110 group-active:scale-95"
+            className="px-3 py-1.5 rounded-lg text-[9px] sm:text-[10px] md:text-xs font-black uppercase tracking-widest bg-accent text-on-accent transition-all duration-200 group-hover:brightness-110 group-active:scale-95"
           >
             {t('student.dashboard.view')}
           </Link>
@@ -432,25 +432,25 @@ const Dashboard = () => {
         <div ref={statsRef}>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 md:gap-4 lg:gap-5">
             <SectionButton
-              icon={<GraduationCap className={`w-5 h-5 md:w-7 md:h-7 ${activeSection === 'courses' ? 'text-bg' : 'text-text-primary'}`} />}
+              icon={<GraduationCap className={`w-5 h-5 md:w-7 md:h-7 ${activeSection === 'courses' ? 'text-on-accent' : 'text-text-primary'}`} />}
               label={t('nav.courses')}
               active={activeSection === 'courses'}
               onClick={() => handleSectionToggle('courses')}
             />
             <SectionButton
-              icon={<Briefcase className={`w-5 h-5 md:w-7 md:h-7 ${activeSection === 'bootcamps' ? 'text-bg' : 'text-text-primary'}`} />}
+              icon={<Briefcase className={`w-5 h-5 md:w-7 md:h-7 ${activeSection === 'bootcamps' ? 'text-on-accent' : 'text-text-primary'}`} />}
               label={t('nav.bootcamps')}
               active={activeSection === 'bootcamps'}
               onClick={() => handleSectionToggle('bootcamps')}
             />
             <SectionButton
-              icon={<FlaskConical className={`w-5 h-5 md:w-7 md:h-7 ${activeSection === 'labs' ? 'text-bg' : 'text-text-primary'}`} />}
+              icon={<FlaskConical className={`w-5 h-5 md:w-7 md:h-7 ${activeSection === 'labs' ? 'text-on-accent' : 'text-text-primary'}`} />}
               label={t('nav.labs')}
               active={activeSection === 'labs'}
               onClick={() => handleSectionToggle('labs')}
             />
             <SectionButton
-              icon={<ShoppingBag className={`w-5 h-5 md:w-7 md:h-7 ${activeSection === 'marketplace' ? 'text-bg' : 'text-text-primary'}`} />}
+              icon={<ShoppingBag className={`w-5 h-5 md:w-7 md:h-7 ${activeSection === 'marketplace' ? 'text-on-accent' : 'text-text-primary'}`} />}
               label={t('nav.marketplace')}
               active={activeSection === 'marketplace'}
               onClick={() => handleSectionToggle('marketplace')}
@@ -473,7 +473,7 @@ const Dashboard = () => {
             <button
               onClick={handleInstall}
               disabled={installing}
-              className="sm:ml-auto flex items-center justify-center gap-1.5 w-full sm:w-auto px-4 py-2.5 rounded-xl bg-accent text-bg text-[10px] font-black uppercase tracking-widest hover:bg-accent/90 transition-colors disabled:opacity-50"
+              className="sm:ml-auto flex items-center justify-center gap-1.5 w-full sm:w-auto px-4 py-2.5 rounded-xl bg-accent text-on-accent text-[10px] font-black uppercase tracking-widest hover:bg-accent/90 transition-colors disabled:opacity-50"
             >
               {installing ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <IconDownload size={14} />}
               {installing ? t('button.installing') : t('button.install')}
@@ -498,7 +498,7 @@ const Dashboard = () => {
               </div>
               <Link
                 to="/dashboard/bootcamps"
-                className="inline-flex items-center gap-2 self-start px-5 py-2.5 rounded-xl bg-accent text-bg text-[10px] font-black uppercase tracking-widest hover:bg-accent/90 transition-colors"
+                className="inline-flex items-center gap-2 self-start px-5 py-2.5 rounded-xl bg-accent text-on-accent text-[10px] font-black uppercase tracking-widest hover:bg-accent/90 transition-colors"
               >
                 {t('student.dashboard.action.startLearning')} <IconArrowRight size={14} />
               </Link>
@@ -616,7 +616,7 @@ const Dashboard = () => {
                           {course.cpCost} CP
                         </span>
                       </div>
-                      <span className="px-3 py-1.5 rounded-lg text-[9px] sm:text-[10px] md:text-xs font-black uppercase tracking-widest bg-accent text-bg transition-all duration-200 group-hover/card:brightness-110 group-active:scale-95">
+                      <span className="px-3 py-1.5 rounded-lg text-[9px] sm:text-[10px] md:text-xs font-black uppercase tracking-widest bg-accent text-on-accent transition-all duration-200 group-hover/card:brightness-110 group-active:scale-95">
                         {t('student.dashboard.view')}
                       </span>
                     </div>

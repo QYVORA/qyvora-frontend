@@ -57,7 +57,7 @@ const BlogsPage = () => {
             <button
               onClick={() => setActiveTag('')}
               className={`px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all ${
-                !activeTag ? 'bg-accent text-bg' : 'bg-bg-card border border-border text-text-muted hover:border-accent/30 hover:text-accent'
+                !activeTag ? 'bg-accent text-on-accent' : 'bg-bg-card border border-border text-text-muted hover:border-accent/30 hover:text-accent'
               }`}
             >
               All
@@ -67,7 +67,7 @@ const BlogsPage = () => {
                 key={tag}
                 onClick={() => setActiveTag(tag)}
                 className={`px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all ${
-                  activeTag === tag ? 'bg-accent text-bg' : 'bg-bg-card border border-border text-text-muted hover:border-accent/30 hover:text-accent'
+                  activeTag === tag ? 'bg-accent text-on-accent' : 'bg-bg-card border border-border text-text-muted hover:border-accent/30 hover:text-accent'
                 }`}
               >
                 {tag}

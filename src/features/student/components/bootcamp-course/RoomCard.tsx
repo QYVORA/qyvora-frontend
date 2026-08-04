@@ -155,7 +155,7 @@ const RoomCard: React.FC<RoomCardProps> = ({
               onClick={toggleAnnotate}
               className={`rounded-lg px-2 py-1 text-[9px] font-black uppercase tracking-widest transition-all flex items-center gap-1 ${
                 annotateMode
-                  ? 'bg-accent text-bg'
+                  ? 'bg-accent text-on-accent'
                   : 'bg-bg-elevated text-text-muted hover:text-accent border border-border/30'
               }`}
             >

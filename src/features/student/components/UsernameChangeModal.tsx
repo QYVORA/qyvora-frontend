@@ -99,7 +99,7 @@ const UsernameChangeModal = () => {
             <button
               type="submit"
               disabled={saving}
-              className="w-full flex items-center justify-center gap-2 bg-accent text-bg font-bold uppercase tracking-wider rounded-xl py-3.5 text-sm transition-all hover:brightness-110 active:scale-[0.98] disabled:opacity-50"
+              className="w-full flex items-center justify-center gap-2 bg-accent text-on-accent font-bold uppercase tracking-wider rounded-xl py-3.5 text-sm transition-all hover:brightness-110 active:scale-[0.98] disabled:opacity-50"
             >
               {saving ? t('button.signingIn') : <><IconCheck size={16} /> {t('student.usernameChange.save')}</>}
             </button>

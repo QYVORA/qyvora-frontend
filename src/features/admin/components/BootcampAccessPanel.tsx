@@ -149,7 +149,7 @@ const BootcampAccessPanel: React.FC<Props> = ({ addToast }) => {
                   isCurrent ? 'border-accent/30 bg-accent-dim/30' : unlocked ? 'border-border bg-bg' : 'border-border/50 bg-bg/80 opacity-50'
                 }`}
               >
-                <div className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-xs font-black ${unlocked ? 'bg-accent text-bg' : 'border border-border bg-bg text-text-muted'}`}>
+                <div className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-xs font-black ${unlocked ? 'bg-accent text-on-accent' : 'border border-border bg-bg text-text-muted'}`}>
                   {unlocked ? <IconCheck size={16} /> : String(mod.moduleId).padStart(2, '0')}
                 </div>
                 <div className="min-w-0 flex-1">

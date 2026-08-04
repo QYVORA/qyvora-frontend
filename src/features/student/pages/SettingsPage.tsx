@@ -287,7 +287,7 @@ const Settings: React.FC = () => {
                   key={tab}
                   onClick={() => setActiveTab(tab)}
                   className={`flex items-center gap-2 px-3 min-h-[44px] rounded-xl text-xs font-bold uppercase tracking-widest whitespace-nowrap transition-colors ${
-                    activeTab === tab ? 'bg-accent text-bg' : 'text-text-muted hover:text-text-primary hover:bg-accent/5'
+                    activeTab === tab ? 'bg-accent text-on-accent' : 'text-text-muted hover:text-text-primary hover:bg-accent/5'
                   }`}
                 >
                   {tabIcons[tab]}
@@ -310,11 +310,11 @@ const Settings: React.FC = () => {
                     <SettingsRow label={t('student.settings.appearance.theme')}>
                       <div className="flex gap-1 bg-bg rounded-xl p-1 border border-border/30">
                         <button onClick={() => handleThemeChange('dark')}
-                          className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-colors ${theme === 'dark' ? 'bg-accent text-bg' : 'text-text-muted hover:text-text-primary'}`}>
+                          className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-colors ${theme === 'dark' ? 'bg-accent text-on-accent' : 'text-text-muted hover:text-text-primary'}`}>
                           <Moon className="w-3.5 h-3.5" /> {t('student.settings.appearance.dark')}
                         </button>
                         <button onClick={() => handleThemeChange('light')}
-                          className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-colors ${theme === 'light' ? 'bg-accent text-bg' : 'text-text-muted hover:text-text-primary'}`}>
+                          className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-colors ${theme === 'light' ? 'bg-accent text-on-accent' : 'text-text-muted hover:text-text-primary'}`}>
                           <Sun className="w-3.5 h-3.5" /> {t('student.settings.appearance.light')}
                         </button>
                       </div>
