@@ -32,6 +32,7 @@ const BlogPostPage      = lazy(() => import('../features/marketing/pages/BlogsPa
 // Public marketing pages
 const CoursesPage       = lazy(() => import('../features/marketing/pages/public/CoursesPage'));
 const HpbPage           = lazy(() => import('../features/marketing/pages/public/HpbPage'));
+const HpbPhasePage      = lazy(() => import('../features/marketing/pages/public/HpbPhasePage'));
 const PublicLabsPage     = lazy(() => import('../features/marketing/pages/public/LabsPage'));
 const ServicesPage      = lazy(() => import('../features/marketing/pages/public/ServicesPage'));
 const BasicPentestPage  = lazy(() => import('../features/marketing/pages/public/services/BasicPentestPage'));
@@ -177,6 +178,7 @@ export const AppRouter = () => {
           {/* Public marketing pages (formerly redirects to landing sections) */}
           <Route path="/courses" element={<Wrap scope="Courses"><CoursesPage /></Wrap>} />
           <Route path="/hpb" element={<Wrap scope="HPB"><HpbPage /></Wrap>} />
+          <Route path="/hpb/:phaseId" element={<Wrap scope="HPB Phase"><HpbPhasePage /></Wrap>} />
           <Route path="/learn" element={<Navigate to="/hpb" replace />} />
           <Route path="/labs" element={<Wrap scope="Labs"><PublicLabsPage /></Wrap>} />
           <Route path="/services" element={<Wrap scope="Services"><ServicesPage /></Wrap>} />

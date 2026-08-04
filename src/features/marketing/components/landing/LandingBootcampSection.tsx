@@ -39,6 +39,7 @@ const LandingBootcampSection: React.FC = () => {
   const supporting = group.slice(1);
   const featuredConfig = BOOTCAMP_CONFIG.phases[PHASES.indexOf(featured)];
   const featuredRoomCount = featuredConfig?.rooms?.length || 0;
+  const featuredHref = featuredConfig ? `/hpb/${featuredConfig.id}` : '/hpb';
 
   return (
     <div className="relative bg-bg min-h-dvh lg:h-dvh flex flex-col overflow-hidden" data-nav-invert>
@@ -59,7 +60,7 @@ const LandingBootcampSection: React.FC = () => {
               className="lg:col-span-2 lg:row-span-2"
             >
               <Link
-                to="/hpb"
+                to={featuredHref}
                 className="group relative block h-full rounded-2xl border border-border/20 bg-bg-card transition-all duration-300 hover:border-accent/30 overflow-hidden"
               >
                 <div className="relative h-full flex flex-col sm:flex-row p-4 sm:p-8 gap-5 sm:gap-6">
@@ -100,6 +101,7 @@ const LandingBootcampSection: React.FC = () => {
               const phaseIdx = PHASES.indexOf(phase);
               const config = BOOTCAMP_CONFIG.phases[phaseIdx];
               const roomCount = config?.rooms?.length || 0;
+              const supportHref = config ? `/hpb/${config.id}` : '/hpb';
               return (
                 <motion.div
                   key={`support-${groupIndex}-${idx}`}
@@ -108,7 +110,7 @@ const LandingBootcampSection: React.FC = () => {
                   transition={{ duration: 0.5, delay: 0.1 * (idx + 1), ease: [0.16, 1, 0.3, 1] }}
                 >
                   <Link
-                    to="/hpb"
+                    to={supportHref}
                     className="group relative block h-full rounded-2xl border border-border/20 bg-bg-card p-3 sm:p-5 transition-all duration-300 hover:border-accent/30"
                   >
                     <div className="relative h-full flex flex-col">
