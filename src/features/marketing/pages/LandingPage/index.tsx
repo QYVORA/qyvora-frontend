@@ -22,6 +22,7 @@ import ActDividerSection from '@/features/marketing/components/landing/ActDivide
 import { Footer } from '@/shared/components/layout';
 import { useAdaptiveUi } from '@/core/hooks/useAdaptiveUi';
 import SEO from '@/shared/components/SEO';
+import { buildOrganization } from '@/shared/seo/schema';
 
 const Landing: React.FC = () => {
   const { t } = useTranslation();
@@ -115,18 +116,7 @@ const Landing: React.FC = () => {
       <SEO
         title={t('landing2.seo.title')}
         description={t('landing2.seo.description')}
-        schemaData={{
-          '@context': 'https://schema.org',
-          '@type': 'Organization',
-          name: 'QYVORA',
-          url: 'https://qyvora.netlify.app',
-          description: 'Africa\'s offensive security platform — training, labs, and enterprise penetration testing.',
-          sameAs: [
-            'https://twitter.com/qyvora',
-            'https://linkedin.com/company/qyvora',
-            'https://github.com/qyvora',
-          ],
-        }}
+        schemaData={buildOrganization()}
       />
 
       {/* ── ACT I: VISION ──────────────────────────────────────────────── */}
