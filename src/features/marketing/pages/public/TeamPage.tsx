@@ -26,7 +26,6 @@ const TeamPage = () => {
       <SEO title="Team - QYVORA" description="The team behind QYVORA — operators, engineers, and security researchers." />
       <PublicSnapLayout>
         <StudentHeroSection
-          icon={<Users className="w-8 h-8 text-accent" />}
           title="Our"
           accentWord="Team"
           titleClassName={PUBLIC_HERO_TITLE_CLASS}
@@ -98,17 +97,9 @@ const TeamPage = () => {
           </div>
           </div>
         </div>
-      </PublicSnapLayout>
-
-      {/* ── Final CTA ── */}
-      <section className="relative w-full min-h-dvh md:h-dvh md:overflow-hidden">
         <LandingFinalCtaSection user={user} />
-      </section>
-
-      {/* ── Footer ── */}
-      <section className="relative w-full bg-bg">
         <Footer />
-      </section>
+      </PublicSnapLayout>
     </div>
   );
 };

@@ -36,7 +36,8 @@ const CoursesPage = () => {
       <SEO title="Courses - QYVORA" description="Master offensive security with QYVORA's structured courses." />
       <PublicSnapLayout>
         <StudentHeroSection
-          title="Courses"
+          title="Offensive"
+          accentWord="Courses"
           titleClassName={PUBLIC_HERO_TITLE_CLASS}
           showGlobe
           typewrite
@@ -88,17 +89,9 @@ const CoursesPage = () => {
           </div>
           </div>
         </div>
-      </PublicSnapLayout>
-
-      {/* ── Final CTA ── */}
-      <section className="relative w-full min-h-dvh md:h-dvh md:overflow-hidden">
         <LandingFinalCtaSection user={user} />
-      </section>
-
-      {/* ── Footer ── */}
-      <section className="relative w-full bg-bg">
         <Footer />
-      </section>
+      </PublicSnapLayout>
     </div>
   );
 };

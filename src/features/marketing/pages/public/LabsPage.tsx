@@ -33,7 +33,6 @@ const LabsPage = () => {
       <SEO title="Attack Labs - QYVORA" description="Hands-on offensive security labs covering privilege escalation, password cracking, SQL injection, OSINT, and the full kill chain." />
       <PublicSnapLayout>
         <StudentHeroSection
-          icon={<FlaskConical className="w-8 h-8 text-accent" />}
           title="Attack"
           accentWord="Labs"
           titleClassName={PUBLIC_HERO_TITLE_CLASS}
@@ -97,17 +96,9 @@ const LabsPage = () => {
           </div>
           </div>
         </div>
-      </PublicSnapLayout>
-
-      {/* ── Final CTA ── */}
-      <section className="relative w-full min-h-dvh md:h-dvh md:overflow-hidden">
         <LandingFinalCtaSection user={user} />
-      </section>
-
-      {/* ── Footer ── */}
-      <section className="relative w-full bg-bg">
         <Footer />
-      </section>
+      </PublicSnapLayout>
     </div>
   );
 };
