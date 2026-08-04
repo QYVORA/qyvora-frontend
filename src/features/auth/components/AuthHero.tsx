@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import { Terminal, Shield, Trophy } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { IconArrowLeft } from '@/shared/components/icons';
-import { GridBoxedBackground } from '@/shared/components/backgrounds';
 import ErrorBoundary from '@/shared/components/ErrorBoundary';
 
 const HackerGlobe = lazy(() => import('@/features/marketing/components/HackerGlobe'));
@@ -17,9 +16,7 @@ const authBullets = [
 const AuthHero: React.FC = () => {
   const { t } = useTranslation();
   return (
-    <div className="hidden md:flex relative w-full min-h-dvh md:h-dvh flex-col bg-bg overflow-hidden" data-nav-invert>
-      <GridBoxedBackground blur={0} mask="right" />
-
+    <div className="hidden md:flex relative w-full min-h-dvh md:h-dvh flex-col overflow-hidden" data-nav-invert>
       <div className="absolute inset-0 z-0 flex items-end justify-end overflow-hidden pointer-events-none">
         <div className="relative w-full h-full flex items-end justify-end">
           <ErrorBoundary scope="AuthHeroGlobe" fallback={null}>

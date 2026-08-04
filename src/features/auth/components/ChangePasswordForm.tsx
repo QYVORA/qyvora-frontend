@@ -19,7 +19,7 @@ const ChangePasswordForm: React.FC<ChangePasswordFormProps> = ({
 }) => {
   const { t } = useTranslation();
   return (
-    <div className="rounded-2xl border border-border/30 bg-bg/70 backdrop-blur-md p-4 sm:p-6 lg:p-8">
+    <div className="rounded-2xl border border-border/30 bg-bg/40 backdrop-blur-md p-4 sm:p-6 lg:p-8">
       <div className="mb-8">
         <div className="flex items-center gap-3 mb-3">
           <div className="w-10 h-10 rounded-lg bg-yellow-500/10 border border-yellow-500/30 flex items-center justify-center">

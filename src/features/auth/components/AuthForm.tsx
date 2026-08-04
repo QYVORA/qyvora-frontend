@@ -52,7 +52,7 @@ const AuthForm: React.FC<AuthFormProps> = ({
       <p className="sr-only" aria-live="polite">{formMessage}</p>
 
       {/* Toggle between login and register */}
-      <div className="w-full flex bg-bg/80 border border-bg/50 p-1.5 rounded-xl backdrop-blur-sm">
+      <div className="w-full flex bg-bg/40 border border-border/30 p-1.5 rounded-xl backdrop-blur-sm">
         <button
           type="button"
           onClick={() => onModeChange('login')}
@@ -88,7 +88,7 @@ const AuthForm: React.FC<AuthFormProps> = ({
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: 20 }}
             transition={{ duration: 0.2 }}
-            className="w-full rounded-2xl border border-border/30 bg-bg/70 backdrop-blur-md p-4 sm:p-6 lg:p-8"
+            className="w-full rounded-2xl border border-border/30 bg-bg/40 backdrop-blur-md p-4 sm:p-6 lg:p-8"
           >
               <div className="mb-8">
                 <h1 className="text-3xl md:text-4xl lg:text-5xl font-black text-text-primary uppercase tracking-tighter mb-1">
@@ -160,7 +160,7 @@ const AuthForm: React.FC<AuthFormProps> = ({
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: -20 }}
             transition={{ duration: 0.2 }}
-            className="w-full rounded-2xl border border-border/30 bg-bg/70 backdrop-blur-md p-4 sm:p-6 lg:p-8"
+            className="w-full rounded-2xl border border-border/30 bg-bg/40 backdrop-blur-md p-4 sm:p-6 lg:p-8"
           >
             <div className="mb-8">
               <h1 className="text-3xl md:text-4xl lg:text-5xl font-black text-text-primary uppercase tracking-tighter mb-1">

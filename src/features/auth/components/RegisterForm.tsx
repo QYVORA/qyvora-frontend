@@ -25,7 +25,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onSubmit, isLoading, onLogi
   };
 
   return (
-    <div className="rounded-2xl border border-border/30 bg-bg-card p-6 md:p-8">
+    <div className="rounded-2xl border border-border/30 bg-bg/40 backdrop-blur-md p-6 md:p-8">
       <div className="mb-8">
         <h1 className="text-3xl md:text-4xl lg:text-5xl font-black text-text-primary uppercase tracking-tighter mb-1">{t('heading.requestAccess')}</h1>
         <p className="text-text-muted text-sm">{t('auth2.registerDescription')}</p>
