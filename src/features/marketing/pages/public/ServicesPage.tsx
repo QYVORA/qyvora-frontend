@@ -7,6 +7,9 @@ import { openServiceRequestModal } from '@/features/marketing/components/Service
 import SEO from '@/shared/components/SEO';
 import PublicSnapLayout from '@/shared/components/PublicSnapLayout';
 import StudentHeroSection, { PUBLIC_HERO_TITLE_CLASS } from '@/shared/components/StudentHeroSection';
+import { Footer } from '@/shared/components/layout';
+import { useAuth } from '@/core/contexts/AuthContext';
+import LandingFinalCtaSection from '@/features/marketing/components/landing/LandingFinalCtaSection';
 import { SERVICES, REQUEST_ASSESSMENT_LABEL, LEARN_MORE_LABEL, type ServiceConfig } from '@/features/marketing/content/servicesConfig';
 
 const ServiceSection: React.FC<{ svc: ServiceConfig; index: number }> = ({ svc, index }) => {
@@ -108,6 +111,7 @@ const ServiceSection: React.FC<{ svc: ServiceConfig; index: number }> = ({ svc, 
 };
 
 const ServicesPage = () => {
+  const { user } = useAuth();
   return (
     <div className="bg-bg min-h-full">
       <SEO title="Services - QYVORA" description="Enterprise-grade penetration testing, security assessments, and offensive security training." />
@@ -126,6 +130,16 @@ const ServicesPage = () => {
           <ServiceSection key={svc.id} svc={svc} index={idx} />
         ))}
       </PublicSnapLayout>
+
+      {/* ── Final CTA ── */}
+      <section className="relative w-full min-h-dvh md:h-dvh md:overflow-hidden">
+        <LandingFinalCtaSection user={user} />
+      </section>
+
+      {/* ── Footer ── */}
+      <section className="relative w-full bg-bg">
+        <Footer />
+      </section>
     </div>
   );
 };

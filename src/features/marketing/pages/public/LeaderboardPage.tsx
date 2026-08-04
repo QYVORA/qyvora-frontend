@@ -8,6 +8,8 @@ import { LeaderboardRow, PodiumCard, useLeaderboard, PERIODS } from '@/shared/co
 import SEO from '@/shared/components/SEO';
 import PublicSnapLayout from '@/shared/components/PublicSnapLayout';
 import StudentHeroSection, { PUBLIC_HERO_TITLE_CLASS } from '@/shared/components/StudentHeroSection';
+import { Footer } from '@/shared/components/layout';
+import LandingFinalCtaSection from '@/features/marketing/components/landing/LandingFinalCtaSection';
 import { ErrorState } from '@/shared/components/ui';
 import type { Period } from '@/shared/components/leaderboard';
 
@@ -155,8 +157,18 @@ const LeaderboardPage = () => {
             </div>
           </div>
           </div>
-        )}
+          )}
       </PublicSnapLayout>
+
+      {/* ── Final CTA ── */}
+      <section className="relative w-full min-h-dvh md:h-dvh md:overflow-hidden">
+        <LandingFinalCtaSection user={user} />
+      </section>
+
+      {/* ── Footer ── */}
+      <section className="relative w-full bg-bg">
+        <Footer />
+      </section>
     </div>
   );
 };

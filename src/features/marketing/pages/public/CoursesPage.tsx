@@ -6,6 +6,9 @@ import { ScrollReveal } from '@/shared/components';
 import SEO from '@/shared/components/SEO';
 import PublicSnapLayout from '@/shared/components/PublicSnapLayout';
 import StudentHeroSection, { PUBLIC_HERO_TITLE_CLASS } from '@/shared/components/StudentHeroSection';
+import { Footer } from '@/shared/components/layout';
+import { useAuth } from '@/core/contexts/AuthContext';
+import LandingFinalCtaSection from '@/features/marketing/components/landing/LandingFinalCtaSection';
 import { COURSES, getCategoryById } from '@/features/student/data/courses';
 import type { SkillLevel } from '@/features/student/data/courses';
 
@@ -20,6 +23,7 @@ const CATEGORY_ICONS: Record<string, React.ElementType> = {
 
 const CoursesPage = () => {
   const { t } = useTranslation();
+  const { user } = useAuth();
 
   const SKILL_CONFIG: Record<SkillLevel, { label: string; color: string; icon: React.ElementType }> = {
     beginner: { label: 'Beginner', color: 'text-accent border-accent/30 bg-accent/10', icon: Sparkles },
@@ -85,6 +89,16 @@ const CoursesPage = () => {
           </div>
         </div>
       </PublicSnapLayout>
+
+      {/* ── Final CTA ── */}
+      <section className="relative w-full min-h-dvh md:h-dvh md:overflow-hidden">
+        <LandingFinalCtaSection user={user} />
+      </section>
+
+      {/* ── Footer ── */}
+      <section className="relative w-full bg-bg">
+        <Footer />
+      </section>
     </div>
   );
 };
