@@ -21,7 +21,7 @@ const LandingFinalCtaSection: React.FC<LandingFinalCtaSectionProps> = ({ user })
 
   return (
     <div className="relative w-full min-h-dvh lg:h-dvh bg-bg flex flex-col lg:flex-row overflow-hidden" data-nav-invert>
-      <GridBoxedBackground opacity={0.4} blur={0} mask="right" />
+      <GridBoxedBackground blur={0} mask="right" />
       <div className="relative z-10 w-full flex-1 px-3 md:px-4 lg:px-6 flex flex-col lg:flex-row lg:items-stretch gap-10 lg:gap-12 pt-20 pb-12 lg:pt-0 lg:pb-0">
 
         {/* Content — flex-1 fills the column so it centres vertically on mobile

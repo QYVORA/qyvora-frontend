@@ -5,7 +5,6 @@ import { IconArrowRight } from '@/shared/components/icons';
 import HpbAvatar, { type HpbVariant } from '@/shared/components/HpbAvatar';
 import { PHASES } from '@/features/marketing/data/learnData';
 import { BOOTCAMP_CONFIG } from '@/features/student/constants/bootcampConfig';
-import { GridBoxedBackground } from '@/shared/components/backgrounds';
 import { useTranslation } from 'react-i18next';
 
 const GROUP_SIZE = 3;
@@ -43,7 +42,6 @@ const LandingBootcampSection: React.FC = () => {
 
   return (
     <div className="relative bg-bg min-h-dvh lg:h-dvh flex flex-col overflow-hidden" data-nav-invert>
-      <GridBoxedBackground opacity={0.4} blur={0} mask="right" />
       <div className="relative z-10 w-full h-full px-3 md:px-4 lg:px-6 pt-24 md:pt-28 lg:pt-32 pb-6 md:pb-8 lg:pb-10 flex flex-col">
         <div className="w-full flex-1 flex flex-col min-h-0">
           <h2 className="text-lg md:text-xl lg:text-2xl font-black text-text-primary tracking-tighter leading-none mb-2 md:mb-3 shrink-0">

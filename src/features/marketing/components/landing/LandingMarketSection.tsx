@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Cloud, FileText, BookOpen, Cpu } from 'lucide-react';
 import { IconArrowRight, IconMarketplace, IconLock } from '@/shared/components/icons';
-import { GridBoxedBackground } from '@/shared/components/backgrounds';
 import ScrollReveal from '@/shared/components/ScrollReveal';
 import api from '@/core/services/api';
 import productFallbackImg from '@/assets/sections/stats/cp-earned-bg.webp';
@@ -52,7 +51,6 @@ const LandingMarketSection = () => {
 
   return (
     <div className="relative bg-bg min-h-dvh lg:h-dvh flex flex-col overflow-hidden" data-nav-invert>
-      <GridBoxedBackground opacity={0.4} blur={0} mask="right" />
       <div className="relative z-10 w-full h-full px-3 md:px-4 lg:px-6 py-10 sm:py-8 md:py-12 lg:py-16 flex flex-col lg:flex-row gap-10 sm:gap-10 lg:gap-24 lg:items-stretch">
         {/* Header column */}
         <div className="shrink-0 lg:w-[420px] xl:w-[480px] flex flex-col lg:justify-center">
