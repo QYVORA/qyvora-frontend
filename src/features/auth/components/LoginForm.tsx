@@ -25,7 +25,7 @@ const LoginForm: React.FC<LoginFormProps> = ({
 }) => {
   const { t } = useTranslation();
   return (
-    <div className="rounded-2xl border border-border/30 bg-bg-card p-6 md:p-8">
+    <div className="rounded-2xl border border-border/30 bg-bg/40 backdrop-blur-md p-6 md:p-8">
       <div className="mb-8">
         <h1 className="text-3xl md:text-4xl lg:text-5xl font-black uppercase tracking-tighter mb-1 text-text-primary">
           {isAdminLoginRoute ? t('heading.workspaceAccess') : t('heading.operatorLogin')}

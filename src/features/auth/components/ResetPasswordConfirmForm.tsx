@@ -25,7 +25,7 @@ const ResetPasswordConfirmForm: React.FC<ResetPasswordConfirmFormProps> = ({
 }) => {
   const { t } = useTranslation();
   return (
-    <div className="rounded-2xl border border-border/30 bg-bg/70 backdrop-blur-md p-4 sm:p-6 lg:p-8">
+    <div className="rounded-2xl border border-border/30 bg-bg/40 backdrop-blur-md p-4 sm:p-6 lg:p-8">
       <button onClick={onBack} className="flex items-center gap-2 text-text-muted hover:text-accent active:opacity-70 mb-8 transition-colors">
         <IconArrowLeft size={16} /> {t('button.back')}
       </button>

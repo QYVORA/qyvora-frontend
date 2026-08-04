@@ -13,9 +13,15 @@ interface AuthFormLayoutProps {
 const AuthFormLayout: React.FC<AuthFormLayoutProps> = ({ children }) => {
   const { t } = useTranslation();
   return (
-    <>
+    <div className="relative min-h-dvh">
       {/* Mobile background layer */}
       <div className="md:hidden fixed inset-0 bg-bg -z-10">
+        <GridBoxedBackground blur={0} mask="right" />
+      </div>
+
+      {/* Desktop blank ground — full-page decorative backdrop behind hero + form.
+          The form column and form cards stay translucent so this shows through. */}
+      <div className="hidden md:block absolute inset-0 bg-bg overflow-hidden" aria-hidden="true">
         <GridBoxedBackground blur={0} mask="right" />
       </div>
 
@@ -44,7 +50,7 @@ const AuthFormLayout: React.FC<AuthFormLayoutProps> = ({ children }) => {
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 
