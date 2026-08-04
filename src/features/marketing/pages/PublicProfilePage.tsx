@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { useParams, Link, useLocation } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import { IconArrowLeft } from '@/shared/components/icons';
 import { User, FlaskConical, GraduationCap, Trophy, Zap, Flame } from 'lucide-react';
 import NotFoundPage from '../../../shared/pages/NotFoundPage';
@@ -20,7 +20,6 @@ import type { ProfileData, ProfileApiResponse, CompletedRoom, ProfileSectionId }
 
 const PublicProfile: React.FC = () => {
   const { handle: rawHandle } = useParams<{ handle: string }>();
-  const location = useLocation();
 
   const isValidHandle = rawHandle && rawHandle.startsWith('@');
   const handle = isValidHandle ? rawHandle.slice(1) : '';
@@ -96,6 +95,11 @@ const PublicProfile: React.FC = () => {
   if (notFound || !profile) {
     return (
       <div className="min-h-screen bg-bg flex flex-col items-center justify-center gap-6 px-4">
+        <SEO
+          noindex
+          title="Operator Not Found"
+          description={`The QYVORA operator profile @${handle} could not be found.`}
+        />
         <IconArrowLeft className="w-4 h-4 text-text-muted" />
         <div className="flex flex-col items-start text-left">
           <h1 className="text-3xl font-black text-text-primary uppercase tracking-tighter mb-2">Operator Not Found</h1>
@@ -112,11 +116,7 @@ const PublicProfile: React.FC = () => {
       <SEO
         title={`@${handle}'s Profile`}
         description={`View the operator profile, achievements, and ranking of @${handle} on QYVORA.`}
-        breadcrumbs={[
-          { name: 'Home', item: '/' },
-          { name: 'Operators', item: '/' },
-          { name: handle ? `@${handle}` : 'Profile', item: location.pathname }
-        ]}
+        breadcrumbName={handle ? `@${handle}` : 'Profile'}
       />
 
       <div className="w-full px-3 md:px-4 lg:px-6 pt-28 md:pt-24 pb-20 lg:pb-24">

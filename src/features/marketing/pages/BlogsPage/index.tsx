@@ -18,10 +18,6 @@ const BlogsPage: React.FC = () => {
       <SEO
         title="Blogs"
         description="Read about cybersecurity, offensive security tooling, and Africa's growing security ecosystem."
-        breadcrumbs={[
-          { name: 'Home', item: '/' },
-          { name: 'Blogs', item: '/blogs' },
-        ]}
       />
 
       {/* ── Hero Section ── */}
