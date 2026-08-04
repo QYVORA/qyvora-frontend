@@ -41,7 +41,7 @@ const ShareProfile = ({ handle }: { handle: string }) => {
       id: 'email',
       name: t('components.share.platforms.email'),
       icon: <Mail className="w-5 h-5" />,
-      color: 'hover:bg-accent hover:text-bg border-accent/20',
+      color: 'hover:bg-accent hover:text-on-accent border-accent/20',
       getUrl: (url: string, text: string) =>
         `mailto:?subject=${encodeURIComponent(t('components.share.emailSubject'))}&body=${encodeURIComponent(text + '\n' + url)}`,
     },
@@ -49,7 +49,7 @@ const ShareProfile = ({ handle }: { handle: string }) => {
       id: 'copy',
       name: t('components.share.platforms.copyLink'),
       icon: <Share2 className="w-5 h-5" />,
-      color: 'hover:bg-accent hover:text-bg border-accent/20',
+      color: 'hover:bg-accent hover:text-on-accent border-accent/20',
       getUrl: () => '',
     },
   ];

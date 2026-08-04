@@ -9,6 +9,15 @@ The source of truth is the SVG logo: **`#06B66F`**.
 - Never use `#66B870` or any other green — always `#06B66F`
 - Tailwind utility: `text-accent`, `bg-accent`, `border-accent`
 
+## Text On Accent (on-accent)
+
+Text/icons/borders rendered **on top of an accent surface** (accent buttons, active pills, badges, selection highlight) use the `on-accent` token — never `text-bg`.
+
+- `--color-on-accent` resolves to near-black (`#000000`) in BOTH dark and light themes, because the accent stays green in both.
+- Tailwind utilities: `text-on-accent`, `border-on-accent`
+- `text-bg` is reserved strictly for "the page background color" and must NOT be used on accent surfaces (in light mode `--color-bg` is near-white, making accent-button text invisible).
+- Covers: `.btn-primary` (CSS), `Button.tsx` primary variant, `selection:*`, and all `bg-accent text-*` call sites.
+
 ## Typography
 
 Mono throughout — JetBrains Mono. No `font-sans` override exists.

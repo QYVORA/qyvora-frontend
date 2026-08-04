@@ -62,7 +62,7 @@ const RoomHeader: React.FC<RoomHeaderProps> = ({
       </div>
       
       {isRoomComplete && (
-        <div className="mt-4 inline-flex items-center gap-2 rounded-lg bg-accent text-bg px-4 py-1.5 text-xs font-black uppercase tracking-widest border border-accent/30">
+        <div className="mt-4 inline-flex items-center gap-2 rounded-lg bg-accent text-on-accent px-4 py-1.5 text-xs font-black uppercase tracking-widest border border-accent/30">
           <IconCheck size={16} /> {t('student.bootcampRoom.header.completeBadge')}
         </div>
       )}

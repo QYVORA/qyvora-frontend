@@ -81,7 +81,7 @@ const DesktopToolbar: React.FC<DesktopToolbarProps> = ({
         }
         className={`flex h-9 w-9 items-center justify-center rounded-lg border transition-colors ${
           isLastStep
-            ? 'bg-accent border-accent text-bg hover:brightness-110 active:scale-95'
+            ? 'bg-accent border-accent text-on-accent hover:brightness-110 active:scale-95'
             : 'bg-bg-card border-border text-text-muted hover:text-accent hover:border-accent/30 active:scale-95'
         } ${completing ? 'opacity-50 cursor-not-allowed' : ''}`}
       >

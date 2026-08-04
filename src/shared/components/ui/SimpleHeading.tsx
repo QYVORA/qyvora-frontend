@@ -2,8 +2,8 @@
  * SimpleHeading.tsx
  * ─────────────────────────────────────────────────────────────────────────────
  * Simple, clean heading component that replaces ASCII art headings.
- * Matches hero text design with accent/white color split in dark theme,
- * and accent/black split in light theme.
+ * Matches hero text design with accent/near-black split on accent surfaces
+ * (on-accent) in both dark and light themes.
  */
 
 import React from 'react';
@@ -57,8 +57,8 @@ const SimpleHeading: React.FC<SimpleHeadingProps> = ({
     ? 'text-3xl md:text-4xl lg:text-5xl' 
     : 'text-4xl md:text-5xl lg:text-6xl xl:text-7xl';
 
-  const primaryClass = variant === 'inverted' ? 'text-bg' : 'text-text-primary';
-  const accentClass = variant === 'inverted' ? 'text-bg/80' : 'text-accent';
+  const primaryClass = variant === 'inverted' ? 'text-on-accent' : 'text-text-primary';
+  const accentClass = variant === 'inverted' ? 'text-on-accent/80' : 'text-accent';
 
   return (
     <h2

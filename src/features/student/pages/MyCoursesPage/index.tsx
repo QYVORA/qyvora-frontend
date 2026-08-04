@@ -225,11 +225,11 @@ const MyCoursesPage: React.FC = () => {
                           <CheckCircle2 className="h-2.5 w-2.5" /> {t('student.myCourses.completed')}
                         </span>
                       ) : canResume ? (
-                        <span className="px-3 py-1.5 rounded-lg text-[9px] sm:text-[10px] md:text-xs font-black uppercase tracking-widest bg-accent text-bg transition-all duration-200 group-hover/card:brightness-110 group-active:scale-95 inline-flex items-center gap-1.5">
+                        <span className="px-3 py-1.5 rounded-lg text-[9px] sm:text-[10px] md:text-xs font-black uppercase tracking-widest bg-accent text-on-accent transition-all duration-200 group-hover/card:brightness-110 group-active:scale-95 inline-flex items-center gap-1.5">
                           <Play className="h-2.5 w-2.5" /> {t('student.myCourses.continue')} <ArrowRight className="h-2.5 w-2.5" />
                         </span>
                       ) : (
-                        <span className="px-3 py-1.5 rounded-lg text-[9px] sm:text-[10px] md:text-xs font-black uppercase tracking-widest bg-accent text-bg transition-all duration-200 group-hover/card:brightness-110 group-active:scale-95 inline-flex items-center gap-1.5">
+                        <span className="px-3 py-1.5 rounded-lg text-[9px] sm:text-[10px] md:text-xs font-black uppercase tracking-widest bg-accent text-on-accent transition-all duration-200 group-hover/card:brightness-110 group-active:scale-95 inline-flex items-center gap-1.5">
                           <BarChart3 className="h-2.5 w-2.5" /> {t('student.myCourses.start')} <ArrowRight className="h-2.5 w-2.5" />
                         </span>
                       )}
@@ -297,7 +297,7 @@ const MyCoursesPage: React.FC = () => {
             <p className="text-text-muted">{t('student.myCourses.empty.enrolled')}</p>
             <Link
               to="/dashboard"
-              className="inline-flex items-center gap-2 px-6 py-3 bg-accent text-bg rounded-xl text-[10px] font-black uppercase tracking-widest transition-all hover:brightness-110"
+              className="inline-flex items-center gap-2 px-6 py-3 bg-accent text-on-accent rounded-xl text-[10px] font-black uppercase tracking-widest transition-all hover:brightness-110"
             >
               {t('student.myCourses.action.browse')} <ArrowRight className="h-3 w-3" />
             </Link>

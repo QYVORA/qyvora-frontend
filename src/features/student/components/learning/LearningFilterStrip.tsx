@@ -27,13 +27,13 @@ const LearningFilterStrip: React.FC<LearningFilterStripProps> = ({
             onClick={() => onFilterChange(filter.id)}
             className={`flex-1 flex items-center justify-center gap-1.5 px-4 py-2 rounded-lg text-[10px] font-black uppercase tracking-widest transition-all whitespace-nowrap ${
               isActive
-                ? 'bg-accent text-bg shadow-sm'
+                ? 'bg-accent text-on-accent shadow-sm'
                 : 'text-text-muted hover:text-accent hover:bg-bg-elevated'
             }`}
           >
             {filter.label}
             {filter.count != null && (
-              <span className={`text-[9px] font-mono ${isActive ? 'text-bg/60' : 'text-text-muted/40'}`}>
+              <span className={`text-[9px] font-mono ${isActive ? 'text-on-accent/60' : 'text-text-muted/40'}`}>
                 {filter.count}
               </span>
             )}

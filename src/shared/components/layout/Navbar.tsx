@@ -71,7 +71,7 @@ const Navbar: React.FC = React.memo(() => {
     <>
       <a
         href="#main-content"
-        className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[200] focus:px-4 focus:py-2 focus:bg-accent focus:text-bg focus:font-bold focus:rounded-sm"
+        className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[200] focus:px-4 focus:py-2 focus:bg-accent focus:text-on-accent focus:font-bold focus:rounded-sm"
       >
         {t('aria.skipToContent')}
       </a>
@@ -170,7 +170,7 @@ const Navbar: React.FC = React.memo(() => {
             <LanguageSwitcher inverted={false} />
             <div className="hidden md:flex items-center gap-3">
               <ContactTrigger
-                className={`font-bold uppercase tracking-widest rounded-xl px-5 py-3.5 transition-[filter,transform] duration-200 active:scale-95 flex items-center justify-center gap-2 text-sm bg-accent text-bg hover:brightness-110`}
+                className={`font-bold uppercase tracking-widest rounded-xl px-5 py-3.5 transition-[filter,transform] duration-200 active:scale-95 flex items-center justify-center gap-2 text-sm bg-accent text-on-accent hover:brightness-110`}
               >
                 {t('nav.contact')}
               </ContactTrigger>
@@ -305,7 +305,7 @@ const Navbar: React.FC = React.memo(() => {
                     <Link
                       to="/dashboard/profile"
                       onClick={closeMenu}
-                      className="w-full flex items-center justify-center gap-3 bg-accent text-bg font-bold uppercase tracking-widest rounded-xl px-6 py-3.5 text-sm transition-[filter,transform] duration-200 hover:brightness-110 active:scale-[0.98]"
+                      className="w-full flex items-center justify-center gap-3 bg-accent text-on-accent font-bold uppercase tracking-widest rounded-xl px-6 py-3.5 text-sm transition-[filter,transform] duration-200 hover:brightness-110 active:scale-[0.98]"
                     >
                       <Identicon value={user.username || '?'} size={20} className="w-5 h-5 rounded-lg bg-black border-black" />
                       {user.username}
@@ -320,7 +320,7 @@ const Navbar: React.FC = React.memo(() => {
                 ) : (
                   <>
                     <ContactTrigger
-                      className="w-full flex items-center justify-center gap-2.5 bg-accent text-bg font-bold uppercase tracking-widest rounded-xl px-6 py-3.5 text-sm transition-[filter,transform] duration-200 hover:brightness-110 active:scale-[0.98]"
+                      className="w-full flex items-center justify-center gap-2.5 bg-accent text-on-accent font-bold uppercase tracking-widest rounded-xl px-6 py-3.5 text-sm transition-[filter,transform] duration-200 hover:brightness-110 active:scale-[0.98]"
                       onOpen={closeMenu}
                     >
                       {t('nav.contact')}

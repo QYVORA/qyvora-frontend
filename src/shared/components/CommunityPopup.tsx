@@ -83,7 +83,7 @@ const CommunityPopup: React.FC = () => {
 
               <div className="absolute bottom-4 left-4 flex h-11 w-11 items-center justify-center rounded-2xl border border-accent/30 bg-accent-dim text-accent shadow-lg">
                 <Users className="h-6 w-6" />
-                <div className="absolute -bottom-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-accent text-bg border-2 border-bg-card">
+                <div className="absolute -bottom-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-accent text-on-accent border-2 border-bg-card">
                   <Zap className="h-2.5 w-2.5 fill-current" />
                 </div>
               </div>

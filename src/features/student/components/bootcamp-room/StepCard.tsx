@@ -100,7 +100,7 @@ const StepCard: React.FC<Props> = ({
         onClick={(e) => { e.stopPropagation(); onGotIt?.(stepNum, !gotIt); }}
         className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[10px] font-black uppercase tracking-widest border transition-all ${
           gotIt
-            ? 'bg-accent text-bg border-accent'
+            ? 'bg-accent text-on-accent border-accent'
             : 'border-border text-text-muted hover:border-accent/30 hover:text-accent'
         }`}
       >

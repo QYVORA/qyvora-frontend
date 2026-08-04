@@ -215,7 +215,7 @@ anansi target.com`} />
               href="https://github.com/QYVORA/qyvora-anansi-cli"
               target="_blank"
                rel="noopener noreferrer"
-              className="inline-flex items-center gap-3 bg-accent text-bg font-black uppercase tracking-[0.12em] rounded-xl px-10 py-4 text-sm hover:brightness-110 active:scale-95 transition-all"
+              className="inline-flex items-center gap-3 bg-accent text-on-accent font-black uppercase tracking-[0.12em] rounded-xl px-10 py-4 text-sm hover:brightness-110 active:scale-95 transition-all"
             >
               <Download className="w-5 h-5" /> Download Now
             </a>

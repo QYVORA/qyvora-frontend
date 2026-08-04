@@ -90,7 +90,7 @@ const LandingServicesSection: React.FC = () => {
                 <div className="mt-auto flex items-center gap-3">
                   <button
                     onClick={() => openServiceRequestModal(featured.tier)}
-                    className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-accent text-[10px] font-black uppercase tracking-widest text-bg transition-all active:scale-[0.98]"
+                    className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-accent text-[10px] font-black uppercase tracking-widest text-on-accent transition-all active:scale-[0.98]"
                   >
                     <IconShield size={14} />
                      {t('landing.services.requestAssessment')}

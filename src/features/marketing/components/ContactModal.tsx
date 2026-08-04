@@ -121,7 +121,7 @@ const ContactModalHost: React.FC = () => {
             <button
               type="button"
               onClick={() => setStatus('idle')}
-              className="bg-accent text-bg font-bold uppercase tracking-[0.08em] rounded-xl px-8 py-3 transition-all hover:brightness-110 active:scale-95 hover:shadow-[0_0_20px_var(--color-accent-glow)] text-sm mt-2"
+              className="bg-accent text-on-accent font-bold uppercase tracking-[0.08em] rounded-xl px-8 py-3 transition-all hover:brightness-110 active:scale-95 hover:shadow-[0_0_20px_var(--color-accent-glow)] text-sm mt-2"
             >
               {t('button.sendAnother')}
             </button>
@@ -141,7 +141,7 @@ const ContactModalHost: React.FC = () => {
                   className={cn(
                     'flex-1 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-wider transition-all',
                     contactType === 'student'
-                      ? 'bg-accent text-bg shadow-[0_0_12px_var(--color-accent-glow)] font-black'
+                      ? 'bg-accent text-on-accent shadow-[0_0_12px_var(--color-accent-glow)] font-black'
                       : 'text-text-muted hover:text-text-primary'
                   )}
                 >
@@ -153,7 +153,7 @@ const ContactModalHost: React.FC = () => {
                   className={cn(
                     'flex-1 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-wider transition-all',
                     contactType === 'business'
-                      ? 'bg-accent text-bg shadow-[0_0_12px_var(--color-accent-glow)] font-black'
+                      ? 'bg-accent text-on-accent shadow-[0_0_12px_var(--color-accent-glow)] font-black'
                       : 'text-text-muted hover:text-text-primary'
                   )}
                 >
@@ -224,7 +224,7 @@ const ContactModalHost: React.FC = () => {
             <button
               type="submit"
               disabled={status === 'sending'}
-              className="w-full bg-accent text-bg font-bold uppercase tracking-[0.1em] rounded-xl px-8 py-4 transition-all hover:brightness-110 active:scale-[0.98] flex items-center justify-center gap-3 disabled:opacity-50 disabled:cursor-not-allowed text-sm"
+              className="w-full bg-accent text-on-accent font-bold uppercase tracking-[0.1em] rounded-xl px-8 py-4 transition-all hover:brightness-110 active:scale-[0.98] flex items-center justify-center gap-3 disabled:opacity-50 disabled:cursor-not-allowed text-sm"
             >
               {status === 'sending' ? (
                 <>

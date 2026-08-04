@@ -145,7 +145,7 @@ const ConsentBanner: React.FC = React.memo(() => {
               {showDetails ? (
                 <button
                   onClick={handleSavePreferences}
-                  className="flex-1 px-4 py-2.5 rounded-2xl bg-accent text-bg font-black uppercase tracking-widest text-[10px] transition-all hover:brightness-110 active:scale-95"
+                  className="flex-1 px-4 py-2.5 rounded-2xl bg-accent text-on-accent font-black uppercase tracking-widest text-[10px] transition-all hover:brightness-110 active:scale-95"
                 >
                   {t('components.consent.saveChoices')}
                 </button>
@@ -153,7 +153,7 @@ const ConsentBanner: React.FC = React.memo(() => {
                 <>
                   <button
                     onClick={handleAcceptAll}
-                    className="flex-1 px-4 py-2.5 rounded-2xl bg-accent text-bg font-black uppercase tracking-widest text-[10px] transition-all hover:brightness-110 active:scale-95"
+                    className="flex-1 px-4 py-2.5 rounded-2xl bg-accent text-on-accent font-black uppercase tracking-widest text-[10px] transition-all hover:brightness-110 active:scale-95"
                   >
                     {t('components.consent.acceptAll')}
                   </button>

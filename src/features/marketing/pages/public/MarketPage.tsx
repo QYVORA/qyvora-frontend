@@ -149,7 +149,7 @@ const MarketPage = () => {
                       {user ? (
                         <Link
                           to="/dashboard/marketplace"
-                          className="px-3 py-1.5 rounded-lg text-[9px] sm:text-[10px] font-black uppercase tracking-widest bg-accent text-bg transition-all hover:brightness-110"
+                          className="px-3 py-1.5 rounded-lg text-[9px] sm:text-[10px] font-black uppercase tracking-widest bg-accent text-on-accent transition-all hover:brightness-110"
                         >
                           View in Store
                         </Link>

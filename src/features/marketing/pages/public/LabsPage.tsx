@@ -86,7 +86,7 @@ const LabsPage = () => {
                     <span className="text-[9px] sm:text-[10px] md:text-xs font-black uppercase tracking-widest text-accent">
                       {lab.cpReward} CP
                     </span>
-                    <span className="px-3 py-1.5 rounded-lg text-[9px] sm:text-[10px] md:text-xs font-black uppercase tracking-widest bg-accent text-bg transition-all duration-200 group-hover/card:brightness-110 group-active:scale-95">
+                    <span className="px-3 py-1.5 rounded-lg text-[9px] sm:text-[10px] md:text-xs font-black uppercase tracking-widest bg-accent text-on-accent transition-all duration-200 group-hover/card:brightness-110 group-active:scale-95">
                       Launch <IconArrowRight size={12} className="inline-block ml-1" />
                     </span>
                   </div>

@@ -102,7 +102,7 @@ const AdminTopbar = () => {
       {/* Skip to content */}
       <a
         href="#main-content"
-        className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-[100] focus:px-4 focus:py-2 focus:bg-accent focus:text-bg focus:rounded-lg focus:text-sm focus:font-bold focus:outline-none"
+        className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-[100] focus:px-4 focus:py-2 focus:bg-accent focus:text-on-accent focus:rounded-lg focus:text-sm focus:font-bold focus:outline-none"
       >
         {t('aria.skipToMain')}
       </a>
@@ -195,7 +195,7 @@ const AdminTopbar = () => {
               >
                 <IconNotification size={24} />
                 {unreadCount > 0 && (
-                  <span className="absolute top-2 right-2 min-w-4 h-4 px-1 bg-accent text-bg text-[9px] font-black rounded-full flex items-center justify-center leading-none">
+                  <span className="absolute top-2 right-2 min-w-4 h-4 px-1 bg-accent text-on-accent text-[9px] font-black rounded-full flex items-center justify-center leading-none">
                     {unreadCount > 9 ? '9+' : unreadCount}
                   </span>
                 )}

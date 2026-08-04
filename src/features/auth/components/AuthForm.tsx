@@ -59,7 +59,7 @@ const AuthForm: React.FC<AuthFormProps> = ({
           className={cn(
             'flex-1 py-2.5 rounded-lg text-[10px] font-bold uppercase tracking-wider transition-all',
             mode === 'login'
-              ? 'bg-accent text-bg shadow-[0_0_12px_var(--color-accent-glow)] font-black'
+              ? 'bg-accent text-on-accent shadow-[0_0_12px_var(--color-accent-glow)] font-black'
               : 'text-text-muted hover:text-text-primary'
           )}
         >
@@ -71,7 +71,7 @@ const AuthForm: React.FC<AuthFormProps> = ({
           className={cn(
             'flex-1 py-2.5 rounded-lg text-[10px] font-bold uppercase tracking-wider transition-all',
             mode === 'register'
-              ? 'bg-accent text-bg shadow-[0_0_12px_var(--color-accent-glow)] font-black'
+              ? 'bg-accent text-on-accent shadow-[0_0_12px_var(--color-accent-glow)] font-black'
               : 'text-text-muted hover:text-text-primary'
           )}
         >

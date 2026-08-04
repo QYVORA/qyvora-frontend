@@ -102,7 +102,7 @@ export const CTA = ({ title, desc, href, label }: { title: string; desc: string;
     </p>
     <a
       href={href}
-      className="inline-flex items-center gap-3 bg-accent text-bg font-black uppercase tracking-[0.12em] rounded-xl px-10 py-4 text-sm hover:brightness-110 active:scale-95 transition-all"
+      className="inline-flex items-center gap-3 bg-accent text-on-accent font-black uppercase tracking-[0.12em] rounded-xl px-10 py-4 text-sm hover:brightness-110 active:scale-95 transition-all"
     >
       {label}
     </a>

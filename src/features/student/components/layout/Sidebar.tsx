@@ -104,7 +104,7 @@ const LeaderboardFiltersPanel = () => {
               to={`/dashboard/competitive?period=${p.key}`}
               className={`px-3 py-2 rounded-lg text-[10px] font-black uppercase tracking-wider transition-all ${
                 active
-                  ? 'bg-accent text-bg'
+                  ? 'bg-accent text-on-accent'
                   : 'text-text-muted hover:text-text-primary hover:bg-accent-dim/30'
               }`}
             >
@@ -170,7 +170,7 @@ const CourseProgressPanel = () => {
           return (
             <div key={mod.moduleId} className="flex items-center gap-2 px-3 py-2">
               <div className={`flex h-5 w-5 shrink-0 items-center justify-center rounded border text-[8px] font-bold font-mono ${
-                isComplete ? 'border-accent/30 bg-accent text-bg'
+                isComplete ? 'border-accent/30 bg-accent text-on-accent'
                   : 'border-border text-text-muted'
               }`}>
                 {isComplete ? <IconCheck size={12} /> : String(idx + 1).padStart(2, '0')}
@@ -297,7 +297,7 @@ const MarketBalancePanel = () => {
       <PanelRow icon={<CpLogo className="w-3.5 h-3.5" />} label="CP" value={Number(balance ?? user?.cp ?? 0).toLocaleString()} />
       <Link
         to="/dashboard/marketplace"
-        className="block text-center px-3 py-1.5 rounded-lg text-[9px] font-black uppercase tracking-wider bg-accent text-bg hover:brightness-110 transition-all mt-1"
+        className="block text-center px-3 py-1.5 rounded-lg text-[9px] font-black uppercase tracking-wider bg-accent text-on-accent hover:brightness-110 transition-all mt-1"
       >
         {t('student.sidebar.browseMarket')}
       </Link>
@@ -327,7 +327,7 @@ const NotificationsFilterPanel = () => {
               to={`/dashboard/notifications?filter=${f.key}`}
               className={`px-3 py-2 rounded-lg text-[10px] font-black uppercase tracking-wider transition-all ${
                 active
-                  ? 'bg-accent text-bg'
+                  ? 'bg-accent text-on-accent'
                   : 'text-text-muted hover:text-text-primary hover:bg-accent-dim/30'
               }`}
             >
