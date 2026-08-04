@@ -9,6 +9,8 @@ export interface Researcher {
   role: string;
   bio: string;
   image: string;
+  width: number;
+  height: number;
 }
 
 export const researchersData: Researcher[] = [
@@ -18,6 +20,8 @@ export const researchersData: Researcher[] = [
     role: 'Graphic designer',
     bio: "I'm a creative graphic designer with a passion for turning ideas into visually compelling designs that connect with audiences.",
     image: awalImg,
+    width: 1920,
+    height: 1282,
   },
   {
     id: 'r2',
@@ -25,6 +29,8 @@ export const researchersData: Researcher[] = [
     role: 'Software Engineer',
     bio: 'Specialises in software development and automation for detection engineering.',
     image: giantImg,
+    width: 1254,
+    height: 1254,
   },
   {
     id: 'r3',
@@ -32,6 +38,8 @@ export const researchersData: Researcher[] = [
     role: 'Security Researcher',
     bio: 'I help Qyvora identify and understand security vulnerabilities through hands-on research and web application testing.',
     image: zeroImg,
+    width: 402,
+    height: 367,
   },
   {
     id: 'r4',
@@ -39,6 +47,8 @@ export const researchersData: Researcher[] = [
     role: 'Penetration Tester',
     bio: 'I am curious to know how things work in building my skills in cybersecurity,',
     image: ghostImg,
+    width: 1254,
+    height: 1254,
   },
 ];
 

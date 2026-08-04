@@ -21,6 +21,8 @@ export interface TeamMember {
   role: string;
   bio: string;
   image: string;
+  width: number;
+  height: number;
   socials: TeamSocials;
 }
 
@@ -32,6 +34,8 @@ export const teamData: TeamMember[] = [
     role: 'CEO',
     bio: 'I dont follow paths I burn them then I write my own in code .',
     image: wsuits6Img,
+    width: 1024,
+    height: 1024,
     socials: {
       youtube: 'https://www.youtube.com/@wsuits6',
       twitter: 'https://x.com/qyvorasec',
@@ -45,6 +49,8 @@ export const teamData: TeamMember[] = [
     role: 'COO',
     bio: "I don't break systems, i find the flaws so others don't",
     image: sopt4Img,
+    width: 1254,
+    height: 1254,
     socials: {
       youtube: 'https://www.youtube.com/@sethabbey-u2c',
       github: 'https://github.com/sethabbey987',
@@ -58,6 +64,8 @@ export const teamData: TeamMember[] = [
     role: 'CFO',
     bio: "I don\u2019t protect assets\u2014I grow them wisely.",
     image: rafiqImg,
+    width: 1080,
+    height: 1080,
     socials: {
       twitter: 'https://x.com/nyabubiyoona1?s=11',
       facebook: 'https://www.facebook.com/share/1E1NGivdg1/?mibextid=wwXIfr',
@@ -70,6 +78,8 @@ export const teamData: TeamMember[] = [
     role: 'CM',
     bio: 'I am the whisper in the code, the Shadow in the system, the ghost no firewall can forget.',
     image: ghostImg,
+    width: 1254,
+    height: 1254,
     socials: {
       linkedin: 'https://www.linkedin.com/in/ghost-malware-222ab4285/',
     },

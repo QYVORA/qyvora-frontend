@@ -68,6 +68,8 @@ const AnansiPage = () => {
               <img
                 src={anansiLogo}
                 alt="Anansi"
+                width={623}
+                height={576}
                 className="w-[72%] xl:w-[64%] 2xl:w-[56%] max-h-[68vh] object-contain drop-shadow-[0_0_50px_rgba(6,182,111,0.35)]"
               />
             </div>
@@ -96,7 +98,7 @@ const AnansiPage = () => {
                 renderCard={(phase) => (
                   <div className="relative min-h-[300px] sm:min-h-[360px] md:min-h-[460px] overflow-hidden p-5 sm:p-6 md:p-8 lg:p-10 bg-bg rounded-2xl">
                     <div className="absolute inset-0">
-                      <img src={phase.image} alt={phase.name} className="w-full h-full object-cover" />
+                      <img src={phase.image} alt={phase.name} width={phase.width} height={phase.height} className="w-full h-full object-cover" />
                       <div className="absolute inset-0 bg-gradient-to-r from-bg via-bg/85 to-bg/30" />
                     </div>
                     <div className="relative z-10 flex flex-col justify-center min-h-[260px] sm:min-h-[320px] md:min-h-[396px]">

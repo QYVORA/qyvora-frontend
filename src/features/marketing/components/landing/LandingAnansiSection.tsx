@@ -14,7 +14,7 @@ const LandingAnansiSection = () => {
         {/* Header column */}
         <div className="shrink-0 lg:w-[420px] xl:w-[480px] flex flex-col lg:justify-center">
           <div className="w-16 h-16 md:w-20 md:h-20 flex items-center justify-center mb-6 overflow-hidden">
-            <img src={anansiLogo} alt="Anansi logo" className="w-full h-full object-contain" />
+            <img src={anansiLogo} alt="Anansi logo" width={623} height={576} className="w-full h-full object-contain" />
           </div>
           <h2 className="text-2xl md:text-4xl lg:text-5xl font-black text-text-primary tracking-tighter leading-none mb-6">
             {t('landing.anansi.title')} <span className="text-accent">{t('landing.anansi.titleAccent')}</span>
