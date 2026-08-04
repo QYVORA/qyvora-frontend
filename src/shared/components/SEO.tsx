@@ -1,24 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { SITE_CONFIG } from '../../features/marketing/content/siteConfig';
-const ogImageSrc = '/og-image.svg';
-
-const MOBILE_BREAKPOINT = 768;
-
-function useIsMobile() {
-  const [isMobile, setIsMobile] = useState(false);
-
-  useEffect(() => {
-    const check = () => setIsMobile(window.innerWidth < MOBILE_BREAKPOINT);
-    check();
-    window.addEventListener('resize', check);
-    return () => window.removeEventListener('resize', check);
-  }, []);
-
-  return isMobile;
-}
+import {
+  buildOrganization,
+  buildWebSite,
+  buildBreadcrumbList,
+  buildAutoBreadcrumbs,
+} from '@/shared/seo/schema';
+const ogImageSrc = '/og-image.png';
 
 interface SEOProps {
   title?: string;
@@ -28,8 +19,10 @@ interface SEOProps {
   canonical?: string;
   type?: 'website' | 'article' | 'software';
   schemaData?: object;
-  /** Optional breadcrumbs for the BreadcrumbList schema */
+  /** Optional breadcrumbs for the BreadcrumbList schema (overrides auto-generated trail) */
   breadcrumbs?: Array<{ name: string; item: string }>;
+  /** Label for the current page when auto-generating a breadcrumb trail */
+  breadcrumbName?: string;
   /** Prevent search engines from indexing this page */
   noindex?: boolean;
 }
@@ -48,9 +41,9 @@ const SEO: React.FC<SEOProps> = ({
   canonical,
   schemaData,
   breadcrumbs,
+  breadcrumbName,
   noindex,
 }) => {
-  const isMobile = useIsMobile();
   const location = useLocation();
   const { i18n } = useTranslation();
   const siteUrl = SITE_CONFIG.brand.siteUrl; 
@@ -63,15 +56,14 @@ const SEO: React.FC<SEOProps> = ({
   
   const seoCanonical = canonical || `${siteUrl}${location.pathname}`;
 
-  const defaultOrganizationSchema = {
-    '@context': 'https://schema.org',
-    '@type': 'Organization',
-    'name': defaultTitle,
-    'url': siteUrl,
-    'logo': `${siteUrl}/favicon.webp`,
-    'description': SITE_CONFIG.brand.description,
-    'sameAs': SITE_CONFIG.social.map(s => s.href)
-  };
+  const seoImageType = seoImage.endsWith('.webp')
+    ? 'image/webp'
+    : seoImage.endsWith('.png')
+      ? 'image/png'
+      : 'image/jpeg';
+
+  const crumbs = breadcrumbs ?? buildAutoBreadcrumbs(location.pathname, breadcrumbName);
+  const breadcrumbSchema = crumbs ? buildBreadcrumbList(crumbs) : null;
 
   const webPageSchema = {
     '@context': 'https://schema.org',
@@ -86,16 +78,10 @@ const SEO: React.FC<SEOProps> = ({
     }
   };
 
-  const breadcrumbSchema = breadcrumbs ? {
-    '@context': 'https://schema.org',
-    '@type': 'BreadcrumbList',
-    'itemListElement': breadcrumbs.map((crumb, index) => ({
-      '@type': 'ListItem',
-      'position': index + 1,
-      'name': crumb.name,
-      'item': crumb.item.startsWith('http') ? crumb.item : `${siteUrl}${crumb.item}`
-    }))
-  } : null;
+  const schemas: object[] = [webPageSchema];
+  if (breadcrumbSchema) schemas.push(breadcrumbSchema);
+  schemas.push(schemaData ?? buildOrganization());
+  if (!noindex && location.pathname === '/') schemas.push(buildWebSite());
 
   return (
     <Helmet>
@@ -109,6 +95,7 @@ const SEO: React.FC<SEOProps> = ({
       <meta property="og:title" content={seoTitle} />
       <meta property="og:description" content={seoDescription} />
       <meta property="og:image" content={seoImage} />
+      <meta property="og:image:type" content={seoImageType} />
       <meta property="og:image:width" content="1200" />
       <meta property="og:image:height" content="630" />
       <meta property="og:url" content={seoCanonical} />
@@ -127,21 +114,11 @@ const SEO: React.FC<SEOProps> = ({
       <meta name="application-name" content="QYVORA" />
       <meta name="apple-mobile-web-app-title" content="QYVORA" />
 
-      {isMobile && <meta name="theme-color" content="#06B66F" />}
+      <meta name="theme-color" content="#06B66F" />
 
       <script type="application/ld+json">
-        {JSON.stringify(webPageSchema)}
+        {JSON.stringify(schemas)}
       </script>
-
-      <script type="application/ld+json">
-        {JSON.stringify(schemaData || defaultOrganizationSchema)}
-      </script>
-
-      {breadcrumbSchema && (
-        <script type="application/ld+json">
-          {JSON.stringify(breadcrumbSchema)}
-        </script>
-      )}
     </Helmet>
   );
 };
