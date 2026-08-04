@@ -22,10 +22,6 @@ const HpbPage = () => {
       <SEO
         title="Hacker Protocol Bootcamp"
         description="Train as an offensive security operator across 5 phases — hacker mindset, Linux foundations, networking, web & backend, and social engineering."
-        breadcrumbs={[
-          { name: 'Home', item: '/' },
-          { name: 'Hacker Protocol Bootcamp', item: '/hpb' },
-        ]}
       />
       <PublicSnapLayout>
         <StudentHeroSection
