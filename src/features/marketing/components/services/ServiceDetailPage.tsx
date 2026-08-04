@@ -7,6 +7,7 @@ import { openServiceRequestModal } from '@/features/marketing/components/Service
 import { getDottedMapBg } from '@/shared/utils/dottedMap';
 import SEO from '@/shared/components/SEO';
 import PublicHeroSection from '@/shared/components/PublicHeroSection';
+import { Footer } from '@/shared/components/layout';
 import { REQUEST_ASSESSMENT_LABEL, PENTEST_PHILOSOPHY, type ServiceConfig } from '@/features/marketing/content/servicesConfig';
 
 const reveal = {
@@ -190,6 +191,11 @@ const ServiceDetailPage: React.FC<{ svc: ServiceConfig }> = ({ svc }) => {
           </div>
         </motion.div>
       </div>
+
+      {/* ── Footer ── */}
+      <section className="relative w-full bg-bg">
+        <Footer />
+      </section>
     </div>
   );
 };
