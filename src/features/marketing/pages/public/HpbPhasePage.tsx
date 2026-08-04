@@ -33,11 +33,7 @@ const HpbPhasePage: React.FC = () => {
       <SEO
         title={`${phase.title} - Hacker Protocol Bootcamp`}
         description={learnPhase?.desc ?? `${phase.title} — Hacker Protocol Bootcamp.`}
-        breadcrumbs={[
-          { name: 'Home', item: '/' },
-          { name: 'Hacker Protocol Bootcamp', item: '/hpb' },
-          { name: phase.title, item: `/hpb/${phase.id}` },
-        ]}
+        breadcrumbName={phase.title}
       />
       <PublicSnapLayout>
         <StudentHeroSection
