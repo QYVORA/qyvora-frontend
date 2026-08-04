@@ -6,6 +6,9 @@ import { ScrollReveal } from '@/shared/components';
 import SEO from '@/shared/components/SEO';
 import PublicSnapLayout from '@/shared/components/PublicSnapLayout';
 import StudentHeroSection, { PUBLIC_HERO_TITLE_CLASS } from '@/shared/components/StudentHeroSection';
+import { Footer } from '@/shared/components/layout';
+import { useAuth } from '@/core/contexts/AuthContext';
+import LandingFinalCtaSection from '@/features/marketing/components/landing/LandingFinalCtaSection';
 
 const LABS = [
   { id: 'privesc', route: '/dashboard/labs/privesc', accentColor: '#FBBF24', difficulty: 'beginner-advanced', cpReward: '50-400' },
@@ -23,6 +26,7 @@ const DIFFICULTY_COLORS: Record<string, string> = {
 
 const LabsPage = () => {
   const { t } = useTranslation();
+  const { user } = useAuth();
 
   return (
     <div className="bg-bg min-h-full">
@@ -94,6 +98,16 @@ const LabsPage = () => {
           </div>
         </div>
       </PublicSnapLayout>
+
+      {/* ── Final CTA ── */}
+      <section className="relative w-full min-h-dvh md:h-dvh md:overflow-hidden">
+        <LandingFinalCtaSection user={user} />
+      </section>
+
+      {/* ── Footer ── */}
+      <section className="relative w-full bg-bg">
+        <Footer />
+      </section>
     </div>
   );
 };

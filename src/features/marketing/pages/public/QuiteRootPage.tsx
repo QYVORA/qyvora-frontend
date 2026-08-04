@@ -6,11 +6,15 @@ import { ScrollReveal } from '@/shared/components';
 import SEO from '@/shared/components/SEO';
 import PublicSnapLayout from '@/shared/components/PublicSnapLayout';
 import StudentHeroSection, { PUBLIC_HERO_TITLE_CLASS } from '@/shared/components/StudentHeroSection';
+import { Footer } from '@/shared/components/layout';
+import { useAuth } from '@/core/contexts/AuthContext';
+import LandingFinalCtaSection from '@/features/marketing/components/landing/LandingFinalCtaSection';
 import { researchersData } from '@/features/marketing/content/researchersData';
 import quiteRootLogo from '@/assets/quiteRoot/ChatGPT Image Jul 3, 2026, 02_45_59 AM.webp';
 
 const QuiteRootPage = () => {
   const { t } = useTranslation();
+  const { user } = useAuth();
 
   return (
     <div className="bg-bg min-h-full">
@@ -86,6 +90,16 @@ const QuiteRootPage = () => {
           </div>
         </div>
       </PublicSnapLayout>
+
+      {/* ── Final CTA ── */}
+      <section className="relative w-full min-h-dvh md:h-dvh md:overflow-hidden">
+        <LandingFinalCtaSection user={user} />
+      </section>
+
+      {/* ── Footer ── */}
+      <section className="relative w-full bg-bg">
+        <Footer />
+      </section>
     </div>
   );
 };
