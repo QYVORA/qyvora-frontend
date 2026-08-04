@@ -53,14 +53,40 @@ All buttons: `!rounded-xl`, `font-black`, `uppercase`, `tracking-[0.08em]`.
 
 ## Identicon Defaults
 
-The `Identicon` component renders jdenticon SVGs with built-in styling via `cn()` merging:
+The `Identicon` component (`src/shared/components/Identicon.tsx`) renders a jdenticon SVG that always fills its container.
 
-**Default classes:** `bg-black border-accent/30 rounded-xl`
+**Base classes:** `aspect-square overflow-hidden bg-black` — no border, no radius.
 
-- **Dark backgrounds:** Default works — black bg + accent border
-- **Accent backgrounds:** Override with `border-black` for contrast
-- **Special cases (e.g. top-3 leaderboard):** Override with `border-0` to suppress
-- Consumer `className` overrides defaults via tailwind-merge
+- The identicon is always **square**; never place it in a non-square container (this distorts the shape).
+- **Borders are owned by the caller.** Any border wrapping an identicon must wrap the *exact* identicon shape and size — never nest a second border inside the container, and never use a different radius than the clip.
+- Recommended wrapper: `rounded-xl overflow-hidden bg-black border-2 border-accent` (or `border border-accent/40` for a lighter ring) with the identicon at `w-full h-full`.
+- Circular avatars: wrap in a `rounded-full overflow-hidden` container and pass `rounded-full` to the identicon so the ring matches the circle.
+- Profile pages (`/dashboard/profile` and `/:handle`) always render the identicon via `ProfileIdentityBlock` at `w-16 h-16 sm:w-20 sm:h-20`.
+
+## Auth Form Layout
+
+`AuthFormLayout` (`src/shared/components/layout/AuthFormLayout.tsx`):
+
+- **Never place an opaque background over the decorative backdrop** (`GridBoxedBackground` / globe). The form column and form cards are translucent (`bg-bg/70` + `backdrop-blur`) so the backdrop shows through.
+- **Mobile:** top-aligned (`justify-start`, no `my-auto`) — the form starts under the top padding instead of floating mid-screen. Full width (`px-3`, no max-width).
+- **Desktop:** two-column grid — left `AuthHero` (globe), right form column at `max-w-lg`, vertically centered (`my-auto`).
+- **No forced scroll.** Use `min-h-dvh` (natural page scroll) instead of `md:h-dvh md:overflow-y-auto`, so short forms never scroll and tall forms scroll only when needed.
+
+## Skeleton Components
+
+All skeletons must match the real component's size, scale, and structure:
+
+- Avatar placeholders mirror the real avatar box (e.g. `ProfileSkeleton` uses `w-16 h-16 sm:w-20 sm:h-20 rounded-2xl` to match the `ProfileIdentityBlock` identicon).
+- Card skeletons use the same grid, padding, and aspect ratios as the live cards (e.g. `aspect-square` learning cards, `aspect-[16/9]` product covers, `w-9 h-9 md:w-10 md:h-10` leaderboard avatars).
+- Icon chips, buttons, and stat cells use identical dimensions to their real counterparts.
+
+## Scroll to Top
+
+`ScrollToTop` (`src/shared/components/ScrollToTop.tsx`) is a fixed button:
+
+- **Mobile:** `bottom-[calc(3.75rem+env(safe-area-inset-bottom))] left-4` — sits just above the fixed bottom nav, aligned with it, and clears the safe-area inset.
+- **Desktop (sm+):** `bottom-6 left-8`.
+- Z-index: `z-[9999]`.
 
 ## Input Fields
 
@@ -145,12 +171,13 @@ p-3 md:p-5 transition-all duration-300 hover:border-accent/30 flex flex-col text
 
 ## Container Widths
 
-| Context | Max Width |
-|---------|-----------|
-| Marketing | `max-w-[1600px]` |
-| Dashboard | `max-w-6xl` |
-| Auth forms | `max-w-lg` |
-| Modals | `max-w-xl` to `max-w-2xl` |
+The entire site uses a **unified stretched layout** — no `max-w-*` constraints on page containers (see AGENTS.md).
+
+| Context | Max Width | Side Padding |
+|---------|-----------|--------------|
+| All pages (landing, public, auth, dashboard) | **None** (full width) | `px-3 md:px-4 lg:px-6` |
+| Auth form wrapper (desktop) | `max-w-lg` (form only) | Inherited from parent |
+| Modals | `max-w-xl` to `max-w-2xl` | Modal handles own padding |
 
 ## Color Palette
 

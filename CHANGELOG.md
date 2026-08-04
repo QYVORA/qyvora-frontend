@@ -10,6 +10,19 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - Removed all card illustrations (numbered badges, DotMap backgrounds, radial patterns, cover images) from lab and course cards
 - Reverted dashboard navbar color switching — StudentTopbar no longer uses `useNavInvert`
 - ScenarioCard simplified: removed `index` and `accentColor` props
+- Student dashboard now stays independent of public pages: course cards link to `/dashboard/courses/:id`, "View All" → `/dashboard/courses`, locked-course fallback and "Course Not Unlocked" CTA route inside the dashboard
+- `/courses/:courseId` legacy redirect now routes to `/dashboard/courses/:courseId` (via `LegacyCourseRedirect`) instead of the public `/courses` page
+- Removed the CP cost badge from dashboard course cards — the CP price stands alone
+
+### SEO
+- Fixed JSON-LD serialization in prerendered HTML — scripts now render JSON as text content instead of a bogus `innerHTML` attribute
+- Removed duplicated homepage fallback title/description/OG/Twitter from `index.html` (per-route prerendered tags now win)
+- Replaced SVG/WebP social previews with a raster 1200×630 PNG (`public/og-image.png`) and declared `og:image:type`
+- `NotFoundPage` now renders `noindex`; added a static branded `public/404.html`
+- Added prerender metadata for the three service detail pages and `/hpb/phase1–5`; added the phase routes to the prerender route list
+- Removed orphan `/events` and `/news` prerender routes (not routed pages)
+- `theme-color` is now unconditional in the static head (`index.html` + SEO component)
+- New **[docs/SEO.md](docs/SEO.md)** documenting the prerender + helmet SEO architecture and GSC verification
 
 ### Removed
 - `LabIcons.tsx` — 10 SVG shield badge illustrations (771 lines, never imported)
