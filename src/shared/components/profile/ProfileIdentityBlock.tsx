@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { useReducedMotion } from '@/shared/hooks/useReducedMotion';
 import { Globe, Github, Linkedin, Calendar, Flame } from 'lucide-react';
 import ShareProfile from '@/shared/components/ShareProfile';
+import Identicon from '@/shared/components/Identicon';
 
 interface IdentityAction {
   label: string;
@@ -96,41 +97,50 @@ const ProfileIdentityBlock: React.FC<ProfileIdentityBlockProps> = ({
       <div className="h-1 w-full bg-accent" />
 
       <div className="p-5 sm:p-6">
-        {/* Name + handle + badges */}
-        <div className="flex flex-wrap items-center gap-2 mb-1">
-          {name && (
-            <h2 className="text-lg sm:text-xl font-black text-text-primary truncate">
-              {name}
-            </h2>
-          )}
-          <span className="px-2 py-0.5 rounded-lg bg-bg-elevated border border-border/30 text-[10px] font-black uppercase tracking-widest text-accent font-mono">
-            @{handle}
-          </span>
-          {rank && (
-            <span className="px-2 py-0.5 rounded-lg bg-accent/10 border border-accent/20 text-[10px] font-black uppercase tracking-widest text-accent">
-              {rank}
-            </span>
-          )}
-        </div>
+        {/* Identicon + identity */}
+        <div className="flex items-start gap-4 sm:gap-5">
+          <div className="w-16 h-16 sm:w-20 sm:h-20 shrink-0 rounded-2xl overflow-hidden border-2 border-accent bg-black">
+            <Identicon value={handle} size={80} className="w-full h-full" />
+          </div>
 
-        {/* Bio */}
-        {bio && (
-          <p className="text-sm text-text-secondary leading-relaxed mt-1.5 line-clamp-2">
-            {bio}
-          </p>
-        )}
+          <div className="min-w-0 flex-1">
+            {/* Name + handle + badges */}
+            <div className="flex flex-wrap items-center gap-2 mb-1">
+              {name && (
+                <h2 className="text-lg sm:text-xl font-black text-text-primary truncate">
+                  {name}
+                </h2>
+              )}
+              <span className="px-2 py-0.5 rounded-lg bg-bg-elevated border border-border/30 text-[10px] font-black uppercase tracking-widest text-accent font-mono">
+                @{handle}
+              </span>
+              {rank && (
+                <span className="px-2 py-0.5 rounded-lg bg-accent/10 border border-accent/20 text-[10px] font-black uppercase tracking-widest text-accent">
+                  {rank}
+                </span>
+              )}
+            </div>
 
-        {/* Meta line: org + email + join date + country */}
-        <div className="flex flex-wrap items-center gap-3 mt-2 text-xs text-text-muted">
-          {organization && <span>{organization}</span>}
-          {email && <span className="hidden sm:inline">{email}</span>}
-          {formattedJoinDate && (
-            <span className="inline-flex items-center gap-1">
-              <Calendar className="w-3 h-3" />
-              Joined {formattedJoinDate}
-            </span>
-          )}
-          {country && <span>{country}</span>}
+            {/* Bio */}
+            {bio && (
+              <p className="text-sm text-text-secondary leading-relaxed mt-1.5 line-clamp-2">
+                {bio}
+              </p>
+            )}
+
+            {/* Meta line: org + email + join date + country */}
+            <div className="flex flex-wrap items-center gap-3 mt-2 text-xs text-text-muted">
+              {organization && <span>{organization}</span>}
+              {email && <span className="hidden sm:inline">{email}</span>}
+              {formattedJoinDate && (
+                <span className="inline-flex items-center gap-1">
+                  <Calendar className="w-3 h-3" />
+                  Joined {formattedJoinDate}
+                </span>
+              )}
+              {country && <span>{country}</span>}
+            </div>
+          </div>
         </div>
 
         {/* Social links */}
