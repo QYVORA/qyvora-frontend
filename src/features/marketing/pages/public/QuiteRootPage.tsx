@@ -29,7 +29,7 @@ const QuiteRootPage = () => {
           description="A network of independent security researchers pushing the boundaries of offensive security research and tooling."
           stats={[{ label: 'Researchers', value: researchersData.length }]}
           rightContent={
-            <div className="relative hidden lg:flex items-center justify-center w-full h-full">
+            <div className="relative md:hidden lg:flex items-center justify-center w-full h-full py-6 lg:py-0">
               <img
                 src={quiteRootLogo}
                 alt="QuiteRoot"
