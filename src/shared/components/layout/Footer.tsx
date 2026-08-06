@@ -17,6 +17,7 @@ const FOOTER_COLS = [
     links: [
       { key: 'hpb', label: 'HPB', path: '/hpb' },
       { key: 'anansi', label: 'Anansi', path: '/anansi' },
+      { key: 'toha3ee', label: 'Toha3ee', path: '/toha3ee' },
       { key: 'blogs', label: 'Blogs', path: '/blogs' },
       { key: 'market', label: 'Market', path: '/zero-day-market' },
       { key: 'leaderboard', label: 'Leaderboard', path: '/leaderboard' },
@@ -65,6 +66,7 @@ const FOOTER_LINK_KEYS: Record<string, string> = {
   events: 'nav.events',
   hpb: 'nav.hpb',
   anansi: 'nav.anansi',
+  toha3ee: 'nav.toha3ee',
   blogs: 'nav.blogs',
   news: 'nav.news',
   market: 'nav.market',

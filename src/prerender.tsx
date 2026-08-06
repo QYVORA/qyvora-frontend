@@ -72,6 +72,10 @@ const routeMetadata: Record<string, { title: string; description: string }> = {
     title: 'Anansi CLI | QYVORA',
     description: 'Command-line interface for security reconnaissance and automation.',
   },
+  '/toha3ee': {
+    title: 'Toha3ee | QYVORA',
+    description: 'Network exploitation & MITM framework written in Go — poisoning, interception, wireless and switch-layer attacks from an interactive REPL.',
+  },
   '/team': {
     title: 'Team | QYVORA',
     description: 'Meet the team behind QYVORA - cybersecurity experts building Africa\'s security ecosystem.',
