@@ -79,7 +79,6 @@ const CommunityPopup: React.FC = () => {
                 aria-label="Community"
                 className="w-full h-full object-contain p-8 bg-bg-card transition-transform duration-700 hover:scale-105"
               />
-              <div className="absolute inset-0 bg-gradient-to-t sm:bg-gradient-to-r from-bg-card/40 via-transparent to-transparent opacity-0 dark:opacity-60" />
 
               <div className="absolute bottom-4 left-4 flex h-11 w-11 items-center justify-center rounded-2xl border border-accent/30 bg-accent-dim text-accent shadow-lg">
                 <Users className="h-6 w-6" />
@@ -120,7 +119,7 @@ const CommunityPopup: React.FC = () => {
                   className="
                     group relative flex-1 flex items-center justify-center gap-2 overflow-hidden
                     rounded-2xl bg-accent py-3.5 text-[10px] font-black uppercase tracking-widest
-                    text-white shadow-lg shadow-accent/20 transition-all
+                    text-on-accent shadow-lg shadow-accent/20 transition-all
                     hover:scale-[1.02] hover:shadow-accent/40 active:scale-[0.98]
                   "
                 >
