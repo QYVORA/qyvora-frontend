@@ -6,6 +6,7 @@ import { IconCheck, IconArrowRight } from '@/shared/components/icons';
 import { openServiceRequestModal } from '@/features/marketing/components/ServiceRequestModal';
 import SEO from '@/shared/components/SEO';
 import PublicSnapLayout from '@/shared/components/PublicSnapLayout';
+import PublicSnapSection from '@/shared/components/PublicSnapSection';
 import StudentHeroSection, { PUBLIC_HERO_TITLE_CLASS } from '@/shared/components/StudentHeroSection';
 import { Footer } from '@/shared/components/layout';
 import { useAuth } from '@/core/contexts/AuthContext';
@@ -16,7 +17,8 @@ const ServiceSection: React.FC<{ svc: ServiceConfig; index: number }> = ({ svc, 
   const Icon = svc.icon;
 
   return (
-    <div className="min-h-dvh flex flex-col lg:flex-row gap-10 sm:gap-10 lg:gap-16 lg:items-stretch justify-center py-16 md:py-20 px-3 md:px-4 lg:px-6">
+    <PublicSnapSection>
+      <div className="flex flex-col lg:flex-row gap-10 sm:gap-10 lg:gap-16 lg:items-stretch justify-center">
       {/* Header column — title, overview, pricing, CTAs */}
       <motion.div
         initial={{ opacity: 0, y: 40 }}
@@ -109,9 +111,10 @@ const ServiceSection: React.FC<{ svc: ServiceConfig; index: number }> = ({ svc, 
           <div className="mt-8 rounded-xl border border-accent/30 bg-accent/5 px-4 py-3">
             <p className="text-xs sm:text-sm text-accent font-mono leading-relaxed">{svc.highlight}</p>
           </div>
-        )}
-      </motion.div>
-    </div>
+          )}
+        </motion.div>
+      </div>
+    </PublicSnapSection>
   );
 };
 

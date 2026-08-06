@@ -5,6 +5,7 @@ import { IconArrowRight } from '@/shared/components/icons';
 import { ScrollReveal } from '@/shared/components';
 import SEO from '@/shared/components/SEO';
 import PublicSnapLayout from '@/shared/components/PublicSnapLayout';
+import PublicSnapSection from '@/shared/components/PublicSnapSection';
 import StudentHeroSection, { PUBLIC_HERO_TITLE_CLASS } from '@/shared/components/StudentHeroSection';
 import { Footer } from '@/shared/components/layout';
 import { useAuth } from '@/core/contexts/AuthContext';
@@ -48,8 +49,7 @@ const QuiteRootPage = () => {
           </Link>
         </StudentHeroSection>
 
-        <div className="min-h-dvh md:h-dvh md:overflow-y-auto px-3 md:px-4 lg:px-6">
-          <div className="min-h-full flex flex-col justify-center py-16 md:py-20">
+        <PublicSnapSection>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
           {researchersData.map((researcher, idx) => (
             <ScrollReveal key={researcher.id} amount={0.05}>
@@ -89,8 +89,7 @@ const QuiteRootPage = () => {
             </ScrollReveal>
           ))}
           </div>
-          </div>
-        </div>
+        </PublicSnapSection>
         <LandingFinalCtaSection user={user} />
         <Footer />
       </PublicSnapLayout>

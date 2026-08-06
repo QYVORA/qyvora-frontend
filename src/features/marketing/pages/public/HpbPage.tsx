@@ -5,6 +5,7 @@ import { IconArrowRight } from '@/shared/components/icons';
 import { ScrollReveal } from '@/shared/components';
 import SEO from '@/shared/components/SEO';
 import PublicSnapLayout from '@/shared/components/PublicSnapLayout';
+import PublicSnapSection from '@/shared/components/PublicSnapSection';
 import StudentHeroSection, { PUBLIC_HERO_TITLE_CLASS } from '@/shared/components/StudentHeroSection';
 import { Footer } from '@/shared/components/layout';
 import { useAuth } from '@/core/contexts/AuthContext';
@@ -44,8 +45,7 @@ const HpbPage = () => {
           </Link>
         </StudentHeroSection>
 
-        <div className="min-h-dvh md:h-dvh md:overflow-y-auto px-3 md:px-4 lg:px-6">
-          <div className="min-h-full flex flex-col justify-center py-16 md:py-20">
+        <PublicSnapSection>
           <div className="space-y-4">
             <h3 className="text-xs font-black uppercase tracking-[0.3em] text-text-muted">Curriculum</h3>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 md:gap-4">
@@ -90,8 +90,7 @@ const HpbPage = () => {
             ))}
           </div>
           </div>
-          </div>
-        </div>
+        </PublicSnapSection>
         <LandingFinalCtaSection user={user} />
         <Footer />
       </PublicSnapLayout>

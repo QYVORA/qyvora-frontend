@@ -2,6 +2,7 @@ import { Terminal, Download, ChevronRight, GitBranch } from 'lucide-react';
 import { IconArrowRight } from '@/shared/components/icons';
 import SEO from '@/shared/components/SEO';
 import PublicSnapLayout from '@/shared/components/PublicSnapLayout';
+import PublicSnapSection from '@/shared/components/PublicSnapSection';
 import StudentHeroSection, { PUBLIC_HERO_TITLE_CLASS } from '@/shared/components/StudentHeroSection';
 import { Footer } from '@/shared/components/layout';
 import { useAuth } from '@/core/contexts/AuthContext';
@@ -84,8 +85,7 @@ const AnansiPage = () => {
         </StudentHeroSection>
 
         {/* ── Modules pipeline carousel ─────────────────────────────────── */}
-        <div className="min-h-dvh md:h-dvh md:overflow-y-auto px-3 md:px-4 lg:px-6">
-          <div className="min-h-full flex flex-col justify-center py-16 md:py-20">
+        <PublicSnapSection>
             <div className="space-y-6 md:space-y-8">
               <SectionHeader
                 kicker="Attack Surface Pipeline"
@@ -120,12 +120,10 @@ const AnansiPage = () => {
                 )}
               />
             </div>
-          </div>
-        </div>
+        </PublicSnapSection>
 
         {/* ── Install ───────────────────────────────────────────────────── */}
-        <div id="install" className="min-h-dvh md:h-dvh md:overflow-y-auto px-3 md:px-4 lg:px-6 scroll-mt-28">
-          <div className="min-h-full flex flex-col justify-center py-16 md:py-20">
+        <PublicSnapSection id="install" className="scroll-mt-28">
             <div className="space-y-6 md:space-y-8">
               <SectionHeader
                 kicker="Install"
@@ -214,12 +212,10 @@ const AnansiPage = () => {
                 </div>
               </div>
             </div>
-          </div>
-        </div>
+        </PublicSnapSection>
 
         {/* ── Quick Start ───────────────────────────────────────────────── */}
-        <div className="min-h-dvh md:h-dvh md:overflow-y-auto px-3 md:px-4 lg:px-6">
-          <div className="min-h-full flex flex-col justify-center py-16 md:py-20">
+        <PublicSnapSection>
             <div className="space-y-6 md:space-y-8">
               <SectionHeader
                 kicker="Quick Start"
@@ -282,8 +278,7 @@ const AnansiPage = () => {
                 </div>
               </div>
             </div>
-          </div>
-        </div>
+        </PublicSnapSection>
         <LandingFinalCtaSection user={user} />
         <Footer />
       </PublicSnapLayout>
