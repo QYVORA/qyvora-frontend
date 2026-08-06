@@ -29,6 +29,7 @@ export default defineConfig(() => ({
         '/zero-day-market',
         '/quiteroot',
         '/anansi',
+        '/toha3ee',
         '/team',
         '/leaderboard',
         '/leaderboard/all',

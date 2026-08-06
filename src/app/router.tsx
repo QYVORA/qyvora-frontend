@@ -41,6 +41,7 @@ const EmployeeBootcampPage = lazy(() => import('../features/marketing/pages/publ
 const LeaderboardPage   = lazy(() => import('../features/marketing/pages/public/LeaderboardPage'));
 const MarketPage        = lazy(() => import('../features/marketing/pages/public/MarketPage'));
 const AnansiPage        = lazy(() => import('../features/marketing/pages/public/AnansiPage'));
+const Toha3eePage       = lazy(() => import('../features/marketing/pages/public/Toha3eePage'));
 const BlogsPage         = lazy(() => import('../features/marketing/pages/public/BlogsPage'));
 const TeamPage          = lazy(() => import('../features/marketing/pages/public/TeamPage'));
 const QuiteRootPage     = lazy(() => import('../features/marketing/pages/public/QuiteRootPage'));
@@ -195,6 +196,7 @@ export const AppRouter = () => {
           <Route path="/leaderboard/all" element={<Navigate to="/leaderboard" replace />} />
           <Route path="/zero-day-market" element={<Wrap scope="Market"><MarketPage /></Wrap>} />
           <Route path="/anansi" element={<Wrap scope="Anansi"><AnansiPage /></Wrap>} />
+          <Route path="/toha3ee" element={<Wrap scope="Toha3ee"><Toha3eePage /></Wrap>} />
           <Route path="/blogs" element={<Wrap scope="Blogs"><BlogsPage /></Wrap>} />
           <Route path="/team" element={<Wrap scope="Team"><TeamPage /></Wrap>} />
           <Route path="/quiteroot" element={<Wrap scope="QuiteRoot"><QuiteRootPage /></Wrap>} />
