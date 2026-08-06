@@ -1,10 +1,18 @@
 import { useEffect, useRef, useState } from 'react';
 import { resolveImg } from '@/shared/utils/resolveImg';
-import { getAccessToken } from '@/core/services/api';
+import api, { hasAuthSessionHint } from '@/core/services/api';
 
 export const AUTH_PATHS = ['/uploads/bootcamps/', '/uploads/cp-products/'];
 
 const inFlight = new Map<string, Promise<Blob>>();
+
+const toAbsoluteUrl = (url: string): string => {
+  try {
+    return new URL(url, window.location.origin).href;
+  } catch {
+    return url;
+  }
+};
 
 interface AuthImageProps extends React.ImgHTMLAttributes<HTMLImageElement> {
   src?: string;
@@ -40,28 +48,29 @@ export const AuthImage: React.FC<AuthImageProps> = ({
     const fetchImage = async () => {
       try {
         setLoading(true);
-        const token = getAccessToken();
 
-        if (!token) {
-          // Unauthenticated visitor: the backend 401s protected uploads, and
-          // the resulting 401 bursts from public pages take the deployment
-          // down. Skip the request and render the fallback directly.
+        // Guest visitor (no token, no session hint): the backend 401s
+        // protected uploads, and the resulting 401 bursts from public pages
+        // take the deployment down. Skip the request and render the fallback.
+        // On a cold start (e.g. installed PWA launch) the token may still be
+        // restoring — then the axios interceptor refreshes and retries for us.
+        if (!hasAuthSessionHint()) {
           if (!cancelled) setObjectUrl(resolveImg(fallback, ''));
           return;
         }
 
-        const headers: Record<string, string> = { Authorization: `Bearer ${token}` };
-
-        const key = `${token}:${resolved}`;
+        const key = resolved;
         let request = inFlight.get(key);
         if (!request) {
-          request = fetch(resolved, {
-            headers,
-            credentials: 'include',
-          }).then(async (res) => {
-            if (!res.ok) throw new Error(`${res.status}`);
-            return res.blob();
-          });
+          // Route through the shared axios client so protected uploads get the
+          // current Bearer token AND an automatic refresh + retry on 401.
+          // This matters on cold starts (e.g. an installed PWA launch) where
+          // silent session restore is still in flight: the first request fires
+          // without a token, 401s, the interceptor refreshes it, and the retry
+          // succeeds — otherwise every protected image would render the fallback.
+          request = api
+            .get(toAbsoluteUrl(resolved), { responseType: 'blob' })
+            .then((res) => res.data as Blob);
           inFlight.set(key, request);
         }
 
@@ -72,7 +81,7 @@ export const AuthImage: React.FC<AuthImageProps> = ({
         blobRef.current = url;
         setObjectUrl(url);
       } catch {
-        inFlight.delete(`${getAccessToken()}:${resolved}`);
+        inFlight.delete(resolved);
         if (!cancelled) setObjectUrl(resolveImg(fallback, ''));
       } finally {
         if (!cancelled) setLoading(false);
