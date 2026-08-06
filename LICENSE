@@ -1,21 +1,72 @@
-MIT License
+QYVORA PROPRIETARY LICENSE
+==========================
 
-Copyright (c) 2026 QYVORA
+Copyright (c) 2026 QYVORA. All rights reserved.
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
+1. OWNERSHIP OF INTELLECTUAL PROPERTY
+-------------------------------------
+All source code, documentation, design assets, trademarks, trade secrets,
+and any other materials contained in or associated with this repository
+(collectively, the "Software") are the exclusive intellectual property of
+QYVORA and its licensors.
 
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
+2. CONTRIBUTOR ASSIGNMENT
+-------------------------
+Any individual or entity that creates, contributes, modifies, or in any
+way participates in the creation of work for this repository (a
+"Contributor") hereby irrevocably assigns and transfers to QYVORA all
+right, title, and interest in and to such work, including all intellectual
+property rights therein. Contributors acknowledge that all work created
+for this repository belongs exclusively to QYVORA. QYVORA is under no
+obligation to compensate any Contributor for any such work.
 
+3. RESTRICTIONS
+---------------
+This Software is a proprietary, closed-source commercial product. Without
+the prior written permission of QYVORA, no person or entity may:
+
+  (a) copy, reproduce, duplicate, or in any way reproduce the Software,
+      in whole or in part;
+  (b) redistribute, publish, sell, license, sublicense, rent, or
+      otherwise transfer the Software to any third party;
+  (c) modify, adapt, translate, reverse engineer, decompile, disassemble,
+      or create derivative works based on the Software, in whole or in
+      part; or
+  (d) reuse any portion of the Software, including source code, design
+      systems, or assets, in any other project.
+
+4. GRANT OF LIMITED ACCESS
+--------------------------
+Access to the repository is granted on a strictly confidential,
+evaluation-only basis. Such access does not constitute a license to use,
+copy, or exploit the Software in any manner beyond internal review.
+
+5. CONFIDENTIALITY
+------------------
+All information contained in this repository is confidential and
+proprietary to QYVORA. Recipients must protect the confidentiality of the
+Software and must not disclose it to any unauthorized party.
+
+6. DISCLAIMER OF WARRANTY
+-------------------------
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
+FITNESS FOR A PARTICULAR PURPOSE, AND NONINFRINGEMENT.
+
+7. LIMITATION OF LIABILITY
+--------------------------
+IN NO EVENT SHALL QYVORA OR ITS AFFILIATES BE LIABLE FOR ANY CLAIM,
+DAMAGES, OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT, OR
+OTHERWISE, ARISING FROM, OUT OF, OR IN CONNECTION WITH THE SOFTWARE OR THE
+USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+8. GENERAL
+----------
+This license constitutes the entire agreement between QYVORA and the
+recipient concerning the Software. Any violation of this license may result
+in immediate revocation of access and legal action. For licensing inquiries,
+contact QYVORA directly.
+
+For written permission or commercial licensing inquiries, contact:
+QYVORA
+https://qyvora.com
