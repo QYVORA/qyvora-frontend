@@ -377,12 +377,13 @@ const StudentTopbar = () => {
               onClick={() => window.dispatchEvent(new CustomEvent('qyvora:open-main-sidebar'))}
               className={`lg:hidden flex h-10 w-10 shrink-0 items-center justify-center rounded-xl transition-colors ml-auto text-text-muted hover:text-accent`}
               aria-label={t('aria.openNav')}
+              data-tour-id="tour-nav-mobile"
             >
               <IconMenu size={24} />
             </button>
 
             {/* Nav tabs — desktop only (lg+), flex-1 pushes right actions to the far right */}
-            <nav className="hidden lg:flex items-center justify-start flex-1 min-w-0 gap-1">
+            <nav className="hidden lg:flex items-center justify-start flex-1 min-w-0 gap-1" data-tour-id="tour-nav-desktop">
               {DESKTOP_NAV_ITEMS.map((item) => {
                 const active = isActive(item.path);
                 return (
@@ -404,20 +405,22 @@ const StudentTopbar = () => {
             {/* Right actions — separated from nav by flex-1 spacer */}
             <div className="hidden md:flex items-center gap-1.5 md:gap-2.5 shrink-0">
               {/* CP Coin badge */}
-              <div className={`hidden md:flex items-center gap-2 px-3 py-2 rounded-xl border border-accent/20 bg-accent/5`}>
+              <div className={`hidden md:flex items-center gap-2 px-3 py-2 rounded-xl border border-accent/20 bg-accent/5`} data-tour-id="tour-cp-desktop">
                 <CpLogo className="w-5 h-5" />
                 <span className="text-xs font-black text-accent">{cpBalance.toLocaleString()}</span>
               </div>
 
-              <ProfileDropdown
-                user={user}
-                unreadCount={unreadCount}
-                onOpenNotifications={() => window.location.href = '/dashboard/notifications'}
-                onOpenTerminal={() => window.dispatchEvent(new CustomEvent('qyvora:open-terminal'))}
-                onOpenIDE={() => window.dispatchEvent(new CustomEvent('qyvora:open-ide'))}
-                onOpenNetworkVisualizer={() => window.dispatchEvent(new CustomEvent('qyvora:open-network-visualizer'))}
-                handleLogout={handleLogout}
-              />
+              <span data-tour-id="tour-profile-desktop">
+                <ProfileDropdown
+                  user={user}
+                  unreadCount={unreadCount}
+                  onOpenNotifications={() => window.location.href = '/dashboard/notifications'}
+                  onOpenTerminal={() => window.dispatchEvent(new CustomEvent('qyvora:open-terminal'))}
+                  onOpenIDE={() => window.dispatchEvent(new CustomEvent('qyvora:open-ide'))}
+                  onOpenNetworkVisualizer={() => window.dispatchEvent(new CustomEvent('qyvora:open-network-visualizer'))}
+                  handleLogout={handleLogout}
+                />
+              </span>
             </div>
 
             {/* Mobile profile trigger */}
@@ -425,6 +428,7 @@ const StudentTopbar = () => {
               onClick={() => setProfileSheetOpen(true)}
               className="md:hidden flex items-center justify-center w-10 h-10 flex-none rounded-lg overflow-hidden transition-colors border-2 border-accent bg-black"
               aria-label="Open profile menu"
+              data-tour-id="tour-profile-mobile"
             >
               <Identicon value={user?.username || '?'} size={40} className="w-full h-full" />
             </button>
