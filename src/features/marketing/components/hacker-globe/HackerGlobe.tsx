@@ -9,9 +9,12 @@ interface HackerGlobeProps {
   scale?: number;
   offset?: [number, number, number];
   fluid?: boolean;
+  /** Disables the scroll-linked scale-up + fade-out exit. Used on auth pages,
+      which host the globe as a persistent page backdrop rather than a hero. */
+  scrollExit?: boolean;
 }
 
-const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88, offset = [0, 0, 0], fluid = false }) => {
+const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88, offset = [0, 0, 0], fluid = false, scrollExit = true }) => {
   const mountRef   = useRef<HTMLDivElement>(null);
   const { constrainedDevice, isMobile } = useAdaptiveUi();
   const isSimplified = constrainedDevice || isMobile;
@@ -19,15 +22,16 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88, offset = [0, 0,
   const effectiveScale = fluid ? fluidGlobe.scale : scale;
   const effectiveOffset = fluid ? fluidGlobe.offset : offset;
 
-  // Scroll-linked exit — as the section scrolls away, the globe gently expands
-  // and fades, so it appears to recede out of the viewport instead of being
-  // clipped. Same behavior across every section that hosts the globe.
+  // Scroll-linked exit — as the section scrolls away, the globe smoothly
+  // expands outward and fades out, so it appears to swell and vanish beyond
+  // the viewport instead of being clipped. Same behavior across every section
+  // that hosts the globe.
   const shouldReduceMotion = useReducedMotion();
   const { scrollYProgress } = useScroll({
     target: mountRef,
     offset: ['start start', 'end start'],
   });
-  const exitScale = useTransform(scrollYProgress, [0, 0.45, 1], [1, 1.05, 1.16]);
+  const exitScale = useTransform(scrollYProgress, [0, 0.6, 1], [1, 1.3, 1.75]);
   const exitOpacity = useTransform(scrollYProgress, [0, 0.6, 1], [1, 1, 0]);
 
   useEffect(() => {
@@ -189,8 +193,8 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88, offset = [0, 0,
       style={{
         cursor: 'default',
         willChange: 'transform, opacity',
-        scale: shouldReduceMotion ? 1 : exitScale,
-        opacity: shouldReduceMotion ? 1 : exitOpacity,
+        scale: shouldReduceMotion || !scrollExit ? 1 : exitScale,
+        opacity: shouldReduceMotion || !scrollExit ? 1 : exitOpacity,
       }}
     />
   );
