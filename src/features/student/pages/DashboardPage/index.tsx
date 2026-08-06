@@ -11,7 +11,7 @@ import {
 } from '@/features/student/utils/studentExperience';
 import { Skeleton, ErrorState } from '@/shared/components/ui';
 import SEO from '@/shared/components/SEO';
-import OnboardingWizard from '@/features/student/components/OnboardingWizard';
+import StudentTour from '@/features/student/components/StudentTour';
 import type { StudentBootcampCardData } from '@/features/student/components/StudentBootcampCard';
 import { DashboardHero } from '@/features/student/components/dashboard';
 import StudentBootcampCard from '@/features/student/components/StudentBootcampCard';
@@ -204,9 +204,10 @@ const DashboardRoomCard = ({ room }: { room: any }) => {
   );
 };
 
-const SectionButton = ({ icon, label, active, onClick }: { icon: React.ReactNode; label: string; active: boolean; onClick: () => void }) => (
+const SectionButton = ({ icon, label, active, onClick, ...rest }: { icon: React.ReactNode; label: string; active: boolean; onClick: () => void } & React.ButtonHTMLAttributes<HTMLButtonElement>) => (
   <button
     onClick={onClick}
+    {...rest}
     className={`flex flex-col items-center gap-2 p-3 md:p-5 lg:p-6 min-h-[100px] md:min-h-[120px] rounded-2xl border text-center transition-all duration-300 ${
       active
         ? 'border-accent bg-accent/10 shadow-lg shadow-accent/10'
@@ -404,7 +405,7 @@ const Dashboard = () => {
   return (
     <div>
       <SEO title={t('student.dashboard.seoTitle')} description={t('student.dashboard.seoDesc')} noindex />
-      <OnboardingWizard />
+      <StudentTour cpBalance={cpBalance} username={user?.username ?? ''} />
 
       {syncError && (
         <div className="bg-bg px-3 md:px-4 lg:px-6 pt-8">
@@ -414,7 +415,7 @@ const Dashboard = () => {
 
       {/* 1. Welcome Banner */}
       <div className="bg-bg px-3 md:px-4 lg:px-6 pt-8 pb-10">
-        <div ref={heroRef}>
+        <div ref={heroRef} data-tour-id="tour-hero">
           <DashboardHero
             isEnrolled={isEnrolled}
             allDone={allDone}
@@ -441,6 +442,7 @@ const Dashboard = () => {
               label={t('nav.bootcamps')}
               active={activeSection === 'bootcamps'}
               onClick={() => handleSectionToggle('bootcamps')}
+              data-tour-id="tour-learning"
             />
             <SectionButton
               icon={<FlaskConical className={`w-5 h-5 md:w-7 md:h-7 ${activeSection === 'labs' ? 'text-on-accent' : 'text-text-primary'}`} />}
@@ -514,7 +516,7 @@ const Dashboard = () => {
                   <p className="text-base md:text-lg lg:text-xl font-black text-text-primary">{rankName}</p>
                 </div>
               </div>
-              <div className="flex flex-col items-center gap-2 p-4 md:p-5 lg:p-6 rounded-2xl border border-border/30 bg-bg-card text-center">
+              <div className="flex flex-col items-center gap-2 p-4 md:p-5 lg:p-6 rounded-2xl border border-border/30 bg-bg-card text-center" data-tour-id="tour-cp-dashboard">
                 <div className="w-12 h-12 md:w-14 md:h-14 lg:w-16 lg:h-16 rounded-xl md:rounded-2xl flex items-center justify-center shrink-0 bg-bg-elevated">
                   <CpLogo className="w-6 h-6 md:w-7 md:h-7 lg:w-8 lg:h-8" />
                 </div>
