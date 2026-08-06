@@ -45,7 +45,7 @@ const LandingBootcampSection: React.FC = () => {
     <div className="relative bg-bg min-h-dvh lg:h-dvh flex flex-col overflow-hidden" data-nav-invert>
       <div className="relative z-10 w-full h-full px-3 md:px-4 lg:px-6 pt-24 md:pt-28 lg:pt-32 pb-6 md:pb-8 lg:pb-10 flex flex-col">
         <div className="w-full flex-1 flex flex-col min-h-0">
-          <h2 className="text-lg md:text-xl lg:text-2xl font-black text-text-primary tracking-tighter leading-none mb-2 md:mb-3 shrink-0">
+          <h2 className="text-lg md:text-xl lg:text-2xl font-black text-text-primary tracking-tighter leading-none mb-6 md:mb-8 lg:mb-10 shrink-0">
             {t('landing2.bootcamp.heading1')} <span className="text-accent">{t('landing2.bootcamp.heading2')}</span>
           </h2>
 
@@ -111,32 +111,33 @@ const LandingBootcampSection: React.FC = () => {
                 >
                   <Link
                     to={supportHref}
-                    className="group relative block h-full rounded-2xl border border-border/20 bg-bg-card p-3 sm:p-5 transition-all duration-300 hover:border-accent/30"
+                    className="group relative block h-full rounded-2xl border border-border/20 bg-bg-card p-3 sm:p-5 transition-all duration-300 hover:border-accent/30 overflow-hidden"
                   >
-                    <div className="relative h-full flex flex-col">
-                      <div className="flex items-center justify-end mb-2 sm:mb-3">
-                        <span className="text-[8px] font-black uppercase tracking-widest px-2 py-1 rounded-full border border-border/30 bg-bg-elevated text-text-muted">
-                          {t('landing.bootcamp.roomCount', { count: roomCount })}
-                        </span>
+                    <div className="relative h-full flex flex-row items-stretch gap-3 sm:gap-4">
+                      <div className="flex-1 min-w-0 flex flex-col">
+                        <h3 className="text-sm sm:text-base font-black text-text-primary tracking-tight mb-1 sm:mb-1.5">
+                          {t(`landing.bootcamp.phases.${phase.id}.name`)}
+                        </h3>
+                        <p className="text-[10px] sm:text-[11px] text-text-muted leading-relaxed line-clamp-2">
+                          {t(`landing.bootcamp.phases.${phase.id}.desc`)}
+                        </p>
+
+                        <div className="mt-auto pt-2 sm:pt-3 flex flex-wrap items-center gap-x-2.5 gap-y-1.5">
+                          <span className="inline-flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest text-accent">
+                            {t('landing.bootcamp.startPhase')} {phase.id}
+                            <IconArrowRight size={12} className="transition-transform group-hover:translate-x-1" />
+                          </span>
+                          <span className="inline-flex text-[8px] font-black uppercase tracking-widest px-2 py-1 rounded-full border border-border/30 bg-bg-elevated text-text-muted shrink-0">
+                            {t('landing.bootcamp.roomCount', { count: roomCount })}
+                          </span>
+                        </div>
                       </div>
 
-                      <h3 className="text-sm sm:text-base font-black text-text-primary tracking-tight mb-1 sm:mb-1.5">
-                        {t(`landing.bootcamp.phases.${phase.id}.name`)}
-                      </h3>
-                      <p className="text-[10px] sm:text-[11px] text-text-muted leading-relaxed line-clamp-2">
-                        {t(`landing.bootcamp.phases.${phase.id}.desc`)}
-                      </p>
-
-                      <div className="flex-1 min-h-0 my-2 sm:my-3 w-full flex items-center justify-center">
+                      <div className="w-[40%] sm:w-[42%] shrink-0 min-h-0 flex items-center justify-center">
                         <HpbAvatar
                           variant={`phase${Number(phase.id)}` as HpbVariant}
-                          className="h-full w-auto max-w-full max-h-[110px] sm:max-h-[140px]"
+                          className="h-full sm:h-[90%] w-auto max-h-full max-w-full"
                         />
-                      </div>
-
-                      <div className="flex items-center gap-2 text-text-muted group-hover:text-accent transition-colors">
-                        <span className="text-[10px] font-black uppercase tracking-widest">{t('landing.bootcamp.startPhase')} {phase.id}</span>
-                        <IconArrowRight size={14} className="transition-transform group-hover:translate-x-1" />
                       </div>
                     </div>
                   </Link>
