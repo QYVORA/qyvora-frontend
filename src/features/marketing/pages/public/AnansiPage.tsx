@@ -96,12 +96,11 @@ const AnansiPage = () => {
               <Carousel
                 slides={PHASES}
                 renderCard={(phase) => (
-                  <div className="relative min-h-[300px] sm:min-h-[360px] md:min-h-[460px] overflow-hidden p-5 sm:p-6 md:p-8 lg:p-10 bg-bg rounded-2xl">
-                    <div className="absolute inset-0">
-                      <img src={phase.image} alt={phase.name} width={phase.width} height={phase.height} className="w-full h-full object-cover" />
-                      <div className="absolute inset-0 bg-gradient-to-r from-bg via-bg/85 to-bg/30" />
+                  <div className="grid md:grid-cols-2 min-h-[300px] sm:min-h-[360px] md:min-h-[460px] overflow-hidden bg-bg-card rounded-2xl border border-border/50">
+                    <div className="relative min-h-[200px] sm:min-h-[240px] md:min-h-full overflow-hidden bg-bg-elevated">
+                      <img src={phase.image} alt={phase.name} width={phase.width} height={phase.height} className="absolute inset-0 w-full h-full object-cover" />
                     </div>
-                    <div className="relative z-10 flex flex-col justify-center min-h-[260px] sm:min-h-[320px] md:min-h-[396px]">
+                    <div className="flex flex-col justify-center p-6 sm:p-8 md:p-10 lg:p-12 min-w-0">
                       <div className="flex items-center gap-3 mb-4 md:mb-6">
                         <div className="w-10 h-10 md:w-12 md:h-12 rounded-xl bg-accent/10 border border-accent/20 flex items-center justify-center">
                           <phase.icon className="w-5 h-5 md:w-6 md:h-6 text-accent" />
