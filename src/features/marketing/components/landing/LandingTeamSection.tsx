@@ -1,86 +1,111 @@
 import { Link } from 'react-router-dom';
-import { IconArrowRight, BrandGithubIcon, BrandLinkedinIcon, BrandXIcon } from '@/shared/components/icons';
-import ScrollReveal from '@/shared/components/ScrollReveal';
-import { teamData } from '@/features/marketing/content/teamData';
+import { useReducedMotion } from 'motion/react';
+import { IconArrowRight, IconProfile, BrandGithubIcon, BrandLinkedinIcon, BrandXIcon } from '@/shared/components/icons';
+import { teamData, type TeamMember } from '@/features/marketing/content/teamData';
 import { useTranslation } from 'react-i18next';
+
+const TeamCard = ({ member }: { member: TeamMember }) => (
+  <Link
+    to={member.handle ? `/@${member.handle}` : undefined}
+    className="group relative h-full w-[min(78vw,340px)] sm:w-[min(52vw,380px)] md:w-[min(42vw,430px)] lg:w-[min(36vw,470px)] xl:w-[min(31vw,520px)] shrink-0 mr-4 md:mr-5 flex flex-col rounded-2xl border border-border/50 bg-bg-card overflow-hidden transition-all duration-300 hover:border-accent/40 hover:shadow-[var(--card-shadow)]"
+  >
+    {/* Member photo as the card background */}
+    <img
+      src={member.image}
+      alt=""
+      aria-hidden
+      width={member.width}
+      height={member.height}
+      className="absolute inset-0 w-full h-full object-cover object-top transition-transform duration-500 group-hover:scale-105"
+      loading="lazy"
+    />
+    {/* Legibility overlay */}
+    <div className="absolute inset-0 bg-gradient-to-t from-bg via-bg/75 to-bg/15" />
+
+    {/* Top header — tiny profile icon */}
+    <div className="relative z-10 flex items-center justify-end p-4 md:p-5 pb-0">
+      <span className="inline-flex items-center justify-center w-8 h-8 rounded-full border border-border/50 bg-bg/40 backdrop-blur-md text-text-primary">
+        <IconProfile className="w-4 h-4" />
+      </span>
+    </div>
+
+    {/* Content pinned to the bottom */}
+    <div className="relative z-10 mt-auto flex flex-col p-5 md:p-6 pt-3">
+      <div className="flex items-start justify-between gap-3 mb-2">
+        <h3 className="text-sm md:text-base font-black uppercase tracking-tight text-text-primary group-hover:text-accent transition-colors truncate">
+          {member.name}
+        </h3>
+        <span className="shrink-0 inline-block px-2.5 py-1 rounded-lg bg-accent/10 text-[9px] font-black uppercase tracking-widest text-accent backdrop-blur-sm">
+          {member.role}
+        </span>
+      </div>
+      <p className="text-[11px] md:text-xs text-text-muted leading-relaxed line-clamp-2 min-h-[3.25em]">
+        {member.bio}
+      </p>
+      {Object.keys(member.socials).length > 0 && (
+        <div className="flex items-center gap-3 mt-4 pt-4 border-t border-border/30">
+          {member.socials.github && (
+            <span className="text-text-muted hover:text-accent transition-colors" aria-hidden="true">
+              <BrandGithubIcon className="w-4 h-4" />
+            </span>
+          )}
+          {member.socials.linkedin && (
+            <span className="text-text-muted hover:text-accent transition-colors" aria-hidden="true">
+              <BrandLinkedinIcon className="w-4 h-4" />
+            </span>
+          )}
+          {member.socials.twitter && (
+            <span className="text-text-muted hover:text-accent transition-colors" aria-hidden="true">
+              <BrandXIcon className="w-4 h-4" />
+            </span>
+          )}
+        </div>
+      )}
+    </div>
+  </Link>
+);
 
 const LandingTeamSection = () => {
   const { t } = useTranslation();
+  const shouldReduceMotion = useReducedMotion();
+
   return (
     <div className="relative bg-bg min-h-dvh lg:h-dvh flex flex-col overflow-hidden">
-      <div className="relative z-10 w-full h-full px-3 md:px-4 lg:px-6 py-12 sm:py-10 md:py-16 lg:py-20 flex flex-col gap-8 sm:gap-10 lg:gap-12">
-        {/* Header */}
-        <div className="flex flex-col">
-          <h2 className="text-2xl md:text-4xl lg:text-5xl font-black text-text-primary tracking-tighter leading-none mb-6">
+      <div className="relative z-10 w-full h-full px-3 md:px-4 lg:px-6 py-12 sm:py-10 md:py-16 lg:py-20 flex flex-col gap-10 sm:gap-12 lg:gap-14">
+        {/* Header — heading on the left, CTA aligned horizontally on the right */}
+        <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6">
+          <h2 className="text-2xl md:text-4xl lg:text-5xl font-black text-text-primary tracking-tighter leading-none">
             {t('landing.teamLanding.title')} <span className="text-accent">{t('landing.teamLanding.titleAccent')}</span>
           </h2>
-          <p className="text-xs md:text-sm text-text-muted leading-relaxed max-w-xl mb-8">
-            {t('landing.teamLanding.description')}
-          </p>
           <Link
             to="/team"
-            className="btn-secondary inline-flex items-center gap-2.5 w-fit"
+            className="btn-secondary inline-flex items-center gap-2.5 w-fit shrink-0"
           >
             {t('landing.teamLanding.viewAll')} <IconArrowRight size={14} />
           </Link>
         </div>
 
-        {/* Responsive Grid */}
-        <div className="relative flex-1 min-h-0 min-w-0 overflow-hidden flex items-start lg:justify-center">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 w-full">
-            {teamData.map((member, idx) => (
-              <ScrollReveal key={member.id} direction="up" delay={idx * 0.1}>
-                <Link
-                  to={member.handle ? `/@${member.handle}` : undefined}
-                  className="group relative flex flex-col rounded-2xl border border-border/30 bg-bg-card p-5 transition-all duration-300 hover:border-accent/30 h-full"
-                >
-                  <div className="flex items-center gap-4 mb-4">
-                    <div className="w-16 h-16 rounded-2xl overflow-hidden border border-border/30 shrink-0">
-                      <img
-                        src={member.image}
-                        alt={member.name}
-                        width={member.width}
-                        height={member.height}
-                        className="w-full h-full object-cover"
-                        loading="lazy"
-                      />
-                    </div>
-                    <div className="min-w-0">
-                      <h3 className="text-sm font-black uppercase tracking-tight text-text-primary group-hover:text-accent transition-colors truncate">
-                        {member.name}
-                      </h3>
-                      <span className="inline-block px-2 py-0.5 rounded-lg bg-accent/10 text-[10px] font-black uppercase tracking-widest text-accent mt-1">
-                        {member.role}
-                      </span>
-                    </div>
-                  </div>
-                  <p className="text-xs text-text-muted line-clamp-3 leading-relaxed">
-                    {member.bio}
-                  </p>
-                  {Object.keys(member.socials).length > 0 && (
-                    <div className="flex items-center gap-3 mt-4">
-                      {member.socials.github && (
-                        <span className="text-text-muted hover:text-accent transition-colors">
-                          <BrandGithubIcon className="w-4 h-4" />
-                        </span>
-                      )}
-                      {member.socials.linkedin && (
-                        <span className="text-text-muted hover:text-accent transition-colors">
-                          <BrandLinkedinIcon className="w-4 h-4" />
-                        </span>
-                      )}
-                      {member.socials.twitter && (
-                        <span className="text-text-muted hover:text-accent transition-colors">
-                          <BrandXIcon className="w-4 h-4" />
-                        </span>
-                      )}
-                    </div>
-                  )}
-                </Link>
-              </ScrollReveal>
+        {shouldReduceMotion ? (
+          /* Reduced motion — static responsive grid (natural card height) */
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            {teamData.map((member) => (
+              <TeamCard key={member.id} member={member} />
             ))}
           </div>
-        </div>
+        ) : (
+          /* Large card infinite carousel — cards fill the strip, never clipped */
+          <div className="relative flex-1 min-h-0 min-w-0 overflow-hidden flex items-center">
+            <div className="marquee-track">
+              {[0, 1].map((copy) => (
+                <div key={copy} aria-hidden={copy === 1} className="h-full flex items-stretch shrink-0">
+                  {teamData.map((member) => (
+                    <TeamCard key={`${copy}-${member.id}`} member={member} />
+                  ))}
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
