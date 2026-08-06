@@ -130,7 +130,7 @@ const LandingLeaderboardSection = () => {
         <div className="relative flex-1 min-h-0 min-w-0 overflow-hidden flex items-center lg:justify-center">
           {loading ? (
             <div
-              className="relative flex flex-wrap content-start"
+              className="relative flex flex-wrap content-start justify-center"
               style={{ gap: `${GAP}px` }}
             >
               {Array.from({ length: 40 }).map((_, i) => (
@@ -149,7 +149,7 @@ const LandingLeaderboardSection = () => {
             <ErrorState message={error} title="Leaderboard Unavailable" className="w-full max-w-md mx-auto" />
           ) : entries.length === 0 ? null : (
             <div
-              className="relative flex flex-wrap content-start"
+              className="relative flex flex-wrap content-start justify-center"
               style={{ gap: `${GAP}px` }}
             >
               {cells.map(({ entry, idx }) => {
