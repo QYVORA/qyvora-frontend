@@ -239,11 +239,10 @@ const DashboardProductCard = ({ product }: { product: any }) => {
           className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
           loading="lazy"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-bg-card via-transparent to-transparent" />
       </div>
       <div className="flex flex-col gap-2 p-4 flex-1">
         <div className="flex items-center gap-2">
-          <span className="px-2 py-0.5 bg-bg/85 backdrop-blur-sm rounded-lg text-[9px] font-black uppercase text-accent tracking-widest border border-accent/20 flex items-center gap-1">
+          <span className="px-2 py-0.5 rounded-lg bg-accent/10 text-[9px] font-black uppercase text-accent tracking-widest border border-accent/20 flex items-center gap-1">
             <IconMarketplace size={9} /> {t('student.dashboard.intelligenceAsset')}
           </span>
         </div>

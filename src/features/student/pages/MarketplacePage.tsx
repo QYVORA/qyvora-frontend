@@ -194,16 +194,15 @@ const Marketplace: React.FC = () => {
                           className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                           loading="lazy"
                         />
-                        <div className="absolute inset-0 bg-gradient-to-t from-bg-card via-transparent to-transparent" />
-                        <div className="absolute top-3 left-3 flex items-center gap-2">
-                          <span className="px-2 py-0.5 bg-bg/85 backdrop-blur-sm rounded-lg text-[9px] font-black uppercase text-accent tracking-widest border border-accent/20 flex items-center gap-1">
+                      </div>
+                      <div className="flex flex-col gap-2 p-4 flex-1">
+                        <div className="flex items-center gap-2">
+                          <span className="px-2 py-0.5 rounded-lg bg-accent/10 text-[9px] font-black uppercase text-accent tracking-widest border border-accent/20 flex items-center gap-1">
                             <ShoppingBag className="h-2.5 w-2.5" /> {t('student.marketplace.intelligenceAsset')}
                           </span>
                           {hasPurchased && <span className="px-2 py-0.5 bg-accent text-on-accent rounded-lg text-[9px] font-black uppercase tracking-widest">{t('student.marketplace.owned')}</span>}
                           {prod.isFree && !hasPurchased && <span className="px-2 py-0.5 bg-accent text-on-accent rounded-lg text-[9px] font-black uppercase tracking-widest">{t('student.marketplace.public')}</span>}
                         </div>
-                      </div>
-                      <div className="flex flex-col gap-2 p-4 flex-1">
                         <h3 className="text-sm sm:text-base md:text-lg lg:text-xl font-black leading-snug text-text-primary group-hover:text-accent transition-colors tracking-tight line-clamp-2">
                           {prod.title}
                         </h3>

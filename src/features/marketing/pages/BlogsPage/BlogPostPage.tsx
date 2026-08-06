@@ -131,7 +131,6 @@ const BlogPostPage: React.FC = () => {
             className="w-full h-full object-cover"
             fetchPriority="high"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-bg via-bg/5 to-transparent" />
         </motion.div>
       </div>
 
@@ -181,7 +180,6 @@ const BlogPostPage: React.FC = () => {
                       className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                       loading="lazy"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-bg-card via-bg-card/10 to-transparent" />
                   </div>
                   <div className="p-6">
                     <div className="flex items-center gap-2 mb-3 overflow-hidden">

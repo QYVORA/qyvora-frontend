@@ -77,8 +77,6 @@ interface CardMediaProps {
   imageAlt?: string;
   /** Aspect ratio class for the image container, e.g. "aspect-video" or "aspect-square" */
   imageAspect?: string;
-  /** Overlay gradient on the image — defaults to bottom-to-transparent */
-  imageGradient?: boolean;
   /** Badges rendered inside the image area (absolute positioned) */
   imageBadges?: React.ReactNode;
   /** Thin progress bar at the very bottom edge of the image */
@@ -99,7 +97,6 @@ export const CardMedia: React.FC<CardMediaProps> = ({
   image,
   imageAlt = '',
   imageAspect = 'aspect-video',
-  imageGradient = true,
   imageBadges,
   imageProgress,
   children,
@@ -132,12 +129,6 @@ export const CardMedia: React.FC<CardMediaProps> = ({
             }
           }}
         />
-        {imageGradient && (
-          <div
-            aria-hidden
-            className="pointer-events-none absolute inset-0 hidden dark:block dark:bg-black/20"
-          />
-        )}
         {imageBadges}
         {typeof imageProgress === 'number' && imageProgress > 0 && (
           <div className="absolute bottom-0 left-0 right-0 h-[3px] bg-bg/40">
@@ -213,7 +204,7 @@ export const CardStat: React.FC<CardStatProps> = ({
     return (
       <Link
         to={href}
-        className="group block overflow-hidden rounded-2xl border border-border/30 bg-bg-card transition-colors hover:border-accent/40"
+        className="group block overflow-hidden rounded-2xl border border-border/50 bg-bg-card transition-colors hover:border-accent/40"
         style={{ boxShadow: 'var(--card-shimmer)' }}
       >
         {inner}
@@ -223,7 +214,7 @@ export const CardStat: React.FC<CardStatProps> = ({
 
   return (
     <div
-      className="overflow-hidden rounded-2xl border border-border/30 bg-bg-card"
+      className="overflow-hidden rounded-2xl border border-border/50 bg-bg-card"
       style={{ boxShadow: 'var(--card-shimmer)' }}
     >
       {inner}
