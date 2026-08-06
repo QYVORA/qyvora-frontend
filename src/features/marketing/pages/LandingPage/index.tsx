@@ -15,7 +15,7 @@ import LandingBlogsSection from '@/features/marketing/components/landing/Landing
 import LandingMarketSection from '@/features/marketing/components/landing/LandingMarketSection';
 import LandingLeaderboardSection from '@/features/marketing/components/landing/LandingLeaderboardSection';
 import LandingServicesSection from '@/features/marketing/components/landing/LandingServicesSection';
-import LandingAnansiSection from '@/features/marketing/components/landing/LandingAnansiSection';
+import LandingOpenSourceToolsSection from '@/features/marketing/components/landing/LandingOpenSourceToolsSection';
 import LandingFinalCtaSection from '@/features/marketing/components/landing/LandingFinalCtaSection';
 import ActDividerSection from '@/features/marketing/components/landing/ActDividerSection';
 
@@ -38,7 +38,7 @@ const Landing: React.FC = () => {
     { id: 'act-iii',    label: 'Act III' },
     { id: 'team',       label: 'Team' },
     { id: 'quiteroot',  label: 'QuiteRoot' },
-    { id: 'anansi',     label: 'Anansi' },
+    { id: 'tools',      label: t('landing.tools.navLabel') },
     { id: 'blogs',      label: 'Blogs' },
     { id: 'market',     label: 'Market' },
     { id: 'leaderboard', label: t('nav.leaderboard') },
@@ -177,9 +177,9 @@ const Landing: React.FC = () => {
         <LandingQuiteRootSection />
       </section>
 
-      {/* 8. Anansi */}
-      <section id="anansi" className="relative w-full min-h-dvh lg:h-dvh snap-section bg-bg">
-        <LandingAnansiSection />
+      {/* 8. Open Source Tools */}
+      <section id="tools" className="relative w-full min-h-dvh lg:h-dvh snap-section bg-bg">
+        <LandingOpenSourceToolsSection />
       </section>
 
       {/* 9. Blogs */}
