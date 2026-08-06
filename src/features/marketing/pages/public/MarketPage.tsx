@@ -9,6 +9,7 @@ import productFallbackImg from '@/assets/sections/stats/cp-earned-bg.webp';
 import { AuthImage, Skeleton, ErrorState, DottedMapOverlay } from '@/shared/components/ui';
 import SEO from '@/shared/components/SEO';
 import PublicSnapLayout from '@/shared/components/PublicSnapLayout';
+import PublicSnapSection from '@/shared/components/PublicSnapSection';
 import StudentHeroSection, { PUBLIC_HERO_TITLE_CLASS } from '@/shared/components/StudentHeroSection';
 import { Footer } from '@/shared/components/layout';
 import LandingFinalCtaSection from '@/features/marketing/components/landing/LandingFinalCtaSection';
@@ -74,8 +75,7 @@ const MarketPage = () => {
           )}
         </StudentHeroSection>
 
-        <div className="min-h-dvh md:h-dvh md:overflow-y-auto px-3 md:px-4 lg:px-6">
-          <div className="min-h-full flex flex-col justify-center py-16 md:py-20">
+        <PublicSnapSection>
           <div className="space-y-8">
         <div className="relative w-full sm:w-72">
           <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-text-muted" />
@@ -166,8 +166,7 @@ const MarketPage = () => {
           </div>
           )}
           </div>
-          </div>
-        </div>
+        </PublicSnapSection>
         <LandingFinalCtaSection user={user} />
         <Footer />
       </PublicSnapLayout>

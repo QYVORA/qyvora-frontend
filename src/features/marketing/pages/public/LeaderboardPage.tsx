@@ -7,6 +7,7 @@ import { ScrollReveal } from '@/shared/components';
 import { LeaderboardRow, PodiumCard, useLeaderboard, PERIODS } from '@/shared/components/leaderboard';
 import SEO from '@/shared/components/SEO';
 import PublicSnapLayout from '@/shared/components/PublicSnapLayout';
+import PublicSnapSection from '@/shared/components/PublicSnapSection';
 import StudentHeroSection, { PUBLIC_HERO_TITLE_CLASS } from '@/shared/components/StudentHeroSection';
 import { Footer } from '@/shared/components/layout';
 import LandingFinalCtaSection from '@/features/marketing/components/landing/LandingFinalCtaSection';
@@ -63,8 +64,7 @@ const LeaderboardPage = () => {
         />
 
         {/* ── Period + Podium ─────────────────────────────────────────── */}
-        <div className="min-h-dvh md:h-dvh md:overflow-y-auto px-3 md:px-4 lg:px-6">
-          <div className="min-h-full flex flex-col justify-center py-16 md:py-20">
+        <PublicSnapSection>
           <div className="flex items-center gap-2 flex-wrap mb-8 md:mb-12">
             {PERIODS.map((p) => (
               <button
@@ -109,13 +109,11 @@ const LeaderboardPage = () => {
               })}
             </div>
           )}
-          </div>
-        </div>
+        </PublicSnapSection>
 
         {/* ── Remaining list ──────────────────────────────────────────── */}
         {rest.length > 0 && (
-          <div className="min-h-dvh md:h-dvh md:overflow-y-auto px-3 md:px-4 lg:px-6">
-          <div className="min-h-full flex flex-col justify-center py-16 md:py-20">
+          <PublicSnapSection>
             <div>
               <div className="hidden md:grid grid-cols-[48px_1fr_140px_100px_80px] gap-4 px-6 py-3 text-[10px] font-black uppercase tracking-widest text-text-muted/50 border-b border-border/40">
                 <span>Rank</span>
@@ -155,8 +153,7 @@ const LeaderboardPage = () => {
                 Verified by QYVORA Chain — {Number(total).toLocaleString()} total operators
               </div>
             </div>
-          </div>
-          </div>
+          </PublicSnapSection>
           )}
         <LandingFinalCtaSection user={user} />
         <Footer />
