@@ -112,7 +112,7 @@ const LandingCoursesSection: React.FC = () => {
       <GridBoxedBackground blur={0} mask="right" />
       <div className="relative z-10 w-full h-full px-3 md:px-4 lg:px-6 pt-20 md:pt-24 lg:pt-28 pb-14 md:pb-20 lg:pb-28 flex flex-col">
         <div className="w-full flex-1 flex flex-col min-h-0">
-          <h2 className="text-lg md:text-xl lg:text-2xl font-black text-text-primary tracking-tighter leading-none mb-2 md:mb-3 shrink-0">
+          <h2 className="text-lg md:text-xl lg:text-2xl font-black text-text-primary tracking-tighter leading-none mb-6 md:mb-8 lg:mb-10 shrink-0">
             {t('landing.courses.heading')}
           </h2>
           {/* Category tabs — horizontal carousel on mobile, wrapping on desktop */}
@@ -121,7 +121,7 @@ const LandingCoursesSection: React.FC = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: '-60px' }}
             transition={{ duration: 0.4, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-            className="relative mb-2 md:mb-4 shrink-0"
+            className="relative mb-4 md:mb-6 shrink-0"
           >
             {/* Left arrow — mobile only */}
             {canScrollLeft && (
