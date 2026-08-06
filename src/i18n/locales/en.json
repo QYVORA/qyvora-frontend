@@ -8,6 +8,7 @@
     "events": "Events",
     "services": "Services",
     "anansi": "Anansi",
+    "toha3ee": "Toha3ee",
     "quiteroot": "QuiteRoot",
     "market": "Market",
     "blogs": "Blogs",
@@ -710,6 +711,18 @@
       "explore": "Explore Anansi",
       "phaseLabel": "Phase",
       "quickInstall": "Quick Install"
+    },
+    "toha3ee": {
+      "title": "Toha3ee",
+      "titleAccent": "MITM",
+      "description": "Network exploitation & MITM framework in Go — poisoning, interception, wireless and switch-layer attacks from an interactive REPL.",
+      "explore": "Explore Toha3ee"
+    },
+    "tools": {
+      "navLabel": "Tools",
+      "title": "Open Source",
+      "titleAccent": "Tools",
+      "description": "Terminal-first security tooling built and open-sourced by QYVORA."
     },
     "blogs": {
       "title": "Intelligence",
