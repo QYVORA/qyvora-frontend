@@ -6,7 +6,7 @@ import { IconMarketplace, IconLock } from '@/shared/components/icons';
 import { ScrollReveal } from '@/shared/components';
 import api from '@/core/services/api';
 import productFallbackImg from '@/assets/sections/stats/cp-earned-bg.webp';
-import { AuthImage, Skeleton, ErrorState } from '@/shared/components/ui';
+import { AuthImage, Skeleton, ErrorState, DottedMapOverlay } from '@/shared/components/ui';
 import SEO from '@/shared/components/SEO';
 import PublicSnapLayout from '@/shared/components/PublicSnapLayout';
 import StudentHeroSection, { PUBLIC_HERO_TITLE_CLASS } from '@/shared/components/StudentHeroSection';
@@ -115,7 +115,8 @@ const MarketPage = () => {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
             {filtered.map((prod, idx) => (
               <ScrollReveal key={prod.id || idx} amount={0.05}>
-                <div className="group flex flex-col overflow-hidden rounded-2xl border border-border/30 bg-bg-card transition-all duration-300 hover:border-accent/30 h-full">
+                <div className="group relative flex flex-col overflow-hidden rounded-2xl border border-border/50 bg-bg-card transition-all duration-300 hover:border-accent/30 h-full">
+                  <DottedMapOverlay />
                   <div className="relative aspect-[16/9] overflow-hidden bg-accent/5 border-b border-border/30">
                     <AuthImage
                       src={prod.coverUrl}
@@ -124,14 +125,11 @@ const MarketPage = () => {
                       className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                       loading="lazy"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-bg-card via-transparent to-transparent" />
-                    <div className="absolute top-3 left-3">
-                      <span className="px-2 py-0.5 bg-bg/85 backdrop-blur-sm rounded-lg text-[9px] font-black uppercase text-accent tracking-widest border border-accent/20 flex items-center gap-1">
-                        <IconMarketplace className="h-2.5 w-2.5" /> Intelligence Asset
-                      </span>
-                    </div>
                   </div>
                   <div className="flex flex-col gap-2 p-4 flex-1">
+                    <span className="self-start px-2 py-0.5 rounded-lg bg-accent/10 text-[9px] font-black uppercase text-accent tracking-widest border border-accent/20 flex items-center gap-1">
+                      <IconMarketplace className="h-2.5 w-2.5" /> Intelligence Asset
+                    </span>
                     <h3 className="text-sm sm:text-base md:text-lg font-black leading-snug text-text-primary group-hover:text-accent transition-colors tracking-tight line-clamp-2">
                       {prod.title}
                     </h3>

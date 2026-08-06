@@ -146,10 +146,12 @@ function isLand(lat: number, lng: number): boolean {
   return isAfrica(lat, lng) || OTHER_POLYS.some(({ p, b }) => pip(lat, lng, p, b));
 }
 
+let cachedKey: string | null = null;
 let cachedSvgUri: string | null = null;
 
-export function getDottedMapBg(step = 4): string {
-  if (cachedSvgUri) return cachedSvgUri;
+export function getDottedMapBg(step = 4, color = '#06B66F'): string {
+  const key = `${step}:${color}`;
+  if (cachedKey === key && cachedSvgUri) return cachedSvgUri;
 
   const W = 360, H = 180;
   const dots: string[] = [];
@@ -159,11 +161,12 @@ export function getDottedMapBg(step = 4): string {
       if (!isLand(lat, lng)) continue;
       const x = ((lng + 180) / 360) * W;
       const y = ((90 - lat) / 180) * H;
-      dots.push(`<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="1.2" fill="currentColor"/>`);
+      dots.push(`<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="1.6" fill="${color}"/>`);
     }
   }
 
   const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}">${dots.join('')}</svg>`;
+  cachedKey = key;
   cachedSvgUri = `url("data:image/svg+xml,${encodeURIComponent(svg)}")`;
   return cachedSvgUri;
 }

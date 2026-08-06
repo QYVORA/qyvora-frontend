@@ -5,7 +5,7 @@ import { IconArrowRight, IconMarketplace, IconLock } from '@/shared/components/i
 import ScrollReveal from '@/shared/components/ScrollReveal';
 import api from '@/core/services/api';
 import productFallbackImg from '@/assets/sections/stats/cp-earned-bg.webp';
-import { AuthImage, Skeleton, ErrorState } from '@/shared/components/ui';
+import { AuthImage, Skeleton, ErrorState, DottedMapOverlay } from '@/shared/components/ui';
 import { useTranslation } from 'react-i18next';
 
 interface ProductItem {
@@ -54,7 +54,7 @@ const LandingMarketSection = () => {
       <div className="relative z-10 w-full h-full px-3 md:px-4 lg:px-6 py-10 sm:py-8 md:py-12 lg:py-16 flex flex-col lg:flex-row gap-10 sm:gap-10 lg:gap-24 lg:items-stretch">
         {/* Header column */}
         <div className="shrink-0 lg:w-[420px] xl:w-[480px] flex flex-col lg:justify-center">
-          <h2 className="text-3xl md:text-5xl lg:text-6xl font-black text-text-primary tracking-tighter leading-none mb-8">
+          <h2 className="text-3xl md:text-5xl lg:text-6xl font-black text-text-primary tracking-tighter leading-none mb-10">
             {t('landing.market.title')} <span className="text-accent">{t('landing.market.titleAccent')}</span>
           </h2>
           <p className="text-xs md:text-sm text-text-muted leading-relaxed max-w-xl mb-10">
@@ -99,7 +99,8 @@ const LandingMarketSection = () => {
           ) : products.length > 0 ? (
             <div className={`grid gap-4 md:gap-6 w-full ${products.length === 1 ? 'grid-cols-1 max-w-lg' : 'grid-cols-1 sm:grid-cols-2'}`}>
               {products.map((prod) => (
-                <div key={prod.id} className="group overflow-hidden flex flex-col border border-border/30 bg-bg-card rounded-2xl transition-all duration-300 hover:border-accent/30">
+                <div key={prod.id} className="group relative overflow-hidden flex flex-col border border-border/50 bg-bg-card rounded-2xl transition-all duration-300 hover:border-accent/30">
+                  <DottedMapOverlay />
                   <div className="relative aspect-[16/9] overflow-hidden bg-accent/5">
                     <AuthImage
                       src={prod.coverUrl}
@@ -110,14 +111,11 @@ const LandingMarketSection = () => {
                       className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                       loading="lazy"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-bg-card via-transparent to-transparent" />
-                    <div className="absolute bottom-3 left-3">
-                      <span className="inline-flex items-center gap-1.5 px-2 py-0.5 bg-bg/85 backdrop-blur-md rounded-lg text-[9px] font-black uppercase text-accent tracking-widest shadow-sm border border-accent/20">
-                        <IconMarketplace className="h-2.5 w-2.5" /> {t('landing.market.intelligenceAsset')}
-                      </span>
-                    </div>
                   </div>
                   <div className="flex flex-1 flex-col p-4 gap-2">
+                    <span className="self-start inline-flex items-center gap-1.5 px-2 py-0.5 rounded-lg bg-accent/10 border border-accent/20 text-[9px] font-black uppercase text-accent tracking-widest">
+                      <IconMarketplace className="h-2.5 w-2.5" /> {t('landing.market.intelligenceAsset')}
+                    </span>
                     <h3 className="text-sm sm:text-base font-black leading-snug text-text-primary group-hover:text-accent transition-colors tracking-tight line-clamp-2">
                       {prod.title}
                     </h3>

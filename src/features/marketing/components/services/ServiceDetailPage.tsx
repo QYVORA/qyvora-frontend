@@ -28,7 +28,7 @@ const SectionCard: React.FC<{
     {...reveal}
     className="relative overflow-hidden rounded-2xl border border-border/30 bg-bg-card p-6 sm:p-10"
   >
-    <div className="absolute inset-0 opacity-[0.04] text-accent rounded-2xl overflow-hidden pointer-events-none" style={{ backgroundImage: getDottedMapBg(), backgroundSize: '360px 180px', backgroundRepeat: 'repeat' }} />
+    <div className="absolute inset-0 opacity-[0.16] text-accent rounded-2xl overflow-hidden pointer-events-none" style={{ backgroundImage: getDottedMapBg(), backgroundSize: 'contain', backgroundRepeat: 'no-repeat', backgroundPosition: 'center' }} />
     <div className="relative">
       <span className="flex items-center gap-2 text-[9px] font-black uppercase tracking-widest text-text-muted mb-3">
         {icon} {label}
@@ -160,7 +160,7 @@ const ServiceDetailPage: React.FC<{ svc: ServiceConfig }> = ({ svc }) => {
           {...reveal}
           className="relative overflow-hidden rounded-2xl border border-border/30 bg-bg-card p-6 sm:p-10"
         >
-          <div className="absolute inset-0 opacity-[0.04] text-accent rounded-2xl overflow-hidden pointer-events-none" style={{ backgroundImage: getDottedMapBg(), backgroundSize: '360px 180px', backgroundRepeat: 'repeat' }} />
+          <div className="absolute inset-0 opacity-[0.16] text-accent rounded-2xl overflow-hidden pointer-events-none" style={{ backgroundImage: getDottedMapBg(), backgroundSize: 'contain', backgroundRepeat: 'no-repeat', backgroundPosition: 'center' }} />
           <div className="relative flex flex-col lg:flex-row items-start gap-6 lg:gap-12">
             <span className="flex items-center gap-2 px-3 py-1 rounded-full bg-accent/10 border border-accent/30 text-[9px] font-black uppercase tracking-widest text-accent shrink-0">
               <Target className="w-3 h-3" /> {PENTEST_PHILOSOPHY.heading}

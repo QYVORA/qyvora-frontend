@@ -11,3 +11,4 @@ export { default as Badge } from './Badge';
 export { default as ErrorState } from './ErrorState';
 export { default as FilterTabs } from './FilterTabs';
 export { AuthImage } from './AuthImage';
+export { default as DottedMapOverlay } from './DottedMapOverlay';
