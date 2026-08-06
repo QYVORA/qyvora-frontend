@@ -30,8 +30,8 @@
   --color-text-primary:   #EEF0EE;
   --color-text-secondary: rgba(238, 240, 238, 0.70);
   --color-text-muted:     rgba(238, 240, 238, 0.40);
-  --color-border:         rgba(171, 181, 192, 0.12);
-  --color-border-strong:  rgba(6, 182, 111, 0.18);
+  --color-border:         rgba(171, 181, 192, 0.18);
+  --color-border-strong:  rgba(6, 182, 111, 0.26);
   --dot-color:            rgba(6, 182, 111, 0.05);
   --color-hero-right-bg:  #000e08;
   --color-hero-glow:      rgba(6, 182, 111, 0.15);
@@ -474,6 +474,33 @@
   animation: fade-in 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
+/* ── Infinite horizontal marquee (Team carousel) ───────────────────────── */
+@keyframes marquee {
+  from { transform: translate3d(0, 0, 0); }
+  to   { transform: translate3d(-50%, 0, 0); }
+}
+
+.marquee-track {
+  display: flex;
+  align-items: stretch;
+  width: max-content;
+  height: 100%;
+  animation: marquee 42s linear infinite;
+  will-change: transform;
+}
+
+.marquee-track:hover {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marquee-track {
+    animation: none;
+    width: 100%;
+    flex-wrap: wrap;
+  }
+}
+
 @keyframes dobia-float {
   0%, 100% { transform: translateY(0px) rotate(0deg); }
   12%      { transform: translateY(-2px) rotate(0.3deg); }
@@ -645,29 +672,38 @@
   transition-duration: 0s !important;
 }
 
-/* ── Light theme overrides ──────────────────────────────────────────────── */
+/* ── Light theme overrides ────────────────────────────────────────────────
+   Dark-theme parity: the page background is the deepest tone and surfaces
+   lift in subtle steps (bg → bg-alt → bg-card → bg-elevated). Surfaces are
+   soft, green-tinted greys — never pure white — for visual comfort and
+   WCAG-conscious contrast. Borders are near-black and clearly visible.
+   ───────────────────────────────────────────────────────────────────────── */
 [data-theme="light"] {
   color-scheme: light;
-  --color-bg: #E8EAE8;
-  --color-bg-card: #F0F1F0;
-  --color-bg-elevated: #E2E4E2;
-  --color-bg-alt: #E4E6E4;
-  --color-text-primary: #2C2F2C;
-  --color-text-secondary: rgba(44, 47, 44, 0.60);
-  --color-text-muted: rgba(44, 47, 44, 0.35);
-  --color-border: rgba(44, 47, 44, 0.06);
-  --color-border-strong: rgba(6, 182, 111, 0.18);
-  --dot-color: rgba(6, 182, 111, 0.04);
-  --color-hero-right-bg: #eaf1ec;
-  --color-hero-glow: rgba(6, 182, 111, 0.06);
-  --color-on-accent: #000000;
-  --color-code-bg: #E2E4E2;
-  --color-code-string: #059669;
-  --color-code-number: #d97706;
-  --color-code-flag: #2563eb;
-  --color-code-path: #7c3aed;
-  --card-shimmer: inset 0 1px 0 rgba(255, 255, 255, 0.5);
-  --card-shadow: 0 12px 40px rgba(0, 0, 0, 0.05);
+  --color-bg:             #E4E7E3;
+  --color-bg-card:        #ECEFEA;
+  --color-bg-elevated:    #F2F4F0;
+  --color-bg-alt:         #DFE3DE;
+  --color-text-primary:   #22251F;
+  --color-text-secondary: rgba(34, 37, 31, 0.66);
+  --color-text-muted:     rgba(34, 37, 31, 0.42);
+  --color-border:         rgba(22, 26, 21, 0.16);
+  --color-border-strong:  rgba(6, 182, 111, 0.34);
+  --color-accent-dim:     rgba(6, 182, 111, 0.06);
+  --color-accent-glow:    rgba(6, 182, 111, 0.10);
+  --dot-color:            rgba(6, 182, 111, 0.06);
+  --color-hero-right-bg:  #d8e6dc;
+  --color-hero-glow:      rgba(6, 182, 111, 0.10);
+  --color-hero-dots:      #06B66F;
+  --color-on-accent:      #000000;
+  --color-code-bg:        #DDE1DB;
+  --color-code-keyword:   #06804F;
+  --color-code-string:    #059669;
+  --color-code-number:    #b45309;
+  --color-code-flag:      #2563eb;
+  --color-code-path:      #7c3aed;
+  --card-shimmer:         inset 0 1px 0 rgba(255, 255, 255, 0.72);
+  --card-shadow:          0 12px 40px rgba(24, 38, 28, 0.10);
 }
 
 [data-theme="light"] ::-webkit-scrollbar-track {
