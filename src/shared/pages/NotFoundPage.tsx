@@ -1,35 +1,45 @@
 import { Link } from 'react-router-dom';
-import { IconTerminal } from '@/shared/components/icons';
+import { IconArrowRight, IconTerminal } from '@/shared/components/icons';
 import SEO from '../components/SEO';
-import PublicHeroSection from '@/shared/components/PublicHeroSection';
+import Dobia from '@/shared/components/Dobia';
+import { GridBoxedBackground } from '@/shared/components/backgrounds';
 
 const NotFoundPage = () => (
-  <div className="min-h-screen bg-bg relative">
+  <div className="relative min-h-dvh bg-bg flex flex-col items-center justify-center overflow-hidden px-3 md:px-4 lg:px-6 py-20" data-nav-invert>
     <SEO
       title="404 - Node Not Found"
       description="The requested page could not be located on the QYVORA network."
       noindex
     />
-    <PublicHeroSection mask="none" showGlobe={false}>
-      <div className="flex items-center gap-2 text-[11px] font-bold uppercase tracking-widest text-text-muted mb-2">
-        <IconTerminal size={16} className="text-accent" />
-        <span className="font-mono">// 404 — NODE NOT FOUND</span>
-      </div>
-      <h1 className="font-black text-text-primary leading-[1.08] tracking-tight w-full relative">
-        <span className="block text-[2rem] min-[400px]:text-[2.25rem] sm:text-[2.5rem] md:text-[3rem] uppercase">
-          Lost in the Network ?
-        </span>
-      </h1>
-      <p className="text-text-secondary text-base sm:text-lg lg:text-base xl:text-lg leading-relaxed max-w-xl font-mono">
-        How did you End Up here? I am suspecting you! ^_^
-      </p>
-      <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 pt-2">
-        <Link to="/" className="btn-primary inline-flex items-center justify-center gap-2.5 !px-8 sm:!px-10 !py-3 sm:!py-4 whitespace-nowrap">
-          Return to Base
-        </Link>
-      </div>
-    </PublicHeroSection>
+    <GridBoxedBackground blur={0} mask="none" />
 
+    <div className="relative z-10 flex flex-col items-center text-center max-w-2xl">
+      <Dobia expression="confused" size="xl" />
+
+      <div className="relative mt-5 w-full rounded-2xl border border-border/30 bg-bg-card px-6 sm:px-8 py-5 sm:py-6 shadow-[var(--card-shimmer)]">
+        <span
+          aria-hidden
+          className="absolute -top-1.5 left-1/2 -translate-x-1/2 w-3 h-3 rotate-45 border-l border-t border-border/30 bg-bg-card"
+        />
+        <p className="inline-flex items-center gap-2 font-mono text-[10px] font-black uppercase tracking-widest text-accent mb-3">
+          <IconTerminal size={14} /> // 404 — NODE NOT FOUND
+        </p>
+        <h1 className="text-3xl sm:text-4xl font-black uppercase tracking-tight text-text-primary leading-none">
+          Lost in the Network?
+        </h1>
+        <p className="text-sm sm:text-base text-text-secondary leading-relaxed mt-3 font-mono">
+          The page you were looking for has been scrubbed from the network.
+          Let&apos;s get you back to base.
+        </p>
+      </div>
+
+      <Link
+        to="/"
+        className="btn-primary inline-flex items-center justify-center gap-2.5 !px-8 sm:!px-10 !py-3 sm:!py-4 whitespace-nowrap mt-6"
+      >
+        Return to Base <IconArrowRight size={18} />
+      </Link>
+    </div>
   </div>
 );
 
