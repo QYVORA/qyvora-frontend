@@ -42,7 +42,7 @@ const PublicHeroSection: React.FC<PublicHeroSectionProps> = ({
 
       <div className={`relative z-10 w-full flex-1 mx-auto grid grid-cols-1 ${splitAt === 'md' ? 'md:grid-cols-2' : 'lg:grid-cols-2'} text-left items-center h-full`}>
         <div className="flex flex-col items-start justify-center px-3 md:px-4 lg:px-6 pt-20 sm:pt-20 lg:pt-24 pb-20 sm:pb-16 lg:pb-16 space-y-0 w-full h-full">
-          <div className="flex flex-col items-start w-full space-y-5 sm:space-y-6">
+          <div className="flex flex-col items-start w-full space-y-8 sm:space-y-10">
             {children}
           </div>
         </div>
