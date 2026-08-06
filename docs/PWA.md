@@ -51,7 +51,7 @@ QYVORA Frontend is a Progressive Web App with offline support and install capabi
 | Priority | Popup |
 |----------|-------|
 | 1 | Consent banner |
-| 2 | Onboarding wizard |
+| 2 | Onboarding tour (spotlight) |
 | 3 | Community popup |
 | 4 | Promotional system |
 | 5 | **Install banner** (highest) |

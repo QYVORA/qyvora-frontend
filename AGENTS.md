@@ -211,7 +211,7 @@ Pass icons at `w-10 h-10` or `w-12 h-12` to the shared `EmptyState` component.
 | Popup | Priority |
 |-------|----------|
 | Consent banner | 1 |
-| Onboarding wizard | 2 |
+| Onboarding tour (spotlight) | 2 |
 | Community popup | 3 |
 | Promotional system | 4 |
 | Install banner | 5 |
