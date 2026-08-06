@@ -964,6 +964,38 @@
       "back": "Back",
       "next": "Next"
     },
+    "tour": {
+      "controls": {
+        "skip": "Skip",
+        "back": "Back",
+        "next": "Next",
+        "finish": "Finish"
+      },
+      "welcome": {
+        "title": "Welcome, operator.",
+        "body": "This is your dashboard — mission control, {{username}}. Track your rank, continue training and see what's next. Here's a quick tour."
+      },
+      "nav": {
+        "title": "Main navigation",
+        "body": "Courses, Bootcamps, Labs and the Marketplace live in this bar — one tap to jump between them."
+      },
+      "cp": {
+        "title": "CyberPoints (CP)",
+        "body": "Your balance: {{cp}} CP. Every room you complete earns CP and climbs you up the ranks."
+      },
+      "learning": {
+        "title": "Jump into training",
+        "body": "Bootcamps are guided programs that take you from beginner to operator. Tap one to continue your mission."
+      },
+      "profile": {
+        "title": "Your profile",
+        "body": "Manage your hacker handle, check your stats and share your progress from here."
+      },
+      "done": {
+        "title": "You're all set!",
+        "body": "Complete your first room and start earning CP. Good luck, operator."
+      }
+    },
     "usernameChange": {
       "title": "Choose your hacker handle",
       "description": "This is how other operators will see you. Pick something unique.",
