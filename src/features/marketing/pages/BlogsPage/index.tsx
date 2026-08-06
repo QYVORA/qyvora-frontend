@@ -53,19 +53,24 @@ const BlogsPage: React.FC = () => {
                 renderCard={(post) => (
                   <a
                     href={`/blogs/${post.slug}`}
-                    className="block relative min-h-[260px] md:min-h-[360px] group"
+                    className="group flex flex-col md:flex-row rounded-2xl border border-border/50 bg-bg-card overflow-hidden min-h-[260px] md:min-h-[360px] h-full transition-all duration-300 hover:border-accent/40"
                   >
-                    <div
-                      className="absolute inset-0 bg-cover bg-center"
-                      style={{ backgroundImage: `url(${post.image})` }}
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-r from-bg-card via-bg-card/90 to-bg-card/40" />
-                    <div className="relative z-10 p-6 sm:p-8 md:p-6 lg:p-8 flex flex-col items-start text-left h-full min-h-[260px] md:min-h-[360px]">
+                    <div className="relative md:w-[45%] lg:w-[48%] shrink-0 aspect-[16/10] md:aspect-auto overflow-hidden bg-bg-elevated">
+                      <img
+                        src={post.image}
+                        alt={post.title}
+                        width={1536}
+                        height={1024}
+                        className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                        loading="lazy"
+                      />
+                    </div>
+                    <div className="relative flex flex-col items-start text-left p-6 sm:p-8 flex-1 min-w-0">
                       <div className="flex flex-wrap gap-1.5 mb-3">
                         {post.tags.map((tag) => (
                           <span
                             key={tag}
-                            className="px-2.5 py-1 text-[9px] font-black uppercase tracking-widest bg-bg/80 border border-accent/20 rounded-full text-accent"
+                            className="px-2.5 py-1 text-[9px] font-black uppercase tracking-widest bg-accent/10 border border-accent/20 rounded-full text-accent"
                           >
                             {tag}
                           </span>

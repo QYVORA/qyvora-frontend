@@ -37,11 +37,17 @@ const LandingBlogsSection = () => {
               renderCard={(post) => (
                 <Link
                   to={`/blogs/${post.slug}`}
-                  className="block relative min-h-[280px] md:min-h-[340px] group"
+                  className="group flex flex-col md:flex-row rounded-2xl border border-border/50 bg-bg-card overflow-hidden min-h-[280px] md:min-h-[340px] h-full transition-all duration-300 hover:border-accent/40"
                 >
-                  <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: `url(${post.image})` }} />
-                  <div className="absolute inset-0 bg-gradient-to-r from-bg-card via-bg-card/90 to-bg-card/40" />
-                  <div className="relative z-10 p-6 sm:p-8 md:p-6 lg:p-8 flex flex-col items-start text-left h-full min-h-[280px] md:min-h-[340px]">
+                  <div className="relative md:w-[45%] lg:w-[48%] shrink-0 aspect-[16/10] md:aspect-auto overflow-hidden bg-bg-elevated">
+                    <img
+                      src={post.image}
+                      alt={post.title}
+                      className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                      loading="lazy"
+                    />
+                  </div>
+                  <div className="relative flex flex-col items-start text-left p-6 sm:p-8 flex-1 min-w-0">
                     <div className="flex flex-wrap gap-1.5 mb-3">
                       {post.tags.map((tag) => (
                         <span
@@ -61,7 +67,7 @@ const LandingBlogsSection = () => {
                     <p className="text-xs sm:text-sm text-text-secondary leading-relaxed font-mono border-l-2 border-accent/40 pl-3 py-1.5 mt-3 line-clamp-3">
                       {post.excerpt}
                     </p>
-                    <div className="flex items-center justify-between gap-3 mt-auto w-full">
+                    <div className="flex items-center justify-between gap-3 mt-auto w-full pt-5">
                       <div className="flex items-center gap-2 min-w-0">
                         <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full shrink-0 bg-accent/10 border border-accent/20 flex items-center justify-center">
                           <User className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-accent" />
