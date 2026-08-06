@@ -28,14 +28,17 @@ const AuthFormLayout: React.FC<AuthFormLayoutProps> = ({ children }) => {
         <GridBoxedBackground blur={0} mask="right" />
       </div>
 
-      {/* Desktop globe — belongs to the page, not the hero. Spans the whole
-          viewport in the bottom-right corner so hero and form share one canvas
-          and the globe is never clipped at the column boundary. */}
-      <div className="hidden md:block absolute inset-0 z-0 flex items-end justify-end overflow-hidden pointer-events-none" aria-hidden="true">
+      {/* Globe — belongs to the page, not the hero. Spans the whole viewport in
+          the bottom-right corner so hero and form share one canvas and the
+          globe is never clipped at the column boundary. Fixed so it stays pinned
+          to the bottom-right corner on mobile while the form scrolls; scroll-exit
+          animation is disabled because the globe is a persistent page backdrop
+          here, not a hero. */}
+      <div className="fixed inset-0 z-0 flex items-end justify-end overflow-hidden pointer-events-none" aria-hidden="true">
         <div className="relative w-full h-full flex items-end justify-end">
           <ErrorBoundary scope="HackerGlobe" fallback={null}>
             <Suspense fallback={null}>
-              <HackerGlobe fluid />
+              <HackerGlobe fluid scrollExit={false} />
             </Suspense>
           </ErrorBoundary>
         </div>
