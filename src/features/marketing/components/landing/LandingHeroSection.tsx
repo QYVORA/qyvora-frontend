@@ -1,5 +1,5 @@
 import React from 'react';
-import { motion, useReducedMotion, useScroll, useTransform } from 'motion/react';
+import { motion, useReducedMotion } from 'motion/react';
 import { Link } from 'react-router-dom';
 import { IconDashboard, IconArrowRight } from '@/shared/components/icons';
 import { lazy, Suspense } from 'react';
@@ -31,14 +31,7 @@ const LandingHeroSection: React.FC<LandingHeroSectionProps> = ({
   const minimizeEffects = shouldReduceMotion || constrainedDevice || isMobile;
   const disableTypewriter = shouldReduceMotion;
 
-  const { scrollYProgress } = useScroll({
-    target: heroRef,
-    offset: ['start start', 'end start'],
-  });
-
   const { scale: rawGlobeScale, offset: globeOffset } = useFluidGlobe();
-  const globeScaleValue = useTransform(scrollYProgress, [0, 1], [1, 2.5]);
-  const globeOpacityValue = useTransform(scrollYProgress, [0, 0.6, 1], [1, 0.8, 0]);
 
   const line1Ref = React.useRef<HTMLSpanElement>(null);
   const line2DisplayRef = React.useRef<HTMLSpanElement>(null);
@@ -114,14 +107,7 @@ const LandingHeroSection: React.FC<LandingHeroSectionProps> = ({
       <GridBoxedBackground reduced={shouldReduceMotion || constrainedDevice} blur={0} mask="right" />
 
       {/* ── Globe - positioned absolutely behind text, expands + fades on scroll ── */}
-      <motion.div
-        style={
-          minimizeEffects
-            ? { opacity: 1, scale: 1 }
-            : { opacity: globeOpacityValue, scale: globeScaleValue }
-        }
-        className="absolute inset-0 z-[1] flex items-end justify-end overflow-hidden"
-      >
+      <div className="absolute inset-0 z-[1] flex items-end justify-end overflow-hidden">
         <div className="relative w-full h-full flex items-end justify-end">
           <ErrorBoundary scope="HackerGlobe" fallback={null}>
             <Suspense fallback={null}>
@@ -129,7 +115,7 @@ const LandingHeroSection: React.FC<LandingHeroSectionProps> = ({
             </Suspense>
           </ErrorBoundary>
         </div>
-      </motion.div>
+      </div>
 
       {/* ── Main content grid ── */}
       <div
@@ -154,7 +140,7 @@ const LandingHeroSection: React.FC<LandingHeroSectionProps> = ({
         ">
 
           {/* Top content block */}
-          <div className="flex flex-col items-start w-full space-y-5 sm:space-y-6">
+          <div className="flex flex-col items-start w-full space-y-8 sm:space-y-10">
             {/* Status badge */}
             <motion.div
               initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 14 }}
@@ -210,7 +196,7 @@ const LandingHeroSection: React.FC<LandingHeroSectionProps> = ({
             initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={minimizeEffects ? { duration: 0.2 } : { duration: 0.5, delay: 0.85, ease: [0.16, 1, 0.3, 1] }}
-            className="flex flex-col sm:flex-row w-full sm:w-auto items-stretch sm:items-center gap-4 mt-8 sm:mt-12 lg:mt-9"
+            className="flex flex-col sm:flex-row w-full sm:w-auto items-stretch sm:items-center gap-4 mt-10 sm:mt-14 lg:mt-12"
           >
             {user ? (
               <Link to="/dashboard" className="btn-primary flex items-center justify-center gap-2.5 !px-8 sm:!px-10 !py-3 sm:!py-4">

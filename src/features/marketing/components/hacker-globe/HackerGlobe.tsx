@@ -1,5 +1,6 @@
 import React, { useRef, useEffect } from 'react';
 import * as THREE from 'three';
+import { motion, useReducedMotion, useScroll, useTransform } from 'motion/react';
 import { useAdaptiveUi } from '../../../../core/hooks/useAdaptiveUi';
 import { buildDotMapTexture } from './helpers';
 import { useFluidGlobe } from './useFluidGlobe';
@@ -17,6 +18,17 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88, offset = [0, 0,
   const fluidGlobe = useFluidGlobe();
   const effectiveScale = fluid ? fluidGlobe.scale : scale;
   const effectiveOffset = fluid ? fluidGlobe.offset : offset;
+
+  // Scroll-linked exit — as the section scrolls away, the globe gently expands
+  // and fades, so it appears to recede out of the viewport instead of being
+  // clipped. Same behavior across every section that hosts the globe.
+  const shouldReduceMotion = useReducedMotion();
+  const { scrollYProgress } = useScroll({
+    target: mountRef,
+    offset: ['start start', 'end start'],
+  });
+  const exitScale = useTransform(scrollYProgress, [0, 0.45, 1], [1, 1.05, 1.16]);
+  const exitOpacity = useTransform(scrollYProgress, [0, 0.6, 1], [1, 1, 0]);
 
   useEffect(() => {
     const el = mountRef.current;
@@ -171,10 +183,15 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88, offset = [0, 0,
   }, [effectiveScale, isSimplified, effectiveOffset]);
 
   return (
-    <div
+    <motion.div
       ref={mountRef}
       className="relative z-0 h-full w-full pointer-events-none overflow-hidden"
-      style={{ cursor: 'default', willChange: 'transform' }}
+      style={{
+        cursor: 'default',
+        willChange: 'transform, opacity',
+        scale: shouldReduceMotion ? 1 : exitScale,
+        opacity: shouldReduceMotion ? 1 : exitOpacity,
+      }}
     />
   );
 };
