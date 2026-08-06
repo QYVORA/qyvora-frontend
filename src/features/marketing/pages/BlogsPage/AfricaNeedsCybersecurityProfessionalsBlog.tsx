@@ -78,8 +78,8 @@ export const AfricaNeedsCybersecurityProfessionalsBlog: React.FC = () => {
                   <stop offset="100%" stopColor="rgba(6,182,111,0.6)" />
                 </linearGradient>
                 <linearGradient id="target-bar-grad" x1="0" y1="0" x2="1" y2="0">
-                  <stop offset="0%" stopColor="rgba(6,182,111,0.5)" />
-                  <stop offset="100%" stopColor="rgba(6,182,111,0.15)" />
+                  <stop offset="0%" stopColor="rgba(6,182,111,0.85)" />
+                  <stop offset="100%" stopColor="rgba(6,182,111,0.55)" />
                 </linearGradient>
                 <filter id="bar-glow">
                   <feDropShadow dx="0" dy="2" stdDeviation="4" floodColor="rgba(6,182,111,0.15)" />
@@ -98,7 +98,7 @@ export const AfricaNeedsCybersecurityProfessionalsBlog: React.FC = () => {
               <text x="220" y="104" textAnchor="start" fill="#06B66F" fontFamily="JetBrains Mono, monospace" fontWeight="900" fontSize="13">100,000 professionals by 2030</text>
 
               <rect x="140" y="155" width="320" height="20" rx="10" fill="rgba(6,182,111,0.05)" />
-              <text x="300" y="169" textAnchor="middle" fill="rgba(238,240,238,0.35)" fontFamily="JetBrains Mono, monospace" fontSize="11">The gap represents a $2B+ training opportunity</text>
+              <text x="300" y="169" textAnchor="middle" fill="var(--color-text-muted)" fontFamily="JetBrains Mono, monospace" fontSize="11">The gap represents a $2B+ training opportunity</text>
             </svg>
           </div>
         </InlineDiagram>
