@@ -1,9 +1,12 @@
-import React from 'react';
+import React, { lazy, Suspense } from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { IconArrowLeft } from '@/shared/components/icons';
 import { GridBoxedBackground } from '@/shared/components/backgrounds';
+import ErrorBoundary from '@/shared/components/ErrorBoundary';
 import AuthHero from '@/features/auth/components/AuthHero';
+
+const HackerGlobe = lazy(() => import('@/features/marketing/components/HackerGlobe'));
 
 interface AuthFormLayoutProps {
   children: React.ReactNode;
@@ -23,6 +26,19 @@ const AuthFormLayout: React.FC<AuthFormLayoutProps> = ({ children }) => {
           The form column and form cards stay translucent so this shows through. */}
       <div className="hidden md:block absolute inset-0 bg-bg overflow-hidden" aria-hidden="true">
         <GridBoxedBackground blur={0} mask="right" />
+      </div>
+
+      {/* Desktop globe — belongs to the page, not the hero. Spans the whole
+          viewport in the bottom-right corner so hero and form share one canvas
+          and the globe is never clipped at the column boundary. */}
+      <div className="hidden md:block absolute inset-0 z-0 flex items-end justify-end overflow-hidden pointer-events-none" aria-hidden="true">
+        <div className="relative w-full h-full flex items-end justify-end">
+          <ErrorBoundary scope="HackerGlobe" fallback={null}>
+            <Suspense fallback={null}>
+              <HackerGlobe fluid />
+            </Suspense>
+          </ErrorBoundary>
+        </div>
       </div>
 
       <div className="min-h-dvh relative md:grid md:grid-cols-2">
