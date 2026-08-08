@@ -4,7 +4,7 @@ import { motion, useReducedMotion } from 'motion/react';
 import { BookOpen, Zap } from 'lucide-react';
 import { IconLabs, IconShield, IconLock, IconArrowRight } from '@/shared/components/icons';
 import { useTranslation } from 'react-i18next';
-import { getDottedMapBg } from '@/shared/utils/dottedMap';
+import { DottedMapOverlay } from '@/shared/components/ui';
 
 const PILLARS_META = [
   { id: 'labs', icon: IconLabs, link: '/dashboard/labs', featured: false },
@@ -52,7 +52,7 @@ const LandingPillarsSection: React.FC = () => {
                 to={featured.link}
                 className="group relative block h-full rounded-2xl border border-border/30 bg-bg-card p-4 sm:p-8 transition-all duration-300 hover:border-accent/30"
               >
-                <div className="absolute inset-0 opacity-[0.16] text-accent" style={{ backgroundImage: getDottedMapBg(), backgroundSize: 'contain', backgroundRepeat: 'no-repeat', backgroundPosition: 'center' }} />
+                <DottedMapOverlay className="rounded-2xl" />
 
                 <div className="relative h-full flex flex-col">
                   <div className="flex items-center justify-between mb-3 sm:mb-6">
@@ -94,7 +94,7 @@ const LandingPillarsSection: React.FC = () => {
                 to={supporting[0].link}
                 className="group relative block h-full rounded-2xl border border-border/30 bg-bg-card p-3 sm:p-5 transition-all duration-300 hover:border-accent/30"
               >
-                <div className="absolute inset-0 opacity-[0.16] text-accent" style={{ backgroundImage: getDottedMapBg(), backgroundSize: 'contain', backgroundRepeat: 'no-repeat', backgroundPosition: 'center' }} />
+                <DottedMapOverlay className="rounded-2xl" />
 
                 <div className="relative h-full flex flex-col">
                   <div className="flex items-center justify-between mb-2 sm:mb-3">
@@ -132,7 +132,7 @@ const LandingPillarsSection: React.FC = () => {
                 to={supporting[1].link}
                 className="group relative block h-full rounded-2xl border border-border/30 bg-bg-card p-3 sm:p-5 transition-all duration-300 hover:border-accent/30"
               >
-                <div className="absolute inset-0 opacity-[0.16] text-accent" style={{ backgroundImage: getDottedMapBg(), backgroundSize: 'contain', backgroundRepeat: 'no-repeat', backgroundPosition: 'center' }} />
+                <DottedMapOverlay className="rounded-2xl" />
 
                 <div className="relative h-full flex flex-col">
                   <div className="flex items-center justify-between mb-2 sm:mb-3">
@@ -170,7 +170,7 @@ const LandingPillarsSection: React.FC = () => {
                 to={supporting[2].link}
                 className="group relative block h-full rounded-2xl border border-border/30 bg-bg-card p-3 sm:p-5 transition-all duration-300 hover:border-accent/30"
               >
-                <div className="absolute inset-0 opacity-[0.16] text-accent" style={{ backgroundImage: getDottedMapBg(), backgroundSize: 'contain', backgroundRepeat: 'no-repeat', backgroundPosition: 'center' }} />
+                <DottedMapOverlay className="rounded-2xl" />
 
                 <div className="relative h-full flex flex-col">
                   <div className="flex items-center justify-between mb-2 sm:mb-3">
