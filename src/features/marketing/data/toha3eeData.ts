@@ -1,4 +1,4 @@
-import { Network, Eye, Key, Radar, Router, Wifi, FileText, Terminal, type LucideIcon } from 'lucide-react';
+import { Network, Eye, Key, Radar, Router, Wifi, FileText, Search, ListChecks, Globe, Terminal, type LucideIcon } from 'lucide-react';
 
 export interface Toha3eeCategory {
   id: string;
@@ -27,15 +27,36 @@ export const MODULES: Toha3eeCategory[] = [
     id: 'auth',
     name: 'Auth',
     icon: Key,
-    desc: 'Credential and authentication attacks — relay, signing checks and default-credential audits.',
-    modules: ['default.creds', 'ntlm.relay', 'smb.signing', 'smb.kerberoast'],
+    desc: 'Credential and authentication attacks — relay, signing checks, spraying, brute force and AS-REP.',
+    modules: ['default.creds', 'ntlm.relay', 'smb.signing', 'smb.kerberoast', 'auth.spray', 'auth.brute', 'auth.userenum', 'auth.asrep'],
   },
   {
     id: 'recon',
     name: 'Recon',
     icon: Radar,
     desc: 'Network discovery and fingerprinting that feeds the store and ranks attack vectors.',
-    modules: ['net.scan', 'service.synscan', 'service.fingerprint', 'cve.suggest'],
+    modules: ['net.scan', 'net.ping', 'net.traceroute', 'net.osdetect', 'service.synscan', 'service.tcpconnect', 'service.udpscan', 'service.finxmas', 'service.ack', 'service.protoscan', 'service.idle', 'service.fingerprint', 'service.tls', 'web.dir', 'cve.suggest'],
+  },
+  {
+    id: 'osint',
+    name: 'OSINT',
+    icon: Search,
+    desc: 'Open-source intelligence — DNS, WHOIS, CT logs, ASN, Shodan, buckets, wayback and GitHub dorks.',
+    modules: ['osint.dns', 'osint.whois', 'osint.ct', 'osint.asn', 'osint.shodan', 'osint.bucket', 'osint.wayback', 'osint.github', 'osint.hibp', 'osint.metadata', 'osint.dork', 'osint.harvest'],
+  },
+  {
+    id: 'enum',
+    name: 'Enumeration',
+    icon: ListChecks,
+    desc: 'Service-level enumeration — SMTP, SNMP, LDAP, NFS and SMB users plus IPv6 host sweeps.',
+    modules: ['smtp.enum', 'snmp.enum', 'ldap.enum', 'nfs.enum', 'smb.enum', 'net.ip6sweep'],
+  },
+  {
+    id: 'web',
+    name: 'Web',
+    icon: Globe,
+    desc: 'Web-layer assessment — misconfiguration discovery on top of the recon fingerprints.',
+    modules: ['web.misconfig'],
   },
   {
     id: 'switch',
