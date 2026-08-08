@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useSearchParams } from 'react-router-dom';
 import { Bell, CheckCheck, Loader2 } from 'lucide-react';
 import ScrollReveal from '../../../shared/components/ScrollReveal';
 import api from '../../../core/services/api';
@@ -36,6 +37,28 @@ const TYPE_COLORS: Record<string, string> = {
 
 const PAGE_SIZE = 15;
 
+type Filter = 'all' | 'unread' | 'system' | 'achievement';
+
+const ACHIEVEMENT_TYPES = new Set([
+  'cp_earned',
+  'rank_change',
+  'room_completed',
+  'room_complete',
+  'quiz_result',
+  'landing_reward',
+]);
+
+const FILTER_KEYS: Filter[] = ['all', 'unread', 'system', 'achievement'];
+
+const matchesFilter = (n: Notification, filter: Filter): boolean => {
+  switch (filter) {
+    case 'all': return true;
+    case 'unread': return !n.read;
+    case 'achievement': return ACHIEVEMENT_TYPES.has(n.type);
+    case 'system': return !ACHIEVEMENT_TYPES.has(n.type);
+  }
+};
+
 const Notifications: React.FC = () => {
   const { t } = useTranslation();
   const { addToast } = useToast();
@@ -43,7 +66,10 @@ const Notifications: React.FC = () => {
   const [loading, setLoading]             = useState(true);
   const [markingAll, setMarkingAll]       = useState(false);
   const [visibleCount, setVisibleCount]   = useState(PAGE_SIZE);
-  const [filter, setFilter]               = useState<'all' | 'unread'>('all');
+  const [searchParams]                    = useSearchParams();
+
+  const filterParam = searchParams.get('filter') || 'all';
+  const filter: Filter = (FILTER_KEYS as string[]).includes(filterParam) ? filterParam as Filter : 'all';
 
   useEffect(() => {
     api.get('/notifications')
@@ -75,18 +101,9 @@ const Notifications: React.FC = () => {
   };
 
   const unreadCount = notifications.filter((n) => !n.read).length;
-  const displayed   = filter === 'unread' ? notifications.filter((n) => !n.read) : notifications;
+  const displayed   = notifications.filter((n) => matchesFilter(n, filter));
   const visible     = displayed.slice(0, visibleCount);
   const hasMore     = visibleCount < displayed.length;
-
-  // Type breakdown for sidebar
-  const typeCounts = notifications.reduce<Record<string, number>>((acc, n) => {
-    acc[n.type] = (acc[n.type] || 0) + 1;
-    return acc;
-  }, {});
-  const topTypes = Object.entries(typeCounts)
-    .sort((a, b) => b[1] - a[1])
-    .slice(0, 5);
 
   if (loading) return <NotificationsSkeleton />;
 
