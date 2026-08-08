@@ -38,19 +38,17 @@ const SkillMatrix = ({ modules }: SkillMatrixProps) => {
   }, [modules]);
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-2 gap-2 md:gap-3">
+    <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 md:gap-4 lg:h-[460px]">
       {/* Radar Chart Card */}
-      <div className="rounded-2xl border border-border/30 bg-bg-card p-2 md:p-3 lg:p-4 flex flex-col">
-        <div className="flex-1 min-h-0 overflow-hidden">
+      <div className="rounded-2xl border border-border/30 bg-bg-card p-4 md:p-6 flex flex-col min-h-[360px] lg:min-h-0">
+        <div className="flex-1 min-h-0 flex items-center justify-center">
           <SkillRadarChart data={radarData} />
         </div>
       </div>
 
       {/* Skill Stats Card */}
-      <div className="rounded-2xl border border-border/30 bg-bg-card p-2 md:p-3 lg:p-4 flex flex-col">
-        <div className="min-h-0 h-full flex flex-col overflow-y-auto">
-          <SkillStats modules={modules} />
-        </div>
+      <div className="rounded-2xl border border-border/30 bg-bg-card p-4 md:p-6 flex flex-col min-h-[360px] lg:min-h-0">
+        <SkillStats modules={modules} />
       </div>
     </div>
   );

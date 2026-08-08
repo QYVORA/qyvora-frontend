@@ -9,6 +9,7 @@ import { useAdaptiveUi } from '../../../../core/hooks/useAdaptiveUi';
 import { useFluidGlobe } from '../hacker-globe/useFluidGlobe';
 import ErrorBoundary from '../../../../shared/components/ErrorBoundary';
 import { GridBoxedBackground } from '@/shared/components/backgrounds';
+import { SOCIAL_LINKS } from '@/shared/components/layout/Footer';
 
 const HackerGlobe = lazy(() => import('@/features/marketing/components/HackerGlobe'));
 
@@ -212,6 +213,33 @@ const LandingHeroSection: React.FC<LandingHeroSectionProps> = ({
                 </Link>
               </>
             )}
+          </motion.div>
+
+          {/* Social buttons */}
+          <motion.div
+            initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={minimizeEffects ? { duration: 0.2 } : { duration: 0.5, delay: 1, ease: [0.16, 1, 0.3, 1] }}
+            className="mt-8 sm:mt-10 lg:mt-9 flex items-center gap-4"
+          >
+            <span className="text-[9px] min-[380px]:text-[10px] font-black uppercase tracking-[0.14em] sm:tracking-[0.2em] text-text-muted">
+              {t('hero.followUs')}
+            </span>
+            <span className="hidden min-[380px]:block h-px w-8 bg-border/40" aria-hidden="true" />
+            <div className="flex items-center gap-2.5 sm:gap-3">
+              {SOCIAL_LINKS.map(({ key, label, href, Icon }) => (
+                <a
+                  key={key}
+                  href={href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={label}
+                  className="flex h-10 w-10 md:h-11 md:w-11 items-center justify-center rounded-xl border border-border/30 bg-bg-elevated/50 text-text-muted transition-all hover:border-accent/40 hover:text-accent active:scale-95 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+                >
+                  <Icon className="h-4 w-4" />
+                </a>
+              ))}
+            </div>
           </motion.div>
         </div>
 
