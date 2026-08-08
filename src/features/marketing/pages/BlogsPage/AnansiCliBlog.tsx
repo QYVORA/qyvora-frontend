@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { Globe, FileCode, Download, Zap } from 'lucide-react';
 import { IconSearch, IconLock, IconShield, IconWarning, IconCheck } from '@/shared/components/icons';
 import { Section, Body, CodeBlock, TerminalBlock, Heading, Highlight, PhaseCard, OutputBlock } from './shared';
@@ -219,12 +220,12 @@ anansi target.com`} />
             >
               <Download className="w-5 h-5" /> Download Now
             </a>
-            <a
-              href="/anansi"
+            <Link
+              to="/anansi"
               className="inline-flex items-center gap-3 border border-accent/30 text-accent font-black uppercase tracking-[0.12em] rounded-xl px-10 py-4 text-sm hover:bg-accent/5 active:scale-95 transition-all"
             >
               Learn More <Zap className="w-5 h-5" />
-            </a>
+            </Link>
           </div>
         </div>
       </Section>
