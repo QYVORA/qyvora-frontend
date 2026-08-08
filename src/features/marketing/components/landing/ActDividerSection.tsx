@@ -1,53 +1,34 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { motion, useReducedMotion } from 'motion/react';
 import PublicHeroSection from '@/shared/components/PublicHeroSection';
+import { IconArrowRight } from '@/shared/components/icons';
 
-interface ActDividerSectionProps {
-  number: string;
-  title: string;
-  accentWord?: string;
-  tagline: string;
+interface ActDividerItem {
+  icon: React.ElementType;
+  label: string;
   description: string;
+  to: string;
 }
 
-const ActDividerSection: React.FC<ActDividerSectionProps> = ({ number, title, accentWord, tagline, description }) => {
+interface ActDividerSectionProps {
+  title: string;
+  accentWord?: string;
+  description: string;
+  items: ActDividerItem[];
+}
+
+const ActDividerSection: React.FC<ActDividerSectionProps> = ({ title, accentWord, description, items }) => {
   const shouldReduceMotion = useReducedMotion();
 
   return (
     <PublicHeroSection showGlobe mask="right">
-      {/* Anchored to the content block so the numeral stays aligned with the
-          text (and clears the fixed navbar) on mobile, and bleeds up on desktop. */}
       <div className="relative w-full space-y-5 sm:space-y-6">
-        {/* Large faint number watermark */}
-        <motion.span
-          initial={{ opacity: 0, scale: 1.1 }}
-          whileInView={{ opacity: 1, scale: 1 }}
-          viewport={{ once: true, margin: '-80px' }}
-          transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
-          className="absolute left-0 -top-10 lg:-top-16 leading-none font-black select-none pointer-events-none"
-          style={{
-            fontSize: 'clamp(8rem, 22vw, 24rem)',
-            color: 'rgba(6, 182, 111, 0.04)',
-          }}
-        >
-          {number}
-        </motion.span>
-
-        <motion.span
-          initial={{ opacity: 0, x: -20 }}
-          whileInView={{ opacity: 1, x: 0 }}
-          viewport={{ once: true, margin: '-80px' }}
-          transition={{ duration: 0.5, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
-          className="text-[9px] md:text-[10px] font-black uppercase tracking-[0.35em] text-accent"
-        >
-          {tagline}
-        </motion.span>
-
         <motion.h2
           initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-80px' }}
-          transition={{ duration: 0.6, delay: 0.25, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
           className="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-black text-text-primary tracking-tight leading-[1.05]"
         >
           {title}{' '}
@@ -58,7 +39,7 @@ const ActDividerSection: React.FC<ActDividerSectionProps> = ({ number, title, ac
           initial={{ opacity: 0, scaleX: 0 }}
           whileInView={{ opacity: 1, scaleX: 1 }}
           viewport={{ once: true, margin: '-80px' }}
-          transition={{ duration: 0.6, delay: 0.35, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
           className="w-12 h-0.5 bg-accent/50 origin-left"
         />
 
@@ -66,11 +47,38 @@ const ActDividerSection: React.FC<ActDividerSectionProps> = ({ number, title, ac
           initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 15 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-80px' }}
-          transition={{ duration: 0.6, delay: 0.45, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
           className="text-sm md:text-base text-text-muted font-mono leading-relaxed max-w-md"
         >
           {description}
         </motion.p>
+
+        <motion.div
+          initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-80px' }}
+          transition={{ duration: 0.6, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
+          className="grid grid-cols-1 sm:grid-cols-3 gap-2 md:gap-3 pt-2 sm:pt-4 max-w-xl"
+        >
+          {items.map((item) => (
+            <Link
+              key={item.label}
+              to={item.to}
+              className="group relative flex items-start gap-3 rounded-2xl border border-border/30 bg-bg-card p-3 md:p-4 transition-all duration-300 hover:border-accent/30"
+            >
+              <div className="w-8 h-8 shrink-0 rounded-xl flex items-center justify-center bg-accent/10 border border-accent/20">
+                <item.icon size={16} className="text-accent" />
+              </div>
+              <div className="min-w-0">
+                <span className="flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest text-text-primary group-hover:text-accent transition-colors">
+                  {item.label}
+                  <IconArrowRight size={12} className="text-text-muted group-hover:text-accent transition-colors shrink-0" />
+                </span>
+                <p className="text-[10px] text-text-muted leading-relaxed mt-1 line-clamp-2">{item.description}</p>
+              </div>
+            </Link>
+          ))}
+        </motion.div>
       </div>
     </PublicHeroSection>
   );

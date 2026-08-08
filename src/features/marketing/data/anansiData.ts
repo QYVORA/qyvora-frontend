@@ -1,140 +1,69 @@
-import { Globe, FileCode, type LucideIcon } from 'lucide-react';
+import { Globe, FileCode, Cpu, Users, GitBranch, type LucideIcon } from 'lucide-react';
 import { IconSearch, IconLock, IconShield, IconWarning } from '@/shared/components/icons';
-import discoveryImg from '@/assets/anansi/discovery.webp';
-import probeImg from '@/assets/anansi/probe.webp';
-import tlsImg from '@/assets/anansi/tls.webp';
-import headersImg from '@/assets/anansi/headers.webp';
-import pathsImg from '@/assets/anansi/paths.webp';
-import takeoverImg from '@/assets/anansi/takeover.webp';
 
 export interface AnansiPhase {
   id: string;
   name: string;
   icon: LucideIcon | React.FC<{ size?: number | string; className?: string }>;
   desc: string;
-  image: string;
-  width: number;
-  height: number;
 }
 
 export const PHASES: AnansiPhase[] = [
-  { id: '01', name: 'DISCOVERY', icon: IconSearch, desc: 'Subdomains via crt.sh CT logs + DNS brute-force', image: discoveryImg, width: 1536, height: 1024 },
-  { id: '02', name: 'PROBE', icon: Globe, desc: 'Live HTTP/HTTPS hosts, status codes, and titles', image: probeImg, width: 1254, height: 1254 },
-  { id: '03', name: 'TLS', icon: IconLock, desc: 'Certificate analysis, SANs, and protocol audit', image: tlsImg, width: 1254, height: 1254 },
-  { id: '04', name: 'HEADERS', icon: IconShield, desc: 'Security headers and CORS misconfigurations', image: headersImg, width: 1536, height: 1024 },
-  { id: '05', name: 'PATHS', icon: FileCode, desc: 'Exposed files (.env, .git), admin panels, and backups', image: pathsImg, width: 1536, height: 1024 },
-  { id: '06', name: 'TAKEOVER', icon: IconWarning, desc: 'Dangling CNAME detection for cloud services', image: takeoverImg, width: 1535, height: 1024 },
+  { id: '01', name: 'DISCOVERY', icon: IconSearch, desc: 'Subdomains via crt.sh CT logs + DNS brute-force wordlist' },
+  { id: '02', name: 'PROBE', icon: Globe, desc: 'Live HTTP/HTTPS hosts — status codes, servers, redirect chains, titles' },
+  { id: '03', name: 'TLS', icon: IconLock, desc: 'Certificate expiry, SANs, protocol version, cipher, self-signed detection' },
+  { id: '04', name: 'HEADERS', icon: IconShield, desc: 'Missing security headers and CORS misconfigurations' },
+  { id: '05', name: 'PATHS', icon: FileCode, desc: 'Exposed files (.env, .git), configs, admin panels, backups, API docs' },
+  { id: '06', name: 'TECH-STACK', icon: Cpu, desc: 'Deep audit of detected platforms — version detection, WordPress plugins/themes, XML-RPC, user enumeration, config backups, known-vulnerable version matching' },
+  { id: '07', name: 'TAKEOVER', icon: IconWarning, desc: 'Dangling CNAMEs pointing to unclaimed cloud services' },
+  { id: '08', name: 'OSINT', icon: Users, desc: 'Emails, phone numbers, employees, WHOIS registrant data' },
+  { id: '09', name: 'CHAIN', icon: GitBranch, desc: 'Assembles findings into multi-step exploit paths (low → high → critical) with per-step exploitation techniques' },
 ];
 
 export interface AnansiRelease {
   id: string;
   label: string;
   arch: string;
-  icon: 'linux' | 'apple' | 'windows';
   file: string;
   size: string;
-  curl: string;
-  steps: { cmd: string; note?: string }[];
 }
 
 const BASE = 'https://github.com/QYVORA/qyvora-anansi-cli/releases/latest/download';
 
 export const RELEASES: AnansiRelease[] = [
-  {
-    id: 'linux-amd64',
-    label: 'Linux',
-    arch: 'x86_64',
-    icon: 'linux',
-    file: 'anansi-linux-amd64',
-    size: '~9.6 MB',
-    curl: `curl -L ${BASE}/anansi-linux-amd64 -o anansi`,
-    steps: [
-      { cmd: `curl -L ${BASE}/anansi-linux-amd64 -o anansi` },
-      { cmd: 'chmod +x anansi' },
-      { cmd: 'sudo mv anansi /usr/local/bin/' },
-      { cmd: 'anansi target.com --deep', note: 'Run a scan' },
-    ],
-  },
-  {
-    id: 'linux-arm64',
-    label: 'Linux',
-    arch: 'ARM64',
-    icon: 'linux',
-    file: 'anansi-linux-arm64',
-    size: '~8.9 MB',
-    curl: `curl -L ${BASE}/anansi-linux-arm64 -o anansi`,
-    steps: [
-      { cmd: `curl -L ${BASE}/anansi-linux-arm64 -o anansi` },
-      { cmd: 'chmod +x anansi' },
-      { cmd: 'sudo mv anansi /usr/local/bin/' },
-      { cmd: 'anansi target.com --deep', note: 'Run a scan' },
-    ],
-  },
-  {
-    id: 'macos-amd64',
-    label: 'macOS',
-    arch: 'Intel',
-    icon: 'apple',
-    file: 'anansi-macos-amd64',
-    size: '~9.8 MB',
-    curl: `curl -L ${BASE}/anansi-macos-amd64 -o anansi`,
-    steps: [
-      { cmd: `curl -L ${BASE}/anansi-macos-amd64 -o anansi` },
-      { cmd: 'chmod +x anansi' },
-      { cmd: 'sudo mv anansi /usr/local/bin/' },
-      { cmd: 'anansi target.com --deep', note: 'Run a scan' },
-    ],
-  },
-  {
-    id: 'macos-arm64',
-    label: 'macOS',
-    arch: 'Apple Silicon',
-    icon: 'apple',
-    file: 'anansi-macos-arm64',
-    size: '~9.2 MB',
-    curl: `curl -L ${BASE}/anansi-macos-arm64 -o anansi`,
-    steps: [
-      { cmd: `curl -L ${BASE}/anansi-macos-arm64 -o anansi` },
-      { cmd: 'chmod +x anansi' },
-      { cmd: 'sudo mv anansi /usr/local/bin/' },
-      { cmd: 'anansi target.com --deep', note: 'Run a scan' },
-    ],
-  },
-  {
-    id: 'windows-amd64',
-    label: 'Windows',
-    arch: 'x86_64',
-    icon: 'windows',
-    file: 'anansi-windows-amd64.exe',
-    size: '~9.9 MB',
-    curl: `curl -L ${BASE}/anansi-windows-amd64.exe -o anansi.exe`,
-    steps: [
-      { cmd: `curl -L ${BASE}/anansi-windows-amd64.exe -o anansi.exe` },
-      { cmd: 'Rename anansi.exe to anansi.exe', note: 'Already named' },
-      { cmd: 'anansi target.com --deep', note: 'Run in PowerShell' },
-    ],
-  },
+  { id: 'linux-amd64', label: 'Linux', arch: 'x86_64', file: 'anansi-linux-amd64', size: '~10.0 MB' },
+  { id: 'linux-arm64', label: 'Linux', arch: 'ARM64', file: 'anansi-linux-arm64', size: '~9.3 MB' },
+  { id: 'macos-amd64', label: 'macOS', arch: 'Intel', file: 'anansi-macos-amd64', size: '~10.2 MB' },
+  { id: 'macos-arm64', label: 'macOS', arch: 'Apple Silicon', file: 'anansi-macos-arm64', size: '~9.6 MB' },
+  { id: 'windows-amd64', label: 'Windows', arch: 'x86_64', file: 'anansi-windows-amd64.exe', size: '~10.3 MB' },
 ];
 
-export const INSTALL_COMMANDS = [
-  {
-    step: '# Step 01: Download for Linux (AMD64)',
-    cmd: 'curl -L https://github.com/QYVORA/qyvora-anansi-cli/releases/latest/download/anansi-linux-amd64 -o anansi',
-  },
-  {
-    step: '# Step 02: Make Executable & Install',
-    cmd: 'chmod +x anansi && sudo mv anansi /usr/local/bin/',
-  },
-  {
-    step: '# Step 03: Run Initial Scan',
-    cmd: 'anansi target.com --deep',
-  },
-];
+export const ONE_LINER = 'curl -fsSL https://raw.githubusercontent.com/QYVORA/qyvora-anansi-cli/main/install.sh | bash';
 
 export const BUILD_FROM_SOURCE = {
+  requirements: 'Go 1.22+ and an active internet connection.',
   steps: [
     { cmd: 'git clone https://github.com/QYVORA/qyvora-anansi-cli' },
     { cmd: 'cd qyvora-anansi-cli' },
-    { cmd: './install.sh', note: 'Auto-builds & installs to PATH' },
+    { cmd: './install.sh', note: 'Auto-detects your OS/arch, downloads the checksum-verified binary, or falls back to building from source. Installs to ~/.local/bin and adds it to your shell config.' },
   ],
 };
+
+export const USAGE_EXAMPLES = [
+  'anansi target.com',
+  'anansi target.com --deep',
+  'anansi target.com -v',
+  'anansi target.com --modules discovery,tls,takeover',
+  'anansi target.com --out json > results.json',
+];
+
+export const SCAN_OUTPUT: { label: string; text: string }[] = [
+  { label: 'discovery', text: '312 subdomains resolved via crt.sh + brute-force' },
+  { label: 'probe', text: '48 live hosts — status codes and titles extracted' },
+  { label: 'tls', text: '3 SANs mapped · weak protocol flagged' },
+  { label: 'headers', text: '12 security header misconfigurations found' },
+  { label: 'paths', text: '.env exposed · backup archive discoverable' },
+  { label: 'tech', text: 'WordPress 6.x detected · known-vulnerable plugin flagged' },
+  { label: 'takeover', text: '1 dangling CNAME pointing to AWS S3' },
+  { label: 'chain', text: '2 exploit paths assembled · Critical: 3 · High: 7' },
+];

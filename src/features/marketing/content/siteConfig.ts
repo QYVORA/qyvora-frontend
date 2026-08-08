@@ -100,8 +100,7 @@ export const SITE_CONFIG = {
         key: 'resources',
         label: 'Resources',
         items: [
-      { key: 'anansi', label: 'Anansi', path: '/anansi', desc: 'Attack Surface Intelligence' },
-      { key: 'toha3ee', label: 'Toha3ee', path: '/toha3ee', desc: 'Network exploitation & MITM framework' },
+          { key: 'anansi', label: 'Anansi', path: '/anansi', desc: 'Attack Surface Intelligence' },
           { key: 'toha3ee', label: 'Toha3ee', path: '/toha3ee', desc: 'Network exploitation & MITM framework' },
           { key: 'leaderboard', label: 'Leaderboard', path: '/leaderboard', desc: 'Top operators ranking' },
           { key: 'blogs', label: 'Blogs', path: '/blogs', desc: 'Security articles' },

@@ -18,7 +18,8 @@ const CompetitivePage = () => {
 
   const period = (searchParams.get('period') as Period) || 'all';
 
-  const { entries, loading, error, total, fetchLeaderboard } = useLeaderboard({
+  const { entries, loading, loadingMore, error, total, hasMore, fetchLeaderboard, loadMore } = useLeaderboard({
+    limit: 50,
     errorMessages: {
       loadFailed: t('toast.leaderboardLoadFailed'),
       networkFailed: t('toast.leaderboardLoadFailedNetwork'),
@@ -116,6 +117,18 @@ const CompetitivePage = () => {
                 </ScrollReveal>
               ))}
             </div>
+
+            {hasMore && (
+              <div className="flex justify-center pt-4">
+                <button
+                  onClick={() => loadMore(period)}
+                  disabled={loadingMore}
+                  className="px-6 py-2.5 rounded-xl text-xs font-black uppercase tracking-widest border border-border/30 bg-bg-card text-text-muted hover:border-accent/30 hover:text-accent transition-all disabled:opacity-50"
+                >
+                  {loadingMore ? t('student.competitive.loadingMore') : t('student.competitive.showMore')}
+                </button>
+              </div>
+            )}
 
             {/* Chain verification badge */}
             <div className="flex items-center justify-center gap-2 pt-4 text-[10px] font-bold uppercase tracking-widest text-text-muted/40">

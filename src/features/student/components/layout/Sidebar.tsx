@@ -20,6 +20,7 @@ import {
 import { useAuth } from '@/core/contexts/AuthContext';
 import api from '@/core/services/api';
 import { getRankInfo } from '@/features/student/utils/rankUtils';
+import { COURSES, getCourseById } from '@/features/student/data/courses';
 import { extractCpBalance } from '@/shared/utils/cpBalance';
 import { BOOTCAMP_CONFIG } from '@/features/student/constants/bootcampConfig';
 import Logo from '@/shared/components/brand/Logo';
@@ -190,33 +191,51 @@ const CourseProgressPanel = () => {
   );
 };
 
+const COURSE_PROGRESS_KEY = 'qyvora_course_progress';
+
 const CoursesListPanel = () => {
   const { t } = useTranslation();
   const { user } = useAuth();
-  const [courses, setCourses] = useState<any[]>([]);
+  const [purchased, setPurchased] = useState<Set<string>>(new Set());
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     let mounted = true;
-    api.get('/student/courses').then((res) => {
-      if (!mounted) return;
-      const items = Array.isArray(res.data?.items) ? res.data.items : [];
-      setCourses(items);
-    }).catch((err) => { console.warn('[Sidebar] courses list failed:', err?.response?.status || err?.message); });
+    api.get('/cp/transactions?limit=100').then((r) => {
+      const items = Array.isArray(r.data?.items) ? r.data.items : [];
+      const purchasedIds = items.filter((tx: any) => tx.type === 'purchase').map((tx: any) => {
+        return tx.metadata?.slug || tx.metadata?.courseId || String(tx.productId);
+      });
+      if (mounted) setPurchased(new Set(purchasedIds));
+    }).catch((err) => { console.warn('[Sidebar] transactions failed:', err?.response?.status || err?.message); })
+      .finally(() => { if (mounted) setLoading(false); });
     return () => { mounted = false; };
   }, [user?.uid]);
 
-  const enrolled = courses.filter((c: any) => c.enrolled);
-  const inProgress = enrolled.filter((c: any) => (c.progress || 0) < 100);
+  const courseProgressPct = (courseId: string) => {
+    try {
+      const parsed = JSON.parse(localStorage.getItem(`${COURSE_PROGRESS_KEY}_${courseId}`) || '{}');
+      const total = getCourseById(courseId)?.lessons.length || 0;
+      if (!total) return 0;
+      return Math.round(((parsed.completedLessons?.length || 0) / total) * 100);
+    } catch { return 0; }
+  };
+
+  const enrolled = COURSES.filter((c) => purchased.has(c.id));
+  const inProgress = enrolled.filter((c) => {
+    const pct = courseProgressPct(c.id);
+    return pct > 0 && pct < 100;
+  });
 
   return (
     <SidebarPanel>
       <div className="text-[9px] font-black uppercase tracking-widest text-accent mb-1">{t('student.sidebar.courses')}</div>
-      <PanelRow icon={<BookMarked className="w-3.5 h-3.5 text-accent" />} label={t('student.sidebar.enrolled')} value={String(enrolled.length)} />
-      <PanelRow icon={<BarChart3 className="w-3.5 h-3.5" />} label={t('student.sidebar.inProgress')} value={String(inProgress.length)} />
-      {courses.length > 0 && (
+      <PanelRow icon={<BookMarked className="w-3.5 h-3.5 text-accent" />} label={t('student.sidebar.enrolled')} value={String(loading ? '…' : enrolled.length)} />
+      <PanelRow icon={<BarChart3 className="w-3.5 h-3.5" />} label={t('student.sidebar.inProgress')} value={String(loading ? '…' : inProgress.length)} />
+      {enrolled.length > 0 && (
         <div className="pt-1 space-y-1 max-h-[180px] overflow-y-auto">
-          {courses.map((c: any) => {
-            const pct = c.progress || 0;
+          {enrolled.map((c) => {
+            const pct = courseProgressPct(c.id);
             return (
               <Link
                 key={c.id}
@@ -238,32 +257,28 @@ const CoursesListPanel = () => {
 
 const LessonNavPanel = () => {
   const { t } = useTranslation();
-  const { pathname } = useLocation();
-  const [lessons, setLessons] = useState<any[]>([]);
+  const { pathname, search } = useLocation();
   const courseId = pathname.split('/dashboard/courses/')[1]?.split('/')[0];
+  const course = getCourseById(courseId || '');
+  const lessons = course?.lessons || [];
 
-  useEffect(() => {
-    if (!courseId) return;
-    let mounted = true;
-    api.get(`/student/course?courseId=${encodeURIComponent(courseId)}`).then((res) => {
-      if (!mounted) return;
-      setLessons(Array.isArray(res.data?.lessons) ? res.data.lessons : []);
-    }).catch((err) => { console.warn('[Sidebar] lessons list failed:', err?.response?.status || err?.message); });
-    return () => { mounted = false; };
-  }, [courseId]);
+  const lessonParam = Number(new URLSearchParams(search).get('lesson'));
+  const currentLessonIdx = Number.isInteger(lessonParam) && lessonParam >= 0 && lessonParam < lessons.length
+    ? lessonParam
+    : null;
 
-  const currentLessonId = pathname.split('/lessons/')[1] || '';
+  if (!course) return null;
 
   return (
     <SidebarPanel>
       <div className="text-[9px] font-black uppercase tracking-widest text-accent mb-1">{t('student.sidebar.lessons')}</div>
       <div className="space-y-0.5 max-h-[260px] overflow-y-auto">
-        {lessons.map((lesson: any) => {
-          const active = lesson.id === currentLessonId || lesson.slug === currentLessonId;
+        {lessons.map((lesson, idx) => {
+          const active = currentLessonIdx === idx;
           return (
             <Link
               key={lesson.id}
-              to={`/dashboard/courses/${courseId}/lessons/${lesson.slug || lesson.id}`}
+              to={`/dashboard/courses/${courseId}?lesson=${idx}`}
               className={`block px-2 py-1.5 rounded-lg text-[10px] font-bold transition-colors ${
                 active ? 'text-accent bg-accent-dim' : 'text-text-muted hover:text-text-primary hover:bg-accent-dim/30'
               }`}

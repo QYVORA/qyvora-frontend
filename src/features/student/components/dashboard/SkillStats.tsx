@@ -55,23 +55,25 @@ const SkillStats = ({ modules }: SkillStatsProps) => {
   const { skills } = computeSkillStats(modules);
 
   return (
-    <div className="flex flex-col justify-between h-full gap-1.5 md:gap-2">
+    <div className="flex flex-col justify-between gap-2 md:gap-2.5 h-full">
       {skills.map((skill) => (
-        <div key={skill.key} className="flex items-center gap-2 md:gap-3">
-          <div
-            className="w-2 h-2 lg:w-2.5 lg:h-2.5 rounded-full shrink-0"
-            style={{ backgroundColor: skill.color }}
-          />
-          <span className="text-[8px] md:text-[9px] lg:text-[10px] font-black uppercase tracking-widest text-text-muted min-w-[60px] md:min-w-[70px] lg:min-w-[85px] truncate">
-            {skill.shortLabel}
+        <div key={skill.key} className="flex items-center gap-2.5 md:gap-3">
+          <span className="flex items-center gap-2 shrink-0 w-[74px] md:w-[84px] lg:w-[92px]">
+            <span
+              className="w-2 h-2 lg:w-2.5 lg:h-2.5 rounded-full shrink-0"
+              style={{ backgroundColor: skill.color }}
+            />
+            <span className="text-[8px] md:text-[9px] lg:text-[10px] font-black uppercase tracking-widest text-text-muted truncate">
+              {skill.shortLabel}
+            </span>
           </span>
-          <div className="flex-1 h-2 md:h-2.5 lg:h-3 rounded-full bg-accent-dim/20 overflow-hidden">
+          <div className="flex-1 h-1.5 md:h-2 lg:h-2.5 rounded-full bg-accent-dim/20 overflow-hidden">
             <div
               className="h-full rounded-full transition-all duration-700"
               style={{ width: `${skill.level}%`, backgroundColor: skill.color }}
             />
           </div>
-          <span className="text-[8px] md:text-[9px] lg:text-[10px] font-black text-text-primary w-12 text-right tabular-nums">
+          <span className="text-[8px] md:text-[9px] lg:text-[10px] font-black text-text-primary w-10 md:w-12 text-right tabular-nums shrink-0">
             {skill.completed}/{skill.total}
           </span>
         </div>

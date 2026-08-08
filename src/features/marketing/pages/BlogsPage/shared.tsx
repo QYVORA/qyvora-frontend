@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { Terminal } from '@/shared/components/blog/Terminal';
 import { OutputBlock as OutputBlockComponent } from '@/shared/components/blog/OutputBlock';
 import { IdeBlock } from '@/shared/components/blog/IdeBlock';
@@ -100,12 +101,23 @@ export const CTA = ({ title, desc, href, label }: { title: string; desc: string;
     <p className="text-sm md:text-lg text-text-secondary font-mono max-w-2xl leading-relaxed md:leading-[2] mb-8 md:mb-10">
       {desc}
     </p>
-    <a
-      href={href}
-      className="inline-flex items-center gap-3 bg-accent text-on-accent font-black uppercase tracking-[0.12em] rounded-xl px-10 py-4 text-sm hover:brightness-110 active:scale-95 transition-all"
-    >
-      {label}
-    </a>
+    {href.startsWith('/') ? (
+      <Link
+        to={href}
+        className="inline-flex items-center gap-3 bg-accent text-on-accent font-black uppercase tracking-[0.12em] rounded-xl px-10 py-4 text-sm hover:brightness-110 active:scale-95 transition-all"
+      >
+        {label}
+      </Link>
+    ) : (
+      <a
+        href={href}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="inline-flex items-center gap-3 bg-accent text-on-accent font-black uppercase tracking-[0.12em] rounded-xl px-10 py-4 text-sm hover:brightness-110 active:scale-95 transition-all"
+      >
+        {label}
+      </a>
+    )}
   </div>
 );
 

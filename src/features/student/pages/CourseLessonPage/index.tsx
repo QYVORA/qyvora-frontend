@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { useParams, Link, useNavigate } from 'react-router-dom';
+import { useParams, Link, useSearchParams } from 'react-router-dom';
 import { ArrowLeft, ArrowRight, CheckCircle2, ChevronLeft, ChevronRight, Lock, Loader2, Target, Zap, BookOpen } from 'lucide-react';
 import SEO from '@/shared/components/SEO';
 import { getCourseById } from '@/features/student/data/courses';
@@ -90,15 +90,17 @@ const LessonViewer: React.FC<{ lesson: Lesson; number: number; courseId?: string
 
 const CourseLessonPage: React.FC = () => {
   const { courseId } = useParams<{ courseId: string }>();
-  const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
   const course = getCourseById(courseId || '');
 
   const [purchased, setPurchased] = useState<boolean | null>(null);
   const [checkingAccess, setCheckingAccess] = useState(true);
-  const [currentLessonIdx, setCurrentLessonIdx] = useState(0);
   const [completedLessons, setCompletedLessons] = useState<Set<string>>(new Set());
+  const [resumeIdx, setResumeIdx] = useState<number | null>(null);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   useScrollLock(sidebarOpen);
+
+  const totalLessons = course?.lessons.length ?? 0;
 
   useEffect(() => {
     const sidebarHandler = () => setSidebarOpen(true);
@@ -115,7 +117,7 @@ const CourseLessonPage: React.FC = () => {
       try {
         const parsed = JSON.parse(saved);
         setCompletedLessons(new Set(parsed.completedLessons));
-        setCurrentLessonIdx(parsed.lastLesson ?? 0);
+        setResumeIdx(Number(parsed.lastLesson) || 0);
       } catch {}
     }
     api.get('/cp/transactions?limit=100').then((r) => {
@@ -129,8 +131,15 @@ const CourseLessonPage: React.FC = () => {
     }).finally(() => setCheckingAccess(false));
   }, [courseId]);
 
+  const lessonParam = Number(searchParams.get('lesson'));
+  const lessonParamValid = Number.isInteger(lessonParam) && lessonParam >= 0 && lessonParam < totalLessons;
+  const currentLessonIdx = lessonParamValid
+    ? lessonParam
+    : resumeIdx !== null
+      ? Math.min(resumeIdx, Math.max(totalLessons - 1, 0))
+      : 0;
+
   const lesson = course?.lessons[currentLessonIdx];
-  const totalLessons = course?.lessons.length ?? 0;
   const completedCount = completedLessons.size;
   const progress = totalLessons > 0 ? Math.round((completedCount / totalLessons) * 100) : 0;
 
@@ -142,6 +151,17 @@ const CourseLessonPage: React.FC = () => {
     }));
   }, [courseId]);
 
+  const goToLesson = useCallback((idx: number) => {
+    if (totalLessons === 0) return;
+    const clamped = Math.max(0, Math.min(idx, totalLessons - 1));
+    setSearchParams((prev) => {
+      const next = new URLSearchParams(prev);
+      next.set('lesson', String(clamped));
+      return next;
+    }, { replace: true });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, [totalLessons, setSearchParams]);
+
   const markComplete = useCallback(() => {
     if (!lesson) return;
     const next = new Set([...completedLessons, lesson.id]);
@@ -150,18 +170,12 @@ const CourseLessonPage: React.FC = () => {
   }, [lesson, completedLessons, currentLessonIdx, saveProgress]);
 
   const goNext = useCallback(() => {
-    if (currentLessonIdx < totalLessons - 1) {
-      setCurrentLessonIdx((i) => i + 1);
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-  }, [currentLessonIdx, totalLessons]);
+    if (currentLessonIdx < totalLessons - 1) goToLesson(currentLessonIdx + 1);
+  }, [currentLessonIdx, totalLessons, goToLesson]);
 
   const goPrev = useCallback(() => {
-    if (currentLessonIdx > 0) {
-      setCurrentLessonIdx((i) => i - 1);
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-  }, [currentLessonIdx]);
+    if (currentLessonIdx > 0) goToLesson(currentLessonIdx - 1);
+  }, [currentLessonIdx, goToLesson]);
 
   useEffect(() => {
     const handleKey = (e: KeyboardEvent) => {
@@ -245,8 +259,7 @@ const CourseLessonPage: React.FC = () => {
             isCompleted: completedLessons.has(l.id),
             isLocked: false,
             onClick: () => {
-              setCurrentLessonIdx(i);
-              window.scrollTo({ top: 0, behavior: 'smooth' });
+              goToLesson(i);
             },
           })),
         }]}
