@@ -194,7 +194,7 @@ const StudentTopbar = () => {
                   <ProfileDropdown
                     user={user}
                     unreadCount={unreadCount}
-                    onOpenNotifications={() => window.location.href = '/dashboard/notifications'}
+                    onOpenNotifications={() => navigate('/dashboard/notifications')}
                     onOpenTerminal={() => window.dispatchEvent(new CustomEvent('qyvora:open-terminal'))}
                     onOpenIDE={() => window.dispatchEvent(new CustomEvent('qyvora:open-ide'))}
                     onOpenNetworkVisualizer={() => window.dispatchEvent(new CustomEvent('qyvora:open-network-visualizer'))}
@@ -276,7 +276,7 @@ const StudentTopbar = () => {
                 <ProfileDropdown
                   user={user}
                   unreadCount={unreadCount}
-                  onOpenNotifications={() => window.location.href = '/dashboard/notifications'}
+                  onOpenNotifications={() => navigate('/dashboard/notifications')}
                   onOpenTerminal={() => window.dispatchEvent(new CustomEvent('qyvora:open-terminal'))}
                   onOpenIDE={() => window.dispatchEvent(new CustomEvent('qyvora:open-ide'))}
                   onOpenNetworkVisualizer={() => window.dispatchEvent(new CustomEvent('qyvora:open-network-visualizer'))}
@@ -334,7 +334,7 @@ const StudentTopbar = () => {
               <ProfileDropdown
                 user={user}
                 unreadCount={unreadCount}
-                onOpenNotifications={() => window.location.href = '/dashboard/notifications'}
+                onOpenNotifications={() => navigate('/dashboard/notifications')}
                 onOpenTerminal={() => window.dispatchEvent(new CustomEvent('qyvora:open-terminal'))}
                 onOpenIDE={() => window.dispatchEvent(new CustomEvent('qyvora:open-ide'))}
                 onOpenNetworkVisualizer={() => window.dispatchEvent(new CustomEvent('qyvora:open-network-visualizer'))}
@@ -414,7 +414,7 @@ const StudentTopbar = () => {
                 <ProfileDropdown
                   user={user}
                   unreadCount={unreadCount}
-                  onOpenNotifications={() => window.location.href = '/dashboard/notifications'}
+                  onOpenNotifications={() => navigate('/dashboard/notifications')}
                   onOpenTerminal={() => window.dispatchEvent(new CustomEvent('qyvora:open-terminal'))}
                   onOpenIDE={() => window.dispatchEvent(new CustomEvent('qyvora:open-ide'))}
                   onOpenNetworkVisualizer={() => window.dispatchEvent(new CustomEvent('qyvora:open-network-visualizer'))}

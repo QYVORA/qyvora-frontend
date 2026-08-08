@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { Globe, Users, Lightbulb, TrendingUp } from 'lucide-react';
 import { IconShield, IconTerminal, IconNetwork, IconTarget } from '@/shared/components/icons';
 import HpbAvatar, { type HpbVariant } from '@/shared/components/HpbAvatar';
@@ -294,12 +295,12 @@ export const HackerProtocolBootcampBlog: React.FC = () => {
           <p className="text-base md:text-lg text-text-secondary font-mono max-w-2xl leading-relaxed mb-8">
             Hacker Protocol Bootcamp — 2026 Cohort is live now. Phase 01 is open to everyone. No prerequisites, no application, no cost.
           </p>
-          <a
-            href="/hpb"
+          <Link
+            to="/hpb"
             className="inline-flex items-center gap-3 bg-accent text-on-accent font-black uppercase tracking-[0.12em] rounded-xl px-10 py-4 text-sm hover:brightness-110 active:scale-95 transition-all"
           >
             <IconTarget size={20} /> Begin Phase 01
-          </a>
+          </Link>
         </div>
       </Section>
     </div>
