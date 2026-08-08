@@ -108,5 +108,7 @@ export const AuthImage: React.FC<AuthImageProps> = ({
     );
   }
 
+  if (!objectUrl) return null;
+
   return <img src={objectUrl} className={className} style={style} {...imgProps} />;
 };

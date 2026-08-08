@@ -1,6 +1,6 @@
 import React, { useRef, useEffect } from 'react';
 import * as THREE from 'three';
-import { motion, useReducedMotion, useScroll, useTransform } from 'motion/react';
+import { motion } from 'motion/react';
 import { useAdaptiveUi } from '../../../../core/hooks/useAdaptiveUi';
 import { buildDotMapTexture } from './helpers';
 import { useFluidGlobe } from './useFluidGlobe';
@@ -9,30 +9,15 @@ interface HackerGlobeProps {
   scale?: number;
   offset?: [number, number, number];
   fluid?: boolean;
-  /** Disables the scroll-linked scale-up + fade-out exit. Used on auth pages,
-      which host the globe as a persistent page backdrop rather than a hero. */
-  scrollExit?: boolean;
 }
 
-const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88, offset = [0, 0, 0], fluid = false, scrollExit = true }) => {
+const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88, offset = [0, 0, 0], fluid = false }) => {
   const mountRef   = useRef<HTMLDivElement>(null);
   const { constrainedDevice, isMobile } = useAdaptiveUi();
   const isSimplified = constrainedDevice || isMobile;
   const fluidGlobe = useFluidGlobe();
   const effectiveScale = fluid ? fluidGlobe.scale : scale;
   const effectiveOffset = fluid ? fluidGlobe.offset : offset;
-
-  // Scroll-linked exit — as the section scrolls away, the globe smoothly
-  // expands outward and fades out, so it appears to swell and vanish beyond
-  // the viewport instead of being clipped. Same behavior across every section
-  // that hosts the globe.
-  const shouldReduceMotion = useReducedMotion();
-  const { scrollYProgress } = useScroll({
-    target: mountRef,
-    offset: ['start start', 'end start'],
-  });
-  const exitScale = useTransform(scrollYProgress, [0, 0.6, 1], [1, 1.3, 1.75]);
-  const exitOpacity = useTransform(scrollYProgress, [0, 0.6, 1], [1, 1, 0]);
 
   useEffect(() => {
     const el = mountRef.current;
@@ -190,12 +175,7 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88, offset = [0, 0,
     <motion.div
       ref={mountRef}
       className="relative z-0 h-full w-full pointer-events-none overflow-hidden"
-      style={{
-        cursor: 'default',
-        willChange: 'transform, opacity',
-        scale: shouldReduceMotion || !scrollExit ? 1 : exitScale,
-        opacity: shouldReduceMotion || !scrollExit ? 1 : exitOpacity,
-      }}
+      style={{ cursor: 'default' }}
     />
   );
 };

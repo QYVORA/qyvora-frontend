@@ -53,7 +53,6 @@ import { useGsapReveal, useGsapHover } from '@/shared/hooks/useGsap';
 
 
 import hpbCoverImg from '@/assets/bootcamp/hpb-cover.webp';
-import productFallbackImg from '@/assets/sections/stats/cp-earned-bg.webp';
 
 const BOOTCAMP_COVER_IMGS: Record<string, string> = { bc_1775270338500: hpbCoverImg };
 const BOOTCAMP_FALLBACK_IMG = hpbCoverImg;
@@ -120,16 +119,16 @@ const DashboardSkeleton = () => (
 
     {/* 4. Skill Matrix — 2-column grid (radar chart + skill stats) */}
     <div className="bg-bg-alt px-3 md:px-4 lg:px-6 py-10">
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-2 md:gap-3">
-        <div className="rounded-2xl border border-border/30 bg-bg-card p-2 md:p-3 lg:p-4 flex items-center justify-center">
-          <Skeleton className="w-44 h-44 md:w-52 md:h-52 bg-border/20 rounded-full" />
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 md:gap-4 lg:h-[460px]">
+        <div className="rounded-2xl border border-border/30 bg-bg-card p-4 md:p-6 flex flex-col items-center justify-center min-h-[360px] lg:min-h-0">
+          <Skeleton className="w-64 h-64 md:w-72 md:h-72 bg-border/20 rounded-full" />
         </div>
-        <div className="rounded-2xl border border-border/30 bg-bg-card p-2 md:p-3 lg:p-4 flex flex-col justify-between gap-2 md:gap-3">
+        <div className="rounded-2xl border border-border/30 bg-bg-card p-4 md:p-6 flex flex-col justify-between gap-2.5 min-h-[360px] lg:min-h-0">
           {[...Array(5)].map((_, i) => (
             <div key={i} className="flex items-center gap-3">
-              <Skeleton className="h-2.5 w-16 bg-border/30 rounded" />
+              <Skeleton className="h-2.5 w-20 bg-border/30 rounded" />
               <Skeleton className="h-1.5 flex-1 bg-border/20 rounded-full" />
-              <Skeleton className="h-2.5 w-8 bg-border/30 rounded" />
+              <Skeleton className="h-2.5 w-10 bg-border/30 rounded" />
             </div>
           ))}
         </div>
@@ -235,7 +234,6 @@ const DashboardProductCard = ({ product }: { product: any }) => {
       <div className="relative aspect-[16/9] overflow-hidden bg-accent/5">
         <AuthImage
           src={product?.coverUrl}
-          fallback={productFallbackImg}
           alt={title}
           className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
           loading="lazy"
@@ -556,6 +554,7 @@ const Dashboard = () => {
       </div>
 
       {/* 4. Section Content — appears below stats when a button is toggled */}
+      {activeSection !== null && (
       <div className="bg-bg px-3 md:px-4 lg:px-6 py-10">
         <div ref={sectionContentRef}>
         {activeSection === 'courses' && (
@@ -680,10 +679,11 @@ const Dashboard = () => {
         )}
         </div>
       </div>
+      )}
 
       {/* 5. Next Rank Progress */}
+      {nextRank && (
       <div className="bg-bg-alt px-3 md:px-4 lg:px-6 py-10 pb-20 lg:pb-24">
-        {nextRank && (
           <div ref={rankRef}>
             <div ref={progressRef} className="rounded-2xl border border-accent/20 bg-bg-card p-6 md:p-8 lg:p-10">
               <div className="flex items-center justify-between mb-3">
@@ -695,8 +695,8 @@ const Dashboard = () => {
               </div>
             </div>
           </div>
-        )}
       </div>
+      )}
     </div>
   );
 };

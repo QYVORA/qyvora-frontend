@@ -4,7 +4,6 @@ import { Cloud, FileText, BookOpen, Cpu } from 'lucide-react';
 import { IconArrowRight, IconMarketplace, IconLock } from '@/shared/components/icons';
 import ScrollReveal from '@/shared/components/ScrollReveal';
 import api from '@/core/services/api';
-import productFallbackImg from '@/assets/sections/stats/cp-earned-bg.webp';
 import { AuthImage, Skeleton, ErrorState, DottedMapOverlay } from '@/shared/components/ui';
 import { useTranslation } from 'react-i18next';
 
@@ -104,7 +103,6 @@ const LandingMarketSection = () => {
                   <div className="relative aspect-[16/9] overflow-hidden bg-accent/5">
                     <AuthImage
                       src={prod.coverUrl}
-                      fallback={productFallbackImg}
                       alt={prod.title}
                       width={1200}
                       height={675}

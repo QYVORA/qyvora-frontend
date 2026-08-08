@@ -23,6 +23,8 @@ import { Footer } from '@/shared/components/layout';
 import { useAdaptiveUi } from '@/core/hooks/useAdaptiveUi';
 import SEO from '@/shared/components/SEO';
 import { buildOrganization } from '@/shared/seo/schema';
+import { BookOpen, Users } from 'lucide-react';
+import { IconLabs, IconShield, IconLeaderboard, IconMarketplace } from '@/shared/components/icons';
 
 const Landing: React.FC = () => {
   const { t } = useTranslation();
@@ -133,11 +135,29 @@ const Landing: React.FC = () => {
       {/* ── ACT II: THE WORK ──────────────────────────────────────────── */}
       <section id="act-ii" className="relative w-full min-h-dvh lg:h-dvh snap-section bg-bg">
         <ActDividerSection
-          number="II"
           title="The"
           accentWord="Work"
-          tagline="ACT II"
           description="Hands-on labs, courses, and bootcamps that build real offensive security skills through practice."
+          items={[
+            {
+              icon: IconLabs,
+              label: t('nav.labs'),
+              description: 'Attack and privesc labs to sharpen your craft.',
+              to: '/labs',
+            },
+            {
+              icon: BookOpen,
+              label: t('nav.courses'),
+              description: 'Structured courses that take you from zero to offensive.',
+              to: '/courses',
+            },
+            {
+              icon: IconShield,
+              label: t('nav.bootcamp'),
+              description: 'Our flagship Hacker Protocol Bootcamp program.',
+              to: '/hpb',
+            },
+          ]}
         />
       </section>
 
@@ -159,11 +179,29 @@ const Landing: React.FC = () => {
       {/* ── ACT III: THE WORLD ──────────────────────────────────────────── */}
       <section id="act-iii" className="relative w-full min-h-dvh lg:h-dvh snap-section bg-bg-alt">
         <ActDividerSection
-          number="III"
           title="The"
           accentWord="World"
-          tagline="ACT III"
           description="Join a community of cybersecurity professionals, ethical hackers, and researchers shaping Africa's digital future."
+          items={[
+            {
+              icon: Users,
+              label: t('components.community.title'),
+              description: 'Connect with researchers across the QuiteRoot network.',
+              to: '/quiteroot',
+            },
+            {
+              icon: IconLeaderboard,
+              label: t('nav.leaderboard'),
+              description: 'Climb the ranks and prove yourself on the leaderboard.',
+              to: '/leaderboard',
+            },
+            {
+              icon: IconMarketplace,
+              label: t('nav.market'),
+              description: 'Buy and sell tools, reports, and zero-day intel.',
+              to: '/zero-day-market',
+            },
+          ]}
         />
       </section>
 
