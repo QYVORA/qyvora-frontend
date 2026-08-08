@@ -1,13 +1,10 @@
 import React, { useState, useCallback } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { motion } from 'motion/react';
 import { useTranslation } from 'react-i18next';
 import {
   Home,
   Wrench,
   Mail,
-  Radar,
-  Calendar,
   LogIn,
   UserPlus,
 } from 'lucide-react';
@@ -27,7 +24,6 @@ const PRIMARY = [
 
 /* ── More sheet items ───────────────────────────────────────────────────────── */
 const MORE_ITEMS: { key: string; icon: any; path: string }[] = [
-  { key: 'events', icon: Calendar, path: '/events' },
   { key: 'market', icon: IconMarketplace, path: '/zero-day-market' },
 ];
 
@@ -35,7 +31,6 @@ const BOTTOM_NAV_KEYS: Record<string, string> = {
   home: 'components.bottomNav.home',
   leaderboard: 'components.bottomNav.leaderboard',
   contact: 'components.bottomNav.contact',
-  events: 'components.bottomNav.events',
   market: 'components.bottomNav.market',
 };
 

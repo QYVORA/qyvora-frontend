@@ -8,7 +8,7 @@ import { BrandYoutubeIcon } from '@/shared/components/icons';
 import { BrandGithubIcon } from '@/shared/components/icons';
 import { BrandXIcon } from '@/shared/components/icons';
 import { ContactTrigger } from '@/features/marketing/components/ContactModal';
-import { Logo, QyvoraLogotype } from '@/shared/components/brand';
+import { Logo } from '@/shared/components/brand';
 import LanguageSwitcher from '@/shared/components/LanguageSwitcher';
 
 const FOOTER_COLS = [
@@ -46,7 +46,7 @@ interface SocialLink {
   Icon: React.ComponentType<{ className?: string }>;
 }
 
-const SOCIAL_LINKS: SocialLink[] = [
+export const SOCIAL_LINKS: SocialLink[] = [
   { key: 'x',        label: 'X',        href: 'https://x.com/qyvorasec',             Icon: BrandXIcon },
   { key: 'linkedin', label: 'LinkedIn', href: 'https://linkedin.com/company/qyvora', Icon: BrandLinkedinIcon },
   { key: 'github',   label: 'GitHub',   href: 'https://github.com/QYVORA',           Icon: BrandGithubIcon },
@@ -96,25 +96,6 @@ const Footer: React.FC = React.memo(() => {
 
   return (
     <footer className="relative w-full min-h-dvh overflow-hidden select-none bg-bg flex flex-col">
-      {/* ── Desktop: QYVORA logotype banner at bottom ─────────────────── */}
-      <div
-        className="hidden lg:block absolute inset-x-0 bottom-0 pointer-events-none select-none overflow-hidden"
-        style={{ height: '45%', maxHeight: '440px' }}
-      >
-        <div
-          className="w-full h-full flex items-end justify-center"
-          style={{
-            background: 'radial-gradient(ellipse 90% 70% at 50% 100%, rgba(6,182,111,0.10), transparent 70%)',
-          }}
-        >
-          <QyvoraLogotype
-            className="w-[200%] h-auto max-w-none block"
-            color="#06B66F"
-            style={{ opacity: 0.12 }}
-          />
-        </div>
-      </div>
-
       {/* ── Content ──────────────────────────────────────────────────────── */}
       <div className="relative z-10 flex-1 w-full h-full px-3 py-10 md:px-4 md:py-20 lg:px-6 flex flex-col">
         <div className="w-full flex-1 flex flex-col">

@@ -52,7 +52,7 @@ const SkillRadarChart = ({ data }: SkillRadarChartProps) => {
   const handleMouseLeave = useCallback(() => setHoveredIdx(null), []);
 
   return (
-    <div ref={containerRef} className="relative w-full h-full" onMouseLeave={handleMouseLeave}>
+    <div ref={containerRef} className="relative w-full max-w-[320px] md:max-w-[340px] aspect-square" onMouseLeave={handleMouseLeave}>
       <svg
         viewBox="0 0 400 400"
         className="w-full h-full overflow-visible"

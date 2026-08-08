@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, useReducedMotion } from 'motion/react';
 import { IconArrowRight } from '@/shared/components/icons';
+import { DottedMapOverlay } from '@/shared/components/ui';
 import HpbAvatar, { type HpbVariant } from '@/shared/components/HpbAvatar';
 import { PHASES } from '@/features/marketing/data/learnData';
 import { BOOTCAMP_CONFIG } from '@/features/student/constants/bootcampConfig';
@@ -63,6 +64,7 @@ const LandingBootcampSection: React.FC = () => {
                 to={featuredHref}
                 className="group relative block h-full rounded-2xl border border-border/20 bg-bg-card transition-all duration-300 hover:border-accent/30 overflow-hidden"
               >
+                <DottedMapOverlay className="rounded-2xl" />
                 <div className="relative h-full flex flex-col sm:flex-row p-4 sm:p-8 gap-5 sm:gap-6">
                   <div className="flex-1 min-w-0 flex flex-col">
                     <div className="flex items-center justify-end mb-3 sm:mb-6">
@@ -113,6 +115,7 @@ const LandingBootcampSection: React.FC = () => {
                     to={supportHref}
                     className="group relative block h-full rounded-2xl border border-border/20 bg-bg-card p-3 sm:p-5 transition-all duration-300 hover:border-accent/30 overflow-hidden"
                   >
+                    <DottedMapOverlay className="rounded-2xl" />
                     <div className="relative h-full flex flex-row items-stretch gap-3 sm:gap-4">
                       <div className="flex-1 min-w-0 flex flex-col">
                         <h3 className="text-sm sm:text-base font-black text-text-primary tracking-tight mb-1 sm:mb-1.5">
@@ -159,6 +162,7 @@ const LandingBootcampSection: React.FC = () => {
                   to={href}
                   className="group relative block w-full shrink-0 rounded-2xl border border-border/20 bg-bg-card overflow-hidden transition-all duration-300 hover:border-accent/30"
                 >
+                  <DottedMapOverlay className="rounded-2xl" />
                   <div className="relative w-full flex flex-row items-stretch gap-3 md:gap-4 p-3 md:p-4">
                     <div className="flex-1 min-w-0 flex flex-col">
                       <div className="flex items-center justify-end mb-1.5 md:mb-2">

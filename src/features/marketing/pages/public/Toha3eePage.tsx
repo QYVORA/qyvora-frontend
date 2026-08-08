@@ -7,6 +7,7 @@ import StudentHeroSection, { PUBLIC_HERO_TITLE_CLASS } from '@/shared/components
 import { Footer } from '@/shared/components/layout';
 import { useAuth } from '@/core/contexts/AuthContext';
 import LandingFinalCtaSection from '@/features/marketing/components/landing/LandingFinalCtaSection';
+import { Carousel } from '@/shared/components/carousel';
 import { MODULES, INSTALLERS, BUILD_FROM_SOURCE, QUICK_START, CONSOLE_SESSION, GITHUB_URL } from '@/features/marketing/data/toha3eeData';
 import toha3eeLogo from '@/assets/toha3ee/toha3ee-main-logo.webp';
 
@@ -39,10 +40,10 @@ const Toha3eePage = () => {
           titleClassName={PUBLIC_HERO_TITLE_CLASS}
           showGlobe
           typewrite
-          description="Network exploitation & MITM framework in Go — poisoning, interception, wireless and switch-layer attacks from an interactive REPL."
+          description="Network exploitation & MITM framework in Go — 73 modules across ten categories, driven from an interactive REPL, a guided wizard, or one-shot scripts."
           stats={[
             { label: 'Categories', value: MODULES.length },
-            { label: 'Platform', value: 'CLI' },
+            { label: 'Modules', value: 73 },
           ]}
           rightContent={
             <div className="relative md:hidden lg:flex items-center justify-center w-full h-full py-6 lg:py-0">
@@ -51,7 +52,7 @@ const Toha3eePage = () => {
                 alt="Toha3ee"
                 width={1024}
                 height={1024}
-                className="w-[72%] xl:w-[64%] 2xl:w-[56%] max-h-[68vh] object-contain drop-shadow-[0_0_50px_rgba(6,182,111,0.35)]"
+                className="w-[72%] xl:w-[64%] 2xl:w-[56%] max-h-[68vh] object-contain"
               />
             </div>
           }
@@ -66,198 +67,204 @@ const Toha3eePage = () => {
 
         {/* ── Authorised-use warning ─────────────────────────────────────── */}
         <PublicSnapSection>
-            <div className="space-y-6 md:space-y-8">
-              <SectionHeader
-                kicker="Warning"
-                title="Authorised"
-                accent="Use Only"
-                description="Toha3ee actively redirects, poisons, decrypts and intercepts network traffic. Use it only on networks you own or are explicitly authorised to test."
-              />
-              <div className="rounded-2xl border border-amber-500/30 bg-amber-500/5 p-6 md:p-8 flex flex-col sm:flex-row gap-4 items-start">
-                <div className="w-10 h-10 md:w-12 md:h-12 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center shrink-0">
-                  <ShieldAlert className="w-5 h-5 md:w-6 md:h-6 text-amber-400" />
-                </div>
-                <div>
-                  <h4 className="text-sm font-black text-text-primary leading-tight">Not for use against third parties</h4>
-                  <p className="text-xs md:text-sm text-text-secondary leading-relaxed mt-2 font-mono max-w-2xl">
-                    Running these modules against networks you do not own is illegal in most jurisdictions. Most attack modules require root — raw sockets, packet capture and IP forwarding. The tool re-executes itself under sudo by default; pass <code className="text-amber-400">--no-sudo</code> for unprivileged commands.
-                  </p>
-                </div>
+          <div className="space-y-6 md:space-y-8">
+            <SectionHeader
+              kicker="Warning"
+              title="Authorised"
+              accent="Use Only"
+              description="Toha3ee actively redirects, poisons, decrypts and intercepts network traffic. Use it only on networks you own or are explicitly authorised to test."
+            />
+            <div className="rounded-2xl border border-amber-500/30 bg-amber-500/5 px-6 py-5 md:px-8 flex flex-col sm:flex-row gap-4 items-start">
+              <div className="w-10 h-10 md:w-12 md:h-12 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center shrink-0">
+                <ShieldAlert className="w-5 h-5 md:w-6 md:h-6 text-amber-400" />
               </div>
+              <p className="text-xs md:text-sm text-text-secondary leading-relaxed font-mono max-w-2xl">
+                Running these modules against networks you do not own is illegal in most jurisdictions. Most attack
+                modules require root — raw sockets, packet capture and IP forwarding. The tool re-executes itself under
+                sudo by default; pass <code className="text-amber-400">--no-sudo</code> for unprivileged commands.
+              </p>
             </div>
+          </div>
         </PublicSnapSection>
 
-        {/* ── Module catalogue ─────────────────────────────────────────── */}
+        {/* ── Module catalogue carousel ─────────────────────────────────── */}
         <PublicSnapSection>
-            <div className="space-y-6 md:space-y-8">
-              <SectionHeader
-                kicker="Module Catalogue"
-                title="Seven"
-                accent="Layers"
-                description="Everything is a module. Each one self-registers, runs through a central safety lifecycle and tears down cleanly on panic or SIGINT."
-              />
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
-                {MODULES.map((cat) => (
-                  <div key={cat.id} className="rounded-2xl border border-border/30 bg-bg-card p-5 md:p-6 flex flex-col h-full">
-                    <div className="flex items-center gap-3 mb-3">
-                      <div className="w-10 h-10 rounded-xl bg-accent/10 border border-accent/20 flex items-center justify-center shrink-0">
-                        <cat.icon className="w-5 h-5 text-accent" />
-                      </div>
-                      <span className="text-xs font-black uppercase tracking-widest text-text-primary">{cat.name}</span>
+          <div className="space-y-6 md:space-y-8">
+            <SectionHeader
+              kicker="Module Catalogue"
+              title="Ten"
+              accent="Categories"
+              description="Everything is a module. Each one self-registers, runs through a central safety lifecycle and tears down cleanly on panic or SIGINT."
+            />
+            <Carousel
+              slides={MODULES}
+              autoPlayInterval={6500}
+              renderCard={(cat) => (
+                <div className="p-6 sm:p-10 md:p-14 min-h-[300px] sm:min-h-[340px] md:min-h-[360px] flex flex-col justify-center">
+                  <div className="flex items-center gap-4 mb-4 md:mb-6">
+                    <div className="w-12 h-12 md:w-14 md:h-14 rounded-2xl bg-accent/10 border border-accent/20 flex items-center justify-center shrink-0">
+                      <cat.icon className="w-6 h-6 text-accent" />
                     </div>
-                    <p className="text-xs text-text-muted leading-relaxed font-mono mb-4">{cat.desc}</p>
-                    <div className="flex flex-wrap gap-1.5 mt-auto">
-                      {cat.modules.map((m) => (
-                        <code key={m} className="px-2 py-0.5 rounded-lg bg-bg-elevated border border-border/20 text-[9px] font-mono text-text-secondary">
-                          {m}
-                        </code>
-                      ))}
-                    </div>
+                    <span className="text-[9px] font-black uppercase tracking-widest text-accent/70">
+                      Category {cat.id.toUpperCase()}
+                    </span>
                   </div>
-                ))}
-              </div>
-            </div>
+                  <h5 className="text-2xl md:text-3xl lg:text-4xl font-black uppercase tracking-tight text-text-primary mb-3">
+                    {cat.name}
+                  </h5>
+                  <p className="text-xs sm:text-sm md:text-base text-text-secondary leading-relaxed font-mono mb-5 max-w-2xl">
+                    {cat.desc}
+                  </p>
+                  <div className="flex flex-wrap gap-1.5">
+                    {cat.modules.map((m) => (
+                      <code key={m} className="px-2.5 py-1 rounded-lg bg-bg-elevated border border-border/20 text-[9px] md:text-[10px] font-mono text-text-secondary">
+                        {m}
+                      </code>
+                    ))}
+                  </div>
+                </div>
+              )}
+            />
+          </div>
         </PublicSnapSection>
 
         {/* ── Install ───────────────────────────────────────────────────── */}
         <PublicSnapSection id="install" className="scroll-mt-28">
-            <div className="space-y-6 md:space-y-8">
-              <SectionHeader
-                kicker="Install"
-                title="Ready in"
-                accent="One Line"
-                description="One-liner installers fetch the prebuilt binary, verify its SHA-256 checksum and register the desktop icon."
-              />
+          <div className="space-y-6 md:space-y-8">
+            <SectionHeader
+              kicker="Install"
+              title="Ready in"
+              accent="One Line"
+              description="One-liner installers fetch the prebuilt binary, verify its SHA-256 checksum and register the desktop icon."
+            />
 
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6">
-                {/* Option 1 — One-liner installer */}
-                <div className="rounded-2xl border border-border/30 bg-bg-card p-6 md:p-8 space-y-5 h-full">
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-xl bg-accent/10 flex items-center justify-center shrink-0">
-                      <Download className="w-5 h-5 text-accent" />
-                    </div>
-                    <div>
-                      <h4 className="text-sm font-black text-text-primary leading-tight">Option 1 — One-Line Installer</h4>
-                      <p className="text-[10px] font-mono text-text-muted mt-0.5">Prebuilt binary, checksum-verified.</p>
-                    </div>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6">
+              {/* Option 1 — One-liner installer */}
+              <div className="rounded-2xl border border-border/30 bg-accent/5 p-6 md:p-8 space-y-4 h-full">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-xl bg-accent/10 border border-accent/20 flex items-center justify-center shrink-0">
+                    <Download className="w-5 h-5 text-accent" />
                   </div>
-                  <div className="space-y-2">
-                    {INSTALLERS.map(({ id, label, icon: Icon, cmd, note }) => (
-                      <div key={id} className="rounded-xl border border-border/20 bg-bg p-4">
-                        <div className="flex items-center gap-2 mb-1.5">
-                          <Icon className="w-3.5 h-3.5 text-accent" />
-                          <span className="text-[9px] font-black uppercase tracking-widest text-text-muted">{label}</span>
-                        </div>
-                        <code className="block text-[10px] md:text-[11px] font-mono text-text-secondary break-all">{cmd}</code>
-                        <p className="text-[10px] font-mono text-text-muted mt-2 leading-relaxed">{note}</p>
-                      </div>
-                    ))}
+                  <div>
+                    <h4 className="text-sm font-black text-text-primary leading-tight">One-Line Installer</h4>
+                    <p className="text-[10px] font-mono text-text-muted mt-0.5">Prebuilt binary, checksum-verified.</p>
                   </div>
                 </div>
-
-                {/* Option 2 — Build from source */}
-                <div className="rounded-2xl border border-border/30 bg-bg-card p-6 md:p-8 space-y-5 h-full">
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-xl bg-accent/10 flex items-center justify-center shrink-0">
-                      <GitBranch className="w-5 h-5 text-accent" />
-                    </div>
-                    <div>
-                      <h4 className="text-sm font-black text-text-primary leading-tight">Option 2 — Build From Source</h4>
-                      <p className="text-[10px] font-mono text-text-muted mt-0.5">{BUILD_FROM_SOURCE.requirements}</p>
-                    </div>
-                  </div>
-                  <div className="space-y-2">
-                    {BUILD_FROM_SOURCE.steps.map(({ cmd, note }) => (
-                      <div key={cmd} className="rounded-xl border border-border/20 bg-bg p-4">
-                        <code className="block text-[11px] md:text-xs font-mono text-text-secondary break-all">
-                          {cmd}
-                        </code>
-                        {note && (
-                          <p className="text-[10px] font-mono text-text-muted mt-2 leading-relaxed">{note}</p>
-                        )}
+                <div className="space-y-2">
+                  {INSTALLERS.map(({ id, label, icon: Icon, cmd, note }) => (
+                    <div key={id} className="rounded-xl border border-border/20 bg-bg px-4 py-3">
+                      <div className="flex items-center gap-2 mb-1.5">
+                        <Icon className="w-3.5 h-3.5 text-accent" />
+                        <span className="text-[9px] font-black uppercase tracking-widest text-text-muted">{label}</span>
                       </div>
-                    ))}
-                  </div>
-                  <a
-                    href={GITHUB_URL}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-accent hover:underline"
-                  >
-                    GitHub Repository <IconArrowRight size={14} />
-                  </a>
+                      <code className="block text-[10px] md:text-[11px] font-mono text-text-secondary break-all">{cmd}</code>
+                      <p className="text-[10px] font-mono text-text-muted mt-2 leading-relaxed">{note}</p>
+                    </div>
+                  ))}
                 </div>
               </div>
+
+              {/* Option 2 — Build from source */}
+              <div className="rounded-2xl border border-border/30 bg-accent/5 p-6 md:p-8 space-y-4 h-full">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-xl bg-accent/10 border border-accent/20 flex items-center justify-center shrink-0">
+                    <GitBranch className="w-5 h-5 text-accent" />
+                  </div>
+                  <div>
+                    <h4 className="text-sm font-black text-text-primary leading-tight">Build From Source</h4>
+                    <p className="text-[10px] font-mono text-text-muted mt-0.5">{BUILD_FROM_SOURCE.requirements}</p>
+                  </div>
+                </div>
+                <div className="space-y-2">
+                  {BUILD_FROM_SOURCE.steps.map(({ cmd, note }) => (
+                    <div key={cmd} className="rounded-xl border border-border/20 bg-bg px-4 py-3">
+                      <code className="block text-[10px] md:text-xs font-mono text-text-secondary break-all">$ {cmd}</code>
+                      {note && (
+                        <p className="text-[10px] font-mono text-text-muted mt-2 leading-relaxed">{note}</p>
+                      )}
+                    </div>
+                  ))}
+                </div>
+                <a
+                  href={GITHUB_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-accent hover:underline"
+                >
+                  GitHub Repository <IconArrowRight size={14} />
+                </a>
+              </div>
             </div>
+          </div>
         </PublicSnapSection>
 
         {/* ── Quick Start ───────────────────────────────────────────────── */}
         <PublicSnapSection>
-            <div className="space-y-6 md:space-y-8">
-              <SectionHeader
-                kicker="Quick Start"
-                title="Drop into"
-                accent="The Console"
-                description="Bare toha3ee opens a bettercap/metasploit-style REPL — grouped, aligned output with status glyphs. Sessions keep captured data across module runs."
-              />
+          <div className="space-y-6 md:space-y-8">
+            <SectionHeader
+              kicker="Quick Start"
+              title="Drop into"
+              accent="The Console"
+              description="Bare toha3ee opens a bettercap/metasploit-style REPL — grouped, aligned output with status glyphs. Sessions keep captured data across module runs."
+            />
 
-              <div className="grid grid-cols-1 lg:grid-cols-[1.15fr_1fr] gap-4 md:gap-6 items-stretch">
-                {/* Terminal mock */}
-                <div className="rounded-2xl border border-border/30 bg-bg-card overflow-hidden h-full">
-                  <div className="flex items-center gap-2 px-4 py-3 border-b border-border/20 bg-bg">
-                    <span className="w-2.5 h-2.5 rounded-full bg-red-400/70" />
-                    <span className="w-2.5 h-2.5 rounded-full bg-yellow-400/70" />
-                    <span className="w-2.5 h-2.5 rounded-full bg-accent/70" />
-                    <span className="ml-2 text-[9px] font-mono text-text-muted">toha3ee — zsh</span>
-                  </div>
-                  <div className="p-4 md:p-6 font-mono text-xs md:text-sm space-y-3">
-                    <div className="flex items-center gap-2">
-                      <span className="text-accent">$</span>
-                      <span className="text-text-primary">sudo ./toha3ee --iface eth0</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <span className="text-accent">$</span>
-                      <span className="text-text-muted">[+] session ready. type 'help' for commands.</span>
-                    </div>
-                    <div className="pl-4 space-y-2 border-l border-accent/30">
-                      {CONSOLE_SESSION.map((line) => (
-                        <div key={line.cmd} className="flex items-start gap-2">
-                          <span className="text-accent shrink-0 pt-0.5">toha3ee&gt;</span>
-                          <span className="text-text-primary shrink-0">{line.cmd}</span>
-                          <span className="text-text-muted leading-relaxed break-words">— {line.note}</span>
-                        </div>
-                      ))}
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <span className="text-accent">$</span>
-                      <span className="text-text-primary animate-pulse">▋</span>
-                    </div>
-                  </div>
+            <div className="grid grid-cols-1 lg:grid-cols-[1.15fr_1fr] gap-4 md:gap-6 items-stretch">
+              {/* Terminal mock */}
+              <div className="rounded-2xl border border-border/30 bg-bg-card overflow-hidden h-full">
+                <div className="flex items-center gap-2 px-4 py-3 border-b border-border/20 bg-bg">
+                  <span className="w-2.5 h-2.5 rounded-full bg-red-400/70" />
+                  <span className="w-2.5 h-2.5 rounded-full bg-yellow-400/70" />
+                  <span className="w-2.5 h-2.5 rounded-full bg-accent/70" />
+                  <span className="ml-2 text-[9px] font-mono text-text-muted">toha3ee — zsh</span>
                 </div>
-
-                {/* Usage commands */}
-                <div className="rounded-2xl border border-border/30 bg-bg-card p-6 md:p-8 space-y-3 h-full">
-                  <div className="flex items-center gap-3 mb-2">
-                    <div className="w-10 h-10 rounded-xl bg-accent/10 flex items-center justify-center shrink-0">
-                      <Terminal className="w-5 h-5 text-accent" />
-                    </div>
-                    <div>
-                      <h4 className="text-sm font-black text-text-primary leading-tight">Usage</h4>
-                      <p className="text-[10px] font-mono text-text-muted mt-0.5">One-shot and scripted runs</p>
-                    </div>
+                <div className="p-4 md:p-6 font-mono text-xs md:text-sm space-y-3">
+                  <div className="flex items-center gap-2">
+                    <span className="text-accent">$</span>
+                    <span className="text-text-primary">sudo ./toha3ee --iface eth0</span>
                   </div>
-                  {QUICK_START.map((cmd) => (
-                    <div key={cmd} className="flex items-center gap-2 rounded-xl border border-border/20 bg-bg px-4 py-3">
-                      <ChevronRight className="w-4 h-4 text-accent shrink-0" />
-                      <code className="text-xs md:text-sm text-text-secondary break-all">{cmd}</code>
-                    </div>
-                  ))}
-                  <p className="text-[10px] font-mono text-text-muted leading-relaxed pt-1">
-                    Most attack modules require root. Use only on networks you own or have explicit written permission to test.
-                  </p>
+                  <div className="flex items-center gap-2">
+                    <span className="text-accent">$</span>
+                    <span className="text-text-muted">[+] session ready. type 'help' for commands.</span>
+                  </div>
+                  <div className="pl-4 space-y-2 border-l border-accent/30">
+                    {CONSOLE_SESSION.map((line) => (
+                      <div key={line.cmd} className="flex items-start gap-2">
+                        <span className="text-accent shrink-0 pt-0.5">toha3ee&gt;</span>
+                        <span className="text-text-primary shrink-0">{line.cmd}</span>
+                        <span className="text-text-muted leading-relaxed break-words">— {line.note}</span>
+                      </div>
+                    ))}
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span className="text-accent">$</span>
+                    <span className="text-text-primary animate-pulse">▋</span>
+                  </div>
                 </div>
               </div>
+
+              {/* Usage commands */}
+              <div className="rounded-2xl border border-border/30 bg-accent/5 p-6 md:p-8 space-y-3 h-full">
+                <div className="flex items-center gap-3 mb-2">
+                  <div className="w-10 h-10 rounded-xl bg-accent/10 border border-accent/20 flex items-center justify-center shrink-0">
+                    <Terminal className="w-5 h-5 text-accent" />
+                  </div>
+                  <div>
+                    <h4 className="text-sm font-black text-text-primary leading-tight">Usage</h4>
+                    <p className="text-[10px] font-mono text-text-muted mt-0.5">One-shot and scripted runs</p>
+                  </div>
+                </div>
+                {QUICK_START.map((cmd) => (
+                  <div key={cmd} className="flex items-center gap-2 rounded-xl border border-border/20 bg-bg px-4 py-3">
+                    <ChevronRight className="w-4 h-4 text-accent shrink-0" />
+                    <code className="text-xs md:text-sm text-text-secondary break-all">{cmd}</code>
+                  </div>
+                ))}
+                <p className="text-[10px] font-mono text-text-muted leading-relaxed pt-1">
+                  Most attack modules require root. Use only on networks you own or have explicit written permission to test.
+                </p>
+              </div>
             </div>
+          </div>
         </PublicSnapSection>
         <LandingFinalCtaSection user={user} />
         <Footer />

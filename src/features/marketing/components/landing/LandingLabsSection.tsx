@@ -4,6 +4,7 @@ import { motion, useReducedMotion } from 'motion/react';
 import { Zap } from 'lucide-react';
 
 import { IconArrowRight } from '@/shared/components/icons';
+import { DottedMapOverlay } from '@/shared/components/ui';
 import { useTranslation } from 'react-i18next';
 
 const LABS = [
@@ -67,6 +68,7 @@ const LandingLabsSection: React.FC = () => {
                 to="/dashboard/labs"
                 className="group relative block h-full rounded-2xl border border-border/20 bg-bg/90 p-4 sm:p-8 transition-all duration-300 hover:border-accent/30"
               >
+                <DottedMapOverlay className="rounded-2xl" />
                 <div className="relative h-full flex flex-col">
                   <div className="flex items-center justify-between mb-3 sm:mb-6">
                     <span className="text-[9px] font-black uppercase tracking-widest px-3 py-1.5 rounded-full border border-border/30 bg-bg-elevated text-text-muted">
@@ -104,6 +106,7 @@ const LandingLabsSection: React.FC = () => {
                   to="/dashboard/labs"
                   className="group relative block h-full rounded-2xl border border-border/20 bg-bg/90 p-3 sm:p-5 transition-all duration-300 hover:border-accent/30"
                 >
+                  <DottedMapOverlay className="rounded-2xl" />
                   <div className="relative h-full flex flex-col">
                     <div className="flex items-center justify-between mb-2 sm:mb-3">
                       <span className="text-[8px] font-black uppercase tracking-widest px-2 py-1 rounded-full border border-border/30 bg-bg-elevated text-text-muted">

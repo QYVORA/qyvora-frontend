@@ -38,7 +38,7 @@ export const ContactTrigger: React.FC<ContactTriggerProps> = ({
   if (type === 'link') {
     return (
       <a
-        href="/contact"
+        href="#"
         onClick={(event) => {
           event.preventDefault();
           handleOpen();
