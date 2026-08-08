@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useRef } from 'react';
 import api from '@/core/services/api';
 import type { LeaderboardEntry, Period } from './types';
 
@@ -12,21 +12,34 @@ interface UseLeaderboardOptions {
 }
 
 export function useLeaderboard(options: UseLeaderboardOptions = {}) {
-  const { limit = 50, offset = 0, errorMessages } = options;
+  const { limit = 50, offset: initialOffset = 0, errorMessages } = options;
   const [entries, setEntries] = useState<LeaderboardEntry[]>([]);
   const [loading, setLoading] = useState(true);
+  const [loadingMore, setLoadingMore] = useState(false);
   const [error, setError] = useState('');
   const [total, setTotal] = useState(0);
+  const [hasMore, setHasMore] = useState(false);
+  const offsetRef = useRef(initialOffset);
 
-  const fetchLeaderboard = useCallback(async (period: Period) => {
-    setLoading(true);
+  const fetchLeaderboard = useCallback(async (period: Period, mode: 'reset' | 'append' = 'reset') => {
+    if (mode === 'reset') {
+      offsetRef.current = initialOffset;
+      setLoading(true);
+      setEntries([]);
+    } else {
+      setLoadingMore(true);
+    }
     setError('');
     try {
-      const res = await api.get(`/public/leaderboard?period=${period}&limit=${limit}&offset=${offset}`);
+      const res = await api.get(`/public/leaderboard?period=${period}&limit=${limit}&offset=${offsetRef.current}`);
       const data = res.data;
       if (data.success) {
-        setEntries(data.entries || []);
+        const batch = data.entries || [];
+        setEntries((prev) => (mode === 'reset' ? batch : [...prev, ...batch]));
         setTotal(data.total || 0);
+        const nextOffset = offsetRef.current + batch.length;
+        offsetRef.current = nextOffset;
+        setHasMore(batch.length >= limit && nextOffset < (data.total || 0));
       } else {
         setError(errorMessages?.loadFailed || 'Failed to load leaderboard.');
       }
@@ -34,8 +47,11 @@ export function useLeaderboard(options: UseLeaderboardOptions = {}) {
       setError(errorMessages?.networkFailed || 'Failed to load leaderboard. Check connection and try again.');
     } finally {
       setLoading(false);
+      setLoadingMore(false);
     }
-  }, [limit, offset, errorMessages?.loadFailed, errorMessages?.networkFailed]);
+  }, [limit, initialOffset, errorMessages?.loadFailed, errorMessages?.networkFailed]);
 
-  return { entries, loading, error, total, fetchLeaderboard, setEntries, setTotal, setError, setLoading };
+  const loadMore = useCallback((period: Period) => fetchLeaderboard(period, 'append'), [fetchLeaderboard]);
+
+  return { entries, loading, loadingMore, error, total, hasMore, fetchLeaderboard, loadMore, setEntries, setTotal, setError, setLoading };
 }
