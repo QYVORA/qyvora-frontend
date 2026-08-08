@@ -292,7 +292,7 @@ border border-border/30 bg-bg-card rounded-2xl overflow-hidden
 **Key rules:**
 - **Never use `aspect-square`** on product cards — use `aspect-[16/9]` for the cover image
 - Use `AuthImage` component (from `@/shared/components/ui`) for product images — they are behind auth (`/uploads/cp-products/`, `/uploads/bootcamps/`)
-- Fallback image: `import productFallbackImg from '@/assets/sections/stats/cp-earned-bg.webp'`
+- Product images come ONLY from the DB/admin uploads — do NOT pass a `fallback` prop (and never reference the deleted `@/assets/sections/stats/cp-earned-bg.webp`). `AuthImage` renders nothing when there's no usable src.
 - Cover image gradient: `bg-gradient-to-t from-bg-card via-transparent to-transparent`
 - Hover effect: `group-hover:scale-105` on the image with `transition-transform duration-500`
 
