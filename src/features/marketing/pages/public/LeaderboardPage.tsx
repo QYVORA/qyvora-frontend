@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSearchParams } from 'react-router-dom';
 import { Trophy, Shield } from 'lucide-react';
@@ -14,8 +14,6 @@ import LandingFinalCtaSection from '@/features/marketing/components/landing/Land
 import { ErrorState } from '@/shared/components/ui';
 import type { Period } from '@/shared/components/leaderboard';
 
-const PAGE_SIZE = 10;
-
 const LeaderboardPage = () => {
   const { t } = useTranslation();
   const { user } = useAuth();
@@ -23,19 +21,16 @@ const LeaderboardPage = () => {
 
   const period = (searchParams.get('period') as Period) || 'all';
 
-  const { entries, loading, error, total, fetchLeaderboard } = useLeaderboard({
-    limit: 100,
+  const { entries, loading, loadingMore, error, total, hasMore, fetchLeaderboard, loadMore } = useLeaderboard({
+    limit: 50,
     errorMessages: {
       loadFailed: 'Failed to load leaderboard.',
       networkFailed: 'Failed to load leaderboard. Check connection.',
     },
   });
 
-  const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
-
   useEffect(() => {
     fetchLeaderboard(period);
-    setVisibleCount(PAGE_SIZE);
   }, [period, fetchLeaderboard]);
 
   const handlePeriodChange = (newPeriod: Period) => {
@@ -44,8 +39,7 @@ const LeaderboardPage = () => {
 
   const podium = entries.slice(0, 3);
   const rest = entries.slice(3);
-  const visibleRest = rest.slice(0, visibleCount);
-  const hasMore = rest.length > visibleCount;
+  const remainingCount = Math.max(total - entries.length, 0);
 
   const podiumOrder = [podium[1], podium[0], podium[2]].filter(Boolean) as typeof podium;
 
@@ -123,7 +117,7 @@ const LeaderboardPage = () => {
                 <span className="text-right">Streak</span>
               </div>
               <div className="space-y-2 py-2">
-                {visibleRest.map((entry) => (
+                {rest.map((entry) => (
                   <ScrollReveal key={entry.userId} amount={0.05}>
                     <LeaderboardRow
                       entry={entry}
@@ -141,10 +135,11 @@ const LeaderboardPage = () => {
               {hasMore && (
                 <div className="flex justify-center pt-6">
                   <button
-                    onClick={() => setVisibleCount((c) => c + PAGE_SIZE)}
-                    className="px-6 py-2.5 rounded-xl text-xs font-black uppercase tracking-widest border border-border/30 bg-bg-card text-text-muted hover:border-accent/30 hover:text-accent transition-all"
+                    onClick={() => loadMore(period)}
+                    disabled={loadingMore}
+                    className="px-6 py-2.5 rounded-xl text-xs font-black uppercase tracking-widest border border-border/30 bg-bg-card text-text-muted hover:border-accent/30 hover:text-accent transition-all disabled:opacity-50"
                   >
-                    Show more ({rest.length - visibleCount} remaining)
+                    {loadingMore ? 'Loading…' : `Show more (${remainingCount} remaining)`}
                   </button>
                 </div>
               )}
