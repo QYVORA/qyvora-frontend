@@ -15,22 +15,30 @@ interface StudentTourProps {
 const queryTarget = (id: string) =>
   document.querySelector<HTMLElement>(`[data-tour-id="${id}"]`);
 
-const useNeedsOnboarding = () =>
+const useNeedsOnboarding = (completedOnServer: boolean) =>
   useMemo(() => {
     try {
-      return localStorage.getItem(ONBOARDING_TOUR_SEEN_KEY) !== '1';
+      const seenLocally = localStorage.getItem(ONBOARDING_TOUR_SEEN_KEY) === '1';
+      return !seenLocally || !completedOnServer;
     } catch {
       return true;
     }
-  }, []);
+  }, [completedOnServer]);
 
 /**
  * Wrapper that only mounts the tour (and thus only registers with the popup
  * priority queue) when onboarding is actually pending. This keeps the slot
  * free for lower-priority popups once the tour is no longer needed.
+ *
+ * Every signed-in user sees the tour once: it shows until onboarding is
+ * complete on the account (server-side `onboardingCompletedAt`) AND on this
+ * device (local flag). Existing accounts that never finished onboarding — or
+ * that have only a stale local flag — get the flow on their next login.
  */
 export const StudentTour: React.FC<StudentTourProps> = (props) => {
-  const needsOnboarding = useNeedsOnboarding();
+  const { user } = useAuth();
+  const completedOnServer = Boolean(user?.onboardingCompletedAt);
+  const needsOnboarding = useNeedsOnboarding(completedOnServer);
   if (!needsOnboarding) return null;
   return <StudentTourGate {...props} />;
 };
@@ -58,7 +66,7 @@ const StudentTourGate: React.FC<StudentTourProps> = ({ cpBalance, username }) =>
       /* ignore storage errors */
     }
     try {
-      await api.put('/profile', { onboardingCompletedAt: new Date().toISOString() });
+      await api.post('/profile/onboarding/complete');
       await refreshMe();
     } catch {
       // Best-effort server write-back; the local flag already prevents re-showing.
