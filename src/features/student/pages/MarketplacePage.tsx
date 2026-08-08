@@ -9,7 +9,6 @@ import { useToast } from '../../../core/contexts/ToastContext';
 import SEO from '../../../shared/components/SEO';
 import CpLogo from '../../../shared/components/CpLogo';
 import { AuthImage } from '../../../shared/components/ui';
-import productFallbackImg from '@/assets/sections/stats/cp-earned-bg.webp';
 import { extractCpBalance } from '../../../shared/utils/cpBalance';
 import { formatNumber } from '../../../shared/utils/formatNumber';
 import { MarketplaceSkeleton } from '../components/StudentSkeletons';
@@ -189,7 +188,6 @@ const Marketplace: React.FC = () => {
                       <div className="relative aspect-[16/9] overflow-hidden bg-accent/5 border-b border-border/30">
                         <AuthImage
                           src={prod.coverUrl}
-                          fallback={productFallbackImg}
                           alt={prod.title}
                           className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                           loading="lazy"

@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { User, Search } from 'lucide-react';
 import { IconArrowRight, IconClock } from '@/shared/components/icons';
+import { DottedMapOverlay } from '@/shared/components/ui';
 import { ScrollReveal } from '@/shared/components';
 import SEO from '@/shared/components/SEO';
 import PublicSnapLayout from '@/shared/components/PublicSnapLayout';
@@ -98,6 +99,7 @@ const BlogsPage = () => {
                   to={`/blogs/${post.slug}`}
                   className="group flex flex-col rounded-2xl border border-border/30 bg-bg-card overflow-hidden transition-all duration-300 hover:border-accent/30 h-full"
                 >
+                  <DottedMapOverlay className="rounded-2xl" />
                   {post.image && (
                     <div className="aspect-[16/9] overflow-hidden bg-accent/5">
                       <img

@@ -5,7 +5,6 @@ import { BookOpen, Cpu, FileText, Search } from 'lucide-react';
 import { IconMarketplace, IconLock } from '@/shared/components/icons';
 import { ScrollReveal } from '@/shared/components';
 import api from '@/core/services/api';
-import productFallbackImg from '@/assets/sections/stats/cp-earned-bg.webp';
 import { AuthImage, Skeleton, ErrorState, DottedMapOverlay } from '@/shared/components/ui';
 import SEO from '@/shared/components/SEO';
 import PublicSnapLayout from '@/shared/components/PublicSnapLayout';
@@ -120,7 +119,6 @@ const MarketPage = () => {
                   <div className="relative aspect-[16/9] overflow-hidden bg-accent/5 border-b border-border/30">
                     <AuthImage
                       src={prod.coverUrl}
-                      fallback={productFallbackImg}
                       alt={prod.title}
                       className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                       loading="lazy"
