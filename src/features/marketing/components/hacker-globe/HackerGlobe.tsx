@@ -11,165 +11,151 @@ interface HackerGlobeProps {
   fluid?: boolean;
 }
 
+interface GlobeScene {
+  renderer: THREE.WebGLRenderer;
+  scene: THREE.Scene;
+  camera: THREE.PerspectiveCamera;
+  globe: THREE.Group;
+  rafId: number;
+  last: number;
+}
+
 const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88, offset = [0, 0, 0], fluid = false }) => {
-  const mountRef   = useRef<HTMLDivElement>(null);
+  const mountRef = useRef<HTMLDivElement>(null);
   const { constrainedDevice, isMobile } = useAdaptiveUi();
   const isSimplified = constrainedDevice || isMobile;
   const fluidGlobe = useFluidGlobe();
   const effectiveScale = fluid ? fluidGlobe.scale : scale;
   const effectiveOffset = fluid ? fluidGlobe.offset : offset;
 
+  // Live values read inside the animation loop so changing them never
+  // restarts the WebGL scene.
+  const live = useRef({ scale: effectiveScale, offset: effectiveOffset, simplified: isSimplified });
+  live.current = { scale: effectiveScale, offset: effectiveOffset, simplified: isSimplified };
+
+  const sceneRef = useRef<GlobeScene | null>(null);
+
+  // Mount / unmount the WebGL scene exactly once. Resizes and fluid size
+  // changes are applied in place — the context is never torn down — so the
+  // globe cannot flicker, disappear, or stutter while scrolling (mobile
+  // browser URL-bar height changes used to trigger a full re-init every
+  // scroll tick).
   useEffect(() => {
     const el = mountRef.current;
     if (!el) return;
 
+    const ctx = live.current;
     let renderer: THREE.WebGLRenderer | null = null;
-    let scene: THREE.Scene | null = null;
-    let rafId: number | null = null;
-    let camera: THREE.PerspectiveCamera | null = null;
-    let globe: THREE.Group | null = null;
-    let w = 0, h = 0;
-    let isInView = false;
 
-    const init = (initialW: number, initialH: number) => {
-      w = initialW;
-      h = initialH;
-      const isLight = false;
+    try {
+      renderer = new THREE.WebGLRenderer({
+        antialias: true,
+        alpha: true,
+        powerPreference: ctx.simplified ? 'low-power' : 'high-performance',
+      });
+    } catch {
+      // WebGL unavailable (old mobile browser, WebView, etc.)
+      return;
+    }
 
-      try {
-        renderer = new THREE.WebGLRenderer({
-          antialias: true,
-          alpha: true,
-          powerPreference: isSimplified ? 'low-power' : 'high-performance'
-        });
-      } catch {
-        // WebGL unavailable (old mobile browser, WebView, etc.)
-        return;
-      }
-      renderer.setSize(w, h);
-      renderer.setPixelRatio(Math.min(window.devicePixelRatio, isSimplified ? 2 : 1.5));
-      renderer.outputColorSpace = THREE.SRGBColorSpace;
-      renderer.domElement.style.cssText = 'position:absolute;inset:0;z-index:1;pointer-events:none;';
-      el.appendChild(renderer.domElement);
+    const w = el.clientWidth || 1;
+    const h = el.clientHeight || 1;
+    renderer.setSize(w, h);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
+    renderer.outputColorSpace = THREE.SRGBColorSpace;
+    renderer.domElement.style.cssText = 'position:absolute;inset:0;z-index:1;pointer-events:none;';
+    el.appendChild(renderer.domElement);
 
-      scene  = new THREE.Scene();
-      camera = new THREE.PerspectiveCamera(38, w / h, 0.1, 100);
-      camera.position.z = 2.1;
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(38, w / h, 0.1, 100);
+    camera.position.z = 2.1;
+    camera.lookAt(0, 0, 0);
 
-      globe = new THREE.Group();
-      globe.scale.setScalar(effectiveScale);
-      globe.position.set(effectiveOffset[0], effectiveOffset[1], effectiveOffset[2]);
-      globe.rotation.y = -1.9;
-      scene.add(globe);
+    const globe = new THREE.Group();
+    globe.scale.setScalar(ctx.scale);
+    globe.position.set(ctx.offset[0], ctx.offset[1], ctx.offset[2]);
+    globe.rotation.y = -1.9;
+    scene.add(globe);
 
-      const sphereSegments = isSimplified ? 32 : 64;
-      const step = 1.6;
-      const dotTex = buildDotMapTexture(isLight, step);
+    const sphereSegments = ctx.simplified ? 32 : 64;
+    const dotTex = buildDotMapTexture(false, 1.6);
 
-      const globeBack = new THREE.Mesh(
-        new THREE.SphereGeometry(1.0, sphereSegments, sphereSegments),
-        new THREE.MeshBasicMaterial({
-          map: dotTex, transparent: true, opacity: 0.55,
-          depthWrite: false, side: THREE.BackSide,
-        }),
-      );
-      globeBack.renderOrder = 1;
-      globe.add(globeBack);
+    const globeBack = new THREE.Mesh(
+      new THREE.SphereGeometry(1.0, sphereSegments, sphereSegments),
+      new THREE.MeshBasicMaterial({
+        map: dotTex, transparent: true, opacity: 0.55,
+        depthWrite: false, side: THREE.BackSide,
+      }),
+    );
+    globeBack.renderOrder = 1;
+    globe.add(globeBack);
 
-      const globeFront = new THREE.Mesh(
-        new THREE.SphereGeometry(1.0, sphereSegments, sphereSegments),
-        new THREE.MeshBasicMaterial({
-          map: dotTex, transparent: true, opacity: 1.0,
-          depthWrite: false, side: THREE.FrontSide,
-        }),
-      );
-      globeFront.renderOrder = 2;
-      globe.add(globeFront);
+    const globeFront = new THREE.Mesh(
+      new THREE.SphereGeometry(1.0, sphereSegments, sphereSegments),
+      new THREE.MeshBasicMaterial({
+        map: dotTex, transparent: true, opacity: 1.0,
+        depthWrite: false, side: THREE.FrontSide,
+      }),
+    );
+    globeFront.renderOrder = 2;
+    globe.add(globeFront);
 
-      let last = 0, tick = 0, frameCount = 0;
-
-      const animate = (now: number) => {
-        if (!isInView) {
-          rafId = null;
-          return;
-        }
-
-        rafId = requestAnimationFrame(animate);
-
-        const dt = Math.min(now - last, 50);
-        last = now;
-        tick += dt * 0.001;
-        frameCount++;
-
-        if (globe) globe.rotation.y += dt * (isSimplified ? 0.00040 : 0.00050);
-
-        if (camera) {
-          const orbitSpeed = isSimplified ? 0.20 : 0.30;
-          const orbitRadius = 0.35;
-          const verticalDrift = 0.12;
-          camera.position.x = Math.sin(tick * orbitSpeed) * orbitRadius;
-          camera.position.y = Math.cos(tick * orbitSpeed * 0.7) * verticalDrift;
-          camera.lookAt(0, 0, 0);
-        }
-
-        if (renderer && scene && camera && (!isSimplified || frameCount % 2 === 0)) renderer.render(scene, camera);
-      };
-
-      if (isInView) {
-        rafId = requestAnimationFrame(animate);
-      }
-
-      (el as any)._animate = animate;
-      };
-
-    const cleanup = () => {
-      if (rafId) cancelAnimationFrame(rafId);
-      if (scene) {
-        scene.traverse(obj => {
-          const m = obj as THREE.Mesh;
-          if (m.geometry) m.geometry.dispose();
-          const mat = m.material as THREE.Material | THREE.Material[] | undefined;
-          if (Array.isArray(mat)) mat.forEach(x => x.dispose());
-          else mat?.dispose();
-        });
-      }
-      if (renderer) {
-        if (el.contains(renderer.domElement)) el.removeChild(renderer.domElement);
-        renderer.forceContextLoss();
-        renderer.dispose();
-      }
-      renderer = null; scene = null; camera = null; globe = null;
+    const state: GlobeScene = {
+      renderer,
+      scene,
+      camera,
+      globe,
+      rafId: 0,
+      last: 0,
     };
 
-    const viewObserver = new IntersectionObserver((entries) => {
-      const wasInView = isInView;
-      isInView = entries[0].isIntersecting;
-      if (isInView && !wasInView && !rafId) {
-        const animate = (el as any)._animate;
-        if (animate) rafId = requestAnimationFrame(animate);
-      }
-    }, { threshold: 0 });
-    viewObserver.observe(el);
-    const observer = new ResizeObserver((entries) => {
+    const frame = (now: number) => {
+      state.rafId = requestAnimationFrame(frame);
+      const dt = Math.min(now - state.last, 50);
+      state.last = now;
+      state.globe.rotation.y += dt * (live.current.simplified ? 0.00040 : 0.00050);
+      state.renderer.render(state.scene, state.camera);
+    };
+    state.rafId = requestAnimationFrame(frame);
+
+    sceneRef.current = state;
+
+    const resizeObserver = new ResizeObserver((entries) => {
       const entry = entries[0];
       if (!entry) return;
-      const { width: newW, height: newH } = entry.contentRect;
-      if (newW > 0 && newH > 0) {
-        if (!renderer) init(newW, newH);
-        else {
-          w = newW; h = newH;
-          if (renderer) renderer.setSize(w, h);
-          if (camera) { camera.aspect = w / h; camera.updateProjectionMatrix(); }
-        }
+      const { width, height } = entry.contentRect;
+      if (width > 0 && height > 0) {
+        state.renderer.setSize(width, height);
+        state.camera.aspect = width / height;
+        state.camera.updateProjectionMatrix();
       }
     });
-    observer.observe(el);
+    resizeObserver.observe(el);
+
     return () => {
-      viewObserver.disconnect();
-      observer.disconnect();
-      cleanup();
+      resizeObserver.disconnect();
+      cancelAnimationFrame(state.rafId);
+      scene.traverse((obj) => {
+        const m = obj as THREE.Mesh;
+        if (m.geometry) m.geometry.dispose();
+        const mat = m.material as THREE.Material | THREE.Material[] | undefined;
+        if (Array.isArray(mat)) mat.forEach((x) => x.dispose());
+        else mat?.dispose();
+      });
+      if (el.contains(renderer.domElement)) el.removeChild(renderer.domElement);
+      renderer.forceContextLoss();
+      renderer.dispose();
+      sceneRef.current = null;
     };
-  }, [effectiveScale, isSimplified, effectiveOffset]);
+  }, [isSimplified]);
+
+  // Fluid scale / offset changes are applied in place — no scene rebuild.
+  useEffect(() => {
+    const state = sceneRef.current;
+    if (!state) return;
+    state.globe.scale.setScalar(effectiveScale);
+    state.globe.position.set(effectiveOffset[0], effectiveOffset[1], effectiveOffset[2]);
+  }, [effectiveScale, effectiveOffset]);
 
   return (
     <motion.div

@@ -193,7 +193,7 @@ const LandingLeaderboardSection = () => {
                       {isTopThree ? (
                         <Medal className={`${medalSizes} ${TOP_THREE_RANK_COLOR[entry!.rank - 1]}`} />
                       ) : (
-                        <span className="text-[8px] font-mono font-bold text-text-muted/40 bg-bg/70 rounded px-0.5 leading-none">
+                        <span className="text-[8px] font-mono font-bold text-text-primary/80 bg-black/50 rounded px-0.5 leading-none">
                           {entry!.rank}
                         </span>
                       )}
@@ -201,7 +201,7 @@ const LandingLeaderboardSection = () => {
 
                     <div
                       className={[
-                        'absolute inset-x-0 bottom-0 z-10 bg-gradient-to-t from-bg via-bg/90 to-transparent',
+                        'absolute inset-x-0 bottom-0 z-10 bg-gradient-to-t from-black/70 via-black/40 to-transparent',
                         'flex flex-col items-center justify-end pb-1.5 pt-4',
                         'transition-opacity duration-300',
                         isHovered ? 'opacity-100' : 'opacity-0',
