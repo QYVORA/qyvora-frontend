@@ -16,9 +16,9 @@ interface GlobeScene {
   scene: THREE.Scene;
   camera: THREE.PerspectiveCamera;
   globe: THREE.Group;
-  rafId: number;
-  last: number;
 }
+
+const SCROLL_SUSPEND_MS = 150;
 
 const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88, offset = [0, 0, 0], fluid = false }) => {
   const mountRef = useRef<HTMLDivElement>(null);
@@ -40,6 +40,12 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88, offset = [0, 0,
   // globe cannot flicker, disappear, or stutter while scrolling (mobile
   // browser URL-bar height changes used to trigger a full re-init every
   // scroll tick).
+  //
+  // The render loop is suspended while the user is actively scrolling and
+  // while the globe is off-screen. That removes the main-thread contention
+  // that used to make the rotation judder/pause mid-scroll; the globe simply
+  // holds its frame while you scroll and resumes rotating smoothly once the
+  // page settles.
   useEffect(() => {
     const el = mountRef.current;
     if (!el) return;
@@ -100,41 +106,76 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88, offset = [0, 0,
     globeFront.renderOrder = 2;
     globe.add(globeFront);
 
-    const state: GlobeScene = {
-      renderer,
-      scene,
-      camera,
-      globe,
-      rafId: 0,
-      last: 0,
+    sceneRef.current = { renderer, scene, camera, globe };
+
+    let rafId = 0;
+    let last = 0;
+    let visible = true;
+    let suspended = false;
+    let scrollTimer = 0;
+
+    const stop = () => {
+      if (rafId) {
+        cancelAnimationFrame(rafId);
+        rafId = 0;
+      }
     };
 
-    const frame = (now: number) => {
-      state.rafId = requestAnimationFrame(frame);
-      const dt = Math.min(now - state.last, 50);
-      state.last = now;
-      state.globe.rotation.y += dt * (live.current.simplified ? 0.00040 : 0.00050);
-      state.renderer.render(state.scene, state.camera);
+    const tick = (now: number) => {
+      rafId = requestAnimationFrame(tick);
+      const dt = Math.min(now - last, 50);
+      last = now;
+      globe.rotation.y += dt * (live.current.simplified ? 0.00040 : 0.00050);
+      renderer.render(scene, camera);
     };
-    state.rafId = requestAnimationFrame(frame);
 
-    sceneRef.current = state;
+    const start = () => {
+      if (rafId || !visible || suspended) return;
+      last = performance.now();
+      rafId = requestAnimationFrame(tick);
+    };
+
+    const onScroll = () => {
+      suspended = true;
+      stop();
+      window.clearTimeout(scrollTimer);
+      scrollTimer = window.setTimeout(() => {
+        suspended = false;
+        start();
+      }, SCROLL_SUSPEND_MS);
+    };
+
+    const viewObserver = new IntersectionObserver((entries) => {
+      visible = entries[0].isIntersecting;
+      if (visible) start();
+      else stop();
+    }, { threshold: 0 });
+    viewObserver.observe(el);
+
+    // capture:true also catches scrolls on nested scroll containers
+    // (the landing page scrolls inside .snap-container, public pages on window).
+    window.addEventListener('scroll', onScroll, { capture: true, passive: true });
+
+    start();
 
     const resizeObserver = new ResizeObserver((entries) => {
       const entry = entries[0];
       if (!entry) return;
       const { width, height } = entry.contentRect;
       if (width > 0 && height > 0) {
-        state.renderer.setSize(width, height);
-        state.camera.aspect = width / height;
-        state.camera.updateProjectionMatrix();
+        renderer.setSize(width, height);
+        camera.aspect = width / height;
+        camera.updateProjectionMatrix();
       }
     });
     resizeObserver.observe(el);
 
     return () => {
+      viewObserver.disconnect();
       resizeObserver.disconnect();
-      cancelAnimationFrame(state.rafId);
+      window.removeEventListener('scroll', onScroll, { capture: true });
+      window.clearTimeout(scrollTimer);
+      stop();
       scene.traverse((obj) => {
         const m = obj as THREE.Mesh;
         if (m.geometry) m.geometry.dispose();
