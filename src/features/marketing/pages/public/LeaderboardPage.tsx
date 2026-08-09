@@ -76,7 +76,7 @@ const LeaderboardPage = () => {
           </div>
 
           {error ? (
-            <ErrorState message={error} title="Leaderboard Unavailable" />
+            <ErrorState message={error} title="Leaderboard Unavailable" bare />
           ) : loading ? (
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
               {Array.from({ length: 3 }).map((_, i) => (

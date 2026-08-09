@@ -146,7 +146,7 @@ const LandingLeaderboardSection = () => {
               ))}
             </div>
           ) : error ? (
-            <ErrorState message={error} title="Leaderboard Unavailable" className="w-full max-w-md mx-auto" />
+            <ErrorState message={error} title="Leaderboard Unavailable" bare className="w-full" />
           ) : entries.length === 0 ? null : (
             <div
               className="relative flex flex-wrap content-start justify-center"

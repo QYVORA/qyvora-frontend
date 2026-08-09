@@ -94,7 +94,7 @@ const LandingMarketSection = () => {
               ))}
             </div>
           ) : error ? (
-            <ErrorState message={error} title="Marketplace Unavailable" className="w-full" />
+            <ErrorState message={error} title="Marketplace Unavailable" bare className="w-full" />
           ) : products.length > 0 ? (
             <div className={`grid gap-4 md:gap-6 w-full ${products.length === 1 ? 'grid-cols-1 max-w-lg' : 'grid-cols-1 sm:grid-cols-2'}`}>
               {products.map((prod) => (
