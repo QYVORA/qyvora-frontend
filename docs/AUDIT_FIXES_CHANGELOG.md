@@ -145,6 +145,17 @@ Implementation log for the `docs/USER_FLOW_AUDIT.md` fixes across `qyvora-fronte
 
 ---
 
+## Phase 12 — Landing Courses section desktop overflow (frontend)
+
+**What changed** — `LandingCoursesSection` overflowed its snap section on desktop: the root lacked `lg:h-dvh` (so it grew taller than the 100dvh snap viewport and bled the card bottoms into the Hacker Protocol Bootcamp section below) and the `aspect-square` cards scaled with column width, making each card huge on wide screens while the generous padding (`pt-28 pb-36`) wasted space at the top. Fixed to match the Labs/Bootcamp pattern:
+- Root now `min-h-dvh lg:h-dvh flex flex-col` — the section is exactly viewport height, so the snap rhythm is preserved and nothing bleeds into the next section.
+- Padding reduced to `pt-20 md:pt-24 lg:pt-24 pb-6 md:pb-8 lg:pb-10` — content moves up (still clears the 80px navbar) and the bottom no longer wastes ~104px.
+- Card grid becomes `flex-1 min-h-0 lg:auto-rows-fr` and cards `aspect-square lg:aspect-auto lg:h-full` — on desktop the row fills the remaining section height (adapting to any viewport) instead of forcing a fixed aspect ratio that overflows; mobile/small screens keep the original square cards (no regression).
+
+**Verified** — frontend `lint`, `typecheck` pass.
+
+---
+
 ## Deferred (out of scope, flagged only)
 
 *(populated at the end)*
