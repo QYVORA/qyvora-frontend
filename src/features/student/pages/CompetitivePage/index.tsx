@@ -40,7 +40,6 @@ const CompetitivePage = () => {
 
       <div className="bg-bg px-3 md:px-4 lg:px-6 pt-8 pb-10">
         <StudentHeroSection
-          icon={<Trophy className="w-8 h-8 text-accent" />}
           title={t('student.competitive.title')}
           accentWord={t('student.competitive.title').split(' ').pop()}
           description={t('student.competitive.description', { count: total })}

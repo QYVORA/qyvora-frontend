@@ -96,7 +96,6 @@ const SqlInjectionLab = () => {
         <SEO title="SQL Injection Lab" description="Deep dive into SQL injection techniques." noindex />
 
         <StudentHeroSection
-          icon={<Database className="w-8 h-8 text-accent" />}
           title="SQL Injection"
           accentWord="Deep Dive"
           description="Explore and exploit SQL injection vulnerabilities across different target systems."

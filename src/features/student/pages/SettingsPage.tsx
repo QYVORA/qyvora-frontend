@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { Shield, Key, Eye, EyeOff, Loader2, Save, Copy, CheckCircle2, AlertTriangle, RefreshCw, Settings as SettingsIcon, User, Palette, Bell, BookOpen, Code, Database, Accessibility, Trash2, Monitor, Smartphone, Moon, Sun } from 'lucide-react';
+import { Shield, Key, Eye, EyeOff, Loader2, Save, Copy, CheckCircle2, AlertTriangle, RefreshCw, User, Palette, Bell, BookOpen, Code, Database, Accessibility, Trash2, Monitor, Smartphone, Moon, Sun } from 'lucide-react';
 import ScrollReveal from '../../../shared/components/ScrollReveal';
 import api from '../../../core/services/api';
 import { useToast } from '../../../core/contexts/ToastContext';
@@ -263,7 +263,6 @@ const Settings: React.FC = () => {
       <SEO title={t('student.settings.seoTitle')} description={t('student.settings.seoDesc')} noindex />
       <div className="bg-bg px-3 md:px-4 lg:px-6 pt-8 pb-10">
         <StudentHeroSection
-          icon={<SettingsIcon className="w-8 h-8 text-accent" />}
           title={t('student.settings.title')}
           description={t('student.settings.description')}
         >

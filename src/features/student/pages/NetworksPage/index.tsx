@@ -71,7 +71,6 @@ const NetworksPage = () => {
 
       <div className="bg-bg px-3 md:px-4 lg:px-6 pt-8 pb-10">
         <StudentHeroSection
-          icon={<Network className="w-8 h-8 text-accent" />}
           title="Network Lab"
           description="Simulated corporate network environment for terminal practice"
           stats={[{ label: 'Subnet', value: `${NETWORK_CONFIG.subnet}/${NETWORK_CONFIG.cidr}` }]}

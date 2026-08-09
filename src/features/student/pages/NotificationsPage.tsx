@@ -115,7 +115,6 @@ const Notifications: React.FC = () => {
         <div className="w-full flex-1 min-w-0">
           <div className="px-2 sm:px-6 md:px-8 lg:px-8 lg:py-6">
             <StudentHeroSection
-              icon={<Bell className="w-8 h-8 text-accent" />}
               title={t('student.notificationsPage.title')}
               description={t('student.notificationsPage.description')}
               stats={[{ label: t('student.notificationsPage.unread'), value: unreadCount }]}

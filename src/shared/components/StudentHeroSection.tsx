@@ -11,7 +11,6 @@ interface StudentHeroStat {
 }
 
 interface StudentHeroSectionProps {
-  icon?: React.ReactNode;
   title: string;
   accentWord?: string;
   description: string;
@@ -44,7 +43,6 @@ export function StudentHeroSection({
   children,
   rightContent,
   titleClassName,
-  icon,
   showGlobe = false,
   typewrite = false,
 }: StudentHeroSectionProps) {
@@ -91,13 +89,6 @@ export function StudentHeroSection({
       <div className="relative z-10 w-full flex-1 mx-auto grid grid-cols-1 lg:grid-cols-2 text-left items-center h-full">
         <div className="flex flex-col items-start justify-center px-3 md:px-4 lg:px-6 py-16 md:py-24">
           <div className="w-full space-y-10 lg:space-y-12">
-            {icon && (
-              <div className="inline-flex items-center gap-2 px-4 py-2.5 sm:px-5 sm:py-3 border border-border/30 bg-bg-elevated/50 rounded-lg">
-                <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse flex-none" />
-                {icon}
-              </div>
-            )}
-
             <h1 className={`${titleClassName ?? 'text-5xl md:text-7xl lg:text-8xl'} font-black text-text-primary tracking-tight leading-[1.05]`}>
               {title}{' '}
               {accentWord && (
