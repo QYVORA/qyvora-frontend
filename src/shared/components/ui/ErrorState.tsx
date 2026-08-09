@@ -7,16 +7,30 @@ interface ErrorStateProps {
   icon?: ReactNode;
   className?: string;
   severity?: 'warning' | 'error';
+  /**
+   * Render just the error avatar — no card, no red background, no text.
+   * Used in marketing sections where a clean, minimal placeholder is wanted.
+   */
+  bare?: boolean;
 }
 
-const ErrorState = ({ message, title, icon, className = '', severity = 'warning' }: ErrorStateProps) => (
-  <div className={`flex items-start gap-3 p-4 rounded-2xl border border-red-400/30 bg-red-400/5 ${className}`}>
-    <div className="shrink-0 mt-0.5">{icon ?? <Dobia expression={severity === 'error' ? 'angry' : 'confused'} size="lg" />}</div>
-    <div>
-      {title && <p className="text-sm font-bold text-red-400">{title}</p>}
-      <p className={`text-sm text-red-400 ${title ? 'text-text-secondary mt-1' : ''}`}>{message}</p>
+const ErrorState = ({ message, title, icon, className = '', severity = 'warning', bare = false }: ErrorStateProps) => {
+  if (bare) {
+    return (
+      <div className={`flex items-center justify-center ${className}`}>
+        <Dobia expression={severity === 'error' ? 'angry' : 'confused'} size="lg" />
+      </div>
+    );
+  }
+  return (
+    <div className={`flex items-start gap-3 p-4 rounded-2xl border border-red-400/30 bg-red-400/5 ${className}`}>
+      <div className="shrink-0 mt-0.5">{icon ?? <Dobia expression={severity === 'error' ? 'angry' : 'confused'} size="lg" />}</div>
+      <div>
+        {title && <p className="text-sm font-bold text-red-400">{title}</p>}
+        <p className={`text-sm text-red-400 ${title ? 'text-text-secondary mt-1' : ''}`}>{message}</p>
+      </div>
     </div>
-  </div>
-);
+  );
+};
 
 export default ErrorState;

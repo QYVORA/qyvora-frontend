@@ -104,7 +104,7 @@ const MarketPage = () => {
             ))}
           </div>
         ) : error ? (
-          <ErrorState message={error} title="Marketplace Unavailable" />
+          <ErrorState message={error} title="Marketplace Unavailable" bare />
         ) : filtered.length === 0 ? (
           <div className="col-span-full text-center py-20 rounded-3xl border-2 border-dashed border-border/20">
             <IconLock className="h-12 w-12 text-text-muted/20 mx-auto mb-4" />
