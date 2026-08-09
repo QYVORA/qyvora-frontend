@@ -52,15 +52,15 @@ const LandingQuiteRootSection = () => {
                   className="absolute inset-0 w-full h-full object-cover object-top transition-transform duration-500 group-hover:scale-105"
                   loading="lazy"
                 />
-                {/* Legibility overlay */}
-                <div className="absolute inset-0 bg-gradient-to-t from-bg via-bg/75 to-bg/15" />
+                {/* Legibility overlay — theme-neutral dark scrim so it never washes out the photo in light mode */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/30 to-transparent" />
 
                 {/* Top header — index + tiny profile icon */}
                 <div className="relative z-10 flex items-center justify-between p-3 sm:p-4 pb-0">
                   <span className="font-mono text-[10px] sm:text-xs font-black text-text-primary/60">
                     {String(idx + 1).padStart(2, '0')}
                   </span>
-                  <span className="inline-flex items-center justify-center w-8 h-8 rounded-full border border-border/50 bg-bg/40 backdrop-blur-md text-text-primary">
+                  <span className="inline-flex items-center justify-center w-8 h-8 rounded-full border border-border/50 bg-black/40 backdrop-blur-md text-text-primary">
                     <IconProfile className="w-4 h-4" />
                   </span>
                 </div>

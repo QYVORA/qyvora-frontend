@@ -32,7 +32,13 @@ export function useFluidGlobe(): GlobeFluid {
     const onResize = () => {
       cancelAnimationFrame(raf);
       raf = requestAnimationFrame(() =>
-        setVp({ w: window.innerWidth, h: window.innerHeight }),
+        setVp((prev) => {
+          const w = window.innerWidth;
+          // Ignore height-only changes (mobile URL-bar show/hide during scroll)
+          // so the globe stays stable instead of nudging on every scroll tick.
+          if (w === prev.w) return prev;
+          return { w, h: window.innerHeight };
+        }),
       );
     };
     window.addEventListener('resize', onResize);
