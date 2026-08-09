@@ -97,10 +97,10 @@ const ServiceSection: React.FC<{ svc: ServiceConfig; index: number }> = ({ svc, 
           {svc.included.map((item) => (
             <li
               key={item}
-              className="relative flex flex-col items-start justify-between gap-2 aspect-square rounded-xl border border-border/30 bg-bg-card p-3 md:p-3.5"
+              className="relative flex items-center gap-2.5 rounded-xl border border-border/30 bg-bg-card px-3 py-2.5 md:px-3.5 md:py-3"
             >
-              <span className="w-7 h-7 md:w-8 md:h-8 rounded-lg bg-accent/10 flex items-center justify-center shrink-0">
-                <IconCheck size={15} className="text-accent" />
+              <span className="w-6 h-6 md:w-7 md:h-7 rounded-lg bg-accent/10 flex items-center justify-center shrink-0">
+                <IconCheck size={14} className="text-accent" />
               </span>
               <span className="text-[11px] md:text-xs text-text-secondary leading-snug font-mono">{item}</span>
             </li>
