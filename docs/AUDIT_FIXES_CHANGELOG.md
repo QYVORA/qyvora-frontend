@@ -137,6 +137,14 @@ Implementation log for the `docs/USER_FLOW_AUDIT.md` fixes across `qyvora-fronte
 
 ---
 
+## Phase 11 — Story section heading scale (frontend)
+
+**What changed** — `ActDividerSection.tsx` (the "The Work" / "The World" story dividers on the landing page) had an oversized heading (`text-4xl md:text-5xl lg:text-6xl xl:text-7xl tracking-tight leading-[1.05]`) that dwarfed every other section header and used different typography. Aligned it to the shared large-section heading pattern: `text-2xl md:text-4xl lg:text-5xl font-black text-text-primary tracking-tighter leading-none` — identical to the Team / QuiteRoot / Leaderboard section headers.
+
+**Verified** — frontend `lint`, `typecheck` pass.
+
+---
+
 ## Deferred (out of scope, flagged only)
 
 *(populated at the end)*
