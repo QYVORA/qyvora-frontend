@@ -108,9 +108,9 @@ const LandingCoursesSection: React.FC = () => {
   const ActiveCatIcon = pageCourses[0] ? CATEGORY_ICONS[pageCourses[0].category] : GraduationCap;
 
   return (
-    <div className="relative overflow-hidden min-h-dvh flex flex-col" data-nav-invert>
+    <div className="relative overflow-hidden min-h-dvh lg:h-dvh flex flex-col" data-nav-invert>
       <GridBoxedBackground blur={0} mask="right" />
-      <div className="relative z-10 w-full h-full px-3 md:px-4 lg:px-6 pt-20 md:pt-24 lg:pt-28 pb-16 md:pb-24 lg:pb-36 flex flex-col">
+      <div className="relative z-10 w-full h-full px-3 md:px-4 lg:px-6 pt-20 md:pt-24 lg:pt-24 pb-6 md:pb-8 lg:pb-10 flex flex-col">
         <div className="w-full flex-1 flex flex-col min-h-0">
           <h2 className="text-lg md:text-xl lg:text-2xl font-black text-text-primary tracking-tighter leading-none mb-6 md:mb-8 lg:mb-10 shrink-0">
             {t('landing.courses.heading')}
@@ -187,7 +187,7 @@ const LandingCoursesSection: React.FC = () => {
           </motion.div>
 
           {/* Carousel — fills remaining space */}
-          <div className="flex-1 flex flex-col lg:justify-center">
+          <div className="flex-1 flex flex-col min-h-0">
             <AnimatePresence mode="wait" custom={dir}>
               <motion.div
                 key={`${activeCategory}-${page}`}
@@ -196,7 +196,7 @@ const LandingCoursesSection: React.FC = () => {
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: dir > 0 ? -60 : 60 }}
                 transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
-                className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 md:gap-4"
+                className="flex-1 min-h-0 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 md:gap-4 lg:auto-rows-fr"
               >
                 {pageCourses.map((course) => {
                   const CatIc = CATEGORY_ICONS[course.category];
@@ -204,7 +204,7 @@ const LandingCoursesSection: React.FC = () => {
                     <button
                       key={course.id}
                       onClick={() => setSelectedCourseId(course.id)}
-                      className="group/card relative aspect-square rounded-2xl border border-border/30 bg-bg-card p-3 md:p-5 transition-all duration-300 hover:border-accent/30 flex flex-col text-left"
+                      className="group/card relative aspect-square lg:aspect-auto lg:h-full rounded-2xl border border-border/30 bg-bg-card p-3 md:p-5 transition-all duration-300 hover:border-accent/30 flex flex-col text-left"
                     >
                       <div className="flex items-center gap-2 mb-2">
                         <div className="w-8 h-8 rounded-xl flex items-center justify-center shrink-0 bg-accent/10 border border-accent/20">
