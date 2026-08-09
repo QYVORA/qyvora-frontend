@@ -93,7 +93,6 @@ const PrivescLab = () => {
         />
 
         <StudentHeroSection
-          icon={<Shield className="w-8 h-8 text-accent" />}
           title="Privilege"
           accentWord="Escalation"
           description="Escalate from low-privilege user to root using Linux misconfigurations."

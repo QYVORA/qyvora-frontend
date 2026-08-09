@@ -127,7 +127,6 @@ const Marketplace: React.FC = () => {
       <SEO title={t('student.marketplace.seoTitle')} description={t('student.marketplace.seoDesc')} noindex />
       <div className="bg-bg px-3 md:px-4 lg:px-6 pt-8 pb-10">
         <StudentHeroSection
-            icon={<ShoppingBag className="w-8 h-8 text-accent" />}
             title={t('student.marketplace.title')}
             description={t('student.marketplace.description')}
             stats={balance !== null ? [{ label: t('student.marketplace.cpBalance'), value: formatNumber(balance), accent: true }] : undefined}

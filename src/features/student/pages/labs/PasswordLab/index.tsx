@@ -127,7 +127,6 @@ const PasswordLab = () => {
         <SEO title="Password Cracking Lab" description="Crack password hashes using John the Ripper and Hashcat." noindex />
 
         <StudentHeroSection
-          icon={<Key className="w-8 h-8 text-accent" />}
           title="Password"
           accentWord="Cracking"
           description="Extract and crack password hashes using John the Ripper and Hashcat."

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useParams, Link, useSearchParams } from 'react-router-dom';
-import { ArrowLeft, ArrowRight, CheckCircle2, ChevronLeft, ChevronRight, Lock, Loader2, Target, Zap, BookOpen } from 'lucide-react';
+import { ArrowLeft, ArrowRight, CheckCircle2, ChevronLeft, ChevronRight, Lock, Loader2, Target, Zap } from 'lucide-react';
 import SEO from '@/shared/components/SEO';
 import { getCourseById } from '@/features/student/data/courses';
 import CodeBlockRenderer from '@/shared/components/courses/CodeBlockRenderer';
@@ -274,7 +274,6 @@ const CourseLessonPage: React.FC = () => {
       <div className=" px-3 md:px-4 lg:px-6 pt-8 pb-20 lg:pb-24 space-y-8">
             {currentLessonIdx === 0 && (
               <StudentHeroSection
-                icon={<BookOpen className="w-8 h-8 text-accent" />}
                 title={course.title}
                 description={`${completedCount} of ${totalLessons} lessons completed`}
                 stats={[

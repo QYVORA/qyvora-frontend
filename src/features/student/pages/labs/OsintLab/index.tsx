@@ -84,7 +84,6 @@ const OsintLab = () => {
         <SEO title="OSINT Recon Lab" description="Master open-source intelligence gathering techniques." noindex />
 
         <StudentHeroSection
-          icon={<Globe className="w-8 h-8 text-accent" />}
           title="OSINT Recon"
           accentWord="Challenge"
           description="Master open-source intelligence gathering with guided reconnaissance exercises."
