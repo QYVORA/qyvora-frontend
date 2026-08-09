@@ -3,7 +3,6 @@ import { Link, Navigate, useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Clock, Zap } from 'lucide-react';
 import { IconArrowLeft, IconArrowRight, IconTerminal } from '@/shared/components/icons';
-import { DottedMapOverlay } from '@/shared/components/ui';
 import { ScrollReveal } from '@/shared/components';
 import SEO from '@/shared/components/SEO';
 import PublicSnapLayout from '@/shared/components/PublicSnapLayout';
@@ -80,7 +79,6 @@ const HpbPhasePage: React.FC = () => {
                 {phase.rooms.map((room, idx) => (
                   <ScrollReveal key={room.id} amount={0.05}>
                     <div className="group/card relative aspect-square rounded-2xl border border-border/30 bg-bg-card p-3 md:p-5 transition-all duration-300 hover:border-accent/30 flex flex-col text-left">
-                      <DottedMapOverlay className="rounded-2xl" />
                       <div className="flex items-center justify-between mb-2">
                         <div className="w-8 h-8 rounded-xl flex items-center justify-center shrink-0 bg-accent/10 border border-accent/20">
                           <IconTerminal className="w-4 h-4 text-accent" />

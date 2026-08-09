@@ -26,6 +26,7 @@ export default defineConfig(() => ({
         '/services/employee-cybersecurity-bootcamp',
         '/blogs',
         '/courses',
+        '/labs',
         '/zero-day-market',
         '/quiteroot',
         '/anansi',

@@ -2,7 +2,6 @@ import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { Users } from 'lucide-react';
 import { IconArrowRight } from '@/shared/components/icons';
-import { DottedMapOverlay } from '@/shared/components/ui';
 import { ScrollReveal } from '@/shared/components';
 import SEO from '@/shared/components/SEO';
 import PublicSnapLayout from '@/shared/components/PublicSnapLayout';
@@ -55,7 +54,6 @@ const QuiteRootPage = () => {
           {researchersData.map((researcher, idx) => (
             <ScrollReveal key={researcher.id} amount={0.05}>
               <div className="group relative flex flex-col rounded-2xl border border-border/30 bg-bg-card p-5 transition-all duration-300 hover:border-accent/40 h-full overflow-hidden">
-                <DottedMapOverlay className="rounded-2xl" />
                 <span className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-accent/60 to-transparent opacity-60 group-hover:opacity-100 transition-opacity" />
                 <span className="absolute top-4 right-5 font-mono text-sm font-black text-accent/25 group-hover:text-accent/60 transition-colors">
                   {String(idx + 1).padStart(2, '0')}

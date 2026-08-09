@@ -5,7 +5,7 @@ import { BookOpen, Cpu, FileText, Search } from 'lucide-react';
 import { IconMarketplace, IconLock } from '@/shared/components/icons';
 import { ScrollReveal } from '@/shared/components';
 import api from '@/core/services/api';
-import { AuthImage, Skeleton, ErrorState, DottedMapOverlay } from '@/shared/components/ui';
+import { AuthImage, Skeleton, ErrorState } from '@/shared/components/ui';
 import SEO from '@/shared/components/SEO';
 import PublicSnapLayout from '@/shared/components/PublicSnapLayout';
 import PublicSnapSection from '@/shared/components/PublicSnapSection';
@@ -115,7 +115,6 @@ const MarketPage = () => {
             {filtered.map((prod, idx) => (
               <ScrollReveal key={prod.id || idx} amount={0.05}>
                 <div className="group relative flex flex-col overflow-hidden rounded-2xl border border-border/50 bg-bg-card transition-all duration-300 hover:border-accent/30 h-full">
-                  <DottedMapOverlay />
                   <div className="relative aspect-[16/9] overflow-hidden bg-accent/5 border-b border-border/30">
                     <AuthImage
                       src={prod.coverUrl}
