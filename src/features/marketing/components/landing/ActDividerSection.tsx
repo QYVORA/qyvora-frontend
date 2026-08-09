@@ -29,7 +29,7 @@ const ActDividerSection: React.FC<ActDividerSectionProps> = ({ title, accentWord
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-80px' }}
           transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-          className="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-black text-text-primary tracking-tight leading-[1.05]"
+          className="text-2xl md:text-4xl lg:text-5xl font-black text-text-primary tracking-tighter leading-none"
         >
           {title}{' '}
           {accentWord && <span className="text-accent">{accentWord}</span>}
