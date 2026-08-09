@@ -132,8 +132,6 @@ const LandingPillarsSection: React.FC = () => {
                 to={supporting[1].link}
                 className="group relative block h-full rounded-2xl border border-border/30 bg-bg-card p-3 sm:p-5 transition-all duration-300 hover:border-accent/30"
               >
-                <DottedMapOverlay className="rounded-2xl" />
-
                 <div className="relative h-full flex flex-col">
                   <div className="flex items-center justify-between mb-2 sm:mb-3">
                     <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl flex items-center justify-center shrink-0 bg-accent/10 border border-accent/20">
@@ -170,8 +168,6 @@ const LandingPillarsSection: React.FC = () => {
                 to={supporting[2].link}
                 className="group relative block h-full rounded-2xl border border-border/30 bg-bg-card p-3 sm:p-5 transition-all duration-300 hover:border-accent/30"
               >
-                <DottedMapOverlay className="rounded-2xl" />
-
                 <div className="relative h-full flex flex-col">
                   <div className="flex items-center justify-between mb-2 sm:mb-3">
                     <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl flex items-center justify-center shrink-0 bg-accent/10 border border-accent/20">

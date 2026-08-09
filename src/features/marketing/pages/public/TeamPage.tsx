@@ -2,7 +2,6 @@ import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { Users } from 'lucide-react';
 import { IconArrowRight, BrandGithubIcon, BrandLinkedinIcon, BrandXIcon } from '@/shared/components/icons';
-import { DottedMapOverlay } from '@/shared/components/ui';
 import { ScrollReveal } from '@/shared/components';
 import SEO from '@/shared/components/SEO';
 import PublicSnapLayout from '@/shared/components/PublicSnapLayout';
@@ -42,7 +41,6 @@ const TeamPage = () => {
           {teamData.map((member) => (
             <ScrollReveal key={member.id} amount={0.05}>
               <div className="group relative flex flex-col rounded-2xl border border-border/30 bg-bg-card p-5 transition-all duration-300 hover:border-accent/30 h-full">
-                <DottedMapOverlay className="rounded-2xl" />
                 <div className="flex items-center gap-4 mb-4">
                   <div className="w-16 h-16 rounded-2xl overflow-hidden border border-border/30 shrink-0">
                     {member.image ? (

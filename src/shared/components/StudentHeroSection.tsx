@@ -73,7 +73,7 @@ export function StudentHeroSection({
   }, [typewrite, accentWord]);
 
   return (
-    <div className="relative min-h-dvh md:h-dvh flex flex-col justify-center overflow-hidden">
+    <div className="relative min-h-dvh flex flex-col justify-center overflow-hidden">
       <GridBoxedBackground blur={0} mask="right" />
 
       {showGlobe && (

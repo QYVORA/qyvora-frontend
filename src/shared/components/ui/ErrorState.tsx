@@ -18,7 +18,11 @@ const ErrorState = ({ message, title, icon, className = '', severity = 'warning'
   if (bare) {
     return (
       <div className={`flex items-center justify-center ${className}`}>
-        <Dobia expression={severity === 'error' ? 'angry' : 'confused'} size="lg" />
+        <Dobia
+          expression={severity === 'error' ? 'angry' : 'confused'}
+          size="hero"
+          animated={false}
+        />
       </div>
     );
   }

@@ -167,10 +167,28 @@ export const AppRouter = () => {
     '/login', '/register', '/forgot-password', '/reset-password',
     '/verify-email', '/change-password',
   ];
+
+  const immersiveStudentPaths = [
+    '/dashboard/labs/privesc',
+    '/dashboard/labs/passwords',
+    '/dashboard/labs/sql-injection',
+    '/dashboard/labs/osint',
+    '/dashboard/labs/kill-chain',
+    '/dashboard/networks',
+    '/dashboard/courses/',
+    '/dashboard/tools',
+  ];
+
+  const isBootcampRoom =
+    location.pathname.startsWith('/dashboard/bootcamps/') &&
+    location.pathname.includes('/rooms/');
+
   const hideDobia =
     noDobiaRoutes.includes(location.pathname) ||
     location.pathname === ADMIN_PATH ||
-    location.pathname.startsWith(`${ADMIN_PATH}/`);
+    location.pathname.startsWith(`${ADMIN_PATH}/`) ||
+    immersiveStudentPaths.some((p) => location.pathname.startsWith(p)) ||
+    isBootcampRoom;
 
   return (
     <div className="min-h-screen flex flex-col relative">

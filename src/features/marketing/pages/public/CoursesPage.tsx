@@ -2,7 +2,6 @@ import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { GraduationCap, Sparkles, TrendingUp } from 'lucide-react';
 import { IconArrowRight, IconTerminal, IconNetwork, IconCode } from '@/shared/components/icons';
-import { DottedMapOverlay } from '@/shared/components/ui';
 import { ScrollReveal } from '@/shared/components';
 import SEO from '@/shared/components/SEO';
 import PublicSnapLayout from '@/shared/components/PublicSnapLayout';
@@ -59,7 +58,6 @@ const CoursesPage = () => {
                   to={`/courses/${course.id}`}
                   className="group flex flex-col aspect-square rounded-2xl border border-border/30 bg-bg-card overflow-hidden transition-all duration-300 hover:border-accent/30"
                 >
-                  <DottedMapOverlay className="rounded-2xl" />
                   <div className="flex flex-col gap-2 p-4 sm:p-5 md:p-6 lg:p-7 flex-1">
                     <div className="flex items-center justify-between">
                       <span className="flex items-center gap-1.5 px-2 py-0.5 rounded-lg bg-accent/10 text-[9px] font-black uppercase tracking-widest text-accent border border-accent/20">

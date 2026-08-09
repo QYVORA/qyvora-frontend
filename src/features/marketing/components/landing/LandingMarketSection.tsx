@@ -4,7 +4,7 @@ import { Cloud, FileText, BookOpen, Cpu } from 'lucide-react';
 import { IconArrowRight, IconMarketplace, IconLock } from '@/shared/components/icons';
 import ScrollReveal from '@/shared/components/ScrollReveal';
 import api from '@/core/services/api';
-import { AuthImage, Skeleton, ErrorState, DottedMapOverlay } from '@/shared/components/ui';
+import { AuthImage, Skeleton, ErrorState } from '@/shared/components/ui';
 import { useTranslation } from 'react-i18next';
 
 interface ProductItem {
@@ -99,7 +99,6 @@ const LandingMarketSection = () => {
             <div className={`grid gap-4 md:gap-6 w-full ${products.length === 1 ? 'grid-cols-1 max-w-lg' : 'grid-cols-1 sm:grid-cols-2'}`}>
               {products.map((prod) => (
                 <div key={prod.id} className="group relative overflow-hidden flex flex-col border border-border/50 bg-bg-card rounded-2xl transition-all duration-300 hover:border-accent/30">
-                  <DottedMapOverlay />
                   <div className="relative aspect-[16/9] overflow-hidden bg-accent/5">
                     <AuthImage
                       src={prod.coverUrl}

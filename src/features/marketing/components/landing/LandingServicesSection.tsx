@@ -64,6 +64,7 @@ const LandingServicesSection: React.FC = () => {
             >
               <div className="group relative h-full rounded-2xl border border-border/30 bg-bg-card p-4 sm:p-8 transition-all duration-300 hover:border-accent/30 flex flex-col">
                 <DottedMapOverlay className="rounded-2xl" />
+                <div className="relative flex flex-col flex-1 min-h-0">
                 <div className="flex items-center gap-2 mb-3 sm:mb-6">
                   <span className="text-[9px] font-black uppercase tracking-widest text-text-muted">{featured.subtitle}</span>
                   <span className="flex items-center gap-1 px-2 py-0.5 rounded-full bg-accent/10 border border-accent/30 text-[8px] font-black uppercase tracking-widest text-accent">
@@ -97,6 +98,7 @@ const LandingServicesSection: React.FC = () => {
                     <IconArrowRight size={14} />
                   </button>
                 </div>
+                </div>
               </div>
             </motion.div>
 
@@ -110,6 +112,7 @@ const LandingServicesSection: React.FC = () => {
             >
               <div className="group relative h-full rounded-2xl border border-border/30 bg-bg-card p-3 sm:p-5 transition-all duration-300 hover:border-accent/30 flex flex-col">
                 <DottedMapOverlay className="rounded-2xl" />
+                <div className="relative flex flex-col flex-1 min-h-0">
                 <span className="text-[9px] font-black uppercase tracking-widest text-text-muted block mb-1">{supporting[0].subtitle}</span>
                 <div className="flex items-end justify-between mb-2 sm:mb-3">
                   <h3 className="text-sm sm:text-base font-black text-text-primary tracking-tight">{supporting[0].tier}</h3>
@@ -136,6 +139,7 @@ const LandingServicesSection: React.FC = () => {
                     <IconArrowRight size={12} />
                   </button>
                 </div>
+                </div>
               </div>
             </motion.div>
 
@@ -149,6 +153,7 @@ const LandingServicesSection: React.FC = () => {
             >
               <div className="group relative h-full rounded-2xl border border-border/30 bg-bg-card p-3 sm:p-5 transition-all duration-300 hover:border-accent/30 flex flex-col">
                 <DottedMapOverlay className="rounded-2xl" />
+                <div className="relative flex flex-col flex-1 min-h-0">
                 <span className="text-[9px] font-black uppercase tracking-widest text-text-muted block mb-1">{supporting[1].subtitle}</span>
                 <div className="flex items-end justify-between mb-2 sm:mb-3">
                   <h3 className="text-sm sm:text-base font-black text-text-primary tracking-tight">{supporting[1].tier}</h3>
@@ -174,6 +179,7 @@ const LandingServicesSection: React.FC = () => {
                      {t('landing.services.requestAssessment')}
                     <IconArrowRight size={12} />
                   </button>
+                </div>
                 </div>
               </div>
             </motion.div>

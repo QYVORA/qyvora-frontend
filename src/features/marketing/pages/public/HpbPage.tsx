@@ -2,7 +2,6 @@ import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { Zap, Users } from 'lucide-react';
 import { IconArrowRight } from '@/shared/components/icons';
-import { DottedMapOverlay } from '@/shared/components/ui';
 import { ScrollReveal } from '@/shared/components';
 import SEO from '@/shared/components/SEO';
 import PublicSnapLayout from '@/shared/components/PublicSnapLayout';
@@ -53,7 +52,6 @@ const HpbPage = () => {
             {phases.map((phase, idx) => (
               <ScrollReveal key={phase.id} amount={0.05}>
                 <div className="group/card relative aspect-square rounded-2xl border border-border/30 bg-bg-card p-3 md:p-5 transition-all duration-300 hover:border-accent/30 flex flex-col">
-                  <DottedMapOverlay className="rounded-2xl" />
                   <div className="flex items-center gap-2 mb-2">
                     <span className="text-[9px] sm:text-[10px] font-black uppercase tracking-widest px-2 py-0.5 rounded-lg border border-accent/20 bg-accent/10 text-accent">
                       Phase {idx + 1}
