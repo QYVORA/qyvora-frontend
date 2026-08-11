@@ -7,7 +7,7 @@ import StudentHeroSection, { PUBLIC_HERO_TITLE_CLASS } from '@/shared/components
 import { Footer } from '@/shared/components/layout';
 import { useAuth } from '@/core/contexts/AuthContext';
 import LandingFinalCtaSection from '@/features/marketing/components/landing/LandingFinalCtaSection';
-import { Carousel } from '@/shared/components/carousel';
+import FeatureMarquee from '@/shared/components/FeatureMarquee';
 import { MODULES, INSTALLERS, BUILD_FROM_SOURCE, QUICK_START, CONSOLE_SESSION, GITHUB_URL } from '@/features/marketing/data/toha3eeData';
 import toha3eeLogo from '@/assets/toha3ee/toha3ee-main-logo.webp';
 
@@ -19,11 +19,11 @@ const SectionHeader: React.FC<{ kicker: string; title: string; accent: string; d
 }) => (
   <div className="max-w-2xl">
     <h3 className="text-xs font-black uppercase tracking-[0.3em] text-accent">{kicker}</h3>
-    <h4 className="text-2xl md:text-4xl lg:text-5xl font-black text-text-primary tracking-tighter leading-tight mt-3">
+    <h4 className="text-xl md:text-3xl lg:text-4xl font-black text-text-primary tracking-tighter leading-tight mt-2">
       {title} <span className="text-accent">{accent}</span>
     </h4>
     {description && (
-      <p className="text-xs md:text-sm text-text-muted leading-relaxed mt-4 font-mono">{description}</p>
+      <p className="text-xs md:text-sm text-text-muted leading-relaxed mt-3 font-mono">{description}</p>
     )}
   </div>
 );
@@ -67,14 +67,14 @@ const Toha3eePage = () => {
 
         {/* ── Authorised-use warning ─────────────────────────────────────── */}
         <PublicSnapSection>
-          <div className="space-y-6 md:space-y-8">
+          <div className="flex flex-col gap-6 lg:gap-8">
             <SectionHeader
               kicker="Warning"
               title="Authorised"
               accent="Use Only"
               description="Toha3ee actively redirects, poisons, decrypts and intercepts network traffic. Use it only on networks you own or are explicitly authorised to test."
             />
-            <div className="rounded-2xl border border-amber-500/30 bg-amber-500/5 px-6 py-5 md:px-8 flex flex-col sm:flex-row gap-4 items-start">
+            <div className="rounded-2xl border border-amber-500/30 bg-amber-500/5 px-5 md:px-8 py-5 flex flex-col sm:flex-row gap-4 items-start">
               <div className="w-10 h-10 md:w-12 md:h-12 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center shrink-0">
                 <ShieldAlert className="w-5 h-5 md:w-6 md:h-6 text-amber-400" />
               </div>
@@ -87,50 +87,31 @@ const Toha3eePage = () => {
           </div>
         </PublicSnapSection>
 
-        {/* ── Module catalogue carousel ─────────────────────────────────── */}
+        {/* ── Module catalogue capability marquee ───────────────────────── */}
         <PublicSnapSection>
-          <div className="space-y-6 md:space-y-8">
+          <div className="flex flex-col gap-6 lg:gap-8">
             <SectionHeader
               kicker="Module Catalogue"
               title="Ten"
               accent="Categories"
-              description="Everything is a module. Each one self-registers, runs through a central safety lifecycle and tears down cleanly on panic or SIGINT."
+              description="Everything is a module — self-registering, centrally safety-checked, clean teardown."
             />
-            <Carousel
-              slides={MODULES}
-              autoPlayInterval={6500}
-              renderCard={(cat) => (
-                <div className="p-6 sm:p-10 md:p-14 min-h-[300px] sm:min-h-[340px] md:min-h-[360px] flex flex-col justify-center">
-                  <div className="flex items-center gap-4 mb-4 md:mb-6">
-                    <div className="w-12 h-12 md:w-14 md:h-14 rounded-2xl bg-accent/10 border border-accent/20 flex items-center justify-center shrink-0">
-                      <cat.icon className="w-6 h-6 text-accent" />
-                    </div>
-                    <span className="text-[9px] font-black uppercase tracking-widest text-accent/70">
-                      Category {cat.id.toUpperCase()}
-                    </span>
-                  </div>
-                  <h5 className="text-2xl md:text-3xl lg:text-4xl font-black uppercase tracking-tight text-text-primary mb-3">
-                    {cat.name}
-                  </h5>
-                  <p className="text-xs sm:text-sm md:text-base text-text-secondary leading-relaxed font-mono mb-5 max-w-2xl">
-                    {cat.desc}
-                  </p>
-                  <div className="flex flex-wrap gap-1.5">
-                    {cat.modules.map((m) => (
-                      <code key={m} className="px-2.5 py-1 rounded-lg bg-bg-elevated border border-border/20 text-[9px] md:text-[10px] font-mono text-text-secondary">
-                        {m}
-                      </code>
-                    ))}
-                  </div>
-                </div>
-              )}
+            <FeatureMarquee
+              items={MODULES.map((cat) => ({
+                id: cat.id,
+                meta: `${cat.modules.length} modules`,
+                icon: <cat.icon className="w-5 h-5 text-accent" />,
+                title: cat.name,
+                description: cat.desc,
+                commands: cat.modules.join(' '),
+              }))}
             />
           </div>
         </PublicSnapSection>
 
         {/* ── Install ───────────────────────────────────────────────────── */}
         <PublicSnapSection id="install" className="scroll-mt-28">
-          <div className="space-y-6 md:space-y-8">
+          <div className="flex flex-col gap-6 lg:gap-8">
             <SectionHeader
               kicker="Install"
               title="Ready in"
@@ -138,49 +119,47 @@ const Toha3eePage = () => {
               description="One-liner installers fetch the prebuilt binary, verify its SHA-256 checksum and register the desktop icon."
             />
 
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6">
-              {/* Option 1 — One-liner installer */}
-              <div className="rounded-2xl border border-border/30 bg-accent/5 p-6 md:p-8 space-y-4 h-full">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6 items-stretch">
+              {/* Option 1 — One-line installers */}
+              <div className="rounded-2xl border border-border/30 bg-accent/5 p-5 md:p-6 space-y-3">
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-accent/10 border border-accent/20 flex items-center justify-center shrink-0">
-                    <Download className="w-5 h-5 text-accent" />
+                  <div className="w-9 h-9 rounded-xl bg-accent/10 border border-accent/20 flex items-center justify-center shrink-0">
+                    <Download className="w-4 h-4 text-accent" />
                   </div>
                   <div>
-                    <h4 className="text-sm font-black text-text-primary leading-tight">One-Line Installer</h4>
-                    <p className="text-[10px] font-mono text-text-muted mt-0.5">Prebuilt binary, checksum-verified.</p>
+                    <h4 className="text-xs font-black text-text-primary leading-tight">One-Line Installers</h4>
+                    <p className="text-[9px] font-mono text-text-muted mt-0.5">Prebuilt binary, checksum-verified.</p>
                   </div>
                 </div>
-                <div className="space-y-2">
-                  {INSTALLERS.map(({ id, label, icon: Icon, cmd, note }) => (
-                    <div key={id} className="rounded-xl border border-border/20 bg-bg px-4 py-3">
-                      <div className="flex items-center gap-2 mb-1.5">
-                        <Icon className="w-3.5 h-3.5 text-accent" />
-                        <span className="text-[9px] font-black uppercase tracking-widest text-text-muted">{label}</span>
-                      </div>
+                <div className="space-y-1.5">
+                  {INSTALLERS.map(({ id, label, icon: Icon, cmd }) => (
+                    <div key={id} className="rounded-lg border border-border/20 bg-bg px-3 py-2">
+                      <span className="flex items-center gap-1.5 text-[9px] font-black uppercase tracking-widest text-text-muted mb-1">
+                        <Icon className="w-3 h-3 text-accent" /> {label}
+                      </span>
                       <code className="block text-[10px] md:text-[11px] font-mono text-text-secondary break-all">{cmd}</code>
-                      <p className="text-[10px] font-mono text-text-muted mt-2 leading-relaxed">{note}</p>
                     </div>
                   ))}
                 </div>
               </div>
 
               {/* Option 2 — Build from source */}
-              <div className="rounded-2xl border border-border/30 bg-accent/5 p-6 md:p-8 space-y-4 h-full">
+              <div className="rounded-2xl border border-border/30 bg-accent/5 p-5 md:p-6 space-y-3">
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-accent/10 border border-accent/20 flex items-center justify-center shrink-0">
-                    <GitBranch className="w-5 h-5 text-accent" />
+                  <div className="w-9 h-9 rounded-xl bg-accent/10 border border-accent/20 flex items-center justify-center shrink-0">
+                    <GitBranch className="w-4 h-4 text-accent" />
                   </div>
                   <div>
-                    <h4 className="text-sm font-black text-text-primary leading-tight">Build From Source</h4>
-                    <p className="text-[10px] font-mono text-text-muted mt-0.5">{BUILD_FROM_SOURCE.requirements}</p>
+                    <h4 className="text-xs font-black text-text-primary leading-tight">Build From Source</h4>
+                    <p className="text-[9px] font-mono text-text-muted mt-0.5">{BUILD_FROM_SOURCE.requirements}</p>
                   </div>
                 </div>
-                <div className="space-y-2">
+                <div className="space-y-1.5">
                   {BUILD_FROM_SOURCE.steps.map(({ cmd, note }) => (
-                    <div key={cmd} className="rounded-xl border border-border/20 bg-bg px-4 py-3">
-                      <code className="block text-[10px] md:text-xs font-mono text-text-secondary break-all">$ {cmd}</code>
+                    <div key={cmd} className="rounded-lg border border-border/20 bg-bg px-3 py-2">
+                      <code className="block text-[10px] md:text-[11px] font-mono text-text-secondary break-all">$ {cmd}</code>
                       {note && (
-                        <p className="text-[10px] font-mono text-text-muted mt-2 leading-relaxed">{note}</p>
+                        <p className="text-[9px] font-mono text-text-muted mt-1 leading-snug">{note}</p>
                       )}
                     </div>
                   ))}
@@ -200,24 +179,24 @@ const Toha3eePage = () => {
 
         {/* ── Quick Start ───────────────────────────────────────────────── */}
         <PublicSnapSection>
-          <div className="space-y-6 md:space-y-8">
+          <div className="flex flex-col gap-6 lg:gap-8">
             <SectionHeader
               kicker="Quick Start"
               title="Drop into"
               accent="The Console"
-              description="Bare toha3ee opens a bettercap/metasploit-style REPL — grouped, aligned output with status glyphs. Sessions keep captured data across module runs."
+              description="Bare toha3ee opens a bettercap/metasploit-style REPL — grouped output with status glyphs."
             />
 
             <div className="grid grid-cols-1 lg:grid-cols-[1.15fr_1fr] gap-4 md:gap-6 items-stretch">
               {/* Terminal mock */}
               <div className="rounded-2xl border border-border/30 bg-bg-card overflow-hidden h-full">
-                <div className="flex items-center gap-2 px-4 py-3 border-b border-border/20 bg-bg">
+                <div className="flex items-center gap-2 px-4 py-2.5 border-b border-border/20 bg-bg">
                   <span className="w-2.5 h-2.5 rounded-full bg-red-400/70" />
                   <span className="w-2.5 h-2.5 rounded-full bg-yellow-400/70" />
                   <span className="w-2.5 h-2.5 rounded-full bg-accent/70" />
                   <span className="ml-2 text-[9px] font-mono text-text-muted">toha3ee — zsh</span>
                 </div>
-                <div className="p-4 md:p-6 font-mono text-xs md:text-sm space-y-3">
+                <div className="p-4 md:p-5 font-mono text-[11px] md:text-xs space-y-2">
                   <div className="flex items-center gap-2">
                     <span className="text-accent">$</span>
                     <span className="text-text-primary">sudo ./toha3ee --iface eth0</span>
@@ -226,7 +205,7 @@ const Toha3eePage = () => {
                     <span className="text-accent">$</span>
                     <span className="text-text-muted">[+] session ready. type 'help' for commands.</span>
                   </div>
-                  <div className="pl-4 space-y-2 border-l border-accent/30">
+                  <div className="pl-4 space-y-1.5 border-l border-accent/30">
                     {CONSOLE_SESSION.map((line) => (
                       <div key={line.cmd} className="flex items-start gap-2">
                         <span className="text-accent shrink-0 pt-0.5">toha3ee&gt;</span>
@@ -243,24 +222,24 @@ const Toha3eePage = () => {
               </div>
 
               {/* Usage commands */}
-              <div className="rounded-2xl border border-border/30 bg-accent/5 p-6 md:p-8 space-y-3 h-full">
+              <div className="rounded-2xl border border-border/30 bg-accent/5 p-5 md:p-6 space-y-2 h-full">
                 <div className="flex items-center gap-3 mb-2">
-                  <div className="w-10 h-10 rounded-xl bg-accent/10 border border-accent/20 flex items-center justify-center shrink-0">
-                    <Terminal className="w-5 h-5 text-accent" />
+                  <div className="w-9 h-9 rounded-xl bg-accent/10 border border-accent/20 flex items-center justify-center shrink-0">
+                    <Terminal className="w-4 h-4 text-accent" />
                   </div>
                   <div>
-                    <h4 className="text-sm font-black text-text-primary leading-tight">Usage</h4>
-                    <p className="text-[10px] font-mono text-text-muted mt-0.5">One-shot and scripted runs</p>
+                    <h4 className="text-xs font-black text-text-primary leading-tight">Usage</h4>
+                    <p className="text-[9px] font-mono text-text-muted mt-0.5">One-shot and scripted runs</p>
                   </div>
                 </div>
                 {QUICK_START.map((cmd) => (
-                  <div key={cmd} className="flex items-center gap-2 rounded-xl border border-border/20 bg-bg px-4 py-3">
-                    <ChevronRight className="w-4 h-4 text-accent shrink-0" />
-                    <code className="text-xs md:text-sm text-text-secondary break-all">{cmd}</code>
+                  <div key={cmd} className="flex items-center gap-2 rounded-lg border border-border/20 bg-bg px-3 py-2">
+                    <ChevronRight className="w-3.5 h-3.5 text-accent shrink-0" />
+                    <code className="text-[10px] md:text-xs text-text-secondary break-all">{cmd}</code>
                   </div>
                 ))}
-                <p className="text-[10px] font-mono text-text-muted leading-relaxed pt-1">
-                  Most attack modules require root. Use only on networks you own or have explicit written permission to test.
+                <p className="text-[9px] font-mono text-text-muted leading-relaxed pt-1">
+                  Most attack modules require root. Use only on networks you own.
                 </p>
               </div>
             </div>
