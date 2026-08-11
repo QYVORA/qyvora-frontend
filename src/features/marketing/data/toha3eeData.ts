@@ -131,7 +131,7 @@ export const QUICK_START = [
   'sudo ./toha3ee --iface eth0',
   'sudo ./toha3ee wizard --iface eth0',
   'sudo ./toha3ee --eval "net.scan; net.show" --iface eth0',
-  'sudo ./toha3ee run --iface eth0 caplets/basic.cap',
+  'sudo ./toha3ee run --iface eth0 caplets/basic-recon.caplet',
 ];
 
 export const CONSOLE_SESSION: { cmd: string; note: string }[] = [
