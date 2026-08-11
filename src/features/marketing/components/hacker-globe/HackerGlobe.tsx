@@ -2,7 +2,7 @@ import React, { useRef, useEffect, useState } from 'react';
 import * as THREE from 'three';
 import { motion } from 'motion/react';
 import { useAdaptiveUi } from '../../../../core/hooks/useAdaptiveUi';
-import { buildDotMapTexture } from './helpers';
+import { buildDotMapTexture, buildLandDots, latLngToVec3, getDotRadius, getMapColors, isBlackRegion } from './helpers';
 import { useFluidGlobe } from './useFluidGlobe';
 
 interface HackerGlobeProps {
@@ -116,6 +116,36 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88, offset = [0, 0,
     );
     globeFront.renderOrder = 2;
     globe.add(globeFront);
+
+    // Raised "terrain" pins on every land dot: each flat dot that forms the map
+    // gets a short radial cylinder standing out of the surface, so the map reads
+    // as raised high ground. The cylinder keeps the footprint of the flat dot —
+    // it only lifts the dot up, it does not reshape it into a spike.
+    const pinR   = getDotRadius(1.6);
+    const pinLen = 0.02;
+    const landDots = buildLandDots(1.6);
+    const pins = new THREE.InstancedMesh(
+      new THREE.CylinderGeometry(pinR, pinR, pinLen, 8),
+      new THREE.MeshBasicMaterial({ transparent: true, opacity: 0.92, depthWrite: false }),
+      landDots.length,
+    );
+    const pinMatrix = new THREE.Matrix4();
+    const pinQuat = new THREE.Quaternion();
+    const yUp = new THREE.Vector3(0, 1, 0);
+    const unit = new THREE.Vector3(1, 1, 1);
+    const { land, region } = getMapColors(isLight);
+    landDots.forEach((d, i) => {
+      const dir = latLngToVec3(d.lat, d.lng, 1).normalize();
+      const center = dir.clone().multiplyScalar(1.001 + pinLen / 2);
+      pinQuat.setFromUnitVectors(yUp, dir);
+      pinMatrix.compose(center, pinQuat, unit);
+      pins.setMatrixAt(i, pinMatrix);
+      pins.setColorAt(i, isBlackRegion(d.lat, d.lng) ? region : land);
+    });
+    pins.instanceMatrix.needsUpdate = true;
+    if (pins.instanceColor) pins.instanceColor.needsUpdate = true;
+    pins.renderOrder = 3;
+    globe.add(pins);
 
     sceneRef.current = { renderer, scene, camera, globe };
 
