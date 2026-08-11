@@ -7,7 +7,7 @@ import { useTranslation } from 'react-i18next';
 const TeamCard = ({ member }: { member: TeamMember }) => (
   <Link
     to={member.handle ? `/@${member.handle}` : undefined}
-    className="group relative h-full w-[min(78vw,340px)] sm:w-[min(52vw,380px)] md:w-[min(42vw,430px)] lg:w-[min(36vw,470px)] xl:w-[min(31vw,520px)] shrink-0 mr-4 md:mr-5 flex flex-col rounded-2xl border border-border/50 bg-bg-card overflow-hidden transition-all duration-300 hover:border-accent/40 hover:shadow-[var(--card-shadow)]"
+    className="group relative h-full min-h-[360px] sm:min-h-0 w-[min(85vw,360px)] sm:w-[min(52vw,380px)] md:w-[min(42vw,430px)] lg:w-[min(36vw,470px)] xl:w-[min(31vw,520px)] shrink-0 mr-4 md:mr-5 flex flex-col rounded-2xl border border-border/50 bg-bg-card overflow-hidden transition-all duration-300 hover:border-accent/40 hover:shadow-[var(--card-shadow)]"
   >
     {/* Member photo as the card background */}
     <img
@@ -94,7 +94,7 @@ const LandingTeamSection = () => {
           </div>
         ) : (
           /* Large card infinite carousel — cards fill the strip, never clipped */
-          <div className="relative flex-1 min-h-0 min-w-0 overflow-hidden flex items-center">
+          <div className="relative flex-1 min-h-[400px] sm:min-h-0 min-w-0 overflow-hidden flex items-center">
             <div className="marquee-track">
               {[0, 1].map((copy) => (
                 <div key={copy} aria-hidden={copy === 1} className="h-full flex items-stretch shrink-0">
