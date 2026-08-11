@@ -31,11 +31,11 @@ export interface AnansiRelease {
 const BASE = 'https://github.com/QYVORA/qyvora-anansi-cli/releases/latest/download';
 
 export const RELEASES: AnansiRelease[] = [
-  { id: 'linux-amd64', label: 'Linux', arch: 'x86_64', file: 'anansi-linux-amd64', size: '~10.0 MB' },
-  { id: 'linux-arm64', label: 'Linux', arch: 'ARM64', file: 'anansi-linux-arm64', size: '~9.3 MB' },
-  { id: 'macos-amd64', label: 'macOS', arch: 'Intel', file: 'anansi-macos-amd64', size: '~10.2 MB' },
-  { id: 'macos-arm64', label: 'macOS', arch: 'Apple Silicon', file: 'anansi-macos-arm64', size: '~9.6 MB' },
-  { id: 'windows-amd64', label: 'Windows', arch: 'x86_64', file: 'anansi-windows-amd64.exe', size: '~10.3 MB' },
+  { id: 'linux-amd64', label: 'Linux', arch: 'x86_64', file: 'anansi-linux-amd64', size: '~8.5 MB' },
+  { id: 'linux-arm64', label: 'Linux', arch: 'ARM64', file: 'anansi-linux-arm64', size: '~8.3 MB' },
+  { id: 'macos-amd64', label: 'macOS', arch: 'Intel', file: 'anansi-macos-amd64', size: '~8.8 MB' },
+  { id: 'macos-arm64', label: 'macOS', arch: 'Apple Silicon', file: 'anansi-macos-arm64', size: '~8.5 MB' },
+  { id: 'windows-amd64', label: 'Windows', arch: 'x86_64', file: 'anansi-windows-amd64.exe', size: '~8.9 MB' },
 ];
 
 export const ONE_LINER = 'curl -fsSL https://raw.githubusercontent.com/QYVORA/qyvora-anansi-cli/main/install.sh | bash';
