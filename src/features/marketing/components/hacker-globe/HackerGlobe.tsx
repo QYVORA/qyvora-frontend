@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import * as THREE from 'three';
 import { motion } from 'motion/react';
 import { useAdaptiveUi } from '../../../../core/hooks/useAdaptiveUi';
@@ -32,6 +32,20 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88, offset = [0, 0,
   live.current = { scale: effectiveScale, offset: effectiveOffset, simplified: isSimplified };
 
   const sceneRef = useRef<GlobeScene | null>(null);
+
+  // The target-country voids are theme-inverted (white on dark, black on
+  // light). Track the theme reactively so toggling it rebuilds the globe.
+  const [isLight, setIsLight] = useState(
+    () => typeof document !== 'undefined' && document.documentElement.getAttribute('data-theme') === 'light',
+  );
+
+  useEffect(() => {
+    const el = document.documentElement;
+    const update = () => setIsLight(el.getAttribute('data-theme') === 'light');
+    const observer = new MutationObserver(update);
+    observer.observe(el, { attributes: true, attributeFilter: ['data-theme'] });
+    return () => observer.disconnect();
+  }, []);
 
   // Mount / unmount the WebGL scene exactly once. Resizes and fluid size
   // changes are applied in place — the context is never torn down — so the
@@ -81,7 +95,7 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88, offset = [0, 0,
     scene.add(globe);
 
     const sphereSegments = ctx.simplified ? 32 : 64;
-    const dotTex = buildDotMapTexture(false, 1.6);
+    const dotTex = buildDotMapTexture(isLight, 1.6);
 
     const globeBack = new THREE.Mesh(
       new THREE.SphereGeometry(1.0, sphereSegments, sphereSegments),
@@ -171,7 +185,7 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88, offset = [0, 0,
       renderer.dispose();
       sceneRef.current = null;
     };
-  }, [isSimplified]);
+  }, [isSimplified, isLight]);
 
   // Fluid scale / offset changes are applied in place — no scene rebuild.
   useEffect(() => {

@@ -1,5 +1,6 @@
 import * as THREE from 'three';
-import { ACCENT_COLOR, ACCENT_COLOR_HEX } from './data';
+import { ACCENT_COLOR_HEX, REGION_COLOR_DARK_HEX, REGION_COLOR_LIGHT_HEX, TARGETS } from './data';
+import { COUNTRIES } from './countries';
 
 export type BBox = { minLat: number; maxLat: number; minLng: number; maxLng: number };
 
@@ -157,6 +158,41 @@ function isLand(lat: number, lng: number): boolean {
   return isAfrica(lat, lng) || OTHER_POLYS.some(({ p, b }) => pip(lat, lng, p, b));
 }
 
+// Countries containing a target city get their land dots filled with the
+// theme-inverted color so they stand out as voids against the accent dot world.
+type BlackRegion = { poly: number[]; bbox: BBox };
+
+const BLACK_OUTERS: BlackRegion[] = [];
+const BLACK_HOLES: BlackRegion[] = [];
+{
+  const seen = new Set<string>();
+  for (const t of TARGETS) {
+    if (seen.has(t.country)) continue;
+    seen.add(t.country);
+    const geo = COUNTRIES[t.country];
+    if (!geo) continue;
+    for (const poly of geo.rings) BLACK_OUTERS.push({ poly, bbox: getBBox(poly) });
+    for (const poly of geo.holes) BLACK_HOLES.push({ poly, bbox: getBBox(poly) });
+  }
+}
+
+export function isBlackRegion(lat: number, lng: number): boolean {
+  let inside = false;
+  for (const { poly, bbox } of BLACK_OUTERS) {
+    if (lat < bbox.minLat || lat > bbox.maxLat || lng < bbox.minLng || lng > bbox.maxLng) continue;
+    if (pip(lat, lng, poly)) {
+      inside = true;
+      break;
+    }
+  }
+  if (!inside) return false;
+  for (const { poly, bbox } of BLACK_HOLES) {
+    if (lat < bbox.minLat || lat > bbox.maxLat || lng < bbox.minLng || lng > bbox.maxLng) continue;
+    if (pip(lat, lng, poly)) return false;
+  }
+  return true;
+}
+
 const TEXTURE_CACHE = new Map<string, THREE.CanvasTexture>();
 
 export function buildDotMapTexture(isLight: boolean, step = 1.6): THREE.CanvasTexture {
@@ -172,6 +208,7 @@ export function buildDotMapTexture(isLight: boolean, step = 1.6): THREE.CanvasTe
 
   const dotR      = (step / 180) * H * 0.42;
   const landFill  = ACCENT_COLOR_HEX;
+  const regionFill = isLight ? REGION_COLOR_LIGHT_HEX : REGION_COLOR_DARK_HEX;
 
   for (let lat = 89; lat >= -89; lat -= step) {
     for (let lng = -179; lng <= 179; lng += step) {
@@ -181,7 +218,7 @@ export function buildDotMapTexture(isLight: boolean, step = 1.6): THREE.CanvasTe
       const y = ((90 - lat) / 180) * H;
 
       ctx.globalAlpha = 1.0;
-      ctx.fillStyle   = landFill;
+      ctx.fillStyle = isBlackRegion(lat, lng) ? regionFill : landFill;
 
       ctx.beginPath();
       ctx.arc(x, y, dotR, 0, Math.PI * 2);

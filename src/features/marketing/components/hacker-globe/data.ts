@@ -1,39 +1,39 @@
 export const TARGETS = [
-  { lat:   5.56, lng:  -0.20, label: 'ACCRA',          status: 'home',    region: 'africa' },
-  { lat:   6.52, lng:   3.37, label: 'LAGOS',          status: 'secured', region: 'africa' },
-  { lat:  30.04, lng:  31.23, label: 'CAIRO',          status: 'secured', region: 'africa' },
-  { lat: -26.20, lng:  28.05, label: 'JOBURG',         status: 'secured', region: 'africa' },
-  { lat:  -1.29, lng:  36.82, label: 'NAIROBI',        status: 'secured', region: 'africa' },
-  { lat:  33.57, lng:  -7.58, label: 'CASABLANCA',     status: 'secured', region: 'africa' },
-  { lat:  -4.32, lng:  15.31, label: 'KINSHASA',       status: 'secured', region: 'africa' },
-  { lat:  14.69, lng: -17.44, label: 'DAKAR',          status: 'secured', region: 'africa' },
-  { lat:   0.34, lng:  32.58, label: 'KAMPALA',        status: 'secured', region: 'africa' },
-  { lat:  12.13, lng:  15.05, label: 'N\'DJAMENA',     status: 'secured', region: 'africa' },
-  { lat:  40.71, lng: -74.01, label: 'NEW YORK',       status: 'secured', region: 'world'  },
-  { lat:  34.05, lng: -118.24, label: 'LOS ANGELES',   status: 'secured', region: 'world'  },
-  { lat:  48.85, lng:   2.35, label: 'PARIS',          status: 'secured', region: 'world'  },
-  { lat:  51.51, lng:  -0.13, label: 'LONDON',         status: 'secured', region: 'world'  },
-  { lat:  52.52, lng:  13.40, label: 'BERLIN',         status: 'secured', region: 'world'  },
-  { lat:  25.20, lng:  55.27, label: 'DUBAI',          status: 'secured', region: 'world'  },
-  { lat:   1.35, lng: 103.82, label: 'SINGAPORE',      status: 'secured', region: 'world'  },
-  { lat:  35.68, lng: 139.69, label: 'TOKYO',          status: 'secured', region: 'world'  },
-  { lat:  31.23, lng: 121.47, label: 'SHANGHAI',       status: 'secured', region: 'world'  },
-  { lat: -33.86, lng: 151.20, label: 'SYDNEY',         status: 'secured', region: 'world'  },
-  { lat: -23.55, lng: -46.63, label: 'SAO PAULO',      status: 'secured', region: 'world'  },
-  { lat:  19.43, lng: -99.13, label: 'MEXICO CITY',    status: 'secured', region: 'world'  },
-  { lat:  55.75, lng:  37.62, label: 'MOSCOW',         status: 'secured', region: 'world'  },
-  { lat:  28.61, lng:  77.20, label: 'NEW DELHI',      status: 'secured', region: 'world'  },
-  { lat:   9.03, lng:  38.74, label: 'ADDIS ABABA',    status: 'secured', region: 'africa' },
-  { lat:  -8.83, lng:  13.23, label: 'LUANDA',         status: 'secured', region: 'africa' },
-  { lat:  36.75, lng:   3.04, label: 'ALGIERS',        status: 'secured', region: 'africa' },
-  { lat:  36.80, lng:  10.18, label: 'TUNIS',          status: 'secured', region: 'africa' },
-  { lat:  -6.79, lng:  39.20, label: 'DAR ES SALAAM',  status: 'secured', region: 'africa' },
-  { lat:   5.36, lng:  -4.00, label: 'ABIDJAN',        status: 'secured', region: 'africa' },
-  { lat:  15.50, lng:  32.55, label: 'KHARTOUM',       status: 'secured', region: 'africa' },
-  { lat: -33.92, lng:  18.42, label: 'CAPE TOWN',      status: 'secured', region: 'africa' },
-  { lat:  -1.94, lng:  30.06, label: 'KIGALI',         status: 'secured', region: 'africa' },
-  { lat:  12.63, lng:  -8.00, label: 'BAMAKO',         status: 'secured', region: 'africa' },
-  { lat:  18.07, lng: -15.96, label: 'NOUAKCHOTT',     status: 'secured', region: 'africa' },
+  { lat:   5.56, lng:  -0.20, label: 'ACCRA',          status: 'home',    region: 'africa', country: 'ghana' },
+  { lat:   6.52, lng:   3.37, label: 'LAGOS',          status: 'secured', region: 'africa', country: 'nigeria' },
+  { lat:  30.04, lng:  31.23, label: 'CAIRO',          status: 'secured', region: 'africa', country: 'egypt' },
+  { lat: -26.20, lng:  28.05, label: 'JOBURG',         status: 'secured', region: 'africa', country: 'south-africa' },
+  { lat:  -1.29, lng:  36.82, label: 'NAIROBI',        status: 'secured', region: 'africa', country: 'kenya' },
+  { lat:  33.57, lng:  -7.58, label: 'CASABLANCA',     status: 'secured', region: 'africa', country: 'morocco' },
+  { lat:  -4.32, lng:  15.31, label: 'KINSHASA',       status: 'secured', region: 'africa', country: 'drc' },
+  { lat:  14.69, lng: -17.44, label: 'DAKAR',          status: 'secured', region: 'africa', country: 'senegal' },
+  { lat:   0.34, lng:  32.58, label: 'KAMPALA',        status: 'secured', region: 'africa', country: 'uganda' },
+  { lat:  12.13, lng:  15.05, label: 'N\'DJAMENA',     status: 'secured', region: 'africa', country: 'chad' },
+  { lat:  40.71, lng: -74.01, label: 'NEW YORK',       status: 'secured', region: 'world',  country: 'usa' },
+  { lat:  34.05, lng: -118.24, label: 'LOS ANGELES',   status: 'secured', region: 'world',  country: 'usa' },
+  { lat:  48.85, lng:   2.35, label: 'PARIS',          status: 'secured', region: 'world',  country: 'france' },
+  { lat:  51.51, lng:  -0.13, label: 'LONDON',         status: 'secured', region: 'world',  country: 'uk' },
+  { lat:  52.52, lng:  13.40, label: 'BERLIN',         status: 'secured', region: 'world',  country: 'germany' },
+  { lat:  25.20, lng:  55.27, label: 'DUBAI',          status: 'secured', region: 'world',  country: 'uae' },
+  { lat:   1.35, lng: 103.82, label: 'SINGAPORE',      status: 'secured', region: 'world',  country: 'singapore' },
+  { lat:  35.68, lng: 139.69, label: 'TOKYO',          status: 'secured', region: 'world',  country: 'japan' },
+  { lat:  31.23, lng: 121.47, label: 'SHANGHAI',       status: 'secured', region: 'world',  country: 'china' },
+  { lat: -33.86, lng: 151.20, label: 'SYDNEY',         status: 'secured', region: 'world',  country: 'australia' },
+  { lat: -23.55, lng: -46.63, label: 'SAO PAULO',      status: 'secured', region: 'world',  country: 'brazil' },
+  { lat:  19.43, lng: -99.13, label: 'MEXICO CITY',    status: 'secured', region: 'world',  country: 'mexico' },
+  { lat:  55.75, lng:  37.62, label: 'MOSCOW',         status: 'secured', region: 'world',  country: 'russia' },
+  { lat:  28.61, lng:  77.20, label: 'NEW DELHI',      status: 'secured', region: 'world',  country: 'india' },
+  { lat:   9.03, lng:  38.74, label: 'ADDIS ABABA',    status: 'secured', region: 'africa', country: 'ethiopia' },
+  { lat:  -8.83, lng:  13.23, label: 'LUANDA',         status: 'secured', region: 'africa', country: 'angola' },
+  { lat:  36.75, lng:   3.04, label: 'ALGIERS',        status: 'secured', region: 'africa', country: 'algeria' },
+  { lat:  36.80, lng:  10.18, label: 'TUNIS',          status: 'secured', region: 'africa', country: 'tunisia' },
+  { lat:  -6.79, lng:  39.20, label: 'DAR ES SALAAM',  status: 'secured', region: 'africa', country: 'tanzania' },
+  { lat:   5.36, lng:  -4.00, label: 'ABIDJAN',        status: 'secured', region: 'africa', country: 'cote-ivoire' },
+  { lat:  15.50, lng:  32.55, label: 'KHARTOUM',       status: 'secured', region: 'africa', country: 'sudan' },
+  { lat: -33.92, lng:  18.42, label: 'CAPE TOWN',      status: 'secured', region: 'africa', country: 'south-africa' },
+  { lat:  -1.94, lng:  30.06, label: 'KIGALI',         status: 'secured', region: 'africa', country: 'rwanda' },
+  { lat:  12.63, lng:  -8.00, label: 'BAMAKO',         status: 'secured', region: 'africa', country: 'mali' },
+  { lat:  18.07, lng: -15.96, label: 'NOUAKCHOTT',     status: 'secured', region: 'africa', country: 'mauritania' },
 ];
 
 export const ARC_PAIRS: Array<[number, number]> = [
@@ -43,6 +43,13 @@ export const ARC_PAIRS: Array<[number, number]> = [
   [10, 13], [13, 12], [12, 17], [17, 18], [18, 10], [10, 20], [21, 10], [13, 22], [22, 17], [19, 23], [12, 14], [15, 17],
 ];
 
+// Dot-matrix globe palette. The main map stays in the accent color; only the
+// countries containing a target city are theme-inverted — white on the dark
+// hero, black on the light theme — so they read as voids against the accent
+// dot world.
 export const ACCENT_COLOR     = 0x06B66F;
 export const ACCENT_COLOR_HEX = '#06B66F';
-export const MAP_COLOR_HEX    = '#000000';
+export const REGION_COLOR_DARK   = 0xFFFFFF;
+export const REGION_COLOR_DARK_HEX = '#FFFFFF';
+export const REGION_COLOR_LIGHT  = 0x000000;
+export const REGION_COLOR_LIGHT_HEX = '#000000';
