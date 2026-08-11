@@ -24,6 +24,7 @@ const NAV_ITEM_LABELS: Record<string, string> = {
   labs: 'nav.labs',
   anansi: 'nav.anansi',
   toha3ee: 'nav.toha3ee',
+  jabari: 'nav.jabari',
   leaderboard: 'nav.leaderboard',
   blogs: 'nav.blogs',
   team: 'nav.team',
