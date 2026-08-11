@@ -19,7 +19,6 @@ export interface OsintChallenge {
     name: string;
     alias: string;
     description: string;
-    avatar: string;
   };
   narrative?: string;
 }
@@ -36,16 +35,22 @@ export const OSINT_CHALLENGES: OsintChallenge[] = [
       name: 'Chen Wei',
       alias: 'The Digital Ghost',
       description: 'A corporate spy who uses email harvesting to launch phishing attacks. His email patterns are predictable.',
-      avatar: '👻',
     },
-    narrative: `🔎 Valkyrie: "Chen Wei — The Digital Ghost — harvested NovaCorp's emails to launch a phishing campaign. He didn't write a single line of code. He just searched. That's the terrifying power of OSINT — all the information is already public."
+    narrative: `> **Valkyrie:** "Chen Wei — The Digital Ghost — harvested NovaCorp's emails to launch a phishing campaign. He didn't write a single line of code. He just searched. That's the terrifying power of OSINT — all the information is already public."
 
 Email addresses are the skeleton key of any corporate attack. They're used for phishing, password resets, social engineering, and lateral movement. Chen Wei built a database of every NovaCorp employee's email using nothing but WHOIS records, DNS queries, and search engines. He never touched NovaCorp's infrastructure — he just read what they'd already published to the world.
 
-The danger isn't that emails exist — it's that organizations don't realize how many places they expose them. DNS records, social media profiles, job postings, PDF documents, code repositories — each one is a potential email leak. Once an attacker has the email format (firstname.lastname@novacorp.io), they can predict every employee's address and build targeted attacks at scale.
+## Where Emails Leak
 
-🔎 Recon Flow:
-[Domain Research] ──> [DNS Enumeration] ──> [Email Harvesting] ──> [Pattern Analysis] ──> [Attack Surface Mapping]`,
+The danger isn't that emails exist — it's that organizations don't realize how many places they expose them. DNS records, social media profiles, job postings, PDF documents, code repositories — each one is a potential email leak. Once an attacker has the email format (\`firstname.lastname@novacorp.io\`), they can **predict every employee's address** and build targeted attacks at scale.
+
+This is why one harvested address is never just one address. The format reveals the pattern, the pattern reveals the whole directory, and the directory becomes the target list for a phishing campaign.
+
+## Recon Flow
+
+\`[Domain Research]\` --> \`[DNS Enumeration]\` --> \`[Email Harvesting]\` --> \`[Pattern Analysis]\` --> \`[Attack Surface Mapping]\`
+
+Start with \`whois\` for registration details, \`dig\` for DNS records, then let theHarvester aggregate emails and hosts from public search engines.`,
     steps: [
       {
         tool: 'whois',
@@ -92,16 +97,22 @@ The danger isn't that emails exist — it's that organizations don't realize how
       name: 'The Social Engineer',
       alias: 'The Profile Builder',
       description: 'A social engineering expert who builds detailed profiles of targets using public social media data.',
-      avatar: '🕵️',
     },
-    narrative: `🌐 Valkyrie: "The Social Engineer — The Profile Builder — targets employees through social media. Fatima Okafor is his latest target. He doesn't need to hack anything — he just reads what people share publicly."
+    narrative: `> **Valkyrie:** "The Social Engineer — The Profile Builder — targets employees through social media. Fatima Okafor is his latest target. He doesn't need to hack anything — he just reads what people share publicly."
 
-Social media is a goldmine for attackers, and Fatima's public profiles are an open book. Her Twitter reveals her interests and opinions. Her GitHub shows her coding habits and NovaCorp tools. Her Instagram photos contain GPS coordinates that pinpoint her exact location. The Social Engineer uses all of this to craft personalized phishing attacks that are nearly impossible to distinguish from legitimate messages.
+Social media is a goldmine for attackers, and Fatima's public profiles are an open book. Her Twitter reveals her interests and opinions. Her GitHub shows her coding habits and NovaCorp tools. Her Instagram photos contain GPS coordinates that pinpoint her exact location. The Social Engineer uses all of this to craft **personalized phishing attacks** that are nearly impossible to distinguish from legitimate messages.
 
-This is the reality of modern social engineering. People share their location, their employer, their technologies, their routines — all voluntarily. The Social Engineer doesn't need to guess. He builds a complete profile from public data, then exploits the trust that comes with appearing to 'know' the target. A single Instagram photo with embedded EXIF data can reveal where someone works, what device they use, and where they live.
+## The Trust Exploit
 
-🔍 Social Recon Strategy:
-[Username Search] ──> [Profile Analysis] ──> [Metadata Extraction] ──> [Trust Exploitation]`,
+This is the reality of modern social engineering. People share their location, their employer, their technologies, their routines — all voluntarily. The Social Engineer doesn't need to guess. He builds a complete profile from public data, then exploits the trust that comes with appearing to "know" the target. A single Instagram photo with embedded EXIF data can reveal where someone works, what device they use, and where they live.
+
+The methodology matters as much as the tools: enumerate usernames across platforms, map each account to a data source, then extract metadata that humans never think about.
+
+## Social Recon Strategy
+
+\`[Username Search]\` --> \`[Profile Analysis]\` --> \`[Metadata Extraction]\` --> \`[Trust Exploitation]\`
+
+Run \`sherlock\` to find Fatima's accounts across platforms, check GitHub for NovaCorp code, and pull EXIF metadata from her profile photo.`,
     steps: [
       {
         tool: 'sherlock',
@@ -142,16 +153,22 @@ This is the reality of modern social engineering. People share their location, t
       name: 'The Subdomain Hunter',
       alias: 'The Network Mapper',
       description: 'A reconnaissance specialist who maps entire corporate networks through subdomain enumeration.',
-      avatar: '🗺️',
     },
-    narrative: `🗺️ Valkyrie: "The Subdomain Hunter — The Network Mapper — discovered NovaCorp's entire infrastructure through subdomain enumeration. He didn't scan a single port until he knew exactly what was out there."
+    narrative: `> **Valkyrie:** "The Subdomain Hunter — The Network Mapper — discovered NovaCorp's entire infrastructure through subdomain enumeration. He didn't scan a single port until he knew exactly what was out there."
 
-Subdomains are the hidden architecture of a company. Most organizations don't just run www.novacorp.io — they have api.novacorp.io for their API, dev.novacorp.io for development servers, staging.novacorp.io for pre-production, admin.novacorp.io for internal dashboards, and jenkins.novacorp.io for CI/CD. Each subdomain is a potential entry point, and attackers know that development and staging servers often have weaker security than production.
+Subdomains are the hidden architecture of a company. Most organizations don't just run \`www.novacorp.io\` — they have \`api.novacorp.io\` for their API, \`dev.novacorp.io\` for development servers, \`staging.novacorp.io\` for pre-production, \`admin.novacorp.io\` for internal dashboards, and \`jenkins.novacorp.io\` for CI/CD. Each subdomain is a potential entry point, and attackers know that development and staging servers often have weaker security than production.
 
 The Subdomain Hunter found 13 subdomains from multiple sources — certificate transparency logs, DNS brute-forcing, search engine dorking, and passive reconnaissance. The internal tools (Grafana, Jenkins, Git) are especially dangerous because they're often left exposed with default credentials. This is the reconnaissance phase that separates amateurs from professionals: mapping the entire attack surface before launching a single exploit.
 
-🗺️ Subdomain Strategy:
-[Passive Enumeration] ──> [Active Brute-force] ──> [DNS Resolution] ──> [Service Mapping] ──> [Attack Prioritization]`,
+## Why Certificate Transparency Matters
+
+Every TLS certificate issued for *.\`novacorp.io\` is logged in public certificate transparency databases. When NovaCorp's developers spun up \`staging.novacorp.io\`, they probably requested a Let's Encrypt cert — and that subdomain name became public record forever. Passive tools like subfinder and amass query these logs (plus search engine indexes and DNS datasets) to discover subdomains the company never advertised. No traffic touches NovaCorp's servers, which makes this phase completely undetectable.
+
+## Subdomain Strategy
+
+\`[Passive Enumeration]\` --> \`[Active Brute-force]\` --> \`[DNS Resolution]\` --> \`[Service Mapping]\` --> \`[Attack Prioritization]\`
+
+Map every subdomain, resolve the live ones to IPs, fingerprint the services, then rank targets by value: internal tooling beats production web servers every time.`,
     steps: [
       {
         tool: 'subfinder',
@@ -192,16 +209,22 @@ The Subdomain Hunter found 13 subdomains from multiple sources — certificate t
       name: 'The Breach Collector',
       alias: 'The Data Hoarder',
       description: 'A black-hat hacker who collects and sells leaked credentials from data breaches.',
-      avatar: '📦',
     },
-    narrative: `📦 Valkyrie: "The Breach Collector — The Data Hoarder — sold NovaCorp's leaked credentials on the dark web. He didn't hack them. He just bought what was already stolen."
+    narrative: `> **Valkyrie:** "The Breach Collector — The Data Hoarder — sold NovaCorp's leaked credentials on the dark web. He didn't hack them. He just bought what was already stolen."
 
-Data breaches are inevitable. What makes them dangerous is password reuse. When a LinkedIn password is the same as a NovaCorp admin password, the breach becomes a corporate compromise. The Breach Collector found NovaCorp employees using predictable passwords — company name plus year, simple substitutions, dictionary words. He bought 847 leaked records across three breaches and sold them to the highest bidder.
+Data breaches are inevitable. What makes them dangerous is **password reuse**. When a LinkedIn password is the same as a NovaCorp admin password, the breach becomes a corporate compromise. The Breach Collector found NovaCorp employees using predictable passwords — company name plus year, simple substitutions, dictionary words. He bought 847 leaked records across three breaches and sold them to the highest bidder.
 
-The NovaCorp-Leak breach is especially damning — it includes internal roles and API keys alongside credentials. This suggests an insider threat or a compromised internal system. Breach analysis isn't just about checking if passwords leaked — it's about understanding patterns. If 'fatima2024' was Fatima's old password, what's her new one? Probably 'Fatima2025' or 'Fatima2024!'. Pattern analysis turns old leaks into new attack vectors.
+The NovaCorp-Leak breach is especially damning — it includes internal roles and API keys alongside credentials. This suggests an insider threat or a compromised internal system. Breach analysis isn't just about checking if passwords leaked — it's about understanding patterns. If \`Fatima2024!\` was Fatima's old password, what's her new one? Probably \`Fatima2025!\` or \`fatima2024!\`. **Pattern analysis turns old leaks into new attack vectors.**
 
-🔍 Breach Analysis:
-[Breach Database] ──> [Credential Matching] ──> [Pattern Recognition] ──> [Predictive Attacks]`,
+## Credential Stuffing Is the Payoff
+
+A single leaked email-password pair is an account take over waiting to happen. Attackers run automated "stuffing" tools that replay leaked credentials against VPN portals, email webmail, GitHub, Jenkins, and Grafana — any service the target is likely to have reused the password on. The victims never see it coming because their primary account still works fine. The only defense is unique passwords per service and mandatory breach monitoring.
+
+## Breach Analysis
+
+\`[Breach Database]\` --> \`[Credential Matching]\` --> \`[Pattern Recognition]\` --> \`[Predictive Attacks]\`
+
+Query the breach indexes, match leaked emails to employees, extract the password habits they reveal, then predict their current and future credentials.`,
     steps: [
       {
         tool: 'breach-check',
@@ -236,16 +259,22 @@ The NovaCorp-Leak breach is especially damning — it includes internal roles an
       name: 'The Phantom Network',
       alias: 'The Intelligence Syndicate',
       description: 'A group of elite hackers who combine OSINT techniques to build comprehensive profiles of their targets.',
-      avatar: '🌐',
     },
-    narrative: `🌐 Valkyrie: "The Phantom Network — The Intelligence Syndicate — conducted a full recon of NovaCorp. They didn't write a single exploit. They just connected dots that NovaCorp left scattered across the internet."
+    narrative: `> **Valkyrie:** "The Phantom Network — The Intelligence Syndicate — conducted a full recon of NovaCorp. They didn't write a single exploit. They just connected dots that NovaCorp left scattered across the internet."
 
-The Phantom Network is legendary in the hacking community because they prove that information is the ultimate weapon. They don't write zero-days or develop malware — they use publicly available information to find vulnerabilities that developers never knew existed. Their methodology is simple: gather everything, connect everything, exploit the gaps.
+The Phantom Network is legendary in the hacking community because they prove that **information is the ultimate weapon**. They don't write zero-days or develop malware — they use publicly available information to find vulnerabilities that developers never knew existed. Their methodology is simple: gather everything, connect everything, exploit the gaps.
 
-This full recon mission combines every OSINT technique into a single operation. Domain research reveals the infrastructure. DNS enumeration maps the network. Social profiling identifies human targets. Subdomain discovery finds hidden services. Breach analysis reveals password patterns. The final compilation turns raw data into actionable intelligence — a complete attack plan built entirely from public information.
+This full recon mission combines every OSINT technique into a single operation. Domain research reveals the infrastructure. DNS enumeration maps the network. Social profiling identifies human targets. Subdomain discovery finds hidden services. Breach analysis reveals password patterns. The final compilation turns raw data into **actionable intelligence** — a complete attack plan built entirely from public information.
 
-🌐 Full Recon Strategy:
-[Domain Research] ──> [DNS Enumeration] ──> [Social Profiling] ──> [Service Mapping] ──> [Intelligence Compilation]`,
+## Intelligence Fusion
+
+The power of full-recon isn't any single tool — it's the correlations between data sources. The WHOIS registrant email \`admin@novacorp.io\` matches the domain admin. The GitHub \`novacorp-tools\` repo lists the same technologies running on \`api.novacorp.io\`. The breach record for \`support@novacorp.io\` (\`support123\`) likely reuses that password on the VPN endpoint \`vpn.novacorp.io\`. Each data point is weak alone; **triangulated together they form a precise attack path**. This is the mindset that separates a scanner from a strategist.
+
+## Full Recon Strategy
+
+\`[Domain Research]\` --> \`[DNS Enumeration]\` --> \`[Social Profiling]\` --> \`[Service Mapping]\` --> \`[Intelligence Compilation]\`
+
+Run every recon phase in order, then synthesize a single intelligence report that identifies the highest-probability entry point.`,
     steps: [
       {
         tool: 'whois',

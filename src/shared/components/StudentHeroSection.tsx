@@ -24,7 +24,6 @@ interface StudentHeroSectionProps {
     name: string;
     alias: string;
     description: string;
-    avatar: string;
   };
 }
 

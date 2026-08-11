@@ -4,7 +4,7 @@ export interface FlowNode {
   id: string;
   label: string;
   sublabel?: string;
-  icon?: string;
+  icon?: React.ReactNode;
   status?: 'default' | 'active' | 'completed' | 'danger' | 'warning' | 'success';
 }
 
@@ -90,7 +90,11 @@ function FlowNodeBox({ node }: { node: FlowNode }) {
       'rounded-xl border flex flex-col items-center justify-center text-center px-2 transition-all',
       STATUS_STYLES[node.status || 'default'],
     )}>
-      {node.icon && <span className="text-lg mb-1">{node.icon}</span>}
+      {node.icon && (
+        <span className="text-lg leading-none mb-1 flex items-center justify-center">
+          {node.icon}
+        </span>
+      )}
       <span className="text-[10px] md:text-xs font-black uppercase tracking-wider leading-tight">{node.label}</span>
       {node.sublabel && (
         <span className="text-[8px] md:text-[9px] font-mono opacity-60 mt-0.5">{node.sublabel}</span>

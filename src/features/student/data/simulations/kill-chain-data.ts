@@ -25,7 +25,6 @@ export interface KillChainScenario {
     name: string;
     alias: string;
     description: string;
-    avatar: string;
   };
   phases: KillChainPhase[];
   cpReward: number;
@@ -42,7 +41,6 @@ export const KILL_CHAIN_SCENARIOS: KillChainScenario[] = [
       name: 'Director Marcus Webb',
       alias: 'The Architect',
       description: "NovaCorp's former CISO turned rogue insider. Marcus built the company's security infrastructure, then was fired for selling access to competitors. He's now selling NovaCorp's internal network access on the dark web.",
-      avatar: '🏗️',
     },
     phases: [
       {
@@ -50,14 +48,21 @@ export const KILL_CHAIN_SCENARIOS: KillChainScenario[] = [
         name: 'Reconnaissance',
         description: 'Discover live hosts and services on the network.',
         icon: 'radar',
-        narrative: `🎯 Valkyrie: "The Architect has left backdoors everywhere. Let's map this network like he would — he built it, he knows every corner."
+        narrative: `> **Valkyrie:** "The Architect has left backdoors everywhere. Let's map this network like he would — he built it, he knows every corner."
 
-Our target is NovaCorp's internal network. Marcus Webb, the villain, was their CISO for 12 years. He knows every server, every weakness, every lazy admin password.
+Our target is NovaCorp's internal network. Marcus Webb, the villain, was their CISO for 12 years. He knows every server, every weakness, every lazy admin password. To beat him we have to think like him.
 
-🗺️ Attack Flow:
-[Network Scan] ──> [Host Discovery] ──> [Service Enumeration] ──> [Attack Surface Map]
+## Reconnaissance Phase
 
-The first rule of pentesting: know your target better than they know themselves.`,
+The first rule of pentesting: know your target better than they know themselves. Reconnaissance is the information-gathering phase where we map the network's attack surface before touching anything. Passive collection (WHOIS, DNS, public records) happens first, then active probing (ping sweeps, port scans) — and it always begins with host discovery.
+
+The key insight: a ping sweep with \`nmap -sn\` tells us which IPs respond, but it doesn't tell us what they're running. Only a version scan (\`-sV\`) identifies services and their exact versions — and version numbers are what let us later search for matching exploits. Every service version is a fingerprint that pins us to a specific exploit.
+
+## Attack Flow
+
+\`[Network Scan]\` --> \`[Host Discovery]\` --> \`[Service Enumeration]\` --> \`[Attack Surface Map]\`
+
+Scan the subnet for live hosts, fingerprint the services on the most interesting targets, and build a map of everything reachable.`,
         commands: [
           {
             command: 'nmap -sn 10.0.0.0/24',
@@ -85,12 +90,21 @@ The first rule of pentesting: know your target better than they know themselves.
         name: 'Enumeration',
         description: 'Enumerate services and discover vulnerabilities.',
         icon: 'search',
-        narrative: `🔍 Valkyrie: "The Architect was lazy — he reused passwords everywhere. His backup_admin account is the weak link."
+        narrative: `> **Valkyrie:** "The Architect was lazy — he reused passwords everywhere. His backup_admin account is the weak link."
 
-Marcus left breadcrumbs everywhere. He was arrogant — he thought no one would ever find his backdoors. Let's prove him wrong.
+Marcus left breadcrumbs everywhere. He was arrogant — he thought no one would ever find his backdoors. Enumeration is where we turn the raw attack surface from the recon phase into a concrete list of named users, shares, and paths to target.
 
-🔍 Enumeration Strategy:
-[Service Scan] ──> [Share Discovery] ──> [User Enumeration] ──> [Vulnerability Map]`,
+## Enumeration Phase
+
+Enumeration is the phase where services start talking and revealing their structure. SMB shares tell us what file storage is exposed and — critically — what account names exist. Directory brute-forcing finds hidden web paths that weren't advertised in any page or sitemap. Vulnerability scanners flag known misconfigurations. Each of these gives us a progressively sharper picture of where to strike.
+
+The most important output is often user enumeration: a single valid username (\`backup_admin\`) turns a blind password attack into a targeted one. Names are half the credentials.
+
+## Enumeration Strategy
+
+\`[Service Scan]\` --> \`[Share Discovery]\` --> \`[User Enumeration]\` --> \`[Vulnerability Map]\`
+
+Run share enumeration, brute-force hidden directories, and scan for known vulnerabilities to assemble the full target list.`,
         commands: [
           {
             command: 'enum4linux 10.0.0.10',
@@ -118,12 +132,21 @@ Marcus left breadcrumbs everywhere. He was arrogant — he thought no one would 
         name: 'Initial Access',
         description: 'Gain access to the target system.',
         icon: 'key',
-        narrative: `🔓 Valkyrie: "Marcus always used 'password123' for his admin accounts. His ego was his downfall."
+        narrative: `> **Valkyrie:** "Marcus always used 'password123' for his admin accounts. His ego was his downfall."
 
-The Architect thought he was clever — hiding in plain sight. But his password habits are legendary. Let's crack his legacy.
+The Architect thought he was clever — hiding in plain sight. But his password habits are legendary. Initial access is the first moment we cross the boundary from being outside the network to being inside it.
 
-🔑 Access Methodology:
-[Vulnerability Research] ──> [Credential Attack] ──> [SSH Access] ──> [Shell]`,
+## Initial Access Phase
+
+The options for crossing that boundary are broad: exploit a known vulnerability (via a matching public exploit), or abuse weak credentials (via password attacks). The version we fingerprinted during recon — OpenSSH 7.9 — is old enough to have documented vulnerabilities, and the enum users list gives us a known username to attack.
+
+Brute-forcing with Hydra takes the known username (\`admin\`) and tries it against the password wordlist until one matches. This is why the enumeration phase mattered: knowing the username means only the password needs guessing. Once we have valid credentials, the SSH handshake drops us straight into a shell — initial access achieved.
+
+## Access Methodology
+
+\`[Vulnerability Research]\` --> \`[Credential Attack]\` --> \`[SSH Access]\` --> \`[Shell]\`
+
+Check the version against known exploits, crack the weak password, and log in to get our first foothold on the system.`,
         commands: [
           {
             command: 'searchsploit openssh 7.9',
@@ -151,12 +174,23 @@ The Architect thought he was clever — hiding in plain sight. But his password 
         name: 'Privilege Escalation',
         description: 'Escalate from admin to root.',
         icon: 'shield',
-        narrative: `🛡️ Valkyrie: "Marcus left a SUID find binary — his signature backdoor. He thought no one would notice."
+        narrative: `> **Valkyrie:** "Marcus left a SUID find binary — his signature backdoor. He thought no one would notice."
 
 The Architect's ego is showing. He left his favorite privesc vector in plain sight — a SUID find binary. He's been using this trick for years.
 
-🛡️ Escalation Path:
-[Admin Shell] ──> [SUID Discovery] ──> [Binary Abuse] ──> [Root Shell]`,
+## Privilege Escalation Phase
+
+We now have an admin shell, but admin is not root. The whole point of privilege escalation is converting limited access into maximum access — and the fastest way to do that on Linux is hunting for SUID binaries.
+
+## SUID Explained
+
+The SUID (Set User ID) permission bit makes a binary execute with the privileges of its **owner** rather than the user who ran it. That's how \`passwd\` lets regular users change their passwords — it runs as root. When a *custom* binary like \`find\` gets SUID set, it inherits the same superpower: any command it runs — including one we pass via \`-exec\` — executes as root. The check is simple: a file with SUID shows up as \`-rwsr-xr-x\` (owner execute bit becomes \`s\`), and \`find / -perm -4000\` lists every SUID binary on the system.
+
+## Escalation Path
+
+\`[Admin Shell]\` --> \`[SUID Discovery]\` --> \`[Binary Abuse]\` --> \`[Root Shell]\`
+
+Confirm our current privileges, hunt for SUID binaries, then abuse the one Marcus left behind to spawn a root shell.`,
         commands: [
           {
             command: 'whoami && id',
@@ -184,12 +218,21 @@ The Architect's ego is showing. He left his favorite privesc vector in plain sig
         name: 'Lateral Movement',
         description: 'Move to other systems using harvested credentials.',
         icon: 'network',
-        narrative: `🌐 Valkyrie: "Marcus reused his admin password across all servers. One password to rule them all."
+        narrative: `> **Valkyrie:** "Marcus reused his admin password across all servers. One password to rule them all."
 
 The Architect's fatal flaw — password reuse. He used the same credentials everywhere. Now we can move freely through NovaCorp's network.
 
-🌐 Movement Strategy:
-[Root Access] ──> [Credential Harvest] ──> [Password Spray] ──> [Lateral Move]`,
+## Lateral Movement Phase
+
+Compromising one host is a win; compromising many is a campaign. Lateral movement is how we spread from the host we already own to the rest of the network — and it runs on **credential harvesting plus reuse**.
+
+The shell we captured gives us root, and root can read \`/etc/shadow\` — the password hashes of every local account. Those hashes confirm Marcus's habits. Then password-spraying tools like CrackMapExec take a known username-password pair and replay it across every host in the subnet, automatically detecting which machines accept it. Each success (\`Pwn3d!\`) expands our footprint, and the file shares we can reach with those credentials contain backups, configs, and database dumps.
+
+## Movement Strategy
+
+\`[Root Access]\` --> \`[Credential Harvest]\` --> \`[Password Spray]\` --> \`[Lateral Move]\`
+
+Harvest hashes from the compromised host, replay the credentials network-wide, and start pulling data from the shares that open up.`,
         commands: [
           {
             command: 'cat /etc/shadow | grep -v "!" | head -5',
@@ -217,12 +260,21 @@ The Architect's fatal flaw — password reuse. He used the same credentials ever
         name: 'Data Exfiltration',
         description: 'Extract sensitive data from the target.',
         icon: 'download',
-        narrative: `🏆 Valkyrie: "We've penetrated NovaCorp's network. The Architect's empire crumbles. Capture the flag and expose his treachery."
+        narrative: `> **Valkyrie:** "We've penetrated NovaCorp's network. The Architect's empire crumbles. Capture the flag and expose his treachery."
 
-Marcus Webb thought he was untouchable. He built this network, he knew every corner. But his arrogance was his downfall. Now we expose his crimes and claim victory.
+Marcus Webb thought he was untouchable. He built this network, he knew every corner. But his arrogance was his downfall. Data exfiltration is where we take everything we've accessed and pull the actual evidence out.
 
-🏆 Final Objective:
-[Data Staging] ──> [Credential Extraction] ──> [Flag Capture] ──> [Mission Complete]`,
+## Data Exfiltration Phase
+
+Access without extraction is just sightseeing. Exfiltration is the goal-oriented phase: copying sensitive artifacts off the compromised host to a location we control. The backup share we opened during lateral movement is the perfect source — it contains the full database dump, user records, and configuration archives that Marcus never expected anyone to reach.
+
+Then comes the payoff. The database backup contains password hashes, API keys, and SMTP credentials — the operational secrets that prove the breach's severity. The final flag validates that we've reached the deepest objective. In a real engagement, this is where the report gets written: what we accessed, what we took, and what it was worth.
+
+## Final Objective
+
+\`[Data Staging]\` --> \`[Credential Extraction]\` --> \`[Flag Capture]\` --> \`[Mission Complete]\`
+
+Copy the database backup off the server, mine it for credentials and secrets, then capture the flag.`,
         commands: [
           {
             command: 'scp admin@10.0.0.10:/backups/db_backup.sql .',
@@ -258,7 +310,6 @@ Marcus Webb thought he was untouchable. He built this network, he knew every cor
       name: 'Zara Okonkwo',
       alias: 'The Phantom',
       description: "A notorious black-hat hacker who sells zero-day exploits on the dark web. She compromised NovaCorp's web application and left backdoors for future access. Her signature: she always leaves a calling card in the database.",
-      avatar: '👻',
     },
     phases: [
       {
@@ -266,12 +317,21 @@ Marcus Webb thought he was untouchable. He built this network, he knew every cor
         name: 'Reconnaissance',
         description: 'Discover technologies and attack surface.',
         icon: 'radar',
-        narrative: `🎯 Valkyrie: "The Phantom strikes again. She's left her signature backdoor in NovaCorp's web app. Let's trace her steps."
+        narrative: `> **Valkyrie:** "The Phantom strikes again. She's left her signature backdoor in NovaCorp's web app. Let's trace her steps."
 
-Zara Okonkwo — The Phantom — is one of the most feared hackers in Africa. She sells zero-day exploits for a living. Her latest target: NovaCorp's web application.
+Zara Okonkwo — The Phantom — is one of the most feared hackers in Africa. She sells zero-day exploits for a living. Her latest target: NovaCorp's web application. This chain targets an external web app rather than the internal network, so the recon phase looks different: we fingerprint the technology stack exposed to the internet.
 
-🗺️ Attack Flow:
-[Target Identification] ──> [Technology Fingerprint] ──> [Attack Surface Map]`,
+## Web Reconnaissance Phase
+
+For an external target, "the network" is the application itself. The service scan tells us what ports are open; the DNS lookup maps the domain to its infrastructure; and technology fingerprinting (\`whatweb\`) reveals the exact stack — nginx, jQuery, Bootstrap, PHP, Express. Every banner is a clue: framework versions narrow the pool of known CVEs we can research next, and exposed headers like \`X-Powered-By\` remove all guesswork.
+
+The lesson of web recon: fingerprint everything, because a single identifiable version often hands us the exploit for the next phase.
+
+## Attack Flow
+
+\`[Target Identification]\` --> \`[Technology Fingerprint]\` --> \`[Attack Surface Map]\`
+
+Map the ports, DNS, and technology stack of the web target to build the vulnerability hunt list.`,
         commands: [
           {
             command: 'nmap -sV -p 80,443,8080 target.novacorp.io',
@@ -299,12 +359,21 @@ Zara Okonkwo — The Phantom — is one of the most feared hackers in Africa. Sh
         name: 'Vulnerability Discovery',
         description: 'Find vulnerabilities in the application.',
         icon: 'search',
-        narrative: `🔍 Valkyrie: "The Phantom always hides SQL injection points. She thinks she's clever — but we know her patterns."
+        narrative: `> **Valkyrie:** "The Phantom always hides SQL injection points. She thinks she's clever — but we know her patterns."
 
-Zara's signature move: she leaves SQL injection vulnerabilities as backdoors. She thinks no one will notice. Let's prove her wrong.
+Zara's signature move: she leaves SQL injection vulnerabilities as backdoors. She thinks no one will notice. Vulnerability discovery is the phase where we take the mapped attack surface and find the specific flaws that will let us in.
 
-🔍 Discovery Strategy:
-[Directory Enumeration] ──> [Vulnerability Scanning] ──> [Injection Testing]`,
+## Vulnerability Discovery Phase
+
+Web applications have a much bigger attack surface than their open ports suggest: every URL is a potential vulnerability. Directory brute-forcing (\`gobuster\`) discovers hidden paths the application never links to — admin panels, backup directories, API versions. Vulnerability scanning (\`nikto\`) then checks those paths for known misconfigurations and flags candidates like exposed endpoints and injection points.
+
+The goal here is a short list of **verified, exploitable** findings rather than a long list of noise. Each candidate gets triaged: the exposed \`/api/v1\` endpoint and the \`/search?q=\` parameter that feeds straight into a query are exactly what we'll weaponize next.
+
+## Discovery Strategy
+
+\`[Directory Enumeration]\` --> \`[Vulnerability Scanning]\` --> \`[Injection Testing]\`
+
+Enumerate the app's structure, scan for misconfigurations, and identify the injection candidates.`,
         commands: [
           {
             command: 'gobuster dir -u https://target.novacorp.io -w /usr/share/wordlists/dirb/common.txt',
@@ -326,12 +395,21 @@ Zara's signature move: she leaves SQL injection vulnerabilities as backdoors. Sh
         name: 'Exploitation',
         description: 'Exploit discovered vulnerabilities.',
         icon: 'zap',
-        narrative: `💉 Valkyrie: "The Phantom's SQL injection is textbook. Let's exploit it and expose her backdoor."
+        narrative: `> **Valkyrie:** "The Phantom's SQL injection is textbook. Let's exploit it and expose her backdoor."
 
-Zara's SQL injection is elegant — she uses UNION-based injection to extract data. But we're better. Let's crack her code and steal her secrets.
+Zara's SQL injection is elegant — she uses UNION-based injection to extract data. But we're better. Exploitation is where the vulnerability becomes access: the suspected injection point gets proven, the database gets enumerated, and credentials get cracked into a working shell.
 
-💉 Exploitation Chain:
-[Injection Point] ──> [Database Enumeration] ──> [Credential Extraction] ──> [Shell Access]`,
+## Exploitation Phase
+
+The flagged \`/search?id=1\` parameter is the key. Running sqlmap against it confirms the injection, identifies the backend as MySQL, and reveals the available databases. With the injection proven, dumping the \`users\` table hands us password hashes — and cracking those hashes with John the Ripper turns them into real credentials.
+
+Each step feeds the next: injection proves the flaw, the dump proves its impact, the cracked password (\`admin2024!\`) proves the damage. Finally, that credential opens an SSH session — exploitation is complete and we've crossed into the system.
+
+## Exploitation Chain
+
+\`[Injection Point]\` --> \`[Database Enumeration]\` --> \`[Credential Extraction]\` --> \`[Shell Access]\`
+
+Prove the injection, enumerate and dump the database, crack the hashes, then log in with the recovered credentials.`,
         commands: [
           {
             command: "sqlmap -u 'https://target.novacorp.io/search?id=1' --batch --dbs",
@@ -365,12 +443,21 @@ Zara's SQL injection is elegant — she uses UNION-based injection to extract da
         name: 'Post-Exploitation',
         description: 'Gather additional access and data.',
         icon: 'database',
-        narrative: `🔎 Valkyrie: "The Phantom hides API keys in .env files. She thinks she's invisible — but we see everything."
+        narrative: `> **Valkyrie:** "The Phantom hides API keys in .env files. She thinks she's invisible — but we see everything."
 
-Zara's post-exploitation is methodical. She searches for API keys, database credentials, and configuration files. Let's follow her trail.
+Zara's post-exploitation is methodical. She searches for API keys, database credentials, and configuration files. Post-exploitation is where the shell we gained gets converted into deeper access and more data.
 
-🔎 Post-Exploitation:
-[Config File Search] ──> [API Key Extraction] ──> [Database Access]`,
+## Post-Exploitation Phase
+
+A shell alone is a foothold; post-exploitation is where it pays. Application config files (\`.env\`) are the highest-value target because developers stuff them with everything the app needs to run: database credentials, API keys, SMTP passwords. One readable \`.env\` frequently equals full database and third-party service compromise.
+
+The stolen API key then demonstrates the blast radius — it authenticates directly against the internal API and returns the full user list, which we'd otherwise have to fetch from the database. This is the moment the engagement stops being "we got a shell" and becomes "we can access whatever we want, whenever we want."
+
+## Post-Exploitation
+
+\`[Config File Search]\` --> \`[API Key Extraction]\` --> \`[Database Access]\`
+
+Read the application's secrets, then use the recovered keys to hit internal services.`,
         commands: [
           {
             command: 'cat /var/www/.env',
@@ -392,12 +479,21 @@ Zara's post-exploitation is methodical. She searches for API keys, database cred
         name: 'Persistence & Exfiltration',
         description: 'Establish persistence and extract data.',
         icon: 'flag',
-        narrative: `🏆 Valkyrie: "We've beaten The Phantom at her own game. Capture the flag and expose her crimes."
+        narrative: `> **Valkyrie:** "We've beaten The Phantom at her own game. Capture the flag and expose her crimes."
 
-Zara Okonkwo thought she was untouchable. She sold zero-day exploits, she left backdoors everywhere. But her arrogance was her downfall. Now we expose her crimes and claim victory.
+Zara Okonkwo thought she was untouchable. She sold zero-day exploits, she left backdoors everywhere. But her arrogance was her downfall. Persistence and exfiltration close the chain: we cement our access so it survives, stage the valuable data, and take the flag.
 
-🏆 Final Objective:
-[Backdoor Creation] ──> [Data Staging] ──> [Flag Capture] ──> [Mission Complete]`,
+## Persistence & Exfiltration Phase
+
+Persistence guarantees the access doesn't evaporate when the current session ends. Creating a new admin account through the API (using the stolen token) is a textbook persistence technique — it survives reboots, logins, and cleanup because it looks like a legitimate user. We then stage the sensitive files (web root, shadow hashes, SSH keys) into a single archive ready to move off-host.
+
+The final flag capture proves the objective: full compromise from first scan to last exfil. In a real engagement this is where the complete kill chain gets documented — the persistence we leave behind, the data we took, and the paths we walked.
+
+## Final Objective
+
+\`[Backdoor Creation]\` --> \`[Data Staging]\` --> \`[Flag Capture]\` --> \`[Mission Complete]\`
+
+Plant the persistent account, archive the sensitive data for exfiltration, and capture the flag.`,
         commands: [
           {
             command: "curl -X POST https://target.novacorp.io/api/v1/users -H 'Content-Type: application/json' -H 'Authorization: Bearer stolen_token' -d '{\"username\":\"backdoor\",\"password\":\"B4ckd00r!\",\"email\":\"backdoor@target.io\",\"role\":\"admin\"}'",

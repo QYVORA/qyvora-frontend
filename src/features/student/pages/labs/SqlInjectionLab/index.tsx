@@ -1,27 +1,20 @@
 import { useState, useCallback, useMemo } from 'react';
-import { Database, CheckCircle } from 'lucide-react';
+import { Database, CheckCircle, Keyboard, Search, Server } from 'lucide-react';
 import { WalkthroughLayout, WalkthroughStep } from '@/shared/components/walkthrough/';
 import { SQL_INJECTION_TARGETS } from '@/features/student/data/simulations';
 import { createSqlInjectionSimulations } from '@/features/student/components/simulations/labSimulationContent';
 import SEO from '@/shared/components/SEO';
-import ScenarioCard from '@/shared/components/ScenarioCard';
+import LearningAccordion from '@/shared/components/learning/LearningAccordion';
 import { verifyLabFlag } from '../../../services/lab.service';
 import { getRelatedContentForLab } from '@/shared/constants/topicMap';
 import RelatedContent from '@/shared/components/RelatedContent';
 import StudentHeroSection from '@/shared/components/StudentHeroSection';
 import { FlowDiagram } from '@/shared/components/diagrams/FlowDiagram';
 
-
-const DIFFICULTY_STYLES: Record<string, string> = {
-  beginner: 'bg-green-400/10 text-green-400 border-green-400/20',
-  intermediate: 'bg-yellow-400/10 text-yellow-400 border-yellow-400/20',
-  advanced: 'bg-red-400/10 text-red-400 border-red-400/20',
-};
-
 const SQL_ATTACK_FLOW_NODES = [
-  { id: 'input', label: 'Input Field', icon: '⌨️', status: 'warning' as const },
-  { id: 'query', label: 'Query Builder', icon: '🔍', status: 'danger' as const },
-  { id: 'db', label: 'DB Server', icon: '🗄️', status: 'default' as const },
+  { id: 'input', label: 'Input Field', icon: <Keyboard className="w-4 h-4" />, status: 'warning' as const },
+  { id: 'query', label: 'Query Builder', icon: <Search className="w-4 h-4" />, status: 'danger' as const },
+  { id: 'db', label: 'DB Server', icon: <Server className="w-4 h-4" />, status: 'default' as const },
 ];
 
 const SQL_ATTACK_FLOW_ARROWS = [
@@ -105,19 +98,22 @@ const SqlInjectionLab = () => {
         <div className="px-3 md:px-4 lg:px-6 pb-20 lg:pb-24 space-y-8">
           <div className="border-t border-border/30" />
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
-            {SQL_INJECTION_TARGETS.map((target) => (
-              <ScenarioCard
-                key={target.id}
-                title={target.name}
-                difficulty={target.difficulty}
-                description={target.description}
-                cpReward={target.cpReward}
-                subtitle={`${target.injectionType} · ${target.dbms}`}
-                onStart={() => startTarget(target)}
-              />
-            ))}
-          </div>
+          <LearningAccordion
+            items={SQL_INJECTION_TARGETS.map((target) => ({
+              id: target.id,
+              title: target.name,
+              subtitle: `${target.injectionType} · ${target.dbms}`,
+              description: target.description,
+              difficulty: target.difficulty,
+              meta: (
+                <span className="text-[9px] font-black uppercase tracking-widest text-accent">
+                  {target.cpReward} CP
+                </span>
+              ),
+              onStart: () => startTarget(target),
+              startLabel: 'Start Attack',
+            }))}
+          />
 
           <RelatedContent {...getRelatedContentForLab('sql-injection')} title="Continue This Topic" />
         </div>
@@ -152,10 +148,7 @@ const SqlInjectionLab = () => {
           const isActive = index === firstIncomplete;
           const isLocked = !isCompleted && index > firstIncomplete;
 
-          const emojis = ['💉', '🗄️', '🔓', '💀', '🎯', '🏆'];
-          const emoji = emojis[index % emojis.length];
-
-          const narrative = `${emoji} SQL Injection — Step ${index + 1}\n\n${step.explanation}\n\nExecute the command below to proceed.`;
+          const narrative = `## SQL Injection — Step ${index + 1}\n\n${step.explanation}\n\nExecute the command below to proceed.`;
 
           return (
             <WalkthroughStep

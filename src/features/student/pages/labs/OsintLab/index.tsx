@@ -4,18 +4,11 @@ import { WalkthroughLayout, WalkthroughStep } from '@/shared/components/walkthro
 import { OSINT_CHALLENGES } from '@/features/student/data/simulations';
 import { createOsintSimulations } from '@/features/student/components/simulations/labSimulationContent';
 import SEO from '@/shared/components/SEO';
-import ScenarioCard from '@/shared/components/ScenarioCard';
+import LearningAccordion from '@/shared/components/learning/LearningAccordion';
 import { verifyLabFlag } from '../../../services/lab.service';
 import { getRelatedContentForLab } from '@/shared/constants/topicMap';
 import RelatedContent from '@/shared/components/RelatedContent';
 import StudentHeroSection from '@/shared/components/StudentHeroSection';
-
-
-const DIFFICULTY_STYLES: Record<string, string> = {
-  beginner: 'bg-green-400/10 text-green-400 border-green-400/20',
-  intermediate: 'bg-yellow-400/10 text-yellow-400 border-yellow-400/20',
-  advanced: 'bg-red-400/10 text-red-400 border-red-400/20',
-};
 
 const OsintLab = () => {
   const [activeChallenge, setActiveChallenge] = useState(null);
@@ -93,18 +86,22 @@ const OsintLab = () => {
         <div className="px-3 md:px-4 lg:px-6 pb-20 lg:pb-24 space-y-8">
           <div className="border-t border-border/30" />
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
-            {OSINT_CHALLENGES.map((challenge) => (
-              <ScenarioCard
-                key={challenge.id}
-                title={challenge.title}
-                difficulty={challenge.difficulty}
-                description={challenge.description}
-                cpReward={challenge.cpReward}
-                onStart={() => startChallenge(challenge)}
-              />
-            ))}
-          </div>
+          <LearningAccordion
+            items={OSINT_CHALLENGES.map((challenge) => ({
+              id: challenge.id,
+              title: challenge.title,
+              subtitle: `${challenge.targetName} — ${challenge.skills.slice(0, 2).join(' · ')}`,
+              description: challenge.description,
+              difficulty: challenge.difficulty,
+              meta: (
+                <span className="text-[9px] font-black uppercase tracking-widest text-accent">
+                  {challenge.cpReward} CP
+                </span>
+              ),
+              onStart: () => startChallenge(challenge),
+              startLabel: 'Start Mission',
+            }))}
+          />
 
           <RelatedContent {...getRelatedContentForLab('osint')} title="Continue This Topic" />
         </div>
@@ -128,7 +125,7 @@ const OsintLab = () => {
         simulations={simulations}
       >
         <div className="rounded-2xl border border-border/30 bg-bg-card p-4 mb-2">
-          <p className="text-sm font-black text-text-primary mb-1">🎯 Target: {activeChallenge.targetName}</p>
+          <p className="text-sm font-black text-text-primary mb-1">Target: {activeChallenge.targetName}</p>
           <p className="text-sm text-text-muted font-mono">{activeChallenge.targetDescription}</p>
         </div>
 
@@ -138,12 +135,9 @@ const OsintLab = () => {
           const isActive = index === firstIncomplete;
           const isLocked = !isCompleted && index > firstIncomplete;
 
-          const emojis = ['🔎', '🌐', '📡', '🔍', '🕵️', '🏆'];
-          const emoji = emojis[index % emojis.length];
-
           const narrative = index === 0 && activeChallenge.narrative
-            ? `${activeChallenge.narrative}\n\n🔎 OSINT Reconnaissance — Step ${index + 1}\n\nTool: ${step.tool}\n\n${step.explanation}\n\nExecute the command below to gather intelligence.`
-            : `${emoji} OSINT Reconnaissance — Step ${index + 1}\n\nTool: ${step.tool}\n\n${step.explanation}\n\nExecute the command below to gather intelligence.`;
+            ? `${activeChallenge.narrative}\n\n## OSINT Reconnaissance — Step ${index + 1}\n\nTool: ${step.tool}\n\n${step.explanation}\n\nExecute the command below to gather intelligence.`
+            : `## OSINT Reconnaissance — Step ${index + 1}\n\nTool: ${step.tool}\n\n${step.explanation}\n\nExecute the command below to gather intelligence.`;
 
           return (
             <WalkthroughStep
