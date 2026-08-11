@@ -51,7 +51,7 @@ const HpbPage = () => {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 md:gap-4">
             {phases.map((phase, idx) => (
               <ScrollReveal key={phase.id} amount={0.05}>
-                <div className="group/card relative aspect-square rounded-2xl border border-border/30 bg-bg-card p-3 md:p-5 transition-all duration-300 hover:border-accent/30 flex flex-col">
+                <div className="group/card relative h-72 sm:h-64 lg:h-60 rounded-2xl border border-border/30 bg-bg-card p-3 md:p-5 transition-all duration-300 hover:border-accent/30 flex flex-col">
                   <div className="flex items-center gap-2 mb-2">
                     <span className="text-[9px] sm:text-[10px] font-black uppercase tracking-widest px-2 py-0.5 rounded-lg border border-accent/20 bg-accent/10 text-accent">
                       Phase {idx + 1}

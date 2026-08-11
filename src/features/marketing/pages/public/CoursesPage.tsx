@@ -56,7 +56,7 @@ const CoursesPage = () => {
               <ScrollReveal key={course.id} amount={0.05}>
                 <Link
                   to={`/courses/${course.id}`}
-                  className="group flex flex-col aspect-square rounded-2xl border border-border/30 bg-bg-card overflow-hidden transition-all duration-300 hover:border-accent/30"
+                  className="group flex flex-col h-72 sm:h-64 lg:h-60 rounded-2xl border border-border/30 bg-bg-card overflow-hidden transition-all duration-300 hover:border-accent/30"
                 >
                   <div className="flex flex-col gap-2 p-4 sm:p-5 md:p-6 lg:p-7 flex-1">
                     <div className="flex items-center justify-between">

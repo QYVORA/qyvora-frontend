@@ -6,6 +6,7 @@ import { IconArrowRight, IconClock } from '@/shared/components/icons';
 import { ScrollReveal } from '@/shared/components';
 import SEO from '@/shared/components/SEO';
 import PublicSnapLayout from '@/shared/components/PublicSnapLayout';
+import PublicSnapSection from '@/shared/components/PublicSnapSection';
 import StudentHeroSection, { PUBLIC_HERO_TITLE_CLASS } from '@/shared/components/StudentHeroSection';
 import { Footer } from '@/shared/components/layout';
 import { useAuth } from '@/core/contexts/AuthContext';
@@ -49,8 +50,7 @@ const BlogsPage = () => {
           stats={[{ label: 'Articles', value: BLOG_POSTS.length }]}
         />
 
-        <div className="min-h-dvh md:h-dvh md:overflow-y-auto px-3 md:px-4 lg:px-6">
-          <div className="min-h-full flex flex-col justify-center py-16 md:py-20">
+        <PublicSnapSection>
           <div className="space-y-8">
           <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
           <div className="flex items-center gap-2 flex-wrap">
@@ -139,8 +139,7 @@ const BlogsPage = () => {
           </div>
           )}
           </div>
-          </div>
-        </div>
+        </PublicSnapSection>
         <LandingFinalCtaSection user={user} />
         <Footer />
       </PublicSnapLayout>
