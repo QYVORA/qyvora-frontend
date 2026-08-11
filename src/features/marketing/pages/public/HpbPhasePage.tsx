@@ -78,7 +78,7 @@ const HpbPhasePage: React.FC = () => {
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
                 {phase.rooms.map((room, idx) => (
                   <ScrollReveal key={room.id} amount={0.05}>
-                    <div className="group/card relative aspect-square rounded-2xl border border-border/30 bg-bg-card p-3 md:p-5 transition-all duration-300 hover:border-accent/30 flex flex-col text-left">
+                    <div className="group/card relative h-72 sm:h-64 lg:h-60 rounded-2xl border border-border/30 bg-bg-card p-3 md:p-5 transition-all duration-300 hover:border-accent/30 flex flex-col text-left">
                       <div className="flex items-center justify-between mb-2">
                         <div className="w-8 h-8 rounded-xl flex items-center justify-center shrink-0 bg-accent/10 border border-accent/20">
                           <IconTerminal className="w-4 h-4 text-accent" />
