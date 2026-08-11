@@ -97,15 +97,18 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88, offset = [0, 0,
     const sphereSegments = ctx.simplified ? 32 : 64;
     const dotTex = buildDotMapTexture(isLight, 1.6);
 
-    const globeBack = new THREE.Mesh(
+    // Opaque globe body: without it the transparent front face let the far-side
+    // dot map ghost through, rendering one map underneath another. The solid
+    // surface also depth-occludes the pins on the far hemisphere.
+    const globeBody = new THREE.Mesh(
       new THREE.SphereGeometry(1.0, sphereSegments, sphereSegments),
       new THREE.MeshBasicMaterial({
-        map: dotTex, transparent: true, opacity: 0.55,
-        depthWrite: false, side: THREE.BackSide,
+        color: isLight ? 0xE4E7E3 : 0x000000,
+        side: THREE.FrontSide,
       }),
     );
-    globeBack.renderOrder = 1;
-    globe.add(globeBack);
+    globeBody.renderOrder = 0;
+    globe.add(globeBody);
 
     const globeFront = new THREE.Mesh(
       new THREE.SphereGeometry(1.0, sphereSegments, sphereSegments),
