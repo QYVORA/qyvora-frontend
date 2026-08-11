@@ -1,5 +1,10 @@
 import * as THREE from 'three';
-import { ACCENT_COLOR_HEX, REGION_COLOR_DARK_HEX, REGION_COLOR_LIGHT_HEX, TARGETS } from './data';
+import {
+  ACCENT_COLOR, ACCENT_COLOR_HEX,
+  REGION_COLOR_DARK, REGION_COLOR_DARK_HEX,
+  REGION_COLOR_LIGHT, REGION_COLOR_LIGHT_HEX,
+  TARGETS,
+} from './data';
 import { COUNTRIES } from './countries';
 
 export type BBox = { minLat: number; maxLat: number; minLng: number; maxLng: number };
@@ -230,4 +235,45 @@ export function buildDotMapTexture(isLight: boolean, step = 1.6): THREE.CanvasTe
   tex.colorSpace = THREE.SRGBColorSpace;
   TEXTURE_CACHE.set(cacheKey, tex);
   return tex;
+}
+
+const LAND_DOTS_CACHE = new Map<number, Array<{ lat: number; lng: number }>>();
+
+/**
+ * All land cells (lat/lng grid) used by `buildDotMapTexture`. The same grid
+ * positions the raised 3D pins so every flat dot on the globe has a short
+ * radial cylinder standing out of the surface.
+ */
+export function buildLandDots(step = 1.6): Array<{ lat: number; lng: number }> {
+  const cached = LAND_DOTS_CACHE.get(step);
+  if (cached) return cached;
+
+  const dots: Array<{ lat: number; lng: number }> = [];
+  for (let lat = 89; lat >= -89; lat -= step) {
+    for (let lng = -179; lng <= 179; lng += step) {
+      if (!isLand(lat, lng)) continue;
+      dots.push({ lat, lng });
+    }
+  }
+
+  LAND_DOTS_CACHE.set(step, dots);
+  return dots;
+}
+
+/**
+ * Angular radius (radians) of a single dot drawn by `buildDotMapTexture` on a
+ * unit sphere. The raised pins use this so every cylinder keeps the footprint
+ * of the flat dot it sits on.
+ */
+export function getDotRadius(step = 1.6): number {
+  const H = 1024;
+  const dotR = (step / 180) * H * 0.42;
+  return (dotR / H) * Math.PI;
+}
+
+/** Per-instance colors for the raised pins, matching the dot-map palette. */
+export function getMapColors(isLight: boolean): { land: THREE.Color; region: THREE.Color } {
+  return isLight
+    ? { land: new THREE.Color(ACCENT_COLOR), region: new THREE.Color(REGION_COLOR_LIGHT) }
+    : { land: new THREE.Color(ACCENT_COLOR), region: new THREE.Color(REGION_COLOR_DARK) };
 }
