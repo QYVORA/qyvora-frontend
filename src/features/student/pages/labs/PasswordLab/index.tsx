@@ -1,28 +1,21 @@
 import { useState, useCallback, useMemo } from 'react';
-import { Key, CheckCircle } from 'lucide-react';
+import { Key, CheckCircle, FileText, Search, Zap, KeyRound, Book, Settings, Scale, Target, Skull, NotebookPen, Trophy } from 'lucide-react';
 import { WalkthroughLayout, WalkthroughStep } from '@/shared/components/walkthrough/';
 import { PASSWORD_EXERCISES } from '@/features/student/data/simulations';
 import { createPasswordSimulations } from '@/features/student/components/simulations/labSimulationContent';
 import SEO from '@/shared/components/SEO';
-import ScenarioCard from '@/shared/components/ScenarioCard';
+import LearningAccordion from '@/shared/components/learning/LearningAccordion';
 import { verifyLabFlag } from '../../../services/lab.service';
 import { getRelatedContentForLab } from '@/shared/constants/topicMap';
 import RelatedContent from '@/shared/components/RelatedContent';
 import StudentHeroSection from '@/shared/components/StudentHeroSection';
 import { FlowDiagram, type FlowNode, type FlowArrow } from '@/shared/components/diagrams/FlowDiagram';
 
-
-const DIFFICULTY_STYLES: Record<string, string> = {
-  beginner: 'bg-green-400/10 text-green-400 border-green-400/20',
-  intermediate: 'bg-yellow-400/10 text-yellow-400 border-yellow-400/20',
-  advanced: 'bg-red-400/10 text-red-400 border-red-400/20',
-};
-
 const HASH_CRACKING_NODES: FlowNode[] = [
-  { id: 'hash', label: 'Hash File', icon: '\u{1F4C4}', status: 'warning' },
-  { id: 'identify', label: 'Identify Type', icon: '\u{1F50D}', status: 'active' },
-  { id: 'attack', label: 'Dictionary', icon: '\u{26A1}', status: 'danger' },
-  { id: 'result', label: 'Plaintext', icon: '\u{1F513}', status: 'success' },
+  { id: 'hash', label: 'Hash File', icon: <FileText className="w-4 h-4" />, status: 'warning' },
+  { id: 'identify', label: 'Identify Type', icon: <Search className="w-4 h-4" />, status: 'active' },
+  { id: 'attack', label: 'Dictionary', icon: <Zap className="w-4 h-4" />, status: 'danger' },
+  { id: 'result', label: 'Plaintext', icon: <KeyRound className="w-4 h-4" />, status: 'success' },
 ];
 const HASH_CRACKING_ARROWS: FlowArrow[] = [
   { from: 'hash', to: 'identify', type: 'solid' },
@@ -31,10 +24,10 @@ const HASH_CRACKING_ARROWS: FlowArrow[] = [
 ];
 
 const ITERATION_NODES: FlowNode[] = [
-  { id: 'wordlist', label: 'Wordlist', icon: '\u{1F4D6}', status: 'default' },
-  { id: 'hashfn', label: 'Hash Function', icon: '\u{2699}\u{FE0F}', status: 'active' },
-  { id: 'compare', label: 'Compare', icon: '\u{2696}\u{FE0F}', status: 'warning' },
-  { id: 'match', label: 'Match', icon: '\u{1F3AF}', status: 'success' },
+  { id: 'wordlist', label: 'Wordlist', icon: <Book className="w-4 h-4" />, status: 'default' },
+  { id: 'hashfn', label: 'Hash Function', icon: <Settings className="w-4 h-4" />, status: 'active' },
+  { id: 'compare', label: 'Compare', icon: <Scale className="w-4 h-4" />, status: 'warning' },
+  { id: 'match', label: 'Match', icon: <Target className="w-4 h-4" />, status: 'success' },
 ];
 const ITERATION_ARROWS: FlowArrow[] = [
   { from: 'wordlist', to: 'hashfn', type: 'solid' },
@@ -43,9 +36,9 @@ const ITERATION_ARROWS: FlowArrow[] = [
 ];
 
 const HARVEST_NODES: FlowNode[] = [
-  { id: 'cracked', label: 'Cracked', icon: '\u{1F480}', status: 'danger' },
-  { id: 'plain', label: 'Plaintext', icon: '\u{1F4DD}', status: 'active' },
-  { id: 'harvest', label: 'Harvest', icon: '\u{1F3C6}', status: 'success' },
+  { id: 'cracked', label: 'Cracked', icon: <Skull className="w-4 h-4" />, status: 'danger' },
+  { id: 'plain', label: 'Plaintext', icon: <NotebookPen className="w-4 h-4" />, status: 'active' },
+  { id: 'harvest', label: 'Harvest', icon: <Trophy className="w-4 h-4" />, status: 'success' },
 ];
 const HARVEST_ARROWS: FlowArrow[] = [
   { from: 'cracked', to: 'plain', type: 'solid' },
@@ -136,19 +129,22 @@ const PasswordLab = () => {
         <div className="px-3 md:px-4 lg:px-6 pb-20 lg:pb-24 space-y-8">
           <div className="border-t border-border/30" />
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
-            {PASSWORD_EXERCISES.map((scenario) => (
-              <ScenarioCard
-                key={scenario.id}
-                title={scenario.title}
-                difficulty={scenario.difficulty}
-                description={scenario.description}
-                cpReward={scenario.cpReward}
-                subtitle={scenario.hashType}
-                onStart={() => startScenario(scenario)}
-              />
-            ))}
-          </div>
+          <LearningAccordion
+            items={PASSWORD_EXERCISES.map((scenario) => ({
+              id: scenario.id,
+              title: scenario.title,
+              subtitle: scenario.hashType,
+              description: scenario.description,
+              difficulty: scenario.difficulty,
+              meta: (
+                <span className="text-[9px] font-black uppercase tracking-widest text-accent">
+                  {scenario.cpReward} CP
+                </span>
+              ),
+              onStart: () => startScenario(scenario),
+              startLabel: 'Start Attack',
+            }))}
+          />
 
           <RelatedContent {...getRelatedContentForLab('passwords')} title="Continue This Topic" />
         </div>
@@ -178,11 +174,31 @@ const PasswordLab = () => {
           const isLocked = !isCompleted && index > firstIncomplete;
 
           const narratives = [
-            `\u{1F511} Initialize your cracking session.\n\nBefore attacking, we identify the hash type and prepare our toolchain. Different hashes require different approaches.\n\nFollow the command below to prepare your environment.`,
-            `\u{26A1} Launch the cracking attack.\n\nJohn the Ripper iterates through password candidates, hashing each one and comparing against the target hash.\n\nExecute the command below to begin cracking.`,
-            `\u{1F3AF} Extract and analyze results.\n\nOnce cracks are found, retrieve the plaintext passwords from the output. These credentials are your foothold into the target system.\n\nRun the command below to view your results.`,
-            `\u{1F480} Advanced cracking techniques.\n\nIf standard dictionary attacks fail, we escalate to rule-based mutations and incremental mode.\n\nApply advanced techniques with the command below.`,
-            `\u{1F3C6} Final credential extraction.\n\nCompile all cracked passwords and verify them against the target. The flag is embedded within the recovered credential data.\n\nExecute the final command to complete the exercise.`,
+            `## Prepare the Attack Environment
+
+Before we run a single crack, we identify the hash type and prepare our toolchain. Different hashes are handled by different Hashcat modes, so getting this right determines whether the attack finishes in seconds or never finds a match.
+
+Start by writing the captured hash to a file and confirming it is intact. A single mistyped character changes the hash completely, and the cracking tool silently wastes hours hunting for a plaintext that can never match.`,
+            `## Launch the Attack
+
+John the Ripper and Hashcat both work by iterating through password candidates, hashing each one, and comparing the result against the target hash. A dictionary attack feeds candidates from a wordlist such as \`rockyou.txt\`; a brute-force or rule-based attack mutates them on the fly.
+
+Execute the command below to begin cracking. Keep the output in mind — the tools report status, speed, and any recoveries in real time.`,
+            `## Extract and Analyze Results
+
+Once a password is recovered, we retrieve the plaintext from the tool's output. This is your foothold into the target system, so record it carefully — it is usually reused across other accounts and services.
+
+Run the command below to view your results. The \`--show\` flag replays previously cracked hashes without re-running the attack, which is the fastest way to confirm what we already recovered.`,
+            `## Escalate the Attack
+
+If a standard dictionary attack comes up empty, we escalate to rule-based mutations and incremental mode. Rule-based attacks take every word in the wordlist and apply transformations — appending digits, swapping letters, capitalizing — mirroring how real users build "strong" passwords.
+
+Apply advanced techniques with the command below. This is where attacker patience pays off: the weak hash types fall in seconds, but the stronger ones reward a targeted, rules-driven approach.`,
+            `## Recover the Credential
+
+Compile all cracked passwords and verify them against the target system. The flag is embedded within the recovered credential data — proof that the account belongs to you now.
+
+Execute the final command to complete the exercise.`,
           ];
 
           const flow = PASSWORD_FLOWS[index % PASSWORD_FLOWS.length];

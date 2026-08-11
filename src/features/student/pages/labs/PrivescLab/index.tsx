@@ -1,7 +1,7 @@
 import { useState, useCallback, useMemo } from 'react';
-import { Shield } from 'lucide-react';
+import { Shield, User, Folder, Cog, Crown } from 'lucide-react';
 import SEO from '@/shared/components/SEO';
-import ScenarioCard from '@/shared/components/ScenarioCard';
+import LearningAccordion from '@/shared/components/learning/LearningAccordion';
 import { WalkthroughLayout } from '@/shared/components/walkthrough/WalkthroughLayout';
 import { WalkthroughStep } from '@/shared/components/walkthrough/WalkthroughStep';
 import { PRIVESC_SCENARIOS } from '@/features/student/data/simulations';
@@ -13,7 +13,6 @@ import RelatedContent from '@/shared/components/RelatedContent';
 import StudentHeroSection from '@/shared/components/StudentHeroSection';
 import { FlowDiagram } from '@/shared/components/diagrams/FlowDiagram';
 
-
 const DIFFICULTY_STYLES: Record<string, string> = {
   beginner: 'bg-green-400/10 text-green-400 border-green-400/20',
   intermediate: 'bg-yellow-400/10 text-yellow-400 border-yellow-400/20',
@@ -21,10 +20,10 @@ const DIFFICULTY_STYLES: Record<string, string> = {
 };
 
 const PRIVESC_FLOW_NODES = [
-  { id: 'you', label: 'You', icon: '👤', status: 'active' as const },
-  { id: 'filesystem', label: 'Filesystem', icon: '📁', status: 'default' as const },
-  { id: 'suid', label: 'SUID Binary', icon: '⚙️', status: 'warning' as const },
-  { id: 'root', label: 'Root', icon: '👑', status: 'success' as const },
+  { id: 'you', label: 'You', icon: <User className="w-4 h-4" />, status: 'active' as const },
+  { id: 'filesystem', label: 'Filesystem', icon: <Folder className="w-4 h-4" />, status: 'default' as const },
+  { id: 'suid', label: 'SUID Binary', icon: <Cog className="w-4 h-4" />, status: 'warning' as const },
+  { id: 'root', label: 'Root', icon: <Crown className="w-4 h-4" />, status: 'success' as const },
 ];
 
 const PRIVESC_FLOW_ARROWS = [
@@ -102,21 +101,25 @@ const PrivescLab = () => {
         <div className="px-3 md:px-4 lg:px-6 pb-20 lg:pb-24 space-y-8">
           <div className="border-t border-border/30" />
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
-            {PRIVESC_SCENARIOS.map((scenario) => (
-              <ScenarioCard
-                key={scenario.id}
-                title={scenario.title}
-                difficulty={scenario.difficulty}
-                description={scenario.technique}
-                cpReward={50}
-                onStart={() => {
-                  setCompletedSteps(new Set());
-                  setSelectedScenario(scenario);
-                }}
-              />
-            ))}
-          </div>
+          <LearningAccordion
+            items={PRIVESC_SCENARIOS.map((scenario) => ({
+              id: scenario.id,
+              title: scenario.title,
+              subtitle: scenario.technique,
+              description: scenario.description,
+              difficulty: scenario.difficulty,
+              meta: (
+                <span className="text-[9px] font-black uppercase tracking-widest text-accent">
+                  50 CP
+                </span>
+              ),
+              onStart: () => {
+                setCompletedSteps(new Set());
+                setSelectedScenario(scenario);
+              },
+              startLabel: 'Enter Room',
+            }))}
+          />
 
           <RelatedContent {...getRelatedContentForLab('privesc')} title="Continue This Topic" />
         </div>

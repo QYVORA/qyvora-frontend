@@ -29,7 +29,6 @@ export interface SqlInjectionTarget {
     name: string;
     alias: string;
     description: string;
-    avatar: string;
   };
   narrative?: string;
 }
@@ -51,16 +50,22 @@ export const SQL_INJECTION_TARGETS: SqlInjectionTarget[] = [
       name: 'Kevin Liu',
       alias: 'The Query Master',
       description: 'A database administrator who never learned about parameterized queries. His login form is a SQL injection playground.',
-      avatar: '🧑‍💻',
     },
-    narrative: `💉 Valkyrie: "Kevin Liu — The Query Master — built this login form during a weekend hackathon. He copy-pasted a Stack Overflow answer that concatenated user input directly into SQL queries. No parameterized queries, no input validation, no WAF. Classic mistake — and a textbook entry point for us."
+    narrative: `> **Valkyrie:** "Kevin Liu — The Query Master — built this login form during a weekend hackathon. He copy-pasted a Stack Overflow answer that concatenated user input directly into SQL queries. No parameterized queries, no input validation, no WAF. Classic mistake — and a textbook entry point for us."
 
-Kevin's login form takes your username and shoves it straight into a SELECT query without any sanitization. That means we can break out of the intended query structure and inject our own SQL logic. The application trusts whatever we send it — that's the fundamental flaw.
+Kevin's login form takes your username and shoves it straight into a \`SELECT\` query without any sanitization. That means we can break out of the intended query structure and inject our own SQL logic. The application trusts whatever we send it — that's the fundamental flaw.
 
-UNION-based injection is the most direct and rewarding attack vector. We inject our own SELECT statement to hijack the query's output and extract data from entirely different tables — passwords, emails, admin credentials, everything.
+## Why UNION-Based Injection Is the Best Start
 
-💉 Attack Flow:
-[Login Form] ──> [Error Detection] ──> [Column Enumeration] ──> [UNION Injection] ──> [Data Extraction] ──> [Credential Harvest]`,
+UNION-based injection is the most direct and rewarding attack vector. We inject our own \`SELECT\` statement to **hijack the query's output** and extract data from entirely different tables — passwords, emails, admin credentials, everything. Unlike blind techniques, the database literally prints the results back in the HTTP response, so extraction is fast and obvious.
+
+The attack flow always starts the same way: probe the endpoint with a single quote to see if input breaks the query, count the columns in the original \`SELECT\`, then align our \`UNION SELECT\` to match. Getting the column count right is the whole game — too many or too few columns and the query errors out instead of returning data.
+
+## Attack Flow
+
+\`[Login Form]\` --> \`[Error Detection]\` --> \`[Column Enumeration]\` --> \`[UNION Injection]\` --> \`[Data Extraction]\` --> \`[Credential Harvest]\`
+
+Follow the steps to prove the injection, then automate the heavy lifting with sqlmap once we know the database is vulnerable.`,
     tables: [
       {
         name: 'users',
@@ -128,14 +133,21 @@ UNION-based injection is the most direct and rewarding attack vector. We inject 
     dbms: 'MySQL 8.0.35',
     difficulty: 'intermediate',
     injectionType: 'Boolean-Based Blind',
-    narrative: `🔍 Valkyrie: "This search API is deceptively simple. It takes a product ID and tells you whether a product exists — true or false. That's all we need for blind injection."
+    narrative: `> **Valkyrie:** "This search API is deceptively simple. It takes a product ID and tells you whether a product exists — true or false. That's all we need for blind injection."
 
-The NovaCorp Search API doesn't return database rows or error messages. It only responds with 'found' or 'not found'. This means we can't use UNION injection to pull data directly, and error messages won't leak query structure. But the application's behavior changes based on whether our injected condition is true or false — and that binary signal is everything we need.
+The NovaCorp Search API doesn't return database rows or error messages. It only responds with "found" or "not found". This means we can't use UNION injection to pull data directly, and error messages won't leak query structure. But the application's behavior changes based on whether our injected condition is true or false — and that **binary signal is everything we need**.
 
-Think of it like 20 questions with the database. Each request is a yes/no question: 'Is the first letter of the admin password A?' If the product appears, the answer is yes. If not, it's no. By asking hundreds of these questions, we can reconstruct any data in the database one character at a time. It's tedious, but it's a proven technique that works even against hardened applications.
+## Blind Injection Is a Conversation with the Database
 
-🔍 Blind Injection Strategy:
-[Probe Response] ──> [Boolean Comparison] ──> [Conditional Extraction] ──> [Data Reconstruction]`,
+Think of it like 20 questions with the database. Each request is a yes/no question: "Is the first letter of the admin password A?" If the product appears, the answer is yes. If not, it's no. By asking hundreds of these questions, we can reconstruct any data in the database one character at a time.
+
+It's tedious, but it's a proven technique that works even against hardened applications — which is exactly why it matters. The "oracle" we rely on is any observable difference between a true and a false condition, and we've already confirmed this endpoint gives us one.
+
+## Blind Injection Strategy
+
+\`[Probe Response]\` --> \`[Boolean Comparison]\` --> \`[Conditional Extraction]\` --> \`[Data Reconstruction]\`
+
+We'll manually confirm the boolean oracle with \`1=1\` and \`1=2\`, then let sqlmap's \`--technique=B\` flag automate the character-by-character extraction.`,
     tables: [
       {
         name: 'accounts',
@@ -182,14 +194,21 @@ Think of it like 20 questions with the database. Each request is a yes/no questi
     dbms: 'MySQL 8.0.35',
     difficulty: 'advanced',
     injectionType: 'Time-Based Blind',
-    narrative: `⏱️ Valkyrie: "This user lookup API is the hardest target yet. It doesn't return data, it doesn't return errors, and the response doesn't even change based on our input. The only thing we can measure is how long it takes to respond."
+    narrative: `> **Valkyrie:** "This user lookup API is the hardest target yet. It doesn't return data, it doesn't return errors, and the response doesn't even change based on our input. The only thing we can measure is how long it takes to respond."
 
-The NovaCorp User Lookup API accepts a username and returns nothing — no product found, no error message, no boolean difference. The application swallows all output. But it can't swallow time. When we inject SQL that triggers a delay, the response takes longer. That delay is our signal. Every second of delay represents a 'yes' from the database, and a normal-speed response represents a 'no'.
+The NovaCorp User Lookup API accepts a username and returns nothing — no product found, no error message, no boolean difference. The application swallows all output. But it can't swallow **time**. When we inject SQL that triggers a delay, the response takes longer. That delay is our signal: every second of delay represents a "yes" from the database, and a normal-speed response represents a "no".
 
-This is the most stealthy injection technique. There's no error in the logs, no unusual data in the response — just a slightly slower HTTP reply. Automated security scanners often miss it. But for an attacker who knows what to look for, time-based blind injection is just as devastating as any other technique. We can extract credentials, API keys, and secrets one character at a time by measuring response times down to the millisecond.
+## The Stealthiest Technique
 
-⏱️ Time-Based Strategy:
-[Response Timing] ──> [SLEEP Injection] ──> [Conditional Delays] ──> [Character Extraction]`,
+This is the most stealthy injection technique. There's no error in the logs, no unusual data in the response — just a slightly slower HTTP reply. Automated security scanners often miss it. But for an attacker who knows what to look for, time-based blind injection is just as devastating as any other technique: we can extract credentials, API keys, and secrets one character at a time by measuring response times down to the millisecond.
+
+The key primitive is MySQL's \`SLEEP()\` function combined with an \`IF()\` condition: \`IF(condition, SLEEP(5), 0)\` makes the database pause only when our guess is correct. Slow answer means true, fast answer means false — and we build the data one bit at a time.
+
+## Time-Based Strategy
+
+\`[Response Timing]\` --> \`[SLEEP Injection]\` --> \`[Conditional Delays]\` --> \`[Character Extraction]\`
+
+We'll measure a baseline with the \`time\` command, prove the injection with \`SLEEP(5)\`, then let sqlmap's \`--technique=T\` automate the rest.`,
     tables: [
       {
         name: 'credentials',
@@ -230,14 +249,21 @@ This is the most stealthy injection technique. There's no error in the logs, no 
     dbms: 'MySQL 8.0.35',
     difficulty: 'intermediate',
     injectionType: 'Error-Based',
-    narrative: `⚠️ Valkyrie: "This product catalog filter has a dangerous habit — it leaks SQL error messages directly to the user. That's like leaving your database error log open to the world."
+    narrative: `> **Valkyrie:** "This product catalog filter has a dangerous habit — it leaks SQL error messages directly to the user. That's like leaving your database error log open to the world."
 
-The NovaCorp Product Catalog accepts a category filter and builds a SQL query to fetch matching products. When we inject a single quote, the query breaks — and the application helpfully sends us the full MySQL error message. Those error messages reveal the exact SQL syntax being used, including table names, column names, and query structure. This is a goldmine for an attacker because it eliminates guesswork entirely.
+The NovaCorp Product Catalog accepts a category filter and builds a SQL query to fetch matching products. When we inject a single quote, the query breaks — and the application helpfully sends us the full MySQL error message. Those error messages reveal the exact SQL syntax being used, including table names, column names, and query structure. This is a **goldmine** for an attacker because it eliminates guesswork entirely.
 
-Error-based injection is one of the fastest ways to extract data. We can use functions like UPDATEXML() or EXTRACTVALUE() to force MySQL to embed our extracted data directly into the error message. No blind guessing, no timing attacks — just raw data returned in the error response. The secrets table inside this database contains API tokens and database credentials that could compromise NovaCorp's entire backend.
+## Data Through Error Messages
 
-⚠️ Error Leak Strategy:
-[Trigger Error] ──> [Analyze Syntax] ──> [Extract via Errors] ──> [Credential Dump]`,
+Error-based injection is one of the fastest ways to extract data. We can use functions like \`UPDATEXML()\` or \`EXTRACTVALUE()\` to force MySQL to embed our extracted data directly into the error message. No blind guessing, no timing attacks — just raw data returned in the error response.
+
+The secrets table inside this database contains API tokens and database credentials that could compromise NovaCorp's entire backend. This is exactly why verbose error messages are a security misconfiguration: in production, they should be logged server-side and never shown to end users.
+
+## Error Leak Strategy
+
+\`[Trigger Error]\` --> \`[Analyze Syntax]\` --> \`[Extract via Errors]\` --> \`[Credential Dump]\`
+
+We'll trigger the error with a single quote to confirm the leak, then use sqlmap's \`--technique=E\` to pull the whole secrets table through the error responses.`,
     tables: [
       {
         name: 'secrets',
@@ -279,14 +305,21 @@ Error-based injection is one of the fastest ways to extract data. We can use fun
     dbms: 'PostgreSQL 14',
     difficulty: 'advanced',
     injectionType: 'Second-Order',
-    narrative: `🎭 Valkyrie: "Second-order injection is the sleeper agent of SQL attacks. The payload doesn't execute when you inject it — it sits dormant in the database until the application uses it in a different query later."
+    narrative: `> **Valkyrie:** "Second-order injection is the sleeper agent of SQL attacks. The payload doesn't execute when you inject it — it sits dormant in the database until the application uses it in a different query later."
 
-The NovaCorp Registration form stores usernames in the database without sanitization. When you register with a normal username like 'testuser', everything works fine. But when you register with a malicious username like "admin'--", that payload gets stored verbatim in the users table. The injection doesn't happen during registration — it happens later, when the application reads that stored username back and uses it in a login query.
+The NovaCorp Registration form stores usernames in the database without sanitization. When you register with a normal username like \`testuser\`, everything works fine. But when you register with a malicious username like \`admin'--\`, that payload gets stored verbatim in the users table. The injection doesn't happen during registration — it happens *later*, when the application reads that stored username back and uses it in a login query.
 
-This is what makes second-order injection so dangerous and hard to detect. The registration endpoint passes all security tests because the payload never executes there. The vulnerability only triggers when the stored data is used in a different context. Most automated scanners miss this entirely because they test each endpoint in isolation. An attacker who understands the data flow between endpoints can weaponize stored data into a delayed exploitation chain.
+## Why It's So Hard to Detect
 
-🎭 Second-Order Strategy:
-[Store Payload] ──> [Wait for Usage] ──> [Trigger via Different Query] ──> [Privilege Escalation]`,
+This is what makes second-order injection so dangerous: the registration endpoint passes all security tests because the payload never executes there. The vulnerability only triggers when the stored data is used in a different context. Most automated scanners miss this entirely because they test each endpoint in isolation. An attacker who understands the data flow between endpoints can weaponize stored data into a **delayed exploitation chain**.
+
+This mirrors a whole class of real-world bugs — stored XSS, stored path traversal, and poisoning attacks — where the exploit is planted in one place and detonated somewhere else entirely.
+
+## Second-Order Strategy
+
+\`[Store Payload]\` --> \`[Wait for Usage]\` --> \`[Trigger via Different Query]\` --> \`[Privilege Escalation]\`
+
+Register with the malicious username first, then log in with it — the stored payload does the rest.`,
     tables: [
       {
         name: 'users',
@@ -327,14 +360,21 @@ This is what makes second-order injection so dangerous and hard to detect. The r
     dbms: 'MySQL 8.0.35',
     difficulty: 'intermediate',
     injectionType: 'Stacked Queries',
-    narrative: `🔗 Valkyrie: "Stacked queries injection is like being handed a blank check by the database. We're not just reading data — we're writing our own SQL statements directly into the execution pipeline."
+    narrative: `> **Valkyrie:** "Stacked queries injection is like being handed a blank check by the database. We're not just reading data — we're writing our own SQL statements directly into the execution pipeline."
 
-The NovaCorp API Endpoint takes an order ID and returns order details. The vulnerable parameter allows us to append entirely new SQL statements using a semicolon. Unlike UNION injection which combines results with the original query, stacked queries let us execute completely independent operations — INSERT, UPDATE, DELETE, even DROP TABLE. The application only returns the result of the first query, but all subsequent queries still execute silently.
+The NovaCorp API Endpoint takes an order ID and returns order details. The vulnerable parameter allows us to append entirely new SQL statements using a **semicolon**. Unlike UNION injection — which combines results with the original query — stacked queries let us execute completely independent operations: \`INSERT\`, \`UPDATE\`, \`DELETE\`, even \`DROP TABLE\`. The application only returns the result of the first query, but all subsequent queries still execute silently.
 
-This is one of the most powerful injection techniques because it gives us full control over the database. We can modify existing data, create new records, or even escalate our privileges. The danger is that the application appears to work normally — no errors, no data leaks — while we're silently manipulating the database behind the scenes. In this exercise, we'll insert a fraudulent order to demonstrate the potential for financial fraud or data manipulation.
+## Full Control, No Visible Trace
 
-🔗 Stacked Query Strategy:
-[Append Statement] ──> [Execute Malicious Query] ──> [Verify Injection] ──> [Data Manipulation]`,
+This is one of the most powerful injection techniques because it gives us full control over the database. We can modify existing data, create new records, or even escalate our privileges. The danger is that the application appears to work normally — no errors, no data leaks — while we're silently manipulating the database behind the scenes.
+
+In this exercise we'll insert a fraudulent order to demonstrate the potential for **financial fraud and data manipulation**. The same technique is what real attackers use to add admin accounts, change balances, or plant backdoor records that survive for months.
+
+## Stacked Query Strategy
+
+\`[Append Statement]\` --> \`[Execute Malicious Query]\` --> \`[Verify Injection]\` --> \`[Data Manipulation]\`
+
+Append a semicolon-terminated \`INSERT\` to the order ID parameter, then query the injected record back to prove it executed.`,
     tables: [
       {
         name: 'orders',
