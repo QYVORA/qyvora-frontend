@@ -9,6 +9,7 @@
     "services": "Services",
     "anansi": "Anansi",
     "toha3ee": "Toha3ee",
+    "jabari": "Jabari",
     "quiteroot": "QuiteRoot",
     "market": "Market",
     "blogs": "Blogs",
@@ -717,6 +718,12 @@
       "titleAccent": "MITM",
       "description": "Network exploitation & MITM framework in Go — poisoning, interception, wireless and switch-layer attacks from an interactive REPL.",
       "explore": "Explore Toha3ee"
+    },
+    "jabari": {
+      "title": "Jabari",
+      "titleAccent": "AndroidSec",
+      "description": "Android security assessment framework — authorized USB and network (ADB) targets, non-destructive rule engine and evidence-driven reporting.",
+      "explore": "Explore Jabari"
     },
     "tools": {
       "navLabel": "Tools",
