@@ -68,20 +68,42 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88, offset = [0, 0,
       renderer = new THREE.WebGLRenderer({
         antialias: true,
         alpha: true,
-        powerPreference: ctx.simplified ? 'low-power' : 'high-performance',
+        powerPreference: ctx.simplified ? 'low-power' : 'default',
+        failIfMajorPerformanceCaveat: false,
       });
     } catch {
-      // WebGL unavailable (old mobile browser, WebView, etc.)
-      return;
+      try {
+        renderer = new THREE.WebGLRenderer({
+          antialias: false,
+          alpha: true,
+          powerPreference: 'default',
+        });
+      } catch {
+        // WebGL completely unavailable (old mobile browser, WebView, etc.)
+        return;
+      }
     }
 
-    const w = el.clientWidth || 1;
-    const h = el.clientHeight || 1;
-    renderer.setSize(w, h);
+    const w = Math.max(el.clientWidth, 1);
+    const h = Math.max(el.clientHeight, 1);
+    renderer.setSize(w, h, false);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
-    renderer.outputColorSpace = THREE.SRGBColorSpace;
-    renderer.domElement.style.cssText = 'position:absolute;inset:0;z-index:1;pointer-events:none;';
+    if ('outputColorSpace' in renderer) {
+      renderer.outputColorSpace = THREE.SRGBColorSpace;
+    }
+    renderer.domElement.style.cssText = 'position:absolute;inset:0;z-index:1;pointer-events:none;width:100%;height:100%;';
     el.appendChild(renderer.domElement);
+
+    // Handle context loss gracefully
+    const handleContextLost = (e: Event) => {
+      e.preventDefault();
+      stop();
+    };
+    const handleContextRestored = () => {
+      start();
+    };
+    renderer.domElement.addEventListener('webglcontextlost', handleContextLost);
+    renderer.domElement.addEventListener('webglcontextrestored', handleContextRestored);
 
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(38, w / h, 0.1, 100);
@@ -97,11 +119,6 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88, offset = [0, 0,
     const sphereSegments = ctx.simplified ? 32 : 64;
     const dotTex = buildDotMapTexture(isLight, 1.6);
 
-    // The globe itself must not occlude the far hemisphere: this is a
-    // see-through globe. Instead, only opaque map dots write depth. With both
-    // sides rendered, far-side land remains visible through empty globe space,
-    // while a nearer land dot still prevents another map dot behind it from
-    // showing through at the same screen position.
     const globeFront = new THREE.Mesh(
       new THREE.SphereGeometry(1.0, sphereSegments, sphereSegments),
       new THREE.MeshBasicMaterial({
@@ -112,23 +129,35 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88, offset = [0, 0,
     globeFront.renderOrder = 1;
     globe.add(globeFront);
 
-    // Raised "terrain" pins on every land dot: each flat dot that forms the map
-    // gets a short radial cylinder standing out of the surface, so the map reads
-    // as raised high ground. The cylinder keeps the footprint of the flat dot —
-    // it only lifts the dot up, it does not reshape it into a spike.
+    // Raised "terrain" pins on every land dot with high-contrast cylinder edge lines
     const pinR   = getDotRadius(1.6);
     const pinLen = 0.02;
     const landDots = buildLandDots(1.6);
+    const cylGeo = new THREE.CylinderGeometry(pinR, pinR, pinLen, 6);
     const pins = new THREE.InstancedMesh(
-      new THREE.CylinderGeometry(pinR, pinR, pinLen, 8),
+      cylGeo,
       new THREE.MeshBasicMaterial({ depthWrite: true }),
       landDots.length,
     );
+
+    // High-contrast edge border line around each cylinder so every dot has distinct boundaries
+    const edgeGeo = new THREE.EdgesGeometry(cylGeo);
+    const pinEdges = new THREE.InstancedMesh(
+      edgeGeo,
+      new THREE.LineBasicMaterial({
+        color: isLight ? 0x000000 : 0x002414,
+        transparent: true,
+        opacity: 0.85,
+      }),
+      landDots.length,
+    );
+
     const pinMatrix = new THREE.Matrix4();
     const pinQuat = new THREE.Quaternion();
     const yUp = new THREE.Vector3(0, 1, 0);
     const unit = new THREE.Vector3(1, 1, 1);
     const { land, region } = getMapColors(isLight);
+
     landDots.forEach((d, i) => {
       const dir = latLngToVec3(d.lat, d.lng, 1).normalize();
       const center = dir.clone().multiplyScalar(1.001 + pinLen / 2);
@@ -136,11 +165,17 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88, offset = [0, 0,
       pinMatrix.compose(center, pinQuat, unit);
       pins.setMatrixAt(i, pinMatrix);
       pins.setColorAt(i, isBlackRegion(d.lat, d.lng) ? region : land);
+      pinEdges.setMatrixAt(i, pinMatrix);
     });
+
     pins.instanceMatrix.needsUpdate = true;
     if (pins.instanceColor) pins.instanceColor.needsUpdate = true;
     pins.renderOrder = 3;
     globe.add(pins);
+
+    pinEdges.instanceMatrix.needsUpdate = true;
+    pinEdges.renderOrder = 4;
+    globe.add(pinEdges);
 
     sceneRef.current = { renderer, scene, camera, globe };
 
@@ -148,6 +183,18 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88, offset = [0, 0,
     let last = 0;
     let visible = true;
     let rotationY = globe.rotation.y;
+    let targetScrollRotation = 0;
+    let currentScrollRotation = 0;
+
+    const handleScroll = () => {
+      const snapContainer = document.querySelector('.snap-container');
+      const scrollTop = snapContainer ? snapContainer.scrollTop : window.scrollY;
+      targetScrollRotation = scrollTop * 0.0006;
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    const snapEl = document.querySelector('.snap-container');
+    if (snapEl) snapEl.addEventListener('scroll', handleScroll, { passive: true });
 
     const stop = () => {
       if (rafId) {
@@ -159,9 +206,10 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88, offset = [0, 0,
     const tick = (now: number) => {
       rafId = requestAnimationFrame(tick);
       if (last > 0) {
-        const dt = now - last;
-        rotationY += dt * (live.current.simplified ? 0.00040 : 0.00050);
-        globe.rotation.y = rotationY;
+        const dt = Math.min(now - last, 32);
+        currentScrollRotation += (targetScrollRotation - currentScrollRotation) * 0.08;
+        rotationY += dt * (live.current.simplified ? 0.00035 : 0.00045);
+        globe.rotation.y = rotationY + currentScrollRotation;
       }
       last = now;
       renderer.render(scene, camera);
@@ -186,8 +234,8 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88, offset = [0, 0,
       const entry = entries[0];
       if (!entry) return;
       const { width, height } = entry.contentRect;
-      if (width > 0 && height > 0) {
-        renderer.setSize(width, height);
+      if (width > 0 && height > 0 && renderer) {
+        renderer.setSize(width, height, false);
         camera.aspect = width / height;
         camera.updateProjectionMatrix();
       }
@@ -195,9 +243,16 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88, offset = [0, 0,
     resizeObserver.observe(el);
 
     return () => {
+      window.removeEventListener('scroll', handleScroll);
+      if (snapEl) snapEl.removeEventListener('scroll', handleScroll);
       viewObserver.disconnect();
       resizeObserver.disconnect();
       stop();
+      if (renderer?.domElement) {
+        renderer.domElement.removeEventListener('webglcontextlost', handleContextLost);
+        renderer.domElement.removeEventListener('webglcontextrestored', handleContextRestored);
+        if (el.contains(renderer.domElement)) el.removeChild(renderer.domElement);
+      }
       scene.traverse((obj) => {
         const m = obj as THREE.Mesh;
         if (m.geometry) m.geometry.dispose();
@@ -205,9 +260,10 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88, offset = [0, 0,
         if (Array.isArray(mat)) mat.forEach((x) => x.dispose());
         else mat?.dispose();
       });
-      if (el.contains(renderer.domElement)) el.removeChild(renderer.domElement);
-      renderer.forceContextLoss();
-      renderer.dispose();
+      if (renderer) {
+        renderer.forceContextLoss();
+        renderer.dispose();
+      }
       sceneRef.current = null;
     };
   }, [isSimplified, isLight]);
