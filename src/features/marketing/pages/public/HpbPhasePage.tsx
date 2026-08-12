@@ -1,8 +1,8 @@
 import React from 'react';
 import { Link, Navigate, useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { Clock, Zap } from 'lucide-react';
-import { IconArrowLeft, IconArrowRight, IconTerminal } from '@/shared/components/icons';
+import { Zap } from 'lucide-react';
+import { IconArrowLeft, IconArrowRight } from '@/shared/components/icons';
 import { ScrollReveal } from '@/shared/components';
 import SEO from '@/shared/components/SEO';
 import PublicSnapLayout from '@/shared/components/PublicSnapLayout';
@@ -14,11 +14,14 @@ import LandingFinalCtaSection from '@/features/marketing/components/landing/Land
 import HpbAvatar, { type HpbVariant } from '@/shared/components/HpbAvatar';
 import { BOOTCAMP_CONFIG } from '@/features/student/constants/bootcampConfig';
 import { PHASES } from '@/features/marketing/data/learnData';
+import { CardCollection, ViewToggle, type ViewMode } from '@/shared/components/card-collection';
+import RoomCard from './cards/RoomCard';
 
 const HpbPhasePage: React.FC = () => {
   const { t } = useTranslation();
   const { user } = useAuth();
   const { phaseId } = useParams<{ phaseId: string }>();
+  const [view, setView] = React.useState<ViewMode>('grid');
 
   const phase = BOOTCAMP_CONFIG.phases.find((p) => p.id === phaseId);
   const learnPhase = PHASES.find((p) => p.id === phaseId?.replace('phase', '').padStart(2, '0'));
@@ -67,50 +70,28 @@ const HpbPhasePage: React.FC = () => {
                 <h3 className="text-xs font-black uppercase tracking-[0.3em] text-text-muted">
                   {t('landing.bootcamp.viewCurriculum')}
                 </h3>
-                <Link
-                  to="/hpb"
-                  className="inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-text-muted hover:text-accent transition-colors"
-                >
-                  <IconArrowLeft size={14} /> All Phases
-                </Link>
+                <div className="flex items-center gap-3 shrink-0">
+                  <ViewToggle value={view} onChange={setView} label="Rooms view mode" />
+                  <Link
+                    to="/hpb"
+                    className="inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-text-muted hover:text-accent transition-colors"
+                  >
+                    <IconArrowLeft size={14} /> All Phases
+                  </Link>
+                </div>
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
-                {phase.rooms.map((room, idx) => (
-                  <ScrollReveal key={room.id} amount={0.05}>
-                    <div className="group/card relative h-72 sm:h-64 lg:h-60 rounded-2xl border border-border/30 bg-bg-card p-3 md:p-5 transition-all duration-300 hover:border-accent/30 flex flex-col text-left">
-                      <div className="flex items-center justify-between mb-2">
-                        <div className="w-8 h-8 rounded-xl flex items-center justify-center shrink-0 bg-accent/10 border border-accent/20">
-                          <IconTerminal className="w-4 h-4 text-accent" />
-                        </div>
-                        <span className="px-2 py-0.5 rounded-lg bg-accent/10 text-[9px] font-black uppercase tracking-widest text-accent border border-accent/20">
-                          Room {idx + 1}
-                        </span>
-                      </div>
-
-                      <h4 className="text-sm sm:text-base md:text-lg lg:text-xl font-black text-text-primary group-hover/card:text-accent transition-colors leading-snug break-words mb-1">
-                        {room.title}
-                      </h4>
-
-                      <p className="text-xs sm:text-sm md:text-base text-text-muted leading-relaxed line-clamp-3 break-words flex-1 mb-2">
-                        {room.overview}
-                      </p>
-
-                      <div className="flex items-center justify-between mt-auto">
-                        <span className="text-[9px] sm:text-[10px] font-black uppercase tracking-widest text-text-muted flex items-center gap-1.5">
-                          <Clock className="w-3 h-3" /> {room.estimatedMinutes} min
-                        </span>
-                        <Link
-                          to="/register"
-                          className="px-3 py-1.5 rounded-lg text-[9px] sm:text-[10px] md:text-xs font-black uppercase tracking-widest bg-accent text-on-accent transition-all duration-200 group-hover/card:brightness-110 group-active:scale-95"
-                        >
-                          {t('landing.bootcamp.startPhase')}
-                        </Link>
-                      </div>
-                    </div>
+              <CardCollection
+                view={view}
+                items={phase.rooms}
+                keyOf={(room) => room.id}
+                gridClassName="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6"
+                renderItem={(room, itemView, index) => (
+                  <ScrollReveal amount={0.05}>
+                    <RoomCard room={room} roomIndex={index} view={itemView} />
                   </ScrollReveal>
-                ))}
-              </div>
+                )}
+              />
             </div>
         </PublicSnapSection>
 
