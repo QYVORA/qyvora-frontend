@@ -511,7 +511,7 @@ const Dashboard = () => {
                 </div>
                 <div>
                   <p className="text-[9px] md:text-[10px] font-black uppercase tracking-widest text-text-muted">{t('student.dashboard.rank')}</p>
-                  <p className="text-base md:text-lg lg:text-xl font-black text-text-primary">{rankName}</p>
+                  <p className="text-xl md:text-2xl font-black text-text-primary">{rankName}</p>
                 </div>
               </div>
               <div className="flex flex-col items-center gap-2 p-4 md:p-5 lg:p-6 rounded-2xl border border-border/30 bg-bg-card text-center" data-tour-id="tour-cp-dashboard">
@@ -520,7 +520,7 @@ const Dashboard = () => {
                 </div>
                 <div>
                   <p className="text-[9px] md:text-[10px] font-black uppercase tracking-widest text-text-muted">{t('student.dashboard.cp')}</p>
-                  <p className="text-base md:text-lg lg:text-xl font-black text-text-primary">{cpBalance.toLocaleString()}</p>
+                  <p className="text-xl md:text-2xl font-black text-text-primary">{cpBalance.toLocaleString()}</p>
                 </div>
               </div>
               <div className="flex flex-col items-center gap-2 p-4 md:p-5 lg:p-6 rounded-2xl border border-border/30 bg-bg-card text-center">
@@ -529,7 +529,7 @@ const Dashboard = () => {
                 </div>
                 <div>
                   <p className="text-[9px] md:text-[10px] font-black uppercase tracking-widest text-text-muted">{t('student.dashboard.streak.title')}</p>
-                  <p className="text-base md:text-lg lg:text-xl font-black text-text-primary">{streakDays ?? 0}d</p>
+                  <p className="text-xl md:text-2xl font-black text-text-primary">{streakDays ?? 0}d</p>
                 </div>
               </div>
               <div className="flex flex-col items-center gap-2 p-4 md:p-5 lg:p-6 rounded-2xl border border-border/30 bg-bg-card text-center">
@@ -538,7 +538,7 @@ const Dashboard = () => {
                 </div>
                 <div>
                   <p className="text-[9px] md:text-[10px] font-black uppercase tracking-widest text-text-muted">{t('student.dashboard.roomsDone')}</p>
-                  <p className="text-base md:text-lg lg:text-xl font-black text-text-primary">{totalRoomsDone}</p>
+                  <p className="text-xl md:text-2xl font-black text-text-primary">{totalRoomsDone}</p>
                 </div>
               </div>
             </div>

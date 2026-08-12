@@ -100,7 +100,7 @@ const ProfileDropdown: React.FC<ProfileDropdownProps> = ({
       <button
         ref={triggerRef}
         onClick={() => setOpen(prev => !prev)}
-        className="w-11 h-11 md:w-12 md:h-12 flex-none rounded-xl overflow-hidden transition-colors focus:outline-none border-2 border-accent bg-black"
+        className="w-11 h-11 md:w-12 md:h-12 flex-none rounded-xl overflow-hidden transition-colors focus:outline-none border-2 border-accent bg-black min-h-0"
         aria-label="Profile menu"
         aria-expanded={open}
         aria-haspopup="true"

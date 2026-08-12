@@ -205,7 +205,7 @@ const StudentTopbar = () => {
                 {/* Mobile profile trigger */}
                 <button
                   onClick={() => setProfileSheetOpen(true)}
-                  className="md:hidden flex items-center justify-center w-10 h-10 flex-none rounded-lg overflow-hidden transition-colors border-2 border-accent bg-black"
+                  className="md:hidden flex items-center justify-center w-10 h-10 flex-none rounded-lg overflow-hidden transition-colors border-2 border-accent bg-black min-h-0"
                   aria-label="Open profile menu"
                 >
                   <Identicon value={user?.username || '?'} size={40} className="w-full h-full" />
@@ -287,7 +287,7 @@ const StudentTopbar = () => {
               {/* Mobile profile trigger */}
               <button
                 onClick={() => setProfileSheetOpen(true)}
-                className="md:hidden flex items-center justify-center w-10 h-10 flex-none rounded-lg overflow-hidden transition-colors border-2 border-accent bg-black"
+                className="md:hidden flex items-center justify-center w-10 h-10 flex-none rounded-lg overflow-hidden transition-colors border-2 border-accent bg-black min-h-0"
                 aria-label="Open profile menu"
               >
                 <Identicon value={user?.username || '?'} size={40} className="w-full h-full" />
@@ -345,7 +345,7 @@ const StudentTopbar = () => {
             {/* Mobile profile trigger */}
             <button
               onClick={() => setProfileSheetOpen(true)}
-                className="md:hidden flex items-center justify-center w-10 h-10 flex-none rounded-lg overflow-hidden transition-colors border-2 border-accent bg-black"
+                className="md:hidden flex items-center justify-center w-10 h-10 flex-none rounded-lg overflow-hidden transition-colors border-2 border-accent bg-black min-h-0"
                 aria-label="Open profile menu"
               >
                 <Identicon value={user?.username || '?'} size={40} className="w-full h-full" />
@@ -426,7 +426,7 @@ const StudentTopbar = () => {
             {/* Mobile profile trigger */}
             <button
               onClick={() => setProfileSheetOpen(true)}
-              className="md:hidden flex items-center justify-center w-10 h-10 flex-none rounded-lg overflow-hidden transition-colors border-2 border-accent bg-black"
+              className="md:hidden flex items-center justify-center w-10 h-10 flex-none rounded-lg overflow-hidden transition-colors border-2 border-accent bg-black min-h-0"
               aria-label="Open profile menu"
               data-tour-id="tour-profile-mobile"
             >
