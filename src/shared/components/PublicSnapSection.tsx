@@ -27,10 +27,10 @@ const PublicSnapSection: React.FC<PublicSnapSectionProps> = ({
   return (
     <div
       id={id}
-      className={`relative w-full min-h-dvh lg:h-dvh overflow-y-auto no-scrollbar px-3 md:px-4 lg:px-6 pt-24 md:pt-28 lg:pt-32 pb-6 md:pb-8 lg:pb-10 ${className ?? ''}`}
+      className={`relative w-full min-h-dvh lg:h-dvh overflow-hidden px-3 md:px-4 lg:px-6 pt-24 md:pt-28 lg:pt-32 pb-6 md:pb-8 lg:pb-10 flex flex-col ${className ?? ''}`}
     >
-      <div className="min-h-full flex flex-col">
-        <div className="w-full my-auto">{children}</div>
+      <div className="w-full my-auto flex-1 flex flex-col justify-center min-h-0">
+        {children}
       </div>
     </div>
   );
