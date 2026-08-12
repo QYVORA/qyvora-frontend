@@ -7,11 +7,11 @@ const SectionTitle = ({ className = '' }: { className?: string }) => (
 
 /* ─── Shared: StudentHeroSection skeleton ─────────────────────────────────── */
 const HeroSkeleton = ({ stats = 0, action = false }: { stats?: number; action?: boolean } = {}) => (
-  <div className="relative h-[calc(100dvh-5rem)] md:h-[calc(100dvh-6rem)] flex flex-col justify-center overflow-hidden">
+  <div className="relative flex flex-col justify-center overflow-hidden">
     <div className="absolute inset-0 opacity-10">
       <div className="w-full h-full bg-[repeating-linear-gradient(90deg,transparent,transparent_39px,rgba(255,255,255,0.05)_39px,rgba(255,255,255,0.05)_40px)] bg-[length:40px_40px]" />
     </div>
-    <div className="relative z-10 px-3 md:px-4 lg:px-6 py-12 md:py-16">
+    <div className="relative z-10 px-3 md:px-4 lg:px-6 py-8 md:py-10">
       <div className="w-full space-y-8">
         <Skeleton className="h-16 md:h-20 lg:h-24 w-64 md:w-96 rounded-lg" />
         <Skeleton className="h-4 md:h-5 w-72 md:w-[28rem] rounded bg-border/20" />

@@ -70,6 +70,7 @@ const LabsPage = () => {
       <SEO title={t('student.labs.seoTitle')} description={t('student.labs.seoDesc')} noindex />
       <div className="bg-bg px-3 md:px-4 lg:px-6 pt-8 pb-10">
         <StudentHeroSection
+          fullHeight={false}
           title={t('student.labs.title')}
           description={t('student.labs.description')}
           stats={[

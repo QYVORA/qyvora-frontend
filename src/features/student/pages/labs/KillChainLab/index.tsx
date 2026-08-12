@@ -75,6 +75,7 @@ const KillChainLab = () => {
         <SEO title="Kill Chain Lab" description="Execute full penetration test simulations." noindex />
 
         <StudentHeroSection
+          fullHeight={false}
           title="Kill"
           accentWord="Chain"
           description="Execute full kill chain simulations — from reconnaissance to exfiltration."
