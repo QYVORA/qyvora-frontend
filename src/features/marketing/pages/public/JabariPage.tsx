@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Download, GitBranch, Terminal, ChevronRight, Smartphone, ShieldCheck } from 'lucide-react';
 import { IconArrowRight } from '@/shared/components/icons';
 import SEO from '@/shared/components/SEO';
@@ -10,6 +11,7 @@ import LandingFinalCtaSection from '@/features/marketing/components/landing/Land
 import FeatureMarquee from '@/shared/components/FeatureMarquee';
 import { STAGES, RULES, PROFILES, GITHUB_URL, BUILD_FROM_SOURCE, QUICK_START, AUTHORIZED_WARNING } from '@/features/marketing/data/jabariData';
 import jabariLogo from '@/assets/jabari/jabari-main-logo.webp';
+import { BatchPagination } from '@/shared/components/ui';
 
 const SectionHeader: React.FC<{ kicker: string; title: string; accent: string; description?: string }> = ({
   kicker,
@@ -113,31 +115,7 @@ const JabariPage = () => {
 
         {/* ── Builtin rules ──────────────────────────────────────────────── */}
         <PublicSnapSection>
-          <div className="flex flex-col gap-6 lg:gap-8">
-            <SectionHeader
-              kicker="Rule Engine"
-              title="Builtin"
-              accent="Rules"
-              description="Non-destructive posture checks (AND-001..AND-007) — every finding records evidence and an honest confidence."
-            />
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4">
-              {RULES.map((rule) => (
-                <div
-                  key={rule.id}
-                  className="rounded-2xl border border-border/30 bg-bg-card px-4 py-3.5 flex items-start gap-3"
-                >
-                  <ShieldCheck className="w-4 h-4 text-accent shrink-0 mt-0.5" />
-                  <div className="min-w-0">
-                    <div className="flex items-baseline gap-2">
-                      <span className="text-[9px] font-black text-accent shrink-0">{rule.id}</span>
-                      <span className="text-[11px] md:text-xs font-black text-text-primary leading-tight">{rule.title}</span>
-                    </div>
-                    <p className="text-[10px] font-mono text-text-muted leading-relaxed mt-1">{rule.desc}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
+          <JabariRulesSection rules={RULES} />
         </PublicSnapSection>
 
         {/* ── Install ───────────────────────────────────────────────────── */}
@@ -297,6 +275,43 @@ const JabariPage = () => {
         <LandingFinalCtaSection user={user} />
         <Footer />
       </PublicSnapLayout>
+    </div>
+  );
+};
+
+const JabariRulesSection: React.FC<{ rules: typeof RULES }> = ({ rules }) => {
+  const [page, setPage] = useState(0);
+  const BATCH_SIZE = 6;
+
+  const totalPages = Math.ceil(rules.length / BATCH_SIZE);
+  const currentBatch = rules.slice(page * BATCH_SIZE, (page + 1) * BATCH_SIZE);
+
+  return (
+    <div className="flex flex-col justify-between flex-1 min-h-0 gap-4">
+      <SectionHeader
+        kicker="Rule Engine"
+        title="Builtin"
+        accent="Rules"
+        description="Non-destructive posture checks (AND-001..AND-007) — every finding records evidence and an honest confidence."
+      />
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4 flex-1">
+        {currentBatch.map((rule) => (
+          <div
+            key={rule.id}
+            className="rounded-2xl border border-border/30 bg-bg-card px-4 py-3.5 flex items-start gap-3"
+          >
+            <ShieldCheck className="w-4 h-4 text-accent shrink-0 mt-0.5" />
+            <div className="min-w-0">
+              <div className="flex items-baseline gap-2">
+                <span className="text-[9px] font-black text-accent shrink-0">{rule.id}</span>
+                <span className="text-[11px] md:text-xs font-black text-text-primary leading-tight">{rule.title}</span>
+              </div>
+              <p className="text-[10px] font-mono text-text-muted leading-relaxed mt-1">{rule.desc}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+      <BatchPagination page={page} totalPages={totalPages} onPageChange={setPage} />
     </div>
   );
 };
