@@ -1,7 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { SITE_CONFIG } from '@/features/marketing/content/siteConfig';
 import { BrandWhatsAppIcon } from '@/shared/components/icons';
 import { BrandLinkedinIcon } from '@/shared/components/icons';
 import { BrandYoutubeIcon } from '@/shared/components/icons';
@@ -15,27 +14,33 @@ const FOOTER_COLS = [
   {
     title: 'Platform',
     links: [
-      { key: 'hpb', label: 'HPB', path: '/hpb' },
+      { key: 'courses', label: 'Courses', path: '/courses' },
+      { key: 'bootcamp', label: 'Bootcamp', path: '/hpb' },
+      { key: 'labs', label: 'Labs', path: '/labs' },
+      { key: 'services', label: 'Services', path: '/services' },
+    ],
+  },
+  {
+    title: 'Learning',
+    links: [
       { key: 'anansi', label: 'Anansi', path: '/anansi' },
       { key: 'toha3ee', label: 'Toha3ee', path: '/toha3ee' },
       { key: 'jabari', label: 'Jabari', path: '/jabari' },
       { key: 'blogs', label: 'Blogs', path: '/blogs' },
-      { key: 'market', label: 'Market', path: '/zero-day-market' },
+    ],
+  },
+  {
+    title: 'Community',
+    links: [
       { key: 'leaderboard', label: 'Leaderboard', path: '/leaderboard' },
-      { key: 'services', label: 'Services', path: '/services' },
+      { key: 'market', label: 'Market', path: '/zero-day-market' },
     ],
   },
   {
     title: 'Company',
     links: [
       { key: 'team', label: 'Team', path: '/team' },
-    ],
-  },
-  {
-    title: 'Account',
-    links: [
-      { key: 'register', label: 'Register', path: '/register' },
-      { key: 'login', label: 'Log In', path: '/login' },
+      { key: 'terms', label: 'Terms of Service', path: '/terms' },
     ],
   },
 ];
@@ -59,36 +64,26 @@ const PULSE_TEXT_KEY = 'body.liveNode';
 
 const FOOTER_COL_KEYS: Record<string, string> = {
   Platform: 'footer.platform',
+  Learning: 'footer.learning',
+  Community: 'footer.community',
   Company: 'footer.company',
-  Account: 'footer.account',
 };
 
 const FOOTER_LINK_KEYS: Record<string, string> = {
-  events: 'nav.events',
-  hpb: 'nav.hpb',
+  courses: 'nav.courses',
+  bootcamp: 'nav.bootcamp',
+  labs: 'nav.labs',
+  services: 'nav.services',
   anansi: 'nav.anansi',
   toha3ee: 'nav.toha3ee',
   jabari: 'nav.jabari',
   blogs: 'nav.blogs',
-  news: 'nav.news',
-  market: 'nav.market',
   leaderboard: 'nav.leaderboard',
-  services: 'nav.services',
+  market: 'nav.market',
   team: 'nav.team',
+  terms: 'footer.termsOfService',
   register: 'nav.signUp',
   login: 'button.logIn',
-};
-
-const FOOTER_BOTTOM_LINK_KEYS: Record<string, string> = {
-  'Terms of Service': 'footer.termsOfService',
-  'Cyber Feed': 'nav.cyberFeed',
-  'Anansi': 'nav.anansi',
-  'Learn': 'nav.learn',
-  'Market': 'nav.market',
-  'Blogs': 'nav.blogs',
-  'Team': 'nav.team',
-  'Leaderboard': 'nav.leaderboard',
-  'Services': 'nav.services',
 };
 
 const CURRENT_YEAR = new Date().getFullYear();
@@ -125,10 +120,27 @@ const Footer: React.FC = React.memo(() => {
                   </a>
                 ))}
               </div>
+
+              {/* Account access — compact pair, keeps auth reachable */}
+              <div className="flex items-center gap-5 pt-1">
+                <Link
+                  to="/register"
+                  className="text-sm font-bold text-text-primary transition-colors hover:text-accent focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+                >
+                  {t(FOOTER_LINK_KEYS.register)}
+                </Link>
+                <span className="h-3 w-px bg-border/60" aria-hidden="true" />
+                <Link
+                  to="/login"
+                  className="text-sm font-bold text-text-primary transition-colors hover:text-accent focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+                >
+                  {t(FOOTER_LINK_KEYS.login)}
+                </Link>
+              </div>
             </div>
 
-            {/* Nav columns — fixed grid so it never reflows unevenly */}
-            <nav aria-label="Footer" className="grid grid-cols-2 gap-x-8 gap-y-10 sm:grid-cols-3 sm:gap-x-12">
+            {/* Nav columns — balanced categories, stable grid */}
+            <nav aria-label="Footer" className="grid grid-cols-2 gap-x-8 gap-y-10 lg:grid-cols-4 lg:gap-x-10">
               {FOOTER_COLS.map((col) => (
                 <div key={col.title}>
                   <h3 className="text-[10px] font-black uppercase tracking-widest text-text-muted">
@@ -151,24 +163,11 @@ const Footer: React.FC = React.memo(() => {
             </nav>
           </div>
 
-          {/* ── Spacer pushes legal + utility to bottom ─────────────────── */}
+          {/* ── Spacer pushes status banner to bottom ────────────────────── */}
           <div className="flex-1 min-h-6" />
 
-          {/* ── Legal / secondary links row ──────────────────────────────── */}
-          <div className="flex flex-wrap gap-x-6 gap-y-2 pt-8">
-            {SITE_CONFIG.footer.links.map((link, idx) => (
-              <Link
-                key={idx}
-                to={link.path}
-                className="text-[11px] text-text-muted/60 transition-colors hover:text-text-muted focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
-              >
-                {t(FOOTER_BOTTOM_LINK_KEYS[link.label] || link.label)}
-              </Link>
-            ))}
-          </div>
-
-          {/* ── Utility bar: status · language · copyright · contact ────── */}
-          <div className="mt-6 flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
+          {/* ── Status banner: system status · language · contact ────────── */}
+          <div className="mt-10 flex flex-col gap-5 border-t border-border/20 pt-6 md:flex-row md:items-center md:justify-between">
             <div className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-text-muted">
               <span className="relative flex h-2 w-2">
                 <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-accent opacity-75" />
@@ -176,9 +175,7 @@ const Footer: React.FC = React.memo(() => {
               </span>
               <span>{t(PULSE_TEXT_KEY)}</span>
               <span className="mx-2 h-3 w-px bg-border/60" aria-hidden="true" />
-              <span className="text-text-muted/40 normal-case tracking-normal">
-                &copy; {CURRENT_YEAR} QYVORA
-              </span>
+              <span className="normal-case tracking-normal">{CURRENT_YEAR}</span>
             </div>
 
             <div className="flex items-center gap-4">
