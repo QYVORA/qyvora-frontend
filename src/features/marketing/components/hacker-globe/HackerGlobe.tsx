@@ -97,29 +97,19 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88, offset = [0, 0,
     const sphereSegments = ctx.simplified ? 32 : 64;
     const dotTex = buildDotMapTexture(isLight, 1.6);
 
-    // Invisible depth-occluder: the globe shell stays transparent (no paint),
-    // but without depth the far hemisphere's pins ghost through the front gaps,
-    // rendering one map underneath another. Writing depth at r=1.0 occludes the
-    // far-side dots while drawing nothing visible.
-    const globeBody = new THREE.Mesh(
-      new THREE.SphereGeometry(1.0, sphereSegments, sphereSegments),
-      new THREE.MeshBasicMaterial({
-        colorWrite: false,
-        depthWrite: true,
-        side: THREE.FrontSide,
-      }),
-    );
-    globeBody.renderOrder = 0;
-    globe.add(globeBody);
-
+    // The globe itself must not occlude the far hemisphere: this is a
+    // see-through globe. Instead, only opaque map dots write depth. With both
+    // sides rendered, far-side land remains visible through empty globe space,
+    // while a nearer land dot still prevents another map dot behind it from
+    // showing through at the same screen position.
     const globeFront = new THREE.Mesh(
       new THREE.SphereGeometry(1.0, sphereSegments, sphereSegments),
       new THREE.MeshBasicMaterial({
         map: dotTex, transparent: true, opacity: 1.0,
-        depthWrite: false, side: THREE.FrontSide,
+        alphaTest: 0.01, depthWrite: true, side: THREE.DoubleSide,
       }),
     );
-    globeFront.renderOrder = 2;
+    globeFront.renderOrder = 1;
     globe.add(globeFront);
 
     // Raised "terrain" pins on every land dot: each flat dot that forms the map
@@ -131,7 +121,7 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88, offset = [0, 0,
     const landDots = buildLandDots(1.6);
     const pins = new THREE.InstancedMesh(
       new THREE.CylinderGeometry(pinR, pinR, pinLen, 8),
-      new THREE.MeshBasicMaterial({ depthWrite: false }),
+      new THREE.MeshBasicMaterial({ depthWrite: true }),
       landDots.length,
     );
     const pinMatrix = new THREE.Matrix4();
