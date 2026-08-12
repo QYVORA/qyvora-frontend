@@ -274,6 +274,7 @@ const CourseLessonPage: React.FC = () => {
       <div className=" px-3 md:px-4 lg:px-6 pt-8 pb-20 lg:pb-24 space-y-8">
             {currentLessonIdx === 0 && (
               <StudentHeroSection
+                fullHeight={false}
                 title={course.title}
                 description={`${completedCount} of ${totalLessons} lessons completed`}
                 stats={[

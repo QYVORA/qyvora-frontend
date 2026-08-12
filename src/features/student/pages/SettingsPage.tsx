@@ -263,6 +263,7 @@ const Settings: React.FC = () => {
       <SEO title={t('student.settings.seoTitle')} description={t('student.settings.seoDesc')} noindex />
       <div className="bg-bg px-3 md:px-4 lg:px-6 pt-8 pb-10">
         <StudentHeroSection
+          fullHeight={false}
           title={t('student.settings.title')}
           description={t('student.settings.description')}
         >

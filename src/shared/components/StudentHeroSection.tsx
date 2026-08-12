@@ -20,6 +20,12 @@ interface StudentHeroSectionProps {
   titleClassName?: string;
   showGlobe?: boolean;
   typewrite?: boolean;
+  /**
+   * Whether the hero must fill the viewport height. Defaults to true for the
+   * public/marketing snap sections. Student dashboard pages set it to false so
+   * the hero sizes to its content and sits right under the topbar.
+   */
+  fullHeight?: boolean;
   villain?: {
     name: string;
     alias: string;
@@ -44,6 +50,7 @@ export function StudentHeroSection({
   titleClassName,
   showGlobe = false,
   typewrite = false,
+  fullHeight = true,
 }: StudentHeroSectionProps) {
   const accentRef = useRef<HTMLSpanElement>(null);
 
@@ -70,7 +77,7 @@ export function StudentHeroSection({
   }, [typewrite, accentWord]);
 
   return (
-    <div className="relative min-h-dvh flex flex-col justify-center overflow-hidden">
+    <div className={fullHeight ? 'relative min-h-dvh flex flex-col justify-center overflow-hidden' : 'relative flex flex-col justify-center overflow-hidden'}>
       <GridBoxedBackground blur={0} mask="right" />
 
       {showGlobe && (
@@ -86,7 +93,7 @@ export function StudentHeroSection({
       )}
 
       <div className="relative z-10 w-full flex-1 mx-auto grid grid-cols-1 lg:grid-cols-2 text-left items-center h-full">
-        <div className="flex flex-col items-start justify-center px-3 md:px-4 lg:px-6 py-16 md:py-24">
+        <div className={`flex flex-col items-start ${fullHeight ? 'justify-center py-16 md:py-24' : 'justify-start py-8 md:py-10'} px-3 md:px-4 lg:px-6`}>
           <div className="w-full space-y-10 lg:space-y-12">
             <h1 className={`${titleClassName ?? 'text-4xl md:text-6xl'} font-black text-text-primary tracking-tight leading-[1.05]`}>
               {title}{' '}

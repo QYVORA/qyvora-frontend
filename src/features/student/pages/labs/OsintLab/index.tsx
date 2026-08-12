@@ -77,6 +77,7 @@ const OsintLab = () => {
         <SEO title="OSINT Recon Lab" description="Master open-source intelligence gathering techniques." noindex />
 
         <StudentHeroSection
+          fullHeight={false}
           title="OSINT Recon"
           accentWord="Challenge"
           description="Master open-source intelligence gathering with guided reconnaissance exercises."

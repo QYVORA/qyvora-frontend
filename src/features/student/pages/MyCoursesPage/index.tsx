@@ -132,6 +132,7 @@ const MyCoursesPage: React.FC = () => {
 
       <div className="bg-bg px-3 md:px-4 lg:px-6 pt-8 pb-10">
         <StudentHeroSection
+          fullHeight={false}
           title={t('student.myCourses.title')}
           description={t('student.myCourses.description')}
           stats={[

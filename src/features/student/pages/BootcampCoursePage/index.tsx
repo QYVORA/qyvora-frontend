@@ -145,6 +145,7 @@ const BootcampCourse: React.FC = () => {
 
       <div className="bg-bg px-3 md:px-4 lg:px-6 pt-8 pb-10">
         <StudentHeroSection
+          fullHeight={false}
           title={course?.title || 'Bootcamp'}
           description={syncError || `Track your progress through ${course?.title || 'the bootcamp'}. ${formatSyncLabel(lastSync)}`}
           stats={[

@@ -92,6 +92,7 @@ const PrivescLab = () => {
         />
 
         <StudentHeroSection
+          fullHeight={false}
           title="Privilege"
           accentWord="Escalation"
           description="Escalate from low-privilege user to root using Linux misconfigurations."
