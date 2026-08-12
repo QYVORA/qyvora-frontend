@@ -371,7 +371,9 @@
     "account": "Akaụntụ",
     "register": "Register",
     "termsOfService": "Terms of Service",
-    "copyright": "© {{year}} QYVORA"
+    "copyright": "© {{year}} QYVORA",
+    "learning": "Learning",
+    "community": "Community"
   },
   "landing": {
     "pillars": {
