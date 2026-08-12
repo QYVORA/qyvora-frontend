@@ -367,3 +367,12 @@ npm run preview
 ```
 
 Set `VITE_API_BASE_URL` in the Netlify project environment variables.
+
+## License
+
+Copyright (c) 2026 QYVORA. All rights reserved.
+
+This repository contains proprietary, closed-source QYVORA software. No
+permission is granted to copy, redistribute, modify, sublicense, or
+commercially exploit the code unless explicitly authorized in writing by
+QYVORA. This is not an open-source project. See `LICENSE`.

@@ -1,5 +1,9 @@
 # Contributing to QYVORA Frontend
 
+> **Access**: This repository is **private and proprietary** to QYVORA. Access
+> and contribution are granted only to authorized personnel. This is not an
+> open-source project — see `LICENSE`.
+
 Thank you for your interest in contributing to QYVORA.
 
 ## Getting Started
