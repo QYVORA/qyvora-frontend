@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { FlaskConical, Zap, Star } from 'lucide-react';
@@ -10,6 +11,7 @@ import StudentHeroSection, { PUBLIC_HERO_TITLE_CLASS } from '@/shared/components
 import { Footer } from '@/shared/components/layout';
 import { useAuth } from '@/core/contexts/AuthContext';
 import LandingFinalCtaSection from '@/features/marketing/components/landing/LandingFinalCtaSection';
+import { BatchPagination } from '@/shared/components/ui';
 
 const LABS = [
   { id: 'privesc', route: '/dashboard/labs/privesc', accentColor: '#FBBF24', difficulty: 'beginner-advanced', cpReward: '50-400' },
@@ -25,9 +27,15 @@ const DIFFICULTY_COLORS: Record<string, string> = {
   advanced: 'text-red-400 border-red-400/30 bg-red-400/10',
 };
 
+const BATCH_SIZE = 3;
+
 const LabsPage = () => {
   const { t } = useTranslation();
   const { user } = useAuth();
+  const [page, setPage] = useState(0);
+
+  const totalPages = Math.ceil(LABS.length / BATCH_SIZE);
+  const currentBatch = LABS.slice(page * BATCH_SIZE, (page + 1) * BATCH_SIZE);
 
   return (
     <div className="bg-bg min-h-full">
@@ -54,45 +62,50 @@ const LabsPage = () => {
         </StudentHeroSection>
 
         <PublicSnapSection>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
-          {LABS.map((lab) => {
-            const baseDiff = lab.difficulty.split('-')[0];
-            const diffColor = DIFFICULTY_COLORS[baseDiff] || DIFFICULTY_COLORS.beginner;
-            return (
-              <ScrollReveal key={lab.id} amount={0.05}>
-                <Link
-                  to={lab.route}
-                  className="group/card relative h-72 sm:h-64 lg:h-60 rounded-2xl border border-border/30 bg-bg-card p-3 md:p-5 transition-all duration-300 hover:border-accent/30 flex flex-col text-left"
-                >
-                  <div className="flex items-center justify-between mb-2">
-                    <div className="w-8 h-8 rounded-xl flex items-center justify-center shrink-0 bg-accent/10 border border-accent/20">
-                      <FlaskConical className="w-4 h-4 text-accent" />
-                    </div>
-                    <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-lg text-[9px] font-black uppercase tracking-widest ${diffColor}`}>
-                      <Star className="h-2.5 w-2.5" /> {baseDiff}
-                    </span>
-                  </div>
+          <div className="flex flex-col justify-between flex-1 min-h-0">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 flex-1 items-stretch">
+              {currentBatch.map((lab) => {
+                const baseDiff = lab.difficulty.split('-')[0];
+                const diffColor = DIFFICULTY_COLORS[baseDiff] || DIFFICULTY_COLORS.beginner;
+                return (
+                  <ScrollReveal key={lab.id} amount={0.05} className="h-full">
+                    <Link
+                      to={lab.route}
+                      className="group/card relative h-full min-h-[220px] rounded-2xl border border-border/30 bg-bg-card p-4 md:p-5 transition-all duration-300 hover:border-accent/30 flex flex-col text-left justify-between"
+                    >
+                      <div>
+                        <div className="flex items-center justify-between mb-2">
+                          <div className="w-8 h-8 rounded-xl flex items-center justify-center shrink-0 bg-accent/10 border border-accent/20">
+                            <FlaskConical className="w-4 h-4 text-accent" />
+                          </div>
+                          <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-lg text-[9px] font-black uppercase tracking-widest ${diffColor}`}>
+                            <Star className="h-2.5 w-2.5" /> {baseDiff}
+                          </span>
+                        </div>
 
-                  <h3 className="text-sm sm:text-base md:text-lg lg:text-xl font-black text-text-primary group-hover/card:text-accent transition-colors leading-snug break-words mb-1">
-                    {t(`student.labs.list.${lab.id}.title`)}
-                  </h3>
+                        <h3 className="text-sm sm:text-base md:text-lg font-black text-text-primary group-hover/card:text-accent transition-colors leading-snug break-words mb-1">
+                          {t(`student.labs.list.${lab.id}.title`)}
+                        </h3>
 
-                  <p className="text-xs sm:text-sm md:text-base text-text-muted leading-relaxed line-clamp-3 flex-1 mb-2">
-                    {t(`student.labs.list.${lab.id}.description`)}
-                  </p>
+                        <p className="text-xs sm:text-sm text-text-muted leading-relaxed line-clamp-3 mb-2">
+                          {t(`student.labs.list.${lab.id}.description`)}
+                        </p>
+                      </div>
 
-                  <div className="flex items-center justify-between mt-auto pt-2">
-                    <span className="text-[9px] sm:text-[10px] md:text-xs font-black uppercase tracking-widest text-accent">
-                      {lab.cpReward} CP
-                    </span>
-                    <span className="px-3 py-1.5 rounded-lg text-[9px] sm:text-[10px] md:text-xs font-black uppercase tracking-widest bg-accent text-on-accent transition-all duration-200 group-hover/card:brightness-110 group-active:scale-95">
-                      Launch <IconArrowRight size={12} className="inline-block ml-1" />
-                    </span>
-                  </div>
-                </Link>
-              </ScrollReveal>
-            );
-          })}
+                      <div className="flex items-center justify-between mt-auto pt-2 border-t border-border/10">
+                        <span className="text-[9px] sm:text-[10px] md:text-xs font-black uppercase tracking-widest text-accent">
+                          {lab.cpReward} CP
+                        </span>
+                        <span className="px-3 py-1.5 rounded-lg text-[9px] sm:text-[10px] md:text-xs font-black uppercase tracking-widest bg-accent text-on-accent transition-all duration-200 group-hover/card:brightness-110 group-active:scale-95">
+                          Launch <IconArrowRight size={12} className="inline-block ml-1" />
+                        </span>
+                      </div>
+                    </Link>
+                  </ScrollReveal>
+                );
+              })}
+            </div>
+            <BatchPagination page={page} totalPages={totalPages} onPageChange={setPage} />
           </div>
         </PublicSnapSection>
         <LandingFinalCtaSection user={user} />
