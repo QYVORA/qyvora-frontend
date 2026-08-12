@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSearchParams } from 'react-router-dom';
 import { Trophy, Shield } from 'lucide-react';
@@ -11,7 +11,7 @@ import PublicSnapSection from '@/shared/components/PublicSnapSection';
 import StudentHeroSection, { PUBLIC_HERO_TITLE_CLASS } from '@/shared/components/StudentHeroSection';
 import { Footer } from '@/shared/components/layout';
 import LandingFinalCtaSection from '@/features/marketing/components/landing/LandingFinalCtaSection';
-import { ErrorState } from '@/shared/components/ui';
+import { ErrorState, BatchPagination } from '@/shared/components/ui';
 import type { Period } from '@/shared/components/leaderboard';
 
 const LeaderboardPage = () => {
@@ -107,53 +107,59 @@ const LeaderboardPage = () => {
 
         {/* ── Remaining list ──────────────────────────────────────────── */}
         {rest.length > 0 && (
-          <PublicSnapSection>
-            <div>
-              <div className="hidden md:grid grid-cols-[48px_1fr_140px_100px_80px] gap-4 px-6 py-3 text-[10px] font-black uppercase tracking-widest text-text-muted/50 border-b border-border/40">
-                <span>Rank</span>
-                <span>Operator</span>
-                <span>Rank Label</span>
-                <span className="text-right">CP</span>
-                <span className="text-right">Streak</span>
-              </div>
-              <div className="space-y-2 py-2">
-                {rest.map((entry) => (
-                  <ScrollReveal key={entry.userId} amount={0.05}>
-                    <LeaderboardRow
-                      entry={entry}
-                      user={user}
-                      rank={entry.rank}
-                      anonymousLabel="Anonymous"
-                      youLabel="You"
-                      roomsLabel="rooms"
-                      avatarShape="rounded-xl"
-                      normalBorderColor="border-border/30"
-                    />
-                  </ScrollReveal>
-                ))}
-              </div>
-              {hasMore && (
-                <div className="flex justify-center pt-6">
-                  <button
-                    onClick={() => loadMore(period)}
-                    disabled={loadingMore}
-                    className="px-6 py-2.5 rounded-xl text-xs font-black uppercase tracking-widest border border-border/30 bg-bg-card text-text-muted hover:border-accent/30 hover:text-accent transition-all disabled:opacity-50"
-                  >
-                    {loadingMore ? 'Loading…' : `Show more (${remainingCount} remaining)`}
-                  </button>
-                </div>
-              )}
-              <div className="flex items-center justify-center gap-2 pt-6 text-[10px] font-bold uppercase tracking-widest text-text-muted/40">
-                <Shield className="w-3 h-3 text-accent" />
-                Verified by QYVORA Chain — {Number(total).toLocaleString()} total operators
-              </div>
-            </div>
-          </PublicSnapSection>
-          )}
+          <LeaderboardRestSection rest={rest} user={user} total={total} />
+        )}
         <LandingFinalCtaSection user={user} />
         <Footer />
       </PublicSnapLayout>
     </div>
+  );
+};
+
+const LeaderboardRestSection: React.FC<{ rest: any[]; user: any; total: number }> = ({ rest, user, total }) => {
+  const [page, setPage] = useState(0);
+  const BATCH_SIZE = 5;
+
+  const totalPages = Math.ceil(rest.length / BATCH_SIZE);
+  const currentBatch = rest.slice(page * BATCH_SIZE, (page + 1) * BATCH_SIZE);
+
+  return (
+    <PublicSnapSection>
+      <div className="flex flex-col justify-between flex-1 min-h-0">
+        <div>
+          <div className="hidden md:grid grid-cols-[48px_1fr_140px_100px_80px] gap-4 px-6 py-3 text-[10px] font-black uppercase tracking-widest text-text-muted/50 border-b border-border/40">
+            <span>Rank</span>
+            <span>Operator</span>
+            <span>Rank Label</span>
+            <span className="text-right">CP</span>
+            <span className="text-right">Streak</span>
+          </div>
+          <div className="space-y-2 py-2">
+            {currentBatch.map((entry) => (
+              <ScrollReveal key={entry.userId} amount={0.05}>
+                <LeaderboardRow
+                  entry={entry}
+                  user={user}
+                  rank={entry.rank}
+                  anonymousLabel="Anonymous"
+                  youLabel="You"
+                  roomsLabel="rooms"
+                  avatarShape="rounded-xl"
+                  normalBorderColor="border-border/30"
+                />
+              </ScrollReveal>
+            ))}
+          </div>
+        </div>
+        <div>
+          <BatchPagination page={page} totalPages={totalPages} onPageChange={setPage} />
+          <div className="flex items-center justify-center gap-2 pt-4 text-[10px] font-bold uppercase tracking-widest text-text-muted/40">
+            <Shield className="w-3 h-3 text-accent" />
+            Verified by QYVORA Chain — {Number(total).toLocaleString()} total operators
+          </div>
+        </div>
+      </div>
+    </PublicSnapSection>
   );
 };
 
