@@ -103,7 +103,7 @@ export function WalkthroughLayout({
               {icon}
             </div>
             <div className="flex-1 min-w-0">
-              <h1 className="text-3xl md:text-4xl font-black text-text-primary tracking-tight">
+              <h1 className="text-3xl md:text-4xl lg:text-5xl font-black text-text-primary tracking-tight">
                 {title}
               </h1>
               <p className="mt-2 text-base text-text-secondary leading-relaxed">{subtitle}</p>
