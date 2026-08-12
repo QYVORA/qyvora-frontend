@@ -130,7 +130,7 @@ const StudentTopbar = () => {
         {t('aria.skipToContent')}
       </a>
 
-      <header className="fixed top-0 left-0 w-full z-40 bg-bg border-b border-border pt-[env(safe-area-inset-top)]">
+      <header className="fixed top-0 left-0 w-full z-40 bg-transparent pt-[env(safe-area-inset-top)]">
         {isRoomPage ? (
           isCoursePage ? (
             /* ══ COURSE MODE ══ */
@@ -138,17 +138,17 @@ const StudentTopbar = () => {
               <div className="flex-1 flex items-center gap-1.5 md:gap-3 min-w-0">
                 <button
                   onClick={() => navigate('/dashboard/courses')}
-                  className={`flex h-10 w-10 md:h-12 md:w-12 shrink-0 items-center justify-center rounded-xl transition-colors text-text-muted hover:text-accent active:scale-95`}
+                  className={`flex h-10 w-10 md:h-12 md:w-12 shrink-0 items-center justify-center rounded-xl transition-colors text-text-secondary hover:text-accent active:scale-95`}
                   aria-label={t('aria.backToCourses')}
                 >
-                  <IconArrowLeft size={20} />
+                  <IconArrowLeft size={20} strokeWidth={2.5} />
                 </button>
                 <button
                   onClick={openSidebar}
-                  className={`md:hidden flex h-10 w-10 shrink-0 items-center justify-center rounded-xl transition-colors text-text-muted hover:text-accent active:scale-95`}
+                  className={`md:hidden flex h-10 w-10 shrink-0 items-center justify-center rounded-xl transition-colors text-text-secondary hover:text-accent active:scale-95`}
                   aria-label={t('aria.toggleLessons')}
                 >
-                  <IconMenu size={20} />
+                  <IconMenu size={20} strokeWidth={2.5} />
                 </button>
                 <div className={`hidden sm:flex items-center gap-1.5 text-xs font-bold uppercase tracking-widest min-w-0 flex-1 text-text-muted`}>
                   <Link to="/dashboard/courses" className={`transition-colors shrink-0 hover:text-accent active:opacity-70`}>
@@ -233,17 +233,17 @@ const StudentTopbar = () => {
             <div className="px-4 md:px-6 h-20 md:h-24 flex items-center gap-1.5 md:gap-3">
               <button
                 onClick={() => navigate(`/dashboard/bootcamps/${roomBootcampId}`)}
-                className={`flex h-10 w-10 md:h-12 md:w-12 shrink-0 items-center justify-center rounded-xl transition-colors text-text-muted hover:text-accent active:scale-95`}
+                className={`flex h-10 w-10 md:h-12 md:w-12 shrink-0 items-center justify-center rounded-xl transition-colors text-text-secondary hover:text-accent active:scale-95`}
                 aria-label={t('aria.backToCurriculum')}
               >
-                <IconArrowLeft size={20} />
+                <IconArrowLeft size={20} strokeWidth={2.5} />
               </button>
               <button
                 onClick={openSidebar}
-                className={`md:hidden flex h-10 w-10 shrink-0 items-center justify-center rounded-xl transition-colors text-text-muted hover:text-accent active:scale-95`}
+                className={`md:hidden flex h-10 w-10 shrink-0 items-center justify-center rounded-xl transition-colors text-text-secondary hover:text-accent active:scale-95`}
                 aria-label={t('aria.toggleCurriculum')}
               >
-                <IconMenu size={16} />
+                <IconMenu size={16} strokeWidth={2.5} />
               </button>
               <div className={`hidden sm:flex items-center gap-1.5 text-xs font-bold uppercase tracking-widest min-w-0 flex-1 text-text-muted`}>
                 <Link to={`/dashboard/bootcamps/${roomBootcampId}`} className="hover:text-accent active:opacity-70 transition-colors shrink-0">
@@ -310,10 +310,10 @@ const StudentTopbar = () => {
           <div className="px-4 md:px-6 h-20 md:h-24 flex items-center gap-1.5 md:gap-3">
             <button
               onClick={() => navigate('/dashboard/labs')}
-              className={`flex h-10 w-10 md:h-12 md:w-12 shrink-0 items-center justify-center rounded-xl transition-colors text-text-muted hover:text-accent active:scale-95`}
+              className={`flex h-10 w-10 md:h-12 md:w-12 shrink-0 items-center justify-center rounded-xl transition-colors text-text-secondary hover:text-accent active:scale-95`}
               aria-label={t('aria.backToLabs')}
             >
-              <IconArrowLeft size={20} />
+              <IconArrowLeft size={20} strokeWidth={2.5} />
             </button>
             <div className={`hidden sm:flex items-center gap-1.5 text-xs font-bold uppercase tracking-widest min-w-0 flex-1 text-text-muted`}>
               <Link to="/dashboard/labs" className="hover:text-accent active:opacity-70 transition-colors shrink-0">
@@ -375,11 +375,11 @@ const StudentTopbar = () => {
             {/* Hamburger — visible on mobile only */}
             <button
               onClick={() => window.dispatchEvent(new CustomEvent('qyvora:open-main-sidebar'))}
-              className={`lg:hidden flex h-10 w-10 shrink-0 items-center justify-center rounded-xl transition-colors ml-auto text-text-muted hover:text-accent`}
+              className={`lg:hidden flex h-10 w-10 shrink-0 items-center justify-center rounded-xl transition-colors ml-auto text-text-secondary hover:text-accent`}
               aria-label={t('aria.openNav')}
               data-tour-id="tour-nav-mobile"
             >
-              <IconMenu size={24} />
+                  <IconMenu size={24} strokeWidth={2.5} />
             </button>
 
             {/* Nav tabs — desktop only (lg+), flex-1 pushes right actions to the far right */}
@@ -390,9 +390,9 @@ const StudentTopbar = () => {
                   <Link
                     key={item.path}
                     to={item.path}
-                    className="relative flex flex-col items-center gap-1.5 px-5 py-2 text-[10px] font-black uppercase tracking-widest transition-colors shrink-0 text-text-muted hover:text-text-primary active:opacity-70"
+                    className="relative flex flex-col items-center gap-1.5 px-5 py-2 text-[10px] font-black uppercase tracking-widest transition-colors shrink-0 text-text-secondary hover:text-text-primary active:opacity-70"
                   >
-                    <item.icon size={32} />
+                    <item.icon size={32} strokeWidth={2.5} />
                     <span>{item.label}</span>
                     {active && (
                       <span className="absolute bottom-0 left-1/4 right-1/4 h-0.5 rounded-full bg-accent" />
