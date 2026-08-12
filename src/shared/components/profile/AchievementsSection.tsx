@@ -113,7 +113,7 @@ const AchievementsSection: React.FC<AchievementsSectionProps> = ({
           initial={prefersReduced ? false : { opacity: 0, y: 8 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: prefersReduced ? 0 : 0.35 }}
-          className="rounded-2xl border border-border/30 bg-bg-card p-5 flex items-center gap-4"
+          className="flex items-center gap-4"
         >
           <BootcampBadge completed className="w-16 h-16" />
           <div>
@@ -129,7 +129,7 @@ const AchievementsSection: React.FC<AchievementsSectionProps> = ({
 
       {/* Pinned achievements shelf */}
       {pinned.length > 0 && (
-        <div className="rounded-2xl border border-border/30 bg-bg-card p-5">
+        <div>
           <ModuleHeader
             icon={<Award className="w-4 h-4 text-accent" />}
             iconClassName="bg-accent/10"
@@ -195,7 +195,7 @@ const AchievementsSection: React.FC<AchievementsSectionProps> = ({
       )}
 
       {/* Full achievement grid */}
-      <div className="rounded-2xl border border-border/30 bg-bg-card overflow-hidden">
+      <div>
         <ModuleHeader
           icon={<Award className="w-4 h-4 text-accent" />}
           iconClassName="bg-accent/10"
@@ -207,7 +207,7 @@ const AchievementsSection: React.FC<AchievementsSectionProps> = ({
           }
         />
 
-        <div className="p-5 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
+        <div className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
           <AnimatePresence mode="popLayout">
             {visibleGrid.map((achievement, idx) => {
               const rarity = achievement.rarity || 'common';
@@ -269,7 +269,7 @@ const AchievementsSection: React.FC<AchievementsSectionProps> = ({
         </div>
 
         {hasMore && (
-          <div className="px-5 pb-5">
+          <div className="mt-4">
             <button
               onClick={() => setExpanded(!expanded)}
               className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl border border-border/30 bg-bg-elevated text-xs font-black uppercase tracking-widest text-text-muted hover:border-accent/30 hover:text-text-primary transition-all"

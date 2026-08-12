@@ -17,7 +17,7 @@ const CoursesModule: React.FC<CoursesModuleProps> = ({
   const prefersReduced = useReducedMotion();
 
   return (
-    <div className={`rounded-2xl border border-border/30 bg-bg-card overflow-hidden ${className}`}>
+    <div className={className}>
       <ModuleHeader
         icon={<GraduationCap className="w-4 h-4 text-blue-400" />}
         iconClassName="bg-blue-400/10"
@@ -31,7 +31,7 @@ const CoursesModule: React.FC<CoursesModuleProps> = ({
         }
       />
 
-      <div className="p-5">
+      <div className="mt-4">
         {coursesCompleted === 0 ? (
           <p className="text-xs text-text-muted text-center py-4">
             {t('profile.courses.empty', 'No courses completed yet.')}

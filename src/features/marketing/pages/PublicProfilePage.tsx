@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { IconArrowLeft } from '@/shared/components/icons';
-import { User, FlaskConical, GraduationCap, Trophy, Zap, Flame } from 'lucide-react';
+import { User, FlaskConical, GraduationCap, Zap, Flame } from 'lucide-react';
 import NotFoundPage from '../../../shared/pages/NotFoundPage';
 import api from '../../../core/services/api';
 import PageLoader from '../../../shared/components/PageLoader';
@@ -9,7 +9,8 @@ import SEO from '../../../shared/components/SEO';
 import { Navbar } from '../../../shared/components/layout';
 import { Footer } from '../../../shared/components/layout';
 import ProfileIdentityBlock from '../../../shared/components/profile/ProfileIdentityBlock';
-import ProfileStatCard from '../../../shared/components/ui/CardStat';
+import CpLogo from '../../../shared/components/CpLogo';
+import ProfileMetricsStrip from '../../../shared/components/profile/ProfileMetricsStrip';
 import AchievementsSection from '../../../shared/components/profile/AchievementsSection';
 import ContributionCalendar from '../../../shared/components/profile/ContributionCalendar';
 import ActivityTimeline from '../../../shared/components/profile/ActivityTimeline';
@@ -147,53 +148,28 @@ const PublicProfile: React.FC = () => {
               />
             </section>
 
-            {/* ── Stats Section ── */}
+            {/* ── Metrics Strip ── */}
             <section id="profile-section-stats">
-              <div className="grid grid-cols-2 gap-4">
-                <ProfileStatCard
-                  icon={<Trophy className="w-5 h-5 text-accent" />}
-                  label="CP"
-                  value={profile.cp.toLocaleString()}
-                  accent
-                />
-                <ProfileStatCard
-                  icon={<User className="w-5 h-5 text-text-muted" />}
-                  label="Rank"
-                  value={profile.rank}
-                />
-                <ProfileStatCard
-                  icon={<FlaskConical className="w-5 h-5 text-text-muted" />}
-                  label="Labs"
-                  value={profile.labsCompleted || profile.completedRooms.length}
-                />
-                <ProfileStatCard
-                  icon={<GraduationCap className="w-5 h-5 text-text-muted" />}
-                  label="Courses"
-                  value={profile.coursesCompleted}
-                />
-                <ProfileStatCard
-                  icon={<Flame className="w-5 h-5 text-text-muted" />}
-                  label="Streak"
-                  value={`${profile.xpLevel}`}
-                />
-                <ProfileStatCard
-                  icon={<Zap className="w-5 h-5 text-text-muted" />}
-                  label="XP Level"
-                  value={`Lv.${profile.xpLevel}`}
-                />
-              </div>
+              <ProfileMetricsStrip metrics={[
+                { icon: <CpLogo className="w-5 h-5" />, value: profile.cp.toLocaleString(), accent: true },
+                { icon: <User className="w-5 h-5" />, value: profile.rank },
+                { icon: <FlaskConical className="w-5 h-5" />, value: profile.labsCompleted || profile.completedRooms.length },
+                { icon: <GraduationCap className="w-5 h-5" />, value: profile.coursesCompleted },
+                { icon: <Flame className="w-5 h-5" />, value: profile.xpLevel },
+                { icon: <Zap className="w-5 h-5" />, value: `Lv.${profile.xpLevel}` },
+              ]} />
             </section>
 
             {/* ── Activity Section ── */}
             {visibleSections.includes('activity') && (
               <section id="profile-section-activity">
                 <div className="flex flex-col gap-6">
+                  <ActivityTimeline profile={profile} />
                   {Object.keys(activityDates).length > 0 && (
                     <div className="rounded-2xl border border-border/30 bg-bg-card p-5">
                       <ContributionCalendar activityDates={activityDates} />
                     </div>
                   )}
-                  <ActivityTimeline profile={profile} />
                 </div>
               </section>
             )}

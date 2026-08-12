@@ -1,14 +1,15 @@
 import React, { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router-dom';
-import { Edit3, User, FlaskConical, GraduationCap, Trophy, Zap, Flame } from 'lucide-react';
+import { Edit3, User, FlaskConical, GraduationCap, Zap, Flame } from 'lucide-react';
 import { useAuth } from '../../../core/contexts/AuthContext';
 import { useProfile } from '../../../shared/hooks/useProfile';
 import EditModal from '../components/profile/EditModal';
 import { ProfileSkeleton } from '../components/StudentSkeletons';
 import SEO from '../../../shared/components/SEO';
 import ProfileIdentityBlock from '../../../shared/components/profile/ProfileIdentityBlock';
-import ProfileStatCard from '../../../shared/components/ui/CardStat';
+import CpLogo from '../../../shared/components/CpLogo';
+import ProfileMetricsStrip from '../../../shared/components/profile/ProfileMetricsStrip';
 import AchievementsSection from '../../../shared/components/profile/AchievementsSection';
 import ContributionCalendar from '../../../shared/components/profile/ContributionCalendar';
 import ActivityTimeline from '../../../shared/components/profile/ActivityTimeline';
@@ -93,39 +94,14 @@ const Profile: React.FC = () => {
 
       <div className="bg-bg-alt px-3 md:px-4 lg:px-6 py-10">
         <section id="profile-section-stats">
-          <div className="grid grid-cols-2 gap-4">
-            <ProfileStatCard
-              icon={<Trophy className="w-5 h-5 text-accent" />}
-              label={t('student.profile.stats.cp')}
-              value={profile.cp.toLocaleString()}
-              accent
-            />
-            <ProfileStatCard
-              icon={<User className="w-5 h-5 text-text-muted" />}
-              label={t('student.profile.rank')}
-              value={profile.rank}
-            />
-            <ProfileStatCard
-              icon={<FlaskConical className="w-5 h-5 text-text-muted" />}
-              label={t('student.profile.stats.labs')}
-              value={profile.labsCompleted || profile.completedRooms.length}
-            />
-            <ProfileStatCard
-              icon={<GraduationCap className="w-5 h-5 text-text-muted" />}
-              label={t('student.profile.stats.courses')}
-              value={profile.coursesCompleted}
-            />
-            <ProfileStatCard
-              icon={<Flame className="w-5 h-5 text-text-muted" />}
-              label={t('student.profile.stats.streak', 'Streak')}
-              value={`${profile.xpLevel}`}
-            />
-            <ProfileStatCard
-              icon={<Zap className="w-5 h-5 text-text-muted" />}
-              label={t('student.profile.stats.xp', 'XP Level')}
-              value={`Lv.${profile.xpLevel}`}
-            />
-          </div>
+          <ProfileMetricsStrip metrics={[
+            { icon: <CpLogo className="w-5 h-5" />, value: profile.cp.toLocaleString(), accent: true },
+            { icon: <User className="w-5 h-5" />, value: profile.rank },
+            { icon: <FlaskConical className="w-5 h-5" />, value: profile.labsCompleted || profile.completedRooms.length },
+            { icon: <GraduationCap className="w-5 h-5" />, value: profile.coursesCompleted },
+            { icon: <Flame className="w-5 h-5" />, value: profile.xpLevel },
+            { icon: <Zap className="w-5 h-5" />, value: `Lv.${profile.xpLevel}` },
+          ]} />
         </section>
       </div>
 
@@ -133,12 +109,12 @@ const Profile: React.FC = () => {
         {visibleSections.includes('activity') && (
           <section id="profile-section-activity">
             <div className="flex flex-col gap-6">
+              <ActivityTimeline profile={profile} />
               {Object.keys(activityDates).length > 0 && (
                 <div className="rounded-2xl border border-border/30 bg-bg-card p-5">
                   <ContributionCalendar activityDates={activityDates} />
                 </div>
               )}
-              <ActivityTimeline profile={profile} />
             </div>
           </section>
         )}
