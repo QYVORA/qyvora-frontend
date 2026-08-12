@@ -146,49 +146,65 @@ const LandingBootcampSection: React.FC = () => {
             })}
           </div>
 
-          {/* Mobile — static list of all 5 phases, styled like the featured card (no switching) */}
-          <div className="lg:hidden w-full flex-1 min-h-0 mt-2 md:mt-3 overflow-y-auto no-scrollbar flex flex-col gap-2 md:gap-3">
-            {PHASES.map((phase) => {
-              const phaseIdx = PHASES.indexOf(phase);
-              const config = BOOTCAMP_CONFIG.phases[phaseIdx];
-              const roomCount = config?.rooms?.length || 0;
-              const href = config ? `/hpb/${config.id}` : '/hpb';
-              return (
-                <Link
-                  key={phase.id}
-                  to={href}
-                  className="group relative block w-full shrink-0 rounded-2xl border border-border/20 bg-bg-card overflow-hidden transition-all duration-300 hover:border-accent/30"
-                >
-                  <div className="relative w-full flex flex-row items-stretch gap-3 md:gap-4 p-3 md:p-4">
-                    <div className="flex-1 min-w-0 flex flex-col">
-                      <div className="flex items-center justify-end mb-1.5 md:mb-2">
-                        <span className="text-[8px] md:text-[9px] font-black uppercase tracking-widest px-2.5 py-1 rounded-full border border-border/30 bg-bg-elevated text-text-muted">
-                          {t('landing.bootcamp.roomCount', { count: roomCount })}
-                        </span>
+          {/* Mobile — active batch view fitting within section height without overflow */}
+          <div className="lg:hidden w-full flex-1 min-h-0 mt-2 flex flex-col gap-2 justify-between">
+            <div className="flex-1 flex flex-col gap-2 justify-center min-h-0">
+              {group.slice(0, 2).map((phase) => {
+                const phaseIdx = PHASES.indexOf(phase);
+                const config = BOOTCAMP_CONFIG.phases[phaseIdx];
+                const roomCount = config?.rooms?.length || 0;
+                const href = config ? `/hpb/${config.id}` : '/hpb';
+                return (
+                  <Link
+                    key={phase.id}
+                    to={href}
+                    className="group relative block w-full flex-1 rounded-2xl border border-border/20 bg-bg-card overflow-hidden transition-all duration-300 hover:border-accent/30"
+                  >
+                    <div className="relative w-full h-full flex flex-row items-center gap-3 p-3">
+                      <div className="flex-1 min-w-0 flex flex-col justify-between h-full">
+                        <div>
+                          <div className="flex items-center justify-end mb-1">
+                            <span className="text-[8px] font-black uppercase tracking-widest px-2 py-0.5 rounded-full border border-border/30 bg-bg-elevated text-text-muted">
+                              {t('landing.bootcamp.roomCount', { count: roomCount })}
+                            </span>
+                          </div>
+                          <h3 className="text-base font-black text-text-primary tracking-tighter leading-none mb-1">
+                            {t(`landing.bootcamp.phases.${phase.id}.name`)}
+                          </h3>
+                          <p className="text-[10px] text-text-secondary leading-relaxed line-clamp-2">
+                            {t(`landing.bootcamp.phases.${phase.id}.desc`)}
+                          </p>
+                        </div>
+                        <div className="pt-1 mt-auto">
+                          <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-xl bg-bg text-[8px] font-black uppercase tracking-widest text-accent">
+                            {t('landing.bootcamp.startPhase')} {phase.id}
+                            <IconArrowRight size={10} />
+                          </span>
+                        </div>
                       </div>
-                      <h3 className="text-base md:text-lg font-black text-text-primary tracking-tighter leading-none mb-1 md:mb-1.5">
-                        {t(`landing.bootcamp.phases.${phase.id}.name`)}
-                      </h3>
-                      <p className="text-[10px] md:text-[11px] text-text-secondary leading-relaxed line-clamp-2">
-                        {t(`landing.bootcamp.phases.${phase.id}.desc`)}
-                      </p>
-                      <div className="mt-auto pt-2 md:pt-2.5">
-                        <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-bg text-[9px] font-black uppercase tracking-widest text-accent transition-all group-hover:gap-2.5">
-                          {t('landing.bootcamp.startPhase')} {phase.id}
-                          <IconArrowRight size={12} />
-                        </span>
+                      <div className="w-[30%] shrink-0 min-h-0 flex items-center justify-center">
+                        <HpbAvatar
+                          variant={`phase${Number(phase.id)}` as HpbVariant}
+                          className="w-full h-auto max-h-[85px]"
+                        />
                       </div>
                     </div>
-                    <div className="w-[34%] md:w-[36%] shrink-0 min-h-0 flex items-center justify-center">
-                      <HpbAvatar
-                        variant={`phase${Number(phase.id)}` as HpbVariant}
-                        className="w-full h-auto max-w-full max-h-[110px] md:max-h-[140px]"
-                      />
-                    </div>
-                  </div>
-                </Link>
-              );
-            })}
+                  </Link>
+                );
+              })}
+            </div>
+            {/* Batch indicator dots on mobile */}
+            <div className="flex justify-center gap-1.5 py-1">
+              {Array.from({ length: totalGroups }).map((_, i) => (
+                <button
+                  key={i}
+                  onClick={() => setGroupIndex(i)}
+                  className={`h-1.5 rounded-full transition-all duration-300 ${
+                    i === groupIndex ? 'w-5 bg-accent' : 'w-1.5 bg-text-muted/30'
+                  }`}
+                />
+              ))}
+            </div>
           </div>
 
           {/* Footer */}
