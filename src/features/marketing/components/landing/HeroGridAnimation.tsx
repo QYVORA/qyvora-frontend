@@ -35,7 +35,10 @@ function createCells(cols: number, rows: number, cellSize: number, isLight: bool
       // screen while the left stays empty. Works in both themes: light renders
       // them at full opacity, dark at a dimmed glow.
       const colFrac = c / lastCol;
-      const spawnChance = 0.015 + colFrac * 0.035;
+      // Dark keeps ~2-5% of cells; light renders accent green at full opacity,
+      // which reads much louder on a pale background, so it gets fewer boxes.
+      const densityScale = isLight ? 0.4 : 1;
+      const spawnChance = (0.015 + colFrac * 0.035) * densityScale;
       const baseOpacity = Math.random() < spawnChance
         ? (isLight ? 1 : 0.2 + Math.random() * 0.4)
         : 0;
