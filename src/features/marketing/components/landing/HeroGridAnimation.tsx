@@ -35,10 +35,11 @@ function createCells(cols: number, rows: number, cellSize: number, isLight: bool
       // screen while the left stays empty. Works in both themes: light renders
       // them at full opacity, dark at a dimmed glow.
       const colFrac = c / lastCol;
-      // Dark keeps ~2-5% of cells; light renders accent green at full opacity,
-      // which reads much louder on a pale background, so it gets fewer boxes.
+      // Dark keeps ~6-15% of cells; light renders accent green at full opacity,
+      // which reads much louder on a pale background, so it gets fewer boxes
+      // (~2.4-6%). Both are roughly triple the original sparse field.
       const densityScale = isLight ? 0.4 : 1;
-      const spawnChance = (0.015 + colFrac * 0.035) * densityScale;
+      const spawnChance = (0.015 + colFrac * 0.035) * densityScale * 3;
       const baseOpacity = Math.random() < spawnChance
         ? (isLight ? 1 : 0.2 + Math.random() * 0.4)
         : 0;
