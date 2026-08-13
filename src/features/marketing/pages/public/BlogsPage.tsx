@@ -69,10 +69,10 @@ const BlogsPage = () => {
         <PublicSnapSection>
           <div className="flex flex-col justify-between flex-1 min-h-0 space-y-4">
             <div className="flex flex-col sm:flex-row gap-2.5 sm:gap-4 items-start sm:items-center justify-between shrink-0">
-              <div className="flex items-center gap-1.5 flex-wrap">
+              <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar flex-nowrap shrink-0 min-w-0">
                 <button
                   onClick={() => handleTagChange('')}
-                  className={`px-2.5 py-1 rounded-lg text-[9px] font-black uppercase tracking-widest transition-all ${
+                  className={`px-2.5 py-1 shrink-0 whitespace-nowrap rounded-lg text-[9px] font-black uppercase tracking-widest transition-all ${
                     !activeTag ? 'bg-accent text-on-accent' : 'bg-bg-card border border-border text-text-muted hover:border-accent/30 hover:text-accent'
                   }`}
                 >
@@ -82,7 +82,7 @@ const BlogsPage = () => {
                   <button
                     key={tag}
                     onClick={() => handleTagChange(tag)}
-                    className={`px-2.5 py-1 rounded-lg text-[9px] font-black uppercase tracking-widest transition-all ${
+                    className={`px-2.5 py-1 shrink-0 whitespace-nowrap rounded-lg text-[9px] font-black uppercase tracking-widest transition-all ${
                       activeTag === tag ? 'bg-accent text-on-accent' : 'bg-bg-card border border-border text-text-muted hover:border-accent/30 hover:text-accent'
                     }`}
                   >
