@@ -27,7 +27,7 @@ const PublicSnapSection: React.FC<PublicSnapSectionProps> = ({
   return (
     <div
       id={id}
-      className={`relative w-full min-h-dvh px-3 md:px-4 lg:px-6 pt-24 md:pt-24 lg:pt-24 pb-6 md:pb-8 lg:pb-10 flex flex-col ${className ?? ''}`}
+      className={`relative w-full min-h-dvh px-3 md:px-4 lg:px-6 pt-24 md:pt-28 lg:pt-28 pb-6 md:pb-8 lg:pb-10 flex flex-col ${className ?? ''}`}
     >
       <div className="w-full my-auto flex-1 flex flex-col justify-center min-h-0">
         {children}
