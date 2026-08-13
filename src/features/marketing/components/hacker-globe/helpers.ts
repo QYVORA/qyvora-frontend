@@ -200,6 +200,11 @@ export function isBlackRegion(lat: number, lng: number): boolean {
 
 const TEXTURE_CACHE = new Map<string, THREE.CanvasTexture>();
 
+function hexToRgb(hex: string): [number, number, number] {
+  const value = parseInt(hex.slice(1), 16);
+  return [(value >> 16) & 255, (value >> 8) & 255, value & 255];
+}
+
 export function buildDotMapTexture(isLight: boolean, step = 1.6): THREE.CanvasTexture {
   const cacheKey = `${isLight}-${step}`;
   if (TEXTURE_CACHE.has(cacheKey)) return TEXTURE_CACHE.get(cacheKey)!;
@@ -211,7 +216,7 @@ export function buildDotMapTexture(isLight: boolean, step = 1.6): THREE.CanvasTe
 
   ctx.clearRect(0, 0, W, H);
 
-  const dotR      = (step / 180) * H * 0.42;
+  const dotR      = (step / 180) * H * 0.55;
   const landFill  = ACCENT_COLOR_HEX;
   const regionFill = isLight ? REGION_COLOR_LIGHT_HEX : REGION_COLOR_DARK_HEX;
 
@@ -222,8 +227,15 @@ export function buildDotMapTexture(isLight: boolean, step = 1.6): THREE.CanvasTe
       const x = ((lng + 180) / 360) * W;
       const y = ((90 - lat) / 180) * H;
 
-      ctx.globalAlpha = 1.0;
-      ctx.fillStyle = isBlackRegion(lat, lng) ? regionFill : landFill;
+      // Soft radial-falloff dots: a solid core that fades to transparent at the
+      // edge, instead of hard-edged circles, so the map reads smooth and clean.
+      const fill = isBlackRegion(lat, lng) ? regionFill : landFill;
+      const [r, g, b] = hexToRgb(fill);
+      const grad = ctx.createRadialGradient(x, y, 0, x, y, dotR);
+      grad.addColorStop(0, `rgba(${r},${g},${b},1)`);
+      grad.addColorStop(0.6, `rgba(${r},${g},${b},0.85)`);
+      grad.addColorStop(1, `rgba(${r},${g},${b},0)`);
+      ctx.fillStyle = grad;
 
       ctx.beginPath();
       ctx.arc(x, y, dotR, 0, Math.PI * 2);
@@ -261,14 +273,14 @@ export function buildLandDots(step = 1.6): Array<{ lat: number; lng: number }> {
 }
 
 /**
- * Angular radius (radians) of a single dot drawn by `buildDotMapTexture` on a
- * unit sphere. The raised pins use this so every cylinder keeps the footprint
- * of the flat dot it sits on.
+ * Angular radius (radians) of a dot's solid core on a unit sphere. The flat
+ * texture dots are soft (radial falloff), so the raised pins keep the radius
+ * of the solid centre rather than the full faded halo.
  */
 export function getDotRadius(step = 1.6): number {
   const H = 1024;
-  const dotR = (step / 180) * H * 0.42;
-  return (dotR / H) * Math.PI;
+  const dotR = (step / 180) * H * 0.55;
+  return ((dotR * 0.6) / H) * Math.PI;
 }
 
 /** Per-instance colors for the raised pins, matching the dot-map palette. */
