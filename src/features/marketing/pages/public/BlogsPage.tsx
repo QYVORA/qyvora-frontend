@@ -67,7 +67,7 @@ const BlogsPage = () => {
         />
 
         <PublicSnapSection>
-          <div className="flex flex-col justify-between flex-1 min-h-0 space-y-4">
+          <div className="flex flex-col justify-between flex-1 min-h-0 space-y-3">
             <div className="flex flex-col sm:flex-row gap-2.5 sm:gap-4 items-start sm:items-center justify-between shrink-0">
               <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar flex-nowrap shrink-0 min-w-0">
                 <button

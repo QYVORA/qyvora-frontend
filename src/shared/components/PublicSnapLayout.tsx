@@ -21,7 +21,7 @@ const PublicSnapLayout: React.FC<PublicSnapLayoutProps> = ({ children }) => {
   );
 
   return (
-    <div className="relative w-full bg-bg snap-container no-scrollbar">
+    <div className="relative w-full bg-bg snap-container-proximity no-scrollbar">
       {sections.map((child, i) => {
         const isFooter = child.type === Footer;
         const carriesOwnGrid =
