@@ -129,26 +129,15 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88, offset = [0, 0,
     globeFront.renderOrder = 1;
     globe.add(globeFront);
 
-    // Raised "terrain" pins on every land dot with high-contrast cylinder edge lines
+    // Raised pins on every land dot — smooth rounded bumps, softly translucent,
+    // with no edge outlines so the dot map reads clean instead of brick-like.
     const pinR   = getDotRadius(1.6);
-    const pinLen = 0.02;
+    const pinLen = 0.014;
     const landDots = buildLandDots(1.6);
-    const cylGeo = new THREE.CylinderGeometry(pinR, pinR, pinLen, 6);
+    const cylGeo = new THREE.CylinderGeometry(pinR, pinR, pinLen, 16);
     const pins = new THREE.InstancedMesh(
       cylGeo,
-      new THREE.MeshBasicMaterial({ depthWrite: true }),
-      landDots.length,
-    );
-
-    // High-contrast edge border line around each cylinder so every dot has distinct boundaries
-    const edgeGeo = new THREE.EdgesGeometry(cylGeo);
-    const pinEdges = new THREE.InstancedMesh(
-      edgeGeo,
-      new THREE.LineBasicMaterial({
-        color: isLight ? 0x000000 : 0x002414,
-        transparent: true,
-        opacity: 0.85,
-      }),
+      new THREE.MeshBasicMaterial({ depthWrite: true, transparent: true, opacity: 0.7 }),
       landDots.length,
     );
 
@@ -165,17 +154,12 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88, offset = [0, 0,
       pinMatrix.compose(center, pinQuat, unit);
       pins.setMatrixAt(i, pinMatrix);
       pins.setColorAt(i, isBlackRegion(d.lat, d.lng) ? region : land);
-      pinEdges.setMatrixAt(i, pinMatrix);
     });
 
     pins.instanceMatrix.needsUpdate = true;
     if (pins.instanceColor) pins.instanceColor.needsUpdate = true;
     pins.renderOrder = 3;
     globe.add(pins);
-
-    pinEdges.instanceMatrix.needsUpdate = true;
-    pinEdges.renderOrder = 4;
-    globe.add(pinEdges);
 
     sceneRef.current = { renderer, scene, camera, globe };
 
