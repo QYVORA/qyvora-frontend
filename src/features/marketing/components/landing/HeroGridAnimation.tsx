@@ -26,33 +26,25 @@ const GLITCH_DURATION = 120;
 
 function createCells(cols: number, rows: number, cellSize: number, isLight: boolean): Cell[] {
   const cells: Cell[] = [];
+  const lastCol = Math.max(1, cols - 1);
   for (let r = 0; r < rows; r++) {
     for (let c = 0; c < cols; c++) {
-      const rand = Math.random();
-      let color: [number, number, number];
-      let baseOpacity: number;
-
-      if (rand < 0.08) {
-        color = ACCENT;
-        baseOpacity = isLight ? 1 : 0.15 + Math.random() * 0.35;
-      } else if (rand < 0.18) {
-        const shade = isLight ? 180 + Math.floor(Math.random() * 50) : Math.floor(Math.random() * 12);
-        color = [shade, shade, shade];
-        baseOpacity = isLight ? 1 : 0.3 + Math.random() * 0.5;
-      } else if (rand < 0.35) {
-        const g = isLight ? 160 + Math.floor(Math.random() * 60) : Math.floor(40 + Math.random() * 30);
-        color = isLight ? [g, g, g] : [0, g, Math.floor(g * 0.5)];
-        baseOpacity = isLight ? 1 : 0.15 + Math.random() * 0.3;
-      } else {
-        color = isLight ? ACCENT : [0, 0, 0];
-        baseOpacity = isLight ? 1 : 0.4 + Math.random() * 0.6;
-      }
+      // Sparse, accent-only Athene grid. Boxes are always the accent colour
+      // and only a few spawn (~2-5% of cells), with the spawn chance rising
+      // toward the right edge so the animation lives on the right side of the
+      // screen while the left stays empty. Works in both themes: light renders
+      // them at full opacity, dark at a dimmed glow.
+      const colFrac = c / lastCol;
+      const spawnChance = 0.015 + colFrac * 0.035;
+      const baseOpacity = Math.random() < spawnChance
+        ? (isLight ? 1 : 0.2 + Math.random() * 0.4)
+        : 0;
 
       cells.push({
         x: c * cellSize,
         y: r * cellSize,
         size: cellSize,
-        color,
+        color: ACCENT,
         baseOpacity,
         currentOpacity: baseOpacity,
         prevDrawnOpacity: baseOpacity,
@@ -144,6 +136,7 @@ const HeroGridAnimation: React.FC<HeroGridAnimationProps> = ({ className = '', r
     if (reduced) {
       ctx.clearRect(0, 0, canvas.width / dpr, canvas.height / dpr);
       for (const cell of cellsRef.current) {
+        if (cell.baseOpacity === 0) continue;
         ctx.fillStyle = `rgba(${cell.color[0]},${cell.color[1]},${cell.color[2]},${cell.baseOpacity * 0.5})`;
         drawRoundedRect(ctx, cell.x + 1, cell.y + 1, cell.size - 2, cell.size - 2, CORNER_RADIUS);
         ctx.fill();
