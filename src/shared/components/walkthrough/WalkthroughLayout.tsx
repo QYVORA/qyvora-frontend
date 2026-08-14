@@ -97,16 +97,17 @@ export function WalkthroughLayout({
         </button>
 
         {/* Room Header */}
-        <div className="mb-10 rounded-2xl border border-border/30 bg-bg-card p-6 md:p-8">
+        <div className="relative overflow-hidden mb-12 md:mb-16 rounded-2xl border border-border/30 bg-bg-card p-6 md:p-8">
+          <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-accent/40 to-transparent" />
           <div className="flex items-start gap-5">
             <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl border border-border/30 bg-bg-elevated text-accent">
               {icon}
             </div>
             <div className="flex-1 min-w-0">
-              <h1 className="text-3xl md:text-4xl lg:text-5xl font-black text-text-primary tracking-tight">
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-black uppercase tracking-tight leading-[1.05] text-text-primary">
                 {title}
               </h1>
-              <p className="mt-2 text-base text-text-secondary leading-relaxed">{subtitle}</p>
+              <p className="mt-3 text-base md:text-lg text-text-secondary leading-relaxed">{subtitle}</p>
               <div className="mt-4 flex flex-wrap items-center gap-2">
                 {difficulty && (
                   <span className={cn('px-2.5 py-1 rounded-lg text-[9px] font-black uppercase tracking-widest', difficultyColor ?? 'bg-accent/10 text-accent')}>
@@ -194,7 +195,7 @@ export function WalkthroughLayout({
         )}
 
         {/* Steps */}
-        <div className="space-y-6">
+        <div className="space-y-12 md:space-y-16">
           {children}
         </div>
 

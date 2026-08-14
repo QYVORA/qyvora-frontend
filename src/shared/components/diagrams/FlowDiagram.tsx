@@ -23,15 +23,15 @@ interface FlowDiagramProps {
 }
 
 const STATUS_STYLES = {
-  default: 'border-border/40 bg-bg-elevated text-text-muted',
-  active: 'border-accent/50 bg-accent/10 text-accent',
-  completed: 'border-green-500/50 bg-green-500/10 text-green-400',
-  danger: 'border-red-500/50 bg-red-500/10 text-red-400',
-  warning: 'border-yellow-500/50 bg-yellow-500/10 text-yellow-400',
-  success: 'border-accent/50 bg-accent/10 text-accent',
+  default: 'border-border/40 bg-bg-elevated text-text-secondary',
+  active: 'border-accent/60 bg-accent/10 text-accent',
+  completed: 'border-green-500/60 bg-green-500/10 text-green-500',
+  danger: 'border-red-500/60 bg-red-500/10 text-red-400',
+  warning: 'border-yellow-500/60 bg-yellow-500/10 text-yellow-400',
+  success: 'border-accent/60 bg-accent/10 text-accent',
 };
 
-const NODE_SIZE = 'w-24 h-16 md:w-32 md:h-20';
+const NODE_SIZE = 'w-28 h-20 md:w-36 md:h-24';
 
 function FlowArrowHorizontal({ arrow }: { arrow: FlowArrow }) {
   const dashStyle = arrow.type === 'dashed' ? 'stroke-dasharray="6 3"' : arrow.type === 'dotted' ? 'stroke-dasharray="2 2"' : '';
@@ -97,7 +97,7 @@ function FlowNodeBox({ node }: { node: FlowNode }) {
       )}
       <span className="text-[10px] md:text-xs font-black uppercase tracking-wider leading-tight">{node.label}</span>
       {node.sublabel && (
-        <span className="text-[8px] md:text-[9px] font-mono opacity-60 mt-0.5">{node.sublabel}</span>
+        <span className="text-[8px] md:text-[9px] font-mono opacity-70 mt-0.5">{node.sublabel}</span>
       )}
     </div>
   );
@@ -109,8 +109,9 @@ export function FlowDiagram({ nodes, arrows, direction = 'horizontal', className
 
   if (direction === 'horizontal') {
     return (
-      <div className={cn('rounded-xl border border-border/20 bg-bg-elevated/50 p-4 overflow-x-auto', className)}>
-        <div className="flex items-center justify-center min-w-max gap-0">
+      <div className={cn('relative overflow-hidden rounded-xl border border-border/30 bg-bg-card p-4 md:p-6 overflow-x-auto', className)}>
+        <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-accent/40 to-transparent" />
+        <div className="flex items-center min-w-max gap-0">
           {arrows.map((arrow, i) => {
             const fromNode = nodeMap.get(arrow.from);
             const toNode = nodeMap.get(arrow.to);
@@ -129,7 +130,8 @@ export function FlowDiagram({ nodes, arrows, direction = 'horizontal', className
   }
 
   return (
-    <div className={cn('rounded-xl border border-border/20 bg-bg-elevated/50 p-4', className)}>
+    <div className={cn('relative overflow-hidden rounded-xl border border-border/30 bg-bg-card p-4 md:p-6', className)}>
+      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-accent/40 to-transparent" />
       <div className="flex flex-col items-center gap-0">
         {arrows.map((arrow, i) => {
           const fromNode = nodeMap.get(arrow.from);

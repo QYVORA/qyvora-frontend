@@ -215,7 +215,7 @@ type InlineBlock =
   | { kind: 'hr' }
   | { kind: 'blockquote'; text: string };
 
-const PARA_CLASS = 'leading-[1.8] sm:leading-[1.85] max-w-prose sm:max-w-[85ch] lg:max-w-3xl px-1 sm:px-0';
+const PARA_CLASS = 'text-sm md:text-base text-text-secondary font-mono leading-[2] md:leading-[2.2] mb-6 md:mb-8 max-w-none';
 
 function parseBlocks(text: string): InlineBlock[] {
   const rawBlocks = text.split(/\n\n+/);
@@ -271,7 +271,7 @@ function renderBlock(block: InlineBlock, key: number): React.ReactNode {
       );
     case 'ul':
       return (
-        <ul key={key} className="list-disc list-inside space-y-3 leading-[1.8] sm:leading-[1.85] max-w-prose sm:max-w-[85ch] lg:max-w-3xl px-1 sm:px-0">
+        <ul key={key} className="list-disc list-inside space-y-3 md:space-y-4 text-sm md:text-base text-text-secondary font-mono leading-[2] md:leading-[2.2] mb-6 md:mb-8 max-w-none">
           {block.items.map((item, j) => (
             <li key={j}>{renderInline(item)}</li>
           ))}
@@ -279,7 +279,7 @@ function renderBlock(block: InlineBlock, key: number): React.ReactNode {
       );
     case 'ol':
       return (
-        <ol key={key} className="list-decimal list-inside space-y-3 leading-[1.8] sm:leading-[1.85] max-w-prose sm:max-w-[85ch] lg:max-w-3xl px-1 sm:px-0">
+        <ol key={key} className="list-decimal list-inside space-y-3 md:space-y-4 text-sm md:text-base text-text-secondary font-mono leading-[2] md:leading-[2.2] mb-6 md:mb-8 max-w-none">
           {block.items.map((item, j) => (
             <li key={j}>{renderInline(item)}</li>
           ))}
@@ -288,11 +288,13 @@ function renderBlock(block: InlineBlock, key: number): React.ReactNode {
     case 'heading': {
       const level = Math.min(block.level, 4);
       const size =
-        level === 1 ? 'text-2xl mt-6 mb-4' :
-        level === 2 ? 'text-xl mt-5 mb-3' :
-        level === 3 ? 'text-lg mt-4 mb-2' :
-                      'text-base mt-3 mb-2';
-      const cls = `font-bold text-text-primary leading-snug ${size} px-1 sm:px-0 max-w-prose sm:max-w-[85ch] lg:max-w-3xl`;
+        level === 1 ? 'text-2xl md:text-4xl mb-6 md:mb-8' :
+        level === 2 ? 'text-2xl md:text-4xl mb-6 md:mb-8' :
+        level === 3 ? 'text-xl md:text-2xl text-accent mb-5 md:mb-6' :
+                      'text-lg font-black mb-4 mt-4';
+      const cls = `font-black uppercase tracking-tight leading-snug ${size} max-w-none ${
+        level === 3 ? 'text-accent' : 'text-text-primary'
+      }`;
       switch (level) {
         case 1: return <h1 key={key} className={cls}>{renderInline(block.text)}</h1>;
         case 2: return <h2 key={key} className={cls}>{renderInline(block.text)}</h2>;
@@ -302,12 +304,12 @@ function renderBlock(block: InlineBlock, key: number): React.ReactNode {
     }
     case 'blockquote':
       return (
-        <blockquote key={key} className="border-l-2 border-accent/40 pl-4 italic text-text-secondary leading-[1.8] sm:leading-[1.85] max-w-prose sm:max-w-[85ch] lg:max-w-3xl px-1 sm:px-0">
+        <blockquote key={key} className="border-l-2 border-accent/40 pl-4 md:pl-6 italic text-text-secondary font-mono leading-[2] md:leading-[2.2] mb-6 md:mb-8 max-w-none">
           {renderInline(block.text)}
         </blockquote>
       );
     case 'hr':
-      return <hr key={key} className="border-border my-12 md:my-16" />;
+      return <hr key={key} className="border-border my-14 md:my-20" />;
   }
 }
 
@@ -361,7 +363,7 @@ const CodeBlockRenderer: React.FC<{ text: string }> = ({ text }) => {
         const blocks = parseBlocks(seg.text);
 
         return (
-          <div key={segIdx} className="space-y-8 md:space-y-10">
+          <div key={segIdx}>
             {blocks.map((block, blockIdx) => renderBlock(block, blockIdx))}
           </div>
         );
