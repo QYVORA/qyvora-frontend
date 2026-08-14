@@ -94,6 +94,7 @@ export const SITE_CONFIG = {
           { key: 'courses', label: 'Courses', path: '/courses', desc: 'Security courses' },
           { key: 'bootcamp', label: 'Bootcamp', path: '/hpb', desc: 'Hacker Protocol Bootcamp' },
           { key: 'labs', label: 'Labs', path: '/labs', desc: 'Attack labs' },
+          { key: 'simulations', label: 'Simulations', path: '/simulations', desc: 'Live tool demos' },
         ],
       },
       {
@@ -113,6 +114,7 @@ export const SITE_CONFIG = {
       { key: 'courses', label: 'Courses', path: '/courses', desc: 'Security courses' },
       { key: 'bootcamp', label: 'Bootcamp', path: '/hpb', desc: 'Hacker Protocol Bootcamp' },
       { key: 'labs', label: 'Labs', path: '/labs', desc: 'Attack labs' },
+      { key: 'simulations', label: 'Simulations', path: '/simulations', desc: 'Live tool demos' },
       { key: 'anansi', label: 'Anansi', path: '/anansi', desc: 'Attack Surface Intelligence' },
       { key: 'jabari', label: 'Jabari', path: '/jabari', desc: 'Android security assessment' },
       { key: 'leaderboard', label: 'Leaderboard', path: '/leaderboard', desc: 'Top operators ranking' },

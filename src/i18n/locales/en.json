@@ -20,6 +20,7 @@
     "dashboard": "Dashboard",
     "bootcamp": "Bootcamp",
     "labs": "Labs",
+    "simulations": "Simulations",
     "settings": "Settings",
     "competitive": "Competitive",
     "notifications": {
@@ -511,6 +512,31 @@
       "heading1": "Attack",
       "heading2": "Labs"
     },
+    "simulations": {
+      "badge": "Interactive Demos",
+      "heading1": "Simulation",
+      "heading2": "Playground",
+      "description": "Try the tools live — no account needed.",
+      "exploreAll": "Explore All Simulations",
+      "launchDemo": "Launch Demo",
+      "list": {
+        "terminal": {
+          "title": "Terminal",
+          "desc": "A full Linux shell in your browser — navigate files, run commands, chain pipes and redirects against a realistic sandbox.",
+          "tag": "Linux Shell"
+        },
+        "ide": {
+          "title": "Code Playground",
+          "desc": "A browser-based IDE with Python, JavaScript and Bash. Write, run, and debug code with a built-in terminal.",
+          "tag": "3 Languages"
+        },
+        "network": {
+          "title": "Network Visualizer",
+          "desc": "Map live network topologies — hosts, subnets, ports and services — exactly like the recon tools used in ops.",
+          "tag": "Topology Mapper"
+        }
+      }
+    },
     "courses": {
       "badge": "Self-Paced",
       "heading": "Courses",
@@ -853,6 +879,64 @@
           "bio": "I don’t protect assets—I grow them wisely."
         }
       }
+    }
+  },
+  "simulations": {
+    "metaTitle": "Simulations - QYVORA",
+    "metaDescription": "Try QYVORA's simulation tools live — a browser terminal, a code playground, and a network visualizer. No account required.",
+    "heroTitle": "Simulation",
+    "heroAccent": "Playground",
+    "heroDescription": "Try the tools before you commit — every simulation runs live in your browser, with no account and no setup.",
+    "statsTools": "Live Tools",
+    "statsNoAccount": "No Account",
+    "startTraining": "Start Training",
+    "backToAll": "Back to All Simulations",
+    "backToIndex": "Back to Simulations",
+    "runDemo": "Run the Demo",
+    "terminal": {
+      "slug": "terminal",
+      "tag": "Linux Shell",
+      "title": "Browser Terminal",
+      "titleAccent": "Linux Shell",
+      "description": "A full Linux shell running in your browser. Navigate a realistic filesystem, inspect permissions, and chain commands with pipes and redirects.",
+      "demoTitle": "Live Terminal",
+      "demoDescription": "This is a real simulated shell. Type help or run commands like ls, cat, whoami, and history.",
+      "features": [
+        "Realistic Linux filesystem",
+        "Pipes, redirects, and environment variables",
+        "Persistent session state",
+        "Typed output with realistic timing"
+      ]
+    },
+    "ide": {
+      "slug": "ide",
+      "tag": "3 Languages",
+      "title": "Code",
+      "titleAccent": "Playground",
+      "description": "A browser-based IDE with Python, JavaScript, and Bash. Write code, run it, and see output — with a terminal docked right underneath.",
+      "demoTitle": "Live IDE",
+      "demoDescription": "Edit any file and hit Run. The built-in terminal is fully interactive.",
+      "features": [
+        "Python, JavaScript and Bash",
+        "Syntax-highlighted editor",
+        "Interactive output console",
+        "Built-in terminal"
+      ]
+    },
+    "network": {
+      "slug": "network-visualizer",
+      "tag": "Topology Mapper",
+      "title": "Network",
+      "titleAccent": "Visualizer",
+      "description": "Map live network topologies — hosts, subnets, ports, and services — the same way operators build a picture of a target environment.",
+      "demoTitle": "Live Network Map",
+      "demoDescription": "Inspect hosts, subnets, and connections. Click nodes to see service details.",
+      "features": [
+        "Interactive topology canvas",
+        "Host and service discovery",
+        "Subnet grouping",
+        "Drag and connect nodes"
+      ]
     }
   },
   "student": {

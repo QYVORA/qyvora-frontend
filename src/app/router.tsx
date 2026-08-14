@@ -46,6 +46,8 @@ const JabariPage        = lazy(() => import('../features/marketing/pages/public/
 const BlogsPage         = lazy(() => import('../features/marketing/pages/public/BlogsPage'));
 const TeamPage          = lazy(() => import('../features/marketing/pages/public/TeamPage'));
 const QuiteRootPage     = lazy(() => import('../features/marketing/pages/public/QuiteRootPage'));
+const SimulationsPage   = lazy(() => import('../features/marketing/pages/public/SimulationsPage'));
+const SimulationPage    = lazy(() => import('../features/marketing/pages/public/SimulationPage'));
 
 // Auth pages
 const LoginPage         = lazy(() => import('../features/auth/pages/LoginPage'));
@@ -220,6 +222,8 @@ export const AppRouter = () => {
           <Route path="/blogs" element={<Wrap scope="Blogs"><BlogsPage /></Wrap>} />
           <Route path="/team" element={<Wrap scope="Team"><TeamPage /></Wrap>} />
           <Route path="/quiteroot" element={<Wrap scope="QuiteRoot"><QuiteRootPage /></Wrap>} />
+          <Route path="/simulations" element={<Wrap scope="Simulations"><SimulationsPage /></Wrap>} />
+          <Route path="/simulations/:slug" element={<Wrap scope="Simulation"><SimulationPage /></Wrap>} />
           
           {/* Legacy slug redirect — "hacker-protocol-book" → "hacker-protocol-bootcamp" */}
           <Route path="/blogs/hacker-protocol-book" element={<Navigate to="/blogs/hacker-protocol-bootcamp" replace />} />

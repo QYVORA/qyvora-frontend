@@ -22,6 +22,7 @@ const NAV_ITEM_LABELS: Record<string, string> = {
   courses: 'nav.courses',
   bootcamp: 'nav.bootcamp',
   labs: 'nav.labs',
+  simulations: 'nav.simulations',
   anansi: 'nav.anansi',
   toha3ee: 'nav.toha3ee',
   jabari: 'nav.jabari',

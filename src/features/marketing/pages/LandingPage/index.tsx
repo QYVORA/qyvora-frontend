@@ -7,6 +7,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import LandingHeroSection from '@/features/marketing/components/landing/LandingHeroSection';
 import LandingPillarsSection from '@/features/marketing/components/landing/LandingPillarsSection';
 import LandingLabsSection from '@/features/marketing/components/landing/LandingLabsSection';
+import LandingSimulationsSection from '@/features/marketing/components/landing/LandingSimulationsSection';
 import LandingCoursesSection from '@/features/marketing/components/landing/LandingCoursesSection';
 import LandingBootcampSection from '@/features/marketing/components/landing/LandingBootcampSection';
 import LandingTeamSection from '@/features/marketing/components/landing/LandingTeamSection';
@@ -35,6 +36,7 @@ const Landing: React.FC = () => {
     { id: 'pillars',    label: t('landing2.platform') },
     { id: 'act-ii',     label: 'Act II' },
     { id: 'labs',       label: t('nav.labs') },
+    { id: 'simulations', label: t('nav.simulations') },
     { id: 'courses',    label: t('nav.courses') },
     { id: 'bootcamp',   label: t('nav.bootcamp') },
     { id: 'act-iii',    label: 'Act III' },
@@ -164,6 +166,11 @@ const Landing: React.FC = () => {
       {/* 3. Labs */}
       <section id="labs" className="relative w-full min-h-dvh lg:h-dvh snap-section bg-bg">
         <LandingLabsSection />
+      </section>
+
+      {/* 3.5 Simulations */}
+      <section id="simulations" className="relative w-full min-h-dvh lg:h-dvh snap-section bg-bg">
+        <LandingSimulationsSection />
       </section>
 
       {/* 4. Courses */}
