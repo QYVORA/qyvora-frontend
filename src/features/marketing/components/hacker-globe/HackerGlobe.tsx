@@ -87,7 +87,7 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88, offset = [0, 0,
     const w = Math.max(el.clientWidth, 1);
     const h = Math.max(el.clientHeight, 1);
     renderer.setSize(w, h, false);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, ctx.simplified ? 1 : 1.5));
     if ('outputColorSpace' in renderer) {
       renderer.outputColorSpace = THREE.SRGBColorSpace;
     }
@@ -117,51 +117,70 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88, offset = [0, 0,
     scene.add(globe);
 
     const sphereSegments = ctx.simplified ? 32 : 64;
-    const dotTex = buildDotMapTexture(isLight, 1.6);
 
-    const globeFront = new THREE.Mesh(
-      new THREE.SphereGeometry(1.0, sphereSegments, sphereSegments),
-      new THREE.MeshBasicMaterial({
-        map: dotTex, transparent: true, opacity: 1.0,
-        alphaTest: 0.01, depthWrite: true, side: THREE.DoubleSide,
-      }),
-    );
-    globeFront.renderOrder = 1;
-    globe.add(globeFront);
+    // The dot-map texture and instanced pins are built off the critical path so
+    // the first paint and the initial frames are never blocked by synchronous
+    // texture generation or instancing (the biggest load-time jank source on
+    // slower machines).
+    let cancelled = false;
+    let buildTimer = 0;
+    let sceneReady = false;
 
-    // Raised pins on every land dot — smooth rounded bumps, softly translucent,
-    // with no edge outlines so the dot map reads clean instead of brick-like.
-    const pinR   = getDotRadius(1.6);
-    const pinLen = 0.014;
-    const landDots = buildLandDots(1.6);
-    const cylGeo = new THREE.CylinderGeometry(pinR, pinR, pinLen, 16);
-    const pins = new THREE.InstancedMesh(
-      cylGeo,
-      new THREE.MeshBasicMaterial({ depthWrite: true, transparent: true, opacity: 0.7 }),
-      landDots.length,
-    );
+    const buildScene = () => {
+      if (cancelled || sceneReady) return;
 
-    const pinMatrix = new THREE.Matrix4();
-    const pinQuat = new THREE.Quaternion();
-    const yUp = new THREE.Vector3(0, 1, 0);
-    const unit = new THREE.Vector3(1, 1, 1);
-    const { land, region } = getMapColors(isLight);
+      const dotTex = buildDotMapTexture(isLight, 1.6);
 
-    landDots.forEach((d, i) => {
-      const dir = latLngToVec3(d.lat, d.lng, 1).normalize();
-      const center = dir.clone().multiplyScalar(1.001 + pinLen / 2);
-      pinQuat.setFromUnitVectors(yUp, dir);
-      pinMatrix.compose(center, pinQuat, unit);
-      pins.setMatrixAt(i, pinMatrix);
-      pins.setColorAt(i, isBlackRegion(d.lat, d.lng) ? region : land);
-    });
+      const globeFront = new THREE.Mesh(
+        new THREE.SphereGeometry(1.0, sphereSegments, sphereSegments),
+        new THREE.MeshBasicMaterial({
+          map: dotTex, transparent: true, opacity: 1.0,
+          alphaTest: 0.01, depthWrite: true, side: THREE.DoubleSide,
+        }),
+      );
+      globeFront.renderOrder = 1;
+      globe.add(globeFront);
 
-    pins.instanceMatrix.needsUpdate = true;
-    if (pins.instanceColor) pins.instanceColor.needsUpdate = true;
-    pins.renderOrder = 3;
-    globe.add(pins);
+      // Raised pins on every land dot — smooth rounded bumps, softly translucent,
+      // with no edge outlines so the dot map reads clean instead of brick-like.
+      const pinR   = getDotRadius(1.6);
+      const pinLen = 0.014;
+      const landDots = buildLandDots(1.6);
+      const cylGeo = new THREE.CylinderGeometry(pinR, pinR, pinLen, 16);
+      const pins = new THREE.InstancedMesh(
+        cylGeo,
+        new THREE.MeshBasicMaterial({ depthWrite: true, transparent: true, opacity: 0.7 }),
+        landDots.length,
+      );
 
-    sceneRef.current = { renderer, scene, camera, globe };
+      const pinMatrix = new THREE.Matrix4();
+      const pinQuat = new THREE.Quaternion();
+      const yUp = new THREE.Vector3(0, 1, 0);
+      const unit = new THREE.Vector3(1, 1, 1);
+      const { land, region } = getMapColors(isLight);
+
+      landDots.forEach((d, i) => {
+        const dir = latLngToVec3(d.lat, d.lng, 1).normalize();
+        const center = dir.clone().multiplyScalar(1.001 + pinLen / 2);
+        pinQuat.setFromUnitVectors(yUp, dir);
+        pinMatrix.compose(center, pinQuat, unit);
+        pins.setMatrixAt(i, pinMatrix);
+        pins.setColorAt(i, isBlackRegion(d.lat, d.lng) ? region : land);
+      });
+
+      pins.instanceMatrix.needsUpdate = true;
+      if (pins.instanceColor) pins.instanceColor.needsUpdate = true;
+      pins.renderOrder = 3;
+      globe.add(pins);
+
+      // Apply the freshest fluid sizing now that the globe is ready.
+      globe.scale.setScalar(live.current.scale);
+      globe.position.set(live.current.offset[0], live.current.offset[1], live.current.offset[2]);
+
+      sceneReady = true;
+      sceneRef.current = { renderer, scene, camera, globe };
+      start();
+    };
 
     let rafId = 0;
     let last = 0;
@@ -169,6 +188,7 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88, offset = [0, 0,
     let rotationY = globe.rotation.y;
     let targetScrollRotation = 0;
     let currentScrollRotation = 0;
+    let frameCounter = 0;
 
     const handleScroll = () => {
       const snapContainer = document.querySelector('.snap-container');
@@ -196,6 +216,12 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88, offset = [0, 0,
         globe.rotation.y = rotationY + currentScrollRotation;
       }
       last = now;
+      // Constrained devices render every other frame to halve GPU load. The
+      // rotation is driven by real elapsed time, so the globe stays on beat.
+      if (live.current.simplified) {
+        frameCounter += 1;
+        if (frameCounter % 2 !== 0) return;
+      }
       renderer.render(scene, camera);
     };
 
@@ -212,7 +238,15 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88, offset = [0, 0,
     }, { threshold: 0 });
     viewObserver.observe(el);
 
-    start();
+    const handleVisibility = () => {
+      if (document.hidden) stop();
+      else if (visible) start();
+    };
+    document.addEventListener('visibilitychange', handleVisibility);
+
+    // Kick off the heavy build after the current task so the first paint is
+    // not blocked by texture generation / instancing.
+    buildTimer = window.setTimeout(buildScene, 0);
 
     const resizeObserver = new ResizeObserver((entries) => {
       const entry = entries[0];
@@ -227,8 +261,11 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88, offset = [0, 0,
     resizeObserver.observe(el);
 
     return () => {
+      cancelled = true;
+      clearTimeout(buildTimer);
       window.removeEventListener('scroll', handleScroll);
       if (snapEl) snapEl.removeEventListener('scroll', handleScroll);
+      document.removeEventListener('visibilitychange', handleVisibility);
       viewObserver.disconnect();
       resizeObserver.disconnect();
       stop();
