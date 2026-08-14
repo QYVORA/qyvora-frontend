@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useParams, Link, useSearchParams } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { ArrowLeft, ArrowRight, CheckCircle2, ChevronLeft, ChevronRight, Lock, Loader2, Target, Zap } from 'lucide-react';
 import SEO from '@/shared/components/SEO';
 import { getCourseById } from '@/features/student/data/courses';
@@ -12,6 +13,8 @@ import CodePlayground from '@/shared/components/courses/CodePlayground';
 import StudentHeroSection from '@/shared/components/StudentHeroSection';
 import api from '@/core/services/api';
 import { useScrollLock } from '@/core/hooks/useScrollLock';
+import CelebrationModal from '@/shared/components/CelebrationModal';
+import { useCelebrationTrigger } from '@/shared/hooks/useCelebrationTrigger';
 import type { Lesson } from '@/features/student/data/courses';
 
 const STORAGE_KEY = 'qyvora_course_progress';
@@ -92,6 +95,7 @@ const CourseLessonPage: React.FC = () => {
   const { courseId } = useParams<{ courseId: string }>();
   const [searchParams, setSearchParams] = useSearchParams();
   const course = getCourseById(courseId || '');
+  const { t } = useTranslation();
 
   const [purchased, setPurchased] = useState<boolean | null>(null);
   const [checkingAccess, setCheckingAccess] = useState(true);
@@ -142,6 +146,8 @@ const CourseLessonPage: React.FC = () => {
   const lesson = course?.lessons[currentLessonIdx];
   const completedCount = completedLessons.size;
   const progress = totalLessons > 0 ? Math.round((completedCount / totalLessons) * 100) : 0;
+  const allComplete = totalLessons > 0 && completedLessons.size === totalLessons;
+  const [celebrationOpen, setCelebrationOpen] = useCelebrationTrigger(allComplete);
 
   const saveProgress = useCallback((lessons: Set<string>, idx: number) => {
     if (!courseId) return;
@@ -243,11 +249,19 @@ const CourseLessonPage: React.FC = () => {
 
   const isCompleted = completedLessons.has(lesson.id);
   const isLastLesson = currentLessonIdx === totalLessons - 1;
-  const allComplete = completedCount === totalLessons;
 
   return (
     <div className="bg-bg">
       <SEO title={`${course.title} — ${lesson.title}`} description={course.description} noindex />
+
+      <CelebrationModal
+        open={celebrationOpen}
+        onClose={() => setCelebrationOpen(false)}
+        badge={t('student.celebration.courseBadge')}
+        title={t('student.celebration.courseTitle')}
+        description={t('student.celebration.courseDescription', { title: course.title })}
+        ctaLabel={t('student.celebration.continue')}
+      />
 
       <WalkthroughSidebar
         sections={[{

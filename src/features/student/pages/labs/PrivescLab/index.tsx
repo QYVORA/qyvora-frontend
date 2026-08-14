@@ -12,6 +12,7 @@ import { getRelatedContentForLab } from '@/shared/constants/topicMap';
 import RelatedContent from '@/shared/components/RelatedContent';
 import StudentHeroSection from '@/shared/components/StudentHeroSection';
 import { FlowDiagram } from '@/shared/components/diagrams/FlowDiagram';
+import { LabCelebration } from '@/shared/components/LabCelebration';
 
 const DIFFICULTY_STYLES: Record<string, string> = {
   beginner: 'bg-green-400/10 text-green-400 border-green-400/20',
@@ -191,6 +192,12 @@ const PrivescLab = () => {
           </div>
         )}
       </WalkthroughLayout>
+
+      <LabCelebration
+        trigger={allDone}
+        title={selectedScenario.title}
+        rewardCp={50}
+      />
     </div>
   );
 };

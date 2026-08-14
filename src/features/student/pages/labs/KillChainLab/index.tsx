@@ -10,6 +10,7 @@ import { getRelatedContentForLab } from '@/shared/constants/topicMap';
 import RelatedContent from '@/shared/components/RelatedContent';
 import { KillChainDiagramSimple } from '@/shared/components/diagrams/KillChainDiagram';
 import StudentHeroSection from '@/shared/components/StudentHeroSection';
+import { LabCelebration } from '@/shared/components/LabCelebration';
 
 const KillChainLab = () => {
   const [activeScenario, setActiveScenario] = useState(null);
@@ -191,6 +192,12 @@ const KillChainLab = () => {
           </div>
         )}
       </WalkthroughLayout>
+
+      <LabCelebration
+        trigger={flagStatus === 'correct'}
+        title={activeScenario.title}
+        rewardCp={activeScenario.cpReward}
+      />
     </div>
   );
 };

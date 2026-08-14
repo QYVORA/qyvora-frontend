@@ -1286,6 +1286,15 @@
         "badge": "Room Complete!"
       }
     },
+    "celebration": {
+      "title": "Mission Complete",
+      "description": "You captured the flag and completed {{title}}.",
+      "continue": "Continue",
+      "badge": "Lab Complete",
+      "courseTitle": "Course Complete",
+      "courseDescription": "You completed every lesson in {{title}}. Outstanding work.",
+      "courseBadge": "Course Complete"
+    },
     "settings": {
       "seoTitle": "Settings",
       "seoDesc": "Account and learning preferences.",
