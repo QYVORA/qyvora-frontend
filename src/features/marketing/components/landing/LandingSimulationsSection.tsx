@@ -126,7 +126,7 @@ const LandingSimulationsSection: React.FC = () => {
   const shouldReduceMotion = useReducedMotion();
 
   return (
-    <div className="relative flex min-h-dvh flex-col overflow-hidden bg-bg" data-nav-invert>
+    <div className="relative flex min-h-dvh flex-col overflow-x-clip overflow-y-visible bg-bg" data-nav-invert>
       <div className="relative z-10 flex h-full w-full flex-1 flex-col px-3 pb-6 pt-24 md:px-4 md:pb-8 md:pt-28 lg:px-6 lg:pb-10 lg:pt-32">
         <div className="mb-5 shrink-0 md:mb-6">
           <span className="mb-3 inline-block rounded-full border border-accent/30 bg-accent/10 px-3 py-1.5 text-[9px] font-black uppercase tracking-widest text-accent">{t('landing.simulations.badge')}</span>
@@ -136,25 +136,27 @@ const LandingSimulationsSection: React.FC = () => {
           <p className="mt-2 font-mono text-xs leading-relaxed text-text-secondary">{t('landing.simulations.description')}</p>
         </div>
 
-        {shouldReduceMotion ? (
-          <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
-            {SIMULATIONS.map((sim) => <SimulationCard key={sim.id} sim={sim} />)}
-          </div>
-        ) : (
-          <div className="relative -mx-3 h-[350px] shrink-0 overflow-hidden md:-mx-4 sm:h-[390px] lg:-mx-6 lg:h-[410px]">
-            <div className="marquee-track">
-              {[0, 1].map((copy) => (
-                <div key={copy} aria-hidden={copy === 1} className="flex h-full shrink-0 items-stretch gap-4 pr-4 md:gap-5 md:pr-5">
-                  {SIMULATIONS.map((sim) => <SimulationCard key={`${copy}-${sim.id}`} sim={sim} tabIndex={copy === 1 ? -1 : undefined} />)}
-                </div>
-              ))}
+        <div className="relative -translate-y-4 sm:-translate-y-5 lg:-translate-y-6">
+          {shouldReduceMotion ? (
+            <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
+              {SIMULATIONS.map((sim) => <SimulationCard key={sim.id} sim={sim} />)}
             </div>
-          </div>
-        )}
+          ) : (
+            <div className="relative -mx-3 h-[350px] shrink-0 overflow-x-clip overflow-y-visible md:-mx-4 sm:h-[390px] lg:-mx-6 lg:h-[410px]">
+              <div className="marquee-track">
+                {[0, 1].map((copy) => (
+                  <div key={copy} aria-hidden={copy === 1} className="flex h-full shrink-0 items-stretch gap-4 pr-4 md:gap-5 md:pr-5">
+                    {SIMULATIONS.map((sim) => <SimulationCard key={`${copy}-${sim.id}`} sim={sim} tabIndex={copy === 1 ? -1 : undefined} />)}
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
 
-        <Link to="/simulations" className="mt-4 inline-flex w-fit shrink-0 items-center gap-2 text-[10px] font-black uppercase tracking-widest text-text-muted transition-colors hover:text-text-primary">
-          {t('landing.simulations.exploreAll')} <IconArrowRight size={14} />
-        </Link>
+          <Link to="/simulations" className="mt-4 inline-flex w-fit shrink-0 items-center gap-2 text-[10px] font-black uppercase tracking-widest text-text-muted transition-colors hover:text-text-primary">
+            {t('landing.simulations.exploreAll')} <IconArrowRight size={14} />
+          </Link>
+        </div>
       </div>
     </div>
   );

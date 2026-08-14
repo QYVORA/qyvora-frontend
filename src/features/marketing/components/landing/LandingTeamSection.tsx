@@ -70,7 +70,7 @@ const LandingTeamSection = () => {
   const shouldReduceMotion = useReducedMotion();
 
   return (
-    <div className="relative bg-bg min-h-dvh lg:h-dvh flex flex-col overflow-hidden">
+    <div className="relative bg-bg min-h-dvh lg:h-dvh flex flex-col overflow-x-clip overflow-y-visible">
       <div className="relative z-10 w-full h-full px-3 md:px-4 lg:px-6 py-12 sm:py-10 md:py-16 lg:py-20 flex flex-col gap-10 sm:gap-12 lg:gap-14">
         {/* Header — heading on the left, CTA aligned horizontally on the right */}
         <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6">
@@ -94,7 +94,7 @@ const LandingTeamSection = () => {
           </div>
         ) : (
           /* Large card infinite carousel — cards fill the strip, never clipped */
-          <div className="relative -mx-3 md:-mx-4 lg:-mx-6 flex-1 min-h-[400px] sm:min-h-0 min-w-0 overflow-hidden flex items-center">
+          <div className="relative -mx-3 md:-mx-4 lg:-mx-6 flex-1 min-h-[400px] sm:min-h-0 min-w-0 overflow-x-clip overflow-y-visible flex items-center py-3">
             <div className="marquee-track">
               {[0, 1].map((copy) => (
                 <div key={copy} aria-hidden={copy === 1} className="h-full flex items-stretch shrink-0">
