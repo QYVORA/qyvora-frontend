@@ -7,7 +7,8 @@ import StudentHeroSection, { PUBLIC_HERO_TITLE_CLASS } from '@/shared/components
 import { Footer } from '@/shared/components/layout';
 import { useAuth } from '@/core/contexts/AuthContext';
 import LandingFinalCtaSection from '@/features/marketing/components/landing/LandingFinalCtaSection';
-import FeatureMarquee from '@/shared/components/FeatureMarquee';
+import ToolDocumentationSection from '@/shared/components/ToolDocumentationSection';
+import GoCodeCarousel from '@/shared/components/GoCodeCarousel';
 import { PHASES, RELEASES, ONE_LINER, BUILD_FROM_SOURCE, USAGE_EXAMPLES, SCAN_OUTPUT } from '@/features/marketing/data/anansiData';
 import anansiLogo from '@/assets/anansi/anansi-main-logo.webp';
 
@@ -60,32 +61,75 @@ const AnansiPage = () => {
             </div>
           }
         >
-          <a
-            href="#install"
-            className="btn-primary inline-flex items-center gap-2 px-6 py-2.5"
-          >
-            <Download className="w-4 h-4" /> Install Now <IconArrowRight size={14} />
-          </a>
+          <div className="flex flex-wrap items-center gap-3">
+            <a href="#install" className="btn-primary inline-flex items-center gap-2 px-6 py-2.5"><Download className="w-4 h-4" /> Install Now <IconArrowRight size={14} /></a>
+            <span className="inline-flex items-center gap-2 px-2.5 py-1 rounded-lg border border-border/30 bg-bg-card text-[9px] font-black uppercase tracking-widest text-text-muted"><span className="font-black text-[#00ADD8]">Go</span> 1.22+</span>
+          </div>
         </StudentHeroSection>
 
-        {/* ── Nine-phase capability marquee ─────────────────────────────── */}
-        <PublicSnapSection>
-          <div className="flex flex-col gap-6 lg:gap-8">
-            <SectionHeader
-              kicker="Attack Surface Pipeline"
-              title="Nine"
-              accent="Phases"
-              description="From subdomain discovery to exploit-chain analysis — each module feeds the next."
-            />
-            <FeatureMarquee
-              items={PHASES.map((phase) => ({
-                id: phase.id,
-                meta: `Module ${phase.id}`,
-                icon: <phase.icon className="w-5 h-5 text-accent" />,
-                title: phase.name,
-                description: phase.desc,
-              }))}
-            />
+        {PHASES.map((phase) => (
+          <ToolDocumentationSection
+            key={phase.id}
+            id={`phase-${phase.id}`}
+            index={phase.id}
+            icon={phase.icon}
+            eyebrow="Anansi pipeline"
+            title={phase.name}
+            accent="module"
+            description={phase.desc}
+            why="This phase turns one part of a target's public attack surface into evidence the next phase can use, keeping reconnaissance structured instead of ad hoc."
+            bullets={['Runs as part of a nine-phase, terminal-first intelligence pipeline.', 'Shares results with later phases instead of treating findings as isolated output.', 'Only reports assets and checks that the scanner can substantiate by default.']}
+            code={`anansi target.example --modules ${['discovery', 'probe', 'tls', 'headers', 'paths', 'tech', 'takeover', 'osint', 'chain'][Number(phase.id) - 1]}`}
+            codeLabel="Run this phase"
+          />
+        ))}
+
+        <ToolDocumentationSection
+          id="architecture"
+          index="ARC"
+          icon={GitBranch}
+          eyebrow="How Anansi is built"
+          title="Concurrent"
+          accent="by design"
+          description="Anansi is a Go CLI built around shared HTTP transport, TTL DNS caching, fixed worker pools, and concurrent network checks so deep recon stays controlled and repeatable."
+          why="A scanner that repeatedly opens connections or spawns unbounded work becomes slow and noisy; the architecture reuses connections, caches DNS answers, and bounds concurrency."
+          bullets={['One process-wide HTTP transport reuses keep-alive connections.', 'A 60-second DNS cache prevents repeat lookups across recursive and TLS-SAN work.', 'Discovery, probing, paths, and tech-stack work use fixed worker pools.']}
+          tree={['cmd/                 Cobra command layer', 'internal/discovery/  CT logs + DNS discovery', 'internal/probe/      live HTTP/HTTPS checks', 'internal/techstack/  platform fingerprinting', 'internal/chain/      exploit-path assembly', 'wordlists/           editable rules and fingerprints']}
+        />
+
+        <PublicSnapSection id="go-source" fitViewport>
+          <div className="flex h-full min-h-0 flex-col justify-center gap-5">
+            <SectionHeader kicker="Go source" title="Small" accent="entry point" description="The executable delegates to the Cobra command package; the larger pipeline is split into focused internal packages." />
+            <GoCodeCarousel examples={[
+              { 
+                id: 'entry', 
+                filename: 'main.go', 
+                label: 'CLI entry point', 
+                description: 'The binary stays intentionally thin and hands control to the command layer.', 
+                code: 'package main\n\nimport "github.com/QYVORA/qyvora-anansi-cli/cmd"\n\nfunc main() {\n    cmd.Execute()\n}' 
+              },
+              { 
+                id: 'pipeline', 
+                filename: 'internal/', 
+                label: 'Pipeline boundaries', 
+                description: 'Recon capabilities are separated by domain so discovery, probing, TLS, paths, and reporting can evolve independently.', 
+                code: '// internal/discovery  — CT logs + DNS\n// internal/probe      — live HTTP/HTTPS\n// internal/tls        — certificate analysis\n// internal/techstack  — platform audit\n// internal/chain      — exploit-path assembly' 
+              },
+              { 
+                id: 'transport', 
+                filename: 'internal/probe/client.go', 
+                label: 'Shared HTTP transport', 
+                description: 'One process-wide HTTP client reuses keep-alive connections across all HTTP/HTTPS probing work.', 
+                code: 'var httpClient = &http.Client{\n    Transport: &http.Transport{\n        MaxIdleConns:        100,\n        MaxIdleConnsPerHost: 10,\n        IdleConnTimeout:     90 * time.Second,\n    },\n    Timeout: 10 * time.Second,\n}' 
+              },
+              { 
+                id: 'worker', 
+                filename: 'internal/discovery/workers.go', 
+                label: 'Worker pool pattern', 
+                description: 'Fixed-size worker pools process subdomain discovery without spawning unbounded goroutines.', 
+                code: 'func processSubdomains(targets []string, workers int) {\n    jobs := make(chan string, len(targets))\n    results := make(chan Result, len(targets))\n    \n    for w := 0; w < workers; w++ {\n        go worker(jobs, results)\n    }\n    \n    for _, target := range targets {\n        jobs <- target\n    }\n    close(jobs)\n}' 
+              },
+            ]} />
           </div>
         </PublicSnapSection>
 

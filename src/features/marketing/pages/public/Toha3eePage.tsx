@@ -7,7 +7,8 @@ import StudentHeroSection, { PUBLIC_HERO_TITLE_CLASS } from '@/shared/components
 import { Footer } from '@/shared/components/layout';
 import { useAuth } from '@/core/contexts/AuthContext';
 import LandingFinalCtaSection from '@/features/marketing/components/landing/LandingFinalCtaSection';
-import FeatureMarquee from '@/shared/components/FeatureMarquee';
+import ToolDocumentationSection from '@/shared/components/ToolDocumentationSection';
+import GoCodeCarousel from '@/shared/components/GoCodeCarousel';
 import { MODULES, INSTALLERS, BUILD_FROM_SOURCE, QUICK_START, CONSOLE_SESSION, GITHUB_URL } from '@/features/marketing/data/toha3eeData';
 import toha3eeLogo from '@/assets/toha3ee/toha3ee-main-logo.webp';
 
@@ -57,12 +58,10 @@ const Toha3eePage = () => {
             </div>
           }
         >
-          <a
-            href="#install"
-            className="btn-primary inline-flex items-center gap-2 px-6 py-2.5"
-          >
-            <Download className="w-4 h-4" /> Install Now <IconArrowRight size={14} />
-          </a>
+          <div className="flex flex-wrap items-center gap-3">
+            <a href="#install" className="btn-primary inline-flex items-center gap-2 px-6 py-2.5"><Download className="w-4 h-4" /> Install Now <IconArrowRight size={14} /></a>
+            <span className="inline-flex items-center gap-2 px-2.5 py-1 rounded-lg border border-border/30 bg-bg-card text-[9px] font-black uppercase tracking-widest text-text-muted"><span className="font-black text-[#00ADD8]">Go</span> 1.26+</span>
+          </div>
         </StudentHeroSection>
 
         {/* ── Authorised-use warning ─────────────────────────────────────── */}
@@ -87,25 +86,69 @@ const Toha3eePage = () => {
           </div>
         </PublicSnapSection>
 
-        {/* ── Module catalogue capability marquee ───────────────────────── */}
-        <PublicSnapSection>
-          <div className="flex flex-col gap-6 lg:gap-8">
-            <SectionHeader
-              kicker="Module Catalogue"
-              title="Ten"
-              accent="Categories"
-              description="Everything is a module — self-registering, centrally safety-checked, clean teardown."
-            />
-            <FeatureMarquee
-              items={MODULES.map((cat) => ({
-                id: cat.id,
-                meta: `${cat.modules.length} modules`,
-                icon: <cat.icon className="w-5 h-5 text-accent" />,
-                title: cat.name,
-                description: cat.desc,
-                commands: cat.modules.join(' '),
-              }))}
-            />
+        {MODULES.map((category, index) => (
+          <ToolDocumentationSection
+            key={category.id}
+            id={`modules-${category.id}`}
+            index={String(index + 1).padStart(2, '0')}
+            icon={category.icon}
+            eyebrow={`${category.modules.length} registered modules`}
+            title={category.name}
+            accent="tooling"
+            description={category.desc}
+            why="Toha3ee organises related capabilities behind one module lifecycle so operators can preflight, run, verify, and clean up consistently."
+            bullets={category.modules.slice(0, 3).map((module) => `${module} — available through the interactive console and scripting engine.`)}
+            code={`toha3ee > modules ${category.id}\ntoha3ee > on ${category.modules[0]}`}
+            codeLabel="Console workflow"
+          />
+        ))}
+
+        <ToolDocumentationSection
+          id="architecture"
+          index="ARC"
+          icon={GitBranch}
+          eyebrow="How Toha3ee is built"
+          title="Safe module"
+          accent="lifecycle"
+          description="Every module self-registers and implements metadata, preflight, run, verify, and cleanup. The safety layer tracks cleanup handlers and heartbeats so network changes are restored after stop signals or failures."
+          why="Network testing can alter live traffic; a central lifecycle makes cleanup and risk gating part of the framework rather than a promise each module has to remember."
+          bullets={['Preflight refuses execution while required checks are blocked.', 'Run loops receive cancellation and must heartbeat while active.', 'Cleanup handlers are run even after panic or SIGINT.']}
+          tree={['cmd/toha3ee/       CLI, REPL, wizard, scripts', 'internal/attacks/    self-registering modules', 'internal/safety/     preflight, risk gates, cleanup', 'internal/netx/       protocol primitives', 'internal/store/      host, credential, event state', 'internal/script/     .toha3ee language', 'pkg/certutil/        CA and TLS certificates']}
+        />
+
+        <PublicSnapSection id="go-source" fitViewport>
+          <div className="flex h-full min-h-0 flex-col justify-center gap-5">
+            <SectionHeader kicker="Go source" title="One module" accent="contract" description="Every Toha3ee capability follows the same lifecycle contract, so the framework can enforce safety checks and cleanup consistently." />
+            <GoCodeCarousel examples={[
+              { 
+                id: 'interface', 
+                filename: 'internal/attacks/module.go', 
+                label: 'Module interface', 
+                description: 'Every attack module implements this contract so the framework can manage lifecycle consistently.', 
+                code: 'type Module interface {\n    Meta() Metadata\n    Preflight(ctx context.Context) error\n    Run(ctx context.Context, opts Options) error\n    Verify(ctx context.Context) (bool, error)\n    Cleanup(ctx context.Context) error\n}' 
+              },
+              { 
+                id: 'register', 
+                filename: 'internal/attacks/arp/arp_spoof.go', 
+                label: 'Self-registration', 
+                description: 'Attack packages register during Go initialisation; duplicate IDs fail fast at startup.', 
+                code: 'func init() {\n    attacks.Register(&ARPSpoofModule{\n        id: "arp.spoof",\n    })\n}' 
+              },
+              { 
+                id: 'cleanup', 
+                filename: 'internal/safety/tracker.go', 
+                label: 'Cleanup tracking', 
+                description: 'The safety layer registers cleanup handlers and runs them even after SIGINT or panic recovery.', 
+                code: 'func (t *Tracker) RegisterCleanup(fn func()) {\n    t.mu.Lock()\n    defer t.mu.Unlock()\n    t.cleanups = append(t.cleanups, fn)\n}\n\nfunc (t *Tracker) RunCleanup() {\n    for i := len(t.cleanups) - 1; i >= 0; i-- {\n        t.cleanups[i]()\n    }\n}' 
+              },
+              { 
+                id: 'heartbeat', 
+                filename: 'internal/attacks/base.go', 
+                label: 'Heartbeat requirement', 
+                description: 'Running modules must heartbeat periodically; the framework stops unresponsive work.', 
+                code: 'func (m *BaseModule) Run(ctx context.Context) error {\n    ticker := time.NewTicker(5 * time.Second)\n    defer ticker.Stop()\n    \n    for {\n        select {\n        case <-ctx.Done():\n            return ctx.Err()\n        case <-ticker.C:\n            m.Heartbeat()\n        }\n    }\n}' 
+              },
+            ]} />
           </div>
         </PublicSnapSection>
 
