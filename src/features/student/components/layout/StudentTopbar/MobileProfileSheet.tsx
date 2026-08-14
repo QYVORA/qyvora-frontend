@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { LogOut, Terminal, Code2, Network, Wrench, Settings, Globe } from 'lucide-react';
 import { IconX } from '@/shared/components/icons';
 import { BottomSheet, BottomSheetClose, BottomSheetContent } from '../../../../../shared/components/ui/BottomSheet';
 import Identicon from '../../../../../shared/components/Identicon';
 import ToolChooserModal from '@/features/student/components/tools/ToolChooserModal';
+import { SETTINGS_SECTIONS, isSettingsPath } from '@/features/student/constants/settingsSections';
 
 interface MobileProfileSheetProps {
   open: boolean;
@@ -40,6 +41,8 @@ const MobileProfileSheet: React.FC<MobileProfileSheetProps> = ({
   handleLogout,
 }) => {
   const { t } = useTranslation();
+  const location = useLocation();
+  const onSettingsPage = isSettingsPath(location.pathname);
   const [chooserOpen, setChooserOpen] = useState(false);
   const [chosenTool, setChosenTool] = useState<typeof TOOLS[number] | null>(null);
 
@@ -72,35 +75,73 @@ const MobileProfileSheet: React.FC<MobileProfileSheetProps> = ({
           </div>
 
           {/* Header — clickable, navigates to profile */}
-          <Link
-            to="/dashboard/profile"
-            onClick={() => onOpenChange(false)}
-            className="flex items-center justify-between px-5 py-4 border-b border-border/50 flex-none hover:bg-accent-dim/50 transition-colors"
-          >
-            <div className="flex items-center gap-3">
-              <div className="w-12 h-12 shrink-0 rounded-xl overflow-hidden flex items-center justify-center border-2 border-accent bg-black">
-                <Identicon value={user?.username || '?'} size={48} className="w-full h-full" />
-              </div>
+          {onSettingsPage ? (
+            <div className="flex items-center justify-between px-5 py-4 border-b border-border/50 flex-none">
               <div>
-                <div className="text-sm font-black uppercase tracking-widest text-text-primary">
-                  {user?.username || '—'}
-                </div>
-                <div className="text-[10px] text-text-muted">{user?.email || '—'}</div>
-                {user?.rank && (
-                  <span className="inline-block mt-1 px-2 py-0.5 rounded-lg bg-accent/10 text-[8px] font-black uppercase tracking-widest text-accent">
-                    {user.rank}
-                  </span>
-                )}
+                <div className="text-[9px] font-black uppercase tracking-[0.25em] text-accent leading-none mb-0.5">CONFIGURE</div>
+                <div className="text-sm font-black uppercase tracking-widest text-text-primary">Settings</div>
               </div>
+              <BottomSheetClose className="p-2 text-text-muted hover:text-accent transition-colors" aria-label="Close menu">
+                <IconX size={20} />
+              </BottomSheetClose>
             </div>
-            <BottomSheetClose className="p-2 text-text-muted hover:text-accent transition-colors" aria-label="Close menu">
-              <IconX size={20} />
-            </BottomSheetClose>
-          </Link>
+          ) : (
+            <Link
+              to="/dashboard/profile"
+              onClick={() => onOpenChange(false)}
+              className="flex items-center justify-between px-5 py-4 border-b border-border/50 flex-none hover:bg-accent-dim/50 transition-colors"
+            >
+              <div className="flex items-center gap-3">
+                <div className="w-12 h-12 shrink-0 rounded-xl overflow-hidden flex items-center justify-center border-2 border-accent bg-black">
+                  <Identicon value={user?.username || '?'} size={48} className="w-full h-full" />
+                </div>
+                <div>
+                  <div className="text-sm font-black uppercase tracking-widest text-text-primary">
+                    {user?.username || '—'}
+                  </div>
+                  <div className="text-[10px] text-text-muted">{user?.email || '—'}</div>
+                  {user?.rank && (
+                    <span className="inline-block mt-1 px-2 py-0.5 rounded-lg bg-accent/10 text-[8px] font-black uppercase tracking-widest text-accent">
+                      {user.rank}
+                    </span>
+                  )}
+                </div>
+              </div>
+              <BottomSheetClose className="p-2 text-text-muted hover:text-accent transition-colors" aria-label="Close menu">
+                <IconX size={20} />
+              </BottomSheetClose>
+            </Link>
+          )}
 
           {/* Menu items */}
           <div className="flex-1 overflow-y-auto p-4 space-y-2">
-            {/* Notifications */}
+            {onSettingsPage ? (
+              SETTINGS_SECTIONS.map((section) => {
+                const active = location.pathname === section.path;
+                const Icon = section.icon;
+                return (
+                  <Link
+                    key={section.id}
+                    to={section.path}
+                    onClick={() => onOpenChange(false)}
+                    className={`flex items-center gap-3 px-4 py-3 rounded-xl border text-left transition-all active:scale-[0.98] ${
+                      active ? 'border-accent/40 bg-accent/5' : 'border-border hover:border-accent/30'
+                    }`}
+                  >
+                    <div className="w-10 h-10 rounded-xl bg-bg-elevated border border-border/30 flex items-center justify-center shrink-0">
+                      <Icon size={16} className={active ? 'text-accent' : 'text-text-muted'} />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <div className={`text-xs font-black uppercase tracking-widest ${active ? 'text-accent' : 'text-text-primary'}`}>
+                        {t(section.labelKey)}
+                      </div>
+                    </div>
+                  </Link>
+                );
+              })
+            ) : (
+              <>
+                {/* Notifications */}
             <Link
               to="/dashboard/notifications"
               onClick={() => onOpenChange(false)}
@@ -191,6 +232,8 @@ const MobileProfileSheet: React.FC<MobileProfileSheetProps> = ({
                 </div>
               </div>
             </Link>
+              </>
+            )}
           </div>
 
           {/* Logout */}
