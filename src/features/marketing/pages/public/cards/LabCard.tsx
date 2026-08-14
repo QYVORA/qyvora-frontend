@@ -40,7 +40,7 @@ const LabCard: React.FC<LabCardProps> = ({ lab, view }) => {
     return (
       <Link
         to={lab.route}
-        className="group/card flex flex-col gap-2 rounded-2xl border border-border/30 bg-bg-card p-4 md:p-5 transition-all duration-300 hover:border-accent/30 text-left"
+        className="group/card flex flex-col gap-2 card-accent bg-bg-card p-4 md:p-5 transition-all duration-300 text-left"
       >
         <div className="flex items-center gap-3 min-w-0">
           <div className="w-9 h-9 rounded-xl flex items-center justify-center shrink-0 bg-accent/10 border border-accent/20">
@@ -71,7 +71,7 @@ const LabCard: React.FC<LabCardProps> = ({ lab, view }) => {
   return (
     <Link
       to={lab.route}
-      className="group/card relative h-full min-h-[220px] rounded-2xl border border-border/30 bg-bg-card p-4 md:p-5 transition-all duration-300 hover:border-accent/30 flex flex-col text-left justify-between"
+      className="group/card relative h-full min-h-[220px] card-accent bg-bg-card p-4 md:p-5 transition-all duration-300 flex flex-col text-left justify-between"
     >
       <div>
         <div className="flex items-center justify-between mb-2">

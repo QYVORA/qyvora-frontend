@@ -76,7 +76,7 @@ const DashboardSkeleton = () => (
   <div>
     {/* 1. Hero Banner — matches DashboardHero card layout */}
     <div className="bg-bg px-3 md:px-4 lg:px-6 pt-8 pb-10">
-      <div className="relative rounded-2xl border border-border/30 bg-bg-card p-6 sm:p-10 lg:p-14 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 sm:gap-6 overflow-hidden">
+      <div className="relative card-accent bg-bg-card p-6 sm:p-10 lg:p-14 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 sm:gap-6 overflow-hidden">
         <div className="absolute inset-0 opacity-10">
           <div className="w-full h-full bg-[repeating-linear-gradient(90deg,transparent,transparent_39px,rgba(255,255,255,0.05)_39px,rgba(255,255,255,0.05)_40px)] bg-[length:40px_40px]" />
         </div>
@@ -93,7 +93,7 @@ const DashboardSkeleton = () => (
     <div className="bg-bg-alt px-3 md:px-4 lg:px-6 py-10">
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 md:gap-4 lg:gap-5">
         {[...Array(5)].map((_, i) => (
-          <div key={i} className="flex flex-col items-center gap-3 p-3 md:p-5 lg:p-6 min-h-[100px] md:min-h-[120px] rounded-2xl border border-border/30 bg-bg-card">
+          <div key={i} className="flex flex-col items-center gap-3 p-3 md:p-5 lg:p-6 min-h-[100px] md:min-h-[120px] card-accent bg-bg-card">
             <Skeleton className="w-10 h-10 md:w-14 md:h-14 lg:w-16 lg:h-16 rounded-xl md:rounded-2xl bg-border/30 shrink-0" />
             <Skeleton className="h-2.5 w-16 bg-border/30 rounded" />
           </div>
@@ -113,7 +113,7 @@ const DashboardSkeleton = () => (
         </div>
         <div className="grid grid-cols-2 gap-3">
           {[...Array(4)].map((_, i) => (
-            <div key={i} className="flex flex-col items-center gap-3 p-4 md:p-5 lg:p-6 rounded-2xl border border-border/30 bg-bg-card">
+            <div key={i} className="flex flex-col items-center gap-3 p-4 md:p-5 lg:p-6 card-accent bg-bg-card">
               <Skeleton className="w-12 h-12 md:w-14 md:h-14 lg:w-16 lg:h-16 rounded-xl md:rounded-2xl bg-bg-elevated shrink-0" />
               <Skeleton className="h-2.5 w-14 bg-border/30 rounded" />
               <Skeleton className="h-4 w-12 bg-border/30 rounded" />
@@ -126,10 +126,10 @@ const DashboardSkeleton = () => (
     {/* 4. Skill Matrix — 2-column grid (radar chart + skill stats) */}
     <div className="bg-bg-alt px-3 md:px-4 lg:px-6 py-10">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 md:gap-4 lg:h-[460px]">
-        <div className="rounded-2xl border border-border/30 bg-bg-card p-4 md:p-6 flex flex-col items-center justify-center min-h-[360px] lg:min-h-0">
+        <div className="card-accent bg-bg-card p-4 md:p-6 flex flex-col items-center justify-center min-h-[360px] lg:min-h-0">
           <Skeleton className="w-64 h-64 md:w-72 md:h-72 bg-border/20 rounded-full" />
         </div>
-        <div className="rounded-2xl border border-border/30 bg-bg-card p-4 md:p-6 flex flex-col justify-between gap-2.5 min-h-[360px] lg:min-h-0">
+        <div className="card-accent bg-bg-card p-4 md:p-6 flex flex-col justify-between gap-2.5 min-h-[360px] lg:min-h-0">
           {[...Array(5)].map((_, i) => (
             <div key={i} className="flex items-center gap-3">
               <Skeleton className="h-2.5 w-20 bg-border/30 rounded" />
@@ -150,7 +150,7 @@ const DashboardSkeleton = () => (
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
           {[...Array(3)].map((_, i) => (
-            <div key={i} className="aspect-square rounded-2xl border border-border/30 bg-bg-card flex flex-col p-4 md:p-5">
+            <div key={i} className="aspect-square card-accent bg-bg-card flex flex-col p-4 md:p-5">
               <div className="flex items-center gap-2 mb-3">
                 <Skeleton className="w-8 h-8 rounded-xl bg-border/30 shrink-0" />
                 <Skeleton className="h-5 w-16 bg-border/30 rounded-lg" />
@@ -184,7 +184,7 @@ const DashboardRoomCard = ({ room }: { room: any }) => {
     <Link
       ref={hoverRef}
       to={`/dashboard/bootcamps/bc_1775270338500/phases/${room.id.split('-')[0]}/rooms/${room.id}`}
-      className="group/card relative aspect-square rounded-2xl border border-border/30 bg-bg-card p-3 md:p-5 transition-all duration-300 hover:border-accent/30 flex flex-col text-left"
+      className="group/card relative aspect-square card-accent bg-bg-card p-3 md:p-5 transition-all duration-300 flex flex-col text-left"
     >
       <div className="flex items-center gap-2 mb-2">
         <div className="w-8 h-8 rounded-xl flex items-center justify-center shrink-0 bg-accent/10 border border-accent/20">
@@ -216,7 +216,7 @@ const SectionButton = ({ icon, label, active, onClick, ...rest }: { icon: React.
     className={`flex flex-col items-center gap-2 p-3 md:p-5 lg:p-6 min-h-[100px] md:min-h-[120px] rounded-2xl border text-center transition-all duration-300 ${
       active
         ? 'border-accent bg-accent/10 shadow-lg shadow-accent/10'
-        : 'border-border/30 bg-bg-card hover:border-accent/30 hover:bg-bg-card/80'
+        : 'border-border/30 bg-bg-card hover:bg-bg-card/80'
     }`}
   >
     <div className={`w-10 h-10 md:w-14 md:h-14 lg:w-16 lg:h-16 rounded-xl md:rounded-2xl flex items-center justify-center shrink-0 ${
@@ -236,7 +236,7 @@ const DashboardProductCard = ({ product }: { product: any }) => {
   const title = String(product?.title || t('student.dashboard.intelligenceAsset'));
   const description = String(product?.description || t('student.dashboard.intelligenceDesc'));
   return (
-    <div className="group flex flex-col overflow-hidden rounded-2xl border border-border/30 bg-bg-card transition-all duration-300 hover:border-accent/30">
+    <div className="group flex flex-col overflow-hidden card-accent bg-bg-card transition-all duration-300">
       <div className="relative aspect-[16/9] overflow-hidden bg-accent/5">
         <AuthImage
           src={product?.coverUrl}
@@ -519,7 +519,7 @@ const Dashboard = () => {
 
             {/* Right: Stats Cards */}
             <div className="grid grid-cols-2 gap-3">
-              <div className="flex flex-col items-center gap-2 p-4 md:p-5 lg:p-6 rounded-2xl border border-border/30 bg-bg-card text-center">
+              <div className="flex flex-col items-center gap-2 p-4 md:p-5 lg:p-6 card-accent bg-bg-card text-center">
                 <div className="w-12 h-12 md:w-14 md:h-14 lg:w-16 lg:h-16 rounded-xl md:rounded-2xl flex items-center justify-center shrink-0 bg-bg-elevated text-text-primary">
                   <IconRank size={24} className="text-accent md:w-7 md:h-7 lg:w-8 lg:h-8" />
                 </div>
@@ -528,7 +528,7 @@ const Dashboard = () => {
                   <p className="text-xl md:text-2xl font-black text-text-primary">{rankName}</p>
                 </div>
               </div>
-              <div className="flex flex-col items-center gap-2 p-4 md:p-5 lg:p-6 rounded-2xl border border-border/30 bg-bg-card text-center" data-tour-id="tour-cp-dashboard">
+              <div className="flex flex-col items-center gap-2 p-4 md:p-5 lg:p-6 card-accent bg-bg-card text-center" data-tour-id="tour-cp-dashboard">
                 <div className="w-12 h-12 md:w-14 md:h-14 lg:w-16 lg:h-16 rounded-xl md:rounded-2xl flex items-center justify-center shrink-0 bg-bg-elevated">
                   <CpLogo className="w-6 h-6 md:w-7 md:h-7 lg:w-8 lg:h-8" />
                 </div>
@@ -537,7 +537,7 @@ const Dashboard = () => {
                   <p className="text-xl md:text-2xl font-black text-text-primary">{cpBalance.toLocaleString()}</p>
                 </div>
               </div>
-              <div className="flex flex-col items-center gap-2 p-4 md:p-5 lg:p-6 rounded-2xl border border-border/30 bg-bg-card text-center">
+              <div className="flex flex-col items-center gap-2 p-4 md:p-5 lg:p-6 card-accent bg-bg-card text-center">
                 <div className="w-12 h-12 md:w-14 md:h-14 lg:w-16 lg:h-16 rounded-xl md:rounded-2xl flex items-center justify-center shrink-0 bg-bg-elevated text-text-primary">
                   <IconFire size={24} className="text-orange-400 md:w-7 md:h-7 lg:w-8 lg:h-8" />
                 </div>
@@ -546,7 +546,7 @@ const Dashboard = () => {
                   <p className="text-xl md:text-2xl font-black text-text-primary">{streakDays ?? 0}d</p>
                 </div>
               </div>
-              <div className="flex flex-col items-center gap-2 p-4 md:p-5 lg:p-6 rounded-2xl border border-border/30 bg-bg-card text-center">
+              <div className="flex flex-col items-center gap-2 p-4 md:p-5 lg:p-6 card-accent bg-bg-card text-center">
                 <div className="w-12 h-12 md:w-14 md:h-14 lg:w-16 lg:h-16 rounded-xl md:rounded-2xl flex items-center justify-center shrink-0 bg-bg-elevated text-text-primary">
                   <IconCode size={24} className="text-accent md:w-7 md:h-7 lg:w-8 lg:h-8" />
                 </div>
@@ -602,7 +602,7 @@ const Dashboard = () => {
                   <Link
                     key={course.id}
                     to={`/dashboard/courses/${course.id}`}
-                    className="group/card relative aspect-square rounded-2xl border border-border/30 bg-bg-card p-3 md:p-5 transition-all duration-300 hover:border-accent/30 flex flex-col text-left"
+                    className="group/card relative aspect-square card-accent bg-bg-card p-3 md:p-5 transition-all duration-300 flex flex-col text-left"
                   >
                     <div className="flex items-center gap-2 mb-2">
                       <div className="w-8 h-8 rounded-xl flex items-center justify-center shrink-0 bg-accent/10 border border-accent/20">
@@ -649,7 +649,7 @@ const Dashboard = () => {
                 ))}
               </div>
             ) : (
-              <div className="text-center py-12 rounded-2xl border border-border/30 bg-bg-card">
+              <div className="text-center py-12 card-accent bg-bg-card">
                 <Briefcase className="w-12 h-12 text-text-muted/20 mx-auto mb-3" />
                 <p className="text-sm text-text-muted">{t('student.myCourses.empty.enrolled')}</p>
                 <Link to="/dashboard/bootcamps" className="inline-flex items-center gap-1.5 mt-3 text-[10px] font-black uppercase tracking-widest text-accent hover:underline">
@@ -681,7 +681,7 @@ const Dashboard = () => {
                 ))}
               </div>
             ) : (
-              <div className="text-center py-12 rounded-2xl border border-border/30 bg-bg-card">
+              <div className="text-center py-12 card-accent bg-bg-card">
                 <ShoppingBag className="w-12 h-12 text-text-muted/20 mx-auto mb-3" />
                 <p className="text-sm text-text-muted">{t('student.marketplace.empty')}</p>
                 <Link to="/dashboard/marketplace" className="inline-flex items-center gap-1.5 mt-3 text-[10px] font-black uppercase tracking-widest text-accent hover:underline">
@@ -705,7 +705,7 @@ const Dashboard = () => {
                   <Link
                     key={tool.id}
                     to={tool.route}
-                    className="group/card relative aspect-square rounded-2xl border border-border/30 bg-bg-card p-3 md:p-5 transition-all duration-300 hover:border-accent/30 flex flex-col text-left"
+                    className="group/card relative aspect-square card-accent bg-bg-card p-3 md:p-5 transition-all duration-300 flex flex-col text-left"
                   >
                     <div className="flex items-center gap-2 mb-2">
                       <div className="w-8 h-8 rounded-xl flex items-center justify-center shrink-0 bg-accent/10 border border-accent/20">

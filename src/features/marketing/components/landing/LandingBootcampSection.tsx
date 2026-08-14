@@ -61,7 +61,7 @@ const LandingBootcampSection: React.FC = () => {
             >
               <Link
                 to={featuredHref}
-                className="group relative block h-full rounded-2xl border border-border/20 bg-bg-card transition-all duration-300 hover:border-accent/30 overflow-hidden"
+                className="group relative block h-full card-accent bg-bg-card transition-all duration-300 overflow-hidden"
               >
                 <div className="relative h-full flex flex-col sm:flex-row p-4 sm:p-8 gap-5 sm:gap-6">
                   <div className="flex-1 min-w-0 flex flex-col">
@@ -111,7 +111,7 @@ const LandingBootcampSection: React.FC = () => {
                 >
                   <Link
                     to={supportHref}
-                    className="group relative block h-full rounded-2xl border border-border/20 bg-bg-card p-3 sm:p-5 transition-all duration-300 hover:border-accent/30 overflow-hidden"
+                    className="group relative block h-full card-accent bg-bg-card p-3 sm:p-5 transition-all duration-300 overflow-hidden"
                   >
                     <div className="relative h-full flex flex-row items-stretch gap-3 sm:gap-4">
                       <div className="flex-1 min-w-0 flex flex-col">
@@ -158,7 +158,7 @@ const LandingBootcampSection: React.FC = () => {
                   <Link
                     key={phase.id}
                     to={href}
-                    className="group relative block w-full flex-1 rounded-2xl border border-border/20 bg-bg-card overflow-hidden transition-all duration-300 hover:border-accent/30"
+                    className="group relative block w-full flex-1 card-accent bg-bg-card overflow-hidden transition-all duration-300"
                   >
                     <div className="relative w-full h-full flex flex-row items-center gap-3 p-3">
                       <div className="flex-1 min-w-0 flex flex-col justify-between h-full">

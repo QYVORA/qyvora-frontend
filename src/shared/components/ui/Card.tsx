@@ -41,8 +41,8 @@ export const CardBase: React.FC<CardBaseProps> = ({
 }) => {
   const base = [
     'terminal-card group relative flex flex-col overflow-hidden rounded-2xl border bg-bg-card transition-all duration-300',
-    active  ? 'border-accent/40'                         : 'border-border',
-    muted   ? 'opacity-60 cursor-default'                : 'hover:border-accent/40',
+    active  ? 'border-accent/55'                         : 'border-accent/30',
+    muted   ? 'opacity-60 cursor-default'                : 'hover:border-accent/55',
     className,
   ].join(' ');
 
@@ -204,7 +204,7 @@ export const CardStat: React.FC<CardStatProps> = ({
     return (
       <Link
         to={href}
-        className="group block overflow-hidden rounded-2xl border border-border/50 bg-bg-card transition-colors hover:border-accent/40"
+        className="group block overflow-hidden card-accent bg-bg-card transition-colors hover:shadow-[var(--card-shadow)]"
         style={{ boxShadow: 'var(--card-shimmer)' }}
       >
         {inner}
@@ -214,7 +214,7 @@ export const CardStat: React.FC<CardStatProps> = ({
 
   return (
     <div
-      className="overflow-hidden rounded-2xl border border-border/50 bg-bg-card"
+      className="overflow-hidden card-accent bg-bg-card"
       style={{ boxShadow: 'var(--card-shimmer)' }}
     >
       {inner}

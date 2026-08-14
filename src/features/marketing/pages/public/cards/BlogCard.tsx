@@ -25,7 +25,7 @@ const BlogCard: React.FC<BlogCardProps> = ({ post, view }) => {
     return (
       <Link
         to={`/blogs/${post.slug}`}
-        className="group flex flex-col sm:flex-row rounded-2xl border border-border/30 bg-bg-card overflow-hidden transition-all duration-300 hover:border-accent/30"
+        className="group flex flex-col sm:flex-row card-accent bg-bg-card overflow-hidden transition-all duration-300"
       >
         {post.image && (
           <div className="sm:w-48 lg:w-56 shrink-0 aspect-[16/9] sm:aspect-auto sm:min-h-[120px] overflow-hidden bg-accent/5">
@@ -70,7 +70,7 @@ const BlogCard: React.FC<BlogCardProps> = ({ post, view }) => {
   return (
     <Link
       to={`/blogs/${post.slug}`}
-      className="group flex flex-col rounded-2xl border border-border/30 bg-bg-card overflow-hidden transition-all duration-300 hover:border-accent/30 h-full min-h-[220px]"
+      className="group flex flex-col card-accent bg-bg-card overflow-hidden transition-all duration-300 h-full min-h-[220px]"
     >
       {post.image && (
         <div className="aspect-[16/9] overflow-hidden bg-accent/5 shrink-0">

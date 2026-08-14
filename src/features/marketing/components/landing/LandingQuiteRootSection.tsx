@@ -41,7 +41,7 @@ const LandingQuiteRootSection = () => {
         <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:gap-5 min-w-0 w-full lg:h-full lg:grid-rows-2">
           {researchersData.map((researcher, idx) => (
             <ScrollReveal key={researcher.id} direction="up" delay={idx * 0.1} className="min-w-0 min-h-0 lg:h-full">
-              <figure className="group relative h-full aspect-square lg:aspect-auto flex flex-col rounded-2xl border border-border/50 bg-bg-card overflow-hidden transition-colors duration-300 group-hover:border-accent/40">
+              <figure className="group relative h-full aspect-square lg:aspect-auto flex flex-col card-accent bg-bg-card overflow-hidden transition-colors duration-300">
                 {/* Researcher photo as the card background */}
                 <img
                   src={researcher.image}

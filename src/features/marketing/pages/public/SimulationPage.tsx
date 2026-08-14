@@ -134,7 +134,7 @@ const SimulationPage = () => {
           {/* Demo launcher — the live tool opens in a modal */}
           <PublicSnapSection>
             <div className="flex flex-col items-center text-center gap-6 lg:gap-8">
-              <div className="w-full max-w-3xl rounded-2xl border border-border/30 bg-bg-card px-6 py-10 md:py-14 flex flex-col items-center">
+              <div className="w-full max-w-3xl card-accent bg-bg-card px-6 py-10 md:py-14 flex flex-col items-center">
                 <span className="w-16 h-16 md:w-20 md:h-20 rounded-2xl bg-accent/10 border border-accent/20 flex items-center justify-center mb-5">
                   <DemoIcon className="w-8 h-8 md:w-10 md:h-10 text-accent" />
                 </span>
@@ -170,7 +170,7 @@ const SimulationPage = () => {
                 {features.map((feature, i) => (
                   <div
                     key={i}
-                    className="rounded-2xl border border-border/20 bg-bg-card px-4 py-4 flex items-center gap-3"
+                    className="card-accent bg-bg-card px-4 py-4 flex items-center gap-3"
                   >
                     <span className="w-6 h-6 rounded-lg bg-accent/10 border border-accent/20 flex items-center justify-center shrink-0">
                       <Zap className="w-3 h-3 text-accent" />

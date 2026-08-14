@@ -97,7 +97,7 @@ const LandingSimulationsSection: React.FC = () => {
                 >
                   <Link
                     to={sim.slug}
-                    className="group relative block h-full rounded-2xl border border-border/20 bg-bg/90 p-4 sm:p-6 transition-all duration-300 hover:border-accent/30 overflow-hidden"
+                    className="group relative block h-full card-accent bg-bg/90 p-4 sm:p-6 transition-all duration-300 overflow-hidden"
                   >
                     {featured && <DottedMapOverlay className="rounded-2xl" />}
                     <div className={`relative h-full flex flex-col ${featured ? 'gap-4 sm:gap-5' : 'gap-3 sm:gap-4'}`}>

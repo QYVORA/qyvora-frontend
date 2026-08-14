@@ -37,7 +37,7 @@ const LandingBlogsSection = () => {
               renderCard={(post) => (
                 <Link
                   to={`/blogs/${post.slug}`}
-                  className="group flex flex-col md:flex-row rounded-2xl border border-border/50 bg-bg-card overflow-hidden min-h-[280px] md:min-h-[340px] h-full transition-all duration-300 hover:border-accent/40"
+                  className="group flex flex-col md:flex-row card-accent bg-bg-card overflow-hidden min-h-[280px] md:min-h-[340px] h-full transition-all duration-300"
                 >
                   <div className="relative md:w-[45%] lg:w-[48%] shrink-0 aspect-[16/10] md:aspect-auto overflow-hidden bg-bg-elevated">
                     <img

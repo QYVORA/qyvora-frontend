@@ -573,6 +573,17 @@
     transition-timing-function: var(--ease-smooth);
   }
 
+  /* Accent-bordered card — accent border by default, intensified on hover */
+  .card-accent {
+    @apply rounded-2xl border border-accent/30;
+    transition-property: transform, box-shadow, border-color, background-color;
+    transition-duration: var(--dur-base);
+    transition-timing-function: var(--ease-smooth);
+  }
+  .card-accent:hover {
+    border-color: rgb(6 182 111 / 0.55);
+  }
+
   .card-qyvora {
     @apply bg-transparent rounded-2xl cursor-default;
     transition-property: transform, box-shadow, border-color;

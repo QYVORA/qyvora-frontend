@@ -64,7 +64,7 @@ const ActDividerSection: React.FC<ActDividerSectionProps> = ({ title, accentWord
             <Link
               key={item.label}
               to={item.to}
-              className="group relative flex items-start gap-3 rounded-2xl border border-border/30 bg-bg-card p-3 md:p-4 transition-all duration-300 hover:border-accent/30"
+              className="group relative flex items-start gap-3 card-accent bg-bg-card p-3 md:p-4 transition-all duration-300"
             >
               <div className="w-8 h-8 shrink-0 rounded-xl flex items-center justify-center bg-accent/10 border border-accent/20">
                 <item.icon size={16} className="text-accent" />

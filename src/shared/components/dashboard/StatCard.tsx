@@ -33,7 +33,7 @@ const TrendIcon = ({ direction }: { direction: TrendData['direction'] }) => {
 };
 
 export const StatCardSkeleton = () => (
-  <div className="rounded-2xl border border-border/30 bg-bg-card p-5 space-y-4">
+  <div className="card-accent bg-bg-card p-5 space-y-4">
     <div className="flex items-center gap-3">
       <Skeleton className="w-10 h-10 rounded-xl bg-bg-elevated shrink-0" />
       <Skeleton className="h-3 w-24 bg-border/30 rounded" />
@@ -53,9 +53,9 @@ const StatCard = ({
 
   return (
     <Tag
-      className={`rounded-2xl border bg-bg-card p-5 transition-all duration-200 ${
-        accent ? 'border-accent/30' : 'border-border/40'
-      } ${onClick || href ? 'cursor-pointer hover:border-accent/40 hover:shadow-sm active:scale-[0.98]' : ''} ${className ?? ''}`}
+      className={`card-accent bg-bg-card p-5 transition-all duration-200 ${
+        accent ? 'border-accent/55' : ''
+      } ${onClick || href ? 'cursor-pointer hover:shadow-sm active:scale-[0.98]' : ''} ${className ?? ''}`}
       {...hrefProps}
       {...clickProps}
     >
