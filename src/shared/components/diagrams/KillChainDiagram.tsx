@@ -27,7 +27,8 @@ interface KillChainDiagramProps {
 
 export function KillChainDiagram({ currentPhaseIndex = -1, completedPhaseIds = [], className }: KillChainDiagramProps) {
   return (
-    <div className={cn('rounded-xl border border-border/20 bg-bg-elevated/50 p-4', className)}>
+    <div className={cn('relative overflow-hidden rounded-xl border border-border/30 bg-bg-card p-4', className)}>
+      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-accent/40 to-transparent" />
       <div className="flex items-center gap-2 mb-4">
         <Shield className="w-4 h-4 text-accent" />
         <span className="text-[9px] font-black uppercase tracking-widest text-accent">Kill Chain Phases</span>
@@ -40,13 +41,13 @@ export function KillChainDiagram({ currentPhaseIndex = -1, completedPhaseIds = [
             <div key={phase.id} className="flex items-center">
               <div className={cn(
                 'flex items-center gap-2 px-3 py-2 rounded-xl border transition-all',
-                isCompleted ? 'border-green-400/30 bg-green-400/10 text-green-400' :
-                isCurrent ? 'border-yellow-400/30 bg-yellow-400/10 text-yellow-400' :
-                'border-border/20 bg-bg-elevated/50 text-text-muted/50',
+                isCompleted ? 'border-green-400/40 bg-green-400/10 text-green-400' :
+                isCurrent ? 'border-yellow-400/40 bg-yellow-400/10 text-yellow-400' :
+                'border-border/30 bg-bg-elevated text-text-secondary',
               )}>
                 <div className={cn(
                   'flex items-center justify-center w-6 h-6 rounded-lg',
-                  isCompleted ? 'bg-green-400/20' : isCurrent ? 'bg-yellow-400/20' : 'bg-white/5',
+                  isCompleted ? 'bg-green-400/20' : isCurrent ? 'bg-yellow-400/20' : 'bg-bg-card',
                 )}>
                   {isCompleted ? (
                     <span className="text-green-400 text-xs">✓</span>
@@ -82,7 +83,8 @@ interface KillChainDiagramSimpleProps {
 
 export function KillChainDiagramSimple({ phases, currentPhaseIndex = -1, completedPhaseIds = [], className }: KillChainDiagramSimpleProps) {
   return (
-    <div className={cn('rounded-xl border border-border/20 bg-bg-elevated/50 p-3 md:p-4', className)}>
+    <div className={cn('relative overflow-hidden rounded-xl border border-border/30 bg-bg-card p-3 md:p-4', className)}>
+      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-accent/40 to-transparent" />
       <div className="flex items-center gap-2 mb-3">
         <Shield className="w-3.5 h-3.5 text-accent" />
         <span className="text-[9px] font-black uppercase tracking-widest text-accent">Kill Chain Progress</span>
@@ -95,9 +97,9 @@ export function KillChainDiagramSimple({ phases, currentPhaseIndex = -1, complet
             <div key={phase} className="flex items-center">
               <div className={cn(
                 'flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg border transition-all',
-                isCompleted ? 'border-accent/30 bg-accent/10 text-accent' :
-                isCurrent ? 'border-yellow-400/30 bg-yellow-400/10 text-yellow-400' :
-                'border-border/20 bg-white/5 text-text-muted/40',
+                isCompleted ? 'border-accent/40 bg-accent/10 text-accent' :
+                isCurrent ? 'border-yellow-400/40 bg-yellow-400/10 text-yellow-400' :
+                'border-border/30 bg-bg-elevated text-text-secondary',
               )}>
                 {isCompleted ? (
                   <span className="text-accent text-[10px]">✓</span>

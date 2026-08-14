@@ -61,7 +61,7 @@ export function WalkthroughStep({
       />
 
       {/* Step Content — always visible */}
-      <div className="space-y-8 md:space-y-10 pb-12 md:pb-16">
+      <div className="space-y-10 md:space-y-14 pb-14 md:pb-20">
         {/* Mission */}
         {mission && (
           <div className="rounded-xl border border-accent/20 bg-accent/5 px-5 py-4 flex items-start gap-3">
@@ -92,7 +92,7 @@ export function WalkthroughStep({
         )}
 
         {/* Narrative — continuous reading flow */}
-        <div className="text-sm sm:text-base text-text-secondary font-mono">
+        <div className="text-sm md:text-base text-text-secondary font-mono">
           <CodeBlockRenderer text={narrative} />
         </div>
 
