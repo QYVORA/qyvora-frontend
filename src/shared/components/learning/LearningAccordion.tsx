@@ -78,18 +78,18 @@ export function LearningAccordion({ items, className, defaultOpen = 0 }: Learnin
             <button
               type="button"
               onClick={() => toggleSection(idx)}
-              className="w-full flex items-center justify-between gap-4 px-5 py-4 text-left group"
+              className="w-full flex items-center justify-between gap-4 px-6 py-5 text-left group"
             >
               <div className="flex items-center gap-4 min-w-0">
-                <span className="text-[10px] font-black text-accent/60 font-mono w-6 shrink-0">
+                <span className="text-[11px] font-black text-accent/60 font-mono w-6 shrink-0">
                   {String(idx + 1).padStart(2, '0')}
                 </span>
                 <div className="min-w-0">
-                  <h3 className="text-sm font-black text-text-primary uppercase tracking-tight truncate">
+                  <h3 className="text-base font-black text-text-primary uppercase tracking-tight truncate">
                     {item.title}
                   </h3>
                   {item.subtitle && (
-                    <p className="text-[10px] font-black uppercase tracking-widest text-accent/60 mt-0.5 truncate">
+                    <p className="text-[11px] font-black uppercase tracking-widest text-accent/60 mt-0.5 truncate">
                       {item.subtitle}
                     </p>
                   )}
@@ -115,8 +115,8 @@ export function LearningAccordion({ items, className, defaultOpen = 0 }: Learnin
                   transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
                   className="overflow-hidden"
                 >
-                  <div className="px-5 pb-5 pl-15">
-                    <p className="text-sm text-text-secondary leading-relaxed mb-4 pl-10 max-w-2xl">
+                  <div className="px-6 pb-6 pl-15">
+                    <p className="text-base text-text-primary leading-relaxed mb-4 pl-10 max-w-2xl">
                       {item.description}
                     </p>
                     {item.body}
@@ -145,11 +145,11 @@ export function LearningAccordion({ items, className, defaultOpen = 0 }: Learnin
               >
                 {String(idx + 1).padStart(2, '0')}
               </div>
-              <h3 className="text-sm font-black text-text-primary mb-1 font-mono uppercase tracking-tight pr-10">
+              <h3 className="text-base font-black text-text-primary mb-1 font-mono uppercase tracking-tight pr-10">
                 {item.title}
               </h3>
               {item.subtitle && (
-                <p className="text-[10px] font-black uppercase tracking-widest text-accent/60 mb-3">
+                <p className="text-[11px] font-black uppercase tracking-widest text-accent/60 mb-3">
                   {item.subtitle}
                 </p>
               )}
@@ -157,7 +157,7 @@ export function LearningAccordion({ items, className, defaultOpen = 0 }: Learnin
                 {item.difficulty && <DifficultyBadge difficulty={item.difficulty} />}
                 {item.meta}
               </div>
-              <p className="text-sm text-text-secondary leading-relaxed">{item.description}</p>
+              <p className="text-base text-text-primary leading-relaxed">{item.description}</p>
               {item.body}
               {item.onStart && <StartButton label={item.startLabel ?? 'Start'} onClick={item.onStart} />}
             </div>

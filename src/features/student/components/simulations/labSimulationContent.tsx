@@ -37,7 +37,7 @@ function TerminalSimulationContent({ context }: { context: TerminalContext }) {
   }, []);
 
   return (
-    <div ref={wrapperRef} className="h-full w-full overflow-hidden">
+    <div ref={wrapperRef} className="h-full w-full md:w-fit md:min-w-[600px] md:max-w-full md:mx-auto overflow-hidden">
       <TerminalWrapper
         open={open}
         onOpenChange={handleOpenChange}

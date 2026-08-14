@@ -1,6 +1,6 @@
 import { Unplug, Loader2 } from 'lucide-react';
 import { useEffect } from 'react';
-import { IconArrowLeft, IconClock, IconTerminal } from '@/shared/components/icons';
+import { IconClock, IconTerminal } from '@/shared/components/icons';
 import { cn } from '@/shared/utils/cn';
 import { useLabConnection } from '@/features/student/hooks/useLabConnection';
 import { SimulationPanel, useSimulation, getNetworkProfileForLab, type SimulationType } from '@/features/student/components/simulations';
@@ -15,7 +15,7 @@ export interface WalkthroughLayoutProps {
   labId: string;
   scenarioId?: string;
   children: React.ReactNode;
-  onBack: () => void;
+  onBack?: () => void;
   backLabel?: string;
   completedCount?: number;
   totalSteps?: number;
@@ -43,8 +43,6 @@ export function WalkthroughLayout({
   labId,
   scenarioId,
   children,
-  onBack,
-  backLabel,
   completedCount = 0,
   totalSteps = 0,
   showConnectionGuide = true,
@@ -86,16 +84,6 @@ export function WalkthroughLayout({
       )}
 
       <div className="w-full px-3 md:px-4 lg:px-6 py-8 md:py-12">
-        {/* Back button */}
-        <button
-          type="button"
-          onClick={onBack}
-          className="group mb-8 flex items-center gap-2 text-text-muted transition-colors hover:text-text-primary"
-        >
-          <IconArrowLeft size={16} className="transition-transform group-hover:-translate-x-0.5" />
-          <span className="text-[10px] font-black uppercase tracking-widest">{backLabel || 'All Labs'}</span>
-        </button>
-
         {/* Room Header */}
         <div className="relative overflow-hidden mb-12 md:mb-16 rounded-2xl border border-border/30 bg-bg-card p-6 md:p-8">
           <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-accent/40 to-transparent" />
@@ -138,50 +126,75 @@ export function WalkthroughLayout({
 
         {/* Connection Panel */}
         {scenarioId && showConnectionGuide && (
-          <div className="mb-10 rounded-2xl border border-border/20 bg-bg-card p-4 md:p-6">
-            <div className="flex items-center gap-3 mb-3">
-              <IconTerminal size={16} className="text-accent" />
-              <h3 className="text-[10px] font-black uppercase tracking-widest text-accent">
+          <div className="mb-10 rounded-2xl border border-border/30 bg-bg-card p-5 md:p-7">
+            <div className="flex flex-wrap items-center gap-3 mb-4">
+              <div className="flex h-9 w-9 items-center justify-center rounded-xl border border-border/30 bg-bg-elevated text-accent">
+                <IconTerminal size={18} />
+              </div>
+              <h3 className="text-[11px] font-black uppercase tracking-widest text-text-primary">
                 Lab Connection
               </h3>
+              <span className="px-2.5 py-1 rounded-lg bg-accent/10 text-[9px] font-black uppercase tracking-widest text-accent">
+                Live Instance
+              </span>
             </div>
 
             {!isConnected ? (
-              <div className="space-y-3">
-                <p className="text-sm text-text-muted font-mono leading-relaxed">
+              <div className="space-y-4">
+                <p className="text-sm md:text-base text-text-secondary font-mono leading-relaxed">
                   Connect to a live lab machine to run commands and complete this walkthrough.
+                  Your progress, commands and captured flags are saved as you go.
                 </p>
+                <div className="grid gap-2 sm:grid-cols-3">
+                  <div className="rounded-xl border border-border/20 bg-bg-elevated px-3.5 py-3">
+                    <p className="text-[9px] font-black uppercase tracking-widest text-text-muted mb-1">Target</p>
+                    <p className="text-sm font-mono text-text-primary">Linux VM</p>
+                  </div>
+                  <div className="rounded-xl border border-border/20 bg-bg-elevated px-3.5 py-3">
+                    <p className="text-[9px] font-black uppercase tracking-widest text-text-muted mb-1">Persists</p>
+                    <p className="text-sm font-mono text-text-primary">Session saved</p>
+                  </div>
+                  <div className="rounded-xl border border-border/20 bg-bg-elevated px-3.5 py-3">
+                    <p className="text-[9px] font-black uppercase tracking-widest text-text-muted mb-1">Flags</p>
+                    <p className="text-sm font-mono text-text-primary">Verified on submit</p>
+                  </div>
+                </div>
                 <div className="flex flex-col sm:flex-row sm:items-center gap-3">
                   <button
                     onClick={handleConnect}
                     disabled={isLoading}
-                    className="flex items-center gap-1.5 px-4 py-2 rounded-xl border border-accent/30 bg-accent/10 text-[10px] font-black uppercase tracking-widest text-accent hover:bg-accent/20 transition-colors disabled:opacity-50 w-fit"
+                    className="flex items-center gap-2 px-5 py-2.5 rounded-xl border border-accent/30 bg-accent/10 text-[10px] font-black uppercase tracking-widest text-accent hover:bg-accent/20 transition-colors disabled:opacity-50 w-fit"
                   >
-                    {isLoading ? <Loader2 className="w-3 h-3 animate-spin" /> : <IconTerminal size={12} />}
+                    {isLoading ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <IconTerminal size={14} />}
                     {isLoading ? 'Connecting...' : 'Connect to Lab'}
                   </button>
-                  {error && <span className="text-[9px] text-red-400">{error}</span>}
+                  {error && <span className="text-xs text-red-400">{error}</span>}
                 </div>
               </div>
             ) : (
-              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-                <div className="flex flex-wrap items-center gap-3">
-                  <span className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-green-500/10 text-[9px] font-black uppercase tracking-widest text-green-400">
-                    <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" />
-                    Connected
-                  </span>
-                  <span className="px-2.5 py-1 rounded-lg bg-bg-elevated text-[9px] font-mono text-text-muted">
-                    Target: {connection?.targetIp}
-                  </span>
+              <div className="flex flex-col gap-4">
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+                  <div className="flex flex-wrap items-center gap-3">
+                    <span className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-green-500/10 text-[10px] font-black uppercase tracking-widest text-green-400">
+                      <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" />
+                      Connected
+                    </span>
+                    <span className="px-3 py-1.5 rounded-lg bg-bg-elevated text-[10px] font-mono text-text-secondary">
+                      Target: <span className="text-text-primary">{connection?.targetIp}</span>
+                    </span>
+                  </div>
+                  <button
+                    onClick={disconnect}
+                    disabled={isLoading}
+                    className="flex items-center gap-1.5 px-4 py-2 rounded-lg border border-red-500/30 bg-red-500/10 text-[10px] font-black uppercase tracking-widest text-red-400 hover:bg-red-500/20 transition-colors disabled:opacity-50 w-fit"
+                  >
+                    {isLoading ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Unplug className="w-3.5 h-3.5" />}
+                    Disconnect
+                  </button>
                 </div>
-                <button
-                  onClick={disconnect}
-                  disabled={isLoading}
-                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-red-500/30 bg-red-500/10 text-[9px] font-black uppercase tracking-widest text-red-400 hover:bg-red-500/20 transition-colors disabled:opacity-50"
-                >
-                  {isLoading ? <Loader2 className="w-3 h-3 animate-spin" /> : <Unplug className="w-3 h-3" />}
-                  Disconnect
-                </button>
+                <p className="text-sm text-text-secondary font-mono leading-relaxed">
+                  Use the terminal below to run commands against the live machine. Progress is tracked automatically.
+                </p>
               </div>
             )}
           </div>
