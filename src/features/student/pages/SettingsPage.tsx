@@ -1,26 +1,25 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { Shield, Key, Eye, EyeOff, Loader2, Save, Copy, CheckCircle2, AlertTriangle, RefreshCw, User, Palette, Bell, BookOpen, Trash2, Smartphone } from 'lucide-react';
-import ScrollReveal from '../../../shared/components/ScrollReveal';
+import { Key, Eye, EyeOff, Loader2, Save, Copy, CheckCircle2, AlertTriangle, RefreshCw, Trash2 } from 'lucide-react';
 import api from '../../../core/services/api';
 import { useToast } from '../../../core/contexts/ToastContext';
 import { getDataSaverEnabled, setDataSaverEnabled } from '../utils/studentExperience';
 import SEO from '../../../shared/components/SEO';
 import { SettingsSkeleton } from '../components/StudentSkeletons';
-import StudentHeroSection from '@/shared/components/StudentHeroSection';
 import { usePreferences } from '../../../shared/hooks/usePreferences';
 import { useThemeContext } from '../../../core/contexts/ThemeContext';
 import { useAuth } from '../../../core/contexts/AuthContext';
+import { SETTINGS_SECTIONS, type SettingsSectionId } from '../constants/settingsSections';
 
 const INPUT_CLS = 'w-full bg-bg border border-border rounded-xl py-3 px-4 text-sm text-text-primary placeholder:text-text-muted focus:border-accent outline-none transition-all font-mono';
 
 const LABEL_CLS = 'text-[10px] font-black uppercase tracking-widest text-text-muted block mb-1.5';
 
-const CardHeader: React.FC<{ icon: React.ReactNode; title: string }> = ({ icon, title }) => (
-  <div className="flex items-center gap-3 border-b border-border/30 px-6 py-4">
-    {icon}
-    <h2 className="text-base font-black uppercase tracking-widest">{title}</h2>
+const SectionHeader: React.FC<{ title: string; description?: string }> = ({ title, description }) => (
+  <div className="mb-6">
+    <h2 className="text-2xl font-black text-text-primary mb-2">{title}</h2>
+    {description && <p className="text-sm text-text-muted">{description}</p>}
   </div>
 );
 
@@ -90,6 +89,11 @@ const Settings: React.FC = () => {
   const { user } = useAuth();
   const { preferences, loading: prefsLoading, saving: prefsSaving, updatePreferences, updateNotification, updateLearning, updateDisplay } = usePreferences();
   const { theme, setTheme } = useThemeContext();
+  const { section: sectionParam } = useParams<{ section?: string }>();
+
+  const activeSection: SettingsSectionId = SETTINGS_SECTIONS.some((s) => s.id === sectionParam)
+    ? (sectionParam as SettingsSectionId)
+    : 'appearance';
 
   const [changingPwd, setChangingPwd] = useState(false);
   const [shakeCurrentPwd, setShakeCurrentPwd] = useState(false);
@@ -98,6 +102,7 @@ const Settings: React.FC = () => {
   const [recoveryAcked, setRecoveryAcked] = useState(false);
   const [recoveryCreatedAt, setRecoveryCreatedAt] = useState<string | null>(null);
   const [loadingRecovery, setLoadingRecovery] = useState(true);
+
   const [copied, setCopied] = useState(false);
   const [acking, setAcking] = useState(false);
   const [regenerating, setRegenerating] = useState(false);
@@ -261,32 +266,42 @@ const Settings: React.FC = () => {
   if (prefsLoading || loadingRecovery) return <SettingsSkeleton />;
 
   return (
-    <div>
+    <>
       <SEO title={t('student.settings.seoTitle')} description={t('student.settings.seoDesc')} noindex />
-      <div className="bg-bg px-3 md:px-4 lg:px-6 pt-8 pb-10">
-        <StudentHeroSection
-          fullHeight={false}
-          title={t('student.settings.title')}
-          description={t('student.settings.description')}
-        >
-          <Link
-            to="/dashboard/profile"
-            className="btn-primary inline-flex items-center gap-2 px-6 py-2.5"
-          >
-            <User className="w-4 h-4" />
-            {t('student.profile.edit')}
-          </Link>
-        </StudentHeroSection>
-      </div>
 
-      <div className="bg-bg-alt px-3 md:px-4 lg:px-6 py-10 pb-20 lg:pb-24">
-        <div className="flex flex-col gap-6">
-          {/* ── Appearance ─────────────────────────────────────────────── */}
-          <ScrollReveal>
-            <section className="card-accent bg-bg-card">
-              <CardHeader icon={<Palette className="h-5 w-5 text-accent" />} title={t('student.settings.appearance.title')} />
-              <div className="p-6 divide-y divide-border/30">
-                <SettingsRow label={t('student.settings.appearance.theme')}>
+      <div className="bg-bg min-h-screen px-3 md:px-4 lg:px-6 pt-8 pb-40 lg:pb-44">
+        <div className="max-w-4xl mx-auto">
+
+          {/* Desktop bottom nav — mirrors the overview top bar */}
+          <nav className="hidden md:flex fixed bottom-4 left-1/2 -translate-x-1/2 z-30 items-center gap-1 rounded-2xl border border-border/30 bg-bg-card/95 backdrop-blur-xl px-2 py-1.5 shadow-2xl shadow-black/50">
+            {SETTINGS_SECTIONS.map((section) => {
+              const active = activeSection === section.id;
+              const Icon = section.icon;
+              return (
+                <Link
+                  key={section.id}
+                  to={section.path}
+                  className={`relative flex flex-col items-center gap-1.5 px-5 py-2 text-[10px] font-black uppercase tracking-widest transition-colors shrink-0 ${active ? 'text-accent' : 'text-text-secondary hover:text-text-primary active:opacity-70'}`}
+                >
+                  <Icon size={32} strokeWidth={2.5} className={active ? 'text-accent' : 'text-text-secondary'} />
+                  <span>{t(section.labelKey)}</span>
+                  {active && (
+                    <span className="absolute top-0 left-1/4 right-1/4 h-0.5 rounded-full bg-accent" />
+                  )}
+                </Link>
+              );
+            })}
+          </nav>
+          
+          {/* Appearance Section */}
+          {activeSection === 'appearance' && (
+            <div className="bg-bg-card border border-border/30 rounded-2xl p-6 md:p-8">
+              <SectionHeader 
+                title={t('student.settings.appearance.title')}
+                description={t('student.settings.appearance.description')}
+              />
+              <div className="divide-y divide-border/20">
+                <SettingsRow label={t('student.settings.appearance.theme')} description={t('student.settings.appearance.themeDesc')}>
                   <div className="flex gap-1 bg-bg rounded-xl p-1 border border-border/30">
                     <button onClick={() => handleThemeChange('dark')}
                       className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-colors ${theme === 'dark' ? 'bg-accent text-on-accent' : 'text-text-muted hover:text-text-primary'}`}>
@@ -333,14 +348,17 @@ const Settings: React.FC = () => {
                   </SelectField>
                 </SettingsRow>
               </div>
-            </section>
-          </ScrollReveal>
+            </div>
+          )}
 
-          {/* ── Notifications ──────────────────────────────────────────── */}
-          <ScrollReveal>
-            <section className="card-accent bg-bg-card">
-              <CardHeader icon={<Bell className="h-5 w-5 text-accent" />} title={t('student.settings.notifications.title')} />
-              <div className="p-6 divide-y divide-border/30">
+          {/* Notifications Section */}
+          {activeSection === 'notifications' && (
+            <div className="bg-bg-card border border-border/30 rounded-2xl p-6 md:p-8">
+              <SectionHeader 
+                title={t('student.settings.notifications.title')}
+                description={t('student.settings.notifications.description')}
+              />
+              <div className="divide-y divide-border/20">
                 <SettingsRow label={t('student.settings.notifications.email')} description={t('student.settings.notifications.receiveEmail')}>
                   <Toggle checked={preferences.notifications.email} onChange={(v) => updateNotification('email', v)} disabled={prefsSaving} />
                 </SettingsRow>
@@ -360,14 +378,17 @@ const Settings: React.FC = () => {
                   <Toggle checked={preferences.notifications.systemUpdates} onChange={(v) => updateNotification('systemUpdates', v)} disabled={prefsSaving} />
                 </SettingsRow>
               </div>
-            </section>
-          </ScrollReveal>
+            </div>
+          )}
 
-          {/* ── Learning ────────────────────────────────────────────────── */}
-          <ScrollReveal>
-            <section className="card-accent bg-bg-card">
-              <CardHeader icon={<BookOpen className="h-5 w-5 text-accent" />} title={t('student.settings.learningPrefs.title')} />
-              <div className="p-6 divide-y divide-border/30">
+          {/* Learning Section */}
+          {activeSection === 'learning' && (
+            <div className="bg-bg-card border border-border/30 rounded-2xl p-6 md:p-8">
+              <SectionHeader 
+                title={t('student.settings.learningPrefs.title')}
+                description={t('student.settings.learningPrefs.description')}
+              />
+              <div className="divide-y divide-border/20">
                 <SettingsRow label={t('student.settings.learningPrefs.difficulty')}>
                   <SelectField id="settings-preferred-difficulty" ariaLabel={t('student.settings.learningPrefs.difficulty')} value={preferences.learning.preferredDifficulty} onChange={(v) => updateLearning('preferredDifficulty', v)}>
                     <option value="beginner">{t('student.settings.learningPrefs.beginner')}</option>
@@ -390,31 +411,34 @@ const Settings: React.FC = () => {
                   <Toggle checked={preferences.learning.showCodeExamples} onChange={(v) => updateLearning('showCodeExamples', v)} disabled={prefsSaving} />
                 </SettingsRow>
               </div>
-            </section>
-          </ScrollReveal>
+            </div>
+          )}
 
-          {/* ── Security ────────────────────────────────────────────────── */}
-          <ScrollReveal>
-            <div className="flex flex-col gap-6">
+          {/* Security Section */}
+          {activeSection === 'security' && (
+            <div className="space-y-6">
               {/* 2FA */}
-              <section className="card-accent bg-bg-card">
-                <CardHeader icon={<Shield className="h-5 w-5 text-accent" />} title={t('student.settings.twoFactor.title')} />
-                <div className="p-6">
-                  <SettingsRow label={twoFAEnabled ? t('student.settings.twoFactor.enabled') : t('student.settings.twoFactor.disabled')} description={t('student.settings.twoFactor.description')}>
-                    <button onClick={handleToggle2FA} disabled={toggling2FA}
-                      className={`px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-widest transition-colors disabled:opacity-50 ${
-                        twoFAEnabled ? 'border border-border text-text-muted hover:border-red-400/50 hover:text-red-400' : 'btn-primary'
-                      }`}>
-                      {toggling2FA ? <Loader2 className="w-4 h-4 animate-spin" /> : twoFAEnabled ? t('student.settings.twoFactor.disable') : t('student.settings.twoFactor.enable')}
-                    </button>
-                  </SettingsRow>
-                </div>
-              </section>
+              <div className="bg-bg-card border border-border/30 rounded-2xl p-6 md:p-8">
+                <SectionHeader 
+                  title={t('student.settings.twoFactor.title')}
+                  description={t('student.settings.twoFactor.description')}
+                />
+                <SettingsRow label={twoFAEnabled ? t('student.settings.twoFactor.enabled') : t('student.settings.twoFactor.disabled')} description={t('student.settings.twoFactor.description')}>
+                  <button onClick={handleToggle2FA} disabled={toggling2FA}
+                    className={`px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-widest transition-colors disabled:opacity-50 ${
+                      twoFAEnabled ? 'border border-border text-text-muted hover:border-red-400/50 hover:text-red-400' : 'btn-primary'
+                    }`}>
+                    {toggling2FA ? <Loader2 className="w-4 h-4 animate-spin" /> : twoFAEnabled ? t('student.settings.twoFactor.disable') : t('student.settings.twoFactor.enable')}
+                  </button>
+                </SettingsRow>
+              </div>
 
               {/* Password */}
-              <section className="card-accent bg-bg-card">
-                <CardHeader icon={<Key className="h-5 w-5 text-accent" />} title={t('student.settings.password.title')} />
-                <form onSubmit={handlePasswordChange} className="p-6 space-y-4">
+              <div className="bg-bg-card border border-border/30 rounded-2xl p-6 md:p-8">
+                <SectionHeader 
+                  title={t('student.settings.password.title')}
+                />
+                <form onSubmit={handlePasswordChange} className="space-y-4">
                   <PasswordField name="current_password" id="settings-current-password" label={t('student.settings.password.currentLabel')} placeholder={t('student.settings.password.currentPlaceholder')} shake={shakeCurrentPwd} onAnimationEnd={() => setShakeCurrentPwd(false)} />
                   <PasswordField name="new_password" id="settings-new-password" label={t('student.settings.password.newLabel')} placeholder={t('student.settings.password.newPlaceholder')} />
                   <PasswordField name="confirm_password" id="settings-confirm-password" label={t('student.settings.password.confirmLabel')} placeholder={t('student.settings.password.confirmPlaceholder')} />
@@ -423,12 +447,14 @@ const Settings: React.FC = () => {
                     {changingPwd ? <><Loader2 className="w-4 h-4 animate-spin" /> {t('common.updating')}</> : <><Save className="w-4 h-4" /> {t('student.settings.password.update')}</>}
                   </button>
                 </form>
-              </section>
+              </div>
 
               {/* Recovery Token */}
-              <section className="card-accent bg-bg-card">
-                <CardHeader icon={<Key className="h-5 w-5 text-accent" />} title={t('student.settings.recovery.title')} />
-                <div className="p-6 space-y-5">
+              <div className="bg-bg-card border border-border/30 rounded-2xl p-6 md:p-8">
+                <SectionHeader 
+                  title={t('student.settings.recovery.title')}
+                />
+                <div className="space-y-5">
                   <div className="flex items-start gap-3 p-4 bg-yellow-500/5 border border-yellow-500/20 rounded-xl">
                     <AlertTriangle className="w-4 h-4 text-yellow-500 flex-none mt-0.5" />
                     <p className="text-xs text-text-secondary leading-relaxed">{t('student.settings.recovery.description')}</p>
@@ -482,81 +508,85 @@ const Settings: React.FC = () => {
                     </div>
                   )}
                 </div>
-              </section>
+              </div>
 
               {/* Sessions */}
-              <section className="card-accent bg-bg-card">
-                <div className="flex items-center justify-between border-b border-border/30 px-6 py-4">
-                  <div className="flex items-center gap-3">
-                    <Smartphone className="h-5 w-5 text-accent" />
-                    <h2 className="text-base font-black uppercase tracking-widest">{t('student.settings.sessions.title')}</h2>
-                  </div>
+              <div className="bg-bg-card border border-border/30 rounded-2xl p-6 md:p-8">
+                <div className="flex items-center justify-between mb-6">
+                  <SectionHeader 
+                    title={t('student.settings.sessions.title')}
+                  />
                   {sessions.length > 1 && (
                     <button onClick={handleRevokeAll} className="text-[10px] font-black uppercase tracking-widest text-red-400 hover:text-red-300 active:opacity-70 transition-colors">
                       {t('student.settings.sessions.revokeAll')}
                     </button>
                   )}
                 </div>
-                <div className="p-6">
-                  {loadingSessions ? (
-                    <div className="flex items-center justify-center py-8"><Loader2 className="w-5 h-5 animate-spin text-accent" /></div>
-                  ) : sessions.length === 0 ? (
-                    <p className="text-sm text-text-muted text-center py-4">{t('student.settings.sessions.empty')}</p>
-                  ) : (
-                    <div className="space-y-3">
-                      {sessions.map((session) => (
-                        <div key={session.id} className="flex items-center justify-between gap-3 p-3 bg-bg border border-border/30 rounded-xl">
-                          <div className="min-w-0">
-                            <div className="flex items-center gap-2">
-                              <p className="text-sm font-bold text-text-primary truncate">{session.userAgent || t('student.settings.sessions.unknown')}</p>
-                              {session.isCurrent && <span className="text-[9px] font-black uppercase tracking-widest text-accent bg-accent/10 px-2 py-0.5 rounded-lg">{t('student.settings.sessions.current')}</span>}
-                            </div>
-                            <p className="text-[10px] text-text-muted font-mono mt-0.5">{session.ipAddress} · {new Date(session.createdAt).toLocaleDateString()}</p>
-                          </div>
-                          {!session.isCurrent && (
-                            <button onClick={() => handleRevokeSession(session.id)} className="text-[10px] font-black uppercase tracking-widest text-text-muted hover:text-red-400 active:opacity-70 transition-colors shrink-0">
-                              {t('student.settings.sessions.revoke')}
-                            </button>
-                          )}
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              </section>
-            </div>
-          </ScrollReveal>
-
-          {/* ── Account / Danger Zone ───────────────────────────────────── */}
-          <ScrollReveal>
-            <section className="rounded-2xl border border-red-500/20 bg-bg-card">
-              <div className="flex items-center gap-3 border-b border-red-500/20 px-6 py-4">
-                <Trash2 className="h-5 w-5 text-red-500" />
-                <h2 className="text-base font-black uppercase tracking-widest text-red-400">{t('student.settings.dangerZone.title')}</h2>
-              </div>
-              <div className="p-6 space-y-4">
-                <p className="text-sm text-text-muted">{t('student.settings.dangerZone.deleteDescription')}</p>
-                {!confirmDelete ? (
-                  <button onClick={() => setConfirmDelete(true)} className="btn-danger !py-2.5 text-sm flex items-center justify-center gap-2">
-                    <Trash2 className="w-4 h-4" /> {t('student.settings.dangerZone.deleteAccount')}
-                  </button>
+                {loadingSessions ? (
+                  <div className="flex items-center justify-center py-8"><Loader2 className="w-5 h-5 animate-spin text-accent" /></div>
+                ) : sessions.length === 0 ? (
+                  <p className="text-sm text-text-muted text-center py-4">{t('student.settings.sessions.empty')}</p>
                 ) : (
-                  <div className="p-4 border border-red-500/30 rounded-xl bg-red-500/5 space-y-3">
-                    <p className="text-xs text-red-400 font-bold">{t('student.settings.dangerZone.deleteConfirmDesc')}</p>
-                    <div className="flex gap-2">
-                      <button onClick={() => setConfirmDelete(false)} className="flex-1 px-3 py-2 border border-border rounded-xl text-xs font-bold text-text-muted active:scale-[0.98] transition-colors">{t('button.cancel')}</button>
-                      <button onClick={handleDeleteAccount} disabled={deleting} className="flex-1 px-3 py-2 btn-danger !text-xs disabled:opacity-50 flex items-center justify-center gap-1.5">
-                        {deleting ? <><Loader2 className="w-3.5 h-3.5 animate-spin" /> {t('student.settings.dangerZone.deleting')}</> : <><Trash2 className="w-3.5 h-3.5" /> {t('student.settings.dangerZone.confirmDelete')}</>}
-                      </button>
-                    </div>
+                  <div className="space-y-3">
+                    {sessions.map((session) => (
+                      <div key={session.id} className="flex items-center justify-between gap-3 p-3 bg-bg border border-border/30 rounded-xl">
+                        <div className="min-w-0">
+                          <div className="flex items-center gap-2">
+                            <p className="text-sm font-bold text-text-primary truncate">{session.userAgent || t('student.settings.sessions.unknown')}</p>
+                            {session.isCurrent && <span className="text-[9px] font-black uppercase tracking-widest text-accent bg-accent/10 px-2 py-0.5 rounded-lg">{t('student.settings.sessions.current')}</span>}
+                          </div>
+                          <p className="text-[10px] text-text-muted font-mono mt-0.5">{session.ipAddress} · {new Date(session.createdAt).toLocaleDateString()}</p>
+                        </div>
+                        {!session.isCurrent && (
+                          <button onClick={() => handleRevokeSession(session.id)} className="text-[10px] font-black uppercase tracking-widest text-text-muted hover:text-red-400 active:opacity-70 transition-colors shrink-0">
+                            {t('student.settings.sessions.revoke')}
+                          </button>
+                        )}
+                      </div>
+                    ))}
                   </div>
                 )}
               </div>
-            </section>
-          </ScrollReveal>
+            </div>
+          )}
+
+          {/* Account / Danger Zone */}
+          {activeSection === 'account' && (
+            <div className="bg-bg-card border border-red-500/20 rounded-2xl p-6 md:p-8">
+              <SectionHeader 
+                title={t('student.settings.dangerZone.title')}
+                description={t('student.settings.dangerZone.description')}
+              />
+              <div className="bg-red-500/5 border border-red-500/20 rounded-xl p-6 space-y-4">
+                <div className="flex items-start gap-3">
+                  <AlertTriangle className="w-5 h-5 text-red-400 flex-none mt-0.5" />
+                  <div>
+                    <h3 className="text-base font-black text-red-400 mb-2">{t('student.settings.dangerZone.deleteAccount')}</h3>
+                    <p className="text-sm text-text-muted mb-4">{t('student.settings.dangerZone.deleteDescription')}</p>
+                    {!confirmDelete ? (
+                      <button onClick={() => setConfirmDelete(true)} className="btn-danger !py-2.5 text-sm flex items-center justify-center gap-2">
+                        <Trash2 className="w-4 h-4" /> {t('student.settings.dangerZone.deleteAccount')}
+                      </button>
+                    ) : (
+                      <div className="p-4 border border-red-500/30 rounded-xl bg-red-500/5 space-y-3">
+                        <p className="text-xs text-red-400 font-bold">{t('student.settings.dangerZone.deleteConfirmDesc')}</p>
+                        <div className="flex gap-2">
+                          <button onClick={() => setConfirmDelete(false)} className="flex-1 px-3 py-2 border border-border rounded-xl text-xs font-bold text-text-muted active:scale-[0.98] transition-colors">{t('button.cancel')}</button>
+                          <button onClick={handleDeleteAccount} disabled={deleting} className="flex-1 px-3 py-2 btn-danger !text-xs disabled:opacity-50 flex items-center justify-center gap-1.5">
+                            {deleting ? <><Loader2 className="w-3.5 h-3.5 animate-spin" /> {t('student.settings.dangerZone.deleting')}</> : <><Trash2 className="w-3.5 h-3.5" /> {t('student.settings.dangerZone.confirmDelete')}</>}
+                          </button>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
         </div>
       </div>
-    </div>
+    </>
   );
 };
 
