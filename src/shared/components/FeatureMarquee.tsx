@@ -54,7 +54,7 @@ const FeatureMarquee: React.FC<{ items: FeatureMarqueeItem[] }> = ({ items }) =>
   }
 
   return (
-    <div className="relative h-[260px] md:h-[280px] lg:h-[300px] overflow-hidden flex items-center">
+    <div className="relative h-[260px] md:h-[280px] lg:h-[300px] overflow-x-clip overflow-y-visible flex items-center py-3">
       <div className="marquee-track">
         {[0, 1].map((copy) => (
           <div key={copy} aria-hidden={copy === 1} className="h-full flex items-center shrink-0">
