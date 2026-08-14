@@ -1,7 +1,8 @@
+import { useState } from 'react';
 import { Navigate, Link, useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { Zap, ArrowLeft } from 'lucide-react';
-import { IconArrowRight } from '@/shared/components/icons';
+import { Zap, ArrowLeft, Play } from 'lucide-react';
+import { IconArrowRight, IconTerminal, IconCode, IconNetwork } from '@/shared/components/icons';
 import SEO from '@/shared/components/SEO';
 import PublicSnapLayout from '@/shared/components/PublicSnapLayout';
 import PublicSnapSection from '@/shared/components/PublicSnapSection';
@@ -18,6 +19,12 @@ const SLUG_KEYS: Record<string, 'terminal' | 'ide' | 'network'> = {
   terminal: 'terminal',
   ide: 'ide',
   'network-visualizer': 'network',
+};
+
+const SIM_ICONS: Record<'terminal' | 'ide' | 'network', React.ComponentType<{ className?: string }>> = {
+  terminal: IconTerminal,
+  ide: IconCode,
+  network: IconNetwork,
 };
 
 const DEMO_FILES = [
@@ -79,41 +86,18 @@ echo "Current dir: $(pwd)"
   },
 ];
 
-const DemoChrome: React.FC<{ title: string; children: React.ReactNode }> = ({ title, children }) => (
-  <div className="rounded-2xl border border-border/30 overflow-hidden h-[65vh] md:h-[70vh] flex flex-col">
-    <div className="flex items-center gap-2 px-4 py-2.5 border-b border-border/20 bg-bg shrink-0">
-      <span className="w-2.5 h-2.5 rounded-full bg-red-400/70" />
-      <span className="w-2.5 h-2.5 rounded-full bg-yellow-400/70" />
-      <span className="w-2.5 h-2.5 rounded-full bg-accent/70" />
-      <span className="ml-2 text-[9px] font-mono text-text-muted">{title}</span>
-    </div>
-    <div className="flex-1 min-h-0 bg-[#0c0c0c]">{children}</div>
-  </div>
-);
-
 const SimulationPage = () => {
   const { slug } = useParams<{ slug: string }>();
   const { t } = useTranslation();
   const { user } = useAuth();
+  const [demoOpen, setDemoOpen] = useState(false);
 
   const key = SLUG_KEYS[slug ?? ''];
   if (!key) return <Navigate to="/simulations" replace />;
 
-  const demo =
-    key === 'terminal' ? (
-      <TerminalWrapper open onOpenChange={() => {}} context={{ type: 'dashboard' }} mode="raw" />
-    ) : key === 'ide' ? (
-      <Ide
-        open={true}
-        onOpenChange={() => {}}
-        title="Code Playground"
-        standalone
-        terminalContext={{ type: 'dashboard' }}
-        files={DEMO_FILES}
-      />
-    ) : (
-      <NetworkBuilder open={true} onOpenChange={() => {}} standalone />
-    );
+  const DemoIcon = SIM_ICONS[key];
+
+  const features = (t(`simulations.${key}.features`, { returnObjects: true }) as unknown as string[]) ?? [];
 
   return (
     <div className="bg-bg min-h-full">
@@ -147,18 +131,32 @@ const SimulationPage = () => {
             </div>
           </StudentHeroSection>
 
+          {/* Demo launcher — the live tool opens in a modal */}
           <PublicSnapSection>
-            <div className="flex flex-col gap-6 lg:gap-8">
-              <div>
-                <h2 className="text-lg md:text-2xl lg:text-3xl font-black text-text-primary tracking-tighter leading-tight">
+            <div className="flex flex-col items-center text-center gap-6 lg:gap-8">
+              <div className="w-full max-w-3xl rounded-2xl border border-border/30 bg-bg-card px-6 py-10 md:py-14 flex flex-col items-center">
+                <span className="w-16 h-16 md:w-20 md:h-20 rounded-2xl bg-accent/10 border border-accent/20 flex items-center justify-center mb-5">
+                  <DemoIcon className="w-8 h-8 md:w-10 md:h-10 text-accent" />
+                </span>
+                <span className="text-[9px] font-black uppercase tracking-[0.3em] text-accent">
+                  {t(`simulations.${key}.tag`)}
+                </span>
+                <h2 className="text-xl md:text-3xl lg:text-4xl font-black text-text-primary tracking-tighter leading-tight mt-2">
                   {t(`simulations.${key}.demoTitle`)}
                 </h2>
-                <p className="text-xs md:text-sm text-text-muted leading-relaxed mt-2 font-mono max-w-xl">
+                <p className="text-xs md:text-sm text-text-secondary leading-relaxed mt-3 font-mono max-w-xl">
                   {t(`simulations.${key}.demoDescription`)}
                 </p>
+                <button
+                  onClick={() => setDemoOpen(true)}
+                  className="btn-primary inline-flex items-center justify-center gap-2 px-7 py-3 mt-7"
+                >
+                  <Play className="w-4 h-4" /> {t('simulations.runDemo')} <IconArrowRight size={14} />
+                </button>
+                <p className="text-[10px] font-mono text-text-muted mt-4">
+                  {t('simulations.statsNoAccount')} · live in your browser
+                </p>
               </div>
-
-              <DemoChrome title={t(`simulations.${key}.demoTitle`)}>{demo}</DemoChrome>
             </div>
           </PublicSnapSection>
 
@@ -169,7 +167,7 @@ const SimulationPage = () => {
                 <span className="text-accent">{t('simulations.heroAccent')}</span>
               </h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 md:gap-3">
-                {(t(`simulations.${key}.features`, { returnObjects: true }) as unknown as string[]).map((feature, i) => (
+                {features.map((feature, i) => (
                   <div
                     key={i}
                     className="rounded-2xl border border-border/20 bg-bg-card px-4 py-4 flex items-center gap-3"
@@ -195,6 +193,21 @@ const SimulationPage = () => {
           <LandingFinalCtaSection user={user} />
           <Footer />
         </PublicSnapLayout>
+
+        {/* Live tool modals */}
+        {key === 'terminal' && (
+          <TerminalWrapper open={demoOpen} onOpenChange={setDemoOpen} context={{ type: 'dashboard' }} mode="modal" />
+        )}
+        {key === 'ide' && (
+          <Ide
+            open={demoOpen}
+            onOpenChange={setDemoOpen}
+            title="Code Playground"
+            terminalContext={{ type: 'dashboard' }}
+            files={DEMO_FILES}
+          />
+        )}
+        {key === 'network' && <NetworkBuilder open={demoOpen} onOpenChange={setDemoOpen} />}
       </SimulationProvider>
     </div>
   );

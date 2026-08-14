@@ -104,10 +104,10 @@ const Navbar: React.FC = React.memo(() => {
                 onMouseLeave={handleDropdownLeave}
               >
                 <button
-                  className={`flex items-center gap-1.5 px-4 py-2 text-sm font-black uppercase tracking-widest transition-colors rounded-xl ${
+                  className={`flex items-center gap-1.5 px-4 py-2 text-xs font-black uppercase tracking-widest transition-colors rounded-xl border ${
                     group.items.some((item) => isActive(item.path))
-                      ? 'text-accent hover:text-accent/80'
-                      : 'text-text-primary/70 hover:text-accent'
+                      ? 'border-accent/40 text-accent bg-accent/5'
+                      : 'border-border/30 text-text-primary/80 hover:border-accent/40 hover:text-accent'
                   }`}
                 >
                   {t(NAV_GROUP_LABELS[group.key] || group.label)}
@@ -125,42 +125,46 @@ const Navbar: React.FC = React.memo(() => {
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: -4 }}
                       transition={{ duration: 0.15 }}
-                      className="absolute top-full left-1/2 -translate-x-1/2 mt-2 min-w-[400px] bg-bg-card border border-border rounded-xl shadow-xl overflow-hidden"
+                      className="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-[300px] rounded-2xl border border-border/20 bg-bg-card shadow-xl overflow-hidden"
                     >
-                      <div className="grid grid-cols-2">
-                        {group.items.map((item, idx) => {
-                          const n = group.items.length;
-                          const hasBottomBorder = idx < n - (2 - n % 2);
-                          const linkClasses = `text-center px-4 py-4 text-sm font-black uppercase tracking-[0.15em] transition-colors ${
-                            isActive(item.path)
-                              ? 'text-accent bg-accent/5'
-                              : 'text-text-secondary hover:text-text-primary hover:bg-bg-elevated'
-                          } ${idx % 2 === 0 ? 'border-r border-accent/20' : ''} ${hasBottomBorder ? 'border-b border-accent/20' : ''}`;
+                      <div className="flex items-center justify-between px-5 pt-4 pb-3 border-b border-border/20">
+                        <h3 className="text-[9px] font-black uppercase tracking-widest text-text-muted">
+                          {t(NAV_GROUP_LABELS[group.key] || group.label)}
+                        </h3>
+                        <span className="h-1.5 w-1.5 rounded-full bg-accent" aria-hidden="true" />
+                      </div>
+                      <ul className="p-2 flex flex-col">
+                        {group.items.map((item) => {
+                          const linkClasses = `flex items-center justify-between gap-3 px-3 py-2.5 rounded-lg text-sm font-bold text-text-primary transition-colors hover:text-accent hover:bg-bg-elevated ${
+                            isActive(item.path) ? 'text-accent bg-accent/5' : ''
+                          }`;
 
                           if ((item as any).modal) {
                             return (
-                              <ContactTrigger
-                                key={item.key}
-                                className={linkClasses}
-                                onOpen={closeDropdown}
-                              >
-                                {t(NAV_ITEM_LABELS[item.key] || item.label)}
-                              </ContactTrigger>
+                              <li key={item.key}>
+                                <ContactTrigger
+                                  className={linkClasses}
+                                  onOpen={closeDropdown}
+                                >
+                                  {t(NAV_ITEM_LABELS[item.key] || item.label)}
+                                </ContactTrigger>
+                              </li>
                             );
                           }
 
                           return (
-                            <Link
-                              key={item.key}
-                              to={item.path}
-                              onClick={closeDropdown}
-                              className={linkClasses}
-                            >
-                              {item.label}
-                            </Link>
+                            <li key={item.key}>
+                              <Link
+                                to={item.path}
+                                onClick={closeDropdown}
+                                className={linkClasses}
+                              >
+                                {t(NAV_ITEM_LABELS[item.key] || item.label)}
+                              </Link>
+                            </li>
                           );
                         })}
-                      </div>
+                      </ul>
                     </motion.div>
                   )}
                 </AnimatePresence>
