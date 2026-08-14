@@ -149,32 +149,23 @@ export const SettingsSkeleton = () => (
       <HeroSkeleton action />
     </div>
     <div className="bg-bg-alt px-3 md:px-4 lg:px-6 py-10 pb-20 lg:pb-24">
-      <div className="flex flex-col lg:flex-row gap-6">
-        {/* Sidebar tabs skeleton */}
-        <div className="lg:w-56 shrink-0">
-          <div className="flex lg:flex-col gap-1 overflow-x-auto pb-2 lg:pb-0">
-            {Array.from({ length: 7 }).map((_, i) => (
-              <Skeleton key={i} className="h-10 w-28 lg:w-full rounded-xl shrink-0" />
-            ))}
-          </div>
-        </div>
-        {/* Content skeleton */}
-        <div className="flex-1 min-w-0">
-          <div className="rounded-2xl border border-border/30 bg-bg-card overflow-hidden">
+      <div className="flex flex-col gap-6">
+        {Array.from({ length: 3 }).map((_, i) => (
+          <div key={i} className="rounded-2xl border border-border/30 bg-bg-card overflow-hidden">
             <div className="flex items-center gap-3 border-b border-border/30 px-6 py-4">
               <Skeleton className="w-5 h-5 rounded" />
               <Skeleton className="h-4 w-36 rounded" />
             </div>
             <div className="p-6 divide-y divide-border/30">
-              {Array.from({ length: 4 }).map((_, i) => (
-                <div key={i} className="flex items-center justify-between gap-4 py-3">
+              {Array.from({ length: 4 }).map((_, j) => (
+                <div key={j} className="flex items-center justify-between gap-4 py-3">
                   <Skeleton className="h-4 w-40 rounded" />
                   <Skeleton className="w-11 h-6 rounded-full shrink-0" />
                 </div>
               ))}
             </div>
           </div>
-        </div>
+        ))}
       </div>
     </div>
   </div>
