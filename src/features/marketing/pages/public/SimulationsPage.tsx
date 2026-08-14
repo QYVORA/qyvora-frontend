@@ -144,8 +144,8 @@ const SimulationsPage = () => {
       /* Split layout — text left, live shell visual right */
       return (
         <PublicSnapSection key={sim.id}>
-          <div className="flex flex-col gap-6 lg:gap-8">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-8 items-stretch">
+          <div className="flex flex-col gap-8 lg:gap-10">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-10 items-stretch">
               <div className="flex flex-col justify-center">
                 {badge}
                 {heading}
@@ -168,8 +168,8 @@ const SimulationsPage = () => {
       /* Split layout — header left, code editor visual right */
       return (
         <PublicSnapSection key={sim.id}>
-          <div className="flex flex-col gap-6 lg:gap-8">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-8 items-stretch">
+          <div className="flex flex-col gap-8 lg:gap-10">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-10 items-stretch">
               <div className="flex flex-col justify-center">
                 {badge}
                 {heading}
@@ -191,7 +191,7 @@ const SimulationsPage = () => {
     /* Network — text and feature chips on one row, wide topology strip below */
     return (
       <PublicSnapSection key={sim.id}>
-        <div className="flex flex-col gap-6 lg:gap-8">
+        <div className="flex flex-col gap-8 lg:gap-10">
           <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 lg:gap-10">
             <div className="flex-1 max-w-xl">
               {badge}
