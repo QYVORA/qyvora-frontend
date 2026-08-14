@@ -357,6 +357,7 @@
     "backToCourses": "Back to courses",
     "backToCurriculum": "Back to curriculum",
     "backToLabs": "Back to labs",
+    "backToDashboard": "Back to dashboard",
     "toggleLessons": "Toggle lessons sidebar",
     "toggleCurriculum": "Toggle curriculum sidebar",
     "showPassword": "Show password",
@@ -1006,7 +1007,8 @@
         "labs": "Labs",
         "lab": "Lab",
         "lessons": "Lessons",
-        "room": "Room"
+        "room": "Room",
+        "dashboard": "Dashboard"
       }
     },
     "search": {
@@ -1430,6 +1432,7 @@
       },
       "notifications": {
         "title": "Notification Preferences",
+        "description": "Control how and when you receive notifications.",
         "email": "Email notifications",
         "push": "Push notifications",
         "weekly": "Weekly digest",
@@ -1452,7 +1455,9 @@
       },
       "appearance": {
         "title": "Appearance",
+        "description": "Customize the visual appearance of your dashboard.",
         "theme": "Theme",
+        "themeDesc": "Choose between dark and light mode",
         "dark": "Dark",
         "light": "Light",
         "compactMode": "Compact Mode",
@@ -1460,6 +1465,7 @@
         "showAnimations": "Animations",
         "showAnimationsDesc": "Enable motion and transition effects",
         "fontSize": "Font Size",
+        "fontSizeDesc": "Adjust text size across the interface",
         "small": "Small",
         "medium": "Medium",
         "large": "Large"
@@ -1470,11 +1476,14 @@
       },
       "learningPrefs": {
         "title": "Learning Preferences",
+        "description": "Customize your learning experience and goals.",
         "difficulty": "Preferred Difficulty",
+        "difficultyDesc": "Default difficulty level for new content",
         "beginner": "Beginner",
         "intermediate": "Intermediate",
         "advanced": "Advanced",
         "weeklyGoal": "Weekly Study Goal (hours)",
+        "weeklyGoalDesc": "Set your target study hours per week",
         "showHints": "Show Hints",
         "showHintsDesc": "Display hints and suggestions during learning",
         "autoPlayVideos": "Auto-play Videos",
@@ -1501,6 +1510,7 @@
       },
       "dangerZone": {
         "title": "Danger Zone",
+        "description": "Permanent account actions.",
         "deleteAccount": "Delete Account",
         "deleteDescription": "This action is irreversible. All your data will be permanently deleted.",
         "confirmDelete": "I understand, delete my account",
@@ -1509,6 +1519,10 @@
         "deleteSuccess": "Account deleted successfully.",
         "deleteFailed": "Failed to delete account.",
         "deleting": "Deleting..."
+      },
+      "security": {
+        "title": "Security",
+        "description": "Manage your account security and authentication."
       },
       "twoFactor": {
         "title": "Two-Factor Authentication",
