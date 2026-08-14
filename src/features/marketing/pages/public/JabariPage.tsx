@@ -1,5 +1,4 @@
-import { useState } from 'react';
-import { Download, GitBranch, Terminal, ChevronRight, Smartphone, ShieldCheck } from 'lucide-react';
+import { Download, GitBranch, Terminal, ChevronRight, Smartphone } from 'lucide-react';
 import { IconArrowRight } from '@/shared/components/icons';
 import SEO from '@/shared/components/SEO';
 import PublicSnapLayout from '@/shared/components/PublicSnapLayout';
@@ -8,10 +7,10 @@ import StudentHeroSection, { PUBLIC_HERO_TITLE_CLASS } from '@/shared/components
 import { Footer } from '@/shared/components/layout';
 import { useAuth } from '@/core/contexts/AuthContext';
 import LandingFinalCtaSection from '@/features/marketing/components/landing/LandingFinalCtaSection';
-import FeatureMarquee from '@/shared/components/FeatureMarquee';
+import ToolDocumentationSection from '@/shared/components/ToolDocumentationSection';
+import GoCodeCarousel from '@/shared/components/GoCodeCarousel';
 import { STAGES, RULES, PROFILES, GITHUB_URL, BUILD_FROM_SOURCE, QUICK_START, AUTHORIZED_WARNING } from '@/features/marketing/data/jabariData';
 import jabariLogo from '@/assets/jabari/jabari-main-logo.webp';
-import { BatchPagination } from '@/shared/components/ui';
 
 const SectionHeader: React.FC<{ kicker: string; title: string; accent: string; description?: string }> = ({
   kicker,
@@ -59,12 +58,10 @@ const JabariPage = () => {
             </div>
           }
         >
-          <a
-            href="#install"
-            className="btn-primary inline-flex items-center gap-2 px-6 py-2.5"
-          >
-            <Download className="w-4 h-4" /> Install Now <IconArrowRight size={14} />
-          </a>
+          <div className="flex flex-wrap items-center gap-3">
+            <a href="#install" className="btn-primary inline-flex items-center gap-2 px-6 py-2.5"><Download className="w-4 h-4" /> Install Now <IconArrowRight size={14} /></a>
+            <span className="inline-flex items-center gap-2 px-2.5 py-1 rounded-lg border border-border/30 bg-bg-card text-[9px] font-black uppercase tracking-widest text-text-muted"><span className="font-black text-[#00ADD8]">Go</span> 1.26+</span>
+          </div>
         </StudentHeroSection>
 
         {/* ── Authorized-use warning ─────────────────────────────────────── */}
@@ -92,30 +89,85 @@ const JabariPage = () => {
           </div>
         </PublicSnapSection>
 
-        {/* ── Seven-stage pipeline marquee ───────────────────────────────── */}
-        <PublicSnapSection>
-          <div className="flex flex-col gap-6 lg:gap-8">
-            <SectionHeader
-              kicker="Assessment Pipeline"
-              title="Seven"
-              accent="Stages"
-              description="Discovery → Enumeration → Analysis → Validation → Evidence → Risk → Reporting — each stage feeds the next."
-            />
-            <FeatureMarquee
-              items={STAGES.map((stage) => ({
-                id: stage.id,
-                meta: `Stage ${stage.id}`,
-                icon: <stage.icon className="w-5 h-5 text-accent" />,
-                title: stage.name,
-                description: stage.desc,
-              }))}
-            />
-          </div>
-        </PublicSnapSection>
+        {STAGES.map((stage) => (
+          <ToolDocumentationSection
+            key={stage.id}
+            id={`stage-${stage.id}`}
+            index={stage.id}
+            icon={stage.icon}
+            eyebrow="Jabari assessment pipeline"
+            title={stage.name}
+            accent="stage"
+            description={stage.desc}
+            why="Jabari keeps each assessment step explicit, timed, and recorded so the final report explains what was actually observed and how the conclusion was reached."
+            bullets={['Works on one authorised USB or specified-network Android target.', 'Reads and writes through the shared assessment environment, not directly into reports.', 'Partial evidence remains available if a later stage fails or is cancelled.']}
+            code={`jabari assess usb --profile standard\n# ${stage.name.toLowerCase()} is recorded in the session`}
+            codeLabel="Assessment flow"
+          />
+        ))}
 
-        {/* ── Builtin rules ──────────────────────────────────────────────── */}
-        <PublicSnapSection>
-          <JabariRulesSection rules={RULES} />
+        <ToolDocumentationSection
+          id="rules-and-evidence"
+          index="RULE"
+          icon={GitBranch}
+          eyebrow="Non-destructive rule engine"
+          title="Rules with"
+          accent="evidence"
+          description="The initial AND-001 through AND-007 rules examine Android posture such as debuggable builds, patch age, insecure ADB, root indicators, emulator signals, and ADB-over-TCP. Findings carry evidence, severity, confidence, and status."
+          why="A useful assessment must distinguish an observed fact from a confident conclusion; evidence references and explicit confidence make findings reviewable."
+          bullets={RULES.slice(0, 3).map((rule) => `${rule.id}: ${rule.title}.`)}
+          code={'jabari assess usb -y --profile deep --json\njabari report --list'}
+          codeLabel="Evidence and reporting"
+          tree={['internal/rules/       rule interface + AND rules', 'internal/evidence/    hashing and evidence storage', 'internal/validation/  non-destructive confirmation', 'internal/risk/        severity × confidence', 'internal/reporting/   terminal, JSON, Markdown, HTML']}
+        />
+
+        <ToolDocumentationSection
+          id="architecture"
+          index="ARC"
+          icon={GitBranch}
+          eyebrow="How Jabari is built"
+          title="Transport-aware"
+          accent="pipeline"
+          description="Go interfaces separate the assessment stages from device access. USB and specified-network targets share the same pipeline through a transport abstraction backed by a minimal, injectable ADB wrapper."
+          why="Keeping transports separate makes the pipeline testable with fakes and ensures a network target remains one deliberate device, never a broad subnet scan."
+          bullets={['Six core stages: discovery, enumeration, analysis, validation, risk, reporting.', 'Profiles select the pipeline shape, from quick posture reads to research fidelity.', 'Interactive and non-interactive authorization are enforced before assessment.']}
+          tree={['cmd/jabari/            CLI entry point', 'internal/orchestration/ profile builder + runner', 'internal/transport/     USB and network transports', 'internal/core/          Stage and assessment environment', 'internal/reporting/     offline renderers', 'pkg/adb/                thin injectable ADB wrapper']}
+        />
+
+        <PublicSnapSection id="go-source" fitViewport>
+          <div className="flex h-full min-h-0 flex-col justify-center gap-5">
+            <SectionHeader kicker="Go source" title="Testable" accent="contracts" description="Jabari uses small interfaces for its assessment stages and transports, allowing the pipeline to be tested without a live device." />
+            <GoCodeCarousel examples={[
+              { 
+                id: 'stage-interface', 
+                filename: 'internal/core/stage.go', 
+                label: 'Assessment stage interface', 
+                description: 'Every stage receives the shared environment rather than reaching into a device directly.', 
+                code: 'type Stage interface {\n    Name() string\n    Run(ctx context.Context, env *Env) error\n}\n\ntype Env struct {\n    Device    DeviceInfo\n    Transport Transport\n    Store     *Store\n    Config    *Config\n}' 
+              },
+              { 
+                id: 'transport', 
+                filename: 'internal/transport/transport.go', 
+                label: 'Transport interface', 
+                description: 'USB and specified-network Android targets implement the same connection boundary.', 
+                code: 'type Transport interface {\n    Connect(ctx context.Context) error\n    Disconnect() error\n    Info(ctx context.Context) (*models.DeviceInfo, error)\n    Execute(ctx context.Context, req models.Request) (models.Response, error)\n}' 
+              },
+              { 
+                id: 'rule', 
+                filename: 'internal/rules/rule.go', 
+                label: 'Rule interface', 
+                description: 'Rules assess a single security aspect and return a finding with evidence, severity, and confidence.', 
+                code: 'type Rule interface {\n    ID() string\n    Title() string\n    Assess(ctx context.Context, env *core.Env) (*Finding, error)\n}\n\ntype Finding struct {\n    RuleID     string\n    Status     Status\n    Severity   Severity\n    Confidence Confidence\n    Evidence   []Evidence\n}' 
+              },
+              { 
+                id: 'authorization', 
+                filename: 'internal/auth/gate.go', 
+                label: 'Authorization gate', 
+                description: 'Every assessment passes through an authorization check before the pipeline starts.', 
+                code: 'func Authorize(ctx context.Context, target string) error {\n    if !isInteractive() {\n        if !flags.Authorized {\n            return ErrNotAuthorized\n        }\n        return nil\n    }\n    \n    fmt.Printf("Authorize assessment of %s? [y/N]: ", target)\n    var response string\n    fmt.Scanln(&response)\n    \n    if strings.ToLower(response) != "y" {\n        return ErrNotAuthorized\n    }\n    return nil\n}' 
+              },
+            ]} />
+          </div>
         </PublicSnapSection>
 
         {/* ── Install ───────────────────────────────────────────────────── */}
@@ -275,43 +327,6 @@ const JabariPage = () => {
         <LandingFinalCtaSection user={user} />
         <Footer />
       </PublicSnapLayout>
-    </div>
-  );
-};
-
-const JabariRulesSection: React.FC<{ rules: typeof RULES }> = ({ rules }) => {
-  const [page, setPage] = useState(0);
-  const BATCH_SIZE = 6;
-
-  const totalPages = Math.ceil(rules.length / BATCH_SIZE);
-  const currentBatch = rules.slice(page * BATCH_SIZE, (page + 1) * BATCH_SIZE);
-
-  return (
-    <div className="flex flex-col justify-between flex-1 min-h-0 gap-4">
-      <SectionHeader
-        kicker="Rule Engine"
-        title="Builtin"
-        accent="Rules"
-        description="Non-destructive posture checks (AND-001..AND-007) — every finding records evidence and an honest confidence."
-      />
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4 flex-1">
-        {currentBatch.map((rule) => (
-          <div
-            key={rule.id}
-            className="rounded-2xl border border-border/30 bg-bg-card px-4 py-3.5 flex items-start gap-3"
-          >
-            <ShieldCheck className="w-4 h-4 text-accent shrink-0 mt-0.5" />
-            <div className="min-w-0">
-              <div className="flex items-baseline gap-2">
-                <span className="text-[9px] font-black text-accent shrink-0">{rule.id}</span>
-                <span className="text-[11px] md:text-xs font-black text-text-primary leading-tight">{rule.title}</span>
-              </div>
-              <p className="text-[10px] font-mono text-text-muted leading-relaxed mt-1">{rule.desc}</p>
-            </div>
-          </div>
-        ))}
-      </div>
-      <BatchPagination page={page} totalPages={totalPages} onPageChange={setPage} />
     </div>
   );
 };
