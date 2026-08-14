@@ -10,6 +10,7 @@ import { getRelatedContentForLab } from '@/shared/constants/topicMap';
 import RelatedContent from '@/shared/components/RelatedContent';
 import StudentHeroSection from '@/shared/components/StudentHeroSection';
 import { FlowDiagram } from '@/shared/components/diagrams/FlowDiagram';
+import { LabCelebration } from '@/shared/components/LabCelebration';
 
 const SQL_ATTACK_FLOW_NODES = [
   { id: 'input', label: 'Input Field', icon: <Keyboard className="w-4 h-4" />, status: 'warning' as const },
@@ -190,6 +191,12 @@ const SqlInjectionLab = () => {
           </div>
         )}
       </WalkthroughLayout>
+
+      <LabCelebration
+        trigger={flagStatus === 'correct'}
+        title={activeTarget.name}
+        rewardCp={activeTarget.cpReward}
+      />
     </div>
   );
 };

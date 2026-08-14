@@ -10,6 +10,7 @@ import { getRelatedContentForLab } from '@/shared/constants/topicMap';
 import RelatedContent from '@/shared/components/RelatedContent';
 import StudentHeroSection from '@/shared/components/StudentHeroSection';
 import { FlowDiagram, type FlowNode, type FlowArrow } from '@/shared/components/diagrams/FlowDiagram';
+import { LabCelebration } from '@/shared/components/LabCelebration';
 
 const HASH_CRACKING_NODES: FlowNode[] = [
   { id: 'hash', label: 'Hash File', icon: <FileText className="w-4 h-4" />, status: 'warning' },
@@ -241,6 +242,12 @@ Execute the final command to complete the exercise.`,
           </div>
         )}
       </WalkthroughLayout>
+
+      <LabCelebration
+        trigger={flagStatus === 'correct'}
+        title={activeScenario.title}
+        rewardCp={activeScenario.cpReward}
+      />
     </div>
   );
 };

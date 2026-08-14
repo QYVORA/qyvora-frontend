@@ -9,6 +9,7 @@ import { verifyLabFlag } from '../../../services/lab.service';
 import { getRelatedContentForLab } from '@/shared/constants/topicMap';
 import RelatedContent from '@/shared/components/RelatedContent';
 import StudentHeroSection from '@/shared/components/StudentHeroSection';
+import { LabCelebration } from '@/shared/components/LabCelebration';
 
 const OsintLab = () => {
   const [activeChallenge, setActiveChallenge] = useState(null);
@@ -171,6 +172,12 @@ const OsintLab = () => {
           </div>
         )}
       </WalkthroughLayout>
+
+      <LabCelebration
+        trigger={flagStatus === 'correct'}
+        title={activeChallenge.title}
+        rewardCp={activeChallenge.cpReward}
+      />
     </div>
   );
 };
