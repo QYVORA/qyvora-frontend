@@ -14,7 +14,7 @@ const PODIUM_STYLES = [
     border: 'border-yellow-400/70',
     glow: 'shadow-[0_0_40px_-8px_rgba(250,204,21,0.5)]',
     rankColor: 'text-yellow-400',
-    avatarSize: 'w-20 h-20 md:w-24 md:h-24',
+    avatarSize: 'w-24 h-24 md:w-28 md:h-28',
     title: 'text-lg md:text-xl',
     chip: 'bg-yellow-400/10 border-yellow-400/30 text-yellow-400',
     scale: 'md:scale-105',
@@ -24,7 +24,7 @@ const PODIUM_STYLES = [
     border: 'border-gray-300/70',
     glow: 'shadow-[0_0_36px_-8px_rgba(209,213,219,0.4)]',
     rankColor: 'text-gray-300',
-    avatarSize: 'w-16 h-16 md:w-20 md:h-20',
+    avatarSize: 'w-20 h-20 md:w-24 md:h-24',
     title: 'text-base md:text-lg',
     chip: 'bg-gray-300/10 border-gray-300/30 text-gray-300',
     scale: '',
@@ -34,7 +34,7 @@ const PODIUM_STYLES = [
     border: 'border-amber-600/70',
     glow: 'shadow-[0_0_36px_-8px_rgba(217,119,6,0.4)]',
     rankColor: 'text-amber-600',
-    avatarSize: 'w-16 h-16 md:w-20 md:h-20',
+    avatarSize: 'w-20 h-20 md:w-24 md:h-24',
     title: 'text-base md:text-lg',
     chip: 'bg-amber-600/10 border-amber-600/30 text-amber-600',
     scale: '',
@@ -63,7 +63,7 @@ const PodiumCard = ({ entry, rank, className = '' }: PodiumCardProps) => {
       <div className={`${s.avatarSize} rounded-full overflow-hidden bg-black shrink-0 border border-accent/40`}>
         <Identicon
           value={entry.hackerHandle || entry.name}
-          size={96}
+          size={112}
           className="w-full h-full rounded-full"
         />
       </div>
