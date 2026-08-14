@@ -205,20 +205,49 @@ function hexToRgb(hex: string): [number, number, number] {
   return [(value >> 16) & 255, (value >> 8) & 255, value & 255];
 }
 
+const DOT_MAP_H = 512;
+
+const DOT_SPRITE_CACHE = new Map<string, HTMLCanvasElement>();
+
+// A tiny pre-rendered soft dot (solid core fading to transparent). The dot map
+// stamps this sprite for every land cell instead of building a radial gradient
+// per dot, which is dramatically cheaper on the main thread at mount.
+function makeDotSprite(fill: string): HTMLCanvasElement {
+  const cached = DOT_SPRITE_CACHE.get(fill);
+  if (cached) return cached;
+
+  const size = 16;
+  const sprite = document.createElement('canvas');
+  sprite.width = size;
+  sprite.height = size;
+  const sctx = sprite.getContext('2d')!;
+  const [r, g, b] = hexToRgb(fill);
+  const grad = sctx.createRadialGradient(size / 2, size / 2, 0, size / 2, size / 2, size / 2);
+  grad.addColorStop(0, `rgba(${r},${g},${b},1)`);
+  grad.addColorStop(0.6, `rgba(${r},${g},${b},0.85)`);
+  grad.addColorStop(1, `rgba(${r},${g},${b},0)`);
+  sctx.fillStyle = grad;
+  sctx.fillRect(0, 0, size, size);
+
+  DOT_SPRITE_CACHE.set(fill, sprite);
+  return sprite;
+}
+
 export function buildDotMapTexture(isLight: boolean, step = 1.6): THREE.CanvasTexture {
   const cacheKey = `${isLight}-${step}`;
   if (TEXTURE_CACHE.has(cacheKey)) return TEXTURE_CACHE.get(cacheKey)!;
 
-  const W = 2048, H = 1024;
+  const W = DOT_MAP_H * 2, H = DOT_MAP_H;
   const canvas = document.createElement('canvas');
   canvas.width = W; canvas.height = H;
   const ctx = canvas.getContext('2d')!;
 
   ctx.clearRect(0, 0, W, H);
 
-  const dotR      = (step / 180) * H * 0.55;
-  const landFill  = ACCENT_COLOR_HEX;
-  const regionFill = isLight ? REGION_COLOR_LIGHT_HEX : REGION_COLOR_DARK_HEX;
+  const dotR         = (step / 180) * H * 0.55;
+  const dia          = dotR * 2;
+  const accentSprite = makeDotSprite(ACCENT_COLOR_HEX);
+  const regionSprite = makeDotSprite(isLight ? REGION_COLOR_LIGHT_HEX : REGION_COLOR_DARK_HEX);
 
   for (let lat = 89; lat >= -89; lat -= step) {
     for (let lng = -179; lng <= 179; lng += step) {
@@ -229,17 +258,7 @@ export function buildDotMapTexture(isLight: boolean, step = 1.6): THREE.CanvasTe
 
       // Soft radial-falloff dots: a solid core that fades to transparent at the
       // edge, instead of hard-edged circles, so the map reads smooth and clean.
-      const fill = isBlackRegion(lat, lng) ? regionFill : landFill;
-      const [r, g, b] = hexToRgb(fill);
-      const grad = ctx.createRadialGradient(x, y, 0, x, y, dotR);
-      grad.addColorStop(0, `rgba(${r},${g},${b},1)`);
-      grad.addColorStop(0.6, `rgba(${r},${g},${b},0.85)`);
-      grad.addColorStop(1, `rgba(${r},${g},${b},0)`);
-      ctx.fillStyle = grad;
-
-      ctx.beginPath();
-      ctx.arc(x, y, dotR, 0, Math.PI * 2);
-      ctx.fill();
+      ctx.drawImage(isBlackRegion(lat, lng) ? regionSprite : accentSprite, x - dotR, y - dotR, dia, dia);
     }
   }
 
@@ -275,12 +294,12 @@ export function buildLandDots(step = 1.6): Array<{ lat: number; lng: number }> {
 /**
  * Angular radius (radians) of a dot's solid core on a unit sphere. The flat
  * texture dots are soft (radial falloff), so the raised pins keep the radius
- * of the solid centre rather than the full faded halo.
+ * of the solid centre rather than the full faded halo. Matches the sprite
+ * diameter stamped by `buildDotMapTexture` (which scales with `DOT_MAP_H`).
  */
 export function getDotRadius(step = 1.6): number {
-  const H = 1024;
-  const dotR = (step / 180) * H * 0.55;
-  return ((dotR * 0.6) / H) * Math.PI;
+  const dotR = (step / 180) * DOT_MAP_H * 0.55;
+  return ((dotR * 0.6) / DOT_MAP_H) * Math.PI;
 }
 
 /** Per-instance colors for the raised pins, matching the dot-map palette. */
