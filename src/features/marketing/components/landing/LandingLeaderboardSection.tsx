@@ -35,8 +35,9 @@ const TOP_THREE_RING = [
 const TOP_THREE_RANK_COLOR = ['text-yellow-400', 'text-gray-300', 'text-amber-600'];
 
 const CELL_SIZE_SM = 56;
-const CELL_SIZE_LG = 72;
+const CELL_SIZE_LG = 56;
 const GAP = 4;
+const GRID_COLUMNS = 8;
 
 type Period = 'all' | 'week' | 'month';
 
@@ -130,8 +131,8 @@ const LandingLeaderboardSection = () => {
         <div className="relative flex-1 min-h-0 min-w-0 overflow-hidden flex items-center lg:justify-center">
           {loading ? (
             <div
-              className="relative flex flex-wrap content-start justify-center"
-              style={{ gap: `${GAP}px` }}
+              className="relative grid content-center justify-center"
+              style={{ gap: `${GAP}px`, gridTemplateColumns: `repeat(${GRID_COLUMNS}, ${cellSize}px)` }}
             >
               {Array.from({ length: 40 }).map((_, i) => (
                 <div
@@ -149,8 +150,8 @@ const LandingLeaderboardSection = () => {
             <ErrorState message={error} title="Leaderboard Unavailable" bare className="w-full" />
           ) : entries.length === 0 ? null : (
             <div
-              className="relative flex flex-wrap content-start justify-center"
-              style={{ gap: `${GAP}px` }}
+              className="relative grid content-center justify-center"
+              style={{ gap: `${GAP}px`, gridTemplateColumns: `repeat(${GRID_COLUMNS}, ${cellSize}px)` }}
             >
               {cells.map(({ entry, idx }) => {
                 const isFilled = entry !== null;
@@ -174,7 +175,7 @@ const LandingLeaderboardSection = () => {
                     onMouseEnter={() => setHoveredIdx(idx)}
                     onMouseLeave={() => setHoveredIdx(null)}
                     className={[
-                      'cursor-pointer shrink-0 relative',
+                      'group cursor-pointer shrink-0 relative',
                       'transition-all duration-300',
                       'rounded-lg overflow-hidden',
                       isTopThree
@@ -185,32 +186,25 @@ const LandingLeaderboardSection = () => {
                     ].join(' ')}
                     style={{ width: `${cellSize}px`, height: `${cellSize}px` }}
                   >
-                    <div className="flex items-center justify-center w-full h-full bg-bg-elevated">
+                    <div className="flex items-center justify-center w-full h-full bg-bg-elevated transition-transform duration-300 group-hover:scale-110">
                       <Identicon value={entry!.hackerHandle || entry!.name || '?'} size={cellSize} className="w-full h-full" />
                     </div>
 
-                    <div className="absolute top-[3px] left-[3px] z-10">
+                    <div className="absolute top-[3px] left-[3px] z-10 rounded bg-black/75 px-1 py-0.5 shadow-sm">
                       {isTopThree ? (
                         <Medal className={`${medalSizes} ${TOP_THREE_RANK_COLOR[entry!.rank - 1]}`} />
                       ) : (
-                        <span className="text-[8px] font-mono font-bold text-text-primary/80 bg-black/50 rounded px-0.5 leading-none">
+                        <span className="block text-[9px] font-mono font-black leading-none text-white">
                           {entry!.rank}
                         </span>
                       )}
                     </div>
 
-                    <div
-                      className={[
-                        'absolute inset-x-0 bottom-0 z-10 bg-gradient-to-t from-black/70 via-black/40 to-transparent',
-                        'flex flex-col items-center justify-end pb-1.5 pt-4',
-                        'transition-opacity duration-300',
-                        isHovered ? 'opacity-100' : 'opacity-0',
-                      ].join(' ')}
-                    >
-                       <span className="text-[9px] font-black text-text-primary truncate w-full text-center leading-none px-1">
+                    <div className="absolute inset-x-0 bottom-0 z-10 flex flex-col items-center justify-end bg-gradient-to-t from-black/90 via-black/65 to-transparent pb-1 pt-5">
+                       <span className="w-full truncate px-1 text-center text-[8px] font-black leading-none text-white">
                          {entry!.hackerHandle || entry!.name || t('landing.leaderboard.anonFallback')}
                        </span>
-                       <span className="text-[8px] font-mono font-bold text-accent leading-none mt-0.5">
+                       <span className="mt-0.5 text-[7px] font-mono font-black leading-none text-accent">
                          {Number(entry!.cp).toLocaleString()} {t('landing.leaderboard.cpSuffix')}
                        </span>
                     </div>

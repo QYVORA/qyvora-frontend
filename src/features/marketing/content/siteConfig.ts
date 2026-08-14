@@ -93,6 +93,7 @@ export const SITE_CONFIG = {
           { key: 'courses', label: 'Courses', path: '/courses', desc: 'Security courses' },
           { key: 'bootcamp', label: 'Bootcamp', path: '/hpb', desc: 'Hacker Protocol Bootcamp' },
           { key: 'labs', label: 'Labs', path: '/labs', desc: 'Attack labs' },
+          { key: 'simulations', label: 'Simulations', path: '/simulations', desc: 'Live tool demos' },
           { key: 'blogs', label: 'Blogs', path: '/blogs', desc: 'Security articles' },
         ],
       },
@@ -109,6 +110,7 @@ export const SITE_CONFIG = {
         label: 'Company',
         items: [
           { key: 'team', label: 'Team', path: '/team', desc: 'Our team' },
+          { key: 'quiteroot', label: 'QuiteRoot', path: '/quiteroot', desc: 'Our offensive research collective' },
           { key: 'terms', label: 'Terms of Service', path: '/terms', desc: 'Terms of Service' },
         ],
       },
