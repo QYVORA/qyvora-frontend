@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { motion, useReducedMotion } from 'motion/react';
 import PublicHeroSection from '@/shared/components/PublicHeroSection';
 import { IconArrowRight } from '@/shared/components/icons';
+import { useTranslation } from 'react-i18next';
 
 interface ActDividerItem {
   icon: React.ElementType;
@@ -20,6 +21,7 @@ interface ActDividerSectionProps {
 
 const ActDividerSection: React.FC<ActDividerSectionProps> = ({ title, accentWord, description, items }) => {
   const shouldReduceMotion = useReducedMotion();
+  const { t } = useTranslation();
 
   return (
     <PublicHeroSection showGlobe mask="right">
@@ -58,24 +60,32 @@ const ActDividerSection: React.FC<ActDividerSectionProps> = ({ title, accentWord
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-80px' }}
           transition={{ duration: 0.6, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
-          className="grid grid-cols-1 sm:grid-cols-3 gap-2 md:gap-3 pt-2 sm:pt-4 max-w-xl"
+          className="grid grid-cols-1 sm:grid-cols-3 gap-3 md:gap-4 pt-2 sm:pt-4 max-w-2xl"
         >
-          {items.map((item) => (
+          {items.map((item, i) => (
             <Link
               key={item.label}
               to={item.to}
-              className="group relative flex items-start gap-3 card-accent bg-bg-card p-3 md:p-4 transition-all duration-300"
+              className="group relative flex flex-col card-accent bg-bg-card p-4 sm:p-5 transition-all duration-300 hover:shadow-[var(--card-shadow)]"
             >
-              <div className="w-8 h-8 shrink-0 rounded-xl flex items-center justify-center bg-accent/10 border border-accent/20">
-                <item.icon size={16} className="text-accent" />
-              </div>
-              <div className="min-w-0">
-                <span className="flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest text-text-primary group-hover:text-accent transition-colors">
-                  {item.label}
-                  <IconArrowRight size={12} className="text-text-muted group-hover:text-accent transition-colors shrink-0" />
+              <div className="flex items-center justify-between mb-3 sm:mb-4">
+                <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-xl flex items-center justify-center bg-accent/10 border border-accent/20 group-hover:bg-accent/15 transition-colors">
+                  <item.icon size={20} className="text-accent" />
+                </div>
+                <span className="text-[9px] font-black uppercase tracking-widest text-text-muted/70">
+                  0{i + 1}
                 </span>
-                <p className="text-[10px] text-text-muted leading-relaxed mt-1 line-clamp-2">{item.description}</p>
               </div>
+              <span className="text-sm sm:text-base font-black uppercase tracking-tight text-text-primary group-hover:text-accent transition-colors">
+                {item.label}
+              </span>
+              <p className="text-[11px] sm:text-xs text-text-muted leading-relaxed mt-2 mb-4 sm:mb-5 flex-1">
+                {item.description}
+              </p>
+              <span className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-accent">
+                {t('button.explore')}
+                <IconArrowRight size={12} className="transition-transform duration-300 group-hover:translate-x-1" />
+              </span>
             </Link>
           ))}
         </motion.div>

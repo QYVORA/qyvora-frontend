@@ -104,9 +104,6 @@ const LandingTeamSection = () => {
                 </div>
               ))}
             </div>
-            {/* Edge fades — cards melt into the background instead of hard-clipping */}
-            <div className="pointer-events-none absolute inset-y-0 left-0 w-12 sm:w-24 lg:w-40 z-10 bg-gradient-to-r from-bg via-bg/70 to-transparent" aria-hidden="true" />
-            <div className="pointer-events-none absolute inset-y-0 right-0 w-12 sm:w-24 lg:w-40 z-10 bg-gradient-to-l from-bg via-bg/70 to-transparent" aria-hidden="true" />
           </div>
         )}
       </div>
