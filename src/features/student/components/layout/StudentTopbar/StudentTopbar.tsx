@@ -41,9 +41,11 @@ const StudentTopbar = () => {
   const roomMatchLegacy = useMatch('/dashboard/bootcamps/:bootcampId/modules/:moduleId/rooms/:roomId');
   const courseMatch = useMatch('/dashboard/courses/:courseId');
   const labMatch = useMatch('/dashboard/labs/:labType');
+  const settingsMatch = useMatch('/dashboard/settings/*');
 
   const isCoursePage = Boolean(courseMatch);
   const isLabPage = Boolean(labMatch);
+  const isSettingsPage = Boolean(settingsMatch);
   const activeRoomMatch = roomMatch ?? roomMatchLegacy;
   const isRoomPage = Boolean(activeRoomMatch) || isCoursePage;
 
@@ -363,7 +365,60 @@ const StudentTopbar = () => {
               />
             </div>
 
-          ) : (
+          ) : isSettingsPage ? (
+          /* ══ SETTINGS MODE ══ */
+          <div className="px-4 md:px-6 h-20 md:h-24 flex items-center gap-1.5 md:gap-3">
+            <button
+              onClick={() => navigate('/dashboard')}
+              className={`flex h-10 w-10 md:h-12 md:w-12 shrink-0 items-center justify-center rounded-xl transition-colors text-text-secondary hover:text-accent active:scale-95`}
+              aria-label={t('aria.backToDashboard')}
+            >
+              <IconArrowLeft size={20} strokeWidth={2.5} />
+            </button>
+            <div className={`hidden sm:flex items-center gap-1.5 text-xs font-bold uppercase tracking-widest min-w-0 flex-1 text-text-muted`}>
+              <Link to="/dashboard" className={`transition-colors shrink-0 hover:text-accent active:opacity-70`}>
+                {t('student.topbar.breadcrumb.dashboard')}
+              </Link>
+              <IconChevronRight size={12} className={`opacity-40 shrink-0`} />
+              <span className="text-text-primary font-black truncate">Settings</span>
+            </div>
+            <div className="flex sm:hidden flex-col min-w-0 flex-1">
+              <span className="text-[9px] font-black uppercase tracking-[0.25em] text-accent leading-none mb-0.5">CONFIGURE</span>
+              <span className="text-sm font-black text-text-primary truncate leading-tight">Settings</span>
+            </div>
+            <div className="flex items-center gap-1.5 md:gap-2 shrink-0 ml-auto">
+              <ProfileDropdown
+                user={user}
+                unreadCount={unreadCount}
+                onOpenNotifications={() => navigate('/dashboard/notifications')}
+                onOpenTerminal={() => window.dispatchEvent(new CustomEvent('qyvora:open-terminal'))}
+                onOpenIDE={() => window.dispatchEvent(new CustomEvent('qyvora:open-ide'))}
+                onOpenNetworkVisualizer={() => window.dispatchEvent(new CustomEvent('qyvora:open-network-visualizer'))}
+                handleLogout={handleLogout}
+              />
+            </div>
+
+            {/* Mobile profile trigger */}
+            <button
+              onClick={() => setProfileSheetOpen(true)}
+              className="md:hidden flex items-center justify-center w-10 h-10 flex-none rounded-lg overflow-hidden transition-colors border-2 border-accent bg-black min-h-0"
+              aria-label="Open profile menu"
+            >
+              <Identicon value={user?.username || '?'} size={40} className="w-full h-full" />
+            </button>
+
+            <MobileProfileSheet
+              open={profileSheetOpen}
+              onOpenChange={setProfileSheetOpen}
+              user={user}
+              unreadCount={unreadCount}
+              onOpenTerminal={() => window.dispatchEvent(new CustomEvent('qyvora:open-terminal'))}
+              onOpenIDE={() => window.dispatchEvent(new CustomEvent('qyvora:open-ide'))}
+              onOpenNetworkVisualizer={() => window.dispatchEvent(new CustomEvent('qyvora:open-network-visualizer'))}
+              handleLogout={handleLogout}
+            />
+          </div>
+        ) : (
           /* ══ DASHBOARD MODE ══ */
           <div className=" px-3 md:px-4 lg:px-6 h-20 md:h-24 flex items-center gap-2 md:gap-3">
 
