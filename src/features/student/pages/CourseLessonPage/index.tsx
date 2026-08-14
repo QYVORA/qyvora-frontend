@@ -65,7 +65,7 @@ const LessonViewer: React.FC<{ lesson: Lesson; number: number; courseId?: string
       )}
 
       {lesson.hasCodePlayground && (
-        <div className="mt-10 md:mt-14">
+        <div className="mt-8 md:mt-10">
           <div className="flex items-center gap-2 mb-4">
             <Target className="h-4 w-4 text-accent" />
             <span className="text-[10px] font-black uppercase tracking-widest text-accent">Code Playground</span>
