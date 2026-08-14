@@ -57,7 +57,13 @@ import hpbCoverImg from '@/assets/bootcamp/hpb-cover.webp';
 const BOOTCAMP_COVER_IMGS: Record<string, string> = { bc_1775270338500: hpbCoverImg };
 const BOOTCAMP_FALLBACK_IMG = hpbCoverImg;
 
-type SectionKey = 'courses' | 'bootcamps' | 'labs' | 'marketplace';
+type SectionKey = 'courses' | 'bootcamps' | 'labs' | 'marketplace' | 'tools';
+
+const TOOLS = [
+  { id: 'ide', labelKey: 'student.tools.ide', descKey: 'student.tools.ideDesc', route: '/dashboard/tools/ide', icon: IconCode },
+  { id: 'terminal', labelKey: 'student.tools.terminal', descKey: 'student.tools.terminalDesc', route: '/dashboard/tools/terminal', icon: IconTerminal },
+  { id: 'network-visualizer', labelKey: 'student.tools.networkVisualizer', descKey: 'student.tools.networkVisualizerDesc', route: '/dashboard/tools/network-visualizer', icon: IconNetwork },
+];
 
 function pickCpBalance(userCp: number, overview: any, cpBalance: number | null): number {
   if (typeof cpBalance === 'number' && Number.isFinite(cpBalance)) return cpBalance;
@@ -83,10 +89,10 @@ const DashboardSkeleton = () => (
       </div>
     </div>
 
-    {/* 2. Section Navigation Buttons — 4-column grid of SectionButtons */}
+    {/* 2. Section Navigation Buttons — 5-column grid of SectionButtons */}
     <div className="bg-bg-alt px-3 md:px-4 lg:px-6 py-10">
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 md:gap-4 lg:gap-5">
-        {[...Array(4)].map((_, i) => (
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 md:gap-4 lg:gap-5">
+        {[...Array(5)].map((_, i) => (
           <div key={i} className="flex flex-col items-center gap-3 p-3 md:p-5 lg:p-6 min-h-[100px] md:min-h-[120px] rounded-2xl border border-border/30 bg-bg-card">
             <Skeleton className="w-10 h-10 md:w-14 md:h-14 lg:w-16 lg:h-16 rounded-xl md:rounded-2xl bg-border/30 shrink-0" />
             <Skeleton className="h-2.5 w-16 bg-border/30 rounded" />
@@ -428,7 +434,7 @@ const Dashboard = () => {
       {/* 2. Navigation Buttons */}
       <div className="bg-bg-alt px-3 md:px-4 lg:px-6 py-10">
         <div ref={statsRef}>
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 md:gap-4 lg:gap-5">
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 md:gap-4 lg:gap-5">
             <SectionButton
               icon={<GraduationCap className={`w-5 h-5 md:w-7 md:h-7 ${activeSection === 'courses' ? 'text-on-accent' : 'text-text-primary'}`} />}
               label={t('nav.courses')}
@@ -454,6 +460,14 @@ const Dashboard = () => {
               active={activeSection === 'marketplace'}
               onClick={() => handleSectionToggle('marketplace')}
             />
+            <div className="col-span-2 sm:col-span-1">
+              <SectionButton
+                icon={<Wrench className={`w-5 h-5 md:w-7 md:h-7 ${activeSection === 'tools' ? 'text-on-accent' : 'text-text-primary'}`} />}
+                label={t('student.tools.title')}
+                active={activeSection === 'tools'}
+                onClick={() => handleSectionToggle('tools')}
+              />
+            </div>
           </div>
         </div>
 
@@ -675,6 +689,51 @@ const Dashboard = () => {
                 </Link>
               </div>
             )}
+          </div>
+        )}
+
+        {activeSection === 'tools' && (
+          <div>
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-xs font-black uppercase tracking-[0.3em] text-text-muted">{t('student.tools.title')}</h3>
+              <span className="text-[10px] font-black uppercase tracking-widest text-accent">{t('student.tools.title')}</span>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+              {TOOLS.map((tool) => {
+                const ToolIcon = tool.icon;
+                return (
+                  <Link
+                    key={tool.id}
+                    to={tool.route}
+                    className="group/card relative aspect-square rounded-2xl border border-border/30 bg-bg-card p-3 md:p-5 transition-all duration-300 hover:border-accent/30 flex flex-col text-left"
+                  >
+                    <div className="flex items-center gap-2 mb-2">
+                      <div className="w-8 h-8 rounded-xl flex items-center justify-center shrink-0 bg-accent/10 border border-accent/20">
+                        <ToolIcon className="w-4 h-4 text-accent" />
+                      </div>
+                      <span className="px-2 py-0.5 rounded-lg bg-accent/10 text-[9px] font-black uppercase tracking-widest text-accent border border-accent/20">
+                        {t('student.tools.title')}
+                      </span>
+                    </div>
+
+                    <h3 className="text-sm sm:text-base md:text-lg lg:text-xl font-black text-text-primary group-hover/card:text-accent transition-colors leading-snug break-words mb-1">
+                      {t(tool.labelKey)}
+                    </h3>
+
+                    <p className="text-xs sm:text-sm md:text-base text-text-muted leading-relaxed line-clamp-3 break-words flex-1 mb-2">
+                      {t(tool.descKey)}
+                    </p>
+
+                    <div className="flex items-center justify-between mt-auto">
+                      <span className="px-3 py-1.5 rounded-lg text-[9px] sm:text-[10px] md:text-xs font-black uppercase tracking-widest bg-accent text-on-accent transition-all duration-200 group-hover/card:brightness-110 group-active:scale-95">
+                        {t('student.dashboard.view')}
+                      </span>
+                      <IconArrowRight size={12} className="text-text-muted" />
+                    </div>
+                  </Link>
+                );
+              })}
+            </div>
           </div>
         )}
         </div>
