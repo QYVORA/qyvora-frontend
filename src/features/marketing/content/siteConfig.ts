@@ -87,25 +87,39 @@ export const SITE_CONFIG = {
   nav: {
     groups: [
       {
-        key: 'platform',
-        label: 'Platform',
+        key: 'learning',
+        label: 'Learning',
         items: [
-          { key: 'services', label: 'Services', path: '/services', desc: 'Enterprise security services' },
           { key: 'courses', label: 'Courses', path: '/courses', desc: 'Security courses' },
           { key: 'bootcamp', label: 'Bootcamp', path: '/hpb', desc: 'Hacker Protocol Bootcamp' },
           { key: 'labs', label: 'Labs', path: '/labs', desc: 'Attack labs' },
-          { key: 'simulations', label: 'Simulations', path: '/simulations', desc: 'Live tool demos' },
+          { key: 'blogs', label: 'Blogs', path: '/blogs', desc: 'Security articles' },
         ],
       },
       {
-        key: 'resources',
-        label: 'Resources',
+        key: 'community',
+        label: 'Community',
+        items: [
+          { key: 'leaderboard', label: 'Leaderboard', path: '/leaderboard', desc: 'Top operators ranking' },
+          { key: 'market', label: 'Market', path: '/zero-day-market', desc: 'Zero-day vulnerability market' },
+        ],
+      },
+      {
+        key: 'company',
+        label: 'Company',
+        items: [
+          { key: 'team', label: 'Team', path: '/team', desc: 'Our team' },
+          { key: 'terms', label: 'Terms of Service', path: '/terms', desc: 'Terms of Service' },
+        ],
+      },
+      {
+        key: 'platform',
+        label: 'Platform',
         items: [
           { key: 'anansi', label: 'Anansi', path: '/anansi', desc: 'Attack Surface Intelligence' },
           { key: 'toha3ee', label: 'Toha3ee', path: '/toha3ee', desc: 'Network exploitation & MITM framework' },
           { key: 'jabari', label: 'Jabari', path: '/jabari', desc: 'Android security assessment' },
-          { key: 'leaderboard', label: 'Leaderboard', path: '/leaderboard', desc: 'Top operators ranking' },
-          { key: 'blogs', label: 'Blogs', path: '/blogs', desc: 'Security articles' },
+          { key: 'services', label: 'Services', path: '/services', desc: 'Enterprise security services' },
         ],
       },
     ],

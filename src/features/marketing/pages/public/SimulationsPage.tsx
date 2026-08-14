@@ -165,25 +165,23 @@ const SimulationsPage = () => {
     }
 
     if (sim.id === 'ide') {
-      /* Centered header, editor visual on the right, features stacked left */
+      /* Split layout — header left, code editor visual right */
       return (
         <PublicSnapSection key={sim.id}>
           <div className="flex flex-col gap-6 lg:gap-8">
-            <div className="text-center mx-auto max-w-2xl">
-              {badge}
-              {heading}
-              {description}
-              <div className="flex justify-center">{cta}</div>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-8 items-stretch">
+              <div className="flex flex-col justify-center">
+                {badge}
+                {heading}
+                {description}
+                {cta}
+              </div>
+              <IdeMock />
             </div>
-            <div className="grid grid-cols-1 lg:grid-cols-5 gap-4 lg:gap-8 items-stretch">
-              <div className="lg:col-span-2 flex flex-col justify-center gap-2">
-                {features.map((feature, i) => (
-                  <FeatureCard key={i} feature={feature} />
-                ))}
-              </div>
-              <div className="lg:col-span-3">
-                <IdeMock />
-              </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2 md:gap-3">
+              {features.map((feature, i) => (
+                <FeatureCard key={i} feature={feature} />
+              ))}
             </div>
           </div>
         </PublicSnapSection>

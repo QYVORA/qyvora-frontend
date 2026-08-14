@@ -13,23 +13,25 @@ import LanguageSwitcher from '@/shared/components/LanguageSwitcher';
 import Identicon from '@/shared/components/Identicon';
 
 const NAV_GROUP_LABELS: Record<string, string> = {
+  learning: 'nav.learning',
+  community: 'nav.community',
+  company: 'nav.company',
   platform: 'nav.platform',
-  resources: 'nav.resources',
 };
 
 const NAV_ITEM_LABELS: Record<string, string> = {
-  services: 'nav.services',
   courses: 'nav.courses',
   bootcamp: 'nav.bootcamp',
   labs: 'nav.labs',
-  simulations: 'nav.simulations',
+  blogs: 'nav.blogs',
+  leaderboard: 'nav.leaderboard',
+  market: 'nav.market',
+  team: 'nav.team',
+  terms: 'footer.termsOfService',
   anansi: 'nav.anansi',
   toha3ee: 'nav.toha3ee',
   jabari: 'nav.jabari',
-  leaderboard: 'nav.leaderboard',
-  blogs: 'nav.blogs',
-  team: 'nav.team',
-  contact: 'nav.contact',
+  services: 'nav.services',
 };
 
 const Navbar: React.FC = React.memo(() => {
