@@ -20,6 +20,9 @@ export interface TeamMember {
   handle?: string;
   role: string;
   bio: string;
+  profile: string;
+  disciplines: string[];
+  location?: string;
   image: string;
   width: number;
   height: number;
@@ -32,7 +35,10 @@ export const teamData: TeamMember[] = [
     name: 'wsuits6',
     handle: 'wsuits6',
     role: 'CEO',
-    bio: 'I dont follow paths I burn them then I write my own in code .',
+    bio: 'Ethical hacker, systems builder, and QYVORA founder shaping security-first technology from Ghana.',
+    profile: 'Wsuits6 is the online alias of Alhassan Osman Wunpini, also known as Osman Alhassan. As CEO of QYVORA and Wsuits Industries, he works at the intersection of ethical hacking, systems coding, red-team thinking, and security psychology—building practical projects and communities around a more resilient digital future.',
+    disciplines: ['Red teaming', 'Systems coding', 'Security psychology'],
+    location: 'Ghana',
     image: wsuits6Img,
     width: 1024,
     height: 1024,
@@ -47,7 +53,9 @@ export const teamData: TeamMember[] = [
     id: 'sopt4',
     name: 'sopt4',
     role: 'COO',
-    bio: "I don't break systems, i find the flaws so others don't",
+    bio: 'Software engineer and graphic designer focused on polished interfaces, interaction, and web development.',
+    profile: 'sopt4 is a software engineer, graphic designer, and web developer who brings visual clarity to technical work. His focus is creating good-looking, interactive digital experiences that feel considered from the first screen to the final detail, helping QYVORA turn ambitious ideas into approachable products.',
+    disciplines: ['Software engineering', 'UI design', 'Web development'],
     image: sopt4Img,
     width: 1254,
     height: 1254,
@@ -62,7 +70,10 @@ export const teamData: TeamMember[] = [
     id: 'mohammedRafiq',
     name: 'Mohammed Rafiq',
     role: 'CFO',
-    bio: "I don\u2019t protect assets\u2014I grow them wisely.",
+    bio: 'Computer hardware engineer, IT graduate, and hands-on troubleshooter based in Tamale.',
+    profile: 'Sulemana Mohammed Rafiq is a professional computer hardware engineer and troubleshooter with a BTech in Information Technology. He is the Managing Director of Conda Computers in Tamale, bringing practical technical leadership, diagnostics expertise, and a grounded understanding of the hardware that keeps people connected.',
+    disciplines: ['Hardware engineering', 'IT troubleshooting', 'Technical operations'],
+    location: 'Tamale, Ghana',
     image: rafiqImg,
     width: 1080,
     height: 1080,
@@ -75,8 +86,11 @@ export const teamData: TeamMember[] = [
   {
     id: 'ghostVenom',
     name: 'Ghost Venom',
-    role: 'CM',
-    bio: 'I am the whisper in the code, the Shadow in the system, the ghost no firewall can forget.',
+    role: 'Community Manager',
+    bio: 'Nigerian ethical hacker, penetration tester, content creator, and QYVORA community manager.',
+    profile: 'Ghost Venom is a passionate ethical hacker and penetration tester from Nigeria. Alongside creating cybersecurity content, he manages the QYVORA community—making security knowledge more accessible, encouraging responsible practice, and helping operators learn together in public.',
+    disciplines: ['Penetration testing', 'Security content', 'Community building'],
+    location: 'Nigeria',
     image: ghostImg,
     width: 1254,
     height: 1254,
