@@ -184,7 +184,7 @@ const Marketplace: React.FC = () => {
                 const hasPurchased = purchased.has(id);
                 return (
                   <motion.div key={id || idx} initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.45, delay: idx * 0.08, ease: [0.16, 1, 0.3, 1] }}>
-                    <div className="group flex flex-col overflow-hidden w-full border border-border/30 bg-bg-card rounded-2xl transition-all duration-300 hover:border-accent/30">
+                    <div className="group flex flex-col overflow-hidden w-full card-accent bg-bg-card transition-all duration-300">
                       <div className="relative aspect-[16/9] overflow-hidden bg-accent/5 border-b border-border/30">
                         <AuthImage
                           src={prod.coverUrl}
@@ -226,7 +226,7 @@ const Marketplace: React.FC = () => {
           </div>
         ) : (
           <div className="px-1 md:px-0">
-            <div className="overflow-hidden rounded-2xl border border-border/30 bg-bg-card">
+            <div className="overflow-hidden card-accent bg-bg-card">
               <div className="flex items-center gap-2 border-b border-border px-5 py-4">
                 <Zap className="h-5 w-5 text-accent shrink-0" />
                 <h3 className="text-base font-black uppercase tracking-widest text-text-primary">{t('nav.market')}</h3>
@@ -261,7 +261,7 @@ const Marketplace: React.FC = () => {
                     <div className="px-5 py-4 flex justify-center">
                       <button
                         onClick={() => setVisibleCount((prev) => prev + PAGE_SIZE)}
-                        className="px-4 py-2 bg-bg border border-border hover:border-accent/40 rounded-lg text-xs font-bold text-text-primary transition-all"
+                        className="px-4 py-2 bg-bg border border-border rounded-lg text-xs font-bold text-text-primary transition-all"
                       >
                         {t('student.marketplace.loadMore', { count: txRows.length - visibleCount })}
                       </button>

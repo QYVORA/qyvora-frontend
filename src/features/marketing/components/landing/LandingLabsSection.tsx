@@ -66,7 +66,7 @@ const LandingLabsSection: React.FC = () => {
             >
               <Link
                 to="/dashboard/labs"
-                className="group relative block h-full rounded-2xl border border-border/20 bg-bg/90 p-4 sm:p-8 transition-all duration-300 hover:border-accent/30"
+                className="group relative block h-full card-accent bg-bg/90 p-4 sm:p-8 transition-all duration-300"
               >
                 <DottedMapOverlay className="rounded-2xl" />
                 <div className="relative h-full flex flex-col">
@@ -104,7 +104,7 @@ const LandingLabsSection: React.FC = () => {
               >
                 <Link
                   to="/dashboard/labs"
-                  className="group relative block h-full rounded-2xl border border-border/20 bg-bg/90 p-3 sm:p-5 transition-all duration-300 hover:border-accent/30"
+                  className="group relative block h-full card-accent bg-bg/90 p-3 sm:p-5 transition-all duration-300"
                 >
                   <div className="relative h-full flex flex-col">
                     <div className="flex items-center justify-between mb-2 sm:mb-3">

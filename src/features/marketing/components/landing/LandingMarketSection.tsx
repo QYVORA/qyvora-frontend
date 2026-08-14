@@ -80,7 +80,7 @@ const LandingMarketSection = () => {
           {loading ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-6 w-full">
               {Array.from({ length: 4 }).map((_, i) => (
-                <div key={i} className="rounded-2xl border border-border/30 bg-bg-card overflow-hidden">
+                <div key={i} className="card-accent bg-bg-card overflow-hidden">
                   <Skeleton className="aspect-[16/9] w-full rounded-none" />
                   <div className="flex flex-col gap-2.5 p-4">
                     <Skeleton className="h-5 w-3/4 rounded" />
@@ -98,7 +98,7 @@ const LandingMarketSection = () => {
           ) : products.length > 0 ? (
             <div className={`grid gap-4 md:gap-6 w-full ${products.length === 1 ? 'grid-cols-1 max-w-lg' : 'grid-cols-1 sm:grid-cols-2'}`}>
               {products.map((prod) => (
-                <div key={prod.id} className="group relative overflow-hidden flex flex-col border border-border/50 bg-bg-card rounded-2xl transition-all duration-300 hover:border-accent/30">
+                <div key={prod.id} className="group relative overflow-hidden flex flex-col card-accent bg-bg-card transition-all duration-300">
                   <div className="relative aspect-[16/9] overflow-hidden bg-accent/5">
                     <AuthImage
                       src={prod.coverUrl}

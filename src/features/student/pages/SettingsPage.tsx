@@ -283,7 +283,7 @@ const Settings: React.FC = () => {
         <div className="flex flex-col gap-6">
           {/* ── Appearance ─────────────────────────────────────────────── */}
           <ScrollReveal>
-            <section className="rounded-2xl border border-border/30 bg-bg-card">
+            <section className="card-accent bg-bg-card">
               <CardHeader icon={<Palette className="h-5 w-5 text-accent" />} title={t('student.settings.appearance.title')} />
               <div className="p-6 divide-y divide-border/30">
                 <SettingsRow label={t('student.settings.appearance.theme')}>
@@ -338,7 +338,7 @@ const Settings: React.FC = () => {
 
           {/* ── Notifications ──────────────────────────────────────────── */}
           <ScrollReveal>
-            <section className="rounded-2xl border border-border/30 bg-bg-card">
+            <section className="card-accent bg-bg-card">
               <CardHeader icon={<Bell className="h-5 w-5 text-accent" />} title={t('student.settings.notifications.title')} />
               <div className="p-6 divide-y divide-border/30">
                 <SettingsRow label={t('student.settings.notifications.email')} description={t('student.settings.notifications.receiveEmail')}>
@@ -365,7 +365,7 @@ const Settings: React.FC = () => {
 
           {/* ── Learning ────────────────────────────────────────────────── */}
           <ScrollReveal>
-            <section className="rounded-2xl border border-border/30 bg-bg-card">
+            <section className="card-accent bg-bg-card">
               <CardHeader icon={<BookOpen className="h-5 w-5 text-accent" />} title={t('student.settings.learningPrefs.title')} />
               <div className="p-6 divide-y divide-border/30">
                 <SettingsRow label={t('student.settings.learningPrefs.difficulty')}>
@@ -397,7 +397,7 @@ const Settings: React.FC = () => {
           <ScrollReveal>
             <div className="flex flex-col gap-6">
               {/* 2FA */}
-              <section className="rounded-2xl border border-border/30 bg-bg-card">
+              <section className="card-accent bg-bg-card">
                 <CardHeader icon={<Shield className="h-5 w-5 text-accent" />} title={t('student.settings.twoFactor.title')} />
                 <div className="p-6">
                   <SettingsRow label={twoFAEnabled ? t('student.settings.twoFactor.enabled') : t('student.settings.twoFactor.disabled')} description={t('student.settings.twoFactor.description')}>
@@ -412,7 +412,7 @@ const Settings: React.FC = () => {
               </section>
 
               {/* Password */}
-              <section className="rounded-2xl border border-border/30 bg-bg-card">
+              <section className="card-accent bg-bg-card">
                 <CardHeader icon={<Key className="h-5 w-5 text-accent" />} title={t('student.settings.password.title')} />
                 <form onSubmit={handlePasswordChange} className="p-6 space-y-4">
                   <PasswordField name="current_password" id="settings-current-password" label={t('student.settings.password.currentLabel')} placeholder={t('student.settings.password.currentPlaceholder')} shake={shakeCurrentPwd} onAnimationEnd={() => setShakeCurrentPwd(false)} />
@@ -426,7 +426,7 @@ const Settings: React.FC = () => {
               </section>
 
               {/* Recovery Token */}
-              <section className="rounded-2xl border border-border/30 bg-bg-card">
+              <section className="card-accent bg-bg-card">
                 <CardHeader icon={<Key className="h-5 w-5 text-accent" />} title={t('student.settings.recovery.title')} />
                 <div className="p-6 space-y-5">
                   <div className="flex items-start gap-3 p-4 bg-yellow-500/5 border border-yellow-500/20 rounded-xl">
@@ -458,14 +458,14 @@ const Settings: React.FC = () => {
                         </div>
                       </div>
                       {!confirmRegenerate ? (
-                        <button onClick={() => setConfirmRegenerate(true)} className="w-full flex items-center justify-center gap-2 px-4 py-2.5 border border-border rounded-xl text-sm font-bold text-text-muted hover:border-accent/30 hover:text-accent active:scale-[0.98] transition-colors">
+                        <button onClick={() => setConfirmRegenerate(true)} className="w-full flex items-center justify-center gap-2 px-4 py-2.5 border border-border rounded-xl text-sm font-bold text-text-muted hover:text-accent active:scale-[0.98] transition-colors">
                           <RefreshCw className="w-4 h-4" /> {t('student.settings.recovery.generate')}
                         </button>
                       ) : (
                         <div className="p-4 border border-yellow-500/30 rounded-xl bg-yellow-500/5 space-y-3">
                           <p className="text-xs text-yellow-400 font-bold">{t('student.settings.recovery.invalidateWarning')}</p>
                           <div className="flex gap-2">
-                            <button onClick={() => setConfirmRegenerate(false)} className="flex-1 px-3 py-2 border border-border rounded-xl text-xs font-bold text-text-muted hover:border-accent/30 active:scale-[0.98] transition-colors">{t('button.cancel')}</button>
+                            <button onClick={() => setConfirmRegenerate(false)} className="flex-1 px-3 py-2 border border-border rounded-xl text-xs font-bold text-text-muted active:scale-[0.98] transition-colors">{t('button.cancel')}</button>
                             <button onClick={() => void regenerateToken()} disabled={regenerating} className="flex-1 px-3 py-2 border border-yellow-500/40 rounded-xl text-xs font-bold text-yellow-400 hover:bg-yellow-500/10 active:scale-[0.98] transition-colors disabled:opacity-50 flex items-center justify-center gap-1.5">
                               {regenerating ? <><Loader2 className="w-3.5 h-3.5 animate-spin" /> {t('student.settings.recovery.generating')}</> : <><RefreshCw className="w-3.5 h-3.5" /> {t('student.settings.recovery.regenerate')}</>}
                             </button>
@@ -485,7 +485,7 @@ const Settings: React.FC = () => {
               </section>
 
               {/* Sessions */}
-              <section className="rounded-2xl border border-border/30 bg-bg-card">
+              <section className="card-accent bg-bg-card">
                 <div className="flex items-center justify-between border-b border-border/30 px-6 py-4">
                   <div className="flex items-center gap-3">
                     <Smartphone className="h-5 w-5 text-accent" />
@@ -544,7 +544,7 @@ const Settings: React.FC = () => {
                   <div className="p-4 border border-red-500/30 rounded-xl bg-red-500/5 space-y-3">
                     <p className="text-xs text-red-400 font-bold">{t('student.settings.dangerZone.deleteConfirmDesc')}</p>
                     <div className="flex gap-2">
-                      <button onClick={() => setConfirmDelete(false)} className="flex-1 px-3 py-2 border border-border rounded-xl text-xs font-bold text-text-muted hover:border-accent/30 active:scale-[0.98] transition-colors">{t('button.cancel')}</button>
+                      <button onClick={() => setConfirmDelete(false)} className="flex-1 px-3 py-2 border border-border rounded-xl text-xs font-bold text-text-muted active:scale-[0.98] transition-colors">{t('button.cancel')}</button>
                       <button onClick={handleDeleteAccount} disabled={deleting} className="flex-1 px-3 py-2 btn-danger !text-xs disabled:opacity-50 flex items-center justify-center gap-1.5">
                         {deleting ? <><Loader2 className="w-3.5 h-3.5 animate-spin" /> {t('student.settings.dangerZone.deleting')}</> : <><Trash2 className="w-3.5 h-3.5" /> {t('student.settings.dangerZone.confirmDelete')}</>}
                       </button>

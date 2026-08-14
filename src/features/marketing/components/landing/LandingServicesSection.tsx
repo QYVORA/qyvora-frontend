@@ -62,7 +62,7 @@ const LandingServicesSection: React.FC = () => {
               transition={{ duration: 0.5, delay: 0, ease: [0.16, 1, 0.3, 1] }}
               className="lg:col-span-2 lg:row-span-2"
             >
-              <div className="group relative h-full rounded-2xl border border-border/30 bg-bg-card p-4 sm:p-8 transition-all duration-300 hover:border-accent/30 flex flex-col">
+              <div className="group relative h-full card-accent bg-bg-card p-4 sm:p-8 transition-all duration-300 flex flex-col">
                 <DottedMapOverlay className="rounded-2xl" />
                 <div className="relative flex flex-col flex-1 min-h-0">
                 <div className="flex items-center gap-2 mb-3 sm:mb-6">
@@ -110,7 +110,7 @@ const LandingServicesSection: React.FC = () => {
               transition={{ duration: 0.5, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
               className="lg:col-span-2"
             >
-              <div className="group relative h-full rounded-2xl border border-border/30 bg-bg-card p-3 sm:p-5 transition-all duration-300 hover:border-accent/30 flex flex-col">
+              <div className="group relative h-full card-accent bg-bg-card p-3 sm:p-5 transition-all duration-300 flex flex-col">
                 <DottedMapOverlay className="rounded-2xl" />
                 <div className="relative flex flex-col flex-1 min-h-0">
                 <span className="text-[9px] font-black uppercase tracking-widest text-text-muted block mb-1">{supporting[0].subtitle}</span>
@@ -151,7 +151,7 @@ const LandingServicesSection: React.FC = () => {
               transition={{ duration: 0.5, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
               className="lg:col-span-2"
             >
-              <div className="group relative h-full rounded-2xl border border-border/30 bg-bg-card p-3 sm:p-5 transition-all duration-300 hover:border-accent/30 flex flex-col">
+              <div className="group relative h-full card-accent bg-bg-card p-3 sm:p-5 transition-all duration-300 flex flex-col">
                 <DottedMapOverlay className="rounded-2xl" />
                 <div className="relative flex flex-col flex-1 min-h-0">
                 <span className="text-[9px] font-black uppercase tracking-widest text-text-muted block mb-1">{supporting[1].subtitle}</span>
@@ -198,7 +198,7 @@ const LandingServicesSection: React.FC = () => {
               tabIndex={0}
               onClick={() => openServiceRequestModal('Custom Inquiry')}
               onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openServiceRequestModal('Custom Inquiry'); } }}
-              className="group relative flex flex-col sm:flex-row items-start gap-4 p-4 sm:p-6 rounded-2xl border border-border/30 bg-bg-card cursor-pointer hover:border-accent/30 transition-all"
+              className="group relative flex flex-col sm:flex-row items-start gap-4 p-4 sm:p-6 card-accent bg-bg-card cursor-pointer transition-all"
             >
               <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl border border-accent/20 bg-accent/10">
                 <Building2 className="h-6 w-6 text-accent group-hover:text-accent/80 transition-colors" />

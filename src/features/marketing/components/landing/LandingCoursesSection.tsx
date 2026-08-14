@@ -127,7 +127,7 @@ const LandingCoursesSection: React.FC = () => {
             {canScrollLeft && (
               <button
                 onClick={() => scrollTabs(-1)}
-                className="md:hidden absolute -left-1 top-1/2 -translate-y-1/2 z-10 w-7 h-7 rounded-full bg-bg-card/90 border border-border/30 flex items-center justify-center text-text-muted hover:text-text-primary hover:border-accent/30 transition-all backdrop-blur-sm"
+                className="md:hidden absolute -left-1 top-1/2 -translate-y-1/2 z-10 w-7 h-7 rounded-full bg-bg-card/90 border border-border/30 flex items-center justify-center text-text-muted hover:text-text-primary transition-all backdrop-blur-sm"
               >
                 <ChevronLeft size={14} />
               </button>
@@ -179,7 +179,7 @@ const LandingCoursesSection: React.FC = () => {
             {canScrollRight && (
               <button
                 onClick={() => scrollTabs(1)}
-                className="md:hidden absolute -right-1 top-1/2 -translate-y-1/2 z-10 w-7 h-7 rounded-full bg-bg-card/90 border border-border/30 flex items-center justify-center text-text-muted hover:text-text-primary hover:border-accent/30 transition-all backdrop-blur-sm"
+                className="md:hidden absolute -right-1 top-1/2 -translate-y-1/2 z-10 w-7 h-7 rounded-full bg-bg-card/90 border border-border/30 flex items-center justify-center text-text-muted hover:text-text-primary transition-all backdrop-blur-sm"
               >
                 <ChevronRight size={14} />
               </button>
@@ -204,7 +204,7 @@ const LandingCoursesSection: React.FC = () => {
                     <button
                       key={course.id}
                       onClick={() => setSelectedCourseId(course.id)}
-                      className="group/card relative aspect-square lg:aspect-auto lg:h-full rounded-2xl border border-border/30 bg-bg-card p-3 md:p-5 transition-all duration-300 hover:border-accent/30 flex flex-col text-left"
+                      className="group/card relative aspect-square lg:aspect-auto lg:h-full card-accent bg-bg-card p-3 md:p-5 transition-all duration-300 flex flex-col text-left"
                     >
                       <div className="flex items-center gap-2 mb-2">
                         <div className="w-8 h-8 rounded-xl flex items-center justify-center shrink-0 bg-accent/10 border border-accent/20">

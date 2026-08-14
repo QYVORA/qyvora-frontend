@@ -31,7 +31,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, isLoggedIn, view }) 
   ) : (
     <Link
       to="/login"
-      className="px-3 py-1.5 rounded-lg text-[9px] sm:text-[10px] font-black uppercase tracking-widest border border-border/40 text-text-primary hover:border-accent/30 hover:text-accent transition-all"
+      className="px-3 py-1.5 rounded-lg text-[9px] sm:text-[10px] font-black uppercase tracking-widest border border-border/40 text-text-primary hover:text-accent transition-all"
     >
       Log In to Purchase
     </Link>
@@ -48,7 +48,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, isLoggedIn, view }) 
 
   if (view === 'expanded') {
     return (
-      <div className="group relative flex flex-col sm:flex-row overflow-hidden rounded-2xl border border-border/50 bg-bg-card transition-all duration-300 hover:border-accent/30">
+      <div className="group relative flex flex-col sm:flex-row overflow-hidden card-accent bg-bg-card transition-all duration-300">
         <div className="sm:w-40 lg:w-48 shrink-0 aspect-[16/9] sm:aspect-auto sm:min-h-[120px] overflow-hidden bg-accent/5 border-b sm:border-b-0 sm:border-r border-border/30">
           <AuthImage
             src={product.coverUrl}
@@ -79,7 +79,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, isLoggedIn, view }) 
   }
 
   return (
-    <div className="group relative flex flex-col overflow-hidden rounded-2xl border border-border/50 bg-bg-card transition-all duration-300 hover:border-accent/30 h-full min-h-[240px] justify-between">
+    <div className="group relative flex flex-col overflow-hidden card-accent bg-bg-card transition-all duration-300 h-full min-h-[240px] justify-between">
       <div className="relative aspect-[16/9] overflow-hidden bg-accent/5 border-b border-border/30 shrink-0">
         <AuthImage
           src={product.coverUrl}

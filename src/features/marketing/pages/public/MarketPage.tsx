@@ -97,7 +97,7 @@ const MarketPage = () => {
             {loading ? (
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 flex-1">
                 {Array.from({ length: 3 }).map((_, i) => (
-                  <div key={i} className="rounded-2xl border border-border/30 bg-bg-card overflow-hidden">
+                  <div key={i} className="card-accent bg-bg-card overflow-hidden">
                     <Skeleton className="aspect-[16/9] w-full rounded-none" />
                     <div className="flex flex-col gap-2.5 p-4">
                       <Skeleton className="h-5 w-3/4 rounded" />

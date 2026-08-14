@@ -36,7 +36,7 @@ const CourseCard: React.FC<CourseCardProps> = ({ course, view }) => {
     return (
       <Link
         to={`/courses/${course.id}`}
-        className="group flex flex-col gap-2 rounded-2xl border border-border/30 bg-bg-card p-4 md:p-5 transition-all duration-300 hover:border-accent/30 justify-between text-left"
+        className="group flex flex-col gap-2 card-accent bg-bg-card p-4 md:p-5 transition-all duration-300 justify-between text-left"
       >
         <div className="flex items-center justify-between gap-4">
           <div className="flex items-center gap-3 min-w-0">
@@ -79,7 +79,7 @@ const CourseCard: React.FC<CourseCardProps> = ({ course, view }) => {
   return (
     <Link
       to={`/courses/${course.id}`}
-      className="group flex flex-col h-full min-h-[220px] rounded-2xl border border-border/30 bg-bg-card p-4 sm:p-5 md:p-6 transition-all duration-300 hover:border-accent/30 justify-between"
+      className="group flex flex-col h-full min-h-[220px] card-accent bg-bg-card p-4 sm:p-5 md:p-6 transition-all duration-300 justify-between"
     >
       <div>
         <div className="flex items-center justify-between mb-2">
