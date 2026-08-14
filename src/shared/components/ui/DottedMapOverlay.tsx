@@ -2,7 +2,7 @@ import React from 'react';
 import { getDottedMapBg } from '@/shared/utils/dottedMap';
 
 interface DottedMapOverlayProps {
-  /** Opacity of the dotted map. Default 0.16 — visible on both themes. */
+  /** Opacity of the dotted map. Default 0.24 — visible on both themes. */
   opacity?: number;
   /** Extra classes (e.g. border-radius). The overlay is inset to its parent. */
   className?: string;
@@ -20,7 +20,7 @@ interface DottedMapOverlayProps {
  * backgrounds — do NOT use on cards over the athene grid, accent or image
  * backgrounds, and never on dashboard or authenticated application surfaces.
  */
-const DottedMapOverlay: React.FC<DottedMapOverlayProps> = ({ opacity = 0.16, className = '' }) => (
+const DottedMapOverlay: React.FC<DottedMapOverlayProps> = ({ opacity = 0.24, className = '' }) => (
   <div
     aria-hidden
     className={`absolute inset-0 pointer-events-none overflow-hidden text-accent ${className}`}

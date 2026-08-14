@@ -24,7 +24,7 @@ const TeamCard = ({ member }: { member: TeamMember }) => (
 
     {/* Top header — tiny profile icon */}
     <div className="relative z-10 flex items-center justify-end p-4 md:p-5 pb-0">
-      <span className="inline-flex items-center justify-center w-8 h-8 rounded-full border border-border/50 bg-black/40 backdrop-blur-md text-text-primary">
+      <span className="inline-flex items-center justify-center w-8 h-8 rounded-full border border-white/20 bg-black/40 backdrop-blur-md text-white/85">
         <IconProfile className="w-4 h-4" />
       </span>
     </div>
@@ -32,30 +32,30 @@ const TeamCard = ({ member }: { member: TeamMember }) => (
     {/* Content pinned to the bottom */}
     <div className="relative z-10 mt-auto flex flex-col p-5 md:p-6 pt-3">
       <div className="flex items-start justify-between gap-3 mb-2">
-        <h3 className="text-sm md:text-base font-black uppercase tracking-tight text-text-primary group-hover:text-accent transition-colors truncate">
+        <h3 className="text-sm md:text-base font-black uppercase tracking-tight text-white group-hover:text-accent transition-colors truncate">
           {member.name}
         </h3>
         <span className="shrink-0 inline-block px-2.5 py-1 rounded-lg bg-accent/10 text-[9px] font-black uppercase tracking-widest text-accent backdrop-blur-sm">
           {member.role}
         </span>
       </div>
-      <p className="text-[11px] md:text-xs text-text-muted leading-relaxed line-clamp-2 min-h-[3.25em]">
+      <p className="text-[11px] md:text-xs text-white/75 leading-relaxed line-clamp-2 min-h-[3.25em]">
         {member.bio}
       </p>
       {Object.keys(member.socials).length > 0 && (
         <div className="flex items-center gap-3 mt-4 pt-4 border-t border-border/30">
           {member.socials.github && (
-            <span className="text-text-muted hover:text-accent transition-colors" aria-hidden="true">
+            <span className="text-white/70 hover:text-accent transition-colors" aria-hidden="true">
               <BrandGithubIcon className="w-4 h-4" />
             </span>
           )}
           {member.socials.linkedin && (
-            <span className="text-text-muted hover:text-accent transition-colors" aria-hidden="true">
+            <span className="text-white/70 hover:text-accent transition-colors" aria-hidden="true">
               <BrandLinkedinIcon className="w-4 h-4" />
             </span>
           )}
           {member.socials.twitter && (
-            <span className="text-text-muted hover:text-accent transition-colors" aria-hidden="true">
+            <span className="text-white/70 hover:text-accent transition-colors" aria-hidden="true">
               <BrandXIcon className="w-4 h-4" />
             </span>
           )}
@@ -94,7 +94,7 @@ const LandingTeamSection = () => {
           </div>
         ) : (
           /* Large card infinite carousel — cards fill the strip, never clipped */
-          <div className="relative flex-1 min-h-[400px] sm:min-h-0 min-w-0 overflow-hidden flex items-center">
+          <div className="relative -mx-3 md:-mx-4 lg:-mx-6 flex-1 min-h-[400px] sm:min-h-0 min-w-0 overflow-hidden flex items-center">
             <div className="marquee-track">
               {[0, 1].map((copy) => (
                 <div key={copy} aria-hidden={copy === 1} className="h-full flex items-stretch shrink-0">
