@@ -4,6 +4,8 @@ interface PublicSnapSectionProps {
   children: React.ReactNode;
   className?: string;
   id?: string;
+  /** Keep compact profile-style content inside one snap viewport. */
+  fitViewport?: boolean;
 }
 
 /**
@@ -23,11 +25,16 @@ const PublicSnapSection: React.FC<PublicSnapSectionProps> = ({
   children,
   className,
   id,
+  fitViewport = false,
 }) => {
   return (
     <div
       id={id}
-      className={`relative w-full min-h-dvh px-3 md:px-4 lg:px-6 pt-24 md:pt-28 lg:pt-28 pb-6 md:pb-8 lg:pb-10 flex flex-col ${className ?? ''}`}
+      className={`relative w-full px-3 md:px-4 lg:px-6 flex flex-col ${
+        fitViewport
+          ? 'h-dvh min-h-0 overflow-hidden pt-20 md:pt-24 lg:pt-28 pb-8 md:pb-12 lg:pb-16'
+          : 'min-h-dvh pt-24 md:pt-28 lg:pt-32 pb-12 md:pb-16 lg:pb-20'
+      } ${className ?? ''}`}
     >
       <div className="w-full my-auto flex-1 flex flex-col justify-center min-h-0">
         {children}
