@@ -507,14 +507,10 @@
 }
 
 @keyframes dobia-float {
-  0%, 100% { transform: translateY(0px) rotate(0deg); }
-  12%      { transform: translateY(-2px) rotate(0.3deg); }
-  25%      { transform: translateY(-5px) rotate(0deg); }
-  37%      { transform: translateY(-4px) rotate(-0.2deg); }
-  50%      { transform: translateY(-1px) rotate(0deg); }
-  62%      { transform: translateY(1px) rotate(0.15deg); }
-  75%      { transform: translateY(-1px) rotate(-0.1deg); }
-  87%      { transform: translateY(0.5px) rotate(0deg); }
+  0%, 16%, 100% { transform: translate3d(0, 0, 0) rotate(0deg); }
+  38%           { transform: translate3d(-7px, -10px, 0) rotate(-0.5deg); }
+  56%           { transform: translate3d(-11px, -15px, 0) rotate(0.35deg); }
+  76%           { transform: translate3d(-5px, -6px, 0) rotate(-0.2deg); }
 }
 
 @keyframes dobia-wave {
