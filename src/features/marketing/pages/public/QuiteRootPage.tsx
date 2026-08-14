@@ -1,7 +1,5 @@
-import { useState } from 'react';
-import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
-import { Users } from 'lucide-react';
+import { Binary, Cpu, Palette, ShieldCheck, Users } from 'lucide-react';
 import { IconArrowRight } from '@/shared/components/icons';
 import { ScrollReveal } from '@/shared/components';
 import SEO from '@/shared/components/SEO';
@@ -11,19 +9,62 @@ import StudentHeroSection, { PUBLIC_HERO_TITLE_CLASS } from '@/shared/components
 import { Footer } from '@/shared/components/layout';
 import { useAuth } from '@/core/contexts/AuthContext';
 import LandingFinalCtaSection from '@/features/marketing/components/landing/LandingFinalCtaSection';
-import { researchersData } from '@/features/marketing/content/researchersData';
+import { researchersData, type Researcher } from '@/features/marketing/content/researchersData';
 import quiteRootLogo from '@/assets/quiteRoot/ChatGPT Image Jul 3, 2026, 02_45_59 AM.webp';
-import { BatchPagination } from '@/shared/components/ui';
 
-const BATCH_SIZE = 4;
+const RESEARCHER_ICONS: Record<string, React.ElementType> = {
+  r1: Palette,
+  r2: Cpu,
+  r3: Binary,
+  r4: ShieldCheck,
+};
+
+const RESEARCHER_LAYOUTS: Record<string, { imageFirst: boolean; imagePosition: string; marker: string }> = {
+  r1: { imageFirst: true, imagePosition: 'object-center', marker: '01' },
+  r2: { imageFirst: false, imagePosition: 'object-[center_20%]', marker: '02' },
+  r3: { imageFirst: true, imagePosition: 'object-center', marker: '03' },
+  r4: { imageFirst: false, imagePosition: 'object-[center_20%]', marker: '04' },
+};
+
+const ResearcherSection = ({ researcher }: { researcher: Researcher }) => {
+  const layout = RESEARCHER_LAYOUTS[researcher.id];
+  const ResearcherIcon = RESEARCHER_ICONS[researcher.id] ?? ShieldCheck;
+
+  return (
+    <PublicSnapSection id={`researcher-${researcher.id}`} fitViewport>
+      <ScrollReveal amount={0.08} className="h-full w-full min-h-0">
+        <article className="relative grid h-full w-full min-h-0 grid-cols-1 grid-rows-[minmax(100px,0.5fr)_minmax(0,1.5fr)] gap-3 sm:grid-rows-[minmax(150px,0.7fr)_minmax(0,1.3fr)] sm:gap-4 lg:grid-cols-2 lg:grid-rows-1 lg:gap-12">
+          <div className={`relative min-h-0 overflow-hidden rounded-2xl border border-border/30 bg-bg-card ${layout.imageFirst ? 'lg:order-1' : 'lg:order-2'}`}>
+            <img src={researcher.image} alt={researcher.name} width={researcher.width} height={researcher.height} className={`h-full w-full object-cover ${layout.imagePosition} transition-transform duration-700 hover:scale-105`} loading="lazy" />
+            <div className="absolute inset-0 bg-gradient-to-t from-bg-card via-transparent to-transparent" />
+            <div className="absolute left-3 top-3 flex h-9 w-9 items-center justify-center rounded-lg border border-border/30 bg-bg/80 text-[9px] font-black tracking-widest text-accent backdrop-blur-sm sm:left-5 sm:top-5 sm:h-11 sm:w-11 sm:text-[10px]">{layout.marker}</div>
+            <div className="absolute bottom-3 left-3 right-3 flex items-end justify-between gap-4 sm:bottom-5 sm:left-5 sm:right-5">
+              <div>
+                <p className="mb-1 text-[8px] font-black uppercase tracking-widest text-text-muted sm:mb-2 sm:text-[9px]">QuiteRoot researcher</p>
+                <p className="text-xs font-black uppercase tracking-tight text-text-primary sm:text-sm">{researcher.name}</p>
+              </div>
+              <ResearcherIcon className="h-6 w-6 shrink-0 text-accent" aria-hidden="true" />
+            </div>
+          </div>
+
+          <div className={`flex min-h-0 min-w-0 flex-col justify-center ${layout.imageFirst ? 'lg:order-2' : 'lg:order-1'}`}>
+            <span className="mb-2 w-fit px-2.5 py-1 rounded-lg border border-accent/30 bg-accent/10 text-[9px] font-black uppercase tracking-widest text-accent sm:mb-3 lg:mb-5">{researcher.role}</span>
+            <h2 className="text-2xl md:text-4xl lg:text-6xl font-black uppercase tracking-tight leading-[.95] text-text-primary break-words">{researcher.name}</h2>
+            <p className="mt-2 text-[10px] font-black uppercase tracking-widest text-accent sm:mt-3 sm:text-xs">Research node // {researcher.id.toUpperCase()}</p>
+            <p className="mt-3 max-w-2xl text-[11px] leading-[1.45] text-text-secondary sm:mt-4 sm:text-sm sm:leading-relaxed lg:mt-6 lg:text-base">{researcher.bio}</p>
+            <div className="mt-4 border-t border-border/30 pt-3 sm:mt-5 sm:pt-4 lg:mt-8 lg:pt-5">
+              <p className="text-[9px] font-black uppercase tracking-widest text-text-muted">Independent research collective</p>
+              <p className="mt-2 text-xs leading-relaxed text-text-secondary">QuiteRoot brings together builders and security-minded researchers contributing to QYVORA's tools, experiments, and learning ecosystem.</p>
+            </div>
+          </div>
+        </article>
+      </ScrollReveal>
+    </PublicSnapSection>
+  );
+};
 
 const QuiteRootPage = () => {
-  const { t } = useTranslation();
   const { user } = useAuth();
-  const [page, setPage] = useState(0);
-
-  const totalPages = Math.ceil(researchersData.length / BATCH_SIZE);
-  const currentBatch = researchersData.slice(page * BATCH_SIZE, (page + 1) * BATCH_SIZE);
 
   return (
     <div className="bg-bg min-h-full">
@@ -57,55 +98,7 @@ const QuiteRootPage = () => {
           </Link>
         </StudentHeroSection>
 
-        <PublicSnapSection>
-          <div className="flex flex-col justify-between flex-1 min-h-0">
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 flex-1 items-stretch">
-              {currentBatch.map((researcher, idx) => {
-                const globalIdx = page * BATCH_SIZE + idx;
-                return (
-                  <ScrollReveal key={researcher.id} amount={0.05} className="h-full">
-                    <div className="group relative flex flex-col rounded-2xl border border-border/30 bg-bg-card p-5 transition-all duration-300 hover:border-accent/40 h-full overflow-hidden justify-between min-h-[220px]">
-                      <span className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-accent/60 to-transparent opacity-60 group-hover:opacity-100 transition-opacity" />
-                      <span className="absolute top-4 right-5 font-mono text-sm font-black text-accent/25 group-hover:text-accent/60 transition-colors">
-                        {String(globalIdx + 1).padStart(2, '0')}
-                      </span>
-
-                      <div>
-                        <div className="flex items-center gap-4 mb-4 pr-12">
-                          <div className="relative w-14 h-14 rounded-2xl overflow-hidden border border-border/30 shrink-0">
-                            <img src={researcher.image} alt={researcher.name} width={researcher.width} height={researcher.height} className="w-full h-full object-cover" loading="lazy" />
-                            <span className="absolute inset-0 ring-1 ring-inset ring-black/40" />
-                          </div>
-                          <div className="min-w-0">
-                            <h3 className="text-sm font-black uppercase tracking-tight text-text-primary group-hover:text-accent transition-colors truncate">
-                              {researcher.name}
-                            </h3>
-                            <span className="inline-block px-2 py-0.5 rounded-lg bg-accent/10 text-[10px] font-black uppercase tracking-widest text-accent mt-1">
-                              {researcher.role}
-                            </span>
-                          </div>
-                        </div>
-
-                        <p className="text-xs text-text-muted line-clamp-3 leading-relaxed mb-2">{researcher.bio}</p>
-                      </div>
-
-                      <div className="mt-auto pt-3 border-t border-border/20 flex items-center gap-3">
-                        <span className="font-mono text-[10px] font-black uppercase tracking-widest text-accent/80">
-                          &gt; {researcher.id.toUpperCase()}
-                        </span>
-                        <span className="ml-auto inline-flex items-center gap-1.5 text-[9px] font-black uppercase tracking-widest text-text-muted">
-                          <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />
-                          Active
-                        </span>
-                      </div>
-                    </div>
-                  </ScrollReveal>
-                );
-              })}
-            </div>
-            <BatchPagination page={page} totalPages={totalPages} onPageChange={setPage} />
-          </div>
-        </PublicSnapSection>
+        {researchersData.map((researcher) => <ResearcherSection key={researcher.id} researcher={researcher} />)}
         <LandingFinalCtaSection user={user} />
         <Footer />
       </PublicSnapLayout>
