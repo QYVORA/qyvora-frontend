@@ -12,21 +12,21 @@ import LanguageSwitcher from '@/shared/components/LanguageSwitcher';
 
 const FOOTER_COLS = [
   {
-    title: 'Platform',
+    title: 'Learning',
     links: [
       { key: 'courses', label: 'Courses', path: '/courses' },
       { key: 'bootcamp', label: 'Bootcamp', path: '/hpb' },
       { key: 'labs', label: 'Labs', path: '/labs' },
-      { key: 'services', label: 'Services', path: '/services' },
+      { key: 'blogs', label: 'Blogs', path: '/blogs' },
     ],
   },
   {
-    title: 'Learning',
+    title: 'Platform',
     links: [
       { key: 'anansi', label: 'Anansi', path: '/anansi' },
       { key: 'toha3ee', label: 'Toha3ee', path: '/toha3ee' },
       { key: 'jabari', label: 'Jabari', path: '/jabari' },
-      { key: 'blogs', label: 'Blogs', path: '/blogs' },
+      { key: 'services', label: 'Services', path: '/services' },
     ],
   },
   {

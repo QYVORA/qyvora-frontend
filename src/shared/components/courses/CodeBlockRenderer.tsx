@@ -215,7 +215,7 @@ type InlineBlock =
   | { kind: 'hr' }
   | { kind: 'blockquote'; text: string };
 
-const PARA_CLASS = 'text-sm md:text-base text-text-secondary font-mono leading-[2] md:leading-[2.2] mb-6 md:mb-8 max-w-none';
+const PARA_CLASS = 'text-sm md:text-base text-text-primary font-mono leading-[2] md:leading-[2.2] mb-6 md:mb-8 max-w-none';
 
 function parseBlocks(text: string): InlineBlock[] {
   const rawBlocks = text.split(/\n\n+/);
@@ -271,7 +271,7 @@ function renderBlock(block: InlineBlock, key: number): React.ReactNode {
       );
     case 'ul':
       return (
-        <ul key={key} className="list-disc list-inside space-y-3 md:space-y-4 text-sm md:text-base text-text-secondary font-mono leading-[2] md:leading-[2.2] mb-6 md:mb-8 max-w-none">
+        <ul key={key} className="list-disc list-inside space-y-3 md:space-y-4 text-sm md:text-base text-text-primary font-mono leading-[2] md:leading-[2.2] mb-6 md:mb-8 max-w-none">
           {block.items.map((item, j) => (
             <li key={j}>{renderInline(item)}</li>
           ))}
@@ -279,7 +279,7 @@ function renderBlock(block: InlineBlock, key: number): React.ReactNode {
       );
     case 'ol':
       return (
-        <ol key={key} className="list-decimal list-inside space-y-3 md:space-y-4 text-sm md:text-base text-text-secondary font-mono leading-[2] md:leading-[2.2] mb-6 md:mb-8 max-w-none">
+        <ol key={key} className="list-decimal list-inside space-y-3 md:space-y-4 text-sm md:text-base text-text-primary font-mono leading-[2] md:leading-[2.2] mb-6 md:mb-8 max-w-none">
           {block.items.map((item, j) => (
             <li key={j}>{renderInline(item)}</li>
           ))}
@@ -304,7 +304,7 @@ function renderBlock(block: InlineBlock, key: number): React.ReactNode {
     }
     case 'blockquote':
       return (
-        <blockquote key={key} className="border-l-2 border-accent/40 pl-4 md:pl-6 italic text-text-secondary font-mono leading-[2] md:leading-[2.2] mb-6 md:mb-8 max-w-none">
+        <blockquote key={key} className="border-l-2 border-accent/40 pl-4 md:pl-6 italic text-text-primary font-mono leading-[2] md:leading-[2.2] mb-6 md:mb-8 max-w-none">
           {renderInline(block.text)}
         </blockquote>
       );
