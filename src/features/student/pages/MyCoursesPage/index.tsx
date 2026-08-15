@@ -8,7 +8,7 @@ import {
 import ScrollReveal from '@/shared/components/ScrollReveal';
 import SEO from '@/shared/components/SEO';
 import { COURSES, getCategoryById } from '@/features/student/data/courses';
-import CourseAvatar from '@/features/student/components/CourseAvatar';
+import CourseIconBackground from '@/shared/components/CourseIconBackground';
 import api from '@/core/services/api';
 import { MyCoursesSkeleton } from '@/features/student/components/StudentSkeletons';
 import { LearningFilterStrip } from '@/features/student/components/learning';
@@ -188,10 +188,10 @@ const MyCoursesPage: React.FC = () => {
                 <ScrollReveal key={course.id} direction="up" amount={0.1} delay={i * 0.05}>
                   <Link
                     to={`/dashboard/courses/${course.id}${canResume ? `?lesson=${progress.lastLesson}` : ''}`}
-                    className="group/card relative aspect-square rounded-2xl border border-border/30 bg-bg-card p-3 md:p-5 transition-all duration-300 hover:border-accent/30 flex flex-col text-left"
+                    className="group/card relative aspect-square rounded-2xl border border-border/30 bg-bg-card p-3 md:p-5 transition-all duration-300 hover:border-accent/30 flex flex-col text-left overflow-hidden"
                   >
-                    <div className="flex items-start gap-2 mb-2">
-                      <CourseAvatar courseId={course.id} variant="badge" />
+                    <CourseIconBackground courseId={course.id} />
+                    <div className="relative z-10 flex items-start gap-2 mb-2">
                       <span className="px-2 py-0.5 rounded-lg bg-accent/10 text-[9px] font-black uppercase tracking-widest text-accent border border-accent/20">
                         {category?.name}
                       </span>
@@ -200,15 +200,15 @@ const MyCoursesPage: React.FC = () => {
                       </span>
                     </div>
 
-                    <h3 className="text-sm sm:text-base md:text-lg lg:text-xl font-black text-text-primary group-hover/card:text-accent transition-colors leading-snug break-words mb-1">
+                    <h3 className="relative z-10 text-sm sm:text-base md:text-lg lg:text-xl font-black text-text-primary group-hover/card:text-accent transition-colors leading-snug break-words mb-1">
                       {course.title}
                     </h3>
 
-                    <p className="text-xs sm:text-sm md:text-base text-text-muted leading-relaxed line-clamp-3 flex-1 mb-2">
+                    <p className="relative z-10 text-xs sm:text-sm md:text-base text-text-muted leading-relaxed line-clamp-3 flex-1 mb-2">
                       {course.description}
                     </p>
 
-                    <div className="space-y-1 mt-auto">
+                    <div className="relative z-10 space-y-1 mt-auto">
                       <div className="flex items-center justify-between">
                         <span className="text-[8px] font-mono text-text-muted">
                           {progress?.completed || 0}/{progress?.total || course.lessons.length} lessons
@@ -220,7 +220,7 @@ const MyCoursesPage: React.FC = () => {
                       </div>
                     </div>
 
-                    <div className="pt-1">
+                    <div className="relative z-10 pt-1">
                       {isComplete ? (
                         <span className="inline-flex items-center gap-1.5 text-[9px] sm:text-[10px] font-black uppercase tracking-widest text-accent/60">
                           <CheckCircle2 className="h-2.5 w-2.5" /> {t('student.myCourses.completed')}
@@ -263,18 +263,18 @@ const MyCoursesPage: React.FC = () => {
                 return (
                   <div
                     key={course.id}
-                    className="relative aspect-square rounded-2xl border border-border/30 bg-bg-card/50 opacity-60 p-3 md:p-5 flex flex-col"
+                    className="relative aspect-square rounded-2xl border border-border/30 bg-bg-card/50 opacity-60 p-3 md:p-5 flex flex-col overflow-hidden"
                   >
-                    <div className="flex items-start gap-2 mb-2">
-                      <CourseAvatar courseId={course.id} variant="badge" />
+                    <CourseIconBackground courseId={course.id} />
+                    <div className="relative z-10 flex items-start gap-2 mb-2">
                       <span className="px-2 py-0.5 rounded-lg bg-bg-elevated text-[9px] font-black uppercase tracking-widest text-text-muted border border-border/20">
                         {category?.name}
                       </span>
                     </div>
-                     <h3 className="text-sm sm:text-base md:text-lg lg:text-xl font-black text-text-muted leading-snug break-words mb-1">
+                     <h3 className="relative z-10 text-sm sm:text-base md:text-lg lg:text-xl font-black text-text-muted leading-snug break-words mb-1">
                         {course.title}
                      </h3>
-                    <div className="mt-auto pt-2">
+                    <div className="relative z-10 mt-auto pt-2">
                       <button
                         onClick={() => setSelectedCourseId(course.id)}
                         className="inline-flex items-center gap-1.5 text-[9px] sm:text-[10px] font-black uppercase tracking-widest text-accent hover:gap-2 transition-all"

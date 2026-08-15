@@ -5,6 +5,7 @@ import { IconArrowRight, IconTerminal, IconNetwork, IconCode } from '@/shared/co
 import type { ViewMode } from '@/shared/components/card-collection';
 import { getCategoryById } from '@/features/student/data/courses';
 import type { Course, SkillLevel } from '@/features/student/data/courses';
+import CourseIconBackground from '@/shared/components/CourseIconBackground';
 
 const CATEGORY_ICONS: Record<string, React.ElementType> = {
   terminal: IconTerminal,
@@ -36,9 +37,10 @@ const CourseCard: React.FC<CourseCardProps> = ({ course, view }) => {
     return (
       <Link
         to={`/courses/${course.id}`}
-        className="group flex flex-col gap-2 card-accent bg-bg-card p-4 md:p-5 transition-all duration-300 justify-between text-left"
+        className="group relative overflow-hidden flex flex-col gap-2 card-accent bg-bg-card p-4 md:p-5 transition-all duration-300 justify-between text-left"
       >
-        <div className="flex items-center justify-between gap-4">
+        <CourseIconBackground courseId={course.id} />
+        <div className="relative z-10 flex items-center justify-between gap-4">
           <div className="flex items-center gap-3 min-w-0">
             <div className="w-9 h-9 rounded-xl flex items-center justify-center shrink-0 bg-accent/10 border border-accent/20">
               <CatIcon className="w-4 h-4 text-accent" />
@@ -57,11 +59,11 @@ const CourseCard: React.FC<CourseCardProps> = ({ course, view }) => {
           </span>
         </div>
 
-        <p className="text-xs sm:text-sm text-text-muted leading-relaxed line-clamp-2">
+        <p className="relative z-10 text-xs sm:text-sm text-text-muted leading-relaxed line-clamp-2">
           {course.description}
         </p>
 
-        <div className="flex items-center justify-between pt-2">
+        <div className="relative z-10 flex items-center justify-between pt-2">
           <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-lg text-[9px] font-black uppercase tracking-widest ${skillCfg.color}`}>
             <SkillIcon className="h-2.5 w-2.5" /> {skillCfg.label}
           </span>
@@ -79,9 +81,10 @@ const CourseCard: React.FC<CourseCardProps> = ({ course, view }) => {
   return (
     <Link
       to={`/courses/${course.id}`}
-      className="group flex flex-col h-full min-h-[220px] card-accent bg-bg-card p-4 sm:p-5 md:p-6 transition-all duration-300 justify-between"
+      className="group relative overflow-hidden flex flex-col h-full min-h-[220px] card-accent bg-bg-card p-4 sm:p-5 md:p-6 transition-all duration-300 justify-between"
     >
-      <div>
+      <CourseIconBackground courseId={course.id} />
+      <div className="relative z-10">
         <div className="flex items-center justify-between mb-2">
           <span className="flex items-center gap-1.5 px-2 py-0.5 rounded-lg bg-accent/10 text-[9px] font-black uppercase tracking-widest text-accent border border-accent/20">
             <CatIcon className="h-2.5 w-2.5" /> {category?.name}
@@ -97,7 +100,7 @@ const CourseCard: React.FC<CourseCardProps> = ({ course, view }) => {
           {course.description}
         </p>
       </div>
-      <div className="flex items-center justify-between mt-auto pt-2">
+      <div className="relative z-10 flex items-center justify-between mt-auto pt-2">
         <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-lg text-[9px] font-black uppercase tracking-widest ${skillCfg.color}`}>
           <SkillIcon className="h-2.5 w-2.5" /> {skillCfg.label}
         </span>
