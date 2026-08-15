@@ -115,7 +115,7 @@ const AchievementsSection: React.FC<AchievementsSectionProps> = ({
           transition={{ duration: prefersReduced ? 0 : 0.35 }}
           className="flex items-center gap-4"
         >
-          <BootcampBadge completed className="w-16 h-16" />
+          <BootcampBadge completed className="w-24 sm:w-28" />
           <div>
             <h3 className="text-sm font-black text-text-primary">
               {t(`${prefix}.achievements.hpbGraduate`, 'HPB Graduate')}
