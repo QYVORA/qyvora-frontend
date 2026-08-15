@@ -16,7 +16,7 @@ const SIMULATIONS = [
 /* Mirrors the Kali-style terminal chrome used by TerminalShell. */
 const TerminalPreview: React.FC = () => (
   <div className="flex flex-1 min-h-0 flex-col overflow-hidden rounded-xl border border-[#2a2a2a] bg-[#0c0c0c] shadow-inner">
-    <div className="flex items-center justify-between border-b border-[#2a2a2a] bg-[#1a1a1a] px-3.5 py-2.5">
+    <div className="flex items-center justify-between bg-[#1a1a1a] px-3.5 py-2.5">
       <span className="font-mono text-[10px] tracking-[0.12em] text-white/30">_terminal <span className="text-white/20">v2.0</span></span>
       <div className="flex gap-1.5" aria-hidden="true"><span className="h-2 w-2 rounded-full bg-white/15" /><span className="h-2 w-2 rounded-full bg-white/15" /></div>
     </div>
@@ -32,14 +32,14 @@ const TerminalPreview: React.FC = () => (
 
 const EditorPreview: React.FC = () => (
   <div className="flex flex-1 min-h-0 flex-col overflow-hidden rounded-xl border border-[#2a2a2a] bg-[#0c0c0c] shadow-inner">
-    <div className="flex items-end border-b border-[#2a2a2a] bg-[#1a1a1a] px-3.5 pt-2.5">
+    <div className="flex items-end bg-[#1a1a1a] px-3.5 pt-2.5">
       <span className="rounded-t-lg border border-b-0 border-[#2a2a2a] bg-[#0c0c0c] px-3 py-1.5 font-mono text-[11px] text-accent">recon.py</span>
     </div>
     <div className="space-y-1.5 p-4 font-mono text-xs leading-relaxed sm:text-sm">
       <p><span className="text-[#c678dd]">def</span> <span className="text-accent">probe</span>(<span className="text-[#e5c07b]">host</span>):</p>
       <p className="pl-5 text-[#d4d4d4]">return scan(host)</p>
       <p className="mt-3"><span className="text-[#c678dd]">print</span>(<span className="text-accent">probe</span>(<span className="text-[#e5c07b]">&quot;target&quot;</span>))</p>
-      <p className="mt-3 border-t border-white/10 pt-3 text-[#00ff41]">✓ host discovered</p>
+      <p className="mt-3 pt-3 text-[#00ff41]">✓ host discovered</p>
     </div>
   </div>
 );
@@ -111,7 +111,7 @@ const SimulationCard: React.FC<{ sim: (typeof SIMULATIONS)[number]; tabIndex?: -
         <IconArrowRight className="h-5 w-5 shrink-0 text-text-muted transition-transform group-hover:translate-x-1 group-hover:text-accent" />
       </div>
       <Preview />
-      <div className="mt-4 flex items-center justify-between border-t border-border/20 pt-3">
+      <div className="mt-4 flex items-center justify-between">
         <span className="text-[10px] font-black uppercase tracking-widest text-text-secondary">{t('landing.simulations.launchDemo')}</span>
         <span className="h-1.5 w-1.5 rounded-full bg-accent" aria-hidden="true" />
       </div>
@@ -127,8 +127,8 @@ const LandingSimulationsSection: React.FC = () => {
 
   return (
     <div className="relative flex min-h-dvh flex-col overflow-x-clip overflow-y-visible bg-bg" data-nav-invert>
-      <div className="relative z-10 flex h-full w-full flex-1 flex-col px-3 pb-6 pt-24 md:px-4 md:pb-8 md:pt-28 lg:px-6 lg:pb-10 lg:pt-32">
-        <div className="mb-5 shrink-0 md:mb-6">
+      <div className="relative z-10 flex h-full w-full flex-1 flex-col px-3 pb-6 pt-24 md:px-4 md:pb-8 lg:px-6 lg:pb-10">
+        <div className="mb-8 shrink-0 md:mb-10 lg:mb-14">
           <span className="mb-3 inline-block rounded-full border border-accent/30 bg-accent/10 px-3 py-1.5 text-[9px] font-black uppercase tracking-widest text-accent">{t('landing.simulations.badge')}</span>
           <h2 className="text-xl font-black leading-none tracking-tighter text-text-primary md:text-2xl lg:text-3xl">
             {t('landing.simulations.heading1')} <span className="text-accent">{t('landing.simulations.heading2')}</span>
@@ -136,7 +136,7 @@ const LandingSimulationsSection: React.FC = () => {
           <p className="mt-2 font-mono text-xs leading-relaxed text-text-secondary">{t('landing.simulations.description')}</p>
         </div>
 
-        <div className="relative -translate-y-4 sm:-translate-y-5 lg:-translate-y-6">
+        <div className="relative -translate-y-2 sm:-translate-y-3 lg:-translate-y-4">
           {shouldReduceMotion ? (
             <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
               {SIMULATIONS.map((sim) => <SimulationCard key={sim.id} sim={sim} />)}
