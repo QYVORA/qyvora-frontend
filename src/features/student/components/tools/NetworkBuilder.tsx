@@ -400,7 +400,7 @@ const NetworkBuilderInner: React.FC<NetworkBuilderProps> = ({ open, onOpenChange
           </div>
 
           {/* Actions */}
-          <div className="px-3 pt-3 border-t border-border/20">
+          <div className="px-3 pt-3">
             <p className="text-[9px] font-black uppercase tracking-widest text-accent mb-2">Actions</p>
             <button
               onClick={deleteSelected}
@@ -414,7 +414,7 @@ const NetworkBuilderInner: React.FC<NetworkBuilderProps> = ({ open, onOpenChange
 
           {/* Selected device info */}
           {selectedDeviceNode && selectedDeviceData && (
-            <div className="px-3 pt-3 mt-3 border-t border-border/20">
+            <div className="px-3 pt-3 mt-3">
               <p className="text-[9px] font-black uppercase tracking-widest text-accent mb-2">Device</p>
               <div className="space-y-2">
                 <div>
@@ -467,7 +467,7 @@ const NetworkBuilderInner: React.FC<NetworkBuilderProps> = ({ open, onOpenChange
 
           {/* Selected edge info */}
           {selectedEdge && !selectedDeviceNode && (
-            <div className="px-3 pt-3 mt-3 border-t border-border/20">
+            <div className="px-3 pt-3 mt-3">
               <p className="text-[9px] font-black uppercase tracking-widest text-accent mb-2">Link</p>
               <div className="space-y-2">
                 <div>

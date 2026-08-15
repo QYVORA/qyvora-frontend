@@ -294,7 +294,7 @@ const Settings: React.FC = () => {
                 title={t('student.settings.appearance.title')}
                 description={t('student.settings.appearance.description')}
               />
-              <div className="divide-y divide-border/20">
+              <div>
                 <SettingsRow label={t('student.settings.appearance.theme')} description={t('student.settings.appearance.themeDesc')}>
                   <div className="flex gap-1 bg-bg rounded-xl p-1 border border-border/30">
                     <button onClick={() => handleThemeChange('dark')}
@@ -352,7 +352,7 @@ const Settings: React.FC = () => {
                 title={t('student.settings.notifications.title')}
                 description={t('student.settings.notifications.description')}
               />
-              <div className="divide-y divide-border/20">
+              <div>
                 <SettingsRow label={t('student.settings.notifications.email')} description={t('student.settings.notifications.receiveEmail')}>
                   <Toggle checked={preferences.notifications.email} onChange={(v) => updateNotification('email', v)} disabled={prefsSaving} />
                 </SettingsRow>
@@ -382,7 +382,7 @@ const Settings: React.FC = () => {
                 title={t('student.settings.learningPrefs.title')}
                 description={t('student.settings.learningPrefs.description')}
               />
-              <div className="divide-y divide-border/20">
+              <div>
                 <SettingsRow label={t('student.settings.learningPrefs.difficulty')}>
                   <SelectField id="settings-preferred-difficulty" ariaLabel={t('student.settings.learningPrefs.difficulty')} value={preferences.learning.preferredDifficulty} onChange={(v) => updateLearning('preferredDifficulty', v)}>
                     <option value="beginner">{t('student.settings.learningPrefs.beginner')}</option>

@@ -331,7 +331,7 @@ export const SpotlightTour: React.FC<SpotlightTourProps> = ({
         </h3>
         <div className="text-xs text-text-muted font-mono leading-relaxed">{step.body}</div>
 
-        <div className="flex items-center justify-between gap-3 mt-5 pt-4 border-t border-border/40">
+        <div className="flex items-center justify-between gap-3 mt-5 pt-4">
           <button
             onClick={() => setStepIndex((i) => Math.max(0, i - 1))}
             disabled={isFirst}

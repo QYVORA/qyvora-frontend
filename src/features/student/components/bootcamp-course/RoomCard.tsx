@@ -196,7 +196,7 @@ const RoomCard: React.FC<RoomCardProps> = ({
         </div>
       </div>
 
-      <div className="flex items-center justify-between mt-auto pt-2 border-t border-border/20">
+      <div className="flex items-center justify-between mt-auto pt-2">
         {roomDone ? (
           <span className="flex items-center gap-1.5 text-[9px] sm:text-[10px] font-black uppercase tracking-widest text-accent">
             Review room <IconArrowRight size={12} />

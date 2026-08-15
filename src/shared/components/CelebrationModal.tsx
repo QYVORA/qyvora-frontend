@@ -69,7 +69,6 @@ const CelebrationModal: React.FC<CelebrationModalProps> = ({
             className="relative z-10 w-full max-w-md mx-4"
           >
             <div className="relative overflow-hidden rounded-2xl border border-border/40 bg-bg-card text-center">
-              <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-accent to-transparent" />
 
               {/* Burst */}
               <div className="pointer-events-none absolute left-1/2 top-20 -translate-x-1/2">

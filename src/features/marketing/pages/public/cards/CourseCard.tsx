@@ -61,7 +61,7 @@ const CourseCard: React.FC<CourseCardProps> = ({ course, view }) => {
           {course.description}
         </p>
 
-        <div className="flex items-center justify-between pt-2 border-t border-border/10">
+        <div className="flex items-center justify-between pt-2">
           <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-lg text-[9px] font-black uppercase tracking-widest ${skillCfg.color}`}>
             <SkillIcon className="h-2.5 w-2.5" /> {skillCfg.label}
           </span>
@@ -97,7 +97,7 @@ const CourseCard: React.FC<CourseCardProps> = ({ course, view }) => {
           {course.description}
         </p>
       </div>
-      <div className="flex items-center justify-between mt-auto pt-2 border-t border-border/10">
+      <div className="flex items-center justify-between mt-auto pt-2">
         <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-lg text-[9px] font-black uppercase tracking-widest ${skillCfg.color}`}>
           <SkillIcon className="h-2.5 w-2.5" /> {skillCfg.label}
         </span>

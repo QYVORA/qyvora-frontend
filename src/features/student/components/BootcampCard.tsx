@@ -44,7 +44,7 @@ const BootcampCard: React.FC<BootcampCardProps> = ({ level, title, description, 
           {description}
         </p>
       )}
-      <div className="flex items-center justify-between mt-auto pt-2 border-t border-border/20">
+      <div className="flex items-center justify-between mt-auto pt-2">
         <span className="text-[9px] sm:text-[10px] md:text-xs font-black uppercase tracking-widest text-text-muted">
           {duration} · {price}
         </span>

@@ -56,7 +56,7 @@ const LabCard: React.FC<LabCardProps> = ({ lab, view }) => {
           {lab.description}
         </p>
 
-        <div className="flex items-center justify-between pt-2 border-t border-border/10">
+        <div className="flex items-center justify-between pt-2">
           <span className="text-[9px] sm:text-[10px] md:text-xs font-black uppercase tracking-widest text-accent">
             {lab.cpReward} CP
           </span>
@@ -90,7 +90,7 @@ const LabCard: React.FC<LabCardProps> = ({ lab, view }) => {
         </p>
       </div>
 
-      <div className="flex items-center justify-between mt-auto pt-2 border-t border-border/10">
+      <div className="flex items-center justify-between mt-auto pt-2">
         <span className="text-[9px] sm:text-[10px] md:text-xs font-black uppercase tracking-widest text-accent">
           {lab.cpReward} CP
         </span>

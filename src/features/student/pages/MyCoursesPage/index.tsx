@@ -274,7 +274,7 @@ const MyCoursesPage: React.FC = () => {
                      <h3 className="text-sm sm:text-base md:text-lg lg:text-xl font-black text-text-muted leading-snug break-words mb-1">
                         {course.title}
                      </h3>
-                    <div className="mt-auto pt-2 border-t border-border/20">
+                    <div className="mt-auto pt-2">
                       <button
                         onClick={() => setSelectedCourseId(course.id)}
                         className="inline-flex items-center gap-1.5 text-[9px] sm:text-[10px] font-black uppercase tracking-widest text-accent hover:gap-2 transition-all"

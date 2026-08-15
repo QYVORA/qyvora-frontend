@@ -93,7 +93,7 @@ const ConsentBanner: React.FC = React.memo(() => {
               <motion.div
                 initial={{ height: 0, opacity: 0 }}
                 animate={{ height: 'auto', opacity: 1 }}
-                className="space-y-3 mb-6 pt-4 border-t border-border/30"
+                className="space-y-3 mb-6 pt-4"
               >
                 <div className="flex items-center justify-between">
                   <div>

@@ -58,7 +58,7 @@ const TransactionLedger: React.FC<TransactionLedgerProps> = ({
       </div>
 
       {loading ? (
-        <div className="divide-y divide-border/50">
+        <div>
           {[0,1,2,3,4].map(i => (
             <div key={i} className="px-5 py-3.5 flex items-center gap-3 animate-pulse">
               <div className="w-8 h-8 rounded-lg bg-accent-dim/30 flex-none" />
@@ -75,7 +75,7 @@ const TransactionLedger: React.FC<TransactionLedgerProps> = ({
       ) : (
         <>
           {/* Mobile */}
-          <div className="md:hidden divide-y divide-border/50">
+          <div className="md:hidden">
             {txs.map(tx => {
               const pts = Number(tx.points || 0);
               const isCredit = pts >= 0;

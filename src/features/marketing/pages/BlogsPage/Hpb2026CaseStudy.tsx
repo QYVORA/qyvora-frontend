@@ -26,7 +26,7 @@ const StatRow = ({ icon, label, value }: { icon: React.ReactNode; label: string;
 const Screenshot = ({ src, alt, caption }: { src: string; alt: string; caption: string }) => (
   <div className="my-10 rounded-2xl overflow-hidden border border-border/20">
     <img src={src} alt={alt} width={1200} height={675} className="w-full object-cover" loading="lazy" />
-    <div className="px-5 py-3 bg-bg-card border-t border-border/20">
+    <div className="px-5 py-3 bg-bg-card">
       <p className="text-xs font-mono text-text-muted">{caption}</p>
     </div>
   </div>

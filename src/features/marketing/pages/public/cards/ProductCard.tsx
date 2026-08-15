@@ -49,7 +49,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, isLoggedIn, view }) 
   if (view === 'expanded') {
     return (
       <div className="group relative flex flex-col sm:flex-row overflow-hidden card-accent bg-bg-card transition-all duration-300">
-        <div className="sm:w-40 lg:w-48 shrink-0 aspect-[16/9] sm:aspect-auto sm:min-h-[120px] overflow-hidden bg-accent/5 border-b sm:border-b-0 sm:border-r border-border/30">
+        <div className="sm:w-40 lg:w-48 shrink-0 aspect-[16/9] sm:aspect-auto sm:min-h-[120px] overflow-hidden bg-accent/5 sm:border-r border-border/30">
           <AuthImage
             src={product.coverUrl}
             alt={product.title}
@@ -69,7 +69,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, isLoggedIn, view }) 
               {product.description || 'Premium intelligence asset.'}
             </p>
           </div>
-          <div className="flex items-center justify-between mt-auto pt-2 border-t border-border/10">
+          <div className="flex items-center justify-between mt-auto pt-2">
             {price}
             {cta}
           </div>
@@ -80,7 +80,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, isLoggedIn, view }) 
 
   return (
     <div className="group relative flex flex-col overflow-hidden card-accent bg-bg-card transition-all duration-300 h-full min-h-[240px] justify-between">
-      <div className="relative aspect-[16/9] overflow-hidden bg-accent/5 border-b border-border/30 shrink-0">
+      <div className="relative aspect-[16/9] overflow-hidden bg-accent/5 shrink-0">
         <AuthImage
           src={product.coverUrl}
           alt={product.title}
@@ -100,7 +100,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, isLoggedIn, view }) 
             {product.description || 'Premium intelligence asset.'}
           </p>
         </div>
-        <div className="flex items-center justify-between mt-auto pt-2 border-t border-border/10">
+        <div className="flex items-center justify-between mt-auto pt-2">
           {price}
           {cta}
         </div>

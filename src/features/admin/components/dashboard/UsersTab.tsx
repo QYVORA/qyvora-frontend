@@ -192,7 +192,6 @@ const UsersTab: React.FC<UsersTabProps> = ({
           {t('admin.users.deleteUser')}
         </button>
       </div>
-      <div className="h-px w-full bg-border/20 mt-6" />
     </div>
   );
 

@@ -42,7 +42,7 @@ const MobileNotificationsSheet: React.FC<MobileNotificationsSheetProps> = ({
             </BottomSheetClose>
           </div>
         </div>
-        <div className="flex-1 overflow-y-auto divide-y divide-border/50">
+        <div className="flex-1 overflow-y-auto">
           {notifLoading ? (
             <div className="p-5 text-sm text-text-muted text-center">{t('empty.loading')}</div>
           ) : notificationsPreview.length === 0 ? (

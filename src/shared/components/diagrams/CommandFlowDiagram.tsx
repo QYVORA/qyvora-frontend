@@ -71,7 +71,6 @@ interface SimpleCommandFlowProps {
 export function SimpleCommandFlow({ commands, className }: SimpleCommandFlowProps) {
   return (
     <div className={cn('relative overflow-hidden rounded-xl border border-border/30 bg-bg-card p-4', className)}>
-      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-accent/40 to-transparent" />
       <div className="flex items-center gap-2 mb-4">
         <span className="text-[9px] font-black uppercase tracking-widest text-accent">Command Sequence</span>
       </div>

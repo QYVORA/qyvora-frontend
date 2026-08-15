@@ -31,7 +31,7 @@ const FeatureCard: React.FC<{ feature: string }> = ({ feature }) => (
 /* ── Static visual mocks (texture, not interactive) ─────────────────────── */
 const TerminalMock: React.FC = () => (
   <div className="relative flex h-full min-h-[280px] lg:min-h-[360px] flex-col rounded-2xl border border-border/30 bg-[#0c0c0c] overflow-hidden">
-    <div className="flex items-center gap-2 px-4 py-2.5 border-b border-white/10 shrink-0">
+    <div className="flex items-center gap-2 px-4 py-2.5 shrink-0">
       <span className="w-2.5 h-2.5 rounded-full bg-red-400/70" />
       <span className="w-2.5 h-2.5 rounded-full bg-yellow-400/70" />
       <span className="w-2.5 h-2.5 rounded-full bg-accent/70" />
@@ -87,7 +87,7 @@ const IdeMock: React.FC = () => (
 
 const NetworkMock: React.FC = () => (
   <div className="relative flex h-full min-h-[220px] lg:min-h-[280px] flex-col rounded-2xl border border-border/30 bg-bg-card overflow-hidden">
-    <div className="flex items-center justify-between px-4 py-2.5 border-b border-border/20 shrink-0">
+    <div className="flex items-center justify-between px-4 py-2.5 shrink-0">
       <span className="text-[9px] font-mono text-text-muted">topology — recon</span>
       <span className="flex items-center gap-1.5 text-[9px] font-mono text-text-muted">
         <span className="h-1.5 w-1.5 rounded-full bg-accent animate-pulse" /> live
@@ -95,11 +95,8 @@ const NetworkMock: React.FC = () => (
     </div>
     <div className="flex-1 min-h-0 flex items-center justify-center gap-2 sm:gap-4 px-4 py-6 overflow-hidden">
       <span className="rounded-xl border border-border/30 bg-bg px-3 py-2 text-[9px] font-mono text-text-muted whitespace-nowrap">edge 10.0.0.1</span>
-      <span className="w-4 sm:w-8 h-px bg-border" aria-hidden="true" />
       <span className="rounded-xl border border-accent/30 bg-accent/10 px-3 py-2 text-[9px] font-mono text-accent whitespace-nowrap">10.10.14.0/24</span>
-      <span className="w-4 sm:w-8 h-px bg-border" aria-hidden="true" />
       <span className="rounded-xl border border-border/30 bg-bg px-3 py-2 text-[9px] font-mono text-text-muted whitespace-nowrap">10.10.14.7</span>
-      <span className="w-4 sm:w-8 h-px bg-border" aria-hidden="true" />
       <span className="rounded-xl border border-border/30 bg-bg px-3 py-2 text-[9px] font-mono text-text-muted whitespace-nowrap">:80 :443</span>
     </div>
   </div>

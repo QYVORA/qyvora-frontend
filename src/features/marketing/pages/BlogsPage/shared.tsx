@@ -122,12 +122,11 @@ export const CTA = ({ title, desc, href, label }: { title: string; desc: string;
 );
 
 export const Divider = () => (
-  <div className="w-full h-px bg-gradient-to-r from-transparent via-border/30 to-transparent my-16 md:my-24" />
+  <div className="w-full my-16 md:my-24" aria-hidden="true" />
 );
 
 export const InlineDiagram = ({ children }: { children: React.ReactNode }) => (
   <div className="relative my-10 md:my-12 p-4 sm:p-6 md:p-8 lg:p-10 rounded-xl bg-bg-card border border-border/30 overflow-hidden">
-    <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-border/50 to-transparent" />
     <div className="relative z-10 flex items-center justify-center w-full">
       {children}
     </div>

@@ -148,7 +148,7 @@ const CoursePurchaseModal: React.FC<CoursePurchaseModalProps> = ({ open, onOpenC
           </div>
 
           {/* Actions */}
-          <div className="pt-2 border-t border-border/30">
+          <div className="pt-2">
             {purchased ? (
               <button
                 onClick={handleContinue}

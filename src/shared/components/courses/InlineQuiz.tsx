@@ -101,7 +101,7 @@ const InlineQuiz: React.FC<InlineQuizProps> = ({
                     )}
                   </div>
                 </div>
-                <p className="text-xs text-text-muted/70 border-t border-border/30 pt-2">{q.explanation}</p>
+                <p className="text-xs text-text-muted/70 pt-2">{q.explanation}</p>
               </div>
             );
           })}

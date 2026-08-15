@@ -156,7 +156,7 @@ export const SettingsSkeleton = () => (
               <Skeleton className="w-5 h-5 rounded" />
               <Skeleton className="h-4 w-36 rounded" />
             </div>
-            <div className="p-6 divide-y divide-border/30">
+            <div className="p-6">
               {Array.from({ length: 4 }).map((_, j) => (
                 <div key={j} className="flex items-center justify-between gap-4 py-3">
                   <Skeleton className="h-4 w-40 rounded" />

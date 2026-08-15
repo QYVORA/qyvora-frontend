@@ -42,7 +42,7 @@ const ZeroDayMarketTab: React.FC<ZeroDayMarketTabProps> = ({
   return (
     <div className="space-y-6">
       <div ref={productFormRef} className={`rounded-2xl p-6 md:p-8 space-y-6 transition-all duration-300 border border-border/40 ${productForm.id ? 'bg-accent/5' : 'bg-bg-card'}`}>
-        <div className="flex items-center justify-between border-b border-border/10 pb-4">
+        <div className="flex items-center justify-between pb-4">
           <div className={`text-[10px] font-black uppercase tracking-[0.2em] flex items-center gap-2 ${productForm.id ? 'text-accent' : 'text-text-muted'}`}>{productForm.id ? <><RefreshCw className="w-4 h-4 animate-spin-slow" /> {t('admin.market.editingAsset')}: {productForm.title}</> : t('admin.market.initializeNewAsset')}</div>
           {productForm.id && <button onClick={resetProductForm} className="text-[9px] font-black text-text-muted hover:text-accent uppercase tracking-[0.2em] transition-colors border border-border/40 px-3 py-1 rounded-lg">{t('admin.market.abortProtocol')}</button>}
         </div>
@@ -65,7 +65,7 @@ const ZeroDayMarketTab: React.FC<ZeroDayMarketTabProps> = ({
           </div>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 pt-4 border-t border-border/10">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 pt-4">
           <label className="block space-y-2"><span className="text-[9px] font-black uppercase text-text-muted/60 tracking-[0.2em]">{t('admin.market.coverImage')}</span><input type="file" accept="image/*" onChange={e => setCoverFile(e.target.files?.[0] || null)} className="block w-full text-[10px] text-text-muted file:mr-4 file:py-2.5 file:px-5 file:rounded-xl file:border-0 file:bg-accent/10 file:text-[9px] file:font-black file:uppercase file:tracking-widest file:text-accent file:cursor-pointer hover:file:bg-accent/20 file:transition-all" /></label>
           <label className="block space-y-2"><span className="text-[9px] font-black uppercase text-text-muted/60 tracking-[0.2em]">{t('admin.market.productPdf')} *</span><input type="file" accept="application/pdf" onChange={e => setProductFile(e.target.files?.[0] || null)} className="block w-full text-[10px] text-text-muted file:mr-4 file:py-2.5 file:px-5 file:rounded-xl file:border-0 file:bg-accent/10 file:text-[9px] file:font-black file:uppercase file:tracking-widest file:text-accent file:cursor-pointer hover:file:bg-accent/20 file:transition-all" /></label>
         </div>

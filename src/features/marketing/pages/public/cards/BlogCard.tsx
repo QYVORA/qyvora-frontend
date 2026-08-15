@@ -49,7 +49,7 @@ const BlogCard: React.FC<BlogCardProps> = ({ post, view }) => {
               {post.excerpt}
             </p>
           </div>
-          <div className="flex items-center justify-between pt-2 border-t border-border/10 text-[10px] text-text-muted font-mono">
+          <div className="flex items-center justify-between pt-2 text-[10px] text-text-muted font-mono">
             <span className="flex items-center gap-1 truncate min-w-0">
               <User className="w-3 h-3 shrink-0" /> <span className="truncate">{post.author?.name}</span>
             </span>
@@ -94,7 +94,7 @@ const BlogCard: React.FC<BlogCardProps> = ({ post, view }) => {
             {post.excerpt}
           </p>
         </div>
-        <div className="flex items-center justify-between pt-2 border-t border-border/10 text-[10px] text-text-muted font-mono">
+        <div className="flex items-center justify-between pt-2 text-[10px] text-text-muted font-mono">
           <span className="flex items-center gap-1 truncate">
             <User className="w-3 h-3" /> {post.author?.name}
           </span>

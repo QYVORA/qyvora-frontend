@@ -98,7 +98,7 @@ const StudentBootcampCard: React.FC<Props> = ({ data, index = 0, onEnroll, onLoc
         </div>
       )}
 
-      <div className="flex flex-wrap items-center gap-x-3 gap-y-1 mt-auto pt-2 border-t border-border/20">
+      <div className="flex flex-wrap items-center gap-x-3 gap-y-1 mt-auto pt-2">
         {duration && (
           <span className="flex items-center gap-1.5 text-[9px] sm:text-[10px] font-black uppercase tracking-widest text-text-muted">
             <IconClock size={12} /> {duration}

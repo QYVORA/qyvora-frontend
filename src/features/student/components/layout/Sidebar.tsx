@@ -162,7 +162,7 @@ const CourseProgressPanel = () => {
         </div>
         <p className="text-[10px] text-text-secondary">{doneRooms}/{totalRooms} {t('badge.rooms')}</p>
       </div>
-      <div className="rounded-xl border border-border/30 bg-bg-card divide-y divide-border/30 max-h-[260px] overflow-y-auto">
+      <div className="rounded-xl border border-border/30 bg-bg-card max-h-[260px] overflow-y-auto">
         {courseModules.map((mod: any, idx: number) => {
           const prog = progMap[idx + 1];
           const pct = Number(prog?.progress || 0);

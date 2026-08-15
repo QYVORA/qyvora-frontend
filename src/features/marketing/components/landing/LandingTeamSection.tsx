@@ -43,7 +43,7 @@ const TeamCard = ({ member }: { member: TeamMember }) => (
         {member.bio}
       </p>
       {Object.keys(member.socials).length > 0 && (
-        <div className="flex items-center gap-3 mt-4 pt-4 border-t border-border/30">
+        <div className="flex items-center gap-3 mt-4 pt-4">
           {member.socials.github && (
             <span className="text-white/70 hover:text-accent transition-colors" aria-hidden="true">
               <BrandGithubIcon className="w-4 h-4" />

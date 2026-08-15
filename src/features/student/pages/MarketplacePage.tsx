@@ -185,7 +185,7 @@ const Marketplace: React.FC = () => {
                 return (
                   <motion.div key={id || idx} initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.45, delay: idx * 0.08, ease: [0.16, 1, 0.3, 1] }}>
                     <div className="group flex flex-col overflow-hidden w-full card-accent bg-bg-card transition-all duration-300">
-                      <div className="relative aspect-[16/9] overflow-hidden bg-accent/5 border-b border-border/30">
+                      <div className="relative aspect-[16/9] overflow-hidden bg-accent/5">
                         <AuthImage
                           src={prod.coverUrl}
                           alt={prod.title}
@@ -235,7 +235,7 @@ const Marketplace: React.FC = () => {
               {txRows.length === 0 ? (
                 <div className="py-12 text-center text-text-muted text-sm">{t('student.marketplace.empty')}</div>
               ) : (
-                <div className="divide-y divide-border/50">
+                <div>
                   {visibleTxRows.map((tx, idx) => (
                     <div key={idx} className="px-4 py-3.5 flex items-center gap-3 hover:bg-accent-dim/5 transition-colors sm:px-5 sm:py-4 sm:gap-4">
                       <div className={`w-9 h-9 rounded-lg flex items-center justify-center flex-none shrink-0 border ${
