@@ -11,6 +11,7 @@ import {
 } from '@/shared/components/icons';
 import ProfileDropdown from './ProfileDropdown';
 import MobileProfileSheet from './MobileProfileSheet';
+import { SETTINGS_SECTIONS, type SettingsSectionId } from '../../../constants/settingsSections';
 import { BOOTCAMP_CONFIG } from '../../../constants/bootcampConfig';
 import { getCourseById } from '../../../data/courses';
 import { useAuth } from '../../../../../core/contexts/AuthContext';
@@ -42,6 +43,11 @@ const StudentTopbar = () => {
   const courseMatch = useMatch('/dashboard/courses/:courseId');
   const labMatch = useMatch('/dashboard/labs/:labType');
   const settingsMatch = useMatch('/dashboard/settings/*');
+
+  const settingsPath = location.pathname.replace(/^\/dashboard\/settings\/?/, '');
+  const activeSettingsSection: SettingsSectionId = (SETTINGS_SECTIONS as { id: string }[]).some((s) => s.id === settingsPath)
+    ? (settingsPath as SettingsSectionId)
+    : 'appearance';
 
   const isCoursePage = Boolean(courseMatch);
   const isLabPage = Boolean(labMatch);
@@ -375,17 +381,41 @@ const StudentTopbar = () => {
             >
               <IconArrowLeft size={20} strokeWidth={2.5} />
             </button>
-            <div className={`hidden sm:flex items-center gap-1.5 text-xs font-bold uppercase tracking-widest min-w-0 flex-1 text-text-muted`}>
+            <div className={`hidden sm:flex items-center gap-1.5 text-xs font-bold uppercase tracking-widest min-w-0 text-text-muted`}>
               <Link to="/dashboard" className={`transition-colors shrink-0 hover:text-accent active:opacity-70`}>
                 {t('student.topbar.breadcrumb.dashboard')}
               </Link>
-              <IconChevronRight size={12} className={`opacity-40 shrink-0`} />
+              <IconChevronRight size={12} className={`opacity-40 shrink-0 `} />
               <span className="text-text-primary font-black truncate">Settings</span>
             </div>
             <div className="flex sm:hidden flex-col min-w-0 flex-1">
               <span className="text-[9px] font-black uppercase tracking-[0.25em] text-accent leading-none mb-0.5">CONFIGURE</span>
               <span className="text-sm font-black text-text-primary truncate leading-tight">Settings</span>
             </div>
+
+            {/* Settings section nav — desktop (md+) */}
+            <nav className="hidden md:flex items-center justify-start flex-1 min-w-0 gap-1" data-tour-id="tour-settings-nav">
+              {SETTINGS_SECTIONS.map((section) => {
+                const active = activeSettingsSection === section.id;
+                const Icon = section.icon;
+                return (
+                  <Link
+                    key={section.id}
+                    to={section.path}
+                    className={`relative flex flex-col items-center gap-1.5 px-4 py-2 text-[10px] font-black uppercase tracking-widest transition-colors shrink-0 ${
+                      active ? 'text-accent' : 'text-text-secondary hover:text-text-primary active:opacity-70'
+                    }`}
+                  >
+                    <Icon size={30} strokeWidth={2.5} className={active ? 'text-accent' : 'text-text-secondary'} />
+                    <span>{t(section.labelKey)}</span>
+                    {active && (
+                      <span className="absolute bottom-0 left-1/4 right-1/4 h-0.5 rounded-full bg-accent" />
+                    )}
+                  </Link>
+                );
+              })}
+            </nav>
+
             <div className="flex items-center gap-1.5 md:gap-2 shrink-0 ml-auto">
               <ProfileDropdown
                 user={user}
