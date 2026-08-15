@@ -167,7 +167,7 @@ const Footer: React.FC = React.memo(() => {
           <div className="flex-1 min-h-6" />
 
           {/* ── Status banner: system status · language · contact ────────── */}
-          <div className="mt-10 flex flex-col gap-5 border-t border-border/20 pt-6 md:flex-row md:items-center md:justify-between">
+          <div className="mt-10 flex flex-col gap-5 pt-6 md:flex-row md:items-center md:justify-between">
             <div className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-text-muted">
               <span className="relative flex h-2 w-2">
                 <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-accent opacity-75" />

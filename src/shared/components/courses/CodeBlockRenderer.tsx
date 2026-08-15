@@ -309,7 +309,7 @@ function renderBlock(block: InlineBlock, key: number): React.ReactNode {
         </blockquote>
       );
     case 'hr':
-      return <hr key={key} className="border-border my-14 md:my-20" />;
+      return null;
   }
 }
 

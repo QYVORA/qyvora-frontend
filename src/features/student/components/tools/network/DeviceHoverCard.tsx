@@ -37,9 +37,6 @@ const DeviceHoverCard: React.FC<DeviceHoverCardProps> = ({ data }) => {
           </div>
         </div>
 
-        {/* Divider */}
-        <div className="h-px bg-border/20 mb-2" />
-
         {/* Stats row */}
         <div className="grid grid-cols-3 gap-2">
           {data.cpu !== undefined && (

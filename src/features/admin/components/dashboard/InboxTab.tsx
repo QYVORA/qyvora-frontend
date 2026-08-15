@@ -243,7 +243,7 @@ const InboxTab = () => {
                   </div>
                 </div>
 
-                <div className="flex items-center gap-2 flex-wrap pt-2 border-t border-border/20">
+                <div className="flex items-center gap-2 flex-wrap pt-2">
                   <span className="text-[10px] font-bold text-text-muted uppercase tracking-wider">{t('admin.inbox.updateStatus')}:</span>
                   {(isContact ? statusOptions.contact : statusOptions.service).map((s) => (
                     <button

@@ -233,7 +233,7 @@ const Toha3eePage = () => {
             <div className="grid grid-cols-1 lg:grid-cols-[1.15fr_1fr] gap-4 md:gap-6 items-stretch">
               {/* Terminal mock */}
               <div className="rounded-2xl border border-border/30 bg-bg-card overflow-hidden h-full">
-                <div className="flex items-center gap-2 px-4 py-2.5 border-b border-border/20 bg-bg">
+                <div className="flex items-center gap-2 px-4 py-2.5 bg-bg">
                   <span className="w-2.5 h-2.5 rounded-full bg-red-400/70" />
                   <span className="w-2.5 h-2.5 rounded-full bg-yellow-400/70" />
                   <span className="w-2.5 h-2.5 rounded-full bg-accent/70" />

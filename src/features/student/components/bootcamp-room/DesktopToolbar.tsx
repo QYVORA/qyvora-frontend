@@ -57,8 +57,6 @@ const DesktopToolbar: React.FC<DesktopToolbarProps> = ({
         {fullscreen ? <Minimize2 className="h-4 w-4" /> : <Maximize2 className="h-4 w-4" />}
       </button>
 
-      <div className="h-px w-5 bg-border/20 my-1" />
-
       <button
         onClick={async () => {
           if (!isLastStep) {

@@ -46,7 +46,7 @@ const NotificationsDropdown: React.FC<NotificationsDropdownProps> = ({
           ) : notificationsPreview.length === 0 ? (
             <div className="p-4 text-xs text-text-muted">{t('student.topbar.notifications.empty')}</div>
           ) : (
-            <div className="max-h-80 overflow-auto divide-y divide-border/50">
+            <div className="max-h-80 overflow-auto">
               {notificationsPreview.map((item) => (
                 <div key={item.id} className={`px-4 py-3 ${item.read ? 'opacity-60' : ''}`} role="listitem">
                   <div className="flex items-center gap-2">

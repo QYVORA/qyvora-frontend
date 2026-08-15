@@ -100,7 +100,7 @@ const BlogPostPage: React.FC = () => {
               {post.subtitle}
             </p>
 
-            <div className="flex flex-wrap items-center gap-6 text-[11px] font-mono text-text-muted uppercase tracking-widest pb-8 border-b border-border/50">
+            <div className="flex flex-wrap items-center gap-6 text-[11px] font-mono text-text-muted uppercase tracking-widest pb-8">
               <span className="flex items-center gap-2">
                 <User className="w-4 h-4 text-accent" /> {post.author.name}
               </span>
@@ -143,7 +143,7 @@ const BlogPostPage: React.FC = () => {
         </article>
 
         {/* ── Footer Nav ── */}
-        <div className="mt-24 pt-10 border-t border-border/50 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
+        <div className="mt-24 pt-10 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
           <Link
             to="/blogs"
             className="flex items-center gap-2 text-[11px] font-black uppercase tracking-[0.3em] text-text-muted hover:text-accent transition-colors"
@@ -158,7 +158,7 @@ const BlogPostPage: React.FC = () => {
 
       {/* ── Read Next ── */}
       {otherPosts.length > 0 && (
-        <section className="border-t border-border/50">
+        <section>
           <div className="w-full px-3 md:px-4 lg:px-6 py-16 md:py-24">
             <h2 className="text-2xl md:text-3xl font-black uppercase tracking-tight mb-10">
               Keep Reading

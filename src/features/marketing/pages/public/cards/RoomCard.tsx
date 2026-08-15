@@ -41,7 +41,7 @@ const RoomCard: React.FC<RoomCardProps> = ({ room, roomIndex, view }) => {
           {room.overview}
         </p>
 
-        <div className="flex items-center justify-end pt-2 border-t border-border/10">
+        <div className="flex items-center justify-end pt-2">
           <Link
             to="/register"
             className="px-3 py-1.5 rounded-lg text-[9px] sm:text-[10px] md:text-xs font-black uppercase tracking-widest bg-accent text-on-accent transition-all duration-200 group-hover/card:brightness-110 group-active:scale-95"

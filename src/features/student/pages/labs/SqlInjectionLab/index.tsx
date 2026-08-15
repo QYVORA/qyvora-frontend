@@ -98,7 +98,6 @@ const SqlInjectionLab = () => {
         />
 
         <div className="px-3 md:px-4 lg:px-6 pb-20 lg:pb-24 space-y-8">
-          <div className="border-t border-border/30" />
 
           <LearningAccordion
             items={SQL_INJECTION_TARGETS.map((target) => ({

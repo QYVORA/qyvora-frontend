@@ -86,7 +86,6 @@ export function WalkthroughLayout({
       <div className="w-full px-3 md:px-4 lg:px-6 py-8 md:py-12">
         {/* Room Header */}
         <div className="relative overflow-hidden mb-12 md:mb-16 rounded-2xl border border-border/30 bg-bg-card p-6 md:p-8">
-          <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-accent/40 to-transparent" />
           <div className="flex items-start gap-5">
             <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl border border-border/30 bg-bg-elevated text-accent">
               {icon}

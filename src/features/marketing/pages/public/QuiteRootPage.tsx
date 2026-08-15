@@ -52,7 +52,7 @@ const ResearcherSection = ({ researcher }: { researcher: Researcher }) => {
             <h2 className="text-2xl md:text-4xl lg:text-6xl font-black uppercase tracking-tight leading-[.95] text-text-primary break-words">{researcher.name}</h2>
             <p className="mt-2 text-[10px] font-black uppercase tracking-widest text-accent sm:mt-3 sm:text-xs">Research node // {researcher.id.toUpperCase()}</p>
             <p className="mt-3 max-w-2xl text-[11px] leading-[1.45] text-text-secondary sm:mt-4 sm:text-sm sm:leading-relaxed lg:mt-6 lg:text-base">{researcher.bio}</p>
-            <div className="mt-4 border-t border-border/30 pt-3 sm:mt-5 sm:pt-4 lg:mt-8 lg:pt-5">
+            <div className="mt-4 pt-3 sm:mt-5 sm:pt-4 lg:mt-8 lg:pt-5">
               <p className="text-[9px] font-black uppercase tracking-widest text-text-muted">Independent research collective</p>
               <p className="mt-2 text-xs leading-relaxed text-text-secondary">QuiteRoot brings together builders and security-minded researchers contributing to QYVORA's tools, experiments, and learning ecosystem.</p>
             </div>

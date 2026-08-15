@@ -16,7 +16,7 @@ const GoCodeCarousel = ({ examples }: { examples: GoCodeExample[] }) => (
     className="w-full"
     renderCard={(example) => (
       <article className="flex min-h-[330px] flex-col bg-bg-card p-5 sm:min-h-[360px] sm:p-6">
-        <div className="flex items-start gap-3 border-b border-border/20 pb-4">
+        <div className="flex items-start gap-3 pb-4">
           <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-accent/30 bg-accent/10"><Code2 className="h-5 w-5 text-accent" /></span>
           <div className="min-w-0">
             <p className="text-[9px] font-black uppercase tracking-widest text-accent">Go source example</p>

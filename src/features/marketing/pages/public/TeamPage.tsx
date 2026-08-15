@@ -81,7 +81,7 @@ const TeamMemberSection = ({ member }: { member: TeamMember }) => {
               ))}
             </div>
 
-            <div className="mt-4 flex flex-wrap items-center gap-x-5 gap-y-2 border-t border-border/30 pt-3 sm:mt-5 sm:pt-4 lg:mt-8 lg:pt-5">
+            <div className="mt-4 flex flex-wrap items-center gap-x-5 gap-y-2 pt-3 sm:mt-5 sm:pt-4 lg:mt-8 lg:pt-5">
               {member.handle && (
                 <Link to={`/@${member.handle}`} className="inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-accent transition-colors hover:text-text-primary">
                   View profile <ArrowUpRight className="h-3.5 w-3.5" />

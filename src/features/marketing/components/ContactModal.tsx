@@ -130,7 +130,7 @@ const ContactModalHost: React.FC = () => {
           <form className="space-y-6" onSubmit={handleSubmit}>
             
             {/* Contact Type Toggle */}
-            <div className="flex items-center justify-between border-b border-border/40 pb-4">
+            <div className="flex items-center justify-between pb-4">
               <span className="text-[10px] font-black text-text-muted uppercase tracking-[0.25em]">
                 {t('contact2.category')}
               </span>

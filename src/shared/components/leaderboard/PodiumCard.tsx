@@ -78,7 +78,7 @@ const PodiumCard = ({ entry, rank, className = '' }: PodiumCardProps) => {
         )}
       </div>
 
-      <div className="mt-auto flex flex-col items-center gap-1 pt-1 w-full border-t border-border/20">
+      <div className="mt-auto flex flex-col items-center gap-1 pt-1 w-full">
         <span className="text-base md:text-xl font-black font-mono text-text-primary">
           {Number(entry.cp).toLocaleString()} <span className="text-[9px] uppercase tracking-widest text-accent">CP</span>
         </span>

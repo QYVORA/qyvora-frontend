@@ -110,7 +110,6 @@ export function FlowDiagram({ nodes, arrows, direction = 'horizontal', className
   if (direction === 'horizontal') {
     return (
       <div className={cn('relative overflow-hidden rounded-xl border border-border/30 bg-bg-card p-4 md:p-6 overflow-x-auto', className)}>
-        <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-accent/40 to-transparent" />
         <div className="flex items-center min-w-max gap-0">
           {arrows.map((arrow, i) => {
             const fromNode = nodeMap.get(arrow.from);
@@ -131,7 +130,6 @@ export function FlowDiagram({ nodes, arrows, direction = 'horizontal', className
 
   return (
     <div className={cn('relative overflow-hidden rounded-xl border border-border/30 bg-bg-card p-4 md:p-6', className)}>
-      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-accent/40 to-transparent" />
       <div className="flex flex-col items-center gap-0">
         {arrows.map((arrow, i) => {
           const fromNode = nodeMap.get(arrow.from);

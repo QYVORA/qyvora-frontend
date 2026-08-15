@@ -306,9 +306,6 @@ const Navbar: React.FC = React.memo(() => {
                 );
               })}
 
-              {/* Separator */}
-              <div className="my-6 h-px bg-border/20" />
-
               {/* Auth buttons */}
               <div className="flex flex-col gap-3">
                 {user ? (

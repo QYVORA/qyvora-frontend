@@ -197,7 +197,7 @@ const DashboardRoomCard = ({ room }: { room: any }) => {
 
       <h3 className="text-sm sm:text-base md:text-lg lg:text-xl font-black text-text-primary group-hover/card:text-accent transition-colors leading-snug break-words mb-1">{room.title}</h3>
 
-      <div className="flex items-center justify-between mt-auto pt-2 border-t border-border/20">
+      <div className="flex items-center justify-between mt-auto pt-2">
         <span className="text-[9px] sm:text-[10px] font-black uppercase tracking-widest text-text-muted">
           Active
         </span>
