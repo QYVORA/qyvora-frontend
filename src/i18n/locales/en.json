@@ -1534,6 +1534,7 @@
       },
       "sessions": {
         "title": "Active Sessions",
+        "description": "Devices currently logged into your account.",
         "current": "Current",
         "revoke": "Revoke",
         "revokeAll": "Revoke All Others",

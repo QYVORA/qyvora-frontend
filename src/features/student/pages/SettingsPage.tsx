@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { Key, Eye, EyeOff, Loader2, Save, Copy, CheckCircle2, AlertTriangle, RefreshCw, Trash2 } from 'lucide-react';
+import { Key, Eye, EyeOff, Loader2, Save, Copy, CheckCircle2, AlertTriangle, RefreshCw, Trash2, ChevronDown } from 'lucide-react';
 import api from '../../../core/services/api';
 import { useToast } from '../../../core/contexts/ToastContext';
 import { getDataSaverEnabled, setDataSaverEnabled } from '../utils/studentExperience';
@@ -67,20 +67,23 @@ const Toggle: React.FC<{ checked: boolean; onChange: (v: boolean) => void; disab
 );
 
 const SettingsRow: React.FC<{ label: string; description?: string; children: React.ReactNode }> = ({ label, description, children }) => (
-  <div className="flex items-center justify-between gap-4 py-3">
-    <div className="min-w-0">
+  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-6 py-4">
+    <div className="min-w-0 sm:flex-1">
       <p className="text-sm font-bold text-text-primary">{label}</p>
-      {description && <p className="text-xs text-text-muted mt-0.5">{description}</p>}
+      {description && <p className="text-xs text-text-muted mt-0.5 leading-relaxed">{description}</p>}
     </div>
     <div className="shrink-0">{children}</div>
   </div>
 );
 
 const SelectField: React.FC<{ id: string; ariaLabel: string; value: string; onChange: (v: string) => void; children: React.ReactNode }> = ({ id, ariaLabel, value, onChange, children }) => (
-  <select id={id} aria-label={ariaLabel} value={value} onChange={(e) => onChange(e.target.value)}
-    className="bg-bg border border-border rounded-xl px-3 py-1.5 text-xs font-bold text-text-primary focus:border-accent outline-none">
-    {children}
-  </select>
+  <div className="relative">
+    <select id={id} aria-label={ariaLabel} value={value} onChange={(e) => onChange(e.target.value)}
+      className="appearance-none w-full sm:w-auto min-w-[9rem] bg-bg border border-border rounded-xl py-2.5 pl-3.5 pr-9 text-sm font-bold text-text-primary focus:border-accent outline-none transition-all cursor-pointer">
+      {children}
+    </select>
+    <ChevronDown className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-text-muted" />
+  </div>
 );
 
 const Settings: React.FC = () => {
@@ -269,33 +272,24 @@ const Settings: React.FC = () => {
     <>
       <SEO title={t('student.settings.seoTitle')} description={t('student.settings.seoDesc')} noindex />
 
-      <div className="bg-bg min-h-screen px-3 md:px-4 lg:px-6 pt-8 pb-40 lg:pb-44">
-        <div className="max-w-4xl mx-auto">
+      <div className="bg-bg min-h-screen px-3 md:px-4 lg:px-6 pt-8 pb-16 md:pb-20">
 
-          {/* Desktop bottom nav — mirrors the overview top bar */}
-          <nav className="hidden md:flex fixed bottom-4 left-1/2 -translate-x-1/2 z-30 items-center gap-1 rounded-2xl border border-border/30 bg-bg-card/95 backdrop-blur-xl px-2 py-1.5 shadow-2xl shadow-black/50">
-            {SETTINGS_SECTIONS.map((section) => {
-              const active = activeSection === section.id;
-              const Icon = section.icon;
-              return (
-                <Link
-                  key={section.id}
-                  to={section.path}
-                  className={`relative flex flex-col items-center gap-1.5 px-5 py-2 text-[10px] font-black uppercase tracking-widest transition-colors shrink-0 ${active ? 'text-accent' : 'text-text-secondary hover:text-text-primary active:opacity-70'}`}
-                >
-                  <Icon size={32} strokeWidth={2.5} className={active ? 'text-accent' : 'text-text-secondary'} />
-                  <span>{t(section.labelKey)}</span>
-                  {active && (
-                    <span className="absolute top-0 left-1/4 right-1/4 h-0.5 rounded-full bg-accent" />
-                  )}
-                </Link>
-              );
-            })}
-          </nav>
-          
+        {/* Page header */}
+        <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-8">
+          <div>
+            <h1 className="text-4xl md:text-5xl font-black tracking-tight text-text-primary">{t('student.settings.title')}</h1>
+            <p className="text-sm md:text-base text-text-muted mt-2">{t('student.settings.description')}</p>
+          </div>
+          <div className="md:hidden">
+            <span className="text-[9px] font-black uppercase tracking-[0.25em] text-accent leading-none mb-0.5">CONFIGURE</span>
+          </div>
+        </div>
+
+        <div className="w-full space-y-6 md:space-y-8">
+
           {/* Appearance Section */}
           {activeSection === 'appearance' && (
-            <div className="bg-bg-card border border-border/30 rounded-2xl p-6 md:p-8">
+            <div className="bg-bg-card border border-border/30 rounded-2xl p-5 md:p-8">
               <SectionHeader 
                 title={t('student.settings.appearance.title')}
                 description={t('student.settings.appearance.description')}
@@ -353,7 +347,7 @@ const Settings: React.FC = () => {
 
           {/* Notifications Section */}
           {activeSection === 'notifications' && (
-            <div className="bg-bg-card border border-border/30 rounded-2xl p-6 md:p-8">
+            <div className="bg-bg-card border border-border/30 rounded-2xl p-5 md:p-8">
               <SectionHeader 
                 title={t('student.settings.notifications.title')}
                 description={t('student.settings.notifications.description')}
@@ -383,7 +377,7 @@ const Settings: React.FC = () => {
 
           {/* Learning Section */}
           {activeSection === 'learning' && (
-            <div className="bg-bg-card border border-border/30 rounded-2xl p-6 md:p-8">
+            <div className="bg-bg-card border border-border/30 rounded-2xl p-5 md:p-8">
               <SectionHeader 
                 title={t('student.settings.learningPrefs.title')}
                 description={t('student.settings.learningPrefs.description')}
@@ -399,7 +393,7 @@ const Settings: React.FC = () => {
                 <SettingsRow label={t('student.settings.learningPrefs.weeklyGoal')}>
                   <input id="settings-weekly-goal" type="number" min={0} max={80} value={preferences.learning.weeklyGoalHours}
                     onChange={(e) => updateLearning('weeklyGoalHours', Number(e.target.value))}
-                    className="w-20 bg-bg border border-border rounded-xl px-3 py-1.5 text-xs font-bold text-text-primary text-center focus:border-accent outline-none" />
+                    className="w-24 bg-bg border border-border rounded-xl px-3 py-2.5 text-sm font-bold text-text-primary text-center focus:border-accent outline-none" />
                 </SettingsRow>
                 <SettingsRow label={t('student.settings.learningPrefs.showHints')} description={t('student.settings.learningPrefs.showHintsDesc')}>
                   <Toggle checked={preferences.learning.showHints} onChange={(v) => updateLearning('showHints', v)} disabled={prefsSaving} />
@@ -416,9 +410,9 @@ const Settings: React.FC = () => {
 
           {/* Security Section */}
           {activeSection === 'security' && (
-            <div className="space-y-6">
+            <div className="space-y-6 md:space-y-8">
               {/* 2FA */}
-              <div className="bg-bg-card border border-border/30 rounded-2xl p-6 md:p-8">
+              <div className="bg-bg-card border border-border/30 rounded-2xl p-5 md:p-8">
                 <SectionHeader 
                   title={t('student.settings.twoFactor.title')}
                   description={t('student.settings.twoFactor.description')}
@@ -434,7 +428,7 @@ const Settings: React.FC = () => {
               </div>
 
               {/* Password */}
-              <div className="bg-bg-card border border-border/30 rounded-2xl p-6 md:p-8">
+              <div className="bg-bg-card border border-border/30 rounded-2xl p-5 md:p-8">
                 <SectionHeader 
                   title={t('student.settings.password.title')}
                 />
@@ -443,14 +437,14 @@ const Settings: React.FC = () => {
                   <PasswordField name="new_password" id="settings-new-password" label={t('student.settings.password.newLabel')} placeholder={t('student.settings.password.newPlaceholder')} />
                   <PasswordField name="confirm_password" id="settings-confirm-password" label={t('student.settings.password.confirmLabel')} placeholder={t('student.settings.password.confirmPlaceholder')} />
                   <button type="submit" disabled={changingPwd}
-                    className="w-full btn-primary !py-2.5 text-sm flex items-center justify-center gap-2 disabled:opacity-50">
+                    className="w-full sm:w-auto btn-primary !py-2.5 text-sm px-6 flex items-center justify-center gap-2 disabled:opacity-50">
                     {changingPwd ? <><Loader2 className="w-4 h-4 animate-spin" /> {t('common.updating')}</> : <><Save className="w-4 h-4" /> {t('student.settings.password.update')}</>}
                   </button>
                 </form>
               </div>
 
               {/* Recovery Token */}
-              <div className="bg-bg-card border border-border/30 rounded-2xl p-6 md:p-8">
+              <div className="bg-bg-card border border-border/30 rounded-2xl p-5 md:p-8">
                 <SectionHeader 
                   title={t('student.settings.recovery.title')}
                 />
@@ -470,7 +464,7 @@ const Settings: React.FC = () => {
                           </button>
                         </div>
                       </div>
-                      <button onClick={acknowledgeToken} disabled={acking} className="w-full btn-primary !py-2.5 text-sm flex items-center justify-center gap-2 disabled:opacity-50">
+                      <button onClick={acknowledgeToken} disabled={acking} className="w-full sm:w-auto btn-primary !py-2.5 text-sm px-6 flex items-center justify-center gap-2 disabled:opacity-50">
                         {acking ? <><Loader2 className="w-4 h-4 animate-spin" /> {t('student.settings.recovery.acknowledging')}</> : <><CheckCircle2 className="w-4 h-4" /> {t('student.settings.recovery.savedToken')}</>}
                       </button>
                     </div>
@@ -484,13 +478,13 @@ const Settings: React.FC = () => {
                         </div>
                       </div>
                       {!confirmRegenerate ? (
-                        <button onClick={() => setConfirmRegenerate(true)} className="w-full flex items-center justify-center gap-2 px-4 py-2.5 border border-border rounded-xl text-sm font-bold text-text-muted hover:text-accent active:scale-[0.98] transition-colors">
+                        <button onClick={() => setConfirmRegenerate(true)} className="w-full sm:w-auto flex items-center justify-center gap-2 px-4 py-2.5 border border-border rounded-xl text-sm font-bold text-text-muted hover:text-accent active:scale-[0.98] transition-colors">
                           <RefreshCw className="w-4 h-4" /> {t('student.settings.recovery.generate')}
                         </button>
                       ) : (
                         <div className="p-4 border border-yellow-500/30 rounded-xl bg-yellow-500/5 space-y-3">
                           <p className="text-xs text-yellow-400 font-bold">{t('student.settings.recovery.invalidateWarning')}</p>
-                          <div className="flex gap-2">
+                          <div className="flex flex-col sm:flex-row gap-2">
                             <button onClick={() => setConfirmRegenerate(false)} className="flex-1 px-3 py-2 border border-border rounded-xl text-xs font-bold text-text-muted active:scale-[0.98] transition-colors">{t('button.cancel')}</button>
                             <button onClick={() => void regenerateToken()} disabled={regenerating} className="flex-1 px-3 py-2 border border-yellow-500/40 rounded-xl text-xs font-bold text-yellow-400 hover:bg-yellow-500/10 active:scale-[0.98] transition-colors disabled:opacity-50 flex items-center justify-center gap-1.5">
                               {regenerating ? <><Loader2 className="w-3.5 h-3.5 animate-spin" /> {t('student.settings.recovery.generating')}</> : <><RefreshCw className="w-3.5 h-3.5" /> {t('student.settings.recovery.regenerate')}</>}
@@ -502,7 +496,7 @@ const Settings: React.FC = () => {
                   ) : (
                     <div className="space-y-4">
                       <p className="text-sm text-text-muted">{t('student.settings.recovery.noTokenYet')}</p>
-                      <button onClick={() => void regenerateToken()} disabled={regenerating} className="w-full btn-primary !py-2.5 text-sm flex items-center justify-center gap-2 disabled:opacity-50">
+                      <button onClick={() => void regenerateToken()} disabled={regenerating} className="w-full sm:w-auto btn-primary !py-2.5 text-sm px-6 flex items-center justify-center gap-2 disabled:opacity-50">
                         {regenerating ? <><Loader2 className="w-4 h-4 animate-spin" /> {t('student.settings.recovery.generating')}</> : <><Key className="w-4 h-4" /> {t('student.settings.recovery.generate')}</>}
                       </button>
                     </div>
@@ -511,13 +505,14 @@ const Settings: React.FC = () => {
               </div>
 
               {/* Sessions */}
-              <div className="bg-bg-card border border-border/30 rounded-2xl p-6 md:p-8">
-                <div className="flex items-center justify-between mb-6">
-                  <SectionHeader 
-                    title={t('student.settings.sessions.title')}
-                  />
+              <div className="bg-bg-card border border-border/30 rounded-2xl p-5 md:p-8">
+                <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4 mb-6">
+                  <div>
+                    <h2 className="text-2xl font-black text-text-primary mb-2">{t('student.settings.sessions.title')}</h2>
+                    <p className="text-sm text-text-muted">{t('student.settings.sessions.description')}</p>
+                  </div>
                   {sessions.length > 1 && (
-                    <button onClick={handleRevokeAll} className="text-[10px] font-black uppercase tracking-widest text-red-400 hover:text-red-300 active:opacity-70 transition-colors">
+                    <button onClick={handleRevokeAll} className="shrink-0 text-[10px] font-black uppercase tracking-widest text-red-400 hover:text-red-300 active:opacity-70 transition-colors">
                       {t('student.settings.sessions.revokeAll')}
                     </button>
                   )}
@@ -552,7 +547,7 @@ const Settings: React.FC = () => {
 
           {/* Account / Danger Zone */}
           {activeSection === 'account' && (
-            <div className="bg-bg-card border border-red-500/20 rounded-2xl p-6 md:p-8">
+            <div className="bg-bg-card border border-red-500/20 rounded-2xl p-5 md:p-8">
               <SectionHeader 
                 title={t('student.settings.dangerZone.title')}
                 description={t('student.settings.dangerZone.description')}
@@ -570,7 +565,7 @@ const Settings: React.FC = () => {
                     ) : (
                       <div className="p-4 border border-red-500/30 rounded-xl bg-red-500/5 space-y-3">
                         <p className="text-xs text-red-400 font-bold">{t('student.settings.dangerZone.deleteConfirmDesc')}</p>
-                        <div className="flex gap-2">
+                        <div className="flex flex-col sm:flex-row gap-2">
                           <button onClick={() => setConfirmDelete(false)} className="flex-1 px-3 py-2 border border-border rounded-xl text-xs font-bold text-text-muted active:scale-[0.98] transition-colors">{t('button.cancel')}</button>
                           <button onClick={handleDeleteAccount} disabled={deleting} className="flex-1 px-3 py-2 btn-danger !text-xs disabled:opacity-50 flex items-center justify-center gap-1.5">
                             {deleting ? <><Loader2 className="w-3.5 h-3.5 animate-spin" /> {t('student.settings.dangerZone.deleting')}</> : <><Trash2 className="w-3.5 h-3.5" /> {t('student.settings.dangerZone.confirmDelete')}</>}
