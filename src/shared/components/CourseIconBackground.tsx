@@ -24,8 +24,7 @@ const CourseIconBackground: React.FC<CourseIconBackgroundProps> = ({ courseId, c
   return (
     <div
       aria-hidden="true"
-      className={`pointer-events-none absolute inset-0 z-0 flex items-center justify-center ${className}`}
-      style={{ color: 'var(--color-bg-alt)' }}
+      className={`pointer-events-none absolute inset-0 z-0 flex items-center justify-center text-accent/25 ${className}`}
     >
       <Icon className="w-full h-full max-w-[70%] max-h-[70%]" />
     </div>
