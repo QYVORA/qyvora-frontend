@@ -6,6 +6,7 @@ import { IconArrowRight, IconTerminal, IconNetwork, IconCode } from '@/shared/co
 import { useTranslation } from 'react-i18next';
 import { GridBoxedBackground } from '@/shared/components/backgrounds';
 import CoursePurchaseModal from '@/shared/components/CoursePurchaseModal';
+import CourseIconBackground from '@/shared/components/CourseIconBackground';
 
 const CATEGORY_ICONS: Record<string, React.ElementType> = {
   terminal: IconTerminal,
@@ -204,9 +205,10 @@ const LandingCoursesSection: React.FC = () => {
                     <button
                       key={course.id}
                       onClick={() => setSelectedCourseId(course.id)}
-                      className="group/card relative aspect-square lg:aspect-auto lg:h-full card-accent bg-bg-card p-3 md:p-5 transition-all duration-300 flex flex-col text-left"
+                      className="group/card relative aspect-square lg:aspect-auto lg:h-full card-accent bg-bg-card p-3 md:p-5 transition-all duration-300 flex flex-col text-left overflow-hidden"
                     >
-                      <div className="flex items-center gap-2 mb-2">
+                      <CourseIconBackground courseId={course.id} />
+                      <div className="relative z-10 flex items-center gap-2 mb-2">
                         <div className="w-8 h-8 rounded-xl flex items-center justify-center shrink-0 bg-accent/10 border border-accent/20">
                           {CatIc && <CatIc className="w-4 h-4 text-accent" />}
                         </div>
@@ -217,14 +219,14 @@ const LandingCoursesSection: React.FC = () => {
                         )}
                       </div>
 
-                      <h4 className="text-sm sm:text-base md:text-lg lg:text-xl font-black text-text-primary tracking-tight mb-1 leading-snug">
+                      <h4 className="relative z-10 text-sm sm:text-base md:text-lg lg:text-xl font-black text-text-primary tracking-tight mb-1 leading-snug">
                         {t(`landing.courses.list.${course.tKey}.title`)}
                       </h4>
-                      <p className="text-xs sm:text-sm md:text-base text-text-muted leading-relaxed mb-2 line-clamp-3 flex-1">
+                      <p className="relative z-10 text-xs sm:text-sm md:text-base text-text-muted leading-relaxed mb-2 line-clamp-3 flex-1">
                         {t(`landing.courses.list.${course.tKey}.desc`)}
                       </p>
 
-                      <div className="flex items-center justify-between mt-auto">
+                      <div className="relative z-10 flex items-center justify-between mt-auto">
                         <div className="flex items-center gap-2">
                           <span className="text-[9px] sm:text-[10px] font-black uppercase tracking-widest px-2 py-0.5 rounded-lg border border-accent/20 bg-accent/10 text-accent">
                             {t(`landing.courses.level.${course.level}`)}

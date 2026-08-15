@@ -78,3 +78,19 @@ export { default as BrandWhatsAppIcon } from './BrandWhatsAppIcon';
 export { default as BrandLinkedinIcon } from './BrandLinkedinIcon';
 export { default as BrandYoutubeIcon } from './BrandYoutubeIcon';
 export { default as BrandGithubIcon } from './BrandGithubIcon';
+
+// Course icons (vector-traced artwork, one per course)
+export {
+  LinuxTerminal101Icon,
+  WindowsCmd101Icon,
+  Networking101Icon,
+  Nmap101Icon,
+  Wireshark101Icon,
+  PythonForHackers101Icon,
+  GitGithub101Icon,
+  SqlInjection101Icon,
+  WebRecon101Icon,
+  WebTechnologies101Icon,
+  WifiFundamentals101Icon,
+  BurpSuite101Icon,
+} from './course-icons';
