@@ -98,6 +98,14 @@ const Settings: React.FC = () => {
     ? (sectionParam as SettingsSectionId)
     : 'appearance';
 
+  const sectionHeader: Record<SettingsSectionId, { title: string; description: string }> = {
+    appearance: { title: t('student.settings.appearance.title'), description: t('student.settings.appearance.description') },
+    notifications: { title: t('student.settings.notifications.title'), description: t('student.settings.notifications.description') },
+    learning: { title: t('student.settings.learningPrefs.title'), description: t('student.settings.learningPrefs.description') },
+    security: { title: t('student.settings.security.title'), description: t('student.settings.security.description') },
+    account: { title: t('student.settings.dangerZone.title'), description: t('student.settings.dangerZone.description') },
+  };
+
   const [changingPwd, setChangingPwd] = useState(false);
   const [shakeCurrentPwd, setShakeCurrentPwd] = useState(false);
   const [liveToken, setLiveToken] = useState('');
@@ -277,8 +285,8 @@ const Settings: React.FC = () => {
         {/* Page header */}
         <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-8">
           <div>
-            <h1 className="text-4xl md:text-5xl font-black tracking-tight text-text-primary">{t('student.settings.title')}</h1>
-            <p className="text-sm md:text-base text-text-muted mt-2">{t('student.settings.description')}</p>
+            <h1 className="text-4xl md:text-5xl font-black tracking-tight text-text-primary">{sectionHeader[activeSection].title}</h1>
+            <p className="text-sm md:text-base text-text-muted mt-2">{sectionHeader[activeSection].description}</p>
           </div>
           <div className="md:hidden">
             <span className="text-[9px] font-black uppercase tracking-[0.25em] text-accent leading-none mb-0.5">CONFIGURE</span>
