@@ -1,18 +1,21 @@
 import React from 'react';
+import { cn } from '@/shared/utils/cn';
 
 interface PublicSnapLayoutProps {
   children: React.ReactNode;
+  /**
+   * Enable desktop scroll-snap (full-viewport sections) like the landing page.
+   * HPB pages opt in; every other public inner page keeps natural flow.
+   */
+  snap?: boolean;
 }
 
-/**
- * Plain wrapper for public inner pages.
- *
- * Sections flow naturally (no scroll-snap, no forced full-viewport strips,
- * no alternating backgrounds, no background injection). Each child provides
- * its own background and vertical padding via `PublicSnapSection`.
- */
-const PublicSnapLayout: React.FC<PublicSnapLayoutProps> = ({ children }) => {
-  return <div className="relative w-full bg-bg">{children}</div>;
+const PublicSnapLayout: React.FC<PublicSnapLayoutProps> = ({ children, snap = false }) => {
+  return (
+    <div className={cn('relative w-full bg-bg', snap && 'snap-container no-scrollbar')}>
+      {children}
+    </div>
+  );
 };
 
 export default PublicSnapLayout;
