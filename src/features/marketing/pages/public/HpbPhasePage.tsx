@@ -14,14 +14,12 @@ import LandingFinalCtaSection from '@/features/marketing/components/landing/Land
 import HpbAvatar, { type HpbVariant } from '@/shared/components/HpbAvatar';
 import { BOOTCAMP_CONFIG } from '@/features/student/constants/bootcampConfig';
 import { PHASES } from '@/features/marketing/data/learnData';
-import { CardCollection, ViewToggle, type ViewMode } from '@/shared/components/card-collection';
-import RoomCard from './cards/RoomCard';
+import RoomSection from './cards/RoomSection';
 
 const HpbPhasePage: React.FC = () => {
   const { t } = useTranslation();
   const { user } = useAuth();
   const { phaseId } = useParams<{ phaseId: string }>();
-  const [view, setView] = React.useState<ViewMode>('grid');
 
   const phase = BOOTCAMP_CONFIG.phases.find((p) => p.id === phaseId);
   const learnPhase = PHASES.find((p) => p.id === phaseId?.replace('phase', '').padStart(2, '0'));
@@ -65,33 +63,26 @@ const HpbPhasePage: React.FC = () => {
         </StudentHeroSection>
 
         <PublicSnapSection>
-            <div className="space-y-4">
+            <div className="space-y-4 md:space-y-6">
               <div className="flex items-center justify-between gap-4">
                 <h3 className="text-xs font-black uppercase tracking-[0.3em] text-text-muted">
                   {t('landing.bootcamp.viewCurriculum')}
                 </h3>
-                <div className="flex items-center gap-3 shrink-0">
-                  <ViewToggle value={view} onChange={setView} label="Rooms view mode" />
-                  <Link
-                    to="/hpb"
-                    className="inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-text-muted hover:text-accent transition-colors"
-                  >
-                    <IconArrowLeft size={14} /> All Phases
-                  </Link>
-                </div>
+                <Link
+                  to="/hpb"
+                  className="inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-text-muted hover:text-accent transition-colors shrink-0"
+                >
+                  <IconArrowLeft size={14} /> All Phases
+                </Link>
               </div>
 
-              <CardCollection
-                view={view}
-                items={phase.rooms}
-                keyOf={(room) => room.id}
-                gridClassName="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6"
-                renderItem={(room, itemView, index) => (
-                  <ScrollReveal amount={0.05}>
-                    <RoomCard room={room} roomIndex={index} view={itemView} />
+              <div className="space-y-4 md:space-y-6">
+                {phase.rooms.map((room, index) => (
+                  <ScrollReveal key={room.id} amount={0.05}>
+                    <RoomSection room={room} roomIndex={index} />
                   </ScrollReveal>
-                )}
-              />
+                ))}
+              </div>
             </div>
         </PublicSnapSection>
 
