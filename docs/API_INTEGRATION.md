@@ -98,10 +98,10 @@ Refresh is **de-duplicated** — concurrent 401s share a single refresh promise.
 
 | Service | Source | Purpose |
 |---------|--------|---------|
-| `chain.service` | `features/student/services/chain.service.ts` | Blockchain interactions |
-| `tokenBalance` | `features/student/services/tokenBalance.ts` | CP balance management |
 | `lab.service` | `features/student/services/lab.service.ts` | Lab flag verification, progress |
 | `pwa` | `features/student/services/pwa.ts` | PWA install prompt |
+
+> Note: The frontend has no direct chain client. `chain.service.ts` and `tokenBalance.ts` were removed (2026-08); CP balances are read via `GET /api/cp/balance` through the shared Axios client (`core/services/api.ts`).
 
 ## Dev Proxy
 
