@@ -7,6 +7,7 @@ import { useTranslation } from 'react-i18next';
 import { GridBoxedBackground } from '@/shared/components/backgrounds';
 import CoursePurchaseModal from '@/shared/components/CoursePurchaseModal';
 import CourseIconBackground from '@/shared/components/CourseIconBackground';
+import { useAdaptiveUi } from '@/core/hooks/useAdaptiveUi';
 
 const CATEGORY_ICONS: Record<string, React.ElementType> = {
   terminal: IconTerminal,
@@ -48,6 +49,7 @@ const CYCLE_MS = 3000;
 const LandingCoursesSection: React.FC = () => {
   const { t } = useTranslation();
   const shouldReduceMotion = useReducedMotion();
+  const { isMobile } = useAdaptiveUi();
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
   const [page, setPage] = useState(0);
   const [dir, setDir] = useState(1);
@@ -193,10 +195,10 @@ const LandingCoursesSection: React.FC = () => {
               <motion.div
                 key={`${activeCategory}-${page}`}
                 custom={dir}
-                initial={{ opacity: 0, x: dir > 0 ? 60 : -60 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: dir > 0 ? -60 : 60 }}
-                transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+                initial={{ opacity: 0, scale: isMobile ? 0.95 : 1, x: isMobile ? 0 : dir > 0 ? 60 : -60 }}
+                animate={{ opacity: 1, scale: 1, x: 0 }}
+                exit={{ opacity: 0, scale: isMobile ? 0.95 : 1, x: isMobile ? 0 : dir > 0 ? -60 : 60 }}
+                transition={{ duration: isMobile ? 0.3 : 0.35, ease: [0.16, 1, 0.3, 1] }}
                 className="flex-1 min-h-0 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 md:gap-4 lg:auto-rows-fr"
               >
                 {pageCourses.map((course) => {
