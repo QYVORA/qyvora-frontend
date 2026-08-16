@@ -31,10 +31,10 @@ const ResearcherSection = ({ researcher }: { researcher: Researcher }) => {
   const ResearcherIcon = RESEARCHER_ICONS[researcher.id] ?? ShieldCheck;
 
   return (
-    <PublicSnapSection id={`researcher-${researcher.id}`} fitViewport>
-      <ScrollReveal amount={0.08} className="h-full w-full min-h-0">
-        <article className="relative grid h-full w-full min-h-0 grid-cols-1 grid-rows-[minmax(100px,0.5fr)_minmax(0,1.5fr)] gap-3 sm:grid-rows-[minmax(150px,0.7fr)_minmax(0,1.3fr)] sm:gap-4 lg:grid-cols-2 lg:grid-rows-1 lg:gap-12">
-          <div className={`relative min-h-0 overflow-hidden rounded-2xl border border-border/30 bg-bg-card ${layout.imageFirst ? 'lg:order-1' : 'lg:order-2'}`}>
+    <PublicSnapSection id={`researcher-${researcher.id}`}>
+      <ScrollReveal amount={0.08} className="h-full w-full">
+        <article className="relative grid w-full grid-cols-1 gap-3 sm:gap-4 lg:grid-cols-2 lg:gap-12">
+          <div className={`relative h-64 overflow-hidden rounded-2xl border border-border/30 bg-bg-card sm:h-80 lg:h-auto ${layout.imageFirst ? 'lg:order-1' : 'lg:order-2'}`}>
             <img src={researcher.image} alt={researcher.name} width={researcher.width} height={researcher.height} className={`h-full w-full object-cover ${layout.imagePosition} transition-transform duration-700 hover:scale-105`} loading="lazy" />
             <div className="absolute inset-0 bg-gradient-to-t from-bg-card via-transparent to-transparent" />
             <div className="absolute left-3 top-3 flex h-9 w-9 items-center justify-center rounded-lg border border-border/30 bg-bg/80 text-[9px] font-black tracking-widest text-accent backdrop-blur-sm sm:left-5 sm:top-5 sm:h-11 sm:w-11 sm:text-[10px]">{layout.marker}</div>
@@ -47,7 +47,7 @@ const ResearcherSection = ({ researcher }: { researcher: Researcher }) => {
             </div>
           </div>
 
-          <div className={`flex min-h-0 min-w-0 flex-col justify-center ${layout.imageFirst ? 'lg:order-2' : 'lg:order-1'}`}>
+          <div className={`flex flex-col justify-center ${layout.imageFirst ? 'lg:order-2' : 'lg:order-1'}`}>
             <span className="mb-2 w-fit px-2.5 py-1 rounded-lg border border-accent/30 bg-accent/10 text-[9px] font-black uppercase tracking-widest text-accent sm:mb-3 lg:mb-5">{researcher.role}</span>
             <h2 className="text-2xl md:text-4xl lg:text-6xl font-black uppercase tracking-tight leading-[.95] text-text-primary break-words">{researcher.name}</h2>
             <p className="mt-2 text-[10px] font-black uppercase tracking-widest text-accent sm:mt-3 sm:text-xs">Research node // {researcher.id.toUpperCase()}</p>

@@ -37,10 +37,10 @@ const TeamMemberSection = ({ member }: { member: TeamMember }) => {
   const MemberIcon = MEMBER_ICONS[member.id] ?? ShieldCheck;
 
   return (
-    <PublicSnapSection id={member.id} fitViewport>
-      <ScrollReveal amount={0.08} className="h-full w-full min-h-0">
-        <article className="relative grid h-full w-full min-h-0 grid-cols-1 grid-rows-[minmax(100px,0.5fr)_minmax(0,1.5fr)] gap-3 sm:grid-rows-[minmax(150px,0.7fr)_minmax(0,1.3fr)] sm:gap-4 lg:grid-cols-2 lg:grid-rows-1 lg:gap-12">
-          <div className={`relative min-h-0 overflow-hidden rounded-2xl border border-border/30 bg-bg-card ${layout.imageFirst ? 'lg:order-1' : 'lg:order-2'}`}>
+    <PublicSnapSection id={member.id}>
+      <ScrollReveal amount={0.08} className="h-full w-full">
+        <article className="relative grid w-full grid-cols-1 gap-3 sm:gap-4 lg:grid-cols-2 lg:gap-12">
+          <div className={`relative h-64 overflow-hidden rounded-2xl border border-border/30 bg-bg-card sm:h-80 lg:h-auto ${layout.imageFirst ? 'lg:order-1' : 'lg:order-2'}`}>
             <img
               src={member.image}
               alt={member.name}
