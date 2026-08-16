@@ -23,7 +23,7 @@ const HpbPage = () => {
         title="Hacker Protocol Bootcamp"
         description="Train as an offensive security operator across 5 phases — hacker mindset, Linux foundations, networking, web & backend, and social engineering."
       />
-      <PublicSnapLayout snap>
+      <PublicSnapLayout>
         {/* Hero */}
         <section id="hero" className="relative w-full min-h-dvh lg:h-dvh snap-section bg-bg">
           <StudentHeroSection
