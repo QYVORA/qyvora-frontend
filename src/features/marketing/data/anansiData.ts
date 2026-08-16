@@ -1,5 +1,6 @@
 import { Globe, FileCode, Cpu, Users, GitBranch, type LucideIcon } from 'lucide-react';
 import { IconSearch, IconLock, IconShield, IconWarning } from '@/shared/components/icons';
+import type { ToolSourceExample } from '../components/tools/ToolSourceSection';
 
 export interface AnansiPhase {
   id: string;
@@ -55,6 +56,37 @@ export const USAGE_EXAMPLES = [
   'anansi target.com -v',
   'anansi target.com --modules discovery,tls,takeover',
   'anansi target.com --out json > results.json',
+];
+
+export const SOURCE_EXAMPLES: ToolSourceExample[] = [
+  {
+    id: 'entry',
+    filename: 'main.go',
+    label: 'CLI entry point',
+    description: 'The binary stays intentionally thin and hands control to the Cobra command layer.',
+    code: 'package main\n\nimport "github.com/QYVORA/qyvora-anansi-cli/cmd"\n\nfunc main() {\n\tcmd.Execute()\n}',
+  },
+  {
+    id: 'transport',
+    filename: 'internal/httpclient/httpclient.go',
+    label: 'Shared HTTP transport',
+    description: 'One process-wide transport reuses keep-alive connections across every phase of a scan.',
+    code: 'var sharedTransport = &http.Transport{\n\tTLSClientConfig:       &tls.Config{InsecureSkipVerify: true},\n\tMaxIdleConns:          1024,\n\tMaxIdleConnsPerHost:   64,\n\tIdleConnTimeout:       90 * time.Second,\n\tTLSHandshakeTimeout:   10 * time.Second,\n\tForceAttemptHTTP2:     true,\n}\n\nfunc New(timeoutSec int, maxRedirects int) *http.Client {\n\ttimeout := time.Duration(timeoutSec) * time.Second\n\tclient := &http.Client{\n\t\tTimeout:   timeout,\n\t\tTransport: sharedTransport,\n\t}\n\tif maxRedirects >= 0 {\n\t\tclient.CheckRedirect = func(_ *http.Request, via []*http.Request) error {\n\t\t\tif len(via) > maxRedirects {\n\t\t\t\treturn http.ErrUseLastResponse\n\t\t\t}\n\t\t\treturn nil\n\t\t}\n\t}\n\treturn client\n}',
+  },
+  {
+    id: 'discovery',
+    filename: 'internal/discovery/discovery.go',
+    label: 'CT-log discovery',
+    description: 'Subdomain candidates are pulled from crt.sh Certificate Transparency logs, then deduplicated.',
+    code: 'var resolver = dnscache.New(dnsResolver, 60*time.Second, 20000)\n\nfunc fetchCrtSh(target string, timeout int) ([]string, error) {\n\tctx, cancel := context.WithTimeout(context.Background(), time.Duration(timeout*2)*time.Second)\n\tdefer cancel()\n\tclient := httpclient.NewFollowRedirects(timeout)\n\turl := fmt.Sprintf("https://crt.sh/?q=%%25.%s&output=json", target)\n\treq, err := http.NewRequestWithContext(ctx, "GET", url, nil)\n\tif err != nil {\n\t\treturn nil, err\n\t}\n\tresp, err := client.Do(req)\n\tif err != nil {\n\t\treturn nil, err\n\t}\n\tdefer resp.Body.Close()\n\n\tvar entries []crtEntry\n\tif err := json.NewDecoder(resp.Body).Decode(&entries); err != nil {\n\t\treturn nil, fmt.Errorf("json decode error: %w", err)\n\t}\n\n\tseen := map[string]struct{}{}\n\tvar results []string\n\tfor _, e := range entries {\n\t\tfor _, name := range strings.Split(e.NameValue, "\\n") {\n\t\t\tclean := strings.ToLower(strings.TrimSpace(name))\n\t\t\tclean = strings.TrimPrefix(clean, "*.")\n\t\t\tif strings.HasSuffix(clean, "."+target) || clean == target {\n\t\t\t\tif _, exists := seen[clean]; !exists {\n\t\t\t\t\tseen[clean] = struct{}{}\n\t\t\t\t\tresults = append(results, clean)\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\t}\n\treturn results, nil\n}',
+  },
+  {
+    id: 'resolver',
+    filename: 'internal/discovery/discovery.go',
+    label: 'Dead-CNAME detection',
+    description: 'Unresolvable CNAMEs are kept as flagged hosts — the subdomain takeover signal.',
+    code: 'func resolveHost(ctx context.Context, fqdn string) ([]string, []string) {\n\tips, err := resolver.LookupHost(ctx, fqdn)\n\tif err != nil {\n\t\tcname, cerr := resolver.LookupCNAME(ctx, fqdn)\n\t\tif cerr == nil && cname != fqdn+"." {\n\t\t\treturn nil, []string{strings.TrimSuffix(cname, ".")}\n\t\t}\n\t\treturn nil, nil\n\t}\n\n\tvar publicIPs []string\n\tfor _, ip := range ips {\n\t\tparsed := net.ParseIP(ip)\n\t\tif parsed != nil && !parsed.IsPrivate() && !parsed.IsLoopback() {\n\t\t\tpublicIPs = append(publicIPs, ip)\n\t\t}\n\t}\n\treturn publicIPs, nil\n}',
+  },
 ];
 
 export const SCAN_OUTPUT: { label: string; text: string }[] = [

@@ -1,4 +1,5 @@
 import { Radar, ListChecks, ScanSearch, TestTube2, FileSearch, Gauge, FileText, ShieldAlert, type LucideIcon } from 'lucide-react';
+import type { ToolSourceExample } from '../components/tools/ToolSourceSection';
 
 export interface JabariStage {
   id: string;
@@ -63,3 +64,34 @@ export const AUTHORIZED_WARNING = {
   description:
     'JABARI requires explicit authorization for every assessment — an interactive gate on a TTY, or -y / authorized config for non-interactive runs. It assesses only the device you point it at, never the surrounding network.',
 };
+
+export const SOURCE_EXAMPLES: ToolSourceExample[] = [
+  {
+    id: 'entry',
+    filename: 'cmd/jabari/main.go',
+    label: 'CLI entry point',
+    description: 'The binary hands control to the CLI layer and exits with its status code. The same binary is also published under the androidsec alias.',
+    code: 'package main\n\nimport (\n\t"os"\n\n\t"github.com/QYVORA/qyvora-jabari/internal/cli"\n)\n\nfunc main() {\n\tos.Exit(cli.Execute())\n}',
+  },
+  {
+    id: 'stage',
+    filename: 'internal/core/core.go',
+    label: 'Stage + environment',
+    description: 'Every pipeline stage receives the shared environment instead of reaching into a device directly.',
+    code: 'type Env struct {\n\tTarget    *models.Target\n\tSession   *models.Session\n\tTransport transport.Transport\n\tRules     *rules.Registry\n\tEvidence  *evidence.Store\n\tLog       *logger.Logger\n\tConfig    *viper.Viper\n\tApps      []models.Application\n}\n\ntype Stage interface {\n\tName() string\n\tRun(ctx context.Context, env *Env) error\n}',
+  },
+  {
+    id: 'transport',
+    filename: 'internal/transport/transport.go',
+    label: 'Transport interface',
+    description: 'USB and specified-network Android targets implement the same connection boundary, so the pipeline never needs to know how it reaches the device.',
+    code: 'type Transport interface {\n\tConnect(ctx context.Context) error\n\tDisconnect() error\n\tInfo(ctx context.Context) (*models.DeviceInfo, error)\n\tExecute(ctx context.Context, req models.Request) (models.Response, error)\n\tString() string\n}',
+  },
+  {
+    id: 'authorization',
+    filename: 'internal/cli/authorization.go',
+    label: 'Authorization gate',
+    description: 'Every assessment passes through the gate: the --authorized flag, the QYVORA_AUTHORIZED env var, or an interactive [y/N] prompt on a TTY.',
+    code: 'func authorize(cmd *cobra.Command, t *models.Target) (*models.Target, error) {\n\tswitch {\n\tcase authorizationFlags.authorized || cfg.GetBool("authorized"):\n\t\tt.Auth = granted(t)\n\t\treturn t, nil\n\tcase strings.EqualFold(os.Getenv("QYVORA_AUTHORIZED"), "true"):\n\t\tt.Auth = granted(t)\n\t\treturn t, nil\n\t}\n\n\tif isTTY(os.Stdin) {\n\t\tfmt.Fprintf(os.Stderr, "Confirm authorization? [y/N] ")\n\t\tanswer, err := bufio.NewReader(os.Stdin).ReadString(\'\\n\')\n\t\tif err == nil && strings.EqualFold(strings.TrimSpace(answer), "y") {\n\t\t\tt.Auth = granted(t)\n\t\t\treturn t, nil\n\t\t}\n\t\treturn nil, errs.NewExitError(3, "authorization declined; assessment aborted")\n\t}\n\n\treturn nil, errs.NewExitError(3,\n\t\t"target authorization required; re-run with --authorized to confirm scope non-interactively")\n}',
+  },
+];
