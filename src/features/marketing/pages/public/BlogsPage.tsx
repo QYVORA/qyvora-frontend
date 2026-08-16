@@ -56,6 +56,7 @@ const BlogsPage = () => {
     <div className="bg-bg min-h-full">
       <SEO title="Blogs - QYVORA" description="Security research, tutorials, and updates from the QYVORA team." />
       <PublicSnapLayout>
+        <section className="relative w-full min-h-dvh lg:h-dvh snap-section bg-bg">
         <StudentHeroSection
           title="Intelligence"
           accentWord="Reports"
@@ -65,6 +66,7 @@ const BlogsPage = () => {
           description="Security research, walkthroughs, and platform updates from the QYVORA team."
           stats={[{ label: 'Articles', value: BLOG_POSTS.length }]}
         />
+        </section>
 
         <PublicSnapSection>
           <div className="flex flex-col justify-between flex-1 min-h-0 space-y-3">
@@ -127,8 +129,13 @@ const BlogsPage = () => {
             )}
           </div>
         </PublicSnapSection>
-        <LandingFinalCtaSection user={user} />
-        <Footer />
+        <section className="relative w-full min-h-dvh lg:h-dvh snap-section bg-bg-alt">
+          <LandingFinalCtaSection user={user} />
+        </section>
+
+        <section className="w-full bg-bg pt-10 md:pt-0 snap-section">
+          <Footer />
+        </section>
       </PublicSnapLayout>
     </div>
   );

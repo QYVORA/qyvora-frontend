@@ -70,6 +70,7 @@ const QuiteRootPage = () => {
     <div className="bg-bg min-h-full">
       <SEO title="QuiteRoot - QYVORA" description="QuiteRoot — a network of security researchers pushing the boundaries of offensive security." />
       <PublicSnapLayout>
+        <section className="relative w-full min-h-dvh lg:h-dvh snap-section bg-bg">
         <StudentHeroSection
           title="Quite"
           accentWord="Root"
@@ -97,10 +98,16 @@ const QuiteRootPage = () => {
             <Users className="w-4 h-4" /> Join the Network <IconArrowRight size={14} />
           </Link>
         </StudentHeroSection>
+        </section>
 
         {researchersData.map((researcher) => <ResearcherSection key={researcher.id} researcher={researcher} />)}
-        <LandingFinalCtaSection user={user} />
-        <Footer />
+        <section className="relative w-full min-h-dvh lg:h-dvh snap-section bg-bg-alt">
+          <LandingFinalCtaSection user={user} />
+        </section>
+
+        <section className="w-full bg-bg pt-10 md:pt-0 snap-section">
+          <Footer />
+        </section>
       </PublicSnapLayout>
     </div>
   );

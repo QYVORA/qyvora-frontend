@@ -22,6 +22,7 @@ const Toha3eePage = () => {
     <div className="bg-bg min-h-full">
       <SEO title="Toha3ee - QYVORA" description="Toha3ee — network exploitation & MITM framework written in Go. ARP/DHCP/DNS/IPv6 poisoning, inline interception, wireless and switch-layer attacks from an interactive REPL." />
       <PublicSnapLayout>
+        <section className="relative w-full min-h-dvh lg:h-dvh snap-section bg-bg">
         <StudentHeroSection
           title="Toha3ee"
           accentWord="MITM"
@@ -50,6 +51,7 @@ const Toha3eePage = () => {
             <span className="inline-flex items-center gap-2 px-2.5 py-1 rounded-lg border border-border/30 bg-bg-card text-[9px] font-black uppercase tracking-widest text-text-muted"><span className="font-black text-[#00ADD8]">Go</span> 1.26+</span>
           </div>
         </StudentHeroSection>
+        </section>
 
         {/* ── Authorised-use warning ─────────────────────────────────────── */}
         <PublicSnapSection>
@@ -268,8 +270,13 @@ const Toha3eePage = () => {
             </div>
           </div>
         </PublicSnapSection>
-        <LandingFinalCtaSection user={user} />
-        <Footer />
+        <section className="relative w-full min-h-dvh lg:h-dvh snap-section bg-bg-alt">
+          <LandingFinalCtaSection user={user} />
+        </section>
+
+        <section className="w-full bg-bg pt-10 md:pt-0 snap-section">
+          <Footer />
+        </section>
       </PublicSnapLayout>
     </div>
   );

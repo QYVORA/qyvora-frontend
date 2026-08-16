@@ -60,6 +60,7 @@ const MarketPage = () => {
     <div className="bg-bg min-h-full">
       <SEO title="Zero Day Market - QYVORA" description="Intelligence assets, guides, papers, and tools available for CP." />
       <PublicSnapLayout>
+        <section className="relative w-full min-h-dvh lg:h-dvh snap-section bg-bg">
         <StudentHeroSection
           title="Zero Day"
           accentWord="Market"
@@ -77,6 +78,7 @@ const MarketPage = () => {
             </Link>
           )}
         </StudentHeroSection>
+        </section>
 
         <PublicSnapSection>
           <div className="flex flex-col justify-between flex-1 min-h-0 space-y-4">
@@ -135,8 +137,13 @@ const MarketPage = () => {
             )}
           </div>
         </PublicSnapSection>
-        <LandingFinalCtaSection user={user} />
-        <Footer />
+        <section className="relative w-full min-h-dvh lg:h-dvh snap-section bg-bg-alt">
+          <LandingFinalCtaSection user={user} />
+        </section>
+
+        <section className="w-full bg-bg pt-10 md:pt-0 snap-section">
+          <Footer />
+        </section>
       </PublicSnapLayout>
     </div>
   );

@@ -27,6 +27,7 @@ const AnansiPage = () => {
     <div className="bg-bg min-h-full">
       <SEO title="Anansi - QYVORA" description="Anansi — Attack Surface Intelligence CLI. A nine-phase recon pipeline from subdomain discovery to exploit-chain analysis, all from the terminal." />
       <PublicSnapLayout>
+        <section className="relative w-full min-h-dvh lg:h-dvh snap-section bg-bg">
         <StudentHeroSection
           title="Anansi"
           accentWord="CLI"
@@ -55,6 +56,7 @@ const AnansiPage = () => {
             <span className="inline-flex items-center gap-2 px-2.5 py-1 rounded-lg border border-border/30 bg-bg-card text-[9px] font-black uppercase tracking-widest text-text-muted"><span className="font-black text-[#00ADD8]">Go</span> 1.22+</span>
           </div>
         </StudentHeroSection>
+        </section>
 
         {/* ── Modules ────────────────────────────────────────────────────── */}
         <ToolModulesSection
@@ -263,8 +265,13 @@ const AnansiPage = () => {
             </div>
           </div>
         </PublicSnapSection>
-        <LandingFinalCtaSection user={user} />
-        <Footer />
+        <section className="relative w-full min-h-dvh lg:h-dvh snap-section bg-bg-alt">
+          <LandingFinalCtaSection user={user} />
+        </section>
+
+        <section className="w-full bg-bg pt-10 md:pt-0 snap-section">
+          <Footer />
+        </section>
       </PublicSnapLayout>
     </div>
   );

@@ -107,6 +107,7 @@ const SimulationPage = () => {
       />
       <SimulationProvider>
         <PublicSnapLayout>
+          <section className="relative w-full min-h-dvh lg:h-dvh snap-section bg-bg">
           <StudentHeroSection
             title={t(`simulations.${key}.title`)}
             accentWord={t(`simulations.${key}.titleAccent`)}
@@ -130,6 +131,7 @@ const SimulationPage = () => {
               </Link>
             </div>
           </StudentHeroSection>
+          </section>
 
           {/* Demo launcher — the live tool opens in a modal */}
           <PublicSnapSection>
@@ -190,8 +192,13 @@ const SimulationPage = () => {
             </div>
           </PublicSnapSection>
 
-          <LandingFinalCtaSection user={user} />
-          <Footer />
+          <section className="relative w-full min-h-dvh lg:h-dvh snap-section bg-bg-alt">
+            <LandingFinalCtaSection user={user} />
+          </section>
+
+          <section className="w-full bg-bg pt-10 md:pt-0 snap-section">
+            <Footer />
+          </section>
         </PublicSnapLayout>
 
         {/* Live tool modals */}

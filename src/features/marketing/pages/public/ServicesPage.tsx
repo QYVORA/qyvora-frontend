@@ -124,6 +124,7 @@ const ServicesPage = () => {
     <div className="bg-bg min-h-full">
       <SEO title="Services - QYVORA" description="Enterprise-grade penetration testing, security assessments, and offensive security training." />
       <PublicSnapLayout>
+        <section className="relative w-full min-h-dvh lg:h-dvh snap-section bg-bg">
         <StudentHeroSection
           title="Security"
           accentWord="Services"
@@ -132,12 +133,18 @@ const ServicesPage = () => {
           typewrite
           description="Enterprise penetration testing, vulnerability assessments, and custom security training for your organization."
         />
+        </section>
 
         {SERVICES.map((svc, idx) => (
           <ServiceSection key={svc.id} svc={svc} index={idx} />
         ))}
-        <LandingFinalCtaSection user={user} />
-        <Footer />
+        <section className="relative w-full min-h-dvh lg:h-dvh snap-section bg-bg-alt">
+          <LandingFinalCtaSection user={user} />
+        </section>
+
+        <section className="w-full bg-bg pt-10 md:pt-0 snap-section">
+          <Footer />
+        </section>
       </PublicSnapLayout>
     </div>
   );
