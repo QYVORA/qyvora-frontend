@@ -1,4 +1,5 @@
 import { Network, Eye, Key, Radar, Router, Wifi, FileText, Search, ListChecks, Globe, Terminal, type LucideIcon } from 'lucide-react';
+import type { ToolSourceExample } from '../components/tools/ToolSourceSection';
 
 export interface Toha3eeCategory {
   id: string;
@@ -140,4 +141,35 @@ export const CONSOLE_SESSION: { cmd: string; note: string }[] = [
   { cmd: 'net.show', note: 'discovered hosts' },
   { cmd: 'net.profile', note: 'profile + ranked attack vectors' },
   { cmd: 'quit', note: 'cleanup lifecycle tears every attack down' },
+];
+
+export const SOURCE_EXAMPLES: ToolSourceExample[] = [
+  {
+    id: 'contract',
+    filename: 'internal/attacks/registry.go',
+    label: 'Module contract',
+    description: 'Every attack implements the same lifecycle so the framework can enforce preflight, verification and cleanup consistently.',
+    code: 'type Module interface {\n\tMeta() ModuleMeta\n\tPreflight(ctx *AttackCtx) (*PreflightReport, error)\n\tRun(ctx *AttackCtx, opts map[string]string) error\n\tVerify(ctx *AttackCtx) (*Impact, error)\n\tCleanup(ctx *AttackCtx) error\n}',
+  },
+  {
+    id: 'register',
+    filename: 'internal/attacks/registry.go',
+    label: 'Self-registration',
+    description: 'Modules register themselves during Go initialisation; duplicate IDs panic so mistakes surface at startup.',
+    code: 'var Registry = map[string]Module{}\n\nfunc Register(m Module) {\n\tmeta := m.Meta()\n\tif meta.ID == "" {\n\t\tpanic("attacks: module registered with empty ID")\n\t}\n\tif _, dup := Registry[meta.ID]; dup {\n\t\tpanic(fmt.Sprintf("attacks: duplicate module ID %q", meta.ID))\n\t}\n\tRegistry[meta.ID] = m\n}',
+  },
+  {
+    id: 'arp',
+    filename: 'internal/attacks/mitm/arp_spoof.go',
+    label: 'ARPSpoof registration',
+    description: 'The flagship MITM module self-registers under "arp.spoof" with its metadata, risk level and required capabilities.',
+    code: 'func init() {\n\tattacks.Register(&ARPSpoof{})\n}\n\ntype ARPSpoof struct{}\n\nfunc (*ARPSpoof) Meta() attacks.ModuleMeta {\n\treturn attacks.ModuleMeta{\n\t\tID:       "arp.spoof",\n\t\tCategory: "mitm",\n\t\tRisk:     attacks.RiskMedium,\n\t\tTargets:  []string{"gateway", "host"},\n\t\tRequires: []string{"cap.raw_socket", "cap.ip_forward"},\n\t}\n}',
+  },
+  {
+    id: 'cleanup',
+    filename: 'internal/safety/manager.go',
+    label: 'Cleanup registry',
+    description: 'Modules register restore actions; the safety layer runs them in reverse order on SIGINT, panic or module error.',
+    code: 'func (m *Manager) RegisterCleanup(id, desc string, restore func() error) {\n\tm.mu.Lock()\n\tdefer m.mu.Unlock()\n\tfor i := range m.actions {\n\t\tif m.actions[i].ID == id {\n\t\t\tm.actions[i].Desc = desc\n\t\t\tm.actions[i].Restore = restore\n\t\t\treturn\n\t\t}\n\t}\n\tm.actions = append(m.actions, Action{ID: id, Desc: desc, Restore: restore})\n}',
+  },
 ];
