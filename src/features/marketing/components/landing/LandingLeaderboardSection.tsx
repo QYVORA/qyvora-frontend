@@ -34,8 +34,8 @@ const TOP_THREE_RING = [
 
 const TOP_THREE_RANK_COLOR = ['text-yellow-400', 'text-gray-300', 'text-amber-600'];
 
-const CELL_SIZE_SM = 56;
-const CELL_SIZE_LG = 56;
+const CELL_SIZE_SM = 64;
+const CELL_SIZE_LG = 64;
 const GAP = 4;
 const GRID_COLUMNS = 8;
 
@@ -128,10 +128,10 @@ const LandingLeaderboardSection = () => {
         </div>
 
         {/* Grid column — fills same height as header */}
-        <div className="relative flex-1 min-h-0 min-w-0 overflow-hidden flex items-center lg:justify-center">
+        <div className="relative flex-1 min-h-0 min-w-0 overflow-x-auto overflow-y-hidden no-scrollbar flex items-center">
           {loading ? (
             <div
-              className="relative grid content-center justify-center"
+              className="relative grid content-center mx-auto"
               style={{ gap: `${GAP}px`, gridTemplateColumns: `repeat(${GRID_COLUMNS}, ${cellSize}px)` }}
             >
               {Array.from({ length: 40 }).map((_, i) => (
@@ -150,7 +150,7 @@ const LandingLeaderboardSection = () => {
             <ErrorState message={error} title="Leaderboard Unavailable" bare className="w-full" />
           ) : entries.length === 0 ? null : (
             <div
-              className="relative grid content-center justify-center"
+              className="relative grid content-center mx-auto"
               style={{ gap: `${GAP}px`, gridTemplateColumns: `repeat(${GRID_COLUMNS}, ${cellSize}px)` }}
             >
               {cells.map(({ entry, idx }) => {
