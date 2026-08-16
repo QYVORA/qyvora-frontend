@@ -7,12 +7,12 @@ interface PublicSnapSectionProps {
 }
 
 /**
- * Natural-flow content section for public inner pages.
+ * Full-viewport snap section for public inner pages.
  *
- * Uses the unified stretched layout: full width, consistent side padding,
- * generous vertical rhythm. Sections scroll normally — no snap behaviour and
- * no forced viewport height, so taller content grows the page instead of
- * clipping or creating full-height strips.
+ * Each section fills at least one viewport (`min-h-dvh`), is a scroll-snap
+ * target on desktop, alternates `bg-bg`/`bg-bg-alt` by its position among the
+ * page's sections, and clears the fixed 80px navbar via `pt-24 md:pt-28 lg:pt-32`.
+ * Content is vertically centered; sections grow if content exceeds the viewport.
  */
 const PublicSnapSection: React.FC<PublicSnapSectionProps> = ({
   children,
@@ -22,9 +22,11 @@ const PublicSnapSection: React.FC<PublicSnapSectionProps> = ({
   return (
     <section
       id={id}
-      className={`relative w-full px-3 md:px-4 lg:px-6 py-16 md:py-20 lg:py-24 scroll-mt-24 md:scroll-mt-28 ${className ?? ''}`}
+      className={`relative w-full min-h-dvh snap-section flex items-center odd:bg-bg even:bg-bg-alt scroll-mt-24 md:scroll-mt-28 ${className ?? ''}`}
     >
-      {children}
+      <div className="w-full px-3 md:px-4 lg:px-6 pt-24 md:pt-28 lg:pt-32 pb-6 md:pb-8 lg:pb-10">
+        {children}
+      </div>
     </section>
   );
 };

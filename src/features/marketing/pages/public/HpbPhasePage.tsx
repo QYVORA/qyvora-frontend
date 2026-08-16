@@ -35,7 +35,7 @@ const HpbPhasePage: React.FC = () => {
         description={learnPhase?.desc ?? `${phase.title} — Hacker Protocol Bootcamp.`}
         breadcrumbName={phase.title}
       />
-      <PublicSnapLayout snap>
+      <PublicSnapLayout>
         {/* Phase hero */}
         <section id={phase.id} className="relative w-full min-h-dvh lg:h-dvh snap-section bg-bg">
           <StudentHeroSection
