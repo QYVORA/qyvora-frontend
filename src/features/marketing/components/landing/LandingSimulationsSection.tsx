@@ -83,7 +83,7 @@ const SimulationCard: React.FC<{ sim: (typeof SIMULATIONS)[number]; tabIndex?: -
     <Link
       to={sim.slug}
       tabIndex={tabIndex}
-      className="group flex h-[350px] w-[min(88vw,620px)] shrink-0 flex-col rounded-2xl border border-border/30 bg-bg-card p-4 transition-[border-color,transform,box-shadow] duration-300 hover:-translate-y-1 hover:border-accent/30 hover:shadow-[var(--card-shadow)] sm:h-[390px] sm:w-[min(72vw,680px)] lg:h-[410px] lg:w-[min(48vw,700px)]"
+      className="group flex h-[460px] w-[min(88vw,620px)] shrink-0 flex-col overflow-hidden rounded-2xl border border-border/30 bg-bg-card p-4 transition-[border-color,transform,box-shadow] duration-300 hover:-translate-y-1 hover:border-accent/30 hover:shadow-[var(--card-shadow)] sm:h-[460px] sm:w-[min(72vw,680px)] lg:h-[410px] lg:w-[min(48vw,700px)]"
     >
       {isTerminal ? (
         <div className="flex min-h-0 flex-1 flex-col gap-4 lg:flex-row lg:items-stretch">
@@ -142,7 +142,7 @@ const LandingSimulationsSection: React.FC = () => {
               {SIMULATIONS.map((sim) => <SimulationCard key={sim.id} sim={sim} />)}
             </div>
           ) : (
-            <div className="relative -mx-3 h-[350px] shrink-0 overflow-x-clip overflow-y-visible md:-mx-4 sm:h-[390px] lg:-mx-6 lg:h-[410px]">
+            <div className="relative -mx-3 h-[460px] shrink-0 overflow-x-clip overflow-y-visible md:-mx-4 sm:h-[460px] lg:-mx-6 lg:h-[410px]">
               <div className="marquee-track">
                 {[0, 1].map((copy) => (
                   <div key={copy} aria-hidden={copy === 1} className="flex h-full shrink-0 items-stretch gap-4 pr-4 md:gap-5 md:pr-5">
