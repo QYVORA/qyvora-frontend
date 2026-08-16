@@ -75,19 +75,11 @@ export default function App() {
           Must wrap AppRouter and any component that uses useNavigate(),
           useLocation(), <Link>, or <Navigate>.
 
-          future flags:
-            v7_startTransition     — Wraps route state updates in
-                                     React.startTransition(), keeping
-                                     the UI responsive during navigations.
-                                     This is required in React Router v7
-                                     and opts in early here to avoid
-                                     deprecation warnings.
-            v7_relativeSplatPath   — Changes how relative paths are resolved
-                                     inside splat ("*") routes to align with
-                                     the v7 behaviour. Enabling it now prevents
-                                     breaking changes when upgrading later.
+          v7 behaviors are the default: route state updates are wrapped in
+          React.startTransition(), and relative paths inside splat ("*")
+          routes resolve using the v7 rules — no future flags needed.
         */}
-        <Router future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
+        <Router>
 
           {/*
             AdaptiveMode
