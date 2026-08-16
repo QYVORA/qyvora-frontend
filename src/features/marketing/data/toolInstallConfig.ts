@@ -1,0 +1,71 @@
+/**
+ * Per-tool install metadata for the Install modal.
+ *
+ * Assets come straight from the GitHub release pages of the three open-source
+ * tools (see products/qyvora-opensource-tools). commandTemplates may contain
+ * {url} and {bin} placeholders that are expanded at runtime.
+ */
+
+export type ToolInstallKey = 'anansi' | 'jabari' | 'toha3ee';
+export type ToolPlatform = 'linux' | 'darwin' | 'windows';
+export type ToolArch = 'amd64' | 'arm64';
+
+export interface ToolInstallConfig {
+  bin: string;
+  displayName: string;
+  releaseBase: string;
+  assets: Record<ToolPlatform, Partial<Record<ToolArch, string>>>;
+  commandTemplates: Record<ToolPlatform, string>;
+  note: string;
+}
+
+export const TOOL_INSTALL_CONFIG: Record<ToolInstallKey, ToolInstallConfig> = {
+  anansi: {
+    bin: 'anansi',
+    displayName: 'Anansi',
+    releaseBase: 'https://github.com/QYVORA/qyvora-anansi-cli/releases/latest/download',
+    assets: {
+      linux: { amd64: 'anansi-linux-amd64', arm64: 'anansi-linux-arm64' },
+      darwin: { amd64: 'anansi-darwin-amd64', arm64: 'anansi-darwin-arm64' },
+      windows: { amd64: 'anansi-windows-amd64.exe' },
+    },
+    commandTemplates: {
+      linux: 'curl -fsSL https://raw.githubusercontent.com/QYVORA/qyvora-anansi-cli/main/install.sh | bash',
+      darwin: 'curl -fsSL https://raw.githubusercontent.com/QYVORA/qyvora-anansi-cli/main/install.sh | bash',
+      windows: 'curl.exe -fsSL -o anansi.exe {url}',
+    },
+    note: 'Single static binary. The installer auto-detects your OS, CPU and shell.',
+  },
+  jabari: {
+    bin: 'jabari',
+    displayName: 'Jabari',
+    releaseBase: 'https://github.com/QYVORA/qyvora-jabari/releases/latest/download',
+    assets: {
+      linux: { amd64: 'jabari-linux-amd64', arm64: 'jabari-linux-arm64' },
+      darwin: { amd64: 'jabari-darwin-amd64', arm64: 'jabari-darwin-arm64' },
+      windows: { amd64: 'jabari-windows-amd64.exe' },
+    },
+    commandTemplates: {
+      linux: 'curl -fsSL -o {bin} {url} && chmod +x {bin} && sudo install -m 0755 {bin} /usr/local/bin/{bin}',
+      darwin: 'curl -fsSL -o {bin} {url} && chmod +x {bin} && sudo install -m 0755 {bin} /usr/local/bin/{bin}',
+      windows: 'Invoke-WebRequest -Uri "{url}" -OutFile {bin}.exe',
+    },
+    note: 'Downloaded as a raw binary from the latest release.',
+  },
+  toha3ee: {
+    bin: 'toha3ee',
+    displayName: 'Toha3ee',
+    releaseBase: 'https://github.com/qyvora/qyvora-toha3ee/releases/latest/download',
+    assets: {
+      linux: { amd64: 'toha3ee_linux_amd64.tar.gz', arm64: 'toha3ee_linux_arm64.tar.gz' },
+      darwin: { amd64: 'toha3ee_darwin_amd64.tar.gz', arm64: 'toha3ee_darwin_arm64.tar.gz' },
+      windows: { amd64: 'toha3ee_windows_amd64.zip' },
+    },
+    commandTemplates: {
+      linux: 'curl -fsSL https://raw.githubusercontent.com/qyvora/qyvora-toha3ee/main/scripts/install.sh | sh',
+      darwin: 'curl -fsSL https://raw.githubusercontent.com/qyvora/qyvora-toha3ee/main/scripts/install.sh | sh',
+      windows: 'irm https://raw.githubusercontent.com/qyvora/qyvora-toha3ee/main/scripts/install.ps1 | iex',
+    },
+    note: 'Distributed as an archive. The installer unpacks the binary and wires up cleanup handlers.',
+  },
+};

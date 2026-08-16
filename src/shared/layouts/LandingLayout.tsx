@@ -69,6 +69,7 @@ import { Navbar } from '@/shared/components/layout';
 // can be triggered from anywhere within the landing page (any snap section).
 import ContactModalHost from '@/features/marketing/components/ContactModal';
 import ServiceRequestModalHost from '@/features/marketing/components/ServiceRequestModal';
+import ToolInstallModalHost from '@/features/marketing/components/ToolInstallModal';
 
 import ConsentBanner from '@/shared/components/ConsentBanner';
 
@@ -127,6 +128,7 @@ const LandingLayout = () => (
     */}
     <ContactModalHost />
     <ServiceRequestModalHost />
+    <ToolInstallModalHost />
 
     {/* Cookie Consent banner */}
     <ConsentBanner />
