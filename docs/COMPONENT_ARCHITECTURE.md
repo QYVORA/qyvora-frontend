@@ -20,7 +20,6 @@ The root component is a configuration shell — no visible UI. It wraps the enti
 | Layout | Route Scope | Source |
 |--------|-------------|--------|
 | `LandingLayout` | `/`, `/terms`, `/anansi`, `/team`, `/hpb`, `/courses`, etc. | `src/shared/layouts/` |
-| `BlogsLayout` | `/blogs`, `/blogs/:slug` | `src/shared/layouts/` |
 | `StudentLayout` | `/dashboard/**` | `src/features/student/layouts/` |
 | `AdminLayout` | `{ADMIN_PATH}/**` | `src/features/admin/layouts/` |
 
@@ -45,7 +44,6 @@ graph TD
     D --> G[AppRouter]
     G --> H{Layout?}
     H -->|/| I[LandingLayout]
-    H -->|/blogs| J[BlogsLayout]
     H -->|/dashboard| K[StudentLayout]
     H -->|admin| L[AdminLayout]
     H -->|/:handle| M[PublicProfile]
@@ -66,7 +64,6 @@ graph TD
 | `BottomSheet` | Mobile bottom sheet overlay |
 | `Card` | Card primitives (CardBase, CardMedia, CardStat) |
 | `Dialog` | Radix dialog wrapper with `DialogContent` |
-| `NavCard` | Navigation card with icon, label, badge |
 | `SimpleHeading` | Reusable section heading |
 | `Skeleton` | Loading skeleton placeholder |
 | `StatCounter` | Animated number counter |
@@ -107,7 +104,6 @@ graph TD
 | `backgrounds/` | GridBoxedBackground, AdinkraBackground decorative patterns |
 | `blog/` | Blog content renderer |
 | `brand/` | Logo component |
-| `card-grid/` | CardGrid layout wrapper |
 | `carousel/` | Carousel component with auto-play |
 | `courses/` | Course-specific components |
 | `dashboard/` | EmptyState and dashboard primitives |
@@ -140,6 +136,6 @@ features/student/
 ├── hooks/               # Student-specific hooks
 ├── layouts/             # StudentLayout
 ├── pages/               # 20+ page components
-├── services/            # chain.service, pwa, tokenBalance
+├── services/            # lab.service, pwa
 └── utils/               # Student utilities
 ```

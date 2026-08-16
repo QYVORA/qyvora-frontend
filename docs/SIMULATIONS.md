@@ -43,7 +43,7 @@ All interactive simulation systems in one place.
 
 | File | Purpose |
 |------|---------|
-| `SimulatedTerminal.tsx` | Radix Dialog wrapper (modal/inline modes) |
+| `index.ts` | Re-exports `TerminalShell` + `clearTerminalStorage` |
 | `TerminalShell.tsx` | Terminal UI — keyboard, rendering, persistence |
 | `types.ts` | TypeScript interfaces |
 | `engine/state.ts` | Input processing, pipeline execution |
@@ -51,11 +51,13 @@ All interactive simulation systems in one place.
 | `engine/commands.ts` | Command registry (114+ entries) |
 | `engine/filesystem.ts` | Virtual filesystem (VFS) utilities |
 | `engine/streaming.ts` | Line-by-line output animation |
-| `engine/handlers/*.ts` | Command implementations (7 modules) |
+| `engine/handlers/*.ts` | Command implementations (10 modules) |
 | `data/defaultFilesystem.ts` | Kali Linux filesystem tree |
 | `context/bootcampContent.ts` | Bootcamp-specific VFS injection |
 | `context/courseContent.ts` | Course-specific VFS injection |
 | `context/labContent.ts` | Lab-specific VFS injection |
+
+> Note: The former `SimulatedTerminal.tsx` (Radix Dialog wrapper) was merged into `TerminalShell` (2026-08). The modal/inline wrapper now lives in shared code at `shared/components/learning/TerminalWrapper.tsx`.
 
 **Modes:**
 - `modal` — Radix Dialog overlay, centered, `rounded-2xl`
@@ -324,14 +326,14 @@ Profiles with realistic device configs (IPs, hostnames, OS, vendor, open ports, 
 
 ```
 WalkthroughLayout (all 5 labs)
-├── SimulatedTerminal (breakout mode, primary simulation)
+├── TerminalShell (breakout mode, primary simulation)
 │   └── TerminalShell → engine (commands, parser, filesystem, streaming)
 ├── WalkthroughStep
-│   └── Flag submission → useLabConnection
-└── LabConnectButton → useLabConnection → API
+│   └── Flag submission → useLabConnection → API
+└── (LabConnectButton was removed 2026-08 — connection flow is handled inside WalkthroughLayout via useLabConnection)
 
 CourseLessonPage
-├── SimulatedTerminal (inline)
+├── TerminalShell (inline)
 ├── CodePlayground
 └── InlineQuiz
 

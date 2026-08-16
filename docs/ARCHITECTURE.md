@@ -138,20 +138,18 @@ See `DATA_FLOW.md` for the complete flow diagram.
 
 **Balance Resolution:**
 1. Frontend requests a page that displays CP balance
-2. Backend calls `cpToken.service.resolveCpBalance(userId)` which returns MongoDB cached value
-3. For admin chain explorer, backend directly queries chain via `chain.service.ts`
+2. Frontend calls backend `GET /api/cp/balance` (via the Axios client `api.ts`)
+3. Backend calls `cpToken.service.resolveCpBalance(userId)` which resolves the true balance from the chain (MongoDB `cpPoints` read-model as fallback if the chain is unreachable)
 
-**Frontend → Chain direct call (exceptions only):**
-- `tokenBalance.service.ts` in `features/student/` calls `VITE_CHAIN_API_BASE_URL/token/balance/:userId` directly
-- This is a deviation (see §9.4). All other chain reads should go through the backend.
+**Frontend → Chain direct call:** None. The frontend never calls chain endpoints directly (`tokenBalance.service.ts` and `VITE_CHAIN_API_BASE_URL` were removed 2026-08). All chain reads go through the backend.
 
 ### 4.2 Data Flow Rules
 
 1. **All API requests from the frontend must use the Axios client (`api.ts`)**, which handles token attachment, CSRF headers, and response interceptor logic automatically.
 
-2. **The frontend must never call chain API endpoints except for the specific case of `GET /token/balance/:userId`** when resolving CP for display purposes. This is a temporary measure.
+2. **The frontend must never call chain API endpoints.** CP balances are resolved by the backend and exposed through backend routes (`GET /api/cp/balance`, profile, leaderboard).
 
-3. **Chain write must always go through the outbox.** Direct `chain.service.ts` calls are only permitted for read operations (balance, history) and the chain explorer.
+3. **Chain write must always go through the outbox.** The frontend never writes to the chain directly; it calls backend routes that enqueue `ChainOutboxEvent`s.
 
 4. **Chain failure must never block the user response.** The outbox pattern ensures eventual consistency; the backend should respond to the user immediately after the MongoDB write succeeds.
 
@@ -189,9 +187,9 @@ src/
 
 ```
 features/
-  admin/        # Admin dashboard, chain explorer, CP analytics
+  admin/        # Admin dashboard, CP analytics
   auth/         # Login, register, password flow
-  marketing/    # Landing page, blogs, courses, team
+  marketing/    # Landing page, blogs, courses, team, services, simulations, hpb
   student/      # Dashboard, bootcamps, marketplace, wallet, profile, settings
 ```
 
@@ -210,7 +208,7 @@ features/
 | `components/layout/` | Navbar, Footer, PublicBottomNav | Layouts |
 | `components/brand/` | Logo, QyvoraLogotype, QyvoraMark | All features |
 | `components/backgrounds/` | GridBoxedBackground, AdinkraBackground | All features |
-| `layouts/` | LandingLayout, BlogsLayout | Router only |
+| `layouts/` | LandingLayout | Router only |
 | `utils/` | cn, cpBalance, formatNumber, resolveImg, etc. | All features |
 
 **Anti-pattern:** Do not put domain-specific components in `shared/`. If a component is only used by one feature, keep it in that feature. If it is used by two or more features, put it in `shared/`.
@@ -236,7 +234,6 @@ Four layouts, each with different chrome:
 | Layout | Navbar | Footer | Bottom Nav | Used For |
 |--------|--------|--------|------------|----------|
 | `LandingLayout` | Fixed top (with nav invert support) | Embedded in last scroll section | None | Marketing homepage |
-| `BlogsLayout` | Fixed top | None | None | Blog post detail |
 | `StudentLayout` | `StudentTopbar` (fixed) | None | Student mobile nav | Authenticated student pages |
 | `AdminLayout` | `AdminTopbar` (fixed) | None | Admin mobile nav | Admin dashboard |
 
@@ -344,9 +341,9 @@ All API routes mount under `/api` (prefix defined in `endpoints.config.ts`):
 | Mount Point | Module | Auth Required | Key Endpoints |
 |-------------|--------|---------------|---------------|
 | `/api/auth` | `modules/auth/routes/` | Mixed | `POST /login`, `POST /register`, `POST /refresh`, `POST /logout`, `GET /me` |
-| `/api/student` | `modules/student/routes/` | `requireAuth` | `GET /overview`, `GET /course`, `POST /quiz`, `POST /.../complete`, `GET /chain-history` |
+| `/api/student` | `modules/student/routes/` | `requireAuth` | `GET /overview`, `GET /course`, `POST /quiz`, `POST /.../complete` |
 | `/api/profile` | `modules/student/routes/` | `requireAuth` | Profile CRUD, recovery token, password change |
-| `/api/admin` | `modules/dashboards/routes/` | `requireAuth` + `requireAdmin` | User CRUD, CP management, chain explorer, security events |
+| `/api/admin` | `modules/dashboards/routes/` | `requireAuth` + `requireAdmin` | User CRUD, CP management, security events |
 | `/api/public` | `modules/shared/routes/` | None | Landing stats, CP products, leaderboard, contact form |
 | `/api/cp` | `modules/cp/routes/` | `requireAuth` | Balance, transactions, purchase, download |
 | `/api/notifications` | `modules/notifications/routes/` | `requireAuth` | List, mark read |
@@ -758,7 +755,6 @@ This section documents where the current implementation deviates from the intend
 **Recommendation:** Extract the following domains from `student.controller.ts`:
 - Quiz grading → `modules/student/services/quiz.service.ts`
 - Room completion logic → `modules/student/services/room.service.ts`
-- Chain history → reuse `core/services/chain.service.ts`
 
 From `admin.controller.ts`:
 - CP operations → reuse `core/services/cpLedger.service.ts`
@@ -789,13 +785,13 @@ From `admin.controller.ts`:
 
 **Intended:** The frontend should communicate with the chain only through the backend API.
 
-**Current:** `tokenBalance.service.ts` in `features/student/` calls `VITE_CHAIN_API_BASE_URL/token/balance/:userId` directly.
+**Current:** No frontend code calls the chain directly. The old `tokenBalance.service.ts` and `VITE_CHAIN_API_BASE_URL` were removed (2026-08) after the chain-explorer cleanup. The frontend reads CP balances via `GET /api/cp/balance`, and the backend resolves the true balance through `cpToken.service.resolveCpBalance` (chain-first, MongoDB `cpPoints` fallback).
 
 **Files:**
-- `qyvora-frontend/src/features/student/services/tokenBalance.service.ts`
-- (env) `VITE_CHAIN_API_BASE_URL`
+- `qyvora-frontend/src/core/services/api.ts` (backend-only Axios client)
+- Backend: `qyvora-backend/src/core/services/cpToken.service.ts`, `src/modules/cp/controllers/cp.controller.ts`
 
-**Classification:** Technical debt. This bypasses backend authorization and should be routed through the backend. The backend already has `cpToken.service.ts` for balance resolution.
+**Status:** Resolved — no longer a deviation. Rule §4.2 now states the frontend never calls chain endpoints directly.
 
 ### 9.5 No Shared API Contracts
 
@@ -847,12 +843,7 @@ From `admin.controller.ts`:
 
 ### 9.10 Missing Routes Documentation
 
-**Current:** The chain README documents `/chain`, `/block/:hash`, and `/stats` routes that are not implemented in the code.
-
-**Files:**
-- `qyvora-chain/README.md`
-
-**Classification:** Documentation debt. The README should be updated to match the actual routes defined in `chain.routes.ts`.
+**Current:** Resolved — the chain README route table now matches `chain.routes.ts` exactly (including `/metrics` and `/health/validate`, added 2026-08). The earlier drift (`/chain`, `/block/:hash`, `/stats` documented but unimplemented) was corrected.
 
 ---
 

@@ -337,7 +337,6 @@ Each step in the path shows:
 | `src/features/student/components/layout/SearchBar.tsx` | Update search entry path |
 | `src/features/student/components/LearningPathMap.tsx` | Update "View All" link |
 | `src/features/student/components/dashboard/ActiveDeployments.tsx` | Update "View All" link |
-| `src/features/student/components/layout/StudentTopbar/mobileNav.ts` | Update HPB mobile link |
 
 ---
 

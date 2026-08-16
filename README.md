@@ -67,7 +67,7 @@ If a component can be split into smaller, focused sub-components, it **must** be
 
 - **Single-responsibility**: Each component should do one thing well.
 - **Extract sub-components**: When a component has distinct visual/logical sections, extract them into separate files under a folder named after the parent component.
-- **Example pattern**: For `HackerGlobe.tsx`, extract `hacker-globe/data.ts`, `hacker-globe/helpers.ts`, `hacker-globe/types.ts`, and keep the main component in `hacker-globe/HackerGlobe.tsx`. Re-export from the original file path.
+- **Example pattern**: For `HackerGlobe.tsx`, extract `hacker-globe/data.ts`, `hacker-globe/helpers.ts`, `hacker-globe/countries.ts`, and keep the main component in `hacker-globe/HackerGlobe.tsx`. Re-export from the original file path.
 
 ### 2. File Size Limit
 
@@ -103,7 +103,7 @@ src/
 │       └── api.ts                 # Axios instance with interceptors
 ├── features/
 │   ├── auth/
-│   │   ├── components/            # AuthHero, LoginForm, RegisterForm, etc.
+│   │   ├── components/            # AuthHero, AuthForm, PasswordInput, etc.
 │   │   ├── pages/                 # LoginPage, RegisterPage, etc.
 │   │   └── ... (hooks/, services/, validators/ as needed)
 │   ├── marketing/
@@ -126,12 +126,10 @@ src/
 │   │   │   │       ├── MobileNotificationsSheet.tsx
 │   │   │   │       ├── MobileMoreSheet.tsx
 │   │   │   │       ├── navGroups.ts
-│   │   │   │       ├── mobileNav.ts
 │   │   │   │       └── types.ts
-│   │   │   ├── bootcamp-course/    # CourseHeader, PhaseSection, RoomCard, etc.
+│   │   │   ├── bootcamp-course/    # PhaseSection, RoomCard, PhaseHeroSection, etc.
 │   │   │   ├── bootcamp-room/      # StepCard, CodeBlockRenderer, QuizModal, etc.
 │   │   │   ├── profile/            # EditModal
-│   │   │   ├── BootcampCard.tsx
 │   │   │   ├── RecoveryTokenModal.tsx
 │   │   │   └── WelcomeModal.tsx
 │   │   ├── constants/
@@ -181,7 +179,7 @@ src/
 │   │   ├── ScrollReveal.tsx
 │   │   ├── ScrollToTop.tsx
 │   │   └── SEO.tsx
-│   ├── layouts/                    # LandingLayout, BlogsLayout
+│   ├── layouts/                    # LandingLayout
 │   ├── pages/                      # NotFoundPage
 │   └── utils/                      # cn, cpBalance, formatNumber, resolveImg, storageConsent
 ├── styles/
@@ -202,7 +200,7 @@ When refactoring a component into a folder of sub-components:
 
 ### 6. Naming Conventions
 
-- **Files**: PascalCase for components (`LoginForm.tsx`), camelCase for utilities (`formatNumber.ts`)
+- **Files**: PascalCase for components (`PasswordInput.tsx`), camelCase for utilities (`formatNumber.ts`)
 - **Folders**: kebab-case for multi-word folders (`hacker-globe/`, `bootcamp-room/`)
 - **Exports**: Default export for main components, named exports for types, constants, and utilities
 - **Types**: Co-locate with the component in a `types.ts` file within the component folder
@@ -226,7 +224,7 @@ src/
 │       └── api.ts              # Axios instance with interceptors
 ├── features/
 │   ├── auth/
-│   │   ├── components/         # AuthHero, LoginForm, PasswordInput, etc.
+│   │   ├── components/         # AuthHero, AuthForm, PasswordInput, etc.
 │   │   └── pages/              # LoginPage, RegisterPage, VerifyEmailPage, etc.
 │   ├── marketing/
 │   │   ├── components/
@@ -244,7 +242,6 @@ src/
 │   │   │   ├── bootcamp-course/
 │   │   │   ├── bootcamp-room/
 │   │   │   ├── profile/
-│   │   │   ├── BootcampCard.tsx
 │   │   │   ├── RecoveryTokenModal.tsx
 │   │   │   └── WelcomeModal.tsx
 │   │   ├── constants/
@@ -255,8 +252,8 @@ src/
 │   │   │   └── StudentLayout.tsx
 │   │   ├── pages/              # Dashboard, BootcampCourse, BootcampRoom, etc.
 │   │   └── services/
-│   │       ├── chain.service.ts
-│   │       └── tokenBalance.service.ts
+│   │       ├── lab.service.ts
+│   │       └── pwa.ts
 │   └── admin/
 │       ├── components/
 │       │   ├── layout/AdminTopbar/    # With sub-components
@@ -286,7 +283,7 @@ src/
 │   ├── ScrollReveal.tsx
 │   ├── ScrollToTop.tsx
 │   └── SEO.tsx
-├── layouts/                 # LandingLayout, BlogsLayout
+├── layouts/                 # LandingLayout
     └── utils/
         ├── cn.ts
         ├── cpBalance.ts

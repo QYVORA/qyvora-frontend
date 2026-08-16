@@ -1,7 +1,7 @@
 # QYVORA Product Roadmap
 
 **Status:** Live · 170+ users · Social channels active  
-**Last updated:** July 2026 (housekeeping cleanup)
+**Last updated:** 2026-08-15 (merged with `docs/_ROADMAP.md` feature inventory)
 
 ---
 
@@ -75,3 +75,96 @@
 | **Retention over acquisition** | A user who finishes Phase 01 is worth more than 10 signups. Optimise for completion. |
 | **Verifiable credentials** | Every achievement must be on-chain and independently verifiable. CP is not a score — it's a credential. |
 | **Community as moat** | The network effect of users helping users is harder to replicate than the curriculum. Invest in it early. |
+
+---
+
+## Feature Inventory
+
+> Replaces the former `docs/_ROADMAP.md`. Keep this section up to date when implementing features (see "Contributing to Roadmap" below).
+
+### ✅ Implemented Features
+
+**Core Systems**
+- **Authentication** — JWT access + refresh tokens, CSRF protection, route guards
+- **Authorization** — Student/Admin role-based access control
+- **Session Management** — Secure token handling; 2FA toggle (enable/disable/verify) — see `KNOWN_ISSUES.md` (not yet enforced at login)
+
+**Learning Systems**
+- **Attack Labs (5 labs)** — all terminal-based with flag verification (Privilege Escalation, Password Cracking, SQL Injection, OSINT, Kill Chain)
+- **Simulated Terminal** — 114+ commands, Kali Linux emulation, virtual filesystem (`TerminalShell` behind shared `TerminalWrapper`)
+- **13 Simulation Components** — Browser, HTTP Inspector, SQL Console, etc.
+- **Course System (12 courses)** — structured lessons with quizzes and code playgrounds
+- **Bootcamp System** — Hacker Protocol Bootcamp, 5 phases / 18 rooms
+- **Code Playground** — in-browser code execution (Python, Bash, JavaScript)
+- **Quiz System** — inline quizzes and bootcamp room quizzes
+
+**Gamification**
+- **Cyber Points (CP)** — reward currency tracked on-chain (chain write via backend outbox)
+- **Ranking System** — 5-tier progression (Candidate → Vanguard)
+- **Streak Tracking** — daily login streak incentives
+- **Public Profiles** — handle, rank, CP balance
+- **Leaderboard** — top-50 competitive ranking (see `KNOWN_ISSUES.md` — no pagination)
+
+**UI/UX**
+- **Responsive Layouts** — unified stretched layout across all pages (see `AGENTS.md`)
+- **Dark Theme** — complete dark mode design system
+- **45+ Custom Icons** — SVG icon system with lucide-react
+- **SEO Components** — dynamic meta tags and structured data
+- **Accessibility** — WCAG compliance, keyboard navigation, screen reader support
+- **PWA Support** — manifest, service worker, install banner
+- **Mobile Optimization** — touch-friendly interfaces, bottom navigation
+
+**Admin Features**
+- **Admin Dashboard** — user management, CP analytics
+- **Security Events** — audit log viewing
+- **CP Management** — mint/burn CP tokens
+- ~~Chain Explorer~~ — **removed** (dead frontend calls to non-existent chain endpoints; backend endpoints also removed 2026-08)
+
+**Marketing/Public**
+- **Landing Page** — hero sections, feature showcase (scroll-snap sections)
+- **Blog System** — `/blogs` + individual posts at `/blogs/:slug`
+- **Team Section** — team member profiles
+- **Public Profiles** — profile viewing by handle
+- **Course Info Pages** — `/courses/:courseId`
+
+### 📋 Planned Features
+
+**Learning Paths (Design Complete)** — see `docs/LEARNING_PATHS.md`
+- 5 curated skill-based tracks (Terminal Foundations, Network Operations, Web Security, Developer Toolkit, Wireless Security)
+- Path progress tracking, prerequisite system, path detail pages
+
+**CTF Platform (Design Complete)** — see `docs/CTF_PLAN.md`
+- 25 browser-native challenges across 5 modules, `FLAG{...}` submission
+- 10 Phase 1 rooms; separate Netlify deployment (`qyvora-ctf-rooms` repo, not yet created)
+
+### 🚧 Future Considerations
+
+**Phase 2 (Post-Launch):** social features (team challenges, peer reviews) · live events · certification system · job board · mentorship · custom/shared labs · public API · mobile app · offline mode
+
+**Advanced CTF:** dynamic per-user flags · timed challenges · team CTF · tournaments · advanced challenge types
+
+**Backend improvements:** learning-path API · real-time collaboration · advanced analytics · content recommendations
+
+**Bootcamp room polish:** step transition animations · completion confetti · dark/light image variants · step preview thumbnails · scroll-to-top · step-time analytics · quiz attempt tracking · image preloading · offline room caching · print stylesheet
+
+### Implementation Priority
+
+| Priority | Items |
+|----------|-------|
+| **High (Q3 2026)** | Learning Paths, CTF Phase 1 (10 rooms) |
+| **Medium (Q4 2026)** | Backend path sync, CTF Phase 2, Social features |
+| **Low (2027+)** | Mobile apps, public API, advanced analytics |
+
+---
+
+## Contributing to Roadmap
+
+When adding new features to the roadmap:
+
+1. **Status** — mark as Implemented (✅), Planned (📋, design complete), or Future (🚧, concept).
+2. **Design Doc** — link to the detailed design document if one exists.
+3. **Effort Estimate** — rough time/complexity estimate.
+4. **Dependencies** — prerequisite features or infrastructure.
+5. **Implementation Checklist** — break down into actionable tasks.
+
+When implementing a planned feature: move it from "Planned" to "Implemented", update related docs to present tense, and remove "Status: Planning" headers from design docs.
