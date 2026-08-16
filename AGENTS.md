@@ -150,7 +150,7 @@ must clear it. Exact clearance depends on context:
 | Context | Clearance |
 |---------|-----------|
 | Snap bento sections (Labs, Bootcamp, Courses, Pillars, Services) | `pt-24 md:pt-28 lg:pt-32`, bottom `pb-6 md:pb-8 lg:pb-10` |
-| `PublicSnapSection` (natural flow) | `py-16 md:py-20 lg:py-24`; `section[id]` also `scroll-mt-24 md:scroll-mt-28` |
+| `PublicSnapSection` (full-viewport snap) | `pt-24 md:pt-28 lg:pt-32`, bottom `pb-6 md:pb-8 lg:pb-10`; `section[id]` also `scroll-mt-24 md:scroll-mt-28` |
 | Student / admin topbar layouts | `pt-20 md:pt-24` (their `TOPBAR_H` constant) |
 | Sidebar-layout sections (Team, QuiteRoot, Anansi, Blogs, Market, Leaderboard) | `py-12 sm:py-10 md:py-16 lg:py-20` |
 
@@ -161,25 +161,34 @@ must clear it. Exact clearance depends on context:
 ## Public Inner Pages (non-landing)
 
 Public pages rendered through `PublicSnapLayout` (Courses, Labs, Services, Blogs, Team, QuiteRoot,
-Leaderboard, Hpb, Market, Simulations, Anansi, Toha3ee, Jabari, ...) use **natural flow — no
-scroll-snap, no full-viewport strips**:
+Leaderboard, Hpb, Market, Simulations, Anansi, Toha3ee, Jabari, ...) use **full-viewport scroll-snap
+sections** — the same architecture as the landing page and the HPB pages:
 
-- `PublicSnapLayout` (`src/shared/components/PublicSnapLayout.tsx`) is a **plain wrapper by default**:
-  `<div className="relative w-full bg-bg">{children}</div>`. No snap container, no alternating
-  `bg-bg`/`bg-bg-alt` injection, no `GridBoxedBackground` injection. Optional `snap` prop renders
-  `snap-container no-scrollbar` for full-viewport snap pages (HPB only — see HPB Snap Pages below).
-  The `fitViewport` prop was removed from `PublicSnapSection` — do not reintroduce it.
-- `PublicSnapSection` (`src/shared/components/PublicSnapSection.tsx`) is a natural-flow section:
-  `<section className="relative w-full px-3 md:px-4 lg:px-6 py-16 md:py-20 lg:py-24 scroll-mt-24 md:scroll-mt-28">`.
-  Sections grow with their content; never force `min-h-dvh`/`h-dvh` on them.
-- The snap pages are the landing page (`LandingPage/index.tsx`) and the HPB pages
-  (`/hpb`, `/hpb/:phaseId`) — see Snap Scrolling and HPB Snap Pages below. Other public inner pages
-  are natural flow. `StudentHeroSection` and `LandingFinalCtaSection` keep their own `min-h-dvh` heights.
+- `PublicSnapLayout` (`src/shared/components/PublicSnapLayout.tsx`) **always** renders the snap
+  container: `<div className="relative w-full bg-bg snap-container no-scrollbar">{children}</div>`.
+  The `snap` prop was removed — do not reintroduce it. No alternating background injection and no
+  `GridBoxedBackground` injection; each section provides its own `bg-bg`/`bg-bg-alt`.
+- `PublicSnapSection` (`src/shared/components/PublicSnapSection.tsx`) is a **full-viewport snap
+  section**: `relative w-full min-h-dvh snap-section flex items-center odd:bg-bg even:bg-bg-alt
+  scroll-mt-24 md:scroll-mt-28` with an inner content wrapper
+  `w-full px-3 md:px-4 lg:px-6 pt-24 md:pt-28 lg:pt-32 pb-6 md:pb-8 lg:pb-10`. `odd:`/`even:` is
+  `:nth-child`-based, so sections must stay **direct children** of `PublicSnapLayout`. Sections grow
+  if content exceeds the viewport (never `h-dvh`, always `min-h-dvh`).
+- Every page wraps its hero in
+  `<section className="relative w-full min-h-dvh lg:h-dvh snap-section bg-bg">`, its CTA in
+  `<section className="relative w-full min-h-dvh lg:h-dvh snap-section bg-bg-alt">`, and its
+  `<Footer />` in `<section className="w-full bg-bg pt-10 md:pt-0 snap-section">`.
+- Section sub-components render `PublicSnapSection` internally, so each becomes its own full-viewport
+  snap section: `ToolModulesSection`/`ToolSourceSection`/`ToolDocumentationSection`
+  (`src/features/marketing/components/tools/`, `src/shared/components/ToolDocumentationSection.tsx`),
+  `ServiceSection` (ServicesPage), `TeamMemberSection` (TeamPage), `ResearcherSection`
+  (QuiteRootPage), and the per-sim sections (SimulationsPage).
+- `StudentHeroSection` and `LandingFinalCtaSection` keep their own `min-h-dvh` heights.
 
 ## HPB Snap Pages (`/hpb`, `/hpb/:phaseId`)
 
-The Hacker Protocol Bootcamp pages opt into full-viewport **scroll-snap** sections (like the landing
-page), via `<PublicSnapLayout snap>`:
+The Hacker Protocol Bootcamp pages use full-viewport **scroll-snap** sections like every other
+public page (via `<PublicSnapLayout>` — see Public Inner Pages above):
 
 - `/hpb` — hero, then **one full-viewport section per phase** (not a card grid), then CTA, then footer.
 - `/hpb/:phaseId` — phase hero, then **one full-viewport section per room** (`RoomSection` in
@@ -232,8 +241,9 @@ Rules:
 - Desktop scroll-spy: listener at `scrollY + viewportHeight * 0.3` → `navigate('#id', { replace: true })`,
   throttled ~100ms, skipped during programmatic scroll.
 - Hash deep-links: `scrollIntoView({ behavior: 'smooth' })` after a small delay, desktop only.
-- `PublicSnapLayout` does **NOT** snap by default — only the landing page and the HPB pages
-  (`/hpb`, `/hpb/:phaseId`) use `snap-container` (see Public Inner Pages and HPB Snap Pages above).
+- All public inner pages snap: `PublicSnapLayout` always renders `snap-container` (see Public Inner
+  Pages and HPB Snap Pages above). The landing page renders its own snap container directly in
+  `LandingPage/index.tsx`.
 
 ## Navbar
 
