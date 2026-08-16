@@ -212,6 +212,7 @@ const SimulationsPage = () => {
     <div className="bg-bg min-h-full">
       <SEO title={t('simulations.metaTitle')} description={t('simulations.metaDescription')} />
       <PublicSnapLayout>
+        <section className="relative w-full min-h-dvh lg:h-dvh snap-section bg-bg">
         <StudentHeroSection
           title={t('simulations.heroTitle')}
           accentWord={t('simulations.heroAccent')}
@@ -231,11 +232,17 @@ const SimulationsPage = () => {
             <Zap className="w-4 h-4" /> {t('simulations.startTraining')} <IconArrowRight size={14} />
           </Link>
         </StudentHeroSection>
+        </section>
 
         {SIMULATIONS.map((sim) => renderSection(sim))}
 
-        <LandingFinalCtaSection user={user} />
-        <Footer />
+        <section className="relative w-full min-h-dvh lg:h-dvh snap-section bg-bg-alt">
+          <LandingFinalCtaSection user={user} />
+        </section>
+
+        <section className="w-full bg-bg pt-10 md:pt-0 snap-section">
+          <Footer />
+        </section>
       </PublicSnapLayout>
     </div>
   );

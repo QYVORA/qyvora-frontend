@@ -47,6 +47,7 @@ const LeaderboardPage = () => {
     <div className="bg-bg min-h-full">
       <SEO title="Leaderboard - QYVORA" description="Top offensive security operators ranked by CP earnings." />
       <PublicSnapLayout>
+        <section className="relative w-full min-h-dvh lg:h-dvh snap-section bg-bg">
         <StudentHeroSection
           title="Operator"
           accentWord="Leaderboard"
@@ -56,6 +57,7 @@ const LeaderboardPage = () => {
           description="Top operators ranked by CP earnings. The leaderboard is verified by the QYVORA Chain."
           stats={[{ label: 'Operators', value: Number(total).toLocaleString() }]}
         />
+        </section>
 
         {/* ── Period + Podium ─────────────────────────────────────────── */}
         <PublicSnapSection>
@@ -109,8 +111,13 @@ const LeaderboardPage = () => {
         {rest.length > 0 && (
           <LeaderboardRestSection rest={rest} user={user} total={total} />
         )}
-        <LandingFinalCtaSection user={user} />
-        <Footer />
+        <section className="relative w-full min-h-dvh lg:h-dvh snap-section bg-bg-alt">
+          <LandingFinalCtaSection user={user} />
+        </section>
+
+        <section className="w-full bg-bg pt-10 md:pt-0 snap-section">
+          <Footer />
+        </section>
       </PublicSnapLayout>
     </div>
   );
