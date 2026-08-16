@@ -209,6 +209,8 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88, offset = [0, 0,
 
     const tick = (now: number) => {
       rafId = requestAnimationFrame(tick);
+      
+      // Always update timing and rotation, even if we skip rendering
       if (last > 0) {
         const dt = Math.min(now - last, 32);
         currentScrollRotation += (targetScrollRotation - currentScrollRotation) * 0.08;
@@ -216,13 +218,18 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88, offset = [0, 0,
         globe.rotation.y = rotationY + currentScrollRotation;
       }
       last = now;
-      // Constrained devices render every other frame to halve GPU load. The
-      // rotation is driven by real elapsed time, so the globe stays on beat.
+      
+      // Constrained devices render every other frame to halve GPU load.
+      // The rotation is driven by real elapsed time, so the globe stays on beat.
       if (live.current.simplified) {
         frameCounter += 1;
         if (frameCounter % 2 !== 0) return;
       }
-      renderer.render(scene, camera);
+      
+      // Only render if we have a valid renderer and scene
+      if (renderer && scene && camera) {
+        renderer.render(scene, camera);
+      }
     };
 
     const start = () => {
