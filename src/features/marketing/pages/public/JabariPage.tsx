@@ -1,4 +1,4 @@
-import { Download, GitBranch, Terminal, ChevronRight, Smartphone } from 'lucide-react';
+import { Download, GitBranch, Smartphone, Terminal, ChevronRight } from 'lucide-react';
 import { IconArrowRight } from '@/shared/components/icons';
 import SEO from '@/shared/components/SEO';
 import PublicSnapLayout from '@/shared/components/PublicSnapLayout';
@@ -8,26 +8,19 @@ import { Footer } from '@/shared/components/layout';
 import { useAuth } from '@/core/contexts/AuthContext';
 import LandingFinalCtaSection from '@/features/marketing/components/landing/LandingFinalCtaSection';
 import ToolDocumentationSection from '@/shared/components/ToolDocumentationSection';
-import GoCodeCarousel from '@/shared/components/GoCodeCarousel';
-import { STAGES, RULES, PROFILES, GITHUB_URL, BUILD_FROM_SOURCE, QUICK_START, AUTHORIZED_WARNING } from '@/features/marketing/data/jabariData';
+import CodeBlock from '@/shared/components/CodeBlock';
+import ToolModulesSection from '@/features/marketing/components/tools/ToolModulesSection';
+import ToolSourceSection from '@/features/marketing/components/tools/ToolSourceSection';
+import ToolSectionHeader from '@/features/marketing/components/tools/ToolSectionHeader';
+import { openToolInstall } from '@/features/marketing/components/ToolInstallModal';
+import { STAGES, RULES, PROFILES, GITHUB_URL, BUILD_FROM_SOURCE, QUICK_START, AUTHORIZED_WARNING, SOURCE_EXAMPLES } from '@/features/marketing/data/jabariData';
 import jabariLogo from '@/assets/jabari/jabari-main-logo.webp';
 
-const SectionHeader: React.FC<{ kicker: string; title: string; accent: string; description?: string }> = ({
-  kicker,
-  title,
-  accent,
-  description,
-}) => (
-  <div className="max-w-2xl">
-    <h3 className="text-xs font-black uppercase tracking-[0.3em] text-accent">{kicker}</h3>
-    <h4 className="text-xl md:text-3xl lg:text-4xl font-black text-text-primary tracking-tighter leading-tight mt-2">
-      {title} <span className="text-accent">{accent}</span>
-    </h4>
-    {description && (
-      <p className="text-xs md:text-sm text-text-muted leading-relaxed mt-3 font-mono">{description}</p>
-    )}
-  </div>
-);
+const REQUIREMENTS = [
+  'Android platform-tools (adb) — USB + network transports',
+  'Go 1.21+ toolchain to build',
+  'An authorized Android device or emulator to assess',
+];
 
 const JabariPage = () => {
   const { user } = useAuth();
@@ -59,7 +52,7 @@ const JabariPage = () => {
           }
         >
           <div className="flex flex-wrap items-center gap-3">
-            <a href="#install" className="btn-primary inline-flex items-center gap-2 px-6 py-2.5"><Download className="w-4 h-4" /> Install Now <IconArrowRight size={14} /></a>
+            <button type="button" onClick={() => openToolInstall('jabari')} className="btn-primary inline-flex items-center gap-2 px-6 py-2.5"><Download className="w-4 h-4" /> Install Now <IconArrowRight size={14} /></button>
             <span className="inline-flex items-center gap-2 px-2.5 py-1 rounded-lg border border-border/30 bg-bg-card text-[9px] font-black uppercase tracking-widest text-text-muted"><span className="font-black text-[#00ADD8]">Go</span> 1.26+</span>
           </div>
         </StudentHeroSection>
@@ -67,7 +60,7 @@ const JabariPage = () => {
         {/* ── Authorized-use warning ─────────────────────────────────────── */}
         <PublicSnapSection>
           <div className="flex flex-col gap-6 lg:gap-8">
-            <SectionHeader
+            <ToolSectionHeader
               kicker="Authorization"
               title={AUTHORIZED_WARNING.title}
               accent={AUTHORIZED_WARNING.accent}
@@ -89,22 +82,21 @@ const JabariPage = () => {
           </div>
         </PublicSnapSection>
 
-        {STAGES.map((stage) => (
-          <ToolDocumentationSection
-            key={stage.id}
-            id={`stage-${stage.id}`}
-            index={stage.id}
-            icon={stage.icon}
-            eyebrow="Jabari assessment pipeline"
-            title={stage.name}
-            accent="stage"
-            description={stage.desc}
-            why="Jabari keeps each assessment step explicit, timed, and recorded so the final report explains what was actually observed and how the conclusion was reached."
-            bullets={['Works on one authorised USB or specified-network Android target.', 'Reads and writes through the shared assessment environment, not directly into reports.', 'Partial evidence remains available if a later stage fails or is cancelled.']}
-            code={`jabari assess usb --profile standard\n# ${stage.name.toLowerCase()} is recorded in the session`}
-            codeLabel="Assessment flow"
-          />
-        ))}
+        {/* ── Modules ────────────────────────────────────────────────────── */}
+        <ToolModulesSection
+          kicker="Assessment pipeline"
+          title="Seven"
+          accent="Stages"
+          description="Jabari keeps each assessment step explicit, timed, and recorded so the final report explains what was actually observed and how the conclusion was reached."
+          modules={STAGES.map((stage) => ({
+            id: stage.id,
+            index: stage.id,
+            icon: stage.icon,
+            title: stage.name,
+            description: stage.desc,
+            code: `jabari assess usb --profile standard\n# ${stage.name.toLowerCase()} recorded in the session`,
+          }))}
+        />
 
         <ToolDocumentationSection
           id="rules-and-evidence"
@@ -134,55 +126,50 @@ const JabariPage = () => {
           tree={['cmd/jabari/            CLI entry point', 'internal/orchestration/ profile builder + runner', 'internal/transport/     USB and network transports', 'internal/core/          Stage and assessment environment', 'internal/reporting/     offline renderers', 'pkg/adb/                thin injectable ADB wrapper']}
         />
 
-        <PublicSnapSection id="go-source" fitViewport>
-          <div className="flex h-full min-h-0 flex-col justify-center gap-5">
-            <SectionHeader kicker="Go source" title="Testable" accent="contracts" description="Jabari uses small interfaces for its assessment stages and transports, allowing the pipeline to be tested without a live device." />
-            <GoCodeCarousel examples={[
-              { 
-                id: 'stage-interface', 
-                filename: 'internal/core/stage.go', 
-                label: 'Assessment stage interface', 
-                description: 'Every stage receives the shared environment rather than reaching into a device directly.', 
-                code: 'type Stage interface {\n    Name() string\n    Run(ctx context.Context, env *Env) error\n}\n\ntype Env struct {\n    Device    DeviceInfo\n    Transport Transport\n    Store     *Store\n    Config    *Config\n}' 
-              },
-              { 
-                id: 'transport', 
-                filename: 'internal/transport/transport.go', 
-                label: 'Transport interface', 
-                description: 'USB and specified-network Android targets implement the same connection boundary.', 
-                code: 'type Transport interface {\n    Connect(ctx context.Context) error\n    Disconnect() error\n    Info(ctx context.Context) (*models.DeviceInfo, error)\n    Execute(ctx context.Context, req models.Request) (models.Response, error)\n}' 
-              },
-              { 
-                id: 'rule', 
-                filename: 'internal/rules/rule.go', 
-                label: 'Rule interface', 
-                description: 'Rules assess a single security aspect and return a finding with evidence, severity, and confidence.', 
-                code: 'type Rule interface {\n    ID() string\n    Title() string\n    Assess(ctx context.Context, env *core.Env) (*Finding, error)\n}\n\ntype Finding struct {\n    RuleID     string\n    Status     Status\n    Severity   Severity\n    Confidence Confidence\n    Evidence   []Evidence\n}' 
-              },
-              { 
-                id: 'authorization', 
-                filename: 'internal/auth/gate.go', 
-                label: 'Authorization gate', 
-                description: 'Every assessment passes through an authorization check before the pipeline starts.', 
-                code: 'func Authorize(ctx context.Context, target string) error {\n    if !isInteractive() {\n        if !flags.Authorized {\n            return ErrNotAuthorized\n        }\n        return nil\n    }\n    \n    fmt.Printf("Authorize assessment of %s? [y/N]: ", target)\n    var response string\n    fmt.Scanln(&response)\n    \n    if strings.ToLower(response) != "y" {\n        return ErrNotAuthorized\n    }\n    return nil\n}' 
-              },
-            ]} />
-          </div>
-        </PublicSnapSection>
+        {/* ── Go source ──────────────────────────────────────────────────── */}
+        <ToolSourceSection
+          id="go-source"
+          kicker="Go source"
+          title="Testable"
+          accent="contracts"
+          description="Small interfaces for stages and transports — the pipeline runs against fakes without a live device."
+          examples={SOURCE_EXAMPLES}
+        />
 
         {/* ── Install ───────────────────────────────────────────────────── */}
-        <PublicSnapSection id="install" className="scroll-mt-28">
+        <PublicSnapSection id="install">
           <div className="flex flex-col gap-6 lg:gap-8">
-            <SectionHeader
+            <ToolSectionHeader
               kicker="Install"
               title="Build &"
               accent="Install"
               description="Built with make — produces the jabari binary plus the androidsec alias, installed with its logo and desktop entry."
             />
 
+            <div className="rounded-2xl border border-accent/30 bg-accent/5 p-5 md:p-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+              <div className="flex items-start gap-3">
+                <div className="w-10 h-10 rounded-xl bg-accent/10 border border-accent/20 flex items-center justify-center shrink-0">
+                  <Download className="w-5 h-5 text-accent" />
+                </div>
+                <div>
+                  <h4 className="text-sm font-black text-text-primary">Install automatically</h4>
+                  <p className="text-xs text-text-muted mt-1 max-w-xl leading-relaxed">
+                    We detect your operating system and CPU architecture and download the matching prebuilt binary for you. A terminal command is included as a copyable alternative.
+                  </p>
+                </div>
+              </div>
+              <button
+                type="button"
+                onClick={() => openToolInstall('jabari')}
+                className="btn-primary inline-flex items-center gap-2 shrink-0 !px-6 !py-3"
+              >
+                <Download className="w-4 h-4" /> Auto-install
+              </button>
+            </div>
+
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6 items-stretch">
               {/* Option 1 — Build from source */}
-              <div className="rounded-2xl border border-border/30 bg-accent/5 p-5 md:p-6 space-y-3">
+              <div className="rounded-2xl border border-border/30 bg-bg-card p-5 md:p-6 space-y-4">
                 <div className="flex items-center gap-3">
                   <div className="w-9 h-9 rounded-xl bg-accent/10 border border-accent/20 flex items-center justify-center shrink-0">
                     <GitBranch className="w-4 h-4 text-accent" />
@@ -192,12 +179,12 @@ const JabariPage = () => {
                     <p className="text-[9px] font-mono text-text-muted mt-0.5">{BUILD_FROM_SOURCE.requirements}</p>
                   </div>
                 </div>
-                <div className="space-y-1.5">
+                <div className="space-y-3">
                   {BUILD_FROM_SOURCE.steps.map(({ cmd, note }) => (
-                    <div key={cmd} className="rounded-lg border border-border/20 bg-bg px-3 py-2">
-                      <code className="block text-[10px] md:text-[11px] font-mono text-text-secondary break-all">$ {cmd}</code>
+                    <div key={cmd} className="space-y-1.5">
+                      <CodeBlock code={`$ ${cmd}`} lang="sh" copyable />
                       {note && (
-                        <p className="text-[9px] font-mono text-text-muted mt-1 leading-snug">{note}</p>
+                        <p className="text-[9px] font-mono text-text-muted leading-snug">{note}</p>
                       )}
                     </div>
                   ))}
@@ -213,7 +200,7 @@ const JabariPage = () => {
               </div>
 
               {/* Option 2 — Requirements & profiles */}
-              <div className="rounded-2xl border border-border/30 bg-accent/5 p-5 md:p-6 space-y-3">
+              <div className="rounded-2xl border border-border/30 bg-bg-card p-5 md:p-6 space-y-4">
                 <div className="flex items-center gap-3">
                   <div className="w-9 h-9 rounded-xl bg-accent/10 border border-accent/20 flex items-center justify-center shrink-0">
                     <Smartphone className="w-4 h-4 text-accent" />
@@ -224,7 +211,7 @@ const JabariPage = () => {
                   </div>
                 </div>
                 <ul className="space-y-1.5">
-                  {['Android platform-tools (adb) — USB + network transports', 'Go 1.21+ toolchain to build', 'An authorized Android device or emulator to assess'].map((req) => (
+                  {REQUIREMENTS.map((req) => (
                     <li key={req} className="flex items-start gap-2 rounded-lg border border-border/20 bg-bg px-3 py-2">
                       <ChevronRight className="w-3.5 h-3.5 text-accent shrink-0 mt-0.5" />
                       <span className="text-[10px] md:text-xs text-text-secondary leading-snug">{req}</span>
@@ -252,7 +239,7 @@ const JabariPage = () => {
         {/* ── Quick Start ───────────────────────────────────────────────── */}
         <PublicSnapSection>
           <div className="flex flex-col gap-6 lg:gap-8">
-            <SectionHeader
+            <ToolSectionHeader
               kicker="Quick Start"
               title="Assess in"
               accent="One Command"
@@ -283,7 +270,7 @@ const JabariPage = () => {
                       { label: 'enumeration', text: 'package inventory + posture facts collected' },
                       { label: 'analysis', text: 'AND-001 debuggable (high) · AND-002 outdated patch (medium)' },
                       { label: 'risk', text: 'critical 0 · high 1 · medium 1 · low 0' },
-                      { label: 'reporting', text: 'session saved → reports/session-&lt;id&gt;.json' },
+                      { label: 'reporting', text: 'session saved → reports/session-<id>.json' },
                     ].map((line) => (
                       <div key={line.label} className="flex items-start gap-2">
                         <span className="text-[9px] md:text-[10px] font-black uppercase tracking-widest text-accent shrink-0 pt-0.5">
@@ -301,8 +288,8 @@ const JabariPage = () => {
               </div>
 
               {/* Usage commands */}
-              <div className="rounded-2xl border border-border/30 bg-accent/5 p-5 md:p-6 space-y-2 h-full">
-                <div className="flex items-center gap-3 mb-2">
+              <div className="rounded-2xl border border-border/30 bg-bg-card p-5 md:p-6 h-full flex flex-col gap-4">
+                <div className="flex items-center gap-3">
                   <div className="w-9 h-9 rounded-xl bg-accent/10 border border-accent/20 flex items-center justify-center shrink-0">
                     <Terminal className="w-4 h-4 text-accent" />
                   </div>
@@ -311,13 +298,13 @@ const JabariPage = () => {
                     <p className="text-[9px] font-mono text-text-muted mt-0.5">USB, network and reporting</p>
                   </div>
                 </div>
-                {QUICK_START.map((cmd) => (
-                  <div key={cmd} className="flex items-center gap-2 rounded-lg border border-border/20 bg-bg px-3 py-2">
-                    <ChevronRight className="w-3.5 h-3.5 text-accent shrink-0" />
-                    <code className="text-[10px] md:text-xs text-text-secondary break-all">{cmd}</code>
-                  </div>
-                ))}
-                <p className="text-[9px] font-mono text-text-muted leading-relaxed pt-1">
+                <CodeBlock
+                  code={QUICK_START.map((cmd) => `$ ${cmd}`).join('\n')}
+                  lang="sh"
+                  copyable
+                  className="mt-auto"
+                />
+                <p className="text-[9px] font-mono text-text-muted leading-relaxed">
                   Only assess devices you own or have explicit written permission to test.
                 </p>
               </div>
