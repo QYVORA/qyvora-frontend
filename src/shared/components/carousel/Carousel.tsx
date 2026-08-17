@@ -1,5 +1,5 @@
-import React, { useState, useCallback } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
+import React, { useState, useCallback, useEffect } from 'react';
+import { motion, AnimatePresence, useReducedMotion } from 'motion/react';
 import { ChevronLeft } from 'lucide-react';
 import { IconChevronRight } from '@/shared/components/icons';
 import { useAutoPlay } from '@/core/hooks/useAutoPlay';
@@ -22,6 +22,7 @@ function Carousel<T extends { id: string }>({
   const [current, setCurrent] = useState(0);
   const [direction, setDirection] = useState(0);
   const total = slides.length;
+  const prefersReducedMotion = useReducedMotion();
 
   const next = useCallback(() => {
     const nextIndex = current + 1 >= total ? 0 : current + 1;
@@ -38,8 +39,18 @@ function Carousel<T extends { id: string }>({
   const { containerProps } = useAutoPlay({
     onNext: next,
     duration: autoPlayInterval,
-    disabled: total <= 1,
+    disabled: total <= 1 || !!prefersReducedMotion,
   });
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) return;
+      if (e.key === 'ArrowLeft') { e.preventDefault(); prev(); }
+      if (e.key === 'ArrowRight') { e.preventDefault(); next(); }
+    };
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, [next, prev]);
 
   if (!slides.length) return null;
 
