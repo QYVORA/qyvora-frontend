@@ -9,7 +9,7 @@ import { useAuth } from '@/core/contexts/AuthContext';
 import LandingFinalCtaSection from '@/features/marketing/components/landing/LandingFinalCtaSection';
 import ToolDocumentationSection from '@/shared/components/ToolDocumentationSection';
 import CodeBlock from '@/shared/components/CodeBlock';
-import ToolModulesSection from '@/features/marketing/components/tools/ToolModulesSection';
+import ToolsCarousel from '@/features/marketing/components/ToolsCarousel';
 import ToolSourceSection from '@/features/marketing/components/tools/ToolSourceSection';
 import ToolSectionHeader from '@/features/marketing/components/tools/ToolSectionHeader';
 import { openToolInstall } from '@/features/marketing/components/ToolInstallModal';
@@ -84,21 +84,23 @@ const JabariPage = () => {
           </div>
         </PublicSnapSection>
 
-        {/* ── Modules ────────────────────────────────────────────────────── */}
-        <ToolModulesSection
-          kicker="Assessment pipeline"
-          title="Seven"
-          accent="Stages"
-          description="Jabari keeps each assessment step explicit, timed, and recorded so the final report explains what was actually observed and how the conclusion was reached."
-          modules={STAGES.map((stage) => ({
-            id: stage.id,
-            index: stage.id,
-            icon: stage.icon,
-            title: stage.name,
-            description: stage.desc,
-            code: `jabari assess usb --profile standard\n# ${stage.name.toLowerCase()} recorded in the session`,
-          }))}
-        />
+        {/* ── Stages Carousel ─────────────────────────────────────────────── */}
+        <section className="relative w-full min-h-dvh lg:h-dvh snap-section bg-bg-alt">
+          <ToolsCarousel
+            kicker="Assessment pipeline"
+            title="Seven"
+            accent="Stages"
+            label="Stage"
+            modules={STAGES.map((stage) => ({
+              id: stage.id,
+              index: stage.id,
+              icon: stage.icon,
+              title: stage.name,
+              description: stage.desc,
+              code: `jabari assess usb --profile standard\n# ${stage.name.toLowerCase()} recorded in the session`,
+            }))}
+          />
+        </section>
 
         <ToolDocumentationSection
           id="rules-and-evidence"
