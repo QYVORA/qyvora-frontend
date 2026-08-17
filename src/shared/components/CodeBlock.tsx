@@ -189,7 +189,7 @@ const CodeBlock: React.FC<CodeBlockProps> = ({
   const hasHeader = Boolean(filename || badge || copyable);
 
   return (
-    <div className={`wc-code overflow-hidden rounded-xl border border-border/30 bg-bg ${className ?? ''}`}>
+    <div className={`wc-code min-w-0 max-w-full overflow-hidden rounded-xl border border-border/30 bg-bg ${className ?? ''}`}>
       {hasHeader && (
         <div className="flex items-center justify-between gap-2 border-b border-border/20 bg-bg-elevated px-3 py-2">
           {filename ? (
@@ -213,7 +213,7 @@ const CodeBlock: React.FC<CodeBlockProps> = ({
           </div>
         </div>
       )}
-      <pre className={`whitespace-pre-wrap break-words p-4 font-mono text-[11px] leading-relaxed sm:text-xs ${maxHeight ?? ''}`}>
+      <pre className={`min-w-0 max-w-full whitespace-pre-wrap break-words overflow-y-auto p-4 font-mono text-[11px] leading-relaxed sm:text-xs ${maxHeight ?? ''}`}>
         <code>
           {tokens.map((token, i) => (
             <span key={i} className={TOKEN_CLASSES[token.cls]}>

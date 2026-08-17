@@ -103,7 +103,7 @@ const ToolsCarousel: React.FC<ToolsCarouselProps> = ({
           >
             <div className="grid grid-cols-1 lg:grid-cols-2 lg:items-center gap-8 lg:gap-12">
               {/* Left column — module details */}
-              <div className="flex flex-col min-h-0 overflow-hidden">
+              <div className="flex min-h-0 min-w-0 flex-col overflow-hidden">
                 {kicker && title && accent && current === 0 && (
                   <div className="mb-2">
                     <span className="text-[9px] font-black uppercase tracking-[0.3em] text-accent">
