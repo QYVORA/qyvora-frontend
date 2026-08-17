@@ -57,7 +57,7 @@ export const CardBase: React.FC<CardBaseProps> = ({
   if (onClick) {
     return (
       <div role="button" tabIndex={0} onClick={onClick}
-        onKeyDown={(e) => e.key === 'Enter' && onClick()}
+        onKeyDown={(e) => (e.key === 'Enter' || e.key === ' ') && (e.preventDefault(), onClick())}
         className={base} style={style}
       >
         {children}
