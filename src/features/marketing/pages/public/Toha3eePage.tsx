@@ -9,7 +9,7 @@ import { useAuth } from '@/core/contexts/AuthContext';
 import LandingFinalCtaSection from '@/features/marketing/components/landing/LandingFinalCtaSection';
 import ToolDocumentationSection from '@/shared/components/ToolDocumentationSection';
 import CodeBlock from '@/shared/components/CodeBlock';
-import ToolModulesSection from '@/features/marketing/components/tools/ToolModulesSection';
+import ToolsCarousel from '@/features/marketing/components/ToolsCarousel';
 import ToolSourceSection from '@/features/marketing/components/tools/ToolSourceSection';
 import ToolSectionHeader from '@/features/marketing/components/tools/ToolSectionHeader';
 import { openToolInstall } from '@/features/marketing/components/ToolInstallModal';
@@ -75,22 +75,24 @@ const Toha3eePage = () => {
           </div>
         </PublicSnapSection>
 
-        {/* ── Modules ────────────────────────────────────────────────────── */}
-        <ToolModulesSection
-          kicker="Framework"
-          title="Attack"
-          accent="Categories"
-          description="Toha3ee organises 73 modules behind one module lifecycle so operators can preflight, run, verify, and clean up consistently."
-          modules={MODULES.map((category, i) => ({
-            id: category.id,
-            index: String(i + 1).padStart(2, '0'),
-            icon: category.icon,
-            title: category.name,
-            description: category.desc,
-            meta: `${category.modules.length} modules`,
-            code: `toha3ee > modules ${category.id}\ntoha3ee > on ${category.modules[0]}`,
-          }))}
-        />
+        {/* ── Categories Carousel ─────────────────────────────────────────── */}
+        <section className="relative w-full min-h-dvh lg:h-dvh snap-section bg-bg-alt">
+          <ToolsCarousel
+            kicker="Framework"
+            title="Attack"
+            accent="Categories"
+            label="Category"
+            modules={MODULES.map((category, i) => ({
+              id: category.id,
+              index: String(i + 1).padStart(2, '0'),
+              icon: category.icon,
+              title: category.name,
+              description: category.desc,
+              meta: `${category.modules.length} modules`,
+              code: `toha3ee > modules ${category.id}\ntoha3ee > on ${category.modules[0]}`,
+            }))}
+          />
+        </section>
 
         <ToolDocumentationSection
           id="architecture"

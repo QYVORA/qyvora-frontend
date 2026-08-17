@@ -9,7 +9,7 @@ import { useAuth } from '@/core/contexts/AuthContext';
 import LandingFinalCtaSection from '@/features/marketing/components/landing/LandingFinalCtaSection';
 import ToolDocumentationSection from '@/shared/components/ToolDocumentationSection';
 import CodeBlock from '@/shared/components/CodeBlock';
-import ToolModulesSection from '@/features/marketing/components/tools/ToolModulesSection';
+import ToolsCarousel from '@/features/marketing/components/ToolsCarousel';
 import ToolSourceSection from '@/features/marketing/components/tools/ToolSourceSection';
 import ToolSectionHeader from '@/features/marketing/components/tools/ToolSectionHeader';
 import { openToolInstall } from '@/features/marketing/components/ToolInstallModal';
@@ -58,21 +58,23 @@ const AnansiPage = () => {
         </StudentHeroSection>
         </section>
 
-        {/* ── Modules ────────────────────────────────────────────────────── */}
-        <ToolModulesSection
-          kicker="Recon pipeline"
-          title="Nine"
-          accent="Phases"
-          description="Each phase turns one part of a target's public attack surface into evidence the next phase can use, keeping reconnaissance structured instead of ad hoc."
-          modules={PHASES.map((phase) => ({
-            id: phase.id,
-            index: phase.id,
-            icon: phase.icon,
-            title: phase.name,
-            description: phase.desc,
-            code: `anansi target.example --modules ${PHASE_MODULES[Number(phase.id) - 1]}`,
-          }))}
-        />
+        {/* ── Modules Carousel ─────────────────────────────────────────────── */}
+        <section className="relative w-full min-h-dvh lg:h-dvh snap-section bg-bg-alt">
+          <ToolsCarousel
+            kicker="Recon pipeline"
+            title="Nine"
+            accent="Phases"
+            label="Phase"
+            modules={PHASES.map((phase) => ({
+              id: phase.id,
+              index: phase.id,
+              icon: phase.icon,
+              title: phase.name,
+              description: phase.desc,
+              code: `anansi target.example --modules ${PHASE_MODULES[Number(phase.id) - 1]}`,
+            }))}
+          />
+        </section>
 
         <ToolDocumentationSection
           id="architecture"
