@@ -72,7 +72,7 @@ const InlineQuiz: React.FC<InlineQuizProps> = ({
     const passed = score >= passThreshold;
 
     return (
-      <div className={`border border-border bg-bg-card rounded-xl p-6 space-y-5 ${className}`}>
+      <div className={`wc-interactive border border-border bg-bg-card rounded-xl p-6 space-y-5 ${className}`}>
         <div className="text-center py-4">
           <div className={`text-5xl font-black font-mono mb-2 ${passed ? 'text-accent' : 'text-red-400'}`}>
             {score}%
@@ -115,7 +115,7 @@ const InlineQuiz: React.FC<InlineQuizProps> = ({
   }
 
   return (
-    <div className={`border border-border bg-bg-card rounded-xl p-6 space-y-5 ${className}`}>
+    <div className={`wc-interactive border border-border bg-bg-card rounded-xl p-6 space-y-5 ${className}`}>
       <div className="flex items-center justify-between">
         <span className="text-[10px] font-black uppercase tracking-widest text-accent">{resolvedTitle}</span>
         <span className="text-[10px] font-mono text-text-muted">{currentQ + 1} / {questions.length}</span>

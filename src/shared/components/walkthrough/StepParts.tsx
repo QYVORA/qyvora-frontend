@@ -11,7 +11,7 @@ export function CommandBlock({ command, labId }: { command: string; labId: strin
     setTimeout(() => setCopied(false), 2000);
   };
   return (
-    <div className="space-y-2">
+    <div className="wc-terminal space-y-2">
       <div className="flex items-center gap-2">
         <Terminal size={12} className="text-accent" />
         <span className="text-[10px] font-black uppercase tracking-widest text-text-muted">Run in terminal</span>

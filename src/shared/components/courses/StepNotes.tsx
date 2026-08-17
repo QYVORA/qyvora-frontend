@@ -30,7 +30,7 @@ const StepNotes: React.FC<StepNotesProps> = ({ storageKey, className = '' }) => 
   };
 
   return (
-    <div className={`border border-border rounded-xl overflow-hidden ${className} ${expanded ? '' : ''}`}>
+    <div className={`wc-interactive border border-border rounded-xl overflow-hidden ${className} ${expanded ? '' : ''}`}>
       <button
         onClick={() => setExpanded(!expanded)}
         className="w-full flex items-center gap-2 px-4 py-3 bg-bg-card text-text-muted hover:text-accent active:opacity-70 transition-colors text-xs font-black uppercase tracking-widest"

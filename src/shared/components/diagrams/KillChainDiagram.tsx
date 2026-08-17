@@ -27,7 +27,7 @@ interface KillChainDiagramProps {
 
 export function KillChainDiagram({ currentPhaseIndex = -1, completedPhaseIds = [], className }: KillChainDiagramProps) {
   return (
-    <div className={cn('relative overflow-hidden rounded-xl border border-border/30 bg-bg-card p-4', className)}>
+    <div className={cn('wc-diagram relative overflow-hidden rounded-xl border border-border/30 bg-bg-card p-4', className)}>
       <div className="flex items-center gap-2 mb-4">
         <Shield className="w-4 h-4 text-accent" />
         <span className="text-[9px] font-black uppercase tracking-widest text-accent">Kill Chain Phases</span>
@@ -82,7 +82,7 @@ interface KillChainDiagramSimpleProps {
 
 export function KillChainDiagramSimple({ phases, currentPhaseIndex = -1, completedPhaseIds = [], className }: KillChainDiagramSimpleProps) {
   return (
-    <div className={cn('relative overflow-hidden rounded-xl border border-border/30 bg-bg-card p-3 md:p-4', className)}>
+    <div className={cn('wc-diagram relative overflow-hidden rounded-xl border border-border/30 bg-bg-card p-3 md:p-4', className)}>
       <div className="flex items-center gap-2 mb-3">
         <Shield className="w-3.5 h-3.5 text-accent" />
         <span className="text-[9px] font-black uppercase tracking-widest text-accent">Kill Chain Progress</span>
