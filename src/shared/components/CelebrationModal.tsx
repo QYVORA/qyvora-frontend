@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef, useCallback } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Zap } from 'lucide-react';
 import CpLogo from '@/shared/components/CpLogo';
@@ -41,6 +41,47 @@ const CelebrationModal: React.FC<CelebrationModalProps> = ({
   children,
 }) => {
   useScrollLock(open);
+  const cardRef = useRef<HTMLDivElement>(null);
+  const previousFocus = useRef<HTMLElement | null>(null);
+
+  const handleKeyDown = useCallback((e: KeyboardEvent) => {
+    if (e.key === 'Escape') {
+      e.stopPropagation();
+      onClose();
+    }
+    if (e.key === 'Tab' && cardRef.current) {
+      const focusable = cardRef.current.querySelectorAll<HTMLElement>(
+        'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+      );
+      if (focusable.length === 0) return;
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
+    }
+  }, [onClose]);
+
+  useEffect(() => {
+    if (open) {
+      previousFocus.current = document.activeElement as HTMLElement;
+      requestAnimationFrame(() => {
+        cardRef.current?.focus();
+      });
+    } else {
+      previousFocus.current?.focus();
+    }
+  }, [open]);
+
+  useEffect(() => {
+    if (!open) return;
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, [open, handleKeyDown]);
 
   return (
     <AnimatePresence>
@@ -62,11 +103,16 @@ const CelebrationModal: React.FC<CelebrationModalProps> = ({
 
           {/* Celebration card */}
           <motion.div
+            ref={cardRef}
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="celebration-title"
+            tabIndex={-1}
             initial={{ scale: 0.92, opacity: 0, y: 16 }}
             animate={{ scale: 1, opacity: 1, y: 0 }}
             exit={{ scale: 0.92, opacity: 0, y: 16 }}
             transition={{ type: 'spring', stiffness: 260, damping: 22 }}
-            className="relative z-10 w-full max-w-md mx-4"
+            className="relative z-10 w-full max-w-md mx-4 outline-none"
           >
             <div className="relative overflow-hidden rounded-2xl border border-border/40 bg-bg-card text-center">
 
@@ -94,7 +140,7 @@ const CelebrationModal: React.FC<CelebrationModalProps> = ({
                   </span>
                 )}
 
-                <h2 className="mb-2 text-2xl md:text-3xl font-black uppercase tracking-tight text-text-primary">
+                <h2 id="celebration-title" className="mb-2 text-2xl md:text-3xl font-black uppercase tracking-tight text-text-primary">
                   {title}
                 </h2>
 
