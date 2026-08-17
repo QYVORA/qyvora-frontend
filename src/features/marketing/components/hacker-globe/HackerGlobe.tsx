@@ -210,10 +210,14 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88, offset = [0, 0,
     const tick = (now: number) => {
       rafId = requestAnimationFrame(tick);
       
-      // Always update timing and rotation, even if we skip rendering
+      // Always update timing and rotation, even if we skip rendering.
+      // The cap at 200 ms only prevents huge jumps on tab-refocus; it
+      // never throttles the normal per-frame rotation so the globe
+      // always tracks wall-clock time accurately.
       if (last > 0) {
-        const dt = Math.min(now - last, 32);
-        currentScrollRotation += (targetScrollRotation - currentScrollRotation) * 0.08;
+        const dt = Math.min(now - last, 200);
+        const scrollFactor = 1 - Math.pow(0.92, dt / 16.667);
+        currentScrollRotation += (targetScrollRotation - currentScrollRotation) * scrollFactor;
         rotationY += dt * (live.current.simplified ? 0.00035 : 0.00045);
         globe.rotation.y = rotationY + currentScrollRotation;
       }
