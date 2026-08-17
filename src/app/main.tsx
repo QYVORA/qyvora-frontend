@@ -66,7 +66,7 @@ createRoot(document.getElementById('root')!).render(
       ThemeProvider (outermost context)
       ─────────────────────────────────────────────────────────────────────────
       Sets data-theme="dark" on <html> so CSS variables are applied.
-      Currently dark-only; placed outermost because every other provider
+      Supports dark and light themes; placed outermost because every other provider
       and component may depend on theme tokens.
     */}
     <ThemeProvider>
