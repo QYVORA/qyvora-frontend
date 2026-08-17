@@ -89,7 +89,7 @@ const FencedCodeBlock: React.FC<{ code: string; lang: string }> = ({ code, lang 
   const isBash = !lang || lang === 'bash' || lang === 'sh' || lang === 'shell';
 
   return (
-    <div className="my-10 md:my-14 rounded-xl border border-border overflow-hidden bg-code-bg">
+    <div className="wc-code my-10 md:my-14 rounded-xl border border-border overflow-hidden bg-code-bg">
       {/* Header bar */}
       <div className="flex items-center justify-between px-3 py-2 border-b border-border/60 bg-bg-card/80">
         <div className="flex items-center gap-2">

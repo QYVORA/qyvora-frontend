@@ -124,7 +124,7 @@ const Terminal: React.FC<{
   // Non-interactive: just show code
   if (!interactive) {
     return (
-      <div className="relative border border-border/50 bg-bg-card rounded-xl overflow-hidden my-8">
+      <div className="wc-terminal relative border border-border/50 bg-bg-card rounded-xl overflow-hidden my-8">
         <div className="flex items-center justify-between border-b border-border/50 bg-bg-elevated px-5 py-3 select-none">
           <div className="flex items-center gap-2">
             <span className="h-2.5 w-2.5 rounded-full bg-accent/80" />
@@ -171,16 +171,16 @@ const Terminal: React.FC<{
   }
 
   // Interactive mode
-  return (
-    <div className="relative border border-border/50 bg-bg-card rounded-xl overflow-hidden my-8">
-      <div className="flex items-center justify-between border-b border-border/50 bg-bg-elevated px-5 py-3 select-none">
-        <div className="flex items-center gap-2">
-          <span className="h-2.5 w-2.5 rounded-full bg-accent/80" />
-          <span className="h-2.5 w-2.5 rounded-full bg-text-muted/40" />
-          <span className="h-2.5 w-2.5 rounded-full bg-text-muted/20" />
+    return (
+      <div className="wc-terminal relative border border-border/50 bg-bg-card rounded-xl overflow-hidden my-8">
+        <div className="flex items-center justify-between border-b border-border/50 bg-bg-elevated px-5 py-3 select-none">
+          <div className="flex items-center gap-2">
+            <span className="h-2.5 w-2.5 rounded-full bg-accent/80" />
+            <span className="h-2.5 w-2.5 rounded-full bg-text-muted/40" />
+            <span className="h-2.5 w-2.5 rounded-full bg-text-muted/20" />
+          </div>
+          <span className="text-[10px] font-mono text-text-muted uppercase tracking-[0.15em]">{title}</span>
         </div>
-        <span className="text-[10px] font-mono text-text-muted uppercase tracking-[0.15em]">{title}</span>
-      </div>
 
       <div
         ref={outputRef}

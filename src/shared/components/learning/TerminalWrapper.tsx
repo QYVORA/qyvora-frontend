@@ -82,7 +82,7 @@ export const TerminalWrapper: React.FC<TerminalWrapperProps> = ({
   if (!open) return null;
 
   return (
-    <div className="w-full h-full">
+    <div className="wc-terminal w-full h-full">
       <div
         className={cn(
           'w-full h-full',

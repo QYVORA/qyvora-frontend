@@ -654,6 +654,32 @@
       box-shadow: var(--card-shimmer), 0 4px 12px rgba(0, 0, 0, 0.2);
     }
   }
+
+  /* ── Walkthrough content width system ────────────────────────────────────────
+     Semantic width constraints for rich-content components inside walkthrough
+     environments (courses, labs, bootcamp rooms). Each content type receives
+     an intentional max-width so it doesn't blindly stretch to the parent width.
+     The walkthrough shell remains the outer reading environment.
+  ────────────────────────────────────────────────────────────────────────────── */
+  .wc-prose       { max-width: 42rem; }
+  .wc-code        { max-width: 52rem; }
+  .wc-terminal    { max-width: 56rem; }
+  .wc-diagram     { max-width: 52rem; }
+  .wc-table       { max-width: 56rem; }
+  .wc-media       { max-width: 40rem; }
+  .wc-interactive { max-width: 48rem; }
+
+  @media (max-width: 767px) {
+    .wc-prose,
+    .wc-code,
+    .wc-terminal,
+    .wc-diagram,
+    .wc-table,
+    .wc-media,
+    .wc-interactive {
+      max-width: 100%;
+    }
+  }
 }
 
 
