@@ -13,7 +13,7 @@ const authBullets = [
 const AuthHero: React.FC = () => {
   const { t } = useTranslation();
   return (
-    <div className="hidden md:flex relative w-full min-h-dvh md:h-dvh flex-col overflow-hidden" data-nav-invert>
+    <div className="hidden md:flex relative w-full min-h-dvh lg:h-dvh flex-col overflow-hidden">
       <div className="absolute top-6 left-6 z-20">
         <Link
           to="/"
