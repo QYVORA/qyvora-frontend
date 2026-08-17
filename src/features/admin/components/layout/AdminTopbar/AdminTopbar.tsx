@@ -107,7 +107,7 @@ const AdminTopbar = () => {
         {t('aria.skipToMain')}
       </a>
 
-      <header className="fixed top-0 left-0 w-full z-40 bg-bg border-b border-border pt-[env(safe-area-inset-top)]">
+      <header className="fixed top-0 left-0 w-full z-[100] bg-bg border-b border-border pt-[env(safe-area-inset-top)]">
           <div className="px-3 md:px-4 lg:px-6 h-20 md:h-24 flex items-center justify-between">
           <div className="flex items-center gap-6 lg:gap-8">
             <div className="flex items-center gap-3">
