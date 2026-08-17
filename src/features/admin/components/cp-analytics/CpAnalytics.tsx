@@ -1,13 +1,13 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { TrendingUp, RefreshCw, BarChart2 } from 'lucide-react';
-import api from '../../../../core/services/api';
+import { TrendingUp, RefreshCw, BarChart2, ArrowDownLeft, ArrowUpRight, Activity, Users, Award } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
+import api from '@/core/services/api';
+import { StatCard } from '@/shared/components/dashboard';
 import { CpTx, Range } from './types';
 import { buildKpis } from './utils';
 import BarChart from './BarChart';
-import KpiCard from './KpiCard';
 import PointsControl from './PointsControl';
 import TransactionLedger from './TransactionLedger';
-import { ArrowDownLeft, ArrowUpRight, Activity, Users, Award } from 'lucide-react';
 
 interface CpAnalyticsProps {
   users: Array<{ id: string; hackerHandle?: string; name?: string; email?: string }>;
@@ -21,6 +21,7 @@ const fmtShort = (n: number) => {
 };
 
 const CpAnalytics: React.FC<CpAnalyticsProps> = ({ users, addToast }) => {
+  const { t } = useTranslation();
   const [txs, setTxs] = useState<CpTx[]>([]);
   const [loading, setLoading] = useState(true);
   const [range, setRange] = useState<Range>('30d');
@@ -51,11 +52,11 @@ const CpAnalytics: React.FC<CpAnalyticsProps> = ({ users, addToast }) => {
       setTxTotal(Number(res.data?.total ?? 0));
       setTxPage(page);
     } catch {
-      addToast('Failed to load CP transactions', 'error');
+      addToast(t('admin.cp.loadTransactionsFailed'), 'error');
     } finally {
       setLoading(false);
     }
-  }, [txFilter, txSearch, addToast]);
+  }, [txFilter, txSearch, addToast, t]);
 
   useEffect(() => { void loadTxs(1); }, [txFilter, txSearch]);
 
@@ -87,18 +88,18 @@ const CpAnalytics: React.FC<CpAnalyticsProps> = ({ users, addToast }) => {
   }, [allTxs, rangeDays]);
 
   const runCpAction = async () => {
-    if (!cpUserId) { addToast('Select a user first.', 'error'); return; }
-    if (cpAction !== 'set' && cpValue <= 0) { addToast('Points must be > 0.', 'error'); return; }
+    if (!cpUserId) { addToast(t('admin.cp.selectUser'), 'error'); return; }
+    if (cpAction !== 'set' && cpValue <= 0) { addToast(t('admin.cp.pointsMustBePositive'), 'error'); return; }
     setSaving(true);
     try {
       if (cpAction === 'grant') await api.post('/admin/cp/grant', { userIds: [cpUserId], points: cpValue, reason: cpReason });
       else if (cpAction === 'deduct') await api.post('/admin/cp/deduct', { userIds: [cpUserId], points: cpValue, reason: cpReason });
       else await api.post('/admin/cp/set', { userIds: [cpUserId], value: cpValue, reason: cpReason });
-      addToast('Points operation completed', 'success');
+      addToast(t('admin.cp.operationCompleted'), 'success');
       setCpValue(0); setCpReason('');
       void loadTxs(1);
     } catch (e: any) {
-      addToast(e?.response?.data?.error || 'Points operation failed', 'error');
+      addToast(e?.response?.data?.error || t('admin.cp.operationFailed'), 'error');
     } finally {
       setSaving(false);
     }
@@ -112,9 +113,9 @@ const CpAnalytics: React.FC<CpAnalyticsProps> = ({ users, addToast }) => {
         <div>
           <h2 className="text-lg font-black uppercase tracking-tight text-text-primary flex items-center gap-2">
                  <TrendingUp className="h-4 w-4 text-accent" />
-                 CP Economy
+                 {t('admin.cp.economy')}
                </h2>
-          <p className="text-xs text-text-muted mt-0.5">Real-time Cyber Points flow — issued, burned, net</p>
+          <p className="text-xs text-text-muted mt-0.5">{t('admin.cp.economyDescription')}</p>
         </div>
         <div className="flex items-center gap-2">
           {(['7d','30d','90d'] as Range[]).map(r => (
@@ -133,43 +134,38 @@ const CpAnalytics: React.FC<CpAnalyticsProps> = ({ users, addToast }) => {
       </div>
 
       <div className="grid grid-cols-2 gap-3 lg:grid-cols-3">
-        <KpiCard
-          label={`CP Issued (${range})`}
+        <StatCard
+          icon={<ArrowDownLeft className="w-5 h-5 text-accent" />}
+          label={t('admin.cp.issued', { range })}
           value={fmtShort(kpis.totalIssued)}
-          icon={<ArrowDownLeft className="w-4 h-4" />}
-          trend="up" accent
+          accent
         />
-        <KpiCard
-          label={`CP Burned (${range})`}
+        <StatCard
+          icon={<ArrowUpRight className="w-5 h-5 text-text-muted" />}
+          label={t('admin.cp.burned', { range })}
           value={fmtShort(kpis.totalBurned)}
-          icon={<ArrowUpRight className="w-4 h-4" />}
-          trend="down"
         />
-        <KpiCard
-          label={`Net Flow (${range})`}
+        <StatCard
+          icon={<Activity className="w-5 h-5 text-accent" />}
+          label={t('admin.cp.netFlow', { range })}
           value={(kpis.netFlow >= 0 ? '+' : '') + fmtShort(kpis.netFlow)}
-          icon={<Activity className="w-4 h-4" />}
-          trend={kpis.netFlow >= 0 ? 'up' : 'down'}
+          accent={kpis.netFlow >= 0}
         />
-        <KpiCard
-          label="Active Users"
+        <StatCard
+          icon={<Users className="w-5 h-5 text-text-muted" />}
+          label={t('admin.cp.activeUsers')}
           value={String(kpis.uniqueUsers)}
-          icon={<Users className="w-4 h-4" />}
-          trend="neutral"
         />
-        <KpiCard
-          label="Avg per Tx"
+        <StatCard
+          icon={<BarChart2 className="w-5 h-5 text-text-muted" />}
+          label={t('admin.cp.avgPerTx')}
           value={fmtShort(kpis.avgPerTx)}
-          sub="CP per transaction"
-          icon={<BarChart2 className="w-4 h-4" />}
-          trend="neutral"
         />
-        <KpiCard
-          label="Top Earner"
+        <StatCard
+          icon={<Award className="w-5 h-5 text-accent" />}
+          label={t('admin.cp.topEarner')}
           value={kpis.topEarner.length > 12 ? kpis.topEarner.slice(0, 12) + '…' : kpis.topEarner}
-          sub={`in last ${range}`}
-          icon={<Award className="w-4 h-4" />}
-          trend="up"
+          accent
         />
       </div>
 
@@ -177,10 +173,10 @@ const CpAnalytics: React.FC<CpAnalyticsProps> = ({ users, addToast }) => {
         <div className="rounded-2xl border border-border/30 bg-bg-card p-5">
           <div className="mb-4 flex items-center gap-2">
             <BarChart2 className="w-4 h-4 text-accent" />
-            <span className="text-sm font-black uppercase tracking-wide text-text-primary">By Type</span>
+            <span className="text-sm font-black uppercase tracking-wide text-text-primary">{t('admin.cp.byType')}</span>
           </div>
           {typeBreakdown.length === 0 ? (
-            <div className="text-sm text-text-muted py-4 text-center">No data</div>
+            <div className="text-sm text-text-muted py-4 text-center">{t('admin.cp.noData')}</div>
           ) : (
             <BarChart data={typeBreakdown} />
           )}
