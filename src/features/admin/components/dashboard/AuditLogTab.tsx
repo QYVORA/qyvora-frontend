@@ -114,7 +114,7 @@ const AuditLogTab = () => {
             <button
               key={i}
               onClick={() => setPage(i + 1)}
-              className={`w-8 h-8 rounded-lg text-xs font-bold transition-colors ${
+              className={`w-11 h-11 rounded-lg text-xs font-bold transition-colors ${
                 page === i + 1 ? 'btn-primary' : 'btn-secondary'
               }`}
             >

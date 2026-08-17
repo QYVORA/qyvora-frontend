@@ -146,21 +146,21 @@ const InboxTab = () => {
                 className="flex items-center gap-3 px-4 py-3 rounded-xl border border-border bg-bg-card hover:border-accent/20 transition-all cursor-pointer"
                 onClick={() => setSelectedItem(item)}
               >
-                <div className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 ${isContact ? 'bg-blue-500/10' : 'bg-accent/10'}`}>
-                  {isContact ? <Mail className="w-4 h-4 text-blue-400" /> : <IconShield size={16} className="text-accent" />}
+                <div className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 ${isContact ? 'bg-accent/10' : 'bg-bg-elevated'}`}>
+                  {isContact ? <Mail className="w-4 h-4 text-accent" /> : <IconShield size={16} className="text-accent" />}
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 min-w-0">
                     <span className="text-sm font-bold text-text-primary truncate flex-1 min-w-0">{d.name}</span>
                     <span className={`px-2.5 py-1 rounded-lg text-[9px] font-black uppercase tracking-widest shrink-0 whitespace-nowrap ${
-                      isContact ? 'bg-blue-500/10 text-blue-400' : 'bg-accent/10 text-accent'
+                      isContact ? 'bg-bg-elevated text-text-muted' : 'bg-accent/10 text-accent'
                     }`}>
                       {isContact ? t('admin.inbox.contact') : t('admin.inbox.service')}
                     </span>
                     <span className={`px-2.5 py-1 rounded-lg text-[9px] font-black uppercase tracking-widest shrink-0 whitespace-nowrap ${
                       d.status === 'new' ? 'bg-accent/10 text-accent' :
-                      d.status === 'archived' ? 'bg-zinc-500/10 text-zinc-400' :
-                      'bg-amber-500/10 text-amber-400'
+                      d.status === 'archived' ? 'bg-bg-elevated text-text-muted' :
+                      'bg-accent/5 text-accent/70'
                     }`}>
                       {d.status}
                     </span>
@@ -186,14 +186,14 @@ const InboxTab = () => {
               <div className="space-y-5">
                 <div className="flex items-center gap-2 flex-wrap">
                   <span className={`px-2 py-1 rounded-lg text-[10px] font-bold uppercase tracking-wider ${
-                    isContact ? 'bg-blue-500/10 text-blue-400' : 'bg-accent/10 text-accent'
+                    isContact ? 'bg-bg-elevated text-text-muted' : 'bg-accent/10 text-accent'
                   }`}>
                       {isContact ? t('admin.inbox.contactMessage') : t('admin.inbox.serviceInquiry')}
                   </span>
                   <span className={`px-2 py-1 rounded-lg text-[10px] font-bold uppercase tracking-wider ${
                     d.status === 'new' ? 'bg-accent/10 text-accent' :
-                    d.status === 'archived' ? 'bg-zinc-500/10 text-zinc-400' :
-                    'bg-amber-500/10 text-amber-400'
+                    d.status === 'archived' ? 'bg-bg-elevated text-text-muted' :
+                    'bg-accent/5 text-accent/70'
                   }`}>
                     {d.status}
                   </span>
