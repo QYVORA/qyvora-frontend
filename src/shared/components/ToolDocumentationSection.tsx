@@ -66,7 +66,7 @@ const ToolDocumentationSection = ({
         {tree && (
           <div className="overflow-hidden rounded-2xl border border-border/30 bg-bg-card p-3 sm:p-4">
             <p className="mb-2 flex items-center gap-2 text-[9px] font-black uppercase tracking-widest text-text-muted"><FolderTree className="h-3.5 w-3.5 text-accent" /> Source layout</p>
-            <pre className="font-mono text-[10px] leading-relaxed text-text-secondary"><code>{tree.slice(0, 7).join('\n')}</code></pre>
+            <pre className="min-w-0 overflow-x-auto font-mono text-[10px] leading-relaxed text-text-secondary"><code>{tree.slice(0, 7).join('\n')}</code></pre>
           </div>
         )}
       </div>
