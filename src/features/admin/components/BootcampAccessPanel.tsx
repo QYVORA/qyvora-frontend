@@ -1,7 +1,8 @@
 import React from 'react';
-import { Unlock } from 'lucide-react';
+import { Unlock, Users, Activity, Zap } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { IconCheck } from '@/shared/components/icons';
+import { StatCard } from '@/shared/components/dashboard';
 import api from '@/core/services/api';
 import { HACKER_PROTOCOL_ID, BOOTCAMP_MODULES } from '@/features/admin/constants/bootcampModules';
 
@@ -57,16 +58,9 @@ const BootcampAccessPanel: React.FC<Props> = ({ addToast }) => {
     <div className="w-full space-y-8">
       {/* Key metrics */}
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-        {[
-          { label: t('admin.bootcamps.enrolledStudents'), value: enrolledStudents },
-          { label: t('admin.bootcamps.activeStudents'), value: activeStudents },
-          { label: t('admin.bootcamps.engagedInCurrentPhase'), value: engagement },
-        ].map(({ label, value }) => (
-          <div key={label} className="rounded-2xl border border-border/30 bg-bg-card p-5 md:p-6">
-            <div className="mb-2 text-xs font-bold uppercase tracking-widest text-text-muted">{label}</div>
-            <div className="text-3xl font-black tabular-nums text-text-primary md:text-4xl">{value}</div>
-          </div>
-        ))}
+        <StatCard icon={<Users className="w-5 h-5 text-text-muted" />} label={t('admin.bootcamps.enrolledStudents')} value={enrolledStudents} />
+        <StatCard icon={<Activity className="w-5 h-5 text-accent" />} label={t('admin.bootcamps.activeStudents')} value={activeStudents} accent />
+        <StatCard icon={<Zap className="w-5 h-5 text-text-muted" />} label={t('admin.bootcamps.engagedInCurrentPhase')} value={engagement} />
       </div>
 
       {/* Live toggle */}

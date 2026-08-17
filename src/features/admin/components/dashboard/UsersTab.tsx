@@ -91,7 +91,7 @@ const UsersTab: React.FC<UsersTabProps> = ({
             </button>
             {item.recoveryTokenAcknowledgedAt && (
               <Tooltip content={t('admin.users.acknowledgedToken')}>
-                <IconShield size={16} className="text-emerald-500" />
+                <IconShield size={16} className="text-accent" />
               </Tooltip>
             )}
           </div>
