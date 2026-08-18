@@ -61,12 +61,12 @@ const LoginPage: React.FC = () => {
     setIsLoading(true);
     setFormMessage('');
     
-    try {
-      const form = e.currentTarget;
-      const formData = new FormData(form);
-      const email = String(formData.get('email') || '');
-      const password = String(formData.get('password') || '');
+    const form = e.currentTarget;
+    const formData = new FormData(form);
+    const email = String(formData.get('email') || '');
+    const password = String(formData.get('password') || '');
 
+    try {
       await login({ email, password, isAdminRoute: isAdminLoginRoute });
       
       // login() already calls /auth/me and sets user state internally.
@@ -81,6 +81,11 @@ const LoginPage: React.FC = () => {
       setFormMessage('Login successful.');
       navigate('/dashboard');
     } catch (err: any) {
+      if (err?.response?.data?.verificationRequired) {
+        addToast('Please verify your email before signing in.', 'error');
+        navigate('/verify-email', { state: { email } });
+        return;
+      }
       const msg = sanitizeError(err, 'login');
       setFormMessage(msg);
       setShakePassword(true);
@@ -106,12 +111,18 @@ const LoginPage: React.FC = () => {
         return;
       }
 
-      await api.post('/auth/register', {
+      const res = await api.post('/auth/register', {
         role: 'student',
         inviteCode: '',
         profile: { fullName, organization: '', handle },
         credentials: { email, password },
       });
+
+      if (res.data?.verificationRequired) {
+        addToast('Account created. Please check your email to verify your account.', 'success');
+        navigate('/verify-email', { state: { email } });
+        return;
+      }
 
       await login({ email, password });
       addToast('Session established. Welcome, Operator.', 'success');
