@@ -1,6 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { motion } from 'motion/react';
 import { useToast } from '../../../core/contexts/ToastContext';
 import SEO from '@/shared/components/SEO';
 import { AuthFormLayout } from '@/shared/components/layout';
@@ -8,39 +7,58 @@ import { sanitizeError } from '../../../shared/utils/sanitizeError';
 import api from '../../../core/services/api';
 import VerifyEmailForm from '../components/VerifyEmailForm';
 
+type VerifyState = 'idle' | 'verifying' | 'success' | 'error' | 'expired' | 'already_verified';
+
 const VerifyEmailPage: React.FC = () => {
   const { addToast } = useToast();
   const navigate = useNavigate();
   const location = useLocation();
-  const params = new URLSearchParams(location.search);
-  const urlToken = params.get('token') || '';
-  const urlEmail = params.get('email') || '';
+  const stateEmail = (location.state as any)?.email || '';
 
-  const [isLoading, setIsLoading] = useState(false);
-  const [verifyEmail, setVerifyEmail] = useState(urlEmail);
+  const [verifyState, setVerifyState] = useState<VerifyState>(stateEmail ? 'idle' : 'idle');
+  const [verifyEmail, setVerifyEmail] = useState(stateEmail);
+  const [resendCooldown, setResendCooldown] = useState(0);
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setIsLoading(true);
+  useEffect(() => {
+    if (resendCooldown <= 0) return;
+    const timer = setTimeout(() => setResendCooldown((c) => c - 1), 1000);
+    return () => clearTimeout(timer);
+  }, [resendCooldown]);
+
+  const handleVerifyOtp = async (otp: string) => {
+    setVerifyState('verifying');
     try {
-      const form = e.currentTarget;
-      const formData = new FormData(form);
-      const token = String(formData.get('token') || urlToken);
-      await api.post('/auth/verify-email/confirm', { token });
-      addToast('Email verified. You can now log in.', 'success');
-      navigate('/login');
+      const res = await api.post('/auth/verify-email/confirm', { otp });
+      if (res.data?.success) {
+        if (res.data?.message === 'Email is already verified') {
+          setVerifyState('already_verified');
+        } else {
+          setVerifyState('success');
+          addToast('Email verified successfully!', 'success');
+        }
+      }
     } catch (err: any) {
       const msg = sanitizeError(err, 'verify');
+      const status = err?.response?.status;
+      if (status === 400 && msg.includes('expired')) {
+        setVerifyState('expired');
+      } else {
+        setVerifyState('error');
+      }
       addToast(msg, 'error');
-    } finally {
-      setIsLoading(false);
     }
   };
 
   const handleResendVerification = async () => {
+    if (!verifyEmail) {
+      addToast('Enter your email address to resend.', 'error');
+      return;
+    }
     try {
       await api.post('/auth/verify-email/request', { email: verifyEmail });
-      addToast('Verification token re-sent if account exists.', 'success');
+      addToast('New verification code sent. Check your inbox.', 'success');
+      setResendCooldown(60);
+      setVerifyState('idle');
     } catch {
       addToast('Could not resend. Try again later.', 'error');
     }
@@ -49,16 +67,16 @@ const VerifyEmailPage: React.FC = () => {
   return (
     <AuthFormLayout>
       <SEO title="Verify Email" description="Verify your QYVORA email address to activate your account." noindex />
-      <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.2 }}>
-        <VerifyEmailForm
-          onSubmit={handleSubmit}
-          isLoading={isLoading}
-          email={verifyEmail}
-          token={urlToken}
-          onBackToLogin={() => navigate('/login')}
-          onResendToken={handleResendVerification}
-        />
-      </motion.div>
+      <VerifyEmailForm
+        state={verifyState}
+        email={verifyEmail}
+        onEmailChange={setVerifyEmail}
+        onBackToLogin={() => navigate('/login')}
+        onResendCode={handleResendVerification}
+        onVerifyOtp={handleVerifyOtp}
+        resendCooldown={resendCooldown}
+        onResetState={() => setVerifyState('idle')}
+      />
     </AuthFormLayout>
   );
 };
