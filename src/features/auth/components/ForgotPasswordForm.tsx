@@ -9,14 +9,12 @@ interface ForgotPasswordFormProps {
   onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
   isLoading: boolean;
   onBackToLogin: () => void;
-  onEnterToken: () => void;
 }
 
 const ForgotPasswordForm: React.FC<ForgotPasswordFormProps> = ({
   onSubmit,
   isLoading,
   onBackToLogin,
-  onEnterToken,
 }) => {
   const { t } = useTranslation();
   return (
@@ -46,16 +44,11 @@ const ForgotPasswordForm: React.FC<ForgotPasswordFormProps> = ({
             </>
           ) : (
             <>
-              <span className="text-[10px]">{t('auth2.forgot.sendInstructions')}</span> <Send className="w-5 h-5" />
+              <span className="text-[10px]">Send Reset Code</span> <Send className="w-5 h-5" />
             </>
           )}
         </button>
       </form>
-
-      <p className="mt-6 text-center text-sm text-text-muted">
-        {t('auth2.forgot.alreadyHaveToken')}{' '}
-        <button onClick={onEnterToken} className="text-accent font-bold hover:underline active:opacity-70">{t('auth2.forgot.enterToken')}</button>
-      </p>
     </div>
   );
 };
