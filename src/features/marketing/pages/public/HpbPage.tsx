@@ -54,7 +54,7 @@ const HpbPage = () => {
             <section
               key={phase.id}
               id={phase.id}
-              className={`relative w-full min-h-dvh snap-section flex items-center ${
+              className={`relative w-full min-h-dvh lg:h-dvh snap-section flex items-center ${
                 idx % 2 === 0 ? 'bg-bg-alt' : 'bg-bg'
               }`}
             >
