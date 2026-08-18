@@ -580,7 +580,7 @@ const routeContent: Record<string, RouteContent> = {
           'wsuits6 — CEO. "I don\'t follow paths, I burn them then I write my own in code."',
           'sopt4 — COO. "I don\'t break systems, I find the flaws so others don\'t."',
           'Mohammed Rafiq — CFO. "I don\'t protect assets — I grow them wisely."',
-          'Ghost Venom — CM. "I am the whisper in the code, the shadow in the system."',
+          'Ghost Venom — CMO. "I am the whisper in the code, the shadow in the system."',
         ],
       },
     ],

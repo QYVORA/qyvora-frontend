@@ -86,7 +86,7 @@ export const teamData: TeamMember[] = [
   {
     id: 'ghostVenom',
     name: 'Ghost Venom',
-    role: 'Community Manager',
+    role: 'Chief Marketing Officer',
     bio: 'Nigerian ethical hacker, penetration tester, content creator, and QYVORA community manager.',
     profile: 'Ghost Venom is a passionate ethical hacker and penetration tester from Nigeria. Alongside creating cybersecurity content, he manages the QYVORA community—making security knowledge more accessible, encouraging responsible practice, and helping operators learn together in public.',
     disciplines: ['Penetration testing', 'Security content', 'Community building'],
