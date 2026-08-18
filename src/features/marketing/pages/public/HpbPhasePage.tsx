@@ -73,7 +73,7 @@ const HpbPhasePage: React.FC = () => {
           <section
             key={room.id}
             id={room.id}
-            className={`relative w-full min-h-dvh snap-section flex items-center ${
+            className={`relative w-full min-h-dvh lg:h-dvh snap-section flex items-center ${
               index % 2 === 0 ? 'bg-bg-alt' : 'bg-bg'
             }`}
           >
