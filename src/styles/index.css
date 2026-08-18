@@ -661,7 +661,7 @@
      an intentional max-width so it doesn't blindly stretch to the parent width.
      The walkthrough shell remains the outer reading environment.
   ────────────────────────────────────────────────────────────────────────────── */
-  .wc-prose       { max-width: 42rem; }
+  .wc-prose       { max-width: 42rem; margin-inline: auto; }
   .wc-code        { max-width: 52rem; }
   .wc-terminal    { max-width: 56rem; }
   .wc-diagram     { max-width: 52rem; }
