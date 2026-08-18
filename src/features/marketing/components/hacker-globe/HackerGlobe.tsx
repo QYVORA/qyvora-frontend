@@ -87,7 +87,7 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88, offset = [0, 0,
     const w = Math.max(el.clientWidth, 1);
     const h = Math.max(el.clientHeight, 1);
     renderer.setSize(w, h, false);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, ctx.simplified ? 1 : 1.5));
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, ctx.simplified ? 1 : 1.25));
     if ('outputColorSpace' in renderer) {
       renderer.outputColorSpace = THREE.SRGBColorSpace;
     }
@@ -188,7 +188,6 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88, offset = [0, 0,
     let rotationY = globe.rotation.y;
     let targetScrollRotation = 0;
     let currentScrollRotation = 0;
-    let frameCounter = 0;
 
     const handleScroll = () => {
       const snapContainer = document.querySelector('.snap-container');
@@ -207,6 +206,8 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88, offset = [0, 0,
       }
     };
 
+    const FRAME_BUDGET = 1000 / 30; // 30 fps cap — enough for a slow decorative rotation
+    let lastRenderFrame = 0;
     const tick = (now: number) => {
       rafId = requestAnimationFrame(tick);
       
@@ -223,12 +224,10 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88, offset = [0, 0,
       }
       last = now;
       
-      // Constrained devices render every other frame to halve GPU load.
-      // The rotation is driven by real elapsed time, so the globe stays on beat.
-      if (live.current.simplified) {
-        frameCounter += 1;
-        if (frameCounter % 2 !== 0) return;
-      }
+      // Throttle render to 30 fps. Rotation is wall-clock driven so the
+      // globe stays smooth even when frames are dropped.
+      if (now - lastRenderFrame < FRAME_BUDGET) return;
+      lastRenderFrame = now;
       
       // Only render if we have a valid renderer and scene
       if (renderer && scene && camera) {
