@@ -655,14 +655,17 @@
      environments (courses, labs, bootcamp rooms). Each content type receives
      an intentional max-width so it doesn't blindly stretch to the parent width.
      The walkthrough shell remains the outer reading environment.
+     NOTE: wc-prose uses a broad technical reading width (64rem), not a narrow
+     blog-style column. Walkthroughs are instructional interfaces that benefit
+     from wider horizontal space for commands, explanations, and context.
   ────────────────────────────────────────────────────────────────────────────── */
-  .wc-prose       { max-width: 42rem; margin-inline: auto; }
-  .wc-code        { max-width: 52rem; }
+  .wc-prose       { max-width: 64rem; margin-inline: auto; }
+  .wc-code        { max-width: 56rem; }
   .wc-terminal    { max-width: 56rem; }
   .wc-diagram     { max-width: 52rem; }
   .wc-table       { max-width: 56rem; }
   .wc-media       { max-width: 40rem; }
-  .wc-interactive { max-width: 48rem; }
+  .wc-interactive { max-width: 52rem; }
 
   @media (max-width: 767px) {
     .wc-prose,

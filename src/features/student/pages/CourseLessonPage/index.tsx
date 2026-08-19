@@ -43,7 +43,7 @@ const LessonViewer: React.FC<{ lesson: Lesson; number: number; courseId?: string
         }
       />
 
-      <div className="wc-prose text-sm sm:text-base leading-relaxed whitespace-pre-wrap overflow-x-auto text-text-primary w-full mb-10 md:mb-14">
+      <div className="wc-prose text-base sm:text-lg leading-relaxed whitespace-pre-wrap overflow-x-auto text-text-primary w-full mb-10 md:mb-14">
         <CodeBlockRenderer text={lesson.instruction} />
       </div>
 
