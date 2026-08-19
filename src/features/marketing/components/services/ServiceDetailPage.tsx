@@ -96,7 +96,7 @@ const ServiceDetailPage: React.FC<{ svc: ServiceConfig }> = ({ svc }) => {
 
             {/* Right: Included items */}
             <ScrollReveal delay={0.1}>
-              <div className="relative rounded-2xl border border-border/30 bg-bg-card p-8 lg:p-10 overflow-hidden">
+              <div className="relative h-full rounded-2xl border border-border/30 bg-bg-card p-8 lg:p-10 overflow-hidden">
                 <DottedMapOverlay className="rounded-2xl" />
                 <div className="relative">
                   <span className="text-[9px] font-black uppercase tracking-widest text-text-muted mb-6 block">
@@ -133,7 +133,7 @@ const ServiceDetailPage: React.FC<{ svc: ServiceConfig }> = ({ svc }) => {
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                 {svc.benefits.map((benefit, idx) => (
                   <ScrollReveal key={benefit} delay={idx * 0.05}>
-                    <div className="relative rounded-2xl border border-border/30 bg-bg-card p-6 lg:p-7 overflow-hidden">
+                    <div className="relative h-full rounded-2xl border border-border/30 bg-bg-card p-6 lg:p-7 overflow-hidden">
                       <DottedMapOverlay className="rounded-2xl" />
                       <div className="relative flex items-start gap-4">
                         <div className="w-10 h-10 rounded-xl bg-accent/10 border border-accent/30 flex items-center justify-center shrink-0">
@@ -191,7 +191,7 @@ const ServiceDetailPage: React.FC<{ svc: ServiceConfig }> = ({ svc }) => {
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                 {svc.deliverables.map((deliverable, idx) => (
                   <ScrollReveal key={deliverable.label} delay={idx * 0.05}>
-                    <div className="relative rounded-2xl border border-border/30 bg-bg-card p-6 lg:p-7 overflow-hidden">
+                    <div className="relative h-full rounded-2xl border border-border/30 bg-bg-card p-6 lg:p-7 overflow-hidden">
                       <DottedMapOverlay className="rounded-2xl" />
                       <div className="relative">
                         <div className="flex items-center gap-3 mb-3">
@@ -221,7 +221,7 @@ const ServiceDetailPage: React.FC<{ svc: ServiceConfig }> = ({ svc }) => {
           <div className="w-full grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center">
             {/* Left: CTA card */}
             <ScrollReveal>
-              <div className="relative rounded-2xl border border-accent/40 bg-accent/5 p-10 overflow-hidden">
+              <div className="relative h-full rounded-2xl border border-accent/40 bg-accent/5 p-10 overflow-hidden">
                 <div className="relative flex flex-col items-start text-left space-y-6">
                   <h3 className="text-2xl md:text-3xl font-black text-text-primary tracking-tight">
                     Ready to get started?
@@ -229,16 +229,16 @@ const ServiceDetailPage: React.FC<{ svc: ServiceConfig }> = ({ svc }) => {
                   <p className="text-base text-text-muted font-mono">
                     Request an assessment or explore the full range of services.
                   </p>
-                  <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 pt-2">
+                  <div className="flex flex-col sm:flex-row items-stretch gap-4 pt-2 w-full">
                     <button
                       onClick={() => openServiceRequestModal(svc.title)}
-                      className="btn-primary inline-flex items-center justify-center gap-2.5 !px-8 sm:!px-10 !py-3.5 whitespace-nowrap"
+                      className="btn-primary inline-flex items-center justify-center gap-2.5 !px-8 sm:!px-10 !py-3.5 whitespace-nowrap flex-1 sm:flex-none"
                     >
                       {REQUEST_ASSESSMENT_LABEL} <IconArrowRight size={14} />
                     </button>
                     <Link
                       to="/services"
-                      className="btn-secondary inline-flex items-center justify-center gap-2.5 !px-8 sm:!px-10 !py-3.5 whitespace-nowrap"
+                      className="btn-secondary inline-flex items-center justify-center gap-2.5 !px-8 sm:!px-10 !py-3.5 whitespace-nowrap flex-1 sm:flex-none"
                     >
                       <IconArrowLeft size={14} /> All Services
                     </Link>
@@ -249,7 +249,7 @@ const ServiceDetailPage: React.FC<{ svc: ServiceConfig }> = ({ svc }) => {
 
             {/* Right: Philosophy header */}
             <ScrollReveal delay={0.1}>
-              <div className="space-y-8">
+              <div className="h-full space-y-8">
                 <span className="text-[9px] font-black uppercase tracking-widest text-text-muted block">
                   {PENTEST_PHILOSOPHY.heading}
                 </span>
