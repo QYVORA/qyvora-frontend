@@ -237,7 +237,10 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88, offset = [0, 0,
 
     const start = () => {
       if (rafId || !visible) return;
-      last = performance.now();
+      // Do NOT reset `last` here — if the globe was paused (off-screen),
+      // the next tick's dt will be the pause duration (capped at 200 ms),
+      // so the rotation "catches up" to the correct wall-clock angle
+      // instead of freezing for one frame.
       rafId = requestAnimationFrame(tick);
     };
 
@@ -245,7 +248,7 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88, offset = [0, 0,
       visible = entries[0].isIntersecting;
       if (visible) start();
       else stop();
-    }, { threshold: 0 });
+    }, { threshold: 0, rootMargin: '100px' });
     viewObserver.observe(el);
 
     const handleVisibility = () => {
