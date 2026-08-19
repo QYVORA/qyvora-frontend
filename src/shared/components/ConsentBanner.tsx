@@ -21,6 +21,12 @@ const ConsentBanner: React.FC = React.memo(() => {
 
   const { isVisible: managerVisible, onDismiss: managerDismiss } = usePopupManager('consent-banner', 1);
 
+  // Release the popup slot immediately when consent isn't needed so other
+  // popups (e.g. onboarding modal) are not blocked by a ghost registration.
+  useEffect(() => {
+    if (!needsConsent) managerDismiss();
+  }, [needsConsent, managerDismiss]);
+
   const [delayReady, setDelayReady] = useState(false);
   const [showDetails, setShowDetails] = useState(false);
   const [prefs, setPrefs] = useState<Omit<CookiePreferences, 'consentedAt'>>({
