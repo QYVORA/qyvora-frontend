@@ -92,7 +92,7 @@ export function WalkthroughStep({
         )}
 
         {/* Narrative — continuous reading flow */}
-        <div className="wc-prose text-base md:text-lg text-text-secondary font-mono leading-relaxed">
+        <div className="w-full md:max-w-4xl md:mx-auto text-base md:text-lg text-text-secondary font-mono leading-relaxed">
           <CodeBlockRenderer text={narrative} />
         </div>
 
