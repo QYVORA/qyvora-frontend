@@ -117,7 +117,7 @@ const LabsCarousel: React.FC<LabsCarouselProps> = ({
                   Lab {String(current + 1).padStart(2, '0')}
                 </span>
 
-                <h2 className="text-3xl md:text-4xl lg:text-5xl font-black text-text-primary tracking-tighter leading-none mt-3">
+                <h2 className="text-4xl md:text-5xl lg:text-6xl font-black text-text-primary tracking-tighter leading-tight mt-3">
                   {getLabTitle(lab.id)}
                 </h2>
 

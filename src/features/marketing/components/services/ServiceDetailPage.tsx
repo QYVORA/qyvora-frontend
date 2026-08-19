@@ -69,7 +69,7 @@ const ServiceDetailPage: React.FC<{ svc: ServiceConfig }> = ({ svc }) => {
                 <span className="text-[9px] font-black uppercase tracking-widest text-text-muted block">
                   Scope of Work
                 </span>
-                <h2 className="text-3xl md:text-5xl lg:text-6xl font-black text-text-primary tracking-tighter leading-none">
+                <h2 className="text-4xl md:text-6xl lg:text-7xl font-black text-text-primary tracking-tighter leading-tight">
                   What This Engagement <span className="text-accent">Covers</span>
                 </h2>
                 <p className="text-base sm:text-lg text-text-secondary leading-relaxed font-mono">
@@ -155,7 +155,7 @@ const ServiceDetailPage: React.FC<{ svc: ServiceConfig }> = ({ svc }) => {
                 <span className="text-[9px] font-black uppercase tracking-widest text-text-muted block">
                   Benefits
                 </span>
-                <h2 className="text-3xl md:text-5xl lg:text-6xl font-black text-text-primary tracking-tighter leading-none">
+                <h2 className="text-4xl md:text-6xl lg:text-7xl font-black text-text-primary tracking-tighter leading-tight">
                   What You <span className="text-accent">Gain</span>
                 </h2>
                 <p className="text-base sm:text-lg text-text-secondary leading-relaxed font-mono">
@@ -177,7 +177,7 @@ const ServiceDetailPage: React.FC<{ svc: ServiceConfig }> = ({ svc }) => {
                 <span className="text-[9px] font-black uppercase tracking-widest text-text-muted block">
                   Deliverables
                 </span>
-                <h2 className="text-3xl md:text-5xl lg:text-6xl font-black text-text-primary tracking-tighter leading-none">
+                <h2 className="text-4xl md:text-6xl lg:text-7xl font-black text-text-primary tracking-tighter leading-tight">
                   The Security <span className="text-accent">Report</span>
                 </h2>
                 <p className="text-base sm:text-lg text-text-secondary leading-relaxed font-mono">
@@ -253,7 +253,7 @@ const ServiceDetailPage: React.FC<{ svc: ServiceConfig }> = ({ svc }) => {
                 <span className="text-[9px] font-black uppercase tracking-widest text-text-muted block">
                   {PENTEST_PHILOSOPHY.heading}
                 </span>
-                <h2 className="text-3xl md:text-5xl lg:text-6xl font-black text-text-primary tracking-tighter leading-none">
+                <h2 className="text-4xl md:text-6xl lg:text-7xl font-black text-text-primary tracking-tighter leading-tight">
                   Thorough Assessment, <span className="text-accent">Not Checkbox Audits</span>
                 </h2>
                 <p className="text-base sm:text-lg text-text-secondary leading-relaxed font-mono">

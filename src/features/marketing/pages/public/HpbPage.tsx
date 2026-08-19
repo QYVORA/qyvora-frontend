@@ -63,7 +63,7 @@ const HpbPage = () => {
                   <span className="text-[9px] font-black uppercase tracking-[0.3em] text-accent">
                     Phase {idx + 1}
                   </span>
-                  <h2 className="text-3xl md:text-4xl lg:text-5xl font-black text-text-primary tracking-tighter leading-none mt-2">
+                  <h2 className="text-4xl md:text-5xl lg:text-6xl font-black text-text-primary tracking-tighter leading-tight mt-2">
                     {phase.title}
                   </h2>
                   <p className="text-xs md:text-sm text-text-muted leading-relaxed mt-4 max-w-xl">
