@@ -14,6 +14,10 @@ export type AdminUser = {
   recoveryToken?: string;
   recoveryTokenCreatedAt?: string | null;
   recoveryTokenAcknowledgedAt?: string | null;
+  lastLoginAt?: string | null;
+  lastLoginIp?: string;
+  lastLoginUserAgent?: string;
+  lastLoginDeviceId?: string;
 };
 
 export type CPProduct = {
