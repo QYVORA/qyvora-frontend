@@ -124,7 +124,7 @@ const ServicesPage = () => {
     <div className="bg-bg min-h-full">
       <SEO title="Services - QYVORA" description="Enterprise-grade penetration testing, security assessments, and offensive security training." />
       <PublicSnapLayout>
-        <section className="relative w-full min-h-dvh lg:h-dvh snap-section bg-bg">
+        <section className="relative w-full min-h-dvh lg:h-dvh snap-section bg-bg overflow-hidden">
         <StudentHeroSection
           title="Security"
           accentWord="Services"
