@@ -27,7 +27,7 @@ const ServiceDetailPage: React.FC<{ svc: ServiceConfig }> = ({ svc }) => {
 
       <PublicSnapLayout>
         {/* SECTION 1: Hero */}
-        <section className="relative w-full min-h-dvh lg:h-dvh snap-section bg-bg">
+        <section className="relative w-full min-h-dvh lg:h-dvh snap-section bg-bg overflow-hidden">
           <StudentHeroSection
             title={svc.title.split(' ').slice(0, -1).join(' ')}
             accentWord={svc.accentWord}
