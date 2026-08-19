@@ -108,7 +108,7 @@ const Footer: React.FC = React.memo(() => {
   return (
     <footer className="relative flex min-h-dvh w-full flex-col overflow-hidden bg-bg select-none">
       {/* ── Content ──────────────────────────────────────────────────────── */}
-      <div className="relative z-10 flex w-full flex-1 flex-col px-3 md:px-4 lg:px-6 pt-24 pb-8 md:pb-10 lg:pb-12">
+      <div className="relative z-10 flex w-full flex-1 flex-col justify-center px-3 md:px-4 lg:px-6 pt-24 pb-8 md:pb-10 lg:pb-12">
         <div className="flex w-full flex-1 flex-col">
 
           {/* ── Top: Brand | Nav grid ─────────────────────────────────────── */}
@@ -192,11 +192,8 @@ const Footer: React.FC = React.memo(() => {
             </nav>
           </div>
 
-          {/* ── Spacer pushes status banner to bottom ────────────────────── */}
-          <div className="min-h-12 flex-1 lg:min-h-20" />
-
           {/* ── Status banner: system status · language · contact ────────── */}
-          <div className="mt-10 flex flex-col gap-6 border-t border-border/60 pt-8 md:flex-row md:items-center md:justify-between lg:mt-12 lg:pt-10">
+          <div className="mt-10 flex flex-col gap-6 pt-8 md:flex-row md:items-center md:justify-between lg:mt-12 lg:pt-10">
             <div className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-text-muted">
               <span className="relative flex h-2 w-2">
                 <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-accent opacity-75" />
