@@ -88,12 +88,14 @@ const Landing: React.FC = () => {
 
   useEffect(() => {
     if (isMobile) return;
+    const snapContainer = document.querySelector('.snap-container');
+    if (!snapContainer) return;
     const handleScroll = () => {
       const now = Date.now();
       if (isScrollingProgrammatically.current || now - lastScrollTime.current < 100) return;
       lastScrollTime.current = now;
-      const scrollY = window.scrollY;
-      const viewportHeight = window.innerHeight;
+      const scrollY = snapContainer.scrollTop;
+      const viewportHeight = snapContainer.clientHeight;
       const detectionPoint = scrollY + viewportHeight * 0.3;
       let foundSection = SECTIONS[0].id;
       for (let i = SECTIONS.length - 1; i >= 0; i--) {
@@ -110,9 +112,9 @@ const Landing: React.FC = () => {
         navigate(`#${foundSection}`, { replace: true });
       }
     };
-    window.addEventListener('scroll', handleScroll, { passive: true });
+    snapContainer.addEventListener('scroll', handleScroll, { passive: true });
     handleScroll();
-    return () => window.removeEventListener('scroll', handleScroll);
+    return () => snapContainer.removeEventListener('scroll', handleScroll);
   }, [activeSection, navigate, isMobile]);
 
   return (
