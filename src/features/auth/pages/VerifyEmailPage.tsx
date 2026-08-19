@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useToast } from '../../../core/contexts/ToastContext';
 import SEO from '@/shared/components/SEO';
@@ -9,21 +9,45 @@ import VerifyEmailForm from '../components/VerifyEmailForm';
 
 type VerifyState = 'idle' | 'verifying' | 'success' | 'error' | 'expired' | 'already_verified';
 
+const PENDING_EMAIL_KEY = 'qyvora_pending_verification_email';
+const REQUIRES_VERIFICATION_KEY = 'qyvora_auth_requires_verification';
+
 const VerifyEmailPage: React.FC = () => {
   const { addToast } = useToast();
   const navigate = useNavigate();
   const location = useLocation();
-  const stateEmail = (location.state as any)?.email || '';
 
-  const [verifyState, setVerifyState] = useState<VerifyState>(stateEmail ? 'idle' : 'idle');
-  const [verifyEmail, setVerifyEmail] = useState(stateEmail);
+  const getInitialEmail = useCallback(() => {
+    const stateEmail = (location.state as any)?.email;
+    if (stateEmail) return stateEmail;
+    try {
+      const pendingEmail = localStorage.getItem(PENDING_EMAIL_KEY);
+      if (pendingEmail) return pendingEmail;
+    } catch { /* ignore */ }
+    return '';
+  }, [location.state]);
+
+  const [verifyState, setVerifyState] = useState<VerifyState>('idle');
+  const [verifyEmail, setVerifyEmail] = useState(getInitialEmail);
   const [resendCooldown, setResendCooldown] = useState(0);
+  const autoSentRef = React.useRef(false);
 
   useEffect(() => {
     if (resendCooldown <= 0) return;
     const timer = setTimeout(() => setResendCooldown((c) => c - 1), 1000);
     return () => clearTimeout(timer);
   }, [resendCooldown]);
+
+  useEffect(() => {
+    if (autoSentRef.current) return;
+    if (!verifyEmail) return;
+    autoSentRef.current = true;
+    try {
+      localStorage.removeItem(PENDING_EMAIL_KEY);
+      localStorage.removeItem(REQUIRES_VERIFICATION_KEY);
+    } catch { /* ignore */ }
+    handleResendVerification(verifyEmail);
+  }, [verifyEmail]);
 
   const handleVerifyOtp = async (otp: string) => {
     setVerifyState('verifying');
@@ -34,7 +58,7 @@ const VerifyEmailPage: React.FC = () => {
           setVerifyState('already_verified');
         } else {
           setVerifyState('success');
-          addToast('Email verified successfully!', 'success');
+          addToast('Email verified successfully! You can now sign in.', 'success');
         }
       }
     } catch (err: any) {
@@ -49,19 +73,28 @@ const VerifyEmailPage: React.FC = () => {
     }
   };
 
-  const handleResendVerification = async () => {
-    if (!verifyEmail) {
+  const handleResendVerification = async (emailOverride?: string) => {
+    const emailToUse = emailOverride || verifyEmail;
+    if (!emailToUse) {
       addToast('Enter your email address to resend.', 'error');
       return;
     }
     try {
-      await api.post('/auth/verify-email/request', { email: verifyEmail });
+      await api.post('/auth/verify-email/request', { email: emailToUse });
       addToast('New verification code sent. Check your inbox.', 'success');
       setResendCooldown(60);
       setVerifyState('idle');
     } catch {
       addToast('Could not resend. Try again later.', 'error');
     }
+  };
+
+  const handleBackToLogin = () => {
+    try {
+      localStorage.removeItem(PENDING_EMAIL_KEY);
+      localStorage.removeItem(REQUIRES_VERIFICATION_KEY);
+    } catch { /* ignore */ }
+    navigate('/login');
   };
 
   return (
@@ -71,8 +104,8 @@ const VerifyEmailPage: React.FC = () => {
         state={verifyState}
         email={verifyEmail}
         onEmailChange={setVerifyEmail}
-        onBackToLogin={() => navigate('/login')}
-        onResendCode={handleResendVerification}
+        onBackToLogin={handleBackToLogin}
+        onResendCode={() => handleResendVerification()}
         onVerifyOtp={handleVerifyOtp}
         resendCooldown={resendCooldown}
         onResetState={() => setVerifyState('idle')}

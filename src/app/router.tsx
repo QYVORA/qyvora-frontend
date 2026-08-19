@@ -124,8 +124,15 @@ const Wrap = ({ children, scope }: { children: ReactNode; scope?: string }) => (
 const StudentOnly = ({ children }: { children: ReactNode }) => {
   const { user, loading } = useAuth();
   if (loading) return <PageLoader />;
-  if (!user) return <Navigate to="/login" replace />;
+  if (!user) {
+    const needsVerification = (() => {
+      try { return localStorage.getItem('qyvora_auth_requires_verification') === '1'; } catch { return false; }
+    })();
+    if (needsVerification) return <Navigate to="/verify-email" replace />;
+    return <Navigate to="/login" replace />;
+  }
   if (user.isAdmin) return <Navigate to={`${ADMIN_PATH}/dashboard`} replace />;
+  if (!user.emailVerified) return <Navigate to="/verify-email" replace />;
   return <>{children}</>;
 };
 
