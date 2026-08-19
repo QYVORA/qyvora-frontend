@@ -132,7 +132,7 @@ const ServiceDetailPage: React.FC<{ svc: ServiceConfig }> = ({ svc }) => {
             <ScrollReveal>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                 {svc.benefits.map((benefit, idx) => (
-                  <ScrollReveal key={benefit} delay={idx * 0.05}>
+                  <ScrollReveal key={benefit} delay={idx * 0.05} className="h-full">
                     <div className="relative h-full rounded-2xl border border-border/30 bg-bg-card p-6 lg:p-7 overflow-hidden">
                       <DottedMapOverlay className="rounded-2xl" />
                       <div className="relative flex items-start gap-4">
@@ -190,7 +190,7 @@ const ServiceDetailPage: React.FC<{ svc: ServiceConfig }> = ({ svc }) => {
             <ScrollReveal delay={0.1}>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                 {svc.deliverables.map((deliverable, idx) => (
-                  <ScrollReveal key={deliverable.label} delay={idx * 0.05}>
+                  <ScrollReveal key={deliverable.label} delay={idx * 0.05} className="h-full">
                     <div className="relative h-full rounded-2xl border border-border/30 bg-bg-card p-6 lg:p-7 overflow-hidden">
                       <DottedMapOverlay className="rounded-2xl" />
                       <div className="relative">
