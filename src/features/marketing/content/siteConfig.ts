@@ -6,8 +6,8 @@ export const SITE_CONFIG = {
     siteUrl: 'https://qyvora.netlify.app',
   },
   contact: {
-    opsEmail: 'ops@qyvora.netlify.app',
-    securityDeskEmail: 'ops@qyvora.netlify.app',
+    opsEmail: 'qyvorasec@gmail.com',
+    securityDeskEmail: 'qyvorasec@gmail.com',
     whatsappUrl: 'https://chat.whatsapp.com/Ja8pR0FZQAI2pceGjQpji5',
     whatsappLabel: 'https://chat.whatsapp.com/Ja8pR0FZQAI2pceGjQpji5',
     headquarters: 'Remote',

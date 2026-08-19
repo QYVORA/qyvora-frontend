@@ -201,7 +201,7 @@ export const termsData: TermsData = {
       title: "Contact Information",
       body: "If you have any questions, concerns, or notices regarding these Terms of Service, please contact QYVORA at:",
       bullets: [
-        "Email: legal@qyvora.com",
+        "Email: qyvorasec@gmail.com",
         "Website: https://qyvora.com",
         "QYVORA OFFSEC — Republic of Ghana",
         "For matters requiring formal legal notice, please send written correspondence to the above email address with \"Legal Notice\" in the subject line."

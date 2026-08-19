@@ -6,7 +6,7 @@ If you discover a security vulnerability in QYVORA Frontend, please report it re
 
 **Do NOT open a public GitHub issue for security vulnerabilities.**
 
-Instead, please email: **security@qyvora.com** with:
+Instead, please email: **qyvorasec@gmail.com** with:
 
 - Description of the vulnerability
 - Steps to reproduce

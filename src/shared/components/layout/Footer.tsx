@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { Mail, Copy } from 'lucide-react';
 import { BrandWhatsAppIcon } from '@/shared/components/icons';
 import { BrandLinkedinIcon } from '@/shared/components/icons';
 import { BrandYoutubeIcon } from '@/shared/components/icons';
@@ -9,6 +10,8 @@ import { BrandXIcon } from '@/shared/components/icons';
 import { ContactTrigger } from '@/features/marketing/components/ContactModal';
 import { Logo } from '@/shared/components/brand';
 import LanguageSwitcher from '@/shared/components/LanguageSwitcher';
+import { useToast } from '@/core/contexts/ToastContext';
+import { SITE_CONFIG } from '@/features/marketing/content/siteConfig';
 
 const FOOTER_COLS = [
   {
@@ -90,6 +93,17 @@ const CURRENT_YEAR = new Date().getFullYear();
 
 const Footer: React.FC = React.memo(() => {
   const { t } = useTranslation();
+  const { addToast } = useToast();
+  const companyEmail = SITE_CONFIG.contact.opsEmail;
+
+  const handleCopyEmail = useCallback(async () => {
+    try {
+      await navigator.clipboard.writeText(companyEmail);
+      addToast(t('button.emailCopied'), 'success');
+    } catch {
+      addToast(companyEmail, 'info');
+    }
+  }, [companyEmail, addToast, t]);
 
   return (
     <footer className="relative w-full min-h-dvh overflow-hidden select-none bg-bg flex flex-col">
@@ -119,6 +133,22 @@ const Footer: React.FC = React.memo(() => {
                     <Icon className="h-4 w-4" />
                   </a>
                 ))}
+                <a
+                  href={`mailto:${companyEmail}`}
+                  aria-label={t('button.emailUs')}
+                  title={companyEmail}
+                  className="flex h-11 w-11 items-center justify-center rounded-xl border border-border text-text-muted transition-colors hover:border-accent/40 hover:text-accent active:scale-95 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+                >
+                  <Mail className="h-4 w-4" />
+                </a>
+                <button
+                  type="button"
+                  onClick={handleCopyEmail}
+                  aria-label={t('button.copyEmail')}
+                  className="flex h-11 w-11 items-center justify-center rounded-xl border border-border text-text-muted transition-colors hover:border-accent/40 hover:text-accent active:scale-95 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+                >
+                  <Copy className="h-4 w-4" />
+                </button>
               </div>
 
               {/* Account access — compact pair, keeps auth reachable */}
