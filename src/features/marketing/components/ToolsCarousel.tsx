@@ -119,7 +119,7 @@ const ToolsCarousel: React.FC<ToolsCarouselProps> = ({
                   {label} {module.index}
                 </span>
 
-                <h3 className="text-3xl md:text-4xl lg:text-5xl font-black text-text-primary tracking-tighter leading-none mt-3">
+                <h3 className="text-4xl md:text-5xl lg:text-6xl font-black text-text-primary tracking-tighter leading-tight mt-3">
                   {module.title}
                 </h3>
 
