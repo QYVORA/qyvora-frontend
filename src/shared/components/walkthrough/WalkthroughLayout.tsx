@@ -83,7 +83,7 @@ export function WalkthroughLayout({
         </div>
       )}
 
-      <div className="w-full px-3 md:px-4 lg:px-6 py-8 md:py-12">
+      <div className="w-full py-8 md:py-12">
         {/* Room Header */}
         <div className="relative overflow-hidden mb-12 md:mb-16 rounded-2xl border border-border/30 bg-bg-card p-6 md:p-8">
           <div className="flex items-start gap-5">
