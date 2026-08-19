@@ -53,12 +53,12 @@ const LandingFinalCtaSection: React.FC<LandingFinalCtaSectionProps> = ({ user })
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
-              className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4"
+              className="flex flex-col sm:flex-row items-stretch gap-4"
             >
               {user ? (
                 <Link
                   to="/dashboard"
-                  className="btn-primary !px-8 sm:!px-10 !py-4 inline-flex items-center justify-center gap-2.5 whitespace-nowrap"
+                  className="btn-primary !px-8 sm:!px-10 !py-4 inline-flex items-center justify-center gap-2.5 whitespace-nowrap flex-1 sm:flex-none"
                 >
                   <IconDashboard size={18} /> {t('landing.finalCta.goToDashboard')}
                 </Link>
@@ -66,13 +66,13 @@ const LandingFinalCtaSection: React.FC<LandingFinalCtaSectionProps> = ({ user })
                 <>
                   <Link
                     to="/register"
-                    className="btn-primary !px-8 sm:!px-10 !py-4 inline-flex items-center justify-center gap-2.5 whitespace-nowrap"
+                    className="btn-primary !px-8 sm:!px-10 !py-4 inline-flex items-center justify-center gap-2.5 whitespace-nowrap flex-1 sm:flex-none"
                   >
                     {t('landing.finalCta.startTraining')} <IconArrowRight size={18} />
                   </Link>
                   <Link
                     to="/login"
-                    className="btn-secondary !px-8 sm:!px-10 !py-4 inline-flex items-center justify-center gap-2.5 whitespace-nowrap"
+                    className="btn-secondary !px-8 sm:!px-10 !py-4 inline-flex items-center justify-center gap-2.5 whitespace-nowrap flex-1 sm:flex-none"
                   >
                     {t('landing.finalCta.logIn')}
                   </Link>
