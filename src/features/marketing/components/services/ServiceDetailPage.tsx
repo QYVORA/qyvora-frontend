@@ -1,49 +1,23 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { motion } from 'motion/react';
 import { Target, Lock, PackageCheck, FileText, CheckCircle2 } from 'lucide-react';
 import { IconArrowRight, IconArrowLeft } from '@/shared/components/icons';
 import { openServiceRequestModal } from '@/features/marketing/components/ServiceRequestModal';
 import { DottedMapOverlay } from '@/shared/components/ui';
 import SEO from '@/shared/components/SEO';
-import PublicHeroSection from '@/shared/components/PublicHeroSection';
+import PublicSnapLayout from '@/shared/components/PublicSnapLayout';
+import PublicSnapSection from '@/shared/components/PublicSnapSection';
+import StudentHeroSection, { PUBLIC_HERO_TITLE_CLASS } from '@/shared/components/StudentHeroSection';
 import { Footer } from '@/shared/components/layout';
 import { REQUEST_ASSESSMENT_LABEL, PENTEST_PHILOSOPHY, type ServiceConfig } from '@/features/marketing/content/servicesConfig';
 import { buildService } from '@/shared/seo/schema';
-
-const reveal = {
-  initial: { opacity: 0, y: 40 },
-  whileInView: { opacity: 1, y: 0 },
-  viewport: { once: true, margin: '-60px' as const },
-  transition: { duration: 0.5, ease: [0.16, 1, 0.3, 1] as const },
-};
-
-const SectionCard: React.FC<{
-  icon: React.ReactNode;
-  label: string;
-  title: string;
-  children: React.ReactNode;
-}> = ({ icon, label, title, children }) => (
-  <motion.div
-    {...reveal}
-    className="relative overflow-hidden rounded-2xl border border-border/30 bg-bg-card p-6 sm:p-10"
-  >
-    <DottedMapOverlay className="rounded-2xl" />
-    <div className="relative">
-      <span className="flex items-center gap-2 text-[9px] font-black uppercase tracking-widest text-text-muted mb-3">
-        {icon} {label}
-      </span>
-      <h2 className="text-xl md:text-2xl font-black text-text-primary tracking-tight mb-5">{title}</h2>
-      {children}
-    </div>
-  </motion.div>
-);
+import ScrollReveal from '@/shared/components/ScrollReveal';
 
 const ServiceDetailPage: React.FC<{ svc: ServiceConfig }> = ({ svc }) => {
   const Icon = svc.icon;
 
   return (
-    <div className="bg-bg min-h-full" data-nav-invert>
+    <>
       <SEO
         title={`${svc.title} - QYVORA`}
         description={svc.overview}
@@ -51,158 +25,223 @@ const ServiceDetailPage: React.FC<{ svc: ServiceConfig }> = ({ svc }) => {
         schemaData={buildService(svc)}
       />
 
-      <PublicHeroSection mask="none">
-        <span className={`flex items-center gap-2 px-3 py-1 rounded-full border text-[9px] font-black uppercase tracking-widest ${
-          svc.featured ? 'bg-accent/10 border-accent/30 text-accent' : 'bg-bg-elevated border-border/30 text-text-muted'
-        }`}>
-          <Icon className="w-3 h-3" /> {svc.badge}
-        </span>
-
-        <h1 className="font-black text-text-primary leading-[1.08] tracking-tight w-full relative">
-          <span className="block text-[2rem] min-[400px]:text-[2.25rem] sm:text-[2.5rem] md:text-[3rem] lg:text-[2.5rem] xl:text-[3rem] lg:leading-[1.1] xl:leading-[1.05]">
-            {svc.title}{' '}
-            {svc.accentWord && <span className="text-accent">{svc.accentWord}</span>}
-          </span>
-        </h1>
-
-        <p className="text-text-secondary text-base sm:text-lg lg:text-base xl:text-lg leading-relaxed max-w-xl animate-fade-in font-mono">
-          {svc.overview}
-        </p>
-
-        <div className="flex flex-wrap items-baseline gap-x-4 gap-y-1">
-          <span className={`font-black ${svc.featured ? 'text-accent text-xl sm:text-2xl' : 'text-text-primary text-lg sm:text-xl'}`}>
-            {svc.price}
-          </span>
-          <span className="text-xs sm:text-sm text-text-muted font-mono">{svc.priceLocal}</span>
-        </div>
-        {svc.priceNote && (
-          <p className="text-xs text-text-muted leading-relaxed font-mono max-w-xl">{svc.priceNote}</p>
-        )}
-
-        <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 pt-2">
-          <button
-            onClick={() => openServiceRequestModal(svc.title)}
-            className="btn-primary inline-flex items-center justify-center gap-2.5 !px-8 sm:!px-10 !py-3.5 whitespace-nowrap"
+      <PublicSnapLayout>
+        {/* SECTION 1: Hero */}
+        <section className="relative w-full min-h-dvh lg:h-dvh snap-section bg-bg">
+          <StudentHeroSection
+            title={svc.title.split(' ').slice(0, -1).join(' ')}
+            accentWord={svc.accentWord}
+            titleClassName={PUBLIC_HERO_TITLE_CLASS}
+            showGlobe
+            description={svc.overview}
           >
-            {REQUEST_ASSESSMENT_LABEL} <IconArrowRight className="h-4 w-4" />
-          </button>
-          <Link
-            to="/services"
-            className="btn-secondary inline-flex items-center justify-center gap-2.5 !px-8 sm:!px-10 !py-3.5 whitespace-nowrap"
-          >
-            <IconArrowLeft className="h-4 w-4" /> All Services
-          </Link>
-        </div>
-      </PublicHeroSection>
+            <span className={`flex items-center gap-2 px-3 py-1 rounded-full border text-[9px] font-black uppercase tracking-widest ${
+              svc.featured ? 'bg-accent/10 border-accent/30 text-accent' : 'bg-bg-elevated border-border/30 text-text-muted'
+            }`}>
+              <Icon className="w-3 h-3" /> {svc.badge}
+            </span>
 
-      <div className="px-3 md:px-4 lg:px-6 space-y-6 md:space-y-8 pb-16 md:pb-24">
-
-        {svc.highlight && (
-          <motion.div
-            {...reveal}
-            className="rounded-2xl border border-accent/40 bg-accent/5 p-6 sm:p-8"
-          >
-            <div className="flex items-start gap-4">
-              <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl border border-accent/30 bg-accent/10">
-                <CheckCircle2 className="h-6 w-6 text-accent" />
+            <div className="flex flex-wrap items-baseline gap-x-4 gap-y-1">
+              <span className={`font-black ${svc.featured ? 'text-accent text-xl sm:text-2xl' : 'text-text-primary text-lg sm:text-xl'}`}>
+                {svc.price}
               </span>
-              <div>
-                <span className="text-[9px] font-black uppercase tracking-widest text-accent mb-2 block">Key Benefit</span>
-                <p className="text-sm sm:text-base text-text-primary font-mono leading-relaxed">{svc.highlight}</p>
+              <span className="text-xs sm:text-sm text-text-muted font-mono">{svc.priceLocal}</span>
+            </div>
+            {svc.priceNote && (
+              <p className="text-xs text-text-muted leading-relaxed font-mono max-w-xl">{svc.priceNote}</p>
+            )}
+
+            {svc.highlight && (
+              <div className="rounded-xl border border-accent/40 bg-accent/5 px-4 py-3 max-w-xl">
+                <p className="text-xs sm:text-sm text-accent font-mono leading-relaxed">{svc.highlight}</p>
+              </div>
+            )}
+
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4">
+              <button
+                onClick={() => openServiceRequestModal(svc.title)}
+                className="btn-primary inline-flex items-center justify-center gap-2.5 !px-8 sm:!px-10 !py-3.5 whitespace-nowrap"
+              >
+                {REQUEST_ASSESSMENT_LABEL} <IconArrowRight className="h-4 w-4" />
+              </button>
+              <Link
+                to="/services"
+                className="btn-secondary inline-flex items-center justify-center gap-2.5 !px-8 sm:!px-10 !py-3.5 whitespace-nowrap"
+              >
+                <IconArrowLeft className="h-4 w-4" /> All Services
+              </Link>
+            </div>
+          </StudentHeroSection>
+        </section>
+
+        {/* SECTION 2: Scope & What's Included */}
+        <PublicSnapSection>
+          <div className="flex flex-col items-center justify-center h-full">
+            <div className="w-full max-w-6xl space-y-12 lg:space-y-16">
+              <ScrollReveal>
+                <span className="text-[9px] font-black uppercase tracking-widest text-text-muted mb-4 block">
+                  Scope of Work
+                </span>
+                <h2 className="text-3xl md:text-5xl lg:text-6xl font-black text-text-primary tracking-tighter leading-none mb-6">
+                  What This Engagement <span className="text-accent">Covers</span>
+                </h2>
+                <p className="text-sm sm:text-base text-text-secondary leading-relaxed font-mono max-w-2xl">
+                  {svc.scope}
+                </p>
+              </ScrollReveal>
+
+              <div className="relative rounded-2xl border border-border/30 bg-bg-card p-8 lg:p-12 overflow-hidden">
+                <DottedMapOverlay className="rounded-2xl" />
+                <div className="relative">
+                  <span className="text-[9px] font-black uppercase tracking-widest text-text-muted mb-6 block">
+                    What's Included
+                  </span>
+                  <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6">
+                    {svc.included.map((item, idx) => (
+                      <ScrollReveal key={item} delay={idx * 0.05}>
+                        <li className="flex items-start gap-3 rounded-xl border border-border/30 bg-bg-elevated/60 px-4 py-3">
+                          <span className="w-6 h-6 rounded-lg bg-accent/10 flex items-center justify-center shrink-0 mt-0.5">
+                            <CheckCircle2 className="w-3.5 h-3.5 text-accent" />
+                          </span>
+                          <span className="text-xs sm:text-sm text-text-secondary leading-relaxed flex-1">{item}</span>
+                        </li>
+                      </ScrollReveal>
+                    ))}
+                  </ul>
+                </div>
               </div>
             </div>
-          </motion.div>
-        )}
-
-        <SectionCard icon={<Lock className="w-3 h-3" />} label="Scope of Work" title="What the engagement covers">
-          <p className="text-sm sm:text-base text-text-secondary leading-relaxed font-mono">
-            {svc.scope}
-          </p>
-        </SectionCard>
-
-        <SectionCard icon={<PackageCheck className="w-3 h-3" />} label="What's Included" title="Included in this engagement">
-          <ul className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-3">
-            {svc.included.map((item) => (
-              <li key={item} className="flex items-start gap-2.5">
-                <span className="w-1.5 h-1.5 rounded-full bg-accent mt-2 shrink-0" />
-                <span className="text-xs sm:text-sm text-text-secondary leading-relaxed">{item}</span>
-              </li>
-            ))}
-          </ul>
-        </SectionCard>
-
-        <SectionCard icon={<Target className="w-3 h-3" />} label="Benefits" title="What you get">
-          <ul className="space-y-3">
-            {svc.benefits.map((benefit) => (
-              <li key={benefit} className="flex items-start gap-3">
-                <CheckCircle2 className="w-4 h-4 text-accent mt-0.5 shrink-0" />
-                <span className="text-sm sm:text-base text-text-secondary leading-relaxed">{benefit}</span>
-              </li>
-            ))}
-          </ul>
-        </SectionCard>
-
-        <SectionCard icon={<FileText className="w-3 h-3" />} label="Deliverables" title="The security report">
-          <p className="text-sm sm:text-base text-text-secondary leading-relaxed mb-6 font-mono">
-            You receive a professional security report that includes:
-          </p>
-          <ul className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-4">
-            {svc.deliverables.map((d) => (
-              <li key={d.label} className="rounded-xl border border-border/30 bg-bg-elevated/60 px-4 py-3">
-                <span className="block text-xs sm:text-sm font-black text-text-primary uppercase tracking-widest mb-1">{d.label}</span>
-                <span className="block text-xs text-text-muted leading-relaxed">{d.desc}</span>
-              </li>
-            ))}
-          </ul>
-        </SectionCard>
-
-        <motion.div
-          {...reveal}
-          className="relative overflow-hidden rounded-2xl border border-border/30 bg-bg-card p-6 sm:p-10"
-        >
-          <DottedMapOverlay className="rounded-2xl" />
-          <div className="relative flex flex-col lg:flex-row items-start gap-6 lg:gap-12">
-            <span className="flex items-center gap-2 px-3 py-1 rounded-full bg-accent/10 border border-accent/30 text-[9px] font-black uppercase tracking-widest text-accent shrink-0">
-              <Target className="w-3 h-3" /> {PENTEST_PHILOSOPHY.heading}
-            </span>
-            <p className="text-sm sm:text-base text-text-secondary leading-relaxed font-mono max-w-3xl">
-              {PENTEST_PHILOSOPHY.body}
-            </p>
           </div>
-        </motion.div>
+        </PublicSnapSection>
 
-        <motion.div
-          {...reveal}
-          className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4 rounded-2xl border border-accent/40 bg-accent/5 p-6 sm:p-10"
-        >
-          <div>
-            <h2 className="text-lg sm:text-xl font-black text-text-primary tracking-tight mb-1">Ready to get started?</h2>
-            <p className="text-xs sm:text-sm text-text-muted font-mono">
-              Request an assessment or explore the full range of services.
-            </p>
-          </div>
-          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 shrink-0">
-            <button
-              onClick={() => openServiceRequestModal(svc.title)}
-              className="btn-primary inline-flex items-center justify-center gap-2 !px-7 !py-3.5 whitespace-nowrap"
-            >
-              {REQUEST_ASSESSMENT_LABEL} <IconArrowRight size={13} />
-            </button>
-            <Link
-              to="/services"
-              className="btn-secondary inline-flex items-center justify-center gap-2 !px-7 !py-3.5 whitespace-nowrap"
-            >
-              <IconArrowLeft size={13} /> All Services
-            </Link>
-          </div>
-        </motion.div>
-      </div>
+        {/* SECTION 3: Benefits & Value */}
+        <PublicSnapSection>
+          <div className="flex flex-col items-center justify-center h-full">
+            <div className="w-full max-w-6xl space-y-12 lg:space-y-16">
+              <ScrollReveal>
+                <span className="text-[9px] font-black uppercase tracking-widest text-text-muted mb-4 block">
+                  Benefits
+                </span>
+                <h2 className="text-3xl md:text-5xl lg:text-6xl font-black text-text-primary tracking-tighter leading-none mb-6">
+                  What You <span className="text-accent">Gain</span>
+                </h2>
+              </ScrollReveal>
 
-      {/* ── Footer ── */}
-      <section className="relative w-full bg-bg">
-        <Footer />
-      </section>
-    </div>
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
+                {svc.benefits.map((benefit, idx) => (
+                  <ScrollReveal key={benefit} delay={idx * 0.1}>
+                    <div className="relative rounded-2xl border border-border/30 bg-bg-card p-6 lg:p-8 overflow-hidden">
+                      <DottedMapOverlay className="rounded-2xl" />
+                      <div className="relative flex items-start gap-4">
+                        <div className="w-10 h-10 rounded-xl bg-accent/10 border border-accent/30 flex items-center justify-center shrink-0">
+                          <Target className="w-5 h-5 text-accent" />
+                        </div>
+                        <p className="text-sm sm:text-base text-text-secondary leading-relaxed font-mono flex-1">
+                          {benefit}
+                        </p>
+                      </div>
+                    </div>
+                  </ScrollReveal>
+                ))}
+              </div>
+            </div>
+          </div>
+        </PublicSnapSection>
+
+        {/* SECTION 4: Deliverables */}
+        <PublicSnapSection>
+          <div className="flex flex-col items-center justify-center h-full">
+            <div className="w-full max-w-6xl space-y-12 lg:space-y-16">
+              <ScrollReveal>
+                <span className="text-[9px] font-black uppercase tracking-widest text-text-muted mb-4 block">
+                  Deliverables
+                </span>
+                <h2 className="text-3xl md:text-5xl lg:text-6xl font-black text-text-primary tracking-tighter leading-none mb-6">
+                  The Security <span className="text-accent">Report</span>
+                </h2>
+                <p className="text-sm sm:text-base text-text-secondary leading-relaxed font-mono max-w-2xl">
+                  You receive a professional security report that includes:
+                </p>
+              </ScrollReveal>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
+                {svc.deliverables.map((deliverable, idx) => (
+                  <ScrollReveal key={deliverable.label} delay={idx * 0.1}>
+                    <div className="relative rounded-2xl border border-border/30 bg-bg-card p-6 lg:p-8 overflow-hidden">
+                      <DottedMapOverlay className="rounded-2xl" />
+                      <div className="relative">
+                        <div className="flex items-center gap-3 mb-3">
+                          <div className="w-8 h-8 rounded-lg bg-accent/10 border border-accent/30 flex items-center justify-center shrink-0">
+                            <FileText className="w-4 h-4 text-accent" />
+                          </div>
+                          <h3 className="text-sm font-black text-text-primary uppercase tracking-widest">
+                            {deliverable.label}
+                          </h3>
+                        </div>
+                        <p className="text-xs sm:text-sm text-text-muted leading-relaxed font-mono">
+                          {deliverable.desc}
+                        </p>
+                      </div>
+                    </div>
+                  </ScrollReveal>
+                ))}
+              </div>
+            </div>
+          </div>
+        </PublicSnapSection>
+
+        {/* SECTION 5: Philosophy & CTA */}
+        <PublicSnapSection>
+          <div className="flex flex-col items-center justify-center h-full">
+            <div className="w-full max-w-4xl space-y-12 lg:space-y-16">
+              <ScrollReveal className="text-center">
+                <span className="text-[9px] font-black uppercase tracking-widest text-text-muted mb-4 block">
+                  {PENTEST_PHILOSOPHY.heading}
+                </span>
+                <h2 className="text-3xl md:text-5xl lg:text-6xl font-black text-text-primary tracking-tighter leading-none mb-6">
+                  Thorough Assessment, <span className="text-accent">Not Checkbox Audits</span>
+                </h2>
+                <p className="text-sm sm:text-base text-text-secondary leading-relaxed font-mono max-w-2xl mx-auto mb-12">
+                  {PENTEST_PHILOSOPHY.body}
+                </p>
+              </ScrollReveal>
+
+              <ScrollReveal>
+                <div className="relative rounded-2xl border border-accent/40 bg-accent/5 p-8 lg:p-12 overflow-hidden">
+                  <div className="relative flex flex-col items-center text-center space-y-6">
+                    <h3 className="text-xl md:text-2xl font-black text-text-primary tracking-tight">
+                      Ready to get started?
+                    </h3>
+                    <p className="text-sm text-text-muted font-mono max-w-xl">
+                      Request an assessment or explore the full range of services.
+                    </p>
+                    <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 pt-2">
+                      <button
+                        onClick={() => openServiceRequestModal(svc.title)}
+                        className="btn-primary inline-flex items-center justify-center gap-2.5 !px-8 sm:!px-10 !py-3.5 whitespace-nowrap"
+                      >
+                        {REQUEST_ASSESSMENT_LABEL} <IconArrowRight size={14} />
+                      </button>
+                      <Link
+                        to="/services"
+                        className="btn-secondary inline-flex items-center justify-center gap-2.5 !px-8 sm:!px-10 !py-3.5 whitespace-nowrap"
+                      >
+                        <IconArrowLeft size={14} /> All Services
+                      </Link>
+                    </div>
+                  </div>
+                </div>
+              </ScrollReveal>
+            </div>
+          </div>
+        </PublicSnapSection>
+
+        {/* SECTION 6: Footer */}
+        <section className="w-full bg-bg snap-section">
+          <Footer />
+        </section>
+      </PublicSnapLayout>
+    </>
   );
 };
 

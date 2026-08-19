@@ -11,8 +11,9 @@ interface PublicSnapSectionProps {
  *
  * Each section fills at least one viewport (`min-h-dvh`), is a scroll-snap
  * target on desktop, alternates `bg-bg`/`bg-bg-alt` by its position among the
- * page's sections, and clears the fixed 80px navbar via `pt-24 md:pt-28 lg:pt-32`.
- * Content is vertically centered; sections grow if content exceeds the viewport.
+ * page's sections, and clears the fixed 80px navbar via `pt-24`.
+ * Content is vertically centered inside the snap frame. No nested scrolling —
+ * the page-level snap container is the sole vertical scroll surface.
  */
 const PublicSnapSection: React.FC<PublicSnapSectionProps> = ({
   children,
@@ -22,11 +23,9 @@ const PublicSnapSection: React.FC<PublicSnapSectionProps> = ({
   return (
     <section
       id={id}
-      className={`relative w-full min-h-dvh lg:h-dvh snap-section flex items-start odd:bg-bg even:bg-bg-alt ${className ?? ''}`}
+      className={`relative w-full min-h-dvh lg:h-dvh snap-section flex flex-col items-center justify-center odd:bg-bg even:bg-bg-alt px-3 md:px-4 lg:px-6 pt-24 pb-8 md:pb-10 lg:pb-12 overflow-hidden ${className ?? ''}`}
     >
-      <div className="w-full h-full overflow-y-auto px-3 md:px-4 lg:px-6 pt-24 md:pt-28 lg:pt-32 pb-6 md:pb-8 lg:pb-10">
-        {children}
-      </div>
+      {children}
     </section>
   );
 };

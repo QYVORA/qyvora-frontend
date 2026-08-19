@@ -138,11 +138,9 @@ const ServicesPage = () => {
         {SERVICES.map((svc, idx) => (
           <ServiceSection key={svc.id} svc={svc} index={idx} />
         ))}
-        <section className="relative w-full min-h-dvh lg:h-dvh snap-section bg-bg-alt">
-          <LandingFinalCtaSection user={user} />
-        </section>
+        <LandingFinalCtaSection user={user} />
 
-        <section className="w-full bg-bg pt-10 md:pt-0 snap-section">
+        <section className="w-full bg-bg snap-section">
           <Footer />
         </section>
       </PublicSnapLayout>
