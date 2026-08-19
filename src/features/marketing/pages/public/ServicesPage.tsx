@@ -140,7 +140,7 @@ const ServicesPage = () => {
         ))}
         <LandingFinalCtaSection user={user} />
 
-        <section className="w-full bg-bg snap-section">
+        <section className="relative w-full min-h-dvh lg:h-dvh snap-section bg-bg overflow-hidden">
           <Footer />
         </section>
       </PublicSnapLayout>
