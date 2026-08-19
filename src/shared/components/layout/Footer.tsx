@@ -106,21 +106,21 @@ const Footer: React.FC = React.memo(() => {
   }, [companyEmail, addToast, t]);
 
   return (
-    <footer className="relative w-full min-h-dvh overflow-hidden select-none bg-bg flex flex-col">
+    <footer className="relative flex min-h-dvh w-full flex-col overflow-hidden bg-bg select-none">
       {/* ── Content ──────────────────────────────────────────────────────── */}
-      <div className="relative z-10 flex-1 w-full h-full px-3 py-10 md:px-4 md:py-20 lg:px-6 flex flex-col">
-        <div className="w-full flex-1 flex flex-col">
+      <div className="relative z-10 mx-auto flex w-full max-w-7xl flex-1 flex-col px-4 py-12 sm:px-6 md:py-20 lg:px-8 lg:py-24">
+        <div className="flex w-full flex-1 flex-col">
 
           {/* ── Top: Brand | Nav grid ─────────────────────────────────────── */}
-          <div className="grid grid-cols-1 gap-12 lg:grid-cols-[minmax(0,340px)_1fr] lg:gap-20 xl:gap-32">
+          <div className="grid grid-cols-1 gap-14 lg:grid-cols-[minmax(0,300px)_1fr] lg:gap-20 xl:grid-cols-[minmax(0,340px)_1fr] xl:gap-28">
 
             {/* Brand */}
-            <div className="space-y-5">
+            <div className="space-y-6">
               <Logo size="lg" variant="full" className="block" />
-              <p className="max-w-xs font-mono text-sm leading-relaxed text-text-muted">
+              <p className="max-w-sm font-mono text-sm leading-relaxed text-text-muted">
                 {t('body.footerDesc')}
               </p>
-              <div className="flex items-center gap-3">
+              <div className="flex max-w-sm flex-wrap gap-2.5">
                 {SOCIAL_LINKS.map(({ key, label, href, Icon }) => (
                   <a
                     key={key}
@@ -128,7 +128,7 @@ const Footer: React.FC = React.memo(() => {
                     target="_blank"
                     rel="noopener noreferrer"
                     aria-label={label}
-                    className="flex h-11 w-11 items-center justify-center rounded-xl border border-border text-text-muted transition-colors hover:border-accent/40 hover:text-accent active:scale-95 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+                    className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-border text-text-muted transition-colors hover:border-accent/40 hover:text-accent active:scale-95 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
                   >
                     <Icon className="h-4 w-4" />
                   </a>
@@ -137,7 +137,7 @@ const Footer: React.FC = React.memo(() => {
                   href={`mailto:${companyEmail}`}
                   aria-label={t('button.emailUs')}
                   title={companyEmail}
-                  className="flex h-11 w-11 items-center justify-center rounded-xl border border-border text-text-muted transition-colors hover:border-accent/40 hover:text-accent active:scale-95 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+                  className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-border text-text-muted transition-colors hover:border-accent/40 hover:text-accent active:scale-95 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
                 >
                   <Mail className="h-4 w-4" />
                 </a>
@@ -145,24 +145,23 @@ const Footer: React.FC = React.memo(() => {
                   type="button"
                   onClick={handleCopyEmail}
                   aria-label={t('button.copyEmail')}
-                  className="flex h-11 w-11 items-center justify-center rounded-xl border border-border text-text-muted transition-colors hover:border-accent/40 hover:text-accent active:scale-95 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+                  className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-border text-text-muted transition-colors hover:border-accent/40 hover:text-accent active:scale-95 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
                 >
                   <Copy className="h-4 w-4" />
                 </button>
               </div>
 
               {/* Account access — compact pair, keeps auth reachable */}
-              <div className="flex items-center gap-5 pt-1">
+              <div className="flex flex-wrap items-center gap-2 pt-1">
                 <Link
                   to="/register"
-                  className="text-sm font-bold text-text-primary transition-colors hover:text-accent focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+                  className="rounded-lg border border-border px-3.5 py-2 text-sm font-bold text-text-primary transition-colors hover:border-accent/40 hover:text-accent focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
                 >
                   {t(FOOTER_LINK_KEYS.register)}
                 </Link>
-                <span className="h-3 w-px bg-border/60" aria-hidden="true" />
                 <Link
                   to="/login"
-                  className="text-sm font-bold text-text-primary transition-colors hover:text-accent focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+                  className="rounded-lg border border-border px-3.5 py-2 text-sm font-bold text-text-primary transition-colors hover:border-accent/40 hover:text-accent focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
                 >
                   {t(FOOTER_LINK_KEYS.login)}
                 </Link>
@@ -170,13 +169,13 @@ const Footer: React.FC = React.memo(() => {
             </div>
 
             {/* Nav columns — balanced categories, stable grid */}
-            <nav aria-label="Footer" className="grid grid-cols-2 gap-x-8 gap-y-10 lg:grid-cols-4 lg:gap-x-10">
+            <nav aria-label="Footer" className="grid grid-cols-2 gap-x-8 gap-y-12 md:grid-cols-4 md:gap-x-6 lg:gap-x-10">
               {FOOTER_COLS.map((col) => (
                 <div key={col.title}>
                   <h3 className="text-[10px] font-black uppercase tracking-widest text-text-muted">
                     {t(FOOTER_COL_KEYS[col.title] || col.title)}
                   </h3>
-                  <ul className="mt-5 space-y-3">
+                  <ul className="mt-5 space-y-3.5">
                     {col.links.map((link) => (
                       <li key={link.key}>
                         <Link
@@ -194,10 +193,10 @@ const Footer: React.FC = React.memo(() => {
           </div>
 
           {/* ── Spacer pushes status banner to bottom ────────────────────── */}
-          <div className="flex-1 min-h-6" />
+          <div className="min-h-12 flex-1 lg:min-h-20" />
 
           {/* ── Status banner: system status · language · contact ────────── */}
-          <div className="mt-10 flex flex-col gap-5 pt-6 md:flex-row md:items-center md:justify-between">
+          <div className="mt-10 flex flex-col gap-6 border-t border-border/60 pt-8 md:flex-row md:items-center md:justify-between lg:mt-12 lg:pt-10">
             <div className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-text-muted">
               <span className="relative flex h-2 w-2">
                 <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-accent opacity-75" />
@@ -208,7 +207,7 @@ const Footer: React.FC = React.memo(() => {
               <span className="normal-case tracking-normal">{CURRENT_YEAR}</span>
             </div>
 
-            <div className="flex items-center gap-4">
+            <div className="flex flex-wrap items-center gap-3 sm:gap-4">
               <LanguageSwitcher />
               <ContactTrigger type="button" className="btn-primary">
                 {t('button.contactUs')}
