@@ -2240,7 +2240,11 @@
       "tokenCopied": "Token copied to clipboard",
       "acknowledgedToken": "Token acknowledged",
       "unblockUser": "Unblock User",
-      "blockUser": "Block User"
+      "blockUser": "Block User",
+      "lastLogin": "Last Login",
+      "lastLoginIp": "IP Address",
+      "lastLoginDevice": "Device",
+      "neverLoggedIn": "Never"
     },
     "inbox": {
       "loadFailed": "Failed to load inbox",

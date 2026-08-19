@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Copy, Ban, Unlock, Trash2 } from 'lucide-react';
+import { Copy, Ban, Unlock, Trash2, Globe } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { IconShield } from '@/shared/components/icons';
 import type { AdminUser } from '../../types/admin.types';
@@ -45,6 +45,33 @@ const UsersTab: React.FC<UsersTabProps> = ({
         <span className="px-2.5 py-1 rounded-lg bg-accent-dim text-[9px] font-black uppercase tracking-widest text-accent">
           {item.role}
         </span>
+      ),
+    },
+    {
+      key: 'lastLoginIp',
+      header: t('admin.users.lastLogin'),
+      sortable: true,
+      render: (item) => (
+        item.lastLoginAt ? (
+          <div className="space-y-1">
+            <div className="flex items-center gap-1.5 text-xs font-mono font-bold text-text-primary">
+              <Globe className="w-3 h-3 text-accent/60" />
+              {item.lastLoginIp || '—'}
+            </div>
+            <div className="text-[10px] text-text-muted/50 font-mono">
+              {new Date(item.lastLoginAt).toLocaleString()}
+            </div>
+            {item.lastLoginUserAgent && (
+              <Tooltip content={item.lastLoginUserAgent}>
+                <div className="text-[10px] text-text-muted/40 font-mono max-w-[140px] truncate cursor-help">
+                  {item.lastLoginUserAgent}
+                </div>
+              </Tooltip>
+            )}
+          </div>
+        ) : (
+          <span className="text-[10px] font-black uppercase text-text-muted/40 tracking-widest">{t('admin.users.neverLoggedIn')}</span>
+        )
       ),
     },
     {
@@ -144,7 +171,7 @@ const UsersTab: React.FC<UsersTabProps> = ({
   ];
 
   const searchFilter = (item: AdminUser, query: string) =>
-    `${item.name} ${item.hackerHandle} ${item.email} ${item.role}`.toLowerCase().includes(query);
+    `${item.name} ${item.hackerHandle} ${item.email} ${item.role} ${item.lastLoginIp || ''}`.toLowerCase().includes(query);
 
   const mobileCard = (item: AdminUser) => (
     <div className="bg-transparent space-y-4">
@@ -162,6 +189,16 @@ const UsersTab: React.FC<UsersTabProps> = ({
             </span>
           )}
         </div>
+        {item.lastLoginAt ? (
+          <div className="flex items-center gap-2 mt-3 text-xs font-mono text-text-muted/60">
+            <Globe className="w-3 h-3 text-accent/60" />
+            <span className="font-bold text-text-primary">{item.lastLoginIp || '—'}</span>
+            <span>·</span>
+            <span>{new Date(item.lastLoginAt).toLocaleString()}</span>
+          </div>
+        ) : (
+          <div className="mt-3 text-[10px] font-black uppercase text-text-muted/40 tracking-widest">{t('admin.users.neverLoggedIn')}</div>
+        )}
         {item.recoveryToken && (
           <div className="flex items-center gap-3 mt-4 p-3 bg-bg-elevated rounded-xl shadow-sm">
             <IconShield size={16} className="text-accent" />
