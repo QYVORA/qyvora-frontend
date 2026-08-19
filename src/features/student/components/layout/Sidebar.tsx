@@ -16,6 +16,7 @@ import {
   IconCheck,
   IconLock,
   IconLabs,
+  IconInfo,
 } from '@/shared/components/icons';
 import { useAuth } from '@/core/contexts/AuthContext';
 import api from '@/core/services/api';
@@ -489,6 +490,10 @@ const Sidebar = () => {
   const { pathname } = useLocation();
   const { user, logout } = useAuth();
 
+  const handleStartTour = () => {
+    window.dispatchEvent(new CustomEvent('qyvora:start-tutorial'));
+  };
+
   const ALL_NAV: NavItem[] = [
     { label: t('nav.dashboard'), icon: IconDashboard, path: '/dashboard' },
     { label: t('nav.myCourses'), icon: BookMarked, path: '/dashboard/courses' },
@@ -583,6 +588,15 @@ const Sidebar = () => {
             </Link>
           );
         })}
+        {user?.onboardingCompletedAt && (
+          <button
+            onClick={handleStartTour}
+            className="flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-bold uppercase tracking-wider transition-colors text-text-muted hover:text-text-primary hover:bg-accent-dim/50 w-full"
+          >
+            <IconInfo className="w-5 h-5 shrink-0" />
+            {t('student.tour.replay')}
+          </button>
+        )}
       </div>
     </>
   );
@@ -646,6 +660,14 @@ const Sidebar = () => {
                   <p className="text-[10px] font-black uppercase tracking-widest text-accent">{t('student.sidebar.viewProfile')}</p>
                 </div>
               </Link>
+              {user?.onboardingCompletedAt && (
+                <button
+                  onClick={() => { handleStartTour(); setMobileOpen(false); }}
+                  className="w-full flex items-center justify-center gap-2 py-3 rounded-xl border border-border/30 text-text-muted text-xs font-black uppercase tracking-widest hover:bg-accent-dim/50 hover:text-text-primary transition-all"
+                >
+                  <IconInfo className="w-4 h-4" /> {t('student.tour.replay')}
+                </button>
+              )}
               <button
                 onClick={() => { logout(); setMobileOpen(false); }}
                 className="w-full flex items-center justify-center gap-2 py-3.5 rounded-xl border border-red-400/20 text-red-400 text-xs font-black uppercase tracking-widest hover:bg-red-400/10 transition-all"

@@ -49,6 +49,7 @@ interface User {
   bootcampId: string;
   bootcampStatus: string;
   onboardingCompletedAt: string | null;
+  onboardingSkippedAt: string | null;
   recoveryTokenAcknowledgedAt: string | null;
   handleNeedsUpdate: boolean;
   twoFactorEnabled: boolean;
@@ -97,6 +98,7 @@ interface BackendUser {
   bootcampId?: string;
   bootcampStatus?: string;
   onboardingCompletedAt?: string;
+  onboardingSkippedAt?: string;
   recoveryTokenAcknowledgedAt?: string;
   handleNeedsUpdate?: boolean;
   twoFactorEnabled?: boolean;
@@ -161,6 +163,7 @@ const toFrontendUser = (backendUser: BackendUser): User => {
     bootcampId: String(backendUser?.bootcampId || ''),
     bootcampStatus: String(backendUser?.bootcampStatus || 'not_enrolled'),
     onboardingCompletedAt: backendUser?.onboardingCompletedAt || null,
+    onboardingSkippedAt: backendUser?.onboardingSkippedAt || null,
     recoveryTokenAcknowledgedAt: backendUser?.recoveryTokenAcknowledgedAt || null,
     handleNeedsUpdate: !!backendUser?.handleNeedsUpdate,
     twoFactorEnabled: !!(backendUser as any)?.twoFactorEnabled,
