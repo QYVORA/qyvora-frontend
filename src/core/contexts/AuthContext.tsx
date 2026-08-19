@@ -48,6 +48,7 @@ interface User {
   role: string;
   bootcampId: string;
   bootcampStatus: string;
+  emailVerified: boolean;
   onboardingCompletedAt: string | null;
   onboardingSkippedAt: string | null;
   recoveryTokenAcknowledgedAt: string | null;
@@ -97,6 +98,7 @@ interface BackendUser {
   cpPoints?: number;
   bootcampId?: string;
   bootcampStatus?: string;
+  emailVerified?: boolean;
   onboardingCompletedAt?: string;
   onboardingSkippedAt?: string;
   recoveryTokenAcknowledgedAt?: string;
@@ -162,6 +164,7 @@ const toFrontendUser = (backendUser: BackendUser): User => {
     role,
     bootcampId: String(backendUser?.bootcampId || ''),
     bootcampStatus: String(backendUser?.bootcampStatus || 'not_enrolled'),
+    emailVerified: backendUser?.emailVerified !== false,
     onboardingCompletedAt: backendUser?.onboardingCompletedAt || null,
     onboardingSkippedAt: backendUser?.onboardingSkippedAt || null,
     recoveryTokenAcknowledgedAt: backendUser?.recoveryTokenAcknowledgedAt || null,
@@ -227,15 +230,20 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     (async () => {
       try {
         await refreshMe();
-      } catch {
-        // Session restoration failed (token expired, cookie cleared, etc.).
-        // Clear any leftover auth data to ensure a clean guest state.
-        // The error is intentionally swallowed here — it is an expected
-        // outcome for expired sessions, not an application error.
+      } catch (err: any) {
+        const isVerificationRequired =
+          err?.response?.status === 403 &&
+          (err?.response?.data?.verificationRequired || err?.response?.data?.code === 'email_verification_required');
+        if (isVerificationRequired) {
+          try {
+            const pendingEmail = err?.response?.data?.email || localStorage.getItem('qyvora_pending_verification_email') || '';
+            if (pendingEmail) localStorage.setItem('qyvora_pending_verification_email', pendingEmail);
+            localStorage.setItem('qyvora_auth_requires_verification', '1');
+          } catch { /* ignore */ }
+        }
         setUser(null);
         clearAuthStorage();
       } finally {
-        // Always clear the loading flag, even on failure, so the UI unblocks.
         setLoading(false);
       }
     })();

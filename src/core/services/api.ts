@@ -126,6 +126,10 @@ export const clearAuthStorage = () => {
   persistAccessToken('');
   persistCsrfToken('');
   setAuthSessionHint(false);
+  try {
+    localStorage.removeItem('qyvora_auth_requires_verification');
+    localStorage.removeItem('qyvora_pending_verification_email');
+  } catch { /* ignore */ }
 };
 
 // ─── Response token extraction ────────────────────────────────────────────────
@@ -256,9 +260,15 @@ const tryRefreshToken = async (): Promise<string | null> => {
         maybeUpdateAuthArtifacts(res.data, res.headers as Record<string, unknown>);
         return getAccessToken() || null;
       })
-      .catch(() => {
-        // Refresh failed (refresh token expired, revoked, or server error).
-        // Wipe all auth state so the user is treated as fully logged out.
+      .catch((err) => {
+        const isVerificationRequired =
+          err?.response?.status === 403 &&
+          (err?.response?.data?.verificationRequired || err?.response?.data?.code === 'email_verification_required');
+        if (isVerificationRequired) {
+          try {
+            localStorage.setItem('qyvora_auth_requires_verification', '1');
+          } catch { /* ignore */ }
+        }
         clearAuthStorage();
         return null;
       })

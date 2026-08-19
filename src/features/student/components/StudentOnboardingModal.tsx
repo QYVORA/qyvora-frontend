@@ -7,12 +7,14 @@ import { usePopupManager } from '@/core/hooks/usePopupManager';
 import { Dialog, DialogContent } from '@/shared/components/ui/Dialog';
 import { IconShield, IconTarget, IconLeaderboard, IconArrowRight } from '@/shared/components/icons';
 
-const ONBOARDING_COMPLETED_KEY = 'qyvora_onboarding_completed';
-
 /**
  * Multi-step onboarding modal that appears when a student has not completed
  * onboarding. Primary goal: drive the student to register/continue with the
  * Hacker Protocol Bootcamp.
+ *
+ * Server state (onboardingCompletedAt / onboardingSkippedAt) is authoritative.
+ * localStorage is used only to avoid re-showing after dismiss within the same
+ * session — it does NOT override a server-side skip/complete.
  *
  * Uses usePopupManager('onboarding', 0) — absolute highest priority popup slot.
  * After onboarding completes, the guided tutorial (priority 2) can auto-show.
@@ -26,13 +28,9 @@ const StudentOnboardingModal: React.FC = () => {
   const skippedOnServer = Boolean(user?.onboardingSkippedAt);
 
   const needsOnboarding = useMemo(() => {
-    if (completedOnServer) return false;
-    try {
-      return localStorage.getItem(ONBOARDING_COMPLETED_KEY) !== '1';
-    } catch {
-      return true;
-    }
-  }, [completedOnServer]);
+    if (completedOnServer || skippedOnServer) return false;
+    return true;
+  }, [completedOnServer, skippedOnServer]);
 
   const { isVisible, onDismiss } = usePopupManager('onboarding', 0);
   const onDismissRef = useRef(onDismiss);
@@ -46,19 +44,14 @@ const StudentOnboardingModal: React.FC = () => {
   const isEnrolled = user?.bootcampStatus !== 'not_enrolled';
   const totalSteps = 4;
 
-  const markLocalComplete = useCallback(() => {
-    try { localStorage.setItem(ONBOARDING_COMPLETED_KEY, '1'); } catch { /* ignore */ }
-  }, []);
-
   const handleSkip = useCallback(async () => {
     setSubmitting(true);
     try {
       await api.post('/profile/onboarding/skip');
       await refreshMe();
     } catch { /* best-effort */ }
-    markLocalComplete();
     onDismiss();
-  }, [refreshMe, onDismiss, markLocalComplete]);
+  }, [refreshMe, onDismiss]);
 
   const handleComplete = useCallback(async () => {
     setSubmitting(true);
@@ -66,10 +59,9 @@ const StudentOnboardingModal: React.FC = () => {
       await api.post('/profile/onboarding/complete');
       await refreshMe();
     } catch { /* best-effort */ }
-    markLocalComplete();
     onDismiss();
     navigate('/dashboard/bootcamps/bc_1775270338500');
-  }, [refreshMe, onDismiss, navigate, markLocalComplete]);
+  }, [refreshMe, onDismiss, navigate]);
 
   const handleNext = useCallback(() => {
     if (step < totalSteps - 1) setStep(step + 1);
