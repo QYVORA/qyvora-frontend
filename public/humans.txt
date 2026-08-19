@@ -1,6 +1,6 @@
 /* TEAM */
   Site Owner: QYVORA OFFSEC
-  Contact: ops@qyvora.netlify.app
+  Contact: qyvorasec@gmail.com
   Location: Tamale, Ghana
 
 /* SITE */

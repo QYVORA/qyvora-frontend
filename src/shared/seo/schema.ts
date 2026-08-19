@@ -30,6 +30,12 @@ function organizationNode() {
     url: SITE_URL,
     logo: `${SITE_URL}/favicon.webp`,
     description: SITE_CONFIG.brand.description,
+    email: SITE_CONFIG.contact.opsEmail,
+    contactPoint: {
+      '@type': 'ContactPoint',
+      email: SITE_CONFIG.contact.opsEmail,
+      contactType: 'customer support',
+    },
     sameAs: SITE_CONFIG.social
       .filter((s) => REAL_SOCIAL_PROFILES.has(s.key))
       .map((s) => s.href),
