@@ -122,7 +122,10 @@
     "send": "Send",
     "retry": "Retry",
     "dismiss": "Dismiss",
-    "joinNow": "Join Now"
+    "joinNow": "Join Now",
+    "emailUs": "Email us",
+    "copyEmail": "Copy email address",
+    "emailCopied": "Email address copied"
   },
   "heading": {
     "operatorLogin": "Dɔwɔla Tutu Le",

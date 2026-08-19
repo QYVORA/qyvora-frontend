@@ -136,7 +136,10 @@
     "joinNow": "Join Now",
     "all": "All",
     "purge": "Purge",
-    "refresh": "Refresh"
+    "refresh": "Refresh",
+    "emailUs": "Email us",
+    "copyEmail": "Copy email address",
+    "emailCopied": "Email address copied"
   },
   "heading": {
     "operatorLogin": "Operator Login",
@@ -1076,7 +1079,34 @@
       "back": "Back",
       "next": "Next"
     },
+    "onboardingModal": {
+      "step0": {
+        "title": "Welcome to QYVORA",
+        "body": "Your cybersecurity training platform. Learn offensive and defensive security through hands-on bootcamps, labs, and simulations.",
+        "cta": "Next"
+      },
+      "step1": {
+        "title": "Your First Mission",
+        "body": "Start with the Hacker Protocol Bootcamp. This is the foundational path that teaches you the fundamentals before you tackle advanced labs and simulations.",
+        "cta": "Next"
+      },
+      "step2": {
+        "title": "Why Start Here",
+        "body": "The bootcamp covers the core skills you need. Once you complete the fundamentals, you'll unlock attack labs, security simulations, and advanced tooling.",
+        "cta": "Next"
+      },
+      "step3": {
+        "title": "Register for Bootcamp",
+        "body": "Ready to begin? Register for the Hacker Protocol Bootcamp and start earning CyberPoints.",
+        "cta": "Register for Hacker Protocol Bootcamp",
+        "ctaEnrolled": "Continue Bootcamp"
+      },
+      "skip": "Skip",
+      "back": "Back",
+      "next": "Next"
+    },
     "tour": {
+      "replay": "Take a Tour",
       "controls": {
         "skip": "Skip",
         "back": "Back",
