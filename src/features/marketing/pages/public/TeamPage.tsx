@@ -40,7 +40,7 @@ const TeamMemberSection = ({ member }: { member: TeamMember }) => {
     <PublicSnapSection id={member.id}>
       <ScrollReveal amount={0.08} className="h-full w-full">
         <article className="relative grid w-full grid-cols-1 gap-3 sm:gap-4 lg:grid-cols-2 lg:gap-12">
-          <div className={`relative h-64 overflow-hidden rounded-2xl border border-border/30 bg-bg-card sm:h-80 lg:h-auto ${layout.imageFirst ? 'lg:order-1' : 'lg:order-2'}`}>
+          <div className={`relative h-64 max-h-[70vh] overflow-hidden rounded-2xl border border-border/30 bg-bg-card sm:h-80 lg:h-full ${layout.imageFirst ? 'lg:order-1' : 'lg:order-2'}`}>
             <img
               src={member.image}
               alt={member.name}
