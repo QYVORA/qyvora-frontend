@@ -108,7 +108,7 @@ const Footer: React.FC = React.memo(() => {
   return (
     <footer className="relative flex min-h-dvh w-full flex-col overflow-hidden bg-bg select-none">
       {/* ── Content ──────────────────────────────────────────────────────── */}
-      <div className="relative z-10 mx-auto flex w-full max-w-7xl flex-1 flex-col px-4 py-12 sm:px-6 md:py-20 lg:px-8 lg:py-24">
+      <div className="relative z-10 flex w-full flex-1 flex-col px-3 md:px-4 lg:px-6 pt-24 pb-8 md:pb-10 lg:pb-12">
         <div className="flex w-full flex-1 flex-col">
 
           {/* ── Top: Brand | Nav grid ─────────────────────────────────────── */}
