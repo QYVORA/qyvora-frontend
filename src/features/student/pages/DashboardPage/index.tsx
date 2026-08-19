@@ -12,6 +12,7 @@ import {
 import { Skeleton, ErrorState } from '@/shared/components/ui';
 import SEO from '@/shared/components/SEO';
 import StudentTour from '@/features/student/components/StudentTour';
+import StudentOnboardingModal from '@/features/student/components/StudentOnboardingModal';
 import type { StudentBootcampCardData } from '@/features/student/components/StudentBootcampCard';
 import { DashboardHero } from '@/features/student/components/dashboard';
 import StudentBootcampCard from '@/features/student/components/StudentBootcampCard';
@@ -409,6 +410,7 @@ const Dashboard = () => {
   return (
     <div>
       <SEO title={t('student.dashboard.seoTitle')} description={t('student.dashboard.seoDesc')} noindex />
+      <StudentOnboardingModal />
       <StudentTour cpBalance={cpBalance} username={user?.username ?? ''} />
 
       {syncError && (
