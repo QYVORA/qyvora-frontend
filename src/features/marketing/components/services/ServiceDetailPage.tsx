@@ -229,16 +229,16 @@ const ServiceDetailPage: React.FC<{ svc: ServiceConfig }> = ({ svc }) => {
                   <p className="text-base text-text-muted font-mono">
                     Request an assessment or explore the full range of services.
                   </p>
-                  <div className="flex flex-col sm:flex-row items-stretch gap-4 pt-2 w-full">
+                  <div className="flex flex-col sm:flex-row sm:flex-wrap items-stretch gap-4 pt-2 w-full">
                     <button
                       onClick={() => openServiceRequestModal(svc.title)}
-                      className="btn-primary inline-flex items-center justify-center gap-2.5 !px-8 sm:!px-10 !py-3.5 whitespace-nowrap flex-1 sm:flex-none"
+                      className="btn-primary inline-flex items-center justify-center gap-2.5"
                     >
                       {REQUEST_ASSESSMENT_LABEL} <IconArrowRight size={14} />
                     </button>
                     <Link
                       to="/services"
-                      className="btn-secondary inline-flex items-center justify-center gap-2.5 !px-8 sm:!px-10 !py-3.5 whitespace-nowrap flex-1 sm:flex-none"
+                      className="btn-secondary inline-flex items-center justify-center gap-2.5"
                     >
                       <IconArrowLeft size={14} /> All Services
                     </Link>
