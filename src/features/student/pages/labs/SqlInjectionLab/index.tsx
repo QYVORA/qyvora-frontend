@@ -1,16 +1,18 @@
-import { useState, useCallback, useMemo } from 'react';
+import { useMemo } from 'react';
 import { Database, CheckCircle, Keyboard, Search, Server } from 'lucide-react';
 import { WalkthroughLayout, WalkthroughStep } from '@/shared/components/walkthrough/';
 import { SQL_INJECTION_TARGETS } from '@/features/student/data/simulations';
 import { createSqlInjectionSimulations } from '@/features/student/components/simulations/labSimulationContent';
 import SEO from '@/shared/components/SEO';
 import LearningAccordion from '@/shared/components/learning/LearningAccordion';
-import { verifyLabFlag } from '../../../services/lab.service';
 import { getRelatedContentForLab } from '@/shared/constants/topicMap';
 import RelatedContent from '@/shared/components/RelatedContent';
 import StudentHeroSection from '@/shared/components/StudentHeroSection';
 import { FlowDiagram } from '@/shared/components/diagrams/FlowDiagram';
 import { LabCelebration } from '@/shared/components/LabCelebration';
+import useLabAccess from '@/features/student/hooks/useLabAccess';
+import useLabScenario from '@/features/student/hooks/useLabScenario';
+import { getLabCpCost } from '@/features/student/data/simulations/labAccess';
 
 const SQL_ATTACK_FLOW_NODES = [
   { id: 'input', label: 'Input Field', icon: <Keyboard className="w-4 h-4" />, status: 'warning' as const },
@@ -23,60 +25,16 @@ const SQL_ATTACK_FLOW_ARROWS = [
   { from: 'query', to: 'db', label: 'Execute', type: 'dashed' as const },
 ];
 
+type SqlInjectionTarget = typeof SQL_INJECTION_TARGETS[number];
+
 const SqlInjectionLab = () => {
-  const [activeTarget, setActiveTarget] = useState(null);
-  const [completedSteps, setCompletedSteps] = useState(new Set());
-  const [flagInput, setFlagInput] = useState('');
-  const [flagStatus, setFlagStatus] = useState('idle');
-  const [flagLoading, setFlagLoading] = useState(false);
-
-  const startTarget = useCallback((target) => {
-    setActiveTarget(target);
-    setCompletedSteps(new Set());
-    setFlagInput('');
-    setFlagStatus('idle');
-    setFlagLoading(false);
-  }, []);
-
-  const exitTarget = useCallback(() => {
-    setActiveTarget(null);
-    setCompletedSteps(new Set());
-    setFlagInput('');
-    setFlagStatus('idle');
-    setFlagLoading(false);
-  }, []);
-
-  const handleStepComplete = useCallback((index) => {
-    setCompletedSteps(prev => {
-      const next = new Set(prev);
-      next.add(index);
-      return next;
+  const { activeScenario: activeTarget, completedSteps, handleFlagSubmit, getStepState, allDone, startScenario, exitScenario } =
+    useLabScenario<SqlInjectionTarget>({
+      labId: 'sql-injection',
+      getScenarioId: (t) => t.id,
+      getStepIds: (t) => t.steps.map((_, i) => `${t.id}-step-${i}`),
     });
-  }, []);
-
-  const handleSubmitFlag = useCallback(async () => {
-    if (!activeTarget || !flagInput.trim() || flagLoading) return;
-    setFlagLoading(true);
-    try {
-      const result = await verifyLabFlag('sql-injection', activeTarget.id, flagInput.trim());
-      setFlagStatus(result.correct ? 'correct' : 'incorrect');
-    } catch {
-      setFlagStatus('incorrect');
-    } finally {
-      setFlagLoading(false);
-    }
-  }, [activeTarget, flagInput, flagLoading]);
-
-  const handleFlagSubmit = useCallback(async (_stepId: string, flag: string) => {
-    if (!activeTarget) return { correct: false };
-    try {
-      return await verifyLabFlag('sql-injection', activeTarget.id, flag);
-    } catch {
-      return { correct: false };
-    }
-  }, [activeTarget]);
-
-  const allStepsCompleted = activeTarget && completedSteps.size >= activeTarget.steps.length;
+  const { isLocked, purchaseLab } = useLabAccess();
 
   const simulations = useMemo(
     () => activeTarget ? createSqlInjectionSimulations(activeTarget.tables, activeTarget.url) : [],
@@ -100,20 +58,30 @@ const SqlInjectionLab = () => {
         <div className="px-3 md:px-4 lg:px-6 pb-20 lg:pb-24 space-y-8">
 
           <LearningAccordion
-            items={SQL_INJECTION_TARGETS.map((target) => ({
-              id: target.id,
-              title: target.name,
-              subtitle: `${target.injectionType} · ${target.dbms}`,
-              description: target.description,
-              difficulty: target.difficulty,
-              meta: (
-                <span className="text-[9px] font-black uppercase tracking-widest text-accent">
-                  {target.cpReward} CP
-                </span>
-              ),
-              onStart: () => startTarget(target),
-              startLabel: 'Start Attack',
-            }))}
+            items={SQL_INJECTION_TARGETS.map((target) => {
+              const cpCost = getLabCpCost(target.id);
+              const locked = isLocked(target.id);
+              return {
+                id: target.id,
+                title: target.name,
+                subtitle: `${target.injectionType} · ${target.dbms}`,
+                description: target.description,
+                difficulty: target.difficulty,
+                meta: (
+                  <span className="text-[9px] font-black uppercase tracking-widest text-accent">
+                    {target.cpReward} CP
+                  </span>
+                ),
+                onStart: () => startScenario(target),
+                startLabel: 'Start Attack',
+                locked,
+                cpCost: locked ? cpCost ?? undefined : undefined,
+                onUnlock: cpCost ? async () => {
+                  const success = await purchaseLab(target.id, 'sql-injection');
+                  if (success) startScenario(target);
+                } : undefined,
+              };
+            })}
           />
 
           <RelatedContent {...getRelatedContentForLab('sql-injection')} title="Continue This Topic" />
@@ -132,11 +100,31 @@ const SqlInjectionLab = () => {
         difficulty={activeTarget.difficulty}
         labId="sql-injection"
         scenarioId={activeTarget.id}
-        onBack={exitTarget}
+        onBack={exitScenario}
         completedCount={completedSteps.size}
-        totalSteps={activeTarget.steps.length}
+        totalSteps={activeTarget.steps.length + 2}
         simulations={simulations}
       >
+        <WalkthroughStep
+          stepIndex={0}
+          title="Mission Briefing"
+          narrative={`## ${activeTarget.name}\n\n${activeTarget.description}\n\n**Target URL:** ${activeTarget.url}\n\n**Injection Type:** ${activeTarget.injectionType}\n\n**Database:** ${activeTarget.dbms}`}
+          mission={activeTarget.description}
+          objectives={[
+            `Exploit the ${activeTarget.injectionType} vulnerability`,
+            'Extract sensitive data from the database',
+            'Capture the flag',
+          ]}
+          isLocked={false}
+          isCompleted={true}
+          isActive={false}
+          flagId="briefing"
+          labId="sql-injection"
+          onFlagSubmit={async () => ({ correct: false })}
+          onComplete={() => {}}
+          skipFlag
+        />
+
         <div className="rounded-2xl border border-border/30 bg-bg-card p-4 mb-2">
           <p className="text-sm font-mono text-text-muted">
             <span className="text-accent font-black">Target:</span> {activeTarget.url}
@@ -144,27 +132,25 @@ const SqlInjectionLab = () => {
         </div>
 
         {activeTarget.steps.map((step, index) => {
-          const isCompleted = completedSteps.has(index);
-          const firstIncomplete = activeTarget.steps.findIndex((_: string, i: number) => !completedSteps.has(i));
-          const isActive = index === firstIncomplete;
-          const isLocked = !isCompleted && index > firstIncomplete;
+          const { isLocked, isCompleted, isActive } = getStepState(index);
+          const stepId = `${activeTarget.id}-step-${index}`;
 
           const narrative = `## SQL Injection — Step ${index + 1}\n\n${step.explanation}\n\nExecute the command below to proceed.`;
 
           return (
             <WalkthroughStep
               key={index}
-              stepIndex={index}
+              stepIndex={index + 1}
               title={`Step ${index + 1}`}
               narrative={narrative}
               commandInstruction={step.command}
               isLocked={isLocked}
               isCompleted={isCompleted}
               isActive={isActive}
-              flagId={`${activeTarget.id}-step-${index}`}
+              flagId={stepId}
               labId="sql-injection"
               onFlagSubmit={handleFlagSubmit}
-              onComplete={() => handleStepComplete(index)}
+              onComplete={() => {}}
             >
               {index === 0 && (
                 <FlowDiagram
@@ -177,22 +163,24 @@ const SqlInjectionLab = () => {
           );
         })}
 
-        {flagStatus === 'correct' && (
-          <div className="rounded-2xl border border-accent/30 bg-accent/5 p-4 md:p-6 flex flex-col sm:flex-row items-start sm:items-center gap-4">
-            <div className="w-12 h-12 rounded-xl bg-accent/20 flex items-center justify-center shrink-0">
-              <CheckCircle className="w-6 h-6 text-accent" />
-            </div>
-            <div>
-              <p className="text-lg font-black text-accent">Flag Accepted!</p>
-              <p className="text-sm font-mono text-text-muted mt-1">+{activeTarget.cpReward} CP earned.</p>
-              <button onClick={exitTarget} className="btn-secondary !rounded-xl !text-[10px] mt-3 px-5 py-2">Back to Targets</button>
-            </div>
-          </div>
-        )}
+        <WalkthroughStep
+          stepIndex={activeTarget.steps.length + 1}
+          title="Mission Debrief"
+          narrative={`## Attack Complete\n\nYou successfully exploited the **${activeTarget.injectionType}** vulnerability on ${activeTarget.name}.\n\n### Key Takeaways\n\n- **${activeTarget.injectionType}** injection allows data extraction through crafted queries\n- Always validate and sanitize user input\n- Use parameterized queries to prevent SQL injection\n- The ${activeTarget.dbms} database was vulnerable to this technique\n\n### What to Remember\n\nSQL injection remains one of the most common web vulnerabilities. Understanding the attack vector is essential for building secure applications.`}
+          reflection={`What did you learn about ${activeTarget.injectionType} injection? How would you secure this application against this attack?`}
+          isLocked={false}
+          isCompleted={allDone}
+          isActive={false}
+          flagId="debrief"
+          labId="sql-injection"
+          onFlagSubmit={async () => ({ correct: false })}
+          onComplete={() => {}}
+          skipFlag
+        />
       </WalkthroughLayout>
 
       <LabCelebration
-        trigger={flagStatus === 'correct'}
+        trigger={allDone}
         title={activeTarget.name}
         rewardCp={activeTarget.cpReward}
       />

@@ -1,4 +1,4 @@
-import { useState, useCallback, useMemo } from 'react';
+import { useMemo } from 'react';
 import { Shield, User, Folder, Cog, Crown } from 'lucide-react';
 import SEO from '@/shared/components/SEO';
 import LearningAccordion from '@/shared/components/learning/LearningAccordion';
@@ -7,12 +7,14 @@ import { WalkthroughStep } from '@/shared/components/walkthrough/WalkthroughStep
 import { PRIVESC_SCENARIOS } from '@/features/student/data/simulations';
 import { createPrivescSimulations } from '@/features/student/components/simulations/labSimulationContent';
 import type { PrivescScenario } from '@/features/student/data/simulations';
-import { verifyLabFlag } from '../../../services/lab.service';
 import { getRelatedContentForLab } from '@/shared/constants/topicMap';
 import RelatedContent from '@/shared/components/RelatedContent';
 import StudentHeroSection from '@/shared/components/StudentHeroSection';
 import { FlowDiagram } from '@/shared/components/diagrams/FlowDiagram';
 import { LabCelebration } from '@/shared/components/LabCelebration';
+import useLabAccess from '@/features/student/hooks/useLabAccess';
+import useLabScenario from '@/features/student/hooks/useLabScenario';
+import { getLabCpCost } from '@/features/student/data/simulations/labAccess';
 
 const DIFFICULTY_STYLES: Record<string, string> = {
   beginner: 'bg-green-400/10 text-green-400 border-green-400/20',
@@ -34,55 +36,22 @@ const PRIVESC_FLOW_ARROWS = [
 ];
 
 const PrivescLab = () => {
-  const [selectedScenario, setSelectedScenario] =
-    useState<PrivescScenario | null>(null);
-  const [completedSteps, setCompletedSteps] = useState<Set<string>>(new Set());
+  const { activeScenario, completedSteps, handleComplete, handleFlagSubmit, getStepState, allDone, startScenario, exitScenario } =
+    useLabScenario<PrivescScenario>({
+      labId: 'privesc',
+      getScenarioId: (s) => s.id,
+      getStepIds: (s) => (s.story?.chapters ?? []).map((ch) => ch.id),
+    });
+  const { isLocked, purchaseLab } = useLabAccess();
 
-  const chapters = selectedScenario?.story?.chapters ?? [];
-
-  const handleComplete = useCallback((stepId: string) => {
-    setCompletedSteps((prev) => new Set(prev).add(stepId));
-  }, []);
-
-  const handleFlagSubmit = useCallback(
-    async (stepId: string, flag: string) => {
-      if (!selectedScenario) return { correct: false };
-      const result = await verifyLabFlag(
-        'privesc',
-        selectedScenario.id,
-        flag
-      );
-      if (result.correct) handleComplete(stepId);
-      return { correct: result.correct };
-    },
-    [selectedScenario, handleComplete]
-  );
-
-  const getStepState = useCallback(
-    (index: number) => {
-      const chapter = chapters[index];
-      if (!chapter) return { isLocked: true, isCompleted: false, isActive: false };
-      const isCompleted = completedSteps.has(chapter.id);
-      const firstIncomplete = chapters.findIndex(
-        (ch) => !completedSteps.has(ch.id)
-      );
-      const isActive = index === firstIncomplete;
-      const isLocked = !isCompleted && index > firstIncomplete;
-      return { isLocked, isCompleted, isActive };
-    },
-    [chapters, completedSteps]
-  );
-
-  const allDone =
-    chapters.length > 0 &&
-    chapters.every((ch) => completedSteps.has(ch.id));
+  const chapters = activeScenario?.story?.chapters ?? [];
 
   const simulations = useMemo(
-    () => selectedScenario ? createPrivescSimulations(selectedScenario.filesystem) : [],
-    [selectedScenario],
+    () => activeScenario ? createPrivescSimulations(activeScenario.filesystem) : [],
+    [activeScenario],
   );
 
-  if (!selectedScenario) {
+  if (!activeScenario) {
     const firstScenarioWithVillain = PRIVESC_SCENARIOS.find(s => s.villain);
     return (
       <div className="bg-bg min-h-full">
@@ -103,23 +72,34 @@ const PrivescLab = () => {
         <div className="px-3 md:px-4 lg:px-6 pb-20 lg:pb-24 space-y-8">
 
           <LearningAccordion
-            items={PRIVESC_SCENARIOS.map((scenario) => ({
-              id: scenario.id,
-              title: scenario.title,
-              subtitle: scenario.technique,
-              description: scenario.description,
-              difficulty: scenario.difficulty,
-              meta: (
-                <span className="text-[9px] font-black uppercase tracking-widest text-accent">
-                  50 CP
-                </span>
-              ),
-              onStart: () => {
-                setCompletedSteps(new Set());
-                setSelectedScenario(scenario);
-              },
-              startLabel: 'Enter Room',
-            }))}
+            items={PRIVESC_SCENARIOS.map((scenario) => {
+              const cpCost = getLabCpCost(scenario.id);
+              const locked = isLocked(scenario.id);
+              return {
+                id: scenario.id,
+                title: scenario.title,
+                subtitle: scenario.technique,
+                description: scenario.description,
+                difficulty: scenario.difficulty,
+                meta: (
+                  <span className="text-[9px] font-black uppercase tracking-widest text-accent">
+                    {cpCost ? `${cpCost} CP` : '50 CP'}
+                  </span>
+                ),
+                onStart: () => {
+                  startScenario(scenario);
+                },
+                startLabel: 'Enter Room',
+                locked,
+                cpCost: locked ? cpCost ?? undefined : undefined,
+                onUnlock: cpCost ? async () => {
+                  const success = await purchaseLab(scenario.id, 'privesc');
+                  if (success) {
+                    startScenario(scenario);
+                  }
+                } : undefined,
+              };
+            })}
           />
 
           <RelatedContent {...getRelatedContentForLab('privesc')} title="Continue This Topic" />
@@ -131,32 +111,50 @@ const PrivescLab = () => {
   return (
     <div className="bg-bg min-h-full">
       <SEO
-        title={`${selectedScenario.title} — Privilege Escalation`}
-        description={selectedScenario.description}
+        title={`${activeScenario.title} — Privilege Escalation`}
+        description={activeScenario.description}
         noindex
       />
       <WalkthroughLayout
-        title={selectedScenario.title}
-        subtitle={selectedScenario.technique}
+        title={activeScenario.title}
+        subtitle={activeScenario.technique}
         icon={<Shield className="w-6 h-6" />}
-        difficulty={selectedScenario.difficulty}
-        difficultyColor={DIFFICULTY_STYLES[selectedScenario.difficulty]}
+        difficulty={activeScenario.difficulty}
+        difficultyColor={DIFFICULTY_STYLES[activeScenario.difficulty]}
         labId="privesc"
-        scenarioId={selectedScenario.id}
-        onBack={() => {
-          setCompletedSteps(new Set());
-          setSelectedScenario(null);
-        }}
+        scenarioId={activeScenario.id}
+        onBack={exitScenario}
         completedCount={completedSteps.size}
-        totalSteps={chapters.length}
+        totalSteps={chapters.length + 2}
         simulations={simulations}
       >
+        <WalkthroughStep
+          stepIndex={0}
+          title="Mission Briefing"
+          narrative={`## ${activeScenario.title}\n\n${activeScenario.description}\n\n**Technique:** ${activeScenario.technique}\n\n**Difficulty:** ${activeScenario.difficulty.charAt(0).toUpperCase() + activeScenario.difficulty.slice(1)}`}
+          mission={activeScenario.description}
+          objectives={[
+            `Understand the ${activeScenario.technique} technique`,
+            'Identify the vulnerable configuration',
+            'Escalate privileges to root',
+            'Capture the flag',
+          ]}
+          isLocked={false}
+          isCompleted={true}
+          isActive={false}
+          flagId="briefing"
+          labId="privesc"
+          onFlagSubmit={async () => ({ correct: false })}
+          onComplete={() => {}}
+          skipFlag
+        />
+
         {chapters.map((chapter, i) => {
           const { isLocked, isCompleted, isActive } = getStepState(i);
           return (
             <WalkthroughStep
               key={chapter.id}
-              stepIndex={i}
+              stepIndex={i + 1}
               title={chapter.title}
               narrative={chapter.narrative}
               hint={chapter.hint}
@@ -180,21 +178,25 @@ const PrivescLab = () => {
           );
         })}
 
-        {allDone && (
-          <div className="mt-6 rounded-xl border border-accent/20 bg-accent/5 p-4 md:p-6 text-center">
-            <p className="text-sm font-black text-accent uppercase tracking-widest">
-              Scenario Complete
-            </p>
-            <p className="text-sm font-mono text-text-muted mt-2">
-              You escalated privileges and captured the flag.
-            </p>
-          </div>
-        )}
+        <WalkthroughStep
+          stepIndex={chapters.length + 1}
+          title="Mission Debrief"
+          narrative={`## Mission Complete\n\nYou successfully exploited the **${activeScenario.technique}** vulnerability to escalate from a low-privilege user to root.\n\n### Key Takeaways\n\n- **${activeScenario.technique}** is a common privilege escalation vector\n- Always audit SUID binaries and their configurations\n- Understanding the underlying technique is critical for both attack and defense\n\n### What to Remember\n\nThis technique applies to real-world Linux environments. Always follow responsible disclosure when discovering vulnerabilities.`}
+          reflection={`What did you learn about the ${activeScenario.technique} technique? How would you defend against this in a production environment?`}
+          isLocked={false}
+          isCompleted={allDone}
+          isActive={false}
+          flagId="debrief"
+          labId="privesc"
+          onFlagSubmit={async () => ({ correct: false })}
+          onComplete={() => {}}
+          skipFlag
+        />
       </WalkthroughLayout>
 
       <LabCelebration
         trigger={allDone}
-        title={selectedScenario.title}
+        title={activeScenario.title}
         rewardCp={50}
       />
     </div>
