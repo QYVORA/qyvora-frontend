@@ -30,6 +30,7 @@ export interface WalkthroughStepProps {
   onFlagSubmit: (stepId: string, flag: string) => Promise<{ correct: boolean }>;
   onComplete: (stepId: string) => void;
   children?: React.ReactNode;
+  skipFlag?: boolean;
 }
 
 const HINT_LEVEL_LABELS = ['General Guidance', 'Approach', 'Tool Hint', 'Example Command'];
@@ -38,7 +39,7 @@ export function WalkthroughStep({
   stepIndex, title, narrative, hint, progressiveHints, commandInstruction,
   mission, objectives, evidence, reflection,
   isLocked, isCompleted, isActive, flagId, labId,
-  onFlagSubmit, onComplete, children,
+  onFlagSubmit, onComplete, children, skipFlag,
 }: WalkthroughStepProps) {
   const [showHint, setShowHint] = useState(false);
   const [visibleHintLevel, setVisibleHintLevel] = useState(0);
@@ -184,7 +185,7 @@ export function WalkthroughStep({
         )}
 
         {/* Flag Input — embedded naturally in the reading flow */}
-        {!isCompleted && (
+        {!isCompleted && !skipFlag && (
           <FlagInput flagId={flagId} disabled={false} onFlagSubmit={onFlagSubmit} onCorrect={handleCorrect} />
         )}
 
