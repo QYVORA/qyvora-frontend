@@ -192,7 +192,7 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88, offset = [0, 0,
     const handleScroll = () => {
       const snapContainer = document.querySelector('.snap-container');
       const scrollTop = snapContainer ? snapContainer.scrollTop : window.scrollY;
-      targetScrollRotation = scrollTop * 0.0006;
+      targetScrollRotation = scrollTop * 0.0003;
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
@@ -217,7 +217,7 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88, offset = [0, 0,
       // always tracks wall-clock time accurately.
       if (last > 0) {
         const dt = Math.min(now - last, 200);
-        const scrollFactor = 1 - Math.pow(0.92, dt / 16.667);
+        const scrollFactor = 1 - Math.pow(0.88, dt / 16.667);
         currentScrollRotation += (targetScrollRotation - currentScrollRotation) * scrollFactor;
         rotationY += dt * (live.current.simplified ? 0.00035 : 0.00045);
         globe.rotation.y = rotationY + currentScrollRotation;
@@ -244,11 +244,21 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88, offset = [0, 0,
       rafId = requestAnimationFrame(tick);
     };
 
+    let debounceTimer = 0;
     const viewObserver = new IntersectionObserver((entries) => {
-      visible = entries[0].isIntersecting;
-      if (visible) start();
-      else stop();
-    }, { threshold: 0, rootMargin: '100px' });
+      const isIntersecting = entries[0].isIntersecting;
+      if (isIntersecting) {
+        clearTimeout(debounceTimer);
+        visible = true;
+        start();
+      } else {
+        // Delay stopping to avoid rapid pause/resume during snap-scrolling
+        debounceTimer = window.setTimeout(() => {
+          visible = false;
+          stop();
+        }, 600);
+      }
+    }, { threshold: 0, rootMargin: '300px' });
     viewObserver.observe(el);
 
     const handleVisibility = () => {
@@ -276,6 +286,7 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88, offset = [0, 0,
     return () => {
       cancelled = true;
       clearTimeout(buildTimer);
+      clearTimeout(debounceTimer);
       window.removeEventListener('scroll', handleScroll);
       if (snapEl) snapEl.removeEventListener('scroll', handleScroll);
       document.removeEventListener('visibilitychange', handleVisibility);
@@ -300,7 +311,7 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88, offset = [0, 0,
       }
       sceneRef.current = null;
     };
-  }, [isSimplified, isLight]);
+  }, [isLight]); // isSimplified read from live.current — no scene rebuild on mobile toggle
 
   // Fluid scale / offset changes are applied in place — no scene rebuild.
   useEffect(() => {
