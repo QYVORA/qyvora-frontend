@@ -1,70 +1,28 @@
-import { useState, useCallback, useMemo } from 'react';
+import { useMemo } from 'react';
 import { Globe, CheckCircle } from 'lucide-react';
 import { WalkthroughLayout, WalkthroughStep } from '@/shared/components/walkthrough/';
 import { OSINT_CHALLENGES } from '@/features/student/data/simulations';
 import { createOsintSimulations } from '@/features/student/components/simulations/labSimulationContent';
 import SEO from '@/shared/components/SEO';
 import LearningAccordion from '@/shared/components/learning/LearningAccordion';
-import { verifyLabFlag } from '../../../services/lab.service';
 import { getRelatedContentForLab } from '@/shared/constants/topicMap';
 import RelatedContent from '@/shared/components/RelatedContent';
 import StudentHeroSection from '@/shared/components/StudentHeroSection';
 import { LabCelebration } from '@/shared/components/LabCelebration';
+import useLabAccess from '@/features/student/hooks/useLabAccess';
+import useLabScenario from '@/features/student/hooks/useLabScenario';
+import { getLabCpCost } from '@/features/student/data/simulations/labAccess';
+
+type OsintChallenge = typeof OSINT_CHALLENGES[number];
 
 const OsintLab = () => {
-  const [activeChallenge, setActiveChallenge] = useState(null);
-  const [completedSteps, setCompletedSteps] = useState(new Set());
-  const [flagInput, setFlagInput] = useState('');
-  const [flagStatus, setFlagStatus] = useState('idle');
-  const [flagLoading, setFlagLoading] = useState(false);
-
-  const startChallenge = useCallback((challenge) => {
-    setActiveChallenge(challenge);
-    setCompletedSteps(new Set());
-    setFlagInput('');
-    setFlagStatus('idle');
-    setFlagLoading(false);
-  }, []);
-
-  const exitChallenge = useCallback(() => {
-    setActiveChallenge(null);
-    setCompletedSteps(new Set());
-    setFlagInput('');
-    setFlagStatus('idle');
-    setFlagLoading(false);
-  }, []);
-
-  const handleStepComplete = useCallback((index) => {
-    setCompletedSteps(prev => {
-      const next = new Set(prev);
-      next.add(index);
-      return next;
+  const { activeScenario: activeChallenge, completedSteps, handleFlagSubmit, getStepState, allDone, startScenario, exitScenario } =
+    useLabScenario<OsintChallenge>({
+      labId: 'osint',
+      getScenarioId: (c) => c.id,
+      getStepIds: (c) => c.steps.map((_, i) => `${c.id}-step-${i}`),
     });
-  }, []);
-
-  const handleSubmitFlag = useCallback(async () => {
-    if (!activeChallenge || !flagInput.trim() || flagLoading) return;
-    setFlagLoading(true);
-    try {
-      const result = await verifyLabFlag('osint', activeChallenge.id, flagInput.trim());
-      setFlagStatus(result.correct ? 'correct' : 'incorrect');
-    } catch {
-      setFlagStatus('incorrect');
-    } finally {
-      setFlagLoading(false);
-    }
-  }, [activeChallenge, flagInput, flagLoading]);
-
-  const handleFlagSubmit = useCallback(async (_stepId: string, flag: string) => {
-    if (!activeChallenge) return { correct: false };
-    try {
-      return await verifyLabFlag('osint', activeChallenge.id, flag);
-    } catch {
-      return { correct: false };
-    }
-  }, [activeChallenge]);
-
-  const allStepsCompleted = activeChallenge && completedSteps.size >= activeChallenge.steps.length;
+  const { isLocked, purchaseLab } = useLabAccess();
 
   const simulations = useMemo(
     () => activeChallenge ? createOsintSimulations(activeChallenge.targetName, activeChallenge.skills) : [],
@@ -88,20 +46,30 @@ const OsintLab = () => {
         <div className="px-3 md:px-4 lg:px-6 pb-20 lg:pb-24 space-y-8">
 
           <LearningAccordion
-            items={OSINT_CHALLENGES.map((challenge) => ({
-              id: challenge.id,
-              title: challenge.title,
-              subtitle: `${challenge.targetName} — ${challenge.skills.slice(0, 2).join(' · ')}`,
-              description: challenge.description,
-              difficulty: challenge.difficulty,
-              meta: (
-                <span className="text-[9px] font-black uppercase tracking-widest text-accent">
-                  {challenge.cpReward} CP
-                </span>
-              ),
-              onStart: () => startChallenge(challenge),
-              startLabel: 'Start Mission',
-            }))}
+            items={OSINT_CHALLENGES.map((challenge) => {
+              const cpCost = getLabCpCost(challenge.id);
+              const locked = isLocked(challenge.id);
+              return {
+                id: challenge.id,
+                title: challenge.title,
+                subtitle: `${challenge.targetName} — ${challenge.skills.slice(0, 2).join(' · ')}`,
+                description: challenge.description,
+                difficulty: challenge.difficulty,
+                meta: (
+                  <span className="text-[9px] font-black uppercase tracking-widest text-accent">
+                    {challenge.cpReward} CP
+                  </span>
+                ),
+                onStart: () => startScenario(challenge),
+                startLabel: 'Start Mission',
+                locked,
+                cpCost: locked ? cpCost ?? undefined : undefined,
+                onUnlock: cpCost ? async () => {
+                  const success = await purchaseLab(challenge.id, 'osint');
+                  if (success) startScenario(challenge);
+                } : undefined,
+              };
+            })}
           />
 
           <RelatedContent {...getRelatedContentForLab('osint')} title="Continue This Topic" />
@@ -120,21 +88,39 @@ const OsintLab = () => {
         difficulty={activeChallenge.difficulty}
         labId="osint"
         scenarioId={activeChallenge.id}
-        onBack={exitChallenge}
+        onBack={exitScenario}
         completedCount={completedSteps.size}
-        totalSteps={activeChallenge.steps.length}
+        totalSteps={activeChallenge.steps.length + 2}
         simulations={simulations}
       >
+        <WalkthroughStep
+          stepIndex={0}
+          title="Mission Briefing"
+          narrative={`## ${activeChallenge.title}\n\n${activeChallenge.description}\n\n**Target:** ${activeChallenge.targetName}\n\n**Skills:** ${activeChallenge.skills.join(', ')}`}
+          mission={activeChallenge.description}
+          objectives={[
+            `Research ${activeChallenge.targetName}`,
+            'Gather open-source intelligence',
+            'Analyze collected data',
+            'Capture the flag',
+          ]}
+          isLocked={false}
+          isCompleted={true}
+          isActive={false}
+          flagId="briefing"
+          labId="osint"
+          onFlagSubmit={async () => ({ correct: false })}
+          onComplete={() => {}}
+          skipFlag
+        />
+
         <div className="rounded-2xl border border-border/30 bg-bg-card p-4 mb-2">
           <p className="text-sm font-black text-text-primary mb-1">Target: {activeChallenge.targetName}</p>
           <p className="text-sm text-text-muted font-mono">{activeChallenge.targetDescription}</p>
         </div>
 
         {activeChallenge.steps.map((step, index) => {
-          const isCompleted = completedSteps.has(index);
-          const firstIncomplete = activeChallenge.steps.findIndex((_: string, i: number) => !completedSteps.has(i));
-          const isActive = index === firstIncomplete;
-          const isLocked = !isCompleted && index > firstIncomplete;
+          const { isLocked, isCompleted, isActive } = getStepState(index);
 
           const narrative = index === 0 && activeChallenge.narrative
             ? `${activeChallenge.narrative}\n\n## OSINT Reconnaissance — Step ${index + 1}\n\nTool: ${step.tool}\n\n${step.explanation}\n\nExecute the command below to gather intelligence.`
@@ -143,7 +129,7 @@ const OsintLab = () => {
           return (
             <WalkthroughStep
               key={index}
-              stepIndex={index}
+              stepIndex={index + 1}
               title={`Step ${index + 1} — ${step.tool}`}
               narrative={narrative}
               commandInstruction={step.command}
@@ -153,27 +139,29 @@ const OsintLab = () => {
               flagId={`${activeChallenge.id}-step-${index}`}
               labId="osint"
               onFlagSubmit={handleFlagSubmit}
-              onComplete={() => handleStepComplete(index)}
+              onComplete={() => {}}
             />
           );
         })}
 
-        {flagStatus === 'correct' && (
-          <div className="rounded-2xl border border-accent/30 bg-accent/5 p-4 md:p-6 flex flex-col sm:flex-row items-start sm:items-center gap-4">
-            <div className="w-12 h-12 rounded-xl bg-accent/20 flex items-center justify-center shrink-0">
-              <CheckCircle className="w-6 h-6 text-accent" />
-            </div>
-            <div>
-              <p className="text-lg font-black text-accent">Flag Captured!</p>
-              <p className="text-sm font-mono text-text-muted mt-1">+{activeChallenge.cpReward} CP earned.</p>
-              <button onClick={exitChallenge} className="btn-secondary !rounded-xl !text-[10px] mt-3 px-5 py-2">Back to Challenges</button>
-            </div>
-          </div>
-        )}
+        <WalkthroughStep
+          stepIndex={activeChallenge.steps.length + 1}
+          title="Mission Debrief"
+          narrative={`## Mission Complete\n\nYou successfully gathered open-source intelligence on **${activeChallenge.targetName}**.\n\n### Key Takeaways\n\n- OSINT tools provide powerful reconnaissance capabilities\n- Public data can reveal sensitive information\n- Understanding OSINT is essential for both offense and defense\n- Always consider what your digital footprint reveals\n\n### What to Remember\n\nOSINT is a critical skill for security professionals. The same techniques used for reconnaissance can be used for defensive intelligence gathering.`}
+          reflection={`What did you learn about OSINT reconnaissance? How could you use these techniques to improve an organization's security posture?`}
+          isLocked={false}
+          isCompleted={allDone}
+          isActive={false}
+          flagId="debrief"
+          labId="osint"
+          onFlagSubmit={async () => ({ correct: false })}
+          onComplete={() => {}}
+          skipFlag
+        />
       </WalkthroughLayout>
 
       <LabCelebration
-        trigger={flagStatus === 'correct'}
+        trigger={allDone}
         title={activeChallenge.title}
         rewardCp={activeChallenge.cpReward}
       />

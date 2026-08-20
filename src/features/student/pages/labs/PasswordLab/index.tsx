@@ -1,16 +1,18 @@
-import { useState, useCallback, useMemo } from 'react';
+import { useMemo } from 'react';
 import { Key, CheckCircle, FileText, Search, Zap, KeyRound, Book, Settings, Scale, Target, Skull, NotebookPen, Trophy } from 'lucide-react';
 import { WalkthroughLayout, WalkthroughStep } from '@/shared/components/walkthrough/';
 import { PASSWORD_EXERCISES } from '@/features/student/data/simulations';
 import { createPasswordSimulations } from '@/features/student/components/simulations/labSimulationContent';
 import SEO from '@/shared/components/SEO';
 import LearningAccordion from '@/shared/components/learning/LearningAccordion';
-import { verifyLabFlag } from '../../../services/lab.service';
 import { getRelatedContentForLab } from '@/shared/constants/topicMap';
 import RelatedContent from '@/shared/components/RelatedContent';
 import StudentHeroSection from '@/shared/components/StudentHeroSection';
 import { FlowDiagram, type FlowNode, type FlowArrow } from '@/shared/components/diagrams/FlowDiagram';
 import { LabCelebration } from '@/shared/components/LabCelebration';
+import useLabAccess from '@/features/student/hooks/useLabAccess';
+import useLabScenario from '@/features/student/hooks/useLabScenario';
+import { getLabCpCost } from '@/features/student/data/simulations/labAccess';
 
 const HASH_CRACKING_NODES: FlowNode[] = [
   { id: 'hash', label: 'Hash File', icon: <FileText className="w-4 h-4" />, status: 'warning' },
@@ -54,60 +56,16 @@ const PASSWORD_FLOWS: { nodes: FlowNode[]; arrows: FlowArrow[] }[] = [
   { nodes: HARVEST_NODES, arrows: HARVEST_ARROWS },
 ];
 
+type PasswordExercise = typeof PASSWORD_EXERCISES[number];
+
 const PasswordLab = () => {
-  const [activeScenario, setActiveScenario] = useState(null);
-  const [completedSteps, setCompletedSteps] = useState(new Set());
-  const [flagInput, setFlagInput] = useState('');
-  const [flagStatus, setFlagStatus] = useState('idle');
-  const [flagLoading, setFlagLoading] = useState(false);
-
-  const startScenario = useCallback((scenario) => {
-    setActiveScenario(scenario);
-    setCompletedSteps(new Set());
-    setFlagInput('');
-    setFlagStatus('idle');
-    setFlagLoading(false);
-  }, []);
-
-  const exitScenario = useCallback(() => {
-    setActiveScenario(null);
-    setCompletedSteps(new Set());
-    setFlagInput('');
-    setFlagStatus('idle');
-    setFlagLoading(false);
-  }, []);
-
-  const handleStepComplete = useCallback((index) => {
-    setCompletedSteps(prev => {
-      const next = new Set(prev);
-      next.add(index);
-      return next;
+  const { activeScenario, completedSteps, handleFlagSubmit, getStepState, allDone, startScenario, exitScenario } =
+    useLabScenario<PasswordExercise>({
+      labId: 'passwords',
+      getScenarioId: (s) => s.id,
+      getStepIds: (s) => s.steps.map((_, i) => `${s.id}-step-${i}`),
     });
-  }, []);
-
-  const handleSubmitFlag = useCallback(async () => {
-    if (!activeScenario || !flagInput.trim() || flagLoading) return;
-    setFlagLoading(true);
-    try {
-      const result = await verifyLabFlag('passwords', activeScenario.id, flagInput.trim());
-      setFlagStatus(result.correct ? 'correct' : 'incorrect');
-    } catch {
-      setFlagStatus('incorrect');
-    } finally {
-      setFlagLoading(false);
-    }
-  }, [activeScenario, flagInput, flagLoading]);
-
-  const allStepsCompleted = activeScenario && completedSteps.size >= activeScenario.steps.length;
-
-  const handleFlagSubmit = useCallback(async (_stepId: string, flag: string) => {
-    if (!activeScenario) return { correct: false };
-    try {
-      return await verifyLabFlag('passwords', activeScenario.id, flag);
-    } catch {
-      return { correct: false };
-    }
-  }, [activeScenario]);
+  const { isLocked, purchaseLab } = useLabAccess();
 
   const simulations = useMemo(
     () => activeScenario ? createPasswordSimulations(activeScenario.hashContent, activeScenario.hashType, ['password', '123456', 'admin', 'letmein', 'qwerty', 'test', 'guest', 'master', 'dragon', 'login']) : [],
@@ -131,20 +89,30 @@ const PasswordLab = () => {
         <div className="px-3 md:px-4 lg:px-6 pb-20 lg:pb-24 space-y-8">
 
           <LearningAccordion
-            items={PASSWORD_EXERCISES.map((scenario) => ({
-              id: scenario.id,
-              title: scenario.title,
-              subtitle: scenario.hashType,
-              description: scenario.description,
-              difficulty: scenario.difficulty,
-              meta: (
-                <span className="text-[9px] font-black uppercase tracking-widest text-accent">
-                  {scenario.cpReward} CP
-                </span>
-              ),
-              onStart: () => startScenario(scenario),
-              startLabel: 'Start Attack',
-            }))}
+            items={PASSWORD_EXERCISES.map((scenario) => {
+              const cpCost = getLabCpCost(scenario.id);
+              const locked = isLocked(scenario.id);
+              return {
+                id: scenario.id,
+                title: scenario.title,
+                subtitle: scenario.hashType,
+                description: scenario.description,
+                difficulty: scenario.difficulty,
+                meta: (
+                  <span className="text-[9px] font-black uppercase tracking-widest text-accent">
+                    {scenario.cpReward} CP
+                  </span>
+                ),
+                onStart: () => startScenario(scenario),
+                startLabel: 'Start Attack',
+                locked,
+                cpCost: locked ? cpCost ?? undefined : undefined,
+                onUnlock: cpCost ? async () => {
+                  const success = await purchaseLab(scenario.id, 'passwords');
+                  if (success) startScenario(scenario);
+                } : undefined,
+              };
+            })}
           />
 
           <RelatedContent {...getRelatedContentForLab('passwords')} title="Continue This Topic" />
@@ -165,14 +133,32 @@ const PasswordLab = () => {
         scenarioId={activeScenario.id}
         onBack={exitScenario}
         completedCount={completedSteps.size}
-        totalSteps={activeScenario.steps.length}
+        totalSteps={activeScenario.steps.length + 2}
         simulations={simulations}
       >
+        <WalkthroughStep
+          stepIndex={0}
+          title="Mission Briefing"
+          narrative={`## ${activeScenario.title}\n\n${activeScenario.description}\n\n**Hash Type:** ${activeScenario.hashType}\n\n**Wordlist:** ${activeScenario.wordlist}`}
+          mission={activeScenario.description}
+          objectives={[
+            `Identify the ${activeScenario.hashType} hash type`,
+            'Select the appropriate cracking tool',
+            'Recover the plaintext password',
+            'Capture the flag',
+          ]}
+          isLocked={false}
+          isCompleted={true}
+          isActive={false}
+          flagId="briefing"
+          labId="passwords"
+          onFlagSubmit={async () => ({ correct: false })}
+          onComplete={() => {}}
+          skipFlag
+        />
+
         {activeScenario.steps.map((step, index) => {
-          const isCompleted = completedSteps.has(index);
-          const firstIncomplete = activeScenario.steps.findIndex((_: string, i: number) => !completedSteps.has(i));
-          const isActive = index === firstIncomplete;
-          const isLocked = !isCompleted && index > firstIncomplete;
+          const { isLocked, isCompleted, isActive } = getStepState(index);
 
           const narratives = [
             `## Prepare the Attack Environment
@@ -207,7 +193,7 @@ Execute the final command to complete the exercise.`,
           return (
             <WalkthroughStep
               key={index}
-              stepIndex={index}
+              stepIndex={index + 1}
               title={`Step ${index + 1}`}
               narrative={narratives[index % narratives.length]}
               commandInstruction={step}
@@ -217,33 +203,31 @@ Execute the final command to complete the exercise.`,
               flagId={`${activeScenario.id}-step-${index}`}
               labId="passwords"
               onFlagSubmit={handleFlagSubmit}
-              onComplete={() => handleStepComplete(index)}
+              onComplete={() => {}}
             >
               <FlowDiagram nodes={flow.nodes} arrows={flow.arrows} direction="horizontal" />
             </WalkthroughStep>
           );
         })}
 
-        {flagStatus === 'correct' && (
-          <div className="rounded-2xl border border-accent/30 bg-accent/5 p-4 md:p-6 flex flex-col sm:flex-row items-start sm:items-center gap-4">
-            <div className="w-12 h-12 rounded-xl bg-accent/20 flex items-center justify-center shrink-0">
-              <CheckCircle className="w-6 h-6 text-accent" />
-            </div>
-            <div>
-              <p className="text-lg font-black text-accent">Flag Captured!</p>
-              <p className="text-sm font-mono text-text-muted mt-1">
-                You earned {activeScenario.cpReward} CP for completing this exercise.
-              </p>
-              <button onClick={exitScenario} className="btn-secondary !rounded-xl !text-[10px] mt-3 px-5 py-2">
-                Back to Exercises
-              </button>
-            </div>
-          </div>
-        )}
+        <WalkthroughStep
+          stepIndex={activeScenario.steps.length + 1}
+          title="Mission Debrief"
+          narrative={`## Exercise Complete\n\nYou successfully cracked the **${activeScenario.hashType}** hash and recovered the plaintext password.\n\n### Key Takeaways\n\n- **${activeScenario.hashType}** hashes are vulnerable to dictionary and rule-based attacks\n- Weak passwords fall quickly to modern cracking tools\n- Password complexity and length are critical for defense\n- Organizations should enforce strong password policies\n\n### What to Remember\n\nPassword cracking is a fundamental skill for penetration testers and security auditors. Understanding the attack helps build better defenses.`}
+          reflection={`What did you learn about ${activeScenario.hashType} hash cracking? How would you improve password security in an organization?`}
+          isLocked={false}
+          isCompleted={allDone}
+          isActive={false}
+          flagId="debrief"
+          labId="passwords"
+          onFlagSubmit={async () => ({ correct: false })}
+          onComplete={() => {}}
+          skipFlag
+        />
       </WalkthroughLayout>
 
       <LabCelebration
-        trigger={flagStatus === 'correct'}
+        trigger={allDone}
         title={activeScenario.title}
         rewardCp={activeScenario.cpReward}
       />
