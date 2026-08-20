@@ -701,6 +701,12 @@
   .min-h-\[240px\] { min-height: 160px !important; }
   .min-h-\[280px\] { min-height: 180px !important; }
   .h-36 { height: 4.5rem !important; }
+
+  /* ── Mobile sections: allow growth beyond viewport ──
+     On mobile, min-h-dvh locks sections to exactly one viewport which clips
+     content. Remove the constraint so sections start at viewport height but
+     grow freely when content overflows. Desktop keeps min-h-dvh for snap. */
+  .snap-section { min-height: auto !important; height: auto !important; }
 }
 
 [data-saver="true"] * {
