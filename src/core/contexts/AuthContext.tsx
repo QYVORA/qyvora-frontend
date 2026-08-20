@@ -230,17 +230,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     (async () => {
       try {
         await refreshMe();
-      } catch (err: any) {
-        const isVerificationRequired =
-          err?.response?.status === 403 &&
-          (err?.response?.data?.verificationRequired || err?.response?.data?.code === 'email_verification_required');
-        if (isVerificationRequired) {
-          try {
-            const pendingEmail = err?.response?.data?.email || localStorage.getItem('qyvora_pending_verification_email') || '';
-            if (pendingEmail) localStorage.setItem('qyvora_pending_verification_email', pendingEmail);
-            localStorage.setItem('qyvora_auth_requires_verification', '1');
-          } catch { /* ignore */ }
-        }
+      } catch {
         setUser(null);
         clearAuthStorage();
       } finally {

@@ -26,7 +26,6 @@ interface AuthFormProps {
   handleRef: React.RefObject<HTMLInputElement | null>;
   onLoginSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
   onRegisterSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
-  onForgotPassword: () => void;
 }
 
 const AuthForm: React.FC<AuthFormProps> = ({
@@ -43,7 +42,6 @@ const AuthForm: React.FC<AuthFormProps> = ({
   handleRef,
   onLoginSubmit,
   onRegisterSubmit,
-  onForgotPassword,
 }) => {
   const { t } = useTranslation();
 
@@ -114,16 +112,7 @@ const AuthForm: React.FC<AuthFormProps> = ({
               </div>
 
               <div className="space-y-2">
-                <div className="flex justify-between items-center">
-                  <label htmlFor="login-password" className="text-[10px] font-black text-text-muted uppercase tracking-widest">{t('form.password')}</label>
-                  <button 
-                    type="button" 
-                    onClick={onForgotPassword} 
-                    className="text-accent hover:text-accent/70 hover:underline transition-colors text-xs font-bold"
-                  >
-                    {t('button.forgot')}
-                  </button>
-                </div>
+                <label htmlFor="login-password" className="text-[10px] font-black text-text-muted uppercase tracking-widest">{t('form.password')}</label>
                 <PasswordInput
                   id="login-password"
                   name="password"
