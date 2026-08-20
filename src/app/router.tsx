@@ -52,8 +52,6 @@ const SimulationPage    = lazy(() => import('../features/marketing/pages/public/
 // Auth pages
 const LoginPage         = lazy(() => import('../features/auth/pages/LoginPage'));
 const RegisterPage      = lazy(() => import('../features/auth/pages/RegisterPage'));
-const ForgotPasswordPage = lazy(() => import('../features/auth/pages/ForgotPasswordPage'));
-const VerifyEmailPage    = lazy(() => import('../features/auth/pages/VerifyEmailPage'));
 const ChangePasswordPage = lazy(() => import('../features/auth/pages/ChangePasswordPage'));
 
 // Student pages
@@ -124,15 +122,8 @@ const Wrap = ({ children, scope }: { children: ReactNode; scope?: string }) => (
 const StudentOnly = ({ children }: { children: ReactNode }) => {
   const { user, loading } = useAuth();
   if (loading) return <PageLoader />;
-  if (!user) {
-    const needsVerification = (() => {
-      try { return localStorage.getItem('qyvora_auth_requires_verification') === '1'; } catch { return false; }
-    })();
-    if (needsVerification) return <Navigate to="/verify-email" replace />;
-    return <Navigate to="/login" replace />;
-  }
+  if (!user) return <Navigate to="/login" replace />;
   if (user.isAdmin) return <Navigate to={`${ADMIN_PATH}/dashboard`} replace />;
-  if (!user.emailVerified) return <Navigate to="/verify-email" replace />;
   return <>{children}</>;
 };
 
@@ -174,8 +165,7 @@ export const AppRouter = () => {
   }, []);
 
   const noDobiaRoutes = [
-    '/login', '/register', '/forgot-password', '/reset-password',
-    '/verify-email', '/change-password',
+    '/login', '/register', '/change-password',
     '/dashboard',
   ];
 
@@ -243,9 +233,6 @@ export const AppRouter = () => {
         {/* ── Auth routes ───────── */}
         <Route path="/login"           element={<Wrap scope="Login"><LoginPage /></Wrap>} />
         <Route path="/register"        element={<Wrap scope="Register"><RegisterPage /></Wrap>} />
-        <Route path="/forgot-password" element={<Wrap scope="Forgot Password"><ForgotPasswordPage /></Wrap>} />
-        <Route path="/reset-password"  element={<Wrap scope="Reset Password"><ForgotPasswordPage /></Wrap>} />
-        <Route path="/verify-email"    element={<Wrap scope="Verify Email"><VerifyEmailPage /></Wrap>} />
         <Route path="/change-password" element={<Wrap scope="Change Password"><ChangePasswordPage /></Wrap>} />
         <Route path={ADMIN_PATH}        element={<Wrap scope="Admin Login"><LoginPage /></Wrap>} />
 

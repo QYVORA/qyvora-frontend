@@ -81,15 +81,6 @@ const LoginPage: React.FC = () => {
       setFormMessage('Login successful.');
       navigate('/dashboard');
     } catch (err: any) {
-      if (err?.response?.data?.verificationRequired) {
-        try {
-          localStorage.setItem('qyvora_pending_verification_email', email);
-          localStorage.setItem('qyvora_auth_requires_verification', '1');
-        } catch { /* ignore */ }
-        addToast('Please verify your email before signing in.', 'error');
-        navigate('/verify-email', { state: { email } });
-        return;
-      }
       const msg = sanitizeError(err, 'login');
       setFormMessage(msg);
       setShakePassword(true);
@@ -121,16 +112,6 @@ const LoginPage: React.FC = () => {
         profile: { fullName, organization: '', handle },
         credentials: { email, password },
       });
-
-      if (res.data?.verificationRequired) {
-        try {
-          localStorage.setItem('qyvora_pending_verification_email', email);
-          localStorage.setItem('qyvora_auth_requires_verification', '1');
-        } catch { /* ignore */ }
-        addToast('Account created. Please check your email to verify your account.', 'success');
-        navigate('/verify-email', { state: { email } });
-        return;
-      }
 
       await login({ email, password });
       addToast('Session established. Welcome, Operator.', 'success');
@@ -229,7 +210,6 @@ const LoginPage: React.FC = () => {
     handleRef,
     onLoginSubmit: handleLoginSubmit,
     onRegisterSubmit: handleRegisterSubmit,
-    onForgotPassword: () => navigate('/forgot-password'),
   };
 
   return (
