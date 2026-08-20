@@ -430,7 +430,7 @@ const Dashboard = () => {
       {/* 1. Welcome Banner + Daily Mission */}
       <div className="bg-bg px-3 md:px-4 lg:px-6 pt-8 pb-10">
         <div ref={heroRef} data-tour-id="tour-hero">
-          <div className="grid grid-cols-1 lg:grid-cols-[1fr_340px] gap-4 lg:gap-6 items-start">
+          <div className="grid grid-cols-1 lg:grid-cols-[1fr_340px] gap-4 lg:gap-6 items-stretch">
             <DashboardHero
               isEnrolled={isEnrolled}
               allDone={allDone}
