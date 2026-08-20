@@ -34,6 +34,8 @@ export interface ProfileApiResponse {
   bootcampCompleted?: boolean;
   labsCompleted?: number;
   coursesCompleted?: number;
+  completedPhaseIds?: string[];
+  completedCourseIds?: string[];
   learn?: {
     completedRooms?: CompletedRoom[];
   };
@@ -59,6 +61,8 @@ export interface ProfileData {
   labsCompleted: number;
   coursesCompleted: number;
   bootcampCompleted: boolean;
+  completedPhaseIds: string[];
+  completedCourseIds: string[];
   completedRooms: CompletedRoom[];
   xpLevel: number;
   xpCurrent: number;

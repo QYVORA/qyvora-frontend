@@ -66,6 +66,8 @@ const PublicProfile: React.FC = () => {
       labsCompleted: Number(profileApi.labsCompleted || 0),
       coursesCompleted: Number(profileApi.coursesCompleted || 0),
       bootcampCompleted: profileApi.bootcampStatus === 'completed' || profileApi.bootcampCompleted === true,
+      completedPhaseIds: Array.isArray(profileApi.completedPhaseIds) ? profileApi.completedPhaseIds : [],
+      completedCourseIds: Array.isArray(profileApi.completedCourseIds) ? profileApi.completedCourseIds : [],
       completedRooms,
       xpLevel: Number(profileApi.xpSummary?.level || 1),
       xpCurrent: Number(profileApi.xpSummary?.xp || 0),
@@ -181,6 +183,8 @@ const PublicProfile: React.FC = () => {
                 bootcampCompleted={profile.bootcampCompleted}
                 labsCompleted={profile.labsCompleted}
                 coursesCompleted={profile.coursesCompleted}
+                completedPhaseIds={profile.completedPhaseIds}
+                completedCourseIds={profile.completedCourseIds}
               />
             </section>
 

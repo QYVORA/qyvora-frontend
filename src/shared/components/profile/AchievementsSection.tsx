@@ -2,15 +2,14 @@ import React, { useState, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { motion, AnimatePresence } from 'motion/react';
 import { useReducedMotion } from '@/shared/hooks/useReducedMotion';
-import { Award, ChevronDown, ChevronUp, Star } from 'lucide-react';
-import { type Achievement, RARITY_STYLES, TYPE_ICONS, TYPE_COLORS } from './AchievementCard';
+import { Award, ChevronDown, ChevronUp, FlaskConical } from 'lucide-react';
+import { type Achievement, RARITY_STYLES } from './AchievementCard';
+import HpbAvatar from '@/shared/components/HpbAvatar';
 import BootcampBadge from '@/shared/components/BootcampBadge';
 import ModuleHeader from './ModuleHeader';
-
-interface CompletedRoom {
-  roomId: number;
-  title: string;
-}
+import { BOOTCAMP_CONFIG, PHASE_COLORS } from '@/features/student/constants/bootcampStructure';
+import { COURSES } from '@/features/student/data/courses/courseData';
+import { COURSE_ICON_MAP } from '@/features/student/data/courses/courseIcons';
 
 interface SkillAchievement {
   skill: string;
@@ -21,22 +20,25 @@ interface SkillAchievement {
 }
 
 interface AchievementsSectionProps {
-  rooms: CompletedRoom[];
+  rooms: { roomId: number; title: string }[];
   bootcampCompleted: boolean;
   labsCompleted?: number;
   coursesCompleted?: number;
+  completedPhaseIds?: string[];
+  completedCourseIds?: string[];
   skillAchievements?: SkillAchievement[];
   i18nPrefix?: string;
 }
 
 const PINNED_RARITIES = new Set(['rare', 'epic', 'legendary']);
-const COLLAPSE_THRESHOLD = 8;
 
 const AchievementsSection: React.FC<AchievementsSectionProps> = ({
   rooms,
   bootcampCompleted,
   labsCompleted = 0,
   coursesCompleted = 0,
+  completedPhaseIds = [],
+  completedCourseIds = [],
   skillAchievements = [],
   i18nPrefix,
 }) => {
@@ -45,73 +47,51 @@ const AchievementsSection: React.FC<AchievementsSectionProps> = ({
   const prefix = i18nPrefix || 'student.profile';
   const [expanded, setExpanded] = useState(false);
 
-  const achievements: Achievement[] = useMemo(() => {
-    const result: Achievement[] = [];
+  const phaseAchievements = useMemo(() => {
+    const phaseMap = new Map(BOOTCAMP_CONFIG.phases.map((p) => [p.id, p]));
+    return completedPhaseIds
+      .map((id) => phaseMap.get(id))
+      .filter(Boolean)
+      .map((phase) => ({
+        id: `phase-${phase!.id}`,
+        type: 'bootcamp' as const,
+        title: phase!.title,
+        description: phase!.codename,
+        rarity: 'uncommon' as const,
+        iconNode: <HpbAvatar variant={phase!.id as 'phase1'} size="xs" />,
+        color: PHASE_COLORS[phase!.id] || '#06B66F',
+      }));
+  }, [completedPhaseIds]);
 
-    if (bootcampCompleted) {
-      result.push({
-        id: 'bootcamp-hpb',
-        type: 'bootcamp',
-        title: t(`${prefix}.achievements.hpbGraduate`, 'HPB Graduate'),
-        description: t(`${prefix}.achievements.hpbGraduateDesc`, 'Completed the Hacker Protocol Bootcamp'),
-        rarity: 'epic',
+  const courseAchievements = useMemo(() => {
+    const courseMap = new Map(COURSES.map((c) => [c.id, c]));
+    return completedCourseIds
+      .map((id) => courseMap.get(id))
+      .filter(Boolean)
+      .map((course) => {
+        const iconCfg = COURSE_ICON_MAP[course!.id];
+        return {
+          id: `course-${course!.id}`,
+          type: 'course' as const,
+          title: course!.title,
+          description: course!.categoryId,
+          rarity: 'common' as const,
+          IconComponent: iconCfg?.icon,
+        };
       });
-    }
+  }, [completedCourseIds]);
 
-    const labCount = labsCompleted || rooms.length;
-    if (labCount > 0) {
-      result.push({
-        id: 'labs-completed',
-        type: 'lab',
-        title: t(`${prefix}.achievements.labsCompleted`, 'Lab Operator'),
-        description: t(`${prefix}.achievements.labsCompletedDesc`, `${labCount} lab${labCount !== 1 ? 's' : ''} completed`),
-        rarity: labCount >= 10 ? 'rare' : labCount >= 5 ? 'uncommon' : 'common',
-      });
-    }
+  const labCount = labsCompleted || rooms.length;
 
-    if (coursesCompleted > 0) {
-      result.push({
-        id: 'courses-completed',
-        type: 'course',
-        title: t(`${prefix}.achievements.coursesCompleted`, 'Course Graduate'),
-        description: t(`${prefix}.achievements.coursesCompletedDesc`, `${coursesCompleted} course${coursesCompleted !== 1 ? 's' : ''} completed`),
-        rarity: coursesCompleted >= 5 ? 'rare' : coursesCompleted >= 2 ? 'uncommon' : 'common',
-      });
-    }
+  const pinnedPhaseCount = phaseAchievements.filter((a) => PINNED_RARITIES.has(a.rarity)).length;
+  const pinnedCourseCount = courseAchievements.filter((a) => PINNED_RARITIES.has(a.rarity)).length;
+  const pinnedLabCount = labCount >= 10 ? 1 : 0;
+  const pinnedSkillCount = skillAchievements.filter((sa) => PINNED_RARITIES.has(sa.rarity)).length;
+  const totalPinned = pinnedPhaseCount + pinnedCourseCount + pinnedLabCount + pinnedSkillCount;
 
-    rooms.forEach((room) => {
-      result.push({
-        id: `room-${room.roomId}`,
-        type: 'challenge',
-        title: room.title,
-        description: t(`${prefix}.achievements.roomCompleted`, 'Room completed'),
-        rarity: 'common',
-      });
-    });
+  const totalAchievements = phaseAchievements.length + courseAchievements.length + (labCount > 0 ? 1 : 0) + skillAchievements.length;
 
-    skillAchievements.forEach((sa) => {
-      result.push({
-        id: `skill-${sa.skill}`,
-        type: 'lab',
-        title: sa.label,
-        description: `${sa.scenariosCompleted} scenario${sa.scenariosCompleted !== 1 ? 's' : ''} completed`,
-        rarity: sa.rarity,
-        color: sa.color,
-      });
-    });
-
-    return result;
-  }, [rooms, bootcampCompleted, labsCompleted, coursesCompleted, skillAchievements, t, prefix]);
-
-  const pinned = useMemo(
-    () => achievements.filter((a) => PINNED_RARITIES.has(a.rarity || 'common')),
-    [achievements],
-  );
-
-  const hasMore = achievements.length > COLLAPSE_THRESHOLD;
-  const visibleGrid = expanded ? achievements : achievements.slice(0, COLLAPSE_THRESHOLD);
-
-  if (achievements.length === 0) {
+  if (totalAchievements === 0) {
     return (
       <div className="rounded-2xl border border-border/30 bg-bg-card p-6">
         <ModuleHeader
@@ -128,7 +108,6 @@ const AchievementsSection: React.FC<AchievementsSectionProps> = ({
 
   return (
     <div className="space-y-4">
-      {/* Bootcamp Badge (if completed) */}
       {bootcampCompleted && (
         <motion.div
           initial={prefersReduced ? false : { opacity: 0, y: 8 }}
@@ -148,162 +127,205 @@ const AchievementsSection: React.FC<AchievementsSectionProps> = ({
         </motion.div>
       )}
 
-      {/* Pinned achievements shelf */}
-      {pinned.length > 0 && (
+      {/* Bootcamp Phases */}
+      {phaseAchievements.length > 0 && (
         <div>
           <ModuleHeader
             icon={<Award className="w-4 h-4 text-accent" />}
             iconClassName="bg-accent/10"
-            title={t('profile.achievements.pinned', 'Pinned')}
+            title={t('profile.achievements.bootcampPhases', 'Bootcamp Phases')}
             trailing={
               <span className="px-2 py-1 bg-accent/10 text-accent text-[9px] font-black rounded-lg">
-                {pinned.length}
+                {phaseAchievements.length}
               </span>
             }
           />
-          <div className="flex gap-3 overflow-x-auto pb-1 -mx-1 px-1">
-            {pinned.map((achievement, idx) => {
-              const rarity = achievement.rarity || 'common';
-              const styles = RARITY_STYLES[rarity];
-              const typeIcon = achievement.icon || TYPE_ICONS[achievement.type];
-              const typeColor = achievement.color || TYPE_COLORS[achievement.type];
-
-              return (
+          <div className="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
+            <AnimatePresence mode="popLayout">
+              {phaseAchievements.map((a, idx) => (
                 <motion.div
-                  key={achievement.id}
-                  initial={prefersReduced ? false : { opacity: 0, scale: 0.9 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ duration: prefersReduced ? 0 : 0.3, delay: prefersReduced ? 0 : idx * 0.05 }}
-                  className={`
-                    relative flex flex-col items-center text-center p-4 rounded-xl border
-                    min-w-[140px] shrink-0 transition-all duration-300 hover:scale-[1.02] cursor-default
-                    ${styles.border} ${styles.bg} ${styles.glow}
-                  `}
-                >
-                  <div className={`
-                    w-12 h-12 rounded-xl flex items-center justify-center mb-2
-                    ${rarity === 'legendary' ? 'bg-amber-400/10' :
-                      rarity === 'epic' ? 'bg-purple-400/10' :
-                      rarity === 'rare' ? 'bg-blue-400/10' :
-                      'bg-accent/10'}
-                  `}>
-                    <span className={typeColor}>{typeIcon}</span>
-                  </div>
-                  <h4 className="text-[10px] font-black uppercase tracking-widest text-text-primary leading-tight mb-1">
-                    {achievement.title}
-                  </h4>
-                  {achievement.description && (
-                    <p className="text-[9px] text-text-muted leading-snug line-clamp-2">
-                      {achievement.description}
-                    </p>
-                  )}
-                  {rarity !== 'common' && (
-                    <span className={`
-                      mt-2 px-1.5 py-0.5 rounded text-[7px] font-black uppercase tracking-wider
-                      ${rarity === 'legendary' ? 'bg-amber-400/20 text-amber-400' :
-                        rarity === 'epic' ? 'bg-purple-400/20 text-purple-400' :
-                        rarity === 'rare' ? 'bg-blue-400/20 text-blue-400' :
-                        'bg-accent/20 text-accent'}
-                    `}>
-                      {rarity}
-                    </span>
-                  )}
-                </motion.div>
-              );
-            })}
-          </div>
-        </div>
-      )}
-
-      {/* Full achievement grid */}
-      <div>
-        <ModuleHeader
-          icon={<Award className="w-4 h-4 text-accent" />}
-          iconClassName="bg-accent/10"
-          title={t('profile.achievements.title', 'Achievements')}
-          trailing={
-            <span className="px-2 py-1 bg-accent/10 text-accent text-[9px] font-black rounded-lg">
-              {achievements.length}
-            </span>
-          }
-        />
-
-        <div className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
-          <AnimatePresence mode="popLayout">
-            {visibleGrid.map((achievement, idx) => {
-              const rarity = achievement.rarity || 'common';
-              const styles = RARITY_STYLES[rarity];
-              const typeIcon = achievement.icon || TYPE_ICONS[achievement.type];
-              const typeColor = achievement.color || TYPE_COLORS[achievement.type];
-
-              return (
-                <motion.div
-                  key={achievement.id}
+                  key={a.id}
                   layout
                   initial={prefersReduced ? false : { opacity: 0, scale: 0.9 }}
                   animate={{ opacity: 1, scale: 1 }}
                   exit={prefersReduced ? undefined : { opacity: 0, scale: 0.9 }}
                   transition={{ duration: prefersReduced ? 0 : 0.3, delay: prefersReduced ? 0 : idx * 0.03 }}
-                  className={`
-                    relative group flex flex-col items-center text-center p-4 rounded-xl border
-                    transition-all duration-300 hover:scale-[1.02] cursor-default
-                    ${styles.border} ${styles.bg} ${styles.glow}
-                  `}
+                  className="relative group flex flex-col items-center text-center p-4 rounded-xl border border-border/30 bg-bg-card transition-all duration-300 hover:scale-[1.02] cursor-default"
                 >
-                  <div className={`
-                    w-12 h-12 rounded-xl flex items-center justify-center mb-3
-                    ${rarity === 'legendary' ? 'bg-amber-400/10' :
-                      rarity === 'epic' ? 'bg-purple-400/10' :
-                      rarity === 'rare' ? 'bg-blue-400/10' :
-                      'bg-accent/10'}
-                  `}>
-                    <span className={typeColor}>{typeIcon}</span>
+                  <div className="w-12 h-12 rounded-xl flex items-center justify-center mb-3 bg-bg-elevated">
+                    {a.iconNode}
                   </div>
                   <h4 className="text-[10px] font-black uppercase tracking-widest text-text-primary leading-tight mb-1">
-                    {achievement.title}
+                    {a.title}
                   </h4>
-                  {achievement.description && (
+                  {a.description && (
                     <p className="text-[9px] text-text-muted leading-snug line-clamp-2">
-                      {achievement.description}
+                      {a.description}
                     </p>
                   )}
-                  {rarity !== 'common' && (
-                    <span className={`
-                      mt-2 px-1.5 py-0.5 rounded text-[7px] font-black uppercase tracking-wider
-                      ${rarity === 'legendary' ? 'bg-amber-400/20 text-amber-400' :
-                        rarity === 'epic' ? 'bg-purple-400/20 text-purple-400' :
-                        rarity === 'rare' ? 'bg-blue-400/20 text-blue-400' :
-                        'bg-accent/20 text-accent'}
-                    `}>
-                      {rarity}
-                    </span>
-                  )}
-                  {achievement.earnedAt && (
-                    <span className="mt-2 text-[8px] text-text-muted/50 font-mono">
-                      {new Date(achievement.earnedAt).toLocaleDateString()}
-                    </span>
+                  {a.color && (
+                    <span
+                      className="mt-2 inline-block w-2 h-2 rounded-full"
+                      style={{ backgroundColor: a.color }}
+                    />
                   )}
                 </motion.div>
-              );
-            })}
-          </AnimatePresence>
-        </div>
-
-        {hasMore && (
-          <div className="mt-4">
-            <button
-              onClick={() => setExpanded(!expanded)}
-              className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl border border-border/30 bg-bg-elevated text-xs font-black uppercase tracking-widest text-text-muted hover:border-accent/30 hover:text-text-primary transition-all"
-            >
-              {expanded ? (
-                <>{t('profile.achievements.showLess', 'Show less')} <ChevronUp className="w-3.5 h-3.5" /></>
-              ) : (
-                <>{t('profile.achievements.showAll', 'Show all')} ({achievements.length}) <ChevronDown className="w-3.5 h-3.5" /></>
-              )}
-            </button>
+              ))}
+            </AnimatePresence>
           </div>
-        )}
-      </div>
+        </div>
+      )}
+
+      {/* Courses */}
+      {courseAchievements.length > 0 && (
+        <div>
+          <ModuleHeader
+            icon={<Award className="w-4 h-4 text-blue-400" />}
+            iconClassName="bg-blue-400/10"
+            title={t('profile.achievements.courses', 'Courses')}
+            trailing={
+              <span className="px-2 py-1 bg-blue-400/10 text-blue-400 text-[9px] font-black rounded-lg">
+                {courseAchievements.length}
+              </span>
+            }
+          />
+          <div className="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
+            <AnimatePresence mode="popLayout">
+              {courseAchievements.map((a, idx) => {
+                const IconComp = a.IconComponent;
+                return (
+                  <motion.div
+                    key={a.id}
+                    layout
+                    initial={prefersReduced ? false : { opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={prefersReduced ? undefined : { opacity: 0, scale: 0.9 }}
+                    transition={{ duration: prefersReduced ? 0 : 0.3, delay: prefersReduced ? 0 : idx * 0.03 }}
+                    className="relative group flex flex-col items-center text-center p-4 rounded-xl border border-border/30 bg-bg-card transition-all duration-300 hover:scale-[1.02] cursor-default"
+                  >
+                    <div className="w-12 h-12 rounded-xl flex items-center justify-center mb-3 bg-blue-400/10">
+                      {IconComp ? (
+                        <IconComp className="w-6 h-6 text-blue-400" />
+                      ) : (
+                        <FlaskConical className="w-5 h-5 text-blue-400" />
+                      )}
+                    </div>
+                    <h4 className="text-[10px] font-black uppercase tracking-widest text-text-primary leading-tight mb-1">
+                      {a.title}
+                    </h4>
+                    {a.description && (
+                      <p className="text-[9px] text-text-muted leading-snug line-clamp-2">
+                        {a.description}
+                      </p>
+                    )}
+                  </motion.div>
+                );
+              })}
+            </AnimatePresence>
+          </div>
+        </div>
+      )}
+
+      {/* Labs */}
+      {labCount > 0 && (
+        <div>
+          <ModuleHeader
+            icon={<FlaskConical className="w-4 h-4 text-red-400" />}
+            iconClassName="bg-red-400/10"
+            title={t('profile.achievements.labs', 'Labs')}
+            trailing={
+              <span className="px-2 py-1 bg-red-400/10 text-red-400 text-[9px] font-black rounded-lg">
+                {labCount}
+              </span>
+            }
+          />
+          <div className="mt-3">
+            <div className="flex flex-col items-center text-center p-4 rounded-xl border border-border/30 bg-bg-card max-w-[200px]">
+              <div className="w-12 h-12 rounded-xl flex items-center justify-center mb-3 bg-red-400/10">
+                <FlaskConical className="w-5 h-5 text-red-400" />
+              </div>
+              <h4 className="text-[10px] font-black uppercase tracking-widest text-text-primary leading-tight mb-1">
+                {t('profile.achievements.labsCompleted', 'Lab Operator')}
+              </h4>
+              <p className="text-[9px] text-text-muted leading-snug">
+                {t('profile.achievements.labsCompletedDesc', `${labCount} lab${labCount !== 1 ? 's' : ''} completed`)}
+              </p>
+              {(labCount >= 5 || labCount >= 10) && (
+                <span className={`mt-2 px-1.5 py-0.5 rounded text-[7px] font-black uppercase tracking-wider ${
+                  labCount >= 10
+                    ? 'bg-blue-400/20 text-blue-400'
+                    : 'bg-accent/20 text-accent'
+                }`}>
+                  {labCount >= 10 ? 'rare' : 'uncommon'}
+                </span>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Skill Achievements */}
+      {skillAchievements.length > 0 && (
+        <div>
+          <ModuleHeader
+            icon={<Award className="w-4 h-4 text-accent" />}
+            iconClassName="bg-accent/10"
+            title={t('profile.achievements.skills', 'Skill Badges')}
+            trailing={
+              <span className="px-2 py-1 bg-accent/10 text-accent text-[9px] font-black rounded-lg">
+                {skillAchievements.length}
+              </span>
+            }
+          />
+          <div className="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
+            <AnimatePresence mode="popLayout">
+              {skillAchievements.map((sa, idx) => {
+                const rarity = sa.rarity || 'common';
+                const styles = RARITY_STYLES[rarity];
+                return (
+                  <motion.div
+                    key={`skill-${sa.skill}`}
+                    layout
+                    initial={prefersReduced ? false : { opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={prefersReduced ? undefined : { opacity: 0, scale: 0.9 }}
+                    transition={{ duration: prefersReduced ? 0 : 0.3, delay: prefersReduced ? 0 : idx * 0.03 }}
+                    className={`
+                      relative group flex flex-col items-center text-center p-4 rounded-xl border
+                      transition-all duration-300 hover:scale-[1.02] cursor-default
+                      ${styles.border} ${styles.bg} ${styles.glow}
+                    `}
+                  >
+                    <div
+                      className="w-12 h-12 rounded-xl flex items-center justify-center mb-3"
+                      style={{ backgroundColor: `${sa.color}15` }}
+                    >
+                      <Award className="w-5 h-5" style={{ color: sa.color }} />
+                    </div>
+                    <h4 className="text-[10px] font-black uppercase tracking-widest text-text-primary leading-tight mb-1">
+                      {sa.label}
+                    </h4>
+                    <p className="text-[9px] text-text-muted leading-snug line-clamp-2">
+                      {sa.scenariosCompleted} scenario{sa.scenariosCompleted !== 1 ? 's' : ''} completed
+                    </p>
+                    {rarity !== 'common' && (
+                      <span className={`
+                        mt-2 px-1.5 py-0.5 rounded text-[7px] font-black uppercase tracking-wider
+                        ${rarity === 'legendary' ? 'bg-amber-400/20 text-amber-400' :
+                          rarity === 'epic' ? 'bg-purple-400/20 text-purple-400' :
+                          rarity === 'rare' ? 'bg-blue-400/20 text-blue-400' :
+                          'bg-accent/20 text-accent'}
+                      `}>
+                        {rarity}
+                      </span>
+                    )}
+                  </motion.div>
+                );
+              })}
+            </AnimatePresence>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

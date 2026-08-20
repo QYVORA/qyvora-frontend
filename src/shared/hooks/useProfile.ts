@@ -95,6 +95,8 @@ export function useProfile({ paramUsername, authUser }: UseProfileOptions): UseP
         authUser?.bootcampStatus === 'completed' ||
         api.bootcampStatus === 'completed' ||
         api.bootcampCompleted === true,
+      completedPhaseIds: Array.isArray(api.completedPhaseIds) ? api.completedPhaseIds : [],
+      completedCourseIds: Array.isArray(api.completedCourseIds) ? api.completedCourseIds : [],
       completedRooms,
       xpLevel: Number(api.xpSummary?.level || 1),
       xpCurrent: Number(api.xpSummary?.xp || 0),

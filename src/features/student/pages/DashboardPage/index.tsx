@@ -389,6 +389,7 @@ const Dashboard = () => {
   const allDone = isEnrolled && !nextMission && totalRoomsDone > 0;
   const streakDays = overview?.xpSummary?.streakDays ?? null;
   const visitDates = overview?.xpSummary?.visitDates ?? [];
+  const visitDurations = overview?.xpSummary?.visitDurations ?? {};
   const rankName = _r?.name || t('stat.candidate');
 
   const heroRef = useGsapReveal<HTMLDivElement>({ y: 40, duration: 0.8 });
@@ -542,13 +543,15 @@ const Dashboard = () => {
           </div>
 
           {/* Activity Row — Week Activity + Active Deployments as 2-col grid */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6 items-stretch">
             {visitDates.length > 0 && (
-              <div className="card-accent bg-bg-card p-6 md:p-8">
+              <div className="card-accent bg-bg-card p-6 md:p-8 flex flex-col h-full">
                 <div className="text-xs font-black uppercase tracking-widest text-text-muted mb-4">
                   {t('student.dashboard.streak.title')}
                 </div>
-                <WeekActivity visitDates={visitDates} />
+                <div className="flex-1 flex flex-col justify-end">
+                  <WeekActivity visitDates={visitDates} visitDurations={visitDurations} />
+                </div>
               </div>
             )}
             <ActiveDeployments bootcamps={enrolledBootcamps} />
