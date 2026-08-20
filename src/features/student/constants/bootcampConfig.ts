@@ -1,65 +1,18 @@
 /**
- * HACKER PROTOCOL BOOTCAMP — STATIC CONFIG
- * =========================================
- * Single source of truth for the bootcamp walkthrough structure.
- * MUST mirror the backend bootcamp.config.js exactly.
- *
- * Instruction format supports (GitHub-Flavored Markdown):
- *   - Fenced code blocks:  ```bash\ncommand\n```
- *   - Inline code:         `command`
- *   - Bold:                **text**
- *   - Italic:              *text*
- *   - Bold+Italic:         ***text***
- *   - Unordered lists:     - item
- *   - Ordered lists:       1. item
- *   - Headings:            # text
- *   - Blockquotes:         > text
- *   - Horizontal rule:     ---
- *   - Plain prose
+ * HACKER PROTOCOL BOOTCAMP — FULL CONFIG (structure + step content)
+ * =================================================================
+ * For nav/layout components that only need phase/room metadata,
+ * import from './bootcampStructure' instead to avoid shipping
+ * ~4000 lines of step content.
  */
 
-export interface BootcampStep {
-  title: string;
-  instruction: string;
-  /** Exact filename from the filesystem. null = no image yet → show placeholder. */
-  image: string | null;
-}
-
-export interface BootcampRoom {
-  id: string;       // e.g. "room1"
-  title: string;    // MUST match backend room title exactly (case-insensitive)
-  overview: string;
-  estimatedMinutes: number; // Estimated time to complete this room
-  steps: BootcampStep[];
-}
-
-export interface BootcampPhase {
-  id: string;       // e.g. "phase1"
-  title: string;    // MUST match backend module title exactly (case-insensitive)
-  codename: string;
-  color?: string;   // hex color for this phase
-  rooms: BootcampRoom[];
-}
-
-export interface BootcampConfig {
-  id: string;
-  title: string;
-  phases: BootcampPhase[];
-}
-
-// ── Phase Colors ──────────────────────────────────────────────────────────────
-export const PHASE_COLORS: Record<string, string> = {
-  phase1: '#06B66F', // Green (Mindset)
-  phase2: '#60A5FA', // Blue (Linux)
-  phase3: '#A78BFA', // Purple (Networking)
-  phase4: '#F59E0B', // Amber (Web)
-  phase5: '#EF4444', // Red (Social)
-};
-
-// ── Image path builder ────────────────────────────────────────────────────────
-export { getWalkthroughImage as buildStepImagePath } from '../utils/walkthroughImages';
+export type { BootcampStep, BootcampRoom, BootcampPhase, BootcampConfig } from './bootcampStructure';
+export { PHASE_COLORS, buildStepImagePath } from './bootcampStructure';
 
 // ── Config ────────────────────────────────────────────────────────────────────
+import type { BootcampConfig } from './bootcampStructure';
+import { PHASE_COLORS } from './bootcampStructure';
+
 export const BOOTCAMP_CONFIG: BootcampConfig = {
   id: 'hpb',
   title: 'Hacker Protocol Bootcamp',

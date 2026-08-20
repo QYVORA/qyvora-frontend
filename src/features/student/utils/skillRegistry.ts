@@ -12,7 +12,7 @@
  */
 
 import { COURSES } from '@/features/student/data/courses';
-import { BOOTCAMP_CONFIG } from '@/features/student/constants/bootcampConfig';
+import { BOOTCAMP_CONFIG } from '@/features/student/constants/bootcampStructure';
 
 // ── Types ──────────────────────────────────────────────────────────────────────
 
