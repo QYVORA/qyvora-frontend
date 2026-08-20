@@ -12,7 +12,6 @@ import {
 import ProfileDropdown from './ProfileDropdown';
 import MobileProfileSheet from './MobileProfileSheet';
 import { SETTINGS_SECTIONS, type SettingsSectionId } from '../../../constants/settingsSections';
-import { BOOTCAMP_CONFIG } from '../../../constants/bootcampConfig';
 import { getCourseById } from '../../../data/courses';
 import { useAuth } from '../../../../../core/contexts/AuthContext';
 import { useToast } from '../../../../../core/contexts/ToastContext';
@@ -22,6 +21,8 @@ import { useEffect, useRef, useState } from 'react';
 import api from '../../../../../core/services/api';
 import { extractCpBalance } from '@/shared/utils/cpBalance';
 import Identicon from '@/shared/components/Identicon';
+import useStudentOverview from '@/features/student/hooks/useStudentOverview';
+import { getBootcampProgressMap, resolveNextRoomPath } from '@/features/student/utils/studentExperience';
 
 const StudentTopbar = () => {
   const { t } = useTranslation();
@@ -59,8 +60,24 @@ const StudentTopbar = () => {
   const roomPhaseId = roomMatch?.params?.phaseId
     ?? (roomMatchLegacy?.params?.moduleId ? `phase${roomMatchLegacy.params.moduleId}` : '');
   const roomRoomId = activeRoomMatch?.params?.roomId ?? '';
-  const roomPhaseConfig = BOOTCAMP_CONFIG.phases.find((p) => p.id === roomPhaseId);
-  const roomConfig = roomPhaseConfig?.rooms.find((r) => r.id === roomRoomId);
+
+  const [roomBreadcrumb, setRoomBreadcrumb] = useState<{ phaseTitle?: string; roomTitle?: string } | null>(null);
+
+  useEffect(() => {
+    if (!roomBootcampId || !roomPhaseId || !roomRoomId) { setRoomBreadcrumb(null); return; }
+    let mounted = true;
+    api.get(`/student/course?bootcampId=${encodeURIComponent(roomBootcampId)}`)
+      .then((res) => {
+        if (!mounted || !res.data?.modules) return;
+        const phaseNum = parseInt(roomPhaseId.replace('phase', ''), 10) || 0;
+        const roomNum = parseInt(roomRoomId.replace('room', ''), 10) || 0;
+        const mod = res.data.modules.find((m: any) => Number(m.moduleId) === phaseNum) || res.data.modules[phaseNum - 1];
+        const room = mod?.rooms?.[roomNum - 1];
+        setRoomBreadcrumb({ phaseTitle: mod?.title, roomTitle: room?.title });
+      })
+      .catch(() => { if (mounted) setRoomBreadcrumb(null); });
+    return () => { mounted = false; };
+  }, [roomBootcampId, roomPhaseId, roomRoomId]);
 
   const courseId = courseMatch?.params?.courseId ?? '';
   const courseConfig = getCourseById(courseId);
@@ -107,16 +124,14 @@ const StudentTopbar = () => {
     setProfileSheetOpen(false);
   }, [location.pathname]);
 
+  const { data: overview } = useStudentOverview();
+
   useEffect(() => {
-    let mounted = true;
-    api.get('/student/overview').then((res) => {
-      if (!mounted) return;
-      const overview = res.data || null;
+    if (overview) {
       const cp = extractCpBalance(overview?.xpSummary) ?? user?.cp ?? 0;
       setCpBalance(cp);
-    }).catch((err) => { console.warn('[Topbar] overview failed:', err?.response?.status || err?.message); });
-    return () => { mounted = false; };
-  }, [user?.uid]);
+    }
+  }, [overview, user?.uid]);
 
   const handleLogout = async () => {
     await logout();
@@ -128,6 +143,14 @@ const StudentTopbar = () => {
     if (path === '/dashboard') return location.pathname === '/dashboard';
     return location.pathname.startsWith(path);
   };
+
+  const continuePath = (() => {
+    if (!overview) return null;
+    const progressMap = getBootcampProgressMap(overview);
+    const activeBootcamp = progressMap.size > 0 ? Array.from(progressMap.values())[0] : null;
+    if (!activeBootcamp) return null;
+    return resolveNextRoomPath(String(activeBootcamp.bootcampId || activeBootcamp.id || ''));
+  })();
 
   return (
     <>
@@ -257,27 +280,27 @@ const StudentTopbar = () => {
                 <Link to={`/dashboard/bootcamps/${roomBootcampId}`} className="hover:text-accent active:opacity-70 transition-colors shrink-0">
                   {t('student.topbar.breadcrumb.curriculum')}
                 </Link>
-                {roomPhaseConfig && (
+                {roomBreadcrumb?.phaseTitle && (
                   <>
                     <IconChevronRight size={12} className="opacity-40 shrink-0" />
-                    <span className="text-accent shrink-0">{roomPhaseConfig.codename}</span>
+                    <span className="text-accent shrink-0">{roomBreadcrumb.phaseTitle}</span>
                   </>
                 )}
-                {roomConfig && (
+                {roomBreadcrumb?.roomTitle && (
                   <>
                     <IconChevronRight size={12} className="opacity-40 shrink-0" />
-                    <span className="text-text-primary font-black truncate">{roomConfig.title}</span>
+                    <span className="text-text-primary font-black truncate">{roomBreadcrumb.roomTitle}</span>
                   </>
                 )}
               </div>
               <div className="flex sm:hidden flex-col min-w-0 flex-1">
-                {roomPhaseConfig && (
+                {roomBreadcrumb?.phaseTitle && (
                   <span className="text-[9px] font-black uppercase tracking-[0.25em] text-accent leading-none mb-0.5">
-                    {roomPhaseConfig.codename}
+                    {roomBreadcrumb.phaseTitle}
                   </span>
                 )}
                 <span className="text-sm font-black text-text-primary truncate leading-tight">
-                  {roomConfig?.title ?? t('student.topbar.breadcrumb.room')}
+                  {roomBreadcrumb?.roomTitle ?? t('student.topbar.breadcrumb.room')}
                 </span>
               </div>
               <div className="flex items-center gap-1.5 md:gap-2 shrink-0">
@@ -457,16 +480,6 @@ const StudentTopbar = () => {
               <Logo size="xl" variant="mark" />
             </Link>
 
-            {/* Hamburger — visible on mobile only */}
-            <button
-              onClick={() => window.dispatchEvent(new CustomEvent('qyvora:open-main-sidebar'))}
-              className={`lg:hidden flex h-10 w-10 shrink-0 items-center justify-center rounded-xl transition-colors ml-auto text-text-secondary hover:text-accent`}
-              aria-label={t('aria.openNav')}
-              data-tour-id="tour-nav-mobile"
-            >
-                  <IconMenu size={24} strokeWidth={2.5} />
-            </button>
-
             {/* Nav tabs — desktop only (lg+), flex-1 pushes right actions to the far right */}
             <nav className="hidden lg:flex items-center justify-start flex-1 min-w-0 gap-1" data-tour-id="tour-nav-desktop">
               {DESKTOP_NAV_ITEMS.map((item) => {
@@ -489,6 +502,16 @@ const StudentTopbar = () => {
 
             {/* Right actions — separated from nav by flex-1 spacer */}
             <div className="hidden md:flex items-center gap-1.5 md:gap-2.5 shrink-0">
+              {/* Continue Mission CTA — only on dashboard when enrolled */}
+              {continuePath && location.pathname === '/dashboard' && (
+                <Link
+                  to={continuePath}
+                  className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-accent text-on-accent text-[10px] font-black uppercase tracking-widest transition-all hover:brightness-110 active:scale-95 shrink-0"
+                >
+                  {t('student.topbar.continueMission', 'Continue Mission')}
+                </Link>
+              )}
+
               {/* CP Coin badge */}
               <div className={`hidden md:flex items-center gap-2 px-3 py-2 rounded-xl border border-accent/20 bg-accent/5`} data-tour-id="tour-cp-desktop">
                 <CpLogo className="w-5 h-5" />
