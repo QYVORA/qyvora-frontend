@@ -9,12 +9,20 @@ import {
   getBootcampProgressMap,
   resolveNextRoomPath,
 } from '@/features/student/utils/studentExperience';
+import useStudentOverview from '@/features/student/hooks/useStudentOverview';
+import useEngagement from '@/features/student/hooks/useEngagement';
 import { Skeleton, ErrorState } from '@/shared/components/ui';
 import SEO from '@/shared/components/SEO';
 import StudentTour from '@/features/student/components/StudentTour';
 import StudentOnboardingModal from '@/features/student/components/StudentOnboardingModal';
 import type { StudentBootcampCardData } from '@/features/student/components/StudentBootcampCard';
 import { DashboardHero } from '@/features/student/components/dashboard';
+import DailyMissionCard from '@/features/student/components/dashboard/DailyMissionCard';
+import WeeklyOperationCard from '@/features/student/components/dashboard/WeeklyOperationCard';
+import CpEarnHint from '@/features/student/components/dashboard/CpEarnHint';
+import WeekActivity from '@/features/student/components/dashboard/WeekActivity';
+import ActiveDeployments from '@/features/student/components/dashboard/ActiveDeployments';
+import { StatCard } from '@/shared/components/dashboard';
 import StudentBootcampCard from '@/features/student/components/StudentBootcampCard';
 import LabCard from '@/features/student/pages/labs/LabsPage/LabCard';
 import SkillMatrix from '@/features/student/components/dashboard/SkillMatrix';
@@ -288,8 +296,9 @@ const Dashboard = () => {
   const { user } = useAuth();
   const { addToast } = useToast();
   const navigate = useNavigate();
+  const { data: overview, loading: overviewLoading } = useStudentOverview();
+  const { data: engagement, loading: engagementLoading } = useEngagement();
 
-  const [overview, setOverview] = useState<any>(null);
   const [bootcamps, setBootcamps] = useState<any[]>([]);
   const [cpBalanceState, setCpBalance] = useState<number | null>(null);
   const [loading, setLoading] = useState(true);
@@ -330,13 +339,11 @@ const Dashboard = () => {
     let mounted = true;
     const load = async () => {
       try {
-        const [ovRes, bcRes, prodRes] = await Promise.all([
-          api.get('/student/overview').catch((err) => { console.warn('[Dashboard] overview failed:', err?.response?.status || err?.message); return null; }),
+        const [bcRes, prodRes] = await Promise.all([
           api.get('/public/bootcamps').catch((err) => { console.warn('[Dashboard] bootcamps failed:', err?.response?.status || err?.message); return null; }),
           api.get('/public/cp-products').catch((err) => { console.warn('[Dashboard] products failed:', err?.response?.status || err?.message); return null; }),
         ]);
         if (!mounted) return;
-        setOverview(ovRes?.data || null);
         setBootcamps(Array.isArray(bcRes?.data?.items) ? bcRes.data.items : []);
         setProducts(Array.isArray(prodRes?.data?.items) ? prodRes.data.items : []);
         setCpBalance(user?.cp ?? 0);
@@ -381,6 +388,7 @@ const Dashboard = () => {
   const totalRoomsDone = overviewModules.reduce((sum: number, m: any) => sum + Number(m.roomsCompleted || 0), 0);
   const allDone = isEnrolled && !nextMission && totalRoomsDone > 0;
   const streakDays = overview?.xpSummary?.streakDays ?? null;
+  const visitDates = overview?.xpSummary?.visitDates ?? [];
   const rankName = _r?.name || t('stat.candidate');
 
   const heroRef = useGsapReveal<HTMLDivElement>({ y: 40, duration: 0.8 });
@@ -419,17 +427,22 @@ const Dashboard = () => {
         </div>
       )}
 
-      {/* 1. Welcome Banner */}
+      {/* 1. Welcome Banner + Daily Mission */}
       <div className="bg-bg px-3 md:px-4 lg:px-6 pt-8 pb-10">
         <div ref={heroRef} data-tour-id="tour-hero">
-          <DashboardHero
-            isEnrolled={isEnrolled}
-            allDone={allDone}
-            nextMission={nextMission}
-            continuePath={continuePath}
-            currentPhaseTitle={overview?.progressMeta?.currentPhase?.title}
-            username={user?.username}
-          />
+          <div className="grid grid-cols-1 lg:grid-cols-[1fr_340px] gap-4 lg:gap-6 items-start">
+            <DashboardHero
+              isEnrolled={isEnrolled}
+              allDone={allDone}
+              nextMission={nextMission}
+              continuePath={continuePath}
+              currentPhaseTitle={overview?.progressMeta?.currentPhase?.title}
+              username={user?.username}
+            />
+            {engagement && (
+              <DailyMissionCard engagement={engagement} loading={engagementLoading} />
+            )}
+          </div>
         </div>
       </div>
 
@@ -462,14 +475,12 @@ const Dashboard = () => {
               active={activeSection === 'marketplace'}
               onClick={() => handleSectionToggle('marketplace')}
             />
-            <div className="col-span-2 sm:col-span-1">
-              <SectionButton
-                icon={<Wrench className={`w-5 h-5 md:w-7 md:h-7 ${activeSection === 'tools' ? 'text-on-accent' : 'text-text-primary'}`} />}
-                label={t('student.tools.title')}
-                active={activeSection === 'tools'}
-                onClick={() => handleSectionToggle('tools')}
-              />
-            </div>
+            <SectionButton
+              icon={<Wrench className={`w-5 h-5 md:w-7 md:h-7 ${activeSection === 'tools' ? 'text-on-accent' : 'text-text-primary'}`} />}
+              label={t('student.tools.title')}
+              active={activeSection === 'tools'}
+              onClick={() => handleSectionToggle('tools')}
+            />
           </div>
         </div>
 
@@ -497,72 +508,62 @@ const Dashboard = () => {
         )}
       </div>
 
-      {/* 3. Achievement Stats — always visible */}
+      {/* 3. Stats + Activity */}
       <div className="bg-bg px-3 md:px-4 lg:px-6 py-10">
         <div ref={roomsRef}>
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-10">
-            {/* Left: Overview */}
-            <div className="flex flex-col justify-center gap-4">
-              <div>
-                <h2 className="text-xl md:text-2xl lg:text-3xl font-black text-text-primary">
-                  Overview
-                </h2>
-                <p className="text-base md:text-lg text-text-muted font-mono leading-relaxed mt-1">
-                  {t('student.dashboard.overviewDesc')}
-                </p>
-              </div>
-              <Link
-                to="/dashboard/bootcamps"
-                className="inline-flex items-center gap-2 self-start px-5 py-2.5 rounded-xl bg-accent text-on-accent text-[10px] font-black uppercase tracking-widest hover:bg-accent/90 transition-colors"
-              >
-                {t('student.dashboard.action.startLearning')} <IconArrowRight size={14} />
-              </Link>
-            </div>
+          {/* Stats Row — 4 equal columns */}
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4 mb-6">
+            <StatCard
+              icon={<IconRank size={20} className="text-accent" />}
+              label={t('student.dashboard.rank')}
+              value={rankName}
+            />
+            <StatCard
+              icon={<CpLogo className="w-5 h-5" />}
+              label={t('student.dashboard.cp')}
+              value={cpBalance.toLocaleString()}
+              data-tour-id="tour-cp-dashboard"
+            />
+            <StatCard
+              icon={<IconFire size={20} className="text-orange-400" />}
+              label={t('student.dashboard.streak.title')}
+              value={`${streakDays ?? 0}d`}
+            />
+            <StatCard
+              icon={<IconCode size={20} className="text-accent" />}
+              label={t('student.dashboard.roomsDone')}
+              value={totalRoomsDone}
+            />
+          </div>
 
-            {/* Right: Stats Cards */}
-            <div className="grid grid-cols-2 gap-3">
-              <div className="flex flex-col items-center gap-2 p-4 md:p-5 lg:p-6 card-accent bg-bg-card text-center">
-                <div className="w-12 h-12 md:w-14 md:h-14 lg:w-16 lg:h-16 rounded-xl md:rounded-2xl flex items-center justify-center shrink-0 bg-bg-elevated text-text-primary">
-                  <IconRank size={24} className="text-accent md:w-7 md:h-7 lg:w-8 lg:h-8" />
+          {/* CP Earn Hint — contextual suggestion near CP stats */}
+          <div className="mb-6">
+            <CpEarnHint engagement={engagement} loading={engagementLoading} />
+          </div>
+
+          {/* Activity Row — Week Activity + Active Deployments as 2-col grid */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6">
+            {visitDates.length > 0 && (
+              <div className="card-accent bg-bg-card p-6 md:p-8">
+                <div className="text-xs font-black uppercase tracking-widest text-text-muted mb-4">
+                  {t('student.dashboard.streak.title')}
                 </div>
-                <div>
-                  <p className="text-[9px] md:text-[10px] font-black uppercase tracking-widest text-text-muted">{t('student.dashboard.rank')}</p>
-                  <p className="text-xl md:text-2xl font-black text-text-primary">{rankName}</p>
-                </div>
+                <WeekActivity visitDates={visitDates} />
               </div>
-              <div className="flex flex-col items-center gap-2 p-4 md:p-5 lg:p-6 card-accent bg-bg-card text-center" data-tour-id="tour-cp-dashboard">
-                <div className="w-12 h-12 md:w-14 md:h-14 lg:w-16 lg:h-16 rounded-xl md:rounded-2xl flex items-center justify-center shrink-0 bg-bg-elevated">
-                  <CpLogo className="w-6 h-6 md:w-7 md:h-7 lg:w-8 lg:h-8" />
-                </div>
-                <div>
-                  <p className="text-[9px] md:text-[10px] font-black uppercase tracking-widest text-text-muted">{t('student.dashboard.cp')}</p>
-                  <p className="text-xl md:text-2xl font-black text-text-primary">{cpBalance.toLocaleString()}</p>
-                </div>
-              </div>
-              <div className="flex flex-col items-center gap-2 p-4 md:p-5 lg:p-6 card-accent bg-bg-card text-center">
-                <div className="w-12 h-12 md:w-14 md:h-14 lg:w-16 lg:h-16 rounded-xl md:rounded-2xl flex items-center justify-center shrink-0 bg-bg-elevated text-text-primary">
-                  <IconFire size={24} className="text-orange-400 md:w-7 md:h-7 lg:w-8 lg:h-8" />
-                </div>
-                <div>
-                  <p className="text-[9px] md:text-[10px] font-black uppercase tracking-widest text-text-muted">{t('student.dashboard.streak.title')}</p>
-                  <p className="text-xl md:text-2xl font-black text-text-primary">{streakDays ?? 0}d</p>
-                </div>
-              </div>
-              <div className="flex flex-col items-center gap-2 p-4 md:p-5 lg:p-6 card-accent bg-bg-card text-center">
-                <div className="w-12 h-12 md:w-14 md:h-14 lg:w-16 lg:h-16 rounded-xl md:rounded-2xl flex items-center justify-center shrink-0 bg-bg-elevated text-text-primary">
-                  <IconCode size={24} className="text-accent md:w-7 md:h-7 lg:w-8 lg:h-8" />
-                </div>
-                <div>
-                  <p className="text-[9px] md:text-[10px] font-black uppercase tracking-widest text-text-muted">{t('student.dashboard.roomsDone')}</p>
-                  <p className="text-xl md:text-2xl font-black text-text-primary">{totalRoomsDone}</p>
-                </div>
-              </div>
-            </div>
+            )}
+            <ActiveDeployments bootcamps={enrolledBootcamps} />
           </div>
         </div>
       </div>
 
-      {/* 3b. Skill Matrix — always visible */}
+      {/* 3b. Weekly Operation — full width */}
+      {engagement && (
+      <div className="bg-bg px-3 md:px-4 lg:px-6 pb-10">
+        <WeeklyOperationCard engagement={engagement} loading={engagementLoading} />
+      </div>
+      )}
+
+      {/* 3c. Skill Matrix — always visible */}
       <div className="bg-bg-alt px-3 md:px-4 lg:px-6 py-10">
         <SkillMatrix
           modules={overviewModules}
@@ -643,13 +644,7 @@ const Dashboard = () => {
         {activeSection === 'bootcamps' && (
           <div>
             {enrolledBootcamps.length > 0 ? (
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
-                {enrolledBootcamps.map((bc, idx) => (
-                  <div key={bc.id} className="aspect-square">
-                    <StudentBootcampCard data={bc} index={idx} />
-                  </div>
-                ))}
-              </div>
+              <ActiveDeployments bootcamps={enrolledBootcamps} />
             ) : (
               <div className="text-center py-12 card-accent bg-bg-card">
                 <Briefcase className="w-12 h-12 text-text-muted/20 mx-auto mb-3" />

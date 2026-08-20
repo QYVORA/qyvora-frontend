@@ -5,20 +5,20 @@ interface WeekActivityProps {
 }
 
 const DayBar = ({ label, active, maxActive }: { label: string; active: boolean; maxActive: number }) => {
-  const height = active ? Math.max(20, 80 + (maxActive > 3 ? 20 : 0)) : 8;
+  const height = active ? Math.max(32, 70 + (maxActive > 3 ? 15 : 0)) : 12;
   return (
-    <div className="flex flex-col items-center gap-1 flex-1">
-      <div className="relative w-full flex justify-center" style={{ height: 32 }}>
+    <div className="flex flex-col items-center gap-2 flex-1">
+      <div className="relative w-full flex justify-center" style={{ height: 64 }}>
         <div
-          className={`absolute bottom-0 w-full max-w-[20px] rounded-t-sm transition-all duration-500 ${
+          className={`absolute bottom-0 w-full max-w-[28px] rounded-t-md transition-all duration-500 ${
             active
-              ? 'bg-accent shadow-[0_0_6px_var(--color-accent)]'
+              ? 'bg-accent shadow-[0_0_8px_var(--color-accent)]'
               : 'bg-border/20'
           }`}
           style={{ height: `${height}%` }}
         />
       </div>
-      <span className={`text-[10px] font-bold uppercase ${
+      <span className={`text-xs font-bold uppercase tracking-wider ${
         active ? 'text-accent/80' : 'text-text-muted/30'
       }`}>
         {label}
@@ -47,7 +47,7 @@ const WeekActivity = ({ visitDates = [] }: WeekActivityProps) => {
   if (visitDates.length === 0) return null;
 
   return (
-    <div className="flex items-end gap-[2px] w-full pt-1" title="Mon-Sun activity" role="img" aria-label={`Activity: ${days.filter(d => d.active).length} of 7 days active`}>
+    <div className="flex items-end gap-1 w-full pt-2" title="Mon-Sun activity" role="img" aria-label={`Activity: ${days.filter(d => d.active).length} of 7 days active`}>
       {days.map((d) => (
         <DayBar key={d.label} label={d.label} active={d.active} maxActive={maxActive} />
       ))}
