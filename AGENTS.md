@@ -92,7 +92,7 @@ h2 compact bento sections: **title only, no description**.
 | Layout | Clearance | Notes |
 |--------|-----------|-------|
 | `LandingLayout` | None (hero clears own space) | No `<Footer />` (last snap section) |
-| `StudentLayout` | `pt-20 md:pt-24` | Topbar + sidebar |
+| `StudentLayout` | `pt-20 md:pt-24` | Topbar only |
 | `AdminLayout` | `pt-20 md:pt-24` | Forced dark, `data-theme-persist="dark"` |
 | `AuthFormLayout` | 2-col grid, `max-w-lg` form | Globe pinned bottom-right |
 
