@@ -25,6 +25,7 @@ import RoomProgress from '@/features/student/components/bootcamp-room/RoomProgre
 import RoomNavigation from '@/features/student/components/bootcamp-room/RoomNavigation';
 import DesktopToolbar from '@/features/student/components/bootcamp-room/DesktopToolbar';
 import { useRoomSession } from '@/features/student/hooks/useRoomSession';
+import useStudentOverview from '@/features/student/hooks/useStudentOverview';
 import type { ApiCourse, RoomQuiz, QuizQuestion } from '@/features/student/components/bootcamp-room/types';
 import SEO from '@/shared/components/SEO';
 import { BootcampRoomSkeleton } from '@/features/student/components/StudentSkeletons';
@@ -63,6 +64,7 @@ const BootcampRoomPage: React.FC = () => {
   const mountedRef = useRef(true);
   const redirectCountRef = useRef(0);
   const MAX_REDIRECTS = 3;
+  const { data: overview } = useStudentOverview();
 
   useEffect(() => {
     mountedRef.current = true;
@@ -71,7 +73,6 @@ const BootcampRoomPage: React.FC = () => {
 
   const [apiCourse, setApiCourse] = useState<ApiCourse | null>(null);
   const [apiLoading, setApiLoading] = useState(true);
-  const [bootcampStatus, setBootcampStatus] = useState('not_enrolled');
   const [searchParams, setSearchParams] = useSearchParams();
   const [currentStepIdx, setCurrentStepIdx] = useState(() => {
     const step = searchParams.get('step');
@@ -91,18 +92,17 @@ const BootcampRoomPage: React.FC = () => {
 
   const { timeSpent, fullscreen, toggleFullscreen, resetSession } = useRoomSession();
 
+  const bootcampStatus = (() => {
+    const enrolledViaStatus = overview?.bootcampStatus && overview.bootcampStatus !== 'not_enrolled' && String(overview?.bootcampId || '') === String(bootcampId || '');
+    const enrolledViaModules = (Array.isArray(overview?.modules) ? overview.modules : []).some((m: any) => String(m.bootcampId || m.id || '') === String(bootcampId || ''));
+    return enrolledViaStatus || enrolledViaModules ? 'enrolled' : 'not_enrolled';
+  })();
+
   const loadCourseData = useCallback(async () => {
     try {
       const query = bootcampId ? `?bootcampId=${encodeURIComponent(bootcampId)}` : '';
-      const [ovRes, courseRes] = await Promise.all([
-        api.get('/student/overview'),
-        api.get(`/student/course${query}`).catch(() => null),
-      ]);
+      const courseRes = await api.get(`/student/course${query}`).catch(() => null);
       if (!mountedRef.current) return;
-      const ov = ovRes.data;
-      const enrolledViaStatus = ov?.bootcampStatus && ov.bootcampStatus !== 'not_enrolled' && String(ov?.bootcampId || '') === String(bootcampId || '');
-      const enrolledViaModules = (Array.isArray(ov?.modules) ? ov.modules : []).some((m: any) => String(m.bootcampId || m.id || '') === String(bootcampId || ''));
-      setBootcampStatus(enrolledViaStatus || enrolledViaModules ? 'enrolled' : 'not_enrolled');
       if (courseRes?.data) setApiCourse(courseRes.data as ApiCourse);
     } catch { addToast(t('toast.courseLoadFailed'), 'error'); }
     finally { if (mountedRef.current) setApiLoading(false); }

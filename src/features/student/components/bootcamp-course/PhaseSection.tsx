@@ -3,7 +3,7 @@ import { IconLock } from '@/shared/components/icons';
 import ScrollReveal from '../../../../shared/components/ScrollReveal';
 import RoomCard from './RoomCard';
 import PhaseHeroSection from './PhaseHeroSection';
-import { BOOTCAMP_CONFIG } from '../../constants/bootcampConfig';
+import { BOOTCAMP_CONFIG } from '../../constants/bootcampStructure';
 import hpbCoverImg from '@/assets/bootcamp/hpb-cover.webp';
 
 const PHASE_ROOM_IMAGES: Record<string, string> = {};

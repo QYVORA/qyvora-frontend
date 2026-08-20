@@ -1,4 +1,4 @@
-import { BOOTCAMP_CONFIG } from '../constants/bootcampConfig';
+import { BOOTCAMP_CONFIG } from '../constants/bootcampStructure';
 
 const DATA_SAVER_KEY = 'hs_data_saver_v1';
 const LAST_SYNC_KEY = 'hs_last_sync_v1';

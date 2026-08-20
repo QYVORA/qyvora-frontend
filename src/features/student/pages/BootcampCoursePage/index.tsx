@@ -12,6 +12,7 @@ import api from '@/core/services/api';
 import { useToast } from '@/core/contexts/ToastContext';
 import { useAuth } from '@/core/contexts/AuthContext';
 import { formatSyncLabel, getLastSync, resolveNextRoomPath, setLastSyncNow } from '@/features/student/utils/studentExperience';
+import useStudentOverview from '@/features/student/hooks/useStudentOverview';
 import SEO from '@/shared/components/SEO';
 import { BootcampCourseSkeleton } from '@/features/student/components/StudentSkeletons';
 import PhaseSection from '@/features/student/components/bootcamp-course/PhaseSection';
@@ -23,9 +24,9 @@ const BootcampCourse: React.FC = () => {
   const { bootcampId } = useParams<{ bootcampId?: string }>();
   const { addToast } = useToast();
   const { refreshMe } = useAuth();
+  const { data: overview, loading: overviewLoading } = useStudentOverview();
 
   const [course, setCourse]     = useState<Course | null>(null);
-  const [overview, setOverview] = useState<any>(null);
   const [loading, setLoading]   = useState(true);
   const [syncError, setSyncError]   = useState('');
   const [lastSync, setLastSync]     = useState<string | null>(getLastSync('bootcamp-course'));
@@ -50,15 +51,8 @@ const BootcampCourse: React.FC = () => {
   const load = async () => {
     try {
       const query = bootcampId ? `?bootcampId=${encodeURIComponent(bootcampId)}` : '';
-      const cacheBust = `?_t=${Date.now()}`;
-      const [ovRes, courseRes] = await Promise.all([
-        api.get(`/student/overview${cacheBust}`),
-        api.get(`/student/course${query}`).catch(() => null),
-      ]);
+      const courseRes = await api.get(`/student/course${query}`).catch(() => null);
       if (!mountedRef.current) return;
-      const ov = ovRes.data || null;
-      setOverview(ov);
-      
       if (courseRes?.data) setCourse(courseRes.data as Course);
       setLastSync(setLastSyncNow('bootcamp-course'));
       setSyncError('');
@@ -133,7 +127,7 @@ const BootcampCourse: React.FC = () => {
     return course.modules.filter((mod) => String(mod.moduleId) === activePhase);
   }, [course, activePhase]);
 
-  if (loading) return <BootcampCourseSkeleton />;
+  if (loading || overviewLoading) return <BootcampCourseSkeleton />;
 
   return (
     <div>
