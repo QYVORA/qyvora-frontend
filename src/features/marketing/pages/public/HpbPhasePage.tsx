@@ -10,7 +10,7 @@ import { Footer } from '@/shared/components/layout';
 import { useAuth } from '@/core/contexts/AuthContext';
 import LandingFinalCtaSection from '@/features/marketing/components/landing/LandingFinalCtaSection';
 import HpbAvatar, { type HpbVariant } from '@/shared/components/HpbAvatar';
-import { BOOTCAMP_CONFIG } from '@/features/student/constants/bootcampConfig';
+import { BOOTCAMP_CONFIG } from '@/features/student/constants/bootcampStructure';
 import { PHASES } from '@/features/marketing/data/learnData';
 import RoomSection from './cards/RoomSection';
 
