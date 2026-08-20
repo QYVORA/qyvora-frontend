@@ -176,6 +176,7 @@ export const AppRouter = () => {
   const noDobiaRoutes = [
     '/login', '/register', '/forgot-password', '/reset-password',
     '/verify-email', '/change-password',
+    '/dashboard',
   ];
 
   const immersiveStudentPaths = [

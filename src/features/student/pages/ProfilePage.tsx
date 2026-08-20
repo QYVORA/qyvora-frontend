@@ -130,6 +130,8 @@ const Profile: React.FC = () => {
             bootcampCompleted={profile.bootcampCompleted}
             labsCompleted={profile.labsCompleted}
             coursesCompleted={profile.coursesCompleted}
+            completedPhaseIds={profile.completedPhaseIds}
+            completedCourseIds={profile.completedCourseIds}
             skillAchievements={skillAchievements}
           />
         </section>

@@ -186,13 +186,12 @@
   ───────────────────────────────────────────────────────────────────────── */
   @media (min-width: 768px) {
     .snap-container {
-      scroll-snap-type: y mandatory;
+      scroll-snap-type: y proximity;
       overflow-y: auto;
       height: 100dvh;
     }
     .snap-section {
       scroll-snap-align: start;
-      scroll-snap-stop: always;
     }
   }
 

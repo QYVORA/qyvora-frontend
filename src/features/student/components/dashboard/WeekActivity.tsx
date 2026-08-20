@@ -1,56 +1,123 @@
 import { useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 
 interface WeekActivityProps {
   visitDates?: string[];
+  visitDurations?: Record<string, number>;
 }
 
-const DayBar = ({ label, active, maxActive }: { label: string; active: boolean; maxActive: number }) => {
-  const height = active ? Math.max(32, 70 + (maxActive > 3 ? 15 : 0)) : 12;
+const DayBar = ({
+  label,
+  minutes,
+  isToday,
+  maxMinutes,
+}: {
+  label: string;
+  minutes: number;
+  isToday: boolean;
+  maxMinutes: number;
+}) => {
+  const active = minutes > 0;
+  const heightPercent = active && maxMinutes > 0
+    ? Math.max(12, (minutes / maxMinutes) * 100)
+    : 12;
+
   return (
     <div className="flex flex-col items-center gap-2 flex-1">
-      <div className="relative w-full flex justify-center" style={{ height: 64 }}>
+      <div className="relative w-full flex justify-center" style={{ height: 120 }}>
         <div
           className={`absolute bottom-0 w-full max-w-[28px] rounded-t-md transition-all duration-500 ${
             active
               ? 'bg-accent shadow-[0_0_8px_var(--color-accent)]'
               : 'bg-border/20'
           }`}
-          style={{ height: `${height}%` }}
+          style={{ height: `${heightPercent}%` }}
         />
       </div>
-      <span className={`text-xs font-bold uppercase tracking-wider ${
-        active ? 'text-accent/80' : 'text-text-muted/30'
-      }`}>
-        {label}
-      </span>
+      <div className="flex flex-col items-center gap-0.5">
+        <span
+          className={`text-xs font-bold uppercase tracking-wider ${
+            active ? 'text-accent/80' : 'text-text-muted/30'
+          }`}
+        >
+          {label}
+        </span>
+        {isToday && (
+          <span className="w-1 h-1 rounded-full bg-accent" />
+        )}
+      </div>
     </div>
   );
 };
 
-const WeekActivity = ({ visitDates = [] }: WeekActivityProps) => {
-  const days = useMemo(() => {
+function formatMinutes(total: number): string {
+  if (total < 60) return `${total}m`;
+  const h = Math.floor(total / 60);
+  const m = total % 60;
+  return m > 0 ? `${h}h ${m}m` : `${h}h`;
+}
+
+const WeekActivity = ({ visitDates = [], visitDurations = {} }: WeekActivityProps) => {
+  const { t } = useTranslation();
+
+  const { days, totalMinutes } = useMemo(() => {
     const today = new Date();
     const dayOfWeek = today.getDay();
     const monday = new Date(today);
     monday.setDate(today.getDate() - ((dayOfWeek + 6) % 7));
+
     const labels = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
-    return labels.map((label, i) => {
+    let total = 0;
+
+    const result = labels.map((label, i) => {
       const date = new Date(monday);
       date.setDate(monday.getDate() + i);
       const dateStr = date.toISOString().split('T')[0];
-      return { label, active: visitDates.includes(dateStr) };
+      const isToday =
+        date.getFullYear() === today.getFullYear() &&
+        date.getMonth() === today.getMonth() &&
+        date.getDate() === today.getDate();
+      const minutes = visitDurations[dateStr] ?? (visitDates.includes(dateStr) ? 1 : 0);
+      total += minutes;
+      return { label, minutes, isToday };
     });
-  }, [visitDates]);
 
-  const maxActive = days.filter(d => d.active).length;
+    return { days: result, totalMinutes: total };
+  }, [visitDates, visitDurations]);
+
+  const maxMinutes = useMemo(
+    () => Math.max(1, ...days.map((d) => d.minutes)),
+    [days],
+  );
 
   if (visitDates.length === 0) return null;
 
   return (
-    <div className="flex items-end gap-1 w-full pt-2" title="Mon-Sun activity" role="img" aria-label={`Activity: ${days.filter(d => d.active).length} of 7 days active`}>
-      {days.map((d) => (
-        <DayBar key={d.label} label={d.label} active={d.active} maxActive={maxActive} />
-      ))}
+    <div>
+      <div
+        className="flex items-end gap-1 w-full pt-2"
+        role="img"
+        aria-label={t('student.dashboard.streak.ariaWeek', {
+          total: formatMinutes(totalMinutes),
+          active: days.filter((d) => d.minutes > 0).length,
+          defaultValue: `Activity: ${formatMinutes(totalMinutes)} across ${days.filter((d) => d.minutes > 0).length} of 7 days`,
+        })}
+      >
+        {days.map((d) => (
+          <DayBar
+            key={d.label}
+            label={d.label}
+            minutes={d.minutes}
+            isToday={d.isToday}
+            maxMinutes={maxMinutes}
+          />
+        ))}
+      </div>
+      <div className="mt-3 text-center">
+        <span className="text-[10px] font-mono text-text-muted">
+          {formatMinutes(totalMinutes)} {t('student.dashboard.streak.thisWeek', 'this week')}
+        </span>
+      </div>
     </div>
   );
 };
