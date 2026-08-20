@@ -2,7 +2,7 @@ import React, { useState, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { motion, AnimatePresence } from 'motion/react';
 import { useReducedMotion } from '@/shared/hooks/useReducedMotion';
-import { Award, ChevronDown, ChevronUp } from 'lucide-react';
+import { Award, ChevronDown, ChevronUp, Star } from 'lucide-react';
 import { type Achievement, RARITY_STYLES, TYPE_ICONS, TYPE_COLORS } from './AchievementCard';
 import BootcampBadge from '@/shared/components/BootcampBadge';
 import ModuleHeader from './ModuleHeader';
@@ -12,11 +12,20 @@ interface CompletedRoom {
   title: string;
 }
 
+interface SkillAchievement {
+  skill: string;
+  label: string;
+  color: string;
+  scenariosCompleted: number;
+  rarity: 'common' | 'uncommon' | 'rare' | 'epic' | 'legendary';
+}
+
 interface AchievementsSectionProps {
   rooms: CompletedRoom[];
   bootcampCompleted: boolean;
   labsCompleted?: number;
   coursesCompleted?: number;
+  skillAchievements?: SkillAchievement[];
   i18nPrefix?: string;
 }
 
@@ -28,6 +37,7 @@ const AchievementsSection: React.FC<AchievementsSectionProps> = ({
   bootcampCompleted,
   labsCompleted = 0,
   coursesCompleted = 0,
+  skillAchievements = [],
   i18nPrefix,
 }) => {
   const { t } = useTranslation();
@@ -79,8 +89,19 @@ const AchievementsSection: React.FC<AchievementsSectionProps> = ({
       });
     });
 
+    skillAchievements.forEach((sa) => {
+      result.push({
+        id: `skill-${sa.skill}`,
+        type: 'lab',
+        title: sa.label,
+        description: `${sa.scenariosCompleted} scenario${sa.scenariosCompleted !== 1 ? 's' : ''} completed`,
+        rarity: sa.rarity,
+        color: sa.color,
+      });
+    });
+
     return result;
-  }, [rooms, bootcampCompleted, labsCompleted, coursesCompleted, t, prefix]);
+  }, [rooms, bootcampCompleted, labsCompleted, coursesCompleted, skillAchievements, t, prefix]);
 
   const pinned = useMemo(
     () => achievements.filter((a) => PINNED_RARITIES.has(a.rarity || 'common')),

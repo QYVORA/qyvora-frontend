@@ -15,6 +15,9 @@ export interface LearningAccordionItem {
   body?: React.ReactNode;
   onStart?: () => void;
   startLabel?: string;
+  locked?: boolean;
+  cpCost?: number;
+  onUnlock?: () => void;
 }
 
 interface LearningAccordionProps {
@@ -37,7 +40,17 @@ function DifficultyBadge({ difficulty }: { difficulty: LearningAccordionDifficul
   );
 }
 
-function StartButton({ label, onClick }: { label: string; onClick?: () => void }) {
+function StartButton({ label, onClick, locked, cpCost, onUnlock }: { label: string; onClick?: () => void; locked?: boolean; cpCost?: number; onUnlock?: () => void }) {
+  if (locked && cpCost) {
+    return (
+      <button type="button" onClick={onUnlock} className="btn-secondary !rounded-xl !text-[10px] px-5 py-2.5 mt-4 flex items-center gap-2">
+        <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+          <path strokeLinecap="round" strokeLinejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+        </svg>
+        Unlock for {cpCost} CP
+      </button>
+    );
+  }
   return (
     <button type="button" onClick={onClick} className="btn-primary !rounded-xl !text-[10px] px-5 py-2.5 mt-4">
       {label}
@@ -97,6 +110,11 @@ export function LearningAccordion({ items, className, defaultOpen = 0 }: Learnin
               </div>
               <div className="flex items-center gap-3 shrink-0">
                 {item.difficulty && <DifficultyBadge difficulty={item.difficulty} />}
+                {item.locked && (
+                  <svg className="w-4 h-4 text-text-muted" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                  </svg>
+                )}
                 {item.meta}
                 <ChevronDown
                   size={16}
@@ -122,7 +140,7 @@ export function LearningAccordion({ items, className, defaultOpen = 0 }: Learnin
                     {item.body}
                     {item.onStart && (
                       <div className="pl-10">
-                        <StartButton label={item.startLabel ?? 'Start'} onClick={item.onStart} />
+                        <StartButton label={item.startLabel ?? 'Start'} onClick={item.onStart} locked={item.locked} cpCost={item.cpCost} onUnlock={item.onUnlock} />
                       </div>
                     )}
                   </div>
@@ -155,11 +173,16 @@ export function LearningAccordion({ items, className, defaultOpen = 0 }: Learnin
               )}
               <div className="flex items-center gap-2 mb-4">
                 {item.difficulty && <DifficultyBadge difficulty={item.difficulty} />}
+                {item.locked && (
+                  <svg className="w-4 h-4 text-text-muted" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                  </svg>
+                )}
                 {item.meta}
               </div>
               <p className="text-base text-text-primary leading-relaxed">{item.description}</p>
               {item.body}
-              {item.onStart && <StartButton label={item.startLabel ?? 'Start'} onClick={item.onStart} />}
+              {item.onStart && <StartButton label={item.startLabel ?? 'Start'} onClick={item.onStart} locked={item.locked} cpCost={item.cpCost} onUnlock={item.onUnlock} />}
             </div>
           </div>
         ))}

@@ -4,6 +4,7 @@ import { useParams } from 'react-router-dom';
 import { Edit3, User, FlaskConical, GraduationCap, Zap, Flame } from 'lucide-react';
 import { useAuth } from '../../../core/contexts/AuthContext';
 import { useProfile } from '../../../shared/hooks/useProfile';
+import { useSkillAchievements } from '../../../shared/hooks/useSkillAchievements';
 import EditModal from '../components/profile/EditModal';
 import { ProfileSkeleton } from '../components/StudentSkeletons';
 import SEO from '../../../shared/components/SEO';
@@ -32,6 +33,8 @@ const Profile: React.FC = () => {
     isOwnProfile,
     setRawProfile,
   } = useProfile({ paramUsername, authUser });
+
+  const { achievements: skillAchievements } = useSkillAchievements();
 
   const editInitial = profile ? {
     name: profile.displayName,
@@ -127,6 +130,7 @@ const Profile: React.FC = () => {
             bootcampCompleted={profile.bootcampCompleted}
             labsCompleted={profile.labsCompleted}
             coursesCompleted={profile.coursesCompleted}
+            skillAchievements={skillAchievements}
           />
         </section>
       </div>
