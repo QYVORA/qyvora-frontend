@@ -5,6 +5,7 @@ import type { LeaderboardEntry, Period } from './types';
 interface UseLeaderboardOptions {
   limit?: number;
   offset?: number;
+  cohortId?: string | null;
   errorMessages?: {
     loadFailed?: string;
     networkFailed?: string;
@@ -12,7 +13,7 @@ interface UseLeaderboardOptions {
 }
 
 export function useLeaderboard(options: UseLeaderboardOptions = {}) {
-  const { limit = 50, offset: initialOffset = 0, errorMessages } = options;
+  const { limit = 50, offset: initialOffset = 0, cohortId: initialCohortId, errorMessages } = options;
   const [entries, setEntries] = useState<LeaderboardEntry[]>([]);
   const [loading, setLoading] = useState(true);
   const [loadingMore, setLoadingMore] = useState(false);
@@ -20,8 +21,9 @@ export function useLeaderboard(options: UseLeaderboardOptions = {}) {
   const [total, setTotal] = useState(0);
   const [hasMore, setHasMore] = useState(false);
   const offsetRef = useRef(initialOffset);
+  const cohortIdRef = useRef(initialCohortId);
 
-  const fetchLeaderboard = useCallback(async (period: Period, mode: 'reset' | 'append' = 'reset') => {
+  const fetchLeaderboard = useCallback(async (period: Period, mode: 'reset' | 'append' = 'reset', cohortId?: string | null) => {
     if (mode === 'reset') {
       offsetRef.current = initialOffset;
       setLoading(true);
@@ -29,9 +31,16 @@ export function useLeaderboard(options: UseLeaderboardOptions = {}) {
     } else {
       setLoadingMore(true);
     }
+    if (cohortId !== undefined) {
+      cohortIdRef.current = cohortId;
+    }
     setError('');
     try {
-      const res = await api.get(`/public/leaderboard?period=${period}&limit=${limit}&offset=${offsetRef.current}`);
+      let url = `/public/leaderboard?period=${period}&limit=${limit}&offset=${offsetRef.current}`;
+      if (cohortIdRef.current) {
+        url += `&cohortId=${cohortIdRef.current}`;
+      }
+      const res = await api.get(url);
       const data = res.data;
       if (data.success) {
         const batch = data.entries || [];
