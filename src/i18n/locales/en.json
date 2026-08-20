@@ -1209,6 +1209,23 @@
         "continue": "Continue",
         "startTraining": "Start Training"
       },
+      "dailyMission": {
+        "title": "Daily Mission",
+        "completed": "Completed",
+        "start": "Start Mission"
+      },
+      "weeklyOperation": {
+        "title": "Weekly Operation",
+        "daysLeft": "days left",
+        "steps": "steps",
+        "completed": "Completed",
+        "remaining": "remaining"
+      },
+      "cpEarnHint": {
+        "dailyMission": "Complete today's mission for +{{cp}} CP",
+        "weeklyOperation": "Continue your weekly operation for +{{cp}} CP",
+        "general": "Complete labs and courses to earn CP"
+      },
       "skillMatrix": "Skill Matrix",
       "skillMatrixSub": "Overall",
       "skillStats": "Skill Progress",

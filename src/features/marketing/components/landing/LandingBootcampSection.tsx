@@ -4,7 +4,7 @@ import { motion, useReducedMotion } from 'motion/react';
 import { IconArrowRight } from '@/shared/components/icons';
 import HpbAvatar, { type HpbVariant } from '@/shared/components/HpbAvatar';
 import { PHASES } from '@/features/marketing/data/learnData';
-import { BOOTCAMP_CONFIG } from '@/features/student/constants/bootcampConfig';
+import { BOOTCAMP_CONFIG } from '@/features/student/constants/bootcampStructure';
 import { useTranslation } from 'react-i18next';
 
 const GROUP_SIZE = 3;
