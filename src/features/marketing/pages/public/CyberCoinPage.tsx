@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'motion/react';
 import { ArrowDown, FlaskConical } from 'lucide-react';
@@ -28,28 +28,6 @@ import type { CpActivityStatus } from '@/features/marketing/data/cpPageData';
 const STARTER_COURSES = COURSES.filter((c) => c.skillLevel === 'beginner').slice(0, 6);
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
-
-/** Character typewriter — renders full text immediately under reduced motion. */
-function useTypewriter(text: string, enabled: boolean, speed = 34): { typed: string; done: boolean } {
-  const [count, setCount] = useState(enabled ? 0 : text.length);
-
-  useEffect(() => {
-    if (!enabled) {
-      setCount(text.length);
-      return;
-    }
-    let i = 0;
-    setCount(0);
-    const id = window.setInterval(() => {
-      i += 1;
-      setCount(i);
-      if (i >= text.length) window.clearInterval(id);
-    }, speed);
-    return () => window.clearInterval(id);
-  }, [text, enabled, speed]);
-
-  return { typed: text.slice(0, count), done: count >= text.length };
-}
 
 const scrollToId = (id: string) => {
   const el = document.getElementById(id);
@@ -104,10 +82,8 @@ const STATUS_STYLES: Record<CpActivityStatus, { dot: string; text: string }> = {
 
 const CyberCoinPage: React.FC = () => {
   const prefersReducedMotion = useReducedMotion();
-  const { typed, done } = useTypewriter(CP_HERO.terminal.command, !prefersReducedMotion);
 
   const handleExplore = useCallback(() => scrollToId('what-is-cp'), []);
-  const handleHowItWorks = useCallback(() => scrollToId('philosophy'), []);
 
   return (
     <div className="bg-bg min-h-full">
@@ -118,12 +94,11 @@ const CyberCoinPage: React.FC = () => {
 
       <PublicSnapLayout>
 
-        {/* ── 01 · HERO ─────────────────────────────────────────────────── */}
+        {/* ── 01 · HERO — simple header left, logo right ───────────────── */}
         <section className="relative w-full min-h-dvh snap-section bg-bg overflow-hidden">
-          <GridBoxedBackground blur={0} mask="right" />
           <div className="relative z-10 w-full min-h-dvh grid grid-cols-1 lg:grid-cols-2 items-center px-3 md:px-4 lg:px-6 pt-24 md:pt-28 lg:pt-32 pb-6 md:pb-8 lg:pb-10">
             {/* Copy */}
-            <div className="flex flex-col items-start justify-center space-y-7 lg:space-y-9">
+            <div className="flex flex-col items-start justify-center space-y-6 lg:space-y-8">
               <span className="inline-flex items-center gap-2 rounded-lg border border-border/30 bg-bg-card px-2.5 py-1 text-[9px] font-black uppercase tracking-[0.25em] text-text-muted">
                 <span className="w-1.5 h-1.5 rounded-full bg-accent" aria-hidden="true" />
                 {CP_HERO.label}
@@ -143,51 +118,18 @@ const CyberCoinPage: React.FC = () => {
                 {CP_HERO.description}
               </p>
 
-              <div className="flex items-center gap-2 flex-wrap">
-                {CP_HERO.motto.map((word, i) => (
-                  <React.Fragment key={word}>
-                    {i > 0 && <IconArrow size={12} className="text-text-muted shrink-0" aria-hidden="true" />}
-                    <span className="inline-flex items-center rounded-lg border border-accent/30 bg-accent/5 px-2.5 py-1 text-[9px] font-black uppercase tracking-widest text-accent">
-                      {word}
-                    </span>
-                  </React.Fragment>
-                ))}
-              </div>
-
-              <div className="rounded-xl border border-border/30 bg-bg-card px-4 py-3 font-mono text-[11px] md:text-xs max-w-md w-full">
-                <p className="break-words">
-                  <span className="text-accent">{CP_HERO.terminal.prompt}</span>{' '}
-                  <span className="text-text-primary">{typed}</span>
-                  {!done && <span className="animate-pulse" aria-hidden="true">▋</span>}
-                </p>
-                {done && (
-                  <p className="text-text-muted animate-fade-in mt-1 break-words">{CP_HERO.terminal.output}</p>
-                )}
-              </div>
-
-              <div className="flex flex-col sm:flex-row items-stretch gap-3 w-full sm:w-auto">
-                <button type="button" onClick={handleExplore} className="btn-primary inline-flex items-center justify-center gap-2 !px-6 !py-3">
-                  Explore CP <IconArrow size={14} />
-                </button>
-                <button type="button" onClick={handleHowItWorks} className="btn-secondary inline-flex items-center justify-center gap-2 !px-6 !py-3">
-                  How It Works
-                </button>
-              </div>
+              <button type="button" onClick={handleExplore} className="btn-primary inline-flex items-center justify-center gap-2 !px-6 !py-3">
+                Explore CP <IconArrow size={14} />
+              </button>
             </div>
 
-            {/* Official CP logo — framed product visual */}
+            {/* Official CP logo */}
             <div className="flex items-center justify-center lg:justify-end mt-4 lg:mt-0">
               <ScrollReveal direction="left" className="w-full flex justify-center lg:justify-end">
-                <figure className="relative rounded-3xl border border-border/30 bg-bg-card p-8 min-[400px]:p-10 sm:p-12 lg:p-14 card-qyvora">
-                  <CpLogo
-                    className="w-36 h-36 min-[400px]:w-44 min-[400px]:h-44 sm:w-52 sm:h-52 lg:w-60 lg:h-60 xl:w-72 xl:h-72"
-                    alt="CP — QYVORA Cyber Coin logo"
-                  />
-                  <figcaption className="mt-6 flex items-center justify-center gap-2 text-[9px] font-black uppercase tracking-[0.3em] text-text-muted">
-                    <span className="w-1.5 h-1.5 rounded-full bg-accent" aria-hidden="true" />
-                    {CP_HERO.subtitle}
-                  </figcaption>
-                </figure>
+                <CpLogo
+                  className="w-48 h-48 min-[400px]:w-56 min-[400px]:h-56 sm:w-64 sm:h-64 lg:w-72 lg:h-72 xl:w-80 xl:h-80"
+                  alt="CP — QYVORA Cyber Coin logo"
+                />
               </ScrollReveal>
             </div>
           </div>
