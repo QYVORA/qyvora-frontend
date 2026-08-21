@@ -59,8 +59,8 @@ const ActDividerSection: React.FC<ActDividerSectionProps> = ({ title, accentWord
           initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-80px' }}
-          transition={{ duration: 0.6, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
-          className="grid grid-cols-1 sm:grid-cols-3 gap-3 md:gap-4 pt-2 sm:pt-4 max-w-2xl"
+          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+          className={`grid grid-cols-1 ${items.length > 3 ? 'sm:grid-cols-2' : 'sm:grid-cols-3'} gap-3 md:gap-4 pt-2 sm:pt-4 max-w-2xl`}
         >
           {items.map((item, i) => (
             <Link

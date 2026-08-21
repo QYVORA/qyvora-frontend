@@ -26,6 +26,12 @@ import SEO from '@/shared/components/SEO';
 import { buildOrganization } from '@/shared/seo/schema';
 import { BookOpen, Users } from 'lucide-react';
 import { IconLabs, IconShield, IconLeaderboard, IconMarketplace } from '@/shared/components/icons';
+import CpLogo from '@/shared/components/CpLogo';
+
+/** CpLogo adapted to the ActDividerItem icon contract (size + className). */
+const CpIcon: React.FC<{ size?: number; className?: string }> = ({ className }) => (
+  <CpLogo className={className ?? 'w-5 h-5'} alt="Cyber Coin" />
+);
 
 const Landing: React.FC = () => {
   const { t } = useTranslation();
@@ -160,6 +166,12 @@ const Landing: React.FC = () => {
               label: t('nav.bootcamp'),
               description: 'Our flagship Hacker Protocol Bootcamp program.',
               to: '/hpb',
+            },
+            {
+              icon: CpIcon,
+              label: t('nav.cp'),
+              description: 'Earn CP for every verified achievement across the platform.',
+              to: '/cp',
             },
           ]}
         />
