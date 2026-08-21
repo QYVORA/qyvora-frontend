@@ -93,6 +93,7 @@ export const SITE_CONFIG = {
           { key: 'courses', label: 'Courses', path: '/courses', desc: 'Security courses' },
           { key: 'bootcamp', label: 'Bootcamp', path: '/hpb', desc: 'Hacker Protocol Bootcamp' },
           { key: 'labs', label: 'Labs', path: '/labs', desc: 'Attack labs' },
+          { key: 'cp', label: 'Cyber Coin', path: '/cp', desc: 'CP reward system' },
           { key: 'simulations', label: 'Simulations', path: '/simulations', desc: 'Live tool demos' },
           { key: 'blogs', label: 'Blogs', path: '/blogs', desc: 'Security articles' },
         ],

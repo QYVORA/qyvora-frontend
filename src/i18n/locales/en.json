@@ -52,7 +52,8 @@
     "marketplace": "Marketplace",
     "adminConsole": "Admin Console",
     "signUp": "Sign Up",
-    "profile": "Profile"
+    "profile": "Profile",
+    "cp": "Cyber Coin"
   },
   "button": {
     "startTraining": "Start Training",

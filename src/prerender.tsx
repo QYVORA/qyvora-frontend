@@ -568,6 +568,44 @@ const routeContent: Record<string, RouteContent> = {
     ],
     links: [{ label: 'Anansi CLI', href: '/anansi' }],
   },
+  '/cp': {
+    title: 'Cyber Coin (CP) | QYVORA',
+    description: 'CP — the QYVORA Cyber Coin. The reward layer connecting learning, execution, and achievement across the QYVORA cybersecurity ecosystem.',
+    h1: 'CP — QYVORA Cyber Coin',
+    lead: 'Earn Your Progress. CP is the reward layer connecting learning, execution, and achievement across the QYVORA cybersecurity ecosystem. Learn. Execute. Earn.',
+    sections: [
+      {
+        heading: 'A reward system built around capability',
+        body: 'Instead of rewarding passive engagement, QYVORA rewards operators for actually progressing through its ecosystem — completing courses, passing quizzes, finishing bootcamp phases, clearing attack labs, completing challenges, and reaching defined milestones.',
+      },
+      {
+        heading: 'The philosophy',
+        body: 'Knowledge is only the beginning. QYVORA is designed around the transition from consuming cybersecurity knowledge to actually executing it: KNOWLEDGE → PRACTICE → EXECUTION → VERIFICATION → REWARD.',
+      },
+      {
+        heading: 'How you earn CP',
+        bullets: [
+          'Course Completed — + CP',
+          'Quiz Passed — + CP',
+          'Phase Completed — + CP',
+          'Attack Lab Completed — + CP',
+          'Challenge Completed — + CP',
+          'Milestone Achieved — + CP',
+        ],
+      },
+      {
+        heading: 'Future architecture',
+        body: 'CP is designed with a future-ready architecture that can connect verified cybersecurity achievements with a blockchain-backed reward infrastructure. Blockchain settlement is planned, not deployed — CP currently functions as the QYVORA platform reward system and is not a publicly tradable asset.',
+      },
+    ],
+    links: [
+      { label: 'Hacker Protocol Bootcamp', href: '/hpb' },
+      { label: 'Courses', href: '/courses' },
+      { label: 'Attack Labs', href: '/labs' },
+      { label: 'Anansi CLI', href: '/anansi' },
+      { label: 'Leaderboard', href: '/leaderboard' },
+    ],
+  },
   '/team': {
     title: 'Team | QYVORA',
     description: 'Meet the team behind QYVORA - cybersecurity experts building Africa\'s security ecosystem.',
