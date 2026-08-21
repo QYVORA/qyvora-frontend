@@ -14,7 +14,7 @@ const LandingBlogsSection = () => {
       <div className="relative z-10 w-full h-full px-3 md:px-4 lg:px-6 py-12 sm:py-10 md:py-16 lg:py-20 flex flex-col lg:flex-row gap-10 sm:gap-10 lg:gap-16 lg:items-stretch">
         {/* Header column */}
         <div className="shrink-0 lg:w-[420px] xl:w-[480px] flex flex-col lg:justify-center">
-          <h2 className="text-3xl md:text-5xl lg:text-5xl font-black text-text-primary tracking-tighter leading-none mb-8">
+          <h2 className="text-3xl md:text-5xl lg:text-6xl font-black text-text-primary tracking-tighter leading-none mb-8">
             {t('landing.blogs.title')} <span className="text-accent">{t('landing.blogs.titleAccent')}</span>
           </h2>
           <p className="text-xs md:text-sm text-text-muted leading-relaxed max-w-xl mb-10">
@@ -43,6 +43,8 @@ const LandingBlogsSection = () => {
                     <img
                       src={post.image}
                       alt={post.title}
+                      width={1536}
+                      height={1024}
                       className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                       loading="lazy"
                     />

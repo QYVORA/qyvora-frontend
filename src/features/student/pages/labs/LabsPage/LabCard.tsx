@@ -17,7 +17,7 @@ const LabCard = ({ title, description, cpReward, route }: LabCardProps) => {
   return (
     <Link
       to={route}
-      className="group/card relative aspect-square rounded-2xl border border-border/30 bg-bg-card p-3 md:p-5 transition-all duration-300 hover:border-accent/30 flex flex-col text-left"
+      className="group/card relative aspect-square card-accent bg-bg-card p-3 md:p-5 transition-all duration-300 flex flex-col text-left"
     >
       <div className="flex items-center gap-2 mb-2">
         <div className="w-8 h-8 rounded-xl flex items-center justify-center shrink-0 bg-accent/10 border border-accent/20">

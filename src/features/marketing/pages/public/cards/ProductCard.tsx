@@ -57,7 +57,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, isLoggedIn, view }) 
             loading="lazy"
           />
         </div>
-        <div className="flex flex-col gap-2 p-4 flex-1 justify-between min-w-0">
+        <div className="flex flex-col gap-2 p-4 md:p-5 flex-1 justify-between min-w-0">
           <div className="min-w-0">
             <span className="self-start px-2 py-0.5 rounded-lg bg-accent/10 text-[9px] font-black uppercase text-accent tracking-widest border border-accent/20 inline-flex items-center gap-1 mb-1">
               <IconMarketplace className="h-2.5 w-2.5" /> Intelligence Asset
@@ -88,7 +88,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, isLoggedIn, view }) 
           loading="lazy"
         />
       </div>
-      <div className="flex flex-col gap-2 p-4 flex-1 justify-between">
+      <div className="flex flex-col gap-2 p-4 md:p-5 flex-1 justify-between">
         <div>
           <span className="self-start px-2 py-0.5 rounded-lg bg-accent/10 text-[9px] font-black uppercase text-accent tracking-widest border border-accent/20 inline-flex items-center gap-1 mb-1">
             <IconMarketplace className="h-2.5 w-2.5" /> Intelligence Asset

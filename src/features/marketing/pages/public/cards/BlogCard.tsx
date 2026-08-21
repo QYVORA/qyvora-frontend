@@ -39,7 +39,7 @@ const BlogCard: React.FC<BlogCardProps> = ({ post, view }) => {
             />
           </div>
         )}
-        <div className="flex flex-col gap-2 p-4 flex-1 justify-between min-w-0">
+        <div className="flex flex-col gap-2 p-4 md:p-5 flex-1 justify-between min-w-0">
           <div className="min-w-0">
             <Tags post={post} />
             <h3 className="text-sm sm:text-base font-black text-text-primary group-hover:text-accent transition-colors leading-snug line-clamp-2 mt-1">
@@ -84,7 +84,7 @@ const BlogCard: React.FC<BlogCardProps> = ({ post, view }) => {
           />
         </div>
       )}
-      <div className="flex flex-col gap-2 p-4 flex-1 justify-between">
+      <div className="flex flex-col gap-2 p-4 md:p-5 flex-1 justify-between">
         <div>
           <Tags post={post} />
           <h3 className="text-sm sm:text-base font-black text-text-primary group-hover:text-accent transition-colors leading-snug line-clamp-2">
