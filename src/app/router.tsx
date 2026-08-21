@@ -48,6 +48,7 @@ const TeamPage          = lazy(() => import('../features/marketing/pages/public/
 const QuiteRootPage     = lazy(() => import('../features/marketing/pages/public/QuiteRootPage'));
 const SimulationsPage   = lazy(() => import('../features/marketing/pages/public/SimulationsPage'));
 const SimulationPage    = lazy(() => import('../features/marketing/pages/public/SimulationPage'));
+const CyberCoinPage     = lazy(() => import('../features/marketing/pages/public/CyberCoinPage'));
 
 // Auth pages
 const LoginPage         = lazy(() => import('../features/auth/pages/LoginPage'));
@@ -222,6 +223,7 @@ export const AppRouter = () => {
           <Route path="/quiteroot" element={<Wrap scope="QuiteRoot"><QuiteRootPage /></Wrap>} />
           <Route path="/simulations" element={<Wrap scope="Simulations"><SimulationsPage /></Wrap>} />
           <Route path="/simulations/:slug" element={<Wrap scope="Simulation"><SimulationPage /></Wrap>} />
+          <Route path="/cp" element={<Wrap scope="Cyber Coin"><CyberCoinPage /></Wrap>} />
           
           {/* Legacy slug redirect — "hacker-protocol-book" → "hacker-protocol-bootcamp" */}
           <Route path="/blogs/hacker-protocol-book" element={<Navigate to="/blogs/hacker-protocol-bootcamp" replace />} />
