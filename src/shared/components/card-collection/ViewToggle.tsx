@@ -39,7 +39,7 @@ const ViewToggle: React.FC<ViewToggleProps> = ({
           aria-label={buttonLabel}
           title={buttonLabel}
           onClick={() => onChange(mode)}
-          className={`flex items-center justify-center w-7 h-7 rounded-lg transition-all duration-200 ${
+          className={`flex items-center justify-center w-7 h-7 rounded-lg transition-all duration-200 active:scale-95 disabled:opacity-50 disabled:pointer-events-none ${
             isActive
               ? 'bg-accent text-on-accent'
               : 'text-text-muted hover:text-accent hover:bg-bg-elevated'
