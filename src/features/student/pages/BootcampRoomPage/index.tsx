@@ -118,6 +118,13 @@ const BootcampRoomPage: React.FC = () => {
       setShowCompleteOverlay(true);
       loadCourseData(); 
     } catch (err: any) {
+      // Server enforces the quiz gate (F-04): if completion was rejected
+      // because no graded quiz pass exists, route the user back to the quiz.
+      if (err?.response?.status === 403 && err?.response?.data?.code === 'quiz_required') {
+        setQuizPassed(false);
+        setQuizGateOpen(true);
+        return;
+      }
       console.error('Failed to complete room:', err?.response?.data || err);
       addToast(t('toast.roomCompleteFailed'), 'error');
     }
