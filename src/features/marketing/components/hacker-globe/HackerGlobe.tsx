@@ -189,14 +189,20 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88, offset = [0, 0,
     let targetScrollRotation = 0;
     let currentScrollRotation = 0;
 
+    const snapEl = document.querySelector('.snap-container');
+
+    // While a scroll gesture is in flight the render loop is frozen so the
+    // canvas never competes with the browser compositor mid-snap. Rotation
+    // is wall-clock driven, so it catches up seamlessly on resume.
+    let scrollSettleTimer = 0;
     const handleScroll = () => {
-      const snapContainer = document.querySelector('.snap-container');
-      const scrollTop = snapContainer ? snapContainer.scrollTop : window.scrollY;
-      targetScrollRotation = scrollTop * 0.0003;
+      targetScrollRotation = (snapEl ? snapEl.scrollTop : window.scrollY) * 0.0003;
+      stop();
+      clearTimeout(scrollSettleTimer);
+      scrollSettleTimer = window.setTimeout(start, 160);
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
-    const snapEl = document.querySelector('.snap-container');
     if (snapEl) snapEl.addEventListener('scroll', handleScroll, { passive: true });
 
     const stop = () => {
@@ -287,6 +293,7 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88, offset = [0, 0,
       cancelled = true;
       clearTimeout(buildTimer);
       clearTimeout(debounceTimer);
+      clearTimeout(scrollSettleTimer);
       window.removeEventListener('scroll', handleScroll);
       if (snapEl) snapEl.removeEventListener('scroll', handleScroll);
       document.removeEventListener('visibilitychange', handleVisibility);

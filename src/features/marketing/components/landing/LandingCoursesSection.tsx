@@ -269,4 +269,4 @@ const LandingCoursesSection: React.FC = () => {
   );
 };
 
-export default LandingCoursesSection;
+export default React.memo(LandingCoursesSection);

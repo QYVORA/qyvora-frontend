@@ -248,4 +248,4 @@ const LandingServicesSection: React.FC = () => {
   );
 };
 
-export default LandingServicesSection;
+export default React.memo(LandingServicesSection);

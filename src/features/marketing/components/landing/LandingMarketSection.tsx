@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { memo, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Cloud, FileText, BookOpen, Cpu } from 'lucide-react';
 import { IconArrowRight, IconMarketplace, IconLock } from '@/shared/components/icons';
@@ -141,4 +141,4 @@ const LandingMarketSection = () => {
   );
 };
 
-export default LandingMarketSection;
+export default memo(LandingMarketSection);
