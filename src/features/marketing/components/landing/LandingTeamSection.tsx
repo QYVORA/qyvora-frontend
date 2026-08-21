@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import { Link } from 'react-router-dom';
 import { useReducedMotion } from 'motion/react';
 import { IconArrowRight, IconProfile, BrandGithubIcon, BrandLinkedinIcon, BrandXIcon } from '@/shared/components/icons';
@@ -111,4 +112,4 @@ const LandingTeamSection = () => {
   );
 };
 
-export default LandingTeamSection;
+export default memo(LandingTeamSection);

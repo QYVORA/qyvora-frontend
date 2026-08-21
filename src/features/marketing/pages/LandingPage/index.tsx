@@ -1,8 +1,8 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '@/core/contexts/AuthContext';
 import { useLandingData } from '@/features/marketing/hooks/useLandingData';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 
 import LandingHeroSection from '@/features/marketing/components/landing/LandingHeroSection';
 import LandingPillarsSection from '@/features/marketing/components/landing/LandingPillarsSection';
@@ -62,10 +62,9 @@ const Landing: React.FC = () => {
 
   const heroRef = React.useRef<HTMLDivElement>(null);
   const location = useLocation();
-  const navigate = useNavigate();
-  const [activeSection, setActiveSection] = useState('hero');
-  const isScrollingProgrammatically = React.useRef(false);
-  const lastScrollTime = React.useRef(0);
+  // Last section hash written to the URL. Plain ref on purpose — syncing the
+  // hash must never re-render or re-run effects; it exists for deep links.
+  const lastHashRef = React.useRef('hero');
 
   const totalCp = stats?.stats?.cpPoolSize ?? 0;
 
@@ -76,52 +75,52 @@ const Landing: React.FC = () => {
   useEffect(() => {
     if (isMobile) return;
     const hash = location.hash.replace('#', '');
-    if (hash && isValidSection(hash)) {
-      const timer = setTimeout(() => {
-        const element = document.getElementById(hash);
-        if (element) {
-          isScrollingProgrammatically.current = true;
-          element.scrollIntoView({ behavior: 'smooth' });
-          setActiveSection(hash);
-          setTimeout(() => {
-            isScrollingProgrammatically.current = false;
-          }, 1000);
-        }
-      }, 100);
-      return () => clearTimeout(timer);
-    }
-  }, [location.hash, isValidSection, navigate, isMobile]);
+    if (!hash || !isValidSection(hash)) return;
+    lastHashRef.current = hash;
+    const timer = setTimeout(() => {
+      document.getElementById(hash)?.scrollIntoView({ behavior: 'smooth' });
+    }, 100);
+    return () => clearTimeout(timer);
+  }, [location.hash, isValidSection, isMobile]);
 
   useEffect(() => {
     if (isMobile) return;
     const snapContainer = document.querySelector('.snap-container');
     if (!snapContainer) return;
-    const handleScroll = () => {
-      const now = Date.now();
-      if (isScrollingProgrammatically.current || now - lastScrollTime.current < 100) return;
-      lastScrollTime.current = now;
-      const scrollY = snapContainer.scrollTop;
-      const viewportHeight = snapContainer.clientHeight;
-      const detectionPoint = scrollY + viewportHeight * 0.3;
+
+    // CSS scroll-snap owns all movement. Once scrolling settles, the URL
+    // hash is synced via history.replaceState — deliberately NOT navigate().
+    // Router-driven hash writes re-fired the deep-link effect (duplicate
+    // scrollIntoView after every snap) and re-rendered the whole page tree,
+    // which read as constant lag while snapping between sections.
+    let settleTimer = 0;
+    const resolveActiveSection = () => {
+      const detectionPoint = snapContainer.scrollTop + snapContainer.clientHeight * 0.3;
       let foundSection = SECTIONS[0].id;
       for (let i = SECTIONS.length - 1; i >= 0; i--) {
-        const section = SECTIONS[i];
-        const element = document.getElementById(section.id);
+        const element = document.getElementById(SECTIONS[i].id);
         if (!element) continue;
         if (detectionPoint >= element.offsetTop) {
-          foundSection = section.id;
+          foundSection = SECTIONS[i].id;
           break;
         }
       }
-      if (activeSection !== foundSection) {
-        setActiveSection(foundSection);
-        navigate(`#${foundSection}`, { replace: true });
+      if (lastHashRef.current !== foundSection) {
+        lastHashRef.current = foundSection;
+        window.history.replaceState(null, '', `#${foundSection}`);
       }
+    };
+    const handleScroll = () => {
+      window.clearTimeout(settleTimer);
+      settleTimer = window.setTimeout(resolveActiveSection, 150);
     };
     snapContainer.addEventListener('scroll', handleScroll, { passive: true });
     handleScroll();
-    return () => snapContainer.removeEventListener('scroll', handleScroll);
-  }, [activeSection, navigate, isMobile]);
+    return () => {
+      snapContainer.removeEventListener('scroll', handleScroll);
+      window.clearTimeout(settleTimer);
+    };
+  }, [isMobile]);
 
   return (
     <div className="relative w-full bg-bg snap-container no-scrollbar">

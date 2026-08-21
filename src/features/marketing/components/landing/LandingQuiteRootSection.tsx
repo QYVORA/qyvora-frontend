@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import { Link } from 'react-router-dom';
 import { IconArrowRight, IconProfile } from '@/shared/components/icons';
 import { GridBoxedBackground } from '@/shared/components/backgrounds';
@@ -83,4 +84,4 @@ const LandingQuiteRootSection = () => {
   );
 };
 
-export default LandingQuiteRootSection;
+export default memo(LandingQuiteRootSection);

@@ -162,4 +162,4 @@ const LandingSimulationsSection: React.FC = () => {
   );
 };
 
-export default LandingSimulationsSection;
+export default React.memo(LandingSimulationsSection);

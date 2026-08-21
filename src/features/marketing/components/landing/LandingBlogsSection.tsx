@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import { Link } from 'react-router-dom';
 import { User } from 'lucide-react';
 import { IconArrowRight, IconClock } from '@/shared/components/icons';
@@ -102,4 +103,4 @@ const LandingBlogsSection = () => {
   );
 };
 
-export default LandingBlogsSection;
+export default memo(LandingBlogsSection);

@@ -151,4 +151,4 @@ const LandingLabsSection: React.FC = () => {
   );
 };
 
-export default LandingLabsSection;
+export default React.memo(LandingLabsSection);

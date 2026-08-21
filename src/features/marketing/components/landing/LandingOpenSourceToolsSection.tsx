@@ -80,4 +80,4 @@ const LandingOpenSourceToolsSection: React.FC = () => {
   );
 };
 
-export default LandingOpenSourceToolsSection;
+export default React.memo(LandingOpenSourceToolsSection);

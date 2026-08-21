@@ -199,4 +199,4 @@ const LandingPillarsSection: React.FC = () => {
   );
 };
 
-export default LandingPillarsSection;
+export default React.memo(LandingPillarsSection);

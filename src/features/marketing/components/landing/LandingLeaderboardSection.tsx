@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState, useCallback } from 'react';
+import { memo } from 'react';
 import { Link } from 'react-router-dom';
 import { Medal } from 'lucide-react';
 import { IconArrowRight } from '@/shared/components/icons';
@@ -219,4 +220,4 @@ const LandingLeaderboardSection = () => {
   );
 };
 
-export default LandingLeaderboardSection;
+export default memo(LandingLeaderboardSection);
