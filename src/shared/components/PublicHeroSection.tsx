@@ -22,10 +22,7 @@ const PublicHeroSection: React.FC<PublicHeroSectionProps> = ({
   splitAt = 'lg',
 }) => {
   return (
-    <div
-      className={`relative w-full ${scrollable ? 'min-h-dvh' : 'min-h-dvh lg:h-dvh overflow-hidden'} flex flex-col bg-bg`}
-      data-nav-invert
-    >
+    <div className={`relative w-full ${scrollable ? 'min-h-dvh' : 'min-h-dvh lg:h-dvh overflow-hidden'} flex flex-col bg-bg`}>
       <GridBoxedBackground blur={0} mask={mask} />
 
       {showGlobe && (
