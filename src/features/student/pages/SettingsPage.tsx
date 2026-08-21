@@ -89,7 +89,7 @@ const SelectField: React.FC<{ id: string; ariaLabel: string; value: string; onCh
 const Settings: React.FC = () => {
   const { t, i18n } = useTranslation();
   const { addToast } = useToast();
-  const { user } = useAuth();
+  const { user, refreshMe } = useAuth();
   const { preferences, loading: prefsLoading, saving: prefsSaving, updatePreferences, updateNotification, updateLearning, updateDisplay } = usePreferences();
   const { theme, setTheme } = useThemeContext();
   const { section: sectionParam } = useParams<{ section?: string }>();
@@ -120,7 +120,14 @@ const Settings: React.FC = () => {
   const [confirmRegenerate, setConfirmRegenerate] = useState(false);
   const [dataSaver, setDataSaver] = useState(getDataSaverEnabled());
   const [twoFAEnabled, setTwoFAEnabled] = useState(false);
-  const [toggling2FA, setToggling2FA] = useState(false);
+  const [twoFaSetup, setTwoFaSetup] = useState<{ secret: string; otpauthUri: string } | null>(null);
+  const [twoFaBackupCodes, setTwoFaBackupCodes] = useState<string[]>([]);
+  const [startingSetup, setStartingSetup] = useState(false);
+  const [enabling2FA, setEnabling2FA] = useState(false);
+  const [disabling2FA, setDisabling2FA] = useState(false);
+  const [showDisable2FA, setShowDisable2FA] = useState(false);
+  const [copiedSecret, setCopiedSecret] = useState(false);
+  const [copiedCodes, setCopiedCodes] = useState(false);
   const [sessions, setSessions] = useState<any[]>([]);
   const [loadingSessions, setLoadingSessions] = useState(true);
   const [deleting, setDeleting] = useState(false);
@@ -214,21 +221,68 @@ const Settings: React.FC = () => {
     } finally { setRegenerating(false); }
   };
 
-  const handleToggle2FA = async () => {
-    setToggling2FA(true);
+  const start2FASetup = async () => {
+    setStartingSetup(true);
     try {
-      if (twoFAEnabled) {
-        await api.post('/auth/2fa/disable');
-        setTwoFAEnabled(false);
-        addToast(t('toast.twoFaDisabled'), 'success');
-      } else {
-        await api.post('/auth/2fa/enable');
-        setTwoFAEnabled(true);
-        addToast(t('toast.twoFaEnabled'), 'success');
-      }
+      const res = await api.post('/auth/2fa/setup');
+      setTwoFaSetup({ secret: res.data?.secret || '', otpauthUri: res.data?.otpauthUri || '' });
+    } catch (err: any) {
+      addToast(err?.response?.data?.error || t('toast.twoFaSetupFailed'), 'error');
+    } finally { setStartingSetup(false); }
+  };
+
+  const copySecret = async () => {
+    if (!twoFaSetup?.secret) return;
+    try {
+      await navigator.clipboard.writeText(twoFaSetup.secret);
+      setCopiedSecret(true);
+      setTimeout(() => setCopiedSecret(false), 2000);
+    } catch { addToast(t('toast.copyFailed'), 'error'); }
+  };
+
+  const copyBackupCodes = async () => {
+    try {
+      await navigator.clipboard.writeText(twoFaBackupCodes.join('\n'));
+      setCopiedCodes(true);
+      setTimeout(() => setCopiedCodes(false), 2000);
+    } catch { addToast(t('toast.copyFailed'), 'error'); }
+  };
+
+  const confirmEnable2FA = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (enabling2FA) return;
+    const fd = new FormData(e.currentTarget);
+    const code = String(fd.get('two_fa_code') || '').trim();
+    const currentPassword = String(fd.get('two_fa_password') || '');
+    setEnabling2FA(true);
+    try {
+      const res = await api.post('/auth/2fa/enable', { token: code, currentPassword });
+      setTwoFaBackupCodes(res.data?.backupCodes || []);
+      setTwoFaSetup(null);
+      setTwoFAEnabled(true);
+      await refreshMe();
+      addToast(t('toast.twoFaEnabled'), 'success');
     } catch (err: any) {
       addToast(err?.response?.data?.error || t('toast.failedToUpdateTwoFa'), 'error');
-    } finally { setToggling2FA(false); }
+    } finally { setEnabling2FA(false); }
+  };
+
+  const handleDisable2FA = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (disabling2FA) return;
+    const fd = new FormData(e.currentTarget);
+    const currentPassword = String(fd.get('two_fa_disable_password') || '');
+    setDisabling2FA(true);
+    try {
+      await api.post('/auth/2fa/disable', { currentPassword });
+      setShowDisable2FA(false);
+      setTwoFAEnabled(false);
+      setTwoFaBackupCodes([]);
+      await refreshMe();
+      addToast(t('toast.twoFaDisabled'), 'success');
+    } catch (err: any) {
+      addToast(err?.response?.data?.error || t('toast.failedToUpdateTwoFa'), 'error');
+    } finally { setDisabling2FA(false); }
   };
 
   const handleRevokeSession = async (sessionId: string) => {
@@ -425,14 +479,86 @@ const Settings: React.FC = () => {
                   title={t('student.settings.twoFactor.title')}
                   description={t('student.settings.twoFactor.description')}
                 />
-                <SettingsRow label={twoFAEnabled ? t('student.settings.twoFactor.enabled') : t('student.settings.twoFactor.disabled')} description={t('student.settings.twoFactor.description')}>
-                  <button onClick={handleToggle2FA} disabled={toggling2FA}
-                    className={`px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-widest transition-colors disabled:opacity-50 ${
-                      twoFAEnabled ? 'border border-border text-text-muted hover:border-red-400/50 hover:text-red-400' : 'btn-primary'
-                    }`}>
-                    {toggling2FA ? <Loader2 className="w-4 h-4 animate-spin" /> : twoFAEnabled ? t('student.settings.twoFactor.disable') : t('student.settings.twoFactor.enable')}
-                  </button>
-                </SettingsRow>
+
+                {/* Backup codes shown exactly once, right after enabling */}
+                {twoFaBackupCodes.length > 0 ? (
+                  <div className="space-y-4" aria-describedby="twofa-codes-desc">
+                    <div className="p-4 bg-accent-dim/30 border border-accent/30 rounded-xl">
+                      <p id="twofa-codes-desc" className="text-[10px] font-black text-accent uppercase tracking-widest mb-3">{t('student.settings.twoFactor.backupCodesTitle')}</p>
+                      <p className="text-xs text-text-secondary leading-relaxed mb-4">{t('student.settings.twoFactor.backupCodesWarning')}</p>
+                      <div className="grid grid-cols-2 sm:grid-cols-5 gap-2 font-mono text-sm text-text-primary select-all">
+                        {twoFaBackupCodes.map((code) => (
+                          <span key={code} className="px-2 py-1.5 bg-bg border border-border rounded-lg text-center">{code}</span>
+                        ))}
+                      </div>
+                    </div>
+                    <div className="flex flex-col sm:flex-row gap-3">
+                      <button type="button" onClick={copyBackupCodes} className="w-full sm:w-auto btn-secondary !py-2.5 text-sm px-6 flex items-center justify-center gap-2">
+                        {copiedCodes ? <><CheckCircle2 className="w-4 h-4 text-accent" /> {t('common.copied')}</> : <><Copy className="w-4 h-4" /> {t('aria.copyToken')}</>}
+                      </button>
+                      <button type="button" onClick={() => setTwoFaBackupCodes([])} className="w-full sm:w-auto btn-primary !py-2.5 text-sm px-6 flex items-center justify-center gap-2">
+                        <CheckCircle2 className="w-4 h-4" /> {t('student.settings.twoFactor.done')}
+                      </button>
+                    </div>
+                  </div>
+                ) : twoFAEnabled ? (
+                  showDisable2FA ? (
+                    <form onSubmit={handleDisable2FA} className="space-y-4 max-w-md" aria-describedby="twofa-disable-desc">
+                      <p id="twofa-disable-desc" className="text-xs text-text-muted leading-relaxed">{t('student.settings.twoFactor.disableDescription')}</p>
+                      <PasswordField name="two_fa_disable_password" id="settings-twofa-disable-password" label={t('student.settings.twoFactor.currentPassword')} />
+                      <div className="flex flex-col sm:flex-row gap-3">
+                        <button type="submit" disabled={disabling2FA}
+                          className="w-full sm:w-auto btn-danger !py-2.5 text-sm px-6 flex items-center justify-center gap-2 disabled:opacity-50">
+                          {disabling2FA ? <Loader2 className="w-4 h-4 animate-spin" /> : t('student.settings.twoFactor.confirmDisable')}
+                        </button>
+                        <button type="button" onClick={() => setShowDisable2FA(false)}
+                          className="w-full sm:w-auto px-6 py-2.5 rounded-xl border border-border text-xs font-bold uppercase tracking-widest text-text-muted hover:text-text-primary transition-colors min-h-[44px]">
+                          {t('student.settings.twoFactor.cancel')}
+                        </button>
+                      </div>
+                    </form>
+                  ) : (
+                    <SettingsRow label={t('student.settings.twoFactor.enabled')}>
+                      <button type="button" onClick={() => setShowDisable2FA(true)}
+                        className="px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-widest transition-colors border border-border text-text-muted hover:border-red-400/50 hover:text-red-400 min-h-[44px]">
+                        {t('student.settings.twoFactor.disable')}
+                      </button>
+                    </SettingsRow>
+                  )
+                ) : twoFaSetup ? (
+                  <form onSubmit={confirmEnable2FA} className="space-y-5 max-w-md" aria-describedby="twofa-setup-desc">
+                    <div className="p-4 bg-bg border border-border rounded-xl space-y-3">
+                      <p id="twofa-setup-desc" className="text-[10px] font-black text-text-muted uppercase tracking-widest">{t('student.settings.twoFactor.step1')}</p>
+                      <div className="relative">
+                        <input type="text" readOnly value={twoFaSetup.secret} aria-label={t('student.settings.twoFactor.step1')} className={`${INPUT_CLS} pr-12 select-all cursor-text`} onFocus={(e) => e.target.select()} />
+                        <button type="button" onClick={copySecret} aria-label={t('student.settings.twoFactor.copySecret')} className="absolute right-3 top-1/2 -translate-y-1/2 text-text-muted hover:text-accent active:scale-95 transition-colors">
+                          {copiedSecret ? <CheckCircle2 className="w-4 h-4 text-accent" /> : <Copy className="w-4 h-4" />}
+                        </button>
+                      </div>
+                    </div>
+                    <p className="text-[10px] font-black text-text-muted uppercase tracking-widest">{t('student.settings.twoFactor.step2')}</p>
+                    <input name="two_fa_code" required autoComplete="one-time-code" inputMode="text" placeholder="000000"
+                      aria-label={t('auth.twoFactor.codeLabel')} className={INPUT_CLS} />
+                    <PasswordField name="two_fa_password" id="settings-twofa-enable-password" label={t('student.settings.twoFactor.currentPassword')} />
+                    <div className="flex flex-col sm:flex-row gap-3">
+                      <button type="submit" disabled={enabling2FA}
+                        className="w-full sm:w-auto btn-primary !py-2.5 text-sm px-6 flex items-center justify-center gap-2 disabled:opacity-50">
+                        {enabling2FA ? <><Loader2 className="w-4 h-4 animate-spin" /> {t('common.updating')}</> : t('student.settings.twoFactor.confirmEnable')}
+                      </button>
+                      <button type="button" onClick={() => setTwoFaSetup(null)}
+                        className="w-full sm:w-auto px-6 py-2.5 rounded-xl border border-border text-xs font-bold uppercase tracking-widest text-text-muted hover:text-text-primary transition-colors min-h-[44px]">
+                        {t('student.settings.twoFactor.cancel')}
+                      </button>
+                    </div>
+                  </form>
+                ) : (
+                  <SettingsRow label={t('student.settings.twoFactor.disabled')}>
+                    <button type="button" onClick={start2FASetup} disabled={startingSetup}
+                      className="btn-primary px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-widest disabled:opacity-50 flex items-center justify-center gap-2 min-h-[44px]">
+                      {startingSetup ? <Loader2 className="w-4 h-4 animate-spin" /> : t('student.settings.twoFactor.setup')}
+                    </button>
+                  </SettingsRow>
+                )}
               </div>
 
               {/* Password */}
