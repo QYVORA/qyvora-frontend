@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Loader2, Mail, Send, MessageSquare, AlertCircle, User } from 'lucide-react';
+import { Mail, Send, MessageSquare, AlertCircle, User } from 'lucide-react';
 import { IconCheck } from '@/shared/components/icons';
 import api from '../../../core/services/api';
 import { Dialog, DialogContent } from '../../../shared/components/ui/Dialog';
+import Button from '../../../shared/components/ui/Button';
 import { cn } from '../../../shared/utils/cn';
 import { SITE_CONFIG } from '../content/siteConfig';
 
@@ -221,23 +222,20 @@ const ContactModalHost: React.FC = () => {
             )}
 
             {/* Submit Button */}
-            <button
+            <Button
               type="submit"
-              disabled={status === 'sending'}
-              className="w-full bg-accent text-on-accent font-bold uppercase tracking-[0.1em] rounded-xl px-8 py-4 transition-all hover:brightness-110 active:scale-[0.98] flex items-center justify-center gap-3 disabled:opacity-50 disabled:cursor-not-allowed text-sm"
+              loading={status === 'sending'}
+              className="w-full !font-bold !tracking-[0.1em] !px-8 !py-4 !text-sm gap-3"
             >
               {status === 'sending' ? (
-                <>
-                  <Loader2 className="w-5 h-5 animate-spin" />
-                  {t('contact2.sendingMessage')}
-                </>
+                t('contact2.sendingMessage')
               ) : (
                 <>
                   <Send className="w-5 h-5" />
                   {t('contact2.sendMessage')}
                 </>
               )}
-            </button>
+            </Button>
 
 
           </form>

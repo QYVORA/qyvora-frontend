@@ -6,6 +6,8 @@ import api from '../../../core/services/api';
 import { useToast } from '../../../core/contexts/ToastContext';
 import { getDataSaverEnabled, setDataSaverEnabled } from '../utils/studentExperience';
 import SEO from '../../../shared/components/SEO';
+import Button from '../../../shared/components/ui/Button';
+import FadeIn from '../../../shared/components/ui/FadeIn';
 import { SettingsSkeleton } from '../components/StudentSkeletons';
 import { usePreferences } from '../../../shared/hooks/usePreferences';
 import { useThemeContext } from '../../../core/contexts/ThemeContext';
@@ -331,6 +333,7 @@ const Settings: React.FC = () => {
   if (prefsLoading || loadingRecovery) return <SettingsSkeleton />;
 
   return (
+    <FadeIn>
     <>
       <SEO title={t('student.settings.seoTitle')} description={t('student.settings.seoDesc')} noindex />
 
@@ -507,10 +510,10 @@ const Settings: React.FC = () => {
                       <p id="twofa-disable-desc" className="text-xs text-text-muted leading-relaxed">{t('student.settings.twoFactor.disableDescription')}</p>
                       <PasswordField name="two_fa_disable_password" id="settings-twofa-disable-password" label={t('student.settings.twoFactor.currentPassword')} />
                       <div className="flex flex-col sm:flex-row gap-3">
-                        <button type="submit" disabled={disabling2FA}
-                          className="w-full sm:w-auto btn-danger !py-2.5 text-sm px-6 flex items-center justify-center gap-2 disabled:opacity-50">
-                          {disabling2FA ? <Loader2 className="w-4 h-4 animate-spin" /> : t('student.settings.twoFactor.confirmDisable')}
-                        </button>
+                        <Button type="submit" variant="danger" loading={disabling2FA}
+                          className="w-full sm:w-auto !py-2.5 text-sm px-6">
+                          {t('student.settings.twoFactor.confirmDisable')}
+                        </Button>
                         <button type="button" onClick={() => setShowDisable2FA(false)}
                           className="w-full sm:w-auto px-6 py-2.5 rounded-xl border border-border text-xs font-bold uppercase tracking-widest text-text-muted hover:text-text-primary transition-colors min-h-[44px]">
                           {t('student.settings.twoFactor.cancel')}
@@ -541,10 +544,10 @@ const Settings: React.FC = () => {
                       aria-label={t('auth.twoFactor.codeLabel')} className={INPUT_CLS} />
                     <PasswordField name="two_fa_password" id="settings-twofa-enable-password" label={t('student.settings.twoFactor.currentPassword')} />
                     <div className="flex flex-col sm:flex-row gap-3">
-                      <button type="submit" disabled={enabling2FA}
-                        className="w-full sm:w-auto btn-primary !py-2.5 text-sm px-6 flex items-center justify-center gap-2 disabled:opacity-50">
-                        {enabling2FA ? <><Loader2 className="w-4 h-4 animate-spin" /> {t('common.updating')}</> : t('student.settings.twoFactor.confirmEnable')}
-                      </button>
+                        <Button type="submit" loading={enabling2FA}
+                          className="w-full sm:w-auto !py-2.5 text-sm px-6">
+                          {enabling2FA ? t('common.updating') : t('student.settings.twoFactor.confirmEnable')}
+                        </Button>
                       <button type="button" onClick={() => setTwoFaSetup(null)}
                         className="w-full sm:w-auto px-6 py-2.5 rounded-xl border border-border text-xs font-bold uppercase tracking-widest text-text-muted hover:text-text-primary transition-colors min-h-[44px]">
                         {t('student.settings.twoFactor.cancel')}
@@ -553,10 +556,10 @@ const Settings: React.FC = () => {
                   </form>
                 ) : (
                   <SettingsRow label={t('student.settings.twoFactor.disabled')}>
-                    <button type="button" onClick={start2FASetup} disabled={startingSetup}
-                      className="btn-primary px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-widest disabled:opacity-50 flex items-center justify-center gap-2 min-h-[44px]">
-                      {startingSetup ? <Loader2 className="w-4 h-4 animate-spin" /> : t('student.settings.twoFactor.setup')}
-                    </button>
+                    <Button type="button" onClick={start2FASetup} loading={startingSetup}
+                      className="!px-4 !py-2 text-xs font-bold min-h-[44px]">
+                      {t('student.settings.twoFactor.setup')}
+                    </Button>
                   </SettingsRow>
                 )}
               </div>
@@ -570,10 +573,10 @@ const Settings: React.FC = () => {
                   <PasswordField name="current_password" id="settings-current-password" label={t('student.settings.password.currentLabel')} placeholder={t('student.settings.password.currentPlaceholder')} shake={shakeCurrentPwd} onAnimationEnd={() => setShakeCurrentPwd(false)} />
                   <PasswordField name="new_password" id="settings-new-password" label={t('student.settings.password.newLabel')} placeholder={t('student.settings.password.newPlaceholder')} />
                   <PasswordField name="confirm_password" id="settings-confirm-password" label={t('student.settings.password.confirmLabel')} placeholder={t('student.settings.password.confirmPlaceholder')} />
-                  <button type="submit" disabled={changingPwd}
-                    className="w-full sm:w-auto btn-primary !py-2.5 text-sm px-6 flex items-center justify-center gap-2 disabled:opacity-50">
-                    {changingPwd ? <><Loader2 className="w-4 h-4 animate-spin" /> {t('common.updating')}</> : <><Save className="w-4 h-4" /> {t('student.settings.password.update')}</>}
-                  </button>
+                  <Button type="submit" loading={changingPwd}
+                    className="w-full sm:w-auto !py-2.5 text-sm px-6">
+                    {changingPwd ? t('common.updating') : <><Save className="w-4 h-4" /> {t('student.settings.password.update')}</>}
+                  </Button>
                 </form>
               </div>
 
@@ -598,9 +601,9 @@ const Settings: React.FC = () => {
                           </button>
                         </div>
                       </div>
-                      <button onClick={acknowledgeToken} disabled={acking} className="w-full sm:w-auto btn-primary !py-2.5 text-sm px-6 flex items-center justify-center gap-2 disabled:opacity-50">
-                        {acking ? <><Loader2 className="w-4 h-4 animate-spin" /> {t('student.settings.recovery.acknowledging')}</> : <><CheckCircle2 className="w-4 h-4" /> {t('student.settings.recovery.savedToken')}</>}
-                      </button>
+                      <Button onClick={acknowledgeToken} loading={acking} className="w-full sm:w-auto !py-2.5 text-sm px-6">
+                        {acking ? t('student.settings.recovery.acknowledging') : <><CheckCircle2 className="w-4 h-4" /> {t('student.settings.recovery.savedToken')}</>}
+                      </Button>
                     </div>
                   ) : tokenAvailable ? (
                     <div className="space-y-4">
@@ -630,9 +633,9 @@ const Settings: React.FC = () => {
                   ) : (
                     <div className="space-y-4">
                       <p className="text-sm text-text-muted">{t('student.settings.recovery.noTokenYet')}</p>
-                      <button onClick={() => void regenerateToken()} disabled={regenerating} className="w-full sm:w-auto btn-primary !py-2.5 text-sm px-6 flex items-center justify-center gap-2 disabled:opacity-50">
-                        {regenerating ? <><Loader2 className="w-4 h-4 animate-spin" /> {t('student.settings.recovery.generating')}</> : <><Key className="w-4 h-4" /> {t('student.settings.recovery.generate')}</>}
-                      </button>
+                      <Button onClick={() => void regenerateToken()} loading={regenerating} className="w-full sm:w-auto !py-2.5 text-sm px-6">
+                        {regenerating ? t('student.settings.recovery.generating') : <><Key className="w-4 h-4" /> {t('student.settings.recovery.generate')}</>}
+                      </Button>
                     </div>
                   )}
                 </div>
@@ -716,6 +719,7 @@ const Settings: React.FC = () => {
         </div>
       </div>
     </>
+    </FadeIn>
   );
 };
 

@@ -6,6 +6,7 @@ import { useAuth } from '../../../core/contexts/AuthContext';
 import { useProfile } from '../../../shared/hooks/useProfile';
 import { useSkillAchievements } from '../../../shared/hooks/useSkillAchievements';
 import EditModal from '../components/profile/EditModal';
+import FadeIn from '../../../shared/components/ui/FadeIn';
 import { ProfileSkeleton } from '../components/StudentSkeletons';
 import SEO from '../../../shared/components/SEO';
 import ProfileIdentityBlock from '../../../shared/components/profile/ProfileIdentityBlock';
@@ -58,6 +59,7 @@ const Profile: React.FC = () => {
   if (loading || !profile) return <ProfileSkeleton />;
 
   return (
+    <FadeIn>
     <div>
       <SEO
         title={`@${profile.username}'s Profile`}
@@ -171,6 +173,7 @@ const Profile: React.FC = () => {
         />
       )}
     </div>
+    </FadeIn>
   );
 };
 

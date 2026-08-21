@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Loader2, Save } from 'lucide-react';
+import { Save } from 'lucide-react';
 import { useToast } from '../../../../core/contexts/ToastContext';
 import api from '../../../../core/services/api';
 import { Dialog, DialogContent } from '../../../../shared/components/ui/Dialog';
+import Button from '../../../../shared/components/ui/Button';
 import HandleSuggestions from '../../../../shared/components/HandleSuggestions';
 
 interface EditModalProps {
@@ -83,9 +84,9 @@ const EditModal: React.FC<EditModalProps> = ({ open, onOpenChange, initial, onSa
           </div>
           <div className="flex gap-3 pt-2">
             <button type="button" onClick={() => onOpenChange(false)} className="flex-1 btn-secondary !py-2.5 text-xs">{t('button.cancel')}</button>
-            <button type="submit" disabled={saving} className="flex-1 btn-primary !py-2.5 text-xs flex items-center justify-center gap-2 disabled:opacity-50">
-              {saving ? <><Loader2 className="w-3 h-3 animate-spin" /> {t('student.profile.editModal.saving')}</> : <><Save className="w-3 h-3" /> {t('student.profile.editModal.save')}</>}
-            </button>
+            <Button type="submit" loading={saving} className="flex-1 !py-2.5 !text-xs">
+              {saving ? t('student.profile.editModal.saving') : <><Save className="w-3 h-3" /> {t('student.profile.editModal.save')}</>}
+            </Button>
           </div>
         </form>
       </DialogContent>

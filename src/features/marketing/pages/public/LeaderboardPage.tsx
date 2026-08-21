@@ -13,7 +13,7 @@ import PublicSnapSection from '@/shared/components/PublicSnapSection';
 import StudentHeroSection, { PUBLIC_HERO_TITLE_CLASS } from '@/shared/components/StudentHeroSection';
 import { Footer } from '@/shared/components/layout';
 import LandingFinalCtaSection from '@/features/marketing/components/landing/LandingFinalCtaSection';
-import { ErrorState, BatchPagination } from '@/shared/components/ui';
+import { ErrorState, BatchPagination, Skeleton } from '@/shared/components/ui';
 import type { Period } from '@/shared/components/leaderboard';
 
 interface Cohort {
@@ -144,9 +144,17 @@ const LeaderboardPage = () => {
           {error ? (
             <ErrorState message={error} title="Leaderboard Unavailable" bare />
           ) : loading ? (
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 items-stretch">
               {Array.from({ length: 3 }).map((_, i) => (
-                <div key={i} className="h-72 rounded-2xl bg-bg-card border border-border/30 animate-pulse" />
+                <div
+                  key={i}
+                  className={`rounded-2xl border border-border/30 bg-bg-card p-6 md:p-8 h-full flex flex-col items-center text-center gap-3 ${i === 0 ? 'md:order-2' : i === 1 ? 'md:order-1' : 'md:order-3'}`}
+                >
+                  <Skeleton variant="icon" className="w-24 h-24 md:w-28 md:h-28 rounded-full" />
+                  <Skeleton variant="title" className="w-32 mt-2" />
+                  <Skeleton className="h-3 w-20" />
+                  <Skeleton variant="stat-value" className="w-24 h-8 mt-2" />
+                </div>
               ))}
             </div>
           ) : podium.length === 0 ? (

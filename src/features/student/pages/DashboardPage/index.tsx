@@ -11,7 +11,7 @@ import {
 } from '@/features/student/utils/studentExperience';
 import useStudentOverview from '@/features/student/hooks/useStudentOverview';
 import useEngagement from '@/features/student/hooks/useEngagement';
-import { Skeleton, ErrorState } from '@/shared/components/ui';
+import { Skeleton, ErrorState, FadeIn } from '@/shared/components/ui';
 import SEO from '@/shared/components/SEO';
 import StudentTour from '@/features/student/components/StudentTour';
 import StudentOnboardingModal from '@/features/student/components/StudentOnboardingModal';
@@ -417,6 +417,7 @@ const Dashboard = () => {
   if (loading) return <DashboardSkeleton />;
 
   return (
+    <FadeIn>
     <div>
       <SEO title={t('student.dashboard.seoTitle')} description={t('student.dashboard.seoDesc')} noindex />
       <StudentOnboardingModal />
@@ -757,6 +758,7 @@ const Dashboard = () => {
       </div>
       )}
     </div>
+    </FadeIn>
   );
 };
 

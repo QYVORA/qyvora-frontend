@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Zap, BookOpen, Clock, Loader2, Terminal, Globe, Wifi, Wrench, GraduationCap, Sparkles } from 'lucide-react';
+import { Zap, BookOpen, Clock, Terminal, Globe, Wifi, Wrench, GraduationCap, Sparkles } from 'lucide-react';
 import { IconCode, IconShield, IconCheck, IconLock } from '@/shared/components/icons';
 import { Dialog, DialogContent, DialogClose } from '@/shared/components/ui/Dialog';
+import Button from '@/shared/components/ui/Button';
 import { useAuth } from '@/core/contexts/AuthContext';
 import { useToast } from '@/core/contexts/ToastContext';
 import { getCourseById, getCategoryById } from '@/features/student/data/courses';
@@ -158,18 +159,15 @@ const CoursePurchaseModal: React.FC<CoursePurchaseModalProps> = ({ open, onOpenC
               </button>
             ) : user ? (
               <div className="space-y-3">
-                <button
+                <Button
                   onClick={handlePurchase}
-                  disabled={purchasing || !canAfford}
-                  className="w-full btn-primary flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                  disabled={!canAfford}
+                  loading={purchasing}
+                  className="w-full gap-2"
                 >
-                  {purchasing ? (
-                    <Loader2 className="h-4 w-4 animate-spin" />
-                  ) : (
-                    <Zap className="h-4 w-4" />
-                  )}
+                  {!purchasing && <Zap className="h-4 w-4" />}
                   {purchasing ? 'Unlocking...' : `Unlock for ${course.cpCost} CP`}
-                </button>
+                </Button>
                 {balance !== null && (
                   <p className={`text-xs font-mono text-center ${canAfford ? 'text-text-muted' : 'text-red-400'}`}>
                     Balance: {balance} CP

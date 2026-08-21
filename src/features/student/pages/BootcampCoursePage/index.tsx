@@ -14,6 +14,7 @@ import { useAuth } from '@/core/contexts/AuthContext';
 import { formatSyncLabel, getLastSync, resolveNextRoomPath, setLastSyncNow } from '@/features/student/utils/studentExperience';
 import useStudentOverview from '@/features/student/hooks/useStudentOverview';
 import SEO from '@/shared/components/SEO';
+import FadeIn from '../../../../shared/components/ui/FadeIn';
 import { BootcampCourseSkeleton } from '@/features/student/components/StudentSkeletons';
 import PhaseSection from '@/features/student/components/bootcamp-course/PhaseSection';
 import { LearningFilterStrip } from '@/features/student/components/learning';
@@ -130,6 +131,7 @@ const BootcampCourse: React.FC = () => {
   if (loading || overviewLoading) return <BootcampCourseSkeleton />;
 
   return (
+    <FadeIn>
     <div>
       <SEO
         title={course?.title || 'Bootcamp Course'}
@@ -202,6 +204,7 @@ const BootcampCourse: React.FC = () => {
         })}
       </div>
     </div>
+    </FadeIn>
   );
 };
 

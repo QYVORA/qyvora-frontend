@@ -11,6 +11,7 @@ import CpLogo from '../../../shared/components/CpLogo';
 import { AuthImage } from '../../../shared/components/ui';
 import { extractCpBalance } from '../../../shared/utils/cpBalance';
 import { formatNumber } from '../../../shared/utils/formatNumber';
+import FadeIn from '../../../shared/components/ui/FadeIn';
 import { MarketplaceSkeleton } from '../components/StudentSkeletons';
 import StudentHeroSection from '@/shared/components/StudentHeroSection';
 
@@ -123,6 +124,7 @@ const Marketplace: React.FC = () => {
   if (loading) return <MarketplaceSkeleton />;
 
   return (
+    <FadeIn>
     <div>
       <SEO title={t('student.marketplace.seoTitle')} description={t('student.marketplace.seoDesc')} noindex />
       <div className="bg-bg px-3 md:px-4 lg:px-6 pt-8 pb-10">
@@ -274,6 +276,7 @@ const Marketplace: React.FC = () => {
         )}
       </div>
     </div>
+    </FadeIn>
   );
 };
 
