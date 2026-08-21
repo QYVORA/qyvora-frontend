@@ -5,6 +5,7 @@ export { Tooltip, TooltipProvider } from './Tooltip';
 export { default as StatCounter } from './StatCounter';
 export { default as SimpleHeading } from './SimpleHeading';
 export { default as Skeleton } from './Skeleton';
+export { default as FadeIn } from './FadeIn';
 export { default as Button } from './Button';
 export { default as Input } from './Input';
 export { default as Badge } from './Badge';

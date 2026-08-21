@@ -87,7 +87,7 @@ const NetworkVizToolPage  = lazy(() => import('../features/student/pages/tools/N
 const AdminDashboardPage= lazy(() => import('../features/admin/pages/AdminDashboardPage'));
 
 // ─── Loading fallback ─────────────────────────────────────────────────────────
-import PageLoader from '../shared/components/PageLoader';
+import PageLoader, { DelayedPageLoader } from '../shared/components/PageLoader';
 import CommunityPopup from '../shared/components/CommunityPopup';
 
 import ADMIN_PATH from '@/shared/utils/adminPath';
@@ -110,9 +110,9 @@ const Wrap = ({ children, scope }: { children: ReactNode; scope?: string }) => (
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      transition={{ duration: 0.25 }}
+      transition={{ duration: 0.15 }}
     >
-      <Suspense fallback={<PageLoader />}>
+      <Suspense fallback={<DelayedPageLoader />}>
         {children}
       </Suspense>
     </motion.div>

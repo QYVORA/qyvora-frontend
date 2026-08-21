@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 const PageLoader: React.FC = () => {
   return (
@@ -10,6 +10,22 @@ const PageLoader: React.FC = () => {
       </div>
     </div>
   );
+};
+
+/**
+ * Suspense fallback that stays invisible for fast/cached chunk loads and only
+ * shows the full-screen loader once loading exceeds `delay` ms.
+ */
+export const DelayedPageLoader: React.FC<{ delay?: number }> = ({ delay = 180 }) => {
+  const [show, setShow] = useState(false);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setShow(true), delay);
+    return () => clearTimeout(timer);
+  }, [delay]);
+
+  if (!show) return null;
+  return <PageLoader />;
 };
 
 export default PageLoader;

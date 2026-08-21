@@ -6,6 +6,7 @@ import ScrollReveal from '../../../shared/components/ScrollReveal';
 import api from '../../../core/services/api';
 import { useToast } from '../../../core/contexts/ToastContext';
 import SEO from '../../../shared/components/SEO';
+import FadeIn from '../../../shared/components/ui/FadeIn';
 import { NotificationsSkeleton } from '../components/StudentSkeletons';
 import StudentHeroSection from '@/shared/components/StudentHeroSection';
 import Dobia from '@/shared/components/Dobia';
@@ -108,6 +109,7 @@ const Notifications: React.FC = () => {
   if (loading) return <NotificationsSkeleton />;
 
   return (
+    <FadeIn>
     <div>
       <SEO title={t('student.notificationsPage.seoTitle')} description={t('student.notificationsPage.seoDesc')} noindex />
 
@@ -206,6 +208,7 @@ const Notifications: React.FC = () => {
         </div>{/* end right main */}
       </div>{/* end two-col */}
     </div>
+    </FadeIn>
   );
 };
 

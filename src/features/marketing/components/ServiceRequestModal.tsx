@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Loader2, Send, Building2, Globe, Phone, User as UserIcon } from 'lucide-react';
+import { Send, Building2, Globe, Phone, User as UserIcon } from 'lucide-react';
 import { IconCheck } from '@/shared/components/icons';
 import api from '../../../core/services/api';
 import { Dialog, DialogContent } from '../../../shared/components/ui/Dialog';
+import Button from '../../../shared/components/ui/Button';
 
 const SERVICE_REQUEST_MODAL_EVENT = 'qyvora:open-service-request-modal';
 
@@ -176,15 +177,15 @@ const ServiceRequestModalHost: React.FC = () => {
                 </p>
               )}
 
-              <button
+              <Button
                 type="submit"
-                disabled={status === 'sending'}
-                className="w-full btn-primary !py-4 flex items-center justify-center gap-3 disabled:opacity-50"
+                loading={status === 'sending'}
+                className="w-full !py-4 gap-3"
               >
                 {status === 'sending'
-                  ? <><Loader2 className="w-4 h-4 animate-spin" /> {t('services2.transmitting')}</>
+                  ? t('services2.transmitting')
                   : <><Send className="w-4 h-4" /> {t('services2.submitRequest')}</>}
-              </button>
+              </Button>
             </form>
           </div>
         )}
