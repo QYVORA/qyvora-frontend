@@ -326,7 +326,9 @@
     "marketplaceLoadFailed": "Failed to load marketplace",
     "newsLoadFailed": "Failed to fetch threat intelligence feed. Check connection and try again.",
     "leaderboardLoadFailed": "Failed to load leaderboard.",
-    "leaderboardLoadFailedNetwork": "Failed to load leaderboard. Check connection and try again."
+    "leaderboardLoadFailedNetwork": "Failed to load leaderboard. Check connection and try again.",
+    "twoFaSetupFailed": "Could not start 2FA setup.",
+    "twoFaBackupCodesCopied": "Backup codes copied."
   },
   "validation": {
     "authFailed": "Authentication failed. Check credentials.",
@@ -390,6 +392,15 @@
       "labs": "Hands-on penetration testing labs",
       "scenarios": "Real-world offensive security scenarios",
       "ctf": "Capture the flag challenges & rankings"
+    },
+    "twoFactor": {
+      "title": "Two-Factor Authentication",
+      "description": "Enter the 6-digit code from your authenticator app, or a backup code.",
+      "codeLabel": "Authentication code",
+      "codePlaceholder": "000000 or backup code",
+      "verify": "Verify",
+      "backToLogin": "Back to login",
+      "invalidCode": "Invalid or expired code."
     }
   },
   "typewriter": {
@@ -1578,7 +1589,21 @@
         "disabled": "Disabled",
         "enable": "Enable 2FA",
         "disable": "Disable 2FA",
-        "description": "Add an extra layer of security to your account."
+        "description": "Add an extra layer of security to your account.",
+        "setup": "Set up 2FA",
+        "setupTitle": "Set up two-factor authentication",
+        "step1": "1. Add this secret to your authenticator app",
+        "step2": "2. Enter the current 6-digit code",
+        "currentPassword": "Current password",
+        "confirmEnable": "Enable 2FA",
+        "cancel": "Cancel",
+        "backupCodesTitle": "Save your backup codes",
+        "backupCodesWarning": "Each code works once. These are shown only once — store them somewhere safe.",
+        "done": "I have saved my codes",
+        "disableTitle": "Disable two-factor authentication",
+        "disableDescription": "Confirm your current password to disable 2FA.",
+        "confirmDisable": "Disable 2FA",
+        "copySecret": "Copy secret"
       },
       "sessions": {
         "title": "Active Sessions",
