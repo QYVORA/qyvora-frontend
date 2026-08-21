@@ -23,6 +23,7 @@ const NAV_ITEM_LABELS: Record<string, string> = {
   courses: 'nav.courses',
   bootcamp: 'nav.bootcamp',
   labs: 'nav.labs',
+  cp: 'nav.cp',
   simulations: 'nav.simulations',
   blogs: 'nav.blogs',
   leaderboard: 'nav.leaderboard',

@@ -23,9 +23,11 @@ const SKILL_COLORS: Record<SkillLevel, string> = {
 interface CoursesCarouselProps {
   courses: readonly Course[];
   className?: string;
+  /** Optional header rendered above the slides, inside the section padding. */
+  heading?: React.ReactNode;
 }
 
-const CoursesCarousel: React.FC<CoursesCarouselProps> = ({ courses, className = '' }) => {
+const CoursesCarousel: React.FC<CoursesCarouselProps> = ({ courses, className = '', heading }) => {
   const [current, setCurrent] = useState(0);
   const [direction, setDirection] = useState(0);
   const total = courses.length;
@@ -84,6 +86,7 @@ const CoursesCarousel: React.FC<CoursesCarouselProps> = ({ courses, className = 
       {...containerProps}
     >
       <div className="w-full px-3 md:px-4 lg:px-6 pt-24 md:pt-28 lg:pt-32 pb-6 md:pb-8 lg:pb-10">
+        {heading}
         <AnimatePresence mode="wait" custom={direction}>
           <motion.div
             key={course.id}
