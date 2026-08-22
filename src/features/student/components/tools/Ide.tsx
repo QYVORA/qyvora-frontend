@@ -1,9 +1,9 @@
 import React, { useState, useCallback, useRef, useEffect, useMemo } from 'react';
 import * as RadixDialog from '@radix-ui/react-dialog';
 import {
-  X, Play, RotateCcw, Copy, Check, FileCode2, Maximize2, Minimize2,
-  Search, GitBranch, Puzzle, ChevronDown, ChevronRight,
-  Settings, Files, TerminalSquare, Save, PanelLeftClose, PanelLeftOpen,
+  X, Play, RotateCcw, FileCode2, Maximize2, Minimize2,
+  GitBranch, ChevronDown, ChevronRight,
+  Files, TerminalSquare, Save, PanelLeftClose, PanelLeftOpen,
 } from 'lucide-react';
 import { TerminalWrapper } from '@/shared/components/learning/TerminalWrapper';
 import type { TerminalContext } from '@/features/student/components/SimulatedTerminal/types';
@@ -283,10 +283,8 @@ const Ide: React.FC<IdeProps> = ({ files, context, terminalContext, title = 'IDE
   });
   const [output, setOutput] = useState<string | null>(null);
   const [exitCode, setExitCode] = useState<number | null>(null);
-  const [copied, setCopied] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [sidebarExpanded, setSidebarExpanded] = useState(true);
-  const [sidebarPanel, setSidebarPanel] = useState<'files' | 'search'>('files');
   const [bottomPanelOpen, setBottomPanelOpen] = useState(true);
   const [bottomPanelTab, setBottomPanelTab] = useState<'output' | 'terminal'>('output');
   const [saveFlash, setSaveFlash] = useState(false);
@@ -315,13 +313,6 @@ const Ide: React.FC<IdeProps> = ({ files, context, terminalContext, title = 'IDE
     setSaveFlash(true);
     setTimeout(() => setSaveFlash(false), 1500);
   }, []);
-
-  const handleCopy = useCallback(() => {
-    navigator.clipboard.writeText(currentContent).then(() => {
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
-    });
-  }, [currentContent]);
 
   const handleTabKeyDown = useCallback((e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === 'Tab') {
@@ -354,14 +345,7 @@ const Ide: React.FC<IdeProps> = ({ files, context, terminalContext, title = 'IDE
     return () => window.removeEventListener('keydown', handler);
   }, [handleRun, handleSave]);
 
-  const handleSidebarIconClick = (panel: typeof sidebarPanel) => {
-    if (sidebarExpanded && sidebarPanel === panel) {
-      setSidebarExpanded(false);
-    } else {
-      setSidebarPanel(panel);
-      setSidebarExpanded(true);
-    }
-  };
+  const handleSidebarToggle = () => setSidebarExpanded(p => !p);
 
   const shell = (
     <div className="flex flex-col h-full bg-[#1e1e1e] text-[#cccccc] font-mono select-none">
@@ -371,22 +355,23 @@ const Ide: React.FC<IdeProps> = ({ files, context, terminalContext, title = 'IDE
           <FileCode2 size={14} className="text-[#007acc]" />
           <span className="text-[11px] font-bold text-[#cccccc]">QYVORA</span>
         </div>
-        <div className="flex items-center gap-1 text-[11px] text-[#999]">
-          <span className="px-1.5 hover:bg-[#ffffff10] rounded cursor-pointer">File</span>
-          <span className="px-1.5 hover:bg-[#ffffff10] rounded cursor-pointer">Edit</span>
-          <span className="px-1.5 hover:bg-[#ffffff10] rounded cursor-pointer">View</span>
-          <span className="px-1.5 hover:bg-[#ffffff10] rounded cursor-pointer">Run</span>
-        </div>
+        <span className="text-[11px] text-[#999] truncate">{activeFile?.name}</span>
         <div className="flex-1" />
         <div className="flex items-center gap-1">
-          <button onClick={handleSave} className="flex items-center gap-1 px-2 py-1 text-[10px] text-[#999] hover:text-[#ccc] hover:bg-[#ffffff10] rounded transition-colors">
+          <button onClick={handleRun} className="flex items-center gap-1 px-2 py-1 text-[10px] text-[#4ec9b0] hover:text-[#ffffff] hover:bg-[#ffffff10] rounded transition-colors" aria-label="Run code (Ctrl+Enter)">
+            <Play size={11} /> Run
+          </button>
+          <button onClick={handleReset} className="flex items-center gap-1 px-2 py-1 text-[10px] text-[#999] hover:text-[#ccc] hover:bg-[#ffffff10] rounded transition-colors" aria-label="Reset to starter code">
+            <RotateCcw size={11} /> Reset
+          </button>
+          <button onClick={handleSave} className="flex items-center gap-1 px-2 py-1 text-[10px] text-[#999] hover:text-[#ccc] hover:bg-[#ffffff10] rounded transition-colors" aria-label="Save file (Ctrl+S)">
             <Save size={11} />
             {saveFlash ? <span className="text-green-400">Saved</span> : 'Save'}
           </button>
-          <button onClick={() => setIsFullscreen(prev => !prev)} className="flex items-center justify-center h-6 w-8 hover:bg-[#ffffff10] transition-colors text-[#999] hover:text-[#ccc]">
+          <button onClick={() => setIsFullscreen(prev => !prev)} className="flex items-center justify-center h-6 w-8 hover:bg-[#ffffff10] transition-colors text-[#999] hover:text-[#ccc]" aria-label={isFullscreen ? 'Exit fullscreen' : 'Enter fullscreen'}>
             {isFullscreen ? <Minimize2 size={12} /> : <Maximize2 size={12} />}
           </button>
-          <button onClick={() => onOpenChange(false)} className="flex items-center justify-center h-6 w-8 hover:bg-[#e81123] transition-colors text-[#999] hover:text-white">
+          <button onClick={() => onOpenChange(false)} className="flex items-center justify-center h-6 w-8 hover:bg-[#e81123] transition-colors text-[#999] hover:text-white" aria-label="Close editor">
             <X size={13} />
           </button>
         </div>
@@ -396,68 +381,57 @@ const Ide: React.FC<IdeProps> = ({ files, context, terminalContext, title = 'IDE
       <div className="flex-1 flex min-h-0">
         {/* Activity Bar */}
         <div className="w-12 bg-[#333333] flex flex-col items-center py-2 border-r border-[#3c3c3c] shrink-0">
-          <SidebarIcon icon={Files} active={sidebarExpanded && sidebarPanel === 'files'} onClick={() => handleSidebarIconClick('files')} />
-          <SidebarIcon icon={Search} active={sidebarExpanded && sidebarPanel === 'search'} onClick={() => handleSidebarIconClick('search')} />
+          <SidebarIcon icon={Files} active={sidebarExpanded} onClick={handleSidebarToggle} />
           <div className="flex-1" />
           <SidebarIcon icon={Play} active={false} onClick={handleRun} accent />
-          <SidebarIcon icon={Settings} active={false} onClick={() => {}} />
         </div>
 
         {/* Side Panel */}
         {sidebarExpanded && (
           <div className="w-56 bg-[#252526] border-r border-[#3c3c3c] flex flex-col shrink-0 overflow-hidden animate-in slide-in-from-left-4 fade-in duration-150">
             <div className="flex items-center justify-between h-9 px-3 border-b border-[#3c3c3c] shrink-0">
-              <span className="text-[10px] font-black uppercase tracking-[0.15em] text-[#999]">
-                {sidebarPanel === 'files' ? 'EXPLORER' : 'SEARCH'}
-              </span>
-              <button onClick={() => setSidebarExpanded(false)} className="text-[#666] hover:text-[#ccc]">
+              <span className="text-[10px] font-black uppercase tracking-[0.15em] text-[#999]">EXPLORER</span>
+              <button onClick={() => setSidebarExpanded(false)} className="flex items-center justify-center h-6 w-6 text-[#666] hover:text-[#ccc]" aria-label="Collapse sidebar">
                 <PanelLeftClose size={14} />
               </button>
             </div>
             <div className="flex-1 overflow-y-auto overflow-x-hidden">
-              {sidebarPanel === 'files' && (
-                <div>
-                  <div className="flex items-center gap-1.5 px-3 py-1.5 text-[11px] font-bold text-[#cccccc]">
-                    <ChevronDown size={12} className="text-[#999]" />
-                    <span>PROJECT</span>
-                  </div>
-                  <div className="pb-2">
-                    {files.map((file) => {
-                      const isActive = file.id === activeFileId;
-                      const modified = fileContents[file.id] !== file.content;
-                      return (
-                        <button
-                          key={file.id}
-                          onClick={() => setActiveFileId(file.id)}
-                          className={`w-full flex items-center gap-2 px-3 py-[5px] text-left text-[12px] transition-colors ${
-                            isActive ? 'bg-[#094771] text-white' : 'text-[#cccccc] hover:bg-[#2a2d2e]'
-                          }`}
-                        >
-                          <FileIcon language={file.language} size={14} />
-                          <span className="font-mono truncate flex-1">{file.name}</span>
-                          {modified && <span className="w-2 h-2 rounded-full bg-[#e0e0e0] shrink-0" />}
-                        </button>
-                      );
-                    })}
-                  </div>
-                  {files.some(f => fileContents[f.id] !== f.content) && (
-                    <div className="px-3 py-1 border-t border-[#3c3c3c]">
-                      <span className="text-[9px] text-[#e0e0e0] bg-[#4d4d4d] px-1.5 py-0.5 rounded">Unsaved changes</span>
-                    </div>
-                  )}
+              <div>
+                <div className="flex items-center gap-1.5 px-3 py-1.5 text-[11px] font-bold text-[#cccccc]">
+                  <ChevronDown size={12} className="text-[#999]" />
+                  <span>PROJECT</span>
                 </div>
-              )}
-              {sidebarPanel === 'search' && (
-                <div className="p-3">
-                  <input placeholder="Search in files..." className="w-full px-2.5 py-1.5 bg-[#3c3c3c] border border-[#555] rounded text-[12px] text-[#ccc] font-mono outline-none focus:border-[#007acc]" />
+                <div className="pb-2">
+                  {files.map((file) => {
+                    const isActive = file.id === activeFileId;
+                    const modified = fileContents[file.id] !== file.content;
+                    return (
+                      <button
+                        key={file.id}
+                        onClick={() => setActiveFileId(file.id)}
+                        className={`w-full flex items-center gap-2 px-3 py-[5px] text-left text-[12px] transition-colors ${
+                          isActive ? 'bg-[#094771] text-white' : 'text-[#cccccc] hover:bg-[#2a2d2e]'
+                        }`}
+                      >
+                        <FileIcon language={file.language} size={14} />
+                        <span className="font-mono truncate flex-1">{file.name}</span>
+                        {modified && <span className="w-2 h-2 rounded-full bg-[#e0e0e0] shrink-0" />}
+                      </button>
+                    );
+                  })}
                 </div>
-              )}
+                {files.some(f => fileContents[f.id] !== f.content) && (
+                  <div className="px-3 py-1 border-t border-[#3c3c3c]">
+                    <span className="text-[9px] text-[#e0e0e0] bg-[#4d4d4d] px-1.5 py-0.5 rounded">Unsaved changes</span>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
         )}
 
         {!sidebarExpanded && (
-          <button onClick={() => setSidebarExpanded(true)} className="w-0 flex items-center justify-center bg-[#252526] border-r border-[#3c3c3c] hover:bg-[#2a2d2e] transition-colors group" title="Expand sidebar">
+          <button onClick={() => setSidebarExpanded(true)} className="w-9 flex items-start justify-center pt-2 bg-[#252526] border-r border-[#3c3c3c] hover:bg-[#2a2d2e] transition-colors group" title="Expand sidebar" aria-label="Expand sidebar">
             <PanelLeftOpen size={14} className="text-[#666] group-hover:text-[#ccc]" />
           </button>
         )}
@@ -473,8 +447,8 @@ const Ide: React.FC<IdeProps> = ({ files, context, terminalContext, title = 'IDE
                 <button
                   key={file.id}
                   onClick={() => setActiveFileId(file.id)}
-                  className={`flex items-center gap-1.5 h-full px-3 text-[11px] border-r border-[#3c3c3c] transition-colors shrink-0 ${
-                    isActive ? 'bg-[#1e1e1e] text-[#ffffff] border-t-[2px] border-t-[#007acc]' : 'bg-[#2d2d2d] text-[#999] hover:bg-[#2a2d2e] hover:text-[#ccc]'
+                  className={`flex items-center gap-1.5 h-full px-3 text-[11px] border-r border-[#3c3c3c] border-t-[2px] transition-colors shrink-0 ${
+                    isActive ? 'bg-[#1e1e1e] text-[#ffffff] border-t-[#007acc]' : 'bg-[#2d2d2d] text-[#999] hover:bg-[#2a2d2e] hover:text-[#ccc] border-t-transparent'
                   }`}
                 >
                   <FileIcon language={file.language} size={12} />
@@ -499,9 +473,9 @@ const Ide: React.FC<IdeProps> = ({ files, context, terminalContext, title = 'IDE
           <div className="flex-1 min-h-0 overflow-hidden bg-[#1e1e1e] relative">
             <div className="absolute inset-0 overflow-auto" ref={highlightRef}>
               <div className="flex">
-                <div className="shrink-0 pt-3 pb-3 pl-3 pr-1 text-right bg-[#1e1e1e]">
+                <div className="shrink-0 pt-3 pb-3 pl-3 bg-[#1e1e1e]">
                   {currentContent.split('\n').map((_, i) => (
-                    <div key={i} className="text-[13px] leading-[1.6] text-[#858585] select-none pr-2">
+                    <div key={i} className="w-7 pr-2 text-right text-[13px] leading-[1.6] text-[#858585] select-none">
                       {i + 1}
                     </div>
                   ))}
@@ -520,7 +494,7 @@ const Ide: React.FC<IdeProps> = ({ files, context, terminalContext, title = 'IDE
               onChange={(e) => setFileContents(prev => ({ ...prev, [activeFileId]: e.target.value }))}
               onKeyDown={handleTabKeyDown}
               onScroll={syncScroll}
-              className="absolute inset-0 flex w-full h-full bg-transparent text-transparent font-mono text-[13px] pt-3 pb-3 pl-[3.75rem] pr-3 border-none outline-none resize-none leading-[1.6] caret-[#aeafad] overflow-auto"
+              className="absolute inset-0 flex w-full h-full bg-transparent text-transparent font-mono text-[13px] pt-3 pb-3 pl-[2.5rem] pr-3 border-none outline-none resize-none leading-[1.6] overflow-auto"
               style={{ tabSize: 2, caretColor: '#aeafad', WebkitTextFillColor: 'transparent' }}
               spellCheck={false}
               autoFocus
@@ -531,20 +505,20 @@ const Ide: React.FC<IdeProps> = ({ files, context, terminalContext, title = 'IDE
           {bottomPanelOpen && (
             <div className="h-[200px] flex flex-col border-t border-[#3c3c3c] shrink-0">
               <div className="flex items-center h-8 bg-[#1e1e1e] border-b border-[#3c3c3c] shrink-0 px-1">
-                <button onClick={() => setBottomPanelTab('output')} className={`flex items-center gap-1.5 h-full px-3 text-[11px] transition-colors ${bottomPanelTab === 'output' ? 'text-[#ffffff] border-t-[2px] border-t-[#007acc]' : 'text-[#999] hover:text-[#ccc]'}`}>
+                <button onClick={() => setBottomPanelTab('output')} className={`flex items-center gap-1.5 h-full px-3 text-[11px] border-t-[2px] transition-colors ${bottomPanelTab === 'output' ? 'text-[#ffffff] border-t-[#007acc]' : 'text-[#999] hover:text-[#ccc] border-t-transparent'}`}>
                   <TerminalSquare size={12} /> OUTPUT
                 </button>
-                <button onClick={() => setBottomPanelTab('terminal')} className={`flex items-center gap-1.5 h-full px-3 text-[11px] transition-colors ${bottomPanelTab === 'terminal' ? 'text-[#ffffff] border-t-[2px] border-t-[#007acc]' : 'text-[#999] hover:text-[#ccc]'}`}>
+                <button onClick={() => setBottomPanelTab('terminal')} className={`flex items-center gap-1.5 h-full px-3 text-[11px] border-t-[2px] transition-colors ${bottomPanelTab === 'terminal' ? 'text-[#ffffff] border-t-[#007acc]' : 'text-[#999] hover:text-[#ccc] border-t-transparent'}`}>
                   <TerminalSquare size={12} /> TERMINAL
                 </button>
                 <div className="flex-1" />
-                <button onClick={() => setBottomPanelOpen(false)} className="flex items-center justify-center h-5 w-5 text-[#666] hover:text-[#ccc] hover:bg-[#ffffff10] rounded">
+                <button onClick={() => setBottomPanelOpen(false)} className="flex items-center justify-center h-6 w-6 text-[#666] hover:text-[#ccc] hover:bg-[#ffffff10] rounded" aria-label="Close panel">
                   <X size={12} />
                 </button>
               </div>
               <div className="flex-1 overflow-hidden bg-[#1e1e1e]">
                 {bottomPanelTab === 'output' ? (
-                  <div className="h-full overflow-auto p-3">
+                  <div className="h-full overflow-auto p-3 select-text">
                     {output ? (
                       <pre className={`text-[13px] font-mono whitespace-pre-wrap leading-relaxed ${exitCode === 0 ? 'text-[#d4d4d4]' : 'text-[#f48771]'}`}>{output}</pre>
                     ) : (
@@ -566,8 +540,8 @@ const Ide: React.FC<IdeProps> = ({ files, context, terminalContext, title = 'IDE
           )}
 
           {!bottomPanelOpen && (
-            <button onClick={() => setBottomPanelOpen(true)} className="h-6 bg-[#007acc] flex items-center px-3 text-[10px] text-white hover:bg-[#0098ff] transition-colors shrink-0">
-              <TerminalSquare size={10} className="mr-1.5" /> Show Panel
+            <button onClick={() => setBottomPanelOpen(true)} className="h-6 bg-[#252526] border-t border-[#3c3c3c] flex items-center justify-center gap-1.5 text-[10px] text-[#999] hover:text-white hover:bg-[#2a2d2e] transition-colors shrink-0" aria-label="Show output panel">
+              <ChevronRight size={10} className="-rotate-90" /> Show Panel
             </button>
           )}
         </div>
@@ -601,11 +575,11 @@ const Ide: React.FC<IdeProps> = ({ files, context, terminalContext, title = 'IDE
       <RadixDialog.Portal>
         <RadixDialog.Overlay className="fixed inset-0 z-[200] bg-black/80 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0" />
         <RadixDialog.Content
-          aria-label="IDE"
+          aria-label={title}
           onKeyDown={(e) => { if (e.key === 'Tab') e.stopPropagation(); }}
           className="fixed z-[201] left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[calc(100vw-2rem)] sm:w-[calc(100vw-3rem)] max-w-[1400px] h-[88vh] max-h-[92vh] flex flex-col overflow-hidden rounded-lg border border-[#3c3c3c] data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 duration-150"
         >
-          <RadixDialog.Title className="sr-only">IDE</RadixDialog.Title>
+          <RadixDialog.Title className="sr-only">{title}</RadixDialog.Title>
           {shell}
         </RadixDialog.Content>
       </RadixDialog.Portal>
