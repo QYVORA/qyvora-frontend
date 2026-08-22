@@ -1,4 +1,4 @@
-import { Download, GitBranch, Terminal } from 'lucide-react';
+import { Download, GitBranch, Loader2, Terminal } from 'lucide-react';
 import { IconArrowRight } from '@/shared/components/icons';
 import SEO from '@/shared/components/SEO';
 import PublicSnapLayout from '@/shared/components/PublicSnapLayout';
@@ -13,16 +13,23 @@ import ToolsCarousel from '@/features/marketing/components/ToolsCarousel';
 import ToolSourceSection from '@/features/marketing/components/tools/ToolSourceSection';
 import ToolSectionHeader from '@/features/marketing/components/tools/ToolSectionHeader';
 import { openToolInstall } from '@/features/marketing/components/ToolInstallModal';
+import { useToolRelease } from '@/features/marketing/hooks/useToolRelease';
 import { PHASES, RELEASES, ONE_LINER, BUILD_FROM_SOURCE, USAGE_EXAMPLES, SCAN_OUTPUT, SOURCE_EXAMPLES } from '@/features/marketing/data/anansiData';
 import anansiLogo from '@/assets/anansi/anansi-main-logo.webp';
 
-const RELEASES_URL = 'https://github.com/QYVORA/qyvora-anansi-cli/releases/latest/download';
 const GITHUB_URL = 'https://github.com/QYVORA/qyvora-anansi-cli';
 
 const PHASE_MODULES = ['discovery', 'probe', 'tls', 'headers', 'paths', 'tech', 'takeover', 'osint', 'chain'];
 
+function formatBytes(bytes: number): string {
+  if (!Number.isFinite(bytes) || bytes <= 0) return '';
+  if (bytes >= 1024 * 1024) return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
+  return `${Math.max(1, Math.round(bytes / 1024))} KB`;
+}
+
 const AnansiPage = () => {
   const { user } = useAuth();
+  const release = useToolRelease('anansi');
   return (
     <div className="bg-bg min-h-full">
       <SEO title="Anansi - QYVORA" description="Anansi — Attack Surface Intelligence CLI. A nine-phase recon pipeline from subdomain discovery to exploit-chain analysis, all from the terminal." />
@@ -177,26 +184,43 @@ const AnansiPage = () => {
               </div>
             </div>
 
-            {/* Direct downloads — compact horizontal row */}
+            {/* Direct downloads — compact horizontal row, verified against
+                the latest GitHub release so missing builds never render */}
             <div>
               <span className="text-[9px] font-black uppercase tracking-widest text-text-muted block mb-2">
-                Direct Download
+                Direct Download{release.version ? ` · ${release.version}` : ''}
               </span>
               <div className="flex gap-2 overflow-x-auto no-scrollbar">
-                {RELEASES.map((rel) => (
-                  <a
-                    key={rel.id}
-                    href={`${RELEASES_URL}/${rel.file}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="shrink-0 flex items-center gap-2 rounded-lg border border-border/20 bg-bg px-3 py-2 transition-colors hover:border-accent/40"
-                  >
-                    <span className="text-[9px] font-black uppercase tracking-widest text-text-primary">
-                      {rel.label} <span className="text-text-muted">{rel.arch}</span>
-                    </span>
-                    <span className="text-[9px] font-mono text-accent">{rel.size}</span>
-                  </a>
-                ))}
+                {release.status === 'loading' && (
+                  <span className="inline-flex items-center gap-1.5 rounded-lg border border-border/20 bg-bg px-3 py-2 text-[9px] uppercase tracking-widest text-text-muted">
+                    <Loader2 className="h-3 w-3 animate-spin" /> Checking release…
+                  </span>
+                )}
+                {release.status === 'unavailable' && (
+                  <span className="rounded-lg border border-amber-500/30 bg-amber-500/5 px-3 py-2 text-[9px] uppercase tracking-widest text-text-muted">
+                    No release published yet — use the installer above
+                  </span>
+                )}
+                {release.status === 'ready' &&
+                  RELEASES.filter((rel) => release.assetUrl(rel.file)).map((rel) => {
+                    const size = release.assetSize(rel.file);
+                    return (
+                      <a
+                        key={rel.id}
+                        href={release.assetUrl(rel.file)}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="shrink-0 flex items-center gap-2 rounded-lg border border-border/20 bg-bg px-3 py-2 transition-colors hover:border-accent/40"
+                      >
+                        <span className="text-[9px] font-black uppercase tracking-widest text-text-primary">
+                          {rel.label} <span className="text-text-muted">{rel.arch}</span>
+                        </span>
+                        {size ? (
+                          <span className="text-[9px] font-mono text-accent">{formatBytes(size)}</span>
+                        ) : null}
+                      </a>
+                    );
+                  })}
               </div>
             </div>
           </div>

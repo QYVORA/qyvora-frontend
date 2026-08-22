@@ -1,11 +1,12 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { Apple, Check, Copy, Download, Loader2, Terminal } from 'lucide-react';
+import React, { useEffect, useMemo, useState } from 'react';
+import { Apple, Check, Download, Loader2, Terminal, TriangleAlert } from 'lucide-react';
 import {
   TOOL_INSTALL_CONFIG,
   ToolArch,
   ToolInstallKey,
   ToolPlatform,
 } from '../data/toolInstallConfig';
+import { useToolRelease } from '../hooks/useToolRelease';
 import { Dialog, DialogContent } from '../../../shared/components/ui/Dialog';
 import CodeBlock from '../../../shared/components/CodeBlock';
 
@@ -36,14 +37,18 @@ function detectArch(): ToolArch {
   return 'amd64';
 }
 
+function formatSize(bytes: number): string {
+  if (!Number.isFinite(bytes) || bytes <= 0) return '';
+  if (bytes >= 1024 * 1024) return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
+  return `${Math.max(1, Math.round(bytes / 1024))} KB`;
+}
+
 const ToolInstallModalHost: React.FC = () => {
   const [open, setOpen] = useState(false);
   const [tool, setTool] = useState<ToolInstallKey>('anansi');
   const [platform, setPlatform] = useState<ToolPlatform>('linux');
   const [arch, setArch] = useState<ToolArch>('amd64');
-  const [downloaded, setDownloaded] = useState(false);
-  const [copied, setCopied] = useState(false);
-  const downloadedRef = useRef(false);
+  const release = useToolRelease(tool);
 
   useEffect(() => {
     const handleOpen = (e: Event) => {
@@ -53,86 +58,96 @@ const ToolInstallModalHost: React.FC = () => {
       }
       setPlatform(detectPlatform());
       setArch(detectArch());
-      downloadedRef.current = false;
-      setDownloaded(false);
       setOpen(true);
     };
     window.addEventListener(TOOL_INSTALL_EVENT, handleOpen);
     return () => window.removeEventListener(TOOL_INSTALL_EVENT, handleOpen);
   }, []);
 
-  useEffect(() => {
-    if (!open) {
-      setCopied(false);
-    }
-  }, [open]);
-
   const cfg = TOOL_INSTALL_CONFIG[tool];
-  const platformAssets = cfg.assets[platform];
-  const asset =
-    platformAssets?.[arch] ?? platformAssets?.amd64 ?? Object.values(platformAssets ?? {})[0];
-  const assetUrl = asset ? `${cfg.releaseBase}/${asset}` : '';
-  const supportsArch = Boolean(platformAssets?.arm64);
+
+  // Only platform/arch combinations that actually exist in the published
+  // release are selectable. While the release is still loading every known
+  // combination stays visible but inert.
+  const availablePlatforms = useMemo(
+    () =>
+      PLATFORMS.filter(({ key }) =>
+        release.status !== 'ready' ? true : (['amd64', 'arm64'] as ToolArch[]).some((a) => release.hasDownload(key, a)),
+      ),
+    [release],
+  );
+  const supportsArch =
+    release.status !== 'ready'
+      ? Boolean(cfg.assets[platform]?.arm64)
+      : release.hasDownload(platform, 'arm64');
+  const archChoices: ToolArch[] = supportsArch ? ['amd64', 'arm64'] : ['amd64'];
   const activeArch: ToolArch = supportsArch ? arch : 'amd64';
 
-  // Auto-download the detected binary as soon as the modal opens.
-  useEffect(() => {
-    if (!open || !assetUrl || downloadedRef.current) return;
-    downloadedRef.current = true;
-    const timer = window.setTimeout(() => {
-      const anchor = document.createElement('a');
-      anchor.href = assetUrl;
-      anchor.rel = 'noopener noreferrer';
-      document.body.appendChild(anchor);
-      anchor.click();
-      document.body.removeChild(anchor);
-      setDownloaded(true);
-    }, 350);
-    return () => window.clearTimeout(timer);
-  }, [open, assetUrl]);
+  const assetName = cfg.assets[platform]?.[activeArch];
+  const assetUrl = release.status === 'ready' && assetName ? release.assetUrl(assetName) : '';
+  const assetSize = release.status === 'ready' && assetName ? release.assetSize(assetName) : undefined;
+  const canDownload = release.status === 'ready' && Boolean(assetUrl);
 
   const command = cfg.commandTemplates[platform]
-    .replaceAll('{url}', assetUrl)
+    .replaceAll('{url}', assetName ? `${cfg.releaseBase}/${assetName}` : '')
     .replaceAll('{bin}', cfg.bin);
-
-  const copyCommand = async () => {
-    try {
-      await navigator.clipboard.writeText(command);
-      setCopied(true);
-      window.setTimeout(() => setCopied(false), 1600);
-    } catch {
-      // Clipboard unavailable — ignore.
-    }
-  };
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogContent title={`Install ${cfg.displayName}`} maxWidth="max-w-lg">
         <div className="space-y-5">
-          <div className="rounded-2xl border border-border bg-accent/5 p-4">
-            <p className="text-xs text-text-secondary leading-relaxed">{cfg.note}</p>
-          </div>
+          {release.status === 'loading' && (
+            <div className="flex items-center gap-2 rounded-xl border border-border/20 bg-bg-alt px-4 py-3">
+              <Loader2 className="h-3.5 w-3.5 shrink-0 animate-spin text-accent" />
+              <p className="text-[11px] text-text-muted">Checking the latest release…</p>
+            </div>
+          )}
+          {release.status === 'unavailable' && (
+            <div className="flex items-start gap-2 rounded-xl border border-amber-500/30 bg-amber-500/5 px-4 py-3">
+              <TriangleAlert className="mt-0.5 h-3.5 w-3.5 shrink-0 text-amber-400" />
+              <p className="text-[11px] leading-relaxed text-text-secondary">
+                No published release could be reached for this tool yet. The download
+                buttons are disabled until a release is available — build from source
+                or use the terminal commands below once a release exists.
+              </p>
+            </div>
+          )}
+          {release.status === 'ready' && release.version && (
+            <div className="flex items-center justify-between rounded-xl border border-border bg-accent/5 px-4 py-2.5">
+              <p className="text-[11px] text-text-secondary">{cfg.note}</p>
+              <span className="ml-3 shrink-0 font-mono text-[11px] font-bold text-accent">
+                {release.version}
+              </span>
+            </div>
+          )}
 
           <div className="space-y-3">
             <p className="text-[10px] font-black uppercase tracking-widest text-text-muted">
               Operating System
             </p>
             <div className="grid grid-cols-3 gap-2">
-              {PLATFORMS.map((p) => (
-                <button
-                  key={p.key}
-                  type="button"
-                  onClick={() => setPlatform(p.key)}
-                  className={`inline-flex items-center justify-center gap-1.5 rounded-xl border px-2 py-2.5 text-[10px] font-black uppercase tracking-widest transition-colors ${
-                    platform === p.key
-                      ? 'border-accent/50 bg-accent/10 text-accent'
-                      : 'border-border/30 text-text-muted hover:border-accent/40 hover:text-accent'
-                  }`}
-                >
-                  {p.icon}
-                  {p.label}
-                </button>
-              ))}
+              {PLATFORMS.map((p) => {
+                const enabled = availablePlatforms.some(({ key }) => key === p.key);
+                return (
+                  <button
+                    key={p.key}
+                    type="button"
+                    onClick={() => setPlatform(p.key)}
+                    disabled={!enabled}
+                    title={enabled ? undefined : 'No build published for this operating system'}
+                    className={`inline-flex items-center justify-center gap-1.5 rounded-xl border px-2 py-2.5 text-[10px] font-black uppercase tracking-widest transition-colors ${
+                      platform === p.key
+                        ? 'border-accent/50 bg-accent/10 text-accent'
+                        : enabled
+                          ? 'border-border/30 text-text-muted hover:border-accent/40 hover:text-accent'
+                          : 'cursor-not-allowed border-border/15 text-text-muted/40'
+                    }`}
+                  >
+                    {p.icon}
+                    {p.label}
+                  </button>
+                );
+              })}
             </div>
           </div>
 
@@ -142,7 +157,7 @@ const ToolInstallModalHost: React.FC = () => {
                 Architecture
               </p>
               <div className="grid grid-cols-2 gap-2">
-                {(['amd64', 'arm64'] as ToolArch[]).map((a) => (
+                {archChoices.map((a) => (
                   <button
                     key={a}
                     type="button"
@@ -166,24 +181,25 @@ const ToolInstallModalHost: React.FC = () => {
             </p>
             <div className="flex items-center justify-between gap-3 rounded-xl border border-border/30 bg-bg px-4 py-3">
               <span className="min-w-0 truncate font-mono text-[11px] text-text-secondary">
-                {asset ?? 'Unavailable for this platform'}
+                {assetName ?? 'Unavailable for this platform'}
+                {assetSize ? <span className="ml-2 text-text-muted">{formatSize(assetSize)}</span> : null}
               </span>
               <button
                 type="button"
-                disabled={!assetUrl}
+                disabled={!canDownload}
                 onClick={() => {
+                  if (!assetUrl) return;
                   const anchor = document.createElement('a');
                   anchor.href = assetUrl;
                   anchor.rel = 'noopener noreferrer';
                   document.body.appendChild(anchor);
                   anchor.click();
                   document.body.removeChild(anchor);
-                  setDownloaded(true);
                 }}
                 className="inline-flex shrink-0 items-center gap-1.5 rounded-lg border border-accent/40 px-3 py-2 text-[10px] font-black uppercase tracking-widest text-accent transition-colors hover:bg-accent/10 disabled:opacity-50"
               >
-                {downloaded ? <Check className="h-3.5 w-3.5" /> : <Download className="h-3.5 w-3.5" />}
-                {downloaded ? 'Downloaded' : 'Download'}
+                <Download className="h-3.5 w-3.5" />
+                Download
               </button>
             </div>
           </div>
@@ -195,14 +211,25 @@ const ToolInstallModalHost: React.FC = () => {
             <CodeBlock code={command} lang="sh" copyable />
           </div>
 
-          <div className="flex items-center gap-2 rounded-xl border border-border/20 bg-bg-alt px-4 py-3">
-            <Loader2 className="h-3.5 w-3.5 shrink-0 animate-spin text-accent" />
-            <p className="text-[11px] text-text-muted leading-snug">
-              {copied
-                ? 'Command copied to clipboard.'
-                : 'Your download should start automatically — check your browser downloads.'}
-            </p>
-          </div>
+          {release.status === 'ready' && (
+            <div className="flex items-center gap-2 rounded-xl border border-border/20 bg-bg-alt px-4 py-3">
+              {canDownload ? (
+                <>
+                  <Check className="h-3.5 w-3.5 shrink-0 text-emerald-400" />
+                  <p className="text-[11px] text-text-muted leading-snug">
+                    Download resolved from the latest GitHub release.
+                  </p>
+                </>
+              ) : (
+                <>
+                  <TriangleAlert className="h-3.5 w-3.5 shrink-0 text-amber-400" />
+                  <p className="text-[11px] text-text-muted leading-snug">
+                    This build was not found in the latest release.
+                  </p>
+                </>
+              )}
+            </div>
+          )}
         </div>
       </DialogContent>
     </Dialog>

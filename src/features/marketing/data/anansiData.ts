@@ -26,17 +26,16 @@ export interface AnansiRelease {
   label: string;
   arch: string;
   file: string;
-  size: string;
 }
 
 const BASE = 'https://github.com/QYVORA/qyvora-anansi-cli/releases/latest/download';
 
 export const RELEASES: AnansiRelease[] = [
-  { id: 'linux-amd64', label: 'Linux', arch: 'x86_64', file: 'anansi-linux-amd64', size: '~8.5 MB' },
-  { id: 'linux-arm64', label: 'Linux', arch: 'ARM64', file: 'anansi-linux-arm64', size: '~8.3 MB' },
-  { id: 'macos-amd64', label: 'macOS', arch: 'Intel', file: 'anansi-macos-amd64', size: '~8.8 MB' },
-  { id: 'macos-arm64', label: 'macOS', arch: 'Apple Silicon', file: 'anansi-macos-arm64', size: '~8.5 MB' },
-  { id: 'windows-amd64', label: 'Windows', arch: 'x86_64', file: 'anansi-windows-amd64.exe', size: '~8.9 MB' },
+  { id: 'linux-amd64', label: 'Linux', arch: 'x86_64', file: 'anansi-linux-amd64' },
+  { id: 'linux-arm64', label: 'Linux', arch: 'ARM64', file: 'anansi-linux-arm64' },
+  { id: 'macos-amd64', label: 'macOS', arch: 'Intel', file: 'anansi-macos-amd64' },
+  { id: 'macos-arm64', label: 'macOS', arch: 'Apple Silicon', file: 'anansi-macos-arm64' },
+  { id: 'windows-amd64', label: 'Windows', arch: 'x86_64', file: 'anansi-windows-amd64.exe' },
 ];
 
 export const ONE_LINER = 'curl -fsSL https://raw.githubusercontent.com/QYVORA/qyvora-anansi-cli/main/install.sh | bash';
