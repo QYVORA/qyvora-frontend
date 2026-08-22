@@ -220,7 +220,21 @@ function makeDotSprite(fill: string): HTMLCanvasElement {
   const sprite = document.createElement('canvas');
   sprite.width = size;
   sprite.height = size;
-  const sctx = sprite.getContext('2d')!;
+  const sctx = sprite.getContext('2d', { 
+    alpha: true,
+    desynchronized: true,
+    willReadFrequently: false 
+  });
+  
+  if (!sctx) {
+    // Fallback: return empty canvas
+    const fallback = document.createElement('canvas');
+    fallback.width = size;
+    fallback.height = size;
+    DOT_SPRITE_CACHE.set(fill, fallback);
+    return fallback;
+  }
+  
   const [r, g, b] = hexToRgb(fill);
   const grad = sctx.createRadialGradient(size / 2, size / 2, 0, size / 2, size / 2, size / 2);
   grad.addColorStop(0, `rgba(${r},${g},${b},1)`);
@@ -240,7 +254,21 @@ export function buildDotMapTexture(isLight: boolean, step = 1.6): THREE.CanvasTe
   const W = DOT_MAP_H * 2, H = DOT_MAP_H;
   const canvas = document.createElement('canvas');
   canvas.width = W; canvas.height = H;
-  const ctx = canvas.getContext('2d')!;
+  const ctx = canvas.getContext('2d', { 
+    alpha: true,
+    desynchronized: true,
+    willReadFrequently: false 
+  });
+  
+  if (!ctx) {
+    // Fallback: return a minimal transparent texture
+    const fallbackCanvas = document.createElement('canvas');
+    fallbackCanvas.width = 2;
+    fallbackCanvas.height = 2;
+    const tex = new THREE.CanvasTexture(fallbackCanvas);
+    tex.colorSpace = THREE.SRGBColorSpace;
+    return tex;
+  }
 
   ctx.clearRect(0, 0, W, H);
 
@@ -264,6 +292,11 @@ export function buildDotMapTexture(isLight: boolean, step = 1.6): THREE.CanvasTe
 
   const tex = new THREE.CanvasTexture(canvas);
   tex.colorSpace = THREE.SRGBColorSpace;
+  tex.minFilter = THREE.LinearFilter;
+  tex.magFilter = THREE.LinearFilter;
+  tex.generateMipmaps = false;
+  tex.needsUpdate = true;
+  
   TEXTURE_CACHE.set(cacheKey, tex);
   return tex;
 }

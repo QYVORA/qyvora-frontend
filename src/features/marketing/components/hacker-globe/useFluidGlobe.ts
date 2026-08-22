@@ -29,21 +29,36 @@ export function useFluidGlobe(): GlobeFluid {
 
   useEffect(() => {
     let raf = 0;
+    let debounceTimer = 0;
+    
     const onResize = () => {
       cancelAnimationFrame(raf);
-      raf = requestAnimationFrame(() =>
-        setVp((prev) => {
-          const w = window.innerWidth;
-          // Ignore height-only changes (mobile URL-bar show/hide during scroll)
-          // so the globe stays stable instead of nudging on every scroll tick.
-          if (w === prev.w) return prev;
-          return { w, h: window.innerHeight };
-        }),
-      );
+      clearTimeout(debounceTimer);
+      
+      raf = requestAnimationFrame(() => {
+        debounceTimer = window.setTimeout(() => {
+          setVp((prev) => {
+            const w = window.innerWidth;
+            const h = window.innerHeight;
+            
+            // Ignore height-only changes (mobile URL-bar show/hide during scroll)
+            // so the globe stays stable instead of nudging on every scroll tick.
+            if (w === prev.w) return prev;
+            
+            // Sanity check viewport dimensions
+            if (w <= 0 || h <= 0) return prev;
+            
+            return { w, h };
+          });
+        }, 50);
+      });
     };
-    window.addEventListener('resize', onResize);
+    
+    window.addEventListener('resize', onResize, { passive: true });
+    
     return () => {
       cancelAnimationFrame(raf);
+      clearTimeout(debounceTimer);
       window.removeEventListener('resize', onResize);
     };
   }, []);
