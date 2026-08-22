@@ -1,4 +1,4 @@
-import React, { useState, useRef, useCallback, useEffect, useMemo } from 'react';
+import React, { useState, useRef, useCallback, useEffect } from 'react';
 import * as RadixDialog from '@radix-ui/react-dialog';
 import {
   ReactFlow,
@@ -9,7 +9,6 @@ import {
   useNodesState,
   useEdgesState,
   BackgroundVariant,
-  useReactFlow,
   type Connection,
   type Edge,
   type Node,
@@ -23,7 +22,7 @@ import {
 } from '@xyflow/react';
 import {
   X, Maximize2, Minimize2, Trash2, Wifi, ChevronDown, ChevronRight,
-  Play, Pause, Tag, Radio,
+  Play, Pause, Tag, PanelLeftClose, PanelLeftOpen, Network,
 } from 'lucide-react';
 import { TopologyProvider, useTopology } from './network/topologyStore';
 import DeviceNodeComponent from './network/DeviceNode';
@@ -91,8 +90,8 @@ const NetworkBuilderInner: React.FC<NetworkBuilderProps> = ({ open, onOpenChange
   });
   const [labelInput, setLabelInput] = useState<{ id: string; field: 'label' | 'ip'; value: string } | null>(null);
   const reactFlowWrapper = useRef<HTMLDivElement>(null);
-  const [showInterfaces, setShowInterfaces] = useState(false);
   const [showLabels, setShowLabels] = useState(true);
+  const [paletteOpen, setPaletteOpen] = useState(true);
 
   // Provide edge data to traffic engine
   useEffect(() => {
@@ -280,13 +279,6 @@ const NetworkBuilderInner: React.FC<NetworkBuilderProps> = ({ open, onOpenChange
   const selectedDeviceNode = selectedNode && selectedNode.type === 'device' ? selectedNode : null;
   const selectedDeviceData = selectedDeviceNode ? (selectedDeviceNode.data as DeviceNodeData) : null;
 
-  // ── Zoom adaptive detail ─────────────────────────────────────────────────
-
-  const zoomDisplay = useMemo(() => {
-    const zoom = 1; // placeholder — actual zoom from ReactFlow viewport
-    return zoom < 0.3 ? 'low' : zoom < 0.6 ? 'medium' : zoom < 0.9 ? 'high' : 'very-high';
-  }, []);
-
   // ── Shell ────────────────────────────────────────────────────────────────
 
   const shell = (
@@ -302,21 +294,23 @@ const NetworkBuilderInner: React.FC<NetworkBuilderProps> = ({ open, onOpenChange
         </div>
         <div className="flex items-center gap-1">
           {/* Traffic controls */}
-          <div className="flex items-center gap-0.5 mr-2 border border-border/20 rounded-lg px-1 py-0.5">
+          <div className="flex items-center gap-1 mr-2 border border-border/20 rounded-lg px-1.5 py-1">
             <button
               onClick={trafficRunning ? stopTraffic : startTraffic}
-              className="flex items-center justify-center h-5 w-5 rounded hover:bg-white/5 transition-colors"
+              className="flex items-center justify-center h-6 w-6 rounded hover:bg-white/5 transition-colors"
               title={trafficRunning ? 'Stop simulation' : 'Start simulation'}
+              aria-label={trafficRunning ? 'Stop traffic simulation' : 'Start traffic simulation'}
             >
               {trafficRunning
-                ? <Pause size={10} className="text-accent" />
-                : <Play size={10} className="text-text-muted" />
+                ? <Pause size={12} className="text-accent" />
+                : <Play size={12} className="text-text-muted" />
               }
             </button>
             <select
               value={trafficLevel}
               onChange={(e) => setTrafficLevel(e.target.value as TrafficLevel)}
-              className="text-[8px] font-mono bg-transparent text-text-muted border-none outline-none cursor-pointer"
+              aria-label="Traffic level"
+              className="text-[10px] font-mono bg-transparent text-text-muted border-none outline-none cursor-pointer"
             >
               <option value="idle">Idle</option>
               <option value="low">Low</option>
@@ -328,24 +322,20 @@ const NetworkBuilderInner: React.FC<NetworkBuilderProps> = ({ open, onOpenChange
 
           {/* View toggles */}
           <button
-            onClick={() => setShowInterfaces(p => !p)}
-            className={`flex items-center justify-center h-5 w-5 rounded hover:bg-white/5 transition-colors ${showInterfaces ? 'text-accent' : 'text-text-muted/40'}`}
-            title="Toggle interfaces"
-          >
-            <Radio size={10} />
-          </button>
-          <button
             onClick={() => setShowLabels(p => !p)}
-            className={`flex items-center justify-center h-5 w-5 rounded hover:bg-white/5 transition-colors ${showLabels ? 'text-accent' : 'text-text-muted/40'}`}
+            className={`flex items-center justify-center h-7 w-7 rounded-lg hover:bg-white/5 transition-colors ${showLabels ? 'text-accent' : 'text-text-muted/40'}`}
             title="Toggle labels"
+            aria-label="Toggle device labels"
+            aria-pressed={showLabels}
           >
-            <Tag size={10} />
+            <Tag size={13} />
           </button>
 
           <button
             onClick={() => setIsFullscreen((p) => !p)}
             className="flex items-center justify-center h-7 w-7 rounded-lg hover:bg-white/5 transition-all text-text-muted hover:text-text-primary"
-            aria-label={isFullscreen ? 'Minimize' : 'Maximize'}
+            title={isFullscreen ? 'Exit fullscreen' : 'Fullscreen'}
+            aria-label={isFullscreen ? 'Exit fullscreen' : 'Enter fullscreen'}
           >
             {isFullscreen ? <Minimize2 size={13} /> : <Maximize2 size={13} />}
           </button>
@@ -360,44 +350,56 @@ const NetworkBuilderInner: React.FC<NetworkBuilderProps> = ({ open, onOpenChange
       </div>
 
       <div className="flex-1 flex min-h-0">
-        {/* Left palette */}
-        <div className="w-52 shrink-0 bg-bg-elevated border-r border-border/20 overflow-y-auto">
-          <div className="p-3">
-            <p className="text-[9px] font-black uppercase tracking-widest text-accent mb-3">Add Device</p>
-            {DEVICE_CATEGORIES.map((cat) => {
-              const expanded = expandedCategories[cat.id] ?? false;
-              return (
-                <div key={cat.id} className="mb-1">
-                  <button
-                    onClick={() => setExpandedCategories((p) => ({ ...p, [cat.id]: !p[cat.id] }))}
-                    className="w-full flex items-center gap-1.5 px-2 py-1.5 rounded-lg text-left hover:bg-white/5 transition-colors"
-                  >
-                    {expanded ? <ChevronDown size={10} className="text-text-muted" /> : <ChevronRight size={10} className="text-text-muted" />}
-                    <span className="text-[9px] font-black uppercase tracking-widest text-text-muted">{cat.label}</span>
-                    <span className="text-[8px] text-text-muted/40 ml-auto">{cat.types.length}</span>
-                  </button>
-                  {expanded && (
-                    <div className="flex flex-col gap-0.5 pl-2 mt-0.5">
-                      {cat.types.map((type) => {
-                        const def = getDeviceDef(type);
-                        const Icon = def.icon;
-                        return (
-                          <button
-                            key={type}
-                            onClick={() => addNode(type)}
-                            className="flex items-center gap-2 px-2.5 py-1.5 rounded-lg text-left hover:bg-accent-dim/50 transition-all group border border-transparent hover:border-accent/20"
-                          >
-                            <Icon size={12} style={{ color: def.color }} />
-                            <span className="text-[10px] font-bold text-text-muted group-hover:text-text-primary transition-colors">{def.label}</span>
-                          </button>
-                        );
-                      })}
-                    </div>
-                  )}
-                </div>
-              );
-            })}
-          </div>
+        {/* Left palette — collapsible */}
+        {paletteOpen ? (
+          <div className="w-52 shrink-0 bg-bg-elevated border-r border-border/20 overflow-y-auto">
+            <div className="p-3 pb-0">
+              <div className="flex items-center justify-between mb-3">
+                <p className="text-[9px] font-black uppercase tracking-widest text-accent">Add Device</p>
+                <button
+                  onClick={() => setPaletteOpen(false)}
+                  className="flex items-center justify-center h-6 w-6 rounded-lg hover:bg-white/5 transition-colors text-text-muted hover:text-text-primary"
+                  title="Collapse palette"
+                  aria-label="Collapse device palette"
+                >
+                  <PanelLeftClose size={13} />
+                </button>
+              </div>
+              {DEVICE_CATEGORIES.map((cat) => {
+                const expanded = expandedCategories[cat.id] ?? false;
+                return (
+                  <div key={cat.id} className="mb-1">
+                    <button
+                      onClick={() => setExpandedCategories((p) => ({ ...p, [cat.id]: !p[cat.id] }))}
+                      aria-expanded={expanded}
+                      className="w-full flex items-center gap-1.5 px-2 py-1.5 rounded-lg text-left hover:bg-white/5 transition-colors"
+                    >
+                      {expanded ? <ChevronDown size={10} className="text-text-muted" /> : <ChevronRight size={10} className="text-text-muted" />}
+                      <span className="text-[9px] font-black uppercase tracking-widest text-text-muted">{cat.label}</span>
+                      <span className="text-[8px] text-text-muted/40 ml-auto">{cat.types.length}</span>
+                    </button>
+                    {expanded && (
+                      <div className="flex flex-col gap-0.5 pl-2 mt-0.5">
+                        {cat.types.map((type) => {
+                          const def = getDeviceDef(type);
+                          const Icon = def.icon;
+                          return (
+                            <button
+                              key={type}
+                              onClick={() => addNode(type)}
+                              className="flex items-center gap-2 px-2.5 py-1.5 rounded-lg text-left hover:bg-accent-dim/50 transition-all group border border-transparent hover:border-accent/20"
+                            >
+                              <Icon size={12} style={{ color: def.color }} />
+                              <span className="text-[10px] font-bold text-text-muted group-hover:text-text-primary transition-colors">{def.label}</span>
+                            </button>
+                          );
+                        })}
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
 
           {/* Actions */}
           <div className="px-3 pt-3">
@@ -499,12 +501,32 @@ const NetworkBuilderInner: React.FC<NetworkBuilderProps> = ({ open, onOpenChange
               </div>
             </div>
           )}
-        </div>
+          </div>
+        ) : (
+          <div className="w-9 shrink-0 bg-bg-elevated border-r border-border/20 flex flex-col items-center pt-2 gap-1">
+            <button
+              onClick={() => setPaletteOpen(true)}
+              className="flex items-center justify-center h-7 w-7 rounded-lg hover:bg-white/5 transition-colors text-text-muted hover:text-text-primary"
+              title="Expand palette"
+              aria-label="Expand device palette"
+            >
+              <PanelLeftOpen size={14} />
+            </button>
+            <button
+              onClick={() => setPaletteOpen(true)}
+              className="flex items-center justify-center h-7 w-7 rounded-lg hover:bg-white/5 transition-colors text-text-muted/50 hover:text-accent"
+              title="Add device"
+              aria-label="Open device palette to add a device"
+            >
+              <Network size={14} />
+            </button>
+          </div>
+        )}
 
         {/* Canvas */}
         <div
           ref={reactFlowWrapper}
-          className="flex-1 min-h-0 bg-[#0a0a0a]"
+          className="flex-1 min-h-0 bg-bg-alt"
           onContextMenu={handleCanvasContextMenu}
         >
           <ReactFlow
@@ -548,8 +570,8 @@ const NetworkBuilderInner: React.FC<NetworkBuilderProps> = ({ open, onOpenChange
             {nodes.length === 0 && (
               <Panel position="top-center" className="pointer-events-none mt-20">
                 <div className="text-center">
-                  <div className="text-text-muted/20 text-sm font-mono">Add devices from the palette to start building your network</div>
-                  <div className="text-text-muted/10 text-[10px] font-mono mt-1">Drag from device interfaces to connect them</div>
+                  <div className="text-text-muted text-sm font-mono">Add devices from the palette to start building your network</div>
+                  <div className="text-text-muted/60 text-[10px] font-mono mt-1">Drag from device interfaces to connect them</div>
                 </div>
               </Panel>
             )}
