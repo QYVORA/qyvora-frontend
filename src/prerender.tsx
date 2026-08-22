@@ -32,7 +32,7 @@ const routeContent: Record<string, RouteContent> = {
       },
       {
         heading: 'Tools for Operators',
-        body: 'Anansi CLI runs a nine-phase attack-surface reconnaissance pipeline from the terminal. Toha3ee is a network exploitation and MITM framework in Go covering ARP/DHCP/DNS/IPv6 poisoning, wireless and switch-layer attacks.',
+        body: 'Anansi CLI runs a nine-phase attack-surface reconnaissance pipeline from the terminal. Toha3ee is a local & network security assessment framework in Go covering discovery, enumeration, credential auditing, wireless and MITM capabilities.',
       },
       {
         heading: 'Professional Services',
@@ -538,9 +538,9 @@ const routeContent: Record<string, RouteContent> = {
   },
   '/toha3ee': {
     title: 'Toha3ee | QYVORA',
-    description: 'Network exploitation & MITM framework written in Go — poisoning, interception, wireless and switch-layer attacks from an interactive REPL.',
+    description: 'Local & network security assessment framework written in Go — host and service discovery, enumeration, credential auditing, wireless and MITM capabilities from an interactive REPL.',
     h1: 'Toha3ee',
-    lead: 'Network exploitation & MITM framework written in Go. ARP/DHCP/DNS/IPv6 poisoning, inline interception, wireless and switch-layer attacks from an interactive REPL.',
+    lead: 'Local & network security assessment framework written in Go. Ten module categories spanning recon, enumeration, OSINT, auth, web, switch, wireless, MITM and post-exploitation — driven from an interactive REPL.',
     sections: [
       {
         heading: 'Capabilities',

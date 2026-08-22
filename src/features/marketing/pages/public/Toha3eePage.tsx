@@ -20,16 +20,16 @@ const Toha3eePage = () => {
   const { user } = useAuth();
   return (
     <div className="bg-bg min-h-full">
-      <SEO title="Toha3ee - QYVORA" description="Toha3ee — network exploitation & MITM framework written in Go. ARP/DHCP/DNS/IPv6 poisoning, inline interception, wireless and switch-layer attacks from an interactive REPL." />
+      <SEO title="Toha3ee - QYVORA" description="Toha3ee — local & network security assessment framework in Go. Host and service discovery, enumeration, credential auditing, wireless, MITM and post-exploitation modules from an interactive REPL." />
       <PublicSnapLayout>
         <section className="relative w-full min-h-dvh lg:h-dvh snap-section bg-bg">
         <StudentHeroSection
           title="Toha3ee"
-          accentWord="MITM"
+          accentWord="Security"
           titleClassName={PUBLIC_HERO_TITLE_CLASS}
           showGlobe
           typewrite
-          description="Network exploitation & MITM framework in Go — 73 modules across ten categories, driven from an interactive REPL, a guided wizard, or one-shot scripts."
+          description="Local & network security assessment framework in Go — 73 modules across ten categories (recon, enumeration, OSINT, wireless, MITM and more), driven from an interactive REPL, a guided wizard, or one-shot scripts."
           stats={[
             { label: 'Categories', value: MODULES.length },
             { label: 'Modules', value: 73 },

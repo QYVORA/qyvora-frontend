@@ -120,7 +120,7 @@ export const SITE_CONFIG = {
         label: 'Platform',
         items: [
           { key: 'anansi', label: 'Anansi', path: '/anansi', desc: 'Attack Surface Intelligence' },
-          { key: 'toha3ee', label: 'Toha3ee', path: '/toha3ee', desc: 'Network exploitation & MITM framework' },
+          { key: 'toha3ee', label: 'Toha3ee', path: '/toha3ee', desc: 'Local & network security assessment framework' },
           { key: 'jabari', label: 'Jabari', path: '/jabari', desc: 'Android security assessment' },
           { key: 'services', label: 'Services', path: '/services', desc: 'Enterprise security services' },
         ],

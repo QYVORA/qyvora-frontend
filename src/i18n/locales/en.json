@@ -763,8 +763,8 @@
     },
     "toha3ee": {
       "title": "Toha3ee",
-      "titleAccent": "MITM",
-      "description": "Network exploitation & MITM framework in Go — poisoning, interception, wireless and switch-layer attacks from an interactive REPL.",
+      "titleAccent": "Security",
+      "description": "Local & network security assessment framework in Go — host and service discovery, enumeration, wireless and MITM capabilities from an interactive REPL.",
       "explore": "Explore Toha3ee"
     },
     "jabari": {
