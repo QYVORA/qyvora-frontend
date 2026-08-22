@@ -4,8 +4,9 @@ import { useTranslation } from 'react-i18next';
 import { useReducedMotion } from 'motion/react';
 import { IconArrowRight, IconTerminal, IconCode, IconNetwork } from '@/shared/components/icons';
 import DeviceShape from '@/features/student/components/tools/network/DeviceShape';
+import DeviceLeds from '@/features/student/components/tools/network/DeviceLeds';
 import { getDeviceDef } from '@/features/student/components/tools/network/devices';
-import type { DeviceType } from '@/features/student/components/tools/network/types';
+import type { DeviceType, TrafficLevel } from '@/features/student/components/tools/network/types';
 
 const SIMULATIONS = [
   { id: 'terminal', slug: '/simulations/terminal', icon: IconTerminal },
@@ -44,14 +45,14 @@ const EditorPreview: React.FC = () => (
   </div>
 );
 
-const VisualizerNode: React.FC<{ type: DeviceType; label: string; ip: string; className: string }> = ({ type, label, ip, className }) => {
+const VisualizerNode: React.FC<{ type: DeviceType; label: string; ip: string; className: string; traffic?: TrafficLevel }> = ({ type, label, ip, className, traffic = 'idle' }) => {
   const device = getDeviceDef(type);
 
   return (
     <div className={`absolute z-10 flex -translate-x-1/2 -translate-y-1/2 flex-col items-center ${className}`}>
       <div className="relative">
-        <DeviceShape shape={device.shape} color={device.color} icon={device.icon} selected={type === 'switch'} hovered={false} status="online" traffic={type === 'switch' ? 'medium' : 'idle'} />
-        <span className="absolute -right-1 -top-1 h-2 w-2 rounded-full border border-bg bg-[#22c55e]" />
+        <DeviceShape shape={device.shape} color={device.color} icon={device.icon} selected={false} hovered={false} status="online" traffic={traffic} />
+        <span className="absolute -right-1 -top-1"><DeviceLeds status="online" traffic={traffic} compact /></span>
       </div>
       <span className="mt-1 whitespace-nowrap text-[9px] font-bold text-text-primary">{label}</span>
       <span className="whitespace-nowrap text-[8px] font-mono text-text-muted">{ip}</span>
@@ -59,20 +60,52 @@ const VisualizerNode: React.FC<{ type: DeviceType; label: string; ip: string; cl
   );
 };
 
-const NetworkPreview: React.FC = () => (
-  <div className="relative flex flex-1 min-h-0 items-center justify-center overflow-hidden rounded-xl border border-border/30 bg-bg">
-    <div className="absolute inset-0 opacity-30 [background-image:radial-gradient(var(--color-border)_1px,transparent_1px)] [background-size:16px_16px]" />
-    <svg viewBox="0 0 600 240" className="absolute inset-0 h-full w-full" aria-hidden="true">
-      <path d="M110 120H270M330 120H490M300 82V168" stroke="#3b82f6" strokeOpacity=".7" strokeWidth="2" />
-      <path d="M110 120H270M330 120H490M300 82V168" stroke="#3b82f6" strokeOpacity=".18" strokeWidth="7" />
-    </svg>
-    <VisualizerNode type="firewall" label="edge-fw" ip="10.10.14.1" className="left-[18.3%] top-1/2" />
-    <VisualizerNode type="switch" label="core-switch" ip="10.10.14.2" className="left-1/2 top-1/2" />
-    <VisualizerNode type="web-server" label="web-01" ip="10.10.14.7" className="left-[81.7%] top-1/2" />
-    <VisualizerNode type="laptop" label="operator" ip="10.10.14.21" className="left-1/2 top-[24%]" />
-    <VisualizerNode type="database-server" label="db-01" ip="10.10.14.12" className="left-1/2 top-[76%]" />
-  </div>
+/* Mirrors NetworkEdge styling: slate base stroke, medium-tinted glow, dashed wireless. */
+type PreviewLink = { x1: string; y1: string; x2: string; y2: string; glow: string; dashed?: boolean };
+const PREVIEW_LINKS: PreviewLink[] = [
+  { x1: '18.3%', y1: '50%', x2: '50%', y2: '50%', glow: '#3b82f6' },
+  { x1: '50%', y1: '24%', x2: '50%', y2: '50%', glow: '#06b6d6', dashed: true },
+  { x1: '50%', y1: '50%', x2: '81.7%', y2: '50%', glow: '#3b82f6' },
+  { x1: '50%', y1: '50%', x2: '50%', y2: '76%', glow: '#3b82f6' },
+];
+
+const PacketFlow: React.FC<{ link: PreviewLink }> = ({ link }) => (
+  <line
+    x1={link.x1} y1={link.y1} x2={link.x2} y2={link.y2}
+    pathLength={100}
+    stroke="var(--color-accent)"
+    strokeWidth={2.5}
+    strokeLinecap="round"
+    strokeDasharray="2.5 97.5"
+  >
+    <animate attributeName="stroke-dashoffset" values="2.5;-97.5" dur="1.8s" begin={`${(PREVIEW_LINKS.indexOf(link) * -0.45).toFixed(2)}s`} repeatCount="indefinite" />
+  </line>
 );
+
+const NetworkPreview: React.FC = () => {
+  const shouldReduceMotion = useReducedMotion();
+
+  return (
+    <div className="relative flex flex-1 min-h-0 items-center justify-center overflow-hidden rounded-xl border border-border/30 bg-bg">
+      <div className="absolute inset-0 opacity-30 [background-image:radial-gradient(var(--color-border)_1px,transparent_1px)] [background-size:16px_16px]" />
+      {/* No viewBox — percentage coordinates keep links pinned to node anchors at every card size */}
+      <svg className="absolute inset-0 h-full w-full" aria-hidden="true">
+        {PREVIEW_LINKS.map((link) => (
+          <g key={`${link.x1}${link.y1}${link.x2}${link.y2}`}>
+            <line x1={link.x1} y1={link.y1} x2={link.x2} y2={link.y2} stroke={link.glow} strokeWidth={6} opacity={0.06} />
+            <line x1={link.x1} y1={link.y1} x2={link.x2} y2={link.y2} stroke="#334155" strokeWidth={1.5} opacity={0.6} strokeDasharray={link.dashed ? '6 4' : undefined} />
+          </g>
+        ))}
+        {!shouldReduceMotion && PREVIEW_LINKS.map((link) => <PacketFlow key={`p-${link.x1}${link.y1}${link.x2}${link.y2}`} link={link} />)}
+      </svg>
+      <VisualizerNode type="firewall" label="edge-fw" ip="10.10.14.1" className="left-[18.3%] top-1/2" />
+      <VisualizerNode type="switch" label="core-switch" ip="10.10.14.2" className="left-1/2 top-1/2" traffic="medium" />
+      <VisualizerNode type="web-server" label="web-01" ip="10.10.14.7" className="left-[81.7%] top-1/2" traffic="low" />
+      <VisualizerNode type="laptop" label="operator" ip="10.10.14.21" className="left-1/2 top-[24%]" />
+      <VisualizerNode type="database-server" label="db-01" ip="10.10.14.12" className="left-1/2 top-[76%]" />
+    </div>
+  );
+};
 
 const SimulationCard: React.FC<{ sim: (typeof SIMULATIONS)[number]; tabIndex?: -1 }> = ({ sim, tabIndex }) => {
   const { t } = useTranslation();
