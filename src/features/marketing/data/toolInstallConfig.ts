@@ -11,7 +11,7 @@
  * at runtime.
  */
 
-export type ToolInstallKey = 'anansi' | 'jabari' | 'toha3ee';
+export type ToolInstallKey = 'anansi' | 'jabari' | 'toha3ee' | 'aksum';
 export type ToolPlatform = 'linux' | 'darwin' | 'windows';
 export type ToolArch = 'amd64' | 'arm64';
 
@@ -77,5 +77,22 @@ export const TOOL_INSTALL_CONFIG: Record<ToolInstallKey, ToolInstallConfig> = {
       windows: 'irm https://raw.githubusercontent.com/QYVORA/qyvora-toha3ee/main/scripts/install.ps1 | iex',
     },
     note: 'Distributed as an archive. The installer unpacks the binary and wires up cleanup handlers.',
+  },
+  aksum: {
+    bin: 'aksum',
+    displayName: 'Aksum',
+    repo: 'QYVORA/qyvora-aksum',
+    releaseBase: 'https://github.com/QYVORA/qyvora-aksum/releases/latest/download',
+    assets: {
+      linux: { amd64: 'aksum-linux-amd64', arm64: 'aksum-linux-arm64' },
+      darwin: { amd64: 'aksum-darwin-amd64', arm64: 'aksum-darwin-arm64' },
+      windows: { amd64: 'aksum-windows-amd64.exe', arm64: 'aksum-windows-arm64.exe' },
+    },
+    commandTemplates: {
+      linux: 'curl -fsSL https://raw.githubusercontent.com/QYVORA/qyvora-aksum/main/install.sh | bash',
+      darwin: 'curl -fsSL https://raw.githubusercontent.com/QYVORA/qyvora-aksum/main/install.sh | bash',
+      windows: 'Invoke-WebRequest -Uri "{url}" -OutFile {bin}.exe',
+    },
+    note: 'Single static binary. The installer verifies SHA-256 against the published checksums.',
   },
 };
