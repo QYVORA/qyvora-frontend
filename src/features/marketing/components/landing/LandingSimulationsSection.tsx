@@ -49,7 +49,7 @@ const VisualizerNode: React.FC<{ type: DeviceType; label: string; ip: string; cl
   const device = getDeviceDef(type);
 
   return (
-    <div className={`absolute z-10 flex -translate-x-1/2 -translate-y-1/2 flex-col items-center ${className}`}>
+    <div className={`absolute z-10 flex -translate-x-1/2 -translate-y-1/2 flex-col items-center rounded-xl bg-bg px-1.5 py-1 ${className}`}>
       <div className="relative">
         <DeviceShape shape={device.shape} color={device.color} icon={device.icon} selected={false} hovered={false} status="online" traffic={traffic} />
         <span className="absolute -right-1 -top-1"><DeviceLeds status="online" traffic={traffic} compact /></span>
