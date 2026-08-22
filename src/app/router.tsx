@@ -43,6 +43,7 @@ const MarketPage        = lazy(() => import('../features/marketing/pages/public/
 const AnansiPage        = lazy(() => import('../features/marketing/pages/public/AnansiPage'));
 const Toha3eePage       = lazy(() => import('../features/marketing/pages/public/Toha3eePage'));
 const JabariPage        = lazy(() => import('../features/marketing/pages/public/JabariPage'));
+const AksumPage         = lazy(() => import('../features/marketing/pages/public/AksumPage'));
 const BlogsPage         = lazy(() => import('../features/marketing/pages/public/BlogsPage'));
 const TeamPage          = lazy(() => import('../features/marketing/pages/public/TeamPage'));
 const QuiteRootPage     = lazy(() => import('../features/marketing/pages/public/QuiteRootPage'));
@@ -218,6 +219,7 @@ export const AppRouter = () => {
           <Route path="/anansi" element={<Wrap scope="Anansi"><AnansiPage /></Wrap>} />
           <Route path="/toha3ee" element={<Wrap scope="Toha3ee"><Toha3eePage /></Wrap>} />
           <Route path="/jabari" element={<Wrap scope="Jabari"><JabariPage /></Wrap>} />
+          <Route path="/aksum" element={<Wrap scope="Aksum"><AksumPage /></Wrap>} />
           <Route path="/blogs" element={<Wrap scope="Blogs"><BlogsPage /></Wrap>} />
           <Route path="/team" element={<Wrap scope="Team"><TeamPage /></Wrap>} />
           <Route path="/quiteroot" element={<Wrap scope="QuiteRoot"><QuiteRootPage /></Wrap>} />
