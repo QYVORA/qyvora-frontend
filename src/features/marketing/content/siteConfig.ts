@@ -122,6 +122,7 @@ export const SITE_CONFIG = {
           { key: 'anansi', label: 'Anansi', path: '/anansi', desc: 'Attack Surface Intelligence' },
           { key: 'toha3ee', label: 'Toha3ee', path: '/toha3ee', desc: 'Local & network security assessment framework' },
           { key: 'jabari', label: 'Jabari', path: '/jabari', desc: 'Android security assessment' },
+          { key: 'aksum', label: 'Aksum', path: '/aksum', desc: 'Binary security assessment & reverse engineering' },
           { key: 'services', label: 'Services', path: '/services', desc: 'Enterprise security services' },
         ],
       },
@@ -134,6 +135,7 @@ export const SITE_CONFIG = {
       { key: 'simulations', label: 'Simulations', path: '/simulations', desc: 'Live tool demos' },
       { key: 'anansi', label: 'Anansi', path: '/anansi', desc: 'Attack Surface Intelligence' },
       { key: 'jabari', label: 'Jabari', path: '/jabari', desc: 'Android security assessment' },
+      { key: 'aksum', label: 'Aksum', path: '/aksum', desc: 'Binary security assessment & reverse engineering' },
       { key: 'leaderboard', label: 'Leaderboard', path: '/leaderboard', desc: 'Top operators ranking' },
     ],
     company: [

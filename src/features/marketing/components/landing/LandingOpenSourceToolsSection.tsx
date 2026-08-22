@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next';
 import anansiLogo from '@/assets/anansi/anansi-main-logo.webp';
 import toha3eeLogo from '@/assets/toha3ee/toha3ee-main-logo.webp';
 import jabariLogo from '@/assets/jabari/jabari-main-logo.webp';
+import aksumLogo from '@/assets/aksum/aksum-main-logo.webp';
 
 interface Tool {
   slug: string;
@@ -23,6 +24,7 @@ const LandingOpenSourceToolsSection: React.FC = () => {
     { slug: 'anansi', path: '/anansi', logo: anansiLogo, alt: t('landing.anansi.title') },
     { slug: 'toha3ee', path: '/toha3ee', logo: toha3eeLogo, alt: t('landing.toha3ee.title') },
     { slug: 'jabari', path: '/jabari', logo: jabariLogo, alt: t('landing.jabari.title') },
+    { slug: 'aksum', path: '/aksum', logo: aksumLogo, alt: t('landing.aksum.title') },
   ];
 
   const logoClass =
