@@ -13,6 +13,7 @@
     "anansi": "Anansi",
     "toha3ee": "Toha3ee",
     "jabari": "Jabari",
+    "aksum": "Aksum",
     "quiteroot": "QuiteRoot",
     "market": "Market",
     "blogs": "Blogs",
@@ -899,6 +900,12 @@
           "bio": "I don’t protect assets—I grow them wisely."
         }
       }
+    },
+    "aksum": {
+      "title": "Aksum",
+      "titleAccent": "BinarySec",
+      "description": "Binary security assessment & reverse-engineering platform in Go — identification, disassembly, function discovery, call graphs and evidence-backed findings.",
+      "explore": "Explore Aksum"
     }
   },
   "simulations": {

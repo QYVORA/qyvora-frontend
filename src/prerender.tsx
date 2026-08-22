@@ -568,6 +568,47 @@ const routeContent: Record<string, RouteContent> = {
     ],
     links: [{ label: 'Anansi CLI', href: '/anansi' }],
   },
+  '/aksum': {
+    title: 'Aksum | QYVORA',
+    description: 'Binary security assessment & reverse-engineering framework in Go — identification, disassembly, function discovery, dataflow-corroborated findings and honest confidence states.',
+    h1: 'Aksum',
+    lead: 'Binary security assessment from the terminal. A ten-stage pipeline from identification and disassembly to dataflow-corroborated findings — with confidence states that only escalate when independent evidence agrees.',
+    sections: [
+      {
+        heading: 'The ten stages',
+        bullets: [
+          'IDENTIFY — format, architecture, linking and hardening posture (PIE/NX/RELRO/canary)',
+          'ENUMERATE — sections, segments, symbols and imports grouped by security relevance',
+          'STRINGS — extraction with URL/path/command/crypto/credential classification',
+          'DISASSEMBLY — x86/x86-64 linear sweep with structured operands and CET-aware decoding',
+          'FUNCTIONS — multi-source discovery with provenance and per-function confidence',
+          'GRAPHS — basic-block CFGs, loop detection, direct-call graph, code/data xrefs',
+          'DATAFLOW — call-site argument tracking; PLT stubs resolved to import names via relocations',
+          'VALIDATION — findings escalate to VALIDATED only on independent corroboration',
+          'SURFACE — attack-surface aggregation of entry points, risky import categories and string classes',
+          'REPORT — terminal summary or schema_version-1.0 JSON anchored to the target SHA-256',
+        ],
+      },
+      {
+        heading: 'Honest limits',
+        body: 'A dangerous import alone is a CANDIDATE, never a verdict. Only statically resolved call sites justify VALIDATED. Unsupported architectures exit with a dedicated code instead of guessing, and this build ships no dynamic executor.',
+      },
+      {
+        heading: 'Install',
+        body: 'curl -fsSL https://raw.githubusercontent.com/QYVORA/qyvora-aksum/main/install.sh | bash',
+      },
+      {
+        heading: 'Usage',
+        bullets: [
+          'aksum binary /usr/bin/ls',
+          'aksum analyze /usr/bin/ls --report report.json',
+          'aksum surface /usr/bin/ls',
+          'aksum dynamic plan ./target --yes',
+        ],
+      },
+    ],
+    links: [{ label: 'Jabari', href: '/jabari' }],
+  },
   '/cp': {
     title: 'Cyber Coin (CP) | QYVORA',
     description: 'CP — the QYVORA Cyber Coin. The reward layer connecting learning, execution, and achievement across the QYVORA cybersecurity ecosystem.',

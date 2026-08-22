@@ -31,6 +31,7 @@ export default defineConfig(() => ({
         '/quiteroot',
         '/anansi',
         '/toha3ee',
+        '/aksum',
         '/cp',
         '/team',
         '/leaderboard',
