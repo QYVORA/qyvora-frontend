@@ -86,10 +86,11 @@ const ToolsCarousel: React.FC<ToolsCarouselProps> = ({
 
   return (
     <div
-      className={`relative w-full min-h-dvh lg:h-dvh flex items-center overflow-hidden ${className}`}
+      className={`relative w-full min-h-dvh flex flex-col ${className}`}
       {...containerProps}
     >
-      <div className="w-full px-3 md:px-4 lg:px-6 pt-24 md:pt-28 lg:pt-32 pb-6 md:pb-8 lg:pb-10">
+      <div className="w-full px-3 md:px-4 lg:px-6 pt-24 md:pt-28 lg:pt-32 pb-6 md:pb-8 lg:pb-10 my-auto">
+        <div className="overflow-x-clip">
         <AnimatePresence mode="wait" custom={direction}>
           <motion.div
             key={module.id}
@@ -109,7 +110,7 @@ const ToolsCarousel: React.FC<ToolsCarouselProps> = ({
                     <span className="text-[9px] font-black uppercase tracking-[0.3em] text-accent">
                       {kicker}
                     </span>
-                    <h2 className="text-2xl md:text-3xl font-black text-text-primary tracking-tight leading-none mt-1">
+                    <h2 className="text-lg md:text-xl lg:text-2xl font-black text-text-primary tracking-tight leading-none mt-1">
                       {title} <span className="text-accent">{accent}</span>
                     </h2>
                   </div>
@@ -150,6 +151,7 @@ const ToolsCarousel: React.FC<ToolsCarouselProps> = ({
             </div>
           </motion.div>
         </AnimatePresence>
+        </div>
 
         {/* Navigation — arrows + dots */}
         {total > 1 && (

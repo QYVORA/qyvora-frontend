@@ -2,7 +2,9 @@ import { useEffect, useRef, useState } from 'react';
 import { resolveImg } from '@/shared/utils/resolveImg';
 import api, { hasAuthSessionHint } from '@/core/services/api';
 
-export const AUTH_PATHS = ['/uploads/bootcamps/', '/uploads/cp-products/'];
+// Only bootcamp imagery is auth-gated now: CP product covers are public
+// marketing assets served without requireAuth, so they render as plain <img>.
+export const AUTH_PATHS = ['/uploads/bootcamps/'];
 
 const inFlight = new Map<string, Promise<Blob>>();
 

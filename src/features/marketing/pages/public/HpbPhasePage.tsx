@@ -37,7 +37,7 @@ const HpbPhasePage: React.FC = () => {
       />
       <PublicSnapLayout>
         {/* Phase hero */}
-        <section id={phase.id} className="relative w-full min-h-dvh lg:h-dvh snap-section bg-bg">
+        <section id={phase.id} className="relative w-full min-h-dvh snap-section bg-bg">
           <StudentHeroSection
             title={phase.title}
             accentWord={phase.codename}
@@ -73,7 +73,7 @@ const HpbPhasePage: React.FC = () => {
           <section
             key={room.id}
             id={room.id}
-            className={`relative w-full min-h-dvh lg:h-dvh snap-section flex items-center ${
+            className={`relative w-full min-h-dvh snap-section flex items-center ${
               index % 2 === 0 ? 'bg-bg-alt' : 'bg-bg'
             }`}
           >
@@ -82,7 +82,7 @@ const HpbPhasePage: React.FC = () => {
         ))}
 
         {/* CTA */}
-        <section id="cta" className="relative w-full min-h-dvh lg:h-dvh snap-section bg-bg-alt">
+        <section id="cta" className="relative w-full min-h-dvh snap-section bg-bg-alt">
           <LandingFinalCtaSection user={user} />
         </section>
 

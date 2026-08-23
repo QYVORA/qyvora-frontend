@@ -112,7 +112,7 @@ const TeamPage = () => {
     <div className="bg-bg min-h-full">
       <SEO title="Team - QYVORA" description="The team behind QYVORA — operators, engineers, and security researchers." />
       <PublicSnapLayout>
-        <section className="relative w-full min-h-dvh lg:h-dvh snap-section bg-bg">
+        <section className="relative w-full min-h-dvh snap-section bg-bg">
         <StudentHeroSection
           title="Our"
           accentWord="Team"
@@ -125,7 +125,7 @@ const TeamPage = () => {
         </section>
 
         {teamData.map((member) => <TeamMemberSection key={member.id} member={member} />)}
-        <section className="relative w-full min-h-dvh lg:h-dvh snap-section bg-bg-alt">
+        <section className="relative w-full min-h-dvh snap-section bg-bg-alt">
           <LandingFinalCtaSection user={user} />
         </section>
 

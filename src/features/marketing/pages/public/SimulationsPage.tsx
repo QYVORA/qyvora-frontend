@@ -212,7 +212,7 @@ const SimulationsPage = () => {
     <div className="bg-bg min-h-full">
       <SEO title={t('simulations.metaTitle')} description={t('simulations.metaDescription')} />
       <PublicSnapLayout>
-        <section className="relative w-full min-h-dvh lg:h-dvh snap-section bg-bg">
+        <section className="relative w-full min-h-dvh snap-section bg-bg">
         <StudentHeroSection
           title={t('simulations.heroTitle')}
           accentWord={t('simulations.heroAccent')}
@@ -236,7 +236,7 @@ const SimulationsPage = () => {
 
         {SIMULATIONS.map((sim) => renderSection(sim))}
 
-        <section className="relative w-full min-h-dvh lg:h-dvh snap-section bg-bg-alt">
+        <section className="relative w-full min-h-dvh snap-section bg-bg-alt">
           <LandingFinalCtaSection user={user} />
         </section>
 

@@ -79,7 +79,7 @@ const LeaderboardPage = () => {
         description={t('leaderboardPage.seo.description')}
       />
       <PublicSnapLayout>
-        <section className="relative w-full min-h-dvh lg:h-dvh snap-section bg-bg">
+        <section className="relative w-full min-h-dvh snap-section bg-bg">
         <StudentHeroSection
           title={t('leaderboardPage.hero.title')}
           accentWord={t('leaderboardPage.hero.titleHighlight')}
@@ -193,7 +193,7 @@ const LeaderboardPage = () => {
         {rest.length > 0 && (
           <LeaderboardRestSection rest={rest} user={user} total={total} />
         )}
-        <section className="relative w-full min-h-dvh lg:h-dvh snap-section bg-bg-alt">
+        <section className="relative w-full min-h-dvh snap-section bg-bg-alt">
           <LandingFinalCtaSection user={user} />
         </section>
 

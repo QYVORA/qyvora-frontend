@@ -10,6 +10,8 @@ import { useEffect, useState, Suspense, lazy } from 'react';
 import type { ReactNode } from 'react';
 import { Routes, Route, Navigate, useLocation, useParams } from 'react-router-dom';
 import { AnimatePresence, motion } from 'motion/react';
+import { useTranslation } from 'react-i18next';
+import { Bot, X } from 'lucide-react';
 import { useAuth } from '../core/contexts/AuthContext';
 import ErrorBoundary from '../shared/components/ErrorBoundary';
 import Dobia from '../shared/components/Dobia';
@@ -146,6 +148,7 @@ const LegacyCourseRedirect = () => {
 // ─── Router ───────────────────────────────────────────────────────────────────
 export const AppRouter = () => {
   const location = useLocation();
+  const { t } = useTranslation();
 
   const [dobiaExpr, setDobiaExpr] = useState<'greeting' | 'confused' | 'alert' | 'waving'>('waving');
   const [msgIdx, setMsgIdx] = useState(0);
@@ -166,11 +169,6 @@ export const AppRouter = () => {
     return () => clearInterval(interval);
   }, []);
 
-  const noDobiaRoutes = [
-    '/login', '/register', '/change-password',
-    '/dashboard',
-  ];
-
   const immersiveStudentPaths = [
     '/dashboard/labs/privesc',
     '/dashboard/labs/passwords',
@@ -186,12 +184,31 @@ export const AppRouter = () => {
     location.pathname.startsWith('/dashboard/bootcamps/') &&
     location.pathname.includes('/rooms/');
 
-  const hideDobia =
-    noDobiaRoutes.includes(location.pathname) ||
+  const isToolScreen = location.pathname.startsWith('/dashboard/tools/');
+  const isAdminArea =
     location.pathname === ADMIN_PATH ||
-    location.pathname.startsWith(`${ADMIN_PATH}/`) ||
+    location.pathname.startsWith(`${ADMIN_PATH}/`);
+  const isAuthRoute = ['/login', '/register', '/change-password'].includes(location.pathname);
+
+  // Dobia visibility policy:
+  // - landing ('/') → hidden until the user summons it
+  // - immersive student areas (labs, rooms, courses, networks, tools) → hidden, summonable
+  // - every other page → visible by default, dismissible
+  // - auth screens, admin area and full-screen tools → never shown, no toggle
+  const dobiaBlocked = isAuthRoute || isAdminArea || isToolScreen;
+  const dobiaHiddenByDefault =
+    location.pathname === '/' ||
+    location.pathname === '/dashboard' ||
     immersiveStudentPaths.some((p) => location.pathname.startsWith(p)) ||
     isBootcampRoom;
+
+  const [dobiaOverride, setDobiaOverride] = useState<boolean | null>(null);
+
+  useEffect(() => {
+    setDobiaOverride(null);
+  }, [location.pathname]);
+
+  const dobiaVisible = !dobiaBlocked && (dobiaOverride ?? !dobiaHiddenByDefault);
 
   return (
     <div className="min-h-screen flex flex-col relative">
@@ -297,7 +314,7 @@ export const AppRouter = () => {
       </Routes>
     </AnimatePresence>
     <MotionCommunityPopup />
-    {!hideDobia && (
+    {dobiaVisible && (
       <div className="fixed bottom-0 right-0 z-[9999] pointer-events-none flex flex-col items-end overflow-hidden">
 
         {/* 128px – mobile */}
@@ -378,6 +395,16 @@ export const AppRouter = () => {
         </div>
 
       </div>
+    )}
+    {!dobiaBlocked && (
+      <button
+        type="button"
+        onClick={() => setDobiaOverride(!dobiaVisible)}
+        aria-label={t(dobiaVisible ? 'aria.dobiaDismiss' : 'aria.dobiaSummon')}
+        className="fixed bottom-4 right-4 z-[9998] w-11 h-11 rounded-full border border-border/50 bg-bg-card text-text-secondary hover:text-accent hover:border-accent/40 active:scale-95 flex items-center justify-center transition-colors"
+      >
+        {dobiaVisible ? <X size={18} /> : <Bot size={20} />}
+      </button>
     )}
   </div>
   );

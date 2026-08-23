@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { Zap, ArrowLeft, Play } from 'lucide-react';
 import { IconArrowRight, IconTerminal, IconCode, IconNetwork } from '@/shared/components/icons';
 import SEO from '@/shared/components/SEO';
+import CodeBlock from '@/shared/components/CodeBlock';
 import PublicSnapLayout from '@/shared/components/PublicSnapLayout';
 import PublicSnapSection from '@/shared/components/PublicSnapSection';
 import StudentHeroSection, { PUBLIC_HERO_TITLE_CLASS } from '@/shared/components/StudentHeroSection';
@@ -107,7 +108,7 @@ const SimulationPage = () => {
       />
       <SimulationProvider>
         <PublicSnapLayout>
-          <section className="relative w-full min-h-dvh lg:h-dvh snap-section bg-bg">
+          <section className="relative w-full min-h-dvh snap-section bg-bg">
           <StudentHeroSection
             title={t(`simulations.${key}.title`)}
             accentWord={t(`simulations.${key}.titleAccent`)}
@@ -135,30 +136,43 @@ const SimulationPage = () => {
 
           {/* Demo launcher — the live tool opens in a modal */}
           <PublicSnapSection>
-            <div className="flex flex-col items-center text-center gap-6 lg:gap-8">
-              <div className="w-full max-w-3xl card-accent bg-bg-card px-6 py-10 md:py-14 flex flex-col items-center">
-                <span className="w-16 h-16 md:w-20 md:h-20 rounded-2xl bg-accent/10 border border-accent/20 flex items-center justify-center mb-5">
-                  <DemoIcon className="w-8 h-8 md:w-10 md:h-10 text-accent" />
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 lg:items-center">
+              {/* Left — launcher copy + CTA */}
+              <div className="flex flex-col gap-5">
+                <span className="w-12 h-12 md:w-14 md:h-14 rounded-2xl bg-accent/10 border border-accent/20 flex items-center justify-center">
+                  <DemoIcon className="w-6 h-6 md:w-7 md:h-7 text-accent" />
                 </span>
-                <span className="text-[9px] font-black uppercase tracking-[0.3em] text-accent">
-                  {t(`simulations.${key}.tag`)}
-                </span>
-                <h2 className="text-xl md:text-3xl lg:text-4xl font-black text-text-primary tracking-tighter leading-tight mt-2">
-                  {t(`simulations.${key}.demoTitle`)}
-                </h2>
-                <p className="text-xs md:text-sm text-text-secondary leading-relaxed mt-3 font-mono max-w-xl">
+                <div>
+                  <span className="text-[9px] font-black uppercase tracking-[0.3em] text-accent">
+                    {t(`simulations.${key}.tag`)}
+                  </span>
+                  <h2 className="text-2xl md:text-3xl lg:text-4xl font-black text-text-primary tracking-tighter leading-tight mt-2">
+                    {t(`simulations.${key}.demoTitle`)}
+                  </h2>
+                </div>
+                <p className="text-xs md:text-sm text-text-secondary leading-relaxed font-mono max-w-xl">
                   {t(`simulations.${key}.demoDescription`)}
                 </p>
-                <button
-                  onClick={() => setDemoOpen(true)}
-                  className="btn-primary inline-flex items-center justify-center gap-2 px-7 py-3 mt-7"
-                >
-                  <Play className="w-4 h-4" /> {t('simulations.runDemo')} <IconArrowRight size={14} />
-                </button>
-                <p className="text-[10px] font-mono text-text-muted mt-4">
-                  {t('simulations.statsNoAccount')} · live in your browser
-                </p>
+                <div className="flex flex-col sm:flex-row sm:items-center gap-4 mt-2">
+                  <button
+                    onClick={() => setDemoOpen(true)}
+                    className="btn-primary inline-flex items-center justify-center gap-2 px-7 py-3"
+                  >
+                    <Play className="w-4 h-4" /> {t('simulations.runDemo')} <IconArrowRight size={14} />
+                  </button>
+                  <span className="text-[10px] font-mono text-text-muted leading-snug max-w-[220px]">
+                    {t('simulations.statsNoAccount')} · live in your browser
+                  </span>
+                </div>
               </div>
+
+              {/* Right — live preview of the exercise you will run */}
+              <CodeBlock
+                code={DEMO_FILES[0].content}
+                lang="text"
+                filename={DEMO_FILES[0].name}
+                maxHeight="max-h-[50vh]"
+              />
             </div>
           </PublicSnapSection>
 
@@ -192,7 +206,7 @@ const SimulationPage = () => {
             </div>
           </PublicSnapSection>
 
-          <section className="relative w-full min-h-dvh lg:h-dvh snap-section bg-bg-alt">
+          <section className="relative w-full min-h-dvh snap-section bg-bg-alt">
             <LandingFinalCtaSection user={user} />
           </section>
 

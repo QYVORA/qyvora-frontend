@@ -56,7 +56,7 @@ const BlogsPage = () => {
     <div className="bg-bg min-h-full">
       <SEO title="Blogs - QYVORA" description="Security research, tutorials, and updates from the QYVORA team." />
       <PublicSnapLayout>
-        <section className="relative w-full min-h-dvh lg:h-dvh snap-section bg-bg">
+        <section className="relative w-full min-h-dvh snap-section bg-bg">
         <StudentHeroSection
           title="Intelligence"
           accentWord="Reports"
@@ -129,7 +129,7 @@ const BlogsPage = () => {
             )}
           </div>
         </PublicSnapSection>
-        <section className="relative w-full min-h-dvh lg:h-dvh snap-section bg-bg-alt">
+        <section className="relative w-full min-h-dvh snap-section bg-bg-alt">
           <LandingFinalCtaSection user={user} />
         </section>
 

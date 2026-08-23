@@ -27,7 +27,7 @@ const ServiceSection: React.FC<{ svc: ServiceConfig; index: number }> = ({ svc, 
         transition={{ duration: 0.5, delay: index * 0.1, ease: [0.16, 1, 0.3, 1] }}
         className="shrink-0 lg:w-[420px] xl:w-[480px] flex flex-col lg:justify-center"
       >
-        <span className={`flex items-center gap-2 px-3 py-1 rounded-full border text-[9px] font-black uppercase tracking-widest mb-6 ${
+        <span className={`flex items-center gap-2 px-3 py-1 rounded-lg border text-[9px] font-black uppercase tracking-widest mb-6 w-fit ${
           svc.featured ? 'bg-accent/10 border-accent/30 text-accent' : 'bg-bg-elevated border-border/30 text-text-muted'
         }`}>
           <Icon className="w-3 h-3" /> {svc.badge}
@@ -124,7 +124,7 @@ const ServicesPage = () => {
     <div className="bg-bg min-h-full">
       <SEO title="Services - QYVORA" description="Enterprise-grade penetration testing, security assessments, and offensive security training." />
       <PublicSnapLayout>
-        <section className="relative w-full min-h-dvh lg:h-dvh snap-section bg-bg overflow-hidden">
+        <section className="relative w-full min-h-dvh snap-section bg-bg overflow-hidden">
         <StudentHeroSection
           title="Security"
           accentWord="Services"
@@ -138,9 +138,11 @@ const ServicesPage = () => {
         {SERVICES.map((svc, idx) => (
           <ServiceSection key={svc.id} svc={svc} index={idx} />
         ))}
-        <LandingFinalCtaSection user={user} />
+        <section className="relative w-full min-h-dvh snap-section bg-bg-alt overflow-hidden">
+          <LandingFinalCtaSection user={user} />
+        </section>
 
-        <section className="relative w-full min-h-dvh lg:h-dvh snap-section bg-bg overflow-hidden">
+        <section className="relative w-full snap-section bg-bg overflow-hidden">
           <Footer />
         </section>
       </PublicSnapLayout>

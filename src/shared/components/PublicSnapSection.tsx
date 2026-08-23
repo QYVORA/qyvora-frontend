@@ -9,13 +9,16 @@ interface PublicSnapSectionProps {
 /**
  * Full-viewport snap section for public inner pages.
  *
- * On desktop (md+) sections fill at least one viewport (`min-h-dvh`) and snap
- * into view. On mobile sections have no minimum height so content can grow
- * naturally without clipping — vertical space is too precious to lock to a
- * single viewport.
- *
- * Content is vertically centered inside the snap frame. No nested scrolling —
- * the page-level snap container is the sole vertical scroll surface.
+ * Layout contract:
+ * - Desktop (md+): sections are AT LEAST one viewport tall (`min-h-dvh`) and
+ *   snap into view under the strict snap container. The section grows freely
+ *   when content exceeds the viewport — never `h-dvh`, so content can never
+ *   be clipped.
+ * - Vertical centering is done via `my-auto` on the inner wrapper: when the
+ *   content fits, it is centered in the remaining space; when it overflows,
+ *   auto margins collapse to zero and the content starts right below the
+ *   reserved navbar clearance instead of bleeding underneath the navbar.
+ * - Mobile: no minimum height — sections size to their content.
  */
 const PublicSnapSection: React.FC<PublicSnapSectionProps> = ({
   children,
@@ -25,9 +28,9 @@ const PublicSnapSection: React.FC<PublicSnapSectionProps> = ({
   return (
     <section
       id={id}
-      className={`relative w-full md:min-h-dvh lg:h-dvh snap-section flex flex-col justify-center odd:bg-bg even:bg-bg-alt px-3 md:px-4 lg:px-6 pt-24 pb-8 md:pb-10 lg:pb-12 overflow-hidden ${className ?? ''}`}
+      className={`relative w-full md:min-h-dvh snap-section flex flex-col odd:bg-bg even:bg-bg-alt px-3 md:px-4 lg:px-6 pt-24 pb-8 md:pt-28 md:pb-10 lg:pt-32 lg:pb-12 scroll-mt-24 md:scroll-mt-28 ${className ?? ''}`}
     >
-      {children}
+      <div className="w-full my-auto">{children}</div>
     </section>
   );
 };

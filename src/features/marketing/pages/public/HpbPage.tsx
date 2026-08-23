@@ -25,7 +25,7 @@ const HpbPage = () => {
       />
       <PublicSnapLayout>
         {/* Hero */}
-        <section id="hero" className="relative w-full min-h-dvh lg:h-dvh snap-section bg-bg">
+        <section id="hero" className="relative w-full min-h-dvh snap-section bg-bg">
           <StudentHeroSection
             title="Hacker Protocol"
             accentWord="Bootcamp"
@@ -54,7 +54,7 @@ const HpbPage = () => {
             <section
               key={phase.id}
               id={phase.id}
-              className={`relative w-full min-h-dvh lg:h-dvh snap-section flex items-center ${
+              className={`relative w-full min-h-dvh snap-section flex items-center ${
                 idx % 2 === 0 ? 'bg-bg-alt' : 'bg-bg'
               }`}
             >
@@ -106,7 +106,7 @@ const HpbPage = () => {
         })}
 
         {/* CTA */}
-        <section id="cta" className="relative w-full min-h-dvh lg:h-dvh snap-section bg-bg-alt">
+        <section id="cta" className="relative w-full min-h-dvh snap-section bg-bg-alt">
           <LandingFinalCtaSection user={user} />
         </section>
 

@@ -86,13 +86,14 @@ const ToolSourceSection: React.FC<ToolSourceSectionProps> = ({
   return (
     <div
       id={id}
-      className={`relative w-full min-h-dvh lg:h-dvh snap-section flex items-center overflow-hidden odd:bg-bg even:bg-bg-alt`}
+      className={`relative w-full min-h-dvh snap-section flex flex-col odd:bg-bg even:bg-bg-alt`}
       {...containerProps}
     >
-      <div className="w-full px-3 md:px-4 lg:px-6 pt-24 md:pt-28 lg:pt-32 pb-6 md:pb-8 lg:pb-10">
+      <div className="w-full px-3 md:px-4 lg:px-6 pt-24 md:pt-28 lg:pt-32 pb-6 md:pb-8 lg:pb-10 my-auto">
         <div className="flex flex-col gap-6 lg:gap-8">
           <ToolSectionHeader kicker={kicker} title={title} accent={accent} description={description} />
 
+          <div className="overflow-x-clip">
           <AnimatePresence mode="wait" custom={direction}>
             <motion.div
               key={example.id}
@@ -115,7 +116,7 @@ const ToolSourceSection: React.FC<ToolSourceSectionProps> = ({
                       <p className="text-[9px] font-black uppercase tracking-widest text-accent">
                         Go source example
                       </p>
-                      <h3 className="mt-0.5 text-sm font-black text-text-primary">{example.label}</h3>
+                      <h4 className="mt-0.5 text-sm font-black text-text-primary">{example.label}</h4>
                       <p className="mt-1 text-xs leading-relaxed text-text-muted line-clamp-3">{example.description}</p>
                     </div>
                   </div>
@@ -132,8 +133,9 @@ const ToolSourceSection: React.FC<ToolSourceSectionProps> = ({
                   </div>
                 </div>
               </div>
-            </motion.div>
+          </motion.div>
           </AnimatePresence>
+          </div>
 
           {/* Navigation — arrows + dots */}
           {total > 1 && (

@@ -321,7 +321,7 @@ Inline error display within pages/cards.
 ```
 
 **Visual traits**:
-- Container: `min-h-dvh md:h-dvh`, `bg-bg`, 2-col grid on `lg`
+- Container: `min-h-dvh`, `bg-bg`, 2-col grid on `lg` (growable, never fixed `md:h-dvh`)
 - Globe: `hidden md:flex`, `HackerGlobe` (Three.js)
 - Left padding: `px-3 md:px-4 lg:px-6 pt-20 sm:pt-20 lg:pt-24 pb-14 sm:pb-16 lg:pb-16`
 - Inner text: `space-y-5 sm:space-y-6`
@@ -527,14 +527,15 @@ Prefer `ScrollReveal` over this pattern.
 ### 16a. Snap Section
 
 ```tsx
-<section className="relative w-full min-h-dvh lg:h-dvh snap-section bg-bg">
+<section className="relative w-full min-h-dvh snap-section bg-bg">
   <div className="w-full px-3 md:px-4 lg:px-6 pt-24 md:pt-28 lg:pt-32 pb-6 md:pb-8 lg:pb-10">
     {content}
   </div>
 </section>
 ```
 
-Alternate `bg-bg` / `bg-bg-alt`. Footer is last snap section (no `min-h-dvh`).
+Alternate `bg-bg` / `bg-bg-alt`. Footer is last snap section (no `min-h-dvh`; snaps to `end` via
+`.snap-section:last-child`). Never a fixed `h-dvh`/`lg:h-dvh` on content sections — they must grow.
 
 ### 16b. PublicSnapSection
 
@@ -544,7 +545,7 @@ Alternate `bg-bg` / `bg-bg-alt`. Footer is last snap section (no `min-h-dvh`).
 </PublicSnapSection>
 ```
 
-Auto-applies: `relative w-full min-h-dvh snap-section flex items-center odd:bg-bg even:bg-bg-alt scroll-mt-24 md:scroll-mt-28`. Inner wrapper: `w-full px-3 md:px-4 lg:px-6 pt-24 md:pt-28 lg:pt-32 pb-6 md:pb-8 lg:pb-10`.
+Auto-applies: `relative w-full min-h-dvh snap-section flex flex-col odd:bg-bg even:bg-bg-alt px-3 md:px-4 lg:px-6 pt-24 pb-8 md:pt-28 md:pb-10 lg:pt-32 lg:pb-12 scroll-mt-24 md:scroll-mt-28`. Inner wrapper: `w-full my-auto`.
 
 ### 16c. Sidebar Layout (Team, QuiteRoot, Anansi, etc.)
 
@@ -579,10 +580,10 @@ Major layout containers must have stable, intentional dimensions. Dynamic conten
 ### Carousel Viewport Stability
 
 Full-section carousels (Courses, Labs) use:
-- `min-h-dvh lg:h-dvh` on the section (stable viewport)
-- `overflow-hidden` on the carousel container
-- `min-h-0 overflow-hidden` on content columns
-- `line-clamp-*` on variable-length text
+- `relative w-full min-h-dvh flex flex-col` on the section (growable, never fixed `lg:h-dvh`)
+- `my-auto` on the padded wrapper (short slides center, tall slides grow the section)
+- `overflow-x-clip` around the AnimatePresence slide region
+- `line-clamp-*` on variable-length text where slides must not change section height
 - Dedicated visual region with stable aspect ratio
 
 ### Content Slot Stability
@@ -595,8 +596,9 @@ Where content varies between slides:
 
 ### Snap Section Stability
 
-Snap sections must not grow beyond the viewport. Use `min-h-dvh lg:h-dvh` (note `lg:`, not `md:`).
-Content must adapt inside the section, not expand it.
+Snap sections use `min-h-dvh` and grow when content exceeds the viewport — content must never clip
+under the fixed navbar or get cut at the section bottom. Vertical centering comes from an inner
+`my-auto` wrapper, which collapses to top-alignment on overflow.
 
 ---
 

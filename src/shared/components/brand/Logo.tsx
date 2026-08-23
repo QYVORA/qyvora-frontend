@@ -10,6 +10,8 @@ interface LogoProps {
   size?: LogoSize;
   variant?: LogoVariant;
   color?: string;
+  /** Opt-in light sweep inside the mark's strokes (mark variant only). */
+  animated?: boolean;
 }
 
 const sizes: Record<LogoSize, string> = {
@@ -30,11 +32,11 @@ const markSizes: Record<LogoSize, string> = {
   '3xl': 'w-[140px]',
 };
 
-const Logo: React.FC<LogoProps> = ({ className = '', size = 'md', variant = 'full', color = '#06B66F' }) => {
+const Logo: React.FC<LogoProps> = ({ className = '', size = 'md', variant = 'full', color = '#06B66F', animated = false }) => {
   if (variant === 'mark') {
     return (
       <div className={`logo-wrap flex-none ${markSizes[size]} max-w-full ${className}`}>
-        <QyvoraMark className="w-full h-auto block" color={color} />
+        <QyvoraMark className="w-full h-auto block" color={color} animated={animated} />
       </div>
     );
   }

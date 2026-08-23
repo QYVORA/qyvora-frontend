@@ -61,6 +61,39 @@ const StudentTopbar = () => {
     ?? (roomMatchLegacy?.params?.moduleId ? `phase${roomMatchLegacy.params.moduleId}` : '');
   const roomRoomId = activeRoomMatch?.params?.roomId ?? '';
 
+  // Walkthrough pages (rooms, courses, labs): auto-hide the topbar while
+  // scrolling down past the first viewport, reveal again on scroll up.
+  // Layout reservation stays static — the bar slides over content.
+  const isWalkthroughPage = Boolean(activeRoomMatch) || isCoursePage || isLabPage;
+  const [topbarHidden, setTopbarHidden] = useState(false);
+  const lastScrollYRef = useRef(0);
+
+  useEffect(() => {
+    setTopbarHidden(false);
+    lastScrollYRef.current = window.scrollY;
+    if (!isWalkthroughPage) return;
+    let ticking = false;
+    const onScroll = () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => {
+        const y = window.scrollY;
+        const prev = lastScrollYRef.current;
+        if (y <= 80) {
+          setTopbarHidden(false);
+        } else if (y > prev + 8) {
+          setTopbarHidden(true);
+        } else if (y < prev - 8) {
+          setTopbarHidden(false);
+        }
+        lastScrollYRef.current = y;
+        ticking = false;
+      });
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, [isWalkthroughPage, location.pathname]);
+
   const [roomBreadcrumb, setRoomBreadcrumb] = useState<{ phaseTitle?: string; roomTitle?: string } | null>(null);
 
   useEffect(() => {
@@ -161,7 +194,9 @@ const StudentTopbar = () => {
         {t('aria.skipToContent')}
       </a>
 
-      <header className="fixed top-0 left-0 w-full z-40 bg-transparent pt-[env(safe-area-inset-top)]">
+      <header
+        className={`fixed top-0 left-0 w-full z-40 bg-transparent pt-[env(safe-area-inset-top)] transition-transform duration-300 ${topbarHidden ? '-translate-y-full' : 'translate-y-0'}`}
+      >
         {isRoomPage ? (
           isCoursePage ? (
             /* ══ COURSE MODE ══ */

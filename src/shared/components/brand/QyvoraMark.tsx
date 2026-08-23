@@ -2,12 +2,19 @@ import React from "react";
 
 export interface QyvoraMarkProps extends React.SVGProps<SVGSVGElement> {
   color?: string;
+  /** Opt-in light sweep that travels inside the mark's strokes. */
+  animated?: boolean;
 }
 
 export const QyvoraMark: React.FC<QyvoraMarkProps> = ({
   color = "#06B66F",
+  animated = false,
   ...props
 }) => {
+  // useId contains colons which are invalid in SVG url(#id) references.
+  const uid = React.useId().replace(/[^a-zA-Z0-9]/g, "");
+  const gradientId = `qyvora-sheen-${uid}`;
+
   return (
     <svg
       viewBox="0 0 699 510"
@@ -16,9 +23,30 @@ export const QyvoraMark: React.FC<QyvoraMarkProps> = ({
       aria-label="QYVORA"
       {...props}
     >
+      {animated && (
+        <defs>
+          {/* Diagonal highlight band sweeping across the fill — reads as a
+              glint travelling inside the green strokes. */}
+          <linearGradient id={gradientId} x1="0%" y1="0%" x2="70%" y2="100%">
+            <stop offset="0" stopColor={color} />
+            <stop offset="0.42" stopColor={color} />
+            <stop offset="0.5" stopColor="#FFFFFF" stopOpacity="0.55" />
+            <stop offset="0.58" stopColor={color} />
+            <stop offset="1" stopColor={color} />
+            <animateTransform
+              attributeName="gradientTransform"
+              type="translate"
+              from="-1.2 0"
+              to="1.2 0"
+              dur="3.2s"
+              repeatCount="indefinite"
+            />
+          </linearGradient>
+        </defs>
+      )}
       <g
         transform="translate(0,510) scale(0.1,-0.1)"
-        fill={color}
+        fill={animated ? `url(#${gradientId})` : color}
         stroke="none"
       >
         <path d="M2380 4529 c-130 -14 -256 -37 -355 -66 -546 -158 -958 -539 -1125 -1042 -77 -231 -75 -205 -75 -966 0 -615 2 -689 18 -773 56 -288 181 -515 407 -743 249 -250 548 -410 912 -486 l133 -28 1315 -3 1315 -3 -30 30 c-16 16 -84 78 -150 137 -200 181 -773 703 -868 792 l-88 82 -560 0 c-471 0 -572 3 -636 16 -266 55 -457 221 -540 469 l-27 80 -4 435 c-2 280 0 456 7 496 27 152 80 252 192 365 61 61 95 86 170 123 160 79 138 77 1003 74 849 -4 793 1 941 -76 102 -53 230 -183 278 -282 66 -136 69 -166 73 -625 1 -225 3 -413 3 -416 1 -6 958 -692 1023 -734 l28 -17 21 48 c35 81 77 209 96 296 16 76 18 141 18 733 0 588 -2 659 -18 740 -75 372 -238 681 -484 916 -265 254 -587 395 -978 428 -146 13 -1891 12 -2015 0z" />
