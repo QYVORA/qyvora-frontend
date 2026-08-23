@@ -423,50 +423,13 @@
   100% { background-position: 142% 0; opacity: 0; }
 }
 
-/* ─────────────────────────────────────────────────────────────────────────────
-   HERO ORNAMENT ANIMATIONS (final CTA logo composition)
-   spin-slower      — slow orbit ring rotation
-   dotted-map-drift — slow pan of the dotted world-map backdrop so it feels
-                      like it merges with the hero grid behind the mark
-───────────────────────────────────────────────────────────────────────────── */
-@keyframes spin-slower {
-  from { transform: translate(-50%, -50%) rotate(0deg); }
-  to   { transform: translate(-50%, -50%) rotate(360deg); }
-}
-
-@keyframes dotted-map-drift {
-  from { background-position: 0% 40%; }
-  to   { background-position: 100% 60%; }
-}
-
-.spin-slower {
-  animation: spin-slower 32s linear infinite;
-}
-
-.spin-slower-reverse {
-  animation: spin-slower 46s linear infinite reverse;
-}
-
-.dotted-map-drift {
-  animation: dotted-map-drift 26s ease-in-out infinite alternate;
-}
-
 @media (prefers-reduced-motion: reduce) {
   .border-beam::before,
   .nav-border-beam::after,
   .animate-athena-box-1,
   .animate-athena-box-2,
-  .animate-athena-box-3,
-  .spin-slower,
-  .spin-slower-reverse,
-  .dotted-map-drift {
+  .animate-athena-box-3 {
     animation: none;
-  }
-
-  /* Keep statically centred without the translate baked into the keyframes. */
-  .spin-slower,
-  .spin-slower-reverse {
-    transform: translate(-50%, -50%);
   }
 }
 
