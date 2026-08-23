@@ -28,7 +28,7 @@ const ToolDocumentationSection = ({
 
   return (
   <PublicSnapSection id={id}>
-    <article className="relative grid w-full grid-cols-1 gap-6 lg:grid-cols-2 lg:gap-10 lg:gap-x-14">
+    <article className="relative grid w-full grid-cols-1 gap-6 lg:grid-cols-2 lg:gap-10 lg:gap-x-14 lg:items-center">
       <div className={`flex flex-col ${reverseDesktop ? 'lg:order-2' : 'lg:order-1'}`}>
         <div className="mb-3 flex items-center gap-3">
           <span className="flex h-9 w-9 items-center justify-center rounded-lg border border-accent/30 bg-accent/10 text-[9px] font-black tracking-widest text-accent">{index}</span>
@@ -37,10 +37,10 @@ const ToolDocumentationSection = ({
         <div className="flex items-start gap-3">
           <Icon className="mt-1 h-5 w-5 shrink-0 text-accent" />
           <div>
-            <h2 className="text-3xl md:text-5xl lg:text-6xl font-black tracking-tight leading-[.95] text-text-primary">
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-black tracking-tight leading-[1.02] text-text-primary">
               {title} <span className="text-accent">{accent}</span>
             </h2>
-            <p className="mt-4 text-sm leading-relaxed text-text-secondary sm:text-base lg:mt-5 lg:text-lg">{description}</p>
+            <p className="mt-4 text-sm leading-relaxed text-text-secondary sm:text-base lg:mt-5">{description}</p>
           </div>
         </div>
         <div className="mt-4 border-l-2 border-accent/50 pl-3 lg:mt-6">
@@ -49,7 +49,7 @@ const ToolDocumentationSection = ({
         </div>
       </div>
 
-      <div className={`grid grid-cols-1 gap-3 sm:grid-cols-2 ${splitDesktop ? 'lg:grid-cols-2' : 'lg:grid-cols-1'} ${reverseDesktop ? 'lg:order-1' : 'lg:order-2'} lg:content-center`}>
+      <div className={`grid grid-cols-1 gap-3 sm:grid-cols-2 ${splitDesktop ? 'lg:grid-cols-2' : 'lg:grid-cols-1'} ${reverseDesktop ? 'lg:order-1' : 'lg:order-2'}`}>
         {bullets.length > 0 && (
           <div className={`rounded-2xl border border-border/30 bg-bg-card p-4 sm:p-5 ${splitDesktop ? 'lg:translate-y-6' : ''}`}>
             <p className="mb-2 text-[9px] font-black uppercase tracking-widest text-text-muted">What it does</p>

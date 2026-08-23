@@ -158,21 +158,28 @@ Content fills the viewport with consistent padding: `px-3 md:px-4 lg:px-6`.
 
 ### Snap Scrolling
 
-Every snap section: `relative w-full min-h-dvh lg:h-dvh snap-section` - **note `lg:h-dvh`, NOT `md:h-dvh`**.
-Alternate `bg-bg`/`bg-bg-alt`. Footer is last snap section (no `min-h-dvh`).
+Every snap section: `relative w-full min-h-dvh snap-section` - **never a fixed `h-dvh`/`lg:h-dvh` on
+content sections**; sections must grow when content exceeds the viewport so nothing clips under the
+navbar. Alternate `bg-bg`/`bg-bg-alt`. Footer is last snap section (no `min-h-dvh`; it snaps to `end`
+via `.snap-section:last-child { scroll-snap-align: end; }`).
+Snap container: `.snap-container { scroll-snap-type: y mandatory }` on md+ — one scroll gesture,
+one section.
 Mobile: snap is off, `section[id]` has `scroll-margin-top: 80px`.
 
 ### PublicSnapSection
 
 ```tsx
-<section className="relative w-full min-h-dvh snap-section flex items-center odd:bg-bg even:bg-bg-alt scroll-mt-24 md:scroll-mt-28">
-  <div className="w-full px-3 md:px-4 lg:px-6 pt-24 md:pt-28 lg:pt-32 pb-6 md:pb-8 lg:pb-10">
+<section className="relative w-full min-h-dvh snap-section flex flex-col odd:bg-bg even:bg-bg-alt px-3 md:px-4 lg:px-6 pt-24 pb-8 md:pt-28 md:pb-10 lg:pt-32 lg:pb-12 scroll-mt-24 md:scroll-mt-28">
+  <div className="w-full my-auto">
     {children}
   </div>
 </section>
 ```
 
-Sections grow if content exceeds viewport - **never `h-dvh`, always `min-h-dvh`**.
+Sections grow if content exceeds viewport - **never `h-dvh`, always `min-h-dvh`**. The inner
+`my-auto` wrapper vertically centers short content and collapses to top-alignment when content
+overflows, so overflow can never bleed under the fixed navbar (that was the "eyebrow enters navbar /
+snipped content" bug).
 
 ---
 
@@ -304,8 +311,11 @@ Dynamic content adapts within the established layout rather than redefining the 
 Carousels and full-section carousels must maintain a stable viewport while slides change.
 Different slide content lengths must not cause the page or surrounding sections to jump.
 
-- Full-section carousels: use `min-h-dvh lg:h-dvh` on the section, `overflow-hidden` on the container
-- Content columns: `min-h-0 overflow-hidden` to prevent content from growing the section
+- Full-section carousels: `relative w-full min-h-dvh flex flex-col` on the section (growable, never a
+  fixed `lg:h-dvh`), `overflow-x-clip` around the AnimatePresence slide region, and a `my-auto` padded
+  wrapper so short slides center while tall slides push the section taller instead of clipping
+- Content columns: avoid fixed heights; constrain variable text with `line-clamp-*` where slides must
+  not change section height
 - Variable-length text: `line-clamp-*` to constrain description growth
 - Course/lab visuals: dedicated visual region with stable aspect ratio (`aspect-square` or `aspect-[4/3]`)
 

@@ -74,21 +74,28 @@ export function WalkthroughStep({
           </div>
         )}
 
-        {/* Objectives */}
+        {/* Objectives — numbered vertical stepper */}
         {objectives && objectives.length > 0 && (
-          <div className="rounded-xl border border-border/20 bg-bg-elevated px-5 py-4">
-            <div className="flex items-center gap-2 mb-3">
+          <div>
+            <div className="flex items-center gap-2 mb-5">
               <ClipboardList className="w-4 h-4 text-accent" />
               <p className="text-[9px] font-black uppercase tracking-widest text-accent">Objectives</p>
             </div>
-            <ul className="space-y-2">
+            <ol className="space-y-5">
               {objectives.map((obj, i) => (
-                <li key={i} className="flex items-start gap-2 text-sm font-mono text-text-secondary">
-                  <span className="text-accent mt-0.5">{i + 1}.</span>
-                  <span>{obj}</span>
+                <li key={i} className="flex items-start gap-4">
+                  <div className="relative flex flex-col items-center self-stretch shrink-0">
+                    <span className="relative z-10 w-7 h-7 rounded-lg border border-accent/40 bg-bg flex items-center justify-center font-mono text-[10px] font-black text-accent">
+                      {String(i + 1).padStart(2, '0')}
+                    </span>
+                    {i < objectives.length - 1 && (
+                      <span aria-hidden="true" className="absolute top-7 -bottom-5 left-1/2 -translate-x-1/2 w-px bg-border/40" />
+                    )}
+                  </div>
+                  <p className="text-sm md:text-base font-mono text-text-secondary leading-relaxed pt-1 min-w-0">{obj}</p>
                 </li>
               ))}
-            </ul>
+            </ol>
           </div>
         )}
 
@@ -97,18 +104,23 @@ export function WalkthroughStep({
           <CodeBlockRenderer text={narrative} />
         </div>
 
-        {/* Evidence */}
+        {/* Evidence — terminal-style log panel */}
         {evidence && evidence.length > 0 && (
-          <div className="rounded-xl border border-border/20 bg-bg-elevated px-5 py-4">
-            <div className="flex items-center gap-2 mb-3">
-              <Search className="w-4 h-4 text-accent" />
-              <p className="text-[9px] font-black uppercase tracking-widest text-accent">Evidence</p>
+          <div className="wc-terminal rounded-xl border border-border/30 bg-bg overflow-hidden">
+            <div className="flex items-center justify-between px-4 py-2 border-b border-border/20 bg-bg-elevated">
+              <div className="flex items-center gap-2">
+                <Search className="w-3 h-3 text-accent" />
+                <p className="text-[9px] font-black uppercase tracking-widest text-accent">Evidence</p>
+              </div>
+              <span className="font-mono text-[9px] uppercase tracking-widest text-text-muted">
+                {evidence.length} {evidence.length === 1 ? 'entry' : 'entries'}
+              </span>
             </div>
-            <ul className="space-y-2">
+            <ul className="p-4 space-y-1.5">
               {evidence.map((item, i) => (
-                <li key={i} className="flex items-start gap-2 text-sm font-mono text-text-secondary">
-                  <span className="text-accent mt-0.5">{'>'}</span>
-                  <span className="whitespace-pre-wrap">{item}</span>
+                <li key={i} className="flex items-start gap-2 font-mono text-xs md:text-sm text-text-secondary leading-relaxed">
+                  <span className="text-accent shrink-0 select-none">{'>'}</span>
+                  <span className="whitespace-pre-wrap break-words min-w-0">{item}</span>
                 </li>
               ))}
             </ul>

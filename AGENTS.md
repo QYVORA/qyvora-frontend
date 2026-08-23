@@ -35,9 +35,12 @@ h2 compact bento sections: **title only, no description**.
 
 - **No `max-w-*` on page-level containers**. Content fills viewport: `px-3 md:px-4 lg:px-6`
 - **Navbar clearance**: snap sections `pt-24 md:pt-28 lg:pt-32`; topbar layouts `pt-20 md:pt-24`; sidebar sections `py-12 sm:py-10 md:py-16 lg:py-20`
-- **Snap sections**: `relative w-full min-h-dvh lg:h-dvh snap-section` — **`lg:h-dvh`, NOT `md:h-dvh`**
-- **Content grows**: never `h-dvh` on content sections, always `min-h-dvh`
+- **Snap sections**: `relative w-full min-h-dvh snap-section` — never a fixed `h-dvh`/`lg:h-dvh` on content sections; sections grow when content exceeds the viewport so nothing clips under the navbar
+- **Content grows**: never `h-dvh` on content sections, always `min-h-dvh`. Center short content with an inner `my-auto` wrapper (collapses to top-align on overflow)
+- **No strip-like sections**: every snap section is a filled composition — header paired with substantive content (split layout, grid, or panel stack). Never ship a lone small card/banner centered in an otherwise empty viewport; if a section would be sparse, merge its content into an adjacent section or pair it with a complementary card
+- **Snap sections must fit the viewport**: content should not exceed one viewport at common laptop sizes (~1366×768). If it does, SPLIT into additional snap sections (see Layout Stability) — an oversized snap area breaks strict `y mandatory` scrolling
 - **Width constraints**: use `wc-*` classes (`wc-prose`, `wc-code`, `wc-terminal`, `wc-diagram`, `wc-table`, `wc-media`, `wc-interactive`), never ad-hoc `max-w-*`
+- **Kickers/eyebrows**: tiny uppercase accent text (`p`/`span`, `text-[10px] tracking-[0.3em]`) — never small headings (`h3`/`h4`)
 
 ## Component Rules
 
@@ -100,9 +103,10 @@ h2 compact bento sections: **title only, no description**.
 
 **Rule: Major layout containers must have stable, intentional dimensions.** Changes in child content must not cause unexpected resizing or movement of surrounding content. Dynamic content adapts within the established layout rather than redefining the layout geometry.
 
-- **Carousels**: must maintain a stable viewport while slides change. Different slide content lengths must not cause the page or surrounding sections to jump. Use `min-h-dvh lg:h-dvh` on carousel sections.
-- **Full-section carousels** (Courses, Labs): use `overflow-hidden` on the carousel container, `min-h-0 overflow-hidden` on content columns, and `line-clamp-*` on variable-length text to prevent content from growing the section.
-- **Snap sections**: content must not grow beyond the section viewport. Use `min-h-dvh lg:h-dvh` (note `lg:`, not `md:`).
+- **Carousels**: must maintain a stable viewport while slides change. Different slide content lengths must not cause the page or surrounding sections to jump. Use `relative w-full min-h-dvh flex flex-col` on carousel sections.
+- **Full-section carousels** (Courses, Labs): `my-auto` on the padded wrapper, `overflow-x-clip` around the AnimatePresence slide region, and `line-clamp-*` on variable-length text where slides must not change section height.
+- **Snap sections**: use `min-h-dvh` and grow when content exceeds the viewport — content must never clip under the fixed navbar or get cut at the section bottom (that was the "eyebrow enters navbar / snipped content" bug).
+- **Snap sections under `y mandatory` must not exceed ~one viewport** (at 1366×768): a snap area taller than the screen makes one wheel tick skip past its end, so users land mid-section and snapping fights them. When a composition grows past that (e.g. install pages stacking header + banner + two option cards ≈ 1000px), split it into multiple leaner snap sections instead of letting it grow. Precedent: tool install sections are split into "Install" (header + auto-install banner + installer card) and "Build from source" (full-width build card).
 - **Course/lab visuals**: treat SVG/course icons as first-class section visuals, not card content. They must have their own dedicated visual region with sufficient scale, preserved aspect ratio, and stable responsive geometry.
 
 ## Admin Dashboard Rules

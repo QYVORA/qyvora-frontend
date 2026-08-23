@@ -1,4 +1,4 @@
-import { Download, GitBranch, ShieldAlert, Terminal } from 'lucide-react';
+import { Download, GitBranch, ShieldAlert, ShieldCheck, Terminal } from 'lucide-react';
 import { IconArrowRight } from '@/shared/components/icons';
 import SEO from '@/shared/components/SEO';
 import PublicSnapLayout from '@/shared/components/PublicSnapLayout';
@@ -22,7 +22,7 @@ const Toha3eePage = () => {
     <div className="bg-bg min-h-full">
       <SEO title="Toha3ee - QYVORA" description="Toha3ee — local & network security assessment framework in Go. Host and service discovery, enumeration, credential auditing, wireless, MITM and post-exploitation modules from an interactive REPL." />
       <PublicSnapLayout>
-        <section className="relative w-full min-h-dvh lg:h-dvh snap-section bg-bg">
+        <section className="relative w-full min-h-dvh snap-section bg-bg">
         <StudentHeroSection
           title="Toha3ee"
           accentWord="Security"
@@ -55,28 +55,51 @@ const Toha3eePage = () => {
 
         {/* ── Authorised-use warning ─────────────────────────────────────── */}
         <PublicSnapSection>
-          <div className="flex flex-col gap-6 lg:gap-8">
-            <ToolSectionHeader
-              kicker="Warning"
-              title="Authorised"
-              accent="Use Only"
-              description="Toha3ee actively redirects, poisons, decrypts and intercepts network traffic. Use it only on networks you own or are explicitly authorised to test."
-            />
-            <div className="rounded-2xl border border-amber-500/30 bg-amber-500/5 px-5 md:px-8 py-5 flex flex-col sm:flex-row gap-4 items-start">
-              <div className="w-10 h-10 md:w-12 md:h-12 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center shrink-0">
-                <ShieldAlert className="w-5 h-5 md:w-6 md:h-6 text-amber-400" />
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 lg:items-center">
+            <div className="flex flex-col gap-6 lg:gap-8">
+              <ToolSectionHeader
+                kicker="Warning"
+                title="Authorised"
+                accent="Use Only"
+                description="Toha3ee actively redirects, poisons, decrypts and intercepts network traffic. Use it only on networks you own or are explicitly authorised to test."
+              />
+              <div className="rounded-2xl border border-amber-500/30 bg-amber-500/5 px-5 md:px-6 py-5 flex gap-4 items-start">
+                <div className="w-10 h-10 md:w-12 md:h-12 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center shrink-0">
+                  <ShieldAlert className="w-5 h-5 md:w-6 md:h-6 text-amber-400" />
+                </div>
+                <p className="text-xs md:text-sm text-text-secondary leading-relaxed font-mono">
+                  Running these modules against networks you do not own is illegal in most jurisdictions. Most attack
+                  modules require root — raw sockets, packet capture and IP forwarding. The tool re-executes itself under
+                  sudo by default; pass <code className="text-amber-400">--no-sudo</code> for unprivileged commands.
+                </p>
               </div>
-              <p className="text-xs md:text-sm text-text-secondary leading-relaxed font-mono max-w-2xl">
-                Running these modules against networks you do not own is illegal in most jurisdictions. Most attack
-                modules require root — raw sockets, packet capture and IP forwarding. The tool re-executes itself under
-                sudo by default; pass <code className="text-amber-400">--no-sudo</code> for unprivileged commands.
-              </p>
+            </div>
+
+            {/* Safety contract — enforced by the framework lifecycle */}
+            <div className="rounded-2xl border border-border/30 bg-bg-card p-5 md:p-6 flex flex-col gap-4">
+              <div className="flex items-center gap-3">
+                <span className="text-[9px] font-black uppercase tracking-[0.3em] text-accent">Safety layer</span>
+                <span className="h-px flex-1 bg-border/30" />
+                <span className="font-mono text-[9px] uppercase tracking-widest text-text-muted">enforced, not promised</span>
+              </div>
+              {[
+                'Preflight refuses execution while required checks are blocked.',
+                'Run loops receive cancellation and must heartbeat while active.',
+                'Cleanup handlers are run even after panic or SIGINT.',
+              ].map((rule) => (
+                <div key={rule} className="flex items-start gap-3 rounded-xl border border-border/20 bg-bg-elevated px-4 py-3">
+                  <span className="w-6 h-6 rounded-lg bg-accent/10 border border-accent/20 flex items-center justify-center shrink-0 mt-0.5">
+                    <ShieldCheck className="w-3.5 h-3.5 text-accent" />
+                  </span>
+                  <span className="text-xs font-mono text-text-secondary leading-relaxed">{rule}</span>
+                </div>
+              ))}
             </div>
           </div>
         </PublicSnapSection>
 
         {/* ── Categories Carousel ─────────────────────────────────────────── */}
-        <section className="relative w-full min-h-dvh lg:h-dvh snap-section bg-bg-alt">
+        <section className="relative w-full min-h-dvh snap-section bg-bg-alt">
           <ToolsCarousel
             kicker="Framework"
             title="Attack"
@@ -117,7 +140,9 @@ const Toha3eePage = () => {
           examples={SOURCE_EXAMPLES}
         />
 
-        {/* ── Install ───────────────────────────────────────────────────── */}
+        {/* ── Install ─────────────────────────────────────────────────────
+            Split into two snap sections: an oversized single section breaks
+            strict y-mandatory snapping (snap area taller than the viewport). */}
         <PublicSnapSection id="install">
           <div className="flex flex-col gap-6 lg:gap-8">
             <ToolSectionHeader
@@ -127,28 +152,29 @@ const Toha3eePage = () => {
               description="One-liner installers fetch the prebuilt binary, verify its SHA-256 checksum and register the desktop icon."
             />
 
-            <div className="rounded-2xl border border-accent/30 bg-accent/5 p-5 md:p-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-              <div className="flex items-start gap-3">
-                <div className="w-10 h-10 rounded-xl bg-accent/10 border border-accent/20 flex items-center justify-center shrink-0">
-                  <Download className="w-5 h-5 text-accent" />
+            <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,2fr)_minmax(0,3fr)] gap-4 md:gap-6 items-stretch">
+              {/* Auto-install */}
+              <div className="rounded-2xl border border-accent/30 bg-accent/5 p-5 md:p-6 flex flex-col justify-between gap-4">
+                <div className="flex items-start gap-3">
+                  <div className="w-10 h-10 rounded-xl bg-accent/10 border border-accent/20 flex items-center justify-center shrink-0">
+                    <Download className="w-5 h-5 text-accent" />
+                  </div>
+                  <div>
+                    <h4 className="text-sm font-black text-text-primary">Install automatically</h4>
+                    <p className="text-xs text-text-muted mt-1 leading-relaxed">
+                      We detect your operating system and CPU architecture and download the matching prebuilt binary for you.
+                    </p>
+                  </div>
                 </div>
-                <div>
-                  <h4 className="text-sm font-black text-text-primary">Install automatically</h4>
-                  <p className="text-xs text-text-muted mt-1 max-w-xl leading-relaxed">
-                    We detect your operating system and CPU architecture and download the matching prebuilt binary for you. A terminal command is included as a copyable alternative.
-                  </p>
-                </div>
+                <button
+                  type="button"
+                  onClick={() => openToolInstall('toha3ee')}
+                  className="btn-primary inline-flex items-center gap-2 w-fit !px-6 !py-3"
+                >
+                  <Download className="w-4 h-4" /> Auto-install
+                </button>
               </div>
-              <button
-                type="button"
-                onClick={() => openToolInstall('toha3ee')}
-                className="btn-primary inline-flex items-center gap-2 shrink-0 !px-6 !py-3"
-              >
-                <Download className="w-4 h-4" /> Auto-install
-              </button>
-            </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6 items-stretch">
               {/* Option 1 — One-line installers */}
               <div className="rounded-2xl border border-border/30 bg-bg-card p-5 md:p-6 space-y-4">
                 <div className="flex items-center gap-3">
@@ -169,38 +195,41 @@ const Toha3eePage = () => {
                   ))}
                 </div>
               </div>
+            </div>
+          </div>
+        </PublicSnapSection>
 
-              {/* Option 2 — Build from source */}
-              <div className="rounded-2xl border border-border/30 bg-bg-card p-5 md:p-6 space-y-4">
-                <div className="flex items-center gap-3">
-                  <div className="w-9 h-9 rounded-xl bg-accent/10 border border-accent/20 flex items-center justify-center shrink-0">
-                    <GitBranch className="w-4 h-4 text-accent" />
-                  </div>
-                  <div>
-                    <h4 className="text-xs font-black text-text-primary leading-tight">Build From Source</h4>
-                    <p className="text-[9px] font-mono text-text-muted mt-0.5">{BUILD_FROM_SOURCE.requirements}</p>
-                  </div>
-                </div>
-                <div className="space-y-3">
-                  {BUILD_FROM_SOURCE.steps.map(({ cmd, note }) => (
-                    <div key={cmd} className="space-y-1.5">
-                      <CodeBlock code={`$ ${cmd}`} lang="sh" copyable />
-                      {note && (
-                        <p className="text-[9px] font-mono text-text-muted leading-snug">{note}</p>
-                      )}
-                    </div>
-                  ))}
-                </div>
-                <a
-                  href={GITHUB_URL}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-accent hover:underline"
-                >
-                  GitHub Repository <IconArrowRight size={14} />
-                </a>
+        {/* ── Install · Build from source ─────────────────────────────────── */}
+        <PublicSnapSection>
+          {/* Option 2 — Build from source */}
+          <div className="rounded-2xl border border-border/30 bg-bg-card p-5 md:p-6 space-y-4 max-w-full">
+            <div className="flex items-center gap-3">
+              <div className="w-9 h-9 rounded-xl bg-accent/10 border border-accent/20 flex items-center justify-center shrink-0">
+                <GitBranch className="w-4 h-4 text-accent" />
+              </div>
+              <div className="min-w-0">
+                <h4 className="text-xs font-black text-text-primary leading-tight">Build From Source</h4>
+                <p className="text-[9px] font-mono text-text-muted mt-0.5">{BUILD_FROM_SOURCE.requirements}</p>
               </div>
             </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-3">
+              {BUILD_FROM_SOURCE.steps.map(({ cmd, note }) => (
+                <div key={cmd} className="space-y-1.5">
+                  <CodeBlock code={`$ ${cmd}`} lang="sh" copyable />
+                  {note && (
+                    <p className="text-[9px] font-mono text-text-muted leading-snug">{note}</p>
+                  )}
+                </div>
+              ))}
+            </div>
+            <a
+              href={GITHUB_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-accent hover:underline"
+            >
+              GitHub Repository <IconArrowRight size={14} />
+            </a>
           </div>
         </PublicSnapSection>
 
@@ -272,7 +301,7 @@ const Toha3eePage = () => {
             </div>
           </div>
         </PublicSnapSection>
-        <section className="relative w-full min-h-dvh lg:h-dvh snap-section bg-bg-alt">
+        <section className="relative w-full min-h-dvh snap-section bg-bg-alt">
           <LandingFinalCtaSection user={user} />
         </section>
 

@@ -18,7 +18,7 @@ const CoursesPage = () => {
       <SEO title="Courses - QYVORA" description="Master offensive security with QYVORA's structured courses." />
       <PublicSnapLayout>
         {/* Hero */}
-        <section className="relative w-full min-h-dvh lg:h-dvh snap-section bg-bg">
+        <section className="relative w-full min-h-dvh snap-section bg-bg">
           <StudentHeroSection
             title="Offensive"
             accentWord="Courses"
@@ -34,12 +34,12 @@ const CoursesPage = () => {
         </section>
 
         {/* Courses Carousel — one full section per course */}
-        <section className="relative w-full min-h-dvh lg:h-dvh snap-section bg-bg-alt">
+        <section className="relative w-full min-h-dvh snap-section bg-bg-alt">
           <CoursesCarousel courses={COURSES} />
         </section>
 
         {/* CTA */}
-        <section className="relative w-full min-h-dvh lg:h-dvh snap-section bg-bg">
+        <section className="relative w-full min-h-dvh snap-section bg-bg">
           <LandingFinalCtaSection user={user} />
         </section>
 

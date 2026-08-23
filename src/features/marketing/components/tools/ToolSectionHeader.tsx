@@ -14,13 +14,13 @@ const ToolSectionHeader: React.FC<ToolSectionHeaderProps> = ({
   accent,
   description,
 }) => (
-  <div className="max-w-2xl">
-    <h3 className="text-xs font-black uppercase tracking-[0.3em] text-accent">{kicker}</h3>
-    <h4 className="text-xl md:text-3xl lg:text-4xl font-black text-text-primary tracking-tighter leading-tight mt-2">
+  <div>
+    <p className="text-[10px] font-black uppercase tracking-[0.3em] text-accent">{kicker}</p>
+    <h2 className="text-2xl md:text-3xl lg:text-4xl font-black text-text-primary tracking-tighter leading-tight mt-2">
       {title} <span className="text-accent">{accent}</span>
-    </h4>
+    </h2>
     {description && (
-      <p className="text-xs md:text-sm text-text-muted leading-relaxed mt-3 font-mono">{description}</p>
+      <p className="max-w-xl text-xs md:text-sm text-text-muted leading-relaxed mt-3 font-mono">{description}</p>
     )}
   </div>
 );

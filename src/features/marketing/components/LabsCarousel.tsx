@@ -95,10 +95,11 @@ const LabsCarousel: React.FC<LabsCarouselProps> = ({
 
   return (
     <div
-      className={`relative w-full min-h-dvh lg:h-dvh flex items-center overflow-hidden ${className}`}
+      className={`relative w-full min-h-dvh flex flex-col ${className}`}
       {...containerProps}
     >
-      <div className="w-full px-3 md:px-4 lg:px-6 pt-24 md:pt-28 lg:pt-32 pb-6 md:pb-8 lg:pb-10">
+      <div className="w-full px-3 md:px-4 lg:px-6 pt-24 md:pt-28 lg:pt-32 pb-6 md:pb-8 lg:pb-10 my-auto">
+        <div className="overflow-x-clip">
         <AnimatePresence mode="wait" custom={direction}>
           <motion.div
             key={lab.id}
@@ -182,6 +183,7 @@ const LabsCarousel: React.FC<LabsCarouselProps> = ({
             </div>
           </motion.div>
         </AnimatePresence>
+        </div>
 
         {/* Navigation — arrows + dots */}
         {total > 1 && (

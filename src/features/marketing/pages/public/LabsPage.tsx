@@ -27,7 +27,7 @@ const LabsPage = () => {
       <SEO title="Attack Labs - QYVORA" description="Hands-on offensive security labs covering privilege escalation, password cracking, SQL injection, OSINT, and the full kill chain." />
       <PublicSnapLayout>
         {/* Hero */}
-        <section className="relative w-full min-h-dvh lg:h-dvh snap-section bg-bg">
+        <section className="relative w-full min-h-dvh snap-section bg-bg">
           <StudentHeroSection
             title="Attack"
             accentWord="Labs"
@@ -50,7 +50,7 @@ const LabsPage = () => {
         </section>
 
         {/* Labs Carousel — one full section per lab */}
-        <section className="relative w-full min-h-dvh lg:h-dvh snap-section bg-bg-alt">
+        <section className="relative w-full min-h-dvh snap-section bg-bg-alt">
           <LabsCarousel
             labs={LABS}
             getLabTitle={(id) => t(`student.labs.list.${id}.title`)}
@@ -59,7 +59,7 @@ const LabsPage = () => {
         </section>
 
         {/* CTA */}
-        <section className="relative w-full min-h-dvh lg:h-dvh snap-section bg-bg">
+        <section className="relative w-full min-h-dvh snap-section bg-bg">
           <LandingFinalCtaSection user={user} />
         </section>
 

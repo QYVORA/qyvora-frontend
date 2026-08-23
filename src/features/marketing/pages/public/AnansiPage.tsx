@@ -34,7 +34,7 @@ const AnansiPage = () => {
     <div className="bg-bg min-h-full">
       <SEO title="Anansi - QYVORA" description="Anansi — Attack Surface Intelligence CLI. A nine-phase recon pipeline from subdomain discovery to exploit-chain analysis, all from the terminal." />
       <PublicSnapLayout>
-        <section className="relative w-full min-h-dvh lg:h-dvh snap-section bg-bg">
+        <section className="relative w-full min-h-dvh snap-section bg-bg">
         <StudentHeroSection
           title="Anansi"
           accentWord="CLI"
@@ -66,7 +66,7 @@ const AnansiPage = () => {
         </section>
 
         {/* ── Modules Carousel ─────────────────────────────────────────────── */}
-        <section className="relative w-full min-h-dvh lg:h-dvh snap-section bg-bg-alt">
+        <section className="relative w-full min-h-dvh snap-section bg-bg-alt">
           <ToolsCarousel
             kicker="Recon pipeline"
             title="Nine"
@@ -106,7 +106,9 @@ const AnansiPage = () => {
           examples={SOURCE_EXAMPLES}
         />
 
-        {/* ── Install ───────────────────────────────────────────────────── */}
+        {/* ── Install ─────────────────────────────────────────────────────
+            Split into two snap sections: an oversized single section breaks
+            strict y-mandatory snapping (snap area taller than the viewport). */}
         <PublicSnapSection id="install">
           <div className="flex flex-col gap-6 lg:gap-8">
             <ToolSectionHeader
@@ -116,28 +118,29 @@ const AnansiPage = () => {
               description="Single static binary with zero runtime dependencies — one-liner install, manual download, or build from source."
             />
 
-            <div className="rounded-2xl border border-accent/30 bg-accent/5 p-5 md:p-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-              <div className="flex items-start gap-3">
-                <div className="w-10 h-10 rounded-xl bg-accent/10 border border-accent/20 flex items-center justify-center shrink-0">
-                  <Download className="w-5 h-5 text-accent" />
+            <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,2fr)_minmax(0,3fr)] gap-4 md:gap-6 items-stretch">
+              {/* Auto-install */}
+              <div className="rounded-2xl border border-accent/30 bg-accent/5 p-5 md:p-6 flex flex-col justify-between gap-4">
+                <div className="flex items-start gap-3">
+                  <div className="w-10 h-10 rounded-xl bg-accent/10 border border-accent/20 flex items-center justify-center shrink-0">
+                    <Download className="w-5 h-5 text-accent" />
+                  </div>
+                  <div>
+                    <h4 className="text-sm font-black text-text-primary">Install automatically</h4>
+                    <p className="text-xs text-text-muted mt-1 leading-relaxed">
+                      We detect your operating system and CPU architecture and download the matching prebuilt binary for you.
+                    </p>
+                  </div>
                 </div>
-                <div>
-                  <h4 className="text-sm font-black text-text-primary">Install automatically</h4>
-                  <p className="text-xs text-text-muted mt-1 max-w-xl leading-relaxed">
-                    We detect your operating system and CPU architecture and download the matching prebuilt binary for you. A terminal command is included as a copyable alternative.
-                  </p>
-                </div>
+                <button
+                  type="button"
+                  onClick={() => openToolInstall('anansi')}
+                  className="btn-primary inline-flex items-center gap-2 w-fit !px-6 !py-3"
+                >
+                  <Download className="w-4 h-4" /> Auto-install
+                </button>
               </div>
-              <button
-                type="button"
-                onClick={() => openToolInstall('anansi')}
-                className="btn-primary inline-flex items-center gap-2 shrink-0 !px-6 !py-3"
-              >
-                <Download className="w-4 h-4" /> Auto-install
-              </button>
-            </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6 items-stretch">
               {/* Option 1 — One-liner */}
               <div className="rounded-2xl border border-border/30 bg-bg-card p-5 md:p-6 space-y-4">
                 <div className="flex items-center gap-3">
@@ -159,28 +162,33 @@ const AnansiPage = () => {
                   GitHub Repository <IconArrowRight size={14} />
                 </a>
               </div>
+            </div>
+          </div>
+        </PublicSnapSection>
 
-              {/* Option 2 — Build from source */}
-              <div className="rounded-2xl border border-border/30 bg-bg-card p-5 md:p-6 space-y-4">
-                <div className="flex items-center gap-3">
-                  <div className="w-9 h-9 rounded-xl bg-accent/10 border border-accent/20 flex items-center justify-center shrink-0">
-                    <GitBranch className="w-4 h-4 text-accent" />
-                  </div>
-                  <div className="min-w-0">
-                    <h4 className="text-xs font-black text-text-primary leading-tight">Build From Source</h4>
-                    <p className="text-[9px] font-mono text-text-muted mt-0.5">{BUILD_FROM_SOURCE.requirements}</p>
-                  </div>
+        {/* ── Install · Build from source ─────────────────────────────────── */}
+        <PublicSnapSection>
+          <div className="flex flex-col gap-6 lg:gap-8">
+            {/* Option 2 — Build from source */}
+            <div className="rounded-2xl border border-border/30 bg-bg-card p-5 md:p-6 space-y-4">
+              <div className="flex items-center gap-3">
+                <div className="w-9 h-9 rounded-xl bg-accent/10 border border-accent/20 flex items-center justify-center shrink-0">
+                  <GitBranch className="w-4 h-4 text-accent" />
                 </div>
-                <div className="space-y-3">
-                  {BUILD_FROM_SOURCE.steps.map(({ cmd, note }) => (
-                    <div key={cmd} className="space-y-1.5">
-                      <CodeBlock code={`$ ${cmd}`} lang="sh" copyable />
-                      {note && (
-                        <p className="text-[9px] font-mono text-text-muted leading-snug">{note}</p>
-                      )}
-                    </div>
-                  ))}
+                <div className="min-w-0">
+                  <h4 className="text-xs font-black text-text-primary leading-tight">Build From Source</h4>
+                  <p className="text-[9px] font-mono text-text-muted mt-0.5">{BUILD_FROM_SOURCE.requirements}</p>
                 </div>
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-3">
+                {BUILD_FROM_SOURCE.steps.map(({ cmd, note }) => (
+                  <div key={cmd} className="space-y-1.5">
+                    <CodeBlock code={`$ ${cmd}`} lang="sh" copyable />
+                    {note && (
+                      <p className="text-[9px] font-mono text-text-muted leading-snug">{note}</p>
+                    )}
+                  </div>
+                ))}
               </div>
             </div>
 
@@ -291,7 +299,7 @@ const AnansiPage = () => {
             </div>
           </div>
         </PublicSnapSection>
-        <section className="relative w-full min-h-dvh lg:h-dvh snap-section bg-bg-alt">
+        <section className="relative w-full min-h-dvh snap-section bg-bg-alt">
           <LandingFinalCtaSection user={user} />
         </section>
 
