@@ -2258,7 +2258,20 @@
       "reachable": "Reachable",
       "unreachable": "Unreachable",
       "recentSignups": "Recent Signups",
-      "noRecentSignups": "No recent signups"
+      "noRecentSignups": "No recent signups",
+      "unavailable": "Overview data could not be loaded.",
+      "databaseStatus": "Database",
+      "connected": "Connected",
+      "degraded": "Degraded",
+      "openIncidents": "Open incidents",
+      "critical": "critical",
+      "blockedAccounts": "Blocked accounts",
+      "authFailures24h": "Auth failures (24h)",
+      "bootcampEnrolled": "Bootcamp enrolled",
+      "bootcampActive": "Bootcamp active",
+      "bootcampEngagement": "In current module",
+      "currentModule": "Current module",
+      "notConfigured": "Not configured"
     },
     "users": {
       "user": "User",
@@ -2297,7 +2310,8 @@
       "lastLogin": "Last Login",
       "lastLoginIp": "IP Address",
       "lastLoginDevice": "Device",
-      "neverLoggedIn": "Never"
+      "neverLoggedIn": "Never",
+      "unavailable": "User list could not be loaded."
     },
     "inbox": {
       "loadFailed": "Failed to load inbox",
@@ -2325,7 +2339,8 @@
       "service": "Service",
       "deleteTitle": "Delete Inquiry",
       "serviceRequest": "Service Request",
-      "deleteDescription": "This action cannot be undone."
+      "deleteDescription": "This action cannot be undone.",
+      "unavailable": "Inbox could not be loaded."
     },
     "broadcast": {
       "newAnnouncement": "New Announcement",
@@ -2362,13 +2377,24 @@
       "colAction": "Action",
       "colPath": "Path",
       "colCode": "Code",
-      "colIp": "IP"
+      "colIp": "IP",
+      "summaryUnavailable": "Security summary could not be loaded.",
+      "eventsUnavailable": "Security events could not be loaded.",
+      "filteredByRequest": "Filtered by request",
+      "clearRequestFilter": "Clear request filter"
     },
     "audit": {
       "allActions": "All Actions",
       "filter": "Filter",
       "entriesCount": "{{count}} entries",
-      "empty": "No audit log entries"
+      "empty": "No audit log entries",
+      "loadFailed": "Audit log could not be loaded.",
+      "unavailable": "Audit log unavailable",
+      "dateFrom": "From date",
+      "dateTo": "To date",
+      "correlationId": "Correlation ID",
+      "viewSecurityEvents": "View related security events",
+      "unauditedWarning": "Action applied, but its audit entry could not be written. Please verify and retry."
     },
     "market": {
       "initializeNewAsset": "Initialize New Asset",
@@ -2417,7 +2443,8 @@
       "status": "Status",
       "actions": "Actions",
       "freeAccess": "Free Access",
-      "operational": "Operational"
+      "operational": "Operational",
+      "unavailable": "Market inventory could not be loaded."
     },
     "bootcamps": {
       "loadingPanel": "Loading control panel…",
@@ -2444,7 +2471,9 @@
       "bootcampPaused": "Bootcamp paused",
       "bootcampStarted": "Bootcamp started",
       "moduleUnlocked": "Module unlocked",
-      "rooms": "{{count}} Rooms"
+      "rooms": "{{count}} Rooms",
+      "loadFailed": "Bootcamp control panel could not be loaded.",
+      "unavailable": "Bootcamp control panel unavailable"
     },
     "cp": {
       "economy": "CP Economy",
@@ -2490,7 +2519,42 @@
       "colDate": "Date",
       "pageOf": "Page {{page}} of {{total}} · {{count}} transactions"
     },
-    "syncError": "Failed to sync. Some data may be stale."
+    "syncError": "Failed to sync. Some data may be stale.",
+    "dataUnavailable": "Data currently unavailable",
+    "incidents": {
+      "newIncident": "New incident",
+      "titleLabel": "Title",
+      "titlePlaceholder": "Short incident summary",
+      "descriptionLabel": "Description",
+      "descriptionPlaceholder": "What happened, scope, and current impact",
+      "severityLabel": "Severity",
+      "correlationLabel": "Correlation ID (optional)",
+      "correlationPlaceholder": "Request ID from audit or security events",
+      "createButton": "Create incident",
+      "created": "Incident created",
+      "createFailed": "Could not create incident",
+      "statusUpdated": "Incident status updated",
+      "statusUpdateFailed": "Could not update incident status",
+      "loadFailed": "Incidents could not be loaded.",
+      "unavailable": "Incident tracker unavailable",
+      "empty": "No incidents recorded.",
+      "filterStatus": "Filter by status",
+      "filterSeverity": "Filter by severity",
+      "allStatuses": "All statuses",
+      "allSeverities": "All severities",
+      "statusOpen": "Open",
+      "statusMonitoring": "Monitoring",
+      "statusResolved": "Resolved",
+      "severityLow": "Low",
+      "severityMedium": "Medium",
+      "severityHigh": "High",
+      "severityCritical": "Critical",
+      "startMonitoring": "Monitor",
+      "resolve": "Resolve",
+      "reopen": "Reopen",
+      "createdBy": "Created by",
+      "resolvedAt": "Resolved"
+    }
   },
   "news": {
     "readIntelligence": "Read intelligence",
