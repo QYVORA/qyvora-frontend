@@ -14,7 +14,7 @@
 
 import React, { createContext, useCallback, useContext, useMemo, useState } from 'react';
 import { AnimatePresence, motion } from 'motion/react';
-import { Info } from 'lucide-react';
+import { Info, TriangleAlert } from 'lucide-react';
 import { IconShield, IconCheck, IconX } from '@/shared/components/icons';
 
 // ─── Types ────────────────────────────────────────────────────────────────────
@@ -27,7 +27,7 @@ import { IconShield, IconCheck, IconX } from '@/shared/components/icons';
 interface Toast {
   id: string;
   message: string;
-  type: 'success' | 'error' | 'info';
+  type: 'success' | 'error' | 'info' | 'warning';
 }
 
 /** Public API exposed to consumers via useToast(). */
@@ -35,7 +35,7 @@ interface ToastContextType {
   /**
    * Push a new notification into the toast stack.
    * @param message - Human-readable message to display.
-   * @param type    - Visual severity: 'success' | 'error' | 'info'
+   * @param type    - Visual severity: 'success' | 'error' | 'info' | 'warning'
    */
   addToast: (message: string, type: Toast['type']) => void;
 }
@@ -132,6 +132,8 @@ export const ToastProvider: React.FC<{ children: React.ReactNode }> = ({ childre
                   ? 'border-accent/40'
                   : toast.type === 'error'
                   ? 'border-red-500/40'
+                  : toast.type === 'warning'
+                  ? 'border-yellow-400/40'
                   : 'border-accent/40'
               }`}
               >
@@ -146,11 +148,14 @@ export const ToastProvider: React.FC<{ children: React.ReactNode }> = ({ childre
                     ? 'text-accent'
                     : toast.type === 'error'
                     ? 'text-red-400'
+                    : toast.type === 'warning'
+                    ? 'text-yellow-400'
                     : 'text-blue-400'
                 }`}
               >
                 {toast.type === 'success' && <IconCheck size={20} />}
                 {toast.type === 'error' && <IconShield size={20} />}
+                {toast.type === 'warning' && <TriangleAlert className="w-5 h-5" />}
                 {toast.type === 'info' && <Info className="w-5 h-5" />}
               </div>
 
