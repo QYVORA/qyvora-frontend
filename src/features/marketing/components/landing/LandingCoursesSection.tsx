@@ -61,25 +61,25 @@ const CompactCourseCard: React.FC<{
     <button
       onClick={() => onSelect(course.id)}
       aria-label={t(`landing.courses.list.${course.tKey}.title`)}
-      className="group/card relative h-[104px] w-[min(70vw,280px)] shrink-0 card-accent bg-bg-card p-3 flex items-center gap-3 text-left overflow-hidden"
+      className="group/card relative h-[112px] w-[min(70vw,280px)] shrink-0 card-accent bg-bg-card p-3 flex items-center gap-3 text-left overflow-hidden"
     >
       <CourseIconBackground courseId={course.id} />
       <div className="relative z-10 w-10 h-10 rounded-xl flex items-center justify-center shrink-0 bg-accent/10 border border-accent/20">
         {CatIc && <CatIc className="w-5 h-5 text-accent" />}
       </div>
-      <div className="relative z-10 flex min-w-0 flex-1 flex-col">
+      <div className="relative z-10 flex min-w-0 flex-1 flex-col justify-center gap-1">
         <h4 className="text-sm font-black text-text-primary tracking-tight leading-snug line-clamp-2">
           {t(`landing.courses.list.${course.tKey}.title`)}
         </h4>
-        <p className="mt-1 flex items-center gap-2 text-[9px] font-black uppercase tracking-widest">
+        <p className="flex items-center gap-2 text-[9px] font-black uppercase tracking-widest">
           <span className="rounded-lg border border-accent/20 bg-accent/10 px-2 py-0.5 text-accent">
             {t(`landing.courses.level.${course.level}`)}
           </span>
           <span className="text-text-muted">{course.minutes}m</span>
         </p>
       </div>
-      <span className="relative z-10 shrink-0 self-stretch flex items-center">
-        <span className="px-2.5 py-1.5 rounded-lg text-[9px] font-black uppercase tracking-widest bg-accent text-on-accent transition-all duration-200 group-hover/card:brightness-110 group-active:scale-95">
+      <span className="relative z-10 shrink-0 self-center">
+        <span className="block px-2.5 py-1.5 rounded-lg text-[9px] font-black uppercase tracking-widest bg-accent text-on-accent transition-all duration-200 group-hover/card:brightness-110 group-active:scale-95">
           {t('landing.courses.viewCourse', { defaultValue: 'View' })}
         </span>
       </span>
@@ -113,14 +113,14 @@ const FullCourseCard: React.FC<{
         )}
       </div>
 
-      <h4 className="relative z-10 text-sm sm:text-base md:text-lg lg:text-xl font-black text-text-primary tracking-tight mb-1 leading-snug">
+      <h4 className="relative z-10 text-sm sm:text-base md:text-lg lg:text-xl font-black text-text-primary tracking-tight mb-1 leading-snug line-clamp-2">
         {t(`landing.courses.list.${course.tKey}.title`)}
       </h4>
       <p className="relative z-10 text-xs sm:text-sm md:text-base text-text-muted leading-relaxed mb-2 line-clamp-3 flex-1">
         {t(`landing.courses.list.${course.tKey}.desc`)}
       </p>
 
-      <div className="relative z-10 flex items-center justify-between mt-auto">
+      <div className="relative z-10 flex items-center justify-between flex-wrap gap-2 mt-auto">
         <div className="flex items-center gap-2">
           <span className="text-[9px] sm:text-[10px] font-black uppercase tracking-widest px-2 py-0.5 rounded-lg border border-accent/20 bg-accent/10 text-accent">
             {t(`landing.courses.level.${course.level}`)}
@@ -242,7 +242,7 @@ const LandingCoursesSection: React.FC = () => {
             {canScrollLeft && (
               <button
                 onClick={() => scrollTabs(-1)}
-                className="md:hidden absolute -left-1 top-1/2 -translate-y-1/2 z-10 w-7 h-7 rounded-full bg-bg-card/90 border border-border/30 flex items-center justify-center text-text-muted hover:text-text-primary transition-all backdrop-blur-sm"
+                className="md:hidden absolute -left-1 top-1/2 -translate-y-1/2 z-10 w-7 h-7 aspect-square shrink-0 rounded-full bg-bg-card/90 border border-border/30 flex items-center justify-center text-text-muted hover:text-text-primary transition-all backdrop-blur-sm"
               >
                 <ChevronLeft size={14} />
               </button>
@@ -257,7 +257,7 @@ const LandingCoursesSection: React.FC = () => {
                 onClick={() => setActiveCategory(null)}
                 className={`shrink-0 flex items-center gap-2 px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all duration-200 border ${
                   activeCategory === null
-                    ? 'bg-bg-elevated text-text-primary border-border/50 shadow-lg'
+                    ? 'bg-bg-elevated text-text-primary border-border/50'
                     : 'bg-bg-card text-text-muted border-border/30 hover:bg-bg-elevated hover:text-text-primary'
                 }`}
               >
@@ -276,7 +276,7 @@ const LandingCoursesSection: React.FC = () => {
                     onClick={() => setActiveCategory(cat)}
                     className={`shrink-0 flex items-center gap-2 px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all duration-200 border ${
                       isActive
-                        ? 'bg-bg-elevated text-text-primary border-border/50 shadow-lg'
+                        ? 'bg-bg-elevated text-text-primary border-border/50'
                         : 'bg-bg-card text-text-muted border-border/30 hover:bg-bg-elevated hover:text-text-primary'
                     }`}
                   >
@@ -294,7 +294,7 @@ const LandingCoursesSection: React.FC = () => {
             {canScrollRight && (
               <button
                 onClick={() => scrollTabs(1)}
-                className="md:hidden absolute -right-1 top-1/2 -translate-y-1/2 z-10 w-7 h-7 rounded-full bg-bg-card/90 border border-border/30 flex items-center justify-center text-text-muted hover:text-text-primary transition-all backdrop-blur-sm"
+                className="md:hidden absolute -right-1 top-1/2 -translate-y-1/2 z-10 w-7 h-7 aspect-square shrink-0 rounded-full bg-bg-card/90 border border-border/30 flex items-center justify-center text-text-muted hover:text-text-primary transition-all backdrop-blur-sm"
               >
                 <ChevronRight size={14} />
               </button>

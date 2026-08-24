@@ -543,31 +543,27 @@ const Dashboard = () => {
             <CpEarnHint engagement={engagement} loading={engagementLoading} />
           </div>
 
-          {/* Activity Row — Week Activity + Active Deployments as 2-col grid */}
+          {/* Activity Row — stacked column (Weekly Operation + Week Activity) | Active Deployments */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6 items-stretch">
-            {visitDates.length > 0 && (
-              <div className="card-accent bg-bg-card p-6 md:p-8 flex flex-col h-full">
-                <div className="text-xs font-black uppercase tracking-widest text-text-muted mb-4">
-                  {t('student.dashboard.streak.title')}
-                </div>
-                <div className="flex-1 flex flex-col justify-end">
+            <div className="flex flex-col gap-4 lg:gap-6 min-h-0">
+              {engagement && (
+                <WeeklyOperationCard engagement={engagement} loading={engagementLoading} />
+              )}
+              {visitDates.length > 0 && (
+                <div className="card-accent bg-bg-card p-5 md:p-6 flex flex-col flex-1 min-h-0">
+                  <div className="text-xs font-black uppercase tracking-widest text-text-muted mb-3 shrink-0">
+                    {t('student.dashboard.streak.title')}
+                  </div>
                   <WeekActivity visitDates={visitDates} visitDurations={visitDurations} />
                 </div>
-              </div>
-            )}
+              )}
+            </div>
             <ActiveDeployments bootcamps={enrolledBootcamps} />
           </div>
         </div>
       </div>
 
-      {/* 3b. Weekly Operation — full width */}
-      {engagement && (
-      <div className="bg-bg px-3 md:px-4 lg:px-6 pb-10">
-        <WeeklyOperationCard engagement={engagement} loading={engagementLoading} />
-      </div>
-      )}
-
-      {/* 3c. Skill Matrix — always visible */}
+      {/* 3b. Skill Matrix — always visible */}
       <div className="bg-bg-alt px-3 md:px-4 lg:px-6 py-10">
         <SkillMatrix
           modules={overviewModules}
@@ -751,7 +747,7 @@ const Dashboard = () => {
                 <span className="font-mono text-sm font-black text-accent">{rankProgress}%</span>
               </div>
               <div className="h-3 rounded-full bg-accent-dim/20 overflow-hidden">
-                <div className="progress-fill h-full rounded-full bg-accent shadow-[0_0_8px_var(--color-accent)]" style={{ width: '0%', transition: 'width 1.2s cubic-bezier(0.22, 1, 0.36, 1)' }} />
+                <div className="progress-fill h-full rounded-full bg-accent" style={{ width: '0%', transition: 'width 1.2s cubic-bezier(0.22, 1, 0.36, 1)' }} />
               </div>
             </div>
           </div>
