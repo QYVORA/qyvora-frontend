@@ -7,6 +7,7 @@ import { BrandLinkedinIcon } from '@/shared/components/icons';
 import { BrandYoutubeIcon } from '@/shared/components/icons';
 import { BrandGithubIcon } from '@/shared/components/icons';
 import { BrandXIcon } from '@/shared/components/icons';
+import { BrandMediumIcon } from '@/shared/components/icons';
 import { ContactTrigger } from '@/features/marketing/components/ContactModal';
 import { Logo } from '@/shared/components/brand';
 import LanguageSwitcher from '@/shared/components/LanguageSwitcher';
@@ -60,6 +61,7 @@ export const SOCIAL_LINKS: SocialLink[] = [
   { key: 'linkedin', label: 'LinkedIn', href: 'https://linkedin.com/company/qyvora', Icon: BrandLinkedinIcon },
   { key: 'github',   label: 'GitHub',   href: 'https://github.com/QYVORA',           Icon: BrandGithubIcon },
   { key: 'youtube',  label: 'YouTube',  href: 'https://www.youtube.com/@QYVORA',     Icon: BrandYoutubeIcon },
+  { key: 'medium',   label: 'Medium',   href: 'https://medium.com/@qyvorasec',       Icon: BrandMediumIcon },
   { key: 'whatsapp', label: 'WhatsApp', href: 'https://wa.me/233535535222',          Icon: BrandWhatsAppIcon },
 ];
 

@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { ArrowUpRight, Cpu, MapPin, Palette, ShieldCheck, Terminal } from 'lucide-react';
-import { BrandGithubIcon, BrandLinkedinIcon, BrandXIcon, BrandYoutubeIcon } from '@/shared/components/icons';
+import { BrandGithubIcon, BrandLinkedinIcon, BrandXIcon, BrandYoutubeIcon, BrandMediumIcon } from '@/shared/components/icons';
 import { ScrollReveal } from '@/shared/components';
 import SEO from '@/shared/components/SEO';
 import PublicSnapLayout from '@/shared/components/PublicSnapLayout';
@@ -16,6 +16,7 @@ const SOCIAL_ICONS: Record<string, React.ElementType> = {
   linkedin: BrandLinkedinIcon,
   twitter: BrandXIcon,
   youtube: BrandYoutubeIcon,
+  medium: BrandMediumIcon,
 };
 
 const MEMBER_ICONS: Record<string, React.ElementType> = {
