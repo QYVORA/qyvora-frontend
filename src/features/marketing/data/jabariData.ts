@@ -9,13 +9,13 @@ export interface JabariStage {
 }
 
 export const STAGES: JabariStage[] = [
-  { id: '01', name: 'DISCOVERY', icon: Radar, desc: 'ADB device enumeration — manufacturer, model, build, patch level, kernel, root indicators' },
+  { id: '01', name: 'DISCOVERY', icon: Radar, desc: 'ADB device enumeration: manufacturer, model, build, patch level, kernel, root indicators' },
   { id: '02', name: 'ENUMERATION', icon: ListChecks, desc: 'Package inventory, system properties and posture facts gathered from the device' },
-  { id: '03', name: 'ANALYSIS', icon: ScanSearch, desc: 'Rule engine evaluates posture — AND-001..007 detect debuggable, rooted, outdated or exposed devices' },
+  { id: '03', name: 'ANALYSIS', icon: ScanSearch, desc: 'Rule engine evaluates posture. AND-001..007 detect debuggable, rooted, outdated or exposed devices' },
   { id: '04', name: 'VALIDATION', icon: TestTube2, desc: 'Non-destructive confirmation of findings with honest low-confidence attribution' },
   { id: '05', name: 'EVIDENCE', icon: FileSearch, desc: 'SHA-256-hashed evidence store ties every finding to a reproducible artifact' },
   { id: '06', name: 'RISK', icon: Gauge, desc: 'Severity × confidence scoring ranks what to fix first' },
-  { id: '07', name: 'REPORTING', icon: FileText, desc: 'Offline re-renderable sessions — table, JSON, YAML, text, Markdown or HTML' },
+  { id: '07', name: 'REPORTING', icon: FileText, desc: 'Offline re-renderable sessions: table, JSON, YAML, text, Markdown or HTML' },
 ];
 
 export interface JabariRule {
@@ -30,8 +30,8 @@ export const RULES: JabariRule[] = [
   { id: 'AND-003', title: 'Insecure USB connection', desc: 'ro.adb.secure=0' },
   { id: 'AND-004', title: 'Rooted / userdebug build', desc: 'ro.debuggable plus root indicators' },
   { id: 'AND-005', title: 'User-visible build type', desc: 'ro.build.type = userdebug / eng on a release device' },
-  { id: 'AND-006', title: 'Emulator detected', desc: 'ro.kernel.qemu=1 — informational' },
-  { id: 'AND-007', title: 'ADB over TCP enabled', desc: 'ADB network mode active — informational' },
+  { id: 'AND-006', title: 'Emulator detected', desc: 'ro.kernel.qemu=1 (informational)' },
+  { id: 'AND-007', title: 'ADB over TCP enabled', desc: 'ADB network mode active (informational)' },
 ];
 
 export const PROFILES: string[] = ['quick', 'standard', 'deep', 'application', 'device', 'network', 'compliance', 'research'];
@@ -62,7 +62,7 @@ export const AUTHORIZED_WARNING = {
   title: 'Authorized',
   accent: 'Devices Only',
   description:
-    'JABARI requires explicit authorization for every assessment — an interactive gate on a TTY, or -y / authorized config for non-interactive runs. It assesses only the device you point it at, never the surrounding network.',
+    'JABARI requires explicit authorization for every assessment, an interactive gate on a TTY, or -y / authorized config for non-interactive runs. It assesses only the device you point it at, never the surrounding network.',
 };
 
 export const SOURCE_EXAMPLES: ToolSourceExample[] = [

@@ -29,7 +29,7 @@ export const BOOTCAMP_CONFIG: BootcampConfig = {
           id: 'room1',
           title: 'Introduction to Offensive Security',
           overview:
-            'Offensive security is the practice of thinking and acting like an attacker — with permission — to find weaknesses before real adversaries do. This room explains what the field is, why it exists, and how QYVORA fits into it.',
+            'Offensive security is the practice of thinking and acting like an attacker: with permission, to find weaknesses before real adversaries do. This room explains what the field is, why it exists, and how QYVORA fits into it.',
           estimatedMinutes: 20,
           steps: [
             {
@@ -40,10 +40,10 @@ export const BOOTCAMP_CONFIG: BootcampConfig = {
 We simulate real-world attacks to find security bugs. Once we find them, organisations can patch them.
 
 **Core Fields:**
-- **Penetration Testing** — Finding security bugs in an application or network.
-- **Red Teaming** — Simulating a full attack on a company to test their response times.
-- **Bug Bounties** — Finding bugs independently for cash rewards.
-- **Vulnerability Research** — Finding new bugs in system code.
+- **Penetration Testing** - Finding security bugs in an application or network.
+- **Red Teaming** - Simulating a full attack on a company to test their response times.
+- **Bug Bounties** - Finding bugs independently for cash rewards.
+- **Vulnerability Research** - Finding new bugs in system code.
 
 *Task:* Write down the difference between offensive (attacking) and defensive (protecting) security in your own words."`,
               image: 'step-01.webp',
@@ -65,10 +65,10 @@ We simulate real-world attacks to find security bugs. Once we find them, organis
               instruction:
                 `Valkyrie: "Here are the main job roles in this field:
 
-- **Penetration Tester** — Tests apps and networks, then writes reports to help fix bugs.
-- **Red Team Operator** — Simulates real cyber attackers using stealth and custom tools.
-- **Bug Bounty Hunter** — Finds bugs on public websites for direct payments.
-- **Security Researcher** — Analyzes code to discover brand new exploits.
+- **Penetration Tester** - Tests apps and networks, then writes reports to help fix bugs.
+- **Red Team Operator** - Simulates real cyber attackers using stealth and custom tools.
+- **Bug Bounty Hunter** - Finds bugs on public websites for direct payments.
+- **Security Researcher** - Analyzes code to discover brand new exploits.
 
 *Task:* Rank these jobs from most to least interesting to you."`,
               image: 'step-03.webp',
@@ -79,7 +79,7 @@ We simulate real-world attacks to find security bugs. Once we find them, organis
           id: 'room2',
           title: 'The Hacker Mindset',
           overview:
-            'The most important tool you will ever develop is not a piece of software — it is how you think. This room breaks down the cognitive traits that separate effective operators from people who just run tools.',
+            'The most important tool you will ever develop is not a piece of software. It is how you think. This room breaks down the cognitive traits that separate effective operators from people who just run tools.',
           estimatedMinutes: 18,
           steps: [
             {
@@ -87,9 +87,9 @@ We simulate real-world attacks to find security bugs. Once we find them, organis
               instruction:
                 `Valkyrie: "To be a successful operator, you need three key habits:
 
-1. **Curiosity** — Always ask how a system works under the hood. When you see a login box, ask what happens if you input unexpected data.
-2. **Persistence** — Most attacks fail the first time. You must be willing to try different methods until you succeed.
-3. **Lateral Thinking** — Solve problems from unexpected angles. If the front gate is locked, look for a side window.
+1. **Curiosity** - Always ask how a system works under the hood. When you see a login box, ask what happens if you input unexpected data.
+2. **Persistence** - Most attacks fail the first time. You must be willing to try different methods until you succeed.
+3. **Lateral Thinking** - Solve problems from unexpected angles. If the front gate is locked, look for a side window.
 
 *Task:* Write down a quick example of using lateral thinking in daily life."`,
               image: 'step-01.webp',
@@ -112,8 +112,8 @@ We simulate real-world attacks to find security bugs. Once we find them, organis
               instruction:
                 `Valkyrie: "There is a difference between running a tool and understanding how it works.
 
-- **Tool Runners** — Just download scripts and run them. If the script fails, they cannot fix it.
-- **Operators** — Understand the underlying bug. They can write custom scripts and adapt when tools fail.
+- **Tool Runners** - Just download scripts and run them. If the script fails, they cannot fix it.
+- **Operators** - Understand the underlying bug. They can write custom scripts and adapt when tools fail.
 
 **Our goal is to make you an operator.**
 
@@ -126,7 +126,7 @@ We simulate real-world attacks to find security bugs. Once we find them, organis
           id: 'room3',
           title: 'Ethics & Legal Boundaries',
           overview:
-            'Operating without authorisation is a criminal offence in every jurisdiction. This room covers the legal framework, the concept of scope, and responsible disclosure — the non-negotiable foundations of professional offensive security.',
+            'Operating without authorisation is a criminal offence in every jurisdiction. This room covers the legal framework, the concept of scope, and responsible disclosure: the non-negotiable foundations of professional offensive security.',
           estimatedMinutes: 22,
           steps: [
             {
@@ -135,9 +135,9 @@ We simulate real-world attacks to find security bugs. Once we find them, organis
                 `Valkyrie: "Unauthorized access to any computer system is illegal. The line between security testing and criminal hacking is simple: **written permission**.
 
 Major computer crime laws:
-- **United Kingdom** — Computer Misuse Act 1990.
-- **United States** — Computer Fraud and Abuse Act (CFAA).
-- **European Union** — Directive 2013/40/EU.
+- **United Kingdom** - Computer Misuse Act 1990.
+- **United States** - Computer Fraud and Abuse Act (CFAA).
+- **European Union** - Directive 2013/40/EU.
 
 *Task:* Write down the name of the cyber crime law in your country."`,
               image: 'step-01.webp',
@@ -148,10 +148,10 @@ Major computer crime laws:
                 `Valkyrie: "In a professional security test, the **Scope** defines exactly what you are allowed to attack.
 
 A scope document lists:
-- **In-Scope Targets** — The domains and IP addresses you can test.
-- **Out-of-Scope Targets** — Systems you must not touch.
-- **Allowed Methods** — What attacks you are permitted to use.
-- **Testing Times** — The exact dates and hours for the test.
+- **In-Scope Targets** - The domains and IP addresses you can test.
+- **Out-of-Scope Targets** - Systems you must not touch.
+- **Allowed Methods** - What attacks you are permitted to use.
+- **Testing Times** - The exact dates and hours for the test.
 
 *Task:* What would you do if you found a bug on a system that is out-of-scope? (Hint: Do not exploit it)."`,
               image: 'step-02.webp',
@@ -222,10 +222,10 @@ clear
 
 **3. The Global Directory Structure:**
 Linux is organized like a giant tree. As an Qyvora Hacker, you should know exactly where the 'prizes' are hidden.
-- \`/root\` — The ultimate goal. The home of the system administrator.
-- \`/home\` — Where the users live. A goldmine for personal files and SSH keys.
-- \`/var/log\` — The 'Black Box.' This records everything that happens. A smart hacker knows how to read these — and how to stay out of them.
-- \`/proc\` — A virtual filesystem that shows every running process as a folder.
+- \`/root\` - The ultimate goal. The home of the system administrator.
+- \`/home\` - Where the users live. A goldmine for personal files and SSH keys.
+- \`/var/log\`: The 'Black Box.' This records everything that happens. A smart hacker knows how to read these, and how to stay out of them.
+- \`/proc\` - A virtual filesystem that shows every running process as a folder.
 
 **4. Navigating the Root:**
 \`\`\`bash
@@ -354,7 +354,7 @@ When you run \`ls -l\`, you see something like \`-rwxr-xr-x\`.
 - **x (1)**: Execute (run) access.
 
 **2. Checking for Weak Points:**
-Qyvora Hackers look for "World Writable" files — these are misconfigurations that allow anyone to change sensitive data.
+Qyvora Hackers look for "World Writable" files: these are misconfigurations that allow anyone to change sensitive data.
 \`\`\`bash
 # Find files that EVERYONE can write to (A huge security hole!)
 find / -perm -o+w -type f 2>/dev/null
@@ -1040,7 +1040,7 @@ systemctl status sshd
             {
               title: 'Hacker Automation: The First Script',
               instruction:
-                `Every Qyvora toolkit started with a single script. Bash scripting allows you to chain commands together, creating a powerful multiplier for your efforts. As you become a hacker, you'll realize that consistency is key — and scripts provide exactly that.
+                `Every Qyvora toolkit started with a single script. Bash scripting allows you to chain commands together, creating a powerful multiplier for your efforts. As you become a hacker, you'll realize that consistency is key, and scripts provide exactly that.
 
 **1. The Foundation (Shebang & Permissions):**
 Every script must start with a 'Shebang' to tell Linux which interpreter to use.
@@ -1360,25 +1360,25 @@ fi
 
 **The 7 Layers of Engagement:**
 
-1.  **Layer 7 — Application:** Where the human meets the machine.
+1.  **Layer 7 - Application:** Where the human meets the machine.
     *   *Protocols:* HTTP, DNS, SSH, FTP, SMTP.
     *   *Qyvora Focus:* SQL Injection, XSS, API manipulation.
-2.  **Layer 6 — Presentation:** The translator. Manages encryption and formatting.
+2.  **Layer 6 - Presentation:** The translator. Manages encryption and formatting.
     *   *Protocols:* SSL/TLS, JPEG, GIF.
     *   *Qyvora Focus:* Downgrade attacks, certificate spoofing.
-3.  **Layer 5 — Session:** The coordinator. Manages connections.
+3.  **Layer 5 - Session:** The coordinator. Manages connections.
     *   *Protocols:* RPC, NetBIOS, Sockets.
     *   *Qyvora Focus:* Session hijacking, token theft.
-4.  **Layer 4 — Transport:** The logistics. Manages delivery.
+4.  **Layer 4 - Transport:** The logistics. Manages delivery.
     *   *Protocols:* TCP (Reliable), UDP (Fast).
     *   *Qyvora Focus:* Port scanning, SYN flooding.
-5.  **Layer 3 — Network:** The navigator. Manages routing.
+5.  **Layer 3 - Network:** The navigator. Manages routing.
     *   *Protocols:* IP, ICMP, IPsec.
     *   *Qyvora Focus:* IP spoofing, ICMP redirect.
-6.  **Layer 2 — Data Link:** The neighborhood. Manages local hardware.
+6.  **Layer 2 - Data Link:** The neighborhood. Manages local hardware.
     *   *Protocols:* Ethernet, Wi-Fi (802.11).
     *   *Qyvora Focus:* ARP poisoning, MAC flooding.
-7.  **Layer 1 — Physical:** The terrain. The cables and radio waves.
+7.  **Layer 1 - Physical:** The terrain. The cables and radio waves.
     *   *Qyvora Focus:* RF Jamming, hardware implants.
 
 **Command Line Reconnaissance:**
@@ -1408,7 +1408,7 @@ ip link show eth0 | grep mtu
             {
               title: 'The TCP Three-Way Handshake',
               instruction:
-                `TCP (Transmission Control Protocol) is the "connection-oriented" standard. Before an Qyvora operative can extract data, they must understand the 'handshake'—the formal greeting between two systems.
+                `TCP (Transmission Control Protocol) is the "connection-oriented" standard. Before an Qyvora operative can extract data, they must understand the 'handshake', the formal greeting between two systems.
 
 **The Sequence of Trust:**
 1.  **SYN (Synchronize):** "Hello, I want to talk."
@@ -2142,7 +2142,7 @@ tshark -r capture.pcap -Y "ip.ttl > 128"
             {
               title: 'Advanced Display Filters',
               instruction:
-                `Display filters are your most powerful weapon in the war against noise. To become a hacker, you must be able to filter through millions of packets to find the 'needle in the haystack'—the one packet containing the password.
+                `Display filters are your most powerful weapon in the war against noise. To become a hacker, you must be able to filter through millions of packets to find the 'needle in the haystack', the one packet containing the password.
 
 **Attack Detection Filters:**
 \`\`\`bash
@@ -2419,7 +2419,7 @@ curl -s -I http://<target_ip>1 | grep "Set-Cookie"
             {
               title: 'Cookies, Sessions & State Manipulation',
               instruction:
-                `HTTP is a 'stateless' protocol—it has no memory. Cookies are the 'IDs' that servers use to remember who you are. To train like a hacker is to understand how to steal, forge, and manipulate these IDs to gain unauthorized access.
+                `HTTP is a 'stateless' protocol, it has no memory. Cookies are the 'IDs' that servers use to remember who you are. To train like a hacker is to understand how to steal, forge, and manipulate these IDs to gain unauthorized access.
 
 **Cookie Inspection & Attributes:**
 - **HttpOnly:** If set, JavaScript cannot see the cookie (Protects against XSS).
@@ -3124,7 +3124,7 @@ curl -b "session=hacker_token" -d "token=VICTIM_TOKEN" ...
 \`\`\`
 
 **5. Exploiting GET-Based CSRF:**
-(The easiest to exploit—can be triggered via a simple \`<img>\` tag)
+(The easiest to exploit, can be triggered via a simple \`<img>\` tag)
 \`\`\`html
 <img src="http://<target_ip>/api/admin/delete-user?id=100" style="display:none;" />
 \`\`\`
@@ -3195,7 +3195,7 @@ if (req.body.csrf_token !== req.session.csrf_token) {
           id: 'room5',
           title: 'Authentication Attacks',
           overview:
-            "Authentication is the front door of every application — and it is often left unlocked. To become an Qyvora operative, you must learn to pick that lock without leaving a scratch. This room covers brute force, session attacks, token analysis, and the full range of authentication weaknesses that separate a hardened target from a compromised one.",
+            "Authentication is the front door of every application, and it is often left unlocked. To become an Qyvora operative, you must learn to pick that lock without leaving a scratch. This room covers brute force, session attacks, token analysis, and the full range of authentication weaknesses that separate a hardened target from a compromised one.",
           estimatedMinutes: 30,
           steps: [
             {
@@ -3227,7 +3227,7 @@ hydra -L users.txt -p "Password123!" http-post-form \
 3. In Intruder → Positions, mark the password field with §
 4. In Intruder → Payloads, load a wordlist
 5. Start the attack
-6. Sort by response length — a different length usually indicates success
+6. Sort by response length, a different length usually indicates success
 
 **What to look for in the application's response:**
 - Does it lock out after N failed attempts? (good security control)
@@ -3261,10 +3261,10 @@ echo "eyJ1c2VyIjoiYWRtaW4ifQ==" | base64 -d
 \`\`\`
 
 **What makes a session token weak:**
-- **Predictable** — sequential numbers, timestamps, or simple patterns
-- **Short** — fewer than 128 bits of entropy
-- **Not invalidated on logout** — the token remains valid after the user logs out
-- **Not rotated after privilege change** — the same token is used before and after login
+- **Predictable**: sequential numbers, timestamps, or simple patterns
+- **Short**: fewer than 128 bits of entropy
+- **Not invalidated on logout**: the token remains valid after the user logs out
+- **Not rotated after privilege change**: the same token is used before and after login
 
 **Testing token invalidation:**
 \`\`\`bash
@@ -3292,7 +3292,7 @@ curl http://<target_site>/  # Server sets: Set-Cookie: session=KNOWN_TOKEN
 # 2. Attacker tricks the victim into using this token
 # (via a link: http://<target_site>/login?session=KNOWN_TOKEN)
 
-# 3. Victim logs in — if the server does not rotate the token on login,
+# 3. Victim logs in, if the server does not rotate the token on login,
 #    the attacker's known token is now authenticated
 
 # 4. Attacker uses the known token to access the victim's account
@@ -3316,7 +3316,7 @@ echo "After: $AFTER_LOGIN"
 \`\`\`
 
 **Session hijacking via XSS:**
-If you have XSS, you can steal the session cookie and use it to impersonate the victim — this is why HttpOnly cookies are important.
+If you have XSS, you can steal the session cookie and use it to impersonate the victim, this is why HttpOnly cookies are important.
 
 Test the demo application for session fixation. Document whether the session token changes after login.`,
               image: 'step-03.webp',
@@ -3353,7 +3353,7 @@ Remediation: Invalidate session tokens server-side on logout.
              Implement session expiry (e.g. 30 minutes of inactivity).
 \`\`\`
 
-Write findings for every authentication weakness you discovered. Be specific — include the exact evidence, the HTTP requests and responses, and concrete remediation steps.
+Write findings for every authentication weakness you discovered. Be specific, include the exact evidence, the HTTP requests and responses, and concrete remediation steps.
 
 **Mini-Challenge: Chain the Weaknesses**
 
@@ -3368,7 +3368,7 @@ Combine everything you've learned into a single real-world attack scenario:
 # 6. Attempt to access the admin endpoint with the still-valid token
 \`\`\`
 
-Document each step with the actual commands you ran. If any step fails, explain *why* — understanding the defense is as important as understanding the attack.`,
+Document each step with the actual commands you ran. If any step fails, explain *why*, understanding the defense is as important as understanding the attack.`,
               image: 'step-04.webp',
             },
           ],
@@ -3435,7 +3435,7 @@ dnstwist --format csv <target_ip> > typosquats.csv
             {
               title: 'Anatomy of a Spoofed Engagement',
               instruction:
-                `A successful phishing campaign requires technical precision. To train like a hacker is to understand the protocols that govern email trust—and how to bypass them. You must learn to forge headers and create deceptive payloads that look identical to legitimate communication.
+                `A successful phishing campaign requires technical precision. To train like a hacker is to understand the protocols that govern email trust, and how to bypass them. You must learn to forge headers and create deceptive payloads that look identical to legitimate communication.
 
 **1. Technical Spoofing Drills:**
 \`\`\`bash
@@ -3528,7 +3528,7 @@ site:news.<search_engine> "Qyvora" "Acquisition"
             {
               title: 'Defensive Counter-Measures',
               instruction:
-                `To train like a hacker is to know how the enemy thinks—and how to stop them. As an Qyvora operative, you must be able to train others to spot the subtle 'glitches' in a social engineering attack.
+                `To train like a hacker is to know how the enemy thinks, and how to stop them. As an Qyvora operative, you must be able to train others to spot the subtle 'glitches' in a social engineering attack.
 
 **1. Technical Verification:**
 \`\`\`bash
@@ -3588,7 +3588,7 @@ Document your scenario with a diagram of the attack chain. What countermeasure w
             {
               title: 'Google Dorking: The Search Operator',
               instruction:
-                `Google is more than a search engine; it is a massive, indexed database of the world's misconfigurations. To train like a hacker is to use 'Dorks'—advanced search operators—to find information that was never meant to be public.
+                `Google is more than a search engine; it is a massive, indexed database of the world's misconfigurations. To train like a hacker is to use 'Dorks', advanced search operators, to find information that was never meant to be public.
 
 **Essential Dorking Drills:**
 \`\`\`bash
@@ -3978,7 +3978,7 @@ cat config.bak | grep "interface" -A 5
 \`\`\`
 
 **5. Building a 'Human Profile' from Trash:**
-Identify employee names and birthdays from discarded 'Happy Birthday' cards or cake boxes—perfect for password guessing.
+Identify employee names and birthdays from discarded 'Happy Birthday' cards or cake boxes, perfect for password guessing.
 
 **6. Analyzing Post-it Note Residue:**
 Checking discarded monitors or keyboards for the 'imprint' of a password written on a sticky note.
@@ -4011,7 +4011,7 @@ sudo rfkill block all
 - **No Evidence:** Never leave your own trash or notes behind.
 
 **4. Implementing the 'Authorisation' Buffer:**
-Always carry a 'Get Out of Jail Free' card—the signed authorization letter from the Qyvora client. If challenged, stay calm and present the letter.
+Always carry a 'Get Out of Jail Free' card, the signed authorization letter from the Qyvora client. If challenged, stay calm and present the letter.
 
 **5. Post-Engagement Sanitization:**
 \`\`\`bash
@@ -4054,7 +4054,7 @@ Plan a complete physical penetration test from reconnaissance to exit:
 # - Retrieve any planted devices or confirm they've been destroyed
 # - Wipe all logs from your field laptop
 dd if=/dev/zero of=/tmp/wipe bs=1M; rm /tmp/wipe
-# - Review building CCTV blind spots — were you captured?
+# - Review building CCTV blind spots, were you captured?
 \`\`\`
 
 Write a one-page engagement plan and identify the three most likely points of failure in your scenario. This is your final exercise as an Qyvora operative.`,

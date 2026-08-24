@@ -539,7 +539,7 @@ export const TerminalShell: React.FC<TerminalShellProps> = ({
           className="flex items-center justify-between px-2.5 py-1 shrink-0 border-b"
           style={{ background: KALI_TITLE_BG, borderColor: KALI_BORDER }}
         >
-          <span className="text-[10px] font-mono text-white/30 tracking-[0.12em] select-none truncate">_terminal <span className="text-white/20">v2.0 — type "help"</span></span>
+          <span className="text-[10px] font-mono text-white/30 tracking-[0.12em] select-none truncate">_terminal <span className="text-white/20">v2.0, type "help"</span></span>
           <div className="flex items-center gap-1">
             <button
               onClick={onToggleFullscreen}

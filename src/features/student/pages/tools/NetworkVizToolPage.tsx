@@ -4,7 +4,7 @@ import SEO from '@/shared/components/SEO';
 
 const NetworkVizToolPage = () => (
   <>
-    <SEO title="Network Visualizer — QYVORA Tools" description="Interactive network topology visualizer for mapping and analyzing network infrastructure." noindex />
+    <SEO title="Network Visualizer | QYVORA Tools" description="Interactive network topology visualizer for mapping and analyzing network infrastructure." noindex />
     <SimulationProvider>
       <NetworkBuilder
         open={true}

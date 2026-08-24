@@ -1,4 +1,5 @@
 import { Download, GitBranch, Loader2, Terminal } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { IconArrowRight } from '@/shared/components/icons';
 import SEO from '@/shared/components/SEO';
 import PublicSnapLayout from '@/shared/components/PublicSnapLayout';
@@ -15,6 +16,8 @@ import ToolSectionHeader from '@/features/marketing/components/tools/ToolSection
 import { openToolInstall } from '@/features/marketing/components/ToolInstallModal';
 import { useToolRelease } from '@/features/marketing/hooks/useToolRelease';
 import { PHASES, RELEASES, ONE_LINER, BUILD_FROM_SOURCE, USAGE_EXAMPLES, SCAN_OUTPUT, SOURCE_EXAMPLES } from '@/features/marketing/data/anansiData';
+import { getRelatedTools } from '@/features/marketing/data/relatedTools';
+import RelatedContentSection from '@/shared/components/RelatedContentSection';
 import anansiLogo from '@/assets/anansi/anansi-main-logo.webp';
 
 const GITHUB_URL = 'https://github.com/QYVORA/qyvora-anansi-cli';
@@ -29,10 +32,11 @@ function formatBytes(bytes: number): string {
 
 const AnansiPage = () => {
   const { user } = useAuth();
+  const { t } = useTranslation();
   const release = useToolRelease('anansi');
   return (
     <div className="bg-bg min-h-full">
-      <SEO title="Anansi - QYVORA" description="Anansi — Attack Surface Intelligence CLI. A nine-phase recon pipeline from subdomain discovery to exploit-chain analysis, all from the terminal." />
+      <SEO title="Anansi - QYVORA" description="Anansi. Attack Surface Intelligence CLI. A nine-phase recon pipeline from subdomain discovery to exploit-chain analysis, all from the terminal." />
       <PublicSnapLayout>
         <section className="relative w-full min-h-dvh snap-section bg-bg">
         <StudentHeroSection
@@ -41,7 +45,7 @@ const AnansiPage = () => {
           titleClassName={PUBLIC_HERO_TITLE_CLASS}
           showGlobe
           typewrite
-          description="Attack Surface Intelligence Engine — a nine-phase recon pipeline that discovers, probes and maps attack surfaces from the terminal."
+          description="Attack Surface Intelligence Engine: a nine-phase recon pipeline that discovers, probes and maps attack surfaces from the terminal."
           stats={[
             { label: 'Modules', value: PHASES.length },
             { label: 'Platform', value: 'CLI' },
@@ -102,7 +106,7 @@ const AnansiPage = () => {
           kicker="Go source"
           title="Real engine"
           accent="code"
-          description="Shared transport, TTL-cached resolution and dead-CNAME detection — lifted from the repository."
+          description="Shared transport, TTL-cached resolution and dead-CNAME detection, lifted from the repository."
           examples={SOURCE_EXAMPLES}
         />
 
@@ -115,7 +119,7 @@ const AnansiPage = () => {
               kicker="Install"
               title="Ready in"
               accent="Minutes"
-              description="Single static binary with zero runtime dependencies — one-liner install, manual download, or build from source."
+              description="Single static binary with zero runtime dependencies, one-liner install, manual download, or build from source."
             />
 
             <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,2fr)_minmax(0,3fr)] gap-4 md:gap-6 items-stretch">
@@ -206,7 +210,7 @@ const AnansiPage = () => {
                 )}
                 {release.status === 'unavailable' && (
                   <span className="rounded-lg border border-amber-500/30 bg-amber-500/5 px-3 py-2 text-[9px] uppercase tracking-widest text-text-muted">
-                    No release published yet — use the installer above
+                    No release published yet, use the installer above
                   </span>
                 )}
                 {release.status === 'ready' &&
@@ -251,7 +255,7 @@ const AnansiPage = () => {
                   <span className="w-2.5 h-2.5 rounded-full bg-red-400/70" />
                   <span className="w-2.5 h-2.5 rounded-full bg-yellow-400/70" />
                   <span className="w-2.5 h-2.5 rounded-full bg-accent/70" />
-                  <span className="ml-2 text-[9px] font-mono text-text-muted">anansi — zsh</span>
+                  <span className="ml-2 text-[9px] font-mono text-text-muted">anansi, zsh</span>
                 </div>
                 <div className="p-4 md:p-5 font-mono text-[11px] md:text-xs space-y-2">
                   <div className="flex items-center gap-2">
@@ -299,6 +303,9 @@ const AnansiPage = () => {
             </div>
           </div>
         </PublicSnapSection>
+
+        <RelatedContentSection items={getRelatedTools(t, '/anansi')} />
+
         <section className="relative w-full min-h-dvh snap-section bg-bg-alt">
           <LandingFinalCtaSection user={user} />
         </section>

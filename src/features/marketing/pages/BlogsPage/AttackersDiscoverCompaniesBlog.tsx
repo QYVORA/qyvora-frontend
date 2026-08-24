@@ -9,13 +9,13 @@ export const AttackersDiscoverCompaniesBlog: React.FC = () => {
 
       <Section>
         <Body>
-          Before an attacker launches a single exploit, they need to find you. Not your company website — your <Highlight>real infrastructure</Highlight>. The subdomain running a staging environment. The cloud storage bucket with no access policy. The old API endpoint still responding on a forgotten IP address.
+          Before an attacker launches a single exploit, they need to find you. Not your company website, your <Highlight>real infrastructure</Highlight>. The subdomain running a staging environment. The cloud storage bucket with no access policy. The old API endpoint still responding on a forgotten IP address.
         </Body>
         <Body>
           This phase is called <Highlight>reconnaissance</Highlight>, and it determines everything that follows. A well-executed recon phase can identify critical vulnerabilities before a single line of code is exploited. A poorly protected attack surface means attackers already know more about your infrastructure than your own team does.
         </Body>
         <Body>
-          This article walks through how attackers discover companies on the internet — and what you can do about it.
+          This article walks through how attackers discover companies on the internet, and what you can do about it.
         </Body>
       </Section>
 
@@ -23,16 +23,16 @@ export const AttackersDiscoverCompaniesBlog: React.FC = () => {
       <Section>
         <Heading>How Recon Works: The Attacker's Pipeline</Heading>
         <Body>
-          Professional reconnaissance follows a structured pipeline. Attackers do not guess — they follow a methodology that systematically expands the attack surface:
+          Professional reconnaissance follows a structured pipeline. Attackers do not guess, they follow a methodology that systematically expands the attack surface:
         </Body>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 my-8">
-          <PhaseCard icon={IconSearch} name="Step 01 — Surface Enumeration" desc="Identify the known attack surface: main domains, ASNs, SSL certs, DNS records" />
-          <PhaseCard icon={GitBranch} name="Step 02 — Subdomain Discovery" desc="Find every subdomain via certificate transparency logs, DNS brute-force, and crawlers" />
-          <PhaseCard icon={Radio} name="Step 03 — Host Probing" desc="Check which discovered hosts are live, what ports are open, and what services are running" />
-          <PhaseCard icon={Globe} name="Step 04 — Technology Fingerprinting" desc="Identify web servers, frameworks, CMS platforms, and their version numbers" />
-          <PhaseCard icon={IconEye} name="Step 05 — Directory Enumeration" desc="Discover exposed paths: admin panels, .env files, API docs, backup archives, staging environments" />
-          <PhaseCard icon={IconWarning} name="Step 06 — Vulnerability Mapping" desc="Cross-reference findings against known vulnerabilities and misconfigurations" />
+          <PhaseCard icon={IconSearch} name="Step 01. Surface Enumeration" desc="Identify the known attack surface: main domains, ASNs, SSL certs, DNS records" />
+          <PhaseCard icon={GitBranch} name="Step 02. Subdomain Discovery" desc="Find every subdomain via certificate transparency logs, DNS brute-force, and crawlers" />
+          <PhaseCard icon={Radio} name="Step 03. Host Probing" desc="Check which discovered hosts are live, what ports are open, and what services are running" />
+          <PhaseCard icon={Globe} name="Step 04. Technology Fingerprinting" desc="Identify web servers, frameworks, CMS platforms, and their version numbers" />
+          <PhaseCard icon={IconEye} name="Step 05. Directory Enumeration" desc="Discover exposed paths: admin panels, .env files, API docs, backup archives, staging environments" />
+          <PhaseCard icon={IconWarning} name="Step 06. Vulnerability Mapping" desc="Cross-reference findings against known vulnerabilities and misconfigurations" />
         </div>
 
         <Body>
@@ -44,7 +44,7 @@ export const AttackersDiscoverCompaniesBlog: React.FC = () => {
       <Section>
         <Heading>Subdomain Discovery: The Entry Point</Heading>
         <Body>
-          The most common starting point is <Highlight>Certificate Transparency (CT) log enumeration</Highlight>. Every time an organisation issues an SSL/TLS certificate, the certificate is logged publicly. Attackers query these logs to discover subdomains — and they do not need any special access to do so.
+          The most common starting point is <Highlight>Certificate Transparency (CT) log enumeration</Highlight>. Every time an organisation issues an SSL/TLS certificate, the certificate is logged publicly. Attackers query these logs to discover subdomains, and they do not need any special access to do so.
         </Body>
 
         <TerminalBlock code={`# Query crt.sh for all logged certificates on target.com
@@ -60,7 +60,7 @@ mail.target.com
 vpn.target.com`} />
 
         <Body>
-          CT logs are just the beginning. Attackers combine this with <Highlight>DNS brute-forcing</Highlight> — trying thousands of common subdomain names against the target's DNS servers — and <Highlight>search engine dorking</Highlight> to find subdomains indexed by Google that are not in CT logs.
+          CT logs are just the beginning. Attackers combine this with <Highlight>DNS brute-forcing</Highlight>: trying thousands of common subdomain names against the target's DNS servers, and <Highlight>search engine dorking</Highlight> to find subdomains indexed by Google that are not in CT logs.
         </Body>
 
         <Body>
@@ -69,10 +69,10 @@ vpn.target.com`} />
 
         <BulletList
           items={[
-            { icon: <IconSearch size={20} className="text-accent" />, text: <span><Highlight>CT logs</Highlight> — certificate transparency records (crt.sh, CertSpotter)</span> },
-            { icon: <GitBranch className="w-5 h-5 text-accent" />, text: <span><Highlight>DNS brute-force</Highlight> — common subdomain wordlists (subdomains-top1million)</span> },
-            { icon: <Globe className="w-5 h-5 text-accent" />, text: <span><Highlight>Search engines</Highlight> — Google dorking for site:*.target.com</span> },
-            { icon: <Radio className="w-5 h-5 text-accent" />, text: <span><Highlight>Zone transfers</Highlight> — misconfigured DNS servers leaking entire zone files</span> },
+            { icon: <IconSearch size={20} className="text-accent" />, text: <span><Highlight>CT logs</Highlight>, certificate transparency records (crt.sh, CertSpotter)</span> },
+            { icon: <GitBranch className="w-5 h-5 text-accent" />, text: <span><Highlight>DNS brute-force</Highlight>, common subdomain wordlists (subdomains-top1million)</span> },
+            { icon: <Globe className="w-5 h-5 text-accent" />, text: <span><Highlight>Search engines</Highlight>. Google dorking for site:*.target.com</span> },
+            { icon: <Radio className="w-5 h-5 text-accent" />, text: <span><Highlight>Zone transfers</Highlight>, misconfigured DNS servers leaking entire zone files</span> },
           ]}
         />
       </Section>
@@ -81,7 +81,7 @@ vpn.target.com`} />
       <Section>
         <Heading>Technology Fingerprinting</Heading>
         <Body>
-          Once live hosts are identified, attackers <Highlight>fingerprint</Highlight> the technology stack. This tells them what software is running, what version, and — critically — what known vulnerabilities exist for that specific version.
+          Once live hosts are identified, attackers <Highlight>fingerprint</Highlight> the technology stack. This tells them what software is running, what version, and critically, what known vulnerabilities exist for that specific version.
         </Body>
 
         <InlineDiagram>
@@ -122,7 +122,7 @@ vpn.target.com`} />
               <rect x="320" y="140" width="260" height="3" rx="1.5" fill="rgba(6,182,111,0.2)" />
               <circle cx="338" cy="156" r="3" fill="rgba(6,182,111,0.3)" />
               <text x="348" y="160" textAnchor="start" fill="#06B66F" fontFamily="JetBrains Mono, monospace" fontWeight="900" fontSize="12" letterSpacing="0.5">Favicon Hash</text>
-              <text x="338" y="186" textAnchor="start" fill="rgba(238,240,238,0.4)" fontFamily="JetBrains Mono, monospace" fontSize="11">MurmurHash3 — matches default framework icons</text>
+              <text x="338" y="186" textAnchor="start" fill="rgba(238,240,238,0.4)" fontFamily="JetBrains Mono, monospace" fontSize="11">MurmurHash3 - matches default framework icons</text>
             </svg>
           </div>
         </InlineDiagram>
@@ -136,20 +136,20 @@ vpn.target.com`} />
       <Section>
         <Heading>Exposed Paths and Misconfigurations</Heading>
         <Body>
-          This is where reconnaissance becomes dangerous. Attackers scan for <Highlight>exposed paths</Highlight> — common files and directories that should never be publicly accessible but often are:
+          This is where reconnaissance becomes dangerous. Attackers scan for <Highlight>exposed paths</Highlight>, common files and directories that should never be publicly accessible but often are:
         </Body>
 
-        <CodeBlock code={`/.env                # Environment variables — API keys, DB credentials, secrets
-/.git/config         # Git repository disclosure — full source code leak
-/admin               # Admin panel — often default credentials
-/backup              # Backup archives — entire database dumps
-/api/docs            # API documentation — endpoint descriptions, auth methods
+        <CodeBlock code={`/.env                # Environment variables. API keys, DB credentials, secrets
+/.git/config         # Git repository disclosure, full source code leak
+/admin               # Admin panel, often default credentials
+/backup              # Backup archives, entire database dumps
+/api/docs            # API documentation, endpoint descriptions, auth methods
 /.well-known/        # Security.txt, DMARC, and other security configuration files
-/swagger.json        # Swagger/OpenAPI spec — full API surface documentation
-/phpinfo.php         # PHP info — server configuration, environment variables exposed`} />
+/swagger.json        # Swagger/OpenAPI spec, full API surface documentation
+/phpinfo.php         # PHP info, server configuration, environment variables exposed`} />
 
         <Body>
-          A single exposed <Highlight>.env file</Highlight> can compromise an entire organisation. Attackers have used leaked database credentials from <Highlight>.env files</Highlight> to gain direct access to production databases without exploiting any technical vulnerability — they simply used the credentials the application itself uses.
+          A single exposed <Highlight>.env file</Highlight> can compromise an entire organisation. Attackers have used leaked database credentials from <Highlight>.env files</Highlight> to gain direct access to production databases without exploiting any technical vulnerability, they simply used the credentials the application itself uses.
         </Body>
 
         <Body>
@@ -161,7 +161,7 @@ vpn.target.com`} />
       <Section>
         <Heading>What This Means for Your Organisation</Heading>
         <Body>
-          The uncomfortable truth is that <Highlight>your organisation has already been discovered</Highlight> — at least partially. Certificate transparency logs are public. DNS records are public. Your technology stack is visible to anyone who sends an HTTP request to your servers.
+          The uncomfortable truth is that <Highlight>your organisation has already been discovered</Highlight>, at least partially. Certificate transparency logs are public. DNS records are public. Your technology stack is visible to anyone who sends an HTTP request to your servers.
         </Body>
 
         <Body>
@@ -188,12 +188,12 @@ vpn.target.com`} />
           <FeatureCard
             icon={IconSearch}
             title="Map Your Full Attack Surface"
-            desc="Run comprehensive reconnaissance against your own organisation. Use the same techniques attackers use — CT log enumeration, subdomain brute-forcing, technology fingerprinting — to discover everything externally visible."
+            desc="Run comprehensive reconnaissance against your own organisation. Use the same techniques attackers use: CT log enumeration, subdomain brute-forcing, technology fingerprinting, to discover everything externally visible."
           />
           <FeatureCard
             icon={IconShield}
             title="Eliminate Shadow Assets"
-            desc="Shut down or secure any discovered assets that are not meant to be public. Staging environments, old APIs, dev subdomains — if they do not need to be on the internet, remove them or put them behind authentication."
+            desc="Shut down or secure any discovered assets that are not meant to be public. Staging environments, old APIs, dev subdomains, if they do not need to be on the internet, remove them or put them behind authentication."
           />
           <FeatureCard
             icon={Radio}
@@ -207,7 +207,7 @@ vpn.target.com`} />
       <Section>
         <CTA
           title="Know Your Attack Surface"
-          desc="Run an Anansi attack surface intelligence scan against your own organisation. See what attackers see — in under two minutes, from your terminal, for free."
+          desc="Run an Anansi attack surface intelligence scan against your own organisation. See what attackers see, in under two minutes, from your terminal, for free."
           href="https://github.com/QYVORA/qyvora-anansi-cli"
           label="Scan Your Surface"
         />

@@ -5,6 +5,7 @@ import { Zap } from 'lucide-react';
 import { IconArrowLeft, IconArrowRight } from '@/shared/components/icons';
 import SEO from '@/shared/components/SEO';
 import PublicSnapLayout from '@/shared/components/PublicSnapLayout';
+import RelatedContentSection from '@/shared/components/RelatedContentSection';
 import StudentHeroSection, { PUBLIC_HERO_TITLE_CLASS } from '@/shared/components/StudentHeroSection';
 import { Footer } from '@/shared/components/layout';
 import { useAuth } from '@/core/contexts/AuthContext';
@@ -28,11 +29,21 @@ const HpbPhasePage: React.FC = () => {
   const totalMinutes = (phase.rooms || []).reduce((sum, room) => sum + (room.estimatedMinutes || 0), 0);
   const totalHours = Math.max(1, Math.round((totalMinutes / 60) * 10) / 10);
 
+  // Sibling phases for the related-content listing at the page bottom.
+  const otherPhases = BOOTCAMP_CONFIG.phases
+    .filter((p) => p.id !== phase.id)
+    .map((p) => ({
+      to: `/hpb/${p.id}`,
+      title: p.title,
+      badge: p.codename,
+      icon: <HpbAvatar variant={p.id as HpbVariant} className="h-full w-auto object-contain" />,
+    }));
+
   return (
     <div className="bg-bg min-h-full">
       <SEO
         title={`${phase.title} - Hacker Protocol Bootcamp`}
-        description={learnPhase?.desc ?? `${phase.title} — Hacker Protocol Bootcamp.`}
+        description={learnPhase?.desc ?? `${phase.title}. Hacker Protocol Bootcamp.`}
         breadcrumbName={phase.title}
       />
       <PublicSnapLayout>
@@ -44,7 +55,7 @@ const HpbPhasePage: React.FC = () => {
             titleClassName={PUBLIC_HERO_TITLE_CLASS}
             showGlobe
             typewrite
-            description={learnPhase?.desc ?? `${phase.title} — Hacker Protocol Bootcamp.`}
+            description={learnPhase?.desc ?? `${phase.title}. Hacker Protocol Bootcamp.`}
             stats={[
               { label: 'Rooms', value: roomCount },
               { label: 'Est. Time', value: `${totalHours}h` },
@@ -80,6 +91,9 @@ const HpbPhasePage: React.FC = () => {
             <RoomSection room={room} roomIndex={index} />
           </section>
         ))}
+
+        {/* Related phases */}
+        <RelatedContentSection items={otherPhases} />
 
         {/* CTA */}
         <section id="cta" className="relative w-full min-h-dvh snap-section bg-bg-alt">

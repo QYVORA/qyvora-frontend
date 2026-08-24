@@ -91,7 +91,10 @@ const NetworkBuilderInner: React.FC<NetworkBuilderProps> = ({ open, onOpenChange
   const [labelInput, setLabelInput] = useState<{ id: string; field: 'label' | 'ip'; value: string } | null>(null);
   const reactFlowWrapper = useRef<HTMLDivElement>(null);
   const [showLabels, setShowLabels] = useState(true);
-  const [paletteOpen, setPaletteOpen] = useState(true);
+  // Palette starts collapsed on phones — the open panel ate the whole canvas
+  // and the topology had no room to breathe (or be tapped).
+  const isMobileViewport = typeof window !== 'undefined' && window.matchMedia('(max-width: 767px)').matches;
+  const [paletteOpen, setPaletteOpen] = useState(!isMobileViewport);
 
   // Provide edge data to traffic engine
   useEffect(() => {

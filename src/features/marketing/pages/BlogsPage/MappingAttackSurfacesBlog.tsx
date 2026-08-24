@@ -9,10 +9,10 @@ export const MappingAttackSurfacesBlog: React.FC = () => {
 
       <Section>
         <Body>
-          Over the past year, we have been mapping attack surfaces across multiple sectors — fintech, government, e-commerce, healthcare, and telecommunications — using our own reconnaissance tooling to understand the real state of internet-facing security posture. The findings have been consistent, and they have been sobering.
+          Over the past year, we have been mapping attack surfaces across multiple sectors: fintech, government, e-commerce, healthcare, and telecommunications, using our own reconnaissance tooling to understand the real state of internet-facing security posture. The findings have been consistent, and they have been sobering.
         </Body>
         <Body>
-          We are sharing some of the patterns we have observed — not targeting specific organisations, but the <Highlight>recurring themes and structural weaknesses</Highlight> we see across the board.
+          We are sharing some of the patterns we have observed, not targeting specific organisations, but the <Highlight>recurring themes and structural weaknesses</Highlight> we see across the board.
         </Body>
         <Body>
           If your organisation has never done an external attack surface assessment, there is a high probability that some of these patterns apply to you.
@@ -54,7 +54,7 @@ export const MappingAttackSurfacesBlog: React.FC = () => {
               <rect x="280" y="55" width="300" height="80" rx="10" fill="url(#unknown-grad)" stroke="rgba(6,182,111,0.15)" strokeWidth="1" strokeDasharray="5 4" filter="url(#bar-shadow)" />
               <rect x="280" y="55" width="300" height="4" rx="2" fill="rgba(6,182,111,0.2)" />
               <text x="430" y="92" textAnchor="middle" fill="#06B66F" fontFamily="JetBrains Mono, monospace" fontWeight="900" fontSize="16" letterSpacing="1">Unknown (Shadow)</text>
-              <text x="430" y="118" textAnchor="middle" fill="rgba(238,240,238,0.4)" fontFamily="JetBrains Mono, monospace" fontSize="11">~40-70% — unmonitored, unpatched</text>
+              <text x="430" y="118" textAnchor="middle" fill="rgba(238,240,238,0.4)" fontFamily="JetBrains Mono, monospace" fontSize="11">~40-70%, unmonitored, unpatched</text>
             </svg>
           </div>
         </InlineDiagram>
@@ -65,9 +65,9 @@ export const MappingAttackSurfacesBlog: React.FC = () => {
 
         <BulletList
           items={[
-            { icon: <Server className="w-5 h-5 text-accent" />, text: <span><Highlight>Staging environments</Highlight> — deployed by developers, accessible from the internet, often with default credentials and production-like data</span> },
-            { icon: <Globe className="w-5 h-5 text-accent" />, text: <span><Highlight>Forgotten subdomains</Highlight> — old marketing sites, archived applications, experiment deployments that were never decommissioned</span> },
-            { icon: <IconEye size={20} className="text-accent" />, text: <span><Highlight>Cloud resources</Highlight> — storage buckets, databases, and compute instances provisioned outside official cloud accounts or governance policies</span> },
+            { icon: <Server className="w-5 h-5 text-accent" />, text: <span><Highlight>Staging environments</Highlight>, deployed by developers, accessible from the internet, often with default credentials and production-like data</span> },
+            { icon: <Globe className="w-5 h-5 text-accent" />, text: <span><Highlight>Forgotten subdomains</Highlight>, old marketing sites, archived applications, experiment deployments that were never decommissioned</span> },
+            { icon: <IconEye size={20} className="text-accent" />, text: <span><Highlight>Cloud resources</Highlight>, storage buckets, databases, and compute instances provisioned outside official cloud accounts or governance policies</span> },
           ]}
         />
 
@@ -83,20 +83,20 @@ export const MappingAttackSurfacesBlog: React.FC = () => {
           During reconnaissance, we regularly discover <Highlight>exposed configuration files</Highlight> containing credentials, API keys, and infrastructure details. The most common offenders:
         </Body>
 
-        <CodeBlock code={`.env — environment variables with database credentials, API keys, and secrets
-.git/config — full source code repository disclosure
-.aws/credentials — AWS access keys and secret keys
-config.json / config.php — application configuration with hardcoded passwords
-phpinfo.php — complete PHP configuration including environment variables
-robots.txt — sometimes reveals hidden admin paths
-swagger.json / openapi.json — full API documentation including auth endpoints`} />
+        <CodeBlock code={`.env, environment variables with database credentials, API keys, and secrets
+.git/config, full source code repository disclosure
+.aws/credentials - AWS access keys and secret keys
+config.json / config.php, application configuration with hardcoded passwords
+phpinfo.php, complete PHP configuration including environment variables
+robots.txt, sometimes reveals hidden admin paths
+swagger.json / openapi.json, full API documentation including auth endpoints`} />
 
         <Body>
           What makes this particularly dangerous is that these files are usually exposed through <Highlight>automated discovery</Highlight>. Attackers use wordlists with thousands of common paths and check each one against discovered subdomains. If a path returns HTTP 200 with content, they have found something valuable.
         </Body>
 
         <Body>
-          In many cases, these exposed files are not the result of malice or negligence — they are the result of <Highlight>default configurations</Highlight>. A developer sets up a web server, deploys an application, and the framework's default settings serve static files from the public directory — including the <Highlight>.env file</Highlight> or <Highlight>.git directory</Highlight> that should have been excluded.
+          In many cases, these exposed files are not the result of malice or negligence: they are the result of <Highlight>default configurations</Highlight>. A developer sets up a web server, deploys an application, and the framework's default settings serve static files from the public directory, including the <Highlight>.env file</Highlight> or <Highlight>.git directory</Highlight> that should have been excluded.
         </Body>
       </Section>
 
@@ -119,7 +119,7 @@ swagger.json / openapi.json — full API documentation including auth endpoints`
         </Body>
 
         <Body>
-          The fix is straightforward — add the appropriate headers at the reverse proxy or web server level. But many organisations do not even know they are missing them until an assessment reveals the gap.
+          The fix is straightforward, add the appropriate headers at the reverse proxy or web server level. But many organisations do not even know they are missing them until an assessment reveals the gap.
         </Body>
       </Section>
 
@@ -157,7 +157,7 @@ old-blog.target.com.  CNAME  target.github.io.
         </Body>
 
         <Body>
-          The solution is not to slow down development or add more bureaucracy. The solution is <Highlight>continuous, automated attack surface visibility</Highlight> — tools that discover assets automatically, monitor them for changes, and alert when new exposures appear.
+          The solution is not to slow down development or add more bureaucracy. The solution is <Highlight>continuous, automated attack surface visibility</Highlight>, tools that discover assets automatically, monitor them for changes, and alert when new exposures appear.
         </Body>
       </Section>
 

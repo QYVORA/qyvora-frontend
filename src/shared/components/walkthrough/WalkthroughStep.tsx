@@ -140,7 +140,7 @@ export function WalkthroughStep({
                 <Lightbulb className="w-4 h-4 text-yellow-400 shrink-0 mt-0.5" />
                 <div>
                   <p className="text-[9px] font-black uppercase tracking-widest text-yellow-400/60 mb-1">
-                    Hint {ph.level} — {HINT_LEVEL_LABELS[ph.level - 1]}
+                    Hint {ph.level}, {HINT_LEVEL_LABELS[ph.level - 1]}
                   </p>
                   <p className="text-sm font-mono text-yellow-300/80 leading-relaxed">{ph.content}</p>
                 </div>

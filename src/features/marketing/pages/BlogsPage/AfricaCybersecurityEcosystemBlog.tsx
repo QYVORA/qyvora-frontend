@@ -9,10 +9,10 @@ export const AfricaCybersecurityEcosystemBlog: React.FC = () => {
 
       <Section>
         <Body>
-          Africa is at a crossroads. The continent is digitising faster than anywhere else on the planet — mobile money, e-governance, fintech, healthtech, and digital infrastructure are expanding at an unprecedented rate. But there is a problem: <Highlight>security is not keeping up</Highlight>.
+          Africa is at a crossroads. The continent is digitising faster than anywhere else on the planet: mobile money, e-governance, fintech, healthtech, and digital infrastructure are expanding at an unprecedented rate. But there is a problem: <Highlight>security is not keeping up</Highlight>.
         </Body>
         <Body>
-          This is the story of why QYVORA exists, what we are building, and why we believe Africa needs a homegrown offensive security ecosystem — not just imported solutions.
+          This is the story of why QYVORA exists, what we are building, and why we believe Africa needs a homegrown offensive security ecosystem, not just imported solutions.
         </Body>
       </Section>
 
@@ -34,7 +34,7 @@ export const AfricaCybersecurityEcosystemBlog: React.FC = () => {
         </div>
 
         <Body>
-          The gap is not just technical — it is <Highlight>structural and educational</Highlight>. We do not have enough trained professionals, enough local tooling, or enough awareness at the decision-maker level.
+          The gap is not just technical, it is <Highlight>structural and educational</Highlight>. We do not have enough trained professionals, enough local tooling, or enough awareness at the decision-maker level.
         </Body>
       </Section>
 
@@ -42,7 +42,7 @@ export const AfricaCybersecurityEcosystemBlog: React.FC = () => {
       <Section>
         <Heading>The Gap: Imported Solutions, Local Problems</Heading>
         <Body>
-          Many African organisations rely on imported security products built for Western infrastructure and compliance regimes. These tools assume a certain maturity level — dedicated SOC teams, mature DevSecOps pipelines, and budgets that most African companies do not have.
+          Many African organisations rely on imported security products built for Western infrastructure and compliance regimes. These tools assume a certain maturity level: dedicated SOC teams, mature DevSecOps pipelines, and budgets that most African companies do not have.
         </Body>
         <Body>
           The result is a <Highlight>false sense of security</Highlight>. Expensive tools sit misconfigured. Alerts are ignored because there is nobody to triage them. Incident response plans exist on paper but have never been tested.
@@ -66,7 +66,7 @@ export const AfricaCybersecurityEcosystemBlog: React.FC = () => {
           <FeatureCard
             icon={IconTarget}
             title="Attack Surface Intelligence"
-            desc="Tools like the Anansi CLI engine that map, probe, and analyse external attack surfaces — giving organisations the same visibility attackers have, built for the African infrastructure landscape."
+            desc="Tools like the Anansi CLI engine that map, probe, and analyse external attack surfaces: giving organisations the same visibility attackers have, built for the African infrastructure landscape."
           />
           <FeatureCard
             icon={BookOpen}
@@ -76,7 +76,7 @@ export const AfricaCybersecurityEcosystemBlog: React.FC = () => {
           <FeatureCard
             icon={Zap}
             title="Tooling & Innovation"
-            desc="We build our own tools — like the Anansi attack surface intelligence engine — because existing tools do not fit our workflow. Open source, terminal-first, built in Accra."
+            desc="We build our own tools (like the Anansi attack surface intelligence engine) because existing tools do not fit our workflow. Open source, terminal-first, built in Accra."
           />
         </div>
       </Section>
@@ -137,7 +137,7 @@ export const AfricaCybersecurityEcosystemBlog: React.FC = () => {
         </InlineDiagram>
 
         <Body>
-          This is not a linear pipeline — it is a <Highlight>flywheel</Highlight>. Every skilled operator we train becomes a potential tool contributor, service deliverer, or future trainer. Every engagement teaches us something that improves our tools and our curriculum.
+          This is not a linear pipeline, it is a <Highlight>flywheel</Highlight>. Every skilled operator we train becomes a potential tool contributor, service deliverer, or future trainer. Every engagement teaches us something that improves our tools and our curriculum.
         </Body>
       </Section>
 
@@ -145,7 +145,7 @@ export const AfricaCybersecurityEcosystemBlog: React.FC = () => {
       <Section>
         <Heading>Why This Matters for Africa</Heading>
         <Body>
-          Cybersecurity is not a luxury — it is a <Highlight>foundational requirement</Highlight> for digital sovereignty. If African companies and governments cannot secure their own infrastructure, they cannot truly own it. They remain dependent on external vendors, external expertise, and external approval.
+          Cybersecurity is not a luxury, it is a <Highlight>foundational requirement</Highlight> for digital sovereignty. If African companies and governments cannot secure their own infrastructure, they cannot truly own it. They remain dependent on external vendors, external expertise, and external approval.
         </Body>
         <Body>
           QYVORA is building the <Highlight>infrastructure for African cybersecurity independence</Highlight>. Every bootcamp graduate, every attack surface scan, every engagement brings us closer to a continent that can defend itself, innovate on its own terms, and compete globally.
@@ -159,7 +159,7 @@ export const AfricaCybersecurityEcosystemBlog: React.FC = () => {
       <Section>
         <CTA
           title="Join the Mission"
-          desc="Whether you are a student looking to start your cybersecurity journey, a company needing security assessments, or a partner who shares our vision — there is a place for you in the QYVORA ecosystem."
+          desc="Whether you are a student looking to start your cybersecurity journey, a company needing security assessments, or a partner who shares our vision, there is a place for you in the QYVORA ecosystem."
           href="/hpb"
           label="Explore the Ecosystem"
         />

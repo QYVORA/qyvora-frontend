@@ -48,15 +48,15 @@ export const KILL_CHAIN_SCENARIOS: KillChainScenario[] = [
         name: 'Reconnaissance',
         description: 'Discover live hosts and services on the network.',
         icon: 'radar',
-        narrative: `> **Valkyrie:** "The Architect has left backdoors everywhere. Let's map this network like he would — he built it, he knows every corner."
+        narrative: `> **Valkyrie:** "The Architect has left backdoors everywhere. Let's map this network like he would, he built it, he knows every corner."
 
 Our target is NovaCorp's internal network. Marcus Webb, the villain, was their CISO for 12 years. He knows every server, every weakness, every lazy admin password. To beat him we have to think like him.
 
 ## Reconnaissance Phase
 
-The first rule of pentesting: know your target better than they know themselves. Reconnaissance is the information-gathering phase where we map the network's attack surface before touching anything. Passive collection (WHOIS, DNS, public records) happens first, then active probing (ping sweeps, port scans) — and it always begins with host discovery.
+The first rule of pentesting: know your target better than they know themselves. Reconnaissance is the information-gathering phase where we map the network's attack surface before touching anything. Passive collection (WHOIS, DNS, public records) happens first, then active probing (ping sweeps, port scans), and it always begins with host discovery.
 
-The key insight: a ping sweep with \`nmap -sn\` tells us which IPs respond, but it doesn't tell us what they're running. Only a version scan (\`-sV\`) identifies services and their exact versions — and version numbers are what let us later search for matching exploits. Every service version is a fingerprint that pins us to a specific exploit.
+The key insight: a ping sweep with \`nmap -sn\` tells us which IPs respond, but it doesn't tell us what they're running. Only a version scan (\`-sV\`) identifies services and their exact versions, and version numbers are what let us later search for matching exploits. Every service version is a fingerprint that pins us to a specific exploit.
 
 ## Attack Flow
 
@@ -67,19 +67,19 @@ Scan the subnet for live hosts, fingerprint the services on the most interesting
           {
             command: 'nmap -sn 10.0.0.0/24',
             output: `Starting Nmap 7.94 ( https://nmap.org )\nNmap scan report for 10.0.0.1\nHost is up (0.0023s latency).\nNmap scan report for 10.0.0.5\nHost is up (0.0018s latency).\nNmap scan report for 10.0.0.10\nHost is up (0.0031s latency).\nNmap scan report for 10.0.0.15\nHost is up (0.0027s latency).\nNmap scan report for 10.0.0.20\nHost is up (0.0019s latency).\nNmap scan report for 10.0.0.50\nHost is up (0.0022s latency).\nNmap scan report for 10.0.0.51\nHost is up (0.0025s latency).\nNmap scan report for 10.0.0.100\nHost is up (0.0029s latency).\n\nNmap done: 256 IP addresses (8 hosts up) scanned in 12.34 seconds`,
-            explanation: 'Ping sweep reveals 8 live hosts on the subnet. Marcus was thorough — he documented everything in his notes.',
+            explanation: 'Ping sweep reveals 8 live hosts on the subnet. Marcus was thorough, he documented everything in his notes.',
             isRequired: true,
           },
           {
             command: 'nmap -sV -p 22,80,443,445,3306,8080 10.0.0.50',
             output: `Starting Nmap 7.94\nNmap scan report for 10.0.0.50\nHost is up (0.0022s latency).\n\nPORT     STATE SERVICE  VERSION\n22/tcp   open  ssh      OpenSSH 7.9p1 Ubuntu 10ubuntu2\n80/tcp   open  http     Apache httpd 2.4.41\n443/tcp  open  ssl/http Apache httpd 2.4.41\n3306/tcp open  mysql    MySQL 8.0.35\n8080/tcp open  http     Tomcat 9.0.65\n\nService detection performed.\nNmap done: 1 IP address (1 host up) scanned in 8.45 seconds`,
-            explanation: 'Service scan on target reveals multiple open services. The Architect left Tomcat running — classic mistake.',
+            explanation: 'Service scan on target reveals multiple open services. The Architect left Tomcat running, classic mistake.',
             isRequired: true,
           },
           {
             command: 'whois 10.0.0.50',
             output: `% Information related to '10.0.0.50'\n\nNetRange:       10.0.0.0 - 10.0.0.255\nCIDR:           10.0.0.0/24\nNetName:        NOVACORP-INTERNAL\nOrgName:        NovaCorp Technologies\nOrgId:          NC-12345\nAddress:        14 Adeola Odeku, Victoria Island\nCity:           Lagos\nState:          Lagos\nCountry:        NG`,
-            explanation: 'WHOIS confirms this is NovaCorp internal infrastructure. Marcus was based in Lagos — this is his domain.',
+            explanation: 'WHOIS confirms this is NovaCorp internal infrastructure. Marcus was based in Lagos, this is his domain.',
             isRequired: false,
           },
         ],
@@ -90,13 +90,13 @@ Scan the subnet for live hosts, fingerprint the services on the most interesting
         name: 'Enumeration',
         description: 'Enumerate services and discover vulnerabilities.',
         icon: 'search',
-        narrative: `> **Valkyrie:** "The Architect was lazy — he reused passwords everywhere. His backup_admin account is the weak link."
+        narrative: `> **Valkyrie:** "The Architect was lazy, he reused passwords everywhere. His backup_admin account is the weak link."
 
-Marcus left breadcrumbs everywhere. He was arrogant — he thought no one would ever find his backdoors. Enumeration is where we turn the raw attack surface from the recon phase into a concrete list of named users, shares, and paths to target.
+Marcus left breadcrumbs everywhere. He was arrogant, he thought no one would ever find his backdoors. Enumeration is where we turn the raw attack surface from the recon phase into a concrete list of named users, shares, and paths to target.
 
 ## Enumeration Phase
 
-Enumeration is the phase where services start talking and revealing their structure. SMB shares tell us what file storage is exposed and — critically — what account names exist. Directory brute-forcing finds hidden web paths that weren't advertised in any page or sitemap. Vulnerability scanners flag known misconfigurations. Each of these gives us a progressively sharper picture of where to strike.
+Enumeration is the phase where services start talking and revealing their structure. SMB shares tell us what file storage is exposed and: critically, what account names exist. Directory brute-forcing finds hidden web paths that weren't advertised in any page or sitemap. Vulnerability scanners flag known misconfigurations. Each of these gives us a progressively sharper picture of where to strike.
 
 The most important output is often user enumeration: a single valid username (\`backup_admin\`) turns a blind password attack into a targeted one. Names are half the credentials.
 
@@ -109,19 +109,19 @@ Run share enumeration, brute-force hidden directories, and scan for known vulner
           {
             command: 'enum4linux 10.0.0.10',
             output: `Starting enum4linux v0.9.1\nTarget: 10.0.0.10\n\n=========================\n|    Target Info    |\n=========================\nNetBIOS Domain: NOVACORP\nNetBIOS Computer Name: FILE-SRV-01\nDNS Domain: novacorp.local\nFQDN: file-srv-01.novacorp.local\n\n=========================\n|    Share Enumeration    |\n=========================\nSharename       Type      Comment\n---------       ----      -------\nADMIN$          Disk      Remote Admin\nC$              Disk      Default share\nIPC$            IPC       Remote IPC\nbackups         Disk      Weekly backups\nshared          Disk      Team shared folder\n\n=========================\n|    User Enumeration    |\n=========================\nUser: administrator (Local, Admin)\nUser: guest (Local, Guest)\nUser: backup_admin (Domain, Admin)`,
-            explanation: "SMB enumeration reveals shares and users. The backup_admin account — that's Marcus's legacy.",
+            explanation: "SMB enumeration reveals shares and users. The backup_admin account, that's Marcus's legacy.",
             isRequired: true,
           },
           {
             command: 'gobuster dir -u http://10.0.0.50 -w /usr/share/wordlists/dirb/common.txt -x php,html,txt',
             output: `===============================================================\nGobuster v3.6\n===============================================================\n[+] Url:                     http://10.0.0.50\n[+] Method:                  GET\n[+] Threads:                 10\n[+] Wordlist:                /usr/share/wordlists/dirb/common.txt\n===============================================================\nStarting gobuster in directory enumeration mode\n===============================================================\n/admin                (Status: 200) [Size: 2345]\n/backup               (Status: 200) [Size: 8721]\n/config               (Status: 403) [Size: 0]\n/login                (Status: 200) [Size: 4123]\n/robots.txt           (Status: 200) [Size: 124]\n/.git                 (Status: 301) [Size: 0]\n/.env                 (Status: 403) [Size: 0]\n/api                  (Status: 200) [Size: 156]\n===============================================================\nFinished\n===============================================================`,
-            explanation: "Directory brute-force reveals hidden paths. The /backup directory — Marcus's favorite hiding spot.",
+            explanation: "Directory brute-force reveals hidden paths. The /backup directory. Marcus's favorite hiding spot.",
             isRequired: true,
           },
           {
             command: 'nikto -h 10.0.0.50',
             output: `- Nikto v2.5.0\n---------------------------------------------------------------------------\n+ Target IP:          10.0.0.50\n+ Target Hostname:    10.0.0.50\n+ Target Port:        80\n+ Start Time:         2024-03-15 10:30:00\n---------------------------------------------------------------------------\n+ Server: Apache/2.4.41\n+ The anti-clickjacking X-Frame-Options header is not present.\n+ The X-Content-Type-Options header is not set.\n+ /admin/: Admin login page found.\n+ /backup/: Directory listing found.\n+ /robots.txt: Contains 2 disallowed entries.\n+ /.env: Environment file may be accessible.\n+ /api: API endpoint exposed.\n---------------------------------------------------------------------------\n+ 6 vulnerabilities identified`,
-            explanation: "Nikto scan identifies web vulnerabilities. Marcus didn't bother fixing these — he was leaving them as backdoors.",
+            explanation: "Nikto scan identifies web vulnerabilities. Marcus didn't bother fixing these, he was leaving them as backdoors.",
             isRequired: true,
           },
         ],
@@ -134,13 +134,13 @@ Run share enumeration, brute-force hidden directories, and scan for known vulner
         icon: 'key',
         narrative: `> **Valkyrie:** "Marcus always used 'password123' for his admin accounts. His ego was his downfall."
 
-The Architect thought he was clever — hiding in plain sight. But his password habits are legendary. Initial access is the first moment we cross the boundary from being outside the network to being inside it.
+The Architect thought he was clever, hiding in plain sight. But his password habits are legendary. Initial access is the first moment we cross the boundary from being outside the network to being inside it.
 
 ## Initial Access Phase
 
-The options for crossing that boundary are broad: exploit a known vulnerability (via a matching public exploit), or abuse weak credentials (via password attacks). The version we fingerprinted during recon — OpenSSH 7.9 — is old enough to have documented vulnerabilities, and the enum users list gives us a known username to attack.
+The options for crossing that boundary are broad: exploit a known vulnerability (via a matching public exploit), or abuse weak credentials (via password attacks). The version we fingerprinted during recon. OpenSSH 7.9, is old enough to have documented vulnerabilities, and the enum users list gives us a known username to attack.
 
-Brute-forcing with Hydra takes the known username (\`admin\`) and tries it against the password wordlist until one matches. This is why the enumeration phase mattered: knowing the username means only the password needs guessing. Once we have valid credentials, the SSH handshake drops us straight into a shell — initial access achieved.
+Brute-forcing with Hydra takes the known username (\`admin\`) and tries it against the password wordlist until one matches. This is why the enumeration phase mattered: knowing the username means only the password needs guessing. Once we have valid credentials, the SSH handshake drops us straight into a shell, initial access achieved.
 
 ## Access Methodology
 
@@ -157,7 +157,7 @@ Check the version against known exploits, crack the weak password, and log in to
           {
             command: 'hydra -l admin -P /usr/share/wordlists/rockyou.txt ssh://10.0.0.50',
             output: `Hydra v9.5 (c) 2023 by van Hauser/THC\nHydra starting at 2024-03-15 10:45:00\n[DATA] max 16 tasks per 1 server, overall 16 tasks, 14344398 login tries\n[DATA] attacking ssh://10.0.0.50:22/\n[ssh][host: 10.0.0.50] login: admin   password: password123\n[STATUS] attack finished for 10.0.0.50 (waiting for children to complete)\n1 of 1 target successfully completed, 1 valid password found\nHydra finished at 2024-03-15 10:47:30`,
-            explanation: "Brute-force attack cracks the admin password: password123. Just as we predicted — Marcus's favorite.",
+            explanation: "Brute-force attack cracks the admin password: password123. Just as we predicted. Marcus's favorite.",
             isRequired: true,
           },
           {
@@ -174,17 +174,17 @@ Check the version against known exploits, crack the weak password, and log in to
         name: 'Privilege Escalation',
         description: 'Escalate from admin to root.',
         icon: 'shield',
-        narrative: `> **Valkyrie:** "Marcus left a SUID find binary — his signature backdoor. He thought no one would notice."
+        narrative: `> **Valkyrie:** "Marcus left a SUID find binary, his signature backdoor. He thought no one would notice."
 
-The Architect's ego is showing. He left his favorite privesc vector in plain sight — a SUID find binary. He's been using this trick for years.
+The Architect's ego is showing. He left his favorite privesc vector in plain sight, a SUID find binary. He's been using this trick for years.
 
 ## Privilege Escalation Phase
 
-We now have an admin shell, but admin is not root. The whole point of privilege escalation is converting limited access into maximum access — and the fastest way to do that on Linux is hunting for SUID binaries.
+We now have an admin shell, but admin is not root. The whole point of privilege escalation is converting limited access into maximum access, and the fastest way to do that on Linux is hunting for SUID binaries.
 
 ## SUID Explained
 
-The SUID (Set User ID) permission bit makes a binary execute with the privileges of its **owner** rather than the user who ran it. That's how \`passwd\` lets regular users change their passwords — it runs as root. When a *custom* binary like \`find\` gets SUID set, it inherits the same superpower: any command it runs — including one we pass via \`-exec\` — executes as root. The check is simple: a file with SUID shows up as \`-rwsr-xr-x\` (owner execute bit becomes \`s\`), and \`find / -perm -4000\` lists every SUID binary on the system.
+The SUID (Set User ID) permission bit makes a binary execute with the privileges of its **owner** rather than the user who ran it. That's how \`passwd\` lets regular users change their passwords, it runs as root. When a *custom* binary like \`find\` gets SUID set, it inherits the same superpower: any command it runs, including one we pass via \`-exec\`, executes as root. The check is simple: a file with SUID shows up as \`-rwsr-xr-x\` (owner execute bit becomes \`s\`), and \`find / -perm -4000\` lists every SUID binary on the system.
 
 ## Escalation Path
 
@@ -195,13 +195,13 @@ Confirm our current privileges, hunt for SUID binaries, then abuse the one Marcu
           {
             command: 'whoami && id',
             output: `admin\nuid=1000(admin) gid=1000(admin) groups=1000(admin),4(adm),24(cdrom),27(sudo),30(dip),33(www-data)`,
-            explanation: "We are admin but not root. Marcus was careful — he didn't give admin full root access.",
+            explanation: "We are admin but not root. Marcus was careful, he didn't give admin full root access.",
             isRequired: true,
           },
           {
             command: 'find / -perm -4000 2>/dev/null',
             output: `/usr/bin/passwd\n/usr/bin/sudo\n/usr/bin/su\n/usr/bin/newgrp\n/usr/bin/chsh\n/usr/bin/chfn\n/usr/local/bin/find`,
-            explanation: "Find SUID binaries. /usr/local/bin/find has SUID bit set — Marcus's signature backdoor.",
+            explanation: "Find SUID binaries. /usr/local/bin/find has SUID bit set. Marcus's signature backdoor.",
             isRequired: true,
           },
           {
@@ -220,13 +220,13 @@ Confirm our current privileges, hunt for SUID binaries, then abuse the one Marcu
         icon: 'network',
         narrative: `> **Valkyrie:** "Marcus reused his admin password across all servers. One password to rule them all."
 
-The Architect's fatal flaw — password reuse. He used the same credentials everywhere. Now we can move freely through NovaCorp's network.
+The Architect's fatal flaw, password reuse. He used the same credentials everywhere. Now we can move freely through NovaCorp's network.
 
 ## Lateral Movement Phase
 
-Compromising one host is a win; compromising many is a campaign. Lateral movement is how we spread from the host we already own to the rest of the network — and it runs on **credential harvesting plus reuse**.
+Compromising one host is a win; compromising many is a campaign. Lateral movement is how we spread from the host we already own to the rest of the network, and it runs on **credential harvesting plus reuse**.
 
-The shell we captured gives us root, and root can read \`/etc/shadow\` — the password hashes of every local account. Those hashes confirm Marcus's habits. Then password-spraying tools like CrackMapExec take a known username-password pair and replay it across every host in the subnet, automatically detecting which machines accept it. Each success (\`Pwn3d!\`) expands our footprint, and the file shares we can reach with those credentials contain backups, configs, and database dumps.
+The shell we captured gives us root, and root can read \`/etc/shadow\`, the password hashes of every local account. Those hashes confirm Marcus's habits. Then password-spraying tools like CrackMapExec take a known username-password pair and replay it across every host in the subnet, automatically detecting which machines accept it. Each success (\`Pwn3d!\`) expands our footprint, and the file shares we can reach with those credentials contain backups, configs, and database dumps.
 
 ## Movement Strategy
 
@@ -237,7 +237,7 @@ Harvest hashes from the compromised host, replay the credentials network-wide, a
           {
             command: 'cat /etc/shadow | grep -v "!" | head -5',
             output: `admin:$6$rounds=656000$xyz...:19458:0:99999:7:::\nbackup:$6$rounds=656000$abc...:19458:0:99999:7:::\nroot:$6$rounds=656000$def...:19458:0:99999:7:::`,
-            explanation: "Extract password hashes from /etc/shadow. Marcus's hashes are weak — he never updated them.",
+            explanation: "Extract password hashes from /etc/shadow. Marcus's hashes are weak, he never updated them.",
             isRequired: true,
           },
           {
@@ -249,7 +249,7 @@ Harvest hashes from the compromised host, replay the credentials network-wide, a
           {
             command: 'smbclient //10.0.0.10/backups -U admin',
             output: `Enter NOVACORP\\admin's password: \nTry "help" to get a list of possible commands.\nsmb: \\> ls\n  .                                   D        0  Fri Mar 14 16:30:00 2024\n  ..                                  D        0  Fri Mar 14 16:30:00 2024\n  db_backup.sql                      245678  Thu Mar 13 02:00:00 2024\n  user_backup.csv                     12345  Thu Mar 13 02:00:00 2024\n  config.tar.gz                      45678  Thu Mar 13 02:00:00 2024`,
-            explanation: 'Access backup share. Marcus stored everything here — database backups, configs, everything.',
+            explanation: 'Access backup share. Marcus stored everything here, database backups, configs, everything.',
             isRequired: true,
           },
         ],
@@ -266,9 +266,9 @@ Marcus Webb thought he was untouchable. He built this network, he knew every cor
 
 ## Data Exfiltration Phase
 
-Access without extraction is just sightseeing. Exfiltration is the goal-oriented phase: copying sensitive artifacts off the compromised host to a location we control. The backup share we opened during lateral movement is the perfect source — it contains the full database dump, user records, and configuration archives that Marcus never expected anyone to reach.
+Access without extraction is just sightseeing. Exfiltration is the goal-oriented phase: copying sensitive artifacts off the compromised host to a location we control. The backup share we opened during lateral movement is the perfect source, it contains the full database dump, user records, and configuration archives that Marcus never expected anyone to reach.
 
-Then comes the payoff. The database backup contains password hashes, API keys, and SMTP credentials — the operational secrets that prove the breach's severity. The final flag validates that we've reached the deepest objective. In a real engagement, this is where the report gets written: what we accessed, what we took, and what it was worth.
+Then comes the payoff. The database backup contains password hashes, API keys, and SMTP credentials, the operational secrets that prove the breach's severity. The final flag validates that we've reached the deepest objective. In a real engagement, this is where the report gets written: what we accessed, what we took, and what it was worth.
 
 ## Final Objective
 
@@ -285,7 +285,7 @@ Copy the database backup off the server, mine it for credentials and secrets, th
           {
             command: 'grep -i "password\\|secret\\|key" db_backup.sql | head -10',
             output: `INSERT INTO users VALUES (1,'admin','$2y$10$xVqYLkR5pN3m','admin@novacorp.io','Sup3rS3cret!');\nINSERT INTO api_keys VALUES (1,'sk-nova-xxxxxxxxxxxx','production');\nINSERT INTO config VALUES ('smtp_password','MailS3cret!2024');`,
-            explanation: "Search backup for sensitive data. Found passwords and API keys — Marcus's entire operation exposed.",
+            explanation: "Search backup for sensitive data. Found passwords and API keys. Marcus's entire operation exposed.",
             isRequired: true,
           },
           {
@@ -319,11 +319,11 @@ Copy the database backup off the server, mine it for credentials and secrets, th
         icon: 'radar',
         narrative: `> **Valkyrie:** "The Phantom strikes again. She's left her signature backdoor in NovaCorp's web app. Let's trace her steps."
 
-Zara Okonkwo — The Phantom — is one of the most feared hackers in Africa. She sells zero-day exploits for a living. Her latest target: NovaCorp's web application. This chain targets an external web app rather than the internal network, so the recon phase looks different: we fingerprint the technology stack exposed to the internet.
+Zara Okonkwo: The Phantom, is one of the most feared hackers in Africa. She sells zero-day exploits for a living. Her latest target: NovaCorp's web application. This chain targets an external web app rather than the internal network, so the recon phase looks different: we fingerprint the technology stack exposed to the internet.
 
 ## Web Reconnaissance Phase
 
-For an external target, "the network" is the application itself. The service scan tells us what ports are open; the DNS lookup maps the domain to its infrastructure; and technology fingerprinting (\`whatweb\`) reveals the exact stack — nginx, jQuery, Bootstrap, PHP, Express. Every banner is a clue: framework versions narrow the pool of known CVEs we can research next, and exposed headers like \`X-Powered-By\` remove all guesswork.
+For an external target, "the network" is the application itself. The service scan tells us what ports are open; the DNS lookup maps the domain to its infrastructure; and technology fingerprinting (\`whatweb\`) reveals the exact stack, nginx, jQuery, Bootstrap, PHP, Express. Every banner is a clue: framework versions narrow the pool of known CVEs we can research next, and exposed headers like \`X-Powered-By\` remove all guesswork.
 
 The lesson of web recon: fingerprint everything, because a single identifiable version often hands us the exploit for the next phase.
 
@@ -336,13 +336,13 @@ Map the ports, DNS, and technology stack of the web target to build the vulnerab
           {
             command: 'nmap -sV -p 80,443,8080 target.novacorp.io',
             output: `PORT     STATE SERVICE  VERSION\n80/tcp   open  http     nginx 1.24.0\n443/tcp  open  ssl/http nginx 1.24.0\n8080/tcp open  http     Node.js Express`,
-            explanation: "Identify open ports and services. The Phantom likes Node.js apps — they're often vulnerable.",
+            explanation: "Identify open ports and services. The Phantom likes Node.js apps, they're often vulnerable.",
             isRequired: true,
           },
           {
             command: 'dig target.novacorp.io ANY',
             output: `;; ANSWER SECTION:\ntarget.novacorp.io.     3600    IN      A       102.89.23.50\ntarget.novacorp.io.     3600    IN      MX      10 mail.target.novacorp.io.\ntarget.novacorp.io.     3600    IN      NS      ns1.digitalocean.com.`,
-            explanation: "DNS enumeration reveals infrastructure details. DigitalOcean hosting — The Phantom's favorite target.",
+            explanation: "DNS enumeration reveals infrastructure details. DigitalOcean hosting. The Phantom's favorite target.",
             isRequired: true,
           },
           {
@@ -359,13 +359,13 @@ Map the ports, DNS, and technology stack of the web target to build the vulnerab
         name: 'Vulnerability Discovery',
         description: 'Find vulnerabilities in the application.',
         icon: 'search',
-        narrative: `> **Valkyrie:** "The Phantom always hides SQL injection points. She thinks she's clever — but we know her patterns."
+        narrative: `> **Valkyrie:** "The Phantom always hides SQL injection points. She thinks she's clever, but we know her patterns."
 
 Zara's signature move: she leaves SQL injection vulnerabilities as backdoors. She thinks no one will notice. Vulnerability discovery is the phase where we take the mapped attack surface and find the specific flaws that will let us in.
 
 ## Vulnerability Discovery Phase
 
-Web applications have a much bigger attack surface than their open ports suggest: every URL is a potential vulnerability. Directory brute-forcing (\`gobuster\`) discovers hidden paths the application never links to — admin panels, backup directories, API versions. Vulnerability scanning (\`nikto\`) then checks those paths for known misconfigurations and flags candidates like exposed endpoints and injection points.
+Web applications have a much bigger attack surface than their open ports suggest: every URL is a potential vulnerability. Directory brute-forcing (\`gobuster\`) discovers hidden paths the application never links to, admin panels, backup directories, API versions. Vulnerability scanning (\`nikto\`) then checks those paths for known misconfigurations and flags candidates like exposed endpoints and injection points.
 
 The goal here is a short list of **verified, exploitable** findings rather than a long list of noise. Each candidate gets triaged: the exposed \`/api/v1\` endpoint and the \`/search?q=\` parameter that feeds straight into a query are exactly what we'll weaponize next.
 
@@ -378,7 +378,7 @@ Enumerate the app's structure, scan for misconfigurations, and identify the inje
           {
             command: 'gobuster dir -u https://target.novacorp.io -w /usr/share/wordlists/dirb/common.txt',
             output: `===============================================================\nStarting gobuster in directory enumeration mode\n===============================================================\n/admin                (Status: 200) [Size: 2345]\n/api                  (Status: 200) [Size: 156]\n/api/v1               (Status: 200) [Size: 156]\n/api/v2               (Status: 200) [Size: 156]\n/backup               (Status: 200) [Size: 8721]\n/config               (Status: 403) [Size: 0]\n/login                (Status: 200) [Size: 4123]\n/search               (Status: 200) [Size: 3456]\n===============================================================\nFinished\n===============================================================`,
-            explanation: "Directory enumeration reveals API versions and hidden paths. The /api/v1 endpoint — The Phantom's favorite target.",
+            explanation: "Directory enumeration reveals API versions and hidden paths. The /api/v1 endpoint. The Phantom's favorite target.",
             isRequired: true,
           },
           {
@@ -397,13 +397,13 @@ Enumerate the app's structure, scan for misconfigurations, and identify the inje
         icon: 'zap',
         narrative: `> **Valkyrie:** "The Phantom's SQL injection is textbook. Let's exploit it and expose her backdoor."
 
-Zara's SQL injection is elegant — she uses UNION-based injection to extract data. But we're better. Exploitation is where the vulnerability becomes access: the suspected injection point gets proven, the database gets enumerated, and credentials get cracked into a working shell.
+Zara's SQL injection is elegant, she uses UNION-based injection to extract data. But we're better. Exploitation is where the vulnerability becomes access: the suspected injection point gets proven, the database gets enumerated, and credentials get cracked into a working shell.
 
 ## Exploitation Phase
 
-The flagged \`/search?id=1\` parameter is the key. Running sqlmap against it confirms the injection, identifies the backend as MySQL, and reveals the available databases. With the injection proven, dumping the \`users\` table hands us password hashes — and cracking those hashes with John the Ripper turns them into real credentials.
+The flagged \`/search?id=1\` parameter is the key. Running sqlmap against it confirms the injection, identifies the backend as MySQL, and reveals the available databases. With the injection proven, dumping the \`users\` table hands us password hashes, and cracking those hashes with John the Ripper turns them into real credentials.
 
-Each step feeds the next: injection proves the flaw, the dump proves its impact, the cracked password (\`admin2024!\`) proves the damage. Finally, that credential opens an SSH session — exploitation is complete and we've crossed into the system.
+Each step feeds the next: injection proves the flaw, the dump proves its impact, the cracked password (\`admin2024!\`) proves the damage. Finally, that credential opens an SSH session, exploitation is complete and we've crossed into the system.
 
 ## Exploitation Chain
 
@@ -443,7 +443,7 @@ Prove the injection, enumerate and dump the database, crack the hashes, then log
         name: 'Post-Exploitation',
         description: 'Gather additional access and data.',
         icon: 'database',
-        narrative: `> **Valkyrie:** "The Phantom hides API keys in .env files. She thinks she's invisible — but we see everything."
+        narrative: `> **Valkyrie:** "The Phantom hides API keys in .env files. She thinks she's invisible, but we see everything."
 
 Zara's post-exploitation is methodical. She searches for API keys, database credentials, and configuration files. Post-exploitation is where the shell we gained gets converted into deeper access and more data.
 
@@ -451,7 +451,7 @@ Zara's post-exploitation is methodical. She searches for API keys, database cred
 
 A shell alone is a foothold; post-exploitation is where it pays. Application config files (\`.env\`) are the highest-value target because developers stuff them with everything the app needs to run: database credentials, API keys, SMTP passwords. One readable \`.env\` frequently equals full database and third-party service compromise.
 
-The stolen API key then demonstrates the blast radius — it authenticates directly against the internal API and returns the full user list, which we'd otherwise have to fetch from the database. This is the moment the engagement stops being "we got a shell" and becomes "we can access whatever we want, whenever we want."
+The stolen API key then demonstrates the blast radius, it authenticates directly against the internal API and returns the full user list, which we'd otherwise have to fetch from the database. This is the moment the engagement stops being "we got a shell" and becomes "we can access whatever we want, whenever we want."
 
 ## Post-Exploitation
 
@@ -462,7 +462,7 @@ Read the application's secrets, then use the recovered keys to hit internal serv
           {
             command: 'cat /var/www/.env',
             output: `DB_HOST=localhost\ndb_user=appuser\ndb_pass=AppP@ss2024!\nAPI_KEY=sk-nova-xxxxxxxxxxxx\nSMTP_PASS=MailS3cret!`,
-            explanation: "Read application configuration file. The Phantom's API key — her digital fingerprint.",
+            explanation: "Read application configuration file. The Phantom's API key, her digital fingerprint.",
             isRequired: true,
           },
           {
@@ -485,9 +485,9 @@ Zara Okonkwo thought she was untouchable. She sold zero-day exploits, she left b
 
 ## Persistence & Exfiltration Phase
 
-Persistence guarantees the access doesn't evaporate when the current session ends. Creating a new admin account through the API (using the stolen token) is a textbook persistence technique — it survives reboots, logins, and cleanup because it looks like a legitimate user. We then stage the sensitive files (web root, shadow hashes, SSH keys) into a single archive ready to move off-host.
+Persistence guarantees the access doesn't evaporate when the current session ends. Creating a new admin account through the API (using the stolen token) is a textbook persistence technique, it survives reboots, logins, and cleanup because it looks like a legitimate user. We then stage the sensitive files (web root, shadow hashes, SSH keys) into a single archive ready to move off-host.
 
-The final flag capture proves the objective: full compromise from first scan to last exfil. In a real engagement this is where the complete kill chain gets documented — the persistence we leave behind, the data we took, and the paths we walked.
+The final flag capture proves the objective: full compromise from first scan to last exfil. In a real engagement this is where the complete kill chain gets documented, the persistence we leave behind, the data we took, and the paths we walked.
 
 ## Final Objective
 

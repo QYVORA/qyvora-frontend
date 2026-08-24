@@ -24,9 +24,25 @@ const LandingFinalCtaSection: React.FC<LandingFinalCtaSectionProps> = ({ user })
       <GridBoxedBackground blur={0} mask="right" />
       <div className="relative z-10 w-full flex-1 px-3 md:px-4 lg:px-6 flex flex-col lg:flex-row lg:items-stretch gap-10 lg:gap-12 pt-24 pb-12 md:pt-28 lg:pt-32 lg:pb-10">
 
+        {/* Logo — leads the section on mobile (top), right column on desktop. */}
+        <motion.div
+          initial={{ opacity: 0, scale: shouldReduceMotion ? 1 : 0.9 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+          className="relative order-first flex items-center justify-center lg:order-last lg:justify-end shrink-0 lg:ml-2 xl:ml-4 lg:mr-6 xl:mr-10 2xl:mr-12"
+        >
+          <Logo
+            variant="mark"
+            size="3xl"
+            color="#06B66F"
+            className="!w-[220px] min-[420px]:!w-[300px] sm:!w-[420px] md:!w-[500px] lg:!w-[min(520px,42vw)] xl:!w-[min(640px,44vw)] 2xl:!w-[min(760px,42vw)]"
+          />
+        </motion.div>
+
         {/* Content — flex-1 fills the column so it centres vertically on mobile
             and keeps the left column balanced on desktop */}
-        <div className="flex-1 flex items-center lg:pr-4 xl:pr-6">
+        <div className="flex flex-1 items-center lg:pr-4 xl:pr-6">
           <motion.div
             initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -81,23 +97,6 @@ const LandingFinalCtaSection: React.FC<LandingFinalCtaSectionProps> = ({ user })
             </motion.div>
           </motion.div>
         </div>
-
-        {/* Logo — visible on all screens: centred below the content on mobile,
-            right column on desktop. */}
-        <motion.div
-          initial={{ opacity: 0, scale: shouldReduceMotion ? 1 : 0.9 }}
-          whileInView={{ opacity: 1, scale: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-          className="relative flex items-center justify-center lg:justify-end shrink-0 lg:ml-2 xl:ml-4 lg:mr-6 xl:mr-10 2xl:mr-12"
-        >
-          <Logo
-            variant="mark"
-            size="3xl"
-            color="#06B66F"
-            className="!w-[300px] min-[420px]:!w-[420px] sm:!w-[500px] md:!w-[580px] lg:!w-[min(520px,42vw)] xl:!w-[min(640px,44vw)] 2xl:!w-[min(760px,42vw)]"
-          />
-        </motion.div>
       </div>
     </div>
   );

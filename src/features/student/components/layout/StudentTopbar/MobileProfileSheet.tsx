@@ -97,9 +97,9 @@ const MobileProfileSheet: React.FC<MobileProfileSheetProps> = ({
                 </div>
                 <div>
                   <div className="text-sm font-black uppercase tracking-widest text-text-primary">
-                    {user?.username || '—'}
+                    {user?.username || '-'}
                   </div>
-                  <div className="text-[10px] text-text-muted">{user?.email || '—'}</div>
+                  <div className="text-[10px] text-text-muted">{user?.email || '-'}</div>
                   {user?.rank && (
                     <span className="inline-block mt-1 px-2 py-0.5 rounded-lg bg-accent/10 text-[8px] font-black uppercase tracking-widest text-accent">
                       {user.rank}

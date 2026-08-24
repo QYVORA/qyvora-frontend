@@ -135,7 +135,7 @@ const BootcampCourse: React.FC = () => {
     <div>
       <SEO
         title={course?.title || 'Bootcamp Course'}
-        description={`Track your progress through ${course?.title || 'the bootcamp'} on QYVORA — ${progressValue} complete.`}
+        description={`Track your progress through ${course?.title || 'the bootcamp'} on QYVORA | ${progressValue} complete.`}
         noindex
       />
 
@@ -177,7 +177,7 @@ const BootcampCourse: React.FC = () => {
                 </div>
                 <div className="min-w-0">
                   <p className="text-[10px] font-black uppercase tracking-widest text-accent truncate">Recommended Next</p>
-                  <p className="text-sm font-bold text-text-primary">{nextRoomLabel.phase} — {nextRoomLabel.room}</p>
+                  <p className="text-sm font-bold text-text-primary">{nextRoomLabel.phase}, {nextRoomLabel.room}</p>
                 </div>
               </div>
               <Link

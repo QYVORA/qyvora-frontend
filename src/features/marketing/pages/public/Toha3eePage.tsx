@@ -7,6 +7,10 @@ import StudentHeroSection, { PUBLIC_HERO_TITLE_CLASS } from '@/shared/components
 import { Footer } from '@/shared/components/layout';
 import { useAuth } from '@/core/contexts/AuthContext';
 import LandingFinalCtaSection from '@/features/marketing/components/landing/LandingFinalCtaSection';
+import { getRelatedTools } from '@/features/marketing/data/relatedTools';
+import RelatedContentSection from '@/shared/components/RelatedContentSection';
+import { useTranslation } from 'react-i18next';
+
 import ToolDocumentationSection from '@/shared/components/ToolDocumentationSection';
 import CodeBlock from '@/shared/components/CodeBlock';
 import ToolsCarousel from '@/features/marketing/components/ToolsCarousel';
@@ -18,9 +22,10 @@ import toha3eeLogo from '@/assets/toha3ee/toha3ee-main-logo.webp';
 
 const Toha3eePage = () => {
   const { user } = useAuth();
+  const { t } = useTranslation();
   return (
     <div className="bg-bg min-h-full">
-      <SEO title="Toha3ee - QYVORA" description="Toha3ee — local & network security assessment framework in Go. Host and service discovery, enumeration, credential auditing, wireless, MITM and post-exploitation modules from an interactive REPL." />
+      <SEO title="Toha3ee - QYVORA" description="Toha3ee: local & network security assessment framework in Go. Host and service discovery, enumeration, credential auditing, wireless, MITM and post-exploitation modules from an interactive REPL." />
       <PublicSnapLayout>
         <section className="relative w-full min-h-dvh snap-section bg-bg">
         <StudentHeroSection
@@ -29,7 +34,7 @@ const Toha3eePage = () => {
           titleClassName={PUBLIC_HERO_TITLE_CLASS}
           showGlobe
           typewrite
-          description="Local & network security assessment framework in Go — 73 modules across ten categories (recon, enumeration, OSINT, wireless, MITM and more), driven from an interactive REPL, a guided wizard, or one-shot scripts."
+          description="Local & network security assessment framework in Go - 73 modules across ten categories (recon, enumeration, OSINT, wireless, MITM and more), driven from an interactive REPL, a guided wizard, or one-shot scripts."
           stats={[
             { label: 'Categories', value: MODULES.length },
             { label: 'Modules', value: 73 },
@@ -69,7 +74,7 @@ const Toha3eePage = () => {
                 </div>
                 <p className="text-xs md:text-sm text-text-secondary leading-relaxed font-mono">
                   Running these modules against networks you do not own is illegal in most jurisdictions. Most attack
-                  modules require root — raw sockets, packet capture and IP forwarding. The tool re-executes itself under
+                  modules require root, raw sockets, packet capture and IP forwarding. The tool re-executes itself under
                   sudo by default; pass <code className="text-amber-400">--no-sudo</code> for unprivileged commands.
                 </p>
               </div>
@@ -240,7 +245,7 @@ const Toha3eePage = () => {
               kicker="Quick Start"
               title="Drop into"
               accent="The Console"
-              description="Bare toha3ee opens a bettercap/metasploit-style REPL — grouped output with status glyphs."
+              description="Bare toha3ee opens a bettercap/metasploit-style REPL: grouped output with status glyphs."
             />
 
             <div className="grid grid-cols-1 lg:grid-cols-[1.15fr_1fr] gap-4 md:gap-6 items-stretch">
@@ -250,7 +255,7 @@ const Toha3eePage = () => {
                   <span className="w-2.5 h-2.5 rounded-full bg-red-400/70" />
                   <span className="w-2.5 h-2.5 rounded-full bg-yellow-400/70" />
                   <span className="w-2.5 h-2.5 rounded-full bg-accent/70" />
-                  <span className="ml-2 text-[9px] font-mono text-text-muted">toha3ee — zsh</span>
+                  <span className="ml-2 text-[9px] font-mono text-text-muted">toha3ee, zsh</span>
                 </div>
                 <div className="p-4 md:p-5 font-mono text-[11px] md:text-xs space-y-2">
                   <div className="flex items-center gap-2">
@@ -266,7 +271,7 @@ const Toha3eePage = () => {
                       <div key={line.cmd} className="flex items-start gap-2">
                         <span className="text-accent shrink-0 pt-0.5">toha3ee&gt;</span>
                         <span className="text-text-primary shrink-0">{line.cmd}</span>
-                        <span className="text-text-muted leading-relaxed break-words">— {line.note}</span>
+                        <span className="text-text-muted leading-relaxed break-words">, {line.note}</span>
                       </div>
                     ))}
                   </div>
@@ -301,6 +306,8 @@ const Toha3eePage = () => {
             </div>
           </div>
         </PublicSnapSection>
+        <RelatedContentSection items={getRelatedTools(t, "/toha3ee")} />
+
         <section className="relative w-full min-h-dvh snap-section bg-bg-alt">
           <LandingFinalCtaSection user={user} />
         </section>

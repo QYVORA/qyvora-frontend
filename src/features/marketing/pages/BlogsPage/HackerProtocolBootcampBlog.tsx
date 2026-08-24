@@ -35,7 +35,7 @@ const FIVE_PHASES: {
     color: '#06B66F',
     desc: (
       <>
-        Before a single tool is opened, this phase installs the <Highlight>operating discipline</Highlight> behind offensive security. You map the field — penetration testing, red teaming, bug bounties, vulnerability research — then train the three core traits of an operator: curiosity, persistence, and lateral thinking. It closes on the non-negotiables: <Highlight>legal frameworks, scope and authorisation</Highlight>, and responsible disclosure.
+        Before a single tool is opened, this phase installs the <Highlight>operating discipline</Highlight> behind offensive security. You map the field: penetration testing, red teaming, bug bounties, vulnerability research, then train the three core traits of an operator: curiosity, persistence, and lateral thinking. It closes on the non-negotiables: <Highlight>legal frameworks, scope and authorisation</Highlight>, and responsible disclosure.
       </>
     ),
   },
@@ -47,7 +47,7 @@ const FIVE_PHASES: {
     color: '#60A5FA',
     desc: (
       <>
-        The terminal becomes your cockpit. You build <Highlight>navigation and file-search fluency</Highlight>, then master identity — users, groups, the <code className="text-accent">passwd</code> and <code className="text-accent">shadow</code> vaults, and SUID/SGID escalation paths. You read the machine's heartbeat through processes and open ports, and finish by scripting, turning one-off commands into <Highlight>reusable automation</Highlight>.
+        The terminal becomes your cockpit. You build <Highlight>navigation and file-search fluency</Highlight>, then master identity, users, groups, the <code className="text-accent">passwd</code> and <code className="text-accent">shadow</code> vaults, and SUID/SGID escalation paths. You read the machine's heartbeat through processes and open ports, and finish by scripting, turning one-off commands into <Highlight>reusable automation</Highlight>.
       </>
     ),
   },
@@ -59,7 +59,7 @@ const FIVE_PHASES: {
     color: '#A78BFA',
     desc: (
       <>
-        Every attack travels across a wire, so this phase demands <Highlight>total visibility over the stack</Highlight>. You map the OSI model down to the TCP three-way handshake, dissect DNS and HTTP, then weaponise that knowledge with nmap-driven scanning and enumeration. It culminates in raw <Highlight>packet analysis</Highlight> — Wireshark display filters, stream reconstruction, and exfiltration detection.
+        Every attack travels across a wire, so this phase demands <Highlight>total visibility over the stack</Highlight>. You map the OSI model down to the TCP three-way handshake, dissect DNS and HTTP, then weaponise that knowledge with nmap-driven scanning and enumeration. It culminates in raw <Highlight>packet analysis</Highlight>. Wireshark display filters, stream reconstruction, and exfiltration detection.
       </>
     ),
   },
@@ -71,7 +71,7 @@ const FIVE_PHASES: {
     color: '#F59E0B',
     desc: (
       <>
-        The modern attack surface is web-first. You start with how the web actually works — DevTools, HTTP headers, cookies and sessions — and move through the <Highlight>OWASP Top 10</Highlight> before diving into the highest-value bug classes: <Highlight>SQL injection</Highlight> and XSS/CSRF. The phase ends with authentication attacks: brute force, session token analysis, fixation, and hijacking.
+        The modern attack surface is web-first. You start with how the web actually works: DevTools, HTTP headers, cookies and sessions, and move through the <Highlight>OWASP Top 10</Highlight> before diving into the highest-value bug classes: <Highlight>SQL injection</Highlight> and XSS/CSRF. The phase ends with authentication attacks: brute force, session token analysis, fixation, and hijacking.
       </>
     ),
   },
@@ -83,7 +83,7 @@ const FIVE_PHASES: {
     color: '#EF4444',
     desc: (
       <>
-        The human layer is the weakest boundary. You study the <Highlight>psychology of influence</Highlight>, then build convincing pretexts and vishing engagements. From there it is OSINT — Google dorking, theHarvester, Shodan, social media mapping — and finally physical security: tailgating, RFID badge cloning, and <Highlight>OPSEC</Highlight> for engagements that leave the keyboard.
+        The human layer is the weakest boundary. You study the <Highlight>psychology of influence</Highlight>, then build convincing pretexts and vishing engagements. From there it is OSINT: Google dorking, theHarvester, Shodan, social media mapping, and finally physical security: tailgating, RFID badge cloning, and <Highlight>OPSEC</Highlight> for engagements that leave the keyboard.
       </>
     ),
   },
@@ -95,10 +95,10 @@ export const HackerProtocolBootcampBlog: React.FC = () => {
       {/* ── Introduction ── */}
       <Section>
         <Body>
-          Cybersecurity education in Africa has a <Highlight>discovery problem</Highlight>. Not a talent problem — a <Highlight>discovery</Highlight> problem. There are brilliant minds across the continent with the raw aptitude for offensive security, but they don't know where to start, what tools matter, or how to think like an operator.
+          Cybersecurity education in Africa has a <Highlight>discovery problem</Highlight>. Not a talent problem, a <Highlight>discovery</Highlight> problem. There are brilliant minds across the continent with the raw aptitude for offensive security, but they don't know where to start, what tools matter, or how to think like an operator.
         </Body>
         <Body>
-          The Hacker Protocol Bootcamp (HPB) — <Highlight>2026 Cohort</Highlight> — was designed to solve exactly that. It's not a collection of video lectures or multiple-choice quizzes. It's a <Highlight>hands-on, terminal-first bootcamp</Highlight> that walks you through the entire offensive security stack — from the hacker mindset all the way to advanced exploitation — using real tools, real scenarios, and real infrastructure.
+          The Hacker Protocol Bootcamp (HPB), <Highlight>2026 Cohort</Highlight>, was designed to solve exactly that. It's not a collection of video lectures or multiple-choice quizzes. It's a <Highlight>hands-on, terminal-first bootcamp</Highlight> that walks you through the entire offensive security stack, from the hacker mindset all the way to advanced exploitation, using real tools, real scenarios, and real infrastructure.
         </Body>
         <Body>
           This is the philosophy behind the HPB, the architecture of the bootcamp, and why we believe it's the right approach for building Africa's cybersecurity pipeline.
@@ -112,7 +112,7 @@ export const HackerProtocolBootcampBlog: React.FC = () => {
           Most would-be security operators in Africa face the same wall: <Highlight>information overload with no signal</Highlight>. YouTube tutorials jump between beginner and expert with no ramp. Online courses cost in dollars that don't stretch the same way locally. CTF platforms assume you already know the basics.
         </Body>
         <Body>
-          The result? Talented people give up before they even start. Or worse — they learn the wrong things and develop bad habits that take years to unlearn.
+          The result? Talented people give up before they even start. Or worse, they learn the wrong things and develop bad habits that take years to unlearn.
         </Body>
         <Body>
           The HPB flips this. Instead of throwing a million resources at you and saying "good luck," it gives you a <Highlight>structured, phase-gated pipeline</Highlight> where each phase builds directly on the last. You don't move forward until you've internalised the current layer.
@@ -137,19 +137,19 @@ export const HackerProtocolBootcampBlog: React.FC = () => {
         </div>
 
         <Body>
-          <Highlight>Phase 01 — Hacker Mindset:</Highlight> Before you touch a single tool, you learn how to think. Legal boundaries, scope definition, rules of engagement, and the ethical framework that separates a security researcher from a black-hat actor. This isn't philosophy — it's <Highlight>operational discipline</Highlight>.
+          <Highlight>Phase 01: Hacker Mindset:</Highlight> Before you touch a single tool, you learn how to think. Legal boundaries, scope definition, rules of engagement, and the ethical framework that separates a security researcher from a black-hat actor. This isn't philosophy, it's <Highlight>operational discipline</Highlight>.
         </Body>
         <Body>
-          <Highlight>Phase 02 — Linux Foundations:</Highlight> The terminal is your cockpit. If you can't navigate, escalate privileges, and manipulate the filesystem blindfolded, you can't operate. This phase builds terminal fluency from the ground up — no GUI crutches, no hand-holding.
+          <Highlight>Phase 02: Linux Foundations:</Highlight> The terminal is your cockpit. If you can't navigate, escalate privileges, and manipulate the filesystem blindfolded, you can't operate. This phase builds terminal fluency from the ground up, no GUI crutches, no hand-holding.
         </Body>
         <Body>
-          <Highlight>Phase 03 — Networking:</Highlight> Every attack traverses a network. You need total visibility over the stack — TCP/IP, OSI layers, routing protocols, packet interception at the raw bytecode level. You don't just learn how networks work; you learn how to <Highlight>break them</Highlight>.
+          <Highlight>Phase 03: Networking:</Highlight> Every attack traverses a network. You need total visibility over the stack. TCP/IP, OSI layers, routing protocols, packet interception at the raw bytecode level. You don't just learn how networks work; you learn how to <Highlight>break them</Highlight>.
         </Body>
         <Body>
-          <Highlight>Phase 04 — Web & Backend Systems:</Highlight> The modern attack surface is web-first. You dissect HTTP, manipulate REST APIs, exploit injection points, and compromise backend persistence layers. This is where theory meets <Highlight>practical exploitation</Highlight>.
+          <Highlight>Phase 04 - Web & Backend Systems:</Highlight> The modern attack surface is web-first. You dissect HTTP, manipulate REST APIs, exploit injection points, and compromise backend persistence layers. This is where theory meets <Highlight>practical exploitation</Highlight>.
         </Body>
         <Body>
-          <Highlight>Phase 05 — Social Engineering:</Highlight> The human layer is the weakest link. You study pretexting, psychological manipulation vectors, trust exploitation, and spoofing. Because the most sophisticated technical exploit is useless if the front door is already open.
+          <Highlight>Phase 05 - Social Engineering:</Highlight> The human layer is the weakest link. You study pretexting, psychological manipulation vectors, trust exploitation, and spoofing. Because the most sophisticated technical exploit is useless if the front door is already open.
         </Body>
       </Section>
 
@@ -157,7 +157,7 @@ export const HackerProtocolBootcampBlog: React.FC = () => {
       <Section>
         <Heading>The Five Phases</Heading>
         <Body>
-          Every operator has a face, and so does every layer of the bootcamp. These are the phases you train through in order — each one gated behind the last, each one earning its place in the pipeline above.
+          Every operator has a face, and so does every layer of the bootcamp. These are the phases you train through in order, each one gated behind the last, each one earning its place in the pipeline above.
         </Body>
 
         <div className="space-y-4 md:space-y-6 my-8 md:my-10">
@@ -195,13 +195,13 @@ export const HackerProtocolBootcampBlog: React.FC = () => {
       <Section>
         <Heading>Room-Based Architecture</Heading>
         <Body>
-          Each phase is composed of <Highlight>rooms</Highlight> — individual, self-contained challenges that teach a specific concept or skill. A room might ask you to enumerate a subdomain, exploit a misconfigured HTTP header, or pivot through a compromised host.
+          Each phase is composed of <Highlight>rooms</Highlight>, individual, self-contained challenges that teach a specific concept or skill. A room might ask you to enumerate a subdomain, exploit a misconfigured HTTP header, or pivot through a compromised host.
         </Body>
         <Body>
-          Rooms are designed as <Highlight>structured walkthroughs</Highlight> — step-by-step guides that teach each concept through carefully crafted content with built-in quiz validation to confirm understanding. No local setup, no dependency hell.
+          Rooms are designed as <Highlight>structured walkthroughs</Highlight>, step-by-step guides that teach each concept through carefully crafted content with built-in quiz validation to confirm understanding. No local setup, no dependency hell.
         </Body>
         <Body>
-          When you complete a room, you earn <Highlight>CyberPoints (CP)</Highlight> — on-chain verified credentials that represent your mastery. These aren't participation trophies. They're <Highlight>provable, transferable signals</Highlight> of your capability. You can show them to employers, add them to your portfolio, or just flex on the leaderboard.
+          When you complete a room, you earn <Highlight>CyberPoints (CP)</Highlight>, on-chain verified credentials that represent your mastery. These aren't participation trophies. They're <Highlight>provable, transferable signals</Highlight> of your capability. You can show them to employers, add them to your portfolio, or just flex on the leaderboard.
         </Body>
       </Section>
 
@@ -209,7 +209,7 @@ export const HackerProtocolBootcampBlog: React.FC = () => {
       <Section>
         <Heading>Why This Matters for Africa</Heading>
         <Body>
-          The global cybersecurity workforce shortage is projected at <Highlight>4 million professionals</Highlight>. Africa's share of that gap is disproportionate — not because we lack talent, but because we lack <Highlight>infrastructure and pathways</Highlight>.
+          The global cybersecurity workforce shortage is projected at <Highlight>4 million professionals</Highlight>. Africa's share of that gap is disproportionate, not because we lack talent, but because we lack <Highlight>infrastructure and pathways</Highlight>.
         </Body>
         <Body>
           The HPB is our attempt to build that pathway. It's designed for the African context: low-bandwidth-friendly, mobile-accessible, and completely free to start. Every room, every phase, every CyberPoint is a step toward building a self-sustaining cybersecurity ecosystem on the continent.
@@ -218,7 +218,7 @@ export const HackerProtocolBootcampBlog: React.FC = () => {
           We're not just training operators. We're building a <Highlight>credentialing layer</Highlight> that lets talent surface regardless of where they're from, who they know, or what school they went to.
         </Body>
         <Body>
-          To build the HPB platform and the infrastructure behind it, we formed <Highlight>QuitRoot</Highlight> — a tech team focused on building cybersecurity tools and educational systems for the African market. QuitRoot is the engineering backbone that makes the bootcamp possible, from the blockchain credentialing layer to the interactive room environments.
+          To build the HPB platform and the infrastructure behind it, we formed <Highlight>QuitRoot</Highlight>, a tech team focused on building cybersecurity tools and educational systems for the African market. QuitRoot is the engineering backbone that makes the bootcamp possible, from the blockchain credentialing layer to the interactive room environments.
         </Body>
       </Section>
 
@@ -226,7 +226,7 @@ export const HackerProtocolBootcampBlog: React.FC = () => {
       <Section>
         <Heading>How It Works Under the Hood</Heading>
         <Body>
-          The HPB runs on a <Highlight>Proof-of-Authority (PoA) blockchain</Highlight> we built specifically for this purpose. Every room completion, every CP award, every phase unlock is recorded on-chain — not because we need a blockchain for the sake of it, but because we wanted <Highlight>verifiable, tamper-proof credentials</Highlight> that outlive any single platform.
+          The HPB runs on a <Highlight>Proof-of-Authority (PoA) blockchain</Highlight> we built specifically for this purpose. Every room completion, every CP award, every phase unlock is recorded on-chain, not because we need a blockchain for the sake of it, but because we wanted <Highlight>verifiable, tamper-proof credentials</Highlight> that outlive any single platform.
         </Body>
         <Body>
           The architecture is straightforward:
@@ -278,7 +278,7 @@ export const HackerProtocolBootcampBlog: React.FC = () => {
               <div className="min-w-0">
                 <h3 className="text-base md:text-lg font-black uppercase tracking-wider mb-2 text-text-primary break-words">Real-World Relevance</h3>
                 <p className="text-sm font-mono text-text-secondary leading-[2]">
-                  Every room is based on a real vulnerability class or attack technique. You're not solving abstract puzzles — you're learning skills that map directly to bug bounties, pentest engagements, and red team operations.
+                  Every room is based on a real vulnerability class or attack technique. You're not solving abstract puzzles, you're learning skills that map directly to bug bounties, pentest engagements, and red team operations.
                 </p>
               </div>
             </div>
@@ -293,7 +293,7 @@ export const HackerProtocolBootcampBlog: React.FC = () => {
             Ready for the 2026 Cohort?
           </h2>
           <p className="text-base md:text-lg text-text-secondary font-mono max-w-2xl leading-relaxed mb-8">
-            Hacker Protocol Bootcamp — 2026 Cohort is live now. Phase 01 is open to everyone. No prerequisites, no application, no cost.
+            Hacker Protocol Bootcamp - 2026 Cohort is live now. Phase 01 is open to everyone. No prerequisites, no application, no cost.
           </p>
           <Link
             to="/hpb"

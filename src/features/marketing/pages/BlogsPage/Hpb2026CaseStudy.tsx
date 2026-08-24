@@ -38,20 +38,20 @@ export const Hpb2026CaseStudy: React.FC = () => {
       {/* ── Introduction ── */}
       <Section>
         <Body>
-          The Hacker Protocol Bootcamp (HPB) — <Highlight>2026 Cohort</Highlight> — was more than just a training program. It was a <Highlight>mission</Highlight>. We set out to find, train, and credential the next generation of offensive security operators in Africa, and what we accomplished exceeded every expectation.
+          The Hacker Protocol Bootcamp (HPB) <Highlight>2026 Cohort</Highlight> was more than just a training program. It was a <Highlight>mission</Highlight>. We set out to find, train, and credential the next generation of offensive security operators in Africa, and what we accomplished exceeded every expectation.
         </Body>
         <Body>
-          Over the course of the bootcamp, participants moved through five intensive phases — from the hacker mindset all the way to advanced social engineering — completing <Highlight>20 rooms</Highlight> and earning <Highlight>on-chain verified CyberPoints (CP)</Highlight>. But the real story isn't the curriculum. It's the <Highlight>community, the outcomes, and the team</Highlight> that emerged from this cohort.
+          Over the course of the bootcamp, participants moved through five intensive phases: from the hacker mindset all the way to advanced social engineering, completing <Highlight>20 rooms</Highlight> and earning <Highlight>on-chain verified CyberPoints (CP)</Highlight>. But the real story isn't the curriculum. It's the <Highlight>community, the outcomes, and the team</Highlight> that emerged from this cohort.
         </Body>
         <Body>
-          <Highlight>Note on our evolution:</Highlight> When the HPB 2026 Cohort launched, we operated under the name <Highlight>HSOCIETY OFFSEC</Highlight>. Since then, we have evolved into <Highlight>QYVORA</Highlight> — a unified platform for offensive security training, credentialing, and operations. The bootcamp's results and participants remain the same; only the banner has grown.
+          <Highlight>Note on our evolution:</Highlight> When the HPB 2026 Cohort launched, we operated under the name <Highlight>HSOCIETY OFFSEC</Highlight>. Since then, we have evolved into <Highlight>QYVORA</Highlight>, a unified platform for offensive security training, credentialing, and operations. The bootcamp's results and participants remain the same; only the banner has grown.
         </Body>
       </Section>
 
       <Screenshot
         src={img01}
         alt="HPB 2026 cohort online class session"
-        caption="Online class session — Phase 01 introduction to offensive security and the hacker mindset."
+        caption="Online class session - Phase 01 introduction to offensive security and the hacker mindset."
       />
 
       {/* ── The Five Phases ── */}
@@ -72,26 +72,26 @@ export const Hpb2026CaseStudy: React.FC = () => {
         </div>
 
         <Body>
-          <Highlight>Phase 01 — Hacker Mindset:</Highlight> Participants learned the ethical and legal frameworks that distinguish security researchers from malicious actors. Scope definition, rules of engagement, and the operational discipline required to operate professionally.
+          <Highlight>Phase 01 - Hacker Mindset:</Highlight> Participants learned the ethical and legal frameworks that distinguish security researchers from malicious actors. Scope definition, rules of engagement, and the operational discipline required to operate professionally.
         </Body>
         <Body>
-          <Highlight>Phase 02 — Linux Foundations:</Highlight> Terminal fluency was built from the ground up — filesystem navigation, privilege escalation, process management, and bash scripting. No graphical interfaces, no shortcuts.
+          <Highlight>Phase 02: Linux Foundations:</Highlight> Terminal fluency was built from the ground up, filesystem navigation, privilege escalation, process management, and bash scripting. No graphical interfaces, no shortcuts.
         </Body>
         <Body>
-          <Highlight>Phase 03 — Networking:</Highlight> Total visibility over the network stack — TCP/IP, OSI layers, packet interception with tcpdump and Wireshark, DNS interrogation, and Nmap mastery.
+          <Highlight>Phase 03: Networking:</Highlight> Total visibility over the network stack. TCP/IP, OSI layers, packet interception with tcpdump and Wireshark, DNS interrogation, and Nmap mastery.
         </Body>
         <Body>
-          <Highlight>Phase 04 — Web & Backend Systems:</Highlight> The modern attack surface. Participants dissected HTTP, exploited SQL injection and XSS, manipulated authentication flows, and used Burp Suite for web application testing.
+          <Highlight>Phase 04 - Web & Backend Systems:</Highlight> The modern attack surface. Participants dissected HTTP, exploited SQL injection and XSS, manipulated authentication flows, and used Burp Suite for web application testing.
         </Body>
         <Body>
-          <Highlight>Phase 05 — Social Engineering:</Highlight> The human layer. Pretexting, phishing, OSINT, and physical security concepts including tailgating and RFID cloning.
+          <Highlight>Phase 05 - Social Engineering:</Highlight> The human layer. Pretexting, phishing, OSINT, and physical security concepts including tailgating and RFID cloning.
         </Body>
       </Section>
 
       <Screenshot
         src={img02}
         alt="HPB 2026 cohort hands-on exercise"
-        caption="Hands-on terminal exercise during the Linux Foundations phase — participants navigating real command-line environments."
+        caption="Hands-on terminal exercise during the Linux Foundations phase, participants navigating real command-line environments."
       />
 
       {/* ── Beyond the Core Curriculum ── */}
@@ -113,7 +113,7 @@ export const Hpb2026CaseStudy: React.FC = () => {
             <IconSearch size={24} className="text-accent mb-3" />
             <h3 className="text-sm font-black uppercase tracking-wider mb-2 break-words">Shodan</h3>
             <p className="text-xs font-mono text-text-secondary leading-[2] break-words">
-              Deep dive into Shodan for internet-wide device discovery — identifying exposed industrial control systems, open databases, and misconfigured servers.
+              Deep dive into Shodan for internet-wide device discovery, identifying exposed industrial control systems, open databases, and misconfigured servers.
             </p>
           </div>
           <div className="p-5 rounded-xl border border-accent/10 bg-accent/5">
@@ -126,14 +126,14 @@ export const Hpb2026CaseStudy: React.FC = () => {
         </div>
 
         <Body>
-          We also held an <Highlight>open Q&A session</Highlight> where participants could ask anything about careers in cybersecurity, the tools we use daily, and the realities of working in offensive security. The engagement was intense — participants asked questions for over two hours straight.
+          We also held an <Highlight>open Q&A session</Highlight> where participants could ask anything about careers in cybersecurity, the tools we use daily, and the realities of working in offensive security. The engagement was intense, participants asked questions for over two hours straight.
         </Body>
       </Section>
 
       <Screenshot
         src={img03}
         alt="HPB 2026 cohort Q&A and discussion session"
-        caption="Q&A session — participants engaging with the team on career pathways, tooling choices, and real-world offensive security operations."
+        caption="Q&A session, participants engaging with the team on career pathways, tooling choices, and real-world offensive security operations."
       />
 
       {/* ── The Outcomes ── */}
@@ -153,9 +153,9 @@ export const Hpb2026CaseStudy: React.FC = () => {
               className="w-20 h-20 md:w-24 md:h-24 rounded-full object-cover border-2 border-accent/20 shrink-0"
             />
             <div className="min-w-0">
-              <h3 className="text-base md:text-lg font-black uppercase tracking-wider mb-2 text-text-primary break-words">sopt4 — Our COO</h3>
+              <h3 className="text-base md:text-lg font-black uppercase tracking-wider mb-2 text-text-primary break-words">sopt4. Our COO</h3>
               <p className="text-sm font-mono text-text-secondary leading-[2]">
-                Among the participants, one stood out not just for technical ability but for <Highlight>leadership, discipline, and vision</Highlight>. <Highlight>sopt4</Highlight> demonstrated an exceptional understanding of offensive security concepts and the operational maturity to lead. After the bootcamp, we recruited sopt4 as QYVORA's <Highlight>Chief Operating Officer (COO)</Highlight> — a testament to the calibre of talent the HPB pipeline can identify and develop.
+                Among the participants, one stood out not just for technical ability but for <Highlight>leadership, discipline, and vision</Highlight>. <Highlight>sopt4</Highlight> demonstrated an exceptional understanding of offensive security concepts and the operational maturity to lead. After the bootcamp, we recruited sopt4 as QYVORA's <Highlight>Chief Operating Officer (COO)</Highlight>, a testament to the calibre of talent the HPB pipeline can identify and develop.
               </p>
             </div>
           </div>
@@ -169,9 +169,9 @@ export const Hpb2026CaseStudy: React.FC = () => {
               className="w-16 h-16 md:w-20 md:h-20 rounded-xl object-cover shrink-0"
             />
             <div className="min-w-0">
-              <h3 className="text-base md:text-lg font-black uppercase tracking-wider mb-2 text-text-primary break-words">QuiteRoot — The Tech Team</h3>
+              <h3 className="text-base md:text-lg font-black uppercase tracking-wider mb-2 text-text-primary break-words">QuiteRoot. The Tech Team</h3>
               <p className="text-sm font-mono text-text-secondary leading-[2]">
-                From the HPB cohort, we identified the most <Highlight>serious and dedicated learners</Highlight> and formed <Highlight>QuiteRoot</Highlight> — QYVORA's offensive research and engineering collective. QuiteRoot is responsible for building the tools, frameworks, and intelligence capabilities that power QYVORA's platform. The team emerged organically from the bootcamp because the curriculum itself was a filter: those who completed all 20 rooms demonstrated the <Highlight>grit, curiosity, and technical aptitude</Highlight> that makes a great operator.
+                From the HPB cohort, we identified the most <Highlight>serious and dedicated learners</Highlight> and formed <Highlight>QuiteRoot</Highlight> | QYVORA's offensive research and engineering collective. QuiteRoot is responsible for building the tools, frameworks, and intelligence capabilities that power QYVORA's platform. The team emerged organically from the bootcamp because the curriculum itself was a filter: those who completed all 20 rooms demonstrated the <Highlight>grit, curiosity, and technical aptitude</Highlight> that makes a great operator.
               </p>
             </div>
           </div>
@@ -181,7 +181,7 @@ export const Hpb2026CaseStudy: React.FC = () => {
             <div className="min-w-0">
               <h3 className="text-base md:text-lg font-black uppercase tracking-wider mb-2 text-text-primary break-words">Verifiable Credentials</h3>
               <p className="text-sm font-mono text-text-secondary leading-[2]">
-                Every participant who completed rooms earned <Highlight>CyberPoints (CP)</Highlight> recorded on QYVORA's Proof-of-Authority blockchain. These are not certificates — they are <Highlight>tamper-proof, independently verifiable on-chain credentials</Highlight> that participants can present to employers as proof of capability.
+                Every participant who completed rooms earned <Highlight>CyberPoints (CP)</Highlight> recorded on QYVORA's Proof-of-Authority blockchain. These are not certificates, they are <Highlight>tamper-proof, independently verifiable on-chain credentials</Highlight> that participants can present to employers as proof of capability.
               </p>
             </div>
           </div>
@@ -191,14 +191,14 @@ export const Hpb2026CaseStudy: React.FC = () => {
       <Screenshot
         src={img04}
         alt="HPB 2026 cohort CTF and practical assessment"
-        caption="Capture-the-flag session — participants competing in a timed offensive security challenge."
+        caption="Capture-the-flag session, participants competing in a timed offensive security challenge."
       />
 
       {/* ── The Architecture ── */}
       <Section>
         <Heading>How It Worked Under the Hood</Heading>
         <Body>
-          The HPB ran on QYVORA's <Highlight>interactive room architecture</Highlight> — a terminal-first, browser-based learning environment where every concept was taught through structured walkthroughs with built-in quiz validation. No local setup, no dependency management, no friction.
+          The HPB ran on QYVORA's <Highlight>interactive room architecture</Highlight>, a terminal-first, browser-based learning environment where every concept was taught through structured walkthroughs with built-in quiz validation. No local setup, no dependency management, no friction.
         </Body>
         <Body>
           Each room completion triggered a <Highlight>blockchain transaction</Highlight> on our Proof-of-Authority chain:
@@ -218,7 +218,7 @@ export const Hpb2026CaseStudy: React.FC = () => {
       <Screenshot
         src={img05}
         alt="HPB 2026 cohort graduation and credential award"
-        caption="Bootcamp wrap-up — participants receiving their on-chain credentials and discussing next steps in their cybersecurity careers."
+        caption="Bootcamp wrap-up, participants receiving their on-chain credentials and discussing next steps in their cybersecurity careers."
       />
 
       {/* ── Why This Matters ── */}
@@ -228,7 +228,7 @@ export const Hpb2026CaseStudy: React.FC = () => {
           The HPB 2026 Cohort proved something we've believed from the start: Africa does not have a <Highlight>talent problem</Highlight>. It has a <Highlight>discovery and infrastructure problem</Highlight>. When you build the right pipeline and the right incentive structure, the talent surfaces naturally.
         </Body>
         <Body>
-          We didn't just train operators — we <Highlight>recruited a COO</Highlight>, <Highlight>formed a tech team</Highlight>, and <Highlight>issued verifiable blockchain credentials</Highlight> that will follow these participants throughout their careers. That is the model. That is what the HPB is designed to do.
+          We didn't just train operators, we <Highlight>recruited a COO</Highlight>, <Highlight>formed a tech team</Highlight>, and <Highlight>issued verifiable blockchain credentials</Highlight> that will follow these participants throughout their careers. That is the model. That is what the HPB is designed to do.
         </Body>
         <Body>
           The 2026 Cohort was the proof of concept. The pipeline works. The question now is: <Highlight>how many more cohorts can we run?</Highlight>

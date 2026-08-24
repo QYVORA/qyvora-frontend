@@ -4,6 +4,7 @@ import { Zap, Star, ArrowRightLeft } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { IconArrowRight } from '@/shared/components/icons';
 import { useAutoPlay } from '@/core/hooks/useAutoPlay';
+import { useSwipeNav } from '@/core/hooks/useSwipeNav';
 import { useReducedMotion } from '@/shared/hooks/useReducedMotion';
 
 interface Lab {
@@ -60,6 +61,8 @@ const LabsCarousel: React.FC<LabsCarouselProps> = ({
     disabled: total <= 1 || prefersReduced,
   });
 
+  const swipeHandlers = useSwipeNav({ onPrevious: prev, onNext: next });
+
   useEffect(() => {
     if (prefersReduced) return;
     const handleKey = (e: KeyboardEvent) => {
@@ -99,7 +102,7 @@ const LabsCarousel: React.FC<LabsCarouselProps> = ({
       {...containerProps}
     >
       <div className="w-full px-3 md:px-4 lg:px-6 pt-24 md:pt-28 lg:pt-32 pb-6 md:pb-8 lg:pb-10 my-auto">
-        <div className="overflow-x-clip">
+        <div className="overflow-x-clip touch-pan-y select-none cursor-grab active:cursor-grabbing" {...swipeHandlers}>
         <AnimatePresence mode="wait" custom={direction}>
           <motion.div
             key={lab.id}

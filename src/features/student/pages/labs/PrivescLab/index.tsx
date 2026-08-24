@@ -111,7 +111,7 @@ const PrivescLab = () => {
   return (
     <div className="bg-bg min-h-full">
       <SEO
-        title={`${activeScenario.title} — Privilege Escalation`}
+        title={`${activeScenario.title} - Privilege Escalation`}
         description={activeScenario.description}
         noindex
       />

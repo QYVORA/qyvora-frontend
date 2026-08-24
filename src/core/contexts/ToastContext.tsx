@@ -98,7 +98,7 @@ export const ToastProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         • Desktop (md+): anchored to the bottom-right corner, fixed width.
 
         aria-live="polite" tells screen readers to announce new toasts after
-        the current speech finishes — appropriate for non-critical notifications.
+        the current speech finishes, appropriate for non-critical notifications.
         aria-atomic="true" means the whole region is re-read as a unit when
         updated, preventing partial announcements.
 

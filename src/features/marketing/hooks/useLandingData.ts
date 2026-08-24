@@ -147,7 +147,7 @@ export const useLandingData = () => {
       mounted = false;      // Prevents all subsequent async setState calls
       revokeObjectUrls();   // Frees all blob: URL memory on unmount
     };
-  }, []); // Empty dependency array — run once on mount only.
+  }, []); // Empty dependency array, run once on mount only.
 
   return { stats, bootcamps, marketItems, loading };
 };

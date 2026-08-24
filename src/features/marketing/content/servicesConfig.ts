@@ -40,7 +40,7 @@ export const SERVICES: ServiceConfig[] = [
     badge: 'Essential',
     icon: Shield,
     overview:
-      'A focused assessment of your application\u2019s most critical pages \u2014 fast, thorough, and built around the OWASP Top 10.',
+      'A focused assessment of your application\u2019s most critical pages: fast, thorough, and built around the OWASP Top 10.',
     price: '$300 - $500 USD',
     priceLocal: 'GH\u20B54,000 - GH\u20B57,000',
     scope: 'Up to 5 application pages/endpoints.',
@@ -55,7 +55,7 @@ export const SERVICES: ServiceConfig[] = [
       'Ideal entry point for small applications and MVPs',
       'Manual + automated analysis of every in-scope endpoint',
       'Clear, prioritized findings tied to real business risk',
-      'No checkbox audit \u2014 real exploitation with practical fixes',
+      'No checkbox audit: real exploitation with practical fixes',
     ],
     deliverables: [
       {
@@ -104,7 +104,7 @@ export const SERVICES: ServiceConfig[] = [
       'Rate limiting checks',
     ],
     benefits: [
-      'Full application coverage \u2014 no endpoint left out of scope',
+      'Full application coverage: no endpoint left out of scope',
       'Deep-dive into authorization, business logic, and file handling',
       'Actionable findings mapped to remediation priority',
       'One free retest after vulnerabilities have been remediated',
@@ -152,7 +152,7 @@ export const SERVICES: ServiceConfig[] = [
     price: 'Custom quotation',
     priceLocal: 'Depends on organization size & scope',
     priceNote:
-      'No fixed price \u2014 the quotation depends on organization size, employee count, training requirements, and engagement scope. Contact us for a custom quotation.',
+      'No fixed price: the quotation depends on organization size, employee count, training requirements, and engagement scope. Contact us for a custom quotation.',
     scope: 'Tailored to your organization size, employee count, and training requirements.',
     included: [
       'Understanding cybersecurity risks',
@@ -165,7 +165,7 @@ export const SERVICES: ServiceConfig[] = [
       'Basic incident response awareness',
     ],
     benefits: [
-      'A security-aware workforce \u2014 your employees become your first line of defense',
+      'A security-aware workforce: your employees become your first line of defense',
       'Practical, scenario-based training instead of slideware',
       'Curriculum tailored to your industry and risk profile',
       'Hands-on drills and simulations employees will remember',
@@ -193,7 +193,7 @@ export const SERVICES: ServiceConfig[] = [
 
 export const PENTEST_PHILOSOPHY = {
   heading: 'Why We Test',
-  body: 'We do not perform penetration tests to check a box or generate revenue. The objective is to identify real vulnerabilities, help you strengthen your security posture, and deliver meaningful security improvements. Client satisfaction matters \u2014 but the focus is thorough, high-quality assessments that uncover genuine weaknesses with practical remediation guidance.',
+  body: 'We do not perform penetration tests to check a box or generate revenue. The objective is to identify real vulnerabilities, help you strengthen your security posture, and deliver meaningful security improvements. Client satisfaction matters, but the focus is thorough, high-quality assessments that uncover genuine weaknesses with practical remediation guidance.',
 };
 
 export const REQUEST_ASSESSMENT_LABEL = 'Request an Assessment';

@@ -3,6 +3,7 @@ import { motion, AnimatePresence, useReducedMotion } from 'motion/react';
 import { ChevronLeft } from 'lucide-react';
 import { IconChevronRight } from '@/shared/components/icons';
 import { useAutoPlay } from '@/core/hooks/useAutoPlay';
+import { useSwipeNav } from '@/core/hooks/useSwipeNav';
 
 export interface CarouselProps<T extends { id: string }> {
   slides: readonly T[];
@@ -42,6 +43,9 @@ function Carousel<T extends { id: string }>({
     disabled: total <= 1 || !!prefersReducedMotion,
   });
 
+  // Drag/swipe the slide area to change slides (arrows stay as fallback).
+  const swipeHandlers = useSwipeNav({ onPrevious: prev, onNext: next });
+
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) return;
@@ -56,7 +60,10 @@ function Carousel<T extends { id: string }>({
 
   return (
     <div className={`relative group ${className}`} {...containerProps}>
-      <div className="overflow-hidden rounded-2xl md:rounded-3xl border border-border/30 bg-accent-dim">
+      <div
+        className="overflow-hidden rounded-2xl md:rounded-3xl border border-border/30 bg-accent-dim cursor-grab touch-pan-y select-none active:cursor-grabbing"
+        {...swipeHandlers}
+      >
         <AnimatePresence mode="wait" custom={direction}>
           <motion.div
             key={slides[current].id}

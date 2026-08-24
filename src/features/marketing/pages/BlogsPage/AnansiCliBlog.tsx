@@ -13,7 +13,7 @@ export const AnansiCliBlog: React.FC = () => {
           Every pentester and bug bounty hunter knows the feeling: you've got a target, but the recon phase takes forever. You're stitching together five different tools, parsing output formats that don't talk to each other, and fighting dependency hell just to get a basic subdomain list.
         </Body>
         <Body>
-          <Highlight>Anansi CLI</Highlight> is our answer to that. A single, static binary that does <Highlight>six phases of attack surface intelligence</Highlight> — from subdomain discovery to subdomain takeover detection — in one command. No web UI. No cloud account. No API keys. Just raw technical signal delivered straight to your terminal.
+          <Highlight>Anansi CLI</Highlight> is our answer to that. A single, static binary that does <Highlight>six phases of attack surface intelligence</Highlight>: from subdomain discovery to subdomain takeover detection, in one command. No web UI. No cloud account. No API keys. Just raw technical signal delivered straight to your terminal.
         </Body>
         <Body>
           Named after the West African trickster god Anansi (the spider), this tool embodies the philosophy that <Highlight>intelligence is about weaving together disparate threads</Highlight> into a coherent picture of the attack surface.
@@ -31,19 +31,19 @@ export const AnansiCliBlog: React.FC = () => {
           <div className="p-6 rounded-xl border border-accent/10 bg-accent/5">
             <h3 className="text-base md:text-lg font-black uppercase tracking-wider mb-2 text-text-primary break-words">1. Single Binary, Zero Friction</h3>
             <p className="text-sm font-mono text-text-secondary leading-[2]">
-              You should not need a package manager, a runtime, or a cloud account to run recon. Download one binary, chmod it, and run it. That's it. Go makes this possible — Anansi is compiled to a static binary with <Highlight>zero runtime dependencies</Highlight>.
+              You should not need a package manager, a runtime, or a cloud account to run recon. Download one binary, chmod it, and run it. That's it. Go makes this possible. Anansi is compiled to a static binary with <Highlight>zero runtime dependencies</Highlight>.
             </p>
           </div>
           <div className="p-6 rounded-xl border border-accent/10 bg-accent/5">
             <h3 className="text-base md:text-lg font-black uppercase tracking-wider mb-2 text-text-primary break-words">2. Signal Over Noise</h3>
             <p className="text-sm font-mono text-text-secondary leading-[2]">
-              Most recon tools dump everything at you and let you figure out what matters. Anansi flips that — by default, it <Highlight>only shows what it finds</Highlight>. If a subdomain is dead, it's hidden. If a path returns 404, it's suppressed. You get a clean terminal with <Highlight>actionable intelligence</Highlight> and nothing else.
+              Most recon tools dump everything at you and let you figure out what matters. Anansi flips that: by default, it <Highlight>only shows what it finds</Highlight>. If a subdomain is dead, it's hidden. If a path returns 404, it's suppressed. You get a clean terminal with <Highlight>actionable intelligence</Highlight> and nothing else.
             </p>
           </div>
           <div className="p-6 rounded-xl border border-accent/10 bg-accent/5">
             <h3 className="text-base md:text-lg font-black uppercase tracking-wider mb-2 text-text-primary break-words">3. Pipeline, Not Point Tool</h3>
             <p className="text-sm font-mono text-text-secondary leading-[2]">
-              Recon is not a single step — it's a <Highlight>pipeline</Highlight>. You discover subdomains, probe for live hosts, check TLS configs, audit headers, find exposed paths, and check for takeovers. Anansi runs this entire pipeline in one command, passing data between phases automatically.
+              Recon is not a single step, it's a <Highlight>pipeline</Highlight>. You discover subdomains, probe for live hosts, check TLS configs, audit headers, find exposed paths, and check for takeovers. Anansi runs this entire pipeline in one command, passing data between phases automatically.
             </p>
           </div>
         </div>
@@ -57,15 +57,15 @@ export const AnansiCliBlog: React.FC = () => {
         </Body>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 my-8">
-          <PhaseCard icon={IconSearch} name="Phase 01 — Discovery" desc="Subdomain enumeration via crt.sh CT logs + DNS brute-force wordlist" />
-          <PhaseCard icon={Globe} name="Phase 02 — Probe" desc="Live HTTP/HTTPS host detection with status codes, servers, and titles" />
-          <PhaseCard icon={IconLock} name="Phase 03 — TLS" desc="Certificate analysis, SAN extraction, protocol version, and cipher audit" />
-          <PhaseCard icon={IconShield} name="Phase 04 — Headers" desc="Security header audit and CORS misconfiguration detection" />
-          <PhaseCard icon={FileCode} name="Phase 05 — Paths" desc="Exposed file detection — .env, .git, admin panels, backups, API docs" />
-          <PhaseCard icon={IconWarning} name="Phase 06 — Takeover" desc="Dangling CNAME detection for AWS, Heroku, GitHub Pages, and more" />
+          <PhaseCard icon={IconSearch} name="Phase 01. Discovery" desc="Subdomain enumeration via crt.sh CT logs + DNS brute-force wordlist" />
+          <PhaseCard icon={Globe} name="Phase 02. Probe" desc="Live HTTP/HTTPS host detection with status codes, servers, and titles" />
+          <PhaseCard icon={IconLock} name="Phase 03. TLS" desc="Certificate analysis, SAN extraction, protocol version, and cipher audit" />
+          <PhaseCard icon={IconShield} name="Phase 04. Headers" desc="Security header audit and CORS misconfiguration detection" />
+          <PhaseCard icon={FileCode} name="Phase 05: Paths" desc="Exposed file detection, .env, .git, admin panels, backups, API docs" />
+          <PhaseCard icon={IconWarning} name="Phase 06. Takeover" desc="Dangling CNAME detection for AWS, Heroku, GitHub Pages, and more" />
         </div>
 
-        <TerminalBlock code={`# Full pipeline — one command
+        <TerminalBlock code={`# Full pipeline, one command
 anansi target.com
 
 # Deep scan with extended wordlists
@@ -97,7 +97,7 @@ anansi target.com --modules discovery,tls,takeover`} />
   ─────────────────────────────────────────────────────────────
   api.target.com              104.21.44.12    crt.sh    LIVE
   dev.target.com              104.21.44.13    crt.sh    LIVE
-  old.target.com              —               wordlist  DEAD
+  old.target.com             -               wordlist  DEAD
                               CNAME → target.herokuapp.com
 
   ══ PHASE 05 ── PATHS // exposed endpoint detection
@@ -117,7 +117,7 @@ anansi target.com --modules discovery,tls,takeover`} />
   findings    CRIT:3  HIGH:7  MED:4  LOW:6  INFO:2`} />
 
         <Body>
-          Every finding includes <Highlight>evidence and a fix recommendation</Highlight>. You don't need to cross-reference external documentation — Anansi tells you what's wrong, why it matters, and how to fix it. Critical findings get priority placement so you know exactly where to focus.
+          Every finding includes <Highlight>evidence and a fix recommendation</Highlight>. You don't need to cross-reference external documentation. Anansi tells you what's wrong, why it matters, and how to fix it. Critical findings get priority placement so you know exactly where to focus.
         </Body>
       </Section>
 
@@ -128,18 +128,18 @@ anansi target.com --modules discovery,tls,takeover`} />
           Terminal output is great for live scanning, but sometimes you need to share findings or integrate with other tools. Anansi supports four output formats:
         </Body>
 
-        <TerminalBlock code={`# JSON — pipe to jq or save for downstream tools
+        <TerminalBlock code={`# JSON: pipe to jq or save for downstream tools
 anansi target.com --out json > results.json
 anansi target.com --out json | jq '.Findings[] | select(.Severity == "CRITICAL")'
 
-# Markdown — drop straight into a report
+# Markdown, drop straight into a report
 anansi target.com --out markdown > recon.md
 
-# HTML — generate a premium, high-fidelity dark mode report
+# HTML: generate a premium, high-fidelity dark mode report
 anansi target.com --out html > report.html`} />
 
         <Body>
-          The HTML report is particularly useful for client engagements. It generates a <Highlight>standalone, dark-mode report</Highlight> with all findings organized by severity, complete with evidence, fix recommendations, and a summary dashboard. No external CSS or JS required — it's a single self-contained file.
+          The HTML report is particularly useful for client engagements. It generates a <Highlight>standalone, dark-mode report</Highlight> with all findings organized by severity, complete with evidence, fix recommendations, and a summary dashboard. No external CSS or JS required, it's a single self-contained file.
         </Body>
       </Section>
 
@@ -152,19 +152,19 @@ anansi target.com --out html > report.html`} />
         <ul className="space-y-4 my-8 text-sm md:text-base font-mono text-text-secondary leading-[2]">
           <li className="flex items-start gap-3">
             <IconCheck size={20} className="text-accent mt-0.5 shrink-0" />
-            <span><Highlight>Native Go DNS Resolver</Highlight> — bypasses slow cgo-blocked system lookups with pure Go goroutines</span>
+            <span><Highlight>Native Go DNS Resolver</Highlight>, bypasses slow cgo-blocked system lookups with pure Go goroutines</span>
           </li>
           <li className="flex items-start gap-3">
             <IconCheck size={20} className="text-accent mt-0.5 shrink-0" />
-            <span><Highlight>Concurrent Probing</Highlight> — HTTP probes, TLS analyses, and header checks run in parallel across configurable thread pools</span>
+            <span><Highlight>Concurrent Probing</Highlight>. HTTP probes, TLS analyses, and header checks run in parallel across configurable thread pools</span>
           </li>
           <li className="flex items-start gap-3">
             <IconCheck size={20} className="text-accent mt-0.5 shrink-0" />
-            <span><Highlight>Smart Takeover Filtering</Highlight> — only scans subdomains with verified dead CNAME records instead of testing every candidate</span>
+            <span><Highlight>Smart Takeover Filtering</Highlight>, only scans subdomains with verified dead CNAME records instead of testing every candidate</span>
           </li>
           <li className="flex items-start gap-3">
             <IconCheck size={20} className="text-accent mt-0.5 shrink-0" />
-            <span><Highlight>Parallel Path Probing</Highlight> — custom 404 baselines are fetched concurrently, and paths are scanned in parallel</span>
+            <span><Highlight>Parallel Path Probing</Highlight>, custom 404 baselines are fetched concurrently, and paths are scanned in parallel</span>
           </li>
         </ul>
 
@@ -191,7 +191,7 @@ chmod +x anansi && sudo mv anansi /usr/local/bin/
 anansi target.com`} />
 
         <Body>
-          The binary supports Linux (amd64 and arm64), macOS (Intel and Apple Silicon), and Windows. The same <Highlight>zero-dependency philosophy</Highlight> applies everywhere — download, chmod, run.
+          The binary supports Linux (amd64 and arm64), macOS (Intel and Apple Silicon), and Windows. The same <Highlight>zero-dependency philosophy</Highlight> applies everywhere: download, chmod, run.
         </Body>
       </Section>
 

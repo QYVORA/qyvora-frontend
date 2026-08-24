@@ -212,26 +212,26 @@ const InboxTab = () => {
                     <>
                       <div>
                         <span className="text-[10px] font-bold text-text-muted uppercase tracking-wider block mb-1">{t('form.business')}</span>
-                        <span className="text-text-primary">{(d as any).businessName || '—'}</span>
+                        <span className="text-text-primary">{(d as any).businessName || '-'}</span>
                       </div>
                       <div>
                         <span className="text-[10px] font-bold text-text-muted uppercase tracking-wider block mb-1">{t('form.phone')}</span>
-                        <span className="text-text-primary">{(d as any).phone || '—'}</span>
+                        <span className="text-text-primary">{(d as any).phone || '-'}</span>
                       </div>
                       <div className="col-span-2">
                         <span className="text-[10px] font-bold text-text-muted uppercase tracking-wider block mb-1">{t('form.website')}</span>
-                        <span className="text-text-primary font-mono text-xs">{(d as any).websiteUrl || '—'}</span>
+                        <span className="text-text-primary font-mono text-xs">{(d as any).websiteUrl || '-'}</span>
                       </div>
                       <div className="col-span-2">
                         <span className="text-[10px] font-bold text-text-muted uppercase tracking-wider block mb-1">{t('form.packageServiceType')}</span>
-                        <span className="text-text-primary">{(d as any).packageTier || (d as any).serviceType || '—'}</span>
+                        <span className="text-text-primary">{(d as any).packageTier || (d as any).serviceType || '-'}</span>
                       </div>
                     </>
                   )}
                   {isContact && (
                     <div className="col-span-2">
                       <span className="text-[10px] font-bold text-text-muted uppercase tracking-wider block mb-1">{t('form.subject')}</span>
-                      <span className="text-text-primary">{(d as any).subject || '—'}</span>
+                      <span className="text-text-primary">{(d as any).subject || '-'}</span>
                     </div>
                   )}
                 </div>

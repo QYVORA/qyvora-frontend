@@ -6,6 +6,7 @@ import anansiLogo from '@/assets/anansi/anansi-main-logo.webp';
 import toha3eeLogo from '@/assets/toha3ee/toha3ee-main-logo.webp';
 import jabariLogo from '@/assets/jabari/jabari-main-logo.webp';
 import aksumLogo from '@/assets/aksum/aksum-main-logo.webp';
+import DragMarquee from '@/shared/components/carousel/DragMarquee';
 
 interface Tool {
   slug: string;
@@ -58,24 +59,20 @@ const LandingOpenSourceToolsSection: React.FC = () => {
         </div>
       ) : (
         <div className="relative z-10 flex-1 min-h-0 min-w-0 overflow-x-clip overflow-y-visible flex items-center py-3">
-          <div className="marquee-track">
-            {[0, 1].map((copy) => (
-              <div key={copy} aria-hidden={copy === 1} className="h-full flex items-center shrink-0">
-                {Array.from({ length: REPEATS }).flatMap((_, rep) =>
-                  tools.map((tool) => (
-                    <Link
-                      key={`${copy}-${rep}-${tool.slug}`}
-                      to={tool.path}
-                      aria-label={tool.alt}
-                      className="group shrink-0 flex items-center justify-center px-5 md:px-8"
-                    >
-                      <img src={tool.logo} alt={tool.alt} className={logoClass} loading="lazy" />
-                    </Link>
-                  ))
-                )}
-              </div>
-            ))}
-          </div>
+          <DragMarquee speed={30} trackClassName="h-full items-center" className="w-full">
+            {Array.from({ length: REPEATS }).flatMap((_, rep) =>
+              tools.map((tool) => (
+                <Link
+                  key={`${rep}-${tool.slug}`}
+                  to={tool.path}
+                  aria-label={tool.alt}
+                  className="group shrink-0 flex items-center justify-center px-5 md:px-8"
+                >
+                  <img src={tool.logo} alt={tool.alt} className={logoClass} loading="lazy" />
+                </Link>
+              ))
+            )}
+          </DragMarquee>
         </div>
       )}
     </div>

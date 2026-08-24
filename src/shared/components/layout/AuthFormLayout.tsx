@@ -32,7 +32,7 @@ const AuthFormLayout: React.FC<AuthFormLayoutProps> = ({ children }) => {
           the bottom-right corner so hero and form share one canvas and the
           globe is never clipped at the column boundary. Fixed so it stays pinned
           to the bottom-right corner on mobile while the form scrolls; the globe
-          has no scroll-exit animation — it stays anchored to its backdrop. */}
+          has no scroll-exit animation, it stays anchored to its backdrop. */}
       <div className="fixed inset-0 z-0 flex items-end justify-end overflow-hidden pointer-events-none" aria-hidden="true">
         <div className="relative w-full h-full flex items-end justify-end">
           <ErrorBoundary scope="HackerGlobe" fallback={null}>

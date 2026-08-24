@@ -110,7 +110,7 @@ const TeamPage = () => {
 
   return (
     <div className="bg-bg min-h-full">
-      <SEO title="Team - QYVORA" description="The team behind QYVORA — operators, engineers, and security researchers." />
+      <SEO title="Team - QYVORA" description="The team behind QYVORA | operators, engineers, and security researchers." />
       <PublicSnapLayout>
         <section className="relative w-full min-h-dvh snap-section bg-bg">
         <StudentHeroSection

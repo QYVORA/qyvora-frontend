@@ -72,7 +72,7 @@ export function useAdaptiveUi() {
       mobileMedia.removeEventListener('change', onMobileChange);
       lgMedia.removeEventListener('change', onLgChange);
     };
-  }, []); // Empty dependency array — the media query listeners are set up once.
+  }, []); // Empty dependency array, the media query listeners are set up once.
 
   /**
    * Computes the full device profile. Memoized so the object reference is

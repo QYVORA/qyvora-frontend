@@ -35,7 +35,7 @@ const TerminalMock: React.FC = () => (
       <span className="w-2.5 h-2.5 rounded-full bg-red-400/70" />
       <span className="w-2.5 h-2.5 rounded-full bg-yellow-400/70" />
       <span className="w-2.5 h-2.5 rounded-full bg-accent/70" />
-      <span className="ml-2 text-[9px] font-mono text-text-muted">operator@qyvora — ~</span>
+      <span className="ml-2 text-[9px] font-mono text-text-muted">operator@qyvora:~</span>
     </div>
     <div className="flex-1 min-h-0 p-4 font-mono text-[11px] leading-relaxed space-y-1 overflow-hidden">
       <p>
@@ -50,7 +50,7 @@ const TerminalMock: React.FC = () => (
         <span className="text-text-muted">:~$</span> cat notes.txt
       </p>
       <p className="text-text-muted">recon the target · enumerate services · escalate.</p>
-      <p className="text-text-muted">target 10.10.14.7 — keep low noise.</p>
+      <p className="text-text-muted">target 10.10.14.7 - keep low noise.</p>
       <p>
         <span className="text-accent">operator@qyvora</span>
         <span className="text-text-muted">:~$</span> whoami
@@ -88,7 +88,7 @@ const IdeMock: React.FC = () => (
 const NetworkMock: React.FC = () => (
   <div className="relative flex h-full min-h-[220px] lg:min-h-[280px] flex-col rounded-2xl border border-border/30 bg-bg-card overflow-hidden">
     <div className="flex items-center justify-between px-4 py-2.5 shrink-0">
-      <span className="text-[9px] font-mono text-text-muted">topology — recon</span>
+      <span className="text-[9px] font-mono text-text-muted">topology | recon</span>
       <span className="flex items-center gap-1.5 text-[9px] font-mono text-text-muted">
         <span className="h-1.5 w-1.5 rounded-full bg-accent animate-pulse" /> live
       </span>

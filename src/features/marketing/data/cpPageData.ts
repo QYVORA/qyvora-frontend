@@ -136,7 +136,7 @@ export const CP_LEARNING_LOOP: CpLoopStage[] = [
 // ─── 06 · Anansi terminal ─────────────────────────────────────────────────────
 
 export const CP_ANANSI_TERMINAL = {
-  title: 'anansi — zsh',
+  title: 'anansi, zsh',
   command: 'anansi target.example --modules chain',
   lines: [
     { text: '> initializing reconnaissance', accent: false },

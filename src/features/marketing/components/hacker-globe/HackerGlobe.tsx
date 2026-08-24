@@ -178,31 +178,21 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88, offset = [0, 0,
     let targetScrollRotation = 0;
     let currentScrollRotation = 0;
 
-    const snapEl = document.querySelector('.snap-container');
-
-    let scrollSettleTimer = 0;
-    let isScrolling = false;
-    
-    const handleScroll = () => {
+    // Scroll only feeds a target rotation that the render loop lerps toward.
+    // The loop itself never stops during scrolling — pausing and resuming it
+    // here read as stutter because the globe froze mid-scroll, then jumped.
+    const syncTargetFromScroll = () => {
       if (!mounted) return;
-      
+
       const scrollY = snapEl ? snapEl.scrollTop : window.scrollY;
       targetScrollRotation = scrollY * 0.0003;
-      
-      if (!isScrolling) {
-        isScrolling = true;
-        stop();
-      }
-      
-      clearTimeout(scrollSettleTimer);
-      scrollSettleTimer = window.setTimeout(() => {
-        isScrolling = false;
-        if (visible && mounted && sceneReady) start();
-      }, 120);
     };
 
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    if (snapEl) snapEl.addEventListener('scroll', handleScroll, { passive: true });
+    const snapEl = document.querySelector('.snap-container');
+
+    window.addEventListener('scroll', syncTargetFromScroll, { passive: true });
+    if (snapEl) snapEl.addEventListener('scroll', syncTargetFromScroll, { passive: true });
+    syncTargetFromScroll();
 
     const stop = () => {
       if (rafId) {
@@ -211,7 +201,9 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88, offset = [0, 0,
       }
     };
 
-    const FRAME_BUDGET = 1000 / 30;
+    // Constrained devices cap at ~30fps; capable devices render every rAF tick
+    // so scroll-linked rotation stays perfectly smooth.
+    const FRAME_BUDGET = live.current.simplified ? 1000 / 30 : 0;
     let lastRenderFrame = 0;
     
     const tick = (now: number) => {
@@ -231,7 +223,7 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88, offset = [0, 0,
       }
       last = now;
       
-      if (now - lastRenderFrame < FRAME_BUDGET) return;
+      if (FRAME_BUDGET && now - lastRenderFrame < FRAME_BUDGET) return;
       lastRenderFrame = now;
       
       if (renderer && scene && camera && sceneReady) {
@@ -252,12 +244,12 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88, offset = [0, 0,
     let debounceTimer = 0;
     const viewObserver = new IntersectionObserver((entries) => {
       if (!mounted) return;
-      
+
       const isIntersecting = entries[0]?.isIntersecting ?? false;
       if (isIntersecting) {
         clearTimeout(debounceTimer);
         visible = true;
-        if (sceneReady && !isScrolling) start();
+        if (sceneReady) start();
       } else {
         debounceTimer = window.setTimeout(() => {
           visible = false;
@@ -272,7 +264,7 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88, offset = [0, 0,
       if (!mounted) return;
       if (document.hidden) {
         stop();
-      } else if (visible && sceneReady && !isScrolling) {
+      } else if (visible && sceneReady) {
         start();
       }
     };
@@ -304,9 +296,8 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88, offset = [0, 0,
       cancelled = true;
       clearTimeout(buildTimer);
       clearTimeout(debounceTimer);
-      clearTimeout(scrollSettleTimer);
-      window.removeEventListener('scroll', handleScroll);
-      if (snapEl) snapEl.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('scroll', syncTargetFromScroll);
+      if (snapEl) snapEl.removeEventListener('scroll', syncTargetFromScroll);
       document.removeEventListener('visibilitychange', handleVisibility);
       viewObserver.disconnect();
       resizeObserver.disconnect();

@@ -89,7 +89,7 @@ const CyberCoinPage: React.FC = () => {
     <div className="bg-bg min-h-full">
       <SEO
         title="Cyber Coin - QYVORA"
-        description="CP — the QYVORA Cyber Coin. The reward layer connecting learning, execution, and achievement across the QYVORA cybersecurity ecosystem. Learn. Execute. Earn."
+        description="CP: the QYVORA Cyber Coin. The reward layer connecting learning, execution, and achievement across the QYVORA cybersecurity ecosystem. Learn. Execute. Earn."
       />
 
       <PublicSnapLayout>
@@ -128,7 +128,7 @@ const CyberCoinPage: React.FC = () => {
               <ScrollReveal direction="left" className="w-full flex justify-center lg:justify-end">
                 <CpLogo
                   className="w-48 h-48 min-[400px]:w-56 min-[400px]:h-56 sm:w-64 sm:h-64 lg:w-72 lg:h-72 xl:w-80 xl:h-80"
-                  alt="CP — QYVORA Cyber Coin logo"
+                  alt="CP | QYVORA Cyber Coin logo"
                 />
               </ScrollReveal>
             </div>
@@ -179,7 +179,7 @@ const CyberCoinPage: React.FC = () => {
               <SectionHeader
                 kicker="The CP Philosophy"
                 title={<>Knowledge Is Only the <span className="text-accent">Beginning.</span></>}
-                description="QYVORA is designed around the transition from consuming cybersecurity knowledge to actually executing it. The reward system reinforces that progression — every stage must be proven before the next one pays out."
+                description="QYVORA is designed around the transition from consuming cybersecurity knowledge to actually executing it. The reward system reinforces that progression: every stage must be proven before the next one pays out."
               />
             </ScrollReveal>
 
@@ -235,7 +235,7 @@ const CyberCoinPage: React.FC = () => {
                     <span className="w-2.5 h-2.5 rounded-full bg-red-400/70" aria-hidden="true" />
                     <span className="w-2.5 h-2.5 rounded-full bg-yellow-400/70" aria-hidden="true" />
                     <span className="w-2.5 h-2.5 rounded-full bg-accent/70" aria-hidden="true" />
-                    <span className="ml-2 text-[9px] font-mono text-text-muted">qyvora — verification</span>
+                    <span className="ml-2 text-[9px] font-mono text-text-muted">qyvora - verification</span>
                   </div>
                   <div className="p-4 md:p-5 font-mono text-[11px] md:text-xs space-y-2 flex-1">
                     <div className="flex items-center gap-2">
@@ -275,7 +275,7 @@ const CyberCoinPage: React.FC = () => {
               <SectionHeader
                 kicker="Reward Protocol"
                 title={<>How You Earn <span className="text-accent">CP.</span></>}
-                description="Progress through the QYVORA learning loop — learn, practice, break, build, verify — and every verified step is mapped to a CP issuance. No logins, no clicks: only completed, verified missions earn rewards."
+                description="Progress through the QYVORA learning loop: learn, practice, break, build, verify, and every verified step is mapped to a CP issuance. No logins, no clicks: only completed, verified missions earn rewards."
               />
             </ScrollReveal>
 
@@ -387,7 +387,7 @@ const CyberCoinPage: React.FC = () => {
                 </p>
               </ScrollReveal>
               <p className="text-[9px] md:text-[10px] font-mono text-text-muted leading-relaxed max-w-sm md:text-right">
-                Reward values are defined per activity by the QYVORA protocol. Values shown are placeholders — concrete CP amounts are issued by the platform on verification.
+                Reward values are defined per activity by the QYVORA protocol. Values shown are placeholders. Concrete CP amounts are issued by the platform on verification.
               </p>
             </div>
           </div>
@@ -401,10 +401,10 @@ const CyberCoinPage: React.FC = () => {
                 <SectionHeader
                   kicker="CP × Anansi CLI"
                   title={<>From Intelligence to <span className="text-accent">Execution.</span></>}
-                  description="Anansi CLI is the sharpest example of QYVORA's philosophy of practical cybersecurity capability — reconnaissance intelligence gathered by running a real tool against a real target."
+                  description="Anansi CLI is the sharpest example of QYVORA's philosophy of practical cybersecurity capability: reconnaissance intelligence gathered by running a real tool against a real target."
                 />
                 <p className="text-xs md:text-sm text-text-muted leading-relaxed font-mono max-w-xl">
-                  Missions executed through Anansi demonstrate applied skill, not theory. Completed missions feed reward eligibility — turning offensive execution into verifiable progress inside the CP ecosystem.
+                  Missions executed through Anansi demonstrate applied skill, not theory. Completed missions feed reward eligibility, turning offensive execution into verifiable progress inside the CP ecosystem.
                 </p>
                 <Link
                   to="/anansi"
@@ -459,7 +459,7 @@ const CyberCoinPage: React.FC = () => {
               <SectionHeader
                 kicker="Future Architecture // Planned"
                 title={<>Built for the Next <span className="text-accent">Layer.</span></>}
-                description="CP is designed with a future-ready architecture that can connect verified cybersecurity achievements with a blockchain-backed reward infrastructure — tamper-evident, portable digital proof of capability."
+                description="CP is designed with a future-ready architecture that can connect verified cybersecurity achievements with a blockchain-backed reward infrastructure: tamper-evident, portable digital proof of capability."
               />
             </ScrollReveal>
 
@@ -505,7 +505,7 @@ const CyberCoinPage: React.FC = () => {
               <div className="wc-table mx-auto rounded-2xl border border-border/30 bg-bg-card p-4 md:p-5 flex items-start gap-3">
                 <FlaskConical className="w-4 h-4 text-accent shrink-0 mt-0.5" aria-hidden="true" />
                 <p className="text-[10px] md:text-xs font-mono text-text-muted leading-relaxed">
-                  CP currently functions as the QYVORA platform reward system. Blockchain-backed settlement and portable digital proof are planned future layers — they are not deployed, and CP is not a publicly tradable asset.
+                  CP currently functions as the QYVORA platform reward system. Blockchain-backed settlement and portable digital proof are planned future layers. They are not deployed, and CP is not a publicly tradable asset.
                 </p>
               </div>
             </ScrollReveal>
@@ -528,7 +528,7 @@ const CyberCoinPage: React.FC = () => {
                     Begin With Your First <span className="text-accent">Course.</span>
                   </h2>
                   <p className="text-xs md:text-sm text-text-muted leading-relaxed mt-3 font-mono">
-                    Every completed course is verified and feeds your CP balance. Start where every operator starts — the fundamentals.
+                    Every completed course is verified and feeds your CP balance. Start where every operator starts, the fundamentals.
                   </p>
                 </div>
                 <Link

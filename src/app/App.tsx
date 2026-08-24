@@ -54,11 +54,11 @@ export default function App() {
         reducedMotion="user"
           Automatically disables or reduces animations for users who have
           enabled "Reduce Motion" in their OS accessibility settings.
-          This is an important accessibility requirement — do not remove it.
+          This is an important accessibility requirement, do not remove it.
 
         transition={{ duration: 0.42, ease: [0.22, 1, 0.36, 1] }}
           The default easing curve is a custom cubic-bezier that produces a
-          quick acceleration with a soft, natural deceleration — similar to
+          quick acceleration with a soft, natural deceleration, similar to
           iOS spring physics. 0.42 s is deliberately slightly longer than a
           standard 0.3 s transition to give the UI a premium, unhurried feel.
           Both values are purely aesthetic and can be tuned freely.
@@ -77,7 +77,7 @@ export default function App() {
 
           v7 behaviors are the default: route state updates are wrapped in
           React.startTransition(), and relative paths inside splat ("*")
-          routes resolve using the v7 rules — no future flags needed.
+          routes resolve using the v7 rules, no future flags needed.
         */}
         <Router>
 

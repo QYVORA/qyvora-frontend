@@ -91,7 +91,7 @@ const TransactionLedger: React.FC<TransactionLedgerProps> = ({
                   </div>
                   <div className="flex-1 min-w-0">
                     <div className="text-xs font-bold text-text-primary truncate">
-                      {tx.user?.hackerHandle || tx.user?.name || tx.user?.email || '—'}
+                      {tx.user?.hackerHandle || tx.user?.name || tx.user?.email || '-'}
                     </div>
                     <div className="text-[10px] text-text-muted truncate">{tx.note || tx.type}</div>
                     <div className="text-[10px] text-text-muted font-mono">
@@ -124,14 +124,14 @@ const TransactionLedger: React.FC<TransactionLedgerProps> = ({
                     <tr key={tx._id} className="hover:bg-accent-dim/5 transition-colors">
                       <td className="px-4 py-3">
                         <div className="text-xs font-bold text-text-primary">
-                          {tx.user?.hackerHandle || tx.user?.name || '—'}
+                          {tx.user?.hackerHandle || tx.user?.name || '-'}
                         </div>
                         <div className="text-[10px] text-text-muted">{tx.user?.email || ''}</div>
                       </td>
                       <td className="px-4 py-3">
                         <span className={`text-[10px] font-bold uppercase px-2 py-0.5 rounded-lg border ${
                           isCredit ? 'text-accent border-accent/20 bg-accent/5' : 'text-red-400 border-red-400/20 bg-red-400/5'
-                        }`}>{tx.type || '—'}</span>
+                        }`}>{tx.type || '-'}</span>
                       </td>
                       <td className="px-4 py-3">
                         <span className={`text-sm font-mono font-bold inline-flex items-center gap-1 ${isCredit ? 'text-accent' : 'text-red-400'}`}>
@@ -139,9 +139,9 @@ const TransactionLedger: React.FC<TransactionLedgerProps> = ({
                         </span>
                       </td>
                       <td className="px-4 py-3 text-xs font-mono text-text-secondary">
-                        {tx.balanceAfter != null ? fmt(Number(tx.balanceAfter)) : '—'}
+                        {tx.balanceAfter != null ? fmt(Number(tx.balanceAfter)) : '-'}
                       </td>
-                      <td className="px-4 py-3 text-xs text-text-muted max-w-[180px] truncate">{tx.note || '—'}</td>
+                      <td className="px-4 py-3 text-xs text-text-muted max-w-[180px] truncate">{tx.note || '-'}</td>
                       <td className="px-4 py-3 text-[10px] font-mono text-text-muted whitespace-nowrap">
                         {new Date(tx.createdAt).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: '2-digit' })}
                       </td>

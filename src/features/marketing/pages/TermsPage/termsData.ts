@@ -203,7 +203,7 @@ export const termsData: TermsData = {
       bullets: [
         "Email: qyvorasec@gmail.com",
         "Website: https://qyvora.com",
-        "QYVORA OFFSEC — Republic of Ghana",
+        "QYVORA OFFSEC - Republic of Ghana",
         "For matters requiring formal legal notice, please send written correspondence to the above email address with \"Legal Notice\" in the subject line."
       ]
     }

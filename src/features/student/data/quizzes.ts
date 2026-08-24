@@ -55,7 +55,7 @@ export const ROOM_QUIZ_BANK = {
   '3:4': [
     { id: 'q1', text: 'What Wireshark display filter shows only HTTP traffic?', options: ['tcp', 'http', 'port 80', 'web'], correctIndex: 1 },
     { id: 'q2', text: 'What does "Follow TCP Stream" in Wireshark allow you to do?', options: ['Speed up the capture', 'Read the full request and response as plain text', 'Filter by IP address', 'Export packets'], correctIndex: 1 },
-    { id: 'q3', text: 'What type of data is visible in unencrypted HTTP traffic captured with Wireshark?', options: ['Nothing — HTTP is always encrypted', 'Credentials, cookies, and request/response bodies in plain text', 'Only IP addresses', 'Only port numbers'], correctIndex: 1 },
+    { id: 'q3', text: 'What type of data is visible in unencrypted HTTP traffic captured with Wireshark?', options: ['Nothing. HTTP is always encrypted', 'Credentials, cookies, and request/response bodies in plain text', 'Only IP addresses', 'Only port numbers'], correctIndex: 1 },
   ],
   // Phase 4: Web & Backend Systems
   '4:1': [
@@ -81,7 +81,7 @@ export const ROOM_QUIZ_BANK = {
   '4:5': [
     { id: 'q1', text: 'What is a brute force attack on a login form?', options: ['Guessing one password very carefully', 'Systematically trying many passwords until one works', 'Bypassing the login form entirely', 'Stealing the session cookie'], correctIndex: 1 },
     { id: 'q2', text: 'What is session fixation?', options: ['Fixing a broken session', 'Forcing a user to use a session ID chosen by the attacker', 'Extending a session timeout', 'Encrypting a session token'], correctIndex: 1 },
-    { id: 'q3', text: 'What should happen to a session token when a user logs out?', options: ['It should be reused for the next login', 'It should be invalidated server-side immediately', 'It should be stored in localStorage', 'Nothing — it expires on its own'], correctIndex: 1 },
+    { id: 'q3', text: 'What should happen to a session token when a user logs out?', options: ['It should be reused for the next login', 'It should be invalidated server-side immediately', 'It should be stored in localStorage', 'Nothing, it expires on its own'], correctIndex: 1 },
   ],
   // Phase 5: Social Engineering
   '5:1': [

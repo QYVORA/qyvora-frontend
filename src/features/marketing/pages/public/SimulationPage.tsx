@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { Navigate, Link, useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Zap, ArrowLeft, Play } from 'lucide-react';
@@ -12,6 +12,7 @@ import { Footer } from '@/shared/components/layout';
 import { useAuth } from '@/core/contexts/AuthContext';
 import LandingFinalCtaSection from '@/features/marketing/components/landing/LandingFinalCtaSection';
 import { SimulationProvider } from '@/features/student/components/simulations';
+import RelatedContentSection from '@/shared/components/RelatedContentSection';
 import { TerminalWrapper } from '@/shared/components/learning/TerminalWrapper';
 import Ide from '@/features/student/components/tools/Ide';
 import NetworkBuilder from '@/features/student/components/tools/NetworkBuilder';
@@ -33,7 +34,7 @@ const DEMO_FILES = [
     id: 'main',
     name: 'main.py',
     language: 'python' as const,
-    content: `# QYVORA — Python Exercise
+    content: `# QYVORA - Python Exercise
 # Complete the function below and run the code.
 
 def greet(name):
@@ -51,7 +52,7 @@ print(message)
     id: 'app',
     name: 'app.js',
     language: 'javascript' as const,
-    content: `// QYVORA — JavaScript Exercise
+    content: `// QYVORA - JavaScript Exercise
 // Complete the function below and run the code.
 
 function fibonacci(n) {
@@ -73,7 +74,7 @@ console.log(fibonacci(10));
     name: 'script.sh',
     language: 'bash' as const,
     content: `#!/bin/bash
-# QYVORA — Bash Exercise
+# QYVORA - Bash Exercise
 # Complete the script below and run the code.
 
 echo "=== System Info ==="
@@ -87,6 +88,12 @@ echo "Current dir: $(pwd)"
   },
 ];
 
+const SIM_META: Record<'terminal' | 'ide' | 'network', { slug: string; icon: React.ComponentType<{ className?: string }> }> = {
+  terminal: { slug: '/simulations/terminal', icon: IconTerminal },
+  ide: { slug: '/simulations/ide', icon: IconCode },
+  network: { slug: '/simulations/network-visualizer', icon: IconNetwork },
+};
+
 const SimulationPage = () => {
   const { slug } = useParams<{ slug: string }>();
   const { t } = useTranslation();
@@ -98,12 +105,23 @@ const SimulationPage = () => {
 
   const DemoIcon = SIM_ICONS[key];
 
+  // Sibling simulations for the related-content listing at the page bottom.
+  const otherSimulations = (Object.keys(SIM_META) as (keyof typeof SIM_META)[])
+    .filter((k) => k !== key)
+    .map((k) => ({
+      to: SIM_META[k].slug,
+      title: t(`simulations.${k}.title`),
+      subtitle: t(`simulations.${k}.description`),
+      badge: t(`simulations.${k}.tag`),
+      icon: React.createElement(SIM_META[k].icon, { className: 'w-16 h-16' }),
+    }));
+
   const features = (t(`simulations.${key}.features`, { returnObjects: true }) as unknown as string[]) ?? [];
 
   return (
     <div className="bg-bg min-h-full">
       <SEO
-        title={`${t(`simulations.${key}.title`)} — ${t('simulations.metaTitle')}`}
+        title={`${t(`simulations.${key}.title`)} | ${t('simulations.metaTitle')}`}
         description={t(`simulations.${key}.description`)}
       />
       <SimulationProvider>
@@ -205,6 +223,8 @@ const SimulationPage = () => {
               </Link>
             </div>
           </PublicSnapSection>
+
+          <RelatedContentSection items={otherSimulations} />
 
           <section className="relative w-full min-h-dvh snap-section bg-bg-alt">
             <LandingFinalCtaSection user={user} />

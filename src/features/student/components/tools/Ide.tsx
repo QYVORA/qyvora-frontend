@@ -246,7 +246,7 @@ function executeWithRules(code: string, context?: IdeContext): { output: string;
       if (matches) return { output: rule.output, exitCode: rule.exitCode ?? 0 };
     }
     return {
-      output: context.fallback || "No matching output — check your syntax against the lesson's expected approach.",
+      output: context.fallback || "No matching output, check your syntax against the lesson's expected approach.",
       exitCode: 1,
     };
   }
@@ -267,7 +267,7 @@ function executeWithRules(code: string, context?: IdeContext): { output: string;
     if (match) return { output: match[2], exitCode: 0 };
   }
   return {
-    output: "No matching output — check your syntax against the lesson's expected approach.",
+    output: "No matching output, check your syntax against the lesson's expected approach.",
     exitCode: 1,
   };
 }
@@ -522,7 +522,7 @@ const Ide: React.FC<IdeProps> = ({ files, context, terminalContext, title = 'IDE
                     {output ? (
                       <pre className={`text-[13px] font-mono whitespace-pre-wrap leading-relaxed ${exitCode === 0 ? 'text-[#d4d4d4]' : 'text-[#f48771]'}`}>{output}</pre>
                     ) : (
-                      <div className="flex items-center justify-center h-full text-[#555] text-[12px] font-mono">No output — run your code to see results</div>
+                      <div className="flex items-center justify-center h-full text-[#555] text-[12px] font-mono">No output, run your code to see results</div>
                     )}
                   </div>
                 ) : (

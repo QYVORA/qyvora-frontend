@@ -78,7 +78,7 @@ sudo nmap -sU 192.168.1.1
 
 UDP scans are slower because UDP doesn't have a handshake. Nmap waits for responses or ICMP unreachable messages.
 
-> **Why this matters for hacking:** Scanning is the first phase of any network penetration test. A SYN scan (\`-sS\`) is fast and stealthy — it never completes the TCP handshake, so many targets won't log a full connection. UDP scanning is essential for finding exposed DNS, SNMP, and DHCP services. In red team engagements, adjusting scan speed and type evades detection by network intrusion detection systems (NIDS).
+> **Why this matters for hacking:** Scanning is the first phase of any network penetration test. A SYN scan (\`-sS\`) is fast and stealthy, it never completes the TCP handshake, so many targets won't log a full connection. UDP scanning is essential for finding exposed DNS, SNMP, and DHCP services. In red team engagements, adjusting scan speed and type evades detection by network intrusion detection systems (NIDS).
 
 **Mini-challenge:** Run \`sudo nmap -sn 192.168.1.0/24\` (adjust to your subnet) to discover live hosts. Then scan a discovered host with \`-sS -sV\` to find open ports and service versions. This is the exact workflow for network reconnaissance.`,
       { hasTerminal: true, terminalCommands: ['nmap --help | head -5', 'nmap -sn 192.168.1.0/24 2>/dev/null || echo "Adjust subnet or run with sudo"'], terminalTitle: 'lesson-terminal' }),
@@ -104,11 +104,11 @@ nmap -F scanme.nmap.org
 \`\`\`
 
 **Port states:**
-- **open** — an application is listening on this port
-- **closed** — no application listening (port is accessible)
-- **filtered** — a firewall or filter is blocking the probe
-- **unfiltered** — port is accessible but state unknown
-- **open|filtered** — Nmap can't determine if open or filtered
+- **open**: an application is listening on this port
+- **closed**: no application listening (port is accessible)
+- **filtered**: a firewall or filter is blocking the probe
+- **unfiltered**: port is accessible but state unknown
+- **open|filtered** - Nmap can't determine if open or filtered
 
 \`\`\`bash
 # Scan common web ports across multiple hosts
@@ -118,7 +118,7 @@ nmap -p 80,443,8080,8443 192.168.1.0/24
 nmap -p 3306,5432,27017,6379 192.168.1.0/24
 \`\`\`
 
-> **Why this matters for hacking:** Port discovery reveals the attack surface. Open ports are doors into the system. SSH (22), HTTP (80/443), and RDP (3389) are common targets. Finding an unexpected database port (3306, 5432) exposed to the internet is a critical finding — it means the DB is directly reachable without VPN. In CTF challenges and real engagements, scanning ALL ports (\`-p-\`) often reveals non-standard services running on high ports that the default 1000-port scan misses.
+> **Why this matters for hacking:** Port discovery reveals the attack surface. Open ports are doors into the system. SSH (22), HTTP (80/443), and RDP (3389) are common targets. Finding an unexpected database port (3306, 5432) exposed to the internet is a critical finding, it means the DB is directly reachable without VPN. In CTF challenges and real engagements, scanning ALL ports (\`-p-\`) often reveals non-standard services running on high ports that the default 1000-port scan misses.
 
 Common database ports: 3306 (MySQL), 5432 (PostgreSQL), 27017 (MongoDB), 6379 (Redis). Seeing these exposed is a common security finding.`,
       { hasTerminal: true, terminalCommands: ['nmap --top-ports 10 scanme.nmap.org'], terminalTitle: 'lesson-terminal' }),
@@ -200,7 +200,7 @@ sudo nmap -O --osscan-limit scanme.nmap.org
 sudo nmap -O --osscan-guess scanme.nmap.org
 \`\`\`
 
-> **Why this matters for hacking:** OS fingerprinting tells you what exploit framework to reach for. A Linux target might need kernel exploits; Windows targets might need SMB or RDP exploits. The \`-A\` flag (aggressive scan) combines OS detection, version detection, default scripts, and traceroute in one command — it's the go-to for comprehensive reconnaissance. Use \`-O\` with \`--osscan-guess\` when dealing with hardened systems that try to obscure their identity.
+> **Why this matters for hacking:** OS fingerprinting tells you what exploit framework to reach for. A Linux target might need kernel exploits; Windows targets might need SMB or RDP exploits. The \`-A\` flag (aggressive scan) combines OS detection, version detection, default scripts, and traceroute in one command, it's the go-to for comprehensive reconnaissance. Use \`-O\` with \`--osscan-guess\` when dealing with hardened systems that try to obscure their identity.
 
 Despite its limitations, OS fingerprinting is remarkably accurate for identifying the general OS family (Windows vs Linux vs macOS).`,
       { hasTerminal: true, terminalCommands: ['nmap -O scanme.nmap.org 2>/dev/null || echo "Run with sudo for OS detection"'], terminalTitle: 'lesson-terminal' }),
@@ -224,13 +224,13 @@ nmap --script http-title,http-server-header scanme.nmap.org
 \`\`\`
 
 **Script categories:**
-- **safe** — won't crash services or cause damage
-- **intrusive** — might affect the target
-- **vuln** — check for specific vulnerabilities
-- **exploit** — attempt to exploit vulnerabilities
-- **auth** — authentication testing
-- **brute** — brute-force attacks
-- **discovery** — service and host discovery
+- **safe**: won't crash services or cause damage
+- **intrusive**: might affect the target
+- **vuln**: check for specific vulnerabilities
+- **exploit**: attempt to exploit vulnerabilities
+- **auth**: authentication testing
+- **brute**: brute-force attacks
+- **discovery**: service and host discovery
 
 \`\`\`bash
 # Vulnerability scanning
@@ -276,7 +276,7 @@ Save as \`my-script.nse\` in \`/usr/share/nmap/scripts/\` and run:
 nmap --script my-script target.com
 \`\`\`
 
-> **Why this matters for hacking:** NSE scripts automate the tedious parts of reconnaissance. Instead of manually checking for each vulnerability, you can run \`--script vuln\` to test hundreds of checks at once. The \`http-enum\` script discovers hidden directories and files — a standard step in web application testing. Always start with safe scripts (\`-sC\`) on production targets, and escalate to intrusive/vuln scripts only with explicit authorization.
+> **Why this matters for hacking:** NSE scripts automate the tedious parts of reconnaissance. Instead of manually checking for each vulnerability, you can run \`--script vuln\` to test hundreds of checks at once. The \`http-enum\` script discovers hidden directories and files, a standard step in web application testing. Always start with safe scripts (\`-sC\`) on production targets, and escalate to intrusive/vuln scripts only with explicit authorization.
 
 **Mini-challenge:** Run \`nmap -sC scanme.nmap.org\` to execute default scripts. Then try \`nmap --script http-headers scanme.nmap.org\` to see HTTP headers. These are the scripts you'll use most often in real engagements.
 
@@ -290,13 +290,13 @@ NSE makes Nmap infinitely extensible. The community has written hundreds of scri
 
 **TCP FIN, NULL, and XMAS scans (stealth through firewalls):**
 \`\`\`bash
-# FIN scan — sends packet with only FIN flag set
+# FIN scan, sends packet with only FIN flag set
 nmap -sF target.com
 
-# NULL scan — no flags set
+# NULL scan, no flags set
 nmap -sN target.com
 
-# XMAS scan — FIN, PSH, URG flags set (lights up like a Christmas tree)
+# XMAS scan - FIN, PSH, URG flags set (lights up like a Christmas tree)
 nmap -sX target.com
 \`\`\`
 
@@ -304,7 +304,7 @@ These work because closed ports respond with RST, but open ports ignore the pack
 
 **ACK scan — map firewall rules:**
 \`\`\`bash
-# ACK scan — never identifies open ports, but maps firewall rules
+# ACK scan, never identifies open ports, but maps firewall rules
 nmap -sA target.com
 # Filtered: port is behind a firewall
 # Unfiltered: port is reachable (helps with -sW)
@@ -312,7 +312,7 @@ nmap -sA target.com
 
 **Window scan:**
 \`\`\`bash
-# Window scan — uses TCP window size to determine open vs closed
+# Window scan, uses TCP window size to determine open vs closed
 nmap -sW target.com
 # Some systems use specific window sizes for open ports
 \`\`\`
@@ -333,7 +333,7 @@ nmap -A target.com
             nmap -sS -sV -sC -O -T4 target.com
 \`\`\`
 
-> **Why this matters for hacking:** FIN/NULL/XMAS scans exploit RFC behavior — closed ports MUST reply with RST, while open ports drop the packet silently. This lets you bypass stateless firewalls that only block SYN packets. The ACK scan (\`-sA\`) won't find open ports but will map firewall rules, telling you which ports are filtered vs. unfiltered — critical for understanding the defensive posture before committing to an attack path.
+> **Why this matters for hacking:** FIN/NULL/XMAS scans exploit RFC behavior, closed ports MUST reply with RST, while open ports drop the packet silently. This lets you bypass stateless firewalls that only block SYN packets. The ACK scan (\`-sA\`) won't find open ports but will map firewall rules, telling you which ports are filtered vs. unfiltered, critical for understanding the defensive posture before committing to an attack path.
 
 **Mini-challenge:** Compare \`nmap -sS scanme.nmap.org\` with \`nmap -sF scanme.nmap.org\` and note the difference in output. If a firewall blocks SYN scans, the FIN scan may still get through. Practice using \`-sA\` to probe firewall rules on a target you control.`),
 
@@ -342,22 +342,22 @@ nmap -A target.com
 
 **Timing templates (T0-T5):**
 \`\`\`bash
-# Paranoid (T0) — serializes scans, waits 5 min between probes
+# Paranoid (T0), serializes scans, waits 5 min between probes
 nmap -T0 target.com      # IDS evasion, extremely slow
 
-# Sneaky (T1) — 15 seconds between probes
+# Sneaky (T1) - 15 seconds between probes
 nmap -T1 target.com      # Still evades IDS
 
-# Polite (T2) — 0.4 seconds between probes
+# Polite (T2) - 0.4 seconds between probes
 nmap -T2 target.com      # Less bandwidth, less IDS attention
 
-# Normal (T3) — default, parallel probes
+# Normal (T3), default, parallel probes
 nmap -T3 target.com      # Default behavior
 
-# Aggressive (T4) — faster, assumes good network
+# Aggressive (T4), faster, assumes good network
 nmap -T4 target.com      # Common for local networks
 
-# Insane (T5) — very fast, may miss open ports
+# Insane (T5), very fast, may miss open ports
 nmap -T5 target.com      # Sacrifices accuracy for speed
 \`\`\`
 
@@ -369,7 +369,7 @@ nmap --mtu 16 target.com  # Custom fragment size
 
 # Decoy scans (spoof source IPs)
 nmap -D 192.168.1.10,10.0.0.1,target.com
-# -D decoy1,decoy2,ME — uses your real IP among decoys
+# -D decoy1,decoy2,ME, uses your real IP among decoys
 
 # Randomize host and port order
 nmap --randomize-hosts target.com
@@ -407,7 +407,7 @@ nmap --top-ports 100 target.com
 # -sn = ping sweep only, fast subnet discovery
 \`\`\`
 
-> **Why this matters for hacking:** Timing and evasion are essential in adversarial environments. A T5 scan over a 100Mbps link might still miss ports, but a T0 scan with decoys, fragmentation, and randomized order can evade even well-tuned IDS. In penetration tests, use \`-D\` decoys to obscure your true IP, \`-f\` to bypass simple packet filters, and \`--randomize-hosts\` to avoid pattern detection. The idle scan (\`-sI\`) is the most stealthy — it bounces scan traffic through a "zombie" host so the target never sees your IP.
+> **Why this matters for hacking:** Timing and evasion are essential in adversarial environments. A T5 scan over a 100Mbps link might still miss ports, but a T0 scan with decoys, fragmentation, and randomized order can evade even well-tuned IDS. In penetration tests, use \`-D\` decoys to obscure your true IP, \`-f\` to bypass simple packet filters, and \`--randomize-hosts\` to avoid pattern detection. The idle scan (\`-sI\`) is the most stealthy, it bounces scan traffic through a "zombie" host so the target never sees your IP.
 
 **Mini-challenge:** Run \`nmap -T4 -F scanme.nmap.org\` (fast, top-100 ports) and time it. Then run \`nmap -T2 -p 22,80,443 scanme.nmap.org\` (slower, specific ports) and compare the timing. Understanding the speed-accuracy tradeoff is crucial for real-world engagements where time windows vary.`),
 
@@ -451,7 +451,7 @@ for host in tree.findall('.//host'):
 **Automation with bash:**
 \`\`\`bash
 #!/bin/bash
-# auto-scan.sh — scan a list of targets
+# auto-scan.sh, scan a list of targets
 TARGETS="targets.txt"
 OUTDIR="scans/$(date +%Y%m%d-%H%M)"
 
@@ -499,7 +499,7 @@ export const COURSE: Course = {
   description:
     'The network mapper every hacker must master. Learn to scan hosts, discover services, and fingerprint operating systems.',
   overview:
-    'Nmap is the most widely used network discovery tool in security. This course teaches you to scan networks, detect open ports, identify running services, and fingerprint operating systems — the essential first step in any network assessment.',
+    'Nmap is the most widely used network discovery tool in security. This course teaches you to scan networks, detect open ports, identify running services, and fingerprint operating systems, the essential first step in any network assessment.',
   estimatedMinutes: 60,
   cpCost: 75,
   learningObjectives: [

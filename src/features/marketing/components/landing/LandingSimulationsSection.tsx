@@ -5,6 +5,7 @@ import { useReducedMotion } from 'motion/react';
 import { IconArrowRight, IconTerminal, IconCode, IconNetwork } from '@/shared/components/icons';
 import DeviceShape from '@/features/student/components/tools/network/DeviceShape';
 import DeviceLeds from '@/features/student/components/tools/network/DeviceLeds';
+import DragMarquee from '@/shared/components/carousel/DragMarquee';
 import { getDeviceDef } from '@/features/student/components/tools/network/devices';
 import type { DeviceType, TrafficLevel } from '@/features/student/components/tools/network/types';
 
@@ -45,41 +46,113 @@ const EditorPreview: React.FC = () => (
   </div>
 );
 
-const VisualizerNode: React.FC<{ type: DeviceType; label: string; ip: string; className: string; traffic?: TrafficLevel }> = ({ type, label, ip, className, traffic = 'idle' }) => {
-  const device = getDeviceDef(type);
+/* ── Network visualizer preview ────────────────────────────────────────────────
+   One anchor table per breakpoint: nodes and SVG links read the exact same
+   coordinates and every chip is centred on its anchor, so connections always
+   land on hardware. The mobile layer spreads nodes wider and shrinks the
+   chips, at ~320px card width the desktop spacing collapsed into overlap. */
 
-  return (
-    <div className={`absolute z-10 flex -translate-x-1/2 -translate-y-1/2 flex-col items-center rounded-xl bg-bg px-1.5 py-1 ${className}`}>
-      <div className="relative">
-        <DeviceShape shape={device.shape} color={device.color} icon={device.icon} selected={false} hovered={false} status="online" traffic={traffic} />
-        <span className="absolute -right-1 -top-1"><DeviceLeds status="online" traffic={traffic} compact /></span>
-      </div>
-      <span className="mt-1 whitespace-nowrap text-[9px] font-bold text-text-primary">{label}</span>
-      <span className="whitespace-nowrap text-[8px] font-mono text-text-muted">{ip}</span>
-    </div>
-  );
+type NodeKey = 'fw' | 'sw' | 'web' | 'op' | 'db';
+
+const PREVIEW_NODES: Record<NodeKey, { type: DeviceType; label: string; ip: string; traffic?: TrafficLevel }> = {
+  fw: { type: 'firewall', label: 'edge-fw', ip: '10.10.14.1' },
+  sw: { type: 'switch', label: 'core-switch', ip: '10.10.14.2', traffic: 'medium' },
+  web: { type: 'web-server', label: 'web-01', ip: '10.10.14.7', traffic: 'low' },
+  op: { type: 'laptop', label: 'operator', ip: '10.10.14.21' },
+  db: { type: 'database-server', label: 'db-01', ip: '10.10.14.12' },
 };
 
-/* Mirrors NetworkEdge styling: slate base stroke, medium-tinted glow, dashed wireless. */
-type PreviewLink = { x1: string; y1: string; x2: string; y2: string; glow: string; dashed?: boolean };
-const PREVIEW_LINKS: PreviewLink[] = [
-  { x1: '18.3%', y1: '50%', x2: '50%', y2: '50%', glow: '#3b82f6' },
-  { x1: '50%', y1: '24%', x2: '50%', y2: '50%', glow: '#06b6d6', dashed: true },
-  { x1: '50%', y1: '50%', x2: '81.7%', y2: '50%', glow: '#3b82f6' },
-  { x1: '50%', y1: '50%', x2: '50%', y2: '76%', glow: '#3b82f6' },
+interface PreviewLayout {
+  compact: boolean;
+  anchors: Record<NodeKey, { left: string; top: string }>;
+}
+
+const LAYOUT_MOBILE: PreviewLayout = {
+  compact: true,
+  anchors: {
+    fw: { left: '12%', top: '50%' },
+    sw: { left: '50%', top: '50%' },
+    web: { left: '88%', top: '50%' },
+    op: { left: '50%', top: '15%' },
+    db: { left: '50%', top: '85%' },
+  },
+};
+
+const LAYOUT_DESKTOP: PreviewLayout = {
+  compact: false,
+  anchors: {
+    fw: { left: '18.3%', top: '50%' },
+    sw: { left: '50%', top: '50%' },
+    web: { left: '81.7%', top: '50%' },
+    op: { left: '50%', top: '24%' },
+    db: { left: '50%', top: '76%' },
+  },
+};
+
+const PREVIEW_LINKS: { from: NodeKey; to: NodeKey; glow: string; dashed?: boolean }[] = [
+  { from: 'fw', to: 'sw', glow: '#3b82f6' },
+  { from: 'op', to: 'sw', glow: '#06b6d6', dashed: true },
+  { from: 'sw', to: 'web', glow: '#3b82f6' },
+  { from: 'sw', to: 'db', glow: '#3b82f6' },
 ];
 
-const PacketFlow: React.FC<{ link: PreviewLink }> = ({ link }) => (
+/* Mirrors NetworkEdge styling: slate base stroke, tinted glow, dashed wireless.
+   Packet dot rides the same coordinates as the base stroke. */
+const PacketFlow: React.FC<{ x1: string; y1: string; x2: string; y2: string; delay: number }> = ({ x1, y1, x2, y2, delay }) => (
   <line
-    x1={link.x1} y1={link.y1} x2={link.x2} y2={link.y2}
+    x1={x1} y1={y1} x2={x2} y2={y2}
     pathLength={100}
     stroke="var(--color-accent)"
     strokeWidth={2.5}
     strokeLinecap="round"
     strokeDasharray="2.5 97.5"
   >
-    <animate attributeName="stroke-dashoffset" values="2.5;-97.5" dur="1.8s" begin={`${(PREVIEW_LINKS.indexOf(link) * -0.45).toFixed(2)}s`} repeatCount="indefinite" />
+    <animate attributeName="stroke-dashoffset" values="2.5;-97.5" dur="1.8s" begin={`${(-delay * 0.45).toFixed(2)}s`} repeatCount="indefinite" />
   </line>
+);
+
+const VisualizerChip: React.FC<{ nodeKey: NodeKey; layout: PreviewLayout }> = ({ nodeKey, layout }) => {
+  const def = getDeviceDef(PREVIEW_NODES[nodeKey].type);
+  const { left, top } = layout.anchors[nodeKey];
+  const { label, ip, traffic } = PREVIEW_NODES[nodeKey];
+
+  return (
+    <div className="absolute z-10 -translate-x-1/2 -translate-y-1/2" style={{ left, top }}>
+      {/* Shape box — centred exactly on the anchor point */}
+      <div className={`relative flex items-center justify-center ${layout.compact ? 'scale-[0.7]' : ''}`}>
+        <DeviceShape shape={def.shape} color={def.color} icon={def.icon} selected={false} hovered={false} status="online" traffic={traffic} />
+        <span className="absolute -right-1 -top-1"><DeviceLeds status="online" traffic={traffic} compact /></span>
+      </div>
+      {/* Label + IP hang below the connection point */}
+      <span className={`flex flex-col items-center leading-tight ${layout.compact ? 'mt-0.5' : 'mt-1'}`}>
+        <span className={`whitespace-nowrap rounded bg-bg px-1 font-bold text-text-primary ${layout.compact ? 'text-[8px]' : 'text-[9px]'}`}>{label}</span>
+        <span className={`whitespace-nowrap rounded bg-bg px-1 font-mono text-text-muted ${layout.compact ? 'text-[7px]' : 'text-[8px]'}`}>{ip}</span>
+      </span>
+    </div>
+  );
+};
+
+const NetworkLayer: React.FC<{ layout: PreviewLayout; className: string; reduceMotion: boolean }> = ({ layout, className, reduceMotion }) => (
+  <div className={`absolute inset-0 ${className}`}>
+    <svg className="absolute inset-0 h-full w-full" aria-hidden="true">
+      {PREVIEW_LINKS.map((link, i) => {
+        const a = layout.anchors[link.from];
+        const b = layout.anchors[link.to];
+        return (
+          <g key={`${layout.compact ? 'm' : 'd'}-${i}`}>
+            <line x1={a.left} y1={a.top} x2={b.left} y2={b.top} stroke={link.glow} strokeWidth={6} opacity={0.06} />
+            <line x1={a.left} y1={a.top} x2={b.left} y2={b.top} stroke="#334155" strokeWidth={1.5} opacity={0.6} strokeDasharray={link.dashed ? '6 4' : undefined} />
+            {!reduceMotion && (
+              <PacketFlow x1={a.left} y1={a.top} x2={b.left} y2={b.top} delay={i} />
+            )}
+          </g>
+        );
+      })}
+    </svg>
+    {(Object.keys(PREVIEW_NODES) as NodeKey[]).map((key) => (
+      <VisualizerChip key={`${layout.compact ? 'm' : 'd'}-${key}`} nodeKey={key} layout={layout} />
+    ))}
+  </div>
 );
 
 const NetworkPreview: React.FC = () => {
@@ -88,21 +161,8 @@ const NetworkPreview: React.FC = () => {
   return (
     <div className="relative flex flex-1 min-h-0 items-center justify-center overflow-hidden rounded-xl border border-border/30 bg-bg">
       <div className="absolute inset-0 opacity-30 [background-image:radial-gradient(var(--color-border)_1px,transparent_1px)] [background-size:16px_16px]" />
-      {/* No viewBox — percentage coordinates keep links pinned to node anchors at every card size */}
-      <svg className="absolute inset-0 h-full w-full" aria-hidden="true">
-        {PREVIEW_LINKS.map((link) => (
-          <g key={`${link.x1}${link.y1}${link.x2}${link.y2}`}>
-            <line x1={link.x1} y1={link.y1} x2={link.x2} y2={link.y2} stroke={link.glow} strokeWidth={6} opacity={0.06} />
-            <line x1={link.x1} y1={link.y1} x2={link.x2} y2={link.y2} stroke="#334155" strokeWidth={1.5} opacity={0.6} strokeDasharray={link.dashed ? '6 4' : undefined} />
-          </g>
-        ))}
-        {!shouldReduceMotion && PREVIEW_LINKS.map((link) => <PacketFlow key={`p-${link.x1}${link.y1}${link.x2}${link.y2}`} link={link} />)}
-      </svg>
-      <VisualizerNode type="firewall" label="edge-fw" ip="10.10.14.1" className="left-[18.3%] top-1/2" />
-      <VisualizerNode type="switch" label="core-switch" ip="10.10.14.2" className="left-1/2 top-1/2" traffic="medium" />
-      <VisualizerNode type="web-server" label="web-01" ip="10.10.14.7" className="left-[81.7%] top-1/2" traffic="low" />
-      <VisualizerNode type="laptop" label="operator" ip="10.10.14.21" className="left-1/2 top-[24%]" />
-      <VisualizerNode type="database-server" label="db-01" ip="10.10.14.12" className="left-1/2 top-[76%]" />
+      <NetworkLayer layout={LAYOUT_MOBILE} className="sm:hidden" reduceMotion={!!shouldReduceMotion} />
+      <NetworkLayer layout={LAYOUT_DESKTOP} className="hidden sm:block" reduceMotion={!!shouldReduceMotion} />
     </div>
   );
 };
@@ -175,14 +235,10 @@ const LandingSimulationsSection: React.FC = () => {
               {SIMULATIONS.map((sim) => <SimulationCard key={sim.id} sim={sim} />)}
             </div>
           ) : (
-            <div className="relative -mx-3 h-[460px] shrink-0 overflow-x-clip overflow-y-visible md:-mx-4 sm:h-[460px] lg:-mx-6 lg:h-[410px]">
-              <div className="marquee-track">
-                {[0, 1].map((copy) => (
-                  <div key={copy} aria-hidden={copy === 1} className="flex h-full shrink-0 items-stretch gap-4 pr-4 md:gap-5 md:pr-5">
-                    {SIMULATIONS.map((sim) => <SimulationCard key={`${copy}-${sim.id}`} sim={sim} tabIndex={copy === 1 ? -1 : undefined} />)}
-                  </div>
-                ))}
-              </div>
+            <div className="relative -mx-3 h-[460px] shrink-0 md:-mx-4 sm:h-[460px] lg:-mx-6 lg:h-[410px]">
+              <DragMarquee speed={22} trackClassName="gap-4 pr-4 md:gap-5 md:pr-5" className="h-full">
+                {SIMULATIONS.map((sim) => <SimulationCard key={sim.id} sim={sim} />)}
+              </DragMarquee>
             </div>
           )}
 

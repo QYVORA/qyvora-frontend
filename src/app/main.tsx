@@ -54,7 +54,7 @@ createRoot(document.getElementById('root')!).render(
     intentionally double-invokes certain lifecycle methods (render, effects)
     to surface bugs caused by impure functions or missing effect cleanup.
 
-    StrictMode has ZERO effect in production builds — it is stripped out by
+    StrictMode has ZERO effect in production builds, it is stripped out by
     the bundler. Safe to keep permanently; remove only if a third-party library
     is incompatible with double-invocation (which is itself a bug in that library).
   */

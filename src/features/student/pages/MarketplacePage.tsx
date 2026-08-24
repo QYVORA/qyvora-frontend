@@ -113,7 +113,7 @@ const Marketplace: React.FC = () => {
       id: String(tx?._id || tx?.id || `TXN-${idx + 1}`),
       shortId: String(tx?._id || tx?.id || `TXN-${idx + 1}`).slice(-8).toUpperCase(),
       desc: String(tx?.note || tx?.type || 'Points transaction'),
-      date: tx?.createdAt ? new Date(tx.createdAt).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: '2-digit' }) : '—',
+      date: tx?.createdAt ? new Date(tx.createdAt).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: '2-digit' }) : '-',
       value: Number(tx?.points || 0),
     }));
   }, [transactions]);

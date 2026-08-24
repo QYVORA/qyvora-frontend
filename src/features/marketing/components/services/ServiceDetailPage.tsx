@@ -9,12 +9,25 @@ import PublicSnapLayout from '@/shared/components/PublicSnapLayout';
 import PublicSnapSection from '@/shared/components/PublicSnapSection';
 import StudentHeroSection, { PUBLIC_HERO_TITLE_CLASS } from '@/shared/components/StudentHeroSection';
 import { Footer } from '@/shared/components/layout';
-import { REQUEST_ASSESSMENT_LABEL, PENTEST_PHILOSOPHY, type ServiceConfig } from '@/features/marketing/content/servicesConfig';
+import { REQUEST_ASSESSMENT_LABEL, PENTEST_PHILOSOPHY, SERVICES, type ServiceConfig } from '@/features/marketing/content/servicesConfig';
 import { buildService } from '@/shared/seo/schema';
 import ScrollReveal from '@/shared/components/ScrollReveal';
+import RelatedContentSection, { type RelatedItem } from '@/shared/components/RelatedContentSection';
 
 const ServiceDetailPage: React.FC<{ svc: ServiceConfig }> = ({ svc }) => {
   const Icon = svc.icon;
+
+  // Sibling services for the related-content listing before the footer.
+  const otherServices: RelatedItem[] = SERVICES.filter((s) => s.id !== svc.id).map((s) => {
+    const SvcIcon = s.icon;
+    return {
+      to: s.path,
+      title: s.title,
+      subtitle: s.overview,
+      badge: s.badge,
+      icon: <SvcIcon className="w-16 h-16" strokeWidth={1.25} />,
+    };
+  });
 
   return (
     <>
@@ -159,7 +172,7 @@ const ServiceDetailPage: React.FC<{ svc: ServiceConfig }> = ({ svc }) => {
                   What You <span className="text-accent">Gain</span>
                 </h2>
                 <p className="text-base sm:text-lg text-text-secondary leading-relaxed font-mono">
-                  Every engagement delivers actionable results — not just a report that sits on a shelf.
+                  Every engagement delivers actionable results, not just a report that sits on a shelf.
                 </p>
               </div>
             </ScrollReveal>
@@ -263,6 +276,9 @@ const ServiceDetailPage: React.FC<{ svc: ServiceConfig }> = ({ svc }) => {
             </ScrollReveal>
           </div>
         </PublicSnapSection>
+
+        {/* ── Related services ─────────────────────────────────────────── */}
+        <RelatedContentSection items={otherServices} />
 
         {/* ── SECTION 6: Footer ────────────────────────────────────────── */}
         <section className="relative w-full min-h-dvh lg:h-dvh snap-section bg-bg overflow-hidden">

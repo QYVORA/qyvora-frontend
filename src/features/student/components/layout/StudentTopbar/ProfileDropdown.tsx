@@ -131,9 +131,9 @@ const ProfileDropdown: React.FC<ProfileDropdownProps> = ({
                 </div>
                 <div className="min-w-0">
                   <div className="text-xs font-black uppercase tracking-widest text-text-primary truncate">
-                    {user?.username || '—'}
+                    {user?.username || '-'}
                   </div>
-                  <div className="text-[10px] text-text-muted truncate">{user?.email || '—'}</div>
+                  <div className="text-[10px] text-text-muted truncate">{user?.email || '-'}</div>
                   {user?.rank && (
                     <span className="inline-block mt-1 px-2 py-0.5 rounded-lg bg-accent/10 text-[8px] font-black uppercase tracking-widest text-accent">
                       {user.rank}
