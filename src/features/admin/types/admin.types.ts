@@ -1,6 +1,6 @@
 export type AdminTab =
   | 'overview' | 'users' | 'bootcamps' | 'zero_day' | 'cp'
-  | 'inbox' | 'broadcast' | 'audit' | 'security';
+  | 'inbox' | 'broadcast' | 'audit' | 'security' | 'incidents';
 
 export type AdminUser = {
   id: string;
@@ -67,6 +67,8 @@ export type AuditLogEntry = {
   targetId: string;
   metadata: Record<string, unknown>;
   ipAddress: string;
+  /** Same value as SecurityEvent.requestId for the originating HTTP request. */
+  correlationId?: string;
   createdAt: string;
 };
 
@@ -78,6 +80,24 @@ export type SecurityEventItem = {
   path: string;
   statusCode: number;
   ipAddress: string;
+  requestId?: string;
+};
+
+export type IncidentStatus = 'open' | 'monitoring' | 'resolved';
+export type IncidentSeverity = 'low' | 'medium' | 'high' | 'critical';
+
+export type IncidentItem = {
+  id: string;
+  title: string;
+  description: string;
+  status: IncidentStatus;
+  severity: IncidentSeverity;
+  correlationId: string;
+  createdBy: { id: string; name: string; email: string } | null;
+  resolvedBy: { id: string; name: string; email: string } | null;
+  resolvedAt: string | null;
+  createdAt: string;
+  updatedAt: string;
 };
 
 export const isUserBlocked = (u: AdminUser) =>
