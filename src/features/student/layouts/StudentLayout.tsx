@@ -5,6 +5,7 @@ import InstallBanner from '@/features/student/components/layout/InstallBanner';
 import UsernameChangeModal from '@/features/student/components/UsernameChangeModal';
 import ConsentBanner from '@/shared/components/ConsentBanner';
 import { TerminalWrapper } from '@/shared/components/learning/TerminalWrapper';
+import { InternalTerminal } from '@/shared/components/walkthrough/InternalTerminal';
 import { SimulationProvider } from '@/features/student/components/simulations';
 import Ide from '@/features/student/components/tools/Ide';
 import NetworkBuilder from '@/features/student/components/tools/NetworkBuilder';
@@ -18,9 +19,11 @@ const StudentLayout = () => {
   const roomMatch = useMatch('/dashboard/bootcamps/:bootcampId/phases/:phaseId/rooms/:roomId');
   const roomMatchLegacy = useMatch('/dashboard/bootcamps/:bootcampId/modules/:moduleId/rooms/:roomId');
   const courseMatch = useMatch('/dashboard/courses/:courseId');
+  const labMatch = useMatch('/dashboard/labs/:labType');
   const [terminalOpen, setTerminalOpen] = useState(false);
   const [ideOpen, setIdeOpen] = useState(false);
   const [networkVizOpen, setNetworkVizOpen] = useState(false);
+  const [walkthroughTerminalOpen, setWalkthroughTerminalOpen] = useState(false);
 
   useEffect(() => {
     initPWA();
@@ -31,6 +34,12 @@ const StudentLayout = () => {
     const handler = () => setTerminalOpen(true);
     window.addEventListener('qyvora:open-terminal', handler);
     return () => window.removeEventListener('qyvora:open-terminal', handler);
+  }, []);
+
+  useEffect(() => {
+    const handler = () => setWalkthroughTerminalOpen(true);
+    window.addEventListener('qyvora:open-walkthrough-terminal', handler);
+    return () => window.removeEventListener('qyvora:open-walkthrough-terminal', handler);
   }, []);
 
   useEffect(() => {
@@ -62,6 +71,8 @@ const StudentLayout = () => {
     ? { type: 'bootcamp', bootcampId: roomMatchLegacy.params.bootcampId, phaseId: `phase${roomMatchLegacy.params.moduleId}`, roomId: roomMatchLegacy.params.roomId }
     : courseMatch
     ? { type: 'course', courseId: courseMatch.params.courseId }
+    : labMatch
+    ? { type: 'lab', labId: String(labMatch.params.labType || '') }
     : { type: 'dashboard' };
 
   return (
@@ -74,6 +85,15 @@ const StudentLayout = () => {
         <ConsentBanner />
         <InstallBanner />
         <UsernameChangeModal />
+
+        {/* Compact walkthrough terminal — labs only (desktop dock / mobile sheet) */}
+        {labMatch && (
+          <InternalTerminal
+            open={walkthroughTerminalOpen}
+            onOpenChange={setWalkthroughTerminalOpen}
+            context={terminalContext}
+          />
+        )}
 
         <TerminalWrapper
           open={terminalOpen}
