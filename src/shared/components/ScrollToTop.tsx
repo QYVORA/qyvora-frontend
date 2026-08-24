@@ -33,7 +33,7 @@ const ScrollToTop = () => {
     <button
       onClick={scrollToTop}
       aria-label="Scroll to top"
-      className="fixed bottom-4 left-4 z-[9997] flex h-11 w-11 sm:h-12 sm:w-12 shrink-0 aspect-square items-center justify-center rounded-full border border-border bg-bg-card p-0 text-accent transition-colors hover:border-accent/40 hover:text-text-primary active:scale-90"
+      className="fixed bottom-4 left-4 z-[9997] flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-border bg-bg-card p-0 text-accent transition-colors hover:border-accent/40 hover:text-text-primary active:scale-90"
     >
       <ArrowUp className="h-5 w-5" />
     </button>

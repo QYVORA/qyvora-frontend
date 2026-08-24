@@ -9,6 +9,7 @@ import { InternalTerminal } from '@/shared/components/walkthrough/InternalTermin
 import { SimulationProvider } from '@/features/student/components/simulations';
 import Ide from '@/features/student/components/tools/Ide';
 import NetworkBuilder from '@/features/student/components/tools/NetworkBuilder';
+import WalkthroughToolbar from '@/features/student/components/layout/WalkthroughToolbar';
 import { initPWA, tryAutoSubscribePush } from '@/features/student/services/pwa';
 import type { TerminalContext } from '@/features/student/components/SimulatedTerminal/types';
 import type { IdeFile } from '@/features/student/components/tools/Ide';
@@ -75,6 +76,9 @@ const StudentLayout = () => {
     ? { type: 'lab', labId: String(labMatch.params.labType || '') }
     : { type: 'dashboard' };
 
+  // Determine if we're on a walkthrough page (rooms, courses, labs)
+  const isWalkthroughPage = Boolean(roomMatch || roomMatchLegacy || courseMatch || labMatch);
+
   return (
     <SimulationProvider>
       <div className="bg-bg min-h-screen">
@@ -85,6 +89,24 @@ const StudentLayout = () => {
         <ConsentBanner />
         <InstallBanner />
         <UsernameChangeModal />
+
+        {/* Walkthrough Toolbar — mobile only, for courses/labs/bootcamp rooms */}
+        {isWalkthroughPage && (
+          <WalkthroughToolbar
+            onOpenTerminal={() => {
+              if (labMatch) {
+                setWalkthroughTerminalOpen(true);
+              } else {
+                setTerminalOpen(true);
+              }
+            }}
+            onOpenIDE={() => setIdeOpen(true)}
+            onOpenNetworkVisualizer={() => setNetworkVizOpen(true)}
+            showTerminal={true}
+            showIDE={Boolean(courseMatch)} // Only show IDE on course pages
+            showNetworkVisualizer={false} // Can enable based on specific lessons
+          />
+        )}
 
         {/* Compact walkthrough terminal — labs only (desktop dock / mobile sheet) */}
         {labMatch && (
