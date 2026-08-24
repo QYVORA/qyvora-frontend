@@ -14,9 +14,9 @@ const WeeklyOperationCard = ({ engagement, loading }: WeeklyOperationCardProps) 
 
   if (loading) {
     return (
-      <div className="card-accent bg-bg-card p-6 md:p-8 animate-pulse">
+      <div className="card-accent bg-bg-card p-5 md:p-6 animate-pulse">
         <div className="h-5 w-40 bg-border/30 rounded mb-4" />
-        <div className="h-7 w-56 bg-border/30 rounded mb-3" />
+        <div className="h-6 w-56 bg-border/30 rounded mb-3" />
         <div className="h-4 w-full bg-border/20 rounded mb-5" />
         <div className="h-9 w-28 bg-border/30 rounded" />
       </div>
@@ -24,10 +24,10 @@ const WeeklyOperationCard = ({ engagement, loading }: WeeklyOperationCardProps) 
   }
 
   return (
-    <div className="card-accent bg-bg-card p-6 md:p-8">
-      <div className="flex items-center gap-3 mb-4">
-        <div className="w-10 h-10 rounded-xl flex items-center justify-center bg-accent/10">
-          <IconTarget size={20} className="text-accent" />
+    <div className="card-accent bg-bg-card p-5 md:p-6">
+      <div className="flex items-center gap-3 mb-3">
+        <div className="w-9 h-9 rounded-xl flex items-center justify-center bg-accent/10 shrink-0">
+          <IconTarget size={18} className="text-accent" />
         </div>
         <span className="text-xs font-black uppercase tracking-widest text-text-muted">
           {t('student.dashboard.weeklyOperation.title')}
@@ -37,7 +37,7 @@ const WeeklyOperationCard = ({ engagement, loading }: WeeklyOperationCardProps) 
         </Badge>
       </div>
 
-      <h3 className="text-xl md:text-2xl font-black text-text-primary mb-2">
+      <h3 className="text-lg md:text-xl font-black text-text-primary mb-2">
         {operation.title}
       </h3>
 

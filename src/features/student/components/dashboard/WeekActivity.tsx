@@ -23,13 +23,11 @@ const DayBar = ({
     : 12;
 
   return (
-    <div className="flex flex-col items-center gap-2 flex-1">
-      <div className="relative w-full flex justify-center" style={{ height: 120 }}>
+    <div className="flex flex-col items-center gap-2 flex-1 min-h-0">
+      <div className="relative w-full flex-1 flex justify-center min-h-[80px]">
         <div
           className={`absolute bottom-0 w-full max-w-[28px] rounded-t-md transition-all duration-500 ${
-            active
-              ? 'bg-accent shadow-[0_0_8px_var(--color-accent)]'
-              : 'bg-border/20'
+            active ? 'bg-accent' : 'bg-border/20'
           }`}
           style={{ height: `${heightPercent}%` }}
         />
@@ -93,9 +91,9 @@ const WeekActivity = ({ visitDates = [], visitDurations = {} }: WeekActivityProp
   if (visitDates.length === 0) return null;
 
   return (
-    <div>
+    <div className="flex flex-col flex-1 min-h-0">
       <div
-        className="flex items-end gap-1 w-full pt-2"
+        className="flex items-stretch gap-1 w-full pt-2 flex-1 min-h-[140px]"
         role="img"
         aria-label={t('student.dashboard.streak.ariaWeek', {
           total: formatMinutes(totalMinutes),
@@ -113,7 +111,7 @@ const WeekActivity = ({ visitDates = [], visitDurations = {} }: WeekActivityProp
           />
         ))}
       </div>
-      <div className="mt-3 text-center">
+      <div className="mt-3 text-center shrink-0">
         <span className="text-[10px] font-mono text-text-muted">
           {formatMinutes(totalMinutes)} {t('student.dashboard.streak.thisWeek', 'this week')}
         </span>

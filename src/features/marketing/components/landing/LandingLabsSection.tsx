@@ -1,10 +1,11 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
-import { motion, useReducedMotion } from 'motion/react';
 import { Zap } from 'lucide-react';
+import { useReducedMotion } from 'motion/react';
 
 import { IconArrowRight } from '@/shared/components/icons';
 import { DottedMapOverlay } from '@/shared/components/ui';
+import DragMarquee from '@/shared/components/carousel/DragMarquee';
 import { useTranslation } from 'react-i18next';
 
 const LABS = [
@@ -15,136 +16,79 @@ const LABS = [
   { id: 'killchain' },
 ];
 
-const GROUP_SIZE = 3;
-const CYCLE_MS = 4000;
+type Lab = (typeof LABS)[number];
+
+/* ── Lab card for the horizontal marquee — fixed height, stable content ──── */
+const LabCard: React.FC<{ lab: Lab }> = ({ lab }) => {
+  const { t } = useTranslation();
+
+  return (
+    <Link
+      to="/dashboard/labs"
+      className="group relative block h-[280px] sm:h-[320px] w-[min(80vw,340px)] sm:w-[min(52vw,380px)] md:w-[min(42vw,430px)] lg:w-[min(36vw,470px)] xl:w-[min(31vw,520px)] shrink-0 card-accent bg-bg-card overflow-hidden transition-colors duration-300"
+    >
+      <DottedMapOverlay className="rounded-2xl" />
+      <div className="relative z-10 h-full flex flex-col p-4 sm:p-6">
+        <span className="self-start text-[8px] font-black uppercase tracking-widest px-2 py-1 rounded-full border border-border/30 bg-bg-elevated text-text-muted">
+          {t(`landing.labs.list.${lab.id}.cp`)}
+        </span>
+
+        <div className="mt-auto">
+          <h3 className="text-xl sm:text-2xl font-black text-text-primary tracking-tighter leading-none">
+            {t(`landing.labs.list.${lab.id}.title`)}
+          </h3>
+          <p className="mt-2 text-xs sm:text-sm text-text-muted leading-relaxed line-clamp-2 min-h-[2.6em]">
+            {t(`landing.labs.list.${lab.id}.desc`)}
+          </p>
+
+          <div className="mt-3 pt-3 border-t border-border/30 flex items-center gap-2 text-text-muted group-hover:text-accent transition-colors">
+            <Zap className="w-3.5 h-3.5 shrink-0" />
+            <span className="text-[10px] font-black uppercase tracking-widest">{t('landing.labs.launchLab')}</span>
+            <IconArrowRight size={14} className="transition-transform group-hover:translate-x-1" />
+          </div>
+        </div>
+      </div>
+    </Link>
+  );
+};
 
 const LandingLabsSection: React.FC = () => {
   const { t } = useTranslation();
   const shouldReduceMotion = useReducedMotion();
-  const [groupIndex, setGroupIndex] = useState(0);
-  const [direction, setDirection] = useState(1);
-
-  const totalGroups = Math.ceil(LABS.length / GROUP_SIZE);
-
-  const advance = useCallback(() => {
-    setDirection(1);
-    setGroupIndex((i) => (i + 1) % totalGroups);
-  }, [totalGroups]);
-
-  useEffect(() => {
-    if (shouldReduceMotion) return;
-    const id = setInterval(advance, CYCLE_MS);
-    return () => clearInterval(id);
-  }, [advance, shouldReduceMotion]);
-
-  const start = groupIndex * GROUP_SIZE;
-  const group = [
-    ...LABS.slice(start, start + GROUP_SIZE),
-    ...LABS.slice(0, Math.max(0, start + GROUP_SIZE - LABS.length)),
-  ].slice(0, GROUP_SIZE);
-
-  const featured = group[0];
-  const supporting = group.slice(1);
 
   return (
-    <div className="relative bg-bg min-h-dvh lg:h-dvh flex flex-col overflow-hidden" data-nav-invert>
-      <div className="relative z-10 w-full h-full px-3 md:px-4 lg:px-6 pt-24 md:pt-28 lg:pt-32 pb-6 md:pb-8 lg:pb-10 flex flex-col">
-        <div className="w-full flex-1 flex flex-col min-h-0">
-          <h2 className="text-lg md:text-xl lg:text-2xl font-black text-text-primary tracking-tighter leading-none mb-6 md:mb-8 lg:mb-10 shrink-0">
-            {t('landing.labs.heading1')} <span className="text-accent">{t('landing.labs.heading2')}</span>
-          </h2>
+    <div className="relative bg-bg min-h-dvh lg:h-dvh flex flex-col overflow-x-clip overflow-hidden" data-nav-invert>
+      <div className="relative z-10 w-full h-full px-3 md:px-4 lg:px-6 pt-24 md:pt-28 lg:pt-32 pb-6 md:pb-8 lg:pb-10 flex flex-col gap-8 lg:gap-12">
+        <h2 className="text-lg md:text-xl lg:text-2xl font-black text-text-primary tracking-tighter leading-none shrink-0">
+          {t('landing.labs.heading1')} <span className="text-accent">{t('landing.labs.heading2')}</span>
+        </h2>
 
-          {/* Bento grid: 3 columns on desktop — 1 featured + 2 supporting */}
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-2 md:gap-4 flex-1 auto-rows-fr">
-            {/* Featured card — 2 cols, 2 rows */}
-            <motion.div
-              key={`featured-${groupIndex}`}
-              initial={{ opacity: 0, x: direction * 40 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-              className="lg:col-span-2 lg:row-span-2"
-            >
-              <Link
-                to="/dashboard/labs"
-                className="group relative block h-full card-accent bg-bg/90 p-4 sm:p-8 transition-all duration-300"
-              >
-                <DottedMapOverlay className="rounded-2xl" />
-                <div className="relative h-full flex flex-col">
-                  <div className="flex items-center justify-between mb-3 sm:mb-6">
-                    <span className="text-[9px] font-black uppercase tracking-widest px-3 py-1.5 rounded-full border border-border/30 bg-bg-elevated text-text-muted">
-                      {t(`landing.labs.list.${featured.id}.cp`)}
-                    </span>
-                  </div>
-
-                  <h3 className="text-2xl md:text-3xl lg:text-4xl font-black text-text-primary tracking-tighter leading-none mb-3">
-                    {t(`landing.labs.list.${featured.id}.title`)}
-                  </h3>
-                  <p className="text-xs md:text-sm text-text-secondary leading-relaxed max-w-lg mb-3 sm:mb-6 line-clamp-3">
-                    {t(`landing.labs.list.${featured.id}.desc`)}
-                  </p>
-
-                  <div className="mt-auto flex items-center gap-3">
-                    <span className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-accent text-[10px] font-black uppercase tracking-widest text-on-accent transition-all group-hover:gap-3">
-                      <Zap className="w-3.5 h-3.5" />
-                      {t('landing.labs.launchLab')}
-                      <IconArrowRight size={14} />
-                    </span>
-                  </div>
-                </div>
-              </Link>
-            </motion.div>
-
-            {/* Supporting cards — 1 col each */}
-            {supporting.map((lab, idx) => (
-              <motion.div
-                key={`support-${groupIndex}-${idx}`}
-                initial={{ opacity: 0, x: direction * 40 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.5, delay: 0.1 * (idx + 1), ease: [0.16, 1, 0.3, 1] }}
-              >
-                <Link
-                  to="/dashboard/labs"
-                  className="group relative block h-full card-accent bg-bg/90 p-3 sm:p-5 transition-all duration-300"
-                >
-                  <div className="relative h-full flex flex-col">
-                    <div className="flex items-center justify-between mb-2 sm:mb-3">
-                      <span className="text-[8px] font-black uppercase tracking-widest px-2 py-1 rounded-full border border-border/30 bg-bg-elevated text-text-muted">
-                        {t(`landing.labs.list.${lab.id}.cp`)}
-                      </span>
-                    </div>
-
-                    <h3 className="text-sm sm:text-base font-black text-text-primary tracking-tight mb-1 sm:mb-1.5">
-                      {t(`landing.labs.list.${lab.id}.title`)}
-                    </h3>
-                    <p className="text-[10px] sm:text-[11px] text-text-muted leading-relaxed mb-2 sm:mb-3 line-clamp-2">
-                      {t(`landing.labs.list.${lab.id}.desc`)}
-                    </p>
-
-                    <div className="mt-auto flex items-center gap-2 text-text-muted group-hover:text-accent transition-colors">
-                      <span className="text-[10px] font-black uppercase tracking-widest">{t('landing.labs.launchLab')}</span>
-                      <IconArrowRight size={14} className="transition-transform group-hover:translate-x-1" />
-                    </div>
-                  </div>
-                </Link>
-              </motion.div>
+        {shouldReduceMotion ? (
+          /* Reduced motion — static responsive grid */
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {LABS.map((lab) => (
+              <LabCard key={lab.id} lab={lab} />
             ))}
           </div>
+        ) : (
+          /* Infinite horizontal marquee — grabbable strip, cards fill it fully */
+          <div className="relative -mx-3 md:-mx-4 lg:-mx-6 flex-1 min-h-[360px] sm:min-h-0 min-w-0 overflow-x-clip overflow-y-visible flex items-center py-3">
+            <DragMarquee speed={22} trackClassName="gap-4 md:gap-5 pr-4 md:pr-5" className="w-full">
+              {LABS.map((lab) => (
+                <LabCard key={lab.id} lab={lab} />
+              ))}
+            </DragMarquee>
+          </div>
+        )}
 
-          {/* Footer */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.3 }}
-            className="mt-4 shrink-0"
+        {/* Footer */}
+        <div className="shrink-0">
+          <Link
+            to="/dashboard/labs"
+            className="inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-text-muted hover:text-text-primary transition-colors"
           >
-            <Link
-              to="/dashboard/labs"
-              className="inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-text-muted hover:text-text-primary transition-colors"
-            >
-              {t('landing.labs.viewAll')} <IconArrowRight size={14} />
-            </Link>
-          </motion.div>
+            {t('landing.labs.viewAll')} <IconArrowRight size={14} />
+          </Link>
         </div>
       </div>
     </div>
