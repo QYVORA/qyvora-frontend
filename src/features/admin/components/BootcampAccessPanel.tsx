@@ -3,6 +3,7 @@ import { Unlock, Users, Activity, Zap } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { IconCheck } from '@/shared/components/icons';
 import { StatCard } from '@/shared/components/dashboard';
+import { ErrorState } from '@/shared/components/ui';
 import api from '@/core/services/api';
 import { HACKER_PROTOCOL_ID, BOOTCAMP_MODULES } from '@/features/admin/constants/bootcampModules';
 
@@ -14,13 +15,15 @@ const BootcampAccessPanel: React.FC<Props> = ({ addToast }) => {
   const { t } = useTranslation();
   const [panel, setPanel] = React.useState<any>(null);
   const [loading, setLoading] = React.useState(true);
+  const [error, setError] = React.useState(false);
   const [saving, setSaving] = React.useState(false);
 
   const load = () => {
     setLoading(true);
+    setError(false);
     api.get(`/admin/bootcamp/control-panel?bootcampId=${HACKER_PROTOCOL_ID}`)
       .then(res => setPanel(res.data || null))
-      .catch(() => {})
+      .catch(() => setError(true))
       .finally(() => setLoading(false));
   };
 
@@ -44,7 +47,28 @@ const BootcampAccessPanel: React.FC<Props> = ({ addToast }) => {
     }
   };
 
-  if (loading) return <div className="p-6 text-text-muted text-sm animate-pulse">{t('admin.bootcamps.loading')}</div>;
+  if (loading) {
+    return (
+      <div className="w-full space-y-8" role="status">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+          {[0, 1, 2].map(i => (
+            <div key={i} className="rounded-2xl border border-border/30 bg-bg-card p-5 space-y-3 animate-pulse">
+              <div className="h-4 w-24 bg-border/30 rounded" />
+              <div className="h-8 w-16 bg-border/30 rounded" />
+            </div>
+          ))}
+        </div>
+        <div className="h-28 rounded-2xl border border-border/30 bg-bg-card animate-pulse" />
+        <div className="h-64 rounded-2xl border border-border/30 bg-bg-card animate-pulse" />
+      </div>
+    );
+  }
+
+  if (error) {
+    return <ErrorState message={t('admin.bootcamps.loadFailed')} title={t('admin.bootcamps.unavailable')} />;
+  }
+
+  if (!panel) return null;
 
   const started = Boolean(panel?.bootcampStarted);
   const unlockedModules: number[] = Array.isArray(panel?.unlockedModules) ? panel.unlockedModules : [];

@@ -5,7 +5,8 @@ import { IconShield, IconSearch } from '@/shared/components/icons';
 import api from '@/core/services/api';
 import { useToast } from '@/core/contexts/ToastContext';
 import type { ContactMessage, ServiceRequestItem } from '../../types/admin.types';
-import { Skeleton } from '@/shared/components/ui';
+import { Skeleton, ErrorState } from '@/shared/components/ui';
+import EmptyState from '@/shared/components/dashboard/EmptyState';
 import { Dialog, DialogContent, ConfirmDialog } from '@/shared/components/ui/Dialog';
 
 type InboxItem = {
@@ -18,6 +19,7 @@ const InboxTab = () => {
   const { addToast } = useToast();
   const [items, setItems] = useState<InboxItem[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
   const [filter, setFilter] = useState<'all' | 'contact' | 'service'>('all');
   const [statusFilter, setStatusFilter] = useState('');
   const [search, setSearch] = useState('');
@@ -29,6 +31,7 @@ const InboxTab = () => {
 
   const fetchAll = async (p = 1) => {
     setLoading(true);
+    setError(false);
     try {
       const [contactsRes, servicesRes] = await Promise.all([
         api.get(`/admin/contact-messages?limit=${limit}&page=${p}`),
@@ -56,6 +59,7 @@ const InboxTab = () => {
       setItems(merged);
       setTotal(merged.length);
     } catch {
+      setError(true);
       addToast(t('admin.inbox.loadFailed'), 'error');
     } finally {
       setLoading(false);
@@ -129,12 +133,11 @@ const InboxTab = () => {
       </div>
 
       {loading ? (
-        <div className="space-y-2">{Array.from({ length: 8 }).map((_, i) => <div key={i} className="h-14 rounded-xl bg-bg-card border border-border animate-pulse" />)}</div>
+        <div className="space-y-2" role="status">{Array.from({ length: 8 }).map((_, i) => <div key={i} className="h-14 rounded-xl bg-bg-card border border-border animate-pulse" />)}</div>
+      ) : error ? (
+        <ErrorState message={t('admin.inbox.loadFailed')} title={t('admin.inbox.unavailable')} />
       ) : items.length === 0 ? (
-        <div className="rounded-2xl border border-dashed border-border/30 py-12 text-center">
-          <Mail className="mx-auto mb-3 h-10 w-10 text-text-muted opacity-30" />
-          <p className="text-sm text-text-muted font-bold">{t('admin.inbox.empty')}</p>
-        </div>
+        <EmptyState icon={<Mail className="w-10 h-10 text-text-muted" />} title={t('admin.inbox.empty')} />
       ) : (
         <div className="space-y-2">
           {items.map((item) => {
