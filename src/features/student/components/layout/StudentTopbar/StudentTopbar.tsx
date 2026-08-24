@@ -397,6 +397,13 @@ const StudentTopbar = () => {
               </span>
             </div>
             <div className="flex items-center gap-1.5 md:gap-2 shrink-0">
+              <button
+                onClick={() => window.dispatchEvent(new CustomEvent('qyvora:open-walkthrough-terminal'))}
+                className="hidden lg:flex h-10 w-10 md:h-12 md:w-12 shrink-0 items-center justify-center rounded-xl transition-colors text-text-secondary hover:text-accent active:scale-95"
+                aria-label={t('aria.openTerminal')}
+              >
+                <IconTerminal size={20} strokeWidth={2.5} />
+              </button>
               <ProfileDropdown
                 user={user}
                 unreadCount={unreadCount}
