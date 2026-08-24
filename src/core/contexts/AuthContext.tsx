@@ -51,10 +51,9 @@ interface User {
   emailVerified: boolean;
   onboardingCompletedAt: string | null;
   onboardingSkippedAt: string | null;
-  recoveryTokenAcknowledgedAt: string | null;
-  handleNeedsUpdate: boolean;
-  twoFactorEnabled: boolean;
-  preferences?: Record<string, any>;
+   recoveryTokenAcknowledgedAt: string | null;
+   handleNeedsUpdate: boolean;
+   preferences?: Record<string, any>;
 }
 
 /**
@@ -75,27 +74,11 @@ export class MustChangePasswordError extends Error {
   }
 }
 
-/**
- * Thrown by `login()` when the account has TOTP two-factor authentication
- * enabled. The password factor succeeded but no session exists yet — the
- * caller (LoginPage) must collect the 6-digit code and call `login2FA()`
- * with the enclosed short-lived challenge token.
- */
-export class TwoFactorRequiredError extends Error {
-  twoFactorLoginToken: string;
-  constructor(token: string) {
-    super('Two-factor verification required');
-    this.name = 'TwoFactorRequiredError';
-    this.twoFactorLoginToken = token;
-  }
-}
-
 /** Public API that consumers of AuthContext receive via useAuth(). */
 interface AuthContextType {
   user: User | null;          // null = not authenticated
   loading: boolean;           // true while the initial session check is in flight
   login: (credentials: { email?: string; password?: string; isAdminRoute?: boolean }) => Promise<void>;
-  login2FA: (twoFactorLoginToken: string, code: string) => Promise<void>;
   logout: () => Promise<void>;
   refreshMe: () => Promise<void>; // Re-fetches the current user from /auth/me
 }
@@ -119,7 +102,6 @@ interface BackendUser {
   onboardingSkippedAt?: string;
   recoveryTokenAcknowledgedAt?: string;
   handleNeedsUpdate?: boolean;
-  twoFactorEnabled?: boolean;
   preferences?: Record<string, any>;
 }
 
@@ -185,7 +167,6 @@ const toFrontendUser = (backendUser: BackendUser): User => {
     onboardingSkippedAt: backendUser?.onboardingSkippedAt || null,
     recoveryTokenAcknowledgedAt: backendUser?.recoveryTokenAcknowledgedAt || null,
     handleNeedsUpdate: !!backendUser?.handleNeedsUpdate,
-    twoFactorEnabled: !!(backendUser as any)?.twoFactorEnabled,
     preferences: (backendUser as any)?.preferences || undefined,
   };
 };
@@ -280,13 +261,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       throw new MustChangePasswordError(String(res.data.passwordChangeToken));
     }
 
-    // 2FA-enabled accounts receive a challenge token instead of a session —
-    // the second factor must be verified via login2FA() before any state is
-    // set. Deliberately no token/user handling happens here.
-    if (res.data?.twoFactorRequired && res.data?.twoFactorLoginToken) {
-      throw new TwoFactorRequiredError(String(res.data.twoFactorLoginToken));
-    }
-
     // Persist the short-lived access token for subsequent API calls.
     // setAccessToken handles the storage details internally.
     if (res.data?.token) setAccessToken(String(res.data.token));
@@ -303,28 +277,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
     // Fallback: fetch the user separately. This handles backends that return
     // only the token on login and expect a follow-up /auth/me call.
-    await refreshMe();
-  };
-
-  /**
-   * Completes login for a 2FA-enabled account by exchanging the short-lived
-   * challenge token (from TwoFactorRequiredError) plus the user's TOTP or
-   * backup code for a full session. Mirrors the session-establishment logic
-   * of login().
-   */
-  const login2FA = async (twoFactorLoginToken: string, code: string) => {
-    const res = await api.post('/auth/2fa/login', {
-      twoFactorLoginToken: String(twoFactorLoginToken || ''),
-      code: String(code || '').trim(),
-    });
-
-    if (res.data?.token) setAccessToken(String(res.data.token));
-    setAuthSessionHint(true);
-
-    if (res.data?.user) {
-      setUser(toFrontendUser(res.data.user));
-      return;
-    }
     await refreshMe();
   };
 
@@ -355,7 +307,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
    * of AuthProvider itself.
    */
   const value = useMemo(
-    () => ({ user, loading, login, login2FA, logout, refreshMe }),
+    () => ({ user, loading, login, logout, refreshMe }),
     [user, loading]
   );
 

@@ -1,8 +1,8 @@
 import React, { useEffect, useState, useRef, useCallback } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { Mail, LogIn, ShieldCheck } from 'lucide-react';
+import { Mail, LogIn } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import { useAuth, TwoFactorRequiredError, MustChangePasswordError } from '../../../core/contexts/AuthContext';
+import { useAuth, MustChangePasswordError } from '../../../core/contexts/AuthContext';
 import { useToast } from '../../../core/contexts/ToastContext';
 import SEO from '@/shared/components/SEO';
 import { AuthFormLayout } from '@/shared/components/layout';
@@ -14,64 +14,8 @@ import Input from '@/shared/components/ui/Input';
 import AthenaBoxes from '@/shared/components/AthenaBoxes';
 import AuthForm, { type AuthMode } from '../components/AuthForm';
 
-/**
- * Second-factor step rendered in place of the credential form once the
- * password factor has been accepted for a 2FA-enabled account.
- */
-const TwoFactorStep: React.FC<{
-  onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
-  onCancel: () => void;
-  isLoading: boolean;
-  formMessage: string;
-}> = ({ onSubmit, onCancel, isLoading, formMessage }) => {
-  const { t } = useTranslation();
-  return (
-    <form className="space-y-6" onSubmit={onSubmit} noValidate aria-describedby="twofa-desc">
-      <div className="mb-8">
-        <h1 className="text-3xl md:text-4xl lg:text-5xl font-black uppercase tracking-tighter mb-1 text-text-primary">
-          {t('auth.twoFactor.title')}
-        </h1>
-        <p id="twofa-desc" className="text-sm text-text-muted">{t('auth.twoFactor.description')}</p>
-      </div>
-
-      <div className="space-y-2">
-        <label htmlFor="twofa-code" className="text-[10px] font-black text-text-muted uppercase tracking-widest">
-          {t('auth.twoFactor.codeLabel')}
-        </label>
-        <Input
-          id="twofa-code"
-          name="twoFaCode"
-          type="text"
-          required
-          autoComplete="one-time-code"
-          inputMode="text"
-          placeholder={t('auth.twoFactor.codePlaceholder')}
-          icon={<ShieldCheck className="w-4 h-4 lg:w-5 lg:h-5" />}
-          className="lg:py-4"
-        />
-      </div>
-
-      <button
-        type="submit"
-        disabled={isLoading}
-        className="w-full bg-bg-card border border-border text-text-primary hover:border-accent/40 active:scale-[0.98] !rounded-xl !py-4 flex items-center justify-center gap-3 disabled:opacity-50 text-[10px] font-black uppercase tracking-widest transition-all"
-      >
-        <span className="text-[10px]">{t('auth.twoFactor.verify')}</span> <LogIn className="w-5 h-5" />
-      </button>
-
-      <button
-        type="button"
-        onClick={onCancel}
-        className="w-full text-[10px] font-bold uppercase tracking-widest text-text-muted hover:text-text-primary transition-colors min-h-[44px]"
-      >
-        {t('auth.twoFactor.backToLogin')}
-      </button>
-    </form>
-  );
-};
-
 const LoginPage: React.FC = () => {  const { t } = useTranslation();
-  const { login, login2FA, user: sessionUser, loading: sessionLoading } = useAuth();
+  const { login, user: sessionUser, loading: sessionLoading } = useAuth();
   const { addToast } = useToast();
   const navigate = useNavigate();
   const location = useLocation();
@@ -87,11 +31,6 @@ const LoginPage: React.FC = () => {  const { t } = useTranslation();
   const [fullName, setFullName] = useState('');
   const [selectedHandle, setSelectedHandle] = useState('');
   const handleRef = useRef<HTMLInputElement>(null);
-
-  // Two-factor challenge state: when set, the login form is replaced by the
-  // TOTP/backup-code step. The challenge token is short-lived and held in
-  // memory only — never persisted.
-  const [twoFaToken, setTwoFaToken] = useState<string | null>(null);
 
   useEffect(() => {
     if (sessionLoading || !isAdminLoginRoute) return;
@@ -141,50 +80,12 @@ const LoginPage: React.FC = () => {  const { t } = useTranslation();
       setFormMessage('Login successful.');
       navigate('/dashboard');
     } catch (err: any) {
-      // 2FA-enabled account: password factor accepted, waiting on the code.
-      if (err instanceof TwoFactorRequiredError) {
-        setTwoFaToken(err.twoFactorLoginToken);
-        setFormMessage('');
-        setIsLoading(false);
-        return;
-      }
       if (err instanceof MustChangePasswordError) {
         setIsLoading(false);
       }
       const msg = sanitizeError(err, 'login');
       setFormMessage(msg);
       setShakePassword(true);
-      addToast(msg, 'error');
-      setIsLoading(false);
-    }
-  };
-
-  const completeLoginRedirects = () => {
-    if (isAdminLoginRoute) {
-      addToast('Session established.', 'success');
-      navigate(`${ADMIN_PATH}/dashboard`);
-      return;
-    }
-    addToast('Session established. Welcome back, Operator.', 'success');
-    setFormMessage('Login successful.');
-    navigate('/dashboard');
-  };
-
-  const handle2FASubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    e.stopPropagation();
-    if (isLoading || !twoFaToken) return;
-    setIsLoading(true);
-    setFormMessage('');
-    const formData = new FormData(e.currentTarget);
-    const code = String(formData.get('twoFaCode') || '');
-    try {
-      await login2FA(twoFaToken, code);
-      setTwoFaToken(null);
-      completeLoginRedirects();
-    } catch (err: any) {
-      const msg = sanitizeError(err, 'login');
-      setFormMessage(msg);
       addToast(msg, 'error');
       setIsLoading(false);
     }
@@ -236,15 +137,6 @@ const LoginPage: React.FC = () => {  const { t } = useTranslation();
           <div className="w-full max-w-lg">
             <p className="sr-only" aria-live="polite">{formMessage}</p>
             <div className="rounded-2xl border border-border/30 bg-bg-card p-6 md:p-8">
-              {twoFaToken ? (
-                <TwoFactorStep
-                  onSubmit={handle2FASubmit}
-                  onCancel={() => setTwoFaToken(null)}
-                  isLoading={isLoading}
-                  formMessage={formMessage}
-                />
-              ) : (
-              <>
               <div className="mb-8">
                 <h1 className="text-3xl md:text-4xl lg:text-5xl font-black uppercase tracking-tighter mb-1 text-text-primary">
                   {t('heading.workspaceAccess1')} <span className="text-accent">{t('heading.workspaceAccess2')}</span>
@@ -297,8 +189,6 @@ const LoginPage: React.FC = () => {  const { t } = useTranslation();
                   )}
                 </button>
               </form>
-              </>
-              )}
             </div>
           </div>
         </div>
@@ -334,19 +224,7 @@ const LoginPage: React.FC = () => {  const { t } = useTranslation();
         } 
         noindex 
       />
-      {twoFaToken ? (
-        <div className="w-full max-w-lg rounded-2xl border border-border/30 bg-bg-card p-6 md:p-8">
-          <p className="sr-only" aria-live="polite">{formMessage}</p>
-          <TwoFactorStep
-            onSubmit={handle2FASubmit}
-            onCancel={() => setTwoFaToken(null)}
-            isLoading={isLoading}
-            formMessage={formMessage}
-          />
-        </div>
-      ) : (
-        <AuthForm {...authFormProps} />
-      )}
+      <AuthForm {...authFormProps} />
     </AuthFormLayout>
   );
 };
