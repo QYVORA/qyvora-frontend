@@ -13,6 +13,7 @@ import OverviewTab from '../components/dashboard/OverviewTab';
 import InboxTab from '../components/dashboard/InboxTab';
 import BroadcastTab from '../components/dashboard/BroadcastTab';
 import AuditLogTab from '../components/dashboard/AuditLogTab';
+import IncidentsTab from '../components/dashboard/IncidentsTab';
 import ADMIN_PATH from '@/shared/utils/adminPath';
 import { useAuth } from '@/core/contexts/AuthContext';
 import { useToast } from '@/core/contexts/ToastContext';
@@ -25,6 +26,34 @@ import {
   type SecurityEventItem,
   isUserBlocked,
 } from '../types/admin.types';
+
+export type SectionStatus = 'loading' | 'loaded' | 'error';
+
+export interface OverviewData {
+  users: { total: number; active24h: number; byRole: Record<string, number> };
+  recentSignups: Array<{ id: string; name: string; email: string; createdAt: string }>;
+  newSignupsWeek: number;
+  totalCpMinted: number;
+  bootcampEnrollmentRate: number;
+  chainReachable: boolean | string;
+  systemHealth?: {
+    mongodb: boolean;
+    blockedAccounts: number;
+    incidentsOpen: number;
+    incidentsCriticalOpen: number;
+    authFailures24h: number;
+    serverErrors24h: number;
+    bootcamp?: { enrolled: number; active: number; engagementCurrentModule: number; currentModuleId: number | null };
+  };
+}
+
+const INITIAL_STATUSES: Record<'overview' | 'users' | 'cp' | 'securitySummary' | 'securityEvents', SectionStatus> = {
+  overview: 'loading',
+  users: 'loading',
+  cp: 'loading',
+  securitySummary: 'loading',
+  securityEvents: 'loading',
+};
 
 // ── Main component ────────────────────────────────────────────────────────────
 const AdminDashboardPage: React.FC = () => {
@@ -41,8 +70,9 @@ const AdminDashboardPage: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [lastSync, setLastSync] = useState<string | null>(null);
   const [syncError, setSyncError] = useState('');
+  const [statuses, setStatuses] = useState(INITIAL_STATUSES);
 
-  const [overview, setOverview] = useState<Record<string, unknown> | null>(null);
+  const [overview, setOverview] = useState<OverviewData | null>(null);
   const [users, setUsers] = useState<AdminUser[]>([]);
   const [products, setProducts] = useState<CPProduct[]>([]);
   const [securitySummary, setSecuritySummary] = useState<Record<string, unknown> | null>(null);
@@ -53,28 +83,60 @@ const AdminDashboardPage: React.FC = () => {
   const loadAll = async () => {
     setLoading(true);
     setSyncError('');
-    try {
-      const [ovRes, usersRes, productsRes, summaryRes, eventsRes] =
-        await Promise.all([
-          api.get('/admin/overview').catch(() => null),
-          api.get('/admin/users').catch(() => null),
-          api.get('/admin/cp-products').catch(() => null),
-          api.get('/admin/security/summary').catch(() => null),
-          api.get('/admin/security/events?limit=50').catch(() => null),
-        ]);
+    setStatuses(INITIAL_STATUSES);
 
-      setOverview((ovRes?.data as Record<string, unknown>) || null);
-      const userItems = Array.isArray(usersRes?.data) ? (usersRes.data as AdminUser[]) : [];
-      setUsers(userItems);
-      setProducts(Array.isArray(productsRes?.data?.items) ? productsRes.data.items : []);
-      setSecuritySummary((summaryRes?.data as Record<string, unknown>) || null);
-      setSecurityEvents(Array.isArray(eventsRes?.data?.items) ? eventsRes.data.items : []);
-      setLastSync(new Date().toLocaleTimeString());
-    } catch {
-      setSyncError(t('admin.syncError'));
-    } finally {
-      setLoading(false);
+    // Each section tracks its own outcome — a failed request renders an
+    // explicit "data unavailable" state instead of silently becoming empty.
+    const [ovRes, usersRes, productsRes, summaryRes, eventsRes] = await Promise.allSettled([
+      api.get('/admin/overview'),
+      api.get('/admin/users'),
+      api.get('/admin/cp-products'),
+      api.get('/admin/security/summary'),
+      api.get('/admin/security/events?limit=50'),
+    ]);
+
+    const outcomes: Record<string, SectionStatus> = {
+      overview: ovRes.status === 'fulfilled' ? 'loaded' : 'error',
+      users: usersRes.status === 'fulfilled' ? 'loaded' : 'error',
+      cp: productsRes.status === 'fulfilled' ? 'loaded' : 'error',
+      securitySummary: summaryRes.status === 'fulfilled' ? 'loaded' : 'error',
+      securityEvents: eventsRes.status === 'fulfilled' ? 'loaded' : 'error',
+    };
+    setStatuses(outcomes as typeof INITIAL_STATUSES);
+
+    if (ovRes.status === 'fulfilled') {
+      const ov: any = ovRes.value?.data || {};
+      const signups: any[] = Array.isArray(ov.recentSignups) ? ov.recentSignups : [];
+      setOverview({
+        users: { total: ov.users?.total || 0, active24h: ov.users?.active24h || 0, byRole: ov.users?.byRole || {} },
+        recentSignups: signups.slice(0, 5),
+        newSignupsWeek: Number(ov.newSignupsWeek ?? 0),
+        totalCpMinted: Number(ov.totalCpMinted ?? 0),
+        bootcampEnrollmentRate: Number(ov.bootcampEnrollmentRate ?? 0),
+        chainReachable: ov.chainReachable ?? true,
+        systemHealth: ov.systemHealth,
+      });
     }
+
+    if (usersRes.status === 'fulfilled') {
+      setUsers(Array.isArray(usersRes.value?.data) ? (usersRes.value.data as AdminUser[]) : []);
+    }
+
+    if (productsRes.status === 'fulfilled') {
+      setProducts(Array.isArray(productsRes.value?.data?.items) ? productsRes.value.data.items : []);
+    }
+
+    if (summaryRes.status === 'fulfilled') {
+      setSecuritySummary((summaryRes.value?.data as Record<string, unknown>) || null);
+    }
+
+    if (eventsRes.status === 'fulfilled') {
+      setSecurityEvents(Array.isArray(eventsRes.value?.data?.items) ? eventsRes.value.data.items : []);
+    }
+
+    if (Object.values(outcomes).some((s) => s === 'error')) setSyncError(t('admin.syncError'));
+    setLastSync(new Date().toLocaleTimeString());
+    setLoading(false);
   };
 
   useEffect(() => { void loadAll(); }, []);
@@ -90,11 +152,21 @@ const AdminDashboardPage: React.FC = () => {
   };
 
   const handleUserBlockToggle = async (target: AdminUser) => {
+    const wasBlocked = isUserBlocked(target);
     try {
-      await api.patch(`/admin/users/${encodeURIComponent(target.id)}/block`, { blocked: !isUserBlocked(target) });
-      addToast(isUserBlocked(target) ? t('admin.users.unblocked') : t('admin.users.blockedToast'), 'success');
+      const res = await api.patch(`/admin/users/${encodeURIComponent(target.id)}/block`, { blocked: !wasBlocked });
+      // The action succeeds even when the audit write failed — surface that
+      // as a warning instead of reporting silent success.
+      if (res?.data?.audited === false) {
+        addToast(t('admin.audit.unauditedWarning'), 'warning');
+      } else {
+        addToast(wasBlocked ? t('admin.users.unblocked') : t('admin.users.blockedToast'), 'success');
+      }
       await loadAll();
-    } catch (e: any) { addToast(e?.response?.data?.error || t('admin.users.blockFailed'), 'error'); }
+    } catch (e: any) {
+      addToast(e?.response?.data?.error || t('admin.users.blockFailed'), 'error');
+      await loadAll();
+    }
   };
 
   const handleDeleteUserConfirmed = async (target: AdminUser) => {
@@ -122,7 +194,7 @@ const AdminDashboardPage: React.FC = () => {
       }
 
       if (!form.id && !fileMeta) { addToast(t('admin.market.pdfRequired'), 'error'); return; }
-      
+
       const payload: Record<string, unknown> = {
         title: form.title, description: form.description,
         cpPrice: form.isFree ? 0 : Number(form.cpPrice || 0),
@@ -160,7 +232,7 @@ const AdminDashboardPage: React.FC = () => {
     users: 'Users', bootcamps: 'Bootcamps',
     zero_day: 'Market', cp: 'Points',
     inbox: 'Inbox', broadcast: 'Broadcast', audit: 'Audit',
-    security: 'Security',
+    security: 'Security', incidents: 'Incidents',
   };
   const activeLabel = TAB_LABELS[activeTab] ?? '';
 
@@ -180,7 +252,7 @@ const AdminDashboardPage: React.FC = () => {
             title={activeLabel}
             description={loading ? t('admin.syncing') : t('admin.managingDescription', { section: activeLabel.toLowerCase() })}
             stats={overview ? [
-              { label: t('admin.tabs.users'), value: String((overview as Record<string, unknown>)?.totalUsers ?? 0) },
+              { label: t('admin.tabs.users'), value: String(overview.users.total) },
               { label: t('admin.tabs.market'), value: String(products.length) },
             ] : undefined}
             action={{
@@ -204,13 +276,15 @@ const AdminDashboardPage: React.FC = () => {
           ) : (
             <div>
               {/* ── OVERVIEW ──────────────────────────────────────────────── */}
-              {activeTab === 'overview' && <OverviewTab />}
+              {activeTab === 'overview' && <OverviewTab data={overview} status={statuses.overview} onRetry={() => void loadAll()} />}
 
               {/* ── USERS ─────────────────────────────────────────────────── */}
               {activeTab === 'users' && (
                 <UsersTab
                   users={users}
                   overview={overview}
+                  status={statuses.users}
+                  onRetry={() => void loadAll()}
                   addToast={addToast}
                   patchUser={patchUser}
                   handleUserBlockToggle={handleUserBlockToggle}
@@ -219,27 +293,21 @@ const AdminDashboardPage: React.FC = () => {
               )}
 
               {/* ── BOOTCAMPS ─────────────────────────────────────────────── */}
-              {activeTab === 'bootcamps' && (
-                <div className="card-qyvora p-6 md:p-8 border border-border">
-                  <BootcampAccessPanel addToast={addToast} />
-                </div>
-              )}
+              {activeTab === 'bootcamps' && <BootcampAccessPanel addToast={addToast} />}
 
               {/* ── ZERO-DAY MARKET ───────────────────────────────────────── */}
               {activeTab === 'zero_day' && (
                 <ZeroDayMarketTab
                   products={products}
+                  status={statuses.cp}
+                  onRetry={() => void loadAll()}
                   saveProduct={saveProduct}
                   deleteProduct={deleteProduct}
                 />
               )}
 
               {/* ── POINTS / CP ANALYTICS ────────────────────────────────── */}
-              {activeTab === 'cp' && (
-                <div className="card-qyvora p-6 md:p-8 border border-border">
-                  <CpAnalytics users={users} addToast={addToast} />
-                </div>
-              )}
+              {activeTab === 'cp' && <CpAnalytics users={users} addToast={addToast} />}
 
               {/* ── INBOX (Contacts + Service Requests) ──────────────────── */}
               {activeTab === 'inbox' && <InboxTab />}
@@ -250,11 +318,17 @@ const AdminDashboardPage: React.FC = () => {
               {/* ── AUDIT LOG ─────────────────────────────────────────────── */}
               {activeTab === 'audit' && <AuditLogTab />}
 
+              {/* ── INCIDENTS ─────────────────────────────────────────────── */}
+              {activeTab === 'incidents' && <IncidentsTab />}
+
               {/* ── SECURITY ──────────────────────────────────────────────── */}
               {activeTab === 'security' && (
                 <SecurityTab
                   securitySummary={securitySummary}
                   securityEvents={securityEvents}
+                  summaryStatus={statuses.securitySummary}
+                  eventsStatus={statuses.securityEvents}
+                  onRetry={() => void loadAll()}
                 />
               )}
             </div>

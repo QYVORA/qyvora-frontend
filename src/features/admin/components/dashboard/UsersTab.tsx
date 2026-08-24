@@ -4,14 +4,18 @@ import { useTranslation } from 'react-i18next';
 import { IconShield } from '@/shared/components/icons';
 import type { AdminUser } from '../../types/admin.types';
 import { isUserBlocked } from '../../types/admin.types';
+import type { SectionStatus } from '../../pages/AdminDashboardPage';
 import CpLogo from '@/shared/components/CpLogo';
 import { Tooltip } from '@/shared/components/ui/Tooltip';
 import { StatCard, DataTable } from '@/shared/components/dashboard';
 import type { Column } from '@/shared/components/dashboard';
+import { ErrorState } from '@/shared/components/ui';
 
 interface UsersTabProps {
   users: AdminUser[];
   overview: any;
+  status?: SectionStatus;
+  onRetry?: () => void;
   addToast: (msg: string, type: string) => void;
   patchUser: (id: string, payload: Record<string, unknown>, msg: string) => Promise<void>;
   handleUserBlockToggle: (target: AdminUser) => Promise<void>;
@@ -19,10 +23,14 @@ interface UsersTabProps {
 }
 
 const UsersTab: React.FC<UsersTabProps> = ({
-  users, overview, addToast, patchUser, handleUserBlockToggle, handleDeleteUser,
+  users, overview, status = 'loaded', onRetry, addToast, patchUser, handleUserBlockToggle, handleDeleteUser,
 }) => {
   const { t } = useTranslation();
   const adminsCount = users.filter(u => u.role === 'admin').length;
+
+  if (status === 'error') {
+    return <ErrorState message={t('admin.users.unavailable')} title={t('admin.dataUnavailable')} />;
+  }
 
   const columns: Column<AdminUser>[] = [
     {
