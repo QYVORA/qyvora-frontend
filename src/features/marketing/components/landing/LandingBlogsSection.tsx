@@ -38,9 +38,9 @@ const LandingBlogsSection = () => {
               renderCard={(post) => (
                 <Link
                   to={`/blogs/${post.slug}`}
-                  className="group flex flex-col md:flex-row card-accent bg-bg-card overflow-hidden h-[590px] md:h-full md:min-h-[340px] transition-all duration-300"
+                  className="group flex flex-col md:flex-row card-accent bg-bg-card overflow-hidden h-full min-h-[500px] md:min-h-[380px] transition-all duration-300"
                 >
-                  <div className="relative md:w-[45%] lg:w-[48%] shrink-0 aspect-[16/10] md:aspect-auto overflow-hidden bg-bg-elevated">
+                  <div className="relative md:w-[45%] lg:w-[48%] shrink-0 h-[200px] md:h-full md:aspect-auto overflow-hidden bg-bg-elevated">
                     <img
                       src={post.image}
                       alt={post.title}
@@ -50,7 +50,7 @@ const LandingBlogsSection = () => {
                       loading="lazy"
                     />
                   </div>
-                  <div className="relative flex flex-col items-start text-left p-6 sm:p-8 flex-1 min-w-0">
+                  <div className="relative flex flex-col items-start text-left p-5 sm:p-6 md:p-7 flex-1 min-w-0">
                     <div className="flex flex-wrap gap-1.5 mb-3">
                       {post.tags.map((tag) => (
                         <span
@@ -61,35 +61,35 @@ const LandingBlogsSection = () => {
                         </span>
                       ))}
                     </div>
-                    <h3 className="text-xl md:text-2xl font-black uppercase tracking-tight text-text-primary transition-colors duration-300 group-hover:text-accent line-clamp-2">
+                    <h3 className="text-lg md:text-xl lg:text-2xl font-black uppercase tracking-tight text-text-primary transition-colors duration-300 group-hover:text-accent line-clamp-2 mb-1">
                       {post.title}
                     </h3>
-                    <p className="text-[10px] font-bold uppercase tracking-widest text-accent/80 mt-1">
+                    <p className="text-[10px] font-bold uppercase tracking-widest text-accent/80 mb-3">
                       {post.subtitle}
                     </p>
-                    <p className="text-xs sm:text-sm text-text-secondary leading-relaxed font-mono border-l-2 border-accent/40 pl-3 py-1.5 mt-3 line-clamp-3">
+                    <p className="text-xs sm:text-sm text-text-secondary leading-relaxed font-mono border-l-2 border-accent/40 pl-3 py-1.5 mb-4 line-clamp-3 flex-1">
                       {post.excerpt}
                     </p>
-                    <div className="flex items-center justify-between gap-3 mt-auto w-full pt-5">
-                      <div className="flex items-center gap-2 min-w-0">
-                        <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full shrink-0 bg-accent/10 border border-accent/20 flex items-center justify-center">
-                          <User className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-accent" />
+                    <div className="flex items-center justify-between gap-3 w-full pt-3 mt-auto border-t border-border/30">
+                      <div className="flex items-center gap-2 min-w-0 flex-1">
+                        <div className="w-8 h-8 rounded-full shrink-0 bg-accent/10 border border-accent/20 flex items-center justify-center">
+                          <User className="w-4 h-4 text-accent" />
                         </div>
-                        <div className="min-w-0">
+                        <div className="min-w-0 flex-1">
                           <div className="text-[10px] sm:text-xs font-black uppercase tracking-widest text-text-primary truncate">
                             {post.author.name}
                           </div>
-                          <div className="text-[8px] sm:text-[10px] font-mono text-text-muted truncate">
+                          <div className="text-[9px] sm:text-[10px] font-mono text-text-muted truncate">
                             {post.author.handle}
                           </div>
                         </div>
                       </div>
                       <div className="flex items-center gap-3 text-[10px] sm:text-[11px] font-mono text-text-muted shrink-0">
                         <span className="flex items-center gap-1 whitespace-nowrap">
-                          <IconClock size={12} className="sm:w-3.5 sm:h-3.5 shrink-0" /> {post.readTime}
+                          <IconClock size={12} className="shrink-0" /> {post.readTime}
                         </span>
                         <span className="flex items-center gap-1 text-accent group-hover:gap-1.5 transition-all whitespace-nowrap">
-                          {t('landing.blogs.read')} <IconArrowRight size={12} className="sm:w-3.5 sm:h-3.5 shrink-0" />
+                          {t('landing.blogs.read')} <IconArrowRight size={12} className="shrink-0" />
                         </span>
                       </div>
                     </div>

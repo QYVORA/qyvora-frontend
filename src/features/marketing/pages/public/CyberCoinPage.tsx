@@ -66,7 +66,7 @@ const SnapSection: React.FC<{ id?: string; className?: string; children: React.R
     id={id}
     className={`relative w-full min-h-dvh snap-section overflow-hidden ${className}`}
   >
-    <div className="w-full min-h-dvh px-3 md:px-4 lg:px-6 pt-24 md:pt-28 lg:pt-32 pb-6 md:pb-8 lg:pb-10 flex flex-col justify-center">
+    <div className="w-full min-h-dvh px-3 md:px-4 lg:px-6 py-12 sm:py-10 md:py-16 lg:py-20 flex flex-col justify-center">
       {children}
     </div>
   </section>
@@ -96,41 +96,44 @@ const CyberCoinPage: React.FC = () => {
 
         {/* ── 01 · HERO — simple header left, logo right ───────────────── */}
         <section className="relative w-full min-h-dvh snap-section bg-bg overflow-hidden">
-          <div className="relative z-10 w-full min-h-dvh grid grid-cols-1 lg:grid-cols-2 items-center px-3 md:px-4 lg:px-6 pt-24 md:pt-28 lg:pt-32 pb-6 md:pb-8 lg:pb-10">
-            {/* Copy */}
-            <div className="flex flex-col items-start justify-center space-y-6 lg:space-y-8">
-              <span className="inline-flex items-center gap-2 rounded-lg border border-border/30 bg-bg-card px-2.5 py-1 text-[9px] font-black uppercase tracking-[0.25em] text-text-muted">
-                <span className="w-1.5 h-1.5 rounded-full bg-accent" aria-hidden="true" />
-                {CP_HERO.label}
-              </span>
-
-              <h1 className="font-black text-text-primary tracking-tight leading-[1.05]">
-                <span className="block text-[4.25rem] min-[400px]:text-[5rem] sm:text-[6rem] lg:text-[5.5rem] xl:text-[6.5rem] leading-[0.95]">
-                  {CP_HERO.title}
+          <GridBoxedBackground blur={0} mask="right" />
+          <div className="relative z-10 w-full min-h-dvh flex items-center px-3 md:px-4 lg:px-6 pt-24 md:pt-28 lg:pt-32 pb-12 md:pb-16 lg:pb-20">
+            <div className="w-full grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center">
+              {/* Copy */}
+              <div className="flex flex-col items-start justify-center space-y-6 lg:space-y-8">
+                <span className="inline-flex items-center gap-2 rounded-lg border border-border/30 bg-bg-card px-2.5 py-1 text-[9px] font-black uppercase tracking-[0.25em] text-text-muted">
+                  <span className="w-1.5 h-1.5 rounded-full bg-accent" aria-hidden="true" />
+                  {CP_HERO.label}
                 </span>
-                <span className="block mt-3 text-2xl sm:text-3xl md:text-4xl tracking-tight">
-                  {CP_HERO.headlinePrimary}{' '}
-                  <span className="text-accent">{CP_HERO.headlineAccent}</span>
-                </span>
-              </h1>
 
-              <p className="text-text-secondary text-base sm:text-lg lg:text-base xl:text-lg leading-relaxed max-w-xl font-mono">
-                {CP_HERO.description}
-              </p>
+                <h1 className="font-black text-text-primary tracking-tight leading-[1.05]">
+                  <span className="block text-3xl md:text-5xl lg:text-6xl leading-[0.95]">
+                    {CP_HERO.title}
+                  </span>
+                  <span className="block mt-3 text-2xl md:text-3xl lg:text-4xl tracking-tight">
+                    {CP_HERO.headlinePrimary}{' '}
+                    <span className="text-accent">{CP_HERO.headlineAccent}</span>
+                  </span>
+                </h1>
 
-              <button type="button" onClick={handleExplore} className="btn-primary inline-flex items-center justify-center gap-2 !px-6 !py-3">
-                Explore CP <IconArrow size={14} />
-              </button>
-            </div>
+                <p className="text-text-secondary text-base md:text-lg leading-relaxed max-w-xl font-mono">
+                  {CP_HERO.description}
+                </p>
 
-            {/* Official CP logo */}
-            <div className="flex items-center justify-center lg:justify-end mt-4 lg:mt-0">
-              <ScrollReveal direction="left" className="w-full flex justify-center lg:justify-end">
-                <CpLogo
-                  className="w-48 h-48 min-[400px]:w-56 min-[400px]:h-56 sm:w-64 sm:h-64 lg:w-72 lg:h-72 xl:w-80 xl:h-80"
-                  alt="CP | QYVORA Cyber Coin logo"
-                />
-              </ScrollReveal>
+                <button type="button" onClick={handleExplore} className="btn-primary inline-flex items-center justify-center gap-2 !px-6 !py-3">
+                  Explore CP <IconArrow size={14} />
+                </button>
+              </div>
+
+              {/* Official CP logo */}
+              <div className="flex items-center justify-center lg:justify-end">
+                <ScrollReveal direction="left" className="w-full flex justify-center lg:justify-end">
+                  <CpLogo
+                    className="w-full max-w-[320px] sm:max-w-[420px] md:max-w-[520px] lg:max-w-[480px] xl:max-w-[560px]"
+                    alt="CP | QYVORA Cyber Coin logo"
+                  />
+                </ScrollReveal>
+              </div>
             </div>
           </div>
         </section>
@@ -513,21 +516,20 @@ const CyberCoinPage: React.FC = () => {
         </SnapSection>
 
         {/* ── 07 · START YOUR JOURNEY (course carousel) ─────────────────── */}
-        <section id="journey" className="relative w-full snap-section bg-bg-alt overflow-hidden">
+        <section id="journey" className="relative w-full min-h-dvh snap-section bg-bg-alt overflow-hidden">
           <GridBoxedBackground blur={0} mask="right" />
-          <CoursesCarousel
-            className="relative z-10"
-            courses={STARTER_COURSES}
-            heading={
-              <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-8 md:mb-10">
-                <div className="max-w-2xl">
+          <div className="relative z-10 w-full min-h-dvh flex flex-col px-3 md:px-4 lg:px-6 py-12 sm:py-10 md:py-16 lg:py-20">
+            <div className="my-auto w-full space-y-8 md:space-y-10">
+              {/* Header */}
+              <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4">
+                <div>
                   <h3 className="text-[9px] md:text-xs font-black uppercase tracking-[0.3em] text-accent">
                     Start Your Journey
                   </h3>
                   <h2 className="text-2xl md:text-4xl lg:text-5xl font-black text-text-primary tracking-tighter leading-none mt-2">
                     Begin With Your First <span className="text-accent">Course.</span>
                   </h2>
-                  <p className="text-xs md:text-sm text-text-muted leading-relaxed mt-3 font-mono">
+                  <p className="text-xs md:text-sm text-text-muted leading-relaxed mt-3 font-mono max-w-xl">
                     Every completed course is verified and feeds your CP balance. Start where every operator starts, the fundamentals.
                   </p>
                 </div>
@@ -538,8 +540,14 @@ const CyberCoinPage: React.FC = () => {
                   View All Courses <IconArrow size={14} />
                 </Link>
               </div>
-            }
-          />
+
+              {/* Course Carousel Content */}
+              <CoursesCarousel
+                courses={STARTER_COURSES}
+                className="!min-h-0"
+              />
+            </div>
+          </div>
         </section>
 
         {/* ── 08 · FOOTER ───────────────────────────────────────────────── */}

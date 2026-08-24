@@ -6,7 +6,7 @@ import { IconArrowRight, IconTerminal, IconNetwork, IconCode } from '@/shared/co
 import { useTranslation } from 'react-i18next';
 import { GridBoxedBackground } from '@/shared/components/backgrounds';
 import CoursePurchaseModal from '@/shared/components/CoursePurchaseModal';
-import CourseIconBackground from '@/shared/components/CourseIconBackground';
+import { getCourseIconConfig } from '@/features/student/data/courses';
 import DragMarquee from '@/shared/components/carousel/DragMarquee';
 import { useAdaptiveUi } from '@/core/hooks/useAdaptiveUi';
 
@@ -55,34 +55,42 @@ const CompactCourseCard: React.FC<{
   onSelect: (id: string) => void;
 }> = ({ course, onSelect }) => {
   const { t } = useTranslation();
-  const CatIc = CATEGORY_ICONS[course.category];
+  const config = getCourseIconConfig(course.id);
+  const CourseIcon = config?.icon;
 
   return (
     <button
       onClick={() => onSelect(course.id)}
       aria-label={t(`landing.courses.list.${course.tKey}.title`)}
-      className="group/card relative h-[112px] w-[min(70vw,280px)] shrink-0 card-accent bg-bg-card p-3 flex items-center gap-3 text-left overflow-hidden"
+      className="group/card relative h-[140px] w-[min(80vw,340px)] shrink-0 card-accent bg-bg-card p-4 flex items-stretch gap-4 text-left overflow-hidden"
     >
-      <CourseIconBackground courseId={course.id} />
-      <div className="relative z-10 w-10 h-10 rounded-xl flex items-center justify-center shrink-0 bg-accent/10 border border-accent/20">
-        {CatIc && <CatIc className="w-5 h-5 text-accent" />}
-      </div>
-      <div className="relative z-10 flex min-w-0 flex-1 flex-col justify-center gap-1">
-        <h4 className="text-sm font-black text-text-primary tracking-tight leading-snug line-clamp-2">
-          {t(`landing.courses.list.${course.tKey}.title`)}
-        </h4>
-        <p className="flex items-center gap-2 text-[9px] font-black uppercase tracking-widest">
-          <span className="rounded-lg border border-accent/20 bg-accent/10 px-2 py-0.5 text-accent">
-            {t(`landing.courses.level.${course.level}`)}
+      {/* Left side: Content */}
+      <div className="relative z-10 flex min-w-0 flex-1 flex-col justify-between">
+        <div className="flex flex-col gap-1.5">
+          <h4 className="text-sm font-black text-text-primary tracking-tight leading-snug line-clamp-2">
+            {t(`landing.courses.list.${course.tKey}.title`)}
+          </h4>
+          <div className="flex items-center gap-2 text-[9px] font-black uppercase tracking-widest">
+            <span className="rounded-lg border border-accent/20 bg-accent/10 px-2 py-0.5 text-accent">
+              {t(`landing.courses.level.${course.level}`)}
+            </span>
+            <span className="text-text-muted">{course.minutes}m</span>
+          </div>
+        </div>
+        
+        <span className="inline-flex self-start">
+          <span className="block px-3 py-1.5 rounded-lg text-[9px] font-black uppercase tracking-widest bg-accent text-on-accent transition-all duration-200 group-hover/card:brightness-110 group-active:scale-95">
+            {t('landing.courses.viewCourse', { defaultValue: 'View' })}
           </span>
-          <span className="text-text-muted">{course.minutes}m</span>
-        </p>
-      </div>
-      <span className="relative z-10 shrink-0 self-center">
-        <span className="block px-2.5 py-1.5 rounded-lg text-[9px] font-black uppercase tracking-widest bg-accent text-on-accent transition-all duration-200 group-hover/card:brightness-110 group-active:scale-95">
-          {t('landing.courses.viewCourse', { defaultValue: 'View' })}
         </span>
-      </span>
+      </div>
+
+      {/* Right side: Course SVG Icon */}
+      <div className="relative z-10 w-[100px] shrink-0 flex items-center justify-center">
+        {CourseIcon && (
+          <CourseIcon className="w-full h-full max-w-[90px] max-h-[90px] text-accent/30" />
+        )}
+      </div>
     </button>
   );
 };
@@ -93,43 +101,57 @@ const FullCourseCard: React.FC<{
   onSelect: (id: string) => void;
 }> = ({ course, onSelect }) => {
   const { t } = useTranslation();
-  const CatIc = CATEGORY_ICONS[course.category];
+  const config = getCourseIconConfig(course.id);
+  const CourseIcon = config?.icon;
 
   return (
     <button
       key={course.id}
       onClick={() => onSelect(course.id)}
-      className="group/card relative aspect-square lg:aspect-auto lg:h-full card-accent bg-bg-card p-3 md:p-5 transition-all duration-300 flex flex-col text-left overflow-hidden"
+      className="group/card relative card-accent bg-bg-card p-4 md:p-5 lg:p-6 transition-all duration-300 flex items-stretch gap-4 md:gap-5 lg:gap-6 text-left overflow-hidden min-h-[180px] lg:min-h-[200px]"
     >
-      <CourseIconBackground courseId={course.id} />
-      <div className="relative z-10 flex items-center gap-2 mb-2">
-        <div className="w-8 h-8 rounded-xl flex items-center justify-center shrink-0 bg-accent/10 border border-accent/20">
-          {CatIc && <CatIc className="w-4 h-4 text-accent" />}
+      {/* Left side: Content */}
+      <div className="relative z-10 flex flex-col justify-between flex-1 min-w-0">
+        <div className="flex flex-col gap-2 md:gap-3">
+          {/* Badges */}
+          <div className="flex items-center gap-2 flex-wrap">
+            <span className="text-[9px] sm:text-[10px] font-black uppercase tracking-widest px-2 py-0.5 rounded-lg border border-accent/20 bg-accent/10 text-accent">
+              {t(`landing.courses.level.${course.level}`)}
+            </span>
+            <span className="text-[9px] sm:text-[10px] font-black uppercase tracking-widest text-text-muted">
+              {course.minutes}m
+            </span>
+            {course.popular && (
+              <span className="px-2 py-0.5 rounded-full bg-bg-elevated border border-border/30 text-[8px] font-black uppercase tracking-widest text-text-primary">
+                {t('badge.popular')}
+              </span>
+            )}
+          </div>
+
+          {/* Title */}
+          <h4 className="text-base md:text-lg lg:text-xl font-black text-text-primary tracking-tight leading-snug line-clamp-2">
+            {t(`landing.courses.list.${course.tKey}.title`)}
+          </h4>
+
+          {/* Description */}
+          <p className="text-xs md:text-sm text-text-muted leading-relaxed line-clamp-2">
+            {t(`landing.courses.list.${course.tKey}.desc`)}
+          </p>
         </div>
-        {course.popular && (
-          <span className="px-2 py-0.5 rounded-full bg-bg-elevated border border-border/30 text-[8px] font-black uppercase tracking-widest text-text-primary">
-            {t('badge.popular')}
+
+        {/* Button */}
+        <div className="mt-4">
+          <span className="inline-flex px-4 py-2 rounded-lg text-[10px] md:text-xs font-black uppercase tracking-widest bg-accent text-on-accent transition-all duration-200 group-hover/card:brightness-110 group-active:scale-95">
+            {t('landing.courses.viewCourse', { defaultValue: 'View' })}
           </span>
-        )}
+        </div>
       </div>
 
-      <h4 className="relative z-10 text-sm sm:text-base md:text-lg lg:text-xl font-black text-text-primary tracking-tight mb-1 leading-snug line-clamp-2">
-        {t(`landing.courses.list.${course.tKey}.title`)}
-      </h4>
-      <p className="relative z-10 text-xs sm:text-sm md:text-base text-text-muted leading-relaxed mb-2 line-clamp-3 flex-1">
-        {t(`landing.courses.list.${course.tKey}.desc`)}
-      </p>
-
-      <div className="relative z-10 flex items-center justify-between flex-wrap gap-2 mt-auto">
-        <div className="flex items-center gap-2">
-          <span className="text-[9px] sm:text-[10px] font-black uppercase tracking-widest px-2 py-0.5 rounded-lg border border-accent/20 bg-accent/10 text-accent">
-            {t(`landing.courses.level.${course.level}`)}
-          </span>
-          <span className="text-[9px] sm:text-[10px] font-black uppercase tracking-widest text-text-muted">{course.minutes}m</span>
-        </div>
-        <span className="px-3 py-1.5 rounded-lg text-[9px] sm:text-[10px] md:text-xs font-black uppercase tracking-widest bg-accent text-on-accent transition-all duration-200 group-hover/card:brightness-110 group-active:scale-95">
-          {t('landing.courses.viewCourse', { defaultValue: 'View' })}
-        </span>
+      {/* Right side: Course SVG Icon */}
+      <div className="relative z-10 w-[120px] md:w-[140px] lg:w-[160px] shrink-0 flex items-center justify-center">
+        {CourseIcon && (
+          <CourseIcon className="w-full h-full max-w-full max-h-full text-accent/30" />
+        )}
       </div>
     </button>
   );
@@ -311,7 +333,7 @@ const LandingCoursesSection: React.FC = () => {
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: dir > 0 ? -60 : 60 }}
                 transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
-                className="flex-1 min-h-0 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 md:gap-4 lg:auto-rows-fr"
+                className="flex-1 min-h-0 flex flex-col gap-3 md:gap-4"
               >
                 {pageCourses.map((course) => (
                   <FullCourseCard key={course.id} course={course} onSelect={setSelectedCourseId} />

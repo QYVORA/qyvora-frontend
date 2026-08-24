@@ -22,7 +22,7 @@ const LandingFinalCtaSection: React.FC<LandingFinalCtaSectionProps> = ({ user })
   return (
     <div className="relative w-full min-h-dvh bg-bg flex flex-col lg:flex-row overflow-hidden">
       <GridBoxedBackground blur={0} mask="right" />
-      <div className="relative z-10 w-full flex-1 px-3 md:px-4 lg:px-6 flex flex-col lg:flex-row lg:items-stretch gap-10 lg:gap-12 pt-24 pb-12 md:pt-28 lg:pt-32 lg:pb-10">
+      <div className="relative z-10 w-full flex-1 px-3 md:px-4 lg:px-6 flex flex-col lg:flex-row lg:items-center gap-10 lg:gap-12 xl:gap-16 pt-24 pb-12 md:pt-28 lg:pt-32 lg:pb-10">
 
         {/* Logo — leads the section on mobile (top), right column on desktop. */}
         <motion.div
@@ -30,25 +30,25 @@ const LandingFinalCtaSection: React.FC<LandingFinalCtaSectionProps> = ({ user })
           whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-          className="relative order-first flex items-center justify-center lg:order-last lg:justify-end shrink-0 lg:ml-2 xl:ml-4 lg:mr-6 xl:mr-10 2xl:mr-12"
+          className="relative order-first flex items-center justify-center lg:order-last lg:justify-end shrink-0 lg:flex-1"
         >
           <Logo
             variant="mark"
             size="3xl"
             color="#06B66F"
-            className="!w-[220px] min-[420px]:!w-[300px] sm:!w-[420px] md:!w-[500px] lg:!w-[min(520px,42vw)] xl:!w-[min(640px,44vw)] 2xl:!w-[min(760px,42vw)]"
+            className="!w-full !max-w-[420px] sm:!max-w-[540px] md:!max-w-[640px] lg:!max-w-[520px] xl:!max-w-[620px] 2xl:!max-w-[720px]"
           />
         </motion.div>
 
         {/* Content — flex-1 fills the column so it centres vertically on mobile
             and keeps the left column balanced on desktop */}
-        <div className="flex flex-1 items-center lg:pr-4 xl:pr-6">
+        <div className="flex flex-1 items-center">
           <motion.div
             initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-            className="w-full max-w-2xl"
+            className="w-full"
           >
             <h2 className="font-black text-text-primary leading-[1.08] tracking-tight text-[2rem] min-[400px]:text-[2.25rem] sm:text-[2.5rem] md:text-[3rem] lg:text-[2.5rem] xl:text-[3rem] lg:leading-[1.1] xl:leading-[1.05] mb-6">
               {primaryText} <span className="text-accent">{accentWord}</span>
