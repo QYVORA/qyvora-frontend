@@ -76,6 +76,14 @@ export const SITE_CONFIG = {
       action: 'Subscribe',
     },
     {
+      key: 'medium',
+      label: 'Read on Medium',
+      handle: '@qyvorasec',
+      desc: 'Write-ups, research notes, and field reports.',
+      href: 'https://medium.com/@qyvorasec',
+      action: 'Read',
+    },
+    {
       key: 'whatsapp',
       label: 'Join on WhatsApp',
       handle: 'QYVORA Community',

@@ -9,6 +9,7 @@ export interface TeamSocials {
   twitter?: string; // X
   github?: string;
   linkedin?: string;
+  medium?: string;
   instagram?: string;
   facebook?: string;
   website?: string;

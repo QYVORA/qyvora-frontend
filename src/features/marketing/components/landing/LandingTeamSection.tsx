@@ -1,7 +1,7 @@
 import { memo } from 'react';
 import { Link } from 'react-router-dom';
 import { useReducedMotion } from 'motion/react';
-import { IconArrowRight, IconProfile, BrandGithubIcon, BrandLinkedinIcon, BrandXIcon } from '@/shared/components/icons';
+import { IconArrowRight, IconProfile, BrandGithubIcon, BrandLinkedinIcon, BrandXIcon, BrandMediumIcon } from '@/shared/components/icons';
 import { teamData, type TeamMember } from '@/features/marketing/content/teamData';
 import DragMarquee from '@/shared/components/carousel/DragMarquee';
 import { useTranslation } from 'react-i18next';
@@ -54,6 +54,11 @@ const TeamCard = ({ member }: { member: TeamMember }) => (
           {member.socials.linkedin && (
             <span className="text-white/70 hover:text-accent transition-colors" aria-hidden="true">
               <BrandLinkedinIcon className="w-4 h-4" />
+            </span>
+          )}
+          {member.socials.medium && (
+            <span className="text-white/70 hover:text-accent transition-colors" aria-hidden="true">
+              <BrandMediumIcon className="w-4 h-4" />
             </span>
           )}
           {member.socials.twitter && (
