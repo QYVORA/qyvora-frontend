@@ -19,65 +19,64 @@ const DeviceNode: React.FC<NodeProps> = ({ data, selected, id }) => {
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >
-      {/* Invisible interface hitboxes — ReactFlow Handles for edge connections */}
-      {presentInterfaces.map((iface) => {
-        const ifaceIdx = presentInterfaces.indexOf(iface);
-        const total = presentInterfaces.length;
-        const pos = getHandlePosition(ifaceIdx, total);
-        return (
-          <Handle
-            key={iface.id}
-            id={iface.id}
-            type="source"
-            position={pos.position}
-            className={`!w-3 !h-3 !border-transparent transition-all duration-150 ${
-              hovered
-                ? '!bg-accent/20 !border-accent/50'
-                : '!bg-transparent !border-transparent'
-            }`}
-            style={{
-              [pos.offsetDir]: pos.offset,
-            }}
-          />
-        );
-      })}
-
-      {/* Node body */}
+      {/* Node body — the shape box is the handle anchor. Labels live outside it
+          so ReactFlow measures edge endpoints against the device silhouette,
+          not the taller label stack (edges used to float off the hardware). */}
       <div
-        className={`flex flex-col items-center transition-all duration-150 ${
+        className={`relative flex items-center justify-center transition-all duration-150 ${
           selected ? 'scale-105' : ''
         }`}
       >
-        {/* Shape + LED indicator */}
-        <div className="relative">
-          <DeviceShape
-            shape={shape}
-            color={def.color}
-            icon={def.icon}
-            selected={!!selected}
-            hovered={hovered}
-            status={status}
-            traffic={traffic}
-          />
-          {/* LED strip — top right */}
-          <div className="absolute -top-1 -right-1">
-            <DeviceLeds status={status} traffic={traffic} compact />
-          </div>
+        {/* Invisible interface hitboxes — ReactFlow Handles for edge connections */}
+        {presentInterfaces.map((iface) => {
+          const ifaceIdx = presentInterfaces.indexOf(iface);
+          const total = presentInterfaces.length;
+          const pos = getHandlePosition(ifaceIdx, total);
+          return (
+            <Handle
+              key={iface.id}
+              id={iface.id}
+              type="source"
+              position={pos.position}
+              className={`!w-3 !h-3 !border-transparent transition-all duration-150 ${
+                hovered
+                  ? '!bg-accent/20 !border-accent/50'
+                  : '!bg-transparent !border-transparent'
+              }`}
+              style={{
+                [pos.offsetDir]: pos.offset,
+              }}
+            />
+          );
+        })}
+
+        <DeviceShape
+          shape={shape}
+          color={def.color}
+          icon={def.icon}
+          selected={selected}
+          hovered={hovered}
+          status={status}
+          traffic={traffic}
+        />
+        {/* LED strip — top right */}
+        <div className="absolute -top-1 -right-1">
+          <DeviceLeds status={status} traffic={traffic} compact />
         </div>
 
-        {/* Label + IP */}
-        <div className="text-center mt-1">
-          <div className="text-[9px] font-bold text-text-primary leading-tight whitespace-nowrap">
-            {label}
-          </div>
-          <div className="text-[7px] font-mono text-text-muted leading-tight">
-            {ip}
-          </div>
-        </div>
+        {/* Hover card */}
+        {hovered && !selected && <DeviceHoverCard data={data as DeviceNodeData} />}
       </div>
 
-      {/* Hover card */}
-      {hovered && !selected && <DeviceHoverCard data={data as DeviceNodeData} />}
+      {/* Label + IP — outside the handle anchor box */}
+      <div className="text-center mt-1">
+        <div className="text-[9px] font-bold text-text-primary leading-tight whitespace-nowrap">
+          {label}
+        </div>
+        <div className="text-[7px] font-mono text-text-muted leading-tight">
+          {ip}
+        </div>
+      </div>
     </div>
   );
 };

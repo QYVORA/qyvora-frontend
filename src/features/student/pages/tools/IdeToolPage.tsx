@@ -2,7 +2,7 @@ import { SimulationProvider } from '@/features/student/components/simulations';
 import Ide from '@/features/student/components/tools/Ide';
 import SEO from '@/shared/components/SEO';
 
-const TOOL_PYTHON_CONTENT = `# QYVORA — Python Exercise
+const TOOL_PYTHON_CONTENT = `# QYVORA | Python Exercise
 # Complete the function below and run the code.
 
 def greet(name):
@@ -17,7 +17,7 @@ print(message)
 # TODO: Add a second parameter for the course name
 `;
 
-const TOOL_JS_CONTENT = `// QYVORA — JavaScript Exercise
+const TOOL_JS_CONTENT = `// QYVORA | JavaScript Exercise
 // Complete the function below and run the code.
 
 function fibonacci(n) {
@@ -36,7 +36,7 @@ console.log(fibonacci(10));
 `;
 
 const TOOL_BASH_CONTENT = `#!/bin/bash
-# QYVORA — Bash Exercise
+# QYVORA | Bash Exercise
 # Complete the script below and run the code.
 
 echo "=== System Info ==="
@@ -51,7 +51,7 @@ echo "Current dir: $(pwd)"
 
 const IdeToolPage = () => (
   <>
-    <SEO title="IDE — QYVORA Tools" description="Browser-based IDE for hands-on exercises and exploit development." noindex />
+    <SEO title="IDE | QYVORA Tools" description="Browser-based IDE for hands-on exercises and exploit development." noindex />
     <SimulationProvider>
       <Ide
         open={true}

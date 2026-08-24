@@ -1,12 +1,13 @@
 import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import { Link } from 'react-router-dom';
+import { Globe, Wifi, Wrench, ChevronLeft, ChevronRight } from 'lucide-react';
 import { motion, useReducedMotion, AnimatePresence } from 'motion/react';
-import { GraduationCap, Globe, Wifi, Wrench, ChevronLeft, ChevronRight, Search } from 'lucide-react';
 import { IconArrowRight, IconTerminal, IconNetwork, IconCode } from '@/shared/components/icons';
 import { useTranslation } from 'react-i18next';
 import { GridBoxedBackground } from '@/shared/components/backgrounds';
 import CoursePurchaseModal from '@/shared/components/CoursePurchaseModal';
 import CourseIconBackground from '@/shared/components/CourseIconBackground';
+import DragMarquee from '@/shared/components/carousel/DragMarquee';
 import { useAdaptiveUi } from '@/core/hooks/useAdaptiveUi';
 
 const CATEGORY_ICONS: Record<string, React.ElementType> = {
@@ -46,10 +47,98 @@ const CATEGORIES = Object.keys(CATEGORY_KEYS);
 const PER_PAGE = 3;
 const CYCLE_MS = 3000;
 
+type CourseEntry = (typeof COURSES)[number];
+
+/* ── Compact card for the mobile marquee rows ─────────────────────────────── */
+const CompactCourseCard: React.FC<{
+  course: CourseEntry;
+  onSelect: (id: string) => void;
+}> = ({ course, onSelect }) => {
+  const { t } = useTranslation();
+  const CatIc = CATEGORY_ICONS[course.category];
+
+  return (
+    <button
+      onClick={() => onSelect(course.id)}
+      aria-label={t(`landing.courses.list.${course.tKey}.title`)}
+      className="group/card relative h-[104px] w-[min(70vw,280px)] shrink-0 card-accent bg-bg-card p-3 flex items-center gap-3 text-left overflow-hidden"
+    >
+      <CourseIconBackground courseId={course.id} />
+      <div className="relative z-10 w-10 h-10 rounded-xl flex items-center justify-center shrink-0 bg-accent/10 border border-accent/20">
+        {CatIc && <CatIc className="w-5 h-5 text-accent" />}
+      </div>
+      <div className="relative z-10 flex min-w-0 flex-1 flex-col">
+        <h4 className="text-sm font-black text-text-primary tracking-tight leading-snug line-clamp-2">
+          {t(`landing.courses.list.${course.tKey}.title`)}
+        </h4>
+        <p className="mt-1 flex items-center gap-2 text-[9px] font-black uppercase tracking-widest">
+          <span className="rounded-lg border border-accent/20 bg-accent/10 px-2 py-0.5 text-accent">
+            {t(`landing.courses.level.${course.level}`)}
+          </span>
+          <span className="text-text-muted">{course.minutes}m</span>
+        </p>
+      </div>
+      <span className="relative z-10 shrink-0 self-stretch flex items-center">
+        <span className="px-2.5 py-1.5 rounded-lg text-[9px] font-black uppercase tracking-widest bg-accent text-on-accent transition-all duration-200 group-hover/card:brightness-110 group-active:scale-95">
+          {t('landing.courses.viewCourse', { defaultValue: 'View' })}
+        </span>
+      </span>
+    </button>
+  );
+};
+
+/* ── Full card for the desktop paged grid ─────────────────────────────────── */
+const FullCourseCard: React.FC<{
+  course: CourseEntry;
+  onSelect: (id: string) => void;
+}> = ({ course, onSelect }) => {
+  const { t } = useTranslation();
+  const CatIc = CATEGORY_ICONS[course.category];
+
+  return (
+    <button
+      key={course.id}
+      onClick={() => onSelect(course.id)}
+      className="group/card relative aspect-square lg:aspect-auto lg:h-full card-accent bg-bg-card p-3 md:p-5 transition-all duration-300 flex flex-col text-left overflow-hidden"
+    >
+      <CourseIconBackground courseId={course.id} />
+      <div className="relative z-10 flex items-center gap-2 mb-2">
+        <div className="w-8 h-8 rounded-xl flex items-center justify-center shrink-0 bg-accent/10 border border-accent/20">
+          {CatIc && <CatIc className="w-4 h-4 text-accent" />}
+        </div>
+        {course.popular && (
+          <span className="px-2 py-0.5 rounded-full bg-bg-elevated border border-border/30 text-[8px] font-black uppercase tracking-widest text-text-primary">
+            {t('badge.popular')}
+          </span>
+        )}
+      </div>
+
+      <h4 className="relative z-10 text-sm sm:text-base md:text-lg lg:text-xl font-black text-text-primary tracking-tight mb-1 leading-snug">
+        {t(`landing.courses.list.${course.tKey}.title`)}
+      </h4>
+      <p className="relative z-10 text-xs sm:text-sm md:text-base text-text-muted leading-relaxed mb-2 line-clamp-3 flex-1">
+        {t(`landing.courses.list.${course.tKey}.desc`)}
+      </p>
+
+      <div className="relative z-10 flex items-center justify-between mt-auto">
+        <div className="flex items-center gap-2">
+          <span className="text-[9px] sm:text-[10px] font-black uppercase tracking-widest px-2 py-0.5 rounded-lg border border-accent/20 bg-accent/10 text-accent">
+            {t(`landing.courses.level.${course.level}`)}
+          </span>
+          <span className="text-[9px] sm:text-[10px] font-black uppercase tracking-widest text-text-muted">{course.minutes}m</span>
+        </div>
+        <span className="px-3 py-1.5 rounded-lg text-[9px] sm:text-[10px] md:text-xs font-black uppercase tracking-widest bg-accent text-on-accent transition-all duration-200 group-hover/card:brightness-110 group-active:scale-95">
+          {t('landing.courses.viewCourse', { defaultValue: 'View' })}
+        </span>
+      </div>
+    </button>
+  );
+};
+
 const LandingCoursesSection: React.FC = () => {
   const { t } = useTranslation();
   const shouldReduceMotion = useReducedMotion();
-  const { isMobile } = useAdaptiveUi();
+  const { isLg } = useAdaptiveUi();
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
   const [page, setPage] = useState(0);
   const [dir, setDir] = useState(1);
@@ -60,7 +149,14 @@ const LandingCoursesSection: React.FC = () => {
 
   const filteredCourses = useMemo(() => {
     return activeCategory ? COURSES.filter((c) => c.category === activeCategory) : COURSES;
-  }, [activeCategory, t]);
+  }, [activeCategory]);
+
+  // Three interleaved rows so adjacent courses sit side by side while scrolling.
+  const mobileRows = useMemo(() => [
+    COURSES.filter((_, i) => i % 3 === 0),
+    COURSES.filter((_, i) => i % 3 === 1),
+    COURSES.filter((_, i) => i % 3 === 2),
+  ], []);
 
   const totalPages = Math.max(1, Math.ceil(filteredCourses.length / PER_PAGE));
 
@@ -69,11 +165,12 @@ const LandingCoursesSection: React.FC = () => {
     setPage((p) => (p + 1) % totalPages);
   }, [totalPages]);
 
+  // Auto-paging drives the desktop grid only — mobile scrolls continuously.
   useEffect(() => {
-    if (shouldReduceMotion) return;
+    if (shouldReduceMotion || !isLg) return;
     const id = setInterval(advance, CYCLE_MS);
     return () => clearInterval(id);
-  }, [advance, shouldReduceMotion]);
+  }, [advance, shouldReduceMotion, isLg]);
 
   useEffect(() => {
     setPage(0);
@@ -106,10 +203,6 @@ const LandingCoursesSection: React.FC = () => {
 
   const pageCourses = filteredCourses.slice(page * PER_PAGE, page * PER_PAGE + PER_PAGE);
 
-  // Get the color for the first visible course's category
-  const activeColor = 'var(--color-accent)';
-  const ActiveCatIcon = pageCourses[0] ? CATEGORY_ICONS[pageCourses[0].category] : GraduationCap;
-
   return (
     <div className="relative overflow-hidden min-h-dvh lg:h-dvh flex flex-col" data-nav-invert>
       <GridBoxedBackground blur={0} mask="right" />
@@ -118,7 +211,26 @@ const LandingCoursesSection: React.FC = () => {
           <h2 className="text-lg md:text-xl lg:text-2xl font-black text-text-primary tracking-tighter leading-none mb-6 md:mb-8 lg:mb-10 shrink-0">
             {t('landing.courses.heading')}
           </h2>
-          {/* Category tabs — horizontal carousel on mobile, wrapping on desktop */}
+
+          {/* Mobile + tablet — three counter-scrolling rows, grabbable */}
+          {!isLg ? (
+            <div className="flex-1 min-h-0 flex flex-col justify-center gap-3 -mx-3 md:-mx-4">
+              {mobileRows.map((row, rowIndex) => (
+                <DragMarquee
+                  key={rowIndex}
+                  speed={16 + rowIndex * 5}
+                  reverse={rowIndex % 2 === 1}
+                  trackClassName="gap-3 pr-3"
+                >
+                  {row.map((course) => (
+                    <CompactCourseCard key={course.id} course={course} onSelect={setSelectedCourseId} />
+                  ))}
+                </DragMarquee>
+              ))}
+            </div>
+          ) : (
+            <>
+          {/* Category tabs — wrapping on desktop */}
           <motion.div
             initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 15 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -195,56 +307,20 @@ const LandingCoursesSection: React.FC = () => {
               <motion.div
                 key={`${activeCategory}-${page}`}
                 custom={dir}
-                initial={{ opacity: 0, scale: isMobile ? 0.95 : 1, x: isMobile ? 0 : dir > 0 ? 60 : -60 }}
-                animate={{ opacity: 1, scale: 1, x: 0 }}
-                exit={{ opacity: 0, scale: isMobile ? 0.95 : 1, x: isMobile ? 0 : dir > 0 ? -60 : 60 }}
-                transition={{ duration: isMobile ? 0.3 : 0.35, ease: [0.16, 1, 0.3, 1] }}
+                initial={{ opacity: 0, x: dir > 0 ? 60 : -60 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: dir > 0 ? -60 : 60 }}
+                transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
                 className="flex-1 min-h-0 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 md:gap-4 lg:auto-rows-fr"
               >
-                {pageCourses.map((course) => {
-                  const CatIc = CATEGORY_ICONS[course.category];
-                  return (
-                    <button
-                      key={course.id}
-                      onClick={() => setSelectedCourseId(course.id)}
-                      className="group/card relative aspect-square lg:aspect-auto lg:h-full card-accent bg-bg-card p-3 md:p-5 transition-all duration-300 flex flex-col text-left overflow-hidden"
-                    >
-                      <CourseIconBackground courseId={course.id} />
-                      <div className="relative z-10 flex items-center gap-2 mb-2">
-                        <div className="w-8 h-8 rounded-xl flex items-center justify-center shrink-0 bg-accent/10 border border-accent/20">
-                          {CatIc && <CatIc className="w-4 h-4 text-accent" />}
-                        </div>
-                        {course.popular && (
-                          <span className="px-2 py-0.5 rounded-full bg-bg-elevated border border-border/30 text-[8px] font-black uppercase tracking-widest text-text-primary">
-                            {t('badge.popular')}
-                          </span>
-                        )}
-                      </div>
-
-                      <h4 className="relative z-10 text-sm sm:text-base md:text-lg lg:text-xl font-black text-text-primary tracking-tight mb-1 leading-snug">
-                        {t(`landing.courses.list.${course.tKey}.title`)}
-                      </h4>
-                      <p className="relative z-10 text-xs sm:text-sm md:text-base text-text-muted leading-relaxed mb-2 line-clamp-3 flex-1">
-                        {t(`landing.courses.list.${course.tKey}.desc`)}
-                      </p>
-
-                      <div className="relative z-10 flex items-center justify-between mt-auto">
-                        <div className="flex items-center gap-2">
-                          <span className="text-[9px] sm:text-[10px] font-black uppercase tracking-widest px-2 py-0.5 rounded-lg border border-accent/20 bg-accent/10 text-accent">
-                            {t(`landing.courses.level.${course.level}`)}
-                          </span>
-                          <span className="text-[9px] sm:text-[10px] font-black uppercase tracking-widest text-text-muted">{course.minutes}m</span>
-                        </div>
-                        <span className="px-3 py-1.5 rounded-lg text-[9px] sm:text-[10px] md:text-xs font-black uppercase tracking-widest bg-accent text-on-accent transition-all duration-200 group-hover/card:brightness-110 group-active:scale-95">
-                          {t('landing.courses.viewCourse', { defaultValue: 'View' })}
-                        </span>
-                      </div>
-                    </button>
-                  );
-                })}
+                {pageCourses.map((course) => (
+                  <FullCourseCard key={course.id} course={course} onSelect={setSelectedCourseId} />
+                ))}
               </motion.div>
             </AnimatePresence>
           </div>
+            </>
+          )}
 
           {/* Footer */}
           <div className="mt-3 md:mt-4 shrink-0">

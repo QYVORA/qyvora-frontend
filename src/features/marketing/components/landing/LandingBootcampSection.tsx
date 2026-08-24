@@ -1,10 +1,12 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Link } from 'react-router-dom';
-import { motion, useReducedMotion } from 'motion/react';
+import { motion, useReducedMotion, AnimatePresence } from 'motion/react';
 import { IconArrowRight } from '@/shared/components/icons';
 import HpbAvatar, { type HpbVariant } from '@/shared/components/HpbAvatar';
 import { PHASES } from '@/features/marketing/data/learnData';
 import { BOOTCAMP_CONFIG } from '@/features/student/constants/bootcampStructure';
+import { useSwipeNav } from '@/core/hooks/useSwipeNav';
+import { useAdaptiveUi } from '@/core/hooks/useAdaptiveUi';
 import { useTranslation } from 'react-i18next';
 
 const GROUP_SIZE = 3;
@@ -13,21 +15,35 @@ const CYCLE_MS = 4500;
 const LandingBootcampSection: React.FC = () => {
   const { t } = useTranslation();
   const shouldReduceMotion = useReducedMotion();
+  const { isLg } = useAdaptiveUi();
   const [groupIndex, setGroupIndex] = useState(0);
   const [direction, setDirection] = useState(1);
+  // Mobile cycles one broad phase card at a time instead of a batch of strips.
+  const [phaseIndex, setPhaseIndex] = useState(0);
 
   const totalGroups = Math.ceil(PHASES.length / GROUP_SIZE);
 
-  const advance = useCallback(() => {
+  const advanceGroup = useCallback(() => {
     setDirection(1);
     setGroupIndex((i) => (i + 1) % totalGroups);
   }, [totalGroups]);
 
   useEffect(() => {
-    if (shouldReduceMotion) return;
-    const id = setInterval(advance, CYCLE_MS);
+    if (shouldReduceMotion || !isLg) return;
+    const id = setInterval(advanceGroup, CYCLE_MS);
     return () => clearInterval(id);
-  }, [advance, shouldReduceMotion]);
+  }, [advanceGroup, shouldReduceMotion, isLg]);
+
+  const advancePhase = useCallback(() => {
+    setDirection(1);
+    setPhaseIndex((i) => (i + 1) % PHASES.length);
+  }, []);
+
+  useEffect(() => {
+    if (shouldReduceMotion || isLg) return;
+    const id = setInterval(advancePhase, CYCLE_MS);
+    return () => clearInterval(id);
+  }, [advancePhase, shouldReduceMotion, isLg]);
 
   const start = groupIndex * GROUP_SIZE;
   const group = [
@@ -40,6 +56,16 @@ const LandingBootcampSection: React.FC = () => {
   const featuredConfig = BOOTCAMP_CONFIG.phases[PHASES.indexOf(featured)];
   const featuredRoomCount = featuredConfig?.rooms?.length || 0;
   const featuredHref = featuredConfig ? `/hpb/${featuredConfig.id}` : '/hpb';
+
+  const mobilePhase = PHASES[phaseIndex];
+  const mobileConfig = BOOTCAMP_CONFIG.phases[PHASES.indexOf(mobilePhase)];
+  const mobileRoomCount = mobileConfig?.rooms?.length || 0;
+  const mobileHref = mobileConfig ? `/hpb/${mobileConfig.id}` : '/hpb';
+  const goPrevPhase = useCallback(() => {
+    setDirection(-1);
+    setPhaseIndex((i) => (i - 1 < 0 ? PHASES.length - 1 : i - 1));
+  }, []);
+  const swipeHandlers = useSwipeNav({ onPrevious: goPrevPhase, onNext: advancePhase });
 
   return (
     <div className="relative bg-bg min-h-dvh lg:h-dvh flex flex-col overflow-hidden" data-nav-invert>
@@ -146,63 +172,79 @@ const LandingBootcampSection: React.FC = () => {
             })}
           </div>
 
-          {/* Mobile — active batch view fitting within section height without overflow */}
-          <div className="lg:hidden w-full flex-1 min-h-0 mt-2 flex flex-col gap-2 justify-between">
-            <div className="flex-1 flex flex-col gap-2 justify-center min-h-0">
-              {group.slice(0, 2).map((phase) => {
-                const phaseIdx = PHASES.indexOf(phase);
-                const config = BOOTCAMP_CONFIG.phases[phaseIdx];
-                const roomCount = config?.rooms?.length || 0;
-                const href = config ? `/hpb/${config.id}` : '/hpb';
-                return (
+          {/* Mobile — one broad phase card at a time, swipeable, auto-rotating */}
+          <div className="lg:hidden w-full flex-1 min-h-0 mt-2 flex flex-col">
+            <div
+              className="flex-1 min-h-0 flex flex-col justify-center touch-pan-y select-none cursor-grab active:cursor-grabbing"
+              {...swipeHandlers}
+            >
+              <AnimatePresence mode="wait" custom={direction}>
+                <motion.div
+                  key={mobilePhase.id}
+                  custom={direction}
+                  initial={{ opacity: 0, x: direction > 0 ? 120 : -120 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: direction > 0 ? -120 : 120 }}
+                  transition={{ duration: 0.35, ease: [0.25, 0.46, 0.45, 0.94] }}
+                  className="w-full overflow-x-clip"
+                >
                   <Link
-                    key={phase.id}
-                    to={href}
-                    className="group relative block w-full flex-1 card-accent bg-bg-card overflow-hidden transition-all duration-300"
+                    to={mobileHref}
+                    aria-label={t(`landing.bootcamp.phases.${mobilePhase.id}.name`)}
+                    className="group relative block w-full card-accent bg-bg-card overflow-hidden transition-all duration-300"
                   >
-                    <div className="relative w-full h-full flex flex-row items-center gap-3 p-3">
-                      <div className="flex-1 min-w-0 flex flex-col justify-between h-full">
-                        <div>
-                          <div className="flex items-center justify-end mb-1">
-                            <span className="text-[8px] font-black uppercase tracking-widest px-2 py-0.5 rounded-full border border-border/30 bg-bg-elevated text-text-muted">
-                              {t('landing.bootcamp.roomCount', { count: roomCount })}
-                            </span>
-                          </div>
-                          <h3 className="text-base font-black text-text-primary tracking-tighter leading-none mb-1">
-                            {t(`landing.bootcamp.phases.${phase.id}.name`)}
-                          </h3>
-                          <p className="text-[10px] text-text-secondary leading-relaxed line-clamp-2">
-                            {t(`landing.bootcamp.phases.${phase.id}.desc`)}
-                          </p>
-                        </div>
-                        <div className="pt-1 mt-auto">
-                          <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-xl bg-bg text-[8px] font-black uppercase tracking-widest text-accent">
-                            {t('landing.bootcamp.startPhase')} {phase.id}
-                            <IconArrowRight size={10} />
-                          </span>
-                        </div>
-                      </div>
-                      <div className="w-[30%] shrink-0 min-h-0 flex items-center justify-center">
-                        <HpbAvatar
-                          variant={`phase${Number(phase.id)}` as HpbVariant}
-                          className="w-full h-auto max-h-[85px]"
-                        />
+                    {/* Avatar as the card's visual header */}
+                    <div className="relative h-[150px] sm:h-[180px] flex items-end justify-center border-b border-border/30 bg-bg-elevated/40 overflow-hidden">
+                      <HpbAvatar
+                        variant={`phase${Number(mobilePhase.id)}` as HpbVariant}
+                        className="h-[92%] w-auto max-w-full"
+                      />
+                      <span className="absolute top-3 right-3 text-[8px] font-black uppercase tracking-widest px-2 py-0.5 rounded-full border border-border/30 bg-bg-elevated text-text-muted">
+                        {t('landing.bootcamp.roomCount', { count: mobileRoomCount })}
+                      </span>
+                    </div>
+
+                    <div className="p-4">
+                      <h3 className="text-lg font-black text-text-primary tracking-tighter leading-none mb-1.5">
+                        {t(`landing.bootcamp.phases.${mobilePhase.id}.name`)}
+                      </h3>
+                      <p className="text-[11px] text-text-secondary leading-relaxed line-clamp-2 min-h-[2.6em]">
+                        {t(`landing.bootcamp.phases.${mobilePhase.id}.desc`)}
+                      </p>
+                      <div className="mt-3 flex items-center justify-between">
+                        <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-xl bg-bg text-[9px] font-black uppercase tracking-widest text-accent transition-all group-hover:gap-2">
+                          {t('landing.bootcamp.startPhase')} {mobilePhase.id}
+                          <IconArrowRight size={11} />
+                        </span>
+                        <span className="text-[8px] font-mono uppercase tracking-widest text-text-muted">
+                          {phaseIndex + 1} / {PHASES.length}
+                        </span>
                       </div>
                     </div>
                   </Link>
-                );
-              })}
+                </motion.div>
+              </AnimatePresence>
             </div>
-            {/* Batch indicator dots on mobile */}
-            <div className="flex justify-center gap-1.5 py-1">
-              {Array.from({ length: totalGroups }).map((_, i) => (
+
+            {/* Phase indicator dots on mobile */}
+            <div className="flex justify-center gap-1.5 py-2" role="tablist" aria-label={t('landing.bootcamp.heading1')}>
+              {PHASES.map((phase, i) => (
                 <button
-                  key={i}
-                  onClick={() => setGroupIndex(i)}
-                  className={`h-1.5 rounded-full transition-all duration-300 ${
-                    i === groupIndex ? 'w-5 bg-accent' : 'w-1.5 bg-text-muted/30'
-                  }`}
-                />
+                  key={phase.id}
+                  onClick={() => {
+                    setDirection(i > phaseIndex ? 1 : -1);
+                    setPhaseIndex(i);
+                  }}
+                  aria-label={`${i + 1}`}
+                  aria-current={i === phaseIndex}
+                  className={`min-h-[24px] min-w-[24px] flex items-center justify-center p-0 rounded-full`}
+                >
+                  <span
+                    className={`h-1.5 rounded-full transition-all duration-300 ${
+                      i === phaseIndex ? 'w-5 bg-accent' : 'w-1.5 bg-text-muted/30'
+                    }`}
+                  />
+                </button>
               ))}
             </div>
           </div>

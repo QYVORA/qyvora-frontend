@@ -253,7 +253,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         setLoading(false);
       }
     })();
-  }, []); // Empty dependency array — run exactly once on mount.
+  }, []); // Empty dependency array, run exactly once on mount.
 
   /**
    * Authenticates a user with email + password credentials.

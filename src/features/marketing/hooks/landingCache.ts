@@ -271,7 +271,7 @@ const resolveImageFromCache = async (url?: string): Promise<string | undefined> 
   try {
     const imageCache = await caches.open(LANDING_IMAGE_CACHE);
     const response = await imageCache.match(toAbsoluteUrl(source));
-    if (!response) return source; // Not cached — fall back to original URL
+    if (!response) return source; // Not cached, fall back to original URL
 
     const blob = await response.blob();
     return URL.createObjectURL(blob); // Creates an in-memory object URL

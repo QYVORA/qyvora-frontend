@@ -56,7 +56,7 @@ const UsersTab: React.FC<UsersTabProps> = ({
           <div className="space-y-1">
             <div className="flex items-center gap-1.5 text-xs font-mono font-bold text-text-primary">
               <Globe className="w-3 h-3 text-accent/60" />
-              {item.lastLoginIp || '—'}
+              {item.lastLoginIp || '-'}
             </div>
             <div className="text-[10px] text-text-muted/50 font-mono">
               {new Date(item.lastLoginAt).toLocaleString()}
@@ -192,7 +192,7 @@ const UsersTab: React.FC<UsersTabProps> = ({
         {item.lastLoginAt ? (
           <div className="flex items-center gap-2 mt-3 text-xs font-mono text-text-muted/60">
             <Globe className="w-3 h-3 text-accent/60" />
-            <span className="font-bold text-text-primary">{item.lastLoginIp || '—'}</span>
+            <span className="font-bold text-text-primary">{item.lastLoginIp || '-'}</span>
             <span>·</span>
             <span>{new Date(item.lastLoginAt).toLocaleString()}</span>
           </div>

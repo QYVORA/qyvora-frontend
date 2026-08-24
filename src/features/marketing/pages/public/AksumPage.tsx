@@ -7,6 +7,10 @@ import StudentHeroSection, { PUBLIC_HERO_TITLE_CLASS } from '@/shared/components
 import { Footer } from '@/shared/components/layout';
 import { useAuth } from '@/core/contexts/AuthContext';
 import LandingFinalCtaSection from '@/features/marketing/components/landing/LandingFinalCtaSection';
+import { getRelatedTools } from '@/features/marketing/data/relatedTools';
+import RelatedContentSection from '@/shared/components/RelatedContentSection';
+import { useTranslation } from 'react-i18next';
+
 import ToolDocumentationSection from '@/shared/components/ToolDocumentationSection';
 import CodeBlock from '@/shared/components/CodeBlock';
 import ToolsCarousel from '@/features/marketing/components/ToolsCarousel';
@@ -17,16 +21,17 @@ import { STAGES, CHECKS, CONFIDENCE_STATES, GITHUB_URL, BUILD_FROM_SOURCE, QUICK
 import aksumLogo from '@/assets/aksum/aksum-main-logo.webp';
 
 const REQUIREMENTS = [
-  'Linux ELF binaries (x86/x86-64) — other formats degrade honestly to strings-only RAW mode',
+  'Linux ELF binaries (x86/x86-64), other formats degrade honestly to strings-only RAW mode',
   'Go 1.22+ toolchain to build',
-  'No external runtime dependencies — a single static binary',
+  'No external runtime dependencies, a single static binary',
 ];
 
 const AksumPage = () => {
   const { user } = useAuth();
+  const { t } = useTranslation();
   return (
     <div className="bg-bg min-h-full">
-      <SEO title="Aksum - QYVORA" description="Aksum — binary security assessment & reverse-engineering framework in Go. Identification, disassembly, function discovery, dataflow-corroborated findings and honest confidence states." />
+      <SEO title="Aksum - QYVORA" description="Aksum, binary security assessment & reverse-engineering framework in Go. Identification, disassembly, function discovery, dataflow-corroborated findings and honest confidence states." />
       <PublicSnapLayout>
         <section className="relative w-full min-h-dvh snap-section bg-bg">
         <StudentHeroSection
@@ -35,7 +40,7 @@ const AksumPage = () => {
           titleClassName={PUBLIC_HERO_TITLE_CLASS}
           showGlobe
           typewrite
-          description="Binary security assessment & reverse-engineering platform in Go — identification, disassembly, function discovery and evidence-backed findings that escalate only when independently corroborated."
+          description="Binary security assessment & reverse-engineering platform in Go, identification, disassembly, function discovery and evidence-backed findings that escalate only when independently corroborated."
           stats={[
             { label: 'Pipeline Stages', value: STAGES.length },
             { label: 'Static Rules', value: CHECKS.length },
@@ -74,7 +79,7 @@ const AksumPage = () => {
                   <AUTHORIZED_WARNING.icon className="w-5 h-5 md:w-6 md:h-6 text-amber-400" />
                 </div>
                 <p className="text-xs md:text-sm text-text-secondary leading-relaxed font-mono">
-                  Aksum reads the file you point it at and nothing else. It never executes the target and never touches a network — dynamic planning is policy-bounded architecture that refuses without an explicit consent flag, and this build ships no executor at all.
+                  Aksum reads the file you point it at and nothing else. It never executes the target and never touches a network, dynamic planning is policy-bounded architecture that refuses without an explicit consent flag, and this build ships no executor at all.
                 </p>
               </div>
             </div>
@@ -87,7 +92,7 @@ const AksumPage = () => {
                 <span className="font-mono text-[9px] uppercase tracking-widest text-text-muted">read-only by design</span>
               </div>
               {[
-                'Reads only the file you point it at — no side channels, no discovery.',
+                'Reads only the file you point it at, no side channels, no discovery.',
                 'Never executes the target and never touches a network.',
                 'Ships no executor; dynamic planning refuses without an explicit consent flag.',
               ].map((rule) => (
@@ -128,7 +133,7 @@ const AksumPage = () => {
           title="Corroborated"
           accent="findings"
           description="A dangerous import alone is a CANDIDATE, never a verdict. The dataflow engine tracks register and stack state through each function body, resolves PLT stubs to real import names via relocations, and recovers string arguments where they are statically materialized. When resolved call sites corroborate a rule's claim, validation escalates the finding to VALIDATED and attaches the callsite evidence."
-          why="Confidence must mean something actionable. Escalation is mechanical and one-directional — findings never downgrade within a run, and runtime-computed arguments stay honestly unproven."
+          why="Confidence must mean something actionable. Escalation is mechanical and one-directional, findings never downgrade within a run, and runtime-computed arguments stay honestly unproven."
           bullets={CHECKS.slice(0, 4).map((check) => `${check.id}: ${check.title}.`)}
           code={'aksum analyze ./target --report report.json\n# "confidence": "VALIDATED" only with callsite corroboration'}
           codeLabel="Dataflow-corroborated escalation"
@@ -142,9 +147,9 @@ const AksumPage = () => {
           eyebrow="How Aksum is built"
           title="Honest"
           accent="degradation"
-          description="Every stage consumes structured output from the previous one — loader, structure, disassembly, functions, graphs, dataflow, checks, validation. When a capability is missing (another CPU, another container format), Aksum says so with a typed error or degrades to strings-only RAW mode instead of guessing."
+          description="Every stage consumes structured output from the previous one, loader, structure, disassembly, functions, graphs, dataflow, checks, validation. When a capability is missing (another CPU, another container format), Aksum says so with a typed error or degrades to strings-only RAW mode instead of guessing."
           why="A binary analyzer users can trust is one whose limits are visible in the output: unknown hardening properties print as unknown, unsupported targets exit with a dedicated code, and identification is never half-guessed."
-          bullets={['Confidence states OBSERVED → CANDIDATE → SUSPECTED → VALIDATED; CONFIRMED reserved for a future dynamic executor.', 'Exit codes separate usage errors (2) from unsupported targets (3) so orchestrators can skip, not retry.', 'Deterministic finding IDs anchor to the target SHA-256 — identical input yields identical reports.']}
+          bullets={['Confidence states OBSERVED → CANDIDATE → SUSPECTED → VALIDATED; CONFIRMED reserved for a future dynamic executor.', 'Exit codes separate usage errors (2) from unsupported targets (3) so orchestrators can skip, not retry.', 'Deterministic finding IDs anchor to the target SHA-256, identical input yields identical reports.']}
           tree={['internal/loader/       format dispatch + SHA-256 anchoring', 'internal/structure/    ELF parsing, sections, relocations, hardening', 'internal/functions/    multi-source discovery with provenance', 'internal/dynamic/      policy-bounded execution plans (no bundled executor)']}
         />
 
@@ -154,7 +159,7 @@ const AksumPage = () => {
           kicker="Go source"
           title="Structured"
           accent="contracts"
-          description="Instructions decode into data, functions carry provenance, call sites carry arguments — every stage is testable against crafted fixtures, no checked-in binaries."
+          description="Instructions decode into data, functions carry provenance, call sites carry arguments, every stage is testable against crafted fixtures, no checked-in binaries."
           examples={SOURCE_EXAMPLES}
         />
 
@@ -167,7 +172,7 @@ const AksumPage = () => {
               kicker="Install"
               title="Build &"
               accent="Install"
-              description="Built with make — produces the aksum binary installed with its logo and desktop entry."
+              description="Built with make, produces the aksum binary installed with its logo and desktop entry."
             />
 
             <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,2fr)_minmax(0,3fr)] gap-4 md:gap-6 items-stretch">
@@ -271,7 +276,7 @@ const AksumPage = () => {
               kicker="Quick Start"
               title="Analyze in"
               accent="One Command"
-              description="Point aksum at any binary — identification runs first, then the full pipeline down to evidence-backed findings."
+              description="Point aksum at any binary, identification runs first, then the full pipeline down to evidence-backed findings."
             />
 
             <div className="grid grid-cols-1 lg:grid-cols-[1.15fr_1fr] gap-4 md:gap-6 items-stretch">
@@ -281,7 +286,7 @@ const AksumPage = () => {
                   <span className="w-2.5 h-2.5 rounded-full bg-red-400/70" />
                   <span className="w-2.5 h-2.5 rounded-full bg-yellow-400/70" />
                   <span className="w-2.5 h-2.5 rounded-full bg-accent/70" />
-                  <span className="ml-2 text-[9px] font-mono text-text-muted">aksum — zsh</span>
+                  <span className="ml-2 text-[9px] font-mono text-text-muted">aksum, zsh</span>
                 </div>
                 <div className="p-4 md:p-5 font-mono text-[11px] md:text-xs space-y-2">
                   <div className="flex items-center gap-2">
@@ -294,7 +299,7 @@ const AksumPage = () => {
                       { label: 'functions', text: '259 functions discovered · symbols + entry + call targets' },
                       { label: 'dataflow', text: '168 call sites resolved through .plt to import names' },
                       { label: 'checks', text: 'hardening-properties OBSERVED · dangerous-imports CANDIDATE' },
-                      { label: 'validated', text: 'system() called with static string — escalated VALIDATED' },
+                      { label: 'validated', text: 'system() called with static string, escalated VALIDATED' },
                       { label: 'summary', text: 'critical 0 · high 1 · medium 1 · low 2 · info 3' },
                     ].map((line) => (
                       <div key={line.label} className="flex items-start gap-2">
@@ -336,6 +341,8 @@ const AksumPage = () => {
             </div>
           </div>
         </PublicSnapSection>
+        <RelatedContentSection items={getRelatedTools(t, "/aksum")} />
+
         <section className="relative w-full min-h-dvh snap-section bg-bg-alt">
           <LandingFinalCtaSection user={user} />
         </section>

@@ -93,7 +93,7 @@ const LandingLayout = () => (
   <>
     {/*
       ── Shared Marketing Navbar ────────────────────────────────────────────────
-      `position: fixed` inside Navbar — floats above all content at the top.
+      `position: fixed` inside Navbar, floats above all content at the top.
       Used across all public/marketing pages (landing, contact, services, etc.).
       The landing page hero handles its own top offset so content clears this bar.
     */}
@@ -103,13 +103,13 @@ const LandingLayout = () => (
       ── Snap Scroll Content Area ───────────────────────────────────────────────
       `w-full` ensures the content spans the full viewport width.
 
-      NO top padding here (unlike PublicLayout's pt-[72px]) — see file-level
+      NO top padding here (unlike PublicLayout's pt-[72px]), see file-level
       comment for the reasoning. The HeroSection manages its own top clearance.
 
-      NO overflow-hidden here — the snap container inside <Outlet /> manages
+      NO overflow-hidden here, the snap container inside <Outlet /> manages
       its own scroll behaviour.
 
-      <Outlet /> renders the matched child route — in practice, this is always
+      <Outlet /> renders the matched child route, in practice, this is always
       LandingPage, which contains the snap scroll container and all snap sections.
     */}
     <main id="main-content" className="w-full min-h-screen flex flex-col">

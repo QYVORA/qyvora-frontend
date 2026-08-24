@@ -6,7 +6,7 @@ const l = (id: string, title: string, instruction: string, extras?: Partial<Less
 
 export const LESSONS: Lesson[] = [
     l('wc-1', 'Command Prompt vs PowerShell',
-      `Windows has two command-line interfaces: **Command Prompt (CMD)** and **PowerShell**. CMD is the traditional tool, while PowerShell is more modern and powerful. Understanding both is essential — the vast majority of enterprise environments run Windows, from corporate offices to government agencies. If you want to work in cybersecurity or IT, Windows command-line skills are non-negotiable.
+      `Windows has two command-line interfaces: **Command Prompt (CMD)** and **PowerShell**. CMD is the traditional tool, while PowerShell is more modern and powerful. Understanding both is essential, the vast majority of enterprise environments run Windows, from corporate offices to government agencies. If you want to work in cybersecurity or IT, Windows command-line skills are non-negotiable.
 
 **Why the command line matters for security:** GUIs are great for everyday tasks, but the command line gives you direct access to the operating system's internals. Many security tools, penetration testing frameworks, and automation scripts operate through the command line. When you're doing incident response or forensics, you often can't rely on a graphical interface — you need to know the commands by heart.
 
@@ -19,9 +19,9 @@ C:\\Users\\YourName>
 \`\`\`
 
 This is the **command prompt**. It tells you:
-- **C:** — the current drive (usually the system drive)
-- **\\Users\\YourName** — your current directory (working folder)
-- **>** — indicates the shell is waiting for your command
+- **C:**: the current drive (usually the system drive)
+- **\\Users\\YourName**: your current directory (working folder)
+- **>**: indicates the shell is waiting for your command
 
 Try your first command:
 
@@ -29,12 +29,12 @@ Try your first command:
 echo Hello, Hacker!
 \`\`\`
 
-The \`echo\` command prints text back to you — it's the simplest way to verify that the command line is working. This is the Windows equivalent of the Linux terminal's first lesson.
+The \`echo\` command prints text back to you, it's the simplest way to verify that the command line is working. This is the Windows equivalent of the Linux terminal's first lesson.
 
 **PowerShell** has a blue background and uses different commands (\`Get-ChildItem\` instead of \`dir\`). PowerShell is more powerful because it works with **objects** rather than plain text, making it easier to filter, sort, and process data programmatically. For this course, we'll focus on CMD since it's universal on Windows and provides the foundational skills you need before moving to PowerShell.`),
 
     l('wc-2', 'Navigation & File Management',
-      `Navigating Windows from the command line is similar to Linux but uses different commands and path conventions. Before you can manage files, you need to understand the concept of a **working directory** — the folder you're currently "in" when you type a command. Every command you run operates relative to this directory unless you specify a full path.
+      `Navigating Windows from the command line is similar to Linux but uses different commands and path conventions. Before you can manage files, you need to understand the concept of a **working directory**, the folder you're currently "in" when you type a command. Every command you run operates relative to this directory unless you specify a full path.
 
 **Why path separators matter:** One of the first things you'll notice is that Windows uses **backslashes** (\`\\\`) to separate directories in a path, while Linux uses **forward slashes** (\`/\`). This matters because using the wrong separator will break your commands. A Windows path looks like \`C:\\Users\\Admin\\Desktop\` while a Linux path looks like \`/home/admin/Desktop\`. Getting this wrong is one of the most common mistakes when switching between systems.
 
@@ -54,7 +54,7 @@ rmdir /s folder        Remove folder and contents
 type file.txt          Display file contents
 \`\`\`
 
-The \`dir\` command lists the contents of your current directory — it's the Windows equivalent of Linux's \`ls\`. The \`cd\` command changes your working directory, and \`cd ..\` moves up one level. The \`type\` command displays a file's contents, similar to \`cat\` on Linux.
+The \`dir\` command lists the contents of your current directory, it's the Windows equivalent of Linux's \`ls\`. The \`cd\` command changes your working directory, and \`cd ..\` moves up one level. The \`type\` command displays a file's contents, similar to \`cat\` on Linux.
 
 Unlike Linux, Windows uses backslashes (\`\\\`) for paths and drive letters (\`C:\`, \`D:\`). Switching between drives requires a special command because each drive has its own current directory:
 
@@ -66,7 +66,7 @@ C:> cd /D E:\\projects    Switch to a different drive and folder
 The \`/D\` flag with \`cd\` lets you switch both the drive and directory in one command. Without it, \`cd E:\\projects\` would change the directory on the current drive instead.`),
 
     l('wc-3', 'System Information',
-      `Windows provides powerful commands to inspect system configuration. System reconnaissance — gathering information about a target system — is one of the first steps in both penetration testing and incident response. You need to know what you're working with before you can find vulnerabilities or investigate an breach.
+      `Windows provides powerful commands to inspect system configuration. System reconnaissance: gathering information about a target system, is one of the first steps in both penetration testing and incident response. You need to know what you're working with before you can find vulnerabilities or investigate an breach.
 
 **Why system information matters for security:** Knowing the operating system version tells you which exploits might work. Knowing the installed patches tells you which vulnerabilities have been fixed. Knowing the running processes reveals what software is active and potentially vulnerable. Knowing user accounts shows you who has access and what privilege levels exist. This information helps you understand the attack surface of a system.
 
@@ -74,14 +74,14 @@ The \`/D\` flag with \`cd\` lets you switch both the drive and directory in one 
 systeminfo          Detailed system information (OS, RAM, BIOS)
 \`\`\`
 
-The \`systeminfo\` command is a goldmine of information. It shows your Windows version, installation date, available memory, network adapters, installed hotfixes (security patches), and BIOS version. Each piece of this tells you something important — for example, missing hotfixes indicate unpatched vulnerabilities.
+The \`systeminfo\` command is a goldmine of information. It shows your Windows version, installation date, available memory, network adapters, installed hotfixes (security patches), and BIOS version. Each piece of this tells you something important, for example, missing hotfixes indicate unpatched vulnerabilities.
 
 \`\`\`cmd
 tasklist            List all running processes
 tasklist /SVC       Show services behind each process
 \`\`\`
 
-Running processes tell you what software is active on the system. The \`/SVC\` flag reveals which Windows services are hosted inside each process — this is useful for identifying suspicious processes that might be malware masquerading as legitimate services.
+Running processes tell you what software is active on the system. The \`/SVC\` flag reveals which Windows services are hosted inside each process, this is useful for identifying suspicious processes that might be malware masquerading as legitimate services.
 
 Stop a process:
 
@@ -98,12 +98,12 @@ net user            List all user accounts on the system
 hostname            The computer's network name
 \`\`\`
 
-These identity commands are critical. \`whoami\` shows your current user and privileges — this tells you what you can access. \`net user\` reveals all user accounts on the system, including hidden or administrative accounts that might indicate compromise. \`hostname\` identifies the machine on the network, which is essential when you're working across multiple systems.
+These identity commands are critical. \`whoami\` shows your current user and privileges, this tells you what you can access. \`net user\` reveals all user accounts on the system, including hidden or administrative accounts that might indicate compromise. \`hostname\` identifies the machine on the network, which is essential when you're working across multiple systems.
 
-These commands help you understand the Windows system you're working on — essential for both defense and offense.`),
+These commands help you understand the Windows system you're working on, essential for both defense and offense.`),
 
     l('wc-4', 'Network Commands',
-      `Windows has built-in network commands for troubleshooting and reconnaissance. Network reconnaissance is a critical skill in cybersecurity — it's how you discover what's on a network, how it's connected, and where potential vulnerabilities might exist.
+      `Windows has built-in network commands for troubleshooting and reconnaissance. Network reconnaissance is a critical skill in cybersecurity, it's how you discover what's on a network, how it's connected, and where potential vulnerabilities might exist.
 
 **Why network reconnaissance matters:** Before you can test a system's security, you need to understand its network footprint. What IP address does it use? What ports are open? What services are running? What DNS servers does it use? These answers help you map out the attack surface and identify the best points of entry.
 
@@ -112,7 +112,7 @@ ipconfig            Show IP configuration
 ipconfig /all       Detailed info (MAC address, DNS, DHCP)
 \`\`\`
 
-The \`ipconfig\` command shows your network interface details — your IP address, subnet mask, and default gateway. The \`/all\` flag adds your MAC address, DNS servers, and DHCP server information. This is your starting point for understanding your position on the network. The DNS server reveals where your domain queries go, and the DHCP server tells you which device分配s IP addresses on the network.
+The \`ipconfig\` command shows your network interface details, your IP address, subnet mask, and default gateway. The \`/all\` flag adds your MAC address, DNS servers, and DHCP server information. This is your starting point for understanding your position on the network. The DNS server reveals where your domain queries go, and the DHCP server tells you which device分配s IP addresses on the network.
 
 \`\`\`cmd
 ping 8.8.8.8        Test connectivity to a host
@@ -130,10 +130,10 @@ The \`tracert\` command shows every router (hop) your packets pass through to re
 Each hop shows a router along the path between you and the destination.
 
 \`\`\`cmd
-nslookup google.com     DNS lookup — find IP address of a domain
+nslookup google.com     DNS lookup, find IP address of a domain
 \`\`\`
 
-The \`nslookup\` command queries DNS servers to translate domain names into IP addresses. This is essential for reconnaissance — you need to know a target's IP address before you can scan or attack it. It also reveals the DNS infrastructure, which can be a target itself.
+The \`nslookup\` command queries DNS servers to translate domain names into IP addresses. This is essential for reconnaissance, you need to know a target's IP address before you can scan or attack it. It also reveals the DNS infrastructure, which can be a target itself.
 
 \`\`\`cmd
 netstat -an             Show all active network connections and listening ports
@@ -141,12 +141,12 @@ netstat -an | findstr "LISTEN"    Show only listening ports
 netstat -an | findstr ":80"       Show connections on port 80
 \`\`\`
 
-The \`netstat\` command is one of the most important networking tools. It shows all active network connections and which ports are listening for incoming connections. Open ports indicate running services — and each service is a potential entry point. The \`-a\` flag shows all connections and listening ports, while \`-n\` displays addresses and port numbers in numeric format (faster and clearer than DNS names).
+The \`netstat\` command is one of the most important networking tools. It shows all active network connections and which ports are listening for incoming connections. Open ports indicate running services, and each service is a potential entry point. The \`-a\` flag shows all connections and listening ports, while \`-n\` displays addresses and port numbers in numeric format (faster and clearer than DNS names).
 
-The \`| findstr\` command is CMD's equivalent of \`grep\`. It filters text output, letting you search for specific patterns in command results — an essential skill when dealing with large amounts of data.`),
+The \`| findstr\` command is CMD's equivalent of \`grep\`. It filters text output, letting you search for specific patterns in command results, an essential skill when dealing with large amounts of data.`),
 
     l('wc-5', 'Scripting Basics',
-      `Batch files (.bat) let you chain multiple CMD commands into a reusable script. Automation is a core skill in cybersecurity — whether you're running a series of reconnaissance commands, deploying a tool across multiple machines, or creating a quick incident response checklist, scripting saves time and ensures consistency.
+      `Batch files (.bat) let you chain multiple CMD commands into a reusable script. Automation is a core skill in cybersecurity, whether you're running a series of reconnaissance commands, deploying a tool across multiple machines, or creating a quick incident response checklist, scripting saves time and ensures consistency.
 
 **Why automation matters in security:** When you're performing a penetration test or responding to an incident, you often need to run the same sequence of commands repeatedly. Writing them into a script ensures you don't forget a step, can reproduce your actions for documentation, and can execute them quickly under pressure.
 
@@ -184,7 +184,7 @@ Get-Service | Where-Object Status -eq "Running"
 
 The pipe operator (\`|\`) sends the output of one command into the next, building complex operations from simple building blocks. This object-oriented approach is what makes PowerShell significantly more capable than CMD for complex automation tasks.
 
-Scripting turns manual tasks into automated workflows — a core skill for any Windows operator.`, { hasQuiz: true, quiz: [
+Scripting turns manual tasks into automated workflows, a core skill for any Windows operator.`, { hasQuiz: true, quiz: [
         { id: 'wc-5-q1', question: 'How do you create a reusable batch script on Windows?', options: ['Save commands in a .bat file', 'Save commands in a .exe file', 'Save commands in a .ps1 file', 'Save commands in a .cmd file'], correctIndex: 0, explanation: 'Batch files use the .bat extension and contain CMD commands that execute sequentially.' },
         { id: 'wc-5-q2', question: 'What is the PowerShell equivalent of `dir`?', options: ['ls', 'Get-ChildItem', 'List-Files', 'Show-Directory'], correctIndex: 1, explanation: 'PowerShell uses Get-ChildItem (or its aliases: ls, dir) to list directory contents.' },
         { id: 'wc-5-q3', question: 'How do you filter output in CMD?', options: ['grep', 'findstr', 'select-string', 'filter'], correctIndex: 1, explanation: 'CMD uses `findstr` to filter text output, similar to `grep` on Linux.' },
@@ -219,7 +219,7 @@ Set-Location         # Also: cd, sl
 Get-Content          # Also: cat, type
 \`\`\`
 
-The **Verb-Noun naming convention** is PowerShell's signature feature. Every cmdlet follows the pattern \`Verb-Noun\` — the verb tells you what action is being performed (Get, Set, Start, Stop), and the noun tells you what object it acts on (Process, Service, ChildItem). Once you learn this pattern, you can predict the name of commands you've never used before. For example, if you know \`Get-Service\` lists services, you can guess that \`Stop-Service\` stops them.
+The **Verb-Noun naming convention** is PowerShell's signature feature. Every cmdlet follows the pattern \`Verb-Noun\`, the verb tells you what action is being performed (Get, Set, Start, Stop), and the noun tells you what object it acts on (Process, Service, ChildItem). Once you learn this pattern, you can predict the name of commands you've never used before. For example, if you know \`Get-Service\` lists services, you can guess that \`Stop-Service\` stops them.
 
 **Working with objects — PowerShell's superpower:**
 \`\`\`powershell
@@ -281,7 +281,7 @@ Set-Content -Path C:\\temp\\targets.txt -Value "192.168.1.1"
 Add-Content -Path C:\\temp\\targets.txt -Value "192.168.1.2"
 \`\`\`
 
-> **Why this matters for hacking:** PowerShell's object-oriented nature makes it far more powerful than CMD for security operations. Where CMD gives you text that you must parse with \`findstr\`, PowerShell gives you objects you can filter, sort, and export with built-in cmdlets. The \`Get-Process | Where-Object\` pattern is the equivalent of \`tasklist | findstr\` but with structured data — you can sort by memory, filter by CPU, and export to CSV or HTML for reports. The Remote PowerShell (\`Enter-PSSession\`) capability allows managing remote machines, which is essential for incident response across an enterprise network. Understanding PowerShell is a prerequisite for modern Windows security work.
+> **Why this matters for hacking:** PowerShell's object-oriented nature makes it far more powerful than CMD for security operations. Where CMD gives you text that you must parse with \`findstr\`, PowerShell gives you objects you can filter, sort, and export with built-in cmdlets. The \`Get-Process | Where-Object\` pattern is the equivalent of \`tasklist | findstr\` but with structured data, you can sort by memory, filter by CPU, and export to CSV or HTML for reports. The Remote PowerShell (\`Enter-PSSession\`) capability allows managing remote machines, which is essential for incident response across an enterprise network. Understanding PowerShell is a prerequisite for modern Windows security work.
 
 **Mini-challenge:** (Conceptual — requires Windows.) The Verb-Noun naming convention (\`Get-Process\`, \`Stop-Service\`, \`Set-Location\`) lets you predict command names. Try: if \`Get-Service\` lists services and \`Stop-Service\` stops one, what do you think \`Start-Service\` does? This pattern recognition accelerates learning PowerShell. On Linux, install PowerShell Core: \`sudo apt install powershell\`.
 
@@ -301,7 +301,7 @@ Import-Csv big-processes.csv
 \`\`\``),
 
     l('wc-7', 'Windows Service & Process Management',
-      `Managing services and processes is critical for understanding what's running on a Windows system. Every program that executes on Windows is a process, and many of those processes are Windows services — background programs that start with the system and run without user interaction.
+      `Managing services and processes is critical for understanding what's running on a Windows system. Every program that executes on Windows is a process, and many of those processes are Windows services, background programs that start with the system and run without user interaction.
 
 **Why understanding processes matters for security:** Malware often hides among legitimate processes or registers itself as a Windows service to maintain persistence — meaning it automatically restarts after a reboot. By understanding how processes and services work, you can identify suspicious activity, detect unauthorized software, and understand how an attacker might maintain access to a compromised system.
 
@@ -410,7 +410,7 @@ tasklist /FI "MEMUSAGE gt 10000" /V
 sc query wuauserv | findstr STATE
 
 # 3. View scheduled tasks
-> **Why this matters for hacking:** Process and service management is critical for identifying malicious activity. Suspicious processes often have unusual names, high CPU/memory usage, or are running from unexpected locations (e.g., \`C:\\Users\\Public\\\` instead of \`C:\\Program Files\\\`). The \`tasklist /SVC\` flag shows services hosted in each process — malware often runs as a service to maintain persistence. \`sc query\` lists all services; look for services with unusual names or descriptions. Scheduled tasks (\`schtasks\`) are another common persistence mechanism — attackers create tasks that run malicious scripts on a schedule or at login.
+> **Why this matters for hacking:** Process and service management is critical for identifying malicious activity. Suspicious processes often have unusual names, high CPU/memory usage, or are running from unexpected locations (e.g., \`C:\\Users\\Public\\\` instead of \`C:\\Program Files\\\`). The \`tasklist /SVC\` flag shows services hosted in each process, malware often runs as a service to maintain persistence. \`sc query\` lists all services; look for services with unusual names or descriptions. Scheduled tasks (\`schtasks\`) are another common persistence mechanism, attackers create tasks that run malicious scripts on a schedule or at login.
 
 **Mini-challenge:** On Windows: \`tasklist /FI "MEMUSAGE gt 50000"\` finds processes using >50MB RAM. \`sc query state= running\` lists running services. \`schtasks /QUERY /FO LIST /V\` shows all scheduled tasks with detailed information. Practice filtering: \`schtasks /QUERY /FO TABLE | findstr "Daily"\` finds daily tasks.
 
@@ -425,14 +425,14 @@ sc query wuauserv | findstr STATE
 **Common attack vectors through the registry:** Attackers frequently abuse the registry to gain persistence (surviving reboots), escalate privileges, disable security features, and hide their activity. The \`Run\` and \`RunOnce\` keys are especially popular because any program listed there starts automatically when a user logs in. Attackers also modify file associations to launch malicious programs when you open common file types.
 
 \`\`\`
-HKEY_LOCAL_MACHINE (HKLM) — System-wide settings
-HKEY_CURRENT_USER (HKCU) — Current user settings
-HKEY_USERS (HKU)         — All user profiles
-HKEY_CLASSES_ROOT (HKCR) — File associations
-HKEY_CURRENT_CONFIG (HKCC) — Hardware profile
+HKEY_LOCAL_MACHINE (HKLM) - System-wide settings
+HKEY_CURRENT_USER (HKCU) - Current user settings
+HKEY_USERS (HKU)         - All user profiles
+HKEY_CLASSES_ROOT (HKCR) - File associations
+HKEY_CURRENT_CONFIG (HKCC) - Hardware profile
 \`\`\`
 
-Each hive contains a tree of keys and values — think of it like a file system where folders are keys and files are values.
+Each hive contains a tree of keys and values, think of it like a file system where folders are keys and files are values.
 
 **View registry from command line with REG:**
 \`\`\`cmd
@@ -471,11 +471,11 @@ reg query HKLM\\SYSTEM\\CurrentControlSet\\Enum\\USBSTOR /s
 reg query "HKLM\\Software\\Microsoft\\Windows\\CurrentVersion\\Uninstall" /s
 \`\`\`
 \`\`\`
-HKEY_LOCAL_MACHINE (HKLM) — System-wide settings
-HKEY_CURRENT_USER (HKCU) — Current user settings
-HKEY_USERS (HKU)         — All user profiles
-HKEY_CLASSES_ROOT (HKCR) — File associations
-HKEY_CURRENT_CONFIG (HKCC) — Hardware profile
+HKEY_LOCAL_MACHINE (HKLM) - System-wide settings
+HKEY_CURRENT_USER (HKCU) - Current user settings
+HKEY_USERS (HKU)         - All user profiles
+HKEY_CLASSES_ROOT (HKCR) - File associations
+HKEY_CURRENT_CONFIG (HKCC) - Hardware profile
 \`\`\`
 
 **View registry from command line with REG:**
@@ -519,7 +519,7 @@ reg query "HKLM\\Software\\Microsoft\\Windows\\CurrentVersion\\Uninstall" /s
 \`\`\`cmd
 # Open System Configuration
 msconfig
-# (GUI tool — boot options, services, startup)
+# (GUI tool, boot options, services, startup)
 \`\`\`
 
 **Environment variables on Windows:**
@@ -566,7 +566,7 @@ wmic qfe get HotFixID,InstalledOn
 wmic bios get SerialNumber,Manufacturer
 \`\`\`
 
-> **Why this matters for hacking:** Windows Registry forensics is one of the most valuable skills in incident response. The \`Run\` keys (HKLM\\...\\Run, HKCU\\...\\Run) show startup programs — malware often adds itself here for persistence. The \`USBSTOR\` key lists every USB device ever connected — evidence of data exfiltration. The \`Uninstall\` key lists installed software — useful for identifying unauthorized tools. The \`RecentDocs\` key shows recently opened files. \`WMI\` queries (\`wmic os get Caption,Version\`) are powerful for system reconnaissance. Understanding these locations helps both attackers find persistence and defenders detect it.
+> **Why this matters for hacking:** Windows Registry forensics is one of the most valuable skills in incident response. The \`Run\` keys (HKLM\\...\\Run, HKCU\\...\\Run) show startup programs, malware often adds itself here for persistence. The \`USBSTOR\` key lists every USB device ever connected, evidence of data exfiltration. The \`Uninstall\` key lists installed software, useful for identifying unauthorized tools. The \`RecentDocs\` key shows recently opened files. \`WMI\` queries (\`wmic os get Caption,Version\`) are powerful for system reconnaissance. Understanding these locations helps both attackers find persistence and defenders detect it.
 
 **Mini-challenge:** (Conceptual — requires Windows.) On a Windows machine, run \`reg query HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Run\` to see what starts automatically. Then \`wmic os get Caption,Version\` to see OS info. If you don't have Windows, study the command structure: \`reg query <key>\` queries registry, \`reg query <key> /s\` recurses subkeys, \`reg export <key> file.reg\` exports.
 
@@ -597,7 +597,7 @@ export const COURSE: Course = {
   description:
     'Master the Windows Command Prompt and PowerShell. Essential for any hacker targeting Windows environments.',
   overview:
-    'Windows is everywhere — in enterprises, government, and home networks. This course teaches you to navigate Windows from the command line, manage files, inspect network configurations, and automate tasks.',
+    'Windows is everywhere, in enterprises, government, and home networks. This course teaches you to navigate Windows from the command line, manage files, inspect network configurations, and automate tasks.',
   estimatedMinutes: 50,
   cpCost: 50,
   learningObjectives: [

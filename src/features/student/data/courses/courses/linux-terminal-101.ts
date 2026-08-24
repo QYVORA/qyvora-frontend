@@ -6,9 +6,9 @@ const l = (id: string, title: string, instruction: string, extras?: Partial<Less
 
 export const LESSONS: Lesson[] = [
     l('lt-1', 'What is the Terminal?',
-      `The terminal is a text-based interface where you control your computer by typing commands instead of clicking buttons. Think of it as the "real" way to talk to your machine — the GUI is just a friendly wrapper on top.
+      `The terminal is a text-based interface where you control your computer by typing commands instead of clicking buttons. Think of it as the "real" way to talk to your machine, the GUI is just a friendly wrapper on top.
 
-> **Why this matters for hacking:** Every server, firewall, and IoT device runs some form of command-line interface. When you compromise a machine, the terminal is your cockpit. You won't have a mouse or a desktop — just a blinking cursor and a shell prompt. The faster you can navigate this environment, the more effective you'll be.
+> **Why this matters for hacking:** Every server, firewall, and IoT device runs some form of command-line interface. When you compromise a machine, the terminal is your cockpit. You won't have a mouse or a desktop, just a blinking cursor and a shell prompt. The faster you can navigate this environment, the more effective you'll be.
 
 When you open a terminal, you'll see something like this:
 
@@ -17,10 +17,10 @@ user@qyvora:~$
 \`\`\`
 
 This is the **shell prompt**. It tells you:
-- **user** — your username
-- **qyvora** — the computer's hostname  
-- **~** — your current directory (home folder)
-- **$** — indicates a regular user (root uses #)
+- **user**: your username
+- **qyvora**: the computer's hostname  
+- **~**: your current directory (home folder)
+- **$**: indicates a regular user (root uses #)
 
 Type your first command:
 
@@ -54,11 +54,11 @@ ls -la    # detailed view with hidden files
 The \`-la\` flag combines \`-l\` (long format) and \`-a\` (show hidden files). Hidden files start with a dot (\`.bashrc\`).
 
 > **Why this matters for hacking:** During a penetration test, the first thing you do on a compromised server is orient yourself. \`pwd\` tells you where you landed, \`ls\` tells you what's nearby, and \`cd\` lets you explore. Key directories to know:
-> - \`/etc\` — configuration files (passwords, service configs)
-> - \`/var/log\` — log files (auth attempts, errors)
-> - \`/tmp\` — world-writable, great for staging exploits
-> - \`/home\` — user data directories
-> - \`/root\` — the all-powerful admin's home
+> - \`/etc\`, configuration files (passwords, service configs)
+> - \`/var/log\`, log files (auth attempts, errors)
+> - \`/tmp\`, world-writable, great for staging exploits
+> - \`/home\`, user data directories
+> - \`/root\`, the all-powerful admin's home
 
 **cd** — Change Directory:
 
@@ -66,7 +66,7 @@ The \`-la\` flag combines \`-l\` (long format) and \`-a\` (show hidden files). H
 cd Documents    # go into Documents folder
 cd ..           # go up one level
 cd ~            # go to home directory
-cd /etc         # absolute path — go directly to /etc
+cd /etc         # absolute path, go directly to /etc
 \`\`\`
 
 **Absolute paths** start with \`/\` (e.g., \`/home/user/Documents\`). **Relative paths** start from where you are (e.g., \`Documents\`).
@@ -92,7 +92,7 @@ cp notes.txt projects/notes.txt
 # Move (or rename) a file
 mv notes.txt projects/old-notes.txt
 
-# Delete a file (permanent — no trash!)
+# Delete a file (permanent, no trash!)
 rm old-notes.txt
 
 # Delete a directory and everything inside
@@ -107,7 +107,7 @@ nano notes.txt
 
 The \`rm -rf\` command is dangerous. \`-r\` means recursive (deletes folders), \`-f\` means force (no confirmation). Double-check before running it.
 
-> **Why this matters for hacking:** In real engagements, you'll create directory structures for each target (recon/ scans/ exploits/ loot/). \`mkdir -p\` creates the whole tree at once. \`cp\` and \`mv\` move your tools around. And when you're cleaning up after an engagement, \`rm -rf\` wipes your tracks — but use it carefully; one wrong \`rm -rf /\` and the system is gone.
+> **Why this matters for hacking:** In real engagements, you'll create directory structures for each target (recon/ scans/ exploits/ loot/). \`mkdir -p\` creates the whole tree at once. \`cp\` and \`mv\` move your tools around. And when you're cleaning up after an engagement, \`rm -rf\` wipes your tracks, but use it carefully; one wrong \`rm -rf /\` and the system is gone.
 
 **Mini-challenge:** Create a recon directory structure: \`mkdir -p ~/recon/{scans,exploits,loot,notes}\`. Then create a target file with \`echo "target.com" > ~/recon/notes/targets.txt\`. Verify with \`ls -R ~/recon\`.`,
       { hasTerminal: true, terminalCommands: ['mkdir -p ~/recon/{scans,exploits,loot,notes}', 'echo "target.com" > ~/recon/notes/targets.txt', 'ls -R ~/recon'], terminalTitle: 'lesson-terminal' }),
@@ -147,13 +147,13 @@ sudo chown root:root script.sh
 # Changes owner to root, group to root
 \`\`\`
 
-> **Why this matters for hacking:** Permission misconfigurations are a top-5 attack vector. World-writable files let any user modify them. Files owned by root with the **SUID bit** set (like \`/usr/bin/passwd\`) run with the owner's privileges when executed — and if you find a custom SUID binary, you can often escalate to root. The \`/etc/shadow\` file must be readable only by root; if it's world-readable, you can steal password hashes.
+> **Why this matters for hacking:** Permission misconfigurations are a top-5 attack vector. World-writable files let any user modify them. Files owned by root with the **SUID bit** set (like \`/usr/bin/passwd\`) run with the owner's privileges when executed, and if you find a custom SUID binary, you can often escalate to root. The \`/etc/shadow\` file must be readable only by root; if it's world-readable, you can steal password hashes.
 
 **Mini-challenge:** Find all SUID binaries on the system: \`find / -perm -4000 -type f 2>/dev/null\`. These are potential privilege escalation vectors. Then find all world-writable files in \`/tmp\`: \`find /tmp -perm -o+w -type f\`. Both are common first steps in Linux privilege escalation.`,
-      { hasTerminal: true, terminalCommands: ['find / -perm -4000 -type f 2>/dev/null | head -10', 'find /tmp -perm -o+w -type f 2>/dev/null', 'ls -la /etc/shadow 2>/dev/null || echo "No access — correct!"'], terminalTitle: 'lesson-terminal' }),
+      { hasTerminal: true, terminalCommands: ['find / -perm -4000 -type f 2>/dev/null | head -10', 'find /tmp -perm -o+w -type f 2>/dev/null', 'ls -la /etc/shadow 2>/dev/null || echo "No access, correct!"'], terminalTitle: 'lesson-terminal' }),
 
     l('lt-5', 'Pipes and Redirection',
-      `Pipes and redirection let you chain commands together — this is where the terminal becomes powerful.
+      `Pipes and redirection let you chain commands together, this is where the terminal becomes powerful.
 
 **Redirect output to a file** with \`>\`:
 
@@ -238,7 +238,7 @@ Ctrl+Z             # suspend current process
 bg %1              # resume job 1 in background
 \`\`\`
 
-> **Why this matters for hacking:** During a penetration test, you'll run multiple tools simultaneously — a port scan in one terminal, a directory brute-forcer in another, a reverse shell listener in a third. You need \`bg\`, \`fg\`, and \`jobs\` to juggle them. \`kill -9\` is the nuclear option for killing hung exploits. And when you find a suspicious process on a compromised machine, \`ps aux | grep -i crypto\` might reveal a miner eating CPU.
+> **Why this matters for hacking:** During a penetration test, you'll run multiple tools simultaneously, a port scan in one terminal, a directory brute-forcer in another, a reverse shell listener in a third. You need \`bg\`, \`fg\`, and \`jobs\` to juggle them. \`kill -9\` is the nuclear option for killing hung exploits. And when you find a suspicious process on a compromised machine, \`ps aux | grep -i crypto\` might reveal a miner eating CPU.
 
 Understanding process management is crucial for controlling long-running tools like scanners and listeners.`,
       { hasQuiz: true, quiz: [
@@ -248,7 +248,7 @@ Understanding process management is crucial for controlling long-running tools l
       ] }),
 
     l('lt-7', 'Archiving & Compression',
-      `When working with multiple files — common in security toolkits and log archives — you need to bundle and compress them. Start with a single file, then build up to full directory archives.
+      `When working with multiple files: common in security toolkits and log archives, you need to bundle and compress them. Start with a single file, then build up to full directory archives.
 
 **Compress a single file with gzip:**
 
@@ -346,19 +346,19 @@ The key progression: single file → archive → compressed archive → encrypte
 **Viewing files (no editing, just looking):**
 
 \`\`\`bash
-# less — scroll through a file (press q to quit)
+# less, scroll through a file (press q to quit)
 less /var/log/syslog
 
-# head — see the first lines (default: 10)
+# head, see the first lines (default: 10)
 head /etc/passwd
 head -n 20 /etc/passwd    # First 20 lines
 
-# tail — see the last lines
+# tail, see the last lines
 tail /var/log/auth.log
 tail -f /var/log/auth.log  # Follow in real-time (Ctrl+C to stop)
 tail -n 50 /var/log/syslog # Last 50 lines
 
-# wc — word/line count
+# wc, word/line count
 wc -l /etc/passwd   # Count lines
 wc -w report.txt    # Count words
 wc -c file.bin      # Count bytes
@@ -373,11 +373,11 @@ nano notes.txt
 
 Inside nano:
 - Type to edit
-- \`Ctrl+O\` — save (WriteOut)
-- \`Ctrl+X\` — exit
-- \`Ctrl+W\` — search
-- \`Ctrl+K\` — cut line, \`Ctrl+U\` — paste
-- \`Alt+6\` — copy line
+- \`Ctrl+O\`, save (WriteOut)
+- \`Ctrl+X\`, exit
+- \`Ctrl+W\`, search
+- \`Ctrl+K\`: cut line, \`Ctrl+U\`, paste
+- \`Alt+6\`, copy line
 
 **Vim — the power editor (steeper learning curve, much faster):**
 
@@ -387,24 +387,24 @@ vim notes.txt
 \`\`\`
 
 Vim modes (this is the key concept):
-- \`Normal mode\` — default on open. Press \`Esc\` to return here.
-- \`Insert mode\` — press \`i\` to start typing. Press \`Esc\` to leave.
-- \`Command mode\` — press \`:\` to enter commands.
+- \`Normal mode\`, default on open. Press \`Esc\` to return here.
+- \`Insert mode\`, press \`i\` to start typing. Press \`Esc\` to leave.
+- \`Command mode\`, press \`:\` to enter commands.
 
 **Essential vim commands (normal mode):**
 \`\`\`
-i        — enter insert mode (start typing)
-dd       — delete current line
-yy       — copy (yank) current line
-p        — paste below cursor
-:w       — save file
-:q       — quit
-:wq      — save and quit
-:q!      — quit without saving
-/text    — search for "text"
-n        — next search result
-u        — undo
-Ctrl+r   — redo
+i       , enter insert mode (start typing)
+dd      , delete current line
+yy      , copy (yank) current line
+p       , paste below cursor
+:w      , save file
+:q      , quit
+:wq     , save and quit
+:q!     , quit without saving
+/text   , search for "text"
+n       , next search result
+u       , undo
+Ctrl+r  , redo
 \`\`\`
 
 **Practical progression:**
@@ -440,7 +440,7 @@ ssh -V
 
 **Connect to a remote machine (build up the command):**
 \`\`\`bash
-# Simplest form — connect with default port (22)
+# Simplest form, connect with default port (22)
 ssh user@192.168.1.100
 
 # Specify a different port
@@ -517,7 +517,7 @@ echo "Host mytarget\n    HostName 192.168.1.100\n    User root" >> ~/.ssh/config
 chmod 600 ~/.ssh/config
 \`\`\`
 
-> **Why this matters for hacking:** SSH is the backbone of remote access in security work. You'll SSH into vulnerable machines to deploy exploits, set up port forwarding to access internal services through a compromised host ("pivoting"), and use SSH tunnels to bypass firewalls. \`ssh -L\` creates a tunnel from your machine to the target's network — you access \`localhost:8080\` on your box, and traffic flows through the SSH connection to the target's internal service. This is the single most important skill for network-based operations.
+> **Why this matters for hacking:** SSH is the backbone of remote access in security work. You'll SSH into vulnerable machines to deploy exploits, set up port forwarding to access internal services through a compromised host ("pivoting"), and use SSH tunnels to bypass firewalls. \`ssh -L\` creates a tunnel from your machine to the target's network, you access \`localhost:8080\` on your box, and traffic flows through the SSH connection to the target's internal service. This is the single most important skill for network-based operations.
 
 **Mini-challenge:** Add a config entry for a fictional target in \`~/.ssh/config\`: \`echo -e "Host vulnbox\\n    HostName 10.10.10.10\\n    User root" >> ~/.ssh/config && chmod 600 ~/.ssh/config\`. Practice connecting with \`ssh vulnbox\`. Understanding SSH configs saves you minutes of typing on every engagement.
 
@@ -529,21 +529,21 @@ chmod 600 ~/.ssh/config
 
 **Find where a command is located:**
 \`\`\`bash
-# which — show the path of a command
+# which, show the path of a command
 which nmap
 # /usr/bin/nmap
 
 which python3
 # /usr/bin/python3
 
-# whereis — find binary, source, and man page
+# whereis, find binary, source, and man page
 whereis nmap
 # nmap: /usr/bin/nmap /usr/share/nmap /usr/share/man/man1/nmap.1.gz
 \`\`\`
 
 **Find files by name (simple searches):**
 \`\`\`bash
-# locate — fast, uses a database
+# locate, fast, uses a database
 locate .bashrc
 locate password.txt
 
@@ -555,7 +555,7 @@ sudo updatedb
 
 **Find files by properties (powerful searches):**
 \`\`\`bash
-# find — searches the filesystem directly, slower but current
+# find, searches the filesystem directly, slower but current
 
 # By name (exact)
 find /home -name "notes.txt"
@@ -613,7 +613,7 @@ grep -r "Listen" --include="*.conf" /etc/
 find /home -iname "*secret*" -exec grep -l "password" {} \\;
 \`\`\`
 
-> **Why this matters for hacking:** \`find\` is a post-exploitation workhorse. You'll use it to locate config files with hardcoded credentials, find writable directories for staging payloads, and discover SUID binaries for privilege escalation. The \`-exec\` flag lets you act on results immediately — like compressing all files over 100MB with one command. \`grep -r "password"\` across common config directories (\`/etc\`, \`/var/www\`, \`/home\`) is a standard first step after gaining access.
+> **Why this matters for hacking:** \`find\` is a post-exploitation workhorse. You'll use it to locate config files with hardcoded credentials, find writable directories for staging payloads, and discover SUID binaries for privilege escalation. The \`-exec\` flag lets you act on results immediately, like compressing all files over 100MB with one command. \`grep -r "password"\` across common config directories (\`/etc\`, \`/var/www\`, \`/home\`) is a standard first step after gaining access.
 
 **Practical progression:**
 \`\`\`bash
@@ -693,9 +693,9 @@ echo 'export PATH=$PATH:$HOME/scripts' >> ~/.bashrc
 
 **Shell configuration files:**
 \`\`\`bash
-# ~/.bashrc — runs every time you open a new terminal
-# ~/.bash_profile — runs for login shells
-# ~/.bash_history — stores your command history
+# ~/.bashrc, runs every time you open a new terminal
+# ~/.bash_profile, runs for login shells
+# ~/.bash_history, stores your command history
 
 # See how many commands are stored
 echo $HISTSIZE
@@ -736,7 +736,7 @@ unalias ll
 echo "alias ll='ls -la --color=auto'" >> ~/.bashrc
 \`\`\`
 
-> **Why this matters for hacking:** PATH manipulation is a classic privilege escalation technique. If a directory in your PATH is world-writable (like \`/tmp\` added to PATH), you can place a malicious \`ls\` binary there, and when root runs \`ls\`, your code executes with root privileges. Always check \`echo $PATH | tr ':' '\\n'\` during a penetration test to look for writable directories. Aliases are also useful — create shortcuts for your most-used scanning commands.
+> **Why this matters for hacking:** PATH manipulation is a classic privilege escalation technique. If a directory in your PATH is world-writable (like \`/tmp\` added to PATH), you can place a malicious \`ls\` binary there, and when root runs \`ls\`, your code executes with root privileges. Always check \`echo $PATH | tr ':' '\\n'\` during a penetration test to look for writable directories. Aliases are also useful, create shortcuts for your most-used scanning commands.
 
 **Mini-challenge:** Check your PATH for writable directories: \`for dir in $(echo $PATH | tr ':' ' '); do ls -ld "$dir" 2>/dev/null | grep -q "w" && echo "Writable: $dir"; done\`. This is a real privilege escalation check. Then create an alias called \`scan\` that runs \`nmap -sV -sC -p-\` and make it permanent by adding it to \`~/.bashrc\`.
 
@@ -763,7 +763,7 @@ echo 'alias ll="ls -la --color=auto"' >> ~/.bashrc && source ~/.bashrc
 
 **Check disk space on mounted filesystems:**
 \`\`\`bash
-# df — disk free (human-readable)
+# df, disk free (human-readable)
 df -h
 
 # Output:
@@ -779,7 +779,7 @@ df -a
 
 **Check directory/file sizes:**
 \`\`\`bash
-# du — disk usage
+# du, disk usage
 du -sh /var/log      # Total size of a directory (-s = summary, -h = human)
 # 1.2G    /var/log
 
@@ -823,21 +823,21 @@ sudo mount -o loop disk-image.iso /mnt/iso
 
 **System information commands:**
 \`\`\`bash
-# uname — system info
+# uname, system info
 uname -a           # All system info
 uname -r           # Kernel release
 uname -m           # Architecture (x86_64, aarch64)
 
-# lsb_release — distribution info
+# lsb_release, distribution info
 lsb_release -a
 
-# hostnamectl — full system info (systemd systems)
+# hostnamectl, full system info (systemd systems)
 hostnamectl
 
-# lscpu — CPU details
+# lscpu - CPU details
 lscpu | grep "Model name"
 
-# free — memory usage
+# free, memory usage
 free -h            # Human-readable
 free -ht           # With totals
 free -s 5          # Refresh every 5 seconds
@@ -845,14 +845,14 @@ free -s 5          # Refresh every 5 seconds
 
 **Check system uptime and load:**
 \`\`\`bash
-# uptime — how long since last boot
+# uptime, how long since last boot
 uptime
 # 14:32:11 up 3 days,  2:15,  2 users,  load average: 0.08, 0.03, 0.01
 
 # The three numbers are load averages (1, 5, 15 minutes)
 # Below 1.0 = healthy, above = busy
 
-# dmesg — kernel messages
+# dmesg, kernel messages
 dmesg | tail -20   # Last 20 kernel messages
 dmesg | grep -i error
 \`\`\`
@@ -873,11 +873,11 @@ uname -a
 hostnamectl
 \`\`\`
 
-> **Why this matters for hacking:** Before you deploy a tool or exfiltrate data, check available disk space with \`df -h\`. A full disk can crash tools and lose results. \`du -sh\` helps you find large log files that might be eating space. And \`uname -a\` reveals the kernel version — the first step in researching kernel exploits. Every operator runs \`uname -a\` and \`cat /etc/os-release\` within seconds of landing on a new box.
+> **Why this matters for hacking:** Before you deploy a tool or exfiltrate data, check available disk space with \`df -h\`. A full disk can crash tools and lose results. \`du -sh\` helps you find large log files that might be eating space. And \`uname -a\` reveals the kernel version, the first step in researching kernel exploits. Every operator runs \`uname -a\` and \`cat /etc/os-release\` within seconds of landing on a new box.
 
 **Mini-challenge:** Run \`df -h\` to check disk usage, then \`free -h\` to see memory. Find the top 5 largest files in \`/var\` with \`du -sh /var/* | sort -rh | head -5\`. Finally, run \`uname -a\` and \`cat /etc/os-release\` to identify the system — exactly what you'd do in the first 30 seconds after gaining shell access.
 
-This lesson wraps up the Linux Terminal 101 course. You now have the essential skills to navigate, manipulate, and manage a Linux system from the command line — the foundation of all offensive security work.`,
+This lesson wraps up the Linux Terminal 101 course. You now have the essential skills to navigate, manipulate, and manage a Linux system from the command line, the foundation of all offensive security work.`,
       { hasTerminal: true, terminalCommands: ['df -h', 'free -h', 'uname -a', 'cat /etc/os-release 2>/dev/null || cat /etc/*release 2>/dev/null | head -5'], terminalTitle: 'lesson-terminal' }),
 ];
 
@@ -886,7 +886,7 @@ export const COURSE: Course = {
   title: 'Linux Terminal 101',
   categoryId: 'terminal',
   description:
-    'Learn to navigate, control, and exploit the Linux command line. No prior experience needed — start from scratch and gain real terminal skills.',
+    'Learn to navigate, control, and exploit the Linux command line. No prior experience needed, start from scratch and gain real terminal skills.',
   overview:
     'The terminal is the hacker’s cockpit. This course teaches you to navigate the filesystem, manipulate files, manage processes, and chain commands together. Every lesson uses real commands you’d run on any Linux system.',
   estimatedMinutes: 70,

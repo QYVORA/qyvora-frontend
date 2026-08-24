@@ -9,10 +9,10 @@ export const AfricaNeedsCybersecurityProfessionalsBlog: React.FC = () => {
 
       <Section>
         <Body>
-          Africa has a cybersecurity problem. It is not just a security problem — it is a <Highlight>talent problem</Highlight>. The continent is digitising rapidly, but the number of trained cybersecurity professionals is not keeping pace. The gap is measured in <Highlight>hundreds of thousands</Highlight>, and it is growing every year.
+          Africa has a cybersecurity problem. It is not just a security problem, it is a <Highlight>talent problem</Highlight>. The continent is digitising rapidly, but the number of trained cybersecurity professionals is not keeping pace. The gap is measured in <Highlight>hundreds of thousands</Highlight>, and it is growing every year.
         </Body>
         <Body>
-          According to the (ISC)2 Cybersecurity Workforce Study, the global cybersecurity workforce gap stands at approximately 4 million professionals. Africa's share of that gap is disproportionate — not because the talent is absent, but because the <Highlight>pathways to develop it are missing</Highlight>.
+          According to the (ISC)2 Cybersecurity Workforce Study, the global cybersecurity workforce gap stands at approximately 4 million professionals. Africa's share of that gap is disproportionate, not because the talent is absent, but because the <Highlight>pathways to develop it are missing</Highlight>.
         </Body>
         <Body>
           Here is a closer look at the problem, the opportunity, and what we are doing about it.
@@ -33,11 +33,11 @@ export const AfricaNeedsCybersecurityProfessionalsBlog: React.FC = () => {
         </div>
 
         <Body>
-          To put this in perspective: North America has roughly <Highlight>1 security professional per 500 people</Highlight>. In Africa, that ratio is closer to <Highlight>1 per 10,000 people</Highlight> — and in many countries, it is far worse. Meanwhile, digital adoption across the continent is accelerating at over 40% year-over-year in sectors like fintech, e-commerce, and digital banking.
+          To put this in perspective: North America has roughly <Highlight>1 security professional per 500 people</Highlight>. In Africa, that ratio is closer to <Highlight>1 per 10,000 people</Highlight>, and in many countries, it is far worse. Meanwhile, digital adoption across the continent is accelerating at over 40% year-over-year in sectors like fintech, e-commerce, and digital banking.
         </Body>
 
         <Body>
-          This means the <Highlight>attack surface is expanding faster than our defensive capacity</Highlight>. Every new mobile money platform, every new government digital service, every new cloud deployment adds to the surface area that needs protection — but there are not enough skilled professionals to secure it.
+          This means the <Highlight>attack surface is expanding faster than our defensive capacity</Highlight>. Every new mobile money platform, every new government digital service, every new cloud deployment adds to the surface area that needs protection, but there are not enough skilled professionals to secure it.
         </Body>
       </Section>
 
@@ -45,15 +45,15 @@ export const AfricaNeedsCybersecurityProfessionalsBlog: React.FC = () => {
       <Section>
         <Heading>Why the Gap Exists</Heading>
         <Body>
-          The talent gap is not about intelligence or aptitude — African professionals compete and excel globally. The gap exists because of <Highlight>structural barriers</Highlight> that prevent talent from entering the field:
+          The talent gap is not about intelligence or aptitude. African professionals compete and excel globally. The gap exists because of <Highlight>structural barriers</Highlight> that prevent talent from entering the field:
         </Body>
 
         <BulletList
           items={[
-            { icon: <GraduationCap className="w-5 h-5 text-accent" />, text: <span><Highlight>Limited university programmes</Highlight> — few African universities offer dedicated cybersecurity degrees, and those that do often focus on theory over practice</span> },
-            { icon: <DollarSign className="w-5 h-5 text-accent" />, text: <span><Highlight>Cost of certification</Highlight> — industry certifications like OSCP, CISSP, and CEH cost hundreds to thousands of dollars, often more than a month's salary</span> },
-            { icon: <Globe className="w-5 h-5 text-accent" />, text: <span><Highlight>Lack of practical pathways</Highlight> — online courses assume Western infrastructure, reliable high-bandwidth internet, and credit cards for payment</span> },
-            { icon: <Users className="w-5 h-5 text-accent" />, text: <span><Highlight>No local community infrastructure</Highlight> — limited meetups, conferences, Capture The Flag events, and mentorship programmes</span> },
+            { icon: <GraduationCap className="w-5 h-5 text-accent" />, text: <span><Highlight>Limited university programmes</Highlight>, few African universities offer dedicated cybersecurity degrees, and those that do often focus on theory over practice</span> },
+            { icon: <DollarSign className="w-5 h-5 text-accent" />, text: <span><Highlight>Cost of certification</Highlight>, industry certifications like OSCP, CISSP, and CEH cost hundreds to thousands of dollars, often more than a month's salary</span> },
+            { icon: <Globe className="w-5 h-5 text-accent" />, text: <span><Highlight>Lack of practical pathways</Highlight>, online courses assume Western infrastructure, reliable high-bandwidth internet, and credit cards for payment</span> },
+            { icon: <Users className="w-5 h-5 text-accent" />, text: <span><Highlight>No local community infrastructure</Highlight>, limited meetups, conferences, Capture The Flag events, and mentorship programmes</span> },
           ]}
         />
 
@@ -66,7 +66,7 @@ export const AfricaNeedsCybersecurityProfessionalsBlog: React.FC = () => {
       <Section>
         <Heading>The Opportunity: 100,000 Professionals</Heading>
         <Body>
-          We believe Africa needs <Highlight>100,000 new cybersecurity professionals</Highlight> over the next five years. This is not an impossible target — it is a <Highlight>strategic necessity</Highlight>. And the opportunity is as much economic as it is defensive.
+          We believe Africa needs <Highlight>100,000 new cybersecurity professionals</Highlight> over the next five years. This is not an impossible target, it is a <Highlight>strategic necessity</Highlight>. And the opportunity is as much economic as it is defensive.
         </Body>
 
         <InlineDiagram>
@@ -104,7 +104,7 @@ export const AfricaNeedsCybersecurityProfessionalsBlog: React.FC = () => {
         </InlineDiagram>
 
         <Body>
-          The economic opportunity is significant. Entry-level cybersecurity roles in Africa command salaries 2-3x the average for other IT roles. Senior positions — penetration testers, security architects, SOC managers — earn competitive global rates while working locally. For young professionals, cybersecurity represents one of the <Highlight>fastest paths to economic mobility</Highlight> in the technology sector.
+          The economic opportunity is significant. Entry-level cybersecurity roles in Africa command salaries 2-3x the average for other IT roles. Senior positions: penetration testers, security architects, SOC managers, earn competitive global rates while working locally. For young professionals, cybersecurity represents one of the <Highlight>fastest paths to economic mobility</Highlight> in the technology sector.
         </Body>
       </Section>
 
@@ -116,10 +116,10 @@ export const AfricaNeedsCybersecurityProfessionalsBlog: React.FC = () => {
         </Body>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 my-8">
-          <FeatureCard icon={IconTarget} title="Penetration Testing" desc="Hands-on offensive security skills — web application testing, network penetration testing, mobile app security assessments. The most in-demand and highest-paid skill in the African market." />
+          <FeatureCard icon={IconTarget} title="Penetration Testing" desc="Hands-on offensive security skills, web application testing, network penetration testing, mobile app security assessments. The most in-demand and highest-paid skill in the African market." />
           <FeatureCard icon={IconShield} title="SOC Operations" desc="Security Operations Centre analysts who can triage alerts, investigate incidents, and manage SIEM platforms. Critical for banks, telcos, and government agencies." />
           <FeatureCard icon={Globe} title="Cloud Security" desc="With African organisations migrating to AWS, Azure, and GCP at record rates, cloud security architects who understand IAM, network segmentation, and compliance are urgently needed." />
-          <FeatureCard icon={Users} title="Security Awareness" desc="Professionals who can build security culture — policy development, training delivery, phishing simulations. Often undervalued but critical for organisational security maturity." />
+          <FeatureCard icon={Users} title="Security Awareness" desc="Professionals who can build security culture, policy development, training delivery, phishing simulations. Often undervalued but critical for organisational security maturity." />
         </div>
 
         <Body>
@@ -131,20 +131,20 @@ export const AfricaNeedsCybersecurityProfessionalsBlog: React.FC = () => {
       <Section>
         <Heading>How the Hacker Protocol Bootcamp Helps</Heading>
         <Body>
-          The Hacker Protocol Bootcamp (HPB) was designed specifically to address this talent gap. It is not a traditional course — it is a <Highlight>hands-on, phase-gated pipeline</Highlight> that takes students from zero to operational capability in a structured, measurable way.
+          The Hacker Protocol Bootcamp (HPB) was designed specifically to address this talent gap. It is not a traditional course, it is a <Highlight>hands-on, phase-gated pipeline</Highlight> that takes students from zero to operational capability in a structured, measurable way.
         </Body>
 
         <BulletList
           items={[
-            { icon: <IconCheck size={20} className="text-accent" />, text: <span><Highlight>No prerequisites required</Highlight> — Phase 01 is open to everyone, regardless of background. The only requirement is the willingness to learn</span> },
-            { icon: <IconCheck size={20} className="text-accent" />, text: <span><Highlight>Low-bandwidth accessible</Highlight> — built for the African connectivity reality. The bootcamp works on mobile connections and moderate bandwidth</span> },
-            { icon: <IconCheck size={20} className="text-accent" />, text: <span><Highlight>Structured walkthroughs</Highlight> — no local setup, no dependency management. Every room guides you step-by-step with built-in quiz validation to confirm understanding</span> },
-            { icon: <IconCheck size={20} className="text-accent" />, text: <span><Highlight>Verifiable credentials</Highlight> — every completed room earns CyberPoints (CP) recorded on a blockchain, providing provable proof of capability for employers</span> },
+            { icon: <IconCheck size={20} className="text-accent" />, text: <span><Highlight>No prerequisites required</Highlight>. Phase 01 is open to everyone, regardless of background. The only requirement is the willingness to learn</span> },
+            { icon: <IconCheck size={20} className="text-accent" />, text: <span><Highlight>Low-bandwidth accessible</Highlight>, built for the African connectivity reality. The bootcamp works on mobile connections and moderate bandwidth</span> },
+            { icon: <IconCheck size={20} className="text-accent" />, text: <span><Highlight>Structured walkthroughs</Highlight>, no local setup, no dependency management. Every room guides you step-by-step with built-in quiz validation to confirm understanding</span> },
+            { icon: <IconCheck size={20} className="text-accent" />, text: <span><Highlight>Verifiable credentials</Highlight>, every completed room earns CyberPoints (CP) recorded on a blockchain, providing provable proof of capability for employers</span> },
           ]}
         />
 
         <Body>
-          The HPB is our contribution to closing the 100,000-professional gap. We are not trying to replace university education or industry certifications — we are building a <Highlight>parallel pathway</Highlight> that focuses purely on practical capability, accessible to anyone on the continent with the drive to learn.
+          The HPB is our contribution to closing the 100,000-professional gap. We are not trying to replace university education or industry certifications, we are building a <Highlight>parallel pathway</Highlight> that focuses purely on practical capability, accessible to anyone on the continent with the drive to learn.
         </Body>
       </Section>
 

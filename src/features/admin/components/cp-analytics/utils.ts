@@ -25,7 +25,7 @@ export function buildKpis(txs: CpTx[], days: number): KpiData {
   }
   const uniqueUsers = new Set(recent.map(t => t.user?.email || t._id)).size;
   const avgPerTx = recent.length ? Math.round((totalIssued + totalBurned) / recent.length) : 0;
-  const topEarner = [...userEarnings.entries()].sort((a, b) => b[1] - a[1])[0]?.[0] ?? '—';
+  const topEarner = [...userEarnings.entries()].sort((a, b) => b[1] - a[1])[0]?.[0] ?? '-';
   return { totalIssued, totalBurned, netFlow: totalIssued - totalBurned, uniqueUsers, avgPerTx, topEarner };
 }
 

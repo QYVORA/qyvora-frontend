@@ -68,7 +68,7 @@ const QuiteRootPage = () => {
 
   return (
     <div className="bg-bg min-h-full">
-      <SEO title="QuiteRoot - QYVORA" description="QuiteRoot — a network of security researchers pushing the boundaries of offensive security." />
+      <SEO title="QuiteRoot - QYVORA" description="QuiteRoot, a network of security researchers pushing the boundaries of offensive security." />
       <PublicSnapLayout>
         <section className="relative w-full min-h-dvh snap-section bg-bg">
         <StudentHeroSection

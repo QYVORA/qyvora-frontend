@@ -32,14 +32,14 @@ dig target.com ANY
 curl -I https://target.com
 \`\`\`
 
-> **Why this matters for hacking:** Recon is 80% of any security assessment. The more you know about your target, the fewer surprises during exploitation. Passive recon (DNS, WHOIS, certificate logs) leaves no trace — the target never knows you're researching them. Active recon (port scans, directory enumeration) creates logs and may trigger alarms. Professional testers spend days on passive recon before sending a single packet. In CTFs, thorough recon often reveals hidden flags in DNS TXT records, certificate SAN entries, or WHOIS contact fields.
+> **Why this matters for hacking:** Recon is 80% of any security assessment. The more you know about your target, the fewer surprises during exploitation. Passive recon (DNS, WHOIS, certificate logs) leaves no trace, the target never knows you're researching them. Active recon (port scans, directory enumeration) creates logs and may trigger alarms. Professional testers spend days on passive recon before sending a single packet. In CTFs, thorough recon often reveals hidden flags in DNS TXT records, certificate SAN entries, or WHOIS contact fields.
 
 **Mini-challenge:** Run \`dig target.com ANY +short\` followed by \`whois target.com 2>/dev/null | head -20\` on a target you own or \`google.com\`. Notice how much information is publicly available — IP ranges, name servers, administrative contacts. This is the starting point for every engagement.
 
 The rule: **passive first, active second, exploit last**.`),
 
     l('recon-2', 'WHOIS & DNS Enumeration',
-      `**WHOIS** tells you who owns a domain. This is passive recon — it's public information.
+      `**WHOIS** tells you who owns a domain. This is passive recon, it's public information.
 
 \`\`\`bash
 # Basic WHOIS lookup
@@ -70,7 +70,7 @@ A **zone transfer** copies the entire DNS database. Most servers block this, but
 dnsrecon -d target.com -D /usr/share/wordlists/dns.txt -t brt
 \`\`\`
 
-> **Why this matters for hacking:** WHOIS data often reveals the target's infrastructure — IP ranges, hosting providers, and contact emails useful for social engineering. DNS enumeration discovers subdomains, mail servers, and name servers. A successful zone transfer (\`dig axfr\`) is the jackpot — it dumps every DNS record in seconds. Even without zone transfer, tools like \`dnsrecon\` brute-force common subdomain names to find hidden services.
+> **Why this matters for hacking:** WHOIS data often reveals the target's infrastructure. IP ranges, hosting providers, and contact emails useful for social engineering. DNS enumeration discovers subdomains, mail servers, and name servers. A successful zone transfer (\`dig axfr\`) is the jackpot, it dumps every DNS record in seconds. Even without zone transfer, tools like \`dnsrecon\` brute-force common subdomain names to find hidden services.
 
 **Mini-challenge:** Run \`dig google.com NS +short\` to find Google's nameservers. Then \`dig axfr @ns1.google.com google.com 2>&1 | head -5\` (will likely fail — zone transfers are restricted). This demonstrates why zone transfers are rare in production — but when they work, they're devastating for recon. Test with \`dig version.bind CHAOS TXT @8.8.8.8\` to check DNS server version.
 
@@ -82,24 +82,24 @@ This tries thousands of common subdomain names. Install with: \`sudo apt install
 **Tools for subdomain enumeration:**
 
 \`\`\`bash
-# Sublist3r — uses search engines and DNS
+# Sublist3r, uses search engines and DNS
 sublist3r -d target.com
 
-# Amass — more thorough, uses many sources
+# Amass, more thorough, uses many sources
 amass enum -d target.com
 
-# Assetfinder — quick and simple
+# Assetfinder, quick and simple
 assetfinder --subs-only target.com
 \`\`\`
 
 **Why enumerate subdomains?**
-- \`admin.target.com\` — admin panel
-- \`dev.target.com\` — development server (less secure)
-- \`api.target.com\` — API endpoint
-- \`test.target.com\` — testing environment
-- \`jenkins.target.com\` — CI/CD (often misconfigured)
-- \`vpn.target.com\` — VPN access point
-- \`git.target.com\` — internal Git server
+- \`admin.target.com\`, admin panel
+- \`dev.target.com\`, development server (less secure)
+- \`api.target.com\` - API endpoint
+- \`test.target.com\`, testing environment
+- \`jenkins.target.com\` - CI/CD (often misconfigured)
+- \`vpn.target.com\` - VPN access point
+- \`git.target.com\`, internal Git server
 
 \`\`\`bash
 # Verify found subdomains resolve
@@ -119,35 +119,35 @@ curl -s "https://crt.sh/?q=%25.target.com&output=json" \\
   | sort -u
 \`\`\`
 
-> **Why this matters for hacking:** Subdomain enumeration reveals the full attack surface. \`admin.target.com\` (admin panel), \`dev.target.com\` (less secure dev environment), \`api.target.com\` (backend API), \`jenkins.target.com\` (CI/CD — often with default credentials). Certificate Transparency logs (\`crt.sh\`) are a passive goldmine — every SSL certificate issued for your target's domain is publicly logged, revealing subdomains you'd never find through brute-force.
+> **Why this matters for hacking:** Subdomain enumeration reveals the full attack surface. \`admin.target.com\` (admin panel), \`dev.target.com\` (less secure dev environment), \`api.target.com\` (backend API), \`jenkins.target.com\` (CI/CD, often with default credentials). Certificate Transparency logs (\`crt.sh\`) are a passive goldmine, every SSL certificate issued for your target's domain is publicly logged, revealing subdomains you'd never find through brute-force.
 
 **Mini-challenge:** Run \`curl -s "https://crt.sh/?q=%25.google.com&output=json" 2>/dev/null | python3 -c "import sys,json; data=json.load(sys.stdin); seen=set(); [print(v) for e in data for v in [e.get('name_value','')] if v not in seen and not seen.add(v)]" 2>/dev/null | head -20\`. This queries Certificate Transparency logs for Google subdomains — a passive recon technique that often reveals dozens of hidden services.
 
-This pulls every SSL certificate issued for \`*.target.com\` and \`target.com\` — a passive way to discover subdomains.`),
+This pulls every SSL certificate issued for \`*.target.com\` and \`target.com\`, a passive way to discover subdomains.`),
 
     l('recon-4', 'Directory Brute-Forcing',
       `Once you know a host, you need to find hidden files and directories. This is called **directory enumeration** or **directory brute-forcing**.
 
 \`\`\`bash
-# ffuf — the modern choice (fast, flexible)
+# ffuf, the modern choice (fast, flexible)
 ffuf -u https://target.com/FUZZ -w /usr/share/wordlists/common.txt
 
-# dirb — simpler but effective
+# dirb, simpler but effective
 dirb https://target.com /usr/share/wordlists/common.txt
 
-# gobuster — another solid option
+# gobuster, another solid option
 gobuster dir -u https://target.com -w /usr/share/wordlists/common.txt
 \`\`\`
 
 **Common discovery:**
-- \`/admin\` , \`/login\` — authentication pages
-- \`/backup\` , \`/backups\` — backup files
-- \`/.git\` — exposed Git repository
-- \`/.env\` — environment variables with secrets
-- \`/wp-admin\` , \`/wp-content\` — WordPress
-- \`/api\` , \`/v1\` , \`/v2\` — API endpoints
-- \`/robots.txt\` — hidden paths listed by the developer
-- \`/sitemap.xml\` — all pages the site wants indexed
+- \`/admin\` , \`/login\`, authentication pages
+- \`/backup\` , \`/backups\`, backup files
+- \`/.git\`, exposed Git repository
+- \`/.env\`, environment variables with secrets
+- \`/wp-admin\` , \`/wp-content\`. WordPress
+- \`/api\` , \`/v1\` , \`/v2\`. API endpoints
+- \`/robots.txt\`, hidden paths listed by the developer
+- \`/sitemap.xml\`, all pages the site wants indexed
 
 \`\`\`bash
 # ffuf with filtering (hide 404s)
@@ -160,7 +160,7 @@ ffuf -u https://target.com/FUZZ.bak \\
   -w /usr/share/seclists/Discovery/Web-Content/common.txt
 \`\`\`
 
-> **Why this matters for hacking:** Directory brute-forcing finds hidden endpoints that aren't linked from any page — admin panels, backup files, configuration files, and API endpoints. A 404 response means the path doesn't exist. A 403 or 401 means it exists but is protected. A 200 means it's publicly accessible. The \`-fc 404\` flag in ffuf filters out noise. Different file extensions (\`.bak\`, \`.old\`, \`.txt\`) may reveal source code or configuration. The difference between a 403 and a 404 is critical — 403 confirms the resource exists.
+> **Why this matters for hacking:** Directory brute-forcing finds hidden endpoints that aren't linked from any page, admin panels, backup files, configuration files, and API endpoints. A 404 response means the path doesn't exist. A 403 or 401 means it exists but is protected. A 200 means it's publicly accessible. The \`-fc 404\` flag in ffuf filters out noise. Different file extensions (\`.bak\`, \`.old\`, \`.txt\`) may reveal source code or configuration. The difference between a 403 and a 404 is critical - 403 confirms the resource exists.
 
 **Mini-challenge:** Run \`ffuf -u https://httpbin.org/FUZZ -w /usr/share/wordlists/dirb/common.txt -c -fc 404 2>/dev/null | head -20\`. If ffuf isn't installed, simulate: \`for path in admin login backup .git .env; do code=$(curl -s -o /dev/null -w "%{http_code}" "https://httpbin.org/$path"); echo "$path → $code"; done\`. This shows how different status codes reveal existence even when access is denied.
 
@@ -172,12 +172,12 @@ sudo apt install seclists
 \`\`\``),
 
     l('recon-5', 'Technology Fingerprinting',
-      `**Fingerprinting** identifies the technologies a website uses — the web server, framework, CMS, JavaScript libraries, and more.
+      `**Fingerprinting** identifies the technologies a website uses, the web server, framework, CMS, JavaScript libraries, and more.
 
 **Manual fingerprinting:**
 
 \`\`\`bash
-# Check response headers — they reveal server info
+# Check response headers, they reveal server info
 curl -I https://target.com
 \`\`\`
 
@@ -213,7 +213,7 @@ WordPress[6.4], jQuery[3.7.1]
 
 \`\`\`bash
 # More detailed with WPScan (for WordPress)
-> **Why this matters for hacking:** Technology fingerprinting tells you exactly which vulnerabilities to pursue. Apache 2.4.49 has CVE-2021-41773 (path traversal). WordPress 6.4 has specific plugin vulnerabilities. Express.js suggests Node.js backend. PHP 8.2 suggests Laravel or WordPress. Each technology stack has known attack vectors — your recon tells you which ones apply. The \`Server\` header is the first clue, but tools like WhatWeb check hundreds of fingerprints.
+> **Why this matters for hacking:** Technology fingerprinting tells you exactly which vulnerabilities to pursue. Apache 2.4.49 has CVE-2021-41773 (path traversal). WordPress 6.4 has specific plugin vulnerabilities. Express.js suggests Node.js backend. PHP 8.2 suggests Laravel or WordPress. Each technology stack has known attack vectors, your recon tells you which ones apply. The \`Server\` header is the first clue, but tools like WhatWeb check hundreds of fingerprints.
 
 **Mini-challenge:** Run \`curl -I https://httpbin.org 2>/dev/null | grep -iE "server|x-powered-by|x-frame"\` to fingerprint a simple service. Then \`nmap -sV --script http-headers httpbin.org -p 80 2>/dev/null\`. Compare the information from each tool — this is how you build a technology profile from multiple data sources.
 
@@ -266,13 +266,13 @@ Review your findings and look for:
 - Outdated software versions
 - Subdomains with different technologies
 
-> **Why this matters for hacking:** A structured recon report is your engagement roadmap. Phase 1 (passive) gathers intel without touching the target. Phase 2 (active) validates findings and discovers new attack surface. Phase 3 (analysis) correlates data — a WordPress site on an unusual port, a subdomain with different technologies, an admin panel with default credentials. Saving output in organized directories with timestamps creates an audit trail and ensures nothing is lost when you revisit findings later.
+> **Why this matters for hacking:** A structured recon report is your engagement roadmap. Phase 1 (passive) gathers intel without touching the target. Phase 2 (active) validates findings and discovers new attack surface. Phase 3 (analysis) correlates data, a WordPress site on an unusual port, a subdomain with different technologies, an admin panel with default credentials. Saving output in organized directories with timestamps creates an audit trail and ensures nothing is lost when you revisit findings later.
 
 **Mini-challenge:** Create the recon directory structure: \`mkdir -p /tmp/recon-demo/{passive,active,reports}\`. Then run \`curl -s -o /tmp/recon-demo/passive/headers.txt -w "%{http_code}" https://example.com && curl -s -o /tmp/recon-demo/active/robots.txt https://example.com/robots.txt\`. Practice the discipline of saving everything — this habit separates professional testers from ad-hoc scanners.
 
 Save everything in a structured format. Documentation is as important as discovery.`, { hasQuiz: true, quiz: [
-        { id: 'recon-6-q1', question: 'What is the first phase of a security assessment?', options: ['Exploitation', 'Reconnaissance', 'Reporting', 'Privilege Escalation'], correctIndex: 1, explanation: 'Reconnaissance is always the first phase — you must gather information before you can attack.' },
-        { id: 'recon-6-q2', question: 'What tool would you use for passive subdomain enumeration?', options: ['nmap', 'curl against crt.sh', 'hydra', 'sqlmap'], correctIndex: 1, explanation: 'crt.sh queries Certificate Transparency logs — a passive way to find subdomains without touching the target.' },
+        { id: 'recon-6-q1', question: 'What is the first phase of a security assessment?', options: ['Exploitation', 'Reconnaissance', 'Reporting', 'Privilege Escalation'], correctIndex: 1, explanation: 'Reconnaissance is always the first phase, you must gather information before you can attack.' },
+        { id: 'recon-6-q2', question: 'What tool would you use for passive subdomain enumeration?', options: ['nmap', 'curl against crt.sh', 'hydra', 'sqlmap'], correctIndex: 1, explanation: 'crt.sh queries Certificate Transparency logs, a passive way to find subdomains without touching the target.' },
         { id: 'recon-6-q3', question: 'What is the difference between passive and active reconnaissance?', options: ['Passive is faster', 'Passive leaves no logs on the target', 'Active is always illegal', 'Passive requires more tools'], correctIndex: 1, explanation: 'Passive reconnaissance gathers information without directly interacting with the target, leaving no trace.' },
       ] }),
 
@@ -343,12 +343,12 @@ done
 \`\`\`
 
 **Operational security when dorking:**
-- Use a VPN or Tor — Google tracks searches
+- Use a VPN or Tor. Google tracks searches
 - Don't click on results unless authorized
 - Document findings with screenshots
-- Google may block automated queries — use delays
+- Google may block automated queries, use delays
 
-> **Why this matters for hacking:** Google Dorking is passive reconnaissance at scale. The Google Hacking Database (GHDB) catalogs thousands of pre-built queries that find exposed CCTV cameras, database dumps, login pages, and vulnerable web applications. The \`site:\` operator limits results to your target. \`filetype:\` finds specific document types. \`intitle:"index of"\` finds directory listings — one of the most common information disclosure vulnerabilities. Always use a VPN or Tor when dorking to avoid profiling.
+> **Why this matters for hacking:** Google Dorking is passive reconnaissance at scale. The Google Hacking Database (GHDB) catalogs thousands of pre-built queries that find exposed CCTV cameras, database dumps, login pages, and vulnerable web applications. The \`site:\` operator limits results to your target. \`filetype:\` finds specific document types. \`intitle:"index of"\` finds directory listings, one of the most common information disclosure vulnerabilities. Always use a VPN or Tor when dorking to avoid profiling.
 
 **Mini-challenge:** Run a Google dork test on a non-sensitive target: search for \`site:example.com intitle:"index of"\` in your browser (replace example.com with a real domain you own). If directory listing is enabled, you'll see the file structure. Practice with \`site:github.com "password" "secret" in:file\` to understand how dorks find exposed credentials.
 
@@ -360,7 +360,7 @@ Dorking is completely passive. The target never knows you searched for them.`),
 **Build a simple recon script:**
 \`\`\`bash
 #!/bin/bash
-# basic-recon.sh — automated recon pipeline
+# basic-recon.sh, automated recon pipeline
 
 TARGET=$1
 OUTPUT_DIR="recon-$(echo $TARGET | tr -d '/')"

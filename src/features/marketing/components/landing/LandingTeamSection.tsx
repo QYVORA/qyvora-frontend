@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { useReducedMotion } from 'motion/react';
 import { IconArrowRight, IconProfile, BrandGithubIcon, BrandLinkedinIcon, BrandXIcon } from '@/shared/components/icons';
 import { teamData, type TeamMember } from '@/features/marketing/content/teamData';
+import DragMarquee from '@/shared/components/carousel/DragMarquee';
 import { useTranslation } from 'react-i18next';
 
 const TeamCard = ({ member }: { member: TeamMember }) => (
@@ -94,17 +95,13 @@ const LandingTeamSection = () => {
             ))}
           </div>
         ) : (
-          /* Large card infinite carousel — cards fill the strip, never clipped */
+          /* Large card infinite carousel — grabbable strip, cards fill it fully */
           <div className="relative -mx-3 md:-mx-4 lg:-mx-6 flex-1 min-h-[400px] sm:min-h-0 min-w-0 overflow-x-clip overflow-y-visible flex items-center py-3">
-            <div className="marquee-track">
-              {[0, 1].map((copy) => (
-                <div key={copy} aria-hidden={copy === 1} className="h-full flex items-stretch shrink-0">
-                  {teamData.map((member) => (
-                    <TeamCard key={`${copy}-${member.id}`} member={member} />
-                  ))}
-                </div>
+            <DragMarquee speed={24} trackClassName="mr-4 md:mr-5" className="w-full">
+              {teamData.map((member) => (
+                <TeamCard key={member.id} member={member} />
               ))}
-            </div>
+            </DragMarquee>
           </div>
         )}
       </div>

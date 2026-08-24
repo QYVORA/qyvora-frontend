@@ -52,7 +52,7 @@ const OsintLab = () => {
               return {
                 id: challenge.id,
                 title: challenge.title,
-                subtitle: `${challenge.targetName} — ${challenge.skills.slice(0, 2).join(' · ')}`,
+                subtitle: `${challenge.targetName} | ${challenge.skills.slice(0, 2).join(' · ')}`,
                 description: challenge.description,
                 difficulty: challenge.difficulty,
                 meta: (
@@ -80,7 +80,7 @@ const OsintLab = () => {
 
   return (
     <div className="bg-bg min-h-full">
-      <SEO title={`${activeChallenge.title} — OSINT Lab`} description={activeChallenge.description} noindex />
+      <SEO title={`${activeChallenge.title}. OSINT Lab`} description={activeChallenge.description} noindex />
       <WalkthroughLayout
         title={activeChallenge.title}
         subtitle={activeChallenge.description}
@@ -123,14 +123,14 @@ const OsintLab = () => {
           const { isLocked, isCompleted, isActive } = getStepState(index);
 
           const narrative = index === 0 && activeChallenge.narrative
-            ? `${activeChallenge.narrative}\n\n## OSINT Reconnaissance — Step ${index + 1}\n\nTool: ${step.tool}\n\n${step.explanation}\n\nExecute the command below to gather intelligence.`
-            : `## OSINT Reconnaissance — Step ${index + 1}\n\nTool: ${step.tool}\n\n${step.explanation}\n\nExecute the command below to gather intelligence.`;
+            ? `${activeChallenge.narrative}\n\n## OSINT Reconnaissance. Step ${index + 1}\n\nTool: ${step.tool}\n\n${step.explanation}\n\nExecute the command below to gather intelligence.`
+            : `## OSINT Reconnaissance - Step ${index + 1}\n\nTool: ${step.tool}\n\n${step.explanation}\n\nExecute the command below to gather intelligence.`;
 
           return (
             <WalkthroughStep
               key={index}
               stepIndex={index + 1}
-              title={`Step ${index + 1} — ${step.tool}`}
+              title={`Step ${index + 1} | ${step.tool}`}
               narrative={narrative}
               commandInstruction={step.command}
               isLocked={isLocked}

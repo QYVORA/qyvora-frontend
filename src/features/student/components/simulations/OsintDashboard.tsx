@@ -112,7 +112,7 @@ function generateResult(type: string, query: string, module: OsintModule): strin
     case 'social':
       return `LinkedIn: ${query || module.query} Corp\n  - 500+ employees\n  - Founded 2015\n  - HQ: San Francisco, CA\n\nTwitter: @${q}\n  - 12.4K followers\n  - Joined Mar 2015\n  - Bio: "Innovation starts here"\n\nGitHub: github.com/${q}\n  - 47 repositories\n  - 312 followers\n  - Top languages: JavaScript, Python\n\nKey Personnel:\n  - CTO: j.doe@${q} (GitHub: janedoe)`;
     case 'search':
-      return `Results for "${query}":\n\n1. ${query} — Official Website\n   https://www.${q}.com\n   Corporate website for ${query} Inc.\n\n2. ${query} on LinkedIn\n   https://linkedin.com/company/${q}\n   ${query} Corp | 500+ employees\n\n3. ${query} - Wikipedia\n   https://en.wikipedia.org/wiki/${q}\n   Overview and history of ${query}.\n\n4. Jobs at ${query}\n   https://glassdoor.com/${q}-jobs\n   23 open positions found.\n\n5. ${query} GitHub\n   https://github.com/${q}\n   Open source projects and contributions.`;
+      return `Results for "${query}":\n\n1. ${query}. Official Website\n   https://www.${q}.com\n   Corporate website for ${query} Inc.\n\n2. ${query} on LinkedIn\n   https://linkedin.com/company/${q}\n   ${query} Corp | 500+ employees\n\n3. ${query} - Wikipedia\n   https://en.wikipedia.org/wiki/${q}\n   Overview and history of ${query}.\n\n4. Jobs at ${query}\n   https://glassdoor.com/${q}-jobs\n   23 open positions found.\n\n5. ${query} GitHub\n   https://github.com/${q}\n   Open source projects and contributions.`;
     default:
       return module.result || 'No results found.';
   }

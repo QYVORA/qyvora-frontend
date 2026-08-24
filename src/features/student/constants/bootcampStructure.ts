@@ -76,7 +76,7 @@ export const BOOTCAMP_CONFIG: BootcampConfig = {
           id: 'room1',
           title: 'Introduction to Offensive Security',
           overview:
-            'Offensive security is the practice of thinking and acting like an attacker — with permission — to find weaknesses before real adversaries do. This room explains what the field is, why it exists, and how QYVORA fits into it.',
+            'Offensive security is the practice of thinking and acting like an attacker: with permission, to find weaknesses before real adversaries do. This room explains what the field is, why it exists, and how QYVORA fits into it.',
           estimatedMinutes: 20,
           steps: [],
         },
@@ -84,7 +84,7 @@ export const BOOTCAMP_CONFIG: BootcampConfig = {
           id: 'room2',
           title: 'The Hacker Mindset',
           overview:
-            'The most important tool you will ever develop is not a piece of software — it is how you think. This room breaks down the cognitive traits that separate effective operators from people who just run tools.',
+            'The most important tool you will ever develop is not a piece of software. It is how you think. This room breaks down the cognitive traits that separate effective operators from people who just run tools.',
           estimatedMinutes: 18,
           steps: [],
         },
@@ -92,7 +92,7 @@ export const BOOTCAMP_CONFIG: BootcampConfig = {
           id: 'room3',
           title: 'Ethics & Legal Boundaries',
           overview:
-            'Operating without authorisation is a criminal offence in every jurisdiction. This room covers the legal framework, the concept of scope, and responsible disclosure — the non-negotiable foundations of professional offensive security.',
+            'Operating without authorisation is a criminal offence in every jurisdiction. This room covers the legal framework, the concept of scope, and responsible disclosure: the non-negotiable foundations of professional offensive security.',
           estimatedMinutes: 22,
           steps: [],
         }],
@@ -223,7 +223,7 @@ export const BOOTCAMP_CONFIG: BootcampConfig = {
           id: 'room5',
           title: 'Authentication Attacks',
           overview:
-            "Authentication is the front door of every application — and it is often left unlocked. To become an Qyvora operative, you must learn to pick that lock without leaving a scratch. This room covers brute force, session attacks, token analysis, and the full range of authentication weaknesses that separate a hardened target from a compromised one.",
+            "Authentication is the front door of every application, and it is often left unlocked. To become an Qyvora operative, you must learn to pick that lock without leaving a scratch. This room covers brute force, session attacks, token analysis, and the full range of authentication weaknesses that separate a hardened target from a compromised one.",
           estimatedMinutes: 30,
           steps: [],
         }],

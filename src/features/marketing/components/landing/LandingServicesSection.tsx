@@ -4,6 +4,7 @@ import { motion, useReducedMotion } from 'motion/react';
 import { Sparkles, Building2, Send } from 'lucide-react';
 import { IconShield, IconCheck, IconArrowRight, IconLock } from '@/shared/components/icons';
 import { openServiceRequestModal } from '../ServiceRequestModal';
+import { Carousel } from '@/shared/components/carousel';
 import { useTranslation } from 'react-i18next';
 import { DottedMapOverlay } from '@/shared/components/ui';
 
@@ -48,12 +49,64 @@ const LandingServicesSection: React.FC = () => {
     features: meta.featureKeys.map((fk) => t(`landing.services.${meta.tKey}.features.${fk}`)),
   }));
 
+  /* Mobile: one service tier per slide, blog-carousel style (swipeable). */
+  const mobileSlides = [featured, ...supporting];
+
   return (
     <div className="relative overflow-hidden min-h-dvh lg:h-dvh flex flex-col">
       <div className="relative w-full h-full px-3 md:px-4 lg:px-6 pt-20 md:pt-20 lg:pt-20 pb-6 md:pb-10 lg:pb-16 flex flex-col">
         <div className="w-full flex-1 flex flex-col min-h-0">
+          {/* Mobile — service tiers as a swipeable carousel */}
+          <div className="lg:hidden">
+            <Carousel
+              slides={mobileSlides}
+              renderCard={(service) => (
+                <div className="flex flex-col card-accent bg-bg-card overflow-hidden h-[430px] sm:h-[400px]">
+                  <DottedMapOverlay className="rounded-none" />
+                  <div className="relative flex flex-col flex-1 p-5">
+                    <div className="flex items-center gap-2 mb-2">
+                      <span className="text-[9px] font-black uppercase tracking-widest text-text-muted">{service.subtitle}</span>
+                      {service.featured && (
+                        <span className="flex items-center gap-1 px-2 py-0.5 rounded-full bg-accent/10 border border-accent/30 text-[8px] font-black uppercase tracking-widest text-accent">
+                          <Sparkles className="w-2.5 h-2.5" /> {t('landing.services.mostPopular')}
+                        </span>
+                      )}
+                    </div>
+                    <h3 className="text-xl font-black text-text-primary tracking-tighter leading-none mb-1.5">
+                      {service.tier}
+                    </h3>
+                    <span className="text-sm font-black text-accent mb-4">{service.price}</span>
+
+                    <ul className="space-y-2.5">
+                      {service.features.map((feature, i) => (
+                        <li key={i} className="flex items-start gap-2.5">
+                          <IconCheck size={16} className="text-accent mt-0.5 shrink-0" />
+                          <span className="text-xs text-text-secondary leading-relaxed">{feature}</span>
+                        </li>
+                      ))}
+                    </ul>
+
+                    <button
+                      onClick={() => openServiceRequestModal(service.tier)}
+                      className={`mt-auto inline-flex items-center justify-center gap-2 py-3 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all active:scale-[0.98] ${
+                        service.featured
+                          ? 'bg-accent text-on-accent'
+                          : 'btn-primary !border-accent/30'
+                      }`}
+                    >
+                      <IconShield size={14} />
+                      {t('landing.services.requestAssessment')}
+                      <IconArrowRight size={14} />
+                    </button>
+                  </div>
+                </div>
+              )}
+              autoPlayInterval={6000}
+            />
+          </div>
+
           {/* Bento grid: 4 columns on desktop — same structure as pillars */}
-          <div className="grid grid-cols-1 lg:grid-cols-4 gap-2 md:gap-4 flex-1 auto-rows-fr">
+          <div className="hidden lg:grid grid-cols-1 lg:grid-cols-4 gap-2 md:gap-4 flex-1 auto-rows-fr">
             {/* Featured card — Standard tier, 2 cols, 2 rows */}
             <motion.div
               initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 40 }}

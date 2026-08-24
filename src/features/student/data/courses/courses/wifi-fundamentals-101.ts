@@ -9,10 +9,10 @@ export const LESSONS: Lesson[] = [
       `Wi-Fi uses **radio waves** to transmit data between devices. Instead of cables, data travels through the air at specific frequencies.
 
 Every Wi-Fi network has:
-- **SSID** — the network name you see (e.g., "HomeWiFi")
-- **BSSID** — the MAC address of the access point (router)
-- **Channel** — the specific frequency used for transmission
-- **Band** — 2.4 GHz or 5 GHz
+- **SSID**: the network name you see (e.g., "HomeWiFi")
+- **BSSID**: the MAC address of the access point (router)
+- **Channel**: the specific frequency used for transmission
+- **Band** - 2.4 GHz or 5 GHz
 
 **How devices connect:**
 1. Device scans for nearby SSIDs (probe request)
@@ -30,7 +30,7 @@ iwlist wlan0 scan | grep -E "ESSID|Channel|Signal"
 nmcli dev wifi list
 \`\`\`
 
-> **Why this matters for hacking:** Wi-Fi networks are a primary entry point for attackers. Understanding SSID, BSSID, channel, and encryption lets you identify target networks and assess their security posture. The \`iwlist wlan0 scan\` command reveals every network in range — including those with hidden SSIDs. Signal strength (PWR) tells you how close the access point is, useful for physical targeting. In wardriving (mapping Wi-Fi networks geographically), these commands are the foundation.
+> **Why this matters for hacking:** Wi-Fi networks are a primary entry point for attackers. Understanding SSID, BSSID, channel, and encryption lets you identify target networks and assess their security posture. The \`iwlist wlan0 scan\` command reveals every network in range, including those with hidden SSIDs. Signal strength (PWR) tells you how close the access point is, useful for physical targeting. In wardriving (mapping Wi-Fi networks geographically), these commands are the foundation.
 
 **Mini-challenge:** Run \`iwconfig 2>/dev/null || echo "No wireless interface found"\` to check your Wi-Fi adapter. Then \`iw dev wlan0 scan 2>/dev/null | grep -E "SSID|signal|freq" | head -20\` to see nearby networks. If no wireless interface, install \`sudo apt install wireless-tools\` and check with \`iwconfig\`. This is the starting point for any wireless security assessment.`),
 
@@ -38,16 +38,16 @@ nmcli dev wifi list
       `Wi-Fi operates on two main frequency bands, each with trade-offs.
 
 **2.4 GHz:**
-- **Range** — better through walls and obstacles
-- **Speed** — slower (max ~600 Mbps theoretical)
-- **Channels** — 11-14 channels (only 3 non-overlapping: 1, 6, 11)
-- **Interference** — crowded (Bluetooth, microwaves, cordless phones)
+- **Range**: better through walls and obstacles
+- **Speed**: slower (max ~600 Mbps theoretical)
+- **Channels** - 11-14 channels (only 3 non-overlapping: 1, 6, 11)
+- **Interference**: crowded (Bluetooth, microwaves, cordless phones)
 
 **5 GHz:**
-- **Range** — shorter, worse through walls
-- **Speed** — faster (max ~1.3 Gbps theoretical)
-- **Channels** — more channels, less congestion
-- **Interference** — less crowded
+- **Range**: shorter, worse through walls
+- **Speed**: faster (max ~1.3 Gbps theoretical)
+- **Channels**: more channels, less congestion
+- **Interference**: less crowded
 
 \`\`\`bash
 # Check which band you're connected to (Linux)
@@ -60,16 +60,16 @@ iw dev wlan0 link
 Output shows the frequency (2.4xxx = 2.4 GHz, 5.xxx = 5 GHz) and signal quality in dBm. Signals above \`-70 dBm\` are considered good. Weaker than \`-80 dBm\` means poor connectivity.
 
 **Wi-Fi standards:**
-- **802.11b/g/n** — 2.4 GHz (legacy)
-- **802.11a/n/ac** — 5 GHz (modern)
-> **Why this matters for hacking:** Band selection affects attack methodology. 2.4 GHz penetrates walls better (good for war driving from outside buildings) but is more congested. 5 GHz has more channels and less interference but shorter range. The \`iwconfig\` output shows which band you're connected to — 2.4xxx GHz = 2.4 GHz band, 5.xxx GHz = 5 GHz. Signal strength below \`-80 dBm\` is too weak for reliable connection. Understanding these characteristics helps you position yourself for optimal signal capture.
+- **802.11b/g/n** - 2.4 GHz (legacy)
+- **802.11a/n/ac** - 5 GHz (modern)
+> **Why this matters for hacking:** Band selection affects attack methodology. 2.4 GHz penetrates walls better (good for war driving from outside buildings) but is more congested. 5 GHz has more channels and less interference but shorter range. The \`iwconfig\` output shows which band you're connected to - 2.4xxx GHz = 2.4 GHz band, 5.xxx GHz = 5 GHz. Signal strength below \`-80 dBm\` is too weak for reliable connection. Understanding these characteristics helps you position yourself for optimal signal capture.
 
 **Mini-challenge:** Check your current connection quality: \`iw dev wlan0 link 2>/dev/null | head -10\`. If your system supports it, this shows signal strength (dBm), frequency, and bitrate. Compare the value to the guidelines: > -70 dBm (excellent), -70 to -80 (good), < -80 (poor). This skill is essential for assessing whether you can reliably capture traffic from a target network.
 
-- **802.11ax (Wi-Fi 6)** — both bands (latest)`),
+- **802.11ax (Wi-Fi 6)**: both bands (latest)`),
 
     l('wf-3', 'WPA2 & WPA3',
-      `**WPA2** (Wi-Fi Protected Access 2) has been the standard since 2004. It uses AES encryption and requires a **pre-shared key (PSK)** — the Wi-Fi password.
+      `**WPA2** (Wi-Fi Protected Access 2) has been the standard since 2004. It uses AES encryption and requires a **pre-shared key (PSK)**, the Wi-Fi password.
 
 **The 4-Way Handshake:**
 When a device connects to WPA2:
@@ -108,10 +108,10 @@ sudo airodump-ng -c 6 --bssid AA:BB:CC:DD:EE:FF -w capture wlan0mon
 **Essential tools on Linux:**
 
 \`\`\`bash
-# iwlist — scan for networks
+# iwlist, scan for networks
 sudo iwlist wlan0 scan
 
-# airodump-ng — detailed network capture (install aircrack-ng first)
+# airodump-ng, detailed network capture (install aircrack-ng first)
 sudo airmon-ng start wlan0    # Enable monitor mode
 sudo airodump-ng wlan0mon     # Start capturing
 \`\`\`
@@ -123,21 +123,21 @@ AA:BB:CC:DD:EE:FF  -65   120     42     6  WPA2 HomeWiFi
 11:22:33:44:55:66  -72   95      18     1  WPA2 OfficeNet
 \`\`\`
 
-- **BSSID** — MAC address of the access point
-- **PWR** — signal strength (higher = closer)
-- **CH** — channel
-- **ENC** — encryption type
-- **ESSID** — network name
+- **BSSID** - MAC address of the access point
+- **PWR**: signal strength (higher = closer)
+- **CH**: channel
+- **ENC**: encryption type
+- **ESSID**: network name
 
 \`\`\`bash
-# Kismet — full-featured wireless sniffer and IDS
+# Kismet, full-featured wireless sniffer and IDS
 sudo kismet
 
-# Wash — detect WPS-enabled networks (install reaver)
+# Wash, detect WPS-enabled networks (install reaver)
 sudo wash -i wlan0mon
 \`\`\`
 
-> **Why this matters for hacking:** Wireless reconnaissance reveals the full picture of nearby networks. Airodump-ng shows BSSID (MAC), channel, signal strength, encryption type, and number of connected clients. Higher PWR (less negative = stronger signal) means closer to the access point. Kismet adds IDS capabilities, detecting deauth attacks and rogue APs. Wash identifies WPS-enabled routers — WPS PINs can be brute-forced in hours due to a design flaw that splits the 8-digit PIN into two halves (first 4 digits validated separately, reducing entropy from 10^8 to just 11,000 attempts).
+> **Why this matters for hacking:** Wireless reconnaissance reveals the full picture of nearby networks. Airodump-ng shows BSSID (MAC), channel, signal strength, encryption type, and number of connected clients. Higher PWR (less negative = stronger signal) means closer to the access point. Kismet adds IDS capabilities, detecting deauth attacks and rogue APs. Wash identifies WPS-enabled routers. WPS PINs can be brute-forced in hours due to a design flaw that splits the 8-digit PIN into two halves (first 4 digits validated separately, reducing entropy from 10^8 to just 11,000 attempts).
 
 **Mini-challenge:** If you have a wireless adapter supporting monitor mode: \`sudo airmon-ng start wlan0 2>/dev/null && sudo airodump-ng wlan0mon 2>/dev/null | head -20\`. If not available, study the command syntax: \`sudo airodump-ng -c 6 --bssid AA:BB:CC:DD:EE:FF -w capture wlan0mon\`. Understanding the command structure prepares you for when you have the right hardware.
 
@@ -211,14 +211,14 @@ tshark -r capture-01.cap -Y "eapol" 2>/dev/null
 # EAPOL frames = the 4-way handshake messages
 \`\`\`
 
-> **Why this matters for hacking:** The deauth attack exploits an unencrypted management frame in WPA2 — any device on the same channel can forge a deauthentication packet that appears to come from the access point. The client disconnects and reconnects automatically, generating the 4-way handshake. The \`aireplay-ng -0 0\` command sends continuous deauth frames until stopped. This is the most common technique for capturing WPA2 handshakes for offline cracking. WPA3's Protected Management Frames (PMF) encrypts these frames, preventing deauth attacks.
+> **Why this matters for hacking:** The deauth attack exploits an unencrypted management frame in WPA2, any device on the same channel can forge a deauthentication packet that appears to come from the access point. The client disconnects and reconnects automatically, generating the 4-way handshake. The \`aireplay-ng -0 0\` command sends continuous deauth frames until stopped. This is the most common technique for capturing WPA2 handshakes for offline cracking. WPA3's Protected Management Frames (PMF) encrypts these frames, preventing deauth attacks.
 
 **Mini-challenge:** (Conceptual — requires wireless hardware in monitor mode.) Study the command chain: \`airmon-ng start wlan0\` → \`airodump-ng wlan0mon\` → \`aireplay-ng -0 2 -a BSSID\`. The -0 (deauth count) of 2 is usually sufficient. Understanding this chain is essential for wireless security testing. Verify captured handshake with \`aircrack-ng capture-01.cap | grep WPA\` or \`tshark -r capture-01.cap -Y "eapol"\`. EAPOL frames = the 4-way handshake messages.
 
 **Why this matters:**
 - The captured handshake can be cracked offline (no network connection needed)
 - Tools like aircrack-ng, hashcat, and John the Ripper can crack WPA2 PSK
-- WPA3's SAE handshake resists this attack — deauth frames don't help against WPA3`),
+- WPA3's SAE handshake resists this attack, deauth frames don't help against WPA3`),
 
     l('wf-7', 'PMKID Attack & WPA3',
       `**PMKID attack:** An alternative to the 4-way handshake that doesn't need a client to be connected.
@@ -258,7 +258,7 @@ nmcli dev wifi list | grep -E "WPA2|WPA3"
 3. Capture the WPA2 handshake as normal
 4. Crack the password
 
-> **Why this matters for hacking:** The PMKID attack is superior to deauth-based capture because it doesn't require any connected client — the access point transmits the PMKID during association. This means you can capture the hash from a network that has zero active clients. The hash is computed from the PMK (Pairwise Master Key) and the access point's MAC address. Crack the PMKID and you have the PSK (Wi-Fi password). WPA3's SAE uses a password-authenticated key exchange that prevents offline dictionary attacks entirely. However, WPA3 Transition Mode (dual WPA2/WPA3) allows downgrade attacks.
+> **Why this matters for hacking:** The PMKID attack is superior to deauth-based capture because it doesn't require any connected client, the access point transmits the PMKID during association. This means you can capture the hash from a network that has zero active clients. The hash is computed from the PMK (Pairwise Master Key) and the access point's MAC address. Crack the PMKID and you have the PSK (Wi-Fi password). WPA3's SAE uses a password-authenticated key exchange that prevents offline dictionary attacks entirely. However, WPA3 Transition Mode (dual WPA2/WPA3) allows downgrade attacks.
 
 **Mini-challenge:** (Conceptual) Compare the two capture methods: deauth attack requires a client (more intrusive, leaves evidence), PMKID requires only an AP (less intrusive, no deauth). In authorized penetration tests, PMKID capture is preferred because it doesn't disrupt network operations. Understanding which technique to use in which scenario is the mark of a professional tester.
 
@@ -295,7 +295,7 @@ hashcat -m 22000 hash.hc22000 --show
 
 **Building a password cracking workflow:**
 \`\`\`bash
-# 1. Quick check — tiny wordlist first (seconds)
+# 1. Quick check, tiny wordlist first (seconds)
 aircrack-ng -w common-passwords.txt capture-01.cap
 
 # 2. RockYou wordlist (minutes to hours)
@@ -316,7 +316,7 @@ hashcat -m 22000 hash.hc22000 -a 3 ?u?l?l?l?d?d?d?d?d
 - Seasons + year (summer2020, winter2021)
 - Phone numbers, street names
 
-> **Why this matters for hacking:** The deauth attack exploits an unencrypted management frame in WPA2 — any device on the same channel can forge a deauthentication packet that appears to come from the access point. The client disconnects and reconnects automatically, generating the 4-way handshake. The \`aireplay-ng -0 0\` command sends continuous deauth frames until stopped. This is the most common technique for capturing WPA2 handshakes for offline cracking. WPA3's Protected Management Frames (PMF) encrypts these frames, preventing deauth attacks.
+> **Why this matters for hacking:** The deauth attack exploits an unencrypted management frame in WPA2, any device on the same channel can forge a deauthentication packet that appears to come from the access point. The client disconnects and reconnects automatically, generating the 4-way handshake. The \`aireplay-ng -0 0\` command sends continuous deauth frames until stopped. This is the most common technique for capturing WPA2 handshakes for offline cracking. WPA3's Protected Management Frames (PMF) encrypts these frames, preventing deauth attacks.
 
 **Mini-challenge:** (Conceptual — requires wireless hardware in monitor mode.) Study the command chain: \`airmon-ng start wlan0\` enables monitor mode, \`airodump-ng\` discovers targets, \`aireplay-ng -0 2 -a BSSID\` sends 2 deauth packets. The -0 (deauth count) of 2 is usually sufficient — 0 sends continuously. Understanding this chain is essential for wireless security testing.
 

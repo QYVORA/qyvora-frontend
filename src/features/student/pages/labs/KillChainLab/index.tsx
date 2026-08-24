@@ -68,7 +68,7 @@ const KillChainLab = () => {
           fullHeight={false}
           title="Kill"
           accentWord="Chain"
-          description="Execute full kill chain simulations — from reconnaissance to exfiltration."
+          description="Execute full kill chain simulations, from reconnaissance to exfiltration."
           villain={firstScenarioWithVillain?.villain}
         />
 
@@ -81,7 +81,7 @@ const KillChainLab = () => {
               return {
                 id: s.id,
                 title: s.title,
-                subtitle: `${s.phases.length} phases — full chain`,
+                subtitle: `${s.phases.length} phases, full chain`,
                 description: s.description,
                 difficulty: s.difficulty,
                 meta: (
@@ -109,7 +109,7 @@ const KillChainLab = () => {
 
   return (
     <div className="bg-bg min-h-full">
-      <SEO title={`${activeScenario.title} — Kill Chain`} description={activeScenario.description} noindex />
+      <SEO title={`${activeScenario.title}. Kill Chain`} description={activeScenario.description} noindex />
       <WalkthroughLayout
         title={activeScenario.title}
         subtitle={activeScenario.description}
@@ -164,13 +164,13 @@ const KillChainLab = () => {
           const firstIncomplete = currentPhase.commands.findIndex((_: any, i: number) => !completedCommands.has(`${currentPhase.id}-${i}`));
           const isLocked = !isCompleted && cmdIdx > firstIncomplete;
 
-              const narrative = `## ${currentPhase.name} — Command ${cmdIdx + 1}\n\n${currentPhase.narrative || cmd.explanation}\n\nExecute the command below to advance the kill chain.`;
+              const narrative = `## ${currentPhase.name}. Command ${cmdIdx + 1}\n\n${currentPhase.narrative || cmd.explanation}\n\nExecute the command below to advance the kill chain.`;
 
               return (
                 <WalkthroughStep
                   key={cmdIdx}
                   stepIndex={cmdIdx + 1}
-                  title={`${currentPhase.name} — Command ${cmdIdx + 1}`}
+                  title={`${currentPhase.name} - Command ${cmdIdx + 1}`}
                   narrative={narrative}
                   commandInstruction={cmd.command}
                   isLocked={isLocked}

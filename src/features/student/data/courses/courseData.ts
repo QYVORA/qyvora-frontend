@@ -17,7 +17,7 @@ export const COURSE_CATEGORIES: CourseCategory[] = [
   {
     id: 'terminal',
     name: 'Terminal',
-    description: 'Master the command line — the hacker\'s primary interface.',
+    description: 'Master the command line, the hacker\'s primary interface.',
   },
   {
     id: 'networking',

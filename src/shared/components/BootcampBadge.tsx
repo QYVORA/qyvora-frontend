@@ -13,7 +13,7 @@ const BootcampBadge: React.FC<BootcampBadgeProps> = ({ completed, className = ''
     <img
       src={BADGE_PATH}
       alt="HPB Bootcamp Completed"
-      title="Hacker Protocol Bootcamp — Completed"
+      title="Hacker Protocol Bootcamp - Completed"
       width={96}
       height={64}
       className={`inline-block ${className}`}

@@ -92,10 +92,10 @@ const SqlInjectionLab = () => {
 
   return (
     <div className="bg-bg min-h-full">
-      <SEO title={`${activeTarget.name} — SQL Injection Lab`} description={activeTarget.description} noindex />
+      <SEO title={`${activeTarget.name}. SQL Injection Lab`} description={activeTarget.description} noindex />
       <WalkthroughLayout
         title={activeTarget.name}
-        subtitle={`${activeTarget.injectionType} — ${activeTarget.description}`}
+        subtitle={`${activeTarget.injectionType} | ${activeTarget.description}`}
         icon={<Database className="w-6 h-6" />}
         difficulty={activeTarget.difficulty}
         labId="sql-injection"
@@ -135,7 +135,7 @@ const SqlInjectionLab = () => {
           const { isLocked, isCompleted, isActive } = getStepState(index);
           const stepId = `${activeTarget.id}-step-${index}`;
 
-          const narrative = `## SQL Injection — Step ${index + 1}\n\n${step.explanation}\n\nExecute the command below to proceed.`;
+          const narrative = `## SQL Injection. Step ${index + 1}\n\n${step.explanation}\n\nExecute the command below to proceed.`;
 
           return (
             <WalkthroughStep

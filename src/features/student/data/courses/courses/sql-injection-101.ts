@@ -41,7 +41,7 @@ sqlite3 test.db "INSERT INTO users VALUES (1, 'admin');"
             sqlite3 test.db "SELECT * FROM users;"
 \`\`\`
 
-> **Why this matters for hacking:** SQL injection has been in the OWASP Top 10 for over two decades. The root cause is simple: user input is concatenated directly into SQL queries. Understanding SQL basics is step one — every web application that touches a database is a potential target. In bug bounty programs, SQLi findings regularly pay $1,000-$10,000+.
+> **Why this matters for hacking:** SQL injection has been in the OWASP Top 10 for over two decades. The root cause is simple: user input is concatenated directly into SQL queries. Understanding SQL basics is step one, every web application that touches a database is a potential target. In bug bounty programs, SQLi findings regularly pay $1,000-$10,000+.
 
 **Mini-challenge:** Create an in-memory SQLite database and practice the SELECT/INSERT queries above. Run \`sqlite3 :memory: "CREATE TABLE users (id INT, name TEXT); INSERT INTO users VALUES (1, 'admin'); SELECT * FROM users;"\` to see how a database works from the command line.`),
 
@@ -78,7 +78,7 @@ If this returns any row, the login succeeds. If it returns no rows, login fails.
 The problem: the application directly inserts user input into the query:
 
 \`\`\`python
-# Vulnerable code — NEVER do this
+# Vulnerable code - NEVER do this
 username = request.form['username']
 password = request.form['password']
 query = f"SELECT * FROM users WHERE username = '{username}' AND password = '{password}'"
@@ -103,7 +103,7 @@ The extra \`'\` breaks the string, causing a SQL syntax error. If the applicatio
 
 \`\`\`
 '           -- Single quote (breaks the string)
-''          -- Double quote (escaped quote — might work)
+''          -- Double quote (escaped quote, might work)
 "           -- Double quote for databases that use them
 ')          -- Close the string and parenthesis
 1' OR '1'='1   -- Always-true condition
@@ -128,7 +128,7 @@ www.site.com/page?id=1' AND '1'='1
 www.site.com/page?id=1' AND '1'='2
 \`\`\`
 
-> **Why this matters for hacking:** Detection is the hardest part of SQLi exploitation. Error-based detection is loud but fast — database errors leak information about the backend (MySQL vs PostgreSQL vs SQL Server). Blind SQLi requires more skill but works when errors are suppressed. In real engagements, start with the single quote (\`'\`) test on every input, then progress to boolean-based timing tests if errors are hidden. Automated tools like sqlmap automate discovery, but manual testing finds edge cases that scanners miss.
+> **Why this matters for hacking:** Detection is the hardest part of SQLi exploitation. Error-based detection is loud but fast, database errors leak information about the backend (MySQL vs PostgreSQL vs SQL Server). Blind SQLi requires more skill but works when errors are suppressed. In real engagements, start with the single quote (\`'\`) test on every input, then progress to boolean-based timing tests if errors are hidden. Automated tools like sqlmap automate discovery, but manual testing finds edge cases that scanners miss.
 
 Different responses (one works, one doesn't) confirm SQL injection exists.
 
@@ -180,7 +180,7 @@ The \`--\` comments out the rest of the query. \`1=1\` is always true. You're lo
 /* */ Block comment (works in most databases)
 \`\`\`
 
-> **Why this matters for hacking:** Once you bypass auth, the real target is data — user credentials, personal information, payment details. The \`UNION\` operator is the most powerful SQLi technique because it lets you read arbitrary tables. The \`information_schema\` (MySQL) or \`sqlite_master\` (SQLite) tables contain metadata about every table and column in the database. In CTF challenges, UNION-based SQLi is the standard way to extract the flag from the database.
+> **Why this matters for hacking:** Once you bypass auth, the real target is data, user credentials, personal information, payment details. The \`UNION\` operator is the most powerful SQLi technique because it lets you read arbitrary tables. The \`information_schema\` (MySQL) or \`sqlite_master\` (SQLite) tables contain metadata about every table and column in the database. In CTF challenges, UNION-based SQLi is the standard way to extract the flag from the database.
 
 Always test with different comment styles when one doesn't work.
 
@@ -248,7 +248,7 @@ No error = that many columns.
 ' UNION SELECT 1, sql, 3 FROM sqlite_master WHERE name='users' --
 \`\`\`
 
-> **Why this matters for hacking:** UNION-based extraction is the main event of SQL injection. After finding the column count (via \`ORDER BY\` or \`UNION SELECT NULL\`), you can read any table in the database. The key is matching column types — use \`NULL\` as a placeholder to probe the column count without type mismatches, then replace each \`NULL\` with the data you want to extract. In MySQL, \`information_schema.tables\` and \`information_schema.columns\` are your maps to the entire database.
+> **Why this matters for hacking:** UNION-based extraction is the main event of SQL injection. After finding the column count (via \`ORDER BY\` or \`UNION SELECT NULL\`), you can read any table in the database. The key is matching column types, use \`NULL\` as a placeholder to probe the column count without type mismatches, then replace each \`NULL\` with the data you want to extract. In MySQL, \`information_schema.tables\` and \`information_schema.columns\` are your maps to the entire database.
 
 **Mini-challenge:** Simulate the column-count probe: \`sqlite3 :memory: "SELECT 1,2 UNION SELECT 1,2,3;"\` (note error — wrong column count). Then \`sqlite3 :memory: "SELECT 1,2 UNION SELECT 1,2;"\` (no error — 2 columns). This is the exact probing technique used against web applications.
 
@@ -260,7 +260,7 @@ Always extract the schema first so you know the table and column names.`),
 **Vulnerable code (NEVER do this):**
 
 \`\`\`python
-# Python with raw string formatting — DANGEROUS
+# Python with raw string formatting. DANGEROUS
 query = f"SELECT * FROM users WHERE username = '{username}'"
 cursor.execute(query)
 \`\`\`
@@ -268,7 +268,7 @@ cursor.execute(query)
 **Safe code (parameterized query):**
 
 \`\`\`python
-# Python with parameterized query — SAFE
+# Python with parameterized query. SAFE
 query = "SELECT * FROM users WHERE username = ?"
 cursor.execute(query, (username,))
 \`\`\`
@@ -291,12 +291,12 @@ $stmt->execute([$username]);
 \`\`\`
 
 **Additional defenses:**
-- **Input validation** — reject unexpected characters
-- **Least privilege** — database accounts should have minimal permissions
-- **WAF** — Web Application Firewall can block known attack patterns (but can be bypassed)
-- **Regular security testing** — scan your applications for SQL injection
+- **Input validation**: reject unexpected characters
+- **Least privilege**: database accounts should have minimal permissions
+- **WAF** - Web Application Firewall can block known attack patterns (but can be bypassed)
+- **Regular security testing**: scan your applications for SQL injection
 
-> **Why this matters for hacking:** Prevention is the other side of the coin. As a security professional, you need to understand both attack and defense. Parameterized queries (prepared statements) are the ONLY reliable defense because they separate SQL logic from data at the protocol level — before the database even sees the query. Input validation and WAFs can be bypassed. When doing code reviews, always check for string concatenation in SQL queries. Every instance is a critical vulnerability.
+> **Why this matters for hacking:** Prevention is the other side of the coin. As a security professional, you need to understand both attack and defense. Parameterized queries (prepared statements) are the ONLY reliable defense because they separate SQL logic from data at the protocol level, before the database even sees the query. Input validation and WAFs can be bypassed. When doing code reviews, always check for string concatenation in SQL queries. Every instance is a critical vulnerability.
 
 SQL injection is preventable. Every modern programming language supports parameterized queries. There is never a valid reason to concatenate user input into SQL queries.`, { hasQuiz: true, quiz: [
         { id: 'sql-6-q1', question: 'Why are parameterized queries safe against SQL injection?', options: ['They encrypt the query', 'User input is treated as data, not SQL code', 'They use a different database', 'They block all input'], correctIndex: 1, explanation: 'Parameterized queries send user input as data, separate from the SQL command structure.' },
@@ -334,7 +334,7 @@ curl "http://target.com/item?id=1'; WAITFOR DELAY '0:0:5' -- "
             curl "http://target.com/item?id=1' AND IF(SUBSTRING(database(),1,1)='m', SLEEP(3), 0) -- "
 \`\`\`
 
-> **Why this matters for hacking:** Blind SQLi is the most common real-world scenario because modern applications rarely expose database errors. Boolean-based blind requires many requests (one bit of data per request), so automating it is essential. Time-based blind is slower but works even when the application returns identical HTTP responses regardless of true/false. The \`SLEEP(5)\` function pauses the database for 5 seconds — if the response takes 5+ seconds, you know the condition was true. Database-specific sleep functions: MySQL uses \`SLEEP(n)\`, PostgreSQL uses \`pg_sleep(n)\`, SQL Server uses \`WAITFOR DELAY '0:0:n'\`.
+> **Why this matters for hacking:** Blind SQLi is the most common real-world scenario because modern applications rarely expose database errors. Boolean-based blind requires many requests (one bit of data per request), so automating it is essential. Time-based blind is slower but works even when the application returns identical HTTP responses regardless of true/false. The \`SLEEP(5)\` function pauses the database for 5 seconds, if the response takes 5+ seconds, you know the condition was true. Database-specific sleep functions: MySQL uses \`SLEEP(n)\`, PostgreSQL uses \`pg_sleep(n)\`, SQL Server uses \`WAITFOR DELAY '0:0:n'\`.
 
 **Mini-challenge:** Run \`curl -v -o /dev/null -s -w "%{time_total}\\n" "https://httpbin.org/delay/3"\` to measure a 3-second delayed response. Then modify to \`delay/1\` and compare timing. Understanding response time measurement is essential for time-based blind injection testing.`),
 
@@ -353,12 +353,12 @@ curl -X POST -H "Content-Type: application/json" \
 \`\`\`
 
 **MongoDB operators:**
-- \`$ne\` — not equal (match everything)
-- \`$gt\` — greater than
-- \`$regex\` — pattern matching
-- \`$where\` — JavaScript expression (code injection!)
+- \`$ne\`, not equal (match everything)
+- \`$gt\`, greater than
+- \`$regex\`, pattern matching
+- \`$where\` - JavaScript expression (code injection!)
 
-> **Why this matters for hacking:** NoSQL databases are not immune to injection — the attack vector just changes. MongoDB's \`$ne\` (not equal) operator matches every document, so \`{"username": {"$ne": ""}}\` matches any user. The \`$regex\` operator allows pattern matching, and \`$where\` allows arbitrary JavaScript execution — the most dangerous. In modern web apps (especially Node.js/MERN stack), NoSQL injection is often overlooked because developers assume NoSQL databases are "safe" from SQL injection. They're not.
+> **Why this matters for hacking:** NoSQL databases are not immune to injection, the attack vector just changes. MongoDB's \`$ne\` (not equal) operator matches every document, so \`{"username": {"$ne": ""}}\` matches any user. The \`$regex\` operator allows pattern matching, and \`$where\` allows arbitrary JavaScript execution, the most dangerous. In modern web apps (especially Node.js/MERN stack), NoSQL injection is often overlooked because developers assume NoSQL databases are "safe" from SQL injection. They're not.
 
 **Mini-challenge:** Install \`mongosh\` or use MongoDB's free cloud sandbox. Run \`db.users.find({username: {$ne: ""}})\` to see how the \`$ne\` operator matches all documents. Then compare with a direct string match: \`db.users.find({username: "admin"})\`. This demonstrates how JSON operators change query behavior.
 
@@ -410,12 +410,12 @@ sqlmap -u "http://target.com/item?id=1" --tamper=space2comment
 sqlmap -u "http://target.com/item?id=1" --is-dba
 \`\`\`
 
-> **Why this matters for hacking:** Sqlmap is the most powerful SQLi automation tool in existence. It handles detection, blind injection, out-of-band exfiltration, and even database takeover. However, it's noisy — the \`--tamper\` flag helps evade WAFs (e.g., \`--tamper=space2comment\` replaces spaces with comments, \`--tamper=between\` replaces \`>\` with \`NOT BETWEEN\`). Always start with \`--batch\` for non-interactive mode and \`--risk=1\` for safe probes. NEVER run sqlmap against targets without authorization.
+> **Why this matters for hacking:** Sqlmap is the most powerful SQLi automation tool in existence. It handles detection, blind injection, out-of-band exfiltration, and even database takeover. However, it's noisy, the \`--tamper\` flag helps evade WAFs (e.g., \`--tamper=space2comment\` replaces spaces with comments, \`--tamper=between\` replaces \`>\` with \`NOT BETWEEN\`). Always start with \`--batch\` for non-interactive mode and \`--risk=1\` for safe probes. NEVER run sqlmap against targets without authorization.
 
 **Mini-challenge:** Run \`sqlmap --version\` to confirm installation. Then try \`sqlmap -u "http://testphp.vulnweb.com/artists.php?artist=1" --batch\` (with permission) to see automated detection in action. Observe how sqlmap tests each parameter, identifies the DBMS, and suggests exploitation techniques.
 
 Master sqlmap to automate the tedious parts of SQL injection testing, but always understand what it's doing under the hood.`, { hasQuiz: true, quiz: [
-        { id: 'sql-10-q1', question: 'Which sqlmap flag dumps all tables from all databases?', options: ['--dump', '--dump-all', '--all', '--extract'], correctIndex: 1, explanation: '--dump-all dumps all tables from all databases. Use with caution — it generates a lot of data.' },
+        { id: 'sql-10-q1', question: 'Which sqlmap flag dumps all tables from all databases?', options: ['--dump', '--dump-all', '--all', '--extract'], correctIndex: 1, explanation: '--dump-all dumps all tables from all databases. Use with caution, it generates a lot of data.' },
         { id: 'sql-10-q2', question: 'What does --tamper=space2comment do?', options: ['Speeds up the scan', 'Replaces spaces with comments to bypass WAF', 'Adds delays', 'Encrypts payloads'], correctIndex: 1, explanation: 'space2comment replaces space characters with /**/ comments, which can bypass simple WAF rules that look for spaces in SQL keywords.' },
       ] }),
 ];

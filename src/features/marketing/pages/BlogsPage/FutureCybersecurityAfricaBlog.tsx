@@ -9,10 +9,10 @@ export const FutureCybersecurityAfricaBlog: React.FC = () => {
 
       <Section>
         <Body>
-          Cybersecurity is not standing still. The tools, techniques, and technologies that define the field are evolving rapidly — driven by artificial intelligence, cloud transformation, and the growing sophistication of both attackers and defenders.
+          Cybersecurity is not standing still. The tools, techniques, and technologies that define the field are evolving rapidly, driven by artificial intelligence, cloud transformation, and the growing sophistication of both attackers and defenders.
         </Body>
         <Body>
-          For Africa, this evolution presents both a <Highlight>challenge and an opportunity</Highlight>. The challenge is that the continent is playing catch-up on basic security maturity while the field advances. The opportunity is that Africa can <Highlight>leapfrog</Highlight> — adopting the latest approaches without being burdened by decades of legacy infrastructure.
+          For Africa, this evolution presents both a <Highlight>challenge and an opportunity</Highlight>. The challenge is that the continent is playing catch-up on basic security maturity while the field advances. The opportunity is that Africa can <Highlight>leapfrog</Highlight>, adopting the latest approaches without being burdened by decades of legacy infrastructure.
         </Body>
         <Body>
           Here is our view on where cybersecurity in Africa is heading over the next five to ten years.
@@ -62,7 +62,7 @@ export const FutureCybersecurityAfricaBlog: React.FC = () => {
       <Section>
         <Heading>Trend 02: Automation and the Death of Manual Recon</Heading>
         <Body>
-          The era of manual reconnaissance is ending. Attackers already use automated pipelines that discover, probe, fingerprint, and map vulnerabilities in minutes — work that used to take days or weeks.
+          The era of manual reconnaissance is ending. Attackers already use automated pipelines that discover, probe, fingerprint, and map vulnerabilities in minutes. Work that used to take days or weeks.
         </Body>
 
         <InlineDiagram>
@@ -120,11 +120,11 @@ export const FutureCybersecurityAfricaBlog: React.FC = () => {
         </InlineDiagram>
 
         <Body>
-          Defenders must respond with the same level of automation. <Highlight>Continuous attack surface monitoring</Highlight> — scanning your own infrastructure the same way attackers do — should become as standard as having a firewall or antivirus. The organisations that automate their defence will have a serious advantage over those that still run periodic manual assessments.
+          Defenders must respond with the same level of automation. <Highlight>Continuous attack surface monitoring</Highlight> (scanning your own infrastructure the same way attackers do) should become as standard as having a firewall or antivirus. The organisations that automate their defence will have a serious advantage over those that still run periodic manual assessments.
         </Body>
 
         <Body>
-          This is why we built Anansi CLI — to give defenders access to the same automated recon capabilities that attackers use. The battlefield is asymmetric. Defenders need every advantage they can get.
+          This is why we built Anansi CLI: to give defenders access to the same automated recon capabilities that attackers use. The battlefield is asymmetric. Defenders need every advantage they can get.
         </Body>
       </Section>
 
@@ -137,14 +137,14 @@ export const FutureCybersecurityAfricaBlog: React.FC = () => {
 
         <BulletList
           items={[
-            { icon: <Rocket className="w-5 h-5 text-accent" />, text: <span><Highlight>Mobile-first security</Highlight> — Africa skipped the desktop era and went straight to mobile. Security models designed for mobile-first infrastructure are more relevant than PC-era frameworks</span> },
-            { icon: <Cloud className="w-5 h-5 text-accent" />, text: <span><Highlight>Cloud-native by default</Highlight> — new organisations launch on AWS, GCP, or Azure, not on-premise servers. This means modern IAM, infrastructure-as-code, and API-first security models</span> },
-            { icon: <Users className="w-5 h-5 text-accent" />, text: <span><Highlight>Young, adaptable workforce</Highlight> — Africa has the youngest population in the world. Young professionals are more adaptable to new technologies and less burdened by "this is how we have always done it" thinking</span> },
+            { icon: <Rocket className="w-5 h-5 text-accent" />, text: <span><Highlight>Mobile-first security</Highlight>. Africa skipped the desktop era and went straight to mobile. Security models designed for mobile-first infrastructure are more relevant than PC-era frameworks</span> },
+            { icon: <Cloud className="w-5 h-5 text-accent" />, text: <span><Highlight>Cloud-native by default</Highlight>. New organisations launch on AWS, GCP, or Azure, not on-premise servers. This means modern IAM, infrastructure-as-code, and API-first security models</span> },
+            { icon: <Users className="w-5 h-5 text-accent" />, text: <span><Highlight>Young, adaptable workforce</Highlight>. Africa has the youngest population in the world. Young professionals are more adaptable to new technologies and less burdened by "this is how we have always done it" thinking</span> },
           ]}
         />
 
         <Body>
-          The opportunity is significant. Instead of spending years migrating off legacy systems, African organisations can <Highlight>build securely from the start</Highlight>. The organisations that invest in security now — while their infrastructure is still new and flexible — will have a massive advantage over those that wait until after a breach forces their hand.
+          The opportunity is significant. Instead of spending years migrating off legacy systems, African organisations can <Highlight>build securely from the start</Highlight>. The organisations that invest in security now, while their infrastructure is still new and flexible, will have a massive advantage over those that wait until after a breach forces their hand.
         </Body>
       </Section>
 
@@ -152,13 +152,13 @@ export const FutureCybersecurityAfricaBlog: React.FC = () => {
       <Section>
         <Heading>Trend 04: Talent Localisation</Heading>
         <Body>
-          The global cybersecurity talent shortage means that organisations everywhere are competing for the same limited pool of professionals. For African organisations, relying on imported expertise is not sustainable — it is too expensive, too slow, and often disconnected from local context.
+          The global cybersecurity talent shortage means that organisations everywhere are competing for the same limited pool of professionals. For African organisations, relying on imported expertise is not sustainable. It is too expensive, too slow, and often disconnected from local context.
         </Body>
         <Body>
           The future belongs to organisations that <Highlight>grow their own talent</Highlight>. This means investing in training programmes, apprenticeship models, and partnerships with educational institutions. It means creating career pathways that do not require expensive certifications or overseas experience.
         </Body>
         <Body>
-          The Hacker Protocol Bootcamp is our contribution to this future. We are building a pipeline that takes raw talent and turns it into operational capability — at scale, at low cost, and without the barriers that have traditionally prevented talented Africans from entering the field.
+          The Hacker Protocol Bootcamp is our contribution to this future. We are building a pipeline that takes raw talent and turns it into operational capability: at scale, at low cost, and without the barriers that have traditionally prevented talented Africans from entering the field.
         </Body>
       </Section>
 
@@ -173,22 +173,22 @@ export const FutureCybersecurityAfricaBlog: React.FC = () => {
           <FeatureCard
             icon={IconShield}
             title="Security Is Native"
-            desc="Every African organisation building digital infrastructure treats security as a core requirement, not an afterthought — embedded from design through deployment."
+            desc="Every African organisation building digital infrastructure treats security as a core requirement, not an afterthought embedded from design through deployment."
           />
           <FeatureCard
             icon={Users}
             title="Talent Is Local"
-            desc="Africa produces 100,000+ cybersecurity professionals annually, trained through diverse pathways — bootcamps, university programmes, apprenticeships, and self-study."
+            desc="Africa produces 100,000+ cybersecurity professionals annually, trained through diverse pathways: bootcamps, university programmes, apprenticeships, and self-study."
           />
           <FeatureCard
             icon={Zap}
             title="Tools Are Homegrown"
-            desc="African security companies build world-class tools for African needs — tools that understand the local infrastructure landscape, regulatory environment, and threat model."
+            desc="African security companies build world-class tools for African needs: tools that understand the local infrastructure landscape, regulatory environment, and threat model."
           />
           <FeatureCard
             icon={Globe}
             title="The Continent Is Resilient"
-            desc="African organisations defend themselves effectively. Breaches still happen, but they are contained, investigated, and learned from — not catastrophic events that threaten the organisation's existence."
+            desc="African organisations defend themselves effectively. Breaches still happen, but they are contained, investigated, and learned from, not catastrophic events that threaten the organisation's existence."
           />
         </div>
 
@@ -201,7 +201,7 @@ export const FutureCybersecurityAfricaBlog: React.FC = () => {
       <Section>
         <CTA
           title="Help Build the Future"
-          desc="Whether you are a student, a professional, an investor, or an organisation — there is a role for you in building Africa's cybersecurity future. Start where you are, with what you have."
+          desc="Whether you are a student, a professional, an investor, or an organisation, there is a role for you in building Africa's cybersecurity future. Start where you are, with what you have."
           href="/hpb"
           label="Get Involved"
         />

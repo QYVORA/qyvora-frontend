@@ -123,10 +123,10 @@ const PasswordLab = () => {
 
   return (
     <div className="bg-bg min-h-full">
-      <SEO title={`${activeScenario.title} — Password Lab`} description={activeScenario.description} noindex />
+      <SEO title={`${activeScenario.title}. Password Lab`} description={activeScenario.description} noindex />
       <WalkthroughLayout
         title={activeScenario.title}
-        subtitle={`${activeScenario.hashType} — ${activeScenario.description}`}
+        subtitle={`${activeScenario.hashType} | ${activeScenario.description}`}
         icon={<Key className="w-6 h-6" />}
         difficulty={activeScenario.difficulty}
         labId="passwords"
@@ -170,20 +170,20 @@ Start by writing the captured hash to a file and confirming it is intact. A sing
 
 John the Ripper and Hashcat both work by iterating through password candidates, hashing each one, and comparing the result against the target hash. A dictionary attack feeds candidates from a wordlist such as \`rockyou.txt\`; a brute-force or rule-based attack mutates them on the fly.
 
-Execute the command below to begin cracking. Keep the output in mind — the tools report status, speed, and any recoveries in real time.`,
+Execute the command below to begin cracking. Keep the output in mind, the tools report status, speed, and any recoveries in real time.`,
             `## Extract and Analyze Results
 
-Once a password is recovered, we retrieve the plaintext from the tool's output. This is your foothold into the target system, so record it carefully — it is usually reused across other accounts and services.
+Once a password is recovered, we retrieve the plaintext from the tool's output. This is your foothold into the target system, so record it carefully, it is usually reused across other accounts and services.
 
 Run the command below to view your results. The \`--show\` flag replays previously cracked hashes without re-running the attack, which is the fastest way to confirm what we already recovered.`,
             `## Escalate the Attack
 
-If a standard dictionary attack comes up empty, we escalate to rule-based mutations and incremental mode. Rule-based attacks take every word in the wordlist and apply transformations — appending digits, swapping letters, capitalizing — mirroring how real users build "strong" passwords.
+If a standard dictionary attack comes up empty, we escalate to rule-based mutations and incremental mode. Rule-based attacks take every word in the wordlist and apply transformations: appending digits, swapping letters, capitalizing, mirroring how real users build "strong" passwords.
 
 Apply advanced techniques with the command below. This is where attacker patience pays off: the weak hash types fall in seconds, but the stronger ones reward a targeted, rules-driven approach.`,
             `## Recover the Credential
 
-Compile all cracked passwords and verify them against the target system. The flag is embedded within the recovered credential data — proof that the account belongs to you now.
+Compile all cracked passwords and verify them against the target system. The flag is embedded within the recovered credential data, proof that the account belongs to you now.
 
 Execute the final command to complete the exercise.`,
           ];

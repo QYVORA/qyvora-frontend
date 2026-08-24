@@ -63,8 +63,6 @@ export const SOCIAL_LINKS: SocialLink[] = [
   { key: 'whatsapp', label: 'WhatsApp', href: 'https://wa.me/233535535222',          Icon: BrandWhatsAppIcon },
 ];
 
-const PULSE_TEXT_KEY = 'body.liveNode';
-
 const FOOTER_COL_KEYS: Record<string, string> = {
   Platform: 'footer.platform',
   Learning: 'footer.learning',
@@ -192,16 +190,12 @@ const Footer: React.FC = React.memo(() => {
             </nav>
           </div>
 
-          {/* ── Status banner: system status · language · contact ────────── */}
+          {/* ── Status banner: location line · language · contact ────────── */}
           <div className="mt-10 flex flex-col gap-6 pt-8 md:flex-row md:items-center md:justify-between lg:mt-12 lg:pt-10">
             <div className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-text-muted">
-              <span className="relative flex h-2 w-2">
-                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-accent opacity-75" />
-                <span className="relative inline-flex h-2 w-2 rounded-full bg-accent" />
-              </span>
-              <span>{t(PULSE_TEXT_KEY)}</span>
+              <span>QYVORA - GHANA, TAMALE</span>
               <span className="mx-2 h-3 w-px bg-border/60" aria-hidden="true" />
-              <span className="normal-case tracking-normal">{CURRENT_YEAR}</span>
+              <span>{CURRENT_YEAR}</span>
             </div>
 
             <div className="flex flex-wrap items-center gap-3 sm:gap-4">

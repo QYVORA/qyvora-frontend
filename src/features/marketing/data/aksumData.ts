@@ -9,15 +9,15 @@ export interface AksumStage {
 }
 
 export const STAGES: AksumStage[] = [
-  { id: '01', name: 'IDENTIFY', icon: Radar, desc: 'Format, architecture, linking and hardening posture — PIE/NX/RELRO/canary/fortify with honest unknown values' },
+  { id: '01', name: 'IDENTIFY', icon: Radar, desc: 'Format, architecture, linking and hardening posture. PIE/NX/RELRO/canary/fortify with honest unknown values' },
   { id: '02', name: 'ENUMERATE', icon: ListChecks, desc: 'Sections, segments, symbols and imports grouped by security relevance' },
   { id: '03', name: 'STRINGS', icon: ScanSearch, desc: 'Printable-string extraction with URL/path/command/crypto/credential classification and confidence levels' },
   { id: '04', name: 'DISASSEMBLY', icon: GitBranch, desc: 'x86/x86-64 linear sweep with structured operands, resolved branch targets and CET-aware decoding' },
-  { id: '05', name: 'FUNCTIONS', icon: Network, desc: 'Multi-source discovery — symbols, entry point, call targets — each function carries provenance and confidence' },
+  { id: '05', name: 'FUNCTIONS', icon: Network, desc: 'Multi-source discovery: symbols, entry point, call targets. Each function carries provenance and confidence' },
   { id: '06', name: 'GRAPHS', icon: FileSearch, desc: 'Basic-block CFGs with loop and unreachable detection, direct-call graph, code/data cross-references' },
-  { id: '07', name: 'DATAFLOW', icon: Waypoints, desc: 'Intra-procedural call-site argument tracking — PLT stubs resolved to import names via relocations, string arguments recovered where statically materialized' },
-  { id: '08', name: 'VALIDATION', icon: ShieldCheck, desc: 'Confidence escalation — findings rise to VALIDATED only when independent evidence such as resolved call sites corroborates them' },
-  { id: '09', name: 'SURFACE', icon: Crosshair, desc: 'Attack-surface aggregation — entry points, security-relevant import categories, exports and string classes as observation counts' },
+  { id: '07', name: 'DATAFLOW', icon: Waypoints, desc: 'Intra-procedural call-site argument tracking. PLT stubs resolved to import names via relocations, string arguments recovered where statically materialized' },
+  { id: '08', name: 'VALIDATION', icon: ShieldCheck, desc: 'Confidence escalation: findings rise to VALIDATED only when independent evidence such as resolved call sites corroborates them' },
+  { id: '09', name: 'SURFACE', icon: Crosshair, desc: 'Attack-surface aggregation: entry points, security-relevant import categories, exports and string classes as observation counts' },
   { id: '10', name: 'REPORT', icon: FileText, desc: 'Terminal summary or schema_version-1.0 JSON with per-run SHA-256 anchoring and JSONL event streams' },
 ];
 
@@ -28,11 +28,11 @@ export interface AksumCheck {
 }
 
 export const CHECKS: AksumCheck[] = [
-  { id: 'AKS-HARD', title: 'Hardening posture', desc: 'NX/PIE/RELRO/canary read directly from program headers and dynamic entries — disabled properties are findings' },
+  { id: 'AKS-HARD', title: 'Hardening posture', desc: 'NX/PIE/RELRO/canary read directly from program headers and dynamic entries; disabled properties are findings' },
   { id: 'AKS-WX', title: 'Writable + executable segments', desc: 'W^X violations detected from segment permission flags' },
-  { id: 'AKS-IMP', title: 'Dangerous imports', desc: 'gets, strcpy, sprintf, system, popen and friends — reported as CANDIDATE, never as verdicts' },
+  { id: 'AKS-IMP', title: 'Dangerous imports', desc: 'gets, strcpy, sprintf, system, popen and friends; reported as CANDIDATE, never as verdicts' },
   { id: 'AKS-DCS', title: 'Dangerous call sites', desc: 'system/popen/exec-family calls whose string arguments resolve statically are escalated to VALIDATED with callsite evidence' },
-  { id: 'AKS-CRY', title: 'Weak crypto signals', desc: 'MD5/SHA1/DES/RC4/ECB markers in strings — escalated only when dataflow resolves corroborating usage' },
+  { id: 'AKS-CRY', title: 'Weak crypto signals', desc: 'MD5/SHA1/DES/RC4/ECB markers in strings; escalated only when dataflow resolves corroborating usage' },
   { id: 'AKS-SEC', title: 'Sensitive strings', desc: 'Password/key-shaped naming patterns flagged for manual review' },
   { id: 'AKS-SRF', title: 'Execution surface', desc: 'Process-spawning APIs summarized as attack-surface context' },
 ];
@@ -66,7 +66,7 @@ export const AUTHORIZED_WARNING = {
   title: 'Authorized',
   accent: 'Analysis Only',
   description:
-    'AKSUM is a static analysis platform — it reads files, it never executes them or touches a network. Analyze only software you own or have explicit written permission to assess.',
+    'AKSUM is a static analysis platform: it reads files but never executes them or touches a network. Analyze only software you own or have explicit written permission to assess.',
 };
 
 export const SOURCE_EXAMPLES: ToolSourceExample[] = [

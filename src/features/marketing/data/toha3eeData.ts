@@ -14,7 +14,7 @@ export const MODULES: Toha3eeCategory[] = [
     id: 'mitm',
     name: 'MITM',
     icon: Network,
-    desc: 'Man-in-the-middle primitives — ARP, DHCP, DNS, IPv6 and LLMNR poisoning with inline interception.',
+    desc: 'Man-in-the-middle primitives. ARP, DHCP, DNS, IPv6 and LLMNR poisoning with inline interception.',
     modules: ['arp.spoof', 'dns.spoof', 'dns.rebind', 'dhcp.rogue', 'dhcp.starve', 'dhcp6.spoof', 'icmp.redirect', 'ipv6.ra', 'ipv6.ndp', 'llmnr.poison', 'wpad.poison'],
   },
   {
@@ -28,7 +28,7 @@ export const MODULES: Toha3eeCategory[] = [
     id: 'auth',
     name: 'Auth',
     icon: Key,
-    desc: 'Credential and authentication attacks — relay, signing checks, spraying, brute force and AS-REP.',
+    desc: 'Credential and authentication attacks: relay, signing checks, spraying, brute force and AS-REP.',
     modules: ['default.creds', 'ntlm.relay', 'smb.signing', 'smb.kerberoast', 'auth.spray', 'auth.brute', 'auth.userenum', 'auth.asrep'],
   },
   {
@@ -42,35 +42,35 @@ export const MODULES: Toha3eeCategory[] = [
     id: 'osint',
     name: 'OSINT',
     icon: Search,
-    desc: 'Open-source intelligence — DNS, WHOIS, CT logs, ASN, Shodan, buckets, wayback and GitHub dorks.',
+    desc: 'Open-source intelligence - DNS, WHOIS, CT logs, ASN, Shodan, buckets, wayback and GitHub dorks.',
     modules: ['osint.dns', 'osint.whois', 'osint.ct', 'osint.asn', 'osint.shodan', 'osint.bucket', 'osint.wayback', 'osint.github', 'osint.hibp', 'osint.metadata', 'osint.dork', 'osint.harvest'],
   },
   {
     id: 'enum',
     name: 'Enumeration',
     icon: ListChecks,
-    desc: 'Service-level enumeration — SMTP, SNMP, LDAP, NFS and SMB users plus IPv6 host sweeps.',
+    desc: 'Service-level enumeration - SMTP, SNMP, LDAP, NFS and SMB users plus IPv6 host sweeps.',
     modules: ['smtp.enum', 'snmp.enum', 'ldap.enum', 'nfs.enum', 'smb.enum', 'net.ip6sweep'],
   },
   {
     id: 'web',
     name: 'Web',
     icon: Globe,
-    desc: 'Web-layer assessment — misconfiguration discovery on top of the recon fingerprints.',
+    desc: 'Web-layer assessment: misconfiguration discovery on top of the recon fingerprints.',
     modules: ['web.misconfig'],
   },
   {
     id: 'switch',
     name: 'Switch',
     icon: Router,
-    desc: 'Layer-2 switch exploitation — flooding, port stealing, VLAN hopping and STP/CDP abuse.',
+    desc: 'Layer-2 switch exploitation: flooding, port stealing, VLAN hopping and STP/CDP abuse.',
     modules: ['switch.flood', 'switch.portsteal', 'switch.vlanhop', 'switch.cdp', 'switch.stp'],
   },
   {
     id: 'wireless',
     name: 'Wireless',
     icon: Wifi,
-    desc: '802.11 attacks — scanning, deauth, handshake capture, evil twin, PMKID and KARMA.',
+    desc: '802.11 attacks: scanning, deauth, handshake capture, evil twin, PMKID and KARMA.',
     modules: ['wlan.scan', 'wlan.deauth', 'wlan.handshake', 'wlan.eviltwin', 'wlan.pmkid', 'wlan.beaconflood', 'wlan.karma'],
   },
   {
@@ -123,7 +123,7 @@ export const BUILD_FROM_SOURCE = {
   steps: [
     { cmd: 'git clone https://github.com/qyvora/qyvora-toha3ee' },
     { cmd: 'cd qyvora-toha3ee' },
-    { cmd: 'sudo apt install libpcap-dev', note: 'Debian/Ubuntu only — macOS ships libpcap with Xcode CLT' },
+    { cmd: 'sudo apt install libpcap-dev', note: 'Debian/Ubuntu only; macOS ships libpcap with Xcode CLT' },
     { cmd: 'go build ./cmd/toha3ee', note: 'Linux builds need libpcap headers' },
   ],
 };
@@ -137,7 +137,7 @@ export const QUICK_START = [
 
 export const CONSOLE_SESSION: { cmd: string; note: string }[] = [
   { cmd: 'modules recon', note: 'module catalogue filtered by category' },
-  { cmd: 'on net.scan', note: 'run a module — preflight checks shown first' },
+  { cmd: 'on net.scan', note: 'run a module; preflight checks shown first' },
   { cmd: 'net.show', note: 'discovered hosts' },
   { cmd: 'net.profile', note: 'profile + ranked attack vectors' },
   { cmd: 'quit', note: 'cleanup lifecycle tears every attack down' },

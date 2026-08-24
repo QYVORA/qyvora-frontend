@@ -107,7 +107,7 @@ const ToolInstallModalHost: React.FC = () => {
               <TriangleAlert className="mt-0.5 h-3.5 w-3.5 shrink-0 text-amber-400" />
               <p className="text-[11px] leading-relaxed text-text-secondary">
                 No published release could be reached for this tool yet. The download
-                buttons are disabled until a release is available — build from source
+                buttons are disabled until a release is available, build from source
                 or use the terminal commands below once a release exists.
               </p>
             </div>

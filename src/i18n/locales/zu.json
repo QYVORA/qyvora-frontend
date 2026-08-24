@@ -218,9 +218,8 @@
     "attackLabsDesc": "Ukuhlola ukuphepha okuqondile ngokusebenza",
     "enrollHpb": "Bhalisa ukuqala i-Hacker Protocol Bootcamp.",
     "installDesc": "Faka esikrinini sasekhaya ukuze ube nokufinyelela ngokushesha futhi ukwesekwe offline.",
-    "ctaDescription": "Joya abaphethini abaqeqeshwa ekuhlaseleni kwedijithali e-Afrika. Qala ngemoduli eyisisekelo, qhubeka ngezigaba ze-bootcamp, futhi uzuze amaphuzu ezokuphepha. Akukudingi ukuba naloluhlobo lwamakhono — ukuzibophezela kuphela.",
-    "footerDesc": "I-Plathifomu YokuHlasela — thola, sebenzisa, bika. Uhlelo lokuqala lwe-Afrika olukhethekile lwenzweni yokuHlasela.",
-    "liveNode": "QYVORA — I-NODE EPHILILE — TAMALE, GHANA",
+    "ctaDescription": "Joya abaphethini abaqeqeshwa ekuhlaseleni kwedijithali e-Afrika. Qala ngemoduli eyisisekelo, qhubeka ngezigaba ze-bootcamp, futhi uzuze amaphuzu ezokuphepha. Akukudingi ukuba naloluhlobo lwamakhono, ukuzibophezela kuphela.",
+    "footerDesc": "I-Plathifomu YokuHlasela, thola, sebenzisa, bika. Uhlelo lokuqala lwe-Afrika olukhethekile lwenzweni yokuHlasela.",
     "manageYourAccount": "Manage your account and preferences.",
     "yourOperatorIdentity": "Your operator identity and stats.",
     "systemAlerts": "System alerts and mission updates.",
@@ -245,7 +244,7 @@
     "noHosts": "No known hosts discovered. Use the terminal to start scanning.",
     "noPhases": "No phases found.",
     "noUnread": "No unread notifications.",
-    "noNotificationsAll": "No notifications yet — you're clear.",
+    "noNotificationsAll": "No notifications yet, you're clear.",
     "noNews": "No recent news",
     "noSuggestions": "Could not load suggestions."
   },
@@ -261,21 +260,21 @@
     "loadFailed": "Kuhlulekile ukulayisha idatha ye-dashboard",
     "passwordUpdated": "Password updated successfully.",
     "passwordUpdateFailed": "Failed to update password.",
-    "tokenGenerated": "Token generated successfully. Copy it now — you won't see it again.",
+    "tokenGenerated": "Token generated successfully. Copy it now, you won't see it again.",
     "copied": "Copied!",
     "profileUpdated": "Profile updated!",
     "profileUpdateFailed": "Failed to update profile.",
     "handleSaved": "Handle saved!",
     "handleSaveFailed": "Failed to save handle.",
     "profileUrlCopied": "Profile URL copied!",
-    "issueReported": "Issue reported — thank you!",
+    "issueReported": "Issue reported, thank you!",
     "issueReportFailed": "Could not submit report",
     "notificationsLoadFailed": "Failed to load notifications",
     "markReadError": "Could not mark as read.",
     "markAllSuccess": "All notifications marked as read.",
     "markAllError": "Could not mark all as read.",
-    "quizPassed": "Quiz passed! {{score}}% — +{{cp}} CP",
-    "quizScore": "Score: {{score}}% — need 70% to pass",
+    "quizPassed": "Quiz passed! {{score}}% - +{{cp}} CP",
+    "quizScore": "Score: {{score}}%, need 70% to pass",
     "quizSubmitError": "Could not submit quiz.",
     "quizAnswerAll": "Answer all questions before submitting.",
     "lessonCompleted": "Lesson completed!",
@@ -381,12 +380,12 @@
       "badge": "What We Build",
       "labs": {
         "title": "Attack Labs",
-        "desc": "10 live labs — crack passwords, inject SQL, escalate privileges, and phish real targets in sandboxed environments.",
+        "desc": "10 live labs, crack passwords, inject SQL, escalate privileges, and phish real targets in sandboxed environments.",
         "stat": "10 Labs"
       },
       "courses": {
         "title": "Self-Paced Courses",
-        "desc": "12 structured courses across terminal, networking, web security, programming, and tools — earn CP as you learn.",
+        "desc": "12 structured courses across terminal, networking, web security, programming, and tools, earn CP as you learn.",
         "stat": "12 Courses"
       },
       "bootcamp": {
@@ -456,7 +455,7 @@
         },
         "killchain": {
           "title": "Kill Chain",
-          "desc": "Full pentest from recon to exploitation — chain every skill into a complete attack narrative",
+          "desc": "Full pentest from recon to exploitation, chain every skill into a complete attack narrative",
           "cp": "500-600 CP"
         }
       },
@@ -586,7 +585,7 @@
     "finalCta": {
       "headingReturning": "Continue Training",
       "headingNew": "Start Your Journey",
-      "description": "Join operators training in offensive security across Africa. Start with foundational modules, progress through bootcamp phases, and earn cyber points. No experience required — just commitment.",
+      "description": "Join operators training in offensive security across Africa. Start with foundational modules, progress through bootcamp phases, and earn cyber points. No experience required, just commitment.",
       "goToDashboard": "Go to Dashboard",
       "startTraining": "Start Free Training",
       "logIn": "Log In"
@@ -704,7 +703,7 @@
     },
     "team": {
       "heading": "Built by Hackers",
-      "description": "Two operators, one mission — building Africa's offensive security platform",
+      "description": "Two operators, one mission, building Africa's offensive security platform",
       "members": {
         "wsuits6": {
           "role": "CEO",
@@ -716,7 +715,7 @@
         },
         "mohammedRafiq": {
           "role": "CFO",
-          "bio": "I don’t protect assets—I grow them wisely."
+          "bio": "I don’t protect assets, I grow them wisely."
         }
       }
     },
@@ -754,7 +753,7 @@
     "teamLanding": {
       "title": "Meet The",
       "titleAccent": "Operators",
-      "description": "The core team behind QYVORA — building Africa's offensive security platform from the ground up.",
+      "description": "The core team behind QYVORA, building Africa's offensive security platform from the ground up.",
       "viewAll": "View Full Team"
     },
     "publicProfile": {
@@ -795,7 +794,7 @@
       "description": "Manage your bootcamps, labs, and personal settings."
     },
     "sidebar": {
-      "promo": "Enroll Now — 75% off"
+      "promo": "Enroll Now - 75% off"
     },
     "topbar": {
       "search": {
@@ -888,7 +887,7 @@
     },
     "dashboard": {
       "seoTitle": "Dashboard",
-      "seoDesc": "Operator dashboard — QYVORA",
+      "seoDesc": "Operator dashboard | QYVORA",
       "greeting": "Welcome back, {{name}}",
       "greetingFallback": "Welcome to QYVORA",
       "overviewDesc": "Your CyberPoints summary and quick actions.",
@@ -979,7 +978,7 @@
         "complete": "Complete",
         "continue": "Continue",
         "start": "Start",
-        "lockedHint": "Locked — complete previous rooms first",
+        "lockedHint": "Locked, complete previous rooms first",
         "steps": "{{count}} steps",
         "duration": "{{min}} min"
       },
@@ -1010,7 +1009,7 @@
       "notFound": "Room not found.",
       "error": "An error occurred. Please try refreshing.",
       "header": {
-        "phaseLabel": "{{codename}} — {{phase}}",
+        "phaseLabel": "{{codename}} - {{phase}}",
         "duration": "{{min}} min",
         "steps": "{{count}} steps",
         "sessionTime": "Session: {{time}}",
@@ -1066,7 +1065,7 @@
         "notAvailable": "Quiz not available for this room yet.",
         "loadError": "Could not load quiz.",
         "passed": "Passed",
-        "failed": "Not quite — 70% needed",
+        "failed": "Not quite - 70% needed",
         "cpEarned": "+{{cp}} CP earned",
         "excellent": "Excellent work! You've mastered the concepts in this room.",
         "continue": "Continue",
@@ -1082,7 +1081,7 @@
       "quizGate": {
         "title": "Quiz Required",
         "heading": "Not so fast, operator.",
-        "description": "You need to complete this room's quiz before moving on. No skipping — the mission requires it.",
+        "description": "You need to complete this room's quiz before moving on. No skipping, the mission requires it.",
         "takeQuiz": "Take the Quiz",
         "stayHere": "Stay Here"
       },
@@ -1185,7 +1184,7 @@
       "markAllRead": "Mark All Read",
       "empty": {
         "unread": "No unread notifications.",
-        "all": "No notifications yet — you're clear."
+        "all": "No notifications yet, you're clear."
       },
       "markRead": "Mark read",
       "loadMore": "Load more ({{count}} remaining)"
@@ -1286,7 +1285,7 @@
       },
       "hosts": {
         "known": "Known hosts ({{count}})",
-        "hidden": "{{count}} hidden — use nmap to discover",
+        "hidden": "{{count}} hidden, use nmap to discover",
         "empty": "No known hosts discovered. Use the terminal to start scanning."
       },
       "tableHeaders": {
@@ -1343,7 +1342,7 @@
   },
   "components": {
     "errorBoundary": {
-      "renderError": "// {{scope}} — Render Error",
+      "renderError": "// {{scope}} - Render Error",
       "title": "Something went wrong",
       "description": "This section crashed unexpectedly. The rest of the app is still running.",
       "tryAgain": "Try Again",
@@ -1444,7 +1443,7 @@
     },
     "bootcampBadge": {
       "alt": "HPB Bootcamp Completed",
-      "title": "Hacker Protocol Bootcamp — Completed"
+      "title": "Hacker Protocol Bootcamp - Completed"
     },
     "terminal": {
       "welcome": "QYVORA Sandbox Terminal v1.0",
@@ -1848,7 +1847,7 @@
   },
   "landing2": {
     "seo": {
-      "title": "QYVORA — Africa's Offensive Security Platform",
+      "title": "QYVORA | Africa's Offensive Security Platform",
       "description": "Training, labs, and enterprise penetration testing. Building a strong cybersecurity ecosystem in Africa."
     },
     "bootcamp": {
@@ -1913,14 +1912,14 @@
     "hero": {
       "badge": "Live Operations",
       "title": "Events",
-      "description": "Join QYVORA live events — offensive security sessions, hacking challenges, and community meetups."
+      "description": "Join QYVORA live events, offensive security sessions, hacking challenges, and community meetups."
     },
     "empty": "No upcoming events.",
     "badge": "Live Operations"
   },
   "servicesPage": {
     "seo": {
-      "title": "Services — QYVORA",
+      "title": "Services | QYVORA",
       "description": "Professional penetration testing services tailored for African organizations."
     },
     "hero": {
@@ -1961,7 +1960,7 @@
   },
   "leaderboardPage": {
     "seo": {
-      "title": "Leaderboard — QYVORA",
+      "title": "Leaderboard | QYVORA",
       "description": "Ranking Africa's top cybersecurity operators by CyberPoints earned."
     },
     "hero": {

@@ -20,9 +20,9 @@ sudo usermod -aG wireshark $USER
 \`\`\`
 
 **Wireshark's main interface:**
-1. **Packet List** — summary of captured packets (time, source, dest, protocol, info)
-2. **Packet Details** — decoded protocol information for the selected packet
-3. **Packet Bytes** — raw hex and ASCII of the packet
+1. **Packet List**: summary of captured packets (time, source, dest, protocol, info)
+2. **Packet Details**: decoded protocol information for the selected packet
+3. **Packet Bytes**: raw hex and ASCII of the packet
 
 When you first open Wireshark, it shows a list of network interfaces. Choose the one you want to capture from (likely \`eth0\` for wired or \`wlan0\` for Wi-Fi).
 
@@ -31,7 +31,7 @@ When you first open Wireshark, it shows a list of network interfaces. Choose the
             tshark -i eth0 -c 100    # Capture 100 packets
 \`\`\`
 
-> **Why this matters for hacking:** Wireshark is the foundation of network forensics. Every security analyst needs to understand packet capture — it's how you detect data exfiltration, C2 beaconing, DNS tunneling, and ARP spoofing. When an incident occurs, the packet capture is the definitive record of what happened. In CTF challenges, pcap analysis is a common skill tested during forensics challenges.
+> **Why this matters for hacking:** Wireshark is the foundation of network forensics. Every security analyst needs to understand packet capture, it's how you detect data exfiltration, C2 beaconing, DNS tunneling, and ARP spoofing. When an incident occurs, the packet capture is the definitive record of what happened. In CTF challenges, pcap analysis is a common skill tested during forensics challenges.
 
 **Mini-challenge:** Run \`ping -c 4 scanme.nmap.org && tshark -i any -c 10 -w /tmp/test.pcap 2>/dev/null; tshark -r /tmp/test.pcap 2>/dev/null | head -5\` to capture and analyze your first packets. If tshark is not available, install with \`sudo apt install tshark\`.`),
 
@@ -69,7 +69,7 @@ sudo airmon-ng start wlan0
 sudo tshark -i wlan0mon
 \`\`\`
 
-> **Why this matters for hacking:** Capture strategy determines what evidence you collect. Promiscuous mode lets you see all traffic on a network segment (hub or ARP-spoofed). Monitor mode on Wi-Fi captures packets from all nearby access points — essential for wireless security assessments. When investigating an incident, capture from the most strategic point (edge router, DMZ switch, or endpoint) based on the type of traffic you need to observe. Always capture to a file with rotation (\`-b filesize:10000 -b files:5\`) to avoid filling the disk.
+> **Why this matters for hacking:** Capture strategy determines what evidence you collect. Promiscuous mode lets you see all traffic on a network segment (hub or ARP-spoofed). Monitor mode on Wi-Fi captures packets from all nearby access points, essential for wireless security assessments. When investigating an incident, capture from the most strategic point (edge router, DMZ switch, or endpoint) based on the type of traffic you need to observe. Always capture to a file with rotation (\`-b filesize:10000 -b files:5\`) to avoid filling the disk.
 
 **Mini-challenge:** Run \`tshark -D\` to list available interfaces. Then \`tshark -i any -c 50 -w /tmp/capture.pcapng\` and generate some traffic (\`curl https://example.com\`). Read the file with \`tshark -r /tmp/capture.pcapng | head -10\`. This is the exact workflow for collecting evidence during an investigation.
 
@@ -133,7 +133,7 @@ ssh.failed_authentication
 
 **Mini-challenge:** Run \`tshark -r /tmp/capture.pcapng -Y "http" 2>/dev/null | head -10\` to filter HTTP traffic from your test capture. Then \`tshark -r /tmp/capture.pcapng -Y "dns" 2>/dev/null | head -10\` to see DNS queries. Practice combining filters like \`tshark -r /tmp/capture.pcapng -Y "ip.addr != 127.0.0.1" 2>/dev/null | head -5\`.
 
-Wireshark highlights matching packets in green. The filter expression is evaluated for each packet — if it's true, the packet is shown.`),
+Wireshark highlights matching packets in green. The filter expression is evaluated for each packet, if it's true, the packet is shown.`),
 
     l('ws-4', 'Following Streams',
       `**Following a TCP stream** reconstructs the entire conversation between two hosts. Instead of seeing individual packets, you see the complete data exchange.
@@ -144,7 +144,7 @@ In Wireshark GUI:
 3. The entire conversation appears in a new window
 
 \`\`\`bash
-# tshark equivalent — extract TCP stream data
+# tshark equivalent, extract TCP stream data
 tshark -r capture.pcapng -z follow,tcp,ascii,0
 # The 0 is the stream index
 \`\`\`
@@ -182,7 +182,7 @@ FLAG{network_traffic_is_not_private}
 
 **HTTP/2 streams** work differently — use "Follow → HTTP/2 Stream" instead.
 
-> **Why this matters for hacking:** Following TCP streams is one of the most powerful Wireshark features for security analysis. When investigating a breach, reconstructing the TCP stream shows you exactly what data was exchanged — including credentials, session tokens, and file contents sent in plaintext. HTTP streams reveal login forms, API responses, and hidden endpoints. In CTFs, following streams often reveals flags transmitted in network conversations that would be invisible looking at individual packets.
+> **Why this matters for hacking:** Following TCP streams is one of the most powerful Wireshark features for security analysis. When investigating a breach, reconstructing the TCP stream shows you exactly what data was exchanged, including credentials, session tokens, and file contents sent in plaintext. HTTP streams reveal login forms, API responses, and hidden endpoints. In CTFs, following streams often reveals flags transmitted in network conversations that would be invisible looking at individual packets.
 
 **Mini-challenge:** Generate HTTP traffic with \`curl -v http://example.com\` while capturing (\`tshark -i any -c 100 -w /tmp/http.pcapng\`). Then use the filter approach: \`tshark -r /tmp/http.pcapng -Y "tcp.stream eq 0" -z follow,tcp,ascii,0 2>/dev/null | head -30\` to reconstruct the first TCP conversation. This is how forensic analysts extract evidence from captures.
 
@@ -231,9 +231,9 @@ username=admin&password=secret123
 Plaintext credentials in the request body. This is why HTTPS exists.
 
 **Statistic tools in Wireshark:**
-- Statistics → HTTP → Requests — see all URLs requested
-- Statistics → HTTP → Load Distribution — which servers get the most traffic
-- Statistics → Protocol Hierarchy — see which protocols use the most bandwidth
+- Statistics → HTTP → Requests, see all URLs requested
+- Statistics → HTTP → Load Distribution, which servers get the most traffic
+- Statistics → Protocol Hierarchy, see which protocols use the most bandwidth
 
 \`\`\`bash
 # tshark HTTP analysis
@@ -281,7 +281,7 @@ dns.qry.name matches "^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{
 \`\`\`
 # Many SYN packets to different ports from one IP
 tcp.flags.syn == 1 and tcp.flags.ack == 0 and !icmp
-# Group by destination port — many different ports = scanning
+# Group by destination port, many different ports = scanning
 \`\`\`
 
 **5. Large data exfiltration:**
@@ -301,12 +301,12 @@ arp.duplicate-address-detected
 
 **Always correlate** suspicious traffic with other evidence. A single strange packet doesn't confirm an attack, but patterns of unusual behavior are worth investigating.
 
-> **Why this matters for hacking:** Malicious traffic identification is the core skill for blue team analysts. Beaconing traffic to C2 servers is the most common indicator of compromise — regular HTTP/HTTPS requests at consistent intervals (every 60 seconds) to a suspicious domain. DNS tunneling encodes data in subdomain queries (\`base64data.evil.com\`) and bypasses most firewalls. ARP spoofing detection (\`arp.duplicate-address-detected\`) catches man-in-the-middle attacks. In incident response, these Wireshark filters are the first tools you reach for.
+> **Why this matters for hacking:** Malicious traffic identification is the core skill for blue team analysts. Beaconing traffic to C2 servers is the most common indicator of compromise, regular HTTP/HTTPS requests at consistent intervals (every 60 seconds) to a suspicious domain. DNS tunneling encodes data in subdomain queries (\`base64data.evil.com\`) and bypasses most firewalls. ARP spoofing detection (\`arp.duplicate-address-detected\`) catches man-in-the-middle attacks. In incident response, these Wireshark filters are the first tools you reach for.
 
 **Mini-challenge:** Practice identifying malicious patterns by creating test traffic: run \`while true; do curl -s http://example.com > /dev/null; sleep 2; done\` in background, capture for 10 seconds, then look for regular timing patterns in the packet list. Use \`tshark\` to filter traffic to that destination and observe the consistent intervals — this is exactly what beaconing looks like.
 
 The best way to learn is to practice: download public packet captures from malware-traffic-analysis.net and try to identify the malicious traffic yourself.`, { hasQuiz: true, quiz: [
-        { id: 'ws-6-q1', question: 'What does beaconing traffic typically look like in Wireshark?', options: ['Random bursts of packets', 'Regular periodic connections at consistent intervals', 'Large single transfers', 'Encrypted HTTPS traffic'], correctIndex: 1, explanation: 'Beaconing is characterized by regular, periodic connections to a C2 server — often every 60 seconds or at another consistent interval.' },
+        { id: 'ws-6-q1', question: 'What does beaconing traffic typically look like in Wireshark?', options: ['Random bursts of packets', 'Regular periodic connections at consistent intervals', 'Large single transfers', 'Encrypted HTTPS traffic'], correctIndex: 1, explanation: 'Beaconing is characterized by regular, periodic connections to a C2 server, often every 60 seconds or at another consistent interval.' },
         { id: 'ws-6-q2', question: 'Which Wireshark filter detects DNS tunneling?', options: ['dns.qry.name.len > 50', 'dns.flags == 1', 'udp.port == 53', 'ip.proto == 17'], correctIndex: 0, explanation: 'DNS tunneling often uses very long subdomains to encode data. Filtering for query names longer than 50 characters is a good starting point.' },
       ] }),
 
@@ -366,7 +366,7 @@ tshark -r capture.pcapng -z expert
 **Automated analysis scripts:**
 \`\`\`bash
 #!/bin/bash
-# analyze.sh — quick triage of a pcap
+# analyze.sh, quick triage of a pcap
 PCAP="$1"
 
 echo "=== Protocol Hierarchy ==="
@@ -388,7 +388,7 @@ tshark -r "$PCAP" -T fields -e tcp.dstport 2>/dev/null | \
             sort | uniq -c | sort -rn | head -10
 \`\`\`
 
-> **Why this matters for hacking:** TShark is essential for automated forensics at scale. When analyzing a compromised server remotely (no GUI available), TShark is your only option. The \`-T fields\` flag extracts structured data (hosts, URIs, ports) for feeding into other tools (Splunk, custom scripts, spreadsheets). The \`-z io,phs\` (protocol hierarchy) gives a quick overview of what protocols are present — the starting point for any pcap triage. In incident response, a TShark analysis script can triage a 1GB pcap in seconds.
+> **Why this matters for hacking:** TShark is essential for automated forensics at scale. When analyzing a compromised server remotely (no GUI available), TShark is your only option. The \`-T fields\` flag extracts structured data (hosts, URIs, ports) for feeding into other tools (Splunk, custom scripts, spreadsheets). The \`-z io,phs\` (protocol hierarchy) gives a quick overview of what protocols are present, the starting point for any pcap triage. In incident response, a TShark analysis script can triage a 1GB pcap in seconds.
 
 **Mini-challenge:** Run the full triage script against your /tmp/capture.pcapng: \`tshark -r /tmp/capture.pcapng -z io,phs 2>/dev/null\`. This prints the protocol hierarchy — the first step in any pcap analysis. Look for unexpected protocols like FTP, Telnet, or SMB on unusual ports.`),
 
@@ -421,7 +421,7 @@ tshark -r capture.pcapng -o tls.keylog_file:/tmp/keys.log \
 
 **Decrypting with a server private key:**
 \`\`\`bash
-# Only works for RSA key exchange (not ECDHE — most modern TLS)
+# Only works for RSA key exchange (not ECDHE: most modern TLS)
 # Wireshark: Edit → Preferences → Protocols → TLS → RSA key file
 # Format: ip,port,protocol,keyfile
 # 10.0.0.1,443,tcp,/path/to/private.key
@@ -457,7 +457,7 @@ tshark -r capture.pcapng -Y "icmp" -T fields \
             tshark -r capture.pcapng -Y "icmp" -T fields -e ip.ttl
 \`\`\`
 
-> **Why this matters for hacking:** TLS decryption transforms encrypted traffic back into plaintext for analysis. The \`SSLKEYLOGFILE\` environment variable is the easiest method — Firefox and Chrome both support it. This is critical for debugging HTTPS applications and investigating encrypted malware C2 traffic. With the session keys, you can see every request, response, header, and body that would otherwise be opaque. In penetration testing, configuring TLS decryption lets you analyze how an application behaves over HTTPS, revealing API calls and authentication flows that are invisible in encrypted form.
+> **Why this matters for hacking:** TLS decryption transforms encrypted traffic back into plaintext for analysis. The \`SSLKEYLOGFILE\` environment variable is the easiest method. Firefox and Chrome both support it. This is critical for debugging HTTPS applications and investigating encrypted malware C2 traffic. With the session keys, you can see every request, response, header, and body that would otherwise be opaque. In penetration testing, configuring TLS decryption lets you analyze how an application behaves over HTTPS, revealing API calls and authentication flows that are invisible in encrypted form.
 
 **Mini-challenge:** Set \`export SSLKEYLOGFILE=/tmp/keys.log\`, then run \`curl -o /dev/null -s https://example.com\`. Check if the key file was written: \`cat /tmp/keys.log 2>/dev/null | head -5\`. Modern Firefox/Chrome browsers also support this for all HTTPS traffic — one of the most useful debugging techniques for security testing.`),
 
@@ -525,7 +525,7 @@ foremost -t png -i capture.pcapng
 **Full forensic triage workflow:**
 \`\`\`bash
 #!/bin/bash
-# forensic-triage.sh — automate pcap analysis
+# forensic-triage.sh, automate pcap analysis
 
 PCAP="$1"
 OUTDIR="forensic-output-$(date +%s)"
@@ -549,7 +549,7 @@ echo "[5/5] Extract credentials from protocols"
 tshark -r "$PCAP" -Y "ftp.request.command == USER || ftp.request.command == PASS" \
   -T fields -e ftp.request.arg > "$OUTDIR/ftp-creds.txt"
 
-echo "Done — output in $OUTDIR/"
+echo "Done, output in $OUTDIR/"
 \`\`\`
 
 Mastering these advanced techniques separates script kiddies from real security analysts. Practice on public packet captures from malware-traffic-analysis.net and the Wireshark sample captures page.`, { hasQuiz: true, quiz: [

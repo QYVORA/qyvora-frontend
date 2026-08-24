@@ -7,6 +7,10 @@ import StudentHeroSection, { PUBLIC_HERO_TITLE_CLASS } from '@/shared/components
 import { Footer } from '@/shared/components/layout';
 import { useAuth } from '@/core/contexts/AuthContext';
 import LandingFinalCtaSection from '@/features/marketing/components/landing/LandingFinalCtaSection';
+import { getRelatedTools } from '@/features/marketing/data/relatedTools';
+import RelatedContentSection from '@/shared/components/RelatedContentSection';
+import { useTranslation } from 'react-i18next';
+
 import ToolDocumentationSection from '@/shared/components/ToolDocumentationSection';
 import CodeBlock from '@/shared/components/CodeBlock';
 import ToolsCarousel from '@/features/marketing/components/ToolsCarousel';
@@ -17,16 +21,17 @@ import { STAGES, RULES, PROFILES, GITHUB_URL, BUILD_FROM_SOURCE, QUICK_START, AU
 import jabariLogo from '@/assets/jabari/jabari-main-logo.webp';
 
 const REQUIREMENTS = [
-  'Android platform-tools (adb) — USB + network transports',
+  'Android platform-tools (adb) - USB + network transports',
   'Go 1.21+ toolchain to build',
   'An authorized Android device or emulator to assess',
 ];
 
 const JabariPage = () => {
   const { user } = useAuth();
+  const { t } = useTranslation();
   return (
     <div className="bg-bg min-h-full">
-      <SEO title="Jabari - QYVORA" description="Jabari — Android security assessment framework in Go. USB and network (ADB) targets, a seven-stage pipeline, non-destructive rule engine and evidence-driven reporting." />
+      <SEO title="Jabari - QYVORA" description="Jabari. Android security assessment framework in Go. USB and network (ADB) targets, a seven-stage pipeline, non-destructive rule engine and evidence-driven reporting." />
       <PublicSnapLayout>
         <section className="relative w-full min-h-dvh snap-section bg-bg">
         <StudentHeroSection
@@ -35,7 +40,7 @@ const JabariPage = () => {
           titleClassName={PUBLIC_HERO_TITLE_CLASS}
           showGlobe
           typewrite
-          description="Android security assessment framework in Go — a seven-stage pipeline from discovery to evidence-driven reporting across USB and specified-network targets."
+          description="Android security assessment framework in Go, a seven-stage pipeline from discovery to evidence-driven reporting across USB and specified-network targets."
           stats={[
             { label: 'Pipeline Stages', value: STAGES.length },
             { label: 'Profiles', value: PROFILES.length },
@@ -74,11 +79,11 @@ const JabariPage = () => {
                   <AUTHORIZED_WARNING.icon className="w-5 h-5 md:w-6 md:h-6 text-amber-400" />
                 </div>
                 <p className="text-xs md:text-sm text-text-secondary leading-relaxed font-mono">
-                  Every run passes an authorization gate — an interactive{' '}
+                  Every run passes an authorization gate, an interactive{' '}
                   <code className="text-amber-400">[y/N]</code> prompt on a TTY, or{' '}
                   <code className="text-amber-400">-y</code> / <code className="text-amber-400">authorized: true</code>{' '}
                   for non-interactive runs. The authorized flag is recorded on the session for the audit trail. Jabari is
-                  Android-centric by design: it assesses the single USB device or IP you point it at — never the
+                  Android-centric by design: it assesses the single USB device or IP you point it at, never the
                   surrounding subnet.
                 </p>
               </div>
@@ -94,7 +99,7 @@ const JabariPage = () => {
               {[
                 'Interactive [y/N] authorization gate before any assessment stage runs.',
                 'The authorized flag is written to the session record for the audit trail.',
-                'One deliberate target — a single USB device or IP, never the surrounding subnet.',
+                'One deliberate target, a single USB device or IP, never the surrounding subnet.',
               ].map((rule) => (
                 <div key={rule} className="flex items-start gap-3 rounded-xl border border-border/20 bg-bg-elevated px-4 py-3">
                   <span className="w-6 h-6 rounded-lg bg-accent/10 border border-accent/20 flex items-center justify-center shrink-0 mt-0.5">
@@ -159,7 +164,7 @@ const JabariPage = () => {
           kicker="Go source"
           title="Testable"
           accent="contracts"
-          description="Small interfaces for stages and transports — the pipeline runs against fakes without a live device."
+          description="Small interfaces for stages and transports, the pipeline runs against fakes without a live device."
           examples={SOURCE_EXAMPLES}
         />
 
@@ -172,7 +177,7 @@ const JabariPage = () => {
               kicker="Install"
               title="Build &"
               accent="Install"
-              description="Built with make — produces the jabari binary plus the androidsec alias, installed with its logo and desktop entry."
+              description="Built with make, produces the jabari binary plus the androidsec alias, installed with its logo and desktop entry."
             />
 
             <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,2fr)_minmax(0,3fr)] gap-4 md:gap-6 items-stretch">
@@ -276,7 +281,7 @@ const JabariPage = () => {
               kicker="Quick Start"
               title="Assess in"
               accent="One Command"
-              description="Point jabari at a connected device or an authorized IP — the authorization gate runs, then the pipeline begins."
+              description="Point jabari at a connected device or an authorized IP: the authorization gate runs, then the pipeline begins."
             />
 
             <div className="grid grid-cols-1 lg:grid-cols-[1.15fr_1fr] gap-4 md:gap-6 items-stretch">
@@ -286,7 +291,7 @@ const JabariPage = () => {
                   <span className="w-2.5 h-2.5 rounded-full bg-red-400/70" />
                   <span className="w-2.5 h-2.5 rounded-full bg-yellow-400/70" />
                   <span className="w-2.5 h-2.5 rounded-full bg-accent/70" />
-                  <span className="ml-2 text-[9px] font-mono text-text-muted">jabari — zsh</span>
+                  <span className="ml-2 text-[9px] font-mono text-text-muted">jabari, zsh</span>
                 </div>
                 <div className="p-4 md:p-5 font-mono text-[11px] md:text-xs space-y-2">
                   <div className="flex items-center gap-2">
@@ -295,7 +300,7 @@ const JabariPage = () => {
                   </div>
                   <div className="flex items-center gap-2">
                     <span className="text-accent">$</span>
-                    <span className="text-text-muted">[authorized] target: device via USB — session recorded</span>
+                    <span className="text-text-muted">[authorized] target: device via USB: session recorded</span>
                   </div>
                   <div className="pl-4 space-y-1.5 border-l border-accent/30">
                     {[
@@ -344,6 +349,8 @@ const JabariPage = () => {
             </div>
           </div>
         </PublicSnapSection>
+        <RelatedContentSection items={getRelatedTools(t, "/jabari")} />
+
         <section className="relative w-full min-h-dvh snap-section bg-bg-alt">
           <LandingFinalCtaSection user={user} />
         </section>

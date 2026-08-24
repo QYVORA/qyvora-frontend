@@ -22,7 +22,7 @@ const RoomSidebar: React.FC<Props> = ({
   const { t } = useTranslation();
 
   const sections = phases.map((phase) => ({
-    label: `${phase.codename} — ${phase.title}`,
+    label: `${phase.codename} | ${phase.title}`,
     items: phase.rooms.map((room) => {
       const key = `${phase.id}:${room.id}`;
       return {
