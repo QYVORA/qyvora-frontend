@@ -1,4 +1,4 @@
-import { Users, Database, Coins, Mail, Megaphone } from 'lucide-react';
+import { Users, Database, Coins, Mail, Megaphone, OctagonAlert } from 'lucide-react';
 import { IconShield, IconClock, IconWarning, IconDashboard } from '@/shared/components/icons';
 import ADMIN_PATH from '@/shared/utils/adminPath';
 
@@ -28,8 +28,9 @@ export const NAV_GROUPS = [
   {
     label: 'Monitor',
     items: [
-      { label: 'Audit',     icon: IconClock,   path: `${ADMIN_PATH}/dashboard?tab=audit`,     desc: 'Admin action log'   },
-      { label: 'Security',  icon: IconWarning, path: `${ADMIN_PATH}/dashboard?tab=security`, desc: 'Security events'     },
+      { label: 'Audit',     icon: IconClock,     path: `${ADMIN_PATH}/dashboard?tab=audit`,      desc: 'Admin action log'   },
+      { label: 'Security',  icon: IconWarning,   path: `${ADMIN_PATH}/dashboard?tab=security`,   desc: 'Security events'    },
+      { label: 'Incidents', icon: OctagonAlert,  path: `${ADMIN_PATH}/dashboard?tab=incidents`,  desc: 'Incident tracking'  },
     ],
   },
 ];
@@ -47,4 +48,5 @@ export const MOBILE_MORE = [
   { label: 'Broadcast', icon: Megaphone,     path: `${ADMIN_PATH}/dashboard?tab=broadcast` },
   { label: 'Audit',     icon: IconClock,     path: `${ADMIN_PATH}/dashboard?tab=audit`    },
   { label: 'Security',  icon: IconWarning,   path: `${ADMIN_PATH}/dashboard?tab=security` },
+  { label: 'Incidents', icon: OctagonAlert,  path: `${ADMIN_PATH}/dashboard?tab=incidents` },
 ];
