@@ -8,7 +8,6 @@ import CodeBlockRenderer from '@/shared/components/courses/CodeBlockRenderer';
 import InlineQuiz from '@/shared/components/courses/InlineQuiz';
 import { TerminalWrapper } from '@/shared/components/learning/TerminalWrapper';
 import { StepNumberHeader } from '@/shared/components/learning/StepNumberHeader';
-import { WalkthroughSidebar } from '@/shared/components/walkthrough/WalkthroughSidebar';
 import CodePlayground from '@/shared/components/courses/CodePlayground';
 import StudentHeroSection from '@/shared/components/StudentHeroSection';
 import api from '@/core/services/api';
@@ -101,18 +100,8 @@ const CourseLessonPage: React.FC = () => {
   const [checkingAccess, setCheckingAccess] = useState(true);
   const [completedLessons, setCompletedLessons] = useState<Set<string>>(new Set());
   const [resumeIdx, setResumeIdx] = useState<number | null>(null);
-  const [sidebarOpen, setSidebarOpen] = useState(false);
-  useScrollLock(sidebarOpen);
 
   const totalLessons = course?.lessons.length ?? 0;
-
-  useEffect(() => {
-    const sidebarHandler = () => setSidebarOpen(true);
-    window.addEventListener('course:openSidebar', sidebarHandler);
-    return () => {
-      window.removeEventListener('course:openSidebar', sidebarHandler);
-    };
-  }, []);
 
   useEffect(() => {
     if (!courseId) { setCheckingAccess(false); return; }
@@ -261,28 +250,6 @@ const CourseLessonPage: React.FC = () => {
         title={t('student.celebration.courseTitle')}
         description={t('student.celebration.courseDescription', { title: course.title })}
         ctaLabel={t('student.celebration.continue')}
-      />
-
-      <WalkthroughSidebar
-        sections={[{
-          label: 'Lessons',
-          items: course.lessons.map((l, i) => ({
-            id: l.id,
-            title: l.title,
-            isActive: i === currentLessonIdx,
-            isCompleted: completedLessons.has(l.id),
-            isLocked: false,
-            onClick: () => {
-              goToLesson(i);
-            },
-          })),
-        }]}
-        backHref="/dashboard/courses"
-        backLabel="Back to Courses"
-        mobileOpen={sidebarOpen}
-        onMobileClose={() => setSidebarOpen(false)}
-        title="Lesson Navigator"
-        subtitle="Course"
       />
 
       <div className=" px-3 md:px-4 lg:px-6 pt-8 pb-20 lg:pb-24 space-y-8">
