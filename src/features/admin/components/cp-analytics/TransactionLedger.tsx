@@ -33,7 +33,7 @@ const TransactionLedger: React.FC<TransactionLedgerProps> = ({
   const { t } = useTranslation();
 
   return (
-    <div className="rounded-2xl border border-border/30 bg-bg-card overflow-hidden">
+    <div className="rounded-2xl border border-border/50 bg-bg-card overflow-hidden">
       <div className="flex flex-wrap items-center justify-between gap-3 border-b border-border px-5 py-4">
         <div className="flex items-center gap-2">
           <Activity className="w-4 h-4 text-accent" />

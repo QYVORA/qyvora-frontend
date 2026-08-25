@@ -120,10 +120,10 @@ const CoursePurchaseModal: React.FC<CoursePurchaseModalProps> = ({ open, onOpenC
             <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-[9px] font-black uppercase tracking-widest ${skillCfg.color}`}>
               <Sparkles className="h-3 w-3" /> {skillCfg.label}
             </span>
-            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-bg-elevated rounded-lg text-[9px] font-black uppercase tracking-widest text-text-muted border border-border/30">
+            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-bg-elevated rounded-lg text-[9px] font-black uppercase tracking-widest text-text-muted border border-border/50">
               <Clock size={12} className="text-accent" /> {course.estimatedMinutes} min
             </span>
-            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-bg-elevated rounded-lg text-[9px] font-black uppercase tracking-widest text-text-muted border border-border/30">
+            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-bg-elevated rounded-lg text-[9px] font-black uppercase tracking-widest text-text-muted border border-border/50">
               <BookOpen className="h-3 w-3" /> {course.lessons.length} lessons
             </span>
           </div>

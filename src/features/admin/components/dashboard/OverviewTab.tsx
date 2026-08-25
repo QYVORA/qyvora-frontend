@@ -23,7 +23,7 @@ const OverviewTab = ({ data, status, onRetry }: OverviewTabProps) => {
     return (
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4" role="status">
         {Array.from({ length: 6 }).map((_, i) => (
-          <div key={i} className="rounded-2xl border border-border/30 bg-bg-card p-5 space-y-3 animate-pulse">
+          <div key={i} className="rounded-2xl border border-border/50 bg-bg-card p-5 space-y-3 animate-pulse">
             <div className="h-4 w-24 bg-border/30 rounded" />
             <div className="h-8 w-20 bg-border/30 rounded" />
           </div>
@@ -86,7 +86,7 @@ const OverviewTab = ({ data, status, onRetry }: OverviewTabProps) => {
   ];
 
   const signupMobileCard = (u: OverviewData['recentSignups'][number]) => (
-    <div className="bg-bg-card border border-border/30 rounded-2xl p-4 space-y-2">
+    <div className="bg-bg-card border border-border/50 rounded-2xl p-4 space-y-2">
       <div className="flex items-center justify-between gap-4">
         <div className="min-w-0">
           <div className="text-sm font-bold text-text-primary truncate">{u.name || t('common2.unknown')}</div>
@@ -119,7 +119,7 @@ const OverviewTab = ({ data, status, onRetry }: OverviewTabProps) => {
         </div>
       )}
 
-      <div className="rounded-2xl border border-border/30 bg-bg-card p-5">
+      <div className="rounded-2xl border border-border/50 bg-bg-card p-5">
         <h3 className="text-sm font-black uppercase tracking-wide text-text-primary mb-4 flex items-center gap-2">
           <UserPlus className="w-4 h-4 text-accent" /> {t('admin.overview.recentSignups')}
         </h3>

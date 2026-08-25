@@ -48,7 +48,7 @@ const ToolModulesSection: React.FC<ToolModulesSectionProps> = ({
             return (
               <article
                 key={module.id}
-                className="group relative flex min-w-0 flex-col overflow-hidden rounded-2xl border border-border/30 bg-bg-card p-5 transition-colors hover:border-accent/40 sm:p-6"
+                className="group relative flex min-w-0 flex-col overflow-hidden rounded-2xl border border-border/50 bg-bg-card p-5 transition-colors hover:border-accent/40 sm:p-6"
               >
                 <div className="mb-4 flex items-start justify-between gap-3">
                   <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-accent/30 bg-accent/10">

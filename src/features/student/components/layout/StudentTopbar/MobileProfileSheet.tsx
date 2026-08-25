@@ -125,10 +125,10 @@ const MobileProfileSheet: React.FC<MobileProfileSheetProps> = ({
                     to={section.path}
                     onClick={() => onOpenChange(false)}
                     className={`flex items-center gap-3 px-4 py-3 rounded-xl border text-left transition-all active:scale-[0.98] ${
-                      active ? 'border-accent/40 bg-accent/5' : 'border-border hover:border-accent/30'
+                      active ? 'border-accent/40 bg-accent/5' : 'border-border hover:border-accent/50'
                     }`}
                   >
-                    <div className="w-10 h-10 rounded-xl bg-bg-elevated border border-border/30 flex items-center justify-center shrink-0">
+                    <div className="w-10 h-10 rounded-xl bg-bg-elevated border border-border/50 flex items-center justify-center shrink-0">
                       <Icon size={16} className={active ? 'text-accent' : 'text-text-muted'} />
                     </div>
                     <div className="flex-1 min-w-0">
@@ -145,9 +145,9 @@ const MobileProfileSheet: React.FC<MobileProfileSheetProps> = ({
             <Link
               to="/dashboard/notifications"
               onClick={() => onOpenChange(false)}
-              className="flex items-center gap-3 px-4 py-3 rounded-xl border border-border text-left transition-all active:scale-[0.98] hover:border-accent/30"
+              className="flex items-center gap-3 px-4 py-3 rounded-xl border border-border text-left transition-all active:scale-[0.98] hover:border-accent/50"
             >
-              <div className="relative w-10 h-10 rounded-xl bg-bg-elevated border border-border/30 flex items-center justify-center shrink-0">
+              <div className="relative w-10 h-10 rounded-xl bg-bg-elevated border border-border/50 flex items-center justify-center shrink-0">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-text-muted">
                   <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9" />
                   <path d="M10.3 21a1.94 1.94 0 0 0 3.4 0" />
@@ -171,7 +171,7 @@ const MobileProfileSheet: React.FC<MobileProfileSheetProps> = ({
             {/* Tools */}
             <div className="rounded-xl border border-border overflow-hidden">
               <div className="flex items-center gap-3 px-4 py-3">
-                <div className="w-10 h-10 rounded-xl bg-bg-elevated border border-border/30 flex items-center justify-center shrink-0">
+                <div className="w-10 h-10 rounded-xl bg-bg-elevated border border-border/50 flex items-center justify-center shrink-0">
                   <Wrench size={16} className="text-text-muted" />
                 </div>
                 <div className="flex-1 min-w-0">
@@ -205,9 +205,9 @@ const MobileProfileSheet: React.FC<MobileProfileSheetProps> = ({
             <Link
               to="/dashboard/networks"
               onClick={() => onOpenChange(false)}
-              className="flex items-center gap-3 px-4 py-3 rounded-xl border border-border text-left transition-all active:scale-[0.98] hover:border-accent/30"
+              className="flex items-center gap-3 px-4 py-3 rounded-xl border border-border text-left transition-all active:scale-[0.98] hover:border-accent/50"
             >
-              <div className="w-10 h-10 rounded-xl bg-bg-elevated border border-border/30 flex items-center justify-center shrink-0">
+              <div className="w-10 h-10 rounded-xl bg-bg-elevated border border-border/50 flex items-center justify-center shrink-0">
                 <Globe size={16} className="text-text-muted" />
               </div>
               <div className="flex-1 min-w-0">
@@ -221,9 +221,9 @@ const MobileProfileSheet: React.FC<MobileProfileSheetProps> = ({
             <Link
               to="/dashboard/settings"
               onClick={() => onOpenChange(false)}
-              className="flex items-center gap-3 px-4 py-3 rounded-xl border border-border text-left transition-all active:scale-[0.98] hover:border-accent/30"
+              className="flex items-center gap-3 px-4 py-3 rounded-xl border border-border text-left transition-all active:scale-[0.98] hover:border-accent/50"
             >
-              <div className="w-10 h-10 rounded-xl bg-bg-elevated border border-border/30 flex items-center justify-center shrink-0">
+              <div className="w-10 h-10 rounded-xl bg-bg-elevated border border-border/50 flex items-center justify-center shrink-0">
                 <Settings size={16} className="text-text-muted" />
               </div>
               <div className="flex-1 min-w-0">

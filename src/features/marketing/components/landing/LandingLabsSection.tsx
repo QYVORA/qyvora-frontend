@@ -31,7 +31,7 @@ const LabCard: React.FC<{ lab: Lab }> = ({ lab }) => {
       <DottedMapOverlay className="rounded-2xl" />
       <div className="relative z-10 h-full flex flex-col p-4 sm:p-6">
         <div className="flex items-start justify-between">
-          <span className="self-start text-[8px] font-black uppercase tracking-widest px-2 py-1 rounded-full border border-border/30 bg-bg-elevated text-text-muted">
+          <span className="self-start text-[8px] font-black uppercase tracking-widest px-2 py-1 rounded-full border border-border/50 bg-bg-elevated text-text-muted">
             {t(`landing.labs.list.${lab.id}.cp`)}
           </span>
           <LabBadge labId={lab.id} accentColor={lab.accentColor} className="w-14 h-14 shrink-0" />
@@ -45,7 +45,7 @@ const LabCard: React.FC<{ lab: Lab }> = ({ lab }) => {
             {t(`landing.labs.list.${lab.id}.desc`)}
           </p>
 
-          <div className="mt-3 pt-3 border-t border-border/30 flex items-center gap-2 text-text-muted group-hover:text-accent transition-colors">
+          <div className="mt-3 pt-3 border-t border-border/50 flex items-center gap-2 text-text-muted group-hover:text-accent transition-colors">
             <Zap className="w-3.5 h-3.5 shrink-0" />
             <span className="text-[10px] font-black uppercase tracking-widest">{t('landing.labs.launchLab')}</span>
             <IconArrowRight size={14} className="transition-transform group-hover:translate-x-1" />

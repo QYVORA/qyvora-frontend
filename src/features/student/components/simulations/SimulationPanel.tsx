@@ -21,7 +21,7 @@ export function SimulationPanel({ simulations, defaultHeight = 'h-[50vh] md:h-[6
   const hasBreakout = activeSimulation?.breakout ?? false;
 
   return (
-    <div className={`rounded-2xl border border-border/30 bg-bg-card overflow-hidden ${expanded ? 'fixed inset-4 z-[200]' : defaultHeight}`}>
+    <div className={`rounded-2xl border border-border/50 bg-bg-card overflow-hidden ${expanded ? 'fixed inset-4 z-[200]' : defaultHeight}`}>
       {/* Content — each simulation rendered with data-active attribute */}
       <div className="h-full min-h-0 overflow-hidden">
         {simulations.map(sim => (

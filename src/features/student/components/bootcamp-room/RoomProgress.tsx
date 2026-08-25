@@ -25,7 +25,7 @@ const RoomProgress: React.FC<RoomProgressProps> = ({
 }) => {
   const { t } = useTranslation();
   return (
-    <div className="mb-8 rounded-2xl border border-border/30 bg-bg-card p-5 md:p-6">
+    <div className="mb-8 rounded-2xl border border-border/50 bg-bg-card p-5 md:p-6">
       <div className="mb-3 flex items-center justify-between gap-2">
         <span className="text-xs font-black uppercase tracking-[0.2em] text-text-muted">{t('student.bootcampRoom.progress.title')}</span>
         <span className="font-mono text-base font-black text-accent">

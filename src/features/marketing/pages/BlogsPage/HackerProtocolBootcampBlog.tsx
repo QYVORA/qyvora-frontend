@@ -164,9 +164,9 @@ export const HackerProtocolBootcampBlog: React.FC = () => {
           {FIVE_PHASES.map((p) => (
             <div
               key={p.variant}
-              className="p-5 md:p-6 rounded-xl border border-border/30 bg-bg-card flex flex-col sm:flex-row gap-5 md:gap-6 items-start hover:border-accent/30 transition-colors"
+              className="p-5 md:p-6 rounded-xl border border-border/50 bg-bg-card flex flex-col sm:flex-row gap-5 md:gap-6 items-start hover:border-accent/50 transition-colors"
             >
-              <div className="w-28 h-28 md:w-36 md:h-36 shrink-0 rounded-xl border border-border/30 bg-bg-elevated flex items-center justify-center overflow-hidden">
+              <div className="w-28 h-28 md:w-36 md:h-36 shrink-0 rounded-xl border border-border/50 bg-bg-elevated flex items-center justify-center overflow-hidden">
                 <HpbAvatar variant={p.variant} className="h-full w-auto max-h-full max-w-full" />
               </div>
               <div className="min-w-0 flex-1">

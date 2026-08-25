@@ -51,7 +51,7 @@ const ToolDocumentationSection = ({
 
       <div className={`grid grid-cols-1 gap-3 sm:grid-cols-2 ${splitDesktop ? 'lg:grid-cols-2' : 'lg:grid-cols-1'} ${reverseDesktop ? 'lg:order-1' : 'lg:order-2'}`}>
         {bullets.length > 0 && (
-          <div className={`rounded-2xl border border-border/30 bg-bg-card p-4 sm:p-5 ${splitDesktop ? 'lg:translate-y-6' : ''}`}>
+          <div className={`rounded-2xl border border-border/50 bg-bg-card p-4 sm:p-5 ${splitDesktop ? 'lg:translate-y-6' : ''}`}>
             <p className="mb-2 text-[9px] font-black uppercase tracking-widest text-text-muted">What it does</p>
             <ul className="space-y-1.5">
               {bullets.slice(0, 3).map((bullet) => <li key={bullet} className="flex gap-2 text-xs leading-relaxed text-text-secondary sm:text-sm"><span className="text-accent">›</span>{bullet}</li>)}
@@ -64,7 +64,7 @@ const ToolDocumentationSection = ({
           </div>
         )}
         {tree && (
-          <div className="overflow-hidden rounded-2xl border border-border/30 bg-bg-card p-3 sm:p-4">
+          <div className="overflow-hidden rounded-2xl border border-border/50 bg-bg-card p-3 sm:p-4">
             <p className="mb-2 flex items-center gap-2 text-[9px] font-black uppercase tracking-widest text-text-muted"><FolderTree className="h-3.5 w-3.5 text-accent" /> Source layout</p>
             <pre className="min-w-0 overflow-x-auto font-mono text-[10px] leading-relaxed text-text-secondary"><code>{tree.slice(0, 7).join('\n')}</code></pre>
           </div>

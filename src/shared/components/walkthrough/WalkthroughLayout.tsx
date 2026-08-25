@@ -85,9 +85,9 @@ export function WalkthroughLayout({
 
       <div className="w-full py-8 md:py-12">
         {/* Room Header */}
-        <div className="relative overflow-hidden mb-12 md:mb-16 rounded-2xl border border-border/30 bg-bg-card p-6 md:p-8">
+        <div className="relative overflow-hidden mb-12 md:mb-16 rounded-2xl border border-border/50 bg-bg-card p-6 md:p-8">
           <div className="flex items-start gap-5">
-            <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl border border-border/30 bg-bg-elevated text-accent">
+            <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl border border-border/50 bg-bg-elevated text-accent">
               {icon}
             </div>
             <div className="flex-1 min-w-0">
@@ -125,9 +125,9 @@ export function WalkthroughLayout({
 
         {/* Connection Panel */}
         {scenarioId && showConnectionGuide && (
-          <div className="mb-10 rounded-2xl border border-border/30 bg-bg-card p-5 md:p-7">
+          <div className="mb-10 rounded-2xl border border-border/50 bg-bg-card p-5 md:p-7">
             <div className="flex flex-wrap items-center gap-3 mb-4">
-              <div className="flex h-9 w-9 items-center justify-center rounded-xl border border-border/30 bg-bg-elevated text-accent">
+              <div className="flex h-9 w-9 items-center justify-center rounded-xl border border-border/50 bg-bg-elevated text-accent">
                 <IconTerminal size={18} />
               </div>
               <h3 className="text-[11px] font-black uppercase tracking-widest text-text-primary">

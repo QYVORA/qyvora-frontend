@@ -32,7 +32,7 @@ const FilterTabs: React.FC<FilterTabsProps> = ({ tabs, activeKey, onChange, size
             'font-black uppercase tracking-wider transition-all duration-300 active:scale-95 disabled:opacity-50 disabled:pointer-events-none',
             activeKey === tab.key
               ? 'bg-accent text-on-accent'
-              : 'bg-bg-card border border-border text-text-muted hover:border-accent/30 hover:text-accent',
+              : 'bg-bg-card border border-border text-text-muted hover:border-accent/50 hover:text-accent',
           )}
         >
           <span className="inline-flex items-center gap-2">

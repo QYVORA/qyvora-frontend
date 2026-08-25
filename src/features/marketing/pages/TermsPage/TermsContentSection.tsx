@@ -46,7 +46,7 @@ const TermsContentSection: React.FC = () => {
             return (
               <div
                 key={idx}
-                className="rounded-xl border border-border/30 bg-bg-card overflow-hidden transition-colors hover:border-border/50"
+                className="rounded-xl border border-border/50 bg-bg-card overflow-hidden transition-colors hover:border-border/50"
               >
                 {/* Strip header — always visible */}
                 <button

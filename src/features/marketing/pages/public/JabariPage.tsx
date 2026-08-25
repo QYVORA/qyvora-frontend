@@ -59,7 +59,7 @@ const JabariPage = () => {
         >
           <div className="flex flex-wrap items-center gap-3">
             <button type="button" onClick={() => openToolInstall('jabari')} className="btn-primary inline-flex items-center gap-2 px-6 py-2.5"><Download className="w-4 h-4" /> Install Now <IconArrowRight size={14} /></button>
-            <span className="inline-flex items-center gap-2 px-2.5 py-1 rounded-lg border border-border/30 bg-bg-card text-[9px] font-black uppercase tracking-widest text-text-muted"><span className="font-black text-[#00ADD8]">Go</span> 1.26+</span>
+            <span className="inline-flex items-center gap-2 px-2.5 py-1 rounded-lg border border-border/50 bg-bg-card text-[9px] font-black uppercase tracking-widest text-text-muted"><span className="font-black text-[#00ADD8]">Go</span> 1.26+</span>
           </div>
         </StudentHeroSection>
         </section>
@@ -90,7 +90,7 @@ const JabariPage = () => {
             </div>
 
             {/* Session guarantees */}
-            <div className="rounded-2xl border border-border/30 bg-bg-card p-5 md:p-6 flex flex-col gap-4">
+            <div className="rounded-2xl border border-border/50 bg-bg-card p-5 md:p-6 flex flex-col gap-4">
               <div className="flex items-center gap-3">
                 <span className="text-[9px] font-black uppercase tracking-[0.3em] text-accent">Session guarantees</span>
                 <span className="h-px flex-1 bg-border/30" />
@@ -182,7 +182,7 @@ const JabariPage = () => {
 
             <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,2fr)_minmax(0,3fr)] gap-4 md:gap-6 items-stretch">
               {/* Auto-install */}
-              <div className="rounded-2xl border border-accent/30 bg-accent/5 p-5 md:p-6 flex flex-col justify-between gap-4">
+              <div className="rounded-2xl border border-accent/50 bg-accent/5 p-5 md:p-6 flex flex-col justify-between gap-4">
                 <div className="flex items-start gap-3">
                   <div className="w-10 h-10 rounded-xl bg-accent/10 border border-accent/20 flex items-center justify-center shrink-0">
                     <Download className="w-5 h-5 text-accent" />
@@ -204,7 +204,7 @@ const JabariPage = () => {
               </div>
 
               {/* Requirements & profiles */}
-              <div className="rounded-2xl border border-border/30 bg-bg-card p-5 md:p-6 space-y-4">
+              <div className="rounded-2xl border border-border/50 bg-bg-card p-5 md:p-6 space-y-4">
                 <div className="flex items-center gap-3">
                   <div className="w-9 h-9 rounded-xl bg-accent/10 border border-accent/20 flex items-center justify-center shrink-0">
                     <Smartphone className="w-4 h-4 text-accent" />
@@ -243,7 +243,7 @@ const JabariPage = () => {
         {/* ── Install · Build from source ─────────────────────────────────── */}
         <PublicSnapSection>
           {/* Build from source */}
-          <div className="rounded-2xl border border-border/30 bg-bg-card p-5 md:p-6 space-y-4 max-w-full">
+          <div className="rounded-2xl border border-border/50 bg-bg-card p-5 md:p-6 space-y-4 max-w-full">
             <div className="flex items-center gap-3">
               <div className="w-9 h-9 rounded-xl bg-accent/10 border border-accent/20 flex items-center justify-center shrink-0">
                 <GitBranch className="w-4 h-4 text-accent" />
@@ -286,7 +286,7 @@ const JabariPage = () => {
 
             <div className="grid grid-cols-1 lg:grid-cols-[1.15fr_1fr] gap-4 md:gap-6 items-stretch">
               {/* Terminal mock */}
-              <div className="rounded-2xl border border-border/30 bg-bg-card overflow-hidden h-full">
+              <div className="rounded-2xl border border-border/50 bg-bg-card overflow-hidden h-full">
                 <div className="flex items-center gap-2 px-4 py-2.5 bg-bg">
                   <span className="w-2.5 h-2.5 rounded-full bg-red-400/70" />
                   <span className="w-2.5 h-2.5 rounded-full bg-yellow-400/70" />
@@ -326,7 +326,7 @@ const JabariPage = () => {
               </div>
 
               {/* Usage commands */}
-              <div className="rounded-2xl border border-border/30 bg-bg-card p-5 md:p-6 h-full flex flex-col gap-4">
+              <div className="rounded-2xl border border-border/50 bg-bg-card p-5 md:p-6 h-full flex flex-col gap-4">
                 <div className="flex items-center gap-3">
                   <div className="w-9 h-9 rounded-xl bg-accent/10 border border-accent/20 flex items-center justify-center shrink-0">
                     <Terminal className="w-4 h-4 text-accent" />

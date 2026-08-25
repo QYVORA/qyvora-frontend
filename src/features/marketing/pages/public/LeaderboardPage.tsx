@@ -103,7 +103,7 @@ const LeaderboardPage = () => {
                 className={`px-5 py-2.5 rounded-xl text-xs font-black uppercase tracking-wider transition-all duration-300 ${
                   period === p.key
                     ? 'bg-accent text-on-accent'
-                    : 'bg-bg-card border border-border text-text-muted hover:border-accent/30 hover:text-accent'
+                    : 'bg-bg-card border border-border text-text-muted hover:border-accent/50 hover:text-accent'
                 }`}
               >
                 {t(p.labelKey)}
@@ -118,7 +118,7 @@ const LeaderboardPage = () => {
                 className={`px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-wider transition-all duration-300 ${
                   !cohortId
                     ? 'bg-accent text-on-accent'
-                    : 'bg-bg-card border border-border text-text-muted hover:border-accent/30 hover:text-accent'
+                    : 'bg-bg-card border border-border text-text-muted hover:border-accent/50 hover:text-accent'
                 }`}
               >
                 <Users size={12} className="inline-block mr-1" />
@@ -131,7 +131,7 @@ const LeaderboardPage = () => {
                   className={`px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-wider transition-all duration-300 ${
                     cohortId === cohort.id
                       ? 'bg-accent text-on-accent'
-                      : 'bg-bg-card border border-border text-text-muted hover:border-accent/30 hover:text-accent'
+                      : 'bg-bg-card border border-border text-text-muted hover:border-accent/50 hover:text-accent'
                   }`}
                 >
                   <Users size={12} className="inline-block mr-1" />
@@ -148,7 +148,7 @@ const LeaderboardPage = () => {
               {Array.from({ length: 3 }).map((_, i) => (
                 <div
                   key={i}
-                  className={`rounded-2xl border border-border/30 bg-bg-card p-6 md:p-8 h-full flex flex-col items-center text-center gap-3 ${i === 0 ? 'md:order-2' : i === 1 ? 'md:order-1' : 'md:order-3'}`}
+                  className={`rounded-2xl border border-border/50 bg-bg-card p-6 md:p-8 h-full flex flex-col items-center text-center gap-3 ${i === 0 ? 'md:order-2' : i === 1 ? 'md:order-1' : 'md:order-3'}`}
                 >
                   <Skeleton variant="icon" className="w-24 h-24 md:w-28 md:h-28 rounded-full" />
                   <Skeleton variant="title" className="w-32 mt-2" />
@@ -243,7 +243,7 @@ const LeaderboardRestSection: React.FC<{ rest: any[]; user: any; total: number }
                     youLabel="You"
                     roomsLabel={t('leaderboardPage.rooms')}
                     avatarShape="rounded-xl"
-                    normalBorderColor="border-border/30"
+                    normalBorderColor="border-border/50"
                   />
                 </motion.div>
               ))}

@@ -38,37 +38,40 @@ const StudentBootcampCard: React.FC<Props> = ({ data, index = 0, onEnroll, onLoc
   const { id, title, description, level, duration, priceLabel, progress, isEnrolled, isLocked } = data;
   const isComplete = progress === 100;
 
-  const cardClasses = `relative aspect-square rounded-2xl border border-border/30 bg-bg-card p-3 md:p-5 transition-all duration-300 flex flex-col text-left ${
+  const cardClasses = `relative aspect-square rounded-2xl border border-border/50 bg-bg-card p-3 md:p-5 transition-all duration-300 flex flex-col text-left ${
     isLocked
       ? 'opacity-40 cursor-default'
-      : 'hover:border-accent/30'
+      : 'hover:border-accent/50'
   }`;
 
   const BtnBase = 'px-3 py-1.5 rounded-lg text-[9px] sm:text-[10px] md:text-xs font-black uppercase tracking-widest bg-accent text-on-accent transition-all duration-200 group-hover/card:brightness-110 group-active:scale-95';
 
   const inner = (
     <>
-      <div className="flex items-center gap-2 mb-2">
-        {level && (
-          <span className="px-2 py-0.5 rounded-lg text-[9px] font-black uppercase tracking-widest border border-accent/20 bg-accent/10 text-accent">
-            {level}
-          </span>
-        )}
-        {isLocked && (
-          <span className="px-2 py-0.5 rounded-lg text-[9px] font-black uppercase tracking-widest bg-bg-elevated text-text-muted border border-border/30 flex items-center gap-1">
-            <IconLock size={10} /> {t('student.studentBootcampCard.comingSoon')}
-          </span>
-        )}
-        {isComplete && !isLocked && (
-          <span className="px-2 py-0.5 rounded-lg bg-accent text-on-accent text-[9px] font-black uppercase tracking-widest flex items-center gap-1">
-            <IconCheck size={10} /> {t('badge.completed')}
-          </span>
-        )}
-        {isEnrolled && !isComplete && !isLocked && (
-          <span className="px-2 py-0.5 rounded-lg bg-accent/20 text-accent text-[9px] font-black uppercase tracking-widest flex items-center gap-1">
-            <IconPlay size={8} /> {t('badge.active')}
-          </span>
-        )}
+      <div className="flex items-center justify-between gap-2 mb-2">
+        <div className="min-w-0"></div>
+        <div className="flex items-center gap-2 shrink-0">
+          {level && (
+            <span className="px-2 py-0.5 rounded-lg text-[9px] font-black uppercase tracking-widest border border-accent/20 bg-accent/10 text-accent">
+              {level}
+            </span>
+          )}
+          {isLocked && (
+            <span className="px-2 py-0.5 rounded-lg text-[9px] font-black uppercase tracking-widest bg-bg-elevated text-text-muted border border-border/50 flex items-center gap-1">
+              <IconLock size={10} /> {t('student.studentBootcampCard.comingSoon')}
+            </span>
+          )}
+          {isComplete && !isLocked && (
+            <span className="px-2 py-0.5 rounded-lg bg-accent text-on-accent text-[9px] font-black uppercase tracking-widest flex items-center gap-1">
+              <IconCheck size={10} /> {t('badge.completed')}
+            </span>
+          )}
+          {isEnrolled && !isComplete && !isLocked && (
+            <span className="px-2 py-0.5 rounded-lg bg-accent/20 text-accent text-[9px] font-black uppercase tracking-widest flex items-center gap-1">
+              <IconPlay size={8} /> {t('badge.active')}
+            </span>
+          )}
+        </div>
       </div>
 
       <h3 className={`text-sm sm:text-base md:text-lg lg:text-xl font-black leading-snug break-words transition-colors mb-1 ${
@@ -109,7 +112,7 @@ const StudentBootcampCard: React.FC<Props> = ({ data, index = 0, onEnroll, onLoc
         )}
         <div className="ml-auto">
           {isLocked ? (
-            <span className="px-3 py-1.5 rounded-lg text-[9px] sm:text-[10px] font-black uppercase tracking-widest bg-bg-elevated text-text-muted border border-border/30">
+            <span className="px-3 py-1.5 rounded-lg text-[9px] sm:text-[10px] font-black uppercase tracking-widest bg-bg-elevated text-text-muted border border-border/50">
               {t('student.studentBootcampCard.comingSoon')}
             </span>
           ) : isEnrolled ? (

@@ -57,7 +57,7 @@ export function PasswordCracker({ hashes, wordlist }: PasswordCrackerProps) {
 
   if (!hash) {
     return (
-      <div className="flex flex-col h-full rounded-2xl border border-border/30 bg-bg-card overflow-hidden">
+      <div className="flex flex-col h-full rounded-2xl border border-border/50 bg-bg-card overflow-hidden">
         <div className="px-4 py-3 bg-bg-elevated border-b border-border/20">
           <p className="text-[10px] font-black uppercase tracking-widest text-accent">Password Cracker</p>
         </div>
@@ -69,7 +69,7 @@ export function PasswordCracker({ hashes, wordlist }: PasswordCrackerProps) {
   }
 
   return (
-    <div className="flex flex-col h-full rounded-2xl border border-border/30 bg-bg-card overflow-hidden">
+    <div className="flex flex-col h-full rounded-2xl border border-border/50 bg-bg-card overflow-hidden">
       <div className="px-4 py-3 bg-bg-elevated border-b border-border/20">
         <p className="text-[10px] font-black uppercase tracking-widest text-accent">Password Cracker</p>
       </div>
@@ -104,7 +104,7 @@ export function PasswordCracker({ hashes, wordlist }: PasswordCrackerProps) {
             {isRunning ? <><Pause size={10} /> Stop</> : <><Play size={10} /> Crack</>}
           </button>
           <button onClick={reset}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-bg-elevated border border-border/30 text-[9px] font-black uppercase tracking-wider text-text-muted">
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-bg-elevated border border-border/50 text-[9px] font-black uppercase tracking-wider text-text-muted">
             <RotateCcw size={10} /> Reset
           </button>
           {found && (

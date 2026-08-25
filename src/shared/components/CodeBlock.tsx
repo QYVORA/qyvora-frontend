@@ -189,7 +189,7 @@ const CodeBlock: React.FC<CodeBlockProps> = ({
   const hasHeader = Boolean(filename || badge || copyable);
 
   return (
-    <div className={`wc-code min-w-0 max-w-full overflow-hidden rounded-xl border border-border/30 bg-bg ${className ?? ''}`}>
+    <div className={`wc-code min-w-0 max-w-full overflow-hidden rounded-xl border border-border/50 bg-bg ${className ?? ''}`}>
       {hasHeader && (
         <div className="flex items-center justify-between gap-2 border-b border-border/20 bg-bg-elevated px-3 py-2">
           {filename ? (

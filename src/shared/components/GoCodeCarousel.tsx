@@ -24,7 +24,7 @@ const GoCodeCarousel = ({ examples }: { examples: GoCodeExample[] }) => (
             <p className="mt-1 text-xs leading-relaxed text-text-muted">{example.description}</p>
           </div>
         </div>
-        <div className="mt-4 min-h-0 flex-1 overflow-y-auto rounded-xl border border-border/30 bg-bg p-4">
+        <div className="mt-4 min-h-0 flex-1 overflow-y-auto rounded-xl border border-border/50 bg-bg p-4">
           <p className="mb-3 font-mono text-[10px] text-text-muted">{example.filename}</p>
           <pre className="whitespace-pre-wrap break-words font-mono text-[11px] leading-relaxed text-text-secondary sm:text-xs"><code>{example.code}</code></pre>
         </div>

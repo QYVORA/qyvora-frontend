@@ -139,7 +139,7 @@ const ToolInstallModalHost: React.FC = () => {
                       platform === p.key
                         ? 'border-accent/50 bg-accent/10 text-accent'
                         : enabled
-                          ? 'border-border/30 text-text-muted hover:border-accent/40 hover:text-accent'
+                          ? 'border-border/50 text-text-muted hover:border-accent/40 hover:text-accent'
                           : 'cursor-not-allowed border-border/15 text-text-muted/40'
                     }`}
                   >
@@ -165,7 +165,7 @@ const ToolInstallModalHost: React.FC = () => {
                     className={`rounded-xl border px-2 py-2.5 text-[10px] font-black uppercase tracking-widest transition-colors ${
                       activeArch === a
                         ? 'border-accent/50 bg-accent/10 text-accent'
-                        : 'border-border/30 text-text-muted hover:border-accent/40 hover:text-accent'
+                        : 'border-border/50 text-text-muted hover:border-accent/40 hover:text-accent'
                     }`}
                   >
                     {a === 'arm64' ? 'arm64' : 'x86_64'}
@@ -179,7 +179,7 @@ const ToolInstallModalHost: React.FC = () => {
             <p className="text-[10px] font-black uppercase tracking-widest text-text-muted">
               Binary
             </p>
-            <div className="flex items-center justify-between gap-3 rounded-xl border border-border/30 bg-bg px-4 py-3">
+            <div className="flex items-center justify-between gap-3 rounded-xl border border-border/50 bg-bg px-4 py-3">
               <span className="min-w-0 truncate font-mono text-[11px] text-text-secondary">
                 {assetName ?? 'Unavailable for this platform'}
                 {assetSize ? <span className="ml-2 text-text-muted">{formatSize(assetSize)}</span> : null}

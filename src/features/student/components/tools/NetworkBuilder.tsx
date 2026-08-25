@@ -427,7 +427,7 @@ const NetworkBuilderInner: React.FC<NetworkBuilderProps> = ({ open, onOpenChange
                   <input
                     value={selectedDeviceData.label}
                     onChange={(e) => setLabelInput({ id: selectedDeviceNode.id, field: 'label', value: e.target.value })}
-                    className="w-full px-2 py-1.5 rounded-lg bg-bg border border-border/30 text-xs text-text-primary font-mono outline-none focus:border-accent"
+                    className="w-full px-2 py-1.5 rounded-lg bg-bg border border-border/50 text-xs text-text-primary font-mono outline-none focus:border-accent"
                   />
                 </div>
                 <div>
@@ -435,7 +435,7 @@ const NetworkBuilderInner: React.FC<NetworkBuilderProps> = ({ open, onOpenChange
                   <input
                     value={selectedDeviceData.ip}
                     onChange={(e) => setLabelInput({ id: selectedDeviceNode.id, field: 'ip', value: e.target.value })}
-                    className="w-full px-2 py-1.5 rounded-lg bg-bg border border-border/30 text-xs text-text-primary font-mono outline-none focus:border-accent"
+                    className="w-full px-2 py-1.5 rounded-lg bg-bg border border-border/50 text-xs text-text-primary font-mono outline-none focus:border-accent"
                   />
                 </div>
                 <div>
@@ -567,7 +567,7 @@ const NetworkBuilderInner: React.FC<NetworkBuilderProps> = ({ open, onOpenChange
             <Controls
               position="bottom-left"
               showInteractive={false}
-              className="!bg-bg-card !border-border/30 !rounded-xl !shadow-xl !shadow-black/40 [&>button]:!bg-bg-card [&>button]:!border-border/20 [&>button]:!text-text-muted hover:[&>button]:!text-accent"
+              className="!bg-bg-card !border-border/50 !rounded-xl !shadow-xl !shadow-black/40 [&>button]:!bg-bg-card [&>button]:!border-border/20 [&>button]:!text-text-muted hover:[&>button]:!text-accent"
             />
 
             {nodes.length === 0 && (

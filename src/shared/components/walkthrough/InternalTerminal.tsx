@@ -84,7 +84,7 @@ export const InternalTerminal: React.FC<InternalTerminalProps> = ({ open, onOpen
                 e.preventDefault();
                 handleClose();
               }}
-              className="fixed z-[150] top-24 md:top-28 bottom-6 right-4 xl:right-6 w-[400px] max-w-[calc(100vw-2rem)] flex flex-col overflow-hidden rounded-2xl border border-border/30 bg-bg-card outline-none
+              className="fixed z-[150] top-24 md:top-28 bottom-6 right-4 xl:right-6 w-[400px] max-w-[calc(100vw-2rem)] flex flex-col overflow-hidden rounded-2xl border border-border/50 bg-bg-card outline-none
                 data-[state=open]:animate-in data-[state=closed]:animate-out
                 data-[state=open]:slide-in-from-right data-[state=closed]:slide-out-to-right
                 duration-200"
@@ -107,7 +107,7 @@ export const InternalTerminal: React.FC<InternalTerminalProps> = ({ open, onOpen
               onKeyDown={(e) => {
                 if (e.key === 'Tab') e.stopPropagation();
               }}
-              className="fixed bottom-0 left-0 right-0 z-[130] lg:hidden h-[72svh] max-h-[85svh] flex flex-col overflow-hidden rounded-t-2xl border-t border-border/30 bg-bg-card outline-none
+              className="fixed bottom-0 left-0 right-0 z-[130] lg:hidden h-[72svh] max-h-[85svh] flex flex-col overflow-hidden rounded-t-2xl border-t border-border/50 bg-bg-card outline-none
                 data-[state=open]:animate-in data-[state=closed]:animate-out
                 data-[state=closed]:slide-out-to-bottom data-[state=open]:slide-in-from-bottom
                 duration-200"

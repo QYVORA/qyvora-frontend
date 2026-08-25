@@ -51,7 +51,7 @@ const ActivityTimeline: React.FC<ActivityTimelineProps> = ({ profile, className 
 
   if (events.length === 0) {
     return (
-      <div className={`rounded-2xl border border-border/30 bg-bg-card p-6 ${className}`}>
+      <div className={`rounded-2xl border border-border/50 bg-bg-card p-6 ${className}`}>
         <ModuleHeader
           icon={<Clock className="w-4 h-4 text-accent" />}
           iconClassName="bg-accent/10"
@@ -65,7 +65,7 @@ const ActivityTimeline: React.FC<ActivityTimelineProps> = ({ profile, className 
   }
 
   return (
-    <div className={`rounded-2xl border border-border/30 bg-bg-card overflow-hidden ${className}`}>
+    <div className={`rounded-2xl border border-border/50 bg-bg-card overflow-hidden ${className}`}>
       <ModuleHeader
         icon={<Clock className="w-4 h-4 text-accent" />}
         iconClassName="bg-accent/10"

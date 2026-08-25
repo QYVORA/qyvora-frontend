@@ -20,7 +20,7 @@ export function HttpInspector({ requests }: HttpInspectorProps) {
   };
 
   return (
-    <div className="flex flex-col h-full rounded-2xl border border-border/30 bg-bg-card overflow-hidden">
+    <div className="flex flex-col h-full rounded-2xl border border-border/50 bg-bg-card overflow-hidden">
       <div className="px-4 py-3 bg-bg-elevated border-b border-border/20">
         <p className="text-[10px] font-black uppercase tracking-widest text-accent">HTTP Inspector</p>
       </div>
@@ -91,7 +91,7 @@ export function HttpInspector({ requests }: HttpInspectorProps) {
                   <label htmlFor="http-body-editor" className="text-[9px] font-black uppercase tracking-widest text-text-muted mb-1 block">Body</label>
                   {editMode ? (
                     <textarea id="http-body-editor" value={editedBody} onChange={e => setEditedBody(e.target.value)}
-                      className="w-full h-20 bg-black/40 border border-border/30 rounded p-2 text-[10px] font-mono text-text-primary outline-none" />
+                      className="w-full h-20 bg-black/40 border border-border/50 rounded p-2 text-[10px] font-mono text-text-primary outline-none" />
                   ) : (
                     <pre className="text-[10px] font-mono text-text-muted whitespace-pre-wrap bg-black/40 rounded p-2">{selected.body}</pre>
                   )}

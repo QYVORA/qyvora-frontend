@@ -116,7 +116,7 @@ const Profile: React.FC = () => {
             <div className="flex flex-col gap-6">
               <ActivityTimeline profile={profile} />
               {Object.keys(activityDates).length > 0 && (
-                <div className="rounded-2xl border border-border/30 bg-bg-card p-5">
+                <div className="rounded-2xl border border-border/50 bg-bg-card p-5">
                   <ContributionCalendar activityDates={activityDates} />
                 </div>
               )}

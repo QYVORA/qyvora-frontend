@@ -34,10 +34,10 @@ const ResearcherSection = ({ researcher }: { researcher: Researcher }) => {
     <PublicSnapSection id={`researcher-${researcher.id}`}>
       <ScrollReveal amount={0.08} className="h-full w-full">
         <article className="relative grid w-full grid-cols-1 gap-3 sm:gap-4 lg:grid-cols-2 lg:gap-12">
-          <div className={`relative h-64 max-h-[70vh] overflow-hidden rounded-2xl border border-border/30 bg-bg-card sm:h-80 lg:h-full ${layout.imageFirst ? 'lg:order-1' : 'lg:order-2'}`}>
+          <div className={`relative h-64 max-h-[70vh] overflow-hidden rounded-2xl border border-border/50 bg-bg-card sm:h-80 lg:h-full ${layout.imageFirst ? 'lg:order-1' : 'lg:order-2'}`}>
             <img src={researcher.image} alt={researcher.name} width={researcher.width} height={researcher.height} className={`h-full w-full object-cover ${layout.imagePosition} transition-transform duration-700 hover:scale-105`} loading="lazy" />
             <div className="absolute inset-0 bg-gradient-to-t from-bg-card via-transparent to-transparent" />
-            <div className="absolute left-3 top-3 flex h-9 w-9 items-center justify-center rounded-lg border border-border/30 bg-bg/80 text-[9px] font-black tracking-widest text-accent backdrop-blur-sm sm:left-5 sm:top-5 sm:h-11 sm:w-11 sm:text-[10px]">{layout.marker}</div>
+            <div className="absolute left-3 top-3 flex h-9 w-9 items-center justify-center rounded-lg border border-border/50 bg-bg/80 text-[9px] font-black tracking-widest text-accent backdrop-blur-sm sm:left-5 sm:top-5 sm:h-11 sm:w-11 sm:text-[10px]">{layout.marker}</div>
             <div className="absolute bottom-3 left-3 right-3 flex items-end justify-between gap-4 sm:bottom-5 sm:left-5 sm:right-5">
               <div>
                 <p className="mb-1 text-[8px] font-black uppercase tracking-widest text-text-muted sm:mb-2 sm:text-[9px]">QuiteRoot researcher</p>

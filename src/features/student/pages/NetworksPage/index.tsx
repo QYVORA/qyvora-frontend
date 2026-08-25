@@ -20,7 +20,7 @@ const SubnetBadge = () => (
 );
 
 const InfoCard = ({ icon, label, value }: { icon: React.ReactNode; label: string; value: string }) => (
-  <div className="flex items-center gap-3 p-5 rounded-2xl border border-border/30 bg-bg-card">
+  <div className="flex items-center gap-3 p-5 rounded-2xl border border-border/50 bg-bg-card">
     <div className="w-10 h-10 rounded-xl bg-accent/10 flex items-center justify-center text-accent shrink-0">
       {icon}
     </div>
@@ -41,7 +41,7 @@ const OSIcon = ({ os }: { os: string }) => {
 
 const DeviceRow = ({ device, index, discovered }: { device: typeof DEVICES[0]; index: number; discovered: boolean }) => (
   <div className={`grid grid-cols-[24px_1fr_auto] md:grid-cols-[24px_1fr_140px] gap-2 md:gap-4 px-4 py-3 rounded-2xl border transition-all items-center ${
-    discovered ? 'border-border/30 bg-bg-card hover:border-accent/30' : 'border-border/10 bg-bg-card/50 opacity-50'
+    discovered ? 'border-border/50 bg-bg-card hover:border-accent/50' : 'border-border/10 bg-bg-card/50 opacity-50'
   }`}>
     <span className="text-[10px] font-mono font-bold text-text-muted/40">{index + 1}</span>
     <div className="flex items-center gap-2 min-w-0">
@@ -89,7 +89,7 @@ const NetworksPage = () => {
       <div className="bg-bg-alt px-3 md:px-4 lg:px-6 py-10 pb-20 lg:pb-24 space-y-10">
 
         {/* Simulation notice */}
-        <div className="flex items-start gap-3 px-5 py-4 rounded-2xl border border-border/30 bg-bg-card">
+        <div className="flex items-start gap-3 px-5 py-4 rounded-2xl border border-border/50 bg-bg-card">
           <Shield className="w-5 h-5 text-yellow-400 shrink-0 mt-0.5" />
           <div>
             <p className="text-sm font-bold text-yellow-400">Simulated Environment</p>
@@ -110,7 +110,7 @@ const NetworksPage = () => {
         </div>
 
         {/* Your machine card */}
-        <div className="rounded-2xl border border-border/30 bg-bg-card p-5 md:p-6">
+        <div className="rounded-2xl border border-border/50 bg-bg-card p-5 md:p-6">
           <div className="flex items-center gap-2 mb-4">
             <Monitor className="w-4 h-4 text-accent" />
             <span className="text-[10px] font-black uppercase tracking-widest text-accent">Your Machine (Kali)</span>
@@ -150,7 +150,7 @@ const NetworksPage = () => {
         </div>
 
         {/* Device list header */}
-        <div className="hidden md:grid grid-cols-[24px_1fr_140px] gap-4 px-4 py-3 text-[9px] font-black uppercase tracking-widest text-text-muted/50 border-b border-border/30">
+        <div className="hidden md:grid grid-cols-[24px_1fr_140px] gap-4 px-4 py-3 text-[9px] font-black uppercase tracking-widest text-text-muted/50 border-b border-border/50">
           <span>#</span>
           <span>Hostname</span>
           <span className="text-right">IP</span>
@@ -159,7 +159,7 @@ const NetworksPage = () => {
         {/* Device rows — only show discovered devices */}
         <div className="space-y-2">
           {discoveredCount === 0 ? (
-            <div className="px-4 py-6 text-center text-xs text-text-muted font-mono border border-dashed border-border/30 rounded-2xl">
+            <div className="px-4 py-6 text-center text-xs text-text-muted font-mono border border-dashed border-border/50 rounded-2xl">
               No hosts discovered yet. Open the terminal and run <span className="text-accent">nmap -sn 10.0.0.0/24</span> to start scanning.
             </div>
           ) : (
@@ -178,7 +178,7 @@ const NetworksPage = () => {
         </div>
 
         {/* Tip box */}
-        <div className="rounded-2xl border border-border/30 bg-bg-card p-5 md:p-6">
+        <div className="rounded-2xl border border-border/50 bg-bg-card p-5 md:p-6">
           <div className="flex items-start gap-3">
             <Terminal className="w-5 h-5 text-accent shrink-0 mt-0.5" />
             <div>

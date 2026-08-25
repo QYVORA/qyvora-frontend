@@ -135,7 +135,7 @@ const InlineQuiz: React.FC<InlineQuizProps> = ({
               className={`w-full text-left rounded-lg border px-4 py-3 text-sm transition-all ${
                 selectedIdx === idx
                   ? 'border-accent bg-accent-dim text-accent font-bold'
-                  : 'border-border text-text-secondary hover:border-accent/30 hover:bg-accent-dim/20'
+                  : 'border-border text-text-secondary hover:border-accent/50 hover:bg-accent-dim/20'
               }`}
             >
               <span className="mr-2 font-mono text-[10px] opacity-50">{String.fromCharCode(65 + idx)}.</span>

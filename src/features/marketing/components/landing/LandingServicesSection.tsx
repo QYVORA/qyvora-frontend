@@ -61,7 +61,7 @@ const LandingServicesSection: React.FC = () => {
             <Carousel
               slides={mobileSlides}
               renderCard={(service) => (
-                <div className="flex flex-col card-accent bg-bg-card overflow-hidden h-[430px] sm:h-[400px]">
+                <div className="flex flex-col bg-bg-card overflow-hidden h-[430px] sm:h-[400px] hover:bg-bg-elevated transition-colors">
                   <DottedMapOverlay className="rounded-none" />
                   <div className="relative flex flex-col flex-1 p-5">
                     <div className="flex items-center gap-2 mb-2">

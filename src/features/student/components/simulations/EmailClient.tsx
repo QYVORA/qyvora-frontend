@@ -14,7 +14,7 @@ export function EmailClient({ emails }: EmailClientProps) {
   const selected = emails.find(e => e.id === selectedId);
 
   return (
-    <div className="flex flex-col h-full rounded-2xl border border-border/30 bg-bg-card overflow-hidden">
+    <div className="flex flex-col h-full rounded-2xl border border-border/50 bg-bg-card overflow-hidden">
       <div className="px-4 py-3 bg-bg-elevated border-b border-border/20 flex items-center gap-2">
         <Mail size={14} className="text-accent" />
         <p className="text-[10px] font-black uppercase tracking-widest text-accent">Email Client</p>
@@ -100,7 +100,7 @@ export function EmailClient({ emails }: EmailClientProps) {
                   <div key={i} className={`p-2 rounded border text-[10px] font-mono ${
                     ind.severity === 'high' ? 'border-red-500/30 bg-red-500/5' :
                     ind.severity === 'medium' ? 'border-yellow-500/30 bg-yellow-500/5' :
-                    'border-border/30 bg-bg-elevated'
+                    'border-border/50 bg-bg-elevated'
                   }`}>
                     <span className={`font-black uppercase text-[9px] ${
                       ind.severity === 'high' ? 'text-red-400' :

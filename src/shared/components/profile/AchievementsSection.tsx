@@ -93,7 +93,7 @@ const AchievementsSection: React.FC<AchievementsSectionProps> = ({
 
   if (totalAchievements === 0) {
     return (
-      <div className="rounded-2xl border border-border/30 bg-bg-card p-6">
+      <div className="rounded-2xl border border-border/50 bg-bg-card p-6">
         <ModuleHeader
           icon={<Award className="w-4 h-4 text-accent" />}
           iconClassName="bg-accent/10"
@@ -150,7 +150,7 @@ const AchievementsSection: React.FC<AchievementsSectionProps> = ({
                   animate={{ opacity: 1, scale: 1 }}
                   exit={prefersReduced ? undefined : { opacity: 0, scale: 0.9 }}
                   transition={{ duration: prefersReduced ? 0 : 0.3, delay: prefersReduced ? 0 : idx * 0.03 }}
-                  className="relative group flex flex-col items-center text-center p-4 rounded-xl border border-border/30 bg-bg-card transition-all duration-300 hover:scale-[1.02] cursor-default"
+                  className="relative group flex flex-col items-center text-center p-4 rounded-xl border border-border/50 bg-bg-card transition-all duration-300 hover:scale-[1.02] cursor-default"
                 >
                   <div className="w-12 h-12 rounded-xl flex items-center justify-center mb-3 bg-bg-elevated">
                     {a.iconNode}
@@ -201,7 +201,7 @@ const AchievementsSection: React.FC<AchievementsSectionProps> = ({
                     animate={{ opacity: 1, scale: 1 }}
                     exit={prefersReduced ? undefined : { opacity: 0, scale: 0.9 }}
                     transition={{ duration: prefersReduced ? 0 : 0.3, delay: prefersReduced ? 0 : idx * 0.03 }}
-                    className="relative group flex flex-col items-center text-center p-4 rounded-xl border border-border/30 bg-bg-card transition-all duration-300 hover:scale-[1.02] cursor-default"
+                    className="relative group flex flex-col items-center text-center p-4 rounded-xl border border-border/50 bg-bg-card transition-all duration-300 hover:scale-[1.02] cursor-default"
                   >
                     <div className="w-12 h-12 rounded-xl flex items-center justify-center mb-3 bg-blue-400/10">
                       {IconComp ? (
@@ -240,7 +240,7 @@ const AchievementsSection: React.FC<AchievementsSectionProps> = ({
             }
           />
           <div className="mt-3">
-            <div className="flex flex-col items-center text-center p-4 rounded-xl border border-border/30 bg-bg-card max-w-[200px]">
+            <div className="flex flex-col items-center text-center p-4 rounded-xl border border-border/50 bg-bg-card max-w-[200px]">
               <div className="w-12 h-12 rounded-xl flex items-center justify-center mb-3 bg-red-400/10">
                 <FlaskConical className="w-5 h-5 text-red-400" />
               </div>

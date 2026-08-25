@@ -147,7 +147,7 @@ const LandingHeroSection: React.FC<LandingHeroSectionProps> = ({
               initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 14 }}
               animate={{ opacity: 1, y: 0 }}
               transition={minimizeEffects ? { duration: 0.2 } : { duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-              className="inline-flex items-center gap-2 px-4 py-2.5 sm:px-5 sm:py-3 border border-border/30 bg-bg-elevated/50 dark:backdrop-blur-sm backdrop-blur-none rounded-lg max-w-full shadow-[0_0_15px_rgba(0,0,0,0.05)]"
+              className="inline-flex items-center gap-2 px-4 py-2.5 sm:px-5 sm:py-3 border border-border/50 bg-bg-elevated/50 dark:backdrop-blur-sm backdrop-blur-none rounded-lg max-w-full shadow-[0_0_15px_rgba(0,0,0,0.05)]"
             >
               <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse flex-none" />
               <span className="font-mono text-[9px] min-[380px]:text-[10px] sm:text-[11px] font-black uppercase tracking-[0.12em] min-[380px]:tracking-[0.14em] sm:tracking-[0.3em] text-text-muted whitespace-normal">
@@ -206,7 +206,7 @@ const LandingHeroSection: React.FC<LandingHeroSectionProps> = ({
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label={label}
-                className="flex h-10 w-10 md:h-11 md:w-11 items-center justify-center rounded-xl border border-border/30 bg-bg-elevated/50 text-text-muted transition-all hover:border-accent/40 hover:text-accent active:scale-95 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+                className="flex h-10 w-10 md:h-11 md:w-11 items-center justify-center rounded-xl border border-border/50 bg-bg-elevated/50 text-text-muted transition-all hover:border-accent/40 hover:text-accent active:scale-95 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
               >
                 <Icon className="h-4 w-4" />
               </a>

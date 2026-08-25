@@ -20,7 +20,7 @@ const DashboardHero = ({
   const { t } = useTranslation();
   const displayName = username ? `@${username}` : t('student.dashboard.hero.operatorFallback');
 
-  const cardClass = "relative rounded-2xl border border-border/30 bg-bg-card p-6 sm:p-10 lg:p-14 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 sm:gap-6";
+  const cardClass = "relative rounded-2xl border border-border/50 bg-bg-card p-6 sm:p-10 lg:p-14 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 sm:gap-6";
 
   if (allDone) {
     return (

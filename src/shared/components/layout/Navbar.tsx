@@ -112,7 +112,7 @@ const Navbar: React.FC = React.memo(() => {
                   className={`flex items-center gap-1.5 px-4 py-2 text-xs font-black uppercase tracking-widest transition-colors rounded-xl border ${
                     group.items.some((item) => isActive(item.path))
                       ? 'border-accent/40 text-accent bg-accent/5'
-                      : 'border-border/30 text-text-primary/80 hover:border-accent/40 hover:text-accent'
+                      : 'border-border/50 text-text-primary/80 hover:border-accent/40 hover:text-accent'
                   }`}
                 >
                   {t(NAV_GROUP_LABELS[group.key] || group.label)}

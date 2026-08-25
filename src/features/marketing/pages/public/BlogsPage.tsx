@@ -75,7 +75,7 @@ const BlogsPage = () => {
                 <button
                   onClick={() => handleTagChange('')}
                   className={`px-2.5 py-1 shrink-0 whitespace-nowrap rounded-lg text-[9px] font-black uppercase tracking-widest transition-all ${
-                    !activeTag ? 'bg-accent text-on-accent' : 'bg-bg-card border border-border text-text-muted hover:border-accent/30 hover:text-accent'
+                    !activeTag ? 'bg-accent text-on-accent' : 'bg-bg-card border border-border text-text-muted hover:border-accent/50 hover:text-accent'
                   }`}
                 >
                   All
@@ -85,7 +85,7 @@ const BlogsPage = () => {
                     key={tag}
                     onClick={() => handleTagChange(tag)}
                     className={`px-2.5 py-1 shrink-0 whitespace-nowrap rounded-lg text-[9px] font-black uppercase tracking-widest transition-all ${
-                      activeTag === tag ? 'bg-accent text-on-accent' : 'bg-bg-card border border-border text-text-muted hover:border-accent/30 hover:text-accent'
+                      activeTag === tag ? 'bg-accent text-on-accent' : 'bg-bg-card border border-border text-text-muted hover:border-accent/50 hover:text-accent'
                     }`}
                   >
                     {tag}

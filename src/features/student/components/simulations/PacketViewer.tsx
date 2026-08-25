@@ -15,7 +15,7 @@ export function PacketViewer({ packets }: PacketViewerProps) {
     : packets;
 
   return (
-    <div className="flex flex-col h-full rounded-2xl border border-border/30 bg-bg-card overflow-hidden">
+    <div className="flex flex-col h-full rounded-2xl border border-border/50 bg-bg-card overflow-hidden">
       <div className="px-4 py-3 bg-bg-elevated border-b border-border/20 flex items-center gap-3">
         <p className="text-[10px] font-black uppercase tracking-widest text-accent">Packet Viewer</p>
         <input
@@ -23,7 +23,7 @@ export function PacketViewer({ packets }: PacketViewerProps) {
           value={filter}
           onChange={e => setFilter(e.target.value)}
           placeholder="Filter..."
-          className="px-2 py-1 rounded bg-bg border border-border/30 text-[10px] font-mono text-text-primary outline-none w-32"
+          className="px-2 py-1 rounded bg-bg border border-border/50 text-[10px] font-mono text-text-primary outline-none w-32"
         />
         <span className="ml-auto text-[9px] font-mono text-text-muted">{filtered.length} packets</span>
       </div>

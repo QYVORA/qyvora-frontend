@@ -31,7 +31,7 @@ const PointsControl: React.FC<PointsControlProps> = ({
 }) => {
   const { t } = useTranslation();
   return (
-    <div className="rounded-2xl border border-border/30 bg-bg-card p-5">
+    <div className="rounded-2xl border border-border/50 bg-bg-card p-5">
       <div className="mb-4 flex items-center gap-2">
         <Coins className="w-4 h-4 text-accent" />
         <span className="text-sm font-black uppercase tracking-wide text-text-primary">{t('admin.cp.control')}</span>

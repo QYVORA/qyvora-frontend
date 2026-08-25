@@ -42,7 +42,7 @@ export function TimelineInvestigation({ events }: TimelineInvestigationProps) {
   };
 
   return (
-    <div className="flex flex-col h-full rounded-2xl border border-border/30 bg-bg-card overflow-hidden">
+    <div className="flex flex-col h-full rounded-2xl border border-border/50 bg-bg-card overflow-hidden">
       <div className="px-4 py-3 bg-bg-elevated border-b border-border/20 flex items-center gap-3">
         <p className="text-[10px] font-black uppercase tracking-widest text-accent">Timeline Investigation</p>
         {orderedIds.length > 0 && (
@@ -132,7 +132,7 @@ export function TimelineInvestigation({ events }: TimelineInvestigationProps) {
               className={`mt-4 w-full px-3 py-2 rounded-lg text-[9px] font-black uppercase tracking-wider ${
                 orderedIds.includes(selected.id)
                   ? 'bg-accent/20 border border-accent/30 text-accent'
-                  : 'bg-bg-elevated border border-border/30 text-text-muted'
+                  : 'bg-bg-elevated border border-border/50 text-text-muted'
               }`}>
               {orderedIds.includes(selected.id) ? 'Remove from Sequence' : 'Add to Sequence'}
             </button>

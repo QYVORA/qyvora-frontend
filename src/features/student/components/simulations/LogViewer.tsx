@@ -32,7 +32,7 @@ export function LogViewer({ sources }: LogViewerProps) {
   };
 
   return (
-    <div className="flex flex-col h-full rounded-2xl border border-border/30 bg-bg-card overflow-hidden">
+    <div className="flex flex-col h-full rounded-2xl border border-border/50 bg-bg-card overflow-hidden">
       <div className="px-4 py-3 bg-bg-elevated border-b border-border/20 flex items-center gap-3">
         <p className="text-[10px] font-black uppercase tracking-widest text-accent">Log Viewer</p>
         <div className="flex items-center gap-1 ml-2">
@@ -46,7 +46,7 @@ export function LogViewer({ sources }: LogViewerProps) {
           ))}
         </div>
         <div className="ml-auto flex items-center gap-2">
-          <div className="flex items-center gap-1 px-2 py-1 rounded bg-bg border border-border/30">
+          <div className="flex items-center gap-1 px-2 py-1 rounded bg-bg border border-border/50">
             <label htmlFor="log-search" className="contents"><Search size={10} className="text-text-muted" /></label>
             <input id="log-search" type="text" value={search} onChange={e => setSearch(e.target.value)}
               placeholder="Search logs..."

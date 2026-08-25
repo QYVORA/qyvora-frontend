@@ -38,7 +38,7 @@ const LandingBlogsSection = () => {
               renderCard={(post) => (
                 <Link
                   to={`/blogs/${post.slug}`}
-                  className="group flex flex-col md:flex-row card-accent bg-bg-card overflow-hidden h-full min-h-[500px] md:min-h-[380px] transition-all duration-300"
+                  className="group flex flex-col md:flex-row bg-bg-card overflow-hidden h-full min-h-[500px] md:min-h-[380px] transition-all duration-300 hover:bg-bg-elevated"
                 >
                   <div className="relative md:w-[45%] lg:w-[48%] shrink-0 h-[200px] md:h-full md:aspect-auto overflow-hidden bg-bg-elevated">
                     <img
@@ -70,7 +70,7 @@ const LandingBlogsSection = () => {
                     <p className="text-xs sm:text-sm text-text-secondary leading-relaxed font-mono border-l-2 border-accent/40 pl-3 py-1.5 mb-4 line-clamp-3 flex-1">
                       {post.excerpt}
                     </p>
-                    <div className="flex items-center justify-between gap-3 w-full pt-3 mt-auto border-t border-border/30">
+                    <div className="flex items-center justify-between gap-3 w-full pt-3 mt-auto border-t border-border/50">
                       <div className="flex items-center gap-2 min-w-0 flex-1">
                         <div className="w-8 h-8 rounded-full shrink-0 bg-accent/10 border border-accent/20 flex items-center justify-center">
                           <User className="w-4 h-4 text-accent" />

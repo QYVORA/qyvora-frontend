@@ -138,7 +138,7 @@ const QuizModal: React.FC<QuizModalProps> = ({ moduleId, roomId, courseId, onClo
                     {result.questions.map((q, idx) => {
                       const chosen  = answers[q.id];
                       return (
-                        <div key={q.id} className="rounded-2xl border border-border/30 bg-bg-card p-4">
+                        <div key={q.id} className="rounded-2xl border border-border/50 bg-bg-card p-4">
                           <div className="flex items-start gap-2 mb-3">
                             <span className="shrink-0 mt-0.5 text-text-muted">
                               <ClipboardList className="h-4 w-4" />
@@ -221,7 +221,7 @@ const QuizModal: React.FC<QuizModalProps> = ({ moduleId, roomId, courseId, onClo
                             className={`w-full rounded-xl border px-4 py-3 text-left text-sm transition-all ${
                               selected
                                 ? 'border-accent bg-accent-dim font-bold text-accent'
-                                : 'border-border text-text-secondary hover:border-accent/30 hover:bg-accent-dim/20'
+                                : 'border-border text-text-secondary hover:border-accent/50 hover:bg-accent-dim/20'
                             }`}
                           >
                             <span className="mr-2 font-mono text-[10px] opacity-50">

@@ -310,7 +310,7 @@ const BootcampRoomPage: React.FC = () => {
               <Link to={`/dashboard/bootcamps/${bootcampId}`} className="mb-8 inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-text-muted hover:text-accent transition-colors">
                 <ArrowLeft className="h-3.5 w-3.5" /> {t('student.bootcampRoom.backToBootcamp')}
               </Link>
-              <div className="rounded-2xl border border-border/30 bg-bg-card p-10 text-center">
+              <div className="rounded-2xl border border-border/50 bg-bg-card p-10 text-center">
                 <BookOpen className="mx-auto mb-4 h-10 w-10 text-text-muted opacity-40" />
                 <h1 className="mb-2 text-3xl font-black text-text-primary">{t('student.bootcampRoom.notFound')}</h1>
                 <p className="text-sm text-text-muted">{t('student.bootcampRoom.notFoundDesc')}</p>
@@ -321,7 +321,7 @@ const BootcampRoomPage: React.FC = () => {
               <Link to={`/dashboard/bootcamps/${bootcampId}`} className="mb-8 inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-text-muted hover:text-accent transition-colors">
                 <ArrowLeft className="h-3.5 w-3.5" /> {t('student.bootcampRoom.backToBootcamp')}
               </Link>
-              <div className="rounded-2xl border border-border/30 bg-bg-card p-10 text-center">
+              <div className="rounded-2xl border border-border/50 bg-bg-card p-10 text-center">
                 <Lock className="mx-auto mb-4 h-10 w-10 text-text-muted opacity-40" />
                 <h1 className="mb-2 text-3xl font-black text-text-primary">{room.title}</h1>
                 <p className="text-sm text-text-muted">{t('student.bootcampRoom.roomLocked')}</p>

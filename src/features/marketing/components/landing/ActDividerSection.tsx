@@ -76,7 +76,7 @@ const ActDividerSection: React.FC<ActDividerSectionProps> = ({ title, accentWord
               return (
                 <Link
                   to={item.to}
-                  className="group relative flex flex-col card-accent bg-bg-card p-6 md:p-8 transition-all duration-300 hover:shadow-[var(--card-shadow)] h-[280px] md:h-[320px]"
+                  className="group relative flex flex-col bg-bg-card p-6 md:p-8 transition-all duration-300 hover:bg-bg-elevated h-[280px] md:h-[320px]"
                 >
                   {isCpIcon ? (
                     // CP icon standalone - no border wrapper

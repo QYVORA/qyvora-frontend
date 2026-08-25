@@ -48,7 +48,7 @@ const ContextMenu: React.FC<ContextMenuProps> = ({ state, onClose }) => {
   return (
     <div
       ref={ref}
-      className="fixed z-[220] min-w-[180px] rounded-xl border border-border/30 bg-bg-card shadow-2xl shadow-black/50 py-1.5 animate-in fade-in zoom-in-95 duration-100"
+      className="fixed z-[220] min-w-[180px] rounded-xl border border-border/50 bg-bg-card shadow-2xl shadow-black/50 py-1.5 animate-in fade-in zoom-in-95 duration-100"
       style={{ left: state.x, top: state.y }}
     >
       {state.items.map((item, idx) => (

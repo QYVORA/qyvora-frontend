@@ -142,7 +142,7 @@ const PublicBottomNav: React.FC = () => {
                          className={`relative flex flex-col items-center gap-2 p-4 rounded-xl border transition-all active:scale-95 ${
                            active
                              ? 'bg-accent-dim border-accent/30 text-accent'
-                             : 'bg-bg border-border text-text-muted hover:border-accent/30 hover:text-accent'
+                             : 'bg-bg border-border text-text-muted hover:border-accent/50 hover:text-accent'
                          }`}
                        >
                          <item.icon className="w-5 h-5" />
