@@ -5,7 +5,7 @@ import { IconArrowRight, IconTerminal, IconNetwork, IconCode } from '@/shared/co
 import type { ViewMode } from '@/shared/components/card-collection';
 import { getCategoryById } from '@/features/student/data/courses';
 import type { Course, SkillLevel } from '@/features/student/data/courses';
-import CourseIconBackground from '@/shared/components/CourseIconBackground';
+import CourseBadge from '@/shared/components/CourseBadge';
 
 const CATEGORY_ICONS: Record<string, React.ElementType> = {
   terminal: IconTerminal,
@@ -39,12 +39,9 @@ const CourseCard: React.FC<CourseCardProps> = ({ course, view }) => {
         to={`/courses/${course.id}`}
         className="group relative overflow-hidden flex flex-col gap-2 card-accent bg-bg-card p-4 md:p-5 transition-all duration-300 justify-between text-left"
       >
-        <CourseIconBackground courseId={course.id} />
         <div className="relative z-10 flex items-center justify-between gap-4">
           <div className="flex items-center gap-3 min-w-0">
-            <div className="w-9 h-9 rounded-xl flex items-center justify-center shrink-0 bg-accent/10 border border-accent/20">
-              <CatIcon className="w-4 h-4 text-accent" />
-            </div>
+            <CourseBadge courseId={course.id} className="w-11 h-11 shrink-0" />
             <div className="min-w-0">
               <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-lg bg-accent/10 text-[9px] font-black uppercase tracking-widest text-accent border border-accent/20">
                 {category?.name}
@@ -83,8 +80,10 @@ const CourseCard: React.FC<CourseCardProps> = ({ course, view }) => {
       to={`/courses/${course.id}`}
       className="group relative overflow-hidden flex flex-col h-full min-h-[220px] card-accent bg-bg-card p-4 sm:p-5 md:p-6 transition-all duration-300 justify-between"
     >
-      <CourseIconBackground courseId={course.id} />
       <div className="relative z-10">
+        <div className="flex justify-center mb-3">
+          <CourseBadge courseId={course.id} className="w-16 h-16 md:w-20 md:h-20" />
+        </div>
         <div className="flex items-center justify-between mb-2">
           <span className="flex items-center gap-1.5 px-2 py-0.5 rounded-lg bg-accent/10 text-[9px] font-black uppercase tracking-widest text-accent border border-accent/20">
             <CatIcon className="h-2.5 w-2.5" /> {category?.name}

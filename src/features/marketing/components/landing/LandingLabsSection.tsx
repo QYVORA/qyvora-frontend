@@ -7,13 +7,14 @@ import { IconArrowRight } from '@/shared/components/icons';
 import { DottedMapOverlay } from '@/shared/components/ui';
 import DragMarquee from '@/shared/components/carousel/DragMarquee';
 import { useTranslation } from 'react-i18next';
+import LabBadge from '@/shared/components/LabBadge';
 
 const LABS = [
-  { id: 'privesc' },
-  { id: 'passwords' },
-  { id: 'sqli' },
-  { id: 'osint' },
-  { id: 'killchain' },
+  { id: 'privesc', accentColor: '#FBBF24' },
+  { id: 'passwords', accentColor: '#F59E0B' },
+  { id: 'sqli', accentColor: '#06B66F' },
+  { id: 'osint', accentColor: '#0EA5E9' },
+  { id: 'killchain', accentColor: '#DC2626' },
 ];
 
 type Lab = (typeof LABS)[number];
@@ -29,9 +30,12 @@ const LabCard: React.FC<{ lab: Lab }> = ({ lab }) => {
     >
       <DottedMapOverlay className="rounded-2xl" />
       <div className="relative z-10 h-full flex flex-col p-4 sm:p-6">
-        <span className="self-start text-[8px] font-black uppercase tracking-widest px-2 py-1 rounded-full border border-border/30 bg-bg-elevated text-text-muted">
-          {t(`landing.labs.list.${lab.id}.cp`)}
-        </span>
+        <div className="flex items-start justify-between">
+          <span className="self-start text-[8px] font-black uppercase tracking-widest px-2 py-1 rounded-full border border-border/30 bg-bg-elevated text-text-muted">
+            {t(`landing.labs.list.${lab.id}.cp`)}
+          </span>
+          <LabBadge labId={lab.id} accentColor={lab.accentColor} className="w-14 h-14 shrink-0" />
+        </div>
 
         <div className="mt-auto">
           <h3 className="text-xl sm:text-2xl font-black text-text-primary tracking-tighter leading-none">
