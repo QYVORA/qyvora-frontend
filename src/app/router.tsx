@@ -321,8 +321,8 @@ export const AppRouter = () => {
         <div className="block min-[420px]:hidden" style={{ marginRight: -26 }}>
           <div className="flex flex-col items-end">
             <div key={msgIdx} className="animate-fade-in" style={{ marginRight: 32, marginBottom: -7 }}>
-              <span className="block px-2 py-1 rounded-xl bg-bg-card border border-border/30 text-[8px] font-mono text-text-secondary leading-relaxed max-w-[min(120px,45vw)] text-right whitespace-normal break-words">{DOBIA_TIPS[msgIdx]}</span>
-              <div className="flex justify-end -mt-px"><div className="w-1.5 h-1.5 rotate-45 bg-bg-card border-r border-b border-border/30 mr-3" /></div>
+              <span className="block px-2 py-1 rounded-xl bg-bg-card border border-border/50 text-[8px] font-mono text-text-secondary leading-relaxed max-w-[min(120px,45vw)] text-right whitespace-normal break-words">{DOBIA_TIPS[msgIdx]}</span>
+              <div className="flex justify-end -mt-px"><div className="w-1.5 h-1.5 rotate-45 bg-bg-card border-r border-b border-border/50 mr-3" /></div>
             </div>
             <div style={{ marginBottom: -38 }}><Dobia expression={dobiaExpr} size={128} /></div>
           </div>
@@ -332,8 +332,8 @@ export const AppRouter = () => {
         <div className="hidden min-[420px]:block sm:hidden" style={{ marginRight: -33 }}>
           <div className="flex flex-col items-end">
             <div key={msgIdx} className="animate-fade-in" style={{ marginRight: 41, marginBottom: -9 }}>
-              <span className="block px-2.5 py-1 rounded-xl bg-bg-card border border-border/30 text-[8px] font-mono text-text-secondary leading-relaxed max-w-[min(140px,50vw)] text-right whitespace-normal break-words">{DOBIA_TIPS[msgIdx]}</span>
-              <div className="flex justify-end -mt-px"><div className="w-1.5 h-1.5 rotate-45 bg-bg-card border-r border-b border-border/30 mr-3.5" /></div>
+              <span className="block px-2.5 py-1 rounded-xl bg-bg-card border border-border/50 text-[8px] font-mono text-text-secondary leading-relaxed max-w-[min(140px,50vw)] text-right whitespace-normal break-words">{DOBIA_TIPS[msgIdx]}</span>
+              <div className="flex justify-end -mt-px"><div className="w-1.5 h-1.5 rotate-45 bg-bg-card border-r border-b border-border/50 mr-3.5" /></div>
             </div>
             <div style={{ marginBottom: -47 }}><Dobia expression={dobiaExpr} size={160} /></div>
           </div>
@@ -343,8 +343,8 @@ export const AppRouter = () => {
         <div className="hidden sm:block md:hidden" style={{ marginRight: -40 }}>
           <div className="flex flex-col items-end">
             <div key={msgIdx} className="animate-fade-in" style={{ marginRight: 50, marginBottom: -11 }}>
-              <span className="block px-2.5 py-1.5 rounded-xl bg-bg-card border border-border/30 text-[9px] font-mono text-text-secondary leading-relaxed max-w-[min(160px,55vw)] text-right whitespace-normal break-words">{DOBIA_TIPS[msgIdx]}</span>
-              <div className="flex justify-end -mt-px"><div className="w-2 h-2 rotate-45 bg-bg-card border-r border-b border-border/30 mr-4" /></div>
+              <span className="block px-2.5 py-1.5 rounded-xl bg-bg-card border border-border/50 text-[9px] font-mono text-text-secondary leading-relaxed max-w-[min(160px,55vw)] text-right whitespace-normal break-words">{DOBIA_TIPS[msgIdx]}</span>
+              <div className="flex justify-end -mt-px"><div className="w-2 h-2 rotate-45 bg-bg-card border-r border-b border-border/50 mr-4" /></div>
             </div>
             <div style={{ marginBottom: -57 }}><Dobia expression={dobiaExpr} size={192} /></div>
           </div>
@@ -354,8 +354,8 @@ export const AppRouter = () => {
         <div className="hidden md:block lg:hidden" style={{ marginRight: -53 }}>
           <div className="flex flex-col items-end">
             <div key={msgIdx} className="animate-fade-in" style={{ marginRight: 65, marginBottom: -14 }}>
-              <span className="block px-3 py-1.5 rounded-xl bg-bg-card border border-border/30 text-[10px] font-mono text-text-secondary leading-relaxed max-w-[min(200px,55vw)] text-right whitespace-normal break-words">{DOBIA_TIPS[msgIdx]}</span>
-              <div className="flex justify-end -mt-px"><div className="w-2 h-2 rotate-45 bg-bg-card border-r border-b border-border/30 mr-5" /></div>
+              <span className="block px-3 py-1.5 rounded-xl bg-bg-card border border-border/50 text-[10px] font-mono text-text-secondary leading-relaxed max-w-[min(200px,55vw)] text-right whitespace-normal break-words">{DOBIA_TIPS[msgIdx]}</span>
+              <div className="flex justify-end -mt-px"><div className="w-2 h-2 rotate-45 bg-bg-card border-r border-b border-border/50 mr-5" /></div>
             </div>
             <div style={{ marginBottom: -75 }}><Dobia expression={dobiaExpr} size={256} /></div>
           </div>
@@ -365,8 +365,8 @@ export const AppRouter = () => {
         <div className="hidden lg:block xl:hidden" style={{ marginRight: -66 }}>
           <div className="flex flex-col items-end">
             <div key={msgIdx} className="animate-fade-in" style={{ marginRight: 82, marginBottom: -18 }}>
-              <span className="block px-3 py-1.5 rounded-xl bg-bg-card border border-border/30 text-[10px] font-mono text-text-secondary leading-relaxed max-w-[min(240px,55vw)] text-right whitespace-normal break-words">{DOBIA_TIPS[msgIdx]}</span>
-              <div className="flex justify-end -mt-px"><div className="w-2 h-2 rotate-45 bg-bg-card border-r border-b border-border/30 mr-6" /></div>
+              <span className="block px-3 py-1.5 rounded-xl bg-bg-card border border-border/50 text-[10px] font-mono text-text-secondary leading-relaxed max-w-[min(240px,55vw)] text-right whitespace-normal break-words">{DOBIA_TIPS[msgIdx]}</span>
+              <div className="flex justify-end -mt-px"><div className="w-2 h-2 rotate-45 bg-bg-card border-r border-b border-border/50 mr-6" /></div>
             </div>
             <div style={{ marginBottom: -94 }}><Dobia expression={dobiaExpr} size={320} /></div>
           </div>
@@ -376,8 +376,8 @@ export const AppRouter = () => {
         <div className="hidden xl:block 2xl:hidden" style={{ marginRight: -83 }}>
           <div className="flex flex-col items-end">
             <div key={msgIdx} className="animate-fade-in" style={{ marginRight: 103, marginBottom: -22 }}>
-              <span className="block px-4 py-2 rounded-xl bg-bg-card border border-border/30 text-[11px] font-mono text-text-secondary leading-relaxed max-w-[min(280px,55vw)] text-right whitespace-normal break-words">{DOBIA_TIPS[msgIdx]}</span>
-              <div className="flex justify-end -mt-px"><div className="w-2.5 h-2.5 rotate-45 bg-bg-card border-r border-b border-border/30 mr-7" /></div>
+              <span className="block px-4 py-2 rounded-xl bg-bg-card border border-border/50 text-[11px] font-mono text-text-secondary leading-relaxed max-w-[min(280px,55vw)] text-right whitespace-normal break-words">{DOBIA_TIPS[msgIdx]}</span>
+              <div className="flex justify-end -mt-px"><div className="w-2.5 h-2.5 rotate-45 bg-bg-card border-r border-b border-border/50 mr-7" /></div>
             </div>
             <div style={{ marginBottom: -118 }}><Dobia expression={dobiaExpr} size={400} /></div>
           </div>
@@ -387,8 +387,8 @@ export const AppRouter = () => {
         <div className="hidden 2xl:block" style={{ marginRight: -99 }}>
           <div className="flex flex-col items-end">
             <div key={msgIdx} className="animate-fade-in" style={{ marginRight: 123, marginBottom: -27 }}>
-              <span className="block px-4 py-2 rounded-xl bg-bg-card border border-border/30 text-[12px] font-mono text-text-secondary leading-relaxed max-w-[min(320px,55vw)] text-right whitespace-normal break-words">{DOBIA_TIPS[msgIdx]}</span>
-              <div className="flex justify-end -mt-px"><div className="w-2.5 h-2.5 rotate-45 bg-bg-card border-r border-b border-border/30 mr-8" /></div>
+              <span className="block px-4 py-2 rounded-xl bg-bg-card border border-border/50 text-[12px] font-mono text-text-secondary leading-relaxed max-w-[min(320px,55vw)] text-right whitespace-normal break-words">{DOBIA_TIPS[msgIdx]}</span>
+              <div className="flex justify-end -mt-px"><div className="w-2.5 h-2.5 rotate-45 bg-bg-card border-r border-b border-border/50 mr-8" /></div>
             </div>
             <div style={{ marginBottom: -141 }}><Dobia expression={dobiaExpr} size={480} /></div>
           </div>

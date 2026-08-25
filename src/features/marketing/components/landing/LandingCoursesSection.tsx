@@ -116,7 +116,7 @@ const FullCourseCard: React.FC<{
               {course.minutes}m
             </span>
             {course.popular && (
-              <span className="px-2 py-0.5 rounded-full bg-bg-elevated border border-border/30 text-[8px] font-black uppercase tracking-widest text-text-primary">
+              <span className="px-2 py-0.5 rounded-full bg-bg-elevated border border-border/50 text-[8px] font-black uppercase tracking-widest text-text-primary">
                 {t('badge.popular')}
               </span>
             )}
@@ -256,7 +256,7 @@ const LandingCoursesSection: React.FC = () => {
             {canScrollLeft && (
               <button
                 onClick={() => scrollTabs(-1)}
-                className="md:hidden absolute -left-1 top-1/2 -translate-y-1/2 z-10 w-7 h-7 aspect-square shrink-0 rounded-full bg-bg-card/90 border border-border/30 flex items-center justify-center text-text-muted hover:text-text-primary transition-all backdrop-blur-sm"
+                className="md:hidden absolute -left-1 top-1/2 -translate-y-1/2 z-10 w-7 h-7 aspect-square shrink-0 rounded-full bg-bg-card/90 border border-border/50 flex items-center justify-center text-text-muted hover:text-text-primary transition-all backdrop-blur-sm"
               >
                 <ChevronLeft size={14} />
               </button>
@@ -272,7 +272,7 @@ const LandingCoursesSection: React.FC = () => {
                 className={`shrink-0 flex items-center gap-2 px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all duration-200 border ${
                   activeCategory === null
                     ? 'bg-bg-elevated text-text-primary border-border/50'
-                    : 'bg-bg-card text-text-muted border-border/30 hover:bg-bg-elevated hover:text-text-primary'
+                    : 'bg-bg-card text-text-muted border-border/50 hover:bg-bg-elevated hover:text-text-primary'
                 }`}
               >
                 {t('landing.courses.filterAll')}
@@ -291,7 +291,7 @@ const LandingCoursesSection: React.FC = () => {
                     className={`shrink-0 flex items-center gap-2 px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all duration-200 border ${
                       isActive
                         ? 'bg-bg-elevated text-text-primary border-border/50'
-                        : 'bg-bg-card text-text-muted border-border/30 hover:bg-bg-elevated hover:text-text-primary'
+                        : 'bg-bg-card text-text-muted border-border/50 hover:bg-bg-elevated hover:text-text-primary'
                     }`}
                   >
                     {CatIconBtn && <CatIconBtn className="w-3.5 h-3.5" />}
@@ -308,7 +308,7 @@ const LandingCoursesSection: React.FC = () => {
             {canScrollRight && (
               <button
                 onClick={() => scrollTabs(1)}
-                className="md:hidden absolute -right-1 top-1/2 -translate-y-1/2 z-10 w-7 h-7 aspect-square shrink-0 rounded-full bg-bg-card/90 border border-border/30 flex items-center justify-center text-text-muted hover:text-text-primary transition-all backdrop-blur-sm"
+                className="md:hidden absolute -right-1 top-1/2 -translate-y-1/2 z-10 w-7 h-7 aspect-square shrink-0 rounded-full bg-bg-card/90 border border-border/50 flex items-center justify-center text-text-muted hover:text-text-primary transition-all backdrop-blur-sm"
               >
                 <ChevronRight size={14} />
               </button>

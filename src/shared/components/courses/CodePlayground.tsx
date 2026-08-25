@@ -128,7 +128,7 @@ const CodePlayground: React.FC<CodePlaygroundProps> = ({
       </div>
 
       {showHint && expectedOutput && (
-        <div className="px-5 py-3 bg-accent-dim border-t border-border/30">
+        <div className="px-5 py-3 bg-accent-dim border-t border-border/50">
           <p className="text-[11px] font-mono text-text-muted">
             {t('components.playground.expectedOutputLabel')} <span className="text-accent">{expectedOutput}</span>
           </p>
@@ -136,7 +136,7 @@ const CodePlayground: React.FC<CodePlaygroundProps> = ({
       )}
 
       {output && (
-        <div className="px-5 py-4 bg-[#000000] border-t border-border/30">
+        <div className="px-5 py-4 bg-[#000000] border-t border-border/50">
           <pre className="text-sm font-mono text-accent whitespace-pre-wrap leading-relaxed">{output}</pre>
         </div>
       )}

@@ -69,7 +69,7 @@ const LandingMarketSection = () => {
           </div>
           <Link
             to="/zero-day-market"
-            className="inline-flex items-center gap-2.5 px-6 py-3 rounded-xl border border-border/30 bg-bg-elevated text-text-primary text-[10px] font-black uppercase tracking-widest hover:bg-bg-card transition-colors"
+            className="inline-flex items-center gap-2.5 px-6 py-3 rounded-xl border border-border/50 bg-bg-elevated text-text-primary text-[10px] font-black uppercase tracking-widest hover:bg-bg-card transition-colors"
           >
             <IconMarketplace className="h-4 w-4" /> {t('landing.market.accessMarket')} <IconArrowRight size={14} />
           </Link>

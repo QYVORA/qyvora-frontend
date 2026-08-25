@@ -49,7 +49,7 @@ export function BrowserSimulation({ pages, defaultUrl }: BrowserSimProps) {
   };
 
   return (
-    <div className="flex flex-col h-full rounded-2xl border border-border/30 bg-bg-card overflow-hidden">
+    <div className="flex flex-col h-full rounded-2xl border border-border/50 bg-bg-card overflow-hidden">
       {/* Browser Chrome */}
       <div className="flex items-center gap-2 px-3 py-2 bg-bg-elevated border-b border-border/20">
         <div className="flex items-center gap-1.5">
@@ -74,7 +74,7 @@ export function BrowserSimulation({ pages, defaultUrl }: BrowserSimProps) {
         </div>
 
         <form onSubmit={handleSubmit} className="flex-1 mx-2">
-          <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-bg border border-border/30">
+          <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-bg border border-border/50">
             <label htmlFor="browser-url-input" className="contents">
               {currentPage?.url.startsWith('https') ? (
                 <Lock size={12} className="text-green-400 shrink-0" />

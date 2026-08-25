@@ -16,10 +16,10 @@ const NotFoundPage = () => (
     <div className="relative z-10 flex flex-col items-center text-center max-w-2xl">
       <Dobia expression="confused" size="xl" />
 
-      <div className="relative mt-5 w-full rounded-2xl border border-border/30 bg-bg-card px-6 sm:px-8 py-5 sm:py-6 shadow-[var(--card-shimmer)]">
+      <div className="relative mt-5 w-full rounded-2xl border border-border/50 bg-bg-card px-6 sm:px-8 py-5 sm:py-6 shadow-[var(--card-shimmer)]">
         <span
           aria-hidden
-          className="absolute -top-1.5 left-1/2 -translate-x-1/2 w-3 h-3 rotate-45 border-l border-t border-border/30 bg-bg-card"
+          className="absolute -top-1.5 left-1/2 -translate-x-1/2 w-3 h-3 rotate-45 border-l border-t border-border/50 bg-bg-card"
         />
         <p className="inline-flex items-center gap-2 font-mono text-[10px] font-black uppercase tracking-widest text-accent mb-3">
           <IconTerminal size={14} /> // 404 - NODE NOT FOUND

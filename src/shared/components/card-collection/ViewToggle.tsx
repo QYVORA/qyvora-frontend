@@ -27,7 +27,7 @@ const ViewToggle: React.FC<ViewToggleProps> = ({
   <div
     role="group"
     aria-label={label}
-    className={`inline-flex items-center gap-0.5 rounded-xl border border-border/30 bg-bg-card p-1 ${className}`}
+    className={`inline-flex items-center gap-0.5 rounded-xl border border-border/50 bg-bg-card p-1 ${className}`}
   >
     {VIEW_OPTIONS.map(({ mode, label: buttonLabel, Icon }) => {
       const isActive = value === mode;

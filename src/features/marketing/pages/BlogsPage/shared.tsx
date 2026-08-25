@@ -45,7 +45,7 @@ export const OutputBlock = ({ text, title = 'output' }: { text: string; title?: 
 );
 
 export const StatCard = ({ icon, label, value }: { icon: React.ReactNode; label: string; value: string }) => (
-  <div className="flex items-center gap-4 p-4 md:p-5 rounded-xl bg-bg-elevated border border-border/30">
+  <div className="flex items-center gap-4 p-4 md:p-5 rounded-xl bg-bg-elevated border border-border/50">
     <div className="w-10 h-10 rounded-lg bg-bg-card flex items-center justify-center shrink-0">
       {icon}
     </div>
@@ -57,7 +57,7 @@ export const StatCard = ({ icon, label, value }: { icon: React.ReactNode; label:
 );
 
 export const PhaseCard = ({ icon: Icon, name, desc }: { icon: React.ElementType; name: string; desc: string }) => (
-  <div className="p-5 md:p-6 rounded-xl border border-border/30 bg-bg-card flex items-start gap-4 hover:border-accent/30 transition-colors">
+  <div className="p-5 md:p-6 rounded-xl border border-border/50 bg-bg-card flex items-start gap-4 hover:border-accent/50 transition-colors">
     <div className="w-10 h-10 rounded-lg bg-bg-elevated flex items-center justify-center shrink-0">
       <Icon size={20} className="text-accent" />
     </div>
@@ -69,7 +69,7 @@ export const PhaseCard = ({ icon: Icon, name, desc }: { icon: React.ElementType;
 );
 
 export const FeatureCard = ({ icon: Icon, title, desc }: { icon: React.ElementType; title: string; desc: string }) => (
-  <div className="p-6 md:p-7 rounded-xl border border-border/30 bg-bg-card">
+  <div className="p-6 md:p-7 rounded-xl border border-border/50 bg-bg-card">
     <div className="flex items-start gap-4">
       <Icon size={24} className="text-accent mt-1 shrink-0" />
       <div className="min-w-0">
@@ -94,7 +94,7 @@ export const BulletList = ({ items }: { items: { icon: React.ReactNode; text: Re
 );
 
 export const CTA = ({ title, desc, href, label }: { title: string; desc: string; href: string; label: string }) => (
-  <div className="p-8 md:p-14 rounded-2xl border border-border/30 bg-bg-card">
+  <div className="p-8 md:p-14 rounded-2xl border border-border/50 bg-bg-card">
     <h2 className="text-3xl md:text-5xl font-black uppercase tracking-tight mb-6">
       {title}
     </h2>
@@ -126,7 +126,7 @@ export const Divider = () => (
 );
 
 export const InlineDiagram = ({ children }: { children: React.ReactNode }) => (
-  <div className="relative my-10 md:my-12 p-4 sm:p-6 md:p-8 lg:p-10 rounded-xl bg-bg-card border border-border/30 overflow-hidden">
+  <div className="relative my-10 md:my-12 p-4 sm:p-6 md:p-8 lg:p-10 rounded-xl bg-bg-card border border-border/50 overflow-hidden">
     <div className="relative z-10 flex items-center justify-center w-full">
       {children}
     </div>

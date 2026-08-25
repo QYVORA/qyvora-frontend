@@ -85,7 +85,7 @@ export function LearningAccordion({ items, className, defaultOpen = 0 }: Learnin
         return (
           <div
             key={item.id}
-            className="hidden md:block rounded-xl border border-border/30 bg-bg-card overflow-hidden transition-colors hover:border-border/50"
+            className="hidden md:block rounded-xl border border-border/50 bg-bg-card overflow-hidden transition-colors hover:border-border/50"
           >
             {/* Strip header — always visible */}
             <button

@@ -21,7 +21,7 @@ const TrophyCabinet: React.FC<TrophyCabinetProps> = ({ profile, className = '' }
 
   if (trophies.length === 0) {
     return (
-      <div className={`rounded-2xl border border-border/30 bg-bg-card p-6 ${className}`}>
+      <div className={`rounded-2xl border border-border/50 bg-bg-card p-6 ${className}`}>
         <ModuleHeader
           icon={<Trophy className="w-4 h-4 text-amber-400" />}
           iconClassName="bg-amber-400/10"
@@ -35,7 +35,7 @@ const TrophyCabinet: React.FC<TrophyCabinetProps> = ({ profile, className = '' }
   }
 
   return (
-    <div className={`rounded-2xl border border-border/30 bg-bg-card overflow-hidden ${className}`}>
+    <div className={`rounded-2xl border border-border/50 bg-bg-card overflow-hidden ${className}`}>
       <ModuleHeader
         icon={<Trophy className="w-4 h-4 text-amber-400" />}
         iconClassName="bg-amber-400/10"

@@ -73,7 +73,7 @@ export function SqlConsole({ tables, predefinedQueries = [] }: SqlConsoleProps) 
   }, [query, tables]);
 
   return (
-    <div className="flex flex-col h-full rounded-2xl border border-border/30 bg-bg-card overflow-hidden">
+    <div className="flex flex-col h-full rounded-2xl border border-border/50 bg-bg-card overflow-hidden">
       <div className="px-4 py-3 bg-bg-elevated border-b border-border/20">
         <p className="text-[10px] font-black uppercase tracking-widest text-accent">SQL Console</p>
       </div>
@@ -96,7 +96,7 @@ export function SqlConsole({ tables, predefinedQueries = [] }: SqlConsoleProps) 
             value={query}
             onChange={e => setQuery(e.target.value)}
             onKeyDown={e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); executeQuery(); } }}
-            className="flex-1 h-16 bg-black/40 border border-border/30 rounded-lg p-2 text-[11px] font-mono text-text-primary outline-none resize-none focus:border-accent/50"
+            className="flex-1 h-16 bg-black/40 border border-border/50 rounded-lg p-2 text-[11px] font-mono text-text-primary outline-none resize-none focus:border-accent/50"
             placeholder="Enter SQL query..."
           />
           <button onClick={executeQuery}
@@ -133,7 +133,7 @@ export function SqlConsole({ tables, predefinedQueries = [] }: SqlConsoleProps) 
               <thead>
                 <tr>
                   {result.columns.map(c => (
-                    <th key={c} className="text-left px-2 py-1.5 text-accent border-b border-border/30">{c}</th>
+                    <th key={c} className="text-left px-2 py-1.5 text-accent border-b border-border/50">{c}</th>
                   ))}
                 </tr>
               </thead>

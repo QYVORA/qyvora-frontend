@@ -29,7 +29,7 @@ const ConnectionMediumModal: React.FC<ConnectionMediumModalProps> = ({
         <RadixDialog.Overlay className="fixed inset-0 z-[210] bg-black/70 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0" />
         <RadixDialog.Content
           aria-label="Select connection medium"
-          className="fixed z-[211] left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[calc(100vw-2rem)] max-w-md bg-bg-card border border-border/30 rounded-2xl shadow-2xl shadow-black/40 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 duration-150"
+          className="fixed z-[211] left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[calc(100vw-2rem)] max-w-md bg-bg-card border border-border/50 rounded-2xl shadow-2xl shadow-black/40 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 duration-150"
         >
           <RadixDialog.Title className="sr-only">Select Connection Medium</RadixDialog.Title>
 

@@ -49,7 +49,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, isLoggedIn, view }) 
   if (view === 'expanded') {
     return (
       <div className="group relative flex flex-col sm:flex-row overflow-hidden card-accent bg-bg-card transition-all duration-300">
-        <div className="sm:w-40 lg:w-48 shrink-0 aspect-[16/9] sm:aspect-auto sm:min-h-[120px] overflow-hidden bg-accent/5 sm:border-r border-border/30">
+        <div className="sm:w-40 lg:w-48 shrink-0 aspect-[16/9] sm:aspect-auto sm:min-h-[120px] overflow-hidden bg-accent/5 sm:border-r border-border/50">
           <AuthImage
             src={product.coverUrl}
             alt={product.title}

@@ -188,7 +188,7 @@ const MyCoursesPage: React.FC = () => {
                 <ScrollReveal key={course.id} direction="up" amount={0.1} delay={i * 0.05}>
                   <Link
                     to={`/dashboard/courses/${course.id}${canResume ? `?lesson=${progress.lastLesson}` : ''}`}
-                    className="group/card relative aspect-square rounded-2xl border border-border/30 bg-bg-card p-3 md:p-5 transition-all duration-300 hover:border-accent/30 flex flex-col text-left overflow-hidden"
+                    className="group/card relative aspect-square rounded-2xl border border-border/50 bg-bg-card p-3 md:p-5 transition-all duration-300 hover:border-accent/50 flex flex-col text-left overflow-hidden"
                   >
                     <div className="flex justify-center mb-2">
                       <CourseBadge courseId={course.id} className="w-16 h-16 md:w-20 md:h-20" />
@@ -265,7 +265,7 @@ const MyCoursesPage: React.FC = () => {
                 return (
                   <div
                     key={course.id}
-                    className="relative aspect-square rounded-2xl border border-border/30 bg-bg-card/50 opacity-60 p-3 md:p-5 flex flex-col overflow-hidden"
+                    className="relative aspect-square rounded-2xl border border-border/50 bg-bg-card/50 opacity-60 p-3 md:p-5 flex flex-col overflow-hidden"
                   >
                     <div className="flex justify-center mb-2 opacity-50">
                       <CourseBadge courseId={course.id} className="w-16 h-16 md:w-20 md:h-20" />

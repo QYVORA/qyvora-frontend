@@ -22,7 +22,7 @@ export interface Achievement {
 
 export const RARITY_STYLES: Record<string, { border: string; bg: string; glow: string }> = {
   common: {
-    border: 'border-border/30',
+    border: 'border-border/50',
     bg: 'bg-bg-card',
     glow: '',
   },

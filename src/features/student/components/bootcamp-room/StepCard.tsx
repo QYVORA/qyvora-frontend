@@ -101,7 +101,7 @@ const StepCard: React.FC<Props> = ({
         className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[10px] font-black uppercase tracking-widest border transition-all ${
           gotIt
             ? 'bg-accent text-on-accent border-accent'
-            : 'border-border text-text-muted hover:border-accent/30 hover:text-accent'
+            : 'border-border text-text-muted hover:border-accent/50 hover:text-accent'
         }`}
       >
         <IconCheck size={12} className={gotIt ? '' : 'opacity-50'} />

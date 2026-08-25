@@ -26,8 +26,8 @@ const CardStat: React.FC<CardStatProps> = ({
       className={`
         rounded-2xl border p-5 flex flex-col gap-2.5
         ${accent
-          ? 'border-accent/20 bg-accent/5'
-          : 'border-border/30 bg-bg-card'
+          ? 'border-accent/40 bg-accent/5'
+          : 'border-border/50 bg-bg-card'
         }
         ${className}
       `}

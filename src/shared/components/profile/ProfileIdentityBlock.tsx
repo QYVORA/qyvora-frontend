@@ -92,7 +92,7 @@ const ProfileIdentityBlock: React.FC<ProfileIdentityBlockProps> = ({
       initial={prefersReduced ? false : { opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: prefersReduced ? 0 : 0.45, delay: prefersReduced ? 0 : 0.05 }}
-      className={`min-w-0 flex-1 rounded-2xl border border-border/30 bg-bg-card overflow-hidden ${className}`}
+      className={`min-w-0 flex-1 rounded-2xl border border-border/50 bg-bg-card overflow-hidden ${className}`}
     >
       <div className="h-1 w-full bg-accent" />
 
@@ -105,7 +105,7 @@ const ProfileIdentityBlock: React.FC<ProfileIdentityBlockProps> = ({
                 {name}
               </h2>
             )}
-            <span className="px-2 py-0.5 rounded-lg bg-bg-elevated border border-border/30 text-[10px] font-black uppercase tracking-widest text-accent font-mono">
+            <span className="px-2 py-0.5 rounded-lg bg-bg-elevated border border-border/50 text-[10px] font-black uppercase tracking-widest text-accent font-mono">
               @{handle}
             </span>
             {rank && (
@@ -145,7 +145,7 @@ const ProfileIdentityBlock: React.FC<ProfileIdentityBlockProps> = ({
                 href={link.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-7 h-7 rounded-lg bg-bg-elevated border border-border/30 flex items-center justify-center text-text-muted hover:text-accent hover:border-accent/30 transition-colors"
+                className="w-7 h-7 rounded-lg bg-bg-elevated border border-border/50 flex items-center justify-center text-text-muted hover:text-accent hover:border-accent/50 transition-colors"
                 aria-label={link.label}
               >
                 {link.icon}

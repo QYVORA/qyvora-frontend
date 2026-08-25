@@ -49,7 +49,7 @@ const ServiceDetailPage: React.FC<{ svc: ServiceConfig }> = ({ svc }) => {
             description={svc.overview}
           >
             <span className={`inline-flex items-center gap-2 px-3 py-1 rounded-full border text-[9px] font-black uppercase tracking-widest ${
-              svc.featured ? 'bg-accent/10 border-accent/30 text-accent' : 'bg-bg-elevated border-border/30 text-text-muted'
+              svc.featured ? 'bg-accent/10 border-accent/30 text-accent' : 'bg-bg-elevated border-border/50 text-text-muted'
             }`}>
               <Icon className="w-3 h-3" /> {svc.badge}
             </span>
@@ -109,7 +109,7 @@ const ServiceDetailPage: React.FC<{ svc: ServiceConfig }> = ({ svc }) => {
 
             {/* Right: Included items */}
             <ScrollReveal delay={0.1}>
-              <div className="relative h-full rounded-2xl border border-border/30 bg-bg-card p-8 lg:p-10 overflow-hidden">
+              <div className="relative h-full rounded-2xl border border-border/50 bg-bg-card p-8 lg:p-10 overflow-hidden">
                 <DottedMapOverlay className="rounded-2xl" />
                 <div className="relative">
                   <span className="text-[9px] font-black uppercase tracking-widest text-text-muted mb-6 block">
@@ -117,7 +117,7 @@ const ServiceDetailPage: React.FC<{ svc: ServiceConfig }> = ({ svc }) => {
                   </span>
                   <ul className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     {svc.included.map((item) => (
-                      <li key={item} className="flex items-start gap-3 rounded-xl border border-border/30 bg-bg-elevated/60 px-5 py-4">
+                      <li key={item} className="flex items-start gap-3 rounded-xl border border-border/50 bg-bg-elevated/60 px-5 py-4">
                         <span className="w-7 h-7 rounded-lg bg-accent/10 flex items-center justify-center shrink-0 mt-0.5">
                           <CheckCircle2 className="w-4 h-4 text-accent" />
                         </span>
@@ -146,7 +146,7 @@ const ServiceDetailPage: React.FC<{ svc: ServiceConfig }> = ({ svc }) => {
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                 {svc.benefits.map((benefit, idx) => (
                   <ScrollReveal key={benefit} delay={idx * 0.05} className="h-full">
-                    <div className="relative h-full rounded-2xl border border-border/30 bg-bg-card p-6 lg:p-7 overflow-hidden">
+                    <div className="relative h-full rounded-2xl border border-border/50 bg-bg-card p-6 lg:p-7 overflow-hidden">
                       <DottedMapOverlay className="rounded-2xl" />
                       <div className="relative flex items-start gap-4">
                         <div className="w-10 h-10 rounded-xl bg-accent/10 border border-accent/30 flex items-center justify-center shrink-0">
@@ -204,7 +204,7 @@ const ServiceDetailPage: React.FC<{ svc: ServiceConfig }> = ({ svc }) => {
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                 {svc.deliverables.map((deliverable, idx) => (
                   <ScrollReveal key={deliverable.label} delay={idx * 0.05} className="h-full">
-                    <div className="relative h-full rounded-2xl border border-border/30 bg-bg-card p-6 lg:p-7 overflow-hidden">
+                    <div className="relative h-full rounded-2xl border border-border/50 bg-bg-card p-6 lg:p-7 overflow-hidden">
                       <DottedMapOverlay className="rounded-2xl" />
                       <div className="relative">
                         <div className="flex items-center gap-3 mb-3">

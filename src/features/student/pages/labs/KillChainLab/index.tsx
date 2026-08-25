@@ -143,11 +143,11 @@ const KillChainLab = () => {
           skipFlag
         />
 
-        <div className="rounded-2xl border border-border/30 bg-bg-card p-4 mb-2">
+        <div className="rounded-2xl border border-border/50 bg-bg-card p-4 mb-2">
           <p className="text-sm text-text-muted font-mono">{activeScenario.targetDescription}</p>
         </div>
 
-        <div className="rounded-2xl border border-border/30 bg-bg-card p-4 md:p-5 mb-2">
+        <div className="rounded-2xl border border-border/50 bg-bg-card p-4 md:p-5 mb-2">
           <div className="flex items-center gap-2 mb-4"><Radar className="w-4 h-4 text-accent" /><span className="text-[9px] font-black uppercase tracking-widest text-accent">Kill Chain Progress</span></div>
           <KillChainDiagramSimple
             phases={activeScenario.phases.map(p => p.name)}

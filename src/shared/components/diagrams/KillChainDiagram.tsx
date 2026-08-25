@@ -27,7 +27,7 @@ interface KillChainDiagramProps {
 
 export function KillChainDiagram({ currentPhaseIndex = -1, completedPhaseIds = [], className }: KillChainDiagramProps) {
   return (
-    <div className={cn('wc-diagram relative overflow-hidden rounded-xl border border-border/30 bg-bg-card p-4', className)}>
+    <div className={cn('wc-diagram relative overflow-hidden rounded-xl border border-border/50 bg-bg-card p-4', className)}>
       <div className="flex items-center gap-2 mb-4">
         <Shield className="w-4 h-4 text-accent" />
         <span className="text-[9px] font-black uppercase tracking-widest text-accent">Kill Chain Phases</span>
@@ -42,7 +42,7 @@ export function KillChainDiagram({ currentPhaseIndex = -1, completedPhaseIds = [
                 'flex items-center gap-2 px-3 py-2 rounded-xl border transition-all',
                 isCompleted ? 'border-green-400/40 bg-green-400/10 text-green-400' :
                 isCurrent ? 'border-yellow-400/40 bg-yellow-400/10 text-yellow-400' :
-                'border-border/30 bg-bg-elevated text-text-secondary',
+                'border-border/50 bg-bg-elevated text-text-secondary',
               )}>
                 <div className={cn(
                   'flex items-center justify-center w-6 h-6 rounded-lg',
@@ -82,7 +82,7 @@ interface KillChainDiagramSimpleProps {
 
 export function KillChainDiagramSimple({ phases, currentPhaseIndex = -1, completedPhaseIds = [], className }: KillChainDiagramSimpleProps) {
   return (
-    <div className={cn('wc-diagram relative overflow-hidden rounded-xl border border-border/30 bg-bg-card p-3 md:p-4', className)}>
+    <div className={cn('wc-diagram relative overflow-hidden rounded-xl border border-border/50 bg-bg-card p-3 md:p-4', className)}>
       <div className="flex items-center gap-2 mb-3">
         <Shield className="w-3.5 h-3.5 text-accent" />
         <span className="text-[9px] font-black uppercase tracking-widest text-accent">Kill Chain Progress</span>
@@ -97,7 +97,7 @@ export function KillChainDiagramSimple({ phases, currentPhaseIndex = -1, complet
                 'flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg border transition-all',
                 isCompleted ? 'border-accent/40 bg-accent/10 text-accent' :
                 isCurrent ? 'border-yellow-400/40 bg-yellow-400/10 text-yellow-400' :
-                'border-border/30 bg-bg-elevated text-text-secondary',
+                'border-border/50 bg-bg-elevated text-text-secondary',
               )}>
                 {isCompleted ? (
                   <span className="text-accent text-[10px]">✓</span>

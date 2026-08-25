@@ -41,8 +41,8 @@ export const CardBase: React.FC<CardBaseProps> = ({
 }) => {
   const base = [
     'terminal-card group relative flex flex-col overflow-hidden rounded-2xl border bg-bg-card transition-all duration-300',
-    active  ? 'border-accent/55'                         : 'border-accent/30',
-    muted   ? 'opacity-60 cursor-default'                : 'hover:border-accent/55',
+    active  ? 'border-accent/60'                         : 'border-accent/50',
+    muted   ? 'opacity-60 cursor-default'                : 'hover:border-accent/60',
     className,
   ].join(' ');
 
@@ -182,7 +182,7 @@ export const CardStat: React.FC<CardStatProps> = ({
     <div className={`flex items-center gap-4 p-5 md:p-4 ${className}`}>
       {icon && (
         <div className={`flex h-12 w-12 md:h-10 md:w-10 shrink-0 items-center justify-center rounded-xl border ${
-          accent ? 'border-accent/30 bg-accent-dim text-accent' : 'border-border bg-bg text-text-muted'
+          accent ? 'border-accent/50 bg-accent-dim text-accent' : 'border-border bg-bg text-text-muted'
         }`}>
           {React.isValidElement(icon) ? React.cloneElement(icon as React.ReactElement<{ className?: string }>, { className: 'w-6 h-6 md:w-5 md:h-5' }) : icon}
         </div>

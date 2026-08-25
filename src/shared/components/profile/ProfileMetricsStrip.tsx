@@ -16,7 +16,7 @@ const ProfileMetricsStrip: React.FC<ProfileMetricsStripProps> = ({ metrics }) =>
   const prefersReduced = useReducedMotion();
 
   return (
-    <div className="grid grid-cols-2 overflow-hidden rounded-2xl border border-border/30 bg-bg-card sm:grid-cols-3 lg:grid-cols-6">
+    <div className="grid grid-cols-2 overflow-hidden rounded-2xl border border-border/50 bg-bg-card sm:grid-cols-3 lg:grid-cols-6">
       {metrics.map((metric, index) => (
         <motion.div
           key={index}

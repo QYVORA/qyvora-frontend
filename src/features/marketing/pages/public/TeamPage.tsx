@@ -41,7 +41,7 @@ const TeamMemberSection = ({ member }: { member: TeamMember }) => {
     <PublicSnapSection id={member.id}>
       <ScrollReveal amount={0.08} className="h-full w-full">
         <article className="relative grid w-full grid-cols-1 gap-3 sm:gap-4 lg:grid-cols-2 lg:gap-12">
-          <div className={`relative h-64 max-h-[70vh] overflow-hidden rounded-2xl border border-border/30 bg-bg-card sm:h-80 lg:h-full ${layout.imageFirst ? 'lg:order-1' : 'lg:order-2'}`}>
+          <div className={`relative h-64 max-h-[70vh] overflow-hidden rounded-2xl border border-border/50 bg-bg-card sm:h-80 lg:h-full ${layout.imageFirst ? 'lg:order-1' : 'lg:order-2'}`}>
             <img
               src={member.image}
               alt={member.name}
@@ -51,7 +51,7 @@ const TeamMemberSection = ({ member }: { member: TeamMember }) => {
               loading="lazy"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-bg-card via-transparent to-transparent" />
-            <div className="absolute left-3 top-3 flex h-9 w-9 items-center justify-center rounded-lg border border-border/30 bg-bg/80 text-[9px] font-black tracking-widest text-accent backdrop-blur-sm sm:left-5 sm:top-5 sm:h-11 sm:w-11 sm:text-[10px]">
+            <div className="absolute left-3 top-3 flex h-9 w-9 items-center justify-center rounded-lg border border-border/50 bg-bg/80 text-[9px] font-black tracking-widest text-accent backdrop-blur-sm sm:left-5 sm:top-5 sm:h-11 sm:w-11 sm:text-[10px]">
               {layout.marker}
             </div>
             <div className="absolute bottom-3 left-3 right-3 flex items-end justify-between gap-4 sm:bottom-5 sm:left-5 sm:right-5">
@@ -78,7 +78,7 @@ const TeamMemberSection = ({ member }: { member: TeamMember }) => {
 
             <div className="mt-3 flex flex-wrap gap-1.5 sm:mt-4 sm:gap-2 lg:mt-7">
               {member.disciplines.map((discipline) => (
-                <span key={discipline} className="px-2 py-0.5 rounded-lg border border-border/30 bg-bg-card text-[9px] font-black uppercase tracking-widest text-text-muted sm:px-2.5 sm:py-1">{discipline}</span>
+                <span key={discipline} className="px-2 py-0.5 rounded-lg border border-border/50 bg-bg-card text-[9px] font-black uppercase tracking-widest text-text-muted sm:px-2.5 sm:py-1">{discipline}</span>
               ))}
             </div>
 

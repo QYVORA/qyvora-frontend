@@ -25,7 +25,7 @@ const AuthHero: React.FC = () => {
 
       <div className="relative z-10 w-full flex-1 flex flex-col items-start justify-center px-3 md:px-4 lg:px-6 py-24 lg:py-32">
         <div className="w-full max-w-xl space-y-10 lg:space-y-12">
-          <div className="inline-flex items-center gap-2 px-4 py-2.5 border border-border/30 bg-bg-elevated/50 rounded-lg">
+          <div className="inline-flex items-center gap-2 px-4 py-2.5 border border-border/50 bg-bg-elevated/50 rounded-lg">
             <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse flex-none" />
             <span className="font-mono text-[10px] sm:text-[11px] font-black uppercase tracking-[0.3em] text-text-muted">
               {t('hero.tagline')}

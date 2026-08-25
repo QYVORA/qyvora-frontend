@@ -61,7 +61,7 @@ function Carousel<T extends { id: string }>({
   return (
     <div className={`relative group ${className}`} {...containerProps}>
       <div
-        className="overflow-hidden rounded-2xl md:rounded-3xl border border-border/30 bg-accent-dim cursor-grab touch-pan-y select-none active:cursor-grabbing"
+        className="overflow-hidden rounded-2xl md:rounded-3xl border border-border/50 bg-accent-dim cursor-grab touch-pan-y select-none active:cursor-grabbing"
         {...swipeHandlers}
       >
         <AnimatePresence mode="wait" custom={direction}>

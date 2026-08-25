@@ -125,7 +125,7 @@ const SqlInjectionLab = () => {
           skipFlag
         />
 
-        <div className="rounded-2xl border border-border/30 bg-bg-card p-4 mb-2">
+        <div className="rounded-2xl border border-border/50 bg-bg-card p-4 mb-2">
           <p className="text-sm font-mono text-text-muted">
             <span className="text-accent font-black">Target:</span> {activeTarget.url}
           </p>

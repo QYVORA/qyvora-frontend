@@ -273,14 +273,14 @@ const Settings: React.FC = () => {
 
           {/* Appearance Section */}
           {activeSection === 'appearance' && (
-            <div className="bg-bg-card border border-border/30 rounded-2xl p-5 md:p-8">
+            <div className="bg-bg-card border border-border/50 rounded-2xl p-5 md:p-8">
               <SectionHeader 
                 title={t('student.settings.appearance.title')}
                 description={t('student.settings.appearance.description')}
               />
               <div>
                 <SettingsRow label={t('student.settings.appearance.theme')} description={t('student.settings.appearance.themeDesc')}>
-                  <div className="flex gap-1 bg-bg rounded-xl p-1 border border-border/30">
+                  <div className="flex gap-1 bg-bg rounded-xl p-1 border border-border/50">
                     <button onClick={() => handleThemeChange('dark')}
                       className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-colors ${theme === 'dark' ? 'bg-accent text-on-accent' : 'text-text-muted hover:text-text-primary'}`}>
                       {t('student.settings.appearance.dark')}
@@ -331,7 +331,7 @@ const Settings: React.FC = () => {
 
           {/* Notifications Section */}
           {activeSection === 'notifications' && (
-            <div className="bg-bg-card border border-border/30 rounded-2xl p-5 md:p-8">
+            <div className="bg-bg-card border border-border/50 rounded-2xl p-5 md:p-8">
               <SectionHeader 
                 title={t('student.settings.notifications.title')}
                 description={t('student.settings.notifications.description')}
@@ -361,7 +361,7 @@ const Settings: React.FC = () => {
 
           {/* Learning Section */}
           {activeSection === 'learning' && (
-            <div className="bg-bg-card border border-border/30 rounded-2xl p-5 md:p-8">
+            <div className="bg-bg-card border border-border/50 rounded-2xl p-5 md:p-8">
               <SectionHeader 
                 title={t('student.settings.learningPrefs.title')}
                 description={t('student.settings.learningPrefs.description')}
@@ -396,7 +396,7 @@ const Settings: React.FC = () => {
           {activeSection === 'security' && (
             <div className="space-y-6 md:space-y-8">
               {/* Password */}
-              <div className="bg-bg-card border border-border/30 rounded-2xl p-5 md:p-8">
+              <div className="bg-bg-card border border-border/50 rounded-2xl p-5 md:p-8">
                 <SectionHeader 
                   title={t('student.settings.password.title')}
                 />
@@ -412,7 +412,7 @@ const Settings: React.FC = () => {
               </div>
 
               {/* Recovery Token */}
-              <div className="bg-bg-card border border-border/30 rounded-2xl p-5 md:p-8">
+              <div className="bg-bg-card border border-border/50 rounded-2xl p-5 md:p-8">
                 <SectionHeader 
                   title={t('student.settings.recovery.title')}
                 />
@@ -473,7 +473,7 @@ const Settings: React.FC = () => {
               </div>
 
               {/* Sessions */}
-              <div className="bg-bg-card border border-border/30 rounded-2xl p-5 md:p-8">
+              <div className="bg-bg-card border border-border/50 rounded-2xl p-5 md:p-8">
                 <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4 mb-6">
                   <div>
                     <h2 className="text-2xl font-black text-text-primary mb-2">{t('student.settings.sessions.title')}</h2>
@@ -492,7 +492,7 @@ const Settings: React.FC = () => {
                 ) : (
                   <div className="space-y-3">
                     {sessions.map((session) => (
-                      <div key={session.id} className="flex items-center justify-between gap-3 p-3 bg-bg border border-border/30 rounded-xl">
+                      <div key={session.id} className="flex items-center justify-between gap-3 p-3 bg-bg border border-border/50 rounded-xl">
                         <div className="min-w-0">
                           <div className="flex items-center gap-2">
                             <p className="text-sm font-bold text-text-primary truncate">{session.userAgent || t('student.settings.sessions.unknown')}</p>

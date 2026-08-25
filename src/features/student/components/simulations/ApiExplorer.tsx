@@ -23,7 +23,7 @@ export function ApiExplorer({ endpoints }: ApiExplorerProps) {
   }, [selected]);
 
   return (
-    <div className="flex flex-col h-full rounded-2xl border border-border/30 bg-bg-card overflow-hidden">
+    <div className="flex flex-col h-full rounded-2xl border border-border/50 bg-bg-card overflow-hidden">
       <div className="px-4 py-3 bg-bg-elevated border-b border-border/20">
         <p className="text-[10px] font-black uppercase tracking-widest text-accent">API Explorer</p>
       </div>
@@ -79,7 +79,7 @@ export function ApiExplorer({ endpoints }: ApiExplorerProps) {
                 <div className="mt-3">
                   <label htmlFor="api-request-body" className="text-[9px] font-black uppercase tracking-widest text-text-muted mb-1 block">Request Body</label>
                   <textarea id="api-request-body" value={customBody || selected.body} onChange={e => setCustomBody(e.target.value)}
-                    className="w-full h-20 bg-black/40 border border-border/30 rounded p-2 text-[10px] font-mono text-text-primary outline-none resize-none" />
+                    className="w-full h-20 bg-black/40 border border-border/50 rounded p-2 text-[10px] font-mono text-text-primary outline-none resize-none" />
                 </div>
               )}
             </div>

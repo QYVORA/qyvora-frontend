@@ -36,7 +36,7 @@ export function OsintDashboard({ modules }: OsintDashboardProps) {
   };
 
   return (
-    <div className="flex flex-col h-full rounded-2xl border border-border/30 bg-bg-card overflow-hidden">
+    <div className="flex flex-col h-full rounded-2xl border border-border/50 bg-bg-card overflow-hidden">
       <div className="px-4 py-3 bg-bg-elevated border-b border-border/20">
         <p className="text-[10px] font-black uppercase tracking-widest text-accent">OSINT Dashboard</p>
       </div>
@@ -73,7 +73,7 @@ export function OsintDashboard({ modules }: OsintDashboardProps) {
                 value={queries[current.id] || ''}
                 onChange={e => setQueries(prev => ({ ...prev, [current.id]: e.target.value }))}
                 placeholder={`Enter ${current.type} query...`}
-                className="flex-1 px-3 py-2 rounded-lg bg-black/40 border border-border/30 text-[11px] font-mono text-text-primary outline-none focus:border-accent/50"
+                className="flex-1 px-3 py-2 rounded-lg bg-black/40 border border-border/50 text-[11px] font-mono text-text-primary outline-none focus:border-accent/50"
               />
               <button onClick={handleSearch} disabled={searching}
                 className="px-3 py-2 rounded-lg bg-accent/10 border border-accent/30 text-[9px] font-black uppercase tracking-wider text-accent disabled:opacity-50">

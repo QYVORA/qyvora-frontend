@@ -58,7 +58,7 @@ const LearningOverviewCard: React.FC<LearningOverviewCardProps> = ({
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.5 }}
-        className="relative rounded-2xl border border-border/30 bg-bg-card p-6 sm:p-8 lg:p-12 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 sm:gap-6 overflow-hidden"
+        className="relative rounded-2xl border border-border/50 bg-bg-card p-6 sm:p-8 lg:p-12 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 sm:gap-6 overflow-hidden"
       >
         <GridBoxedBackground blur={0} mask="right" />
         <div className="relative z-10 w-full sm:w-auto min-w-0">
@@ -69,7 +69,7 @@ const LearningOverviewCard: React.FC<LearningOverviewCardProps> = ({
             className="ov-text flex items-center gap-3 mb-2"
           >
             {avatar ? (
-              <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-xl overflow-hidden border border-border/30 shrink-0">
+              <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-xl overflow-hidden border border-border/50 shrink-0">
                 {avatar}
               </div>
             ) : (

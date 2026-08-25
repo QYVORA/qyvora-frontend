@@ -66,7 +66,7 @@ const RelatedContentSection: React.FC<RelatedContentSectionProps> = ({ title, it
               <div className="p-6">
                 {item.badge && (
                   <div className="mb-3">
-                    <span className="text-[9px] font-black uppercase tracking-widest px-2 py-0.5 rounded-full border border-border/30 bg-bg-elevated text-text-muted">
+                    <span className="text-[9px] font-black uppercase tracking-widest px-2 py-0.5 rounded-full border border-border/50 bg-bg-elevated text-text-muted">
                       {item.badge}
                     </span>
                   </div>

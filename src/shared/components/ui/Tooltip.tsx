@@ -68,7 +68,7 @@ export const Tooltip: React.FC<TooltipProps> = ({
             className={cn(
               // Surface
               'terminal-card z-[300] px-2.5 py-1.5 rounded-lg',
-              'bg-bg-card border border-border/30',
+              'bg-bg-card border border-border/50',
               'shadow-lg shadow-black/30',
               // Typography
               'text-[11px] font-bold text-text-primary uppercase tracking-widest font-mono',

@@ -46,7 +46,7 @@ export function FileExplorer({ files }: FileExplorerProps) {
   const [selectedFile, setSelectedFile] = useState<SimFile | null>(null);
 
   return (
-    <div className="flex flex-col h-full rounded-2xl border border-border/30 bg-bg-card overflow-hidden">
+    <div className="flex flex-col h-full rounded-2xl border border-border/50 bg-bg-card overflow-hidden">
       <div className="px-4 py-3 bg-bg-elevated border-b border-border/20">
         <p className="text-[10px] font-black uppercase tracking-widest text-accent">File Explorer</p>
       </div>

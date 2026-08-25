@@ -133,7 +133,7 @@ const CommunityPopup: React.FC = () => {
                     px-5 flex items-center justify-center rounded-2xl
                     border border-border bg-transparent py-3
                     text-[10px] font-black uppercase tracking-widest
-                    text-text-muted transition-all hover:border-accent/30 hover:text-accent
+                    text-text-muted transition-all hover:border-accent/50 hover:text-accent
                   "
                 >
                   {t('button.dismiss')}

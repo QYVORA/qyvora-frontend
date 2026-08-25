@@ -67,7 +67,7 @@ const CompetitivePage = () => {
               className={`px-5 py-2.5 rounded-xl text-xs font-black uppercase tracking-wider transition-all duration-300 ${
                 period === p.key
                   ? 'bg-accent text-on-accent'
-                  : 'bg-bg-card border border-border text-text-muted hover:border-accent/30 hover:text-accent'
+                  : 'bg-bg-card border border-border text-text-muted hover:border-accent/50 hover:text-accent'
               }`}
             >
               {t(`student.competitive.periods.${p.key}`)}
@@ -112,7 +112,7 @@ const CompetitivePage = () => {
                     youLabel={t('student.competitive.youBadge')}
                     roomsLabel={t('student.competitive.rooms')}
                     avatarShape="rounded-xl"
-                    normalBorderColor="border-border/30"
+                    normalBorderColor="border-border/50"
                   />
                 </ScrollReveal>
               ))}
@@ -123,7 +123,7 @@ const CompetitivePage = () => {
                 <button
                   onClick={() => loadMore(period)}
                   disabled={loadingMore}
-                  className="px-6 py-2.5 rounded-xl text-xs font-black uppercase tracking-widest border border-border/30 bg-bg-card text-text-muted hover:border-accent/30 hover:text-accent transition-all disabled:opacity-50"
+                  className="px-6 py-2.5 rounded-xl text-xs font-black uppercase tracking-widest border border-border/50 bg-bg-card text-text-muted hover:border-accent/50 hover:text-accent transition-all disabled:opacity-50"
                 >
                   {loadingMore ? t('student.competitive.loadingMore') : t('student.competitive.showMore')}
                 </button>

@@ -92,7 +92,7 @@ const LandingBootcampSection: React.FC = () => {
                 <div className="relative h-full flex flex-col sm:flex-row p-4 sm:p-8 gap-5 sm:gap-6">
                   <div className="flex-1 min-w-0 flex flex-col">
                     <div className="flex items-center justify-end mb-3 sm:mb-6">
-                      <span className="text-[9px] font-black uppercase tracking-widest px-3 py-1.5 rounded-full border border-border/30 bg-bg-elevated text-text-muted">
+                      <span className="text-[9px] font-black uppercase tracking-widest px-3 py-1.5 rounded-full border border-border/50 bg-bg-elevated text-text-muted">
                         {t('landing.bootcamp.roomCount', { count: featuredRoomCount })}
                       </span>
                     </div>
@@ -153,7 +153,7 @@ const LandingBootcampSection: React.FC = () => {
                             {t('landing.bootcamp.startPhase')} {phase.id}
                             <IconArrowRight size={12} className="transition-transform group-hover:translate-x-1" />
                           </span>
-                          <span className="inline-flex text-[8px] font-black uppercase tracking-widest px-2 py-1 rounded-full border border-border/30 bg-bg-elevated text-text-muted shrink-0">
+                          <span className="inline-flex text-[8px] font-black uppercase tracking-widest px-2 py-1 rounded-full border border-border/50 bg-bg-elevated text-text-muted shrink-0">
                             {t('landing.bootcamp.roomCount', { count: roomCount })}
                           </span>
                         </div>
@@ -194,12 +194,12 @@ const LandingBootcampSection: React.FC = () => {
                     className="group relative block w-full card-accent bg-bg-card overflow-hidden transition-all duration-300"
                   >
                     {/* Avatar as the card's visual header */}
-                    <div className="relative h-[150px] sm:h-[180px] flex items-end justify-center border-b border-border/30 bg-bg-elevated/40 overflow-hidden">
+                    <div className="relative h-[150px] sm:h-[180px] flex items-end justify-center border-b border-border/50 bg-bg-elevated/40 overflow-hidden">
                       <HpbAvatar
                         variant={`phase${Number(mobilePhase.id)}` as HpbVariant}
                         className="h-[92%] w-auto max-w-full"
                       />
-                      <span className="absolute top-3 right-3 text-[8px] font-black uppercase tracking-widest px-2 py-0.5 rounded-full border border-border/30 bg-bg-elevated text-text-muted">
+                      <span className="absolute top-3 right-3 text-[8px] font-black uppercase tracking-widest px-2 py-0.5 rounded-full border border-border/50 bg-bg-elevated text-text-muted">
                         {t('landing.bootcamp.roomCount', { count: mobileRoomCount })}
                       </span>
                     </div>

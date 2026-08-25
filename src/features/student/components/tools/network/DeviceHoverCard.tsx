@@ -18,7 +18,7 @@ const DeviceHoverCard: React.FC<DeviceHoverCardProps> = ({ data }) => {
       className="absolute z-10 pointer-events-none bottom-full left-1/2 -translate-x-1/2 mb-2 min-w-[180px]"
       style={{ animation: 'fade-in 0.15s ease-out' }}
     >
-      <div className="bg-bg-card border border-border/30 rounded-xl px-3 py-2.5 shadow-xl shadow-black/50">
+      <div className="bg-bg-card border border-border/50 rounded-xl px-3 py-2.5 shadow-xl shadow-black/50">
         {/* Header */}
         <div className="flex items-center gap-2 mb-2">
           <div
@@ -66,7 +66,7 @@ const DeviceHoverCard: React.FC<DeviceHoverCardProps> = ({ data }) => {
       </div>
       {/* Arrow */}
       <div className="flex justify-center">
-        <div className="w-2 h-2 bg-bg-card border-r border-b border-border/30 rotate-45 -mt-1" />
+        <div className="w-2 h-2 bg-bg-card border-r border-b border-border/50 rotate-45 -mt-1" />
       </div>
     </div>
   );

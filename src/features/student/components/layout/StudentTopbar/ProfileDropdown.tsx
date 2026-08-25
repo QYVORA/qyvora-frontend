@@ -115,7 +115,7 @@ const ProfileDropdown: React.FC<ProfileDropdownProps> = ({
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -6, scale: 0.95 }}
             transition={{ duration: 0.15 }}
-            className="absolute right-0 top-full mt-2 w-72 rounded-2xl border border-border/30 bg-bg-card shadow-2xl shadow-black/40 z-[80]"
+            className="absolute right-0 top-full mt-2 w-72 rounded-2xl border border-border/50 bg-bg-card shadow-2xl shadow-black/40 z-[80]"
             role="menu"
           >
             {/* User header — clickable, navigates to profile */}
@@ -151,7 +151,7 @@ const ProfileDropdown: React.FC<ProfileDropdownProps> = ({
                 className="w-full flex items-center gap-3 px-4 py-2.5 rounded-xl text-left transition-all hover:bg-accent-dim/50 active:scale-[0.98] group"
                 role="menuitem"
               >
-                <div className="relative w-8 h-8 rounded-lg bg-bg-elevated border border-border/30 flex items-center justify-center shrink-0 group-hover:border-accent/30 group-hover:bg-accent/10 transition-colors">
+                <div className="relative w-8 h-8 rounded-lg bg-bg-elevated border border-border/50 flex items-center justify-center shrink-0 group-hover:border-accent/50 group-hover:bg-accent/10 transition-colors">
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-text-muted group-hover:text-accent transition-colors">
                     <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9" />
                     <path d="M10.3 21a1.94 1.94 0 0 0 3.4 0" />
@@ -186,7 +186,7 @@ const ProfileDropdown: React.FC<ProfileDropdownProps> = ({
                   role="menuitem"
                   aria-expanded={toolsExpanded}
                 >
-                  <div className="w-8 h-8 rounded-lg bg-bg-elevated border border-border/30 flex items-center justify-center shrink-0 group-hover:border-accent/30 group-hover:bg-accent/10 transition-colors">
+                  <div className="w-8 h-8 rounded-lg bg-bg-elevated border border-border/50 flex items-center justify-center shrink-0 group-hover:border-accent/50 group-hover:bg-accent/10 transition-colors">
                     <Wrench size={14} className="text-text-muted group-hover:text-accent transition-colors" />
                   </div>
                   <div className="flex-1 min-w-0">
@@ -241,7 +241,7 @@ const ProfileDropdown: React.FC<ProfileDropdownProps> = ({
                 className="flex items-center gap-3 px-4 py-2.5 rounded-xl text-left transition-all hover:bg-accent-dim/50 active:scale-[0.98] group"
                 role="menuitem"
               >
-                <div className="w-8 h-8 rounded-lg bg-bg-elevated border border-border/30 flex items-center justify-center shrink-0 group-hover:border-accent/30 group-hover:bg-accent/10 transition-colors">
+                <div className="w-8 h-8 rounded-lg bg-bg-elevated border border-border/50 flex items-center justify-center shrink-0 group-hover:border-accent/50 group-hover:bg-accent/10 transition-colors">
                   <Globe size={14} className="text-text-muted group-hover:text-accent transition-colors" />
                 </div>
                 <div className="flex-1 min-w-0">
@@ -259,7 +259,7 @@ const ProfileDropdown: React.FC<ProfileDropdownProps> = ({
                 className="flex items-center gap-3 px-4 py-2.5 rounded-xl text-left transition-all hover:bg-accent-dim/50 active:scale-[0.98] group"
                 role="menuitem"
               >
-                <div className="w-8 h-8 rounded-lg bg-bg-elevated border border-border/30 flex items-center justify-center shrink-0 group-hover:border-accent/30 group-hover:bg-accent/10 transition-colors">
+                <div className="w-8 h-8 rounded-lg bg-bg-elevated border border-border/50 flex items-center justify-center shrink-0 group-hover:border-accent/50 group-hover:bg-accent/10 transition-colors">
                   <Settings size={14} className="text-text-muted group-hover:text-accent transition-colors" />
                 </div>
                 <div className="flex-1 min-w-0">
@@ -278,7 +278,7 @@ const ProfileDropdown: React.FC<ProfileDropdownProps> = ({
                 className="w-full flex items-center gap-3 px-4 py-2.5 rounded-xl text-left transition-all hover:bg-red-400/10 active:scale-[0.98] group"
                 role="menuitem"
               >
-                <div className="w-8 h-8 rounded-lg bg-bg-elevated border border-border/30 flex items-center justify-center shrink-0 group-hover:border-red-400/30 group-hover:bg-red-400/10 transition-colors">
+                <div className="w-8 h-8 rounded-lg bg-bg-elevated border border-border/50 flex items-center justify-center shrink-0 group-hover:border-red-400/30 group-hover:bg-red-400/10 transition-colors">
                   <LogOut size={14} className="text-text-muted group-hover:text-red-400 transition-colors" />
                 </div>
                 <div className="flex-1 min-w-0">

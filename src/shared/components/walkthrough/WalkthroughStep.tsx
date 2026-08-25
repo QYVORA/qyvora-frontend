@@ -106,7 +106,7 @@ export function WalkthroughStep({
 
         {/* Evidence — terminal-style log panel */}
         {evidence && evidence.length > 0 && (
-          <div className="wc-terminal rounded-xl border border-border/30 bg-bg overflow-hidden">
+          <div className="wc-terminal rounded-xl border border-border/50 bg-bg overflow-hidden">
             <div className="flex items-center justify-between px-4 py-2 border-b border-border/20 bg-bg-elevated">
               <div className="flex items-center gap-2">
                 <Search className="w-3 h-3 text-accent" />

@@ -23,7 +23,7 @@ function ContentCard({ item }: { item: ContentRef }) {
   return (
     <Link
       to={item.route}
-      className="group flex flex-col aspect-square rounded-2xl border border-border/30 bg-bg-card p-4 transition-all hover:border-accent/30"
+      className="group flex flex-col aspect-square rounded-2xl border border-border/50 bg-bg-card p-4 transition-all hover:border-accent/50"
     >
       <div className="flex items-center gap-2 mb-2">
         <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-lg text-[8px] font-black uppercase tracking-widest border ${cfg.color}`}>

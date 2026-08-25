@@ -28,7 +28,7 @@ const ServiceSection: React.FC<{ svc: ServiceConfig; index: number }> = ({ svc, 
         className="shrink-0 lg:w-[420px] xl:w-[480px] flex flex-col lg:justify-center"
       >
         <span className={`flex items-center gap-2 px-3 py-1 rounded-lg border text-[9px] font-black uppercase tracking-widest mb-6 w-fit ${
-          svc.featured ? 'bg-accent/10 border-accent/30 text-accent' : 'bg-bg-elevated border-border/30 text-text-muted'
+          svc.featured ? 'bg-accent/10 border-accent/30 text-accent' : 'bg-bg-elevated border-border/50 text-text-muted'
         }`}>
           <Icon className="w-3 h-3" /> {svc.badge}
         </span>
@@ -97,7 +97,7 @@ const ServiceSection: React.FC<{ svc: ServiceConfig; index: number }> = ({ svc, 
           {svc.included.map((item) => (
             <li
               key={item}
-              className="relative flex items-center gap-2.5 rounded-xl border border-border/30 bg-bg-card px-3 py-2.5 md:px-3.5 md:py-3"
+              className="relative flex items-center gap-2.5 rounded-xl border border-border/50 bg-bg-card px-3 py-2.5 md:px-3.5 md:py-3"
             >
               <span className="w-6 h-6 md:w-7 md:h-7 rounded-lg bg-accent/10 flex items-center justify-center shrink-0">
                 <IconCheck size={14} className="text-accent" />
