@@ -1,11 +1,9 @@
-import { useMemo } from 'react';
 import { Shield, User, Folder, Cog, Crown } from 'lucide-react';
 import SEO from '@/shared/components/SEO';
 import LearningAccordion from '@/shared/components/learning/LearningAccordion';
 import { WalkthroughLayout } from '@/shared/components/walkthrough/WalkthroughLayout';
 import { WalkthroughStep } from '@/shared/components/walkthrough/WalkthroughStep';
 import { PRIVESC_SCENARIOS } from '@/features/student/data/simulations';
-import { createPrivescSimulations } from '@/features/student/components/simulations/labSimulationContent';
 import type { PrivescScenario } from '@/features/student/data/simulations';
 import { getRelatedContentForLab } from '@/shared/constants/topicMap';
 import RelatedContent from '@/shared/components/RelatedContent';
@@ -45,11 +43,6 @@ const PrivescLab = () => {
   const { isLocked, purchaseLab } = useLabAccess();
 
   const chapters = activeScenario?.story?.chapters ?? [];
-
-  const simulations = useMemo(
-    () => activeScenario ? createPrivescSimulations(activeScenario.filesystem) : [],
-    [activeScenario],
-  );
 
   if (!activeScenario) {
     const firstScenarioWithVillain = PRIVESC_SCENARIOS.find(s => s.villain);
@@ -126,7 +119,6 @@ const PrivescLab = () => {
         onBack={exitScenario}
         completedCount={completedSteps.size}
         totalSteps={chapters.length + 2}
-        simulations={simulations}
       >
         <WalkthroughStep
           stepIndex={0}

@@ -1,8 +1,6 @@
-import { useMemo } from 'react';
 import { Database, CheckCircle, Keyboard, Search, Server } from 'lucide-react';
 import { WalkthroughLayout, WalkthroughStep } from '@/shared/components/walkthrough/';
 import { SQL_INJECTION_TARGETS } from '@/features/student/data/simulations';
-import { createSqlInjectionSimulations } from '@/features/student/components/simulations/labSimulationContent';
 import SEO from '@/shared/components/SEO';
 import LearningAccordion from '@/shared/components/learning/LearningAccordion';
 import { getRelatedContentForLab } from '@/shared/constants/topicMap';
@@ -35,11 +33,6 @@ const SqlInjectionLab = () => {
       getStepIds: (t) => t.steps.map((_, i) => `${t.id}-step-${i}`),
     });
   const { isLocked, purchaseLab } = useLabAccess();
-
-  const simulations = useMemo(
-    () => activeTarget ? createSqlInjectionSimulations(activeTarget.tables, activeTarget.url) : [],
-    [activeTarget],
-  );
 
   if (!activeTarget) {
     const firstTargetWithVillain = SQL_INJECTION_TARGETS.find(t => t.villain);
@@ -103,7 +96,6 @@ const SqlInjectionLab = () => {
         onBack={exitScenario}
         completedCount={completedSteps.size}
         totalSteps={activeTarget.steps.length + 2}
-        simulations={simulations}
       >
         <WalkthroughStep
           stepIndex={0}

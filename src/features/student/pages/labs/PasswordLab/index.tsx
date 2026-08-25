@@ -1,8 +1,6 @@
-import { useMemo } from 'react';
 import { Key, CheckCircle, FileText, Search, Zap, KeyRound, Book, Settings, Scale, Target, Skull, NotebookPen, Trophy } from 'lucide-react';
 import { WalkthroughLayout, WalkthroughStep } from '@/shared/components/walkthrough/';
 import { PASSWORD_EXERCISES } from '@/features/student/data/simulations';
-import { createPasswordSimulations } from '@/features/student/components/simulations/labSimulationContent';
 import SEO from '@/shared/components/SEO';
 import LearningAccordion from '@/shared/components/learning/LearningAccordion';
 import { getRelatedContentForLab } from '@/shared/constants/topicMap';
@@ -67,11 +65,6 @@ const PasswordLab = () => {
     });
   const { isLocked, purchaseLab } = useLabAccess();
 
-  const simulations = useMemo(
-    () => activeScenario ? createPasswordSimulations(activeScenario.hashContent, activeScenario.hashType, ['password', '123456', 'admin', 'letmein', 'qwerty', 'test', 'guest', 'master', 'dragon', 'login']) : [],
-    [activeScenario],
-  );
-
   if (!activeScenario) {
     const firstScenarioWithVillain = PASSWORD_EXERCISES.find(s => s.villain);
     return (
@@ -134,7 +127,6 @@ const PasswordLab = () => {
         onBack={exitScenario}
         completedCount={completedSteps.size}
         totalSteps={activeScenario.steps.length + 2}
-        simulations={simulations}
       >
         <WalkthroughStep
           stepIndex={0}
