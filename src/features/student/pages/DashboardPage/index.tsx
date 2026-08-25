@@ -25,6 +25,7 @@ import ActiveDeployments from '@/features/student/components/dashboard/ActiveDep
 import { StatCard } from '@/shared/components/dashboard';
 import StudentBootcampCard from '@/features/student/components/StudentBootcampCard';
 import LabCard from '@/features/student/pages/labs/LabsPage/LabCard';
+import CourseBadge from '@/shared/components/CourseBadge';
 import SkillMatrix from '@/features/student/components/dashboard/SkillMatrix';
 import {
   Loader2,
@@ -607,18 +608,17 @@ const Dashboard = () => {
                     to={`/dashboard/courses/${course.id}`}
                     className="group/card relative aspect-square card-accent bg-bg-card p-3 md:p-5 transition-all duration-300 flex flex-col text-left"
                   >
-                    <div className="flex items-center gap-2 mb-2">
-                      <div className="w-8 h-8 rounded-xl flex items-center justify-center shrink-0 bg-accent/10 border border-accent/20">
-                        {CatIc && <CatIc className="w-4 h-4 text-accent" />}
+                    <div className="grid grid-cols-[minmax(0,1fr)_auto] items-start gap-3 mb-2">
+                      <div className="min-w-0">
+                        <span className="px-2 py-0.5 rounded-lg bg-accent/10 text-[9px] font-black uppercase tracking-widest text-accent border border-accent/20">
+                          {category?.name}
+                        </span>
+                        <h3 className="text-sm sm:text-base md:text-lg lg:text-xl font-black text-text-primary group-hover/card:text-accent transition-colors leading-snug break-words mt-1">
+                          {course.title}
+                        </h3>
                       </div>
-                      <span className="px-2 py-0.5 rounded-lg bg-accent/10 text-[9px] font-black uppercase tracking-widest text-accent border border-accent/20">
-                        {category?.name}
-                      </span>
+                      <CourseBadge courseId={course.id} className="w-12 h-12 shrink-0" />
                     </div>
-
-                    <h3 className="text-sm sm:text-base md:text-lg lg:text-xl font-black text-text-primary group-hover/card:text-accent transition-colors leading-snug break-words mb-1">
-                      {course.title}
-                    </h3>
 
                     <p className="text-xs sm:text-sm md:text-base text-text-muted leading-relaxed line-clamp-3 break-words flex-1 mb-2">
                       {course.description}
