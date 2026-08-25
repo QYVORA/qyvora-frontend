@@ -6,6 +6,7 @@ import { IconArrowRight } from '@/shared/components/icons';
 import { useAutoPlay } from '@/core/hooks/useAutoPlay';
 import { useSwipeNav } from '@/core/hooks/useSwipeNav';
 import { useReducedMotion } from '@/shared/hooks/useReducedMotion';
+import LabBadge from '@/shared/components/LabBadge';
 
 interface Lab {
   id: string;
@@ -154,33 +155,7 @@ const LabsCarousel: React.FC<LabsCarouselProps> = ({
               {/* Right column — lab visual (first-class section element) */}
               <div className="hidden lg:flex items-center justify-center">
                 <div className="relative w-full max-w-[420px] aspect-square flex items-center justify-center">
-                  {/* Large accent-colored visual using lab's brand color */}
-                  <div
-                    className="absolute inset-0 rounded-full opacity-10"
-                    style={{ backgroundColor: lab.accentColor }}
-                  />
-                  <div
-                    className="absolute inset-[15%] rounded-full opacity-20"
-                    style={{ backgroundColor: lab.accentColor }}
-                  />
-                  <div
-                    className="absolute inset-[30%] rounded-full opacity-30"
-                    style={{ backgroundColor: lab.accentColor }}
-                  />
-                  {/* Lab icon */}
-                  <svg
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="1.5"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    className="relative z-10 w-24 h-24"
-                    style={{ color: lab.accentColor }}
-                  >
-                    <path d="M9 3h6v7.8L20.4 19.2a1 1 0 0 1-.8 1.6H4.4a1 1 0 0 1-.8-1.6L9 10.8V3z" />
-                    <path d="M9 3h6" />
-                  </svg>
+                  <LabBadge labId={lab.id} accentColor={lab.accentColor} className="w-64 h-64 lg:w-80 lg:h-80" />
                 </div>
               </div>
             </div>

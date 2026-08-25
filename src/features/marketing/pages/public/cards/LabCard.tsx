@@ -1,8 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { FlaskConical, Star } from 'lucide-react';
+import { Star } from 'lucide-react';
 import { IconArrowRight } from '@/shared/components/icons';
 import type { ViewMode } from '@/shared/components/card-collection';
+import LabBadge from '@/shared/components/LabBadge';
 
 export interface LabCardItem {
   id: string;
@@ -43,9 +44,7 @@ const LabCard: React.FC<LabCardProps> = ({ lab, view }) => {
         className="group/card flex flex-col gap-2 card-accent bg-bg-card p-4 md:p-5 transition-all duration-300 text-left"
       >
         <div className="flex items-center gap-3 min-w-0">
-          <div className="w-9 h-9 rounded-xl flex items-center justify-center shrink-0 bg-accent/10 border border-accent/20">
-            <FlaskConical className="w-4 h-4 text-accent" />
-          </div>
+          <LabBadge labId={lab.id} accentColor={lab.accentColor} className="w-11 h-11 shrink-0" />
           <h3 className="text-sm sm:text-base md:text-lg font-black text-text-primary group-hover/card:text-accent transition-colors leading-snug truncate flex-1 min-w-0">
             {lab.title}
           </h3>
@@ -75,9 +74,7 @@ const LabCard: React.FC<LabCardProps> = ({ lab, view }) => {
     >
       <div>
         <div className="flex items-center justify-between mb-2">
-          <div className="w-8 h-8 rounded-xl flex items-center justify-center shrink-0 bg-accent/10 border border-accent/20">
-            <FlaskConical className="w-4 h-4 text-accent" />
-          </div>
+          <LabBadge labId={lab.id} accentColor={lab.accentColor} className="w-14 h-14" />
           <DifficultyBadge difficulty={lab.difficulty} />
         </div>
 

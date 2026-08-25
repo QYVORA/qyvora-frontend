@@ -6,9 +6,9 @@ import { IconArrowRight, IconTerminal, IconNetwork, IconCode } from '@/shared/co
 import { useTranslation } from 'react-i18next';
 import { GridBoxedBackground } from '@/shared/components/backgrounds';
 import CoursePurchaseModal from '@/shared/components/CoursePurchaseModal';
-import { getCourseIconConfig } from '@/features/student/data/courses';
 import DragMarquee from '@/shared/components/carousel/DragMarquee';
 import { useAdaptiveUi } from '@/core/hooks/useAdaptiveUi';
+import CourseBadge from '@/shared/components/CourseBadge';
 
 const CATEGORY_ICONS: Record<string, React.ElementType> = {
   terminal: IconTerminal,
@@ -55,8 +55,6 @@ const CompactCourseCard: React.FC<{
   onSelect: (id: string) => void;
 }> = ({ course, onSelect }) => {
   const { t } = useTranslation();
-  const config = getCourseIconConfig(course.id);
-  const CourseIcon = config?.icon;
 
   return (
     <button
@@ -85,11 +83,9 @@ const CompactCourseCard: React.FC<{
         </span>
       </div>
 
-      {/* Right side: Course SVG Icon */}
+      {/* Right side: Course Badge */}
       <div className="relative z-10 w-[100px] shrink-0 flex items-center justify-center">
-        {CourseIcon && (
-          <CourseIcon className="w-full h-full max-w-[90px] max-h-[90px] text-accent/30" />
-        )}
+        <CourseBadge courseId={course.id} className="w-20 h-20" />
       </div>
     </button>
   );
@@ -101,8 +97,6 @@ const FullCourseCard: React.FC<{
   onSelect: (id: string) => void;
 }> = ({ course, onSelect }) => {
   const { t } = useTranslation();
-  const config = getCourseIconConfig(course.id);
-  const CourseIcon = config?.icon;
 
   return (
     <button
@@ -147,11 +141,9 @@ const FullCourseCard: React.FC<{
         </div>
       </div>
 
-      {/* Right side: Course SVG Icon */}
+      {/* Right side: Course Badge */}
       <div className="relative z-10 w-[120px] md:w-[140px] lg:w-[160px] shrink-0 flex items-center justify-center">
-        {CourseIcon && (
-          <CourseIcon className="w-full h-full max-w-full max-h-full text-accent/30" />
-        )}
+        <CourseBadge courseId={course.id} className="w-24 h-24 md:w-28 md:h-28 lg:w-32 lg:h-32" />
       </div>
     </button>
   );

@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { FlaskConical } from 'lucide-react';
+import LabBadge from '@/shared/components/LabBadge';
 
 interface LabCardProps {
   id: string;
@@ -12,7 +12,7 @@ interface LabCardProps {
   accentColor: string;
 }
 
-const LabCard = ({ title, description, cpReward, route }: LabCardProps) => {
+const LabCard = ({ id, title, description, cpReward, route, accentColor }: LabCardProps) => {
   const { t } = useTranslation();
   return (
     <Link
@@ -20,9 +20,7 @@ const LabCard = ({ title, description, cpReward, route }: LabCardProps) => {
       className="group/card relative aspect-square card-accent bg-bg-card p-3 md:p-5 transition-all duration-300 flex flex-col text-left"
     >
       <div className="flex items-center gap-2 mb-2">
-        <div className="w-8 h-8 rounded-xl flex items-center justify-center shrink-0 bg-accent/10 border border-accent/20">
-          <FlaskConical className="w-4 h-4 text-accent" />
-        </div>
+        <LabBadge labId={id} accentColor={accentColor} className="w-14 h-14" />
       </div>
 
       <h3 className="text-sm sm:text-base md:text-lg lg:text-xl font-black text-text-primary group-hover/card:text-accent transition-colors leading-snug mb-1">

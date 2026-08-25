@@ -6,8 +6,9 @@ import { IconArrowRight } from '@/shared/components/icons';
 import { useAutoPlay } from '@/core/hooks/useAutoPlay';
 import { useSwipeNav } from '@/core/hooks/useSwipeNav';
 import { useReducedMotion } from '@/shared/hooks/useReducedMotion';
-import { getCategoryById, getCourseIconConfig } from '@/features/student/data/courses';
+import { getCategoryById } from '@/features/student/data/courses';
 import type { Course, SkillLevel } from '@/features/student/data/courses';
+import CourseBadge from '@/shared/components/CourseBadge';
 
 const SKILL_LABELS: Record<SkillLevel, string> = {
   beginner: 'Beginner',
@@ -168,12 +169,7 @@ const CoursesCarousel: React.FC<CoursesCarouselProps> = ({ courses, className = 
               {/* Right column — course visual (first-class section element) */}
               <div className="hidden lg:flex items-center justify-center">
                 <div className="relative w-full max-w-[420px] aspect-square flex items-center justify-center">
-                  {(() => {
-                    const iconConfig = getCourseIconConfig(course.id);
-                    if (!iconConfig) return null;
-                    const Icon = iconConfig.icon;
-                    return <Icon className="w-full h-full text-accent/25" />;
-                  })()}
+                  <CourseBadge courseId={course.id} className="w-64 h-64 lg:w-80 lg:h-80" />
                 </div>
               </div>
             </div>

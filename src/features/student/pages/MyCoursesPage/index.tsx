@@ -8,7 +8,7 @@ import {
 import ScrollReveal from '@/shared/components/ScrollReveal';
 import SEO from '@/shared/components/SEO';
 import { COURSES, getCategoryById } from '@/features/student/data/courses';
-import CourseIconBackground from '@/shared/components/CourseIconBackground';
+import CourseBadge from '@/shared/components/CourseBadge';
 import api from '@/core/services/api';
 import { MyCoursesSkeleton } from '@/features/student/components/StudentSkeletons';
 import { LearningFilterStrip } from '@/features/student/components/learning';
@@ -190,7 +190,9 @@ const MyCoursesPage: React.FC = () => {
                     to={`/dashboard/courses/${course.id}${canResume ? `?lesson=${progress.lastLesson}` : ''}`}
                     className="group/card relative aspect-square rounded-2xl border border-border/30 bg-bg-card p-3 md:p-5 transition-all duration-300 hover:border-accent/30 flex flex-col text-left overflow-hidden"
                   >
-                    <CourseIconBackground courseId={course.id} />
+                    <div className="flex justify-center mb-2">
+                      <CourseBadge courseId={course.id} className="w-16 h-16 md:w-20 md:h-20" />
+                    </div>
                     <div className="relative z-10 flex items-start gap-2 mb-2">
                       <span className="px-2 py-0.5 rounded-lg bg-accent/10 text-[9px] font-black uppercase tracking-widest text-accent border border-accent/20">
                         {category?.name}
@@ -265,7 +267,9 @@ const MyCoursesPage: React.FC = () => {
                     key={course.id}
                     className="relative aspect-square rounded-2xl border border-border/30 bg-bg-card/50 opacity-60 p-3 md:p-5 flex flex-col overflow-hidden"
                   >
-                    <CourseIconBackground courseId={course.id} />
+                    <div className="flex justify-center mb-2 opacity-50">
+                      <CourseBadge courseId={course.id} className="w-16 h-16 md:w-20 md:h-20" />
+                    </div>
                     <div className="relative z-10 flex items-start gap-2 mb-2">
                       <span className="px-2 py-0.5 rounded-lg bg-bg-elevated text-[9px] font-black uppercase tracking-widest text-text-muted border border-border/20">
                         {category?.name}
