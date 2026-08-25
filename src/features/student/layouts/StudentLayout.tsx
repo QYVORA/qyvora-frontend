@@ -90,16 +90,10 @@ const StudentLayout = () => {
         <InstallBanner />
         <UsernameChangeModal />
 
-        {/* Walkthrough Toolbar — mobile only, for courses/labs/bootcamp rooms */}
+        {/* Walkthrough Toolbar — for courses/labs/bootcamp rooms */}
         {isWalkthroughPage && (
           <WalkthroughToolbar
-            onOpenTerminal={() => {
-              if (labMatch) {
-                setWalkthroughTerminalOpen(true);
-              } else {
-                setTerminalOpen(true);
-              }
-            }}
+            onOpenTerminal={() => setWalkthroughTerminalOpen(true)}
             onOpenIDE={() => setIdeOpen(true)}
             onOpenNetworkVisualizer={() => setNetworkVizOpen(true)}
             showTerminal={true}
@@ -108,8 +102,8 @@ const StudentLayout = () => {
           />
         )}
 
-        {/* Compact walkthrough terminal — labs only (desktop dock / mobile sheet) */}
-        {labMatch && (
+        {/* Compact walkthrough terminal — for all walkthrough pages (desktop dock / mobile sheet) */}
+        {isWalkthroughPage && (
           <InternalTerminal
             open={walkthroughTerminalOpen}
             onOpenChange={setWalkthroughTerminalOpen}
@@ -117,6 +111,7 @@ const StudentLayout = () => {
           />
         )}
 
+        {/* Full terminal modal — for standalone terminal access */}
         <TerminalWrapper
           open={terminalOpen}
           onOpenChange={setTerminalOpen}

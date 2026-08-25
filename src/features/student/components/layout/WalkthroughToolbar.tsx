@@ -70,7 +70,7 @@ const WalkthroughToolbar: React.FC<WalkthroughToolbarProps> = ({
   };
 
   return (
-    <div className="lg:hidden fixed right-4 top-1/2 -translate-y-1/2 z-[45] flex flex-col items-end gap-2">
+    <div className="fixed right-4 top-1/2 -translate-y-1/2 z-[45] flex flex-col items-end gap-2">
       {/* Toggle button */}
       <motion.button
         onClick={() => setIsExpanded(!isExpanded)}

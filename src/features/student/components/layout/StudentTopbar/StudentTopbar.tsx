@@ -5,7 +5,6 @@ import {
   IconLabs,
   IconMarketplace,
   IconArrowLeft,
-  IconMenu,
   IconCode,
   IconChevronRight,
 } from '@/shared/components/icons';
@@ -129,7 +128,6 @@ const StudentTopbar = () => {
     return () => window.removeEventListener('course:updateMeta', handler as EventListener);
   }, []);
 
-  const openSidebar = () => window.dispatchEvent(new CustomEvent(isCoursePage ? 'course:openSidebar' : 'bootcamp:openSidebar'));
   const [unreadCount, setUnreadCount] = useState(0);
   const [cpBalance, setCpBalance] = useState<number>(user?.cp ?? 0);
   const [profileSheetOpen, setProfileSheetOpen] = useState(false);
@@ -209,13 +207,6 @@ const StudentTopbar = () => {
                 >
                   <IconArrowLeft size={20} strokeWidth={2.5} />
                 </button>
-                <button
-                  onClick={openSidebar}
-                  className={`md:hidden flex h-10 w-10 shrink-0 items-center justify-center rounded-xl transition-colors text-text-secondary hover:text-accent active:scale-95`}
-                  aria-label={t('aria.toggleLessons')}
-                >
-                  <IconMenu size={20} strokeWidth={2.5} />
-                </button>
                 <div className={`hidden sm:flex items-center gap-1.5 text-xs font-bold uppercase tracking-widest min-w-0 flex-1 text-text-muted`}>
                   <Link to="/dashboard/courses" className={`transition-colors shrink-0 hover:text-accent active:opacity-70`}>
                     {t('student.topbar.breadcrumb.courses')}
@@ -237,23 +228,6 @@ const StudentTopbar = () => {
                       <span className="text-[10px] font-mono text-text-muted hidden sm:inline">
                         {courseMeta.currentLessonIdx + 1}/{courseMeta.totalLessons}
                       </span>
-                      <div className="hidden md:flex items-center gap-1 mr-2">
-                        {courseMeta.lesson?.hasTerminal && (
-                          <span className="px-1.5 py-0.5 rounded bg-accent/10 text-[8px] font-black uppercase tracking-widest text-accent">TERM</span>
-                        )}
-                        {courseMeta.lesson?.hasCodePlayground && (
-                          <span className="px-1.5 py-0.5 rounded bg-accent/10 text-[8px] font-black uppercase tracking-widest text-accent">CODE</span>
-                        )}
-                        {courseMeta.lesson?.quiz && courseMeta.lesson.quiz.length > 0 && (
-                          <span className="px-1.5 py-0.5 rounded bg-accent/10 text-[8px] font-black uppercase tracking-widest text-accent">QUIZ</span>
-                        )}
-                      </div>
-                      <button
-                        onClick={openSidebar}
-                        className="md:hidden flex items-center gap-1 px-2 py-1.5 rounded-lg bg-bg-elevated text-text-muted text-[9px] font-black uppercase tracking-widest border border-border"
-                      >
-                        {t('student.topbar.breadcrumb.lessons')}
-                      </button>
                     </>
                   )}
 
@@ -303,13 +277,6 @@ const StudentTopbar = () => {
                 aria-label={t('aria.backToCurriculum')}
               >
                 <IconArrowLeft size={20} strokeWidth={2.5} />
-              </button>
-              <button
-                onClick={openSidebar}
-                className={`md:hidden flex h-10 w-10 shrink-0 items-center justify-center rounded-xl transition-colors text-text-secondary hover:text-accent active:scale-95`}
-                aria-label={t('aria.toggleCurriculum')}
-              >
-                <IconMenu size={16} strokeWidth={2.5} />
               </button>
               <div className={`hidden sm:flex items-center gap-1.5 text-xs font-bold uppercase tracking-widest min-w-0 flex-1 text-text-muted`}>
                 <Link to={`/dashboard/bootcamps/${roomBootcampId}`} className="hover:text-accent active:opacity-70 transition-colors shrink-0">
