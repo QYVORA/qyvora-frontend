@@ -190,21 +190,22 @@ const MyCoursesPage: React.FC = () => {
                     to={`/dashboard/courses/${course.id}${canResume ? `?lesson=${progress.lastLesson}` : ''}`}
                     className="group/card relative aspect-square rounded-2xl border border-border/50 bg-bg-card p-3 md:p-5 transition-all duration-300 hover:border-accent/50 flex flex-col text-left overflow-hidden"
                   >
-                    <div className="flex justify-center mb-2">
-                      <CourseBadge courseId={course.id} className="w-16 h-16 md:w-20 md:h-20" />
+                    <div className="grid grid-cols-[minmax(0,1fr)_auto] items-start gap-3 mb-2">
+                      <div className="min-w-0">
+                        <div className="flex items-center gap-2 mb-1">
+                          <span className="px-2 py-0.5 rounded-lg bg-accent/10 text-[9px] font-black uppercase tracking-widest text-accent border border-accent/20">
+                            {category?.name}
+                          </span>
+                          <span className="flex items-center gap-1 text-[9px] text-text-muted font-mono whitespace-nowrap">
+                            <Clock className="h-2.5 w-2.5" /> {course.estimatedMinutes} min
+                          </span>
+                        </div>
+                        <h3 className="text-sm sm:text-base md:text-lg lg:text-xl font-black text-text-primary group-hover/card:text-accent transition-colors leading-snug break-words">
+                          {course.title}
+                        </h3>
+                      </div>
+                      <CourseBadge courseId={course.id} className="w-12 h-12 shrink-0" />
                     </div>
-                    <div className="relative z-10 flex items-start gap-2 mb-2">
-                      <span className="px-2 py-0.5 rounded-lg bg-accent/10 text-[9px] font-black uppercase tracking-widest text-accent border border-accent/20">
-                        {category?.name}
-                      </span>
-                      <span className="ml-auto flex items-center gap-1 text-[9px] text-text-muted font-mono whitespace-nowrap">
-                        <Clock className="h-2.5 w-2.5" /> {course.estimatedMinutes} min
-                      </span>
-                    </div>
-
-                    <h3 className="relative z-10 text-sm sm:text-base md:text-lg lg:text-xl font-black text-text-primary group-hover/card:text-accent transition-colors leading-snug break-words mb-1">
-                      {course.title}
-                    </h3>
 
                     <p className="relative z-10 text-xs sm:text-sm md:text-base text-text-muted leading-relaxed line-clamp-3 flex-1 mb-2">
                       {course.description}
@@ -267,17 +268,17 @@ const MyCoursesPage: React.FC = () => {
                     key={course.id}
                     className="relative aspect-square rounded-2xl border border-border/50 bg-bg-card/50 opacity-60 p-3 md:p-5 flex flex-col overflow-hidden"
                   >
-                    <div className="flex justify-center mb-2 opacity-50">
-                      <CourseBadge courseId={course.id} className="w-16 h-16 md:w-20 md:h-20" />
+                    <div className="grid grid-cols-[minmax(0,1fr)_auto] items-start gap-3 mb-2 opacity-50">
+                      <div className="min-w-0">
+                        <span className="px-2 py-0.5 rounded-lg bg-bg-elevated text-[9px] font-black uppercase tracking-widest text-text-muted border border-border/20">
+                          {category?.name}
+                        </span>
+                        <h3 className="text-sm sm:text-base md:text-lg lg:text-xl font-black text-text-muted leading-snug break-words mt-1">
+                          {course.title}
+                        </h3>
+                      </div>
+                      <CourseBadge courseId={course.id} className="w-12 h-12 shrink-0" />
                     </div>
-                    <div className="relative z-10 flex items-start gap-2 mb-2">
-                      <span className="px-2 py-0.5 rounded-lg bg-bg-elevated text-[9px] font-black uppercase tracking-widest text-text-muted border border-border/20">
-                        {category?.name}
-                      </span>
-                    </div>
-                     <h3 className="relative z-10 text-sm sm:text-base md:text-lg lg:text-xl font-black text-text-muted leading-snug break-words mb-1">
-                        {course.title}
-                     </h3>
                     <div className="relative z-10 mt-auto pt-2">
                       <button
                         onClick={() => setSelectedCourseId(course.id)}
