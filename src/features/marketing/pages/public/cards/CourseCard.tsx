@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { GraduationCap, Sparkles, TrendingUp } from 'lucide-react';
+import { GraduationCap, Sparkles, TrendingUp, Clock } from 'lucide-react';
 import { IconArrowRight, IconTerminal, IconNetwork, IconCode } from '@/shared/components/icons';
 import type { ViewMode } from '@/shared/components/card-collection';
 import { getCategoryById } from '@/features/student/data/courses';
@@ -39,21 +39,18 @@ const CourseCard: React.FC<CourseCardProps> = ({ course, view }) => {
         to={`/courses/${course.id}`}
         className="group relative overflow-hidden flex flex-col gap-2 card-accent bg-bg-card p-4 md:p-5 transition-all duration-300 justify-between text-left"
       >
-        <div className="relative z-10 flex items-center justify-between gap-4">
-          <div className="flex items-center gap-3 min-w-0">
-            <CourseBadge courseId={course.id} className="w-11 h-11 shrink-0" />
+        <div className="relative z-10">
+          <div className="grid grid-cols-[minmax(0,1fr)_auto] items-start gap-3">
             <div className="min-w-0">
               <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-lg bg-accent/10 text-[9px] font-black uppercase tracking-widest text-accent border border-accent/20">
                 {category?.name}
               </span>
-              <h3 className="text-sm sm:text-base md:text-lg font-black text-text-primary group-hover:text-accent transition-colors leading-snug truncate">
+              <h3 className="text-sm sm:text-base md:text-lg font-black text-text-primary group-hover:text-accent transition-colors leading-snug truncate mt-1">
                 {course.title}
               </h3>
             </div>
+            <CourseBadge courseId={course.id} className="w-11 h-11 shrink-0" />
           </div>
-          <span className="text-[9px] font-black uppercase tracking-widest text-text-muted shrink-0">
-            {course.estimatedMinutes}min
-          </span>
         </div>
 
         <p className="relative z-10 text-xs sm:text-sm text-text-muted leading-relaxed line-clamp-2">
@@ -65,6 +62,9 @@ const CourseCard: React.FC<CourseCardProps> = ({ course, view }) => {
             <SkillIcon className="h-2.5 w-2.5" /> {skillCfg.label}
           </span>
           <span className="flex items-center gap-3 shrink-0">
+            <span className="inline-flex items-center gap-1 text-[9px] font-black uppercase tracking-widest text-text-muted">
+              <Clock size={10} /> {course.estimatedMinutes}min
+            </span>
             <span className="text-[9px] sm:text-[10px] font-black uppercase tracking-widest text-accent">
               {course.cpCost} CP
             </span>
@@ -81,16 +81,13 @@ const CourseCard: React.FC<CourseCardProps> = ({ course, view }) => {
       className="group relative overflow-hidden flex flex-col h-full min-h-[220px] card-accent bg-bg-card p-4 sm:p-5 md:p-6 transition-all duration-300 justify-between"
     >
       <div className="relative z-10">
-        <div className="flex justify-center mb-3">
-          <CourseBadge courseId={course.id} className="w-16 h-16 md:w-20 md:h-20" />
-        </div>
-        <div className="flex items-center justify-between mb-2">
-          <span className="flex items-center gap-1.5 px-2 py-0.5 rounded-lg bg-accent/10 text-[9px] font-black uppercase tracking-widest text-accent border border-accent/20">
-            <CatIcon className="h-2.5 w-2.5" /> {category?.name}
-          </span>
-          <span className="text-[9px] font-black uppercase tracking-widest text-text-muted">
-            {course.estimatedMinutes}min
-          </span>
+        <div className="grid grid-cols-[minmax(0,1fr)_auto] items-start gap-3 mb-2">
+          <div className="min-w-0">
+            <span className="flex items-center gap-1.5 px-2 py-0.5 rounded-lg bg-accent/10 text-[9px] font-black uppercase tracking-widest text-accent border border-accent/20 w-fit">
+              <CatIcon className="h-2.5 w-2.5" /> {category?.name}
+            </span>
+          </div>
+          <CourseBadge courseId={course.id} className="w-12 h-12 shrink-0" />
         </div>
         <h3 className="text-sm sm:text-base md:text-lg font-black text-text-primary group-hover:text-accent transition-colors leading-snug break-words mb-1">
           {course.title}
@@ -103,8 +100,13 @@ const CourseCard: React.FC<CourseCardProps> = ({ course, view }) => {
         <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-lg text-[9px] font-black uppercase tracking-widest ${skillCfg.color}`}>
           <SkillIcon className="h-2.5 w-2.5" /> {skillCfg.label}
         </span>
-        <span className="text-[9px] sm:text-[10px] font-black uppercase tracking-widest text-accent">
-          {course.cpCost} CP
+        <span className="flex items-center gap-3 shrink-0">
+          <span className="inline-flex items-center gap-1 text-[9px] font-black uppercase tracking-widest text-text-muted">
+            <Clock size={10} /> {course.estimatedMinutes}min
+          </span>
+          <span className="text-[9px] sm:text-[10px] font-black uppercase tracking-widest text-accent">
+            {course.cpCost} CP
+          </span>
         </span>
       </div>
     </Link>

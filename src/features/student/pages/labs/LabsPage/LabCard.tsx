@@ -19,13 +19,12 @@ const LabCard = ({ id, title, description, cpReward, route, accentColor }: LabCa
       to={route}
       className="group/card relative aspect-square card-accent bg-bg-card p-3 md:p-5 transition-all duration-300 flex flex-col text-left"
     >
-      <div className="flex items-center gap-2 mb-2">
-        <LabBadge labId={id} accentColor={accentColor} className="w-14 h-14" />
+      <div className="grid grid-cols-[minmax(0,1fr)_auto] items-start gap-2 mb-2">
+        <h3 className="text-sm sm:text-base md:text-lg lg:text-xl font-black text-text-primary group-hover/card:text-accent transition-colors leading-snug">
+          {title}
+        </h3>
+        <LabBadge labId={id} accentColor={accentColor} className="w-11 h-11 shrink-0" />
       </div>
-
-      <h3 className="text-sm sm:text-base md:text-lg lg:text-xl font-black text-text-primary group-hover/card:text-accent transition-colors leading-snug mb-1">
-        {title}
-      </h3>
 
       <p className="text-xs sm:text-sm md:text-base text-text-muted line-clamp-3 leading-relaxed flex-1 mb-2">
         {description}
