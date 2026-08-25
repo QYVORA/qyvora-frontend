@@ -1,8 +1,6 @@
-import { useMemo } from 'react';
 import { Globe, CheckCircle } from 'lucide-react';
 import { WalkthroughLayout, WalkthroughStep } from '@/shared/components/walkthrough/';
 import { OSINT_CHALLENGES } from '@/features/student/data/simulations';
-import { createOsintSimulations } from '@/features/student/components/simulations/labSimulationContent';
 import SEO from '@/shared/components/SEO';
 import LearningAccordion from '@/shared/components/learning/LearningAccordion';
 import { getRelatedContentForLab } from '@/shared/constants/topicMap';
@@ -23,11 +21,6 @@ const OsintLab = () => {
       getStepIds: (c) => c.steps.map((_, i) => `${c.id}-step-${i}`),
     });
   const { isLocked, purchaseLab } = useLabAccess();
-
-  const simulations = useMemo(
-    () => activeChallenge ? createOsintSimulations(activeChallenge.targetName, activeChallenge.skills) : [],
-    [activeChallenge],
-  );
 
   if (!activeChallenge) {
     const firstChallengeWithVillain = OSINT_CHALLENGES.find(c => c.villain);
@@ -91,7 +84,6 @@ const OsintLab = () => {
         onBack={exitScenario}
         completedCount={completedSteps.size}
         totalSteps={activeChallenge.steps.length + 2}
-        simulations={simulations}
       >
         <WalkthroughStep
           stepIndex={0}

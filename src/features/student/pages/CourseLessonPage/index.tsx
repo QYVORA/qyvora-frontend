@@ -1,12 +1,11 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useParams, Link, useSearchParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { ArrowLeft, ArrowRight, CheckCircle2, ChevronLeft, ChevronRight, Lock, Loader2, Target, Zap } from 'lucide-react';
+import { ArrowLeft, ArrowRight, CheckCircle2, ChevronLeft, ChevronRight, Lock, Loader2, Target } from 'lucide-react';
 import SEO from '@/shared/components/SEO';
 import { getCourseById } from '@/features/student/data/courses';
 import CodeBlockRenderer from '@/shared/components/courses/CodeBlockRenderer';
 import InlineQuiz from '@/shared/components/courses/InlineQuiz';
-import { TerminalWrapper } from '@/shared/components/learning/TerminalWrapper';
 import { StepNumberHeader } from '@/shared/components/learning/StepNumberHeader';
 import CodePlayground from '@/shared/components/courses/CodePlayground';
 import StudentHeroSection from '@/shared/components/StudentHeroSection';
@@ -45,23 +44,6 @@ const LessonViewer: React.FC<{ lesson: Lesson; number: number; courseId?: string
       <div className="wc-prose text-base sm:text-lg leading-relaxed whitespace-pre-wrap overflow-x-auto text-text-primary w-full mb-10 md:mb-14">
         <CodeBlockRenderer text={lesson.instruction} />
       </div>
-
-      {lesson.hasTerminal && (
-        <div className="mt-10 md:mt-14">
-          <div className="flex items-center gap-2 mb-4">
-            <Zap className="h-4 w-4 text-accent" />
-            <span className="text-[10px] font-black uppercase tracking-widest text-accent">Try It Yourself</span>
-          </div>
-          <TerminalWrapper
-            open
-            onOpenChange={() => {}}
-            mode="inline"
-            context={{ type: 'course', courseId: courseId || '', lessonId: lesson.id }}
-            initialCommands={lesson.terminalCommands || []}
-            title={lesson.terminalTitle || 'lesson-terminal'}
-          />
-        </div>
-      )}
 
       {lesson.hasCodePlayground && (
         <div className="mt-8 md:mt-10">

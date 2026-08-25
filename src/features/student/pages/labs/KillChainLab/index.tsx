@@ -1,10 +1,9 @@
-import { useState, useCallback, useMemo } from 'react';
+import { useState, useCallback } from 'react';
 import { Target, CheckCircle, Radar } from 'lucide-react';
 import { WalkthroughLayout, WalkthroughStep } from '@/shared/components/walkthrough/';
 import SEO from '@/shared/components/SEO';
 import LearningAccordion from '@/shared/components/learning/LearningAccordion';
 import { KILL_CHAIN_SCENARIOS } from '@/features/student/data/simulations';
-import { createKillChainSimulations } from '@/features/student/components/simulations/labSimulationContent';
 import { verifyLabFlag } from '../../../services/lab.service';
 import { getRelatedContentForLab } from '@/shared/constants/topicMap';
 import RelatedContent from '@/shared/components/RelatedContent';
@@ -52,11 +51,6 @@ const KillChainLab = () => {
 
   const currentPhase = activeScenario?.phases[activePhaseIndex] ?? null;
   const allPhasesCompleted = activeScenario && completedPhases.size === activeScenario.phases.length;
-
-  const simulations = useMemo(
-    () => activeScenario ? createKillChainSimulations(activeScenario.phases.map(p => ({ name: p.name, commands: p.commands.map(c => ({ command: c.command, output: c.output })) }))) : [],
-    [activeScenario],
-  );
 
   if (!activeScenario) {
     const firstScenarioWithVillain = KILL_CHAIN_SCENARIOS.find(s => s.villain);
@@ -120,7 +114,6 @@ const KillChainLab = () => {
         onBack={exitScenario}
         completedCount={completedPhases.size}
         totalSteps={activeScenario.phases.length + 2}
-        simulations={simulations}
       >
         <WalkthroughStep
           stepIndex={0}
