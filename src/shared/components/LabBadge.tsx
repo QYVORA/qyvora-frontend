@@ -7,6 +7,41 @@ interface LabBadgeProps {
 }
 
 const BADGE_BG = '#0c1222';
+const BADGE_BG_INNER = '#080e1a';
+
+/**
+ * Generates tick-mark SVG elements radiating outward at regular angular intervals.
+ * Creates a compass/scope-like aesthetic around the badge ring.
+ */
+function TickMarks({ color }: { color: string }) {
+  const ticks = [];
+  const count = 24;
+  for (let i = 0; i < count; i++) {
+    const angle = (i * 360) / count;
+    const rad = (angle * Math.PI) / 180;
+    const isMajor = i % 6 === 0;
+    const innerR = isMajor ? 89 : 91;
+    const outerR = 95;
+    const x1 = 100 + innerR * Math.cos(rad);
+    const y1 = 100 + innerR * Math.sin(rad);
+    const x2 = 100 + outerR * Math.cos(rad);
+    const y2 = 100 + outerR * Math.sin(rad);
+    ticks.push(
+      <line
+        key={`tick-${i}`}
+        x1={x1}
+        y1={y1}
+        x2={x2}
+        y2={y2}
+        stroke={color}
+        strokeWidth={isMajor ? 1.8 : 0.8}
+        opacity={isMajor ? 0.7 : 0.35}
+        strokeLinecap="round"
+      />
+    );
+  }
+  return <>{ticks}</>;
+}
 
 /* ── Privesc Illustration — Shield with upward escalation arrow ──────────── */
 const PrivescIllustration: React.FC = () => (
@@ -100,12 +135,10 @@ const LAB_BADGE_CONFIG: Record<string, {
 /**
  * Circular cybersecurity insignia badge for lab cards.
  *
- * Each lab receives a custom illustrated badge with:
- * - Thick colored outer ring (lab-specific accent)
- * - Dark circular interior
- * - Subtle inner boundary ring
- * - Subject-specific vector illustration
- * - Multiple controlled colors within the artwork
+ * Each lab receives a custom illustrated badge with the same structure
+ * as CourseBadge for visual consistency:
+ * thick colored outer ring with tick marks → secondary decorative ring →
+ * dark circular interior → inner boundary → lab-specific illustration.
  */
 const LabBadge: React.FC<LabBadgeProps> = ({ labId, accentColor, className = '' }) => {
   const config = LAB_BADGE_CONFIG[labId];
@@ -127,15 +160,55 @@ const LabBadge: React.FC<LabBadgeProps> = ({ labId, accentColor, className = '' 
         aria-hidden="true"
         focusable="false"
       >
+        {/* Outer thick ring — establishes the badge silhouette */}
         <circle cx="100" cy="100" r="94" stroke={ringColor} strokeWidth="12" fill="none" />
-        <circle cx="100" cy="100" r="88" fill={BADGE_BG} />
-        <circle cx="100" cy="100" r="82" stroke={`${ringColor}4D`} strokeWidth="1.5" fill="none" />
-        <circle cx="100" cy="18" r="2.5" fill={ringColor} opacity="0.6" />
-        <circle cx="100" cy="182" r="2.5" fill={ringColor} opacity="0.6" />
-        <circle cx="18" cy="100" r="2.5" fill={ringColor} opacity="0.6" />
-        <circle cx="182" cy="100" r="2.5" fill={ringColor} opacity="0.6" />
+
+        {/* Tick marks — compass/scope aesthetic around the ring */}
+        <TickMarks color={ringColor} />
+
+        {/* Secondary decorative ring — thin, adds depth */}
+        <circle cx="100" cy="100" r="85" stroke={ringColor} strokeWidth="1" fill="none" opacity="0.25" />
+
+        {/* Dark circular interior — contrast field for the artwork */}
+        <circle cx="100" cy="100" r="82" fill={BADGE_BG} />
+
+        {/* Inner gradient ring — subtle radial depth */}
+        <circle cx="100" cy="100" r="82" fill="none" stroke={BADGE_BG_INNER} strokeWidth="8" opacity="0.4" />
+
+        {/* Inner boundary ring — separates outer structure from artwork */}
+        <circle cx="100" cy="100" r="74" stroke={ringColor} strokeWidth="0.8" fill="none" opacity="0.3" />
+
+        {/* Cardinal accent dots — N/S/E/W positions */}
+        <circle cx="100" cy="16" r="2" fill={ringColor} opacity="0.55" />
+        <circle cx="100" cy="184" r="2" fill={ringColor} opacity="0.55" />
+        <circle cx="16" cy="100" r="2" fill={ringColor} opacity="0.55" />
+        <circle cx="184" cy="100" r="2" fill={ringColor} opacity="0.55" />
+
+        {/* Intercardinal accent dots — NE/SE/SW/NW */}
+        <circle cx="33.5" cy="33.5" r="1.2" fill={ringColor} opacity="0.25" />
+        <circle cx="166.5" cy="33.5" r="1.2" fill={ringColor} opacity="0.25" />
+        <circle cx="33.5" cy="166.5" r="1.2" fill={ringColor} opacity="0.25" />
+        <circle cx="166.5" cy="166.5" r="1.2" fill={ringColor} opacity="0.25" />
+
+        {/* Subtle radial lines — structural detail at cardinal axes */}
+        <line x1="100" y1="22" x2="100" y2="30" stroke={ringColor} strokeWidth="0.5" opacity="0.2" />
+        <line x1="100" y1="170" x2="100" y2="178" stroke={ringColor} strokeWidth="0.5" opacity="0.2" />
+        <line x1="22" y1="100" x2="30" y2="100" stroke={ringColor} strokeWidth="0.5" opacity="0.2" />
+        <line x1="170" y1="100" x2="178" y2="100" stroke={ringColor} strokeWidth="0.5" opacity="0.2" />
+
+        {/* Inner arc accents — quarter-circle details at intercardinal positions */}
+        <path d="M 60 60 A 40 40 0 0 1 74 48" fill="none" stroke={ringColor} strokeWidth="0.6" opacity="0.15" />
+        <path d="M 140 60 A 40 40 0 0 0 126 48" fill="none" stroke={ringColor} strokeWidth="0.6" opacity="0.15" />
+        <path d="M 60 140 A 40 40 0 0 0 74 152" fill="none" stroke={ringColor} strokeWidth="0.6" opacity="0.15" />
+        <path d="M 140 140 A 40 40 0 0 1 126 152" fill="none" stroke={ringColor} strokeWidth="0.6" opacity="0.15" />
       </svg>
+
+      {/* Lab illustration — centered, with subtle glow for depth */}
       <div className="relative z-10 flex items-center justify-center w-[52%] h-[52%]">
+        <div
+          className="absolute inset-0 rounded-full opacity-20 blur-md"
+          style={{ backgroundColor: ringColor }}
+        />
         <Illustration />
       </div>
     </div>
