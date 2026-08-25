@@ -43,12 +43,15 @@ const LabCard: React.FC<LabCardProps> = ({ lab, view }) => {
         to={lab.route}
         className="group/card flex flex-col gap-2 card-accent bg-bg-card p-4 md:p-5 transition-all duration-300 text-left"
       >
-        <div className="flex items-center gap-3 min-w-0">
-          <LabBadge labId={lab.id} accentColor={lab.accentColor} className="w-11 h-11 shrink-0" />
-          <h3 className="text-sm sm:text-base md:text-lg font-black text-text-primary group-hover/card:text-accent transition-colors leading-snug truncate flex-1 min-w-0">
-            {lab.title}
-          </h3>
-          <DifficultyBadge difficulty={lab.difficulty} />
+        <div className="relative z-10">
+          <div className="grid grid-cols-[minmax(0,1fr)_auto] items-start gap-3">
+            <div className="min-w-0">
+              <h3 className="text-sm sm:text-base md:text-lg font-black text-text-primary group-hover/card:text-accent transition-colors leading-snug truncate">
+                {lab.title}
+              </h3>
+            </div>
+            <LabBadge labId={lab.id} accentColor={lab.accentColor} className="w-11 h-11 shrink-0" />
+          </div>
         </div>
 
         <p className="text-xs sm:text-sm text-text-muted leading-relaxed line-clamp-2">
@@ -56,11 +59,14 @@ const LabCard: React.FC<LabCardProps> = ({ lab, view }) => {
         </p>
 
         <div className="flex items-center justify-between pt-2">
-          <span className="text-[9px] sm:text-[10px] md:text-xs font-black uppercase tracking-widest text-accent">
-            {lab.cpReward} CP
-          </span>
-          <span className="px-3 py-1.5 rounded-lg text-[9px] sm:text-[10px] md:text-xs font-black uppercase tracking-widest bg-accent text-on-accent transition-all duration-200 group-hover/card:brightness-110 group-active:scale-95">
-            Launch <IconArrowRight size={12} className="inline-block ml-1" />
+          <DifficultyBadge difficulty={lab.difficulty} />
+          <span className="flex items-center gap-3 shrink-0">
+            <span className="text-[9px] sm:text-[10px] md:text-xs font-black uppercase tracking-widest text-accent">
+              {lab.cpReward} CP
+            </span>
+            <span className="px-3 py-1.5 rounded-lg text-[9px] sm:text-[10px] md:text-xs font-black uppercase tracking-widest bg-accent text-on-accent transition-all duration-200 group-hover/card:brightness-110 group-active:scale-95">
+              Launch <IconArrowRight size={12} className="inline-block ml-1" />
+            </span>
           </span>
         </div>
       </Link>
@@ -73,9 +79,11 @@ const LabCard: React.FC<LabCardProps> = ({ lab, view }) => {
       className="group/card relative h-full min-h-[220px] card-accent bg-bg-card p-4 md:p-5 transition-all duration-300 flex flex-col text-left justify-between"
     >
       <div>
-        <div className="flex items-center justify-between mb-2">
-          <LabBadge labId={lab.id} accentColor={lab.accentColor} className="w-14 h-14" />
-          <DifficultyBadge difficulty={lab.difficulty} />
+        <div className="grid grid-cols-[minmax(0,1fr)_auto] items-start gap-3 mb-2">
+          <div className="min-w-0">
+            <DifficultyBadge difficulty={lab.difficulty} />
+          </div>
+          <LabBadge labId={lab.id} accentColor={lab.accentColor} className="w-12 h-12 shrink-0" />
         </div>
 
         <h3 className="text-sm sm:text-base md:text-lg font-black text-text-primary group-hover/card:text-accent transition-colors leading-snug break-words mb-1">
