@@ -26,6 +26,7 @@ import { I18nextProvider } from 'react-i18next';
 import i18n from '@/i18n';
 import App from './App';
 import '../styles/index.css'; // Global CSS: resets, CSS variables, base typography
+import 'react-loading-skeleton/dist/skeleton.css';
 import { AuthProvider } from '../core/contexts/AuthContext';
 import { ToastProvider } from '../core/contexts/ToastContext';
 import { ThemeProvider } from '../core/contexts/ThemeContext';
