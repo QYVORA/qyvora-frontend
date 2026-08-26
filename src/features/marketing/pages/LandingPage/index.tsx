@@ -177,7 +177,7 @@ const Landing: React.FC = () => {
       </section>
 
       {/* 3. Labs */}
-      <section id="labs" className="relative w-full min-h-dvh lg:h-dvh snap-section bg-bg">
+      <section id="labs" className="relative w-full min-h-dvh lg:h-dvh snap-section bg-bg-alt">
         <LandingLabsSection />
       </section>
 
