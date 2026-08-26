@@ -363,6 +363,8 @@
     "backToCurriculum": "Back to curriculum",
     "backToLabs": "Back to labs",
     "backToDashboard": "Back to dashboard",
+    "goBack": "Go back",
+    "toggleSidebar": "Toggle sidebar",
     "toggleLessons": "Toggle lessons sidebar",
     "toggleCurriculum": "Toggle curriculum sidebar",
     "showPassword": "Show password",
@@ -1238,43 +1240,53 @@
       "skillStats": "Skill Progress",
       "skillStatsSub": "Completion"
     },
-    "myCourses": {
-      "seoTitle": "My Courses",
-      "seoDesc": "Track your enrolled bootcamps and progress.",
-      "title": "My Courses",
-      "description": "Your enrolled bootcamps and progress.",
-      "filter": {
-        "all": "All",
-        "active": "Active",
-        "completed": "Completed"
-      },
-      "searchPlaceholder": "Search courses…",
-      "empty": {
-        "search": "No courses match your search.",
-        "enrolled": "You aren't enrolled in any bootcamps yet.",
-        "cta": "Browse bootcamps"
-      },
-      "continue": "Continue",
-      "start": "Start",
-      "review": "Review",
-      "completed": "Completed",
-      "progress": "{{percent}}% complete",
-      "action": {
-        "browse": "Browse Bootcamps"
-      }
+  "myCourses": {
+    "seoTitle": "My Courses",
+    "seoDesc": "Your purchased courses.",
+    "title": "My Courses",
+    "description": "Your enrolled bootcamps and progress.",
+    "filter": {
+      "all": "All",
+      "active": "Active",
+      "inProgress": "In Progress",
+      "completed": "Completed"
     },
-    "bootcampCourse": {
-      "seoSuffix": "Bootcamp",
-      "breadcrumb": "Learning Path",
-      "journeyMap": "Journey Map",
-      "journeyProgress": "Journey Progress",
-      "start": "Start",
-      "continue": "Continue",
-      "completed": "Completed",
-      "locked": "Locked",
-      "recommendedNext": "Recommended Next",
-      "jumpTo": "Jump to",
-      "phaseCount": "{{phase}} of {{total}} phases",
+    "searchPlaceholder": "Search courses…",
+    "empty": {
+      "search": "No courses match your search.",
+      "enrolled": "You aren't enrolled in any bootcamps yet.",
+      "cta": "Browse bootcamps"
+    },
+    "continue": "Continue",
+    "start": "Start",
+    "review": "Review",
+    "completed": "Completed",
+    "progress": "{{percent}}% complete",
+    "enrolled": "Enrolled",
+    "lockedCourses": "Locked Courses",
+    "viewDetails": "View Details",
+    "fetchError": "Failed to load your courses.",
+    "fetchErrorDesc": "Check your connection and try again.",
+    "action": {
+      "browse": "Browse Bootcamps"
+    }
+  },
+  "bootcampCourse": {
+    "seoSuffix": "Bootcamp",
+    "breadcrumb": "Learning Path",
+    "journeyMap": "Journey Map",
+    "journeyProgress": "Journey Progress",
+    "start": "Start",
+    "continue": "Continue",
+    "continueTraining": "Continue Training",
+    "completed": "Completed",
+    "locked": "Locked",
+    "recommendedNext": "Recommended Next",
+    "jumpTo": "Jump to",
+    "allPhases": "All Phases",
+    "modules": "Modules",
+    "rooms": "Rooms",
+    "phaseCount": "{{phase}} of {{total}} phases",
       "empty": "No phases found.",
       "phaseLabel": "Phase {{n}}",
       "phaseSection": {
@@ -1386,7 +1398,8 @@
       },
       "stepJump": {
         "title": "Jump to Step",
-        "selectStep": "Select a step"
+        "selectStep": "Select a step",
+        "empty": "No steps available."
       },
       "quiz": {
         "title": "Room Quiz",
@@ -1656,7 +1669,9 @@
       },
       "markRead": "Mark read",
       "loadMore": "Load more ({{count}} remaining)",
-      "unread": "Unread"
+      "unread": "Unread",
+      "fetchError": "Failed to load notifications.",
+      "fetchErrorDesc": "Check your connection and try again."
     },
     "newsFeed": {
       "seoTitle": "News Feed",
@@ -2002,6 +2017,8 @@
       "outputMatches": "✓ Output matches expected!",
       "executionError": "Execution error",
       "run": "Run",
+      "copyCode": "Copy code",
+      "reset": "Reset",
       "hideHint": "Hide hint",
       "showHint": "Show hint",
       "expectedOutputLabel": "Expected output:"
@@ -2012,6 +2029,11 @@
       "placeholder": "Write your notes for this step…",
       "clearNotes": "Clear notes"
     },
+    "accordion": {
+      "unlockFor": "Unlock for {{cpCost}} CP",
+      "start": "Start",
+      "done": "Done"
+    },
     "quiz": {
       "defaultTitle": "Knowledge Check",
       "passed": "Passed",
@@ -2021,7 +2043,8 @@
       "correctAnswer": "Correct answer: ",
       "retry": "Retry",
       "next": "Next",
-      "remaining": "{{count}} remaining"
+      "remaining": "{{count}} remaining",
+      "empty": "No questions available."
     },
     "annotate": {
       "freehand": "Freehand draw",
@@ -2893,5 +2916,20 @@
       "coursesCompletedDesc": "{{count}} courses completed",
       "roomCompleted": "Room completed"
     }
+  },
+  "seo": {
+    "notFoundTitle": "404 - Node Not Found",
+    "notFoundDesc": "The requested page could not be located on the QYVORA network."
+  },
+  "notFound": {
+    "title": "Lost in the Network?",
+    "description": "The page you were looking for has been scrubbed from the network. Let's get you back to base.",
+    "returnToBase": "Return to Base"
+  },
+  "labs": {
+    "startAttack": "Start Attack",
+    "startMission": "Start Mission",
+    "enterRoom": "Enter Room",
+    "startOperation": "Start Operation"
   }
 }

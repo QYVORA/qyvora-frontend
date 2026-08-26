@@ -1,5 +1,6 @@
 import { useState, useCallback } from 'react';
 import { Target, CheckCircle, Radar } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { WalkthroughLayout, WalkthroughStep } from '@/shared/components/walkthrough/';
 import LearningAccordion from '@/shared/components/learning/LearningAccordion';
 import LabPage from '@/shared/components/learning/LabPage';
@@ -13,6 +14,7 @@ import useLabAccess from '@/features/student/hooks/useLabAccess';
 import { getLabCpCost } from '@/features/student/data/simulations/labAccess';
 
 const KillChainLab = () => {
+  const { t } = useTranslation();
   const [activeScenario, setActiveScenario] = useState(null);
   const [activePhaseIndex, setActivePhaseIndex] = useState(0);
   const [completedCommands, setCompletedCommands] = useState<Set<string>>(new Set());
@@ -81,7 +83,7 @@ const KillChainLab = () => {
                 </span>
               ),
               onStart: () => startScenario(s),
-              startLabel: 'Start Operation',
+              startLabel: t('labs.startOperation', 'Start Operation'),
               locked,
               cpCost: locked ? cpCost ?? undefined : undefined,
               onUnlock: cpCost ? async () => {

@@ -11,6 +11,7 @@ import { COURSES, getCategoryById } from '@/features/student/data/courses';
 import CourseBadge from '@/shared/components/CourseBadge';
 import api from '@/core/services/api';
 import { MyCoursesSkeleton } from '@/features/student/components/StudentSkeletons';
+import ErrorState from '@/shared/components/ui/ErrorState';
 import { LearningFilterStrip } from '@/features/student/components/learning';
 import StudentHeroSection from '@/shared/components/StudentHeroSection';
 import CoursePurchaseModal from '@/shared/components/CoursePurchaseModal';
@@ -23,6 +24,7 @@ const MyCoursesPage: React.FC = () => {
   const { t } = useTranslation();
   const [purchased, setPurchased] = useState<Set<string>>(new Set());
   const [loading, setLoading] = useState(true);
+  const [fetchError, setFetchError] = useState(false);
   const [activeTab, setActiveTab] = useState<CourseTab>('all');
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCourseId, setSelectedCourseId] = useState<string | null>(null);
@@ -36,7 +38,7 @@ const MyCoursesPage: React.FC = () => {
         return tx.metadata?.slug || tx.metadata?.courseId || String(tx.productId);
       });
       setPurchased(new Set(purchasedIds));
-    }).catch((err) => { console.warn('[MyCourses] transactions failed:', err?.response?.status || err?.message); }).finally(() => setLoading(false));
+    }).catch((err) => { console.warn('[MyCourses] transactions failed:', err?.response?.status || err?.message); setFetchError(true); }).finally(() => setLoading(false));
 
     const progressData: Record<string, { completed: number; total: number; lastLesson: number }> = {};
     for (const course of COURSES) {
@@ -121,14 +123,14 @@ const MyCoursesPage: React.FC = () => {
   }, [availableCourses, courseProgress]);
 
   const filterTabs = useMemo(() => [
-    { id: 'all', label: 'All', count: totalCourses },
-    { id: 'in-progress', label: 'In Progress', count: inProgressCourses },
-    { id: 'completed', label: 'Completed', count: completedCourses },
-  ], [totalCourses, inProgressCourses, completedCourses]);
+    { id: 'all', label: t('student.myCourses.filter.all', 'All'), count: totalCourses },
+    { id: 'in-progress', label: t('student.myCourses.filter.inProgress', 'In Progress'), count: inProgressCourses },
+    { id: 'completed', label: t('student.myCourses.filter.completed', 'Completed'), count: completedCourses },
+  ], [totalCourses, inProgressCourses, completedCourses, t]);
 
   return (
     <div className="min-h-screen">
-      <SEO title="My Courses" description="Your purchased courses." noindex />
+      <SEO title={t('student.myCourses.seoTitle', 'My Courses')} description={t('student.myCourses.seoDesc', 'Your purchased courses.')} noindex />
 
       <div className="bg-bg px-3 md:px-4 lg:px-6 pt-8 pb-10">
         <StudentHeroSection
@@ -136,9 +138,9 @@ const MyCoursesPage: React.FC = () => {
           title={t('student.myCourses.title')}
           description={t('student.myCourses.description')}
           stats={[
-            { label: 'Enrolled', value: totalCourses },
-            { label: 'In Progress', value: inProgressCourses },
-            { label: 'Completed', value: completedCourses },
+            { label: t('student.myCourses.enrolled', 'Enrolled'), value: totalCourses },
+            { label: t('student.myCourses.filter.inProgress', 'In Progress'), value: inProgressCourses },
+            { label: t('student.myCourses.filter.completed', 'Completed'), value: completedCourses },
           ]}
         >
           <Link
@@ -168,7 +170,7 @@ const MyCoursesPage: React.FC = () => {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder={t('student.myCourses.searchPlaceholder')}
-              aria-label="Search my courses"
+              aria-label={t('student.myCourses.searchPlaceholder', 'Search courses…')}
               className="w-full bg-bg border border-border rounded-xl py-3 pl-11 pr-4 text-sm font-mono text-text-primary placeholder:text-text-muted/30 outline-none focus:border-accent transition-colors caret-accent"
             />
           </div>
@@ -176,7 +178,14 @@ const MyCoursesPage: React.FC = () => {
 
         {loading && <MyCoursesSkeleton />}
 
-        {!loading && filteredAvailable.length > 0 && (
+        {!loading && fetchError && (
+          <ErrorState
+            title={t('student.myCourses.fetchError', 'Failed to load your courses.')}
+            message={t('student.myCourses.fetchErrorDesc', 'Check your connection and try again.')}
+          />
+        )}
+
+        {!loading && !fetchError && filteredAvailable.length > 0 && (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
             {filteredAvailable.map((course, i) => {
               const category = getCategoryById(course.categoryId);
@@ -257,9 +266,9 @@ const MyCoursesPage: React.FC = () => {
 
         {!loading && lockedCourses.length > 0 && (
           <div>
-            <h2 className="text-sm font-black text-text-muted uppercase tracking-widest mb-4">
-              Locked Courses
-            </h2>
+              <h2 className="text-sm font-black text-text-muted uppercase tracking-widest mb-4">
+                {t('student.myCourses.lockedCourses', 'Locked Courses')}
+              </h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
               {lockedCourses.map((course) => {
                 const category = getCategoryById(course.categoryId);
@@ -284,7 +293,7 @@ const MyCoursesPage: React.FC = () => {
                         onClick={() => setSelectedCourseId(course.id)}
                         className="inline-flex items-center gap-1.5 text-[9px] sm:text-[10px] font-black uppercase tracking-widest text-accent hover:gap-2 transition-all"
                       >
-                        View Details <ArrowRight className="h-2.5 w-2.5" />
+                        {t('student.myCourses.viewDetails', 'View Details')} <ArrowRight className="h-2.5 w-2.5" />
                       </button>
                     </div>
                   </div>
@@ -294,7 +303,7 @@ const MyCoursesPage: React.FC = () => {
           </div>
         )}
 
-        {!loading && availableCourses.length === 0 && (
+        {!loading && !fetchError && availableCourses.length === 0 && (
           <div className="text-center py-20 space-y-4">
             <GraduationCap className="h-16 w-16 text-text-muted/20 mx-auto" />
             <p className="text-text-muted">{t('student.myCourses.empty.enrolled')}</p>
