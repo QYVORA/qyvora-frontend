@@ -55,25 +55,25 @@ const SkillStats = ({ modules }: SkillStatsProps) => {
   const { skills } = computeSkillStats(modules);
 
   return (
-    <div className="flex flex-col justify-between gap-2 md:gap-2.5 h-full">
+    <div className="flex flex-col justify-between gap-3 md:gap-4 lg:gap-5 h-full">
       {skills.map((skill) => (
-        <div key={skill.key} className="flex items-center gap-2.5 md:gap-3">
-          <span className="flex items-center gap-2 shrink-0 w-[74px] md:w-[84px] lg:w-[92px]">
+        <div key={skill.key} className="flex items-center gap-3 md:gap-3.5 lg:gap-4">
+          <span className="flex items-center gap-2 md:gap-2.5 shrink-0 w-[80px] md:w-[90px] lg:w-[100px]">
             <span
-              className="w-2 h-2 lg:w-2.5 lg:h-2.5 rounded-full shrink-0"
+              className="w-2.5 h-2.5 md:w-3 md:h-3 lg:w-3.5 lg:h-3.5 rounded-full shrink-0"
               style={{ backgroundColor: skill.color }}
             />
-            <span className="text-[8px] md:text-[9px] lg:text-[10px] font-black uppercase tracking-widest text-text-muted truncate">
+            <span className="text-[9px] md:text-[10px] lg:text-xs font-black uppercase tracking-widest text-text-muted truncate">
               {skill.shortLabel}
             </span>
           </span>
-          <div className="flex-1 h-1.5 md:h-2 lg:h-2.5 rounded-full bg-accent-dim/20 overflow-hidden">
+          <div className="flex-1 h-3 md:h-3.5 lg:h-4 rounded-full bg-accent-dim/20 overflow-hidden">
             <div
               className="h-full rounded-full transition-all duration-700"
               style={{ width: `${skill.level}%`, backgroundColor: skill.color }}
             />
           </div>
-          <span className="text-[8px] md:text-[9px] lg:text-[10px] font-black text-text-primary w-10 md:w-12 text-right tabular-nums shrink-0">
+          <span className="text-[9px] md:text-[10px] lg:text-xs font-black text-text-primary w-12 md:w-14 lg:w-16 text-right tabular-nums shrink-0">
             {skill.completed}/{skill.total}
           </span>
         </div>
