@@ -148,7 +148,7 @@ const ProfileDropdown: React.FC<ProfileDropdownProps> = ({
               {/* Notifications */}
               <button
                 onClick={() => handleItemClick(onOpenNotifications)}
-                className="w-full flex items-center gap-3 px-4 py-2.5 rounded-xl text-left transition-all hover:bg-accent-dim/50 active:scale-[0.98] group"
+                className="w-full flex items-center gap-3 px-4 min-h-[44px] rounded-xl text-left transition-all hover:bg-accent-dim/50 active:scale-[0.98] group"
                 role="menuitem"
               >
                 <div className="relative w-8 h-8 rounded-lg bg-bg-elevated border border-border/50 flex items-center justify-center shrink-0 group-hover:border-accent/50 group-hover:bg-accent/10 transition-colors">
@@ -182,7 +182,7 @@ const ProfileDropdown: React.FC<ProfileDropdownProps> = ({
               <div>
                 <button
                   onClick={() => setToolsExpanded(prev => !prev)}
-                  className="w-full flex items-center gap-3 px-4 py-2.5 rounded-xl text-left transition-all hover:bg-accent-dim/50 active:scale-[0.98] group"
+                  className="w-full flex items-center gap-3 px-4 min-h-[44px] rounded-xl text-left transition-all hover:bg-accent-dim/50 active:scale-[0.98] group"
                   role="menuitem"
                   aria-expanded={toolsExpanded}
                 >
@@ -238,7 +238,7 @@ const ProfileDropdown: React.FC<ProfileDropdownProps> = ({
               <Link
                 to="/dashboard/networks"
                 onClick={close}
-                className="flex items-center gap-3 px-4 py-2.5 rounded-xl text-left transition-all hover:bg-accent-dim/50 active:scale-[0.98] group"
+                className="flex items-center gap-3 px-4 min-h-[44px] rounded-xl text-left transition-all hover:bg-accent-dim/50 active:scale-[0.98] group"
                 role="menuitem"
               >
                 <div className="w-8 h-8 rounded-lg bg-bg-elevated border border-border/50 flex items-center justify-center shrink-0 group-hover:border-accent/50 group-hover:bg-accent/10 transition-colors">
@@ -256,7 +256,7 @@ const ProfileDropdown: React.FC<ProfileDropdownProps> = ({
               <Link
                 to="/dashboard/settings"
                 onClick={close}
-                className="flex items-center gap-3 px-4 py-2.5 rounded-xl text-left transition-all hover:bg-accent-dim/50 active:scale-[0.98] group"
+                className="flex items-center gap-3 px-4 min-h-[44px] rounded-xl text-left transition-all hover:bg-accent-dim/50 active:scale-[0.98] group"
                 role="menuitem"
               >
                 <div className="w-8 h-8 rounded-lg bg-bg-elevated border border-border/50 flex items-center justify-center shrink-0 group-hover:border-accent/50 group-hover:bg-accent/10 transition-colors">
@@ -275,7 +275,7 @@ const ProfileDropdown: React.FC<ProfileDropdownProps> = ({
             <div className="px-2 pb-2">
               <button
                 onClick={() => handleItemClick(handleLogout)}
-                className="w-full flex items-center gap-3 px-4 py-2.5 rounded-xl text-left transition-all hover:bg-red-400/10 active:scale-[0.98] group"
+                className="w-full flex items-center gap-3 px-4 min-h-[44px] rounded-xl text-left transition-all hover:bg-red-400/10 active:scale-[0.98] group"
                 role="menuitem"
               >
                 <div className="w-8 h-8 rounded-lg bg-bg-elevated border border-border/50 flex items-center justify-center shrink-0 group-hover:border-red-400/30 group-hover:bg-red-400/10 transition-colors">

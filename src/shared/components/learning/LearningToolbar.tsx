@@ -27,7 +27,7 @@ const LearningToolbar: React.FC<LearningToolbarProps> = ({ actions, className = 
     <>
       {/* Desktop: fixed right sidebar */}
       <aside
-        className={`hidden lg:flex fixed right-6 z-[100] flex-col items-center gap-3 ${className}`}
+        className={`hidden lg:flex fixed right-6 z-[90] flex-col items-center gap-3 ${className}`}
         style={{ top: '5rem', bottom: '1.5rem', justifyContent: 'center' }}
         aria-label={t('learning.toolbar.label')}
       >
@@ -36,7 +36,8 @@ const LearningToolbar: React.FC<LearningToolbarProps> = ({ actions, className = 
             key={action.id}
             onClick={action.onClick}
             title={action.label}
-            className={`flex h-9 w-9 items-center justify-center rounded-lg border transition-colors active:scale-95 ${
+            aria-label={action.label}
+            className={`flex min-h-[44px] min-w-[44px] items-center justify-center rounded-lg border transition-colors active:scale-95 ${
               action.active || action.variant === 'accent'
                 ? 'bg-accent border-accent text-on-accent hover:brightness-110'
                 : 'bg-bg-card border-border text-text-muted hover:text-accent hover:border-accent/50'

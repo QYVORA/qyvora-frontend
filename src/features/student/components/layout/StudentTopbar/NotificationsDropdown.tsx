@@ -40,7 +40,7 @@ const NotificationsDropdown: React.FC<NotificationsDropdownProps> = ({
               <div className="text-[10px] text-text-muted">{unreadCount} {t('badge.unread')}</div>
             </div>
             {unreadCount > 0 && (
-              <button onClick={markAllNotificationsRead} className="text-[10px] font-bold text-accent hover:underline active:opacity-70 whitespace-nowrap">
+              <button onClick={markAllNotificationsRead} className="min-h-[44px] px-2 text-[10px] font-bold text-accent hover:underline active:opacity-70 whitespace-nowrap">
                 {t('button.markAllRead')}
               </button>
             )}

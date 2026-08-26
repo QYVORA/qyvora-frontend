@@ -34,7 +34,7 @@ export const BatchPagination: React.FC<BatchPaginationProps> = ({
             key={i}
             onClick={() => onPageChange(i)}
             aria-label={`Go to batch ${i + 1}`}
-            className={`h-2 rounded-full transition-all duration-300 ${
+            className={`min-h-[44px] min-w-[44px] flex items-center justify-center rounded-full transition-all duration-300 ${
               i === page
                 ? 'w-6 bg-accent'
                 : 'w-2 bg-text-muted/30 hover:bg-text-muted/60'

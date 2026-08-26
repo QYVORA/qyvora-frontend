@@ -39,7 +39,7 @@ const MobileNotificationsSheet: React.FC<MobileNotificationsSheetProps> = ({
           </div>
           <div className="flex items-center gap-3">
             {unreadCount > 0 && (
-              <button onClick={markAllNotificationsRead} className="text-[10px] font-bold text-accent">
+              <button onClick={markAllNotificationsRead} className="min-h-[44px] px-2 text-[10px] font-bold text-accent">
                 {t('student.topbar.notifications.markAllRead')}
               </button>
             )}

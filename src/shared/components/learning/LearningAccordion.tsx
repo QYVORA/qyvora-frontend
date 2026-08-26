@@ -91,6 +91,8 @@ export function LearningAccordion({ items, className, defaultOpen = 0 }: Learnin
             <button
               type="button"
               onClick={() => toggleSection(idx)}
+              aria-expanded={isOpen}
+              aria-controls={`accordion-panel-${item.id}`}
               className="w-full flex items-center justify-between gap-4 px-6 py-5 text-left group"
             >
               <div className="flex items-center gap-4 min-w-0">
@@ -133,7 +135,7 @@ export function LearningAccordion({ items, className, defaultOpen = 0 }: Learnin
                   transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
                   className="overflow-hidden"
                 >
-                  <div className="px-6 pb-6 pl-15">
+                  <div id={`accordion-panel-${item.id}`} role="region" className="px-6 pb-6 pl-15">
                     <p className="text-base text-text-primary leading-relaxed mb-4 pl-10 max-w-2xl">
                       {item.description}
                     </p>

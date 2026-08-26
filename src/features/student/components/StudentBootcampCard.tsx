@@ -151,7 +151,7 @@ const StudentBootcampCard: React.FC<Props> = ({ data, index = 0, onEnroll, onLoc
           onClick={() => onLocked(data)}
           role="button"
           tabIndex={0}
-          onKeyDown={(e) => e.key === 'Enter' && onLocked(data)}
+          onKeyDown={(e) => { if (e.key === 'Enter') onLocked(data); if (e.key === ' ') { e.preventDefault(); onLocked(data); } }}
         >
           {inner}
         </div>
