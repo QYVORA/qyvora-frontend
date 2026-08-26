@@ -153,7 +153,7 @@ const Marketplace: React.FC = () => {
             onClick={() => setTab('market')}
             className={`px-5 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all ${
               tab === 'market'
-                ? 'bg-accent text-on-accent shadow-lg shadow-accent/20'
+                ? 'bg-accent text-on-accent border border-accent'
                 : 'text-text-muted hover:text-text-primary border border-border/40'
             }`}
           >
@@ -164,7 +164,7 @@ const Marketplace: React.FC = () => {
             onClick={() => setTab('history')}
             className={`px-5 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all ${
               tab === 'history'
-                ? 'bg-accent text-on-accent shadow-lg shadow-accent/20'
+                ? 'bg-accent text-on-accent border border-accent'
                 : 'text-text-muted hover:text-text-primary border border-border/40'
             }`}
           >
