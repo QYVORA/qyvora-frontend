@@ -26,6 +26,7 @@ const FOOTER_COLS = [
   {
     title: 'Platform',
     links: [
+      { key: 'cp', label: 'Cyber Coin', path: '/cp' },
       { key: 'anansi', label: 'Anansi', path: '/anansi' },
       { key: 'toha3ee', label: 'Toha3ee', path: '/toha3ee' },
       { key: 'jabari', label: 'Jabari', path: '/jabari' },
@@ -75,6 +76,7 @@ const FOOTER_LINK_KEYS: Record<string, string> = {
   courses: 'nav.courses',
   bootcamp: 'nav.bootcamp',
   labs: 'nav.labs',
+  cp: 'nav.cp',
   services: 'nav.services',
   anansi: 'nav.anansi',
   toha3ee: 'nav.toha3ee',

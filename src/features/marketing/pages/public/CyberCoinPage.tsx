@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'motion/react';
-import { ArrowDown, FlaskConical } from 'lucide-react';
+import { ArrowDown, FlaskConical, Zap, Clock } from 'lucide-react';
 import { IconArrowRight as IconArrow } from '@/shared/components/icons';
 import SEO from '@/shared/components/SEO';
 import PublicSnapLayout from '@/shared/components/PublicSnapLayout';
@@ -11,8 +11,9 @@ import ScrollReveal from '@/shared/components/ScrollReveal';
 import { Footer } from '@/shared/components/layout';
 import { CpLogo } from '@/shared/components';
 import { useReducedMotion } from '@/shared/hooks/useReducedMotion';
-import CoursesCarousel from '@/features/marketing/components/CoursesCarousel';
-import { COURSES } from '@/features/student/data/courses';
+import { Carousel } from '@/shared/components/carousel';
+import { COURSES, getCategoryById } from '@/features/student/data/courses';
+import CourseBadge from '@/shared/components/CourseBadge';
 import {
   CP_HERO,
   CP_PILLARS,
@@ -27,6 +28,18 @@ import type { CpActivityStatus } from '@/features/marketing/data/cpPageData';
 
 /** Beginner-friendly starter courses for the "Start Your Journey" carousel. */
 const STARTER_COURSES = COURSES.filter((c) => c.skillLevel === 'beginner').slice(0, 6);
+
+const SKILL_LABELS: Record<string, string> = {
+  beginner: 'Beginner',
+  intermediate: 'Intermediate',
+  advanced: 'Advanced',
+};
+
+const SKILL_COLORS: Record<string, string> = {
+  beginner: 'text-accent border-accent/30 bg-accent/10',
+  intermediate: 'text-blue-400 border-blue-400/30 bg-blue-400/10',
+  advanced: 'text-red-400 border-red-400/30 bg-red-400/10',
+};
 
 // ─── Shared bits ──────────────────────────────────────────────────────────────
 
@@ -101,7 +114,7 @@ const CyberCoinPage: React.FC = () => {
 
         {/* ── 02 · WHAT IS CP ───────────────────────────────────────────── */}
         <PublicSnapSection id="what-is-cp">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 lg:items-start">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
             <ScrollReveal>
               <SectionHeader
                 kicker="What is CP"
@@ -138,62 +151,16 @@ const CyberCoinPage: React.FC = () => {
 
         {/* ── 03 · PHILOSOPHY ───────────────────────────────────────────── */}
         <PublicSnapSection id="philosophy">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 lg:items-start">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
             <ScrollReveal>
-              <SectionHeader
-                kicker="The CP Philosophy"
-                title={<>Knowledge Is Only the <span className="text-accent">Beginning.</span></>}
-                description="QYVORA is designed around the transition from consuming cybersecurity knowledge to actually executing it. The reward system reinforces that progression: every stage must be proven before the next one pays out."
-              />
-            </ScrollReveal>
+              <div className="space-y-6">
+                <SectionHeader
+                  kicker="The CP Philosophy"
+                  title={<>Knowledge Is Only the <span className="text-accent">Beginning.</span></>}
+                  description="QYVORA is designed around the transition from consuming cybersecurity knowledge to actually executing it. The reward system reinforces that progression: every stage must be proven before the next one pays out."
+                />
 
-            <div className="space-y-6">
-              {/* Progression stepper */}
-              <ScrollReveal>
-                <div className="relative rounded-2xl border border-border/50 bg-bg-card p-5 md:p-7">
-                  <div className="absolute left-[39px] md:left-[47px] top-10 bottom-10 w-px bg-border/30" aria-hidden="true" />
-                  {!prefersReducedMotion && (
-                    <motion.span
-                      className="absolute left-[35px] md:left-[43px] w-[9px] h-[9px] rounded-full bg-accent"
-                      style={{ boxShadow: '0 0 8px var(--color-hero-glow)' }}
-                      animate={{ top: ['12%', '88%'], opacity: [0, 1, 1, 0] }}
-                      transition={{ duration: 4.5, repeat: Infinity, ease: 'linear', times: [0, 0.1, 0.9, 1] }}
-                      aria-hidden="true"
-                    />
-                  )}
-                  <ol className="relative space-y-6">
-                    {CP_PHILOSOPHY_STAGES.map((stage, i) => {
-                      const isReward = stage.id === 'reward';
-                      return (
-                        <li key={stage.id} className="flex items-center gap-4">
-                          <span
-                            className={`relative z-10 w-8 h-8 md:w-9 md:h-9 rounded-lg border flex items-center justify-center font-mono text-[10px] font-black shrink-0 ${
-                              isReward
-                                ? 'border-accent bg-accent text-on-accent'
-                                : 'border-border/40 bg-bg-elevated text-text-muted'
-                            }`}
-                          >
-                            {String(i + 1).padStart(2, '0')}
-                          </span>
-                          <div className="min-w-0">
-                            <p className={`text-sm md:text-base font-black uppercase tracking-widest ${isReward ? 'text-accent' : 'text-text-primary'}`}>
-                              {stage.label}
-                            </p>
-                          </div>
-                          {isReward && (
-                            <span className="ml-auto inline-flex items-center rounded-lg border border-accent/30 bg-accent/5 px-2 py-0.5 text-[8px] font-black uppercase tracking-widest text-accent shrink-0">
-                              + CP
-                            </span>
-                          )}
-                        </li>
-                      );
-                    })}
-                  </ol>
-                </div>
-              </ScrollReveal>
-
-              {/* Verification terminal */}
-              <ScrollReveal>
+                {/* Verification terminal */}
                 <div className="rounded-2xl border border-border/50 bg-bg-card overflow-hidden flex flex-col">
                   <div className="flex items-center gap-2 px-4 py-2.5 bg-bg border-b border-border/20">
                     <span className="w-2.5 h-2.5 rounded-full bg-red-400/70" aria-hidden="true" />
@@ -227,14 +194,58 @@ const CyberCoinPage: React.FC = () => {
                     </div>
                   </div>
                 </div>
-              </ScrollReveal>
-            </div>
+              </div>
+            </ScrollReveal>
+
+            <ScrollReveal direction="left">
+              {/* Progression stepper */}
+              <div className="relative rounded-2xl border border-border/50 bg-bg-card p-5 md:p-7">
+                <div className="absolute left-[39px] md:left-[47px] top-10 bottom-10 w-px bg-border/30" aria-hidden="true" />
+                {!prefersReducedMotion && (
+                  <motion.span
+                    className="absolute left-[35px] md:left-[43px] w-[9px] h-[9px] rounded-full bg-accent"
+                    style={{ boxShadow: '0 0 8px var(--color-hero-glow)' }}
+                    animate={{ top: ['12%', '88%'], opacity: [0, 1, 1, 0] }}
+                    transition={{ duration: 4.5, repeat: Infinity, ease: 'linear', times: [0, 0.1, 0.9, 1] }}
+                    aria-hidden="true"
+                  />
+                )}
+                <ol className="relative space-y-6">
+                  {CP_PHILOSOPHY_STAGES.map((stage, i) => {
+                    const isReward = stage.id === 'reward';
+                    return (
+                      <li key={stage.id} className="flex items-center gap-4">
+                        <span
+                          className={`relative z-10 w-8 h-8 md:w-9 md:h-9 rounded-lg border flex items-center justify-center font-mono text-[10px] font-black shrink-0 ${
+                            isReward
+                              ? 'border-accent bg-accent text-on-accent'
+                              : 'border-border/40 bg-bg-elevated text-text-muted'
+                          }`}
+                        >
+                          {String(i + 1).padStart(2, '0')}
+                        </span>
+                        <div className="min-w-0">
+                          <p className={`text-sm md:text-base font-black uppercase tracking-widest ${isReward ? 'text-accent' : 'text-text-primary'}`}>
+                            {stage.label}
+                          </p>
+                        </div>
+                        {isReward && (
+                          <span className="ml-auto inline-flex items-center rounded-lg border border-accent/30 bg-accent/5 px-2 py-0.5 text-[8px] font-black uppercase tracking-widest text-accent shrink-0">
+                            + CP
+                          </span>
+                        )}
+                      </li>
+                    );
+                  })}
+                </ol>
+              </div>
+            </ScrollReveal>
           </div>
         </PublicSnapSection>
 
         {/* ── 04 · HOW YOU EARN CP — learning loop ──────────────────────── */}
         <PublicSnapSection id="earn">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 lg:items-start">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
             <ScrollReveal>
               <SectionHeader
                 kicker="Reward Protocol"
@@ -244,65 +255,85 @@ const CyberCoinPage: React.FC = () => {
             </ScrollReveal>
 
             <div className="space-y-6">
-              {/* Learning loop — desktop horizontal track */}
-              <ScrollReveal className="hidden lg:block">
-                <div className="relative w-full">
-                  <div className="absolute top-[22px] left-[calc(8.33%)] right-[calc(8.33%)] h-px bg-border/30" aria-hidden="true" />
-                  <div className="grid grid-cols-6 gap-4">
-                    {CP_LEARNING_LOOP.map((stage) => {
+              {/* Learning loop — vertical stepper with animated dot */}
+              <ScrollReveal>
+                <div className="relative rounded-2xl border border-border/50 bg-bg-card p-5 md:p-7">
+                  <div className="absolute left-[39px] md:left-[47px] top-10 bottom-10 w-px bg-border/30" aria-hidden="true" />
+                  {!prefersReducedMotion && (
+                    <motion.span
+                      className="absolute left-[35px] md:left-[43px] w-[9px] h-[9px] rounded-full bg-accent"
+                      style={{ boxShadow: '0 0 8px var(--color-hero-glow)' }}
+                      animate={{ top: ['8%', '92%'], opacity: [0, 1, 1, 0] }}
+                      transition={{ duration: 5, repeat: Infinity, ease: 'linear', times: [0, 0.1, 0.9, 1] }}
+                      aria-hidden="true"
+                    />
+                  )}
+                  <ol className="relative space-y-5">
+                    {CP_LEARNING_LOOP.map((stage, i) => {
                       const isEarn = stage.id === 'earn';
                       return (
-                        <div key={stage.id} className="flex flex-col items-center text-center">
+                        <li key={stage.id} className="flex items-center gap-4">
                           <span
-                            className={`relative z-10 w-11 h-11 rounded-xl border flex items-center justify-center font-mono text-[11px] font-black ${
+                            className={`relative z-10 w-8 h-8 md:w-9 md:h-9 rounded-lg border flex items-center justify-center font-mono text-[10px] font-black shrink-0 ${
                               isEarn
                                 ? 'border-on-accent bg-accent text-on-accent'
-                                : 'border-border/40 bg-bg-card text-text-muted'
+                                : 'border-border/40 bg-bg-elevated text-text-muted'
                             }`}
                           >
                             {stage.index}
                           </span>
-                          <p className={`mt-4 text-sm font-black uppercase tracking-widest ${isEarn ? 'text-accent' : 'text-text-primary'}`}>
-                            {stage.label}
-                          </p>
-                          <p className="mt-2 text-[10px] font-mono text-text-muted leading-relaxed line-clamp-2">
-                            {stage.description}
-                          </p>
-                        </div>
+                          <div className="min-w-0 flex-1">
+                            <p className={`text-sm md:text-base font-black uppercase tracking-widest ${isEarn ? 'text-accent' : 'text-text-primary'}`}>
+                              {stage.label}
+                            </p>
+                            <p className="text-[10px] font-mono text-text-muted leading-relaxed mt-0.5 line-clamp-1">
+                              {stage.description}
+                            </p>
+                          </div>
+                        </li>
                       );
                     })}
-                  </div>
+                  </ol>
                 </div>
               </ScrollReveal>
 
-              {/* Learning loop — mobile/tablet vertical rail */}
-              <div className="lg:hidden relative pl-2">
-                <div className="absolute left-[21px] top-4 bottom-4 w-px bg-border/30" aria-hidden="true" />
-                <ol className="space-y-5">
-                  {CP_LEARNING_LOOP.map((stage) => {
-                    const isEarn = stage.id === 'earn';
-                    return (
-                      <li key={stage.id} className="relative flex items-start gap-4">
-                        <span
-                          className={`relative z-10 w-9 h-9 rounded-lg border flex items-center justify-center font-mono text-[10px] font-black shrink-0 bg-bg ${
-                            isEarn ? 'border-on-accent bg-accent text-on-accent' : 'border-border/40 text-text-muted'
-                          }`}
+              <ScrollReveal>
+                <div className="rounded-2xl border border-border/50 bg-bg-card overflow-hidden flex flex-col">
+                  <div className="flex items-center gap-2 px-4 py-2.5 bg-bg border-b border-border/20">
+                    <span className="w-2.5 h-2.5 rounded-full bg-red-400/70" aria-hidden="true" />
+                    <span className="w-2.5 h-2.5 rounded-full bg-yellow-400/70" aria-hidden="true" />
+                    <span className="w-2.5 h-2.5 rounded-full bg-accent/70" aria-hidden="true" />
+                    <span className="ml-2 text-[9px] font-mono text-text-muted">qyvora - rewards</span>
+                  </div>
+                  <div className="p-4 md:p-5 font-mono text-[11px] md:text-xs space-y-2">
+                    <div className="flex items-center gap-2">
+                      <span className="text-accent">$</span>
+                      <span className="text-text-primary">qyvora reward --status</span>
+                    </div>
+                    <div className="pl-4 space-y-1.5 border-l border-accent/30">
+                      {CP_LEARNING_LOOP.map((stage, i) => (
+                        <motion.p
+                          key={stage.id}
+                          initial={prefersReducedMotion ? false : { opacity: 0, x: -6 }}
+                          whileInView={{ opacity: 1, x: 0 }}
+                          viewport={{ once: true }}
+                          transition={{ duration: 0.3, delay: 0.3 + i * 0.35 }}
+                          className="flex items-center gap-2"
                         >
-                          {stage.index}
-                        </span>
-                        <div className="min-w-0 pt-1">
-                          <p className={`text-sm font-black uppercase tracking-widest ${isEarn ? 'text-accent' : 'text-text-primary'}`}>
-                            {stage.label}
-                          </p>
-                          <p className="mt-1 text-[10px] font-mono text-text-muted leading-relaxed">
-                            {stage.description}
-                          </p>
-                        </div>
-                      </li>
-                    );
-                  })}
-                </ol>
-              </div>
+                          <span className="text-text-muted">{`> ${stage.label.toLowerCase()} active`}</span>
+                          <span className={`font-black ml-auto ${stage.id === 'earn' ? 'text-accent' : 'text-accent/60'}`}>
+                            {stage.id === 'earn' ? '[EARN]' : '[OK]'}
+                          </span>
+                        </motion.p>
+                      ))}
+                    </div>
+                    <div className="flex items-center gap-2 pt-1">
+                      <span className="text-accent">$</span>
+                      <span className="text-text-primary animate-pulse" aria-hidden="true">▋</span>
+                    </div>
+                  </div>
+                </div>
+              </ScrollReveal>
 
               <ScrollReveal>
                 <p className="wc-interactive rounded-xl border border-accent/30 bg-accent/5 px-4 py-3 text-xs md:text-sm font-mono text-text-secondary">
@@ -315,7 +346,7 @@ const CyberCoinPage: React.FC = () => {
 
         {/* ── 05 · REWARD MATRIX ────────────────────────────────────────── */}
         <PublicSnapSection id="rewards">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 lg:items-start">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
             <ScrollReveal>
               <SectionHeader
                 kicker="Reward Matrix"
@@ -433,7 +464,7 @@ const CyberCoinPage: React.FC = () => {
 
         {/* ── 07 · FUTURE / BLOCKCHAIN LAYER ────────────────────────────── */}
         <PublicSnapSection id="future">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 lg:items-start">
+          <div className="space-y-8">
             <ScrollReveal>
               <SectionHeader
                 kicker="Future Architecture // Planned"
@@ -442,62 +473,60 @@ const CyberCoinPage: React.FC = () => {
               />
             </ScrollReveal>
 
-            <div className="space-y-6">
-              <ScrollReveal>
-                <div className="flex flex-col lg:flex-row items-stretch lg:items-center gap-3 lg:gap-2">
-                  {CP_FUTURE_CHAIN.map((step, i) => (
-                    <React.Fragment key={step.id}>
-                      {i > 0 && (
-                        <>
-                          <IconArrow size={14} className="hidden lg:block text-accent/60 shrink-0 rotate-90 lg:rotate-0" aria-hidden="true" />
-                          <ArrowDown size={14} className="lg:hidden text-accent/60 shrink-0 self-center rotate-180" aria-hidden="true" />
-                        </>
-                      )}
-                      <div
-                        className={`flex-1 rounded-2xl border p-4 md:p-5 min-h-[44px] ${
-                          step.planned
-                            ? 'border-dashed border-border/40 bg-transparent'
-                            : 'border-accent/50 bg-bg-card'
-                        }`}
-                      >
-                        <div className="flex items-center justify-between gap-2">
-                          <span className="font-mono text-[9px] text-text-muted">{String(i + 1).padStart(2, '0')}</span>
-                          <span
-                            className={`inline-flex items-center rounded-lg px-2 py-0.5 text-[8px] font-black uppercase tracking-widest ${
-                              step.planned
-                                ? 'border border-dashed border-border/50 text-text-muted'
-                                : 'border border-accent/30 bg-accent/5 text-accent'
-                            }`}
-                          >
-                            {step.planned ? 'Planned' : 'Active'}
-                          </span>
-                        </div>
-                        <p className={`mt-2 text-xs md:text-sm font-black uppercase tracking-widest ${step.planned ? 'text-text-muted' : 'text-text-primary'}`}>
-                          {step.label}
-                        </p>
+            <ScrollReveal>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 lg:gap-2">
+                {CP_FUTURE_CHAIN.map((step, i) => (
+                  <React.Fragment key={step.id}>
+                    {i > 0 && (
+                      <>
+                        <IconArrow size={14} className="hidden lg:block text-accent/60 shrink-0 rotate-90 lg:rotate-0 lg:col-span-0" aria-hidden="true" />
+                        <ArrowDown size={14} className="lg:hidden text-accent/60 shrink-0 self-center rotate-180" aria-hidden="true" />
+                      </>
+                    )}
+                    <div
+                      className={`flex-1 rounded-2xl border p-4 md:p-5 min-h-[44px] ${
+                        step.planned
+                          ? 'border-dashed border-border/40 bg-transparent'
+                          : 'border-accent/50 bg-bg-card'
+                      }`}
+                    >
+                      <div className="flex items-center justify-between gap-2">
+                        <span className="font-mono text-[9px] text-text-muted">{String(i + 1).padStart(2, '0')}</span>
+                        <span
+                          className={`inline-flex items-center rounded-lg px-2 py-0.5 text-[8px] font-black uppercase tracking-widest ${
+                            step.planned
+                              ? 'border border-dashed border-border/50 text-text-muted'
+                              : 'border border-accent/30 bg-accent/5 text-accent'
+                          }`}
+                        >
+                          {step.planned ? 'Planned' : 'Active'}
+                        </span>
                       </div>
-                    </React.Fragment>
-                  ))}
-                </div>
-              </ScrollReveal>
+                      <p className={`mt-2 text-xs md:text-sm font-black uppercase tracking-widest ${step.planned ? 'text-text-muted' : 'text-text-primary'}`}>
+                        {step.label}
+                      </p>
+                    </div>
+                  </React.Fragment>
+                ))}
+              </div>
+            </ScrollReveal>
 
-              <ScrollReveal>
-                <div className="rounded-2xl border border-border/50 bg-bg-card p-4 md:p-5 flex items-start gap-3">
-                  <FlaskConical className="w-4 h-4 text-accent shrink-0 mt-0.5" aria-hidden="true" />
-                  <p className="text-[10px] md:text-xs font-mono text-text-muted leading-relaxed">
-                    CP currently functions as the QYVORA platform reward system. Blockchain-backed settlement and portable digital proof are planned future layers. They are not deployed, and CP is not a publicly tradable asset.
-                  </p>
-                </div>
-              </ScrollReveal>
-            </div>
+            <ScrollReveal>
+              <div className="rounded-2xl border border-border/50 bg-bg-card p-4 md:p-5 flex items-start gap-3">
+                <FlaskConical className="w-4 h-4 text-accent shrink-0 mt-0.5" aria-hidden="true" />
+                <p className="text-[10px] md:text-xs font-mono text-text-muted leading-relaxed">
+                  CP currently functions as the QYVORA platform reward system. Blockchain-backed settlement and portable digital proof are planned future layers. They are not deployed, and CP is not a publicly tradable asset.
+                </p>
+              </div>
+            </ScrollReveal>
           </div>
         </PublicSnapSection>
 
         {/* ── 08 · START YOUR JOURNEY ───────────────────────────────────── */}
         <PublicSnapSection id="journey">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 lg:items-start">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 lg:items-stretch">
             <ScrollReveal>
-              <div className="flex flex-col gap-4">
+              <div className="shrink-0 lg:w-[420px] xl:w-[480px] flex flex-col lg:justify-center">
                 <SectionHeader
                   kicker="Start Your Journey"
                   title={<>Begin With Your First <span className="text-accent">Course.</span></>}
@@ -505,17 +534,64 @@ const CyberCoinPage: React.FC = () => {
                 />
                 <Link
                   to="/courses"
-                  className="btn-secondary inline-flex items-center justify-center gap-2 !px-5 !py-2.5 self-start shrink-0"
+                  className="btn-secondary inline-flex items-center justify-center gap-2 !px-5 !py-2.5 self-start shrink-0 mt-6"
                 >
                   View All Courses <IconArrow size={14} />
                 </Link>
               </div>
             </ScrollReveal>
 
-            <CoursesCarousel
-              courses={STARTER_COURSES}
-              className="!min-h-0"
-            />
+            <div className="relative flex-1 min-h-0 min-w-0 overflow-hidden flex items-center">
+              <Carousel
+                slides={STARTER_COURSES}
+                showArrows={false}
+                className="w-full"
+                renderCard={(course) => {
+                  const category = getCategoryById(course.categoryId);
+                  return (
+                    <Link
+                      to={`/courses/${course.id}`}
+                      className="group relative overflow-hidden flex flex-col md:flex-row bg-bg-card rounded-2xl border border-border/50 transition-all duration-300 hover:border-accent/40 h-full min-h-[340px] md:min-h-[280px]"
+                    >
+                      <div className="relative flex flex-col items-start text-left p-5 sm:p-6 md:p-7 flex-1 min-w-0">
+                        <div className="flex items-center gap-2 flex-wrap mb-3">
+                          {category && (
+                            <span className="px-2.5 py-1 text-[9px] font-black uppercase tracking-widest bg-accent/10 border border-accent/20 rounded-full text-accent">
+                              {category.name}
+                            </span>
+                          )}
+                          <span className={`px-2.5 py-1 text-[9px] font-black uppercase tracking-widest rounded-full border ${SKILL_COLORS[course.skillLevel]}`}>
+                            {SKILL_LABELS[course.skillLevel]}
+                          </span>
+                        </div>
+                        <h3 className="text-lg md:text-xl lg:text-2xl font-black uppercase tracking-tight text-text-primary transition-colors duration-300 group-hover:text-accent line-clamp-2 mb-2">
+                          {course.title}
+                        </h3>
+                        <p className="text-xs sm:text-sm text-text-secondary leading-relaxed font-mono border-l-2 border-accent/40 pl-3 py-1.5 mb-4 line-clamp-3 flex-1">
+                          {course.description}
+                        </p>
+                        <div className="flex items-center justify-between gap-3 w-full pt-3 mt-auto border-t border-border/50">
+                          <div className="flex items-center gap-3 text-[10px] sm:text-[11px] font-mono text-text-muted shrink-0">
+                            <span className="flex items-center gap-1 whitespace-nowrap">
+                              <Clock size={12} className="shrink-0" /> {course.estimatedMinutes}min
+                            </span>
+                            <span className="flex items-center gap-1 whitespace-nowrap">
+                              <Zap size={12} className="shrink-0" /> {course.lessons.length || 0} lessons
+                            </span>
+                          </div>
+                          <span className="flex items-center gap-1 text-[10px] sm:text-[11px] font-black uppercase tracking-widest text-accent group-hover:gap-1.5 transition-all whitespace-nowrap">
+                            View Course <IconArrow size={12} className="shrink-0" />
+                          </span>
+                        </div>
+                      </div>
+                      <div className="hidden md:flex relative w-[140px] lg:w-[160px] shrink-0 items-center justify-center border-l border-border/30">
+                        <CourseBadge courseId={course.id} className="w-24 h-24 lg:w-28 lg:h-28" />
+                      </div>
+                    </Link>
+                  );
+                }}
+              />
+            </div>
           </div>
         </PublicSnapSection>
 

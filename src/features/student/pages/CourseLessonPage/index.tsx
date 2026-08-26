@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useParams, Link, useSearchParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { ArrowLeft, ArrowRight, Lock, Target } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Lock, Target, Minimize2, Maximize2 } from 'lucide-react';
 import { FadeIn } from '@/shared/components/ui';
 import SEO from '@/shared/components/SEO';
 import { getCourseById } from '@/features/student/data/courses';
@@ -11,10 +11,12 @@ import CodePlayground from '@/shared/components/courses/CodePlayground';
 import StudentHeroSection from '@/shared/components/StudentHeroSection';
 import StepRenderer from '@/shared/components/learning/StepRenderer';
 import LearningNav from '@/shared/components/learning/LearningNav';
+import LearningToolbar from '@/shared/components/learning/LearningToolbar';
 import { CourseLessonSkeleton } from '@/features/student/components/StudentSkeletons';
 import api from '@/core/services/api';
 import CelebrationModal from '@/shared/components/CelebrationModal';
 import { useCelebrationTrigger } from '@/shared/hooks/useCelebrationTrigger';
+import { useRoomSession } from '@/features/student/hooks/useRoomSession';
 import type { Lesson } from '@/features/student/data/courses';
 
 const STORAGE_KEY = 'qyvora_course_progress';
@@ -119,6 +121,7 @@ const CourseLessonPage: React.FC = () => {
   const progress = totalLessons > 0 ? Math.round((completedCount / totalLessons) * 100) : 0;
   const allComplete = totalLessons > 0 && completedLessons.size === totalLessons;
   const [celebrationOpen, setCelebrationOpen] = useCelebrationTrigger(allComplete);
+  const { fullscreen, toggleFullscreen } = useRoomSession();
 
   const saveProgress = useCallback((lessons: Set<string>, idx: number) => {
     if (!courseId) return;
@@ -229,6 +232,17 @@ const CourseLessonPage: React.FC = () => {
         title={t('student.celebration.courseTitle')}
         description={t('student.celebration.courseDescription', { title: course.title })}
         ctaLabel={t('student.celebration.continue')}
+      />
+
+      <LearningToolbar
+        actions={[
+          {
+            id: 'fullscreen',
+            icon: fullscreen ? <Minimize2 className="h-4 w-4" /> : <Maximize2 className="h-4 w-4" />,
+            label: fullscreen ? 'Exit Fullscreen' : 'Enter Fullscreen',
+            onClick: toggleFullscreen,
+          },
+        ]}
       />
 
       <div className="px-3 md:px-4 lg:px-6 pt-8 pb-20 lg:pb-24 space-y-8">

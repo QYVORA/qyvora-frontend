@@ -101,7 +101,6 @@ export const SITE_CONFIG = {
           { key: 'courses', label: 'Courses', path: '/courses', desc: 'Security courses' },
           { key: 'bootcamp', label: 'Bootcamp', path: '/hpb', desc: 'Hacker Protocol Bootcamp' },
           { key: 'labs', label: 'Labs', path: '/labs', desc: 'Attack labs' },
-          { key: 'cp', label: 'Cyber Coin', path: '/cp', desc: 'CP reward system' },
           { key: 'simulations', label: 'Simulations', path: '/simulations', desc: 'Live tool demos' },
           { key: 'blogs', label: 'Blogs', path: '/blogs', desc: 'Security articles' },
         ],
@@ -127,6 +126,7 @@ export const SITE_CONFIG = {
         key: 'platform',
         label: 'Platform',
         items: [
+          { key: 'cp', label: 'Cyber Coin', path: '/cp', desc: 'CP reward system' },
           { key: 'anansi', label: 'Anansi', path: '/anansi', desc: 'Attack Surface Intelligence' },
           { key: 'toha3ee', label: 'Toha3ee', path: '/toha3ee', desc: 'Local & network security assessment framework' },
           { key: 'jabari', label: 'Jabari', path: '/jabari', desc: 'Android security assessment' },

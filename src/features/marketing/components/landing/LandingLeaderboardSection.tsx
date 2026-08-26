@@ -36,9 +36,10 @@ const TOP_THREE_RING = [
 const TOP_THREE_RANK_COLOR = ['text-yellow-400', 'text-gray-300', 'text-amber-600'];
 
 const CELL_SIZE_SM = 64;
-const CELL_SIZE_LG = 64;
+const CELL_SIZE_LG = 96;
 const GAP = 4;
-const GRID_COLUMNS = 8;
+const GRID_COLUMNS_SM = 8;
+const GRID_COLUMNS_LG = 6;
 
 type Period = 'all' | 'week' | 'month';
 
@@ -61,6 +62,7 @@ const LandingLeaderboardSection = () => {
   }, []);
 
   const cellSize = isDesktop ? CELL_SIZE_LG : CELL_SIZE_SM;
+  const gridColumns = isDesktop ? GRID_COLUMNS_LG : GRID_COLUMNS_SM;
 
   const fetchLeaderboard = useCallback(async (p: Period) => {
     setLoading(true);
@@ -93,7 +95,9 @@ const LandingLeaderboardSection = () => {
     return arr;
   }, [entries]);
 
-  const medalSizes = isDesktop ? 'w-4 h-4' : 'w-3 h-3';
+  const medalSizes = isDesktop ? 'w-5 h-5' : 'w-3 h-3';
+  const nameTextSize = isDesktop ? 'text-[10px]' : 'text-[8px]';
+  const cpTextSize = isDesktop ? 'text-[9px]' : 'text-[7px]';
 
   return (
     <div className="relative bg-bg min-h-dvh lg:h-dvh flex flex-col overflow-hidden">
@@ -133,7 +137,7 @@ const LandingLeaderboardSection = () => {
           {loading ? (
             <div
               className="relative grid content-center mx-auto"
-              style={{ gap: `${GAP}px`, gridTemplateColumns: `repeat(${GRID_COLUMNS}, ${cellSize}px)` }}
+              style={{ gap: `${GAP}px`, gridTemplateColumns: `repeat(${gridColumns}, ${cellSize}px)` }}
             >
               {Array.from({ length: 40 }).map((_, i) => (
                 <div
@@ -152,7 +156,7 @@ const LandingLeaderboardSection = () => {
           ) : entries.length === 0 ? null : (
             <div
               className="relative grid content-center mx-auto"
-              style={{ gap: `${GAP}px`, gridTemplateColumns: `repeat(${GRID_COLUMNS}, ${cellSize}px)` }}
+              style={{ gap: `${GAP}px`, gridTemplateColumns: `repeat(${gridColumns}, ${cellSize}px)` }}
             >
               {cells.map(({ entry, idx }) => {
                 const isFilled = entry !== null;
@@ -195,17 +199,17 @@ const LandingLeaderboardSection = () => {
                       {isTopThree ? (
                         <Medal className={`${medalSizes} ${TOP_THREE_RANK_COLOR[entry!.rank - 1]}`} />
                       ) : (
-                        <span className="block text-[9px] font-mono font-black leading-none text-white">
+                        <span className={`block font-mono font-black leading-none text-white ${nameTextSize}`}>
                           {entry!.rank}
                         </span>
                       )}
                     </div>
 
                     <div className="absolute inset-x-0 bottom-0 z-10 flex flex-col items-center justify-end bg-gradient-to-t from-black/90 via-black/65 to-transparent pb-1 pt-5">
-                       <span className="w-full truncate px-1 text-center text-[8px] font-black leading-none text-white">
+                       <span className={`w-full truncate px-1 text-center font-black leading-none text-white ${nameTextSize}`}>
                          {entry!.hackerHandle || entry!.name || t('landing.leaderboard.anonFallback')}
                        </span>
-                       <span className="mt-0.5 text-[7px] font-mono font-black leading-none text-accent">
+                       <span className={`mt-0.5 font-mono font-black leading-none text-accent ${cpTextSize}`}>
                          {Number(entry!.cp).toLocaleString()} {t('landing.leaderboard.cpSuffix')}
                        </span>
                     </div>

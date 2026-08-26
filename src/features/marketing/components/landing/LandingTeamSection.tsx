@@ -9,7 +9,7 @@ import { useTranslation } from 'react-i18next';
 const TeamCard = ({ member }: { member: TeamMember }) => (
   <Link
     to={member.handle ? `/@${member.handle}` : undefined}
-    className="group relative h-full min-h-[360px] sm:min-h-0 w-[min(85vw,360px)] sm:w-[min(52vw,380px)] md:w-[min(42vw,430px)] lg:w-[min(36vw,470px)] xl:w-[min(31vw,520px)] shrink-0 mr-4 md:mr-5 flex flex-col card-accent bg-bg-card overflow-hidden transition-all duration-300 hover:shadow-[var(--card-shadow)]"
+    className="group relative block h-[280px] sm:h-[320px] w-[min(85vw,360px)] sm:w-[min(52vw,380px)] md:w-[min(42vw,430px)] lg:w-[min(36vw,470px)] xl:w-[min(31vw,520px)] shrink-0 mr-4 md:mr-5 card-accent bg-bg-card overflow-hidden transition-all duration-300 hover:shadow-[var(--card-shadow)]"
   >
     {/* Member photo as the card background */}
     <img
