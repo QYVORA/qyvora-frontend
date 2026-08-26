@@ -121,7 +121,14 @@ const InlineQuiz: React.FC<InlineQuizProps> = ({
         <span className="text-[10px] font-mono text-text-muted">{currentQ + 1} / {questions.length}</span>
       </div>
 
-      <div className="h-1 bg-bg-elevated rounded-full overflow-hidden">
+      <div
+        className="h-1 bg-bg-elevated rounded-full overflow-hidden"
+        role="progressbar"
+        aria-valuenow={allAnswered ? questions.length : currentQ + (selectedIdx >= 0 ? 1 : 0)}
+        aria-valuemin={0}
+        aria-valuemax={questions.length}
+        aria-label={t('components.quiz.progress', { defaultValue: 'Quiz progress' })}
+      >
         <div className="h-full bg-accent transition-all duration-300" style={{ width: `${((allAnswered ? questions.length : currentQ + (selectedIdx >= 0 ? 1 : 0)) / questions.length) * 100}%` }} />
       </div>
 

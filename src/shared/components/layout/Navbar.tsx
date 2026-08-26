@@ -114,6 +114,17 @@ const Navbar: React.FC = React.memo(() => {
                       ? 'border-accent/40 text-accent bg-accent/5'
                       : 'border-border/50 text-text-primary/80 hover:border-accent/40 hover:text-accent'
                   }`}
+                  aria-expanded={openDropdown === group.key}
+                  aria-haspopup="true"
+                  onClick={() => setOpenDropdown(prev => prev === group.key ? null : group.key)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Escape') {
+                      setOpenDropdown(null);
+                    } else if (e.key === 'ArrowDown') {
+                      e.preventDefault();
+                      setOpenDropdown(group.key);
+                    }
+                  }}
                 >
                   {t(NAV_GROUP_LABELS[group.key] || group.label)}
                   <ChevronDown
@@ -131,6 +142,8 @@ const Navbar: React.FC = React.memo(() => {
                       exit={{ opacity: 0, y: -4 }}
                       transition={{ duration: 0.15 }}
                       className="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-[300px] rounded-2xl border border-border/20 bg-bg-card shadow-xl overflow-hidden"
+                      onKeyDown={(e) => { if (e.key === 'Escape') setOpenDropdown(null); }}
+                      role="menu"
                     >
                       <div className="flex items-center justify-between px-5 pt-4 pb-3 border-b border-border/20">
                         <h3 className="text-[9px] font-black uppercase tracking-widest text-text-muted">

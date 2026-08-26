@@ -131,6 +131,8 @@ function DataTable<T>({
                           key={col.key}
                           className={`px-6 py-5 text-[10px] font-black uppercase tracking-[0.25em] text-text-muted/60 ${col.sortable ? 'cursor-pointer hover:text-accent select-none' : ''} ${col.headerClassName ?? ''}`}
                           onClick={() => col.sortable && handleSort(col.key)}
+                          onKeyDown={(e) => { if (col.sortable && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); handleSort(col.key); } }}
+                          {...(col.sortable ? { role: 'button', tabIndex: 0 } : {})}
                         >
                           <span className="flex items-center gap-2">
                             {col.header}

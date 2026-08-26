@@ -40,7 +40,7 @@ const DialogOverlay = React.forwardRef<
     ref={ref}
     className={cn(
       // Base
-      'fixed inset-0 z-[200] bg-black/70 backdrop-blur-sm',
+      'fixed inset-0 z-[200] bg-black/70',
       // Radix data-state animations
       'data-[state=open]:animate-in data-[state=closed]:animate-out',
       'data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0',
@@ -115,7 +115,7 @@ export const DialogContent = React.forwardRef<
         </RadixDialog.Title>
         {!hideClose && (
           <RadixDialog.Close
-            className="p-1.5 rounded-lg text-text-muted hover:text-accent hover:bg-accent-dim/50 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-accent/40"
+            className="min-h-[44px] min-w-[44px] flex items-center justify-center rounded-lg text-text-muted hover:text-accent hover:bg-accent-dim/50 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-accent/40"
             aria-label={t('components.dialog.close')}
           >
             <IconX size={16} />

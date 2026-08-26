@@ -72,7 +72,7 @@ export function RoomTopBar({
         Skip to main content
       </a>
 
-      <header className="fixed top-0 left-0 w-full z-40 bg-bg border-b border-border pt-[env(safe-area-inset-top)]">
+      <header className="fixed top-0 left-0 w-full z-[100] bg-bg border-b border-border pt-[env(safe-area-inset-top)]">
         <div className="px-3 md:px-4 lg:px-6 h-20 md:h-24 flex items-center gap-1.5 md:gap-3">
           {/* Back button */}
           {backHref ? (
@@ -154,7 +154,7 @@ export function RoomTopBar({
                   <Link
                     key={i}
                     to={action.href}
-                    className={`relative w-9 h-9 md:w-11 md:h-11 flex items-center justify-center transition-colors rounded-xl ${
+                    className={`relative min-h-[44px] min-w-[44px] md:w-11 md:h-11 flex items-center justify-center transition-colors rounded-xl ${
                       action.variant === 'primary'
                         ? 'bg-accent text-on-accent hover:brightness-110'
                         : 'text-text-muted hover:text-accent hover:bg-accent-dim/50'
@@ -170,7 +170,7 @@ export function RoomTopBar({
                 <button
                   key={i}
                   onClick={action.onClick}
-                  className={`relative w-9 h-9 md:w-11 md:h-11 flex items-center justify-center transition-colors rounded-xl ${
+                  className={`relative min-h-[44px] min-w-[44px] md:w-11 md:h-11 flex items-center justify-center transition-colors rounded-xl ${
                     action.variant === 'primary'
                       ? 'bg-accent text-on-accent hover:brightness-110'
                       : 'text-text-muted hover:text-accent hover:bg-accent-dim/50'
@@ -186,7 +186,7 @@ export function RoomTopBar({
             {onOpenTerminal && (
               <button
                 onClick={onOpenTerminal}
-                className="w-9 h-9 md:w-11 md:h-11 flex items-center justify-center text-text-muted hover:text-accent transition-colors rounded-xl hover:bg-accent-dim/50"
+                className="min-h-[44px] min-w-[44px] md:w-11 md:h-11 flex items-center justify-center text-text-muted hover:text-accent transition-colors rounded-xl hover:bg-accent-dim/50"
                 aria-label="Open terminal"
               >
                 <IconTerminal size={20} />
@@ -197,7 +197,7 @@ export function RoomTopBar({
             {showProfile && username && (
               <Link
                 to={profileHref}
-                className="w-9 h-9 md:w-11 md:h-11 flex-none transition-colors"
+                className="min-h-[44px] min-w-[44px] md:w-11 md:h-11 flex-none transition-colors"
               >
                 <Identicon value={username} size={44} className="w-full h-full rounded-lg overflow-hidden bg-black border border-accent/40" />
               </Link>

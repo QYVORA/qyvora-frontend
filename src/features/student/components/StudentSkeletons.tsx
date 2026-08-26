@@ -403,7 +403,27 @@ export const MyCoursesSkeleton = () => (
 /* ─── Bootcamp Room Page Skeleton ─────────────────────────────────────────── */
 export const BootcampRoomSkeleton = () => (
   <div className="bg-bg overflow-x-hidden">
-    <main className="w-full px-3 pt-8 md:px-4 lg:px-6">
+    {/* Desktop sidebar skeleton */}
+    <div className="hidden lg:block fixed left-0 top-0 bottom-0 w-72 bg-bg-card border-r border-border/50 z-[90]">
+      <div className="p-5 space-y-4">
+        <S className="h-5 w-32 rounded" />
+        <div className="space-y-2">
+          {Array.from({ length: 3 }).map((_, i) => (
+            <div key={i} className="flex items-center gap-3 p-3 rounded-xl">
+              <S className="w-5 h-5 rounded shrink-0" />
+              <S className="h-3.5 flex-1 rounded" />
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+    {/* Desktop toolbar skeleton */}
+    <div className="hidden lg:flex fixed right-6 z-[90] flex-col items-center gap-3" style={{ top: '5rem', bottom: '1.5rem', justifyContent: 'center' }}>
+      {Array.from({ length: 3 }).map((_, i) => (
+        <S key={i} className="w-11 h-11 rounded-lg" />
+      ))}
+    </div>
+    <main className="w-full px-3 pt-8 md:px-4 lg:px-6 lg:pl-80">
       {/* Header */}
       <header className="mb-8 space-y-4">
         <S className="h-3 w-48 rounded" />
@@ -430,6 +450,12 @@ export const BootcampRoomSkeleton = () => (
             <S className="h-4 w-3/4 rounded" />
           </div>
         ))}
+      </div>
+      {/* Bottom nav skeleton */}
+      <div className="flex items-center justify-between gap-3 border-t border-border/50 pt-6 pb-16 mt-8">
+        <S className="h-11 w-24 rounded-xl" />
+        <S className="h-3 w-16" />
+        <S className="h-11 w-24 rounded-xl" />
       </div>
     </main>
   </div>
@@ -502,42 +528,32 @@ export const CourseLessonSkeleton = () => (
 /* ─── Lab Listing Skeleton (hero renders as real content) ─────────────────── */
 export const LabListingSkeleton = () => (
   <div className="space-y-8">
-    {/* Filter strip */}
-    <div className="border border-border/50 rounded-xl bg-bg-card p-1.5 flex items-center gap-1">
-      <S className="h-10 flex-1 rounded-lg" />
-      <S className="h-10 flex-1 rounded-lg" />
-      <S className="h-10 flex-1 rounded-lg" />
+    {/* Hero skeleton */}
+    <div className="bg-bg px-3 md:px-4 lg:px-6 py-8 md:py-10">
+      <div className="space-y-6">
+        <S className="h-12 md:h-16 lg:h-20 w-64 md:w-96 rounded-lg" />
+        <S className="h-4 md:h-5 w-72 md:w-[28rem] rounded" />
+      </div>
     </div>
-    {/* Search */}
-    <S className="h-12 w-full sm:w-64 rounded-xl" />
     {/* Accordion items */}
-    <div className="space-y-3">
+    <div className="bg-bg-alt px-3 md:px-4 lg:px-6 py-10 pb-20 lg:pb-24 space-y-3">
       {Array.from({ length: 4 }).map((_, i) => (
-        <div key={i} className="rounded-2xl border border-border/50 bg-bg-card overflow-hidden">
-          <div className="flex items-center gap-4 p-5">
-            <div className="flex-1 space-y-2">
-              <div className="flex items-center gap-3">
-                <S className="h-5 w-40 rounded" />
-                <S className="h-5 w-16 rounded-lg" />
+        <div key={i} className="rounded-xl border border-border/50 bg-bg-card overflow-hidden">
+          <div className="flex items-center justify-between gap-4 px-6 py-5">
+            <div className="flex items-center gap-4 min-w-0">
+              <S className="h-4 w-6 rounded shrink-0" />
+              <div className="space-y-2">
+                <S className="h-4 w-40 rounded" />
+                <S className="h-3 w-56 rounded" />
               </div>
-              <S className="h-3 w-56 rounded" />
             </div>
-            <S className="h-10 w-24 rounded-xl shrink-0" />
+            <div className="flex items-center gap-3 shrink-0">
+              <S className="h-5 w-16 rounded-lg" />
+              <S className="h-4 w-4 rounded shrink-0" />
+            </div>
           </div>
         </div>
       ))}
-    </div>
-    {/* Related content */}
-    <div className="mt-8 space-y-3">
-      <SectionTitle />
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-        {Array.from({ length: 2 }).map((_, i) => (
-          <div key={i} className="rounded-2xl border border-border/50 bg-bg-card p-4">
-            <S className="h-4 w-3/4 rounded" />
-            <S className="h-3 w-full rounded mt-2" />
-          </div>
-        ))}
-      </div>
     </div>
   </div>
 );
