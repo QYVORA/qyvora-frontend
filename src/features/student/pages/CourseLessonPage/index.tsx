@@ -1,16 +1,18 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useParams, Link, useSearchParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { ArrowLeft, ArrowRight, CheckCircle2, ChevronLeft, ChevronRight, Lock, Loader2, Target } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Lock, Target } from 'lucide-react';
+import { FadeIn } from '@/shared/components/ui';
 import SEO from '@/shared/components/SEO';
 import { getCourseById } from '@/features/student/data/courses';
 import CodeBlockRenderer from '@/shared/components/courses/CodeBlockRenderer';
 import InlineQuiz from '@/shared/components/courses/InlineQuiz';
-import { StepNumberHeader } from '@/shared/components/learning/StepNumberHeader';
 import CodePlayground from '@/shared/components/courses/CodePlayground';
 import StudentHeroSection from '@/shared/components/StudentHeroSection';
+import StepRenderer from '@/shared/components/learning/StepRenderer';
+import LearningNav from '@/shared/components/learning/LearningNav';
+import { CourseLessonSkeleton } from '@/features/student/components/StudentSkeletons';
 import api from '@/core/services/api';
-import { useScrollLock } from '@/core/hooks/useScrollLock';
 import CelebrationModal from '@/shared/components/CelebrationModal';
 import { useCelebrationTrigger } from '@/shared/hooks/useCelebrationTrigger';
 import type { Lesson } from '@/features/student/data/courses';
@@ -19,28 +21,26 @@ const STORAGE_KEY = 'qyvora_course_progress';
 
 const LessonViewer: React.FC<{ lesson: Lesson; number: number; courseId?: string; backUrl?: string }> = ({ lesson, number, courseId, backUrl }) => {
   return (
-    <div className="w-full border-t border-border/10 first:border-t-0 py-12 md:py-16">
-      <StepNumberHeader
-        stepNumber={number}
-        title={lesson.title}
-        isActive
-        backUrl={backUrl}
-        backLabel="Back to Courses"
-        badges={
-          <>
-            {lesson.hasQuiz && (
-              <span className="px-1.5 py-0.5 rounded-lg bg-accent/10 text-[8px] font-black uppercase tracking-widest text-accent">QUIZ</span>
-            )}
-            {lesson.hasTerminal && (
-              <span className="px-1.5 py-0.5 rounded-lg bg-accent/10 text-[8px] font-black uppercase tracking-widest text-accent">TERM</span>
-            )}
-            {lesson.hasCodePlayground && (
-              <span className="px-1.5 py-0.5 rounded-lg bg-accent/10 text-[8px] font-black uppercase tracking-widest text-accent">CODE</span>
-            )}
-          </>
-        }
-      />
-
+    <StepRenderer
+      stepNumber={number}
+      title={lesson.title}
+      isActive
+      backUrl={backUrl}
+      backLabel="Back to Courses"
+      badges={
+        <>
+          {lesson.hasQuiz && (
+            <span className="px-1.5 py-0.5 rounded-lg bg-accent/10 text-[8px] font-black uppercase tracking-widest text-accent">QUIZ</span>
+          )}
+          {lesson.hasTerminal && (
+            <span className="px-1.5 py-0.5 rounded-lg bg-accent/10 text-[8px] font-black uppercase tracking-widest text-accent">TERM</span>
+          )}
+          {lesson.hasCodePlayground && (
+            <span className="px-1.5 py-0.5 rounded-lg bg-accent/10 text-[8px] font-black uppercase tracking-widest text-accent">CODE</span>
+          )}
+        </>
+      }
+    >
       <div className="wc-prose text-base sm:text-lg leading-relaxed whitespace-pre-wrap overflow-x-auto text-text-primary w-full mb-10 md:mb-14">
         <CodeBlockRenderer text={lesson.instruction} />
       </div>
@@ -68,7 +68,7 @@ const LessonViewer: React.FC<{ lesson: Lesson; number: number; courseId?: string
           />
         </div>
       )}
-    </div>
+    </StepRenderer>
   );
 };
 
@@ -191,11 +191,7 @@ const CourseLessonPage: React.FC = () => {
   }
 
   if (checkingAccess) {
-    return (
-      <div className="min-h-screen bg-bg flex items-center justify-center">
-        <Loader2 className="h-8 w-8 text-accent animate-spin" />
-      </div>
-    );
+    return <CourseLessonSkeleton />;
   }
 
   if (!purchased) {
@@ -222,6 +218,7 @@ const CourseLessonPage: React.FC = () => {
   const isLastLesson = currentLessonIdx === totalLessons - 1;
 
   return (
+    <FadeIn>
     <div className="bg-bg">
       <SEO title={`${course.title} | ${lesson.title}`} description={course.description} noindex />
 
@@ -234,67 +231,68 @@ const CourseLessonPage: React.FC = () => {
         ctaLabel={t('student.celebration.continue')}
       />
 
-      <div className=" px-3 md:px-4 lg:px-6 pt-8 pb-20 lg:pb-24 space-y-8">
-            {currentLessonIdx === 0 && (
-              <StudentHeroSection
-                fullHeight={false}
-                title={course.title}
-                description={`${completedCount} of ${totalLessons} lessons completed`}
-                stats={[
-                  { label: 'Progress', value: `${progress}%`, accent: true },
-                  { label: 'Lessons', value: `${completedCount}/${totalLessons}` },
-                ]}
-              />
-            )}
+      <div className="px-3 md:px-4 lg:px-6 pt-8 pb-20 lg:pb-24 space-y-8">
+        {currentLessonIdx === 0 && (
+          <StudentHeroSection
+            fullHeight={false}
+            title={course.title}
+            description={`${completedCount} of ${totalLessons} lessons completed`}
+            stats={[
+              { label: 'Progress', value: `${progress}%`, accent: true },
+              { label: 'Lessons', value: `${completedCount}/${totalLessons}` },
+            ]}
+          />
+        )}
 
-            <LessonViewer lesson={lesson} number={currentLessonIdx + 1} courseId={courseId} backUrl="/dashboard/courses" />
-
-            <div className="flex flex-col sm:flex-row flex-wrap items-stretch sm:items-center gap-3 pb-16 mt-10 md:mt-14 border-t border-border/5 pt-6">
-              {currentLessonIdx > 0 && (
-                <button
-                  onClick={goPrev}
-                  className="btn-secondary md:hidden inline-flex flex-1 items-center justify-center gap-1.5 !rounded-xl !text-[10px] !font-black !uppercase !tracking-widest px-3.5 py-2 sm:flex-none"
-                >
-                  <ChevronLeft className="h-3.5 w-3.5 shrink-0" />
-                  <span>Prev</span>
-                </button>
-              )}
-
-              <span className="md:hidden order-3 w-full text-center font-mono text-xs font-semibold text-text-muted sm:order-none sm:w-auto">
-                {currentLessonIdx + 1} / {totalLessons}
+        {/* Progress bar */}
+        {totalLessons > 0 && (
+          <div className="rounded-2xl border border-border/50 bg-bg-card px-4 py-4 md:px-6 md:py-5">
+            <div className="mb-3 flex items-center justify-between gap-2">
+              <span className="text-xs font-black uppercase tracking-[0.2em] text-text-muted">{t('learning.progress.title')}</span>
+              <span className="font-mono text-base font-black text-accent">
+                {completedCount}/{totalLessons}
               </span>
-
-              {!isCompleted && !allComplete && (
-                <button
-                  onClick={markComplete}
-                  className="btn-secondary inline-flex items-center gap-1.5 !rounded-xl !text-[10px] !font-black !uppercase !tracking-widest px-3.5 py-2 w-full sm:w-auto"
-                >
-                  <CheckCircle2 className="h-3.5 w-3.5" />
-                  <span className="hidden sm:inline">Complete</span>
-                </button>
-              )}
-
-              {!isLastLesson ? (
-                <button
-                  onClick={goNext}
-                  className="btn-primary inline-flex flex-1 md:flex-none items-center justify-center gap-1.5 !rounded-xl !text-[10px] !font-black !uppercase !tracking-widest px-5 py-2.5 sm:flex-none"
-                >
-                  <span className="md:hidden">Next</span>
-                  <span className="hidden md:inline">Next Lesson</span>
-                  <ChevronRight className="h-3.5 w-3.5 shrink-0" />
-                </button>
-              ) : allComplete ? (
-                <Link
-                  to="/dashboard/courses"
-                  className="btn-primary inline-flex flex-1 md:flex-none items-center justify-center gap-1.5 !rounded-xl !text-[10px] !font-black !uppercase !tracking-widest px-5 py-2.5 sm:flex-none"
-                >
-                  <span>Back to Courses</span>
-                  <ArrowRight className="h-3.5 w-3.5 shrink-0" />
-                </Link>
-              ) : null}
             </div>
+            <div className="h-2 overflow-hidden rounded-full bg-accent-dim border border-border/40">
+              <div
+                className="h-full bg-accent transition-all duration-700 ease-out rounded-full"
+                style={{ width: `${progress}%` }}
+                role="progressbar"
+                aria-valuenow={progress}
+                aria-valuemin={0}
+                aria-valuemax={100}
+                aria-label={`${progress}% complete`}
+              />
+            </div>
+          </div>
+        )}
+
+        <LessonViewer lesson={lesson} number={currentLessonIdx + 1} courseId={courseId} backUrl="/dashboard/courses" />
+
+        <LearningNav
+          currentStep={currentLessonIdx}
+          totalSteps={totalLessons}
+          isLastStep={isLastLesson}
+          isComplete={allComplete}
+          onPrev={currentLessonIdx > 0 ? goPrev : undefined}
+          onNext={!isLastLesson ? goNext : undefined}
+          onComplete={!allComplete && !isCompleted ? markComplete : undefined}
+          completeLabel={t('learning.nav.complete')}
+          nextLabel="Next Lesson"
+          nextLabelMobile="Next"
+          finishContent={
+            <Link
+              to="/dashboard/courses"
+              className="btn-primary inline-flex flex-1 md:flex-none items-center justify-center gap-1.5 sm:flex-none !rounded-xl !text-[10px] !font-black !uppercase !tracking-widest px-5 py-2.5"
+            >
+              <span>Back to Courses</span>
+              <ArrowRight className="h-3.5 w-3.5 shrink-0" />
+            </Link>
+          }
+        />
       </div>
     </div>
+    </FadeIn>
   );
 };
 
