@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { LogOut, Terminal, Code2, Network, Wrench, Settings, Globe } from 'lucide-react';
+import { LogOut, Wrench, Settings, Globe } from 'lucide-react';
 import { IconX } from '@/shared/components/icons';
 import { BottomSheet, BottomSheetClose, BottomSheetContent } from '../../../../../shared/components/ui/BottomSheet';
 import Identicon from '../../../../../shared/components/Identicon';
 import ToolChooserModal from '@/features/student/components/tools/ToolChooserModal';
+import { TOOLS } from '@/features/student/constants/tools';
 import { SETTINGS_SECTIONS, isSettingsPath } from '@/features/student/constants/settingsSections';
 
 interface MobileProfileSheetProps {
@@ -23,12 +24,6 @@ interface MobileProfileSheetProps {
   onOpenNetworkVisualizer: () => void;
   handleLogout: () => void;
 }
-
-const TOOLS = [
-  { id: 'terminal' as const, label: 'Terminal', description: 'Kali Linux terminal emulator', icon: Terminal, shortcut: 'Ctrl+`', route: '/dashboard/tools/terminal' },
-  { id: 'ide' as const, label: 'IDE', description: 'Write and run Python/Bash', icon: Code2, shortcut: 'Ctrl+Shift+I', route: '/dashboard/tools/ide' },
-  { id: 'network-visualizer' as const, label: 'Network Visualizer', description: 'Build network topologies', icon: Network, shortcut: 'Ctrl+Shift+N', route: '/dashboard/tools/network-visualizer' },
-];
 
 const MobileProfileSheet: React.FC<MobileProfileSheetProps> = ({
   open,
