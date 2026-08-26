@@ -44,13 +44,13 @@ const SKILL_COLORS: Record<string, string> = {
 // ─── Shared bits ──────────────────────────────────────────────────────────────
 
 const SectionHeader: React.FC<{ kicker: string; title: React.ReactNode; description?: string }> = ({ kicker, title, description }) => (
-  <div>
-    <span className="text-[9px] md:text-xs font-black uppercase tracking-[0.3em] text-accent">{kicker}</span>
-    <h2 className="text-2xl md:text-3xl lg:text-4xl font-black text-text-primary tracking-tighter leading-tight mt-2">
+  <div className="space-y-4">
+    <span className="text-[10px] font-black uppercase tracking-[0.3em] text-accent">{kicker}</span>
+    <h2 className="text-4xl md:text-6xl lg:text-7xl font-black text-text-primary tracking-tighter leading-tight">
       {title}
     </h2>
     {description && (
-      <p className="text-xs md:text-sm text-text-muted leading-relaxed mt-3 font-mono">{description}</p>
+      <p className="text-base sm:text-lg text-text-muted leading-relaxed font-mono">{description}</p>
     )}
   </div>
 );
