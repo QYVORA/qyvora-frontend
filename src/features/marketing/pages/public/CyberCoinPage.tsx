@@ -18,10 +18,8 @@ import {
   CP_HERO,
   CP_PILLARS,
   CP_PHILOSOPHY_STAGES,
-  CP_PHILOSOPHY_TERMINAL,
   CP_REWARD_MATRIX,
   CP_LEARNING_LOOP,
-  CP_ANANSI_TERMINAL,
   CP_FUTURE_CHAIN,
 } from '@/features/marketing/data/cpPageData';
 import type { CpActivityStatus } from '@/features/marketing/data/cpPageData';
@@ -153,52 +151,14 @@ const CyberCoinPage: React.FC = () => {
         <PublicSnapSection id="philosophy">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
             <ScrollReveal>
-              <div className="space-y-6">
-                <SectionHeader
-                  kicker="The CP Philosophy"
-                  title={<>Knowledge Is Only the <span className="text-accent">Beginning.</span></>}
-                  description="QYVORA is designed around the transition from consuming cybersecurity knowledge to actually executing it. The reward system reinforces that progression: every stage must be proven before the next one pays out."
-                />
-
-                {/* Verification terminal */}
-                <div className="rounded-2xl border border-border/50 bg-bg-card overflow-hidden flex flex-col">
-                  <div className="flex items-center gap-2 px-4 py-2.5 bg-bg border-b border-border/20">
-                    <span className="w-2.5 h-2.5 rounded-full bg-red-400/70" aria-hidden="true" />
-                    <span className="w-2.5 h-2.5 rounded-full bg-yellow-400/70" aria-hidden="true" />
-                    <span className="w-2.5 h-2.5 rounded-full bg-accent/70" aria-hidden="true" />
-                    <span className="ml-2 text-[9px] font-mono text-text-muted">qyvora - verification</span>
-                  </div>
-                  <div className="p-4 md:p-5 font-mono text-[11px] md:text-xs space-y-2">
-                    <div className="flex items-center gap-2">
-                      <span className="text-accent">$</span>
-                      <span className="text-text-primary">qyvora verify --progress</span>
-                    </div>
-                    <div className="pl-4 space-y-1.5 border-l border-accent/30">
-                      {CP_PHILOSOPHY_TERMINAL.map((line, i) => (
-                        <motion.p
-                          key={line.text}
-                          initial={prefersReducedMotion ? false : { opacity: 0, x: -6 }}
-                          whileInView={{ opacity: 1, x: 0 }}
-                          viewport={{ once: true }}
-                          transition={{ duration: 0.3, delay: 0.4 + i * 0.45 }}
-                          className="flex items-center gap-2"
-                        >
-                          <span className="text-text-muted">{line.text}</span>
-                          <span className="text-accent font-black ml-auto">{line.status}</span>
-                        </motion.p>
-                      ))}
-                    </div>
-                    <div className="flex items-center gap-2 pt-1">
-                      <span className="text-accent">$</span>
-                      <span className="text-text-primary animate-pulse" aria-hidden="true">▋</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
+              <SectionHeader
+                kicker="The CP Philosophy"
+                title={<>Knowledge Is Only the <span className="text-accent">Beginning.</span></>}
+                description="QYVORA is designed around the transition from consuming cybersecurity knowledge to actually executing it. The reward system reinforces that progression: every stage must be proven before the next one pays out."
+              />
             </ScrollReveal>
 
             <ScrollReveal direction="left">
-              {/* Progression stepper */}
               <div className="relative rounded-2xl border border-border/50 bg-bg-card p-5 md:p-7">
                 <div className="absolute left-[39px] md:left-[47px] top-10 bottom-10 w-px bg-border/30" aria-hidden="true" />
                 {!prefersReducedMotion && (
@@ -247,53 +207,11 @@ const CyberCoinPage: React.FC = () => {
         <PublicSnapSection id="earn">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
             <ScrollReveal>
-              <div className="space-y-6">
-                <SectionHeader
-                  kicker="Reward Protocol"
-                  title={<>How You Earn <span className="text-accent">CP.</span></>}
-                  description="Progress through the QYVORA learning loop: learn, practice, break, build, verify, and every verified step is mapped to a CP issuance."
-                />
-
-                <div className="rounded-2xl border border-border/50 bg-bg-card overflow-hidden flex flex-col">
-                  <div className="flex items-center gap-2 px-4 py-2.5 bg-bg border-b border-border/20">
-                    <span className="w-2.5 h-2.5 rounded-full bg-red-400/70" aria-hidden="true" />
-                    <span className="w-2.5 h-2.5 rounded-full bg-yellow-400/70" aria-hidden="true" />
-                    <span className="w-2.5 h-2.5 rounded-full bg-accent/70" aria-hidden="true" />
-                    <span className="ml-2 text-[9px] font-mono text-text-muted">qyvora - rewards</span>
-                  </div>
-                  <div className="p-4 md:p-5 font-mono text-[11px] md:text-xs space-y-2">
-                    <div className="flex items-center gap-2">
-                      <span className="text-accent">$</span>
-                      <span className="text-text-primary">qyvora reward --status</span>
-                    </div>
-                    <div className="pl-4 space-y-1.5 border-l border-accent/30">
-                      {CP_LEARNING_LOOP.map((stage, i) => (
-                        <motion.p
-                          key={stage.id}
-                          initial={prefersReducedMotion ? false : { opacity: 0, x: -6 }}
-                          whileInView={{ opacity: 1, x: 0 }}
-                          viewport={{ once: true }}
-                          transition={{ duration: 0.3, delay: 0.3 + i * 0.35 }}
-                          className="flex items-center gap-2"
-                        >
-                          <span className="text-text-muted">{`> ${stage.label.toLowerCase()} active`}</span>
-                          <span className={`font-black ml-auto ${stage.id === 'earn' ? 'text-accent' : 'text-accent/60'}`}>
-                            {stage.id === 'earn' ? '[EARN]' : '[OK]'}
-                          </span>
-                        </motion.p>
-                      ))}
-                    </div>
-                    <div className="flex items-center gap-2 pt-1">
-                      <span className="text-accent">$</span>
-                      <span className="text-text-primary animate-pulse" aria-hidden="true">▋</span>
-                    </div>
-                  </div>
-                </div>
-
-                <p className="wc-interactive rounded-xl border border-accent/30 bg-accent/5 px-4 py-3 text-xs md:text-sm font-mono text-text-secondary">
-                  CP is not the goal itself. <span className="text-accent font-black">Capability is the goal.</span> CP is the receipt for proving progress.
-                </p>
-              </div>
+              <SectionHeader
+                kicker="Reward Protocol"
+                title={<>How You Earn <span className="text-accent">CP.</span></>}
+                description="Progress through the QYVORA learning loop: learn, practice, break, build, verify, and every verified step is mapped to a CP issuance."
+              />
             </ScrollReveal>
 
             <ScrollReveal direction="left">
@@ -397,66 +315,6 @@ const CyberCoinPage: React.FC = () => {
             </div>
           </div>
         </PublicSnapSection>
-
-        {/* ── 06 · CP × ANANSI CLI ──────────────────────────────────────── */}
-        <PublicSnapSection id="anansi">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
-            <ScrollReveal direction="right">
-              <div className="space-y-5">
-                <SectionHeader
-                  kicker="CP × Anansi CLI"
-                  title={<>From Intelligence to <span className="text-accent">Execution.</span></>}
-                  description="Anansi CLI is the sharpest example of QYVORA's philosophy of practical cybersecurity capability: reconnaissance intelligence gathered by running a real tool against a real target."
-                />
-                <p className="wc-prose text-xs md:text-sm text-text-muted leading-relaxed font-mono">
-                  Missions executed through Anansi demonstrate applied skill, not theory. Completed missions feed reward eligibility, turning offensive execution into verifiable progress inside the CP ecosystem.
-                </p>
-                <Link
-                  to="/anansi"
-                  className="btn-secondary inline-flex items-center justify-center gap-2 !px-6 !py-3 w-full sm:w-auto"
-                >
-                  Explore Anansi CLI <IconArrow size={14} />
-                </Link>
-              </div>
-            </ScrollReveal>
-
-            <ScrollReveal direction="left">
-              <div className="rounded-2xl border border-border/50 bg-bg-card overflow-hidden">
-                <div className="flex items-center gap-2 px-4 py-2.5 bg-bg border-b border-border/20">
-                  <span className="w-2.5 h-2.5 rounded-full bg-red-400/70" aria-hidden="true" />
-                  <span className="w-2.5 h-2.5 rounded-full bg-yellow-400/70" aria-hidden="true" />
-                  <span className="w-2.5 h-2.5 rounded-full bg-accent/70" aria-hidden="true" />
-                  <span className="ml-2 text-[9px] font-mono text-text-muted">{CP_ANANSI_TERMINAL.title}</span>
-                </div>
-                <div className="p-4 md:p-5 font-mono text-[11px] md:text-xs space-y-2">
-                  <div className="flex items-center gap-2">
-                    <span className="text-accent">root@qyvora:~$</span>
-                    <span className="text-text-primary break-all">{CP_ANANSI_TERMINAL.command}</span>
-                  </div>
-                  <div className="pl-4 space-y-1.5 border-l border-accent/30">
-                    {CP_ANANSI_TERMINAL.lines.map((line, i) => (
-                      <motion.p
-                        key={line.text}
-                        initial={prefersReducedMotion ? false : { opacity: 0, x: -6 }}
-                        whileInView={{ opacity: 1, x: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.3, delay: 0.3 + i * 0.4 }}
-                        className={line.accent ? 'text-accent font-black' : 'text-text-muted'}
-                      >
-                        {line.text}
-                      </motion.p>
-                    ))}
-                  </div>
-                  <div className="flex items-center gap-2 pt-1">
-                    <span className="text-accent">root@qyvora:~$</span>
-                    <span className="text-text-primary animate-pulse" aria-hidden="true">▋</span>
-                  </div>
-                </div>
-              </div>
-            </ScrollReveal>
-          </div>
-        </PublicSnapSection>
-
         {/* ── 07 · FUTURE / BLOCKCHAIN LAYER ────────────────────────────── */}
         <PublicSnapSection id="future">
           <div className="space-y-8">
