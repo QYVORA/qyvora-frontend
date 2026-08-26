@@ -7,6 +7,7 @@ import {
 } from 'lucide-react';
 import { AnimatePresence, motion } from 'motion/react';
 import { BOOTCAMP_CONFIG } from '@/features/student/constants/bootcampConfig';
+import { useTranslation } from 'react-i18next';
 import ScrollReveal from '@/shared/components/ScrollReveal';
 import api from '@/core/services/api';
 import { useToast } from '@/core/contexts/ToastContext';
@@ -22,6 +23,7 @@ import StudentHeroSection from '@/shared/components/StudentHeroSection';
 import type { Course } from '@/features/student/components/bootcamp-course/types';
 
 const BootcampCourse: React.FC = () => {
+  const { t } = useTranslation();
   const { bootcampId } = useParams<{ bootcampId?: string }>();
   const { addToast } = useToast();
   const { refreshMe } = useAuth();
@@ -103,7 +105,10 @@ const BootcampCourse: React.FC = () => {
       if (mod.locked) continue;
       for (const room of mod.rooms || []) {
         if (!room.completed && !room.locked) {
-          return { phase: mod.title, room: room.title, path: `/dashboard/bootcamps/${bootcampId}/phases/${BOOTCAMP_CONFIG.phases.find(p => p.title.toLowerCase() === mod.title.toLowerCase())?.id}/rooms/${BOOTCAMP_CONFIG.phases.find(p => p.title.toLowerCase() === mod.title.toLowerCase())?.rooms.find(r => r.title.toLowerCase() === room.title.toLowerCase())?.id}` };
+          const phaseId = BOOTCAMP_CONFIG.phases.find(p => p.title.toLowerCase() === mod.title.toLowerCase())?.id;
+          const roomId = BOOTCAMP_CONFIG.phases.find(p => p.title.toLowerCase() === mod.title.toLowerCase())?.rooms.find(r => r.title.toLowerCase() === room.title.toLowerCase())?.id;
+          if (!phaseId || !roomId) continue;
+          return { phase: mod.title, room: room.title, path: `/dashboard/bootcamps/${bootcampId}/phases/${phaseId}/rooms/${roomId}` };
         }
       }
     }
@@ -111,16 +116,16 @@ const BootcampCourse: React.FC = () => {
   })();
 
   const phaseFilters = useMemo(() => {
-    if (!course?.modules) return [{ id: 'all', label: 'All Phases' }];
+    if (!course?.modules) return [{ id: 'all', label: t('student.bootcampCourse.allPhases', 'All Phases') }];
     return [
-      { id: 'all', label: 'All Phases', count: totalModules },
+      { id: 'all', label: t('student.bootcampCourse.allPhases', 'All Phases'), count: totalModules },
       ...course.modules.map((mod) => ({
         id: String(mod.moduleId),
         label: mod.title,
         count: mod.rooms?.length,
       })),
     ];
-  }, [course, totalModules]);
+  }, [course, totalModules, t]);
 
   const filteredModules = useMemo(() => {
     if (!course?.modules) return [];
@@ -134,19 +139,19 @@ const BootcampCourse: React.FC = () => {
     <FadeIn>
     <div>
       <SEO
-        title={course?.title || 'Bootcamp Course'}
-        description={`Track your progress through ${course?.title || 'the bootcamp'} on QYVORA | ${progressValue} complete.`}
+        title={course?.title || t('student.bootcampCourse.header.label', 'Bootcamp')}
+        description={`${t('student.bootcampCourse.journeyProgress', 'Track your progress through')} ${course?.title || t('student.bootcampCourse.header.label', 'the bootcamp')} | ${progressValue} complete.`}
         noindex
       />
 
       <div className="bg-bg px-3 md:px-4 lg:px-6 pt-8 pb-10">
         <StudentHeroSection
           fullHeight={false}
-          title={course?.title || 'Bootcamp'}
-          description={syncError || `Track your progress through ${course?.title || 'the bootcamp'}. ${formatSyncLabel(lastSync)}`}
+          title={course?.title || t('student.bootcampCourse.header.label', 'Bootcamp')}
+          description={syncError || `${t('student.bootcampCourse.journeyProgress', 'Track your progress through')} ${course?.title || t('student.bootcampCourse.header.label', 'the bootcamp')}. ${formatSyncLabel(lastSync)}`}
           stats={[
-            { label: 'Modules', value: `${doneModules}/${totalModules}` },
-            { label: 'Rooms', value: `${doneRooms}/${totalRooms}` },
+            { label: t('student.bootcampCourse.modules', 'Modules'), value: `${doneModules}/${totalModules}` },
+            { label: t('student.bootcampCourse.rooms', 'Rooms'), value: `${doneRooms}/${totalRooms}` },
           ]}
         >
           {nextRoomPath && (
@@ -154,7 +159,7 @@ const BootcampCourse: React.FC = () => {
               to={nextRoomPath}
               className="btn-primary inline-flex items-center gap-2 px-6 py-2.5"
             >
-              Continue Training
+              {t('student.bootcampCourse.continueTraining', 'Continue Training')}
             </Link>
           )}
         </StudentHeroSection>
@@ -168,7 +173,7 @@ const BootcampCourse: React.FC = () => {
           onFilterChange={setActivePhase}
         />
 
-        {nextRoomLabel && nextRoomLabel.path && !nextRoomLabel.path.includes('undefined') && (
+        {nextRoomLabel && nextRoomLabel.path && (
           <div className="border border-accent/20 rounded-2xl bg-accent-dim/20 p-5">
             <div className="flex items-center justify-between gap-4">
               <div className="flex items-center gap-3">
@@ -176,7 +181,7 @@ const BootcampCourse: React.FC = () => {
                   <TrendingUp className="h-5 w-5 text-accent" />
                 </div>
                 <div className="min-w-0">
-                  <p className="text-[10px] font-black uppercase tracking-widest text-accent truncate">Recommended Next</p>
+                  <p className="text-[10px] font-black uppercase tracking-widest text-accent truncate">{t('student.bootcampCourse.recommendedNext', 'Recommended Next')}</p>
                   <p className="text-sm font-bold text-text-primary">{nextRoomLabel.phase}, {nextRoomLabel.room}</p>
                 </div>
               </div>
@@ -184,7 +189,7 @@ const BootcampCourse: React.FC = () => {
                 to={nextRoomLabel.path}
                 className="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl bg-accent text-on-accent text-[10px] font-black uppercase tracking-widest transition-all hover:brightness-110 shrink-0"
               >
-                Continue <Play className="h-3 w-3" />
+                {t('student.bootcampCourse.continue', 'Continue')} <Play className="h-3 w-3" />
               </Link>
             </div>
           </div>

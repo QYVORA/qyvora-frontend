@@ -89,7 +89,7 @@ const ConsentBanner: React.FC = React.memo(() => {
               <button
                 onClick={handleDismiss}
                 className="p-2 rounded-xl text-text-muted hover:text-text-primary hover:bg-bg/80 transition-all"
-                aria-label="Dismiss"
+                aria-label={t('button.dismiss', 'Dismiss')}
               >
                 <IconX size={16} />
               </button>

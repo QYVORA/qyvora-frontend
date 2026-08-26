@@ -1,4 +1,5 @@
 import { Shield, User, Folder, Cog, Crown } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import LearningAccordion from '@/shared/components/learning/LearningAccordion';
 import LabPage from '@/shared/components/learning/LabPage';
 import { WalkthroughLayout } from '@/shared/components/walkthrough/WalkthroughLayout';
@@ -33,6 +34,7 @@ const PRIVESC_FLOW_ARROWS = [
 ];
 
 const PrivescLab = () => {
+  const { t } = useTranslation();
   const { activeScenario, completedSteps, handleComplete, handleFlagSubmit, getStepState, allDone, startScenario, exitScenario } =
     useLabScenario<PrivescScenario>({
       labId: 'privesc',
@@ -75,7 +77,7 @@ const PrivescLab = () => {
               onStart: () => {
                 startScenario(scenario);
               },
-              startLabel: 'Enter Room',
+              startLabel: t('labs.enterRoom', 'Enter Room'),
               locked,
               cpCost: locked ? cpCost ?? undefined : undefined,
               onUnlock: cpCost ? async () => {

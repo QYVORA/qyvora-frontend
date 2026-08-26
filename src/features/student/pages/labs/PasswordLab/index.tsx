@@ -1,4 +1,5 @@
 import { Key, FileText, Search, Zap, KeyRound, Book, Settings, Scale, Target, Skull, NotebookPen, Trophy } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { WalkthroughLayout, WalkthroughStep } from '@/shared/components/walkthrough/';
 import { PASSWORD_EXERCISES } from '@/features/student/data/simulations';
 import LearningAccordion from '@/shared/components/learning/LearningAccordion';
@@ -56,6 +57,7 @@ const PASSWORD_FLOWS: { nodes: FlowNode[]; arrows: FlowArrow[] }[] = [
 type PasswordExercise = typeof PASSWORD_EXERCISES[number];
 
 const PasswordLab = () => {
+  const { t } = useTranslation();
   const { activeScenario, completedSteps, handleFlagSubmit, getStepState, allDone, startScenario, exitScenario } =
     useLabScenario<PasswordExercise>({
       labId: 'passwords',
@@ -95,7 +97,7 @@ const PasswordLab = () => {
                 </span>
               ),
               onStart: () => startScenario(scenario),
-              startLabel: 'Start Attack',
+              startLabel: t('labs.startAttack', 'Start Attack'),
               locked,
               cpCost: locked ? cpCost ?? undefined : undefined,
               onUnlock: cpCost ? async () => {

@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { IconArrowLeft, IconMenu, IconTerminal, IconChevronRight } from '@/shared/components/icons';
 import Identicon from '@/shared/components/Identicon';
 
@@ -59,6 +60,7 @@ export function RoomTopBar({
   mobileTitle,
   mobileSubtitle,
 }: RoomTopBarProps) {
+  const { t } = useTranslation();
   const handleBack = () => {
     if (onBack) onBack();
   };
@@ -69,7 +71,7 @@ export function RoomTopBar({
         href="#main-content"
         className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-[100] focus:px-4 focus:py-2 focus:bg-accent focus:text-on-accent focus:rounded-lg focus:text-sm focus:font-bold focus:outline-none"
       >
-        Skip to main content
+        {t('aria.skipToMain', 'Skip to main content')}
       </a>
 
       <header className="fixed top-0 left-0 w-full z-[100] bg-bg border-b border-border pt-[env(safe-area-inset-top)]">
@@ -79,7 +81,7 @@ export function RoomTopBar({
             <Link
               to={backHref}
               className="flex h-10 w-10 md:h-12 md:w-12 shrink-0 items-center justify-center rounded-xl text-text-muted hover:text-accent transition-colors"
-              aria-label={backLabel || 'Go back'}
+              aria-label={backLabel || t('aria.goBack', 'Go back')}
             >
               <IconArrowLeft size={20} />
             </Link>
@@ -87,7 +89,7 @@ export function RoomTopBar({
             <button
               onClick={handleBack}
               className="flex h-10 w-10 md:h-12 md:w-12 shrink-0 items-center justify-center rounded-xl text-text-muted hover:text-accent transition-colors"
-              aria-label={backLabel || 'Go back'}
+              aria-label={backLabel || t('aria.goBack', 'Go back')}
             >
               <IconArrowLeft size={20} />
             </button>
@@ -98,7 +100,7 @@ export function RoomTopBar({
             <button
               onClick={onMenuToggle}
               className="md:hidden flex h-10 w-10 shrink-0 items-center justify-center rounded-xl text-text-muted hover:text-accent transition-colors"
-              aria-label="Toggle sidebar"
+              aria-label={t('aria.toggleSidebar', 'Toggle sidebar')}
             >
               <IconMenu size={20} />
             </button>

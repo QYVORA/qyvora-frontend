@@ -33,6 +33,14 @@ const InlineQuiz: React.FC<InlineQuizProps> = ({
   const [submitted, setSubmitted] = useState(false);
   const [showResults, setShowResults] = useState(false);
 
+  if (!questions || questions.length === 0) {
+    return (
+      <div className={`wc-interactive border border-border bg-bg-card rounded-xl p-6 text-center ${className}`}>
+        <p className="text-sm text-text-muted">{t('components.quiz.empty', 'No questions available.')}</p>
+      </div>
+    );
+  }
+
   const question = questions[currentQ];
   const selectedIdx = answers[question?.id] ?? -1;
   const totalAnswered = Object.keys(answers).length;

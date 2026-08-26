@@ -7,6 +7,7 @@ import api from '../../../core/services/api';
 import { useToast } from '../../../core/contexts/ToastContext';
 import SEO from '../../../shared/components/SEO';
 import FadeIn from '../../../shared/components/ui/FadeIn';
+import ErrorState from '../../../shared/components/ui/ErrorState';
 import { NotificationsSkeleton } from '../components/StudentSkeletons';
 import StudentHeroSection from '@/shared/components/StudentHeroSection';
 import Dobia from '@/shared/components/Dobia';
@@ -65,6 +66,7 @@ const Notifications: React.FC = () => {
   const { addToast } = useToast();
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [loading, setLoading]             = useState(true);
+  const [fetchError, setFetchError]       = useState(false);
   const [markingAll, setMarkingAll]       = useState(false);
   const [visibleCount, setVisibleCount]   = useState(PAGE_SIZE);
   const [searchParams]                    = useSearchParams();
@@ -75,7 +77,7 @@ const Notifications: React.FC = () => {
   useEffect(() => {
     api.get('/notifications')
       .then((res) => setNotifications(Array.isArray(res.data) ? res.data : []))
-      .catch(() => { setNotifications([]); addToast(t('toast.notificationsLoadFailed'), 'error'); })
+      .catch(() => { setNotifications([]); setFetchError(true); addToast(t('toast.notificationsLoadFailed'), 'error'); })
       .finally(() => setLoading(false));
   }, []);
 
@@ -107,6 +109,20 @@ const Notifications: React.FC = () => {
   const hasMore     = visibleCount < displayed.length;
 
   if (loading) return <NotificationsSkeleton />;
+
+  if (fetchError) {
+    return (
+      <div className="min-h-screen">
+        <SEO title={t('student.notificationsPage.seoTitle', 'Notifications')} description={t('student.notificationsPage.seoDesc', 'Notification inbox.')} />
+        <div className="bg-bg px-3 md:px-4 lg:px-6 pt-8 pb-10">
+          <h1 className="text-3xl font-black uppercase tracking-tight text-text-primary">{t('student.notificationsPage.title', 'Notifications')}</h1>
+        </div>
+        <div className="bg-bg-alt px-3 md:px-4 lg:px-6 py-10 pb-20 lg:pb-24">
+          <ErrorState title={t('student.notificationsPage.fetchError', 'Failed to load notifications.')} message={t('student.notificationsPage.fetchErrorDesc', 'Check your connection and try again.')} />
+        </div>
+      </div>
+    );
+  }
 
   return (
     <FadeIn>

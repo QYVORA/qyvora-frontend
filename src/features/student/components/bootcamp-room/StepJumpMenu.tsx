@@ -26,6 +26,9 @@ const StepJumpMenu: React.FC<Props> = ({ steps, currentStepIdx, viewedSteps, onJ
         </div>
         <div className="max-h-96 overflow-y-auto">
           <div className="space-y-1">
+            {steps.length === 0 && (
+              <p className="py-8 text-center text-sm text-text-muted">{t('student.bootcampRoom.stepJump.empty', 'No steps available.')}</p>
+            )}
             {steps.map((step, idx) => (
               <button
                 key={idx}
