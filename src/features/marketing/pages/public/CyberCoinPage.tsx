@@ -247,57 +247,13 @@ const CyberCoinPage: React.FC = () => {
         <PublicSnapSection id="earn">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
             <ScrollReveal>
-              <SectionHeader
-                kicker="Reward Protocol"
-                title={<>How You Earn <span className="text-accent">CP.</span></>}
-                description="Progress through the QYVORA learning loop: learn, practice, break, build, verify, and every verified step is mapped to a CP issuance."
-              />
-            </ScrollReveal>
+              <div className="space-y-6">
+                <SectionHeader
+                  kicker="Reward Protocol"
+                  title={<>How You Earn <span className="text-accent">CP.</span></>}
+                  description="Progress through the QYVORA learning loop: learn, practice, break, build, verify, and every verified step is mapped to a CP issuance."
+                />
 
-            <div className="space-y-6">
-              {/* Learning loop — vertical stepper with animated dot */}
-              <ScrollReveal>
-                <div className="relative rounded-2xl border border-border/50 bg-bg-card p-5 md:p-7">
-                  <div className="absolute left-[39px] md:left-[47px] top-10 bottom-10 w-px bg-border/30" aria-hidden="true" />
-                  {!prefersReducedMotion && (
-                    <motion.span
-                      className="absolute left-[35px] md:left-[43px] w-[9px] h-[9px] rounded-full bg-accent"
-                      style={{ boxShadow: '0 0 8px var(--color-hero-glow)' }}
-                      animate={{ top: ['8%', '92%'], opacity: [0, 1, 1, 0] }}
-                      transition={{ duration: 5, repeat: Infinity, ease: 'linear', times: [0, 0.1, 0.9, 1] }}
-                      aria-hidden="true"
-                    />
-                  )}
-                  <ol className="relative space-y-5">
-                    {CP_LEARNING_LOOP.map((stage, i) => {
-                      const isEarn = stage.id === 'earn';
-                      return (
-                        <li key={stage.id} className="flex items-center gap-4">
-                          <span
-                            className={`relative z-10 w-8 h-8 md:w-9 md:h-9 rounded-lg border flex items-center justify-center font-mono text-[10px] font-black shrink-0 ${
-                              isEarn
-                                ? 'border-on-accent bg-accent text-on-accent'
-                                : 'border-border/40 bg-bg-elevated text-text-muted'
-                            }`}
-                          >
-                            {stage.index}
-                          </span>
-                          <div className="min-w-0 flex-1">
-                            <p className={`text-sm md:text-base font-black uppercase tracking-widest ${isEarn ? 'text-accent' : 'text-text-primary'}`}>
-                              {stage.label}
-                            </p>
-                            <p className="text-[10px] font-mono text-text-muted leading-relaxed mt-0.5 line-clamp-1">
-                              {stage.description}
-                            </p>
-                          </div>
-                        </li>
-                      );
-                    })}
-                  </ol>
-                </div>
-              </ScrollReveal>
-
-              <ScrollReveal>
                 <div className="rounded-2xl border border-border/50 bg-bg-card overflow-hidden flex flex-col">
                   <div className="flex items-center gap-2 px-4 py-2.5 bg-bg border-b border-border/20">
                     <span className="w-2.5 h-2.5 rounded-full bg-red-400/70" aria-hidden="true" />
@@ -333,14 +289,53 @@ const CyberCoinPage: React.FC = () => {
                     </div>
                   </div>
                 </div>
-              </ScrollReveal>
 
-              <ScrollReveal>
                 <p className="wc-interactive rounded-xl border border-accent/30 bg-accent/5 px-4 py-3 text-xs md:text-sm font-mono text-text-secondary">
                   CP is not the goal itself. <span className="text-accent font-black">Capability is the goal.</span> CP is the receipt for proving progress.
                 </p>
-              </ScrollReveal>
-            </div>
+              </div>
+            </ScrollReveal>
+
+            <ScrollReveal direction="left">
+              <div className="relative rounded-2xl border border-border/50 bg-bg-card p-5 md:p-7">
+                <div className="absolute left-[39px] md:left-[47px] top-10 bottom-10 w-px bg-border/30" aria-hidden="true" />
+                {!prefersReducedMotion && (
+                  <motion.span
+                    className="absolute left-[35px] md:left-[43px] w-[9px] h-[9px] rounded-full bg-accent"
+                    style={{ boxShadow: '0 0 8px var(--color-hero-glow)' }}
+                    animate={{ top: ['8%', '92%'], opacity: [0, 1, 1, 0] }}
+                    transition={{ duration: 5, repeat: Infinity, ease: 'linear', times: [0, 0.1, 0.9, 1] }}
+                    aria-hidden="true"
+                  />
+                )}
+                <ol className="relative space-y-5">
+                  {CP_LEARNING_LOOP.map((stage, i) => {
+                    const isEarn = stage.id === 'earn';
+                    return (
+                      <li key={stage.id} className="flex items-center gap-4">
+                        <span
+                          className={`relative z-10 w-8 h-8 md:w-9 md:h-9 rounded-lg border flex items-center justify-center font-mono text-[10px] font-black shrink-0 ${
+                            isEarn
+                              ? 'border-on-accent bg-accent text-on-accent'
+                              : 'border-border/40 bg-bg-elevated text-text-muted'
+                          }`}
+                        >
+                          {stage.index}
+                        </span>
+                        <div className="min-w-0 flex-1">
+                          <p className={`text-sm md:text-base font-black uppercase tracking-widest ${isEarn ? 'text-accent' : 'text-text-primary'}`}>
+                            {stage.label}
+                          </p>
+                          <p className="text-[10px] font-mono text-text-muted leading-relaxed mt-0.5 line-clamp-1">
+                            {stage.description}
+                          </p>
+                        </div>
+                      </li>
+                    );
+                  })}
+                </ol>
+              </div>
+            </ScrollReveal>
           </div>
         </PublicSnapSection>
 
