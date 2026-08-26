@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { motion, AnimatePresence } from 'motion/react';
 import { User, Mail, LogIn } from 'lucide-react';
 import { cn } from '@/shared/utils/cn';
+import { useReducedMotion } from '@/shared/hooks/useReducedMotion';
 import AthenaBoxes from '@/shared/components/AthenaBoxes';
 import PasswordInput from './PasswordInput';
 import HandleSuggestions from '@/shared/components/HandleSuggestions';
@@ -44,6 +45,7 @@ const AuthForm: React.FC<AuthFormProps> = ({
   onRegisterSubmit,
 }) => {
   const { t } = useTranslation();
+  const prefersReduced = useReducedMotion();
 
   return (
     <div className="w-full space-y-5">
@@ -82,10 +84,10 @@ const AuthForm: React.FC<AuthFormProps> = ({
         {mode === 'login' ? (
           <motion.div
             key="login"
-            initial={{ opacity: 0, x: -20 }}
+            initial={prefersReduced ? false : { opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: 20 }}
-            transition={{ duration: 0.2 }}
+            exit={prefersReduced ? { opacity: 0 } : { opacity: 0, x: 20 }}
+            transition={prefersReduced ? { duration: 0 } : { duration: 0.2 }}
             className="w-full rounded-2xl border border-border/50 bg-bg/40 backdrop-blur-md p-4 sm:p-6 lg:p-8"
           >
               <div className="mb-8">
@@ -145,10 +147,10 @@ const AuthForm: React.FC<AuthFormProps> = ({
         ) : (
           <motion.div
             key="register"
-            initial={{ opacity: 0, x: 20 }}
+            initial={prefersReduced ? false : { opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: -20 }}
-            transition={{ duration: 0.2 }}
+            exit={prefersReduced ? { opacity: 0 } : { opacity: 0, x: -20 }}
+            transition={prefersReduced ? { duration: 0 } : { duration: 0.2 }}
             className="w-full rounded-2xl border border-border/50 bg-bg/40 backdrop-blur-md p-4 sm:p-6 lg:p-8"
           >
             <div className="mb-8">

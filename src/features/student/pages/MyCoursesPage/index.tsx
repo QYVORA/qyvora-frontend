@@ -15,6 +15,7 @@ import ErrorState from '@/shared/components/ui/ErrorState';
 import { LearningFilterStrip } from '@/features/student/components/learning';
 import StudentHeroSection from '@/shared/components/StudentHeroSection';
 import CoursePurchaseModal from '@/shared/components/CoursePurchaseModal';
+import FadeIn from '@/shared/components/ui/FadeIn';
 
 const STORAGE_KEY = 'qyvora_course_progress';
 
@@ -129,7 +130,8 @@ const MyCoursesPage: React.FC = () => {
   ], [totalCourses, inProgressCourses, completedCourses, t]);
 
   return (
-    <div className="min-h-screen">
+    <FadeIn>
+    <div className="min-h-full">
       <SEO title={t('student.myCourses.seoTitle', 'My Courses')} description={t('student.myCourses.seoDesc', 'Your purchased courses.')} noindex />
 
       <div className="bg-bg px-3 md:px-4 lg:px-6 pt-8 pb-10">
@@ -325,6 +327,7 @@ const MyCoursesPage: React.FC = () => {
         />
       )}
     </div>
+    </FadeIn>
   );
 };
 

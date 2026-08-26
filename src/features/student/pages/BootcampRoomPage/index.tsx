@@ -7,6 +7,7 @@ import {
 } from 'lucide-react';
 import { IconArrowRight, IconCheck } from '@/shared/components/icons';
 import { AnimatePresence } from 'motion/react';
+import FadeIn from '@/shared/components/ui/FadeIn';
 import api from '@/core/services/api';
 import { useToast } from '@/core/contexts/ToastContext';
 import {
@@ -265,7 +266,8 @@ const BootcampRoomPage: React.FC = () => {
 
   const roomTitle = room?.title || t('stat.room');
   return (
-    <div className="bg-bg overflow-x-hidden">
+    <FadeIn>
+    <div className="bg-bg overflow-x-hidden min-h-full">
       <SEO
         title={roomTitle}
         description={`Complete the "${roomTitle}" room in the Hacker Protocol Bootcamp on QYVORA.`}
@@ -429,6 +431,7 @@ const BootcampRoomPage: React.FC = () => {
           )}
       </main>
     </div>
+    </FadeIn>
   );
 };
 

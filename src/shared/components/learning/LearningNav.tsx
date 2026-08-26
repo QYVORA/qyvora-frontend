@@ -49,7 +49,7 @@ const LearningNav: React.FC<LearningNavProps> = ({
       {currentStep > 0 && onPrev && (
         <button
           onClick={onPrev}
-          className="btn-secondary md:hidden inline-flex min-h-[44px] flex-1 items-center justify-center gap-1.5 disabled:opacity-50 sm:flex-none px-3.5 py-2"
+          className="btn-secondary inline-flex min-h-[44px] flex-1 items-center justify-center gap-1.5 disabled:opacity-50 sm:flex-none px-3.5 py-2"
           aria-label={t('learning.nav.prev')}
         >
           <ChevronLeft className="h-3.5 w-3.5 shrink-0" />
