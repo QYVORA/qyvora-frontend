@@ -42,14 +42,7 @@ import {
   IconTerminal, IconNetwork, IconCode, IconRank, IconFire, IconDashboard,
   IconMarketplace, IconArrowRight, IconDownload,
 } from '@/shared/components/icons';
-
-const LABS = [
-  { id: 'privesc', titleKey: 'student.labs.list.privesc.title', route: '/dashboard/labs/privesc', accentColor: '#FBBF24', difficulty: 'beginner-advanced', cpReward: '50-400' },
-  { id: 'passwords', titleKey: 'student.labs.list.passwords.title', route: '/dashboard/labs/passwords', accentColor: '#F59E0B', difficulty: 'beginner-advanced', cpReward: '100-300' },
-  { id: 'sqli', titleKey: 'student.labs.list.sqli.title', route: '/dashboard/labs/sql-injection', accentColor: '#06B66F', difficulty: 'beginner-advanced', cpReward: '200-400' },
-  { id: 'osint', titleKey: 'student.labs.list.osint.title', route: '/dashboard/labs/osint', accentColor: '#0EA5E9', difficulty: 'beginner-advanced', cpReward: '150-400' },
-  { id: 'killchain', titleKey: 'student.labs.list.killchain.title', route: '/dashboard/labs/kill-chain', accentColor: '#DC2626', difficulty: 'intermediate-advanced', cpReward: '500-600' },
-];
+import { LABS } from '@/features/student/constants/labs';
 import CpLogo from '@/shared/components/CpLogo';
 import { Link, useNavigate } from 'react-router-dom';
 import { AuthImage } from '@/shared/components/ui';

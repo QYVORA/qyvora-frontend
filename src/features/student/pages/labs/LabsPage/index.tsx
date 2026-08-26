@@ -6,16 +6,7 @@ import LabCard from './LabCard';
 import StudentHeroSection from '@/shared/components/StudentHeroSection';
 import { LearningFilterStrip } from '@/features/student/components/learning';
 import { Link } from 'react-router-dom';
-
-const LABS_IDS = ['privesc', 'passwords', 'sqli', 'osint', 'killchain'] as const;
-
-const LABS = [
-  { id: 'privesc', route: '/dashboard/labs/privesc', accentColor: '#FBBF24', difficulty: 'beginner-advanced', cpReward: '50-400' },
-  { id: 'passwords', route: '/dashboard/labs/passwords', accentColor: '#F59E0B', difficulty: 'beginner-advanced', cpReward: '100-300' },
-  { id: 'sqli', route: '/dashboard/labs/sql-injection', accentColor: '#06B66F', difficulty: 'beginner-advanced', cpReward: '200-400' },
-  { id: 'osint', route: '/dashboard/labs/osint', accentColor: '#0EA5E9', difficulty: 'beginner-advanced', cpReward: '150-400' },
-  { id: 'killchain', route: '/dashboard/labs/kill-chain', accentColor: '#DC2626', difficulty: 'intermediate-advanced', cpReward: '500-600' },
-];
+import { LABS, LABS_IDS } from '@/features/student/constants/labs';
 
 const LabsPage = () => {
   const { t } = useTranslation();

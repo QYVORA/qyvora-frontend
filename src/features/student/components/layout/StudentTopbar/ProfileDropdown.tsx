@@ -2,9 +2,10 @@ import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { AnimatePresence, motion } from 'motion/react';
-import { LogOut, ChevronRight, Terminal, Code2, Network, Wrench, Settings, Globe } from 'lucide-react';
+import { LogOut, ChevronRight, Wrench, Settings, Globe } from 'lucide-react';
 import Identicon from '../../../../../shared/components/Identicon';
 import ToolChooserModal from '@/features/student/components/tools/ToolChooserModal';
+import { TOOLS } from '@/features/student/constants/tools';
 import Dobia from '@/shared/components/Dobia';
 
 interface ProfileDropdownProps {
@@ -21,12 +22,6 @@ interface ProfileDropdownProps {
   onOpenNetworkVisualizer: () => void;
   handleLogout: () => void;
 }
-
-const TOOLS = [
-  { id: 'terminal' as const, label: 'Terminal', description: 'Kali Linux terminal emulator', icon: Terminal, shortcut: 'Ctrl+`', route: '/dashboard/tools/terminal' },
-  { id: 'ide' as const, label: 'IDE', description: 'Write and run Python/Bash', icon: Code2, shortcut: 'Ctrl+Shift+I', route: '/dashboard/tools/ide' },
-  { id: 'network-visualizer' as const, label: 'Network Visualizer', description: 'Build network topologies', icon: Network, shortcut: 'Ctrl+Shift+N', route: '/dashboard/tools/network-visualizer' },
-];
 
 const ProfileDropdown: React.FC<ProfileDropdownProps> = ({
   user,
