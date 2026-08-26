@@ -116,14 +116,14 @@ const SimulationsPage = () => {
     );
 
     const heading = (
-      <h2 className="text-2xl md:text-4xl lg:text-5xl font-black text-text-primary tracking-tighter leading-tight mt-2">
+      <h2 className="text-4xl md:text-6xl lg:text-7xl font-black text-text-primary tracking-tighter leading-tight mt-2">
         {t(`simulations.${sim.id}.title`)}{' '}
         <span className="text-accent">{t(`simulations.${sim.id}.titleAccent`)}</span>
       </h2>
     );
 
     const description = (
-      <p className="text-xs md:text-sm text-text-secondary leading-relaxed mt-3 font-mono max-w-xl">
+      <p className="text-base sm:text-lg text-text-secondary leading-relaxed mt-3 font-mono max-w-xl">
         {t(`simulations.${sim.id}.description`)}
       </p>
     );
