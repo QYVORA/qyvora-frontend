@@ -31,7 +31,7 @@ const ErrorState = ({ message, title, icon, className = '', severity = 'warning'
       <div className="shrink-0 mt-0.5">{icon ?? <Dobia expression={severity === 'error' ? 'angry' : 'confused'} size="lg" />}</div>
       <div>
         {title && <p className="text-sm font-bold text-red-400">{title}</p>}
-        <p className={`text-sm text-red-400 ${title ? 'text-text-secondary mt-1' : ''}`}>{message}</p>
+        <p className={`text-sm text-red-400/70 ${title ? 'mt-1' : ''}`}>{message}</p>
       </div>
     </div>
   );

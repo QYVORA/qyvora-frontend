@@ -121,7 +121,7 @@ const SectionButton = ({ icon, label, active, onClick, ...rest }: { icon: React.
     {...rest}
     className={`flex flex-col items-center gap-2 p-3 md:p-5 lg:p-6 min-h-[100px] md:min-h-[120px] rounded-2xl border text-center transition-all duration-300 ${
       active
-        ? 'border-accent bg-accent/10 shadow-lg shadow-accent/10'
+        ? 'border-accent bg-accent/10'
         : 'border-border/50 bg-bg-card hover:bg-bg-card/80'
     }`}
   >

@@ -18,15 +18,17 @@ interface FilterTabsProps {
 
 const FilterTabs: React.FC<FilterTabsProps> = ({ tabs, activeKey, onChange, size = 'md', className }) => {
   const sizeClasses = size === 'sm'
-    ? 'px-4 py-2 rounded-xl text-[11px]'
-    : 'px-5 py-2.5 rounded-xl text-xs';
+    ? 'px-4 min-h-[44px] rounded-xl text-[11px]'
+    : 'px-5 min-h-[44px] rounded-xl text-xs';
 
   return (
-    <div className={cn('flex items-center gap-2 flex-wrap', className)}>
+    <div className={cn('flex items-center gap-2 flex-wrap', className)} role="tablist">
       {tabs.map((tab) => (
         <button
           key={tab.key}
           onClick={() => onChange(tab.key)}
+          role="tab"
+          aria-selected={activeKey === tab.key}
           className={cn(
             sizeClasses,
             'font-black uppercase tracking-wider transition-all duration-300 active:scale-95 disabled:opacity-50 disabled:pointer-events-none',
