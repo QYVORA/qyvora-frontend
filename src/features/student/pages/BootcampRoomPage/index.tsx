@@ -2,17 +2,16 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useParams, Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import {
-  ArrowLeft, ArrowRight, Lock, Loader2,
-  CheckCircle2, BookOpen,
+  ArrowLeft, Lock, BookOpen,
+  List, Minimize2, Maximize2, Loader2,
 } from 'lucide-react';
-import { motion, AnimatePresence } from 'motion/react';
+import { IconArrowRight, IconCheck } from '@/shared/components/icons';
+import { AnimatePresence } from 'motion/react';
 import api from '@/core/services/api';
 import { useToast } from '@/core/contexts/ToastContext';
 import {
   BOOTCAMP_CONFIG,
-  type BootcampPhase,
 } from '@/features/student/constants/bootcampConfig';
-import CopyButton from '@/features/student/components/bootcamp-room/CopyButton';
 import StepJumpMenu from '@/features/student/components/bootcamp-room/StepJumpMenu';
 import ReportIssueModal from '@/features/student/components/bootcamp-room/ReportIssueModal';
 import StepCard from '@/features/student/components/bootcamp-room/StepCard';
@@ -22,11 +21,11 @@ import QuizGateModal from '@/features/student/components/bootcamp-room/QuizGateM
 import RoomCompletionCelebration from '@/features/student/components/bootcamp-room/RoomCompletionCelebration';
 import RoomHeader from '@/features/student/components/bootcamp-room/RoomHeader';
 import RoomProgress from '@/features/student/components/bootcamp-room/RoomProgress';
-import RoomNavigation from '@/features/student/components/bootcamp-room/RoomNavigation';
-import DesktopToolbar from '@/features/student/components/bootcamp-room/DesktopToolbar';
+import LearningNav from '@/shared/components/learning/LearningNav';
+import LearningToolbar from '@/shared/components/learning/LearningToolbar';
 import { useRoomSession } from '@/features/student/hooks/useRoomSession';
 import useStudentOverview from '@/features/student/hooks/useStudentOverview';
-import type { ApiCourse, RoomQuiz, QuizQuestion } from '@/features/student/components/bootcamp-room/types';
+import type { ApiCourse } from '@/features/student/components/bootcamp-room/types';
 import SEO from '@/shared/components/SEO';
 import { BootcampRoomSkeleton } from '@/features/student/components/StudentSkeletons';
 import { getRelatedContentForHpbRoom } from '@/shared/constants/topicMap';
@@ -297,10 +296,51 @@ const BootcampRoomPage: React.FC = () => {
         }}
       />
 
-      <DesktopToolbar
-        setJumpMenuOpen={setJumpMenuOpen} toggleFullscreen={toggleFullscreen} fullscreen={fullscreen}
-        isLastStep={isLastStep} isRoomComplete={isRoomComplete} nextRoom={nextRoom}
-        quizModuleId={quizModuleId} completing={completing} currentStepIdx={currentStepIdx} goToStep={goToStep} handleComplete={handleComplete}
+      <LearningToolbar
+        actions={[
+          {
+            id: 'jump-menu',
+            icon: <List className="h-4 w-4" />,
+            label: t('student.bootcampRoom.desktopToolbar.jump'),
+            onClick: () => setJumpMenuOpen(true),
+          },
+          {
+            id: 'fullscreen',
+            icon: fullscreen ? <Minimize2 className="h-4 w-4" /> : <Maximize2 className="h-4 w-4" />,
+            label: fullscreen
+              ? t('student.bootcampRoom.desktopToolbar.exitFullscreen')
+              : t('student.bootcampRoom.desktopToolbar.enterFullscreen'),
+            onClick: toggleFullscreen,
+          },
+          {
+            id: 'next-complete',
+            icon: completing ? (
+              <Loader2 className="h-4 w-4 animate-spin" />
+            ) : isLastStep ? (
+              isRoomComplete ? <IconArrowRight size={16} /> : <IconCheck size={16} />
+            ) : (
+              <IconArrowRight size={16} />
+            ),
+            label: isLastStep
+              ? isRoomComplete
+                ? nextRoom
+                  ? t('student.bootcampRoom.desktopToolbar.continueToNext')
+                  : t('student.bootcampRoom.desktopToolbar.finishModule')
+                : quizModuleId
+                ? t('student.bootcampRoom.desktopToolbar.quizAndComplete')
+                : t('student.bootcampRoom.desktopToolbar.completeRoom')
+              : t('student.bootcampRoom.desktopToolbar.nextStep'),
+            onClick: async () => {
+              if (!isLastStep) {
+                goToStep(currentStepIdx + 1);
+              } else {
+                await handleComplete();
+              }
+            },
+            variant: isLastStep ? 'accent' : 'default',
+            active: isLastStep,
+          },
+        ]}
       />
 
       <RoomSidebar phases={BOOTCAMP_CONFIG.phases} activePhaseId={phaseId || ''} activeRoomId={roomId || ''} completedRooms={completedRooms} lockedRooms={lockedRooms} bootcampId={bootcampId || ''} onNavigate={handleNavigate} mobileOpen={sidebarOpen} onMobileClose={() => setSidebarOpen(false)} />
@@ -350,7 +390,39 @@ const BootcampRoomPage: React.FC = () => {
                   <RelatedContent {...getRelatedContentForHpbRoom(phaseId, roomId)} title={t('student.labs.relatedContent.title')} />
                 </div>
               )}
-              <RoomNavigation currentStepIdx={currentStepIdx} totalSteps={room.steps.length} isLastStep={isLastStep} isRoomComplete={isRoomComplete} nextRoom={nextRoom} quizPassed={quizPassed} quizModuleId={quizModuleId} completing={completing} fullscreen={fullscreen} goToStep={goToStep} handleComplete={handleComplete} toggleFullscreen={toggleFullscreen} setJumpMenuOpen={setJumpMenuOpen} />
+              <LearningNav
+                currentStep={currentStepIdx}
+                totalSteps={room.steps.length}
+                isLastStep={isLastStep}
+                isComplete={isRoomComplete}
+                completing={completing}
+                onPrev={currentStepIdx > 0 ? () => goToStep(currentStepIdx - 1) : undefined}
+                onNext={!isLastStep ? () => goToStep(currentStepIdx + 1) : undefined}
+                onComplete={!isLastStep ? undefined : isRoomComplete ? undefined : handleComplete}
+                completeLabel={
+                  quizModuleId && !quizPassed
+                    ? t('learning.nav.quizAndComplete')
+                    : t('learning.nav.completeRoom')
+                }
+                nextLabel={t('learning.nav.nextStep')}
+                nextLabelMobile={t('learning.nav.next')}
+                leading={
+                  <>
+                    <button
+                      onClick={() => setJumpMenuOpen(true)}
+                      className="btn-secondary md:hidden inline-flex items-center gap-1.5 !rounded-xl !text-[10px] !font-black !uppercase !tracking-widest px-3.5 py-2"
+                    >
+                      <List className="h-3.5 w-3.5" />
+                    </button>
+                    <button
+                      onClick={toggleFullscreen}
+                      className="btn-secondary md:hidden inline-flex items-center gap-1.5 !rounded-xl !text-[10px] !font-black !uppercase !tracking-widest px-3.5 py-2"
+                    >
+                      {fullscreen ? <Minimize2 className="h-3.5 w-3.5" /> : <Maximize2 className="h-3.5 w-3.5" />}
+                    </button>
+                  </>
+                }
+              />
             </>
           )}
       </main>
