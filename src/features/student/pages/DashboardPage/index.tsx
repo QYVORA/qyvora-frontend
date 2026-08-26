@@ -11,7 +11,8 @@ import {
 } from '@/features/student/utils/studentExperience';
 import useStudentOverview from '@/features/student/hooks/useStudentOverview';
 import useEngagement from '@/features/student/hooks/useEngagement';
-import { Skeleton, ErrorState, FadeIn } from '@/shared/components/ui';
+import { ErrorState, FadeIn } from '@/shared/components/ui';
+import { DashboardSkeleton } from '@/features/student/components/StudentSkeletons';
 import SEO from '@/shared/components/SEO';
 import StudentTour from '@/features/student/components/StudentTour';
 import StudentOnboardingModal from '@/features/student/components/StudentOnboardingModal';
@@ -81,111 +82,6 @@ function pickCpBalance(userCp: number, overview: any, cpBalance: number | null):
   if (typeof fromOverview === 'number' && Number.isFinite(fromOverview)) return fromOverview;
   return userCp;
 }
-
-const DashboardSkeleton = () => (
-  <div>
-    {/* 1. Hero Banner — matches DashboardHero card layout */}
-    <div className="bg-bg px-3 md:px-4 lg:px-6 pt-8 pb-10">
-      <div className="relative card-accent bg-bg-card p-6 sm:p-10 lg:p-14 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 sm:gap-6 overflow-hidden">
-        <div className="absolute inset-0 opacity-10">
-          <div className="w-full h-full bg-[repeating-linear-gradient(90deg,transparent,transparent_39px,rgba(255,255,255,0.05)_39px,rgba(255,255,255,0.05)_40px)] bg-[length:40px_40px]" />
-        </div>
-        <div className="relative z-10 w-full sm:w-auto space-y-2">
-          <Skeleton className="h-3 w-40 bg-border/30 rounded" />
-          <Skeleton className="h-8 lg:h-10 w-56 bg-border/30 rounded-lg" />
-          <Skeleton className="h-3 w-36 bg-border/20 rounded" />
-        </div>
-        <Skeleton className="relative z-10 h-10 w-full sm:w-32 bg-border/30 rounded-xl shrink-0" />
-      </div>
-    </div>
-
-    {/* 2. Section Navigation Buttons — 5-column grid of SectionButtons */}
-    <div className="bg-bg-alt px-3 md:px-4 lg:px-6 py-10">
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 md:gap-4 lg:gap-5">
-        {[...Array(5)].map((_, i) => (
-          <div key={i} className="flex flex-col items-center gap-3 p-3 md:p-5 lg:p-6 min-h-[100px] md:min-h-[120px] card-accent bg-bg-card">
-            <Skeleton className="w-10 h-10 md:w-14 md:h-14 lg:w-16 lg:h-16 rounded-xl md:rounded-2xl bg-border/30 shrink-0" />
-            <Skeleton className="h-2.5 w-16 bg-border/30 rounded" />
-          </div>
-        ))}
-      </div>
-    </div>
-
-    {/* 3. Achievement Stats — left overview + 2x2 stat cards */}
-    <div className="bg-bg px-3 md:px-4 lg:px-6 py-10">
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-10">
-        <div className="flex flex-col justify-center gap-4">
-          <div className="space-y-2">
-            <Skeleton className="h-7 w-40 bg-border/30 rounded" />
-            <Skeleton className="h-4 w-64 bg-border/20 rounded" />
-          </div>
-          <Skeleton className="h-10 w-44 bg-border/30 rounded-xl" />
-        </div>
-        <div className="grid grid-cols-2 gap-3">
-          {[...Array(4)].map((_, i) => (
-            <div key={i} className="flex flex-col items-center gap-3 p-4 md:p-5 lg:p-6 card-accent bg-bg-card">
-              <Skeleton className="w-12 h-12 md:w-14 md:h-14 lg:w-16 lg:h-16 rounded-xl md:rounded-2xl bg-bg-elevated shrink-0" />
-              <Skeleton className="h-2.5 w-14 bg-border/30 rounded" />
-              <Skeleton className="h-4 w-12 bg-border/30 rounded" />
-            </div>
-          ))}
-        </div>
-      </div>
-    </div>
-
-    {/* 4. Skill Matrix — 2-column grid (radar chart + skill stats) */}
-    <div className="bg-bg-alt px-3 md:px-4 lg:px-6 py-10">
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 md:gap-4 lg:h-[460px]">
-        <div className="card-accent bg-bg-card p-4 md:p-6 flex flex-col items-center justify-center min-h-[360px] lg:min-h-0">
-          <Skeleton className="w-64 h-64 md:w-72 md:h-72 bg-border/20 rounded-full" />
-        </div>
-        <div className="card-accent bg-bg-card p-4 md:p-6 flex flex-col justify-between gap-2.5 min-h-[360px] lg:min-h-0">
-          {[...Array(5)].map((_, i) => (
-            <div key={i} className="flex items-center gap-3">
-              <Skeleton className="h-2.5 w-20 bg-border/30 rounded" />
-              <Skeleton className="h-1.5 flex-1 bg-border/20 rounded-full" />
-              <Skeleton className="h-2.5 w-10 bg-border/30 rounded" />
-            </div>
-          ))}
-        </div>
-      </div>
-    </div>
-
-    {/* 5. Section Content — section header + course card grid */}
-    <div className="bg-bg px-3 md:px-4 lg:px-6 py-10">
-      <div className="space-y-4">
-        <div className="flex items-center justify-between">
-          <Skeleton className="h-3 w-32 bg-border/30 rounded" />
-          <Skeleton className="h-3 w-16 bg-border/30 rounded" />
-        </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
-          {[...Array(3)].map((_, i) => (
-            <div key={i} className="aspect-square card-accent bg-bg-card flex flex-col p-4 md:p-5">
-              <div className="flex items-center gap-2 mb-3">
-                <Skeleton className="w-8 h-8 rounded-xl bg-border/30 shrink-0" />
-                <Skeleton className="h-5 w-16 bg-border/30 rounded-lg" />
-              </div>
-              <Skeleton className="h-5 w-3/4 bg-border/30 rounded" />
-              <Skeleton className="h-3 w-full bg-border/20 rounded mt-2" />
-              <Skeleton className="h-8 w-20 bg-border/30 rounded-lg mt-auto" />
-            </div>
-          ))}
-        </div>
-      </div>
-    </div>
-
-    {/* 6. Rank Progress */}
-    <div className="bg-bg-alt px-3 md:px-4 lg:px-6 py-10 pb-20 lg:pb-24">
-      <div className="rounded-2xl border border-accent/20 bg-bg-card p-6 md:p-8 lg:p-10 space-y-3">
-        <div className="flex items-center justify-between">
-          <Skeleton className="h-3 w-32 bg-border/30 rounded" />
-          <Skeleton className="h-4 w-10 bg-border/30 rounded" />
-        </div>
-        <Skeleton className="h-3 w-full bg-border/30 rounded-full" />
-      </div>
-    </div>
-  </div>
-);
 
 const DashboardRoomCard = ({ room }: { room: any }) => {
   const { t } = useTranslation();
