@@ -109,10 +109,10 @@ const Navbar: React.FC = React.memo(() => {
                 onMouseLeave={handleDropdownLeave}
               >
                 <button
-                  className={`flex items-center gap-1.5 px-4 py-2 text-xs font-black uppercase tracking-widest transition-colors rounded-xl border ${
+                  className={`flex items-center gap-1.5 px-4 py-2 text-xs font-black uppercase tracking-widest transition-colors rounded-xl ${
                     group.items.some((item) => isActive(item.path))
-                      ? 'border-accent/40 text-accent bg-accent/5'
-                      : 'border-border/50 text-text-primary/80 hover:border-accent/40 hover:text-accent'
+                      ? 'text-accent bg-accent/5'
+                      : 'text-text-primary/80 hover:text-accent'
                   }`}
                   aria-expanded={openDropdown === group.key}
                   aria-haspopup="true"
@@ -141,7 +141,7 @@ const Navbar: React.FC = React.memo(() => {
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: -4 }}
                       transition={{ duration: 0.15 }}
-                      className="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-[300px] rounded-2xl border border-border/20 bg-bg-card shadow-xl overflow-hidden"
+                      className="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-fit min-w-[320px] rounded-2xl border border-border/20 bg-bg-card shadow-xl overflow-hidden"
                       onKeyDown={(e) => { if (e.key === 'Escape') setOpenDropdown(null); }}
                       role="menu"
                     >
@@ -151,38 +151,54 @@ const Navbar: React.FC = React.memo(() => {
                         </h3>
                         <span className="h-1.5 w-1.5 rounded-full bg-accent" aria-hidden="true" />
                       </div>
-                      <ul className="p-2 flex flex-col">
+                      <div className="p-2 grid grid-cols-2 gap-1.5">
                         {group.items.map((item) => {
-                          const linkClasses = `flex items-center justify-between gap-3 px-3 py-2.5 rounded-lg text-sm font-bold text-text-primary transition-colors hover:text-accent hover:bg-bg-elevated ${
-                            isActive(item.path) ? 'text-accent bg-accent/5' : ''
+                          const linkClasses = `flex flex-col gap-1 px-4 py-3 rounded-xl text-left transition-colors ${
+                            isActive(item.path)
+                              ? 'bg-accent/5 text-accent'
+                              : 'text-text-primary hover:bg-bg-elevated hover:text-accent'
                           }`;
 
                           if ((item as any).modal) {
                             return (
-                              <li key={item.key}>
+                              <div key={item.key}>
                                 <ContactTrigger
                                   className={linkClasses}
                                   onOpen={closeDropdown}
                                 >
-                                  {t(NAV_ITEM_LABELS[item.key] || item.label)}
+                                  <span className="text-xs font-black uppercase tracking-widest">
+                                    {t(NAV_ITEM_LABELS[item.key] || item.label)}
+                                  </span>
+                                  {(item as any).desc && (
+                                    <span className="text-[10px] font-mono text-text-muted leading-snug">
+                                      {(item as any).desc}
+                                    </span>
+                                  )}
                                 </ContactTrigger>
-                              </li>
+                              </div>
                             );
                           }
 
                           return (
-                            <li key={item.key}>
+                            <div key={item.key}>
                               <Link
                                 to={item.path}
                                 onClick={closeDropdown}
                                 className={linkClasses}
                               >
-                                {t(NAV_ITEM_LABELS[item.key] || item.label)}
+                                <span className="text-xs font-black uppercase tracking-widest">
+                                  {t(NAV_ITEM_LABELS[item.key] || item.label)}
+                                </span>
+                                {(item as any).desc && (
+                                  <span className="text-[10px] font-mono text-text-muted leading-snug">
+                                    {(item as any).desc}
+                                  </span>
+                                )}
                               </Link>
-                            </li>
+                            </div>
                           );
                         })}
-                      </ul>
+                      </div>
                     </motion.div>
                   )}
                 </AnimatePresence>

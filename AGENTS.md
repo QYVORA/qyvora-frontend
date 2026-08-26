@@ -41,6 +41,8 @@ h2 compact bento sections: **title only, no description**.
 - **Snap sections must fit the viewport**: content should not exceed one viewport at common laptop sizes (~1366×768). If it does, SPLIT into additional snap sections (see Layout Stability) — an oversized snap area breaks strict `y mandatory` scrolling
 - **Width constraints**: use `wc-*` classes (`wc-prose`, `wc-code`, `wc-terminal`, `wc-diagram`, `wc-table`, `wc-media`, `wc-interactive`), never ad-hoc `max-w-*`
 - **Kickers/eyebrows**: tiny uppercase accent text (`p`/`span`, `text-[10px] tracking-[0.3em]`) — never small headings (`h3`/`h4`)
+- **No content into navbar**: split-screen sections on desktop must not let content bleed upward into the navbar clearance zone. If the left column has sparse content (e.g. kicker + title only), use `items-center` on the grid row so content vertically centers rather than stretching thin at the top with empty space above. This applies to all desktop split-screen sections — never `lg:items-start` when one column has sparse content
+- **No content into adjacent sections**: each snap section's content must stay strictly within its own viewport boundaries. On desktop, a split-screen section must not overflow downward into the next snap area. If content is tall, split into multiple snap sections rather than letting one section grow past the viewport
 
 ## Component Rules
 
@@ -50,6 +52,7 @@ h2 compact bento sections: **title only, no description**.
 - **Dialogs**: desktop use `DialogContent` (Radix), mobile use `BottomSheet`. Always pass `title`, always have `aria-describedby`
 - **Icons**: `lucide-react` only. Named imports. No emoji as icons
 - **i18n**: all user-facing strings through `useTranslation()`
+- **LearningToolbar**: all walkthrough pages (labs, courses, bootcamp rooms) must include `LearningToolbar` with a fullscreen toggle using `useRoomSession()`. Never place the fullscreen button inline in page content — it belongs exclusively in the toolbar (desktop fixed sidebar + mobile floating panel). Use `<Minimize2>`/`<Maximize2>` icons from lucide-react. If the page already has a `LearningToolbar`, add the fullscreen action to its existing `actions` array
 
 ## Accessibility (Mandatory)
 
@@ -89,6 +92,8 @@ h2 compact bento sections: **title only, no description**.
 - `font-display` utility class
 - Navbar scroll-hide/invert behavior
 - `zustand` or `@tanstack/react-query` (installed but unused)
+- Inline fullscreen buttons on walkthrough pages (use `LearningToolbar` instead)
+- Navbar link buttons with borders (borders only on badges and status indicators)
 
 ## Layouts Reference
 
@@ -108,6 +113,8 @@ h2 compact bento sections: **title only, no description**.
 - **Snap sections**: use `min-h-dvh` and grow when content exceeds the viewport — content must never clip under the fixed navbar or get cut at the section bottom (that was the "eyebrow enters navbar / snipped content" bug).
 - **Snap sections under `y mandatory` must not exceed ~one viewport** (at 1366×768): a snap area taller than the screen makes one wheel tick skip past its end, so users land mid-section and snapping fights them. When a composition grows past that (e.g. install pages stacking header + banner + two option cards ≈ 1000px), split it into multiple leaner snap sections instead of letting it grow. Precedent: tool install sections are split into "Install" (header + auto-install banner + installer card) and "Build from source" (full-width build card).
 - **Course/lab visuals**: treat SVG/course icons as first-class section visuals, not card content. They must have their own dedicated visual region with sufficient scale, preserved aspect ratio, and stable responsive geometry.
+- **Split-screen heading pattern**: on desktop split-screen sections where the left column has sparse content (kicker + title + optional short description), use `items-center` on the grid row and `lg:justify-center` on the content column so the heading vertically centers against the right column. Reference: `ServiceDetailPage.tsx` — kicker as `<span>`, title as `<h2 className="text-4xl md:text-6xl lg:text-7xl font-black ...">`, description as `<p>`. Never use `lg:items-start` with sparse left columns — it wastes vertical space and breaks visual balance.
+- **Section carousel pattern**: when replacing a `CoursesCarousel` or similar built carousel with a shared `Carousel` + inline card, use the blog-carousel card pattern: `Link` wrapping a card with `flex flex-col md:flex-row`, text left, visual right, `min-h-[340px] md:min-h-[280px]` for stable height, `line-clamp-*` on variable text. This keeps the section height predictable across different content lengths.
 
 ## Admin Dashboard Rules
 

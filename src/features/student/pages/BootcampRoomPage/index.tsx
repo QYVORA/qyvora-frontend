@@ -417,13 +417,6 @@ const BootcampRoomPage: React.FC = () => {
                     >
                       <List className="h-3.5 w-3.5" />
                     </button>
-                    <button
-                      onClick={toggleFullscreen}
-                      className="btn-secondary md:hidden inline-flex items-center gap-1.5 !rounded-xl !text-[10px] !font-black !uppercase !tracking-widest px-3.5 py-2"
-                      aria-label={fullscreen ? t('student.bootcampRoom.desktopToolbar.exitFullscreen') : t('student.bootcampRoom.desktopToolbar.enterFullscreen')}
-                    >
-                      {fullscreen ? <Minimize2 className="h-3.5 w-3.5" /> : <Maximize2 className="h-3.5 w-3.5" />}
-                    </button>
                   </>
                 }
               />
