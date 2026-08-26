@@ -8,6 +8,7 @@ import { LeaderboardRow, useLeaderboard, PERIODS } from '@/shared/components/lea
 import SEO from '@/shared/components/SEO';
 import { CompetitiveSkeleton } from '@/features/student/components/StudentSkeletons';
 import StudentHeroSection from '@/shared/components/StudentHeroSection';
+import FadeIn from '@/shared/components/ui/FadeIn';
 import { Link } from 'react-router-dom';
 import type { Period } from '@/shared/components/leaderboard';
 
@@ -35,6 +36,7 @@ const CompetitivePage = () => {
   };
 
   return (
+    <FadeIn>
     <div className="min-h-full">
       <SEO title={t('student.competitive.seoTitle')} description={t('student.competitive.seoDesc')} noindex />
 
@@ -139,6 +141,7 @@ const CompetitivePage = () => {
         )}
       </div>
     </div>
+    </FadeIn>
   );
 };
 

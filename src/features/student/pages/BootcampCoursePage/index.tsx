@@ -137,7 +137,7 @@ const BootcampCourse: React.FC = () => {
 
   return (
     <FadeIn>
-    <div>
+    <div className="min-h-full">
       <SEO
         title={course?.title || t('student.bootcampCourse.header.label', 'Bootcamp')}
         description={`${t('student.bootcampCourse.journeyProgress', 'Track your progress through')} ${course?.title || t('student.bootcampCourse.header.label', 'the bootcamp')} | ${progressValue} complete.`}

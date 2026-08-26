@@ -125,7 +125,7 @@ const Marketplace: React.FC = () => {
 
   return (
     <FadeIn>
-    <div>
+    <div className="min-h-full">
       <SEO title={t('student.marketplace.seoTitle')} description={t('student.marketplace.seoDesc')} noindex />
       <div className="bg-bg px-3 md:px-4 lg:px-6 pt-8 pb-10">
         <StudentHeroSection
@@ -237,7 +237,7 @@ const Marketplace: React.FC = () => {
               {txRows.length === 0 ? (
                 <div className="py-12 text-center text-text-muted text-sm">{t('student.marketplace.empty')}</div>
               ) : (
-                <div>
+    <div>
                   {visibleTxRows.map((tx, idx) => (
                     <div key={idx} className="px-4 py-3.5 flex items-center gap-3 hover:bg-accent-dim/5 transition-colors sm:px-5 sm:py-4 sm:gap-4">
                       <div className={`w-9 h-9 rounded-lg flex items-center justify-center flex-none shrink-0 border ${

@@ -4,12 +4,14 @@ import { motion, AnimatePresence } from 'motion/react';
 import { IconShield, IconInfo, IconX } from '@/shared/components/icons';
 import { getCookiePreferences, setCookiePreferences, type CookiePreferences } from '../utils/storageConsent';
 import { usePopupManager } from '../../core/hooks/usePopupManager';
+import { useReducedMotion } from '@/shared/hooks/useReducedMotion';
 
 const CONSENT_DISMISS_KEY = 'qyvora_consent_dismissed';
 const CONSENT_DISMISS_LEGACY = 'qyvora_cookie_dismissed';
 
 const ConsentBanner: React.FC = React.memo(() => {
   const { t } = useTranslation();
+  const prefersReduced = useReducedMotion();
   const existing = useMemo(() => getCookiePreferences(), []);
   const dismissed = useMemo(() => {
     try {
@@ -67,10 +69,10 @@ const ConsentBanner: React.FC = React.memo(() => {
     <AnimatePresence>
       {isVisible && (
         <motion.div
-          initial={{ y: 100, opacity: 0 }}
+          initial={prefersReduced ? false : { y: 100, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
-          exit={{ y: 100, opacity: 0 }}
-          transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+          exit={prefersReduced ? { opacity: 0 } : { y: 100, opacity: 0 }}
+          transition={prefersReduced ? { duration: 0 } : { duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
           className="fixed bottom-0 left-0 right-0 sm:bottom-6 sm:left-6 sm:right-auto z-[150] md:max-w-2xl sm:max-w-lg w-full"
         >
           <div className="bg-bg-card/95 backdrop-blur-xl border-t sm:border border-border rounded-2xl shadow-2xl p-5 sm:p-6 overflow-hidden">

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { AnimatePresence, motion } from 'motion/react';
+import { useReducedMotion } from '@/shared/hooks/useReducedMotion';
 
 export interface LearningToolbarAction {
   id: string;
@@ -19,6 +20,7 @@ export interface LearningToolbarProps {
 
 const LearningToolbar: React.FC<LearningToolbarProps> = ({ actions, className = '' }) => {
   const { t } = useTranslation();
+  const prefersReduced = useReducedMotion();
   const [expanded, setExpanded] = useState(false);
 
   if (actions.length === 0) return null;
@@ -53,10 +55,10 @@ const LearningToolbar: React.FC<LearningToolbarProps> = ({ actions, className = 
         <AnimatePresence>
           {expanded && (
             <motion.div
-              initial={{ opacity: 0, scale: 0.9, y: 10 }}
+              initial={prefersReduced ? false : { opacity: 0, scale: 0.9, y: 10 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.9, y: 10 }}
-              transition={{ duration: 0.15 }}
+              exit={prefersReduced ? { opacity: 0 } : { opacity: 0, scale: 0.9, y: 10 }}
+              transition={prefersReduced ? { duration: 0 } : { duration: 0.15 }}
             className="absolute bottom-14 right-0 flex flex-col gap-2 p-2 rounded-2xl border border-border/50 bg-bg-card"
             >
               {actions.map((action) => (
