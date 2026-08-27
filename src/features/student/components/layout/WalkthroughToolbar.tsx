@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Maximize2, Minimize2 } from 'lucide-react';
 import { IconTerminal, IconCode, IconNetwork } from '@/shared/components/icons';
 import { useTranslation } from 'react-i18next';
 
@@ -19,13 +19,10 @@ interface WalkthroughToolbarProps {
   showTerminal?: boolean;
   showIDE?: boolean;
   showNetworkVisualizer?: boolean;
+  fullscreen?: boolean;
+  onToggleFullscreen?: () => void;
 }
 
-/**
- * Collapsible vertical toolbar for mobile walkthrough pages (courses, labs, bootcamp rooms).
- * Appears on the right side, contains icon-only buttons stacked vertically.
- * Improves mobile UX by removing clutter from the topbar.
- */
 const WalkthroughToolbar: React.FC<WalkthroughToolbarProps> = ({
   onOpenTerminal,
   onOpenIDE,
@@ -33,6 +30,8 @@ const WalkthroughToolbar: React.FC<WalkthroughToolbarProps> = ({
   showTerminal = true,
   showIDE = false,
   showNetworkVisualizer = false,
+  fullscreen = false,
+  onToggleFullscreen,
 }) => {
   const { t } = useTranslation();
   const [isExpanded, setIsExpanded] = useState(false);
@@ -59,9 +58,15 @@ const WalkthroughToolbar: React.FC<WalkthroughToolbarProps> = ({
       onClick: onOpenNetworkVisualizer,
       show: showNetworkVisualizer,
     },
+    {
+      key: 'fullscreen',
+      icon: fullscreen ? Minimize2 : Maximize2,
+      labelKey: fullscreen ? 'Exit Fullscreen' : 'Enter Fullscreen',
+      onClick: onToggleFullscreen || (() => {}),
+      show: Boolean(onToggleFullscreen),
+    },
   ].filter((btn) => btn.show);
 
-  // Don't render if no buttons to show
   if (buttons.length === 0) return null;
 
   const handleButtonClick = (onClick: () => void) => {
@@ -74,13 +79,13 @@ const WalkthroughToolbar: React.FC<WalkthroughToolbarProps> = ({
       {/* Toggle button */}
       <motion.button
         onClick={() => setIsExpanded(!isExpanded)}
-        className="w-11 h-11 rounded-full border border-border/50 bg-bg-card/95 backdrop-blur-sm flex items-center justify-center text-text-secondary hover:border-accent/40 hover:text-accent active:scale-95 transition-all duration-300 shadow-lg"
+        className="w-11 h-11 rounded-full border border-border/50 bg-bg-card/95 backdrop-blur-sm flex items-center justify-center text-text-secondary hover:border-accent/40 hover:text-accent active:scale-95 transition-all duration-200 shadow-lg"
         aria-label={isExpanded ? t('aria.closeToolbar', 'Close toolbar') : t('aria.openToolbar', 'Open toolbar')}
         whileTap={{ scale: 0.95 }}
       >
         <motion.div
           animate={{ rotate: isExpanded ? 180 : 0 }}
-          transition={{ duration: 0.3 }}
+          transition={{ duration: 0.2 }}
         >
           {isExpanded ? <ChevronRight size={18} /> : <ChevronLeft size={18} />}
         </motion.div>
@@ -90,31 +95,31 @@ const WalkthroughToolbar: React.FC<WalkthroughToolbarProps> = ({
       <AnimatePresence>
         {isExpanded && (
           <motion.div
-            initial={{ opacity: 0, x: 20, scale: 0.9 }}
+            initial={{ opacity: 0, x: 16, scale: 0.9 }}
             animate={{ opacity: 1, x: 0, scale: 1 }}
-            exit={{ opacity: 0, x: 20, scale: 0.9 }}
-            transition={{ duration: 0.2, ease: [0.22, 1, 0.36, 1] }}
-            className="flex flex-col gap-2"
+            exit={{ opacity: 0, x: 16, scale: 0.9 }}
+            transition={{ duration: 0.15, ease: [0.22, 1, 0.36, 1] }}
+            className="flex flex-col gap-1.5"
           >
             {buttons.map((button, index) => {
               const Icon = button.icon;
               return (
                 <motion.button
                   key={button.key}
-                  initial={{ opacity: 0, x: 20 }}
+                  initial={{ opacity: 0, x: 16 }}
                   animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: 20 }}
+                  exit={{ opacity: 0, x: 16 }}
                   transition={{
-                    duration: 0.2,
-                    delay: index * 0.05,
+                    duration: 0.15,
+                    delay: index * 0.04,
                     ease: [0.22, 1, 0.36, 1],
                   }}
                   onClick={() => handleButtonClick(button.onClick)}
-                  className="w-11 h-11 rounded-xl border border-border/50 bg-bg-card/95 backdrop-blur-sm flex items-center justify-center text-text-secondary hover:border-accent/40 hover:text-accent active:scale-95 transition-all duration-300 shadow-lg"
-                  aria-label={t(button.labelKey)}
+                  className="w-11 h-11 rounded-xl border border-border/50 bg-bg-card/95 backdrop-blur-sm flex items-center justify-center text-text-secondary hover:border-accent/40 hover:text-accent active:scale-95 transition-all duration-200 shadow-lg"
+                  aria-label={typeof button.labelKey === 'string' && button.labelKey.startsWith('aria.') ? t(button.labelKey) : button.labelKey}
                   whileTap={{ scale: 0.95 }}
                 >
-                  <Icon size={20} strokeWidth={2.5} />
+                  <Icon size={18} strokeWidth={2.5} />
                 </motion.button>
               );
             })}

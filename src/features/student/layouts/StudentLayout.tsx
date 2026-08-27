@@ -11,6 +11,7 @@ import Ide from '@/features/student/components/tools/Ide';
 import NetworkBuilder from '@/features/student/components/tools/NetworkBuilder';
 import WalkthroughToolbar from '@/features/student/components/layout/WalkthroughToolbar';
 import { initPWA, tryAutoSubscribePush } from '@/features/student/services/pwa';
+import { useRoomSession } from '@/features/student/hooks/useRoomSession';
 import type { TerminalContext } from '@/features/student/components/SimulatedTerminal/types';
 import type { IdeFile } from '@/features/student/components/tools/Ide';
 
@@ -78,6 +79,7 @@ const StudentLayout = () => {
 
   // Determine if we're on a walkthrough page (rooms, courses, labs)
   const isWalkthroughPage = Boolean(roomMatch || roomMatchLegacy || courseMatch || labMatch);
+  const { fullscreen, toggleFullscreen } = useRoomSession();
 
   return (
     <SimulationProvider>
@@ -97,8 +99,10 @@ const StudentLayout = () => {
             onOpenIDE={() => setIdeOpen(true)}
             onOpenNetworkVisualizer={() => setNetworkVizOpen(true)}
             showTerminal={true}
-            showIDE={Boolean(courseMatch)} // Only show IDE on course pages
-            showNetworkVisualizer={false} // Can enable based on specific lessons
+            showIDE={Boolean(courseMatch)}
+            showNetworkVisualizer={false}
+            fullscreen={fullscreen}
+            onToggleFullscreen={toggleFullscreen}
           />
         )}
 
