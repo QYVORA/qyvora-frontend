@@ -349,8 +349,8 @@ const CyberCoinPage: React.FC = () => {
               />
             </ScrollReveal>
 
-            <div className="-mx-3 md:-mx-4 lg:-mx-6 overflow-visible">
-              <DragMarquee speed={20} trackClassName="gap-4 px-2" className="overflow-hidden">
+            <div className="-mx-3 md:-mx-4 lg:-mx-6 overflow-x-clip overflow-y-visible">
+              <DragMarquee speed={20} trackClassName="gap-4 px-2" className="overflow-hidden w-full">
               {CP_FUTURE_CHAIN.map((step, i) => (
                 <React.Fragment key={step.id}>
                   <div
@@ -442,15 +442,15 @@ const CyberCoinPage: React.FC = () => {
                           {course.description}
                         </p>
                         <div className="flex items-center justify-between gap-3 w-full pt-3 mt-auto">
-                          <div className="flex items-center gap-3 text-[10px] sm:text-[11px] font-mono text-text-muted shrink-0">
-                            <span className="flex items-center gap-1 whitespace-nowrap">
+                          <div className="flex items-center gap-3 text-[10px] sm:text-[11px] font-mono text-text-muted shrink-0 min-w-0">
+                            <span className="flex items-center gap-1 whitespace-nowrap min-w-0">
                               <Clock size={12} className="shrink-0" /> {course.estimatedMinutes}min
                             </span>
-                            <span className="flex items-center gap-1 whitespace-nowrap">
+                            <span className="flex items-center gap-1 whitespace-nowrap min-w-0">
                               <Zap size={12} className="shrink-0" /> {course.lessons.length || 0} lessons
                             </span>
                           </div>
-                          <span className="flex items-center gap-1 text-[10px] sm:text-[11px] font-black uppercase tracking-widest text-accent group-hover:gap-1.5 transition-all whitespace-nowrap">
+                          <span className="flex items-center gap-1 text-[10px] sm:text-[11px] font-black uppercase tracking-widest text-accent group-hover:gap-1.5 transition-all whitespace-nowrap shrink-0 min-w-0">
                             View Course <IconArrow size={12} className="shrink-0" />
                           </span>
                         </div>

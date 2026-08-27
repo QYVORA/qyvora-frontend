@@ -71,7 +71,7 @@ const BlogsPage = () => {
         <PublicSnapSection>
           <div className="flex flex-col justify-between flex-1 min-h-0 space-y-3">
             <div className="flex flex-col sm:flex-row gap-2.5 sm:gap-4 items-start sm:items-center justify-between shrink-0">
-              <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar flex-nowrap shrink-0 min-w-0">
+              <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar flex-nowrap min-w-0 flex-1 w-full sm:w-auto">
                 <button
                   onClick={() => handleTagChange('')}
                   className={`px-2.5 py-1 shrink-0 whitespace-nowrap rounded-lg text-[9px] font-black uppercase tracking-widest transition-all ${

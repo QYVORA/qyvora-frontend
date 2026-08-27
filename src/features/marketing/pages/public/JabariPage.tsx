@@ -192,9 +192,9 @@ const JabariPage = () => {
                 'internal/risk/        severity x confidence',
                 'internal/reporting/   terminal, JSON, Markdown, HTML',
               ].map((line) => (
-                <div key={line} className="flex items-center gap-2 py-1 px-2 rounded bg-bg-elevated/50">
+                <div key={line} className="flex items-center gap-2 py-1 px-2 rounded bg-bg-elevated/50 min-w-0">
                   <span className="text-accent shrink-0">{'>'}</span>
-                  <span className="text-text-muted">{line}</span>
+                  <span className="text-text-muted min-w-0 break-words">{line}</span>
                 </div>
               ))}
             </div>
@@ -241,9 +241,9 @@ const JabariPage = () => {
                 'internal/reporting/     offline renderers',
                 'pkg/adb/                thin injectable ADB wrapper',
               ].map((line) => (
-                <div key={line} className="flex items-center gap-2 py-1 px-2 rounded bg-bg-elevated/50">
+                <div key={line} className="flex items-center gap-2 py-1 px-2 rounded bg-bg-elevated/50 min-w-0">
                   <span className="text-accent shrink-0">{'>'}</span>
-                  <span className="text-text-muted">{line}</span>
+                  <span className="text-text-muted min-w-0 break-words">{line}</span>
                 </div>
               ))}
             </div>
