@@ -291,7 +291,7 @@ function renderBlock(block: InlineBlock, key: number): React.ReactNode {
         level === 1 ? 'text-2xl md:text-4xl mb-6 md:mb-8' :
         level === 2 ? 'text-2xl md:text-4xl mb-6 md:mb-8' :
         level === 3 ? 'text-xl md:text-2xl text-accent mb-5 md:mb-6' :
-                      'text-lg font-black mb-4 mt-4';
+                      'text-base md:text-lg mb-4 mt-4';
       const cls = `font-black uppercase tracking-tight leading-snug ${size} max-w-none ${
         level === 3 ? 'text-accent' : 'text-text-primary'
       }`;
