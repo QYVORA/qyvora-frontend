@@ -146,7 +146,7 @@ const InlineCode: React.FC<{ code: string }> = ({ code }) => {
     <button
       onClick={copy}
       title="Click to copy"
-      className={`group/inline inline-flex items-center gap-1.5 mx-1 px-1.5 h-[1.1rem] rounded-[4px] border font-mono text-[10px] leading-none transition-all align-middle whitespace-nowrap ${
+      className={`group/inline inline-flex items-center gap-1 mx-0.5 px-1.5 py-px rounded-[4px] border font-mono text-[10px] leading-snug transition-all align-middle whitespace-nowrap ${
         copied
           ? 'border-accent/50 bg-accent-dim text-accent'
           : 'border-border bg-code-bg text-accent hover:border-accent/40'
