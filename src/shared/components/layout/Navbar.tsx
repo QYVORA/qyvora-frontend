@@ -145,7 +145,7 @@ const Navbar: React.FC = React.memo(() => {
                       onKeyDown={(e) => { if (e.key === 'Escape') setOpenDropdown(null); }}
                       role="menu"
                     >
-                      <div className={`p-2 ${group.items.length <= 2 ? 'grid grid-cols-2 gap-1.5' : 'flex flex-col gap-1'}`}>
+                      <div className="p-2 grid grid-rows-2 grid-flow-col gap-1.5">
                         {group.items.map((item) => {
                           const linkClasses = `flex flex-col gap-0.5 px-4 py-3 rounded-xl text-left transition-colors ${
                             isActive(item.path)
