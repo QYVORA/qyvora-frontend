@@ -36,10 +36,10 @@ const TOP_THREE_RING = [
 const TOP_THREE_RANK_COLOR = ['text-yellow-400', 'text-gray-300', 'text-amber-600'];
 
 const CELL_SIZE_SM = 64;
-const CELL_SIZE_LG = 96;
+const CELL_SIZE_LG = 72;
 const GAP = 4;
 const GRID_COLUMNS_SM = 8;
-const GRID_COLUMNS_LG = 6;
+const GRID_COLUMNS_LG = 8;
 
 type Period = 'all' | 'week' | 'month';
 

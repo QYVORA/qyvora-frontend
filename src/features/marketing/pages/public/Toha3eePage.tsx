@@ -306,7 +306,7 @@ const Toha3eePage = () => {
             </div>
           </div>
         </PublicSnapSection>
-        <RelatedContentSection items={getRelatedTools(t, "/toha3ee")} />
+        <RelatedContentSection items={getRelatedTools(t, "/toha3ee")} snap />
 
         <section className="relative w-full min-h-dvh snap-section bg-bg-alt">
           <LandingFinalCtaSection user={user} />

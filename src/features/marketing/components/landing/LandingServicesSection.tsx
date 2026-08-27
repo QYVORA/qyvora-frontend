@@ -286,7 +286,7 @@ const LandingServicesSection: React.FC = () => {
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5, delay: 0.4 }}
-            className="mt-4 shrink-0"
+            className="mt-4 shrink-0 lg:hidden"
           >
             <Link
               to="/services"

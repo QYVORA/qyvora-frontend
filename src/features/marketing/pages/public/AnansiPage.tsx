@@ -304,7 +304,7 @@ const AnansiPage = () => {
           </div>
         </PublicSnapSection>
 
-        <RelatedContentSection items={getRelatedTools(t, '/anansi')} />
+        <RelatedContentSection items={getRelatedTools(t, '/anansi')} snap />
 
         <section className="relative w-full min-h-dvh snap-section bg-bg-alt">
           <LandingFinalCtaSection user={user} />

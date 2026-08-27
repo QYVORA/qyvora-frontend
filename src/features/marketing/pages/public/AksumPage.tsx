@@ -341,7 +341,7 @@ const AksumPage = () => {
             </div>
           </div>
         </PublicSnapSection>
-        <RelatedContentSection items={getRelatedTools(t, "/aksum")} />
+        <RelatedContentSection items={getRelatedTools(t, "/aksum")} snap />
 
         <section className="relative w-full min-h-dvh snap-section bg-bg-alt">
           <LandingFinalCtaSection user={user} />

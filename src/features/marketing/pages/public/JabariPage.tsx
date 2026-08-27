@@ -349,7 +349,7 @@ const JabariPage = () => {
             </div>
           </div>
         </PublicSnapSection>
-        <RelatedContentSection items={getRelatedTools(t, "/jabari")} />
+        <RelatedContentSection items={getRelatedTools(t, "/jabari")} snap />
 
         <section className="relative w-full min-h-dvh snap-section bg-bg-alt">
           <LandingFinalCtaSection user={user} />

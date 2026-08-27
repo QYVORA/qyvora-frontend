@@ -37,7 +37,7 @@ const ToolDocumentationSection = ({
         <div className="flex items-start gap-3">
           <Icon className="mt-1 h-5 w-5 shrink-0 text-accent" />
           <div>
-            <h2 className="text-4xl md:text-6xl lg:text-7xl font-black tracking-tight leading-[1.02] text-text-primary">
+            <h2 className="text-3xl md:text-5xl lg:text-7xl font-black tracking-tight leading-[1.02] text-text-primary">
               {title} <span className="text-accent">{accent}</span>
             </h2>
             <p className="mt-4 text-base leading-relaxed text-text-secondary sm:text-lg lg:mt-5">{description}</p>

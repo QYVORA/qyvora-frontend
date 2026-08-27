@@ -49,8 +49,8 @@ const LandingMarketSection = () => {
   }, []);
 
   return (
-    <div className="relative bg-bg min-h-dvh lg:h-dvh flex flex-col overflow-hidden" data-nav-invert>
-      <div className="relative z-10 w-full h-full px-3 md:px-4 lg:px-6 py-10 sm:py-8 md:py-12 lg:py-16 flex flex-col lg:flex-row gap-10 sm:gap-10 lg:gap-24 lg:items-stretch">
+    <div className="relative bg-bg min-h-dvh lg:h-dvh flex flex-col overflow-hidden snap-section" data-nav-invert>
+      <div className="relative z-10 w-full h-full px-3 md:px-4 lg:px-6 py-10 sm:py-8 md:py-12 lg:py-12 flex flex-col lg:flex-row gap-10 sm:gap-10 lg:gap-20 lg:items-stretch">
         {/* Header column */}
         <div className="shrink-0 lg:w-[420px] xl:w-[480px] flex flex-col lg:justify-center">
           <h2 className="text-3xl md:text-5xl lg:text-6xl font-black text-text-primary tracking-tighter leading-none mb-10">
@@ -109,17 +109,17 @@ const LandingMarketSection = () => {
                       loading="lazy"
                     />
                   </div>
-                  <div className="flex flex-1 flex-col p-4 gap-2">
+                  <div className="flex flex-1 flex-col p-3 gap-1.5">
                     <span className="self-start inline-flex items-center gap-1.5 px-2 py-0.5 rounded-lg bg-accent/10 border border-accent/20 text-[9px] font-black uppercase text-accent tracking-widest">
                       <IconMarketplace className="h-2.5 w-2.5" /> {t('landing.market.intelligenceAsset')}
                     </span>
                     <h3 className="text-sm sm:text-base font-black leading-snug text-text-primary group-hover:text-accent transition-colors tracking-tight line-clamp-2">
                       {prod.title}
                     </h3>
-                    <p className="text-xs text-text-muted/70 line-clamp-2 leading-relaxed font-mono flex-1">
+                    <p className="text-xs text-text-muted/70 line-clamp-1 leading-relaxed font-mono flex-1">
                       {prod.description || t('landing.market.defaultDesc')}
                     </p>
-                    <div className="mt-auto flex items-center justify-between pt-2">
+                    <div className="mt-auto flex items-center justify-between pt-1">
                       <span className="text-xs font-black text-accent uppercase tracking-widest">{prod.cpPrice} CP</span>
                       <Link to="/zero-day-market" className="text-[10px] font-black uppercase tracking-widest text-accent hover:underline">
                         {t('landing.market.viewAll')}
