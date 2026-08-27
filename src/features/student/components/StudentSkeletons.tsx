@@ -423,8 +423,8 @@ export const BootcampRoomSkeleton = () => (
         <S key={i} className="w-11 h-11 rounded-lg" />
       ))}
     </div>
-    <main className="w-full px-3 pt-8 md:px-4 lg:px-6 lg:pl-80">
-      {/* Header */}
+    <main className="w-full px-3 pt-8 md:px-4 lg:px-6 lg:pl-80 space-y-8">
+      {/* Room header */}
       <header className="mb-8 space-y-4">
         <S className="h-3 w-48 rounded" />
         <S className="h-10 w-64 rounded" />
@@ -434,25 +434,29 @@ export const BootcampRoomSkeleton = () => (
         </div>
       </header>
       {/* Progress */}
-      <div className="mb-8 space-y-2">
+      <div className="space-y-2">
         <div className="flex items-center justify-between">
           <S className="h-3 w-32 rounded" />
           <S className="h-3 w-16 rounded" />
         </div>
         <S className="h-2 w-full rounded-full" />
       </div>
-      {/* Steps */}
-      <div className="space-y-6">
-        {Array.from({ length: 2 }).map((_, i) => (
+      {/* Step cards (all rendered on one page) */}
+      <div className="space-y-8">
+        {Array.from({ length: 3 }).map((_, i) => (
           <div key={i} className="rounded-2xl border border-border/50 bg-bg-card p-5 space-y-3">
-            <S className="h-5 w-40 rounded" />
+            <div className="flex items-center gap-3">
+              <S className="h-5 w-5 rounded shrink-0" />
+              <S className="h-5 w-40 rounded" />
+            </div>
             <S className="h-4 w-full rounded" />
-            <S className="h-4 w-3/4 rounded" />
+            <S className="h-4 w-11/12 rounded" />
+            <S className="h-4 w-4/5 rounded" />
           </div>
         ))}
       </div>
       {/* Bottom nav skeleton */}
-      <div className="flex items-center justify-between gap-3 border-t border-border/50 pt-6 pb-16 mt-8">
+      <div className="flex items-center justify-between gap-3 border-t border-border/50 pt-6 pb-16">
         <S className="h-11 w-24 rounded-xl" />
         <S className="h-3 w-16" />
         <S className="h-11 w-24 rounded-xl" />
@@ -489,19 +493,41 @@ export const CompetitiveSkeleton = () => (
 
 /* ─── Course Lesson Skeleton ──────────────────────────────────────────────── */
 export const CourseLessonSkeleton = () => (
-  <div className="bg-bg px-3 pb-20 pt-8 md:px-4 lg:px-6 lg:pb-24">
-    <div className="space-y-8">
-      {/* Progress bar */}
-      <div className="rounded-2xl border border-border/50 bg-bg-card p-4 md:px-6 md:py-5">
-        <div className="mb-3 flex items-center justify-between">
-          <S className="h-3 w-24 rounded" />
-          <S className="h-5 w-12 rounded" />
-        </div>
-        <S className="h-2 w-full rounded-full" />
+  <div className="bg-bg px-3 md:px-4 lg:px-6 pt-8 pb-20 lg:pb-24 space-y-8">
+    {/* Hero */}
+    <div className="relative flex flex-col justify-center overflow-hidden">
+      <div className="absolute inset-0 opacity-10">
+        <div className="w-full h-full bg-[repeating-linear-gradient(90deg,transparent,transparent_39px,rgba(255,255,255,0.05)_39px,rgba(255,255,255,0.05)_40px)] bg-[length:40px_40px]" />
       </div>
-      {/* Step renderer area */}
-      <div className="wc-prose">
-        <section className="w-full border-t border-border/10 py-12 first:border-t-0 md:py-16">
+      <div className="relative z-10 py-8 md:py-10 space-y-6">
+        <S className="h-16 md:h-20 lg:h-24 w-64 md:w-96 rounded-lg" />
+        <S className="h-4 md:h-5 w-72 md:w-[28rem] rounded" />
+        <div className="flex flex-wrap items-center gap-4 sm:gap-6">
+          <div className="flex items-center gap-2">
+            <S className="h-7 md:h-8 w-16 rounded" />
+            <S className="h-2.5 w-14 rounded" />
+          </div>
+          <div className="flex items-center gap-2">
+            <S className="h-7 md:h-8 w-12 rounded" />
+            <S className="h-2.5 w-16 rounded" />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    {/* Progress bar */}
+    <div className="rounded-2xl border border-border/50 bg-bg-card px-4 py-4 md:px-6 md:py-5">
+      <div className="mb-3 flex items-center justify-between">
+        <S className="h-3 w-24 rounded" />
+        <S className="h-5 w-12 rounded" />
+      </div>
+      <S className="h-2 w-full rounded-full" />
+    </div>
+
+    {/* Lesson cards (all rendered on one page) */}
+    <div className="space-y-4">
+      {Array.from({ length: 3 }).map((_, i) => (
+        <div key={i} className="rounded-2xl border border-border/10 py-12 md:py-16">
           <div className="mb-8 flex items-center gap-4 md:mb-12">
             <S className="h-12 w-12 rounded-xl" />
             <S className="h-4 w-2/3 rounded" />
@@ -513,14 +539,15 @@ export const CourseLessonSkeleton = () => (
             <S className="h-4 w-full rounded" />
             <S className="h-4 w-3/4 rounded" />
           </div>
-        </section>
-      </div>
-      {/* Navigation */}
-      <div className="flex flex-col sm:flex-row flex-wrap items-stretch sm:items-center gap-3 border-t border-border/5 pt-6 pb-16 mt-4">
-        <S className="h-11 flex-1 rounded-xl sm:max-w-32" />
-        <S className="order-3 h-3 w-16 self-center sm:order-none" />
-        <S className="h-11 flex-1 rounded-xl sm:max-w-36" />
-      </div>
+        </div>
+      ))}
+    </div>
+
+    {/* Navigation */}
+    <div className="flex flex-col sm:flex-row flex-wrap items-stretch sm:items-center gap-3 border-t border-border/5 pt-6 pb-16 mt-4">
+      <S className="h-11 flex-1 rounded-xl sm:max-w-32" />
+      <S className="order-3 h-3 w-16 self-center sm:order-none" />
+      <S className="h-11 flex-1 rounded-xl sm:max-w-36" />
     </div>
   </div>
 );
