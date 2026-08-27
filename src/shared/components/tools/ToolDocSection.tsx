@@ -13,7 +13,8 @@ interface ToolDocSectionProps {
 
 /**
  * Consistent section wrapper for tool documentation pages.
- * Provides uniform padding, max-width, and optional section header.
+ * Full-width with side padding — matches site-wide layout (px-3 md:px-4 lg:px-6).
+ * No max-w-4xl centering — documentation content fills the viewport width.
  */
 const ToolDocSection: React.FC<ToolDocSectionProps> = ({
   id,
@@ -28,7 +29,7 @@ const ToolDocSection: React.FC<ToolDocSectionProps> = ({
     id={id}
     className={cn('py-16 md:py-24 border-t border-border/10', className)}
   >
-    <div className="max-w-4xl mx-auto px-4 md:px-6">
+    <div className="px-3 md:px-4 lg:px-6">
       {(kicker || title) && (
         <div className="mb-10 md:mb-14">
           {kicker && (

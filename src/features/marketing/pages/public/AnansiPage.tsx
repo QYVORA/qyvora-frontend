@@ -366,14 +366,14 @@ const AnansiPage = () => {
 
       {/* ── Related ──────────────────────────────────────────────────────── */}
       <div className="py-16 md:py-24 border-t border-border/10">
-        <div className="max-w-4xl mx-auto px-4 md:px-6">
+        <div className="px-3 md:px-4 lg:px-6">
           <RelatedContentSection items={getRelatedTools(t, '/anansi')} />
         </div>
       </div>
 
       {/* ── CTA ──────────────────────────────────────────────────────────── */}
       <section className="py-16 md:py-24 bg-bg-alt border-t border-border/10">
-        <div className="max-w-4xl mx-auto px-4 md:px-6 text-center space-y-6">
+        <div className="px-3 md:px-4 lg:px-6 text-center space-y-6">
           <h2 className="text-3xl md:text-5xl font-black uppercase tracking-tight text-text-primary">
             Ready to <span className="text-accent">scan</span>?
           </h2>

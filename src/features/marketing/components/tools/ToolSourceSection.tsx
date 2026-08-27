@@ -86,10 +86,10 @@ const ToolSourceSection: React.FC<ToolSourceSectionProps> = ({
   return (
     <div
       id={id}
-      className={`relative w-full min-h-dvh snap-section flex flex-col odd:bg-bg even:bg-bg-alt`}
+      className="relative w-full py-16 md:py-24 border-t border-border/10"
       {...containerProps}
     >
-      <div className="w-full px-3 md:px-4 lg:px-6 pt-24 md:pt-28 lg:pt-32 pb-6 md:pb-8 lg:pb-10 my-auto">
+      <div className="w-full px-3 md:px-4 lg:px-6">
         <div className="flex flex-col gap-6 lg:gap-8">
           <ToolSectionHeader kicker={kicker} title={title} accent={accent} description={description} />
 

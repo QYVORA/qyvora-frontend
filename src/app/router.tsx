@@ -20,6 +20,7 @@ import Dobia from '../shared/components/Dobia';
 
 
 const LandingLayout = lazy(() => import('../shared/layouts/LandingLayout'));
+const ToolDocLayout = lazy(() => import('../shared/layouts/ToolDocLayout'));
 const StudentLayout = lazy(() => import('../features/student/layouts/StudentLayout'));
 const AdminLayout = lazy(() => import('../features/admin/layouts/AdminLayout'));
 
@@ -233,10 +234,6 @@ export const AppRouter = () => {
           <Route path="/leaderboard" element={<Wrap scope="Leaderboard"><LeaderboardPage /></Wrap>} />
           <Route path="/leaderboard/all" element={<Navigate to="/leaderboard" replace />} />
           <Route path="/zero-day-market" element={<Wrap scope="Market"><MarketPage /></Wrap>} />
-          <Route path="/anansi" element={<Wrap scope="Anansi"><AnansiPage /></Wrap>} />
-          <Route path="/toha3ee" element={<Wrap scope="Toha3ee"><Toha3eePage /></Wrap>} />
-          <Route path="/jabari" element={<Wrap scope="Jabari"><JabariPage /></Wrap>} />
-          <Route path="/aksum" element={<Wrap scope="Aksum"><AksumPage /></Wrap>} />
           <Route path="/blogs" element={<Wrap scope="Blogs"><BlogsPage /></Wrap>} />
           <Route path="/team" element={<Wrap scope="Team"><TeamPage /></Wrap>} />
           <Route path="/quiteroot" element={<Wrap scope="QuiteRoot"><QuiteRootPage /></Wrap>} />
@@ -249,6 +246,14 @@ export const AppRouter = () => {
 
           {/* Blog post route (individual posts still accessible) */}
           <Route path="/blogs/:slug" element={<Wrap scope="Blog"><BlogPostPage /></Wrap>} />
+        </Route>
+
+        {/* ── Tool documentation routes (no public navbar) ────────── */}
+        <Route element={<ToolDocLayout />}>
+          <Route path="/anansi" element={<Wrap scope="Anansi"><AnansiPage /></Wrap>} />
+          <Route path="/toha3ee" element={<Wrap scope="Toha3ee"><Toha3eePage /></Wrap>} />
+          <Route path="/jabari" element={<Wrap scope="Jabari"><JabariPage /></Wrap>} />
+          <Route path="/aksum" element={<Wrap scope="Aksum"><AksumPage /></Wrap>} />
         </Route>
 
         {/* ── Auth routes ───────── */}
