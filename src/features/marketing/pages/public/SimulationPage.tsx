@@ -164,7 +164,7 @@ const SimulationPage = () => {
                   <span className="text-[9px] font-black uppercase tracking-[0.3em] text-accent">
                     {t(`simulations.${key}.tag`)}
                   </span>
-                  <h2 className="text-4xl md:text-6xl lg:text-7xl font-black text-text-primary tracking-tighter leading-tight mt-2">
+                  <h2 className="text-3xl md:text-5xl lg:text-7xl font-black text-text-primary tracking-tighter leading-tight mt-2">
                     {t(`simulations.${key}.demoTitle`)}
                   </h2>
                 </div>

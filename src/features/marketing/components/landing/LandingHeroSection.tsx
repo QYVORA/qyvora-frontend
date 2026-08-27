@@ -133,7 +133,7 @@ const LandingHeroSection: React.FC<LandingHeroSectionProps> = ({
         <div className="
           flex flex-col items-start lg:justify-center
           px-3 md:px-4 lg:px-6
-          pt-20 sm:pt-20 lg:pt-24
+          pt-24 md:pt-28 lg:pt-32
           pb-14 sm:pb-16 lg:pb-16
           space-y-0
           w-full

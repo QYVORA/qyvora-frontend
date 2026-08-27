@@ -93,7 +93,7 @@ export function StudentHeroSection({
       )}
 
       <div className="relative z-10 w-full flex-1 mx-auto grid grid-cols-1 lg:grid-cols-2 text-left items-center h-full">
-        <div className={`flex flex-col items-start ${fullHeight ? 'justify-center py-16 md:py-24' : 'justify-start py-8 md:py-10'} px-3 md:px-4 lg:px-6`}>
+        <div className={`flex flex-col items-start ${fullHeight ? 'justify-center py-24 md:py-24' : 'justify-start py-12 md:py-10'} px-3 md:px-4 lg:px-6`}>
           <div className="w-full space-y-10 lg:space-y-12">
             <h1 className={`${titleClassName ?? 'text-4xl md:text-6xl'} font-black text-text-primary tracking-tight leading-[1.05]`}>
               {title}{' '}

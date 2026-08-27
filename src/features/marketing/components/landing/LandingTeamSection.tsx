@@ -9,7 +9,7 @@ import { useTranslation } from 'react-i18next';
 const TeamCard = ({ member }: { member: TeamMember }) => (
   <Link
     to={member.handle ? `/@${member.handle}` : undefined}
-    className="group relative block h-[280px] sm:h-[320px] w-[min(85vw,360px)] sm:w-[min(52vw,380px)] md:w-[min(42vw,430px)] lg:w-[min(36vw,470px)] xl:w-[min(31vw,520px)] shrink-0 mr-4 md:mr-5 card-accent bg-bg-card overflow-hidden transition-all duration-300 hover:shadow-[var(--card-shadow)]"
+    className="group relative block h-[340px] sm:h-[400px] w-[min(85vw,360px)] sm:w-[min(52vw,380px)] md:w-[min(42vw,430px)] lg:w-[min(36vw,470px)] xl:w-[min(31vw,520px)] shrink-0 mr-4 md:mr-5 card-accent bg-bg-card overflow-hidden transition-all duration-300 hover:shadow-[var(--card-shadow)]"
   >
     {/* Member photo as the card background */}
     <img
@@ -101,7 +101,7 @@ const LandingTeamSection = () => {
           </div>
         ) : (
           /* Large card infinite carousel — grabbable strip, cards fill it fully */
-          <div className="relative -mx-3 md:-mx-4 lg:-mx-6 flex-1 min-h-[400px] sm:min-h-0 min-w-0 overflow-x-clip overflow-y-visible flex items-center py-3">
+          <div className="relative -mx-3 md:-mx-4 lg:-mx-6 flex-1 min-h-[400px] sm:min-h-0 min-w-0 overflow-x-hidden overflow-y-visible flex items-center py-3">
             <DragMarquee speed={24} trackClassName="mr-4 md:mr-5" className="w-full">
               {teamData.map((member) => (
                 <TeamCard key={member.id} member={member} />

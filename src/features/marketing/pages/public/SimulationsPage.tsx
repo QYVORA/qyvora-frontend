@@ -116,7 +116,7 @@ const SimulationsPage = () => {
     );
 
     const heading = (
-      <h2 className="text-4xl md:text-6xl lg:text-7xl font-black text-text-primary tracking-tighter leading-tight mt-2">
+      <h2 className="text-3xl md:text-5xl lg:text-7xl font-black text-text-primary tracking-tighter leading-tight mt-2">
         {t(`simulations.${sim.id}.title`)}{' '}
         <span className="text-accent">{t(`simulations.${sim.id}.titleAccent`)}</span>
       </h2>
