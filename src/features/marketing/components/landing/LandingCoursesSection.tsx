@@ -51,7 +51,7 @@ const CourseCard: React.FC<{ course: CourseEntry }> = ({ course }) => {
             {t(`landing.courses.list.${course.tKey}.desc`)}
           </p>
 
-          <div className="mt-3 pt-3 border-t border-border/50 flex items-center gap-2 text-text-muted group-hover:text-accent transition-colors">
+          <div className="mt-3 pt-3 flex items-center gap-2 text-text-muted group-hover:text-accent transition-colors">
             <Zap className="w-3.5 h-3.5 shrink-0" />
             <span className="text-[10px] font-black uppercase tracking-widest">{t('landing.courses.viewCourse', { defaultValue: 'View Course' })}</span>
             <IconArrowRight size={14} className="transition-transform group-hover:translate-x-1" />
