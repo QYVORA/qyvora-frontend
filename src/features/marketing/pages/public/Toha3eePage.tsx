@@ -187,9 +187,9 @@ const Toha3eePage = () => {
                 'internal/script/     .toha3ee language',
                 'pkg/certutil/        CA and TLS certificates',
               ].map((line) => (
-                <div key={line} className="flex items-center gap-2 py-1 px-2 rounded bg-bg-elevated/50">
+                <div key={line} className="flex items-center gap-2 py-1 px-2 rounded bg-bg-elevated/50 min-w-0">
                   <span className="text-accent shrink-0">{'>'}</span>
-                  <span className="text-text-muted">{line}</span>
+                  <span className="text-text-muted min-w-0 break-words">{line}</span>
                 </div>
               ))}
             </div>
@@ -319,9 +319,9 @@ const Toha3eePage = () => {
               </div>
               <div className="pl-4 space-y-1.5 border-l border-accent/30">
                 {CONSOLE_SESSION.map((line) => (
-                  <div key={line.cmd} className="flex items-start gap-2">
+                  <div key={line.cmd} className="flex items-start gap-2 min-w-0">
                     <span className="text-accent shrink-0 pt-0.5">toha3ee&gt;</span>
-                    <span className="text-text-primary shrink-0">{line.cmd}</span>
+                    <span className="text-text-primary min-w-0 break-words">{line.cmd}</span>
                     <span className="text-text-muted leading-relaxed break-words">, {line.note}</span>
                   </div>
                 ))}
