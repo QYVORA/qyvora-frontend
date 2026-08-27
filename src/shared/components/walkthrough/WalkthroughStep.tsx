@@ -69,7 +69,7 @@ export function WalkthroughStep({
             <Target className="w-4 h-4 text-accent shrink-0 mt-0.5" />
             <div>
               <p className="text-[9px] font-black uppercase tracking-widest text-accent mb-1">Mission</p>
-              <p className="text-sm font-mono text-text-secondary leading-relaxed">{mission}</p>
+              <p className="text-sm font-mono text-text-secondary leading-[2]">{mission}</p>
             </div>
           </div>
         )}
@@ -92,7 +92,7 @@ export function WalkthroughStep({
                       <span aria-hidden="true" className="absolute top-7 -bottom-5 left-1/2 -translate-x-1/2 w-px bg-border/40" />
                     )}
                   </div>
-                  <p className="text-sm md:text-base font-mono text-text-secondary leading-relaxed pt-1 min-w-0">{obj}</p>
+                  <p className="text-sm md:text-base font-mono text-text-secondary leading-[2] md:leading-[2.2] pt-1 min-w-0">{obj}</p>
                 </li>
               ))}
             </ol>
@@ -100,7 +100,7 @@ export function WalkthroughStep({
         )}
 
         {/* Narrative — continuous reading flow */}
-        <div className="w-full text-base md:text-lg text-text-secondary font-mono leading-relaxed">
+        <div className="w-full text-sm md:text-base text-text-secondary font-mono leading-[2] md:leading-[2.2] mb-6 md:mb-8">
           <CodeBlockRenderer text={narrative} />
         </div>
 

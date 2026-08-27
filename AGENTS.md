@@ -53,6 +53,10 @@ h2 compact bento sections: **title only, no description**.
 - **Icons**: `lucide-react` only. Named imports. No emoji as icons
 - **i18n**: all user-facing strings through `useTranslation()`
 - **LearningToolbar**: all walkthrough pages (labs, courses, bootcamp rooms) must include `LearningToolbar` with a fullscreen toggle using `useRoomSession()`. Never place the fullscreen button inline in page content — it belongs exclusively in the toolbar (desktop fixed sidebar + mobile floating panel). Use `<Minimize2>`/`<Maximize2>` icons from lucide-react. If the page already has a `LearningToolbar`, add the fullscreen action to its existing `actions` array
+- **Walkthrough text styling**: all walkthrough/learning page text must match the blog page text styling. Body text: `text-sm md:text-base text-text-secondary font-mono leading-[2] md:leading-[2.2] mb-6 md:mb-8`. Headings: `text-2xl md:text-4xl font-black uppercase tracking-tight`. The walkthrough is inspired by the blog styling — clean, bold, well-spaced monospaced text. Never use `leading-relaxed` on walkthrough text — always `leading-[2] md:leading-[2.2]`
+- **Walkthrough steps on one page**: all walkthrough pages (courses, labs, bootcamp rooms) must render ALL step cards on a single page. Never navigate to a different page/route for the next step. The Next/Continue button scrolls to the next step card on the same page (`scrollIntoView`). Each step card gets an `id` attribute for scroll targeting. This avoids unnecessary page reloads and keeps the student in context
+- **Walkthrough full-width text**: walkthrough content must NOT use `wc-prose` (max-width: 64rem) width constraints. Text should fill the full viewport width like blog pages (`max-w-none`). The `wc-prose` class is only for code blocks and terminals, not for reading text
+- **CommandBlock compact**: walkthrough command blocks must use compact padding: `px-3 py-1.5` header, `px-3 py-2` content, `space-y-1.5` gaps. Never use `p-4` padding on command block content — it wastes vertical space when multiple blocks are stacked
 
 ## Accessibility (Mandatory)
 

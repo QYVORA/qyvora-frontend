@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { useParams, Link, useSearchParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { ArrowLeft, ArrowRight, Lock, Target, Minimize2, Maximize2 } from 'lucide-react';
@@ -21,13 +21,22 @@ import type { Lesson } from '@/features/student/data/courses';
 
 const STORAGE_KEY = 'qyvora_course_progress';
 
-const LessonViewer: React.FC<{ lesson: Lesson; number: number; courseId?: string; backUrl?: string }> = ({ lesson, number, courseId, backUrl }) => {
+const LessonViewer: React.FC<{
+  lesson: Lesson;
+  number: number;
+  isActive: boolean;
+  isCompleted: boolean;
+  courseId?: string;
+  backUrl?: string;
+  showBack?: boolean;
+}> = ({ lesson, number, isActive, isCompleted, courseId, backUrl, showBack }) => {
   return (
     <StepRenderer
       stepNumber={number}
       title={lesson.title}
-      isActive
-      backUrl={backUrl}
+      isActive={isActive}
+      isCompleted={isCompleted}
+      backUrl={showBack ? backUrl : undefined}
       backLabel="Back to Courses"
       badges={
         <>
@@ -43,7 +52,7 @@ const LessonViewer: React.FC<{ lesson: Lesson; number: number; courseId?: string
         </>
       }
     >
-      <div className="wc-prose text-base sm:text-lg leading-relaxed whitespace-pre-wrap overflow-x-auto text-text-primary w-full mb-10 md:mb-14">
+      <div className="text-sm md:text-base text-text-secondary font-mono leading-[2] md:leading-[2.2] mb-6 md:mb-8 max-w-none overflow-x-auto">
         <CodeBlockRenderer text={lesson.instruction} />
       </div>
 
@@ -116,12 +125,25 @@ const CourseLessonPage: React.FC = () => {
       ? Math.min(resumeIdx, Math.max(totalLessons - 1, 0))
       : 0;
 
-  const lesson = course?.lessons[currentLessonIdx];
   const completedCount = completedLessons.size;
   const progress = totalLessons > 0 ? Math.round((completedCount / totalLessons) * 100) : 0;
   const allComplete = totalLessons > 0 && completedLessons.size === totalLessons;
   const [celebrationOpen, setCelebrationOpen] = useCelebrationTrigger(allComplete);
   const { fullscreen, toggleFullscreen } = useRoomSession();
+
+  const scrollToLesson = useCallback((idx: number) => {
+    if (totalLessons === 0) return;
+    const clamped = Math.max(0, Math.min(idx, totalLessons - 1));
+    setSearchParams((prev) => {
+      const next = new URLSearchParams(prev);
+      next.set('lesson', String(clamped));
+      return next;
+    }, { replace: true });
+    const el = document.getElementById(`lesson-${clamped}`);
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }, [totalLessons, setSearchParams]);
 
   const saveProgress = useCallback((lessons: Set<string>, idx: number) => {
     if (!courseId) return;
@@ -131,31 +153,21 @@ const CourseLessonPage: React.FC = () => {
     }));
   }, [courseId]);
 
-  const goToLesson = useCallback((idx: number) => {
-    if (totalLessons === 0) return;
-    const clamped = Math.max(0, Math.min(idx, totalLessons - 1));
-    setSearchParams((prev) => {
-      const next = new URLSearchParams(prev);
-      next.set('lesson', String(clamped));
-      return next;
-    }, { replace: true });
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }, [totalLessons, setSearchParams]);
-
   const markComplete = useCallback(() => {
+    const lesson = course?.lessons[currentLessonIdx];
     if (!lesson) return;
     const next = new Set([...completedLessons, lesson.id]);
     setCompletedLessons(next);
     saveProgress(next, currentLessonIdx);
-  }, [lesson, completedLessons, currentLessonIdx, saveProgress]);
+  }, [course, completedLessons, currentLessonIdx, saveProgress]);
 
   const goNext = useCallback(() => {
-    if (currentLessonIdx < totalLessons - 1) goToLesson(currentLessonIdx + 1);
-  }, [currentLessonIdx, totalLessons, goToLesson]);
+    if (currentLessonIdx < totalLessons - 1) scrollToLesson(currentLessonIdx + 1);
+  }, [currentLessonIdx, totalLessons, scrollToLesson]);
 
   const goPrev = useCallback(() => {
-    if (currentLessonIdx > 0) goToLesson(currentLessonIdx - 1);
-  }, [currentLessonIdx, goToLesson]);
+    if (currentLessonIdx > 0) scrollToLesson(currentLessonIdx - 1);
+  }, [currentLessonIdx, scrollToLesson]);
 
   useEffect(() => {
     const handleKey = (e: KeyboardEvent) => {
@@ -167,22 +179,33 @@ const CourseLessonPage: React.FC = () => {
     return () => window.removeEventListener('keydown', handleKey);
   }, [goNext, goPrev]);
 
+  // Scroll to initial lesson on mount
+  useEffect(() => {
+    if (lessonParamValid) {
+      const timer = setTimeout(() => {
+        const el = document.getElementById(`lesson-${lessonParam}`);
+        if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 100);
+      return () => clearTimeout(timer);
+    }
+  }, [lessonParamValid, lessonParam]);
+
   useEffect(() => {
     window.dispatchEvent(new CustomEvent('course:updateMeta', {
       detail: {
         currentLessonIdx,
         totalLessons,
         progress,
-        lesson: lesson ? {
-          hasTerminal: lesson.hasTerminal,
-          hasCodePlayground: lesson.hasCodePlayground,
-          quiz: lesson.quiz,
+        lesson: course?.lessons[currentLessonIdx] ? {
+          hasTerminal: course.lessons[currentLessonIdx].hasTerminal,
+          hasCodePlayground: course.lessons[currentLessonIdx].hasCodePlayground,
+          quiz: course.lessons[currentLessonIdx].quiz,
         } : null,
       },
     }));
-  }, [currentLessonIdx, totalLessons, progress, lesson]);
+  }, [currentLessonIdx, totalLessons, progress, course]);
 
-  if (!course || !lesson) {
+  if (!course) {
     return (
       <div className="min-h-screen bg-bg flex items-center justify-center">
         <div className="text-center">
@@ -210,20 +233,17 @@ const CourseLessonPage: React.FC = () => {
             to="/dashboard/marketplace"
             className="inline-flex items-center gap-2 px-6 py-3 bg-accent text-on-accent rounded-xl text-[10px] font-black uppercase tracking-widest transition-all hover:brightness-110 font-mono"
           >
-            Unlock Course <ArrowRight className="h-3.5 w-3.5" />
+            Unlock Course <ArrowRight className="h-3.5 h-3.5" />
           </Link>
         </div>
       </div>
     );
   }
 
-  const isCompleted = completedLessons.has(lesson.id);
-  const isLastLesson = currentLessonIdx === totalLessons - 1;
-
   return (
     <FadeIn>
     <div className="bg-bg">
-      <SEO title={`${course.title} | ${lesson.title}`} description={course.description} noindex />
+      <SEO title={course.title} description={course.description} noindex />
 
       <CelebrationModal
         open={celebrationOpen}
@@ -246,17 +266,15 @@ const CourseLessonPage: React.FC = () => {
       />
 
       <div className="px-3 md:px-4 lg:px-6 pt-8 pb-20 lg:pb-24 space-y-8">
-        {currentLessonIdx === 0 && (
-          <StudentHeroSection
-            fullHeight={false}
-            title={course.title}
-            description={`${completedCount} of ${totalLessons} lessons completed`}
-            stats={[
-              { label: 'Progress', value: `${progress}%`, accent: true },
-              { label: 'Lessons', value: `${completedCount}/${totalLessons}` },
-            ]}
-          />
-        )}
+        <StudentHeroSection
+          fullHeight={false}
+          title={course.title}
+          description={`${completedCount} of ${totalLessons} lessons completed`}
+          stats={[
+            { label: 'Progress', value: `${progress}%`, accent: true },
+            { label: 'Lessons', value: `${completedCount}/${totalLessons}` },
+          ]}
+        />
 
         {/* Progress bar */}
         {totalLessons > 0 && (
@@ -281,16 +299,31 @@ const CourseLessonPage: React.FC = () => {
           </div>
         )}
 
-        <LessonViewer lesson={lesson} number={currentLessonIdx + 1} courseId={courseId} backUrl="/dashboard/courses" />
+        {/* All lessons rendered on one page */}
+        <div className="space-y-4">
+          {course.lessons.map((lesson, i) => (
+            <div key={lesson.id} id={`lesson-${i}`}>
+              <LessonViewer
+                lesson={lesson}
+                number={i + 1}
+                isActive={i === currentLessonIdx}
+                isCompleted={completedLessons.has(lesson.id)}
+                courseId={courseId}
+                backUrl="/dashboard/courses"
+                showBack={i === 0}
+              />
+            </div>
+          ))}
+        </div>
 
         <LearningNav
           currentStep={currentLessonIdx}
           totalSteps={totalLessons}
-          isLastStep={isLastLesson}
+          isLastStep={currentLessonIdx === totalLessons - 1}
           isComplete={allComplete}
           onPrev={currentLessonIdx > 0 ? goPrev : undefined}
-          onNext={!isLastLesson ? goNext : undefined}
-          onComplete={!allComplete && !isCompleted ? markComplete : undefined}
+          onNext={currentLessonIdx < totalLessons - 1 ? goNext : undefined}
+          onComplete={!allComplete && !completedLessons.has(course.lessons[currentLessonIdx]?.id) ? markComplete : undefined}
           completeLabel={t('learning.nav.complete')}
           nextLabel="Next Lesson"
           nextLabelMobile="Next"
@@ -300,7 +333,7 @@ const CourseLessonPage: React.FC = () => {
               className="btn-primary inline-flex flex-1 md:flex-none items-center justify-center gap-1.5 sm:flex-none !rounded-xl !text-[10px] !font-black !uppercase !tracking-widest px-5 py-2.5"
             >
               <span>Back to Courses</span>
-              <ArrowRight className="h-3.5 w-3.5 shrink-0" />
+              <ArrowRight className="h-3.5 h-3.5 shrink-0" />
             </Link>
           }
         />
