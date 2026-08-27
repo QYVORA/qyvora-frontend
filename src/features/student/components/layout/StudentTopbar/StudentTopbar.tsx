@@ -245,10 +245,10 @@ const StudentTopbar = () => {
                 {/* Mobile profile trigger */}
                 <button
                   onClick={() => setProfileSheetOpen(true)}
-                  className="md:hidden flex items-center justify-center h-8 w-8 aspect-square flex-none rounded-lg overflow-hidden transition-colors border border-accent bg-black ml-auto"
+                  className="md:hidden flex items-center justify-center h-9 w-9 rounded-xl transition-colors border border-accent bg-black ml-auto"
                   aria-label="Open profile menu"
                 >
-                  <Identicon value={user?.username || '?'} size={32} className="w-full h-full" />
+                  <Identicon value={user?.username || '?'} size={36} className="w-full h-full" />
                 </button>
 
                 <MobileProfileSheet
@@ -320,10 +320,10 @@ const StudentTopbar = () => {
               {/* Mobile profile trigger */}
               <button
                 onClick={() => setProfileSheetOpen(true)}
-                className="md:hidden flex items-center justify-center h-8 w-8 aspect-square flex-none rounded-lg overflow-hidden transition-colors border border-accent bg-black ml-auto"
+                className="md:hidden flex items-center justify-center h-9 w-9 rounded-xl transition-colors border border-accent bg-black ml-auto"
                 aria-label="Open profile menu"
               >
-                <Identicon value={user?.username || '?'} size={32} className="w-full h-full" />
+                <Identicon value={user?.username || '?'} size={36} className="w-full h-full" />
               </button>
 
               <MobileProfileSheet
@@ -378,10 +378,10 @@ const StudentTopbar = () => {
             {/* Mobile profile trigger */}
             <button
               onClick={() => setProfileSheetOpen(true)}
-              className="md:hidden flex items-center justify-center h-8 w-8 aspect-square flex-none rounded-lg overflow-hidden transition-colors border border-accent bg-black ml-auto"
+              className="md:hidden flex items-center justify-center h-9 w-9 rounded-xl transition-colors border border-accent bg-black ml-auto"
               aria-label="Open profile menu"
             >
-              <Identicon value={user?.username || '?'} size={32} className="w-full h-full" />
+              <Identicon value={user?.username || '?'} size={36} className="w-full h-full" />
             </button>
 
             <MobileProfileSheet
@@ -456,10 +456,10 @@ const StudentTopbar = () => {
             {/* Mobile profile trigger */}
             <button
               onClick={() => setProfileSheetOpen(true)}
-              className="md:hidden flex items-center justify-center h-8 w-8 aspect-square flex-none rounded-lg overflow-hidden transition-colors border border-accent bg-black ml-auto"
+              className="md:hidden flex items-center justify-center h-9 w-9 rounded-xl transition-colors border border-accent bg-black ml-auto"
               aria-label="Open profile menu"
             >
-              <Identicon value={user?.username || '?'} size={32} className="w-full h-full" />
+              <Identicon value={user?.username || '?'} size={36} className="w-full h-full" />
             </button>
 
             <MobileProfileSheet
@@ -536,11 +536,11 @@ const StudentTopbar = () => {
             {/* Mobile profile trigger */}
             <button
               onClick={() => setProfileSheetOpen(true)}
-              className="md:hidden flex items-center justify-center h-8 w-8 aspect-square flex-none rounded-lg overflow-hidden transition-colors border border-accent bg-black ml-auto"
+              className="md:hidden flex items-center justify-center h-9 w-9 rounded-xl transition-colors border border-accent bg-black ml-auto"
               aria-label="Open profile menu"
               data-tour-id="tour-profile-mobile"
             >
-              <Identicon value={user?.username || '?'} size={32} className="w-full h-full" />
+              <Identicon value={user?.username || '?'} size={36} className="w-full h-full" />
             </button>
 
             <MobileProfileSheet

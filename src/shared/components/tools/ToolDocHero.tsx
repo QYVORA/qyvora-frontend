@@ -27,7 +27,7 @@ const ToolDocHero: React.FC<ToolDocHeroProps> = ({
       <div className="w-full h-full bg-[repeating-linear-gradient(90deg,transparent,transparent_39px,rgba(255,255,255,0.05)_39px,rgba(255,255,255,0.05)_40px)] bg-[length:40px_40px]" />
     </div>
 
-    <div className="relative z-10 max-w-4xl mx-auto px-4 md:px-6">
+    <div className="relative z-10 px-3 md:px-4 lg:px-6">
       <div className="flex flex-col lg:flex-row items-start lg:items-center gap-8 lg:gap-12">
         {/* Left: text content */}
         <div className="flex-1 min-w-0">
