@@ -72,7 +72,7 @@ const StepCard: React.FC<Props> = ({
       footer={<div className="flex items-center justify-between border-t border-border/5 pt-6" onClick={(e) => e.stopPropagation()}><button onClick={onReportIssue} className="min-h-[44px] text-[10px] font-bold uppercase tracking-widest text-text-muted hover:text-accent transition-colors flex items-center gap-1.5 opacity-100 lg:opacity-0 lg:group-hover:opacity-100"><Flag className="h-3 w-3" />{t('student.bootcampRoom.stepCard.reportIssue')}</button>{isActive && !isViewed && <span className="text-[10px] font-bold uppercase tracking-widest text-accent/40">{t('student.bootcampRoom.stepCard.unread')}</span>}</div>}
     >
 
-    <div className={`wc-prose w-full text-base sm:text-lg leading-relaxed whitespace-pre-wrap overflow-x-auto transition-colors ${isActive ? 'text-text-primary' : 'text-text-secondary'} mb-10 md:mb-14`}>
+    <div className={`w-full text-sm md:text-base font-mono leading-[2] md:leading-[2.2] overflow-x-auto transition-colors ${isActive ? 'text-text-primary' : 'text-text-secondary'} mb-6 md:mb-8`}>
       <CodeBlockRenderer text={step.instruction} />
     </div>
 
