@@ -141,19 +141,13 @@ const Navbar: React.FC = React.memo(() => {
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: -4 }}
                       transition={{ duration: 0.15 }}
-                      className="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-fit min-w-[320px] rounded-2xl border border-border/20 bg-bg-card shadow-xl overflow-hidden"
+                      className="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-fit min-w-[280px] rounded-2xl border border-border/20 bg-bg-card shadow-xl overflow-hidden"
                       onKeyDown={(e) => { if (e.key === 'Escape') setOpenDropdown(null); }}
                       role="menu"
                     >
-                      <div className="flex items-center justify-between px-5 pt-4 pb-3 border-b border-border/20">
-                        <h3 className="text-[9px] font-black uppercase tracking-widest text-text-muted">
-                          {t(NAV_GROUP_LABELS[group.key] || group.label)}
-                        </h3>
-                        <span className="h-1.5 w-1.5 rounded-full bg-accent" aria-hidden="true" />
-                      </div>
-                      <div className="p-2 grid grid-cols-2 gap-1.5">
+                      <div className={`p-2 ${group.items.length <= 2 ? 'grid grid-cols-2 gap-1.5' : 'flex flex-col gap-1'}`}>
                         {group.items.map((item) => {
-                          const linkClasses = `flex flex-col gap-1 px-4 py-3 rounded-xl text-left transition-colors ${
+                          const linkClasses = `flex flex-col gap-0.5 px-4 py-3 rounded-xl text-left transition-colors ${
                             isActive(item.path)
                               ? 'bg-accent/5 text-accent'
                               : 'text-text-primary hover:bg-bg-elevated hover:text-accent'

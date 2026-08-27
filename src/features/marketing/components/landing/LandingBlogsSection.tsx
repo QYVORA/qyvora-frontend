@@ -70,7 +70,7 @@ const LandingBlogsSection = () => {
                     <p className="text-xs sm:text-sm text-text-secondary leading-relaxed font-mono border-l-2 border-accent/40 pl-3 py-1.5 mb-4 line-clamp-3 flex-1">
                       {post.excerpt}
                     </p>
-                    <div className="flex items-center justify-between gap-3 w-full pt-3 mt-auto border-t border-border/50">
+                    <div className="flex items-center justify-between gap-3 w-full pt-3 mt-auto">
                       <div className="flex items-center gap-2 min-w-0 flex-1">
                         <div className="w-8 h-8 rounded-full shrink-0 bg-accent/10 border border-accent/20 flex items-center justify-center">
                           <User className="w-4 h-4 text-accent" />

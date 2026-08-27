@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'motion/react';
-import { ArrowDown, FlaskConical, Zap, Clock } from 'lucide-react';
+import { FlaskConical, Zap, Clock } from 'lucide-react';
 import { IconArrowRight as IconArrow } from '@/shared/components/icons';
 import SEO from '@/shared/components/SEO';
 import PublicSnapLayout from '@/shared/components/PublicSnapLayout';
@@ -12,6 +12,7 @@ import { Footer } from '@/shared/components/layout';
 import { CpLogo } from '@/shared/components';
 import { useReducedMotion } from '@/shared/hooks/useReducedMotion';
 import { Carousel } from '@/shared/components/carousel';
+import DragMarquee from '@/shared/components/carousel/DragMarquee';
 import { COURSES, getCategoryById } from '@/features/student/data/courses';
 import CourseBadge from '@/shared/components/CourseBadge';
 import {
@@ -326,43 +327,36 @@ const CyberCoinPage: React.FC = () => {
               />
             </ScrollReveal>
 
-            <ScrollReveal>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 lg:gap-2">
-                {CP_FUTURE_CHAIN.map((step, i) => (
-                  <React.Fragment key={step.id}>
-                    {i > 0 && (
-                      <>
-                        <IconArrow size={14} className="hidden lg:block text-accent/60 shrink-0 rotate-90 lg:rotate-0 lg:col-span-0" aria-hidden="true" />
-                        <ArrowDown size={14} className="lg:hidden text-accent/60 shrink-0 self-center rotate-180" aria-hidden="true" />
-                      </>
-                    )}
-                    <div
-                      className={`flex-1 rounded-2xl border p-4 md:p-5 min-h-[44px] ${
-                        step.planned
-                          ? 'border-dashed border-border/40 bg-transparent'
-                          : 'border-accent/50 bg-bg-card'
-                      }`}
-                    >
-                      <div className="flex items-center justify-between gap-2">
-                        <span className="font-mono text-[9px] text-text-muted">{String(i + 1).padStart(2, '0')}</span>
-                        <span
-                          className={`inline-flex items-center rounded-lg px-2 py-0.5 text-[8px] font-black uppercase tracking-widest ${
-                            step.planned
-                              ? 'border border-dashed border-border/50 text-text-muted'
-                              : 'border border-accent/30 bg-accent/5 text-accent'
-                          }`}
-                        >
-                          {step.planned ? 'Planned' : 'Active'}
-                        </span>
-                      </div>
-                      <p className={`mt-2 text-xs md:text-sm font-black uppercase tracking-widest ${step.planned ? 'text-text-muted' : 'text-text-primary'}`}>
-                        {step.label}
-                      </p>
+            <DragMarquee speed={20} trackClassName="gap-4 px-2" className="overflow-hidden">
+              {CP_FUTURE_CHAIN.map((step, i) => (
+                <React.Fragment key={step.id}>
+                  <div
+                    className={`shrink-0 w-[220px] md:w-[260px] rounded-2xl border p-5 md:p-6 ${
+                      step.planned
+                        ? 'border-dashed border-border/40 bg-transparent'
+                        : 'border-accent/50 bg-bg-card'
+                    }`}
+                  >
+                    <div className="flex items-center justify-between gap-2 mb-3">
+                      <span className="font-mono text-[9px] text-text-muted">{String(i + 1).padStart(2, '0')}</span>
+                      <span
+                        className={`inline-flex items-center rounded-lg px-2 py-0.5 text-[8px] font-black uppercase tracking-widest ${
+                          step.planned
+                            ? 'border border-dashed border-border/50 text-text-muted'
+                            : 'border border-accent/30 bg-accent/5 text-accent'
+                        }`}
+                      >
+                        {step.planned ? 'Planned' : 'Active'}
+                      </span>
                     </div>
-                  </React.Fragment>
-                ))}
-              </div>
-            </ScrollReveal>
+                    <p className={`text-xs md:text-sm font-black uppercase tracking-widest ${step.planned ? 'text-text-muted' : 'text-text-primary'}`}>
+                      {step.label}
+                    </p>
+                  </div>
+                  <IconArrow size={16} className="shrink-0 text-accent/40 self-center" aria-hidden="true" />
+                </React.Fragment>
+              ))}
+            </DragMarquee>
 
             <ScrollReveal>
               <div className="rounded-2xl border border-border/50 bg-bg-card p-4 md:p-5 flex items-start gap-3">
@@ -423,7 +417,7 @@ const CyberCoinPage: React.FC = () => {
                         <p className="text-xs sm:text-sm text-text-secondary leading-relaxed font-mono border-l-2 border-accent/40 pl-3 py-1.5 mb-4 line-clamp-3 flex-1">
                           {course.description}
                         </p>
-                        <div className="flex items-center justify-between gap-3 w-full pt-3 mt-auto border-t border-border/50">
+                        <div className="flex items-center justify-between gap-3 w-full pt-3 mt-auto">
                           <div className="flex items-center gap-3 text-[10px] sm:text-[11px] font-mono text-text-muted shrink-0">
                             <span className="flex items-center gap-1 whitespace-nowrap">
                               <Clock size={12} className="shrink-0" /> {course.estimatedMinutes}min

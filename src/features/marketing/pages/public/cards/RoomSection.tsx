@@ -62,7 +62,7 @@ const RoomSection: React.FC<RoomSectionProps> = ({ room, roomIndex }) => {
           </div>
         )}
 
-        <div className="flex items-center justify-between gap-4 mt-6 md:mt-8 pt-5 border-t border-border/20">
+              <div className="flex items-center justify-between gap-4 mt-6 md:mt-8 pt-5">
           <span className="text-[9px] font-black uppercase tracking-widest text-text-muted">
             {room.steps.length} {room.steps.length === 1 ? 'step' : 'steps'} · {room.estimatedMinutes} min
           </span>
