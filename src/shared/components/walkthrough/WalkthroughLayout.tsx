@@ -206,8 +206,8 @@ export function WalkthroughLayout({
           </div>
         )}
 
-        {/* Steps — wc-prose keeps the reading column comfortable on wide screens */}
-        <div className="wc-prose space-y-12 md:space-y-16">
+        {/* Steps — full width, matching blog text layout */}
+        <div className="space-y-12 md:space-y-16">
           {children}
         </div>
 
