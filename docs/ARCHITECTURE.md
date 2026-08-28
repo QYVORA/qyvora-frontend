@@ -205,7 +205,7 @@ features/
 |---|---|---|
 | `components/` | ErrorBoundary, PageLoader, SEO, ScrollReveal, ScrollToTop, Identicon, ConsentBanner, CommunityPopup | All features |
 | `components/ui/` | Dialog, BottomSheet, Tooltip, Card, Skeleton, SimpleHeading, StatCounter | All features |
-| `components/layout/` | Navbar, Footer, PublicBottomNav | Layouts |
+| `components/layout/` | Navbar, Footer, AuthFormLayout, RoomTopBar | Layouts |
 | `components/brand/` | Logo, QyvoraLogotype, QyvoraMark | All features |
 | `components/backgrounds/` | GridBoxedBackground, AdinkraBackground | All features |
 | `layouts/` | LandingLayout | Router only |
