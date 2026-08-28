@@ -219,7 +219,7 @@ const LandingSimulationsSection: React.FC = () => {
   const shouldReduceMotion = useReducedMotion();
 
   return (
-    <div className="relative flex min-h-dvh flex-col overflow-x-clip overflow-hidden bg-bg" data-nav-invert>
+    <div className="relative flex min-h-dvh flex-col overflow-x-clip overflow-hidden bg-bg" >
       <div className="relative z-10 flex h-full w-full flex-1 flex-col px-3 pb-6 pt-24 md:px-4 md:pb-8 lg:px-6 lg:pb-10">
         <div className="mb-8 shrink-0 md:mb-10 lg:mb-14">
           <span className="mb-3 inline-block rounded-full border border-accent/30 bg-accent/10 px-3 py-1.5 text-[9px] font-black uppercase tracking-widest text-accent">{t('landing.simulations.badge')}</span>

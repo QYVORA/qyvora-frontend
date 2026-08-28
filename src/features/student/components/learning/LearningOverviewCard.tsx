@@ -36,7 +36,7 @@ const LearningOverviewCard: React.FC<LearningOverviewCardProps> = ({
   breadcrumbs,
 }) => {
   return (
-    <div data-nav-invert>
+    <div >
       {breadcrumbs && breadcrumbs.length > 0 && (
         <div className="mb-3 flex flex-wrap items-center gap-2 text-xs text-text-muted">
           {breadcrumbs.map((crumb, i) => (

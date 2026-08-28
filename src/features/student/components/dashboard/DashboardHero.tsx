@@ -24,7 +24,7 @@ const DashboardHero = ({
 
   if (allDone) {
     return (
-      <div data-nav-invert>
+      <div >
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -85,7 +85,7 @@ const DashboardHero = ({
 
   if (isEnrolled) {
     return (
-      <div data-nav-invert>
+      <div >
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -145,7 +145,7 @@ const DashboardHero = ({
   }
 
   return (
-    <div data-nav-invert>
+    <div >
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}

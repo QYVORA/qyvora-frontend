@@ -8,7 +8,7 @@ import { GridBoxedBackground } from '@/shared/components/backgrounds';
 const NotFoundPage = () => {
   const { t } = useTranslation();
   return (
-    <div className="relative min-h-dvh bg-bg flex flex-col items-center justify-center overflow-hidden px-3 md:px-4 lg:px-6 py-20" data-nav-invert>
+    <div className="relative min-h-dvh bg-bg flex flex-col items-center justify-center overflow-hidden px-3 md:px-4 lg:px-6 py-20" >
       <SEO
         title={t('seo.notFoundTitle', '404 - Node Not Found')}
         description={t('seo.notFoundDesc', 'The requested page could not be located on the QYVORA network.')}
