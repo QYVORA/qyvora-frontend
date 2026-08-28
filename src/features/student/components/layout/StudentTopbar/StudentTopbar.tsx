@@ -242,14 +242,20 @@ const StudentTopbar = () => {
                   />
                 </div>
 
-                {/* Mobile profile trigger */}
-                <button
-                  onClick={() => setProfileSheetOpen(true)}
-                  className="md:hidden flex items-center justify-center h-9 w-9 rounded-xl transition-colors border border-accent bg-black ml-auto"
-                  aria-label="Open profile menu"
-                >
-                  <Identicon value={user?.username || '?'} size={36} className="w-full h-full" />
-                </button>
+                {/* Mobile CP badge + profile trigger — right-aligned */}
+                <div className="md:hidden flex items-center gap-2 ml-auto">
+                  <div className="flex items-center gap-2 px-3 py-2 rounded-xl bg-bg-card" data-tour-id="tour-cp-mobile">
+                    <CpLogo className="w-4 h-4" />
+                    <span className="text-[10px] font-black text-accent">{cpBalance.toLocaleString()}</span>
+                  </div>
+                  <button
+                    onClick={() => setProfileSheetOpen(true)}
+                    className="flex items-center justify-center h-9 w-9 rounded-xl transition-colors border border-accent bg-black"
+                    aria-label="Open profile menu"
+                  >
+                    <Identicon value={user?.username || '?'} size={36} className="w-full h-full" />
+                  </button>
+                </div>
 
                 <MobileProfileSheet
                   open={profileSheetOpen}
@@ -317,14 +323,20 @@ const StudentTopbar = () => {
                 />
               </div>
 
-              {/* Mobile profile trigger */}
-              <button
-                onClick={() => setProfileSheetOpen(true)}
-                className="md:hidden flex items-center justify-center h-9 w-9 rounded-xl transition-colors border border-accent bg-black ml-auto"
-                aria-label="Open profile menu"
-              >
-                <Identicon value={user?.username || '?'} size={36} className="w-full h-full" />
-              </button>
+              {/* Mobile CP badge + profile trigger — right-aligned */}
+              <div className="md:hidden flex items-center gap-2 ml-auto">
+                <div className="flex items-center gap-2 px-3 py-2 rounded-xl bg-bg-card" data-tour-id="tour-cp-mobile">
+                  <CpLogo className="w-4 h-4" />
+                  <span className="text-[10px] font-black text-accent">{cpBalance.toLocaleString()}</span>
+                </div>
+                <button
+                  onClick={() => setProfileSheetOpen(true)}
+                  className="flex items-center justify-center h-9 w-9 rounded-xl transition-colors border border-accent bg-black"
+                  aria-label="Open profile menu"
+                >
+                  <Identicon value={user?.username || '?'} size={36} className="w-full h-full" />
+                </button>
+              </div>
 
               <MobileProfileSheet
                 open={profileSheetOpen}
@@ -375,14 +387,20 @@ const StudentTopbar = () => {
               />
             </div>
 
-            {/* Mobile profile trigger */}
-            <button
-              onClick={() => setProfileSheetOpen(true)}
-              className="md:hidden flex items-center justify-center h-9 w-9 rounded-xl transition-colors border border-accent bg-black ml-auto"
-              aria-label="Open profile menu"
-            >
-              <Identicon value={user?.username || '?'} size={36} className="w-full h-full" />
-            </button>
+            {/* Mobile CP badge + profile trigger — right-aligned */}
+            <div className="md:hidden flex items-center gap-2 ml-auto">
+              <div className="flex items-center gap-2 px-3 py-2 rounded-xl bg-bg-card" data-tour-id="tour-cp-mobile">
+                <CpLogo className="w-4 h-4" />
+                <span className="text-[10px] font-black text-accent">{cpBalance.toLocaleString()}</span>
+              </div>
+              <button
+                onClick={() => setProfileSheetOpen(true)}
+                className="flex items-center justify-center h-9 w-9 rounded-xl transition-colors border border-accent bg-black"
+                aria-label="Open profile menu"
+              >
+                <Identicon value={user?.username || '?'} size={36} className="w-full h-full" />
+              </button>
+            </div>
 
             <MobileProfileSheet
               open={profileSheetOpen}
@@ -453,14 +471,20 @@ const StudentTopbar = () => {
               />
             </div>
 
-            {/* Mobile profile trigger */}
-            <button
-              onClick={() => setProfileSheetOpen(true)}
-              className="md:hidden flex items-center justify-center h-9 w-9 rounded-xl transition-colors border border-accent bg-black ml-auto"
-              aria-label="Open profile menu"
-            >
-              <Identicon value={user?.username || '?'} size={36} className="w-full h-full" />
-            </button>
+            {/* Mobile CP badge + profile trigger — right-aligned */}
+            <div className="md:hidden flex items-center gap-2 ml-auto">
+              <div className="flex items-center gap-2 px-3 py-2 rounded-xl bg-bg-card" data-tour-id="tour-cp-mobile">
+                <CpLogo className="w-4 h-4" />
+                <span className="text-[10px] font-black text-accent">{cpBalance.toLocaleString()}</span>
+              </div>
+              <button
+                onClick={() => setProfileSheetOpen(true)}
+                className="flex items-center justify-center h-9 w-9 rounded-xl transition-colors border border-accent bg-black"
+                aria-label="Open profile menu"
+              >
+                <Identicon value={user?.username || '?'} size={36} className="w-full h-full" />
+              </button>
+            </div>
 
             <MobileProfileSheet
               open={profileSheetOpen}
@@ -533,15 +557,21 @@ const StudentTopbar = () => {
               </span>
             </div>
 
-            {/* Mobile profile trigger */}
-            <button
-              onClick={() => setProfileSheetOpen(true)}
-              className="md:hidden flex items-center justify-center h-9 w-9 rounded-xl transition-colors border border-accent bg-black ml-auto"
-              aria-label="Open profile menu"
-              data-tour-id="tour-profile-mobile"
-            >
-              <Identicon value={user?.username || '?'} size={36} className="w-full h-full" />
-            </button>
+            {/* Mobile CP badge + profile trigger — right-aligned */}
+            <div className="md:hidden flex items-center gap-2 ml-auto">
+              <div className="flex items-center gap-2 px-3 py-2 rounded-xl bg-bg-card" data-tour-id="tour-cp-mobile">
+                <CpLogo className="w-4 h-4" />
+                <span className="text-[10px] font-black text-accent">{cpBalance.toLocaleString()}</span>
+              </div>
+              <button
+                onClick={() => setProfileSheetOpen(true)}
+                className="flex items-center justify-center h-9 w-9 rounded-xl transition-colors border border-accent bg-black"
+                aria-label="Open profile menu"
+                data-tour-id="tour-profile-mobile"
+              >
+                <Identicon value={user?.username || '?'} size={36} className="w-full h-full" />
+              </button>
+            </div>
 
             <MobileProfileSheet
               open={profileSheetOpen}
