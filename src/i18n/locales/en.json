@@ -14,6 +14,7 @@
     "toha3ee": "Toha3ee",
     "jabari": "Jabari",
     "aksum": "Aksum",
+    "shaka": "SHAKA",
     "quiteroot": "QuiteRoot",
     "market": "Market",
     "blogs": "Blogs",
@@ -896,6 +897,12 @@
       "titleAccent": "BinarySec",
       "description": "Binary security assessment & reverse-engineering platform in Go: identification, disassembly, function discovery, call graphs and evidence-backed findings.",
       "explore": "Explore Aksum"
+    },
+    "shaka": {
+      "title": "SHAKA",
+      "titleAccent": "ActiveDirectory",
+      "description": "Windows & Active Directory security assessment framework in Go: domain discovery, object enumeration, graph-modeled privilege escalation, and evidence-driven reporting.",
+      "explore": "Explore SHAKA"
     }
   },
   "simulations": {
