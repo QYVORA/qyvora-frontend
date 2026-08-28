@@ -136,6 +136,7 @@ const PrivescLab = () => {
                   narrative={chapter.narrative}
                   hint={chapter.hint}
                   commandInstruction={chapter.hint}
+                  quiz={chapter.quiz}
                   isLocked={isLocked}
                   isCompleted={isCompleted}
                   isActive={isActive}
