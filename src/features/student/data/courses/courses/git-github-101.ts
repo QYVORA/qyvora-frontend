@@ -28,7 +28,10 @@ git --version
 
 > **Why this matters for hacking:** Version control isn't just for code, it's essential for security tool development, collaboration on open-source exploits, and tracking changes during engagements. Every major security framework (Metasploit, Burp extensions, Nmap scripts) lives on GitHub. Understanding Git lets you clone, modify, and contribute to the tools you'll use daily. In incident response, Git history can reveal what changed and when, crucial evidence in a breach investigation.
 
-**Mini-challenge:** Run \`git --version\` to confirm Git is installed. Then \`git config --global user.name "Your Name"\` and \`git config --global user.email "your@email.com"\` to set up your identity. These are the first steps before any Git workflow.`),
+**Mini-challenge:** Run \`git --version\` to confirm Git is installed. Then \`git config --global user.name "Your Name"\` and \`git config --global user.email "your@email.com"\` to set up your identity. These are the first steps before any Git workflow.`, { hasQuiz: true, quiz: [
+        { id: 'git-1-q1', question: 'What is the main purpose of version control?', options: ['To make files load faster', 'To track every change to files so you can return to any previous state', 'To automatically fix bugs in code', 'To compress project files'], correctIndex: 1, explanation: 'Version control records every change with a message, letting you revert mistakes and return to any previous state — like a "save game" for code.' },
+        { id: 'git-1-q2', question: 'Why does version control matter to security professionals?', options: ['It creates network traffic', 'Security tools and exploits live on GitHub, and Git history can reveal evidence in a breach investigation', 'It encrypts code', 'It replaces password managers'], correctIndex: 1, explanation: 'Every major security framework lives on GitHub, and Git history can reveal what changed and when during incident response.' },
+      ] }),
 
     l('git-2', 'Your First Repository',
       `A **repository** (or "repo") is a folder that Git is watching. Let's create one.
@@ -72,7 +75,11 @@ git log --oneline
 
 > **Why this matters for hacking:** The \`git init\` → \`add\` → \`commit\` workflow is the foundation. Every commit creates a snapshot you can return to. In security tool development, this means you can experiment freely, if you break something, just \`git checkout\` a previous commit. The \`git log --oneline\` command shows your history at a glance. The \`.git\` folder is also a target in CTF challenges, if a website exposes its \`.git\` directory, you can download the entire repository, including commit history, credentials, and secrets.
 
-**Mini-challenge:** Run \`mkdir /tmp/test-repo && cd /tmp/test-repo && git init && echo "# Test" > README.md && git add README.md && git commit -m "initial"\` then \`git log --oneline\`. This is the exact repo initialization workflow used for every project.`),
+**Mini-challenge:** Run \`mkdir /tmp/test-repo && cd /tmp/test-repo && git init && echo "# Test" > README.md && git add README.md && git commit -m "initial"\` then \`git log --oneline\`. This is the exact repo initialization workflow used for every project.`, { hasQuiz: true, quiz: [
+        { id: 'git-2-q1', question: 'What does `git init` do?', options: ['Deletes the repository', 'Creates a hidden .git folder where Git stores all tracking data', 'Uploads files to GitHub', 'Creates a README file'], correctIndex: 1, explanation: 'git init creates a hidden .git directory that holds all of Git\'s tracking data, turning the folder into a repository.' },
+        { id: 'git-2-q2', question: 'What is the correct workflow to save changes permanently?', options: ['commit then add', 'add then commit', 'init then commit', 'status then log'], correctIndex: 1, explanation: 'The workflow is git add (stage the file) followed by git commit with a message (-m) to save the changes permanently.' },
+        { id: 'git-2-q3', question: 'Why is an exposed .git directory dangerous on a website?', options: ['It contains the HTML files', 'An attacker can download the entire repository, including history, credentials, and secrets', 'It slows down the server', 'It is a PHP backdoor'], correctIndex: 1, explanation: 'If a site exposes its .git directory, attackers can reconstruct the full repository including commit history and any committed secrets.' },
+      ] }),
 
     l('git-3', 'Branching & Merging',
       `**Branches** let you work on different versions of your code simultaneously. The default branch is called \`main\` (or \`master\`).
@@ -121,7 +128,11 @@ git commit -m "Resolve merge conflict"
 
 **Mini-challenge:** Create a branch, make a change, and merge it: \`cd /tmp/test-repo && git checkout -b feature && echo "change" >> README.md && git add README.md && git commit -m "feature change" && git checkout main && git merge feature\`. This is the exact branching workflow used in every Git project.
 
-Branches are the superpower of Git, they let you experiment freely without fear.`),
+Branches are the superpower of Git, they let you experiment freely without fear.`, { hasQuiz: true, quiz: [
+        { id: 'git-3-q1', question: 'Which command creates a new branch AND switches to it?', options: ['git branch feature', 'git checkout -b feature', 'git merge feature', 'git checkout main'], correctIndex: 1, explanation: 'git checkout -b <name> creates a new branch and switches to it in one command.' },
+        { id: 'git-3-q2', question: 'What do the <<<<<<< HEAD markers represent in a file?', options: ['A syntax error in the code', 'A merge conflict, showing your changes vs the incoming branch\'s changes', 'A Git warning message', 'An unsaved file indicator'], correctIndex: 1, explanation: 'Merge conflict markers (<<<<<<< HEAD ... ======= ... >>>>>>> branch) show your changes versus the other branch\'s changes; you resolve by editing and removing the markers.' },
+        { id: 'git-3-q3', question: 'How do you merge a feature branch back into main?', options: ['git checkout main && git merge feature', 'git checkout feature && git merge main', 'git push main', 'git rebase main feature'], correctIndex: 0, explanation: 'Switch to main with git checkout main, then git merge feature integrates the feature branch changes into main.' },
+      ] }),
 
     l('git-4', 'Working with GitHub',
       `**GitHub** is a cloud service that hosts Git repositories. It lets you back up your code, collaborate with others, and contribute to open-source projects.
@@ -176,7 +187,11 @@ git push -u origin my-feature
 # 6. After merge, switch back and update
 git checkout main
 git pull
-\`\`\``),
+\`\`\``, { hasQuiz: true, quiz: [
+        { id: 'git-4-q1', question: 'What does the `-u` flag do in `git push -u origin main`?', options: ['Enables compression', 'Sets upstream tracking so future pushes can just be `git push`', 'Pushes all branches', 'Forces an overwrite of the remote'], correctIndex: 1, explanation: 'The -u flag sets upstream tracking for the branch, so later pushes can be done with just `git push`.' },
+        { id: 'git-4-q2', question: 'Which command downloads a repository for the first time?', options: ['git pull', 'git fetch', 'git clone', 'git init'], correctIndex: 2, explanation: 'git clone copies a remote repository to your machine for the first time; git pull updates an existing local repo.' },
+        { id: 'git-4-q3', question: 'Why would a bug bounty hunter clone a target\'s repository?', options: ['To test their bandwidth', 'To look for hardcoded credentials, API keys, and vulnerabilities in publicly accessible code', 'To take down the site', 'To fork their own version'], correctIndex: 1, explanation: 'Cloning a target\'s public repository is standard recon to hunt for hardcoded credentials, API keys, and other vulnerabilities.' },
+      ] }),
 
     l('git-5', 'Pull Requests & Collaboration',
       `A **Pull Request (PR)** is how you propose changes to a project. Instead of pushing directly to \`main\`, you push a branch and ask the maintainers to review and merge your changes.
@@ -298,7 +313,11 @@ touch logs/.gitkeep
 
 > **Why this matters for hacking:** A well-configured \`.gitignore\` prevents accidentally committing sensitive files. Security professionals often need to check existing \`.gitignore\` files to see what developers were trying to hide, sometimes the ignored files contain credentials, API keys, or configuration secrets. The \`git check-ignore -v\` command reveals which ignore rule is blocking a file, helping debug tracking issues. In CTFs, finding a \`.gitignore\` that references \`secrets.txt\` or \`*.key\` is a hint that those files exist on the server.
 
-**Mini-challenge:** Create a \`.gitignore\` file with \`echo "secrets.txt" > .gitignore\`, then \`echo "API_KEY=secret" > secrets.txt && git add secrets.txt 2>&1\` — observe that Git refuses to track it. Then verify with \`git check-ignore -v secrets.txt\`. This is the exact workflow for protecting sensitive files.`),
+**Mini-challenge:** Create a \`.gitignore\` file with \`echo "secrets.txt" > .gitignore\`, then \`echo "API_KEY=secret" > secrets.txt && git add secrets.txt 2>&1\` — observe that Git refuses to track it. Then verify with \`git check-ignore -v secrets.txt\`. This is the exact workflow for protecting sensitive files.`, { hasQuiz: true, quiz: [
+        { id: 'git-6-q1', question: 'What is the purpose of the .gitignore file?', options: ['To store commit messages', 'To tell Git which files and directories to ignore', 'To configure Git aliases', 'To encrypt repository files'], correctIndex: 1, explanation: '.gitignore specifies which files and directories Git should not track, such as node_modules, secrets, and build outputs.' },
+        { id: 'git-6-q2', question: 'Which command reveals which ignore rule is blocking a specific file?', options: ['git status --ignored', 'git check-ignore -v file', 'git log --oneline', 'git diff'], correctIndex: 1, explanation: 'git check-ignore -v <file> prints the matching rule from .gitignore that is blocking the file, helping debug tracking issues.' },
+        { id: 'git-6-q3', question: 'How does Git handle empty directories?', options: ['It tracks them automatically', 'It does not track them; you add a .gitkeep file to force tracking', 'It converts them to files', 'It deletes them'], correctIndex: 1, explanation: 'Git does not track empty directories, so a placeholder file like .gitkeep is added to make Git track the directory.' },
+      ] }),
 
     l('git-7', 'Rebasing & History Management',
       `Rebasing rewrites history for a cleaner commit log. Use it to maintain a linear project history.
@@ -364,7 +383,11 @@ git reset --hard HEAD~1    # Discard changes completely!
 **When NOT to rebase:**
 - Never rebase commits that have been pushed to a shared branch
 - Git will warn you if you try
-- Use merge instead of rebase on public branches`),
+- Use merge instead of rebase on public branches`, { hasQuiz: true, quiz: [
+        { id: 'git-7-q1', question: 'What does `git rebase -i HEAD~3` allow you to do?', options: ['Merge three branches', 'Interactively squash, reorder, or edit the last 3 commits', 'Delete the repository', 'Push the last 3 commits'], correctIndex: 1, explanation: 'Interactive rebase (-i) on HEAD~3 lets you change "pick" to squash, reword, edit, or drop for each of the last 3 commits.' },
+        { id: 'git-7-q2', question: 'What is the difference between `git revert` and `git reset --hard`?', options: ['They are the same', 'revert creates a NEW commit that undoes changes (safe for shared branches); reset --hard moves the branch pointer and can destroy history', 'reset is safer than revert', 'revert deletes commits permanently'], correctIndex: 1, explanation: 'git revert adds a new commit that undoes the change and is safe for shared branches, while git reset --hard discards commits and should only be used on local branches.' },
+        { id: 'git-7-q3', question: 'Which command pulls a specific commit from another branch?', options: ['git clone abc1234', 'git cherry-pick abc1234', 'git checkout abc1234', 'git stash'], correctIndex: 1, explanation: 'git cherry-pick takes a specific commit from another branch and applies it to your current branch without merging everything.' },
+      ] }),
 
     l('git-8', 'Collaboration Workflows & Open Source',
       `Real-world Git is about collaboration. Understanding workflows makes you an effective team member.
@@ -468,7 +491,11 @@ git checkout -b my-custom-list
 
 > **Why this matters for hacking:** The GitHub Flow is the standard collaboration model for security tools. Every tool you'll use, from Metasploit to Burp to Nmap, follows this workflow. Git hooks (\`.git/hooks/pre-commit\`) can automatically check for secrets, run tests, or enforce code style before commits are created. Understanding hooks lets you both implement them as a defense and recognize how other projects enforce quality. The \`git lg\` alias visualizes the entire branch structure, essential for understanding complex repositories.
 
-**Mini-challenge:** Install a real security tool via Git: \`git clone https://github.com/danielmiessler/SecLists.git /tmp/wordlists && cd /tmp/wordlists && git lg | head -20\`. Then check what hooks exist: \`ls -la .git/hooks/\`. This mirrors how professionals maintain their tool arsenal — always pulling the latest versions from GitHub.`),
+**Mini-challenge:** Install a real security tool via Git: \`git clone https://github.com/danielmiessler/SecLists.git /tmp/wordlists && cd /tmp/wordlists && git lg | head -20\`. Then check what hooks exist: \`ls -la .git/hooks/\`. This mirrors how professionals maintain their tool arsenal — always pulling the latest versions from GitHub.`, { hasQuiz: true, quiz: [
+        { id: 'git-8-q1', question: 'What is GitHub Flow?', options: ['A workflow of branching from main, making changes, and opening a Pull Request', 'A way to copy folders', 'A type of merge conflict', 'A GitHub billing plan'], correctIndex: 0, explanation: 'GitHub Flow branches from main, commits changes, pushes the branch, and merges via a Pull Request — the standard collaboration model.' },
+        { id: 'git-8-q2', question: 'What are Git hooks?', options: ['Clips that lock branches', 'Scripts that run automatically on certain Git actions, e.g. pre-commit checks for secrets', 'Functions in .gitignore', 'Aliases like git lg'], correctIndex: 1, explanation: 'Git hooks in .git/hooks/ run automatically on actions like pre-commit, and can scan for secrets, run tests, or enforce style.' },
+        { id: 'git-8-q3', question: 'How do you keep a forked repository in sync with the original?', options: ['Fork it again', 'Add the original as upstream and pull/merge from it', 'Use git stash', 'Reinstall Git'], correctIndex: 1, explanation: 'You add the original repo as an upstream remote (git remote add upstream <url>), then fetch and merge/rebase from upstream/main.' },
+      ] }),
 ];
 
 export const COURSE: Course = {

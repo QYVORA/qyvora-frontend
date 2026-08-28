@@ -31,7 +31,11 @@ echo "Hello, Hacker!"
 The \`echo\` command prints text back to you. Use it to confirm the shell is working, inspect variables (\`echo $HOME\`), or write data into files (\`echo "data" > file.txt\`).
 
 **Try it yourself:** Run \`whoami\` to see your username, then \`pwd\` to see where you are, and finally \`ls\` to see what's in your current directory. This is the reconnaissance triad of any terminal session.`,
-      { hasTerminal: true, terminalCommands: ['echo "Hello, Hacker!"', 'whoami', 'pwd', 'ls', 'echo $SHELL'], terminalTitle: 'lesson-terminal' }),
+      { hasTerminal: true, terminalCommands: ['echo "Hello, Hacker!"', 'whoami', 'pwd', 'ls', 'echo $SHELL'], terminalTitle: 'lesson-terminal', hasQuiz: true, quiz: [
+        { id: 'lt-1-q1', question: 'What does the `$` symbol in a shell prompt indicate?', options: ['Root user', 'Regular user', 'Sudo mode', 'Remote session'], correctIndex: 1, explanation: '`$` indicates a regular user prompt; root uses `#`.' },
+        { id: 'lt-1-q2', question: 'Which command prints text to confirm the shell is working?', options: ['print', 'echo', 'display', 'write'], correctIndex: 1, explanation: '`echo` outputs the text you pass to it, making it ideal for testing the shell.' },
+        { id: 'lt-1-q3', question: 'Which command shows your current working directory?', options: ['whoami', 'pwd', 'ls', 'cd'], correctIndex: 1, explanation: '`pwd` stands for "Print Working Directory" and shows your current location.' },
+      ] }),
 
     l('lt-2', 'Navigating the Filesystem',
       `Every file and folder on Linux lives under the root directory \`/\`. Think of it like an upside-down tree starting at \`/\`.
@@ -71,7 +75,12 @@ cd /etc         # absolute path, go directly to /etc
 
 **Absolute paths** start with \`/\` (e.g., \`/home/user/Documents\`). **Relative paths** start from where you are (e.g., \`Documents\`).
 
-**Mini-challenge:** Navigate to \`/etc\` and list its contents. Can you find \`passwd\`? Now navigate to \`/var/log\` and look for log files. Practice moving between directories quickly — you'll do this hundreds of times in real engagements.`),
+**Mini-challenge:** Navigate to \`/etc\` and list its contents. Can you find \`passwd\`? Now navigate to \`/var/log\` and look for log files. Practice moving between directories quickly — you'll do this hundreds of times in real engagements.`,
+      { hasQuiz: true, quiz: [
+        { id: 'lt-2-q1', question: 'What does `ls -la` show?', options: ['All files including hidden ones in long format', 'Only hidden files', 'Directory tree structure', 'Running processes'], correctIndex: 0, explanation: '`-l` enables long format and `-a` shows hidden files (those starting with a dot).' },
+        { id: 'lt-2-q2', question: 'Which directory is world-writable and commonly used for staging exploits?', options: ['/etc', '/var/log', '/tmp', '/home'], correctIndex: 2, explanation: '`/tmp` is world-writable by design, making it a common place to stage tools and payloads.' },
+        { id: 'lt-2-q3', question: 'What is the difference between an absolute and a relative path?', options: ['Absolute starts with `/`, relative starts from your current directory', 'Relative starts with `/`, absolute uses backslashes', 'There is no difference', 'Absolute paths only work on Windows'], correctIndex: 0, explanation: 'Absolute paths start from the root `/`, while relative paths resolve from your current working directory.' },
+      ] }),
 
     l('lt-3', 'Working with Files',
       `Creating, reading, and deleting files are the most common terminal tasks.
@@ -110,7 +119,11 @@ The \`rm -rf\` command is dangerous. \`-r\` means recursive (deletes folders), \
 > **Why this matters for hacking:** In real engagements, you'll create directory structures for each target (recon/ scans/ exploits/ loot/). \`mkdir -p\` creates the whole tree at once. \`cp\` and \`mv\` move your tools around. And when you're cleaning up after an engagement, \`rm -rf\` wipes your tracks, but use it carefully; one wrong \`rm -rf /\` and the system is gone.
 
 **Mini-challenge:** Create a recon directory structure: \`mkdir -p ~/recon/{scans,exploits,loot,notes}\`. Then create a target file with \`echo "target.com" > ~/recon/notes/targets.txt\`. Verify with \`ls -R ~/recon\`.`,
-      { hasTerminal: true, terminalCommands: ['mkdir -p ~/recon/{scans,exploits,loot,notes}', 'echo "target.com" > ~/recon/notes/targets.txt', 'ls -R ~/recon'], terminalTitle: 'lesson-terminal' }),
+      { hasTerminal: true, terminalCommands: ['mkdir -p ~/recon/{scans,exploits,loot,notes}', 'echo "target.com" > ~/recon/notes/targets.txt', 'ls -R ~/recon'], terminalTitle: 'lesson-terminal', hasQuiz: true, quiz: [
+        { id: 'lt-3-q1', question: 'What does `rm -rf` do?', options: ['Force-deletes files and directories recursively', 'Renames a file', 'Moves files to trash', 'Creates a backup'], correctIndex: 0, explanation: '`-r` means recursive (deletes folders) and `-f` means force (no confirmation). Use with extreme caution.' },
+        { id: 'lt-3-q2', question: 'What does `mkdir -p` do?', options: ['Creates nested directories including parent directories', 'Creates an empty file', 'Sets directory permissions', 'Lists directory tree'], correctIndex: 0, explanation: '`-p` creates parent directories as needed, so `mkdir -p a/b/c` creates the entire path.' },
+        { id: 'lt-3-q3', question: 'How do you rename a file using the terminal?', options: ['mv old.txt new.txt', 'rename old.txt new.txt', 'cp old.txt new.txt', 'ren old.txt new.txt'], correctIndex: 0, explanation: '`mv` (move) is also used to rename files — moving a file to a new name in the same directory.' },
+      ] }),
 
     l('lt-4', 'File Permissions',
       `Linux uses a permission system to control who can read, write, or execute files.
@@ -150,7 +163,11 @@ sudo chown root:root script.sh
 > **Why this matters for hacking:** Permission misconfigurations are a top-5 attack vector. World-writable files let any user modify them. Files owned by root with the **SUID bit** set (like \`/usr/bin/passwd\`) run with the owner's privileges when executed, and if you find a custom SUID binary, you can often escalate to root. The \`/etc/shadow\` file must be readable only by root; if it's world-readable, you can steal password hashes.
 
 **Mini-challenge:** Find all SUID binaries on the system: \`find / -perm -4000 -type f 2>/dev/null\`. These are potential privilege escalation vectors. Then find all world-writable files in \`/tmp\`: \`find /tmp -perm -o+w -type f\`. Both are common first steps in Linux privilege escalation.`,
-      { hasTerminal: true, terminalCommands: ['find / -perm -4000 -type f 2>/dev/null | head -10', 'find /tmp -perm -o+w -type f 2>/dev/null', 'ls -la /etc/shadow 2>/dev/null || echo "No access, correct!"'], terminalTitle: 'lesson-terminal' }),
+      { hasTerminal: true, terminalCommands: ['find / -perm -4000 -type f 2>/dev/null | head -10', 'find /tmp -perm -o+w -type f 2>/dev/null', 'ls -la /etc/shadow 2>/dev/null || echo "No access, correct!"'], terminalTitle: 'lesson-terminal', hasQuiz: true, quiz: [
+        { id: 'lt-4-q1', question: 'In the permission string `-rwxr--r--`, what permissions do "others" have?', options: ['Read only', 'Read and write', 'Read, write, and execute', 'No permissions'], correctIndex: 0, explanation: 'The last three characters represent others: `r--` means read-only.' },
+        { id: 'lt-4-q2', question: 'What does `chmod 755` set?', options: ['Owner=rwx, group=rx, others=rx', 'All users get rwx', 'Owner=rwx, others=none', 'Read-only for all'], correctIndex: 0, explanation: '7=rwx (4+2+1), 5=rx (4+0+1), 5=rx (4+0+1).' },
+        { id: 'lt-4-q3', question: 'What is a SUID binary?', options: ['A binary that runs with the owner\'s privileges', 'A binary that always runs as root', 'A binary with no permissions', 'A shell script file'], correctIndex: 0, explanation: 'SUID (Set User ID) causes a binary to execute with the file owner\'s privileges, not the running user\'s.' },
+      ] }),
 
     l('lt-5', 'Pipes and Redirection',
       `Pipes and redirection let you chain commands together, this is where the terminal becomes powerful.
@@ -198,7 +215,11 @@ grep -B 3 -A 2 "Failed" /var/log/auth.log
 > **Why this matters for hacking:** Pipes are the glue of the Linux command line. In a real engagement, you'll chain tools together constantly: \`nmap scan results | grep "open" | cut -d' ' -f1\` extracts open ports; \`cat access.log | awk '{print $1}' | sort | uniq -c | sort -rn\` finds the most frequent IP visitors. Mastering command chaining turns you from a button-clicker into an operator.
 
 **Mini-challenge:** Count how many unique IPs have tried to authenticate on your system: \`cat /var/log/auth.log 2>/dev/null | grep "Failed password" | awk '{print $(NF-3)}' | sort | uniq -c | sort -rn | head -5\`. This is the exact same pattern SOC analysts use to detect brute-force attacks.`,
-      { hasTerminal: true, terminalCommands: ['ls -la | grep ".txt"', 'echo -e "error: timeout\\nwarning: disk\\nerror: crash" > /tmp/test.log && cat /tmp/test.log | grep "error"'], terminalTitle: 'lesson-terminal' }),
+      { hasTerminal: true, terminalCommands: ['ls -la | grep ".txt"', 'echo -e "error: timeout\\nwarning: disk\\nerror: crash" > /tmp/test.log && cat /tmp/test.log | grep "error"'], terminalTitle: 'lesson-terminal', hasQuiz: true, quiz: [
+        { id: 'lt-5-q1', question: 'What is the difference between `>` and `>>`?', options: ['`>` overwrites, `>>` appends', '`>` appends, `>>` overwrites', 'Both overwrite the file', 'Both append to the file'], correctIndex: 0, explanation: '`>` truncates and overwrites the file; `>>` appends to the end without overwriting.' },
+        { id: 'lt-5-q2', question: 'What does `grep -r` do?', options: ['Recursively searches directories for a pattern', 'Reverses the output order', 'Runs a command repeatedly', 'Removes matching lines'], correctIndex: 0, explanation: '`-r` makes grep search all files in a directory recursively.' },
+        { id: 'lt-5-q3', question: 'How do you count unique IP addresses from an auth log?', options: ['Pipe through `sort | uniq -c`', 'Use `count --unique`', 'Use `grep -c`', 'Use `wc -l`'], correctIndex: 0, explanation: '`sort | uniq -c` sorts lines and counts consecutive duplicates, giving you a frequency count.' },
+      ] }),
 
     l('lt-6', 'Process Management',
       `Every running program is a **process**. You can view, prioritize, and kill them.
@@ -338,7 +359,11 @@ gpg -c recon-results.tar.gz  # Encrypt with password
 > **Why this matters for hacking:** When you exfiltrate data from a compromised host, you'll compress it first to reduce transfer time and network noise. Multiple small files (credentials, config snippets, database dumps) become one tidy archive. Encrypting before exfiltration buys you time if the transfer is monitored. On the flip side, defenders use these same tools to archive evidence for forensic analysis.
 
 The key progression: single file → archive → compressed archive → encrypted archive. Each step adds a layer of capability.`,
-      { hasTerminal: true, terminalCommands: ['gzip --help', 'tar --help', 'tar -czf test.tar.gz .', 'tar -tzf test.tar.gz'], terminalTitle: 'lesson-terminal' }),
+      { hasTerminal: true, terminalCommands: ['gzip --help', 'tar --help', 'tar -czf test.tar.gz .', 'tar -tzf test.tar.gz'], terminalTitle: 'lesson-terminal', hasQuiz: true, quiz: [
+        { id: 'lt-7-q1', question: 'What flag combination creates a `.tar.gz` archive?', options: ['-czf', '-xzf', '-cjf', '-cf'], correctIndex: 0, explanation: '`-c` creates, `-z` uses gzip compression, `-f` specifies the filename.' },
+        { id: 'lt-7-q2', question: 'What does `zcat` do?', options: ['Views compressed file content without extracting', 'Compresses a file with gzip', 'Creates a tar archive', 'Extracts a .tar.gz file'], correctIndex: 0, explanation: '`zcat` reads a gzipped file and outputs its content to stdout without decompressing to disk.' },
+        { id: 'lt-7-q3', question: 'What compression does the `-j` flag in tar use?', options: ['bzip2', 'gzip', 'xz', 'ZIP'], correctIndex: 0, explanation: '`-j` uses bzip2, which offers better compression than gzip but is slower.' },
+      ] }),
 
     l('lt-8', 'Text Editors & File Viewing',
       `Viewing and editing files is a daily task. Start with simple viewing, then move to editing.
@@ -427,7 +452,11 @@ vim /tmp/notes.txt
 > **Why this matters for hacking:** On a compromised server, you rarely have a GUI editor. You'll view config files with \`less\` or \`cat\`, edit exploit scripts with \`vim\` or \`nano\`, and monitor log files in real-time with \`tail -f\`. \`less\` is especially powerful for scrolling through large files like multi-gigabyte access logs without loading them entirely into memory.
 
 Start with nano. Once you're comfortable, force yourself to use vim for a week. It will feel awkward at first, then incredibly powerful.`,
-      { hasTerminal: true, terminalCommands: ['head -20 /etc/passwd', 'tail -5 /etc/passwd', 'wc -l /etc/passwd', 'less --help | head -5'], terminalTitle: 'lesson-terminal' }),
+      { hasTerminal: true, terminalCommands: ['head -20 /etc/passwd', 'tail -5 /etc/passwd', 'wc -l /etc/passwd', 'less --help | head -5'], terminalTitle: 'lesson-terminal', hasQuiz: true, quiz: [
+        { id: 'lt-8-q1', question: 'In vim, how do you enter insert mode?', options: ['Press `i`', 'Press `:`', 'Press `Esc`', 'Press `dd`'], correctIndex: 0, explanation: 'Pressing `i` in normal mode switches vim to insert mode, allowing you to type text.' },
+        { id: 'lt-8-q2', question: 'What does `tail -f` do?', options: ['Follows file output in real-time as new lines are added', 'Shows the first 10 lines', 'Counts the lines in a file', 'Opens the file for editing'], correctIndex: 0, explanation: '`-f` (follow) keeps reading and displaying new lines as they\'re appended to the file, perfect for monitoring logs.' },
+        { id: 'lt-8-q3', question: 'What does `wc -l` count?', options: ['Lines in a file', 'Words in a file', 'Bytes in a file', 'Characters in a file'], correctIndex: 0, explanation: '`-l` tells `wc` (word count) to count lines instead of words or bytes.' },
+      ] }),
 
     l('lt-9', 'SSH & Remote Connections',
       `SSH (Secure Shell) lets you control remote computers securely. Start locally, then connect remotely.
@@ -522,7 +551,11 @@ chmod 600 ~/.ssh/config
 **Mini-challenge:** Add a config entry for a fictional target in \`~/.ssh/config\`: \`echo -e "Host vulnbox\\n    HostName 10.10.10.10\\n    User root" >> ~/.ssh/config && chmod 600 ~/.ssh/config\`. Practice connecting with \`ssh vulnbox\`. Understanding SSH configs saves you minutes of typing on every engagement.
 
 **Important:** \`~/.ssh\` directory must have permissions \`700\`, and files inside must be \`600\`. SSH will refuse to work if permissions are too open.`,
-      { hasTerminal: true, terminalCommands: ['ssh -V', 'man ssh_config | head -20'], terminalTitle: 'lesson-terminal' }),
+      { hasTerminal: true, terminalCommands: ['ssh -V', 'man ssh_config | head -20'], terminalTitle: 'lesson-terminal', hasQuiz: true, quiz: [
+        { id: 'lt-9-q1', question: 'What does `ssh -L 8080:localhost:80` do?', options: ['Creates a local port forward tunnel', 'Lists SSH key files', 'Logs into a remote machine', 'Disables SSH authentication'], correctIndex: 0, explanation: '`-L` sets up local port forwarding: local port 8080 tunnels to the remote host\'s localhost:80.' },
+        { id: 'lt-9-q2', question: 'What permissions should the `~/.ssh` directory have?', options: ['700 (owner read/write/execute only)', '777 (everyone full access)', '644 (owner read/write, others read)', '600 (owner read/write only)'], correctIndex: 0, explanation: '`~/.ssh` must be 700; individual key files inside should be 600. SSH refuses to work with more open permissions.' },
+        { id: 'lt-9-q3', question: 'What does `ssh-copy-id` do?', options: ['Copies your public key to a remote server', 'Copies a private key to remote', 'Creates an SSH tunnel', 'Lists files on a remote server'], correctIndex: 0, explanation: '`ssh-copy-id` installs your public key on the remote server\'s `~/.ssh/authorized_keys`, enabling passwordless login.' },
+      ] }),
 
     l('lt-10', 'Finding Things: Files & Commands',
       `Knowing how to find files, commands, and information is crucial. Start with simple lookups, then build to complex searches.
@@ -631,7 +664,11 @@ find /etc -mmin -60 -type f
 \`\`\`
 
 **Mini-challenge:** Search for files containing "password" in \`/etc\`: \`grep -rl "password" /etc 2>/dev/null\`. Then find all files modified in the last 10 minutes in \`/tmp\`: \`find /tmp -mmin -10 -type f 2>/dev/null\`. These patterns are used daily in incident response and forensics.`,
-      { hasTerminal: true, terminalCommands: ['which bash', 'find /etc -maxdepth 1 -name "*.conf" | head -10', 'grep --help | head -5'], terminalTitle: 'lesson-terminal' }),
+      { hasTerminal: true, terminalCommands: ['which bash', 'find /etc -maxdepth 1 -name "*.conf" | head -10', 'grep --help | head -5'], terminalTitle: 'lesson-terminal', hasQuiz: true, quiz: [
+        { id: 'lt-10-q1', question: 'What is the key difference between `locate` and `find`?', options: ['locate uses a pre-built database; find searches the filesystem in real time', 'locate is slower than find', 'find uses a database; locate searches live', 'They are identical in behavior'], correctIndex: 0, explanation: '`locate` queries an indexed database (fast but may be stale); `find` traverses the filesystem directly (slower but always current).' },
+        { id: 'lt-10-q2', question: 'What does `find / -perm -4000 -type f` discover?', options: ['SUID binaries', 'Hidden files', 'Files larger than 4000 bytes', 'Recently modified files'], correctIndex: 0, explanation: '`-perm -4000` matches files with the SUID bit set, a common privilege escalation vector.' },
+        { id: 'lt-10-q3', question: 'How do you search file contents recursively in `/etc`?', options: ['grep -r "pattern" /etc/', 'find -r "pattern" /etc/', 'locate -r "pattern" /etc/', 'search "pattern" /etc/'], correctIndex: 0, explanation: '`grep -r` recursively searches all files in the given directory for the specified pattern.' },
+      ] }),
 
     l('lt-11', 'Environment Variables & Shell Configuration',
       `Your shell environment is configured by variables. Understanding them lets you customize your terminal and automate tasks.
@@ -756,7 +793,11 @@ alias
 # 4. Add to bashrc (try it)
 echo 'alias ll="ls -la --color=auto"' >> ~/.bashrc && source ~/.bashrc
 \`\`\``,
-      { hasTerminal: true, terminalCommands: ['echo $PATH | tr ":" "\\n"', 'export TARGET="scanme.nmap.org" && echo "Target: $TARGET"', 'alias ll="ls -la --color=auto" && alias'], terminalTitle: 'lesson-terminal' }),
+      { hasTerminal: true, terminalCommands: ['echo $PATH | tr ":" "\\n"', 'export TARGET="scanme.nmap.org" && echo "Target: $TARGET"', 'alias ll="ls -la --color=auto" && alias'], terminalTitle: 'lesson-terminal', hasQuiz: true, quiz: [
+        { id: 'lt-11-q1', question: 'What does the `$PATH` environment variable control?', options: ['Where the system looks for executable programs', 'The user\'s password hash', 'The home directory location', 'The shell version'], correctIndex: 0, explanation: '`$PATH` is a colon-separated list of directories the shell searches when you type a command name.' },
+        { id: 'lt-11-q2', question: 'What is the difference between setting a variable and exporting it?', options: ['Exported variables are available to child processes', 'Exported variables are saved permanently', 'There is no difference', 'Exported variables are encrypted'], correctIndex: 0, explanation: 'A plain `VAR=value` is local to the current shell; `export VAR=value` passes it to any subprocesses (scripts, commands).' },
+        { id: 'lt-11-q3', question: 'What does an alias do?', options: ['Creates a shortcut for a longer command', 'Exports a variable to child processes', 'Changes file permissions', 'Lists directory contents'], correctIndex: 0, explanation: 'An alias maps a short name to a longer command, e.g., `alias ll="ls -la"` runs `ls -la` when you type `ll`.' },
+      ] }),
 
     l('lt-12', 'Disk Usage & System Management',
       `Understanding disk usage helps you find space hogs and manage system resources. Start simple, then drill down.
@@ -878,7 +919,11 @@ hostnamectl
 **Mini-challenge:** Run \`df -h\` to check disk usage, then \`free -h\` to see memory. Find the top 5 largest files in \`/var\` with \`du -sh /var/* | sort -rh | head -5\`. Finally, run \`uname -a\` and \`cat /etc/os-release\` to identify the system — exactly what you'd do in the first 30 seconds after gaining shell access.
 
 This lesson wraps up the Linux Terminal 101 course. You now have the essential skills to navigate, manipulate, and manage a Linux system from the command line, the foundation of all offensive security work.`,
-      { hasTerminal: true, terminalCommands: ['df -h', 'free -h', 'uname -a', 'cat /etc/os-release 2>/dev/null || cat /etc/*release 2>/dev/null | head -5'], terminalTitle: 'lesson-terminal' }),
+      { hasTerminal: true, terminalCommands: ['df -h', 'free -h', 'uname -a', 'cat /etc/os-release 2>/dev/null || cat /etc/*release 2>/dev/null | head -5'], terminalTitle: 'lesson-terminal', hasQuiz: true, quiz: [
+        { id: 'lt-12-q1', question: 'What does `df -h` show?', options: ['Disk space on mounted filesystems in human-readable format', 'File differences between two directories', 'Running processes sorted by memory', 'Network interface configuration'], correctIndex: 0, explanation: '`df` (disk free) reports filesystem usage; `-h` makes sizes human-readable (GB, MB instead of blocks).' },
+        { id: 'lt-12-q2', question: 'What information does `uname -a` reveal?', options: ['All system info including kernel version and architecture', 'Your current username', 'Disk usage statistics', 'IP address and network config'], correctIndex: 0, explanation: '`uname -a` prints kernel name, hostname, kernel release, kernel version, machine hardware, and OS.' },
+        { id: 'lt-12-q3', question: 'In `uptime` output, what do the three load average numbers represent?', options: ['1-minute, 5-minute, and 15-minute load averages', 'CPU cores, memory, and disk', 'User count, process count, and thread count', 'Read, write, and execute operations'], correctIndex: 0, explanation: 'The three numbers are the average system load over the last 1, 5, and 15 minutes. Below 1.0 means the system is not overloaded.' },
+      ] }),
 ];
 
 export const COURSE: Course = {

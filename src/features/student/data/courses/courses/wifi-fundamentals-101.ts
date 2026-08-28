@@ -32,7 +32,10 @@ nmcli dev wifi list
 
 > **Why this matters for hacking:** Wi-Fi networks are a primary entry point for attackers. Understanding SSID, BSSID, channel, and encryption lets you identify target networks and assess their security posture. The \`iwlist wlan0 scan\` command reveals every network in range, including those with hidden SSIDs. Signal strength (PWR) tells you how close the access point is, useful for physical targeting. In wardriving (mapping Wi-Fi networks geographically), these commands are the foundation.
 
-**Mini-challenge:** Run \`iwconfig 2>/dev/null || echo "No wireless interface found"\` to check your Wi-Fi adapter. Then \`iw dev wlan0 scan 2>/dev/null | grep -E "SSID|signal|freq" | head -20\` to see nearby networks. If no wireless interface, install \`sudo apt install wireless-tools\` and check with \`iwconfig\`. This is the starting point for any wireless security assessment.`),
+**Mini-challenge:** Run \`iwconfig 2>/dev/null || echo "No wireless interface found"\` to check your Wi-Fi adapter. Then \`iw dev wlan0 scan 2>/dev/null | grep -E "SSID|signal|freq" | head -20\` to see nearby networks. If no wireless interface, install \`sudo apt install wireless-tools\` and check with \`iwconfig\`. This is the starting point for any wireless security assessment.`, { hasQuiz: true, quiz: [
+        { id: 'wf-1-q1', question: 'What does BSSID refer to in a Wi-Fi network?', options: ['The network name (SSID)', 'The MAC address of the access point', 'The Wi-Fi password', 'The channel number'], correctIndex: 1, explanation: 'BSSID is the MAC address (hardware address) of the wireless access point broadcasting the network.' },
+        { id: 'wf-1-q2', question: 'What happens immediately after a device authenticates in the Wi-Fi connection process?', options: ['It disconnects from the network', 'It associates with the network', 'It scans for other networks', 'It broadcasts its SSID'], correctIndex: 1, explanation: 'After authentication, the device associates with the network to complete the connection and begin data transfer.' },
+      ] }),
 
     l('wf-2', '2.4 GHz vs 5 GHz',
       `Wi-Fi operates on two main frequency bands, each with trade-offs.
@@ -66,7 +69,10 @@ Output shows the frequency (2.4xxx = 2.4 GHz, 5.xxx = 5 GHz) and signal quality 
 
 **Mini-challenge:** Check your current connection quality: \`iw dev wlan0 link 2>/dev/null | head -10\`. If your system supports it, this shows signal strength (dBm), frequency, and bitrate. Compare the value to the guidelines: > -70 dBm (excellent), -70 to -80 (good), < -80 (poor). This skill is essential for assessing whether you can reliably capture traffic from a target network.
 
-- **802.11ax (Wi-Fi 6)**: both bands (latest)`),
+- **802.11ax (Wi-Fi 6)**: both bands (latest)`, { hasQuiz: true, quiz: [
+        { id: 'wf-2-q1', question: 'How many non-overlapping channels are available in the 2.4 GHz band?', options: ['1', '3 (channels 1, 6, 11)', '11', '14'], correctIndex: 1, explanation: 'The 2.4 GHz band has only 3 non-overlapping channels (1, 6, 11), leading to congestion in dense areas.' },
+        { id: 'wf-2-q2', question: 'Why is 2.4 GHz preferred for wardriving from outside a building?', options: ['It offers faster speeds', 'It penetrates walls and obstacles better', 'It has more channels', 'It uses less power'], correctIndex: 1, explanation: '2.4 GHz signals travel through walls and obstacles more effectively than 5 GHz, making it better for distant capture.' },
+      ] }),
 
     l('wf-3', 'WPA2 & WPA3',
       `**WPA2** (Wi-Fi Protected Access 2) has been the standard since 2004. It uses AES encryption and requires a **pre-shared key (PSK)**, the Wi-Fi password.
@@ -100,7 +106,10 @@ sudo airodump-ng -c 6 --bssid AA:BB:CC:DD:EE:FF -w capture wlan0mon
 **Mini-challenge:** Run \`nmcli dev wifi list 2>/dev/null | head -10\` to see nearby networks and their security types. If \`nmcli\` isn't available, check what your current connection uses: \`iw dev wlan0 link 2>/dev/null | grep -iE "auth|cipher"\`. Identifying WPA2 vs WPA3 vs WEP on nearby networks is the first step in determining which attack techniques apply.
 
             nmcli dev wifi list | grep -E "WPA2|WPA3|WEP"
-\`\`\``),
+\`\`\``, { hasQuiz: true, quiz: [
+        { id: 'wf-3-q1', question: 'What is sent by the access point in the first step of the WPA2 4-way handshake?', options: ['The client password', 'A random number called ANonce', 'The group key', 'A session ID'], correctIndex: 1, explanation: 'The AP sends its ANonce (Access Point Nonce) in the first message, which the client uses to derive session keys.' },
+        { id: 'wf-3-q2', question: 'What makes WPA3 resistant to offline dictionary attacks on captured handshakes?', options: ['It uses longer passwords', 'SAE (Simultaneous Authentication of Equals) replaces PSK', 'It uses AES-256 instead of AES-128', 'It requires biometric authentication'], correctIndex: 1, explanation: 'WPA3 uses SAE (Dragonfly key exchange) which prevents offline dictionary attacks by design, unlike WPA2 PSK.' },
+      ] }),
 
     l('wf-4', 'Wireless Reconnaissance',
       `Wireless recon uses tools to discover and analyze nearby networks.
@@ -141,7 +150,10 @@ sudo wash -i wlan0mon
 
 **Mini-challenge:** If you have a wireless adapter supporting monitor mode: \`sudo airmon-ng start wlan0 2>/dev/null && sudo airodump-ng wlan0mon 2>/dev/null | head -20\`. If not available, study the command syntax: \`sudo airodump-ng -c 6 --bssid AA:BB:CC:DD:EE:FF -w capture wlan0mon\`. Understanding the command structure prepares you for when you have the right hardware.
 
-**WPS (Wi-Fi Protected Setup)** is a feature that allows PIN-based connection. Many routers have WPS enabled, and the PIN can be brute-forced with tools like \`reaver\` or \`bully\`.`),
+**WPS (Wi-Fi Protected Setup)** is a feature that allows PIN-based connection. Many routers have WPS enabled, and the PIN can be brute-forced with tools like \`reaver\` or \`bully\`.`, { hasQuiz: true, quiz: [
+        { id: 'wf-4-q1', question: 'What does the PWR column in airodump-ng output indicate?', options: ['Password strength', 'Signal strength — higher value means closer to the access point', 'Encryption type', 'Number of data packets captured'], correctIndex: 1, explanation: 'PWR shows signal strength in dBm. Values closer to 0 (less negative) indicate a stronger signal and closer proximity.' },
+        { id: 'wf-4-q2', question: 'What is the design flaw in WPS that makes it vulnerable to brute-force attacks?', options: ['It uses WEP encryption', 'The 8-digit PIN is validated in two separate halves, reducing entropy to 11,000 attempts', 'It sends passwords in plaintext', 'It does not use any encryption'], correctIndex: 1, explanation: 'WPS validates the first 4 digits separately from the last 3 (+ checksum), reducing the search space from 10^8 to just 11,000 combinations.' },
+      ] }),
 
     l('wf-5', 'Security Best Practices',
       `Protecting your wireless network is essential. Here's how to secure it.
@@ -218,7 +230,10 @@ tshark -r capture-01.cap -Y "eapol" 2>/dev/null
 **Why this matters:**
 - The captured handshake can be cracked offline (no network connection needed)
 - Tools like aircrack-ng, hashcat, and John the Ripper can crack WPA2 PSK
-- WPA3's SAE handshake resists this attack, deauth frames don't help against WPA3`),
+- WPA3's SAE handshake resists this attack, deauth frames don't help against WPA3`, { hasQuiz: true, quiz: [
+        { id: 'wf-6-q1', question: 'Why can deauthentication frames be forged in WPA2 networks?', options: ['They are encrypted with the network password', 'They are management frames and transmitted unencrypted', 'The access point has a weak password', 'The router firmware is outdated'], correctIndex: 1, explanation: 'WPA2 management frames (including deauth) are unencrypted, allowing any nearby device to forge them without knowing the password.' },
+        { id: 'wf-6-q2', question: 'What does the aireplay-ng -0 0 command do?', options: ['Scans for nearby networks', 'Sends continuous deauthentication frames to a target', 'Captures the WPA2 handshake', 'Cracks the Wi-Fi password offline'], correctIndex: 1, explanation: 'The -0 flag specifies deauthentication mode, and 0 means continuous sending until manually stopped.' },
+      ] }),
 
     l('wf-7', 'PMKID Attack & WPA3',
       `**PMKID attack:** An alternative to the 4-way handshake that doesn't need a client to be connected.
@@ -262,7 +277,10 @@ nmcli dev wifi list | grep -E "WPA2|WPA3"
 
 **Mini-challenge:** (Conceptual) Compare the two capture methods: deauth attack requires a client (more intrusive, leaves evidence), PMKID requires only an AP (less intrusive, no deauth). In authorized penetration tests, PMKID capture is preferred because it doesn't disrupt network operations. Understanding which technique to use in which scenario is the mark of a professional tester.
 
-Always use WPA3-only mode if all your devices support it.`),
+Always use WPA3-only mode if all your devices support it.`, { hasQuiz: true, quiz: [
+        { id: 'wf-7-q1', question: 'What is the main advantage of the PMKID attack over traditional handshake capture?', options: ['It works on WPA3 networks', 'It can capture the hash without any client connected to the network', 'It cracks passwords faster', 'It works only on 5 GHz networks'], correctIndex: 1, explanation: 'The PMKID is transmitted by the AP during association, so no connected client is needed — making it less intrusive.' },
+        { id: 'wf-7-q2', question: 'What vulnerability exists in WPA3 Transition Mode (dual WPA2/WPA3)?', options: ['It uses weak AES encryption', 'Clients can be forced to downgrade to WPA2', 'It requires a RADIUS server', 'It does not support 5 GHz'], correctIndex: 1, explanation: 'In Transition Mode, an attacker can deploy a rogue AP that only supports WPA2, forcing clients to fall back to the weaker protocol.' },
+      ] }),
 
     l('wf-8', 'Cracking Wi-Fi Passwords',
       `Once you have a captured handshake or PMKID, crack the password offline.

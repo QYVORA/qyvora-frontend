@@ -38,7 +38,11 @@ ip addr show
 
 # See your public IP (requires internet)
 curl ifconfig.me
-\`\`\``),
+\`\`\``, { hasQuiz: true, quiz: [
+        { id: 'net-1-q1', question: 'What is the difference between a public IP and a private IP?', options: ['Public IPs are faster', 'A public IP is your internet-facing address, a private IP is only visible on your local network', 'There is no difference', 'Private IPs are assigned by ISPs'], correctIndex: 1, explanation: 'A public IP is assigned by your ISP and is globally unique, while a private IP (e.g., 192.168.x.x) is only used within your local network and is not routable on the internet.' },
+        { id: 'net-1-q2', question: 'Which port does SSH typically listen on?', options: ['80', '443', '22', '53'], correctIndex: 2, explanation: 'SSH (Secure Shell) listens on port 22 and is used for remote login to servers.' },
+        { id: 'net-1-q3', question: 'What technique allows multiple devices to share a single public IP address?', options: ['DNS', 'DHCP', 'NAT (Network Address Translation)', 'ARP'], correctIndex: 2, explanation: 'NAT translates private IP addresses to a public IP, allowing multiple devices on a local network to share one internet connection.' },
+      ] }),
 
     l('net-2', 'The OSI Model',
       `The **OSI model** breaks network communication into 7 layers. Think of it like sending a package through a postal system, each layer handles a specific part of the journey:
@@ -71,7 +75,11 @@ The practical layers you need to remember most:
 - **Layer 4 (Transport)** - TCP/UDP and ports
 - **Layer 7 (Application)**: the protocols you use daily
 
-Each layer adds its own header to the data as it travels down, like nesting envelopes inside envelopes. The receiving end strips them off layer by layer to reconstruct the original message.`),
+Each layer adds its own header to the data as it travels down, like nesting envelopes inside envelopes. The receiving end strips them off layer by layer to reconstruct the original message.`, { hasQuiz: true, quiz: [
+        { id: 'net-2-q1', question: 'At which OSI layer do IP addresses and routing operate?', options: ['Layer 2 (Data Link)', 'Layer 3 (Network)', 'Layer 4 (Transport)', 'Layer 7 (Application)'], correctIndex: 1, explanation: 'Layer 3 (Network) handles IP addressing and routing, determining the best path for data across networks.' },
+        { id: 'net-2-q2', question: 'Which OSI layer is associated with TCP/UDP and port numbers?', options: ['Layer 3 (Network)', 'Layer 4 (Transport)', 'Layer 5 (Session)', 'Layer 6 (Presentation)'], correctIndex: 1, explanation: 'Layer 4 (Transport) handles TCP/UDP protocols and uses port numbers to direct data to the correct application.' },
+        { id: 'net-2-q3', question: 'What type of attack targets the application level (HTTP, DNS) in the OSI model?', options: ['Layer 2 attack', 'Layer 3 attack', 'Layer 4 attack', 'Layer 7 attack'], correctIndex: 3, explanation: 'Layer 7 attacks target the application layer, including SQL injection, XSS, and HTTP floods.' },
+      ] }),
 
     l('net-3', 'TCP/IP & UDP',
       `**TCP** and **UDP** are the two main transport protocols. They sit on top of IP.
@@ -100,7 +108,11 @@ netstat -ulnp   # UDP ports
 
 > **Why this matters for hacking:** The TCP three-way handshake (SYN → SYN-ACK → ACK) is the foundation of reliable network communication, and the basis for SYN flooding as a DoS attack. Understanding TCP flags lets you interpret packet captures, configure firewalls, and craft custom packets. UDP's connectionless nature makes it ideal for DNS and VoIP but also makes it spoofable. In port scanning, the difference between a SYN scan (\`-sS\`, stealthy, half-open) and a TCP connect scan (\`-sT\`, complete handshake, logged) is critical for evasion.
 
-**Mini-challenge:** Run \`ping -c 4 google.com\` to see round-trip times, then \`traceroute -n google.com | head -10\` to see the path. Each hop is a router forwarding your packets — visualizing this path is essential for understanding network topology and identifying where slowdowns or blocks occur.`),
+**Mini-challenge:** Run \`ping -c 4 google.com\` to see round-trip times, then \`traceroute -n google.com | head -10\` to see the path. Each hop is a router forwarding your packets — visualizing this path is essential for understanding network topology and identifying where slowdowns or blocks occur.`, { hasQuiz: true, quiz: [
+        { id: 'net-3-q1', question: 'What are the three steps of the TCP three-way handshake?', options: ['SYN → ACK → FIN', 'SYN → SYN-ACK → ACK', 'GET → POST → PUT', 'CONNECT → SEND → CLOSE'], correctIndex: 1, explanation: 'The TCP three-way handshake is SYN → SYN-ACK → ACK, establishing a reliable connection before data transfer.' },
+        { id: 'net-3-q2', question: 'Which protocol is used for DNS queries and why?', options: ['TCP, because it is reliable', 'UDP, because it is fast and connectionless', 'ICMP, because it is lightweight', 'HTTP, because it is standardized'], correctIndex: 1, explanation: 'DNS uses UDP on port 53 because DNS queries are small and speed is prioritized over guaranteed delivery.' },
+        { id: 'net-3-q3', question: 'What is the difference between a SYN scan (-sS) and a TCP connect scan (-sT)?', options: ['SYN scan completes the full handshake, connect scan does not', 'SYN scan is stealthy and half-open, connect scan completes the handshake', 'There is no difference', 'Connect scan is stealthier'], correctIndex: 1, explanation: 'A SYN scan (-sS) sends a SYN and waits for SYN-ACK but never completes the handshake (half-open), making it stealthier. A connect scan (-sT) completes the full TCP handshake and is more likely to be logged.' },
+      ] }),
 
     l('net-4', 'DNS Explained',
       `**DNS (Domain Name System)** translates human-readable domain names into IP addresses. When you type \`google.com\`, DNS finds the IP address so your computer knows where to connect.
@@ -146,7 +158,11 @@ nslookup -type=MX gmail.com
 
 # Check all record types
 dig any google.com
-\`\`\``),
+\`\`\``, { hasQuiz: true, quiz: [
+        { id: 'net-4-q1', question: 'What tool provides more detailed DNS lookup output than nslookup?', options: ['ping', 'traceroute', 'dig', 'curl'], correctIndex: 2, explanation: 'dig provides more detailed DNS query output than nslookup, including record TTLs and additional section data.' },
+        { id: 'net-4-q2', question: 'What does a DNS MX record indicate?', options: ['The mail server for a domain', 'The IP address of a domain', 'An alias from one domain to another', 'The IPv6 address of a domain'], correctIndex: 0, explanation: 'MX (Mail Exchange) records specify which mail servers handle email for a domain.' },
+        { id: 'net-4-q3', question: 'On which port and protocol does DNS operate?', options: ['TCP port 80', 'UDP port 53', 'TCP port 443', 'UDP port 22'], correctIndex: 1, explanation: 'DNS operates on UDP port 53 for standard queries (TCP is used for zone transfers).' },
+      ] }),
 
     l('net-5', 'HTTP & HTTPS',
       `**HTTP** is the protocol your browser uses to talk to websites. It's a request-response protocol.
@@ -195,7 +211,11 @@ curl -I https://example.com
 
 > **Why this matters for hacking:** HTTP headers reveal server information (Apache vs Nginx, PHP version, cookies), which guides your attack strategy. Status codes tell you what's accessible - 200 (OK), 403 (forbidden but exists), 404 (not found), 500 (server error). The \`Host\` header is used for virtual hosting, modifying it can access different sites on the same server. Understanding HTTPS (TLS handshake, certificate validation) is essential for intercepting encrypted traffic, a core skill in penetration testing.
 
-**Mini-challenge:** Run \`curl -I https://example.com\` to see response headers. Identify the server type, content type, and any security headers. Then \`curl -v https://example.com 2>&1 | grep -iE "ssl|tls|certificate"\` to examine the TLS handshake details — you'll see the certificate chain and cipher negotiation.`),
+**Mini-challenge:** Run \`curl -I https://example.com\` to see response headers. Identify the server type, content type, and any security headers. Then \`curl -v https://example.com 2>&1 | grep -iE "ssl|tls|certificate"\` to examine the TLS handshake details — you'll see the certificate chain and cipher negotiation.`, { hasQuiz: true, quiz: [
+        { id: 'net-5-q1', question: 'What does HTTP status code 403 indicate?', options: ['Not Found', 'Server Error', 'Forbidden — the server understood but refuses to authorize', 'Redirect'], correctIndex: 2, explanation: 'HTTP 403 Forbidden means the server understands the request but refuses to authorize it, unlike 404 which means the resource does not exist.' },
+        { id: 'net-5-q2', question: 'Which HTTP method is used to send form data or login credentials?', options: ['GET', 'POST', 'PUT', 'DELETE'], correctIndex: 1, explanation: 'POST is used to send data to a server, such as form submissions and login credentials.' },
+        { id: 'net-5-q3', question: 'What does HTTPS add on top of HTTP?', options: ['Faster response times', 'SSL/TLS encryption of the entire conversation', 'Support for larger file sizes', 'Automatic data compression'], correctIndex: 1, explanation: 'HTTPS wraps HTTP in SSL/TLS encryption, preventing eavesdropping and tampering with traffic in transit.' },
+      ] }),
 
     l('net-6', 'Troubleshooting Tools',
       `The best way to learn networking is by doing. Here are the essential troubleshooting tools.
@@ -326,7 +346,11 @@ nmap -sn 192.168.1.0/24
 
 > **Why this matters for hacking:** Subnetting knowledge directly impacts scanning efficiency. A /24 (254 hosts) can be scanned quickly with \`nmap -sn 192.168.1.0/24\`. But scanning a /16 (65,534 hosts) requires strategic targeting. Understanding CIDR tells you how many IPs are in a range, what addresses are reserved, and how networks are segmented. In CTFs, finding a /32 (single host) or /30 (2 hosts) tells you something about the network architecture, these are often point-to-point links or specific targets.
 
-**Mini-challenge:** Run \`ipcalc 192.168.1.0/24\` (install with \`sudo apt install ipcalc\`) to see subnet breakdown. If unavailable, compute manually: a /24 has 254 usable hosts (256 - 2). For /28: 16 addresses - 2 (network + broadcast) = 14 usable. Practice converting between CIDR and decimal subnet masks — \`/24 = 255.255.255.0\`, \`/16 = 255.255.0.0\`, \`/8 = 255.0.0.0\`. This mental math saves time during scans.`),
+**Mini-challenge:** Run \`ipcalc 192.168.1.0/24\` (install with \`sudo apt install ipcalc\`) to see subnet breakdown. If unavailable, compute manually: a /24 has 254 usable hosts (256 - 2). For /28: 16 addresses - 2 (network + broadcast) = 14 usable. Practice converting between CIDR and decimal subnet masks — \`/24 = 255.255.255.0\`, \`/16 = 255.255.0.0\`, \`/8 = 255.0.0.0\`. This mental math saves time during scans.`, { hasQuiz: true, quiz: [
+        { id: 'net-7-q1', question: 'How many usable host addresses does a /28 subnet provide?', options: ['30', '14', '6', '254'], correctIndex: 1, explanation: 'A /28 has 2^(32-28) = 16 addresses total; subtracting the network and broadcast addresses leaves 14 usable hosts.' },
+        { id: 'net-7-q2', question: 'What does CIDR notation /24 mean in decimal subnet mask form?', options: ['255.255.0.0', '255.255.255.0', '255.0.0.0', '255.255.255.128'], correctIndex: 1, explanation: '/24 corresponds to the subnet mask 255.255.255.0 and gives 256 addresses (254 usable).' },
+        { id: 'net-7-q3', question: 'Which of these is a private IP range per RFC 1918?', options: ['8.8.8.0/8', '192.168.0.0/16', '172.0.0.0/8', '169.254.0.0/16'], correctIndex: 1, explanation: '192.168.0.0/16 is a private IP range used for home and small office networks; RFC 1918 also includes 10.0.0.0/8 and 172.16.0.0/12.' },
+      ] }),
 
     l('net-8', 'DHCP & NAT',
       `DHCP assigns IP addresses automatically. NAT allows many devices to share one public IP.
@@ -423,7 +447,11 @@ cat /var/lib/dhcp/dhclient.leases 2>/dev/null | tail -10
 # 3. Release and renew your IP
 sudo dhclient -v -r
 sudo dhclient -v
-\`\`\``),
+\`\`\``, { hasQuiz: true, quiz: [
+        { id: 'net-8-q1', question: 'What does the DORA process refer to?', options: ['The TCP connection setup steps', 'The four-step DHCP lease process: Discover, Offer, Request, Ack', 'The DNS resolution sequence', 'The NAT translation stages'], correctIndex: 1, explanation: 'DORA is the DHCP lease process: Discover (asking for an IP), Offer, Request, and Ack (confirmation).' },
+        { id: 'net-8-q2', question: 'Which command releases your current DHCP lease on Linux?', options: ['ip addr show', 'sudo dhclient -r', 'curl -s ifconfig.me', 'hostname -I'], correctIndex: 1, explanation: 'sudo dhclient -r releases the current DHCP lease; running sudo dhclient afterward requests a new one.' },
+        { id: 'net-8-q3', question: 'What security issue can a rogue DHCP server cause?', options: ['Faster network speeds', 'Hijacking all traffic on a network (DHCP spoofing)', 'Automatic port forwarding', 'Blocking DNS resolution'], correctIndex: 1, explanation: 'A rogue DHCP server can assign malicious gateway/DNS settings and hijack traffic on the network, known as DHCP spoofing.' },
+      ] }),
 
     l('net-9', 'Network Security Basics',
       `Understanding firewalls, VPNs, and security concepts is essential for both offense and defense.
@@ -526,7 +554,11 @@ openssl s_client -connect example.com:443 < /dev/null 2>/dev/null | openssl x509
 
 > **Why this matters for hacking:** Firewalls are the first line of defense, understanding their behavior determines your attack approach. A "filtered" port (DROP) tells you a firewall exists. A "closed" port (REJECT) tells you the service isn't running. VPNs encrypt traffic and change your apparent location, essential for operational security. TLS certificate inspection reveals domain ownership, expiration, and issuing authority, useful for identifying phishing sites. The \`ss -tulnp\` command shows every listening service, critical for identifying exposed services on a system.
 
-**Mini-challenge:** Check your firewall: \`sudo ufw status 2>/dev/null || echo "ufw not installed"\`. Then inspect your TLS connections: \`openssl s_client -connect example.com:443 -servername example.com < /dev/null 2>/dev/null | openssl x509 -noout -subject -dates\`. This shows the certificate subject (who it's issued to) and validity dates — essential for verifying TLS configuration.`),
+**Mini-challenge:** Check your firewall: \`sudo ufw status 2>/dev/null || echo "ufw not installed"\`. Then inspect your TLS connections: \`openssl s_client -connect example.com:443 -servername example.com < /dev/null 2>/dev/null | openssl x509 -noout -subject -dates\`. This shows the certificate subject (who it's issued to) and validity dates — essential for verifying TLS configuration.`, { hasQuiz: true, quiz: [
+        { id: 'net-9-q1', question: 'When a port scan reports a port as "filtered", what does that indicate?', options: ['The service is down', 'A firewall is silently dropping packets (DROP)', 'The port accepts connections', 'The service refused the connection'], correctIndex: 1, explanation: 'A "filtered" result from nmap means packets are being dropped (no response), which typically indicates a firewall is present.' },
+        { id: 'net-9-q2', question: 'Which interface does OpenVPN typically create on Linux when active?', options: ['eth0', 'wg0', 'tun0', 'wlan0'], correctIndex: 2, explanation: 'OpenVPN creates a virtual interface named tun0; WireGuard creates wg0.' },
+        { id: 'net-9-q3', question: 'Which command shows every listening service on your machine?', options: ['ip neighbor show', 'dig +short google.com', 'ss -tulnp', 'openssl s_client'], correctIndex: 2, explanation: 'ss -tulnp lists all listening TCP/UDP ports and the processes bound to them, revealing exposed services.' },
+      ] }),
 ];
 
 export const COURSE: Course = {

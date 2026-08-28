@@ -34,7 +34,11 @@ nmap scanme.nmap.org
 This scans the 1000 most common ports. The results show which ports are open and their associated services.
 
 **Try it yourself:** Run \`nmap --version\` to confirm Nmap is installed, then \`nmap scanme.nmap.org\` for your first scan. The output shows open ports and services — the starting point for any network assessment.`,
-      { hasTerminal: true, terminalCommands: ['nmap --version', 'nmap scanme.nmap.org'], terminalTitle: 'lesson-terminal' }),
+      { hasTerminal: true, terminalCommands: ['nmap --version', 'nmap scanme.nmap.org'], terminalTitle: 'lesson-terminal', hasQuiz: true, quiz: [
+        { id: 'nm-1-q1', question: 'Which command checks if Nmap is installed?', options: ['nmap --help', 'nmap --version', 'nmap -V', 'which nmap'], correctIndex: 1, explanation: 'nmap --version displays the installed Nmap version and confirms it is available.' },
+        { id: 'nm-1-q2', question: 'What does scanme.nmap.org provide?', options: ['A paid scanning service', 'A legal target provided by the Nmap project for testing', 'A real company website', 'A default gateway'], correctIndex: 1, explanation: 'scanme.nmap.org is a host provided by the Nmap project specifically for legal testing and practice.' },
+        { id: 'nm-1-q3', question: 'How many common ports does Nmap scan by default?', options: ['100', '1000', '65535', '655'], correctIndex: 1, explanation: 'Nmap scans the 1000 most common ports when no port specification is given.' },
+      ] }),
 
     l('nm-2', 'Basic Scanning',
       `Nmap offers different scan types for different situations.
@@ -81,7 +85,11 @@ UDP scans are slower because UDP doesn't have a handshake. Nmap waits for respon
 > **Why this matters for hacking:** Scanning is the first phase of any network penetration test. A SYN scan (\`-sS\`) is fast and stealthy, it never completes the TCP handshake, so many targets won't log a full connection. UDP scanning is essential for finding exposed DNS, SNMP, and DHCP services. In red team engagements, adjusting scan speed and type evades detection by network intrusion detection systems (NIDS).
 
 **Mini-challenge:** Run \`sudo nmap -sn 192.168.1.0/24\` (adjust to your subnet) to discover live hosts. Then scan a discovered host with \`-sS -sV\` to find open ports and service versions. This is the exact workflow for network reconnaissance.`,
-      { hasTerminal: true, terminalCommands: ['nmap --help | head -5', 'nmap -sn 192.168.1.0/24 2>/dev/null || echo "Adjust subnet or run with sudo"'], terminalTitle: 'lesson-terminal' }),
+      { hasTerminal: true, terminalCommands: ['nmap --help | head -5', 'nmap -sn 192.168.1.0/24 2>/dev/null || echo "Adjust subnet or run with sudo"'], terminalTitle: 'lesson-terminal', hasQuiz: true, quiz: [
+        { id: 'nm-2-q1', question: 'What does the -sn flag do in Nmap?', options: ['Performs a SYN scan', 'Skips port scanning and only checks if hosts are alive', 'Enables stealth mode', 'Scans all ports silently'], correctIndex: 1, explanation: 'The -sn flag performs a ping sweep, checking which hosts are online without scanning any ports.' },
+        { id: 'nm-2-q2', question: 'Why is a SYN scan called "half-open"?', options: ['It scans half the ports', 'It never completes the TCP handshake', 'It uses half the bandwidth', 'It runs at half speed'], correctIndex: 1, explanation: 'A SYN scan sends a SYN packet and waits for SYN-ACK but never sends the final ACK, leaving the connection half-open.' },
+        { id: 'nm-2-q3', question: 'Which scan type does NOT require root privileges?', options: ['-sS (SYN scan)', '-sT (TCP Connect scan)', '-sU (UDP scan)', '-O (OS detection)'], correctIndex: 1, explanation: 'TCP Connect scan (-sT) completes the full handshake using normal OS calls and does not require root.' },
+      ] }),
 
     l('nm-3', 'Port Discovery',
       `Nmap gives you fine-grained control over which ports to scan.
@@ -121,7 +129,11 @@ nmap -p 3306,5432,27017,6379 192.168.1.0/24
 > **Why this matters for hacking:** Port discovery reveals the attack surface. Open ports are doors into the system. SSH (22), HTTP (80/443), and RDP (3389) are common targets. Finding an unexpected database port (3306, 5432) exposed to the internet is a critical finding, it means the DB is directly reachable without VPN. In CTF challenges and real engagements, scanning ALL ports (\`-p-\`) often reveals non-standard services running on high ports that the default 1000-port scan misses.
 
 Common database ports: 3306 (MySQL), 5432 (PostgreSQL), 27017 (MongoDB), 6379 (Redis). Seeing these exposed is a common security finding.`,
-      { hasTerminal: true, terminalCommands: ['nmap --top-ports 10 scanme.nmap.org'], terminalTitle: 'lesson-terminal' }),
+      { hasTerminal: true, terminalCommands: ['nmap --top-ports 10 scanme.nmap.org'], terminalTitle: 'lesson-terminal', hasQuiz: true, quiz: [
+        { id: 'nm-3-q1', question: 'Which Nmap flag scans ALL 65535 ports?', options: ['--all-ports', '-p-', '--full', '-p 1-65535'], correctIndex: 1, explanation: 'The -p- flag tells Nmap to scan every port from 1 to 65535.' },
+        { id: 'nm-3-q2', question: 'What does "filtered" mean as a port state?', options: ['The port is open and accepting connections', 'A firewall or filter is blocking the probe', 'No application is listening', 'The port is closed by the OS'], correctIndex: 1, explanation: 'A filtered port means a firewall or filtering device is blocking Nmap\'s probes from reaching it.' },
+        { id: 'nm-3-q3', question: 'Which port number is used by MySQL?', options: ['5432', '27017', '3306', '6379'], correctIndex: 2, explanation: 'MySQL uses port 3306 by default, while 5432 is PostgreSQL and 27017 is MongoDB.' },
+      ] }),
 
     l('nm-4', 'Service Version Detection',
       `Knowing a port is open is useful. Knowing the exact software version is powerful.
@@ -159,7 +171,11 @@ nmap -sV --version-intensity 0 scanme.nmap.org
 The intensity ranges from 0 (light) to 9 (heavy). Default is 7. Higher intensity is more accurate but takes longer and creates more traffic.
 
 **Mini-challenge:** Run \`nmap -sV scanme.nmap.org\` and study the version output. For each discovered service, think about what vulnerabilities are associated with that version (e.g., OpenSSH 6.6 has known CVE-2015-5600). This correlation between service version and known vulnerabilities is the core of vulnerability assessment.`,
-      { hasTerminal: true, terminalCommands: ['nmap -sV scanme.nmap.org'], terminalTitle: 'lesson-terminal' }),
+      { hasTerminal: true, terminalCommands: ['nmap -sV scanme.nmap.org'], terminalTitle: 'lesson-terminal', hasQuiz: true, quiz: [
+        { id: 'nm-4-q1', question: 'What does the -sV flag do?', options: ['Detects the operating system', 'Detects service versions running on open ports', 'Performs a verbose scan', 'Enables version 2 of Nmap'], correctIndex: 1, explanation: '-sV probes open ports to determine the exact service and version software running.' },
+        { id: 'nm-4-q2', question: 'What is the default version-intensity level?', options: ['0', '5', '7', '9'], correctIndex: 2, explanation: 'The default version-intensity is 7, balancing accuracy with scan speed.' },
+        { id: 'nm-4-q3', question: 'Why is knowing a service version important for security?', options: ['It tells you the port number', 'Specific versions may have known CVEs and vulnerabilities', 'It reveals the hostname', 'It shows the network speed'], correctIndex: 1, explanation: 'Knowing the exact version allows you to look up known vulnerabilities (CVEs) for that specific software.' },
+      ] }),
 
     l('nm-5', 'OS Fingerprinting',
       `Nmap can identify the operating system of a remote host by analyzing subtle differences in how TCP/IP stacks respond to probes.
@@ -203,7 +219,11 @@ sudo nmap -O --osscan-guess scanme.nmap.org
 > **Why this matters for hacking:** OS fingerprinting tells you what exploit framework to reach for. A Linux target might need kernel exploits; Windows targets might need SMB or RDP exploits. The \`-A\` flag (aggressive scan) combines OS detection, version detection, default scripts, and traceroute in one command, it's the go-to for comprehensive reconnaissance. Use \`-O\` with \`--osscan-guess\` when dealing with hardened systems that try to obscure their identity.
 
 Despite its limitations, OS fingerprinting is remarkably accurate for identifying the general OS family (Windows vs Linux vs macOS).`,
-      { hasTerminal: true, terminalCommands: ['nmap -O scanme.nmap.org 2>/dev/null || echo "Run with sudo for OS detection"'], terminalTitle: 'lesson-terminal' }),
+      { hasTerminal: true, terminalCommands: ['nmap -O scanme.nmap.org 2>/dev/null || echo "Run with sudo for OS detection"'], terminalTitle: 'lesson-terminal', hasQuiz: true, quiz: [
+        { id: 'nm-5-q1', question: 'Which flag enables OS fingerprinting?', options: ['-sV', '-O', '-A', '-sC'], correctIndex: 1, explanation: 'The -O flag enables Nmap\'s OS detection by analyzing TCP/IP stack responses.' },
+        { id: 'nm-5-q2', question: 'What does the -A flag combine?', options: ['OS + version + default scripts + traceroute', 'SYN scan + UDP scan', 'Port scan + firewall evasion', 'Version detection + NSE scripts only'], correctIndex: 0, explanation: 'The -A (aggressive) flag runs OS detection, version detection, default scripts, and traceroute together.' },
+        { id: 'nm-5-q3', question: 'Why might OS detection be less reliable behind firewalls?', options: ['Firewalls change the OS', 'Firewalls alter TCP/IP responses, corrupting the fingerprint', 'Nmap cannot reach the target', 'Firewalls block ICMP only'], correctIndex: 1, explanation: 'Firewalls modify or drop packets, which changes the TCP/IP responses Nmap uses to match against its OS fingerprint database.' },
+      ] }),
 
     l('nm-6', 'NSE Scripts',
       `The **Nmap Scripting Engine (NSE)** extends Nmap with automated checks for vulnerabilities, misconfigurations, and more.
@@ -335,7 +355,12 @@ nmap -A target.com
 
 > **Why this matters for hacking:** FIN/NULL/XMAS scans exploit RFC behavior, closed ports MUST reply with RST, while open ports drop the packet silently. This lets you bypass stateless firewalls that only block SYN packets. The ACK scan (\`-sA\`) won't find open ports but will map firewall rules, telling you which ports are filtered vs. unfiltered, critical for understanding the defensive posture before committing to an attack path.
 
-**Mini-challenge:** Compare \`nmap -sS scanme.nmap.org\` with \`nmap -sF scanme.nmap.org\` and note the difference in output. If a firewall blocks SYN scans, the FIN scan may still get through. Practice using \`-sA\` to probe firewall rules on a target you control.`),
+**Mini-challenge:** Compare \`nmap -sS scanme.nmap.org\` with \`nmap -sF scanme.nmap.org\` and note the difference in output. If a firewall blocks SYN scans, the FIN scan may still get through. Practice using \`-sA\` to probe firewall rules on a target you control.`,
+      { hasQuiz: true, quiz: [
+        { id: 'nm-7-q1', question: 'How do FIN/NULL/XMAS scans distinguish open from closed ports?', options: ['Closed ports return SYN-ACK', 'Closed ports respond with RST, open ports silently drop the packet', 'Open ports return an ICMP error', 'Both port types respond identically'], correctIndex: 1, explanation: 'Per RFC 793, closed ports must reply with RST while open ports ignore unexpected packets and drop them silently.' },
+        { id: 'nm-7-q2', question: 'What is the primary purpose of an ACK scan (-sA)?', options: ['Finding open ports', 'Mapping firewall rules by identifying filtered vs unfiltered ports', 'Detecting the operating system', 'Scanning UDP services'], correctIndex: 1, explanation: 'ACK scans cannot identify open ports but reveal which ports are filtered by a firewall versus reachable.' },
+        { id: 'nm-7-q3', question: 'Which scan sends a packet with FIN and PSH flags together?', options: ['NULL scan', 'XMAS scan', 'Maimon scan', 'Window scan'], correctIndex: 2, explanation: 'The Maimon scan (-sM) sends a packet with both FIN and PSH flags set.' },
+      ] }),
 
     l('nm-8', 'Performance & Firewall Evasion',
       `Nmap offers many options to optimize speed and bypass defenses.
@@ -409,7 +434,12 @@ nmap --top-ports 100 target.com
 
 > **Why this matters for hacking:** Timing and evasion are essential in adversarial environments. A T5 scan over a 100Mbps link might still miss ports, but a T0 scan with decoys, fragmentation, and randomized order can evade even well-tuned IDS. In penetration tests, use \`-D\` decoys to obscure your true IP, \`-f\` to bypass simple packet filters, and \`--randomize-hosts\` to avoid pattern detection. The idle scan (\`-sI\`) is the most stealthy, it bounces scan traffic through a "zombie" host so the target never sees your IP.
 
-**Mini-challenge:** Run \`nmap -T4 -F scanme.nmap.org\` (fast, top-100 ports) and time it. Then run \`nmap -T2 -p 22,80,443 scanme.nmap.org\` (slower, specific ports) and compare the timing. Understanding the speed-accuracy tradeoff is crucial for real-world engagements where time windows vary.`),
+**Mini-challenge:** Run \`nmap -T4 -F scanme.nmap.org\` (fast, top-100 ports) and time it. Then run \`nmap -T2 -p 22,80,443 scanme.nmap.org\` (slower, specific ports) and compare the timing. Understanding the speed-accuracy tradeoff is crucial for real-world engagements where time windows vary.`,
+      { hasQuiz: true, quiz: [
+        { id: 'nm-8-q1', question: 'Which timing template is the slowest and most stealthy?', options: ['T5', 'T0', 'T2', 'T3'], correctIndex: 1, explanation: 'T0 (Paranoid) serializes scans and waits 5 minutes between probes, making it extremely slow but evasive to IDS.' },
+        { id: 'nm-8-q2', question: 'What does the -D flag do in Nmap?', options: ['Adds a delay between probes', 'Spoofs source IPs using decoys to obscure your real address', 'Enables debug output', 'Detects decoy hosts'], correctIndex: 1, explanation: 'Decoy scans make the target see multiple source IPs, including your real one mixed among fake decoys.' },
+        { id: 'nm-8-q3', question: 'Which scan type bounces traffic through a "zombie" host?', options: ['Idle scan (-sI)', 'ACL scan', 'NULL scan', 'Maimon scan'], correctIndex: 0, explanation: 'The idle scan (-sI) uses a zombie host to relay probes, so the target never sees your IP address.' },
+      ] }),
 
     l('nm-9', 'Output Formats & Automation',
       `Nmap supports multiple output formats for reporting and automation.

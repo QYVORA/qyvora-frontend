@@ -33,7 +33,12 @@ When you first open Wireshark, it shows a list of network interfaces. Choose the
 
 > **Why this matters for hacking:** Wireshark is the foundation of network forensics. Every security analyst needs to understand packet capture, it's how you detect data exfiltration, C2 beaconing, DNS tunneling, and ARP spoofing. When an incident occurs, the packet capture is the definitive record of what happened. In CTF challenges, pcap analysis is a common skill tested during forensics challenges.
 
-**Mini-challenge:** Run \`ping -c 4 scanme.nmap.org && tshark -i any -c 10 -w /tmp/test.pcap 2>/dev/null; tshark -r /tmp/test.pcap 2>/dev/null | head -5\` to capture and analyze your first packets. If tshark is not available, install with \`sudo apt install tshark\`.`),
+**Mini-challenge:** Run \`ping -c 4 scanme.nmap.org && tshark -i any -c 10 -w /tmp/test.pcap 2>/dev/null; tshark -r /tmp/test.pcap 2>/dev/null | head -5\` to capture and analyze your first packets. If tshark is not available, install with \`sudo apt install tshark\`.`,
+      { hasQuiz: true, quiz: [
+        { id: 'ws-1-q1', question: 'What are the three main panes in Wireshark\'s interface?', options: ['Packet List, Packet Details, Packet Bytes', 'Source, Destination, Info', 'Headers, Body, Footer', 'Capture, Filter, Export'], correctIndex: 0, explanation: 'Wireshark displays packets in three layers: a summary list, decoded protocol details, and raw hex/ASCII bytes.' },
+        { id: 'ws-1-q2', question: 'What does `tshark` provide?', options: ['Command-line packet capture and analysis', 'A graphical user interface', 'A packet editor', 'Firewall rule management'], correctIndex: 0, explanation: '`tshark` is Wireshark\'s command-line tool, essential for headless capture, scripting, and remote analysis.' },
+        { id: 'ws-1-q3', question: 'Why do you add your user to the `wireshark` group?', options: ['To capture packets without running as root', 'To install Wireshark packages', 'To decrypt HTTPS traffic', 'To save capture files'], correctIndex: 0, explanation: 'The wireshark group grants permissions to access network interfaces for capture without requiring root/sudo.' },
+      ] }),
 
     l('ws-2', 'Capturing Traffic',
       `**Capturing** is the process of recording network packets as they pass through an interface.
@@ -73,7 +78,12 @@ sudo tshark -i wlan0mon
 
 **Mini-challenge:** Run \`tshark -D\` to list available interfaces. Then \`tshark -i any -c 50 -w /tmp/capture.pcapng\` and generate some traffic (\`curl https://example.com\`). Read the file with \`tshark -r /tmp/capture.pcapng | head -10\`. This is the exact workflow for collecting evidence during an investigation.
 
-**Best practice:** Save your captures (\`.pcapng\` files) so you can analyze them later without needing to re-capture.`),
+**Best practice:** Save your captures (\`.pcapng\` files) so you can analyze them later without needing to re-capture.`,
+      { hasQuiz: true, quiz: [
+        { id: 'ws-2-q1', question: 'What does promiscuous mode do?', options: ['Captures all traffic the network interface sees, not just your own', 'Only captures packets destined for your machine', 'Encrypts captured traffic', 'Filters out DNS queries'], correctIndex: 0, explanation: 'Promiscuous mode tells the NIC to pass all received packets to the capture tool, not just those addressed to it.' },
+        { id: 'ws-2-q2', question: 'What does `tshark -D` do?', options: ['Lists all available capture interfaces', 'Deletes a capture file', 'Displays decoded packets', 'Dumps DNS cache'], correctIndex: 0, explanation: '`-D` lists network interfaces that tshark can capture on, including interface numbers and descriptions.' },
+        { id: 'ws-2-q3', question: 'What file extension is standard for Wireshark capture files?', options: ['.pcapng', '.log', '.txt', '.csv'], correctIndex: 0, explanation: '`.pcapng` (Packet Capture Next Generation) is Wireshark\'s default format, supporting metadata and multiple interfaces.' },
+      ] }),
 
     l('ws-3', 'Display Filters',
       `In a busy network, thousands of packets fly by every second. **Display filters** let you focus on exactly what you need.
@@ -133,7 +143,12 @@ ssh.failed_authentication
 
 **Mini-challenge:** Run \`tshark -r /tmp/capture.pcapng -Y "http" 2>/dev/null | head -10\` to filter HTTP traffic from your test capture. Then \`tshark -r /tmp/capture.pcapng -Y "dns" 2>/dev/null | head -10\` to see DNS queries. Practice combining filters like \`tshark -r /tmp/capture.pcapng -Y "ip.addr != 127.0.0.1" 2>/dev/null | head -5\`.
 
-Wireshark highlights matching packets in green. The filter expression is evaluated for each packet, if it's true, the packet is shown.`),
+Wireshark highlights matching packets in green. The filter expression is evaluated for each packet, if it's true, the packet is shown.`,
+      { hasQuiz: true, quiz: [
+        { id: 'ws-3-q1', question: 'Which display filter shows only HTTP traffic?', options: ['http', 'tcp', 'port 80', 'GET'], correctIndex: 0, explanation: 'The `http` filter matches any packet that Wireshark decodes as the HTTP protocol.' },
+        { id: 'ws-3-q2', question: 'How do you find TCP SYN packets (connection initiations)?', options: ['tcp.flags.syn == 1 and tcp.flags.ack == 0', 'tcp.syn == true', 'tcp.start == 1', 'tcp.connect == 1'], correctIndex: 0, explanation: 'SYN-only packets have the SYN flag set and ACK unset — this is the first step of a TCP three-way handshake.' },
+        { id: 'ws-3-q3', question: 'What does `frame.len > 1000` filter for?', options: ['Packets larger than 1000 bytes', 'Packets from frame 1000', 'Packets with 1000 TCP flags', 'Packets with 1000ms latency'], correctIndex: 0, explanation: '`frame.len` is the total length of the captured frame in bytes; this filter finds large packets.' },
+      ] }),
 
     l('ws-4', 'Following Streams',
       `**Following a TCP stream** reconstructs the entire conversation between two hosts. Instead of seeing individual packets, you see the complete data exchange.
@@ -186,7 +201,12 @@ FLAG{network_traffic_is_not_private}
 
 **Mini-challenge:** Generate HTTP traffic with \`curl -v http://example.com\` while capturing (\`tshark -i any -c 100 -w /tmp/http.pcapng\`). Then use the filter approach: \`tshark -r /tmp/http.pcapng -Y "tcp.stream eq 0" -z follow,tcp,ascii,0 2>/dev/null | head -30\` to reconstruct the first TCP conversation. This is how forensic analysts extract evidence from captures.
 
-Following streams is how you find passwords, API keys, and sensitive data transmitted in plaintext. If you find HTTPS traffic, it will be encrypted and unreadable (unless you've configured Wireshark with the SSL/TLS keys).`),
+Following streams is how you find passwords, API keys, and sensitive data transmitted in plaintext. If you find HTTPS traffic, it will be encrypted and unreadable (unless you've configured Wireshark with the SSL/TLS keys).`,
+      { hasQuiz: true, quiz: [
+        { id: 'ws-4-q1', question: 'What does "Follow TCP Stream" reconstruct?', options: ['The entire conversation between two hosts as readable data', 'Individual packets in sequence', 'DNS query/response pairs', 'ARP cache entries'], correctIndex: 0, explanation: 'Following a TCP stream reassembles the data from both sides of a connection into a single readable view.' },
+        { id: 'ws-4-q2', question: 'What can following an HTTP stream reveal?', options: ['Login forms, credentials, and API responses in plaintext', 'Only file sizes and transfer durations', 'Router hop information', 'MAC addresses of both endpoints'], correctIndex: 0, explanation: 'HTTP streams contain headers, form data, cookies, and response bodies — all visible when reconstructed.' },
+        { id: 'ws-4-q3', question: 'Why can\'t you read HTTPS streams after following them?', options: ['The traffic is encrypted with TLS', 'You need root permissions', 'The stream is too large to display', 'It\'s a Wireshark bug'], correctIndex: 0, explanation: 'HTTPS encrypts the HTTP payload with TLS; without decryption keys, the reconstructed stream shows encrypted garbage.' },
+      ] }),
 
     l('ws-5', 'Analyzing HTTP Traffic',
       `HTTP is the most common unencrypted protocol you'll encounter. Here's how to analyze it in Wireshark.
@@ -245,7 +265,12 @@ tshark -r capture.pcapng -Y "http.request" -T fields \\
 
 **Mini-challenge:** Run \`curl --user admin:secret123 http://httpbin.org/basic-auth/admin/secret123\` while capturing (\`tshark -i any -c 50 -w /tmp/auth.pcapng\`). Then find the credentials: \`tshark -r /tmp/auth.pcapng -Y "http.authorization" -T fields -e http.authorization 2>/dev/null\`. Decode the Base64 with \`echo "<value>" | base64 -d\` — you'll see \`admin:secret123\`. This is how attackers harvest credentials from network traffic.
 
-This extracts the host, URI, and method from every HTTP request in the capture.`),
+This extracts the host, URI, and method from every HTTP request in the capture.`,
+      { hasQuiz: true, quiz: [
+        { id: 'ws-5-q1', question: 'What does decoding a Base64 Cookie header reveal?', options: ['A JSON blob with user information', 'A password hash', 'An encryption key', 'Nothing useful'], correctIndex: 0, explanation: 'Base64-encoded cookies often contain JSON data like `{"user":"admin"}` — decode with `echo "value" | base64 -d`.' },
+        { id: 'ws-5-q2', question: 'Which Wireshark filter finds HTTP POST requests?', options: ['http.request.method == POST', 'http.post', 'http.form.submit', 'http.upload'], correctIndex: 0, explanation: 'The `http.request.method` field contains the HTTP method; filter for `POST` to find form submissions.' },
+        { id: 'ws-5-q3', question: 'What security risk do plaintext HTTP POST requests expose?', options: ['Credentials and form data sent unencrypted over the network', 'Only the destination hostname', 'DNS cache information', 'File names on the local disk'], correctIndex: 0, explanation: 'HTTP POST bodies (usernames, passwords, tokens) travel in plaintext, visible to anyone sniffing the network.' },
+      ] }),
 
     l('ws-6', 'Identifying Malicious Traffic',
       `Wireshark is an essential tool for network forensics. Here are patterns to look for.
@@ -390,7 +415,12 @@ tshark -r "$PCAP" -T fields -e tcp.dstport 2>/dev/null | \
 
 > **Why this matters for hacking:** TShark is essential for automated forensics at scale. When analyzing a compromised server remotely (no GUI available), TShark is your only option. The \`-T fields\` flag extracts structured data (hosts, URIs, ports) for feeding into other tools (Splunk, custom scripts, spreadsheets). The \`-z io,phs\` (protocol hierarchy) gives a quick overview of what protocols are present, the starting point for any pcap triage. In incident response, a TShark analysis script can triage a 1GB pcap in seconds.
 
-**Mini-challenge:** Run the full triage script against your /tmp/capture.pcapng: \`tshark -r /tmp/capture.pcapng -z io,phs 2>/dev/null\`. This prints the protocol hierarchy — the first step in any pcap analysis. Look for unexpected protocols like FTP, Telnet, or SMB on unusual ports.`),
+**Mini-challenge:** Run the full triage script against your /tmp/capture.pcapng: \`tshark -r /tmp/capture.pcapng -z io,phs 2>/dev/null\`. This prints the protocol hierarchy — the first step in any pcap analysis. Look for unexpected protocols like FTP, Telnet, or SMB on unusual ports.`,
+      { hasQuiz: true, quiz: [
+        { id: 'ws-7-q1', question: 'What does `tshark -z io,phs` display?', options: ['Protocol hierarchy statistics showing bandwidth usage per protocol', 'List of IP hosts and traffic volumes', 'All DNS queries in the capture', 'HTTP request/response summary'], correctIndex: 0, explanation: '`io,phs` shows the protocol hierarchy — a tree breakdown of which protocols occupy the most traffic.' },
+        { id: 'ws-7-q2', question: 'What does the `-T fields` flag do in TShark?', options: ['Extracts specific packet fields as structured output', 'Creates formatted tables', 'Applies display filters', 'Writes captures to disk'], correctIndex: 0, explanation: '`-T fields` outputs selected fields (hosts, URIs, ports) one per line, ideal for scripting and CSV export.' },
+        { id: 'ws-7-q3', question: 'What is the recommended first step in any pcap triage?', options: ['View the protocol hierarchy', 'List all DNS queries', 'Check HTTP hosts', 'Examine IP endpoints'], correctIndex: 0, explanation: 'Protocol hierarchy (`-z io,phs`) gives a quick overview of what protocols are present, guiding deeper analysis.' },
+      ] }),
 
     l('ws-8', 'TLS Decryption & Advanced Analysis',
       `Wireshark can decrypt TLS traffic if you have the private key or session keys.
@@ -459,7 +489,12 @@ tshark -r capture.pcapng -Y "icmp" -T fields \
 
 > **Why this matters for hacking:** TLS decryption transforms encrypted traffic back into plaintext for analysis. The \`SSLKEYLOGFILE\` environment variable is the easiest method. Firefox and Chrome both support it. This is critical for debugging HTTPS applications and investigating encrypted malware C2 traffic. With the session keys, you can see every request, response, header, and body that would otherwise be opaque. In penetration testing, configuring TLS decryption lets you analyze how an application behaves over HTTPS, revealing API calls and authentication flows that are invisible in encrypted form.
 
-**Mini-challenge:** Set \`export SSLKEYLOGFILE=/tmp/keys.log\`, then run \`curl -o /dev/null -s https://example.com\`. Check if the key file was written: \`cat /tmp/keys.log 2>/dev/null | head -5\`. Modern Firefox/Chrome browsers also support this for all HTTPS traffic — one of the most useful debugging techniques for security testing.`),
+**Mini-challenge:** Set \`export SSLKEYLOGFILE=/tmp/keys.log\`, then run \`curl -o /dev/null -s https://example.com\`. Check if the key file was written: \`cat /tmp/keys.log 2>/dev/null | head -5\`. Modern Firefox/Chrome browsers also support this for all HTTPS traffic — one of the most useful debugging techniques for security testing.`,
+      { hasQuiz: true, quiz: [
+        { id: 'ws-8-q1', question: 'Which environment variable enables TLS session key logging for browsers?', options: ['SSLKEYLOGFILE', 'TLSKEYLOG', 'DECRYPT_TLS', 'SSLKEYS'], correctIndex: 0, explanation: 'Setting `SSLKEYLOGFILE` before launching Firefox/Chrome causes them to write session keys to that file for Wireshark to use.' },
+        { id: 'ws-8-q2', question: 'Why can\'t server private key decryption work with ECDHE key exchange?', options: ['ECDHE doesn\'t use RSA for key exchange, so the private key can\'t decrypt sessions', 'The key file is too large to process', 'Permissions prevent access to the key', 'Wireshark doesn\'t support ECDHE'], correctIndex: 0, explanation: 'With ECDHE, session keys are negotiated via ephemeral key exchange — the server\'s RSA private key is only used for signing, not encryption.' },
+        { id: 'ws-8-q3', question: 'In ICMP analysis, what does Type 8 represent?', options: ['Echo request (ping)', 'Echo reply', 'Destination unreachable', 'Time exceeded'], correctIndex: 0, explanation: 'ICMP Type 8 is an echo request; Type 0 is the echo reply. This distinguishes pings sent from pings received.' },
+      ] }),
 
     l('ws-9', 'Forensic Analysis & Custom Filters',
       `Advanced Wireshark techniques for deep packet investigation.

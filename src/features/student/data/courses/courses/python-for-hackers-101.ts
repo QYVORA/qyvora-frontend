@@ -58,7 +58,11 @@ Comments won't affect execution but help others (and your future self) understan
 **Mini-challenge:** Run \`python3 --version\` to confirm Python 3 is installed. Then create a script: \`echo 'import sys; print(f"Python {sys.version}")' > /tmp/test.py && python3 /tmp/test.py\`. This confirms your environment is ready for the course exercises.
 
 In real-world hacking, Python scripts automate repetitive tasks. A port scanner is a Python script. A brute-forcer is a Python script. A tool that parses Nmap XML output and finds vulnerabilities is a Python script. Learning to write these yourself means you can build custom tools tailored to any engagement.`,
-      { hasCodePlayground: true, codePlaygroundInitial: 'print("Hello, Hacker!")\n\nname = "target"\nprint(f"Scanning {name}")', codePlaygroundLanguage: 'python', codePlaygroundExpectedOutput: 'Hello, Hacker!\nScanning target' }),
+      { hasCodePlayground: true, codePlaygroundInitial: 'print("Hello, Hacker!")\n\nname = "target"\nprint(f"Scanning {name}")', codePlaygroundLanguage: 'python', codePlaygroundExpectedOutput: 'Hello, Hacker!\nScanning target', hasQuiz: true, quiz: [
+        { id: 'py-1-q1', question: 'What command runs a Python script saved as hello.py?', options: ['python hello.py', 'python3 hello.py', 'run hello.py', 'execute hello.py'], correctIndex: 1, explanation: 'Python scripts are executed with the python3 command followed by the script filename, e.g. python3 hello.py.' },
+        { id: 'py-1-q2', question: 'What does the f in an f-string do?', options: ['Formats the string by inserting variable values in braces', 'Flattens nested strings', 'Fixes encoding issues', 'Makes the string immutable'], correctIndex: 0, explanation: 'F-strings (formatted string literals) let you embed variables and expressions inside curly braces in a string.' },
+        { id: 'py-1-q3', question: 'What is the result of print(f"Port {port} is {\'open\' if port < 1024 else \'closed\'}") when port is 443?', options: ['Port 443 is open', 'Port 443 is closed', 'Port 443 is 443', 'Port 443 is unknown'], correctIndex: 0, explanation: 'Since 443 is less than 1024, the conditional evaluates to "open", producing "Port 443 is open".' },
+      ] }),
 
     l('py-2', 'Strings & Data Types',
       `Python has several built-in data types. Understanding them is crucial because security tools deal with many different types of data. IPs as strings, ports as integers, scan results as booleans, and tool output that needs to be parsed and converted.
@@ -131,7 +135,12 @@ host = "192.168.1.1"
 port = 443
 print(f"Connecting to {host}:{port}")
 # "Connecting to 192.168.1.1:443"
-\`\`\``),
+\`\`\``,
+      { hasQuiz: true, quiz: [
+        { id: 'py-2-q1', question: 'What does int("80") return?', options: ['"80"', '80', '80.0', 'None'], correctIndex: 1, explanation: 'int("80") converts the string "80" into the integer 80, enabling numeric operations.' },
+        { id: 'py-2-q2', question: 'What would url.split("/") return for "https://target.com/login"?', options: ['https//target.com/login', "['https:', '', 'target.com', 'login']", 'login', 'target.com/login'], correctIndex: 1, explanation: 'The split() method breaks the string into a list at every occurrence of the delimiter "/".' },
+        { id: 'py-2-q3', question: 'What does url[0:5] return for "https://target.com/login"?', options: ['http', 'https', 'target', 'login'], correctIndex: 1, explanation: 'Slicing url[0:5] returns characters from index 0 up to (but not including) index 5, giving "https".' },
+      ] }),
 
     l('py-3', 'Lists & Dictionaries',
       `**Lists** hold ordered collections of items:
@@ -184,7 +193,12 @@ for result in scan_results:
 
     if result["state"] == "open":
         print(f"Port {result['port']} is OPEN: {result['service']}")
-\`\`\``),
+\`\`\``,
+      { hasQuiz: true, quiz: [
+        { id: 'py-3-q1', question: 'In the list ports = [22, 80, 443, 8080], what does ports[0] return?', options: ['8080', '22', '443', 'Errors because index 0 is invalid'], correctIndex: 1, explanation: 'List indexing starts at 0, so ports[0] returns the first element, 22.' },
+        { id: 'py-3-q2', question: 'Which method adds an item to the end of a list?', options: ['add()', 'insert()', 'append()', 'push()'], correctIndex: 2, explanation: 'list.append() adds an item to the end of the list.' },
+        { id: 'py-3-q3', question: 'What is the advantage of using dict.get("os") instead of dict["os"]?', options: ['It is faster', 'It returns None instead of raising an error when the key is missing', 'It sorts the dictionary', 'It converts the value to a string'], correctIndex: 1, explanation: 'The .get() method provides safe access, returning a default (None) instead of raising a KeyError for missing keys.' },
+      ] }),
 
     l('py-4', 'Conditionals & Loops',
       `**Conditionals** let your code make decisions:
@@ -240,7 +254,12 @@ for port in range(1, 10):
 **Mini-challenge:** Run \`python3 -c "for port in range(1, 1024):\\n    if port == 22 or port == 80 or port == 443:\\n        print(f'{port}: common web/admin port')\\n    elif port > 100 and port < 110:\\n        continue\\n    elif port > 500:\\n        break"\` to practice conditional scanning logic — this mirrors how real port scanners prioritize and filter results.
 
             print(f"Checking port {port}")
-\`\`\``),
+\`\`\``,
+      { hasQuiz: true, quiz: [
+        { id: 'py-4-q1', question: 'Which comparison operator checks for equality in Python?', options: ['=', '==', 'equals', ':='], correctIndex: 1, explanation: 'The == operator compares two values for equality, while a single = assigns a value.' },
+        { id: 'py-4-q2', question: 'What does the break statement do?', options: ['Skips to the next iteration', 'Exits the loop early', 'Pauses the loop', 'Restarts the loop'], correctIndex: 1, explanation: 'break immediately exits the loop, commonly used when the desired value is found.' },
+        { id: 'py-4-q3', question: 'What does range(1, 1024) generate?', options: ['The numbers 1 through 1024', 'The numbers 1 through 1023', 'The numbers 0 through 1023', 'The numbers 2 through 1024'], correctIndex: 1, explanation: 'range(start, stop) generates numbers from start up to but not including stop, so range(1, 1024) covers 1-1023.' },
+      ] }),
 
     l('py-5', 'Functions & Modules',
       `**Functions** group code into reusable blocks:
@@ -298,7 +317,12 @@ r = requests.post("https://httpbin.org/post", data=data)
 **Mini-challenge:** Run \`python3 -c "def test_connect(host, port):\\n    import socket\\n    s = socket.socket()\\n    s.settimeout(2)\\n    return s.connect_ex((host, port)) == 0\\n\\nprint('Port 80 on google.com:', test_connect('google.com', 80))"\` to test a socket connection. This is the core function used in every custom port scanner.\`
 
             print(r.text)
-\`\`\``),
+\`\`\``,
+      { hasQuiz: true, quiz: [
+        { id: 'py-5-q1', question: 'What keyword defines a function in Python?', options: ['func', 'function', 'def', 'define'], correctIndex: 2, explanation: 'Functions are defined with the def keyword followed by the function name and parameters.' },
+        { id: 'py-5-q2', question: 'How do you parse a JSON string into a Python dictionary?', options: ['json.parse(data)', 'json.dumps(data)', 'json.loads(data)', 'json.read(data)'], correctIndex: 2, explanation: 'json.loads() parses a JSON string into a Python dictionary, while json.dumps() does the reverse.' },
+        { id: 'py-5-q3', question: 'What does response.status_code return after a successful HTTP request?', options: ['200', '404', 'True', 'OK'], correctIndex: 0, explanation: 'An HTTP 200 status code indicates the request succeeded.' },
+      ] }),
 
     l('py-6', 'Building a Port Scanner',
       `Let's build a real port scanner using Python's \`socket\` library.
@@ -482,7 +506,12 @@ parse_auth_log("/var/log/auth.log")
 
 **Mini-challenge:** Create and read a test file: \`echo "target1.com\\ntarget2.com\\ntarget3.com" > /tmp/targets.txt && python3 -c "with open('/tmp/targets.txt') as f: targets=[l.strip() for l in f]; print(f'Loaded {len(targets)} targets: {targets}')\`". This is the exact wordlist-loading pattern used in directory busters, password crackers, and subdomain enumerators.
 
-Always handle file and network errors, your scripts will run unattended and WILL encounter edge cases.`),
+Always handle file and network errors, your scripts will run unattended and WILL encounter edge cases.`,
+      { hasQuiz: true, quiz: [
+        { id: 'py-7-q1', question: 'Which mode opens a file for reading?', options: ['"w"', '"r"', '"a"', '"x"'], correctIndex: 1, explanation: 'The "r" mode opens a file for reading, "w" overwrites, and "a" appends.' },
+        { id: 'py-7-q2', question: 'Why should a wordlist be read line by line instead of all at once?', options: ['It is more secure', 'Large files like rockyou.txt (14GB) would exhaust memory', 'It is the only correct syntax', 'Lines must be processed in order'], correctIndex: 1, explanation: 'Streaming a wordlist line by line is memory efficient for very large files such as rockyou.txt.' },
+        { id: 'py-7-q3', question: 'What does the except block do in Python?', options: ['It breaks the loop', 'It catches and handles errors raised in the try block', 'It writes the file', 'It restarts the script'], correctIndex: 1, explanation: 'The except block catches exceptions raised in the try block so the script can handle them gracefully instead of crashing.' },
+      ] }),
 
     l('py-8', 'Web Scraping & HTTP Requests',
       `The \`requests\` library makes HTTP simple. Combined with parsing tools, you can extract data from websites and APIs.
@@ -616,7 +645,12 @@ for link in links[:10]:  # First 10
     print(link)
 \`\`\`
 
-Always set a User-Agent and timeout. Many sites block scripts without a proper User-Agent.`),
+Always set a User-Agent and timeout. Many sites block scripts without a proper User-Agent.`,
+      { hasQuiz: true, quiz: [
+        { id: 'py-8-q1', question: 'What does a Session object preserve across multiple HTTP requests?', options: ['Source code', 'Cookies and connection state', 'Browser history', 'Proxy settings only'], correctIndex: 1, explanation: 'A requests.Session() persists cookies (e.g. session tokens from login) across subsequent requests.' },
+        { id: 'py-8-q2', question: 'What is the difference between data= and json= in requests.post()?', options: ['data= sends form data, json= serializes JSON and sets Content-Type', 'There is no difference', 'json= sends binary data, data= sends text', 'data= is faster'], correctIndex: 0, explanation: 'data= sends form-encoded data like a browser form, while json= automatically serializes a dict and sets Content-Type to application/json.' },
+        { id: 'py-8-q3', question: 'What does soup.find_all("a") return?', options: ['All anchor links in the parsed HTML', 'All images', 'All headings', 'The first paragraph'], correctIndex: 0, explanation: 'BeautifulSoup\u2019s find_all("a") locates every <a> tag (link) in the parsed HTML document.' },
+      ] }),
 
     l('py-9', 'Working with APIs & JSON',
       `Most modern services use REST APIs with JSON. Understanding how to parse and manipulate JSON is essential.
@@ -731,7 +765,12 @@ for url, status, note in results:
 
 **Mini-challenge:** Run \`python3 -c "import requests; endpoints=['api/users','api/admin','.env','swagger.json']; [print(e, requests.get(f'https://httpbin.org/{e}').status_code) for e in endpoints]"\` to simulate API endpoint enumeration. This is the starting point for discovering hidden API surfaces in web applications.
 
-APIs are everywhere in modern web applications. Mastering them gives you access to the backend logic of almost any service.`),
+APIs are everywhere in modern web applications. Mastering them gives you access to the backend logic of almost any service.`,
+      { hasQuiz: true, quiz: [
+        { id: 'py-9-q1', question: 'Which function converts a Python dictionary into a JSON string?', options: ['json.loads()', 'json.dumps()', 'json.stringify()', 'json.parse()'], correctIndex: 1, explanation: 'json.dumps() serializes a Python dict into a JSON string, and json.loads() does the reverse.' },
+        { id: 'py-9-q2', question: 'Which HTTP status code indicates an API is rate-limiting you?', options: ['200', '403', '429', '500'], correctIndex: 2, explanation: 'HTTP 429 Too Many Requests is returned when rate limited, and the Retry-After header suggests how long to wait.' },
+        { id: 'py-9-q3', question: 'Why is /swagger.json a valuable endpoint to test during API enumeration?', options: ['It dumps the whole database', 'It often documents the entire API surface', 'It is the login page', 'It speeds up scans'], correctIndex: 1, explanation: 'The /swagger.json endpoint publicly documents the API routes, which reveals undocumented functionality worth probing.' },
+      ] }),
 
     l('py-10', 'Building a Password Generator',
       `Let's build a complete tool from scratch. Start small, add features step by step.

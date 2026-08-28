@@ -27,7 +27,11 @@ Download the free Community Edition from portswigger.net. Java is required to ru
 
 > **Why this matters for hacking:** Burp Suite is the de facto standard for web application security testing. Every professional penetration tester uses Burp to intercept, modify, and analyze web traffic. Understanding the proxy setup is foundational, without it, you're testing blind. The intercepting proxy is what makes web security testing possible: it lets you see every request your browser makes and every response the server returns, with full control to modify either side.
 
-**Mini-challenge:** Run \`java -version\` to confirm Java is installed (required for Burp). Then download the Community Edition from portswigger.net. Once running, configure your browser proxy to 127.0.0.1:8080 and browse to \`http://burpsuite\` to confirm interception is working. You should see the CA certificate download page.`),
+**Mini-challenge:** Run \`java -version\` to confirm Java is installed (required for Burp). Then download the Community Edition from portswigger.net. Once running, configure your browser proxy to 127.0.0.1:8080 and browse to \`http://burpsuite\` to confirm interception is working. You should see the CA certificate download page.`, { hasQuiz: true, quiz: [
+        { id: 'burp-1-q1', question: 'What is the core purpose of Burp Suite?', options: ['A password manager', 'An intercepting proxy that sits between the browser and target server for web security testing', 'A network firewall', 'A code editor'], correctIndex: 1, explanation: 'Burp Suite intercepts, inspects, and modifies HTTP traffic between your browser and the target, making it the standard web application security testing tool.' },
+        { id: 'burp-1-q2', question: 'Which Burp Suite tool resends and manually tweaks individual requests?', options: ['Intruder', 'Decoder', 'Repeater', 'Target'], correctIndex: 2, explanation: 'Repeater lets you take a request, modify it, and resend it manually; Intruder automates fuzzing and brute-force.' },
+        { id: 'burp-1-q3', question: 'What software prerequisite is required to run Burp Suite?', options: ['Python', 'Node.js', 'Java', 'PHP'], correctIndex: 2, explanation: 'Burp Suite runs on Java, so you launch it with java -jar burpsuite_community.jar.' },
+      ] }),
 
     l('burp-2', 'Setting Up the Proxy',
       `Burp's **Proxy** is the core feature. It captures HTTP traffic between your browser and the target.
@@ -62,7 +66,11 @@ Now all your traffic flows through Burp:
 
 > **Why this matters for hacking:** The proxy setup is the MITM (man-in-the-middle) bridge. The Burp CA certificate is required for HTTPS interception because your browser must trust Burp as a certificate authority. Without it, TLS encryption prevents Burp from reading HTTPS traffic. On mobile testing, the same process applies, install Burp's CA on the device and configure the Wi-Fi proxy. Always remove the CA certificate from your browser when done testing.
 
-**Mini-challenge:** Verify proxy connectivity by running \`curl -x http://127.0.0.1:8080 -v http://burpsuite 2>&1 | head -20\`. If Burp is running, you'll see the Burp proxy response. This is the fastest way to confirm your proxy is configured correctly without opening a browser.`),
+**Mini-challenge:** Verify proxy connectivity by running \`curl -x http://127.0.0.1:8080 -v http://burpsuite 2>&1 | head -20\`. If Burp is running, you'll see the Burp proxy response. This is the fastest way to confirm your proxy is configured correctly without opening a browser.`, { hasQuiz: true, quiz: [
+        { id: 'burp-2-q1', question: 'What is Burp\'s default proxy listener address?', options: ['0.0.0.0:80', '127.0.0.1:8080', '127.0.0.1:443', 'localhost:3128'], correctIndex: 1, explanation: 'Burp\'s default proxy listener is 127.0.0.1:8080, which you configure as your browser\'s HTTP and HTTPS proxy.' },
+        { id: 'burp-2-q2', question: 'Why must you install Burp\'s CA certificate to intercept HTTPS traffic?', options: ['To speed up the browser', 'So the browser trusts Burp as a certificate authority and lets it decrypt TLS traffic', 'To allow JavaScript execution', 'To enable cookies'], correctIndex: 1, explanation: 'Burp performs a man-in-the-middle SSL/TLS interception; the browser only accepts it if you trust Burp\'s CA certificate.' },
+        { id: 'burp-2-q3', question: 'In the Intercept tab, what does "Drop" do?', options: ['Saves the request', 'Discards the request without sending it', 'Sends the request to Intruder', 'Encrypts the request'], correctIndex: 1, explanation: 'Drop discards the intercepted request so it never reaches the server, while Forward sends it on.' },
+      ] }),
 
     l('burp-3', 'Intercepting Requests',
       `With the proxy running, you can **intercept** requests and modify them in real time before they reach the server.
@@ -102,7 +110,11 @@ username=admin' --&password=
 
 - Toggle Intercept on/off with the big "Intercept is on" button
 
-Use the **Target** tab to see the site map, every page and resource Burp has seen.`),
+Use the **Target** tab to see the site map, every page and resource Burp has seen.`, { hasQuiz: true, quiz: [
+        { id: 'burp-3-q1', question: 'What happens when you intercept a request in Burp?', options: ['The request is permanently deleted', 'Burp pauses the request so you can edit it before it reaches the server', 'Burp sends it straight to the server', 'The server is blocked'], correctIndex: 1, explanation: 'Burp pauses the request in the Intercept tab, letting you modify headers, parameters, or the HTTP method before forwarding it to the server.' },
+        { id: 'burp-3-q2', question: 'What is the classic SQL injection payload shown in this lesson?', options: ["admin' OR '1'='1", 'javascript:alert(1)', 'GET /index.html', 'session=abc'], correctIndex: 0, explanation: 'Injecting admin\' OR \'1\'=\'1 into a username parameter is a classic SQL injection that can bypass login authentication.' },
+        { id: 'burp-3-q3', question: 'Which tab shows every page and resource Burp has seen?', options: ['Repeater', 'Intruder', 'Target', 'Decoder'], correctIndex: 2, explanation: 'The Target tab shows the site map — every page and resource the proxy has observed.' },
+      ] }),
 
     l('burp-4', 'Repeater Tool',
       `**Repeater** allows you to take a request, modify it, and resend it multiple times. This is useful for exploring how a server responds to different inputs.
@@ -135,7 +147,11 @@ Click "Send" again. Compare responses. This is called **IDOR testing**, checking
 
 > **Why this matters for hacking:** Repeater is the manual precision tool for security testing. Every professional tester uses it dozens of times per engagement. The key technique is IDOR testing, changing an ID parameter (e.g., \`?id=1\` to \`?id=2\`) to see if you can access another user's data. Similarly, testing parameter pollution (\`?debug=1\`, \`?admin=true\`), HTTP method override (\`POST\` to \`PUT\`), and header manipulation. The side-by-side comparison of responses reveals behavioral differences that automated scanners miss.
 
-**Mini-challenge:** Make a request to \`http://httpbin.org/get?id=1\` in Burp, send it to Repeater (Ctrl+R), modify \`id=2\`, and click Send. Compare the JSON responses. Then try adding \`?admin=true\` and \`?debug=1\` to see how the server responds. This is the exact testing methodology for parameter tampering discovery.`),
+**Mini-challenge:** Make a request to \`http://httpbin.org/get?id=1\` in Burp, send it to Repeater (Ctrl+R), modify \`id=2\`, and click Send. Compare the JSON responses. Then try adding \`?admin=true\` and \`?debug=1\` to see how the server responds. This is the exact testing methodology for parameter tampering discovery.`, { hasQuiz: true, quiz: [
+        { id: 'burp-4-q1', question: 'How do you send an intercepted request to Repeater?', options: ['Press Ctrl+D', 'Right-click the request and choose "Send to Repeater" (or Ctrl+R)', 'Type Send in the terminal', 'Double-click the response'], correctIndex: 1, explanation: 'Right-click a request in Intercept or HTTP History and choose "Send to Repeater" (shortcut Ctrl+R) to modify and resend it.' },
+        { id: 'burp-4-q2', question: 'What is IDOR testing?', options: ['Testing a login form', 'Changing an ID parameter (e.g., ?id=1 to ?id=2) to see if you can access another user\'s data', 'Scanning for open ports', 'Decoding Base64'], correctIndex: 1, explanation: 'IDOR (Insecure Direct Object Reference) testing changes an ID parameter to see if the server exposes another user\'s data.' },
+        { id: 'burp-4-q3', question: 'What can Repeater be used for besides IDOR testing?', options: ['Parameter tampering and header manipulation', 'DNS resolver', 'Only re-sending unchanged requests', 'Editing browser settings'], correctIndex: 0, explanation: 'Repeater supports parameter tampering (?admin=true, ?debug=1), SQLi variants, header manipulation (X-Forwarded-For), and timing/rate-limit tests.' },
+      ] }),
 
     l('burp-5', 'Intruder Tool',
       `**Intruder** automates attacks by sending many requests with different payloads. It's used for brute-force attacks, fuzzing, and parameter enumeration.
@@ -173,7 +189,11 @@ Results are color-coded by response length and status code. Different responses 
 
 **Mini-challenge:** Configure Intruder for directory brute-forcing: set \`GET /§FUZZ§ HTTP/1.1\` with a payload list of \`admin,backup,.git,.env,config,test\`. Run the attack and look for 200/301/403 responses vs 404. Different status codes reveal hidden resources. This is the standard content discovery technique used in every web engagement.
 
-**Rate limiting:** Intruder is fast. Use "Resource pool" to set delays if you don't want to overwhelm the target or get blocked.`),
+**Rate limiting:** Intruder is fast. Use "Resource pool" to set delays if you don't want to overwhelm the target or get blocked.`, { hasQuiz: true, quiz: [
+        { id: 'burp-5-q1', question: 'What is the default Intruder attack type?', options: ['Battering ram', 'Pitchfork', 'Sniper', 'Cluster bomb'], correctIndex: 2, explanation: 'Sniper is the default attack type, testing one payload position at a time with a single payload set.' },
+        { id: 'burp-5-q2', question: 'How are payload positions marked in an Intruder request?', options: ['With square brackets', 'With the § characters (e.g., ?id=§1§)', 'With double quotes', 'With asterisks'], correctIndex: 1, explanation: 'Intruder marks payload positions between § characters, e.g., GET /api/user?id=§1§ HTTP/1.1.' },
+        { id: 'burp-5-q3', question: 'When brute-forcing directories with GET /§FUZZ§, what do non-404 responses (200/301/403) indicate?', options: ['The payload list is wrong', 'Possible hidden resources worth investigating', 'A server crash', 'Rate limiting kicked in'], correctIndex: 1, explanation: 'Different status codes and response lengths reveal hidden paths or resources — standard content discovery.' },
+      ] }),
 
     l('burp-6', 'Practical Exercise',
       `Let's walk through a real test scenario.
@@ -258,7 +278,11 @@ Content-Type: application/xml
 **Mini-challenge:** (Conceptual — requires Burp Professional.) The Collaborator URL pattern is \`http://UNIQUE.burpcollaborator.net\`. In Burp Community (free), you can simulate OOB detection by injecting a collaborator-like URL into a vulnerable parameter and monitoring access logs on a server you control. Understanding the concept is more important than实操 — it's the detection mechanism behind many automated scanner checks.
 
 **Automated collaborator checks:**
-Many Burp Scanner checks automatically use Collaborator to detect out-of-band vulnerabilities. This is why Burp Professional is so effective at finding blind vulnerabilities.`),
+Many Burp Scanner checks automatically use Collaborator to detect out-of-band vulnerabilities. This is why Burp Professional is so effective at finding blind vulnerabilities.`, { hasQuiz: true, quiz: [
+        { id: 'burp-7-q1', question: 'How does Burp Collaborator detect blind vulnerabilities?', options: ['It brute-forces credentials', 'It generates unique subdomains Burp controls, capturing any request a vulnerable target makes to them', 'It scans open ports', 'It decodes cookies'], correctIndex: 1, explanation: 'You inject a unique .burpcollaborator.net subdomain into a vulnerable parameter; if the target makes a request to it, Burp captures it, confirming the vulnerability.' },
+        { id: 'burp-7-q2', question: 'Which vulnerabilities are particularly suited to out-of-band testing with Collaborator?', options: ['Blind SQLi, blind XXE, and SSRF', 'XSS via client-side only', 'Port scanning', 'ARP spoofing'], correctIndex: 0, explanation: 'OOB testing is ideal for blind SQLi, blind XXE, SSRF, and blind XSS because the side effect (a DNS/HTTP request) is detectable even when the response is invisible.' },
+        { id: 'burp-7-q3', question: 'Why is out-of-band detection more reliable than time-based blind SQLi?', options: ['It is slower but safer', 'Network latency can produce false positives with time-based SLEEP delays, while an OOB callback is definitive', 'It requires no target interaction', 'It works offline'], correctIndex: 1, explanation: 'Time-based techniques (SLEEP) are unreliable because network latency mimics delays, while a Collaborator callback is definitive proof.' },
+      ] }),
 
     l('burp-8', 'Burp Extensions & BApp Store',
       `Burp's functionality can be extended with plugins from the BApp Store.
@@ -303,7 +327,11 @@ def handleResponse(req, interesting):
 **Mini-challenge:** Open Burp and browse the BApp Store (Extender → BApp Store). Read the descriptions of the top 10 extensions. Identify which ones apply to your testing scenarios. This exploration teaches you what's possible — you don't need to install everything, but knowing what exists is half the battle.
 
 **Writing your own extensions:**
-Burp extensions can be written in Java, Python (via Jython), or Ruby (via JRuby). The Montoya API (Burp v2023+) provides a modern interface for building extensions.`),
+Burp extensions can be written in Java, Python (via Jython), or Ruby (via JRuby). The Montoya API (Burp v2023+) provides a modern interface for building extensions.`, { hasQuiz: true, quiz: [
+        { id: 'burp-8-q1', question: 'Where do you install Burp extensions from?', options: ['The GitHub releases page', 'The BApp Store inside Burp (Extender → BApp Store)', 'The terminal package manager', 'A browser extension store'], correctIndex: 1, explanation: 'Extensions are installed from the BApp Store, accessed via Burp → Extender → BApp Store.' },
+        { id: 'burp-8-q2', question: 'Which extension is described as significantly faster than the built-in Intruder?', options: ['CO2', 'Logger++', 'Turbo Intruder', 'JWT Editor'], correctIndex: 2, explanation: 'Turbo Intruder is Python-based and can reach hundreds of requests per second, far faster than built-in Intruder.' },
+        { id: 'burp-8-q3', question: 'Which extensions help with JWT attacks?', options: ['JWT Editor and JSON Web Tokens toolkit', 'Request Timer', 'Collaborator Everywhere', 'Content Type Converter'], correctIndex: 0, explanation: 'JWT Editor and the JSON Web Tokens toolkit decode and forge JWT tokens for alg/key confusion attacks.' },
+      ] }),
 
     l('burp-9', 'Advanced Burp Techniques',
       `Master these techniques to level up your Burp Suite skills.
@@ -359,7 +387,11 @@ It highlights the exact differences. \`\`\`
 
 > **Why this matters for hacking:** These advanced techniques separate casual testers from professionals. Match and Replace auto-modifies every request (spoof User-Agent, remove CSP). Session handling rules keep Intruder authenticated for long-running attacks. Scope filtering removes noise so you only see relevant traffic. Comparer is invaluable for blind SQLi detection, sending a true vs false response side by side reveals subtle differences in page content or timing that confirm the injection.
 
-**Mini-challenge:** Configure a Match and Replace rule: Proxy → Options → Match and Replace → Add. Set Match: \`^User-Agent:.*$\` and Replace: \`User-Agent: Mozilla/5.0 (compatible; Googlebot/2.1)\`. Now browse any site — every request from Burp will claim to be Googlebot. This is how testers bypass bot-detection and access crawler-specific content.`),
+**Mini-challenge:** Configure a Match and Replace rule: Proxy → Options → Match and Replace → Add. Set Match: \`^User-Agent:.*$\` and Replace: \`User-Agent: Mozilla/5.0 (compatible; Googlebot/2.1)\`. Now browse any site — every request from Burp will claim to be Googlebot. This is how testers bypass bot-detection and access crawler-specific content.`, { hasQuiz: true, quiz: [
+        { id: 'burp-9-q1', question: 'What does a "Match and Replace" rule do?', options: ['Automatically modifies requests/responses as they pass through the proxy', 'Replaces the Burp CA certificate', 'Finds and replaces files on disk', 'Swaps payload positions in Intruder'], correctIndex: 0, explanation: 'Match and Replace (Proxy → Options) auto-modifies traffic in transit, e.g., spoofing a User-Agent or removing CSP headers.' },
+        { id: 'burp-9-q2', question: 'What do session handling rules automate?', options: ['Password generation', 'Re-authentication so long-running Intruder attacks stay logged in', 'Port forwarding', 'Subdomain enumeration'], correctIndex: 1, explanation: 'Session handling rules detect a 302 login redirect, post fresh credentials, capture the new cookie, and retry the request automatically.' },
+        { id: 'burp-9-q3', question: 'What is the Comparer tool best used for?', options: ['Comparing two responses to spot differences, e.g., blind SQLi true/false detection', 'Comparing VPN speeds', 'Comparing wordlists', 'Comparing browser certificates'], correctIndex: 0, explanation: 'Comparer highlights the exact differences between two responses, ideal for blind SQLi detection by comparing true vs false responses.' },
+      ] }),
 ];
 
 export const COURSE: Course = {
