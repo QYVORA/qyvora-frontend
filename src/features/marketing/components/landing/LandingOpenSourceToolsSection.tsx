@@ -34,7 +34,7 @@ const LandingOpenSourceToolsSection: React.FC = () => {
     'w-32 h-32 sm:w-40 sm:h-40 md:w-44 md:h-44 lg:w-52 lg:h-52 object-contain transition-transform duration-500 group-hover:scale-110';
 
   return (
-    <div className="relative bg-bg min-h-dvh flex flex-col overflow-x-clip overflow-hidden" data-nav-invert>
+    <div className="relative bg-bg min-h-dvh flex flex-col overflow-x-clip overflow-hidden" >
       {/* Header — title + one-line description at the top */}
       <div className="relative z-10 w-full px-3 md:px-4 lg:px-6 pt-24 md:pt-28 lg:pt-32 pb-8 md:pb-10 lg:pb-12 flex flex-col gap-3">
         <h2 className="text-2xl md:text-4xl lg:text-5xl font-black text-text-primary tracking-tighter leading-none">

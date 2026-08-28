@@ -47,7 +47,7 @@ const AuthFormLayout: React.FC<AuthFormLayoutProps> = ({ children }) => {
         <AuthHero />
 
         {/* Mobile: hero + form stacked — translucent so the backdrop shows through */}
-        <div className="md:hidden relative w-full min-h-dvh flex flex-col" data-nav-invert>
+        <div className="md:hidden relative w-full min-h-dvh flex flex-col" >
           <div className="absolute top-6 left-6 z-20">
             <Link to="/" className="inline-flex items-center gap-2 px-4 py-2 text-text-primary rounded-lg text-[10px] font-black uppercase tracking-[0.2em] transition-all hover:opacity-70 active:scale-95">
               <IconArrowLeft size={16} /> {t('button.backToHome')}

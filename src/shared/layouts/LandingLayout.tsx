@@ -21,7 +21,7 @@
  *  │                                               │
  *  └──────────────────────────────────────────────┘
  *  ┌──────────────────────────────────────────────┐  ← Fixed at screen bottom (mobile only)
- *  │             PublicBottomNav                   │
+ *  │             (no separate mobile nav)               │
  *  └──────────────────────────────────────────────┘
  *
  * ─── WHY NO PADDING ON <main>? ───────────────────────────────────────────────
@@ -54,12 +54,6 @@
  *   <Route element={<LandingLayout />}>
  *     <Route index element={<LandingPage />} />   ← the only child
  *   </Route>
- *
- * ─── POTENTIAL ISSUE TO NOTE ─────────────────────────────────────────────────
- * PublicBottomNav is fixed at the bottom on mobile. Since there's no bottom
- * padding on <main> here (unlike PublicLayout), the last snap section's content
- * could be obscured by the mobile nav on small screens. Each snap section
- * should account for this internally if needed.
  */
 
 import { Outlet } from 'react-router-dom';
@@ -79,7 +73,6 @@ import ConsentBanner from '@/shared/components/ConsentBanner';
  * A lightweight wrapper that provides:
  *  - The shared Navbar (fixed, always visible).
  *  - A plain <main> with no padding constraints (snap sections handle their own spacing).
- *  - The mobile bottom nav (PublicBottomNav).
  *  - The ContactModalHost so the contact modal can be opened from any section.
  *  - The ConsentBanner.
  *
