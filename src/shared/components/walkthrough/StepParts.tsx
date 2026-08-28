@@ -70,13 +70,13 @@ export function FlagInput({ flagId, disabled, onFlagSubmit, onCorrect }: FlagInp
         <input id={`flag-input-${flagId}`} type="text" value={flag} onChange={(e) => { setFlag(e.target.value); setError(''); }}
           onKeyDown={(e) => e.key === 'Enter' && handleSubmit()} placeholder="QYVORA{...}" disabled={disabled || submitting}
           className={cn('w-full sm:flex-1 rounded-xl border bg-bg px-4 py-3 font-mono text-base text-text-primary placeholder:text-text-muted outline-none transition-colors',
-            error ? 'border-red-500/50 focus:border-red-500' : 'border-border focus:border-accent', 'disabled:opacity-50')} />
+            error ? 'border-danger/50 focus:border-danger' : 'border-border focus:border-accent', 'disabled:opacity-50')} />
         <button type="button" onClick={handleSubmit} disabled={disabled || submitting || !flag.trim()}
           className="btn-primary !rounded-xl !text-xs !px-5 !py-3 disabled:opacity-50 w-full sm:w-auto">
           {submitting ? '...' : 'Submit'}
         </button>
       </div>
-      {error && <p className="text-sm font-mono text-red-400">{error}</p>}
+      {error && <p className="text-sm font-mono text-danger">{error}</p>}
     </div>
   );
 }

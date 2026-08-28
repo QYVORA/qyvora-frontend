@@ -103,8 +103,8 @@ const ToolInstallModalHost: React.FC = () => {
             </div>
           )}
           {release.status === 'unavailable' && (
-            <div className="flex items-start gap-2 rounded-xl border border-amber-500/30 bg-amber-500/5 px-4 py-3">
-              <TriangleAlert className="mt-0.5 h-3.5 w-3.5 shrink-0 text-amber-400" />
+            <div className="flex items-start gap-2 rounded-xl border border-warning/30 bg-warning/5 px-4 py-3">
+              <TriangleAlert className="mt-0.5 h-3.5 w-3.5 shrink-0 text-warning" />
               <p className="text-[11px] leading-relaxed text-text-secondary">
                 No published release could be reached for this tool yet. The download
                 buttons are disabled until a release is available, build from source
@@ -215,14 +215,14 @@ const ToolInstallModalHost: React.FC = () => {
             <div className="flex items-center gap-2 rounded-xl border border-border/20 bg-bg-alt px-4 py-3">
               {canDownload ? (
                 <>
-                  <Check className="h-3.5 w-3.5 shrink-0 text-emerald-400" />
+                  <Check className="h-3.5 w-3.5 shrink-0 text-success" />
                   <p className="text-[11px] text-text-muted leading-snug">
                     Download resolved from the latest GitHub release.
                   </p>
                 </>
               ) : (
                 <>
-                  <TriangleAlert className="h-3.5 w-3.5 shrink-0 text-amber-400" />
+                  <TriangleAlert className="h-3.5 w-3.5 shrink-0 text-warning" />
                   <p className="text-[11px] text-text-muted leading-snug">
                     This build was not found in the latest release.
                   </p>

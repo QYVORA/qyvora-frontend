@@ -57,9 +57,9 @@ export function PacketViewer({ packets }: PacketViewerProps) {
                   <td className="px-3 py-1.5 text-text-primary">{pkt.destination}</td>
                   <td className="px-3 py-1.5">
                     <span className={`px-1.5 py-0.5 rounded text-[8px] font-black uppercase ${
-                      pkt.protocol === 'TCP' ? 'bg-blue-400/10 text-blue-400' :
-                      pkt.protocol === 'UDP' ? 'bg-green-400/10 text-green-400' :
-                      pkt.protocol === 'HTTP' ? 'bg-yellow-400/10 text-yellow-400' :
+                      pkt.protocol === 'TCP' ? 'bg-info/10 text-info' :
+                      pkt.protocol === 'UDP' ? 'bg-success/10 text-success' :
+                      pkt.protocol === 'HTTP' ? 'bg-warning/10 text-warning' :
                       pkt.protocol === 'DNS' ? 'bg-purple-400/10 text-purple-400' :
                       pkt.protocol === 'ARP' ? 'bg-orange-400/10 text-orange-400' :
                       'bg-text-muted/10 text-text-muted'

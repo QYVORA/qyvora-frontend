@@ -24,7 +24,7 @@ const ToolDocHero: React.FC<ToolDocHeroProps> = ({
   <section className="relative w-full bg-bg pt-32 md:pt-28 lg:pt-32 pb-16 md:pb-24 overflow-hidden">
     {/* Background grid */}
     <div className="absolute inset-0 opacity-10">
-      <div className="w-full h-full bg-[repeating-linear-gradient(90deg,transparent,transparent_39px,rgba(255,255,255,0.05)_39px,rgba(255,255,255,0.05)_40px)] bg-[length:40px_40px]" />
+      <div className="w-full h-full line-grid" />
     </div>
 
     <div className="relative z-10 px-3 md:px-4 lg:px-6">

@@ -25,9 +25,9 @@ interface FlowDiagramProps {
 const STATUS_STYLES = {
   default: 'border-border/40 bg-bg-elevated text-text-secondary',
   active: 'border-accent/60 bg-accent/10 text-accent',
-  completed: 'border-green-500/60 bg-green-500/10 text-green-500',
-  danger: 'border-red-500/60 bg-red-500/10 text-red-400',
-  warning: 'border-yellow-500/60 bg-yellow-500/10 text-yellow-400',
+  completed: 'border-success/60 bg-success/10 text-success',
+  danger: 'border-danger/60 bg-danger/10 text-danger',
+  warning: 'border-warning/60 bg-warning/10 text-warning',
   success: 'border-accent/60 bg-accent/10 text-accent',
 };
 

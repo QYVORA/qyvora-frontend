@@ -25,7 +25,7 @@ function FileNode({ file, depth = 0, onSelect, selectedPath }: {
         {isDir ? (
           expanded ? <ChevronDown size={12} /> : <ChevronRight size={12} />
         ) : <span className="w-3" />}
-        {isDir ? <Folder size={12} className="text-yellow-400" /> : <File size={12} className="text-text-muted" />}
+        {isDir ? <Folder size={12} className="text-warning" /> : <File size={12} className="text-text-muted" />}
         <span className="truncate">{file.name}</span>
         {!isDir && <span className="ml-auto text-text-muted/50">{formatSize(file.size)}</span>}
       </button>

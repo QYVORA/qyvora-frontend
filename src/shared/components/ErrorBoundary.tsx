@@ -87,7 +87,7 @@ class ErrorBoundaryInner extends Component<Props, State> {
 
           {/* Heading */}
           <div className="space-y-2">
-            <p className="text-[10px] font-bold text-red-400 uppercase tracking-[0.3em]">
+            <p className="text-[10px] font-bold text-danger uppercase tracking-[0.3em]">
               {t?.('components.errorBoundary.renderError', { defaultValue: 'Error' })}
             </p>
             <h2 className="text-xl font-black text-text-primary">{t?.('components.errorBoundary.title', { defaultValue: 'Something went wrong' })}</h2>

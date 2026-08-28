@@ -37,10 +37,10 @@ export function ApiExplorer({ endpoints }: ApiExplorerProps) {
                 selectedId === ep.id ? 'bg-accent/10' : 'hover:bg-white/5'
               }`}>
               <span className={`text-[8px] font-black uppercase mr-1.5 ${
-                ep.method === 'GET' ? 'text-green-400' :
-                ep.method === 'POST' ? 'text-yellow-400' :
-                ep.method === 'PUT' ? 'text-blue-400' :
-                'text-red-400'
+                ep.method === 'GET' ? 'text-success' :
+                ep.method === 'POST' ? 'text-warning' :
+                ep.method === 'PUT' ? 'text-info' :
+                'text-danger'
               }`}>{ep.method}</span>
               <span className="text-[10px] font-mono text-text-muted">{ep.path}</span>
             </button>
@@ -53,10 +53,10 @@ export function ApiExplorer({ endpoints }: ApiExplorerProps) {
             <div className="p-4 border-b border-border/20">
               <div className="flex items-center gap-2 mb-3">
                 <span className={`px-2 py-0.5 rounded text-[9px] font-black uppercase ${
-                  selected.method === 'GET' ? 'bg-green-400/10 text-green-400' :
-                  selected.method === 'POST' ? 'bg-yellow-400/10 text-yellow-400' :
-                  selected.method === 'PUT' ? 'bg-blue-400/10 text-blue-400' :
-                  'bg-red-400/10 text-red-400'
+                  selected.method === 'GET' ? 'bg-success/10 text-success' :
+                  selected.method === 'POST' ? 'bg-warning/10 text-warning' :
+                  selected.method === 'PUT' ? 'bg-info/10 text-info' :
+                  'bg-danger/10 text-danger'
                 }`}>{selected.method}</span>
                 <span className="text-[11px] font-mono text-text-primary">{selected.path}</span>
                 <button onClick={sendRequest}
@@ -90,9 +90,9 @@ export function ApiExplorer({ endpoints }: ApiExplorerProps) {
                 <div>
                   <div className="flex items-center gap-2 mb-3">
                     <span className={`px-2 py-0.5 rounded text-[9px] font-black ${
-                      response.statusCode < 300 ? 'bg-green-400/10 text-green-400' :
-                      response.statusCode < 400 ? 'bg-yellow-400/10 text-yellow-400' :
-                      'bg-red-400/10 text-red-400'
+                      response.statusCode < 300 ? 'bg-success/10 text-success' :
+                      response.statusCode < 400 ? 'bg-warning/10 text-warning' :
+                      'bg-danger/10 text-danger'
                     }`}>{response.statusCode}</span>
                     <span className="text-[9px] font-mono text-text-muted">{response.timing}ms</span>
                   </div>

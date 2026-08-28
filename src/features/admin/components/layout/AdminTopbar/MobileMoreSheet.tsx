@@ -79,7 +79,7 @@ const MobileMoreSheet: React.FC<MobileMoreSheetProps> = ({
               </div>
               <button
                 onClick={handleLogout}
-                className="flex items-center gap-1.5 px-3 py-2 text-xs font-bold uppercase text-text-muted border border-border rounded-xl hover:text-red-400 hover:border-red-500/30 transition-colors shrink-0"
+                className="flex items-center gap-1.5 px-3 py-2 text-xs font-bold uppercase text-text-muted border border-border rounded-xl hover:text-danger hover:border-danger/30 transition-colors shrink-0"
               >
                 <LogOut className="w-3.5 h-3.5" /> {t('aria.logOut')}
               </button>

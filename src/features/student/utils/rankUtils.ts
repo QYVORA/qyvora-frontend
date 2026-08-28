@@ -1,8 +1,8 @@
 export const RANKS = [
   { name: 'Candidate',   min: 0,    max: 149,      color: 'text-zinc-400'   },
-  { name: 'Contributor', min: 150,  max: 449,      color: 'text-blue-400'   },
+  { name: 'Contributor', min: 150,  max: 449,      color: 'text-info'   },
   { name: 'Specialist',  min: 450,  max: 899,      color: 'text-purple-400' },
-  { name: 'Architect',   min: 900,  max: 1499,     color: 'text-amber-400'  },
+  { name: 'Architect',   min: 900,  max: 1499,     color: 'text-warning'  },
   { name: 'Vanguard',    min: 1500, max: Infinity,  color: 'text-accent'     },
 ] as const;
 

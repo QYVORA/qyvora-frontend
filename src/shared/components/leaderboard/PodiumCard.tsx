@@ -11,18 +11,18 @@ interface PodiumCardProps {
 
 const PODIUM_STYLES = [
   {
-    border: 'border-yellow-400/70',
-    glow: 'shadow-[0_0_40px_-8px_rgba(250,204,21,0.5)]',
-    rankColor: 'text-yellow-400',
+    border: 'border-warning/70',
+    glow: 'shadow-[0_0_40px_-8px] shadow-warning/50',
+    rankColor: 'text-warning',
     avatarSize: 'w-24 h-24 md:w-28 md:h-28',
     title: 'text-lg md:text-xl',
-    chip: 'bg-yellow-400/10 border-yellow-400/30 text-yellow-400',
+    chip: 'bg-warning/10 border-warning/30 text-warning',
     scale: 'md:scale-105',
     crown: true,
   },
   {
     border: 'border-gray-300/70',
-    glow: 'shadow-[0_0_36px_-8px_rgba(209,213,219,0.4)]',
+    glow: 'shadow-[0_0_36px_-8px] shadow-text-muted/40',
     rankColor: 'text-gray-300',
     avatarSize: 'w-20 h-20 md:w-24 md:h-24',
     title: 'text-base md:text-lg',
@@ -32,7 +32,7 @@ const PODIUM_STYLES = [
   },
   {
     border: 'border-amber-600/70',
-    glow: 'shadow-[0_0_36px_-8px_rgba(217,119,6,0.4)]',
+    glow: 'shadow-[0_0_36px_-8px] shadow-warning/40',
     rankColor: 'text-amber-600',
     avatarSize: 'w-20 h-20 md:w-24 md:h-24',
     title: 'text-base md:text-lg',

@@ -36,7 +36,7 @@ const SecurityTab: React.FC<SecurityTabProps> = ({ securitySummary, securityEven
     { key: 'eventType', header: t('admin.security.colType'), render: (item) => <span className="px-2.5 py-1 rounded-lg bg-accent-dim text-[9px] font-black uppercase tracking-widest text-accent whitespace-nowrap border border-accent/10">{item.eventType}</span> },
     { key: 'action', header: t('admin.security.colAction'), render: (item) => <span className="font-black uppercase tracking-tight text-text-primary text-sm whitespace-nowrap">{item.action}</span> },
     { key: 'path', header: t('admin.security.colPath'), render: (item) => <span className="font-mono text-text-muted/70 max-w-[240px] truncate block text-xs">{item.path || '-'}</span> },
-    { key: 'statusCode', header: t('admin.security.colCode'), render: (item) => <span className={`px-2.5 py-1 rounded-lg text-[10px] font-black font-mono border ${Number(item.statusCode) >= 400 ? 'bg-red-400/10 text-red-400 border-red-400/20' : 'bg-accent/10 text-accent border-accent/20'}`}>{item.statusCode}</span> },
+    { key: 'statusCode', header: t('admin.security.colCode'), render: (item) => <span className={`px-2.5 py-1 rounded-lg text-[10px] font-black font-mono border ${Number(item.statusCode) >= 400 ? 'bg-danger/10 text-danger border-danger/20' : 'bg-accent/10 text-accent border-accent/20'}`}>{item.statusCode}</span> },
     { key: 'ipAddress', header: t('admin.security.colIp'), render: (item) => <span className="font-mono text-text-secondary/80 whitespace-nowrap text-xs">{item.ipAddress || '-'}</span> },
   ];
 
@@ -51,7 +51,7 @@ const SecurityTab: React.FC<SecurityTabProps> = ({ securitySummary, securityEven
         {item.path || '-'}
       </div>
       <div className="flex justify-between items-center pt-2 text-[10px] font-black text-text-muted/40 uppercase tracking-widest">
-        <span className={Number(item.statusCode) >= 400 ? 'text-red-400' : 'text-accent'}>HTTP {item.statusCode}</span>
+        <span className={Number(item.statusCode) >= 400 ? 'text-danger' : 'text-accent'}>HTTP {item.statusCode}</span>
         <span className="font-mono">{item.ipAddress || '-'}</span>
       </div>
     </div>

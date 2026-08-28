@@ -26,12 +26,12 @@ const LabsModule: React.FC<LabsModuleProps> = ({
   return (
     <div className={className}>
       <ModuleHeader
-        icon={<FlaskConical className="w-4 h-4 text-red-400" />}
-        iconClassName="bg-red-400/10"
+        icon={<FlaskConical className="w-4 h-4 text-danger" />}
+        iconClassName="bg-danger/10"
         title={t('profile.labs.title', 'Labs')}
         trailing={
           totalLabs > 0 ? (
-            <span className="px-2 py-1 bg-red-400/10 text-red-400 text-[9px] font-black rounded-lg">
+            <span className="px-2 py-1 bg-danger/10 text-danger text-[9px] font-black rounded-lg">
               {totalLabs}
             </span>
           ) : undefined
@@ -53,8 +53,8 @@ const LabsModule: React.FC<LabsModuleProps> = ({
                 transition={{ duration: prefersReduced ? 0 : 0.3, delay: prefersReduced ? 0 : idx * 0.04 }}
                 className="flex items-center gap-3 py-2.5 px-3 rounded-xl bg-bg-elevated/50 hover:bg-bg-elevated transition-colors group"
               >
-                <div className="w-7 h-7 rounded-lg bg-red-400/10 flex items-center justify-center shrink-0">
-                  <FlaskConical className="w-3.5 h-3.5 text-red-400" />
+                <div className="w-7 h-7 rounded-lg bg-danger/10 flex items-center justify-center shrink-0">
+                  <FlaskConical className="w-3.5 h-3.5 text-danger" />
                 </div>
                 <span className="text-sm text-text-primary font-bold truncate flex-1">
                   {room.title}

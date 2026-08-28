@@ -83,7 +83,7 @@ const ZeroDayMarketTab: React.FC<ZeroDayMarketTabProps> = ({
       key: 'isActive',
       header: t('admin.market.status'),
       render: (item) => (
-        <span className={`px-2.5 py-1 rounded-lg text-[9px] font-black uppercase tracking-widest border ${item.isActive ? 'bg-accent/10 text-accent border-accent/20' : 'bg-red-400/10 text-red-400 border-red-400/20'}`}>
+        <span className={`px-2.5 py-1 rounded-lg text-[9px] font-black uppercase tracking-widest border ${item.isActive ? 'bg-accent/10 text-accent border-accent/20' : 'bg-danger/10 text-danger border-danger/20'}`}>
           {item.isActive ? t('admin.market.operational') : t('badge.offline')}
         </span>
       ),
@@ -105,7 +105,7 @@ const ZeroDayMarketTab: React.FC<ZeroDayMarketTabProps> = ({
           <button
             onClick={() => void deleteProduct(item._id)}
             aria-label={t('admin.market.terminate')}
-            className="min-h-[44px] min-w-[44px] inline-flex items-center justify-center rounded-xl bg-red-500/5 text-red-400/60 hover:bg-red-500/10 hover:text-red-400 transition-all active:scale-90"
+            className="min-h-[44px] min-w-[44px] inline-flex items-center justify-center rounded-xl bg-danger/5 text-danger/60 hover:bg-danger/10 hover:text-danger transition-all active:scale-90"
           >
             <Trash2 className="w-4.5 h-4.5" />
           </button>
@@ -123,13 +123,13 @@ const ZeroDayMarketTab: React.FC<ZeroDayMarketTabProps> = ({
           <div className="flex flex-wrap items-center gap-2 mt-2">
             <span className="px-2 py-0.5 rounded-lg bg-accent-dim text-[8px] font-black uppercase tracking-widest text-accent border border-accent/10">{item.type}</span>
             <span className="text-[10px] font-mono font-bold text-text-secondary inline-flex items-center gap-1">{item.isFree ? <span className="text-accent">{t('admin.market.freeAccess')}</span> : <>{item.cpPrice} <CpLogo className="w-3 h-3" /></>}</span>
-            <span className={`px-2 py-0.5 rounded-lg text-[8px] font-black uppercase tracking-widest border ${item.isActive ? 'bg-accent/10 text-accent border-accent/20' : 'bg-red-400/10 text-red-400 border-red-400/20'}`}>{item.isActive ? t('badge.active') : t('badge.offline')}</span>
+            <span className={`px-2 py-0.5 rounded-lg text-[8px] font-black uppercase tracking-widest border ${item.isActive ? 'bg-accent/10 text-accent border-accent/20' : 'bg-danger/10 text-danger border-danger/20'}`}>{item.isActive ? t('badge.active') : t('badge.offline')}</span>
           </div>
         </div>
       </div>
       <div className="grid grid-cols-2 gap-3 pt-2">
         <button onClick={() => editProduct(item)} className="btn-secondary py-3 active:scale-95">{t('admin.market.modify')}</button>
-        <button onClick={() => void deleteProduct(item._id)} className="py-3 rounded-xl border border-red-500/20 text-red-400/60 hover:bg-red-500/10 hover:text-red-400 text-[10px] font-black uppercase tracking-widest active:scale-95 transition-all">{t('admin.market.terminate')}</button>
+        <button onClick={() => void deleteProduct(item._id)} className="py-3 rounded-xl border border-danger/20 text-danger/60 hover:bg-danger/10 hover:text-danger text-[10px] font-black uppercase tracking-widest active:scale-95 transition-all">{t('admin.market.terminate')}</button>
       </div>
     </div>
   );

@@ -78,8 +78,8 @@ const CompetitivePage = () => {
         </div>
 
         {error && (
-          <div className="p-4 rounded-2xl border border-red-400/30 bg-red-400/5">
-            <span className="text-sm text-red-400">{error}</span>
+          <div className="p-4 rounded-2xl border border-danger/30 bg-danger/5">
+            <span className="text-sm text-danger">{error}</span>
           </div>
         )}
 

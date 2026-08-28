@@ -30,10 +30,10 @@ const FeatureCard: React.FC<{ feature: string }> = ({ feature }) => (
 
 /* ── Static visual mocks (texture, not interactive) ─────────────────────── */
 const TerminalMock: React.FC = () => (
-  <div className="relative flex h-full min-h-[280px] lg:min-h-[360px] flex-col rounded-2xl border border-border/50 bg-[#0c0c0c] overflow-hidden">
+  <div className="relative flex h-full min-h-[280px] lg:min-h-[360px] flex-col rounded-2xl border border-border/50 bg-code-bg overflow-hidden">
     <div className="flex items-center gap-2 px-4 py-2.5 shrink-0">
-      <span className="w-2.5 h-2.5 rounded-full bg-red-400/70" />
-      <span className="w-2.5 h-2.5 rounded-full bg-yellow-400/70" />
+      <span className="w-2.5 h-2.5 rounded-full bg-danger/70" />
+      <span className="w-2.5 h-2.5 rounded-full bg-warning/70" />
       <span className="w-2.5 h-2.5 rounded-full bg-accent/70" />
       <span className="ml-2 text-[9px] font-mono text-text-muted">operator@qyvora:~</span>
     </div>
@@ -65,22 +65,22 @@ const TerminalMock: React.FC = () => (
 );
 
 const IdeMock: React.FC = () => (
-  <div className="relative flex h-full min-h-[280px] lg:min-h-[360px] flex-col rounded-2xl border border-border/50 bg-[#1e1e1e] overflow-hidden">
+  <div className="relative flex h-full min-h-[280px] lg:min-h-[360px] flex-col rounded-2xl border border-border/50 bg-bg-elevated overflow-hidden">
     <div className="flex items-end gap-1.5 px-4 pt-2.5 shrink-0">
-      <span className="text-[9px] font-mono px-3 py-1.5 rounded-t-lg bg-[#0c0c0c] text-accent border border-b-0 border-border/50">
+      <span className="text-[9px] font-mono px-3 py-1.5 rounded-t-lg bg-code-bg text-accent border border-b-0 border-border/50">
         main.py
       </span>
     </div>
-    <div className="flex-1 min-h-0 bg-[#0c0c0c] p-4 font-mono text-[11px] leading-[1.8] overflow-hidden">
-      <p><span className="text-[#c678dd]">def</span> <span className="text-accent">greet</span>(<span className="text-[#e5c07b]">name</span>):</p>
+    <div className="flex-1 min-h-0 bg-code-bg p-4 font-mono text-[11px] leading-[1.8] overflow-hidden">
+      <p><span className="text-code-path">def</span> <span className="text-accent">greet</span>(<span className="text-code-number">name</span>):</p>
       <p className="pl-4 text-text-muted">"""Return a greeting string."""</p>
       <p className="pl-4 text-text-muted">return f"Hello,</p>
       <p className="pl-8 text-text-muted">{`{name}`}!"</p>
-      <p><span className="text-[#c678dd]">print</span>(<span className="text-accent">greet</span>(<span className="text-[#e5c07b]">"Hacker"</span>))</p>
+      <p><span className="text-code-path">print</span>(<span className="text-accent">greet</span>(<span className="text-code-number">"Hacker"</span>))</p>
       <p className="text-text-muted">&nbsp;</p>
       <p className="text-text-muted">&gt; Hello, Hacker!</p>
       <p className="text-text-muted">&nbsp;</p>
-      <p className="text-[#c678dd]">def</p> <span className="text-accent">fib</span>(<span className="text-[#e5c07b]">n</span>): ...
+      <p className="text-code-path">def</p> <span className="text-accent">fib</span>(<span className="text-code-number">n</span>): ...
     </div>
   </div>
 );

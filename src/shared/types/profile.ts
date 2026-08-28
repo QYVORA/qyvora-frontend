@@ -151,7 +151,7 @@ export interface Trophy {
 export const TIER_STYLES: Record<TrophyTier, { border: string; bg: string; glow: string; text: string }> = {
   bronze:   { border: 'border-amber-600/30',   bg: 'bg-amber-600/5',   glow: '',                              text: 'text-amber-600' },
   silver:   { border: 'border-gray-300/30',     bg: 'bg-gray-300/5',    glow: '',                              text: 'text-gray-300' },
-  gold:     { border: 'border-yellow-400/30',   bg: 'bg-yellow-400/5',  glow: 'hover:shadow-[0_0_20px_rgba(250,204,21,0.15)]', text: 'text-yellow-400' },
-  platinum: { border: 'border-accent/30',       bg: 'bg-accent/5',      glow: 'hover:shadow-[0_0_20px_rgba(6,182,111,0.15)]',  text: 'text-accent' },
-  diamond:  { border: 'border-purple-400/30',   bg: 'bg-purple-400/5',  glow: 'hover:shadow-[0_0_20px_rgba(192,132,252,0.15)]', text: 'text-purple-400' },
+  gold:     { border: 'border-warning/30',  bg: 'bg-warning/5', glow: 'hover:shadow-[0_0_20px] hover:shadow-warning/15', text: 'text-warning' },
+  platinum: { border: 'border-accent/30',   bg: 'bg-accent/5',  glow: 'hover:shadow-[0_0_20px] hover:shadow-accent/15',  text: 'text-accent' },
+  diamond:  { border: 'border-purple-400/30', bg: 'bg-purple-400/5', glow: 'hover:shadow-[0_0_20px] hover:shadow-accent/15', text: 'text-purple-400' },
 };

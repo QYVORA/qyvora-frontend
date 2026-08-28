@@ -139,6 +139,11 @@
     background-size: 24px 24px;
   }
 
+  .line-grid {
+    background-image: repeating-linear-gradient(90deg, transparent, transparent 39px, rgba(255, 255, 255, 0.05) 39px, rgba(255, 255, 255, 0.05) 40px);
+    background-size: 40px 40px;
+  }
+
   .border-beam {
     position: relative;
     isolation: isolate;

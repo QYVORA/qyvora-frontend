@@ -26,7 +26,7 @@ const TrendIcon = ({ direction }: { direction: TrendData['direction'] }) => {
     case 'up':
       return <TrendingUp className="w-3 h-3 text-accent" />;
     case 'down':
-      return <TrendingDown className="w-3 h-3 text-red-400" />;
+      return <TrendingDown className="w-3 h-3 text-danger" />;
     default:
       return <IconMinus size={12} className="text-text-muted" />;
   }
@@ -77,7 +77,7 @@ const StatCard = ({
         </div>
         {trend && (
           <div className={`flex items-center gap-1 text-[11px] font-bold font-mono ${
-            trend.direction === 'up' ? 'text-accent' : trend.direction === 'down' ? 'text-red-400' : 'text-text-muted'
+            trend.direction === 'up' ? 'text-accent' : trend.direction === 'down' ? 'text-danger' : 'text-text-muted'
           }`}>
             <TrendIcon direction={trend.direction} />
             {trend.value}

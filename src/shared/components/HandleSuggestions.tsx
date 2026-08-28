@@ -89,7 +89,7 @@ const HandleSuggestions = ({ name, email, onSelect, selectedHandle }: HandleSugg
             ))}
           </div>
         ) : error ? (
-          <p className="text-[10px] text-red-400">{error}</p>
+          <p className="text-[10px] text-danger">{error}</p>
         ) : suggestions.length > 0 ? (
           <div className="flex gap-2 flex-wrap">
             {suggestions.map((handle) => (

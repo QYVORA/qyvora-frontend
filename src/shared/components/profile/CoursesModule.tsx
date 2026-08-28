@@ -49,12 +49,12 @@ const CoursesModule: React.FC<CoursesModuleProps> = ({
   return (
     <div className={className}>
       <ModuleHeader
-        icon={<GraduationCap className="w-4 h-4 text-blue-400" />}
-        iconClassName="bg-blue-400/10"
+        icon={<GraduationCap className="w-4 h-4 text-info" />}
+        iconClassName="bg-info/10"
         title={t('profile.courses.title', 'Courses')}
         trailing={
           coursesCompleted > 0 ? (
-            <span className="px-2 py-1 bg-blue-400/10 text-blue-400 text-[9px] font-black rounded-lg">
+            <span className="px-2 py-1 bg-info/10 text-info text-[9px] font-black rounded-lg">
               {coursesCompleted}
             </span>
           ) : undefined

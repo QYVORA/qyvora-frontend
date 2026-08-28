@@ -18,7 +18,7 @@ export function ProgressiveHints({ hints, maxLevel = 4 }: ProgressiveHintsProps)
     <div className="rounded-xl border border-border/20 bg-bg-elevated overflow-hidden">
       <button onClick={() => setExpanded(!expanded)}
         className="w-full flex items-center gap-2 px-3 py-2 text-left hover:bg-white/5 transition-colors">
-        <Lightbulb size={12} className="text-yellow-400" />
+        <Lightbulb size={12} className="text-warning" />
         <span className="text-[9px] font-black uppercase tracking-widest text-text-muted">
           Hints ({visibleHints.length}/{hints.filter(h => h.level <= maxLevel).length})
         </span>
@@ -31,7 +31,7 @@ export function ProgressiveHints({ hints, maxLevel = 4 }: ProgressiveHintsProps)
         <div className="px-3 pb-3 space-y-2">
           {visibleHints.map(hint => (
             <div key={hint.level} className="p-2 rounded bg-black/30 border border-border/10">
-              <p className="text-[8px] font-black uppercase tracking-widest text-yellow-400 mb-1">
+              <p className="text-[8px] font-black uppercase tracking-widest text-warning mb-1">
                 Hint {hint.level}
               </p>
               <p className="text-[10px] font-mono text-text-muted leading-relaxed">{hint.content}</p>
@@ -40,7 +40,7 @@ export function ProgressiveHints({ hints, maxLevel = 4 }: ProgressiveHintsProps)
 
           {nextHint && (
             <button onClick={() => setRevealedLevel(prev => prev + 1)}
-              className="w-full px-3 py-1.5 rounded bg-yellow-400/5 border border-yellow-400/20 text-[9px] font-black uppercase tracking-wider text-yellow-400 hover:bg-yellow-400/10 transition-colors">
+              className="w-full px-3 py-1.5 rounded bg-warning/5 border border-warning/20 text-[9px] font-black uppercase tracking-wider text-warning hover:bg-warning/10 transition-colors">
               Reveal Hint {nextHint.level}
             </button>
           )}

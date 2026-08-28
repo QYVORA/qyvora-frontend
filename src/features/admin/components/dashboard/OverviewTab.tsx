@@ -41,7 +41,7 @@ const OverviewTab = ({ data, status, onRetry }: OverviewTabProps) => {
     { icon: <Award className="w-5 h-5 text-accent" />, label: t('admin.overview.totalCpMinted'), value: Number(data.totalCpMinted).toLocaleString(), accent: true },
     { icon: <BookOpen className="w-5 h-5 text-text-muted" />, label: t('admin.overview.bootcampEnrollment'), value: `${Math.round(data.bootcampEnrollmentRate * 100)}%`, accent: false },
     {
-      icon: data.chainReachable === 'unreachable' ? <XCircle className="w-5 h-5 text-red-400" /> : data.chainReachable === true ? <IconCheck size={20} className="text-accent" /> : <Server className="w-5 h-5 text-text-muted" />,
+      icon: data.chainReachable === 'unreachable' ? <XCircle className="w-5 h-5 text-danger" /> : data.chainReachable === true ? <IconCheck size={20} className="text-accent" /> : <Server className="w-5 h-5 text-text-muted" />,
       label: t('admin.overview.chainStatus'),
       value:
         data.chainReachable === 'unreachable'
@@ -55,7 +55,7 @@ const OverviewTab = ({ data, status, onRetry }: OverviewTabProps) => {
 
   const healthCards = health ? [
     {
-      icon: <Server className={`w-5 h-5 ${health.mongodb ? 'text-accent' : 'text-red-400'}`} />,
+      icon: <Server className={`w-5 h-5 ${health.mongodb ? 'text-accent' : 'text-danger'}`} />,
       label: t('admin.overview.databaseStatus'),
       value: health.mongodb ? t('admin.overview.connected') : t('admin.overview.degraded'),
       accent: health.mongodb,

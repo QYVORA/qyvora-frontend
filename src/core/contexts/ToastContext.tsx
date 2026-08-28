@@ -131,9 +131,9 @@ export const ToastProvider: React.FC<{ children: React.ReactNode }> = ({ childre
                 toast.type === 'success'
                   ? 'border-accent/40'
                   : toast.type === 'error'
-                  ? 'border-red-500/40'
+                  ? 'border-danger/40'
                   : toast.type === 'warning'
-                  ? 'border-yellow-400/40'
+                  ? 'border-warning/40'
                   : 'border-accent/40'
               }`}
               >
@@ -147,10 +147,10 @@ export const ToastProvider: React.FC<{ children: React.ReactNode }> = ({ childre
                   toast.type === 'success'
                     ? 'text-accent'
                     : toast.type === 'error'
-                    ? 'text-red-400'
+                    ? 'text-danger'
                     : toast.type === 'warning'
-                    ? 'text-yellow-400'
-                    : 'text-blue-400'
+                    ? 'text-warning'
+                    : 'text-info'
                 }`}
               >
                 {toast.type === 'success' && <IconCheck size={20} />}

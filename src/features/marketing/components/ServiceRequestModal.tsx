@@ -172,7 +172,7 @@ const ServiceRequestModalHost: React.FC = () => {
               </div>
 
               {status === 'error' && (
-                <p className="text-xs text-red-400 font-mono">
+                <p className="text-xs text-danger font-mono">
                   {t('services2.sendError')}
                 </p>
               )}

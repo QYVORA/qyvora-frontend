@@ -39,8 +39,8 @@ const TrophyCabinet: React.FC<TrophyCabinetProps> = ({ profile, className = '' }
     return (
       <div className={`rounded-2xl border border-border/50 bg-bg-card p-6 ${className}`}>
         <ModuleHeader
-          icon={<Trophy className="w-4 h-4 text-amber-400" />}
-          iconClassName="bg-amber-400/10"
+          icon={<Trophy className="w-4 h-4 text-warning" />}
+          iconClassName="bg-warning/10"
           title={t('profile.trophy.title', 'Trophy Cabinet')}
         />
         <p className="text-xs text-text-muted text-center py-4">
@@ -53,11 +53,11 @@ const TrophyCabinet: React.FC<TrophyCabinetProps> = ({ profile, className = '' }
   return (
     <div className={`rounded-2xl border border-border/50 bg-bg-card overflow-hidden ${className}`}>
       <ModuleHeader
-        icon={<Trophy className="w-4 h-4 text-amber-400" />}
-        iconClassName="bg-amber-400/10"
+        icon={<Trophy className="w-4 h-4 text-warning" />}
+        iconClassName="bg-warning/10"
         title={t('profile.trophy.title', 'Trophy Cabinet')}
         trailing={
-          <span className="px-2 py-1 bg-amber-400/10 text-amber-400 text-[9px] font-black rounded-lg">
+          <span className="px-2 py-1 bg-warning/10 text-warning text-[9px] font-black rounded-lg">
             {trophies.length}
           </span>
         }

@@ -74,14 +74,14 @@ const Toha3eePage = () => {
         description="Toha3ee actively redirects, poisons, decrypts and intercepts network traffic. Use it only on networks you own or are explicitly authorised to test."
       >
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
-          <div className="rounded-2xl border border-amber-500/30 bg-amber-500/5 px-5 md:px-6 py-5 flex gap-4 items-start">
-            <div className="w-10 h-10 md:w-12 md:h-12 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center shrink-0">
-              <ShieldAlert className="w-5 h-5 md:w-6 md:h-6 text-amber-400" />
+          <div className="rounded-2xl border border-warning/30 bg-warning/5 px-5 md:px-6 py-5 flex gap-4 items-start">
+            <div className="w-10 h-10 md:w-12 md:h-12 rounded-xl bg-warning/10 border border-warning/20 flex items-center justify-center shrink-0">
+              <ShieldAlert className="w-5 h-5 md:w-6 md:h-6 text-warning" />
             </div>
             <p className="text-xs md:text-sm text-text-secondary leading-relaxed font-mono">
               Running these modules against networks you do not own is illegal in most jurisdictions. Most attack
               modules require root, raw sockets, packet capture and IP forwarding. The tool re-executes itself under
-              sudo by default; pass <code className="text-amber-400">--no-sudo</code> for unprivileged commands.
+              sudo by default; pass <code className="text-warning">--no-sudo</code> for unprivileged commands.
             </p>
           </div>
 
@@ -303,8 +303,8 @@ const Toha3eePage = () => {
         <div className="grid grid-cols-1 lg:grid-cols-[1.15fr_1fr] gap-4 md:gap-6">
           <div className="rounded-2xl border border-border/50 bg-bg-card overflow-hidden">
             <div className="flex items-center gap-2 px-4 py-2.5 bg-bg">
-              <span className="w-2.5 h-2.5 rounded-full bg-red-400/70" />
-              <span className="w-2.5 h-2.5 rounded-full bg-yellow-400/70" />
+              <span className="w-2.5 h-2.5 rounded-full bg-danger/70" />
+              <span className="w-2.5 h-2.5 rounded-full bg-warning/70" />
               <span className="w-2.5 h-2.5 rounded-full bg-accent/70" />
               <span className="ml-2 text-[9px] font-mono text-text-muted">toha3ee, zsh</span>
             </div>

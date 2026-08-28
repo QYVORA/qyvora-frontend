@@ -82,9 +82,9 @@ const ShakaPage = () => {
         description={AUTHORIZED_WARNING.description}
       >
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
-          <div className="rounded-2xl border border-amber-500/30 bg-amber-500/5 px-5 md:px-6 py-5 flex gap-4 items-start">
-            <div className="w-10 h-10 md:w-12 md:h-12 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center shrink-0">
-              <AUTHORIZED_WARNING.icon className="w-5 h-5 md:w-6 md:h-6 text-amber-400" />
+          <div className="rounded-2xl border border-warning/30 bg-warning/5 px-5 md:px-6 py-5 flex gap-4 items-start">
+            <div className="w-10 h-10 md:w-12 md:h-12 rounded-xl bg-warning/10 border border-warning/20 flex items-center justify-center shrink-0">
+              <AUTHORIZED_WARNING.icon className="w-5 h-5 md:w-6 md:h-6 text-warning" />
             </div>
             <p className="text-xs md:text-sm text-text-secondary leading-relaxed font-mono">
               SHAKA assesses only explicitly authorized directory targets. Live targets require explicit authorization (--authorized/-y, config, or QYVORA_AUTHORIZED=true); the built-in demo directory is auto-authorized for safe offline exploration.

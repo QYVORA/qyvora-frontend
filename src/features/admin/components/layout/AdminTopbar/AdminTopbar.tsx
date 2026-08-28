@@ -229,7 +229,7 @@ const AdminTopbar = () => {
 
             <button
               onClick={handleLogout}
-              className="hidden md:flex p-3 md:p-3.5 text-text-muted hover:text-red-400 transition-colors rounded-xl hover:bg-red-400/10 active:scale-95"
+              className="hidden md:flex p-3 md:p-3.5 text-text-muted hover:text-danger transition-colors rounded-xl hover:bg-danger/10 active:scale-95"
               aria-label={t('aria.logOut')}
             >
               <LogOut className="w-6 h-6" />

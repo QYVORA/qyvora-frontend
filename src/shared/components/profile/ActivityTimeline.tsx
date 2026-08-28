@@ -19,10 +19,10 @@ import { QyvoraMark } from '@/shared/components/brand';
 import ModuleHeader from './ModuleHeader';
 
 const ACTIVITY_CONFIG: Record<ActivityType, { icon: React.ReactNode; color: string; bg: string }> = {
-  lab_completed:     { icon: <FlaskConical className="w-4 h-4" />,  color: 'text-red-400',    bg: 'bg-red-400/10' },
-  course_completed:  { icon: <GraduationCap className="w-4 h-4" />, color: 'text-blue-400',   bg: 'bg-blue-400/10' },
+  lab_completed:     { icon: <FlaskConical className="w-4 h-4" />,  color: 'text-danger',    bg: 'bg-danger/10' },
+  course_completed:  { icon: <GraduationCap className="w-4 h-4" />, color: 'text-info',      bg: 'bg-info/10' },
   bootcamp_completed:{ icon: <Shield className="w-4 h-4" />,        color: 'text-accent',     bg: 'bg-accent/10' },
-  achievement_earned:{ icon: <Award className="w-4 h-4" />,         color: 'text-amber-400',  bg: 'bg-amber-400/10' },
+  achievement_earned:{ icon: <Award className="w-4 h-4" />,         color: 'text-warning',   bg: 'bg-warning/10' },
   rank_up:           { icon: <TrendingUp className="w-4 h-4" />,    color: 'text-purple-400', bg: 'bg-purple-400/10' },
   login:             { icon: <UserCheck className="w-4 h-4" />,     color: 'text-text-muted', bg: 'bg-bg-elevated' },
   profile_updated:   { icon: <UserCheck className="w-4 h-4" />,     color: 'text-text-muted', bg: 'bg-bg-elevated' },

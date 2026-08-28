@@ -169,7 +169,7 @@ const KillChainLab = () => {
                       onComplete={() => handleCommandComplete(currentPhase.id, cmdIdx)}
                     >
                       {cmd.isRequired && (
-                        <span className="inline-flex px-2 py-0.5 rounded bg-yellow-400/10 text-[8px] font-black uppercase tracking-widest text-yellow-400">Required</span>
+                        <span className="inline-flex px-2 py-0.5 rounded bg-warning/10 text-[8px] font-black uppercase tracking-widest text-warning">Required</span>
                       )}
                     </WalkthroughStep>
                   );

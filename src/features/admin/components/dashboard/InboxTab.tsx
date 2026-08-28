@@ -268,7 +268,7 @@ const InboxTab = () => {
                         requestDelete(selectedItem!);
                         setSelectedItem(null);
                       }}
-                      className="ml-auto px-2.5 py-1 rounded-lg text-[10px] font-bold uppercase tracking-wider border border-red-400/30 text-red-400 hover:bg-red-400/10 transition-colors"
+                      className="ml-auto px-2.5 py-1 rounded-lg text-[10px] font-bold uppercase tracking-wider border border-danger/30 text-danger hover:bg-danger/10 transition-colors"
                     >
                       {t('button.delete')}
                     </button>

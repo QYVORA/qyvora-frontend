@@ -552,7 +552,7 @@ export const TerminalShell: React.FC<TerminalShellProps> = ({
             )}
             <button
               onClick={() => { saveTerminalData(lines, stateRef.current); onClose?.(); }}
-              className="flex items-center justify-center h-8 w-8 md:h-5 md:w-5 rounded-lg hover:bg-white/5 transition-all focus:outline-none text-white/30 hover:text-red-400"
+              className="flex items-center justify-center h-8 w-8 md:h-5 md:w-5 rounded-lg hover:bg-white/5 transition-all focus:outline-none text-white/30 hover:text-danger"
               aria-label="Close terminal"
             >
               <IconX size={14} />
@@ -614,7 +614,7 @@ export const TerminalShell: React.FC<TerminalShellProps> = ({
           <div className="flex items-center" style={{ color: KALI_GREEN }}>
             <span className="shrink-0 whitespace-nowrap leading-relaxed">{prefix}</span>
             {reverseSearchActive && (
-              <span className="shrink-0 whitespace-nowrap leading-relaxed text-[#ffbd2e] mr-1">
+              <span className="shrink-0 whitespace-nowrap leading-relaxed text-warning mr-1">
                 (reverse-i-search)`{reverseSearchQuery}':
               </span>
             )}
