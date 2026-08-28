@@ -61,8 +61,8 @@ export const TerminalWrapper: React.FC<TerminalWrapperProps> = ({
               'data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95',
               'duration-150',
               isFullscreen
-                ? 'inset-4 rounded-2xl'
-                : 'left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[calc(100vw-2rem)] sm:w-[calc(100vw-3rem)] max-w-5xl h-[60vh] md:h-[75vh] max-h-[90vh]',
+                ? 'inset-2 sm:inset-4 rounded-2xl'
+                : 'inset-x-2 mx-auto sm:inset-x-6 top-1/2 -translate-y-1/2 w-auto max-w-5xl h-[60vh] md:h-[75vh] max-h-[90vh]',
             )}
           >
             <RadixDialog.Title className="sr-only">Terminal</RadixDialog.Title>
