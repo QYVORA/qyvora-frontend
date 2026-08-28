@@ -21,6 +21,7 @@ interface CardBaseProps {
   className?: string;
   /** If provided the whole card becomes a link */
   href?: string;
+  to?: string;
   /** Use for external links */
   external?: boolean;
   onClick?: () => void;
@@ -34,11 +35,13 @@ export const CardBase: React.FC<CardBaseProps> = ({
   children,
   className = '',
   href,
+  to,
   external,
   onClick,
   active,
   muted,
 }) => {
+  const linkTarget = to || href;
   const base = [
     'terminal-card group relative flex flex-col overflow-hidden rounded-2xl border bg-bg-card transition-all duration-300',
     active  ? 'border-accent/60'                         : 'border-accent/50',
@@ -48,11 +51,11 @@ export const CardBase: React.FC<CardBaseProps> = ({
 
   const style = { boxShadow: 'var(--card-shimmer)' };
 
-  if (href && !external) {
-    return <Link to={href} className={base} style={style}>{children}</Link>;
+  if (linkTarget && !external) {
+    return <Link to={linkTarget} className={base} style={style}>{children}</Link>;
   }
-  if (href && external) {
-    return <a href={href} target="_blank" rel="noopener noreferrer" className={base} style={style}>{children}</a>;
+  if (linkTarget && external) {
+    return <a href={linkTarget} target="_blank" rel="noopener noreferrer" className={base} style={style}>{children}</a>;
   }
   if (onClick) {
     return (
@@ -220,4 +223,13 @@ export const CardStat: React.FC<CardStatProps> = ({
       {inner}
     </div>
   );
+};
+
+export { default as LearningCard, DifficultyBadge } from '../learning/LearningCard';
+export type { LearningCardProps, LearningCardType } from '../learning/LearningCard';
+
+export default {
+  Base: CardBase,
+  Media: CardMedia,
+  Stat: CardStat,
 };
