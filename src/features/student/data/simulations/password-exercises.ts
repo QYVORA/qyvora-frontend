@@ -1,3 +1,5 @@
+import type { QuizQuestion } from './types';
+
 export interface PasswordExercise {
   id: string;
   title: string;
@@ -16,6 +18,7 @@ export interface PasswordExercise {
     description: string;
   };
   narrative?: string;
+  quiz?: QuizQuestion[];
 }
 
 export function getShadowFileContent(): string {
@@ -84,6 +87,39 @@ Run the command below to begin. Hashcat's \`-m 0\` flag selects the MD5 module, 
       'hashcat -m 0 mystery_hash.txt rockyou.txt --show',
     ],
     cpReward: 50,
+    quiz: [
+      {
+        id: 'pwd-crack-md5-simple-q1',
+        question: 'Which Hashcat mode flag targets MD5 hashes?',
+        options: ['-m 0', '-m 1000', '-m 1400', '-m 3200'],
+        correctIndex: 0,
+        explanation: 'Hashcat uses -m 0 for raw MD5 hashes.',
+      },
+      {
+        id: 'pwd-crack-md5-simple-q2',
+        question: 'Why is MD5 particularly dangerous for password storage?',
+        options: [
+          'It is salted by default',
+          'It is unsalted, so identical passwords produce identical hashes',
+          'It uses key stretching to slow attacks',
+          'It requires a GPU to compute',
+        ],
+        correctIndex: 1,
+        explanation: 'MD5 is unsalted, enabling rainbow table attacks where identical passwords produce identical hashes.',
+      },
+      {
+        id: 'pwd-crack-md5-simple-q3',
+        question: 'What does the --show flag do in Hashcat?',
+        options: [
+          'Displays the hash type automatically',
+          'Shows previously cracked results without re-cracking',
+          'Lists available attack modes',
+          'Prints the wordlist contents',
+        ],
+        correctIndex: 1,
+        explanation: 'The --show flag displays already-cracked hashes from the pot file without rerunning the attack.',
+      },
+    ],
   },
   {
     id: 'pwd-crack-sha256-common',
@@ -122,6 +158,34 @@ Hashcat's \`-m 1400\` module handles raw SHA-256. Compare the speed difference a
       'hashcat -m 1400 user_hash.txt rockyou.txt --show',
     ],
     cpReward: 75,
+    quiz: [
+      {
+        id: 'pwd-crack-sha256-common-q1',
+        question: 'Which Hashcat module is used for raw SHA-256 hashes?',
+        options: ['-m 100', '-m 1400', '-m 1800', '-m 0'],
+        correctIndex: 1,
+        explanation: 'Hashcat\'s -m 1400 module handles raw SHA-256 hashes.',
+      },
+      {
+        id: 'pwd-crack-sha256-common-q2',
+        question: 'Why does SHA-256 without salt remain vulnerable to dictionary attacks?',
+        options: [
+          'SHA-256 is reversible',
+          'Alone without a salt, identical passwords produce identical hashes, enabling precomputed rainbow table attacks',
+          'SHA-256 is too fast for key stretching',
+          'SHA-256 stores passwords in plaintext',
+        ],
+        correctIndex: 1,
+        explanation: 'Without a salt, SHA-256 produces the same hash for identical passwords, enabling rainbow table attacks.',
+      },
+      {
+        id: 'pwd-crack-sha256-common-q3',
+        question: 'Which algorithm is designed for password storage with built-in salting?',
+        options: ['SHA-256', 'MD5', 'bcrypt', 'SHA-1'],
+        correctIndex: 2,
+        explanation: 'bcrypt is designed for password storage with built-in salting and key stretching.',
+      },
+    ],
   },
   {
     id: 'pwd-crack-bcrypt',
@@ -160,6 +224,39 @@ Use Hashcat's \`-m 3200\` module for bcrypt. The \`--force\` flag suppresses har
       'hashcat -m 3200 bcrypt_hash.txt rockyou.txt --show',
     ],
     cpReward: 150,
+    quiz: [
+      {
+        id: 'pwd-crack-bcrypt-q1',
+        question: 'Which Hashcat module handles bcrypt hashes?',
+        options: ['-m 1800', '-m 1000', '-m 3200', '-m 1400'],
+        correctIndex: 2,
+        explanation: 'Hashcat uses -m 3200 for bcrypt ($2y$/$2a$/$2b$) hashes.',
+      },
+      {
+        id: 'pwd-crack-bcrypt-q2',
+        question: 'Why is bcrypt much slower to crack than MD5?',
+        options: [
+          'It uses a larger output size',
+          'Key stretching makes each hash computation deliberately slow',
+          'It requires a special GPU',
+          'It encrypts the hash twice',
+        ],
+        correctIndex: 1,
+        explanation: 'Bcrypt applies key stretching, making each hash computation ~10,000x slower than MD5.',
+      },
+      {
+        id: 'pwd-crack-bcrypt-q3',
+        question: 'Why did Viktor\'s strong bcrypt hash still get cracked?',
+        options: [
+          'Bcrypt has a known backdoor',
+          'His password "s3cur3P@ss" is a common dictionary word with leet substitutions',
+          'The --force flag disabled bcrypt security',
+          'Bcrypt is reversible',
+        ],
+        correctIndex: 1,
+        explanation: 'Strong algorithms cannot compensate for weak passwords that appear in dictionaries.',
+      },
+    ],
   },
   {
     id: 'pwd-crack-ntlm-windows',
@@ -198,6 +295,39 @@ Use Hashcat's \`-m 1000\` module for NTLM. Note how much faster this runs than t
       'hashcat -m 1000 ntlm_hash.txt rockyou.txt --show',
     ],
     cpReward: 125,
+    quiz: [
+      {
+        id: 'pwd-crack-ntlm-windows-q1',
+        question: 'Which Hashcat module is used to crack NTLM hashes?',
+        options: ['-m 1000', '-m 0', '-m 1800', '-m 3200'],
+        correctIndex: 0,
+        explanation: 'Hashcat uses -m 1000 for NTLM hashes.',
+      },
+      {
+        id: 'pwd-crack-ntlm-windows-q2',
+        question: 'Why are NTLM hashes prized by attackers?',
+        options: [
+          'They are impossible to crack',
+          'They can be computed extremely fast, making brute-force trivially quick',
+          'They contain the plaintext password',
+          'They are only used on macOS',
+        ],
+        correctIndex: 1,
+        explanation: 'NTLM hashes compute in nanoseconds, making brute-force attacks trivially quick on modern hardware.',
+      },
+      {
+        id: 'pwd-crack-ntlm-windows-q3',
+        question: 'Why does cracking a single NTLM hash often compromise an entire organization?',
+        options: [
+          'NTLM hashes are unsalted and universal',
+          'Users commonly reuse the same password across email, VPN, and admin panels',
+          'NTLM gives access to the whole domain controller directly',
+          'NTLM stores passwords in plaintext databases',
+        ],
+        correctIndex: 1,
+        explanation: 'Credential reuse means one recovered NTLM password can be sprayed across the network.',
+      },
+    ],
   },
   {
     id: 'pwd-crack-shadow-extract',
@@ -239,6 +369,39 @@ The \`unshadow\` tool merges \`/etc/passwd\` and \`/etc/shadow\` so John can rea
       'hashcat -m 3200 shadow.txt rockyou.txt',
     ],
     cpReward: 250,
+    quiz: [
+      {
+        id: 'pwd-crack-shadow-extract-q1',
+        question: 'What does the unshadow tool do?',
+        options: [
+          'Decrypts the shadow file directly',
+          'Merges /etc/passwd and /etc/shadow so John the Ripper can read usernames and hashes together',
+          'Converts NTLM hashes to SHA-512',
+          'Removes locked accounts from the shadow file',
+        ],
+        correctIndex: 1,
+        explanation: 'The unshadow tool combines usernames from /etc/passwd with hashes from /etc/shadow.',
+      },
+      {
+        id: 'pwd-crack-shadow-extract-q2',
+        question: 'Which hash type ($6$) in /etc/shadow indicates SHA-512?',
+        options: ['$1$', '$2y$', '$5$', '$6$'],
+        correctIndex: 3,
+        explanation: 'The $6$ prefix identifies SHA-512 hashes in /etc/shadow.',
+      },
+      {
+        id: 'pwd-crack-shadow-extract-q3',
+        question: 'Why do attackers prioritize the deploy account in this shadow file?',
+        options: [
+          'It has the highest privileges',
+          'It uses MD5 ($1$), the weakest hash in the file',
+          'It has no salt',
+          'It is the only account with a password',
+        ],
+        correctIndex: 1,
+        explanation: 'Real-world cracking is about triage: attackers crack the weakest hashes first, then pivot.',
+      },
+    ],
   },
   {
     id: 'pwd-crack-multi-hash',
@@ -295,5 +458,38 @@ Identify each hash's prefix (\`$1$\`, \`$5$\`, \`$6$\`, or raw 32/40/64-char hex
       'hashcat --show multi_hashes.txt',
     ],
     cpReward: 300,
+    quiz: [
+      {
+        id: 'pwd-crack-multi-hash-q1',
+        question: 'Why does hash type diversity create multiple attack vectors?',
+        options: [
+          'It increases the total compute required',
+          'An attacker only needs to exploit the weakest hash type in the list',
+          'It makes cracking illegal',
+          'Different hashes cannot be stored together',
+        ],
+        correctIndex: 1,
+        explanation: 'An attacker does not need the best hash, only the weakest one in the set.',
+      },
+      {
+        id: 'pwd-crack-multi-hash-q2',
+        question: 'In this exercise, you run four Hashcat modules in parallel. Which module (-m) is the slowest to attack on a GPU?',
+        options: ['-m 0 (MD5)', '-m 100 (SHA-1)', '-m 1400 (SHA-256)', '-m 1800 (salted SHA-512)'],
+        correctIndex: 3,
+        explanation: 'Salted SHA-512 runs at ~1 million hashes per second, far slower than MD5 or SHA-1.',
+      },
+      {
+        id: 'pwd-crack-multi-hash-q3',
+        question: 'How do you identify which hash type a value is in this exercise?',
+        options: [
+          'By the hash length alone',
+          'By its prefix ($1$, $5$, $6$) or whether it is raw 32/40/64-char hex',
+          'By the file creation date',
+          'By running --show first',
+        ],
+        correctIndex: 1,
+        explanation: 'Hash type is told by the salt prefix or the raw hex length.',
+      },
+    ],
   },
 ];
