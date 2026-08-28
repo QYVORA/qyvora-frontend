@@ -1,5 +1,13 @@
 export type Difficulty = 'beginner' | 'intermediate' | 'advanced';
 
+export interface QuizQuestion {
+  id: string;
+  question: string;
+  options: string[];
+  correctIndex: number;
+  explanation: string;
+}
+
 export type LabCategory =
   | 'privilege-escalation'
   | 'password-cracking'
@@ -25,6 +33,7 @@ export interface LabStep {
   instruction: string;
   expectedAction?: string;
   hint?: string;
+  quiz?: QuizQuestion[];
   completed: boolean;
 }
 
@@ -84,6 +93,7 @@ export interface LabChapter {
   narrative: string;
   triggers: ChapterTrigger[];
   hint?: string;
+  quiz?: QuizQuestion[];
 }
 
 export interface ChapterTrigger {

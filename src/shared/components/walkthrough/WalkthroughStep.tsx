@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Lightbulb, Target, ClipboardList, Search, MessageSquare } from 'lucide-react';
 import { IconCheck } from '@/shared/components/icons';
 import { cn } from '@/shared/utils/cn';
+import InlineQuiz, { QuizQuestion } from '@/shared/components/courses/InlineQuiz';
 import { CommandBlock, FlagInput, StepComplete } from './StepParts';
 import { StepNumberHeader } from '@/shared/components/learning/StepNumberHeader';
 import { EducationalMarkdownRenderer } from '@/shared/components/courses/CodeBlockRenderer';
@@ -22,6 +23,7 @@ export interface WalkthroughStepProps {
   objectives?: string[];
   evidence?: string[];
   reflection?: string;
+  quiz?: QuizQuestion[];
   isLocked: boolean;
   isCompleted: boolean;
   isActive: boolean;
@@ -37,7 +39,7 @@ const HINT_LEVEL_LABELS = ['General Guidance', 'Approach', 'Tool Hint', 'Example
 
 export function WalkthroughStep({
   stepIndex, title, narrative, hint, progressiveHints, commandInstruction,
-  mission, objectives, evidence, reflection,
+  mission, objectives, evidence, reflection, quiz,
   isLocked, isCompleted, isActive, flagId, labId,
   onFlagSubmit, onComplete, children, skipFlag,
 }: WalkthroughStepProps) {
@@ -184,6 +186,14 @@ export function WalkthroughStep({
         )}
 
         {children}
+
+        {/* Mini-quiz — reinforce the step's key concepts */}
+        {quiz && quiz.length > 0 && (
+          <InlineQuiz
+            questions={quiz}
+            title="Check your understanding"
+          />
+        )}
 
         {/* Reflection */}
         {reflection && (
