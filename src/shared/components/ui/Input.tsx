@@ -19,7 +19,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
         aria-invalid={Boolean(error)}
         className={cn(
           'w-full bg-bg-card border rounded-xl py-3 text-text-primary',
-          error ? 'border-red-500/60 focus:border-red-400' : 'border-border focus:border-accent',
+          error ? 'border-danger/60 focus:border-danger' : 'border-border focus:border-accent',
           'placeholder:text-text-muted outline-none transition-all',
           'font-mono text-sm',
           icon ? 'pl-12 pr-4' : 'px-4',
@@ -28,7 +28,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
         {...props}
       />
       {typeof error === 'string' && (
-        <p className="mt-1 text-xs text-red-400 font-mono" role="alert">{error}</p>
+        <p className="mt-1 text-xs text-danger font-mono" role="alert">{error}</p>
       )}
     </div>
   ),
