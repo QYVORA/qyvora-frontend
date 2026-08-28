@@ -18,7 +18,7 @@ const variantClasses: Record<SkeletonVariant, string> = {
 
 const Skeleton: React.FC<SkeletonProps> = ({ className = '', variant = 'text' }) => (
   <div
-    className={`animate-pulse bg-border/30 ${variantClasses[variant]} ${className}`}
+    className={`animate-pulse bg-bg-elevated ${variantClasses[variant]} ${className}`}
     aria-hidden="true"
   />
 );

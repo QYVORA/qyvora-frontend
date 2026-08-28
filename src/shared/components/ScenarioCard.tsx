@@ -9,10 +9,10 @@ interface ScenarioCardProps {
   onStart: () => void;
 }
 
-const DIFFICULTY_STYLES: Record<string, string> = {
-  beginner: 'bg-green-400/10 text-green-400 border-green-400/20',
-  intermediate: 'bg-yellow-400/10 text-yellow-400 border-yellow-400/20',
-  advanced: 'bg-red-400/10 text-red-400 border-red-400/20',
+const DIFFICULTY_CLASSES: Record<string, string> = {
+  beginner: 'badge-beginner',
+  intermediate: 'badge-intermediate',
+  advanced: 'badge-advanced',
 };
 
 const ScenarioCard = ({ title, difficulty, description, cpReward, subtitle, onStart }: ScenarioCardProps) => (
@@ -30,7 +30,7 @@ const ScenarioCard = ({ title, difficulty, description, cpReward, subtitle, onSt
       <h3 className="text-sm sm:text-base md:text-lg lg:text-xl font-black text-text-primary group-hover/card:text-accent transition-colors leading-snug">
         {title}
       </h3>
-      <span className={`px-2 py-0.5 rounded-lg text-[9px] sm:text-[10px] font-black uppercase tracking-widest border ${DIFFICULTY_STYLES[difficulty] || DIFFICULTY_STYLES.beginner}`}>
+      <span className={`px-2 py-0.5 rounded-lg text-[9px] sm:text-[10px] font-black uppercase tracking-widest border ${DIFFICULTY_CLASSES[difficulty] || 'badge-accent'}`}>
         {difficulty}
       </span>
     </div>

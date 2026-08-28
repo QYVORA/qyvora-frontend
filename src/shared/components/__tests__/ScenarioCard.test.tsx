@@ -90,25 +90,25 @@ describe('ScenarioCard', () => {
   it('renders beginner difficulty with default style', () => {
     renderCard({ difficulty: 'beginner' });
     const badge = screen.getByText('beginner');
-    expect(badge.className).toContain('green');
+    expect(badge.className).toContain('badge-beginner');
   });
 
   it('renders intermediate difficulty with yellow style', () => {
     renderCard({ difficulty: 'intermediate' });
     const badge = screen.getByText('intermediate');
-    expect(badge.className).toContain('yellow');
+    expect(badge.className).toContain('badge-intermediate');
   });
 
   it('renders advanced difficulty with red style', () => {
     renderCard({ difficulty: 'advanced' });
     const badge = screen.getByText('advanced');
-    expect(badge.className).toContain('red');
+    expect(badge.className).toContain('badge-advanced');
   });
 
-  it('falls back to beginner style for unknown difficulty', () => {
+  it('falls back to accent style for unknown difficulty', () => {
     renderCard({ difficulty: 'unknown' });
     const badge = screen.getByText('unknown');
-    expect(badge.className).toContain('green');
+    expect(badge.className).toContain('badge-accent');
   });
 
   it('renders string cpReward', () => {
