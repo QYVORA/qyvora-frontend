@@ -36,7 +36,10 @@ curl -I https://target.com
 
 **Mini-challenge:** Run \`dig target.com ANY +short\` followed by \`whois target.com 2>/dev/null | head -20\` on a target you own or \`google.com\`. Notice how much information is publicly available — IP ranges, name servers, administrative contacts. This is the starting point for every engagement.
 
-The rule: **passive first, active second, exploit last**.`),
+The rule: **passive first, active second, exploit last**.`, { hasQuiz: true, quiz: [
+        { id: 'recon-1-q1', question: 'Which of the following is an example of active reconnaissance?', options: ['Searching Google for target information', 'Using Shodan to enumerate services', 'Scanning ports with Nmap', 'Checking certificate transparency logs'], correctIndex: 2, explanation: 'Active recon directly interacts with the target. Port scanning with Nmap creates logs on the target systems.' },
+        { id: 'recon-1-q2', question: 'What is the correct order of operations in a security assessment?', options: ['Exploit first, recon last', 'Active first, passive last', 'Passive first, active second, exploit last', 'Recon last, exploit first'], correctIndex: 2, explanation: 'Always start with passive recon (no traces), then active recon, and finally exploitation.' },
+      ] }),
 
     l('recon-2', 'WHOIS & DNS Enumeration',
       `**WHOIS** tells you who owns a domain. This is passive recon, it's public information.
@@ -74,7 +77,10 @@ dnsrecon -d target.com -D /usr/share/wordlists/dns.txt -t brt
 
 **Mini-challenge:** Run \`dig google.com NS +short\` to find Google's nameservers. Then \`dig axfr @ns1.google.com google.com 2>&1 | head -5\` (will likely fail — zone transfers are restricted). This demonstrates why zone transfers are rare in production — but when they work, they're devastating for recon. Test with \`dig version.bind CHAOS TXT @8.8.8.8\` to check DNS server version.
 
-This tries thousands of common subdomain names. Install with: \`sudo apt install dnsrecon\``),
+This tries thousands of common subdomain names. Install with: \`sudo apt install dnsrecon\``, { hasQuiz: true, quiz: [
+        { id: 'recon-2-q1', question: 'What does a successful DNS zone transfer provide?', options: ['Only the target IP address', 'The target password', 'Every subdomain and DNS record in the zone', 'The physical location of the server'], correctIndex: 2, explanation: 'A zone transfer copies the entire DNS database, revealing all subdomains and records.' },
+        { id: 'recon-2-q2', question: 'Which DNS record type is used to find mail servers for a domain?', options: ['A', 'AAAA', 'MX', 'CNAME'], correctIndex: 2, explanation: 'MX (Mail Exchange) records specify the mail servers responsible for handling email for the domain.' },
+      ] }),
 
     l('recon-3', 'Subdomain Enumeration',
       `Subdomains often reveal hidden services, staging environments, and forgotten applications.
@@ -123,7 +129,10 @@ curl -s "https://crt.sh/?q=%25.target.com&output=json" \\
 
 **Mini-challenge:** Run \`curl -s "https://crt.sh/?q=%25.google.com&output=json" 2>/dev/null | python3 -c "import sys,json; data=json.load(sys.stdin); seen=set(); [print(v) for e in data for v in [e.get('name_value','')] if v not in seen and not seen.add(v)]" 2>/dev/null | head -20\`. This queries Certificate Transparency logs for Google subdomains — a passive recon technique that often reveals dozens of hidden services.
 
-This pulls every SSL certificate issued for \`*.target.com\` and \`target.com\`, a passive way to discover subdomains.`),
+This pulls every SSL certificate issued for \`*.target.com\` and \`target.com\`, a passive way to discover subdomains.`, { hasQuiz: true, quiz: [
+        { id: 'recon-3-q1', question: 'Why are Certificate Transparency logs valuable for subdomain enumeration?', options: ['They contain passwords', 'Every SSL certificate issued for a domain is publicly logged', 'They are faster than DNS lookups', 'They only show active subdomains'], correctIndex: 1, explanation: 'Certificate Transparency logs are publicly accessible and record every SSL certificate issued for a domain, passively revealing subdomains.' },
+        { id: 'recon-3-q2', question: 'Which tool performs thorough subdomain enumeration using multiple data sources?', options: ['curl', 'dig', 'amass', 'whois'], correctIndex: 2, explanation: 'Amass aggregates results from many different sources for comprehensive subdomain discovery.' },
+      ] }),
 
     l('recon-4', 'Directory Brute-Forcing',
       `Once you know a host, you need to find hidden files and directories. This is called **directory enumeration** or **directory brute-forcing**.
@@ -169,7 +178,10 @@ ffuf -u https://target.com/FUZZ.bak \\
 \`\`\`bash
 sudo apt install seclists
 # Lists are in /usr/share/seclists/
-\`\`\``),
+\`\`\``, { hasQuiz: true, quiz: [
+        { id: 'recon-4-q1', question: 'What does a 403 HTTP response indicate during directory brute-forcing?', options: ['The path does not exist', 'The resource exists but access is denied', 'The server is down', 'The path is publicly accessible'], correctIndex: 1, explanation: 'A 403 status confirms the resource exists but is protected, unlike a 404 which means it does not exist.' },
+        { id: 'recon-4-q2', question: 'Which ffuf flag filters out 404 responses to reduce noise?', options: ['-w', '-fc 404', '-u', '-t'], correctIndex: 1, explanation: 'The -fc 404 flag tells ffuf to hide responses with status code 404, reducing noise from non-existent paths.' },
+      ] }),
 
     l('recon-5', 'Technology Fingerprinting',
       `**Fingerprinting** identifies the technologies a website uses, the web server, framework, CMS, JavaScript libraries, and more.
@@ -218,7 +230,10 @@ WordPress[6.4], jQuery[3.7.1]
 **Mini-challenge:** Run \`curl -I https://httpbin.org 2>/dev/null | grep -iE "server|x-powered-by|x-frame"\` to fingerprint a simple service. Then \`nmap -sV --script http-headers httpbin.org -p 80 2>/dev/null\`. Compare the information from each tool — this is how you build a technology profile from multiple data sources.
 
             wpscan --url https://target.com
-\`\`\``),
+\`\`\``, { hasQuiz: true, quiz: [
+        { id: 'recon-5-q1', question: 'Which HTTP response header directly reveals the web server software?', options: ['Content-Type', 'Server', 'X-Powered-By', 'Accept'], correctIndex: 1, explanation: 'The Server header identifies the web server software and version (e.g., nginx/1.24.0).' },
+        { id: 'recon-5-q2', question: 'Why is knowing the exact technology version important for a security assessment?', options: ['It reveals the password', 'It tells you which CVEs apply', 'It shows the DNS records', 'It confirms the IP address'], correctIndex: 1, explanation: 'Specific versions have known vulnerabilities (CVEs). Knowing Apache 2.4.49 means CVE-2021-41773 is relevant.' },
+      ] }),
 
     l('recon-6', 'Building a Recon Report',
       `Let's put it all together into a systematic recon workflow.
@@ -352,7 +367,10 @@ done
 
 **Mini-challenge:** Run a Google dork test on a non-sensitive target: search for \`site:example.com intitle:"index of"\` in your browser (replace example.com with a real domain you own). If directory listing is enabled, you'll see the file structure. Practice with \`site:github.com "password" "secret" in:file\` to understand how dorks find exposed credentials.
 
-Dorking is completely passive. The target never knows you searched for them.`),
+Dorking is completely passive. The target never knows you searched for them.`, { hasQuiz: true, quiz: [
+        { id: 'recon-7-q1', question: 'Which Google dork operator finds directory listings on a target site?', options: ['site:target.com', 'filetype:env', 'intitle:"index of"', 'inurl:admin'], correctIndex: 2, explanation: 'intitle:"index of" matches pages whose title contains "index of", a common indicator of exposed directory listings.' },
+        { id: 'recon-7-q2', question: 'Why should you use a VPN or Tor when performing Google dorking?', options: ['Google blocks all searches without VPN', 'To avoid profiling and detection', 'It speeds up searches', 'It is required by law'], correctIndex: 1, explanation: 'Google tracks search queries. Using a VPN or Tor prevents your searches from being linked to your identity.' },
+      ] }),
 
     l('recon-8', 'Automating Recon with Scripts',
       `Manual recon is educational. Automated recon is practical. Build your own recon pipeline.
@@ -444,7 +462,10 @@ recon/passive/2024-01-15_target_subdomains.txt
 
 > **Why this matters for hacking:** Automated recon scripts save hours of manual work and ensure consistency across engagements. A single script can run WHOIS, DNS enumeration, subdomain discovery, technology detection, and port scanning in parallel. The \`xargs -P50\` command checks 50 subdomains simultaneously. The parallel execution pattern (\`& wait\`) runs independent tools concurrently, cutting total scan time from hours to minutes. The standardized output structure makes findings easy to review and share.
 
-**Mini-challenge:** Create and run a minimal recon script: \`echo -e '#!/bin/bash\\nTARGET=\\$1\\nmkdir -p recon/\\$TARGET\\ndig \\$TARGET ANY +short > recon/\\$TARGET/dns.txt\\ncurl -sI https://\\$TARGET > recon/\\$TARGET/headers.txt\\necho "Done — check recon/\\$TARGET/"' > /tmp/recon.sh && chmod +x /tmp/recon.sh && /tmp/recon.sh example.com && cat /tmp/recon-demo/recon/example.com/dns.txt 2>/dev/null || echo "Run with a valid domain"\`. This is the exact pattern used in real recon pipelines.`),
+**Mini-challenge:** Create and run a minimal recon script: \`echo -e '#!/bin/bash\\nTARGET=\\$1\\nmkdir -p recon/\\$TARGET\\ndig \\$TARGET ANY +short > recon/\\$TARGET/dns.txt\\ncurl -sI https://\\$TARGET > recon/\\$TARGET/headers.txt\\necho "Done — check recon/\\$TARGET/"' > /tmp/recon.sh && chmod +x /tmp/recon.sh && /tmp/recon.sh example.com && cat /tmp/recon-demo/recon/example.com/dns.txt 2>/dev/null || echo "Run with a valid domain"\`. This is the exact pattern used in real recon pipelines.`, { hasQuiz: true, quiz: [
+        { id: 'recon-8-q1', question: 'What does the xargs -P50 command do in a recon script?', options: ['Runs commands 50 times', 'Checks 50 subdomains simultaneously in parallel', 'Saves output to 50 files', 'Uses 50 different wordlists'], correctIndex: 1, explanation: 'The -P50 flag runs up to 50 processes in parallel, checking multiple subdomains at once for speed.' },
+        { id: 'recon-8-q2', question: 'Which tool takes screenshots of discovered web servers for visual recon?', options: ['nmap', 'dig', 'eyewitness', 'whois'], correctIndex: 2, explanation: 'Eyewitness (and gowitness) automate screenshot capture of discovered web servers for visual review.' },
+      ] }),
 ];
 
 export const COURSE: Course = {

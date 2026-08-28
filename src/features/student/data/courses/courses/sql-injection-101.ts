@@ -43,7 +43,11 @@ sqlite3 test.db "INSERT INTO users VALUES (1, 'admin');"
 
 > **Why this matters for hacking:** SQL injection has been in the OWASP Top 10 for over two decades. The root cause is simple: user input is concatenated directly into SQL queries. Understanding SQL basics is step one, every web application that touches a database is a potential target. In bug bounty programs, SQLi findings regularly pay $1,000-$10,000+.
 
-**Mini-challenge:** Create an in-memory SQLite database and practice the SELECT/INSERT queries above. Run \`sqlite3 :memory: "CREATE TABLE users (id INT, name TEXT); INSERT INTO users VALUES (1, 'admin'); SELECT * FROM users;"\` to see how a database works from the command line.`),
+**Mini-challenge:** Create an in-memory SQLite database and practice the SELECT/INSERT queries above. Run \`sqlite3 :memory: "CREATE TABLE users (id INT, name TEXT); INSERT INTO users VALUES (1, 'admin'); SELECT * FROM users;"\` to see how a database works from the command line.`,
+      { hasQuiz: true, quiz: [
+        { id: 'sql-1-q1', question: 'What does the following query return: SELECT username, email FROM users WHERE id = 1;', options: ['All rows of the users table', 'Only the username and email columns of the row with id 1', 'Only the id column', 'The whole database'], correctIndex: 1, explanation: 'This SELECT retrieves just the username and email columns, filtered to the row where id equals 1.' },
+        { id: 'sql-1-q2', question: 'What is the root cause of SQL injection?', options: ['Using stored procedures', 'User input is concatenated directly into SQL queries without sanitization', 'Databases are too fast', 'The SELECT keyword is case sensitive'], correctIndex: 1, explanation: 'SQL injection happens when unsanitized user input is concatenated directly into SQL queries, letting attackers alter the query structure.' },
+      ] }),
 
     l('sql-2', 'SELECT & WHERE',
       `The \`SELECT\` statement retrieves data. The \`WHERE\` clause filters it.
@@ -86,7 +90,11 @@ query = f"SELECT * FROM users WHERE username = '{username}' AND password = '{pas
 
 > **Why this matters for hacking:** The authentication bypass pattern is the classic SQLi attack. By injecting \`OR '1'='1\` or \`' OR 1=1 --\`, you turn a login check that should return zero rows into one that returns all users. The query goes from \`WHERE username='hacker' AND password='x'\` to \`WHERE username='' OR 1=1 --' AND password='x'\`, and \`1=1\` is always true. This also works on API tokens, password reset forms, and any other authentication mechanism that queries a database.
 
-**Mini-challenge:** Practice the injection visually: write out \`SELECT * FROM users WHERE username = '' OR 1=1 --' AND password = 'x'\` and identify which parts are original SQL and which are injected. The \`--\` comments out the password check entirely.`),
+**Mini-challenge:** Practice the injection visually: write out \`SELECT * FROM users WHERE username = '' OR 1=1 --' AND password = 'x'\` and identify which parts are original SQL and which are injected. The \`--\` comments out the password check entirely.`,
+      { hasQuiz: true, quiz: [
+        { id: 'sql-2-q1', question: 'What does the WHERE clause do in a SELECT query?', options: ['Orders the results', 'Filters which rows are returned', 'Joins two tables', 'Limits the columns returned'], correctIndex: 1, explanation: 'The WHERE clause filters the rows returned by the query based on the given condition.' },
+        { id: 'sql-2-q2', question: 'In the payload " OR 1=1 --, what does the -- do?', options: ['Adds a comment that makes the rest of the SQL query ignored', 'Encodes the payload', 'Converts the string to a number', 'Closes the connection'], correctIndex: 0, explanation: 'The double dash (--) is a SQL comment, so everything after it including the password check is ignored.' },
+      ] }),
 
     l('sql-3', 'SQL Injection Discovery',
       `Finding SQL injection points is often as simple as typing a single quote (\`'\`).
@@ -132,7 +140,11 @@ www.site.com/page?id=1' AND '1'='2
 
 Different responses (one works, one doesn't) confirm SQL injection exists.
 
-**Mini-challenge:** Run \`echo "' OR '1'='1" | xxd\` to see how a single quote payload looks in hex. Then try \`curl -v "http://testphp.vulnweb.com/artists.php?artist=1'" 2>&1 | grep -i error\` on a vulnerable test site to see error-based detection in action.`),
+**Mini-challenge:** Run \`echo "' OR '1'='1" | xxd\` to see how a single quote payload looks in hex. Then try \`curl -v "http://testphp.vulnweb.com/artists.php?artist=1'" 2>&1 | grep -i error\` on a vulnerable test site to see error-based detection in action.`,
+      { hasQuiz: true, quiz: [
+        { id: 'sql-3-q1', question: 'What is the simplest first test for finding a SQL injection point?', options: ['Entering a single quote (\') into a form field', 'Entering a very long password', 'Using uppercase SQL keywords', 'Refreshing the page'], correctIndex: 0, explanation: 'Typing a lone single quote breaks the SQL string; a syntax error in the response reveals the injection point.' },
+        { id: 'sql-3-q2', question: 'When errors are hidden, how do you confirm blind SQL injection?', options: ['Use boolean-based tests comparing responses to true and false conditions', 'Try longer passwords', 'Disable JavaScript', 'Use a slower browser'], correctIndex: 0, explanation: 'Blind detection compares responses like id=1\' AND \'1\'=\'1 versus id=1\' AND \'1\'=\'2, where a differing response reveals the injection.' },
+      ] }),
 
     l('sql-4', 'Bypassing Authentication',
       `The classic SQL injection attack: bypassing login.
@@ -184,7 +196,11 @@ The \`--\` comments out the rest of the query. \`1=1\` is always true. You're lo
 
 Always test with different comment styles when one doesn't work.
 
-**Mini-challenge:** Run \`sqlite3 :memory: "CREATE TABLE secrets (flag TEXT); INSERT INTO secrets VALUES ('FLAG{injection_success}'); SELECT 1, sqlite_version(), 3 UNION SELECT 1, flag, 3 FROM secrets;"\` to simulate a UNION-based extraction. This shows exactly how an attacker would enumerate version info and then dump data.`),
+**Mini-challenge:** Run \`sqlite3 :memory: "CREATE TABLE secrets (flag TEXT); INSERT INTO secrets VALUES ('FLAG{injection_success}'); SELECT 1, sqlite_version(), 3 UNION SELECT 1, flag, 3 FROM secrets;"\` to simulate a UNION-based extraction. This shows exactly how an attacker would enumerate version info and then dump data.`,
+      { hasQuiz: true, quiz: [
+        { id: 'sql-4-q1', question: 'Given the query WHERE username = \'admin\' OR \'1\'=\'1\' AND password = \'whatever\', why does login succeed?', options: ['Because admin is a valid user', 'Because OR \'1\'=\'1\' is always true, so the query returns the first user', 'Because the password is empty', 'Because the AND operator is disabled'], correctIndex: 1, explanation: 'The injected OR \'1\'=\'1\' is always true, so the WHERE clause matches rows regardless of the password, returning the first user.' },
+        { id: 'sql-4-q2', question: 'Which comment syntax is MySQL-specific?', options: ['--', '#', '/* */', '//'], correctIndex: 1, explanation: 'The # character is a MySQL-specific comment, while -- works in MySQL, PostgreSQL, and SQLite.' },
+      ] }),
 
     l('sql-5', 'Extracting Data with UNION',
       `Once you've found a SQL injection, the \`UNION\` operator lets you extract data from other tables.
@@ -252,7 +268,11 @@ No error = that many columns.
 
 **Mini-challenge:** Simulate the column-count probe: \`sqlite3 :memory: "SELECT 1,2 UNION SELECT 1,2,3;"\` (note error — wrong column count). Then \`sqlite3 :memory: "SELECT 1,2 UNION SELECT 1,2;"\` (no error — 2 columns). This is the exact probing technique used against web applications.
 
-Always extract the schema first so you know the table and column names.`),
+Always extract the schema first so you know the table and column names.`,
+      { hasQuiz: true, quiz: [
+        { id: 'sql-5-q1', question: 'What requirement must both SELECT statements of a UNION satisfy?', options: ['The same number of columns', 'The same table name', 'The same number of rows', 'Identical column names'], correctIndex: 0, explanation: 'UNION combines results only when both SELECT statements return the same number of columns.' },
+        { id: 'sql-5-q2', question: 'How do you find the number of columns in a UNION-based injection?', options: ['Try progressively as \' ORDER BY 1 --, ORDER BY 2, etc., until an error appears', 'Use the LIMIT keyword', 'Count the tables', 'Guess randomly'], correctIndex: 0, explanation: 'Incrementing the ORDER BY number until the query errors reveals the column count, since the last successful number was it.' },
+      ] }),
 
     l('sql-6', 'Prevention & Mitigation',
       `The only real defense against SQL injection is **parameterized queries** (also called prepared statements).
@@ -336,7 +356,11 @@ curl "http://target.com/item?id=1'; WAITFOR DELAY '0:0:5' -- "
 
 > **Why this matters for hacking:** Blind SQLi is the most common real-world scenario because modern applications rarely expose database errors. Boolean-based blind requires many requests (one bit of data per request), so automating it is essential. Time-based blind is slower but works even when the application returns identical HTTP responses regardless of true/false. The \`SLEEP(5)\` function pauses the database for 5 seconds, if the response takes 5+ seconds, you know the condition was true. Database-specific sleep functions: MySQL uses \`SLEEP(n)\`, PostgreSQL uses \`pg_sleep(n)\`, SQL Server uses \`WAITFOR DELAY '0:0:n'\`.
 
-**Mini-challenge:** Run \`curl -v -o /dev/null -s -w "%{time_total}\\n" "https://httpbin.org/delay/3"\` to measure a 3-second delayed response. Then modify to \`delay/1\` and compare timing. Understanding response time measurement is essential for time-based blind injection testing.`),
+**Mini-challenge:** Run \`curl -v -o /dev/null -s -w "%{time_total}\\n" "https://httpbin.org/delay/3"\` to measure a 3-second delayed response. Then modify to \`delay/1\` and compare timing. Understanding response time measurement is essential for time-based blind injection testing.`,
+      { hasQuiz: true, quiz: [
+        { id: 'sql-7-q1', question: 'What distinguishes blind SQL injection from classic SQL injection?', options: ['The application does not show query results or database errors directly', 'It only works on MySQL', 'It requires root privileges', 'It is faster'], correctIndex: 0, explanation: 'Blind SQLi must infer answers through true/false responses or time delays because errors and data are hidden.' },
+        { id: 'sql-7-q2', question: 'Which function pauses a PostgreSQL database for 5 seconds?', options: ['SLEEP(5)', 'pg_sleep(5)', 'WAITFOR DELAY \'0:0:5\'', 'DELAY(5)'], correctIndex: 1, explanation: 'PostgreSQL uses pg_sleep(n), while MySQL uses SLEEP(n) and SQL Server uses WAITFOR DELAY.' },
+      ] }),
 
     l('sql-8', 'NoSQL Injection',
       `Modern apps use MongoDB and other NoSQL databases. They have their own injection patterns.
@@ -362,7 +386,11 @@ curl -X POST -H "Content-Type: application/json" \
 
 **Mini-challenge:** Install \`mongosh\` or use MongoDB's free cloud sandbox. Run \`db.users.find({username: {$ne: ""}})\` to see how the \`$ne\` operator matches all documents. Then compare with a direct string match: \`db.users.find({username: "admin"})\`. This demonstrates how JSON operators change query behavior.
 
-Prevention: validate input types strictly. Never pass user input directly into MongoDB queries.`),
+Prevention: validate input types strictly. Never pass user input directly into MongoDB queries.`,
+      { hasQuiz: true, quiz: [
+        { id: 'sql-8-q1', question: 'Why does the payload {"username": {"$ne": ""}} match all users in MongoDB?', options: ['Because $ne (not equal) matches every document whose username is not empty', 'Because it deletes the collection', 'Because $ne stands for new entry', 'Because it sorts by username'], correctIndex: 0, explanation: 'The $ne (not equal) operator matches any document where the field does not equal the given value, so \'$ne\': "" matches all users.' },
+        { id: 'sql-8-q2', question: 'Which MongoDB operator allows arbitrary JavaScript execution?', options: ['$ne', '$gt', '$where', '$regex'], correctIndex: 2, explanation: 'The $where operator evaluates JavaScript expressions, making it the most dangerous query operator if user input is injected.' },
+      ] }),
 
     l('sql-9', 'Second-Order SQL Injection',
       `Second-order SQLi stores the payload, then triggers it later.
@@ -385,7 +413,11 @@ Prevention: validate input types strictly. Never pass user input directly into M
 - Automated scanners rarely maintain state across requests
 - Registration code may escape differently than profile code
 
-**Prevention:** Parameterize ALL queries — even those using data from the database.`),
+**Prevention:** Parameterize ALL queries — even those using data from the database.`,
+      { hasQuiz: true, quiz: [
+        { id: 'sql-9-q1', question: 'How does a second-order SQL injection work?', options: ['The payload is stored in the database first, then triggered later when the data is reused in another query', 'It sends two payloads at once', 'It only works with XML', 'It exploits the second login attempt'], correctIndex: 0, explanation: 'Second-order SQLi stores a payload (e.g. a malicious username at registration) and triggers it later when a different code path reuses that data in a query.' },
+        { id: 'sql-9-q2', question: 'Why do automated scanners often miss second-order SQL injection?', options: ['They are too slow', 'They rarely maintain state across requests, so the stored payload is never triggered', 'They only test GET requests', 'They use encryption'], correctIndex: 1, explanation: 'Automated scanners usually fail to maintain state across requests, so they never complete the store-then-trigger chain that second-order attacks require.' },
+      ] }),
 
     l('sql-10', 'SQL Injection Automation with sqlmap',
       `Sqlmap automates SQL injection detection and exploitation.

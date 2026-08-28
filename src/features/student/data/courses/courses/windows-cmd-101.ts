@@ -31,7 +31,12 @@ echo Hello, Hacker!
 
 The \`echo\` command prints text back to you, it's the simplest way to verify that the command line is working. This is the Windows equivalent of the Linux terminal's first lesson.
 
-**PowerShell** has a blue background and uses different commands (\`Get-ChildItem\` instead of \`dir\`). PowerShell is more powerful because it works with **objects** rather than plain text, making it easier to filter, sort, and process data programmatically. For this course, we'll focus on CMD since it's universal on Windows and provides the foundational skills you need before moving to PowerShell.`),
+**PowerShell** has a blue background and uses different commands (\`Get-ChildItem\` instead of \`dir\`). PowerShell is more powerful because it works with **objects** rather than plain text, making it easier to filter, sort, and process data programmatically. For this course, we'll focus on CMD since it's universal on Windows and provides the foundational skills you need before moving to PowerShell.`,
+      { hasQuiz: true, quiz: [
+        { id: 'wc-1-q1', question: 'What does PowerShell use instead of plain text output?', options: ['Objects with properties and methods', 'Raw binary data', 'JSON strings', 'XML documents'], correctIndex: 0, explanation: 'PowerShell works with structured objects, allowing you to filter, sort, and manipulate data programmatically.' },
+        { id: 'wc-1-q2', question: 'Which symbol indicates the CMD shell is waiting for your command?', options: ['$', '#', '>', ':'], correctIndex: 2, explanation: 'The `>` prompt means CMD is ready for input. On Linux the equivalent is `$`.' },
+        { id: 'wc-1-q3', question: 'What is the main difference between CMD and PowerShell?', options: ['PowerShell works with objects, CMD works with plain text', 'CMD is more powerful than PowerShell', 'PowerShell uses backslashes, CMD uses forward slashes', 'CMD is newer than PowerShell'], correctIndex: 0, explanation: 'CMD processes text output; PowerShell processes objects with properties, making complex data manipulation much easier.' },
+      ] }),
 
     l('wc-2', 'Navigation & File Management',
       `Navigating Windows from the command line is similar to Linux but uses different commands and path conventions. Before you can manage files, you need to understand the concept of a **working directory**, the folder you're currently "in" when you type a command. Every command you run operates relative to this directory unless you specify a full path.
@@ -63,7 +68,12 @@ C:> D:          Switch to D: drive
 C:> cd /D E:\\projects    Switch to a different drive and folder
 \`\`\`
 
-The \`/D\` flag with \`cd\` lets you switch both the drive and directory in one command. Without it, \`cd E:\\projects\` would change the directory on the current drive instead.`),
+The \`/D\` flag with \`cd\` lets you switch both the drive and directory in one command. Without it, \`cd E:\\projects\` would change the directory on the current drive instead.`,
+      { hasQuiz: true, quiz: [
+        { id: 'wc-2-q1', question: 'What does `cd ..` do in CMD?', options: ['Goes up one directory level', 'Changes to the root drive', 'Switches to the Documents folder', 'Deletes the current directory'], correctIndex: 0, explanation: '`cd ..` moves to the parent directory, just like on Linux.' },
+        { id: 'wc-2-q2', question: 'How do you switch to the D: drive from C:?', options: ['Type `D:`', 'Type `cd D:`', 'Type `switch D:`', 'Type `goto D:`'], correctIndex: 0, explanation: 'Typing the drive letter followed by a colon (e.g., `D:`) switches the current drive.' },
+        { id: 'wc-2-q3', question: 'What flag removes a folder and all its contents in CMD?', options: ['/S', '/F', '/R', '/Q'], correctIndex: 0, explanation: '`rmdir /S` removes a directory and everything inside it. The `/Q` flag suppresses confirmation prompts.' },
+      ] }),
 
     l('wc-3', 'System Information',
       `Windows provides powerful commands to inspect system configuration. System reconnaissance: gathering information about a target system, is one of the first steps in both penetration testing and incident response. You need to know what you're working with before you can find vulnerabilities or investigate an breach.
@@ -100,7 +110,12 @@ hostname            The computer's network name
 
 These identity commands are critical. \`whoami\` shows your current user and privileges, this tells you what you can access. \`net user\` reveals all user accounts on the system, including hidden or administrative accounts that might indicate compromise. \`hostname\` identifies the machine on the network, which is essential when you're working across multiple systems.
 
-These commands help you understand the Windows system you're working on, essential for both defense and offense.`),
+These commands help you understand the Windows system you're working on, essential for both defense and offense.`,
+      { hasQuiz: true, quiz: [
+        { id: 'wc-3-q1', question: 'Which command shows detailed system information including installed hotfixes?', options: ['systeminfo', 'tasklist', 'whoami', 'hostname'], correctIndex: 0, explanation: '`systeminfo` displays OS version, installed hotfixes, BIOS, memory, and network adapters.' },
+        { id: 'wc-3-q2', question: 'What does `taskkill /PID 1234` do?', options: ['Stops process with ID 1234', 'Lists all processes with PID 1234', 'Shows services for PID 1234', 'Starts a new process'], correctIndex: 0, explanation: '`/PID` targets a process by its unique ID number and terminates it.' },
+        { id: 'wc-3-q3', question: 'What does `whoami` reveal?', options: ['Your current username and privilege level', 'All user accounts on the system', 'System information and OS version', 'Network adapter configuration'], correctIndex: 0, explanation: '`whoami` shows the current user context, including whether you have admin/root privileges.' },
+      ] }),
 
     l('wc-4', 'Network Commands',
       `Windows has built-in network commands for troubleshooting and reconnaissance. Network reconnaissance is a critical skill in cybersecurity, it's how you discover what's on a network, how it's connected, and where potential vulnerabilities might exist.
@@ -143,7 +158,12 @@ netstat -an | findstr ":80"       Show connections on port 80
 
 The \`netstat\` command is one of the most important networking tools. It shows all active network connections and which ports are listening for incoming connections. Open ports indicate running services, and each service is a potential entry point. The \`-a\` flag shows all connections and listening ports, while \`-n\` displays addresses and port numbers in numeric format (faster and clearer than DNS names).
 
-The \`| findstr\` command is CMD's equivalent of \`grep\`. It filters text output, letting you search for specific patterns in command results, an essential skill when dealing with large amounts of data.`),
+The \`| findstr\` command is CMD's equivalent of \`grep\`. It filters text output, letting you search for specific patterns in command results, an essential skill when dealing with large amounts of data.`,
+      { hasQuiz: true, quiz: [
+        { id: 'wc-4-q1', question: 'What does `ipconfig /all` show that `ipconfig` alone does not?', options: ['MAC address, DNS servers, and DHCP information', 'IP address and subnet mask only', 'Network speed and bandwidth', 'Active connections and listening ports'], correctIndex: 0, explanation: '`/all` adds detailed info: MAC address, DNS servers, DHCP server, and lease information.' },
+        { id: 'wc-4-q2', question: 'What is CMD\'s equivalent of Linux\'s `grep`?', options: ['findstr', 'find', 'search', 'filter'], correctIndex: 0, explanation: '`findstr` searches for text patterns in command output, similar to `grep` on Linux.' },
+        { id: 'wc-4-q3', question: 'What does `tracert` show?', options: ['Every router hop packets pass through to reach a destination', 'Active network connections on your machine', 'IP configuration details', 'DNS cache contents'], correctIndex: 0, explanation: '`tracert` traces the path packets take, showing each router (hop) between you and the destination.' },
+      ] }),
 
     l('wc-5', 'Scripting Basics',
       `Batch files (.bat) let you chain multiple CMD commands into a reusable script. Automation is a core skill in cybersecurity, whether you're running a series of reconnaissance commands, deploying a tool across multiple machines, or creating a quick incident response checklist, scripting saves time and ensures consistency.
@@ -298,7 +318,12 @@ Get-Process | Where-Object WorkingSet -gt 50MB | Export-Csv big-processes.csv
 
 # 4. Read the CSV back
 Import-Csv big-processes.csv
-\`\`\``),
+\`\`\``,
+      { hasQuiz: true, quiz: [
+        { id: 'wc-6-q1', question: 'What naming convention do PowerShell cmdlets follow?', options: ['Verb-Noun (e.g., Get-Process)', 'Noun-Verb (e.g., Process-Get)', 'Command-Object', 'Action-Target'], correctIndex: 0, explanation: 'PowerShell cmdlets always follow the Verb-Noun pattern, making command names predictable and consistent.' },
+        { id: 'wc-6-q2', question: 'What does `Enter-PSSession` do?', options: ['Opens an interactive remote PowerShell session', 'Lists all running processes', 'Exports data to a CSV file', 'Tests network connectivity'], correctIndex: 0, explanation: '`Enter-PSSession` connects you to a remote machine\'s PowerShell, giving you an interactive command prompt there.' },
+        { id: 'wc-6-q3', question: 'Which PowerShell cmdlet filters objects based on a condition?', options: ['Where-Object', 'findstr', 'Select-String', 'Filter-Output'], correctIndex: 0, explanation: '`Where-Object` filters pipeline objects by a condition, similar to SQL\'s WHERE clause.' },
+      ] }),
 
     l('wc-7', 'Windows Service & Process Management',
       `Managing services and processes is critical for understanding what's running on a Windows system. Every program that executes on Windows is a process, and many of those processes are Windows services, background programs that start with the system and run without user interaction.
@@ -415,7 +440,12 @@ sc query wuauserv | findstr STATE
 **Mini-challenge:** On Windows: \`tasklist /FI "MEMUSAGE gt 50000"\` finds processes using >50MB RAM. \`sc query state= running\` lists running services. \`schtasks /QUERY /FO LIST /V\` shows all scheduled tasks with detailed information. Practice filtering: \`schtasks /QUERY /FO TABLE | findstr "Daily"\` finds daily tasks.
 
             schtasks /QUERY /FO TABLE | findstr "Daily"
-\`\`\``),
+\`\`\``,
+      { hasQuiz: true, quiz: [
+        { id: 'wc-7-q1', question: 'What does `taskkill /T` do?', options: ['Kills a process and all its child processes (process tree)', 'Force-kills a process immediately', 'Lists all running tasks', 'Creates a scheduled task'], correctIndex: 0, explanation: '`/T` terminates the entire process tree — the target process and any processes it spawned.' },
+        { id: 'wc-7-q2', question: 'What does `sc query state= running` show?', options: ['Only currently running services', 'All services regardless of state', 'Only stopped services', 'Process details for each service'], correctIndex: 0, explanation: '`state= running` filters the service query to show only services that are currently active.' },
+        { id: 'wc-7-q3', question: 'What is a common persistence technique using Windows services?', options: ['Registering a malicious service to auto-start on boot', 'Installing Windows updates', 'Running disk cleanup', 'Changing user passwords'], correctIndex: 0, explanation: 'Attackers create or modify services to run automatically at startup, maintaining access across reboots.' },
+      ] }),
 
     l('wc-8', 'Registry & System Configuration',
       `The Windows Registry is a hierarchical database that stores configuration settings for the operating system, hardware, installed software, and user preferences. Understanding it is essential for both system configuration and digital forensics.
@@ -587,7 +617,12 @@ wmic cpu get Name,NumberOfCores
 # 4. Check environment
 echo %USERPROFILE%
 echo %TEMP%
-\`\`\``),
+\`\`\``,
+      { hasQuiz: true, quiz: [
+        { id: 'wc-8-q1', question: 'Which registry hive stores system-wide settings?', options: ['HKEY_LOCAL_MACHINE (HKLM)', 'HKEY_CURRENT_USER (HKCU)', 'HKEY_CLASSES_ROOT (HKCR)', 'HKEY_CURRENT_CONFIG (HKCC)'], correctIndex: 0, explanation: 'HKLM contains settings that apply to the entire system, including all users.' },
+        { id: 'wc-8-q2', question: 'What do the `Run` keys in the Windows registry control?', options: ['Programs that start automatically at login', 'File type associations', 'User passwords', 'Network configuration'], correctIndex: 0, explanation: 'The `Run` and `RunOnce` keys launch programs automatically when a user logs in — a common malware persistence vector.' },
+        { id: 'wc-8-q3', question: 'Which environment variable points to the user\'s home directory?', options: ['%USERPROFILE%', '%WINDIR%', '%TEMP%', '%APPDATA%'], correctIndex: 0, explanation: '`%USERPROFILE%` resolves to `C:\\Users\\<username>`, the user\'s home directory.' },
+      ] }),
 ];
 
 export const COURSE: Course = {

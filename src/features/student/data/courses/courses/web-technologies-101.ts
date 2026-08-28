@@ -41,7 +41,10 @@ curl -v https://example.com
 
 **Mini-challenge:** Run \`curl -v https://example.com 2>&1\` and observe every stage: DNS resolution (\`Trying 93.184.216.34\`), TCP connection (\`Connected to\`), TLS handshake (\`SSL connection using\`), HTTP request, and response. Count how many steps happen before you see any content — this is the web request pipeline that every attack must navigate.
 
-The \`-v\` (verbose) flag shows the full request and response headers, not just the body. This is one of the simplest ways to see the HTTP layer in action and is a habit you should build early.`),
+The \`-v\` (verbose) flag shows the full request and response headers, not just the body. This is one of the simplest ways to see the HTTP layer in action and is a habit you should build early.`, { hasQuiz: true, quiz: [
+        { id: 'web-1-q1', question: 'What is the correct sequence when a browser visits a website?', options: ['HTTP, DNS, TCP, TLS', 'DNS, TCP, TLS, HTTP', 'TLS, TCP, DNS, HTTP', 'TCP, DNS, HTTP, TLS'], correctIndex: 1, explanation: 'The browser first resolves DNS to get an IP, then establishes TCP, performs TLS handshake, then sends the HTTP request.' },
+        { id: 'web-1-q2', question: 'Which attack targets the DNS resolution step of a web request?', options: ['SQL injection', 'DNS poisoning', 'XSS', 'Buffer overflow'], correctIndex: 1, explanation: 'DNS poisoning redirects users to malicious servers by corrupting DNS cache entries.' },
+      ] }),
 
     l('web-2', 'HTTP Deep Dive',
       `HTTP is a text-based protocol. You can read and write HTTP by hand.
@@ -85,7 +88,10 @@ curl -I https://example.com
 **Mini-challenge:** Run \`curl -v -X POST https://httpbin.org/post -H "Content-Type: application/json" -d '{"test":"value"}' 2>&1\` and examine the full request/response. Note how the \`Content-Type\` header tells the server to interpret the body as JSON. Try without headers to see the difference — this teaches you how header manipulation affects server behavior.
 
             curl -v https://example.com
-\`\`\``),
+\`\`\``, { hasQuiz: true, quiz: [
+        { id: 'web-2-q1', question: 'What does the blank line in an HTTP request separate?', options: ['Method from path', 'Headers from body', 'Request from response', 'Client from server'], correctIndex: 1, explanation: 'The blank line separates the HTTP headers from the message body in both requests and responses.' },
+        { id: 'web-2-q2', question: 'Which header carries session data with each HTTP request?', options: ['Host', 'User-Agent', 'Cookie', 'Content-Type'], correctIndex: 2, explanation: 'The Cookie header sends session tokens and other stored data with every request to the server.' },
+      ] }),
 
     l('web-3', 'HTML & Forms',
       `HTML forms are how users send data to servers. Every login form, search box, and contact form is an HTML form.
@@ -124,7 +130,10 @@ username=admin&password=secret123
 
 **Mini-challenge:** Open any website with a form, right-click → Inspect, and look for hidden input fields. Try modifying a search query parameter using DevTools before submitting. Understanding how form data is constructed client-side is the prerequisite for intercepting and modifying it with Burp Suite.
 
-These can be modified by the client before submission, never trust hidden fields on the server.`),
+These can be modified by the client before submission, never trust hidden fields on the server.`, { hasQuiz: true, quiz: [
+        { id: 'web-3-q1', question: 'Why are hidden HTML form fields a security concern?', options: ['They execute JavaScript', 'They can be modified by the client before submission', 'They store passwords in plaintext', 'They bypass HTTPS encryption'], correctIndex: 1, explanation: 'Hidden fields are invisible to users but sent with every submission and can be trivially modified using browser DevTools or Burp Suite.' },
+        { id: 'web-3-q2', question: 'What content type does an HTML form with file upload use?', options: ['application/json', 'application/x-www-form-urlencoded', 'multipart/form-data', 'text/plain'], correctIndex: 2, explanation: 'File uploads require multipart/form-data encoding to handle binary file data alongside text fields.' },
+      ] }),
 
     l('web-4', 'Sessions & Authentication',
       `HTTP is **stateless**, each request is independent. Servers use **sessions** to remember who you are.
@@ -156,7 +165,10 @@ Set-Cookie: session=abc123; HttpOnly; Secure; SameSite=Lax
 **Mini-challenge:** Run \`curl -sI https://github.com 2>/dev/null | grep -i "set-cookie" | head -3\`. Examine the cookie flags: are they HttpOnly? Secure? SameSite? This is exactly how you'd assess session security during a penetration test.\`
 
             curl -I https://example.com | grep -i set-cookie
-\`\`\``),
+\`\`\``, { hasQuiz: true, quiz: [
+        { id: 'web-4-q1', question: 'Which cookie flag prevents JavaScript from reading the session token?', options: ['Secure', 'SameSite', 'HttpOnly', 'Path'], correctIndex: 2, explanation: 'HttpOnly prevents JavaScript access to the cookie, protecting session tokens from being stolen via XSS.' },
+        { id: 'web-4-q2', question: 'Why is HTTP considered a stateless protocol?', options: ['It does not support encryption', 'Each request is independent with no built-in memory', 'It cannot handle forms', 'It does not support cookies'], correctIndex: 1, explanation: 'HTTP has no built-in memory between requests. Servers use sessions and cookies to maintain state across requests.' },
+      ] }),
 
     l('web-5', 'REST APIs',
       `**REST APIs** are how web applications talk to each other. Instead of returning HTML, they return data (usually JSON).
@@ -285,7 +297,10 @@ fetch('https://example.com/api/user', {credentials: 'include'})
 
 **Mini-challenge:** Test CORS on any public API: \`curl -H "Origin: https://evil.com" -sI https://api.github.com 2>/dev/null | grep -i "access-control"\`. Then test with \`-H "Origin: null"\` — some servers reflect the null origin, which is exploitable from sandboxed iframes. This is the exact technique used to discover CORS vulnerabilities.
 
-- Don't rely on CORS alone for security, use proper auth`),
+- Don't rely on CORS alone for security, use proper auth`, { hasQuiz: true, quiz: [
+        { id: 'web-6-q1', question: 'What makes a CORS configuration dangerous when combined with Access-Control-Allow-Credentials: true?', options: ['Using HTTPS', 'Reflecting the Origin header back in Access-Control-Allow-Origin', 'Setting the HttpOnly flag', 'Using JSON format'], correctIndex: 1, explanation: 'Reflecting any Origin with credentials allowed means any website can make authenticated cross-origin requests and read the response.' },
+        { id: 'web-6-q2', question: 'What is a CORS preflight request?', options: ['A GET request for the main page', 'An OPTIONS request to check allowed methods and headers', 'A POST request with credentials', 'A DELETE request to remove resources'], correctIndex: 1, explanation: 'The browser sends an OPTIONS request before non-simple requests to check if the actual request is allowed by the server.' },
+      ] }),
 
     l('web-7', 'Browser Storage & Client-Side Security',
       `Modern browsers provide multiple storage mechanisms. Each has different security properties.
@@ -366,7 +381,10 @@ curl -s -I https://example.com | grep -i "HttpOnly|Secure|SameSite"
 
 **Mini-challenge:** Open your browser's DevTools (F12) → Console and run: \`console.log('localStorage:', JSON.stringify(localStorage)); console.log('sessionStorage:', JSON.stringify(sessionStorage)); console.log('Cookies:', document.cookie);\` on any site. This reveals what the site stores client-side — you might find API tokens, user data, or session identifiers exposed in JavaScript-accessible storage.
 
-The rule: tokens in httpOnly cookies (protected from XSS), non-sensitive prefs in localStorage, and never store secrets in client-side storage.`),
+The rule: tokens in httpOnly cookies (protected from XSS), non-sensitive prefs in localStorage, and never store secrets in client-side storage.`, { hasQuiz: true, quiz: [
+        { id: 'web-7-q1', question: 'Which browser storage mechanism is automatically sent with every HTTP request?', options: ['localStorage', 'sessionStorage', 'Cookies', 'IndexedDB'], correctIndex: 2, explanation: 'Cookies are the only storage mechanism that the browser automatically includes in the Cookie header of every request.' },
+        { id: 'web-7-q2', question: 'Why should JWT tokens not be stored in localStorage?', options: ['It has limited storage space', 'Any XSS vulnerability can steal them via JavaScript', 'It is slower than cookies', 'Cookies are more encrypted'], correctIndex: 1, explanation: 'localStorage is fully accessible to JavaScript. A single XSS vulnerability gives attackers direct access to stored tokens.' },
+      ] }),
 
     l('web-8', 'Browser Security Features',
       `Modern browsers have built-in defenses. Understanding them helps you both exploit and defend.
@@ -446,7 +464,10 @@ openssl dgst -sha384 -binary jquery.min.js | openssl base64 -A
 
 **Mini-challenge:** Run \`curl -sI https://securityheaders.com 2>/dev/null | grep -iE "strict-transport|content-security|x-frame|x-content|referrer|permissions"\` to check security headers. Each missing header is a potential finding. Then check \`https://example.com\` and compare — this teaches you to audit security posture from a single curl command.
 
-Understanding browser security is essential for both finding XSS and preventing it. Every missing header is a potential vulnerability.`),
+Understanding browser security is essential for both finding XSS and preventing it. Every missing header is a potential vulnerability.`, { hasQuiz: true, quiz: [
+        { id: 'web-8-q1', question: 'What does a CSP with script-src \'self\' \'unsafe-inline\' allow?', options: ['External scripts only', 'Inline script execution within the page', 'No scripts at all', 'Only scripts over HTTPS'], correctIndex: 1, explanation: 'unsafe-inline allows inline script tags and event handlers, largely defeating the XSS protection CSP is meant to provide.' },
+        { id: 'web-8-q2', question: 'What does the X-Frame-Options: DENY header prevent?', options: ['Cross-site scripting (XSS)', 'Clickjacking via iframing the page', 'CSRF attacks', 'SQL injection'], correctIndex: 1, explanation: 'X-Frame-Options: DENY prevents the page from being embedded in iframes, stopping clickjacking attacks.' },
+      ] }),
 ];
 
 export const COURSE: Course = {
