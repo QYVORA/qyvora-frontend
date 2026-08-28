@@ -40,7 +40,7 @@ const ServiceDetailPage: React.FC<{ svc: ServiceConfig }> = ({ svc }) => {
 
       <PublicSnapLayout>
         {/* ── SECTION 1: Hero ──────────────────────────────────────────── */}
-        <section className="relative w-full min-h-dvh lg:h-dvh snap-section bg-bg overflow-hidden">
+        <section className="relative w-full min-h-dvh snap-section bg-bg overflow-hidden">
           <StudentHeroSection
             title={svc.title.split(' ').slice(0, -1).join(' ')}
             accentWord={svc.accentWord}
@@ -281,7 +281,7 @@ const ServiceDetailPage: React.FC<{ svc: ServiceConfig }> = ({ svc }) => {
         <RelatedContentSection items={otherServices} />
 
         {/* ── SECTION 6: Footer ────────────────────────────────────────── */}
-        <section className="relative w-full min-h-dvh lg:h-dvh snap-section bg-bg overflow-hidden">
+        <section className="w-full bg-bg pt-10 md:pt-0 snap-section">
           <Footer />
         </section>
       </PublicSnapLayout>

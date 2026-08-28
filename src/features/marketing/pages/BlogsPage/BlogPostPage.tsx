@@ -203,7 +203,7 @@ const BlogPostPage: React.FC = () => {
         </section>
       )}
 
-      <section className="relative w-full min-h-dvh lg:h-dvh lg:overflow-hidden">
+      <section className="relative w-full min-h-dvh">
         <LandingFinalCtaSection user={user} />
       </section>
 

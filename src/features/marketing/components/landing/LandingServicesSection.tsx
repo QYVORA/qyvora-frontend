@@ -53,7 +53,7 @@ const LandingServicesSection: React.FC = () => {
   const mobileSlides = [featured, ...supporting];
 
   return (
-    <div className="relative overflow-hidden min-h-dvh lg:h-dvh flex flex-col">
+    <div className="relative overflow-hidden min-h-dvh flex flex-col">
       <div className="relative w-full h-full px-3 md:px-4 lg:px-6 pt-20 md:pt-20 lg:pt-20 pb-6 md:pb-10 lg:pb-16 flex flex-col">
         <div className="w-full flex-1 flex flex-col min-h-0">
           {/* Mobile — service tiers as a swipeable carousel */}

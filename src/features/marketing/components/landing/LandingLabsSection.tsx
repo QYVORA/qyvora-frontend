@@ -61,7 +61,7 @@ const LandingLabsSection: React.FC = () => {
   const shouldReduceMotion = useReducedMotion();
 
   return (
-    <div className="relative bg-bg min-h-dvh lg:h-dvh flex flex-col overflow-x-clip overflow-hidden" data-nav-invert>
+    <div className="relative bg-bg min-h-dvh flex flex-col overflow-x-clip overflow-hidden" data-nav-invert>
       <div className="relative z-10 w-full h-full px-3 md:px-4 lg:px-6 pt-24 md:pt-28 lg:pt-32 pb-6 md:pb-8 lg:pb-10 flex flex-col gap-8 lg:gap-12">
         <h2 className="text-lg md:text-xl lg:text-2xl font-black text-text-primary tracking-tighter leading-none shrink-0">
           {t('landing.labs.heading1')} <span className="text-accent">{t('landing.labs.heading2')}</span>
