@@ -51,7 +51,7 @@ const Profile: React.FC = () => {
       sections.push('activity');
     }
     if (profile.completedRooms.length > 0) sections.push('labs');
-    if (profile.coursesCompleted > 0) sections.push('courses');
+    if (profile.coursesCompleted > 0 || profile.completedCourseIds.length > 0) sections.push('courses');
     sections.push('trophy');
     return sections;
   }, [profile, activityDates]);
