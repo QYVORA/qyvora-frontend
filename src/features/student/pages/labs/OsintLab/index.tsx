@@ -119,6 +119,7 @@ const OsintLab = () => {
                   title={`Step ${index + 1} | ${step.tool}`}
                   narrative={narrative}
                   commandInstruction={step.command}
+                  quiz={step.quiz}
                   isLocked={isLocked}
                   isCompleted={isCompleted}
                   isActive={isActive}

@@ -130,6 +130,7 @@ const SqlInjectionLab = () => {
                   title={`Step ${index + 1}`}
                   narrative={narrative}
                   commandInstruction={step.command}
+                  quiz={step.quiz}
                   isLocked={isLocked}
                   isCompleted={isCompleted}
                   isActive={isActive}

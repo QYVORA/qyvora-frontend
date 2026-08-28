@@ -201,6 +201,7 @@ Execute the final command to complete the exercise.`,
               title="Mission Debrief"
               narrative={`## Exercise Complete\n\nYou successfully cracked the **${activeScenario.hashType}** hash and recovered the plaintext password.\n\n### Key Takeaways\n\n- **${activeScenario.hashType}** hashes are vulnerable to dictionary and rule-based attacks\n- Weak passwords fall quickly to modern cracking tools\n- Password complexity and length are critical for defense\n- Organizations should enforce strong password policies\n\n### What to Remember\n\nPassword cracking is a fundamental skill for penetration testers and security auditors. Understanding the attack helps build better defenses.`}
               reflection={`What did you learn about ${activeScenario.hashType} hash cracking? How would you improve password security in an organization?`}
+              quiz={activeScenario.quiz}
               isLocked={false}
               isCompleted={allDone}
               isActive={false}

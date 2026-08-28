@@ -159,6 +159,7 @@ const KillChainLab = () => {
                       title={`${currentPhase.name} - Command ${cmdIdx + 1}`}
                       narrative={narrative}
                       commandInstruction={cmd.command}
+                      quiz={cmdIdx === 0 ? currentPhase.quiz : undefined}
                       isLocked={isLocked}
                       isCompleted={isCompleted}
                       isActive={!isCompleted}
