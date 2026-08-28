@@ -117,7 +117,7 @@ export const InternalTerminal: React.FC<InternalTerminalProps> = ({ open, onOpen
               <div aria-hidden="true" className="flex justify-center pt-2 pb-1 shrink-0">
                 <span className="w-10 h-1 rounded-full bg-border" />
               </div>
-              <div className="flex-1 min-h-0">{shell}</div>
+              <div className="flex-1 min-h-0 overflow-hidden pl-[max(1rem,env(safe-area-inset-left))]">{shell}</div>
             </RadixDialog.Content>
           </RadixDialog.Portal>
         </RadixDialog.Root>
