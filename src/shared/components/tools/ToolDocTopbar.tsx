@@ -208,7 +208,7 @@ const ToolDocTopbar: React.FC<ToolDocTopbarProps> = ({
               <button
                 type="button"
                 onClick={onInstall}
-                className="btn-primary !px-3.5 !py-1.5 !text-[10px] !rounded-lg shrink-0"
+                className="btn-primary !w-auto !px-3.5 !py-1.5 !text-[10px] !rounded-lg shrink-0"
               >
                 {installLabel}
               </button>
