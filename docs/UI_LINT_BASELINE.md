@@ -11,11 +11,11 @@
 
 ## Totals
 
-- **Files with violations:** 76
-- **Total flagged class tokens:** 372
+- **Files with violations:** 74
+- **Total flagged class tokens:** 362
 - **By rule:**
 
-  - `qyvora-local/no-status-palette`: 344
+  - `qyvora-local/no-status-palette`: 334
   - `qyvora-local/no-arbitrary-color`: 28
 
 ## Exception allowlist (in effect)
@@ -44,7 +44,6 @@ data-layer semantic color maps (`labs.ts`, `bootcampStructure.ts`,
 | 10 | `src/shared/components/profile/AchievementCard.tsx` |
 | 9 | `src/features/student/pages/labs/PrivescLab/index.tsx` |
 | 9 | `src/shared/components/learning/LearningAccordion.tsx` |
-| 9 | `src/shared/components/ScenarioCard.tsx` |
 | 9 | `src/shared/components/walkthrough/WalkthroughStep.tsx` |
 | 8 | `src/features/admin/components/cp-analytics/TransactionLedger.tsx` |
 | 8 | `src/shared/components/leaderboard/PodiumCard.tsx` |
@@ -108,7 +107,6 @@ data-layer semantic color maps (`labs.ts`, `bootcampStructure.ts`,
 | 1 | `src/shared/components/ErrorBoundary.tsx` |
 | 1 | `src/shared/components/HandleSuggestions.tsx` |
 | 1 | `src/shared/components/tools/ToolDocHero.tsx` |
-| 1 | `src/shared/components/ui/Dialog.tsx` |
 | 1 | `src/shared/components/walkthrough/StepParts.tsx` |
 
 ### Full list (rule → file → line → token):
@@ -116,9 +114,9 @@ data-layer semantic color maps (`labs.ts`, `bootcampStructure.ts`,
 #### qyvora-local/no-arbitrary-color
 
 - `src/features/marketing/components/landing/LandingHeroSection.tsx:150` — Arbitrary color value `shadow-[0_0_15px_rgba(0,0,0,0.05)` bypasses the @theme tokens in src/styles/index.css. Use token utilities (text-accent, text-text-primary, bg-danger, etc.) or the documented exception paths.
-- `src/features/marketing/components/landing/LandingLeaderboardSection.tsx:25` — Arbitrary color value `'shadow-[0_0_16px_rgba(250,204,21,0.4)` bypasses the @theme tokens in src/styles/index.css. Use token utilities (text-accent, text-text-primary, bg-danger, etc.) or the documented exception paths.
-- `src/features/marketing/components/landing/LandingLeaderboardSection.tsx:26` — Arbitrary color value `'shadow-[0_0_14px_rgba(209,213,219,0.3)` bypasses the @theme tokens in src/styles/index.css. Use token utilities (text-accent, text-text-primary, bg-danger, etc.) or the documented exception paths.
-- `src/features/marketing/components/landing/LandingLeaderboardSection.tsx:27` — Arbitrary color value `'shadow-[0_0_14px_rgba(217,119,6,0.3)` bypasses the @theme tokens in src/styles/index.css. Use token utilities (text-accent, text-text-primary, bg-danger, etc.) or the documented exception paths.
+- `src/features/marketing/components/landing/LandingLeaderboardSection.tsx:25` — Arbitrary color value `shadow-[0_0_16px_rgba(250,204,21,0.4)` bypasses the @theme tokens in src/styles/index.css. Use token utilities (text-accent, text-text-primary, bg-danger, etc.) or the documented exception paths.
+- `src/features/marketing/components/landing/LandingLeaderboardSection.tsx:26` — Arbitrary color value `shadow-[0_0_14px_rgba(209,213,219,0.3)` bypasses the @theme tokens in src/styles/index.css. Use token utilities (text-accent, text-text-primary, bg-danger, etc.) or the documented exception paths.
+- `src/features/marketing/components/landing/LandingLeaderboardSection.tsx:27` — Arbitrary color value `shadow-[0_0_14px_rgba(217,119,6,0.3)` bypasses the @theme tokens in src/styles/index.css. Use token utilities (text-accent, text-text-primary, bg-danger, etc.) or the documented exception paths.
 - `src/features/marketing/pages/public/SimulationsPage.tsx:33` — Arbitrary color value `bg-[#0c0c0c` bypasses the @theme tokens in src/styles/index.css. Use token utilities (text-accent, text-text-primary, bg-danger, etc.) or the documented exception paths.
 - `src/features/marketing/pages/public/SimulationsPage.tsx:68` — Arbitrary color value `bg-[#1e1e1e` bypasses the @theme tokens in src/styles/index.css. Use token utilities (text-accent, text-text-primary, bg-danger, etc.) or the documented exception paths.
 - `src/features/marketing/pages/public/SimulationsPage.tsx:70` — Arbitrary color value `bg-[#0c0c0c` bypasses the @theme tokens in src/styles/index.css. Use token utilities (text-accent, text-text-primary, bg-danger, etc.) or the documented exception paths.
@@ -133,16 +131,16 @@ data-layer semantic color maps (`labs.ts`, `bootcampStructure.ts`,
 - `src/features/student/components/StudentSkeletons.tsx:16` — Arbitrary color value `bg-[repeating-linear-gradient(90deg,transparent,transparent_39px,rgba(255,255,255,0.05)_39px,rgba(255,255,255,0.05)_40px)` bypasses the @theme tokens in src/styles/index.css. Use token utilities (text-accent, text-text-primary, bg-danger, etc.) or the documented exception paths.
 - `src/features/student/components/StudentSkeletons.tsx:50` — Arbitrary color value `bg-[repeating-linear-gradient(90deg,transparent,transparent_39px,rgba(255,255,255,0.05)_39px,rgba(255,255,255,0.05)_40px)` bypasses the @theme tokens in src/styles/index.css. Use token utilities (text-accent, text-text-primary, bg-danger, etc.) or the documented exception paths.
 - `src/features/student/components/StudentSkeletons.tsx:484` — Arbitrary color value `bg-[repeating-linear-gradient(90deg,transparent,transparent_39px,rgba(255,255,255,0.05)_39px,rgba(255,255,255,0.05)_40px)` bypasses the @theme tokens in src/styles/index.css. Use token utilities (text-accent, text-text-primary, bg-danger, etc.) or the documented exception paths.
-- `src/shared/components/leaderboard/PodiumCard.tsx:15` — Arbitrary color value `'shadow-[0_0_40px_-8px_rgba(250,204,21,0.5)` bypasses the @theme tokens in src/styles/index.css. Use token utilities (text-accent, text-text-primary, bg-danger, etc.) or the documented exception paths.
-- `src/shared/components/leaderboard/PodiumCard.tsx:25` — Arbitrary color value `'shadow-[0_0_36px_-8px_rgba(209,213,219,0.4)` bypasses the @theme tokens in src/styles/index.css. Use token utilities (text-accent, text-text-primary, bg-danger, etc.) or the documented exception paths.
-- `src/shared/components/leaderboard/PodiumCard.tsx:35` — Arbitrary color value `'shadow-[0_0_36px_-8px_rgba(217,119,6,0.4)` bypasses the @theme tokens in src/styles/index.css. Use token utilities (text-accent, text-text-primary, bg-danger, etc.) or the documented exception paths.
-- `src/shared/components/profile/AchievementCard.tsx:37` — Arbitrary color value `'hover:shadow-[0_0_20px_rgba(96,165,250,0.15)` bypasses the @theme tokens in src/styles/index.css. Use token utilities (text-accent, text-text-primary, bg-danger, etc.) or the documented exception paths.
-- `src/shared/components/profile/AchievementCard.tsx:42` — Arbitrary color value `'hover:shadow-[0_0_20px_rgba(192,132,252,0.15)` bypasses the @theme tokens in src/styles/index.css. Use token utilities (text-accent, text-text-primary, bg-danger, etc.) or the documented exception paths.
-- `src/shared/components/profile/AchievementCard.tsx:47` — Arbitrary color value `'hover:shadow-[0_0_20px_rgba(251,191,36,0.15)` bypasses the @theme tokens in src/styles/index.css. Use token utilities (text-accent, text-text-primary, bg-danger, etc.) or the documented exception paths.
+- `src/shared/components/leaderboard/PodiumCard.tsx:15` — Arbitrary color value `shadow-[0_0_40px_-8px_rgba(250,204,21,0.5)` bypasses the @theme tokens in src/styles/index.css. Use token utilities (text-accent, text-text-primary, bg-danger, etc.) or the documented exception paths.
+- `src/shared/components/leaderboard/PodiumCard.tsx:25` — Arbitrary color value `shadow-[0_0_36px_-8px_rgba(209,213,219,0.4)` bypasses the @theme tokens in src/styles/index.css. Use token utilities (text-accent, text-text-primary, bg-danger, etc.) or the documented exception paths.
+- `src/shared/components/leaderboard/PodiumCard.tsx:35` — Arbitrary color value `shadow-[0_0_36px_-8px_rgba(217,119,6,0.4)` bypasses the @theme tokens in src/styles/index.css. Use token utilities (text-accent, text-text-primary, bg-danger, etc.) or the documented exception paths.
+- `src/shared/components/profile/AchievementCard.tsx:37` — Arbitrary color value `hover:shadow-[0_0_20px_rgba(96,165,250,0.15)` bypasses the @theme tokens in src/styles/index.css. Use token utilities (text-accent, text-text-primary, bg-danger, etc.) or the documented exception paths.
+- `src/shared/components/profile/AchievementCard.tsx:42` — Arbitrary color value `hover:shadow-[0_0_20px_rgba(192,132,252,0.15)` bypasses the @theme tokens in src/styles/index.css. Use token utilities (text-accent, text-text-primary, bg-danger, etc.) or the documented exception paths.
+- `src/shared/components/profile/AchievementCard.tsx:47` — Arbitrary color value `hover:shadow-[0_0_20px_rgba(251,191,36,0.15)` bypasses the @theme tokens in src/styles/index.css. Use token utilities (text-accent, text-text-primary, bg-danger, etc.) or the documented exception paths.
 - `src/shared/components/tools/ToolDocHero.tsx:27` — Arbitrary color value `bg-[repeating-linear-gradient(90deg,transparent,transparent_39px,rgba(255,255,255,0.05)_39px,rgba(255,255,255,0.05)_40px)` bypasses the @theme tokens in src/styles/index.css. Use token utilities (text-accent, text-text-primary, bg-danger, etc.) or the documented exception paths.
-- `src/shared/types/profile.ts:154` — Arbitrary color value `'hover:shadow-[0_0_20px_rgba(250,204,21,0.15)` bypasses the @theme tokens in src/styles/index.css. Use token utilities (text-accent, text-text-primary, bg-danger, etc.) or the documented exception paths.
-- `src/shared/types/profile.ts:155` — Arbitrary color value `'hover:shadow-[0_0_20px_rgba(6,182,111,0.15)` bypasses the @theme tokens in src/styles/index.css. Use token utilities (text-accent, text-text-primary, bg-danger, etc.) or the documented exception paths.
-- `src/shared/types/profile.ts:156` — Arbitrary color value `'hover:shadow-[0_0_20px_rgba(192,132,252,0.15)` bypasses the @theme tokens in src/styles/index.css. Use token utilities (text-accent, text-text-primary, bg-danger, etc.) or the documented exception paths.
+- `src/shared/types/profile.ts:154` — Arbitrary color value `hover:shadow-[0_0_20px_rgba(250,204,21,0.15)` bypasses the @theme tokens in src/styles/index.css. Use token utilities (text-accent, text-text-primary, bg-danger, etc.) or the documented exception paths.
+- `src/shared/types/profile.ts:155` — Arbitrary color value `hover:shadow-[0_0_20px_rgba(6,182,111,0.15)` bypasses the @theme tokens in src/styles/index.css. Use token utilities (text-accent, text-text-primary, bg-danger, etc.) or the documented exception paths.
+- `src/shared/types/profile.ts:156` — Arbitrary color value `hover:shadow-[0_0_20px_rgba(192,132,252,0.15)` bypasses the @theme tokens in src/styles/index.css. Use token utilities (text-accent, text-text-primary, bg-danger, etc.) or the documented exception paths.
 
 #### qyvora-local/no-status-palette
 
@@ -463,16 +461,6 @@ data-layer semantic color maps (`labs.ts`, `bootcampStructure.ts`,
 - `src/shared/components/profile/TrophyCabinet.tsx:41` — Palette class `bg-amber-400/10` bypasses the semantic status/difficulty tokens. Use text-danger / text-success / text-warning / text-info / text-difficulty-* (from --color-* in src/styles/index.css).
 - `src/shared/components/profile/TrophyCabinet.tsx:44` — Palette class `bg-amber-400/10` bypasses the semantic status/difficulty tokens. Use text-danger / text-success / text-warning / text-info / text-difficulty-* (from --color-* in src/styles/index.css).
 - `src/shared/components/profile/TrophyCabinet.tsx:44` — Palette class `text-amber-400` bypasses the semantic status/difficulty tokens. Use text-danger / text-success / text-warning / text-info / text-difficulty-* (from --color-* in src/styles/index.css).
-- `src/shared/components/ScenarioCard.tsx:13` — Palette class `bg-green-400/10` bypasses the semantic status/difficulty tokens. Use text-danger / text-success / text-warning / text-info / text-difficulty-* (from --color-* in src/styles/index.css).
-- `src/shared/components/ScenarioCard.tsx:13` — Palette class `text-green-400` bypasses the semantic status/difficulty tokens. Use text-danger / text-success / text-warning / text-info / text-difficulty-* (from --color-* in src/styles/index.css).
-- `src/shared/components/ScenarioCard.tsx:13` — Palette class `border-green-400/20` bypasses the semantic status/difficulty tokens. Use text-danger / text-success / text-warning / text-info / text-difficulty-* (from --color-* in src/styles/index.css).
-- `src/shared/components/ScenarioCard.tsx:14` — Palette class `bg-yellow-400/10` bypasses the semantic status/difficulty tokens. Use text-danger / text-success / text-warning / text-info / text-difficulty-* (from --color-* in src/styles/index.css).
-- `src/shared/components/ScenarioCard.tsx:14` — Palette class `text-yellow-400` bypasses the semantic status/difficulty tokens. Use text-danger / text-success / text-warning / text-info / text-difficulty-* (from --color-* in src/styles/index.css).
-- `src/shared/components/ScenarioCard.tsx:14` — Palette class `border-yellow-400/20` bypasses the semantic status/difficulty tokens. Use text-danger / text-success / text-warning / text-info / text-difficulty-* (from --color-* in src/styles/index.css).
-- `src/shared/components/ScenarioCard.tsx:15` — Palette class `bg-red-400/10` bypasses the semantic status/difficulty tokens. Use text-danger / text-success / text-warning / text-info / text-difficulty-* (from --color-* in src/styles/index.css).
-- `src/shared/components/ScenarioCard.tsx:15` — Palette class `text-red-400` bypasses the semantic status/difficulty tokens. Use text-danger / text-success / text-warning / text-info / text-difficulty-* (from --color-* in src/styles/index.css).
-- `src/shared/components/ScenarioCard.tsx:15` — Palette class `border-red-400/20` bypasses the semantic status/difficulty tokens. Use text-danger / text-success / text-warning / text-info / text-difficulty-* (from --color-* in src/styles/index.css).
-- `src/shared/components/ui/Dialog.tsx:184` — Palette class `text-red-400` bypasses the semantic status/difficulty tokens. Use text-danger / text-success / text-warning / text-info / text-difficulty-* (from --color-* in src/styles/index.css).
 - `src/shared/components/walkthrough/StepParts.tsx:79` — Palette class `text-red-400` bypasses the semantic status/difficulty tokens. Use text-danger / text-success / text-warning / text-info / text-difficulty-* (from --color-* in src/styles/index.css).
 - `src/shared/components/walkthrough/WalkthroughLayout.tsx:170` — Palette class `text-red-400` bypasses the semantic status/difficulty tokens. Use text-danger / text-success / text-warning / text-info / text-difficulty-* (from --color-* in src/styles/index.css).
 - `src/shared/components/walkthrough/WalkthroughLayout.tsx:177` — Palette class `text-green-400` bypasses the semantic status/difficulty tokens. Use text-danger / text-success / text-warning / text-info / text-difficulty-* (from --color-* in src/styles/index.css).

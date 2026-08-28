@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { Loader2 } from 'lucide-react';
 import { cn } from '@/shared/utils/cn';
 
@@ -11,6 +12,12 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   icon?: React.ReactNode;
   /** Shows a spinner and disables the button while true. */
   loading?: boolean;
+  /** Render as a router <Link> when provided. */
+  to?: string;
+  /** Render as an anchor when provided. */
+  href?: string;
+  /** Open href in a new tab. */
+  external?: boolean;
 }
 
 const variantClasses: Record<ButtonVariant, string> = {
@@ -31,27 +38,54 @@ const sizeClasses: Record<ButtonSize, string> = {
 };
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ variant = 'primary', size = 'md', icon, className, children, disabled, loading = false, ...props }, ref) => (
-    <button
-      ref={ref}
-      disabled={disabled || loading}
-      aria-busy={loading || undefined}
-      className={cn(
-        'inline-flex items-center justify-center gap-2 rounded-xl uppercase tracking-[0.08em] cursor-pointer',
-        'transition-[filter,transform,background-color,color,border-color,box-shadow]',
-        'duration-[var(--dur-base)] ease-[var(--ease-smooth)]',
-        'disabled:opacity-50 disabled:pointer-events-none',
-        variantClasses[variant],
-        sizeClasses[size],
-        className,
-      )}
-      {...props}
-    >
-      {loading && <Loader2 className="h-4 w-4 animate-spin shrink-0" aria-hidden="true" />}
-      {!loading && icon}
-      {children}
-    </button>
-  ),
+  ({ variant = 'primary', size = 'md', icon, className, children, disabled, loading = false, to, href, external, ...props }, ref) => {
+    const classes = cn(
+      'inline-flex items-center justify-center gap-2 rounded-xl uppercase tracking-[0.08em] cursor-pointer',
+      'transition-[filter,transform,background-color,color,border-color,box-shadow]',
+      'duration-[var(--dur-base)] ease-[var(--ease-smooth)]',
+      'disabled:opacity-50 disabled:pointer-events-none',
+      variantClasses[variant],
+      sizeClasses[size],
+      className,
+    );
+    const content = (
+      <>
+        {loading && <Loader2 className="h-4 w-4 animate-spin shrink-0" aria-hidden="true" />}
+        {!loading && icon}
+        {children}
+      </>
+    );
+    if (to) {
+      return (
+        <Link to={to} className={classes}>
+          {content}
+        </Link>
+      );
+    }
+    if (href) {
+      return (
+        <a
+          href={href}
+          className={classes}
+          target={external ? '_blank' : undefined}
+          rel={external ? 'noopener noreferrer' : undefined}
+        >
+          {content}
+        </a>
+      );
+    }
+    return (
+      <button
+        ref={ref}
+        disabled={disabled || loading}
+        aria-busy={loading || undefined}
+        className={classes}
+        {...props}
+      >
+        {content}
+      </button>
+    );
+  },
 );
 
 Button.displayName = 'Button';
