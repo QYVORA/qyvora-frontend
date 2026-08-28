@@ -135,6 +135,12 @@ h2 compact bento sections: **title only, no description**.
 - **Carousel full-bleed**: DragMarquee carousels inside padded sections must break out of parent padding using negative margins (`-mx-3 md:-mx-4 lg:-mx-6`) on a wrapper div. Never let carousel cards get clipped at section edges. Landing section carousels already follow this pattern — public page carousels must match.
 - **Section carousel pattern**: when replacing a `CoursesCarousel` or similar built carousel with a shared `Carousel` + inline card, use the blog-carousel card pattern: `Link` wrapping a card with `flex flex-col md:flex-row`, text left, visual right, `min-h-[340px] md:min-h-[280px]` for stable height, `line-clamp-*` on variable text. This keeps the section height predictable across different content lengths.
 
+## Profile Pages
+
+- **SVG logos, not icon packs**: on the profile pages (student `/dashboard/profile`, public `@/:username`) never use `lucide-react` icons (or custom `Icon*` glyphs) to represent achievements or completed rooms/bootcamp phases/labs/courses — use their dedicated SVG logo assets: `HpbAvatar` (bootcamp phases), `BootcampBadge` (bootcamp), `CpLogo` (CP), and the course icons from `COURSE_ICON_MAP`. The recent-activity feed (`ActivityTimeline`) must reuse those same SVGs
+- **Compact, organised cards**: profile content and cards must stay compact and well organised — consistent `rounded-2xl` cards, tight `gap`s, aligned module headers, `line-clamp`/truncate on variable text. No oversized or sprawling card stacks
+- **Protected cards — never modify**: the stats/overview strip (`ProfileMetricsStrip`) and the identicon/identity card (`ProfileIdentityBlock`) are frozen. Do not restyle, resize, or restructure them
+
 ## Admin Dashboard Rules
 
 - **Same design language**: Admin uses the same tokens, components, and patterns as Student Dashboard and public site
