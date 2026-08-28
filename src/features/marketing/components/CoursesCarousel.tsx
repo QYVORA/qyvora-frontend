@@ -1,6 +1,6 @@
 import React, { useState, useCallback, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import { Zap, Clock } from 'lucide-react';
+import { Link, useNavigate } from 'react-router-dom';
+import { Zap, Clock, CheckCircle2 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { IconArrowRight } from '@/shared/components/icons';
 import { useAutoPlay } from '@/core/hooks/useAutoPlay';
@@ -9,6 +9,9 @@ import { useReducedMotion } from '@/shared/hooks/useReducedMotion';
 import { getCategoryById } from '@/features/student/data/courses';
 import type { Course, SkillLevel } from '@/features/student/data/courses';
 import CourseBadge from '@/shared/components/CourseBadge';
+import { useAuth } from '@/core/contexts/AuthContext';
+import CoursePurchaseModal from '@/shared/components/CoursePurchaseModal';
+import api from '@/core/services/api';
 
 const SKILL_LABELS: Record<SkillLevel, string> = {
   beginner: 'Beginner',
@@ -29,11 +32,48 @@ interface CoursesCarouselProps {
   heading?: React.ReactNode;
 }
 
+const STORAGE_KEY = 'qyvora_course_progress';
+
 const CoursesCarousel: React.FC<CoursesCarouselProps> = ({ courses, className = '', heading }) => {
   const [current, setCurrent] = useState(0);
   const [direction, setDirection] = useState(0);
   const total = courses.length;
   const prefersReduced = useReducedMotion();
+  const { user } = useAuth();
+  const navigate = useNavigate();
+  const [purchasedIds, setPurchasedIds] = useState<Set<string>>(new Set());
+  const [selectedCourseId, setSelectedCourseId] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!user) {
+      setPurchasedIds(new Set());
+      return;
+    }
+    api.get('/cp/transactions?limit=100').then((r) => {
+      const items = Array.isArray(r.data?.items) ? r.data.items : [];
+      const ids = new Set<string>(items.filter((tx: any) => tx.type === 'purchase').map((tx: any) => {
+        return String(tx.metadata?.slug || tx.metadata?.courseId || tx.productId || '');
+      }));
+      setPurchasedIds(ids);
+    }).catch(() => {});
+  }, [user]);
+
+  const getCourseState = useCallback((courseId: string): 'locked' | 'purchased' | 'completed' => {
+    if (purchasedIds.has(courseId)) {
+      try {
+        const saved = localStorage.getItem(`${STORAGE_KEY}_${courseId}`);
+        if (saved) {
+          const parsed = JSON.parse(saved);
+          const course = courses.find((c) => c.id === courseId);
+          if (course && (parsed.completedLessons?.length || 0) >= course.lessons.length) {
+            return 'completed';
+          }
+        }
+      } catch {}
+      return 'purchased';
+    }
+    return 'locked';
+  }, [purchasedIds, courses]);
 
   const next = useCallback(() => {
     setDirection(1);
@@ -158,12 +198,40 @@ const CoursesCarousel: React.FC<CoursesCarouselProps> = ({ courses, className = 
                 )}
 
                 {/* CTA */}
-                <Link
-                  to={`/courses/${course.id}`}
-                  className="btn-primary inline-flex items-center gap-2 mt-8 self-start px-6 py-2.5"
-                >
-                  <Zap className="w-4 h-4" /> View Course <IconArrowRight size={14} />
-                </Link>
+                {(() => {
+                  const state = getCourseState(course.id);
+                  if (state === 'completed') {
+                    return (
+                      <div className="mt-8 self-start inline-flex items-center gap-2 px-6 py-2.5 rounded-xl bg-accent/10 text-accent border border-accent/30 text-[11px] font-black uppercase tracking-widest">
+                        <CheckCircle2 className="w-4 h-4" /> Completed
+                      </div>
+                    );
+                  }
+                  if (state === 'purchased') {
+                    return (
+                      <Link
+                        to={`/dashboard/courses/${course.id}`}
+                        className="btn-primary inline-flex items-center gap-2 mt-8 self-start px-6 py-2.5"
+                      >
+                        <Zap className="w-4 h-4" /> Start Course <IconArrowRight size={14} />
+                      </Link>
+                    );
+                  }
+                  return (
+                    <button
+                      onClick={() => {
+                        if (user) {
+                          setSelectedCourseId(course.id);
+                        } else {
+                          navigate('/register');
+                        }
+                      }}
+                      className="btn-primary inline-flex items-center gap-2 mt-8 self-start px-6 py-2.5"
+                    >
+                      <Zap className="w-4 h-4" /> Buy for {course.cpCost} CP <IconArrowRight size={14} />
+                    </button>
+                  );
+                })()}
               </div>
 
               {/* Right column — course visual (first-class section element) */}
@@ -227,6 +295,14 @@ const CoursesCarousel: React.FC<CoursesCarouselProps> = ({ courses, className = 
           </div>
         )}
       </div>
+
+      {selectedCourseId && (
+        <CoursePurchaseModal
+          open={!!selectedCourseId}
+          onOpenChange={(open) => { if (!open) setSelectedCourseId(null); }}
+          courseId={selectedCourseId}
+        />
+      )}
     </div>
   );
 };
