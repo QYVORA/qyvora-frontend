@@ -9,9 +9,7 @@ import { InternalTerminal } from '@/shared/components/walkthrough/InternalTermin
 import { SimulationProvider } from '@/features/student/components/simulations';
 import Ide from '@/features/student/components/tools/Ide';
 import NetworkBuilder from '@/features/student/components/tools/NetworkBuilder';
-import WalkthroughToolbar from '@/features/student/components/layout/WalkthroughToolbar';
 import { initPWA, tryAutoSubscribePush } from '@/features/student/services/pwa';
-import { useRoomSession } from '@/features/student/hooks/useRoomSession';
 import type { TerminalContext } from '@/features/student/components/SimulatedTerminal/types';
 import type { IdeFile } from '@/features/student/components/tools/Ide';
 
@@ -79,7 +77,6 @@ const StudentLayout = () => {
 
   // Determine if we're on a walkthrough page (rooms, courses, labs)
   const isWalkthroughPage = Boolean(roomMatch || roomMatchLegacy || courseMatch || labMatch);
-  const { fullscreen, toggleFullscreen } = useRoomSession();
 
   return (
     <SimulationProvider>
@@ -91,20 +88,6 @@ const StudentLayout = () => {
         <ConsentBanner />
         <InstallBanner />
         <UsernameChangeModal />
-
-        {/* Walkthrough Toolbar — for courses/labs/bootcamp rooms */}
-        {isWalkthroughPage && (
-          <WalkthroughToolbar
-            onOpenTerminal={() => setWalkthroughTerminalOpen(true)}
-            onOpenIDE={() => setIdeOpen(true)}
-            onOpenNetworkVisualizer={() => setNetworkVizOpen(true)}
-            showTerminal={true}
-            showIDE={Boolean(courseMatch)}
-            showNetworkVisualizer={false}
-            fullscreen={fullscreen}
-            onToggleFullscreen={toggleFullscreen}
-          />
-        )}
 
         {/* Compact walkthrough terminal — for all walkthrough pages (desktop dock / mobile sheet) */}
         {isWalkthroughPage && (
