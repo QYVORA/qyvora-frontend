@@ -130,7 +130,7 @@ const LandingMarketSection = () => {
               ))}
             </div>
           ) : (
-            <div className="text-center py-16 space-y-4 border-2 border-dashed border-bg/20 rounded-3xl w-full">
+            <div className="text-center py-16 space-y-4 border-2 border-dashed border-bg/20 rounded-2xl w-full">
               <IconLock className="h-12 w-12 text-text-muted/20 mx-auto" />
               <p className="text-text-muted/40 text-sm font-mono">{t('landing.market.emptyState')}</p>
             </div>

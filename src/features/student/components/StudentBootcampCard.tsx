@@ -38,7 +38,7 @@ const StudentBootcampCard: React.FC<Props> = ({ data, index = 0, onEnroll, onLoc
   const { id, title, description, level, duration, priceLabel, progress, isEnrolled, isLocked } = data;
   const isComplete = progress === 100;
 
-  const cardClasses = `relative aspect-square rounded-2xl border border-border/50 bg-bg-card p-3 md:p-5 transition-all duration-300 flex flex-col text-left ${
+  const cardClasses = `relative aspect-square rounded-2xl border border-border/50 bg-bg-card p-4 md:p-5 transition-all duration-300 flex flex-col text-left ${
     isLocked
       ? 'opacity-40 cursor-default'
       : 'hover:border-accent/50'
