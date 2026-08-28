@@ -526,6 +526,9 @@ const StudentTopbar = () => {
               })}
             </nav>
 
+            {/* Spacer — keeps right actions right-aligned on md..lg, where the desktop nav (flex-1) is hidden */}
+            <div className="hidden lg:hidden md:flex flex-1" aria-hidden="true" />
+
             {/* Right actions — separated from nav by flex-1 spacer */}
             <div className="hidden md:flex items-center gap-1.5 md:gap-2.5 shrink-0">
               {/* Continue Mission CTA — only on dashboard when enrolled */}
@@ -559,6 +562,14 @@ const StudentTopbar = () => {
 
             {/* Mobile CP badge + profile trigger — right-aligned */}
             <div className="md:hidden flex items-center gap-2 ml-auto">
+              {continuePath && location.pathname === '/dashboard' && (
+                <Link
+                  to={continuePath}
+                  className="flex items-center gap-1.5 px-2.5 py-2 rounded-xl bg-accent text-on-accent text-[10px] font-black uppercase tracking-widest transition-all hover:brightness-110 active:scale-95 shrink-0"
+                >
+                  {t('student.topbar.continueMission', 'Continue Mission')}
+                </Link>
+              )}
               <div className="flex items-center gap-2 px-3 py-2 rounded-xl bg-bg-card" data-tour-id="tour-cp-mobile">
                 <CpLogo className="w-4 h-4" />
                 <span className="text-[10px] font-black text-accent">{cpBalance.toLocaleString()}</span>

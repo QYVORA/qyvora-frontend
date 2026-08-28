@@ -34,9 +34,9 @@ const CoursesModule: React.FC<CoursesModuleProps> = ({
       initial={prefersReduced ? false : { opacity: 0, scale: 0.9 }}
       animate={{ opacity: 1, scale: 1 }}
       transition={{ duration: prefersReduced ? 0 : 0.3, delay: prefersReduced ? 0 : idx * 0.05 }}
-      className="flex items-center gap-3 p-3 rounded-xl bg-bg-elevated/50 border border-border/20 min-w-0"
+      className="flex items-center gap-4 min-w-0"
     >
-      <CourseBadge courseId={entry.id} className="w-9 h-9 shrink-0" />
+      <CourseBadge courseId={entry.id} className="w-12 h-12 sm:w-14 sm:h-14 shrink-0" />
       <div className="min-w-0">
         <p className="text-[10px] font-black uppercase tracking-widest text-text-primary truncate">
           {entry.course?.title}
@@ -71,11 +71,11 @@ const CoursesModule: React.FC<CoursesModuleProps> = ({
             {completed.map(renderItem)}
           </div>
         ) : (
-          <div className="flex items-center gap-3 p-3 rounded-xl bg-bg-elevated/50 border border-border/20 min-w-0">
-            <QyvoraMark className="w-7 h-7 shrink-0" />
+          <div className="flex items-center gap-4 min-w-0">
+            <QyvoraMark className="w-12 h-12 sm:w-14 sm:h-14 shrink-0" />
             <div className="min-w-0">
               <p className="text-[10px] font-black uppercase tracking-widest text-text-primary truncate">
-                {t('profile.courses.completedCount', '{{count}} courses completed')}
+                {t('profile.courses.completedCount', { count: coursesCompleted, defaultValue: '{{count}} courses completed' })}
               </p>
             </div>
           </div>

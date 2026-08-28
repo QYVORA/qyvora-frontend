@@ -243,29 +243,27 @@ const AchievementsSection: React.FC<AchievementsSectionProps> = ({
               </span>
             }
           />
-          <div className="mt-3">
-            <div className="flex flex-col items-center text-center p-4 rounded-xl border border-border/50 bg-bg-card max-w-[280px]">
-              <div className="flex items-center gap-2 mb-3">
-                {LAB_BADGE_IDS.map((labId) => (
-                  <LabBadge key={labId} labId={labId} className="w-9 h-9" />
-                ))}
-              </div>
-              <h4 className="text-[10px] font-black uppercase tracking-widest text-text-primary leading-tight mb-1">
-                {t('profile.achievements.labsCompleted', 'Lab Operator')}
-              </h4>
-              <p className="text-[9px] text-text-muted leading-snug">
-                {t('profile.achievements.labsCompletedDesc', `${labCount} lab${labCount !== 1 ? 's' : ''} completed`)}
-              </p>
-              {(labCount >= 5 || labCount >= 10) && (
-                <span className={`mt-2 px-1.5 py-0.5 rounded text-[7px] font-black uppercase tracking-wider ${
-                  labCount >= 10
-                    ? 'bg-blue-400/20 text-blue-400'
-                    : 'bg-accent/20 text-accent'
-                }`}>
-                  {labCount >= 10 ? 'rare' : 'uncommon'}
-                </span>
-              )}
-            </div>
+          <div className="flex items-center justify-between gap-3 sm:gap-6 px-5 py-5">
+            {LAB_BADGE_IDS.map((labId) => (
+              <LabBadge key={labId} labId={labId} className="w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20" />
+            ))}
+          </div>
+          <div className="flex flex-wrap items-center gap-x-3 gap-y-2 px-5 pb-5">
+            <h4 className="text-[10px] font-black uppercase tracking-widest text-text-primary">
+              {t('profile.achievements.labsCompleted', 'Lab Operator')}
+            </h4>
+            <p className="text-[9px] text-text-muted leading-snug">
+              {t('profile.achievements.labsCompletedDesc', { count: labCount, defaultValue: `${labCount} lab${labCount !== 1 ? 's' : ''} completed` })}
+            </p>
+            {(labCount >= 5 || labCount >= 10) && (
+              <span className={`px-1.5 py-0.5 rounded text-[7px] font-black uppercase tracking-wider ${
+                labCount >= 10
+                  ? 'bg-blue-400/20 text-blue-400'
+                  : 'bg-accent/20 text-accent'
+              }`}>
+                {labCount >= 10 ? 'rare' : 'uncommon'}
+              </span>
+            )}
           </div>
         </div>
       )}
