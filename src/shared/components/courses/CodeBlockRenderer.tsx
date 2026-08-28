@@ -1,6 +1,54 @@
 import { useState } from 'react';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
+import rehypeSanitize, { defaultSchema } from 'rehype-sanitize';
 import { Copy } from 'lucide-react';
 import { IconCheck, IconTerminal } from '@/shared/components/icons';
+
+// ─────────────────────────────────────────────────────────────────────────────
+// EducationalMarkdownRenderer — canonical Markdown renderer for QYVORA learning
+// content (Courses, Labs/Walkthroughs, HPB/Bootcamp).
+//
+// Backed by `react-markdown` + `remark-gfm` (tables, strikethrough, autolinks,
+// task lists) + `rehype-sanitize` (strict allow-list — no raw HTML, safe URL
+// protocols, no event-handler attributes). Typography is centralised here in
+// the `components` map so every QYVORA surface renders the same grammar.
+//
+// QYVORA-specific interactive pieces (fenced terminal blocks with a bash
+// tokeniser + copy button, click-to-copy inline code) are provided as React
+// components mapped onto `code`/`pre`, exactly as before.
+// ─────────────────────────────────────────────────────────────────────────────
+
+// ── Sanitisation ──────────────────────────────────────────────────────────────
+// Base: the rehype-sanitize default schema (blocks `script`/`iframe`, strips
+// `on*`/`style` event handlers and unknown attributes). We tighten URL
+// protocols and restrict attributes to keep the Markdown surface small.
+const SANITIZE_SCHEMA = {
+  ...defaultSchema,
+  protocols: {
+    ...defaultSchema.protocols,
+    href: ['http', 'https', 'mailto'],
+    src: ['http', 'https'],
+  },
+  attributes: {
+    ...defaultSchema.attributes,
+    a: ['href', 'title', ['ariaLabel', 'aria-label']],
+    img: ['src', 'alt', 'title'],
+    code: [['className', /^language-[\w-]+$/]],
+  },
+};
+
+// Belt-and-suspenders: refuse dangerous URL schemes even if the sanitise schema
+// ever lets one through.
+function isSafeUrl(value: string | undefined | null): boolean {
+  if (!value) return false;
+  try {
+    const protocol = new URL(value, 'https://qyvora.invalid').protocol.toLowerCase();
+    return protocol === 'http:' || protocol === 'https:' || protocol === 'mailto:';
+  } catch {
+    return false;
+  }
+}
 
 // ── Syntax token types ────────────────────────────────────────────────────────
 type TokenType = 'keyword' | 'string' | 'comment' | 'number' | 'flag' | 'path' | 'plain';
@@ -70,6 +118,7 @@ const CopyBtn: React.FC<{ text: string }> = ({ text }) => {
   };
   return (
     <button
+      type="button"
       onClick={copy}
       className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg border text-[10px] font-bold uppercase tracking-widest transition-all ${
         copied
@@ -144,6 +193,7 @@ const InlineCode: React.FC<{ code: string }> = ({ code }) => {
   };
   return (
     <button
+      type="button"
       onClick={copy}
       title="Click to copy"
       className={`group/inline inline-flex items-center gap-1 mx-0.5 px-1.5 py-px rounded-[4px] border font-mono text-[10px] leading-snug transition-all align-middle whitespace-nowrap ${
@@ -160,216 +210,140 @@ const InlineCode: React.FC<{ code: string }> = ({ code }) => {
   );
 };
 
-// ── Inline content renderer ────────────────────────────────────────────────────
-type InlinePart =
-  | { type: 'text'; content: string }
-  | { type: 'code'; content: string }
-  | { type: 'bold'; content: string }
-  | { type: 'italic'; content: string }
-  | { type: 'boldItalic'; content: string };
-
-function renderInline(text: string): React.ReactNode[] {
-  const pattern = /(`[^`]+`|\*\*\*[^*]+\*\*\*|\*\*[^*]+\*\*|\*[^*]+\*)/g;
-  const parts: InlinePart[] = [];
-  let li = 0;
-  let m: RegExpExecArray | null;
-
-  while ((m = pattern.exec(text)) !== null) {
-    if (m.index > li) parts.push({ type: 'text', content: text.slice(li, m.index) });
-    const match = m[0];
-    if (match.startsWith('`')) {
-      parts.push({ type: 'code', content: match.slice(1, -1).trim() });
-    } else if (match.startsWith('***')) {
-      parts.push({ type: 'boldItalic', content: match.slice(3, -3) });
-    } else if (match.startsWith('**')) {
-      parts.push({ type: 'bold', content: match.slice(2, -2) });
-    } else {
-      parts.push({ type: 'italic', content: match.slice(1, -1) });
-    }
-    li = m.index + match.length;
-  }
-  if (li < text.length) parts.push({ type: 'text', content: text.slice(li) });
-
-  return parts.map((part, i) => {
-    switch (part.type) {
-      case 'code':
-        return <InlineCode key={i} code={part.content} />;
-      case 'bold':
-        return <strong key={i} className="font-bold text-text-primary">{part.content}</strong>;
-      case 'italic':
-        return <em key={i} className="italic text-text-primary">{part.content}</em>;
-      case 'boldItalic':
-        return <strong key={i} className="font-bold italic text-text-primary">{part.content}</strong>;
-      default:
-        return <span key={i}>{part.content}</span>;
-    }
-  });
-}
-
-// ── Block types for non-fenced content ─────────────────────────────────────────
-type InlineBlock =
-  | { kind: 'paragraph'; lines: string[] }
-  | { kind: 'ul'; items: string[] }
-  | { kind: 'ol'; items: string[] }
-  | { kind: 'heading'; level: number; text: string }
-  | { kind: 'hr' }
-  | { kind: 'blockquote'; text: string };
-
+// ── Typography (centralised QYVORA grammar) ───────────────────────────────────
 const PARA_CLASS = 'text-sm md:text-base text-text-secondary font-mono leading-[2] md:leading-[2.2] mb-6 md:mb-8 max-w-none';
+const LIST_CLASS = 'list-outside pl-5 space-y-3 md:space-y-4 text-sm md:text-base text-text-secondary font-mono leading-[2] md:leading-[2.2] mb-6 md:mb-8 max-w-none';
 
-function parseBlocks(text: string): InlineBlock[] {
-  const rawBlocks = text.split(/\n\n+/);
-  const blocks: InlineBlock[] = [];
+const headingClass = (level: number): string => {
+  const size =
+    level === 1 ? 'text-2xl md:text-4xl mb-6 md:mb-8' :
+    level === 2 ? 'text-2xl md:text-4xl mb-6 md:mb-8' :
+    level === 3 ? 'text-xl md:text-2xl text-accent mb-5 md:mb-6' :
+                  'text-base md:text-lg mb-4 mt-4';
+  const color = level === 3 ? 'text-accent' : 'text-text-primary';
+  return `font-black uppercase tracking-tight ${size} ${color}`;
+};
 
-  for (const raw of rawBlocks) {
-    const trimmed = raw.trim();
-    if (!trimmed) continue;
+const Heading = ({ level, children }: { level: number; children?: React.ReactNode }) => {
+  const Tag = (`h${Math.min(Math.max(1, level), 4)}`) as 'h1' | 'h2' | 'h3' | 'h4';
+  return <Tag className={headingClass(level)}>{children}</Tag>;
+};
 
-    const lines = trimmed.split('\n');
-
-    if (/^(-{3,}|\*{3,}|_{3,})$/.test(trimmed)) {
-      blocks.push({ kind: 'hr' });
-      continue;
-    }
-
-    if (lines.length === 1) {
-      const hMatch = lines[0].match(/^(#{1,6})\s+(.+)$/);
-      if (hMatch) {
-        blocks.push({ kind: 'heading', level: hMatch[1].length, text: hMatch[2] });
-        continue;
-      }
-    }
-
-    if (lines.every(l => /^\s*[-*+]\s/.test(l))) {
-      blocks.push({ kind: 'ul', items: lines.map(l => l.replace(/^\s*[-*+]\s+/, '')) });
-      continue;
-    }
-
-    if (lines.every(l => /^\s*\d+\.\s/.test(l))) {
-      blocks.push({ kind: 'ol', items: lines.map(l => l.replace(/^\s*\d+\.\s+/, '')) });
-      continue;
-    }
-
-    if (lines.every(l => /^\s*>/.test(l))) {
-      blocks.push({ kind: 'blockquote', text: lines.map(l => l.replace(/^\s*> ?/, '')).join('\n') });
-      continue;
-    }
-
-    blocks.push({ kind: 'paragraph', lines });
+// Extract the raw text of a Markdown node (used to read code content before we
+// replace it with our own rendering).
+function nodeText(node: any): string {
+  if (!node) return '';
+  if (node.type === 'text') return node.value;
+  if (Array.isArray(node.children)) {
+    return node.children.map(nodeText).join('');
   }
-
-  return blocks;
+  return '';
 }
 
-function renderBlock(block: InlineBlock, key: number): React.ReactNode {
-  switch (block.kind) {
-    case 'paragraph':
-      return (
-        <p key={key} className={PARA_CLASS}>
-          {renderInline(block.lines.join('\n'))}
-        </p>
-      );
-    case 'ul':
-      return (
-        <ul key={key} className="list-disc list-inside space-y-3 md:space-y-4 text-sm md:text-base text-text-secondary font-mono leading-[2] md:leading-[2.2] mb-6 md:mb-8 max-w-none">
-          {block.items.map((item, j) => (
-            <li key={j}>{renderInline(item)}</li>
-          ))}
-        </ul>
-      );
-    case 'ol':
-      return (
-        <ol key={key} className="list-decimal list-inside space-y-3 md:space-y-4 text-sm md:text-base text-text-secondary font-mono leading-[2] md:leading-[2.2] mb-6 md:mb-8 max-w-none">
-          {block.items.map((item, j) => (
-            <li key={j}>{renderInline(item)}</li>
-          ))}
-        </ol>
-      );
-    case 'heading': {
-      const level = Math.min(block.level, 4);
-      const size =
-        level === 1 ? 'text-2xl md:text-4xl mb-6 md:mb-8' :
-        level === 2 ? 'text-2xl md:text-4xl mb-6 md:mb-8' :
-        level === 3 ? 'text-xl md:text-2xl text-accent mb-5 md:mb-6' :
-                      'text-base md:text-lg mb-4 mt-4';
-      const cls = `font-black uppercase tracking-tight leading-snug ${size} max-w-none ${
-        level === 3 ? 'text-accent' : 'text-text-primary'
-      }`;
-      switch (level) {
-        case 1: return <h1 key={key} className={cls}>{renderInline(block.text)}</h1>;
-        case 2: return <h2 key={key} className={cls}>{renderInline(block.text)}</h2>;
-        case 3: return <h3 key={key} className={cls}>{renderInline(block.text)}</h3>;
-        default: return <h4 key={key} className={cls}>{renderInline(block.text)}</h4>;
-      }
-    }
-    case 'blockquote':
-      return (
-        <blockquote key={key} className="border-l-2 border-accent/40 pl-4 md:pl-6 italic text-text-secondary font-mono leading-[2] md:leading-[2.2] mb-6 md:mb-8 max-w-none">
-          {renderInline(block.text)}
-        </blockquote>
-      );
-    case 'hr':
-      return null;
-  }
-}
-
-// ── Main renderer ─────────────────────────────────────────────────────────────
-// Supports:
-//   - Fenced blocks:  ```bash\n...\n```
-//   - Inline code:    `command`
-//   - Bold:           **text**
-//   - Italic:         *text*
-//   - Bold+Italic:    ***text***
-//   - Lists:          - item / 1. item
-//   - Headings:       # text
-//   - Blockquotes:    > text
-//   - Horizontal rule:--- / *** / ___
-//   - Plain text:     everything else
+// ── Canonical renderer ─────────────────────────────────────────────────────────
+// Renders Markdown through React Markdown. QYVORA-specific components are wired
+// into `components` so the semantics come from a standards parser while the
+// visual language stays on-brand.
 const CodeBlockRenderer: React.FC<{ text: string }> = ({ text }) => {
-  // Split on fenced code blocks first
-  const fencedPattern = /```(\w*)\n([\s\S]*?)```/g;
-  const segments: Array<
-    | { kind: 'fenced'; lang: string; code: string }
-    | { kind: 'inline'; text: string }
-  > = [];
-
-  let lastIndex = 0;
-  let match: RegExpExecArray | null;
-
-  while ((match = fencedPattern.exec(text)) !== null) {
-    if (match.index > lastIndex) {
-      segments.push({ kind: 'inline', text: text.slice(lastIndex, match.index) });
-    }
-    segments.push({ kind: 'fenced', lang: match[1] || 'bash', code: match[2].trimEnd() });
-    lastIndex = match.index + match[0].length;
-  }
-
-  if (lastIndex < text.length) {
-    segments.push({ kind: 'inline', text: text.slice(lastIndex) });
-  }
-
-  if (segments.length === 0) {
-    segments.push({ kind: 'inline', text });
-  }
-
   return (
-    <>
-      {segments.map((seg, segIdx) => {
-        if (seg.kind === 'fenced') {
-          return <FencedCodeBlock key={segIdx} code={seg.code} lang={seg.lang} />;
-        }
-
-        // Parse inline text into blocks (paragraphs, lists, headings, etc.)
-        const blocks = parseBlocks(seg.text);
-
-        return (
-          <div key={segIdx}>
-            {blocks.map((block, blockIdx) => renderBlock(block, blockIdx))}
+    <ReactMarkdown
+      remarkPlugins={[remarkGfm]}
+      rehypePlugins={[[rehypeSanitize, SANITIZE_SCHEMA]]}
+      components={{
+        // Fenced code: react-markdown wraps the code node in <pre>. We unwrap
+        // <pre> so our FencedCodeBlock (which owns its own <pre>) is not nested
+        // inside another <pre>. Language-less / indented code blocks fall back
+        // to a plain bash-styled block.
+        pre: ({ node, children }) => {
+          const codeNode = (node?.children ?? []).find(
+            (c: any) => c && c.type === 'element' && c.tagName === 'code',
+          ) as any;
+          const hasLanguage = /language-[\w-]+/.test(String(codeNode?.properties?.className || ''));
+          if (!hasLanguage) {
+            return <FencedCodeBlock code={nodeText(codeNode).replace(/\n$/, '')} lang="bash" />;
+          }
+          return <>{children}</>;
+        },
+        code: ({ className, children }) => {
+          const lang = (className || '').match(/language-([\w-]+)/)?.[1];
+          if (lang) {
+            return <FencedCodeBlock code={String(children).replace(/\n$/, '')} lang={lang} />;
+          }
+          return <InlineCode code={String(children)} />;
+        },
+        h1: ({ children }) => <Heading level={1}>{children}</Heading>,
+        h2: ({ children }) => <Heading level={2}>{children}</Heading>,
+        h3: ({ children }) => <Heading level={3}>{children}</Heading>,
+        h4: ({ children }) => <Heading level={4}>{children}</Heading>,
+        p: ({ children }) => <p className={PARA_CLASS}>{children}</p>,
+        ul: ({ children }) => <ul className={LIST_CLASS}>{children}</ul>,
+        ol: ({ children }) => <ol className={LIST_CLASS}>{children}</ol>,
+        li: ({ children }) => (
+          <li className="leading-[2] md:leading-[2.2]">{children}</li>
+        ),
+        blockquote: ({ children }) => (
+          <blockquote className="border-l-2 border-accent/40 pl-4 md:pl-6 italic text-text-secondary font-mono leading-[2] md:leading-[2.2] mb-6 md:mb-8 max-w-none">
+            {children}
+          </blockquote>
+        ),
+        hr: () => <hr className="my-10 md:my-12 border-border/30" />,
+        table: ({ children }) => (
+          <div className="wc-table my-8 md:my-10 overflow-x-auto rounded-xl border border-border/50 bg-bg-card">
+            <table className="w-full min-w-[520px] border-collapse text-left text-sm md:text-base font-mono">
+              {children}
+            </table>
           </div>
-        );
-      })}
-    </>
+        ),
+        thead: ({ children }) => (
+          <thead className="border-b border-border/60 bg-bg-elevated">{children}</thead>
+        ),
+        tr: ({ children }) => <tr className="border-b border-border/30 last:border-b-0 even:bg-bg-elevated/40">{children}</tr>,
+        th: ({ children }) => (
+          <th className="px-4 py-3 text-[10px] font-black uppercase tracking-widest text-accent whitespace-nowrap">
+            {children}
+          </th>
+        ),
+        td: ({ children }) => (
+          <td className="px-4 py-3 align-top text-text-secondary leading-[1.9]">{children}</td>
+        ),
+        a: ({ node, href, children }) => {
+          const safe = isSafeUrl(href);
+          return safe ? (
+            <a
+              href={href}
+              target={href?.startsWith('http') ? '_blank' : undefined}
+              rel={href?.startsWith('http') ? 'noopener noreferrer' : undefined}
+              className="text-accent underline decoration-accent/40 underline-offset-4 hover:decoration-accent"
+            >
+              {children}
+            </a>
+          ) : (
+            <span className="text-accent">{children}</span>
+          );
+        },
+        img: ({ node, src, alt, title }) => {
+          if (!isSafeUrl(src)) return null;
+          return (
+            <img
+              src={src}
+              alt={alt ?? ''}
+              title={title}
+              className="my-6 md:my-8 max-w-full rounded-xl border border-border/50"
+            />
+          );
+        },
+        strong: ({ children }) => <strong className="font-bold text-text-primary">{children}</strong>,
+        em: ({ children }) => <em className="italic text-text-primary">{children}</em>,
+        del: ({ children }) => <del className="text-text-muted">{children}</del>,
+      }}
+    >
+      {text}
+    </ReactMarkdown>
   );
 };
 
+// Backwards-compatible alias: this IS the shared walkthrough/lesson renderer.
+const EducationalMarkdownRenderer = CodeBlockRenderer;
+
 export default CodeBlockRenderer;
+export { EducationalMarkdownRenderer, isSafeUrl };

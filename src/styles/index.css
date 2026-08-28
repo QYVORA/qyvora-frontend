@@ -2,6 +2,8 @@
 @import "tailwindcss";
 @import '@xyflow/react/dist/style.css';
 
+@plugin "@tailwindcss/typography";
+
 @custom-variant dark (&:where(.dark, .dark *));
 
 @property --beam-angle {

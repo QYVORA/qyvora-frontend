@@ -1,5 +1,6 @@
-import { useState, useCallback } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { Globe, ArrowLeft, ArrowRight, RotateCcw, Lock, Cookie, Code, Eye } from 'lucide-react';
+import DOMPurify from 'dompurify';
 import type { BrowserPage } from './types';
 import { useSimulation } from './SimulationContext';
 
@@ -7,6 +8,12 @@ interface BrowserSimProps {
   pages: BrowserPage[];
   defaultUrl?: string;
 }
+
+const DEFAULT_PURIFY_CONFIG = {
+  USE_PROFILES: { html: true },
+  FORBID_TAGS: ['script', 'style', 'iframe', 'object', 'embed', 'form', 'input', 'button'],
+  FORBID_ATTR: ['onerror', 'onload', 'onclick', 'onmouseover', 'onfocus', 'onblur', 'style'],
+};
 
 export function BrowserSimulation({ pages, defaultUrl }: BrowserSimProps) {
   const { browser: browserSim } = useSimulation();
@@ -17,6 +24,13 @@ export function BrowserSimulation({ pages, defaultUrl }: BrowserSimProps) {
   const [showCookies, setShowCookies] = useState(false);
 
   const currentPage = pages.find(p => p.url === browser.url) || pages[0];
+
+  // Sanitize HTML before it reaches dangerouslySetInnerHTML. Simulation page
+  // content is authored in-repo, but it must never bypass sanitization.
+  const sanitizedHtml = useMemo(
+    () => (currentPage?.html ? DOMPurify.sanitize(currentPage.html, DEFAULT_PURIFY_CONFIG) : ''),
+    [currentPage?.html],
+  );
 
   const navigate = useCallback((url: string) => {
     setBrowserUrl(url);
@@ -151,7 +165,7 @@ export function BrowserSimulation({ pages, defaultUrl }: BrowserSimProps) {
         {/* Rendered page */}
         <div className="flex-1 overflow-auto bg-white">
           {currentPage ? (
-            <div dangerouslySetInnerHTML={{ __html: currentPage.html }} className="p-4 text-xs text-black" />
+            <div dangerouslySetInnerHTML={{ __html: sanitizedHtml }} className="p-4 text-xs text-black" />
           ) : (
             <div className="flex items-center justify-center h-full text-gray-400 text-sm">
               <p>No page loaded. Enter a URL above.</p>

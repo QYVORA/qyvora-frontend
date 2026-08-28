@@ -4,7 +4,7 @@ import { IconCheck } from '@/shared/components/icons';
 import { cn } from '@/shared/utils/cn';
 import { CommandBlock, FlagInput, StepComplete } from './StepParts';
 import { StepNumberHeader } from '@/shared/components/learning/StepNumberHeader';
-import CodeBlockRenderer from '@/shared/components/courses/CodeBlockRenderer';
+import { EducationalMarkdownRenderer } from '@/shared/components/courses/CodeBlockRenderer';
 
 export interface ProgressiveHintLevel {
   level: 1 | 2 | 3 | 4;
@@ -101,7 +101,7 @@ export function WalkthroughStep({
 
         {/* Narrative — continuous reading flow */}
         <div className="w-full text-sm md:text-base text-text-secondary font-mono leading-[2] md:leading-[2.2] mb-6 md:mb-8">
-          <CodeBlockRenderer text={narrative} />
+          <EducationalMarkdownRenderer text={narrative} />
         </div>
 
         {/* Evidence — terminal-style log panel */}

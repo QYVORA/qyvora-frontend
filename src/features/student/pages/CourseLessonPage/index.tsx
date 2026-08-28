@@ -5,7 +5,7 @@ import { ArrowLeft, ArrowRight, Lock, Target, Minimize2, Maximize2 } from 'lucid
 import { FadeIn } from '@/shared/components/ui';
 import SEO from '@/shared/components/SEO';
 import { getCourseById } from '@/features/student/data/courses';
-import CodeBlockRenderer from '@/shared/components/courses/CodeBlockRenderer';
+import { EducationalMarkdownRenderer } from '@/shared/components/courses/CodeBlockRenderer';
 import InlineQuiz from '@/shared/components/courses/InlineQuiz';
 import CodePlayground from '@/shared/components/courses/CodePlayground';
 import StudentHeroSection from '@/shared/components/StudentHeroSection';
@@ -53,7 +53,7 @@ const LessonViewer: React.FC<{
       }
     >
       <div className="text-sm md:text-base text-text-secondary font-mono leading-[2] md:leading-[2.2] mb-6 md:mb-8 max-w-none overflow-x-auto">
-        <CodeBlockRenderer text={lesson.instruction} />
+        <EducationalMarkdownRenderer text={lesson.instruction} />
       </div>
 
       {lesson.hasCodePlayground && (

@@ -4,7 +4,7 @@ import { Bookmark, Flag } from 'lucide-react';
 import { IconCheck } from '@/shared/components/icons';
 import type { BootcampStep } from '../../constants/bootcampConfig';
 import { buildStepImagePath } from '../../constants/bootcampConfig';
-import CodeBlockRenderer from '@/shared/components/courses/CodeBlockRenderer';
+import { EducationalMarkdownRenderer } from '@/shared/components/courses/CodeBlockRenderer';
 import StepImage from './StepImage';
 import StepRenderer from '@/shared/components/learning/StepRenderer';
 
@@ -73,7 +73,7 @@ const StepCard: React.FC<Props> = ({
     >
 
     <div className={`w-full text-sm md:text-base font-mono leading-[2] md:leading-[2.2] overflow-x-auto transition-colors ${isActive ? 'text-text-primary' : 'text-text-secondary'} mb-6 md:mb-8`}>
-      <CodeBlockRenderer text={step.instruction} />
+      <EducationalMarkdownRenderer text={step.instruction} />
     </div>
 
     {step.image ? (
