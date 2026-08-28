@@ -142,7 +142,7 @@ const ContactModalHost: React.FC = () => {
                   className={cn(
                     'flex-1 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-wider transition-all',
                     contactType === 'student'
-                      ? 'bg-accent text-on-accent shadow-[0_0_12px_var(--color-accent-glow)] font-black'
+                      ? 'bg-accent text-on-accent font-black'
                       : 'text-text-muted hover:text-text-primary'
                   )}
                 >
@@ -154,7 +154,7 @@ const ContactModalHost: React.FC = () => {
                   className={cn(
                     'flex-1 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-wider transition-all',
                     contactType === 'business'
-                      ? 'bg-accent text-on-accent shadow-[0_0_12px_var(--color-accent-glow)] font-black'
+                      ? 'bg-accent text-on-accent font-black'
                       : 'text-text-muted hover:text-text-primary'
                   )}
                 >
