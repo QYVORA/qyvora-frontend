@@ -401,27 +401,13 @@ export const MyCoursesSkeleton = () => (
 /* ─── Bootcamp Room Page Skeleton ─────────────────────────────────────────── */
 export const BootcampRoomSkeleton = () => (
   <div className="bg-bg overflow-x-hidden">
-    {/* Desktop sidebar skeleton */}
-    <div className="hidden lg:block fixed left-0 top-0 bottom-0 w-72 bg-bg-card border-r border-border/50 z-[90]">
-      <div className="p-5 space-y-4">
-        <S className="h-5 w-32 rounded" />
-        <div className="space-y-2">
-          {Array.from({ length: 3 }).map((_, i) => (
-            <div key={i} className="flex items-center gap-3 p-3 rounded-xl">
-              <S className="w-5 h-5 rounded shrink-0" />
-              <S className="h-3.5 flex-1 rounded" />
-            </div>
-          ))}
-        </div>
-      </div>
-    </div>
     {/* Desktop toolbar skeleton */}
     <div className="hidden lg:flex fixed right-6 z-[90] flex-col items-center gap-3" style={{ top: '5rem', bottom: '1.5rem', justifyContent: 'center' }}>
       {Array.from({ length: 3 }).map((_, i) => (
         <S key={i} className="w-11 h-11 rounded-lg" />
       ))}
     </div>
-    <main className="w-full px-3 pt-8 md:px-4 lg:px-6 lg:pl-80 space-y-8">
+    <main className="w-full px-3 pt-8 md:px-4 lg:px-6 space-y-8">
       {/* Room header */}
       <header className="mb-8 space-y-4">
         <S className="h-3 w-48 rounded" />
