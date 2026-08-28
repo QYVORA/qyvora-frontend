@@ -8,11 +8,13 @@ const ScrollToTop = () => {
   const { pathname } = useLocation();
   const [visible, setVisible] = useState(false);
 
+  const walkthroughRoomMatch = useMatch('/dashboard/bootcamps/:bootcampId/phases/:phaseId/rooms/:roomId');
+  const walkthroughRoomMatchLegacy = useMatch('/dashboard/bootcamps/:bootcampId/modules/:moduleId/rooms/:roomId');
+  const walkthroughCourseMatch = useMatch('/dashboard/courses/:courseId');
+  const walkthroughLabMatch = useMatch('/dashboard/labs/:labType');
+
   const isWalkthroughPage = Boolean(
-    useMatch('/dashboard/bootcamps/:bootcampId/phases/:phaseId/rooms/:roomId') ||
-    useMatch('/dashboard/bootcamps/:bootcampId/modules/:moduleId/rooms/:roomId') ||
-    useMatch('/dashboard/courses/:courseId') ||
-    useMatch('/dashboard/labs/:labType')
+    walkthroughRoomMatch || walkthroughRoomMatchLegacy || walkthroughCourseMatch || walkthroughLabMatch
   );
 
   useEffect(() => {
