@@ -17,12 +17,15 @@
  *   - Horizontal rule:     ---
  *   - Plain prose
  */
+import type { QuizQuestion } from '@/features/student/data/courses/types';
 
 export interface BootcampStep {
   title: string;
   instruction: string;
   /** Exact filename from the filesystem. null = no image yet → show placeholder. */
   image: string | null;
+  /** Optional inline mini-quiz reinforcing this step's key concepts. */
+  quiz?: QuizQuestion[];
 }
 
 export interface BootcampRoom {

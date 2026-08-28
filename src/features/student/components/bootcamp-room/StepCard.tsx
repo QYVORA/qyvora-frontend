@@ -5,6 +5,7 @@ import { IconCheck } from '@/shared/components/icons';
 import type { BootcampStep } from '../../constants/bootcampConfig';
 import { buildStepImagePath } from '../../constants/bootcampConfig';
 import { EducationalMarkdownRenderer } from '@/shared/components/courses/CodeBlockRenderer';
+import InlineQuiz from '@/shared/components/courses/InlineQuiz';
 import StepImage from './StepImage';
 import StepRenderer from '@/shared/components/learning/StepRenderer';
 
@@ -75,6 +76,12 @@ const StepCard: React.FC<Props> = ({
     <div className={`w-full text-sm md:text-base font-mono leading-[2] md:leading-[2.2] overflow-x-auto transition-colors ${isActive ? 'text-text-primary' : 'text-text-secondary'} mb-6 md:mb-8`}>
       <EducationalMarkdownRenderer text={step.instruction} />
     </div>
+
+    {step.quiz && step.quiz.length > 0 && (
+      <div className="mt-8 md:mt-10">
+        <InlineQuiz questions={step.quiz} title="Check your understanding" />
+      </div>
+    )}
 
     {step.image ? (
       <StepImage
