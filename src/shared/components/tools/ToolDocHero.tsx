@@ -28,6 +28,13 @@ const ToolDocHero: React.FC<ToolDocHeroProps> = ({
     </div>
 
     <div className="relative z-10 px-3 md:px-4 lg:px-6">
+      {/* Logo above text on mobile, centered */}
+      {logo && (
+        <div className="flex items-center justify-center shrink-0 mb-8 lg:hidden">
+          <div className="w-40 sm:w-52">{logo}</div>
+        </div>
+      )}
+
       <div className="flex flex-col lg:flex-row items-start lg:items-center gap-8 lg:gap-12">
         {/* Left: text content */}
         <div className="flex-1 min-w-0">
@@ -57,7 +64,7 @@ const ToolDocHero: React.FC<ToolDocHeroProps> = ({
           {actions && <div className="flex flex-wrap items-center gap-3 mt-6 md:mt-8">{actions}</div>}
         </div>
 
-        {/* Right: logo/visual */}
+        {/* Right: logo/visual (desktop only) */}
         {logo && (
           <div className="hidden lg:flex items-center justify-center shrink-0 w-64 xl:w-80">
             {logo}
