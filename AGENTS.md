@@ -23,6 +23,8 @@ Use Tailwind utilities (`bg-bg`, `text-text-primary`, `border-border`, `text-acc
 
 ## Typography Sizing
 
+Heading scale source of truth: **`docs/TYPOGRAPHY.md`** (canonical variants + rules). Canonical practice below.
+
 | Element | Min Size |
 |---------|----------|
 | h1 | `text-3xl` (never smaller) |
@@ -30,6 +32,8 @@ Use Tailwind utilities (`bg-bg`, `text-text-primary`, `border-border`, `text-acc
 | h3 | `text-2xl md:text-3xl lg:text-4xl` |
 
 h2 compact bento sections: **title only, no description**.
+
+- **Kickers/eyebrows**: tiny uppercase accent text — use the type tokens (`text-kicker` / `text-tiny`, see `docs/TYPOGRAPHY.md`); legacy `text-[10px]`/`text-[9px]` accepted during migration. Never small headings (`h3`/`h4`).
 
 ## Layout Rules
 
@@ -40,7 +44,7 @@ h2 compact bento sections: **title only, no description**.
 - **No strip-like sections**: every snap section is a filled composition — header paired with substantive content (split layout, grid, or panel stack). Never ship a lone small card/banner centered in an otherwise empty viewport; if a section would be sparse, merge its content into an adjacent section or pair it with a complementary card
 - **Snap sections must fit the viewport**: content should not exceed one viewport at common laptop sizes (~1366×768). If it does, SPLIT into additional snap sections (see Layout Stability) — an oversized snap area breaks strict `y mandatory` scrolling
 - **Width constraints**: use `wc-*` classes (`wc-prose`, `wc-code`, `wc-terminal`, `wc-diagram`, `wc-table`, `wc-media`, `wc-interactive`), never ad-hoc `max-w-*`
-- **Kickers/eyebrows**: tiny uppercase accent text (`p`/`span`, `text-[10px] tracking-[0.3em]`) — never small headings (`h3`/`h4`)
+- **Kickers/eyebrows**: tiny uppercase accent text — use the type tokens (`text-kicker` / `text-tiny`, see `docs/TYPOGRAPHY.md`); legacy `text-[10px]`/`text-[9px]` accepted during migration. Never small headings (`h3`/`h4`).
 - **No content into navbar**: split-screen sections on desktop must not let content bleed upward into the navbar clearance zone. If the left column has sparse content (e.g. kicker + title only), use `items-center` on the grid row so content vertically centers rather than stretching thin at the top with empty space above. This applies to all desktop split-screen sections — never `lg:items-start` when one column has sparse content
 - **No content into adjacent sections**: each snap section's content must stay strictly within its own viewport boundaries. On desktop, a split-screen section must not overflow downward into the next snap area. If content is tall, split into multiple snap sections rather than letting one section grow past the viewport
 

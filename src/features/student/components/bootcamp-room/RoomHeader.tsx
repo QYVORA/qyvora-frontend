@@ -33,7 +33,7 @@ const RoomHeader: React.FC<RoomHeaderProps> = ({
           className="group mb-6 flex items-center gap-2 text-text-muted transition-colors hover:text-text-primary min-h-[44px] min-w-[44px]"
         >
           <IconArrowLeft size={16} className="transition-transform group-hover:-translate-x-0.5" />
-          <span className="text-[10px] font-black uppercase tracking-widest">{backLabel}</span>
+          <span className="text-kicker font-black uppercase tracking-widest">{backLabel}</span>
         </Link>
       )}
       <div className="mb-2 text-xs font-black uppercase tracking-[0.3em] text-accent">

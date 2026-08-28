@@ -19,6 +19,12 @@
   --dur-fast: 160ms;
   --dur-base: 260ms;
   --dur-slow: 420ms;
+
+  /* ── Micro type scale (replaces the text-[10px]/[9px]/[8px]/[7px] drift) ── */
+  --text-kicker:    10px;
+  --text-tiny:      9px;
+  --text-overline:  8px;
+  --text-micro:     7px;
   /* ── Dark theme (default) ── */
   --color-bg:             #000000;
   --color-bg-card:        #050505;

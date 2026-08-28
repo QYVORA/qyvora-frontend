@@ -110,7 +110,7 @@ const ToolsCarousel: React.FC<ToolsCarouselProps> = ({
               <div className="flex min-h-0 min-w-0 flex-col overflow-hidden">
                 {kicker && title && accent && current === 0 && (
                   <div className="mb-2">
-                    <span className="text-[9px] font-black uppercase tracking-[0.3em] text-accent">
+                    <span className="text-tiny font-black uppercase tracking-[0.3em] text-accent">
                       {kicker}
                     </span>
                     <h2 className="text-lg md:text-xl lg:text-2xl font-black text-text-primary tracking-tight leading-none mt-1">
@@ -119,20 +119,20 @@ const ToolsCarousel: React.FC<ToolsCarouselProps> = ({
                   </div>
                 )}
 
-                <span className="text-[9px] font-black uppercase tracking-[0.3em] text-accent">
+                <span className="text-tiny font-black uppercase tracking-[0.3em] text-accent">
                   {label} {module.index}
                 </span>
 
-                <h3 className="text-4xl md:text-5xl lg:text-6xl font-black text-text-primary tracking-tighter leading-tight mt-3">
+                <h2 className="text-4xl md:text-5xl lg:text-6xl font-black text-text-primary tracking-tighter leading-tight mt-3">
                   {module.title}
-                </h3>
+                </h2>
 
                 <p className="text-xs md:text-sm text-text-muted leading-relaxed mt-4 max-w-xl line-clamp-3">
                   {module.description}
                 </p>
 
                 {module.meta && (
-                  <span className="mt-4 inline-flex w-fit items-center rounded-lg border border-accent/30 bg-accent/5 px-2.5 py-1 text-[9px] font-black uppercase tracking-widest text-accent">
+                  <span className="mt-4 inline-flex w-fit items-center rounded-lg border border-accent/30 bg-accent/5 px-2.5 py-1 text-tiny font-black uppercase tracking-widest text-accent">
                     {module.meta}
                   </span>
                 )}

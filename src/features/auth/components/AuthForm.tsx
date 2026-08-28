@@ -99,7 +99,7 @@ const AuthForm: React.FC<AuthFormProps> = ({
 
               <form className="space-y-4" onSubmit={onLoginSubmit} noValidate>
               <div className="space-y-2">
-                <label htmlFor="login-email" className="text-[10px] font-black text-text-muted uppercase tracking-widest">{t('form.email')}</label>
+                <label htmlFor="login-email" className="text-kicker font-black text-text-muted uppercase tracking-widest">{t('form.email')}</label>
                 <Input
                     id="login-email"
                     type="email"

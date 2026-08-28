@@ -105,7 +105,7 @@ const PublicProfile: React.FC = () => {
         />
         <IconArrowLeft className="w-4 h-4 text-text-muted" />
         <div className="flex flex-col items-start text-left">
-          <h1 className="text-3xl font-black text-text-primary uppercase tracking-tighter mb-2">Operator Not Found</h1>
+          <h1 className="text-4xl md:text-6xl font-black text-text-primary uppercase tracking-tighter mb-2">Operator Not Found</h1>
           <p className="text-text-muted text-sm max-w-xs">The handle <span className="text-accent font-mono">@{handle}</span> does not exist.</p>
         </div>
         <Link to="/" className="btn-primary">Return Home</Link>
