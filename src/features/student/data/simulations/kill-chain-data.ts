@@ -1,3 +1,5 @@
+import type { QuizQuestion } from './types';
+
 export interface KillChainCommand {
   command: string;
   output: string;
@@ -13,6 +15,7 @@ export interface KillChainPhase {
   commands: KillChainCommand[];
   completed: boolean;
   narrative?: string;
+  quiz?: QuizQuestion[];
 }
 
 export interface KillChainScenario {
@@ -84,6 +87,32 @@ Scan the subnet for live hosts, fingerprint the services on the most interesting
           },
         ],
         completed: false,
+        quiz: [
+          {
+            id: 'kc-int-phase-1-q1',
+            question: 'What is the key difference between nmap -sn and nmap -sV?',
+            options: [
+              '-sn discovers live hosts; -sV identifies service versions',
+              '-sn scans all ports; -sV scans common ports only',
+              '-sn requires root; -sV works without privileges',
+              '-sn is passive; -sV sends exploit payloads',
+            ],
+            correctIndex: 0,
+            explanation: 'A ping sweep (-sn) finds which hosts are alive, while a version scan (-sV) fingerprints the exact software and version running on each open port.',
+          },
+          {
+            id: 'kc-int-phase-1-q2',
+            question: 'Why is identifying specific service versions critical for the kill chain?',
+            options: [
+              'Version numbers reveal the exact exploit needed for the next phase',
+              'Versions determine which port to scan next',
+              'Version info is required to run nmap scripts',
+              'Versions tell us the operating system only',
+            ],
+            correctIndex: 0,
+            explanation: 'Each service version maps to known CVEs and matching public exploits; without knowing the exact version, you cannot reliably select the right exploit.',
+          },
+        ],
       },
       {
         id: 'phase-2',
@@ -126,6 +155,32 @@ Run share enumeration, brute-force hidden directories, and scan for known vulner
           },
         ],
         completed: false,
+        quiz: [
+          {
+            id: 'kc-int-phase-2-q1',
+            question: 'Why is user enumeration considered "half the credentials" in the kill chain?',
+            options: [
+              'Knowing the username turns a blind brute-force into a targeted password attack',
+              'User enumeration reveals the password hash directly',
+              'It automatically cracks the admin password',
+              'It gives you the encryption key for the database',
+            ],
+            correctIndex: 0,
+            explanation: 'A valid username means the brute-force tool only needs to guess the password, reducing the attack from two unknowns to one.',
+          },
+          {
+            id: 'kc-int-phase-2-q2',
+            question: 'What does gobuster reveal that a standard port scan cannot?',
+            options: [
+              'Hidden web directories and files not linked from any page',
+              'Open ports on the target machine',
+              'The version of the web server software',
+              'Active user sessions on the web application',
+            ],
+            correctIndex: 0,
+            explanation: 'Gobuster brute-forces URL paths to find hidden admin panels, backup directories, and config files that are never advertised in sitemaps or links.',
+          },
+        ],
       },
       {
         id: 'phase-3',
@@ -168,6 +223,32 @@ Check the version against known exploits, crack the weak password, and log in to
           },
         ],
         completed: false,
+        quiz: [
+          {
+            id: 'kc-int-phase-3-q1',
+            question: 'How does the enumeration phase directly enable the initial access attack?',
+            options: [
+              'Enumerated usernames provide the exact target for Hydra brute-force',
+              'Enumeration installs the exploit on the target server',
+              'It opens the SSH port automatically',
+              'It generates the password wordlist for cracking',
+            ],
+            correctIndex: 0,
+            explanation: 'Hydra needs both a username and a password; enumeration provides the valid username so the brute-force only has to guess the password.',
+          },
+          {
+            id: 'kc-int-phase-3-q2',
+            question: 'What does searchsploit do in the initial access workflow?',
+            options: [
+              'Matches fingerprinted service versions against a database of known public exploits',
+              'Automatically exploits the vulnerability and opens a shell',
+              'Generates a custom payload for the target',
+              'Scans the network for additional live hosts',
+            ],
+            correctIndex: 0,
+            explanation: 'SearchSploit searches the Exploit-DB for public exploits matching specific software versions identified during reconnaissance.',
+          },
+        ],
       },
       {
         id: 'phase-4',
@@ -212,6 +293,32 @@ Confirm our current privileges, hunt for SUID binaries, then abuse the one Marcu
           },
         ],
         completed: false,
+        quiz: [
+          {
+            id: 'kc-int-phase-4-q1',
+            question: 'What does the SUID permission bit on a binary do?',
+            options: [
+              'The binary executes with the privileges of its owner rather than the running user',
+              'The binary gains root access automatically on execution',
+              'The binary encrypts all output for security',
+              'The binary runs in a sandboxed environment',
+            ],
+            correctIndex: 0,
+            explanation: 'SUID (Set User ID) makes a binary run with the file owner\'s permissions — that is how passwd lets regular users write to /etc/shadow.',
+          },
+          {
+            id: 'kc-int-phase-4-q2',
+            question: 'Why does a SUID find binary with -exec lead to a root shell?',
+            options: [
+              '-exec runs commands inheriting find\'s SUID privileges, so /bin/sh executes as root',
+              'find automatically detects privilege escalation paths',
+              '-exec injects shellcode into the kernel',
+              'find bypasses all permission checks via a kernel exploit',
+            ],
+            correctIndex: 0,
+            explanation: 'Since find runs as root (due to SUID), any command spawned via -exec inherits root privileges, giving an immediate root shell.',
+          },
+        ],
       },
       {
         id: 'phase-5',
@@ -254,6 +361,32 @@ Harvest hashes from the compromised host, replay the credentials network-wide, a
           },
         ],
         completed: false,
+        quiz: [
+          {
+            id: 'kc-int-phase-5-q1',
+            question: 'Why is /etc/shadow accessible only to root, and why does that matter for lateral movement?',
+            options: [
+              'It contains password hashes; root access lets us harvest them for password spraying',
+              'It stores SSH keys for all users on the network',
+              'It logs all login attempts across the subnet',
+              'It contains the database credentials in plaintext',
+            ],
+            correctIndex: 0,
+            explanation: '/etc/shadow stores hashed passwords for every local account; only root can read it, and those hashes confirm reused credentials for spraying.',
+          },
+          {
+            id: 'kc-int-phase-5-q2',
+            question: 'What does CrackMapExec do during the lateral movement phase?',
+            options: [
+              'Replays known credentials across every host in the subnet to find password reuse',
+              'Cracks password hashes using rainbow tables',
+              'Maps the network topology to find new subnets',
+              'Scans for open SMB ports without authentication',
+            ],
+            correctIndex: 0,
+            explanation: 'CrackMapExec takes a valid username-password pair and tests it against every host via SMB, flagging each machine where the credentials work.',
+          },
+        ],
       },
       {
         id: 'phase-6',
@@ -296,6 +429,32 @@ Copy the database backup off the server, mine it for credentials and secrets, th
           },
         ],
         completed: false,
+        quiz: [
+          {
+            id: 'kc-int-phase-6-q1',
+            question: 'Why is scp used instead of cat to pull the database backup off the target?',
+            options: [
+              'scp copies the authenticated data file to a controlled location off-host, enabling exfiltration',
+              'scp decrypts the backup into readable plaintext',
+              'scp runs the database queries against the backup',
+              'scp deletes the file from the server after copying',
+            ],
+            correctIndex: 0,
+            explanation: 'Exfiltration means transferring sensitive artifacts to an attacker-controlled machine; scp moves the file off the compromised host securely.',
+          },
+          {
+            id: 'kc-int-phase-6-q2',
+            question: 'What real-world value does mining the database backup for passwords, API keys, and SMTP credentials provide?',
+            options: [
+              'It demonstrates the severity and blast radius of the breach for the final report',
+              'It speeds up the network scan for the next target',
+              'It prevents the backup from being restored',
+              'It encrypts the exfiltrated data in transit',
+            ],
+            correctIndex: 0,
+            explanation: 'Harvested operational secrets prove what data was accessible and quantify the damage, which is exactly what a penetration test report documents.',
+          },
+        ],
       },
     ],
     cpReward: 500,
@@ -353,6 +512,32 @@ Map the ports, DNS, and technology stack of the web target to build the vulnerab
           },
         ],
         completed: false,
+        quiz: [
+          {
+            id: 'kc-web-phase-1-q1',
+            question: 'How does web reconnaissance differ from internal network reconnaissance?',
+            options: [
+              'The attack surface is the application and its technology stack rather than network hosts',
+              'It only scans for open ports and never fingerprints services',
+              'It relies entirely on passive DNS queries with no active scanning',
+              'It skips technology fingerprinting because the stack is always known',
+            ],
+            correctIndex: 0,
+            explanation: 'For an external web target "the network" is the application itself, so recon fingerprints the exact technology stack through tools like whatweb.',
+          },
+          {
+            id: 'kc-web-phase-1-q2',
+            question: 'What does the whatweb output (X-Powered-By: Express, nginx 1.24.0, jQuery 3.6.0) help an attacker do?',
+            options: [
+              'Narrow the pool of known CVEs to research against the specific framework versions',
+              'Automatically bypass the application firewall',
+              'Determine the physical location of the web server',
+              'Reveal the exact content of every page on the site',
+            ],
+            correctIndex: 0,
+            explanation: 'Identifiable framework versions reduce the exploit search space, making it much easier to find and match a working public exploit.',
+          },
+        ],
       },
       {
         id: 'phase-2',
@@ -389,6 +574,32 @@ Enumerate the app's structure, scan for misconfigurations, and identify the inje
           },
         ],
         completed: false,
+        quiz: [
+          {
+            id: 'kc-web-phase-2-q1',
+            question: 'Why does web vulnerability discovery target URLs beyond the open ports found in recon?',
+            options: [
+              'Every URL is a potential vulnerability, so hidden paths add to the attack surface',
+              'URLs replace the need for any port scanning',
+              'Only URLs can be exploited, ports are irrelevant in web attacks',
+              'URL enumeration removes the need to fingerprint the technology stack',
+            ],
+            correctIndex: 0,
+            explanation: 'Web apps expose far more attack surface through paths than through ports, so gobuster and nikto enumerate hidden directories and test them.',
+          },
+          {
+            id: 'kc-web-phase-2-q2',
+            question: 'What does the nikto finding "/search?q=test: SQL injection candidate" indicate?',
+            options: [
+              'A user-controlled query parameter that likely feeds directly into a database query',
+              'A validated database compromise proving the injection succeeded',
+              'An open SSRF endpoint that can reach internal services',
+              'A cross-site scripting vulnerability in the search results page',
+            ],
+            correctIndex: 0,
+            explanation: 'The /search?q= parameter passes user input into a query, making it a candidate injection point to prove with a tool like sqlmap.',
+          },
+        ],
       },
       {
         id: 'phase-3',
@@ -437,6 +648,32 @@ Prove the injection, enumerate and dump the database, crack the hashes, then log
           },
         ],
         completed: false,
+        quiz: [
+          {
+            id: 'kc-web-phase-3-q1',
+            question: 'What does the sqlmap flag confirm about the /search?id=1 parameter before any dumping happens?',
+            options: [
+              'It confirms the injection and identifies the backend database as MySQL',
+              'It immediately retrieves all data from the database',
+              'It patches the injection vulnerability in the application',
+              'It reveals the SSH credentials stored in the database',
+            ],
+            correctIndex: 0,
+            explanation: 'sqlmap first verifies the injection point and fingerprints the backend DBMS before it enumerates or dumps any data.',
+          },
+          {
+            id: 'kc-web-phase-3-q2',
+            question: 'Why is John the Ripper run on the dumped password hashes?',
+            options: [
+              'To crack the hashes into plaintext passwords usable for SSH access',
+              'To verify the hashes are correctly computed by MySQL',
+              'To re-encrypt the database to prevent detection',
+              'To generate a new password wordlist for the next host',
+            ],
+            correctIndex: 0,
+            explanation: 'Hashes alone are not credentials; John the Ripper cracks them against rockyou.txt to recover the plaintext password admin2024!.',
+          },
+        ],
       },
       {
         id: 'phase-4',
@@ -473,6 +710,32 @@ Read the application's secrets, then use the recovered keys to hit internal serv
           },
         ],
         completed: false,
+        quiz: [
+          {
+            id: 'kc-web-phase-4-q1',
+            question: 'Why are application config files like .env the highest-value post-exploitation target?',
+            options: [
+              'They contain the database credentials, API keys, and SMTP passwords the app needs to run',
+              'They store the full source code of the application',
+              'They list every user password in plaintext',
+              'They contain the logs of all previous sessions',
+            ],
+            correctIndex: 0,
+            explanation: 'Developers stuff .env with everything the app needs to operate, so one readable config frequently equals full database and third-party compromise.',
+          },
+          {
+            id: 'kc-web-phase-4-q2',
+            question: 'What does authenticating to /api/v1/users with the stolen Bearer token prove?',
+            options: [
+              'The blast radius: the stolen key grants access to internal data without a database query',
+              'The API key was invalid and had to be re-generated',
+              'The SSH session is still active on the target',
+              'The database credentials have changed since the .env was read',
+            ],
+            correctIndex: 0,
+            explanation: 'Using the stolen API key to pull the full user list demonstrates the key grants real, autonomous access to sensitive application data.',
+          },
+        ],
       },
       {
         id: 'phase-5',
@@ -515,6 +778,32 @@ Plant the persistent account, archive the sensitive data for exfiltration, and c
           },
         ],
         completed: false,
+        quiz: [
+          {
+            id: 'kc-web-phase-5-q1',
+            question: 'Why is creating a new admin account through the API a persistence technique?',
+            options: [
+              'It survives reboots, logins, and cleanup because it looks like a legitimate user',
+              'It re-encrypts the application data to prevent exfiltration',
+              'It permanently disables the target web server',
+              'It deletes all audit logs of the intrusion',
+            ],
+            correctIndex: 0,
+            explanation: 'A backdoor admin account persists across sessions and appears legitimate, so it endures even after the original exploit path is patched.',
+          },
+          {
+            id: 'kc-web-phase-5-q2',
+            question: 'What is the purpose of staging /var/www, /etc/shadow, and /root/.ssh into a single tar archive?',
+            options: [
+              'To consolidate the sensitive files into one artifact ready for exfiltration',
+              'To compress log files so the intrusion is hidden',
+              'To create a backup of the system for safe restoration',
+              'To migrate the application to a new server',
+            ],
+            correctIndex: 0,
+            explanation: 'Staging gathers the valuable data into one bundle that can be copied off-host in a single recorded step, completing the exfiltration.',
+          },
+        ],
       },
     ],
     cpReward: 600,
