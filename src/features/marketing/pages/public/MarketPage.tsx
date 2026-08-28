@@ -115,7 +115,7 @@ const MarketPage = () => {
             ) : error ? (
               <ErrorState message={error} title="Marketplace Unavailable" bare />
             ) : filtered.length === 0 ? (
-              <div className="col-span-full text-center py-20 rounded-3xl border-2 border-dashed border-border/20 flex-1 flex flex-col justify-center">
+              <div className="col-span-full text-center py-20 rounded-2xl border-2 border-dashed border-border/20 flex-1 flex flex-col justify-center">
                 <IconLock className="h-12 w-12 text-text-muted/20 mx-auto mb-4" />
                 <p className="text-text-muted text-sm">{query ? 'No products match your search.' : 'No products available yet.'}</p>
               </div>

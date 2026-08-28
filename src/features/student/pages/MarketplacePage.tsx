@@ -176,7 +176,7 @@ const Marketplace: React.FC = () => {
         {tab === 'market' ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 px-1 md:px-0">
             {filtered.length === 0 ? (
-              <div className="col-span-full relative overflow-hidden py-20 text-center rounded-3xl border-2 border-dashed border-border/20 bg-transparent">
+              <div className="col-span-full relative overflow-hidden py-20 text-center rounded-2xl border-2 border-dashed border-border/20 bg-transparent">
                 <BookOpen className="w-12 h-12 text-text-muted mx-auto mb-4 opacity-40" />
                 <p className="text-text-muted text-base">{query ? t('student.marketplace.empty') : t('student.marketplace.empty')}</p>
               </div>
