@@ -1,0 +1,7 @@
+{
+  "name": "eslint-plugin-qyvora-local",
+  "version": "1.0.0",
+  "private": true,
+  "type": "commonjs",
+  "main": "index.cjs"
+}
