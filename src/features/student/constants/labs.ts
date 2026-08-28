@@ -5,14 +5,15 @@ export interface LabDef {
   difficulty: string;
   cpReward: string;
   titleKey?: string;
+  descKey?: string;
 }
 
 export const LABS: LabDef[] = [
-  { id: 'privesc', route: '/dashboard/labs/privesc', accentColor: '#FBBF24', difficulty: 'beginner-advanced', cpReward: '50-400', titleKey: 'student.labs.list.privesc.title' },
-  { id: 'passwords', route: '/dashboard/labs/passwords', accentColor: '#F59E0B', difficulty: 'beginner-advanced', cpReward: '100-300', titleKey: 'student.labs.list.passwords.title' },
-  { id: 'sqli', route: '/dashboard/labs/sql-injection', accentColor: '#06B66F', difficulty: 'beginner-advanced', cpReward: '200-400', titleKey: 'student.labs.list.sqli.title' },
-  { id: 'osint', route: '/dashboard/labs/osint', accentColor: '#0EA5E9', difficulty: 'beginner-advanced', cpReward: '150-400', titleKey: 'student.labs.list.osint.title' },
-  { id: 'killchain', route: '/dashboard/labs/kill-chain', accentColor: '#DC2626', difficulty: 'intermediate-advanced', cpReward: '500-600', titleKey: 'student.labs.list.killchain.title' },
+  { id: 'privesc', route: '/dashboard/labs/privesc', accentColor: '#FBBF24', difficulty: 'beginner-advanced', cpReward: '50-400', titleKey: 'student.labs.list.privesc.title', descKey: 'student.labs.list.privesc.desc' },
+  { id: 'passwords', route: '/dashboard/labs/passwords', accentColor: '#F59E0B', difficulty: 'beginner-advanced', cpReward: '100-300', titleKey: 'student.labs.list.passwords.title', descKey: 'student.labs.list.passwords.desc' },
+  { id: 'sqli', route: '/dashboard/labs/sql-injection', accentColor: '#06B66F', difficulty: 'beginner-advanced', cpReward: '200-400', titleKey: 'student.labs.list.sqli.title', descKey: 'student.labs.list.sqli.desc' },
+  { id: 'osint', route: '/dashboard/labs/osint', accentColor: '#0EA5E9', difficulty: 'beginner-advanced', cpReward: '150-400', titleKey: 'student.labs.list.osint.title', descKey: 'student.labs.list.osint.desc' },
+  { id: 'killchain', route: '/dashboard/labs/kill-chain', accentColor: '#DC2626', difficulty: 'intermediate-advanced', cpReward: '500-600', titleKey: 'student.labs.list.killchain.title', descKey: 'student.labs.list.killchain.desc' },
 ];
 
 export const LABS_IDS = LABS.map(l => l.id) as readonly string[];

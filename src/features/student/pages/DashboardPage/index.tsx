@@ -48,6 +48,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { AuthImage } from '@/shared/components/ui';
 import { COURSES, getCategoryById } from '@/features/student/data/courses';
 import type { SkillLevel } from '@/features/student/data/courses';
+import LearningCard from '@/shared/components/learning/LearningCard';
 import {
   TrendingUp,
   Sparkles,
@@ -78,33 +79,16 @@ function pickCpBalance(userCp: number, overview: any, cpBalance: number | null):
 
 const DashboardRoomCard = ({ room }: { room: any }) => {
   const { t } = useTranslation();
-  const hoverRef = useGsapHover<HTMLAnchorElement>({ scale: 1.02, y: -4 });
   return (
-    <Link
-      ref={hoverRef}
+    <LearningCard
+      type="bootcamp"
+      title={room.title}
       to={`/dashboard/bootcamps/bc_1775270338500/phases/${room.id.split('-')[0]}/rooms/${room.id}`}
-      className="group/card relative aspect-square card-accent bg-bg-card p-3 md:p-5 transition-all duration-300 flex flex-col text-left"
-    >
-      <div className="flex items-center gap-2 mb-2">
-        <div className="w-8 h-8 rounded-xl flex items-center justify-center shrink-0 bg-accent/10 border border-accent/20">
-          <IconCode size={16} className="text-accent" />
-        </div>
-        <span className="px-2 py-0.5 rounded-lg text-[9px] font-black uppercase tracking-widest bg-accent/10 text-accent border border-accent/20">
-          {t('stat.room')}
-        </span>
-      </div>
-
-      <h3 className="text-sm sm:text-base md:text-lg lg:text-xl font-black text-text-primary group-hover/card:text-accent transition-colors leading-snug break-words mb-1">{room.title}</h3>
-
-      <div className="flex items-center justify-between mt-auto pt-2">
-        <span className="text-[9px] sm:text-[10px] font-black uppercase tracking-widest text-text-muted">
-          Active
-        </span>
-        <span className="px-3 py-1.5 rounded-lg text-[9px] sm:text-[10px] font-black uppercase tracking-widest bg-accent text-on-accent transition-all duration-200 group-hover/card:brightness-110 group-active:scale-95">
-          <IconArrowRight size={12} />
-        </span>
-      </div>
-    </Link>
+      badgeText={t('stat.room')}
+      icon={<IconCode size={16} className="text-accent" />}
+      actionLabel=""
+      actionIcon={<IconArrowRight size={12} />}
+    />
   );
 };
 
@@ -135,49 +119,19 @@ const DashboardProductCard = ({ product }: { product: any }) => {
   const title = String(product?.title || t('student.dashboard.intelligenceAsset'));
   const description = String(product?.description || t('student.dashboard.intelligenceDesc'));
   return (
-    <div className="group flex flex-col overflow-hidden card-accent bg-bg-card transition-all duration-300">
-      <div className="relative aspect-[16/9] overflow-hidden bg-accent/5">
-        <AuthImage
-          src={product?.coverUrl}
-          alt={title}
-          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-          loading="lazy"
-        />
-      </div>
-      <div className="flex flex-col gap-2 p-4 flex-1">
-        <div className="flex items-center gap-2">
-          <span className="px-2 py-0.5 rounded-lg bg-accent/10 text-[9px] font-black uppercase text-accent tracking-widest border border-accent/20 flex items-center gap-1">
-            <IconMarketplace size={9} /> {t('student.dashboard.intelligenceAsset')}
-          </span>
-        </div>
-        <h3 className="text-sm sm:text-base md:text-lg lg:text-xl font-black text-text-primary group-hover:text-accent transition-colors leading-snug break-words line-clamp-2">
-          {title}
-        </h3>
-        <p className="text-xs sm:text-sm md:text-base text-text-muted leading-relaxed line-clamp-3 flex-1">
-          {description}
-        </p>
-        <div className="flex items-center justify-between mt-auto pt-2">
-          <div className="flex items-center gap-1.5">
-            {product?.isFree ? (
-              <span className="text-[9px] sm:text-[10px] font-black uppercase tracking-widest text-accent">Free</span>
-            ) : (
-              <>
-                <CpLogo className="w-3.5 h-3.5" />
-                <span className="font-mono text-xs font-black text-text-primary">
-                  {Number(product?.cpPrice || 0).toLocaleString()}
-                </span>
-              </>
-            )}
-          </div>
-          <Link
-            to="/dashboard/marketplace"
-            className="px-3 py-1.5 rounded-lg text-[9px] sm:text-[10px] md:text-xs font-black uppercase tracking-widest bg-accent text-on-accent transition-all duration-200 group-hover:brightness-110 group-active:scale-95"
-          >
-            {t('student.dashboard.view')}
-          </Link>
-        </div>
-      </div>
-    </div>
+    <LearningCard
+      id={id}
+      type="product"
+      title={title}
+      description={description}
+      to="/dashboard/marketplace"
+      image={product?.coverUrl}
+      imageAlt={title}
+      isFree={product?.isFree}
+      price={product?.isFree ? undefined : `${Number(product?.cpPrice || 0).toLocaleString()} CP`}
+      badgeText={t('student.dashboard.intelligenceAsset')}
+      actionLabel={t('student.dashboard.view')}
+    />
   );
 };
 
@@ -474,56 +428,20 @@ const Dashboard = () => {
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
               {COURSES.slice(0, 6).map((course) => {
-                const DASH_CATEGORY_ICONS: Record<string, React.ElementType> = {
-                  terminal: IconTerminal,
-                  networking: IconNetwork,
-                  programming: IconCode,
-                  'web-security': Globe,
-                  wireless: Wifi,
-                  tools: Wrench,
-                };
-                const CatIc = DASH_CATEGORY_ICONS[course.categoryId];
                 const category = getCategoryById(course.categoryId);
-                const SKILL_CONFIG: Record<SkillLevel, { label: string; color: string; icon: React.ElementType }> = {
-                  beginner: { label: t('student.courses.levels.beginner'), color: 'text-accent border-accent/30 bg-accent/10', icon: Sparkles },
-                  intermediate: { label: t('student.courses.levels.intermediate'), color: 'text-blue-400 border-blue-400/30 bg-blue-400/10', icon: TrendingUp },
-                  advanced: { label: t('student.courses.levels.advanced'), color: 'text-red-400 border-red-400/30 bg-red-400/10', icon: GraduationCap },
-                };
-                const skillCfg = SKILL_CONFIG[course.skillLevel];
-                const SkillIcon = skillCfg.icon;
                 return (
-                  <Link
+                  <LearningCard
                     key={course.id}
+                    id={course.id}
+                    type="course"
+                    title={course.title}
+                    description={course.description}
                     to={`/dashboard/courses/${course.id}`}
-                    className="group/card relative aspect-square card-accent bg-bg-card p-3 md:p-5 transition-all duration-300 flex flex-col text-left"
-                  >
-                    <div className="grid grid-cols-[minmax(0,1fr)_auto] items-start gap-3 mb-2">
-                      <div className="min-w-0">
-                        <span className="px-2 py-0.5 rounded-lg bg-accent/10 text-[9px] font-black uppercase tracking-widest text-accent border border-accent/20">
-                          {category?.name}
-                        </span>
-                        <h3 className="text-sm sm:text-base md:text-lg lg:text-xl font-black text-text-primary group-hover/card:text-accent transition-colors leading-snug break-words mt-1">
-                          {course.title}
-                        </h3>
-                      </div>
-                      <CourseBadge courseId={course.id} className="w-12 h-12 shrink-0" />
-                    </div>
-
-                    <p className="text-xs sm:text-sm md:text-base text-text-muted leading-relaxed line-clamp-3 break-words flex-1 mb-2">
-                      {course.description}
-                    </p>
-
-      <div className="flex items-center justify-between mt-auto">
-                      <div className="flex items-center gap-2">
-                        <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-lg text-[9px] font-black uppercase tracking-widest ${skillCfg.color}`}>
-                          <SkillIcon className="h-2.5 w-2.5" /> {skillCfg.label}
-                        </span>
-                      </div>
-                      <span className="px-3 py-1.5 rounded-lg text-[9px] sm:text-[10px] md:text-xs font-black uppercase tracking-widest bg-accent text-on-accent transition-all duration-200 group-hover/card:brightness-110 group-active:scale-95">
-                        {t('student.dashboard.view')}
-                      </span>
-                    </div>
-                  </Link>
+                    badgeText={category?.name}
+                    badge={<CourseBadge courseId={course.id} className="w-11 h-11 shrink-0" />}
+                    difficulty={course.skillLevel}
+                    actionLabel={t('student.dashboard.view')}
+                  />
                 );
               })}
             </div>
@@ -550,8 +468,8 @@ const Dashboard = () => {
           <div ref={labsRef}>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
               {LABS.map((lab) => (
-                <div key={lab.id} className="aspect-square">
-                  <LabCard id={lab.id} title={t(lab.titleKey)} description={t(lab.titleKey)} difficulty={lab.difficulty} cpReward={lab.cpReward} route={lab.route} accentColor={lab.accentColor} />
+                <div key={lab.id} className="h-full">
+                  <LabCard id={lab.id} title={t(lab.titleKey || '')} description={t(lab.descKey || lab.titleKey || '')} difficulty={lab.difficulty} cpReward={lab.cpReward} route={lab.route} accentColor={lab.accentColor} />
                 </div>
               ))}
             </div>
