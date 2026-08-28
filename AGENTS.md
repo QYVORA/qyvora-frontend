@@ -46,13 +46,15 @@ h2 compact bento sections: **title only, no description**.
 
 ## Component Rules
 
-- **Cards**: always `rounded-2xl`. Never mix radius scales. Product cards: `aspect-[16/9]`, never `aspect-square`
-- **Buttons**: always use `<Button>` component for CTAs. Raw buttons need `.btn-primary`/`.btn-secondary`/`.btn-danger` classes
-- **Inputs**: `bg-bg border border-border rounded-xl py-3 px-4 text-text-primary focus:border-accent outline-none font-mono text-sm`
+- **Cards**: always `rounded-2xl`. Never mix radius scales. Product cards: `aspect-[16/9]`, never `aspect-square`. Use canonical card primitives: `CardBase`, `CardMedia`, `CardStat`, `LearningCard` (`@/shared/components/ui/Card` or `@/shared/components/learning/LearningCard`).
+- **Learning Cards**: all learning items (labs, courses, bootcamp phases, lessons, related items) MUST use the canonical `LearningCard` component derived from the preferred Lab Card visual reference.
+- **Buttons**: always use `<Button>` component for CTAs. Raw buttons need `.btn-primary`/`.btn-secondary`/`.btn-danger` classes. Never add ad-hoc glow drop-shadows to buttons.
+- **Inputs**: always use `<Input>` component (`@/shared/components/ui/Input`). Standard style: `bg-bg-card border border-border rounded-xl py-3 px-4 text-text-primary focus:border-accent outline-none font-mono text-sm`.
+- **Skeletons**: always use native `@/shared/components/ui/Skeleton.tsx` with pulse animation. Never import third-party `react-loading-skeleton` or its CSS.
 - **Dialogs**: desktop use `DialogContent` (Radix), mobile use `BottomSheet`. Always pass `title`, always have `aria-describedby`
 - **Icons**: `lucide-react` only. Named imports. No emoji as icons
 - **i18n**: all user-facing strings through `useTranslation()`
-- **LearningToolbar**: all walkthrough pages (labs, courses, bootcamp rooms) must include `LearningToolbar` with a fullscreen toggle using `useRoomSession()`. Never place the fullscreen button inline in page content — it belongs exclusively in the toolbar (desktop fixed sidebar + mobile floating panel). Use `<Minimize2>`/`<Maximize2>` icons from lucide-react. If the page already has a `LearningToolbar`, add the fullscreen action to its existing `actions` array
+- **LearningToolbar**: all walkthrough pages (labs, courses, bootcamp rooms) must include `LearningToolbar` with a fullscreen toggle using `useRoomSession()`. Never place the fullscreen button inline in page content — it belongs exclusively in the toolbar (desktop fixed sidebar + mobile floating panel). Use `<Minimize2>`/`<Maximize2>` icons from lucide-react. If the page already has a `LearningToolbar`, add the fullscreen action to its existing `actions` array. Never mount `WalkthroughToolbar` in `StudentLayout`.
 - **Walkthrough text styling**: all walkthrough/learning page text must match the blog page text styling. Body text: `text-sm md:text-base text-text-secondary font-mono leading-[2] md:leading-[2.2] mb-6 md:mb-8`. The walkthrough is inspired by the blog styling — clean, bold, well-spaced monospaced text. Never use `leading-relaxed` on walkthrough text — always `leading-[2] md:leading-[2.2]`. **Headings in walkthrough narrative text** (via `CodeBlockRenderer` markdown) must match blog heading components exactly:
   - h2 (blog `Heading`): `text-2xl md:text-4xl font-black uppercase tracking-tight mb-6 md:mb-8 text-text-primary`
   - h3 (blog `SubHeading`): `text-xl md:text-2xl font-black uppercase tracking-tight mb-5 md:mb-6 text-accent`
@@ -96,8 +98,11 @@ h2 compact bento sections: **title only, no description**.
 
 - `useNavInvert` hook + `data-nav-invert` attributes
 - `PublicBottomNav`, `GoCodeCarousel`, `CardGrid` components
+- `react-loading-skeleton` package imports
+- Dual walkthrough toolbars (`WalkthroughToolbar` in `StudentLayout`)
 - `.snap-container-proximity` CSS class
 - `font-display` utility class
+- Fixed `lg:h-dvh` or `h-dvh` on content snap sections (always use `min-h-dvh`)
 - Navbar scroll-hide/invert behavior
 - `zustand` or `@tanstack/react-query` (installed but unused)
 - Inline fullscreen buttons on walkthrough pages (use `LearningToolbar` instead)

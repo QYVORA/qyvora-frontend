@@ -1,15 +1,13 @@
-import Skeleton from 'react-loading-skeleton';
-import 'react-loading-skeleton/dist/skeleton.css';
+import React from 'react';
 
-const S = ({ className = '', ...props }: { className?: string; [key: string]: any }) => (
-  <Skeleton
-    className={className}
-    baseColor="var(--color-bg-elevated)"
-    highlightColor="var(--color-border)"
-    borderRadius="0.5rem"
+const S = ({ className = '', circle = false, ...props }: { className?: string; circle?: boolean; [key: string]: any }) => (
+  <div
+    className={`animate-pulse bg-bg-elevated border border-border/20 ${circle ? 'rounded-full' : 'rounded-lg'} ${className}`}
+    aria-hidden="true"
     {...props}
   />
 );
+
 
 /* ─── Shared: Hero skeleton ───────────────────────────────────────────────── */
 const HeroSkeleton = ({ stats = 0, action = false }: { stats?: number; action?: boolean } = {}) => (
