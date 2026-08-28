@@ -201,7 +201,10 @@ const PublicProfile: React.FC = () => {
             {/* ── Courses Section ── */}
             {visibleSections.includes('courses') && (
               <section id="profile-section-courses">
-                <CoursesModule coursesCompleted={profile.coursesCompleted} />
+                <CoursesModule
+                coursesCompleted={profile.coursesCompleted}
+                courseIds={profile.completedCourseIds}
+              />
               </section>
             )}
 

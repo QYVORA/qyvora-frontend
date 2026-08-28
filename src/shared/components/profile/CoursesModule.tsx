@@ -1,20 +1,50 @@
 import { useTranslation } from 'react-i18next';
 import { motion } from 'motion/react';
 import { useReducedMotion } from '@/shared/hooks/useReducedMotion';
-import { GraduationCap, BookOpen } from 'lucide-react';
+import { GraduationCap } from 'lucide-react';
+import CourseBadge from '@/shared/components/CourseBadge';
+import { QyvoraMark } from '@/shared/components/brand';
+import { getCourseById } from '@/features/student/data/courses/courseData';
 import ModuleHeader from './ModuleHeader';
 
 interface CoursesModuleProps {
   coursesCompleted: number;
+  courseIds?: string[];
   className?: string;
 }
 
+const VISIBLE_COURSES = 6;
+
 const CoursesModule: React.FC<CoursesModuleProps> = ({
   coursesCompleted,
+  courseIds = [],
   className = '',
 }) => {
   const { t } = useTranslation();
   const prefersReduced = useReducedMotion();
+
+  const completed = courseIds
+    .map((id) => ({ id, course: getCourseById(id) }))
+    .filter((entry) => Boolean(entry.course))
+    .slice(0, VISIBLE_COURSES);
+
+  const renderItem = (entry: { id: string; course?: { title: string; categoryId: string } }, idx: number) => (
+    <motion.div
+      key={entry.id}
+      initial={prefersReduced ? false : { opacity: 0, scale: 0.9 }}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={{ duration: prefersReduced ? 0 : 0.3, delay: prefersReduced ? 0 : idx * 0.05 }}
+      className="flex items-center gap-3 p-3 rounded-xl bg-bg-elevated/50 border border-border/20 min-w-0"
+    >
+      <CourseBadge courseId={entry.id} className="w-9 h-9 shrink-0" />
+      <div className="min-w-0">
+        <p className="text-[10px] font-black uppercase tracking-widest text-text-primary truncate">
+          {entry.course?.title}
+        </p>
+        <p className="text-[9px] text-text-muted truncate">{entry.course?.categoryId}</p>
+      </div>
+    </motion.div>
+  );
 
   return (
     <div className={className}>
@@ -32,31 +62,22 @@ const CoursesModule: React.FC<CoursesModuleProps> = ({
       />
 
       <div className="mt-4">
-        {coursesCompleted === 0 ? (
+        {coursesCompleted === 0 && completed.length === 0 ? (
           <p className="text-xs text-text-muted text-center py-4">
             {t('profile.courses.empty', 'No courses completed yet.')}
           </p>
+        ) : completed.length > 0 ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            {completed.map(renderItem)}
+          </div>
         ) : (
-          <div className="grid grid-cols-2 gap-3">
-            {Array.from({ length: Math.min(coursesCompleted, 6) }).map((_, idx) => (
-              <motion.div
-                key={idx}
-                initial={prefersReduced ? false : { opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: prefersReduced ? 0 : 0.3, delay: prefersReduced ? 0 : idx * 0.05 }}
-                className="flex items-center gap-2.5 p-3 rounded-xl bg-bg-elevated/50 border border-border/20"
-              >
-                <div className="w-8 h-8 rounded-lg bg-blue-400/10 flex items-center justify-center shrink-0">
-                  <BookOpen className="w-4 h-4 text-blue-400" />
-                </div>
-                <div className="min-w-0">
-                  <p className="text-[10px] font-black uppercase tracking-widest text-text-primary truncate">
-                    Course {idx + 1}
-                  </p>
-                  <p className="text-[9px] text-text-muted">Completed</p>
-                </div>
-              </motion.div>
-            ))}
+          <div className="flex items-center gap-3 p-3 rounded-xl bg-bg-elevated/50 border border-border/20 min-w-0">
+            <QyvoraMark className="w-7 h-7 shrink-0" />
+            <div className="min-w-0">
+              <p className="text-[10px] font-black uppercase tracking-widest text-text-primary truncate">
+                {t('profile.courses.completedCount', '{{count}} courses completed')}
+              </p>
+            </div>
           </div>
         )}
       </div>

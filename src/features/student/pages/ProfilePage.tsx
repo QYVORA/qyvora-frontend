@@ -153,7 +153,10 @@ const Profile: React.FC = () => {
       <div className="bg-bg-alt px-3 md:px-4 lg:px-6 py-10">
         {visibleSections.includes('courses') && (
           <section id="profile-section-courses">
-            <CoursesModule coursesCompleted={profile.coursesCompleted} />
+            <CoursesModule
+              coursesCompleted={profile.coursesCompleted}
+              courseIds={profile.completedCourseIds}
+            />
           </section>
         )}
       </div>

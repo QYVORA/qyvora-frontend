@@ -12,10 +12,10 @@
 ## Totals
 
 - **Files with violations:** 74
-- **Total flagged class tokens:** 362
+- **Total flagged class tokens:** 357
 - **By rule:**
 
-  - `qyvora-local/no-status-palette`: 334
+  - `qyvora-local/no-status-palette`: 329
   - `qyvora-local/no-arbitrary-color`: 28
 
 ## Exception allowlist (in effect)
@@ -35,8 +35,8 @@ data-layer semantic color maps (`labs.ts`, `bootcampStructure.ts`,
 | Count | File |
 |---|---|
 | 19 | `src/features/student/components/simulations/HttpInspector.tsx` |
-| 19 | `src/shared/components/profile/AchievementsSection.tsx` |
 | 18 | `src/features/student/components/simulations/ApiExplorer.tsx` |
+| 16 | `src/shared/components/profile/AchievementsSection.tsx` |
 | 13 | `src/features/student/components/simulations/TimelineInvestigation.tsx` |
 | 12 | `src/features/marketing/pages/public/SimulationsPage.tsx` |
 | 10 | `src/features/admin/components/dashboard/UsersTab.tsx` |
@@ -59,7 +59,6 @@ data-layer semantic color maps (`labs.ts`, `bootcampStructure.ts`,
 | 6 | `src/features/student/pages/NetworksPage/index.tsx` |
 | 6 | `src/features/student/pages/NotificationsPage.tsx` |
 | 6 | `src/shared/components/profile/ActivityTimeline.tsx` |
-| 6 | `src/shared/components/profile/CoursesModule.tsx` |
 | 6 | `src/shared/components/profile/LabsModule.tsx` |
 | 6 | `src/shared/components/profile/TrophyCabinet.tsx` |
 | 6 | `src/shared/types/profile.ts` |
@@ -72,6 +71,7 @@ data-layer semantic color maps (`labs.ts`, `bootcampStructure.ts`,
 | 4 | `src/features/student/components/UsernameChangeModal.tsx` |
 | 4 | `src/features/student/pages/MarketplacePage.tsx` |
 | 4 | `src/shared/components/courses/InlineQuiz.tsx` |
+| 4 | `src/shared/components/profile/CoursesModule.tsx` |
 | 4 | `src/shared/components/walkthrough/WalkthroughLayout.tsx` |
 | 3 | `src/features/admin/components/cp-analytics/PointsControl.tsx` |
 | 3 | `src/features/admin/components/dashboard/InboxTab.tsx` |
@@ -418,49 +418,44 @@ data-layer semantic color maps (`labs.ts`, `bootcampStructure.ts`,
 - `src/shared/components/profile/AchievementCard.tsx:61` — Palette class `text-red-400` bypasses the semantic status/difficulty tokens. Use text-danger / text-success / text-warning / text-info / text-difficulty-* (from --color-* in src/styles/index.css).
 - `src/shared/components/profile/AchievementCard.tsx:62` — Palette class `text-blue-400` bypasses the semantic status/difficulty tokens. Use text-danger / text-success / text-warning / text-info / text-difficulty-* (from --color-* in src/styles/index.css).
 - `src/shared/components/profile/AchievementCard.tsx:64` — Palette class `text-amber-400` bypasses the semantic status/difficulty tokens. Use text-danger / text-success / text-warning / text-info / text-difficulty-* (from --color-* in src/styles/index.css).
-- `src/shared/components/profile/AchievementsSection.tsx:183` — Palette class `text-blue-400` bypasses the semantic status/difficulty tokens. Use text-danger / text-success / text-warning / text-info / text-difficulty-* (from --color-* in src/styles/index.css).
-- `src/shared/components/profile/AchievementsSection.tsx:184` — Palette class `bg-blue-400/10` bypasses the semantic status/difficulty tokens. Use text-danger / text-success / text-warning / text-info / text-difficulty-* (from --color-* in src/styles/index.css).
-- `src/shared/components/profile/AchievementsSection.tsx:187` — Palette class `bg-blue-400/10` bypasses the semantic status/difficulty tokens. Use text-danger / text-success / text-warning / text-info / text-difficulty-* (from --color-* in src/styles/index.css).
 - `src/shared/components/profile/AchievementsSection.tsx:187` — Palette class `text-blue-400` bypasses the semantic status/difficulty tokens. Use text-danger / text-success / text-warning / text-info / text-difficulty-* (from --color-* in src/styles/index.css).
-- `src/shared/components/profile/AchievementsSection.tsx:206` — Palette class `bg-blue-400/10` bypasses the semantic status/difficulty tokens. Use text-danger / text-success / text-warning / text-info / text-difficulty-* (from --color-* in src/styles/index.css).
-- `src/shared/components/profile/AchievementsSection.tsx:208` — Palette class `text-blue-400` bypasses the semantic status/difficulty tokens. Use text-danger / text-success / text-warning / text-info / text-difficulty-* (from --color-* in src/styles/index.css).
-- `src/shared/components/profile/AchievementsSection.tsx:210` — Palette class `text-blue-400` bypasses the semantic status/difficulty tokens. Use text-danger / text-success / text-warning / text-info / text-difficulty-* (from --color-* in src/styles/index.css).
-- `src/shared/components/profile/AchievementsSection.tsx:233` — Palette class `text-red-400` bypasses the semantic status/difficulty tokens. Use text-danger / text-success / text-warning / text-info / text-difficulty-* (from --color-* in src/styles/index.css).
-- `src/shared/components/profile/AchievementsSection.tsx:234` — Palette class `bg-red-400/10` bypasses the semantic status/difficulty tokens. Use text-danger / text-success / text-warning / text-info / text-difficulty-* (from --color-* in src/styles/index.css).
-- `src/shared/components/profile/AchievementsSection.tsx:237` — Palette class `bg-red-400/10` bypasses the semantic status/difficulty tokens. Use text-danger / text-success / text-warning / text-info / text-difficulty-* (from --color-* in src/styles/index.css).
+- `src/shared/components/profile/AchievementsSection.tsx:188` — Palette class `bg-blue-400/10` bypasses the semantic status/difficulty tokens. Use text-danger / text-success / text-warning / text-info / text-difficulty-* (from --color-* in src/styles/index.css).
+- `src/shared/components/profile/AchievementsSection.tsx:191` — Palette class `bg-blue-400/10` bypasses the semantic status/difficulty tokens. Use text-danger / text-success / text-warning / text-info / text-difficulty-* (from --color-* in src/styles/index.css).
+- `src/shared/components/profile/AchievementsSection.tsx:191` — Palette class `text-blue-400` bypasses the semantic status/difficulty tokens. Use text-danger / text-success / text-warning / text-info / text-difficulty-* (from --color-* in src/styles/index.css).
+- `src/shared/components/profile/AchievementsSection.tsx:210` — Palette class `bg-blue-400/10` bypasses the semantic status/difficulty tokens. Use text-danger / text-success / text-warning / text-info / text-difficulty-* (from --color-* in src/styles/index.css).
+- `src/shared/components/profile/AchievementsSection.tsx:212` — Palette class `text-blue-400` bypasses the semantic status/difficulty tokens. Use text-danger / text-success / text-warning / text-info / text-difficulty-* (from --color-* in src/styles/index.css).
 - `src/shared/components/profile/AchievementsSection.tsx:237` — Palette class `text-red-400` bypasses the semantic status/difficulty tokens. Use text-danger / text-success / text-warning / text-info / text-difficulty-* (from --color-* in src/styles/index.css).
-- `src/shared/components/profile/AchievementsSection.tsx:244` — Palette class `bg-red-400/10` bypasses the semantic status/difficulty tokens. Use text-danger / text-success / text-warning / text-info / text-difficulty-* (from --color-* in src/styles/index.css).
-- `src/shared/components/profile/AchievementsSection.tsx:245` — Palette class `text-red-400` bypasses the semantic status/difficulty tokens. Use text-danger / text-success / text-warning / text-info / text-difficulty-* (from --color-* in src/styles/index.css).
-- `src/shared/components/profile/AchievementsSection.tsx:256` — Palette class `bg-blue-400/20` bypasses the semantic status/difficulty tokens. Use text-danger / text-success / text-warning / text-info / text-difficulty-* (from --color-* in src/styles/index.css).
-- `src/shared/components/profile/AchievementsSection.tsx:256` — Palette class `text-blue-400` bypasses the semantic status/difficulty tokens. Use text-danger / text-success / text-warning / text-info / text-difficulty-* (from --color-* in src/styles/index.css).
-- `src/shared/components/profile/AchievementsSection.tsx:314` — Palette class `bg-amber-400/20` bypasses the semantic status/difficulty tokens. Use text-danger / text-success / text-warning / text-info / text-difficulty-* (from --color-* in src/styles/index.css).
-- `src/shared/components/profile/AchievementsSection.tsx:314` — Palette class `text-amber-400` bypasses the semantic status/difficulty tokens. Use text-danger / text-success / text-warning / text-info / text-difficulty-* (from --color-* in src/styles/index.css).
-- `src/shared/components/profile/AchievementsSection.tsx:316` — Palette class `bg-blue-400/20` bypasses the semantic status/difficulty tokens. Use text-danger / text-success / text-warning / text-info / text-difficulty-* (from --color-* in src/styles/index.css).
-- `src/shared/components/profile/AchievementsSection.tsx:316` — Palette class `text-blue-400` bypasses the semantic status/difficulty tokens. Use text-danger / text-success / text-warning / text-info / text-difficulty-* (from --color-* in src/styles/index.css).
-- `src/shared/components/profile/ActivityTimeline.tsx:19` — Palette class `text-red-400` bypasses the semantic status/difficulty tokens. Use text-danger / text-success / text-warning / text-info / text-difficulty-* (from --color-* in src/styles/index.css).
-- `src/shared/components/profile/ActivityTimeline.tsx:19` — Palette class `bg-red-400/10` bypasses the semantic status/difficulty tokens. Use text-danger / text-success / text-warning / text-info / text-difficulty-* (from --color-* in src/styles/index.css).
-- `src/shared/components/profile/ActivityTimeline.tsx:20` — Palette class `text-blue-400` bypasses the semantic status/difficulty tokens. Use text-danger / text-success / text-warning / text-info / text-difficulty-* (from --color-* in src/styles/index.css).
-- `src/shared/components/profile/ActivityTimeline.tsx:20` — Palette class `bg-blue-400/10` bypasses the semantic status/difficulty tokens. Use text-danger / text-success / text-warning / text-info / text-difficulty-* (from --color-* in src/styles/index.css).
-- `src/shared/components/profile/ActivityTimeline.tsx:22` — Palette class `text-amber-400` bypasses the semantic status/difficulty tokens. Use text-danger / text-success / text-warning / text-info / text-difficulty-* (from --color-* in src/styles/index.css).
-- `src/shared/components/profile/ActivityTimeline.tsx:22` — Palette class `bg-amber-400/10` bypasses the semantic status/difficulty tokens. Use text-danger / text-success / text-warning / text-info / text-difficulty-* (from --color-* in src/styles/index.css).
-- `src/shared/components/profile/CoursesModule.tsx:22` — Palette class `text-blue-400` bypasses the semantic status/difficulty tokens. Use text-danger / text-success / text-warning / text-info / text-difficulty-* (from --color-* in src/styles/index.css).
-- `src/shared/components/profile/CoursesModule.tsx:23` — Palette class `bg-blue-400/10` bypasses the semantic status/difficulty tokens. Use text-danger / text-success / text-warning / text-info / text-difficulty-* (from --color-* in src/styles/index.css).
-- `src/shared/components/profile/CoursesModule.tsx:27` — Palette class `bg-blue-400/10` bypasses the semantic status/difficulty tokens. Use text-danger / text-success / text-warning / text-info / text-difficulty-* (from --color-* in src/styles/index.css).
-- `src/shared/components/profile/CoursesModule.tsx:27` — Palette class `text-blue-400` bypasses the semantic status/difficulty tokens. Use text-danger / text-success / text-warning / text-info / text-difficulty-* (from --color-* in src/styles/index.css).
-- `src/shared/components/profile/CoursesModule.tsx:49` — Palette class `bg-blue-400/10` bypasses the semantic status/difficulty tokens. Use text-danger / text-success / text-warning / text-info / text-difficulty-* (from --color-* in src/styles/index.css).
-- `src/shared/components/profile/CoursesModule.tsx:50` — Palette class `text-blue-400` bypasses the semantic status/difficulty tokens. Use text-danger / text-success / text-warning / text-info / text-difficulty-* (from --color-* in src/styles/index.css).
+- `src/shared/components/profile/AchievementsSection.tsx:238` — Palette class `bg-red-400/10` bypasses the semantic status/difficulty tokens. Use text-danger / text-success / text-warning / text-info / text-difficulty-* (from --color-* in src/styles/index.css).
+- `src/shared/components/profile/AchievementsSection.tsx:241` — Palette class `bg-red-400/10` bypasses the semantic status/difficulty tokens. Use text-danger / text-success / text-warning / text-info / text-difficulty-* (from --color-* in src/styles/index.css).
+- `src/shared/components/profile/AchievementsSection.tsx:241` — Palette class `text-red-400` bypasses the semantic status/difficulty tokens. Use text-danger / text-success / text-warning / text-info / text-difficulty-* (from --color-* in src/styles/index.css).
+- `src/shared/components/profile/AchievementsSection.tsx:262` — Palette class `bg-blue-400/20` bypasses the semantic status/difficulty tokens. Use text-danger / text-success / text-warning / text-info / text-difficulty-* (from --color-* in src/styles/index.css).
+- `src/shared/components/profile/AchievementsSection.tsx:262` — Palette class `text-blue-400` bypasses the semantic status/difficulty tokens. Use text-danger / text-success / text-warning / text-info / text-difficulty-* (from --color-* in src/styles/index.css).
+- `src/shared/components/profile/AchievementsSection.tsx:320` — Palette class `bg-amber-400/20` bypasses the semantic status/difficulty tokens. Use text-danger / text-success / text-warning / text-info / text-difficulty-* (from --color-* in src/styles/index.css).
+- `src/shared/components/profile/AchievementsSection.tsx:320` — Palette class `text-amber-400` bypasses the semantic status/difficulty tokens. Use text-danger / text-success / text-warning / text-info / text-difficulty-* (from --color-* in src/styles/index.css).
+- `src/shared/components/profile/AchievementsSection.tsx:322` — Palette class `bg-blue-400/20` bypasses the semantic status/difficulty tokens. Use text-danger / text-success / text-warning / text-info / text-difficulty-* (from --color-* in src/styles/index.css).
+- `src/shared/components/profile/AchievementsSection.tsx:322` — Palette class `text-blue-400` bypasses the semantic status/difficulty tokens. Use text-danger / text-success / text-warning / text-info / text-difficulty-* (from --color-* in src/styles/index.css).
+- `src/shared/components/profile/ActivityTimeline.tsx:22` — Palette class `text-red-400` bypasses the semantic status/difficulty tokens. Use text-danger / text-success / text-warning / text-info / text-difficulty-* (from --color-* in src/styles/index.css).
+- `src/shared/components/profile/ActivityTimeline.tsx:22` — Palette class `bg-red-400/10` bypasses the semantic status/difficulty tokens. Use text-danger / text-success / text-warning / text-info / text-difficulty-* (from --color-* in src/styles/index.css).
+- `src/shared/components/profile/ActivityTimeline.tsx:23` — Palette class `text-blue-400` bypasses the semantic status/difficulty tokens. Use text-danger / text-success / text-warning / text-info / text-difficulty-* (from --color-* in src/styles/index.css).
+- `src/shared/components/profile/ActivityTimeline.tsx:23` — Palette class `bg-blue-400/10` bypasses the semantic status/difficulty tokens. Use text-danger / text-success / text-warning / text-info / text-difficulty-* (from --color-* in src/styles/index.css).
+- `src/shared/components/profile/ActivityTimeline.tsx:25` — Palette class `text-amber-400` bypasses the semantic status/difficulty tokens. Use text-danger / text-success / text-warning / text-info / text-difficulty-* (from --color-* in src/styles/index.css).
+- `src/shared/components/profile/ActivityTimeline.tsx:25` — Palette class `bg-amber-400/10` bypasses the semantic status/difficulty tokens. Use text-danger / text-success / text-warning / text-info / text-difficulty-* (from --color-* in src/styles/index.css).
+- `src/shared/components/profile/CoursesModule.tsx:52` — Palette class `text-blue-400` bypasses the semantic status/difficulty tokens. Use text-danger / text-success / text-warning / text-info / text-difficulty-* (from --color-* in src/styles/index.css).
+- `src/shared/components/profile/CoursesModule.tsx:53` — Palette class `bg-blue-400/10` bypasses the semantic status/difficulty tokens. Use text-danger / text-success / text-warning / text-info / text-difficulty-* (from --color-* in src/styles/index.css).
+- `src/shared/components/profile/CoursesModule.tsx:57` — Palette class `bg-blue-400/10` bypasses the semantic status/difficulty tokens. Use text-danger / text-success / text-warning / text-info / text-difficulty-* (from --color-* in src/styles/index.css).
+- `src/shared/components/profile/CoursesModule.tsx:57` — Palette class `text-blue-400` bypasses the semantic status/difficulty tokens. Use text-danger / text-success / text-warning / text-info / text-difficulty-* (from --color-* in src/styles/index.css).
 - `src/shared/components/profile/LabsModule.tsx:29` — Palette class `text-red-400` bypasses the semantic status/difficulty tokens. Use text-danger / text-success / text-warning / text-info / text-difficulty-* (from --color-* in src/styles/index.css).
 - `src/shared/components/profile/LabsModule.tsx:30` — Palette class `bg-red-400/10` bypasses the semantic status/difficulty tokens. Use text-danger / text-success / text-warning / text-info / text-difficulty-* (from --color-* in src/styles/index.css).
 - `src/shared/components/profile/LabsModule.tsx:34` — Palette class `bg-red-400/10` bypasses the semantic status/difficulty tokens. Use text-danger / text-success / text-warning / text-info / text-difficulty-* (from --color-* in src/styles/index.css).
 - `src/shared/components/profile/LabsModule.tsx:34` — Palette class `text-red-400` bypasses the semantic status/difficulty tokens. Use text-danger / text-success / text-warning / text-info / text-difficulty-* (from --color-* in src/styles/index.css).
 - `src/shared/components/profile/LabsModule.tsx:56` — Palette class `bg-red-400/10` bypasses the semantic status/difficulty tokens. Use text-danger / text-success / text-warning / text-info / text-difficulty-* (from --color-* in src/styles/index.css).
 - `src/shared/components/profile/LabsModule.tsx:57` — Palette class `text-red-400` bypasses the semantic status/difficulty tokens. Use text-danger / text-success / text-warning / text-info / text-difficulty-* (from --color-* in src/styles/index.css).
-- `src/shared/components/profile/TrophyCabinet.tsx:26` — Palette class `text-amber-400` bypasses the semantic status/difficulty tokens. Use text-danger / text-success / text-warning / text-info / text-difficulty-* (from --color-* in src/styles/index.css).
-- `src/shared/components/profile/TrophyCabinet.tsx:27` — Palette class `bg-amber-400/10` bypasses the semantic status/difficulty tokens. Use text-danger / text-success / text-warning / text-info / text-difficulty-* (from --color-* in src/styles/index.css).
-- `src/shared/components/profile/TrophyCabinet.tsx:40` — Palette class `text-amber-400` bypasses the semantic status/difficulty tokens. Use text-danger / text-success / text-warning / text-info / text-difficulty-* (from --color-* in src/styles/index.css).
-- `src/shared/components/profile/TrophyCabinet.tsx:41` — Palette class `bg-amber-400/10` bypasses the semantic status/difficulty tokens. Use text-danger / text-success / text-warning / text-info / text-difficulty-* (from --color-* in src/styles/index.css).
-- `src/shared/components/profile/TrophyCabinet.tsx:44` — Palette class `bg-amber-400/10` bypasses the semantic status/difficulty tokens. Use text-danger / text-success / text-warning / text-info / text-difficulty-* (from --color-* in src/styles/index.css).
-- `src/shared/components/profile/TrophyCabinet.tsx:44` — Palette class `text-amber-400` bypasses the semantic status/difficulty tokens. Use text-danger / text-success / text-warning / text-info / text-difficulty-* (from --color-* in src/styles/index.css).
+- `src/shared/components/profile/TrophyCabinet.tsx:42` — Palette class `text-amber-400` bypasses the semantic status/difficulty tokens. Use text-danger / text-success / text-warning / text-info / text-difficulty-* (from --color-* in src/styles/index.css).
+- `src/shared/components/profile/TrophyCabinet.tsx:43` — Palette class `bg-amber-400/10` bypasses the semantic status/difficulty tokens. Use text-danger / text-success / text-warning / text-info / text-difficulty-* (from --color-* in src/styles/index.css).
+- `src/shared/components/profile/TrophyCabinet.tsx:56` — Palette class `text-amber-400` bypasses the semantic status/difficulty tokens. Use text-danger / text-success / text-warning / text-info / text-difficulty-* (from --color-* in src/styles/index.css).
+- `src/shared/components/profile/TrophyCabinet.tsx:57` — Palette class `bg-amber-400/10` bypasses the semantic status/difficulty tokens. Use text-danger / text-success / text-warning / text-info / text-difficulty-* (from --color-* in src/styles/index.css).
+- `src/shared/components/profile/TrophyCabinet.tsx:60` — Palette class `bg-amber-400/10` bypasses the semantic status/difficulty tokens. Use text-danger / text-success / text-warning / text-info / text-difficulty-* (from --color-* in src/styles/index.css).
+- `src/shared/components/profile/TrophyCabinet.tsx:60` — Palette class `text-amber-400` bypasses the semantic status/difficulty tokens. Use text-danger / text-success / text-warning / text-info / text-difficulty-* (from --color-* in src/styles/index.css).
 - `src/shared/components/walkthrough/StepParts.tsx:79` — Palette class `text-red-400` bypasses the semantic status/difficulty tokens. Use text-danger / text-success / text-warning / text-info / text-difficulty-* (from --color-* in src/styles/index.css).
 - `src/shared/components/walkthrough/WalkthroughLayout.tsx:170` — Palette class `text-red-400` bypasses the semantic status/difficulty tokens. Use text-danger / text-success / text-warning / text-info / text-difficulty-* (from --color-* in src/styles/index.css).
 - `src/shared/components/walkthrough/WalkthroughLayout.tsx:177` — Palette class `text-green-400` bypasses the semantic status/difficulty tokens. Use text-danger / text-success / text-warning / text-info / text-difficulty-* (from --color-* in src/styles/index.css).

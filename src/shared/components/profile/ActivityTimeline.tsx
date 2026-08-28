@@ -13,6 +13,9 @@ import {
 } from 'lucide-react';
 import type { ActivityEvent, ActivityType, ProfileData } from '@/shared/types/profile';
 import { deriveActivityEvents } from '@/shared/utils/profileDerivations';
+import BootcampBadge from '@/shared/components/BootcampBadge';
+import CourseBadge from '@/shared/components/CourseBadge';
+import { QyvoraMark } from '@/shared/components/brand';
 import ModuleHeader from './ModuleHeader';
 
 const ACTIVITY_CONFIG: Record<ActivityType, { icon: React.ReactNode; color: string; bg: string }> = {
@@ -80,6 +83,16 @@ const ActivityTimeline: React.FC<ActivityTimelineProps> = ({ profile, className 
           <div className="space-y-1">
             {events.map((event, idx) => {
               const config = ACTIVITY_CONFIG[event.type];
+              const logoNode =
+                event.type === 'bootcamp_completed' ? (
+                  <BootcampBadge completed className="w-8 h-8 shrink-0" />
+                ) : event.type === 'course_completed' ? (
+                  profile.completedCourseIds?.[0] ? (
+                    <CourseBadge courseId={profile.completedCourseIds[0]} className="w-8 h-8 shrink-0" />
+                  ) : (
+                    <QyvoraMark className="w-7 h-7 shrink-0" />
+                  )
+                ) : null;
               return (
                 <motion.div
                   key={event.id}
@@ -89,9 +102,11 @@ const ActivityTimeline: React.FC<ActivityTimelineProps> = ({ profile, className 
                   className="relative flex items-start gap-3 py-3 pl-1"
                 >
                   {/* Icon dot */}
-                  <div className={`relative z-10 w-[30px] h-[30px] rounded-lg ${config.bg} flex items-center justify-center shrink-0`}>
-                    <span className={config.color}>{config.icon}</span>
-                  </div>
+                  {logoNode || (
+                    <div className={`relative z-10 w-[30px] h-[30px] rounded-lg ${config.bg} flex items-center justify-center shrink-0`}>
+                      <span className={config.color}>{config.icon}</span>
+                    </div>
+                  )}
 
                   {/* Content */}
                   <div className="min-w-0 flex-1 pt-0.5">

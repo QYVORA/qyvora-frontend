@@ -6,6 +6,8 @@ import { Award, ChevronDown, ChevronUp, FlaskConical } from 'lucide-react';
 import { type Achievement, RARITY_STYLES } from './AchievementCard';
 import HpbAvatar from '@/shared/components/HpbAvatar';
 import BootcampBadge from '@/shared/components/BootcampBadge';
+import LabBadge from '@/shared/components/LabBadge';
+import { QyvoraMark } from '@/shared/components/brand';
 import ModuleHeader from './ModuleHeader';
 import { BOOTCAMP_CONFIG, PHASE_COLORS } from '@/features/student/constants/bootcampStructure';
 import { COURSES } from '@/features/student/data/courses/courseData';
@@ -31,6 +33,8 @@ interface AchievementsSectionProps {
 }
 
 const PINNED_RARITIES = new Set(['rare', 'epic', 'legendary']);
+
+const LAB_BADGE_IDS = ['privesc', 'passwords', 'sqli', 'osint', 'killchain'] as const;
 
 const AchievementsSection: React.FC<AchievementsSectionProps> = ({
   rooms,
@@ -207,7 +211,7 @@ const AchievementsSection: React.FC<AchievementsSectionProps> = ({
                       {IconComp ? (
                         <IconComp className="w-6 h-6 text-blue-400" />
                       ) : (
-                        <FlaskConical className="w-5 h-5 text-blue-400" />
+                        <QyvoraMark className="w-5 h-5" />
                       )}
                     </div>
                     <h4 className="text-[10px] font-black uppercase tracking-widest text-text-primary leading-tight mb-1">
@@ -240,9 +244,11 @@ const AchievementsSection: React.FC<AchievementsSectionProps> = ({
             }
           />
           <div className="mt-3">
-            <div className="flex flex-col items-center text-center p-4 rounded-xl border border-border/50 bg-bg-card max-w-[200px]">
-              <div className="w-12 h-12 rounded-xl flex items-center justify-center mb-3 bg-red-400/10">
-                <FlaskConical className="w-5 h-5 text-red-400" />
+            <div className="flex flex-col items-center text-center p-4 rounded-xl border border-border/50 bg-bg-card max-w-[280px]">
+              <div className="flex items-center gap-2 mb-3">
+                {LAB_BADGE_IDS.map((labId) => (
+                  <LabBadge key={labId} labId={labId} className="w-9 h-9" />
+                ))}
               </div>
               <h4 className="text-[10px] font-black uppercase tracking-widest text-text-primary leading-tight mb-1">
                 {t('profile.achievements.labsCompleted', 'Lab Operator')}
