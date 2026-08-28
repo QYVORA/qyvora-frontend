@@ -100,7 +100,7 @@ const LandingLeaderboardSection = () => {
   const cpTextSize = isDesktop ? 'text-[9px]' : 'text-[7px]';
 
   return (
-    <div className="relative bg-bg min-h-dvh lg:h-dvh flex flex-col overflow-hidden">
+    <div className="relative bg-bg min-h-dvh flex flex-col overflow-hidden">
       <GridBoxedBackground blur={0} mask="right" />
       <div className="relative z-10 w-full h-full px-3 md:px-4 lg:px-6 py-12 sm:py-10 md:py-16 lg:py-20 flex flex-col lg:flex-row gap-10 sm:gap-10 lg:gap-16 lg:items-stretch">
         {/* Header column — same height as grid on desktop */}

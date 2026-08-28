@@ -77,7 +77,7 @@ const LandingTeamSection = () => {
   const shouldReduceMotion = useReducedMotion();
 
   return (
-    <div className="relative bg-bg min-h-dvh lg:h-dvh flex flex-col overflow-x-clip overflow-hidden">
+    <div className="relative bg-bg min-h-dvh flex flex-col overflow-x-clip overflow-hidden">
       <div className="relative z-10 w-full h-full px-3 md:px-4 lg:px-6 py-12 sm:py-10 md:py-16 lg:py-20 flex flex-col gap-10 sm:gap-12 lg:gap-14">
         {/* Header — heading on the left, CTA aligned horizontally on the right */}
         <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6">
