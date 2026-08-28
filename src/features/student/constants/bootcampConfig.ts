@@ -47,6 +47,32 @@ We simulate real-world attacks to find security bugs. Once we find them, organis
 
 *Task:* Write down the difference between offensive (attacking) and defensive (protecting) security in your own words."`,
               image: 'step-01.webp',
+              quiz: [
+                {
+                  id: 'bcq-1',
+                  question: 'What is the core difference between offensive and defensive security?',
+                  options: [
+                    'Offensive security attacks systems (with permission) to find flaws before real attackers; defensive security protects systems',
+                    'Offensive security is always illegal; defensive security is always legal',
+                    'Offensive security only involves physical attacks; defensive security is purely digital',
+                    'There is no difference; they are the same role',
+                  ],
+                  correctIndex: 0,
+                  explanation: 'Offensive security simulates attacks to find weaknesses, while defensive security protects against them.',
+                },
+                {
+                  id: 'bcq-2',
+                  question: 'Which of the following is an offensive security field that simulates a full attack on a company to test its response times?',
+                  options: [
+                    'Bug Bounties',
+                    'Red Teaming',
+                    'Security Logging',
+                    'Patch Management',
+                  ],
+                  correctIndex: 1,
+                  explanation: "Red teaming simulates a full attack to test an organisation's detection and response.",
+                },
+              ],
             },
             {
               title: 'The QYVORA Operating Model',
@@ -59,6 +85,32 @@ We simulate real-world attacks to find security bugs. Once we find them, organis
 
 *Task:* Write down one specific skill you want to learn in this bootcamp over the next month."`,
               image: 'step-02.webp',
+              quiz: [
+                {
+                  id: 'bcq-3',
+                  question: 'What are the three pillars QYVORA operates on?',
+                  options: [
+                    'Education, Execution, Community',
+                    'Hacking, Cracking, Pentesting',
+                    'Linux, Windows, Cloud',
+                    'Tools, Scripts, Payloads',
+                  ],
+                  correctIndex: 0,
+                  explanation: 'QYVORA runs on Education (skills), Execution (applying them), and Community (sharing findings).',
+                },
+                {
+                  id: 'bcq-4',
+                  question: 'Pillar 1, Education, is best described as:',
+                  options: [
+                    'Learning the technical skills taught in the bootcamp',
+                    'Getting paid for finding bugs',
+                    'Defending networks 24/7',
+                    'Writing pentest reports for clients',
+                  ],
+                  correctIndex: 0,
+                  explanation: 'Education is the pillar covering the technical skills you learn in this bootcamp.',
+                },
+              ],
             },
             {
               title: 'Career Paths in Offensive Security',
@@ -72,6 +124,32 @@ We simulate real-world attacks to find security bugs. Once we find them, organis
 
 *Task:* Rank these jobs from most to least interesting to you."`,
               image: 'step-03.webp',
+              quiz: [
+                {
+                  id: 'bcq-5',
+                  question: 'Which role simulates real cyber attackers using stealth and custom tools?',
+                  options: [
+                    'Penetration Tester',
+                    'Red Team Operator',
+                    'Security Researcher',
+                    'System Administrator',
+                  ],
+                  correctIndex: 1,
+                  explanation: 'A red team operator simulates real attackers using stealth and custom tools.',
+                },
+                {
+                  id: 'bcq-6',
+                  question: 'A professional who analyzes code to discover brand new exploits is a:',
+                  options: [
+                    'Bug Bounty Hunter',
+                    'Security Researcher',
+                    'Red Team Operator',
+                    'Defensive Analyst',
+                  ],
+                  correctIndex: 1,
+                  explanation: 'Security researchers analyze code to discover brand new exploits.',
+                },
+              ],
             },
           ],
         },
@@ -93,6 +171,32 @@ We simulate real-world attacks to find security bugs. Once we find them, organis
 
 *Task:* Write down a quick example of using lateral thinking in daily life."`,
               image: 'step-01.webp',
+              quiz: [
+                {
+                  id: 'bcq-7',
+                  question: 'Which trait involves asking how a system works under the hood, e.g. wondering what happens when you input unexpected data into a login box?',
+                  options: [
+                    'Curiosity',
+                    'Persistence',
+                    'Lateral Thinking',
+                    'Aggression',
+                  ],
+                  correctIndex: 0,
+                  explanation: 'Curiosity means always asking how a system works under the hood.',
+                },
+                {
+                  id: 'bcq-8',
+                  question: 'If the front gate is locked, a hacker looks for a side window. This demonstrates:',
+                  options: [
+                    'Curiosity',
+                    'Persistence',
+                    'Lateral Thinking',
+                    'Brute Force',
+                  ],
+                  correctIndex: 2,
+                  explanation: 'Solving problems from unexpected angles is lateral thinking.',
+                },
+              ],
             },
             {
               title: 'Applying the Mindset',
@@ -106,6 +210,32 @@ We simulate real-world attacks to find security bugs. Once we find them, organis
 
 *Task:* Write down your answers for the object you chose."`,
               image: 'step-02.webp',
+              quiz: [
+                {
+                  id: 'bcq-9',
+                  question: 'Which of the following questions is NOT part of the mindset practice described in the step?',
+                  options: [
+                    'What is the system designed to do?',
+                    'What assumptions did the designer make?',
+                    'How many gigabytes of RAM does the machine have?',
+                    'What inputs does it accept without checking?',
+                  ],
+                  correctIndex: 2,
+                  explanation: 'The drill asks what the system does, designer assumptions, how to abuse it, and unchecked inputs.',
+                },
+                {
+                  id: 'bcq-10',
+                  question: 'The mindset drill trains you to think about a door lock or coffee machine by asking how you could:',
+                  options: [
+                    'Use it only as the creator intended',
+                    'Abuse or misuse it',
+                    'Decorate it',
+                    'Speed up its CPU',
+                  ],
+                  correctIndex: 1,
+                  explanation: 'The drill asks how you could abuse or misuse the object to spot weak assumptions.',
+                },
+              ],
             },
             {
               title: 'Tools vs. Understanding',
@@ -119,6 +249,32 @@ We simulate real-world attacks to find security bugs. Once we find them, organis
 
 *Task:* Assess yourself honestly. Are you a tool runner or an operator? What do you need to learn next?"`,
               image: 'step-03.webp',
+              quiz: [
+                {
+                  id: 'bcq-11',
+                  question: "What separates an 'Operator' from a 'Tool Runner'?",
+                  options: [
+                    'Operators just download and run scripts',
+                    'Operators understand the underlying bug and adapt when tools fail',
+                    'Operators never use scripts',
+                    'Tool Runners write custom exploits from scratch',
+                  ],
+                  correctIndex: 1,
+                  explanation: 'Operators understand the underlying bug and can adapt when tools fail.',
+                },
+                {
+                  id: 'bcq-12',
+                  question: "A 'Tool Runner' who faces a failing script will likely be unable to:",
+                  options: [
+                    'Run it again verbatim',
+                    "Fix or adapt the script because they don't understand the bug",
+                    'Download more scripts',
+                    'Retry the same command',
+                  ],
+                  correctIndex: 1,
+                  explanation: "Tool runners can't fix failing scripts because they lack understanding of the underlying bug.",
+                },
+              ],
             },
           ],
         },
@@ -141,6 +297,32 @@ Major computer crime laws:
 
 *Task:* Write down the name of the cyber crime law in your country."`,
               image: 'step-01.webp',
+              quiz: [
+                {
+                  id: 'bcq-13',
+                  question: 'Which UK law criminalizes unauthorized access to computer systems?',
+                  options: [
+                    'Computer Misuse Act 1990',
+                    'Computer Fraud and Abuse Act',
+                    'Directive 2013/40/EU',
+                    'Data Protection Act',
+                  ],
+                  correctIndex: 0,
+                  explanation: 'The UK Computer Misuse Act 1990 is the relevant cyber crime law.',
+                },
+                {
+                  id: 'bcq-14',
+                  question: 'The single factor that separates security testing from criminal hacking is:',
+                  options: [
+                    "The hacker's skill level",
+                    'Written permission',
+                    'Using free tools',
+                    'Working at night',
+                  ],
+                  correctIndex: 1,
+                  explanation: 'Written permission is the line between legitimate testing and criminal hacking.',
+                },
+              ],
             },
             {
               title: 'Scope and Authorisation',
@@ -155,6 +337,32 @@ A scope document lists:
 
 *Task:* What would you do if you found a bug on a system that is out-of-scope? (Hint: Do not exploit it)."`,
               image: 'step-02.webp',
+              quiz: [
+                {
+                  id: 'bcq-15',
+                  question: 'What does the Scope document define before a security test?',
+                  options: [
+                    'Exactly what you are allowed to attack and how',
+                    "The hacker's hourly rate",
+                    'The colour of the pentest report',
+                    'Which coffee machine to use',
+                  ],
+                  correctIndex: 0,
+                  explanation: 'The scope defines in-scope targets, out-of-scope targets, allowed methods, and testing times.',
+                },
+                {
+                  id: 'bcq-16',
+                  question: 'If you find a bug on a system that is out-of-scope, you should:',
+                  options: [
+                    'Exploit it fully and take screenshots',
+                    'Report it and NOT exploit it, then stop testing that system',
+                    'Ignore it completely forever',
+                    'Share it on a public forum immediately',
+                  ],
+                  correctIndex: 1,
+                  explanation: 'Do not exploit out-of-scope systems; report the issue within authorised rules.',
+                },
+              ],
             },
             {
               title: 'Responsible Disclosure',
@@ -169,6 +377,32 @@ This protects users from being attacked before the bug is fixed.
 
 *Task:* Summarize the steps of reporting a bug privately."`,
               image: 'step-03.webp',
+              quiz: [
+                {
+                  id: 'bcq-17',
+                  question: 'What is the correct order for Responsible Disclosure?',
+                  options: [
+                    'Publish immediately, then patch',
+                    'Report privately to the vendor, wait ~90 days for a patch, publish after the patch',
+                    'Sell the bug to the highest bidder',
+                    'Tweet about it before patching',
+                  ],
+                  correctIndex: 1,
+                  explanation: 'Report privately, wait for a patch, then publish only after the patch is released.',
+                },
+                {
+                  id: 'bcq-18',
+                  question: 'Why does Responsible Disclosure protect users?',
+                  options: [
+                    'It prevents attackers from exploiting the bug before it is fixed',
+                    'It keeps vulnerabilities secret forever',
+                    'It makes the bug more valuable',
+                    'It shortens the patch window dramatically',
+                  ],
+                  correctIndex: 0,
+                  explanation: "Waiting for a patch prevents attackers from abusing the bug before it's fixed.",
+                },
+              ],
             },
           ],
         },
@@ -268,6 +502,32 @@ apropos network
 
 *Training Task:* Use \`export\` to set a variable named \`CODENAME\` to your hacker handle. Then use \`echo\` to print it. Congratulations, you've just taken your first step in the Qyvora training program.`,
               image: 'step-01.webp',
+              quiz: [
+                {
+                  id: 'bcq-19',
+                  question: 'Which command displays the operating system and kernel version?',
+                  options: [
+                    'hostname',
+                    'uname -a',
+                    'users',
+                    'clear',
+                  ],
+                  correctIndex: 1,
+                  explanation: 'uname -a prints the OS and kernel version used to find exploits.',
+                },
+                {
+                  id: 'bcq-20',
+                  question: "Which directory is described as the 'Black Box' that records everything that happens?",
+                  options: [
+                    '/root',
+                    '/home',
+                    '/var/log',
+                    '/proc',
+                  ],
+                  correctIndex: 2,
+                  explanation: "/var/log is the 'black box' that records everything on the system.",
+                },
+              ],
             },
             {
               title: 'Navigation & Advanced File Searching',
@@ -341,6 +601,32 @@ rm -rf ./tmp_recon_data
 
 *Hacker Challenge:* Navigate to \`/tmp\`, create a folder named \`hs_workspace\`, jump inside, and then use \`cd -\` to return to your previous location. How many commands did it take?`,
               image: 'step-02.webp',
+              quiz: [
+                {
+                  id: 'bcq-21',
+                  question: 'Which command returns you to the previous directory you were in?',
+                  options: [
+                    'cd ~',
+                    'cd ..',
+                    'cd -',
+                    'cd ../..',
+                  ],
+                  correctIndex: 2,
+                  explanation: 'cd - jumps to the previous directory.',
+                },
+                {
+                  id: 'bcq-22',
+                  question: 'Which command finds files modified in the last 10 minutes (useful for spotting active logs)?',
+                  options: [
+                    'find /var/log -mmin -10',
+                    'locate log',
+                    'ls -l /var/log',
+                    'head /var/log',
+                  ],
+                  correctIndex: 0,
+                  explanation: 'find with -mmin -10 finds files modified within the last 10 minutes.',
+                },
+              ],
             },
             {
               title: 'Permissions & Privilege Context',
@@ -404,6 +690,32 @@ su trainee_02 -c "ls /home/trainee_02"
 
 *Pro Tip:* If you find an SUID file owned by root, check it against **GTFOBins**. If it's on the list, you are seconds away from full system control.`,
               image: 'step-03.webp',
+              quiz: [
+                {
+                  id: 'bcq-23',
+                  question: "In the permission string -rwxr-xr-x, what does the 'x' stand for?",
+                  options: [
+                    'Execute (run) access',
+                    'X-Ray mode',
+                    'Extra permissions',
+                    'Export the file',
+                  ],
+                  correctIndex: 0,
+                  explanation: 'x grants execute (run) permission; its octal value is 1.',
+                },
+                {
+                  id: 'bcq-24',
+                  question: 'Which special permission allows a file to run with the privileges of its owner (usually root) regardless of who starts it?',
+                  options: [
+                    'Sticky bit',
+                    'SUID',
+                    'ACL',
+                    'Umask',
+                  ],
+                  correctIndex: 1,
+                  explanation: "SUID allows a file to run with the owner's privileges, a common privilege escalation path.",
+                },
+              ],
             },
             {
               title: 'Reading, Filtering & Data Extraction',
@@ -473,6 +785,32 @@ cat /var/log/access.log | cut -d " " -f 1 | sort | uniq -c | sort -nr | head -n 
 
 *Experiment:* Try running \`history | awk '{print $2}' | sort | uniq -c | sort -nr | head -n 5\`. This will show you your top 5 most used commands. What does it reveal about your training habits?`,
               image: 'step-04.webp',
+              quiz: [
+                {
+                  id: 'bcq-25',
+                  question: 'Which command monitors a log file in real-time to watch users log in?',
+                  options: [
+                    'head -n 20 /var/log/auth.log',
+                    'tail -f /var/log/auth.log',
+                    'cat -n auth.log',
+                    'grep -c auth.log',
+                  ],
+                  correctIndex: 1,
+                  explanation: 'tail -f streams new lines of a log as they are written.',
+                },
+                {
+                  id: 'bcq-26',
+                  question: "Which command counts how many times the word 'failed' appears in a file?",
+                  options: [
+                    "grep -C 3 'failed' file",
+                    "grep -c 'failed' file",
+                    "grep -i 'failed' file",
+                    'sort -u file',
+                  ],
+                  correctIndex: 1,
+                  explanation: 'grep -c counts the number of matching lines.',
+                },
+              ],
             },
           ],
         },
@@ -557,6 +895,32 @@ sudo chage -l $(whoami)
 
 *Identity Check:* Run \`id\`. If you see \`uid=0\`, you have achieved total control. If not, your Qyvora training continues. How many groups are you currently a member of?`,
               image: 'step-01.webp',
+              quiz: [
+                {
+                  id: 'bcq-27',
+                  question: 'Which command shows your detailed identity including UID, GID, and groups?',
+                  options: [
+                    'whoami',
+                    'id',
+                    'w',
+                    'last',
+                  ],
+                  correctIndex: 1,
+                  explanation: 'id prints your UID, GID, and group memberships.',
+                },
+                {
+                  id: 'bcq-28',
+                  question: "What does awk -F: '$3 == 0 {print $1}' /etc/passwd do?",
+                  options: [
+                    'Lists all users whose UID is 0 (root-equivalent accounts)',
+                    'Lists all passwords',
+                    'Counts the users',
+                    'Finds users with shells',
+                  ],
+                  correctIndex: 0,
+                  explanation: 'It enumerates accounts with UID 0, i.e. root or root-equivalent.',
+                },
+              ],
             },
             {
               title: 'The Vault: Passwd & Shadow Files',
@@ -623,6 +987,32 @@ awk -F: '$6 ~ /\\/home/ && $7 ~ /nologin/ {print $1}' /etc/passwd
 
 *Qyvora Insight:* In the \`shadow\` file, the string between the first and second \`$\` is the salt. A hacker uses this salt along with the hash to perform 'Brute Force' or 'Dictionary' attacks offline.`,
               image: 'step-02.webp',
+              quiz: [
+                {
+                  id: 'bcq-29',
+                  question: 'Which file contains the salted password hashes of every user and is restricted to root?',
+                  options: [
+                    '/etc/passwd',
+                    '/etc/shadow',
+                    '/etc/group',
+                    '/etc/sudoers',
+                  ],
+                  correctIndex: 1,
+                  explanation: '/etc/shadow stores salted password hashes and is readable only by root.',
+                },
+                {
+                  id: 'bcq-30',
+                  question: "In the shadow file, what does the string between the first and second '$' represent?",
+                  options: [
+                    'The encryption cost',
+                    'The salt',
+                    'The username',
+                    'The password history',
+                  ],
+                  correctIndex: 1,
+                  explanation: 'The salt is stored between the first and second $ and is used for offline brute force or dictionary attacks.',
+                },
+              ],
             },
             {
               title: 'Advanced Permissions Manipulation',
@@ -687,6 +1077,32 @@ sudo usermod -aG sudo trainee_01
 
 *Challenge:* Create a file, set its permissions to \`000\`, and then try to delete it as a normal user. Does Linux let you delete a file you can't even read?`,
               image: 'step-03.webp',
+              quiz: [
+                {
+                  id: 'bcq-31',
+                  question: 'Which command sets a file to Read/Write/Execute for the owner and nothing for others?',
+                  options: [
+                    'chmod 700 file',
+                    'chmod go-wx file',
+                    'chmod u+s file',
+                    'chmod +t file',
+                  ],
+                  correctIndex: 0,
+                  explanation: 'chmod 700 grants full access to the owner only.',
+                },
+                {
+                  id: 'bcq-32',
+                  question: 'What does chattr +i do to a file?',
+                  options: [
+                    'Makes it executable by everyone',
+                    'Makes the file immutable so even root cannot delete it without removing the attribute',
+                    'Changes its owner to root',
+                    'Sets the sticky bit',
+                  ],
+                  correctIndex: 1,
+                  explanation: 'chattr +i makes a file immutable; even root must remove the attribute to delete it.',
+                },
+              ],
             },
             {
               title: 'Sudo: The Path to Absolute Control',
@@ -745,6 +1161,32 @@ sudo tail -n 50 /var/log/auth.log | grep sudo
 
 *Training Insight:* If you see \`(ALL) NOPASSWD: ALL\` in your \`sudo -l\` output, you have already won. You can run any command as root without a password. Train like a hacker, think like an owner.`,
               image: 'step-04.webp',
+              quiz: [
+                {
+                  id: 'bcq-33',
+                  question: 'Which command is the most important for auditing your privilege escalation opportunities?',
+                  options: [
+                    'sudo -l',
+                    'sudo -v',
+                    'sudo -E',
+                    'sudo -u',
+                  ],
+                  correctIndex: 0,
+                  explanation: 'sudo -l lists which commands you can run as root, revealing escalation paths.',
+                },
+                {
+                  id: 'bcq-34',
+                  question: "If your sudo -l output shows '(ALL) NOPASSWD: ALL', what does it mean?",
+                  options: [
+                    'You need a password for every command',
+                    'You can run any command as root without a password',
+                    'Sudo is disabled',
+                    'You are not in the sudo group',
+                  ],
+                  correctIndex: 1,
+                  explanation: '(ALL) NOPASSWD: ALL means you can run any command as root with no password.',
+                },
+              ],
             },
           ],
         },
@@ -823,6 +1265,32 @@ sudo lsof -i :80
 
 *Hacker's Insight:* If you see a process running as root from the \`/tmp\` or \`/dev/shm\` directory, it's a major red flag. Qyvora Hackers use these directories to hide their temporary tools.`,
               image: 'step-01.webp',
+              quiz: [
+                {
+                  id: 'bcq-35',
+                  question: 'Which command shows all processes with full command lines?',
+                  options: [
+                    'ps auxww',
+                    'top only',
+                    'lsof port 80',
+                    'free -ht',
+                  ],
+                  correctIndex: 0,
+                  explanation: 'ps auxww lists every process with the full command line.',
+                },
+                {
+                  id: 'bcq-36',
+                  question: 'A process running as root from /tmp or /dev/shm is a red flag because:',
+                  options: [
+                    'Those are public writable temp directories hackers use to hide tools',
+                    'They are encrypted',
+                    'They only hold logs',
+                    'They are read-only',
+                  ],
+                  correctIndex: 0,
+                  explanation: 'Qyvora hackers use /tmp and /dev/shm to hide temporary tools.',
+                },
+              ],
             },
             {
               title: 'Mapping the Exposure (Network Ports)',
@@ -886,6 +1354,32 @@ netstat -pant
 
 *Training Task:* Run \`ss -tulnp\`. Can you find any service listening on \`0.0.0.0\`? That means it's open to the entire network. If it's on \`127.0.0.1\`, it's only open to people already on the machine.`,
               image: 'step-02.webp',
+              quiz: [
+                {
+                  id: 'bcq-37',
+                  question: 'Which command lists all listening TCP and UDP ports with process names?',
+                  options: [
+                    'ss -atn',
+                    'sudo ss -tulnp',
+                    'ip route show',
+                    'cat /etc/hosts',
+                  ],
+                  correctIndex: 1,
+                  explanation: 'sudo ss -tulnp shows listening TCP/UDP ports with process names.',
+                },
+                {
+                  id: 'bcq-38',
+                  question: 'A service listening on 0.0.0.0 is:',
+                  options: [
+                    'Open to the entire network',
+                    'Only open to the local machine',
+                    'Disabled',
+                    'Encrypted',
+                  ],
+                  correctIndex: 0,
+                  explanation: '0.0.0.0 means the service accepts connections from the whole network.',
+                },
+              ],
             },
             {
               title: 'Remote Interaction & Data Transfer',
@@ -950,6 +1444,32 @@ iperf3 -c <target_ip>
 
 *Experiment:* Use \`curl\` to visit \`http://<remote_server_ip>\`. If it fails, try adding \`-k\` to ignore SSL errors or \`-L\` to follow redirects. Every failure is a lesson in the Qyvora program.`,
               image: 'step-03.webp',
+              quiz: [
+                {
+                  id: 'bcq-39',
+                  question: 'Which command maps a remote database port to your local machine to tunnel through a firewall?',
+                  options: [
+                    'ssh -L 9000:localhost:3306 user@host',
+                    'scp file user@host',
+                    'rsync -avz dir user@host',
+                    'nc -lvnp 4444',
+                  ],
+                  correctIndex: 0,
+                  explanation: 'ssh -L performs local port forwarding to tunnel traffic through SSH.',
+                },
+                {
+                  id: 'bcq-40',
+                  question: 'What does netcat (nc) allow you to do in a single command?',
+                  options: [
+                    'Connect to services, send raw requests, and create listeners for file transfer',
+                    'Only ping hosts',
+                    'Only scan UDP ports',
+                    'Only clone web pages',
+                  ],
+                  correctIndex: 0,
+                  explanation: "Netcat is the 'Swiss Army Knife' for raw socket interaction, listeners, and transfer.",
+                },
+              ],
             },
             {
               title: 'Mastering Persistence & Background Tasks',
@@ -1027,6 +1547,32 @@ systemctl status sshd
 
 *Hacker Tip:* Use \`Ctrl+Z\` to temporarily pause a running program, then type \`bg\` to keep it running in the background. You've just learned to multitask like a true Qyvora Hacker.`,
               image: 'step-04.webp',
+              quiz: [
+                {
+                  id: 'bcq-41',
+                  question: 'Which command runs a tool that keeps going even after you log out?',
+                  options: [
+                    'nohup ./tool.sh &',
+                    'fg %1',
+                    'jobs -l',
+                    'kill -15 1234',
+                  ],
+                  correctIndex: 0,
+                  explanation: 'nohup runs a command immune to hangup so it survives logout.',
+                },
+                {
+                  id: 'bcq-42',
+                  question: 'Which signal forces an immediate, ungraceful stop of a process?',
+                  options: [
+                    'SIGTERM (15)',
+                    'SIGKILL (9)',
+                    'SIGINT (2)',
+                    'SIGUSR1 (10)',
+                  ],
+                  correctIndex: 1,
+                  explanation: 'SIGKILL (kill -9) forces an immediate stop that cannot be caught or ignored.',
+                },
+              ],
             },
           ],
         },
@@ -1116,6 +1662,32 @@ log_action "Scanning target: <target_ip>"
 
 *Self-Check:* Create a script that prints "Training to be an Qyvora Hacker" and saves it to a file named \`goal.txt\`. Use the commands you've learned to make it executable and run it.`,
               image: 'step-01.webp',
+              quiz: [
+                {
+                  id: 'bcq-43',
+                  question: "What is the purpose of the 'Shebang' line (#!/bin/bash) at the top of a script?",
+                  options: [
+                    'It tells Linux which interpreter to use',
+                    'It makes the file executable',
+                    'It comments out the code',
+                    'It sets the file permissions',
+                  ],
+                  correctIndex: 0,
+                  explanation: 'The shebang tells the system which interpreter to run the script with.',
+                },
+                {
+                  id: 'bcq-44',
+                  question: 'Which command substitution captures the kernel version into a variable?',
+                  options: [
+                    'KERNEL=$(uname -r)',
+                    'KERNEL=uname -r',
+                    'echo uname -r',
+                    'read KERNEL',
+                  ],
+                  correctIndex: 0,
+                  explanation: '$(uname -r) captures the output of uname -r into the KERNEL variable.',
+                },
+              ],
             },
             {
               title: 'Variables & Intelligent Tooling',
@@ -1190,6 +1762,32 @@ echo "New Path: $\{STAGED_PATH/tmp/dev/shm}"
 
 *Training Task:* Write a script that takes a username as an argument and checks if they exist in \`/etc/passwd\`. If they do, print "Target found in Qyvora database."`,
               image: 'step-02.webp',
+              quiz: [
+                {
+                  id: 'bcq-45',
+                  question: 'In a bash script, what is $1?',
+                  options: [
+                    'The script name',
+                    'The first command-line argument passed to the script',
+                    'A built-in variable for the current date',
+                    'The exit code',
+                  ],
+                  correctIndex: 1,
+                  explanation: '$1 is the first argument passed to the script.',
+                },
+                {
+                  id: 'bcq-46',
+                  question: 'Which command reads input from the user and hides what they type (perfect for passwords)?',
+                  options: [
+                    'read CODE',
+                    'read -s CODE',
+                    'echo $CODE',
+                    'cat CODE',
+                  ],
+                  correctIndex: 1,
+                  explanation: 'read -s silently reads input, hiding passwords from the screen.',
+                },
+              ],
             },
             {
               title: 'Loops: The Multiplier of Effort',
@@ -1260,6 +1858,32 @@ done
 
 *Challenge:* Create a loop that prints the numbers 10 down to 1, followed by "LIFTOFF - You are now an Qyvora Hacker!"`,
               image: 'step-03.webp',
+              quiz: [
+                {
+                  id: 'bcq-47',
+                  question: 'Which statement immediately stops an endless loop once a condition is met?',
+                  options: [
+                    'continue',
+                    'break',
+                    'return',
+                    'exit 0',
+                  ],
+                  correctIndex: 1,
+                  explanation: 'break exits the loop early, e.g. once the correct password is found.',
+                },
+                {
+                  id: 'bcq-48',
+                  question: 'What does the {1..254} brace range do in a for loop?',
+                  options: [
+                    'Loops through the numbers 1 to 254',
+                    'Creates 254 new files',
+                    'Pings the same IP 254 times',
+                    'Runs 254 parallel scans',
+                  ],
+                  correctIndex: 0,
+                  explanation: '{1..254} iterates the numbers 1 through 254, used for subnet scans.',
+                },
+              ],
             },
             {
               title: 'Conditionals & The Logic of Discovery',
@@ -1333,6 +1957,32 @@ fi
 
 *Final Training Project:* Combine everything you've learned into a single script. It should take an IP as an argument, check if it's alive, scan 3 common ports, and save the results to a file named \`recon_report.txt\`. You are now ready to graduate from Linux Foundations.`,
               image: 'step-04.webp',
+              quiz: [
+                {
+                  id: 'bcq-49',
+                  question: 'Which logical operator requires BOTH conditions to be true?',
+                  options: [
+                    '&& (AND)',
+                    '|| (OR)',
+                    '! (NOT)',
+                    '== (equals)',
+                  ],
+                  correctIndex: 0,
+                  explanation: '&& (AND) requires both conditions to be true.',
+                },
+                {
+                  id: 'bcq-50',
+                  question: 'What does the $? variable hold after a command runs?',
+                  options: [
+                    'The exit code of the last command',
+                    'The PID of the last command',
+                    'The last argument',
+                    'The current user',
+                  ],
+                  correctIndex: 0,
+                  explanation: '$? stores the exit code, letting you check if the previous command succeeded.',
+                },
+              ],
             },
           ],
         },
@@ -1404,6 +2054,32 @@ ip link show eth0 | grep mtu
 
 *Operative Memory Aid:* **"Please Do Not Throw Sausage Pizza Away"** (Physical to Application). Train your mind to identify which layer a tool is operating on before you run it.`,
               image: 'step-01.webp',
+              quiz: [
+                {
+                  id: 'bcq-51',
+                  question: 'At which OSI layer do protocols like HTTP, DNS, SSH, and FTP live?',
+                  options: [
+                    'Layer 7 - Application',
+                    'Layer 4 - Transport',
+                    'Layer 3 - Network',
+                    'Layer 2 - Data Link',
+                  ],
+                  correctIndex: 0,
+                  explanation: 'HTTP, DNS, SSH, FTP and SMTP operate at Layer 7 (Application).',
+                },
+                {
+                  id: 'bcq-52',
+                  question: 'Which OSI layer is where you would perform ARP poisoning and MAC flooding?',
+                  options: [
+                    'Layer 1 - Physical',
+                    'Layer 2 - Data Link',
+                    'Layer 5 - Session',
+                    'Layer 6 - Presentation',
+                  ],
+                  correctIndex: 1,
+                  explanation: 'ARP poisoning and MAC flooding target Layer 2 (Data Link).',
+                },
+              ],
             },
             {
               title: 'The TCP Three-Way Handshake',
@@ -1450,6 +2126,32 @@ sudo tcpdump -ni any -vvv port 80
 
 *Hacker's Note:* The \`RST\` (Reset) flag is the "Hang up" signal. If you receive a \`RST\` immediately after a \`SYN\`, the port is closed. If you receive a \`SYN-ACK\`, the door is open.`,
               image: 'step-02.webp',
+              quiz: [
+                {
+                  id: 'bcq-53',
+                  question: 'What is the correct sequence of the TCP three-way handshake?',
+                  options: [
+                    'SYN, SYN-ACK, ACK',
+                    'ACK, SYN, FIN',
+                    'SYN, ACK, SYN',
+                    'FIN, ACK, RST',
+                  ],
+                  correctIndex: 0,
+                  explanation: 'The handshake is SYN, SYN-ACK, then ACK.',
+                },
+                {
+                  id: 'bcq-54',
+                  question: 'If you send a SYN and receive a RST immediately, what does that indicate?',
+                  options: [
+                    'The port is closed',
+                    'The port is open',
+                    'The port is filtered by a firewall',
+                    'The connection is encrypted',
+                  ],
+                  correctIndex: 0,
+                  explanation: 'A RST immediately after SYN means the port is closed.',
+                },
+              ],
             },
             {
               title: 'TCP vs UDP: Reliability vs Speed',
@@ -1496,6 +2198,32 @@ sudo tcpdump -i any udp port 53
 
 *Operative Insight:* Attackers target UDP because it is often overlooked by firewalls and rarely requires complex authentication. If a server is 'quiet' on TCP, check the UDP side.`,
               image: 'step-03.webp',
+              quiz: [
+                {
+                  id: 'bcq-55',
+                  question: 'Which protocol is connection-oriented and guarantees reliable delivery?',
+                  options: [
+                    'TCP',
+                    'UDP',
+                    'ICMP',
+                    'ARP',
+                  ],
+                  correctIndex: 0,
+                  explanation: 'TCP is connection-oriented and reliable, like a certified letter.',
+                },
+                {
+                  id: 'bcq-56',
+                  question: 'Which common protocol uses UDP (not TCP)?',
+                  options: [
+                    'SSH on port 22',
+                    'DNS on port 53',
+                    'HTTP on port 80',
+                    'RDP on port 3389',
+                  ],
+                  correctIndex: 1,
+                  explanation: 'DNS uses UDP port 53, which lacks a handshake.',
+                },
+              ],
             },
             {
               title: 'Packet Analysis with tcpdump',
@@ -1549,6 +2277,32 @@ sudo tcpdump -n
 
 *Challenge:* Start \`tcpdump\` in one terminal window. In another, run an \`nmap\` scan against \`localhost\`. Can you identify the exact moment the scan hits your machine? What flags do you see?`,
               image: 'step-04.webp',
+              quiz: [
+                {
+                  id: 'bcq-57',
+                  question: 'Which tcpdump flag limits capture to only traffic on port 80?',
+                  options: [
+                    'tcpdump port 80',
+                    'tcpdump src 80',
+                    'tcpdump -i eth0 80',
+                    'tcpdump host 80',
+                  ],
+                  correctIndex: 0,
+                  explanation: 'tcpdump port 80 captures only traffic on port 80.',
+                },
+                {
+                  id: 'bcq-58',
+                  question: 'Which tcpdump option saves captured traffic to a .pcap file for later analysis in Wireshark?',
+                  options: [
+                    '-w evidence.pcap',
+                    '-r evidence.pcap',
+                    '-n evidence.pcap',
+                    '-q evidence.pcap',
+                  ],
+                  correctIndex: 0,
+                  explanation: '-w writes raw packets to a .pcap file; -r reads one back.',
+                },
+              ],
             },
           ],
         },
@@ -1620,6 +2374,32 @@ dig <target_domain> +noall +answer
 
 *Operative Insight:* A misconfigured DNS server is like leaving your internal network map on a park bench. Always check for AXFR vulnerabilities first.`,
               image: 'step-01.webp',
+              quiz: [
+                {
+                  id: 'bcq-59',
+                  question: "Which DNS query returns a complete copy of a domain's records and, if misconfigured, reveals every subdomain?",
+                  options: [
+                    'AXFR (Zone Transfer)',
+                    'MX record query',
+                    'Reverse DNS lookup',
+                    'SOA query',
+                  ],
+                  correctIndex: 0,
+                  explanation: 'A successful AXFR zone transfer lists every subdomain.',
+                },
+                {
+                  id: 'bcq-60',
+                  question: 'Which dig command performs a reverse DNS lookup, mapping an IP back to a name?',
+                  options: [
+                    'dig -x <target_ip>',
+                    'dig <domain> MX',
+                    'dig <domain> ANY',
+                    'dig @<ns> <domain>',
+                  ],
+                  correctIndex: 0,
+                  explanation: 'dig -x performs reverse DNS to map an IP to a hostname.',
+                },
+              ],
             },
             {
               title: 'HTTP: The Backbone of the Web',
@@ -1679,6 +2459,32 @@ curl -s -I http://<target_ip> | grep -E "Strict-Transport|Content-Security|X-Fra
 
 *Hacker's Strategy:* The \`X-Powered-By\` and \`Server\` headers are your best friends. They tell you exactly what software to research for known exploits.`,
               image: 'step-02.webp',
+              quiz: [
+                {
+                  id: 'bcq-61',
+                  question: 'Which curl flag fetches ONLY the response headers (useful for fingerprinting)?',
+                  options: [
+                    'curl -I <target>',
+                    'curl <target>',
+                    'curl -Lk <target>',
+                    'curl -X POST <target>',
+                  ],
+                  correctIndex: 0,
+                  explanation: 'curl -I HEAD request returns only the response headers.',
+                },
+                {
+                  id: 'bcq-62',
+                  question: 'Which HTTP method, if enabled, allows an attacker to upload files such as a web shell?',
+                  options: [
+                    'PUT',
+                    'GET',
+                    'DELETE',
+                    'OPTIONS',
+                  ],
+                  correctIndex: 0,
+                  explanation: 'PUT lets you write files to the server if it is enabled.',
+                },
+              ],
             },
             {
               title: 'Common Protocols: FTP, SSH & SMTP',
@@ -1735,6 +2541,32 @@ sudo tcpdump -i any port 21 or port 22 or port 25
 
 *Training Task:* Use \`nc\` to connect to port 22 on your local machine. Can you identify the SSH version? Research the most famous vulnerability for that version.`,
               image: 'step-03.webp',
+              quiz: [
+                {
+                  id: 'bcq-63',
+                  question: 'Which SMTP command is used to verify whether a username exists on a mail server?',
+                  options: [
+                    'VRFY',
+                    'HELO',
+                    'MAIL FROM',
+                    'QUIT',
+                  ],
+                  correctIndex: 0,
+                  explanation: 'VRFY lets you test whether a user exists, enabling user enumeration.',
+                },
+                {
+                  id: 'bcq-64',
+                  question: 'Which login is a common misconfiguration on FTP servers that allows unauthenticated access?',
+                  options: [
+                    'Anonymous login',
+                    'Root login',
+                    'Admin login',
+                    'Guest shell',
+                  ],
+                  correctIndex: 0,
+                  explanation: 'Anonymous FTP (username: anonymous) often allows unauthenticated access.',
+                },
+              ],
             },
             {
               title: 'Protocol Analysis & Workflow',
@@ -1789,6 +2621,32 @@ grep -oE "\b([0-9]{1,3}\\.){3}[0-9]{1,3}\b" scan.txt | sort -u
 
 *Final Insight:* Networking isn't about memorizing ports; it's about understanding the "conversation" between machines. If you can hear the conversation, you can join it. If you can join it, you can control it.`,
               image: 'step-04.webp',
+              quiz: [
+                {
+                  id: 'bcq-65',
+                  question: 'Which tool identifies the technologies behind a website?',
+                  options: [
+                    'whatweb',
+                    'nc',
+                    'tshark',
+                    'telnet',
+                  ],
+                  correctIndex: 0,
+                  explanation: 'whatweb fingerprints web technologies.',
+                },
+                {
+                  id: 'bcq-66',
+                  question: 'Using a loop with /dev/tcp to test ports is an example of:',
+                  options: [
+                    'Banner grabbing without installing tools',
+                    'TCP SYN scanning',
+                    'UDP flooding',
+                    'DNS zone transfer',
+                  ],
+                  correctIndex: 0,
+                  explanation: 'The /dev/tcp loop is a shell-only way to test open ports.',
+                },
+              ],
             },
           ],
         },
@@ -1876,6 +2734,32 @@ nmap -sS <target_ip> -oS -
 
 *Operative Drill:* Perform an \`-sS\` scan and an \`-sT\` scan while running \`tcpdump\`. Which one completes the handshake? Which one sends a \`RST\`?`,
               image: 'step-01.webp',
+              quiz: [
+                {
+                  id: 'bcq-67',
+                  question: "Which Nmap scan is a half-open 'stealth' SYN scan that does not complete the TCP handshake?",
+                  options: [
+                    'sudo nmap -sS -T4 <target>',
+                    'nmap -sT -T4 <target>',
+                    'nmap -sU <target>',
+                    'nmap -f <target>',
+                  ],
+                  correctIndex: 0,
+                  explanation: "-sS is the SYN 'stealth' scan, which does not complete the handshake.",
+                },
+                {
+                  id: 'bcq-68',
+                  question: 'Which Nmap flag enables OS detection?',
+                  options: [
+                    '-O',
+                    '-sV',
+                    '-f',
+                    '-sC',
+                  ],
+                  correctIndex: 0,
+                  explanation: "-O attempts to identify the target's operating system.",
+                },
+              ],
             },
             {
               title: 'Interrogating Services & Versions',
@@ -1941,6 +2825,32 @@ telnet <target_ip> 25
 
 *Hacker's Strategy:* If Nmap reports a port as 'Filtered,' it means a firewall is dropping the packets. Try changing your source port to 53 or 88 — firewalls often trust traffic from DNS or Kerberos ports.`,
               image: 'step-02.webp',
+              quiz: [
+                {
+                  id: 'bcq-69',
+                  question: 'Once you identify a software version (e.g. Apache 2.4.41), which tool searches a local database for matching exploits?',
+                  options: [
+                    'searchsploit',
+                    'whatweb',
+                    'theHarvester',
+                    'gobuster',
+                  ],
+                  correctIndex: 0,
+                  explanation: 'searchsploit looks up known exploits for the given version.',
+                },
+                {
+                  id: 'bcq-70',
+                  question: 'Which Nmap script lists shared folders on a Windows SMB service?',
+                  options: [
+                    'smb-enum-shares',
+                    'smb-os-discovery',
+                    'mysql-info',
+                    'http-title',
+                  ],
+                  correctIndex: 0,
+                  explanation: 'smb-enum-shares enumerates shared folders on port 445.',
+                },
+              ],
             },
             {
               title: 'The Nmap Scripting Engine (NSE)',
@@ -2009,6 +2919,32 @@ nmap -p 80 --script http-title,http-headers,http-methods,http-enum <target_ip>
 
 *Operative Drill:* Browse \`/usr/share/nmap/scripts/\`. Find a script you've never used, read its code, and explain to yourself how it detects a vulnerability. This is how you move from tool-user to tool-master.`,
               image: 'step-03.webp',
+              quiz: [
+                {
+                  id: 'bcq-71',
+                  question: 'Which Nmap command runs all default and safe scripts?',
+                  options: [
+                    'nmap -sC <target>',
+                    'nmap --script vuln <target>',
+                    'nmap -p- <target>',
+                    'nmap -O <target>',
+                  ],
+                  correctIndex: 0,
+                  explanation: '-sC runs the default and safe script categories.',
+                },
+                {
+                  id: 'bcq-72',
+                  question: "Which NSE script checks for the famous 'EternalBlue' SMB vulnerability?",
+                  options: [
+                    'smb-vuln-ms17-010',
+                    'ssl-heartbleed',
+                    'http-shellshock',
+                    'ftp-brute',
+                  ],
+                  correctIndex: 0,
+                  explanation: 'smb-vuln-ms17-010 checks for EternalBlue (MS17-010).',
+                },
+              ],
             },
             {
               title: 'Building a Professional Recon Workflow',
@@ -2069,6 +3005,32 @@ script -a engagement_log.txt
 
 *Final Challenge:* Create a bash script that takes a single IP address, finds all open ports, and then automatically runs the \`vuln\` script category against only those ports. Output the result to a file named \`VULN_REPORT.txt\`. Congratulations, Operative.`,
               image: 'step-04.webp',
+              quiz: [
+                {
+                  id: 'bcq-73',
+                  question: "What is the first step of the 'Recon Pipeline' described in this step?",
+                  options: [
+                    'Discover live hosts on the subnet',
+                    'Run the vuln script category',
+                    'Extract service versions',
+                    'Take screenshots',
+                  ],
+                  correctIndex: 0,
+                  explanation: 'The pipeline starts by discovering live hosts with nmap -sn.',
+                },
+                {
+                  id: 'bcq-74',
+                  question: 'Which command logs your entire terminal session to a file for a paper trail?',
+                  options: [
+                    'script -a engagement_log.txt',
+                    'history -c',
+                    'whois domain',
+                    'grep open scan.txt',
+                  ],
+                  correctIndex: 0,
+                  explanation: 'script -a appends a recording of your session to a log file.',
+                },
+              ],
             },
           ],
         },
@@ -2138,6 +3100,32 @@ tshark -r capture.pcap -Y "ip.ttl > 128"
 
 *Hacker's Insight:* In the "Packet Details" pane of Wireshark, the OSI layers are stacked from bottom to top. Always look at the **EtherType** field to see which Layer 3 protocol (like IPv4 or IPv6) is being carried.`,
               image: 'step-01.webp',
+              quiz: [
+                {
+                  id: 'bcq-75',
+                  question: 'What is tshark?',
+                  options: [
+                    'The command-line equivalent of Wireshark for analyzing network captures',
+                    'A GUI packet editor',
+                    'A port scanner',
+                    'A DNS tool',
+                  ],
+                  correctIndex: 0,
+                  explanation: 'tshark is the CLI version of Wireshark for remote/GUI-less analysis.',
+                },
+                {
+                  id: 'bcq-76',
+                  question: 'In the Wireshark packet details pane, which field shows which Layer 3 protocol is being carried?',
+                  options: [
+                    'EtherType',
+                    'TTL',
+                    'TCP flags',
+                    'Sequence number',
+                  ],
+                  correctIndex: 0,
+                  explanation: 'The EtherType field in the Ethernet layer indicates the Layer 3 protocol.',
+                },
+              ],
             },
             {
               title: 'Advanced Display Filters',
@@ -2194,6 +3182,32 @@ tshark -r capture.pcap -Y "tcp.analysis.retransmission"
 
 *Training Task:* Create a Tshark filter that shows only traffic between your machine and \`<target_ip>\`, excluding any SSH or HTTP traffic. What protocols are left?`,
               image: 'step-02.webp',
+              quiz: [
+                {
+                  id: 'bcq-77',
+                  question: 'Which tshark filter detects a TCP SYN flood (many SYNs without ACKs)?',
+                  options: [
+                    'tcp.flags.syn == 1 and tcp.flags.ack == 0',
+                    'tcp.flags.reset == 1',
+                    'dns.qry.name.len > 50',
+                    'arp.duplicate-address-frame',
+                  ],
+                  correctIndex: 0,
+                  explanation: 'SYNs with ack==0 indicate a SYN flood.',
+                },
+                {
+                  id: 'bcq-78',
+                  question: 'Which filter identifies unusually long subdomains, a sign of DNS tunneling?',
+                  options: [
+                    'dns.qry.name.len > 50',
+                    'tcp.port == 443',
+                    "http contains 'pass'",
+                    'ip.ttl > 128',
+                  ],
+                  correctIndex: 0,
+                  explanation: 'Very long DNS query names are a classic exfiltration/tunneling signal.',
+                },
+              ],
             },
             {
               title: 'Following & Reconstructing Streams',
@@ -2248,6 +3262,32 @@ tshark -r capture.pcap -z conv,tcp -q | sort -k 10 -rn | head -n 5
 
 *Operative Drill:* Capture your own login to a non-HTTPS test site (e.g., \`http://<vulnerable_test_site>\`). Use Tshark to reconstruct the stream. Can you find your username and password in the raw data?`,
               image: 'step-03.webp',
+              quiz: [
+                {
+                  id: 'bcq-79',
+                  question: 'Which command reconstructs all HTTP objects (images, files) from a capture?',
+                  options: [
+                    'tshark -r cap.pcap --export-objects http,./dir',
+                    'tshark -r cap.pcap -z conv,tcp',
+                    'tshark -r cap.pcap -Y http',
+                    'tshark -D',
+                  ],
+                  correctIndex: 0,
+                  explanation: '--export-objects extracts files transferred over HTTP.',
+                },
+                {
+                  id: 'bcq-80',
+                  question: 'How can you decrypt encrypted SSL/TLS traffic in tshark?',
+                  options: [
+                    'Provide an RSA private key via tls.keys_list',
+                    'Enable -k flag',
+                    'Use -X option',
+                    'Change the interface',
+                  ],
+                  correctIndex: 0,
+                  explanation: 'Supplying the RSA private key lets tshark decrypt the TLS traffic.',
+                },
+              ],
             },
             {
               title: 'DNS Analysis & Exfiltration Detection',
@@ -2301,6 +3341,32 @@ tshark -r capture.pcap -Y "frame.number == 1234" -V | grep -A 20 "Domain Name Sy
 
 *Final Training Insight:* A hacker's greatest asset is the protocol everyone trusts. DNS, ICMP, and NTP are often overlooked, but in the hands of an Qyvora operative, they are powerful tools for stealthy communication. Congratulations on completing Phase 3.`,
               image: 'step-04.webp',
+              quiz: [
+                {
+                  id: 'bcq-81',
+                  question: 'Why is DNS a preferred protocol for data exfiltration and C2 communication?',
+                  options: [
+                    'It is almost never encrypted or blocked',
+                    'It is always fast',
+                    'It uses the OSI application layer',
+                    'It is immune to inspection',
+                  ],
+                  correctIndex: 0,
+                  explanation: 'DNS is rarely blocked or encrypted, making it ideal for covert C2/exfiltration.',
+                },
+                {
+                  id: 'bcq-82',
+                  question: "Which DNS response code (3) indicates a 'NXDOMAIN' response often seen during scanning or by malware?",
+                  options: [
+                    'rcode == 3',
+                    'rcode == 0',
+                    'rcode == 1',
+                    'rcode == 5',
+                  ],
+                  correctIndex: 0,
+                  explanation: 'NXDOMAIN (rcode 3) indicates a non-existent domain.',
+                },
+              ],
             },
           ],
         },
@@ -2362,6 +3428,32 @@ fetch('/api/status').then(res => res.json()).then(console.log);
 
 *Training Task:* Identify the \`Server\` header for \`<target_ip>\`. Does it reveal a specific version? Research if that version has any 'Zero-Day' or known exploits.`,
               image: 'step-01.webp',
+              quiz: [
+                {
+                  id: 'bcq-83',
+                  question: "In the DevTools Network tab, which HTTP status code means 'Forbidden'?",
+                  options: [
+                    '403',
+                    '200',
+                    '404',
+                    '500',
+                  ],
+                  correctIndex: 0,
+                  explanation: '403 Forbidden indicates access is denied.',
+                },
+                {
+                  id: 'bcq-84',
+                  question: "Which response header reveals the 'DNA' of the server, such as nginx or Express?",
+                  options: [
+                    'Server / X-Powered-By',
+                    'Content-Type',
+                    'Set-Cookie',
+                    'Referer',
+                  ],
+                  correctIndex: 0,
+                  explanation: 'The Server and X-Powered-By headers reveal the technology behind the site.',
+                },
+              ],
             },
             {
               title: 'Mastering HTTP Headers & Fingerprinting',
@@ -2415,6 +3507,32 @@ curl -s -I http://<target_ip>1 | grep "Set-Cookie"
 
 *Hacker's Strategy:* If you see \`X-Powered-By: PHP/5.5\`, you've just found a legacy system. Older versions of languages are riddled with documented vulnerabilities that are trivial for an Qyvora operative to exploit.`,
               image: 'step-02.webp',
+              quiz: [
+                {
+                  id: 'bcq-85',
+                  question: 'Which header can be spoofed to bypass IP-based restrictions by making the server think a request comes from localhost?',
+                  options: [
+                    'X-Forwarded-For: 127.0.0.1',
+                    'Content-Type: application/json',
+                    'Referer: trusted',
+                    'Accept: */*',
+                  ],
+                  correctIndex: 0,
+                  explanation: 'Spoofing X-Forwarded-For can trick servers that trust that header.',
+                },
+                {
+                  id: 'bcq-86',
+                  question: "The recommence of 'Strict-Transport-Security' (HSTS) header indicates:",
+                  options: [
+                    'The site forces HTTPS connections',
+                    'The site is vulnerable to SQLi',
+                    'The site has no firewalls',
+                    'The site disables cookies',
+                  ],
+                  correctIndex: 0,
+                  explanation: 'HSTS forces the browser to use HTTPS, a good security posture.',
+                },
+              ],
             },
             {
               title: 'Cookies, Sessions & State Manipulation',
@@ -2468,6 +3586,32 @@ curl -b "session=OLD_TOKEN" http://<target_ip>1/profile -I
 
 *Operative Insight:* If you find a cookie that isn't \`HttpOnly\`, any script running on the page can steal it. This is the 'Golden Ticket' for session hijacking.`,
               image: 'step-03.webp',
+              quiz: [
+                {
+                  id: 'bcq-87',
+                  question: 'Which cookie attribute prevents JavaScript from reading the cookie, protecting it against XSS-based theft?',
+                  options: [
+                    'HttpOnly',
+                    'Secure',
+                    'SameSite',
+                    'Domain',
+                  ],
+                  correctIndex: 0,
+                  explanation: 'HttpOnly stops JavaScript from accessing cookie values.',
+                },
+                {
+                  id: 'bcq-88',
+                  question: "A Base64-encoded cookie or JWT that reveals data like 'role=admin' is dangerous because:",
+                  options: [
+                    'An attacker can decode and modify it to escalate privileges',
+                    'It is always a virus',
+                    'It locks the browser',
+                    'It is encrypted with a key',
+                  ],
+                  correctIndex: 0,
+                  explanation: 'Decoding and altering readable tokens can escalate privileges.',
+                },
+              ],
             },
             {
               title: 'Intercepting Traffic with Burp Suite',
@@ -2513,6 +3657,32 @@ Use the Site Map to build a visual tree of every folder and file discovered on \
 
 *Training Task:* Capture a request to \`/api/profile\`. In Burp Repeater, change the \`GET\` method to \`POST\`. Does the server respond differently? Sometimes 'Hidden' APIs are only accessible via specific methods.`,
               image: 'step-04.webp',
+              quiz: [
+                {
+                  id: 'bcq-89',
+                  question: 'Which Burp Suite tool lets you pause, modify, and replay a single captured request?',
+                  options: [
+                    'Repeater',
+                    'Intruder',
+                    'Decoder',
+                    'Comparer',
+                  ],
+                  correctIndex: 0,
+                  explanation: 'Repeater is used to modify and resend individual requests.',
+                },
+                {
+                  id: 'bcq-90',
+                  question: "Changing ?id=1001 to ?id=1002 in Repeater to access another user's data is an example of:",
+                  options: [
+                    'IDOR (Insecure Direct Object Reference)',
+                    'SQL injection',
+                    'CSRF',
+                    'Port scanning',
+                  ],
+                  correctIndex: 0,
+                  explanation: "Enumerating object IDs to access others' data is an IDOR.",
+                },
+              ],
             },
           ],
         },
@@ -2578,6 +3748,32 @@ curl -s http://<target_ip>/nonexistent_path_12345 | grep -i "server"
 
 *Operative Drill:* Which of these five categories do you think is hardest to detect with automated scanners? Why does an Qyvora operative provide more value than a tool?`,
               image: 'step-01.webp',
+              quiz: [
+                {
+                  id: 'bcq-91',
+                  question: "Which OWASP category (A01) covers users accessing data or functions they shouldn't, such as IDOR or missing admin checks?",
+                  options: [
+                    'Broken Access Control',
+                    'Injection',
+                    'Security Misconfiguration',
+                    'Cryptographic Failures',
+                  ],
+                  correctIndex: 0,
+                  explanation: 'A01 Broken Access Control is about unauthorized data/function access.',
+                },
+                {
+                  id: 'bcq-92',
+                  question: 'Which category (A03) involves untrusted data changing the logic of a command, e.g. SQL or command injection?',
+                  options: [
+                    'Injection',
+                    'Insecure Design',
+                    'Vulnerable Components',
+                    'SSRF',
+                  ],
+                  correctIndex: 0,
+                  explanation: 'A03 Injection lets untrusted data alter the logic of a command.',
+                },
+              ],
             },
             {
               title: 'OWASP Categories 6-10: The Hidden Seams',
@@ -2634,6 +3830,32 @@ curl "http://<target_ip>/view?url=http://internal-db:8080/phpmyadmin"
 
 *Qyvora Insight:* SSRF (A10) is one of the most prized findings in cloud environments. It often allows an operative to steal IAM roles and gain full control over the infrastructure.`,
               image: 'step-02.webp',
+              quiz: [
+                {
+                  id: 'bcq-93',
+                  question: 'Which OWASP category (A10) occurs when a server blindly fetches a URL supplied by the attacker, e.g. to reach internal metadata?',
+                  options: [
+                    'Server-Side Request Forgery (SSRF)',
+                    'Broken Access Control',
+                    'Injection',
+                    'Cryptographic Failures',
+                  ],
+                  correctIndex: 0,
+                  explanation: 'A10 SSRF tricks the server into fetching attacker-controlled URLs, often exposing internal services.',
+                },
+                {
+                  id: 'bcq-94',
+                  question: 'Which category (A07) involves failures in identification and authentication, such as username enumeration?',
+                  options: [
+                    'Identification and Authentication Failures',
+                    'Security Misconfiguration',
+                    'Data Integrity Failures',
+                    'Logging Failures',
+                  ],
+                  correctIndex: 0,
+                  explanation: 'A07 covers auth failures like username enumeration and weak session handling.',
+                },
+              ],
             },
             {
               title: 'Identifying OWASP Issues: The Operative\'s Checklist',
@@ -2687,6 +3909,32 @@ curl -v http://<target_ip>/api/admin/config > evidence_A01.txt 2>&1
 
 *Training Task:* Open the target application. Using only \`curl\`, find three different OWASP categories that the developers missed. Document your evidence as if you were writing a professional report.`,
               image: 'step-03.webp',
+              quiz: [
+                {
+                  id: 'bcq-95',
+                  question: 'Which tool brute-forces hidden directories and files on a web server?',
+                  options: [
+                    'gobuster dir',
+                    'shodan',
+                    'theHarvester',
+                    'dnstwist',
+                  ],
+                  correctIndex: 0,
+                  explanation: 'gobuster dir enumerates hidden directories using a wordlist.',
+                },
+                {
+                  id: 'bcq-96',
+                  question: 'Which tool provides a comprehensive web server audit looking for known issues?',
+                  options: [
+                    'nikto',
+                    'hcitool',
+                    'photorec',
+                    'exiftool',
+                  ],
+                  correctIndex: 0,
+                  explanation: 'nikto performs a comprehensive web server audit.',
+                },
+              ],
             },
             {
               title: 'Remediation: The Defensive Mindset',
@@ -2745,6 +3993,32 @@ res.send("<h1>Hello " + encodeHTML(req.query.name) + "</h1>");
 
 *Final Insight:* Security is a journey, not a destination. By understanding the OWASP Top 10, you have learned the 'rules of engagement' for the modern web. You are now ready to dive deep into specific exploit chains.`,
               image: 'step-04.webp',
+              quiz: [
+                {
+                  id: 'bcq-97',
+                  question: 'Compared to string concatenation, which is the SECURE way to build a SQL query?',
+                  options: [
+                    "Parameterized queries (db.execute('... WHERE id = ?', [id]))",
+                    'Direct string concatenation',
+                    'Using eval()',
+                    'Storing the query in a cookie',
+                  ],
+                  correctIndex: 0,
+                  explanation: 'Parameterized queries separate data from the SQL command, preventing injection.',
+                },
+                {
+                  id: 'bcq-98',
+                  question: 'Which is the SECURE way to render user input to avoid XSS?',
+                  options: [
+                    'HTML-encoding the output',
+                    'Using innerHTML directly',
+                    'Sending raw input to the client',
+                    'Disabling all scripts server-side',
+                  ],
+                  correctIndex: 0,
+                  explanation: 'Output encoding prevents user input from being interpreted as executable HTML/JS.',
+                },
+              ],
             },
           ],
         },
@@ -2812,6 +4086,32 @@ curl "http://<target_ip>/api/products?id=1' AND (SELECT 1 FROM (SELECT COUNT(*),
 
 *Operative Drill:* Why is a 'Blind' SQL injection more difficult to exploit than an 'Error-Based' one? How does an Qyvora operative use 'Time-Based' delays to extract data?`,
               image: 'step-01.webp',
+              quiz: [
+                {
+                  id: 'bcq-99',
+                  question: "In the login query SELECT * FROM users WHERE user = '$USER', what does providing admin' --  as the username achieve?",
+                  options: [
+                    'It comments out the password check, logging you in as admin',
+                    'It deletes the users table',
+                    'It reveals the database version',
+                    'It crashes the server permanently',
+                  ],
+                  correctIndex: 0,
+                  explanation: 'The -- comment removes the password check, bypassing authentication.',
+                },
+                {
+                  id: 'bcq-100',
+                  question: 'Which test distinguishes a Boolean-based injection?',
+                  options: [
+                    "Comparing responses to 'AND 1=1' vs 'AND 1=2'",
+                    'Sending a SYN packet',
+                    'Running whatweb',
+                    'Checking DNS TXT records',
+                  ],
+                  correctIndex: 0,
+                  explanation: "If 'AND 1=1' returns data and 'AND 1=2' returns nothing, Boolean injection is present.",
+                },
+              ],
             },
             {
               title: 'Authentication Bypass & Credential Theft',
@@ -2860,6 +4160,32 @@ curl "http://<target_ip>/api/products?id=1 UNION SELECT username,password FROM u
 
 *Training Task:* You've extracted a hash: \`5f4dcc3b5aa765d61d8327deb882cf99\`. Use the terminal to identify the hashing algorithm (MD5, SHA1, etc.) and attempt to crack it using an online database or \`hashcat\`.`,
               image: 'step-02.webp',
+              quiz: [
+                {
+                  id: 'bcq-101',
+                  question: 'Which payload bypasses a login form by making the WHERE clause always true?',
+                  options: [
+                    "user=' OR 1=1 -- &pass=anything",
+                    'user=admin &pass=1234',
+                    'user=; rm -rf /',
+                    'user=<script>alert(1)</script>',
+                  ],
+                  correctIndex: 0,
+                  explanation: "' OR 1=1 -- makes the query true, bypassing the login.",
+                },
+                {
+                  id: 'bcq-102',
+                  question: 'Which query extracts the table names in the current database?',
+                  options: [
+                    'UNION SELECT table_name FROM information_schema.tables',
+                    'UNION SELECT * FROM users',
+                    'SHOW COLUMNS FROM users',
+                    'SELECT COUNT(*) FROM users',
+                  ],
+                  correctIndex: 0,
+                  explanation: 'information_schema.tables lists table names to map the database.',
+                },
+              ],
             },
             {
               title: 'UNION-Based Data Exfiltration',
@@ -2911,6 +4237,32 @@ curl "http://<target_ip>/api/products?id=1 UNION SELECT LOAD_FILE('/etc/passwd')
 
 *Operative Insight:* Always check if you can write files too! \`SELECT ... INTO OUTFILE '/var/www/html/shell.php'\` is how an Qyvora operative turns a SQL injection into a full web shell.`,
               image: 'step-03.webp',
+              quiz: [
+                {
+                  id: 'bcq-103',
+                  question: 'Why must you first determine the number of columns when using a UNION-based injection?',
+                  options: [
+                    'The UNION operator requires both queries to return the same number of columns',
+                    'It speeds up the scan',
+                    'It bypasses the WAF',
+                    'It avoids duplicate rows only in MySQL',
+                  ],
+                  correctIndex: 0,
+                  explanation: 'UNION requires matching column counts in both SELECTs.',
+                },
+                {
+                  id: 'bcq-104',
+                  question: "If a WAF blocks the word 'users', how can you still reference that table name?",
+                  options: [
+                    'Encode it in hex, e.g. 0x7573657273',
+                    'Use a synonym',
+                    'Add a comment',
+                    'Change case to Users',
+                  ],
+                  correctIndex: 0,
+                  explanation: "Hex-encoding the table name (0x7573657273 = 'users') bypasses keyword filters.",
+                },
+              ],
             },
             {
               title: 'Automation & Precision: Sqlmap Mastery',
@@ -2959,6 +4311,32 @@ sqlmap -u "http://<target_ip>/api/products?id=1" --os-shell
 
 *Final Training Project:* Perform a full audit of the Qyvora target app. Document the vulnerable parameter, the database version, and extract the admin hash. Then, write a one-paragraph 'Remediation Guide' for the developers, explaining how to use **Parameterized Queries** to kill this bug forever.`,
               image: 'step-04.webp',
+              quiz: [
+                {
+                  id: 'bcq-105',
+                  question: 'Which sqlmap flag lists all databases and checks if the current user is a DBA?',
+                  options: [
+                    '--dbs --is-dba',
+                    '--batch',
+                    '--tamper=space2comment',
+                    '-r request.txt',
+                  ],
+                  correctIndex: 0,
+                  explanation: '--dbs lists databases and --is-dba checks database admin privileges.',
+                },
+                {
+                  id: 'bcq-106',
+                  question: 'Which sqlmap feature is used to evade WAF/IDS by altering payload signatures?',
+                  options: [
+                    '--tamper',
+                    '--cookie',
+                    '--level 3',
+                    '--dump',
+                  ],
+                  correctIndex: 0,
+                  explanation: 'Tampers like space2comment change payloads to evade filters.',
+                },
+              ],
             },
           ],
         },
@@ -3021,6 +4399,32 @@ nmap -p 80 --script http-xssed <target_ip>
 
 *Operative Drill:* Why is Stored XSS considered more dangerous than Reflected XSS in a professional engagement? How can an Qyvora operative use Stored XSS to compromise an entire organization?`,
               image: 'step-01.webp',
+              quiz: [
+                {
+                  id: 'bcq-107',
+                  question: 'Which type of XSS is stored on the server (e.g. in a comment or profile) and runs for every visitor?',
+                  options: [
+                    'Stored XSS',
+                    'Reflected XSS',
+                    'DOM XSS',
+                    'Blind XSS',
+                  ],
+                  correctIndex: 0,
+                  explanation: 'Stored (persistent) XSS is saved server-side and executes for all users.',
+                },
+                {
+                  id: 'bcq-108',
+                  question: "Why is a payload placed after the '#' in a URL (e.g. #user=<img ...>) considered DOM-based?",
+                  options: [
+                    'It is processed by client-side JavaScript and never sent to the server',
+                    'It is encrypted',
+                    'It runs on the server',
+                    'It is always blocked',
+                  ],
+                  correctIndex: 0,
+                  explanation: 'DOM XSS lives in client-side JS; the # fragment never reaches the server.',
+                },
+              ],
             },
             {
               title: 'XSS Impact: Weaponizing the Session',
@@ -3080,6 +4484,32 @@ echo "c2Vzc2lvbj10cmFpbmVlXzEyMw==" | base64 -d
 
 *Training Task:* Identify a page on the Qyvora target that reflects your name. Inject a payload that changes the background color of the page to black. Then, upgrade it to a payload that logs \`document.domain\` to your console.`,
               image: 'step-02.webp',
+              quiz: [
+                {
+                  id: 'bcq-109',
+                  question: 'Which payload is the primary weapon when an XSS is found?',
+                  options: [
+                    "Stealing the victim's session cookie via fetch()",
+                    'Running nmap',
+                    'Sending a DNS query',
+                    'Uploading a file',
+                  ],
+                  correctIndex: 0,
+                  explanation: 'XSS lets you steal session cookies to impersonate the victim.',
+                },
+                {
+                  id: 'bcq-110',
+                  question: 'Which cookie attribute could have prevented the XSS-based cookie theft above?',
+                  options: [
+                    'HttpOnly',
+                    'SameSite only',
+                    'Secure only',
+                    'Max-Age',
+                  ],
+                  correctIndex: 0,
+                  explanation: 'HttpOnly prevents JavaScript from reading the cookie.',
+                },
+              ],
             },
             {
               title: 'Cross-Site Request Forgery (CSRF): The Forced Action',
@@ -3137,6 +4567,32 @@ curl -e "http://<target_ip>/" -d "action=delete" http://<target_ip>/api/data
 
 *Operative Insight:* CSRF tokens must be **Random, Unique per session, and Validated on the server**. If any of these are missing, the Qyvora operative has an opening.`,
               image: 'step-03.webp',
+              quiz: [
+                {
+                  id: 'bcq-111',
+                  question: 'Why does CSRF work?',
+                  options: [
+                    'Browsers automatically include cookies with requests to a domain, so a malicious page can force actions',
+                    'The server trusts all GET requests',
+                    'Firewalls are disabled',
+                    'SQL is injected into cookies',
+                  ],
+                  correctIndex: 0,
+                  explanation: "CSRF abuses the browser automatically sending the victim's cookies with requests.",
+                },
+                {
+                  id: 'bcq-112',
+                  question: 'Which protection makes a site resistant to CSRF?',
+                  options: [
+                    'A random token unique per session validated server-side',
+                    'Removing all headers',
+                    'Using GET for state changes',
+                    'Storing the token in the URL',
+                  ],
+                  correctIndex: 0,
+                  explanation: 'Validating a random, per-session token stops forged requests.',
+                },
+              ],
             },
             {
               title: 'Defensive Engineering: Content Security Policy',
@@ -3188,6 +4644,32 @@ if (req.body.csrf_token !== req.session.csrf_token) {
 
 *Final Training Insight:* The war between XSS/CSRF and CSP/Tokens is a game of details. One missing 'HttpOnly' flag or one 'unsafe-eval' in a CSP can be the difference between a secure app and a total compromise. Train like a hacker, build like an engineer.`,
               image: 'step-04.webp',
+              quiz: [
+                {
+                  id: 'bcq-113',
+                  question: 'Which CSP directive would make the policy effectively useless against XSS?',
+                  options: [
+                    "script-src 'self' 'unsafe-inline'",
+                    "script-src 'self'",
+                    "default-src 'self'",
+                    "object-src 'none'",
+                  ],
+                  correctIndex: 0,
+                  explanation: "Allowing 'unsafe-inline' lets any inline script execute, defeating CSP.",
+                },
+                {
+                  id: 'bcq-114',
+                  question: 'Which coding change is the SECURE alternative to element.innerHTML = userInput?',
+                  options: [
+                    'element.textContent = userInput',
+                    'document.write(userInput)',
+                    'innerHTML with a sanitizer of unknown quality',
+                    'eval(userInput)',
+                  ],
+                  correctIndex: 0,
+                  explanation: 'textContent treats the value as text, preventing HTML/script execution.',
+                },
+              ],
             },
           ],
         },
@@ -3239,6 +4721,32 @@ hydra -L users.txt -p "Password123!" http-post-form \
 
 Attempt a brute force on the demo login. Document the application's response to repeated failures. What countermeasures does it have, and how would you bypass them?`,
               image: 'step-01.webp',
+              quiz: [
+                {
+                  id: 'bcq-115',
+                  question: 'What is the difference between brute force and password spraying?',
+                  options: [
+                    'Brute force tries many passwords against one user; spraying tries one password against many users',
+                    'Spraying uses GUI tools while brute force uses CLI',
+                    'They are identical',
+                    'Spraying is always legal',
+                  ],
+                  correctIndex: 0,
+                  explanation: 'Brute force targets one user with many passwords; spraying uses one password across many users.',
+                },
+                {
+                  id: 'bcq-116',
+                  question: 'If you see a 429 (Too Many Requests) or progressively slower responses, what has the target implemented?',
+                  options: [
+                    'Rate limiting/throttling, which you may bypass with a proxy chain',
+                    'A firewall that blocks all traffic',
+                    'End-to-end encryption',
+                    'A honeypot database',
+                  ],
+                  correctIndex: 0,
+                  explanation: 'Rate limiting countermeasures need bypass techniques like rotating IPs.',
+                },
+              ],
             },
             {
               title: 'Session Token Analysis',
@@ -3278,6 +4786,32 @@ curl -b "session=old_token_here" http://<target_site>/dashboard
 
 Log in to the demo application. Collect 5 session tokens from 5 separate logins. Are they random? Are they predictable? Log out and test whether the token is still valid.`,
               image: 'step-02.webp',
+              quiz: [
+                {
+                  id: 'bcq-117',
+                  question: 'What makes a session token weak?',
+                  options: [
+                    'It is predictable (sequential/timestamp) or short with low entropy',
+                    'It is longer than 128 bits',
+                    'It is regenerated on login',
+                    'It uses HttpOnly',
+                  ],
+                  correctIndex: 0,
+                  explanation: 'Predictable or short tokens can be predicted or forged.',
+                },
+                {
+                  id: 'bcq-118',
+                  question: 'A token that remains valid after logout indicates:',
+                  options: [
+                    'The token was not invalidated, a security weakness',
+                    'Good session hygiene',
+                    'The server is load-balanced',
+                    'Cookies are encrypted',
+                  ],
+                  correctIndex: 0,
+                  explanation: 'Tokens not invalidated on logout stay usable, which is a weakness.',
+                },
+              ],
             },
             {
               title: 'Session Fixation and Hijacking',
@@ -3320,6 +4854,32 @@ If you have XSS, you can steal the session cookie and use it to impersonate the 
 
 Test the demo application for session fixation. Document whether the session token changes after login.`,
               image: 'step-03.webp',
+              quiz: [
+                {
+                  id: 'bcq-119',
+                  question: 'How does a session fixation attack work?',
+                  options: [
+                    "The attacker forces the victim to use a known session ID, and if the token isn't rotated on login it becomes authenticated",
+                    'The attacker steals the token via XSS',
+                    'The attacker floods the server',
+                    'The attacker guesses random tokens',
+                  ],
+                  correctIndex: 0,
+                  explanation: "Fixation pre-sets a known token; if the server doesn't rotate it on login, the attacker can use it.",
+                },
+                {
+                  id: 'bcq-120',
+                  question: 'Which test confirms session fixation?',
+                  options: [
+                    'Check whether the session token changes after login',
+                    'Check for HttpOnly flag',
+                    'Count failed logins',
+                    'Check the CSP header',
+                  ],
+                  correctIndex: 0,
+                  explanation: 'If the token is identical before and after login, the site is vulnerable to fixation.',
+                },
+              ],
             },
             {
               title: 'Authentication Findings Report',
@@ -3370,6 +4930,32 @@ Combine everything you've learned into a single real-world attack scenario:
 
 Document each step with the actual commands you ran. If any step fails, explain *why*, understanding the defense is as important as understanding the attack.`,
               image: 'step-04.webp',
+              quiz: [
+                {
+                  id: 'bcq-121',
+                  question: 'What is the purpose of a professional authentication findings report?',
+                  options: [
+                    'To document evidence, impact, and concrete remediation for each weakness',
+                    "To advertise the hacker's skills",
+                    'To list company passwords',
+                    'To replace the vulnerability scanner',
+                  ],
+                  correctIndex: 0,
+                  explanation: 'A good report includes specific evidence, impact, and remediation for each finding.',
+                },
+                {
+                  id: 'bcq-122',
+                  question: 'In the report, each finding should include:',
+                  options: [
+                    'Title, severity, evidence, impact, and remediation',
+                    'Just a screenshot',
+                    'Only a patch file',
+                    'Recommendations for new tools',
+                  ],
+                  correctIndex: 0,
+                  explanation: 'Findings are documented with title, severity, evidence, impact, and remediation.',
+                },
+              ],
             },
           ],
         },
@@ -3431,6 +5017,32 @@ dnstwist --format csv <target_ip> > typosquats.csv
 
 *Operative Drill:* Look at a real phishing email. Identify the 'Call to Action.' Does it use Urgency ("Reset now") or Authority ("By order of the CEO")? How would an Qyvora operative combine both?`,
               image: 'step-01.webp',
+              quiz: [
+                {
+                  id: 'bcq-123',
+                  question: "Which principle of influence creates a 'crisis' that requires immediate action?",
+                  options: [
+                    'Urgency',
+                    'Liking',
+                    'Reciprocity',
+                    'Social Proof',
+                  ],
+                  correctIndex: 1,
+                  explanation: 'Urgency fabricates a crisis to force immediate compliance.',
+                },
+                {
+                  id: 'bcq-124',
+                  question: "Giving a small 'gift' to induce a feeling of obligation is which principle?",
+                  options: [
+                    'Reciprocity',
+                    'Authority',
+                    'Commitment',
+                    'Scarcity',
+                  ],
+                  correctIndex: 0,
+                  explanation: 'Reciprocity leverages the obligation felt after receiving a gift.',
+                },
+              ],
             },
             {
               title: 'Anatomy of a Spoofed Engagement',
@@ -3483,6 +5095,32 @@ grep "Received: from" raw_email.txt | awk '{print $4}'
 
 *Hacker's Strategy:* A 'Lookalike Domain' (e.g., \`<lookalike_domain>\` with an 'l') is often more effective than direct spoofing, as it bypasses modern SPF/DKIM checks entirely.`,
               image: 'step-02.webp',
+              quiz: [
+                {
+                  id: 'bcq-125',
+                  question: 'Which DNS record, if weak, allows an attacker to spoof email from a target domain?',
+                  options: [
+                    'SPF (v=spf1)',
+                    'MX record',
+                    'AAAA record',
+                    'CNAME record',
+                  ],
+                  correctIndex: 0,
+                  explanation: 'A weak SPF policy allows email spoofing from the domain.',
+                },
+                {
+                  id: 'bcq-126',
+                  question: "Why is a 'lookalike domain' often more effective than direct spoofing?",
+                  options: [
+                    'It bypasses modern SPF/DKIM checks entirely',
+                    'It is faster to register',
+                    'It is always encrypted',
+                    'It avoids all password policies',
+                  ],
+                  correctIndex: 0,
+                  explanation: 'Lookalike domains bypass SPF/DKIM checks, which only verify the exact domain name.',
+                },
+              ],
             },
             {
               title: 'Pretexting & Vishing: The Vocal Exploit',
@@ -3524,6 +5162,32 @@ site:news.<search_engine> "Qyvora" "Acquisition"
 
 *Training Task:* You are pretending to be James from IT. Your goal is to get a trainee to reveal their 'Agent ID.' Write a 3-sentence script that uses the **Reciprocity** principle (give a tip, get an ID).`,
               image: 'step-03.webp',
+              quiz: [
+                {
+                  id: 'bcq-127',
+                  question: "What does 'vishing' stand for?",
+                  options: [
+                    'Voice phishing',
+                    'Video phishing',
+                    'Virtual hacking',
+                    'Verified phishing',
+                  ],
+                  correctIndex: 0,
+                  explanation: 'Vishing is voice phishing - executing a pretext over a live call.',
+                },
+                {
+                  id: 'bcq-128',
+                  question: "Which part of the 'Reason-Request-Urgency' framework creates the reason for the call?",
+                  options: [
+                    'The hook / request',
+                    'The role and reason',
+                    'The deadline',
+                    'The background noise',
+                  ],
+                  correctIndex: 1,
+                  explanation: 'The role/reason justifies why you are calling.',
+                },
+              ],
             },
             {
               title: 'Defensive Counter-Measures',
@@ -3575,6 +5239,32 @@ nc -lvnp 80
 
 Document your scenario with a diagram of the attack chain. What countermeasure would stop each step?`,
               image: 'step-04.webp',
+              quiz: [
+                {
+                  id: 'bcq-129',
+                  question: 'In the example, hovering over a link showing http://<attacker>/log instead of the expected domain is a sign of:',
+                  options: [
+                    'A phishing link that users should report',
+                    'A trusted site',
+                    'An encrypted connection',
+                    'A DNS misconfiguration',
+                  ],
+                  correctIndex: 0,
+                  explanation: 'Hovering reveals mismatched/real URLs that indicate phishing.',
+                },
+                {
+                  id: 'bcq-130',
+                  question: 'Why do password managers help defend against phishing?',
+                  options: [
+                    "They won't autofill credentials on a fake domain the manager doesn't recognize",
+                    'They encrypt all traffic',
+                    'They block all emails',
+                    'They disable JavaScript',
+                  ],
+                  correctIndex: 0,
+                  explanation: 'Because password managers only autofill on recognized, legitimate domains.',
+                },
+              ],
             },
           ],
         },
@@ -3647,6 +5337,32 @@ The Google Hacking Database (GHDB) is your library of pre-built dorks.
 
 *Operative Insight:* Google Dorking is passive reconnaissance. The target has no idea you are searching for them because you are talking to Google's servers, not theirs. This is the ultimate 'Invisible' recon.`,
               image: 'step-01.webp',
+              quiz: [
+                {
+                  id: 'bcq-131',
+                  question: 'Which Google operator restricts results to a single domain?',
+                  options: [
+                    'site:<domain>',
+                    'filetype:sql',
+                    'intitle:index of',
+                    'inurl:admin',
+                  ],
+                  correctIndex: 0,
+                  explanation: 'site: limits results to the specified domain.',
+                },
+                {
+                  id: 'bcq-132',
+                  question: "Why is Google Dorking considered 'invisible' reconnaissance?",
+                  options: [
+                    "You query Google's servers, not the target's, so the target never sees the requests",
+                    'It uses TOR network',
+                    'It is encrypted end-to-end',
+                    'It deletes all logs',
+                  ],
+                  correctIndex: 0,
+                  explanation: 'Because the queries hit Google, the target has no idea it is being researched.',
+                },
+              ],
             },
             {
               title: 'Automated OSINT: The Harvester & Shodan',
@@ -3710,6 +5426,32 @@ dig +short <target_ip> | xargs -I {} curl -s "https://api.hacker<target_site>/re
 
 *Hacker's Strategy:* Shodan is your 'Time Machine.' It shows you what was open yesterday, even if the target has closed the port today. Use it to find 'Shadow IT' that the security team forgot about.`,
               image: 'step-02.webp',
+              quiz: [
+                {
+                  id: 'bcq-133',
+                  question: 'Which tool aggregates emails, names, and subdomains from multiple public sources?',
+                  options: [
+                    'theHarvester',
+                    'nikto',
+                    'gobuster',
+                    'sqlmap',
+                  ],
+                  correctIndex: 0,
+                  explanation: 'theHarvester collects emails, names, and subdomains.',
+                },
+                {
+                  id: 'bcq-134',
+                  question: "How does Shodan act as a 'time machine' for reconnaissance?",
+                  options: [
+                    'It indexes the internet daily, showing ports that were open yesterday even if closed today',
+                    'It caches deleted files',
+                    'It stores login passwords',
+                    'It scans only your local network',
+                  ],
+                  correctIndex: 0,
+                  explanation: "Shodan's historical scans reveal past exposure, useful for finding forgotten 'shadow IT'.",
+                },
+              ],
             },
             {
               title: 'Social Media OSINT & Human Mapping',
@@ -3764,6 +5506,32 @@ curl -s "https://api.hacker<target_site>/reversedns/?q=<target_ip>"
 
 *Operative Drill:* Find a public GitHub repo for a large project. Can you find any 'TODO' comments in the code that mention security issues? These are often the 'First Domino' in an Qyvora engagement.`,
               image: 'step-03.webp',
+              quiz: [
+                {
+                  id: 'bcq-135',
+                  question: 'What does \'site:github.com "<domain>" "password"\' search for?',
+                  options: [
+                    "Accidentally committed passwords or secrets in public repos on the target's domain",
+                    "The target's employee photos",
+                    'Job postings',
+                    'DNS records',
+                  ],
+                  correctIndex: 0,
+                  explanation: 'It hunts for leaked credentials or API keys in public code repositories.',
+                },
+                {
+                  id: 'bcq-136',
+                  question: "If you find 'j.smith@<domain>', the pattern 'first_initial.last' lets you derive which other addresses?",
+                  options: [
+                    "Other employees' emails using the same convention",
+                    "The server's IP",
+                    'The admin password',
+                    'The database schema',
+                  ],
+                  correctIndex: 0,
+                  explanation: 'Naming conventions let you build wordlists for other employee emails.',
+                },
+              ],
             },
             {
               title: 'Operational Security (OPSEC): Staying Invisible',
@@ -3830,6 +5598,32 @@ unset TARGET_DOMAIN && history -c
 
 Compile your findings into a single \`OSINT_PROFILE.txt\` file organized by category (Infrastructure, People, Technology, Leaks). This is your blueprint for the entire engagement.`,
               image: 'step-04.webp',
+              quiz: [
+                {
+                  id: 'bcq-137',
+                  question: 'Which command routes a web request through the TOR anonymity network?',
+                  options: [
+                    'torify curl http://<target>',
+                    'curl -k <target>',
+                    'nmap -sT <target>',
+                    'wget -O <target>',
+                  ],
+                  correctIndex: 0,
+                  explanation: 'torify runs a command through the TOR network to mask your IP.',
+                },
+                {
+                  id: 'bcq-138',
+                  question: 'Which command removes all metadata from your own screenshots before uploading them?',
+                  options: [
+                    'exiftool -all= file.webp',
+                    'chmod +x file.webp',
+                    'history -c',
+                    'unset TARGET_IP',
+                  ],
+                  correctIndex: 0,
+                  explanation: 'exiftool -all= strips all metadata from an image.',
+                },
+              ],
             },
           ],
         },
@@ -3891,6 +5685,32 @@ hcitool scan
 
 *Operative Drill:* You are sitting in the target's lobby. You see an employee walk in with two cups of coffee and a laptop bag. How do you use the **Reciprocity** or **Liking** principle to get them to hold the door for you?`,
               image: 'step-01.webp',
+              quiz: [
+                {
+                  id: 'bcq-139',
+                  question: "What is 'tailgating' in the physical security context?",
+                  options: [
+                    'Following an authorized person through a secured door without proper credentials',
+                    "Tracking a server's network traffic",
+                    "Scanning an employee's RFID card over the internet",
+                    'Photographing a building from a car',
+                  ],
+                  correctIndex: 0,
+                  explanation: 'Tailgating is entering by following an authorized person through a secured door.',
+                },
+                {
+                  id: 'bcq-140',
+                  question: 'During physical reconnaissance, which of these is a key observation recorded by the operative?',
+                  options: [
+                    'Guard rotation patterns and gaps in surveillance',
+                    "The target's DNS records",
+                    'The web server version',
+                    'The database schema',
+                  ],
+                  correctIndex: 0,
+                  explanation: 'Observing guard rotations and surveillance gaps identifies the moment of maximum vulnerability.',
+                },
+              ],
             },
             {
               title: 'RFID Mastery & Badge Cloning',
@@ -3943,6 +5763,32 @@ pm3 -c "lf hid sim --raw 2006f1a23b"
 
 *Hacker's Strategy:* The best time to clone a badge is in a crowded elevator or a coffee shop line. A Proxmark3 hidden in a laptop sleeve can capture a 'Read' in less than a second.`,
               image: 'step-02.webp',
+              quiz: [
+                {
+                  id: 'bcq-141',
+                  question: 'Which frequency (125 kHz) badges like HID Prox are described as older and easy to clone?',
+                  options: [
+                    'Low Frequency (125 kHz)',
+                    'High Frequency (13.56 MHz)',
+                    'Ultra-High Frequency (900 MHz)',
+                    'Microwave (2.4 GHz)',
+                  ],
+                  correctIndex: 0,
+                  explanation: 'Low-frequency HID Prox/Indala cards are older and easy to clone.',
+                },
+                {
+                  id: 'bcq-142',
+                  question: 'Which Proxmark3 command clones captured low-frequency card data to a blank T5577 card?',
+                  options: [
+                    'lf hid clone --raw <data>',
+                    'hf mf snoop',
+                    'lf hid watch',
+                    "pm3 -c 'lf hid sim'",
+                  ],
+                  correctIndex: 0,
+                  explanation: 'lf hid clone writes the captured raw data to a blank low-frequency card.',
+                },
+              ],
             },
             {
               title: 'Dumpster Diving & Data Reconstruction',
@@ -3985,6 +5831,32 @@ Checking discarded monitors or keyboards for the 'imprint' of a password written
 
 *Operative Drill:* You find a discarded network diagram that was only torn in half. What is the first thing you look for on that diagram to help your **Phase 3 (Networking)** engagement?`,
               image: 'step-03.webp',
+              quiz: [
+                {
+                  id: 'bcq-143',
+                  question: 'Which tool recovers deleted files from a discarded SD card or drive?',
+                  options: [
+                    'photorec',
+                    'nmap',
+                    'sqlmap',
+                    'cewl',
+                  ],
+                  correctIndex: 0,
+                  explanation: 'photorec recovers deleted images and documents from discarded media.',
+                },
+                {
+                  id: 'bcq-144',
+                  question: 'Why is a discarded network diagram valuable for your Phase 3 (Networking) engagement?',
+                  options: [
+                    'It maps internal IPs, subnets, and devices to target',
+                    "It lists employees' passwords",
+                    "It contains the CEO's email",
+                    'It is needed for a phishing pretext',
+                  ],
+                  correctIndex: 0,
+                  explanation: 'A network diagram reveals internal IPs, subnets, and devices worth scanning.',
+                },
+              ],
             },
             {
               title: 'OPSEC for Physical Engagements',
@@ -4059,6 +5931,32 @@ dd if=/dev/zero of=/tmp/wipe bs=1M; rm /tmp/wipe
 
 Write a one-page engagement plan and identify the three most likely points of failure in your scenario. This is your final exercise as an Qyvora operative.`,
               image: 'step-04.webp',
+              quiz: [
+                {
+                  id: 'bcq-145',
+                  question: 'What is the purpose of wearing a clipboard, ladder, or box of donuts during a physical engagement?',
+                  options: [
+                    "To act as a credible 'prop' that makes you blend in and appear authorized",
+                    'To hide your face from cameras',
+                    'To carry extra batteries',
+                    'To signal your teammates',
+                  ],
+                  correctIndex: 0,
+                  explanation: 'A convincing prop supports your cover story and reduces suspicion.',
+                },
+                {
+                  id: 'bcq-146',
+                  question: "Why should a physical operative run 'rfkill block all' on their own device in the field?",
+                  options: [
+                    'To disable Wi-Fi/Bluetooth and avoid being tracked or beaconed',
+                    'To free up CPU',
+                    'To block incoming calls',
+                    'To encrypt their files',
+                  ],
+                  correctIndex: 0,
+                  explanation: 'Disabling radios avoids tracking and beaconing that could give away your position.',
+                },
+              ],
             },
           ],
         },
@@ -4067,3 +5965,4 @@ Write a one-page engagement plan and identify the three most likely points of fa
 
   ],
 };
+
