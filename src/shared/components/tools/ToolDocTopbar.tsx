@@ -125,7 +125,7 @@ const ToolDocTopbar: React.FC<ToolDocTopbarProps> = ({
     const el = document.getElementById(id);
     if (el) {
       const isMobile = window.innerWidth < 768;
-      const offset = isMobile ? 100 : 75;
+      const offset = isMobile ? 120 : 75;
       const y = el.getBoundingClientRect().top + window.scrollY - offset;
       window.scrollTo({ top: y, behavior: 'smooth' });
     }
@@ -143,19 +143,19 @@ const ToolDocTopbar: React.FC<ToolDocTopbarProps> = ({
       >
         <div className="flex items-center justify-between h-14 md:h-16 px-3 md:px-4 lg:px-6">
           {/* Brand Logo + Tool Name */}
-          <div className="flex items-center gap-2.5 shrink-0 relative z-[110]">
+          <div className="flex items-center gap-2.5 min-w-0 relative z-[110]">
             <Link
               to="/"
               aria-label="QYVORA - Return to Home"
-              className="flex items-center gap-2.5 transition-transform hover:scale-105 duration-200"
+              className="flex items-center gap-2.5 min-w-0 transition-transform hover:scale-105 duration-200"
             >
-              <Logo size="sm" variant="mark" color="#06B66F" className="!w-7 !h-7" />
-              <div className="flex items-center gap-1.5">
-                <span className="text-sm font-black uppercase tracking-tight text-text-primary">
+              <Logo size="sm" variant="mark" color="#06B66F" className="!w-7 !h-7 shrink-0" />
+              <div className="flex items-center gap-1.5 min-w-0">
+                <span className="text-sm font-black uppercase tracking-tight text-text-primary truncate">
                   {toolName}
                 </span>
                 {accentWord && (
-                  <span className="text-sm font-black uppercase tracking-tight text-accent">
+                  <span className="text-sm font-black uppercase tracking-tight text-accent shrink-0">
                     {accentWord}
                   </span>
                 )}

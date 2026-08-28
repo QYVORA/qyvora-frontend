@@ -6,7 +6,7 @@ import { Outlet } from 'react-router-dom';
  * No snap sections — documentation is single-scroll.
  */
 const ToolDocLayout = () => (
-  <div className="min-h-screen flex flex-col bg-bg">
+  <div className="min-h-screen flex flex-col bg-bg tool-doc-layout">
     <Outlet />
   </div>
 );
