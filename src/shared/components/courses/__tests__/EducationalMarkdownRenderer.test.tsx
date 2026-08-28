@@ -83,6 +83,30 @@ describe('EducationalMarkdownRenderer', () => {
       expect(img.hasAttribute('onerror')).toBe(false);
     }
   });
+
+  it('normalises standalone bold heading lines into mini-headings', () => {
+    renderMd('**Core Fields:**');
+    expect(screen.getByRole('heading', { level: 3, name: 'Core Fields' })).toBeTruthy();
+  });
+
+  it('normalises Valkyrie dialogue into a blockquote callout', () => {
+    const { container } = renderMd('Valkyrie: "Welcome. We attack before the hackers do."');
+    expect(container.querySelector('blockquote')).toBeTruthy();
+    expect(screen.getByText(/Welcome\. We attack/)).toBeTruthy();
+  });
+
+  it('normalises leading bold heading + paragraph into a heading and text', () => {
+    renderMd('**Why this matters:** Every server runs a CLI.');
+    expect(screen.getByRole('heading', { level: 3, name: 'Why this matters' })).toBeTruthy();
+    expect(screen.getByText(/Every server runs a CLI\./)).toBeTruthy();
+  });
+
+  it('leaves already-structured Labs markdown untouched', () => {
+    renderMd('## Finding SUID Binaries\n\n> **Valkyrie:** "Good recon."');
+    expect(screen.getByRole('heading', { level: 2, name: 'Finding SUID Binaries' })).toBeTruthy();
+    expect(screen.getAllByRole('heading').filter((h) => h.textContent === 'Finding SUID Binaries')).toHaveLength(1);
+    expect(document.querySelector('blockquote')?.textContent).toContain('Good recon.');
+  });
 });
 
 describe('isSafeUrl', () => {
