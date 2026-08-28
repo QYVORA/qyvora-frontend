@@ -27,11 +27,11 @@ const ErrorState = ({ message, title, icon, className = '', severity = 'warning'
     );
   }
   return (
-    <div className={`flex items-start gap-3 p-4 rounded-2xl border border-red-400/30 bg-red-400/5 ${className}`}>
+    <div className={`flex items-start gap-3 p-4 rounded-2xl border border-danger/30 bg-danger/5 ${className}`}>
       <div className="shrink-0 mt-0.5">{icon ?? <Dobia expression={severity === 'error' ? 'angry' : 'confused'} size="lg" />}</div>
       <div>
-        {title && <p className="text-sm font-bold text-red-400">{title}</p>}
-        <p className={`text-sm text-red-400/70 ${title ? 'mt-1' : ''}`}>{message}</p>
+        {title && <p className="text-sm font-bold text-danger">{title}</p>}
+        <p className={`text-sm text-danger/70 ${title ? 'mt-1' : ''}`}>{message}</p>
       </div>
     </div>
   );

@@ -462,8 +462,8 @@
 }
 
 @keyframes pulse-error {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); border-color: rgb(239 68 68 / 0.6); }
-  50%       { box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.15); border-color: rgb(239 68 68 / 1); }
+  0%, 100% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--color-danger) 0%, transparent); border-color: color-mix(in srgb, var(--color-danger) 60%, transparent); }
+  50%       { box-shadow: 0 0 0 4px color-mix(in srgb, var(--color-danger) 15%, transparent); border-color: var(--color-danger); }
 }
 
 @keyframes success-pop {
@@ -474,8 +474,8 @@
 }
 
 @keyframes glow-error {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
-  50%       { box-shadow: 0 0 16px 2px rgba(239, 68, 68, 0.18); }
+  0%, 100% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--color-danger) 0%, transparent); }
+  50%       { box-shadow: 0 0 16px 2px color-mix(in srgb, var(--color-danger) 18%, transparent); }
 }
 
 @keyframes slide-in-right {
@@ -554,7 +554,7 @@
 
 /* Input error state — red border + glow */
 .input-error {
-  border-color: rgb(239 68 68 / 0.7) !important;
+  border-color: color-mix(in srgb, var(--color-danger) 70%, transparent) !important;
   animation: shake-x 0.55s cubic-bezier(0.36, 0.07, 0.19, 0.97) both,
              glow-error 0.6s ease-in-out 2;
 }
@@ -576,7 +576,7 @@
   }
 
   .btn-danger {
-    @apply bg-red-500/10 text-red-400 font-black uppercase tracking-[0.08em] rounded-xl px-7 py-3 cursor-pointer hover:bg-red-500/20 active:scale-95 border border-red-500/40;
+    @apply bg-danger/10 text-danger font-black uppercase tracking-[0.08em] rounded-xl px-7 py-3 cursor-pointer hover:bg-danger/20 active:scale-95 border border-danger/40;
     transition-property: filter, transform, background-color, color, border-color, box-shadow;
     transition-duration: var(--dur-base);
     transition-timing-function: var(--ease-smooth);
@@ -584,13 +584,13 @@
 
   /* ── Semantic difficulty & status badge utilities ── */
   .badge-beginner {
-    @apply text-sky-400 border-sky-400/30 bg-sky-400/10;
+    @apply text-difficulty-beginner border-difficulty-beginner/30 bg-difficulty-beginner/10;
   }
   .badge-intermediate {
-    @apply text-amber-400 border-amber-400/30 bg-amber-400/10;
+    @apply text-difficulty-intermediate border-difficulty-intermediate/30 bg-difficulty-intermediate/10;
   }
   .badge-advanced {
-    @apply text-red-400 border-red-400/30 bg-red-400/10;
+    @apply text-difficulty-advanced border-difficulty-advanced/30 bg-difficulty-advanced/10;
   }
   .badge-accent {
     @apply text-accent border-accent/30 bg-accent/10;
