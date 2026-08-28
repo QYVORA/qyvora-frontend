@@ -313,8 +313,8 @@ const AnansiPage = () => {
           {/* Terminal mock */}
           <div className="rounded-2xl border border-border/50 bg-bg-card overflow-hidden">
             <div className="flex items-center gap-2 px-4 py-2.5 bg-bg">
-              <span className="w-2.5 h-2.5 rounded-full bg-red-400/70" />
-              <span className="w-2.5 h-2.5 rounded-full bg-yellow-400/70" />
+              <span className="w-2.5 h-2.5 rounded-full bg-danger/70" />
+              <span className="w-2.5 h-2.5 rounded-full bg-warning/70" />
               <span className="w-2.5 h-2.5 rounded-full bg-accent/70" />
               <span className="ml-2 text-[9px] font-mono text-text-muted">anansi, zsh</span>
             </div>

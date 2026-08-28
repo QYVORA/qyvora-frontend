@@ -22,18 +22,18 @@ interface LeaderboardEntry {
 }
 
 const TOP_THREE_GLOW = [
-  'shadow-[0_0_16px_rgba(250,204,21,0.4)]',
-  'shadow-[0_0_14px_rgba(209,213,219,0.3)]',
-  'shadow-[0_0_14px_rgba(217,119,6,0.3)]',
+  'shadow-[0_0_16px] shadow-warning/40',
+  'shadow-[0_0_14px] shadow-text-muted/30',
+  'shadow-[0_0_14px] shadow-warning/30',
 ];
 
 const TOP_THREE_RING = [
-  'border-yellow-400',
+  'border-warning',
   'border-gray-300',
   'border-amber-600',
 ];
 
-const TOP_THREE_RANK_COLOR = ['text-yellow-400', 'text-gray-300', 'text-amber-600'];
+const TOP_THREE_RANK_COLOR = ['text-warning', 'text-gray-300', 'text-amber-600'];
 
 const CELL_SIZE_SM = 64;
 const CELL_SIZE_LG = 72;

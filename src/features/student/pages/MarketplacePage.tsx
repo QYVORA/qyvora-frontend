@@ -243,7 +243,7 @@ const Marketplace: React.FC = () => {
                       <div className={`w-9 h-9 rounded-lg flex items-center justify-center flex-none shrink-0 border ${
                         tx.value >= 0
                           ? 'bg-accent/10 border-accent/20 text-accent'
-                          : 'bg-red-400/10 border-red-400/20 text-red-400'
+                          : 'bg-danger/10 border-danger/20 text-danger'
                       }`}>
                         {tx.value >= 0
                           ? <ArrowDownLeft className="w-4 h-4" />
@@ -254,7 +254,7 @@ const Marketplace: React.FC = () => {
                         <div className="text-sm font-medium text-text-primary truncate">{tx.desc}</div>
                         <div className="text-[10px] text-text-muted font-mono mt-0.5 truncate">{tx.date} · #{tx.shortId}</div>
                       </div>
-                      <div className={`text-sm font-mono font-bold flex-none shrink-0 ${tx.value < 0 ? 'text-red-400' : 'text-accent'}`}>
+                      <div className={`text-sm font-mono font-bold flex-none shrink-0 ${tx.value < 0 ? 'text-danger' : 'text-accent'}`}>
                         <span className="inline-flex items-center gap-1">{tx.value > 0 ? '+' : ''}{tx.value} <CpLogo className="w-3.5 h-3.5" /></span>
                       </div>
                     </div>

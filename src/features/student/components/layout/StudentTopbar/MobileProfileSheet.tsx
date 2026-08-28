@@ -232,7 +232,7 @@ const MobileProfileSheet: React.FC<MobileProfileSheetProps> = ({
           <div className="px-4 pb-4 flex-none">
             <button
               onClick={() => { onOpenChange(false); handleLogout(); }}
-              className="w-full flex items-center justify-center gap-2 py-3 rounded-xl border border-red-400/20 text-red-400 text-xs font-bold uppercase tracking-widest hover:bg-red-400/10 transition-all active:scale-95"
+              className="w-full flex items-center justify-center gap-2 py-3 rounded-xl border border-danger/20 text-danger text-xs font-bold uppercase tracking-widest hover:bg-danger/10 transition-all active:scale-95"
             >
               <LogOut className="w-3.5 h-3.5" /> {t('button.logOut')}
             </button>

@@ -34,7 +34,7 @@ export function EmailClient({ emails }: EmailClientProps) {
             >
               <div className="flex items-center gap-2 mb-1">
                 <span className="text-[10px] font-bold text-text-primary truncate">{email.fromName}</span>
-                {email.isPhishing && <AlertTriangle size={10} className="text-yellow-400 shrink-0" />}
+                {email.isPhishing && <AlertTriangle size={10} className="text-warning shrink-0" />}
               </div>
               <p className="text-[10px] font-mono text-text-muted truncate">{email.subject}</p>
               <p className="text-[9px] font-mono text-text-muted/50 mt-1">{email.receivedAt}</p>
@@ -98,13 +98,13 @@ export function EmailClient({ emails }: EmailClientProps) {
               <div className="mt-3 space-y-2">
                 {selected.indicators.map((ind, i) => (
                   <div key={i} className={`p-2 rounded border text-[10px] font-mono ${
-                    ind.severity === 'high' ? 'border-red-500/30 bg-red-500/5' :
-                    ind.severity === 'medium' ? 'border-yellow-500/30 bg-yellow-500/5' :
+                    ind.severity === 'high' ? 'border-danger/30 bg-danger/5' :
+                    ind.severity === 'medium' ? 'border-warning/30 bg-warning/5' :
                     'border-border/50 bg-bg-elevated'
                   }`}>
                     <span className={`font-black uppercase text-[9px] ${
-                      ind.severity === 'high' ? 'text-red-400' :
-                      ind.severity === 'medium' ? 'text-yellow-400' : 'text-text-muted'
+                      ind.severity === 'high' ? 'text-danger' :
+                      ind.severity === 'medium' ? 'text-warning' : 'text-text-muted'
                     }`}>{ind.type}</span>
                     <p className="text-text-muted mt-1">{ind.description}</p>
                   </div>

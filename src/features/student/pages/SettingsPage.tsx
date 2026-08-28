@@ -450,11 +450,11 @@ const Settings: React.FC = () => {
                           <RefreshCw className="w-4 h-4" /> {t('student.settings.recovery.generate')}
                         </button>
                       ) : (
-                        <div className="p-4 border border-yellow-500/30 rounded-xl bg-yellow-500/5 space-y-3">
-                          <p className="text-xs text-yellow-400 font-bold">{t('student.settings.recovery.invalidateWarning')}</p>
+                        <div className="p-4 border border-warning/30 rounded-xl bg-warning/5 space-y-3">
+                          <p className="text-xs text-warning font-bold">{t('student.settings.recovery.invalidateWarning')}</p>
                           <div className="flex flex-col sm:flex-row gap-2">
                             <button onClick={() => setConfirmRegenerate(false)} className="flex-1 px-3 py-2 border border-border rounded-xl text-xs font-bold text-text-muted active:scale-[0.98] transition-colors">{t('button.cancel')}</button>
-                            <button onClick={() => void regenerateToken()} disabled={regenerating} className="flex-1 px-3 py-2 border border-yellow-500/40 rounded-xl text-xs font-bold text-yellow-400 hover:bg-yellow-500/10 active:scale-[0.98] transition-colors disabled:opacity-50 flex items-center justify-center gap-1.5">
+                            <button onClick={() => void regenerateToken()} disabled={regenerating} className="flex-1 px-3 py-2 border border-warning/40 rounded-xl text-xs font-bold text-warning hover:bg-warning/10 active:scale-[0.98] transition-colors disabled:opacity-50 flex items-center justify-center gap-1.5">
                               {regenerating ? <><Loader2 className="w-3.5 h-3.5 animate-spin" /> {t('student.settings.recovery.generating')}</> : <><RefreshCw className="w-3.5 h-3.5" /> {t('student.settings.recovery.regenerate')}</>}
                             </button>
                           </div>
@@ -480,7 +480,7 @@ const Settings: React.FC = () => {
                     <p className="text-sm text-text-muted">{t('student.settings.sessions.description')}</p>
                   </div>
                   {sessions.length > 1 && (
-                    <button onClick={handleRevokeAll} className="shrink-0 text-[10px] font-black uppercase tracking-widest text-red-400 hover:text-red-300 active:opacity-70 transition-colors">
+                    <button onClick={handleRevokeAll} className="shrink-0 text-[10px] font-black uppercase tracking-widest text-danger hover:text-danger active:opacity-70 transition-colors">
                       {t('student.settings.sessions.revokeAll')}
                     </button>
                   )}
@@ -501,7 +501,7 @@ const Settings: React.FC = () => {
                           <p className="text-[10px] text-text-muted font-mono mt-0.5">{session.ipAddress} · {new Date(session.createdAt).toLocaleDateString()}</p>
                         </div>
                         {!session.isCurrent && (
-                          <button onClick={() => handleRevokeSession(session.id)} className="text-[10px] font-black uppercase tracking-widest text-text-muted hover:text-red-400 active:opacity-70 transition-colors shrink-0">
+                          <button onClick={() => handleRevokeSession(session.id)} className="text-[10px] font-black uppercase tracking-widest text-text-muted hover:text-danger active:opacity-70 transition-colors shrink-0">
                             {t('student.settings.sessions.revoke')}
                           </button>
                         )}
@@ -515,24 +515,24 @@ const Settings: React.FC = () => {
 
           {/* Account / Danger Zone */}
           {activeSection === 'account' && (
-            <div className="bg-bg-card border border-red-500/20 rounded-2xl p-5 md:p-8">
+            <div className="bg-bg-card border border-danger/20 rounded-2xl p-5 md:p-8">
               <SectionHeader 
                 title={t('student.settings.dangerZone.title')}
                 description={t('student.settings.dangerZone.description')}
               />
-              <div className="bg-red-500/5 border border-red-500/20 rounded-xl p-6 space-y-4">
+              <div className="bg-danger/5 border border-danger/20 rounded-xl p-6 space-y-4">
                 <div className="flex items-start gap-3">
-                  <AlertTriangle className="w-5 h-5 text-red-400 flex-none mt-0.5" />
+                  <AlertTriangle className="w-5 h-5 text-danger flex-none mt-0.5" />
                   <div>
-                    <h3 className="text-base font-black text-red-400 mb-2">{t('student.settings.dangerZone.deleteAccount')}</h3>
+                    <h3 className="text-base font-black text-danger mb-2">{t('student.settings.dangerZone.deleteAccount')}</h3>
                     <p className="text-sm text-text-muted mb-4">{t('student.settings.dangerZone.deleteDescription')}</p>
                     {!confirmDelete ? (
                       <button onClick={() => setConfirmDelete(true)} className="btn-danger !py-2.5 text-sm flex items-center justify-center gap-2">
                         <Trash2 className="w-4 h-4" /> {t('student.settings.dangerZone.deleteAccount')}
                       </button>
                     ) : (
-                      <div className="p-4 border border-red-500/30 rounded-xl bg-red-500/5 space-y-3">
-                        <p className="text-xs text-red-400 font-bold">{t('student.settings.dangerZone.deleteConfirmDesc')}</p>
+                      <div className="p-4 border border-danger/30 rounded-xl bg-danger/5 space-y-3">
+                        <p className="text-xs text-danger font-bold">{t('student.settings.dangerZone.deleteConfirmDesc')}</p>
                         <div className="flex flex-col sm:flex-row gap-2">
                           <button onClick={() => setConfirmDelete(false)} className="flex-1 px-3 py-2 border border-border rounded-xl text-xs font-bold text-text-muted active:scale-[0.98] transition-colors">{t('button.cancel')}</button>
                           <button onClick={handleDeleteAccount} disabled={deleting} className="flex-1 px-3 py-2 btn-danger !text-xs disabled:opacity-50 flex items-center justify-center gap-1.5">

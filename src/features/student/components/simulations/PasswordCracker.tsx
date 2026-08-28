@@ -98,7 +98,7 @@ export function PasswordCracker({ hashes, wordlist }: PasswordCrackerProps) {
         <div className="flex items-center gap-2 mb-4">
           <button onClick={isRunning ? stop : startCrack}
             className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[9px] font-black uppercase tracking-wider ${
-              isRunning ? 'bg-yellow-400/10 border border-yellow-400/30 text-yellow-400' :
+              isRunning ? 'bg-warning/10 border border-warning/30 text-warning' :
               'bg-accent/10 border border-accent/30 text-accent'
             }`}>
             {isRunning ? <><Pause size={10} /> Stop</> : <><Play size={10} /> Crack</>}
@@ -108,7 +108,7 @@ export function PasswordCracker({ hashes, wordlist }: PasswordCrackerProps) {
             <RotateCcw size={10} /> Reset
           </button>
           {found && (
-            <span className="flex items-center gap-1 text-[9px] font-black text-green-400">
+            <span className="flex items-center gap-1 text-[9px] font-black text-success">
               <Check size={10} /> Found: {found.word}
             </span>
           )}
@@ -135,7 +135,7 @@ export function PasswordCracker({ hashes, wordlist }: PasswordCrackerProps) {
           <p className="text-[9px] font-black uppercase tracking-widest text-text-muted mb-2">Attempts</p>
           <div className="space-y-0.5">
             {attempts.slice(-30).map((a, i) => (
-              <div key={i} className={`text-[10px] font-mono ${a.result === 'hit' ? 'text-green-400' : 'text-text-muted/50'}`}>
+              <div key={i} className={`text-[10px] font-mono ${a.result === 'hit' ? 'text-success' : 'text-text-muted/50'}`}>
                 #{a.attemptNumber} {a.word} {a.result === 'hit' && '✓ MATCH'}
               </div>
             ))}

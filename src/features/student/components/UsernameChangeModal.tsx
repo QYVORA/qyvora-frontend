@@ -90,9 +90,9 @@ const UsernameChangeModal = () => {
             </div>
 
             {error && (
-              <div className="flex items-start gap-2 p-3 rounded-lg bg-red-400/5 border border-red-400/20">
-                <AlertCircle className="w-4 h-4 text-red-400 shrink-0 mt-0.5" />
-                <span className="text-xs text-red-400">{error}</span>
+              <div className="flex items-start gap-2 p-3 rounded-lg bg-danger/5 border border-danger/20">
+                <AlertCircle className="w-4 h-4 text-danger shrink-0 mt-0.5" />
+                <span className="text-xs text-danger">{error}</span>
               </div>
             )}
 

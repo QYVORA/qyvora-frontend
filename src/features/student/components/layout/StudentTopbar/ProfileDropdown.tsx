@@ -257,14 +257,14 @@ const ProfileDropdown: React.FC<ProfileDropdownProps> = ({
             <div className="p-1.5 border-t border-border/20">
               <button
                 onClick={() => handleItemClick(handleLogout)}
-                className="w-full flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-left transition-all hover:bg-red-400/10 active:scale-[0.98] group"
+                className="w-full flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-left transition-all hover:bg-danger/10 active:scale-[0.98] group"
                 role="menuitem"
               >
-                <div className="w-7 h-7 rounded-lg bg-bg-elevated flex items-center justify-center shrink-0 group-hover:bg-red-400/10 transition-colors">
-                  <LogOut size={13} className="text-text-muted group-hover:text-red-400 transition-colors" />
+                <div className="w-7 h-7 rounded-lg bg-bg-elevated flex items-center justify-center shrink-0 group-hover:bg-danger/10 transition-colors">
+                  <LogOut size={13} className="text-text-muted group-hover:text-danger transition-colors" />
                 </div>
                 <div className="flex-1 min-w-0">
-                  <div className="text-[10px] font-bold uppercase tracking-widest text-text-muted group-hover:text-red-400 transition-colors">
+                  <div className="text-[10px] font-bold uppercase tracking-widest text-text-muted group-hover:text-danger transition-colors">
                     {t('button.logOut')}
                   </div>
                 </div>

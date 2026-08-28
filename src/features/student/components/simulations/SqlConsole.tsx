@@ -120,7 +120,7 @@ export function SqlConsole({ tables, predefinedQueries = [] }: SqlConsoleProps) 
       {/* Results */}
       <div className="flex-1 overflow-auto">
         {result?.error ? (
-          <div className="p-4 flex items-center gap-2 text-red-400 text-[10px] font-mono">
+          <div className="p-4 flex items-center gap-2 text-danger text-[10px] font-mono">
             <AlertTriangle size={12} /> {result.error}
           </div>
         ) : result && result.columns.length > 0 ? (
@@ -149,7 +149,7 @@ export function SqlConsole({ tables, predefinedQueries = [] }: SqlConsoleProps) 
             </table>
           </div>
         ) : result?.affectedRows !== undefined ? (
-          <div className="p-4 text-[10px] font-mono text-green-400">
+          <div className="p-4 text-[10px] font-mono text-success">
             Query affected {result.affectedRows} row(s) in {result.timing}ms
           </div>
         ) : (

@@ -36,8 +36,8 @@ const SKILL_LABELS: Record<string, string> = {
 
 const SKILL_COLORS: Record<string, string> = {
   beginner: 'text-accent border-accent/30 bg-accent/10',
-  intermediate: 'text-blue-400 border-blue-400/30 bg-blue-400/10',
-  advanced: 'text-red-400 border-red-400/30 bg-red-400/10',
+  intermediate: 'text-info border-info/30 bg-info/10',
+  advanced: 'text-danger border-danger/30 bg-danger/10',
 };
 
 // ─── Shared bits ──────────────────────────────────────────────────────────────

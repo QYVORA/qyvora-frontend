@@ -49,7 +49,7 @@ const StepNotes: React.FC<StepNotesProps> = ({ storageKey, className = '' }) => 
             spellCheck={false}
           />
           {notes && (
-            <button onClick={handleClear} className="mt-2 flex items-center gap-1 text-[10px] font-mono text-text-muted hover:text-red-400 transition-colors">
+            <button onClick={handleClear} className="mt-2 flex items-center gap-1 text-[10px] font-mono text-text-muted hover:text-danger transition-colors">
               <Trash2 className="h-3 w-3" /> {t('components.stepNotes.clearNotes')}
             </button>
           )}

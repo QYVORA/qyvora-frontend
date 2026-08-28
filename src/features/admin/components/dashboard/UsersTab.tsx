@@ -101,7 +101,7 @@ const UsersTab: React.FC<UsersTabProps> = ({
           onClick={() => void patchUser(item.id, { bootcampAccessRevoked: !item.bootcampAccessRevoked }, item.bootcampAccessRevoked ? t('admin.users.accessRestored') : t('admin.users.accessRevoked'))}
           className={`text-[9px] font-black uppercase tracking-widest px-4 py-2.5 rounded-xl transition-all ${
             item.bootcampAccessRevoked
-              ? 'text-red-400 bg-red-500/10'
+              ? 'text-danger bg-danger/10'
               : 'btn-primary'
           }`}
         >
@@ -140,7 +140,7 @@ const UsersTab: React.FC<UsersTabProps> = ({
       header: t('admin.users.status'),
       render: (item) => (
         isUserBlocked(item) ? (
-          <span className="inline-flex items-center gap-2 text-[9px] font-black uppercase tracking-widest text-red-400 bg-red-400/10 px-3 py-1.5 rounded-lg">
+          <span className="inline-flex items-center gap-2 text-[9px] font-black uppercase tracking-widest text-danger bg-danger/10 px-3 py-1.5 rounded-lg">
             <Ban className="w-3.5 h-3.5" /> {t('badge.blocked')}
           </span>
         ) : (
@@ -168,7 +168,7 @@ const UsersTab: React.FC<UsersTabProps> = ({
           <Tooltip content={t('admin.users.permanentlyDelete')} side="left">
             <button
               onClick={() => void handleDeleteUser(item)}
-              className="inline-flex items-center justify-center w-11 h-11 rounded-xl bg-red-500/5 text-red-400/60 hover:bg-red-500/10 hover:text-red-400 transition-all active:scale-90 shadow-sm"
+              className="inline-flex items-center justify-center w-11 h-11 rounded-xl bg-danger/5 text-danger/60 hover:bg-danger/10 hover:text-danger transition-all active:scale-90 shadow-sm"
             >
               <Trash2 className="w-4.5 h-4.5" />
             </button>
@@ -192,7 +192,7 @@ const UsersTab: React.FC<UsersTabProps> = ({
             <CpLogo className="w-4 h-4" /> {Number(item.cpPoints || 0).toLocaleString()}
           </span>
           {isUserBlocked(item) && (
-              <span className="text-red-400 font-black text-[9px] uppercase tracking-widest bg-red-400/10 px-2.5 py-1 rounded-lg flex items-center gap-1">
+              <span className="text-danger font-black text-[9px] uppercase tracking-widest bg-danger/10 px-2.5 py-1 rounded-lg flex items-center gap-1">
               <Ban className="w-3 h-3" /> {t('badge.blocked')}
             </span>
           )}
@@ -220,7 +220,7 @@ const UsersTab: React.FC<UsersTabProps> = ({
       <div className="grid grid-cols-2 gap-3 pt-2">
         <button
           onClick={() => void patchUser(item.id, { bootcampAccessRevoked: !item.bootcampAccessRevoked }, item.bootcampAccessRevoked ? t('admin.users.accessRestored') : t('admin.users.accessRevoked'))}
-          className={`py-3 transition-all ${item.bootcampAccessRevoked ? 'bg-red-500/10 text-red-400 rounded-xl text-[10px] font-black uppercase tracking-widest' : 'btn-primary'}`}
+          className={`py-3 transition-all ${item.bootcampAccessRevoked ? 'bg-danger/10 text-danger rounded-xl text-[10px] font-black uppercase tracking-widest' : 'btn-primary'}`}
         >
           {item.bootcampAccessRevoked ? t('admin.users.revoked') : t('admin.users.allowed')}
         </button>
@@ -232,7 +232,7 @@ const UsersTab: React.FC<UsersTabProps> = ({
         </button>
         <button
           onClick={() => void handleDeleteUser(item)}
-          className="col-span-2 py-3 rounded-xl text-[10px] font-black uppercase tracking-widest bg-red-500/5 text-red-400/60 hover:bg-red-500/10 hover:text-red-400 transition-all active:scale-95"
+          className="col-span-2 py-3 rounded-xl text-[10px] font-black uppercase tracking-widest bg-danger/5 text-danger/60 hover:bg-danger/10 hover:text-danger transition-all active:scale-95"
         >
           {t('admin.users.deleteUser')}
         </button>

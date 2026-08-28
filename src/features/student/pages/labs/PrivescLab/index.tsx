@@ -15,9 +15,9 @@ import useLabScenario from '@/features/student/hooks/useLabScenario';
 import { getLabCpCost } from '@/features/student/data/simulations/labAccess';
 
 const DIFFICULTY_STYLES: Record<string, string> = {
-  beginner: 'bg-green-400/10 text-green-400 border-green-400/20',
-  intermediate: 'bg-yellow-400/10 text-yellow-400 border-yellow-400/20',
-  advanced: 'bg-red-400/10 text-red-400 border-red-400/20',
+  beginner: 'bg-success/10 text-success border-success/20',
+  intermediate: 'bg-warning/10 text-warning border-warning/20',
+  advanced: 'bg-danger/10 text-danger border-danger/20',
 };
 
 const PRIVESC_FLOW_NODES = [

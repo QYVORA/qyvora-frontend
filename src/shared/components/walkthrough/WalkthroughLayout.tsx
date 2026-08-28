@@ -167,15 +167,15 @@ export function WalkthroughLayout({
                     {isLoading ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <IconTerminal size={14} />}
                     {isLoading ? 'Connecting...' : 'Connect to Lab'}
                   </button>
-                  {error && <span className="text-xs text-red-400">{error}</span>}
+                  {error && <span className="text-xs text-danger">{error}</span>}
                 </div>
               </div>
             ) : (
               <div className="flex flex-col gap-4">
                 <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
                   <div className="flex flex-wrap items-center gap-3">
-                    <span className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-green-500/10 text-[10px] font-black uppercase tracking-widest text-green-400">
-                      <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" />
+                    <span className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-success/10 text-[10px] font-black uppercase tracking-widest text-success">
+                      <span className="w-1.5 h-1.5 rounded-full bg-success animate-pulse" />
                       Connected
                     </span>
                     <span className="px-3 py-1.5 rounded-lg bg-bg-elevated text-[10px] font-mono text-text-secondary">
@@ -185,7 +185,7 @@ export function WalkthroughLayout({
                   <button
                     onClick={disconnect}
                     disabled={isLoading}
-                    className="flex items-center gap-1.5 px-4 py-2 rounded-lg border border-red-500/30 bg-red-500/10 text-[10px] font-black uppercase tracking-widest text-red-400 hover:bg-red-500/20 transition-colors disabled:opacity-50 w-fit"
+                    className="flex items-center gap-1.5 px-4 py-2 rounded-lg border border-danger/30 bg-danger/10 text-[10px] font-black uppercase tracking-widest text-danger hover:bg-danger/20 transition-colors disabled:opacity-50 w-fit"
                   >
                     {isLoading ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Unplug className="w-3.5 h-3.5" />}
                     Disconnect

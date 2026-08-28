@@ -20,15 +20,15 @@ export const PERIODS = [
 ];
 
 export const TOP_THREE_COLORS = [
-  'text-yellow-400',
+  'text-warning',
   'text-gray-300',
   'text-amber-600',
 ];
 
 export const RANK_COLORS: Record<string, string> = {
   Vanguard: 'text-accent',
-  Architect: 'text-amber-400',
+  Architect: 'text-warning',
   Specialist: 'text-purple-400',
-  Contributor: 'text-blue-400',
+  Contributor: 'text-info',
   Candidate: 'text-zinc-400',
 };

@@ -82,10 +82,10 @@ const InlineQuiz: React.FC<InlineQuizProps> = ({
     return (
       <div className={`wc-interactive border border-border bg-bg-card rounded-xl p-6 space-y-5 ${className}`}>
         <div className="text-center py-4">
-          <div className={`text-5xl font-black font-mono mb-2 ${passed ? 'text-accent' : 'text-red-400'}`}>
+          <div className={`text-5xl font-black font-mono mb-2 ${passed ? 'text-accent' : 'text-danger'}`}>
             {score}%
           </div>
-          <div className={`flex items-center justify-center gap-1.5 text-sm font-bold uppercase tracking-widest ${passed ? 'text-accent' : 'text-red-400'}`}>
+          <div className={`flex items-center justify-center gap-1.5 text-sm font-bold uppercase tracking-widest ${passed ? 'text-accent' : 'text-danger'}`}>
             {passed ? <><IconCheck size={16} /> {t('components.quiz.passed')}</> : <><XCircle className="h-4 w-4" /> {t('components.quiz.needsReview')}</>}
           </div>
           <p className="text-xs text-text-muted mt-2">{correct} of {questions.length} correct ({(passThreshold)}% to pass)</p>
@@ -98,12 +98,12 @@ const InlineQuiz: React.FC<InlineQuizProps> = ({
             return (
               <div key={q.id} className="border border-border rounded-lg p-4 space-y-3">
                 <div className="flex items-start gap-2">
-                  <span className={`shrink-0 mt-0.5 ${isCorrect ? 'text-accent' : 'text-red-400'}`}>
+                  <span className={`shrink-0 mt-0.5 ${isCorrect ? 'text-accent' : 'text-danger'}`}>
                     {isCorrect ? <IconCheck size={16} /> : <XCircle className="h-4 w-4" />}
                   </span>
                   <div>
                     <p className="text-sm font-bold text-text-primary">{q.question}</p>
-                    <p className="text-xs text-text-muted mt-1">{t('components.quiz.yourAnswer')}<span className={isCorrect ? 'text-accent' : 'text-red-400'}>{q.options[chosen]}</span></p>
+                    <p className="text-xs text-text-muted mt-1">{t('components.quiz.yourAnswer')}<span className={isCorrect ? 'text-accent' : 'text-danger'}>{q.options[chosen]}</span></p>
                     {!isCorrect && (
                       <p className="text-xs text-accent mt-0.5">{t('components.quiz.correctAnswer')}{q.options[q.correctIndex]}</p>
                     )}

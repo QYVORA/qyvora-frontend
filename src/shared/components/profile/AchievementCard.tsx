@@ -32,19 +32,19 @@ export const RARITY_STYLES: Record<string, { border: string; bg: string; glow: s
     glow: '',
   },
   rare: {
-    border: 'border-blue-400/30',
-    bg: 'bg-blue-400/5',
-    glow: 'hover:shadow-[0_0_20px_rgba(96,165,250,0.15)]',
+    border: 'border-info/30',
+    bg: 'bg-info/5',
+    glow: 'hover:shadow-[0_0_20px] hover:shadow-info/15',
   },
   epic: {
     border: 'border-purple-400/30',
     bg: 'bg-purple-400/5',
-    glow: 'hover:shadow-[0_0_20px_rgba(192,132,252,0.15)]',
+    glow: 'hover:shadow-[0_0_20px] hover:shadow-accent/15',
   },
   legendary: {
-    border: 'border-amber-400/30',
-    bg: 'bg-amber-400/5',
-    glow: 'hover:shadow-[0_0_20px_rgba(251,191,36,0.15)]',
+    border: 'border-warning/30',
+    bg: 'bg-warning/5',
+    glow: 'hover:shadow-[0_0_20px] hover:shadow-warning/15',
   },
 };
 
@@ -58,10 +58,10 @@ export const TYPE_ICONS: Record<string, React.ReactNode> = {
 };
 
 export const TYPE_COLORS: Record<string, string> = {
-  lab: 'text-red-400',
-  course: 'text-blue-400',
+  lab: 'text-danger',
+  course: 'text-info',
   bootcamp: 'text-accent',
-  rank: 'text-amber-400',
+  rank: 'text-warning',
   streak: 'text-orange-400',
   challenge: 'text-purple-400',
 };

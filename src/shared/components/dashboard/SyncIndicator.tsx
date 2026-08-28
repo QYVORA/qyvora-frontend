@@ -8,7 +8,7 @@ interface SyncIndicatorProps {
 
 const SyncIndicator = ({ lastSync, error, onRetry }: SyncIndicatorProps) => (
   <div className="flex items-center justify-between gap-3">
-    <p className={`flex items-center gap-1.5 text-[11px] ${error ? 'text-red-400' : 'text-text-muted'}`}>
+    <p className={`flex items-center gap-1.5 text-[11px] ${error ? 'text-danger' : 'text-text-muted'}`}>
       <RefreshCw className="h-3 w-3 shrink-0" />
       {error || (lastSync ? `Last updated: ${lastSync}` : 'No data yet')}
     </p>

@@ -184,11 +184,11 @@ const AchievementsSection: React.FC<AchievementsSectionProps> = ({
       {courseAchievements.length > 0 && (
         <div>
           <ModuleHeader
-            icon={<Award className="w-4 h-4 text-blue-400" />}
-            iconClassName="bg-blue-400/10"
+            icon={<Award className="w-4 h-4 text-info" />}
+            iconClassName="bg-info/10"
             title={t('profile.achievements.courses', 'Courses')}
             trailing={
-              <span className="px-2 py-1 bg-blue-400/10 text-blue-400 text-[9px] font-black rounded-lg">
+              <span className="px-2 py-1 bg-info/10 text-info text-[9px] font-black rounded-lg">
                 {courseAchievements.length}
               </span>
             }
@@ -207,9 +207,9 @@ const AchievementsSection: React.FC<AchievementsSectionProps> = ({
                     transition={{ duration: prefersReduced ? 0 : 0.3, delay: prefersReduced ? 0 : idx * 0.03 }}
                     className="relative group flex flex-col items-center text-center p-4 rounded-xl border border-border/50 bg-bg-card transition-all duration-300 hover:scale-[1.02] cursor-default"
                   >
-                    <div className="w-12 h-12 rounded-xl flex items-center justify-center mb-3 bg-blue-400/10">
+                    <div className="w-12 h-12 rounded-xl flex items-center justify-center mb-3 bg-info/10">
                       {IconComp ? (
-                        <IconComp className="w-6 h-6 text-blue-400" />
+                        <IconComp className="w-6 h-6 text-info" />
                       ) : (
                         <QyvoraMark className="w-5 h-5" />
                       )}
@@ -234,11 +234,11 @@ const AchievementsSection: React.FC<AchievementsSectionProps> = ({
       {labCount > 0 && (
         <div>
           <ModuleHeader
-            icon={<FlaskConical className="w-4 h-4 text-red-400" />}
-            iconClassName="bg-red-400/10"
+            icon={<FlaskConical className="w-4 h-4 text-danger" />}
+            iconClassName="bg-danger/10"
             title={t('profile.achievements.labs', 'Labs')}
             trailing={
-              <span className="px-2 py-1 bg-red-400/10 text-red-400 text-[9px] font-black rounded-lg">
+              <span className="px-2 py-1 bg-danger/10 text-danger text-[9px] font-black rounded-lg">
                 {labCount}
               </span>
             }
@@ -258,7 +258,7 @@ const AchievementsSection: React.FC<AchievementsSectionProps> = ({
             {(labCount >= 5 || labCount >= 10) && (
               <span className={`px-1.5 py-0.5 rounded text-[7px] font-black uppercase tracking-wider ${
                 labCount >= 10
-                  ? 'bg-blue-400/20 text-blue-400'
+? 'bg-info/20 text-info'
                   : 'bg-accent/20 text-accent'
               }`}>
                 {labCount >= 10 ? 'rare' : 'uncommon'}
@@ -315,9 +315,9 @@ const AchievementsSection: React.FC<AchievementsSectionProps> = ({
                     {rarity !== 'common' && (
                       <span className={`
                         mt-2 px-1.5 py-0.5 rounded text-[7px] font-black uppercase tracking-wider
-                        ${rarity === 'legendary' ? 'bg-amber-400/20 text-amber-400' :
+                        ${rarity === 'legendary' ? 'bg-warning/20 text-warning' :
                           rarity === 'epic' ? 'bg-purple-400/20 text-purple-400' :
-                          rarity === 'rare' ? 'bg-blue-400/20 text-blue-400' :
+                          rarity === 'rare' ? 'bg-info/20 text-info' :
                           'bg-accent/20 text-accent'}
                       `}>
                         {rarity}

@@ -32,9 +32,9 @@ const InfoCard = ({ icon, label, value }: { icon: React.ReactNode; label: string
 );
 
 const OSIcon = ({ os }: { os: string }) => {
-  if (os.toLowerCase().includes('windows')) return <Monitor className="w-3.5 h-3.5 text-blue-400" />;
+  if (os.toLowerCase().includes('windows')) return <Monitor className="w-3.5 h-3.5 text-info" />;
   if (os.toLowerCase().includes('ubuntu') || os.toLowerCase().includes('debian') || os.toLowerCase().includes('fedora') || os.toLowerCase().includes('linux')) return <Server className="w-3.5 h-3.5 text-accent" />;
-  if (os.toLowerCase().includes('cisco')) return <Router className="w-3.5 h-3.5 text-amber-400" />;
+  if (os.toLowerCase().includes('cisco')) return <Router className="w-3.5 h-3.5 text-warning" />;
   if (os.toLowerCase().includes('embedded')) return <HardDrive className="w-3.5 h-3.5 text-purple-400" />;
   return <Monitor className="w-3.5 h-3.5 text-text-muted" />;
 };
@@ -90,9 +90,9 @@ const NetworksPage = () => {
 
         {/* Simulation notice */}
         <div className="flex items-start gap-3 px-5 py-4 rounded-2xl border border-border/50 bg-bg-card">
-          <Shield className="w-5 h-5 text-yellow-400 shrink-0 mt-0.5" />
+          <Shield className="w-5 h-5 text-warning shrink-0 mt-0.5" />
           <div>
-            <p className="text-sm font-bold text-yellow-400">Simulated Environment</p>
+            <p className="text-sm font-bold text-warning">Simulated Environment</p>
             <p className="text-xs text-text-muted mt-0.5">
               This is a fully simulated network. All devices, IPs, ports, and services are fictional.
               The environment is designed for learning network scanning, enumeration, and basic penetration testing techniques.
@@ -134,7 +134,7 @@ const NetworksPage = () => {
         {/* Legend */}
         <div className="flex flex-wrap items-center gap-4 text-[10px] font-mono">
           <div className="flex items-center gap-1.5">
-            <div className="w-2.5 h-2.5 rounded-full bg-green-400" />
+            <div className="w-2.5 h-2.5 rounded-full bg-success" />
             <span className="text-text-muted">Discovered ({discoveredCount}/{knownDevices.length})</span>
           </div>
           <div className="flex items-center gap-1.5">
@@ -143,7 +143,7 @@ const NetworksPage = () => {
           </div>
           {hiddenCount > 0 && (
             <div className="flex items-center gap-1.5">
-              <Shield className="w-3 h-3 text-red-400" />
+              <Shield className="w-3 h-3 text-danger" />
               <span className="text-text-muted">{hiddenCount} hidden, use <span className="text-accent">nmap</span> to discover</span>
             </div>
           )}

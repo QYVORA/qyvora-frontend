@@ -85,7 +85,7 @@ const TransactionLedger: React.FC<TransactionLedgerProps> = ({
               return (
                 <div key={tx._id} className="px-4 py-3 flex items-center gap-3">
                   <div className={`w-8 h-8 rounded-lg flex items-center justify-center flex-none border ${
-                    isCredit ? 'bg-accent/10 border-accent/20 text-accent' : 'bg-red-400/10 border-red-400/20 text-red-400'
+                    isCredit ? 'bg-accent/10 border-accent/20 text-accent' : 'bg-danger/10 border-danger/20 text-danger'
                   }`}>
                     {isCredit ? <ArrowDownLeft className="w-3.5 h-3.5" /> : <ArrowUpRight className="w-3.5 h-3.5" />}
                   </div>
@@ -98,7 +98,7 @@ const TransactionLedger: React.FC<TransactionLedgerProps> = ({
                       {new Date(tx.createdAt).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: '2-digit' })}
                     </div>
                   </div>
-                  <div className={`text-sm font-mono font-bold flex-none ${isCredit ? 'text-accent' : 'text-red-400'}`}>
+                  <div className={`text-sm font-mono font-bold flex-none ${isCredit ? 'text-accent' : 'text-danger'}`}>
                     {isCredit ? '+' : ''}{fmt(pts)}
                   </div>
                 </div>
@@ -130,11 +130,11 @@ const TransactionLedger: React.FC<TransactionLedgerProps> = ({
                       </td>
                       <td className="px-4 py-3">
                         <span className={`text-[10px] font-bold uppercase px-2 py-0.5 rounded-lg border ${
-                          isCredit ? 'text-accent border-accent/20 bg-accent/5' : 'text-red-400 border-red-400/20 bg-red-400/5'
+                          isCredit ? 'text-accent border-accent/20 bg-accent/5' : 'text-danger border-danger/20 bg-danger/5'
                         }`}>{tx.type || '-'}</span>
                       </td>
                       <td className="px-4 py-3">
-                        <span className={`text-sm font-mono font-bold inline-flex items-center gap-1 ${isCredit ? 'text-accent' : 'text-red-400'}`}>
+                        <span className={`text-sm font-mono font-bold inline-flex items-center gap-1 ${isCredit ? 'text-accent' : 'text-danger'}`}>
                           {isCredit ? '+' : ''}{fmt(pts)} <CpLogo className="w-3 h-3" />
                         </span>
                       </td>

@@ -59,7 +59,7 @@ const PointsControl: React.FC<PointsControlProps> = ({
             <button key={a} onClick={() => setCpAction(a)}
               className={`py-2 transition-colors ${
                 cpAction === a
-                  ? a === 'deduct' ? 'border border-red-400/40 text-red-400 bg-red-400/10 rounded-xl text-xs font-bold uppercase tracking-wide'
+                  ? a === 'deduct' ? 'border border-danger/40 text-danger bg-danger/10 rounded-xl text-xs font-bold uppercase tracking-wide'
                     : 'btn-primary'
                   : 'btn-secondary'
               }`}>

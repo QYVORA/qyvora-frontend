@@ -23,8 +23,8 @@ const CATEGORY_ICONS: Record<CourseCategoryId, React.ElementType> = {
 
 const SKILL_LEVEL_CONFIG: Record<SkillLevel, { label: string; color: string }> = {
   beginner: { label: 'Beginner', color: 'text-accent border-accent/30 bg-accent/10' },
-  intermediate: { label: 'Intermediate', color: 'text-blue-400 border-blue-400/30 bg-blue-400/10' },
-  advanced: { label: 'Advanced', color: 'text-red-400 border-red-400/30 bg-red-400/10' },
+  intermediate: { label: 'Intermediate', color: 'text-info border-info/30 bg-info/10' },
+  advanced: { label: 'Advanced', color: 'text-danger border-danger/30 bg-danger/10' },
 };
 
 interface CoursePurchaseModalProps {
@@ -169,7 +169,7 @@ const CoursePurchaseModal: React.FC<CoursePurchaseModalProps> = ({ open, onOpenC
                   {purchasing ? 'Unlocking...' : `Unlock for ${course.cpCost} CP`}
                 </Button>
                 {balance !== null && (
-                  <p className={`text-xs font-mono text-center ${canAfford ? 'text-text-muted' : 'text-red-400'}`}>
+                  <p className={`text-xs font-mono text-center ${canAfford ? 'text-text-muted' : 'text-danger'}`}>
                     Balance: {balance} CP
                   </p>
                 )}

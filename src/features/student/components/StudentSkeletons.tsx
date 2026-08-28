@@ -13,7 +13,7 @@ const S = ({ className = '', circle = false, ...props }: { className?: string; c
 const HeroSkeleton = ({ stats = 0, action = false }: { stats?: number; action?: boolean } = {}) => (
   <div className="relative flex flex-col justify-center overflow-hidden">
     <div className="absolute inset-0 opacity-10">
-      <div className="w-full h-full bg-[repeating-linear-gradient(90deg,transparent,transparent_39px,rgba(255,255,255,0.05)_39px,rgba(255,255,255,0.05)_40px)] bg-[length:40px_40px]" />
+      <div className="w-full h-full line-grid" />
     </div>
     <div className="relative z-10 px-3 md:px-4 lg:px-6 py-8 md:py-10">
       <div className="w-full space-y-8">
@@ -47,7 +47,7 @@ export const DashboardSkeleton = () => (
     <div className="bg-bg px-3 md:px-4 lg:px-6 pt-8 pb-10">
       <div className="relative card-accent bg-bg-card p-6 sm:p-10 lg:p-14 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 sm:gap-6 overflow-hidden">
         <div className="absolute inset-0 opacity-10">
-          <div className="w-full h-full bg-[repeating-linear-gradient(90deg,transparent,transparent_39px,rgba(255,255,255,0.05)_39px,rgba(255,255,255,0.05)_40px)] bg-[length:40px_40px]" />
+          <div className="w-full h-full line-grid" />
         </div>
         <div className="relative z-10 w-full sm:w-auto space-y-2">
           <S className="h-3 w-40 rounded" />
@@ -481,7 +481,7 @@ export const CourseLessonSkeleton = () => (
     {/* Hero */}
     <div className="relative flex flex-col justify-center overflow-hidden">
       <div className="absolute inset-0 opacity-10">
-        <div className="w-full h-full bg-[repeating-linear-gradient(90deg,transparent,transparent_39px,rgba(255,255,255,0.05)_39px,rgba(255,255,255,0.05)_40px)] bg-[length:40px_40px]" />
+        <div className="w-full h-full line-grid" />
       </div>
       <div className="relative z-10 py-8 md:py-10 space-y-6">
         <S className="h-16 md:h-20 lg:h-24 w-64 md:w-96 rounded-lg" />

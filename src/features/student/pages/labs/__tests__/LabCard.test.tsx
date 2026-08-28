@@ -1,6 +1,7 @@
 import { describe, it, expect, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
+import { AuthProvider } from '@/core/contexts/AuthContext';
 import LabCard from '../LabsPage/LabCard';
 
 vi.mock('react-i18next', () => ({
@@ -26,9 +27,11 @@ const defaultProps = {
 
 const renderCard = (props = {}) =>
   render(
-    <MemoryRouter>
-      <LabCard {...defaultProps} {...props} />
-    </MemoryRouter>,
+    <AuthProvider>
+      <MemoryRouter>
+        <LabCard {...defaultProps} {...props} />
+      </MemoryRouter>
+    </AuthProvider>,
   );
 
 describe('LabCard', () => {

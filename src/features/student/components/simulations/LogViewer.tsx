@@ -24,10 +24,10 @@ export function LogViewer({ sources }: LogViewerProps) {
 
   const levelIcon = (level: string) => {
     switch (level) {
-      case 'error': return <AlertTriangle size={10} className="text-red-400" />;
-      case 'warn': return <AlertCircle size={10} className="text-yellow-400" />;
+      case 'error': return <AlertTriangle size={10} className="text-danger" />;
+      case 'warn': return <AlertCircle size={10} className="text-warning" />;
       case 'debug': return <Bug size={10} className="text-text-muted" />;
-      default: return <Info size={10} className="text-blue-400" />;
+      default: return <Info size={10} className="text-info" />;
     }
   };
 

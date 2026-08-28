@@ -37,10 +37,10 @@ export function HttpInspector({ requests }: HttpInspectorProps) {
               }`}
             >
               <span className={`text-[9px] font-black uppercase tracking-wider mr-1.5 ${
-                req.method === 'GET' ? 'text-green-400' :
-                req.method === 'POST' ? 'text-yellow-400' :
-                req.method === 'PUT' ? 'text-blue-400' :
-                req.method === 'DELETE' ? 'text-red-400' : 'text-text-muted'
+                req.method === 'GET' ? 'text-success' :
+                req.method === 'POST' ? 'text-warning' :
+                req.method === 'PUT' ? 'text-info' :
+                req.method === 'DELETE' ? 'text-danger' : 'text-text-muted'
               }`}>
                 {req.method}
               </span>
@@ -57,10 +57,10 @@ export function HttpInspector({ requests }: HttpInspectorProps) {
               <div className="flex items-center justify-between mb-3">
                 <div className="flex items-center gap-2">
                   <span className={`px-2 py-0.5 rounded text-[9px] font-black uppercase tracking-wider ${
-                    selected.method === 'GET' ? 'bg-green-400/10 text-green-400' :
-                    selected.method === 'POST' ? 'bg-yellow-400/10 text-yellow-400' :
-                    selected.method === 'PUT' ? 'bg-blue-400/10 text-blue-400' :
-                    'bg-red-400/10 text-red-400'
+                    selected.method === 'GET' ? 'bg-success/10 text-success' :
+                    selected.method === 'POST' ? 'bg-warning/10 text-warning' :
+                    selected.method === 'PUT' ? 'bg-info/10 text-info' :
+                    'bg-danger/10 text-danger'
                   }`}>{selected.method}</span>
                   <span className="text-[11px] font-mono text-text-primary">{selected.url}</span>
                 </div>
@@ -99,7 +99,7 @@ export function HttpInspector({ requests }: HttpInspectorProps) {
               )}
 
               {replayed && (
-                <div className="mt-2 text-[9px] font-black uppercase tracking-wider text-green-400">
+                <div className="mt-2 text-[9px] font-black uppercase tracking-wider text-success">
                   Request replayed successfully
                 </div>
               )}
@@ -109,9 +109,9 @@ export function HttpInspector({ requests }: HttpInspectorProps) {
             <div className="flex-1 overflow-auto p-4">
               <div className="flex items-center gap-2 mb-3">
                 <span className={`px-2 py-0.5 rounded text-[9px] font-black ${
-                  selected.response.statusCode < 300 ? 'bg-green-400/10 text-green-400' :
-                  selected.response.statusCode < 400 ? 'bg-yellow-400/10 text-yellow-400' :
-                  'bg-red-400/10 text-red-400'
+                  selected.response.statusCode < 300 ? 'bg-success/10 text-success' :
+                  selected.response.statusCode < 400 ? 'bg-warning/10 text-warning' :
+                  'bg-danger/10 text-danger'
                 }`}>
                   {selected.response.statusCode} {selected.response.statusText}
                 </span>

@@ -29,7 +29,7 @@ export const FutureCybersecurityAfricaBlog: React.FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 my-8">
           <div className="p-6 rounded-xl border border-accent/10 bg-accent/5">
             <div className="flex items-center gap-3 mb-4">
-              <IconWarning size={20} className="text-red-400" />
+              <IconWarning size={20} className="text-danger" />
               <h3 className="text-sm font-black uppercase tracking-wider text-text-primary">Attacker Advantage</h3>
             </div>
             <ul className="space-y-3 text-sm font-mono text-text-secondary leading-relaxed">

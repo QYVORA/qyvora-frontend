@@ -11,14 +11,14 @@ const CATEGORY_ICONS: Record<string, typeof Network> = {
 };
 
 const SEVERITY_COLORS: Record<string, string> = {
-  low: 'border-blue-400/30 bg-blue-400/5',
-  medium: 'border-yellow-400/30 bg-yellow-400/5',
-  high: 'border-orange-400/30 bg-orange-400/5',
-  critical: 'border-red-400/30 bg-red-400/5',
+  low: 'border-info/30 bg-info/5',
+  medium: 'border-warning/30 bg-warning/5',
+  high: 'border-danger/30 bg-danger/5',
+  critical: 'border-danger/30 bg-danger/5',
 };
 
 const SEVERITY_DOT: Record<string, string> = {
-  low: 'bg-blue-400', medium: 'bg-yellow-400', high: 'bg-orange-400', critical: 'bg-red-400',
+  low: 'bg-info', medium: 'bg-warning', high: 'bg-danger', critical: 'bg-danger',
 };
 
 export function TimelineInvestigation({ events }: TimelineInvestigationProps) {
@@ -47,7 +47,7 @@ export function TimelineInvestigation({ events }: TimelineInvestigationProps) {
         <p className="text-[10px] font-black uppercase tracking-widest text-accent">Timeline Investigation</p>
         {orderedIds.length > 0 && (
           <span className={`text-[8px] font-black uppercase tracking-wider px-1.5 py-0.5 rounded ${
-            isSequenceComplete ? 'bg-green-400/10 text-green-400' : 'bg-yellow-400/10 text-yellow-400'
+            isSequenceComplete ? 'bg-success/10 text-success' : 'bg-warning/10 text-warning'
           }`}>
             {isSequenceComplete ? 'Sequence Verified' : `${orderedIds.length}/${events.length} ordered`}
           </span>

@@ -95,7 +95,7 @@ const QuizModal: React.FC<QuizModalProps> = ({ moduleId, roomId, courseId, onClo
           )}
 
           {!loading && !quiz && !result && (
-            <p className={`py-8 text-center text-sm ${error ? 'text-red-400' : 'text-text-muted'}`}>
+            <p className={`py-8 text-center text-sm ${error ? 'text-danger' : 'text-text-muted'}`}>
               {error || t('student.bootcampRoom.quiz.notAvailable')}
             </p>
           )}
@@ -103,10 +103,10 @@ const QuizModal: React.FC<QuizModalProps> = ({ moduleId, roomId, courseId, onClo
           {!loading && result && (
             <div className="space-y-6">
               <div className="text-center py-4">
-                <div className={`text-6xl font-black mb-2 ${result.passed ? 'text-accent' : 'text-red-400'}`}>
+                <div className={`text-6xl font-black mb-2 ${result.passed ? 'text-accent' : 'text-danger'}`}>
                   {result.score}%
                 </div>
-                <div className={`flex items-center justify-center gap-1.5 text-sm font-bold uppercase tracking-widest ${result.passed ? 'text-accent' : 'text-red-400'}`}>
+                <div className={`flex items-center justify-center gap-1.5 text-sm font-bold uppercase tracking-widest ${result.passed ? 'text-accent' : 'text-danger'}`}>
                   {result.passed
                     ? <><IconCheck size={16} /> {t('student.bootcampRoom.quiz.passed')}</>
                     : <><XCircle className="h-4 w-4" /> {t('student.bootcampRoom.quiz.failed')}</>

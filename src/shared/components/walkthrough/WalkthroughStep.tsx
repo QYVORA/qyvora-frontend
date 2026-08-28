@@ -138,10 +138,10 @@ export function WalkthroughStep({
         {progressiveHints && progressiveHints.length > 0 && (
           <div className="space-y-2">
             {progressiveHints.slice(0, visibleHintLevel).map((ph) => (
-              <div key={ph.level} className="rounded-xl border border-yellow-400/20 bg-yellow-400/5 px-5 py-4 flex items-start gap-2">
-                <Lightbulb className="w-4 h-4 text-yellow-400 shrink-0 mt-0.5" />
+              <div key={ph.level} className="rounded-xl border border-warning/20 bg-warning/5 px-5 py-4 flex items-start gap-2">
+                <Lightbulb className="w-4 h-4 text-warning shrink-0 mt-0.5" />
                 <div>
-                  <p className="text-[9px] font-black uppercase tracking-widest text-yellow-400/60 mb-1">
+                  <p className="text-[9px] font-black uppercase tracking-widest text-warning/60 mb-1">
                     Hint {ph.level}, {HINT_LEVEL_LABELS[ph.level - 1]}
                   </p>
                   <p className="text-sm font-mono text-yellow-300/80 leading-relaxed">{ph.content}</p>
@@ -155,7 +155,7 @@ export function WalkthroughStep({
                   if (!showHint) setShowHint(true);
                   setVisibleHintLevel(prev => prev + 1);
                 }}
-                className="flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest text-text-muted hover:text-yellow-400 transition-colors"
+                className="flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest text-text-muted hover:text-warning transition-colors"
               >
                 <Lightbulb className="w-3 h-3" />
                 {visibleHintLevel === 0 ? 'Need a hint?' : 'Need another hint?'}
@@ -168,15 +168,15 @@ export function WalkthroughStep({
         {!progressiveHints && hint && (
           <div>
             {showHint ? (
-              <div className="rounded-xl border border-yellow-400/20 bg-yellow-400/5 px-5 py-4 flex items-start gap-2">
-                <Lightbulb className="w-4 h-4 text-yellow-400 shrink-0 mt-0.5" />
+              <div className="rounded-xl border border-warning/20 bg-warning/5 px-5 py-4 flex items-start gap-2">
+                <Lightbulb className="w-4 h-4 text-warning shrink-0 mt-0.5" />
                 <p className="text-sm font-mono text-yellow-300/80 leading-relaxed">{hint}</p>
               </div>
             ) : (
               <button
                 type="button"
                 onClick={() => setShowHint(true)}
-                className="flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest text-text-muted hover:text-yellow-400 transition-colors"
+                className="flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest text-text-muted hover:text-warning transition-colors"
               >
                 <Lightbulb className="w-3 h-3" />
                 Need a hint?

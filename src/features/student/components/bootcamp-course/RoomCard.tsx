@@ -165,7 +165,7 @@ const RoomCard: React.FC<RoomCardProps> = ({
             {annotateMode && hasDoodle && (
               <button
                 onClick={clearDoodle}
-                className="rounded-lg px-2 py-1 bg-red-500/20 text-red-400 text-[9px] font-black uppercase tracking-widest flex items-center gap-1 hover:bg-red-500/30 transition-all"
+                className="rounded-lg px-2 py-1 bg-danger/20 text-danger text-[9px] font-black uppercase tracking-widest flex items-center gap-1 hover:bg-danger/30 transition-all"
               >
                 <Trash2 className="h-2.5 w-2.5" />
               </button>

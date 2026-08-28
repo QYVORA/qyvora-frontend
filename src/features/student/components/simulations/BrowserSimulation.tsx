@@ -67,9 +67,9 @@ export function BrowserSimulation({ pages, defaultUrl }: BrowserSimProps) {
       {/* Browser Chrome */}
       <div className="flex items-center gap-2 px-3 py-2 bg-bg-elevated border-b border-border/20">
         <div className="flex items-center gap-1.5">
-          <div className="w-3 h-3 rounded-full bg-red-400/80" />
-          <div className="w-3 h-3 rounded-full bg-yellow-400/80" />
-          <div className="w-3 h-3 rounded-full bg-green-400/80" />
+          <div className="w-3 h-3 rounded-full bg-danger/80" />
+          <div className="w-3 h-3 rounded-full bg-warning/80" />
+          <div className="w-3 h-3 rounded-full bg-success/80" />
         </div>
 
         <div className="flex items-center gap-1 ml-2">
@@ -91,7 +91,7 @@ export function BrowserSimulation({ pages, defaultUrl }: BrowserSimProps) {
           <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-bg border border-border/50">
             <label htmlFor="browser-url-input" className="contents">
               {currentPage?.url.startsWith('https') ? (
-                <Lock size={12} className="text-green-400 shrink-0" />
+                <Lock size={12} className="text-success shrink-0" />
               ) : (
                 <Globe size={12} className="text-text-muted shrink-0" />
               )}
@@ -154,8 +154,8 @@ export function BrowserSimulation({ pages, defaultUrl }: BrowserSimProps) {
               currentPage.cookies.map((c, i) => (
                 <div key={i} className="text-[10px] font-mono text-text-muted mb-1">
                   <span className="text-accent">{c.name}</span> = <span className="text-text-primary">{c.value}</span>
-                  {c.httpOnly && <span className="ml-2 text-yellow-400">[HttpOnly]</span>}
-                  {c.secure && <span className="ml-2 text-green-400">[Secure]</span>}
+                  {c.httpOnly && <span className="ml-2 text-warning">[HttpOnly]</span>}
+                  {c.secure && <span className="ml-2 text-success">[Secure]</span>}
                 </div>
               ))
             )}

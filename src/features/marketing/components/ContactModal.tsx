@@ -213,9 +213,9 @@ const ContactModalHost: React.FC = () => {
 
             {/* Error Message */}
             {status === 'error' && (
-              <div className="flex items-center gap-3 p-4 rounded-xl bg-red-500/10 border border-red-500/30">
-                <AlertCircle className="w-5 h-5 text-red-400 flex-shrink-0" />
-                <p className="text-xs text-red-400 font-mono">
+              <div className="flex items-center gap-3 p-4 rounded-xl bg-danger/10 border border-danger/30">
+                <AlertCircle className="w-5 h-5 text-danger flex-shrink-0" />
+                <p className="text-xs text-danger font-mono">
                   Failed to send message. Please try again or email us directly at {SITE_CONFIG.contact.opsEmail}
                 </p>
               </div>
