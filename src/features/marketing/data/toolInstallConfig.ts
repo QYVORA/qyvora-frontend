@@ -11,7 +11,7 @@
  * at runtime.
  */
 
-export type ToolInstallKey = 'anansi' | 'jabari' | 'toha3ee' | 'aksum';
+export type ToolInstallKey = 'anansi' | 'jabari' | 'toha3ee' | 'aksum' | 'shaka';
 export type ToolPlatform = 'linux' | 'darwin' | 'windows';
 export type ToolArch = 'amd64' | 'arm64';
 
@@ -94,5 +94,22 @@ export const TOOL_INSTALL_CONFIG: Record<ToolInstallKey, ToolInstallConfig> = {
       windows: 'Invoke-WebRequest -Uri "{url}" -OutFile {bin}.exe',
     },
     note: 'Single static binary. The installer verifies SHA-256 against the published checksums.',
+  },
+  shaka: {
+    bin: 'shaka',
+    displayName: 'SHAKA',
+    repo: 'QYVORA/qyvora-shaka',
+    releaseBase: 'https://github.com/QYVORA/qyvora-shaka/releases/latest/download',
+    assets: {
+      linux: { amd64: 'shaka-linux-amd64', arm64: 'shaka-linux-arm64' },
+      darwin: { amd64: 'shaka-darwin-amd64', arm64: 'shaka-darwin-arm64' },
+      windows: { amd64: 'shaka-windows-amd64.exe', arm64: 'shaka-windows-arm64.exe' },
+    },
+    commandTemplates: {
+      linux: 'curl -fsSL https://raw.githubusercontent.com/QYVORA/qyvora-shaka/main/install.sh | bash',
+      darwin: 'curl -fsSL https://raw.githubusercontent.com/QYVORA/qyvora-shaka/main/install.sh | bash',
+      windows: 'Invoke-WebRequest -Uri "{url}" -OutFile {bin}.exe',
+    },
+    note: 'Single static binary. The installer auto-detects your platform and installs the icon and desktop entry.',
   },
 };

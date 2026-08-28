@@ -6,6 +6,7 @@ import anansiLogo from '@/assets/anansi/anansi-main-logo.webp';
 import toha3eeLogo from '@/assets/toha3ee/toha3ee-main-logo.webp';
 import jabariLogo from '@/assets/jabari/jabari-main-logo.webp';
 import aksumLogo from '@/assets/aksum/aksum-main-logo.webp';
+import shakaLogo from '@/assets/shaka/shaka-main-logo.webp';
 import DragMarquee from '@/shared/components/carousel/DragMarquee';
 
 interface Tool {
@@ -26,6 +27,7 @@ const LandingOpenSourceToolsSection: React.FC = () => {
     { slug: 'toha3ee', path: '/toha3ee', logo: toha3eeLogo, alt: t('landing.toha3ee.title') },
     { slug: 'jabari', path: '/jabari', logo: jabariLogo, alt: t('landing.jabari.title') },
     { slug: 'aksum', path: '/aksum', logo: aksumLogo, alt: t('landing.aksum.title') },
+    { slug: 'shaka', path: '/shaka', logo: shakaLogo, alt: t('landing.shaka.title') },
   ];
 
   const logoClass =

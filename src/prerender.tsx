@@ -50,6 +50,9 @@ const routeContent: Record<string, RouteContent> = {
       { label: 'Services', href: '/services' },
       { label: 'Anansi CLI', href: '/anansi' },
       { label: 'Toha3ee', href: '/toha3ee' },
+      { label: 'Jabari', href: '/jabari' },
+      { label: 'Aksum', href: '/aksum' },
+      { label: 'SHAKA', href: '/shaka' },
       { label: 'Zero Day Market', href: '/zero-day-market' },
       { label: 'QuiteRoot', href: '/quiteroot' },
       { label: 'Blog', href: '/blogs' },
@@ -568,6 +571,43 @@ const routeContent: Record<string, RouteContent> = {
     ],
     links: [{ label: 'Anansi CLI', href: '/anansi' }],
   },
+  '/jabari': {
+    title: 'Jabari | QYVORA',
+    description: 'Android security assessment framework in Go: authorized USB and network (ADB) targets, non-destructive rule engine and evidence-driven reporting.',
+    h1: 'Jabari',
+    lead: 'Android security assessment from the terminal. Connect via USB or Wi-Fi (ADB) to evaluate device posture, application hardening, and system exposures with reproducible evidence.',
+    sections: [
+      {
+        heading: 'The seven stages',
+        bullets: [
+          'DISCOVERY, ADB device enumeration: manufacturer, model, build, patch level, kernel, root indicators',
+          'ENUMERATION, package inventory, system properties and posture facts gathered from the device',
+          'ANALYSIS, rule engine evaluates posture. AND-001..007 detect debuggable, rooted, outdated or exposed devices',
+          'VALIDATION, non-destructive confirmation of findings with honest low-confidence attribution',
+          'EVIDENCE, SHA-256-hashed evidence store ties every finding to a reproducible artifact',
+          'RISK, severity × confidence scoring ranks what to fix first',
+          'REPORTING, offline re-renderable sessions: table, JSON, YAML, text, Markdown or HTML',
+        ],
+      },
+      {
+        heading: 'Authorization guarantee',
+        body: 'Jabari assesses only explicitly authorized USB and network-connected Android devices. High-risk modules require confirmation or explicit flags.',
+      },
+      {
+        heading: 'Install',
+        body: 'git clone https://github.com/QYVORA/qyvora-jabari && cd qyvora-jabari && make install-user',
+      },
+      {
+        heading: 'Usage',
+        bullets: [
+          'jabari assess usb',
+          'jabari assess ip 192.168.1.50 -p deep -y',
+          'jabari report --list',
+        ],
+      },
+    ],
+    links: [{ label: 'Aksum', href: '/aksum' }],
+  },
   '/aksum': {
     title: 'Aksum | QYVORA',
     description: 'Binary security assessment & reverse-engineering framework in Go, identification, disassembly, function discovery, dataflow-corroborated findings and honest confidence states.',
@@ -608,6 +648,46 @@ const routeContent: Record<string, RouteContent> = {
       },
     ],
     links: [{ label: 'Jabari', href: '/jabari' }],
+  },
+  '/shaka': {
+    title: 'SHAKA | QYVORA',
+    description: 'Windows & Active Directory security assessment framework in Go: domain discovery, object enumeration, relationship graphing, privilege analysis and evidence-driven reporting.',
+    h1: 'SHAKA',
+    lead: 'Windows & Microsoft Active Directory security assessment from the terminal. Domain discovery, directory enumeration, relationship graphs, privilege analysis and evidence-driven findings with an offline simulator.',
+    sections: [
+      {
+        heading: 'The seven stages',
+        bullets: [
+          'DISCOVER, discover domains, domain controllers, forest topology, and directory boundaries',
+          'ENUMERATE, enumerate users, groups, computers, organizational units, and trust relationships',
+          'GRAPH, build typed relationship graph modeling principals, group memberships, and delegation paths',
+          'ANALYZE, evaluate identity posture, Kerberos pre-auth, delegation configurations, and trust surfaces',
+          'FINDINGS, execute deterministic rule engine with fingerprint deduplication and evidence-backed severity',
+          'RISK, compute risk score (0-100) and risk level across directory findings',
+          'REPORT, render terminal tables, schema-versioned JSON, Markdown, HTML, YAML, and JSONL event streams',
+        ],
+      },
+      {
+        heading: 'Authorization guarantee',
+        body: 'SHAKA requires explicit authorization (--authorized / -y, config, or QYVORA_AUTHORIZED=true) before probing live Active Directory infrastructure. The built-in simulator (--sim) runs completely offline without touching a live network.',
+      },
+      {
+        heading: 'Install',
+        body: 'curl -fsSL https://raw.githubusercontent.com/QYVORA/qyvora-shaka/main/install.sh | bash',
+      },
+      {
+        heading: 'Usage',
+        bullets: [
+          'shaka assess --sim',
+          'shaka discover --sim',
+          'shaka enumerate users --sim',
+          'shaka graph --sim',
+          'shaka assess --endpoint dc01:389 --user audit --password secret --authorized',
+          'shaka assess --sim --output json',
+        ],
+      },
+    ],
+    links: [{ label: 'Aksum', href: '/aksum' }],
   },
   '/cp': {
     title: 'Cyber Coin (CP) | QYVORA',
