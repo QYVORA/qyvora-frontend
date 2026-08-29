@@ -325,7 +325,7 @@ const StudentNavPanel: React.FC<StudentNavPanelProps> = ({
               transition={{ duration: 0.24, ease: [0.22, 1, 0.36, 1] }}
               className="fixed inset-x-0 bottom-0 top-20 md:top-24 z-[96] overflow-y-auto bg-bg-alt"
             >
-              <div className="mx-auto w-full max-w-6xl px-4 py-5 md:px-8 md:py-8">
+              <div className="w-full px-3 py-5 md:px-4 md:py-8 lg:px-6">
                 {/* Panel header */}
                 <div className="mb-6 flex items-center justify-between gap-4 md:mb-8">
                   <div className="flex items-center gap-3 min-w-0">
