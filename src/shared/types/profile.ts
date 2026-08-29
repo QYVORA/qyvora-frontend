@@ -17,6 +17,36 @@ export interface XpSummary {
   level?: number;
   xp?: number;
   xpToNext?: number;
+  progression?: ProgressionStats;
+}
+
+// ── Progression (backend-driven rank) ──────────────────────────────────────────
+// All values are served by the backend (single source of truth). The frontend
+// MUST NOT hardcode rank names or thresholds.
+
+export interface ProgressionTier {
+  id: string;
+  name: string;
+  minPoints: number;
+  description: string;
+  iconKey: string;
+}
+
+export interface ProgressionNextTier {
+  id: string;
+  name: string;
+  points: number;
+}
+
+export interface ProgressionStats {
+  points: number;
+  tierId: string;
+  rank: string;
+  next: ProgressionNextTier | null;
+  prev: ProgressionNextTier | null;
+  pointsToNext: number;
+  progress: number;
+  capped: boolean;
 }
 
 export interface ProfileApiResponse {

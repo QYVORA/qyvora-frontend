@@ -1247,6 +1247,18 @@
       "skillStats": "Skill Progress",
       "skillStatsSub": "Completion"
     },
+    "progression": {
+      "next": "Next Rank",
+      "pointsToNext": "pts to next",
+      "remaining": "remaining",
+      "points": "Progression Points",
+      "currentRank": "Current Rank",
+      "nextRank": "Next Rank",
+      "capped": "Max Rank",
+      "earned": "{{points}} pts earned",
+      "upNext": "Up next: {{name}}",
+      "untilNext": "{{points}} pts to {{name}}"
+    },
   "myCourses": {
     "seoTitle": "My Courses",
     "seoDesc": "Your purchased courses.",
