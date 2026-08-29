@@ -17,8 +17,6 @@ import {
   IconChevronRight,
 } from '@/shared/components/icons';
 import { Wrench, LogOut } from 'lucide-react';
-import Identicon from '@/shared/components/Identicon';
-import CpLogo from '@/shared/components/CpLogo';
 import ToolChooserModal from '@/features/student/components/tools/ToolChooserModal';
 import { TOOLS } from '@/features/student/constants/tools';
 import { useReducedMotion } from '@/shared/hooks/useReducedMotion';
@@ -26,9 +24,7 @@ import { useReducedMotion } from '@/shared/hooks/useReducedMotion';
 interface StudentNavPanelProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  user: { uid: string; username: string; email: string; rank: string } | null;
   unreadCount: number;
-  cpBalance: number;
   continuePath?: string | null;
   onOpenTerminal: () => void;
   onOpenIDE: () => void;
@@ -90,9 +86,7 @@ interface NavItem {
 const StudentNavPanel: React.FC<StudentNavPanelProps> = ({
   open,
   onOpenChange,
-  user,
   unreadCount,
-  cpBalance,
   continuePath,
   onOpenTerminal,
   onOpenIDE,
@@ -114,7 +108,9 @@ const StudentNavPanel: React.FC<StudentNavPanelProps> = ({
 
   const close = () => onOpenChange(false);
 
-  // Escape to close, focus-first-link on open, lock body scroll
+  // Escape to close, focus-first-link on open, lock page scroll.
+  // Locking overflow on BOTH <html> and <body> stops the document from
+  // scrolling on desktop (overflow:hidden on body alone is not reliable).
   useEffect(() => {
     if (!open) return;
     const onKeyDown = (e: KeyboardEvent) => {
@@ -126,11 +122,17 @@ const StudentNavPanel: React.FC<StudentNavPanelProps> = ({
     const tId = window.setTimeout(() => {
       panelRef.current?.querySelector<HTMLElement>('a,button')?.focus();
     }, 50);
-    document.body.style.overflow = 'hidden';
+    const html = document.documentElement;
+    const body = document.body;
+    const prevHtmlOverflow = html.style.overflow;
+    const prevBodyOverflow = body.style.overflow;
+    html.style.overflow = 'hidden';
+    body.style.overflow = 'hidden';
     return () => {
       document.removeEventListener('keydown', onKeyDown);
       window.clearTimeout(tId);
-      document.body.style.overflow = '';
+      html.style.overflow = prevHtmlOverflow;
+      body.style.overflow = prevBodyOverflow;
     };
   }, [open]);
 
@@ -307,7 +309,7 @@ const StudentNavPanel: React.FC<StudentNavPanelProps> = ({
               animate={{ opacity: 1 }}
               exit={prefersReduced ? { opacity: 1 } : { opacity: 0 }}
               transition={{ duration: 0.2 }}
-              className="fixed inset-x-0 bottom-0 top-20 md:top-24 z-[95] bg-black/50"
+              className="fixed inset-0 z-[95] bg-black/50"
               onClick={close}
               aria-hidden="true"
             />
@@ -325,45 +327,7 @@ const StudentNavPanel: React.FC<StudentNavPanelProps> = ({
               transition={{ duration: 0.24, ease: [0.22, 1, 0.36, 1] }}
               className="fixed inset-x-0 bottom-0 top-20 md:top-24 z-[96] overflow-y-auto bg-bg-alt"
             >
-              <div className="w-full px-3 py-5 md:px-4 md:py-8 lg:px-6">
-                {/* Panel header */}
-                <div className="mb-6 flex items-center justify-between gap-4 md:mb-8">
-                  <div className="flex items-center gap-3 min-w-0">
-                    <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-bg-card text-accent">
-                      <CpLogo className="w-5 h-5" />
-                    </div>
-                    <div className="min-w-0">
-                      <div className="text-lg font-black uppercase tracking-tight text-text-primary md:text-xl">
-                        {t('student.navPanel.title', 'Navigation')}
-                      </div>
-                      <div className="mt-0.5 text-xs font-bold uppercase tracking-widest text-text-muted">
-                        {cpBalance.toLocaleString()} CP
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="flex items-center gap-2">
-                    {user?.username && (
-                      <div className="hidden items-center gap-2 px-3 py-1.5 rounded-xl bg-bg-card border border-border/50 sm:flex">
-                        <Identicon value={user.username} size={24} className="w-6 h-6 rounded-md" />
-                        <span className="text-[10px] font-black uppercase tracking-widest text-text-primary truncate max-w-[120px]">
-                          {user.username}
-                        </span>
-                      </div>
-                    )}
-                    <button
-                      onClick={close}
-                      aria-label={t('aria.closeMenu', 'Close menu')}
-                      className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-border/60 bg-bg-card text-text-secondary transition-colors hover:border-accent/50 hover:text-accent active:scale-95"
-                    >
-                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                        <path d="M18 6 6 18" />
-                        <path d="m6 6 12 12" />
-                      </svg>
-                    </button>
-                  </div>
-                </div>
-
+              <div className="w-full px-3 pb-5 pt-2 md:px-4 md:pb-8 md:pt-3 lg:px-6">
                 {/* Continue Mission — prominent accent card */}
                 {continuePath && (
                   <Link
