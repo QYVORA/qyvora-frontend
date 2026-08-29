@@ -1,7 +1,7 @@
 import { useState, useEffect, useMemo, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import api from '../../core/services/api';
-import type { ProfileApiResponse, ProfileData, CompletedRoom } from '../types/profile';
+import type { ProfileApiResponse, ProfileData, CompletedRoom, ProgressionStats } from '../types/profile';
 
 interface UseProfileOptions {
   /** Username from URL params. If undefined, fetches own profile. */
@@ -77,6 +77,8 @@ export function useProfile({ paramUsername, authUser }: UseProfileOptions): UseP
     const completedRooms: CompletedRoom[] = Array.isArray(api.learn?.completedRooms)
       ? api.learn!.completedRooms
       : [];
+    const progression: ProgressionStats | undefined =
+      api.xpSummary?.progression || api.progression || undefined;
 
     return {
       id: (api.id || authUser?.uid || '') as string,
@@ -84,7 +86,15 @@ export function useProfile({ paramUsername, authUser }: UseProfileOptions): UseP
         ? (api.hackerHandle || api.name || displayHandle)
         : (api.handle || api.name || displayHandle),
       displayName: String(api.name || ''),
-      rank: String(api.xpSummary?.rank || api.rank || authUser?.rank || t('stat.candidate')),
+      rank: String(
+        api.xpSummary?.progression?.rank ||
+        api.progression?.rank ||
+        api.xpSummary?.rank ||
+        api.rank ||
+        authUser?.rank ||
+        t('stat.candidate')
+      ),
+      progression,
       bio: String(api.bio || ''),
       organization: String(api.organization || ''),
       email: String(api.email || ''),

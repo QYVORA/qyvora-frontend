@@ -30,6 +30,7 @@ const LeaderboardRow = ({
   const isTopThree = effectiveRank <= 3;
   const isCurrentUser = user && entry.userId === user.uid;
   const bootcampCompleted = entry.bootcampStatus === 'completed';
+  const rankLabel = entry.progression?.rank || entry.rankLabel || '';
 
   return (
     <Link
@@ -83,7 +84,7 @@ const LeaderboardRow = ({
 
       {/* Rank label (desktop) */}
       <div className="hidden md:flex items-center">
-        <RankBadge label={entry.rankLabel} />
+        <RankBadge label={rankLabel} />
       </div>
 
       {/* CP (desktop) */}
@@ -101,7 +102,7 @@ const LeaderboardRow = ({
       {/* Mobile stats row */}
       <div className="md:hidden col-span-2 flex items-center justify-between mt-1">
         <div className="flex items-center gap-2">
-          <RankBadge label={entry.rankLabel} />
+        <RankBadge label={rankLabel} />
           <span className="text-[10px] font-mono text-text-muted/60">
             {entry.roomsCompleted} {roomsLabel}
           </span>
