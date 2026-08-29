@@ -71,9 +71,9 @@ const TOOLS = [
 ];
 
 function pickCpBalance(userCp: number, overview: any, cpBalance: number | null): number {
-  if (typeof cpBalance === 'number' && Number.isFinite(cpBalance)) return cpBalance;
   const fromOverview = extractCpBalance(overview?.xpSummary) ?? extractCpBalance(overview);
   if (typeof fromOverview === 'number' && Number.isFinite(fromOverview)) return fromOverview;
+  if (typeof cpBalance === 'number' && Number.isFinite(cpBalance) && cpBalance > 0) return cpBalance;
   return userCp;
 }
 
