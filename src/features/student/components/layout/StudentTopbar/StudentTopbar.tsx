@@ -8,8 +8,7 @@ import {
   IconCode,
   IconChevronRight,
 } from '@/shared/components/icons';
-import ProfileDropdown from './ProfileDropdown';
-import MobileProfileSheet from './MobileProfileSheet';
+import StudentNavPanel, { NavMenuTrigger } from '../StudentNavPanel/StudentNavPanel';
 import { SETTINGS_SECTIONS, type SettingsSectionId } from '../../../constants/settingsSections';
 import { getCourseById } from '../../../data/courses';
 import { useAuth } from '../../../../../core/contexts/AuthContext';
@@ -19,7 +18,6 @@ import CpLogo from '../../../../../shared/components/CpLogo';
 import { useEffect, useRef, useState } from 'react';
 import api from '../../../../../core/services/api';
 import { extractCpBalance } from '@/shared/utils/cpBalance';
-import Identicon from '@/shared/components/Identicon';
 import useStudentOverview from '@/features/student/hooks/useStudentOverview';
 import { getBootcampProgressMap, resolveNextRoomPath } from '@/features/student/utils/studentExperience';
 
@@ -60,17 +58,16 @@ const StudentTopbar = () => {
     ?? (roomMatchLegacy?.params?.moduleId ? `phase${roomMatchLegacy.params.moduleId}` : '');
   const roomRoomId = activeRoomMatch?.params?.roomId ?? '';
 
-  // Walkthrough pages (rooms, courses, labs): auto-hide the topbar while
-  // scrolling down past the first viewport, reveal again on scroll up.
-  // Layout reservation stays static — the bar slides over content.
-  const isWalkthroughPage = Boolean(activeRoomMatch) || isCoursePage || isLabPage;
+  // Student topbars (dashboard, courses, bootcamps, labs, rooms, settings):
+  // auto-hide the topbar while scrolling down past the first viewport,
+  // reveal again on scroll up. Layout reservation stays static — the bar
+  // slides over content, giving the student more reading space.
   const [topbarHidden, setTopbarHidden] = useState(false);
   const lastScrollYRef = useRef(0);
 
   useEffect(() => {
     setTopbarHidden(false);
     lastScrollYRef.current = window.scrollY;
-    if (!isWalkthroughPage) return;
     let ticking = false;
     const onScroll = () => {
       if (ticking) return;
@@ -91,7 +88,7 @@ const StudentTopbar = () => {
     };
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
-  }, [isWalkthroughPage, location.pathname]);
+  }, [location.pathname]);
 
   const [roomBreadcrumb, setRoomBreadcrumb] = useState<{ phaseTitle?: string; roomTitle?: string } | null>(null);
 
@@ -130,7 +127,7 @@ const StudentTopbar = () => {
 
   const [unreadCount, setUnreadCount] = useState(0);
   const [cpBalance, setCpBalance] = useState<number>(user?.cp ?? 0);
-  const [profileSheetOpen, setProfileSheetOpen] = useState(false);
+  const [navOpen, setNavOpen] = useState(false);
   const lastNotifFetchRef = useRef<number>(0);
   const NOTIF_THROTTLE_MS = 30000;
 
@@ -152,7 +149,7 @@ const StudentTopbar = () => {
   }, [location.pathname]);
 
   useEffect(() => {
-    setProfileSheetOpen(false);
+    setNavOpen(false);
   }, [location.pathname]);
 
   const { data: overview } = useStudentOverview();
@@ -231,42 +228,21 @@ const StudentTopbar = () => {
                     </>
                   )}
 
-                  <ProfileDropdown
-                    user={user}
-                    unreadCount={unreadCount}
-                    onOpenNotifications={() => navigate('/dashboard/notifications')}
-                    onOpenTerminal={() => window.dispatchEvent(new CustomEvent('qyvora:open-terminal'))}
-                    onOpenIDE={() => window.dispatchEvent(new CustomEvent('qyvora:open-ide'))}
-                    onOpenNetworkVisualizer={() => window.dispatchEvent(new CustomEvent('qyvora:open-network-visualizer'))}
-                    handleLogout={handleLogout}
-                  />
+                  <span className="hidden md:block">
+                    <NavMenuTrigger open={navOpen} onClick={() => setNavOpen((v) => !v)} />
+                  </span>
                 </div>
 
-                {/* Mobile CP badge + profile trigger — right-aligned */}
-                <div className="md:hidden flex items-center gap-2 ml-auto">
-                  <div className="flex items-center gap-2 px-3 py-2 rounded-xl bg-bg-card" data-tour-id="tour-cp-mobile">
-                    <CpLogo className="w-4 h-4" />
-                    <span className="text-[10px] font-black text-accent">{cpBalance.toLocaleString()}</span>
-                  </div>
-                  <button
-                    onClick={() => setProfileSheetOpen(true)}
-                    className="flex items-center justify-center h-9 w-9 rounded-xl transition-colors border border-accent bg-black"
-                    aria-label="Open profile menu"
-                  >
-                    <Identicon value={user?.username || '?'} size={36} className="w-full h-full" />
-                  </button>
-                </div>
-
-                <MobileProfileSheet
-                  open={profileSheetOpen}
-                  onOpenChange={setProfileSheetOpen}
-                  user={user}
-                  unreadCount={unreadCount}
-                  onOpenTerminal={() => window.dispatchEvent(new CustomEvent('qyvora:open-terminal'))}
-                  onOpenIDE={() => window.dispatchEvent(new CustomEvent('qyvora:open-ide'))}
-                  onOpenNetworkVisualizer={() => window.dispatchEvent(new CustomEvent('qyvora:open-network-visualizer'))}
-                  handleLogout={handleLogout}
-                />
+            {/* Mobile CP badge + menu trigger — right-aligned */}
+            <div className="md:hidden flex items-center gap-2 ml-auto">
+              <div data-tour-id="tour-cp-mobile" className="flex items-center gap-2 px-3 py-2 rounded-xl bg-bg-card">
+                <CpLogo className="w-4 h-4" />
+                <span className="text-[10px] font-black text-accent">{cpBalance.toLocaleString()}</span>
+              </div>
+              <span data-tour-id="tour-profile-mobile">
+                <NavMenuTrigger open={navOpen} onClick={() => setNavOpen((v) => !v)} />
+              </span>
+            </div>
               </div>
               {courseMeta && (
                 <div className="h-1 bg-bg-elevated">
@@ -312,42 +288,19 @@ const StudentTopbar = () => {
                 </span>
               </div>
               <div className="flex items-center gap-1.5 md:gap-2 shrink-0">
-                <ProfileDropdown
-                  user={user}
-                  unreadCount={unreadCount}
-                  onOpenNotifications={() => navigate('/dashboard/notifications')}
-                  onOpenTerminal={() => window.dispatchEvent(new CustomEvent('qyvora:open-terminal'))}
-                  onOpenIDE={() => window.dispatchEvent(new CustomEvent('qyvora:open-ide'))}
-                  onOpenNetworkVisualizer={() => window.dispatchEvent(new CustomEvent('qyvora:open-network-visualizer'))}
-                  handleLogout={handleLogout}
-                />
+                <span className="hidden md:block">
+                  <NavMenuTrigger open={navOpen} onClick={() => setNavOpen((v) => !v)} />
+                </span>
               </div>
 
-              {/* Mobile CP badge + profile trigger — right-aligned */}
+              {/* Mobile CP badge + menu trigger — right-aligned */}
               <div className="md:hidden flex items-center gap-2 ml-auto">
                 <div className="flex items-center gap-2 px-3 py-2 rounded-xl bg-bg-card" data-tour-id="tour-cp-mobile">
                   <CpLogo className="w-4 h-4" />
                   <span className="text-[10px] font-black text-accent">{cpBalance.toLocaleString()}</span>
                 </div>
-                <button
-                  onClick={() => setProfileSheetOpen(true)}
-                  className="flex items-center justify-center h-9 w-9 rounded-xl transition-colors border border-accent bg-black"
-                  aria-label="Open profile menu"
-                >
-                  <Identicon value={user?.username || '?'} size={36} className="w-full h-full" />
-                </button>
+                <NavMenuTrigger open={navOpen} onClick={() => setNavOpen((v) => !v)} />
               </div>
-
-              <MobileProfileSheet
-                open={profileSheetOpen}
-                onOpenChange={setProfileSheetOpen}
-                user={user}
-                unreadCount={unreadCount}
-                onOpenTerminal={() => window.dispatchEvent(new CustomEvent('qyvora:open-terminal'))}
-                onOpenIDE={() => window.dispatchEvent(new CustomEvent('qyvora:open-ide'))}
-                onOpenNetworkVisualizer={() => window.dispatchEvent(new CustomEvent('qyvora:open-network-visualizer'))}
-                handleLogout={handleLogout}
-              />
             </div>
           )
         ) : isLabPage ? (
@@ -376,42 +329,19 @@ const StudentTopbar = () => {
               </span>
             </div>
             <div className="flex items-center gap-1.5 md:gap-2 shrink-0">
-              <ProfileDropdown
-                user={user}
-                unreadCount={unreadCount}
-                onOpenNotifications={() => navigate('/dashboard/notifications')}
-                onOpenTerminal={() => window.dispatchEvent(new CustomEvent('qyvora:open-terminal'))}
-                onOpenIDE={() => window.dispatchEvent(new CustomEvent('qyvora:open-ide'))}
-                onOpenNetworkVisualizer={() => window.dispatchEvent(new CustomEvent('qyvora:open-network-visualizer'))}
-                handleLogout={handleLogout}
-              />
+              <span className="hidden md:block">
+                <NavMenuTrigger open={navOpen} onClick={() => setNavOpen((v) => !v)} />
+              </span>
             </div>
 
-            {/* Mobile CP badge + profile trigger — right-aligned */}
+            {/* Mobile CP badge + menu trigger — right-aligned */}
             <div className="md:hidden flex items-center gap-2 ml-auto">
               <div className="flex items-center gap-2 px-3 py-2 rounded-xl bg-bg-card" data-tour-id="tour-cp-mobile">
                 <CpLogo className="w-4 h-4" />
                 <span className="text-[10px] font-black text-accent">{cpBalance.toLocaleString()}</span>
               </div>
-              <button
-                onClick={() => setProfileSheetOpen(true)}
-                className="flex items-center justify-center h-9 w-9 rounded-xl transition-colors border border-accent bg-black"
-                aria-label="Open profile menu"
-              >
-                <Identicon value={user?.username || '?'} size={36} className="w-full h-full" />
-              </button>
+              <NavMenuTrigger open={navOpen} onClick={() => setNavOpen((v) => !v)} />
             </div>
-
-            <MobileProfileSheet
-              open={profileSheetOpen}
-              onOpenChange={setProfileSheetOpen}
-              user={user}
-              unreadCount={unreadCount}
-              onOpenTerminal={() => window.dispatchEvent(new CustomEvent('qyvora:open-terminal'))}
-              onOpenIDE={() => window.dispatchEvent(new CustomEvent('qyvora:open-ide'))}
-              onOpenNetworkVisualizer={() => window.dispatchEvent(new CustomEvent('qyvora:open-network-visualizer'))}
-              handleLogout={handleLogout}
-            />
             </div>
 
           ) : isSettingsPage ? (
@@ -460,42 +390,19 @@ const StudentTopbar = () => {
             </nav>
 
             <div className="flex items-center gap-1.5 md:gap-2 shrink-0 ml-auto">
-              <ProfileDropdown
-                user={user}
-                unreadCount={unreadCount}
-                onOpenNotifications={() => navigate('/dashboard/notifications')}
-                onOpenTerminal={() => window.dispatchEvent(new CustomEvent('qyvora:open-terminal'))}
-                onOpenIDE={() => window.dispatchEvent(new CustomEvent('qyvora:open-ide'))}
-                onOpenNetworkVisualizer={() => window.dispatchEvent(new CustomEvent('qyvora:open-network-visualizer'))}
-                handleLogout={handleLogout}
-              />
+              <span className="hidden md:block">
+                <NavMenuTrigger open={navOpen} onClick={() => setNavOpen((v) => !v)} />
+              </span>
             </div>
 
-            {/* Mobile CP badge + profile trigger — right-aligned */}
+            {/* Mobile CP badge + menu trigger — right-aligned */}
             <div className="md:hidden flex items-center gap-2 ml-auto">
               <div className="flex items-center gap-2 px-3 py-2 rounded-xl bg-bg-card" data-tour-id="tour-cp-mobile">
                 <CpLogo className="w-4 h-4" />
                 <span className="text-[10px] font-black text-accent">{cpBalance.toLocaleString()}</span>
               </div>
-              <button
-                onClick={() => setProfileSheetOpen(true)}
-                className="flex items-center justify-center h-9 w-9 rounded-xl transition-colors border border-accent bg-black"
-                aria-label="Open profile menu"
-              >
-                <Identicon value={user?.username || '?'} size={36} className="w-full h-full" />
-              </button>
+              <NavMenuTrigger open={navOpen} onClick={() => setNavOpen((v) => !v)} />
             </div>
-
-            <MobileProfileSheet
-              open={profileSheetOpen}
-              onOpenChange={setProfileSheetOpen}
-              user={user}
-              unreadCount={unreadCount}
-              onOpenTerminal={() => window.dispatchEvent(new CustomEvent('qyvora:open-terminal'))}
-              onOpenIDE={() => window.dispatchEvent(new CustomEvent('qyvora:open-ide'))}
-              onOpenNetworkVisualizer={() => window.dispatchEvent(new CustomEvent('qyvora:open-network-visualizer'))}
-              handleLogout={handleLogout}
-            />
           </div>
         ) : (
           /* ══ DASHBOARD MODE ══ */
@@ -531,16 +438,6 @@ const StudentTopbar = () => {
 
             {/* Right actions — separated from nav by flex-1 spacer */}
             <div className="hidden md:flex items-center gap-1.5 md:gap-2.5 shrink-0">
-              {/* Continue Mission CTA — only on dashboard when enrolled */}
-              {continuePath && location.pathname === '/dashboard' && (
-                <Link
-                  to={continuePath}
-                  className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-accent text-on-accent text-[10px] font-black uppercase tracking-widest transition-all hover:brightness-110 active:scale-95 shrink-0"
-                >
-                  {t('student.topbar.continueMission', 'Continue Mission')}
-                </Link>
-              )}
-
               {/* CP Coin badge */}
               <div className={`hidden md:flex items-center gap-2 px-3 py-2 rounded-xl bg-bg-card`} data-tour-id="tour-cp-desktop">
                 <CpLogo className="w-5 h-5" />
@@ -548,57 +445,35 @@ const StudentTopbar = () => {
               </div>
 
               <span data-tour-id="tour-profile-desktop">
-                <ProfileDropdown
-                  user={user}
-                  unreadCount={unreadCount}
-                  onOpenNotifications={() => navigate('/dashboard/notifications')}
-                  onOpenTerminal={() => window.dispatchEvent(new CustomEvent('qyvora:open-terminal'))}
-                  onOpenIDE={() => window.dispatchEvent(new CustomEvent('qyvora:open-ide'))}
-                  onOpenNetworkVisualizer={() => window.dispatchEvent(new CustomEvent('qyvora:open-network-visualizer'))}
-                  handleLogout={handleLogout}
-                />
+                <NavMenuTrigger open={navOpen} onClick={() => setNavOpen((v) => !v)} />
               </span>
             </div>
 
-            {/* Mobile CP badge + profile trigger — right-aligned */}
+            {/* Mobile CP badge + menu trigger — right-aligned */}
             <div className="md:hidden flex items-center gap-2 ml-auto">
-              {continuePath && location.pathname === '/dashboard' && (
-                <Link
-                  to={continuePath}
-                  className="flex items-center gap-1.5 px-2.5 py-2 rounded-xl bg-accent text-on-accent text-[10px] font-black uppercase tracking-widest transition-all hover:brightness-110 active:scale-95 shrink-0"
-                >
-                  {t('student.topbar.continueMission', 'Continue Mission')}
-                </Link>
-              )}
               <div className="flex items-center gap-2 px-3 py-2 rounded-xl bg-bg-card" data-tour-id="tour-cp-mobile">
                 <CpLogo className="w-4 h-4" />
                 <span className="text-[10px] font-black text-accent">{cpBalance.toLocaleString()}</span>
               </div>
-              <button
-                onClick={() => setProfileSheetOpen(true)}
-                className="flex items-center justify-center h-9 w-9 rounded-xl transition-colors border border-accent bg-black"
-                aria-label="Open profile menu"
-                data-tour-id="tour-profile-mobile"
-              >
-                <Identicon value={user?.username || '?'} size={36} className="w-full h-full" />
-              </button>
+              <NavMenuTrigger open={navOpen} onClick={() => setNavOpen((v) => !v)} />
             </div>
-
-            <MobileProfileSheet
-              open={profileSheetOpen}
-              onOpenChange={setProfileSheetOpen}
-              user={user}
-              unreadCount={unreadCount}
-              onOpenTerminal={() => window.dispatchEvent(new CustomEvent('qyvora:open-terminal'))}
-              onOpenIDE={() => window.dispatchEvent(new CustomEvent('qyvora:open-ide'))}
-              onOpenNetworkVisualizer={() => window.dispatchEvent(new CustomEvent('qyvora:open-network-visualizer'))}
-              handleLogout={handleLogout}
-            />
           </div>
         )}
       </header>
 
-
+      {/* Canonical viewport-level navigation panel */}
+      <StudentNavPanel
+        open={navOpen}
+        onOpenChange={setNavOpen}
+        user={user}
+        unreadCount={unreadCount}
+        cpBalance={cpBalance}
+        continuePath={continuePath}
+        onOpenTerminal={() => window.dispatchEvent(new CustomEvent('qyvora:open-terminal'))}
+        onOpenIDE={() => window.dispatchEvent(new CustomEvent('qyvora:open-ide'))}
+        onOpenNetworkVisualizer={() => window.dispatchEvent(new CustomEvent('qyvora:open-network-visualizer'))}
+        handleLogout={handleLogout}
+      />
     </>
   );
 };
