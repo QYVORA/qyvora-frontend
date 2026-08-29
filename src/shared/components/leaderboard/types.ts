@@ -1,3 +1,5 @@
+import type { ProgressionStats } from '@/shared/types/profile';
+
 export interface LeaderboardEntry {
   rank: number;
   userId: string;
@@ -6,6 +8,7 @@ export interface LeaderboardEntry {
   organization: string;
   cp: number;
   rankLabel: string;
+  progression?: ProgressionStats;
   roomsCompleted: number;
   streakDays: number;
   bootcampStatus?: string;
@@ -26,9 +29,16 @@ export const TOP_THREE_COLORS = [
 ];
 
 export const RANK_COLORS: Record<string, string> = {
+  // Legacy CP-based ladder (kept for backward compatibility)
   Vanguard: 'text-accent',
   Architect: 'text-warning',
   Specialist: 'text-purple-400',
   Contributor: 'text-info',
   Candidate: 'text-zinc-400',
+  // Progression ladder (backend-driven)
+  'Seeker': 'text-zinc-400',
+  'Operator': 'text-info',
+  'Agent': 'text-warning',
+  'Strategist': 'text-accent',
+  'Master Operator': 'text-accent',
 };

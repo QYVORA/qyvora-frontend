@@ -113,7 +113,7 @@ export const ProgressionPanel = ({ progression, fallbackLabel }: ProgressionPane
               </span>
               {!capped && pointsToNext !== null && (
                 <span className="mt-1 block text-[10px] font-mono text-text-muted/70">
-                  {pointsToNext.toLocaleString()} {t('student.progression.pointsRemaining', 'remaining')}
+                  {pointsToNext.toLocaleString()} {t('student.progression.remaining', 'remaining')}
                 </span>
               )}
             </div>

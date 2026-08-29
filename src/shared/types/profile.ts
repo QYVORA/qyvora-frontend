@@ -59,6 +59,7 @@ export interface ProfileApiResponse {
   email?: string;
   cpPoints?: number;
   rank?: string;
+  progression?: ProgressionStats;
   xpSummary?: XpSummary;
   bootcampStatus?: string;
   bootcampCompleted?: boolean;
@@ -84,6 +85,7 @@ export interface ProfileData {
   username: string;
   displayName: string;
   rank: string;
+  progression?: ProgressionStats;
   bio: string;
   organization: string;
   email: string;

@@ -1139,7 +1139,7 @@
       },
       "cp": {
         "title": "CyberPoints (CP)",
-        "body": "Your balance: {{cp}} CP. Every room you complete earns CP and climbs you up the ranks."
+        "body": "Your balance: {{cp}} CP. CP is your spendable currency. Every room you complete earns CP and builds Progression Points that move you up the ranks."
       },
       "learning": {
         "title": "Jump into training",

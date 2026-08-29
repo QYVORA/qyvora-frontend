@@ -58,7 +58,13 @@ const PublicProfile: React.FC = () => {
       id: String(profileApi.id || ''),
       username: String(profileApi.handle || handle),
       displayName: String(profileApi.name || ''),
-      rank: String(profileApi.rank || 'Operator'),
+      rank: String(
+        profileApi.xpSummary?.progression?.rank ||
+        profileApi.progression?.rank ||
+        profileApi.rank ||
+        'Operator'
+      ),
+      progression: profileApi.xpSummary?.progression || profileApi.progression || undefined,
       bio: String(profileApi.bio || ''),
       organization: String(profileApi.organization || ''),
       email: String(profileApi.email || ''),

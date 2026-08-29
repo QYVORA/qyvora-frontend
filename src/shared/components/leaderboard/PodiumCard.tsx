@@ -83,7 +83,7 @@ const PodiumCard = ({ entry, rank, className = '' }: PodiumCardProps) => {
           {Number(entry.cp).toLocaleString()} <span className="text-[9px] uppercase tracking-widest text-accent">CP</span>
         </span>
         <span className="text-[9px] font-bold uppercase tracking-widest text-text-muted">
-          {entry.rankLabel}
+          {entry.progression?.rank || entry.rankLabel}
         </span>
       </div>
     </Link>
