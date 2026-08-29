@@ -22,6 +22,7 @@ import { AppRouter } from './router';
 import ScrollToTop from '../shared/components/ScrollToTop';
 import ErrorBoundary from '../shared/components/ErrorBoundary';
 import AdaptiveMode from '../shared/components/AdaptiveMode';
+import PreferencesApplier from '../shared/components/PreferencesApplier';
 
 export default function App() {
   useEffect(() => {
@@ -91,6 +92,8 @@ export default function App() {
             the current route if needed for per-page adaptations.
           */}
           <AdaptiveMode />
+
+          <PreferencesApplier />
 
           {/*
             ScrollToTop

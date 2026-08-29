@@ -764,6 +764,19 @@
   transition-duration: 0s !important;
 }
 
+/* ── Accessibility / display preference scaling ────────────────────────────
+   Preferences applied by SettingsPage + PreferencesApplier on <html>.
+   font-size scales the rem-based type system as a whole (pixel-fixed utility
+   sizes like text-[10px] keep their footprint for layout stability).
+   data-animations="off" mirrors the data-saver behaviour for reduced motion. */
+html[data-font-size="small"] { font-size: 14px; }
+html[data-font-size="large"] { font-size: 18px; }
+
+html[data-animations="off"] * {
+  animation-duration: 0s !important;
+  transition-duration: 0s !important;
+}
+
 /* ── Light theme overrides ────────────────────────────────────────────────
    Dark-theme parity: the page background is the deepest tone and surfaces
    lift in subtle steps (bg → bg-alt → bg-card → bg-elevated). Surfaces are
@@ -772,30 +785,30 @@
    ───────────────────────────────────────────────────────────────────────── */
 [data-theme="light"] {
   color-scheme: light;
-  --color-bg:             #E4E7E3;
-  --color-bg-card:        #ECEFEA;
-  --color-bg-elevated:    #F2F4F0;
-  --color-bg-alt:         #D4D9D0;
-  --color-text-primary:   #22251F;
-  --color-text-secondary: rgba(34, 37, 31, 0.88);
-  --color-text-muted:     rgba(34, 37, 31, 0.70);
-  --color-border:         rgba(22, 26, 21, 0.20);
-  --color-border-strong:  rgba(6, 182, 111, 0.34);
-  --color-accent-dim:     rgba(6, 182, 111, 0.06);
-  --color-accent-glow:    rgba(6, 182, 111, 0.10);
-  --dot-color:            rgba(6, 182, 111, 0.06);
-  --color-hero-right-bg:  #d8e6dc;
-  --color-hero-glow:      rgba(6, 182, 111, 0.10);
+  --color-bg:             #D9DED5;
+  --color-bg-card:        #E1E6DC;
+  --color-bg-elevated:    #E8EBE4;
+  --color-bg-alt:         #C7CEC1;
+  --color-text-primary:   #262B23;
+  --color-text-secondary: rgba(38, 43, 35, 0.86);
+  --color-text-muted:     rgba(38, 43, 35, 0.64);
+  --color-border:         rgba(22, 26, 21, 0.24);
+  --color-border-strong:  rgba(6, 182, 111, 0.42);
+  --color-accent-dim:     rgba(6, 182, 111, 0.10);
+  --color-accent-glow:    rgba(6, 182, 111, 0.14);
+  --dot-color:            rgba(6, 182, 111, 0.10);
+  --color-hero-right-bg:  #CBDDD1;
+  --color-hero-glow:      rgba(6, 182, 111, 0.14);
   --color-hero-dots:      #06B66F;
   --color-on-accent:      #000000;
-  --color-code-bg:        #DDE1DB;
-  --color-code-keyword:   #06804F;
-  --color-code-string:    #059669;
+  --color-code-bg:        #D1D7CB;
+  --color-code-keyword:   #047A48;
+  --color-code-string:    #047857;
   --color-code-number:    #b45309;
   --color-code-flag:      #2563eb;
   --color-code-path:      #7c3aed;
-  --card-shimmer:         inset 0 1px 0 rgba(255, 255, 255, 0.72);
-  --card-shadow:          0 12px 40px rgba(24, 38, 28, 0.10);
+  --card-shimmer:         inset 0 1px 0 rgba(255, 255, 255, 0.5);
+  --card-shadow:          0 12px 40px rgba(20, 32, 24, 0.14);
 }
 
 [data-theme="light"] ::-webkit-scrollbar-track {
