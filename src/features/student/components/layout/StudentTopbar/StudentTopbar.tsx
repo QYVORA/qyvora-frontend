@@ -64,12 +64,22 @@ const StudentTopbar = () => {
   // slides over content, giving the student more reading space.
   const [topbarHidden, setTopbarHidden] = useState(false);
   const lastScrollYRef = useRef(0);
+  const [navOpen, setNavOpen] = useState(false);
+
+  // When the nav panel is open the topbar acts as its header — keep it sticky.
+  useEffect(() => {
+    if (navOpen) setTopbarHidden(false);
+  }, [navOpen]);
 
   useEffect(() => {
     setTopbarHidden(false);
     lastScrollYRef.current = window.scrollY;
     let ticking = false;
     const onScroll = () => {
+      if (navOpen) {
+        setTopbarHidden(false);
+        return;
+      }
       if (ticking) return;
       ticking = true;
       requestAnimationFrame(() => {
@@ -88,7 +98,7 @@ const StudentTopbar = () => {
     };
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
-  }, [location.pathname]);
+  }, [location.pathname, navOpen]);
 
   const [roomBreadcrumb, setRoomBreadcrumb] = useState<{ phaseTitle?: string; roomTitle?: string } | null>(null);
 
@@ -127,7 +137,6 @@ const StudentTopbar = () => {
 
   const [unreadCount, setUnreadCount] = useState(0);
   const [cpBalance, setCpBalance] = useState<number>(user?.cp ?? 0);
-  const [navOpen, setNavOpen] = useState(false);
   const lastNotifFetchRef = useRef<number>(0);
   const NOTIF_THROTTLE_MS = 30000;
 
@@ -465,9 +474,7 @@ const StudentTopbar = () => {
       <StudentNavPanel
         open={navOpen}
         onOpenChange={setNavOpen}
-        user={user}
         unreadCount={unreadCount}
-        cpBalance={cpBalance}
         continuePath={continuePath}
         onOpenTerminal={() => window.dispatchEvent(new CustomEvent('qyvora:open-terminal'))}
         onOpenIDE={() => window.dispatchEvent(new CustomEvent('qyvora:open-ide'))}
