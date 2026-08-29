@@ -28,6 +28,7 @@ import StudentBootcampCard from '@/features/student/components/StudentBootcampCa
 import LabCard from '@/features/student/pages/labs/LabsPage/LabCard';
 import CourseBadge from '@/shared/components/CourseBadge';
 import SkillMatrix from '@/features/student/components/dashboard/SkillMatrix';
+import ProgressionPanel from '@/features/student/components/dashboard/ProgressionPanel';
 import {
   Loader2,
   GraduationCap,
@@ -225,7 +226,11 @@ const Dashboard = () => {
   const continuePath = activeBootcamp ? resolveNextRoomPath(String(activeBootcamp.id || '')) || `/dashboard/bootcamps/${activeBootcamp.id}` : '/dashboard/bootcamps';
   const isEnrolled = (overview?.bootcampStatus || 'not_enrolled') !== 'not_enrolled';
   const cpBalance = pickCpBalance(user?.cp ?? 0, overview, cpBalanceState);
-  const { rank: _r, next: nextRank, progress: rankProgress } = getRankInfo(cpBalance);
+  const progression = overview?.xpSummary?.progression ?? null;
+  // Backend-driven rank/progression is authoritative when present; fall back to
+  // the legacy client CP mapping only until the backend serves it.
+  const { rank: _r, next: nextRank } = getRankInfo(cpBalance);
+  const effectiveRankName = progression?.rank || _r?.name || t('stat.candidate');
   const nextMission = (overview?.learningPath || []).find((m: any) => m.status === 'in-progress' || m.status === 'next');
 
   const overviewModules = Array.isArray(overview?.modules) ? overview.modules : [];
@@ -234,29 +239,13 @@ const Dashboard = () => {
   const streakDays = overview?.xpSummary?.streakDays ?? null;
   const visitDates = overview?.xpSummary?.visitDates ?? [];
   const visitDurations = overview?.xpSummary?.visitDurations ?? {};
-  const rankName = _r?.name || t('stat.candidate');
+  const rankName = effectiveRankName;
 
   const heroRef = useGsapReveal<HTMLDivElement>({ y: 40, duration: 0.8 });
   const statsRef = useGsapReveal<HTMLDivElement>({ y: 30, stagger: 0.1 });
   const labsRef = useGsapReveal<HTMLDivElement>({ y: 30 });
   const roomsRef = useGsapReveal<HTMLDivElement>({ y: 30, stagger: 0.08 });
   const rankRef = useGsapReveal<HTMLDivElement>({ y: 30 });
-  const progressRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const bar = progressRef.current;
-    if (!bar) return;
-    const fill = bar.querySelector<HTMLElement>('.progress-fill');
-    if (!fill) return;
-    const observer = new IntersectionObserver(([entry]) => {
-      if (entry.isIntersecting) {
-        fill.style.width = `${rankProgress}%`;
-        observer.disconnect();
-      }
-    }, { threshold: 0.1 });
-    observer.observe(bar);
-    return () => observer.disconnect();
-  }, [rankProgress]);
 
   if (loading) return <DashboardSkeleton />;
 
@@ -544,19 +533,11 @@ const Dashboard = () => {
       </div>
       )}
 
-      {/* 5. Next Rank Progress */}
-      {nextRank && (
+      {/* 5. Next Rank / Progression Progress */}
+      {(progression || nextRank) && (
       <div className="bg-bg-alt px-3 md:px-4 lg:px-6 py-10 pb-20 lg:pb-24">
           <div ref={rankRef}>
-            <div ref={progressRef} className="rounded-2xl border border-accent/20 bg-bg-card p-6 md:p-8 lg:p-10">
-              <div className="flex items-center justify-between mb-3">
-                <span className="text-xs font-black uppercase tracking-widest text-text-muted">{t('heading.target')}: <span className="text-accent">{nextRank.name}</span></span>
-                <span className="font-mono text-sm font-black text-accent">{rankProgress}%</span>
-              </div>
-              <div className="h-3 rounded-full bg-accent-dim/20 overflow-hidden">
-                <div className="progress-fill h-full rounded-full bg-accent" style={{ width: '0%', transition: 'width 1.2s cubic-bezier(0.22, 1, 0.36, 1)' }} />
-              </div>
-            </div>
+            <ProgressionPanel progression={progression} fallbackLabel={rankName} />
           </div>
       </div>
       )}
