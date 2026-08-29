@@ -45,7 +45,6 @@ function dismissCurrentPopup() {
  */
 export function usePopupManager(id: string, priority: number) {
   const [isVisible, setIsVisible] = useState(false);
-  const registered = useRef(false);
   const priorityRef = useRef(priority);
   priorityRef.current = priority;
 
@@ -60,15 +59,16 @@ export function usePopupManager(id: string, priority: number) {
     window.addEventListener(SHOW_EVENT, handleShow);
     window.addEventListener(DISMISS_EVENT, handleDismiss);
 
-    if (!registered.current) {
-      registered.current = true;
-      pendingPopups.push({ id, priority: priorityRef.current });
-      tryActivateNext();
-    }
+    pendingPopups.push({ id, priority: priorityRef.current });
+    tryActivateNext();
 
     return () => {
       window.removeEventListener(SHOW_EVENT, handleShow);
       window.removeEventListener(DISMISS_EVENT, handleDismiss);
+
+      const idx = pendingPopups.findIndex((p) => p.id === id);
+      if (idx !== -1) pendingPopups.splice(idx, 1);
+      if (activePopupId === id) dismissCurrentPopup();
     };
   }, [id]);
 

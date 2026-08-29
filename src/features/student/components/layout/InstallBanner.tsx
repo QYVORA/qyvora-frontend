@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { motion, AnimatePresence } from 'motion/react';
 import { Loader2 } from 'lucide-react';
@@ -15,6 +15,12 @@ const InstallBanner = () => {
   });
   const [installing, setInstalling] = useState(false);
   const { isVisible: managerVisible, onDismiss: managerDismiss } = usePopupManager('install', 5);
+
+  // Release the popup slot immediately when it can't show so other popups
+  // are not blocked by a ghost registration (mirrors ConsentBanner).
+  useEffect(() => {
+    if (!isInstallable() || dismissed) managerDismiss();
+  }, [dismissed, managerDismiss]);
 
   const handleDismiss = () => {
     try { localStorage.setItem(DISMISS_KEY, '1'); } catch {}

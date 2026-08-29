@@ -1062,39 +1062,7 @@
       "menu": "Menu",
       "navigation": "Navigation"
     },
-    "onboarding": {
-      "welcome": {
-        "title": "Welcome to QYVORA",
-        "subtitle": "Let's get you set up.",
-        "cta": "Get Started"
-      },
-      "path": {
-        "title": "Choose your path",
-        "prompt": "What brings you here?",
-        "beginner": "Beginner",
-        "intermediate": "Intermediate",
-        "advanced": "Advanced"
-      },
-      "focus": {
-        "title": "Set your focus",
-        "pentest": "Penetration Testing",
-        "defensive": "Defensive Security",
-        "web": "Web Security",
-        "network": "Network Security",
-        "exploit": "Exploit Development",
-        "osint": "OSINT"
-      },
-      "almost": {
-        "title": "Almost there…"
-      },
-      "complete": {
-        "title": "You're all set!",
-        "cta": "Start Learning"
-      },
-      "skip": "Skip",
-      "back": "Back",
-      "next": "Next"
-    },
+
     "onboardingModal": {
       "step0": {
         "title": "Welcome to QYVORA",

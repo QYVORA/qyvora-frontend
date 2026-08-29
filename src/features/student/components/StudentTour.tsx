@@ -35,7 +35,7 @@ export const StudentTour: React.FC<StudentTourProps> = ({
   onOpenChange: externalOnOpenChange,
 }) => {
   const { t } = useTranslation();
-  const { refreshMe } = useAuth();
+  const { user, refreshMe } = useAuth();
   const { isVisible: popupVisible, onDismiss: popupDismiss } = usePopupManager('onboarding-tour', 2);
   const [replayOpen, setReplayOpen] = useState(false);
 
@@ -64,13 +64,16 @@ export const StudentTour: React.FC<StudentTourProps> = ({
   }, []);
 
   const completeTour = useCallback(async () => {
+    // Closing the tour must not flip server-side onboarding state: skippers
+    // keep their skip state and replays don't overwrite a completed state.
+    if (user?.onboardingCompletedAt || user?.onboardingSkippedAt) return;
     try {
       await api.post('/profile/onboarding/complete');
       await refreshMe();
     } catch {
       // Best-effort — the tour is informational, completion is a nice-to-have.
     }
-  }, [refreshMe]);
+  }, [user?.onboardingCompletedAt, user?.onboardingSkippedAt, refreshMe]);
 
   const handleClose = useCallback(() => {
     completeTour();

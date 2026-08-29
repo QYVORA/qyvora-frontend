@@ -40,7 +40,7 @@ import {
 } from 'lucide-react';
 import {
   IconTerminal, IconNetwork, IconCode, IconRank, IconFire, IconDashboard,
-  IconMarketplace, IconArrowRight, IconDownload,
+  IconMarketplace, IconArrowRight, IconDownload, IconPlay,
 } from '@/shared/components/icons';
 import { LABS } from '@/features/student/constants/labs';
 import CpLogo from '@/shared/components/CpLogo';
@@ -280,7 +280,7 @@ const Dashboard = () => {
       {/* 2. Navigation Buttons */}
       <div className="bg-bg-alt px-3 md:px-4 lg:px-6 py-10">
         <div ref={statsRef}>
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 md:gap-4 lg:gap-5">
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 md:gap-4 lg:gap-5">
             <SectionButton
               icon={<GraduationCap className={`w-5 h-5 md:w-7 md:h-7 ${activeSection === 'courses' ? 'text-on-accent' : 'text-text-primary'}`} />}
               label={t('nav.courses')}
@@ -311,6 +311,12 @@ const Dashboard = () => {
               label={t('student.tools.title')}
               active={activeSection === 'tools'}
               onClick={() => handleSectionToggle('tools')}
+            />
+            <SectionButton
+              icon={<IconPlay className="w-5 h-5 md:w-7 md:h-7 text-text-primary" />}
+              label={t('student.tour.replay')}
+              active={false}
+              onClick={() => window.dispatchEvent(new CustomEvent('qyvora:start-tutorial'))}
             />
           </div>
         </div>
