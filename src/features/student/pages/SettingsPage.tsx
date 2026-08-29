@@ -46,20 +46,19 @@ const Toggle: React.FC<{ checked: boolean; onChange: (v: boolean) => void; disab
     type="button"
     role="switch"
     aria-checked={checked}
+    aria-disabled={disabled}
     onClick={() => onChange(!checked)}
     disabled={disabled}
-    className="relative inline-flex shrink-0 items-center justify-center rounded-full transition-transform duration-200 focus:outline-none disabled:opacity-50 active:scale-95"
-    style={{ width: '44px', height: '44px', minWidth: '44px', minHeight: '44px' }}
+    className="relative inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-full focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg disabled:cursor-not-allowed disabled:opacity-50 active:scale-95 transition-transform duration-200"
   >
     <span
-      className={`pointer-events-none inline-flex items-center rounded-full transition-colors duration-200 ${
+      className={`pointer-events-none relative inline-flex h-7 w-12 shrink-0 items-center rounded-full transition-colors duration-200 ${
         checked ? 'bg-accent' : 'bg-border'
       }`}
-      style={{ width: '44px', height: '24px' }}
     >
       <span
-        className={`inline-block rounded-full bg-bg shadow-lg transition-transform duration-200 ${
-          checked ? 'translate-x-[22px]' : 'translate-x-[2px]'
+        className={`inline-block rounded-full bg-bg shadow-sm transition-transform duration-200 ${
+          checked ? 'translate-x-6' : 'translate-x-1'
         }`}
         style={{ width: '20px', height: '20px' }}
       />
@@ -73,7 +72,7 @@ const SettingsRow: React.FC<{ label: string; description?: string; children: Rea
       <p className="text-sm font-bold text-text-primary">{label}</p>
       {description && <p className="text-xs text-text-muted mt-0.5 leading-relaxed">{description}</p>}
     </div>
-    <div className="shrink-0">{children}</div>
+    <div className="shrink-0 w-full sm:w-auto sm:flex sm:justify-end">{children}</div>
   </div>
 );
 
@@ -127,6 +126,13 @@ const Settings: React.FC = () => {
   useEffect(() => {
     document.documentElement.setAttribute('data-saver', dataSaver ? 'true' : 'false');
   }, [dataSaver]);
+
+  useEffect(() => {
+    if (prefsLoading) return;
+    const root = document.documentElement;
+    root.setAttribute('data-font-size', preferences.display.fontSize);
+    root.setAttribute('data-animations', preferences.display.showAnimations ? 'on' : 'off');
+  }, [prefsLoading, preferences.display.fontSize, preferences.display.showAnimations]);
 
   useEffect(() => {
     let mounted = true;
@@ -274,10 +280,6 @@ const Settings: React.FC = () => {
           {/* Appearance Section */}
           {activeSection === 'appearance' && (
             <div className="bg-bg-card border border-border/50 rounded-2xl p-5 md:p-8">
-              <SectionHeader 
-                title={t('student.settings.appearance.title')}
-                description={t('student.settings.appearance.description')}
-              />
               <div>
                 <SettingsRow label={t('student.settings.appearance.theme')} description={t('student.settings.appearance.themeDesc')}>
                   <div className="flex gap-1 bg-bg rounded-xl p-1 border border-border/50">
@@ -332,10 +334,6 @@ const Settings: React.FC = () => {
           {/* Notifications Section */}
           {activeSection === 'notifications' && (
             <div className="bg-bg-card border border-border/50 rounded-2xl p-5 md:p-8">
-              <SectionHeader 
-                title={t('student.settings.notifications.title')}
-                description={t('student.settings.notifications.description')}
-              />
               <div>
                 <SettingsRow label={t('student.settings.notifications.email')} description={t('student.settings.notifications.receiveEmail')}>
                   <Toggle checked={preferences.notifications.email} onChange={(v) => updateNotification('email', v)} disabled={prefsSaving} />
@@ -362,10 +360,6 @@ const Settings: React.FC = () => {
           {/* Learning Section */}
           {activeSection === 'learning' && (
             <div className="bg-bg-card border border-border/50 rounded-2xl p-5 md:p-8">
-              <SectionHeader 
-                title={t('student.settings.learningPrefs.title')}
-                description={t('student.settings.learningPrefs.description')}
-              />
               <div>
                 <SettingsRow label={t('student.settings.learningPrefs.difficulty')}>
                   <SelectField id="settings-preferred-difficulty" ariaLabel={t('student.settings.learningPrefs.difficulty')} value={preferences.learning.preferredDifficulty} onChange={(v) => updateLearning('preferredDifficulty', v)}>
@@ -516,10 +510,6 @@ const Settings: React.FC = () => {
           {/* Account / Danger Zone */}
           {activeSection === 'account' && (
             <div className="bg-bg-card border border-danger/20 rounded-2xl p-5 md:p-8">
-              <SectionHeader 
-                title={t('student.settings.dangerZone.title')}
-                description={t('student.settings.dangerZone.description')}
-              />
               <div className="bg-danger/5 border border-danger/20 rounded-xl p-6 space-y-4">
                 <div className="flex items-start gap-3">
                   <AlertTriangle className="w-5 h-5 text-danger flex-none mt-0.5" />
