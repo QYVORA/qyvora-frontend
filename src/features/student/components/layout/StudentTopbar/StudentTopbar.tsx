@@ -21,6 +21,15 @@ import { extractCpBalance } from '@/shared/utils/cpBalance';
 import useStudentOverview from '@/features/student/hooks/useStudentOverview';
 import { getBootcampProgressMap, resolveNextRoomPath } from '@/features/student/utils/studentExperience';
 
+// Single definition of the mobile CP badge. Every topbar mode renders this one
+// component so the `tour-cp-mobile` tour anchor is defined exactly once.
+const MobileCpBadge = ({ balance }: { balance: number }) => (
+  <div data-tour-id="tour-cp-mobile" className="flex items-center gap-2 px-3 py-2 rounded-xl bg-bg-card">
+    <CpLogo className="w-4 h-4" />
+    <span className="text-[10px] font-black text-accent">{balance.toLocaleString()}</span>
+  </div>
+);
+
 const StudentTopbar = () => {
   const { t } = useTranslation();
   const { user, logout } = useAuth();
@@ -244,12 +253,11 @@ const StudentTopbar = () => {
 
             {/* Mobile CP badge + menu trigger — right-aligned */}
             <div className="md:hidden flex items-center gap-2 ml-auto">
-              <div data-tour-id="tour-cp-mobile" className="flex items-center gap-2 px-3 py-2 rounded-xl bg-bg-card">
-                <CpLogo className="w-4 h-4" />
-                <span className="text-[10px] font-black text-accent">{cpBalance.toLocaleString()}</span>
-              </div>
+              <MobileCpBadge balance={cpBalance} />
               <span data-tour-id="tour-profile-mobile">
-                <NavMenuTrigger open={navOpen} onClick={() => setNavOpen((v) => !v)} />
+                <span data-tour-id="tour-nav-mobile">
+                  <NavMenuTrigger open={navOpen} onClick={() => setNavOpen((v) => !v)} />
+                </span>
               </span>
             </div>
               </div>
@@ -304,11 +312,10 @@ const StudentTopbar = () => {
 
               {/* Mobile CP badge + menu trigger — right-aligned */}
               <div className="md:hidden flex items-center gap-2 ml-auto">
-                <div className="flex items-center gap-2 px-3 py-2 rounded-xl bg-bg-card" data-tour-id="tour-cp-mobile">
-                  <CpLogo className="w-4 h-4" />
-                  <span className="text-[10px] font-black text-accent">{cpBalance.toLocaleString()}</span>
-                </div>
-                <NavMenuTrigger open={navOpen} onClick={() => setNavOpen((v) => !v)} />
+                <MobileCpBadge balance={cpBalance} />
+                <span data-tour-id="tour-nav-mobile">
+                  <NavMenuTrigger open={navOpen} onClick={() => setNavOpen((v) => !v)} />
+                </span>
               </div>
             </div>
           )
@@ -345,11 +352,10 @@ const StudentTopbar = () => {
 
             {/* Mobile CP badge + menu trigger — right-aligned */}
             <div className="md:hidden flex items-center gap-2 ml-auto">
-              <div className="flex items-center gap-2 px-3 py-2 rounded-xl bg-bg-card" data-tour-id="tour-cp-mobile">
-                <CpLogo className="w-4 h-4" />
-                <span className="text-[10px] font-black text-accent">{cpBalance.toLocaleString()}</span>
-              </div>
-              <NavMenuTrigger open={navOpen} onClick={() => setNavOpen((v) => !v)} />
+              <MobileCpBadge balance={cpBalance} />
+              <span data-tour-id="tour-nav-mobile">
+                <NavMenuTrigger open={navOpen} onClick={() => setNavOpen((v) => !v)} />
+              </span>
             </div>
             </div>
 
@@ -406,11 +412,10 @@ const StudentTopbar = () => {
 
             {/* Mobile CP badge + menu trigger — right-aligned */}
             <div className="md:hidden flex items-center gap-2 ml-auto">
-              <div className="flex items-center gap-2 px-3 py-2 rounded-xl bg-bg-card" data-tour-id="tour-cp-mobile">
-                <CpLogo className="w-4 h-4" />
-                <span className="text-[10px] font-black text-accent">{cpBalance.toLocaleString()}</span>
-              </div>
-              <NavMenuTrigger open={navOpen} onClick={() => setNavOpen((v) => !v)} />
+              <MobileCpBadge balance={cpBalance} />
+              <span data-tour-id="tour-nav-mobile">
+                <NavMenuTrigger open={navOpen} onClick={() => setNavOpen((v) => !v)} />
+              </span>
             </div>
           </div>
         ) : (
@@ -460,11 +465,10 @@ const StudentTopbar = () => {
 
             {/* Mobile CP badge + menu trigger — right-aligned */}
             <div className="md:hidden flex items-center gap-2 ml-auto">
-              <div className="flex items-center gap-2 px-3 py-2 rounded-xl bg-bg-card" data-tour-id="tour-cp-mobile">
-                <CpLogo className="w-4 h-4" />
-                <span className="text-[10px] font-black text-accent">{cpBalance.toLocaleString()}</span>
-              </div>
-              <NavMenuTrigger open={navOpen} onClick={() => setNavOpen((v) => !v)} />
+              <MobileCpBadge balance={cpBalance} />
+              <span data-tour-id="tour-nav-mobile">
+                <NavMenuTrigger open={navOpen} onClick={() => setNavOpen((v) => !v)} />
+              </span>
             </div>
           </div>
         )}

@@ -38,6 +38,12 @@ const StudentOnboardingModal: React.FC = () => {
 
   useEffect(() => () => { onDismissRef.current(); }, []);
 
+  // Release the priority-0 slot immediately when onboarding isn't needed so
+  // the guided tour (priority 2) can auto-trigger for already-onboarded users.
+  useEffect(() => {
+    if (!needsOnboarding) onDismiss();
+  }, [needsOnboarding, onDismiss]);
+
   const [step, setStep] = useState(0);
   const [submitting, setSubmitting] = useState(false);
 

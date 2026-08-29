@@ -847,38 +847,64 @@
       "menu": "Menu",
       "navigation": "Navigation"
     },
-    "onboarding": {
-      "welcome": {
+    "onboardingModal": {
+      "step0": {
         "title": "Welcome to QYVORA",
-        "subtitle": "Let's get you set up.",
-        "cta": "Get Started"
+        "body": "Your cybersecurity training platform. Learn offensive and defensive security through hands-on bootcamps, labs, and simulations.",
+        "cta": "Next"
       },
-      "path": {
-        "title": "Choose your path",
-        "prompt": "What brings you here?",
-        "beginner": "Beginner",
-        "intermediate": "Intermediate",
-        "advanced": "Advanced"
+      "step1": {
+        "title": "Your First Mission",
+        "body": "Start with the Hacker Protocol Bootcamp. This is the foundational path that teaches you the fundamentals before you tackle advanced labs and simulations.",
+        "cta": "Next"
       },
-      "focus": {
-        "title": "Set your focus",
-        "pentest": "Penetration Testing",
-        "defensive": "Defensive Security",
-        "web": "Web Security",
-        "network": "Network Security",
-        "exploit": "Exploit Development",
-        "osint": "OSINT"
+      "step2": {
+        "title": "Why Start Here",
+        "body": "The bootcamp covers the core skills you need. Once you complete the fundamentals, you'll unlock attack labs, security simulations, and advanced tooling.",
+        "cta": "Next"
       },
-      "almost": {
-        "title": "Almost there…"
-      },
-      "complete": {
-        "title": "You're all set!",
-        "cta": "Start Learning"
+      "step3": {
+        "title": "Register for Bootcamp",
+        "body": "Ready to begin? Register for the Hacker Protocol Bootcamp and start earning CyberPoints.",
+        "cta": "Register for Hacker Protocol Bootcamp",
+        "ctaEnrolled": "Continue Bootcamp"
       },
       "skip": "Skip",
       "back": "Back",
       "next": "Next"
+    },
+    "tour": {
+      "replay": "Take a Tour",
+      "controls": {
+        "skip": "Skip",
+        "back": "Back",
+        "next": "Next",
+        "finish": "Finish"
+      },
+      "welcome": {
+        "title": "Welcome, operator.",
+        "body": "This is your dashboard: mission control, {{username}}. Track your rank, continue training and see what's next. Here's a quick tour."
+      },
+      "nav": {
+        "title": "Main navigation",
+        "body": "Courses, Bootcamps, Labs and the Marketplace live in this bar. One tap to jump between them."
+      },
+      "cp": {
+        "title": "CyberPoints (CP)",
+        "body": "Your balance: {{cp}} CP. CP is your spendable currency. Every room you complete earns CP and builds Progression Points that move you up the ranks."
+      },
+      "learning": {
+        "title": "Jump into training",
+        "body": "Bootcamps are guided programs that take you from beginner to operator. Tap one to continue your mission."
+      },
+      "profile": {
+        "title": "Your profile",
+        "body": "Manage your hacker handle, check your stats and share your progress from here."
+      },
+      "done": {
+        "title": "You're all set!",
+        "body": "Complete your first room and start earning CP. Good luck, operator."
+      }
     },
     "usernameChange": {
       "title": "Choose your hacker handle",
