@@ -70,33 +70,17 @@ export function deriveTrophies(profile: ProfileData): Trophy[] {
     });
   }
 
-  if (profile.cp >= 1500) {
+  // Progression rank trophy — driven by the backend (ProfileData.progression),
+  // never by client-side CP thresholds or hardcoded rank names. The rank name
+  // and points come straight from the server response.
+  const progression = profile.progression;
+  if (progression && progression.points > 0 && progression.rank) {
     trophies.push({
-      id: 'vanguard',
-      title: 'Vanguard',
-      description: 'Reached Vanguard rank',
-      tier: 'diamond',
-    });
-  } else if (profile.cp >= 900) {
-    trophies.push({
-      id: 'architect',
-      title: 'Architect',
-      description: 'Reached Architect rank',
-      tier: 'platinum',
-    });
-  } else if (profile.cp >= 450) {
-    trophies.push({
-      id: 'specialist',
-      title: 'Specialist',
-      description: 'Reached Specialist rank',
+      id: `rank-${progression.tierId || 'tier'}`,
+      title: progression.rank,
+      description: `${progression.points.toLocaleString()} Progression Points`,
       tier: 'gold',
-    });
-  } else if (profile.cp >= 150) {
-    trophies.push({
-      id: 'contributor',
-      title: 'Contributor',
-      description: 'Reached Contributor rank',
-      tier: 'silver',
+      earnedAt: undefined,
     });
   }
 

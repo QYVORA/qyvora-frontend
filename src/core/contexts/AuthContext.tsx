@@ -119,13 +119,11 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 /**
  * Converts a raw backend user object into the frontend User shape.
  *
- * Rank thresholds (CP-based, ascending):
- *   0–149    → Candidate
- *   150–449  → Contributor
- *   450–899  → Specialist
- *   900–1499 → Architect
- *   1500+    → Vanguard
- *   (admin)  → Administrator (role overrides CP rank)
+ * Rank is NOT derived client-side from CP. The authoritative rank comes from
+ * the backend Progression system, fetched fresh via the profile/overview
+ * endpoints (ProfileData.progression.rank). Here we only provide a neutral
+ * placeholder (Administrator for admins, otherwise the anonymous Operator
+ * label) so a partially formed auth response never crashes the UI.
  *
  * All field access uses safe fallbacks so a partially formed backend response
  * never causes a runtime crash in the frontend.
@@ -145,18 +143,7 @@ const toFrontendUser = (backendUser: BackendUser): User => {
     uid: String(backendUser?.id || ''),
     username,
     email: String(backendUser?.email || ''),
-    rank:
-      role === 'admin'
-        ? 'Administrator'
-        : cp >= 1500
-        ? 'Vanguard'
-        : cp >= 900
-        ? 'Architect'
-        : cp >= 450
-        ? 'Specialist'
-        : cp >= 150
-        ? 'Contributor'
-        : 'Candidate',
+    rank: role === 'admin' ? 'Administrator' : 'Operator',
     cp,
     isAdmin: role === 'admin',
     role,

@@ -17,12 +17,12 @@ interface TrophyCabinetProps {
   className?: string;
 }
 
-const RANK_TROPHY_IDS = new Set(['vanguard', 'architect', 'specialist', 'contributor']);
+const RANK_TROPHY_ID_PREFIX = 'rank-';
 const COURSE_TROPHY_IDS = new Set(['scholar', 'course-graduate', 'first-course']);
 
 function TrophyVisual({ id, profile }: { id: string; profile: ProfileData }) {
   if (id === 'hpb-graduate') return <BootcampBadge completed className="w-12 h-12" />;
-  if (RANK_TROPHY_IDS.has(id)) return <CpLogo className="w-8 h-8" />;
+  if (id.startsWith(RANK_TROPHY_ID_PREFIX)) return <CpLogo className="w-8 h-8" />;
   if (COURSE_TROPHY_IDS.has(id) && profile.completedCourseIds?.[0]) {
     return <CourseBadge courseId={profile.completedCourseIds[0]} className="w-10 h-10" />;
   }

@@ -3,7 +3,6 @@ import { useTranslation } from 'react-i18next';
 import { useAuth } from '@/core/contexts/AuthContext';
 import { useToast } from '@/core/contexts/ToastContext';
 import api from '@/core/services/api';
-import { getRankInfo } from '@/features/student/utils/rankUtils';
 import { extractCpBalance } from '@/shared/utils/cpBalance';
 import {
   getBootcampProgressMap,
@@ -227,10 +226,7 @@ const Dashboard = () => {
   const isEnrolled = (overview?.bootcampStatus || 'not_enrolled') !== 'not_enrolled';
   const cpBalance = pickCpBalance(user?.cp ?? 0, overview, cpBalanceState);
   const progression = overview?.xpSummary?.progression ?? null;
-  // Backend-driven rank/progression is authoritative when present; fall back to
-  // the legacy client CP mapping only until the backend serves it.
-  const { rank: _r, next: nextRank } = getRankInfo(cpBalance);
-  const effectiveRankName = progression?.rank || _r?.name || t('stat.candidate');
+  const effectiveRankName = progression?.rank || t('stat.candidate');
   const nextMission = (overview?.learningPath || []).find((m: any) => m.status === 'in-progress' || m.status === 'next');
 
   const overviewModules = Array.isArray(overview?.modules) ? overview.modules : [];
@@ -534,7 +530,7 @@ const Dashboard = () => {
       )}
 
       {/* 5. Next Rank / Progression Progress */}
-      {(progression || nextRank) && (
+      {progression && (
       <div className="bg-bg-alt px-3 md:px-4 lg:px-6 py-10 pb-20 lg:pb-24">
           <div ref={rankRef}>
             <ProgressionPanel progression={progression} fallbackLabel={rankName} />
