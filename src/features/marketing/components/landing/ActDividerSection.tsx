@@ -76,7 +76,7 @@ const ActDividerSection: React.FC<ActDividerSectionProps> = ({ title, accentWord
               return (
                 <Link
                   to={item.to}
-                  className="group relative flex flex-col bg-bg-card p-6 md:p-8 transition-[background-color] duration-[var(--dur-base)] ease-[var(--ease-smooth)] hover:bg-bg-elevated h-[280px] md:h-[320px]"
+                  className="group relative flex flex-col bg-bg-card p-6 md:p-8 transition-[background-color] duration-[var(--dur-base)] ease-[var(--ease-smooth)] hover:bg-bg-elevated h-[280px] md:h-[320px] overflow-hidden min-w-0"
                 >
                   {isCpIcon ? (
                     // CP icon standalone - no border wrapper
@@ -89,12 +89,12 @@ const ActDividerSection: React.FC<ActDividerSectionProps> = ({ title, accentWord
                       <item.icon size={24} className="text-accent md:w-7 md:h-7" />
                     </div>
                   )}
-                  <div className="flex-1 flex flex-col">
-                    <span className="flex items-center gap-2 text-base md:text-lg font-black uppercase tracking-tight text-text-primary group-hover:text-accent transition-colors mb-3">
+                  <div className="flex-1 flex flex-col min-w-0">
+                    <span className="flex items-center gap-2 text-base md:text-lg font-black uppercase tracking-tight text-text-primary group-hover:text-accent transition-colors mb-3 break-words min-w-0">
                       {item.label}
                       <IconArrowRight size={16} className="shrink-0 text-text-muted transition-[color,transform] duration-[var(--dur-base)] ease-[var(--ease-smooth)] group-hover:translate-x-0.5 group-hover:text-accent" />
                     </span>
-                    <p className="text-sm md:text-base text-text-muted leading-relaxed flex-1">
+                    <p className="text-sm md:text-base text-text-muted leading-relaxed flex-1 min-w-0 break-words line-clamp-3">
                       {item.description}
                     </p>
                   </div>

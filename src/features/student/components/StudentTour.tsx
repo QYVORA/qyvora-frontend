@@ -43,9 +43,12 @@ export const StudentTour: React.FC<StudentTourProps> = ({
   const isVisible = isExternallyControlled ? externalOpen : popupVisible;
 
   const onDismissAll = useCallback(() => {
+    // Closing the tour must always reset the replay flag, otherwise a manual
+    // "Take a Tour" replay stays open forever (the Finish/Skip button would
+    // appear to do nothing on desktop).
+    setReplayOpen(false);
     if (isExternallyControlled) {
       externalOnOpenChange?.(false);
-      setReplayOpen(false);
     } else {
       popupDismiss();
     }

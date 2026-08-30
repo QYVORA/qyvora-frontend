@@ -52,6 +52,24 @@ const DEFAULT_Z = 600;
 
 const pad = (v: number, min: number, max: number) => Math.min(Math.max(v, min), max);
 
+/**
+ * Returns true when the element (or one of its ancestors) is laid out with
+ * `position: fixed`. Fixed elements never move in response to scrollIntoView,
+ * so the tour has to reveal them differently (see the layout effect below).
+ */
+const isInFixedElement = (el: HTMLElement): boolean => {
+  let node: HTMLElement | null = el;
+  while (node) {
+    if (node === document.body || node === document.documentElement) break;
+    if (node.nodeType === Node.ELEMENT_NODE) {
+      const pos = window.getComputedStyle(node).position;
+      if (pos === 'fixed') return true;
+    }
+    node = node.parentElement;
+  }
+  return false;
+};
+
 export const SpotlightTour: React.FC<SpotlightTourProps> = ({
   open,
   steps,
@@ -121,7 +139,15 @@ export const SpotlightTour: React.FC<SpotlightTourProps> = ({
       r.left >= 0 &&
       r.right <= window.innerWidth;
     if (!fullyVisible) {
-      el.scrollIntoView({ behavior: prefersReduced ? 'auto' : 'smooth', block: 'center' });
+      if (isInFixedElement(el)) {
+        // Fixed targets (e.g. the auto-hiding student topbar) never respond to
+        // scrollIntoView. They are only hidden because the header slides off
+        // screen on scroll-down, so scroll back to the top where the fixed
+        // header is guaranteed to be visible.
+        window.scrollTo({ top: 0, left: 0, behavior: prefersReduced ? 'auto' : 'smooth' });
+      } else {
+        el.scrollIntoView({ behavior: prefersReduced ? 'auto' : 'smooth', block: 'center' });
+      }
     }
     const raf = requestAnimationFrame(measure);
     const timer = window.setTimeout(measure, prefersReduced ? 0 : 500);
@@ -306,7 +332,7 @@ export const SpotlightTour: React.FC<SpotlightTourProps> = ({
         ref={cardRef}
         className={cn(
           'pointer-events-auto fixed z-[1] bg-bg-card border border-border/50 rounded-2xl p-5 shadow-2xl animate-fade-in',
-          isDesktop ? 'w-[320px]' : 'inset-x-3 bottom-3 top-auto',
+          isDesktop ? 'w-[min(320px,calc(100vw-24px))]' : 'inset-x-3 bottom-3 top-auto',
         )}
         style={isDesktop ? { left: desktop.left, top: desktop.top } : undefined}
       >
