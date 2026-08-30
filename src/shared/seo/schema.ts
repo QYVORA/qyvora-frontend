@@ -14,7 +14,7 @@ export const SITE_URL = SITE_CONFIG.brand.siteUrl;
 export const SITE_NAME = SITE_CONFIG.brand.name;
 
 /** Public QYVORA properties. WhatsApp is a community invite link, not a profile — excluded from sameAs. */
-const REAL_SOCIAL_PROFILES = new Set(['x', 'linkedin', 'github', 'youtube', 'medium']);
+const REAL_SOCIAL_PROFILES = new Set(['x', 'linkedin', 'github', 'youtube', 'medium', 'tiktok']);
 
 export const toAbsoluteUrl = (pathOrUrl: string): string =>
   pathOrUrl.startsWith('http') ? pathOrUrl : `${SITE_URL}${pathOrUrl}`;
@@ -86,7 +86,12 @@ const ROUTE_LABELS: ReadonlyArray<readonly [string, string]> = [
   ['/courses', 'Courses'],
   ['/labs', 'Labs'],
   ['/blogs', 'Blogs'],
-  ['/anansi', 'Anansi CLI'],
+  ['/anansi', 'anansi'],
+  ['/toha3ee', 'toha3ee'],
+  ['/shaka', 'shaka'],
+  ['/nzinga', 'nzinga'],
+  ['/jabari', 'jabari'],
+  ['/aksum', 'aksum'],
   ['/quiteroot', 'QuiteRoot'],
   ['/leaderboard', 'Leaderboard'],
   ['/zero-day-market', 'Zero Day Market'],

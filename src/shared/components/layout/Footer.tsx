@@ -8,6 +8,7 @@ import { BrandYoutubeIcon } from '@/shared/components/icons';
 import { BrandGithubIcon } from '@/shared/components/icons';
 import { BrandXIcon } from '@/shared/components/icons';
 import { BrandMediumIcon } from '@/shared/components/icons';
+import { BrandTikTokIcon } from '@/shared/components/icons';
 import { ContactTrigger } from '@/features/marketing/components/ContactModal';
 import { Logo } from '@/shared/components/brand';
 import LanguageSwitcher from '@/shared/components/LanguageSwitcher';
@@ -27,11 +28,12 @@ const FOOTER_COLS = [
     title: 'Platform',
     links: [
       { key: 'cp', label: 'Cyber Coin', path: '/cp' },
-      { key: 'anansi', label: 'Anansi', path: '/anansi' },
-      { key: 'toha3ee', label: 'Toha3ee', path: '/toha3ee' },
-      { key: 'jabari', label: 'Jabari', path: '/jabari' },
-      { key: 'aksum', label: 'Aksum', path: '/aksum' },
-      { key: 'shaka', label: 'SHAKA', path: '/shaka' },
+      { key: 'anansi', label: 'anansi', path: '/anansi' },
+      { key: 'toha3ee', label: 'toha3ee', path: '/toha3ee' },
+      { key: 'shaka', label: 'shaka', path: '/shaka' },
+      { key: 'nzinga', label: 'nzinga', path: '/nzinga' },
+      { key: 'jabari', label: 'jabari', path: '/jabari' },
+      { key: 'aksum', label: 'aksum', path: '/aksum' },
       { key: 'services', label: 'Services', path: '/services' },
     ],
   },
@@ -64,6 +66,7 @@ export const SOCIAL_LINKS: SocialLink[] = [
   { key: 'github',   label: 'GitHub',   href: 'https://github.com/QYVORA',           Icon: BrandGithubIcon },
   { key: 'youtube',  label: 'YouTube',  href: 'https://www.youtube.com/@QYVORA',     Icon: BrandYoutubeIcon },
   { key: 'medium',   label: 'Medium',   href: 'https://medium.com/@qyvorasec',       Icon: BrandMediumIcon },
+  { key: 'tiktok',   label: 'TikTok',   href: 'https://www.tiktok.com/@qyvorasecurity', Icon: BrandTikTokIcon },
   { key: 'whatsapp', label: 'WhatsApp', href: 'https://wa.me/233535535222',          Icon: BrandWhatsAppIcon },
 ];
 
@@ -82,9 +85,10 @@ const FOOTER_LINK_KEYS: Record<string, string> = {
   services: 'nav.services',
   anansi: 'nav.anansi',
   toha3ee: 'nav.toha3ee',
+  shaka: 'nav.shaka',
+  nzinga: 'nav.nzinga',
   jabari: 'nav.jabari',
   aksum: 'nav.aksum',
-  shaka: 'nav.shaka',
   blogs: 'nav.blogs',
   leaderboard: 'nav.leaderboard',
   market: 'nav.market',

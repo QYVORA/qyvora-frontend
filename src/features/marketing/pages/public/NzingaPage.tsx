@@ -5,16 +5,16 @@ import { useTranslation } from 'react-i18next';
 import CodeBlock from '@/shared/components/CodeBlock';
 import ToolSourceSection from '@/features/marketing/components/tools/ToolSourceSection';
 import { openToolInstall } from '@/features/marketing/components/ToolInstallModal';
-import { STAGES, RULES, GITHUB_URL, BUILD_FROM_SOURCE, QUICK_START, AUTHORIZED_WARNING, SOURCE_EXAMPLES } from '@/features/marketing/data/shakaData';
+import { STAGES, RULES, GITHUB_URL, BUILD_FROM_SOURCE, QUICK_START, AUTHORIZED_WARNING, SOURCE_EXAMPLES } from '@/features/marketing/data/nzingaData';
 import { getRelatedTools } from '@/features/marketing/data/relatedTools';
 import RelatedContentSection from '@/shared/components/RelatedContentSection';
-import shakaLogo from '@/assets/shaka/shaka-main-logo.webp';
+import nzingaLogo from '@/assets/nzinga/nzinga-main-logo.webp';
 import { ToolDocPage, ToolDocSection, ToolDocHero } from '@/shared/components/tools';
 import type { ToolDocSectionItem } from '@/shared/components/tools';
 
 const REQUIREMENTS = [
-  'Windows Server Active Directory / LDAP target, or use the built-in offline simulator (--sim)',
-  'Go 1.22+ toolchain to build from source',
+  'Public, open-source targets only. Live collection requires explicit authorization (--authorized / -y), or use the built-in offline simulator (--sim)',
+  'Go 1.26+ toolchain to build from source',
   'No external runtime dependencies, a single static binary',
 ];
 
@@ -28,44 +28,44 @@ const DOC_SECTIONS: ToolDocSectionItem[] = [
   { id: 'quickstart', label: 'Quick Start' },
 ];
 
-const ShakaPage = () => {
+const NzingaPage = () => {
   const { user } = useAuth();
   const { t } = useTranslation();
 
   return (
     <ToolDocPage
-      toolName="shaka"
-      seoTitle="shaka - QYVORA"
-      seoDescription="shaka: Windows and Microsoft Active Directory security assessment framework in Go. Domain discovery, directory enumeration, relationship graphs, privilege analysis and evidence-driven reporting."
+      toolName="nzinga"
+      seoTitle="nzinga - QYVORA"
+      seoDescription="nzinga: authorized open-source intelligence (OSINT) collection, cross-source correlation and evidence-driven reporting in Go. Collect from public sources, normalize, correlate and report, all from the terminal."
       sections={DOC_SECTIONS}
       githubUrl={GITHUB_URL}
       installLabel="Install"
-      onInstall={() => openToolInstall('shaka')}
+      onInstall={() => openToolInstall('nzinga')}
     >
       {/* ── Hero ─────────────────────────────────────────────────────────── */}
       <ToolDocHero
-        toolName="shaka"
-        description="Windows and Microsoft Active Directory security assessment framework in Go: domain discovery, object enumeration, relationship graphing, and evidence-driven findings with an offline simulator."
+        toolName="nzinga"
+        description="Authorized open-source intelligence framework in Go: public-source collection, cross-source correlation, and evidence-backed reporting with an offline simulator."
         stats={[
           { label: 'Pipeline Stages', value: STAGES.length },
           { label: 'Built-in Rules', value: RULES.length },
         ]}
         logo={
           <img
-            src={shakaLogo}
-            alt="shaka"
-            width={500}
-            height={500}
+            src={nzingaLogo}
+            alt="nzinga"
+            width={1292}
+            height={1218}
             className="w-full max-h-[50vh] object-contain"
           />
         }
         actions={
           <>
-            <button type="button" onClick={() => openToolInstall('shaka')} className="btn-primary inline-flex items-center gap-2 px-6 py-2.5">
+            <button type="button" onClick={() => openToolInstall('nzinga')} className="btn-primary inline-flex items-center gap-2 px-6 py-2.5">
               <Download className="w-4 h-4" /> Install Now <IconArrowRight size={14} />
             </button>
             <span className="inline-flex items-center gap-2 px-2.5 py-1 rounded-lg border border-border/50 bg-bg-card text-[9px] font-black uppercase tracking-widest text-text-muted">
-              <span className="font-black text-[#00ADD8]">Go</span> 1.22+
+              <span className="font-black text-[#FFB000]">Go</span> 1.26+
             </span>
           </>
         }
@@ -85,7 +85,7 @@ const ShakaPage = () => {
               <AUTHORIZED_WARNING.icon className="w-5 h-5 md:w-6 md:h-6 text-warning" />
             </div>
             <p className="text-xs md:text-sm text-text-secondary leading-relaxed font-mono">
-              shaka assesses only explicitly authorized directory targets. Live targets require explicit authorization (--authorized/-y, config, or QYVORA_AUTHORIZED=true); the built-in demo directory is auto-authorized for safe offline exploration.
+              nzinga collects only from public, open sources and performs authorized reconnaissance only. Live collection requires explicit authorization (--authorized/-y, config, or QYVORA_AUTHORIZED=true); the built-in simulator (--sim) runs offline against a deterministic dataset.
             </p>
           </div>
 
@@ -96,9 +96,9 @@ const ShakaPage = () => {
               <span className="font-mono text-[9px] uppercase tracking-widest text-text-muted">Safe by Design</span>
             </div>
             {[
-              'Explicit authorization gate prevents unintended scans on live corporate directories.',
-              'Includes a deterministic offline simulation engine (--sim) for testing and training.',
-              'Emits JSONL events and structured reports (JSON, Markdown, HTML, YAML) with full evidence hashes.',
+              'Explicit authorization gate prevents live collection without operator authorization.',
+              'Includes a deterministic offline simulation engine (--sim) with no network activity.',
+              'Emits typed reports (terminal, JSON, Markdown, HTML, YAML) where every claim traces to evidence.',
             ].map((rule) => (
               <div key={rule} className="flex items-start gap-3 rounded-xl border border-border/20 bg-bg-elevated px-4 py-3">
                 <span className="w-6 h-6 rounded-lg bg-accent/10 border border-accent/20 flex items-center justify-center shrink-0 mt-0.5">
@@ -114,7 +114,7 @@ const ShakaPage = () => {
       {/* ── Pipeline ─────────────────────────────────────────────────────── */}
       <ToolDocSection
         id="pipeline"
-        kicker="Assessment Pipeline"
+        kicker="Intelligence Pipeline"
         title="Seven"
         accent="Stages"
       >
@@ -141,7 +141,7 @@ const ShakaPage = () => {
                 {stage.desc}
               </p>
               <CodeBlock
-                code={`shaka assess --sim\n# ${stage.name.toLowerCase()} stage`}
+                code={`nzinga assess -y domain:example.com\n# ${stage.name.toLowerCase()} stage`}
                 lang="sh"
                 badge="shell"
                 copyable
@@ -155,21 +155,21 @@ const ShakaPage = () => {
       <ToolDocSection
         id="graph"
         kicker="Relationship modeling"
-        title="Graph-Driven"
-        accent="topology"
-        description="Directory principals do not exist in isolation. shaka builds a typed directed graph connecting users, groups, computers, organizational units, and domains. Edges represent real directory relationships (member_of, joins, trusts, delegates) allowing precise attack-path analysis."
+        title="Correlation"
+        accent="graph"
+        description="Intelligence does not live in one source. nzinga links observations across public sources into a typed directed graph connecting domains, emails, usernames, and infrastructure. Edges represent real correlations (resolves_to, shares_host, observed_on, part_of) exposing a single coherent estate."
       >
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <div className="rounded-2xl border border-border/50 bg-bg-card p-5 md:p-6 space-y-4">
             <h3 className="text-sm font-black uppercase tracking-widest text-accent">Why it matters</h3>
             <p className="text-sm font-mono text-text-secondary leading-relaxed">
-              Finding misconfigurations requires seeing indirect paths: nested group memberships, unconstrained delegation hops, and trust transitivity across forest boundaries.
+              The value is in connections across sources: a username on one platform linked to an email, linked to a domain, linked to shared infrastructure. nzinga attributes each edge to collected evidence.
             </p>
             <div className="space-y-2.5">
               {[
-                'Deterministic graph deduplication prevents redundant findings.',
-                'Nested group resolution reveals hidden Domain Admin access.',
-                'Evidence-referenced edge weights prioritize high-risk attack paths.',
+                'Deterministic correlation deduplicates observations into entities.',
+                'Shared hosting across domains reveals common administration.',
+                'Every claim carries confidence and provenance, never absence-as-proof.',
               ].map((item, i) => (
                 <div key={i} className="flex items-start gap-2.5">
                   <span className="w-1.5 h-1.5 rounded-full bg-accent shrink-0 mt-1.5" />
@@ -183,10 +183,11 @@ const ShakaPage = () => {
             <h3 className="text-sm font-black uppercase tracking-widest text-accent">Source layout</h3>
             <div className="font-mono text-[11px] space-y-1.5">
               {[
-                'internal/graph/        directed graph structure & traversals',
-                'internal/directory/    LDAP object normalization & offline simulator',
-                'internal/analysis/     identity, trust, and attack-path analyzers',
-                'internal/rules/        deterministic rule engine & builtins',
+                'internal/pipeline/          ordered collection & analysis stages',
+                'internal/intelligence/      sources, normalization, correlation',
+                'internal/intelligence/sources/  crt.sh, domain, infrastructure, org',
+                'internal/rules/             deterministic rule engine & builtins',
+                'internal/reporting/         terminal, JSON, Markdown, HTML, YAML',
               ].map((line) => (
                 <div key={line} className="flex items-center gap-2 py-1 px-2 rounded bg-bg-elevated/50 min-w-0">
                   <span className="text-accent shrink-0">{'>'}</span>
@@ -201,10 +202,10 @@ const ShakaPage = () => {
       {/* ── Rules ────────────────────────────────────────────────────────── */}
       <ToolDocSection
         id="rules"
-        kicker="Detection Engine"
+        kicker="Rule Engine"
         title="Built-in"
         accent="Rules"
-        description="shaka includes deterministic detection rules targeting core Active Directory security hygiene, privilege escalation paths, and authentication exposures."
+        description="nzinga ships deterministic correlation rules (OSINT-001..004) that surface evidence-backed findings with confidence, severity, and remediation — never absence-as-proof."
       >
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
           {RULES.map((rule) => (
@@ -223,7 +224,7 @@ const ShakaPage = () => {
           kicker="Go source"
           title="Engineered"
           accent="internals"
-          description="shaka is built in modern Go with zero runtime dependencies. Single binary, fast concurrent LDAP evaluation, and strict safety contracts."
+          description="nzinga is built in modern Go with zero runtime dependencies. Single binary, bounded-concurrency collection, honest confidence states, and strict safety contracts."
           examples={SOURCE_EXAMPLES}
         />
       </div>
@@ -233,14 +234,14 @@ const ShakaPage = () => {
         id="install"
         kicker="Installation"
         title="Get"
-        accent="shaka"
+        accent="nzinga"
         description="Single binary distribution for Linux, macOS, and Windows. Build from source or run via the official install helper."
       >
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <div className="rounded-2xl border border-border/50 bg-bg-card p-5 md:p-6 space-y-4">
             <h3 className="text-sm font-black uppercase tracking-widest text-accent">Quick Install</h3>
             <CodeBlock
-              code="curl -fsSL https://raw.githubusercontent.com/QYVORA/qyvora-shaka/main/install.sh | bash"
+              code="curl -fsSL https://raw.githubusercontent.com/QYVORA/qyvora-nzinga/main/install.sh | bash"
               lang="sh"
               badge="curl"
               copyable
@@ -248,7 +249,7 @@ const ShakaPage = () => {
             <div className="pt-2">
               <button
                 type="button"
-                onClick={() => openToolInstall('shaka')}
+                onClick={() => openToolInstall('nzinga')}
                 className="btn-primary inline-flex items-center gap-2 px-5 py-2 text-xs"
               >
                 <Download size={14} /> Open Install Modal
@@ -273,8 +274,8 @@ const ShakaPage = () => {
         id="quickstart"
         kicker="Quick Start"
         title="Immediate"
-        accent="Execution"
-        description="Run shaka against the offline simulator or point it at an authorized Active Directory domain controller."
+        accent="Collection"
+        description="Run nzinga against the offline simulator or point it at an authorized target with the authorization gate enabled."
       >
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <div className="rounded-2xl border border-border/50 bg-bg-card p-5 md:p-6 space-y-3">
@@ -289,10 +290,10 @@ const ShakaPage = () => {
           <div className="rounded-2xl border border-border/50 bg-bg-card p-5 md:p-6 space-y-4">
             <h3 className="text-xs font-black uppercase tracking-widest text-accent">Interactive REPL</h3>
             <p className="text-xs font-mono text-text-muted leading-relaxed">
-              Running bare <code className="text-accent">shaka</code> launches the interactive console with the brand banner, command history, tab completion, and built-in offline demo exploration:
+              Running bare <code className="text-accent">nzinga</code> launches the interactive console with the brand banner, command history, tab completion, and built-in offline demo exploration:
             </p>
             <CodeBlock
-              code={`$ shaka\n\n[SHAKA BRAND BANNER]\n\nshaka> assess\nshaka> graph\nshaka> findings\nshaka> exit`}
+              code={`$ nzinga\n\n[NZINGA BRAND BANNER]\n\nnzinga> assess --sim\nnzinga> sources list\nnzinga> findings\nnzinga> relationship graph\nnzinga> exit`}
               lang="text"
               badge="interactive"
             />
@@ -302,10 +303,10 @@ const ShakaPage = () => {
 
       {/* ── Related Tools ────────────────────────────────────────────────── */}
       <div className="w-full px-3 md:px-4 lg:px-6 py-12">
-        <RelatedContentSection items={getRelatedTools(t, '/shaka')} />
+        <RelatedContentSection items={getRelatedTools(t, '/nzinga')} />
       </div>
     </ToolDocPage>
   );
 };
 
-export default ShakaPage;
+export default NzingaPage;

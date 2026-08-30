@@ -26,10 +26,9 @@ const Toha3eePage = () => {
 
   return (
     <ToolDocPage
-      toolName="Toha3ee"
-      accentWord="Security"
-      seoTitle="Toha3ee - QYVORA"
-      seoDescription="Toha3ee: local & network security assessment framework in Go. Host and service discovery, enumeration, credential auditing, wireless, MITM and post-exploitation modules from an interactive REPL."
+      toolName="toha3ee"
+      seoTitle="toha3ee - QYVORA"
+      seoDescription="toha3ee: local & network security assessment framework in Go. Host and service discovery, enumeration, credential auditing, wireless, MITM and post-exploitation modules from an interactive REPL."
       sections={DOC_SECTIONS}
       githubUrl={GITHUB_URL}
       installLabel="Install"
@@ -37,8 +36,7 @@ const Toha3eePage = () => {
     >
       {/* ── Hero ─────────────────────────────────────────────────────────── */}
       <ToolDocHero
-        toolName="Toha3ee"
-        accentWord="Security"
+        toolName="toha3ee"
         description="Local & network security assessment framework in Go - 73 modules across ten categories (recon, enumeration, OSINT, wireless, MITM and more), driven from an interactive REPL, a guided wizard, or one-shot scripts."
         stats={[
           { label: 'Categories', value: MODULES.length },
@@ -47,7 +45,7 @@ const Toha3eePage = () => {
         logo={
           <img
             src={toha3eeLogo}
-            alt="Toha3ee"
+            alt="toha3ee"
             width={1024}
             height={1024}
             className="w-full max-h-[50vh] object-contain"
@@ -71,7 +69,7 @@ const Toha3eePage = () => {
         kicker="Warning"
         title="Authorised"
         accent="Use Only"
-        description="Toha3ee actively redirects, poisons, decrypts and intercepts network traffic. Use it only on networks you own or are explicitly authorised to test."
+        description="toha3ee actively redirects, poisons, decrypts and intercepts network traffic. Use it only on networks you own or are explicitly authorised to test."
       >
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
           <div className="rounded-2xl border border-warning/30 bg-warning/5 px-5 md:px-6 py-5 flex gap-4 items-start">
@@ -370,7 +368,7 @@ const Toha3eePage = () => {
             Ready to <span className="text-accent">scan</span>?
           </h2>
           <p className="text-base text-text-secondary font-mono max-w-lg mx-auto">
-            Install Toha3ee and start assessing networks from your terminal.
+            Install toha3ee and start assessing networks from your terminal.
           </p>
           <button
             type="button"

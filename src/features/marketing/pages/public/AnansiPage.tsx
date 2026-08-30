@@ -13,7 +13,7 @@ import anansiLogo from '@/assets/anansi/anansi-main-logo.webp';
 import { ToolDocPage, ToolDocSection, ToolDocHero } from '@/shared/components/tools';
 import type { ToolDocSectionItem } from '@/shared/components/tools';
 
-const GITHUB_URL = 'https://github.com/QYVORA/qyvora-anansi-cli';
+const GITHUB_URL = 'https://github.com/QYVORA/qyvora-anansi';
 
 const PHASE_MODULES = ['discovery', 'probe', 'tls', 'headers', 'paths', 'tech', 'takeover', 'osint', 'chain'];
 
@@ -38,10 +38,9 @@ const AnansiPage = () => {
 
   return (
     <ToolDocPage
-      toolName="Anansi"
-      accentWord="CLI"
-      seoTitle="Anansi - QYVORA"
-      seoDescription="Anansi. Attack Surface Intelligence CLI. A nine-phase recon pipeline from subdomain discovery to exploit-chain analysis, all from the terminal."
+      toolName="anansi"
+      seoTitle="anansi - QYVORA"
+      seoDescription="anansi. A nine-phase recon pipeline from subdomain discovery to exploit-chain analysis, all from the terminal."
       sections={DOC_SECTIONS}
       githubUrl={GITHUB_URL}
       installLabel="Install"
@@ -49,9 +48,8 @@ const AnansiPage = () => {
     >
       {/* ── Hero ─────────────────────────────────────────────────────────── */}
       <ToolDocHero
-        toolName="Anansi"
-        accentWord="CLI"
-        description="Attack Surface Intelligence Engine: a nine-phase recon pipeline that discovers, probes and maps attack surfaces from the terminal."
+        toolName="anansi"
+        description="A nine-phase recon pipeline that discovers, probes and maps attack surfaces from the terminal."
         stats={[
           { label: 'Modules', value: PHASES.length },
           { label: 'Platform', value: 'CLI' },
@@ -59,7 +57,7 @@ const AnansiPage = () => {
         logo={
           <img
             src={anansiLogo}
-            alt="Anansi"
+            alt="anansi"
             width={623}
             height={576}
             className="w-full max-h-[50vh] object-contain"
@@ -127,7 +125,7 @@ const AnansiPage = () => {
         kicker="Architecture"
         title="Concurrent"
         accent="by design"
-        description="Anansi is a Go CLI built around shared HTTP transport, TTL DNS caching, fixed worker pools, and concurrent network checks so deep recon stays controlled and repeatable."
+        description="anansi is a Go CLI built around shared HTTP transport, TTL DNS caching, fixed worker pools, and concurrent network checks so deep recon stays controlled and repeatable."
       >
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {/* Left: why it exists */}
@@ -307,7 +305,7 @@ const AnansiPage = () => {
         kicker="Quick Start"
         title="Scan in"
         accent="One Line"
-        description="Point Anansi at a target and watch it walk the full pipeline."
+        description="Point anansi at a target and watch it walk the full pipeline."
       >
         <div className="grid grid-cols-1 lg:grid-cols-[1.15fr_1fr] gap-4 md:gap-6">
           {/* Terminal mock */}
@@ -378,7 +376,7 @@ const AnansiPage = () => {
             Ready to <span className="text-accent">scan</span>?
           </h2>
           <p className="text-base text-text-secondary font-mono max-w-lg mx-auto">
-            Install Anansi and start mapping attack surfaces from your terminal.
+            Install anansi and start mapping attack surfaces from your terminal.
           </p>
           <button
             type="button"

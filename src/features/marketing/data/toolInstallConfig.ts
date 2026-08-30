@@ -11,7 +11,7 @@
  * at runtime.
  */
 
-export type ToolInstallKey = 'anansi' | 'jabari' | 'toha3ee' | 'aksum' | 'shaka';
+export type ToolInstallKey = 'anansi' | 'jabari' | 'toha3ee' | 'shaka' | 'nzinga' | 'aksum';
 export type ToolPlatform = 'linux' | 'darwin' | 'windows';
 export type ToolArch = 'amd64' | 'arm64';
 
@@ -29,24 +29,24 @@ export interface ToolInstallConfig {
 export const TOOL_INSTALL_CONFIG: Record<ToolInstallKey, ToolInstallConfig> = {
   anansi: {
     bin: 'anansi',
-    displayName: 'Anansi',
-    repo: 'QYVORA/qyvora-anansi-cli',
-    releaseBase: 'https://github.com/QYVORA/qyvora-anansi-cli/releases/latest/download',
+    displayName: 'anansi',
+    repo: 'QYVORA/qyvora-anansi',
+    releaseBase: 'https://github.com/QYVORA/qyvora-anansi/releases/latest/download',
     assets: {
       linux: { amd64: 'anansi-linux-amd64', arm64: 'anansi-linux-arm64' },
       darwin: { amd64: 'anansi-macos-amd64', arm64: 'anansi-macos-arm64' },
       windows: { amd64: 'anansi-windows-amd64.exe' },
     },
     commandTemplates: {
-      linux: 'curl -fsSL https://raw.githubusercontent.com/QYVORA/qyvora-anansi-cli/main/install.sh | bash',
-      darwin: 'curl -fsSL https://raw.githubusercontent.com/QYVORA/qyvora-anansi-cli/main/install.sh | bash',
+      linux: 'curl -fsSL https://raw.githubusercontent.com/QYVORA/qyvora-anansi/main/install.sh | bash',
+      darwin: 'curl -fsSL https://raw.githubusercontent.com/QYVORA/qyvora-anansi/main/install.sh | bash',
       windows: 'curl.exe -fsSL -o anansi.exe {url}',
     },
     note: 'Single static binary. The installer auto-detects your OS, CPU and shell.',
   },
   jabari: {
     bin: 'jabari',
-    displayName: 'Jabari',
+    displayName: 'jabari',
     repo: 'QYVORA/qyvora-jabari',
     releaseBase: 'https://github.com/QYVORA/qyvora-jabari/releases/latest/download',
     assets: {
@@ -63,7 +63,7 @@ export const TOOL_INSTALL_CONFIG: Record<ToolInstallKey, ToolInstallConfig> = {
   },
   toha3ee: {
     bin: 'toha3ee',
-    displayName: 'Toha3ee',
+    displayName: 'toha3ee',
     repo: 'QYVORA/qyvora-toha3ee',
     releaseBase: 'https://github.com/QYVORA/qyvora-toha3ee/releases/latest/download',
     assets: {
@@ -80,7 +80,7 @@ export const TOOL_INSTALL_CONFIG: Record<ToolInstallKey, ToolInstallConfig> = {
   },
   aksum: {
     bin: 'aksum',
-    displayName: 'Aksum',
+    displayName: 'aksum',
     repo: 'QYVORA/qyvora-aksum',
     releaseBase: 'https://github.com/QYVORA/qyvora-aksum/releases/latest/download',
     assets: {
@@ -97,7 +97,7 @@ export const TOOL_INSTALL_CONFIG: Record<ToolInstallKey, ToolInstallConfig> = {
   },
   shaka: {
     bin: 'shaka',
-    displayName: 'SHAKA',
+    displayName: 'shaka',
     repo: 'QYVORA/qyvora-shaka',
     releaseBase: 'https://github.com/QYVORA/qyvora-shaka/releases/latest/download',
     assets: {
@@ -108,6 +108,23 @@ export const TOOL_INSTALL_CONFIG: Record<ToolInstallKey, ToolInstallConfig> = {
     commandTemplates: {
       linux: 'curl -fsSL https://raw.githubusercontent.com/QYVORA/qyvora-shaka/main/install.sh | bash',
       darwin: 'curl -fsSL https://raw.githubusercontent.com/QYVORA/qyvora-shaka/main/install.sh | bash',
+      windows: 'Invoke-WebRequest -Uri "{url}" -OutFile {bin}.exe',
+    },
+    note: 'Single static binary. The installer auto-detects your platform and installs the icon and desktop entry.',
+  },
+  nzinga: {
+    bin: 'nzinga',
+    displayName: 'nzinga',
+    repo: 'QYVORA/qyvora-nzinga',
+    releaseBase: 'https://github.com/QYVORA/qyvora-nzinga/releases/latest/download',
+    assets: {
+      linux: { amd64: 'nzinga-linux-amd64', arm64: 'nzinga-linux-arm64' },
+      darwin: { amd64: 'nzinga-darwin-amd64', arm64: 'nzinga-darwin-arm64' },
+      windows: { amd64: 'nzinga-windows-amd64.exe', arm64: 'nzinga-windows-arm64.exe' },
+    },
+    commandTemplates: {
+      linux: 'curl -fsSL https://raw.githubusercontent.com/QYVORA/qyvora-nzinga/main/install.sh | bash',
+      darwin: 'curl -fsSL https://raw.githubusercontent.com/QYVORA/qyvora-nzinga/main/install.sh | bash',
       windows: 'Invoke-WebRequest -Uri "{url}" -OutFile {bin}.exe',
     },
     note: 'Single static binary. The installer auto-detects your platform and installs the icon and desktop entry.',

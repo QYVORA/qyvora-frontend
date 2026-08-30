@@ -60,7 +60,7 @@ export const AUTHORIZED_WARNING = {
   title: 'Authorized',
   accent: 'Access Only',
   description:
-    'SHAKA requires explicit authorization (--authorized / -y, config, or QYVORA_AUTHORIZED=true) before probing live Active Directory infrastructure. The built-in simulator (--sim) runs completely offline without touching a live network.',
+    'shaka requires explicit authorization (--authorized / -y, config, or QYVORA_AUTHORIZED=true) before probing live Active Directory infrastructure. The built-in simulator (--sim) runs completely offline without touching a live network.',
 };
 
 export const SOURCE_EXAMPLES: ToolSourceExample[] = [
