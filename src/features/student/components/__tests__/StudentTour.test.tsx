@@ -87,6 +87,21 @@ describe('StudentTour', () => {
     expect(screen.getByText(WELCOME)).toBeInTheDocument();
   });
 
+  it('closes a replay-opened tour on skip (replay state is reset on close)', async () => {
+    const user = userEvent.setup();
+    renderTour();
+    // Dismiss the initial popup-driven tour, then re-open via the replay event.
+    await user.click(screen.getByText(SKIP));
+    act(() => {
+      window.dispatchEvent(new CustomEvent('qyvora:start-tutorial'));
+    });
+    expect(screen.getByText(WELCOME)).toBeInTheDocument();
+
+    // Dismiss the replay-driven tour — it must actually close (Finish/Skip bug).
+    await user.click(screen.getByText(SKIP));
+    expect(screen.queryByText(WELCOME)).not.toBeInTheDocument();
+  });
+
   it('does not POST onboarding/complete for an already-completed user', async () => {
     const user = userEvent.setup();
     auth.user = { onboardingCompletedAt: '2026-01-01T00:00:00Z', onboardingSkippedAt: null };

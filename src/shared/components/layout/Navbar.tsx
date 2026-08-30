@@ -1,16 +1,40 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { IconMenu, IconX, IconChevronRight } from '@/shared/components/icons';
-import { LogIn, ChevronDown } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { useTranslation } from 'react-i18next';
+import {
+  IconChevronRight,
+  IconCode,
+  IconTerminal,
+  IconLabs,
+  IconLeaderboard,
+  IconMarketplace,
+  IconShield,
+  IconRank,
+  IconNetwork,
+  IconCTF,
+} from '@/shared/components/icons';
+import {
+  LogIn,
+  BookOpen,
+  FileText,
+  Users,
+  Newspaper,
+  ShoppingBag,
+  Bug,
+  Rocket,
+  Building2,
+  Contact,
+} from 'lucide-react';
 import { useScrollLock } from '@/core/hooks/useScrollLock';
+import { useReducedMotion } from '@/shared/hooks/useReducedMotion';
 import { useAuth } from '@/core/contexts/AuthContext';
 import { Logo } from '@/shared/components/brand';
 import { SITE_CONFIG } from '@/features/marketing/content/siteConfig';
 import { ContactTrigger } from '@/features/marketing/components/ContactModal';
 import LanguageSwitcher from '@/shared/components/LanguageSwitcher';
 import Identicon from '@/shared/components/Identicon';
+import { NavMenuTrigger } from '@/features/student/components/layout/StudentNavPanel/StudentNavPanel';
 
 const NAV_GROUP_LABELS: Record<string, string> = {
   learning: 'nav.learning',
@@ -39,43 +63,101 @@ const NAV_ITEM_LABELS: Record<string, string> = {
   services: 'nav.services',
 };
 
+type NavItemIcon = React.ElementType<{ className?: string; size?: number }>;
+
+const ITEM_ICONS: Record<string, NavItemIcon> = {
+  courses: BookOpen,
+  bootcamp: IconTerminal,
+  labs: IconLabs,
+  simulations: IconCTF,
+  blogs: Newspaper,
+  leaderboard: IconLeaderboard,
+  market: IconMarketplace,
+  team: Users,
+  quiteroot: IconShield,
+  terms: FileText,
+  anansi: IconNetwork,
+  toha3ee: IconCode,
+  jabari: Bug,
+  aksum: IconRank,
+  shaka: Building2,
+  services: Rocket,
+  cp: Contact,
+  contact: Contact,
+};
+
 const Navbar: React.FC = React.memo(() => {
   const { t } = useTranslation();
   const { user } = useAuth();
-  const [isMenuOpen, setIsMenuOpen]             = useState(false);
-  const [openDropdown, setOpenDropdown]         = useState<string | null>(null);
-  const [openMobileGroup, setOpenMobileGroup]   = useState<string | null>(null);
-  const location                                 = useLocation();
-  const hoverTimeoutRef                          = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const [isMenuOpen, setIsMenuOpen] = React.useState(false);
+  const location = useLocation();
+  const prefersReduced = useReducedMotion();
+  const panelRef = useRef<HTMLDivElement>(null);
 
-  // Close menu/dropdowns on route change
+  // Close the panel on route change
   useEffect(() => {
     setIsMenuOpen(false);
-    setOpenDropdown(null);
-    setOpenMobileGroup(null);
   }, [location.pathname]);
 
   useScrollLock(isMenuOpen);
 
-  const isActive = useCallback((path: string) => location.pathname === path, [location.pathname]);
+  // Escape to close + focus the first link while open.
+  useEffect(() => {
+    if (!isMenuOpen) return;
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setIsMenuOpen(false);
+    };
+    document.addEventListener('keydown', onKeyDown);
+    const tId = window.setTimeout(() => {
+      panelRef.current?.querySelector<HTMLElement>('a,button')?.focus();
+    }, 50);
+    return () => {
+      document.removeEventListener('keydown', onKeyDown);
+      window.clearTimeout(tId);
+    };
+  }, [isMenuOpen]);
 
-  const handleMenuToggle = useCallback(() => setIsMenuOpen((prev) => !prev), []);
+  const closeMenu = () => setIsMenuOpen(false);
 
-  const handleDropdownEnter = useCallback((key: string) => {
-    if (hoverTimeoutRef.current) clearTimeout(hoverTimeoutRef.current);
-    setOpenDropdown(key);
-  }, []);
+  const groups = SITE_CONFIG.nav.groups;
 
-  const handleDropdownLeave = useCallback(() => {
-    hoverTimeoutRef.current = setTimeout(() => setOpenDropdown(null), 150);
-  }, []);
+  const renderItem = (item: (typeof groups)[number]['items'][number]) => {
+    const Icon = ITEM_ICONS[item.key] ?? IconChevronRight;
+    const label = t(NAV_ITEM_LABELS[item.key] || item.label);
+    const desc = (item as { desc?: string }).desc;
+    const inner = (
+      <>
+        <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-bg-elevated text-accent transition-colors group-hover:bg-accent/10">
+          <Icon size={20} strokeWidth={2.25} />
+        </span>
+        <span className="flex-1 min-w-0">
+          <span className="block text-sm font-black uppercase tracking-widest text-text-primary">
+            {label}
+          </span>
+          {desc && (
+            <span className="mt-1 block text-xs leading-relaxed text-text-muted">{desc}</span>
+          )}
+        </span>
+        <IconChevronRight size={14} className="shrink-0 text-text-muted/30 transition-colors group-hover:text-accent" />
+      </>
+    );
 
-  const closeMenu = useCallback(() => setIsMenuOpen(false), []);
-  const closeDropdown = useCallback(() => setOpenDropdown(null), []);
+    const cls =
+      'group flex items-start gap-3 rounded-2xl border border-border/50 bg-bg-card p-4 text-left transition-colors focus:outline-none focus-visible:border-accent focus-visible:ring-1 focus-visible:ring-accent active:scale-[0.99] hover:border-accent/50 hover:bg-accent-dim/10';
 
-  const toggleMobileGroup = useCallback((key: string, isOpen: boolean) => {
-    setOpenMobileGroup(isOpen ? null : key);
-  }, []);
+    if ((item as { modal?: boolean }).modal) {
+      return (
+        <ContactTrigger key={item.key} className={cls} onOpen={closeMenu}>
+          {inner}
+        </ContactTrigger>
+      );
+    }
+    return (
+      <Link key={item.key} to={item.path} onClick={closeMenu} className={cls}>
+        {inner}
+      </Link>
+    );
+  };
 
   return (
     <>
@@ -89,7 +171,7 @@ const Navbar: React.FC = React.memo(() => {
         className={[
           'fixed top-0 left-0 w-full z-[100] overflow-visible',
           'h-[80px] flex items-center',
-          'transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)]',
+          'transition-colors duration-300 ease-[cubic-bezier(0.16,1,0.3,1)]',
           isMenuOpen ? 'bg-bg/95 backdrop-blur-xl' : 'bg-transparent',
         ].join(' ')}
       >
@@ -100,107 +182,6 @@ const Navbar: React.FC = React.memo(() => {
             <Logo size="md" className="hidden md:block" color="#06B66F" />
             <Logo size="md" variant="mark" className="md:hidden" color="#06B66F" />
           </Link>
-
-          {/* ── Desktop Navigation (centered, hover dropdowns) ──── */}
-          <div className="hidden md:flex flex-1 items-center justify-center gap-2 lg:gap-3 overflow-visible">
-            {SITE_CONFIG.nav.groups.map((group) => (
-              <div
-                key={group.key}
-                className="relative"
-                onMouseEnter={() => handleDropdownEnter(group.key)}
-                onMouseLeave={handleDropdownLeave}
-              >
-                <button
-                  className={`flex items-center gap-1.5 px-4 py-2 text-xs font-black uppercase tracking-widest transition-colors rounded-xl ${
-                    group.items.some((item) => isActive(item.path))
-                      ? 'text-accent bg-accent/5'
-                      : 'text-text-primary/80 hover:text-accent'
-                  }`}
-                  aria-expanded={openDropdown === group.key}
-                  aria-haspopup="true"
-                  onClick={() => setOpenDropdown(prev => prev === group.key ? null : group.key)}
-                  onKeyDown={(e) => {
-                    if (e.key === 'Escape') {
-                      setOpenDropdown(null);
-                    } else if (e.key === 'ArrowDown') {
-                      e.preventDefault();
-                      setOpenDropdown(group.key);
-                    }
-                  }}
-                >
-                  {t(NAV_GROUP_LABELS[group.key] || group.label)}
-                  <ChevronDown
-                    className={`w-3.5 h-3.5 transition-transform duration-200 ${
-                      openDropdown === group.key ? 'rotate-180' : ''
-                    }`}
-                  />
-                </button>
-
-                <AnimatePresence>
-                  {openDropdown === group.key && (
-                    <motion.div
-                      initial={{ opacity: 0, y: -4 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: -4 }}
-                      transition={{ duration: 0.15 }}
-                      className="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-fit min-w-[280px] rounded-2xl border border-border/20 bg-bg-card shadow-xl overflow-hidden"
-                      onKeyDown={(e) => { if (e.key === 'Escape') setOpenDropdown(null); }}
-                      role="menu"
-                    >
-                      <div className="p-2 grid grid-rows-2 grid-flow-col gap-1.5">
-                        {group.items.map((item) => {
-                          const linkClasses = `flex flex-col gap-0.5 px-4 py-3 rounded-xl text-left transition-colors ${
-                            isActive(item.path)
-                              ? 'bg-accent/5 text-accent'
-                              : 'text-text-primary hover:bg-bg-elevated hover:text-accent'
-                          }`;
-
-                          if ((item as any).modal) {
-                            return (
-                              <div key={item.key}>
-                                <ContactTrigger
-                                  className={linkClasses}
-                                  onOpen={closeDropdown}
-                                >
-                                  <span className="text-xs font-black uppercase tracking-widest">
-                                    {t(NAV_ITEM_LABELS[item.key] || item.label)}
-                                  </span>
-                                  {(item as any).desc && (
-                                    <span className="text-[10px] font-mono text-text-muted leading-snug">
-                                      {(item as any).desc}
-                                    </span>
-                                  )}
-                                </ContactTrigger>
-                              </div>
-                            );
-                          }
-
-                          return (
-                            <div key={item.key}>
-                              <Link
-                                to={item.path}
-                                onClick={closeDropdown}
-                                className={linkClasses}
-                              >
-                                <span className="text-xs font-black uppercase tracking-widest">
-                                  {t(NAV_ITEM_LABELS[item.key] || item.label)}
-                                </span>
-                                {(item as any).desc && (
-                                  <span className="text-[10px] font-mono text-text-muted leading-snug">
-                                    {(item as any).desc}
-                                  </span>
-                                )}
-                              </Link>
-                            </div>
-                          );
-                        })}
-                      </div>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </div>
-            ))}
-          </div>
 
           {/* ── Right controls ──────────────────────────────────── */}
           <div className="flex items-center gap-3 shrink-0 relative z-[110]">
@@ -226,157 +207,95 @@ const Navbar: React.FC = React.memo(() => {
               )}
             </div>
 
-            {/* ── Mobile hamburger (far right edge) ────────────── */}
-            <button
-              onClick={handleMenuToggle}
-              className={`md:hidden p-2 -mr-2 transition-colors relative z-[110] text-text-primary hover:text-accent`}
-              aria-label={isMenuOpen ? t('aria.closeMenu') : t('aria.openMenu')}
-            >
-              {isMenuOpen ? <IconX size={24} /> : <IconMenu size={24} />}
-            </button>
+            {/* Single menu trigger — opens the full navigation panel on all
+                breakpoints (mirrors the student dashboard dropdown). */}
+            <NavMenuTrigger open={isMenuOpen} onClick={() => setIsMenuOpen((v) => !v)} />
           </div>
 
         </div>
       </nav>
 
-      {/* ── Mobile Menu Overlay ─────────────────────────────────── */}
+      {/* ── Full-viewport navigation panel ──────────────────────── */}
       <AnimatePresence>
         {isMenuOpen && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.2 }}
-            className="fixed inset-0 z-[90] md:hidden bg-bg/95 backdrop-blur-xl"
-          >
+          <>
+            {/* Backdrop */}
             <motion.div
-              initial={{ opacity: 0, y: -12 }}
+              initial={prefersReduced ? { opacity: 1 } : { opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={prefersReduced ? { opacity: 1 } : { opacity: 0 }}
+              transition={{ duration: 0.2 }}
+              className="fixed inset-0 z-[95] bg-black/50"
+              onClick={closeMenu}
+              aria-hidden="true"
+            />
+
+            {/* Panel */}
+            <motion.div
+              id="public-nav-panel"
+              ref={panelRef}
+              role="dialog"
+              aria-modal="true"
+              aria-label={t('nav.menu', 'Navigation')}
+              initial={prefersReduced ? { opacity: 1 } : { opacity: 0, y: -12 }}
               animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -12 }}
-              transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
-              className="flex flex-col h-full pt-24 px-6 pb-10 overflow-y-auto"
+              exit={prefersReduced ? { opacity: 1 } : { opacity: 0, y: -12 }}
+              transition={{ duration: 0.24, ease: [0.22, 1, 0.36, 1] }}
+              className="fixed inset-x-0 top-[80px] bottom-0 z-[96] overflow-y-auto bg-bg-alt"
             >
-              {/* Home link */}
-              <Link
-                to="/"
-                onClick={closeMenu}
-                className={`relative pl-4 py-3 text-sm font-black uppercase tracking-[0.25em] transition-colors border-l-2 ${
-                  isActive('/') ? 'text-accent border-accent' : 'text-text-primary/70 border-transparent hover:text-accent hover:border-accent/50'
-                }`}
-              >
-                {t('nav.home')}
-              </Link>
+              <div className="w-full px-3 py-6 md:px-4 lg:px-6">
+                <div className="space-y-8">
+                  {groups.map((group) => (
+                    <section key={group.key}>
+                      <h3 className="mb-3 text-[10px] font-black uppercase tracking-[0.25em] text-accent">
+                        {t(NAV_GROUP_LABELS[group.key] || group.label)}
+                      </h3>
+                      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+                        {group.items.map(renderItem)}
+                      </div>
+                    </section>
+                  ))}
+                </div>
 
-              {/* Grouped nav links */}
-              {SITE_CONFIG.nav.groups.map((group) => {
-                const isOpen = openMobileGroup === group.key;
-                return (
-                  <div key={group.key} className="border-b border-border/10 last:border-b-0">
-                    <button
-                      onClick={() => toggleMobileGroup(group.key, isOpen)}
-                      className="w-full flex items-center justify-between pl-4 pr-2 py-3 text-sm font-black uppercase tracking-[0.25em] transition-colors text-text-primary/70 hover:text-accent"
-                    >
-                      {t(NAV_GROUP_LABELS[group.key] || group.label)}
-                      <IconChevronRight
-                        size={16}
-                        className={`transition-transform duration-200 ${
-                          isOpen ? 'rotate-90' : ''
-                        }`}
-                      />
-                    </button>
-                    <AnimatePresence>
-                      {isOpen && (
-                        <motion.div
-                          initial={{ height: 0, opacity: 0 }}
-                          animate={{ height: 'auto', opacity: 1 }}
-                          exit={{ height: 0, opacity: 0 }}
-                          transition={{ duration: 0.2 }}
-                          className="overflow-hidden"
-                        >
-                          <div className="pl-6 pb-2 flex flex-col gap-1">
-                            {group.items.map((item) => {
-                              const linkClasses = `relative pl-4 py-2.5 text-xs font-bold uppercase tracking-[0.2em] transition-colors border-l-2 ${
-                                isActive(item.path)
-                                  ? 'text-accent border-accent'
-                                  : 'text-text-secondary border-transparent hover:text-accent hover:border-accent/50'
-                              }`;
-
-                              if ((item as any).modal) {
-                                return (
-                                  <ContactTrigger
-                                    key={item.key}
-                                    className={linkClasses}
-                                    onOpen={closeMenu}
-                                  >
-                                    {t(NAV_ITEM_LABELS[item.key] || item.label)}
-                                  </ContactTrigger>
-                                );
-                              }
-
-                              return (
-                                <Link
-                                  key={item.key}
-                                  to={item.path}
-                                  onClick={closeMenu}
-                                  className={linkClasses}
-                                >
-                                  {t(NAV_ITEM_LABELS[item.key] || item.label)}
-                                </Link>
-                              );
-                            })}
-                          </div>
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
-                  </div>
-                );
-              })}
-
-              {/* Auth buttons */}
-              <div className="flex flex-col gap-3">
-                {user ? (
-                  <>
+                {/* Auth actions */}
+                <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+                  {user ? (
                     <Link
                       to="/dashboard/profile"
                       onClick={closeMenu}
-                      className="w-full flex items-center justify-center gap-3 bg-accent text-on-accent font-bold uppercase tracking-widest rounded-xl px-6 py-3.5 text-sm transition-[filter,transform] duration-200 hover:brightness-110 active:scale-[0.98]"
+                      className="flex flex-1 items-center justify-center gap-3 bg-accent text-on-accent font-bold uppercase tracking-widest rounded-xl px-6 py-3.5 text-sm transition-[filter,transform] duration-200 hover:brightness-110 active:scale-[0.98]"
                     >
                       <Identicon value={user.username || '?'} size={20} className="w-5 h-5 rounded-lg bg-black border-black" />
                       {user.username}
                     </Link>
-                    <ContactTrigger
-                      className="w-full flex items-center justify-center gap-2.5 border border-accent/50 text-accent font-bold uppercase tracking-widest rounded-xl px-6 py-3.5 text-sm transition-[background-color,color] duration-200 hover:bg-accent/10 active:scale-[0.98]"
-                      onOpen={closeMenu}
-                    >
-                      {t('nav.contact')}
-                    </ContactTrigger>
-                  </>
-                ) : (
-                  <>
-                    <ContactTrigger
-                      className="w-full flex items-center justify-center gap-2.5 bg-accent text-on-accent font-bold uppercase tracking-widest rounded-xl px-6 py-3.5 text-sm transition-[filter,transform] duration-200 hover:brightness-110 active:scale-[0.98]"
-                      onOpen={closeMenu}
-                    >
-                      {t('nav.contact')}
-                    </ContactTrigger>
-                    <Link
-                      to="/login"
-                      onClick={closeMenu}
-                      className="w-full flex items-center justify-center gap-2.5 border border-accent/50 text-accent font-bold uppercase tracking-widest rounded-xl px-6 py-3.5 text-sm transition-[background-color,color] duration-200 hover:bg-accent/10 active:scale-[0.98]"
-                    >
-                      <LogIn className="w-4 h-4" /> {t('button.logIn')}
-                    </Link>
-                  </>
-                )}
+                  ) : (
+                    <>
+                      <ContactTrigger
+                        className="flex flex-1 items-center justify-center gap-2.5 bg-accent text-on-accent font-bold uppercase tracking-widest rounded-xl px-6 py-3.5 text-sm transition-[filter,transform] duration-200 hover:brightness-110 active:scale-[0.98]"
+                        onOpen={closeMenu}
+                      >
+                        {t('nav.contact')}
+                      </ContactTrigger>
+                      <Link
+                        to="/login"
+                        onClick={closeMenu}
+                        className="flex flex-1 items-center justify-center gap-2.5 border border-accent/50 text-accent font-bold uppercase tracking-widest rounded-xl px-6 py-3.5 text-sm transition-[background-color,color] duration-200 hover:bg-accent/10 active:scale-[0.98]"
+                      >
+                        <LogIn className="w-4 h-4" /> {t('button.logIn')}
+                      </Link>
+                    </>
+                  )}
+                </div>
               </div>
             </motion.div>
-          </motion.div>
+          </>
         )}
       </AnimatePresence>
     </>
   );
 });
 
+// Keep the memoised component lean — no route-change re-renders from a helper callback.
 Navbar.displayName = 'Navbar';
 
 export default Navbar;
