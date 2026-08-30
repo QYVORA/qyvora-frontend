@@ -122,7 +122,7 @@ const ContactModalHost: React.FC = () => {
             <button
               type="button"
               onClick={() => setStatus('idle')}
-              className="bg-accent text-on-accent font-bold uppercase tracking-[0.08em] rounded-xl px-8 py-3 transition-all hover:brightness-110 active:scale-95 hover:shadow-[0_0_20px_var(--color-accent-glow)] text-sm mt-2"
+              className="bg-accent text-on-accent font-bold uppercase tracking-[0.08em] rounded-xl px-8 py-3 transition-[filter,transform,box-shadow] duration-[var(--dur-base)] ease-[var(--ease-smooth)] hover:brightness-110 active:scale-95 hover:shadow-[0_0_20px_var(--color-accent-glow)] text-sm mt-2"
             >
               {t('button.sendAnother')}
             </button>
@@ -140,7 +140,7 @@ const ContactModalHost: React.FC = () => {
                   type="button"
                   onClick={() => setContactType('student')}
                   className={cn(
-                    'flex-1 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-wider transition-all',
+                    'flex-1 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-wider transition-[background-color,color,box-shadow] duration-[var(--dur-fast)] ease-[var(--ease-smooth)]',
                     contactType === 'student'
                       ? 'bg-accent text-on-accent font-black'
                       : 'text-text-muted hover:text-text-primary'
@@ -152,7 +152,7 @@ const ContactModalHost: React.FC = () => {
                   type="button"
                   onClick={() => setContactType('business')}
                   className={cn(
-                    'flex-1 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-wider transition-all',
+                    'flex-1 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-wider transition-[background-color,color,box-shadow] duration-[var(--dur-fast)] ease-[var(--ease-smooth)]',
                     contactType === 'business'
                       ? 'bg-accent text-on-accent font-black'
                       : 'text-text-muted hover:text-text-primary'

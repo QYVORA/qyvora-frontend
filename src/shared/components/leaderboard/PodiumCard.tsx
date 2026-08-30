@@ -49,7 +49,7 @@ const PodiumCard = ({ entry, rank, className = '' }: PodiumCardProps) => {
   return (
     <Link
       to={`/@${entry.hackerHandle}`}
-      className={`group relative flex flex-col items-center text-center gap-3 rounded-2xl border ${s.border} ${s.glow} bg-bg-card p-6 md:p-8 transition-all duration-300 hover:brightness-110 active:scale-[0.99] h-full ${s.scale} ${className}`}
+      className={`group relative flex flex-col items-center text-center gap-3 rounded-2xl border ${s.border} ${s.glow} bg-bg-card p-6 md:p-8 transition-[filter,transform] duration-[var(--dur-base)] ease-[var(--ease-smooth)] hover:brightness-110 active:scale-[0.99] h-full ${s.scale} ${className}`}
     >
       <div className={`absolute top-3 left-3 flex items-center gap-1.5 ${s.rankColor}`}>
         {s.crown && <Crown className="w-4 h-4" />}

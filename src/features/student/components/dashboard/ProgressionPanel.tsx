@@ -67,7 +67,7 @@ export const ProgressionPanel = ({ progression, fallbackLabel }: ProgressionPane
 
         <div className="h-3 rounded-full bg-accent-dim/20 overflow-hidden">
           <div
-            className="h-full rounded-full bg-accent transition-all duration-700"
+            className="h-full rounded-full bg-accent transition-[width] duration-700"
             style={{ width: `${progress}%`, transitionTimingFunction: 'cubic-bezier(0.22, 1, 0.36, 1)' }}
           />
         </div>

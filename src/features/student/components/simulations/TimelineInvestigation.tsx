@@ -80,7 +80,7 @@ export function TimelineInvestigation({ events }: TimelineInvestigationProps) {
 
               return (
                 <button key={event.id} onClick={() => setSelectedId(event.id)}
-                  className={`relative w-full text-left mb-4 pl-4 transition-all ${isSelected ? 'scale-[1.01]' : ''}`}>
+                  className={`relative w-full text-left mb-4 pl-4 transition-transform duration-[var(--dur-base)] ease-[var(--ease-smooth)] ${isSelected ? 'scale-[1.01]' : ''}`}>
                   {/* Dot */}
                   <div className={`absolute -left-4 top-3 w-3 h-3 rounded-full border-2 border-bg-card ${SEVERITY_DOT[event.severity]} ${isOrdered ? 'ring-2 ring-accent ring-offset-1 ring-offset-bg-card' : ''}`} />
 

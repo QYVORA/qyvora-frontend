@@ -181,7 +181,7 @@ const LandingLeaderboardSection = () => {
                     onMouseLeave={() => setHoveredIdx(null)}
                     className={[
                       'group cursor-pointer shrink-0 relative',
-                      'transition-all duration-300',
+                      'transition-[border-color,box-shadow,transform,opacity] duration-[var(--dur-base)] ease-[var(--ease-smooth)]',
                       'rounded-lg overflow-hidden',
                       isTopThree
                         ? `${TOP_THREE_RING[entry!.rank - 1]} ${TOP_THREE_GLOW[entry!.rank - 1]} border-2`

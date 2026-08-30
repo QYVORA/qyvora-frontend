@@ -38,7 +38,7 @@ const LandingBlogsSection = () => {
               renderCard={(post) => (
                 <Link
                   to={`/blogs/${post.slug}`}
-                  className="group flex flex-col md:flex-row bg-bg-card overflow-hidden h-full min-h-[500px] md:min-h-[380px] transition-all duration-300 hover:bg-bg-elevated"
+                  className="group flex flex-col md:flex-row bg-bg-card overflow-hidden h-full min-h-[500px] md:min-h-[380px] transition-[background-color] duration-[var(--dur-base)] ease-[var(--ease-smooth)] hover:bg-bg-elevated"
                 >
                   <div className="relative md:w-[45%] lg:w-[48%] shrink-0 h-[200px] md:h-full md:aspect-auto overflow-hidden bg-bg-elevated">
                     <img
@@ -88,7 +88,7 @@ const LandingBlogsSection = () => {
                         <span className="flex items-center gap-1 whitespace-nowrap">
                           <IconClock size={12} className="shrink-0" /> {post.readTime}
                         </span>
-                        <span className="flex items-center gap-1 text-accent group-hover:gap-1.5 transition-all whitespace-nowrap">
+                        <span className="flex items-center gap-1 text-accent group-hover:gap-1.5 transition-[gap] duration-[var(--dur-base)] ease-[var(--ease-smooth)] whitespace-nowrap">
                           {t('landing.blogs.read')} <IconArrowRight size={12} className="shrink-0" />
                         </span>
                       </div>

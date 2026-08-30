@@ -97,7 +97,7 @@ const HandleSuggestions = ({ name, email, onSelect, selectedHandle }: HandleSugg
                 key={handle}
                 type="button"
                 onClick={() => onSelect(handle)}
-                className={`group inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border text-xs font-mono font-bold transition-all active:scale-95 ${
+                className={`group inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border text-xs font-mono font-bold transition-[background-color,border-color,color,transform] active:scale-95 ${
                   selectedHandle === handle
                     ? 'bg-accent/15 border-accent text-accent'
                     : 'bg-bg-card border-border text-text-primary hover:border-accent/50 hover:bg-accent/5'

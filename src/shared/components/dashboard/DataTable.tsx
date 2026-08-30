@@ -94,7 +94,7 @@ function DataTable<T>({
               value={query}
               onChange={(e) => { setQuery(e.target.value); setPage(1); }}
               placeholder={searchPlaceholder ?? t('components.dataTable.searchPlaceholder')}
-              className="w-full bg-bg border border-border/60 rounded-xl pl-9 pr-4 py-2.5 text-sm text-text-primary focus:outline-none focus:border-accent transition-all"
+              className="w-full bg-bg border border-border/60 rounded-xl pl-9 pr-4 py-2.5 text-sm text-text-primary focus:outline-none focus:border-accent transition-[border-color]"
             />
           </div>
           <span className="text-xs text-text-muted font-mono">{t('components.dataTable.resultsCount', { count: sorted.length })}</span>
@@ -182,14 +182,14 @@ function DataTable<T>({
                 <button
                   onClick={() => setPage((p) => Math.max(1, p - 1))}
                   disabled={safePage <= 1}
-                  className="w-11 h-11 flex items-center justify-center rounded-lg bg-bg-elevated text-text-muted disabled:opacity-50 hover:text-accent transition-all active:scale-90 shadow-sm"
+                  className="w-11 h-11 flex items-center justify-center rounded-lg bg-bg-elevated text-text-muted disabled:opacity-50 hover:text-accent transition-[color,transform] duration-[var(--dur-base)] active:scale-90 shadow-sm"
                 >
                   <ChevronLeft className="w-5 h-5" />
                 </button>
                 <button
                   onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
                   disabled={safePage >= totalPages}
-                  className="w-11 h-11 flex items-center justify-center rounded-lg bg-bg-elevated text-text-muted disabled:opacity-50 hover:text-accent transition-all active:scale-90 shadow-sm"
+                  className="w-11 h-11 flex items-center justify-center rounded-lg bg-bg-elevated text-text-muted disabled:opacity-50 hover:text-accent transition-[color,transform] duration-[var(--dur-base)] active:scale-90 shadow-sm"
                 >
                   <IconChevronRight size={20} />
                 </button>

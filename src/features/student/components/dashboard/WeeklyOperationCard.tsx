@@ -56,7 +56,7 @@ const WeeklyOperationCard = ({ engagement, loading }: WeeklyOperationCardProps) 
         </div>
         <div className="h-2.5 bg-bg-elevated rounded-full overflow-hidden">
           <div
-            className="h-full bg-accent rounded-full transition-all duration-700"
+            className="h-full bg-accent rounded-full transition-[width] duration-700"
             style={{ width: `${Math.min(progress * 100, 100)}%` }}
           />
         </div>

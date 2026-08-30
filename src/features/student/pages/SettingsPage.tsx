@@ -13,7 +13,7 @@ import { usePreferences } from '../../../shared/hooks/usePreferences';
 import { useThemeContext } from '../../../core/contexts/ThemeContext';
 import { SETTINGS_SECTIONS, type SettingsSectionId } from '../constants/settingsSections';
 
-const INPUT_CLS = 'w-full bg-bg border border-border rounded-xl py-3 px-4 text-sm text-text-primary placeholder:text-text-muted focus:border-accent outline-none transition-all font-mono';
+const INPUT_CLS = 'w-full bg-bg border border-border rounded-xl py-3 px-4 text-sm text-text-primary placeholder:text-text-muted focus:border-accent outline-none transition-[border-color] duration-[var(--dur-base)] ease-[var(--ease-smooth)] font-mono';
 
 const LABEL_CLS = 'text-[10px] font-black uppercase tracking-widest text-text-muted block mb-1.5';
 
@@ -79,7 +79,7 @@ const SettingsRow: React.FC<{ label: string; description?: string; children: Rea
 const SelectField: React.FC<{ id: string; ariaLabel: string; value: string; onChange: (v: string) => void; children: React.ReactNode }> = ({ id, ariaLabel, value, onChange, children }) => (
   <div className="relative">
     <select id={id} aria-label={ariaLabel} value={value} onChange={(e) => onChange(e.target.value)}
-      className="appearance-none w-full sm:w-auto min-w-[9rem] bg-bg border border-border rounded-xl py-2.5 pl-3.5 pr-9 text-sm font-bold text-text-primary focus:border-accent outline-none transition-all cursor-pointer">
+      className="appearance-none w-full sm:w-auto min-w-[9rem] bg-bg border border-border rounded-xl py-2.5 pl-3.5 pr-9 text-sm font-bold text-text-primary focus:border-accent outline-none transition-[border-color] duration-[var(--dur-base)] ease-[var(--ease-smooth)] cursor-pointer">
       {children}
     </select>
     <ChevronDown className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-text-muted" />

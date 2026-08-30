@@ -32,7 +32,7 @@ const PhaseHeroSection: React.FC<PhaseHeroSectionProps> = ({
     <div className="grid grid-cols-1 lg:grid-cols-2 items-center gap-6 lg:gap-10 px-5 py-8 sm:py-10">
       <div className="space-y-4 min-w-0">
         <div className="flex items-center gap-3">
-          <div className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl font-mono text-lg font-black transition-all duration-300 ${
+          <div className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl font-mono text-lg font-black transition-[background-color,color,box-shadow,opacity] duration-[var(--dur-base)] ease-[var(--ease-smooth)] ${
             isComplete
               ? 'bg-accent text-on-accent shadow-lg shadow-accent/20'
               : isLocked

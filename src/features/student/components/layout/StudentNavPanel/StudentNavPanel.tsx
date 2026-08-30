@@ -60,7 +60,7 @@ export const NavMenuTrigger: React.FC<NavMenuTriggerProps & React.ButtonHTMLAttr
           style={{ transform: open ? 'translateY(6px) rotate(45deg)' : 'translateY(0) rotate(0)' }}
         />
         <span
-          className="absolute left-0 top-[6px] h-[2px] w-full rounded-full bg-current transition-all duration-200 ease-[cubic-bezier(0.22,1,0.36,1)]"
+          className="absolute left-0 top-[6px] h-[2px] w-full rounded-full bg-current transition-[opacity,transform] duration-200 ease-[cubic-bezier(0.22,1,0.36,1)]"
           style={{ opacity: open ? 0 : 1, transform: open ? 'translateX(-100%)' : 'translateX(0)' }}
         />
         <span
@@ -333,7 +333,7 @@ const StudentNavPanel: React.FC<StudentNavPanelProps> = ({
                   <Link
                     to={continuePath}
                     onClick={close}
-                    className="group mb-6 flex items-center gap-3 rounded-2xl bg-accent p-4 text-on-accent transition-all hover:brightness-110 active:scale-[0.99] md:mb-8 focus:outline-none focus-visible:ring-1 focus-visible:ring-accent"
+                    className="group mb-6 flex items-center gap-3 rounded-2xl bg-accent p-4 text-on-accent transition-[filter,transform] duration-[var(--dur-base)] ease-[var(--ease-smooth)] hover:brightness-110 active:scale-[0.99] md:mb-8 focus:outline-none focus-visible:ring-1 focus-visible:ring-accent"
                   >
                     <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-black/20">
                       <IconPlay size={20} />

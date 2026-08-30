@@ -70,6 +70,10 @@ const NetworkBuilderInner: React.FC<NetworkBuilderProps> = ({ open, onOpenChange
   const { state: topo, addNode: topoAddNode, removeNode: topoRemoveNode, addEdge: topoAddEdge, removeEdge: topoRemoveEdge, updateNode, selectNode, selectEdge, dispatch } = useTopology();
   const { level: trafficLevel, running: trafficRunning, setLevel: setTrafficLevel, start: startTraffic, stop: stopTraffic, setEdgeProvider } = useTrafficSimulation();
 
+  // Stop the packet/traffic engines on unmount so a user navigating away
+  // mid-simulation does not leave a rAF/interval loop running in the background.
+  useEffect(() => () => { stopTraffic(); }, [stopTraffic]);
+
   const [nodes, setNodes, onNodesChange] = useNodesState([]);
   const [edges, setEdges, onEdgesChange] = useEdgesState([]);
   const [isFullscreen, setIsFullscreen] = useState(false);
@@ -336,7 +340,7 @@ const NetworkBuilderInner: React.FC<NetworkBuilderProps> = ({ open, onOpenChange
 
           <button
             onClick={() => setIsFullscreen((p) => !p)}
-            className="flex items-center justify-center h-7 w-7 rounded-lg hover:bg-white/5 transition-all text-text-muted hover:text-text-primary"
+            className="flex items-center justify-center h-7 w-7 rounded-lg hover:bg-white/5 transition-[background-color,color] duration-[var(--dur-fast)] ease-[var(--ease-smooth)] text-text-muted hover:text-text-primary"
             title={isFullscreen ? 'Exit fullscreen' : 'Fullscreen'}
             aria-label={isFullscreen ? 'Exit fullscreen' : 'Enter fullscreen'}
           >
@@ -344,7 +348,7 @@ const NetworkBuilderInner: React.FC<NetworkBuilderProps> = ({ open, onOpenChange
           </button>
           <button
             onClick={() => onOpenChange(false)}
-            className="flex items-center justify-center h-7 w-7 rounded-lg hover:bg-white/5 transition-all text-text-muted hover:text-red-400"
+            className="flex items-center justify-center h-7 w-7 rounded-lg hover:bg-white/5 transition-[background-color,color] duration-[var(--dur-fast)] ease-[var(--ease-smooth)] text-text-muted hover:text-red-400"
             aria-label="Close Network Visualizer"
           >
             <X size={14} />
@@ -390,7 +394,7 @@ const NetworkBuilderInner: React.FC<NetworkBuilderProps> = ({ open, onOpenChange
                             <button
                               key={type}
                               onClick={() => addNode(type)}
-                              className="flex items-center gap-2 px-2.5 py-1.5 rounded-lg text-left hover:bg-accent-dim/50 transition-all group border border-transparent hover:border-accent/20"
+                              className="flex items-center gap-2 px-2.5 py-1.5 rounded-lg text-left hover:bg-accent-dim/50 transition-[background-color,border-color] duration-[var(--dur-fast)] ease-[var(--ease-smooth)] group border border-transparent hover:border-accent/20"
                             >
                               <Icon size={12} style={{ color: def.color }} />
                               <span className="text-[10px] font-bold text-text-muted group-hover:text-text-primary transition-colors">{def.label}</span>
@@ -410,7 +414,7 @@ const NetworkBuilderInner: React.FC<NetworkBuilderProps> = ({ open, onOpenChange
             <button
               onClick={deleteSelected}
               disabled={!selectedNode && !selectedEdge}
-              className="w-full flex items-center gap-2 px-3 py-2 rounded-xl text-left transition-all border border-border/20 text-text-muted hover:bg-red-400/10 hover:border-red-400/20 hover:text-red-400 disabled:opacity-30 disabled:cursor-not-allowed"
+              className="w-full flex items-center gap-2 px-3 py-2 rounded-xl text-left transition-[background-color,border-color,color] duration-[var(--dur-fast)] ease-[var(--ease-smooth)] border border-border/20 text-text-muted hover:bg-red-400/10 hover:border-red-400/20 hover:text-red-400 disabled:opacity-30 disabled:cursor-not-allowed"
             >
               <Trash2 size={14} />
               <span className="text-[10px] font-bold">Delete Selected</span>

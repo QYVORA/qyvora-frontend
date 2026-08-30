@@ -185,7 +185,7 @@ const LandingHeroSection: React.FC<LandingHeroSectionProps> = ({
             <motion.p
               initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 10 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={minimizeEffects ? { duration: 0.2 } : { duration: 0.5, delay: 0.7, ease: [0.16, 1, 0.3, 1] }}
+              transition={minimizeEffects ? { duration: 0.2 } : { duration: 0.35, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
               className="text-text-secondary text-base sm:text-lg lg:text-base xl:text-lg leading-relaxed max-w-xl animate-fade-in"
             >
               {t('hero.description')}
@@ -196,7 +196,7 @@ const LandingHeroSection: React.FC<LandingHeroSectionProps> = ({
           <motion.div
             initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 10 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={minimizeEffects ? { duration: 0.2 } : { duration: 0.5, delay: 0.85, ease: [0.16, 1, 0.3, 1] }}
+            transition={minimizeEffects ? { duration: 0.2 } : { duration: 0.35, delay: 0.25, ease: [0.16, 1, 0.3, 1] }}
             className="mt-8 sm:mt-10 lg:mt-9 flex items-center gap-2.5 sm:gap-3"
           >
             {SOCIAL_LINKS.map(({ key, label, href, Icon }) => (
@@ -206,7 +206,7 @@ const LandingHeroSection: React.FC<LandingHeroSectionProps> = ({
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label={label}
-                className="flex h-10 w-10 md:h-11 md:w-11 items-center justify-center rounded-xl border border-border/50 bg-bg-elevated/50 text-text-muted transition-all hover:border-accent/40 hover:text-accent active:scale-95 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+                className="flex h-10 w-10 md:h-11 md:w-11 items-center justify-center rounded-xl border border-border/50 bg-bg-elevated/50 text-text-muted transition-[border-color,color,transform] duration-[var(--dur-fast)] ease-[var(--ease-smooth)] hover:border-accent/40 hover:text-accent active:scale-95 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
               >
                 <Icon className="h-4 w-4" />
               </a>
@@ -217,7 +217,7 @@ const LandingHeroSection: React.FC<LandingHeroSectionProps> = ({
           <motion.div
             initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 10 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={minimizeEffects ? { duration: 0.2 } : { duration: 0.5, delay: 1, ease: [0.16, 1, 0.3, 1] }}
+            transition={minimizeEffects ? { duration: 0.2 } : { duration: 0.35, delay: 0.35, ease: [0.16, 1, 0.3, 1] }}
             className="flex flex-col sm:flex-row w-full sm:w-auto items-stretch sm:items-center gap-4 mt-6 sm:mt-8 lg:mt-7"
           >
             {user ? (

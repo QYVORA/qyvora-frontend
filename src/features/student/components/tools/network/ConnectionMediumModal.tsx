@@ -66,7 +66,7 @@ const ConnectionMediumModal: React.FC<ConnectionMediumModalProps> = ({
                           onSelect(medium.id, medium.label);
                           onOpenChange(false);
                         }}
-                        className="flex items-center gap-2.5 px-3 py-2.5 rounded-xl border border-border/20 text-left transition-all hover:bg-accent-dim/50 hover:border-accent/20 active:scale-[0.98] group"
+                        className="flex items-center gap-2.5 px-3 py-2.5 rounded-xl border border-border/20 text-left transition-[background-color,border-color,transform] duration-[var(--dur-base)] ease-[var(--ease-smooth)] hover:bg-accent-dim/50 hover:border-accent/20 active:scale-[0.98] group"
                       >
                         <medium.icon size={14} className="text-text-muted group-hover:text-accent transition-colors" />
                         <span className="text-[10px] font-bold text-text-muted group-hover:text-text-primary transition-colors">

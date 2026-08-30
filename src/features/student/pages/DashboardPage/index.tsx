@@ -96,7 +96,7 @@ const SectionButton = ({ icon, label, active, onClick, ...rest }: { icon: React.
   <button
     onClick={onClick}
     {...rest}
-    className={`flex flex-col items-center gap-2 p-3 md:p-5 lg:p-6 min-h-[100px] md:min-h-[120px] rounded-2xl border text-center transition-all duration-300 ${
+    className={`flex flex-col items-center gap-2 p-3 md:p-5 lg:p-6 min-h-[100px] md:min-h-[120px] rounded-2xl border text-center transition-[background-color,border-color] duration-[var(--dur-base)] ease-[var(--ease-smooth)] ${
       active
         ? 'border-accent bg-accent/10'
         : 'border-border/50 bg-bg-card hover:bg-bg-card/80'
@@ -500,7 +500,7 @@ const Dashboard = () => {
                   <Link
                     key={tool.id}
                     to={tool.route}
-                    className="group/card relative aspect-square card-accent bg-bg-card p-3 md:p-5 transition-all duration-300 flex flex-col text-left"
+                    className="group/card relative aspect-square card-accent bg-bg-card p-3 md:p-5 transition-[transform,box-shadow,border-color,background-color] duration-[var(--dur-base)] ease-[var(--ease-smooth)] flex flex-col text-left"
                   >
                     <div className="flex items-center gap-2 mb-2">
                       <div className="w-8 h-8 rounded-xl flex items-center justify-center shrink-0 bg-accent/10 border border-accent/20">
@@ -520,7 +520,7 @@ const Dashboard = () => {
                     </p>
 
                     <div className="flex items-center justify-between mt-auto">
-                      <span className="px-3 py-1.5 rounded-lg text-[9px] sm:text-[10px] md:text-xs font-black uppercase tracking-widest bg-accent text-on-accent transition-all duration-200 group-hover/card:brightness-110 group-active:scale-95">
+                      <span className="px-3 py-1.5 rounded-lg text-[9px] sm:text-[10px] md:text-xs font-black uppercase tracking-widest bg-accent text-on-accent transition-[filter,transform] duration-[var(--dur-fast)] ease-[var(--ease-smooth)] group-hover/card:brightness-110 group-active:scale-95">
                         {t('student.dashboard.view')}
                       </span>
                       <IconArrowRight size={12} className="text-text-muted" />

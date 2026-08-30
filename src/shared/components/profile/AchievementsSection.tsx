@@ -154,7 +154,7 @@ const AchievementsSection: React.FC<AchievementsSectionProps> = ({
                   animate={{ opacity: 1, scale: 1 }}
                   exit={prefersReduced ? undefined : { opacity: 0, scale: 0.9 }}
                   transition={{ duration: prefersReduced ? 0 : 0.3, delay: prefersReduced ? 0 : idx * 0.03 }}
-                  className="relative group flex flex-col items-center text-center p-4 rounded-xl border border-border/50 bg-bg-card transition-all duration-300 hover:scale-[1.02] cursor-default"
+                  className="relative group flex flex-col items-center text-center p-4 rounded-xl border border-border/50 bg-bg-card transition-[transform,background-color,border-color,color,box-shadow] duration-[var(--dur-base)] hover:scale-[1.02] cursor-default"
                 >
                   <div className="w-12 h-12 rounded-xl flex items-center justify-center mb-3 bg-bg-elevated">
                     {a.iconNode}
@@ -205,7 +205,7 @@ const AchievementsSection: React.FC<AchievementsSectionProps> = ({
                     animate={{ opacity: 1, scale: 1 }}
                     exit={prefersReduced ? undefined : { opacity: 0, scale: 0.9 }}
                     transition={{ duration: prefersReduced ? 0 : 0.3, delay: prefersReduced ? 0 : idx * 0.03 }}
-                    className="relative group flex flex-col items-center text-center p-4 rounded-xl border border-border/50 bg-bg-card transition-all duration-300 hover:scale-[1.02] cursor-default"
+                  className="relative group flex flex-col items-center text-center p-4 rounded-xl border border-border/50 bg-bg-card transition-[transform,background-color,border-color,color,box-shadow] duration-[var(--dur-base)] hover:scale-[1.02] cursor-default"
                   >
                     <div className="w-12 h-12 rounded-xl flex items-center justify-center mb-3 bg-info/10">
                       {IconComp ? (
@@ -296,7 +296,7 @@ const AchievementsSection: React.FC<AchievementsSectionProps> = ({
                     transition={{ duration: prefersReduced ? 0 : 0.3, delay: prefersReduced ? 0 : idx * 0.03 }}
                     className={`
                       relative group flex flex-col items-center text-center p-4 rounded-xl border
-                      transition-all duration-300 hover:scale-[1.02] cursor-default
+                      transition-[transform,background-color,border-color,color,box-shadow] duration-[var(--dur-base)] hover:scale-[1.02] cursor-default
                       ${styles.border} ${styles.bg} ${styles.glow}
                     `}
                   >

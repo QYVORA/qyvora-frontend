@@ -260,7 +260,7 @@ const MyCoursesPage: React.FC = () => {
                     <div className="relative z-10 mt-auto pt-2">
                       <button
                         onClick={() => setSelectedCourseId(course.id)}
-                        className="inline-flex items-center gap-1.5 text-[9px] sm:text-[10px] font-black uppercase tracking-widest text-accent hover:gap-2 transition-all"
+                        className="inline-flex items-center gap-1.5 text-[9px] sm:text-[10px] font-black uppercase tracking-widest text-accent hover:gap-2 transition-[gap] duration-[var(--dur-base)] ease-[var(--ease-smooth)]"
                       >
                         {t('student.myCourses.viewDetails', 'View Details')} <ArrowRight className="h-2.5 w-2.5" />
                       </button>
@@ -278,7 +278,7 @@ const MyCoursesPage: React.FC = () => {
             <p className="text-text-muted">{t('student.myCourses.empty.enrolled')}</p>
             <Link
               to="/dashboard"
-              className="inline-flex items-center gap-2 px-6 py-3 bg-accent text-on-accent rounded-xl text-[10px] font-black uppercase tracking-widest transition-all hover:brightness-110"
+              className="inline-flex items-center gap-2 px-6 py-3 bg-accent text-on-accent rounded-xl text-[10px] font-black uppercase tracking-widest transition-[filter] duration-[var(--dur-base)] ease-[var(--ease-smooth)] hover:brightness-110"
             >
               {t('student.myCourses.action.browse')} <ArrowRight className="h-3 w-3" />
             </Link>

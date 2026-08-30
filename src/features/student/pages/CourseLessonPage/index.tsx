@@ -231,7 +231,7 @@ const CourseLessonPage: React.FC = () => {
           </p>
           <Link
             to="/dashboard/marketplace"
-            className="inline-flex items-center gap-2 px-6 py-3 bg-accent text-on-accent rounded-xl text-[10px] font-black uppercase tracking-widest transition-all hover:brightness-110 font-mono"
+            className="inline-flex items-center gap-2 px-6 py-3 bg-accent text-on-accent rounded-xl text-[10px] font-black uppercase tracking-widest transition-[filter] duration-[var(--dur-base)] ease-[var(--ease-smooth)] hover:brightness-110 font-mono"
           >
             Unlock Course <ArrowRight className="h-3.5 h-3.5" />
           </Link>
@@ -287,7 +287,7 @@ const CourseLessonPage: React.FC = () => {
             </div>
             <div className="h-2 overflow-hidden rounded-full bg-accent-dim border border-border/40">
               <div
-                className="h-full bg-accent transition-all duration-700 ease-out rounded-full"
+                className="h-full bg-accent transition-[width] duration-700 ease-out rounded-full"
                 style={{ width: `${progress}%` }}
                 role="progressbar"
                 aria-valuenow={progress}

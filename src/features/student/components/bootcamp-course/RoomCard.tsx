@@ -113,7 +113,7 @@ const RoomCard: React.FC<RoomCardProps> = ({
 
   const inner = (
     <div
-      className={`group/card relative aspect-square rounded-2xl border border-border/50 bg-bg-card p-3 md:p-5 transition-all duration-300 flex flex-col text-left ${
+      className={`group/card relative aspect-square rounded-2xl border border-border/50 bg-bg-card p-3 md:p-5 transition-[transform,box-shadow,border-color,opacity] duration-[var(--dur-base)] ease-[var(--ease-smooth)] flex flex-col text-left ${
         isRoomLocked
           ? 'opacity-40 cursor-not-allowed pointer-events-none'
           : 'hover:border-accent/50'
@@ -153,7 +153,7 @@ const RoomCard: React.FC<RoomCardProps> = ({
           <div className="ml-auto flex items-center gap-1">
             <button
               onClick={toggleAnnotate}
-              className={`rounded-lg px-2 py-1 text-[9px] font-black uppercase tracking-widest transition-all flex items-center gap-1 ${
+              className={`rounded-lg px-2 py-1 text-[9px] font-black uppercase tracking-widest transition-[background-color,color] duration-[var(--dur-fast)] ease-[var(--ease-smooth)] flex items-center gap-1 ${
                 annotateMode
                   ? 'bg-accent text-on-accent'
                   : 'bg-bg-elevated text-text-muted hover:text-accent border border-border/50'
@@ -165,7 +165,7 @@ const RoomCard: React.FC<RoomCardProps> = ({
             {annotateMode && hasDoodle && (
               <button
                 onClick={clearDoodle}
-                className="rounded-lg px-2 py-1 bg-danger/20 text-danger text-[9px] font-black uppercase tracking-widest flex items-center gap-1 hover:bg-danger/30 transition-all"
+                className="rounded-lg px-2 py-1 bg-danger/20 text-danger text-[9px] font-black uppercase tracking-widest flex items-center gap-1 hover:bg-danger/30 transition-[background-color] duration-[var(--dur-fast)] ease-[var(--ease-smooth)]"
               >
                 <Trash2 className="h-2.5 w-2.5" />
               </button>

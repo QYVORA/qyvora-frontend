@@ -99,7 +99,7 @@ const UsersTab: React.FC<UsersTabProps> = ({
       render: (item) => (
         <button
           onClick={() => void patchUser(item.id, { bootcampAccessRevoked: !item.bootcampAccessRevoked }, item.bootcampAccessRevoked ? t('admin.users.accessRestored') : t('admin.users.accessRevoked'))}
-          className={`text-[9px] font-black uppercase tracking-widest px-4 py-2.5 rounded-xl transition-all ${
+          className={`text-[9px] font-black uppercase tracking-widest px-4 py-2.5 rounded-xl transition-[background-color,color,border-color,transform] duration-[var(--dur-base)] ease-[var(--ease-smooth)] ${
             item.bootcampAccessRevoked
               ? 'text-danger bg-danger/10'
               : 'btn-primary'
@@ -120,7 +120,7 @@ const UsersTab: React.FC<UsersTabProps> = ({
             </div>
             <button
               onClick={() => { navigator.clipboard.writeText(item.recoveryToken || ''); addToast(t('admin.users.tokenCopied'), 'success'); }}
-              className="p-2 rounded-lg hover:bg-bg-elevated text-text-muted hover:text-accent transition-all"
+              className="p-2 rounded-lg hover:bg-bg-elevated text-text-muted hover:text-accent transition-[background-color,color] duration-[var(--dur-fast)] ease-[var(--ease-smooth)]"
             >
               <Copy className="w-4 h-4" />
             </button>
@@ -160,7 +160,7 @@ const UsersTab: React.FC<UsersTabProps> = ({
           <Tooltip content={isUserBlocked(item) ? t('admin.users.unblockUser') : t('admin.users.blockUser')} side="left">
             <button
               onClick={() => void handleUserBlockToggle(item)}
-              className="inline-flex items-center justify-center w-11 h-11 rounded-xl bg-bg-elevated text-text-muted hover:text-accent transition-all active:scale-90 shadow-sm"
+              className="inline-flex items-center justify-center w-11 h-11 rounded-xl bg-bg-elevated text-text-muted hover:text-accent transition-[color,transform] duration-[var(--dur-fast)] ease-[var(--ease-smooth)] active:scale-90 shadow-sm"
             >
               {isUserBlocked(item) ? <Unlock className="w-4.5 h-4.5" /> : <Ban className="w-4.5 h-4.5" />}
             </button>
@@ -168,7 +168,7 @@ const UsersTab: React.FC<UsersTabProps> = ({
           <Tooltip content={t('admin.users.permanentlyDelete')} side="left">
             <button
               onClick={() => void handleDeleteUser(item)}
-              className="inline-flex items-center justify-center w-11 h-11 rounded-xl bg-danger/5 text-danger/60 hover:bg-danger/10 hover:text-danger transition-all active:scale-90 shadow-sm"
+              className="inline-flex items-center justify-center w-11 h-11 rounded-xl bg-danger/5 text-danger/60 hover:bg-danger/10 hover:text-danger transition-[background-color,color,transform] duration-[var(--dur-fast)] ease-[var(--ease-smooth)] active:scale-90 shadow-sm"
             >
               <Trash2 className="w-4.5 h-4.5" />
             </button>
@@ -220,19 +220,19 @@ const UsersTab: React.FC<UsersTabProps> = ({
       <div className="grid grid-cols-2 gap-3 pt-2">
         <button
           onClick={() => void patchUser(item.id, { bootcampAccessRevoked: !item.bootcampAccessRevoked }, item.bootcampAccessRevoked ? t('admin.users.accessRestored') : t('admin.users.accessRevoked'))}
-          className={`py-3 transition-all ${item.bootcampAccessRevoked ? 'bg-danger/10 text-danger rounded-xl text-[10px] font-black uppercase tracking-widest' : 'btn-primary'}`}
+          className={`py-3 transition-[background-color,color,border-color,transform] duration-[var(--dur-base)] ease-[var(--ease-smooth)] ${item.bootcampAccessRevoked ? 'bg-danger/10 text-danger rounded-xl text-[10px] font-black uppercase tracking-widest' : 'btn-primary'}`}
         >
           {item.bootcampAccessRevoked ? t('admin.users.revoked') : t('admin.users.allowed')}
         </button>
         <button
           onClick={() => void handleUserBlockToggle(item)}
-          className="btn-secondary py-3 transition-all active:scale-95"
+          className="btn-secondary py-3 transition-[background-color,border-color,color,transform] duration-[var(--dur-base)] ease-[var(--ease-smooth)] active:scale-95"
         >
           {isUserBlocked(item) ? t('admin.users.unblock') : t('admin.users.block')}
         </button>
         <button
           onClick={() => void handleDeleteUser(item)}
-          className="col-span-2 py-3 rounded-xl text-[10px] font-black uppercase tracking-widest bg-danger/5 text-danger/60 hover:bg-danger/10 hover:text-danger transition-all active:scale-95"
+          className="col-span-2 py-3 rounded-xl text-[10px] font-black uppercase tracking-widest bg-danger/5 text-danger/60 hover:bg-danger/10 hover:text-danger transition-[background-color,color,transform] duration-[var(--dur-fast)] ease-[var(--ease-smooth)] active:scale-95"
         >
           {t('admin.users.deleteUser')}
         </button>

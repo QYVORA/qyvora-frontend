@@ -31,7 +31,7 @@ const FilterTabs: React.FC<FilterTabsProps> = ({ tabs, activeKey, onChange, size
           aria-selected={activeKey === tab.key}
           className={cn(
             sizeClasses,
-            'font-black uppercase tracking-wider transition-all duration-300 active:scale-95 disabled:opacity-50 disabled:pointer-events-none',
+            'font-black uppercase tracking-wider transition-[background-color,color,border-color,transform] duration-[var(--dur-base)] ease-[var(--ease-smooth)] active:scale-95 disabled:opacity-50 disabled:pointer-events-none',
             activeKey === tab.key
               ? 'bg-accent text-on-accent'
               : 'bg-bg-card border border-border text-text-muted hover:border-accent/50 hover:text-accent',

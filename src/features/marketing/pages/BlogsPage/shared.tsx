@@ -104,7 +104,7 @@ export const CTA = ({ title, desc, href, label }: { title: string; desc: string;
     {href.startsWith('/') ? (
       <Link
         to={href}
-        className="inline-flex items-center gap-3 bg-accent text-on-accent font-black uppercase tracking-[0.12em] rounded-xl px-10 py-4 text-sm hover:brightness-110 active:scale-95 transition-all"
+        className="inline-flex items-center gap-3 bg-accent text-on-accent font-black uppercase tracking-[0.12em] rounded-xl px-10 py-4 text-sm hover:brightness-110 active:scale-95 transition-[filter,transform] duration-[var(--dur-base)]"
       >
         {label}
       </Link>
@@ -113,7 +113,7 @@ export const CTA = ({ title, desc, href, label }: { title: string; desc: string;
         href={href}
         target="_blank"
         rel="noopener noreferrer"
-        className="inline-flex items-center gap-3 bg-accent text-on-accent font-black uppercase tracking-[0.12em] rounded-xl px-10 py-4 text-sm hover:brightness-110 active:scale-95 transition-all"
+        className="inline-flex items-center gap-3 bg-accent text-on-accent font-black uppercase tracking-[0.12em] rounded-xl px-10 py-4 text-sm hover:brightness-110 active:scale-95 transition-[filter,transform] duration-[var(--dur-base)]"
       >
         {label}
       </a>

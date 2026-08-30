@@ -197,7 +197,7 @@ const QuizModal: React.FC<QuizModalProps> = ({ moduleId, roomId, courseId, onClo
             <>
               <div className="mb-6 h-1 overflow-hidden rounded-full bg-border">
                 <div
-                  className="h-full rounded-full bg-accent transition-all duration-300"
+                  className="h-full rounded-full bg-accent transition-[width] duration-[var(--dur-base)] ease-[var(--ease-smooth)]"
                   style={{ width: `${(Object.keys(answers).length / quiz.questions.length) * 100}%` }}
                 />
               </div>
@@ -218,7 +218,7 @@ const QuizModal: React.FC<QuizModalProps> = ({ moduleId, roomId, courseId, onClo
                           <button
                             key={`${q.id}-${optIdx}`}
                             onClick={() => setAnswers((prev) => ({ ...prev, [q.id]: optIdx }))}
-                            className={`w-full rounded-xl border px-4 py-3 text-left text-sm transition-all ${
+                            className={`w-full rounded-xl border px-4 py-3 text-left text-sm transition-[background-color,border-color,color] duration-[var(--dur-base)] ease-[var(--ease-smooth)] ${
                               selected
                                 ? 'border-accent bg-accent-dim font-bold text-accent'
                                 : 'border-border text-text-secondary hover:border-accent/50 hover:bg-accent-dim/20'

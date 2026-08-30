@@ -45,7 +45,7 @@ const EditModal: React.FC<EditModalProps> = ({ open, onOpenChange, initial, onSa
     }
   };
 
-  const inputCls = 'w-full bg-bg border border-border rounded-xl py-2.5 px-4 text-sm text-text-primary placeholder:text-text-muted focus:border-accent outline-none transition-all font-mono';
+  const inputCls = 'w-full bg-bg border border-border rounded-xl py-2.5 px-4 text-sm text-text-primary placeholder:text-text-muted focus:border-accent outline-none transition-[border-color] duration-[var(--dur-base)] ease-[var(--ease-smooth)] font-mono';
   const labelCls = 'text-[10px] font-bold text-text-muted uppercase tracking-widest block mb-1.5';
 
   return (

@@ -18,7 +18,7 @@ const DIFFICULTY_CLASSES: Record<string, string> = {
 const ScenarioCard = ({ title, difficulty, description, cpReward, subtitle, onStart }: ScenarioCardProps) => (
   <button
     onClick={onStart}
-    className="group/card relative aspect-square card-accent bg-bg-card p-4 md:p-5 transition-all duration-300 flex flex-col text-left w-full"
+    className="group/card relative aspect-square card-accent bg-bg-card p-4 md:p-5 transition-[border-color,box-shadow,transform,background-color] duration-[var(--dur-base)] ease-[var(--ease-smooth)] flex flex-col text-left w-full"
   >
     <div className="flex items-center gap-2 mb-2">
       <div className="w-8 h-8 rounded-xl flex items-center justify-center shrink-0 bg-accent/10 border border-accent/20">
@@ -47,7 +47,7 @@ const ScenarioCard = ({ title, difficulty, description, cpReward, subtitle, onSt
       <span className="text-[9px] font-black uppercase tracking-widest text-accent">
         {cpReward} CP
       </span>
-      <span className="px-3 py-1.5 rounded-lg text-[9px] font-black uppercase tracking-widest bg-accent text-on-accent transition-all duration-200 group-hover/card:brightness-110 group-active:scale-95">
+      <span className="px-3 py-1.5 rounded-lg text-[9px] font-black uppercase tracking-widest bg-accent text-on-accent transition-[filter,transform] duration-[var(--dur-base)] group-hover/card:brightness-110 group-active:scale-95">
         Start
       </span>
     </div>

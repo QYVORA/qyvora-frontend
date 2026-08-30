@@ -100,7 +100,7 @@ const LeaderboardPage = () => {
               <button
                 key={p.key}
                 onClick={() => handlePeriodChange(p.key)}
-                className={`px-5 py-2.5 rounded-xl text-xs font-black uppercase tracking-wider transition-all duration-300 ${
+                className={`px-5 py-2.5 rounded-xl text-xs font-black uppercase tracking-wider transition-[background-color,color,border-color] duration-[var(--dur-base)] ease-[var(--ease-smooth)] ${
                   period === p.key
                     ? 'bg-accent text-on-accent'
                     : 'bg-bg-card border border-border text-text-muted hover:border-accent/50 hover:text-accent'
@@ -115,7 +115,7 @@ const LeaderboardPage = () => {
             <div className="flex items-center gap-2 flex-wrap mb-8 md:mb-12">
               <button
                 onClick={() => handleCohortChange(null)}
-                className={`px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-wider transition-all duration-300 ${
+                className={`px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-wider transition-[background-color,color,border-color] duration-[var(--dur-base)] ease-[var(--ease-smooth)] ${
                   !cohortId
                     ? 'bg-accent text-on-accent'
                     : 'bg-bg-card border border-border text-text-muted hover:border-accent/50 hover:text-accent'
@@ -128,7 +128,7 @@ const LeaderboardPage = () => {
                 <button
                   key={cohort.id}
                   onClick={() => handleCohortChange(cohort.id)}
-                  className={`px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-wider transition-all duration-300 ${
+                  className={`px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-wider transition-[background-color,color,border-color] duration-[var(--dur-base)] ease-[var(--ease-smooth)] ${
                     cohortId === cohort.id
                       ? 'bg-accent text-on-accent'
                       : 'bg-bg-card border border-border text-text-muted hover:border-accent/50 hover:text-accent'

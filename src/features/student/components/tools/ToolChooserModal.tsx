@@ -71,7 +71,7 @@ const ToolChooserModal: React.FC<ToolChooserModalProps> = ({
           <div className="p-5 space-y-3">
             <button
               onClick={handlePanel}
-              className="w-full flex items-center gap-4 p-4 rounded-xl border border-border/50 hover:border-accent/40 bg-bg-elevated hover:bg-accent-dim/30 transition-all text-left group"
+              className="w-full flex items-center gap-4 p-4 rounded-xl border border-border/50 hover:border-accent/40 bg-bg-elevated hover:bg-accent-dim/30 transition-[background-color,border-color] duration-[var(--dur-base)] ease-[var(--ease-smooth)] text-left group"
             >
               <div className="w-12 h-12 rounded-xl bg-bg border border-border/50 flex items-center justify-center shrink-0 group-hover:border-accent/50 group-hover:bg-accent/10 transition-colors">
                 <LayoutPanelLeft size={22} className="text-text-muted group-hover:text-accent transition-colors" />
@@ -88,7 +88,7 @@ const ToolChooserModal: React.FC<ToolChooserModalProps> = ({
 
             <button
               onClick={handleFullscreen}
-              className="w-full flex items-center gap-4 p-4 rounded-xl border border-border/50 hover:border-accent/40 bg-bg-elevated hover:bg-accent-dim/30 active:scale-[0.98] transition-all text-left group"
+              className="w-full flex items-center gap-4 p-4 rounded-xl border border-border/50 hover:border-accent/40 bg-bg-elevated hover:bg-accent-dim/30 active:scale-[0.98] transition-[background-color,border-color,transform] duration-[var(--dur-base)] ease-[var(--ease-smooth)] text-left group"
             >
               <div className="w-12 h-12 rounded-xl bg-bg border border-border/50 flex items-center justify-center shrink-0 group-hover:border-accent/50 group-hover:bg-accent/10 transition-colors">
                 <Maximize2 size={22} className="text-text-muted group-hover:text-accent transition-colors" />

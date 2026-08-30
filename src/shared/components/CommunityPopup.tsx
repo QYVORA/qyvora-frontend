@@ -68,7 +68,7 @@ const CommunityPopup: React.FC = () => {
 
             <button
               onClick={handleClose}
-              className="absolute top-3 right-3 p-2 rounded-xl text-text-muted hover:text-text-primary hover:bg-bg/80 transition-all z-20"
+              className="absolute top-3 right-3 p-2 rounded-xl text-text-muted hover:text-text-primary hover:bg-bg/80 transition-[color,background-color] z-20"
               aria-label="Dismiss"
             >
               <IconX size={16} />
@@ -119,7 +119,7 @@ const CommunityPopup: React.FC = () => {
                   className="
                     group relative flex-1 flex items-center justify-center gap-2 overflow-hidden
                     rounded-2xl bg-accent py-3.5 text-[10px] font-black uppercase tracking-widest
-                    text-on-accent shadow-lg shadow-accent/20 transition-all
+                    text-on-accent shadow-lg shadow-accent/20 transition-[transform,box-shadow]
                     hover:scale-[1.02] hover:shadow-accent/40 active:scale-[0.98]
                   "
                 >
@@ -133,7 +133,7 @@ const CommunityPopup: React.FC = () => {
                     px-5 flex items-center justify-center rounded-2xl
                     border border-border bg-transparent py-3
                     text-[10px] font-black uppercase tracking-widest
-                    text-text-muted transition-all hover:border-accent/50 hover:text-accent
+                    text-text-muted transition-[color,border-color] hover:border-accent/50 hover:text-accent
                   "
                 >
                   {t('button.dismiss')}

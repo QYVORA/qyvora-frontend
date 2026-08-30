@@ -265,7 +265,7 @@ const AnansiPage = () => {
             <span className="text-[9px] font-black uppercase tracking-widest text-text-muted block mb-2">
               Direct Download{release.version ? ` · ${release.version}` : ''}
             </span>
-            <div className="flex gap-2 overflow-x-auto no-scrollbar">
+            <div className="flex gap-2 scroll-x no-scrollbar">
               {release.status === 'loading' && (
                 <span className="inline-flex items-center gap-1.5 rounded-lg border border-border/20 bg-bg px-3 py-2 text-[9px] uppercase tracking-widest text-text-muted">
                   <Loader2 className="h-3 w-3 animate-spin" /> Checking release…

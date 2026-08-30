@@ -90,7 +90,7 @@ const MarketPage = () => {
                   value={query}
                   onChange={(e) => handleQueryChange(e.target.value)}
                   placeholder="Search products..."
-                  className="w-full rounded-xl border border-border/40 bg-bg-card py-2.5 pl-9 pr-3 text-xs text-text-primary transition-all focus:border-accent outline-none"
+                  className="w-full rounded-xl border border-border/40 bg-bg-card py-2.5 pl-9 pr-3 text-xs text-text-primary transition-[border-color] duration-[var(--dur-base)] ease-[var(--ease-smooth)] focus:border-accent outline-none"
                 />
               </div>
               <ViewToggle value={view} onChange={setView} label="Market view mode" />

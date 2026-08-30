@@ -297,7 +297,7 @@ export const HackerProtocolBootcampBlog: React.FC = () => {
           </p>
           <Link
             to="/hpb"
-            className="inline-flex items-center gap-3 bg-accent text-on-accent font-black uppercase tracking-[0.12em] rounded-xl px-10 py-4 text-sm hover:brightness-110 active:scale-95 transition-all"
+            className="inline-flex items-center gap-3 bg-accent text-on-accent font-black uppercase tracking-[0.12em] rounded-xl px-10 py-4 text-sm hover:brightness-110 active:scale-95 transition-[filter,transform] duration-[var(--dur-base)]"
           >
             <IconTarget size={20} /> Begin Phase 01
           </Link>

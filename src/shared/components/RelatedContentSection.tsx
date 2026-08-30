@@ -49,7 +49,7 @@ const RelatedContentSection: React.FC<RelatedContentSectionProps> = ({ title, it
             <Link
               key={item.to + item.title}
               to={item.to}
-              className="group block terminal-card rounded-2xl border border-border bg-bg-card overflow-hidden transition-all duration-500 hover:border-accent/40"
+              className="group block terminal-card rounded-2xl border border-border bg-bg-card overflow-hidden transition-[border-color,box-shadow] duration-[var(--dur-slow)] ease-[var(--ease-smooth)] hover:border-accent/40"
               style={{ boxShadow: 'var(--card-shimmer)' }}
             >
               <div className="relative aspect-[16/9] overflow-hidden bg-accent/5 flex items-center justify-center">
@@ -80,7 +80,7 @@ const RelatedContentSection: React.FC<RelatedContentSectionProps> = ({ title, it
                 {item.subtitle && (
                   <p className="text-xs text-text-muted leading-relaxed line-clamp-2">{item.subtitle}</p>
                 )}
-                <div className="mt-4 flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest text-accent group-hover:gap-2.5 transition-all">
+                <div className="mt-4 flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest text-accent group-hover:gap-2.5 transition-[gap]">
                   {t('relatedContent.view', { defaultValue: 'View' })} <IconArrowRight size={12} />
                 </div>
               </div>

@@ -24,14 +24,14 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, isLoggedIn, view }) 
   const cta = isLoggedIn ? (
     <Link
       to="/dashboard/marketplace"
-      className="px-3 py-1.5 rounded-lg text-[9px] sm:text-[10px] font-black uppercase tracking-widest bg-accent text-on-accent transition-all hover:brightness-110"
+      className="px-3 py-1.5 rounded-lg text-[9px] sm:text-[10px] font-black uppercase tracking-widest bg-accent text-on-accent transition-[filter] duration-[var(--dur-fast)] ease-[var(--ease-smooth)] hover:brightness-110"
     >
       View in Store
     </Link>
   ) : (
     <Link
       to="/login"
-      className="px-3 py-1.5 rounded-lg text-[9px] sm:text-[10px] font-black uppercase tracking-widest border border-border/40 text-text-primary hover:text-accent transition-all"
+      className="px-3 py-1.5 rounded-lg text-[9px] sm:text-[10px] font-black uppercase tracking-widest border border-border/40 text-text-primary hover:text-accent transition-[color] duration-[var(--dur-fast)] ease-[var(--ease-smooth)]"
     >
       Log In to Purchase
     </Link>
@@ -48,7 +48,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, isLoggedIn, view }) 
 
   if (view === 'expanded') {
     return (
-      <div className="group relative flex flex-col sm:flex-row overflow-hidden card-accent bg-bg-card transition-all duration-300">
+      <div className="group relative flex flex-col sm:flex-row overflow-hidden card-accent bg-bg-card transition-[transform,box-shadow,border-color,background-color] duration-[var(--dur-base)] ease-[var(--ease-smooth)]">
         <div className="sm:w-40 lg:w-48 shrink-0 aspect-[16/9] sm:aspect-auto sm:min-h-[120px] overflow-hidden bg-accent/5 sm:border-r border-border/50">
           <AuthImage
             src={product.coverUrl}
@@ -79,7 +79,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, isLoggedIn, view }) 
   }
 
   return (
-    <div className="group relative flex flex-col overflow-hidden card-accent bg-bg-card transition-all duration-300 h-full min-h-[240px] justify-between">
+    <div className="group relative flex flex-col overflow-hidden card-accent bg-bg-card transition-[transform,box-shadow,border-color,background-color] duration-[var(--dur-base)] ease-[var(--ease-smooth)] h-full min-h-[240px] justify-between">
       <div className="relative aspect-[16/9] overflow-hidden bg-accent/5 shrink-0">
         <AuthImage
           src={product.coverUrl}

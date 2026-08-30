@@ -166,7 +166,7 @@ const Notifications: React.FC = () => {
                   const colorCls = TYPE_COLORS[n.type] || 'text-text-primary border-border bg-bg-card';
                   return (
                     <ScrollReveal key={n.id}>
-                      <div className={`relative rounded-2xl border p-5 transition-all ${
+                      <div className={`relative rounded-2xl border p-5 transition-[background-color,border-color,opacity] duration-[var(--dur-base)] ease-[var(--ease-smooth)] ${
                         n.read ? 'bg-bg-card border-border opacity-60' : `${colorCls} border`
                       }`}>
                         {!n.read && (
@@ -208,7 +208,7 @@ const Notifications: React.FC = () => {
                   <div className="pt-2 text-center">
                     <button
                       onClick={() => setVisibleCount((prev) => prev + PAGE_SIZE)}
-                      className="px-4 py-2 bg-bg-card border border-border hover:border-accent/40 rounded-lg text-xs font-bold text-text-primary transition-all"
+                      className="px-4 py-2 bg-bg-card border border-border hover:border-accent/40 rounded-lg text-xs font-bold text-text-primary transition-[border-color] duration-[var(--dur-base)] ease-[var(--ease-smooth)]"
                     >
                       {t('student.notificationsPage.loadMore', { count: displayed.length - visibleCount })}
                     </button>

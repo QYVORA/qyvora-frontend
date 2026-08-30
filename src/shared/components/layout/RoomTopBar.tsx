@@ -211,7 +211,7 @@ export function RoomTopBar({
         {progress && progress.total > 0 && (
           <div className="h-1 bg-bg-elevated">
             <div
-              className="h-full bg-accent transition-all duration-500"
+              className="h-full bg-accent transition-[width] duration-[var(--dur-slow)] ease-[var(--ease-smooth)]"
               style={{ width: `${(progress.current / progress.total) * 100}%` }}
             />
           </div>

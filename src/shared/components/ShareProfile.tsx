@@ -81,7 +81,7 @@ const ShareProfile = ({ handle }: { handle: string }) => {
     <>
       <button
         onClick={() => setOpen(true)}
-        className="flex items-center gap-2 px-4 py-2 bg-bg-elevated border border-border hover:bg-bg-card rounded-xl text-[10px] font-black uppercase tracking-[0.08em] text-text-muted transition-all active:scale-95"
+        className="flex items-center gap-2 px-4 py-2 bg-bg-elevated border border-border hover:bg-bg-card rounded-xl text-[10px] font-black uppercase tracking-[0.08em] text-text-muted transition-[background-color,transform] duration-[var(--dur-base)] active:scale-95"
         aria-label="Share profile"
       >
         <Share2 className="w-3.5 h-3.5" />
@@ -112,7 +112,7 @@ const ShareProfile = ({ handle }: { handle: string }) => {
                       handleShare(p.id);
                       if (p.id !== 'copy') setOpen(false);
                     }}
-                    className={`flex items-center gap-3 px-4 py-3 rounded-xl border border-border text-xs font-bold text-text-primary transition-all ${p.color}`}
+                    className={`flex items-center gap-3 px-4 py-3 rounded-xl border border-border text-xs font-bold text-text-primary transition-[background-color,color,border-color] ${p.color}`}
                   >
                     {p.id === 'copy' && copied ? <IconCheck size={20} className="text-accent" /> : p.icon}
                     {copied && p.id === 'copy' ? t('components.share.copied') : p.name}

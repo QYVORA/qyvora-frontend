@@ -98,7 +98,7 @@ export const LearningCard: React.FC<LearningCardProps> = ({
   const isExpanded = view === 'expanded';
 
   const containerClasses = [
-    'group/card relative rounded-2xl border transition-all duration-300 flex flex-col text-left',
+    'group/card relative rounded-2xl border transition-[border-color,box-shadow,background-color] duration-[var(--dur-base)] ease-[var(--ease-smooth)] flex flex-col text-left',
     active ? 'border-accent shadow-[0_0_16px_var(--color-accent-dim)]' : 'card-accent',
     'bg-bg-card',
     isExpanded ? 'p-4 md:p-5 gap-2' : 'h-full min-h-[220px] p-4 md:p-5 justify-between',
@@ -145,7 +145,7 @@ export const LearningCard: React.FC<LearningCardProps> = ({
 
     const actionContent = (
       <span
-        className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[9px] sm:text-[10px] md:text-xs font-black uppercase tracking-widest bg-accent text-on-accent transition-all duration-200 group-hover/card:brightness-110 group-active:scale-95 ${
+        className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[9px] sm:text-[10px] md:text-xs font-black uppercase tracking-widest bg-accent text-on-accent transition-[filter,transform] duration-[var(--dur-base)] group-hover/card:brightness-110 group-active:scale-95 ${
           isActionDisabled ? 'opacity-50 pointer-events-none' : ''
         }`}
       >
@@ -219,7 +219,7 @@ export const LearningCard: React.FC<LearningCardProps> = ({
 
         {typeof progress === 'number' && (
           <div className="w-full bg-bg-elevated h-1.5 rounded-full overflow-hidden my-1">
-            <div className="bg-accent h-full rounded-full transition-all" style={{ width: `${progress}%` }} />
+            <div className="bg-accent h-full rounded-full transition-[width] duration-[var(--dur-slow)] ease-[var(--ease-smooth)]" style={{ width: `${progress}%` }} />
           </div>
         )}
 
@@ -279,7 +279,7 @@ export const LearningCard: React.FC<LearningCardProps> = ({
               width={640}
               height={360}
               loading="lazy"
-              className="w-full h-full object-cover transition-transform duration-500 group-hover/card:scale-105"
+              className="w-full h-full object-cover transition-transform duration-500 ease-[var(--ease-smooth)] group-hover/card:scale-105"
             />
             {owned && (
               <span className="absolute top-2 right-2 px-2 py-0.5 bg-accent text-on-accent rounded-lg text-[8px] font-black uppercase tracking-widest shadow-sm">
@@ -327,7 +327,7 @@ export const LearningCard: React.FC<LearningCardProps> = ({
         {/* Progress Bar */}
         {typeof progress === 'number' && (
           <div className="w-full bg-bg-elevated h-1.5 rounded-full overflow-hidden my-2">
-            <div className="bg-accent h-full rounded-full transition-all" style={{ width: `${progress}%` }} />
+            <div className="bg-accent h-full rounded-full transition-[width] duration-[var(--dur-slow)] ease-[var(--ease-smooth)]" style={{ width: `${progress}%` }} />
           </div>
         )}
       </div>

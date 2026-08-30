@@ -98,14 +98,14 @@ const ZeroDayMarketTab: React.FC<ZeroDayMarketTabProps> = ({
           <button
             onClick={() => editProduct(item)}
             aria-label={t('admin.market.modify')}
-            className="min-h-[44px] min-w-[44px] inline-flex items-center justify-center rounded-xl bg-bg-elevated text-text-muted hover:text-accent transition-all active:scale-90"
+            className="min-h-[44px] min-w-[44px] inline-flex items-center justify-center rounded-xl bg-bg-elevated text-text-muted hover:text-accent transition-[color,transform] duration-[var(--dur-fast)] ease-[var(--ease-smooth)] active:scale-90"
           >
             <IconSearch size={18} />
           </button>
           <button
             onClick={() => void deleteProduct(item._id)}
             aria-label={t('admin.market.terminate')}
-            className="min-h-[44px] min-w-[44px] inline-flex items-center justify-center rounded-xl bg-danger/5 text-danger/60 hover:bg-danger/10 hover:text-danger transition-all active:scale-90"
+            className="min-h-[44px] min-w-[44px] inline-flex items-center justify-center rounded-xl bg-danger/5 text-danger/60 hover:bg-danger/10 hover:text-danger transition-[background-color,color,transform] duration-[var(--dur-fast)] ease-[var(--ease-smooth)] active:scale-90"
           >
             <Trash2 className="w-4.5 h-4.5" />
           </button>
@@ -129,7 +129,7 @@ const ZeroDayMarketTab: React.FC<ZeroDayMarketTabProps> = ({
       </div>
       <div className="grid grid-cols-2 gap-3 pt-2">
         <button onClick={() => editProduct(item)} className="btn-secondary py-3 active:scale-95">{t('admin.market.modify')}</button>
-        <button onClick={() => void deleteProduct(item._id)} className="py-3 rounded-xl border border-danger/20 text-danger/60 hover:bg-danger/10 hover:text-danger text-[10px] font-black uppercase tracking-widest active:scale-95 transition-all">{t('admin.market.terminate')}</button>
+        <button onClick={() => void deleteProduct(item._id)} className="py-3 rounded-xl border border-danger/20 text-danger/60 hover:bg-danger/10 hover:text-danger text-[10px] font-black uppercase tracking-widest active:scale-95 transition-[background-color,color,transform] duration-[var(--dur-fast)] ease-[var(--ease-smooth)]">{t('admin.market.terminate')}</button>
       </div>
     </div>
   );
@@ -140,7 +140,7 @@ const ZeroDayMarketTab: React.FC<ZeroDayMarketTabProps> = ({
         <ErrorState message={t('admin.market.unavailable')} title={t('admin.dataUnavailable')} />
       )}
 
-      <div ref={productFormRef} className={`rounded-2xl p-6 md:p-8 space-y-6 transition-all duration-300 border border-border/40 ${productForm.id ? 'bg-accent/5' : 'bg-bg-card'}`}>
+      <div ref={productFormRef} className={`rounded-2xl p-6 md:p-8 space-y-6 transition-[background-color] duration-[var(--dur-base)] ease-[var(--ease-smooth)] border border-border/40 ${productForm.id ? 'bg-accent/5' : 'bg-bg-card'}`}>
         <div className="flex items-center justify-between pb-4">
           <div className={`text-[10px] font-black uppercase tracking-[0.2em] flex items-center gap-2 ${productForm.id ? 'text-accent' : 'text-text-muted'}`}>{productForm.id ? <><RefreshCw className="w-4 h-4 animate-spin-slow" /> {t('admin.market.editingAsset')}: {productForm.title}</> : t('admin.market.initializeNewAsset')}</div>
           {productForm.id && <button onClick={resetProductForm} className="text-[9px] font-black text-text-muted hover:text-accent uppercase tracking-[0.2em] transition-colors border border-border/40 px-3 py-1 rounded-lg">{t('admin.market.abortProtocol')}</button>}
@@ -165,8 +165,8 @@ const ZeroDayMarketTab: React.FC<ZeroDayMarketTabProps> = ({
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 pt-4">
-          <label className="block space-y-2"><span className="text-[9px] font-black uppercase text-text-muted/60 tracking-[0.2em]">{t('admin.market.coverImage')}</span><input type="file" accept="image/*" onChange={e => setCoverFile(e.target.files?.[0] || null)} className="block w-full text-[10px] text-text-muted file:mr-4 file:py-2.5 file:px-5 file:rounded-xl file:border-0 file:bg-accent/10 file:text-[9px] file:font-black file:uppercase file:tracking-widest file:text-accent file:cursor-pointer hover:file:bg-accent/20 file:transition-all" /></label>
-          <label className="block space-y-2"><span className="text-[9px] font-black uppercase text-text-muted/60 tracking-[0.2em]">{t('admin.market.productPdf')} *</span><input type="file" accept="application/pdf" onChange={e => setProductFile(e.target.files?.[0] || null)} className="block w-full text-[10px] text-text-muted file:mr-4 file:py-2.5 file:px-5 file:rounded-xl file:border-0 file:bg-accent/10 file:text-[9px] file:font-black file:uppercase file:tracking-widest file:text-accent file:cursor-pointer hover:file:bg-accent/20 file:transition-all" /></label>
+          <label className="block space-y-2"><span className="text-[9px] font-black uppercase text-text-muted/60 tracking-[0.2em]">{t('admin.market.coverImage')}</span><input type="file" accept="image/*" onChange={e => setCoverFile(e.target.files?.[0] || null)} className="block w-full text-[10px] text-text-muted file:mr-4 file:py-2.5 file:px-5 file:rounded-xl file:border-0 file:bg-accent/10 file:text-[9px] file:font-black file:uppercase file:tracking-widest file:text-accent file:cursor-pointer hover:file:bg-accent/20 file:transition-colors" /></label>
+          <label className="block space-y-2"><span className="text-[9px] font-black uppercase text-text-muted/60 tracking-[0.2em]">{t('admin.market.productPdf')} *</span><input type="file" accept="application/pdf" onChange={e => setProductFile(e.target.files?.[0] || null)} className="block w-full text-[10px] text-text-muted file:mr-4 file:py-2.5 file:px-5 file:rounded-xl file:border-0 file:bg-accent/10 file:text-[9px] file:font-black file:uppercase file:tracking-widest file:text-accent file:cursor-pointer hover:file:bg-accent/20 file:transition-colors" /></label>
         </div>
 
         <div className="flex gap-4 pt-4">
