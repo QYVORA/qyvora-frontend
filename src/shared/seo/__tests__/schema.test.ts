@@ -62,6 +62,7 @@ describe('buildOrganization', () => {
     expect(schema['@type']).toBe('Organization');
     expect(schema.sameAs).toContain('https://x.com/qyvorasec');
     expect(schema.sameAs).toContain('https://github.com/QYVORA');
+    expect(schema.sameAs).toContain('https://www.tiktok.com/@qyvorasecurity');
     expect(schema.sameAs.some((url: string) => url.includes('whatsapp'))).toBe(false);
   });
 });

@@ -90,7 +90,7 @@ anansi target.com --modules discovery,tls,takeover`} />
   │  ANANSI  Attack Surface Intelligence Engine             │
   │  TARGET  target.com                                     │
   │  TIME    2026-06-20 10:42:01 UTC                        │
-  │  BY      QYVORA OffSec // github.com/QYVORA/qyvora-anansi-cli  │
+  │  BY      QYVORA OffSec // github.com/QYVORA/qyvora-anansi  │
   └─────────────────────────────────────────────────────────┘
 
   ══ PHASE 01 ── DISCOVERY // subdomain enumeration
@@ -182,7 +182,7 @@ anansi target.com --timeout 10     # per-request timeout in seconds`} />
         </Body>
 
         <TerminalBlock code={`# Step 1: Download the binary
-curl -L https://github.com/QYVORA/qyvora-anansi-cli/releases/latest/download/anansi-linux-amd64 -o anansi
+curl -L https://github.com/QYVORA/qyvora-anansi/releases/latest/download/anansi-linux-amd64 -o anansi
 
 # Step 2: Make it executable and install
 chmod +x anansi && sudo mv anansi /usr/local/bin/
@@ -213,7 +213,7 @@ anansi target.com`} />
           </p>
           <div className="flex flex-col sm:flex-row items-start gap-4">
             <a
-              href="https://github.com/QYVORA/qyvora-anansi-cli"
+              href="https://github.com/QYVORA/qyvora-anansi"
               target="_blank"
                rel="noopener noreferrer"
               className="inline-flex items-center gap-3 bg-accent text-on-accent font-black uppercase tracking-[0.12em] rounded-xl px-10 py-4 text-sm hover:brightness-110 active:scale-95 transition-[filter,transform] duration-[var(--dur-base)]"

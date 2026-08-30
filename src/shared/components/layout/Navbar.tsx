@@ -24,6 +24,7 @@ import {
   Bug,
   Rocket,
   Building2,
+  Radar,
   Contact,
 } from 'lucide-react';
 import { useScrollLock } from '@/core/hooks/useScrollLock';
@@ -57,9 +58,10 @@ const NAV_ITEM_LABELS: Record<string, string> = {
   terms: 'footer.termsOfService',
   anansi: 'nav.anansi',
   toha3ee: 'nav.toha3ee',
+  shaka: 'nav.shaka',
+  nzinga: 'nav.nzinga',
   jabari: 'nav.jabari',
   aksum: 'nav.aksum',
-  shaka: 'nav.shaka',
   services: 'nav.services',
 };
 
@@ -78,9 +80,10 @@ const ITEM_ICONS: Record<string, NavItemIcon> = {
   terms: FileText,
   anansi: IconNetwork,
   toha3ee: IconCode,
+  shaka: Building2,
+  nzinga: Radar,
   jabari: Bug,
   aksum: IconRank,
-  shaka: Building2,
   services: Rocket,
   cp: Contact,
   contact: Contact,

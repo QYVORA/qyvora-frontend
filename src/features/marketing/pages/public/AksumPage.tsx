@@ -34,10 +34,9 @@ const AksumPage = () => {
 
   return (
     <ToolDocPage
-      toolName="Aksum"
-      accentWord="BinarySec"
-      seoTitle="Aksum - QYVORA"
-      seoDescription="Aksum, binary security assessment & reverse-engineering framework in Go. Identification, disassembly, function discovery, dataflow-corroborated findings and honest confidence states."
+      toolName="aksum"
+      seoTitle="aksum - QYVORA"
+      seoDescription="aksum, binary security assessment & reverse-engineering framework in Go. Identification, disassembly, function discovery, dataflow-corroborated findings and honest confidence states."
       sections={DOC_SECTIONS}
       githubUrl={GITHUB_URL}
       installLabel="Install"
@@ -45,8 +44,7 @@ const AksumPage = () => {
     >
       {/* ── Hero ─────────────────────────────────────────────────────────── */}
       <ToolDocHero
-        toolName="Aksum"
-        accentWord="BinarySec"
+        toolName="aksum"
         description="Binary security assessment & reverse-engineering platform in Go, identification, disassembly, function discovery and evidence-backed findings that escalate only when independently corroborated."
         stats={[
           { label: 'Pipeline Stages', value: STAGES.length },
@@ -55,7 +53,7 @@ const AksumPage = () => {
         logo={
           <img
             src={aksumLogo}
-            alt="Aksum"
+            alt="aksum"
             width={500}
             height={500}
             className="w-full max-h-[50vh] object-contain"
@@ -87,7 +85,7 @@ const AksumPage = () => {
               <AUTHORIZED_WARNING.icon className="w-5 h-5 md:w-6 md:h-6 text-warning" />
             </div>
             <p className="text-xs md:text-sm text-text-secondary leading-relaxed font-mono">
-              Aksum reads the file you point it at and nothing else. It never executes the target and never touches a network, dynamic planning is policy-bounded architecture that refuses without an explicit consent flag, and this build ships no executor at all.
+              aksum reads the file you point it at and nothing else. It never executes the target and never touches a network, dynamic planning is policy-bounded architecture that refuses without an explicit consent flag, and this build ships no executor at all.
             </p>
           </div>
 
@@ -202,7 +200,7 @@ const AksumPage = () => {
         kicker="Architecture"
         title="Honest"
         accent="degradation"
-        description="Every stage consumes structured output from the previous one, loader, structure, disassembly, functions, graphs, dataflow, checks, validation. When a capability is missing (another CPU, another container format), Aksum says so with a typed error or degrades to strings-only RAW mode instead of guessing."
+        description="Every stage consumes structured output from the previous one, loader, structure, disassembly, functions, graphs, dataflow, checks, validation. When a capability is missing (another CPU, another container format), aksum says so with a typed error or degrades to strings-only RAW mode instead of guessing."
       >
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <div className="rounded-2xl border border-border/50 bg-bg-card p-5 md:p-6 space-y-4">
@@ -433,7 +431,7 @@ const AksumPage = () => {
             Ready to <span className="text-accent">analyze</span>?
           </h2>
           <p className="text-base text-text-secondary font-mono max-w-lg mx-auto">
-            Install Aksum and start assessing binaries from your terminal.
+            Install aksum and start assessing binaries from your terminal.
           </p>
           <button
             type="button"

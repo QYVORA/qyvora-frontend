@@ -32,7 +32,7 @@ const routeContent: Record<string, RouteContent> = {
       },
       {
         heading: 'Tools for Operators',
-        body: 'Anansi CLI runs a nine-phase attack-surface reconnaissance pipeline from the terminal. Toha3ee is a local & network security assessment framework in Go covering discovery, enumeration, credential auditing, wireless and MITM capabilities.',
+        body: 'anansi runs a nine-phase attack-surface reconnaissance pipeline from the terminal. toha3ee is a local & network security assessment framework in Go covering discovery, enumeration, credential auditing, wireless and MITM capabilities.',
       },
       {
         heading: 'Professional Services',
@@ -48,11 +48,12 @@ const routeContent: Record<string, RouteContent> = {
       { label: 'Courses', href: '/courses' },
       { label: 'Attack Labs', href: '/labs' },
       { label: 'Services', href: '/services' },
-      { label: 'Anansi CLI', href: '/anansi' },
-      { label: 'Toha3ee', href: '/toha3ee' },
-      { label: 'Jabari', href: '/jabari' },
-      { label: 'Aksum', href: '/aksum' },
-      { label: 'SHAKA', href: '/shaka' },
+      { label: 'anansi', href: '/anansi' },
+      { label: 'toha3ee', href: '/toha3ee' },
+      { label: 'shaka', href: '/shaka' },
+      { label: 'nzinga', href: '/nzinga' },
+      { label: 'jabari', href: '/jabari' },
+      { label: 'aksum', href: '/aksum' },
       { label: 'Zero Day Market', href: '/zero-day-market' },
       { label: 'QuiteRoot', href: '/quiteroot' },
       { label: 'Blog', href: '/blogs' },
@@ -504,10 +505,10 @@ const routeContent: Record<string, RouteContent> = {
     links: [{ label: 'Meet the QYVORA Team', href: '/team' }],
   },
   '/anansi': {
-    title: 'Anansi CLI | QYVORA',
-    description: 'Attack Surface Intelligence CLI: a nine-phase recon pipeline from subdomain discovery to exploit-chain analysis.',
-    h1: 'Anansi CLI',
-    lead: 'Attack Surface Intelligence from the terminal. A nine-phase recon pipeline from subdomain discovery to exploit-chain analysis.',
+    title: 'anansi | QYVORA',
+    description: 'anansi – attack surface intelligence from the terminal: a nine-phase recon pipeline from subdomain discovery to exploit-chain analysis.',
+    h1: 'anansi',
+    lead: 'anansi – attack surface intelligence from the terminal. A nine-phase recon pipeline from subdomain discovery to exploit-chain analysis.',
     sections: [
       {
         heading: 'The nine phases',
@@ -525,7 +526,7 @@ const routeContent: Record<string, RouteContent> = {
       },
       {
         heading: 'Install',
-        body: 'curl -fsSL https://raw.githubusercontent.com/QYVORA/qyvora-anansi-cli/main/install.sh | bash',
+        body: 'curl -fsSL https://raw.githubusercontent.com/QYVORA/qyvora-anansi/main/install.sh | bash',
       },
       {
         heading: 'Usage',
@@ -537,12 +538,15 @@ const routeContent: Record<string, RouteContent> = {
         ],
       },
     ],
-    links: [{ label: 'Toha3ee', href: '/toha3ee' }],
+    links: [
+      { label: 'toha3ee', href: '/toha3ee' },
+      { label: 'nzinga', href: '/nzinga' },
+    ],
   },
   '/toha3ee': {
-    title: 'Toha3ee | QYVORA',
+    title: 'toha3ee | QYVORA',
     description: 'Local & network security assessment framework written in Go: host and service discovery, enumeration, credential auditing, wireless and MITM capabilities from an interactive REPL.',
-    h1: 'Toha3ee',
+    h1: 'toha3ee',
     lead: 'Local & network security assessment framework written in Go. Ten module categories spanning recon, enumeration, OSINT, auth, web, switch, wireless, MITM and post-exploitation, driven from an interactive REPL.',
     sections: [
       {
@@ -569,12 +573,12 @@ const routeContent: Record<string, RouteContent> = {
         ],
       },
     ],
-    links: [{ label: 'Anansi CLI', href: '/anansi' }],
+    links: [{ label: 'anansi', href: '/anansi' }],
   },
   '/jabari': {
-    title: 'Jabari | QYVORA',
+    title: 'jabari | QYVORA',
     description: 'Android security assessment framework in Go: authorized USB and network (ADB) targets, non-destructive rule engine and evidence-driven reporting.',
-    h1: 'Jabari',
+    h1: 'jabari',
     lead: 'Android security assessment from the terminal. Connect via USB or Wi-Fi (ADB) to evaluate device posture, application hardening, and system exposures with reproducible evidence.',
     sections: [
       {
@@ -606,12 +610,12 @@ const routeContent: Record<string, RouteContent> = {
         ],
       },
     ],
-    links: [{ label: 'Aksum', href: '/aksum' }],
+    links: [{ label: 'aksum', href: '/aksum' }],
   },
   '/aksum': {
-    title: 'Aksum | QYVORA',
+    title: 'aksum | QYVORA',
     description: 'Binary security assessment & reverse-engineering framework in Go, identification, disassembly, function discovery, dataflow-corroborated findings and honest confidence states.',
-    h1: 'Aksum',
+    h1: 'aksum',
     lead: 'Binary security assessment from the terminal. A ten-stage pipeline from identification and disassembly to dataflow-corroborated findings, with confidence states that only escalate when independent evidence agrees.',
     sections: [
       {
@@ -647,12 +651,12 @@ const routeContent: Record<string, RouteContent> = {
         ],
       },
     ],
-    links: [{ label: 'Jabari', href: '/jabari' }],
+    links: [{ label: 'jabari', href: '/jabari' }],
   },
   '/shaka': {
-    title: 'SHAKA | QYVORA',
+    title: 'shaka | QYVORA',
     description: 'Windows & Active Directory security assessment framework in Go: domain discovery, object enumeration, relationship graphing, privilege analysis and evidence-driven reporting.',
-    h1: 'SHAKA',
+    h1: 'shaka',
     lead: 'Windows & Microsoft Active Directory security assessment from the terminal. Domain discovery, directory enumeration, relationship graphs, privilege analysis and evidence-driven findings with an offline simulator.',
     sections: [
       {
@@ -669,7 +673,7 @@ const routeContent: Record<string, RouteContent> = {
       },
       {
         heading: 'Authorization guarantee',
-        body: 'SHAKA requires explicit authorization (--authorized / -y, config, or QYVORA_AUTHORIZED=true) before probing live Active Directory infrastructure. The built-in simulator (--sim) runs completely offline without touching a live network.',
+        body: 'shaka requires explicit authorization (--authorized / -y, config, or QYVORA_AUTHORIZED=true) before probing live Active Directory infrastructure. The built-in simulator (--sim) runs completely offline without touching a live network.',
       },
       {
         heading: 'Install',
@@ -687,7 +691,52 @@ const routeContent: Record<string, RouteContent> = {
         ],
       },
     ],
-    links: [{ label: 'Aksum', href: '/aksum' }],
+    links: [
+      { label: 'aksum', href: '/aksum' },
+      { label: 'nzinga', href: '/nzinga' },
+    ],
+  },
+  '/nzinga': {
+    title: 'nzinga | QYVORA',
+    description: 'Authorized open-source intelligence (OSINT) collection, cross-source correlation, and evidence-driven reporting in Go.',
+    h1: 'nzinga',
+    lead: 'Authorized open-source intelligence from the terminal. Public-source collection, cross-source correlation, and evidence-backed reporting with an offline simulator.',
+    sections: [
+      {
+        heading: 'The seven stages',
+        bullets: [
+          'DISCOVER, validate and normalize the target, recording honest discovery hints without fabricating observations',
+          'COLLECT, run enabled public sources (crt.sh CT logs, WHOIS, infrastructure, org, relationships) with bounded concurrency',
+          'NORMALIZE, normalize source payloads into typed observations with provenance: source, observed_at, collected_at, raw_reference',
+          'CORRELATE, link observations across sources into entities and a typed relationship graph',
+          'ANALYZE, evaluate evidence-backed claims against deterministic rules (OSINT-001..004) with confidence and severity',
+          'VALIDATE, confirm every finding traces to collected evidence; no absence is ever reported as absence-proof',
+          'REPORT, render terminal tables plus schema-versioned JSON, Markdown, HTML, YAML, and JSONL event streams',
+        ],
+      },
+      {
+        heading: 'Authorization guarantee',
+        body: 'nzinga collects only from public, open sources and performs authorized reconnaissance only. Live collection requires explicit authorization (--authorized / -y, config, or QYVORA_AUTHORIZED=true); the built-in simulator (--sim) runs offline against a deterministic dataset without network activity.',
+      },
+      {
+        heading: 'Install',
+        body: 'curl -fsSL https://raw.githubusercontent.com/QYVORA/qyvora-nzinga/main/install.sh | bash',
+      },
+      {
+        heading: 'Usage',
+        bullets: [
+          'nzinga assess --sim',
+          'nzinga assess -y domain:example.com --profile standard -o json',
+          'nzinga sources list',
+          'nzinga findings -f json',
+          'nzinga relationship graph',
+        ],
+      },
+    ],
+    links: [
+      { label: 'anansi', href: '/anansi' },
+      { label: 'toha3ee', href: '/toha3ee' },
+    ],
   },
   '/cp': {
     title: 'Cyber Coin (CP) | QYVORA',
@@ -723,7 +772,7 @@ const routeContent: Record<string, RouteContent> = {
       { label: 'Hacker Protocol Bootcamp', href: '/hpb' },
       { label: 'Courses', href: '/courses' },
       { label: 'Attack Labs', href: '/labs' },
-      { label: 'Anansi CLI', href: '/anansi' },
+      { label: 'anansi', href: '/anansi' },
       { label: 'Leaderboard', href: '/leaderboard' },
     ],
   },

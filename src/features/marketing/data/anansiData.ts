@@ -28,7 +28,7 @@ export interface AnansiRelease {
   file: string;
 }
 
-const BASE = 'https://github.com/QYVORA/qyvora-anansi-cli/releases/latest/download';
+const BASE = 'https://github.com/QYVORA/qyvora-anansi/releases/latest/download';
 
 export const RELEASES: AnansiRelease[] = [
   { id: 'linux-amd64', label: 'Linux', arch: 'x86_64', file: 'anansi-linux-amd64' },
@@ -38,13 +38,13 @@ export const RELEASES: AnansiRelease[] = [
   { id: 'windows-amd64', label: 'Windows', arch: 'x86_64', file: 'anansi-windows-amd64.exe' },
 ];
 
-export const ONE_LINER = 'curl -fsSL https://raw.githubusercontent.com/QYVORA/qyvora-anansi-cli/main/install.sh | bash';
+export const ONE_LINER = 'curl -fsSL https://raw.githubusercontent.com/QYVORA/qyvora-anansi/main/install.sh | bash';
 
 export const BUILD_FROM_SOURCE = {
   requirements: 'Go 1.22+ and an active internet connection.',
   steps: [
-    { cmd: 'git clone https://github.com/QYVORA/qyvora-anansi-cli' },
-    { cmd: 'cd qyvora-anansi-cli' },
+    { cmd: 'git clone https://github.com/QYVORA/qyvora-anansi' },
+    { cmd: 'cd qyvora-anansi' },
     { cmd: './install.sh', note: 'Auto-detects your OS/arch, downloads the checksum-verified binary, or falls back to building from source. Installs to ~/.local/bin and adds it to your shell config.' },
   ],
 };
@@ -63,7 +63,7 @@ export const SOURCE_EXAMPLES: ToolSourceExample[] = [
     filename: 'main.go',
     label: 'CLI entry point',
     description: 'The binary stays intentionally thin and hands control to the Cobra command layer.',
-    code: 'package main\n\nimport "github.com/QYVORA/qyvora-anansi-cli/cmd"\n\nfunc main() {\n\tcmd.Execute()\n}',
+    code: 'package main\n\nimport "github.com/QYVORA/qyvora-anansi/cmd"\n\nfunc main() {\n\tcmd.Execute()\n}',
   },
   {
     id: 'transport',

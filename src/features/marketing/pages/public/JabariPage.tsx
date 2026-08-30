@@ -34,10 +34,9 @@ const JabariPage = () => {
 
   return (
     <ToolDocPage
-      toolName="Jabari"
-      accentWord="AndroidSec"
-      seoTitle="Jabari - QYVORA"
-      seoDescription="Jabari. Android security assessment framework in Go. USB and network (ADB) targets, a seven-stage pipeline, non-destructive rule engine and evidence-driven reporting."
+      toolName="jabari"
+      seoTitle="jabari - QYVORA"
+      seoDescription="jabari. Android security assessment framework in Go. USB and network (ADB) targets, a seven-stage pipeline, non-destructive rule engine and evidence-driven reporting."
       sections={DOC_SECTIONS}
       githubUrl={GITHUB_URL}
       installLabel="Install"
@@ -45,8 +44,7 @@ const JabariPage = () => {
     >
       {/* ── Hero ─────────────────────────────────────────────────────────── */}
       <ToolDocHero
-        toolName="Jabari"
-        accentWord="AndroidSec"
+        toolName="jabari"
         description="Android security assessment framework in Go, a seven-stage pipeline from discovery to evidence-driven reporting across USB and specified-network targets."
         stats={[
           { label: 'Pipeline Stages', value: STAGES.length },
@@ -55,7 +53,7 @@ const JabariPage = () => {
         logo={
           <img
             src={jabariLogo}
-            alt="Jabari"
+            alt="jabari"
             width={500}
             height={500}
             className="w-full max-h-[50vh] object-contain"
@@ -90,7 +88,7 @@ const JabariPage = () => {
               Every run passes an authorization gate, an interactive{' '}
               <code className="text-warning">[y/N]</code> prompt on a TTY, or{' '}
               <code className="text-warning">-y</code> / <code className="text-warning">authorized: true</code>{' '}
-              for non-interactive runs. The authorized flag is recorded on the session for the audit trail. Jabari is
+              for non-interactive runs. The authorized flag is recorded on the session for the audit trail. jabari is
               Android-centric by design: it assesses the single USB device or IP you point it at, never the
               surrounding subnet.
             </p>
@@ -444,7 +442,7 @@ const JabariPage = () => {
             Ready to <span className="text-accent">assess</span>?
           </h2>
           <p className="text-base text-text-secondary font-mono max-w-lg mx-auto">
-            Install Jabari and start assessing Android devices from your terminal.
+            Install jabari and start assessing Android devices from your terminal.
           </p>
           <button
             type="button"

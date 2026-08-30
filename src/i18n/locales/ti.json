@@ -9,7 +9,12 @@
     "hpb": "HPB",
     "events": "ዝግጅቶች",
     "services": "አገልግሎቶች",
-    "anansi": "Anansi",
+    "anansi": "anansi",
+    "toha3ee": "toha3ee",
+    "jabari": "jabari",
+    "aksum": "aksum",
+    "shaka": "shaka",
+    "nzinga": "nzinga",
     "quiteroot": "QuiteRoot",
     "market": "ገበያ",
     "blogs": "ብሎጎች",
@@ -737,12 +742,36 @@
       "emptyState": "No assets currently published."
     },
     "anansi": {
-      "title": "Anansi",
-      "titleAccent": "CLI",
+      "title": "anansi",
       "description": "Terminal-first attack surface intelligence engine. Automate discovery, probing, and takeover detection.",
-      "explore": "Explore Anansi",
+      "explore": "Explore anansi",
       "phaseLabel": "Phase",
       "quickInstall": "Quick Install"
+    },
+    "toha3ee": {
+      "title": "toha3ee",
+      "description": "Local & network security assessment framework in Go: host and service discovery, enumeration, wireless and MITM capabilities from an interactive REPL.",
+      "explore": "Explore toha3ee"
+    },
+    "jabari": {
+      "title": "jabari",
+      "description": "Android security assessment framework: authorized USB and network (ADB) targets, non-destructive rule engine and evidence-driven reporting.",
+      "explore": "Explore jabari"
+    },
+    "shaka": {
+      "title": "shaka",
+      "description": "Windows & Active Directory security assessment framework in Go: domain discovery, object enumeration, graph-modeled privilege escalation, and evidence-driven reporting.",
+      "explore": "Explore shaka"
+    },
+    "nzinga": {
+      "title": "nzinga",
+      "description": "Authorized open-source intelligence (OSINT) collection, cross-source correlation, and evidence-driven reporting in Go.",
+      "explore": "Explore nzinga"
+    },
+    "aksum": {
+      "title": "aksum",
+      "description": "Binary security assessment & reverse-engineering platform in Go: identification, disassembly, function discovery, call graphs and evidence-backed findings.",
+      "explore": "Explore aksum"
     },
     "blogs": {
       "title": "Intelligence",

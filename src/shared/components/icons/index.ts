@@ -79,6 +79,7 @@ export { default as BrandLinkedinIcon } from './BrandLinkedinIcon';
 export { default as BrandYoutubeIcon } from './BrandYoutubeIcon';
 export { default as BrandGithubIcon } from './BrandGithubIcon';
 export { default as BrandMediumIcon } from './BrandMediumIcon';
+export { default as BrandTikTokIcon } from './BrandTikTokIcon';
 
 // Course icons (vector-traced artwork, one per course)
 export {

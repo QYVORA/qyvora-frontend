@@ -38,6 +38,7 @@ const QYVORA_GITHUB_LANGUAGE_COLOR_PATH = [
   'src/features/marketing/pages/public/AnansiPage.tsx',
   'src/features/marketing/pages/public/ShakaPage.tsx',
   'src/features/marketing/pages/public/Toha3eePage.tsx',
+  'src/features/marketing/pages/public/NzingaPage.tsx',
 ];
 
 module.exports = {
