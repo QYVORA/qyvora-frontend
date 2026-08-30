@@ -87,7 +87,7 @@ function FlowNodeBox({ node }: { node: FlowNode }) {
   return (
     <div className={cn(
       NODE_SIZE,
-      'rounded-xl border flex flex-col items-center justify-center text-center px-2 transition-all',
+      'rounded-xl border flex flex-col items-center justify-center text-center px-2 transition-[border-color,background-color,color,box-shadow,transform]',
       STATUS_STYLES[node.status || 'default'],
     )}>
       {node.icon && (

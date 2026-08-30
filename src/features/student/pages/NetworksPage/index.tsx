@@ -40,7 +40,7 @@ const OSIcon = ({ os }: { os: string }) => {
 };
 
 const DeviceRow = ({ device, index, discovered }: { device: typeof DEVICES[0]; index: number; discovered: boolean }) => (
-  <div className={`grid grid-cols-[24px_1fr_auto] md:grid-cols-[24px_1fr_140px] gap-2 md:gap-4 px-4 py-3 rounded-2xl border transition-all items-center ${
+  <div className={`grid grid-cols-[24px_1fr_auto] md:grid-cols-[24px_1fr_140px] gap-2 md:gap-4 px-4 py-3 rounded-2xl border transition-[background-color,border-color] duration-[var(--dur-base)] ease-[var(--ease-smooth)] items-center ${
     discovered ? 'border-border/50 bg-bg-card hover:border-accent/50' : 'border-border/10 bg-bg-card/50 opacity-50'
   }`}>
     <span className="text-[10px] font-mono font-bold text-text-muted/40">{index + 1}</span>

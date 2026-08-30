@@ -204,6 +204,45 @@
   .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
   .no-scrollbar::-webkit-scrollbar { display: none; }
 
+  /* ── Native horizontal strips: contain overscroll so a swipe/wheel on a
+     carousel or filter row never chains into page-level horizontal panning,
+     and keep momentum-scroll on touch. Add `.scroll-x` to any intent-ional
+     native horizontal scroll row (card strips, filter pills, tab bars). ── */
+  .scroll-x {
+    overflow-x: auto;
+    overflow-y: hidden;
+    overscroll-behavior-x: contain;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Extend the same overscroll containment to every `no-scrollbar` strip so
+     swipe/wheel gestures stay confined to the strip on all devices. */
+  .no-scrollbar {
+    overscroll-behavior-x: contain;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* ── Consistent subtle scrollbar for blog/code consoles (`custom-scrollbar`) ──
+     Mirrors the `scroll-hover` palette: an accent thumb that appears on use.
+     Keeps the scrollbar visible for vertical paging but unobtrusive. */
+  .custom-scrollbar {
+    scrollbar-width: thin;
+    scrollbar-color: color-mix(in srgb, var(--color-accent) 55%, transparent) transparent;
+  }
+  .custom-scrollbar::-webkit-scrollbar { width: 8px; height: 8px; }
+  .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: color-mix(in srgb, var(--color-accent) 40%, transparent);
+    border-radius: 999px;
+    border: 2px solid transparent;
+    background-clip: padding-box;
+  }
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: var(--color-accent);
+    background-clip: padding-box;
+  }
+
   /* ─────────────────────────────────────────────────────────────────────────
      SNAP SCROLLING (desktop only)
   ───────────────────────────────────────────────────────────────────────── */

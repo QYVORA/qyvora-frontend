@@ -26,7 +26,7 @@ const DayBar = ({
     <div className="flex flex-col items-center gap-2 flex-1 min-h-0">
       <div className="relative w-full flex-1 flex justify-center min-h-[80px]">
         <div
-          className={`absolute bottom-0 w-full max-w-[28px] rounded-t-md transition-all duration-500 ${
+          className={`absolute bottom-0 w-full max-w-[28px] rounded-t-md transition-[height,background-color] duration-500 ${
             active ? 'bg-accent' : 'bg-border/20'
           }`}
           style={{ height: `${heightPercent}%` }}

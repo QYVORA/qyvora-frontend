@@ -20,7 +20,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
         className={cn(
           'w-full bg-bg-card border rounded-xl py-3 text-text-primary',
           error ? 'border-danger/60 focus:border-danger' : 'border-border focus:border-accent',
-          'placeholder:text-text-muted outline-none transition-all',
+          'placeholder:text-text-muted outline-none transition-[border-color,box-shadow]',
           'font-mono text-sm',
           icon ? 'pl-12 pr-4' : 'px-4',
           className,

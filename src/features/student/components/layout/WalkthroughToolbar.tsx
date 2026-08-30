@@ -79,7 +79,7 @@ const WalkthroughToolbar: React.FC<WalkthroughToolbarProps> = ({
       {/* Toggle button */}
       <motion.button
         onClick={() => setIsExpanded(!isExpanded)}
-        className="w-11 h-11 rounded-full border border-border/50 bg-bg-card/95 backdrop-blur-sm flex items-center justify-center text-text-secondary hover:border-accent/40 hover:text-accent active:scale-95 transition-all duration-200 shadow-lg"
+        className="w-11 h-11 rounded-full border border-border/50 bg-bg-card/95 backdrop-blur-sm flex items-center justify-center text-text-secondary hover:border-accent/40 hover:text-accent active:scale-95 transition-[border-color,color,transform] duration-[var(--dur-fast)] ease-[var(--ease-smooth)] shadow-lg"
         aria-label={isExpanded ? t('aria.closeToolbar', 'Close toolbar') : t('aria.openToolbar', 'Open toolbar')}
         whileTap={{ scale: 0.95 }}
       >
@@ -115,7 +115,7 @@ const WalkthroughToolbar: React.FC<WalkthroughToolbarProps> = ({
                     ease: [0.22, 1, 0.36, 1],
                   }}
                   onClick={() => handleButtonClick(button.onClick)}
-                  className="w-11 h-11 rounded-xl border border-border/50 bg-bg-card/95 backdrop-blur-sm flex items-center justify-center text-text-secondary hover:border-accent/40 hover:text-accent active:scale-95 transition-all duration-200 shadow-lg"
+                  className="w-11 h-11 rounded-xl border border-border/50 bg-bg-card/95 backdrop-blur-sm flex items-center justify-center text-text-secondary hover:border-accent/40 hover:text-accent active:scale-95 transition-[border-color,color,transform] duration-[var(--dur-fast)] ease-[var(--ease-smooth)] shadow-lg"
                   aria-label={typeof button.labelKey === 'string' && button.labelKey.startsWith('aria.') ? t(button.labelKey) : button.labelKey}
                   whileTap={{ scale: 0.95 }}
                 >

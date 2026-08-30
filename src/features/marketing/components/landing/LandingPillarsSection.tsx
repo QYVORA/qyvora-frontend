@@ -50,7 +50,7 @@ const LandingPillarsSection: React.FC = () => {
             >
               <Link
                 to={featured.link}
-                className="group relative block h-full card-accent bg-bg-card p-4 sm:p-8 transition-all duration-300"
+                className="group relative block h-full card-accent bg-bg-card p-4 sm:p-8 transition-[transform,box-shadow,border-color,background-color] duration-[var(--dur-base)] ease-[var(--ease-smooth)]"
               >
                 <DottedMapOverlay className="rounded-2xl" />
 
@@ -72,7 +72,7 @@ const LandingPillarsSection: React.FC = () => {
                   </p>
 
                   <div className="mt-auto flex items-center gap-3">
-                    <span className="inline-flex items-center gap-2 px-3.5 py-2 sm:px-6 sm:py-3 rounded-xl bg-accent text-[9px] sm:text-[10px] font-black uppercase tracking-widest text-on-accent transition-all group-hover:gap-3">
+                    <span className="inline-flex items-center gap-2 px-3.5 py-2 sm:px-6 sm:py-3 rounded-xl bg-accent text-[9px] sm:text-[10px] font-black uppercase tracking-widest text-on-accent transition-[gap] duration-[var(--dur-base)] ease-[var(--ease-smooth)] group-hover:gap-3">
                       <Zap className="w-3.5 h-3.5 shrink-0" />
                       {t('landing.pillars.startBootcamp')}
                       <IconArrowRight size={14} className="shrink-0" />
@@ -92,7 +92,7 @@ const LandingPillarsSection: React.FC = () => {
             >
               <Link
                 to={supporting[0].link}
-                className="group relative block h-full card-accent bg-bg-card p-3 sm:p-5 transition-all duration-300"
+                className="group relative block h-full card-accent bg-bg-card p-3 sm:p-5 transition-[transform,box-shadow,border-color,background-color] duration-[var(--dur-base)] ease-[var(--ease-smooth)]"
               >
                 <DottedMapOverlay className="rounded-2xl" />
 
@@ -130,7 +130,7 @@ const LandingPillarsSection: React.FC = () => {
             >
               <Link
                 to={supporting[1].link}
-                className="group relative block h-full card-accent bg-bg-card p-3 sm:p-5 transition-all duration-300"
+                className="group relative block h-full card-accent bg-bg-card p-3 sm:p-5 transition-[transform,box-shadow,border-color,background-color] duration-[var(--dur-base)] ease-[var(--ease-smooth)]"
               >
                 <div className="relative h-full flex flex-col">
                   <div className="flex items-center justify-between mb-2 sm:mb-3">
@@ -166,7 +166,7 @@ const LandingPillarsSection: React.FC = () => {
             >
               <Link
                 to={supporting[2].link}
-                className="group relative block h-full card-accent bg-bg-card p-3 sm:p-5 transition-all duration-300"
+                className="group relative block h-full card-accent bg-bg-card p-3 sm:p-5 transition-[transform,box-shadow,border-color,background-color] duration-[var(--dur-base)] ease-[var(--ease-smooth)]"
               >
                 <div className="relative h-full flex flex-col">
                   <div className="flex items-center justify-between mb-2 sm:mb-3">

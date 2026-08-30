@@ -98,7 +98,7 @@ const LandingMarketSection = () => {
           ) : products.length > 0 ? (
             <div className={`grid gap-4 md:gap-6 w-full ${products.length === 1 ? 'grid-cols-1 max-w-lg' : 'grid-cols-1 sm:grid-cols-2'}`}>
               {products.map((prod) => (
-                <div key={prod.id} className="group relative overflow-hidden flex flex-col card-accent bg-bg-card transition-all duration-300">
+                <div key={prod.id} className="group relative overflow-hidden flex flex-col card-accent bg-bg-card transition-[transform,box-shadow,border-color,background-color] duration-[var(--dur-base)] ease-[var(--ease-smooth)]">
                   <div className="relative aspect-[16/9] overflow-hidden bg-accent/5">
                     <AuthImage
                       src={prod.coverUrl}

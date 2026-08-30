@@ -57,7 +57,7 @@ const AuthForm: React.FC<AuthFormProps> = ({
           type="button"
           onClick={() => onModeChange('login')}
           className={cn(
-            'flex-1 py-2.5 rounded-lg text-[10px] font-bold uppercase tracking-wider transition-all',
+            'flex-1 py-2.5 rounded-lg text-[10px] font-bold uppercase tracking-wider transition-[background-color,color,box-shadow] duration-[var(--dur-fast)] ease-[var(--ease-smooth)]',
             mode === 'login'
               ? 'bg-accent text-on-accent shadow-[0_0_12px_var(--color-accent-glow)] font-black'
               : 'text-text-muted hover:text-text-primary'
@@ -69,7 +69,7 @@ const AuthForm: React.FC<AuthFormProps> = ({
           type="button"
           onClick={() => onModeChange('register')}
           className={cn(
-            'flex-1 py-2.5 rounded-lg text-[10px] font-bold uppercase tracking-wider transition-all',
+            'flex-1 py-2.5 rounded-lg text-[10px] font-bold uppercase tracking-wider transition-[background-color,color,box-shadow] duration-[var(--dur-fast)] ease-[var(--ease-smooth)]',
             mode === 'register'
               ? 'bg-accent text-on-accent shadow-[0_0_12px_var(--color-accent-glow)] font-black'
               : 'text-text-muted hover:text-text-primary'
@@ -128,7 +128,7 @@ const AuthForm: React.FC<AuthFormProps> = ({
               <button
                 type="submit"
                 disabled={isLoading}
-                className="w-full btn-primary !py-4 flex items-center justify-center gap-3 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+                className="w-full btn-primary !py-4 flex items-center justify-center gap-3 disabled:opacity-50 disabled:cursor-not-allowed transition-[filter,transform,background-color,color,border-color,box-shadow] duration-[var(--dur-base)] ease-[var(--ease-smooth)]"
               >
                 {isLoading ? (
                   <>

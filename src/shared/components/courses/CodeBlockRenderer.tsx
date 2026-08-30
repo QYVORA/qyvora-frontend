@@ -120,7 +120,7 @@ const CopyBtn: React.FC<{ text: string }> = ({ text }) => {
     <button
       type="button"
       onClick={copy}
-      className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg border text-[10px] font-bold uppercase tracking-widest transition-all ${
+      className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg border text-[10px] font-bold uppercase tracking-widest transition-[border-color,background-color,color] ${
         copied
           ? 'border-accent/50 bg-accent-dim text-accent'
           : 'border-border bg-bg text-text-muted hover:border-accent/40 hover:text-accent'
@@ -196,7 +196,7 @@ const InlineCode: React.FC<{ code: string }> = ({ code }) => {
       type="button"
       onClick={copy}
       title="Click to copy"
-      className={`group/inline inline-flex items-center gap-1 mx-0.5 px-1.5 py-px rounded-[4px] border font-mono text-[10px] leading-snug transition-all align-middle whitespace-nowrap ${
+      className={`group/inline inline-flex items-center gap-1 mx-0.5 px-1.5 py-px rounded-[4px] border font-mono text-[10px] leading-snug transition-[border-color,background-color,color] align-middle whitespace-nowrap ${
         copied
           ? 'border-accent/50 bg-accent-dim text-accent'
           : 'border-border bg-code-bg text-accent hover:border-accent/40'

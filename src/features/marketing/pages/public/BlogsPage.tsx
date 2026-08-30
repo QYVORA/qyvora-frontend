@@ -71,10 +71,10 @@ const BlogsPage = () => {
         <PublicSnapSection>
           <div className="flex flex-col justify-between flex-1 min-h-0 space-y-3">
             <div className="flex flex-col sm:flex-row gap-2.5 sm:gap-4 items-start sm:items-center justify-between shrink-0">
-              <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar flex-nowrap min-w-0 flex-1 w-full sm:w-auto">
+              <div className="flex items-center gap-1.5 scroll-x no-scrollbar flex-nowrap min-w-0 flex-1 w-full sm:w-auto">
                 <button
                   onClick={() => handleTagChange('')}
-                  className={`px-2.5 py-1 shrink-0 whitespace-nowrap rounded-lg text-[9px] font-black uppercase tracking-widest transition-all ${
+                  className={`px-2.5 py-1 shrink-0 whitespace-nowrap rounded-lg text-[9px] font-black uppercase tracking-widest transition-[background-color,color,border-color] ${
                     !activeTag ? 'bg-accent text-on-accent' : 'bg-bg-card border border-border text-text-muted hover:border-accent/50 hover:text-accent'
                   }`}
                 >
@@ -84,7 +84,7 @@ const BlogsPage = () => {
                   <button
                     key={tag}
                     onClick={() => handleTagChange(tag)}
-                    className={`px-2.5 py-1 shrink-0 whitespace-nowrap rounded-lg text-[9px] font-black uppercase tracking-widest transition-all ${
+                  className={`px-2.5 py-1 shrink-0 whitespace-nowrap rounded-lg text-[9px] font-black uppercase tracking-widest transition-[background-color,color,border-color] ${
                       activeTag === tag ? 'bg-accent text-on-accent' : 'bg-bg-card border border-border text-text-muted hover:border-accent/50 hover:text-accent'
                     }`}
                   >
@@ -100,7 +100,7 @@ const BlogsPage = () => {
                     value={query}
                     onChange={(e) => handleQueryChange(e.target.value)}
                     placeholder="Search articles..."
-                    className="w-full rounded-xl border border-border/40 bg-bg-card py-2.5 pl-9 pr-3 text-xs text-text-primary focus:border-accent outline-none transition-all"
+                    className="w-full rounded-xl border border-border/40 bg-bg-card py-2.5 pl-9 pr-3 text-xs text-text-primary focus:border-accent outline-none transition-[border-color] duration-[var(--dur-base)] ease-[var(--ease-smooth)]"
                   />
                 </div>
                 <ViewToggle value={view} onChange={setView} label="Blog view mode" />

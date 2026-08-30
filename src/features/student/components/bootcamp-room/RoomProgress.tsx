@@ -34,7 +34,7 @@ const RoomProgress: React.FC<RoomProgressProps> = ({
       </div>
       <div className="h-3 overflow-hidden rounded-full bg-accent-dim border border-border/40">
         <div
-          className="h-full bg-accent transition-all duration-700 ease-out rounded-full"
+          className="h-full bg-accent transition-[width] duration-700 ease-out rounded-full"
           style={{ width: `${totalStepsCount > 0 ? (viewedStepsCount / totalStepsCount) * 100 : 0}%` }}
           role="progressbar"
           aria-valuenow={totalStepsCount > 0 ? Math.round((viewedStepsCount / totalStepsCount) * 100) : 0}

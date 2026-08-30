@@ -168,7 +168,7 @@ const BlogPostPage: React.FC = () => {
                 <Link
                   key={other.id}
                   to={`/blogs/${other.slug}`}
-                  className="group block terminal-card rounded-2xl border border-border bg-bg-card overflow-hidden transition-all duration-500 hover:border-accent/40"
+                  className="group block terminal-card rounded-2xl border border-border bg-bg-card overflow-hidden transition-[border-color,box-shadow] duration-[var(--dur-slow)] ease-[var(--ease-smooth)] hover:border-accent/40"
                   style={{ boxShadow: 'var(--card-shimmer)' }}
                 >
                   <div className="relative aspect-[16/9] overflow-hidden bg-accent/5">
@@ -192,7 +192,7 @@ const BlogPostPage: React.FC = () => {
                     <h3 className="text-xl font-black uppercase tracking-tight text-text-primary mb-2 break-words">
                       {other.title}
                     </h3>
-                    <div className="mt-4 flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest text-accent group-hover:gap-2.5 transition-all">
+                    <div className="mt-4 flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest text-accent group-hover:gap-2.5 transition-[gap]">
                       Read <IconArrowRight size={12} />
                     </div>
                   </div>

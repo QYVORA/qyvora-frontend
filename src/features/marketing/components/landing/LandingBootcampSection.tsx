@@ -87,7 +87,7 @@ const LandingBootcampSection: React.FC = () => {
             >
               <Link
                 to={featuredHref}
-                className="group relative block h-full card-accent bg-bg-card transition-all duration-300 overflow-hidden"
+                className="group relative block h-full card-accent bg-bg-card transition-[transform,box-shadow,border-color,background-color] duration-[var(--dur-base)] ease-[var(--ease-smooth)] overflow-hidden"
               >
                 <div className="relative h-full flex flex-col sm:flex-row p-4 sm:p-8 gap-5 sm:gap-6">
                   <div className="flex-1 min-w-0 flex flex-col">
@@ -105,7 +105,7 @@ const LandingBootcampSection: React.FC = () => {
                     </p>
 
                     <div className="mt-auto flex items-center gap-3 pt-4 sm:pt-6">
-                      <span className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-bg text-[10px] font-black uppercase tracking-widest text-accent transition-all group-hover:gap-3">
+                      <span className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-bg text-[10px] font-black uppercase tracking-widest text-accent transition-[gap] duration-[var(--dur-base)] ease-[var(--ease-smooth)] group-hover:gap-3">
                         {t('landing.bootcamp.startPhase')} {featured.id}
                         <IconArrowRight size={14} />
                       </span>
@@ -137,7 +137,7 @@ const LandingBootcampSection: React.FC = () => {
                 >
                   <Link
                     to={supportHref}
-                    className="group relative block h-full card-accent bg-bg-card p-3 sm:p-5 transition-all duration-300 overflow-hidden"
+                    className="group relative block h-full card-accent bg-bg-card p-3 sm:p-5 transition-[transform,box-shadow,border-color,background-color] duration-[var(--dur-base)] ease-[var(--ease-smooth)] overflow-hidden"
                   >
                     <div className="relative h-full flex flex-row items-stretch gap-3 sm:gap-4">
                       <div className="flex-1 min-w-0 flex flex-col">
@@ -191,7 +191,7 @@ const LandingBootcampSection: React.FC = () => {
                   <Link
                     to={mobileHref}
                     aria-label={t(`landing.bootcamp.phases.${mobilePhase.id}.name`)}
-                    className="group relative block w-full card-accent bg-bg-card overflow-hidden transition-all duration-300"
+                    className="group relative block w-full card-accent bg-bg-card overflow-hidden transition-[transform,box-shadow,border-color,background-color] duration-[var(--dur-base)] ease-[var(--ease-smooth)]"
                   >
                     {/* Avatar as the card's visual header */}
                     <div className="relative h-[150px] sm:h-[180px] flex items-end justify-center border-b border-border/50 bg-bg-elevated/40 overflow-hidden">
@@ -212,7 +212,7 @@ const LandingBootcampSection: React.FC = () => {
                         {t(`landing.bootcamp.phases.${mobilePhase.id}.desc`)}
                       </p>
                       <div className="mt-3 flex items-center justify-between">
-                        <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-xl bg-bg text-[9px] font-black uppercase tracking-widest text-accent transition-all group-hover:gap-2">
+                        <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-xl bg-bg text-[9px] font-black uppercase tracking-widest text-accent transition-[gap] duration-[var(--dur-base)] ease-[var(--ease-smooth)] group-hover:gap-2">
                           {t('landing.bootcamp.startPhase')} {mobilePhase.id}
                           <IconArrowRight size={11} />
                         </span>
@@ -240,7 +240,7 @@ const LandingBootcampSection: React.FC = () => {
                   className={`min-h-[24px] min-w-[24px] flex items-center justify-center p-0 rounded-full`}
                 >
                   <span
-                    className={`h-1.5 rounded-full transition-all duration-300 ${
+                    className={`h-1.5 rounded-full transition-[width,background-color] duration-[var(--dur-base)] ease-[var(--ease-smooth)] ${
                       i === phaseIndex ? 'w-5 bg-accent' : 'w-1.5 bg-text-muted/30'
                     }`}
                   />

@@ -39,7 +39,7 @@ export function KillChainDiagram({ currentPhaseIndex = -1, completedPhaseIds = [
           return (
             <div key={phase.id} className="flex items-center">
               <div className={cn(
-                'flex items-center gap-2 px-3 py-2 rounded-xl border transition-all',
+                'flex items-center gap-2 px-3 py-2 rounded-xl border transition-[border-color,background-color,color]',
                 isCompleted ? 'border-green-400/40 bg-green-400/10 text-green-400' :
                 isCurrent ? 'border-yellow-400/40 bg-yellow-400/10 text-yellow-400' :
                 'border-border/50 bg-bg-elevated text-text-secondary',
@@ -94,7 +94,7 @@ export function KillChainDiagramSimple({ phases, currentPhaseIndex = -1, complet
           return (
             <div key={phase} className="flex items-center">
               <div className={cn(
-                'flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg border transition-all',
+                'flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg border transition-[border-color,background-color,color]',
                 isCompleted ? 'border-accent/40 bg-accent/10 text-accent' :
                 isCurrent ? 'border-yellow-400/40 bg-yellow-400/10 text-yellow-400' :
                 'border-border/50 bg-bg-elevated text-text-secondary',

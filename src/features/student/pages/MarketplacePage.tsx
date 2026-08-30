@@ -141,7 +141,7 @@ const Marketplace: React.FC = () => {
         <div className="flex flex-col sm:flex-row items-start gap-4 sm:items-center flex-wrap max-w-full px-4 md:px-0">
           {tab === 'market' && (
             <div className="relative w-full sm:w-auto">
-              <input id="marketplace-search" type="text" value={query} onChange={(e) => setQuery(e.target.value)} placeholder={t('student.marketplace.searchPlaceholder')} className="w-full sm:w-64 rounded-xl border border-border/40 bg-bg-card py-3 pl-12 pr-4 text-sm text-text-primary transition-all focus:border-accent outline-none shadow-sm" />
+              <input id="marketplace-search" type="text" value={query} onChange={(e) => setQuery(e.target.value)} placeholder={t('student.marketplace.searchPlaceholder')} className="w-full sm:w-64 rounded-xl border border-border/40 bg-bg-card py-3 pl-12 pr-4 text-sm text-text-primary transition-[border-color] duration-[var(--dur-base)] ease-[var(--ease-smooth)] focus:border-accent outline-none shadow-sm" />
               <label htmlFor="marketplace-search"><Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4.5 h-4.5 text-text-muted pointer-events-none" /></label>
             </div>
           )}
@@ -151,7 +151,7 @@ const Marketplace: React.FC = () => {
         <div className="flex items-center gap-1 px-4 md:px-0">
           <button
             onClick={() => setTab('market')}
-            className={`px-5 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all ${
+            className={`px-5 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest transition-[background-color,color,border-color] duration-[var(--dur-fast)] ease-[var(--ease-smooth)] ${
               tab === 'market'
                 ? 'bg-accent text-on-accent border border-accent'
                 : 'text-text-muted hover:text-text-primary border border-border/40'
@@ -162,7 +162,7 @@ const Marketplace: React.FC = () => {
           </button>
           <button
             onClick={() => setTab('history')}
-            className={`px-5 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all ${
+            className={`px-5 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest transition-[background-color,color,border-color] duration-[var(--dur-fast)] ease-[var(--ease-smooth)] ${
               tab === 'history'
                 ? 'bg-accent text-on-accent border border-accent'
                 : 'text-text-muted hover:text-text-primary border border-border/40'
@@ -186,7 +186,7 @@ const Marketplace: React.FC = () => {
                 const hasPurchased = purchased.has(id);
                 return (
                   <motion.div key={id || idx} initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.45, delay: idx * 0.08, ease: [0.16, 1, 0.3, 1] }}>
-                    <div className="group flex flex-col overflow-hidden w-full card-accent bg-bg-card transition-all duration-300">
+                    <div className="group flex flex-col overflow-hidden w-full card-accent bg-bg-card transition-[transform,box-shadow,border-color,background-color] duration-[var(--dur-base)] ease-[var(--ease-smooth)]">
                       <div className="relative aspect-[16/9] overflow-hidden bg-accent/5">
                         <AuthImage
                           src={prod.coverUrl}
@@ -214,9 +214,9 @@ const Marketplace: React.FC = () => {
                              {prod.isFree ? <span className="text-[9px] sm:text-[10px] font-black uppercase tracking-widest text-accent">{t('student.marketplace.freeAccess')}</span> : <><CpLogo className="h-4 w-4" /><span className="font-mono text-sm font-black text-text-primary">{Number(prod.cpPrice || 0).toLocaleString()}</span></>}
                           </div>
                           {(hasPurchased || prod.isFree) ? (
-                            <button onClick={() => handleDownload(prod)} disabled={downloading === id} className="px-3 py-1.5 rounded-lg text-[9px] sm:text-[10px] md:text-xs font-black uppercase tracking-widest bg-accent text-on-accent transition-all duration-200 hover:brightness-110 active:scale-95 disabled:opacity-50 flex items-center gap-1.5">{downloading === id ? <Loader2 className="h-3 w-3 animate-spin" /> : <Download className="h-3 w-3" />} {t('student.marketplace.download')}</button>
+                            <button onClick={() => handleDownload(prod)} disabled={downloading === id} className="px-3 py-1.5 rounded-lg text-[9px] sm:text-[10px] md:text-xs font-black uppercase tracking-widest bg-accent text-on-accent transition-[filter,transform] duration-[var(--dur-fast)] ease-[var(--ease-smooth)] hover:brightness-110 active:scale-95 disabled:opacity-50 flex items-center gap-1.5">{downloading === id ? <Loader2 className="h-3 w-3 animate-spin" /> : <Download className="h-3 w-3" />} {t('student.marketplace.download')}</button>
                           ) : (
-                            <button onClick={() => handlePurchase(prod)} disabled={purchasing === id} className={`px-3 py-1.5 rounded-lg text-[9px] sm:text-[10px] md:text-xs font-black uppercase tracking-widest bg-accent text-on-accent transition-all duration-200 hover:brightness-110 active:scale-95 disabled:opacity-50 flex items-center gap-1.5 ${shakePurchase === id ? 'animate-shake-x' : ''}`} onAnimationEnd={() => setShakePurchase(null)}>{purchasing === id ? <Loader2 className="h-3 w-3 animate-spin" /> : <><ShoppingBag className="h-3 w-3" /> {t('student.marketplace.unlock')}</>}</button>
+                            <button onClick={() => handlePurchase(prod)} disabled={purchasing === id} className={`px-3 py-1.5 rounded-lg text-[9px] sm:text-[10px] md:text-xs font-black uppercase tracking-widest bg-accent text-on-accent transition-[filter,transform] duration-[var(--dur-fast)] ease-[var(--ease-smooth)] hover:brightness-110 active:scale-95 disabled:opacity-50 flex items-center gap-1.5 ${shakePurchase === id ? 'animate-shake-x' : ''}`} onAnimationEnd={() => setShakePurchase(null)}>{purchasing === id ? <Loader2 className="h-3 w-3 animate-spin" /> : <><ShoppingBag className="h-3 w-3" /> {t('student.marketplace.unlock')}</>}</button>
                           )}
                         </div>
                       </div>
@@ -263,7 +263,7 @@ const Marketplace: React.FC = () => {
                     <div className="px-5 py-4 flex justify-center">
                       <button
                         onClick={() => setVisibleCount((prev) => prev + PAGE_SIZE)}
-                        className="px-4 py-2 bg-bg border border-border rounded-lg text-xs font-bold text-text-primary transition-all"
+                        className="px-4 py-2 bg-bg border border-border rounded-lg text-xs font-bold text-text-primary transition-colors"
                       >
                         {t('student.marketplace.loadMore', { count: txRows.length - visibleCount })}
                       </button>

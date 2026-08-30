@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { IconLock, IconEye, IconEyeOff } from '@/shared/components/icons';
 import { cn } from '@/shared/utils/cn';
 
-const INPUT_BASE = 'w-full bg-bg-card border border-border rounded-xl py-3 pl-12 pr-12 text-text-primary placeholder:text-text-muted focus:border-accent outline-none transition-all font-mono text-sm';
+const INPUT_BASE = 'w-full bg-bg-card border border-border rounded-xl py-3 pl-12 pr-12 text-text-primary placeholder:text-text-muted focus:border-accent outline-none transition-[border-color] duration-[var(--dur-base)] ease-[var(--ease-smooth)] font-mono text-sm';
 
 interface PasswordInputProps {
   id?: string;

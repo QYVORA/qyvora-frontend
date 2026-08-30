@@ -53,7 +53,7 @@ const StatCard = ({
 
   return (
     <Tag
-      className={`card-accent bg-bg-card p-5 transition-all duration-200 ${
+      className={`card-accent bg-bg-card p-5 transition-[border-color,box-shadow,transform] duration-[var(--dur-base)] ease-[var(--ease-smooth)] ${
         accent ? 'border-accent/55' : ''
       } ${onClick || href ? 'cursor-pointer hover:shadow-sm active:scale-[0.98]' : ''} ${className ?? ''}`}
       {...hrefProps}

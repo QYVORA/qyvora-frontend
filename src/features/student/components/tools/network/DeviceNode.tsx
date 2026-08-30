@@ -23,7 +23,7 @@ const DeviceNode: React.FC<NodeProps> = ({ data, selected, id }) => {
           so ReactFlow measures edge endpoints against the device silhouette,
           not the taller label stack (edges used to float off the hardware). */}
       <div
-        className={`relative flex items-center justify-center transition-all duration-150 ${
+        className={`relative flex items-center justify-center transition-[transform] duration-150 ${
           selected ? 'scale-105' : ''
         }`}
       >
@@ -38,7 +38,7 @@ const DeviceNode: React.FC<NodeProps> = ({ data, selected, id }) => {
               id={iface.id}
               type="source"
               position={pos.position}
-              className={`!w-3 !h-3 !border-transparent transition-all duration-150 ${
+              className={`!w-3 !h-3 !border-transparent transition-[background-color,border-color] duration-150 ${
                 hovered
                   ? '!bg-accent/20 !border-accent/50'
                   : '!bg-transparent !border-transparent'

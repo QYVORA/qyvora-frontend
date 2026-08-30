@@ -88,7 +88,7 @@ const LandingServicesSection: React.FC = () => {
 
                     <button
                       onClick={() => openServiceRequestModal(service.tier)}
-                      className={`mt-auto inline-flex items-center justify-center gap-2 py-3 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all active:scale-[0.98] ${
+                      className={`mt-auto inline-flex items-center justify-center gap-2 py-3 rounded-xl text-[10px] font-black uppercase tracking-widest transition-[filter,transform,background-color,color,border-color,box-shadow] duration-[var(--dur-base)] ease-[var(--ease-smooth)] active:scale-[0.98] ${
                         service.featured
                           ? 'bg-accent text-on-accent'
                           : 'btn-primary !border-accent/30'
@@ -115,7 +115,7 @@ const LandingServicesSection: React.FC = () => {
               transition={{ duration: 0.5, delay: 0, ease: [0.16, 1, 0.3, 1] }}
               className="lg:col-span-2 lg:row-span-2"
             >
-              <div className="group relative h-full card-accent bg-bg-card p-4 sm:p-8 transition-all duration-300 flex flex-col">
+              <div className="group relative h-full card-accent bg-bg-card p-4 sm:p-8 transition-[transform,box-shadow,border-color,background-color] duration-[var(--dur-base)] ease-[var(--ease-smooth)] flex flex-col">
                 <DottedMapOverlay className="rounded-2xl" />
                 <div className="relative flex flex-col flex-1 min-h-0">
                 <div className="flex items-center gap-2 mb-3 sm:mb-6">
@@ -144,7 +144,7 @@ const LandingServicesSection: React.FC = () => {
                 <div className="mt-auto flex items-center gap-3">
                   <button
                     onClick={() => openServiceRequestModal(featured.tier)}
-                    className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-accent text-[10px] font-black uppercase tracking-widest text-on-accent transition-all active:scale-[0.98]"
+                    className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-accent text-[10px] font-black uppercase tracking-widest text-on-accent transition-[transform] duration-[var(--dur-base)] ease-[var(--ease-smooth)] active:scale-[0.98]"
                   >
                     <IconShield size={14} />
                      {t('landing.services.requestAssessment')}
@@ -163,7 +163,7 @@ const LandingServicesSection: React.FC = () => {
               transition={{ duration: 0.5, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
               className="lg:col-span-2"
             >
-              <div className="group relative h-full card-accent bg-bg-card p-3 sm:p-5 transition-all duration-300 flex flex-col">
+              <div className="group relative h-full card-accent bg-bg-card p-3 sm:p-5 transition-[transform,box-shadow,border-color,background-color] duration-[var(--dur-base)] ease-[var(--ease-smooth)] flex flex-col">
                 <DottedMapOverlay className="rounded-2xl" />
                 <div className="relative flex flex-col flex-1 min-h-0">
                 <span className="text-[9px] font-black uppercase tracking-widest text-text-muted block mb-1">{supporting[0].subtitle}</span>
@@ -186,7 +186,7 @@ const LandingServicesSection: React.FC = () => {
                 <div className="mt-auto pt-2 sm:pt-3">
                   <button
                     onClick={() => openServiceRequestModal(supporting[0].tier)}
-                    className="w-full py-2.5 sm:py-3 rounded-xl text-[10px] font-black uppercase tracking-[0.15em] transition-all active:scale-[0.98] flex items-center justify-center gap-2 btn-primary !border-accent/30"
+                    className="w-full py-2.5 sm:py-3 rounded-xl text-[10px] font-black uppercase tracking-[0.15em] transition-[filter,transform,background-color,color,border-color,box-shadow] duration-[var(--dur-base)] ease-[var(--ease-smooth)] active:scale-[0.98] flex items-center justify-center gap-2 btn-primary !border-accent/30"
                   >
                      {t('landing.services.requestAssessment')}
                     <IconArrowRight size={12} />
@@ -204,7 +204,7 @@ const LandingServicesSection: React.FC = () => {
               transition={{ duration: 0.5, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
               className="lg:col-span-2"
             >
-              <div className="group relative h-full card-accent bg-bg-card p-3 sm:p-5 transition-all duration-300 flex flex-col">
+              <div className="group relative h-full card-accent bg-bg-card p-3 sm:p-5 transition-[transform,box-shadow,border-color,background-color] duration-[var(--dur-base)] ease-[var(--ease-smooth)] flex flex-col">
                 <DottedMapOverlay className="rounded-2xl" />
                 <div className="relative flex flex-col flex-1 min-h-0">
                 <span className="text-[9px] font-black uppercase tracking-widest text-text-muted block mb-1">{supporting[1].subtitle}</span>
@@ -227,7 +227,7 @@ const LandingServicesSection: React.FC = () => {
                 <div className="mt-auto pt-2 sm:pt-3">
                   <button
                     onClick={() => openServiceRequestModal(supporting[1].tier)}
-                    className="w-full py-2.5 sm:py-3 rounded-xl text-[10px] font-black uppercase tracking-[0.15em] transition-all active:scale-[0.98] flex items-center justify-center gap-2 btn-primary !border-accent/30"
+                    className="w-full py-2.5 sm:py-3 rounded-xl text-[10px] font-black uppercase tracking-[0.15em] transition-[filter,transform,background-color,color,border-color,box-shadow] duration-[var(--dur-base)] ease-[var(--ease-smooth)] active:scale-[0.98] flex items-center justify-center gap-2 btn-primary !border-accent/30"
                   >
                      {t('landing.services.requestAssessment')}
                     <IconArrowRight size={12} />
@@ -251,7 +251,7 @@ const LandingServicesSection: React.FC = () => {
               tabIndex={0}
               onClick={() => openServiceRequestModal('Custom Inquiry')}
               onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openServiceRequestModal('Custom Inquiry'); } }}
-              className="group relative flex flex-col sm:flex-row items-start gap-4 p-4 sm:p-6 card-accent bg-bg-card cursor-pointer transition-all"
+              className="group relative flex flex-col sm:flex-row items-start gap-4 p-4 sm:p-6 card-accent bg-bg-card cursor-pointer transition-[transform,box-shadow,border-color,background-color] duration-[var(--dur-base)] ease-[var(--ease-smooth)]"
             >
               <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl border border-accent/20 bg-accent/10">
                 <Building2 className="h-6 w-6 text-accent group-hover:text-accent/80 transition-colors" />

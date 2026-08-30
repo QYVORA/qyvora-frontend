@@ -146,7 +146,7 @@ const InboxTab = () => {
             return (
               <div
                 key={`${item.type}-${d.id}`}
-                className="flex items-center gap-3 px-4 py-3 rounded-xl border border-border bg-bg-card hover:border-accent/20 transition-all cursor-pointer"
+                className="flex items-center gap-3 px-4 py-3 rounded-xl border border-border bg-bg-card hover:border-accent/20 transition-[border-color] duration-[var(--dur-base)] ease-[var(--ease-smooth)] cursor-pointer"
                 onClick={() => setSelectedItem(item)}
               >
                 <div className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 ${isContact ? 'bg-accent/10' : 'bg-bg-elevated'}`}>

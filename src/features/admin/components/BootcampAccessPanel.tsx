@@ -136,7 +136,7 @@ const BootcampAccessPanel: React.FC<Props> = ({ addToast }) => {
             type="button"
             onClick={() => void patch({ unlockNext: true }, t('admin.bootcamps.moduleUnlocked', { title: nextModule.title }))}
             disabled={saving || !started}
-            className="group btn-secondary flex w-full items-center justify-between gap-4 p-4 transition-all hover:border-accent/40 hover:bg-accent-dim/20 disabled:opacity-50 md:p-5"
+            className="group btn-secondary flex w-full items-center justify-between gap-4 p-4 transition-[background-color,border-color,transform] duration-[var(--dur-base)] ease-[var(--ease-smooth)] hover:border-accent/40 hover:bg-accent-dim/20 disabled:opacity-50 md:p-5"
           >
 <div className="min-w-0 text-left">
                <div className="mb-1 text-xs font-black uppercase tracking-widest text-text-muted">{t('admin.bootcamps.unlockNextPhase')}</div>

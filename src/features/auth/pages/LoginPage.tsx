@@ -175,7 +175,7 @@ const LoginPage: React.FC = () => {  const { t } = useTranslation();
                 <button
                   type="submit"
                   disabled={isLoading}
-                  className="w-full bg-bg-card border border-border text-text-primary hover:border-accent/40 active:scale-[0.98] !rounded-xl !py-4 flex items-center justify-center gap-3 disabled:opacity-50 text-[10px] font-black uppercase tracking-widest transition-all"
+                  className="w-full bg-bg-card border border-border text-text-primary hover:border-accent/40 active:scale-[0.98] !rounded-xl !py-4 flex items-center justify-center gap-3 disabled:opacity-50 text-[10px] font-black uppercase tracking-widest transition-[border-color,transform] duration-[var(--dur-base)] ease-[var(--ease-smooth)]"
                 >
                   {isLoading ? (
                     <>

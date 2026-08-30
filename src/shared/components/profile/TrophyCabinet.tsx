@@ -74,7 +74,7 @@ const TrophyCabinet: React.FC<TrophyCabinetProps> = ({ profile, className = '' }
               transition={{ duration: prefersReduced ? 0 : 0.3, delay: prefersReduced ? 0 : idx * 0.05 }}
               className={`
                 relative flex flex-col items-center text-center p-4 rounded-xl border
-                transition-all duration-300 hover:scale-[1.02] cursor-default
+                transition-[transform,background-color,border-color,color,box-shadow] duration-[var(--dur-base)] hover:scale-[1.02] cursor-default
                 ${styles.border} ${styles.bg} ${styles.glow}
               `}
             >

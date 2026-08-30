@@ -66,7 +66,7 @@ const CompetitivePage = () => {
             <button
               key={p.key}
               onClick={() => handlePeriodChange(p.key)}
-              className={`px-5 py-2.5 rounded-xl text-xs font-black uppercase tracking-wider transition-all duration-300 ${
+              className={`px-5 py-2.5 rounded-xl text-xs font-black uppercase tracking-wider transition-[background-color,color,border-color] duration-[var(--dur-base)] ease-[var(--ease-smooth)] ${
                 period === p.key
                   ? 'bg-accent text-on-accent'
                   : 'bg-bg-card border border-border text-text-muted hover:border-accent/50 hover:text-accent'
@@ -125,7 +125,7 @@ const CompetitivePage = () => {
                 <button
                   onClick={() => loadMore(period)}
                   disabled={loadingMore}
-                  className="px-6 py-2.5 rounded-xl text-xs font-black uppercase tracking-widest border border-border/50 bg-bg-card text-text-muted hover:border-accent/50 hover:text-accent transition-all disabled:opacity-50"
+                  className="px-6 py-2.5 rounded-xl text-xs font-black uppercase tracking-widest border border-border/50 bg-bg-card text-text-muted hover:border-accent/50 hover:text-accent transition-[border-color,color] duration-[var(--dur-base)] ease-[var(--ease-smooth)] disabled:opacity-50"
                 >
                   {loadingMore ? t('student.competitive.loadingMore') : t('student.competitive.showMore')}
                 </button>

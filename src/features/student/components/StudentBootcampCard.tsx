@@ -38,13 +38,13 @@ const StudentBootcampCard: React.FC<Props> = ({ data, index = 0, onEnroll, onLoc
   const { id, title, description, level, duration, priceLabel, progress, isEnrolled, isLocked } = data;
   const isComplete = progress === 100;
 
-  const cardClasses = `relative aspect-square rounded-2xl border border-border/50 bg-bg-card p-4 md:p-5 transition-all duration-300 flex flex-col text-left ${
+  const cardClasses = `relative aspect-square rounded-2xl border border-border/50 bg-bg-card p-4 md:p-5 transition-[transform,box-shadow,border-color] duration-[var(--dur-base)] ease-[var(--ease-smooth)] flex flex-col text-left ${
     isLocked
       ? 'opacity-40 cursor-default'
       : 'hover:border-accent/50'
   }`;
 
-  const BtnBase = 'px-3 py-1.5 rounded-lg text-[9px] sm:text-[10px] md:text-xs font-black uppercase tracking-widest bg-accent text-on-accent transition-all duration-200 group-hover/card:brightness-110 group-active:scale-95';
+  const BtnBase = 'px-3 py-1.5 rounded-lg text-[9px] sm:text-[10px] md:text-xs font-black uppercase tracking-widest bg-accent text-on-accent transition-[filter,transform] duration-[var(--dur-fast)] ease-[var(--ease-smooth)] group-hover/card:brightness-110 group-active:scale-95';
 
   const inner = (
     <>
@@ -96,7 +96,7 @@ const StudentBootcampCard: React.FC<Props> = ({ data, index = 0, onEnroll, onLoc
             <span className="text-[8px] font-mono text-text-muted">{progress}%</span>
           </div>
           <div className="h-1.5 bg-bg-elevated rounded-full overflow-hidden">
-            <div className="h-full bg-accent transition-all duration-700" style={{ width: `${progress}%` }} />
+            <div className="h-full bg-accent transition-[width] duration-700" style={{ width: `${progress}%` }} />
           </div>
         </div>
       )}

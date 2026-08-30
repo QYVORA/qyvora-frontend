@@ -149,7 +149,7 @@ const LearningOverviewCard: React.FC<LearningOverviewCardProps> = ({
       {typeof progress === 'number' && (
         <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-bg-elevated">
           <div
-            className="h-full rounded-full bg-accent transition-all duration-700"
+            className="h-full rounded-full bg-accent transition-[width] duration-700"
             style={{ width: `${Math.min(progress, 100)}%` }}
           />
         </div>

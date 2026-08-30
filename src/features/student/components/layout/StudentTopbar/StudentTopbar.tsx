@@ -263,7 +263,7 @@ const StudentTopbar = () => {
               </div>
               {courseMeta && (
                 <div className="h-1 bg-bg-elevated">
-                  <div className="h-full bg-accent transition-all duration-500" style={{ width: `${courseMeta.progress}%` }} />
+                  <div className="h-full bg-accent transition-[width] duration-500" style={{ width: `${courseMeta.progress}%` }} />
                 </div>
               )}
             </div>

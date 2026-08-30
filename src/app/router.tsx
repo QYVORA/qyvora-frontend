@@ -408,7 +408,7 @@ export const AppRouter = () => {
         type="button"
         onClick={() => setDobiaOverride(!dobiaVisible)}
         aria-label={t(dobiaVisible ? 'aria.dobiaDismiss' : 'aria.dobiaSummon')}
-        className="fixed bottom-4 right-4 z-[50] w-11 h-11 aspect-square shrink-0 rounded-full border border-border/50 bg-bg-card text-text-secondary hover:text-accent hover:border-accent/40 active:scale-95 flex items-center justify-center transition-all duration-200 shadow-lg"
+        className="fixed bottom-4 right-4 z-[50] w-11 h-11 aspect-square shrink-0 rounded-full border border-border/50 bg-bg-card text-text-secondary hover:text-accent hover:border-accent/40 active:scale-95 flex items-center justify-center transition-[color,border-color,transform] duration-[var(--dur-fast)] ease-[var(--ease-smooth)] shadow-lg"
       >
         {dobiaVisible ? <X size={18} /> : <Bot size={20} />}
       </button>

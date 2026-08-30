@@ -121,7 +121,7 @@ export function PasswordCracker({ hashes, wordlist }: PasswordCrackerProps) {
             <span>{progress}%</span>
           </div>
           <div className="h-1.5 rounded-full bg-bg-elevated overflow-hidden">
-            <div className="h-full rounded-full bg-accent transition-all duration-100" style={{ width: `${progress}%` }} />
+            <div className="h-full rounded-full bg-accent transition-[width] duration-100" style={{ width: `${progress}%` }} />
           </div>
           {currentWord && (
             <p className="text-[10px] font-mono text-text-muted mt-1">

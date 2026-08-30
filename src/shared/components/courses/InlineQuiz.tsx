@@ -137,7 +137,7 @@ const InlineQuiz: React.FC<InlineQuizProps> = ({
         aria-valuemax={questions.length}
         aria-label={t('components.quiz.progress', { defaultValue: 'Quiz progress' })}
       >
-        <div className="h-full bg-accent transition-all duration-300" style={{ width: `${((allAnswered ? questions.length : currentQ + (selectedIdx >= 0 ? 1 : 0)) / questions.length) * 100}%` }} />
+        <div className="h-full bg-accent transition-[width] duration-[var(--dur-slow)] ease-[var(--ease-smooth)]" style={{ width: `${((allAnswered ? questions.length : currentQ + (selectedIdx >= 0 ? 1 : 0)) / questions.length) * 100}%` }} />
       </div>
 
       <div className="space-y-3">
@@ -147,7 +147,7 @@ const InlineQuiz: React.FC<InlineQuizProps> = ({
             <button
               key={idx}
               onClick={() => handleSelect(idx)}
-              className={`w-full text-left rounded-lg border px-4 py-3 text-sm transition-all ${
+              className={`w-full text-left rounded-lg border px-4 py-3 text-sm transition-[border-color,background-color,color] duration-[var(--dur-base)] ease-[var(--ease-smooth)] ${
                 selectedIdx === idx
                   ? 'border-accent bg-accent-dim text-accent font-bold'
                   : 'border-border text-text-secondary hover:border-accent/50 hover:bg-accent-dim/20'

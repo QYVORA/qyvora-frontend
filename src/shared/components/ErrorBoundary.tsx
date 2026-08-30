@@ -111,7 +111,7 @@ class ErrorBoundaryInner extends Component<Props, State> {
             <button
               type="button"
               onClick={() => window.location.reload()}
-              className="inline-flex items-center justify-center gap-2 px-5 py-2.5 border border-border text-text-muted rounded-xl text-sm font-bold uppercase tracking-widest hover:border-accent/40 hover:text-accent active:scale-[0.98] transition-all"
+              className="inline-flex items-center justify-center gap-2 px-5 py-2.5 border border-border text-text-muted rounded-xl text-sm font-bold uppercase tracking-widest hover:border-accent/40 hover:text-accent active:scale-[0.98] transition-[color,border-color,transform]"
             >
               <RefreshCw className="w-4 h-4" />
               {t?.('components.errorBoundary.reloadPage', { defaultValue: 'Refresh Page' })}
@@ -119,7 +119,7 @@ class ErrorBoundaryInner extends Component<Props, State> {
             <button
               type="button"
               onClick={() => { window.location.href = '/dashboard'; }}
-              className="inline-flex items-center justify-center gap-2 px-5 py-2.5 border border-border text-text-muted rounded-xl text-sm font-bold uppercase tracking-widest hover:border-accent/40 hover:text-accent active:scale-[0.98] transition-all"
+              className="inline-flex items-center justify-center gap-2 px-5 py-2.5 border border-border text-text-muted rounded-xl text-sm font-bold uppercase tracking-widest hover:border-accent/40 hover:text-accent active:scale-[0.98] transition-[color,border-color,transform]"
             >
               <Home className="w-4 h-4" />
               {t?.('components.errorBoundary.dashboard', { defaultValue: 'Dashboard' })}

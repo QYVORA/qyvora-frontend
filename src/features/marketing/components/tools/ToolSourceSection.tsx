@@ -144,7 +144,7 @@ const ToolSourceSection: React.FC<ToolSourceSectionProps> = ({
                 <button
                   onClick={prev}
                   aria-label="Previous example"
-                  className="w-9 h-9 rounded-full border border-border/50 bg-bg-card flex items-center justify-center text-text-secondary hover:border-accent/40 hover:text-accent active:scale-95 transition-all duration-300"
+                  className="w-9 h-9 rounded-full border border-border/50 bg-bg-card flex items-center justify-center text-text-secondary hover:border-accent/40 hover:text-accent active:scale-95 transition-[border-color,color,transform] duration-[var(--dur-fast)] ease-[var(--ease-smooth)]"
                 >
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                     <polyline points="15 18 9 12 15 6" />
@@ -153,7 +153,7 @@ const ToolSourceSection: React.FC<ToolSourceSectionProps> = ({
                 <button
                   onClick={next}
                   aria-label="Next example"
-                  className="w-9 h-9 rounded-full border border-border/50 bg-bg-card flex items-center justify-center text-text-secondary hover:border-accent/40 hover:text-accent active:scale-95 transition-all duration-300"
+                  className="w-9 h-9 rounded-full border border-border/50 bg-bg-card flex items-center justify-center text-text-secondary hover:border-accent/40 hover:text-accent active:scale-95 transition-[border-color,color,transform] duration-[var(--dur-fast)] ease-[var(--ease-smooth)]"
                 >
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                     <polyline points="9 18 15 12 9 6" />
@@ -170,7 +170,7 @@ const ToolSourceSection: React.FC<ToolSourceSectionProps> = ({
                       setCurrent(i);
                     }}
                     aria-label={`Go to example ${i + 1}`}
-                    className={`w-2 h-2 rounded-full transition-all duration-300 ${
+                    className={`w-2 h-2 rounded-full transition-[width,background-color] duration-[var(--dur-base)] ease-[var(--ease-smooth)] ${
                       i === current
                         ? 'bg-accent w-5'
                         : 'bg-border hover:bg-text-muted'

@@ -422,7 +422,7 @@ const CyberCoinPage: React.FC = () => {
                   return (
                     <Link
                       to={`/courses/${course.id}`}
-                      className="group relative overflow-hidden flex flex-col md:flex-row bg-bg-card rounded-2xl border border-border/50 transition-all duration-300 hover:border-accent/40 h-full min-h-[340px] md:min-h-[280px]"
+                      className="group relative overflow-hidden flex flex-col md:flex-row bg-bg-card rounded-2xl border border-border/50 transition-[transform,box-shadow,border-color,background-color] duration-[var(--dur-base)] ease-[var(--ease-smooth)] hover:border-accent/40 h-full min-h-[340px] md:min-h-[280px]"
                     >
                       <div className="relative flex flex-col items-start text-left p-5 sm:p-6 md:p-7 flex-1 min-w-0">
                         <div className="flex items-center gap-2 flex-wrap mb-3">
@@ -450,7 +450,7 @@ const CyberCoinPage: React.FC = () => {
                               <Zap size={12} className="shrink-0" /> {course.lessons.length || 0} lessons
                             </span>
                           </div>
-                          <span className="flex items-center gap-1 text-[10px] sm:text-[11px] font-black uppercase tracking-widest text-accent group-hover:gap-1.5 transition-all whitespace-nowrap shrink-0 min-w-0">
+                          <span className="flex items-center gap-1 text-[10px] sm:text-[11px] font-black uppercase tracking-widest text-accent group-hover:gap-1.5 transition-[gap] duration-[var(--dur-base)] ease-[var(--ease-smooth)] whitespace-nowrap shrink-0 min-w-0">
                             View Course <IconArrow size={12} className="shrink-0" />
                           </span>
                         </div>

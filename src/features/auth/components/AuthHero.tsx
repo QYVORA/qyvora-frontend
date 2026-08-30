@@ -17,7 +17,7 @@ const AuthHero: React.FC = () => {
       <div className="absolute top-6 left-6 z-20">
         <Link
           to="/"
-          className="inline-flex items-center gap-2 px-4 py-2 text-text-primary rounded-lg text-[10px] font-black uppercase tracking-[0.2em] transition-all hover:opacity-70 active:scale-95"
+          className="inline-flex items-center gap-2 px-4 py-2 text-text-primary rounded-lg text-[10px] font-black uppercase tracking-[0.2em] transition-[opacity,transform] duration-[var(--dur-fast)] ease-[var(--ease-smooth)] hover:opacity-70 active:scale-95"
         >
           <IconArrowLeft size={16} /> {t('button.backToHome')}
         </Link>

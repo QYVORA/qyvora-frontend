@@ -88,13 +88,13 @@ function Carousel<T extends { id: string }>({
         <>
           <button
             onClick={prev}
-            className="absolute left-2 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full border border-border/50 bg-bg-card flex items-center justify-center text-text-secondary hover:border-accent/40 hover:text-accent active:scale-95 transition-all duration-300 shadow-lg"
+            className="absolute left-2 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full border border-border/50 bg-bg-card flex items-center justify-center text-text-secondary hover:border-accent/40 hover:text-accent active:scale-95 transition-[color,background-color,border-color,transform] duration-[var(--dur-base)] ease-[var(--ease-smooth)] shadow-lg"
           >
             <ChevronLeft className="w-4 h-4" />
           </button>
           <button
             onClick={next}
-            className="absolute right-2 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full border border-border/50 bg-bg-card flex items-center justify-center text-text-secondary hover:border-accent/40 hover:text-accent active:scale-95 transition-all duration-300 shadow-lg"
+            className="absolute right-2 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full border border-border/50 bg-bg-card flex items-center justify-center text-text-secondary hover:border-accent/40 hover:text-accent active:scale-95 transition-[color,background-color,border-color,transform] duration-[var(--dur-base)] ease-[var(--ease-smooth)] shadow-lg"
           >
             <IconChevronRight size={16} />
           </button>

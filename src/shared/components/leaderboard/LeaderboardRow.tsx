@@ -36,7 +36,7 @@ const LeaderboardRow = ({
     <Link
       to={`/@${entry.hackerHandle}`}
       className={`
-        grid grid-cols-[36px_1fr] md:grid-cols-[48px_1fr_140px_100px_80px] gap-2 md:gap-4 px-4 md:px-6 py-4 rounded-2xl border transition-all duration-300 items-center
+        grid grid-cols-[36px_1fr] md:grid-cols-[48px_1fr_140px_100px_80px] gap-2 md:gap-4 px-4 md:px-6 py-4 rounded-2xl border transition-[filter,transform,border-color,background-color,box-shadow] duration-[var(--dur-base)] ease-[var(--ease-smooth)] items-center
         ${isCurrentUser
           ? 'border-accent/40 bg-accent-dim/10'
           : isTopThree

@@ -102,7 +102,7 @@ const StudentOnboardingModal: React.FC = () => {
             {Array.from({ length: totalSteps }).map((_, i) => (
               <div
                 key={i}
-                className={`h-1 rounded-full transition-all duration-300 ${
+                className={`h-1 rounded-full transition-[width,background-color] duration-[var(--dur-base)] ease-[var(--ease-smooth)] ${
                   i === step ? 'w-6 bg-accent' : i < step ? 'w-3 bg-accent/40' : 'w-3 bg-border'
                 }`}
               />

@@ -47,7 +47,7 @@ const SecurityTab: React.FC<SecurityTabProps> = ({ securitySummary, securityEven
         <span className="text-[9px] text-text-muted/60 font-mono">{item.createdAt ? new Date(item.createdAt).toLocaleString() : '-'}</span>
       </div>
       <div className="font-black text-text-primary uppercase tracking-tighter text-sm">{item.action}</div>
-      <div className="bg-bg px-4 py-3 rounded-xl font-mono text-[10px] text-accent/70 border border-border/40 break-all overflow-x-auto whitespace-nowrap shadow-sm">
+      <div className="bg-bg px-4 py-3 rounded-xl font-mono text-[10px] text-accent/70 border border-border/40 whitespace-nowrap overflow-x-auto no-scrollbar shadow-sm">
         {item.path || '-'}
       </div>
       <div className="flex justify-between items-center pt-2 text-[10px] font-black text-text-muted/40 uppercase tracking-widest">

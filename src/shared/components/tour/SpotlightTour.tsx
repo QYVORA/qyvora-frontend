@@ -278,7 +278,7 @@ export const SpotlightTour: React.FC<SpotlightTourProps> = ({
         top: targetRect.top - 4,
         width: targetRect.width + 8,
         height: targetRect.height + 8,
-        transition: prefersReduced ? undefined : 'all 300ms cubic-bezier(0.22, 1, 0.36, 1)',
+        transition: prefersReduced ? undefined : 'left 300ms cubic-bezier(0.22, 1, 0.36, 1), top 300ms cubic-bezier(0.22, 1, 0.36, 1), width 300ms cubic-bezier(0.22, 1, 0.36, 1), height 300ms cubic-bezier(0.22, 1, 0.36, 1)',
         boxShadow: '0 0 0 9999px rgba(0, 0, 0, 0.72), 0 0 30px rgba(6, 182, 111, 0.35)',
       }
     : undefined;

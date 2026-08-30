@@ -43,7 +43,7 @@ export const CardBase: React.FC<CardBaseProps> = ({
 }) => {
   const linkTarget = to || href;
   const base = [
-    'terminal-card group relative flex flex-col overflow-hidden rounded-2xl border bg-bg-card transition-all duration-300',
+    'terminal-card group relative flex flex-col overflow-hidden rounded-2xl border bg-bg-card transition-[border-color,box-shadow,background-color] duration-[var(--dur-base)] ease-[var(--ease-smooth)]',
     active  ? 'border-accent/60'                         : 'border-accent/50',
     muted   ? 'opacity-60 cursor-default'                : 'hover:border-accent/60',
     className,
@@ -136,7 +136,7 @@ export const CardMedia: React.FC<CardMediaProps> = ({
         {typeof imageProgress === 'number' && imageProgress > 0 && (
           <div className="absolute bottom-0 left-0 right-0 h-[3px] bg-bg/40">
             <div
-              className="h-full bg-accent transition-all duration-700"
+              className="h-full bg-accent transition-[width] duration-[var(--dur-slow)] ease-[var(--ease-smooth)]"
               style={{ width: `${imageProgress}%` }}
             />
           </div>

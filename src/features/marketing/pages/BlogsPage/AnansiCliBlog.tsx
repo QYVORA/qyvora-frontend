@@ -216,13 +216,13 @@ anansi target.com`} />
               href="https://github.com/QYVORA/qyvora-anansi-cli"
               target="_blank"
                rel="noopener noreferrer"
-              className="inline-flex items-center gap-3 bg-accent text-on-accent font-black uppercase tracking-[0.12em] rounded-xl px-10 py-4 text-sm hover:brightness-110 active:scale-95 transition-all"
+              className="inline-flex items-center gap-3 bg-accent text-on-accent font-black uppercase tracking-[0.12em] rounded-xl px-10 py-4 text-sm hover:brightness-110 active:scale-95 transition-[filter,transform] duration-[var(--dur-base)]"
             >
               <Download className="w-5 h-5" /> Download Now
             </a>
             <Link
               to="/anansi"
-              className="inline-flex items-center gap-3 border border-accent/30 text-accent font-black uppercase tracking-[0.12em] rounded-xl px-10 py-4 text-sm hover:bg-accent/5 active:scale-95 transition-all"
+              className="inline-flex items-center gap-3 border border-accent/30 text-accent font-black uppercase tracking-[0.12em] rounded-xl px-10 py-4 text-sm hover:bg-accent/5 active:scale-95 transition-[background-color,transform] duration-[var(--dur-base)]"
             >
               Learn More <Zap className="w-5 h-5" />
             </Link>

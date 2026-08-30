@@ -135,7 +135,7 @@ const ToolDocTopbar: React.FC<ToolDocTopbarProps> = ({
     <>
       <header
         className={cn(
-          'fixed top-0 left-0 w-full z-[100] transition-all duration-200',
+          'fixed top-0 left-0 w-full z-[100] transition-[background-color,border-color,backdrop-filter] duration-200',
           scrolled || isMenuOpen
             ? 'bg-bg/95 backdrop-blur-xl border-b border-border/50'
             : 'bg-bg/80 md:bg-transparent backdrop-blur-md md:backdrop-blur-none border-b border-border/20 md:border-transparent'
@@ -164,7 +164,7 @@ const ToolDocTopbar: React.FC<ToolDocTopbarProps> = ({
           </div>
 
           {/* Section links — desktop (centered) */}
-          <nav className="hidden md:flex items-center gap-1 flex-1 min-w-0 justify-center overflow-x-auto no-scrollbar mx-4">
+          <nav className="hidden md:flex items-center gap-1 flex-1 min-w-0 justify-center scroll-x no-scrollbar mx-4">
             {sections.map((s) => (
               <button
                 key={s.id}
@@ -230,7 +230,7 @@ const ToolDocTopbar: React.FC<ToolDocTopbarProps> = ({
         {!isMenuOpen && sections.length > 0 && (
           <nav
             aria-label="Document Sections"
-            className="flex md:hidden items-center gap-1.5 px-3 py-1.5 border-t border-border/20 bg-bg-card/90 backdrop-blur-md overflow-x-auto no-scrollbar"
+            className="flex md:hidden items-center gap-1.5 px-3 py-1.5 border-t border-border/20 bg-bg-card/90 backdrop-blur-md scroll-x no-scrollbar"
           >
             {sections.map((s) => (
               <button
