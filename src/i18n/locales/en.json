@@ -44,6 +44,7 @@
     "broadcast": "Broadcast",
     "audit": "Audit",
     "security": "Security",
+    "incidents": "Incidents",
     "points": "Points",
     "operator": "Operator",
     "start": "START",
@@ -2217,7 +2218,32 @@
       "inbox": "Inbox",
       "broadcast": "Broadcast",
       "audit": "Audit",
-      "security": "Security"
+      "security": "Security",
+      "incidents": "Incidents",
+      "zero_day": "Market"
+    },
+    "navGroups": {
+      "manage": "Manage",
+      "content": "Content",
+      "communications": "Communications",
+      "monitor": "Monitor"
+    },
+    "navDescs": {
+      "overview": "System overview, health and signups",
+      "users": "Manage operators and access control",
+      "bootcamps": "Phase admission and enrollment",
+      "market": "Zero-day vault catalogue",
+      "points": "Cyber Point analytics and balances",
+      "inbox": "Contact and service requests",
+      "broadcast": "Send announcements to users",
+      "audit": "Admin action log",
+      "security": "Security events and summary",
+      "incidents": "Incident tracking and resolution"
+    },
+    "sections": {
+      "platform": "Platform",
+      "health": "System health",
+      "bootcamp": "Bootcamp health"
     },
     "seoTitle": "Admin Dashboard",
     "seoDesc": "QYVORA administrator control panel.",

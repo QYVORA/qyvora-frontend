@@ -1,4 +1,5 @@
 import { Users, Activity, UserPlus, Award, BookOpen, XCircle, Server, ShieldAlert, Ban } from 'lucide-react';
+import type { ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
 import { IconCheck } from '@/shared/components/icons';
 import { StatCard, DataTable } from '@/shared/components/dashboard';
@@ -21,7 +22,7 @@ const OverviewTab = ({ data, status, onRetry }: OverviewTabProps) => {
 
   if (status === 'loading' || !data) {
     return (
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4" role="status">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3" role="status">
         {Array.from({ length: 6 }).map((_, i) => (
           <div key={i} className="rounded-2xl border border-border/50 bg-bg-card p-5 space-y-3 animate-pulse">
             <div className="h-4 w-24 bg-border/30 rounded" />
@@ -97,16 +98,31 @@ const OverviewTab = ({ data, status, onRetry }: OverviewTabProps) => {
     </div>
   );
 
+  const StatSection = ({ title, className, children }: { title: string; className: string; children: ReactNode }) => (
+    <section>
+      <h3 className="mb-2.5 text-[10px] font-black uppercase tracking-[0.25em] text-accent">{title}</h3>
+      <div className={className}>{children}</div>
+    </section>
+  );
+
   return (
-    <div className="space-y-6">
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        {[...statCards, ...healthCards].map((card) => (
+    <div className="space-y-6 md:space-y-8">
+      <StatSection title={t('admin.sections.platform')} className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+        {statCards.map((card) => (
           <StatCard key={card.label} icon={card.icon} label={card.label} value={card.value} accent={card.accent} />
         ))}
-      </div>
+      </StatSection>
+
+      {health && healthCards.length > 0 && (
+        <StatSection title={t('admin.sections.health')} className="grid grid-cols-2 gap-3 lg:grid-cols-4">
+          {healthCards.map((card) => (
+            <StatCard key={card.label} icon={card.icon} label={card.label} value={card.value} accent={card.accent} />
+          ))}
+        </StatSection>
+      )}
 
       {health?.bootcamp && (
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+        <StatSection title={t('admin.sections.bootcamp')} className="grid grid-cols-2 gap-3 lg:grid-cols-4">
           <StatCard icon={<BookOpen className="w-5 h-5 text-text-muted" />} label={t('admin.overview.bootcampEnrolled')} value={health.bootcamp.enrolled} />
           <StatCard icon={<Activity className="w-5 h-5 text-accent" />} label={t('admin.overview.bootcampActive')} value={health.bootcamp.active} accent />
           <StatCard icon={<Users className="w-5 h-5 text-text-muted" />} label={t('admin.overview.bootcampEngagement')} value={health.bootcamp.engagementCurrentModule} />
@@ -116,23 +132,22 @@ const OverviewTab = ({ data, status, onRetry }: OverviewTabProps) => {
             value={health.bootcamp.currentModuleId != null ? String(health.bootcamp.currentModuleId).padStart(2, '0') : '-'}
             accent
           />
-        </div>
+        </StatSection>
       )}
 
-      <div className="rounded-2xl border border-border/50 bg-bg-card p-5">
-        <h3 className="text-sm font-black uppercase tracking-wide text-text-primary mb-4 flex items-center gap-2">
-          <UserPlus className="w-4 h-4 text-accent" /> {t('admin.overview.recentSignups')}
-        </h3>
-        <DataTable
-          data={data.recentSignups}
-          columns={signupColumns}
-          keyExtractor={(u) => u.id}
-          mobileCard={signupMobileCard}
-          emptyTitle={t('admin.overview.noRecentSignups')}
-          pageSize={5}
-          minWidth="min-w-[400px]"
-        />
-      </div>
+      <StatSection title={t('admin.overview.recentSignups')} className="grid grid-cols-1 gap-3">
+        <div className="rounded-2xl border border-border/50 bg-bg-card p-5">
+          <DataTable
+            data={data.recentSignups}
+            columns={signupColumns}
+            keyExtractor={(u) => u.id}
+            mobileCard={signupMobileCard}
+            emptyTitle={t('admin.overview.noRecentSignups')}
+            pageSize={5}
+            minWidth="min-w-[400px]"
+          />
+        </div>
+      </StatSection>
     </div>
   );
 };
