@@ -1,52 +1,58 @@
+import type { ElementType } from 'react';
 import { Users, Database, Coins, Mail, Megaphone, OctagonAlert } from 'lucide-react';
 import { IconShield, IconClock, IconWarning, IconDashboard } from '@/shared/components/icons';
 import ADMIN_PATH from '@/shared/utils/adminPath';
 
-export const NAV_GROUPS = [
+export interface AdminNavItem {
+  labelKey: string;
+  descKey: string;
+  icon: ElementType;
+  path: string;
+  tab: string;
+}
+
+export interface AdminNavGroup {
+  titleKey: string;
+  items: AdminNavItem[];
+}
+
+export const NAV_GROUPS: AdminNavGroup[] = [
   {
-    label: 'Manage',
+    titleKey: 'admin.navGroups.manage',
     items: [
-      { label: 'Overview',    icon: IconDashboard, path: `${ADMIN_PATH}/dashboard?tab=overview`, desc: 'System overview'       },
-      { label: 'Users',       icon: Users,         path: `${ADMIN_PATH}/dashboard?tab=users`,      desc: 'Manage operators'       },
-      { label: 'Bootcamps',   icon: IconShield,    path: `${ADMIN_PATH}/dashboard?tab=bootcamps`,  desc: 'Phase control'          },
+      { labelKey: 'admin.tabs.overview', descKey: 'admin.navDescs.overview',   icon: IconDashboard, tab: 'overview',  path: `${ADMIN_PATH}/dashboard?tab=overview` },
+      { labelKey: 'admin.tabs.users',    descKey: 'admin.navDescs.users',      icon: Users,         tab: 'users',     path: `${ADMIN_PATH}/dashboard?tab=users` },
+      { labelKey: 'admin.tabs.bootcamps', descKey: 'admin.navDescs.bootcamps', icon: IconShield,    tab: 'bootcamps', path: `${ADMIN_PATH}/dashboard?tab=bootcamps` },
     ],
   },
   {
-    label: 'Content',
+    titleKey: 'admin.navGroups.content',
     items: [
-      { label: 'Market',    icon: Database, path: `${ADMIN_PATH}/dashboard?tab=zero_day`, desc: 'Zero-day vault' },
-      { label: 'Points',    icon: Coins,    path: `${ADMIN_PATH}/dashboard?tab=cp`,        desc: 'CP analytics'    },
+      { labelKey: 'admin.tabs.market', descKey: 'admin.navDescs.market', icon: Database, tab: 'zero_day', path: `${ADMIN_PATH}/dashboard?tab=zero_day` },
+      { labelKey: 'admin.tabs.points', descKey: 'admin.navDescs.points', icon: Coins,    tab: 'cp',       path: `${ADMIN_PATH}/dashboard?tab=cp` },
     ],
   },
   {
-    label: 'Communications',
+    titleKey: 'admin.navGroups.communications',
     items: [
-      { label: 'Inbox',     icon: Mail,       path: `${ADMIN_PATH}/dashboard?tab=inbox`,     desc: 'Contact & service requests' },
-      { label: 'Broadcast', icon: Megaphone,  path: `${ADMIN_PATH}/dashboard?tab=broadcast`, desc: 'Send announcements' },
+      { labelKey: 'admin.tabs.inbox',     descKey: 'admin.navDescs.inbox',     icon: Mail,      tab: 'inbox',     path: `${ADMIN_PATH}/dashboard?tab=inbox` },
+      { labelKey: 'admin.tabs.broadcast', descKey: 'admin.navDescs.broadcast', icon: Megaphone, tab: 'broadcast', path: `${ADMIN_PATH}/dashboard?tab=broadcast` },
     ],
   },
   {
-    label: 'Monitor',
+    titleKey: 'admin.navGroups.monitor',
     items: [
-      { label: 'Audit',     icon: IconClock,     path: `${ADMIN_PATH}/dashboard?tab=audit`,      desc: 'Admin action log'   },
-      { label: 'Security',  icon: IconWarning,   path: `${ADMIN_PATH}/dashboard?tab=security`,   desc: 'Security events'    },
-      { label: 'Incidents', icon: OctagonAlert,  path: `${ADMIN_PATH}/dashboard?tab=incidents`,  desc: 'Incident tracking'  },
+      { labelKey: 'admin.tabs.audit',     descKey: 'admin.navDescs.audit',     icon: IconClock,    tab: 'audit',     path: `${ADMIN_PATH}/dashboard?tab=audit` },
+      { labelKey: 'admin.tabs.security',  descKey: 'admin.navDescs.security',  icon: IconWarning,  tab: 'security',  path: `${ADMIN_PATH}/dashboard?tab=security` },
+      { labelKey: 'admin.tabs.incidents', descKey: 'admin.navDescs.incidents', icon: OctagonAlert, tab: 'incidents', path: `${ADMIN_PATH}/dashboard?tab=incidents` },
     ],
   },
 ];
 
-export const MOBILE_PRIMARY = [
-  { label: 'Overview',  icon: IconDashboard, path: `${ADMIN_PATH}/dashboard?tab=overview`  },
-  { label: 'Users',     icon: Users,         path: `${ADMIN_PATH}/dashboard?tab=users`     },
-  { label: 'Bootcamps', icon: IconShield,    path: `${ADMIN_PATH}/dashboard?tab=bootcamps` },
-  { label: 'Points',    icon: Coins,         path: `${ADMIN_PATH}/dashboard?tab=cp`        },
-];
-
-export const MOBILE_MORE = [
-  { label: 'Market',    icon: Database,      path: `${ADMIN_PATH}/dashboard?tab=zero_day` },
-  { label: 'Inbox',     icon: Mail,          path: `${ADMIN_PATH}/dashboard?tab=inbox`    },
-  { label: 'Broadcast', icon: Megaphone,     path: `${ADMIN_PATH}/dashboard?tab=broadcast` },
-  { label: 'Audit',     icon: IconClock,     path: `${ADMIN_PATH}/dashboard?tab=audit`    },
-  { label: 'Security',  icon: IconWarning,   path: `${ADMIN_PATH}/dashboard?tab=security` },
-  { label: 'Incidents', icon: OctagonAlert,  path: `${ADMIN_PATH}/dashboard?tab=incidents` },
+// Topbar quick tabs — mirror the student dashboard desktop nav pattern.
+export const ADMIN_QUICK_TABS: AdminNavItem[] = [
+  { labelKey: 'admin.tabs.overview', descKey: 'admin.navDescs.overview',  icon: IconDashboard, tab: 'overview',  path: `${ADMIN_PATH}/dashboard?tab=overview` },
+  { labelKey: 'admin.tabs.users',    descKey: 'admin.navDescs.users',     icon: Users,         tab: 'users',     path: `${ADMIN_PATH}/dashboard?tab=users` },
+  { labelKey: 'admin.tabs.bootcamps', descKey: 'admin.navDescs.bootcamps', icon: IconShield,   tab: 'bootcamps', path: `${ADMIN_PATH}/dashboard?tab=bootcamps` },
+  { labelKey: 'admin.tabs.points',   descKey: 'admin.navDescs.points',    icon: Coins,         tab: 'cp',        path: `${ADMIN_PATH}/dashboard?tab=cp` },
 ];

@@ -1,21 +1,18 @@
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import {
-  LogOut, ChevronDown,
-} from 'lucide-react';
+import { LogOut } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import { IconShield, IconDashboard, IconNotification } from '@/shared/components/icons';
+import { IconShield, IconNotification } from '@/shared/components/icons';
 import { useAuth } from '@/core/contexts/AuthContext';
 import { useToast } from '@/core/contexts/ToastContext';
 import Logo from '@/shared/components/brand/Logo';
 import ADMIN_PATH from '@/shared/utils/adminPath';
 import { useEffect, useRef, useState } from 'react';
 import api from '@/core/services/api';
-import { NAV_GROUPS, MOBILE_PRIMARY } from './navGroups';
-import { AnimatePresence, motion } from 'motion/react';
-import { useScrollLock } from '@/core/hooks/useScrollLock';
+import { ADMIN_QUICK_TABS } from './navGroups';
+import AdminNavPanel from './AdminNavPanel';
+import { NavMenuTrigger } from '@/features/student/components/layout/StudentNavPanel/StudentNavPanel';
 import NotificationsDropdown from './NotificationsDropdown';
 import MobileNotificationsSheet from './MobileNotificationsSheet';
-import MobileMoreSheet from './MobileMoreSheet';
 import type { NotificationItem } from './types';
 
 const NOTIF_PREVIEW_LIMIT = 6;
@@ -27,16 +24,52 @@ const AdminTopbar = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const currentTab = new URLSearchParams(location.search).get('tab') || 'users';
+  const currentTab = new URLSearchParams(location.search).get('tab') || 'overview';
 
   const [unreadCount, setUnreadCount] = useState(0);
   const [notifOpen, setNotifOpen] = useState(false);
   const [notifLoading, setNotifLoading] = useState(false);
   const [notificationsPreview, setNotificationsPreview] = useState<NotificationItem[]>([]);
-  const [moreOpen, setMoreOpen] = useState(false);
-  const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
+  const [navOpen, setNavOpen] = useState(false);
 
-  useScrollLock(moreOpen);
+  // Mirrors the student dashboard topbar: auto-hide while scrolling down past
+  // the first viewport, reveal again on scroll up. Layout reservation stays
+  // static — the bar slides over content, giving the admin more reading space.
+  const [topbarHidden, setTopbarHidden] = useState(false);
+  const lastScrollYRef = useRef(0);
+
+  useEffect(() => {
+    if (navOpen) setTopbarHidden(false);
+  }, [navOpen]);
+
+  useEffect(() => {
+    setTopbarHidden(false);
+    lastScrollYRef.current = window.scrollY;
+    let ticking = false;
+    const onScroll = () => {
+      if (navOpen) {
+        setTopbarHidden(false);
+        return;
+      }
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => {
+        const y = window.scrollY;
+        const prev = lastScrollYRef.current;
+        if (y <= 80) {
+          setTopbarHidden(false);
+        } else if (y > prev + 8) {
+          setTopbarHidden(true);
+        } else if (y < prev - 8) {
+          setTopbarHidden(false);
+        }
+        lastScrollYRef.current = y;
+        ticking = false;
+      });
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, [location.pathname, navOpen]);
 
   const notifRef = useRef<HTMLDivElement>(null);
 
@@ -74,7 +107,7 @@ const AdminTopbar = () => {
   };
 
   useEffect(() => { loadNotificationsSnapshot(); }, [location.pathname]);
-  useEffect(() => { setMoreOpen(false); setNotifOpen(false); setActiveDropdown(null); }, [location.search]);
+  useEffect(() => { setNotifOpen(false); setNavOpen(false); }, [location.search]);
 
   useEffect(() => {
     if (!notifOpen) return;
@@ -92,10 +125,9 @@ const AdminTopbar = () => {
     navigate(ADMIN_PATH);
   };
 
-  const isTabActive = (path: string) => {
-    const tab = new URLSearchParams(path.split('?')[1] || '').get('tab');
-    return tab === currentTab;
-  };
+  const isTabActive = (tab: string) => tab === currentTab;
+
+  const overviewPath = `${ADMIN_PATH}/dashboard?tab=overview`;
 
   return (
     <>
@@ -107,86 +139,47 @@ const AdminTopbar = () => {
         {t('aria.skipToMain')}
       </a>
 
-      <header className="fixed top-0 left-0 w-full z-[100] bg-bg border-b border-border pt-[env(safe-area-inset-top)]">
-          <div className="px-3 md:px-4 lg:px-6 h-20 md:h-24 flex items-center justify-between">
-          <div className="flex items-center gap-6 lg:gap-8">
-            <div className="flex items-center gap-3">
-              <Link to={`${ADMIN_PATH}/dashboard`}><Logo size="md" /></Link>
-              <div className="hidden sm:inline-flex items-center gap-1.5 rounded-lg border border-accent/20 bg-accent-dim/40 px-2 py-0.5">
-                <IconShield size={12} className="text-accent" />
-                <span className="text-[9px] font-black text-accent font-mono tracking-[0.2em]">{t('nav.admin')}</span>
-              </div>
-            </div>
+      <header
+        className={`fixed top-0 left-0 w-full z-[100] bg-transparent pt-[env(safe-area-inset-top)] transition-transform duration-300 ${topbarHidden ? '-translate-y-full' : 'translate-y-0'}`}
+      >
+        <div className="px-3 md:px-4 lg:px-6 h-20 md:h-24 flex items-center gap-2 md:gap-3">
+          {/* Logo + ADMIN badge */}
+          <Link to={overviewPath} className="flex items-center gap-3 flex-none shrink-0" aria-label={t('nav.adminConsole')}>
+            <Logo size="md" variant="mark" />
+            <span className="hidden sm:inline-flex items-center gap-1.5 rounded-lg border border-accent/20 bg-accent-dim/40 px-2 py-0.5">
+              <IconShield size={12} className="text-accent" />
+              <span className="text-[9px] font-black text-accent font-mono tracking-[0.2em]">{t('nav.admin')}</span>
+            </span>
+          </Link>
 
-            <nav className="hidden md:flex items-center gap-1">
-              <Link
-                to="/dashboard"
-                className="flex items-center gap-1.5 px-4 py-2.5 rounded-lg text-sm font-bold uppercase tracking-wider transition-colors text-text-muted hover:text-text-primary hover:bg-accent-dim/50 active:scale-[0.98]"
-              >
-                <IconDashboard size={16} />
-                {t('nav.operator')}
-              </Link>
-
-              {NAV_GROUPS.map((group) => (
-                <div
-                  key={group.label}
-                  className="relative h-20 md:h-24 flex items-center"
-                  onMouseEnter={() => setActiveDropdown(group.label)}
-                  onMouseLeave={() => setActiveDropdown(null)}
+          {/* Quick tabs — desktop only (lg+), flex-1 pushes right actions to the far right */}
+          <nav className="hidden lg:flex items-center justify-start flex-1 min-w-0 gap-1">
+            {ADMIN_QUICK_TABS.map((item) => {
+              const Icon = item.icon;
+              const active = isTabActive(item.tab);
+              return (
+                <Link
+                  key={item.path}
+                  to={item.path}
+                  className={`relative flex flex-col items-center gap-1.5 px-5 py-2 text-[10px] font-black uppercase tracking-widest transition-colors shrink-0 ${
+                    active ? 'text-accent' : 'text-text-secondary hover:text-text-primary active:opacity-70'
+                  }`}
                 >
-                  <button
-                    className={`flex items-center gap-1.5 px-4 py-2.5 rounded-lg text-sm font-bold uppercase tracking-wider transition-colors ${
-                      activeDropdown === group.label
-                        ? 'text-accent bg-accent-dim'
-                        : group.items.some(i => isTabActive(i.path))
-                        ? 'text-accent bg-accent-dim'
-                        : 'text-text-muted hover:text-text-primary hover:bg-accent-dim/50'
-                    }`}
-                  >
-                    {group.label}
-                    <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${activeDropdown === group.label ? 'rotate-180' : ''}`} />
-                  </button>
+                  <Icon size={32} strokeWidth={2.5} className={active ? 'text-accent' : 'text-text-secondary'} />
+                  <span>{t(item.labelKey)}</span>
+                  {active && (
+                    <span className="absolute bottom-0 left-1/4 right-1/4 h-0.5 rounded-full bg-accent" />
+                  )}
+                </Link>
+              );
+            })}
+          </nav>
 
-                  <AnimatePresence>
-                    {activeDropdown === group.label && (
-                      <motion.div
-                        initial={{ opacity: 0, y: -6 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: -6 }}
-                        transition={{ duration: 0.15 }}
-                        className="absolute top-full mt-1 w-64 bg-bg-card border border-border rounded-xl shadow-2xl p-2 z-[80] left-0 right-auto max-w-[calc(100vw-2rem)]"
-                      >
-                        <div className="space-y-1.5">
-                        {group.items.map((item) => {
-                          const active = isTabActive(item.path);
-                          return (
-                            <Link
-                              key={item.path}
-                              to={item.path}
-                              className={`flex items-center gap-3 px-4 py-3.5 rounded-lg border border-transparent transition-colors ${
-                                active
-                                  ? 'bg-accent-dim text-accent'
-                                  : 'text-text-secondary hover:bg-accent-dim/60 hover:text-text-primary'
-                              }`}
-                            >
-                              <item.icon size={20} className="flex-none" />
-                              <div>
-                                <div className="text-sm font-bold">{item.label}</div>
-                                <div className="text-[10px] text-text-muted">{item.desc}</div>
-                              </div>
-                            </Link>
-                          );
-                        })}
-                        </div>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-                </div>
-              ))}
-            </nav>
-          </div>
+          {/* Spacer — keeps right actions right-aligned on md..lg, where the desktop nav (flex-1) is hidden */}
+          <div className="hidden lg:hidden md:flex flex-1" aria-hidden="true" />
 
-          <div className="flex items-center gap-2 md:gap-3">
+          {/* Right actions */}
+          <div className="flex items-center gap-1.5 md:gap-2.5 shrink-0 ml-auto">
             <div ref={notifRef} className="relative">
               <button
                 onClick={() => { const next = !notifOpen; setNotifOpen(next); if (next) loadNotificationsSnapshot(); }}
@@ -211,22 +204,15 @@ const AdminTopbar = () => {
               />
             </div>
 
-            <MobileNotificationsSheet
-              open={notifOpen}
-              onOpenChange={setNotifOpen}
-              unreadCount={unreadCount}
-              notifLoading={notifLoading}
-              notificationsPreview={notificationsPreview}
-              markAllNotificationsRead={markAllNotificationsRead}
-            />
-
+            {/* Admin profile chip — desktop */}
             <div
-              aria-label="Admin profile"
-              className="w-11 h-11 md:w-12 md:h-12 rounded-xl border border-accent/30 bg-accent-dim flex items-center justify-center text-accent font-black text-base flex-none hover:border-accent/60 transition-colors cursor-default"
+              aria-label={t('aria.adminProfile')}
+              className="hidden md:flex w-11 h-11 md:w-12 md:h-12 rounded-xl border border-accent/30 bg-accent-dim items-center justify-center text-accent font-black text-base flex-none"
             >
               {(user?.username || user?.email || 'A').substring(0, 2).toUpperCase()}
             </div>
 
+            {/* Logout — desktop */}
             <button
               onClick={handleLogout}
               className="hidden md:flex p-3 md:p-3.5 text-text-muted hover:text-danger transition-colors rounded-xl hover:bg-danger/10 active:scale-95"
@@ -234,48 +220,24 @@ const AdminTopbar = () => {
             >
               <LogOut className="w-6 h-6" />
             </button>
+
+            {/* Single menu trigger — opens the full admin navigation panel on
+                all breakpoints (mirrors the student dashboard dropdown). */}
+            <NavMenuTrigger open={navOpen} onClick={() => setNavOpen((v) => !v)} />
           </div>
         </div>
       </header>
 
-      {moreOpen && (
-        <MobileMoreSheet
-          open={moreOpen}
-          onOpenChange={setMoreOpen}
-          user={user}
-          handleLogout={handleLogout}
-        />
-      )}
+      <MobileNotificationsSheet
+        open={notifOpen}
+        onOpenChange={setNotifOpen}
+        unreadCount={unreadCount}
+        notifLoading={notifLoading}
+        notificationsPreview={notificationsPreview}
+        markAllNotificationsRead={markAllNotificationsRead}
+      />
 
-      <nav
-        className="fixed bottom-0 left-0 w-full bg-bg-card/95 backdrop-blur-md border-t border-border flex md:hidden z-50"
-        style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}
-      >
-        {MOBILE_PRIMARY.map((item) => {
-          const active = isTabActive(item.path);
-          return (
-            <Link
-              key={item.path}
-              to={item.path}
-              className="flex-1 flex flex-col items-center justify-center gap-1 py-4 min-h-[68px] active:bg-accent-dim/30 transition-colors"
-              aria-current={active ? 'page' : undefined}
-            >
-              <item.icon size={24} className={`transition-colors ${active ? 'text-accent' : 'text-text-muted'}`} />
-              <span className={`text-[11px] font-bold uppercase tracking-wide transition-colors ${active ? 'text-accent' : 'text-text-muted'}`}>
-                {item.label}
-              </span>
-            </Link>
-          );
-        })}
-
-        <button
-          onClick={() => setMoreOpen(true)}
-          className="flex-1 flex flex-col items-center justify-center gap-1 py-4 min-h-[68px] active:bg-accent-dim/30 transition-colors"
-        >
-          <IconShield size={24} className="text-text-muted" />
-          <span className="text-[11px] font-bold uppercase tracking-wide text-text-muted">{t('nav.more')}</span>
-        </button>
-      </nav>
+      <AdminNavPanel open={navOpen} onOpenChange={setNavOpen} handleLogout={handleLogout} />
     </>
   );
 };
