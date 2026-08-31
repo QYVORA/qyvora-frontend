@@ -33,7 +33,7 @@ const LandingOpenSourceToolsSection: React.FC = () => {
   ];
 
   const logoClass =
-    'w-32 h-32 sm:w-40 sm:h-40 md:w-44 md:h-44 lg:w-52 lg:h-52 object-contain transition-transform duration-500 group-hover:scale-110';
+    'w-44 h-44 sm:w-48 sm:h-48 md:w-56 md:h-56 lg:w-60 lg:h-60 object-contain transition-transform duration-500 group-hover:scale-110';
 
   return (
     <div className="relative bg-bg min-h-dvh flex flex-col overflow-x-clip overflow-hidden" >
