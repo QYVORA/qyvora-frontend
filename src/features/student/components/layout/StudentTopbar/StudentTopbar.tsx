@@ -313,8 +313,10 @@ const StudentTopbar = () => {
               {/* Mobile CP badge + menu trigger — right-aligned */}
               <div className="md:hidden flex items-center gap-2 ml-auto">
                 <MobileCpBadge balance={cpBalance} />
-                <span data-tour-id="tour-nav-mobile">
-                  <NavMenuTrigger open={navOpen} onClick={() => setNavOpen((v) => !v)} />
+                <span data-tour-id="tour-profile-mobile">
+                  <span data-tour-id="tour-nav-mobile">
+                    <NavMenuTrigger open={navOpen} onClick={() => setNavOpen((v) => !v)} />
+                  </span>
                 </span>
               </div>
             </div>
@@ -353,8 +355,10 @@ const StudentTopbar = () => {
             {/* Mobile CP badge + menu trigger — right-aligned */}
             <div className="md:hidden flex items-center gap-2 ml-auto">
               <MobileCpBadge balance={cpBalance} />
-              <span data-tour-id="tour-nav-mobile">
-                <NavMenuTrigger open={navOpen} onClick={() => setNavOpen((v) => !v)} />
+              <span data-tour-id="tour-profile-mobile">
+                <span data-tour-id="tour-nav-mobile">
+                  <NavMenuTrigger open={navOpen} onClick={() => setNavOpen((v) => !v)} />
+                </span>
               </span>
             </div>
             </div>
@@ -413,8 +417,10 @@ const StudentTopbar = () => {
             {/* Mobile CP badge + menu trigger — right-aligned */}
             <div className="md:hidden flex items-center gap-2 ml-auto">
               <MobileCpBadge balance={cpBalance} />
-              <span data-tour-id="tour-nav-mobile">
-                <NavMenuTrigger open={navOpen} onClick={() => setNavOpen((v) => !v)} />
+              <span data-tour-id="tour-profile-mobile">
+                <span data-tour-id="tour-nav-mobile">
+                  <NavMenuTrigger open={navOpen} onClick={() => setNavOpen((v) => !v)} />
+                </span>
               </span>
             </div>
           </div>
@@ -466,8 +472,10 @@ const StudentTopbar = () => {
             {/* Mobile CP badge + menu trigger — right-aligned */}
             <div className="md:hidden flex items-center gap-2 ml-auto">
               <MobileCpBadge balance={cpBalance} />
-              <span data-tour-id="tour-nav-mobile">
-                <NavMenuTrigger open={navOpen} onClick={() => setNavOpen((v) => !v)} />
+              <span data-tour-id="tour-profile-mobile">
+                <span data-tour-id="tour-nav-mobile">
+                  <NavMenuTrigger open={navOpen} onClick={() => setNavOpen((v) => !v)} />
+                </span>
               </span>
             </div>
           </div>
