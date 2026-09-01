@@ -38,11 +38,14 @@ const StudentOnboardingModal: React.FC = () => {
 
   useEffect(() => () => { onDismissRef.current(); }, []);
 
-  // Release the priority-0 slot immediately when onboarding isn't needed so
-  // the guided tour (priority 2) can auto-trigger for already-onboarded users.
+  // Release the priority-0 slot whenever onboarding isn't needed. The slot can
+  // be claimed LATER than mount — e.g. held by the consent banner first, then
+  // handed to this modal once the banner is dismissed. Re-evaluating on every
+  // visibility change (not just mount) prevents a stuck, invisible popup from
+  // blocking the guided tour (priority 2).
   useEffect(() => {
-    if (!needsOnboarding) onDismiss();
-  }, [needsOnboarding, onDismiss]);
+    if (!needsOnboarding && isVisible) onDismiss();
+  }, [needsOnboarding, isVisible, onDismiss]);
 
   const [step, setStep] = useState(0);
   const [submitting, setSubmitting] = useState(false);

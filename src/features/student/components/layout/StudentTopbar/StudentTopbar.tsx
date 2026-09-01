@@ -428,8 +428,9 @@ const StudentTopbar = () => {
           /* ══ DASHBOARD MODE ══ */
           <div className=" px-3 md:px-4 lg:px-6 h-20 md:h-24 flex items-center gap-2 md:gap-3">
 
-            {/* Logo */}
-            <Link to="/dashboard" className="flex-none shrink-0">
+            {/* Logo — also the "nav" tour anchor on md..lg, where the desktop
+                nav is hidden and there is no other in-bar navigation */}
+            <Link to="/dashboard" className="flex-none shrink-0" data-tour-id="tour-nav-md">
               <Logo size="xl" variant="mark" />
             </Link>
 

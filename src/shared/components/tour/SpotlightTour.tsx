@@ -130,7 +130,24 @@ export const SpotlightTour: React.FC<SpotlightTourProps> = ({
     const el = resolveTarget(step?.targetId);
     if (!el) {
       setTargetRect(null);
-      return;
+      // A target with no declared targetId (e.g. the closing "done" step) is
+      // intentionally highlight-less. But a step with a targetId can be null
+      // transiently — async content, reveal timing, a mid-transition layout —
+      // so keep polling briefly before giving up to avoid a dead black overlay.
+      if (!step?.targetId) return;
+      let attempts = 0;
+      const retry = window.setInterval(() => {
+        attempts += 1;
+        if (resolveTarget(step?.targetId)) {
+          window.clearInterval(retry);
+          measure();
+        } else if (attempts >= 10) {
+          window.clearInterval(retry);
+        }
+      }, 250);
+      return () => {
+        window.clearTimeout(retry);
+      };
     }
     const r = el.getBoundingClientRect();
     const fullyVisible =
@@ -324,7 +341,15 @@ export const SpotlightTour: React.FC<SpotlightTourProps> = ({
         />
       )}
       {!targetRect && (
-        <div className="pointer-events-none absolute inset-0 bg-black/70" />
+        <div
+          className={`pointer-events-none absolute inset-0 ${
+            // Target-less steps (the closing slide) intentionally dim the whole
+            // app. A step that still has a target but could not be resolved yet
+            // gets a light veil instead of a dead-black screen so the app stays
+            // visible behind the card.
+            step?.targetId ? 'bg-black/30' : 'bg-black/70'
+          }`}
+        />
       )}
 
       <div

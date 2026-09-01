@@ -1,5 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { render, screen } from '@testing-library/react';
+import { useEffect } from 'react';
+import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { MemoryRouter } from 'react-router-dom';
 import StudentOnboardingModal from '../StudentOnboardingModal';
@@ -28,6 +29,17 @@ vi.mock('react-i18next', () => ({
 function TourProbe() {
   const { isVisible } = usePopupManager('onboarding-tour', 2);
   return <div data-testid="tour-probe" data-visible={String(isVisible)} />;
+}
+
+/** Mimics a lower-priority popup (e.g. the consent banner) that claims the
+ * top slot first and only releases it after the tour has mounted. */
+function DelayedBlocker() {
+  const { onDismiss } = usePopupManager('delayed-blocker', 1);
+  useEffect(() => {
+    const h = window.setTimeout(() => onDismiss(), 0);
+    return () => window.clearTimeout(h);
+  }, [onDismiss]);
+  return <div data-testid="delayed-blocker" />;
 }
 
 const renderModal = (extra?: React.ReactNode) =>
@@ -66,6 +78,28 @@ describe('StudentOnboardingModal', () => {
     auth.user = { onboardingCompletedAt: null, onboardingSkippedAt: '2026-01-01T00:00:00Z' };
     renderModal(<TourProbe />);
     expect(screen.getByTestId('tour-probe')).toHaveAttribute('data-visible', 'true');
+  });
+
+  it('releases the priority-0 slot when activated LATE while onboarding is not needed', async () => {
+    // Regression: if another popup (consent banner) held the slot at mount, the
+    // onboarding modal's one-shot release effect already ran. When the banner is
+    // later dismissed, the dormant onboarding popup gets activated and blocks
+    // the guided tour (priority 2) forever. It must release on activation.
+    auth.user = { onboardingCompletedAt: '2026-01-01T00:00:00Z', onboardingSkippedAt: null };
+    render(
+      <MemoryRouter>
+        <DelayedBlocker />
+        <StudentOnboardingModal />
+        <TourProbe />
+      </MemoryRouter>,
+    );
+    expect(
+      screen.queryByRole('heading', { name: 'student.onboardingModal.step0.title' }),
+    ).not.toBeInTheDocument();
+    await waitFor(
+      () => expect(screen.getByTestId('tour-probe')).toHaveAttribute('data-visible', 'true'),
+      { timeout: 2000 },
+    );
   });
 
   it('posts skip and dismisses when Skip is clicked', async () => {
