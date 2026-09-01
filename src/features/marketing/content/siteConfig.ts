@@ -72,7 +72,7 @@ export const SITE_CONFIG = {
       label: 'Watch on YouTube',
       handle: '@QYVORA',
       desc: 'Tutorials, walkthroughs, and operator content.',
-      href: 'https://www.youtube.com/@QYVORA',
+      href: 'https://www.youtube.com/@QYVORASEC',
       action: 'Subscribe',
     },
     {
