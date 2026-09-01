@@ -119,8 +119,12 @@ export const StudentTour: React.FC<StudentTourProps> = ({
     };
     switch (targetId) {
       case 'tour-nav':
-        return lg ? firstVisible('tour-nav-desktop', 'tour-nav-mobile')
-                  : firstVisible('tour-nav-mobile', 'tour-nav-desktop');
+        // tour-nav-md is the topbar brand anchor, visible on md..lg where the
+        // desktop nav (lg+) and the mobile menu trigger (md-) do not exist.
+        // Highlighting something beats a dead black spotlight on 768-1023px.
+        if (lg) return firstVisible('tour-nav-desktop', 'tour-nav-mobile', 'tour-nav-md');
+        if (md) return firstVisible('tour-nav-md', 'tour-nav-desktop', 'tour-nav-mobile');
+        return firstVisible('tour-nav-mobile', 'tour-nav-desktop', 'tour-nav-md');
       case 'tour-cp':
         return md ? firstVisible('tour-cp-desktop', 'tour-cp-dashboard', 'tour-cp-mobile')
                   : firstVisible('tour-cp-dashboard', 'tour-cp-mobile', 'tour-cp-desktop');

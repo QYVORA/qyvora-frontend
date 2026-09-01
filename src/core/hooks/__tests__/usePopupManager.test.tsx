@@ -44,6 +44,23 @@ describe('usePopupManager', () => {
     expect(queued.result.current.isVisible).toBe(true);
   });
 
+  it('preempts an active lower-priority popup when a higher-priority popup registers', () => {
+    const low = renderHook(() => usePopupManager('low', 3));
+    expect(low.result.current.isVisible).toBe(true);
+    const high = renderHook(() => usePopupManager('high', 0));
+    expect(high.result.current.isVisible).toBe(true);
+    expect(low.result.current.isVisible).toBe(false);
+  });
+
+  it('does not preempt when the registering popup has equal or lower priority', () => {
+    const low = renderHook(() => usePopupManager('low', 1));
+    const equal = renderHook(() => usePopupManager('equal', 1));
+    const lower = renderHook(() => usePopupManager('lower', 4));
+    expect(low.result.current.isVisible).toBe(true);
+    expect(equal.result.current.isVisible).toBe(false);
+    expect(lower.result.current.isVisible).toBe(false);
+  });
+
   it('re-activates cleanly after an unmount/remount cycle', () => {
     const first = renderHook(() => usePopupManager('popup', 1));
     first.unmount();

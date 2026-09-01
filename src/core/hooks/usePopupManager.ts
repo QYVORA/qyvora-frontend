@@ -9,6 +9,7 @@ interface PopupEntry {
 }
 
 let activePopupId: string | null = null;
+let activePriority = Infinity;
 const pendingPopups: PopupEntry[] = [];
 
 function notifyShow() {
@@ -24,11 +25,13 @@ function tryActivateNext() {
   pendingPopups.sort((a, b) => a.priority - b.priority);
   const next = pendingPopups.shift()!;
   activePopupId = next.id;
+  activePriority = next.priority;
   notifyShow();
 }
 
 function dismissCurrentPopup() {
   activePopupId = null;
+  activePriority = Infinity;
   notifyDismiss();
   tryActivateNext();
 }
@@ -60,7 +63,17 @@ export function usePopupManager(id: string, priority: number) {
     window.addEventListener(DISMISS_EVENT, handleDismiss);
 
     pendingPopups.push({ id, priority: priorityRef.current });
-    tryActivateNext();
+
+    // A newly registered popup with a strictly higher priority must preempt
+    // the popup currently holding the slot. Without this, whichever popup
+    // happens to register FIRST keeps the slot and low-priority globals (e.g.
+    // the community popup mounted at the router level) starve the guided tour
+    // even though the tour declares a lower (higher-priority) number.
+    if (activePopupId && priorityRef.current < activePriority) {
+      dismissCurrentPopup();
+    } else {
+      tryActivateNext();
+    }
 
     return () => {
       window.removeEventListener(SHOW_EVENT, handleShow);
