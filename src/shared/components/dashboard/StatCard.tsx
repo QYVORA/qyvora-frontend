@@ -9,14 +9,13 @@ export interface TrendData {
   label?: string;
 }
 
-export interface StatCardProps {
+export interface StatCardProps extends React.HTMLAttributes<HTMLElement> {
   icon?: ReactNode;
   label: string;
   value: ReactNode;
   trend?: TrendData;
   accent?: boolean;
   loading?: boolean;
-  className?: string;
   onClick?: () => void;
   href?: string;
 }
@@ -44,6 +43,7 @@ export const StatCardSkeleton = () => (
 
 const StatCard = ({
   icon, label, value, trend, accent, loading, className, onClick, href,
+  ...rest
 }: StatCardProps) => {
   if (loading) return <StatCardSkeleton />;
 
@@ -58,6 +58,7 @@ const StatCard = ({
       } ${onClick || href ? 'cursor-pointer hover:shadow-sm active:scale-[0.98]' : ''} ${className ?? ''}`}
       {...hrefProps}
       {...clickProps}
+      {...rest}
     >
       <div className="flex items-center gap-3 mb-3">
         {icon && (

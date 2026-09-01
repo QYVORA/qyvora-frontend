@@ -90,13 +90,43 @@ export const StudentTour: React.FC<StudentTourProps> = ({
   const getTarget = useCallback((targetId: string): HTMLElement | null => {
     const md = window.matchMedia('(min-width: 768px)').matches;
     const lg = window.matchMedia('(min-width: 1024px)').matches;
+    // Returns the first candidate that is actually present and laid out
+    // (has client rects). The desktop CP/profile anchors live in the
+    // auto-hiding fixed topbar; if it has slid off-screen those elements
+    // report zero/off-screen rects, so fall back to the always-visible
+    // dashboard/topbar static anchors instead of rendering a black spotlight.
+    const firstVisible = (...ids: string[]): HTMLElement | null => {
+      for (const id of ids) {
+        const el = queryTarget(id);
+        if (el && el.getClientRects().length > 0) {
+          const r = el.getBoundingClientRect();
+          // Skip anchors that are not actually visible on screen — the fixed
+          // topbar anchors report rects even when hidden (slid off via
+          // translate-y), which is exactly when we want to fall back.
+          if (
+            r.width > 0 &&
+            r.height > 0 &&
+            r.bottom > 0 &&
+            r.top < window.innerHeight &&
+            r.right > 0 &&
+            r.left < window.innerWidth
+          ) {
+            return el;
+          }
+        }
+      }
+      return queryTarget(ids[0]) ?? null;
+    };
     switch (targetId) {
       case 'tour-nav':
-        return lg ? queryTarget('tour-nav-desktop') : queryTarget('tour-nav-mobile');
+        return lg ? firstVisible('tour-nav-desktop', 'tour-nav-mobile')
+                  : firstVisible('tour-nav-mobile', 'tour-nav-desktop');
       case 'tour-cp':
-        return md ? queryTarget('tour-cp-desktop') : queryTarget('tour-cp-dashboard');
+        return md ? firstVisible('tour-cp-desktop', 'tour-cp-dashboard', 'tour-cp-mobile')
+                  : firstVisible('tour-cp-dashboard', 'tour-cp-mobile', 'tour-cp-desktop');
       case 'tour-profile':
-        return md ? queryTarget('tour-profile-desktop') : queryTarget('tour-profile-mobile');
+        return md ? firstVisible('tour-profile-desktop', 'tour-profile-mobile')
+                  : firstVisible('tour-profile-mobile', 'tour-profile-desktop');
       default:
         return queryTarget(targetId);
     }
