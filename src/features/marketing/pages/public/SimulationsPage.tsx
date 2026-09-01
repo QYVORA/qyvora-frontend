@@ -6,6 +6,7 @@ import SEO from '@/shared/components/SEO';
 import PublicSnapLayout from '@/shared/components/PublicSnapLayout';
 import PublicSnapSection from '@/shared/components/PublicSnapSection';
 import StudentHeroSection, { PUBLIC_HERO_TITLE_CLASS } from '@/shared/components/StudentHeroSection';
+import { SimpleHeading } from '@/shared/components/ui';
 import { Footer } from '@/shared/components/layout';
 import { useAuth } from '@/core/contexts/AuthContext';
 import LandingFinalCtaSection from '@/features/marketing/components/landing/LandingFinalCtaSection';
@@ -116,10 +117,12 @@ const SimulationsPage = () => {
     );
 
     const heading = (
-      <h2 className="text-3xl md:text-5xl lg:text-7xl font-black text-text-primary tracking-tighter leading-tight mt-2">
-        {t(`simulations.${sim.id}.title`)}{' '}
-        <span className="text-accent">{t(`simulations.${sim.id}.titleAccent`)}</span>
-      </h2>
+      <SimpleHeading
+        text={t(`simulations.${sim.id}.title`)}
+        accentText={t(`simulations.${sim.id}.titleAccent`)}
+        align="left"
+        className="mt-2"
+      />
     );
 
     const description = (

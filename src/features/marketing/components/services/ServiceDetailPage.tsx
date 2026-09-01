@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { Target, FileText, CheckCircle2 } from 'lucide-react';
 import { IconArrowRight, IconArrowLeft } from '@/shared/components/icons';
 import { openServiceRequestModal } from '@/features/marketing/components/ServiceRequestModal';
-import { DottedMapOverlay } from '@/shared/components/ui';
+import { DottedMapOverlay, SimpleHeading } from '@/shared/components/ui';
 import SEO from '@/shared/components/SEO';
 import PublicSnapLayout from '@/shared/components/PublicSnapLayout';
 import PublicSnapSection from '@/shared/components/PublicSnapSection';
@@ -79,15 +79,14 @@ const ServiceDetailPage: React.FC<{ svc: ServiceConfig }> = ({ svc }) => {
             {/* Left: Header */}
             <ScrollReveal>
               <div className="space-y-8">
-                <span className="text-[9px] font-black uppercase tracking-widest text-text-muted block">
-                  Scope of Work
-                </span>
-                <h2 className="text-3xl md:text-5xl lg:text-7xl font-black text-text-primary tracking-tighter leading-tight">
-                  What This Engagement <span className="text-accent">Covers</span>
-                </h2>
-                <p className="text-base sm:text-lg text-text-secondary leading-relaxed font-mono">
-                  {svc.scope}
-                </p>
+                <SimpleHeading
+                  text="What This Engagement Covers"
+                  accentWords={1}
+                  accentPlacement="end"
+                  kicker="Scope of Work"
+                  align="left"
+                  description={svc.scope}
+                />
                 {svc.price && (
                   <div className="pt-4">
                     <span className="text-[9px] font-black uppercase tracking-widest text-text-muted flex items-center gap-1.5 mb-3">
@@ -164,17 +163,14 @@ const ServiceDetailPage: React.FC<{ svc: ServiceConfig }> = ({ svc }) => {
 
             {/* Right: Header */}
             <ScrollReveal delay={0.1}>
-              <div className="space-y-8">
-                <span className="text-[9px] font-black uppercase tracking-widest text-text-muted block">
-                  Benefits
-                </span>
-                <h2 className="text-3xl md:text-5xl lg:text-7xl font-black text-text-primary tracking-tighter leading-tight">
-                  What You <span className="text-accent">Gain</span>
-                </h2>
-                <p className="text-base sm:text-lg text-text-secondary leading-relaxed font-mono">
-                  Every engagement delivers actionable results, not just a report that sits on a shelf.
-                </p>
-              </div>
+              <SimpleHeading
+                text="What You Gain"
+                accentWords={1}
+                accentPlacement="end"
+                kicker="Benefits"
+                align="left"
+                description="Every engagement delivers actionable results, not just a report that sits on a shelf."
+              />
             </ScrollReveal>
           </div>
         </PublicSnapSection>
@@ -186,17 +182,14 @@ const ServiceDetailPage: React.FC<{ svc: ServiceConfig }> = ({ svc }) => {
           <div className="w-full grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center">
             {/* Left: Header */}
             <ScrollReveal>
-              <div className="space-y-8">
-                <span className="text-[9px] font-black uppercase tracking-widest text-text-muted block">
-                  Deliverables
-                </span>
-                <h2 className="text-3xl md:text-5xl lg:text-7xl font-black text-text-primary tracking-tighter leading-tight">
-                  The Security <span className="text-accent">Report</span>
-                </h2>
-                <p className="text-base sm:text-lg text-text-secondary leading-relaxed font-mono">
-                  You receive a professional security report that covers everything from executive summaries to detailed remediation steps.
-                </p>
-              </div>
+              <SimpleHeading
+                text="The Security Report"
+                accentWords={1}
+                accentPlacement="end"
+                kicker="Deliverables"
+                align="left"
+                description="You receive a professional security report that covers everything from executive summaries to detailed remediation steps."
+              />
             </ScrollReveal>
 
             {/* Right: Deliverables */}
@@ -262,17 +255,13 @@ const ServiceDetailPage: React.FC<{ svc: ServiceConfig }> = ({ svc }) => {
 
             {/* Right: Philosophy header */}
             <ScrollReveal delay={0.1}>
-              <div className="h-full space-y-8">
-                <span className="text-[9px] font-black uppercase tracking-widest text-text-muted block">
-                  {PENTEST_PHILOSOPHY.heading}
-                </span>
-                <h2 className="text-3xl md:text-5xl lg:text-7xl font-black text-text-primary tracking-tighter leading-tight">
-                  Thorough Assessment, <span className="text-accent">Not Checkbox Audits</span>
-                </h2>
-                <p className="text-base sm:text-lg text-text-secondary leading-relaxed font-mono">
-                  {PENTEST_PHILOSOPHY.body}
-                </p>
-              </div>
+              <SimpleHeading
+                text="Thorough Assessment,"
+                accentText="Not Checkbox Audits"
+                kicker={PENTEST_PHILOSOPHY.heading}
+                align="left"
+                description={PENTEST_PHILOSOPHY.body}
+              />
             </ScrollReveal>
           </div>
         </PublicSnapSection>

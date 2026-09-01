@@ -2,6 +2,7 @@ import { memo } from 'react';
 import { Link } from 'react-router-dom';
 import { IconArrowRight, IconProfile } from '@/shared/components/icons';
 import { GridBoxedBackground } from '@/shared/components/backgrounds';
+import { SimpleHeading } from '@/shared/components/ui';
 import ScrollReveal from '@/shared/components/ScrollReveal';
 import { researchersData } from '@/features/marketing/content/researchersData';
 import quiteRootLogo from '@/assets/quiteRoot/ChatGPT Image Jul 3, 2026, 02_45_59 AM.webp';
@@ -23,9 +24,11 @@ const LandingQuiteRootSection = () => {
               height={787}
               className="w-12 h-12 md:w-16 md:h-16 object-contain"
             />
-            <h2 className="text-3xl md:text-5xl lg:text-6xl font-black text-text-primary tracking-tighter leading-tight">
-              {t('landing.quiteroot.title')}<span className="text-accent">{t('landing.quiteroot.titleAccent')}</span>
-            </h2>
+            <SimpleHeading
+              text={t('landing.quiteroot.title')}
+              accentText={t('landing.quiteroot.titleAccent')}
+              align="left"
+            />
           </div>
           <p className="text-xs md:text-sm text-text-muted leading-relaxed">
             {t('landing.quiteroot.description')}

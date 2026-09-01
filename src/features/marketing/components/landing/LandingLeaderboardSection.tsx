@@ -8,7 +8,7 @@ import { GridBoxedBackground } from '@/shared/components/backgrounds';
 import api from '@/core/services/api';
 
 import { useTranslation } from 'react-i18next';
-import { FilterTabs, ErrorState } from '@/shared/components/ui';
+import { SimpleHeading, FilterTabs, ErrorState } from '@/shared/components/ui';
 
 interface LeaderboardEntry {
   rank: number;
@@ -105,12 +105,13 @@ const LandingLeaderboardSection = () => {
       <div className="relative z-10 w-full h-full px-3 md:px-4 lg:px-6 py-12 sm:py-10 md:py-16 lg:py-20 flex flex-col lg:flex-row gap-10 sm:gap-10 lg:gap-16 lg:items-stretch">
         {/* Header column — same height as grid on desktop */}
         <div className="shrink-0 lg:w-[420px] xl:w-[480px] flex flex-col lg:justify-center">
-            <h2 className="text-2xl md:text-4xl lg:text-5xl font-black text-text-primary tracking-tighter leading-none mb-8">
-              {t('landing.leaderboard.heading1')} <span className="text-accent">{t('landing.leaderboard.heading2')}</span>
-            </h2>
-            <p className="text-xs md:text-sm text-text-muted leading-relaxed max-w-xl mb-10">
-              {t('landing.leaderboard.description')}
-            </p>
+            <SimpleHeading
+              text={t('landing.leaderboard.heading1')}
+              accentText={t('landing.leaderboard.heading2')}
+              align="left"
+              description={t('landing.leaderboard.description')}
+              className="mb-8"
+            />
             <div className="mb-8">
               <FilterTabs
                 tabs={[

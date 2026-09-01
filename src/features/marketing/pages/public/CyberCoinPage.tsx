@@ -10,11 +10,13 @@ import StudentHeroSection, { PUBLIC_HERO_TITLE_CLASS } from '@/shared/components
 import ScrollReveal from '@/shared/components/ScrollReveal';
 import { Footer } from '@/shared/components/layout';
 import { CpLogo } from '@/shared/components';
+import { SimpleHeading } from '@/shared/components/ui';
 import { useReducedMotion } from '@/shared/hooks/useReducedMotion';
 import { Carousel } from '@/shared/components/carousel';
 import DragMarquee from '@/shared/components/carousel/DragMarquee';
 import { COURSES, getCategoryById } from '@/features/student/data/courses';
 import CourseBadge from '@/shared/components/CourseBadge';
+import { DifficultyBadge } from '@/shared/components/learning/LearningCard';
 import {
   CP_HERO,
   CP_PILLARS,
@@ -27,32 +29,6 @@ import type { CpActivityStatus } from '@/features/marketing/data/cpPageData';
 
 /** Beginner-friendly starter courses for the "Start Your Journey" carousel. */
 const STARTER_COURSES = COURSES.filter((c) => c.skillLevel === 'beginner').slice(0, 6);
-
-const SKILL_LABELS: Record<string, string> = {
-  beginner: 'Beginner',
-  intermediate: 'Intermediate',
-  advanced: 'Advanced',
-};
-
-const SKILL_COLORS: Record<string, string> = {
-  beginner: 'text-accent border-accent/30 bg-accent/10',
-  intermediate: 'text-info border-info/30 bg-info/10',
-  advanced: 'text-danger border-danger/30 bg-danger/10',
-};
-
-// ─── Shared bits ──────────────────────────────────────────────────────────────
-
-const SectionHeader: React.FC<{ kicker: string; title: React.ReactNode; description?: string }> = ({ kicker, title, description }) => (
-  <div className="space-y-4">
-    <span className="text-[10px] font-black uppercase tracking-[0.3em] text-accent">{kicker}</span>
-    <h2 className="text-3xl md:text-5xl lg:text-7xl font-black text-text-primary tracking-tighter leading-tight">
-      {title}
-    </h2>
-    {description && (
-      <p className="text-base sm:text-lg text-text-muted leading-relaxed font-mono">{description}</p>
-    )}
-  </div>
-);
 
 const STATUS_STYLES: Record<CpActivityStatus, { dot: string; text: string }> = {
   VERIFIED: { dot: 'bg-accent', text: 'text-accent' },
@@ -115,9 +91,12 @@ const CyberCoinPage: React.FC = () => {
         <PublicSnapSection id="what-is-cp">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
             <ScrollReveal>
-              <SectionHeader
+              <SimpleHeading
+                text="A Reward System Built Around Capability."
+                accentWords={1}
+                accentPlacement="end"
                 kicker="What is CP"
-                title={<>A Reward System Built Around <span className="text-accent">Capability.</span></>}
+                align="left"
                 description="CP connects achievement with cybersecurity development. Instead of rewarding passive engagement, QYVORA rewards operators for actually progressing through its ecosystem."
               />
             </ScrollReveal>
@@ -152,9 +131,12 @@ const CyberCoinPage: React.FC = () => {
         <PublicSnapSection id="philosophy">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
             <ScrollReveal>
-              <SectionHeader
+              <SimpleHeading
+                text="Knowledge Is Only the Beginning."
+                accentWords={1}
+                accentPlacement="end"
                 kicker="The CP Philosophy"
-                title={<>Knowledge Is Only the <span className="text-accent">Beginning.</span></>}
+                align="left"
                 description="QYVORA is designed around the transition from consuming cybersecurity knowledge to actually executing it. The reward system reinforces that progression: every stage must be proven before the next one pays out."
               />
             </ScrollReveal>
@@ -208,9 +190,12 @@ const CyberCoinPage: React.FC = () => {
         <PublicSnapSection id="earn">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
             <ScrollReveal>
-              <SectionHeader
+              <SimpleHeading
+                text="How You Earn CP."
+                accentWords={1}
+                accentPlacement="end"
                 kicker="Reward Protocol"
-                title={<>How You Earn <span className="text-accent">CP.</span></>}
+                align="left"
                 description="Progress through the QYVORA learning loop: learn, practice, break, build, verify, and every verified step is mapped to a CP issuance."
               />
             </ScrollReveal>
@@ -262,9 +247,12 @@ const CyberCoinPage: React.FC = () => {
         <PublicSnapSection id="rewards">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
             <ScrollReveal>
-              <SectionHeader
+              <SimpleHeading
+                text="Verified Activity Rewards."
+                accentWords={1}
+                accentPlacement="end"
                 kicker="Reward Matrix"
-                title={<>Verified Activity <span className="text-accent">Rewards.</span></>}
+                align="left"
                 description="No logins, no clicks: only completed, verified missions earn rewards. Every CP amount is issued by the platform on verification."
               />
             </ScrollReveal>
@@ -304,9 +292,12 @@ const CyberCoinPage: React.FC = () => {
         <PublicSnapSection id="activities">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
             <ScrollReveal>
-              <SectionHeader
+              <SimpleHeading
+                text="All Verified Activities."
+                accentWords={1}
+                accentPlacement="end"
                 kicker="Activity Matrix"
-                title={<>All Verified <span className="text-accent">Activities.</span></>}
+                align="left"
                 description="Every completed, verified activity earns CP. The full matrix of rewarded activities and their categories."
               />
             </ScrollReveal>
@@ -342,9 +333,12 @@ const CyberCoinPage: React.FC = () => {
         <PublicSnapSection id="future">
           <div className="space-y-8">
             <ScrollReveal>
-              <SectionHeader
+              <SimpleHeading
+                text="Built for the Next Layer."
+                accentWords={1}
+                accentPlacement="end"
                 kicker="Future Architecture // Planned"
-                title={<>Built for the Next <span className="text-accent">Layer.</span></>}
+                align="left"
                 description="CP is designed with a future-ready architecture that can connect verified cybersecurity achievements with a blockchain-backed reward infrastructure."
               />
             </ScrollReveal>
@@ -398,9 +392,12 @@ const CyberCoinPage: React.FC = () => {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 lg:items-stretch">
             <ScrollReveal>
               <div className="shrink-0 lg:w-[420px] xl:w-[480px] flex flex-col lg:justify-center">
-                <SectionHeader
+                <SimpleHeading
+                  text="Begin With Your First Course."
+                  accentWords={1}
+                  accentPlacement="end"
                   kicker="Start Your Journey"
-                  title={<>Begin With Your First <span className="text-accent">Course.</span></>}
+                  align="left"
                   description="Every completed course is verified and feeds your CP balance. Start where every operator starts, the fundamentals."
                 />
                 <Link
@@ -431,9 +428,7 @@ const CyberCoinPage: React.FC = () => {
                               {category.name}
                             </span>
                           )}
-                          <span className={`px-2.5 py-1 text-[9px] font-black uppercase tracking-widest rounded-full border ${SKILL_COLORS[course.skillLevel]}`}>
-                            {SKILL_LABELS[course.skillLevel]}
-                          </span>
+                          <DifficultyBadge difficulty={course.skillLevel} />
                         </div>
                         <h3 className="text-lg md:text-xl lg:text-2xl font-black uppercase tracking-tight text-text-primary transition-colors duration-300 group-hover:text-accent line-clamp-2 mb-2">
                           {course.title}

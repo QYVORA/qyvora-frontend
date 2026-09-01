@@ -9,6 +9,7 @@ import aksumLogo from '@/assets/aksum/aksum-main-logo.webp';
 import shakaLogo from '@/assets/shaka/shaka-main-logo.webp';
 import nzingaLogo from '@/assets/nzinga/nzinga-main-logo.webp';
 import DragMarquee from '@/shared/components/carousel/DragMarquee';
+import { SimpleHeading } from '@/shared/components/ui';
 
 interface Tool {
   slug: string;
@@ -39,12 +40,12 @@ const LandingOpenSourceToolsSection: React.FC = () => {
     <div className="relative bg-bg min-h-dvh flex flex-col overflow-x-clip overflow-hidden" >
       {/* Header — title + one-line description at the top */}
       <div className="relative z-10 w-full px-3 md:px-4 lg:px-6 pt-24 md:pt-28 lg:pt-32 pb-8 md:pb-10 lg:pb-12 flex flex-col gap-3">
-        <h2 className="text-2xl md:text-4xl lg:text-5xl font-black text-text-primary tracking-tighter leading-none">
-          {t('landing.tools.title')} <span className="text-accent">{t('landing.tools.titleAccent')}</span>
-        </h2>
-        <p className="text-xs md:text-sm text-text-muted leading-relaxed max-w-xl font-mono">
-          {t('landing.tools.description')}
-        </p>
+        <SimpleHeading
+          text={t('landing.tools.title')}
+          accentText={t('landing.tools.titleAccent')}
+          align="left"
+          description={t('landing.tools.description')}
+        />
       </div>
 
       {/* Full-bleed logo marquee — logos drift from the far right of the viewport to the left */}
