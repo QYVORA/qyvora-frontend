@@ -8,6 +8,7 @@ import CodeBlock from '@/shared/components/CodeBlock';
 import PublicSnapLayout from '@/shared/components/PublicSnapLayout';
 import PublicSnapSection from '@/shared/components/PublicSnapSection';
 import StudentHeroSection, { PUBLIC_HERO_TITLE_CLASS } from '@/shared/components/StudentHeroSection';
+import { SimpleHeading } from '@/shared/components/ui';
 import { Footer } from '@/shared/components/layout';
 import { useAuth } from '@/core/contexts/AuthContext';
 import LandingFinalCtaSection from '@/features/marketing/components/landing/LandingFinalCtaSection';
@@ -161,12 +162,14 @@ const SimulationPage = () => {
                   <DemoIcon className="w-6 h-6 md:w-7 md:h-7 text-accent" />
                 </span>
                 <div>
-                  <span className="text-[9px] font-black uppercase tracking-[0.3em] text-accent">
+                  <span className="text-kicker font-black uppercase tracking-[0.3em] text-accent">
                     {t(`simulations.${key}.tag`)}
                   </span>
-                  <h2 className="text-3xl md:text-5xl lg:text-7xl font-black text-text-primary tracking-tighter leading-tight mt-2">
-                    {t(`simulations.${key}.demoTitle`)}
-                  </h2>
+                  <SimpleHeading
+                    text={t(`simulations.${key}.demoTitle`)}
+                    align="left"
+                    className="mt-2"
+                  />
                 </div>
                 <p className="text-base sm:text-lg text-text-secondary leading-relaxed font-mono max-w-xl">
                   {t(`simulations.${key}.demoDescription`)}
@@ -196,10 +199,11 @@ const SimulationPage = () => {
 
           <PublicSnapSection>
             <div className="flex flex-col gap-6 lg:gap-8">
-              <h2 className="text-lg md:text-2xl lg:text-3xl font-black text-text-primary tracking-tighter leading-tight">
-                {t(`simulations.${key}.demoTitle`)}{' '}
-                <span className="text-accent">{t('simulations.heroAccent')}</span>
-              </h2>
+              <SimpleHeading
+                text={t(`simulations.${key}.demoTitle`)}
+                accentText={t('simulations.heroAccent')}
+                align="left"
+              />
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 md:gap-3">
                 {features.map((feature, i) => (
                   <div

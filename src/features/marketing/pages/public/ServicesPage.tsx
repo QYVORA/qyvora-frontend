@@ -8,6 +8,7 @@ import SEO from '@/shared/components/SEO';
 import PublicSnapLayout from '@/shared/components/PublicSnapLayout';
 import PublicSnapSection from '@/shared/components/PublicSnapSection';
 import StudentHeroSection, { PUBLIC_HERO_TITLE_CLASS } from '@/shared/components/StudentHeroSection';
+import { SimpleHeading } from '@/shared/components/ui';
 import { Footer } from '@/shared/components/layout';
 import { useAuth } from '@/core/contexts/AuthContext';
 import LandingFinalCtaSection from '@/features/marketing/components/landing/LandingFinalCtaSection';
@@ -33,14 +34,13 @@ const ServiceSection: React.FC<{ svc: ServiceConfig; index: number }> = ({ svc, 
           <Icon className="w-3 h-3" /> {svc.badge}
         </span>
 
-        <h2 className="text-3xl md:text-5xl lg:text-5xl font-black text-text-primary tracking-tighter leading-[1.05] mb-6">
-          {svc.title}{' '}
-          {svc.accentWord && <span className="text-accent">{svc.accentWord}</span>}
-        </h2>
-
-        <p className="text-sm sm:text-base text-text-secondary leading-relaxed max-w-xl mb-8 font-mono">
-          {svc.overview}
-        </p>
+        <SimpleHeading
+          text={svc.title}
+          {...(svc.accentWord ? { accentText: svc.accentWord } : {})}
+          align="left"
+          description={svc.overview}
+          className="mb-6"
+        />
 
         <div className="mb-8">
           <span className="text-[9px] font-black uppercase tracking-widest text-text-muted flex items-center gap-1.5 mb-2">

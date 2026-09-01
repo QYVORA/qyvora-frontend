@@ -4,6 +4,7 @@ import { useReducedMotion } from 'motion/react';
 import { IconArrowRight, IconProfile, BrandGithubIcon, BrandLinkedinIcon, BrandXIcon, BrandMediumIcon } from '@/shared/components/icons';
 import { teamData, type TeamMember } from '@/features/marketing/content/teamData';
 import DragMarquee from '@/shared/components/carousel/DragMarquee';
+import { SimpleHeading } from '@/shared/components/ui';
 import { useTranslation } from 'react-i18next';
 
 const TeamCard = ({ member }: { member: TeamMember }) => (
@@ -81,9 +82,11 @@ const LandingTeamSection = () => {
       <div className="relative z-10 w-full h-full px-3 md:px-4 lg:px-6 py-12 sm:py-10 md:py-16 lg:py-20 flex flex-col gap-10 sm:gap-12 lg:gap-14">
         {/* Header — heading on the left, CTA aligned horizontally on the right */}
         <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6">
-          <h2 className="text-2xl md:text-4xl lg:text-5xl font-black text-text-primary tracking-tighter leading-none">
-            {t('landing.teamLanding.title')} <span className="text-accent">{t('landing.teamLanding.titleAccent')}</span>
-          </h2>
+          <SimpleHeading
+            text={t('landing.teamLanding.title')}
+            accentText={t('landing.teamLanding.titleAccent')}
+            align="left"
+          />
           <Link
             to="/team"
             className="btn-secondary inline-flex items-center gap-2.5 w-fit shrink-0"

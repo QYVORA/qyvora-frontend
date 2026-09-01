@@ -4,7 +4,7 @@ import { Cloud, FileText, BookOpen, Cpu } from 'lucide-react';
 import { IconArrowRight, IconMarketplace, IconLock } from '@/shared/components/icons';
 import ScrollReveal from '@/shared/components/ScrollReveal';
 import api from '@/core/services/api';
-import { AuthImage, Skeleton, ErrorState } from '@/shared/components/ui';
+import { SimpleHeading, AuthImage, Skeleton, ErrorState } from '@/shared/components/ui';
 import { useTranslation } from 'react-i18next';
 
 interface ProductItem {
@@ -53,12 +53,13 @@ const LandingMarketSection = () => {
       <div className="relative z-10 w-full h-full px-3 md:px-4 lg:px-6 py-10 sm:py-8 md:py-12 lg:py-12 flex flex-col lg:flex-row gap-10 sm:gap-10 lg:gap-20 lg:items-stretch">
         {/* Header column */}
         <div className="shrink-0 lg:w-[420px] xl:w-[480px] flex flex-col lg:justify-center">
-          <h2 className="text-3xl md:text-5xl lg:text-6xl font-black text-text-primary tracking-tighter leading-none mb-10">
-            {t('landing.market.title')} <span className="text-accent">{t('landing.market.titleAccent')}</span>
-          </h2>
-          <p className="text-xs md:text-sm text-text-muted leading-relaxed max-w-xl mb-10">
-            {t('landing.market.description')}
-          </p>
+          <SimpleHeading
+            text={t('landing.market.title')}
+            accentText={t('landing.market.titleAccent')}
+            align="left"
+            description={t('landing.market.description')}
+            className="mb-10"
+          />
           <div className="flex flex-wrap gap-3 mb-10">
             {FEATURES.map((f) => (
               <div key={f.tKey} className="flex items-center gap-2 px-3 py-2 rounded-lg border border-bg/20 bg-bg/10">
