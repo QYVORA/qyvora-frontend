@@ -11,7 +11,7 @@
  * at runtime.
  */
 
-export type ToolInstallKey = 'anansi' | 'jabari' | 'toha3ee' | 'shaka' | 'nzinga' | 'aksum';
+export type ToolInstallKey = 'anansi' | 'jabari' | 'toha3ee' | 'shaka' | 'nzinga' | 'aksum' | 'sekhmet';
 export type ToolPlatform = 'linux' | 'darwin' | 'windows';
 export type ToolArch = 'amd64' | 'arm64';
 
@@ -128,5 +128,22 @@ windows: { amd64: 'shaka-windows-amd64.exe', arm64: 'shaka-windows-arm64.exe' },
       windows: 'irm https://raw.githubusercontent.com/QYVORA/qyvora-nzinga/main/install.ps1 | iex',
     },
     note: 'Single static binary. The installer auto-detects your platform and installs the icon and desktop entry.',
+  },
+  sekhmet: {
+    bin: 'sekhmet',
+    displayName: 'sekhmet',
+    repo: 'QYVORA/qyvora-Sekhmet',
+    releaseBase: 'https://github.com/QYVORA/qyvora-Sekhmet/releases/latest/download',
+    assets: {
+      linux: { amd64: 'sekhmet-linux-amd64', arm64: 'sekhmet-linux-arm64' },
+      darwin: { amd64: 'sekhmet-macos-amd64', arm64: 'sekhmet-macos-arm64' },
+      windows: { amd64: 'sekhmet-windows-amd64.exe', arm64: 'sekhmet-windows-arm64.exe' },
+    },
+    commandTemplates: {
+      linux: 'curl -fsSL https://raw.githubusercontent.com/QYVORA/qyvora-Sekhmet/main/install.sh | bash',
+      darwin: 'curl -fsSL https://raw.githubusercontent.com/QYVORA/qyvora-Sekhmet/main/install.sh | bash',
+      windows: 'irm https://raw.githubusercontent.com/QYVORA/qyvora-Sekhmet/main/install.ps1 | iex',
+    },
+    note: 'Single static binary. The installer auto-detects your platform, verifies SHA-256 and installs the icon and desktop entry.',
   },
 };

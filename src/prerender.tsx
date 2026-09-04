@@ -32,7 +32,7 @@ const routeContent: Record<string, RouteContent> = {
       },
       {
         heading: 'Tools for Operators',
-        body: 'anansi runs a nine-phase attack-surface reconnaissance pipeline from the terminal. toha3ee is a local & network security assessment framework in Go covering discovery, enumeration, credential auditing, wireless and MITM capabilities.',
+        body: 'anansi runs a nine-phase attack-surface reconnaissance pipeline from the terminal. toha3ee is a local & network security assessment framework in Go covering discovery, enumeration, credential auditing, wireless and MITM capabilities. sekhmet is a baseline-aware fuzzing & vulnerability discovery framework that profiles normal behaviour before fuzzing.',
       },
       {
         heading: 'Professional Services',
@@ -54,6 +54,7 @@ const routeContent: Record<string, RouteContent> = {
       { label: 'nzinga', href: '/nzinga' },
       { label: 'jabari', href: '/jabari' },
       { label: 'aksum', href: '/aksum' },
+      { label: 'sekhmet', href: '/sekhmet' },
       { label: 'Zero Day Market', href: '/zero-day-market' },
       { label: 'QuiteRoot', href: '/quiteroot' },
       { label: 'Blog', href: '/blogs' },
@@ -648,6 +649,49 @@ const routeContent: Record<string, RouteContent> = {
           'aksum analyze /usr/bin/ls --report report.json',
           'aksum surface /usr/bin/ls',
           'aksum dynamic plan ./target --yes',
+        ],
+      },
+    ],
+    links: [{ label: 'jabari', href: '/jabari' }],
+  },
+  '/sekhmet': {
+    title: 'sekhmet | QYVORA',
+    description: 'Baseline-aware, feedback-driven fuzzing & vulnerability discovery framework in Go: profile normal behaviour, adaptive mutation, SHA-256 crash dedup and delta minimization.',
+    h1: 'sekhmet',
+    lead: 'Baseline-aware fuzzing from the terminal. Profile a target\u2019s normal behaviour first, then mutate, execute and classify crashes, hangs and anomalies against that profile instead of fuzzing blindly.',
+    sections: [
+      {
+        heading: 'The ten stages',
+        bullets: [
+          'BASELINE, profile normal exit codes, signals, runtime and output variance before fuzzing',
+          'CORPUS, persistent seed store with SHA-256 dedup, priority ordering and trimming',
+          'MUTATE, 17 structured operators driven by a seeded RNG for reproducibility',
+          'EXECUTE, process {fuzz}/{stdin} templates with no shell, HTTP payloads, or a deterministic simulation target',
+          'CLASSIFY, crash, hang, and anomaly classification relative to the baseline with sanitizer text matching',
+          'DEDUP, SHA-256 signatures collapse thousands of near-identical crashes into unique findings',
+          'FEEDBACK, novelty scoring over behavioral, edge, and block coverage keeps the campaign aimed at new code',
+          'SCHEDULE, power scheduling across fast, explore, exploit, rare, balanced, and adaptive strategies',
+          'MINIMIZE, delta-debugging reducer turns an interesting input into a minimal reproducer',
+          'REPORT, terminal, JSON or YAML with a JSONL event stream (schema_version, execution_id, framework)',
+        ],
+      },
+      {
+        heading: 'Authorization guarantee',
+        body: 'sekhmet fuzzes only the declared target. Local process targets are scoped to the declared path, remote HTTP targets require an explicit authorization acknowledgement, and --dry-run audits a campaign before anything executes. Command execution is shell-free so inputs cannot reach a shell.',
+      },
+      {
+        heading: 'Install',
+        body: 'curl -fsSL https://raw.githubusercontent.com/QYVORA/qyvora-Sekhmet/main/install.sh | bash',
+      },
+      {
+        heading: 'Usage',
+        bullets: [
+          'sekhmet target set --name sim --kind simulation',
+          'sekhmet baseline --target sim',
+          'sekhmet fuzz --target sim --runs 100000',
+          'sekhmet crashes --session <id>',
+          'sekhmet minimize --input interesting.bin',
+          'sekhmet report --session <id> --format json > report.json',
         ],
       },
     ],

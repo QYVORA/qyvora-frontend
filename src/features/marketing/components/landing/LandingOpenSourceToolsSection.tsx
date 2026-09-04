@@ -8,6 +8,7 @@ import jabariLogo from '@/assets/jabari/jabari-main-logo.webp';
 import aksumLogo from '@/assets/aksum/aksum-main-logo.webp';
 import shakaLogo from '@/assets/shaka/shaka-main-logo.webp';
 import nzingaLogo from '@/assets/nzinga/nzinga-main-logo.webp';
+import sekhmetLogo from '@/assets/sekhmet/sekhmet-main-logo.webp';
 import DragMarquee from '@/shared/components/carousel/DragMarquee';
 import { SimpleHeading } from '@/shared/components/ui';
 
@@ -31,6 +32,7 @@ const LandingOpenSourceToolsSection: React.FC = () => {
     { slug: 'nzinga', path: '/nzinga', logo: nzingaLogo, alt: t('landing.nzinga.title') },
     { slug: 'jabari', path: '/jabari', logo: jabariLogo, alt: t('landing.jabari.title') },
     { slug: 'aksum', path: '/aksum', logo: aksumLogo, alt: t('landing.aksum.title') },
+    { slug: 'sekhmet', path: '/sekhmet', logo: sekhmetLogo, alt: t('landing.sekhmet.title') },
   ];
 
   const logoClass =

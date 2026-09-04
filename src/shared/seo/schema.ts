@@ -92,6 +92,7 @@ const ROUTE_LABELS: ReadonlyArray<readonly [string, string]> = [
   ['/nzinga', 'nzinga'],
   ['/jabari', 'jabari'],
   ['/aksum', 'aksum'],
+  ['/sekhmet', 'sekhmet'],
   ['/quiteroot', 'QuiteRoot'],
   ['/leaderboard', 'Leaderboard'],
   ['/zero-day-market', 'Zero Day Market'],

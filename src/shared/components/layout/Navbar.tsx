@@ -26,6 +26,7 @@ import {
   Building2,
   Radar,
   Contact,
+  Crosshair,
 } from 'lucide-react';
 import { useScrollLock } from '@/core/hooks/useScrollLock';
 import { useReducedMotion } from '@/shared/hooks/useReducedMotion';
@@ -62,6 +63,7 @@ const NAV_ITEM_LABELS: Record<string, string> = {
   nzinga: 'nav.nzinga',
   jabari: 'nav.jabari',
   aksum: 'nav.aksum',
+  sekhmet: 'nav.sekhmet',
   services: 'nav.services',
 };
 
@@ -84,6 +86,7 @@ const ITEM_ICONS: Record<string, NavItemIcon> = {
   nzinga: Radar,
   jabari: Bug,
   aksum: IconRank,
+  sekhmet: Crosshair,
   services: Rocket,
   cp: Contact,
   contact: Contact,

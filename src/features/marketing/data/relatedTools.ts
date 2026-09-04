@@ -15,6 +15,7 @@ import jabariLogo from '@/assets/jabari/jabari-main-logo.webp';
 import aksumLogo from '@/assets/aksum/aksum-main-logo.webp';
 import shakaLogo from '@/assets/shaka/shaka-main-logo.webp';
 import nzingaLogo from '@/assets/nzinga/nzinga-main-logo.webp';
+import sekhmetLogo from '@/assets/sekhmet/sekhmet-main-logo.webp';
 
 interface ToolRef {
   path: string;
@@ -30,6 +31,7 @@ const TOOLS: ToolRef[] = [
   { path: '/nzinga', titleKey: 'landing.nzinga.title', descKey: 'landing.nzinga.description', logo: nzingaLogo },
   { path: '/jabari', titleKey: 'landing.jabari.title', descKey: 'landing.jabari.description', logo: jabariLogo },
   { path: '/aksum', titleKey: 'landing.aksum.title', descKey: 'landing.aksum.description', logo: aksumLogo },
+  { path: '/sekhmet', titleKey: 'landing.sekhmet.title', descKey: 'landing.sekhmet.description', logo: sekhmetLogo },
 ];
 
 export const getRelatedTools = (t: TFunction, excludePath: string): RelatedItem[] =>
