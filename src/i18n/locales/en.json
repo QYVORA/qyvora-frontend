@@ -16,6 +16,7 @@
     "aksum": "aksum",
     "shaka": "shaka",
     "nzinga": "nzinga",
+    "sekhmet": "sekhmet",
     "quiteroot": "QuiteRoot",
     "market": "Market",
     "blogs": "Blogs",
@@ -905,6 +906,11 @@
       "title": "aksum",
       "description": "Binary security assessment & reverse-engineering platform in Go: identification, disassembly, function discovery, call graphs and evidence-backed findings.",
       "explore": "Explore aksum"
+    },
+    "sekhmet": {
+      "title": "sekhmet",
+      "description": "Baseline-aware, feedback-driven fuzzing & vulnerability discovery framework in Go: profile normal behaviour, adaptive mutation, SHA-256 crash dedup and delta minimization.",
+      "explore": "Explore sekhmet"
     }
   },
   "simulations": {

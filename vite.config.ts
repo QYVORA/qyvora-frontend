@@ -33,6 +33,7 @@ export default defineConfig(() => ({
         '/toha3ee',
         '/jabari',
         '/aksum',
+        '/sekhmet',
         '/shaka',
         '/cp',
         '/team',

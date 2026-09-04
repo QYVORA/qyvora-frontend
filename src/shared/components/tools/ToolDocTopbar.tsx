@@ -52,6 +52,7 @@ const NAV_ITEM_LABELS: Record<string, string> = {
   nzinga: 'nav.nzinga',
   jabari: 'nav.jabari',
   aksum: 'nav.aksum',
+  sekhmet: 'nav.sekhmet',
   services: 'nav.services',
 };
 
