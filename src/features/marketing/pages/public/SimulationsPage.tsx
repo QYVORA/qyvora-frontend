@@ -87,7 +87,7 @@ const IdeMock: React.FC = () => (
 );
 
 const NetworkMock: React.FC = () => (
-  <div className="relative flex h-full min-h-[220px] lg:min-h-[280px] flex-col rounded-2xl border border-border/50 bg-bg-card overflow-hidden">
+  <div className="relative flex h-full min-h-[200px] lg:min-h-[240px] flex-col rounded-2xl border border-border/50 bg-bg-card overflow-hidden">
     <div className="flex items-center justify-between px-4 py-2.5 shrink-0">
       <span className="text-[9px] font-mono text-text-muted">topology | recon</span>
       <span className="flex items-center gap-1.5 text-[9px] font-mono text-text-muted">
@@ -118,6 +118,7 @@ const SimulationsPage = () => {
 
     const heading = (
       <SimpleHeading
+        compact
         text={t(`simulations.${sim.id}.title`)}
         accentText={t(`simulations.${sim.id}.titleAccent`)}
         align="left"
@@ -144,7 +145,7 @@ const SimulationsPage = () => {
       /* Split layout — text left, live shell visual right */
       return (
         <PublicSnapSection key={sim.id}>
-          <div className="flex flex-col gap-8 lg:gap-10">
+          <div className="flex flex-col gap-6 lg:gap-8">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-10 items-stretch">
               <div className="flex flex-col justify-center">
                 {badge}
@@ -168,7 +169,7 @@ const SimulationsPage = () => {
       /* Split layout — header left, code editor visual right */
       return (
         <PublicSnapSection key={sim.id}>
-          <div className="flex flex-col gap-8 lg:gap-10">
+          <div className="flex flex-col gap-6 lg:gap-8">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-10 items-stretch">
               <div className="flex flex-col justify-center">
                 {badge}
@@ -191,7 +192,7 @@ const SimulationsPage = () => {
     /* Network — text and feature chips on one row, wide topology strip below */
     return (
       <PublicSnapSection key={sim.id}>
-        <div className="flex flex-col gap-8 lg:gap-10">
+        <div className="flex flex-col gap-6 lg:gap-8">
           <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 lg:gap-10">
             <div className="flex-1 max-w-xl">
               {badge}
