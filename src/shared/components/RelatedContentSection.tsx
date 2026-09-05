@@ -38,7 +38,7 @@ const RelatedContentSection: React.FC<RelatedContentSectionProps> = ({ title, it
   if (items.length === 0) return null;
 
   return (
-    <section aria-labelledby="related-content-heading" className={snap ? 'relative w-full min-h-dvh snap-section bg-bg-alt px-3 md:px-4 lg:px-6 pt-24 pb-8 md:pt-28 md:pb-10 lg:pt-32 lg:pb-12 scroll-mt-24 md:scroll-mt-28 flex flex-col' : ''}>
+    <section aria-labelledby="related-content-heading" className={snap ? 'relative w-full min-h-dvh snap-section bg-bg-alt px-3 md:px-4 lg:px-6 pt-24 pb-8 md:pt-28 md:pb-10 lg:pt-32 lg:pb-12 flex flex-col' : ''}>
       <div className={snap ? 'w-full my-auto' : ''}>
         <div className={`w-full ${snap ? '' : 'px-3 md:px-4 lg:px-6 py-16 md:py-24'}`}>
         <h2 id="related-content-heading" className="text-2xl md:text-3xl font-black uppercase tracking-tight mb-10">
