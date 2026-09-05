@@ -54,7 +54,7 @@ const LandingServicesSection: React.FC = () => {
 
   return (
     <div className="relative overflow-hidden min-h-dvh flex flex-col">
-      <div className="relative w-full h-full px-3 md:px-4 lg:px-6 pt-20 md:pt-20 lg:pt-20 pb-6 md:pb-10 lg:pb-16 flex flex-col">
+      <div className="relative w-full h-full px-3 md:px-4 lg:px-6 pt-20 md:pt-20 lg:pt-20 pb-4 md:pb-6 lg:pb-10 flex flex-col">
         <div className="w-full flex-1 flex flex-col min-h-0">
           {/* Mobile — service tiers as a swipeable carousel */}
           <div className="lg:hidden">
@@ -244,7 +244,7 @@ const LandingServicesSection: React.FC = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: '-60px' }}
             transition={{ duration: 0.5, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
-            className="mt-4 shrink-0"
+            className="mt-2 shrink-0"
           >
             <div
               role="button"
