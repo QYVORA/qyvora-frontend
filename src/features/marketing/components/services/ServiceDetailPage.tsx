@@ -78,7 +78,7 @@ const ServiceDetailPage: React.FC<{ svc: ServiceConfig }> = ({ svc }) => {
           <div className="w-full grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center">
             {/* Left: Header */}
             <ScrollReveal>
-              <div className="space-y-8">
+              <div className="space-y-6">
                 <SimpleHeading
                   text="What This Engagement Covers"
                   accentWords={1}
@@ -88,7 +88,7 @@ const ServiceDetailPage: React.FC<{ svc: ServiceConfig }> = ({ svc }) => {
                   description={svc.scope}
                 />
                 {svc.price && (
-                  <div className="pt-4">
+                  <div className="pt-3">
                     <span className="text-[9px] font-black uppercase tracking-widest text-text-muted flex items-center gap-1.5 mb-3">
                       <Target className="w-3 h-3" /> Pricing
                     </span>
@@ -108,16 +108,16 @@ const ServiceDetailPage: React.FC<{ svc: ServiceConfig }> = ({ svc }) => {
 
             {/* Right: Included items */}
             <ScrollReveal delay={0.1}>
-              <div className="relative h-full rounded-2xl border border-border/50 bg-bg-card p-8 lg:p-10 overflow-hidden">
+              <div className="relative h-full rounded-2xl border border-border/50 bg-bg-card p-6 lg:p-7 overflow-hidden">
                 <DottedMapOverlay className="rounded-2xl" />
                 <div className="relative">
-                  <span className="text-[9px] font-black uppercase tracking-widest text-text-muted mb-6 block">
+                  <span className="text-[9px] font-black uppercase tracking-widest text-text-muted mb-4 block">
                     What&apos;s Included
                   </span>
-                  <ul className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     {svc.included.map((item) => (
-                      <li key={item} className="flex items-start gap-3 rounded-xl border border-border/50 bg-bg-elevated/60 px-5 py-4">
-                        <span className="w-7 h-7 rounded-lg bg-accent/10 flex items-center justify-center shrink-0 mt-0.5">
+                      <li key={item} className="flex items-start gap-3 rounded-xl border border-border/50 bg-bg-elevated/60 px-3.5 py-2.5">
+                        <span className="w-6 h-6 rounded-lg bg-accent/10 flex items-center justify-center shrink-0 mt-0.5">
                           <CheckCircle2 className="w-4 h-4 text-accent" />
                         </span>
                         <span className="text-sm sm:text-base text-text-secondary leading-relaxed flex-1">{item}</span>
@@ -125,7 +125,7 @@ const ServiceDetailPage: React.FC<{ svc: ServiceConfig }> = ({ svc }) => {
                     ))}
                   </ul>
                   {svc.highlight && (
-                    <div className="mt-8 rounded-xl border border-accent/30 bg-accent/5 px-5 py-4">
+                    <div className="mt-5 rounded-xl border border-accent/30 bg-accent/5 px-4 py-3">
                       <p className="text-sm sm:text-base text-accent font-mono leading-relaxed">{svc.highlight}</p>
                     </div>
                   )}
@@ -194,10 +194,10 @@ const ServiceDetailPage: React.FC<{ svc: ServiceConfig }> = ({ svc }) => {
 
             {/* Right: Deliverables */}
             <ScrollReveal delay={0.1}>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 {svc.deliverables.map((deliverable, idx) => (
                   <ScrollReveal key={deliverable.label} delay={idx * 0.05} className="h-full">
-                    <div className="relative h-full rounded-2xl border border-border/50 bg-bg-card p-6 lg:p-7 overflow-hidden">
+                    <div className="relative h-full rounded-2xl border border-border/50 bg-bg-card p-4 lg:p-5 overflow-hidden">
                       <DottedMapOverlay className="rounded-2xl" />
                       <div className="relative">
                         <div className="flex items-center gap-3 mb-3">
