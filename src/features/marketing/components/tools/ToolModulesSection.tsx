@@ -39,7 +39,7 @@ const ToolModulesSection: React.FC<ToolModulesSectionProps> = ({
   modules,
 }) => {
   return (
-    <PublicSnapSection id={id}>
+    <PublicSnapSection id={id} className="scroll-mt-24 md:scroll-mt-28">
       <div className="flex flex-col gap-6 lg:gap-8">
         <ToolSectionHeader kicker={kicker} title={title} accent={accent} description={description} />
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-5 xl:grid-cols-3">

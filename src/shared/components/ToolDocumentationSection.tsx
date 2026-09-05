@@ -27,7 +27,7 @@ const ToolDocumentationSection = ({
   const splitDesktop = numericIndex % 3 === 0;
 
   return (
-  <PublicSnapSection id={id}>
+  <PublicSnapSection id={id} className="scroll-mt-24 md:scroll-mt-28">
     <article className="relative grid w-full grid-cols-1 gap-6 lg:grid-cols-2 lg:gap-10 lg:gap-x-14 lg:items-center">
       <div className={`flex flex-col ${reverseDesktop ? 'lg:order-2' : 'lg:order-1'}`}>
         <div className="mb-3 flex items-center gap-3">
