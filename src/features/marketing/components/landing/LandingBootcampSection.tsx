@@ -69,42 +69,42 @@ const LandingBootcampSection: React.FC = () => {
 
   return (
     <div className="relative bg-bg min-h-dvh flex flex-col overflow-hidden" >
-      <div className="relative z-10 w-full h-full px-3 md:px-4 lg:px-6 pt-24 md:pt-28 lg:pt-32 pb-4 md:pb-6 lg:pb-8 flex flex-col">
+      <div className="relative z-10 w-full h-full px-3 md:px-4 lg:px-6 pt-24 md:pt-28 lg:pt-32 pb-4 md:pb-6 lg:pb-6 flex flex-col">
         <div className="w-full flex-1 flex flex-col min-h-0">
-          <h2 className="text-lg md:text-xl lg:text-2xl font-black text-text-primary tracking-tighter leading-none mb-6 md:mb-8 lg:mb-8 shrink-0">
+          <h2 className="text-lg md:text-xl lg:text-2xl font-black text-text-primary tracking-tighter leading-none mb-6 md:mb-8 lg:mb-6 shrink-0">
             {t('landing2.bootcamp.heading1')} <span className="text-accent">{t('landing2.bootcamp.heading2')}</span>
           </h2>
 
           {/* Desktop bento — 3 columns, 1 featured + 2 supporting (desktop only) */}
-          <div className="hidden lg:grid grid-cols-3 gap-2 md:gap-4 flex-1 auto-rows-fr min-h-0">
+          <div className="hidden lg:grid grid-cols-3 gap-2 md:gap-4 flex-1 min-h-0 lg:grid-rows-[160px_160px]">
             {/* Featured card — 2 cols, 2 rows */}
             <motion.div
               key={`featured-${groupIndex}`}
               initial={{ opacity: 0, x: direction * 40 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-              className="lg:col-span-2 lg:row-span-2"
+              className="lg:col-span-2 lg:row-span-2 min-h-0 lg:max-h-[300px]"
             >
               <Link
                 to={featuredHref}
                 className="group relative block h-full card-accent bg-bg-card transition-[transform,box-shadow,border-color,background-color] duration-[var(--dur-base)] ease-[var(--ease-smooth)] overflow-hidden"
               >
-                <div className="relative h-full flex flex-col sm:flex-row p-4 sm:p-8 gap-5 sm:gap-6">
+                <div className="relative h-full flex flex-col sm:flex-row p-4 sm:p-4 gap-4 sm:gap-5">
                   <div className="flex-1 min-w-0 flex flex-col">
-                    <div className="flex items-center justify-end mb-3 sm:mb-6">
+                    <div className="flex items-center justify-end mb-3 sm:mb-3">
                       <span className="text-[9px] font-black uppercase tracking-widest px-3 py-1.5 rounded-full border border-border/50 bg-bg-elevated text-text-muted">
                         {t('landing.bootcamp.roomCount', { count: featuredRoomCount })}
                       </span>
                     </div>
 
-                    <h3 className="text-2xl md:text-3xl lg:text-4xl font-black text-text-primary tracking-tighter leading-none mb-2 sm:mb-3">
+                    <h3 className="text-2xl md:text-3xl lg:text-2xl font-black text-text-primary tracking-tighter leading-none mb-2 sm:mb-2">
                       {t(`landing.bootcamp.phases.${featured.id}.name`)}
                     </h3>
-                    <p className="text-xs md:text-sm text-text-secondary leading-relaxed max-w-lg line-clamp-3">
+                    <p className="text-xs md:text-sm text-text-secondary leading-relaxed max-w-lg line-clamp-2">
                       {t(`landing.bootcamp.phases.${featured.id}.desc`)}
                     </p>
 
-                    <div className="mt-auto flex items-center gap-3 pt-4 sm:pt-6">
+                    <div className="mt-auto flex items-center gap-3 pt-4 sm:pt-5">
                       <span className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-bg text-[10px] font-black uppercase tracking-widest text-accent transition-[gap] duration-[var(--dur-base)] ease-[var(--ease-smooth)] group-hover:gap-3">
                         {t('landing.bootcamp.startPhase')} {featured.id}
                         <IconArrowRight size={14} />
@@ -112,7 +112,7 @@ const LandingBootcampSection: React.FC = () => {
                     </div>
                   </div>
 
-                  <div className="w-full h-[200px] sm:w-[42%] lg:w-[44%] xl:w-[46%] sm:h-auto shrink-0 min-h-0 flex items-center justify-center">
+                  <div className="w-full h-[200px] sm:w-[42%] lg:w-[44%] xl:w-[46%] sm:h-auto lg:max-h-[260px] shrink-0 min-h-0 flex items-center justify-center">
                     <HpbAvatar
                       variant={`phase${Number(featured.id)}` as HpbVariant}
                       className="h-full sm:h-[90%] w-auto max-h-full max-w-full"
@@ -134,10 +134,11 @@ const LandingBootcampSection: React.FC = () => {
                   initial={{ opacity: 0, x: direction * 40 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ duration: 0.5, delay: 0.1 * (idx + 1), ease: [0.16, 1, 0.3, 1] }}
+                  className="min-h-0"
                 >
                   <Link
                     to={supportHref}
-                    className="group relative block h-full card-accent bg-bg-card p-3 sm:p-5 transition-[transform,box-shadow,border-color,background-color] duration-[var(--dur-base)] ease-[var(--ease-smooth)] overflow-hidden"
+                    className="group relative block h-full card-accent bg-bg-card p-3 sm:p-4 transition-[transform,box-shadow,border-color,background-color] duration-[var(--dur-base)] ease-[var(--ease-smooth)] overflow-hidden"
                   >
                     <div className="relative h-full flex flex-row items-stretch gap-3 sm:gap-4">
                       <div className="flex-1 min-w-0 flex flex-col">
@@ -205,7 +206,7 @@ const LandingBootcampSection: React.FC = () => {
                     </div>
 
                     <div className="p-4">
-                      <h3 className="text-lg font-black text-text-primary tracking-tighter leading-none mb-1.5">
+                      <h3 className="text-base font-black text-text-primary tracking-tighter leading-none mb-1.5">
                         {t(`landing.bootcamp.phases.${mobilePhase.id}.name`)}
                       </h3>
                       <p className="text-[11px] text-text-secondary leading-relaxed line-clamp-2 min-h-[2.6em]">
@@ -255,7 +256,7 @@ const LandingBootcampSection: React.FC = () => {
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5, delay: 0.3 }}
-            className="mt-4 shrink-0"
+            className="mt-3 shrink-0"
           >
             <Link
               to="/hpb"

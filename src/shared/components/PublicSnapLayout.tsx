@@ -1,4 +1,5 @@
 import React from 'react';
+import { useSnapWheelNav } from '@/core/hooks/useSnapWheelNav';
 
 interface PublicSnapLayoutProps {
   children: React.ReactNode;
@@ -13,6 +14,7 @@ interface PublicSnapLayoutProps {
  * own background and navbar clearance via `PublicSnapSection`/snap wrappers.
  */
 const PublicSnapLayout: React.FC<PublicSnapLayoutProps> = ({ children }) => {
+  useSnapWheelNav();
   return <div className="relative w-full bg-bg snap-container no-scrollbar">{children}</div>;
 };
 

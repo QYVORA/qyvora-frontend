@@ -22,6 +22,7 @@ import ActDividerSection from '@/features/marketing/components/landing/ActDivide
 
 import { Footer } from '@/shared/components/layout';
 import { useAdaptiveUi } from '@/core/hooks/useAdaptiveUi';
+import { useSnapWheelNav } from '@/core/hooks/useSnapWheelNav';
 import SEO from '@/shared/components/SEO';
 import { buildOrganization } from '@/shared/seo/schema';
 import { BookOpen, Users } from 'lucide-react';
@@ -59,6 +60,8 @@ const Landing: React.FC = () => {
 
   const { stats } = useLandingData();
   const { isMobile } = useAdaptiveUi();
+
+  useSnapWheelNav();
 
   const heroRef = React.useRef<HTMLDivElement>(null);
   const location = useLocation();

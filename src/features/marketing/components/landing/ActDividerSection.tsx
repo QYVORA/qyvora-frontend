@@ -24,9 +24,9 @@ const ActDividerSection: React.FC<ActDividerSectionProps> = ({ title, accentWord
 
   return (
     <PublicHeroSection showGlobe mask="right">
-      <div className="relative w-full h-full flex flex-col gap-6 md:gap-8">
+      <div className="relative w-full h-full flex flex-col gap-6">
         {/* Header */}
-        <div className="space-y-4 md:space-y-5 shrink-0">
+        <div className="space-y-3 md:space-y-4 shrink-0">
           <motion.h2
             initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -76,7 +76,7 @@ const ActDividerSection: React.FC<ActDividerSectionProps> = ({ title, accentWord
               return (
                 <Link
                   to={item.to}
-                  className="group relative flex flex-col bg-bg-card p-6 md:p-8 transition-[background-color] duration-[var(--dur-base)] ease-[var(--ease-smooth)] hover:bg-bg-elevated h-[280px] md:h-[320px] overflow-hidden min-w-0"
+                  className="group relative flex flex-col bg-bg-card p-6 md:p-8 transition-[background-color] duration-[var(--dur-base)] ease-[var(--ease-smooth)] hover:bg-bg-elevated h-[260px] md:h-[270px] overflow-hidden min-w-0"
                 >
                   {isCpIcon ? (
                     // CP icon standalone - no border wrapper
@@ -90,11 +90,11 @@ const ActDividerSection: React.FC<ActDividerSectionProps> = ({ title, accentWord
                     </div>
                   )}
                   <div className="flex-1 flex flex-col min-w-0">
-                    <span className="flex items-center gap-2 text-base md:text-lg font-black uppercase tracking-tight text-text-primary group-hover:text-accent transition-colors mb-3 break-words min-w-0">
+                    <span className="flex items-center gap-2 text-sm md:text-lg font-black uppercase tracking-tight text-text-primary group-hover:text-accent transition-colors mb-3 break-words min-w-0">
                       {item.label}
                       <IconArrowRight size={16} className="shrink-0 text-text-muted transition-[color,transform] duration-[var(--dur-base)] ease-[var(--ease-smooth)] group-hover:translate-x-0.5 group-hover:text-accent" />
                     </span>
-                    <p className="text-sm md:text-base text-text-muted leading-relaxed flex-1 min-w-0 break-words line-clamp-3">
+                    <p className="text-xs md:text-base text-text-muted leading-relaxed flex-1 min-w-0 break-words line-clamp-3">
                       {item.description}
                     </p>
                   </div>
