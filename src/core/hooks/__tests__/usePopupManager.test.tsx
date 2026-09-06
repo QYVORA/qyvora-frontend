@@ -67,4 +67,36 @@ describe('usePopupManager', () => {
     const second = renderHook(() => usePopupManager('popup', 1));
     expect(second.result.current.isVisible).toBe(true);
   });
+
+  it('never activates a popup registered with enabled=false', () => {
+    const disabled = renderHook(() => usePopupManager('disabled-popup', 0, false));
+    expect(disabled.result.current.isVisible).toBe(false);
+    const contender = renderHook(() => usePopupManager('contender', 5));
+    expect(contender.result.current.isVisible).toBe(true);
+  });
+
+  it('activates a popup once it is enabled', () => {
+    const { result, rerender } = renderHook(
+      ({ enabled }) => usePopupManager('flip-popup', 1, enabled),
+      { initialProps: { enabled: false } },
+    );
+    expect(result.current.isVisible).toBe(false);
+    rerender({ enabled: true });
+    expect(result.current.isVisible).toBe(true);
+  });
+
+  it('releases the slot when the active popup is disabled mid-flight', () => {
+    const { result, rerender } = renderHook(
+      ({ enabled }) => usePopupManager('toggle-popup', 1, enabled),
+      { initialProps: { enabled: false } },
+    );
+    const contender = renderHook(() => usePopupManager('contender', 5));
+    expect(contender.result.current.isVisible).toBe(true);
+    rerender({ enabled: true });
+    expect(result.current.isVisible).toBe(true);
+    expect(contender.result.current.isVisible).toBe(false);
+    rerender({ enabled: false });
+    expect(result.current.isVisible).toBe(false);
+    expect(contender.result.current.isVisible).toBe(false);
+  });
 });

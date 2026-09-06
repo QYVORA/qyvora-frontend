@@ -43,15 +43,26 @@ function dismissCurrentPopup() {
  * Usage:
  *   const { isVisible, onDismiss } = usePopupManager('consent-banner', 1);
  *
+ * The optional third argument disables auto-triggering entirely (e.g. for
+ * panels that should only appear on first visit — pass the persisted "already
+ * seen" flag here). Disabled popups never register with the shared queue and
+ * are never activated; a previously-activated popup releases its slot when
+ * `enabled` flips to false.
+ *
  * Call `onDismiss()` when the user dismisses the panel. The next queued panel
  * will automatically appear.
  */
-export function usePopupManager(id: string, priority: number) {
+export function usePopupManager(id: string, priority: number, enabled = true) {
   const [isVisible, setIsVisible] = useState(false);
   const priorityRef = useRef(priority);
   priorityRef.current = priority;
 
   useEffect(() => {
+    // A disabled popup must not claim a slot in the shared queue and must not
+    // activate. Bypassing registration entirely keeps the queue clean for the
+    // popups that are actually eligible to show.
+    if (!enabled) return;
+
     const handleShow = () => {
       if (activePopupId === id) setIsVisible(true);
     };
@@ -76,14 +87,18 @@ export function usePopupManager(id: string, priority: number) {
     }
 
     return () => {
-      window.removeEventListener(SHOW_EVENT, handleShow);
-      window.removeEventListener(DISMISS_EVENT, handleDismiss);
-
+      // Release the slot BEFORE detaching the event listeners so the
+      // notifyDismiss/notifyShow events reach the still-attached handlers —
+      // the disabled popup hides itself and the next queued popup appears.
+      // Removing listeners first would leave the disabled popup stuck visible.
       const idx = pendingPopups.findIndex((p) => p.id === id);
       if (idx !== -1) pendingPopups.splice(idx, 1);
       if (activePopupId === id) dismissCurrentPopup();
+
+      window.removeEventListener(SHOW_EVENT, handleShow);
+      window.removeEventListener(DISMISS_EVENT, handleDismiss);
     };
-  }, [id]);
+  }, [id, enabled]);
 
   const onDismiss = useCallback(() => {
     setIsVisible(false);
