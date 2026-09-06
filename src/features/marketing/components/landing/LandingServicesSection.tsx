@@ -72,7 +72,7 @@ const LandingServicesSection: React.FC = () => {
                         </span>
                       )}
                     </div>
-                    <h3 className="text-xl font-black text-text-primary tracking-tighter leading-none mb-1.5">
+                    <h3 className="text-lg font-black text-text-primary tracking-tighter leading-none mb-1.5">
                       {service.tier}
                     </h3>
                     <span className="text-sm font-black text-accent mb-4">{service.price}</span>
@@ -238,13 +238,14 @@ const LandingServicesSection: React.FC = () => {
             </motion.div>
           </div>
 
-          {/* Custom Inquiries Card */}
+          {/* Custom Inquiries Card — mobile only (desktop custom requests live
+              on the /services page so the bento keeps one clean viewport) */}
           <motion.div
             initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 40 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: '-60px' }}
             transition={{ duration: 0.5, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
-            className="mt-2 shrink-0"
+            className="mt-2 shrink-0 lg:hidden"
           >
             <div
               role="button"

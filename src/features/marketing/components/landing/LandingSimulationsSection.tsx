@@ -176,7 +176,7 @@ const SimulationCard: React.FC<{ sim: (typeof SIMULATIONS)[number]; tabIndex?: -
     <Link
       to={sim.slug}
       tabIndex={tabIndex}
-      className="group flex h-[460px] w-[min(88vw,620px)] shrink-0 flex-col overflow-hidden rounded-2xl border border-border/50 bg-bg-card p-4 transition-[border-color,transform,box-shadow] duration-300 hover:-translate-y-1 hover:border-accent/50 hover:shadow-[var(--card-shadow)] sm:h-[460px] sm:w-[min(72vw,680px)] lg:h-[410px] lg:w-[min(48vw,700px)]"
+      className="group flex h-[460px] w-[min(88vw,620px)] shrink-0 flex-col overflow-hidden rounded-2xl border border-border/50 bg-bg-card p-4 transition-[border-color,transform,box-shadow] duration-300 hover:-translate-y-1 hover:border-accent/50 hover:shadow-[var(--card-shadow)] sm:h-[460px] sm:w-[min(72vw,680px)] lg:h-[360px] lg:w-[min(48vw,700px)]"
     >
       {isTerminal ? (
         <div className="flex min-h-0 flex-1 flex-col gap-4 lg:flex-row lg:items-stretch">
@@ -221,7 +221,7 @@ const LandingSimulationsSection: React.FC = () => {
   return (
     <div className="relative flex min-h-dvh flex-col overflow-x-clip overflow-hidden bg-bg" >
       <div className="relative z-10 flex h-full w-full flex-1 flex-col px-3 pb-6 pt-24 md:px-4 md:pb-8 lg:px-6 lg:pb-10">
-        <div className="mb-8 shrink-0 md:mb-10 lg:mb-14">
+        <div className="mb-8 shrink-0 md:mb-10 lg:mb-8">
           <span className="mb-3 inline-block rounded-full border border-accent/30 bg-accent/10 px-3 py-1.5 text-[9px] font-black uppercase tracking-widest text-accent">{t('landing.simulations.badge')}</span>
           <h2 className="text-xl font-black leading-none tracking-tighter text-text-primary md:text-2xl lg:text-3xl">
             {t('landing.simulations.heading1')} <span className="text-accent">{t('landing.simulations.heading2')}</span>
@@ -235,7 +235,7 @@ const LandingSimulationsSection: React.FC = () => {
               {SIMULATIONS.map((sim) => <SimulationCard key={sim.id} sim={sim} />)}
             </div>
           ) : (
-            <div className="relative -mx-3 h-[460px] shrink-0 md:-mx-4 sm:h-[460px] lg:-mx-6 lg:h-[410px]">
+            <div className="relative -mx-3 h-[460px] shrink-0 md:-mx-4 sm:h-[460px] lg:-mx-6 lg:h-[360px]">
               <DragMarquee speed={22} trackClassName="gap-4 pr-4 md:gap-5 md:pr-5" className="h-full">
                 {SIMULATIONS.map((sim) => <SimulationCard key={sim.id} sim={sim} />)}
               </DragMarquee>

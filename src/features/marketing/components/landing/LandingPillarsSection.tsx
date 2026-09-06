@@ -64,7 +64,7 @@ const LandingPillarsSection: React.FC = () => {
                     </span>
                   </div>
 
-                  <h3 className="text-lg sm:text-2xl md:text-3xl lg:text-4xl font-black text-text-primary tracking-tighter leading-none mb-2 sm:mb-3">
+                  <h3 className="text-base sm:text-2xl md:text-3xl lg:text-4xl font-black text-text-primary tracking-tighter leading-none mb-2 sm:mb-3">
                     {featured.title}
                   </h3>
                   <p className="text-[11px] sm:text-xs md:text-sm text-text-secondary leading-relaxed max-w-lg mb-3 sm:mb-6 line-clamp-3">

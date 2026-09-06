@@ -38,7 +38,7 @@ const LabCard: React.FC<{ lab: Lab }> = ({ lab }) => {
         </div>
 
         <div className="mt-auto">
-          <h3 className="text-xl sm:text-2xl font-black text-text-primary tracking-tighter leading-none">
+          <h3 className="text-lg sm:text-2xl font-black text-text-primary tracking-tighter leading-none">
             {t(`landing.labs.list.${lab.id}.title`)}
           </h3>
           <p className="mt-2 text-xs sm:text-sm text-text-muted leading-relaxed line-clamp-2 min-h-[2.6em]">

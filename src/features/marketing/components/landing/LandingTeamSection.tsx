@@ -10,7 +10,7 @@ import { useTranslation } from 'react-i18next';
 const TeamCard = ({ member }: { member: TeamMember }) => (
   <Link
     to={member.handle ? `/@${member.handle}` : undefined}
-    className="group relative block h-[340px] sm:h-[400px] w-[min(85vw,360px)] sm:w-[min(52vw,380px)] md:w-[min(42vw,430px)] lg:w-[min(36vw,470px)] xl:w-[min(31vw,520px)] shrink-0 mr-4 md:mr-5 card-accent bg-bg-card overflow-hidden transition-[transform,box-shadow,border-color,background-color] duration-[var(--dur-base)] ease-[var(--ease-smooth)] hover:shadow-[var(--card-shadow)]"
+    className="group relative block h-[340px] sm:h-[360px] w-[min(85vw,360px)] sm:w-[min(52vw,380px)] md:w-[min(42vw,430px)] lg:w-[min(36vw,470px)] xl:w-[min(31vw,520px)] shrink-0 mr-4 md:mr-5 card-accent bg-bg-card overflow-hidden transition-[transform,box-shadow,border-color,background-color] duration-[var(--dur-base)] ease-[var(--ease-smooth)] hover:shadow-[var(--card-shadow)]"
   >
     {/* Member photo as the card background */}
     <img
@@ -79,7 +79,7 @@ const LandingTeamSection = () => {
 
   return (
     <div className="relative bg-bg min-h-dvh flex flex-col overflow-x-clip overflow-hidden">
-      <div className="relative z-10 w-full h-full px-3 md:px-4 lg:px-6 py-12 sm:py-10 md:py-16 lg:py-20 flex flex-col gap-10 sm:gap-12 lg:gap-14">
+      <div className="relative z-10 w-full h-full px-3 md:px-4 lg:px-6 py-12 sm:py-10 md:py-16 lg:py-20 flex flex-col gap-10 sm:gap-12 lg:gap-10">
         {/* Header — heading on the left, CTA aligned horizontally on the right */}
         <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6">
           <SimpleHeading
