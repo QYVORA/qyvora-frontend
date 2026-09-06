@@ -83,6 +83,7 @@ afterAll(() => {
 beforeEach(() => {
   auth.user = null;
   api.post.mockReset();
+  localStorage.clear();
 });
 
 const WELCOME = 'student.tour.welcome.title';
@@ -182,5 +183,33 @@ describe('StudentTour', () => {
     renderTour();
     await user.click(screen.getByText(SKIP));
     expect(api.post).toHaveBeenCalledWith('/profile/onboarding/complete');
+  });
+
+  it('persists device acknowledgment on dismissal', async () => {
+    const user = userEvent.setup();
+    renderTour();
+    await user.click(screen.getByText(SKIP));
+    expect(localStorage.getItem('qyvora_tour_acknowledged')).toBe('1');
+  });
+
+  it('does not auto-open again once the tour was acknowledged on this device', () => {
+    const first = renderTour();
+    expect(screen.getByText(WELCOME)).toBeInTheDocument();
+    // Unmount triggers the cleanup that persists the acknowledgment flag.
+    // A fresh mount then simulates a subsequent login on the same device —
+    // the acknowledged flag prevents the popup from auto-triggering.
+    act(() => first.unmount());
+    renderTour();
+    expect(screen.queryByText(WELCOME)).not.toBeInTheDocument();
+  });
+
+  it('still replays on demand after the tour was acknowledged', async () => {
+    const user = userEvent.setup();
+    renderTour();
+    await user.click(screen.getByText(SKIP));
+    act(() => {
+      window.dispatchEvent(new CustomEvent('qyvora:start-tutorial'));
+    });
+    expect(screen.getByText(WELCOME)).toBeInTheDocument();
   });
 });

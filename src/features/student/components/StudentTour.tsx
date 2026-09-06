@@ -14,6 +14,14 @@ interface StudentTourProps {
   onOpenChange?: (open: boolean) => void;
 }
 
+// Device-scoped acknowledgment flag. Once the guided tour has been dismissed
+// (Finished or Skipped) on this browser, it never auto-triggers again — the
+// manual "Take a Tour" replay button still works. Stored locally rather than
+// on the server so it needs no round-trip and respects per-device choice.
+const TOUR_ACKNOWLEDGED_KEY = 'qyvora_tour_acknowledged';
+
+const isTourAcknowledged = () => localStorage.getItem(TOUR_ACKNOWLEDGED_KEY) === '1';
+
 const queryTarget = (id: string) =>
   document.querySelector<HTMLElement>(`[data-tour-id="${id}"]`);
 
@@ -36,7 +44,12 @@ export const StudentTour: React.FC<StudentTourProps> = ({
 }) => {
   const { t } = useTranslation();
   const { user, refreshMe } = useAuth();
-  const { isVisible: popupVisible, onDismiss: popupDismiss } = usePopupManager('onboarding-tour', 2);
+  const [tourAcknowledged, setTourAcknowledged] = useState(isTourAcknowledged);
+  const { isVisible: popupVisible, onDismiss: popupDismiss } = usePopupManager(
+    'onboarding-tour',
+    2,
+    !tourAcknowledged,
+  );
   const [replayOpen, setReplayOpen] = useState(false);
 
   const isExternallyControlled = externalOpen !== undefined;
@@ -47,6 +60,10 @@ export const StudentTour: React.FC<StudentTourProps> = ({
     // "Take a Tour" replay stays open forever (the Finish/Skip button would
     // appear to do nothing on desktop).
     setReplayOpen(false);
+    // Whether the user finished, skipped, or simply left the page, the tour
+    // is considered handled on this device and must not auto-trigger again.
+    localStorage.setItem(TOUR_ACKNOWLEDGED_KEY, '1');
+    setTourAcknowledged(true);
     if (isExternallyControlled) {
       externalOnOpenChange?.(false);
     } else {
