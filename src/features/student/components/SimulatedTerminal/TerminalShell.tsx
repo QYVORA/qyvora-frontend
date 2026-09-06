@@ -87,6 +87,7 @@ interface TerminalShellProps {
   onToggleFullscreen?: () => void;
   isFullscreen?: boolean;
   showChrome?: boolean;
+  noWrap?: boolean;
 }
 
 const KALI_BG = '#0c0c0c';
@@ -107,6 +108,7 @@ export const TerminalShell: React.FC<TerminalShellProps> = ({
   onToggleFullscreen,
   isFullscreen,
   showChrome = true,
+  noWrap = false,
 }) => {
   const savedLines = useRef<TerminalLine[] | null>(loadTerminalLines());
   const savedState = useRef<TerminalState | null>(savedLines.current ? loadTerminalState() : null);
@@ -563,7 +565,7 @@ export const TerminalShell: React.FC<TerminalShellProps> = ({
 
       <div
         ref={containerRef}
-        className="flex-1 overflow-y-auto overflow-x-hidden px-3 md:px-4 pb-4 pt-1 font-mono text-[11px] md:text-sm leading-relaxed overscroll-contain"
+        className={`flex-1 overflow-y-auto ${noWrap ? 'overflow-x-auto' : 'overflow-x-hidden'} px-3 md:px-4 pb-4 pt-1 font-mono text-[11px] md:text-sm leading-relaxed overscroll-contain`}
         style={{
           background: KALI_BG,
           scrollbarWidth: 'thin',
@@ -582,7 +584,7 @@ export const TerminalShell: React.FC<TerminalShellProps> = ({
                   if (sub.endsWith('/')) c = KALI_DIR;
                   else if (sub.endsWith('*')) c = KALI_EXEC;
                   return (
-                    <div key={j} style={{ color: c }} className="whitespace-pre-wrap">
+                    <div key={j} style={{ color: c }} className={`${noWrap ? 'whitespace-pre' : 'whitespace-pre-wrap'}`}>
                       {sub}
                     </div>
                   );
@@ -599,14 +601,14 @@ export const TerminalShell: React.FC<TerminalShellProps> = ({
             <div
               key={i}
               style={{ color, opacity: baseOpacity }}
-              className="whitespace-pre-wrap"
+              className={`${noWrap ? 'whitespace-pre' : 'whitespace-pre-wrap'}`}
             >
               {line.text}
             </div>
           );
         })}
         {streamingActive && (
-          <div style={{ color: KALI_GREEN }} className="whitespace-pre-wrap">
+          <div style={{ color: KALI_GREEN }} className={`${noWrap ? 'whitespace-pre' : 'whitespace-pre-wrap'}`}>
             <span className="inline-block w-2 h-4 bg-current animate-pulse" />
           </div>
         )}

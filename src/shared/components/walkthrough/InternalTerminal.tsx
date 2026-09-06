@@ -54,6 +54,7 @@ export const InternalTerminal: React.FC<InternalTerminalProps> = ({ open, onOpen
       context={context}
       onClose={handleClose}
       showChrome
+      noWrap
     />
   );
 
