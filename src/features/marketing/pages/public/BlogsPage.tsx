@@ -69,7 +69,7 @@ const BlogsPage = () => {
         </section>
 
         <PublicSnapSection>
-          <div className="flex flex-col justify-between flex-1 min-h-0 space-y-3">
+          <div className="flex flex-col justify-between flex-1 min-h-0 space-y-2.5">
             <div className="flex flex-col sm:flex-row gap-2.5 sm:gap-4 items-start sm:items-center justify-between shrink-0">
               <div className="flex items-center gap-1.5 scroll-x no-scrollbar flex-nowrap min-w-0 flex-1 w-full sm:w-auto">
                 <button
@@ -100,7 +100,7 @@ const BlogsPage = () => {
                     value={query}
                     onChange={(e) => handleQueryChange(e.target.value)}
                     placeholder="Search articles..."
-                    className="w-full rounded-xl border border-border/40 bg-bg-card py-2.5 pl-9 pr-3 text-xs text-text-primary focus:border-accent outline-none transition-[border-color] duration-[var(--dur-base)] ease-[var(--ease-smooth)]"
+                    className="w-full rounded-xl border border-border/40 bg-bg-card py-2 pl-9 pr-3 text-xs text-text-primary focus:border-accent outline-none transition-[border-color] duration-[var(--dur-base)] ease-[var(--ease-smooth)]"
                   />
                 </div>
                 <ViewToggle value={view} onChange={setView} label="Blog view mode" />
@@ -117,7 +117,7 @@ const BlogsPage = () => {
                   view={view}
                   items={currentBatch}
                   keyOf={(post) => post.slug}
-                  gridClassName="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 flex-1 items-stretch"
+                  gridClassName="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-4 flex-1 items-stretch"
                   renderItem={(post) => (
                     <ScrollReveal amount={0.05} className="h-full">
                       <BlogCard post={post} view={view} />

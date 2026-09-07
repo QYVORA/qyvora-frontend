@@ -131,7 +131,7 @@ const LabsCarousel: React.FC<LabsCarouselProps> = ({
                 </p>
 
                 {/* Metadata row */}
-                <div className="flex flex-wrap items-center gap-3 sm:gap-5 mt-6">
+                <div className="flex flex-wrap items-center gap-3 sm:gap-5 mt-5">
                   <span className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-[9px] font-black uppercase tracking-widest border ${diffColor}`}>
                     <Star className="h-2.5 w-2.5" /> {diffLabel}
                   </span>
@@ -146,7 +146,7 @@ const LabsCarousel: React.FC<LabsCarouselProps> = ({
                 {/* CTA */}
                 <Link
                   to={lab.route}
-                  className="btn-primary inline-flex items-center gap-2 mt-8 self-start px-6 py-2.5"
+                  className="btn-primary inline-flex items-center gap-2 mt-6 self-start px-6 py-2.5"
                 >
                   <Zap className="w-4 h-4" /> Launch Lab <IconArrowRight size={14} />
                 </Link>
@@ -154,8 +154,8 @@ const LabsCarousel: React.FC<LabsCarouselProps> = ({
 
               {/* Right column — lab visual (first-class section element) */}
               <div className="hidden lg:flex items-center justify-center">
-                <div className="relative w-full max-w-[420px] aspect-square flex items-center justify-center">
-                  <LabBadge labId={lab.id} accentColor={lab.accentColor} className="w-64 h-64 lg:w-80 lg:h-80" />
+                <div className="relative w-full max-w-[360px] aspect-square flex items-center justify-center">
+                  <LabBadge labId={lab.id} accentColor={lab.accentColor} className="w-64 h-64 lg:w-72 lg:h-72" />
                 </div>
               </div>
             </div>
@@ -165,7 +165,7 @@ const LabsCarousel: React.FC<LabsCarouselProps> = ({
 
         {/* Navigation — arrows + dots */}
         {total > 1 && (
-          <div className="flex items-center justify-between mt-10 md:mt-14">
+          <div className="flex items-center justify-between mt-8 md:mt-10">
             {/* Arrow buttons */}
             <div className="flex items-center gap-2">
               <button

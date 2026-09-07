@@ -62,8 +62,8 @@ const HpbPhasePage: React.FC = () => {
             ]}
             rightContent={
               <div className="md:hidden lg:flex items-center justify-center w-full h-full py-6 lg:py-0">
-                <div className="relative w-full max-w-[220px] sm:max-w-[260px] lg:max-w-[80%] 2xl:max-w-[75%] flex items-center justify-center">
-                  <HpbAvatar variant={phase.id as HpbVariant} className="w-full h-auto object-contain" />
+                <div className="relative w-full max-w-[220px] sm:max-w-[260px] lg:max-w-[80%] 2xl:max-w-[75%] max-h-[60vh] flex items-center justify-center">
+                  <HpbAvatar variant={phase.id as HpbVariant} className="w-full h-full object-contain" />
                 </div>
               </div>
             }
@@ -93,7 +93,7 @@ const HpbPhasePage: React.FC = () => {
         ))}
 
         {/* Related phases */}
-        <RelatedContentSection items={otherPhases} />
+        <RelatedContentSection snap items={otherPhases} />
 
         {/* CTA */}
         <section id="cta" className="relative w-full min-h-dvh snap-section bg-bg-alt">

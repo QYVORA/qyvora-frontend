@@ -73,13 +73,13 @@ const BlogCard: React.FC<BlogCardProps> = ({ post, view }) => {
       className="group flex flex-col card-accent bg-bg-card overflow-hidden transition-[transform,box-shadow,border-color,background-color] duration-[var(--dur-base)] ease-[var(--ease-smooth)] h-full min-h-[220px]"
     >
       {post.image && (
-        <div className="aspect-[16/9] overflow-hidden bg-accent/5 shrink-0">
+        <div className="aspect-[16/9] overflow-hidden bg-accent/5 shrink-0 max-h-[170px]">
           <img
             src={post.image}
             alt={post.title}
             width={1536}
             height={1024}
-            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+            className="w-full h-full object-cover object-top transition-transform duration-500 group-hover:scale-105"
             loading="lazy"
           />
         </div>

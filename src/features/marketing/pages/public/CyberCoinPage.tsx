@@ -462,7 +462,7 @@ const CyberCoinPage: React.FC = () => {
         </PublicSnapSection>
 
         {/* ── 09 · FOOTER ───────────────────────────────────────────────── */}
-        <section className="w-full bg-bg snap-section pt-10 md:pt-16">
+        <section className="w-full bg-bg snap-section pt-10 md:pt-0">
           <Footer />
         </section>
 
