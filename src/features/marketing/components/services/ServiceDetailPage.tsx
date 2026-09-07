@@ -78,7 +78,7 @@ const ServiceDetailPage: React.FC<{ svc: ServiceConfig }> = ({ svc }) => {
           <div className="w-full grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center">
             {/* Left: Header */}
             <ScrollReveal>
-              <div className="space-y-6">
+              <div className="space-y-5">
                 <SimpleHeading
                   text="What This Engagement Covers"
                   accentWords={1}
@@ -88,7 +88,7 @@ const ServiceDetailPage: React.FC<{ svc: ServiceConfig }> = ({ svc }) => {
                   description={svc.scope}
                 />
                 {svc.price && (
-                  <div className="pt-3">
+                  <div className="pt-2">
                     <span className="text-[9px] font-black uppercase tracking-widest text-text-muted flex items-center gap-1.5 mb-3">
                       <Target className="w-3 h-3" /> Pricing
                     </span>
@@ -99,7 +99,7 @@ const ServiceDetailPage: React.FC<{ svc: ServiceConfig }> = ({ svc }) => {
                       <span className="text-sm sm:text-base text-text-muted font-mono">{svc.priceLocal}</span>
                     </div>
                     {svc.priceNote && (
-                      <p className="text-sm text-text-muted leading-relaxed mt-3 font-mono">{svc.priceNote}</p>
+                      <p className="text-sm text-text-muted leading-relaxed mt-2 font-mono">{svc.priceNote}</p>
                     )}
                   </div>
                 )}
@@ -114,9 +114,9 @@ const ServiceDetailPage: React.FC<{ svc: ServiceConfig }> = ({ svc }) => {
                   <span className="text-[9px] font-black uppercase tracking-widest text-text-muted mb-4 block">
                     What&apos;s Included
                   </span>
-                  <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                     {svc.included.map((item) => (
-                      <li key={item} className="flex items-start gap-3 rounded-xl border border-border/50 bg-bg-elevated/60 px-3.5 py-2.5">
+                      <li key={item} className="flex items-start gap-3 rounded-xl border border-border/50 bg-bg-elevated/60 px-3 py-1.5">
                         <span className="w-6 h-6 rounded-lg bg-accent/10 flex items-center justify-center shrink-0 mt-0.5">
                           <CheckCircle2 className="w-4 h-4 text-accent" />
                         </span>
@@ -125,7 +125,7 @@ const ServiceDetailPage: React.FC<{ svc: ServiceConfig }> = ({ svc }) => {
                     ))}
                   </ul>
                   {svc.highlight && (
-                    <div className="mt-5 rounded-xl border border-accent/30 bg-accent/5 px-4 py-3">
+                    <div className="mt-4 rounded-xl border border-accent/30 bg-accent/5 px-4 py-3">
                       <p className="text-sm sm:text-base text-accent font-mono leading-relaxed">{svc.highlight}</p>
                     </div>
                   )}
@@ -197,10 +197,10 @@ const ServiceDetailPage: React.FC<{ svc: ServiceConfig }> = ({ svc }) => {
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 {svc.deliverables.map((deliverable, idx) => (
                   <ScrollReveal key={deliverable.label} delay={idx * 0.05} className="h-full">
-                    <div className="relative h-full rounded-2xl border border-border/50 bg-bg-card p-4 lg:p-5 overflow-hidden">
+                    <div className="relative h-full rounded-2xl border border-border/50 bg-bg-card p-4 overflow-hidden">
                       <DottedMapOverlay className="rounded-2xl" />
                       <div className="relative">
-                        <div className="flex items-center gap-3 mb-3">
+                        <div className="flex items-center gap-3 mb-2.5">
                           <div className="w-8 h-8 rounded-lg bg-accent/10 border border-accent/30 flex items-center justify-center shrink-0">
                             <FileText className="w-4 h-4 text-accent" />
                           </div>
@@ -261,13 +261,14 @@ const ServiceDetailPage: React.FC<{ svc: ServiceConfig }> = ({ svc }) => {
                 kicker={PENTEST_PHILOSOPHY.heading}
                 align="left"
                 description={PENTEST_PHILOSOPHY.body}
+                descriptionWidth="max-w-2xl"
               />
             </ScrollReveal>
           </div>
         </PublicSnapSection>
 
         {/* ── Related services ─────────────────────────────────────────── */}
-        <RelatedContentSection items={otherServices} />
+        <RelatedContentSection snap items={otherServices} />
 
         {/* ── SECTION 6: Footer ────────────────────────────────────────── */}
         <section className="w-full bg-bg pt-10 md:pt-0 snap-section">

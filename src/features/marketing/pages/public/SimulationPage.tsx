@@ -228,7 +228,7 @@ const SimulationPage = () => {
             </div>
           </PublicSnapSection>
 
-          <RelatedContentSection items={otherSimulations} />
+          <RelatedContentSection snap items={otherSimulations} />
 
           <section className="relative w-full min-h-dvh snap-section bg-bg-alt">
             <LandingFinalCtaSection user={user} />

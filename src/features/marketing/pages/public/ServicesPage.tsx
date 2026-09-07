@@ -28,7 +28,7 @@ const ServiceSection: React.FC<{ svc: ServiceConfig; index: number }> = ({ svc, 
         transition={{ duration: 0.5, delay: index * 0.1, ease: [0.16, 1, 0.3, 1] }}
         className="shrink-0 lg:w-[420px] xl:w-[480px] flex flex-col lg:justify-center"
       >
-        <span className={`flex items-center gap-2 px-3 py-1 rounded-lg border text-[9px] font-black uppercase tracking-widest mb-3 w-fit ${
+        <span className={`flex items-center gap-2 px-3 py-1 rounded-lg border text-[9px] font-black uppercase tracking-widest mb-2 w-fit ${
           svc.featured ? 'bg-accent/10 border-accent/30 text-accent' : 'bg-bg-elevated border-border/50 text-text-muted'
         }`}>
           <Icon className="w-3 h-3" /> {svc.badge}
@@ -40,10 +40,10 @@ const ServiceSection: React.FC<{ svc: ServiceConfig; index: number }> = ({ svc, 
           {...(svc.accentWord ? { accentText: svc.accentWord } : {})}
           align="left"
           description={svc.overview}
-          className="mb-5"
+          className="mb-4"
         />
 
-        <div className="mb-6">
+        <div className="mb-4">
           <span className="text-[9px] font-black uppercase tracking-widest text-text-muted flex items-center gap-1.5 mb-2">
             <Target className="w-3 h-3" /> Pricing
           </span>
@@ -84,21 +84,21 @@ const ServiceSection: React.FC<{ svc: ServiceConfig; index: number }> = ({ svc, 
         transition={{ duration: 0.5, delay: index * 0.1 + 0.1, ease: [0.16, 1, 0.3, 1] }}
         className="flex-1 min-h-0 flex flex-col lg:justify-center"
       >
-        <div className="mb-5">
+        <div className="mb-3">
           <span className="text-[9px] font-black uppercase tracking-widest text-text-muted flex items-center gap-1.5 mb-2">
             <Lock className="w-3 h-3" /> Scope
           </span>
           <p className="text-sm sm:text-base text-text-primary font-mono leading-relaxed">{svc.scope}</p>
         </div>
 
-        <span className="text-[9px] font-black uppercase tracking-widest text-text-muted mb-2.5">
+        <span className="text-[9px] font-black uppercase tracking-widest text-text-muted mb-2">
           What's Included
         </span>
         <ul className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 md:gap-2.5">
           {svc.included.map((item) => (
             <li
               key={item}
-              className="relative flex items-center gap-2 rounded-xl border border-border/50 bg-bg-card px-3 py-2"
+              className="relative flex items-center gap-2 rounded-xl border border-border/50 bg-bg-card px-3 py-1.5"
             >
               <span className="w-6 h-6 rounded-lg bg-accent/10 flex items-center justify-center shrink-0">
                 <IconCheck size={14} className="text-accent" />
@@ -109,7 +109,7 @@ const ServiceSection: React.FC<{ svc: ServiceConfig; index: number }> = ({ svc, 
         </ul>
 
         {svc.highlight && (
-          <div className="mt-4 rounded-xl border border-accent/30 bg-accent/5 px-4 py-3">
+          <div className="mt-3 rounded-xl border border-accent/30 bg-accent/5 px-4 py-3">
             <p className="text-xs sm:text-sm text-accent font-mono leading-relaxed">{svc.highlight}</p>
           </div>
           )}

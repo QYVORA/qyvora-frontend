@@ -256,6 +256,8 @@
     }
     .snap-section {
       scroll-snap-align: start;
+      /* One gesture advances exactly one section — never skips past it. */
+      scroll-snap-stop: always;
     }
     /* Footers (last snap section) align to the bottom edge so the page can
        rest naturally at max-scroll instead of leaving a void under them. */
