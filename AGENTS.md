@@ -38,15 +38,13 @@ h2 compact bento sections: **title only, no description**.
 ## Layout Rules
 
 - **No `max-w-*` on page-level containers**. Content fills viewport: `px-3 md:px-4 lg:px-6`
-- **Navbar clearance**: snap sections `pt-24 md:pt-28 lg:pt-32`; topbar layouts `pt-20 md:pt-24`; sidebar sections `py-12 sm:py-10 md:py-16 lg:py-20`
-- **Snap sections**: `relative w-full min-h-dvh snap-section` — never a fixed `h-dvh`/`lg:h-dvh` on content sections; sections grow when content exceeds the viewport so nothing clips under the navbar
+- **Navbar clearance**: public sections `pt-24 md:pt-28 lg:pt-32`; topbar layouts `pt-20 md:pt-24`; sidebar sections `py-12 sm:py-10 md:py-16 lg:py-20`
 - **Content grows**: never `h-dvh` on content sections, always `min-h-dvh`. Center short content with an inner `my-auto` wrapper (collapses to top-align on overflow)
-- **No strip-like sections**: every snap section is a filled composition — header paired with substantive content (split layout, grid, or panel stack). Never ship a lone small card/banner centered in an otherwise empty viewport; if a section would be sparse, merge its content into an adjacent section or pair it with a complementary card
-- **Snap sections must fit the viewport**: content should not exceed one viewport at common laptop sizes (~1366×768). If it does, SPLIT into additional snap sections (see Layout Stability) — an oversized snap area breaks strict `y mandatory` scrolling
+- **No strip-like sections**: every content section is a filled composition — header paired with substantive content (split layout, grid, or panel stack). Never ship a lone small card/banner centered in an otherwise empty viewport; if a section would be sparse, merge its content into an adjacent section or pair it with a complementary card
 - **Width constraints**: use `wc-*` classes (`wc-prose`, `wc-code`, `wc-terminal`, `wc-diagram`, `wc-table`, `wc-media`, `wc-interactive`), never ad-hoc `max-w-*`
 - **Kickers/eyebrows**: tiny uppercase accent text — use the type tokens (`text-kicker` / `text-tiny`, see `docs/TYPOGRAPHY.md`); legacy `text-[10px]`/`text-[9px]` accepted during migration. Never small headings (`h3`/`h4`).
 - **No content into navbar**: split-screen sections on desktop must not let content bleed upward into the navbar clearance zone. If the left column has sparse content (e.g. kicker + title only), use `items-center` on the grid row so content vertically centers rather than stretching thin at the top with empty space above. This applies to all desktop split-screen sections — never `lg:items-start` when one column has sparse content
-- **No content into adjacent sections**: each snap section's content must stay strictly within its own viewport boundaries. On desktop, a split-screen section must not overflow downward into the next snap area. If content is tall, split into multiple snap sections rather than letting one section grow past the viewport
+- **No content into adjacent sections**: on desktop, a split-screen section must not overflow downward into the next section. If content is tall, split into multiple sections rather than letting one section grow past expectations
 
 ## Component Rules
 
@@ -106,7 +104,9 @@ h2 compact bento sections: **title only, no description**.
 - Dual walkthrough toolbars (`WalkthroughToolbar` in `StudentLayout`)
 - `.snap-container-proximity` CSS class
 - `font-display` utility class
-- Fixed `lg:h-dvh` or `h-dvh` on content snap sections (always use `min-h-dvh`)
+- Fixed `lg:h-dvh` or `h-dvh` on content sections (always use `min-h-dvh`)
+- Scroll-snap (`scroll-snap-type`, `snap-section` class) on any landing or public page section
+- `useSnapWheelNav` hook
 - Navbar scroll-hide/invert behavior
 - `zustand` or `@tanstack/react-query` (installed but unused)
 - Inline fullscreen buttons on walkthrough pages (use `LearningToolbar` instead)
@@ -116,7 +116,7 @@ h2 compact bento sections: **title only, no description**.
 
 | Layout | Clearance | Notes |
 |--------|-----------|-------|
-| `LandingLayout` | None (hero clears own space) | No `<Footer />` (last snap section) |
+| `LandingLayout` | None (hero clears own space) | No `<Footer />` |
 | `StudentLayout` | `pt-20 md:pt-24` | Topbar only |
 | `AdminLayout` | `pt-20 md:pt-24` | Forced dark, `data-theme-persist="dark"` |
 | `AuthFormLayout` | 2-col grid, `max-w-lg` form | Globe pinned bottom-right |
@@ -127,11 +127,8 @@ h2 compact bento sections: **title only, no description**.
 
 - **Carousels**: must maintain a stable viewport while slides change. Different slide content lengths must not cause the page or surrounding sections to jump. Use `relative w-full min-h-dvh flex flex-col` on carousel sections.
 - **Full-section carousels** (Courses, Labs): `my-auto` on the padded wrapper, `overflow-x-clip` around the AnimatePresence slide region, and `line-clamp-*` on variable-length text where slides must not change section height.
-- **Snap sections**: use `min-h-dvh` and grow when content exceeds the viewport — content must never clip under the fixed navbar or get cut at the section bottom (that was the "eyebrow enters navbar / snipped content" bug). On desktop, each snap section = one viewport. Content must not exceed one viewport at ~1366×768. When a composition grows past that, split into multiple leaner snap sections.
-- **Snap sections under `y mandatory` must not exceed ~one viewport** (at 1366×768): a snap area taller than the screen makes one wheel tick skip past its end, so users land mid-section and snapping fights them. When a composition grows past that (e.g. install pages stacking header + banner + two option cards ≈ 1000px), split it into multiple leaner snap sections instead of letting it grow. Precedent: tool install sections are split into "Install" (header + auto-install banner + installer card) and "Build from source" (full-width build card).
 - **Course/lab visuals**: treat SVG/course icons as first-class section visuals, not card content. They must have their own dedicated visual region with sufficient scale, preserved aspect ratio, and stable responsive geometry.
 - **Split-screen heading pattern**: on desktop split-screen sections where the left column has sparse content (kicker + title + optional short description), use `items-center` on the grid row and `lg:justify-center` on the content column so the heading vertically centers against the right column. Reference: `ServiceDetailPage.tsx` — kicker as `<span className="text-[10px] font-black uppercase tracking-[0.3em] text-accent">`, title as `<h2 className="text-3xl md:text-5xl lg:text-7xl font-black ...">`, description as `<p className="text-base sm:text-lg ...">`. Never use `lg:items-start` with sparse left columns — it wastes vertical space and breaks visual balance.
-- **Snap viewport rule**: one vertical scroll on desktop = one viewport. Each snap section must fit within one viewport at ~1366×768. Users should have to make multiple scrolls to get to the next viewport. If content exceeds one viewport, split into additional snap sections. This is enforced on all public pages and landing sections.
 - **Carousel full-bleed**: DragMarquee carousels inside padded sections must break out of parent padding using negative margins (`-mx-3 md:-mx-4 lg:-mx-6`) on a wrapper div. Never let carousel cards get clipped at section edges. Landing section carousels already follow this pattern — public page carousels must match.
 - **Section carousel pattern**: when replacing a `CoursesCarousel` or similar built carousel with a shared `Carousel` + inline card, use the blog-carousel card pattern: `Link` wrapping a card with `flex flex-col md:flex-row`, text left, visual right, `min-h-[340px] md:min-h-[280px]` for stable height, `line-clamp-*` on variable text. This keeps the section height predictable across different content lengths.
 

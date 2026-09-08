@@ -3,8 +3,8 @@ import { Binary, Cpu, Palette, ShieldCheck, Users } from 'lucide-react';
 import { IconArrowRight } from '@/shared/components/icons';
 import { ScrollReveal } from '@/shared/components';
 import SEO from '@/shared/components/SEO';
-import PublicSnapLayout from '@/shared/components/PublicSnapLayout';
-import PublicSnapSection from '@/shared/components/PublicSnapSection';
+import PublicPageLayout from '@/shared/components/PublicPageLayout';
+import PublicPageSection from '@/shared/components/PublicPageSection';
 import StudentHeroSection, { PUBLIC_HERO_TITLE_CLASS } from '@/shared/components/StudentHeroSection';
 import { Footer } from '@/shared/components/layout';
 import { useAuth } from '@/core/contexts/AuthContext';
@@ -31,7 +31,7 @@ const ResearcherSection = ({ researcher }: { researcher: Researcher }) => {
   const ResearcherIcon = RESEARCHER_ICONS[researcher.id] ?? ShieldCheck;
 
   return (
-    <PublicSnapSection id={`researcher-${researcher.id}`}>
+    <PublicPageSection id={`researcher-${researcher.id}`}>
       <ScrollReveal amount={0.08} className="h-full w-full">
         <article className="relative grid w-full grid-cols-1 gap-3 sm:gap-4 lg:grid-cols-2 lg:gap-12">
           <div className={`relative h-64 max-h-[70vh] overflow-hidden rounded-2xl border border-border/50 bg-bg-card sm:h-80 lg:h-full ${layout.imageFirst ? 'lg:order-1' : 'lg:order-2'}`}>
@@ -59,7 +59,7 @@ const ResearcherSection = ({ researcher }: { researcher: Researcher }) => {
           </div>
         </article>
       </ScrollReveal>
-    </PublicSnapSection>
+    </PublicPageSection>
   );
 };
 
@@ -69,8 +69,8 @@ const QuiteRootPage = () => {
   return (
     <div className="bg-bg min-h-full">
       <SEO title="QuiteRoot - QYVORA" description="QuiteRoot, a network of security researchers pushing the boundaries of offensive security." />
-      <PublicSnapLayout>
-        <section className="relative w-full min-h-dvh snap-section bg-bg">
+      <PublicPageLayout>
+        <section className="relative w-full min-h-dvh bg-bg">
         <StudentHeroSection
           title="Quite"
           accentWord="Root"
@@ -101,14 +101,14 @@ const QuiteRootPage = () => {
         </section>
 
         {researchersData.map((researcher) => <ResearcherSection key={researcher.id} researcher={researcher} />)}
-        <section className="relative w-full min-h-dvh snap-section bg-bg-alt">
+        <section className="relative w-full min-h-dvh bg-bg-alt">
           <LandingFinalCtaSection user={user} />
         </section>
 
-        <section className="w-full bg-bg pt-10 md:pt-0 snap-section">
+        <section className="w-full bg-bg pt-10 md:pt-0">
           <Footer />
         </section>
-      </PublicSnapLayout>
+      </PublicPageLayout>
     </div>
   );
 };

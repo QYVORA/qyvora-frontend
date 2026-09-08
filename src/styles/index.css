@@ -243,28 +243,7 @@
     background-clip: padding-box;
   }
 
-  /* ─────────────────────────────────────────────────────────────────────────
-     SNAP SCROLLING (desktop only)
-  ───────────────────────────────────────────────────────────────────────── */
-  @media (min-width: 768px) {
-    .snap-container {
-      /* Strict snapping: a single scroll gesture always comes to rest aligned
-         with one full section — never parked between two sections. */
-      scroll-snap-type: y mandatory;
-      overflow-y: auto;
-      height: 100dvh;
-    }
-    .snap-section {
-      scroll-snap-align: start;
-      /* One gesture advances exactly one section — never skips past it. */
-      scroll-snap-stop: always;
-    }
-    /* Footers (last snap section) align to the bottom edge so the page can
-       rest naturally at max-scroll instead of leaving a void under them. */
-    .snap-section:last-child {
-      scroll-snap-align: end;
-    }
-  }
+  
 
   /* ─────────────────────────────────────────────────────────────────────────
      SMOOTH OVERLAY SCROLLBAR (scroll-hover)
@@ -793,11 +772,7 @@
   .min-h-\[280px\] { min-height: 180px !important; }
   .h-36 { height: 4.5rem !important; }
 
-  /* ── Mobile sections: allow growth beyond viewport ──
-     On mobile, min-h-dvh locks sections to exactly one viewport which clips
-     content. Remove the constraint so sections start at viewport height but
-     grow freely when content overflows. Desktop keeps min-h-dvh for snap. */
-  .snap-section { min-height: auto !important; height: auto !important; }
+
 }
 
 [data-saver="true"] * {

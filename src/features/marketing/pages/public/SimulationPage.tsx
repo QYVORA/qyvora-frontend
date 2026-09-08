@@ -5,8 +5,8 @@ import { Zap, ArrowLeft, Play } from 'lucide-react';
 import { IconArrowRight, IconTerminal, IconCode, IconNetwork } from '@/shared/components/icons';
 import SEO from '@/shared/components/SEO';
 import CodeBlock from '@/shared/components/CodeBlock';
-import PublicSnapLayout from '@/shared/components/PublicSnapLayout';
-import PublicSnapSection from '@/shared/components/PublicSnapSection';
+import PublicPageLayout from '@/shared/components/PublicPageLayout';
+import PublicPageSection from '@/shared/components/PublicPageSection';
 import StudentHeroSection, { PUBLIC_HERO_TITLE_CLASS } from '@/shared/components/StudentHeroSection';
 import { SimpleHeading } from '@/shared/components/ui';
 import { Footer } from '@/shared/components/layout';
@@ -126,8 +126,8 @@ const SimulationPage = () => {
         description={t(`simulations.${key}.description`)}
       />
       <SimulationProvider>
-        <PublicSnapLayout>
-          <section className="relative w-full min-h-dvh snap-section bg-bg">
+        <PublicPageLayout>
+          <section className="relative w-full min-h-dvh bg-bg">
           <StudentHeroSection
             title={t(`simulations.${key}.title`)}
             accentWord={t(`simulations.${key}.titleAccent`)}
@@ -154,7 +154,7 @@ const SimulationPage = () => {
           </section>
 
           {/* Demo launcher — the live tool opens in a modal */}
-          <PublicSnapSection>
+          <PublicPageSection>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 lg:items-center">
               {/* Left — launcher copy + CTA */}
               <div className="flex flex-col gap-5">
@@ -195,9 +195,9 @@ const SimulationPage = () => {
                 maxHeight="max-h-[50vh]"
               />
             </div>
-          </PublicSnapSection>
+          </PublicPageSection>
 
-          <PublicSnapSection>
+          <PublicPageSection>
             <div className="flex flex-col gap-6 lg:gap-8">
               <SimpleHeading
                 text={t(`simulations.${key}.demoTitle`)}
@@ -226,18 +226,18 @@ const SimulationPage = () => {
                 {t('simulations.startTraining')} <IconArrowRight size={14} />
               </Link>
             </div>
-          </PublicSnapSection>
+          </PublicPageSection>
 
-          <RelatedContentSection snap items={otherSimulations} />
+          <RelatedContentSection items={otherSimulations} />
 
-          <section className="relative w-full min-h-dvh snap-section bg-bg-alt">
+          <section className="relative w-full min-h-dvh bg-bg-alt">
             <LandingFinalCtaSection user={user} />
           </section>
 
-          <section className="w-full bg-bg pt-10 md:pt-0 snap-section">
+          <section className="w-full bg-bg pt-10 md:pt-0">
             <Footer />
           </section>
-        </PublicSnapLayout>
+        </PublicPageLayout>
 
         {/* Live tool modals */}
         {key === 'terminal' && (

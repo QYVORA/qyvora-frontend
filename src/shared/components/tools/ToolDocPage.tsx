@@ -17,7 +17,7 @@ interface ToolDocPageProps {
 
 /**
  * Shared layout for tool documentation pages.
- * Single-scroll page with a fixed tool topbar, no sidebar, no snap sections.
+ * Single-scroll page with a fixed tool topbar, no sidebar.
  */
 const ToolDocPage: React.FC<ToolDocPageProps> = ({
   toolName,

@@ -3,8 +3,8 @@ import { ArrowUpRight, Cpu, MapPin, Palette, ShieldCheck, Terminal } from 'lucid
 import { BrandGithubIcon, BrandLinkedinIcon, BrandXIcon, BrandYoutubeIcon, BrandMediumIcon } from '@/shared/components/icons';
 import { ScrollReveal } from '@/shared/components';
 import SEO from '@/shared/components/SEO';
-import PublicSnapLayout from '@/shared/components/PublicSnapLayout';
-import PublicSnapSection from '@/shared/components/PublicSnapSection';
+import PublicPageLayout from '@/shared/components/PublicPageLayout';
+import PublicPageSection from '@/shared/components/PublicPageSection';
 import StudentHeroSection, { PUBLIC_HERO_TITLE_CLASS } from '@/shared/components/StudentHeroSection';
 import { Footer } from '@/shared/components/layout';
 import { useAuth } from '@/core/contexts/AuthContext';
@@ -38,7 +38,7 @@ const TeamMemberSection = ({ member }: { member: TeamMember }) => {
   const MemberIcon = MEMBER_ICONS[member.id] ?? ShieldCheck;
 
   return (
-    <PublicSnapSection id={member.id}>
+    <PublicPageSection id={member.id}>
       <ScrollReveal amount={0.08} className="h-full w-full">
         <article className="relative grid w-full grid-cols-1 gap-3 sm:gap-4 lg:grid-cols-2 lg:gap-12">
           <div className={`relative h-64 max-h-[70vh] overflow-hidden rounded-2xl border border-border/50 bg-bg-card sm:h-80 lg:h-full ${layout.imageFirst ? 'lg:order-1' : 'lg:order-2'}`}>
@@ -102,7 +102,7 @@ const TeamMemberSection = ({ member }: { member: TeamMember }) => {
           </div>
         </article>
       </ScrollReveal>
-    </PublicSnapSection>
+    </PublicPageSection>
   );
 };
 
@@ -112,8 +112,8 @@ const TeamPage = () => {
   return (
     <div className="bg-bg min-h-full">
       <SEO title="Team - QYVORA" description="The team behind QYVORA | operators, engineers, and security researchers." />
-      <PublicSnapLayout>
-        <section className="relative w-full min-h-dvh snap-section bg-bg">
+      <PublicPageLayout>
+        <section className="relative w-full min-h-dvh bg-bg">
         <StudentHeroSection
           title="Our"
           accentWord="Team"
@@ -126,14 +126,14 @@ const TeamPage = () => {
         </section>
 
         {teamData.map((member) => <TeamMemberSection key={member.id} member={member} />)}
-        <section className="relative w-full min-h-dvh snap-section bg-bg-alt">
+        <section className="relative w-full min-h-dvh bg-bg-alt">
           <LandingFinalCtaSection user={user} />
         </section>
 
-        <section className="w-full bg-bg pt-10 md:pt-0 snap-section">
+        <section className="w-full bg-bg pt-10 md:pt-0">
           <Footer />
         </section>
-      </PublicSnapLayout>
+      </PublicPageLayout>
     </div>
   );
 };

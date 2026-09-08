@@ -3,8 +3,8 @@ import { useTranslation } from 'react-i18next';
 import { Search } from 'lucide-react';
 import { ScrollReveal } from '@/shared/components';
 import SEO from '@/shared/components/SEO';
-import PublicSnapLayout from '@/shared/components/PublicSnapLayout';
-import PublicSnapSection from '@/shared/components/PublicSnapSection';
+import PublicPageLayout from '@/shared/components/PublicPageLayout';
+import PublicPageSection from '@/shared/components/PublicPageSection';
 import StudentHeroSection, { PUBLIC_HERO_TITLE_CLASS } from '@/shared/components/StudentHeroSection';
 import { Footer } from '@/shared/components/layout';
 import { useAuth } from '@/core/contexts/AuthContext';
@@ -55,8 +55,8 @@ const BlogsPage = () => {
   return (
     <div className="bg-bg min-h-full">
       <SEO title="Blogs - QYVORA" description="Security research, tutorials, and updates from the QYVORA team." />
-      <PublicSnapLayout>
-        <section className="relative w-full min-h-dvh snap-section bg-bg">
+      <PublicPageLayout>
+        <section className="relative w-full min-h-dvh bg-bg">
         <StudentHeroSection
           title="Intelligence"
           accentWord="Reports"
@@ -68,7 +68,7 @@ const BlogsPage = () => {
         />
         </section>
 
-        <PublicSnapSection>
+        <PublicPageSection>
           <div className="flex flex-col justify-between flex-1 min-h-0 space-y-2.5">
             <div className="flex flex-col sm:flex-row gap-2.5 sm:gap-4 items-start sm:items-center justify-between shrink-0">
               <div className="flex items-center gap-1.5 scroll-x no-scrollbar flex-nowrap min-w-0 flex-1 w-full sm:w-auto">
@@ -128,15 +128,15 @@ const BlogsPage = () => {
               </div>
             )}
           </div>
-        </PublicSnapSection>
-        <section className="relative w-full min-h-dvh snap-section bg-bg-alt">
+        </PublicPageSection>
+        <section className="relative w-full min-h-dvh bg-bg-alt">
           <LandingFinalCtaSection user={user} />
         </section>
 
-        <section className="w-full bg-bg pt-10 md:pt-0 snap-section">
+        <section className="w-full bg-bg pt-10 md:pt-0">
           <Footer />
         </section>
-      </PublicSnapLayout>
+      </PublicPageLayout>
     </div>
   );
 };

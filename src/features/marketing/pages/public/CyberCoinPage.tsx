@@ -4,8 +4,8 @@ import { motion } from 'motion/react';
 import { FlaskConical, Zap, Clock } from 'lucide-react';
 import { IconArrowRight as IconArrow } from '@/shared/components/icons';
 import SEO from '@/shared/components/SEO';
-import PublicSnapLayout from '@/shared/components/PublicSnapLayout';
-import PublicSnapSection from '@/shared/components/PublicSnapSection';
+import PublicPageLayout from '@/shared/components/PublicPageLayout';
+import PublicPageSection from '@/shared/components/PublicPageSection';
 import StudentHeroSection, { PUBLIC_HERO_TITLE_CLASS } from '@/shared/components/StudentHeroSection';
 import ScrollReveal from '@/shared/components/ScrollReveal';
 import { Footer } from '@/shared/components/layout';
@@ -48,10 +48,10 @@ const CyberCoinPage: React.FC = () => {
         description="CP: the QYVORA Cyber Coin. The reward layer connecting learning, execution, and achievement across the QYVORA cybersecurity ecosystem. Learn. Execute. Earn."
       />
 
-      <PublicSnapLayout>
+      <PublicPageLayout>
 
         {/* ── 01 · HERO ─────────────────────────────────────────────────── */}
-        <section className="relative w-full min-h-dvh snap-section bg-bg">
+        <section className="relative w-full min-h-dvh bg-bg">
           <StudentHeroSection
             title="CP"
             accentWord="Cyber Coin"
@@ -88,7 +88,7 @@ const CyberCoinPage: React.FC = () => {
         </section>
 
         {/* ── 02 · WHAT IS CP ───────────────────────────────────────────── */}
-        <PublicSnapSection id="what-is-cp">
+        <PublicPageSection id="what-is-cp">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
             <ScrollReveal>
               <SimpleHeading
@@ -125,10 +125,10 @@ const CyberCoinPage: React.FC = () => {
               })}
             </div>
           </div>
-        </PublicSnapSection>
+        </PublicPageSection>
 
         {/* ── 03 · PHILOSOPHY ───────────────────────────────────────────── */}
-        <PublicSnapSection id="philosophy">
+        <PublicPageSection id="philosophy">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
             <ScrollReveal>
               <SimpleHeading
@@ -184,10 +184,10 @@ const CyberCoinPage: React.FC = () => {
               </div>
             </ScrollReveal>
           </div>
-        </PublicSnapSection>
+        </PublicPageSection>
 
         {/* ── 04 · HOW YOU EARN CP — learning loop ──────────────────────── */}
-        <PublicSnapSection id="earn">
+        <PublicPageSection id="earn">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
             <ScrollReveal>
               <SimpleHeading
@@ -241,10 +241,10 @@ const CyberCoinPage: React.FC = () => {
               </div>
             </ScrollReveal>
           </div>
-        </PublicSnapSection>
+        </PublicPageSection>
 
         {/* ── 05 · REWARD MATRIX ────────────────────────────────────────── */}
-        <PublicSnapSection id="rewards">
+        <PublicPageSection id="rewards">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
             <ScrollReveal>
               <SimpleHeading
@@ -286,10 +286,10 @@ const CyberCoinPage: React.FC = () => {
               </ScrollReveal>
             </div>
           </div>
-        </PublicSnapSection>
+        </PublicPageSection>
 
         {/* ── 06 · REWARD ACTIVITIES ─────────────────────────────────────── */}
-        <PublicSnapSection id="activities">
+        <PublicPageSection id="activities">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
             <ScrollReveal>
               <SimpleHeading
@@ -328,9 +328,9 @@ const CyberCoinPage: React.FC = () => {
               </p>
             </div>
           </div>
-        </PublicSnapSection>
+        </PublicPageSection>
         {/* ── 07 · FUTURE / BLOCKCHAIN LAYER ────────────────────────────── */}
-        <PublicSnapSection id="future">
+        <PublicPageSection id="future">
           <div className="space-y-8">
             <ScrollReveal>
               <SimpleHeading
@@ -385,10 +385,10 @@ const CyberCoinPage: React.FC = () => {
               </div>
             </ScrollReveal>
           </div>
-        </PublicSnapSection>
+        </PublicPageSection>
 
         {/* ── 08 · START YOUR JOURNEY ───────────────────────────────────── */}
-        <PublicSnapSection id="journey">
+        <PublicPageSection id="journey">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 lg:items-stretch">
             <ScrollReveal>
               <div className="shrink-0 lg:w-[420px] xl:w-[480px] flex flex-col lg:justify-center">
@@ -459,14 +459,14 @@ const CyberCoinPage: React.FC = () => {
               />
             </div>
           </div>
-        </PublicSnapSection>
+        </PublicPageSection>
 
         {/* ── 09 · FOOTER ───────────────────────────────────────────────── */}
-        <section className="w-full bg-bg snap-section pt-10 md:pt-0">
+        <section className="w-full bg-bg pt-10 md:pt-0">
           <Footer />
         </section>
 
-      </PublicSnapLayout>
+      </PublicPageLayout>
     </div>
   );
 };

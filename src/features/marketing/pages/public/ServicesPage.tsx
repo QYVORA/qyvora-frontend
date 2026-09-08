@@ -5,8 +5,8 @@ import { Target, Lock } from 'lucide-react';
 import { IconCheck, IconArrowRight } from '@/shared/components/icons';
 import { openServiceRequestModal } from '@/features/marketing/components/ServiceRequestModal';
 import SEO from '@/shared/components/SEO';
-import PublicSnapLayout from '@/shared/components/PublicSnapLayout';
-import PublicSnapSection from '@/shared/components/PublicSnapSection';
+import PublicPageLayout from '@/shared/components/PublicPageLayout';
+import PublicPageSection from '@/shared/components/PublicPageSection';
 import StudentHeroSection, { PUBLIC_HERO_TITLE_CLASS } from '@/shared/components/StudentHeroSection';
 import { SimpleHeading } from '@/shared/components/ui';
 import { Footer } from '@/shared/components/layout';
@@ -18,7 +18,7 @@ const ServiceSection: React.FC<{ svc: ServiceConfig; index: number }> = ({ svc, 
   const Icon = svc.icon;
 
   return (
-    <PublicSnapSection>
+    <PublicPageSection>
       <div className="flex flex-col lg:flex-row gap-10 sm:gap-10 lg:gap-16 lg:items-stretch justify-center">
       {/* Header column — title, overview, pricing, CTAs */}
       <motion.div
@@ -115,7 +115,7 @@ const ServiceSection: React.FC<{ svc: ServiceConfig; index: number }> = ({ svc, 
           )}
         </motion.div>
       </div>
-    </PublicSnapSection>
+    </PublicPageSection>
   );
 };
 
@@ -124,8 +124,8 @@ const ServicesPage = () => {
   return (
     <div className="bg-bg min-h-full">
       <SEO title="Services - QYVORA" description="Enterprise-grade penetration testing, security assessments, and offensive security training." />
-      <PublicSnapLayout>
-        <section className="relative w-full min-h-dvh snap-section bg-bg overflow-hidden">
+      <PublicPageLayout>
+        <section className="relative w-full min-h-dvh bg-bg overflow-hidden">
         <StudentHeroSection
           title="Security"
           accentWord="Services"
@@ -139,14 +139,14 @@ const ServicesPage = () => {
         {SERVICES.map((svc, idx) => (
           <ServiceSection key={svc.id} svc={svc} index={idx} />
         ))}
-        <section className="relative w-full min-h-dvh snap-section bg-bg-alt overflow-hidden">
+        <section className="relative w-full min-h-dvh bg-bg-alt overflow-hidden">
           <LandingFinalCtaSection user={user} />
         </section>
 
-        <section className="relative w-full snap-section bg-bg overflow-hidden">
+        <section className="relative w-full bg-bg overflow-hidden">
           <Footer />
         </section>
-      </PublicSnapLayout>
+      </PublicPageLayout>
     </div>
   );
 };

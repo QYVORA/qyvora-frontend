@@ -1,6 +1,6 @@
 import React from 'react';
 import type { LucideIcon } from 'lucide-react';
-import PublicSnapSection from '@/shared/components/PublicSnapSection';
+import PublicPageSection from '@/shared/components/PublicPageSection';
 import CodeBlock from '@/shared/components/CodeBlock';
 import ToolSectionHeader from './ToolSectionHeader';
 
@@ -39,7 +39,7 @@ const ToolModulesSection: React.FC<ToolModulesSectionProps> = ({
   modules,
 }) => {
   return (
-    <PublicSnapSection id={id} className="scroll-mt-24 md:scroll-mt-28">
+    <PublicPageSection id={id} className="scroll-mt-24 md:scroll-mt-28">
       <div className="flex flex-col gap-6 lg:gap-8">
         <ToolSectionHeader kicker={kicker} title={title} accent={accent} description={description} />
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-5 xl:grid-cols-3">
@@ -71,7 +71,7 @@ const ToolModulesSection: React.FC<ToolModulesSectionProps> = ({
           })}
         </div>
       </div>
-    </PublicSnapSection>
+    </PublicPageSection>
   );
 };
 

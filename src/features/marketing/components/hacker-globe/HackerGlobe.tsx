@@ -184,14 +184,11 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88, offset = [0, 0,
     const syncTargetFromScroll = () => {
       if (!mounted) return;
 
-      const scrollY = snapEl ? snapEl.scrollTop : window.scrollY;
+      const scrollY = window.scrollY;
       targetScrollRotation = scrollY * 0.0003;
     };
 
-    const snapEl = document.querySelector('.snap-container');
-
     window.addEventListener('scroll', syncTargetFromScroll, { passive: true });
-    if (snapEl) snapEl.addEventListener('scroll', syncTargetFromScroll, { passive: true });
     syncTargetFromScroll();
 
     const stop = () => {
@@ -297,7 +294,6 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88, offset = [0, 0,
       clearTimeout(buildTimer);
       clearTimeout(debounceTimer);
       window.removeEventListener('scroll', syncTargetFromScroll);
-      if (snapEl) snapEl.removeEventListener('scroll', syncTargetFromScroll);
       document.removeEventListener('visibilitychange', handleVisibility);
       viewObserver.disconnect();
       resizeObserver.disconnect();

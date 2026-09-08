@@ -11,7 +11,7 @@ interface ToolDocHeroProps {
 
 /**
  * Hero section for tool documentation pages.
- * Full-width, not a snap section — flows naturally at the top of the page.
+ * Full-width, flows naturally at the top of the page.
  */
 const ToolDocHero: React.FC<ToolDocHeroProps> = ({
   toolName,

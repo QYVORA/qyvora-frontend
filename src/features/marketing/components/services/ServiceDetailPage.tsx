@@ -5,8 +5,8 @@ import { IconArrowRight, IconArrowLeft } from '@/shared/components/icons';
 import { openServiceRequestModal } from '@/features/marketing/components/ServiceRequestModal';
 import { DottedMapOverlay, SimpleHeading } from '@/shared/components/ui';
 import SEO from '@/shared/components/SEO';
-import PublicSnapLayout from '@/shared/components/PublicSnapLayout';
-import PublicSnapSection from '@/shared/components/PublicSnapSection';
+import PublicPageLayout from '@/shared/components/PublicPageLayout';
+import PublicPageSection from '@/shared/components/PublicPageSection';
 import StudentHeroSection, { PUBLIC_HERO_TITLE_CLASS } from '@/shared/components/StudentHeroSection';
 import { Footer } from '@/shared/components/layout';
 import { REQUEST_ASSESSMENT_LABEL, PENTEST_PHILOSOPHY, SERVICES, type ServiceConfig } from '@/features/marketing/content/servicesConfig';
@@ -38,9 +38,9 @@ const ServiceDetailPage: React.FC<{ svc: ServiceConfig }> = ({ svc }) => {
         schemaData={buildService(svc)}
       />
 
-      <PublicSnapLayout>
+      <PublicPageLayout>
         {/* ── SECTION 1: Hero ──────────────────────────────────────────── */}
-        <section className="relative w-full min-h-dvh snap-section bg-bg overflow-hidden">
+        <section className="relative w-full min-h-dvh bg-bg overflow-hidden">
           <StudentHeroSection
             title={svc.title.split(' ').slice(0, -1).join(' ')}
             accentWord={svc.accentWord}
@@ -74,7 +74,7 @@ const ServiceDetailPage: React.FC<{ svc: ServiceConfig }> = ({ svc }) => {
         {/* ── SECTION 2: Scope & What's Included ─────────────────────────
             Desktop: LEFT = header + scope text, RIGHT = included items card
         ──────────────────────────────────────────────────────────────────── */}
-        <PublicSnapSection>
+        <PublicPageSection>
           <div className="w-full grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center">
             {/* Left: Header */}
             <ScrollReveal>
@@ -133,12 +133,12 @@ const ServiceDetailPage: React.FC<{ svc: ServiceConfig }> = ({ svc }) => {
               </div>
             </ScrollReveal>
           </div>
-        </PublicSnapSection>
+        </PublicPageSection>
 
         {/* ── SECTION 3: Benefits (reversed) ─────────────────────────────
             Desktop: LEFT = benefits cards, RIGHT = header
         ──────────────────────────────────────────────────────────────────── */}
-        <PublicSnapSection>
+        <PublicPageSection>
           <div className="w-full grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center">
             {/* Left: Benefits cards */}
             <ScrollReveal>
@@ -173,12 +173,12 @@ const ServiceDetailPage: React.FC<{ svc: ServiceConfig }> = ({ svc }) => {
               />
             </ScrollReveal>
           </div>
-        </PublicSnapSection>
+        </PublicPageSection>
 
         {/* ── SECTION 4: Deliverables ────────────────────────────────────
             Desktop: LEFT = header, RIGHT = deliverables cards
         ──────────────────────────────────────────────────────────────────── */}
-        <PublicSnapSection>
+        <PublicPageSection>
           <div className="w-full grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center">
             {/* Left: Header */}
             <ScrollReveal>
@@ -218,12 +218,12 @@ const ServiceDetailPage: React.FC<{ svc: ServiceConfig }> = ({ svc }) => {
               </div>
             </ScrollReveal>
           </div>
-        </PublicSnapSection>
+        </PublicPageSection>
 
         {/* ── SECTION 5: Philosophy & CTA (reversed) ─────────────────────
             Desktop: LEFT = CTA card, RIGHT = header + philosophy
         ──────────────────────────────────────────────────────────────────── */}
-        <PublicSnapSection>
+        <PublicPageSection>
           <div className="w-full grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center">
             {/* Left: CTA card */}
             <ScrollReveal>
@@ -265,16 +265,16 @@ const ServiceDetailPage: React.FC<{ svc: ServiceConfig }> = ({ svc }) => {
               />
             </ScrollReveal>
           </div>
-        </PublicSnapSection>
+        </PublicPageSection>
 
         {/* ── Related services ─────────────────────────────────────────── */}
-        <RelatedContentSection snap items={otherServices} />
+        <RelatedContentSection items={otherServices} />
 
         {/* ── SECTION 6: Footer ────────────────────────────────────────── */}
-        <section className="w-full bg-bg pt-10 md:pt-0 snap-section">
+        <section className="w-full bg-bg pt-10 md:pt-0">
           <Footer />
         </section>
-      </PublicSnapLayout>
+      </PublicPageLayout>
     </>
   );
 };

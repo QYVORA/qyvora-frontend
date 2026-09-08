@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { Zap } from 'lucide-react';
 import { IconArrowRight } from '@/shared/components/icons';
 import SEO from '@/shared/components/SEO';
-import PublicSnapLayout from '@/shared/components/PublicSnapLayout';
+import PublicPageLayout from '@/shared/components/PublicPageLayout';
 import StudentHeroSection, { PUBLIC_HERO_TITLE_CLASS } from '@/shared/components/StudentHeroSection';
 import { Footer } from '@/shared/components/layout';
 import { useAuth } from '@/core/contexts/AuthContext';
@@ -23,9 +23,9 @@ const HpbPage = () => {
         title="Hacker Protocol Bootcamp"
         description="Train as an offensive security operator across 5 phases, hacker mindset, Linux foundations, networking, web & backend, and social engineering."
       />
-      <PublicSnapLayout>
+      <PublicPageLayout>
         {/* Hero */}
-        <section id="hero" className="relative w-full min-h-dvh snap-section bg-bg">
+        <section id="hero" className="relative w-full min-h-dvh bg-bg">
           <StudentHeroSection
             title="Hacker Protocol"
             accentWord="Bootcamp"
@@ -54,7 +54,7 @@ const HpbPage = () => {
             <section
               key={phase.id}
               id={phase.id}
-              className={`relative w-full min-h-dvh snap-section flex items-center ${
+              className={`relative w-full min-h-dvh flex items-center ${
                 idx % 2 === 0 ? 'bg-bg-alt' : 'bg-bg'
               }`}
             >
@@ -106,15 +106,15 @@ const HpbPage = () => {
         })}
 
         {/* CTA */}
-        <section id="cta" className="relative w-full min-h-dvh snap-section bg-bg-alt">
+        <section id="cta" className="relative w-full min-h-dvh bg-bg-alt">
           <LandingFinalCtaSection user={user} />
         </section>
 
         {/* Footer */}
-        <section id="footer" className="w-full bg-bg pt-10 md:pt-0 snap-section">
+        <section id="footer" className="w-full bg-bg pt-10 md:pt-0">
           <Footer />
         </section>
-      </PublicSnapLayout>
+      </PublicPageLayout>
     </div>
   );
 };

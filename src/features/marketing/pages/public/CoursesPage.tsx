@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import { Zap } from 'lucide-react';
 import { IconArrowRight } from '@/shared/components/icons';
 import SEO from '@/shared/components/SEO';
-import PublicSnapLayout from '@/shared/components/PublicSnapLayout';
+import PublicPageLayout from '@/shared/components/PublicPageLayout';
 import StudentHeroSection, { PUBLIC_HERO_TITLE_CLASS } from '@/shared/components/StudentHeroSection';
 import { Footer } from '@/shared/components/layout';
 import { useAuth } from '@/core/contexts/AuthContext';
@@ -16,9 +16,9 @@ const CoursesPage = () => {
   return (
     <div className="bg-bg min-h-full">
       <SEO title="Courses - QYVORA" description="Master offensive security with QYVORA's structured courses." />
-      <PublicSnapLayout>
+      <PublicPageLayout>
         {/* Hero */}
-        <section className="relative w-full min-h-dvh snap-section bg-bg">
+        <section className="relative w-full min-h-dvh bg-bg">
           <StudentHeroSection
             title="Offensive"
             accentWord="Courses"
@@ -34,20 +34,20 @@ const CoursesPage = () => {
         </section>
 
         {/* Courses Carousel — one full section per course */}
-        <section className="relative w-full min-h-dvh snap-section bg-bg-alt">
+        <section className="relative w-full min-h-dvh bg-bg-alt">
           <CoursesCarousel courses={COURSES} />
         </section>
 
         {/* CTA */}
-        <section className="relative w-full min-h-dvh snap-section bg-bg">
+        <section className="relative w-full min-h-dvh bg-bg">
           <LandingFinalCtaSection user={user} />
         </section>
 
         {/* Footer */}
-        <section className="w-full bg-bg pt-10 md:pt-0 snap-section">
+        <section className="w-full bg-bg pt-10 md:pt-0">
           <Footer />
         </section>
-      </PublicSnapLayout>
+      </PublicPageLayout>
     </div>
   );
 };

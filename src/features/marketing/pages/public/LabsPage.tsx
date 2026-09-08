@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { Zap } from 'lucide-react';
 import { IconArrowRight } from '@/shared/components/icons';
 import SEO from '@/shared/components/SEO';
-import PublicSnapLayout from '@/shared/components/PublicSnapLayout';
+import PublicPageLayout from '@/shared/components/PublicPageLayout';
 import StudentHeroSection, { PUBLIC_HERO_TITLE_CLASS } from '@/shared/components/StudentHeroSection';
 import { Footer } from '@/shared/components/layout';
 import { useAuth } from '@/core/contexts/AuthContext';
@@ -25,9 +25,9 @@ const LabsPage = () => {
   return (
     <div className="bg-bg min-h-full">
       <SEO title="Attack Labs - QYVORA" description="Hands-on offensive security labs covering privilege escalation, password cracking, SQL injection, OSINT, and the full kill chain." />
-      <PublicSnapLayout>
+      <PublicPageLayout>
         {/* Hero */}
-        <section className="relative w-full min-h-dvh snap-section bg-bg">
+        <section className="relative w-full min-h-dvh bg-bg">
           <StudentHeroSection
             title="Attack"
             accentWord="Labs"
@@ -50,7 +50,7 @@ const LabsPage = () => {
         </section>
 
         {/* Labs Carousel — one full section per lab */}
-        <section className="relative w-full min-h-dvh snap-section bg-bg-alt">
+        <section className="relative w-full min-h-dvh bg-bg-alt">
           <LabsCarousel
             labs={LABS}
             getLabTitle={(id) => t(`student.labs.list.${id}.title`)}
@@ -59,15 +59,15 @@ const LabsPage = () => {
         </section>
 
         {/* CTA */}
-        <section className="relative w-full min-h-dvh snap-section bg-bg">
+        <section className="relative w-full min-h-dvh bg-bg">
           <LandingFinalCtaSection user={user} />
         </section>
 
         {/* Footer */}
-        <section className="w-full bg-bg pt-10 md:pt-0 snap-section">
+        <section className="w-full bg-bg pt-10 md:pt-0">
           <Footer />
         </section>
-      </PublicSnapLayout>
+      </PublicPageLayout>
     </div>
   );
 };

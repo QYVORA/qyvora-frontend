@@ -8,8 +8,8 @@ import api from '@/core/services/api';
 import { ScrollReveal } from '@/shared/components';
 import { LeaderboardRow, PodiumCard, useLeaderboard, PERIODS } from '@/shared/components/leaderboard';
 import SEO from '@/shared/components/SEO';
-import PublicSnapLayout from '@/shared/components/PublicSnapLayout';
-import PublicSnapSection from '@/shared/components/PublicSnapSection';
+import PublicPageLayout from '@/shared/components/PublicPageLayout';
+import PublicPageSection from '@/shared/components/PublicPageSection';
 import StudentHeroSection, { PUBLIC_HERO_TITLE_CLASS } from '@/shared/components/StudentHeroSection';
 import { Footer } from '@/shared/components/layout';
 import LandingFinalCtaSection from '@/features/marketing/components/landing/LandingFinalCtaSection';
@@ -78,8 +78,8 @@ const LeaderboardPage = () => {
         title={t('leaderboardPage.seo.title')}
         description={t('leaderboardPage.seo.description')}
       />
-      <PublicSnapLayout>
-        <section className="relative w-full min-h-dvh snap-section bg-bg">
+      <PublicPageLayout>
+        <section className="relative w-full min-h-dvh bg-bg">
         <StudentHeroSection
           title={t('leaderboardPage.hero.title')}
           accentWord={t('leaderboardPage.hero.titleHighlight')}
@@ -94,7 +94,7 @@ const LeaderboardPage = () => {
         </section>
 
         {/* ── Period + Cohort Filters ──────────────────────────────────── */}
-        <PublicSnapSection>
+        <PublicPageSection>
           <div className="flex items-center gap-2 flex-wrap mb-4">
             {PERIODS.map((p) => (
               <button
@@ -187,20 +187,20 @@ const LeaderboardPage = () => {
               </AnimatePresence>
             </div>
           )}
-        </PublicSnapSection>
+        </PublicPageSection>
 
         {/* ── Remaining list ──────────────────────────────────────────── */}
         {rest.length > 0 && (
           <LeaderboardRestSection rest={rest} user={user} total={total} />
         )}
-        <section className="relative w-full min-h-dvh snap-section bg-bg-alt">
+        <section className="relative w-full min-h-dvh bg-bg-alt">
           <LandingFinalCtaSection user={user} />
         </section>
 
-        <section className="w-full bg-bg pt-10 md:pt-0 snap-section">
+        <section className="w-full bg-bg pt-10 md:pt-0">
           <Footer />
         </section>
-      </PublicSnapLayout>
+      </PublicPageLayout>
     </div>
   );
 };
@@ -214,7 +214,7 @@ const LeaderboardRestSection: React.FC<{ rest: any[]; user: any; total: number }
   const currentBatch = rest.slice(page * BATCH_SIZE, (page + 1) * BATCH_SIZE);
 
   return (
-    <PublicSnapSection>
+    <PublicPageSection>
       <div className="flex flex-col justify-between flex-1 min-h-0">
         <div>
           <div className="hidden md:grid grid-cols-[48px_1fr_140px_100px_80px] gap-4 px-6 py-3 text-[10px] font-black uppercase tracking-widest text-text-muted/50 border-b border-border/40">
@@ -258,7 +258,7 @@ const LeaderboardRestSection: React.FC<{ rest: any[]; user: any; total: number }
           </div>
         </div>
       </div>
-    </PublicSnapSection>
+    </PublicPageSection>
   );
 };
 
