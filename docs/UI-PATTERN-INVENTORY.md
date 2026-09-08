@@ -436,6 +436,20 @@ Single-panel card for bootcamp phases. `wc-prose` on narrative, `wc-code` on cod
 
 Lesson content renderer. `wc-prose` on body text, `wc-code` on code blocks, `wc-media` on images.
 
+### 12e. FocusedStepList (all walkthroughs)
+
+**Implementation**: `src/shared/components/learning/FocusedStepList.tsx`
+
+Focused-step presentation for every walkthrough family. Only the CURRENT step renders fully expanded; completed steps collapse to compact "Done" rows and upcoming steps to "Next"/"Locked" rows — all on the same page (never a separate route). The active item carries id `${idPrefix}-${number}` with `scroll-mt-20 md:scroll-mt-24`.
+
+- Bootcamp rooms: `idPrefix="step"` → `step-N` (`BootcampRoomPage`).
+- Courses: `idPrefix="lesson"` → `lesson-N` (`CourseLessonPage`).
+- Labs: `WalkthroughLayout` accepts opt-in props `stepList`, `activeStepIndex`, `onStepSelect`, `stepIdPrefix="ws-step"` → `ws-step-N`.
+
+Navigation scrolls to the newly-activated id via `scrollIntoView`; because the focused id only exists for the active step, scroll calls retry after React commits the newly-expanded step.
+
+**Interaction rule**: never attach a click/scroll/submit handler to a container that wraps interactive content (quizzes, flag inputs, copy buttons, links). Root `onClick`/`onKeyDown` on step containers must ignore events from interactive elements via `target.closest('button, a, input, textarea, select, [role="button"], label, [contenteditable="true"]')` so answering a quiz or pressing a button never scrolls the walkthrough back to the step top.
+
 ---
 
 ## 13. Background & Texture

@@ -12,12 +12,14 @@ import StudentHeroSection from '@/shared/components/StudentHeroSection';
 import StepRenderer from '@/shared/components/learning/StepRenderer';
 import LearningNav from '@/shared/components/learning/LearningNav';
 import LearningToolbar from '@/shared/components/learning/LearningToolbar';
+import FocusedStepList from '@/shared/components/learning/FocusedStepList';
 import WalkthroughScrollControls from '@/shared/components/learning/WalkthroughScrollControls';
 import { CourseLessonSkeleton } from '@/features/student/components/StudentSkeletons';
 import api from '@/core/services/api';
 import CelebrationModal from '@/shared/components/CelebrationModal';
 import { useCelebrationTrigger } from '@/shared/hooks/useCelebrationTrigger';
 import { useRoomSession } from '@/features/student/hooks/useRoomSession';
+import { useReducedMotion } from '@/shared/hooks/useReducedMotion';
 import type { Lesson } from '@/features/student/data/courses';
 
 const STORAGE_KEY = 'qyvora_course_progress';
@@ -131,6 +133,7 @@ const CourseLessonPage: React.FC = () => {
   const allComplete = totalLessons > 0 && completedLessons.size === totalLessons;
   const [celebrationOpen, setCelebrationOpen] = useCelebrationTrigger(allComplete);
   const { fullscreen, toggleFullscreen } = useRoomSession();
+  const prefersReducedMotion = useReducedMotion();
 
   const scrollToLesson = useCallback((idx: number) => {
     if (totalLessons === 0) return;
@@ -140,11 +143,15 @@ const CourseLessonPage: React.FC = () => {
       next.set('lesson', String(clamped));
       return next;
     }, { replace: true });
-    const el = document.getElementById(`lesson-${clamped}`);
-    if (el) {
-      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
-  }, [totalLessons, setSearchParams]);
+    const behavior = prefersReducedMotion ? 'auto' : 'smooth';
+    const attemptScroll = (tries = 0) => {
+      if (tries > 20) return;
+      const el = document.getElementById(`lesson-${clamped + 1}`);
+      if (el) el.scrollIntoView({ behavior, block: 'start' });
+      else window.setTimeout(() => attemptScroll(tries + 1), 50);
+    };
+    requestAnimationFrame(() => attemptScroll());
+  }, [totalLessons, setSearchParams, prefersReducedMotion]);
 
   const saveProgress = useCallback((lessons: Set<string>, idx: number) => {
     if (!courseId) return;
@@ -184,12 +191,12 @@ const CourseLessonPage: React.FC = () => {
   useEffect(() => {
     if (lessonParamValid) {
       const timer = setTimeout(() => {
-        const el = document.getElementById(`lesson-${lessonParam}`);
-        if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        const el = document.getElementById(`lesson-${lessonParam + 1}`);
+        if (el) el.scrollIntoView({ behavior: prefersReducedMotion ? 'auto' : 'smooth', block: 'start' });
       }, 100);
       return () => clearTimeout(timer);
     }
-  }, [lessonParamValid, lessonParam]);
+  }, [lessonParamValid, lessonParam, prefersReducedMotion]);
 
   useEffect(() => {
     window.dispatchEvent(new CustomEvent('course:updateMeta', {
@@ -302,22 +309,30 @@ const CourseLessonPage: React.FC = () => {
           </div>
         )}
 
-        {/* All lessons rendered on one page */}
-        <div className="space-y-4">
-          {course.lessons.map((lesson, i) => (
-            <div key={lesson.id} id={`lesson-${i}`}>
-              <LessonViewer
-                lesson={lesson}
-                number={i + 1}
-                isActive={i === currentLessonIdx}
-                isCompleted={completedLessons.has(lesson.id)}
-                courseId={courseId}
-                backUrl="/dashboard/courses"
-                showBack={i === 0}
-              />
-            </div>
-          ))}
-        </div>
+        {/* All lessons on one page — focused presentation */}
+        <FocusedStepList
+          idPrefix="lesson"
+          items={course.lessons.map((lesson, i) => ({
+            index: i,
+            number: i + 1,
+            title: lesson.title,
+            isActive: i === currentLessonIdx,
+            isCompleted: completedLessons.has(lesson.id),
+            isLocked: false,
+          }))}
+          onSelect={(i) => scrollToLesson(i)}
+          renderActive={(i) => (
+            <LessonViewer
+              lesson={course.lessons[i]}
+              number={i + 1}
+              isActive
+              isCompleted={completedLessons.has(course.lessons[i].id)}
+              courseId={courseId}
+              backUrl="/dashboard/courses"
+              showBack={i === 0}
+            />
+          )}
+        />
 
         <LearningNav
           currentStep={currentLessonIdx}

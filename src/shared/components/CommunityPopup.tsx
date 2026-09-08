@@ -7,17 +7,23 @@ import BrandWhatsAppIcon from './icons/BrandWhatsAppIcon';
 import { SITE_CONFIG } from '../../features/marketing/content/siteConfig';
 import { QyvoraMark } from './brand/QyvoraMark';
 import { usePopupManager } from '../../core/hooks/usePopupManager';
+import { useAuth } from '../../core/contexts/AuthContext';
 
 const COMMUNITY_CLOSE_KEY = 'qyvora_community_dismissed';
 const COMMUNITY_CLOSE_LEGACY = 'qyvora_community_popup_closed';
 const COMMUNITY_JOINED_KEY = 'qyvora_community_joined';
+const APPEAR_DELAY_MS = 8000;
 
 const CommunityPopup: React.FC = () => {
   const { t } = useTranslation();
+  const { user } = useAuth();
   const [delayReady, setDelayReady] = useState(false);
   const observerRef = useRef<MutationObserver | null>(null);
 
-  const { isVisible: managerVisible, onDismiss: managerDismiss } = usePopupManager('community', 3);
+  // Public visitors only. The moment a user signs in the promo must never float
+  // over the dashboard mid-session — release the popup slot and disable it.
+  const authed = Boolean(user);
+  const { isVisible: managerVisible, onDismiss: managerDismiss } = usePopupManager('community', 3, !authed);
 
   useEffect(() => {
     const hasJoined = (() => { try { return localStorage.getItem(COMMUNITY_JOINED_KEY); } catch { return null; } })();
@@ -27,11 +33,11 @@ const CommunityPopup: React.FC = () => {
           || localStorage.getItem(COMMUNITY_CLOSE_LEGACY) === '1';
       } catch { return false; }
     })();
-    if (hasJoined || hasClosed) return;
+    if (authed || hasJoined || hasClosed) return;
 
-    const timer = setTimeout(() => setDelayReady(true), 30000);
+    const timer = setTimeout(() => setDelayReady(true), APPEAR_DELAY_MS);
     return () => clearTimeout(timer);
-  }, []);
+  }, [authed]);
 
   const isVisible = delayReady && managerVisible;
 
@@ -64,7 +70,7 @@ const CommunityPopup: React.FC = () => {
           transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
           className="fixed bottom-24 md:bottom-10 right-4 left-4 md:left-auto md:right-10 z-[145] lg:w-[640px]"
         >
-          <div className="relative overflow-hidden rounded-2xl border border-border bg-bg-card/95 backdrop-blur-xl shadow-2xl flex flex-col sm:flex-row">
+          <div className="relative overflow-hidden rounded-2xl border border-border bg-bg-card flex flex-col sm:flex-row">
 
             <button
               onClick={handleClose}
@@ -74,13 +80,13 @@ const CommunityPopup: React.FC = () => {
               <IconX size={16} />
             </button>
 
-            <div className="relative h-44 sm:h-auto sm:w-52 shrink-0 overflow-hidden bg-bg">
+            <div className="relative h-44 sm:h-auto sm:w-52 shrink-0 overflow-hidden border-b sm:border-b-0 sm:border-r border-border/50 bg-bg-alt">
               <QyvoraMark
                 aria-label="Community"
-                className="w-full h-full object-contain p-8 bg-bg-card transition-transform duration-700 hover:scale-105"
+                className="w-full h-full object-contain p-8 bg-bg-alt transition-transform duration-700 hover:scale-105"
               />
 
-              <div className="absolute bottom-4 left-4 flex h-11 w-11 items-center justify-center rounded-2xl border border-accent/30 bg-accent-dim text-accent shadow-lg">
+              <div className="absolute bottom-4 left-4 flex h-11 w-11 items-center justify-center rounded-2xl border border-accent/30 bg-accent-dim text-accent">
                 <Users className="h-6 w-6" />
                 <div className="absolute -bottom-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-accent text-on-accent border-2 border-bg-card">
                   <Zap className="h-2.5 w-2.5 fill-current" />
@@ -119,8 +125,7 @@ const CommunityPopup: React.FC = () => {
                   className="
                     group relative flex-1 flex items-center justify-center gap-2 overflow-hidden
                     rounded-2xl bg-accent py-3.5 text-[10px] font-black uppercase tracking-widest
-                    text-on-accent shadow-lg shadow-accent/20 transition-[transform,box-shadow]
-                    hover:scale-[1.02] hover:shadow-accent/40 active:scale-[0.98]
+                    text-on-accent transition-[background-color] hover:bg-accent/90
                   "
                 >
                   <BrandWhatsAppIcon className="h-4 w-4" />

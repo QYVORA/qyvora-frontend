@@ -565,6 +565,9 @@ export const TerminalShell: React.FC<TerminalShellProps> = ({
 
       <div
         ref={containerRef}
+        role="log"
+        aria-live="polite"
+        aria-label="Terminal output"
         className={`flex-1 overflow-y-auto ${noWrap ? 'overflow-x-auto' : 'overflow-x-hidden'} px-3 md:px-4 pb-4 pt-1 font-mono text-[11px] md:text-sm leading-relaxed overscroll-contain`}
         style={{
           background: KALI_BG,

@@ -4,6 +4,7 @@ import { createPortal } from 'react-dom';
 import { ZoomIn, ZoomOut } from 'lucide-react';
 import { IconX } from '@/shared/components/icons';
 import { useScrollLock } from '../../../../core/hooks/useScrollLock';
+import { useReducedMotion } from '@/shared/hooks/useReducedMotion';
 
 interface Props {
   src: string;
@@ -13,16 +14,49 @@ interface Props {
 
 const ImageLightbox: React.FC<Props> = ({ src, alt, onClose }) => {
   useScrollLock();
+  const prefersReducedMotion = useReducedMotion();
   const [scale, setScale] = useState(1);
   const [pos, setPos] = useState({ x: 0, y: 0 });
   const [dragging, setDragging] = useState(false);
   const dragStart = useRef<{ mx: number; my: number; px: number; py: number } | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+  const modalRef = useRef<HTMLDivElement>(null);
   const closeButtonRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
     closeButtonRef.current?.focus();
   }, []);
+
+  useEffect(() => {
+    const modal = modalRef.current;
+    if (!modal) return;
+    const focusable = () => Array.from(
+      modal.querySelectorAll<HTMLElement>('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'),
+    ).filter((el) => el.offsetParent !== null);
+
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        e.preventDefault();
+        onClose();
+        return;
+      }
+      if (e.key !== 'Tab') return;
+      const els = focusable();
+      if (els.length === 0) return;
+      const first = els[0];
+      const last = els[els.length - 1];
+      if (e.shiftKey && (document.activeElement === first || document.activeElement === modal)) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
+    };
+
+    document.addEventListener('keydown', onKeyDown);
+    return () => document.removeEventListener('keydown', onKeyDown);
+  }, [onClose]);
 
   const clampScale = (v: number) => Math.min(5, Math.max(1, v));
 
@@ -88,31 +122,34 @@ const ImageLightbox: React.FC<Props> = ({ src, alt, onClose }) => {
   const modal = (
     <AnimatePresence>
       <motion.div
+        ref={modalRef}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
         transition={{ duration: 0.18 }}
         className="fixed inset-0 z-[200] flex flex-col bg-black/95 backdrop-blur-sm"
+        role="dialog"
         aria-modal="true"
-        aria-label="Image viewer"
+        aria-label={alt}
+        aria-labelledby="image-lightbox-title"
       >
         <div className="flex items-center justify-between px-4 py-3 border-b border-white/10 shrink-0">
           <div className="flex items-center gap-2">
             <button
               onClick={() => zoom(-0.5)}
               disabled={scale <= 1}
-              className="flex h-8 w-8 items-center justify-center rounded-lg border border-white/15 text-white/70 hover:text-white hover:border-white/30 transition-colors disabled:opacity-50"
+              className="flex h-11 w-11 items-center justify-center rounded-lg border border-white/15 text-white/70 hover:text-white hover:border-white/30 transition-colors disabled:opacity-50"
               aria-label="Zoom out"
             >
               <ZoomOut className="h-4 w-4" />
             </button>
-            <span className="min-w-[44px] text-center font-mono text-xs font-bold text-white/50">
+            <span id="image-lightbox-title" className="min-w-[44px] text-center font-mono text-xs font-bold text-white/50">
               {Math.round(scale * 100)}%
             </span>
             <button
               onClick={() => zoom(0.5)}
               disabled={scale >= 5}
-              className="flex h-8 w-8 items-center justify-center rounded-lg border border-white/15 text-white/70 hover:text-white hover:border-white/30 transition-colors disabled:opacity-50"
+              className="flex h-11 w-11 items-center justify-center rounded-lg border border-white/15 text-white/70 hover:text-white hover:border-white/30 transition-colors disabled:opacity-50"
               aria-label="Zoom in"
             >
               <ZoomIn className="h-4 w-4" />
@@ -120,7 +157,7 @@ const ImageLightbox: React.FC<Props> = ({ src, alt, onClose }) => {
             {scale > 1 && (
               <button
                 onClick={resetZoom}
-                className="ml-1 px-2.5 h-8 rounded-lg border border-white/15 text-[10px] font-bold uppercase tracking-widest text-white/50 hover:text-white hover:border-white/30 transition-colors"
+                className="ml-1 px-2.5 h-11 rounded-lg border border-white/15 text-[10px] font-bold uppercase tracking-widest text-white/50 hover:text-white hover:border-white/30 transition-colors"
               >
                 Reset
               </button>
@@ -132,7 +169,7 @@ const ImageLightbox: React.FC<Props> = ({ src, alt, onClose }) => {
           <button
             ref={closeButtonRef}
             onClick={onClose}
-            className="flex h-8 w-8 items-center justify-center rounded-lg border border-white/15 text-white/70 hover:text-white hover:border-white/30 transition-colors"
+            className="flex h-11 w-11 items-center justify-center rounded-lg border border-white/15 text-white/70 hover:text-white hover:border-white/30 transition-colors"
             aria-label="Close image viewer"
           >
             <IconX size={16} />
@@ -155,7 +192,7 @@ const ImageLightbox: React.FC<Props> = ({ src, alt, onClose }) => {
             alt={alt}
             draggable={false}
             animate={{ scale, x: pos.x, y: pos.y }}
-            transition={{ type: 'spring', stiffness: 400, damping: 35, mass: 0.6 }}
+            transition={prefersReducedMotion ? { duration: 0 } : { type: 'spring', stiffness: 400, damping: 35, mass: 0.6 }}
             className="max-w-full max-h-full object-contain select-none"
             style={{ transformOrigin: 'center center' }}
           />

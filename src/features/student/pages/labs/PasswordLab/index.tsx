@@ -1,6 +1,8 @@
+import { useState } from 'react';
 import { Key, FileText, Search, Zap, KeyRound, Book, Settings, Scale, Target, Skull, NotebookPen, Trophy } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { WalkthroughLayout, WalkthroughStep } from '@/shared/components/walkthrough/';
+import type { FocusedStepListItem } from '@/shared/components/learning/FocusedStepList';
 import { PASSWORD_EXERCISES } from '@/features/student/data/simulations';
 import LearningAccordion from '@/shared/components/learning/LearningAccordion';
 import LabPage from '@/shared/components/learning/LabPage';
@@ -66,6 +68,43 @@ const PasswordLab = () => {
     });
   const { isLocked, purchaseLab, loading } = useLabAccess();
 
+  const [viewStepIdx, setViewStepIdx] = useState<number | null>(null);
+
+  const stepCount = activeScenario?.steps.length ?? 0;
+  const firstIncomplete = activeScenario?.steps.findIndex((_, i) => !getStepState(i).isCompleted) ?? -1;
+  const defaultActiveIndex = firstIncomplete === -1 ? stepCount + 1 : firstIncomplete + 1;
+  const activeIndex = viewStepIdx ?? defaultActiveIndex;
+
+  const stepItems: FocusedStepListItem[] = activeScenario
+    ? [
+        {
+          index: 0,
+          number: 1,
+          title: 'Mission Briefing',
+          isActive: activeIndex === 0,
+          isCompleted: true,
+        },
+        ...activeScenario.steps.map((_, i) => {
+          const state = getStepState(i);
+          return {
+            index: i + 1,
+            number: i + 2,
+            title: `Step ${i + 1}`,
+            isActive: activeIndex === i + 1,
+            isCompleted: state.isCompleted,
+            isLocked: state.isLocked,
+          };
+        }),
+        {
+          index: stepCount + 1,
+          number: stepCount + 2,
+          title: 'Mission Debrief',
+          isActive: activeIndex === stepCount + 1,
+          isCompleted: allDone,
+        },
+      ]
+    : [];
+
   const firstScenarioWithVillain = PASSWORD_EXERCISES.find(s => s.villain);
 
   if (loading) return <LabListingSkeleton />;
@@ -121,6 +160,10 @@ const PasswordLab = () => {
             onBack={exitScenario}
             completedCount={completedSteps.size + 1 + (allDone ? 1 : 0)}
             totalSteps={activeScenario.steps.length + 2}
+            stepList={stepItems}
+            activeStepIndex={activeIndex}
+            onStepSelect={setViewStepIdx}
+            stepIdPrefix="ws-step"
           >
             <WalkthroughStep
               stepIndex={0}
@@ -188,8 +231,12 @@ Execute the final command to complete the exercise.`,
                   isActive={isActive}
                   flagId={`${activeScenario.id}-step-${index}`}
                   labId="passwords"
-                  onFlagSubmit={handleFlagSubmit}
-                  onComplete={() => {}}
+                  onFlagSubmit={async (id, flag) => {
+                    const res = await handleFlagSubmit(id, flag);
+                    if (res.correct) setViewStepIdx(null);
+                    return res;
+                  }}
+                  onComplete={() => setViewStepIdx(null)}
                 >
                   <FlowDiagram nodes={flow.nodes} arrows={flow.arrows} direction="horizontal" />
                 </WalkthroughStep>

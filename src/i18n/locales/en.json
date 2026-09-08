@@ -2953,5 +2953,30 @@
     "startMission": "Start Mission",
     "enterRoom": "Enter Room",
     "startOperation": "Start Operation"
+  },
+  "learning": {
+    "progress": {
+      "title": "Progress",
+      "steps": "{{completed}}/{{total}} steps",
+      "stepsComplete": "{{completed}}/{{total}} steps complete"
+    },
+    "nav": {
+      "prev": "Previous",
+      "next": "Next",
+      "nextStep": "Next Step",
+      "complete": "Complete",
+      "processing": "Processing…",
+      "quizAndComplete": "Take Quiz & Complete",
+      "completeRoom": "Complete Room"
+    },
+    "toolbar": {
+      "label": "Learning controls",
+      "toggle": "Toggle fullscreen"
+    },
+    "focused": {
+      "done": "Done",
+      "locked": "Locked",
+      "upcoming": "Next"
+    }
   }
 }

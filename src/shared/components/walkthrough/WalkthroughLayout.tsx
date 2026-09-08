@@ -1,8 +1,12 @@
 import { Unplug, Loader2 } from 'lucide-react';
-import { useEffect } from 'react';
+import { Children, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
+import type { ReactNode } from 'react';
 import { IconClock, IconTerminal } from '@/shared/components/icons';
 import { cn } from '@/shared/utils/cn';
 import WalkthroughScrollControls from '@/shared/components/learning/WalkthroughScrollControls';
+import FocusedStepList from '@/shared/components/learning/FocusedStepList';
+import type { FocusedStepListItem } from '@/shared/components/learning/FocusedStepList';
 import { useLabConnection } from '@/features/student/hooks/useLabConnection';
 import { SimulationPanel, useSimulation, getNetworkProfileForLab, type SimulationType } from '@/features/student/components/simulations';
 
@@ -32,6 +36,13 @@ export interface WalkthroughLayoutProps {
   headerContent?: React.ReactNode;
   footer?: React.ReactNode;
   progressContent?: React.ReactNode;
+  /** steps metadata (in the same order as `children`). When provided, the walkthrough
+      collapses non-active steps into focused compact rows instead of a long scroll. */
+  stepList?: FocusedStepListItem[];
+  /** which `children` index is currently expanded (falls back to all-expanded when unset) */
+  activeStepIndex?: number;
+  onStepSelect?: (index: number) => void;
+  stepIdPrefix?: string;
 }
 
 export function WalkthroughLayout({
@@ -56,7 +67,12 @@ export function WalkthroughLayout({
   headerContent,
   footer,
   progressContent,
+  stepList,
+  activeStepIndex,
+  onStepSelect,
+  stepIdPrefix,
 }: WalkthroughLayoutProps) {
+  const { t } = useTranslation();
   const allDone = totalSteps > 0 && completedCount === totalSteps;
   const { connection, isConnected, isLoading, error, connect, disconnect } = useLabConnection();
   const { network, browser } = useSimulation();
@@ -212,18 +228,43 @@ export function WalkthroughLayout({
 
         {/* Steps — full width, matching blog text layout */}
         <div className="space-y-12 md:space-y-16">
-          {children}
+          {stepList && stepList.length > 0 && activeStepIndex !== undefined && onStepSelect ? (
+            <FocusedStepList
+              idPrefix={stepIdPrefix}
+              items={stepList}
+              onSelect={onStepSelect}
+              renderActive={(i) => Children.toArray(children)[i] ?? null}
+              className="space-y-4"
+            />
+          ) : (
+            children
+          )}
         </div>
 
         {/* Progress */}
         {progressContent || (
-          <div className="mt-10 rounded-2xl border border-border/20 bg-bg-card px-4 py-4 md:px-6 md:py-5 flex items-center justify-between">
-            <span className="text-[10px] font-black uppercase tracking-widest text-text-muted">
-              Progress
-            </span>
-            <span className="text-sm font-bold text-text-secondary">
-              {completedCount}/{totalSteps} steps
-            </span>
+          <div className="mt-10 rounded-2xl border border-border/20 bg-bg-card px-4 py-4 md:px-6 md:py-5">
+            <div className="mb-3 flex items-center justify-between gap-4">
+              <span className="text-[10px] font-black uppercase tracking-widest text-text-muted">
+                {t('learning.progress.title')}
+              </span>
+              <span className="text-sm font-bold text-text-secondary">
+                {t('learning.progress.steps', { completed: completedCount, total: totalSteps })}
+              </span>
+            </div>
+            <div
+              className="h-2 overflow-hidden rounded-full bg-accent-dim border border-border/40"
+              role="progressbar"
+              aria-valuenow={totalSteps > 0 ? Math.round((completedCount / totalSteps) * 100) : 0}
+              aria-valuemin={0}
+              aria-valuemax={100}
+              aria-label={t('learning.progress.stepsComplete', { completed: completedCount, total: totalSteps })}
+            >
+              <div
+                className="h-full bg-accent transition-[width] duration-700 ease-out rounded-full"
+                style={{ width: `${totalSteps > 0 ? (completedCount / totalSteps) * 100 : 0}%` }}
+              />
+            </div>
           </div>
         )}
 

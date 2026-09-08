@@ -24,6 +24,7 @@ import RoomHeader from '@/features/student/components/bootcamp-room/RoomHeader';
 import RoomProgress from '@/features/student/components/bootcamp-room/RoomProgress';
 import LearningNav from '@/shared/components/learning/LearningNav';
 import LearningToolbar from '@/shared/components/learning/LearningToolbar';
+import FocusedStepList from '@/shared/components/learning/FocusedStepList';
 import WalkthroughScrollControls from '@/shared/components/learning/WalkthroughScrollControls';
 import { useReducedMotion } from '@/shared/hooks/useReducedMotion';
 import { useRoomSession } from '@/features/student/hooks/useRoomSession';
@@ -253,13 +254,17 @@ const BootcampRoomPage: React.FC = () => {
     }, { replace: true });
     setViewedSteps((prev) => { const next = new Set(prev); next.add(idx); return next; });
     const behavior = prefersReducedMotion ? 'auto' : 'smooth';
-    requestAnimationFrame(() => {
+    const attemptScroll = (tries = 0) => {
+      if (tries > 20) return;
       if (idx === 0) {
         window.scrollTo({ top: 0, behavior });
-      } else {
-        document.getElementById(`step-${idx + 1}`)?.scrollIntoView({ behavior, block: 'start' });
+        return;
       }
-    });
+      const el = document.getElementById(`step-${idx + 1}`);
+      if (el) el.scrollIntoView({ behavior, block: 'start' });
+      else window.setTimeout(() => attemptScroll(tries + 1), 50);
+    };
+    requestAnimationFrame(() => attemptScroll());
   };
   const handleComplete = async () => {
     if (completing) return; setCompleting(true);
@@ -392,7 +397,41 @@ const BootcampRoomPage: React.FC = () => {
                 </div>
               ) : (
                 <>
-                  <div className="mb-10 space-y-8">{room.steps.map((s, i) => <StepCard key={i} step={s} stepNum={i+1} phaseId={phaseId || ''} roomId={roomId || ''} isActive={i===currentStepIdx} isViewed={viewedSteps.has(i)} isBookmarked={isStepBookmarked(i)} gotIt={gotItSteps.has(i+1)} onGotIt={handleGotIt} phaseColor={phase.color} footer={null} onToggleBookmark={() => toggleBookmark(i)} onReportIssue={() => { setReportStepIdx(i); setReportIssueOpen(true); }} onClick={() => goToStep(i)} onNext={() => goToStep(Math.min(i + 1, room.steps.length - 1))} onPrev={() => goToStep(Math.max(i - 1, 0))} />)}</div>
+                  <div className="mb-10">
+                    <FocusedStepList
+                      idPrefix="step"
+                      items={room.steps.map((s, i) => ({
+                        index: i,
+                        number: i + 1,
+                        title: s.title,
+                        isActive: i === currentStepIdx,
+                        isCompleted: viewedSteps.has(i) && i !== currentStepIdx,
+                        isLocked: false,
+                      }))}
+                      onSelect={goToStep}
+                      renderActive={(i) => (
+                        <StepCard
+                          key={i}
+                          step={room.steps[i]}
+                          stepNum={i + 1}
+                          phaseId={phaseId || ''}
+                          roomId={roomId || ''}
+                          isActive
+                          isViewed={viewedSteps.has(i)}
+                          isBookmarked={isStepBookmarked(i)}
+                          gotIt={gotItSteps.has(i + 1)}
+                          onGotIt={handleGotIt}
+                          phaseColor={phase.color}
+                          footer={null}
+                          onToggleBookmark={() => toggleBookmark(i)}
+                          onReportIssue={() => { setReportStepIdx(i); setReportIssueOpen(true); }}
+                          onClick={() => goToStep(i)}
+                          onNext={() => goToStep(Math.min(i + 1, room.steps.length - 1))}
+                          onPrev={() => goToStep(Math.max(i - 1, 0))}
+                        />
+                      )}
+                    />
+                  </div>
                 </>
               )}
               {phaseId && roomId && (
