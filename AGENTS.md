@@ -63,6 +63,8 @@ h2 compact bento sections: **title only, no description**.
   - h4: `text-base md:text-lg font-black uppercase tracking-tight mb-4 mt-4 text-text-primary`
   - All walkthrough headings: `font-black uppercase tracking-tight`, no `leading-snug`, no `max-w-none` on headings
 - **Walkthrough steps on one page**: all walkthrough pages (courses, labs, bootcamp rooms) must render ALL step cards on a single page. Never navigate to a different page/route for the next step. The Next/Continue button scrolls to the next step card on the same page (`scrollIntoView`). Each step card gets an `id` attribute for scroll targeting. This avoids unnecessary page reloads and keeps the student in context
+- **Focused-step presentation**: walkthroughs use the focused pattern — `FocusedStepList` renders only the current step fully expanded, completed steps as compact "Done" rows, upcoming as "Next"/"Locked" rows, all on the same page. The active item carries id `${idPrefix}-${number}` + `scroll-mt-20 md:scroll-mt-24`. Bootcamp uses `idPrefix="step"` (`step-N`), courses `idPrefix="lesson"` (`lesson-N`), labs pass a `stepList` through `WalkthroughLayout` (`ws-step-N`). Navigation scrolls to the newly-activated id (`scrollIntoView`); scroll calls must retry after React commits the newly-expanded step
+- **No scroll on content interaction**: never attach a click/scroll/submit handler to a container that wraps interactive walkthrough content (quizzes, flag inputs, copy buttons, links). A step card's root `onClick`/`onKeyDown` must ignore events originating from interactive elements — guard with `target.closest('button, a, input, textarea, select, [role="button"], label, [contenteditable="true"]')`. Interacting with a form/quiz/button must NEVER scroll the walkthrough to the step/page top (mobile users lose their position and work)
 - **Walkthrough full-width text**: walkthrough content must NOT use `wc-prose` (max-width: 64rem) width constraints. Text should fill the full viewport width like blog pages (`max-w-none`). The `wc-prose` class is only for code blocks and terminals, not for reading text
 - **CommandBlock compact**: walkthrough command blocks must use compact padding: `px-3 py-1.5` header, `px-3 py-2` content, `space-y-1.5` gaps. Never use `p-4` padding on command block content — it wastes vertical space when multiple blocks are stacked
 
@@ -102,11 +104,8 @@ h2 compact bento sections: **title only, no description**.
 - `PublicBottomNav`, `GoCodeCarousel`, `CardGrid` components
 - `react-loading-skeleton` package imports
 - Dual walkthrough toolbars (`WalkthroughToolbar` in `StudentLayout`)
-- `.snap-container-proximity` CSS class
 - `font-display` utility class
 - Fixed `lg:h-dvh` or `h-dvh` on content sections (always use `min-h-dvh`)
-- Scroll-snap (`scroll-snap-type`, `snap-section` class) on any landing or public page section
-- `useSnapWheelNav` hook
 - Navbar scroll-hide/invert behavior
 - `zustand` or `@tanstack/react-query` (installed but unused)
 - Inline fullscreen buttons on walkthrough pages (use `LearningToolbar` instead)

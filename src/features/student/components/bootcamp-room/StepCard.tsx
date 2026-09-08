@@ -38,8 +38,24 @@ const StepCard: React.FC<Props> = ({
   onGotIt, gotIt = false,
 }) => {
   const { t } = useTranslation();
+
+  // The card container wraps interactive content (quizzes, copy buttons, flag
+  // inputs, links). Clicking/activating those controls must NOT bubble up to the
+  // container's onClick, which scrolls the walkthrough to the step top and would
+  // yank mobile users away from their work mid-interaction.
+  const isInteractiveTarget = (target: EventTarget | null) => {
+    if (!(target instanceof Element)) return false;
+    return !!target.closest('button, a, input, textarea, select, [role="button"], [contenteditable="true"], label');
+  };
+
+  const handleCardClick = (e: React.MouseEvent) => {
+    if (isInteractiveTarget(e.target)) return;
+    onClick();
+  };
+
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (!isActive) return;
+    if (isInteractiveTarget(e.target)) return;
     if (e.key === 'ArrowRight') {
       e.preventDefault();
       onNext?.();
@@ -54,8 +70,7 @@ const StepCard: React.FC<Props> = ({
 
   return (
   <div
-    id={`step-${stepNum}`}
-    onClick={onClick}
+    onClick={handleCardClick}
     onKeyDown={handleKeyDown}
     tabIndex={isActive ? 0 : -1}
     role="button"

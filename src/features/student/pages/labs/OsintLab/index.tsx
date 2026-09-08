@@ -1,6 +1,8 @@
+import { useState } from 'react';
 import { Globe } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { WalkthroughLayout, WalkthroughStep } from '@/shared/components/walkthrough/';
+import type { FocusedStepListItem } from '@/shared/components/learning/FocusedStepList';
 import { OSINT_CHALLENGES } from '@/features/student/data/simulations';
 import LearningAccordion from '@/shared/components/learning/LearningAccordion';
 import LabPage from '@/shared/components/learning/LabPage';
@@ -22,6 +24,50 @@ const OsintLab = () => {
       getStepIds: (c) => c.steps.map((_, i) => `${c.id}-step-${i}`),
     });
   const { isLocked, purchaseLab, loading } = useLabAccess();
+
+  const [viewStepIdx, setViewStepIdx] = useState<number | null>(null);
+
+  const stepCount = activeChallenge?.steps.length ?? 0;
+  const firstIncomplete = activeChallenge?.steps.findIndex((_, i) => !getStepState(i).isCompleted) ?? -1;
+  const defaultActiveIndex = firstIncomplete === -1 ? stepCount + 2 : firstIncomplete + 2;
+  const activeIndex = viewStepIdx ?? defaultActiveIndex;
+
+  const stepItems: FocusedStepListItem[] = activeChallenge
+    ? [
+        {
+          index: 0,
+          number: 1,
+          title: 'Mission Briefing',
+          isActive: activeIndex === 0,
+          isCompleted: true,
+        },
+        {
+          index: 1,
+          number: 2,
+          title: `Target — ${activeChallenge.targetName}`,
+          isActive: activeIndex === 1,
+          isCompleted: true,
+        },
+        ...activeChallenge.steps.map((step, i) => {
+          const state = getStepState(i);
+          return {
+            index: i + 2,
+            number: i + 3,
+            title: `Step ${i + 1} | ${step.tool}`,
+            isActive: activeIndex === i + 2,
+            isCompleted: state.isCompleted,
+            isLocked: state.isLocked,
+          };
+        }),
+        {
+          index: stepCount + 2,
+          number: stepCount + 3,
+          title: 'Mission Debrief',
+          isActive: activeIndex === stepCount + 2,
+          isCompleted: allDone,
+        },
+      ]
+    : [];
 
   const firstChallengeWithVillain = OSINT_CHALLENGES.find(c => c.villain);
 
@@ -78,6 +124,10 @@ const OsintLab = () => {
             onBack={exitScenario}
             completedCount={completedSteps.size + 1 + (allDone ? 1 : 0)}
             totalSteps={activeChallenge.steps.length + 2}
+            stepList={stepItems}
+            activeStepIndex={activeIndex}
+            onStepSelect={setViewStepIdx}
+            stepIdPrefix="ws-step"
           >
             <WalkthroughStep
               stepIndex={0}
@@ -125,8 +175,12 @@ const OsintLab = () => {
                   isActive={isActive}
                   flagId={`${activeChallenge.id}-step-${index}`}
                   labId="osint"
-                  onFlagSubmit={handleFlagSubmit}
-                  onComplete={() => {}}
+                  onFlagSubmit={async (id, flag) => {
+                    const res = await handleFlagSubmit(id, flag);
+                    if (res.correct) setViewStepIdx(null);
+                    return res;
+                  }}
+                  onComplete={() => setViewStepIdx(null)}
                 />
               );
             })}

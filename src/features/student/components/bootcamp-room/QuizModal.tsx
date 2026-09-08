@@ -102,7 +102,7 @@ const QuizModal: React.FC<QuizModalProps> = ({ moduleId, roomId, courseId, onClo
 
           {!loading && result && (
             <div className="space-y-6">
-              <div className="text-center py-4">
+              <div aria-live="polite" aria-atomic="true" className="text-center py-4">
                 <div className={`text-6xl font-black mb-2 ${result.passed ? 'text-accent' : 'text-danger'}`}>
                   {result.score}%
                 </div>
@@ -157,8 +157,8 @@ const QuizModal: React.FC<QuizModalProps> = ({ moduleId, roomId, courseId, onClo
                               let cls = 'border-border text-text-muted';
                               if (isChosenOpt) {
                                 cls = ansResult.correct
-                                  ? 'border-green-500/50 bg-green-500/10 text-green-500 font-bold'
-                                  : 'border-red-500/50 bg-red-500/10 text-red-500 font-bold';
+                                  ? 'border-accent/50 bg-accent/10 text-accent font-bold'
+                                  : 'border-danger/50 bg-danger/10 text-danger font-bold';
                               } else if (showCorrect) {
                                 cls = 'border-accent/30 bg-accent/5 text-accent';
                               }
@@ -218,6 +218,7 @@ const QuizModal: React.FC<QuizModalProps> = ({ moduleId, roomId, courseId, onClo
                           <button
                             key={`${q.id}-${optIdx}`}
                             onClick={() => setAnswers((prev) => ({ ...prev, [q.id]: optIdx }))}
+                            aria-pressed={selected}
                             className={`w-full rounded-xl border px-4 py-3 text-left text-sm transition-[background-color,border-color,color] duration-[var(--dur-base)] ease-[var(--ease-smooth)] ${
                               selected
                                 ? 'border-accent bg-accent-dim font-bold text-accent'

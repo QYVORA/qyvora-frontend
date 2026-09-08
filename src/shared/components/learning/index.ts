@@ -15,3 +15,6 @@ export { default as StepNumberHeader } from './StepNumberHeader';
 
 export { default as LearningCard, LearningCard as LearningCardComponent, DifficultyBadge } from './LearningCard';
 export type { LearningCardProps, LearningCardType } from './LearningCard';
+
+export { default as FocusedStepList } from './FocusedStepList';
+export type { FocusedStepListProps, FocusedStepListItem } from './FocusedStepList';

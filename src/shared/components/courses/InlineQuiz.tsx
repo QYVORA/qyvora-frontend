@@ -81,7 +81,11 @@ const InlineQuiz: React.FC<InlineQuizProps> = ({
 
     return (
       <div className={`wc-interactive border border-border bg-bg-card rounded-xl p-6 space-y-5 ${className}`}>
-        <div className="text-center py-4">
+        <div
+          aria-live="polite"
+          aria-atomic="true"
+          className="text-center py-4"
+        >
           <div className={`text-5xl font-black font-mono mb-2 ${passed ? 'text-accent' : 'text-danger'}`}>
             {score}%
           </div>
@@ -147,6 +151,7 @@ const InlineQuiz: React.FC<InlineQuizProps> = ({
             <button
               key={idx}
               onClick={() => handleSelect(idx)}
+              aria-pressed={selectedIdx === idx}
               className={`w-full text-left rounded-lg border px-4 py-3 text-sm transition-[border-color,background-color,color] duration-[var(--dur-base)] ease-[var(--ease-smooth)] ${
                 selectedIdx === idx
                   ? 'border-accent bg-accent-dim text-accent font-bold'

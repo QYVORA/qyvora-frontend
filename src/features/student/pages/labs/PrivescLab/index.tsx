@@ -1,9 +1,11 @@
+import { useState } from 'react';
 import { Shield, User, Folder, Cog, Crown } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import LearningAccordion from '@/shared/components/learning/LearningAccordion';
 import LabPage from '@/shared/components/learning/LabPage';
 import { WalkthroughLayout } from '@/shared/components/walkthrough/WalkthroughLayout';
 import { WalkthroughStep } from '@/shared/components/walkthrough/WalkthroughStep';
+import type { FocusedStepListItem } from '@/shared/components/learning/FocusedStepList';
 import { PRIVESC_SCENARIOS } from '@/features/student/data/simulations';
 import type { PrivescScenario } from '@/features/student/data/simulations';
 import { getRelatedContentForLab } from '@/shared/constants/topicMap';
@@ -42,9 +44,44 @@ const PrivescLab = () => {
       getStepIds: (s) => (s.story?.chapters ?? []).map((ch) => ch.id),
     });
   const { isLocked, purchaseLab, loading } = useLabAccess();
+  const [viewStepIdx, setViewStepIdx] = useState<number | null>(null);
 
   const chapters = activeScenario?.story?.chapters ?? [];
   const firstScenarioWithVillain = PRIVESC_SCENARIOS.find(s => s.villain);
+
+  const firstIncomplete = chapters.findIndex((_, i) => !getStepState(i).isCompleted);
+  const defaultActiveIndex = firstIncomplete === -1 ? chapters.length + 1 : firstIncomplete + 1;
+  const activeIndex = viewStepIdx ?? defaultActiveIndex;
+
+  const stepItems: FocusedStepListItem[] = activeScenario
+    ? [
+        {
+          index: 0,
+          number: 1,
+          title: 'Mission Briefing',
+          isActive: activeIndex === 0,
+          isCompleted: true,
+        },
+        ...chapters.map((ch, i) => {
+          const state = getStepState(i);
+          return {
+            index: i + 1,
+            number: i + 2,
+            title: ch.title,
+            isActive: activeIndex === i + 1,
+            isCompleted: state.isCompleted,
+            isLocked: state.isLocked,
+          };
+        }),
+        {
+          index: chapters.length + 1,
+          number: chapters.length + 2,
+          title: 'Mission Debrief',
+          isActive: activeIndex === chapters.length + 1,
+          isCompleted: allDone,
+        },
+      ]
+    : [];
 
   if (loading) return <LabListingSkeleton />;
 
@@ -104,6 +141,10 @@ const PrivescLab = () => {
             onBack={exitScenario}
             completedCount={completedSteps.size + 1 + (allDone ? 1 : 0)}
             totalSteps={chapters.length + 2}
+            stepList={stepItems}
+            activeStepIndex={activeIndex}
+            onStepSelect={setViewStepIdx}
+            stepIdPrefix="ws-step"
           >
             <WalkthroughStep
               stepIndex={0}
@@ -143,7 +184,10 @@ const PrivescLab = () => {
                   flagId={chapter.id}
                   labId="privesc"
                   onFlagSubmit={handleFlagSubmit}
-                  onComplete={handleComplete}
+                  onComplete={(stepId) => {
+                    setViewStepIdx(null);
+                    handleComplete(stepId);
+                  }}
                 >
                   {i === 0 && (
                     <FlowDiagram

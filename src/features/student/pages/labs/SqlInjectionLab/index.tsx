@@ -1,6 +1,8 @@
+import { useState } from 'react';
 import { Database, Keyboard, Search, Server } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { WalkthroughLayout, WalkthroughStep } from '@/shared/components/walkthrough/';
+import type { FocusedStepListItem } from '@/shared/components/learning/FocusedStepList';
 import { SQL_INJECTION_TARGETS } from '@/features/student/data/simulations';
 import LearningAccordion from '@/shared/components/learning/LearningAccordion';
 import LabPage from '@/shared/components/learning/LabPage';
@@ -34,6 +36,50 @@ const SqlInjectionLab = () => {
       getStepIds: (t) => t.steps.map((_, i) => `${t.id}-step-${i}`),
     });
   const { isLocked, purchaseLab, loading } = useLabAccess();
+
+  const [viewStepIdx, setViewStepIdx] = useState<number | null>(null);
+
+  const stepCount = activeTarget?.steps.length ?? 0;
+  const firstIncomplete = activeTarget?.steps.findIndex((_, i) => !getStepState(i).isCompleted) ?? -1;
+  const defaultActiveIndex = firstIncomplete === -1 ? stepCount + 2 : firstIncomplete + 2;
+  const activeIndex = viewStepIdx ?? defaultActiveIndex;
+
+  const stepItems: FocusedStepListItem[] = activeTarget
+    ? [
+        {
+          index: 0,
+          number: 1,
+          title: 'Mission Briefing',
+          isActive: activeIndex === 0,
+          isCompleted: true,
+        },
+        {
+          index: 1,
+          number: 2,
+          title: `Target — ${activeTarget.url}`,
+          isActive: activeIndex === 1,
+          isCompleted: true,
+        },
+        ...activeTarget.steps.map((step, i) => {
+          const state = getStepState(i);
+          return {
+            index: i + 2,
+            number: i + 3,
+            title: `Step ${i + 1}`,
+            isActive: activeIndex === i + 2,
+            isCompleted: state.isCompleted,
+            isLocked: state.isLocked,
+          };
+        }),
+        {
+          index: stepCount + 2,
+          number: stepCount + 3,
+          title: 'Mission Debrief',
+          isActive: activeIndex === stepCount + 2,
+          isCompleted: allDone,
+        },
+      ]
+    : [];
 
   const firstTargetWithVillain = SQL_INJECTION_TARGETS.find(t => t.villain);
 
@@ -90,6 +136,10 @@ const SqlInjectionLab = () => {
             onBack={exitScenario}
             completedCount={completedSteps.size + 1 + (allDone ? 1 : 0)}
             totalSteps={activeTarget.steps.length + 2}
+            stepList={stepItems}
+            activeStepIndex={activeIndex}
+            onStepSelect={setViewStepIdx}
+            stepIdPrefix="ws-step"
           >
             <WalkthroughStep
               stepIndex={0}
@@ -136,8 +186,12 @@ const SqlInjectionLab = () => {
                   isActive={isActive}
                   flagId={stepId}
                   labId="sql-injection"
-                  onFlagSubmit={handleFlagSubmit}
-                  onComplete={() => {}}
+                  onFlagSubmit={async (id, flag) => {
+                    const res = await handleFlagSubmit(id, flag);
+                    if (res.correct) setViewStepIdx(null);
+                    return res;
+                  }}
+                  onComplete={() => setViewStepIdx(null)}
                 >
                   {index === 0 && (
                     <FlowDiagram
