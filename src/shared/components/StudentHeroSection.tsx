@@ -22,7 +22,7 @@ interface StudentHeroSectionProps {
   typewrite?: boolean;
   /**
    * Whether the hero must fill the viewport height. Defaults to true for the
-   * public/marketing snap sections. Student dashboard pages set it to false so
+   * public/marketing hero sections. Student dashboard pages set it to false so
    * the hero sizes to its content and sits right under the topbar.
    */
   fullHeight?: boolean;

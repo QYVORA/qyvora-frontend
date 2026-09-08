@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { Zap } from 'lucide-react';
 import { IconArrowLeft, IconArrowRight } from '@/shared/components/icons';
 import SEO from '@/shared/components/SEO';
-import PublicSnapLayout from '@/shared/components/PublicSnapLayout';
+import PublicPageLayout from '@/shared/components/PublicPageLayout';
 import RelatedContentSection from '@/shared/components/RelatedContentSection';
 import StudentHeroSection, { PUBLIC_HERO_TITLE_CLASS } from '@/shared/components/StudentHeroSection';
 import { Footer } from '@/shared/components/layout';
@@ -46,9 +46,9 @@ const HpbPhasePage: React.FC = () => {
         description={learnPhase?.desc ?? `${phase.title}. Hacker Protocol Bootcamp.`}
         breadcrumbName={phase.title}
       />
-      <PublicSnapLayout>
+      <PublicPageLayout>
         {/* Phase hero */}
-        <section id={phase.id} className="relative w-full min-h-dvh snap-section bg-bg">
+        <section id={phase.id} className="relative w-full min-h-dvh bg-bg">
           <StudentHeroSection
             title={phase.title}
             accentWord={phase.codename}
@@ -84,7 +84,7 @@ const HpbPhasePage: React.FC = () => {
           <section
             key={room.id}
             id={room.id}
-            className={`relative w-full min-h-dvh snap-section flex items-center ${
+            className={`relative w-full min-h-dvh flex items-center ${
               index % 2 === 0 ? 'bg-bg-alt' : 'bg-bg'
             }`}
           >
@@ -93,18 +93,18 @@ const HpbPhasePage: React.FC = () => {
         ))}
 
         {/* Related phases */}
-        <RelatedContentSection snap items={otherPhases} />
+        <RelatedContentSection items={otherPhases} />
 
         {/* CTA */}
-        <section id="cta" className="relative w-full min-h-dvh snap-section bg-bg-alt">
+        <section id="cta" className="relative w-full min-h-dvh bg-bg-alt">
           <LandingFinalCtaSection user={user} />
         </section>
 
         {/* Footer */}
-        <section id="footer" className="w-full bg-bg pt-10 md:pt-0 snap-section">
+        <section id="footer" className="w-full bg-bg pt-10 md:pt-0">
           <Footer />
         </section>
-      </PublicSnapLayout>
+      </PublicPageLayout>
     </div>
   );
 };

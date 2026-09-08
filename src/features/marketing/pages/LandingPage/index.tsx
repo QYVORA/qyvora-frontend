@@ -22,7 +22,6 @@ import ActDividerSection from '@/features/marketing/components/landing/ActDivide
 
 import { Footer } from '@/shared/components/layout';
 import { useAdaptiveUi } from '@/core/hooks/useAdaptiveUi';
-import { useSnapWheelNav } from '@/core/hooks/useSnapWheelNav';
 import SEO from '@/shared/components/SEO';
 import { buildOrganization } from '@/shared/seo/schema';
 import { BookOpen, Users } from 'lucide-react';
@@ -61,13 +60,8 @@ const Landing: React.FC = () => {
   const { stats } = useLandingData();
   const { isMobile } = useAdaptiveUi();
 
-  useSnapWheelNav();
-
   const heroRef = React.useRef<HTMLDivElement>(null);
   const location = useLocation();
-  // Last section hash written to the URL. Plain ref on purpose — syncing the
-  // hash must never re-render or re-run effects; it exists for deep links.
-  const lastHashRef = React.useRef('hero');
 
   const totalCp = stats?.stats?.cpPoolSize ?? 0;
 
@@ -79,54 +73,14 @@ const Landing: React.FC = () => {
     if (isMobile) return;
     const hash = location.hash.replace('#', '');
     if (!hash || !isValidSection(hash)) return;
-    lastHashRef.current = hash;
     const timer = setTimeout(() => {
       document.getElementById(hash)?.scrollIntoView({ behavior: 'smooth' });
     }, 100);
     return () => clearTimeout(timer);
   }, [location.hash, isValidSection, isMobile]);
 
-  useEffect(() => {
-    if (isMobile) return;
-    const snapContainer = document.querySelector('.snap-container');
-    if (!snapContainer) return;
-
-    // CSS scroll-snap owns all movement. Once scrolling settles, the URL
-    // hash is synced via history.replaceState — deliberately NOT navigate().
-    // Router-driven hash writes re-fired the deep-link effect (duplicate
-    // scrollIntoView after every snap) and re-rendered the whole page tree,
-    // which read as constant lag while snapping between sections.
-    let settleTimer = 0;
-    const resolveActiveSection = () => {
-      const detectionPoint = snapContainer.scrollTop + snapContainer.clientHeight * 0.3;
-      let foundSection = SECTIONS[0].id;
-      for (let i = SECTIONS.length - 1; i >= 0; i--) {
-        const element = document.getElementById(SECTIONS[i].id);
-        if (!element) continue;
-        if (detectionPoint >= element.offsetTop) {
-          foundSection = SECTIONS[i].id;
-          break;
-        }
-      }
-      if (lastHashRef.current !== foundSection) {
-        lastHashRef.current = foundSection;
-        window.history.replaceState(null, '', `#${foundSection}`);
-      }
-    };
-    const handleScroll = () => {
-      window.clearTimeout(settleTimer);
-      settleTimer = window.setTimeout(resolveActiveSection, 150);
-    };
-    snapContainer.addEventListener('scroll', handleScroll, { passive: true });
-    handleScroll();
-    return () => {
-      snapContainer.removeEventListener('scroll', handleScroll);
-      window.clearTimeout(settleTimer);
-    };
-  }, [isMobile]);
-
   return (
-    <div className="relative w-full bg-bg snap-container no-scrollbar">
+    <div className="relative w-full bg-bg">
       <SEO
         title={t('landing2.seo.title')}
         description={t('landing2.seo.description')}
@@ -135,17 +89,17 @@ const Landing: React.FC = () => {
 
       {/* ── ACT I: VISION ──────────────────────────────────────────────── */}
       {/* 1. Hero */}
-      <section id="hero" className="relative w-full min-h-dvh snap-section bg-bg">
+      <section id="hero" className="relative w-full min-h-dvh bg-bg">
         <LandingHeroSection heroRef={heroRef} user={user} stats={stats} totalCp={totalCp} />
       </section>
 
       {/* 2. Platform */}
-      <section id="pillars" className="relative w-full min-h-dvh snap-section bg-bg-alt">
+      <section id="pillars" className="relative w-full min-h-dvh bg-bg-alt">
         <LandingPillarsSection />
       </section>
 
       {/* ── ACT II: THE WORK ──────────────────────────────────────────── */}
-      <section id="act-ii" className="relative w-full min-h-dvh snap-section bg-bg">
+      <section id="act-ii" className="relative w-full min-h-dvh bg-bg">
         <ActDividerSection
           title="The"
           accentWord="Work"
@@ -180,27 +134,27 @@ const Landing: React.FC = () => {
       </section>
 
       {/* 3. Labs */}
-      <section id="labs" className="relative w-full min-h-dvh snap-section bg-bg-alt">
+      <section id="labs" className="relative w-full min-h-dvh bg-bg-alt">
         <LandingLabsSection />
       </section>
 
       {/* 3.5 Simulations */}
-      <section id="simulations" className="relative w-full min-h-dvh snap-section bg-bg">
+      <section id="simulations" className="relative w-full min-h-dvh bg-bg">
         <LandingSimulationsSection />
       </section>
 
       {/* 4. Courses */}
-      <section id="courses" className="relative w-full min-h-dvh snap-section bg-bg-alt">
+      <section id="courses" className="relative w-full min-h-dvh bg-bg-alt">
         <LandingCoursesSection />
       </section>
 
       {/* 5. Bootcamp */}
-      <section id="bootcamp" className="relative w-full min-h-dvh snap-section bg-bg">
+      <section id="bootcamp" className="relative w-full min-h-dvh bg-bg">
         <LandingBootcampSection />
       </section>
 
       {/* ── ACT III: THE WORLD ──────────────────────────────────────────── */}
-      <section id="act-iii" className="relative w-full min-h-dvh snap-section bg-bg-alt">
+      <section id="act-iii" className="relative w-full min-h-dvh bg-bg-alt">
         <ActDividerSection
           title="The"
           accentWord="World"
@@ -229,47 +183,47 @@ const Landing: React.FC = () => {
       </section>
 
       {/* 6. Team */}
-      <section id="team" className="relative w-full min-h-dvh snap-section bg-bg">
+      <section id="team" className="relative w-full min-h-dvh bg-bg">
         <LandingTeamSection />
       </section>
 
       {/* 7. QuiteRoot */}
-      <section id="quiteroot" className="relative w-full min-h-dvh snap-section bg-bg-alt">
+      <section id="quiteroot" className="relative w-full min-h-dvh bg-bg-alt">
         <LandingQuiteRootSection />
       </section>
 
       {/* 8. Open Source Tools */}
-      <section id="tools" className="relative w-full min-h-dvh snap-section bg-bg">
+      <section id="tools" className="relative w-full min-h-dvh bg-bg">
         <LandingOpenSourceToolsSection />
       </section>
 
       {/* 9. Blogs */}
-      <section id="blogs" className="relative w-full min-h-dvh snap-section bg-bg-alt">
+      <section id="blogs" className="relative w-full min-h-dvh bg-bg-alt">
         <LandingBlogsSection />
       </section>
 
       {/* 10. Market */}
-      <section id="market" className="relative w-full min-h-dvh snap-section bg-bg">
+      <section id="market" className="relative w-full min-h-dvh bg-bg">
         <LandingMarketSection />
       </section>
 
       {/* 11. Leaderboard */}
-      <section id="leaderboard" className="relative w-full min-h-dvh snap-section bg-bg-alt">
+      <section id="leaderboard" className="relative w-full min-h-dvh bg-bg-alt">
         <LandingLeaderboardSection />
       </section>
 
       {/* 12. Services */}
-      <section id="services" className="relative w-full min-h-dvh snap-section bg-bg">
+      <section id="services" className="relative w-full min-h-dvh bg-bg">
         <LandingServicesSection />
       </section>
 
       {/* 13. CTA */}
-      <section id="cta" className="relative w-full min-h-dvh snap-section bg-bg-alt">
+      <section id="cta" className="relative w-full min-h-dvh bg-bg-alt">
         <LandingFinalCtaSection user={user} />
       </section>
 
       {/* 14. Footer */}
-      <section id="footer" className="w-full bg-bg pt-10 md:pt-0 snap-section">
+      <section id="footer" className="w-full bg-bg pt-10 md:pt-0">
         <Footer />
       </section>
     </div>

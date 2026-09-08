@@ -160,8 +160,8 @@ const HeroGridAnimation: React.FC<HeroGridAnimationProps> = ({ className = '', r
     );
     observer.observe(canvas);
 
-    // Freeze cell animation while any scroll gesture is running so the
-    // canvas stays out of the compositor's way during snap-scrolling.
+    // Freeze cell animation while a scroll gesture is running so the
+    // canvas stays out of the compositor's way during fast scrolling.
     let scrollSettleTimer = 0;
     let scrollPaused = false;
     const markScrollActivity = () => {
@@ -170,8 +170,6 @@ const HeroGridAnimation: React.FC<HeroGridAnimationProps> = ({ className = '', r
       scrollSettleTimer = window.setTimeout(() => { scrollPaused = false; }, 160);
     };
     window.addEventListener('scroll', markScrollActivity, { passive: true });
-    const snapEl = document.querySelector('.snap-container');
-    if (snapEl) snapEl.addEventListener('scroll', markScrollActivity, { passive: true });
 
     function draw(timestamp: number) {
       rafRef.current = requestAnimationFrame(draw);
@@ -250,7 +248,6 @@ const HeroGridAnimation: React.FC<HeroGridAnimationProps> = ({ className = '', r
       themeObserver.disconnect();
       window.removeEventListener('resize', resize);
       window.removeEventListener('scroll', markScrollActivity);
-      if (snapEl) snapEl.removeEventListener('scroll', markScrollActivity);
       clearTimeout(scrollSettleTimer);
       cancelAnimationFrame(rafRef.current);
     };

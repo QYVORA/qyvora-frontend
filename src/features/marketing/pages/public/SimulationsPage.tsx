@@ -3,8 +3,8 @@ import { Link } from 'react-router-dom';
 import { Zap } from 'lucide-react';
 import { IconArrowRight, IconTerminal, IconCode, IconNetwork } from '@/shared/components/icons';
 import SEO from '@/shared/components/SEO';
-import PublicSnapLayout from '@/shared/components/PublicSnapLayout';
-import PublicSnapSection from '@/shared/components/PublicSnapSection';
+import PublicPageLayout from '@/shared/components/PublicPageLayout';
+import PublicPageSection from '@/shared/components/PublicPageSection';
 import StudentHeroSection, { PUBLIC_HERO_TITLE_CLASS } from '@/shared/components/StudentHeroSection';
 import { SimpleHeading } from '@/shared/components/ui';
 import { Footer } from '@/shared/components/layout';
@@ -144,7 +144,7 @@ const SimulationsPage = () => {
     if (sim.id === 'terminal') {
       /* Split layout — text left, live shell visual right */
       return (
-        <PublicSnapSection key={sim.id}>
+        <PublicPageSection key={sim.id}>
           <div className="flex flex-col gap-6 lg:gap-8">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-10 items-stretch">
               <div className="flex flex-col justify-center">
@@ -161,14 +161,14 @@ const SimulationsPage = () => {
               ))}
             </div>
           </div>
-        </PublicSnapSection>
+        </PublicPageSection>
       );
     }
 
     if (sim.id === 'ide') {
       /* Split layout — header left, code editor visual right */
       return (
-        <PublicSnapSection key={sim.id}>
+        <PublicPageSection key={sim.id}>
           <div className="flex flex-col gap-6 lg:gap-8">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-10 items-stretch">
               <div className="flex flex-col justify-center">
@@ -185,13 +185,13 @@ const SimulationsPage = () => {
               ))}
             </div>
           </div>
-        </PublicSnapSection>
+        </PublicPageSection>
       );
     }
 
     /* Network — text and feature chips on one row, wide topology strip below */
     return (
-      <PublicSnapSection key={sim.id}>
+      <PublicPageSection key={sim.id}>
         <div className="flex flex-col gap-4 lg:gap-6">
           <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 lg:gap-10">
             <div className="flex-1 max-w-xl">
@@ -208,15 +208,15 @@ const SimulationsPage = () => {
           </div>
           <NetworkMock />
         </div>
-      </PublicSnapSection>
+      </PublicPageSection>
     );
   };
 
   return (
     <div className="bg-bg min-h-full">
       <SEO title={t('simulations.metaTitle')} description={t('simulations.metaDescription')} />
-      <PublicSnapLayout>
-        <section className="relative w-full min-h-dvh snap-section bg-bg">
+      <PublicPageLayout>
+        <section className="relative w-full min-h-dvh bg-bg">
         <StudentHeroSection
           title={t('simulations.heroTitle')}
           accentWord={t('simulations.heroAccent')}
@@ -240,14 +240,14 @@ const SimulationsPage = () => {
 
         {SIMULATIONS.map((sim) => renderSection(sim))}
 
-        <section className="relative w-full min-h-dvh snap-section bg-bg-alt">
+        <section className="relative w-full min-h-dvh bg-bg-alt">
           <LandingFinalCtaSection user={user} />
         </section>
 
-        <section className="w-full bg-bg pt-10 md:pt-0 snap-section">
+        <section className="w-full bg-bg pt-10 md:pt-0">
           <Footer />
         </section>
-      </PublicSnapLayout>
+      </PublicPageLayout>
     </div>
   );
 };

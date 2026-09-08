@@ -1,6 +1,6 @@
 import type { ElementType } from 'react';
 import { FolderTree } from 'lucide-react';
-import PublicSnapSection from '@/shared/components/PublicSnapSection';
+import PublicPageSection from '@/shared/components/PublicPageSection';
 import CodeBlock from '@/shared/components/CodeBlock';
 
 export interface ToolDocumentationSectionProps {
@@ -27,7 +27,7 @@ const ToolDocumentationSection = ({
   const splitDesktop = numericIndex % 3 === 0;
 
   return (
-  <PublicSnapSection id={id} className="scroll-mt-24 md:scroll-mt-28">
+  <PublicPageSection id={id} className="scroll-mt-24 md:scroll-mt-28">
     <article className="relative grid w-full grid-cols-1 gap-6 lg:grid-cols-2 lg:gap-10 lg:gap-x-14 lg:items-center">
       <div className={`flex flex-col ${reverseDesktop ? 'lg:order-2' : 'lg:order-1'}`}>
         <div className="mb-3 flex items-center gap-3">
@@ -71,7 +71,7 @@ const ToolDocumentationSection = ({
         )}
       </div>
     </article>
-  </PublicSnapSection>
+  </PublicPageSection>
   );
 };
 

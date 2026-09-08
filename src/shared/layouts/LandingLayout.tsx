@@ -2,10 +2,8 @@
  * @file LandingLayout.tsx
  * @description Shell layout component used EXCLUSIVELY by the marketing landing page.
  *
- * This layout is intentionally different from PublicLayout and SnapPublicLayout.
- * The landing page is a "scroll-snap" experience — the viewport snaps from one
- * full-screen section to the next (like swiping slides), rather than scrolling
- * continuously. This layout is built to support that behaviour.
+ * The landing page uses natural document scrolling — no scroll snapping, no
+ * section-to-section snapping behavior.
  *
  * ─── VISUAL STRUCTURE ────────────────────────────────────────────────────────
  *
@@ -13,15 +11,11 @@
  *  │                  Navbar                       │
  *  ├──────────────────────────────────────────────┤
  *  │                                               │
- *  │   Landing Page Content  (<Outlet />)          │  ← Snap sections rendered here
- *  │   [Hero Section]                              │    Each section = 100vh tall
- *  │   [Features Section]                          │    Page scrolls snap-by-snap
- *  │   [CTA Section]                               │
- *  │   [Footer Section]  ← embedded IN last snap  │  ← NO separate Footer component here
+ *  │   Landing Page Content  (<Outlet />)          │  ← Natural scrolling sections
+ *  │   [Hero Section]                              │
+ *  │   [Features/CTA sections]                     │
+ *  │   [Footer Section]  ← embedded IN last page   │
  *  │                                               │
- *  └──────────────────────────────────────────────┘
- *  ┌──────────────────────────────────────────────┐  ← Fixed at screen bottom (mobile only)
- *  │             (no separate mobile nav)               │
  *  └──────────────────────────────────────────────┘
  *
  * ─── WHY NO PADDING ON <main>? ───────────────────────────────────────────────
@@ -29,24 +23,11 @@
  * Normally, because Navbar is `position: fixed`, you need top-padding on the
  * content below it so the navbar doesn't cover it. Here, that padding is
  * intentionally ABSENT from the layout level. Instead, the HeroSection component
- * (the first snap section) handles its own top offset internally (pt-16 md:pt-20).
+ * (the first section) handles its own top offset internally (pt-16 md:pt-20).
  *
  * This is a deliberate design decision: it allows the hero background to extend
  * fully behind the navbar for a full-bleed visual effect, while the hero's TEXT
  * content still clears the navbar via its own internal padding.
- *
- * ─── WHY NO <Footer /> HERE? ─────────────────────────────────────────────────
- *
- * In a scroll-snap layout, a traditional footer appended after <main> would
- * break the snapping behaviour — the browser would try to snap past it in an
- * unexpected way. Instead, the landing page embeds its footer as the LAST snap
- * section directly inside the page component (rendered via <Outlet />).
- *
- * ─── WHY NO overflow-hidden ON <main>? ───────────────────────────────────────
- *
- * The snap scroll container (inside <Outlet />) manages its own `overflow`
- * internally. Adding `overflow-hidden` here at the layout level would clip
- * the snap container and break scrolling entirely.
  *
  * ─── ROUTING CONTEXT ─────────────────────────────────────────────────────────
  *
@@ -60,7 +41,7 @@ import { Outlet } from 'react-router-dom';
 // Shared marketing navigation bar — fixed at the top of the viewport.
 import { Navbar } from '@/shared/components/layout';
 // A modal component for the "Contact Us" form — rendered at layout level so it
-// can be triggered from anywhere within the landing page (any snap section).
+// can be triggered from anywhere within the landing page.
 import ContactModalHost from '@/features/marketing/components/ContactModal';
 import ServiceRequestModalHost from '@/features/marketing/components/ServiceRequestModal';
 import ToolInstallModalHost from '@/features/marketing/components/ToolInstallModal';
@@ -72,7 +53,7 @@ import ConsentBanner from '@/shared/components/ConsentBanner';
  *
  * A lightweight wrapper that provides:
  *  - The shared Navbar (fixed, always visible).
- *  - A plain <main> with no padding constraints (snap sections handle their own spacing).
+ *  - A plain <main> with no padding constraints (landing sections handle their own spacing).
  *  - The ContactModalHost so the contact modal can be opened from any section.
  *  - The ConsentBanner.
  *
@@ -93,17 +74,11 @@ const LandingLayout = () => (
     <Navbar />
 
     {/*
-      ── Snap Scroll Content Area ───────────────────────────────────────────────
+      ── Content Area ───────────────────────────────────────────────────────
       `w-full` ensures the content spans the full viewport width.
-
       NO top padding here (unlike PublicLayout's pt-[72px]), see file-level
       comment for the reasoning. The HeroSection manages its own top clearance.
-
-      NO overflow-hidden here, the snap container inside <Outlet /> manages
-      its own scroll behaviour.
-
-      <Outlet /> renders the matched child route, in practice, this is always
-      LandingPage, which contains the snap scroll container and all snap sections.
+      <Outlet /> renders the matched child route.
     */}
     <main id="main-content" className="w-full min-h-screen flex flex-col">
       <Outlet />
@@ -113,7 +88,7 @@ const LandingLayout = () => (
       ── Contact Modal Host ─────────────────────────────────────────────────────
       Renders the "Contact Us" modal overlay. It's placed at layout level (outside
       <main>) so it can visually escape any overflow or stacking context constraints
-      that the snap sections might create.
+      that the page sections might create.
 
       The modal is likely hidden by default and shown via a shared state trigger
       (e.g., a Zustand store, React Context, or a URL param) when the user clicks
