@@ -1,5 +1,6 @@
 import { useState, useCallback, useMemo } from 'react';
 import { verifyLabFlag } from '@/features/student/services/lab.service';
+import { isLabCompleted } from '@/features/student/utils/labProgress';
 
 interface UseLabScenarioOptions<T> {
   labId: string;
@@ -69,8 +70,12 @@ function useLabScenario<T>({
 
   const startScenario = useCallback((scenario: T) => {
     setActiveScenario(scenario);
-    setCompletedSteps(new Set());
-  }, []);
+    if (isLabCompleted(getScenarioId(scenario))) {
+      setCompletedSteps(new Set(getStepIds(scenario)));
+    } else {
+      setCompletedSteps(new Set());
+    }
+  }, [getScenarioId, getStepIds]);
 
   const exitScenario = useCallback(() => {
     setActiveScenario(null);

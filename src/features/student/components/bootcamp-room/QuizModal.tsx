@@ -123,7 +123,7 @@ const QuizModal: React.FC<QuizModalProps> = ({ moduleId, roomId, courseId, onClo
                     {t('student.bootcampRoom.quiz.excellent')}
                   </p>
                   <button
-                    onClick={() => { window.scrollTo({ top: 0, behavior: 'smooth' }); onPassed(); }}
+                    onClick={onPassed}
                     className="btn-primary w-full py-3 text-sm font-black uppercase"
                   >
                     {t('button.continue')}
@@ -184,7 +184,7 @@ const QuizModal: React.FC<QuizModalProps> = ({ moduleId, roomId, courseId, onClo
                     >
                       {t('button.tryAgain')}
                     </button>
-                    <button onClick={() => { window.scrollTo({ top: 0, behavior: 'smooth' }); onClose(); }} className="btn-secondary text-sm py-3">
+                    <button onClick={onClose} className="btn-secondary text-sm py-3">
                       {t('button.close')}
                     </button>
                   </div>

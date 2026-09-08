@@ -54,12 +54,13 @@ const StepCard: React.FC<Props> = ({
 
   return (
   <div
+    id={`step-${stepNum}`}
     onClick={onClick}
     onKeyDown={handleKeyDown}
     tabIndex={isActive ? 0 : -1}
     role="button"
     aria-label={step.title}
-    className="group w-full cursor-pointer"
+    className="group w-full cursor-pointer scroll-mt-20 md:scroll-mt-24"
   >
     <StepRenderer
       stepNumber={stepNum}

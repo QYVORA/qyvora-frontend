@@ -102,7 +102,7 @@ const PrivescLab = () => {
             labId="privesc"
             scenarioId={activeScenario.id}
             onBack={exitScenario}
-            completedCount={completedSteps.size}
+            completedCount={completedSteps.size + 1 + (allDone ? 1 : 0)}
             totalSteps={chapters.length + 2}
           >
             <WalkthroughStep

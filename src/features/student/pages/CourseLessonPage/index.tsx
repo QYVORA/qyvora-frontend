@@ -12,6 +12,7 @@ import StudentHeroSection from '@/shared/components/StudentHeroSection';
 import StepRenderer from '@/shared/components/learning/StepRenderer';
 import LearningNav from '@/shared/components/learning/LearningNav';
 import LearningToolbar from '@/shared/components/learning/LearningToolbar';
+import WalkthroughScrollControls from '@/shared/components/learning/WalkthroughScrollControls';
 import { CourseLessonSkeleton } from '@/features/student/components/StudentSkeletons';
 import api from '@/core/services/api';
 import CelebrationModal from '@/shared/components/CelebrationModal';
@@ -264,6 +265,8 @@ const CourseLessonPage: React.FC = () => {
           },
         ]}
       />
+
+      <WalkthroughScrollControls />
 
       <div className="px-3 md:px-4 lg:px-6 pt-8 pb-20 lg:pb-24 space-y-8">
         <StudentHeroSection

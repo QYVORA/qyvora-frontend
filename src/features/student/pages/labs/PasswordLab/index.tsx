@@ -119,7 +119,7 @@ const PasswordLab = () => {
             labId="passwords"
             scenarioId={activeScenario.id}
             onBack={exitScenario}
-            completedCount={completedSteps.size}
+            completedCount={completedSteps.size + 1 + (allDone ? 1 : 0)}
             totalSteps={activeScenario.steps.length + 2}
           >
             <WalkthroughStep
