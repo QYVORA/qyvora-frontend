@@ -159,7 +159,8 @@ export function getCompletedItemIds(): Set<string> {
       if (!raw) continue;
       const parsed = JSON.parse(raw);
       const completedLessons: string[] = parsed.completedLessons || [];
-      if (completedLessons.length > 0) {
+      const totalLessons = course.lessons?.length || 0;
+      if (totalLessons > 0 && completedLessons.length >= totalLessons) {
         completed.add(`course:${course.id}`);
       }
     } catch {

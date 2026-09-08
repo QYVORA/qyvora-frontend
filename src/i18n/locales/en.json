@@ -1167,6 +1167,7 @@
         "logActivity": "Log today's activity",
         "info": "Complete one room or lab per day to maintain your streak.",
         "label": "Streak",
+        "activeDays": "active days",
         "hint": "Complete a room or lab daily to keep your streak going."
       },
       "roomsDone": "Rooms Done",
@@ -1330,6 +1331,8 @@
       "error": "An error occurred. Please try refreshing.",
       "roomLocked": "This room is locked. Your instructor will unlock it when it's time.",
       "backToBootcamp": "Back to Bootcamp",
+      "bootcampComplete": "Bootcamp complete — all rooms finished.",
+      "roomCompleteNextLocked": "Room complete. The next room unlocks when the phase is ready.",
       "backToCurriculum": "Back to Curriculum",
       "noStepsAvailable": "No steps available yet",
       "checkBackLater": "Check back later for new content",

@@ -126,9 +126,10 @@ const CoursesCarousel: React.FC<CoursesCarouselProps> = ({ courses, className = 
 
   return (
     <div
-      className={`relative w-full ${className}`}
+      className={`relative w-full min-h-dvh flex flex-col ${className}`}
       {...containerProps}
     >
+      <div className="w-full px-3 md:px-4 lg:px-6 pt-24 md:pt-28 lg:pt-32 pb-6 md:pb-8 lg:pb-10 my-auto">
       <div className="overflow-x-clip touch-pan-y select-none cursor-grab active:cursor-grabbing" {...swipeHandlers}>
         {heading}
         <AnimatePresence mode="wait" custom={direction}>
@@ -294,6 +295,7 @@ const CoursesCarousel: React.FC<CoursesCarouselProps> = ({ courses, className = 
             </span>
           </div>
         )}
+      </div>
       </div>
 
       {selectedCourseId && (
