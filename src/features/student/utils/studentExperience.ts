@@ -34,7 +34,26 @@ export function getBootcampProgressMap(overview: any): Map<string, OverviewModul
   const mods = Array.isArray(overview?.modules) ? overview.modules : [];
   mods.forEach((m: OverviewModule) => {
     const key = String(m.bootcampId || m.id || '');
-    if (key) map.set(key, m);
+    if (!key) return;
+    const existing = map.get(key);
+    if (!existing) {
+      map.set(key, { ...m });
+      return;
+    }
+    // The overview returns one entry per module/phase, all sharing the same
+    // bootcampId. Aggregate their room counts so a bootcamp's card reflects
+    // the full program instead of only the last module returned.
+    const roomsCompleted = Number(existing.roomsCompleted ?? 0) + Number(m.roomsCompleted ?? 0);
+    const roomsTotal = Number(existing.roomsTotal ?? 0) + Number(m.roomsTotal ?? 0);
+    map.set(key, {
+      ...existing,
+      roomsCompleted,
+      roomsTotal,
+      progress:
+        roomsTotal > 0
+          ? Math.round((roomsCompleted / roomsTotal) * 100)
+          : Math.max(Number(existing.progress ?? 0), Number(m.progress ?? 0)),
+    });
   });
   if (
     overview?.bootcampStatus &&

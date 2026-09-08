@@ -46,7 +46,7 @@ export const ProgressionPanel = ({ progression, fallbackLabel }: ProgressionPane
           </span>
           <span className="flex items-center gap-2">
             <span className="font-mono text-sm font-black text-accent">
-              {points > 0 ? points.toLocaleString() : progress}%
+              {points > 0 ? points.toLocaleString() : `${progress}%`}
             </span>
             <span className="text-text-muted">
               {expanded ? <ChevronUp size={16} /> : <ChevronDown size={16} />}

@@ -48,24 +48,17 @@ const DayBar = ({
   );
 };
 
-function formatMinutes(total: number): string {
-  if (total < 60) return `${total}m`;
-  const h = Math.floor(total / 60);
-  const m = total % 60;
-  return m > 0 ? `${h}h ${m}m` : `${h}h`;
-}
-
 const WeekActivity = ({ visitDates = [], visitDurations = {} }: WeekActivityProps) => {
   const { t } = useTranslation();
 
-  const { days, totalMinutes } = useMemo(() => {
+  const { days, activeDays } = useMemo(() => {
     const today = new Date();
     const dayOfWeek = today.getDay();
     const monday = new Date(today);
     monday.setDate(today.getDate() - ((dayOfWeek + 6) % 7));
 
     const labels = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
-    let total = 0;
+    let active = 0;
 
     const result = labels.map((label, i) => {
       const date = new Date(monday);
@@ -76,11 +69,11 @@ const WeekActivity = ({ visitDates = [], visitDurations = {} }: WeekActivityProp
         date.getMonth() === today.getMonth() &&
         date.getDate() === today.getDate();
       const minutes = visitDurations[dateStr] ?? (visitDates.includes(dateStr) ? 1 : 0);
-      total += minutes;
+      if (minutes > 0) active += 1;
       return { label, minutes, isToday };
     });
 
-    return { days: result, totalMinutes: total };
+    return { days: result, activeDays: active };
   }, [visitDates, visitDurations]);
 
   const maxMinutes = useMemo(
@@ -96,9 +89,9 @@ const WeekActivity = ({ visitDates = [], visitDurations = {} }: WeekActivityProp
         className="flex items-stretch gap-1 w-full pt-2 flex-1 min-h-[140px]"
         role="img"
         aria-label={t('student.dashboard.streak.ariaWeek', {
-          total: formatMinutes(totalMinutes),
-          active: days.filter((d) => d.minutes > 0).length,
-          defaultValue: `Activity: ${formatMinutes(totalMinutes)} across ${days.filter((d) => d.minutes > 0).length} of 7 days`,
+          total: activeDays,
+          active: activeDays,
+          defaultValue: `Activity: ${activeDays} of 7 days this week`,
         })}
       >
         {days.map((d) => (
@@ -113,7 +106,9 @@ const WeekActivity = ({ visitDates = [], visitDurations = {} }: WeekActivityProp
       </div>
       <div className="mt-3 text-center shrink-0">
         <span className="text-[10px] font-mono text-text-muted">
-          {formatMinutes(totalMinutes)} {t('student.dashboard.streak.thisWeek', 'this week')}
+          {activeDays}{' '}
+          {t('student.dashboard.streak.activeDays', 'active days')}{' '}
+          {t('student.dashboard.streak.thisWeek', 'this week')}
         </span>
       </div>
     </div>

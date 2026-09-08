@@ -3,7 +3,7 @@ import { useParams, Link, useNavigate, useSearchParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next';
 import {
   ArrowLeft, Lock, BookOpen,
-  List, Minimize2, Maximize2, Loader2,
+  List, Minimize2, Maximize2, Loader2, ChevronRight,
 } from 'lucide-react';
 import { IconArrowRight, IconCheck } from '@/shared/components/icons';
 import { AnimatePresence } from 'motion/react';
@@ -67,7 +67,7 @@ const BootcampRoomPage: React.FC = () => {
   const mountedRef = useRef(true);
   const redirectCountRef = useRef(0);
   const MAX_REDIRECTS = 3;
-  const { data: overview } = useStudentOverview();
+  const { data: overview, refetch: refetchOverview } = useStudentOverview();
 
   useEffect(() => {
     mountedRef.current = true;
@@ -81,7 +81,18 @@ const BootcampRoomPage: React.FC = () => {
     const step = searchParams.get('step');
     return step ? Math.max(0, parseInt(step, 10) || 0) : 0;
   });
-  const [viewedSteps, setViewedSteps] = useState<Set<number>>(new Set([0]));
+  const viewedStepsKey = `hpb_viewedSteps_${phaseId || 'hpb'}_${roomId || ''}`;
+  const [viewedSteps, setViewedSteps] = useState<Set<number>>(() => {
+    try {
+      const raw = localStorage.getItem(viewedStepsKey);
+      const parsed = raw ? JSON.parse(raw) : null;
+      if (Array.isArray(parsed)) return new Set<number>(parsed);
+    } catch { /* ignore */ }
+    return new Set([0]);
+  });
+  const persistViewedSteps = (next: Set<number>) => {
+    try { localStorage.setItem(viewedStepsKey, JSON.stringify([...next])); } catch { /* ignore */ }
+  };
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [quizOpen, setQuizOpen] = useState(false);
   const [quizGateOpen, setQuizGateOpen] = useState(false);
@@ -120,7 +131,8 @@ const BootcampRoomPage: React.FC = () => {
       const response = await api.post(`/student/modules/${phaseNum}/rooms/${backendRoomId}/complete`, {});
       if (response.data?.reward?.points) setCompletionCpEarned(response.data.reward.points);
       setShowCompleteOverlay(true);
-      loadCourseData(); 
+      loadCourseData();
+      refetchOverview(); 
     } catch (err: any) {
       // Server enforces the quiz gate (F-04): if completion was rejected
       // because no graded quiz pass exists, route the user back to the quiz.
@@ -177,7 +189,14 @@ const BootcampRoomPage: React.FC = () => {
   useEffect(() => {
     const step = searchParams.get('step');
     setCurrentStepIdx(step ? Math.max(0, parseInt(step, 10) || 0) : 0);
-    setViewedSteps(new Set([0]));
+    setViewedSteps(() => {
+      try {
+        const raw = localStorage.getItem(viewedStepsKey);
+        const parsed = raw ? JSON.parse(raw) : null;
+        if (Array.isArray(parsed)) return new Set<number>(parsed);
+      } catch { /* ignore */ }
+      return new Set([0]);
+    });
     setQuizPassed(false);
     resetSession();
   }, [phaseId, roomId]);
@@ -252,7 +271,7 @@ const BootcampRoomPage: React.FC = () => {
       prev.set('step', String(idx));
       return prev;
     }, { replace: true });
-    setViewedSteps((prev) => { const next = new Set(prev); next.add(idx); return next; });
+    setViewedSteps((prev) => { const next = new Set(prev); next.add(idx); persistViewedSteps(next); return next; });
     const behavior = prefersReducedMotion ? 'auto' : 'smooth';
     const attemptScroll = (tries = 0) => {
       if (tries > 20) return;
@@ -269,7 +288,10 @@ const BootcampRoomPage: React.FC = () => {
   const handleComplete = async () => {
     if (completing) return; setCompleting(true);
     try {
-      const allStepIdxs = room?.steps.map((_, i) => i) || []; setViewedSteps(new Set(allStepIdxs));
+      const allStepIdxs = room?.steps.map((_, i) => i) || [];
+      const allViewed = new Set(allStepIdxs);
+      persistViewedSteps(allViewed);
+      setViewedSteps(allViewed);
       if (!quizPassed && quizModuleId) { setQuizGateOpen(true); return; }
       if (phaseId && roomId) await markRoomComplete(phaseId, roomId); else setShowCompleteOverlay(true);
     } finally { setCompleting(false); }
@@ -465,6 +487,32 @@ const BootcampRoomPage: React.FC = () => {
                       <List className="h-3.5 w-3.5" />
                     </button>
                   </>
+                }
+                finishContent={
+                  <div className="flex flex-col sm:flex-row flex-wrap items-stretch sm:items-center gap-3 w-full">
+                    {nextRoom && !lockedRooms.has(`${nextRoom.phaseId}:${nextRoom.roomId}`) ? (
+                      <button
+                        type="button"
+                        onClick={() => handleNavigate(nextRoom.phaseId, nextRoom.roomId)}
+                        className="btn-primary inline-flex min-h-[44px] flex-1 md:flex-none items-center justify-center gap-1.5 px-5 py-2.5"
+                      >
+                        {t('student.bootcampRoom.desktopToolbar.continueToNext')}
+                        <ChevronRight className="h-3.5 w-3.5 shrink-0" />
+                      </button>
+                    ) : (
+                      <span className="flex-1 text-center sm:text-left font-mono text-xs font-semibold text-text-muted">
+                        {!nextRoom
+                          ? t('student.bootcampRoom.bootcampComplete', 'Bootcamp complete — all rooms finished.')
+                          : t('student.bootcampRoom.roomCompleteNextLocked', 'Room complete. The next room unlocks when the phase is ready.')}
+                      </span>
+                    )}
+                    <Link
+                      to={`/dashboard/bootcamps/${bootcampId}`}
+                      className="btn-secondary inline-flex min-h-[44px] flex-1 md:flex-none items-center justify-center gap-1.5 px-5 py-2.5"
+                    >
+                      {t('student.bootcampRoom.backToBootcamp')}
+                    </Link>
+                  </div>
                 }
               />
             </>
