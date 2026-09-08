@@ -105,7 +105,7 @@ const KillChainLab = () => {
             labId="killchain"
             scenarioId={activeScenario.id}
             onBack={exitScenario}
-            completedCount={completedPhases.size}
+            completedCount={completedPhases.size + 1 + (allPhasesCompleted ? 1 : 0)}
             totalSteps={activeScenario.phases.length + 2}
           >
             <WalkthroughStep

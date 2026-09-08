@@ -24,6 +24,8 @@ import RoomHeader from '@/features/student/components/bootcamp-room/RoomHeader';
 import RoomProgress from '@/features/student/components/bootcamp-room/RoomProgress';
 import LearningNav from '@/shared/components/learning/LearningNav';
 import LearningToolbar from '@/shared/components/learning/LearningToolbar';
+import WalkthroughScrollControls from '@/shared/components/learning/WalkthroughScrollControls';
+import { useReducedMotion } from '@/shared/hooks/useReducedMotion';
 import { useRoomSession } from '@/features/student/hooks/useRoomSession';
 import useStudentOverview from '@/features/student/hooks/useStudentOverview';
 import type { ApiCourse } from '@/features/student/components/bootcamp-room/types';
@@ -91,6 +93,7 @@ const BootcampRoomPage: React.FC = () => {
   const [jumpMenuOpen, setJumpMenuOpen] = useState(false);
 
   const { timeSpent, fullscreen, toggleFullscreen, resetSession } = useRoomSession();
+  const prefersReducedMotion = useReducedMotion();
 
   const bootcampStatus = (() => {
     const enrolledViaStatus = overview?.bootcampStatus && overview.bootcampStatus !== 'not_enrolled' && String(overview?.bootcampId || '') === String(bootcampId || '');
@@ -249,8 +252,13 @@ const BootcampRoomPage: React.FC = () => {
       return prev;
     }, { replace: true });
     setViewedSteps((prev) => { const next = new Set(prev); next.add(idx); return next; });
+    const behavior = prefersReducedMotion ? 'auto' : 'smooth';
     requestAnimationFrame(() => {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      if (idx === 0) {
+        window.scrollTo({ top: 0, behavior });
+      } else {
+        document.getElementById(`step-${idx + 1}`)?.scrollIntoView({ behavior, block: 'start' });
+      }
     });
   };
   const handleComplete = async () => {
@@ -346,6 +354,7 @@ const BootcampRoomPage: React.FC = () => {
       />
 
       <RoomSidebar phases={BOOTCAMP_CONFIG.phases} activePhaseId={phaseId || ''} activeRoomId={roomId || ''} completedRooms={completedRooms} lockedRooms={lockedRooms} bootcampId={bootcampId || ''} onNavigate={handleNavigate} mobileOpen={sidebarOpen} onMobileClose={() => setSidebarOpen(false)} />
+      <WalkthroughScrollControls />
       <main className="w-full px-3 md:px-4 lg:px-6 pt-8">
           {!phase || !room ? (
             <div className="px-4 py-12">

@@ -88,7 +88,7 @@ const SqlInjectionLab = () => {
             labId="sql-injection"
             scenarioId={activeTarget.id}
             onBack={exitScenario}
-            completedCount={completedSteps.size}
+            completedCount={completedSteps.size + 1 + (allDone ? 1 : 0)}
             totalSteps={activeTarget.steps.length + 2}
           >
             <WalkthroughStep

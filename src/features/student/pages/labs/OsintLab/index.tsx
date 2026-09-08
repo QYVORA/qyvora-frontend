@@ -76,7 +76,7 @@ const OsintLab = () => {
             labId="osint"
             scenarioId={activeChallenge.id}
             onBack={exitScenario}
-            completedCount={completedSteps.size}
+            completedCount={completedSteps.size + 1 + (allDone ? 1 : 0)}
             totalSteps={activeChallenge.steps.length + 2}
           >
             <WalkthroughStep

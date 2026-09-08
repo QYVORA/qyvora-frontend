@@ -2,6 +2,7 @@ import { Unplug, Loader2 } from 'lucide-react';
 import { useEffect } from 'react';
 import { IconClock, IconTerminal } from '@/shared/components/icons';
 import { cn } from '@/shared/utils/cn';
+import WalkthroughScrollControls from '@/shared/components/learning/WalkthroughScrollControls';
 import { useLabConnection } from '@/features/student/hooks/useLabConnection';
 import { SimulationPanel, useSimulation, getNetworkProfileForLab, type SimulationType } from '@/features/student/components/simulations';
 
@@ -76,6 +77,9 @@ export function WalkthroughLayout({
 
   return (
     <div className="w-full">
+      {/* Walkthrough scroll controls (fixed to viewport) */}
+      <WalkthroughScrollControls />
+
       {/* Desktop Toolbar (right side) */}
       {toolbar && (
         <div className="hidden lg:block">
@@ -83,7 +87,7 @@ export function WalkthroughLayout({
         </div>
       )}
 
-      <div className="w-full py-8 md:py-12">
+      <div className="w-full px-3 md:px-4 lg:px-6 py-8 md:py-12">
         {/* Room Header */}
         <div className="relative overflow-hidden mb-12 md:mb-16 rounded-2xl border border-border/50 bg-bg-card p-6 md:p-8">
           <div className="flex items-start gap-5">

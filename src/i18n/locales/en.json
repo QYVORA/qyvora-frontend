@@ -375,6 +375,8 @@
     "hidePassword": "Hide password",
     "adminProfile": "Admin profile",
     "scrollToTop": "Scroll to top",
+    "scrollUp": "Scroll up in walkthrough",
+    "scrollDown": "Scroll down in walkthrough",
     "openTools": "Open tools",
     "closeTools": "Close tools",
     "closeSidebar": "Close sidebar",
