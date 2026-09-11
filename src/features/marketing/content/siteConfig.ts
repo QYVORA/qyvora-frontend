@@ -142,6 +142,7 @@ export const SITE_CONFIG = {
           { key: 'jabari', label: 'jabari', path: '/jabari', desc: 'Android security assessment' },
           { key: 'aksum', label: 'aksum', path: '/aksum', desc: 'Binary security assessment & reverse engineering' },
           { key: 'sekhmet', label: 'sekhmet', path: '/sekhmet', desc: 'Baseline-aware fuzzing & vulnerability discovery framework' },
+          { key: 'mansa', label: 'mansa', path: '/mansa', desc: 'Wireless security assessment framework' },
           { key: 'services', label: 'Services', path: '/services', desc: 'Enterprise security services' },
         ],
       },
@@ -159,6 +160,7 @@ export const SITE_CONFIG = {
       { key: 'jabari', label: 'jabari', path: '/jabari', desc: 'Android security assessment' },
       { key: 'aksum', label: 'aksum', path: '/aksum', desc: 'Binary security assessment & reverse engineering' },
       { key: 'sekhmet', label: 'sekhmet', path: '/sekhmet', desc: 'Baseline-aware fuzzing & vulnerability discovery framework' },
+      { key: 'mansa', label: 'mansa', path: '/mansa', desc: 'Wireless security assessment framework' },
       { key: 'leaderboard', label: 'Leaderboard', path: '/leaderboard', desc: 'Top operators ranking' },
     ],
     company: [

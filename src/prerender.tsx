@@ -55,6 +55,7 @@ const routeContent: Record<string, RouteContent> = {
       { label: 'jabari', href: '/jabari' },
       { label: 'aksum', href: '/aksum' },
       { label: 'sekhmet', href: '/sekhmet' },
+      { label: 'mansa', href: '/mansa' },
       { label: 'Zero Day Market', href: '/zero-day-market' },
       { label: 'QuiteRoot', href: '/quiteroot' },
       { label: 'Blog', href: '/blogs' },
@@ -696,6 +697,50 @@ const routeContent: Record<string, RouteContent> = {
       },
     ],
     links: [{ label: 'jabari', href: '/jabari' }],
+  },
+  '/mansa': {
+    title: 'mansa | QYVORA',
+    description: 'Authorized wireless security assessment framework in Go: WLAN discovery, enumeration, MITM-range analysis, deterministic rule engine and transparent risk scoring.',
+    h1: 'mansa',
+    lead: 'Authorized wireless security assessment from the terminal. Discover interfaces, enumerate access points, observe stations, and run the deterministic rule engine with transparent risk scoring — offline with --sim or on declared live scopes.',
+    sections: [
+      {
+        heading: 'The eight stages',
+        bullets: [
+          'DISCOVER, list wireless interfaces and their capabilities (bands, modes, power)',
+          'ENUMERATE, scan for access points and record BSSID, SSID, channel, band, RSSI, protocols and cipher suites',
+          'OBSERVE, watch stations and traffic, client behavior, association patterns and signal anomalies',
+          'ANALYZE, run the deterministic rule engine (WLAN-001+) over the session',
+          'VALIDATE, cross-check each finding against raw evidence and hold confidence until confirmed',
+          'FINDINGS, deterministic IDs (WLAN-<category>-<hash>) with supporting evidence records',
+          'RISK, severity_weight × confidence × exposure_factor × 35, capped at 100',
+          'REPORT, terminal, markdown or JSON with a JSONL event stream (schema_version, execution_id, framework)',
+        ],
+      },
+      {
+        heading: 'Authorization guarantee',
+        body: 'mansa assesses only the wireless networks and interfaces you explicitly declare and have authorization to test. Live scopes require an explicit authorization acknowledgement, while --sim runs the full deterministic pipeline offline against the built-in simulated dataset.',
+      },
+      {
+        heading: 'Install',
+        body: 'curl -fsSL https://raw.githubusercontent.com/QYVORA/qyvora-mansa/main/install.sh | bash',
+      },
+      {
+        heading: 'Usage',
+        bullets: [
+          'mansa assess --sim',
+          'mansa discover --sim',
+          'mansa scan --sim',
+          'mansa enumerate --sim',
+          'mansa observe --sim',
+          'mansa analyze',
+          'mansa findings',
+          'mansa evidence',
+          'mansa report -f json --out report.json',
+        ],
+      },
+    ],
+    links: [{ label: 'sekhmet', href: '/sekhmet' }],
   },
   '/shaka': {
     title: 'shaka | QYVORA',
