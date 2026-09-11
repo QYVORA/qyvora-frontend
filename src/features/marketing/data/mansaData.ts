@@ -9,13 +9,13 @@ export interface MansaStage {
 }
 
 export const STAGES: MansaStage[] = [
-  { id: '01', name: 'DISCOVER', icon: Antenna, desc: 'List wireless interfaces and their capabilities (bands, modes, power). Live drivers via iw/devicelist, or the deterministic simulated dataset in --sim.' },
+  { id: '01', name: 'DISCOVER', icon: Antenna, desc: 'List wireless interfaces and their capabilities (name, state, mode, supported features). Live drivers via iw dev, or the deterministic simulated dataset in --sim.' },
   { id: '02', name: 'ENUMERATE', icon: ScanSearch, desc: 'Scan for access points and record the radio-level profile: BSSID, SSID, channel, band, RSSI, supported protocols and cipher suites.' },
-  { id: '03', name: 'OBSERVE', icon: Activity, desc: 'Watch stations and traffic on the observed networks — client behavior, association patterns, signal anomalies, and cleartext/legacy-cipher exposure.' },
+  { id: '03', name: 'OBSERVE', icon: Activity, desc: 'Track station behavior, association patterns and signal readings from the session — fully exercised in --sim, while live capture awaits monitor-mode support.' },
   { id: '04', name: 'ANALYZE', icon: BrainCircuit, desc: 'Run the deterministic rule engine (WLAN-001+) over the session: every rule is a pure function that returns identical findings for identical input.' },
   { id: '05', name: 'VALIDATE', icon: ShieldCheck, desc: 'Cross-check each finding against raw evidence; confidence is upgraded or held until the observation is confirmed on the recorded data.' },
   { id: '06', name: 'FINDINGS', icon: ListChecks, desc: 'Deterministic finding IDs derived from the rule (WLAN-<category>-<hash>), each carrying the triggering evidence record for independent verification.' },
-  { id: '07', name: 'RISK', icon: Gauge, desc: 'Transparent scoring: severity_weight × confidence × exposure_factor × 35, capped at 100, mapped to critical / high / medium / low / none.' },
+  { id: '07', name: 'RISK', icon: Gauge, desc: 'Transparent scoring: severity_weight × confidence × (exposure ÷ 5) × 35, capped at 100, mapped to critical / high / medium / low / none.' },
   { id: '08', name: 'REPORT', icon: FileText, desc: 'Terminal, markdown or JSON reports plus a machine-readable JSONL event stream (schema_version, execution_id, framework) for agents and CI.' },
 ];
 
@@ -33,15 +33,25 @@ export const RULES: MansaRule[] = [
   { id: 'WLAN-003', name: 'WPA1 with TKIP Cipher', category: 'weak-crypto', severity: 'high', checks: 'exact protocol WPA / WPA1 + cipher TKIP' },
   { id: 'WLAN-004', name: 'WPA2 with TKIP Cipher', category: 'weak-crypto', severity: 'medium', checks: 'exact protocol WPA2 + cipher TKIP' },
   { id: 'WLAN-005', name: 'WPS Enabled', category: 'config-weakness', severity: 'medium', checks: 'security.wps == true' },
-  { id: 'WLAN-006', name: 'No Security Protocols', category: 'open-network', severity: 'high', checks: 'enabled == false and protocol list empty' },
+  { id: 'WLAN-006', name: 'No Security Protocols Advertised', category: 'open-network', severity: 'high', checks: 'enabled == false and protocol list empty' },
+  { id: 'WLAN-007', name: 'WPA3 Transition Mode', category: 'weak-crypto', severity: 'medium', checks: 'WPA3 transition mode alongside legacy WPA2' },
+  { id: 'WLAN-008', name: 'Protected Management Frames Disabled', category: 'config-weakness', severity: 'medium', checks: 'PMF not required / supported' },
+  { id: 'WLAN-009', name: 'Hidden SSID', category: 'config-weakness', severity: 'low', checks: 'SSID broadcast disabled' },
   { id: 'WLAN-010', name: 'Crowded Channel', category: 'rf-analysis', severity: 'low', checks: '≥3 APs share the same channel' },
   { id: 'WLAN-011', name: 'Overlapping 2.4 GHz Channels', category: 'rf-analysis', severity: 'low', checks: 'two 2.4 GHz APs within 5 channels' },
-  { id: 'WLAN-012', name: 'Dense 6 GHz Deployment', category: 'rf-analysis', severity: 'info', checks: '≥5 APs detected in the 6 GHz band' },
-  { id: 'WLAN-020', name: 'Extremely Strong Signal', category: 'rf-analysis', severity: 'info', checks: 'RSSI > −20 dBm' },
+  { id: 'WLAN-012', name: 'High Channel Utilization in 6 GHz', category: 'rf-analysis', severity: 'info', checks: '≥5 APs detected in the 6 GHz band' },
+  { id: 'WLAN-013', name: 'Duplicate SSID / Evil Twin', category: 'rogue-ap', severity: 'high', checks: 'two APs share a SSID; an open twin raises severity' },
+  { id: 'WLAN-014', name: 'Station Associated to Open Network', category: 'client-behavior', severity: 'medium', checks: 'station connected to an open-network AP' },
+  { id: 'WLAN-015', name: 'Excessive SSID Probing', category: 'client-behavior', severity: 'info', checks: 'station probes many hidden/unknown SSIDs' },
+  { id: 'WLAN-016', name: 'Deauthentication Flood', category: 'rogue-ap', severity: 'medium', checks: 'burst of deauthentication frames observed' },
+  { id: 'WLAN-017', name: 'Cleartext Traffic on Open Network', category: 'traffic-exposure', severity: 'high', checks: 'plaintext traffic observed on an open network' },
+  { id: 'WLAN-018', name: 'Legacy Cipher Traffic', category: 'traffic-exposure', severity: 'low', checks: 'traffic using WEP / TKIP / legacy cipher' },
+  { id: 'WLAN-020', name: 'Extremely Strong Signal Nearby', category: 'rf-analysis', severity: 'info', checks: 'RSSI > −20 dBm' },
+  { id: 'WLAN-021', name: 'Dense 2.4 GHz Deployment', category: 'rf-analysis', severity: 'low', checks: 'many APs share the 2.4 GHz band' },
   { id: 'WLAN-030', name: 'Legacy Protocol Support', category: 'config-weakness', severity: 'low', checks: 'capabilities contain 802.11b / 802.11g' },
 ];
 
-export const RULE_CATEGORIES: string[] = ['open-network', 'weak-crypto', 'config-weakness', 'rf-analysis'];
+export const RULE_CATEGORIES: string[] = ['open-network', 'weak-crypto', 'config-weakness', 'rf-analysis', 'rogue-ap', 'client-behavior', 'traffic-exposure'];
 
 export const CONFIDENCE_STATES: string[] = ['confirmed', 'observed', 'probable', 'possible', 'unknown', 'not_observed'];
 
@@ -111,7 +121,7 @@ export const SOURCE_EXAMPLES: ToolSourceExample[] = [
     id: 'risk',
     filename: 'internal/risk/risk.go',
     label: 'Transparent risk scoring',
-    description: 'Aggregate risk is the average per-finding score of severity_weight × confidence × exposure_factor × 35 (capped at 100), mapped to a level via LevelFromScore.',
+    description: 'Aggregate risk is the average per-finding ScoreFor value — severity_weight × confidence × (exposure ÷ 5) × 35 with exposure defaulting to 3, capped at 100 — mapped to a level via LevelFromScore.',
     code: 'total := 0\nfor _, f := range findings {\n\ttotal += models.ScoreFor(f)\n}\navg := total / len(findings)\nreturn avg, string(models.LevelFromScore(avg))',
   },
   {

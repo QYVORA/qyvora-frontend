@@ -1,4 +1,4 @@
-import { Radar, ListChecks, ScanSearch, TestTube2, FileSearch, Gauge, FileText, ShieldAlert, type LucideIcon } from 'lucide-react';
+import { Radar, ListChecks, ScanSearch, TestTube2, Gauge, FileText, ShieldAlert, type LucideIcon } from 'lucide-react';
 import type { ToolSourceExample } from '../components/tools/ToolSourceSection';
 
 export interface JabariStage {
@@ -11,11 +11,10 @@ export interface JabariStage {
 export const STAGES: JabariStage[] = [
   { id: '01', name: 'DISCOVERY', icon: Radar, desc: 'ADB device enumeration: manufacturer, model, build, patch level, kernel, root indicators' },
   { id: '02', name: 'ENUMERATION', icon: ListChecks, desc: 'Package inventory, system properties and posture facts gathered from the device' },
-  { id: '03', name: 'ANALYSIS', icon: ScanSearch, desc: 'Rule engine evaluates posture. AND-001..007 detect debuggable, rooted, outdated or exposed devices' },
+  { id: '03', name: 'ANALYSIS', icon: ScanSearch, desc: 'Rule engine evaluates posture. AND-001..012 detect debuggable, rooted, outdated or exposed devices and applications' },
   { id: '04', name: 'VALIDATION', icon: TestTube2, desc: 'Non-destructive confirmation of findings with honest low-confidence attribution' },
-  { id: '05', name: 'EVIDENCE', icon: FileSearch, desc: 'SHA-256-hashed evidence store ties every finding to a reproducible artifact' },
-  { id: '06', name: 'RISK', icon: Gauge, desc: 'Severity × confidence scoring ranks what to fix first' },
-  { id: '07', name: 'REPORTING', icon: FileText, desc: 'Offline re-renderable sessions: table, JSON, YAML, text, Markdown or HTML' },
+  { id: '05', name: 'RISK', icon: Gauge, desc: 'Severity × confidence scoring ranks what to fix first' },
+  { id: '06', name: 'REPORTING', icon: FileText, desc: 'Offline re-renderable sessions: table, JSON, YAML, text, Markdown or HTML' },
 ];
 
 export interface JabariRule {
@@ -26,12 +25,16 @@ export interface JabariRule {
 
 export const RULES: JabariRule[] = [
   { id: 'AND-001', title: 'Debuggable production device', desc: 'ro.debuggable=1 on a non-userdebug, non-eng build' },
-  { id: 'AND-002', title: 'Outdated security patch', desc: 'security patch level older than a reference threshold' },
-  { id: 'AND-003', title: 'Insecure USB connection', desc: 'ro.adb.secure=0' },
-  { id: 'AND-004', title: 'Rooted / userdebug build', desc: 'ro.debuggable plus root indicators' },
-  { id: 'AND-005', title: 'User-visible build type', desc: 'ro.build.type = userdebug / eng on a release device' },
-  { id: 'AND-006', title: 'Emulator detected', desc: 'ro.kernel.qemu=1 (informational)' },
-  { id: 'AND-007', title: 'ADB over TCP enabled', desc: 'ADB network mode active (informational)' },
+  { id: 'AND-002', title: 'Outdated security patch', desc: 'security patch level older than a 6-month reference threshold' },
+  { id: 'AND-003', title: 'ADB unauthenticated access', desc: 'ro.adb.secure=0 exposes the device to unauthenticated ADB' },
+  { id: 'AND-004', title: 'Rooted device', desc: 'su binary present; root indicators detected on the device' },
+  { id: 'AND-005', title: 'Application backup enabled', desc: 'android:allowBackup=true lets application data leave the device' },
+  { id: 'AND-006', title: 'Cleartext traffic allowed', desc: 'android:usesCleartextTraffic=true permits plaintext network traffic' },
+  { id: 'AND-007', title: 'Debuggable application', desc: 'android:debuggable=true on a released application' },
+  { id: 'AND-008', title: 'Outdated Android version', desc: 'API level below 30 / Android below 11 (end-of-life) on the device' },
+  { id: 'AND-009', title: 'Test-keys build', desc: 'ro.build.tags = test-keys, indicating an unsigned engineering build' },
+  { id: 'AND-010', title: 'Excessive dangerous permissions', desc: 'four or more dangerous permissions requested by an application' },
+  { id: 'AND-012', title: 'Debug-signed APK', desc: 'application signed with the debug keystore, not a release key' },
 ];
 
 export const PROFILES: string[] = ['quick', 'standard', 'deep', 'application', 'device', 'network', 'compliance', 'research'];
@@ -39,7 +42,7 @@ export const PROFILES: string[] = ['quick', 'standard', 'deep', 'application', '
 export const GITHUB_URL = 'https://github.com/QYVORA/qyvora-jabari';
 
 export const BUILD_FROM_SOURCE = {
-  requirements: 'Go 1.21+ and Android platform-tools (adb) on PATH.',
+  requirements: 'Go 1.26+ and Android platform-tools (adb) on PATH.',
   steps: [
     { cmd: 'git clone https://github.com/QYVORA/qyvora-jabari' },
     { cmd: 'cd qyvora-jabari' },
@@ -52,7 +55,7 @@ export const QUICK_START = [
   'jabari assess usb',
   'jabari assess usb <serial>',
   'jabari assess ip 192.168.1.50',
-  'jabari assess ip 192.168.1.50 -p deep -y',
+  'jabari assess ip 192.168.1.50 --profile deep -y',
   'jabari report --list',
   'jabari report sess-abc123 -f html',
 ];
@@ -70,7 +73,7 @@ export const SOURCE_EXAMPLES: ToolSourceExample[] = [
     id: 'entry',
     filename: 'cmd/jabari/main.go',
     label: 'CLI entry point',
-    description: 'The binary hands control to the CLI layer and exits with its status code. The same binary is also published under the androidsec alias.',
+    description: 'The binary hands control to the CLI layer and exits with its status code. make build also produces the androidsec alias symlink.',
     code: 'package main\n\nimport (\n\t"os"\n\n\t"github.com/QYVORA/qyvora-jabari/internal/cli"\n)\n\nfunc main() {\n\tos.Exit(cli.Execute())\n}',
   },
   {

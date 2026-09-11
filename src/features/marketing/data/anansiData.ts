@@ -1,4 +1,4 @@
-import { Globe, FileCode, Cpu, Users, GitBranch, type LucideIcon } from 'lucide-react';
+import { Globe, FileCode, Cpu, Users, GitBranch, Crosshair, type LucideIcon } from 'lucide-react';
 import { IconSearch, IconLock, IconShield, IconWarning } from '@/shared/components/icons';
 import type { ToolSourceExample } from '../components/tools/ToolSourceSection';
 
@@ -19,6 +19,7 @@ export const PHASES: AnansiPhase[] = [
   { id: '07', name: 'TAKEOVER', icon: IconWarning, desc: 'Dangling CNAMEs pointing to unclaimed cloud services' },
   { id: '08', name: 'OSINT', icon: Users, desc: 'Emails, phone numbers, employees, WHOIS registrant data' },
   { id: '09', name: 'CHAIN', icon: GitBranch, desc: 'Assembles findings into multi-step exploit paths (low → high → critical) with per-step exploitation techniques' },
+  { id: '10', name: 'EXPLOIT', icon: Crosshair, desc: 'Controlled PoC validation and exploitation of findings' },
 ];
 
 export interface AnansiRelease {
@@ -41,7 +42,7 @@ export const RELEASES: AnansiRelease[] = [
 export const ONE_LINER = 'curl -fsSL https://raw.githubusercontent.com/QYVORA/qyvora-anansi/main/install.sh | bash';
 
 export const BUILD_FROM_SOURCE = {
-  requirements: 'Go 1.22+ and an active internet connection.',
+  requirements: 'Go 1.26+ and an active internet connection.',
   steps: [
     { cmd: 'git clone https://github.com/QYVORA/qyvora-anansi' },
     { cmd: 'cd qyvora-anansi' },
@@ -54,7 +55,7 @@ export const USAGE_EXAMPLES = [
   'anansi target.com --deep',
   'anansi target.com -v',
   'anansi target.com --modules discovery,tls,takeover',
-  'anansi target.com --out json > results.json',
+  'anansi target.com -o json > results.json',
 ];
 
 export const SOURCE_EXAMPLES: ToolSourceExample[] = [

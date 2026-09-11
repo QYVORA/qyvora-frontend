@@ -28,13 +28,13 @@ export interface AksumCheck {
 }
 
 export const CHECKS: AksumCheck[] = [
-  { id: 'AKS-HARD', title: 'Hardening posture', desc: 'NX/PIE/RELRO/canary read directly from program headers and dynamic entries; disabled properties are findings' },
-  { id: 'AKS-WX', title: 'Writable + executable segments', desc: 'W^X violations detected from segment permission flags' },
-  { id: 'AKS-IMP', title: 'Dangerous imports', desc: 'gets, strcpy, sprintf, system, popen and friends; reported as CANDIDATE, never as verdicts' },
-  { id: 'AKS-DCS', title: 'Dangerous call sites', desc: 'system/popen/exec-family calls whose string arguments resolve statically are escalated to VALIDATED with callsite evidence' },
-  { id: 'AKS-CRY', title: 'Weak crypto signals', desc: 'MD5/SHA1/DES/RC4/ECB markers in strings; escalated only when dataflow resolves corroborating usage' },
-  { id: 'AKS-SEC', title: 'Sensitive strings', desc: 'Password/key-shaped naming patterns flagged for manual review' },
-  { id: 'AKS-SRF', title: 'Execution surface', desc: 'Process-spawning APIs summarized as attack-surface context' },
+  { id: 'no-nx', title: 'Hardening posture', desc: 'NX/PIE/RELRO/canary read directly from program headers and dynamic entries; violated properties surface as no-nx, no-pie, no-relro, partial-relro and no-canary findings' },
+  { id: 'wx-segment', title: 'Writable + executable segments', desc: 'W^X violations detected from segment permission flags' },
+  { id: 'dangerous-import-<symbol>', title: 'Dangerous imports', desc: 'gets, strcpy, strcat, sprintf, vsprintf, system and popen reported as CANDIDATE, never as verdicts' },
+  { id: 'dangerous-call-<symbol>', title: 'Dangerous call sites', desc: 'Dataflow-resolved calls to the above APIs with a statically materialized string argument; raised to VALIDATED with callsite evidence' },
+  { id: 'weak-crypto-<token>', title: 'Weak crypto signals', desc: 'md5, sha1, des, rc4 and ecb markers in strings flagged at SUSPECTED for manual review' },
+  { id: 'sensitive-string', title: 'Sensitive strings', desc: 'Password / private-key / api-key shaped naming patterns flagged at SUSPECTED' },
+  { id: 'execution-surface', title: 'Execution surface', desc: 'Process-spawning APIs summarized as attack-surface context at OBSERVED' },
 ];
 
 export const CONFIDENCE_STATES: string[] = ['OBSERVED', 'CANDIDATE', 'SUSPECTED', 'VALIDATED', 'CONFIRMED'];
@@ -42,7 +42,7 @@ export const CONFIDENCE_STATES: string[] = ['OBSERVED', 'CANDIDATE', 'SUSPECTED'
 export const GITHUB_URL = 'https://github.com/QYVORA/qyvora-aksum';
 
 export const BUILD_FROM_SOURCE = {
-  requirements: 'Go 1.22+ toolchain. No external runtime dependencies.',
+  requirements: 'Go 1.26+ toolchain. No external runtime dependencies.',
   steps: [
     { cmd: 'git clone https://github.com/QYVORA/qyvora-aksum' },
     { cmd: 'cd qyvora-aksum' },
@@ -88,14 +88,14 @@ export const SOURCE_EXAMPLES: ToolSourceExample[] = [
     id: 'dataflow',
     filename: 'internal/dataflow/dataflow.go',
     label: 'Call-site resolution',
-    description: 'The dataflow engine tracks register and stack state through each function body. PLT stubs are matched to import names via relocations, so call sites carry real callee identities and arguments.',
-    code: 'cs := e.resolvePLTSite(f, in)\nif cs != nil && len(cs.Args) > 0 {\n\te.sites = append(e.sites, *cs)\n}\n...\ntext, ok := e.strAt(arg.Address) // static string argument',
+    description: 'The dataflow engine resolves PLT stubs to import names via R_X86_64_JUMP_SLOT relocations (resolveStub) and recovers string arguments where statically materialized (stringAt).',
+    code: 'func (e *Engine) resolveStub(f *functions.Function) string {\n\t// scan for jmp qword [rip+disp], resolve the GOT slot\n\t// and look it up in e.gotToSym (built from JUMP_SLOT relocations)\n\t...\n}\n\nsym := e.resolveStub(f)\nif content, isStr := e.stringAt[v.addr]; isStr {\n\t// statically materialized string argument recovered\n\t...\n}',
   },
   {
     id: 'validation',
     filename: 'internal/validation/validation.go',
     label: 'Corroborated escalation',
-    description: 'Findings escalate only when independent evidence agrees: a dangerous import becomes VALIDATED when the dataflow engine resolves a call site passing it a static string.',
-    code: 'if corroborated(fs[i], site) {\n\tfs[i].Confidence = findings.ConfValidated\n\tfs[i].Evidence = append(fs[i].Evidence, callsiteEvidence(site))\n}',
+    description: 'Findings escalate only when independent evidence agrees: a dangerous import becomes VALIDATED when the dataflow engine resolves a call site passing it a statically materialized string. Escalation appends a "callsite" evidence record.',
+    code: 'if e.Kind == "import" && e.Location != "" {\n\tsyms = append(syms, e.Location)\n}\n...\nif f.Confidence.Rank() < findings.ConfValidated.Rank() {\n\tf.Confidence = findings.ConfValidated\n\tf.Evidence = append(f.Evidence, findings.Evidence{Kind: findings.KindCallSite, Location: site.Symbol})\n}',
   },
 ];
