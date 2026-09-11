@@ -13,7 +13,7 @@ export const STAGES: NzingaStage[] = [
   { id: '02', name: 'COLLECT', icon: Database, desc: 'Run enabled public sources (crt.sh CT logs, WHOIS, infrastructure, org, relationships) with bounded concurrency' },
   { id: '03', name: 'NORMALIZE', icon: GitMerge, desc: 'Normalize source payloads into typed observations with provenance: source, observed_at, collected_at, raw_reference' },
   { id: '04', name: 'CORRELATE', icon: Network, desc: 'Link observations across sources into entities and a typed relationship graph' },
-  { id: '05', name: 'ANALYZE', icon: ScanSearch, desc: 'Evaluate evidence-backed claims against deterministic rules (OSINT-001..004) with confidence and severity' },
+  { id: '05', name: 'ANALYZE', icon: ScanSearch, desc: 'Evaluate evidence-backed claims against deterministic rules (OSINT-001..005) with confidence and severity' },
   { id: '06', name: 'VALIDATE', icon: ShieldCheck, desc: 'Confirm every finding traces to collected evidence; no absence is ever reported as absence-proof' },
   { id: '07', name: 'REPORT', icon: FileText, desc: 'Render terminal tables plus schema-versioned JSON, Markdown, HTML, YAML, and JSONL event streams' },
 ];
@@ -29,6 +29,7 @@ export const RULES: NzingaRule[] = [
   { id: 'OSINT-002', title: 'Infrastructure Overlap Across Domains', desc: 'Two or more distinct domains resolve to the same hosting (shared IP/ASN), indicating common administration or a shared provider surface' },
   { id: 'OSINT-003', title: 'Personally Identifying Email Exposed', desc: 'An email address associated with the target appears in public WHOIS registry data or certificate logs, exposing a contact vector' },
   { id: 'OSINT-004', title: 'DNS Wildcard Resolves Unknown Hostnames', desc: 'The zone resolves arbitrary non-existent hostnames, degrading passive hostname discovery and subdomain enumeration' },
+  { id: 'OSINT-005', title: 'Correlation Claim Surfaced as Risk Input', desc: 'Promotes framework correlation claims into evidence-backed findings so intelligence assertions feed the risk engine' },
 ];
 
 export const GITHUB_URL = 'https://github.com/QYVORA/qyvora-nzinga';
@@ -48,7 +49,7 @@ export const QUICK_START = [
   'nzinga assess -y domain:example.com --profile standard -o json',
   'nzinga sources list',
   'nzinga capabilities',
-  'nzinga findings -f json',
+  'nzinga findings -o json',
   'nzinga relationship graph',
 ];
 

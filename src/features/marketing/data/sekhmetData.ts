@@ -9,12 +9,12 @@ export interface SekhmetStage {
 }
 
 export const STAGES: SekhmetStage[] = [
-  { id: '01', name: 'BASELINE', icon: Radar, desc: "Profile the target's normal behaviour first: exit codes, signals, runtime and output variance. Every later result is judged against this profile, never fuzzed blindly." },
+  { id: '01', name: 'BASELINE', icon: Radar, desc: "Profile the target's normal behaviour first (an exit-code baseline recorded without fuzzing). Every later result is judged against this profile, never fuzzed blindly." },
   { id: '02', name: 'CORPUS', icon: Layers3, desc: 'Persistent seed store with SHA-256 dedup, priority ordering and trimming so interesting inputs survive and noise does not.' },
-  { id: '03', name: 'MUTATE', icon: Repeat2, desc: '17 structured operators (bit/byte, block, dictionary insert, JSON structure, boundary, length, splice) driven by a seeded RNG for reproducibility.' },
+  { id: '03', name: 'MUTATE', icon: Repeat2, desc: '17 structured operators (bit/byte, block, dictionary insert, boundary, length, splice, delimiter) driven by a seeded RNG for reproducibility.' },
   { id: '04', name: 'EXECUTE', icon: PlayCircle, desc: 'Three execution modes: process with {fuzz}/{stdin} templates (no shell), HTTP payload delivery, and a deterministic simulation target for CI.' },
   { id: '05', name: 'CLASSIFY', icon: Tag, desc: 'Crash, hang, and anomaly classification relative to the baseline, with ASan / UBSan / MSan report text matching on top of signal detection.' },
-  { id: '06', name: 'DEDUP', icon: Fingerprint, desc: 'SHA-256 signature over normalized stderr + signal + exit class collapses thousands of near-identical crashes into unique findings.' },
+  { id: '06', name: 'DEDUP', icon: Fingerprint, desc: 'Deterministic signature over signal, exit code, sanitizer match and normalized stderr hash collapses thousands of near-identical crashes into unique findings.' },
   { id: '07', name: 'FEEDBACK', icon: Waypoints, desc: 'Novelty scoring over behavioral / edge / block coverage keeps the campaign aimed at code it has not reached yet.' },
   { id: '08', name: 'SCHEDULE', icon: Gauge, desc: 'Power scheduling across fast / explore / exploit / rare / balanced / adaptive strategies, all mutex-safe under parallel workers.' },
   { id: '09', name: 'MINIMIZE', icon: Scissors, desc: 'Delta-debugging reducer turns an interesting input into a minimal reproducer you can actually read.' },
@@ -30,9 +30,9 @@ export interface SekhmetDetector {
 export const DETECTORS: SekhmetDetector[] = [
   { id: 'SEK-CRSH', title: 'Crash classification', desc: 'Signal-aware detection (SIGSEGV, SIGABRT, timeout, nonzero exit) with platform signal naming and baseline exit-class comparison' },
   { id: 'SEK-HANG', title: 'Hang / runaway', desc: 'Per-execution timeouts flag stuck or infinite-loop behaviour that never returns' },
-  { id: 'SEK-ANOM', title: 'Baseline deviation', desc: 'Results that diverge from the profiled normal distribution (unexpected exit, output variance, runtime spikes) are surfaced as anomalies' },
+  { id: 'SEK-ANOM', title: 'Baseline deviation', desc: 'Results whose exit code is not in the baseline exit profile are surfaced as anomalies relative to normal behaviour' },
   { id: 'SEK-SANZ', title: 'Sanitizer reports', desc: 'AddressSanitizer / UBSan / MSan output text matched into typed findings with normalized stderr fingerprinting' },
-  { id: 'SEK-SIGN', title: 'Signature dedup', desc: 'SHA-256 fingerprint over normalized stderr + signal + exit class so 1,000 near-identical crashes become one finding' },
+  { id: 'SEK-SIGN', title: 'Signature dedup', desc: 'Deterministic fingerprint of signal, exit code, sanitizer match and normalized stderr hash so 1,000 near-identical crashes become one finding' },
 ];
 
 export const CONFIDENCE_STATES: string[] = ['low', 'medium', 'high', 'confirmed'];
@@ -50,12 +50,12 @@ export const BUILD_FROM_SOURCE = {
 };
 
 export const QUICK_START = [
-  'sekhmet target set --name sim --kind simulation',
-  'sekhmet baseline --target sim',
-  'sekhmet fuzz --target sim --runs 100000',
+  'sekhmet target set --name sim --type simulation',
+  'sekhmet baseline',
+  'sekhmet fuzz --executions 100000',
   'sekhmet crashes --session <id>',
   'sekhmet minimize --input interesting.bin',
-  'sekhmet report --session <id> --format json > report.json',
+  'sekhmet report --session <id> --json > report.json',
 ];
 
 export const AUTHORIZED_WARNING = {
@@ -78,21 +78,21 @@ export const SOURCE_EXAMPLES: ToolSourceExample[] = [
     id: 'detection',
     filename: 'internal/detection/detection.go',
     label: 'Baseline-relative classification',
-    description: 'Every result is classified against the profiled baseline, then further split by crash, hang, anomaly, or sanitizer text. Crashes reduce to a normalized signature for dedup.',
-    code: 'res.Class = Classify(exec.Result, base)\nif IsCrash(res) {\n\tsig := Signature(res)\n\tif !e.seen(sig) {\n\t\te.record(res, sig) // first of its kind -> unique finding\n\t}\n}',
+    description: 'Every result is classified against the profiled baseline, then further split by crash, hang, anomaly, or sanitizer text. Crashes reduce to a normalized signature (signal, exit code, sanitizer match, stderr hash) for dedup.',
+    code: 'if IsCrash(res) {\n\tsig := Signature(res, detail)\n\t// parts: sig:<signal>, code:<exit>, san:<sanitizer hash>, err:<stderr hash>\n\tif !seen[sig] {\n\t\tseen[sig] = true\n\t\t// first of its kind -> emit one unique finding\n\t\temit(res, detail)\n\t}\n}',
   },
   {
     id: 'feedback',
-    filename: 'internal/feedback/tracker.go',
+    filename: 'internal/feedback/feedback.go',
     label: 'Novelty tracking',
-    description: 'Coverage is hashed into buckets a delay-free hot loop can afford; behavior and edge signatures feed the power scheduler.',
-    code: 'if t.Novel(bucket) {\n\t// new edge / block / behavior reached\n\tt.score++\n\treturn true\n}\nreturn false',
+    description: 'Execution results reduce to behavior/edge feature signatures; the Tracker counts brand-new features so the power scheduler prioritizes novel inputs.',
+    code: '// internal/feedback/feedback.go\nfunc (t *Tracker) Observe(features []string) int // returns count of brand-new features\nfunc (t *Tracker) NewCount() int                 // total novel features seen\nfunc BehaviorSignature(res *models.ExecutionResult) []string\n\nhead := t.Observe(BehaviorSignature(res)) // novel behavior/edge reached\nif head > 0 {\n\tscheduler.NoteNovelty(head) // re-weight this input\n}',
   },
   {
     id: 'safety',
     filename: 'internal/safety/safety.go',
     label: 'Guardrails',
-    description: 'A Guardian enforces execution budgets, size caps, concurrency limits and authorization gates; a breach stops the campaign cleanly.',
-    code: 'if err := g.Allow(op); err != nil {\n\treturn err // campaign halts: budget or guard exceeded\n}',
+    description: 'A Guardian enforces execution budgets, input size caps, concurrency limits and authorization gates; a breach stops the campaign cleanly.',
+    code: 'if err := g.CheckExec(); err != nil {\n\treturn err // execution budget exceeded: campaign halts\n}\nif err := g.CheckInput(len(input)); err != nil {\n\treturn err // input size cap exceeded\n}\nif err := g.CheckAuthorized(authorized); err != nil {\n\treturn err // target outside declared scope\n}',
   },
 ];
