@@ -11,7 +11,7 @@
  * at runtime.
  */
 
-export type ToolInstallKey = 'anansi' | 'jabari' | 'toha3ee' | 'shaka' | 'nzinga' | 'aksum' | 'sekhmet';
+export type ToolInstallKey = 'anansi' | 'jabari' | 'toha3ee' | 'shaka' | 'nzinga' | 'aksum' | 'sekhmet' | 'mansa';
 export type ToolPlatform = 'linux' | 'darwin' | 'windows';
 export type ToolArch = 'amd64' | 'arm64';
 
@@ -145,5 +145,22 @@ windows: { amd64: 'shaka-windows-amd64.exe', arm64: 'shaka-windows-arm64.exe' },
       windows: 'irm https://raw.githubusercontent.com/QYVORA/qyvora-Sekhmet/main/install.ps1 | iex',
     },
     note: 'Single static binary. The installer auto-detects your platform, verifies SHA-256 and installs the icon and desktop entry.',
+  },
+  mansa: {
+    bin: 'mansa',
+    displayName: 'mansa',
+    repo: 'QYVORA/qyvora-mansa',
+    releaseBase: 'https://github.com/QYVORA/qyvora-mansa/releases/latest/download',
+    assets: {
+      linux: { amd64: 'mansa-linux-amd64', arm64: 'mansa-linux-arm64' },
+      darwin: { amd64: 'mansa-macos-amd64', arm64: 'mansa-macos-arm64' },
+      windows: { amd64: 'mansa-windows-amd64.exe', arm64: 'mansa-windows-arm64.exe' },
+    },
+    commandTemplates: {
+      linux: 'curl -fsSL https://raw.githubusercontent.com/QYVORA/qyvora-mansa/main/install.sh | bash',
+      darwin: 'curl -fsSL https://raw.githubusercontent.com/QYVORA/qyvora-mansa/main/install.sh | bash',
+      windows: 'irm https://raw.githubusercontent.com/QYVORA/qyvora-mansa/main/install.ps1 | iex',
+    },
+    note: 'Single static binary. The installer auto-detects your OS, CPU and shell, installs to ~/.local/bin and verifies SHA-256 against the published checksums.',
   },
 };

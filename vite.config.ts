@@ -34,6 +34,7 @@ export default defineConfig(() => ({
         '/jabari',
         '/aksum',
         '/sekhmet',
+        '/mansa',
         '/shaka',
         '/cp',
         '/team',

@@ -50,6 +50,7 @@ const AksumPage         = lazy(() => import('../features/marketing/pages/public/
 const ShakaPage         = lazy(() => import('../features/marketing/pages/public/ShakaPage'));
 const NzingaPage        = lazy(() => import('../features/marketing/pages/public/NzingaPage'));
 const SekhmetPage       = lazy(() => import('../features/marketing/pages/public/SekhmetPage'));
+const MansaPage         = lazy(() => import('../features/marketing/pages/public/MansaPage'));
 const BlogsPage         = lazy(() => import('../features/marketing/pages/public/BlogsPage'));
 const TeamPage          = lazy(() => import('../features/marketing/pages/public/TeamPage'));
 const QuiteRootPage     = lazy(() => import('../features/marketing/pages/public/QuiteRootPage'));
@@ -260,6 +261,7 @@ export const AppRouter = () => {
           <Route path="/shaka" element={<Wrap scope="Shaka"><ShakaPage /></Wrap>} />
           <Route path="/nzinga" element={<Wrap scope="Nzinga"><NzingaPage /></Wrap>} />
           <Route path="/sekhmet" element={<Wrap scope="Sekhmet"><SekhmetPage /></Wrap>} />
+          <Route path="/mansa" element={<Wrap scope="Mansa"><MansaPage /></Wrap>} />
         </Route>
 
         {/* ── Auth routes ───────── */}

@@ -17,6 +17,7 @@
     "shaka": "shaka",
     "nzinga": "nzinga",
     "sekhmet": "sekhmet",
+    "mansa": "mansa",
     "quiteroot": "QuiteRoot",
     "market": "Market",
     "blogs": "Blogs",
@@ -913,6 +914,11 @@
       "title": "sekhmet",
       "description": "Baseline-aware, feedback-driven fuzzing & vulnerability discovery framework in Go: profile normal behaviour, adaptive mutation, SHA-256 crash dedup and delta minimization.",
       "explore": "Explore sekhmet"
+    },
+    "mansa": {
+      "title": "mansa",
+      "description": "Authorized wireless security assessment framework in Go: WLAN discovery, enumeration, MITM-range analysis, deterministic rule engine and transparent risk scoring.",
+      "explore": "Explore mansa"
     }
   },
   "simulations": {
