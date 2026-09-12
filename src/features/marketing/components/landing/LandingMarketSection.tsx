@@ -49,8 +49,8 @@ const LandingMarketSection = () => {
   }, []);
 
   return (
-    <div className="relative bg-bg min-h-dvh flex flex-col overflow-hidden" >
-      <div className="relative z-10 w-full h-full px-3 md:px-4 lg:px-6 py-10 sm:py-8 md:py-12 lg:py-12 flex flex-col lg:flex-row gap-10 sm:gap-10 lg:gap-20 lg:items-stretch">
+    <div className="relative bg-bg min-h-dvh flex flex-col" >
+      <div className="relative z-10 w-full flex-1 min-h-0 px-3 md:px-4 lg:px-6 py-10 sm:py-8 md:py-12 lg:py-12 flex flex-col lg:flex-row gap-10 sm:gap-10 lg:gap-20 lg:items-stretch">
         {/* Header column */}
         <div className="shrink-0 lg:w-[420px] xl:w-[480px] flex flex-col lg:justify-center">
           <SimpleHeading

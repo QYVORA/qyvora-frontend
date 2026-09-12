@@ -42,7 +42,7 @@ const ToolDocPage: React.FC<ToolDocPageProps> = ({
       onInstall={onInstall}
     />
 
-    <main className="min-h-screen">
+    <main className="min-h-dvh">
       {children}
     </main>
 

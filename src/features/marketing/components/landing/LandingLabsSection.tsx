@@ -1,11 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Zap } from 'lucide-react';
-import { useReducedMotion } from 'motion/react';
 
 import { IconArrowRight } from '@/shared/components/icons';
 import { DottedMapOverlay } from '@/shared/components/ui';
-import DragMarquee from '@/shared/components/carousel/DragMarquee';
+import { Carousel } from '@/shared/components/carousel';
 import { useTranslation } from 'react-i18next';
 import LabBadge from '@/shared/components/LabBadge';
 
@@ -19,29 +18,28 @@ const LABS = [
 
 type Lab = (typeof LABS)[number];
 
-/* ── Lab card for the horizontal marquee — fixed height, stable content ──── */
+/* ── Lab card for the single-card content-switch carousel — text left, badge right ── */
 const LabCard: React.FC<{ lab: Lab }> = ({ lab }) => {
   const { t } = useTranslation();
 
   return (
     <Link
       to="/dashboard/labs"
-      className="group relative block h-[280px] sm:h-[320px] w-[min(80vw,340px)] sm:w-[min(52vw,380px)] md:w-[min(42vw,430px)] lg:w-[min(36vw,470px)] xl:w-[min(31vw,520px)] shrink-0 card-accent bg-bg-card overflow-hidden transition-colors duration-300"
+      className="group relative flex flex-col md:flex-row bg-bg-card overflow-hidden h-full min-h-[520px] sm:min-h-[480px] lg:min-h-[460px] transition-[background-color] duration-[var(--dur-base)] ease-[var(--ease-smooth)] hover:bg-bg-elevated"
     >
       <DottedMapOverlay className="rounded-2xl" />
-      <div className="relative z-10 h-full flex flex-col p-4 sm:p-6">
-        <div className="flex items-start justify-between">
-          <span className="self-start text-[8px] font-black uppercase tracking-widest px-2 py-1 rounded-full border border-border/50 bg-bg-elevated text-text-muted">
-            {t(`landing.labs.list.${lab.id}.cp`)}
-          </span>
-          <LabBadge labId={lab.id} accentColor={lab.accentColor} className="w-14 h-14 shrink-0" />
-        </div>
 
-        <div className="mt-auto">
-          <h3 className="text-lg sm:text-2xl font-black text-text-primary tracking-tighter leading-none">
+      {/* Text region */}
+      <div className="relative z-10 flex flex-col items-start text-left p-5 sm:p-6 md:p-7 flex-1 min-w-0">
+        <span className="self-start text-[8px] font-black uppercase tracking-widest px-2 py-1 rounded-full border border-border/50 bg-bg-elevated text-text-muted">
+          {t(`landing.labs.list.${lab.id}.cp`)}
+        </span>
+
+        <div className="mt-auto pt-4 w-full">
+          <h3 className="text-xl sm:text-2xl lg:text-3xl font-black text-text-primary tracking-tighter leading-none">
             {t(`landing.labs.list.${lab.id}.title`)}
           </h3>
-          <p className="mt-2 text-xs sm:text-sm text-text-muted leading-relaxed line-clamp-2 min-h-[2.6em]">
+          <p className="mt-2 text-xs sm:text-sm text-text-muted leading-relaxed line-clamp-2 md:line-clamp-3">
             {t(`landing.labs.list.${lab.id}.desc`)}
           </p>
 
@@ -52,38 +50,35 @@ const LabCard: React.FC<{ lab: Lab }> = ({ lab }) => {
           </div>
         </div>
       </div>
+
+      {/* Visual region — the lab insignia at meaningful scale, no glow */}
+      <div className="relative z-10 shrink-0 flex items-center justify-center border-t md:border-t-0 md:border-l border-border/50 bg-bg-elevated min-h-[180px] md:min-h-0 md:w-[220px] lg:w-[260px] p-6 sm:p-8">
+        <LabBadge labId={lab.id} accentColor={lab.accentColor} glow={false} className="w-28 h-28 sm:w-32 sm:h-32 lg:w-36 lg:h-36 shrink-0" />
+      </div>
     </Link>
   );
 };
 
 const LandingLabsSection: React.FC = () => {
   const { t } = useTranslation();
-  const shouldReduceMotion = useReducedMotion();
 
   return (
-    <div className="relative bg-bg min-h-dvh flex flex-col overflow-x-clip overflow-hidden" >
-      <div className="relative z-10 w-full h-full px-3 md:px-4 lg:px-6 pt-24 md:pt-28 lg:pt-32 pb-6 md:pb-8 lg:pb-10 flex flex-col gap-8 lg:gap-12">
-        <h2 className="text-lg md:text-xl lg:text-2xl font-black text-text-primary tracking-tighter leading-none shrink-0">
+    <div className="relative bg-bg min-h-dvh flex flex-col overflow-x-clip" >
+      <div className="relative z-10 w-full flex-1 min-h-0 px-3 md:px-4 lg:px-6 pt-24 md:pt-28 lg:pt-32 pb-6 md:pb-8 lg:pb-10 flex flex-col gap-8 lg:gap-12">
+        <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black text-text-primary tracking-tighter leading-[0.95] shrink-0">
           {t('landing.labs.heading1')} <span className="text-accent">{t('landing.labs.heading2')}</span>
         </h2>
 
-        {shouldReduceMotion ? (
-          /* Reduced motion — static responsive grid */
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {LABS.map((lab) => (
-              <LabCard key={lab.id} lab={lab} />
-            ))}
-          </div>
-        ) : (
-          /* Infinite horizontal marquee — grabbable strip, cards fill it fully */
-          <div className="relative -mx-3 md:-mx-4 lg:-mx-6 flex-1 min-h-[360px] sm:min-h-0 min-w-0 overflow-x-clip overflow-y-visible flex items-center py-3">
-            <DragMarquee speed={22} trackClassName="gap-4 md:gap-5 pr-4 md:pr-5" className="w-full">
-              {LABS.map((lab) => (
-                <LabCard key={lab.id} lab={lab} />
-              ))}
-            </DragMarquee>
-          </div>
-        )}
+        {/* Single-card content-switch carousel — stable viewport while slides swap */}
+        <div className="relative flex-1 min-h-0 min-w-0 flex items-center overflow-x-clip">
+          <Carousel
+            slides={LABS}
+            className="w-full"
+            renderCard={(lab) => (
+              <LabCard lab={lab} />
+            )}
+          />
+        </div>
 
         {/* Footer */}
         <div className="shrink-0">

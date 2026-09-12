@@ -10,7 +10,7 @@ const TermsPage: React.FC = () => {
   const { user } = useAuth();
 
   return (
-    <div className="relative min-h-screen w-full bg-bg">
+    <div className="relative min-h-dvh w-full bg-bg">
       <SEO
         title="Terms of Service"
         description="Read the terms and conditions for using QYVORA's offensive security platform and services."

@@ -5,7 +5,6 @@ import { useReducedMotion } from 'motion/react';
 import { IconArrowRight, IconTerminal, IconCode, IconNetwork } from '@/shared/components/icons';
 import DeviceShape from '@/features/student/components/tools/network/DeviceShape';
 import DeviceLeds from '@/features/student/components/tools/network/DeviceLeds';
-import DragMarquee from '@/shared/components/carousel/DragMarquee';
 import { getDeviceDef } from '@/features/student/components/tools/network/devices';
 import type { DeviceType, TrafficLevel } from '@/features/student/components/tools/network/types';
 
@@ -176,7 +175,7 @@ const SimulationCard: React.FC<{ sim: (typeof SIMULATIONS)[number]; tabIndex?: -
     <Link
       to={sim.slug}
       tabIndex={tabIndex}
-      className="group flex h-[460px] w-[min(88vw,620px)] shrink-0 flex-col overflow-hidden rounded-2xl border border-border/50 bg-bg-card p-4 transition-[border-color,transform,box-shadow] duration-300 hover:-translate-y-1 hover:border-accent/50 hover:shadow-[var(--card-shadow)] sm:h-[460px] sm:w-[min(72vw,680px)] lg:h-[360px] lg:w-[min(48vw,700px)]"
+      className="group flex h-[460px] w-full flex-col overflow-hidden rounded-2xl border border-border/50 bg-bg-card p-4 transition-[border-color,transform,box-shadow] duration-300 hover:-translate-y-1 hover:border-accent/50 hover:shadow-[var(--card-shadow)] sm:h-[460px] lg:h-[380px]"
     >
       {isTerminal ? (
         <div className="flex min-h-0 flex-1 flex-col gap-4 lg:flex-row lg:items-stretch">
@@ -216,31 +215,22 @@ const SimulationCard: React.FC<{ sim: (typeof SIMULATIONS)[number]; tabIndex?: -
 
 const LandingSimulationsSection: React.FC = () => {
   const { t } = useTranslation();
-  const shouldReduceMotion = useReducedMotion();
 
   return (
-    <div className="relative flex min-h-dvh flex-col overflow-x-clip overflow-hidden bg-bg" >
-      <div className="relative z-10 flex h-full w-full flex-1 flex-col px-3 pb-6 pt-24 md:px-4 md:pb-8 lg:px-6 lg:pb-10">
+    <div className="relative flex min-h-dvh flex-col overflow-x-clip bg-bg" >
+      <div className="relative z-10 flex w-full flex-1 min-h-0 flex-col px-3 pb-6 pt-24 md:px-4 md:pb-8 lg:px-6 lg:pb-10">
         <div className="mb-8 shrink-0 md:mb-10 lg:mb-8">
           <span className="mb-3 inline-block rounded-full border border-accent/30 bg-accent/10 px-3 py-1.5 text-[9px] font-black uppercase tracking-widest text-accent">{t('landing.simulations.badge')}</span>
-          <h2 className="text-xl font-black leading-none tracking-tighter text-text-primary md:text-2xl lg:text-3xl">
+          <h2 className="text-2xl font-black leading-[0.95] tracking-tighter text-text-primary sm:text-3xl md:text-4xl lg:text-5xl">
             {t('landing.simulations.heading1')} <span className="text-accent">{t('landing.simulations.heading2')}</span>
           </h2>
           <p className="mt-2 font-mono text-xs leading-relaxed text-text-secondary">{t('landing.simulations.description')}</p>
         </div>
 
         <div className="relative -translate-y-2 sm:-translate-y-3 lg:-translate-y-4">
-          {shouldReduceMotion ? (
-            <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
-              {SIMULATIONS.map((sim) => <SimulationCard key={sim.id} sim={sim} />)}
-            </div>
-          ) : (
-            <div className="relative -mx-3 h-[460px] shrink-0 md:-mx-4 sm:h-[460px] lg:-mx-6 lg:h-[360px]">
-              <DragMarquee speed={22} trackClassName="gap-4 pr-4 md:gap-5 md:pr-5" className="h-full">
-                {SIMULATIONS.map((sim) => <SimulationCard key={sim.id} sim={sim} />)}
-              </DragMarquee>
-            </div>
-          )}
+          <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
+            {SIMULATIONS.map((sim) => <SimulationCard key={sim.id} sim={sim} />)}
+          </div>
 
           <Link to="/simulations" className="mt-4 inline-flex w-fit shrink-0 items-center gap-2 text-[10px] font-black uppercase tracking-widest text-text-muted transition-colors hover:text-text-primary">
             {t('landing.simulations.exploreAll')} <IconArrowRight size={14} />

@@ -133,7 +133,7 @@ const LoginPage: React.FC = () => {  const { t } = useTranslation();
     return (
       <>
         <SEO title="Admin Login" description="Sign in to QYVORA admin workspace." noindex />
-        <div className="min-h-screen flex items-center justify-center px-4 py-8 bg-bg">
+        <div className="min-h-dvh flex items-center justify-center px-4 py-8 bg-bg">
           <div className="w-full max-w-lg">
             <p className="sr-only" aria-live="polite">{formMessage}</p>
             <div className="rounded-2xl border border-border/50 bg-bg-card p-6 md:p-8">

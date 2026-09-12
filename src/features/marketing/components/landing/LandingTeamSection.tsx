@@ -78,8 +78,8 @@ const LandingTeamSection = () => {
   const shouldReduceMotion = useReducedMotion();
 
   return (
-    <div className="relative bg-bg min-h-dvh flex flex-col overflow-x-clip overflow-hidden">
-      <div className="relative z-10 w-full h-full px-3 md:px-4 lg:px-6 py-12 sm:py-10 md:py-16 lg:py-20 flex flex-col gap-10 sm:gap-12 lg:gap-10">
+    <div className="relative bg-bg min-h-dvh flex flex-col overflow-x-clip">
+      <div className="relative z-10 w-full flex-1 min-h-0 px-3 md:px-4 lg:px-6 py-12 sm:py-10 md:py-16 lg:py-20 flex flex-col gap-10 sm:gap-12 lg:gap-10">
         {/* Header — heading on the left, CTA aligned horizontally on the right */}
         <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6">
           <SimpleHeading
@@ -104,7 +104,7 @@ const LandingTeamSection = () => {
           </div>
         ) : (
           /* Large card infinite carousel — grabbable strip, cards fill it fully */
-          <div className="relative -mx-3 md:-mx-4 lg:-mx-6 flex-1 min-h-[400px] sm:min-h-0 min-w-0 overflow-x-hidden overflow-y-visible flex items-center py-3">
+          <div className="relative -mx-3 md:-mx-4 lg:-mx-6 flex-1 min-h-[400px] sm:min-h-0 min-w-0 overflow-x-clip overflow-y-visible flex items-center py-3">
             <DragMarquee speed={24} trackClassName="mr-4 md:mr-5" className="w-full">
               {teamData.map((member) => (
                 <TeamCard key={member.id} member={member} />

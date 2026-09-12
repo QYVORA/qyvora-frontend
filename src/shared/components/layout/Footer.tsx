@@ -12,6 +12,7 @@ import { BrandTikTokIcon } from '@/shared/components/icons';
 import { ContactTrigger } from '@/features/marketing/components/ContactModal';
 import { Logo } from '@/shared/components/brand';
 import LanguageSwitcher from '@/shared/components/LanguageSwitcher';
+import Button from '@/shared/components/ui/Button';
 import { SITE_CONFIG } from '@/features/marketing/content/siteConfig';
 
 const FOOTER_COLS = [
@@ -28,6 +29,12 @@ const FOOTER_COLS = [
     title: 'Platform',
     links: [
       { key: 'cp', label: 'Cyber Coin', path: '/cp' },
+      { key: 'services', label: 'Services', path: '/services' },
+    ],
+  },
+  {
+    title: 'Tools',
+    links: [
       { key: 'anansi', label: 'anansi', path: '/anansi' },
       { key: 'toha3ee', label: 'toha3ee', path: '/toha3ee' },
       { key: 'shaka', label: 'shaka', path: '/shaka' },
@@ -36,7 +43,6 @@ const FOOTER_COLS = [
       { key: 'aksum', label: 'aksum', path: '/aksum' },
       { key: 'sekhmet', label: 'sekhmet', path: '/sekhmet' },
       { key: 'mansa', label: 'mansa', path: '/mansa' },
-      { key: 'services', label: 'Services', path: '/services' },
     ],
   },
   {
@@ -74,6 +80,7 @@ export const SOCIAL_LINKS: SocialLink[] = [
 
 const FOOTER_COL_KEYS: Record<string, string> = {
   Platform: 'footer.platform',
+  Tools: 'footer.tools',
   Learning: 'footer.learning',
   Community: 'footer.community',
   Company: 'footer.company',
@@ -148,23 +155,17 @@ const Footer: React.FC = React.memo(() => {
 
               {/* Account access — compact pair, keeps auth reachable */}
               <div className="flex flex-wrap items-center gap-2 pt-1">
-                <Link
-                  to="/register"
-                  className="rounded-lg border border-border px-3.5 py-2 text-sm font-bold text-text-primary transition-colors hover:border-accent/40 hover:text-accent focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
-                >
+                <Button to="/register" variant="secondary" size="sm">
                   {t(FOOTER_LINK_KEYS.register)}
-                </Link>
-                <Link
-                  to="/login"
-                  className="rounded-lg border border-border px-3.5 py-2 text-sm font-bold text-text-primary transition-colors hover:border-accent/40 hover:text-accent focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
-                >
+                </Button>
+                <Button to="/login" variant="secondary" size="sm">
                   {t(FOOTER_LINK_KEYS.login)}
-                </Link>
+                </Button>
               </div>
             </div>
 
             {/* Nav columns — balanced categories, stable grid */}
-            <nav aria-label="Footer" className="grid grid-cols-2 gap-x-8 gap-y-12 md:grid-cols-4 md:gap-x-6 lg:gap-x-10">
+            <nav aria-label="Footer" className="grid grid-cols-2 gap-x-8 gap-y-12 sm:grid-cols-3 md:grid-cols-4 md:gap-x-6 xl:grid-cols-5 lg:gap-x-10">
               {FOOTER_COLS.map((col) => (
                 <div key={col.title}>
                   <h3 className="text-[10px] font-black uppercase tracking-widest text-text-muted">
@@ -195,9 +196,12 @@ const Footer: React.FC = React.memo(() => {
               <span>{CURRENT_YEAR}</span>
             </div>
 
-            <div className="flex flex-wrap items-center gap-3 sm:gap-4">
+            <div className="flex flex-col items-stretch gap-4 sm:flex-row sm:items-center sm:justify-end sm:gap-4 md:flex-none">
               <LanguageSwitcher />
-              <ContactTrigger type="button" className="btn-primary">
+              <ContactTrigger
+                type="button"
+                className="btn-primary flex items-center justify-center text-center w-full sm:w-auto min-h-[48px]"
+              >
                 {t('button.contactUs')}
               </ContactTrigger>
             </div>

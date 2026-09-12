@@ -32,6 +32,7 @@ const NAV_GROUP_LABELS: Record<string, string> = {
   community: 'nav.community',
   company: 'nav.company',
   platform: 'nav.platform',
+  tools: 'nav.tools',
 };
 
 const NAV_ITEM_LABELS: Record<string, string> = {

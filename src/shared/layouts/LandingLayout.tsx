@@ -80,7 +80,7 @@ const LandingLayout = () => (
       comment for the reasoning. The HeroSection manages its own top clearance.
       <Outlet /> renders the matched child route.
     */}
-    <main id="main-content" className="w-full min-h-screen flex flex-col">
+    <main id="main-content" className="w-full min-h-dvh flex flex-col">
       <Outlet />
     </main>
 
