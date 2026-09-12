@@ -12,6 +12,7 @@ import Identicon from '@/shared/components/Identicon';
 import { IconMenu, IconX, IconChevronRight } from '@/shared/components/icons';
 import { LogIn, BookOpen } from 'lucide-react';
 import { cn } from '@/shared/utils/cn';
+import { useDocScrollSpy } from '@/shared/hooks/useDocScrollSpy';
 
 export interface ToolDocSection {
   id: string;
@@ -70,7 +71,7 @@ const ToolDocTopbar: React.FC<ToolDocTopbarProps> = ({
   const { user } = useAuth();
   const location = useLocation();
 
-  const [activeSection, setActiveSection] = useState(sections[0]?.id || '');
+  const activeSection = useDocScrollSpy(sections.map((s) => s.id), 130);
   const [scrolled, setScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [openMobileGroup, setOpenMobileGroup] = useState<string | null>(null);
@@ -104,26 +105,11 @@ const ToolDocTopbar: React.FC<ToolDocTopbarProps> = ({
   useEffect(() => {
     const onScroll = () => {
       setScrolled(window.scrollY > 20);
-
-      const offsets = sections.map((s) => {
-        const el = document.getElementById(s.id);
-        return { id: s.id, top: el ? el.getBoundingClientRect().top : Infinity };
-      });
-
-      const current = offsets.reduce(
-        (closest, s) => {
-          if (s.top <= 130 && s.top > closest.top) return s;
-          return closest;
-        },
-        { id: sections[0]?.id || '', top: -Infinity }
-      );
-
-      if (current.id) setActiveSection(current.id);
     };
 
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
-  }, [sections]);
+  }, []);
 
   const scrollTo = useCallback((id: string) => {
     const el = document.getElementById(id);
@@ -167,8 +153,8 @@ const ToolDocTopbar: React.FC<ToolDocTopbarProps> = ({
             </Link>
           </div>
 
-          {/* Section links — desktop (centered) */}
-          <nav className="hidden md:flex items-center gap-1 flex-1 min-w-0 justify-center scroll-x no-scrollbar mx-4">
+          {/* Section links — tablet (centered). lg+ uses the sidebar TOC. */}
+          <nav className="hidden md:flex lg:hidden items-center gap-1 flex-1 min-w-0 justify-center scroll-x no-scrollbar mx-4">
             {sections.map((s) => (
               <button
                 key={s.id}

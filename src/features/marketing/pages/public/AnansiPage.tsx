@@ -1,14 +1,12 @@
 import { Download, GitBranch, Loader2, Terminal } from 'lucide-react';
-import { useTranslation } from 'react-i18next';
-import { IconArrowRight } from '@/shared/components/icons';
 import { useAuth } from '@/core/contexts/AuthContext';
+import { IconArrowRight } from '@/shared/components/icons';
 import CodeBlock from '@/shared/components/CodeBlock';
 import ToolSourceSection from '@/features/marketing/components/tools/ToolSourceSection';
 import { openToolInstall } from '@/features/marketing/components/ToolInstallModal';
 import { useToolRelease } from '@/features/marketing/hooks/useToolRelease';
+import DocFooterNav from '@/features/marketing/components/tools/DocFooterNav';
 import { PHASES, RELEASES, ONE_LINER, BUILD_FROM_SOURCE, USAGE_EXAMPLES, SCAN_OUTPUT, SOURCE_EXAMPLES } from '@/features/marketing/data/anansiData';
-import { getRelatedTools } from '@/features/marketing/data/relatedTools';
-import RelatedContentSection from '@/shared/components/RelatedContentSection';
 import anansiLogo from '@/assets/anansi/anansi-main-logo.webp';
 import { ToolDocPage, ToolDocSection, ToolDocHero } from '@/shared/components/tools';
 import type { ToolDocSectionItem } from '@/shared/components/tools';
@@ -33,7 +31,6 @@ function formatBytes(bytes: number): string {
 
 const AnansiPage = () => {
   const { user } = useAuth();
-  const { t } = useTranslation();
   const release = useToolRelease('anansi');
 
   return (
@@ -362,31 +359,8 @@ const AnansiPage = () => {
         </div>
       </ToolDocSection>
 
-      {/* ── Related ──────────────────────────────────────────────────────── */}
-      <div className="py-16 md:py-24 border-t border-border/10">
-        <div className="px-3 md:px-4 lg:px-6">
-          <RelatedContentSection items={getRelatedTools(t, '/anansi')} />
-        </div>
-      </div>
-
-      {/* ── CTA ──────────────────────────────────────────────────────────── */}
-      <section className="py-16 md:py-24 bg-bg-alt border-t border-border/10">
-        <div className="px-3 md:px-4 lg:px-6 text-center space-y-6">
-          <h2 className="text-3xl md:text-5xl font-black uppercase tracking-tight text-text-primary">
-            Ready to <span className="text-accent">scan</span>?
-          </h2>
-          <p className="text-base text-text-secondary font-mono max-w-lg mx-auto">
-            Install anansi and start mapping attack surfaces from your terminal.
-          </p>
-          <button
-            type="button"
-            onClick={() => openToolInstall('anansi')}
-            className="btn-primary inline-flex items-center gap-2 px-8 py-3"
-          >
-            <Download className="w-4 h-4" /> Get Started <IconArrowRight size={14} />
-          </button>
-        </div>
-      </section>
+      {/* ── Related + Continue reading ───────────────────────────────────── */}
+      <DocFooterNav currentPath="/anansi" />
     </ToolDocPage>
   );
 };

@@ -10,8 +10,9 @@ interface ToolDocHeroProps {
 }
 
 /**
- * Hero section for tool documentation pages.
- * Full-width, flows naturally at the top of the page.
+ * DocHeader — compact page header for tool documentation.
+ * Small logo mark, reading-scale headline and inline stats/actions.
+ * Contrasts with the marketing hero scale so docs read as documentation.
  */
 const ToolDocHero: React.FC<ToolDocHeroProps> = ({
   toolName,
@@ -21,56 +22,39 @@ const ToolDocHero: React.FC<ToolDocHeroProps> = ({
   logo,
   actions,
 }) => (
-  <section className="relative w-full bg-bg pt-32 md:pt-28 lg:pt-32 pb-16 md:pb-24 overflow-hidden">
-    {/* Background grid */}
-    <div className="absolute inset-0 opacity-10">
-      <div className="w-full h-full line-grid" />
-    </div>
-
-    <div className="relative z-10 px-3 md:px-4 lg:px-6">
-      {/* Logo above text on mobile, centered */}
+  <section className="relative w-full bg-bg pt-20 md:pt-24 pb-12 md:pb-14 overflow-hidden">
+    <div className="relative z-10 px-3 md:px-4 lg:px-6 flex flex-col gap-5 md:gap-6">
       {logo && (
-        <div className="flex items-center justify-center shrink-0 mb-8 lg:hidden">
-          <div className="w-40 sm:w-52">{logo}</div>
+        <div className="w-14 md:w-20 shrink-0">
+          {logo}
         </div>
       )}
 
-      <div className="flex flex-col lg:flex-row items-start lg:items-center gap-8 lg:gap-12">
-        {/* Left: text content */}
-        <div className="flex-1 min-w-0">
-          <h1 className="text-4xl md:text-6xl lg:text-7xl font-black uppercase tracking-tight text-text-primary leading-[0.95]">
-            {toolName}{' '}
-            {accentWord && <span className="text-accent">{accentWord}</span>}
-          </h1>
-          <p className="mt-4 md:mt-6 text-base md:text-lg text-text-secondary font-mono leading-relaxed max-w-xl">
-            {description}
-          </p>
+      <h1 className="text-3xl md:text-5xl font-black uppercase tracking-tight text-text-primary leading-[1.05]">
+        {toolName}{' '}
+        {accentWord && <span className="text-accent">{accentWord}</span>}
+      </h1>
 
-          {stats && stats.length > 0 && (
-            <div className="flex flex-wrap items-center gap-4 sm:gap-6 mt-6 md:mt-8">
-              {stats.map((stat) => (
-                <div key={stat.label} className="flex items-center gap-2">
-                  <span className="text-xl md:text-2xl font-black text-accent font-mono">
-                    {stat.value}
-                  </span>
-                  <span className="text-[10px] font-black uppercase tracking-widest text-text-muted">
-                    {stat.label}
-                  </span>
-                </div>
-              ))}
+      <p className="max-w-2xl text-sm md:text-base text-text-secondary font-mono leading-[2] md:leading-[2.2]">
+        {description}
+      </p>
+
+      {stats && stats.length > 0 && (
+        <div className="flex flex-wrap items-center gap-x-6 gap-y-2.5">
+          {stats.map((stat) => (
+            <div key={stat.label} className="flex items-center gap-2">
+              <span className="text-xl md:text-2xl font-black text-accent font-mono">
+                {stat.value}
+              </span>
+              <span className="text-[10px] font-black uppercase tracking-widest text-text-muted">
+                {stat.label}
+              </span>
             </div>
-          )}
-
-          {actions && <div className="flex flex-wrap items-center gap-3 mt-6 md:mt-8">{actions}</div>}
+          ))}
         </div>
+      )}
 
-        {/* Right: logo/visual (desktop only) */}
-        {logo && (
-          <div className="hidden lg:flex items-center justify-center shrink-0 w-64 xl:w-80">
-            {logo}
-          </div>
-        )}
-      </div>
+      {actions && <div className="flex flex-wrap items-center gap-3">{actions}</div>}
     </div>
   </section>
 );

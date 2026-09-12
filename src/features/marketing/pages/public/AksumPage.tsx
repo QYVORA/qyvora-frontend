@@ -1,13 +1,12 @@
 import { Download, GitBranch, Binary, Terminal, ChevronRight } from 'lucide-react';
 import { IconArrowRight } from '@/shared/components/icons';
 import { useAuth } from '@/core/contexts/AuthContext';
-import { useTranslation } from 'react-i18next';
 import CodeBlock from '@/shared/components/CodeBlock';
 import ToolSourceSection from '@/features/marketing/components/tools/ToolSourceSection';
+import Callout from '@/features/marketing/components/tools/Callout';
+import DocFooterNav from '@/features/marketing/components/tools/DocFooterNav';
 import { openToolInstall } from '@/features/marketing/components/ToolInstallModal';
 import { STAGES, CHECKS, CONFIDENCE_STATES, GITHUB_URL, BUILD_FROM_SOURCE, QUICK_START, AUTHORIZED_WARNING, SOURCE_EXAMPLES } from '@/features/marketing/data/aksumData';
-import { getRelatedTools } from '@/features/marketing/data/relatedTools';
-import RelatedContentSection from '@/shared/components/RelatedContentSection';
 import aksumLogo from '@/assets/aksum/aksum-main-logo.webp';
 import { ToolDocPage, ToolDocSection, ToolDocHero } from '@/shared/components/tools';
 import type { ToolDocSectionItem } from '@/shared/components/tools';
@@ -30,7 +29,6 @@ const DOC_SECTIONS: ToolDocSectionItem[] = [
 
 const AksumPage = () => {
   const { user } = useAuth();
-  const { t } = useTranslation();
 
   return (
     <ToolDocPage
@@ -79,15 +77,18 @@ const AksumPage = () => {
         accent={AUTHORIZED_WARNING.accent}
         description={AUTHORIZED_WARNING.description}
       >
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
-          <div className="rounded-2xl border border-warning/30 bg-warning/5 px-5 md:px-6 py-5 flex gap-4 items-start">
-            <div className="w-10 h-10 md:w-12 md:h-12 rounded-xl bg-warning/10 border border-warning/20 flex items-center justify-center shrink-0">
-              <AUTHORIZED_WARNING.icon className="w-5 h-5 md:w-6 md:h-6 text-warning" />
-            </div>
-            <p className="text-xs md:text-sm text-text-secondary leading-relaxed font-mono">
-              aksum reads the file you point it at and nothing else. It never executes the target and never touches a network, dynamic planning is policy-bounded architecture that refuses without an explicit consent flag, and this build ships no executor at all.
-            </p>
-          </div>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8 items-start">
+          <Callout
+            variant="warning"
+            icon={AUTHORIZED_WARNING.icon}
+            eyebrow="Read-only by design"
+            title="Analyze only what you own"
+            className="lg:self-start"
+          >
+            aksum reads the file you point it at and nothing else. It never executes the target and
+            never touches a network — dynamic planning is policy-bounded and refuses without an
+            explicit consent flag, and this build ships no executor at all.
+          </Callout>
 
           <div className="rounded-2xl border border-border/50 bg-bg-card p-5 md:p-6 flex flex-col gap-4">
             <div className="flex items-center gap-3">
@@ -417,31 +418,8 @@ const AksumPage = () => {
         </div>
       </ToolDocSection>
 
-      {/* ── Related ──────────────────────────────────────────────────────── */}
-      <div className="py-16 md:py-24 border-t border-border/10">
-        <div className="px-3 md:px-4 lg:px-6">
-          <RelatedContentSection items={getRelatedTools(t, '/aksum')} />
-        </div>
-      </div>
-
-      {/* ── CTA ──────────────────────────────────────────────────────────── */}
-      <section className="py-16 md:py-24 bg-bg-alt border-t border-border/10">
-        <div className="px-3 md:px-4 lg:px-6 text-center space-y-6">
-          <h2 className="text-3xl md:text-5xl font-black uppercase tracking-tight text-text-primary">
-            Ready to <span className="text-accent">analyze</span>?
-          </h2>
-          <p className="text-base text-text-secondary font-mono max-w-lg mx-auto">
-            Install aksum and start assessing binaries from your terminal.
-          </p>
-          <button
-            type="button"
-            onClick={() => openToolInstall('aksum')}
-            className="btn-primary inline-flex items-center gap-2 px-8 py-3"
-          >
-            <Download className="w-4 h-4" /> Get Started <IconArrowRight size={14} />
-          </button>
-        </div>
-      </section>
+      {/* ── Related + Continue reading ───────────────────────────────────── */}
+      <DocFooterNav currentPath="/aksum" />
     </ToolDocPage>
   );
 };

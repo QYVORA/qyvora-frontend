@@ -1,13 +1,12 @@
 import { Download, GitBranch, ShieldAlert, ShieldCheck, Terminal } from 'lucide-react';
 import { IconArrowRight } from '@/shared/components/icons';
 import { useAuth } from '@/core/contexts/AuthContext';
-import { useTranslation } from 'react-i18next';
 import CodeBlock from '@/shared/components/CodeBlock';
 import ToolSourceSection from '@/features/marketing/components/tools/ToolSourceSection';
+import Callout from '@/features/marketing/components/tools/Callout';
 import { openToolInstall } from '@/features/marketing/components/ToolInstallModal';
 import { MODULES, INSTALLERS, BUILD_FROM_SOURCE, QUICK_START, CONSOLE_SESSION, GITHUB_URL, SOURCE_EXAMPLES } from '@/features/marketing/data/toha3eeData';
-import { getRelatedTools } from '@/features/marketing/data/relatedTools';
-import RelatedContentSection from '@/shared/components/RelatedContentSection';
+import DocFooterNav from '@/features/marketing/components/tools/DocFooterNav';
 import toha3eeLogo from '@/assets/toha3ee/toha3ee-main-logo.webp';
 import { ToolDocPage, ToolDocSection, ToolDocHero } from '@/shared/components/tools';
 import type { ToolDocSectionItem } from '@/shared/components/tools';
@@ -22,7 +21,6 @@ const DOC_SECTIONS: ToolDocSectionItem[] = [
 
 const Toha3eePage = () => {
   const { user } = useAuth();
-  const { t } = useTranslation();
 
   return (
     <ToolDocPage
@@ -71,17 +69,19 @@ const Toha3eePage = () => {
         accent="Use Only"
         description="toha3ee actively redirects, poisons, decrypts and intercepts network traffic. Use it only on networks you own or are explicitly authorised to test."
       >
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
-          <div className="rounded-2xl border border-warning/30 bg-warning/5 px-5 md:px-6 py-5 flex gap-4 items-start">
-            <div className="w-10 h-10 md:w-12 md:h-12 rounded-xl bg-warning/10 border border-warning/20 flex items-center justify-center shrink-0">
-              <ShieldAlert className="w-5 h-5 md:w-6 md:h-6 text-warning" />
-            </div>
-            <p className="text-xs md:text-sm text-text-secondary leading-relaxed font-mono">
-              Running these modules against networks you do not own is illegal in most jurisdictions. Most attack
-              modules require root, raw sockets, packet capture and IP forwarding. The tool re-executes itself under
-              sudo by default; pass <code className="text-warning">--no-sudo</code> for unprivileged commands.
-            </p>
-          </div>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8 items-start">
+          <Callout
+            variant="warning"
+            icon={ShieldAlert}
+            eyebrow="Enforced, not promised"
+            title="Use only on networks you own"
+            className="lg:self-start"
+          >
+            Running these modules against networks you do not own is illegal in most jurisdictions.
+            Most attack modules require root, raw sockets, packet capture and IP forwarding. The tool
+            re-executes itself under sudo by default; pass{' '}
+            <code className="text-warning">--no-sudo</code> for unprivileged commands.
+          </Callout>
 
           <div className="rounded-2xl border border-border/50 bg-bg-card p-5 md:p-6 flex flex-col gap-4">
             <div className="flex items-center gap-3">
@@ -354,31 +354,8 @@ const Toha3eePage = () => {
         </div>
       </ToolDocSection>
 
-      {/* ── Related ──────────────────────────────────────────────────────── */}
-      <div className="py-16 md:py-24 border-t border-border/10">
-        <div className="px-3 md:px-4 lg:px-6">
-          <RelatedContentSection items={getRelatedTools(t, '/toha3ee')} />
-        </div>
-      </div>
-
-      {/* ── CTA ──────────────────────────────────────────────────────────── */}
-      <section className="py-16 md:py-24 bg-bg-alt border-t border-border/10">
-        <div className="px-3 md:px-4 lg:px-6 text-center space-y-6">
-          <h2 className="text-3xl md:text-5xl font-black uppercase tracking-tight text-text-primary">
-            Ready to <span className="text-accent">scan</span>?
-          </h2>
-          <p className="text-base text-text-secondary font-mono max-w-lg mx-auto">
-            Install toha3ee and start assessing networks from your terminal.
-          </p>
-          <button
-            type="button"
-            onClick={() => openToolInstall('toha3ee')}
-            className="btn-primary inline-flex items-center gap-2 px-8 py-3"
-          >
-            <Download className="w-4 h-4" /> Get Started <IconArrowRight size={14} />
-          </button>
-        </div>
-      </section>
+      {/* ── Related + Continue reading ───────────────────────────────────── */}
+      <DocFooterNav currentPath="/toha3ee" />
     </ToolDocPage>
   );
 };

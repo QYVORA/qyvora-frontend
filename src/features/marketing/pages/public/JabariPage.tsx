@@ -1,13 +1,12 @@
 import { Download, GitBranch, Smartphone, Terminal, ChevronRight } from 'lucide-react';
 import { IconArrowRight } from '@/shared/components/icons';
 import { useAuth } from '@/core/contexts/AuthContext';
-import { useTranslation } from 'react-i18next';
 import CodeBlock from '@/shared/components/CodeBlock';
 import ToolSourceSection from '@/features/marketing/components/tools/ToolSourceSection';
+import Callout from '@/features/marketing/components/tools/Callout';
 import { openToolInstall } from '@/features/marketing/components/ToolInstallModal';
 import { STAGES, RULES, PROFILES, GITHUB_URL, BUILD_FROM_SOURCE, QUICK_START, AUTHORIZED_WARNING, SOURCE_EXAMPLES } from '@/features/marketing/data/jabariData';
-import { getRelatedTools } from '@/features/marketing/data/relatedTools';
-import RelatedContentSection from '@/shared/components/RelatedContentSection';
+import DocFooterNav from '@/features/marketing/components/tools/DocFooterNav';
 import jabariLogo from '@/assets/jabari/jabari-main-logo.webp';
 import { ToolDocPage, ToolDocSection, ToolDocHero } from '@/shared/components/tools';
 import type { ToolDocSectionItem } from '@/shared/components/tools';
@@ -30,7 +29,6 @@ const DOC_SECTIONS: ToolDocSectionItem[] = [
 
 const JabariPage = () => {
   const { user } = useAuth();
-  const { t } = useTranslation();
 
   return (
     <ToolDocPage
@@ -79,20 +77,20 @@ const JabariPage = () => {
         accent={AUTHORIZED_WARNING.accent}
         description={AUTHORIZED_WARNING.description}
       >
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
-          <div className="rounded-2xl border border-warning/30 bg-warning/5 px-5 md:px-6 py-5 flex gap-4 items-start">
-            <div className="w-10 h-10 md:w-12 md:h-12 rounded-xl bg-warning/10 border border-warning/20 flex items-center justify-center shrink-0">
-              <AUTHORIZED_WARNING.icon className="w-5 h-5 md:w-6 md:h-6 text-warning" />
-            </div>
-            <p className="text-xs md:text-sm text-text-secondary leading-relaxed font-mono">
-              Every run passes an authorization gate, an interactive{' '}
-              <code className="text-warning">[y/N]</code> prompt on a TTY, or{' '}
-              <code className="text-warning">-y</code> / <code className="text-warning">authorized: true</code>{' '}
-              for non-interactive runs. The authorized flag is recorded on the session for the audit trail. jabari is
-              Android-centric by design: it assesses the single USB device or IP you point it at, never the
-              surrounding subnet.
-            </p>
-          </div>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8 items-start">
+          <Callout
+            variant="warning"
+            icon={AUTHORIZED_WARNING.icon}
+            eyebrow="Audited per run"
+            title="One target, one device"
+            className="lg:self-start"
+          >
+            Every run passes an authorization gate: an interactive <code className="text-warning">[y/N]</code>{' '}
+            prompt on a TTY, or <code className="text-warning">-y</code> /{' '}
+            <code className="text-warning">authorized: true</code> for non-interactive runs. The
+            authorized flag is recorded on the session for the audit trail, and jabari assesses the
+            single USB device or IP you point it at — never the surrounding subnet.
+          </Callout>
 
           <div className="rounded-2xl border border-border/50 bg-bg-card p-5 md:p-6 flex flex-col gap-4">
             <div className="flex items-center gap-3">
@@ -428,31 +426,8 @@ const JabariPage = () => {
         </div>
       </ToolDocSection>
 
-      {/* ── Related ──────────────────────────────────────────────────────── */}
-      <div className="py-16 md:py-24 border-t border-border/10">
-        <div className="px-3 md:px-4 lg:px-6">
-          <RelatedContentSection items={getRelatedTools(t, '/jabari')} />
-        </div>
-      </div>
-
-      {/* ── CTA ──────────────────────────────────────────────────────────── */}
-      <section className="py-16 md:py-24 bg-bg-alt border-t border-border/10">
-        <div className="px-3 md:px-4 lg:px-6 text-center space-y-6">
-          <h2 className="text-3xl md:text-5xl font-black uppercase tracking-tight text-text-primary">
-            Ready to <span className="text-accent">assess</span>?
-          </h2>
-          <p className="text-base text-text-secondary font-mono max-w-lg mx-auto">
-            Install jabari and start assessing Android devices from your terminal.
-          </p>
-          <button
-            type="button"
-            onClick={() => openToolInstall('jabari')}
-            className="btn-primary inline-flex items-center gap-2 px-8 py-3"
-          >
-            <Download className="w-4 h-4" /> Get Started <IconArrowRight size={14} />
-          </button>
-        </div>
-      </section>
+      {/* ── Related + Continue reading ───────────────────────────────────── */}
+      <DocFooterNav currentPath="/jabari" />
     </ToolDocPage>
   );
 };
