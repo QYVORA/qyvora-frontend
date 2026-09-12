@@ -213,7 +213,7 @@ const CodeBlock: React.FC<CodeBlockProps> = ({
           </div>
         </div>
       )}
-      <pre className={`min-w-0 max-w-full whitespace-pre-wrap break-words overflow-y-auto p-4 font-mono text-[11px] leading-relaxed sm:text-xs ${maxHeight ?? ''}`}>
+      <pre className={`min-w-0 max-w-full whitespace-pre-wrap break-words overflow-y-auto p-4 font-mono text-xs leading-relaxed sm:text-[13px] ${maxHeight ?? ''}`}>
         <code>
           {tokens.map((token, i) => (
             <span key={i} className={TOKEN_CLASSES[token.cls]}>

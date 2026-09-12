@@ -14,7 +14,7 @@ interface ToolDocSectionProps {
 /**
  * Consistent section wrapper for tool documentation pages.
  * Full-width with side padding — matches site-wide layout (px-3 md:px-4 lg:px-6).
- * No max-w-4xl centering — documentation content fills the viewport width.
+ * Reading-scale section headings (text-2xl md:text-4xl) and description prose.
  */
 const ToolDocSection: React.FC<ToolDocSectionProps> = ({
   id,
@@ -31,20 +31,20 @@ const ToolDocSection: React.FC<ToolDocSectionProps> = ({
   >
     <div className="px-3 md:px-4 lg:px-6">
       {(kicker || title) && (
-        <div className="mb-10 md:mb-14">
+        <div className="mb-8 md:mb-10">
           {kicker && (
             <p className="text-[10px] font-black uppercase tracking-[0.3em] text-accent mb-3">
               {kicker}
             </p>
           )}
           {title && (
-            <h2 className="text-3xl md:text-5xl font-black uppercase tracking-tight text-text-primary leading-tight">
+            <h2 className="text-2xl md:text-4xl font-black uppercase tracking-tight text-text-primary leading-[1.05]">
               {title}{' '}
               {accent && <span className="text-accent">{accent}</span>}
             </h2>
           )}
           {description && (
-            <p className="mt-4 text-base text-text-secondary font-mono leading-relaxed max-w-2xl">
+            <p className="mt-4 max-w-2xl text-sm md:text-base text-text-secondary font-mono leading-[2] md:leading-[2.2]">
               {description}
             </p>
           )}

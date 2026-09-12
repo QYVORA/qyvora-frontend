@@ -44,3 +44,31 @@ export const getRelatedTools = (t: TFunction, excludePath: string): RelatedItem[
     badge: t('landing.tools.title'),
     image: tool.logo,
   }));
+
+export interface ToolNeighbor {
+  path: string;
+  name: string;
+  title: string;
+  desc: string;
+  logo: string;
+}
+
+const toolNameFromPath = (path: string): string => path.replace('/', '');
+
+export const getToolNeighbors = (t: TFunction, currentPath: string): { prev?: ToolNeighbor; next?: ToolNeighbor } => {
+  const idx = TOOLS.findIndex((tool) => tool.path === currentPath);
+  if (idx === -1) return {};
+
+  const toNeighbor = (tool: ToolRef): ToolNeighbor => ({
+    path: tool.path,
+    name: toolNameFromPath(tool.path),
+    title: t(tool.titleKey),
+    desc: t(tool.descKey),
+    logo: tool.logo,
+  });
+
+  return {
+    prev: idx > 0 ? toNeighbor(TOOLS[idx - 1]) : undefined,
+    next: idx < TOOLS.length - 1 ? toNeighbor(TOOLS[idx + 1]) : undefined,
+  };
+};

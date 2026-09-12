@@ -1,13 +1,12 @@
 import { Download, GitBranch, Terminal, ChevronRight } from 'lucide-react';
 import { IconArrowRight } from '@/shared/components/icons';
 import { useAuth } from '@/core/contexts/AuthContext';
-import { useTranslation } from 'react-i18next';
 import CodeBlock from '@/shared/components/CodeBlock';
 import ToolSourceSection from '@/features/marketing/components/tools/ToolSourceSection';
+import Callout from '@/features/marketing/components/tools/Callout';
 import { openToolInstall } from '@/features/marketing/components/ToolInstallModal';
 import { STAGES, RULES, GITHUB_URL, BUILD_FROM_SOURCE, QUICK_START, AUTHORIZED_WARNING, SOURCE_EXAMPLES } from '@/features/marketing/data/shakaData';
-import { getRelatedTools } from '@/features/marketing/data/relatedTools';
-import RelatedContentSection from '@/shared/components/RelatedContentSection';
+import DocFooterNav from '@/features/marketing/components/tools/DocFooterNav';
 import shakaLogo from '@/assets/shaka/shaka-main-logo.webp';
 import { ToolDocPage, ToolDocSection, ToolDocHero } from '@/shared/components/tools';
 import type { ToolDocSectionItem } from '@/shared/components/tools';
@@ -30,7 +29,6 @@ const DOC_SECTIONS: ToolDocSectionItem[] = [
 
 const ShakaPage = () => {
   const { user } = useAuth();
-  const { t } = useTranslation();
 
   return (
     <ToolDocPage
@@ -79,15 +77,18 @@ const ShakaPage = () => {
         accent={AUTHORIZED_WARNING.accent}
         description={AUTHORIZED_WARNING.description}
       >
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
-          <div className="rounded-2xl border border-warning/30 bg-warning/5 px-5 md:px-6 py-5 flex gap-4 items-start">
-            <div className="w-10 h-10 md:w-12 md:h-12 rounded-xl bg-warning/10 border border-warning/20 flex items-center justify-center shrink-0">
-              <AUTHORIZED_WARNING.icon className="w-5 h-5 md:w-6 md:h-6 text-warning" />
-            </div>
-            <p className="text-xs md:text-sm text-text-secondary leading-relaxed font-mono">
-              shaka assesses only explicitly authorized directory targets. Live targets require explicit authorization (--authorized/-y, config, or QYVORA_AUTHORIZED=true); the built-in demo directory is auto-authorized for safe offline exploration.
-            </p>
-          </div>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8 items-start">
+          <Callout
+            variant="warning"
+            icon={AUTHORIZED_WARNING.icon}
+            eyebrow="Safe by design"
+            title="Assess only authorized directories"
+            className="lg:self-start"
+          >
+            shaka assesses only explicitly authorized directory targets. Live targets require explicit
+            authorization (--authorized/-y, config, or QYVORA_AUTHORIZED=true); the built-in demo
+            directory is auto-authorized for safe offline exploration.
+          </Callout>
 
           <div className="rounded-2xl border border-border/50 bg-bg-card p-5 md:p-6 flex flex-col gap-4">
             <div className="flex items-center gap-3">
@@ -300,10 +301,8 @@ const ShakaPage = () => {
         </div>
       </ToolDocSection>
 
-      {/* ── Related Tools ────────────────────────────────────────────────── */}
-      <div className="w-full px-3 md:px-4 lg:px-6 py-12">
-        <RelatedContentSection items={getRelatedTools(t, '/shaka')} />
-      </div>
+      {/* ── Related + Continue reading ───────────────────────────────────── */}
+      <DocFooterNav currentPath="/shaka" />
     </ToolDocPage>
   );
 };
