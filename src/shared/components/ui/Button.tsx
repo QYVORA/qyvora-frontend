@@ -57,7 +57,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     );
     if (to) {
       return (
-        <Link to={to} className={classes}>
+        <Link to={to} className={classes} {...(props as unknown as React.AnchorHTMLAttributes<HTMLAnchorElement>)}>
           {content}
         </Link>
       );
@@ -69,6 +69,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
           className={classes}
           target={external ? '_blank' : undefined}
           rel={external ? 'noopener noreferrer' : undefined}
+          {...(props as unknown as React.AnchorHTMLAttributes<HTMLAnchorElement>)}
         >
           {content}
         </a>

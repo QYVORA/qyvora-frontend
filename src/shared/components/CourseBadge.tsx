@@ -5,6 +5,7 @@ import { getCourseById } from '@/features/student/data/courses';
 interface CourseBadgeProps {
   courseId: string;
   className?: string;
+  glow?: boolean;
 }
 
 const BADGE_BG = '#0c1222';
@@ -63,7 +64,7 @@ function TickMarks({ color }: { color: string }) {
  * dark circular interior → inner boundary → course illustration.
  * The ring color is determined by the course's category.
  */
-const CourseBadge: React.FC<CourseBadgeProps> = ({ courseId, className = '' }) => {
+const CourseBadge: React.FC<CourseBadgeProps> = ({ courseId, className = '', glow = true }) => {
   const config = getCourseIconConfig(courseId);
   if (!config) return null;
 
@@ -129,10 +130,12 @@ const CourseBadge: React.FC<CourseBadgeProps> = ({ courseId, className = '' }) =
 
       {/* Course SVG illustration — centered, with subtle glow for depth */}
       <div className="relative z-10 flex items-center justify-center w-[52%] h-[52%]">
-        <div
-          className="absolute inset-0 rounded-full opacity-20 blur-md"
-          style={{ backgroundColor: ringColor }}
-        />
+        {glow && (
+          <div
+            className="absolute inset-0 rounded-full opacity-20 blur-md"
+            style={{ backgroundColor: ringColor }}
+          />
+        )}
         <Icon className="relative w-full h-full text-white" />
       </div>
     </div>

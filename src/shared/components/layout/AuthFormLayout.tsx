@@ -10,7 +10,6 @@ const HackerGlobe = lazy(() => import('@/features/marketing/components/HackerGlo
 
 interface AuthFormLayoutProps {
   children: React.ReactNode;
-  title?: string;
 }
 
 const AuthFormLayout: React.FC<AuthFormLayoutProps> = ({ children }) => {

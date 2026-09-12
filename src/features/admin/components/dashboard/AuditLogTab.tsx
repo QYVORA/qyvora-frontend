@@ -124,7 +124,7 @@ const AuditLogTab = () => {
                       onClick={() => navigate(`?tab=security&requestId=${encodeURIComponent(entry.correlationId!)}`)}
                       title={t('admin.audit.viewSecurityEvents')}
                       aria-label={t('admin.audit.viewSecurityEvents')}
-                      className="inline-flex items-center gap-1 text-[10px] font-mono text-accent/80 hover:text-accent transition-colors min-h-[16px]"
+                      className="inline-flex items-center gap-1 text-[10px] font-mono text-accent/80 hover:text-accent transition-colors min-h-[44px]"
                     >
                       <Link2 size={10} />
                       {entry.correlationId.slice(0, 8)}

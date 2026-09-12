@@ -114,6 +114,20 @@ export const SITE_CONFIG = {
         ],
       },
       {
+        key: 'tools',
+        label: 'Tools',
+        items: [
+          { key: 'anansi', label: 'anansi', path: '/anansi', desc: 'Attack Surface Intelligence' },
+          { key: 'toha3ee', label: 'toha3ee', path: '/toha3ee', desc: 'Local & network security assessment framework' },
+          { key: 'shaka', label: 'shaka', path: '/shaka', desc: 'Active Directory & Windows security assessment' },
+          { key: 'nzinga', label: 'nzinga', path: '/nzinga', desc: 'OSINT intelligence collection & analysis' },
+          { key: 'jabari', label: 'jabari', path: '/jabari', desc: 'Android security assessment' },
+          { key: 'aksum', label: 'aksum', path: '/aksum', desc: 'Binary security assessment & reverse engineering' },
+          { key: 'sekhmet', label: 'sekhmet', path: '/sekhmet', desc: 'Baseline-aware fuzzing & vulnerability discovery framework' },
+          { key: 'mansa', label: 'mansa', path: '/mansa', desc: 'Wireless security assessment framework' },
+        ],
+      },
+      {
         key: 'community',
         label: 'Community',
         items: [
@@ -135,14 +149,6 @@ export const SITE_CONFIG = {
         label: 'Platform',
         items: [
           { key: 'cp', label: 'Cyber Coin', path: '/cp', desc: 'CP reward system' },
-          { key: 'anansi', label: 'anansi', path: '/anansi', desc: 'Attack Surface Intelligence' },
-          { key: 'toha3ee', label: 'toha3ee', path: '/toha3ee', desc: 'Local & network security assessment framework' },
-          { key: 'shaka', label: 'shaka', path: '/shaka', desc: 'Active Directory & Windows security assessment' },
-          { key: 'nzinga', label: 'nzinga', path: '/nzinga', desc: 'OSINT intelligence collection & analysis' },
-          { key: 'jabari', label: 'jabari', path: '/jabari', desc: 'Android security assessment' },
-          { key: 'aksum', label: 'aksum', path: '/aksum', desc: 'Binary security assessment & reverse engineering' },
-          { key: 'sekhmet', label: 'sekhmet', path: '/sekhmet', desc: 'Baseline-aware fuzzing & vulnerability discovery framework' },
-          { key: 'mansa', label: 'mansa', path: '/mansa', desc: 'Wireless security assessment framework' },
           { key: 'services', label: 'Services', path: '/services', desc: 'Enterprise security services' },
         ],
       },

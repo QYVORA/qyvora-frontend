@@ -2,6 +2,7 @@
   "nav": {
     "home": "Home",
     "platform": "Platform",
+    "tools": "Tools",
     "resources": "Resources",
     "learning": "Learning",
     "community": "Community",
@@ -435,6 +436,7 @@
   },
   "footer": {
     "platform": "Platform",
+    "tools": "Tools",
     "company": "Company",
     "account": "Account",
     "register": "Register",
@@ -1996,6 +1998,18 @@
       "noData": "No data",
       "itemsPerPage": "{{n}} / page",
       "pageOf": "Page {{page}} of {{total}}"
+    },
+    "batchPagination": {
+      "prev": "Prev",
+      "next": "Next",
+      "previousBatch": "Previous batch",
+      "nextBatch": "Next batch",
+      "goToBatch": "Go to batch {{n}}"
+    },
+    "syncIndicator": {
+      "lastUpdated": "Last updated: {{time}}",
+      "noData": "No data yet",
+      "retry": "Retry"
     },
     "language": {
       "searchPlaceholder": "Search languages…"

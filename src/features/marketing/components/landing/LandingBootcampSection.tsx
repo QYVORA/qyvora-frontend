@@ -68,22 +68,22 @@ const LandingBootcampSection: React.FC = () => {
   const swipeHandlers = useSwipeNav({ onPrevious: goPrevPhase, onNext: advancePhase });
 
   return (
-    <div className="relative bg-bg min-h-dvh flex flex-col overflow-hidden" >
-      <div className="relative z-10 w-full h-full px-3 md:px-4 lg:px-6 pt-24 md:pt-28 lg:pt-32 pb-4 md:pb-6 lg:pb-6 flex flex-col">
+    <div className="relative bg-bg min-h-dvh flex flex-col" >
+      <div className="relative z-10 w-full flex-1 min-h-0 px-3 md:px-4 lg:px-6 pt-24 md:pt-28 lg:pt-32 pb-4 md:pb-6 lg:pb-6 flex flex-col">
         <div className="w-full flex-1 flex flex-col min-h-0">
-          <h2 className="text-lg md:text-xl lg:text-2xl font-black text-text-primary tracking-tighter leading-none mb-6 md:mb-8 lg:mb-6 shrink-0">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black text-text-primary tracking-tighter leading-[0.95] mb-6 md:mb-8 lg:mb-6 shrink-0">
             {t('landing2.bootcamp.heading1')} <span className="text-accent">{t('landing2.bootcamp.heading2')}</span>
           </h2>
 
           {/* Desktop bento — 3 columns, 1 featured + 2 supporting (desktop only) */}
-          <div className="hidden lg:grid grid-cols-3 gap-2 md:gap-4 flex-1 min-h-0 lg:grid-rows-[160px_160px]">
+          <div className="hidden lg:grid grid-cols-3 gap-2 md:gap-4 flex-1 min-h-0 auto-rows-fr">
             {/* Featured card — 2 cols, 2 rows */}
             <motion.div
               key={`featured-${groupIndex}`}
               initial={{ opacity: 0, x: direction * 40 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-              className="lg:col-span-2 lg:row-span-2 min-h-0 lg:max-h-[300px]"
+              className="lg:col-span-2 lg:row-span-2 min-h-0"
             >
               <Link
                 to={featuredHref}

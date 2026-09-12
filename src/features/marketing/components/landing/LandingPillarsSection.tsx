@@ -36,7 +36,7 @@ const LandingPillarsSection: React.FC = () => {
 
   return (
     <div className="relative overflow-hidden min-h-dvh flex flex-col">
-      <div className="relative w-full h-full px-3 md:px-4 lg:px-6 pt-20 md:pt-24 lg:pt-28 pb-6 md:pb-8 lg:pb-10 flex flex-col">
+      <div className="relative w-full flex-1 min-h-0 px-3 md:px-4 lg:px-6 pt-20 md:pt-24 lg:pt-28 pb-6 md:pb-8 lg:pb-10 flex flex-col">
         <div className="w-full flex-1 flex flex-col min-h-0">
           {/* Bento grid: 2-col on mobile (QuiteRoot-style), 4 columns on desktop */}
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 md:gap-4 flex-1 auto-rows-fr">

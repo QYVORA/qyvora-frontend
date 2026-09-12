@@ -103,7 +103,7 @@ const PublicProfile: React.FC = () => {
   if (loading) return <PageLoader />;
   if (notFound || !profile) {
     return (
-      <div className="min-h-screen bg-bg flex flex-col items-center justify-center gap-6 px-4">
+      <div className="min-h-dvh bg-bg flex flex-col items-center justify-center gap-6 px-4">
         <SEO
           noindex
           title="Operator Not Found"
@@ -120,7 +120,7 @@ const PublicProfile: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen w-full bg-bg">
+    <div className="min-h-dvh w-full bg-bg">
       <Navbar />
       <SEO
         title={`@${handle}'s Profile`}

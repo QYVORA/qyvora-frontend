@@ -6,7 +6,7 @@ import { Outlet } from 'react-router-dom';
  * Documentation is single-scroll.
  */
 const ToolDocLayout = () => (
-  <div className="min-h-screen flex flex-col bg-bg tool-doc-layout">
+  <div className="min-h-dvh flex flex-col bg-bg tool-doc-layout">
     <Outlet />
   </div>
 );

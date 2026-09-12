@@ -54,7 +54,7 @@ const LandingServicesSection: React.FC = () => {
 
   return (
     <div className="relative overflow-hidden min-h-dvh flex flex-col">
-      <div className="relative w-full h-full px-3 md:px-4 lg:px-6 pt-20 md:pt-20 lg:pt-20 pb-4 md:pb-6 lg:pb-10 flex flex-col">
+      <div className="relative w-full flex-1 min-h-0 px-3 md:px-4 lg:px-6 pt-20 md:pt-20 lg:pt-20 pb-4 md:pb-6 lg:pb-10 flex flex-col">
         <div className="w-full flex-1 flex flex-col min-h-0">
           {/* Mobile — service tiers as a swipeable carousel */}
           <div className="lg:hidden">

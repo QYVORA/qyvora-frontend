@@ -4,14 +4,10 @@ import { motion, AnimatePresence } from 'motion/react';
 import { useTranslation } from 'react-i18next';
 import {
   IconChevronRight,
-  IconCode,
   IconTerminal,
   IconLabs,
   IconLeaderboard,
   IconMarketplace,
-  IconShield,
-  IconRank,
-  IconNetwork,
   IconCTF,
 } from '@/shared/components/icons';
 import {
@@ -20,14 +16,19 @@ import {
   FileText,
   Users,
   Newspaper,
-  ShoppingBag,
-  Bug,
   Rocket,
-  Building2,
-  Radar,
   Contact,
-  Crosshair,
 } from 'lucide-react';
+import cyberPointsLogo from '@/assets/branding/logos/cyber-points-logo.webp';
+import anansiLogo from '@/assets/anansi/anansi-main-logo.webp';
+import toha3eeLogo from '@/assets/toha3ee/toha3ee-main-logo.webp';
+import shakaLogo from '@/assets/shaka/shaka-main-logo.webp';
+import nzingaLogo from '@/assets/nzinga/nzinga-main-logo.webp';
+import jabariLogo from '@/assets/jabari/jabari-main-logo.webp';
+import aksumLogo from '@/assets/aksum/aksum-main-logo.webp';
+import sekhmetLogo from '@/assets/sekhmet/sekhmet-main-logo.webp';
+import mansaLogo from '@/assets/mansa/mansa-main-logo.webp';
+import quiteRootLogo from '@/assets/quiteRoot/ChatGPT Image Jul 3, 2026, 02_45_59 AM.webp';
 import { useScrollLock } from '@/core/hooks/useScrollLock';
 import { useReducedMotion } from '@/shared/hooks/useReducedMotion';
 import { useAuth } from '@/core/contexts/AuthContext';
@@ -37,12 +38,14 @@ import { ContactTrigger } from '@/features/marketing/components/ContactModal';
 import LanguageSwitcher from '@/shared/components/LanguageSwitcher';
 import Identicon from '@/shared/components/Identicon';
 import { NavMenuTrigger } from '@/features/student/components/layout/StudentNavPanel/StudentNavPanel';
+import Button from '@/shared/components/ui/Button';
 
 const NAV_GROUP_LABELS: Record<string, string> = {
   learning: 'nav.learning',
   community: 'nav.community',
   company: 'nav.company',
   platform: 'nav.platform',
+  tools: 'nav.tools',
 };
 
 const NAV_ITEM_LABELS: Record<string, string> = {
@@ -78,18 +81,23 @@ const ITEM_ICONS: Record<string, NavItemIcon> = {
   leaderboard: IconLeaderboard,
   market: IconMarketplace,
   team: Users,
-  quiteroot: IconShield,
   terms: FileText,
-  anansi: IconNetwork,
-  toha3ee: IconCode,
-  shaka: Building2,
-  nzinga: Radar,
-  jabari: Bug,
-  aksum: IconRank,
-  sekhmet: Crosshair,
   services: Rocket,
-  cp: Contact,
   contact: Contact,
+};
+
+/* Platform/company links use their own brand logos instead of icon glyphs */
+const ITEM_LOGO_SRCS: Record<string, string> = {
+  cp: cyberPointsLogo,
+  anansi: anansiLogo,
+  toha3ee: toha3eeLogo,
+  shaka: shakaLogo,
+  nzinga: nzingaLogo,
+  jabari: jabariLogo,
+  aksum: aksumLogo,
+  sekhmet: sekhmetLogo,
+  mansa: mansaLogo,
+  quiteroot: quiteRootLogo,
 };
 
 const Navbar: React.FC = React.memo(() => {
@@ -128,13 +136,18 @@ const Navbar: React.FC = React.memo(() => {
   const groups = SITE_CONFIG.nav.groups;
 
   const renderItem = (item: (typeof groups)[number]['items'][number]) => {
+    const logoSrc = ITEM_LOGO_SRCS[item.key];
     const Icon = ITEM_ICONS[item.key] ?? IconChevronRight;
     const label = t(NAV_ITEM_LABELS[item.key] || item.label);
     const desc = (item as { desc?: string }).desc;
     const inner = (
       <>
         <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-bg-elevated text-accent transition-colors group-hover:bg-accent/10">
-          <Icon size={20} strokeWidth={2.25} />
+          {logoSrc ? (
+            <img src={logoSrc} alt={label} draggable={false} className="w-7 h-7 object-contain" />
+          ) : (
+            <Icon size={20} strokeWidth={2.25} />
+          )}
         </span>
         <span className="flex-1 min-w-0">
           <span className="block text-sm font-black uppercase tracking-widest text-text-primary">
@@ -282,13 +295,16 @@ const Navbar: React.FC = React.memo(() => {
                       >
                         {t('nav.contact')}
                       </ContactTrigger>
-                      <Link
+                      <Button
                         to="/login"
                         onClick={closeMenu}
-                        className="flex flex-1 items-center justify-center gap-2.5 border border-accent/50 text-accent font-bold uppercase tracking-widest rounded-xl px-6 py-3.5 text-sm transition-[background-color,color] duration-200 hover:bg-accent/10 active:scale-[0.98]"
+                        variant="secondary"
+                        size="md"
+                        icon={<LogIn className="w-4 h-4" />}
+                        className="flex-1"
                       >
-                        <LogIn className="w-4 h-4" /> {t('button.logIn')}
-                      </Link>
+                        {t('button.logIn')}
+                      </Button>
                     </>
                   )}
                 </div>

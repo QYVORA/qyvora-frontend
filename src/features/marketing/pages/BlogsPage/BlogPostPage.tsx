@@ -26,7 +26,7 @@ const BlogPostPage: React.FC = () => {
 
   if (!post) {
     return (
-      <div className="relative min-h-screen w-full bg-bg flex items-center justify-center pt-32">
+      <div className="relative min-h-dvh w-full bg-bg flex items-center justify-center pt-32">
         <div className="flex flex-col items-start">
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-black uppercase tracking-tight mb-4">Blog Not Found</h1>
           <Link to="/blogs" className="btn-primary mt-4 inline-flex items-center gap-2">
@@ -63,7 +63,7 @@ const BlogPostPage: React.FC = () => {
   };
 
   return (
-    <div className="relative min-h-screen w-full bg-bg">
+    <div className="relative min-h-dvh w-full bg-bg">
       <SEO
         title={post.title}
         description={post.excerpt}
@@ -74,7 +74,7 @@ const BlogPostPage: React.FC = () => {
       />
 
       {/* ── Article Header ── */}
-      <header className="pt-[120px] pb-12 md:pt-[136px] md:pb-16">
+      <header className="pt-24 md:pt-28 lg:pt-32 pb-12 md:pb-16">
         <div className="w-full px-3 md:px-4 lg:px-6">
           <motion.div
             initial={{ opacity: 0, y: 20 }}

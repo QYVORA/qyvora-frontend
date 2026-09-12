@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
 import ScrollReveal from '@/shared/components/ScrollReveal';
+import Button from '@/shared/components/ui/Button';
 
 export interface PageHeaderAction {
   label: string;
@@ -17,12 +18,6 @@ export interface PageHeaderProps {
   actions?: PageHeaderAction[];
   loading?: boolean;
 }
-
-const variantStyles: Record<string, string> = {
-  primary: 'bg-accent text-on-accent hover:brightness-110 shadow-lg shadow-accent/20',
-  secondary: 'bg-bg-elevated text-text-muted hover:text-accent border border-border/60',
-  danger: 'bg-danger/10 text-danger hover:bg-danger/20 border border-danger/20',
-};
 
 const PageHeader = ({ pretitle, title, subtitle, actions, loading }: PageHeaderProps) => {
   const { t } = useTranslation();
@@ -46,15 +41,17 @@ const PageHeader = ({ pretitle, title, subtitle, actions, loading }: PageHeaderP
       {actions && actions.length > 0 && (
         <div className="flex items-center gap-3">
           {actions.map((action) => (
-            <button
+            <Button
               key={action.label}
               onClick={action.onClick}
               disabled={action.loading}
-              className={`flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-black uppercase tracking-wider transition-[filter,transform,background-color,color,border-color,box-shadow] duration-[var(--dur-base)] ease-[var(--ease-smooth)] active:scale-95 disabled:opacity-50 ${variantStyles[action.variant ?? 'primary']}`}
+              loading={action.loading}
+              variant={action.variant ?? 'primary'}
+              size="md"
+              icon={action.icon}
             >
-              {action.icon && <span className={`w-4 h-4 ${action.loading ? 'animate-spin' : ''}`}>{action.icon}</span>}
               {action.loading ? t('components.common.loading') : action.label}
-            </button>
+            </Button>
           ))}
         </div>
       )}

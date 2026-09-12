@@ -262,7 +262,7 @@ const Settings: React.FC = () => {
     <>
       <SEO title={t('student.settings.seoTitle')} description={t('student.settings.seoDesc')} noindex />
 
-      <div className="bg-bg min-h-screen px-3 md:px-4 lg:px-6 pt-8 pb-16 md:pb-20">
+      <div className="bg-bg min-h-full px-3 md:px-4 lg:px-6 pt-8 pb-16 md:pb-20">
 
         {/* Page header */}
         <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-8">

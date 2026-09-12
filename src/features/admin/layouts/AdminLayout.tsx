@@ -10,7 +10,7 @@ const TOPBAR_H = 'pt-20 md:pt-24';
 const CONTENT_PB = 'md:pb-6';
 
 const AdminLayout = () => (
-  <div className="bg-bg min-h-screen" data-theme-persist="dark">
+  <div className="bg-bg min-h-dvh" data-theme-persist="dark">
     <AdminTopbar />
     <div id="main-content" className={`${TOPBAR_H} ${CONTENT_PB}`}>
       <Outlet />

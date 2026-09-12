@@ -249,7 +249,7 @@ const IncidentsTab = () => {
                   <button
                     onClick={() => navigate(`?tab=security&requestId=${encodeURIComponent(incident.correlationId)}`)}
                     aria-label={t('admin.audit.viewSecurityEvents')}
-                    className="inline-flex items-center gap-1 text-accent/80 hover:text-accent transition-colors min-h-[24px]"
+                    className="inline-flex items-center gap-1 text-accent/80 hover:text-accent transition-colors min-h-[44px]"
                   >
                     <Link2 size={11} />
                     {incident.correlationId.slice(0, 8)}
@@ -260,7 +260,7 @@ const IncidentsTab = () => {
                     <button
                       key={action.status}
                       onClick={() => void handleStatusChange(incident, action.status)}
-                      className={`${BTN_CLS} ${action.status === 'resolved' ? 'btn-primary' : 'btn-secondary'} px-3 py-1.5 min-h-[32px]`}
+                      className={`${BTN_CLS} ${action.status === 'resolved' ? 'btn-primary' : 'btn-secondary'} px-3 py-1.5`}
                     >
                       {action.label}
                     </button>

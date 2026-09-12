@@ -4,6 +4,7 @@ interface LabBadgeProps {
   labId: string;
   accentColor?: string;
   className?: string;
+  glow?: boolean;
 }
 
 const BADGE_BG = '#0c1222';
@@ -140,7 +141,7 @@ const LAB_BADGE_CONFIG: Record<string, {
  * thick colored outer ring with tick marks → secondary decorative ring →
  * dark circular interior → inner boundary → lab-specific illustration.
  */
-const LabBadge: React.FC<LabBadgeProps> = ({ labId, accentColor, className = '' }) => {
+const LabBadge: React.FC<LabBadgeProps> = ({ labId, accentColor, className = '', glow = true }) => {
   const config = LAB_BADGE_CONFIG[labId];
   if (!config) return null;
 
@@ -205,10 +206,12 @@ const LabBadge: React.FC<LabBadgeProps> = ({ labId, accentColor, className = '' 
 
       {/* Lab illustration — centered, with subtle glow for depth */}
       <div className="relative z-10 flex items-center justify-center w-[52%] h-[52%]">
-        <div
-          className="absolute inset-0 rounded-full opacity-20 blur-md"
-          style={{ backgroundColor: ringColor }}
-        />
+        {glow && (
+          <div
+            className="absolute inset-0 rounded-full opacity-20 blur-md"
+            style={{ backgroundColor: ringColor }}
+          />
+        )}
         <Illustration />
       </div>
     </div>

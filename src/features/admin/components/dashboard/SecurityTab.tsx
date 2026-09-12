@@ -80,7 +80,7 @@ const SecurityTab: React.FC<SecurityTabProps> = ({ securitySummary, securityEven
               <button
                 onClick={clearRequestFilter}
                 aria-label={t('admin.security.clearRequestFilter')}
-                className="ml-auto w-8 h-8 min-h-[32px] flex items-center justify-center rounded-lg text-text-muted hover:text-accent transition-colors"
+                className="ml-auto min-h-[44px] min-w-[44px] flex items-center justify-center rounded-lg text-text-muted hover:text-accent transition-colors"
               >
                 <X size={14} />
               </button>
