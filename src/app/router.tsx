@@ -51,6 +51,11 @@ const ShakaPage         = lazy(() => import('../features/marketing/pages/public/
 const NzingaPage        = lazy(() => import('../features/marketing/pages/public/NzingaPage'));
 const SekhmetPage       = lazy(() => import('../features/marketing/pages/public/SekhmetPage'));
 const MansaPage         = lazy(() => import('../features/marketing/pages/public/MansaPage'));
+const AmanirenasPage    = lazy(() => import('../features/marketing/pages/public/AmanirenasPage'));
+const SundiataPage      = lazy(() => import('../features/marketing/pages/public/SundiataPage'));
+const TimbuktuPage      = lazy(() => import('../features/marketing/pages/public/TimbuktuPage'));
+const KushPage          = lazy(() => import('../features/marketing/pages/public/KushPage'));
+const ImhotepPage       = lazy(() => import('../features/marketing/pages/public/ImhotepPage'));
 const BlogsPage         = lazy(() => import('../features/marketing/pages/public/BlogsPage'));
 const TeamPage          = lazy(() => import('../features/marketing/pages/public/TeamPage'));
 const QuiteRootPage     = lazy(() => import('../features/marketing/pages/public/QuiteRootPage'));
@@ -262,6 +267,11 @@ export const AppRouter = () => {
           <Route path="/nzinga" element={<Wrap scope="Nzinga"><NzingaPage /></Wrap>} />
           <Route path="/sekhmet" element={<Wrap scope="Sekhmet"><SekhmetPage /></Wrap>} />
           <Route path="/mansa" element={<Wrap scope="Mansa"><MansaPage /></Wrap>} />
+          <Route path="/amanirenas" element={<Wrap scope="Amanirenas"><AmanirenasPage /></Wrap>} />
+          <Route path="/sundiata" element={<Wrap scope="Sundiata"><SundiataPage /></Wrap>} />
+          <Route path="/timbuktu" element={<Wrap scope="Timbuktu"><TimbuktuPage /></Wrap>} />
+          <Route path="/kush" element={<Wrap scope="Kush"><KushPage /></Wrap>} />
+          <Route path="/imhotep" element={<Wrap scope="Imhotep"><ImhotepPage /></Wrap>} />
         </Route>
 
         {/* ── Auth routes ───────── */}
