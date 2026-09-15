@@ -56,6 +56,11 @@ const routeContent: Record<string, RouteContent> = {
       { label: 'aksum', href: '/aksum' },
       { label: 'sekhmet', href: '/sekhmet' },
       { label: 'mansa', href: '/mansa' },
+      { label: 'amanirenas', href: '/amanirenas' },
+      { label: 'sundiata', href: '/sundiata' },
+      { label: 'timbuktu', href: '/timbuktu' },
+      { label: 'kush', href: '/kush' },
+      { label: 'imhotep', href: '/imhotep' },
       { label: 'Zero Day Market', href: '/zero-day-market' },
       { label: 'QuiteRoot', href: '/quiteroot' },
       { label: 'Blog', href: '/blogs' },
@@ -682,7 +687,7 @@ const routeContent: Record<string, RouteContent> = {
       },
       {
         heading: 'Install',
-        body: 'curl -fsSL https://raw.githubusercontent.com/QYVORA/qyvora-Sekhmet/main/install.sh | bash',
+        body: 'curl -fsSL https://raw.githubusercontent.com/QYVORA/qyvora-sekhmet/main/install.sh | bash',
       },
       {
         heading: 'Usage',
@@ -741,6 +746,171 @@ const routeContent: Record<string, RouteContent> = {
       },
     ],
     links: [{ label: 'sekhmet', href: '/sekhmet' }],
+  },
+  '/amanirenas': {
+    title: 'amanirenas | QYVORA',
+    description: 'Offline iOS/Android app security assessment framework in Go: static analysis, hardcoded secrets, weak crypto, insecure endpoints, WebView posture and evidence-backed risk scoring.',
+    h1: 'amanirenas',
+    lead: 'Offline mobile app security assessment from the terminal. Analyze app packages (IPA/APK/AAB) for hardcoded secrets, weak cryptography, insecure endpoint usage and WebView posture — without a device, an emulator or live runtime access.',
+    sections: [
+      {
+        heading: 'Guarantees',
+        bullets: [
+          'Offline by design — analyzes only the app package you point it at; live runtime/device collection is refused honestly',
+          'Six-stage pipeline: intake, metadata, static analysis, configuration, API endpoints and evidence-backed findings',
+          'Deterministic rule engine (AMN-001+) — a rule is a pure function of the read-only environment',
+          'Risk scores are transparent: severity_weight × confidence × exposure, capped at 100',
+        ],
+      },
+      {
+        heading: 'Install',
+        body: 'git clone --depth 1 https://github.com/QYVORA/qyvora-amanirenas && cd qyvora-amanirenas && go build ./cmd/amanirenas',
+      },
+      {
+        heading: 'Usage',
+        bullets: [
+          'amanirenas assess --sim',
+          'amanirenas package --output app.json',
+          'amanirenas assess --package app.json',
+          'amanirenas findings',
+          'amanirenas evidence',
+          'amanirenas report -f json --out report.json',
+        ],
+      },
+    ],
+    links: [{ label: 'imhotep', href: '/imhotep' }],
+  },
+  '/sundiata': {
+    title: 'sundiata | QYVORA',
+    description: 'Identity & access security assessment for Active Directory in Go: identity discovery, account posture, password policies and sensitive memberships. Credentials are never stored or printed.',
+    h1: 'sundiata',
+    lead: 'Identity & access security assessment for Windows Active Directory from the terminal. Identity discovery, account posture, password policy evaluation and sensitive group membership checks — credentials are redacted at collection time and never stored.',
+    sections: [
+      {
+        heading: 'Guarantees',
+        bullets: [
+          'No live collection — identity data is read from captured/recorded sources only; live collection is refused honestly',
+          'Credentials are redacted at collection time and never written to disk, logs or reports',
+          'Deterministic rule engine (SDT-001+) over identity posture, account posture and sensitive memberships',
+          'Risk scores are transparent: severity_weight × confidence × exposure, capped at 100',
+        ],
+      },
+      {
+        heading: 'Install',
+        body: 'git clone --depth 1 https://github.com/QYVORA/qyvora-sundiata && cd qyvora-sundiata && go build ./cmd/sundiata',
+      },
+      {
+        heading: 'Usage',
+        bullets: [
+          'sundiata assess --sim',
+          'sundiata recruit --identity identity.yaml',
+          'sundiata assess --lease identities.yaml',
+          'sundiata findings',
+          'sundiata evidence',
+          'sundiata report -f json --out report.json',
+        ],
+      },
+    ],
+    links: [{ label: 'timbuktu', href: '/timbuktu' }],
+  },
+  '/timbuktu': {
+    title: 'timbuktu | QYVORA',
+    description: 'Incident response & digital forensics framework in Go: source integrity, artifact identification, filesystem lifecycle, memory postmortems, log analysis and evidence-backed timelines.',
+    h1: 'timbuktu',
+    lead: 'Incident response and digital forensics from the terminal. Analyze offline case data: source integrity, artifact identification, filesystem lifecycle, memory postmortems, log analysis and evidence-backed timelines.',
+    sections: [
+      {
+        heading: 'Guarantees',
+        bullets: [
+          'Offline only — analyzes recorded case data; live acquisition is refused honestly',
+          'Evidence-backed forensic timeline: every entry carries source, observed_at and integrity',
+          'Deterministic rule engine across integrity, artifacts, filesystem, memory, logs and timelines',
+          'Risk scores are transparent: severity_weight × confidence × exposure, capped at 100',
+        ],
+      },
+      {
+        heading: 'Install',
+        body: 'git clone --depth 1 https://github.com/QYVORA/qyvora-timbuktu && cd qyvora-timbuktu && go build ./cmd/timbuktu',
+      },
+      {
+        heading: 'Usage',
+        bullets: [
+          'timbuktu assess --sim',
+          'timbuktu case --output case.json',
+          'timbuktu assess --case case.json',
+          'timbuktu timeline',
+          'timbuktu findings',
+          'timbuktu report -f json --out report.json',
+        ],
+      },
+    ],
+    links: [{ label: 'kush', href: '/kush' }],
+  },
+  '/kush': {
+    title: 'kush | QYVORA',
+    description: 'Offline malware sample analysis framework in Go: hashing, metadata, static posture, strings, network indicators, IOC extraction and threat classification — without executing samples.',
+    h1: 'kush',
+    lead: 'Offline malware sample analysis from the terminal. Hash samples, extract metadata, analyze static posture and strings, surface network indicators and classify IOCs — without ever executing the sample on the developer host.',
+    sections: [
+      {
+        heading: 'Guarantees',
+        bullets: [
+          'Static by design — samples are never executed on the developer host; dynamic execution is refused honestly',
+          'Nine-stage pipeline: intake, hashing, metadata, static, strings, behavior, network, IOC and risk',
+          'Deterministic rule engine (KSH-001+) with verified high-confidence IOC catalog',
+          'Risk scores are transparent: severity_weight × confidence × exposure, capped at 100',
+        ],
+      },
+      {
+        heading: 'Install',
+        body: 'git clone --depth 1 https://github.com/QYVORA/qyvora-kush && cd qyvora-kush && go build ./cmd/kush',
+      },
+      {
+        heading: 'Usage',
+        bullets: [
+          'kush assess --sim',
+          'kush sample --output sample.json',
+          'kush assess --sample sample.json',
+          'kush findings',
+          'kush evidence',
+          'kush report -f json --out report.json',
+        ],
+      },
+    ],
+    links: [{ label: 'sundiata', href: '/sundiata' }],
+  },
+  '/imhotep': {
+    title: 'imhotep | QYVORA',
+    description: 'Offline cloud snapshot analysis framework in Go: IAM posture, storage exposure, network exposure, container posture, secret redaction and misconfiguration detection.',
+    h1: 'imhotep',
+    lead: 'Offline cloud snapshot analysis from the terminal. Analyze recorded cloud snapshots for IAM posture, storage exposure, network exposure, container posture and misconfigurations — without touching live provider APIs.',
+    sections: [
+      {
+        heading: 'Guarantees',
+        bullets: [
+          'Offline by design — reads recorded snapshots only; live provider collection is refused honestly',
+          'Secret material is redacted at collection time and never stored or printed',
+          'Deterministic rule engine (IAM/STG/NET/DBE/CNT/SEC) across the snapshot surface',
+          'Risk scores are transparent: severity_weight × confidence × exposure, capped at 100',
+        ],
+      },
+      {
+        heading: 'Install',
+        body: 'git clone --depth 1 https://github.com/QYVORA/qyvora-imhotep && cd qyvora-imhotep && go build ./cmd/imhotep',
+      },
+      {
+        heading: 'Usage',
+        bullets: [
+          'imhotep assess --sim',
+          'imhotep snapshot --output snapshot.json',
+          'imhotep assess --snapshot snapshot.json',
+          'imhotep providers',
+          'imhotep findings',
+          'imhotep report -f json --out report.json',
+        ],
+      },
+    ],
+    links: [{ label: 'amanirenas', href: '/amanirenas' }],
   },
   '/shaka': {
     title: 'shaka | QYVORA',
