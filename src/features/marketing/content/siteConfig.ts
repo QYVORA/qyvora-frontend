@@ -125,6 +125,11 @@ export const SITE_CONFIG = {
           { key: 'aksum', label: 'aksum', path: '/aksum', desc: 'Binary security assessment & reverse engineering' },
           { key: 'sekhmet', label: 'sekhmet', path: '/sekhmet', desc: 'Baseline-aware fuzzing & vulnerability discovery framework' },
           { key: 'mansa', label: 'mansa', path: '/mansa', desc: 'Wireless security assessment framework' },
+          { key: 'amanirenas', label: 'amanirenas', path: '/amanirenas', desc: 'Mobile app security assessment' },
+          { key: 'sundiata', label: 'sundiata', path: '/sundiata', desc: 'Identity & access assessment' },
+          { key: 'timbuktu', label: 'timbuktu', path: '/timbuktu', desc: 'Incident response & digital forensics' },
+          { key: 'kush', label: 'kush', path: '/kush', desc: 'Malware sample analysis' },
+          { key: 'imhotep', label: 'imhotep', path: '/imhotep', desc: 'Cloud security assessment' },
         ],
       },
       {
@@ -167,6 +172,11 @@ export const SITE_CONFIG = {
       { key: 'aksum', label: 'aksum', path: '/aksum', desc: 'Binary security assessment & reverse engineering' },
       { key: 'sekhmet', label: 'sekhmet', path: '/sekhmet', desc: 'Baseline-aware fuzzing & vulnerability discovery framework' },
       { key: 'mansa', label: 'mansa', path: '/mansa', desc: 'Wireless security assessment framework' },
+      { key: 'amanirenas', label: 'amanirenas', path: '/amanirenas', desc: 'Mobile app security assessment' },
+      { key: 'sundiata', label: 'sundiata', path: '/sundiata', desc: 'Identity & access assessment' },
+      { key: 'timbuktu', label: 'timbuktu', path: '/timbuktu', desc: 'Incident response & digital forensics' },
+      { key: 'kush', label: 'kush', path: '/kush', desc: 'Malware sample analysis' },
+      { key: 'imhotep', label: 'imhotep', path: '/imhotep', desc: 'Cloud security assessment' },
       { key: 'leaderboard', label: 'Leaderboard', path: '/leaderboard', desc: 'Top operators ranking' },
     ],
     company: [
