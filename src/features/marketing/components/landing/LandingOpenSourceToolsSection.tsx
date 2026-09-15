@@ -10,6 +10,11 @@ import shakaLogo from '@/assets/shaka/shaka-main-logo.webp';
 import nzingaLogo from '@/assets/nzinga/nzinga-main-logo.webp';
 import sekhmetLogo from '@/assets/sekhmet/sekhmet-main-logo.webp';
 import mansaLogo from '@/assets/mansa/mansa-main-logo.webp';
+import amanirenasLogo from '@/assets/amanirenas/amanirenas-main-logo.webp';
+import sundiataLogo from '@/assets/sundiata/sundiata-main-logo.webp';
+import timbuktuLogo from '@/assets/timbuktu/timbuktu-main-logo.webp';
+import kushLogo from '@/assets/kush/kush-main-logo.webp';
+import imhotepLogo from '@/assets/imhotep/imhotep-main-logo.webp';
 import DragMarquee from '@/shared/components/carousel/DragMarquee';
 import { SimpleHeading } from '@/shared/components/ui';
 
@@ -35,6 +40,11 @@ const LandingOpenSourceToolsSection: React.FC = () => {
     { slug: 'aksum', path: '/aksum', logo: aksumLogo, alt: t('landing.aksum.title') },
     { slug: 'sekhmet', path: '/sekhmet', logo: sekhmetLogo, alt: t('landing.sekhmet.title') },
     { slug: 'mansa', path: '/mansa', logo: mansaLogo, alt: t('landing.mansa.title') },
+    { slug: 'amanirenas', path: '/amanirenas', logo: amanirenasLogo, alt: t('landing.amanirenas.title') },
+    { slug: 'sundiata', path: '/sundiata', logo: sundiataLogo, alt: t('landing.sundiata.title') },
+    { slug: 'timbuktu', path: '/timbuktu', logo: timbuktuLogo, alt: t('landing.timbuktu.title') },
+    { slug: 'kush', path: '/kush', logo: kushLogo, alt: t('landing.kush.title') },
+    { slug: 'imhotep', path: '/imhotep', logo: imhotepLogo, alt: t('landing.imhotep.title') },
   ];
 
   const logoClass =
