@@ -17,6 +17,11 @@ import shakaLogo from '@/assets/shaka/shaka-main-logo.webp';
 import nzingaLogo from '@/assets/nzinga/nzinga-main-logo.webp';
 import sekhmetLogo from '@/assets/sekhmet/sekhmet-main-logo.webp';
 import mansaLogo from '@/assets/mansa/mansa-main-logo.webp';
+import amanirenasLogo from '@/assets/amanirenas/amanirenas-main-logo.webp';
+import sundiataLogo from '@/assets/sundiata/sundiata-main-logo.webp';
+import timbuktuLogo from '@/assets/timbuktu/timbuktu-main-logo.webp';
+import kushLogo from '@/assets/kush/kush-main-logo.webp';
+import imhotepLogo from '@/assets/imhotep/imhotep-main-logo.webp';
 
 interface ToolRef {
   path: string;
@@ -34,6 +39,11 @@ const TOOLS: ToolRef[] = [
   { path: '/aksum', titleKey: 'landing.aksum.title', descKey: 'landing.aksum.description', logo: aksumLogo },
   { path: '/sekhmet', titleKey: 'landing.sekhmet.title', descKey: 'landing.sekhmet.description', logo: sekhmetLogo },
   { path: '/mansa', titleKey: 'landing.mansa.title', descKey: 'landing.mansa.description', logo: mansaLogo },
+  { path: '/amanirenas', titleKey: 'landing.amanirenas.title', descKey: 'landing.amanirenas.description', logo: amanirenasLogo },
+  { path: '/sundiata', titleKey: 'landing.sundiata.title', descKey: 'landing.sundiata.description', logo: sundiataLogo },
+  { path: '/timbuktu', titleKey: 'landing.timbuktu.title', descKey: 'landing.timbuktu.description', logo: timbuktuLogo },
+  { path: '/kush', titleKey: 'landing.kush.title', descKey: 'landing.kush.description', logo: kushLogo },
+  { path: '/imhotep', titleKey: 'landing.imhotep.title', descKey: 'landing.imhotep.description', logo: imhotepLogo },
 ];
 
 export const getRelatedTools = (t: TFunction, excludePath: string): RelatedItem[] =>
