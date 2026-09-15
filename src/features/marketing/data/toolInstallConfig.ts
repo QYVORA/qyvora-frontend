@@ -11,7 +11,9 @@
  * at runtime.
  */
 
-export type ToolInstallKey = 'anansi' | 'jabari' | 'toha3ee' | 'shaka' | 'nzinga' | 'aksum' | 'sekhmet' | 'mansa';
+export type ToolInstallKey =
+  | 'anansi' | 'jabari' | 'toha3ee' | 'shaka' | 'nzinga' | 'aksum' | 'sekhmet' | 'mansa'
+  | 'amanirenas' | 'sundiata' | 'timbuktu' | 'kush' | 'imhotep';
 export type ToolPlatform = 'linux' | 'darwin' | 'windows';
 export type ToolArch = 'amd64' | 'arm64';
 
@@ -132,17 +134,17 @@ windows: { amd64: 'shaka-windows-amd64.exe', arm64: 'shaka-windows-arm64.exe' },
   sekhmet: {
     bin: 'sekhmet',
     displayName: 'sekhmet',
-    repo: 'QYVORA/qyvora-Sekhmet',
-    releaseBase: 'https://github.com/QYVORA/qyvora-Sekhmet/releases/latest/download',
+    repo: 'QYVORA/qyvora-sekhmet',
+    releaseBase: 'https://github.com/QYVORA/qyvora-sekhmet/releases/latest/download',
     assets: {
       linux: { amd64: 'sekhmet-linux-amd64', arm64: 'sekhmet-linux-arm64' },
       darwin: { amd64: 'sekhmet-macos-amd64', arm64: 'sekhmet-macos-arm64' },
       windows: { amd64: 'sekhmet-windows-amd64.exe', arm64: 'sekhmet-windows-arm64.exe' },
     },
     commandTemplates: {
-      linux: 'curl -fsSL https://raw.githubusercontent.com/QYVORA/qyvora-Sekhmet/main/install.sh | bash',
-      darwin: 'curl -fsSL https://raw.githubusercontent.com/QYVORA/qyvora-Sekhmet/main/install.sh | bash',
-      windows: 'irm https://raw.githubusercontent.com/QYVORA/qyvora-Sekhmet/main/install.ps1 | iex',
+      linux: 'curl -fsSL https://raw.githubusercontent.com/QYVORA/qyvora-sekhmet/main/install.sh | bash',
+      darwin: 'curl -fsSL https://raw.githubusercontent.com/QYVORA/qyvora-sekhmet/main/install.sh | bash',
+      windows: 'irm https://raw.githubusercontent.com/QYVORA/qyvora-sekhmet/main/install.ps1 | iex',
     },
     note: 'Single static binary. The installer auto-detects your platform, verifies SHA-256 and installs the icon and desktop entry.',
   },
@@ -162,5 +164,90 @@ windows: { amd64: 'shaka-windows-amd64.exe', arm64: 'shaka-windows-arm64.exe' },
       windows: 'irm https://raw.githubusercontent.com/QYVORA/qyvora-mansa/main/install.ps1 | iex',
     },
     note: 'Single static binary. The installer auto-detects your OS, CPU and shell, installs to ~/.local/bin and verifies SHA-256 against the published checksums.',
+  },
+  amanirenas: {
+    bin: 'amanirenas',
+    displayName: 'amanirenas',
+    repo: 'QYVORA/qyvora-amanirenas',
+    releaseBase: 'https://github.com/QYVORA/qyvora-amanirenas/releases/latest/download',
+    assets: {
+      linux: { amd64: 'amanirenas-linux-amd64', arm64: 'amanirenas-linux-arm64' },
+      darwin: { amd64: 'amanirenas-macos-amd64', arm64: 'amanirenas-macos-arm64' },
+      windows: { amd64: 'amanirenas-windows-amd64.exe', arm64: 'amanirenas-windows-arm64.exe' },
+    },
+    commandTemplates: {
+      linux: 'git clone --depth 1 https://github.com/QYVORA/qyvora-amanirenas /tmp/qyvora-amanirenas && cd /tmp/qyvora-amanirenas && sudo make install',
+      darwin: 'git clone --depth 1 https://github.com/QYVORA/qyvora-amanirenas /tmp/qyvora-amanirenas && cd /tmp/qyvora-amanirenas && sudo make install',
+      windows: 'git clone --depth 1 https://github.com/QYVORA/qyvora-amanirenas %TEMP%\\qyvora-amanirenas && cd %TEMP%\\qyvora-amanirenas && go build -o {bin}.exe ./cmd/amanirenas',
+    },
+    note: 'Build from source with Go 1.26+ — make install ships the binary, icon and desktop entry. No release is published yet; the asset map resolves automatically once one exists.',
+  },
+  sundiata: {
+    bin: 'sundiata',
+    displayName: 'sundiata',
+    repo: 'QYVORA/qyvora-sundiata',
+    releaseBase: 'https://github.com/QYVORA/qyvora-sundiata/releases/latest/download',
+    assets: {
+      linux: { amd64: 'sundiata-linux-amd64', arm64: 'sundiata-linux-arm64' },
+      darwin: { amd64: 'sundiata-macos-amd64', arm64: 'sundiata-macos-arm64' },
+      windows: { amd64: 'sundiata-windows-amd64.exe', arm64: 'sundiata-windows-arm64.exe' },
+    },
+    commandTemplates: {
+      linux: 'git clone --depth 1 https://github.com/QYVORA/qyvora-sundiata /tmp/qyvora-sundiata && cd /tmp/qyvora-sundiata && sudo make install',
+      darwin: 'git clone --depth 1 https://github.com/QYVORA/qyvora-sundiata /tmp/qyvora-sundiata && cd /tmp/qyvora-sundiata && sudo make install',
+      windows: 'git clone --depth 1 https://github.com/QYVORA/qyvora-sundiata %TEMP%\\qyvora-sundiata && cd %TEMP%\\qyvora-sundiata && go build -o {bin}.exe ./cmd/sundiata',
+    },
+    note: 'Build from source with Go 1.26+ — make install ships the binary, icon and desktop entry. No release is published yet; the asset map resolves automatically once one exists.',
+  },
+  timbuktu: {
+    bin: 'timbuktu',
+    displayName: 'timbuktu',
+    repo: 'QYVORA/qyvora-timbuktu',
+    releaseBase: 'https://github.com/QYVORA/qyvora-timbuktu/releases/latest/download',
+    assets: {
+      linux: { amd64: 'timbuktu-linux-amd64', arm64: 'timbuktu-linux-arm64' },
+      darwin: { amd64: 'timbuktu-macos-amd64', arm64: 'timbuktu-macos-arm64' },
+      windows: { amd64: 'timbuktu-windows-amd64.exe', arm64: 'timbuktu-windows-arm64.exe' },
+    },
+    commandTemplates: {
+      linux: 'git clone --depth 1 https://github.com/QYVORA/qyvora-timbuktu /tmp/qyvora-timbuktu && cd /tmp/qyvora-timbuktu && sudo make install',
+      darwin: 'git clone --depth 1 https://github.com/QYVORA/qyvora-timbuktu /tmp/qyvora-timbuktu && cd /tmp/qyvora-timbuktu && sudo make install',
+      windows: 'git clone --depth 1 https://github.com/QYVORA/qyvora-timbuktu %TEMP%\\qyvora-timbuktu && cd %TEMP%\\qyvora-timbuktu && go build -o {bin}.exe ./cmd/timbuktu',
+    },
+    note: 'Build from source with Go 1.26+ — make install ships the binary, icon and desktop entry. No release is published yet; the asset map resolves automatically once one exists.',
+  },
+  kush: {
+    bin: 'kush',
+    displayName: 'kush',
+    repo: 'QYVORA/qyvora-kush',
+    releaseBase: 'https://github.com/QYVORA/qyvora-kush/releases/latest/download',
+    assets: {
+      linux: { amd64: 'kush-linux-amd64', arm64: 'kush-linux-arm64' },
+      darwin: { amd64: 'kush-macos-amd64', arm64: 'kush-macos-arm64' },
+      windows: { amd64: 'kush-windows-amd64.exe', arm64: 'kush-windows-arm64.exe' },
+    },
+    commandTemplates: {
+      linux: 'git clone --depth 1 https://github.com/QYVORA/qyvora-kush /tmp/qyvora-kush && cd /tmp/qyvora-kush && sudo make install',
+      darwin: 'git clone --depth 1 https://github.com/QYVORA/qyvora-kush /tmp/qyvora-kush && cd /tmp/qyvora-kush && sudo make install',
+      windows: 'git clone --depth 1 https://github.com/QYVORA/qyvora-kush %TEMP%\\qyvora-kush && cd %TEMP%\\qyvora-kush && go build -o {bin}.exe ./cmd/kush',
+    },
+    note: 'Build from source with Go 1.26+ — make install ships the binary, icon and desktop entry. No release is published yet; the asset map resolves automatically once one exists.',
+  },
+  imhotep: {
+    bin: 'imhotep',
+    displayName: 'imhotep',
+    repo: 'QYVORA/qyvora-imhotep',
+    releaseBase: 'https://github.com/QYVORA/qyvora-imhotep/releases/latest/download',
+    assets: {
+      linux: { amd64: 'imhotep-linux-amd64', arm64: 'imhotep-linux-arm64' },
+      darwin: { amd64: 'imhotep-macos-amd64', arm64: 'imhotep-macos-arm64' },
+      windows: { amd64: 'imhotep-windows-amd64.exe', arm64: 'imhotep-windows-arm64.exe' },
+    },
+    commandTemplates: {
+      linux: 'git clone --depth 1 https://github.com/QYVORA/qyvora-imhotep /tmp/qyvora-imhotep && cd /tmp/qyvora-imhotep && sudo make install',
+      darwin: 'git clone --depth 1 https://github.com/QYVORA/qyvora-imhotep /tmp/qyvora-imhotep && cd /tmp/qyvora-imhotep && sudo make install',
+      windows: 'git clone --depth 1 https://github.com/QYVORA/qyvora-imhotep %TEMP%\\qyvora-imhotep && cd %TEMP%\\qyvora-imhotep && go build -o {bin}.exe ./cmd/imhotep',
+    },
+    note: 'Build from source with Go 1.26+ — make install ships the binary, icon and desktop entry. No release is published yet; the asset map resolves automatically once one exists.',
   },
 };
