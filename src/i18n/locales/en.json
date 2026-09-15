@@ -921,6 +921,31 @@
       "title": "mansa",
       "description": "Authorized wireless security assessment framework in Go: WLAN discovery, enumeration, MITM-range analysis, deterministic rule engine and transparent risk scoring.",
       "explore": "Explore mansa"
+    },
+    "amanirenas": {
+      "title": "amanirenas",
+      "description": "Offline iOS/Android app security assessment in Go: static analysis, hardcoded secrets, weak crypto, insecure endpoints, WebView posture and evidence-backed risk scoring.",
+      "explore": "Explore amanirenas"
+    },
+    "sundiata": {
+      "title": "sundiata",
+      "description": "Identity & access security assessment for Active Directory in Go: identity discovery, account posture, password policies, sensitive memberships. Credentials are never stored or printed.",
+      "explore": "Explore sundiata"
+    },
+    "timbuktu": {
+      "title": "timbuktu",
+      "description": "Incident response & digital forensics framework in Go: source integrity, artifact identification, filesystem lifecycle, memory postmortems, log analysis and evidence-backed timelines.",
+      "explore": "Explore timbuktu"
+    },
+    "kush": {
+      "title": "kush",
+      "description": "Offline malware sample analysis framework in Go: hashing, metadata, static posture, strings, network indicators, IOC extraction and threat classification — without executing samples.",
+      "explore": "Explore kush"
+    },
+    "imhotep": {
+      "title": "imhotep",
+      "description": "Offline cloud snapshot analysis framework in Go: IAM posture, storage exposure, network exposure, container posture, secret redaction and misconfiguration detection.",
+      "explore": "Explore imhotep"
     }
   },
   "simulations": {
