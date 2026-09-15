@@ -43,6 +43,11 @@ const FOOTER_COLS = [
       { key: 'aksum', label: 'aksum', path: '/aksum' },
       { key: 'sekhmet', label: 'sekhmet', path: '/sekhmet' },
       { key: 'mansa', label: 'mansa', path: '/mansa' },
+      { key: 'amanirenas', label: 'amanirenas', path: '/amanirenas' },
+      { key: 'sundiata', label: 'sundiata', path: '/sundiata' },
+      { key: 'timbuktu', label: 'timbuktu', path: '/timbuktu' },
+      { key: 'kush', label: 'kush', path: '/kush' },
+      { key: 'imhotep', label: 'imhotep', path: '/imhotep' },
     ],
   },
   {
