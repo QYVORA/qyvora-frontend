@@ -26,7 +26,7 @@ import { getBootcampProgressMap, resolveNextRoomPath } from '@/features/student/
 const MobileCpBadge = ({ balance }: { balance: number }) => (
   <div data-tour-id="tour-cp-mobile" className="flex items-center gap-2 px-3 py-2 rounded-xl bg-bg-card">
     <CpLogo className="w-4 h-4" />
-    <span className="text-[10px] font-black text-accent">{balance.toLocaleString()}</span>
+    <span className="text-xs font-black text-accent">{balance.toLocaleString()}</span>
   </div>
 );
 
@@ -234,13 +234,13 @@ const StudentTopbar = () => {
                   )}
                 </div>
                 <div className="flex sm:hidden flex-col min-w-0 flex-1">
-                  <span className="text-[9px] font-black uppercase tracking-[0.25em] text-accent leading-none mb-0.5">{t('student.topbar.breadcrumb.course')}</span>
+                  <span className="text-xs font-black uppercase tracking-[0.25em] text-accent leading-none mb-0.5">{t('student.topbar.breadcrumb.course')}</span>
                   <span className="text-sm font-black text-text-primary truncate leading-tight">{courseConfig?.title ?? t('student.topbar.breadcrumb.course')}</span>
                 </div>
                 <div className="flex items-center gap-1.5 md:gap-2 shrink-0 ml-auto">
                   {courseMeta && (
                     <>
-                      <span className="text-[10px] font-mono text-text-muted hidden sm:inline">
+                      <span className="text-xs font-mono text-text-muted hidden sm:inline">
                         {courseMeta.currentLessonIdx + 1}/{courseMeta.totalLessons}
                       </span>
                     </>
@@ -296,7 +296,7 @@ const StudentTopbar = () => {
               </div>
               <div className="flex sm:hidden flex-col min-w-0 flex-1">
                 {roomBreadcrumb?.phaseTitle && (
-                  <span className="text-[9px] font-black uppercase tracking-[0.25em] text-accent leading-none mb-0.5">
+                  <span className="text-xs font-black uppercase tracking-[0.25em] text-accent leading-none mb-0.5">
                     {roomBreadcrumb.phaseTitle}
                   </span>
                 )}
@@ -341,7 +341,7 @@ const StudentTopbar = () => {
               </span>
             </div>
             <div className="flex sm:hidden flex-col min-w-0 flex-1">
-              <span className="text-[9px] font-black uppercase tracking-[0.25em] text-accent leading-none mb-0.5">{t('student.topbar.breadcrumb.lab')}</span>
+              <span className="text-xs font-black uppercase tracking-[0.25em] text-accent leading-none mb-0.5">{t('student.topbar.breadcrumb.lab')}</span>
               <span className="text-sm font-black text-text-primary truncate leading-tight">
                 {labMatch?.params?.labType?.replace(/-/g, ' ') || t('student.topbar.breadcrumb.lab')}
               </span>
@@ -381,7 +381,7 @@ const StudentTopbar = () => {
               <span className="text-text-primary font-black truncate">Settings</span>
             </div>
             <div className="flex sm:hidden flex-col min-w-0 flex-1">
-              <span className="text-[9px] font-black uppercase tracking-[0.25em] text-accent leading-none mb-0.5">CONFIGURE</span>
+              <span className="text-xs font-black uppercase tracking-[0.25em] text-accent leading-none mb-0.5">CONFIGURE</span>
               <span className="text-sm font-black text-text-primary truncate leading-tight">Settings</span>
             </div>
 
@@ -394,7 +394,7 @@ const StudentTopbar = () => {
                   <Link
                     key={section.id}
                     to={section.path}
-                    className={`relative flex flex-col items-center gap-1.5 px-4 py-2 text-[10px] font-black uppercase tracking-widest transition-colors shrink-0 ${
+                    className={`relative flex flex-col items-center gap-1.5 px-4 py-2 text-xs font-black uppercase tracking-widest transition-colors shrink-0 ${
                       active ? 'text-accent' : 'text-text-secondary hover:text-text-primary active:opacity-70'
                     }`}
                   >
@@ -442,7 +442,7 @@ const StudentTopbar = () => {
                   <Link
                     key={item.path}
                     to={item.path}
-                    className="relative flex flex-col items-center gap-1.5 px-5 py-2 text-[10px] font-black uppercase tracking-widest transition-colors shrink-0 text-text-secondary hover:text-text-primary active:opacity-70"
+                    className="relative flex flex-col items-center gap-1.5 px-5 py-2 text-xs font-black uppercase tracking-widest transition-colors shrink-0 text-text-secondary hover:text-text-primary active:opacity-70"
                   >
                     <item.icon size={32} strokeWidth={2.5} />
                     <span>{item.label}</span>

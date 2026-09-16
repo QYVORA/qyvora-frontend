@@ -35,11 +35,11 @@ const MobileNotificationsSheet: React.FC<MobileNotificationsSheetProps> = ({
         <div className="px-5 py-3 border-b border-border flex items-center justify-between flex-none">
           <div>
             <div className="text-sm font-black uppercase tracking-widest text-text-primary">{t('student.topbar.notifications.title')}</div>
-            <div className="text-[10px] text-text-muted">{t('common2.unreadCount', { count: unreadCount })}</div>
+            <div className="text-xs text-text-muted">{t('common2.unreadCount', { count: unreadCount })}</div>
           </div>
           <div className="flex items-center gap-3">
             {unreadCount > 0 && (
-              <button onClick={markAllNotificationsRead} className="min-h-[44px] px-2 text-[10px] font-bold text-accent">
+              <button onClick={markAllNotificationsRead} className="min-h-[44px] px-2 text-xs font-bold text-accent">
                 {t('student.topbar.notifications.markAllRead')}
               </button>
             )}
@@ -69,7 +69,7 @@ const MobileNotificationsSheet: React.FC<MobileNotificationsSheetProps> = ({
                   {!item.read && <span className="w-2 h-2 rounded-full bg-accent flex-none" />}
                 </div>
                 <p className="text-xs text-text-secondary line-clamp-2 mt-1">{item.message}</p>
-                <div className="text-[10px] text-text-muted mt-1">
+                <div className="text-xs text-text-muted mt-1">
                   {item.createdAt ? new Date(item.createdAt).toLocaleString() : '-'}
                 </div>
               </div>
