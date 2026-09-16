@@ -53,7 +53,7 @@ export const DifficultyBadge: React.FC<{ difficulty: string }> = ({ difficulty }
   const baseDiff = difficulty.split('-')[0].toLowerCase();
   const diffClass = DIFFICULTY_CLASSES[baseDiff] || 'badge-accent';
   return (
-    <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-lg text-[9px] font-black uppercase tracking-widest shrink-0 border ${diffClass}`}>
+    <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-lg text-xs font-black uppercase tracking-widest shrink-0 border ${diffClass}`}>
       <Star className="h-2.5 w-2.5" /> {baseDiff}
     </span>
   );
@@ -130,7 +130,7 @@ export const LearningCard: React.FC<LearningCardProps> = ({
     }
     if (badgeText) {
       return (
-        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-lg text-[9px] font-black uppercase tracking-widest shrink-0 border badge-accent">
+        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-lg text-xs font-black uppercase tracking-widest shrink-0 border badge-accent">
           {badgeText}
         </span>
       );
@@ -145,7 +145,7 @@ export const LearningCard: React.FC<LearningCardProps> = ({
 
     const actionContent = (
       <span
-        className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[9px] sm:text-[10px] md:text-xs font-black uppercase tracking-widest bg-accent text-on-accent transition-[filter,transform] duration-[var(--dur-base)] group-hover/card:brightness-110 group-active:scale-95 ${
+        className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs sm:text-xs md:text-xs font-black uppercase tracking-widest bg-accent text-on-accent transition-[filter,transform] duration-[var(--dur-base)] group-hover/card:brightness-110 group-active:scale-95 ${
           isActionDisabled ? 'opacity-50 pointer-events-none' : ''
         }`}
       >
@@ -188,17 +188,17 @@ export const LearningCard: React.FC<LearningCardProps> = ({
               <div className="flex items-center gap-2 mb-1.5 flex-wrap">
                 {renderDifficulty()}
                 {owned && (
-                  <span className="px-2 py-0.5 bg-accent text-on-accent rounded-lg text-[9px] font-black uppercase tracking-widest">
+                  <span className="px-2 py-0.5 bg-accent text-on-accent rounded-lg text-xs font-black uppercase tracking-widest">
                     Owned
                   </span>
                 )}
                 {isFree && !owned && (
-                  <span className="px-2 py-0.5 bg-accent text-on-accent rounded-lg text-[9px] font-black uppercase tracking-widest">
+                  <span className="px-2 py-0.5 bg-accent text-on-accent rounded-lg text-xs font-black uppercase tracking-widest">
                     Free
                   </span>
                 )}
                 {tags?.slice(0, 2).map((tag) => (
-                  <span key={tag} className="text-[9px] font-black uppercase tracking-widest text-text-muted">
+                  <span key={tag} className="text-xs font-black uppercase tracking-widest text-text-muted">
                     #{tag}
                   </span>
                 ))}
@@ -224,7 +224,7 @@ export const LearningCard: React.FC<LearningCardProps> = ({
         )}
 
         <div className="flex items-center justify-between pt-2 border-t border-border/20">
-          <div className="flex items-center gap-3 text-[10px] font-mono text-text-muted">
+          <div className="flex items-center gap-3 text-xs font-mono text-text-muted">
             {cpReward !== undefined && (
               <span className="font-black uppercase tracking-widest text-accent">
                 {cpReward} CP
@@ -258,7 +258,7 @@ export const LearningCard: React.FC<LearningCardProps> = ({
     }
     if (onClick) {
       return (
-        <div role="button" tabIndex={0} onClick={onClick} onKeyDown={(e) => (e.key === 'Enter' || e.key === ' ') && onClick()} className={containerClasses} style={cardStyle}>
+        <div role="button" tabIndex={0} onClick={onClick} aria-label={title} onKeyDown={(e) => (e.key === 'Enter' || e.key === ' ') && onClick()} className={containerClasses} style={cardStyle}>
           {expandedContent}
         </div>
       );
@@ -282,12 +282,12 @@ export const LearningCard: React.FC<LearningCardProps> = ({
               className="w-full h-full object-cover transition-transform duration-500 ease-[var(--ease-smooth)] group-hover/card:scale-105"
             />
             {owned && (
-              <span className="absolute top-2 right-2 px-2 py-0.5 bg-accent text-on-accent rounded-lg text-[8px] font-black uppercase tracking-widest shadow-sm">
+              <span className="absolute top-2 right-2 px-2 py-0.5 bg-accent text-on-accent rounded-lg text-xs font-black uppercase tracking-widest shadow-sm">
                 Owned
               </span>
             )}
             {isFree && !owned && (
-              <span className="absolute top-2 right-2 px-2 py-0.5 bg-accent text-on-accent rounded-lg text-[8px] font-black uppercase tracking-widest shadow-sm">
+              <span className="absolute top-2 right-2 px-2 py-0.5 bg-accent text-on-accent rounded-lg text-xs font-black uppercase tracking-widest shadow-sm">
                 Free
               </span>
             )}
@@ -299,12 +299,12 @@ export const LearningCard: React.FC<LearningCardProps> = ({
           <div className="flex items-center gap-1.5 flex-wrap min-w-0">
             {renderDifficulty()}
             {!image && owned && (
-              <span className="px-2 py-0.5 bg-accent text-on-accent rounded-lg text-[8px] font-black uppercase tracking-widest">
+              <span className="px-2 py-0.5 bg-accent text-on-accent rounded-lg text-xs font-black uppercase tracking-widest">
                 Owned
               </span>
             )}
             {!image && isFree && !owned && (
-              <span className="px-2 py-0.5 bg-accent text-on-accent rounded-lg text-[8px] font-black uppercase tracking-widest">
+              <span className="px-2 py-0.5 bg-accent text-on-accent rounded-lg text-xs font-black uppercase tracking-widest">
                 Free
               </span>
             )}
@@ -334,7 +334,7 @@ export const LearningCard: React.FC<LearningCardProps> = ({
 
       {/* Bottom Footer Row with Metadata and Action CTA */}
       <div className="flex items-center justify-between mt-auto pt-3 border-t border-border/20">
-        <div className="flex items-center gap-2 text-[9px] sm:text-[10px] font-mono text-text-muted">
+        <div className="flex items-center gap-2 text-xs sm:text-xs font-mono text-text-muted">
           {cpReward !== undefined && (
             <span className="font-black uppercase tracking-widest text-accent">
               {cpReward} CP
@@ -368,7 +368,7 @@ export const LearningCard: React.FC<LearningCardProps> = ({
   }
   if (onClick) {
     return (
-      <div role="button" tabIndex={0} onClick={onClick} onKeyDown={(e) => (e.key === 'Enter' || e.key === ' ') && onClick()} className={containerClasses} style={cardStyle}>
+      <div role="button" tabIndex={0} onClick={onClick} aria-label={title} onKeyDown={(e) => (e.key === 'Enter' || e.key === ' ') && onClick()} className={containerClasses} style={cardStyle}>
         {gridContent}
       </div>
     );

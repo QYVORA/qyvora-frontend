@@ -118,7 +118,7 @@ const LabsCarousel: React.FC<LabsCarouselProps> = ({
             <div className="grid grid-cols-1 lg:grid-cols-2 lg:items-center gap-8 lg:gap-12">
               {/* Left column — lab details */}
               <div className="flex flex-col min-h-0 overflow-hidden">
-                <span className="text-[9px] font-black uppercase tracking-[0.3em] text-accent">
+                <span className="text-xs font-black uppercase tracking-[0.3em] text-accent">
                   Lab {String(current + 1).padStart(2, '0')}
                 </span>
 
@@ -132,7 +132,7 @@ const LabsCarousel: React.FC<LabsCarouselProps> = ({
 
                 {/* Metadata row */}
                 <div className="flex flex-wrap items-center gap-3 sm:gap-5 mt-5">
-                  <span className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-[9px] font-black uppercase tracking-widest border ${diffColor}`}>
+                  <span className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-black uppercase tracking-widest border ${diffColor}`}>
                     <Star className="h-2.5 w-2.5" /> {diffLabel}
                   </span>
                   <div className="flex items-center gap-2">
@@ -208,7 +208,7 @@ const LabsCarousel: React.FC<LabsCarouselProps> = ({
             </div>
 
             {/* Counter */}
-            <span className="text-[10px] font-black uppercase tracking-widest text-text-muted">
+            <span className="text-xs font-black uppercase tracking-widest text-text-muted">
               {current + 1} / {total}
             </span>
           </div>
