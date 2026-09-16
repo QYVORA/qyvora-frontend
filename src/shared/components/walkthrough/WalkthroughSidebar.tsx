@@ -53,7 +53,7 @@ export function WalkthroughSidebar({
         {backHref ? (
           <Link
             to={backHref}
-            className="inline-flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest text-text-muted hover:text-accent transition-colors"
+            className="inline-flex items-center gap-1.5 text-xs font-black uppercase tracking-widest text-text-muted hover:text-accent transition-colors"
             onClick={onMobileClose}
           >
             <IconArrowLeft size={12} /> {backLabel}
@@ -61,7 +61,7 @@ export function WalkthroughSidebar({
         ) : onBack ? (
           <button
             onClick={() => { onBack(); onMobileClose(); }}
-            className="inline-flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest text-text-muted hover:text-accent transition-colors"
+            className="inline-flex items-center gap-1.5 text-xs font-black uppercase tracking-widest text-text-muted hover:text-accent transition-colors"
           >
             <IconArrowLeft size={12} /> {backLabel}
           </button>
@@ -70,7 +70,7 @@ export function WalkthroughSidebar({
 
       {sections.map((section, sIdx) => (
         <div key={sIdx} className="mb-3">
-          <p className="mb-1.5 px-2 text-[9px] font-black uppercase tracking-[0.3em] text-accent">
+          <p className="mb-1.5 px-2 text-xs font-black uppercase tracking-[0.3em] text-accent">
             {section.label}
           </p>
           <div className="space-y-0.5 border-l border-border/50 ml-2 pl-2">
@@ -88,7 +88,7 @@ export function WalkthroughSidebar({
                 }`}
               >
                 <span
-                  className={`flex h-4 w-4 shrink-0 items-center justify-center rounded border text-[8px] font-bold font-mono ${
+                  className={`flex h-4 w-4 shrink-0 items-center justify-center rounded border text-xs font-bold font-mono ${
                     item.isCompleted
                       ? 'border-accent/40 text-accent'
                       : item.isActive
@@ -133,7 +133,7 @@ export function WalkthroughSidebar({
             >
               <div className="flex items-center justify-between border-b border-border px-4 py-3.5 bg-bg/95 backdrop-blur-md shrink-0">
                 <div>
-                  <p className="text-[9px] font-black uppercase tracking-[0.3em] text-accent">{subtitle}</p>
+                  <p className="text-xs font-black uppercase tracking-[0.3em] text-accent">{subtitle}</p>
                   <p className="text-xs font-black text-text-primary">{title}</p>
                 </div>
                 <button

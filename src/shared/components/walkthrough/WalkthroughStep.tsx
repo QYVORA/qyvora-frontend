@@ -70,7 +70,7 @@ export function WalkthroughStep({
           <div className="rounded-xl border border-accent/20 bg-accent/5 px-5 py-4 flex items-start gap-3">
             <Target className="w-4 h-4 text-accent shrink-0 mt-0.5" />
             <div>
-              <p className="text-[9px] font-black uppercase tracking-widest text-accent mb-1">Mission</p>
+              <p className="text-xs font-black uppercase tracking-widest text-accent mb-1">Mission</p>
               <p className="text-sm font-mono text-text-secondary leading-[2]">{mission}</p>
             </div>
           </div>
@@ -81,13 +81,13 @@ export function WalkthroughStep({
           <div>
             <div className="flex items-center gap-2 mb-5">
               <ClipboardList className="w-4 h-4 text-accent" />
-              <p className="text-[9px] font-black uppercase tracking-widest text-accent">Objectives</p>
+              <p className="text-xs font-black uppercase tracking-widest text-accent">Objectives</p>
             </div>
             <ol className="space-y-5">
               {objectives.map((obj, i) => (
                 <li key={i} className="flex items-start gap-4">
                   <div className="relative flex flex-col items-center self-stretch shrink-0">
-                    <span className="relative z-10 w-7 h-7 rounded-lg border border-accent/40 bg-bg flex items-center justify-center font-mono text-[10px] font-black text-accent">
+                    <span className="relative z-10 w-7 h-7 rounded-lg border border-accent/40 bg-bg flex items-center justify-center font-mono text-xs font-black text-accent">
                       {String(i + 1).padStart(2, '0')}
                     </span>
                     {i < objectives.length - 1 && (
@@ -112,15 +112,15 @@ export function WalkthroughStep({
             <div className="flex items-center justify-between px-4 py-2 border-b border-border/20 bg-bg-elevated">
               <div className="flex items-center gap-2">
                 <Search className="w-3 h-3 text-accent" />
-                <p className="text-[9px] font-black uppercase tracking-widest text-accent">Evidence</p>
+                <p className="text-xs font-black uppercase tracking-widest text-accent">Evidence</p>
               </div>
-              <span className="font-mono text-[9px] uppercase tracking-widest text-text-muted">
+              <span className="font-mono text-xs uppercase tracking-widest text-text-muted">
                 {evidence.length} {evidence.length === 1 ? 'entry' : 'entries'}
               </span>
             </div>
             <ul className="p-4 space-y-1.5">
               {evidence.map((item, i) => (
-                <li key={i} className="flex items-start gap-2 font-mono text-xs md:text-sm text-text-secondary leading-relaxed">
+                <li key={i} className="flex items-start gap-2 font-mono text-xs md:text-sm text-text-secondary leading-[2] md:leading-[2.2]">
                   <span className="text-accent shrink-0 select-none">{'>'}</span>
                   <span className="whitespace-pre-wrap break-words min-w-0">{item}</span>
                 </li>
@@ -141,10 +141,10 @@ export function WalkthroughStep({
               <div key={ph.level} className="rounded-xl border border-warning/20 bg-warning/5 px-5 py-4 flex items-start gap-2">
                 <Lightbulb className="w-4 h-4 text-warning shrink-0 mt-0.5" />
                 <div>
-                  <p className="text-[9px] font-black uppercase tracking-widest text-warning/60 mb-1">
+                  <p className="text-xs font-black uppercase tracking-widest text-warning/60 mb-1">
                     Hint {ph.level}, {HINT_LEVEL_LABELS[ph.level - 1]}
                   </p>
-                  <p className="text-sm font-mono text-yellow-300/80 leading-relaxed">{ph.content}</p>
+                  <p className="text-sm font-mono text-yellow-300/80 leading-[2] md:leading-[2.2]">{ph.content}</p>
                 </div>
               </div>
             ))}
@@ -155,7 +155,7 @@ export function WalkthroughStep({
                   if (!showHint) setShowHint(true);
                   setVisibleHintLevel(prev => prev + 1);
                 }}
-                className="flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest text-text-muted hover:text-warning transition-colors"
+                className="flex items-center gap-1.5 text-xs font-black uppercase tracking-widest text-text-muted hover:text-warning transition-colors"
               >
                 <Lightbulb className="w-3 h-3" />
                 {visibleHintLevel === 0 ? 'Need a hint?' : 'Need another hint?'}
@@ -170,13 +170,13 @@ export function WalkthroughStep({
             {showHint ? (
               <div className="rounded-xl border border-warning/20 bg-warning/5 px-5 py-4 flex items-start gap-2">
                 <Lightbulb className="w-4 h-4 text-warning shrink-0 mt-0.5" />
-                <p className="text-sm font-mono text-yellow-300/80 leading-relaxed">{hint}</p>
+                <p className="text-sm font-mono text-yellow-300/80 leading-[2] md:leading-[2.2]">{hint}</p>
               </div>
             ) : (
               <button
                 type="button"
                 onClick={() => setShowHint(true)}
-                className="flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest text-text-muted hover:text-warning transition-colors"
+                className="flex items-center gap-1.5 text-xs font-black uppercase tracking-widest text-text-muted hover:text-warning transition-colors"
               >
                 <Lightbulb className="w-3 h-3" />
                 Need a hint?
@@ -200,9 +200,9 @@ export function WalkthroughStep({
           <div className="rounded-xl border border-border/20 bg-bg-elevated px-5 py-4">
             <div className="flex items-center gap-2 mb-3">
               <MessageSquare className="w-4 h-4 text-accent" />
-              <p className="text-[9px] font-black uppercase tracking-widest text-accent">Reflection</p>
+              <p className="text-xs font-black uppercase tracking-widest text-accent">Reflection</p>
             </div>
-            <p className="text-sm font-mono text-text-secondary leading-relaxed whitespace-pre-wrap">{reflection}</p>
+            <p className="text-sm font-mono text-text-secondary leading-[2] md:leading-[2.2] whitespace-pre-wrap">{reflection}</p>
           </div>
         )}
 

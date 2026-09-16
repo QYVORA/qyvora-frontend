@@ -1,16 +1,20 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { Minimize2, Maximize2 } from 'lucide-react';
 import SEO from '@/shared/components/SEO';
-import StudentHeroSection from '@/shared/components/StudentHeroSection';
 import RelatedContent from '@/shared/components/RelatedContent';
 import { LabCelebration } from '@/shared/components/LabCelebration';
 import LearningToolbar from '@/shared/components/learning/LearningToolbar';
+import LearningWorkspaceShell from '@/shared/components/learning/LearningWorkspaceShell';
 import { useRoomSession } from '@/features/student/hooks/useRoomSession';
 
 export interface LabPageProps {
   title: string;
   accentWord: string;
   description?: string;
+  eyebrow?: string;
+  backTo?: string;
+  backLabel?: string;
   villain?: {
     name: string;
     alias: string;
@@ -34,7 +38,9 @@ const LabPage: React.FC<LabPageProps> = ({
   title,
   accentWord,
   description,
-  villain,
+  eyebrow,
+  backTo = '/dashboard/labs',
+  backLabel = undefined,
   activeScenario,
   listingContent,
   walkthroughContent,
@@ -44,10 +50,11 @@ const LabPage: React.FC<LabPageProps> = ({
   relatedContent,
   noIndex = true,
 }) => {
+  const { t } = useTranslation();
   const { fullscreen, toggleFullscreen } = useRoomSession();
 
   return (
-    <div className="bg-bg min-h-full">
+    <div className="w-full bg-canvas min-h-dvh">
       <SEO title={`${title} ${accentWord} | QYVORA`} description={description || `${title} ${accentWord} lab`} noindex={noIndex} />
 
       <LabCelebration
@@ -72,25 +79,22 @@ const LabPage: React.FC<LabPageProps> = ({
       {activeScenario ? (
         walkthroughContent
       ) : (
-        <>
-          <div className="bg-bg px-3 md:px-4 lg:px-6 pt-8 pb-10">
-            <StudentHeroSection
-              fullHeight={false}
-              title={title}
-              accentWord={accentWord}
-              description={description || `Master ${title.toLowerCase()} techniques through hands-on challenges`}
-              villain={villain}
-            />
-          </div>
-          <div className="bg-bg-alt px-3 md:px-4 lg:px-6 py-10 pb-20 lg:pb-24 space-y-8">
+        <LearningWorkspaceShell
+          kicker={eyebrow}
+          backTo={backTo}
+          backLabel={backLabel ?? t('labs.backToLabs', 'Back to Labs')}
+          title={`${title} ${accentWord}`}
+          description={description || `Master ${title.toLowerCase()} techniques through hands-on challenges`}
+        >
+          <div className="w-full space-y-10">
             {listingContent}
             {relatedContent && (
-              <div className="mt-8">
+              <div>
                 {relatedContent}
               </div>
             )}
           </div>
-        </>
+        </LearningWorkspaceShell>
       )}
     </div>
   );

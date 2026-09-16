@@ -87,7 +87,7 @@ function FocusedStepRow({ item, onSelect }: FocusedStepRowProps) {
         >
           {item.title}
         </span>
-        <span className="block text-[9px] font-black uppercase tracking-widest text-accent">
+        <span className="block text-xs font-black uppercase tracking-widest text-accent">
           {statusText}
         </span>
       </span>
