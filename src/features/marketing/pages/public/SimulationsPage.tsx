@@ -1,253 +1,77 @@
+import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { Link } from 'react-router-dom';
-import { Zap } from 'lucide-react';
-import { IconArrowRight, IconTerminal, IconCode, IconNetwork } from '@/shared/components/icons';
+import { ArrowRight } from 'lucide-react';
 import SEO from '@/shared/components/SEO';
-import PublicPageLayout from '@/shared/components/PublicPageLayout';
-import PublicPageSection from '@/shared/components/PublicPageSection';
-import StudentHeroSection, { PUBLIC_HERO_TITLE_CLASS } from '@/shared/components/StudentHeroSection';
-import { SimpleHeading } from '@/shared/components/ui';
-import { Footer } from '@/shared/components/layout';
-import { useAuth } from '@/core/contexts/AuthContext';
-import LandingFinalCtaSection from '@/features/marketing/components/landing/LandingFinalCtaSection';
+import PageHeader from '@/shared/components/ui/PageHeader';
+import Button from '@/shared/components/ui/Button';
+import { Card } from '@/shared/components/ui/Card';
+import ScrollReveal from '@/shared/components/ScrollReveal';
+import { IconTerminal, IconCode, IconNetwork } from '@/shared/components/icons';
 
 type SimKey = 'terminal' | 'ide' | 'network';
 
-const SIMULATIONS: { id: SimKey; slug: string; icon: React.ComponentType<{ className?: string }> }[] = [
+const SIMULATIONS: {
+  id: SimKey;
+  slug: string;
+  icon: React.ComponentType<{ className?: string }>;
+}[] = [
   { id: 'terminal', slug: '/simulations/terminal', icon: IconTerminal },
   { id: 'ide', slug: '/simulations/ide', icon: IconCode },
   { id: 'network', slug: '/simulations/network-visualizer', icon: IconNetwork },
 ];
 
-/* ── Shared feature card — identical across all simulation sections ─────── */
-const FeatureCard: React.FC<{ feature: string }> = ({ feature }) => (
-  <div className="rounded-2xl border border-border/20 bg-bg-card px-4 py-3.5 flex items-center gap-3">
-    <span className="w-5 h-5 rounded-lg bg-accent/10 border border-accent/20 flex items-center justify-center shrink-0">
-      <Zap className="w-2.5 h-2.5 text-accent" />
-    </span>
-    <span className="text-[10px] md:text-[11px] font-mono text-text-secondary leading-snug">{feature}</span>
-  </div>
-);
-
-/* ── Static visual mocks (texture, not interactive) ─────────────────────── */
-const TerminalMock: React.FC = () => (
-  <div className="relative flex h-full min-h-[280px] lg:min-h-[360px] flex-col rounded-2xl border border-border/50 bg-code-bg overflow-hidden">
-    <div className="flex items-center gap-2 px-4 py-2.5 shrink-0">
-      <span className="w-2.5 h-2.5 rounded-full bg-danger/70" />
-      <span className="w-2.5 h-2.5 rounded-full bg-warning/70" />
-      <span className="w-2.5 h-2.5 rounded-full bg-accent/70" />
-      <span className="ml-2 text-[9px] font-mono text-text-muted">operator@qyvora:~</span>
-    </div>
-    <div className="flex-1 min-h-0 p-4 font-mono text-[11px] leading-relaxed space-y-1 overflow-hidden">
-      <p>
-        <span className="text-accent">operator@qyvora</span>
-        <span className="text-text-muted">:~$</span> ls -la /home/operator
-      </p>
-      <p className="text-text-muted">drwxr-xr-x operator operator 4096 Aug 14 09:21 .</p>
-      <p className="text-text-muted">-rw-r--r-- operator operator  187 Aug 14 09:20 notes.txt</p>
-      <p className="text-text-muted">-rwxr-xr-x operator operator 2048 Aug 14 09:19 scan.sh</p>
-      <p>
-        <span className="text-accent">operator@qyvora</span>
-        <span className="text-text-muted">:~$</span> cat notes.txt
-      </p>
-      <p className="text-text-muted">recon the target · enumerate services · escalate.</p>
-      <p className="text-text-muted">target 10.10.14.7 - keep low noise.</p>
-      <p>
-        <span className="text-accent">operator@qyvora</span>
-        <span className="text-text-muted">:~$</span> whoami
-      </p>
-      <p className="text-text-muted">operator</p>
-      <p>
-        <span className="text-accent">operator@qyvora</span>
-        <span className="text-text-muted">:~$</span> <span className="inline-block h-3 w-2 bg-accent/70 align-middle animate-pulse" />
-      </p>
-    </div>
-  </div>
-);
-
-const IdeMock: React.FC = () => (
-  <div className="relative flex h-full min-h-[280px] lg:min-h-[360px] flex-col rounded-2xl border border-border/50 bg-bg-elevated overflow-hidden">
-    <div className="flex items-end gap-1.5 px-4 pt-2.5 shrink-0">
-      <span className="text-[9px] font-mono px-3 py-1.5 rounded-t-lg bg-code-bg text-accent border border-b-0 border-border/50">
-        main.py
-      </span>
-    </div>
-    <div className="flex-1 min-h-0 bg-code-bg p-4 font-mono text-[11px] leading-[1.8] overflow-hidden">
-      <p><span className="text-code-path">def</span> <span className="text-accent">greet</span>(<span className="text-code-number">name</span>):</p>
-      <p className="pl-4 text-text-muted">"""Return a greeting string."""</p>
-      <p className="pl-4 text-text-muted">return f"Hello,</p>
-      <p className="pl-8 text-text-muted">{`{name}`}!"</p>
-      <p><span className="text-code-path">print</span>(<span className="text-accent">greet</span>(<span className="text-code-number">"Hacker"</span>))</p>
-      <p className="text-text-muted">&nbsp;</p>
-      <p className="text-text-muted">&gt; Hello, Hacker!</p>
-      <p className="text-text-muted">&nbsp;</p>
-      <p className="text-code-path">def</p> <span className="text-accent">fib</span>(<span className="text-code-number">n</span>): ...
-    </div>
-  </div>
-);
-
-const NetworkMock: React.FC = () => (
-  <div className="relative flex h-full min-h-[160px] lg:min-h-[200px] flex-col rounded-2xl border border-border/50 bg-bg-card overflow-hidden">
-    <div className="flex items-center justify-between px-4 py-2.5 shrink-0">
-      <span className="text-[9px] font-mono text-text-muted">topology | recon</span>
-      <span className="flex items-center gap-1.5 text-[9px] font-mono text-text-muted">
-        <span className="h-1.5 w-1.5 rounded-full bg-accent animate-pulse" /> live
-      </span>
-    </div>
-    <div className="flex-1 min-h-0 flex items-center justify-center gap-2 sm:gap-4 px-4 py-6 overflow-hidden">
-      <span className="rounded-xl border border-border/50 bg-bg px-3 py-2 text-[9px] font-mono text-text-muted whitespace-nowrap">edge 10.0.0.1</span>
-      <span className="rounded-xl border border-accent/30 bg-accent/10 px-3 py-2 text-[9px] font-mono text-accent whitespace-nowrap">10.10.14.0/24</span>
-      <span className="rounded-xl border border-border/50 bg-bg px-3 py-2 text-[9px] font-mono text-text-muted whitespace-nowrap">10.10.14.7</span>
-      <span className="rounded-xl border border-border/50 bg-bg px-3 py-2 text-[9px] font-mono text-text-muted whitespace-nowrap">:80 :443</span>
-    </div>
-  </div>
-);
-
 const SimulationsPage = () => {
   const { t } = useTranslation();
-  const { user } = useAuth();
-
-  const renderSection = (sim: (typeof SIMULATIONS)[number]) => {
-    const features = (t(`simulations.${sim.id}.features`, { returnObjects: true }) as unknown as string[]) ?? [];
-
-    const badge = (
-      <span className="text-[9px] font-black uppercase tracking-[0.3em] text-accent">
-        {t(`simulations.${sim.id}.tag`)}
-      </span>
-    );
-
-    const heading = (
-      <SimpleHeading
-        compact
-        text={t(`simulations.${sim.id}.title`)}
-        accentText={t(`simulations.${sim.id}.titleAccent`)}
-        align="left"
-        className="mt-2"
-      />
-    );
-
-    const description = (
-      <p className="text-base sm:text-lg text-text-secondary leading-relaxed mt-3 font-mono max-w-xl">
-        {t(`simulations.${sim.id}.description`)}
-      </p>
-    );
-
-    const cta = (
-      <Link
-        to={sim.slug}
-        className="btn-primary inline-flex items-center justify-center gap-2 px-6 py-2.5 w-fit shrink-0 mt-6"
-      >
-        {t('simulations.runDemo')} <IconArrowRight size={14} />
-      </Link>
-    );
-
-    if (sim.id === 'terminal') {
-      /* Split layout — text left, live shell visual right */
-      return (
-        <PublicPageSection key={sim.id}>
-          <div className="flex flex-col gap-6 lg:gap-8">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-10 items-stretch">
-              <div className="flex flex-col justify-center">
-                {badge}
-                {heading}
-                {description}
-                {cta}
-              </div>
-              <TerminalMock />
-            </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2 md:gap-3">
-              {features.map((feature, i) => (
-                <FeatureCard key={i} feature={feature} />
-              ))}
-            </div>
-          </div>
-        </PublicPageSection>
-      );
-    }
-
-    if (sim.id === 'ide') {
-      /* Split layout — header left, code editor visual right */
-      return (
-        <PublicPageSection key={sim.id}>
-          <div className="flex flex-col gap-6 lg:gap-8">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-10 items-stretch">
-              <div className="flex flex-col justify-center">
-                {badge}
-                {heading}
-                {description}
-                {cta}
-              </div>
-              <IdeMock />
-            </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2 md:gap-3">
-              {features.map((feature, i) => (
-                <FeatureCard key={i} feature={feature} />
-              ))}
-            </div>
-          </div>
-        </PublicPageSection>
-      );
-    }
-
-    /* Network — text and feature chips on one row, wide topology strip below */
-    return (
-      <PublicPageSection key={sim.id}>
-        <div className="flex flex-col gap-4 lg:gap-6">
-          <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 lg:gap-10">
-            <div className="flex-1 max-w-xl">
-              {badge}
-              {heading}
-              {description}
-              {cta}
-            </div>
-            <div className="lg:w-[42%] grid grid-cols-1 sm:grid-cols-2 gap-2 md:gap-3">
-              {features.map((feature, i) => (
-                <FeatureCard key={i} feature={feature} />
-              ))}
-            </div>
-          </div>
-          <NetworkMock />
-        </div>
-      </PublicPageSection>
-    );
-  };
 
   return (
-    <div className="bg-bg min-h-full">
+    <div className="w-full bg-canvas">
       <SEO title={t('simulations.metaTitle')} description={t('simulations.metaDescription')} />
-      <PublicPageLayout>
-        <section className="relative w-full min-h-dvh bg-bg">
-        <StudentHeroSection
+      <div className="w-full px-3 pb-20 pt-24 md:px-4 md:pb-24 md:pt-28 lg:px-6 lg:pt-32">
+        <PageHeader
+          kicker={t('simulations.kicker', 'QYVORA · Tools')}
           title={t('simulations.heroTitle')}
-          accentWord={t('simulations.heroAccent')}
-          titleClassName={PUBLIC_HERO_TITLE_CLASS}
-          showGlobe
-          typewrite
           description={t('simulations.heroDescription')}
-          stats={[
-            { label: t('simulations.statsTools'), value: SIMULATIONS.length },
-            { label: t('simulations.statsNoAccount'), value: '0' },
-          ]}
-        >
-          <Link
-            to="/register"
-            className="btn-primary inline-flex items-center gap-2 px-6 py-2.5"
-          >
-            <Zap className="w-4 h-4" /> {t('simulations.startTraining')} <IconArrowRight size={14} />
-          </Link>
-        </StudentHeroSection>
-        </section>
+          actions={
+            <Button to="/register">
+              {t('simulations.startTraining')}
+              <ArrowRight className="h-4 w-4" aria-hidden="true" />
+            </Button>
+          }
+        />
 
-        {SIMULATIONS.map((sim) => renderSection(sim))}
-
-        <section className="relative w-full min-h-dvh bg-bg-alt">
-          <LandingFinalCtaSection user={user} />
-        </section>
-
-        <section className="w-full bg-bg pt-10 md:pt-0">
-          <Footer />
-        </section>
-      </PublicPageLayout>
+        <div className="mt-10 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+          {SIMULATIONS.map((sim) => {
+            const Icon = sim.icon;
+            const features = (t(`simulations.${sim.id}.features`, {
+              returnObjects: true,
+            }) as unknown as string[]) ?? [];
+            return (
+              <ScrollReveal key={sim.id}>
+                <Card interactive className="flex h-full min-h-[240px] flex-col gap-3 p-6">
+                  <span className="flex h-10 w-10 items-center justify-center rounded-lg border border-border-subtle bg-surface-raised text-accent">
+                    <Icon className="h-5 w-5" aria-hidden="true" />
+                  </span>
+                  <h3 className="type-h3 font-black uppercase tracking-tight text-text-primary">
+                    {t(`simulations.${sim.id}.title`)}
+                  </h3>
+                  <p className="type-body-sm flex-1">{t(`simulations.${sim.id}.description`)}</p>
+                  <div className="flex flex-wrap gap-1.5">
+                    {features.slice(0, 3).map((feature, i) => (
+                      <span key={i} className="type-meta rounded-md border border-border-subtle bg-surface-raised px-2 py-1">
+                        {feature}
+                      </span>
+                    ))}
+                  </div>
+                  <Button to={sim.slug} variant="secondary" size="sm">
+                    {t('simulations.runDemo')}
+                    <ArrowRight className="h-4 w-4" aria-hidden="true" />
+                  </Button>
+                </Card>
+              </ScrollReveal>
+            );
+          })}
+        </div>
+      </div>
     </div>
   );
 };

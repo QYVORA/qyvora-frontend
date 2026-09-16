@@ -6,8 +6,6 @@ import NotFoundPage from '../../../shared/pages/NotFoundPage';
 import api from '../../../core/services/api';
 import PageLoader from '../../../shared/components/PageLoader';
 import SEO from '../../../shared/components/SEO';
-import { Navbar } from '../../../shared/components/layout';
-import { Footer } from '../../../shared/components/layout';
 import ProfileIdentityBlock from '../../../shared/components/profile/ProfileIdentityBlock';
 import CpLogo from '../../../shared/components/CpLogo';
 import ProfileMetricsStrip from '../../../shared/components/profile/ProfileMetricsStrip';
@@ -103,7 +101,7 @@ const PublicProfile: React.FC = () => {
   if (loading) return <PageLoader />;
   if (notFound || !profile) {
     return (
-      <div className="min-h-dvh bg-bg flex flex-col items-center justify-center gap-6 px-4">
+      <div className="min-h-dvh bg-canvas flex flex-col items-center justify-center gap-6 px-4">
         <SEO
           noindex
           title="Operator Not Found"
@@ -120,15 +118,14 @@ const PublicProfile: React.FC = () => {
   }
 
   return (
-    <div className="min-h-dvh w-full bg-bg">
-      <Navbar />
+    <div className="min-h-dvh w-full bg-canvas">
       <SEO
         title={`@${handle}'s Profile`}
         description={`View the operator profile, achievements, and ranking of @${handle} on QYVORA.`}
         breadcrumbName={handle ? `@${handle}` : 'Profile'}
       />
 
-      <div className="w-full px-3 md:px-4 lg:px-6 pt-28 md:pt-24 pb-20 lg:pb-24">
+      <div className="w-full px-3 md:px-4 lg:px-6 pt-24 md:pt-28 pb-20 lg:pb-24">
           {/* Main content */}
           <div className="space-y-6">
             {/* ── Identity Section ── */}
@@ -220,11 +217,6 @@ const PublicProfile: React.FC = () => {
             </section>
           </div>
       </div>
-
-      {/* ══ FOOTER ══ */}
-      <section className="bg-transparent overflow-hidden">
-        <Footer />
-      </section>
     </div>
   );
 };

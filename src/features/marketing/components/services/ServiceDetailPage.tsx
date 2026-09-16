@@ -5,10 +5,7 @@ import { IconArrowRight, IconArrowLeft } from '@/shared/components/icons';
 import { openServiceRequestModal } from '@/features/marketing/components/ServiceRequestModal';
 import { DottedMapOverlay, SimpleHeading } from '@/shared/components/ui';
 import SEO from '@/shared/components/SEO';
-import PublicPageLayout from '@/shared/components/PublicPageLayout';
-import PublicPageSection from '@/shared/components/PublicPageSection';
-import StudentHeroSection, { PUBLIC_HERO_TITLE_CLASS } from '@/shared/components/StudentHeroSection';
-import { Footer } from '@/shared/components/layout';
+import PageHeader from '@/shared/components/ui/PageHeader';
 import { REQUEST_ASSESSMENT_LABEL, PENTEST_PHILOSOPHY, SERVICES, type ServiceConfig } from '@/features/marketing/content/servicesConfig';
 import { buildService } from '@/shared/seo/schema';
 import ScrollReveal from '@/shared/components/ScrollReveal';
@@ -17,7 +14,7 @@ import RelatedContentSection, { type RelatedItem } from '@/shared/components/Rel
 const ServiceDetailPage: React.FC<{ svc: ServiceConfig }> = ({ svc }) => {
   const Icon = svc.icon;
 
-  // Sibling services for the related-content listing before the footer.
+  // Sibling services for the related-content listing.
   const otherServices: RelatedItem[] = SERVICES.filter((s) => s.id !== svc.id).map((s) => {
     const SvcIcon = s.icon;
     return {
@@ -30,7 +27,7 @@ const ServiceDetailPage: React.FC<{ svc: ServiceConfig }> = ({ svc }) => {
   });
 
   return (
-    <>
+    <div className="min-h-dvh w-full bg-canvas">
       <SEO
         title={`${svc.title} - QYVORA`}
         description={svc.overview}
@@ -38,80 +35,72 @@ const ServiceDetailPage: React.FC<{ svc: ServiceConfig }> = ({ svc }) => {
         schemaData={buildService(svc)}
       />
 
-      <PublicPageLayout>
-        {/* ── SECTION 1: Hero ──────────────────────────────────────────── */}
-        <section className="relative w-full min-h-dvh bg-bg overflow-hidden">
-          <StudentHeroSection
-            title={svc.title.split(' ').slice(0, -1).join(' ')}
-            accentWord={svc.accentWord}
-            titleClassName={PUBLIC_HERO_TITLE_CLASS}
-            showGlobe
-            description={svc.overview}
-          >
-            <span className={`inline-flex items-center gap-2 px-3 py-1 rounded-full border text-[9px] font-black uppercase tracking-widest ${
-              svc.featured ? 'bg-accent/10 border-accent/30 text-accent' : 'bg-bg-elevated border-border/50 text-text-muted'
-            }`}>
-              <Icon className="w-3 h-3" /> {svc.badge}
-            </span>
-
-            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4">
+      <div className="w-full px-3 pb-20 pt-24 md:px-4 md:pb-24 md:pt-28 lg:px-6 lg:pt-32">
+        <PageHeader
+          kicker={svc.badge}
+          title={svc.title}
+          description={svc.overview}
+          actions={
+            <>
               <button
                 onClick={() => openServiceRequestModal(svc.title)}
-                className="btn-primary inline-flex items-center justify-center gap-2.5 !px-8 sm:!px-10 !py-3.5 whitespace-nowrap"
+                className="btn-primary inline-flex items-center justify-center gap-2.5"
               >
                 {REQUEST_ASSESSMENT_LABEL} <IconArrowRight className="h-4 w-4" />
               </button>
               <Link
                 to="/services"
-                className="btn-secondary inline-flex items-center justify-center gap-2.5 !px-8 sm:!px-10 !py-3.5 whitespace-nowrap"
+                className="btn-secondary inline-flex items-center justify-center gap-2.5"
               >
                 <IconArrowLeft className="h-4 w-4" /> All Services
               </Link>
-            </div>
-          </StudentHeroSection>
-        </section>
+            </>
+          }
+        />
 
-        {/* ── SECTION 2: Scope & What's Included ─────────────────────────
-            Desktop: LEFT = header + scope text, RIGHT = included items card
-        ──────────────────────────────────────────────────────────────────── */}
-        <PublicPageSection>
+        <div className="mt-10 space-y-12 md:mt-14 md:space-y-16">
+          {/* ── SECTION 2: Scope & What's Included ─────────────────────────
+              Desktop: LEFT = header + scope text, RIGHT = included items card
+          ──────────────────────────────────────────────────────────────────── */}
           <div className="w-full grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center">
             {/* Left: Header */}
-            <ScrollReveal>
-              <div className="space-y-5">
-                <SimpleHeading
-                  text="What This Engagement Covers"
-                  accentWords={1}
-                  accentPlacement="end"
-                  kicker="Scope of Work"
-                  align="left"
-                  description={svc.scope}
-                />
-                {svc.price && (
-                  <div className="pt-2">
-                    <span className="text-[9px] font-black uppercase tracking-widest text-text-muted flex items-center gap-1.5 mb-3">
-                      <Target className="w-3 h-3" /> Pricing
-                    </span>
-                    <div className="flex flex-wrap items-baseline gap-x-4 gap-y-1">
-                      <span className={`font-black ${svc.featured ? 'text-accent text-2xl sm:text-3xl' : 'text-text-primary text-xl sm:text-2xl'}`}>
-                        {svc.price}
+            <div className="flex flex-col justify-center">
+              <ScrollReveal>
+                <div className="space-y-5">
+                  <SimpleHeading
+                    text="What This Engagement Covers"
+                    accentWords={1}
+                    accentPlacement="end"
+                    kicker="Scope of Work"
+                    align="left"
+                    description={svc.scope}
+                  />
+                  {svc.price && (
+                    <div className="pt-2">
+                      <span className="text-xs font-black uppercase tracking-widest text-text-muted flex items-center gap-1.5 mb-3">
+                        <Target className="w-3 h-3" /> Pricing
                       </span>
-                      <span className="text-sm sm:text-base text-text-muted font-mono">{svc.priceLocal}</span>
+                      <div className="flex flex-wrap items-baseline gap-x-4 gap-y-1">
+                        <span className={`font-black ${svc.featured ? 'text-accent text-2xl sm:text-3xl' : 'text-text-primary text-xl sm:text-2xl'}`}>
+                          {svc.price}
+                        </span>
+                        <span className="text-sm sm:text-base text-text-muted font-mono">{svc.priceLocal}</span>
+                      </div>
+                      {svc.priceNote && (
+                        <p className="text-sm text-text-muted leading-relaxed mt-2 font-mono">{svc.priceNote}</p>
+                      )}
                     </div>
-                    {svc.priceNote && (
-                      <p className="text-sm text-text-muted leading-relaxed mt-2 font-mono">{svc.priceNote}</p>
-                    )}
-                  </div>
-                )}
-              </div>
-            </ScrollReveal>
+                  )}
+                </div>
+              </ScrollReveal>
+            </div>
 
             {/* Right: Included items */}
             <ScrollReveal delay={0.1}>
               <div className="relative h-full rounded-2xl border border-border/50 bg-bg-card p-6 lg:p-7 overflow-hidden">
                 <DottedMapOverlay className="rounded-2xl" />
                 <div className="relative">
-                  <span className="text-[9px] font-black uppercase tracking-widest text-text-muted mb-4 block">
+                  <span className="text-xs font-black uppercase tracking-widest text-text-muted mb-4 block">
                     What&apos;s Included
                   </span>
                   <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2">
@@ -133,12 +122,10 @@ const ServiceDetailPage: React.FC<{ svc: ServiceConfig }> = ({ svc }) => {
               </div>
             </ScrollReveal>
           </div>
-        </PublicPageSection>
 
-        {/* ── SECTION 3: Benefits (reversed) ─────────────────────────────
-            Desktop: LEFT = benefits cards, RIGHT = header
-        ──────────────────────────────────────────────────────────────────── */}
-        <PublicPageSection>
+          {/* ── SECTION 3: Benefits (reversed) ─────────────────────────────
+              Desktop: LEFT = benefits cards, RIGHT = header
+          ──────────────────────────────────────────────────────────────────── */}
           <div className="w-full grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center">
             {/* Left: Benefits cards */}
             <ScrollReveal>
@@ -162,35 +149,37 @@ const ServiceDetailPage: React.FC<{ svc: ServiceConfig }> = ({ svc }) => {
             </ScrollReveal>
 
             {/* Right: Header */}
-            <ScrollReveal delay={0.1}>
-              <SimpleHeading
-                text="What You Gain"
-                accentWords={1}
-                accentPlacement="end"
-                kicker="Benefits"
-                align="left"
-                description="Every engagement delivers actionable results, not just a report that sits on a shelf."
-              />
-            </ScrollReveal>
+            <div className="flex flex-col justify-center">
+              <ScrollReveal delay={0.1}>
+                <SimpleHeading
+                  text="What You Gain"
+                  accentWords={1}
+                  accentPlacement="end"
+                  kicker="Benefits"
+                  align="left"
+                  description="Every engagement delivers actionable results, not just a report that sits on a shelf."
+                />
+              </ScrollReveal>
+            </div>
           </div>
-        </PublicPageSection>
 
-        {/* ── SECTION 4: Deliverables ────────────────────────────────────
-            Desktop: LEFT = header, RIGHT = deliverables cards
-        ──────────────────────────────────────────────────────────────────── */}
-        <PublicPageSection>
+          {/* ── SECTION 4: Deliverables ────────────────────────────────────
+              Desktop: LEFT = header, RIGHT = deliverables cards
+          ──────────────────────────────────────────────────────────────────── */}
           <div className="w-full grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center">
             {/* Left: Header */}
-            <ScrollReveal>
-              <SimpleHeading
-                text="The Security Report"
-                accentWords={1}
-                accentPlacement="end"
-                kicker="Deliverables"
-                align="left"
-                description="You receive a professional security report that covers everything from executive summaries to detailed remediation steps."
-              />
-            </ScrollReveal>
+            <div className="flex flex-col justify-center">
+              <ScrollReveal>
+                <SimpleHeading
+                  text="The Security Report"
+                  accentWords={1}
+                  accentPlacement="end"
+                  kicker="Deliverables"
+                  align="left"
+                  description="You receive a professional security report that covers everything from executive summaries to detailed remediation steps."
+                />
+              </ScrollReveal>
+            </div>
 
             {/* Right: Deliverables */}
             <ScrollReveal delay={0.1}>
@@ -218,12 +207,10 @@ const ServiceDetailPage: React.FC<{ svc: ServiceConfig }> = ({ svc }) => {
               </div>
             </ScrollReveal>
           </div>
-        </PublicPageSection>
 
-        {/* ── SECTION 5: Philosophy & CTA (reversed) ─────────────────────
-            Desktop: LEFT = CTA card, RIGHT = header + philosophy
-        ──────────────────────────────────────────────────────────────────── */}
-        <PublicPageSection>
+          {/* ── SECTION 5: Philosophy & CTA (reversed) ─────────────────────
+              Desktop: LEFT = CTA card, RIGHT = header + philosophy
+          ──────────────────────────────────────────────────────────────────── */}
           <div className="w-full grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center">
             {/* Left: CTA card */}
             <ScrollReveal>
@@ -254,28 +241,25 @@ const ServiceDetailPage: React.FC<{ svc: ServiceConfig }> = ({ svc }) => {
             </ScrollReveal>
 
             {/* Right: Philosophy header */}
-            <ScrollReveal delay={0.1}>
-              <SimpleHeading
-                text="Thorough Assessment,"
-                accentText="Not Checkbox Audits"
-                kicker={PENTEST_PHILOSOPHY.heading}
-                align="left"
-                description={PENTEST_PHILOSOPHY.body}
-                descriptionWidth="max-w-2xl"
-              />
-            </ScrollReveal>
+            <div className="flex flex-col justify-center">
+              <ScrollReveal delay={0.1}>
+                <SimpleHeading
+                  text="Thorough Assessment,"
+                  accentText="Not Checkbox Audits"
+                  kicker={PENTEST_PHILOSOPHY.heading}
+                  align="left"
+                  description={PENTEST_PHILOSOPHY.body}
+                  descriptionWidth="max-w-2xl"
+                />
+              </ScrollReveal>
+            </div>
           </div>
-        </PublicPageSection>
 
-        {/* ── Related services ─────────────────────────────────────────── */}
-        <RelatedContentSection items={otherServices} />
-
-        {/* ── SECTION 6: Footer ────────────────────────────────────────── */}
-        <section className="w-full bg-bg pt-10 md:pt-0">
-          <Footer />
-        </section>
-      </PublicPageLayout>
-    </>
+          {/* ── Related services ─────────────────────────────────────────── */}
+          <RelatedContentSection items={otherServices} />
+        </div>
+      </div>
+    </div>
   );
 };
 
