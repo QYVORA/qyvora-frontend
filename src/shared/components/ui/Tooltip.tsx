@@ -72,7 +72,7 @@ export const Tooltip: React.FC<TooltipProps> = ({
             'bg-bg-card border border-border/50',
             'shadow-lg shadow-black/30',
             // Typography
-            'text-[11px] font-bold text-text-primary uppercase tracking-widest font-mono',
+            'text-xs font-bold text-text-primary uppercase tracking-widest font-mono',
             // Radix data-state animations
             'data-[state=delayed-open]:animate-in data-[state=closed]:animate-out',
             'data-[state=closed]:fade-out-0 data-[state=delayed-open]:fade-in-0',

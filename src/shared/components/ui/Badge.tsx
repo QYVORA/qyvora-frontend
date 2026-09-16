@@ -19,8 +19,8 @@ const variantClasses: Record<BadgeVariant, string> = {
 };
 
 const sizeClasses: Record<BadgeSize, string> = {
-  sm: 'px-2 py-0.5 text-[9px]',
-  md: 'px-2.5 py-1 text-[10px]',
+  sm: 'px-2 py-0.5 text-xs',
+  md: 'px-2.5 py-1 text-xs',
 };
 
 const Badge: React.FC<BadgeProps> = ({

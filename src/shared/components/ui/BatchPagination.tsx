@@ -25,7 +25,7 @@ export const BatchPagination: React.FC<BatchPaginationProps> = ({
         onClick={() => onPageChange(Math.max(0, page - 1))}
         disabled={page === 0}
         aria-label={t('components.batchPagination.previousBatch')}
-        className="flex items-center gap-1 px-3 py-1.5 rounded-xl border border-border/50 bg-bg-card text-text-muted hover:border-accent/40 hover:text-text-primary transition-[color,border-color] disabled:opacity-50 disabled:pointer-events-none text-[10px] font-black uppercase tracking-widest"
+        className="flex items-center gap-1 px-3 py-1.5 rounded-xl border border-border/50 bg-bg-card text-text-muted hover:border-accent/40 hover:text-text-primary transition-[color,border-color] disabled:opacity-50 disabled:pointer-events-none text-xs font-black uppercase tracking-widest"
       >
         <ChevronLeft className="w-3.5 h-3.5" />
         <span>{t('components.batchPagination.prev')}</span>
@@ -50,7 +50,7 @@ export const BatchPagination: React.FC<BatchPaginationProps> = ({
         onClick={() => onPageChange(Math.min(totalPages - 1, page + 1))}
         disabled={page >= totalPages - 1}
         aria-label={t('components.batchPagination.nextBatch')}
-        className="flex items-center gap-1 px-3 py-1.5 rounded-xl border border-border/50 bg-bg-card text-text-muted hover:border-accent/40 hover:text-text-primary transition-[color,border-color] disabled:opacity-50 disabled:pointer-events-none text-[10px] font-black uppercase tracking-widest"
+        className="flex items-center gap-1 px-3 py-1.5 rounded-xl border border-border/50 bg-bg-card text-text-muted hover:border-accent/40 hover:text-text-primary transition-[color,border-color] disabled:opacity-50 disabled:pointer-events-none text-xs font-black uppercase tracking-widest"
       >
         <span>{t('components.batchPagination.next')}</span>
         <ChevronRight className="w-3.5 h-3.5" />
