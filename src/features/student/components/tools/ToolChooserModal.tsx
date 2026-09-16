@@ -57,7 +57,7 @@ const ToolChooserModal: React.FC<ToolChooserModalProps> = ({
               </div>
               <div>
                 <span className="text-sm font-black uppercase tracking-widest text-text-primary block">{toolLabel}</span>
-                <span className="text-[10px] text-text-muted">{t('components.toolChooser.chooseHowToOpen')}</span>
+                <span className="text-xs text-text-muted">{t('components.toolChooser.chooseHowToOpen')}</span>
               </div>
             </div>
             <RadixDialog.Close asChild>
@@ -80,7 +80,7 @@ const ToolChooserModal: React.FC<ToolChooserModalProps> = ({
                 <div className="text-xs font-black uppercase tracking-widest text-text-primary group-hover:text-accent transition-colors">
                   {t('components.toolChooser.openInPanel')}
                 </div>
-                <div className="text-[10px] text-text-muted mt-0.5">
+                <div className="text-xs text-text-muted mt-0.5">
                   {t('components.toolChooser.openInPanelDesc')}
                 </div>
               </div>
@@ -97,7 +97,7 @@ const ToolChooserModal: React.FC<ToolChooserModalProps> = ({
                 <div className="text-xs font-black uppercase tracking-widest text-text-primary group-hover:text-accent transition-colors">
                   {t('components.toolChooser.openFullScreen')}
                 </div>
-                <div className="text-[10px] text-text-muted mt-0.5">
+                <div className="text-xs text-text-muted mt-0.5">
                   {t('components.toolChooser.openFullScreenDesc')}
                 </div>
               </div>

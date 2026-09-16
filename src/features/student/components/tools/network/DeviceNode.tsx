@@ -70,10 +70,10 @@ const DeviceNode: React.FC<NodeProps> = ({ data, selected, id }) => {
 
       {/* Label + IP — outside the handle anchor box */}
       <div className="text-center mt-1">
-        <div className="text-[9px] font-bold text-text-primary leading-tight whitespace-nowrap">
+        <div className="text-xs font-bold text-text-primary leading-tight whitespace-nowrap">
           {label}
         </div>
-        <div className="text-[7px] font-mono text-text-muted leading-tight">
+        <div className="text-micro font-mono text-text-muted leading-tight">
           {ip}
         </div>
       </div>

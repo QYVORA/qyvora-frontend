@@ -294,8 +294,8 @@ const NetworkBuilderInner: React.FC<NetworkBuilderProps> = ({ open, onOpenChange
       <div className="flex items-center justify-between px-3 py-2 bg-bg-elevated border-b border-border/20 shrink-0">
         <div className="flex items-center gap-2">
           <Wifi size={14} className="text-accent" />
-          <span className="text-[10px] font-black uppercase tracking-widest text-text-muted">Network Visualizer</span>
-          <span className="text-[9px] font-mono text-text-muted/40">
+          <span className="text-xs font-black uppercase tracking-widest text-text-muted">Network Visualizer</span>
+          <span className="text-xs font-mono text-text-muted/40">
             {nodes.length} devices · {edges.length} links
           </span>
         </div>
@@ -317,7 +317,7 @@ const NetworkBuilderInner: React.FC<NetworkBuilderProps> = ({ open, onOpenChange
               value={trafficLevel}
               onChange={(e) => setTrafficLevel(e.target.value as TrafficLevel)}
               aria-label="Traffic level"
-              className="text-[10px] font-mono bg-transparent text-text-muted border-none outline-none cursor-pointer"
+              className="text-xs font-mono bg-transparent text-text-muted border-none outline-none cursor-pointer"
             >
               <option value="idle">Idle</option>
               <option value="low">Low</option>
@@ -362,7 +362,7 @@ const NetworkBuilderInner: React.FC<NetworkBuilderProps> = ({ open, onOpenChange
           <div className="w-52 shrink-0 bg-bg-elevated border-r border-border/20 overflow-y-auto">
             <div className="p-3 pb-0">
               <div className="flex items-center justify-between mb-3">
-                <p className="text-[9px] font-black uppercase tracking-widest text-accent">Add Device</p>
+                <p className="text-xs font-black uppercase tracking-widest text-accent">Add Device</p>
                 <button
                   onClick={() => setPaletteOpen(false)}
                   className="flex items-center justify-center h-6 w-6 rounded-lg hover:bg-white/5 transition-colors text-text-muted hover:text-text-primary"
@@ -382,8 +382,8 @@ const NetworkBuilderInner: React.FC<NetworkBuilderProps> = ({ open, onOpenChange
                       className="w-full flex items-center gap-1.5 px-2 py-1.5 rounded-lg text-left hover:bg-white/5 transition-colors"
                     >
                       {expanded ? <ChevronDown size={10} className="text-text-muted" /> : <ChevronRight size={10} className="text-text-muted" />}
-                      <span className="text-[9px] font-black uppercase tracking-widest text-text-muted">{cat.label}</span>
-                      <span className="text-[8px] text-text-muted/40 ml-auto">{cat.types.length}</span>
+                      <span className="text-xs font-black uppercase tracking-widest text-text-muted">{cat.label}</span>
+                      <span className="text-xs text-text-muted/40 ml-auto">{cat.types.length}</span>
                     </button>
                     {expanded && (
                       <div className="flex flex-col gap-0.5 pl-2 mt-0.5">
@@ -397,7 +397,7 @@ const NetworkBuilderInner: React.FC<NetworkBuilderProps> = ({ open, onOpenChange
                               className="flex items-center gap-2 px-2.5 py-1.5 rounded-lg text-left hover:bg-accent-dim/50 transition-[background-color,border-color] duration-[var(--dur-fast)] ease-[var(--ease-smooth)] group border border-transparent hover:border-accent/20"
                             >
                               <Icon size={12} style={{ color: def.color }} />
-                              <span className="text-[10px] font-bold text-text-muted group-hover:text-text-primary transition-colors">{def.label}</span>
+                              <span className="text-xs font-bold text-text-muted group-hover:text-text-primary transition-colors">{def.label}</span>
                             </button>
                           );
                         })}
@@ -410,55 +410,57 @@ const NetworkBuilderInner: React.FC<NetworkBuilderProps> = ({ open, onOpenChange
 
           {/* Actions */}
           <div className="px-3 pt-3">
-            <p className="text-[9px] font-black uppercase tracking-widest text-accent mb-2">Actions</p>
+            <p className="text-xs font-black uppercase tracking-widest text-accent mb-2">Actions</p>
             <button
               onClick={deleteSelected}
               disabled={!selectedNode && !selectedEdge}
               className="w-full flex items-center gap-2 px-3 py-2 rounded-xl text-left transition-[background-color,border-color,color] duration-[var(--dur-fast)] ease-[var(--ease-smooth)] border border-border/20 text-text-muted hover:bg-red-400/10 hover:border-red-400/20 hover:text-red-400 disabled:opacity-30 disabled:cursor-not-allowed"
             >
               <Trash2 size={14} />
-              <span className="text-[10px] font-bold">Delete Selected</span>
+              <span className="text-xs font-bold">Delete Selected</span>
             </button>
           </div>
 
           {/* Selected device info */}
           {selectedDeviceNode && selectedDeviceData && (
             <div className="px-3 pt-3 mt-3">
-              <p className="text-[9px] font-black uppercase tracking-widest text-accent mb-2">Device</p>
+              <p className="text-xs font-black uppercase tracking-widest text-accent mb-2">Device</p>
               <div className="space-y-2">
                 <div>
-                  <label className="text-[9px] text-text-muted block mb-1">Label</label>
-                  <input
-                    value={selectedDeviceData.label}
-                    onChange={(e) => setLabelInput({ id: selectedDeviceNode.id, field: 'label', value: e.target.value })}
-                    className="w-full px-2 py-1.5 rounded-lg bg-bg border border-border/50 text-xs text-text-primary font-mono outline-none focus:border-accent"
-                  />
-                </div>
+                <label className="text-xs text-text-muted block mb-1" htmlFor="nb-device-label">Label</label>
+                <input
+                  id="nb-device-label"
+                  value={selectedDeviceData.label}
+                  onChange={(e) => setLabelInput({ id: selectedDeviceNode.id, field: 'label', value: e.target.value })}
+                  className="w-full px-2 py-1.5 rounded-lg bg-bg border border-border/50 text-xs text-text-primary font-mono outline-none focus:border-accent"
+                />
+              </div>
+              <div>
+                <label className="text-xs text-text-muted block mb-1" htmlFor="nb-device-ip">IP Address</label>
+                <input
+                  id="nb-device-ip"
+                  value={selectedDeviceData.ip}
+                  onChange={(e) => setLabelInput({ id: selectedDeviceNode.id, field: 'ip', value: e.target.value })}
+                  className="w-full px-2 py-1.5 rounded-lg bg-bg border border-border/50 text-xs text-text-primary font-mono outline-none focus:border-accent"
+                />
+              </div>
                 <div>
-                  <label className="text-[9px] text-text-muted block mb-1">IP Address</label>
-                  <input
-                    value={selectedDeviceData.ip}
-                    onChange={(e) => setLabelInput({ id: selectedDeviceNode.id, field: 'ip', value: e.target.value })}
-                    className="w-full px-2 py-1.5 rounded-lg bg-bg border border-border/50 text-xs text-text-primary font-mono outline-none focus:border-accent"
-                  />
-                </div>
-                <div>
-                  <label className="text-[9px] text-text-muted block mb-1">Type</label>
-                  <div className="text-[10px] font-mono text-text-primary">
+                  <label className="text-xs text-text-muted block mb-1">Type</label>
+                  <div className="text-xs font-mono text-text-primary">
                     {getDeviceDef(selectedDeviceData.deviceType).label}
                   </div>
                 </div>
                 {/* Interface list */}
                 {selectedDeviceData.interfaces && selectedDeviceData.interfaces.length > 0 && (
                   <div>
-                    <label className="text-[9px] text-text-muted block mb-1">
+                    <label className="text-xs text-text-muted block mb-1">
                       Interfaces ({selectedDeviceData.interfaces.filter(i => i.operationalState === 'up').length}/{selectedDeviceData.interfaces.length} up)
                     </label>
                     <div className="max-h-32 overflow-y-auto space-y-0.5">
                       {selectedDeviceData.interfaces.map(iface => (
                         <div
                           key={iface.id}
-                          className="flex items-center gap-1.5 px-1.5 py-1 rounded bg-bg/50 text-[8px] font-mono"
+                          className="flex items-center gap-1.5 px-1.5 py-1 rounded bg-bg/50 text-xs font-mono"
                         >
                           <svg width="4" height="4">
                             <circle cx="2" cy="2" r="2" fill={iface.operationalState === 'up' ? '#22c55e' : '#333'} />
@@ -477,16 +479,16 @@ const NetworkBuilderInner: React.FC<NetworkBuilderProps> = ({ open, onOpenChange
           {/* Selected edge info */}
           {selectedEdge && !selectedDeviceNode && (
             <div className="px-3 pt-3 mt-3">
-              <p className="text-[9px] font-black uppercase tracking-widest text-accent mb-2">Link</p>
+              <p className="text-xs font-black uppercase tracking-widest text-accent mb-2">Link</p>
               <div className="space-y-2">
                 <div>
-                  <label className="text-[9px] text-text-muted block mb-1">Medium</label>
-                  <div className="text-[10px] font-mono text-text-primary">
+                  <label className="text-xs text-text-muted block mb-1">Medium</label>
+                  <div className="text-xs font-mono text-text-primary">
                     {(selectedEdge.data as unknown as NetworkLinkData)?.mediumLabel ?? 'Ethernet'}
                   </div>
                 </div>
                 <div>
-                  <label className="text-[9px] text-text-muted block mb-1">State</label>
+                  <label className="text-xs text-text-muted block mb-1">State</label>
                   <div className="flex gap-1">
                     {(['connected', 'disconnected', 'negotiating', 'blocked', 'error'] as LinkState[]).map(s => (
                       <button
@@ -494,7 +496,7 @@ const NetworkBuilderInner: React.FC<NetworkBuilderProps> = ({ open, onOpenChange
                         onClick={() => {
                           setEdges(eds => eds.map(e => e.id === selectedEdge.id ? { ...e, data: { ...e.data, state: s } } : e));
                         }}
-                        className={`px-1.5 py-0.5 rounded text-[7px] font-mono border transition-colors ${
+                        className={`px-1.5 py-0.5 rounded text-micro font-mono border transition-colors ${
                           (selectedEdge.data as unknown as NetworkLinkData)?.state === s
                             ? 'border-accent text-accent'
                             : 'border-border/20 text-text-muted hover:border-border/40'
@@ -578,7 +580,7 @@ const NetworkBuilderInner: React.FC<NetworkBuilderProps> = ({ open, onOpenChange
               <Panel position="top-center" className="pointer-events-none mt-20">
                 <div className="text-center">
                   <div className="text-text-muted text-sm font-mono">Add devices from the palette to start building your network</div>
-                  <div className="text-text-muted/60 text-[10px] font-mono mt-1">Drag from device interfaces to connect them</div>
+                  <div className="text-text-muted/60 text-xs font-mono mt-1">Drag from device interfaces to connect them</div>
                 </div>
               </Panel>
             )}

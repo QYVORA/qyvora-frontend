@@ -59,7 +59,7 @@ const ContextMenu: React.FC<ContextMenuProps> = ({ state, onClose }) => {
             onClose();
           }}
           disabled={item.disabled}
-          className={`w-full flex items-center gap-2.5 px-3.5 py-2 text-left text-[10px] font-bold transition-colors ${
+          className={`w-full flex items-center gap-2.5 px-3.5 py-2 text-left text-xs font-bold transition-colors ${
             item.danger
               ? 'text-danger hover:bg-danger/10'
               : 'text-text-muted hover:bg-accent-dim/50 hover:text-text-primary'

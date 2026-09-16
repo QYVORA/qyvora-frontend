@@ -541,7 +541,7 @@ export const TerminalShell: React.FC<TerminalShellProps> = ({
           className="flex items-center justify-between px-2.5 py-1 shrink-0 border-b"
           style={{ background: KALI_TITLE_BG, borderColor: KALI_BORDER }}
         >
-          <span className="text-[10px] font-mono text-white/30 tracking-[0.12em] select-none truncate">_terminal <span className="text-white/20">v2.0, type "help"</span></span>
+          <span className="text-xs font-mono text-white/30 tracking-[0.12em] select-none truncate">_terminal <span className="text-white/20">v2.0, type "help"</span></span>
           <div className="flex items-center gap-1">
             {onToggleFullscreen && (
               <button
@@ -568,7 +568,7 @@ export const TerminalShell: React.FC<TerminalShellProps> = ({
         role="log"
         aria-live="polite"
         aria-label="Terminal output"
-        className={`flex-1 overflow-y-auto ${noWrap ? 'overflow-x-auto' : 'overflow-x-hidden'} px-3 md:px-4 pb-4 pt-1 font-mono text-[11px] md:text-sm leading-relaxed overscroll-contain`}
+        className={`flex-1 overflow-y-auto ${noWrap ? 'overflow-x-auto' : 'overflow-x-hidden'} px-3 md:px-4 pb-4 pt-1 font-mono text-xs md:text-sm leading-relaxed overscroll-contain`}
         style={{
           background: KALI_BG,
           scrollbarWidth: 'thin',
@@ -629,7 +629,7 @@ export const TerminalShell: React.FC<TerminalShellProps> = ({
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={handleKeyDown}
-              className="flex-1 bg-transparent border-none outline-none font-mono text-[11px] md:text-sm p-0 m-0 min-h-0 h-auto leading-relaxed ml-1.5"
+              className="flex-1 bg-transparent border-none outline-none font-mono text-xs md:text-sm p-0 m-0 min-h-0 h-auto leading-relaxed ml-1.5"
               style={{ color: KALI_GREEN, caretColor: KALI_CURSOR }}
               spellCheck={false}
               autoComplete="off"

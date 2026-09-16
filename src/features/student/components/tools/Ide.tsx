@@ -353,18 +353,18 @@ const Ide: React.FC<IdeProps> = ({ files, context, terminalContext, title = 'IDE
       <div className="flex items-center h-9 px-2 bg-[#323233] border-b border-[#3c3c3c] shrink-0">
         <div className="flex items-center gap-1.5 mr-4">
           <FileCode2 size={14} className="text-[#007acc]" />
-          <span className="text-[11px] font-bold text-[#cccccc]">QYVORA</span>
+          <span className="text-xs font-bold text-[#cccccc]">QYVORA</span>
         </div>
-        <span className="text-[11px] text-[#999] truncate">{activeFile?.name}</span>
+        <span className="text-xs text-[#999] truncate">{activeFile?.name}</span>
         <div className="flex-1" />
         <div className="flex items-center gap-1">
-          <button onClick={handleRun} className="flex items-center gap-1 px-2 py-1 text-[10px] text-[#4ec9b0] hover:text-[#ffffff] hover:bg-[#ffffff10] rounded transition-colors" aria-label="Run code (Ctrl+Enter)">
+          <button onClick={handleRun} className="flex items-center gap-1 px-2 py-1 text-xs text-[#4ec9b0] hover:text-[#ffffff] hover:bg-[#ffffff10] rounded transition-colors" aria-label="Run code (Ctrl+Enter)">
             <Play size={11} /> Run
           </button>
-          <button onClick={handleReset} className="flex items-center gap-1 px-2 py-1 text-[10px] text-[#999] hover:text-[#ccc] hover:bg-[#ffffff10] rounded transition-colors" aria-label="Reset to starter code">
+          <button onClick={handleReset} className="flex items-center gap-1 px-2 py-1 text-xs text-[#999] hover:text-[#ccc] hover:bg-[#ffffff10] rounded transition-colors" aria-label="Reset to starter code">
             <RotateCcw size={11} /> Reset
           </button>
-          <button onClick={handleSave} className="flex items-center gap-1 px-2 py-1 text-[10px] text-[#999] hover:text-[#ccc] hover:bg-[#ffffff10] rounded transition-colors" aria-label="Save file (Ctrl+S)">
+          <button onClick={handleSave} className="flex items-center gap-1 px-2 py-1 text-xs text-[#999] hover:text-[#ccc] hover:bg-[#ffffff10] rounded transition-colors" aria-label="Save file (Ctrl+S)">
             <Save size={11} />
             {saveFlash ? <span className="text-green-400">Saved</span> : 'Save'}
           </button>
@@ -381,23 +381,23 @@ const Ide: React.FC<IdeProps> = ({ files, context, terminalContext, title = 'IDE
       <div className="flex-1 flex min-h-0">
         {/* Activity Bar */}
         <div className="w-12 bg-[#333333] flex flex-col items-center py-2 border-r border-[#3c3c3c] shrink-0">
-          <SidebarIcon icon={Files} active={sidebarExpanded} onClick={handleSidebarToggle} />
+          <SidebarIcon icon={Files} active={sidebarExpanded} onClick={handleSidebarToggle} label="Toggle explorer" />
           <div className="flex-1" />
-          <SidebarIcon icon={Play} active={false} onClick={handleRun} accent />
+          <SidebarIcon icon={Play} active={false} onClick={handleRun} accent label="Run code" />
         </div>
 
         {/* Side Panel */}
         {sidebarExpanded && (
           <div className="w-56 bg-[#252526] border-r border-[#3c3c3c] flex flex-col shrink-0 overflow-hidden animate-in slide-in-from-left-4 fade-in duration-150">
             <div className="flex items-center justify-between h-9 px-3 border-b border-[#3c3c3c] shrink-0">
-              <span className="text-[10px] font-black uppercase tracking-[0.15em] text-[#999]">EXPLORER</span>
+              <span className="text-xs font-black uppercase tracking-[0.15em] text-[#999]">EXPLORER</span>
               <button onClick={() => setSidebarExpanded(false)} className="flex items-center justify-center h-6 w-6 text-[#666] hover:text-[#ccc]" aria-label="Collapse sidebar">
                 <PanelLeftClose size={14} />
               </button>
             </div>
             <div className="flex-1 overflow-y-auto overflow-x-hidden">
               <div>
-                <div className="flex items-center gap-1.5 px-3 py-1.5 text-[11px] font-bold text-[#cccccc]">
+                <div className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold text-[#cccccc]">
                   <ChevronDown size={12} className="text-[#999]" />
                   <span>PROJECT</span>
                 </div>
@@ -422,7 +422,7 @@ const Ide: React.FC<IdeProps> = ({ files, context, terminalContext, title = 'IDE
                 </div>
                 {files.some(f => fileContents[f.id] !== f.content) && (
                   <div className="px-3 py-1 border-t border-[#3c3c3c]">
-                    <span className="text-[9px] text-[#e0e0e0] bg-[#4d4d4d] px-1.5 py-0.5 rounded">Unsaved changes</span>
+                    <span className="text-xs text-[#e0e0e0] bg-[#4d4d4d] px-1.5 py-0.5 rounded">Unsaved changes</span>
                   </div>
                 )}
               </div>
@@ -447,7 +447,7 @@ const Ide: React.FC<IdeProps> = ({ files, context, terminalContext, title = 'IDE
                 <button
                   key={file.id}
                   onClick={() => setActiveFileId(file.id)}
-                  className={`flex items-center gap-1.5 h-full px-3 text-[11px] border-r border-[#3c3c3c] border-t-[2px] transition-colors shrink-0 ${
+                  className={`flex items-center gap-1.5 h-full px-3 text-xs border-r border-[#3c3c3c] border-t-[2px] transition-colors shrink-0 ${
                     isActive ? 'bg-[#1e1e1e] text-[#ffffff] border-t-[#007acc]' : 'bg-[#2d2d2d] text-[#999] hover:bg-[#2a2d2e] hover:text-[#ccc] border-t-transparent'
                   }`}
                 >
@@ -460,7 +460,7 @@ const Ide: React.FC<IdeProps> = ({ files, context, terminalContext, title = 'IDE
           </div>
 
           {/* Breadcrumb */}
-          <div className="flex items-center h-6 px-3 bg-[#1e1e1e] border-b border-[#3c3c3c] text-[10px] text-[#888] shrink-0">
+          <div className="flex items-center h-6 px-3 bg-[#1e1e1e] border-b border-[#3c3c3c] text-xs text-[#888] shrink-0">
             <span>PROJECT</span>
             <ChevronRight size={10} className="mx-0.5" />
             <span className="text-[#ccc]">{activeFile?.name}</span>
@@ -497,6 +497,7 @@ const Ide: React.FC<IdeProps> = ({ files, context, terminalContext, title = 'IDE
               className="absolute inset-0 flex w-full h-full bg-transparent text-transparent font-mono text-[13px] pt-3 pb-3 pl-[2.5rem] pr-3 border-none outline-none resize-none leading-[1.6] overflow-auto"
               style={{ tabSize: 2, caretColor: '#aeafad', WebkitTextFillColor: 'transparent' }}
               spellCheck={false}
+              aria-label={`${activeFile?.name || 'Editor'} / Editor`}
               autoFocus
             />
           </div>
@@ -505,10 +506,10 @@ const Ide: React.FC<IdeProps> = ({ files, context, terminalContext, title = 'IDE
           {bottomPanelOpen && (
             <div className="h-[200px] flex flex-col border-t border-[#3c3c3c] shrink-0">
               <div className="flex items-center h-8 bg-[#1e1e1e] border-b border-[#3c3c3c] shrink-0 px-1">
-                <button onClick={() => setBottomPanelTab('output')} className={`flex items-center gap-1.5 h-full px-3 text-[11px] border-t-[2px] transition-colors ${bottomPanelTab === 'output' ? 'text-[#ffffff] border-t-[#007acc]' : 'text-[#999] hover:text-[#ccc] border-t-transparent'}`}>
+                <button onClick={() => setBottomPanelTab('output')} className={`flex items-center gap-1.5 h-full px-3 text-xs border-t-[2px] transition-colors ${bottomPanelTab === 'output' ? 'text-[#ffffff] border-t-[#007acc]' : 'text-[#999] hover:text-[#ccc] border-t-transparent'}`}>
                   <TerminalSquare size={12} /> OUTPUT
                 </button>
-                <button onClick={() => setBottomPanelTab('terminal')} className={`flex items-center gap-1.5 h-full px-3 text-[11px] border-t-[2px] transition-colors ${bottomPanelTab === 'terminal' ? 'text-[#ffffff] border-t-[#007acc]' : 'text-[#999] hover:text-[#ccc] border-t-transparent'}`}>
+                <button onClick={() => setBottomPanelTab('terminal')} className={`flex items-center gap-1.5 h-full px-3 text-xs border-t-[2px] transition-colors ${bottomPanelTab === 'terminal' ? 'text-[#ffffff] border-t-[#007acc]' : 'text-[#999] hover:text-[#ccc] border-t-transparent'}`}>
                   <TerminalSquare size={12} /> TERMINAL
                 </button>
                 <div className="flex-1" />
@@ -540,7 +541,7 @@ const Ide: React.FC<IdeProps> = ({ files, context, terminalContext, title = 'IDE
           )}
 
           {!bottomPanelOpen && (
-            <button onClick={() => setBottomPanelOpen(true)} className="h-6 bg-[#252526] border-t border-[#3c3c3c] flex items-center justify-center gap-1.5 text-[10px] text-[#999] hover:text-white hover:bg-[#2a2d2e] transition-colors shrink-0" aria-label="Show output panel">
+            <button onClick={() => setBottomPanelOpen(true)} className="h-6 bg-[#252526] border-t border-[#3c3c3c] flex items-center justify-center gap-1.5 text-xs text-[#999] hover:text-white hover:bg-[#2a2d2e] transition-colors shrink-0" aria-label="Show output panel">
               <ChevronRight size={10} className="-rotate-90" /> Show Panel
             </button>
           )}
@@ -548,7 +549,7 @@ const Ide: React.FC<IdeProps> = ({ files, context, terminalContext, title = 'IDE
       </div>
 
       {/* Status Bar */}
-      <div className="flex items-center h-6 px-2 bg-[#007acc] text-[10px] text-white shrink-0">
+      <div className="flex items-center h-6 px-2 bg-[#007acc] text-xs text-white shrink-0">
         <div className="flex items-center gap-3">
           <span className="flex items-center gap-1"><GitBranch size={10} /> main</span>
           <span>0 errors</span>
@@ -587,15 +588,17 @@ const Ide: React.FC<IdeProps> = ({ files, context, terminalContext, title = 'IDE
   );
 };
 
-function SidebarIcon({ icon: Icon, active, onClick, accent }: {
+function SidebarIcon({ icon: Icon, active, onClick, accent, label }: {
   icon: typeof Files;
   active: boolean;
   onClick: () => void;
   accent?: boolean;
+  label: string;
 }) {
   return (
     <button
       onClick={onClick}
+      aria-label={label}
       className={`w-10 h-10 flex items-center justify-center transition-colors relative ${
         active ? 'text-white' : accent ? 'text-[#999] hover:text-[#007acc]' : 'text-[#999] hover:text-[#ccc]'
       }`}
