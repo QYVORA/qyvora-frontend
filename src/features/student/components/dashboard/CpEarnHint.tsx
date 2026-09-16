@@ -19,7 +19,7 @@ const CpEarnHint = ({ engagement, loading }: CpEarnHintProps) => {
     return (
       <Link
         to={mission.actionType === 'lab_flag' ? '/dashboard/labs' : '/dashboard/courses'}
-        className="flex items-center gap-2 px-3 py-2 rounded-xl bg-accent/5 border border-accent/10 text-[11px] font-mono text-accent hover:bg-accent/10 transition-colors"
+        className="flex items-center gap-2 px-3 py-2 rounded-xl bg-accent/5 border border-accent/10 text-xs font-mono text-accent hover:bg-accent/10 transition-colors"
       >
         <IconFire size={14} className="shrink-0" />
         <span>{t('student.dashboard.cpEarnHint.dailyMission', { cp: mission.cpReward })}</span>
@@ -32,7 +32,7 @@ const CpEarnHint = ({ engagement, loading }: CpEarnHintProps) => {
     return (
       <Link
         to="/dashboard"
-        className="flex items-center gap-2 px-3 py-2 rounded-xl bg-accent/5 border border-accent/10 text-[11px] font-mono text-accent hover:bg-accent/10 transition-colors"
+        className="flex items-center gap-2 px-3 py-2 rounded-xl bg-accent/5 border border-accent/10 text-xs font-mono text-accent hover:bg-accent/10 transition-colors"
       >
         <IconTarget size={14} className="shrink-0" />
         <span>{t('student.dashboard.cpEarnHint.weeklyOperation', { cp: remaining })}</span>
@@ -43,7 +43,7 @@ const CpEarnHint = ({ engagement, loading }: CpEarnHintProps) => {
   return (
     <Link
       to="/dashboard/labs"
-      className="flex items-center gap-2 px-3 py-2 rounded-xl bg-accent/5 border border-accent/10 text-[11px] font-mono text-accent hover:bg-accent/10 transition-colors"
+      className="flex items-center gap-2 px-3 py-2 rounded-xl bg-accent/5 border border-accent/10 text-xs font-mono text-accent hover:bg-accent/10 transition-colors"
     >
       <IconFire size={14} className="shrink-0" />
       <span>{t('student.dashboard.cpEarnHint.general')}</span>

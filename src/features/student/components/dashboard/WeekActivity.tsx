@@ -105,7 +105,7 @@ const WeekActivity = ({ visitDates = [], visitDurations = {} }: WeekActivityProp
         ))}
       </div>
       <div className="mt-3 text-center shrink-0">
-        <span className="text-[10px] font-mono text-text-muted">
+        <span className="text-xs font-mono text-text-muted">
           {activeDays}{' '}
           {t('student.dashboard.streak.activeDays', 'active days')}{' '}
           {t('student.dashboard.streak.thisWeek', 'this week')}

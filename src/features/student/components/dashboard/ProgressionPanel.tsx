@@ -59,7 +59,7 @@ export const ProgressionPanel = ({ progression, fallbackLabel }: ProgressionPane
             {currentLabel}
           </span>
           {!capped && progression?.next && (
-            <span className="text-[10px] font-mono text-text-muted/70">
+            <span className="text-xs font-mono text-text-muted/70">
               {points.toLocaleString()}/{progression.next.points.toLocaleString()}
             </span>
           )}
@@ -72,7 +72,7 @@ export const ProgressionPanel = ({ progression, fallbackLabel }: ProgressionPane
           />
         </div>
 
-        <div className="mt-2 flex items-center justify-between text-[10px] font-mono text-text-muted/60">
+        <div className="mt-2 flex items-center justify-between text-xs font-mono text-text-muted/60">
           <span className="flex items-center gap-2">
             <IconRank size={12} className="text-accent" />
             {currentLabel}
@@ -87,7 +87,7 @@ export const ProgressionPanel = ({ progression, fallbackLabel }: ProgressionPane
         <div className="px-6 pb-6 md:px-8 lg:px-10 border-t border-border/40 pt-4">
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
             <div className="rounded-xl bg-bg-elevated p-4">
-              <span className="block text-[10px] font-black uppercase tracking-widest text-text-muted">
+              <span className="block text-xs font-black uppercase tracking-widest text-text-muted">
                 {t('student.progression.points', 'Progression Points')}
               </span>
               <span className="mt-1 block font-mono text-xl font-black text-accent">
@@ -95,7 +95,7 @@ export const ProgressionPanel = ({ progression, fallbackLabel }: ProgressionPane
               </span>
             </div>
             <div className="rounded-xl bg-bg-elevated p-4">
-              <span className="block text-[10px] font-black uppercase tracking-widest text-text-muted">
+              <span className="block text-xs font-black uppercase tracking-widest text-text-muted">
                 {t('student.progression.currentRank', 'Current Rank')}
               </span>
               <span className="mt-1 block font-mono text-xl font-black text-text-primary">
@@ -103,7 +103,7 @@ export const ProgressionPanel = ({ progression, fallbackLabel }: ProgressionPane
               </span>
             </div>
             <div className="rounded-xl bg-bg-elevated p-4">
-              <span className="block text-[10px] font-black uppercase tracking-widest text-text-muted">
+              <span className="block text-xs font-black uppercase tracking-widest text-text-muted">
                 {capped
                   ? t('student.progression.capped', 'Max Rank')
                   : t('student.progression.nextRank', 'Next Rank')}
@@ -112,7 +112,7 @@ export const ProgressionPanel = ({ progression, fallbackLabel }: ProgressionPane
                 {capped ? '—' : (nextName ?? '—')}
               </span>
               {!capped && pointsToNext !== null && (
-                <span className="mt-1 block text-[10px] font-mono text-text-muted/70">
+                <span className="mt-1 block text-xs font-mono text-text-muted/70">
                   {pointsToNext.toLocaleString()} {t('student.progression.remaining', 'remaining')}
                 </span>
               )}

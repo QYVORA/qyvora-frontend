@@ -176,7 +176,7 @@ const SkillRadarChart = ({ data }: SkillRadarChartProps) => {
                 className={prefersReduced ? '' : 'animate-label-fade'}
                 style={{ animationDelay: '1.15s' }}
               >
-                <tspan className="fill-text-primary text-[10px] font-black uppercase" style={{ letterSpacing: '0.08em' }}>
+                <tspan className="fill-text-primary text-xs font-black uppercase" style={{ letterSpacing: '0.08em' }}>
                   {data[i]?.axis}
                 </tspan>
               </text>

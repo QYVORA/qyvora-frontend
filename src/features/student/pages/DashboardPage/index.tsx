@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '@/core/contexts/AuthContext';
 import { useToast } from '@/core/contexts/ToastContext';
@@ -10,7 +10,7 @@ import {
 } from '@/features/student/utils/studentExperience';
 import useStudentOverview from '@/features/student/hooks/useStudentOverview';
 import useEngagement from '@/features/student/hooks/useEngagement';
-import { ErrorState, FadeIn } from '@/shared/components/ui';
+import { ErrorState, FadeIn, EmptyState } from '@/shared/components/ui';
 import { DashboardSkeleton } from '@/features/student/components/StudentSkeletons';
 import SEO from '@/shared/components/SEO';
 import StudentTour from '@/features/student/components/StudentTour';
@@ -22,47 +22,32 @@ import WeeklyOperationCard from '@/features/student/components/dashboard/WeeklyO
 import CpEarnHint from '@/features/student/components/dashboard/CpEarnHint';
 import WeekActivity from '@/features/student/components/dashboard/WeekActivity';
 import ActiveDeployments from '@/features/student/components/dashboard/ActiveDeployments';
-import { StatCard } from '@/shared/components/dashboard';
-import StudentBootcampCard from '@/features/student/components/StudentBootcampCard';
-import LabCard from '@/features/student/pages/labs/LabsPage/LabCard';
-import CourseBadge from '@/shared/components/CourseBadge';
 import SkillMatrix from '@/features/student/components/dashboard/SkillMatrix';
 import ProgressionPanel from '@/features/student/components/dashboard/ProgressionPanel';
+import { Card, Metric } from '@/shared/components/ui/Card';
+import ScrollReveal from '@/shared/components/ScrollReveal';
+import Button from '@/shared/components/ui/Button';
 import {
-  Loader2,
-  GraduationCap,
+  BookOpen,
   FlaskConical,
-  Briefcase,
-  ShoppingBag,
-  Globe,
-  Wifi,
   Wrench,
+  ShoppingBag,
+  ArrowRight,
+  Flame,
+  Crown,
+  Download,
 } from 'lucide-react';
-import {
-  IconTerminal, IconNetwork, IconCode, IconRank, IconFire, IconDashboard,
-  IconMarketplace, IconArrowRight, IconDownload, IconPlay,
-} from '@/shared/components/icons';
+import { IconCode, IconTerminal, IconNetwork } from '@/shared/components/icons';
 import { LABS } from '@/features/student/constants/labs';
 import CpLogo from '@/shared/components/CpLogo';
-import { Link, useNavigate } from 'react-router-dom';
-import { AuthImage } from '@/shared/components/ui';
 import { COURSES, getCategoryById } from '@/features/student/data/courses';
-import type { SkillLevel } from '@/features/student/data/courses';
-import LearningCard from '@/shared/components/learning/LearningCard';
-import {
-  TrendingUp,
-  Sparkles,
-} from 'lucide-react';
 import { isInstallable, showInstallPrompt } from '@/features/student/services/pwa';
-import { useGsapReveal, useGsapHover } from '@/shared/hooks/useGsap';
-
+import type { LabDef } from '@/features/student/constants/labs';
 
 import hpbCoverImg from '@/assets/bootcamp/hpb-cover.webp';
 
 const BOOTCAMP_COVER_IMGS: Record<string, string> = { bc_1775270338500: hpbCoverImg };
 const BOOTCAMP_FALLBACK_IMG = hpbCoverImg;
-
-type SectionKey = 'courses' | 'bootcamps' | 'labs' | 'marketplace' | 'tools';
 
 const TOOLS = [
   { id: 'ide', labelKey: 'student.tools.ide', descKey: 'student.tools.ideDesc', route: '/dashboard/tools/ide', icon: IconCode },
@@ -77,69 +62,34 @@ function pickCpBalance(userCp: number, overview: any, cpBalance: number | null):
   return userCp;
 }
 
-const DashboardRoomCard = ({ room }: { room: any }) => {
-  const { t } = useTranslation();
-  return (
-    <LearningCard
-      type="bootcamp"
-      title={room.title}
-      to={`/dashboard/bootcamps/bc_1775270338500/phases/${room.id.split('-')[0]}/rooms/${room.id}`}
-      badgeText={t('stat.room')}
-      icon={<IconCode size={16} className="text-accent" />}
-      actionLabel=""
-      actionIcon={<IconArrowRight size={12} />}
-    />
-  );
-};
+interface LibraryTileProps {
+  to: string;
+  title: string;
+  meta: React.ReactNode;
+  icon: React.ReactNode;
+  children?: React.ReactNode;
+}
 
-const SectionButton = ({ icon, label, active, onClick, ...rest }: { icon: React.ReactNode; label: string; active: boolean; onClick: () => void } & React.ButtonHTMLAttributes<HTMLButtonElement>) => (
-  <button
-    onClick={onClick}
-    {...rest}
-    className={`flex flex-col items-center gap-2 p-3 md:p-5 lg:p-6 min-h-[100px] md:min-h-[120px] rounded-2xl border text-center transition-[background-color,border-color] duration-[var(--dur-base)] ease-[var(--ease-smooth)] ${
-      active
-        ? 'border-accent bg-accent/10'
-        : 'border-border/50 bg-bg-card hover:bg-bg-card/80'
-    }`}
-  >
-    <div className={`w-10 h-10 md:w-14 md:h-14 lg:w-16 lg:h-16 rounded-xl md:rounded-2xl flex items-center justify-center shrink-0 ${
-      active ? 'bg-accent text-on-accent' : 'bg-bg-elevated text-text-primary'
-    }`}>
+const LibraryTile: React.FC<LibraryTileProps> = ({ to, title, meta, icon, children }) => (
+  <Card to={to} interactive className="flex min-h-[168px] flex-col gap-3 p-6">
+    <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border border-border-subtle bg-surface-raised text-accent">
       {icon}
+    </span>
+    <h3 className="type-h3 font-black uppercase tracking-tight text-text-primary">{title}</h3>
+    {children}
+    <div className="mt-auto flex items-center justify-between gap-3">
+      <span className="type-meta text-text-tertiary">{meta}</span>
+      <span className="flex min-h-[44px] items-center gap-1.5 text-sm font-bold text-accent">
+        <ArrowRight className="h-4 w-4" aria-hidden="true" />
+      </span>
     </div>
-    <span className={`text-[10px] font-black uppercase tracking-widest mt-1 ${
-      active ? 'text-accent' : 'text-text-muted'
-    }`}>{label}</span>
-  </button>
+  </Card>
 );
-
-const DashboardProductCard = ({ product }: { product: any }) => {
-  const { t } = useTranslation();
-  const id = String(product?.id || '');
-  const title = String(product?.title || t('student.dashboard.intelligenceAsset'));
-  const description = String(product?.description || t('student.dashboard.intelligenceDesc'));
-  return (
-    <LearningCard
-      id={id}
-      type="product"
-      title={title}
-      description={description}
-      to="/dashboard/marketplace"
-      image={product?.coverUrl}
-      imageAlt={title}
-      isFree={product?.isFree}
-      price={product?.isFree ? undefined : `${Number(product?.cpPrice || 0).toLocaleString()} CP`}
-      badgeText={t('student.dashboard.intelligenceAsset')}
-      actionLabel={t('student.dashboard.view')}
-    />
-  );
-};
 
 const Dashboard = () => {
   const { t } = useTranslation();
   const { user } = useAuth();
   const { addToast } = useToast();
-  const navigate = useNavigate();
   const { data: overview, loading: overviewLoading } = useStudentOverview();
   const { data: engagement, loading: engagementLoading } = useEngagement();
 
@@ -148,21 +98,8 @@ const Dashboard = () => {
   const [loading, setLoading] = useState(true);
   const [syncError, setSyncError] = useState('');
   const [products, setProducts] = useState<any[]>([]);
-  const [activeProductIdx, setActiveProductIdx] = useState(0);
   const [installing, setInstalling] = useState(false);
   const [canInstall, setCanInstall] = useState(false);
-  const [activeSection, setActiveSection] = useState<SectionKey | null>(null);
-  const sectionContentRef = useRef<HTMLDivElement>(null);
-
-  const handleSectionToggle = (section: SectionKey) => {
-    const next = activeSection === section ? null : section;
-    setActiveSection(next);
-    if (next) {
-      requestAnimationFrame(() => {
-        sectionContentRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      });
-    }
-  };
 
   useEffect(() => {
     setCanInstall(isInstallable());
@@ -237,12 +174,6 @@ const Dashboard = () => {
   const visitDurations = overview?.xpSummary?.visitDurations ?? {};
   const rankName = effectiveRankName;
 
-  const heroRef = useGsapReveal<HTMLDivElement>({ y: 40, duration: 0.8 });
-  const statsRef = useGsapReveal<HTMLDivElement>({ y: 30, stagger: 0.1 });
-  const labsRef = useGsapReveal<HTMLDivElement>({ y: 30 });
-  const roomsRef = useGsapReveal<HTMLDivElement>({ y: 30, stagger: 0.08 });
-  const rankRef = useGsapReveal<HTMLDivElement>({ y: 30 });
-
   if (loading) return <DashboardSkeleton />;
 
   return (
@@ -253,15 +184,15 @@ const Dashboard = () => {
       <StudentTour cpBalance={cpBalance} username={user?.username ?? ''} />
 
       {syncError && (
-        <div className="bg-bg px-3 md:px-4 lg:px-6 pt-8">
+        <div className="bg-canvas px-3 pt-8 md:px-4 lg:px-6">
           <ErrorState message={syncError} title="Sync Failed" />
         </div>
       )}
 
-      {/* 1. Welcome Banner + Daily Mission */}
-      <div className="bg-bg px-3 md:px-4 lg:px-6 pt-8 pb-10">
-        <div ref={heroRef} data-tour-id="tour-hero">
-          <div className="grid grid-cols-1 lg:grid-cols-[1fr_340px] gap-4 lg:gap-6 items-stretch">
+      {/* 1. Continue — current objective + daily mission */}
+      <div className="bg-canvas px-3 pb-6 pt-8 md:px-4 lg:px-6">
+        <ScrollReveal>
+          <div className="grid grid-cols-1 gap-4 lg:grid-cols-[1fr_340px] lg:gap-6">
             <DashboardHero
               isEnrolled={isEnrolled}
               allDone={allDone}
@@ -274,274 +205,234 @@ const Dashboard = () => {
               <DailyMissionCard engagement={engagement} loading={engagementLoading} />
             )}
           </div>
-        </div>
+        </ScrollReveal>
       </div>
 
-      {/* 2. Navigation Buttons */}
-      <div className="bg-bg-alt px-3 md:px-4 lg:px-6 py-10">
-        <div ref={statsRef}>
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 md:gap-4 lg:gap-5">
-            <SectionButton
-              icon={<GraduationCap className={`w-5 h-5 md:w-7 md:h-7 ${activeSection === 'courses' ? 'text-on-accent' : 'text-text-primary'}`} />}
-              label={t('nav.courses')}
-              active={activeSection === 'courses'}
-              onClick={() => handleSectionToggle('courses')}
-            />
-            <SectionButton
-              icon={<Briefcase className={`w-5 h-5 md:w-7 md:h-7 ${activeSection === 'bootcamps' ? 'text-on-accent' : 'text-text-primary'}`} />}
-              label={t('nav.bootcamps')}
-              active={activeSection === 'bootcamps'}
-              onClick={() => handleSectionToggle('bootcamps')}
-              data-tour-id="tour-learning"
-            />
-            <SectionButton
-              icon={<FlaskConical className={`w-5 h-5 md:w-7 md:h-7 ${activeSection === 'labs' ? 'text-on-accent' : 'text-text-primary'}`} />}
-              label={t('nav.labs')}
-              active={activeSection === 'labs'}
-              onClick={() => handleSectionToggle('labs')}
-            />
-            <SectionButton
-              icon={<ShoppingBag className={`w-5 h-5 md:w-7 md:h-7 ${activeSection === 'marketplace' ? 'text-on-accent' : 'text-text-primary'}`} />}
-              label={t('nav.marketplace')}
-              active={activeSection === 'marketplace'}
-              onClick={() => handleSectionToggle('marketplace')}
-            />
-            <SectionButton
-              icon={<Wrench className={`w-5 h-5 md:w-7 md:h-7 ${activeSection === 'tools' ? 'text-on-accent' : 'text-text-primary'}`} />}
-              label={t('student.tools.title')}
-              active={activeSection === 'tools'}
-              onClick={() => handleSectionToggle('tools')}
-            />
-            <SectionButton
-              icon={<IconPlay className="w-5 h-5 md:w-7 md:h-7 text-text-primary" />}
-              label={t('student.tour.replay')}
-              active={false}
-              onClick={() => window.dispatchEvent(new CustomEvent('qyvora:start-tutorial'))}
-            />
-          </div>
+      {/* 2. Today — weekly operation + streak */}
+      <div className="bg-canvas px-3 pb-6 md:px-4 lg:px-6">
+        <div className="mb-4">
+          <p className="type-label mb-1.5 uppercase tracking-[0.12em] text-accent">
+            {t('student.dashboard.sections.today')}
+          </p>
+          <h2 className="type-h2 font-black uppercase tracking-tight text-text-primary">
+            {t('student.dashboard.sections.todayDesc')}
+          </h2>
         </div>
-
-        {/* 2.5 PWA Install */}
-        {canInstall && (
-          <div className="mt-10 flex flex-col sm:flex-row sm:items-center gap-4 p-5 md:p-6 rounded-2xl border border-accent/20 bg-accent/5">
-            <div className="flex items-center gap-3">
-              <div className="w-14 h-14 rounded-2xl flex items-center justify-center shrink-0 bg-accent/10">
-                <IconDownload size={28} className="text-accent" />
-              </div>
-              <div className="min-w-0">
-                <p className="text-sm md:text-base font-black text-text-primary">{t('student.installBanner.title')}</p>
-                <p className="text-[10px] md:text-xs font-mono text-text-muted">{t('student.installBanner.description')}</p>
-              </div>
-            </div>
-            <button
-              onClick={handleInstall}
-              disabled={installing}
-              className="sm:ml-auto flex items-center justify-center gap-1.5 w-full sm:w-auto px-4 py-2.5 rounded-xl bg-accent text-on-accent text-[10px] font-black uppercase tracking-widest hover:bg-accent/90 transition-colors disabled:opacity-50"
-            >
-              {installing ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <IconDownload size={14} />}
-              {installing ? t('button.installing') : t('button.install')}
-            </button>
-          </div>
-        )}
+        <div className="grid grid-cols-1 gap-4 lg:grid-cols-2 lg:gap-6">
+          {engagement && (
+            <WeeklyOperationCard engagement={engagement} loading={engagementLoading} />
+          )}
+          {visitDates.length > 0 && (
+            <Card className="flex flex-col p-5 md:p-6">
+              <p className="type-label mb-3 uppercase tracking-[0.12em] text-text-tertiary">
+                {t('student.dashboard.weekActivity.title')}
+              </p>
+              <WeekActivity visitDates={visitDates} visitDurations={visitDurations} />
+            </Card>
+          )}
+        </div>
+        <Card className="mt-4 p-4">
+          <CpEarnHint engagement={engagement} loading={engagementLoading} />
+        </Card>
       </div>
 
-      {/* 3. Stats + Activity */}
-      <div className="bg-bg px-3 md:px-4 lg:px-6 py-10">
-        <div ref={roomsRef}>
-          {/* Stats Row — 4 equal columns */}
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4 mb-6">
-            <StatCard
-              icon={<IconRank size={20} className="text-accent" />}
+      {/* 3. Three metrics — CP / rank / streak */}
+      <div className="bg-canvas px-3 pb-6 md:px-4 lg:px-6">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+          <Card className="p-6">
+            <Metric
+              icon={<CpLogo className="h-5 w-5" />}
+              label={t('student.dashboard.cp')}
+              value={cpBalance.toLocaleString()}
+              accent
+            />
+          </Card>
+          <Card className="p-6">
+            <Metric
+              icon={<Crown className="h-5 w-5" aria-hidden="true" />}
               label={t('student.dashboard.rank')}
               value={rankName}
             />
-            <StatCard
-              icon={<CpLogo className="w-5 h-5" />}
-              label={t('student.dashboard.cp')}
-              value={cpBalance.toLocaleString()}
-              data-tour-id="tour-cp-dashboard"
-            />
-            <StatCard
-              icon={<IconFire size={20} className="text-orange-400" />}
+          </Card>
+          <Card className="p-6">
+            <Metric
+              icon={<Flame className="h-5 w-5" aria-hidden="true" />}
               label={t('student.dashboard.streak.title')}
               value={`${streakDays ?? 0}d`}
             />
-            <StatCard
-              icon={<IconCode size={20} className="text-accent" />}
-              label={t('student.dashboard.roomsDone')}
-              value={totalRoomsDone}
-            />
-          </div>
+          </Card>
+        </div>
+      </div>
 
-          {/* CP Earn Hint — contextual suggestion near CP stats */}
+      {/* PWA install */}
+      {canInstall && (
+        <div className="bg-canvas px-3 pb-6 md:px-4 lg:px-6">
+          <Card className="flex flex-col gap-4 p-5 sm:flex-row sm:items-center md:p-6">
+            <div className="flex flex-1 items-center gap-3">
+              <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg border border-border-subtle bg-surface-raised text-accent">
+                <Download className="h-5 w-5" aria-hidden="true" />
+              </span>
+              <div className="min-w-0">
+                <p className="text-sm font-bold text-text-primary">{t('student.installBanner.title')}</p>
+                <p className="type-meta">{t('student.installBanner.description')}</p>
+              </div>
+            </div>
+            <Button onClick={handleInstall} disabled={installing} loading={installing} className="sm:ml-auto">
+              {t('button.install')}
+            </Button>
+          </Card>
+        </div>
+      )}
+
+      {/* 4. Recent learning — permanent library, no toggles */}
+      <div className="bg-canvas px-3 pb-10 md:px-4 lg:px-6">
+        <ScrollReveal>
           <div className="mb-6">
-            <CpEarnHint engagement={engagement} loading={engagementLoading} />
+            <p className="type-label mb-1.5 uppercase tracking-[0.12em] text-accent">
+              {t('student.dashboard.sections.recent')}
+            </p>
+            <h2 className="type-h2 font-black uppercase tracking-tight text-text-primary">
+              {t('student.dashboard.sections.recent')}
+            </h2>
+            <p className="type-body mt-2 max-w-prose">{t('student.dashboard.sections.recentDesc')}</p>
           </div>
+        </ScrollReveal>
 
-          {/* Activity Row — stacked column (Weekly Operation + Week Activity) | Active Deployments */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6 items-stretch">
-            <div className="flex flex-col gap-4 lg:gap-6 min-h-0">
-              {engagement && (
-                <WeeklyOperationCard engagement={engagement} loading={engagementLoading} />
-              )}
-              {visitDates.length > 0 && (
-                <div className="card-accent bg-bg-card p-5 md:p-6 flex flex-col flex-1 min-h-0">
-                  <div className="text-xs font-black uppercase tracking-widest text-text-muted mb-3 shrink-0">
-                    {t('student.dashboard.streak.title')}
-                  </div>
-                  <WeekActivity visitDates={visitDates} visitDurations={visitDurations} />
-                </div>
-              )}
+        {/* Bootcamps */}
+        {enrolledBootcamps.length > 0 && (
+          <div className="mt-8">
+            <div className="mb-3 flex items-center justify-between">
+              <h3 className="type-label uppercase tracking-[0.12em] text-text-tertiary">{t('nav.bootcamp')}</h3>
+              <Button to="/dashboard/bootcamps" variant="ghost" size="sm">
+                {t('student.dashboard.viewAll')}
+              </Button>
             </div>
             <ActiveDeployments bootcamps={enrolledBootcamps} />
           </div>
+        )}
+
+        {/* Courses */}
+        <div className="mt-8">
+          <div className="mb-3 flex items-center justify-between">
+            <h3 className="type-label uppercase tracking-[0.12em] text-text-tertiary">{t('student.dashboard.courses')}</h3>
+            <Button to="/dashboard/courses" variant="ghost" size="sm">
+              {t('student.dashboard.viewAll')}
+            </Button>
+          </div>
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {COURSES.slice(0, 3).map((course) => {
+              const category = getCategoryById(course.categoryId);
+              return (
+                <LibraryTile
+                  key={course.id}
+                  to={`/dashboard/courses/${course.id}`}
+                  title={course.title}
+                  icon={<BookOpen className="h-4 w-4" aria-hidden="true" />}
+                  meta={`${course.lessons.length} lessons · ${course.cpCost} CP`}
+                >
+                  <p className="type-body-sm line-clamp-2">{course.description}</p>
+                  <span className="type-meta text-text-tertiary">{category?.name} · {course.skillLevel}</span>
+                </LibraryTile>
+              );
+            })}
+          </div>
         </div>
-      </div>
 
-      {/* 3b. Skill Matrix — always visible */}
-      <div className="bg-bg-alt px-3 md:px-4 lg:px-6 py-10">
-        <SkillMatrix
-          modules={overviewModules}
-        />
-      </div>
+        {/* Labs */}
+        <div className="mt-8">
+          <div className="mb-3 flex items-center justify-between">
+            <h3 className="type-label uppercase tracking-[0.12em] text-text-tertiary">{t('nav.labs')}</h3>
+            <Button to="/dashboard/labs" variant="ghost" size="sm">
+              {t('student.dashboard.viewAll')}
+            </Button>
+          </div>
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {LABS.slice(0, 3).map((lab: LabDef) => (
+              <LibraryTile
+                key={lab.id}
+                to={lab.route}
+                title={t(lab.titleKey ?? '', lab.id)}
+                icon={<FlaskConical className="h-4 w-4" aria-hidden="true" />}
+                meta={lab.difficulty}
+              >
+                <p className="type-body-sm line-clamp-2">{t(lab.descKey ?? '', '')}</p>
+                <span className="type-meta text-accent">{lab.cpReward} CP</span>
+              </LibraryTile>
+            ))}
+          </div>
+        </div>
 
-      {/* 4. Section Content — appears below stats when a button is toggled */}
-      {activeSection !== null && (
-      <div className="bg-bg px-3 md:px-4 lg:px-6 py-10">
-        <div ref={sectionContentRef}>
-        {activeSection === 'courses' && (
-          <div>
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="text-xs font-black uppercase tracking-[0.3em] text-text-muted">{t('student.dashboard.courses')}</h3>
-              <Link to="/dashboard/courses" className="text-[10px] font-black uppercase tracking-widest text-accent hover:underline">
-                {t('student.dashboard.viewAll')} <IconArrowRight size={12} className="inline-block ml-1" />
-              </Link>
-            </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
-              {COURSES.slice(0, 6).map((course) => {
-                const category = getCategoryById(course.categoryId);
+        {/* Tools */}
+        <div className="mt-8">
+          <div className="mb-3 flex items-center justify-between">
+            <h3 className="type-label uppercase tracking-[0.12em] text-text-tertiary">{t('student.tools.title')}</h3>
+          </div>
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {TOOLS.map((tool) => {
+              const ToolIcon = tool.icon;
+              return (
+                <LibraryTile
+                  key={tool.id}
+                  to={tool.route}
+                  title={t(tool.labelKey)}
+                  icon={<ToolIcon className="h-4 w-4" aria-hidden="true" />}
+                  meta={t('student.dashboard.view')}
+                >
+                  <p className="type-body-sm line-clamp-2">{t(tool.descKey)}</p>
+                </LibraryTile>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Marketplace */}
+        <div className="mt-8">
+          <div className="mb-3 flex items-center justify-between">
+            <h3 className="type-label uppercase tracking-[0.12em] text-text-tertiary">{t('nav.marketplace')}</h3>
+            <Button to="/dashboard/marketplace" variant="ghost" size="sm">
+              {t('student.dashboard.viewAll')}
+            </Button>
+          </div>
+          {products.length > 0 ? (
+            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              {products.slice(0, 3).map((product: any) => {
+                const id = String(product?.id || '');
+                const title = String(product?.title || t('student.dashboard.intelligenceAsset'));
+                const description = String(product?.description || t('student.dashboard.intelligenceDesc'));
                 return (
-                  <LearningCard
-                    key={course.id}
-                    id={course.id}
-                    type="course"
-                    title={course.title}
-                    description={course.description}
-                    to={`/dashboard/courses/${course.id}`}
-                    badgeText={category?.name}
-                    badge={<CourseBadge courseId={course.id} className="w-11 h-11 shrink-0" />}
-                    difficulty={course.skillLevel}
-                    actionLabel={t('student.dashboard.view')}
-                  />
-                );
-              })}
-            </div>
-          </div>
-        )}
-
-        {activeSection === 'bootcamps' && (
-          <div>
-            {enrolledBootcamps.length > 0 ? (
-              <ActiveDeployments bootcamps={enrolledBootcamps} />
-            ) : (
-              <div className="text-center py-12 card-accent bg-bg-card">
-                <Briefcase className="w-12 h-12 text-text-muted/20 mx-auto mb-3" />
-                <p className="text-sm text-text-muted">{t('student.myCourses.empty.enrolled')}</p>
-                <Link to="/dashboard/bootcamps" className="inline-flex items-center gap-1.5 mt-3 text-[10px] font-black uppercase tracking-widest text-accent hover:underline">
-                  {t('button.browseBootcamps')} <IconArrowRight size={12} />
-                </Link>
-              </div>
-            )}
-          </div>
-        )}
-
-        {activeSection === 'labs' && (
-          <div ref={labsRef}>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
-              {LABS.map((lab) => (
-                <div key={lab.id} className="h-full">
-                  <LabCard id={lab.id} title={t(lab.titleKey || '')} description={t(lab.descKey || lab.titleKey || '')} difficulty={lab.difficulty} cpReward={lab.cpReward} route={lab.route} accentColor={lab.accentColor} />
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
-
-        {activeSection === 'marketplace' && (
-          <div>
-            {products.length > 0 ? (
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                {products.map((product, idx) => (
-                  <DashboardProductCard key={product?.id || idx} product={product} />
-                ))}
-              </div>
-            ) : (
-              <div className="text-center py-12 card-accent bg-bg-card">
-                <ShoppingBag className="w-12 h-12 text-text-muted/20 mx-auto mb-3" />
-                <p className="text-sm text-text-muted">{t('student.marketplace.empty')}</p>
-                <Link to="/dashboard/marketplace" className="inline-flex items-center gap-1.5 mt-3 text-[10px] font-black uppercase tracking-widest text-accent hover:underline">
-                  {t('student.marketplace.title')} <IconArrowRight size={12} />
-                </Link>
-              </div>
-            )}
-          </div>
-        )}
-
-        {activeSection === 'tools' && (
-          <div>
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="text-xs font-black uppercase tracking-[0.3em] text-text-muted">{t('student.tools.title')}</h3>
-              <span className="text-[10px] font-black uppercase tracking-widest text-accent">{t('student.tools.title')}</span>
-            </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
-              {TOOLS.map((tool) => {
-                const ToolIcon = tool.icon;
-                return (
-                  <Link
-                    key={tool.id}
-                    to={tool.route}
-                    className="group/card relative aspect-square card-accent bg-bg-card p-3 md:p-5 transition-[transform,box-shadow,border-color,background-color] duration-[var(--dur-base)] ease-[var(--ease-smooth)] flex flex-col text-left"
+                  <LibraryTile
+                    key={id || title}
+                    to="/dashboard/marketplace"
+                    title={title}
+                    icon={<ShoppingBag className="h-4 w-4" aria-hidden="true" />}
+                    meta={product?.isFree ? t('student.dashboard.free') : `${Number(product?.cpPrice || 0).toLocaleString()} CP`}
                   >
-                    <div className="flex items-center gap-2 mb-2">
-                      <div className="w-8 h-8 rounded-xl flex items-center justify-center shrink-0 bg-accent/10 border border-accent/20">
-                        <ToolIcon className="w-4 h-4 text-accent" />
-                      </div>
-                      <span className="px-2 py-0.5 rounded-lg bg-accent/10 text-[9px] font-black uppercase tracking-widest text-accent border border-accent/20">
-                        {t('student.tools.title')}
-                      </span>
-                    </div>
-
-                    <h3 className="text-sm sm:text-base md:text-lg lg:text-xl font-black text-text-primary group-hover/card:text-accent transition-colors leading-snug break-words mb-1">
-                      {t(tool.labelKey)}
-                    </h3>
-
-                    <p className="text-xs sm:text-sm md:text-base text-text-muted leading-relaxed line-clamp-3 break-words flex-1 mb-2">
-                      {t(tool.descKey)}
-                    </p>
-
-                    <div className="flex items-center justify-between mt-auto">
-                      <span className="px-3 py-1.5 rounded-lg text-[9px] sm:text-[10px] md:text-xs font-black uppercase tracking-widest bg-accent text-on-accent transition-[filter,transform] duration-[var(--dur-fast)] ease-[var(--ease-smooth)] group-hover/card:brightness-110 group-active:scale-95">
-                        {t('student.dashboard.view')}
-                      </span>
-                      <IconArrowRight size={12} className="text-text-muted" />
-                    </div>
-                  </Link>
+                    <p className="type-body-sm line-clamp-2">{description}</p>
+                  </LibraryTile>
                 );
               })}
             </div>
-          </div>
-        )}
+          ) : (
+            <EmptyState
+              icon={<ShoppingBag className="h-5 w-5" aria-hidden="true" />}
+              title={t('student.dashboard.sections.emptyMarket')}
+              description={t('student.dashboard.sections.emptyMarketDesc')}
+              action={<Button to="/dashboard/marketplace" variant="secondary" size="sm">{t('student.dashboard.viewAll')}</Button>}
+            />
+          )}
         </div>
       </div>
-      )}
 
-      {/* 5. Next Rank / Progression Progress */}
-      {progression && (
-      <div className="bg-bg-alt px-3 md:px-4 lg:px-6 py-10 pb-20 lg:pb-24">
-          <div ref={rankRef}>
-            <ProgressionPanel progression={progression} fallbackLabel={rankName} />
-          </div>
+      {/* 5. Skill matrix */}
+      <div className="bg-surface px-3 py-10 md:px-4 lg:px-6">
+        <SkillMatrix modules={overviewModules} />
       </div>
+
+      {/* 6. Progression */}
+      {progression && (
+        <div className="bg-canvas px-3 pb-20 pt-10 lg:px-6 lg:pb-24">
+          <ProgressionPanel progression={progression} fallbackLabel={rankName} />
+        </div>
       )}
     </div>
     </FadeIn>
