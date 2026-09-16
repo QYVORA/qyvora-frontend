@@ -12,6 +12,15 @@ let activePopupId: string | null = null;
 let activePriority = Infinity;
 const pendingPopups: PopupEntry[] = [];
 
+let lastFocusedElement: HTMLElement | null = null;
+
+function restoreFocus() {
+  if (lastFocusedElement && typeof lastFocusedElement.focus === 'function' && lastFocusedElement.isConnected) {
+    lastFocusedElement.focus();
+  }
+  lastFocusedElement = null;
+}
+
 function notifyShow() {
   window.dispatchEvent(new CustomEvent(SHOW_EVENT));
 }
@@ -26,6 +35,9 @@ function tryActivateNext() {
   const next = pendingPopups.shift()!;
   activePopupId = next.id;
   activePriority = next.priority;
+  if (document.activeElement instanceof HTMLElement) {
+    lastFocusedElement = document.activeElement;
+  }
   notifyShow();
 }
 
@@ -33,6 +45,7 @@ function dismissCurrentPopup() {
   activePopupId = null;
   activePriority = Infinity;
   notifyDismiss();
+  restoreFocus();
   tryActivateNext();
 }
 
@@ -51,11 +64,25 @@ function dismissCurrentPopup() {
  *
  * Call `onDismiss()` when the user dismisses the panel. The next queued panel
  * will automatically appear.
+ *
+ * Hardening behaviour:
+ * - Only one popup is ever active at a time (priorities; lower = higher).
+ * - When a popup activates, the previously focused element is remembered and
+ *   restored when the popup dismisses (keyboard place).
+ * - While a popup is active, pressing Escape dismisses it (the same single
+ *   active slot guard means at most one popup reacts to a keypress).
  */
 export function usePopupManager(id: string, priority: number, enabled = true) {
   const [isVisible, setIsVisible] = useState(false);
   const priorityRef = useRef(priority);
   priorityRef.current = priority;
+  const onDismissRef = useRef<() => void>(() => {});
+  onDismissRef.current = () => {
+    if (activePopupId === id) {
+      setIsVisible(false);
+      dismissCurrentPopup();
+    }
+  };
 
   useEffect(() => {
     // A disabled popup must not claim a slot in the shared queue and must not
@@ -69,9 +96,16 @@ export function usePopupManager(id: string, priority: number, enabled = true) {
     const handleDismiss = () => {
       if (activePopupId !== id) setIsVisible(false);
     };
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && activePopupId === id) {
+        e.preventDefault();
+        onDismissRef.current();
+      }
+    };
 
     window.addEventListener(SHOW_EVENT, handleShow);
     window.addEventListener(DISMISS_EVENT, handleDismiss);
+    document.addEventListener('keydown', handleKeyDown);
 
     pendingPopups.push({ id, priority: priorityRef.current });
 
@@ -97,12 +131,15 @@ export function usePopupManager(id: string, priority: number, enabled = true) {
 
       window.removeEventListener(SHOW_EVENT, handleShow);
       window.removeEventListener(DISMISS_EVENT, handleDismiss);
+      document.removeEventListener('keydown', handleKeyDown);
     };
   }, [id, enabled]);
 
   const onDismiss = useCallback(() => {
-    setIsVisible(false);
-    if (activePopupId === id) dismissCurrentPopup();
+    if (activePopupId === id) {
+      setIsVisible(false);
+      dismissCurrentPopup();
+    }
   }, [id]);
 
   return { isVisible, onDismiss };
