@@ -30,7 +30,7 @@ export function KillChainDiagram({ currentPhaseIndex = -1, completedPhaseIds = [
     <div className={cn('wc-diagram relative overflow-hidden rounded-xl border border-border/50 bg-bg-card p-4', className)}>
       <div className="flex items-center gap-2 mb-4">
         <Shield className="w-4 h-4 text-accent" />
-        <span className="text-[9px] font-black uppercase tracking-widest text-accent">Kill Chain Phases</span>
+        <span className="text-xs font-black uppercase tracking-widest text-accent">Kill Chain Phases</span>
       </div>
       <div className="flex flex-wrap items-center justify-center gap-2 md:gap-3">
         {KILL_CHAIN_PHASES.map((phase, idx) => {
@@ -51,12 +51,12 @@ export function KillChainDiagram({ currentPhaseIndex = -1, completedPhaseIds = [
                   {isCompleted ? (
                     <span className="text-green-400 text-xs">✓</span>
                   ) : (
-                    <span className="text-[10px] font-mono font-bold">{idx + 1}</span>
+                    <span className="text-xs font-mono font-bold">{idx + 1}</span>
                   )}
                 </div>
                 <div className="hidden md:block">
-                  <p className="text-[9px] font-black uppercase tracking-wider leading-tight">{phase.name}</p>
-                  <p className="text-[8px] font-mono opacity-60">{phase.description}</p>
+                  <p className="text-xs font-black uppercase tracking-wider leading-tight">{phase.name}</p>
+                  <p className="text-xs font-mono opacity-60">{phase.description}</p>
                 </div>
               </div>
               {idx < KILL_CHAIN_PHASES.length - 1 && (
@@ -85,7 +85,7 @@ export function KillChainDiagramSimple({ phases, currentPhaseIndex = -1, complet
     <div className={cn('wc-diagram relative overflow-hidden rounded-xl border border-border/50 bg-bg-card p-3 md:p-4', className)}>
       <div className="flex items-center gap-2 mb-3">
         <Shield className="w-3.5 h-3.5 text-accent" />
-        <span className="text-[9px] font-black uppercase tracking-widest text-accent">Kill Chain Progress</span>
+        <span className="text-xs font-black uppercase tracking-widest text-accent">Kill Chain Progress</span>
       </div>
       <div className="flex flex-wrap items-center gap-2">
         {phases.map((phase, idx) => {
@@ -100,11 +100,11 @@ export function KillChainDiagramSimple({ phases, currentPhaseIndex = -1, complet
                 'border-border/50 bg-bg-elevated text-text-secondary',
               )}>
                 {isCompleted ? (
-                  <span className="text-accent text-[10px]">✓</span>
+                  <span className="text-accent text-xs">✓</span>
                 ) : (
-                  <span className="text-[10px] font-mono font-bold">{idx + 1}</span>
+                  <span className="text-xs font-mono font-bold">{idx + 1}</span>
                 )}
-                <span className="text-[9px] font-black uppercase tracking-wider">{phase}</span>
+                <span className="text-xs font-black uppercase tracking-wider">{phase}</span>
               </div>
             </div>
           );

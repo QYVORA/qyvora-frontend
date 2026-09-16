@@ -69,13 +69,13 @@ const LeaderboardRow = ({
               <BootcampBadge completed={bootcampCompleted} className="w-5 h-5 md:w-6 md:h-6 shrink-0" />
             </span>
             {isCurrentUser && (
-              <span className="px-1.5 py-0.5 text-[8px] font-black uppercase tracking-wider rounded bg-accent text-on-accent">
+              <span className="px-1.5 py-0.5 text-xs font-black uppercase tracking-wider rounded bg-accent text-on-accent">
                 {youLabel}
               </span>
             )}
           </div>
           {entry.organization && (
-            <div className="text-[10px] font-mono text-text-muted truncate">
+            <div className="text-xs font-mono text-text-muted truncate">
               {entry.organization}
             </div>
           )}
@@ -103,7 +103,7 @@ const LeaderboardRow = ({
       <div className="md:hidden col-span-2 flex items-center justify-between mt-1">
         <div className="flex items-center gap-2">
         <RankBadge label={rankLabel} />
-          <span className="text-[10px] font-mono text-text-muted/60">
+          <span className="text-xs font-mono text-text-muted/60">
             {entry.roomsCompleted} {roomsLabel}
           </span>
         </div>
