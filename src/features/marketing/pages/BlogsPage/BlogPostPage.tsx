@@ -4,9 +4,6 @@ import { motion } from 'motion/react';
 import { Calendar, User, Tag } from 'lucide-react';
 import { IconArrowLeft, IconArrowRight, IconClock } from '@/shared/components/icons';
 import SEO from '@/shared/components/SEO';
-import { useAuth } from '@/core/contexts/AuthContext';
-import LandingFinalCtaSection from '@/features/marketing/components/landing/LandingFinalCtaSection';
-import { Footer } from '@/shared/components/layout';
 import { BLOG_POSTS } from './blogContent';
 import { buildBlogPosting } from '@/shared/seo/schema';
 
@@ -21,12 +18,11 @@ const Hpb2026CaseStudy = lazy(() => import('./Hpb2026CaseStudy').then(m => ({ de
 
 const BlogPostPage: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
-  const { user } = useAuth();
   const post = BLOG_POSTS.find((p) => p.slug === slug);
 
   if (!post) {
     return (
-      <div className="relative min-h-dvh w-full bg-bg flex items-center justify-center pt-32">
+      <div className="relative min-h-dvh w-full bg-canvas flex items-center justify-center pt-32">
         <div className="flex flex-col items-start">
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-black uppercase tracking-tight mb-4">Blog Not Found</h1>
           <Link to="/blogs" className="btn-primary mt-4 inline-flex items-center gap-2">
@@ -63,7 +59,7 @@ const BlogPostPage: React.FC = () => {
   };
 
   return (
-    <div className="relative min-h-dvh w-full bg-bg">
+    <div className="relative min-h-dvh w-full bg-canvas">
       <SEO
         title={post.title}
         description={post.excerpt}
@@ -85,7 +81,7 @@ const BlogPostPage: React.FC = () => {
               {post.tags.map((tag) => (
                 <span
                   key={tag}
-                  className="flex items-center gap-1.5 px-3 py-1.5 text-[10px] font-black uppercase tracking-widest bg-accent/10 border border-accent/20 rounded-full text-accent"
+                  className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-black uppercase tracking-widest bg-accent/10 border border-accent/20 rounded-full text-accent"
                 >
                   <Tag className="w-3 h-3" /> {tag}
                 </span>
@@ -100,7 +96,7 @@ const BlogPostPage: React.FC = () => {
               {post.subtitle}
             </p>
 
-            <div className="flex flex-wrap items-center gap-6 text-[11px] font-mono text-text-muted uppercase tracking-widest pb-8">
+            <div className="flex flex-wrap items-center gap-6 text-xs font-mono text-text-muted uppercase tracking-widest pb-8">
               <span className="flex items-center gap-2">
                 <User className="w-4 h-4 text-accent" /> {post.author.name}
               </span>
@@ -146,11 +142,11 @@ const BlogPostPage: React.FC = () => {
         <div className="mt-24 pt-10 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
           <Link
             to="/blogs"
-            className="flex items-center gap-2 text-[11px] font-black uppercase tracking-[0.3em] text-text-muted hover:text-accent transition-colors"
+            className="flex items-center gap-2 text-xs font-black uppercase tracking-[0.3em] text-text-muted hover:text-accent transition-colors"
           >
             <IconArrowLeft size={16} /> Back to all blogs
           </Link>
-          <span className="text-[10px] font-mono text-text-muted">
+          <span className="text-xs font-mono text-text-muted">
             QYVORA // {post.date}
           </span>
         </div>
@@ -184,7 +180,7 @@ const BlogPostPage: React.FC = () => {
                   <div className="p-6">
                     <div className="flex items-center gap-2 mb-3 overflow-hidden">
                       {other.tags.map((tag) => (
-                        <span key={tag} className="text-[9px] font-black uppercase tracking-widest text-accent">
+                        <span key={tag} className="text-xs font-black uppercase tracking-widest text-accent">
                           {tag}
                         </span>
                       ))}
@@ -192,7 +188,7 @@ const BlogPostPage: React.FC = () => {
                     <h3 className="text-xl font-black uppercase tracking-tight text-text-primary mb-2 break-words">
                       {other.title}
                     </h3>
-                    <div className="mt-4 flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest text-accent group-hover:gap-2.5 transition-[gap]">
+                    <div className="mt-4 flex items-center gap-1.5 text-xs font-black uppercase tracking-widest text-accent group-hover:gap-2.5 transition-[gap]">
                       Read <IconArrowRight size={12} />
                     </div>
                   </div>
@@ -202,15 +198,6 @@ const BlogPostPage: React.FC = () => {
           </div>
         </section>
       )}
-
-      <section className="relative w-full min-h-dvh">
-        <LandingFinalCtaSection user={user} />
-      </section>
-
-      {/* ── Footer ── */}
-      <section className="relative w-full bg-bg">
-        <Footer />
-      </section>
     </div>
   );
 };

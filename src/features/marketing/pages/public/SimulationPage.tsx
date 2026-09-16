@@ -5,13 +5,10 @@ import { Zap, ArrowLeft, Play } from 'lucide-react';
 import { IconArrowRight, IconTerminal, IconCode, IconNetwork } from '@/shared/components/icons';
 import SEO from '@/shared/components/SEO';
 import CodeBlock from '@/shared/components/CodeBlock';
-import PublicPageLayout from '@/shared/components/PublicPageLayout';
-import PublicPageSection from '@/shared/components/PublicPageSection';
-import StudentHeroSection, { PUBLIC_HERO_TITLE_CLASS } from '@/shared/components/StudentHeroSection';
+import PageHeader from '@/shared/components/ui/PageHeader';
+import Button from '@/shared/components/ui/Button';
 import { SimpleHeading } from '@/shared/components/ui';
-import { Footer } from '@/shared/components/layout';
 import { useAuth } from '@/core/contexts/AuthContext';
-import LandingFinalCtaSection from '@/features/marketing/components/landing/LandingFinalCtaSection';
 import { SimulationProvider } from '@/features/student/components/simulations';
 import RelatedContentSection from '@/shared/components/RelatedContentSection';
 import { TerminalWrapper } from '@/shared/components/learning/TerminalWrapper';
@@ -120,74 +117,64 @@ const SimulationPage = () => {
   const features = (t(`simulations.${key}.features`, { returnObjects: true }) as unknown as string[]) ?? [];
 
   return (
-    <div className="bg-bg min-h-full">
+    <div className="min-h-full w-full bg-canvas">
       <SEO
         title={`${t(`simulations.${key}.title`)} | ${t('simulations.metaTitle')}`}
         description={t(`simulations.${key}.description`)}
       />
       <SimulationProvider>
-        <PublicPageLayout>
-          <section className="relative w-full min-h-dvh bg-bg">
-          <StudentHeroSection
-            title={t(`simulations.${key}.title`)}
-            accentWord={t(`simulations.${key}.titleAccent`)}
-            titleClassName={PUBLIC_HERO_TITLE_CLASS}
-            showGlobe
-            typewrite
+        <div className="w-full px-3 pb-20 pt-24 md:px-4 md:pb-24 md:pt-28 lg:px-6 lg:pt-32">
+          <PageHeader
+            kicker={t('simulations.eyebrow', 'QYVORA · Simulations')}
+            title={`${t(`simulations.${key}.title`)} ${t(`simulations.${key}.titleAccent`)}`}
             description={t(`simulations.${key}.description`)}
-          >
-            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
-              <Link
-                to="/register"
-                className="btn-primary inline-flex items-center justify-center gap-2 px-6 py-2.5"
-              >
-                <Zap className="w-4 h-4" /> {t('simulations.startTraining')} <IconArrowRight size={14} />
-              </Link>
-              <Link
-                to="/simulations"
-                className="btn-secondary inline-flex items-center justify-center gap-2 px-6 py-2.5"
-              >
-                <ArrowLeft className="w-4 h-4" /> {t('simulations.backToAll')}
-              </Link>
-            </div>
-          </StudentHeroSection>
-          </section>
+            metadata={
+              <span className="type-meta inline-flex items-center gap-1.5">
+                <span className="h-1.5 w-1.5 rounded-full bg-accent" aria-hidden="true" />
+                {t(`simulations.${key}.tag`)}
+              </span>
+            }
+            actions={
+              <>
+                <Button to="/register">
+                  <Zap className="h-4 w-4" /> {t('simulations.startTraining')} <IconArrowRight size={14} />
+                </Button>
+                <Button to="/simulations" variant="secondary">
+                  <ArrowLeft className="h-4 w-4" /> {t('simulations.backToAll')}
+                </Button>
+              </>
+            }
+          />
 
           {/* Demo launcher — the live tool opens in a modal */}
-          <PublicPageSection>
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 lg:items-center">
-              {/* Left — launcher copy + CTA */}
+          <section className="w-full py-10 md:py-14">
+            <div className="grid grid-cols-1 items-center gap-8 lg:grid-cols-2 lg:gap-12">
               <div className="flex flex-col gap-5">
-                <span className="w-12 h-12 md:w-14 md:h-14 rounded-2xl bg-accent/10 border border-accent/20 flex items-center justify-center">
-                  <DemoIcon className="w-6 h-6 md:w-7 md:h-7 text-accent" />
+                <span className="flex h-12 w-12 items-center justify-center rounded-2xl border border-accent/20 bg-accent/10 md:h-14 md:w-14">
+                  <DemoIcon className="h-6 w-6 text-accent md:h-7 md:w-7" />
                 </span>
                 <div>
-                  <span className="text-kicker font-black uppercase tracking-[0.3em] text-accent">
+                  <span className="type-meta mb-2 block font-black uppercase tracking-[0.3em] text-accent">
                     {t(`simulations.${key}.tag`)}
                   </span>
                   <SimpleHeading
                     text={t(`simulations.${key}.demoTitle`)}
                     align="left"
-                    className="mt-2"
                   />
                 </div>
-                <p className="text-base sm:text-lg text-text-secondary leading-relaxed font-mono max-w-xl">
+                <p className="max-w-xl font-mono text-base leading-relaxed text-text-secondary sm:text-lg">
                   {t(`simulations.${key}.demoDescription`)}
                 </p>
-                <div className="flex flex-col sm:flex-row sm:items-center gap-4 mt-2">
-                  <button
-                    onClick={() => setDemoOpen(true)}
-                    className="btn-primary inline-flex items-center justify-center gap-2 px-7 py-3"
-                  >
-                    <Play className="w-4 h-4" /> {t('simulations.runDemo')} <IconArrowRight size={14} />
-                  </button>
-                  <span className="text-[10px] font-mono text-text-muted leading-snug max-w-[220px]">
+                <div className="mt-2 flex flex-col gap-4 sm:flex-row sm:items-center">
+                  <Button onClick={() => setDemoOpen(true)}>
+                    <Play className="h-4 w-4" /> {t('simulations.runDemo')} <IconArrowRight size={14} />
+                  </Button>
+                  <span className="max-w-[220px] font-mono text-xs leading-snug text-text-muted">
                     {t('simulations.statsNoAccount')} · live in your browser
                   </span>
                 </div>
               </div>
 
-              {/* Right — live preview of the exercise you will run */}
               <CodeBlock
                 code={DEMO_FILES[0].content}
                 lang="text"
@@ -195,25 +182,25 @@ const SimulationPage = () => {
                 maxHeight="max-h-[50vh]"
               />
             </div>
-          </PublicPageSection>
+          </section>
 
-          <PublicPageSection>
+          <section className="w-full py-10 md:py-14">
             <div className="flex flex-col gap-6 lg:gap-8">
               <SimpleHeading
                 text={t(`simulations.${key}.demoTitle`)}
                 accentText={t('simulations.heroAccent')}
                 align="left"
               />
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 md:gap-3">
+              <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 md:gap-3">
                 {features.map((feature, i) => (
                   <div
                     key={i}
-                    className="card-accent bg-bg-card px-4 py-4 flex items-center gap-3"
+                    className="card-accent flex items-center gap-3 bg-bg-card px-4 py-4"
                   >
-                    <span className="w-6 h-6 rounded-lg bg-accent/10 border border-accent/20 flex items-center justify-center shrink-0">
-                      <Zap className="w-3 h-3 text-accent" />
+                    <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-lg border border-accent/20 bg-accent/10">
+                      <Zap className="h-3 w-3 text-accent" />
                     </span>
-                    <span className="text-[11px] md:text-xs font-mono text-text-secondary leading-snug">
+                    <span className="font-mono text-xs leading-snug text-text-secondary md:text-sm">
                       {feature}
                     </span>
                   </div>
@@ -221,23 +208,15 @@ const SimulationPage = () => {
               </div>
               <Link
                 to="/register"
-                className="inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-accent hover:underline"
+                className="inline-flex w-fit items-center gap-2 text-xs font-black uppercase tracking-widest text-accent hover:underline"
               >
                 {t('simulations.startTraining')} <IconArrowRight size={14} />
               </Link>
             </div>
-          </PublicPageSection>
+          </section>
 
           <RelatedContentSection items={otherSimulations} />
-
-          <section className="relative w-full min-h-dvh bg-bg-alt">
-            <LandingFinalCtaSection user={user} />
-          </section>
-
-          <section className="w-full bg-bg pt-10 md:pt-0">
-            <Footer />
-          </section>
-        </PublicPageLayout>
+        </div>
 
         {/* Live tool modals */}
         {key === 'terminal' && (
