@@ -139,7 +139,7 @@ const AchievementsSection: React.FC<AchievementsSectionProps> = ({
             iconClassName="bg-accent/10"
             title={t('profile.achievements.bootcampPhases', 'Bootcamp Phases')}
             trailing={
-              <span className="px-2 py-1 bg-accent/10 text-accent text-[9px] font-black rounded-lg">
+              <span className="px-2 py-1 bg-accent/10 text-accent text-xs font-black rounded-lg">
                 {phaseAchievements.length}
               </span>
             }
@@ -159,11 +159,11 @@ const AchievementsSection: React.FC<AchievementsSectionProps> = ({
                   <div className="w-12 h-12 rounded-xl flex items-center justify-center mb-3 bg-bg-elevated">
                     {a.iconNode}
                   </div>
-                  <h4 className="text-[10px] font-black uppercase tracking-widest text-text-primary leading-tight mb-1">
+                  <h4 className="text-xs font-black uppercase tracking-widest text-text-primary leading-tight mb-1">
                     {a.title}
                   </h4>
                   {a.description && (
-                    <p className="text-[9px] text-text-muted leading-snug line-clamp-2">
+                    <p className="text-xs text-text-muted leading-snug line-clamp-2">
                       {a.description}
                     </p>
                   )}
@@ -188,7 +188,7 @@ const AchievementsSection: React.FC<AchievementsSectionProps> = ({
             iconClassName="bg-info/10"
             title={t('profile.achievements.courses', 'Courses')}
             trailing={
-              <span className="px-2 py-1 bg-info/10 text-info text-[9px] font-black rounded-lg">
+              <span className="px-2 py-1 bg-info/10 text-info text-xs font-black rounded-lg">
                 {courseAchievements.length}
               </span>
             }
@@ -214,11 +214,11 @@ const AchievementsSection: React.FC<AchievementsSectionProps> = ({
                         <QyvoraMark className="w-5 h-5" />
                       )}
                     </div>
-                    <h4 className="text-[10px] font-black uppercase tracking-widest text-text-primary leading-tight mb-1">
+                    <h4 className="text-xs font-black uppercase tracking-widest text-text-primary leading-tight mb-1">
                       {a.title}
                     </h4>
                     {a.description && (
-                      <p className="text-[9px] text-text-muted leading-snug line-clamp-2">
+                      <p className="text-xs text-text-muted leading-snug line-clamp-2">
                         {a.description}
                       </p>
                     )}
@@ -238,7 +238,7 @@ const AchievementsSection: React.FC<AchievementsSectionProps> = ({
             iconClassName="bg-danger/10"
             title={t('profile.achievements.labs', 'Labs')}
             trailing={
-              <span className="px-2 py-1 bg-danger/10 text-danger text-[9px] font-black rounded-lg">
+              <span className="px-2 py-1 bg-danger/10 text-danger text-xs font-black rounded-lg">
                 {labCount}
               </span>
             }
@@ -249,14 +249,14 @@ const AchievementsSection: React.FC<AchievementsSectionProps> = ({
             ))}
           </div>
           <div className="flex flex-wrap items-center gap-x-3 gap-y-2 px-5 pb-5">
-            <h4 className="text-[10px] font-black uppercase tracking-widest text-text-primary">
+            <h4 className="text-xs font-black uppercase tracking-widest text-text-primary">
               {t('profile.achievements.labsCompleted', 'Lab Operator')}
             </h4>
-            <p className="text-[9px] text-text-muted leading-snug">
+            <p className="text-xs text-text-muted leading-snug">
               {t('profile.achievements.labsCompletedDesc', { count: labCount, defaultValue: `${labCount} lab${labCount !== 1 ? 's' : ''} completed` })}
             </p>
             {(labCount >= 5 || labCount >= 10) && (
-              <span className={`px-1.5 py-0.5 rounded text-[7px] font-black uppercase tracking-wider ${
+              <span className={`px-1.5 py-0.5 rounded text-micro font-black uppercase tracking-wider ${
                 labCount >= 10
 ? 'bg-info/20 text-info'
                   : 'bg-accent/20 text-accent'
@@ -276,7 +276,7 @@ const AchievementsSection: React.FC<AchievementsSectionProps> = ({
             iconClassName="bg-accent/10"
             title={t('profile.achievements.skills', 'Skill Badges')}
             trailing={
-              <span className="px-2 py-1 bg-accent/10 text-accent text-[9px] font-black rounded-lg">
+              <span className="px-2 py-1 bg-accent/10 text-accent text-xs font-black rounded-lg">
                 {skillAchievements.length}
               </span>
             }
@@ -306,15 +306,15 @@ const AchievementsSection: React.FC<AchievementsSectionProps> = ({
                     >
                       <Award className="w-5 h-5" style={{ color: sa.color }} />
                     </div>
-                    <h4 className="text-[10px] font-black uppercase tracking-widest text-text-primary leading-tight mb-1">
+                    <h4 className="text-xs font-black uppercase tracking-widest text-text-primary leading-tight mb-1">
                       {sa.label}
                     </h4>
-                    <p className="text-[9px] text-text-muted leading-snug line-clamp-2">
+                    <p className="text-xs text-text-muted leading-snug line-clamp-2">
                       {sa.scenariosCompleted} scenario{sa.scenariosCompleted !== 1 ? 's' : ''} completed
                     </p>
                     {rarity !== 'common' && (
                       <span className={`
-                        mt-2 px-1.5 py-0.5 rounded text-[7px] font-black uppercase tracking-wider
+                        mt-2 px-1.5 py-0.5 rounded text-micro font-black uppercase tracking-wider
                         ${rarity === 'legendary' ? 'bg-warning/20 text-warning' :
                           rarity === 'epic' ? 'bg-purple-400/20 text-purple-400' :
                           rarity === 'rare' ? 'bg-info/20 text-info' :

@@ -105,11 +105,11 @@ const ProfileIdentityBlock: React.FC<ProfileIdentityBlockProps> = ({
                 {name}
               </h2>
             )}
-            <span className="px-2 py-0.5 rounded-lg bg-bg-elevated border border-border/50 text-[10px] font-black uppercase tracking-widest text-accent font-mono">
+            <span className="px-2 py-0.5 rounded-lg bg-bg-elevated border border-border/50 text-xs font-black uppercase tracking-widest text-accent font-mono">
               @{handle}
             </span>
             {rank && (
-              <span className="px-2 py-0.5 rounded-lg bg-accent/10 border border-accent/20 text-[10px] font-black uppercase tracking-widest text-accent">
+              <span className="px-2 py-0.5 rounded-lg bg-accent/10 border border-accent/20 text-xs font-black uppercase tracking-widest text-accent">
                 {rank}
               </span>
             )}
@@ -158,10 +158,10 @@ const ProfileIdentityBlock: React.FC<ProfileIdentityBlockProps> = ({
         {xpLevel != null && xpToNext != null && xpToNext > 0 && (
           <div className="mt-5 p-3 rounded-xl bg-bg-elevated border border-border/20">
             <div className="flex items-center justify-between mb-2">
-              <span className="text-[10px] font-black uppercase tracking-widest text-text-muted">
+              <span className="text-xs font-black uppercase tracking-widest text-text-muted">
                 Level {xpLevel}
               </span>
-              <span className="text-[10px] font-mono text-text-muted/60">
+              <span className="text-xs font-mono text-text-muted/60">
                 {(xpCurrent || 0).toLocaleString()} / {xpToNext.toLocaleString()} XP
               </span>
             </div>

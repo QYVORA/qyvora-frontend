@@ -143,7 +143,7 @@ const ContributionCalendar: React.FC<ContributionCalendarProps> = ({
         <h3 className="text-xs font-black uppercase tracking-widest text-text-muted">
           {t('profile.contributionCalendar.title')}
         </h3>
-        <span className="text-[10px] font-mono text-text-muted/60">
+        <span className="text-xs font-mono text-text-muted/60">
           {totalActivities} {t('profile.contributionCalendar.activities')} &middot; {activeDays} {t('profile.contributionCalendar.activeDays')}
         </span>
       </div>
@@ -213,7 +213,7 @@ const ContributionCalendar: React.FC<ContributionCalendarProps> = ({
       </div>
 
       {/* Legend */}
-      <div className="flex items-center gap-2 mt-2 text-[9px] font-mono text-text-muted/50">
+      <div className="flex items-center gap-2 mt-2 text-xs font-mono text-text-muted/50">
         <span>{t('profile.contributionCalendar.less')}</span>
         {INTENSITY_LEVELS.map((cls, i) => (
           <div
