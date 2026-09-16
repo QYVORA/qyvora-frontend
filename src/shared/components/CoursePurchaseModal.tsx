@@ -114,16 +114,16 @@ const CoursePurchaseModal: React.FC<CoursePurchaseModalProps> = ({ open, onOpenC
         <div className="space-y-5">
           {/* Header */}
           <div className="flex items-center gap-2 flex-wrap">
-            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-accent/10 rounded-lg text-[9px] font-black uppercase tracking-widest text-accent border border-accent/30">
+            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-accent/10 rounded-lg text-xs font-black uppercase tracking-widest text-accent border border-accent/30">
               <Icon className="h-3 w-3" /> {category?.name}
             </span>
-            <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-[9px] font-black uppercase tracking-widest ${skillCfg.color}`}>
+            <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-black uppercase tracking-widest ${skillCfg.color}`}>
               <Sparkles className="h-3 w-3" /> {skillCfg.label}
             </span>
-            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-bg-elevated rounded-lg text-[9px] font-black uppercase tracking-widest text-text-muted border border-border/50">
+            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-bg-elevated rounded-lg text-xs font-black uppercase tracking-widest text-text-muted border border-border/50">
               <Clock size={12} className="text-accent" /> {course.estimatedMinutes} min
             </span>
-            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-bg-elevated rounded-lg text-[9px] font-black uppercase tracking-widest text-text-muted border border-border/50">
+            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-bg-elevated rounded-lg text-xs font-black uppercase tracking-widest text-text-muted border border-border/50">
               <BookOpen className="h-3 w-3" /> {course.lessons.length} lessons
             </span>
           </div>
@@ -135,7 +135,7 @@ const CoursePurchaseModal: React.FC<CoursePurchaseModalProps> = ({ open, onOpenC
 
           {/* Learning Objectives */}
           <div>
-            <h3 className="text-[10px] font-black uppercase tracking-widest text-text-muted mb-2">
+            <h3 className="text-xs font-black uppercase tracking-widest text-text-muted mb-2">
               What You'll Learn
             </h3>
             <ul className="space-y-1.5">

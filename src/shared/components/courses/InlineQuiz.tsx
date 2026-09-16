@@ -129,8 +129,8 @@ const InlineQuiz: React.FC<InlineQuizProps> = ({
   return (
     <div className={`wc-interactive border border-border bg-bg-card rounded-xl p-6 space-y-5 ${className}`}>
       <div className="flex items-center justify-between">
-        <span className="text-[10px] font-black uppercase tracking-widest text-accent">{resolvedTitle}</span>
-        <span className="text-[10px] font-mono text-text-muted">{currentQ + 1} / {questions.length}</span>
+        <span className="text-xs font-black uppercase tracking-widest text-accent">{resolvedTitle}</span>
+        <span className="text-xs font-mono text-text-muted">{currentQ + 1} / {questions.length}</span>
       </div>
 
       <div
@@ -158,7 +158,7 @@ const InlineQuiz: React.FC<InlineQuizProps> = ({
                   : 'border-border text-text-secondary hover:border-accent/50 hover:bg-accent-dim/20'
               }`}
             >
-              <span className="mr-2 font-mono text-[10px] opacity-50">{String.fromCharCode(65 + idx)}.</span>
+              <span className="mr-2 font-mono text-xs opacity-50">{String.fromCharCode(65 + idx)}.</span>
               {opt}
             </button>
           ))}
@@ -184,7 +184,7 @@ const InlineQuiz: React.FC<InlineQuizProps> = ({
           </button>
         )}
         {!allAnswered && (
-          <p className="text-[10px] text-text-muted self-center ml-2">
+          <p className="text-xs text-text-muted self-center ml-2">
             {t('components.quiz.remaining', { count: questions.length - totalAnswered })}
           </p>
         )}
