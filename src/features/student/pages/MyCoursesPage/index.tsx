@@ -12,8 +12,9 @@ import CourseBadge from '@/shared/components/CourseBadge';
 import api from '@/core/services/api';
 import { MyCoursesSkeleton } from '@/features/student/components/StudentSkeletons';
 import ErrorState from '@/shared/components/ui/ErrorState';
-import { LearningFilterStrip } from '@/features/student/components/learning';
-import StudentHeroSection from '@/shared/components/StudentHeroSection';
+import PageHeader from '@/shared/components/ui/PageHeader';
+import Button from '@/shared/components/ui/Button';
+import { LearningFilterStrip } from '@/shared/components/learning';
 import CoursePurchaseModal from '@/shared/components/CoursePurchaseModal';
 import FadeIn from '@/shared/components/ui/FadeIn';
 import LearningCard from '@/shared/components/learning/LearningCard';
@@ -132,30 +133,27 @@ const MyCoursesPage: React.FC = () => {
 
   return (
     <FadeIn>
-    <div className="min-h-full">
+    <div className="min-h-full bg-canvas">
       <SEO title={t('student.myCourses.seoTitle', 'My Courses')} description={t('student.myCourses.seoDesc', 'Your purchased courses.')} noindex />
 
-      <div className="bg-bg px-3 md:px-4 lg:px-6 pt-8 pb-10">
-        <StudentHeroSection
-          fullHeight={false}
+      <div className="w-full px-3 pb-16 pt-6 md:px-4 md:pb-20 md:pt-8 lg:px-6 lg:pb-24">
+        <PageHeader
+          kicker={t('student.myCourses.eyebrow', 'QYVORA · Learn')}
           title={t('student.myCourses.title')}
           description={t('student.myCourses.description')}
-          stats={[
-            { label: t('student.myCourses.enrolled', 'Enrolled'), value: totalCourses },
-            { label: t('student.myCourses.filter.inProgress', 'In Progress'), value: inProgressCourses },
-            { label: t('student.myCourses.filter.completed', 'Completed'), value: completedCourses },
-          ]}
-        >
-          <Link
-            to={continuePath}
-            className="btn-primary inline-flex items-center gap-2 px-6 py-2.5"
-          >
-            {totalCourses > 0 ? t('student.myCourses.continue') : t('student.myCourses.action.browse')}
-          </Link>
-        </StudentHeroSection>
-      </div>
+          metadata={
+            <span className="type-meta inline-flex items-center gap-2">
+              <span className="font-bold text-accent">{totalCourses}</span> {t('student.myCourses.enrolled', 'Enrolled')} · <span className="font-bold text-text-primary">{inProgressCourses}</span> {t('student.myCourses.filter.inProgress', 'In Progress')} · <span className="font-bold text-text-primary">{completedCourses}</span> {t('student.myCourses.filter.completed', 'Completed')}
+            </span>
+          }
+          actions={
+            <Button to={continuePath}>
+              {totalCourses > 0 ? t('student.myCourses.continue') : t('student.myCourses.action.browse')}
+            </Button>
+          }
+        />
 
-      <div className="bg-bg-alt px-3 md:px-4 lg:px-6 py-10 pb-20 lg:pb-24 space-y-8">
+        <div className="w-full space-y-8">
 
         {!loading && availableCourses.length > 0 && (
           <LearningFilterStrip
@@ -227,7 +225,7 @@ const MyCoursesPage: React.FC = () => {
           <div className="text-center py-16 space-y-3">
             <Search className="h-10 w-10 text-text-muted/20 mx-auto" />
             <p className="text-text-muted text-sm">{t('student.myCourses.empty.search')}</p>
-            <button onClick={() => { setSearchQuery(''); setActiveTab('all'); }} className="text-accent text-[10px] font-black uppercase tracking-widest hover:underline">
+            <button onClick={() => { setSearchQuery(''); setActiveTab('all'); }} className="text-accent text-xs font-black uppercase tracking-widest hover:underline">
               {t('button.clear')}
             </button>
           </div>
@@ -248,7 +246,7 @@ const MyCoursesPage: React.FC = () => {
                   >
                     <div className="grid grid-cols-[minmax(0,1fr)_auto] items-start gap-3 mb-2 opacity-50">
                       <div className="min-w-0">
-                        <span className="px-2 py-0.5 rounded-lg bg-bg-elevated text-[9px] font-black uppercase tracking-widest text-text-muted border border-border/20">
+                        <span className="px-2 py-0.5 rounded-lg bg-bg-elevated text-xs font-black uppercase tracking-widest text-text-muted border border-border/20">
                           {category?.name}
                         </span>
                         <h3 className="text-sm sm:text-base md:text-lg lg:text-xl font-black text-text-muted leading-snug break-words mt-1">
@@ -260,7 +258,7 @@ const MyCoursesPage: React.FC = () => {
                     <div className="relative z-10 mt-auto pt-2">
                       <button
                         onClick={() => setSelectedCourseId(course.id)}
-                        className="inline-flex items-center gap-1.5 text-[9px] sm:text-[10px] font-black uppercase tracking-widest text-accent hover:gap-2 transition-[gap] duration-[var(--dur-base)] ease-[var(--ease-smooth)]"
+                        className="inline-flex items-center gap-1.5 text-xs sm:text-xs font-black uppercase tracking-widest text-accent hover:gap-2 transition-[gap] duration-[var(--dur-base)] ease-[var(--ease-smooth)]"
                       >
                         {t('student.myCourses.viewDetails', 'View Details')} <ArrowRight className="h-2.5 w-2.5" />
                       </button>
@@ -278,12 +276,13 @@ const MyCoursesPage: React.FC = () => {
             <p className="text-text-muted">{t('student.myCourses.empty.enrolled')}</p>
             <Link
               to="/dashboard"
-              className="inline-flex items-center gap-2 px-6 py-3 bg-accent text-on-accent rounded-xl text-[10px] font-black uppercase tracking-widest transition-[filter] duration-[var(--dur-base)] ease-[var(--ease-smooth)] hover:brightness-110"
+              className="inline-flex items-center gap-2 px-6 py-3 bg-accent text-on-accent rounded-xl text-xs font-black uppercase tracking-widest transition-[filter] duration-[var(--dur-base)] ease-[var(--ease-smooth)] hover:brightness-110"
             >
               {t('student.myCourses.action.browse')} <ArrowRight className="h-3 w-3" />
             </Link>
           </div>
         )}
+      </div>
       </div>
 
       {selectedCourseId && (

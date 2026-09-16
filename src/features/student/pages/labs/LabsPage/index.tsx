@@ -1,115 +1,79 @@
-import { useState, useMemo } from 'react';
+import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Search } from 'lucide-react';
 import SEO from '@/shared/components/SEO';
 import LabCard from './LabCard';
-import StudentHeroSection from '@/shared/components/StudentHeroSection';
-import { LearningFilterStrip } from '@/features/student/components/learning';
-import { Link } from 'react-router-dom';
-import { LABS, LABS_IDS } from '@/features/student/constants/labs';
+import PageHeader from '@/shared/components/ui/PageHeader';
+import Button from '@/shared/components/ui/Button';
+import { LearningCatalogue } from '@/shared/components/learning';
+import type { LearningCatalogueItem } from '@/shared/components/learning';
+import { LABS } from '@/features/student/constants/labs';
 
 const LabsPage = () => {
   const { t } = useTranslation();
-  const [searchQuery, setSearchQuery] = useState('');
-  const [activeFilter, setActiveFilter] = useState('all');
 
-  const labsWithTranslations = useMemo(() => LABS.map((lab) => ({
-    ...lab,
-    title: t(`student.labs.list.${lab.id}.title`),
-    description: t(`student.labs.list.${lab.id}.description`),
-  })), [t]);
-
-  const difficultyFilters = useMemo(() => {
-    const difficulties = new Set(LABS.map((lab) => {
-      const parts = lab.difficulty.split('-');
-      return parts[0];
-    }));
-    return [
-      { id: 'all', label: t('student.labs.filter.all'), count: LABS.length },
-      ...Array.from(difficulties).sort().map((d) => ({
-        id: d,
-        label: d.charAt(0).toUpperCase() + d.slice(1),
-        count: LABS.filter((lab) => lab.difficulty.startsWith(d)).length,
+  const items: LearningCatalogueItem[] = useMemo(
+    () =>
+      LABS.map((lab) => ({
+        key: lab.id,
+        id: lab.id,
+        type: 'lab',
+        to: lab.route,
+        accentColor: lab.accentColor,
+        difficulty: lab.difficulty,
+        cpReward: lab.cpReward,
+        title: t(`student.labs.list.${lab.id}.title`),
+        description: t(`student.labs.list.${lab.id}.description`),
       })),
-    ];
-  }, [t]);
-
-  const filteredLabs = useMemo(() => {
-    let result = [...labsWithTranslations];
-
-    if (activeFilter !== 'all') {
-      result = result.filter((lab) => lab.difficulty.startsWith(activeFilter));
-    }
-
-    if (searchQuery) {
-      const q = searchQuery.toLowerCase();
-      result = result.filter(
-        (lab) =>
-          lab.title.toLowerCase().includes(q) ||
-          lab.description.toLowerCase().includes(q)
-      );
-    }
-
-    return result;
-  }, [searchQuery, activeFilter, labsWithTranslations]);
+    [t],
+  );
 
   const totalCpMin = LABS.reduce((sum, lab) => sum + parseInt(lab.cpReward.split('-')[0]), 0);
   const totalCpMax = LABS.reduce((sum, lab) => sum + parseInt(lab.cpReward.split('-')[1]), 0);
 
   return (
-    <div className="min-h-full">
+    <div className="min-h-full bg-canvas">
       <SEO title={t('student.labs.seoTitle')} description={t('student.labs.seoDesc')} noindex />
-      <div className="bg-bg px-3 md:px-4 lg:px-6 pt-8 pb-10">
-        <StudentHeroSection
-          fullHeight={false}
+      <div className="w-full space-y-8 px-3 pb-16 pt-6 md:px-4 md:pb-20 md:pt-8 lg:px-6 lg:pb-24">
+        <PageHeader
+          kicker={t('student.labs.eyebrow', 'QYVORA · Practice')}
           title={t('student.labs.title')}
           description={t('student.labs.description')}
-          stats={[
-            { label: t('stat.labs'), value: LABS.length },
-            { label: t('stat.cpRange'), value: `${totalCpMin}-${totalCpMax}` },
-          ]}
-        >
-          <Link
-            to={LABS[0]?.route || '/dashboard/labs'}
-            className="btn-primary inline-flex items-center gap-2 px-6 py-2.5"
-          >
-            {t('button.startFirstLab')}
-          </Link>
-        </StudentHeroSection>
-      </div>
-
-      <div className="bg-bg-alt px-3 md:px-4 lg:px-6 py-10 pb-20 lg:pb-24 space-y-8">
-
-        <LearningFilterStrip
-          filters={difficultyFilters}
-          activeFilter={activeFilter}
-          onFilterChange={setActiveFilter}
+          metadata={
+            <span className="type-meta inline-flex items-center gap-2">
+              <span className="font-bold text-accent">{LABS.length}</span> {t('stat.labs')} · <span className="font-bold text-text-primary">{totalCpMin}-{totalCpMax}</span> {t('stat.cpRange')}
+            </span>
+          }
+          actions={
+            <Button to={LABS[0]?.route || '/dashboard/labs'}>
+              {t('button.startFirstLab')}
+            </Button>
+          }
         />
 
-        <div className="relative">
-          <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-text-muted" />
-          <input
-            type="text"
-            placeholder={t('student.labs.searchPlaceholder')}
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full bg-bg border border-border rounded-xl py-3 pl-11 pr-4 text-text-primary focus:border-accent outline-none font-mono text-sm transition-colors"
-          />
-        </div>
-
-        {filteredLabs.length === 0 ? (
-          <div className="flex flex-col items-center justify-center py-20 text-center">
-            <Search className="w-12 h-12 text-text-muted mb-4" />
-            <h3 className="text-lg font-black text-text-primary mb-2">{t('student.labs.empty.title')}</h3>
-            <p className="text-sm text-text-muted">{t('student.labs.empty.description')}</p>
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
-            {filteredLabs.map((lab) => (
-              <LabCard key={lab.id} {...lab} />
-            ))}
-          </div>
-        )}
+        <LearningCatalogue
+          items={items}
+          gridClassName="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-6 lg:grid-cols-3"
+          showSearch
+          searchPlaceholder={t('student.labs.searchPlaceholder')}
+          filterLabel={(id) =>
+            id === 'all'
+              ? t('student.labs.filter.all')
+              : id.charAt(0).toUpperCase() + id.slice(1)
+          }
+          renderItem={(item) => (
+            <LabCard
+              id={item.id!}
+              title={item.title}
+              description={item.description ?? ''}
+              difficulty={item.difficulty ?? 'beginner'}
+              cpReward={String(item.cpReward ?? '')}
+              route={item.to ?? ''}
+              accentColor={item.accentColor ?? ''}
+            />
+          )}
+          emptyTitle={t('student.labs.empty.title')}
+          emptyDescription={t('student.labs.empty.description')}
+        />
       </div>
     </div>
   );
