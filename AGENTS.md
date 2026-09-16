@@ -19,7 +19,7 @@ Operational rules for AI coding agents. Before writing any UI, read `src/styles/
 
 ## Token Usage
 
-Use Tailwind utilities (`bg-bg`, `text-text-primary`, `border-border`, `text-accent`), never raw hexes. Acceptable hex exceptions: `CodeBlock.tsx` syntax colors, `Ide.tsx`/`IdeBlock.tsx` VS Code simulation, `topicMap.ts` data layer colors.
+Use Tailwind utilities (`bg-bg`, `text-text-primary`, `border-border`, `text-accent`), never raw hexes. Acceptable hex exceptions: `CodeBlock.tsx` syntax colors, `Ide.tsx`/`IdeBlock.tsx` VS Code simulation, `topicMap.ts` data layer colors, SVG logo/avatar glyph artwork, `CourseBadge`/`LabBadge`/`HpbAvatars`/bootcamp icon glyphs, simulator & diagram palettes (`network/*`, `SimulatedTerminal`, `skillRegistry`, `labs.ts`, `bootcampStructure`, `devices.ts`, `trafficEngine`, `dottedMap`, admin chart palettes), third-party brand colors (Go `#00ADD8`, LinkedIn `#0A66C2`, WhatsApp `#25D366`), and the `<meta name="theme-color">` value. Brand components resolve accent via `var(--color-accent)` in their default `color` prop — never pass a raw `#06B66F` to `<Logo>`/`<QyvoraMark>`.
 
 ## Typography Sizing
 
@@ -50,7 +50,7 @@ h2 compact bento sections: **title only, no description**.
 
 - **Cards**: always `rounded-2xl`. Never mix radius scales. Product cards: `aspect-[16/9]`, never `aspect-square`. Use canonical card primitives: `CardBase`, `CardMedia`, `CardStat`, `LearningCard` (`@/shared/components/ui/Card` or `@/shared/components/learning/LearningCard`).
 - **Learning Cards**: all learning items (labs, courses, bootcamp phases, lessons, related items) MUST use the canonical `LearningCard` component derived from the preferred Lab Card visual reference.
-- **Buttons**: always use `<Button>` component for CTAs. Raw buttons need `.btn-primary`/`.btn-secondary`/`.btn-danger` classes. Never add ad-hoc glow drop-shadows to buttons.
+- **Buttons**: always use `<Button>` component for CTAs. Raw buttons need `.btn-primary`/`.btn-secondary`/`.btn-danger` classes (or a documented exception — see `docs/UI-PATTERN-INVENTORY.md` §2b-i: sim/tool/walkthrough interactives, canvas controls, input adornments, `role="switch"`/segmented controls, row-level action links, admin table actions). Never add ad-hoc glow drop-shadows to buttons.
 - **Inputs**: always use `<Input>` component (`@/shared/components/ui/Input`). Standard style: `bg-bg-card border border-border rounded-xl py-3 px-4 text-text-primary focus:border-accent outline-none font-mono text-sm`.
 - **Skeletons**: always use native `@/shared/components/ui/Skeleton.tsx` with pulse animation. Never import third-party `react-loading-skeleton` or its CSS.
 - **Dialogs**: desktop use `DialogContent` (Radix), mobile use `BottomSheet`. Always pass `title`, always have `aria-describedby`
@@ -103,7 +103,9 @@ h2 compact bento sections: **title only, no description**.
 - `useNavInvert` hook + `data-nav-invert` attributes
 - `PublicBottomNav`, `GoCodeCarousel`, `CardGrid` components
 - `react-loading-skeleton` package imports
-- Dual walkthrough toolbars (`WalkthroughToolbar` in `StudentLayout`)
+- Dual walkthrough toolbars (`WalkthroughToolbar`)
+- A second overlay system (`OverlayManager` — overlay gating is `usePopupManager` only)
+- Legacy layouts/components (`LandingLayout`, `StudentLayout`, `Navbar`, `Footer`, `RoomTopBar`)
 - `font-display` utility class
 - Fixed `lg:h-dvh` or `h-dvh` on content sections (always use `min-h-dvh`)
 - Navbar scroll-hide/invert behavior
@@ -115,8 +117,9 @@ h2 compact bento sections: **title only, no description**.
 
 | Layout | Clearance | Notes |
 |--------|-----------|-------|
-| `LandingLayout` | None (hero clears own space) | No `<Footer />` |
-| `StudentLayout` | `pt-20 md:pt-24` | Topbar only |
+| `PublicShell` | None (hero clears own space) | Public marketing; owns `PublicNavigation` + `PublicFooter` |
+| `ToolDocLayout` | None | Tool docs; page owns `ToolDocTopbar` |
+| `AppShell` | `pt-20 md:pt-24` | Student topbar + desktop rail (`lg:pl-[264px]`) + mobile bottom nav |
 | `AdminLayout` | `pt-20 md:pt-24` | Forced dark, `data-theme-persist="dark"` |
 | `AuthFormLayout` | 2-col grid, `max-w-lg` form | Globe pinned bottom-right |
 
