@@ -25,6 +25,8 @@ interface CardBaseProps {
   /** Use for external links */
   external?: boolean;
   onClick?: () => void;
+  /** Accessible name for the interactive card (role="button" branch). */
+  ariaLabel?: string;
   /** Highlight the border with accent colour */
   active?: boolean;
   /** Dim the card (locked / disabled state) */
@@ -38,6 +40,7 @@ export const CardBase: React.FC<CardBaseProps> = ({
   to,
   external,
   onClick,
+  ariaLabel,
   active,
   muted,
 }) => {
@@ -59,7 +62,7 @@ export const CardBase: React.FC<CardBaseProps> = ({
   }
   if (onClick) {
     return (
-      <div role="button" tabIndex={0} onClick={onClick}
+      <div role="button" tabIndex={0} onClick={onClick} aria-label={ariaLabel}
         onKeyDown={(e) => (e.key === 'Enter' || e.key === ' ') && (e.preventDefault(), onClick())}
         className={base} style={style}
       >
@@ -195,7 +198,7 @@ export const CardStat: React.FC<CardStatProps> = ({
           {value}
         </div>
         {label && (
-          <div className="mt-1 text-[11px] md:text-[10px] font-bold uppercase tracking-widest text-text-muted truncate">
+          <div className="mt-1 text-xs md:text-xs font-bold uppercase tracking-widest text-text-muted truncate">
             {label}
           </div>
         )}
@@ -227,6 +230,142 @@ export const CardStat: React.FC<CardStatProps> = ({
 
 export { default as LearningCard, DifficultyBadge } from '../learning/LearningCard';
 export type { LearningCardProps, LearningCardType } from '../learning/LearningCard';
+
+// ─────────────────────────────────────────────────────────────────────────────
+// CALM CARD — composable surface for migrated UI (Product UI Redesign Audit).
+// Quiet by default: canvas step (surface), 12px radius, subtle border, no glow,
+// no shimmer, no hover-transform. Accent border ONLY signals selection.
+// ─────────────────────────────────────────────────────────────────────────────
+export interface CardProps {
+  children: React.ReactNode;
+  className?: string;
+  as?: 'div' | 'article' | 'section' | 'li';
+  /** Accent border — reserved for the single selected/active surface. */
+  selected?: boolean;
+  /** Link behaviour (router or external). */
+  to?: string;
+  href?: string;
+  external?: boolean;
+  onClick?: () => void;
+  /** Accessible name for the interactive card (role="button" branch). */
+  ariaLabel?: string;
+  /** Dim the card for locked/unavailable states. */
+  muted?: boolean;
+  /** Visibly indicate the whole card is the interactive target. */
+  interactive?: boolean;
+}
+
+export const Card: React.FC<CardProps> = ({
+  children,
+  className = '',
+  as = 'div',
+  selected,
+  to,
+  href,
+  external,
+  onClick,
+  ariaLabel,
+  muted,
+  interactive,
+}) => {
+  const Tag = as as React.ElementType;
+  const classes = [
+    'bg-surface rounded-xl border border-border-subtle',
+    selected ? 'border-accent/60' : '',
+    interactive ? 'hover:border-border' : '',
+    muted ? 'opacity-55 cursor-default' : '',
+    onClick || to || href ? 'transition-colors duration-[var(--dur-fast)] ease-[var(--ease-smooth)]' : '',
+    className,
+  ].join(' ');
+
+  if (to) {
+    return (
+      <Link to={to} className={`${classes} block focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent`}>
+        {children}
+      </Link>
+    );
+  }
+  if (href) {
+    return (
+      <a
+        href={href}
+        target={external ? '_blank' : undefined}
+        rel={external ? 'noopener noreferrer' : undefined}
+        className={`${classes} block focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent`}
+      >
+        {children}
+      </a>
+    );
+  }
+  if (onClick) {
+    return (
+      <div
+        role="button"
+        tabIndex={0}
+        onClick={onClick}
+        aria-label={ariaLabel}
+        onKeyDown={(e) => (e.key === 'Enter' || e.key === ' ') && (e.preventDefault(), onClick())}
+        className={`${classes} cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent`}
+      >
+        {children}
+      </div>
+    );
+  }
+  return <Tag className={classes}>{children}</Tag>;
+};
+
+// ─────────────────────────────────────────────────────────────────────────────
+// METRIC — compact stat without a mandatory card shell. Composes with dividers
+// or a Card when grouping is needed.
+// ─────────────────────────────────────────────────────────────────────────────
+export interface MetricProps {
+  label: React.ReactNode;
+  value: React.ReactNode;
+  hint?: React.ReactNode;
+  icon?: React.ReactNode;
+  to?: string;
+  className?: string;
+  /** Green for progress/success semantics only. */
+  accent?: boolean;
+}
+
+export const Metric: React.FC<MetricProps> = ({
+  label,
+  value,
+  hint,
+  icon,
+  to,
+  className = '',
+  accent,
+}) => {
+  const inner = (
+    <div className={`flex items-start gap-3 ${className}`}>
+      {icon && (
+        <span className={`mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border ${
+          accent ? 'border-accent/40 bg-accent/10 text-accent' : 'border-border-subtle bg-surface-raised text-text-secondary'
+        }`}>
+          {icon}
+        </span>
+      )}
+      <div className="min-w-0">
+        <div className={`font-mono text-lg font-bold leading-tight tabular-nums ${accent ? 'text-accent' : 'text-text-primary'}`}>
+          {value}
+        </div>
+        <div className="mt-0.5 type-label text-text-tertiary leading-tight">{label}</div>
+        {hint && <div className="mt-1 type-meta leading-snug">{hint}</div>}
+      </div>
+    </div>
+  );
+
+  if (to) {
+    return (
+      <Link to={to} className="group block focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent">
+        {inner}
+      </Link>
+    );
+  }
+  return inner;
+};
 
 export default {
   Base: CardBase,

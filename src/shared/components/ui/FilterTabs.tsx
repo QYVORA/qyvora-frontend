@@ -18,7 +18,7 @@ interface FilterTabsProps {
 
 const FilterTabs: React.FC<FilterTabsProps> = ({ tabs, activeKey, onChange, size = 'md', className }) => {
   const sizeClasses = size === 'sm'
-    ? 'px-4 min-h-[44px] rounded-xl text-[11px]'
+    ? 'px-4 min-h-[44px] rounded-xl text-xs'
     : 'px-5 min-h-[44px] rounded-xl text-xs';
 
   return (
@@ -41,7 +41,7 @@ const FilterTabs: React.FC<FilterTabsProps> = ({ tabs, activeKey, onChange, size
             {tab.icon}
             {tab.label}
             {tab.count !== undefined && (
-              <span className="text-[9px] font-mono opacity-70">{tab.count}</span>
+              <span className="text-xs font-mono opacity-70">{tab.count}</span>
             )}
           </span>
         </button>

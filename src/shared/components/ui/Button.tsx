@@ -10,54 +10,62 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: ButtonVariant;
   size?: ButtonSize;
   icon?: React.ReactNode;
+  /** Icon rendered after the label (e.g. arrow-forward). */
+  trailingIcon?: React.ReactNode;
   /** Shows a spinner and disables the button while true. */
   loading?: boolean;
-  /** Render as a router <Link> when provided. */
+  /** Renders the button as a router <Link>. */
   to?: string;
-  /** Render as an anchor when provided. */
+  /** Renders the button as an anchor. */
   href?: string;
   /** Open href in a new tab. */
   external?: boolean;
+  /** Accessible label for icon-only usage */
+  ariaLabel?: string;
 }
 
 const variantClasses: Record<ButtonVariant, string> = {
   primary:
-    'bg-accent text-on-accent font-black border-2 border-on-accent hover:brightness-110 active:scale-95',
+    'bg-accent text-on-accent font-bold border-2 border-on-accent hover:brightness-110',
   secondary:
-    'bg-bg-elevated text-accent font-black border border-border hover:bg-bg-card active:scale-95',
+    'bg-bg-elevated text-accent font-bold border border-border hover:bg-bg-card',
   danger:
-    'bg-danger/10 text-danger font-black border border-danger/40 hover:bg-danger/20 active:scale-95',
+    'bg-danger/10 text-danger font-bold border border-danger/40 hover:bg-danger/20',
   ghost:
-    'bg-transparent text-text-secondary font-black border border-transparent hover:bg-bg-elevated hover:text-text-primary active:scale-95',
+    'bg-transparent text-text-secondary font-bold border border-transparent hover:bg-bg-elevated hover:text-text-primary',
 };
 
 const sizeClasses: Record<ButtonSize, string> = {
-  sm: 'px-4 py-2.5 text-xs',
-  md: 'px-7 py-3 text-sm',
-  lg: 'px-8 py-3.5 text-sm',
+  sm: 'px-4 py-2 text-sm',
+  md: 'px-5 py-2.5 text-sm',
+  lg: 'px-6 py-3 text-sm',
 };
 
+const baseClasses =
+  'inline-flex items-center justify-center gap-2 rounded-xl cursor-pointer select-none whitespace-nowrap ' +
+  'min-h-[44px] ' +
+  'transition-[filter,transform,background-color,color,border-color] duration-[var(--dur-base)] ease-[var(--ease-smooth)] ' +
+  'active:scale-[0.97] ' +
+  'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent ' +
+  'disabled:opacity-45 disabled:pointer-events-none';
+
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ variant = 'primary', size = 'md', icon, className, children, disabled, loading = false, to, href, external, ...props }, ref) => {
-    const classes = cn(
-      'inline-flex items-center justify-center gap-2 rounded-xl uppercase tracking-[0.08em] cursor-pointer',
-      'transition-[filter,transform,background-color,color,border-color,box-shadow]',
-      'duration-[var(--dur-base)] ease-[var(--ease-smooth)]',
-      'disabled:opacity-50 disabled:pointer-events-none',
-      variantClasses[variant],
-      sizeClasses[size],
-      className,
-    );
+  (
+    { variant = 'primary', size = 'md', icon, trailingIcon, className, children, disabled, loading = false, to, href, external, ariaLabel, ...props },
+    ref,
+  ) => {
+    const classes = cn(baseClasses, variantClasses[variant], sizeClasses[size], className);
     const content = (
       <>
         {loading && <Loader2 className="h-4 w-4 animate-spin shrink-0" aria-hidden="true" />}
         {!loading && icon}
-        {children}
+        <span className="truncate">{children}</span>
+        {!loading && trailingIcon}
       </>
     );
     if (to) {
       return (
-        <Link to={to} className={classes} {...(props as unknown as React.AnchorHTMLAttributes<HTMLAnchorElement>)}>
+        <Link to={to} className={classes} aria-label={ariaLabel} {...(props as unknown as React.AnchorHTMLAttributes<HTMLAnchorElement>)}>
           {content}
         </Link>
       );
@@ -67,6 +75,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         <a
           href={href}
           className={classes}
+          aria-label={ariaLabel}
           target={external ? '_blank' : undefined}
           rel={external ? 'noopener noreferrer' : undefined}
           {...(props as unknown as React.AnchorHTMLAttributes<HTMLAnchorElement>)}
@@ -80,6 +89,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         ref={ref}
         disabled={disabled || loading}
         aria-busy={loading || undefined}
+        aria-label={ariaLabel}
         className={classes}
         {...props}
       >
