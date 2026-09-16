@@ -8,6 +8,8 @@ import {
 import { IconArrowRight, IconCheck } from '@/shared/components/icons';
 import { AnimatePresence } from 'motion/react';
 import FadeIn from '@/shared/components/ui/FadeIn';
+import EmptyState from '@/shared/components/ui/EmptyState';
+import Button from '@/shared/components/ui/Button';
 import api from '@/core/services/api';
 import { useToast } from '@/core/contexts/ToastContext';
 import {
@@ -20,10 +22,9 @@ import RoomSidebar from '@/features/student/components/bootcamp-room/RoomSidebar
 import QuizModal from '@/features/student/components/bootcamp-room/QuizModal';
 import QuizGateModal from '@/features/student/components/bootcamp-room/QuizGateModal';
 import RoomCompletionCelebration from '@/features/student/components/bootcamp-room/RoomCompletionCelebration';
-import RoomHeader from '@/features/student/components/bootcamp-room/RoomHeader';
-import RoomProgress from '@/features/student/components/bootcamp-room/RoomProgress';
 import LearningNav from '@/shared/components/learning/LearningNav';
 import LearningToolbar from '@/shared/components/learning/LearningToolbar';
+import LearningWorkspaceShell from '@/shared/components/learning/LearningWorkspaceShell';
 import FocusedStepList from '@/shared/components/learning/FocusedStepList';
 import WalkthroughScrollControls from '@/shared/components/learning/WalkthroughScrollControls';
 import { useReducedMotion } from '@/shared/hooks/useReducedMotion';
@@ -300,9 +301,51 @@ const BootcampRoomPage: React.FC = () => {
   if (apiLoading) return <BootcampRoomSkeleton />;
 
   const roomTitle = room?.title || t('stat.room');
+
+  if (!phase || !room || isRoomLocked) {
+    return (
+      <FadeIn>
+        <div className="w-full bg-canvas min-h-dvh">
+          <SEO
+            title={roomTitle}
+            description={`Complete the "${roomTitle}" room in the Hacker Protocol Bootcamp on QYVORA.`}
+            noindex
+          />
+          <div className="w-full px-3 pt-8 pb-16 md:px-4 md:pb-20 lg:px-6 lg:pb-24">
+            {!phase || !room ? (
+              <EmptyState
+                icon={<BookOpen className="h-6 w-6" aria-hidden="true" />}
+                title={t('student.bootcampRoom.notFound')}
+                description={t('student.bootcampRoom.notFoundDesc')}
+                action={
+                  <Button to={`/dashboard/bootcamps/${bootcampId}`} variant="secondary">
+                    <ArrowLeft className="h-4 w-4" aria-hidden="true" />
+                    {t('student.bootcampRoom.backToBootcamp')}
+                  </Button>
+                }
+              />
+            ) : (
+              <EmptyState
+                icon={<Lock className="h-6 w-6" aria-hidden="true" />}
+                title={room.title}
+                description={t('student.bootcampRoom.roomLocked')}
+                action={
+                  <Button to={`/dashboard/bootcamps/${bootcampId}`} variant="secondary">
+                    <ArrowLeft className="h-4 w-4" aria-hidden="true" />
+                    {t('student.bootcampRoom.backToBootcamp')}
+                  </Button>
+                }
+              />
+            )}
+          </div>
+        </div>
+      </FadeIn>
+    );
+  }
+
   return (
     <FadeIn>
-    <div className="bg-bg overflow-x-hidden min-h-full">
+    <div className="w-full bg-canvas overflow-x-hidden min-h-dvh">
       <SEO
         title={roomTitle}
         description={`Complete the "${roomTitle}" room in the Hacker Protocol Bootcamp on QYVORA.`}
@@ -317,7 +360,7 @@ const BootcampRoomPage: React.FC = () => {
       )}
 
       <AnimatePresence>
-        {jumpMenuOpen && room && <StepJumpMenu steps={room.steps} currentStepIdx={currentStepIdx} viewedSteps={viewedSteps} onJump={goToStep} isOpen={jumpMenuOpen} onClose={() => setJumpMenuOpen(false)} />}
+        {jumpMenuOpen && <StepJumpMenu steps={room.steps} currentStepIdx={currentStepIdx} viewedSteps={viewedSteps} onJump={goToStep} isOpen={jumpMenuOpen} onClose={() => setJumpMenuOpen(false)} />}
       </AnimatePresence>
 
       <AnimatePresence>
@@ -325,7 +368,7 @@ const BootcampRoomPage: React.FC = () => {
       </AnimatePresence>
 
       <RoomCompletionCelebration
-        show={showCompleteOverlay} roomTitle={room?.title || ''} cpEarned={completionCpEarned}
+        show={showCompleteOverlay} roomTitle={room.title} cpEarned={completionCpEarned}
         onClose={() => {
           setShowCompleteOverlay(false);
           if (nextRoom && !lockedRooms.has(`${nextRoom.phaseId}:${nextRoom.roomId}`)) handleNavigate(nextRoom.phaseId, nextRoom.roomId);
@@ -382,36 +425,26 @@ const BootcampRoomPage: React.FC = () => {
 
       <RoomSidebar phases={BOOTCAMP_CONFIG.phases} activePhaseId={phaseId || ''} activeRoomId={roomId || ''} completedRooms={completedRooms} lockedRooms={lockedRooms} bootcampId={bootcampId || ''} onNavigate={handleNavigate} mobileOpen={sidebarOpen} onMobileClose={() => setSidebarOpen(false)} />
       <WalkthroughScrollControls />
-      <main className="w-full px-3 md:px-4 lg:px-6 pt-8">
-          {!phase || !room ? (
-            <div className="px-4 py-12">
-              <Link to={`/dashboard/bootcamps/${bootcampId}`} className="mb-8 inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-text-muted hover:text-accent transition-colors">
-                <ArrowLeft className="h-3.5 w-3.5" /> {t('student.bootcampRoom.backToBootcamp')}
-              </Link>
-              <div className="rounded-2xl border border-border/50 bg-bg-card p-10 text-center">
-                <BookOpen className="mx-auto mb-4 h-10 w-10 text-text-muted opacity-40" />
-                <h1 className="mb-2 text-3xl font-black text-text-primary">{t('student.bootcampRoom.notFound')}</h1>
-                <p className="text-sm text-text-muted">{t('student.bootcampRoom.notFoundDesc')}</p>
-              </div>
-            </div>
-          ) : isRoomLocked ? (
-            <div className="px-4 py-12">
-              <Link to={`/dashboard/bootcamps/${bootcampId}`} className="mb-8 inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-text-muted hover:text-accent transition-colors">
-                <ArrowLeft className="h-3.5 w-3.5" /> {t('student.bootcampRoom.backToBootcamp')}
-              </Link>
-              <div className="rounded-2xl border border-border/50 bg-bg-card p-10 text-center">
-                <Lock className="mx-auto mb-4 h-10 w-10 text-text-muted opacity-40" />
-                <h1 className="mb-2 text-3xl font-black text-text-primary">{room.title}</h1>
-                <p className="text-sm text-text-muted">{t('student.bootcampRoom.roomLocked')}</p>
-              </div>
-            </div>
-          ) : (
-            <>
-              {currentStepIdx === 0 && (
-                <RoomHeader phase={phase} room={room} timeSpent={timeSpent} formatTime={formatTime} isRoomComplete={isRoomComplete} backUrl={`/dashboard/bootcamps/${bootcampId}`} backLabel={t('student.bootcampRoom.backToBootcamp')} />
-              )}
-              <RoomProgress viewedStepsCount={viewedSteps.size} totalStepsCount={room.steps.length} timeSpent={timeSpent} formatTime={formatTime} currentStepIdx={currentStepIdx} goToStep={goToStep} steps={room.steps} viewedSteps={viewedSteps} />
-              {room.steps.length === 0 && !apiLoading ? (
+      <LearningWorkspaceShell
+        kicker={t('student.bootcampRoom.header.phaseLabel', { codename: phase.codename, phase: phase.title })}
+        title={room.title}
+        description={room.overview}
+        backTo={`/dashboard/bootcamps/${bootcampId}`}
+        backLabel={t('student.bootcampRoom.backToBootcamp')}
+        stats={[
+          { label: t('common.min', 'min'), value: room.estimatedMinutes },
+          { label: t('common.steps', 'steps'), value: room.steps.length },
+          { label: t('common.inSession', 'in session'), value: formatTime(timeSpent) },
+          ...(isRoomComplete
+            ? [{ label: t('common.complete', 'complete'), value: '\u2713', accent: true }]
+            : []),
+        ]}
+        progress={{
+          value: room.steps.length > 0 ? (viewedSteps.size / room.steps.length) * 100 : 0,
+          label: t('student.bootcampRoom.progress.stepsCount', { viewed: viewedSteps.size, total: room.steps.length }),
+        }}
+      >
+          {room.steps.length === 0 && !apiLoading ? (
                 <div className="flex flex-col items-center justify-center py-20 text-center">
                   <BookOpen className="h-12 w-12 text-text-muted opacity-20 mb-4" />
                   <p className="text-base font-bold text-text-muted">{t('student.bootcampRoom.noStepsAvailable')}</p>
@@ -481,7 +514,7 @@ const BootcampRoomPage: React.FC = () => {
                   <>
                     <button
                       onClick={() => setJumpMenuOpen(true)}
-                      className="btn-secondary md:hidden inline-flex items-center gap-1.5 !rounded-xl !text-[10px] !font-black !uppercase !tracking-widest px-3.5 py-2"
+                      className="btn-secondary md:hidden inline-flex items-center gap-1.5 !rounded-xl !text-xs !font-black !uppercase !tracking-widest px-3.5 py-2"
                       aria-label={t('student.bootcampRoom.desktopToolbar.jump')}
                     >
                       <List className="h-3.5 w-3.5" />
@@ -515,9 +548,7 @@ const BootcampRoomPage: React.FC = () => {
                   </div>
                 }
               />
-            </>
-          )}
-      </main>
+      </LearningWorkspaceShell>
     </div>
     </FadeIn>
   );
