@@ -17,7 +17,7 @@ function FileNode({ file, depth = 0, onSelect, selectedPath }: {
     <div>
       <button
         onClick={() => { if (isDir) setExpanded(!expanded); else onSelect(file); }}
-        className={`w-full flex items-center gap-2 px-2 py-1 text-[10px] font-mono transition-colors ${
+        className={`w-full flex items-center gap-2 px-2 py-1 text-xs font-mono transition-colors ${
           isSelected ? 'bg-accent/10 text-accent' : 'text-text-muted hover:bg-white/5'
         }`}
         style={{ paddingLeft: `${depth * 16 + 8}px` }}
@@ -48,7 +48,7 @@ export function FileExplorer({ files }: FileExplorerProps) {
   return (
     <div className="flex flex-col h-full rounded-2xl border border-border/50 bg-bg-card overflow-hidden">
       <div className="px-4 py-3 bg-bg-elevated border-b border-border/20">
-        <p className="text-[10px] font-black uppercase tracking-widest text-accent">File Explorer</p>
+        <p className="text-xs font-black uppercase tracking-widest text-accent">File Explorer</p>
       </div>
 
       <div className="flex-1 min-h-0 flex">
@@ -64,7 +64,7 @@ export function FileExplorer({ files }: FileExplorerProps) {
           {selectedFile ? (
             <div>
               <h3 className="text-sm font-bold text-text-primary mb-3">{selectedFile.name}</h3>
-              <div className="grid grid-cols-2 gap-2 text-[10px] font-mono mb-4">
+              <div className="grid grid-cols-2 gap-2 text-xs font-mono mb-4">
                 <div><span className="text-text-muted">Type:</span> <span className="text-text-primary">{selectedFile.type}</span></div>
                 <div><span className="text-text-muted">Size:</span> <span className="text-text-primary">{formatSize(selectedFile.size)}</span></div>
                 <div className="flex items-center gap-1"><Clock size={10} className="text-text-muted" /> <span className="text-text-primary">{selectedFile.modified}</span></div>
@@ -75,15 +75,15 @@ export function FileExplorer({ files }: FileExplorerProps) {
               </div>
               {selectedFile.content && (
                 <div>
-                  <p className="text-[9px] font-black uppercase tracking-widest text-accent mb-2">Content</p>
-                  <pre className="text-[10px] font-mono text-text-muted bg-black/40 rounded p-3 whitespace-pre-wrap overflow-auto max-h-[300px]">
+                  <p className="text-xs font-black uppercase tracking-widest text-accent mb-2">Content</p>
+                  <pre className="text-xs font-mono text-text-muted bg-black/40 rounded p-3 whitespace-pre-wrap overflow-auto max-h-[300px]">
                     {selectedFile.content}
                   </pre>
                 </div>
               )}
             </div>
           ) : (
-            <div className="flex items-center justify-center h-full text-text-muted/50 text-[11px] font-mono">
+            <div className="flex items-center justify-center h-full text-text-muted/50 text-xs font-mono">
               Select a file to inspect
             </div>
           )}

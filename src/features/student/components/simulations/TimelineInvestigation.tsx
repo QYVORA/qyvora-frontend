@@ -44,9 +44,9 @@ export function TimelineInvestigation({ events }: TimelineInvestigationProps) {
   return (
     <div className="flex flex-col h-full rounded-2xl border border-border/50 bg-bg-card overflow-hidden">
       <div className="px-4 py-3 bg-bg-elevated border-b border-border/20 flex items-center gap-3">
-        <p className="text-[10px] font-black uppercase tracking-widest text-accent">Timeline Investigation</p>
+        <p className="text-xs font-black uppercase tracking-widest text-accent">Timeline Investigation</p>
         {orderedIds.length > 0 && (
-          <span className={`text-[8px] font-black uppercase tracking-wider px-1.5 py-0.5 rounded ${
+          <span className={`text-xs font-black uppercase tracking-wider px-1.5 py-0.5 rounded ${
             isSequenceComplete ? 'bg-success/10 text-success' : 'bg-warning/10 text-warning'
           }`}>
             {isSequenceComplete ? 'Sequence Verified' : `${orderedIds.length}/${events.length} ordered`}
@@ -58,7 +58,9 @@ export function TimelineInvestigation({ events }: TimelineInvestigationProps) {
             return (
               <button key={cat} onClick={() => setFilterCategory(filterCategory === cat ? null : cat)}
                 className={`p-1 rounded ${filterCategory === cat ? 'bg-accent/20 text-accent' : 'text-text-muted/50 hover:text-text-muted'}`}
-                title={cat}>
+                title={cat}
+                aria-label={`Filter: ${cat}`}
+                aria-pressed={filterCategory === cat}>
                 <CatIcon size={12} />
               </button>
             );
@@ -87,13 +89,13 @@ export function TimelineInvestigation({ events }: TimelineInvestigationProps) {
                   <div className={`p-3 rounded-xl border transition-colors ${isSelected ? 'border-accent/30 bg-accent/5' : SEVERITY_COLORS[event.severity]}`}>
                     <div className="flex items-center gap-2 mb-1">
                       <CatIcon size={10} className="text-text-muted" />
-                      <span className="text-[9px] font-mono text-text-muted">{event.timestamp}</span>
-                      <span className={`px-1.5 py-0.5 rounded text-[7px] font-black uppercase ${SEVERITY_DOT[event.severity]} bg-opacity-20 text-${event.severity === 'critical' ? 'red' : event.severity === 'high' ? 'orange' : event.severity === 'medium' ? 'yellow' : 'blue'}-400`}>
+                      <span className="text-xs font-mono text-text-muted">{event.timestamp}</span>
+                      <span className={`px-1.5 py-0.5 rounded text-micro font-black uppercase ${SEVERITY_DOT[event.severity]} bg-opacity-20 text-${event.severity === 'critical' ? 'red' : event.severity === 'high' ? 'orange' : event.severity === 'medium' ? 'yellow' : 'blue'}-400`}>
                         {event.severity}
                       </span>
                     </div>
-                    <p className="text-[11px] font-bold text-text-primary">{event.title}</p>
-                    <p className="text-[10px] font-mono text-text-muted mt-1">{event.description}</p>
+                    <p className="text-xs font-bold text-text-primary">{event.title}</p>
+                    <p className="text-xs font-mono text-text-muted mt-1">{event.description}</p>
                   </div>
                 </button>
               );
@@ -105,21 +107,21 @@ export function TimelineInvestigation({ events }: TimelineInvestigationProps) {
         {selected && (
           <div className="w-[280px] border-l border-border/20 p-4 overflow-auto shrink-0">
             <h3 className="text-sm font-bold text-text-primary mb-2">{selected.title}</h3>
-            <div className="space-y-2 text-[10px] font-mono mb-4">
+            <div className="space-y-2 text-xs font-mono mb-4">
               <div><span className="text-text-muted">Time:</span> <span className="text-text-primary">{selected.timestamp}</span></div>
               <div><span className="text-text-muted">Category:</span> <span className="text-text-primary capitalize">{selected.category}</span></div>
               <div><span className="text-text-muted">Severity:</span> <span className="text-text-primary capitalize">{selected.severity}</span></div>
             </div>
-            <p className="text-[10px] font-mono text-text-muted leading-relaxed">{selected.description}</p>
+            <p className="text-xs font-mono text-text-muted leading-relaxed">{selected.description}</p>
 
             {selected.relatedEvents && selected.relatedEvents.length > 0 && (
               <div className="mt-4">
-                <p className="text-[9px] font-black uppercase tracking-widest text-accent mb-2">Related Events</p>
+                <p className="text-xs font-black uppercase tracking-widest text-accent mb-2">Related Events</p>
                 {selected.relatedEvents.map(relId => {
                   const rel = events.find(e => e.id === relId);
                   return rel ? (
                     <button key={relId} onClick={() => setSelectedId(relId)}
-                      className="block w-full text-left text-[10px] font-mono text-text-muted hover:text-accent mb-1">
+                      className="block w-full text-left text-xs font-mono text-text-muted hover:text-accent mb-1">
                       {rel.timestamp} - {rel.title}
                     </button>
                   ) : null;
@@ -129,7 +131,7 @@ export function TimelineInvestigation({ events }: TimelineInvestigationProps) {
 
             {/* Reorder button */}
             <button onClick={() => handleReorder(selected.id)}
-              className={`mt-4 w-full px-3 py-2 rounded-lg text-[9px] font-black uppercase tracking-wider ${
+              className={`mt-4 w-full px-3 py-2 rounded-lg text-xs font-black uppercase tracking-wider ${
                 orderedIds.includes(selected.id)
                   ? 'bg-accent/20 border border-accent/30 text-accent'
                   : 'bg-bg-elevated border border-border/50 text-text-muted'

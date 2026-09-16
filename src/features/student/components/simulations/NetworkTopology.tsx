@@ -31,8 +31,8 @@ export function NetworkTopology({ nodes, links }: NetworkTopologyProps) {
   return (
     <div className="flex flex-col h-full rounded-2xl border border-border/50 bg-bg-card overflow-hidden">
       <div className="px-4 py-3 bg-bg-elevated border-b border-border/20">
-        <p className="text-[10px] font-black uppercase tracking-widest text-accent">Network Topology</p>
-        <p className="text-[9px] font-mono text-text-muted mt-0.5">
+        <p className="text-xs font-black uppercase tracking-widest text-accent">Network Topology</p>
+        <p className="text-xs font-mono text-text-muted mt-0.5">
           {enrichedNodes.filter(n => n.discovered).length}/{enrichedNodes.length} devices discovered
         </p>
       </div>
@@ -77,14 +77,14 @@ export function NetworkTopology({ nodes, links }: NetworkTopologyProps) {
                 </foreignObject>
                 <text x={node.x} y={node.y + 36}
                   textAnchor="middle"
-                  className="fill-text-muted text-[9px] font-mono"
+                  className="fill-text-muted text-xs font-mono"
                   style={{ fontFamily: 'monospace' }}>
                   {discovered ? node.label : '???'}
                 </text>
                 {discovered && node.ip && (
                   <text x={node.x} y={node.y + 48}
                     textAnchor="middle"
-                    className="fill-text-muted/50 text-[8px] font-mono"
+                    className="fill-text-muted/50 text-xs font-mono"
                     style={{ fontFamily: 'monospace' }}>
                     {node.ip}
                   </text>
@@ -100,7 +100,7 @@ export function NetworkTopology({ nodes, links }: NetworkTopologyProps) {
             const def = getDeviceDef(type);
             const Icon = def.icon;
             return (
-              <div key={type} className="flex items-center gap-1 text-[8px] font-mono text-text-muted">
+              <div key={type} className="flex items-center gap-1 text-xs font-mono text-text-muted">
                 <Icon size={10} style={{ color: def.color }} />
                 <span className="capitalize">{def.label}</span>
               </div>

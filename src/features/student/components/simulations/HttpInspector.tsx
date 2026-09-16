@@ -22,7 +22,7 @@ export function HttpInspector({ requests }: HttpInspectorProps) {
   return (
     <div className="flex flex-col h-full rounded-2xl border border-border/50 bg-bg-card overflow-hidden">
       <div className="px-4 py-3 bg-bg-elevated border-b border-border/20">
-        <p className="text-[10px] font-black uppercase tracking-widest text-accent">HTTP Inspector</p>
+        <p className="text-xs font-black uppercase tracking-widest text-accent">HTTP Inspector</p>
       </div>
 
       <div className="flex-1 min-h-0 flex">
@@ -36,7 +36,7 @@ export function HttpInspector({ requests }: HttpInspectorProps) {
                 selectedId === req.id ? 'bg-accent/10 border-l-2 border-l-accent' : 'hover:bg-white/5 border-l-2 border-l-transparent'
               }`}
             >
-              <span className={`text-[9px] font-black uppercase tracking-wider mr-1.5 ${
+              <span className={`text-xs font-black uppercase tracking-wider mr-1.5 ${
                 req.method === 'GET' ? 'text-success' :
                 req.method === 'POST' ? 'text-warning' :
                 req.method === 'PUT' ? 'text-info' :
@@ -44,7 +44,7 @@ export function HttpInspector({ requests }: HttpInspectorProps) {
               }`}>
                 {req.method}
               </span>
-              <span className="text-[10px] font-mono text-text-muted truncate">{req.url.split('/').pop()}</span>
+              <span className="text-xs font-mono text-text-muted truncate">{req.url.split('/').pop()}</span>
             </button>
           ))}
         </div>
@@ -56,30 +56,30 @@ export function HttpInspector({ requests }: HttpInspectorProps) {
             <div className="border-b border-border/20 p-4">
               <div className="flex items-center justify-between mb-3">
                 <div className="flex items-center gap-2">
-                  <span className={`px-2 py-0.5 rounded text-[9px] font-black uppercase tracking-wider ${
+                  <span className={`px-2 py-0.5 rounded text-xs font-black uppercase tracking-wider ${
                     selected.method === 'GET' ? 'bg-success/10 text-success' :
                     selected.method === 'POST' ? 'bg-warning/10 text-warning' :
                     selected.method === 'PUT' ? 'bg-info/10 text-info' :
                     'bg-danger/10 text-danger'
                   }`}>{selected.method}</span>
-                  <span className="text-[11px] font-mono text-text-primary">{selected.url}</span>
+                  <span className="text-xs font-mono text-text-primary">{selected.url}</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <button onClick={() => { setEditMode(!editMode); setEditedBody(selected.body || ''); }}
-                    aria-label="Toggle inspector" className="text-[9px] font-black uppercase tracking-wider text-text-muted hover:text-accent">
+                    aria-label="Toggle inspector" className="text-xs font-black uppercase tracking-wider text-text-muted hover:text-accent">
                     <ArrowUpDown size={12} />
                   </button>
                   <button onClick={handleReplay}
-                    className="flex items-center gap-1 px-2 py-1 rounded bg-accent/10 text-[9px] font-black uppercase tracking-wider text-accent hover:bg-accent/20">
+                    className="flex items-center gap-1 px-2 py-1 rounded bg-accent/10 text-xs font-black uppercase tracking-wider text-accent hover:bg-accent/20">
                     <Send size={10} /> Replay
                   </button>
                 </div>
               </div>
 
               <div className="mb-2">
-                <p className="text-[9px] font-black uppercase tracking-widest text-text-muted mb-1">Request Headers</p>
+                <p className="text-xs font-black uppercase tracking-widest text-text-muted mb-1">Request Headers</p>
                 {Object.entries(selected.headers).map(([k, v]) => (
-                  <div key={k} className="text-[10px] font-mono">
+                  <div key={k} className="text-xs font-mono">
                     <span className="text-accent">{k}:</span>{' '}
                     <span className="text-text-muted">{v}</span>
                   </div>
@@ -88,18 +88,18 @@ export function HttpInspector({ requests }: HttpInspectorProps) {
 
               {selected.body && (
                 <div>
-                  <label htmlFor="http-body-editor" className="text-[9px] font-black uppercase tracking-widest text-text-muted mb-1 block">Body</label>
+                  <label htmlFor="http-body-editor" className="text-xs font-black uppercase tracking-widest text-text-muted mb-1 block">Body</label>
                   {editMode ? (
                     <textarea id="http-body-editor" value={editedBody} onChange={e => setEditedBody(e.target.value)}
-                      className="w-full h-20 bg-black/40 border border-border/50 rounded p-2 text-[10px] font-mono text-text-primary outline-none" />
+                      className="w-full h-20 bg-black/40 border border-border/50 rounded p-2 text-xs font-mono text-text-primary outline-none" />
                   ) : (
-                    <pre className="text-[10px] font-mono text-text-muted whitespace-pre-wrap bg-black/40 rounded p-2">{selected.body}</pre>
+                    <pre className="text-xs font-mono text-text-muted whitespace-pre-wrap bg-black/40 rounded p-2">{selected.body}</pre>
                   )}
                 </div>
               )}
 
               {replayed && (
-                <div className="mt-2 text-[9px] font-black uppercase tracking-wider text-success">
+                <div className="mt-2 text-xs font-black uppercase tracking-wider text-success">
                   Request replayed successfully
                 </div>
               )}
@@ -108,26 +108,26 @@ export function HttpInspector({ requests }: HttpInspectorProps) {
             {/* Response */}
             <div className="flex-1 overflow-auto p-4">
               <div className="flex items-center gap-2 mb-3">
-                <span className={`px-2 py-0.5 rounded text-[9px] font-black ${
+                <span className={`px-2 py-0.5 rounded text-xs font-black ${
                   selected.response.statusCode < 300 ? 'bg-success/10 text-success' :
                   selected.response.statusCode < 400 ? 'bg-warning/10 text-warning' :
                   'bg-danger/10 text-danger'
                 }`}>
                   {selected.response.statusCode} {selected.response.statusText}
                 </span>
-                <span className="text-[9px] font-mono text-text-muted">{selected.response.timing}ms</span>
+                <span className="text-xs font-mono text-text-muted">{selected.response.timing}ms</span>
               </div>
 
-              <p className="text-[9px] font-black uppercase tracking-widest text-text-muted mb-1">Response Headers</p>
+              <p className="text-xs font-black uppercase tracking-widest text-text-muted mb-1">Response Headers</p>
               {Object.entries(selected.response.headers).map(([k, v]) => (
-                <div key={k} className="text-[10px] font-mono mb-0.5">
+                <div key={k} className="text-xs font-mono mb-0.5">
                   <span className="text-accent">{k}:</span>{' '}
                   <span className="text-text-muted">{v}</span>
                 </div>
               ))}
 
-              <p className="text-[9px] font-black uppercase tracking-widest text-text-muted mt-3 mb-1">Response Body</p>
-              <pre className="text-[10px] font-mono text-text-muted whitespace-pre-wrap bg-black/40 rounded p-2">
+              <p className="text-xs font-black uppercase tracking-widest text-text-muted mt-3 mb-1">Response Body</p>
+              <pre className="text-xs font-mono text-text-muted whitespace-pre-wrap bg-black/40 rounded p-2">
                 {selected.response.body}
               </pre>
             </div>

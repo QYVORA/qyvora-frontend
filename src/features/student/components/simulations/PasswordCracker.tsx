@@ -59,9 +59,9 @@ export function PasswordCracker({ hashes, wordlist }: PasswordCrackerProps) {
     return (
       <div className="flex flex-col h-full rounded-2xl border border-border/50 bg-bg-card overflow-hidden">
         <div className="px-4 py-3 bg-bg-elevated border-b border-border/20">
-          <p className="text-[10px] font-black uppercase tracking-widest text-accent">Password Cracker</p>
+          <p className="text-xs font-black uppercase tracking-widest text-accent">Password Cracker</p>
         </div>
-        <div className="flex-1 flex items-center justify-center text-text-muted/50 text-[10px] font-mono">
+        <div className="flex-1 flex items-center justify-center text-text-muted/50 text-xs font-mono">
           No hashes loaded
         </div>
       </div>
@@ -71,14 +71,14 @@ export function PasswordCracker({ hashes, wordlist }: PasswordCrackerProps) {
   return (
     <div className="flex flex-col h-full rounded-2xl border border-border/50 bg-bg-card overflow-hidden">
       <div className="px-4 py-3 bg-bg-elevated border-b border-border/20">
-        <p className="text-[10px] font-black uppercase tracking-widest text-accent">Password Cracker</p>
+        <p className="text-xs font-black uppercase tracking-widest text-accent">Password Cracker</p>
       </div>
 
       {/* Hash Selection */}
       <div className="px-4 py-2 border-b border-border/20 flex items-center gap-2 overflow-auto">
         {hashes.map((h, i) => (
           <button key={i} onClick={() => { setSelectedHash(i); reset(); }}
-            className={`px-2 py-1 rounded text-[9px] font-mono shrink-0 ${
+            className={`px-2 py-1 rounded text-xs font-mono shrink-0 ${
               selectedHash === i ? 'bg-accent/20 text-accent' : 'text-text-muted hover:text-text-primary'
             }`}>
             {h.algorithm}
@@ -89,26 +89,26 @@ export function PasswordCracker({ hashes, wordlist }: PasswordCrackerProps) {
       <div className="flex-1 min-h-0 flex flex-col p-4">
         {/* Current Hash */}
         <div className="mb-4 p-3 bg-black/40 rounded-lg">
-          <p className="text-[9px] font-black uppercase tracking-widest text-text-muted mb-1">Target Hash</p>
-          <p className="text-[10px] font-mono text-accent break-all">{hash.hash}</p>
-          <p className="text-[9px] font-mono text-text-muted/50 mt-1">Algorithm: {hash.algorithm}</p>
+          <p className="text-xs font-black uppercase tracking-widest text-text-muted mb-1">Target Hash</p>
+          <p className="text-xs font-mono text-accent break-all">{hash.hash}</p>
+          <p className="text-xs font-mono text-text-muted/50 mt-1">Algorithm: {hash.algorithm}</p>
         </div>
 
         {/* Controls */}
         <div className="flex items-center gap-2 mb-4">
           <button onClick={isRunning ? stop : startCrack}
-            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[9px] font-black uppercase tracking-wider ${
+            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-black uppercase tracking-wider ${
               isRunning ? 'bg-warning/10 border border-warning/30 text-warning' :
               'bg-accent/10 border border-accent/30 text-accent'
             }`}>
             {isRunning ? <><Pause size={10} /> Stop</> : <><Play size={10} /> Crack</>}
           </button>
           <button onClick={reset}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-bg-elevated border border-border/50 text-[9px] font-black uppercase tracking-wider text-text-muted">
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-bg-elevated border border-border/50 text-xs font-black uppercase tracking-wider text-text-muted">
             <RotateCcw size={10} /> Reset
           </button>
           {found && (
-            <span className="flex items-center gap-1 text-[9px] font-black text-success">
+            <span className="flex items-center gap-1 text-xs font-black text-success">
               <Check size={10} /> Found: {found.word}
             </span>
           )}
@@ -116,7 +116,7 @@ export function PasswordCracker({ hashes, wordlist }: PasswordCrackerProps) {
 
         {/* Progress */}
         <div className="mb-4">
-          <div className="flex items-center justify-between text-[9px] font-mono text-text-muted mb-1">
+          <div className="flex items-center justify-between text-xs font-mono text-text-muted mb-1">
             <span>{attempts.length} / {wordlist.length} attempts</span>
             <span>{progress}%</span>
           </div>
@@ -124,7 +124,7 @@ export function PasswordCracker({ hashes, wordlist }: PasswordCrackerProps) {
             <div className="h-full rounded-full bg-accent transition-[width] duration-100" style={{ width: `${progress}%` }} />
           </div>
           {currentWord && (
-            <p className="text-[10px] font-mono text-text-muted mt-1">
+            <p className="text-xs font-mono text-text-muted mt-1">
               Testing: <span className="text-text-primary">{currentWord}</span>
             </p>
           )}
@@ -132,10 +132,10 @@ export function PasswordCracker({ hashes, wordlist }: PasswordCrackerProps) {
 
         {/* Attempt Log */}
         <div className="flex-1 overflow-auto">
-          <p className="text-[9px] font-black uppercase tracking-widest text-text-muted mb-2">Attempts</p>
+          <p className="text-xs font-black uppercase tracking-widest text-text-muted mb-2">Attempts</p>
           <div className="space-y-0.5">
             {attempts.slice(-30).map((a, i) => (
-              <div key={i} className={`text-[10px] font-mono ${a.result === 'hit' ? 'text-success' : 'text-text-muted/50'}`}>
+              <div key={i} className={`text-xs font-mono ${a.result === 'hit' ? 'text-success' : 'text-text-muted/50'}`}>
                 #{a.attemptNumber} {a.word} {a.result === 'hit' && '✓ MATCH'}
               </div>
             ))}

@@ -75,15 +75,15 @@ export function SqlConsole({ tables, predefinedQueries = [] }: SqlConsoleProps) 
   return (
     <div className="flex flex-col h-full rounded-2xl border border-border/50 bg-bg-card overflow-hidden">
       <div className="px-4 py-3 bg-bg-elevated border-b border-border/20">
-        <p className="text-[10px] font-black uppercase tracking-widest text-accent">SQL Console</p>
+        <p className="text-xs font-black uppercase tracking-widest text-accent">SQL Console</p>
       </div>
 
       {/* Schema */}
       <div className="px-4 py-2 bg-black/40 border-b border-border/20 flex items-center gap-3 overflow-auto">
-        <span className="text-[9px] font-black uppercase tracking-widest text-text-muted shrink-0">Tables:</span>
+        <span className="text-xs font-black uppercase tracking-widest text-text-muted shrink-0">Tables:</span>
         {tables.map(t => (
           <button key={t.name} onClick={() => setQuery(`SELECT * FROM ${t.name} LIMIT 10;`)}
-            className="px-2 py-0.5 rounded bg-bg-elevated text-[9px] font-mono text-accent hover:bg-accent/10 shrink-0">
+            className="px-2 py-0.5 rounded bg-bg-elevated text-xs font-mono text-accent hover:bg-accent/10 shrink-0">
             {t.name} <span className="text-text-muted/50">({t.rows.length})</span>
           </button>
         ))}
@@ -96,19 +96,20 @@ export function SqlConsole({ tables, predefinedQueries = [] }: SqlConsoleProps) 
             value={query}
             onChange={e => setQuery(e.target.value)}
             onKeyDown={e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); executeQuery(); } }}
-            className="flex-1 h-16 bg-black/40 border border-border/50 rounded-lg p-2 text-[11px] font-mono text-text-primary outline-none resize-none focus:border-accent/50"
+            className="flex-1 h-16 bg-black/40 border border-border/50 rounded-lg p-2 text-xs font-mono text-text-primary outline-none resize-none focus:border-accent/50"
             placeholder="Enter SQL query..."
+            aria-label="SQL query"
           />
           <button onClick={executeQuery}
             className="flex items-center gap-1 px-3 rounded-lg bg-accent/10 border border-accent/30 text-accent hover:bg-accent/20 transition-colors self-start">
-            <Play size={14} /> <span className="text-[9px] font-black uppercase tracking-wider">Run</span>
+            <Play size={14} /> <span className="text-xs font-black uppercase tracking-wider">Run</span>
           </button>
         </div>
         {predefinedQueries.length > 0 && (
           <div className="flex flex-wrap gap-1 mt-2">
             {predefinedQueries.map((pq, i) => (
               <button key={i} onClick={() => setQuery(pq.query)}
-                className="px-2 py-0.5 rounded bg-bg-elevated text-[8px] font-mono text-text-muted hover:text-accent truncate max-w-[150px]"
+                className="px-2 py-0.5 rounded bg-bg-elevated text-xs font-mono text-text-muted hover:text-accent truncate max-w-[150px]"
                 title={pq.description}>
                 {pq.description}
               </button>
@@ -120,16 +121,16 @@ export function SqlConsole({ tables, predefinedQueries = [] }: SqlConsoleProps) 
       {/* Results */}
       <div className="flex-1 overflow-auto">
         {result?.error ? (
-          <div className="p-4 flex items-center gap-2 text-danger text-[10px] font-mono">
+          <div className="p-4 flex items-center gap-2 text-danger text-xs font-mono">
             <AlertTriangle size={12} /> {result.error}
           </div>
         ) : result && result.columns.length > 0 ? (
           <div className="p-3">
-            <div className="flex items-center gap-3 mb-2 text-[9px] font-mono text-text-muted">
+            <div className="flex items-center gap-3 mb-2 text-xs font-mono text-text-muted">
               <span>{result.rows.length} rows</span>
               <span className="flex items-center gap-1"><Clock size={9} /> {result.timing}ms</span>
             </div>
-            <table className="w-full text-[10px] font-mono">
+            <table className="w-full text-xs font-mono">
               <thead>
                 <tr>
                   {result.columns.map(c => (
@@ -149,11 +150,11 @@ export function SqlConsole({ tables, predefinedQueries = [] }: SqlConsoleProps) 
             </table>
           </div>
         ) : result?.affectedRows !== undefined ? (
-          <div className="p-4 text-[10px] font-mono text-success">
+          <div className="p-4 text-xs font-mono text-success">
             Query affected {result.affectedRows} row(s) in {result.timing}ms
           </div>
         ) : (
-          <div className="flex items-center justify-center h-full text-text-muted/50 text-[10px] font-mono">
+          <div className="flex items-center justify-center h-full text-text-muted/50 text-xs font-mono">
             Run a query to see results
           </div>
         )}
@@ -162,10 +163,10 @@ export function SqlConsole({ tables, predefinedQueries = [] }: SqlConsoleProps) 
       {/* History */}
       {history.length > 0 && (
         <div className="border-t border-border/20 px-4 py-2 max-h-[80px] overflow-auto">
-          <p className="text-[8px] font-black uppercase tracking-widest text-text-muted/50 mb-1">History</p>
+          <p className="text-xs font-black uppercase tracking-widest text-text-muted/50 mb-1">History</p>
           {history.slice(-5).map((h, i) => (
             <button key={i} onClick={() => setQuery(h)}
-              className="block text-[9px] font-mono text-text-muted/50 hover:text-accent truncate w-full text-left">
+              className="block text-xs font-mono text-text-muted/50 hover:text-accent truncate w-full text-left">
               {h}
             </button>
           ))}

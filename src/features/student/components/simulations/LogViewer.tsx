@@ -34,11 +34,11 @@ export function LogViewer({ sources }: LogViewerProps) {
   return (
     <div className="flex flex-col h-full rounded-2xl border border-border/50 bg-bg-card overflow-hidden">
       <div className="px-4 py-3 bg-bg-elevated border-b border-border/20 flex items-center gap-3">
-        <p className="text-[10px] font-black uppercase tracking-widest text-accent">Log Viewer</p>
+        <p className="text-xs font-black uppercase tracking-widest text-accent">Log Viewer</p>
         <div className="flex items-center gap-1 ml-2">
           {sources.map(s => (
-            <button key={s.id} onClick={() => setActiveSource(s.id)}
-              className={`px-2 py-0.5 rounded text-[9px] font-black uppercase tracking-wider ${
+            <button key={s.id} onClick={() => setActiveSource(s.id)} aria-pressed={activeSource === s.id}
+              className={`px-2 py-0.5 rounded text-xs font-black uppercase tracking-wider ${
                 activeSource === s.id ? 'bg-accent/20 text-accent' : 'text-text-muted hover:text-text-primary'
               }`}>
               {s.label}
@@ -50,12 +50,13 @@ export function LogViewer({ sources }: LogViewerProps) {
             <label htmlFor="log-search" className="contents"><Search size={10} className="text-text-muted" /></label>
             <input id="log-search" type="text" value={search} onChange={e => setSearch(e.target.value)}
               placeholder="Search logs..."
-              className="bg-transparent text-[10px] font-mono text-text-primary outline-none w-28" />
+              aria-label="Search logs"
+              className="bg-transparent text-xs font-mono text-text-primary outline-none w-28" />
           </div>
           <div className="flex items-center gap-0.5">
             {['info', 'warn', 'error', 'debug'].map(l => (
-              <button key={l} onClick={() => setLevelFilter(levelFilter === l ? null : l)}
-                className={`px-1.5 py-0.5 rounded text-[8px] font-black uppercase ${
+              <button key={l} onClick={() => setLevelFilter(levelFilter === l ? null : l)} aria-pressed={levelFilter === l}
+                className={`px-1.5 py-0.5 rounded text-xs font-black uppercase ${
                   levelFilter === l ? 'bg-accent/20 text-accent' : 'text-text-muted/50 hover:text-text-muted'
                 }`}>
                 {l}
@@ -65,7 +66,7 @@ export function LogViewer({ sources }: LogViewerProps) {
         </div>
       </div>
 
-      <div className="flex-1 overflow-auto font-mono text-[10px]">
+      <div className="flex-1 overflow-auto font-mono text-xs">
         {filtered.length === 0 ? (
           <div className="flex items-center justify-center h-full text-text-muted/50">No matching log entries</div>
         ) : (

@@ -101,23 +101,24 @@ export function BrowserSimulation({ pages, defaultUrl }: BrowserSimProps) {
               type="text"
               value={urlInput}
               onChange={e => setUrlInput(e.target.value)}
-              className="flex-1 bg-transparent text-[11px] font-mono text-text-primary outline-none"
+              className="flex-1 bg-transparent text-xs font-mono text-text-primary outline-none"
               placeholder="Enter URL..."
+              aria-label="Address"
             />
           </div>
         </form>
 
         <div className="flex items-center gap-1">
           <button onClick={() => setShowSource(!showSource)}
-            aria-label="View source" className={`p-1.5 rounded text-[9px] font-black uppercase tracking-wider ${showSource ? 'bg-accent/20 text-accent' : 'hover:bg-white/5 text-text-muted'}`}>
+            aria-label="View source" className={`p-1.5 rounded text-xs font-black uppercase tracking-wider ${showSource ? 'bg-accent/20 text-accent' : 'hover:bg-white/5 text-text-muted'}`}>
             <Code size={14} />
           </button>
           <button onClick={() => setShowHeaders(!showHeaders)}
-            aria-label="Preview" className={`p-1.5 rounded text-[9px] font-black uppercase tracking-wider ${showHeaders ? 'bg-accent/20 text-accent' : 'hover:bg-white/5 text-text-muted'}`}>
+            aria-label="Preview" className={`p-1.5 rounded text-xs font-black uppercase tracking-wider ${showHeaders ? 'bg-accent/20 text-accent' : 'hover:bg-white/5 text-text-muted'}`}>
             <Eye size={14} />
           </button>
           <button onClick={() => setShowCookies(!showCookies)}
-            aria-label="View cookies" className={`p-1.5 rounded text-[9px] font-black uppercase tracking-wider ${showCookies ? 'bg-accent/20 text-accent' : 'hover:bg-white/5 text-text-muted'}`}>
+            aria-label="View cookies" className={`p-1.5 rounded text-xs font-black uppercase tracking-wider ${showCookies ? 'bg-accent/20 text-accent' : 'hover:bg-white/5 text-text-muted'}`}>
             <Cookie size={14} />
           </button>
         </div>
@@ -128,17 +129,17 @@ export function BrowserSimulation({ pages, defaultUrl }: BrowserSimProps) {
         {/* Source / Headers / Cookies panels */}
         {showSource && currentPage && (
           <div className="max-h-[200px] overflow-auto border-b border-border/20 bg-black/40 p-3">
-            <p className="text-[9px] font-black uppercase tracking-widest text-accent mb-2">Page Source</p>
-            <pre className="text-[10px] font-mono text-text-muted whitespace-pre-wrap break-all">
+            <p className="text-xs font-black uppercase tracking-widest text-accent mb-2">Page Source</p>
+            <pre className="text-xs font-mono text-text-muted whitespace-pre-wrap break-all">
               {currentPage.html}
             </pre>
           </div>
         )}
         {showHeaders && currentPage && (
           <div className="max-h-[200px] overflow-auto border-b border-border/20 bg-black/40 p-3">
-            <p className="text-[9px] font-black uppercase tracking-widest text-accent mb-2">Response Headers</p>
+            <p className="text-xs font-black uppercase tracking-widest text-accent mb-2">Response Headers</p>
             {Object.entries(currentPage.headers).map(([k, v]) => (
-              <div key={k} className="text-[10px] font-mono">
+              <div key={k} className="text-xs font-mono">
                 <span className="text-accent">{k}:</span>{' '}
                 <span className="text-text-muted">{v}</span>
               </div>
@@ -147,12 +148,12 @@ export function BrowserSimulation({ pages, defaultUrl }: BrowserSimProps) {
         )}
         {showCookies && currentPage && (
           <div className="max-h-[200px] overflow-auto border-b border-border/20 bg-black/40 p-3">
-            <p className="text-[9px] font-black uppercase tracking-widest text-accent mb-2">Cookies</p>
+            <p className="text-xs font-black uppercase tracking-widest text-accent mb-2">Cookies</p>
             {currentPage.cookies.length === 0 ? (
-              <p className="text-[10px] font-mono text-text-muted/50">No cookies</p>
+              <p className="text-xs font-mono text-text-muted/50">No cookies</p>
             ) : (
               currentPage.cookies.map((c, i) => (
-                <div key={i} className="text-[10px] font-mono text-text-muted mb-1">
+                <div key={i} className="text-xs font-mono text-text-muted mb-1">
                   <span className="text-accent">{c.name}</span> = <span className="text-text-primary">{c.value}</span>
                   {c.httpOnly && <span className="ml-2 text-warning">[HttpOnly]</span>}
                   {c.secure && <span className="ml-2 text-success">[Secure]</span>}
