@@ -66,7 +66,7 @@ const RelatedContentSection: React.FC<RelatedContentSectionProps> = ({ title, it
               <div className="p-6">
                 {item.badge && (
                   <div className="mb-3">
-                    <span className="text-[9px] font-black uppercase tracking-widest px-2 py-0.5 rounded-full border border-border/50 bg-bg-elevated text-text-muted">
+                    <span className="text-xs font-black uppercase tracking-widest px-2 py-0.5 rounded-full border border-border/50 bg-bg-elevated text-text-muted">
                       {item.badge}
                     </span>
                   </div>
@@ -77,7 +77,7 @@ const RelatedContentSection: React.FC<RelatedContentSectionProps> = ({ title, it
                 {item.subtitle && (
                   <p className="text-xs text-text-muted leading-relaxed line-clamp-2">{item.subtitle}</p>
                 )}
-                <div className="mt-4 flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest text-accent group-hover:gap-2.5 transition-[gap]">
+                <div className="mt-4 flex items-center gap-1.5 text-xs font-black uppercase tracking-widest text-accent group-hover:gap-2.5 transition-[gap]">
                   {t('relatedContent.view', { defaultValue: 'View' })} <IconArrowRight size={12} />
                 </div>
               </div>

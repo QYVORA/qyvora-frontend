@@ -30,12 +30,12 @@ const ScenarioCard = ({ title, difficulty, description, cpReward, subtitle, onSt
       <h3 className="text-sm sm:text-base md:text-lg lg:text-xl font-black text-text-primary group-hover/card:text-accent transition-colors leading-snug">
         {title}
       </h3>
-      <span className={`px-2 py-0.5 rounded-lg text-[9px] sm:text-[10px] font-black uppercase tracking-widest border ${DIFFICULTY_CLASSES[difficulty] || 'badge-accent'}`}>
+      <span className={`px-2 py-0.5 rounded-lg text-xs sm:text-xs font-black uppercase tracking-widest border ${DIFFICULTY_CLASSES[difficulty] || 'badge-accent'}`}>
         {difficulty}
       </span>
     </div>
     {subtitle && (
-      <p className="text-[10px] font-black uppercase tracking-widest text-accent/60 mb-1">
+      <p className="text-xs font-black uppercase tracking-widest text-accent/60 mb-1">
         {subtitle}
       </p>
     )}
@@ -44,10 +44,10 @@ const ScenarioCard = ({ title, difficulty, description, cpReward, subtitle, onSt
     </p>
 
     <div className="flex items-center justify-between mt-auto pt-2">
-      <span className="text-[9px] font-black uppercase tracking-widest text-accent">
+      <span className="text-xs font-black uppercase tracking-widest text-accent">
         {cpReward} CP
       </span>
-      <span className="px-3 py-1.5 rounded-lg text-[9px] font-black uppercase tracking-widest bg-accent text-on-accent transition-[filter,transform] duration-[var(--dur-base)] group-hover/card:brightness-110 group-active:scale-95">
+      <span className="px-3 py-1.5 rounded-lg text-xs font-black uppercase tracking-widest bg-accent text-on-accent transition-[filter,transform] duration-[var(--dur-base)] group-hover/card:brightness-110 group-active:scale-95">
         Start
       </span>
     </div>

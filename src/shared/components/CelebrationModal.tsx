@@ -135,7 +135,7 @@ const CelebrationModal: React.FC<CelebrationModalProps> = ({
                 {mascot && <div className="mx-auto mb-6 flex items-center justify-center">{mascot}</div>}
 
                 {badge && (
-                  <span className="inline-flex items-center px-2.5 py-1 rounded-lg text-[9px] font-black uppercase tracking-widest bg-accent/10 text-accent border border-accent/20 mb-4">
+                  <span className="inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-black uppercase tracking-widest bg-accent/10 text-accent border border-accent/20 mb-4">
                     {badge}
                   </span>
                 )}
@@ -162,7 +162,7 @@ const CelebrationModal: React.FC<CelebrationModalProps> = ({
 
                 <button
                   onClick={onClose}
-                  className="w-full btn-primary !rounded-xl !text-[10px] !py-3"
+                  className="w-full btn-primary !rounded-xl !text-xs !py-3"
                 >
                   {ctaLabel || 'Continue'}
                 </button>

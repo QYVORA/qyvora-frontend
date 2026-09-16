@@ -77,6 +77,7 @@ const LanguageSwitcher: React.FC<LanguageSwitcherProps> = ({ inverted = false })
               ref={inputRef}
               type="text"
               placeholder={t('components.language.searchPlaceholder')}
+              aria-label={t('components.language.searchPlaceholder', 'Search language')}
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               className="w-full px-3 py-2 rounded-xl bg-bg border border-border text-text-primary text-sm font-mono placeholder:text-text-muted/50 focus:border-accent outline-none"
@@ -86,7 +87,7 @@ const LanguageSwitcher: React.FC<LanguageSwitcherProps> = ({ inverted = false })
           <div className="overflow-y-auto flex-1 p-2">
             {regions.map((region) => (
               <div key={region} className="mb-2">
-                <div className="px-3 py-1.5 text-[9px] font-black uppercase tracking-[0.25em] text-text-muted/60">
+                <div className="px-3 py-1.5 text-xs font-black uppercase tracking-[0.25em] text-text-muted/60">
                   {region}
                 </div>
                 {grouped[region]?.map((lang) => (
@@ -102,7 +103,7 @@ const LanguageSwitcher: React.FC<LanguageSwitcherProps> = ({ inverted = false })
                     <span className="text-sm font-mono min-w-[20px]">{lang.code.toUpperCase()}</span>
                     <div className="flex-1 min-w-0">
                       <div className="text-sm font-bold truncate">{lang.native}</div>
-                      <div className="text-[10px] text-text-muted truncate">{lang.name}</div>
+                      <div className="text-xs text-text-muted truncate">{lang.name}</div>
                     </div>
                     {i18n.language === lang.code && (
                       <span className="text-accent text-lg">&#10003;</span>

@@ -366,12 +366,12 @@ export const SpotlightTour: React.FC<SpotlightTourProps> = ({
         )}
 
         <div className="flex items-center justify-between mb-3">
-          <span className="text-[9px] font-black uppercase tracking-widest text-accent">
+          <span className="text-xs font-black uppercase tracking-widest text-accent">
             {stepIndex + 1} / {steps.length}
           </span>
           <button
             onClick={onClose}
-            className="text-[10px] font-black uppercase tracking-widest text-text-muted hover:text-accent transition-colors"
+            className="text-xs font-black uppercase tracking-widest text-text-muted hover:text-accent transition-colors"
           >
             {labelsResolved.skip}
           </button>
@@ -386,13 +386,13 @@ export const SpotlightTour: React.FC<SpotlightTourProps> = ({
           <button
             onClick={() => setStepIndex((i) => Math.max(0, i - 1))}
             disabled={isFirst}
-            className="btn-secondary !py-2 px-4 text-[10px] disabled:opacity-50"
+            className="btn-secondary !py-2 px-4 text-xs disabled:opacity-50"
           >
             {labelsResolved.back}
           </button>
           <button
             onClick={handleNext}
-            className="btn-primary !py-2 px-4 text-[10px]"
+            className="btn-primary !py-2 px-4 text-xs"
           >
             {isLast ? labelsResolved.finish : labelsResolved.next}
           </button>
