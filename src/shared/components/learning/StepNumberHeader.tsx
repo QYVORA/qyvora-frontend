@@ -35,7 +35,7 @@ export function StepNumberHeader({
       className="group mb-6 flex items-center gap-2 text-text-muted transition-colors hover:text-text-primary min-h-[44px] min-w-[44px]"
     >
       <IconArrowLeft size={16} className="transition-transform group-hover:-translate-x-0.5" />
-      <span className="text-[10px] font-black uppercase tracking-widest">{backLabel}</span>
+      <span className="text-xs font-black uppercase tracking-widest">{backLabel}</span>
     </Link>
   ) : onBack ? (
     <button
@@ -44,7 +44,7 @@ export function StepNumberHeader({
       className="group mb-6 flex items-center gap-2 text-text-muted transition-colors hover:text-text-primary min-h-[44px] min-w-[44px]"
     >
       <IconArrowLeft size={16} className="transition-transform group-hover:-translate-x-0.5" />
-      <span className="text-[10px] font-black uppercase tracking-widest">{backLabel}</span>
+      <span className="text-xs font-black uppercase tracking-widest">{backLabel}</span>
     </button>
   ) : null;
 
@@ -72,7 +72,7 @@ export function StepNumberHeader({
           <span
             className={cn(
               'block font-black uppercase tracking-[0.25em] transition-colors duration-300',
-              isActive ? 'text-accent text-xs' : isCompleted ? 'text-accent text-xs' : 'text-text-muted text-[10px]',
+              isActive ? 'text-accent text-xs' : isCompleted ? 'text-accent text-xs' : 'text-text-muted text-xs',
             )}
           >
             {title}
@@ -80,12 +80,12 @@ export function StepNumberHeader({
           {badges}
         </div>
         {statusLabel && (
-          <span className="shrink-0 text-accent text-[9px] font-black uppercase tracking-widest px-2 py-1">
+          <span className="shrink-0 text-accent text-xs font-black uppercase tracking-widest px-2 py-1">
             {statusLabel}
           </span>
         )}
         {isCompleted && !statusLabel && (
-          <span className="text-[9px] font-black uppercase tracking-widest text-accent">
+          <span className="text-xs font-black uppercase tracking-widest text-accent">
             {t('components.accordion.done', 'Done')}
           </span>
         )}

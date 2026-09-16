@@ -35,7 +35,7 @@ const DIFFICULTY_STYLES: Record<string, string> = {
 
 function DifficultyBadge({ difficulty }: { difficulty: LearningAccordionDifficulty }) {
   return (
-    <span className={cn('px-2 py-0.5 rounded-lg text-[9px] font-black uppercase tracking-widest border', DIFFICULTY_STYLES[difficulty])}>
+    <span className={cn('px-2 py-0.5 rounded-lg text-xs font-black uppercase tracking-widest border', DIFFICULTY_STYLES[difficulty])}>
       {difficulty}
     </span>
   );
@@ -45,7 +45,7 @@ function StartButton({ label, onClick, locked, cpCost, onUnlock }: { label: stri
   const { t } = useTranslation();
   if (locked && cpCost) {
     return (
-      <button type="button" onClick={onUnlock} className="btn-secondary !rounded-xl !text-[10px] px-5 py-2.5 mt-4 flex items-center gap-2">
+      <button type="button" onClick={onUnlock} className="btn-secondary !rounded-xl !text-xs px-5 py-2.5 mt-4 flex items-center gap-2">
         <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
           <path strokeLinecap="round" strokeLinejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
         </svg>
@@ -54,7 +54,7 @@ function StartButton({ label, onClick, locked, cpCost, onUnlock }: { label: stri
     );
   }
   return (
-    <button type="button" onClick={onClick} className="btn-primary !rounded-xl !text-[10px] px-5 py-2.5 mt-4">
+    <button type="button" onClick={onClick} className="btn-primary !rounded-xl !text-xs px-5 py-2.5 mt-4">
       {label}
     </button>
   );
@@ -99,7 +99,7 @@ export function LearningAccordion({ items, className, defaultOpen = 0 }: Learnin
               className="w-full flex items-center justify-between gap-4 px-6 py-5 text-left group"
             >
               <div className="flex items-center gap-4 min-w-0">
-                <span className="text-[11px] font-black text-accent/60 font-mono w-6 shrink-0">
+                <span className="text-xs font-black text-accent/60 font-mono w-6 shrink-0">
                   {String(idx + 1).padStart(2, '0')}
                 </span>
                 <div className="min-w-0">
@@ -107,7 +107,7 @@ export function LearningAccordion({ items, className, defaultOpen = 0 }: Learnin
                     {item.title}
                   </h3>
                   {item.subtitle && (
-                    <p className="text-[11px] font-black uppercase tracking-widest text-accent/60 mt-0.5 truncate">
+                    <p className="text-xs font-black uppercase tracking-widest text-accent/60 mt-0.5 truncate">
                       {item.subtitle}
                     </p>
                   )}
@@ -139,7 +139,7 @@ export function LearningAccordion({ items, className, defaultOpen = 0 }: Learnin
                   className="overflow-hidden"
                 >
                   <div id={`accordion-panel-${item.id}`} role="region" className="px-6 pb-6 pl-15">
-                    <p className="text-base text-text-primary leading-relaxed mb-4 pl-10 max-w-2xl">
+                    <p className="text-base text-text-primary leading-[2] md:leading-[2.2] mb-4 pl-10 max-w-2xl">
                       {item.description}
                     </p>
                     {item.body}
@@ -172,7 +172,7 @@ export function LearningAccordion({ items, className, defaultOpen = 0 }: Learnin
                 {item.title}
               </h3>
               {item.subtitle && (
-                <p className="text-[11px] font-black uppercase tracking-widest text-accent/60 mb-3">
+                <p className="text-xs font-black uppercase tracking-widest text-accent/60 mb-3">
                   {item.subtitle}
                 </p>
               )}
@@ -185,7 +185,7 @@ export function LearningAccordion({ items, className, defaultOpen = 0 }: Learnin
                 )}
                 {item.meta}
               </div>
-              <p className="text-base text-text-primary leading-relaxed">{item.description}</p>
+              <p className="text-base text-text-primary leading-[2] md:leading-[2.2]">{item.description}</p>
               {item.body}
               {item.onStart && <StartButton label={item.startLabel ?? 'Start'} onClick={item.onStart} locked={item.locked} cpCost={item.cpCost} onUnlock={item.onUnlock} />}
             </div>

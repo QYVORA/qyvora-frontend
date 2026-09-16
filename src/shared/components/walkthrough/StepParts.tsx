@@ -14,12 +14,12 @@ export function CommandBlock({ command, labId }: { command: string; labId: strin
     <div className="space-y-1.5">
       <div className="flex items-center gap-2">
         <Terminal size={12} className="text-accent" />
-        <span className="text-[10px] font-black uppercase tracking-widest text-text-muted">Run in terminal</span>
+        <span className="text-xs font-black uppercase tracking-widest text-text-muted">Run in terminal</span>
       </div>
       <div className="rounded-xl border border-border/50 bg-bg-card overflow-hidden">
         <div className="flex items-center justify-between px-3 py-1.5 border-b border-border/20 bg-bg-elevated">
           <div className="flex items-center gap-2">
-            <span className="text-[9px] font-black uppercase tracking-widest text-accent">Terminal</span>
+            <span className="text-xs font-black uppercase tracking-widest text-accent">Terminal</span>
           </div>
           <button
             type="button"
@@ -37,7 +37,7 @@ export function CommandBlock({ command, labId }: { command: string; labId: strin
           </div>
         </div>
       </div>
-      <p className="text-[10px] text-text-muted font-mono">Connect: <span className="text-accent">qyvora connect {labId}</span></p>
+      <p className="text-xs text-text-muted font-mono">Connect: <span className="text-accent">qyvora connect {labId}</span></p>
     </div>
   );
 }
@@ -65,7 +65,7 @@ export function FlagInput({ flagId, disabled, onFlagSubmit, onCorrect }: FlagInp
   };
   return (
     <div className="space-y-2">
-      <label htmlFor={`flag-input-${flagId}`} className="text-[10px] font-black uppercase tracking-widest text-text-muted">Submit flag</label>
+      <label htmlFor={`flag-input-${flagId}`} className="text-xs font-black uppercase tracking-widest text-text-muted">Submit flag</label>
       <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
         <input id={`flag-input-${flagId}`} type="text" value={flag} onChange={(e) => { setFlag(e.target.value); setError(''); }}
           onKeyDown={(e) => e.key === 'Enter' && handleSubmit()} placeholder="QYVORA{...}" disabled={disabled || submitting}
