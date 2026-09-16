@@ -20,7 +20,7 @@
   --dur-base: 260ms;
   --dur-slow: 420ms;
 
-  /* ── Micro type scale (replaces the text-[10px]/[9px]/[8px]/[7px] drift) ── */
+  /* ── Micro type scale (replaces the text-xs/[9px]/[8px]/[7px] drift) ── */
   --text-kicker:    10px;
   --text-tiny:      9px;
   --text-overline:  8px;
@@ -783,7 +783,7 @@
 /* ── Accessibility / display preference scaling ────────────────────────────
    Preferences applied by SettingsPage + PreferencesApplier on <html>.
    font-size scales the rem-based type system as a whole (pixel-fixed utility
-   sizes like text-[10px] keep their footprint for layout stability).
+   sizes like text-xs keep their footprint for layout stability).
    data-animations="off" mirrors the data-saver behaviour for reduced motion. */
 html[data-font-size="small"] { font-size: 14px; }
 html[data-font-size="large"] { font-size: 18px; }
@@ -865,4 +865,164 @@ html[data-animations="off"] * {
   --color-code-path: #a78bfa;
   --card-shimmer: inset 0 1px 0 rgba(255, 255, 255, 0.05);
   --card-shadow: 0 12px 40px rgba(0, 0, 0, 0.30);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   CALM SYSTEM — Product UI Redesign Audit foundations.
+
+   A deliberately small, additive token layer used by migrated surfaces.
+   Legacy tokens above remain intact for unmigrated routes; new UI uses the
+   tokens in this section only. Rules enforced here:
+     - Three surface steps: canvas -> surface -> surface-raised (no pure black).
+     - Green is an action/active/progress/success colour, never decoration.
+     - Visible text never falls below 12px; body copy is readable sans.
+     - One standard radius (12px) and one compact-control radius (8px).
+     - One subtle raised-overlay elevation; no default card glow/beam.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+@theme {
+  --font-sans: 'Space Grotesk', 'Inter', ui-sans-serif, system-ui, sans-serif;
+
+  /* ── Surfaces & borders ── */
+  --color-canvas:             #0b0d0e;          /* page background (charcoal, not black) */
+  --color-surface:            #121617;          /* cards, form fields, static panels */
+  --color-surface-raised:     #181d1e;          /* menus, sheets, active utility panels */
+  --color-border-subtle:      rgba(178, 193, 194, 0.13);
+  --color-text-tertiary:      rgba(238, 240, 238, 0.55);
+
+  /* ── Semantic states (paired with text/icon, never colour alone) ── */
+  --color-semantic-danger:    #f87171;
+  --color-semantic-warning:   #fbbf24;
+  --color-semantic-info:      #38bdf8;
+  --color-semantic-success:   #06b66f;
+}
+
+:root {
+  /* ── Scale: 4px base (8 steps) ── */
+  --sp-1: 4px;
+  --sp-2: 8px;
+  --sp-3: 12px;
+  --sp-4: 16px;
+  --sp-5: 24px;
+  --sp-6: 32px;
+  --sp-7: 48px;
+  --sp-8: 64px;
+
+  /* ── Page gutters: 16px mobile / 24px tablet / 32px desktop ── */
+  --gutter-mobile: 16px;
+  --gutter-tablet: 24px;
+  --gutter-desktop: 32px;
+
+  /* ── Radius ── */
+  --radius-standard: 12px;   /* surfaces */
+  --radius-control: 8px;     /* inputs, chips, compact controls */
+
+  /* ── Elevation: one subtle raised-overlay shadow ── */
+  --elevation-raised: 0 8px 24px rgba(0, 0, 0, 0.45);
+
+  /* ── Breakpoints (design + validation matrix) ── */
+  --bp-mobile: 360px;
+  --bp-mobile-lg: 390px;
+  --bp-tablet: 768px;
+  --bp-desktop: 1024px;
+  --bp-wide: 1440px;
+  --bp-ultra-wide: 1920px;
+
+  /* ── Elevation layer scale (overlays) ── */
+  --z-nav: 100;
+  --z-sheet: 130;
+  --z-consent: 150;
+  --z-dialog: 200;
+  --z-toast: 500;
+  --z-loader: 9999;
+}
+
+@layer components {
+  /* ═══════ Typography tokens — visible text never below 12px ═══════
+     .type-display   landing hero only, one per view
+     .type-h1        page titles (app/public/docs)
+     .type-h2        section titles
+     .type-h3        major content groups
+     .type-body      long-form copy (readable sans)
+     .type-body-sm   supporting copy, table cells
+     .type-label     short field labels, status, metadata (mono)
+     .type-meta      small metadata, timestamps (mono)
+     .type-code      commands, code, IDs, technical values (mono)      */
+  .type-display {
+    font-family: var(--font-display);
+    font-size: clamp(2.25rem, 2rem + 2vw, 3.5rem);
+    font-weight: 800;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+  }
+  .type-h1 {
+    font-family: var(--font-display);
+    font-size: clamp(1.75rem, 1.5rem + 1vw, 2.5rem);
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: -0.01em;
+  }
+  .type-h2 {
+    font-family: var(--font-display);
+    font-size: clamp(1.25rem, 1.125rem + 0.75vw, 1.75rem);
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: -0.005em;
+  }
+  .type-h3 {
+    font-family: var(--font-display);
+    font-size: 1.125rem;
+    font-weight: 700;
+    line-height: 1.3;
+  }
+  .type-body {
+    font-family: var(--font-sans);
+    font-size: 1rem;
+    line-height: 1.65;
+    color: var(--color-text-secondary);
+  }
+  .type-body-sm {
+    font-family: var(--font-sans);
+    font-size: 0.875rem;
+    line-height: 1.55;
+    color: var(--color-text-secondary);
+  }
+  .type-label {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+  }
+  .type-meta {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--color-text-muted);
+  }
+  .type-code {
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+    line-height: 1.6;
+  }
+
+  /* ── Calm surface primitives ── */
+  .surface {
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border-subtle);
+    border-radius: var(--radius-standard);
+  }
+  .surface-raised {
+    background-color: var(--color-surface-raised);
+    border: 1px solid var(--color-border-subtle);
+    border-radius: var(--radius-standard);
+    box-shadow: var(--elevation-raised);
+  }
+
+  /* ── Safe-area helpers for fixed content (sheets, nav, drawers) ── */
+  .pt-safe { padding-top: env(safe-area-inset-top, 0px); }
+  .pb-safe { padding-bottom: env(safe-area-inset-bottom, 0px); }
+  .pl-safe { padding-left: env(safe-area-inset-left, 0px); }
+  .pr-safe { padding-right: env(safe-area-inset-right, 0px); }
+  .pb-safe-bottom-nav {
+    padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 0.5rem);
+  }
 }
