@@ -45,11 +45,12 @@ const StepNotes: React.FC<StepNotesProps> = ({ storageKey, className = '' }) => 
             value={notes}
             onChange={(e) => handleChange(e.target.value)}
             placeholder={t('components.stepNotes.placeholder')}
+            aria-label={t('components.stepNotes.myNotes')}
             className="w-full bg-bg-elevated border border-border rounded-lg p-3 text-sm font-mono text-text-primary placeholder:text-text-muted/30 outline-none resize-none min-h-[80px] caret-accent"
             spellCheck={false}
           />
           {notes && (
-            <button onClick={handleClear} className="mt-2 flex items-center gap-1 text-[10px] font-mono text-text-muted hover:text-danger transition-colors">
+            <button onClick={handleClear} className="mt-2 flex items-center gap-1 text-xs font-mono text-text-muted hover:text-danger transition-colors">
               <Trash2 className="h-3 w-3" /> {t('components.stepNotes.clearNotes')}
             </button>
           )}

@@ -120,7 +120,7 @@ const CopyBtn: React.FC<{ text: string }> = ({ text }) => {
     <button
       type="button"
       onClick={copy}
-      className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg border text-[10px] font-bold uppercase tracking-widest transition-[border-color,background-color,color] ${
+      className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg border text-xs font-bold uppercase tracking-widest transition-[border-color,background-color,color] ${
         copied
           ? 'border-accent/50 bg-accent-dim text-accent'
           : 'border-border bg-bg text-text-muted hover:border-accent/40 hover:text-accent'
@@ -143,7 +143,7 @@ const FencedCodeBlock: React.FC<{ code: string; lang: string }> = ({ code, lang 
       <div className="flex items-center justify-between px-3 py-2 border-b border-border/60 bg-bg-card/80">
         <div className="flex items-center gap-2">
           <IconTerminal size={14} className="text-accent opacity-70" />
-          <span className="text-[10px] font-black uppercase tracking-[0.25em] text-text-muted">
+          <span className="text-xs font-black uppercase tracking-[0.25em] text-text-muted">
             {lang || 'bash'}
           </span>
         </div>
@@ -156,7 +156,7 @@ const FencedCodeBlock: React.FC<{ code: string; lang: string }> = ({ code, lang 
           {lines.map((line, lineIdx) => (
             <div key={lineIdx} className="flex">
               {/* Line number */}
-              <span className="select-none mr-3 text-[11px] text-text-muted/30 w-4 shrink-0 text-right">
+              <span className="select-none mr-3 text-xs text-text-muted/30 w-4 shrink-0 text-right">
                 {lineIdx + 1}
               </span>
               {/* Tokenised line */}
@@ -196,7 +196,7 @@ const InlineCode: React.FC<{ code: string }> = ({ code }) => {
       type="button"
       onClick={copy}
       title="Click to copy"
-      className={`group/inline inline-flex items-center gap-1 mx-0.5 px-1.5 py-px rounded-[4px] border font-mono text-[10px] leading-snug transition-[border-color,background-color,color] align-middle whitespace-nowrap ${
+      className={`group/inline inline-flex items-center gap-1 mx-0.5 px-1.5 py-px rounded-[4px] border font-mono text-xs leading-snug transition-[border-color,background-color,color] align-middle whitespace-nowrap ${
         copied
           ? 'border-accent/50 bg-accent-dim text-accent'
           : 'border-border bg-code-bg text-accent hover:border-accent/40'
@@ -381,7 +381,7 @@ const CodeBlockRenderer: React.FC<{ text: string }> = ({ text }) => {
         ),
         tr: ({ children }) => <tr className="border-b border-border/30 last:border-b-0 even:bg-bg-elevated/40">{children}</tr>,
         th: ({ children }) => (
-          <th className="px-4 py-3 text-[10px] font-black uppercase tracking-widest text-accent whitespace-nowrap">
+          <th className="px-4 py-3 text-xs font-black uppercase tracking-widest text-accent whitespace-nowrap">
             {children}
           </th>
         ),

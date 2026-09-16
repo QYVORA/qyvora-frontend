@@ -91,9 +91,9 @@ const CodePlayground: React.FC<CodePlaygroundProps> = ({
       <div className="flex items-center justify-between bg-bg-card px-5 py-3 border-b border-border">
         <div className="flex items-center gap-2">
           <IconTerminal size={16} className="text-accent" />
-          <span className="text-[10px] font-mono font-black uppercase tracking-widest text-text-muted">{title}</span>
+          <span className="text-xs font-mono font-black uppercase tracking-widest text-text-muted">{title}</span>
           {language && (
-            <span className="px-1.5 py-0.5 rounded-lg bg-accent/10 text-[9px] font-mono font-black text-accent uppercase">{language}</span>
+            <span className="px-1.5 py-0.5 rounded-lg bg-accent/10 text-xs font-mono font-black text-accent uppercase">{language}</span>
           )}
         </div>
         <div className="flex items-center gap-2">
@@ -110,6 +110,7 @@ const CodePlayground: React.FC<CodePlaygroundProps> = ({
         <textarea
           value={code}
           onChange={(e) => setCode(e.target.value)}
+          aria-label={t('components.playground.editor', 'Code editor')}
           className="w-full bg-transparent text-text-primary font-mono text-sm p-4 sm:p-5 border-none outline-none resize-none min-h-[120px] leading-relaxed caret-accent"
           spellCheck={false}
           style={{ tabSize: 2 }}
@@ -117,11 +118,11 @@ const CodePlayground: React.FC<CodePlaygroundProps> = ({
       </div>
 
       <div className="flex items-center gap-3 px-5 py-3 bg-bg-card border-t border-border">
-        <button onClick={handleRun} className="btn-primary text-[10px] py-2 px-5 inline-flex items-center gap-1.5">
+        <button onClick={handleRun} className="btn-primary text-xs py-2 px-5 inline-flex items-center gap-1.5">
           <IconPlay size={12} /> {t('components.playground.run')}
         </button>
         {expectedOutput && (
-          <button onClick={() => setShowHint(!showHint)} className="min-h-[44px] px-2 text-[10px] font-mono text-text-muted hover:text-accent active:opacity-70 transition-colors">
+          <button onClick={() => setShowHint(!showHint)} className="min-h-[44px] px-2 text-xs font-mono text-text-muted hover:text-accent active:opacity-70 transition-colors">
             {showHint ? t('components.playground.hideHint') : t('components.playground.showHint')}
           </button>
         )}
@@ -129,7 +130,7 @@ const CodePlayground: React.FC<CodePlaygroundProps> = ({
 
       {showHint && expectedOutput && (
         <div className="px-5 py-3 bg-accent-dim border-t border-border/50">
-          <p className="text-[11px] font-mono text-text-muted">
+          <p className="text-xs font-mono text-text-muted">
             {t('components.playground.expectedOutputLabel')} <span className="text-accent">{expectedOutput}</span>
           </p>
         </div>
