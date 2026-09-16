@@ -1,5 +1,6 @@
 import { SimulationProvider } from '@/features/student/components/simulations';
 import Ide from '@/features/student/components/tools/Ide';
+import ImmersiveToolShell from '@/shared/components/tools/ImmersiveToolShell';
 import SEO from '@/shared/components/SEO';
 
 const TOOL_PYTHON_CONTENT = `# QYVORA | Python Exercise
@@ -53,18 +54,25 @@ const IdeToolPage = () => (
   <>
     <SEO title="IDE | QYVORA Tools" description="Browser-based IDE for hands-on exercises and exploit development." noindex />
     <SimulationProvider>
-      <Ide
-        open={true}
-        onOpenChange={() => window.close()}
+      <ImmersiveToolShell
         title="Code Playground"
-        standalone
-        terminalContext={{ type: 'dashboard' }}
-        files={[
-          { id: 'main', name: 'main.py', language: 'python', content: TOOL_PYTHON_CONTENT },
-          { id: 'app', name: 'app.js', language: 'javascript', content: TOOL_JS_CONTENT },
-          { id: 'script', name: 'script.sh', language: 'bash', content: TOOL_BASH_CONTENT },
-        ]}
-      />
+        scope="Standalone IDE"
+        exitTo="/dashboard"
+        exitLabel="Back"
+      >
+        <Ide
+          open={true}
+          onOpenChange={() => window.close()}
+          title="Code Playground"
+          standalone
+          terminalContext={{ type: 'dashboard' }}
+          files={[
+            { id: 'main', name: 'main.py', language: 'python', content: TOOL_PYTHON_CONTENT },
+            { id: 'app', name: 'app.js', language: 'javascript', content: TOOL_JS_CONTENT },
+            { id: 'script', name: 'script.sh', language: 'bash', content: TOOL_BASH_CONTENT },
+          ]}
+        />
+      </ImmersiveToolShell>
     </SimulationProvider>
   </>
 );
