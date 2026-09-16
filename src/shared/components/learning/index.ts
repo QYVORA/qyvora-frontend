@@ -16,5 +16,14 @@ export { default as StepNumberHeader } from './StepNumberHeader';
 export { default as LearningCard, LearningCard as LearningCardComponent, DifficultyBadge } from './LearningCard';
 export type { LearningCardProps, LearningCardType } from './LearningCard';
 
+export { default as LearningFilterStrip } from './LearningFilterStrip';
+export type { LearningFilter } from './LearningFilterStrip';
+
+export { default as LearningCatalogue } from './LearningCatalogue';
+export type { LearningCatalogueItem } from './LearningCatalogue';
+
+export { default as LearningDetailShell } from './LearningDetailShell';
+export type { LearningDetailShellProps } from './LearningDetailShell';
+
 export { default as FocusedStepList } from './FocusedStepList';
 export type { FocusedStepListProps, FocusedStepListItem } from './FocusedStepList';
