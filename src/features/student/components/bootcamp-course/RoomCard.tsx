@@ -124,7 +124,7 @@ const RoomCard: React.FC<RoomCardProps> = ({
           {roomDone ? (
             <IconCheck size={16} className="text-accent" />
           ) : (
-            <span className="text-[9px] font-black text-accent">{String(roomIdx + 1).padStart(2, '0')}</span>
+            <span className="text-xs font-black text-accent">{String(roomIdx + 1).padStart(2, '0')}</span>
           )}
           <canvas
             ref={canvasRef}
@@ -143,7 +143,7 @@ const RoomCard: React.FC<RoomCardProps> = ({
         </div>
 
         {isRoomLocked && (
-          <span className="px-2 py-0.5 rounded-lg text-[9px] font-black uppercase tracking-widest bg-bg-elevated text-text-muted border border-border/50 flex items-center gap-1">
+          <span className="px-2 py-0.5 rounded-lg text-xs font-black uppercase tracking-widest bg-bg-elevated text-text-muted border border-border/50 flex items-center gap-1">
             <IconLock size={10} /> Locked
           </span>
         )}
@@ -153,7 +153,8 @@ const RoomCard: React.FC<RoomCardProps> = ({
           <div className="ml-auto flex items-center gap-1">
             <button
               onClick={toggleAnnotate}
-              className={`rounded-lg px-2 py-1 text-[9px] font-black uppercase tracking-widest transition-[background-color,color] duration-[var(--dur-fast)] ease-[var(--ease-smooth)] flex items-center gap-1 ${
+              aria-pressed={annotateMode}
+              className={`rounded-lg px-2 py-1 text-xs font-black uppercase tracking-widest transition-[background-color,color] duration-[var(--dur-fast)] ease-[var(--ease-smooth)] flex items-center gap-1 ${
                 annotateMode
                   ? 'bg-accent text-on-accent'
                   : 'bg-bg-elevated text-text-muted hover:text-accent border border-border/50'
@@ -165,7 +166,8 @@ const RoomCard: React.FC<RoomCardProps> = ({
             {annotateMode && hasDoodle && (
               <button
                 onClick={clearDoodle}
-                className="rounded-lg px-2 py-1 bg-danger/20 text-danger text-[9px] font-black uppercase tracking-widest flex items-center gap-1 hover:bg-danger/30 transition-[background-color] duration-[var(--dur-fast)] ease-[var(--ease-smooth)]"
+                aria-label="Clear doodle"
+                className="rounded-lg px-2 py-1 bg-danger/20 text-danger text-xs font-black uppercase tracking-widest flex items-center gap-1 hover:bg-danger/30 transition-[background-color] duration-[var(--dur-fast)] ease-[var(--ease-smooth)]"
               >
                 <Trash2 className="h-2.5 w-2.5" />
               </button>
@@ -198,18 +200,18 @@ const RoomCard: React.FC<RoomCardProps> = ({
 
       <div className="flex items-center justify-between mt-auto pt-2">
         {roomDone ? (
-          <span className="flex items-center gap-1.5 text-[9px] sm:text-[10px] font-black uppercase tracking-widest text-accent">
+          <span className="flex items-center gap-1.5 text-xs sm:text-xs font-black uppercase tracking-widest text-accent">
             Review room <IconArrowRight size={12} />
           </span>
         ) : !isRoomLocked ? (
-          <span className="flex items-center gap-1.5 text-[9px] sm:text-[10px] font-black uppercase tracking-widest text-accent">
+          <span className="flex items-center gap-1.5 text-xs sm:text-xs font-black uppercase tracking-widest text-accent">
             Enter room <IconArrowRight size={12} />
           </span>
         ) : (
           <span />
         )}
         {configRoom && !roomDone && (
-          <span className="text-[9px] sm:text-[10px] font-black uppercase tracking-widest text-text-muted">
+          <span className="text-xs sm:text-xs font-black uppercase tracking-widest text-text-muted">
             {configRoom.steps.length} steps
           </span>
         )}

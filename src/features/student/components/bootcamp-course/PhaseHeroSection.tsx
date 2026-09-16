@@ -45,7 +45,7 @@ const PhaseHeroSection: React.FC<PhaseHeroSectionProps> = ({
                 ? <IconLock size={16} />
                 : String(phaseNumber).padStart(2, '0')}
           </div>
-          <p className="text-[10px] font-black uppercase tracking-[0.3em] text-accent/70">
+          <p className="text-xs font-black uppercase tracking-[0.3em] text-accent/70">
             {codename}
           </p>
         </div>
@@ -61,7 +61,7 @@ const PhaseHeroSection: React.FC<PhaseHeroSectionProps> = ({
         )}
 
         <div className="flex flex-wrap items-center gap-4">
-          <span className="flex items-center gap-1.5 text-[11px] font-black uppercase tracking-widest text-text-muted/60">
+          <span className="flex items-center gap-1.5 text-xs font-black uppercase tracking-widest text-text-muted/60">
             <ListChecks className="h-4 w-4" />
             {roomsDone}/{roomsTotal} <span className="hidden sm:inline">Modules</span>
           </span>
