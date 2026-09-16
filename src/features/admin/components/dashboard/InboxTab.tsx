@@ -155,12 +155,12 @@ const InboxTab = () => {
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 min-w-0">
                     <span className="text-sm font-bold text-text-primary truncate flex-1 min-w-0">{d.name}</span>
-                    <span className={`px-2.5 py-1 rounded-lg text-[9px] font-black uppercase tracking-widest shrink-0 whitespace-nowrap ${
+                    <span className={`px-2.5 py-1 rounded-lg text-xs font-black uppercase tracking-widest shrink-0 whitespace-nowrap ${
                       isContact ? 'bg-bg-elevated text-text-muted' : 'bg-accent/10 text-accent'
                     }`}>
                       {isContact ? t('admin.inbox.contact') : t('admin.inbox.service')}
                     </span>
-                    <span className={`px-2.5 py-1 rounded-lg text-[9px] font-black uppercase tracking-widest shrink-0 whitespace-nowrap ${
+                    <span className={`px-2.5 py-1 rounded-lg text-xs font-black uppercase tracking-widest shrink-0 whitespace-nowrap ${
                       d.status === 'new' ? 'bg-accent/10 text-accent' :
                       d.status === 'archived' ? 'bg-bg-elevated text-text-muted' :
                       'bg-accent/5 text-accent/70'
@@ -170,7 +170,7 @@ const InboxTab = () => {
                   </div>
                   <div className="text-xs text-text-muted font-mono truncate mt-0.5">{d.email}</div>
                 </div>
-                <div className="text-[10px] text-text-muted font-mono shrink-0">
+                <div className="text-xs text-text-muted font-mono shrink-0">
                   {new Date(d.createdAt || '').toLocaleDateString()}
                 </div>
               </div>
@@ -188,12 +188,12 @@ const InboxTab = () => {
             return (
               <div className="space-y-5">
                 <div className="flex items-center gap-2 flex-wrap">
-                  <span className={`px-2 py-1 rounded-lg text-[10px] font-bold uppercase tracking-wider ${
+                  <span className={`px-2 py-1 rounded-lg text-xs font-bold uppercase tracking-wider ${
                     isContact ? 'bg-bg-elevated text-text-muted' : 'bg-accent/10 text-accent'
                   }`}>
                       {isContact ? t('admin.inbox.contactMessage') : t('admin.inbox.serviceInquiry')}
                   </span>
-                  <span className={`px-2 py-1 rounded-lg text-[10px] font-bold uppercase tracking-wider ${
+                  <span className={`px-2 py-1 rounded-lg text-xs font-bold uppercase tracking-wider ${
                     d.status === 'new' ? 'bg-accent/10 text-accent' :
                     d.status === 'archived' ? 'bg-bg-elevated text-text-muted' :
                     'bg-accent/5 text-accent/70'
@@ -204,50 +204,50 @@ const InboxTab = () => {
 
                 <div className="grid grid-cols-2 gap-4 text-sm">
                   <div>
-                    <span className="text-[10px] font-bold text-text-muted uppercase tracking-wider block mb-1">{t('form.name')}</span>
+                    <span className="text-xs font-bold text-text-muted uppercase tracking-wider block mb-1">{t('form.name')}</span>
                     <span className="font-bold text-text-primary">{d.name}</span>
                   </div>
                   <div>
-                    <span className="text-[10px] font-bold text-text-muted uppercase tracking-wider block mb-1">{t('form.email')}</span>
+                    <span className="text-xs font-bold text-text-muted uppercase tracking-wider block mb-1">{t('form.email')}</span>
                     <span className="font-mono text-text-primary">{d.email}</span>
                   </div>
                   {!isContact && (
                     <>
                       <div>
-                        <span className="text-[10px] font-bold text-text-muted uppercase tracking-wider block mb-1">{t('form.business')}</span>
+                        <span className="text-xs font-bold text-text-muted uppercase tracking-wider block mb-1">{t('form.business')}</span>
                         <span className="text-text-primary">{(d as any).businessName || '-'}</span>
                       </div>
                       <div>
-                        <span className="text-[10px] font-bold text-text-muted uppercase tracking-wider block mb-1">{t('form.phone')}</span>
+                        <span className="text-xs font-bold text-text-muted uppercase tracking-wider block mb-1">{t('form.phone')}</span>
                         <span className="text-text-primary">{(d as any).phone || '-'}</span>
                       </div>
                       <div className="col-span-2">
-                        <span className="text-[10px] font-bold text-text-muted uppercase tracking-wider block mb-1">{t('form.website')}</span>
+                        <span className="text-xs font-bold text-text-muted uppercase tracking-wider block mb-1">{t('form.website')}</span>
                         <span className="text-text-primary font-mono text-xs">{(d as any).websiteUrl || '-'}</span>
                       </div>
                       <div className="col-span-2">
-                        <span className="text-[10px] font-bold text-text-muted uppercase tracking-wider block mb-1">{t('form.packageServiceType')}</span>
+                        <span className="text-xs font-bold text-text-muted uppercase tracking-wider block mb-1">{t('form.packageServiceType')}</span>
                         <span className="text-text-primary">{(d as any).packageTier || (d as any).serviceType || '-'}</span>
                       </div>
                     </>
                   )}
                   {isContact && (
                     <div className="col-span-2">
-                      <span className="text-[10px] font-bold text-text-muted uppercase tracking-wider block mb-1">{t('form.subject')}</span>
+                      <span className="text-xs font-bold text-text-muted uppercase tracking-wider block mb-1">{t('form.subject')}</span>
                       <span className="text-text-primary">{(d as any).subject || '-'}</span>
                     </div>
                   )}
                 </div>
 
                 <div>
-                  <span className="text-[10px] font-bold text-text-muted uppercase tracking-wider block mb-2">{t('form.message')}</span>
+                  <span className="text-xs font-bold text-text-muted uppercase tracking-wider block mb-2">{t('form.message')}</span>
                   <div className="rounded-xl border border-border bg-bg p-4 text-sm text-text-secondary leading-relaxed whitespace-pre-wrap">
                     {d.message || t('admin.inbox.noMessage')}
                   </div>
                 </div>
 
                 <div className="flex items-center gap-2 flex-wrap pt-2">
-                  <span className="text-[10px] font-bold text-text-muted uppercase tracking-wider">{t('admin.inbox.updateStatus')}:</span>
+                  <span className="text-xs font-bold text-text-muted uppercase tracking-wider">{t('admin.inbox.updateStatus')}:</span>
                   {(isContact ? statusOptions.contact : statusOptions.service).map((s) => (
                     <button
                       key={s}
@@ -268,7 +268,7 @@ const InboxTab = () => {
                         requestDelete(selectedItem!);
                         setSelectedItem(null);
                       }}
-                      className="ml-auto px-2.5 py-1 rounded-lg text-[10px] font-bold uppercase tracking-wider border border-danger/30 text-danger hover:bg-danger/10 transition-colors"
+                      className="ml-auto px-2.5 py-1 rounded-lg text-xs font-bold uppercase tracking-wider border border-danger/30 text-danger hover:bg-danger/10 transition-colors"
                     >
                       {t('button.delete')}
                     </button>

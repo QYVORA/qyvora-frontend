@@ -38,7 +38,7 @@ const TransactionLedger: React.FC<TransactionLedgerProps> = ({
         <div className="flex items-center gap-2">
           <Activity className="w-4 h-4 text-accent" />
           <span className="text-sm font-black uppercase tracking-wide text-text-primary">{t('admin.cp.ledger')}</span>
-          <span className="text-[10px] font-mono text-text-muted">{t('admin.cp.totalTransactions', { count: txTotal })}</span>
+          <span className="text-xs font-mono text-text-muted">{t('admin.cp.totalTransactions', { count: txTotal })}</span>
         </div>
         <div className="flex flex-wrap items-center gap-2">
           <input
@@ -93,8 +93,8 @@ const TransactionLedger: React.FC<TransactionLedgerProps> = ({
                     <div className="text-xs font-bold text-text-primary truncate">
                       {tx.user?.hackerHandle || tx.user?.name || tx.user?.email || '-'}
                     </div>
-                    <div className="text-[10px] text-text-muted truncate">{tx.note || tx.type}</div>
-                    <div className="text-[10px] text-text-muted font-mono">
+                    <div className="text-xs text-text-muted truncate">{tx.note || tx.type}</div>
+                    <div className="text-xs text-text-muted font-mono">
                       {new Date(tx.createdAt).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: '2-digit' })}
                     </div>
                   </div>
@@ -112,7 +112,7 @@ const TransactionLedger: React.FC<TransactionLedgerProps> = ({
               <thead className="bg-bg-elevated/50">
                 <tr>
                   {[t('admin.cp.colUser'), t('admin.cp.colType'), t('admin.cp.colPoints'), t('admin.cp.colBalanceAfter'), t('admin.cp.colNote'), t('admin.cp.colDate')].map(h => (
-                    <th key={h} className="px-4 py-3 text-[10px] font-black uppercase tracking-[0.25em] text-text-muted/60">{h}</th>
+                    <th key={h} className="px-4 py-3 text-xs font-black uppercase tracking-[0.25em] text-text-muted/60">{h}</th>
                   ))}
                 </tr>
               </thead>
@@ -126,10 +126,10 @@ const TransactionLedger: React.FC<TransactionLedgerProps> = ({
                         <div className="text-xs font-bold text-text-primary">
                           {tx.user?.hackerHandle || tx.user?.name || '-'}
                         </div>
-                        <div className="text-[10px] text-text-muted">{tx.user?.email || ''}</div>
+                        <div className="text-xs text-text-muted">{tx.user?.email || ''}</div>
                       </td>
                       <td className="px-4 py-3">
-                        <span className={`text-[10px] font-bold uppercase px-2 py-0.5 rounded-lg border ${
+                        <span className={`text-xs font-bold uppercase px-2 py-0.5 rounded-lg border ${
                           isCredit ? 'text-accent border-accent/20 bg-accent/5' : 'text-danger border-danger/20 bg-danger/5'
                         }`}>{tx.type || '-'}</span>
                       </td>
@@ -142,7 +142,7 @@ const TransactionLedger: React.FC<TransactionLedgerProps> = ({
                         {tx.balanceAfter != null ? fmt(Number(tx.balanceAfter)) : '-'}
                       </td>
                       <td className="px-4 py-3 text-xs text-text-muted max-w-[180px] truncate">{tx.note || '-'}</td>
-                      <td className="px-4 py-3 text-[10px] font-mono text-text-muted whitespace-nowrap">
+                      <td className="px-4 py-3 text-xs font-mono text-text-muted whitespace-nowrap">
                         {new Date(tx.createdAt).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: '2-digit' })}
                       </td>
                     </tr>

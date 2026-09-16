@@ -250,7 +250,7 @@ const AdminDashboardPage: React.FC = () => {
           {/* ── Page header ─────────────────────────────────────────────── */}
           <header className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between rounded-2xl border border-border/50 bg-bg-card p-5 sm:p-6">
             <div className="min-w-0">
-              <div className="mb-1 text-[10px] font-black uppercase tracking-[0.3em] text-accent">
+              <div className="mb-1 text-xs font-black uppercase tracking-[0.3em] text-accent">
                 {t('nav.admin')} · {t('nav.adminConsole')}
               </div>
               <h1 className="text-xl md:text-2xl font-black text-text-primary tracking-tight">{t(activeLabelKey)}</h1>
@@ -264,11 +264,11 @@ const AdminDashboardPage: React.FC = () => {
                 <div className="hidden sm:flex items-center gap-5">
                   <div className="text-right">
                     <div className="font-mono text-sm font-black text-accent leading-none tabular-nums">{overview.users.total}</div>
-                    <div className="mt-1 text-[9px] font-black uppercase tracking-widest text-text-muted">{t('admin.tabs.users')}</div>
+                    <div className="mt-1 text-xs font-black uppercase tracking-widest text-text-muted">{t('admin.tabs.users')}</div>
                   </div>
                   <div className="text-right">
                     <div className="font-mono text-sm font-black text-accent leading-none tabular-nums">{products.length}</div>
-                    <div className="mt-1 text-[9px] font-black uppercase tracking-widest text-text-muted">{t('admin.tabs.market')}</div>
+                    <div className="mt-1 text-xs font-black uppercase tracking-widest text-text-muted">{t('admin.tabs.market')}</div>
                   </div>
                 </div>
               )}

@@ -38,7 +38,7 @@ const PointsControl: React.FC<PointsControlProps> = ({
       </div>
       <div className="space-y-3">
         <div>
-          <label className="text-[10px] uppercase text-text-muted tracking-widest block mb-1.5">{t('admin.cp.user')}</label>
+          <label className="text-xs uppercase text-text-muted tracking-widest block mb-1.5">{t('admin.cp.user')}</label>
           <div className="relative">
             <select
               value={cpUserId}

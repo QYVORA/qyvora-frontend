@@ -12,7 +12,7 @@ const BarChart: React.FC<BarChartProps> = ({ data }) => {
     <div className="space-y-2">
       {data.map((d, i) => (
         <div key={i} className="flex items-center gap-3">
-          <div className="w-20 text-[10px] font-mono text-text-muted uppercase tracking-wider truncate">{d.label}</div>
+          <div className="w-20 text-xs font-mono text-text-muted uppercase tracking-wider truncate">{d.label}</div>
           <div className="flex-1 h-5 bg-bg rounded-full overflow-hidden">
             <motion.div
               initial={{ width: 0 }}
@@ -22,7 +22,7 @@ const BarChart: React.FC<BarChartProps> = ({ data }) => {
               style={{ backgroundColor: d.color }}
             />
           </div>
-          <div className="w-16 text-right text-[10px] font-mono text-text-secondary">{fmtShort(d.value)}</div>
+          <div className="w-16 text-right text-xs font-mono text-text-secondary">{fmtShort(d.value)}</div>
         </div>
       ))}
     </div>

@@ -33,10 +33,10 @@ const NotificationsDropdown: React.FC<NotificationsDropdownProps> = ({
           <div className="px-4 py-3 border-b border-border flex items-center justify-between">
             <div>
               <div className="text-xs font-black uppercase tracking-widest text-text-primary">{t('student.topbar.notifications.title')}</div>
-              <div className="text-[10px] text-text-muted">{t('student.topbar.notifications.unreadCount', { count: unreadCount })}</div>
+              <div className="text-xs text-text-muted">{t('student.topbar.notifications.unreadCount', { count: unreadCount })}</div>
             </div>
             {unreadCount > 0 && (
-              <button onClick={markAllNotificationsRead} className="text-[10px] font-bold text-accent hover:underline whitespace-nowrap">
+              <button onClick={markAllNotificationsRead} className="text-xs font-bold text-accent hover:underline whitespace-nowrap">
                 {t('button.markAllRead')}
               </button>
             )}
@@ -53,8 +53,8 @@ const NotificationsDropdown: React.FC<NotificationsDropdownProps> = ({
                     <span className="text-xs font-bold text-text-primary line-clamp-1">{item.title}</span>
                     {!item.read && <span className="w-1.5 h-1.5 rounded-full bg-accent flex-none" />}
                   </div>
-                  <p className="text-[11px] text-text-secondary line-clamp-2 mt-0.5">{item.message}</p>
-                  <div className="text-[10px] text-text-muted mt-1">
+                  <p className="text-xs text-text-secondary line-clamp-2 mt-0.5">{item.message}</p>
+                  <div className="text-xs text-text-muted mt-1">
                     {item.createdAt ? new Date(item.createdAt).toLocaleString() : '-'}
                   </div>
                 </div>
