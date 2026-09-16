@@ -6,7 +6,6 @@ import { useAuth } from '../../../core/contexts/AuthContext';
 import { useProfile } from '../../../shared/hooks/useProfile';
 import { useSkillAchievements } from '../../../shared/hooks/useSkillAchievements';
 import EditModal from '../components/profile/EditModal';
-import FadeIn from '../../../shared/components/ui/FadeIn';
 import { ProfileSkeleton } from '../components/StudentSkeletons';
 import SEO from '../../../shared/components/SEO';
 import ProfileIdentityBlock from '../../../shared/components/profile/ProfileIdentityBlock';
@@ -59,8 +58,7 @@ const Profile: React.FC = () => {
   if (loading || !profile) return <ProfileSkeleton />;
 
   return (
-    <FadeIn>
-    <div>
+    <div className="min-h-full bg-canvas">
       <SEO
         title={`@${profile.username}'s Profile`}
         description={`View the operator profile, rank, and accomplishments of @${profile.username} on QYVORA. - ${profile.rank} | ${profile.cp.toLocaleString()} CP earned.`}
@@ -68,7 +66,7 @@ const Profile: React.FC = () => {
         noindex
       />
 
-      <div className="bg-bg px-3 md:px-4 lg:px-6 pt-8 pb-10">
+      <div className="w-full space-y-10 px-3 pb-16 pt-6 md:px-4 md:pb-20 md:pt-8 lg:px-6 lg:pb-24">
         <section id="profile-section-identity">
           <ProfileIdentityBlock
             id={profile.id}
@@ -95,9 +93,7 @@ const Profile: React.FC = () => {
             twitter={profile.twitter || undefined}
           />
         </section>
-      </div>
 
-      <div className="bg-bg-alt px-3 md:px-4 lg:px-6 py-10">
         <section id="profile-section-stats">
           <ProfileMetricsStrip metrics={[
             { icon: <CpLogo className="w-5 h-5" />, value: profile.cp.toLocaleString(), accent: true },
@@ -108,9 +104,7 @@ const Profile: React.FC = () => {
             { icon: <Zap className="w-5 h-5" />, value: `Lv.${profile.xpLevel}` },
           ]} />
         </section>
-      </div>
 
-      <div className="bg-bg px-3 md:px-4 lg:px-6 py-10">
         {visibleSections.includes('activity') && (
           <section id="profile-section-activity">
             <div className="flex flex-col gap-6">
@@ -123,9 +117,7 @@ const Profile: React.FC = () => {
             </div>
           </section>
         )}
-      </div>
 
-      <div className="bg-bg-alt px-3 md:px-4 lg:px-6 py-10">
         <section id="profile-section-achievements">
           <AchievementsSection
             rooms={profile.completedRooms}
@@ -137,9 +129,7 @@ const Profile: React.FC = () => {
             skillAchievements={skillAchievements}
           />
         </section>
-      </div>
 
-      <div className="bg-bg px-3 md:px-4 lg:px-6 py-10">
         {visibleSections.includes('labs') && (
           <section id="profile-section-labs">
             <LabsModule
@@ -148,9 +138,7 @@ const Profile: React.FC = () => {
             />
           </section>
         )}
-      </div>
 
-      <div className="bg-bg-alt px-3 md:px-4 lg:px-6 py-10">
         {visibleSections.includes('courses') && (
           <section id="profile-section-courses">
             <CoursesModule
@@ -159,9 +147,7 @@ const Profile: React.FC = () => {
             />
           </section>
         )}
-      </div>
 
-      <div className="bg-bg px-3 md:px-4 lg:px-6 py-10 pb-20 lg:pb-24">
         <section id="profile-section-trophy">
           <TrophyCabinet profile={profile} />
         </section>
@@ -176,7 +162,6 @@ const Profile: React.FC = () => {
         />
       )}
     </div>
-    </FadeIn>
   );
 };
 

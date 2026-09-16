@@ -84,7 +84,7 @@ const UsernameChangeModal = () => {
                 onSelect={(h) => { setHandle(h); setError(''); }}
                 selectedHandle={handle}
               />
-              <p className="text-[10px] text-text-muted/60">
+              <p className="text-xs text-text-muted/60">
                 {t('student.usernameChange.handleRules')}
               </p>
             </div>
