@@ -62,7 +62,7 @@ const JabariPage = () => {
             <button type="button" onClick={() => openToolInstall('jabari')} className="btn-primary inline-flex items-center gap-2 px-6 py-2.5">
               <Download className="w-4 h-4" /> Install Now <IconArrowRight size={14} />
             </button>
-            <span className="inline-flex items-center gap-2 px-2.5 py-1 rounded-lg border border-border/50 bg-bg-card text-[9px] font-black uppercase tracking-widest text-text-muted">
+            <span className="inline-flex items-center gap-2 px-2.5 py-1 rounded-lg border border-border/50 bg-bg-card text-xs font-black uppercase tracking-widest text-text-muted">
               <span className="font-black text-[#00ADD8]">Go</span> 1.26+
             </span>
           </>
@@ -94,9 +94,9 @@ const JabariPage = () => {
 
           <div className="rounded-2xl border border-border/50 bg-bg-card p-5 md:p-6 flex flex-col gap-4">
             <div className="flex items-center gap-3">
-              <span className="text-[9px] font-black uppercase tracking-[0.3em] text-accent">Session guarantees</span>
+              <span className="text-xs font-black uppercase tracking-[0.3em] text-accent">Session guarantees</span>
               <span className="h-px flex-1 bg-border/30" />
-              <span className="font-mono text-[9px] uppercase tracking-widest text-text-muted">recorded per run</span>
+              <span className="font-mono text-xs uppercase tracking-widest text-text-muted">recorded per run</span>
             </div>
             {[
               'Interactive [y/N] authorization gate before any assessment stage runs.',
@@ -132,7 +132,7 @@ const JabariPage = () => {
                   <stage.icon size={16} className="text-accent" />
                 </div>
                 <div className="min-w-0">
-                  <span className="text-[8px] font-black uppercase tracking-widest text-accent">
+                  <span className="text-xs font-black uppercase tracking-widest text-accent">
                     Stage {stage.id}
                   </span>
                   <h4 className="text-xs font-black text-text-primary leading-tight">
@@ -140,7 +140,7 @@ const JabariPage = () => {
                   </h4>
                 </div>
               </div>
-              <p className="text-[11px] font-mono text-text-muted leading-relaxed">
+              <p className="text-xs font-mono text-text-muted leading-relaxed">
                 {stage.desc}
               </p>
               <CodeBlock
@@ -180,7 +180,7 @@ const JabariPage = () => {
 
           <div className="rounded-2xl border border-border/50 bg-bg-card p-5 md:p-6 space-y-4">
             <h3 className="text-sm font-black uppercase tracking-widest text-accent">Source layout</h3>
-            <div className="font-mono text-[11px] space-y-1.5">
+            <div className="font-mono text-xs space-y-1.5">
               {[
                 'internal/rules/       rule interface + AND rules',
                 'internal/evidence/    hashing and evidence storage',
@@ -228,7 +228,7 @@ const JabariPage = () => {
 
           <div className="rounded-2xl border border-border/50 bg-bg-card p-5 md:p-6 space-y-4">
             <h3 className="text-sm font-black uppercase tracking-widest text-accent">Source layout</h3>
-            <div className="font-mono text-[11px] space-y-1.5">
+            <div className="font-mono text-xs space-y-1.5">
               {[
                 'cmd/jabari/            CLI entry point',
                 'internal/orchestration/ profile builder + runner',
@@ -296,24 +296,24 @@ const JabariPage = () => {
                 </div>
                 <div>
                   <h4 className="text-xs font-black text-text-primary leading-tight">Requirements</h4>
-                  <p className="text-[9px] font-mono text-text-muted mt-0.5">What you need on PATH</p>
+                  <p className="text-xs font-mono text-text-muted mt-0.5">What you need on PATH</p>
                 </div>
               </div>
               <ul className="space-y-1.5">
                 {REQUIREMENTS.map((req) => (
                   <li key={req} className="flex items-start gap-2 rounded-lg border border-border/20 bg-bg px-3 py-2">
                     <ChevronRight className="w-3.5 h-3.5 text-accent shrink-0 mt-0.5" />
-                    <span className="text-[10px] md:text-xs text-text-secondary leading-snug">{req}</span>
+                    <span className="text-xs md:text-xs text-text-secondary leading-snug">{req}</span>
                   </li>
                 ))}
               </ul>
               <div>
-                <span className="text-[9px] font-black uppercase tracking-widest text-text-muted block mb-1.5">Profiles</span>
+                <span className="text-xs font-black uppercase tracking-widest text-text-muted block mb-1.5">Profiles</span>
                 <div className="flex flex-wrap gap-1.5">
                   {PROFILES.map((p) => (
                     <span
                       key={p}
-                      className="px-2.5 py-1 rounded-lg border border-border/20 bg-bg text-[9px] font-mono text-text-muted"
+                      className="px-2.5 py-1 rounded-lg border border-border/20 bg-bg text-xs font-mono text-text-muted"
                     >
                       {p}
                     </span>
@@ -330,7 +330,7 @@ const JabariPage = () => {
               </div>
               <div className="min-w-0">
                 <h4 className="text-xs font-black text-text-primary leading-tight">Build From Source</h4>
-                <p className="text-[9px] font-mono text-text-muted mt-0.5">{BUILD_FROM_SOURCE.requirements}</p>
+                <p className="text-xs font-mono text-text-muted mt-0.5">{BUILD_FROM_SOURCE.requirements}</p>
               </div>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-3">
@@ -338,7 +338,7 @@ const JabariPage = () => {
                 <div key={cmd} className="space-y-1.5">
                   <CodeBlock code={`$ ${cmd}`} lang="sh" copyable />
                   {note && (
-                    <p className="text-[9px] font-mono text-text-muted leading-snug">{note}</p>
+                    <p className="text-xs font-mono text-text-muted leading-snug">{note}</p>
                   )}
                 </div>
               ))}
@@ -347,7 +347,7 @@ const JabariPage = () => {
               href={GITHUB_URL}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-accent hover:underline"
+              className="inline-flex items-center gap-2 text-xs font-black uppercase tracking-widest text-accent hover:underline"
             >
               GitHub Repository <IconArrowRight size={14} />
             </a>
@@ -369,9 +369,9 @@ const JabariPage = () => {
               <span className="w-2.5 h-2.5 rounded-full bg-danger/70" />
               <span className="w-2.5 h-2.5 rounded-full bg-warning/70" />
               <span className="w-2.5 h-2.5 rounded-full bg-accent/70" />
-              <span className="ml-2 text-[9px] font-mono text-text-muted">jabari, zsh</span>
+              <span className="ml-2 text-xs font-mono text-text-muted">jabari, zsh</span>
             </div>
-            <div className="p-4 md:p-5 font-mono text-[11px] md:text-xs space-y-2">
+            <div className="p-4 md:p-5 font-mono text-xs md:text-xs space-y-2">
               <div className="flex items-center gap-2">
                 <span className="text-accent">$</span>
                 <span className="text-text-primary">jabari assess usb</span>
@@ -389,7 +389,7 @@ const JabariPage = () => {
                   { label: 'reporting', text: 'session saved -> reports/session-<id>.json' },
                 ].map((line) => (
                   <div key={line.label} className="flex items-start gap-2">
-                    <span className="text-[9px] md:text-[10px] font-black uppercase tracking-widest text-accent shrink-0 pt-0.5">
+                    <span className="text-xs md:text-xs font-black uppercase tracking-widest text-accent shrink-0 pt-0.5">
                       [{line.label}]
                     </span>
                     <span className="text-text-muted leading-relaxed break-words">{line.text}</span>
@@ -410,7 +410,7 @@ const JabariPage = () => {
               </div>
               <div>
                 <h4 className="text-xs font-black text-text-primary leading-tight">Usage</h4>
-                <p className="text-[9px] font-mono text-text-muted mt-0.5">USB, network and reporting</p>
+                <p className="text-xs font-mono text-text-muted mt-0.5">USB, network and reporting</p>
               </div>
             </div>
             <CodeBlock
@@ -419,7 +419,7 @@ const JabariPage = () => {
               copyable
               className="mt-auto"
             />
-            <p className="text-[9px] font-mono text-text-muted leading-relaxed">
+            <p className="text-xs font-mono text-text-muted leading-relaxed">
               Only assess devices you own or have explicit written permission to test.
             </p>
           </div>

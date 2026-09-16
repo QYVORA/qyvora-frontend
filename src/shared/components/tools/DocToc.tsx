@@ -1,7 +1,8 @@
 import React, { useCallback } from 'react';
-import { Download, BookOpen } from 'lucide-react';
+import { BookOpen } from 'lucide-react';
 import { cn } from '@/shared/utils/cn';
 import { useDocScrollSpy } from '@/shared/hooks/useDocScrollSpy';
+import Button from '@/shared/components/ui/Button';
 import type { ToolDocSection as ToolDocSectionItem } from './ToolDocTopbar';
 
 interface DocTocProps {
@@ -9,18 +10,20 @@ interface DocTocProps {
   sections: ToolDocSectionItem[];
   installLabel?: string;
   onInstall?: () => void;
+  onNavigate?: () => void;
 }
 
 /**
- * DocToc — sticky "On this page" rail for tool documentation pages.
- * Rendered in the left sidebar column on lg+; shares the same scroll-spy
- * state as the topbar pills so both stay in sync.
+ * DocToc — "On this page" rail for tool documentation. Scroll-spies the same
+ * section ids as the topbar pills. Used in the DocsShell sidebar (lg+) and the
+ * mobile On-this-page sheet. `onNavigate` closes the sheet after a jump.
  */
 const DocToc: React.FC<DocTocProps> = ({
   toolName,
   sections,
   installLabel = 'Install',
   onInstall,
+  onNavigate,
 }) => {
   const activeSection = useDocScrollSpy(sections.map((s) => s.id), 130);
 
@@ -32,9 +35,14 @@ const DocToc: React.FC<DocTocProps> = ({
     }
   }, []);
 
+  const jump = (id: string) => {
+    scrollTo(id);
+    onNavigate?.();
+  };
+
   return (
-    <nav aria-label="On this page" className="flex flex-col gap-1">
-      <p className="text-[10px] font-black uppercase tracking-[0.3em] text-text-muted mb-3">
+    <nav aria-label="On this page" className="flex flex-col gap-0.5">
+      <p className="type-label mb-2 px-1 text-text-tertiary uppercase tracking-[0.12em]">
         On this page
       </p>
 
@@ -42,13 +50,13 @@ const DocToc: React.FC<DocTocProps> = ({
         <button
           key={s.id}
           type="button"
-          onClick={() => scrollTo(s.id)}
+          onClick={() => jump(s.id)}
           aria-current={activeSection === s.id ? 'true' : undefined}
           className={cn(
-            'text-left relative pl-4 py-2 text-xs font-bold uppercase tracking-[0.2em] transition-colors border-l-2 flex items-center gap-2',
+            'min-h-[44px] rounded-lg border-l-2 px-3 py-2 text-left text-sm font-medium transition-colors focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-accent',
             activeSection === s.id
-              ? 'text-accent border-accent'
-              : 'text-text-secondary border-transparent hover:text-accent hover:border-accent/50'
+              ? 'border-accent bg-accent/10 text-accent'
+              : 'border-transparent text-text-secondary hover:border-accent/40 hover:text-text-primary',
           )}
         >
           {s.label}
@@ -56,20 +64,16 @@ const DocToc: React.FC<DocTocProps> = ({
       ))}
 
       {onInstall && (
-        <div className="mt-5 pt-5 border-t border-border/10 flex flex-col gap-3">
+        <div className="mt-6 flex flex-col gap-3 border-t border-border-subtle pt-5">
           <div className="flex items-center gap-2">
-            <BookOpen size={14} className="text-accent shrink-0" />
-            <span className="text-[10px] font-black uppercase tracking-widest text-text-muted truncate">
+            <BookOpen className="h-4 w-4 shrink-0 text-accent" aria-hidden="true" />
+            <span className="type-label truncate text-text-tertiary">
               {toolName} docs
             </span>
           </div>
-          <button
-            type="button"
-            onClick={onInstall}
-            className="btn-primary inline-flex items-center justify-center gap-2 !px-4 !py-2.5 !text-[10px] !rounded-xl"
-          >
-            <Download className="w-3.5 h-3.5" /> {installLabel}
-          </button>
+          <Button size="sm" onClick={onInstall} className="w-full">
+            {installLabel}
+          </Button>
         </div>
       )}
     </nav>

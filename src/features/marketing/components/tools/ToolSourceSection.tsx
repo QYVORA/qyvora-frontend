@@ -113,7 +113,7 @@ const ToolSourceSection: React.FC<ToolSourceSectionProps> = ({
                       <Code2 className="h-4 w-4 text-accent" />
                     </div>
                     <div className="min-w-0">
-                      <p className="text-[9px] font-black uppercase tracking-widest text-accent">
+                      <p className="text-xs font-black uppercase tracking-widest text-accent">
                         Go source example
                       </p>
                       <h4 className="mt-0.5 text-sm font-black text-text-primary">{example.label}</h4>
@@ -179,7 +179,7 @@ const ToolSourceSection: React.FC<ToolSourceSectionProps> = ({
                 ))}
               </div>
 
-              <span className="text-[10px] font-black uppercase tracking-widest text-text-muted">
+              <span className="text-xs font-black uppercase tracking-widest text-text-muted">
                 {current + 1} / {total}
               </span>
             </div>

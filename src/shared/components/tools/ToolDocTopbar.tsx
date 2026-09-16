@@ -139,7 +139,7 @@ const ToolDocTopbar: React.FC<ToolDocTopbarProps> = ({
               aria-label="QYVORA - Return to Home"
               className="flex items-center gap-2.5 min-w-0 transition-transform hover:scale-105 duration-200"
             >
-              <Logo size="sm" variant="mark" color="#06B66F" className="!w-7 !h-7 shrink-0" />
+              <Logo size="sm" variant="mark" color="var(--color-accent)" className="!w-7 !h-7 shrink-0" />
               <div className="flex items-center gap-1.5 min-w-0">
                 <span className="text-sm font-black uppercase tracking-tight text-text-primary truncate">
                   {toolName}
@@ -161,7 +161,7 @@ const ToolDocTopbar: React.FC<ToolDocTopbarProps> = ({
                 type="button"
                 onClick={() => scrollTo(s.id)}
                 className={cn(
-                  'relative px-3 py-1.5 text-[10px] font-black uppercase tracking-widest whitespace-nowrap transition-colors shrink-0',
+                  'relative px-3 py-1.5 text-xs font-black uppercase tracking-widest whitespace-nowrap transition-colors shrink-0',
                   activeSection === s.id
                     ? 'text-accent'
                     : 'text-text-muted hover:text-text-primary'
@@ -184,7 +184,7 @@ const ToolDocTopbar: React.FC<ToolDocTopbarProps> = ({
                 href={githubUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="hidden lg:flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-[9px] font-black uppercase tracking-widest text-text-muted hover:text-text-primary border border-border/50 hover:border-border transition-colors"
+                className="hidden lg:flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs font-black uppercase tracking-widest text-text-muted hover:text-text-primary border border-border/50 hover:border-border transition-colors"
                 aria-label="GitHub Repository"
               >
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
@@ -198,7 +198,7 @@ const ToolDocTopbar: React.FC<ToolDocTopbarProps> = ({
               <button
                 type="button"
                 onClick={onInstall}
-                className="btn-primary !w-auto !px-3.5 !py-1.5 !text-[10px] !rounded-lg shrink-0"
+                className="btn-primary !w-auto !px-3.5 !py-1.5 !text-xs !rounded-lg shrink-0"
               >
                 {installLabel}
               </button>
@@ -228,7 +228,7 @@ const ToolDocTopbar: React.FC<ToolDocTopbarProps> = ({
                 type="button"
                 onClick={() => scrollTo(s.id)}
                 className={cn(
-                  'px-2.5 py-1 text-[9px] font-black uppercase tracking-widest whitespace-nowrap rounded-lg transition-colors shrink-0',
+                  'px-2.5 py-1 text-xs font-black uppercase tracking-widest whitespace-nowrap rounded-lg transition-colors shrink-0',
                   activeSection === s.id
                     ? 'bg-accent/10 text-accent border border-accent/40'
                     : 'text-text-muted hover:text-text-primary bg-bg-elevated/40 border border-border/30'

@@ -52,7 +52,7 @@ const Callout: React.FC<CalloutProps> = ({
       </div>
       <div className="min-w-0 flex flex-col gap-2">
         {eyebrow && (
-          <p className="text-[9px] font-black uppercase tracking-[0.3em] text-text-muted">{eyebrow}</p>
+          <p className="text-xs font-black uppercase tracking-[0.3em] text-text-muted">{eyebrow}</p>
         )}
         {title && (
           <p className="text-sm font-black text-text-primary uppercase tracking-wide">{title}</p>

@@ -33,7 +33,7 @@ const ToolDocSection: React.FC<ToolDocSectionProps> = ({
       {(kicker || title) && (
         <div className="mb-8 md:mb-10">
           {kicker && (
-            <p className="text-[10px] font-black uppercase tracking-[0.3em] text-accent mb-3">
+            <p className="text-xs font-black uppercase tracking-[0.3em] text-accent mb-3">
               {kicker}
             </p>
           )}

@@ -70,7 +70,7 @@ const AmanirenasPage = () => {
             <button type="button" onClick={() => openToolInstall('amanirenas')} className="btn-primary inline-flex items-center gap-2 px-6 py-2.5">
               <Download className="w-4 h-4" /> Install Now <IconArrowRight size={14} />
             </button>
-            <span className="inline-flex items-center gap-2 px-2.5 py-1 rounded-lg border border-border/50 bg-bg-card text-[9px] font-black uppercase tracking-widest text-text-muted">
+            <span className="inline-flex items-center gap-2 px-2.5 py-1 rounded-lg border border-border/50 bg-bg-card text-xs font-black uppercase tracking-widest text-text-muted">
               <span className="font-black text-accent">Go</span> 1.26+
             </span>
           </>
@@ -100,9 +100,9 @@ const AmanirenasPage = () => {
 
           <div className="rounded-2xl border border-border/50 bg-bg-card p-5 md:p-6 flex flex-col gap-4">
             <div className="flex items-center gap-3">
-              <span className="text-[9px] font-black uppercase tracking-[0.3em] text-accent">Assessment guarantees</span>
+              <span className="text-xs font-black uppercase tracking-[0.3em] text-accent">Assessment guarantees</span>
               <span className="h-px flex-1 bg-border/30" />
-              <span className="font-mono text-[9px] uppercase tracking-widest text-text-muted">offline by design</span>
+              <span className="font-mono text-xs uppercase tracking-widest text-text-muted">offline by design</span>
             </div>
             {[
               'Never executes app code: findings are derived from the recorded profile, never a running binary.',
@@ -139,7 +139,7 @@ const AmanirenasPage = () => {
                   <stage.icon size={16} className="text-accent" />
                 </div>
                 <div className="min-w-0">
-                  <span className="text-[8px] font-black uppercase tracking-widest text-accent">
+                  <span className="text-xs font-black uppercase tracking-widest text-accent">
                     Stage {stage.id}
                   </span>
                   <h4 className="text-xs font-black text-text-primary leading-tight">
@@ -147,7 +147,7 @@ const AmanirenasPage = () => {
                   </h4>
                 </div>
               </div>
-              <p className="text-[11px] font-mono text-text-muted leading-relaxed">
+              <p className="text-xs font-mono text-text-muted leading-relaxed">
                 {stage.desc}
               </p>
               <CodeBlock
@@ -178,15 +178,15 @@ const AmanirenasPage = () => {
             <div className="divide-y divide-border/10">
               {RULES.map((rule) => (
                 <div key={rule.id} className="flex items-start gap-3 px-5 py-3">
-                  <span className="w-20 shrink-0 text-[10px] font-black text-accent font-mono pt-0.5">
+                  <span className="w-20 shrink-0 text-xs font-black text-accent font-mono pt-0.5">
                     {rule.id}
                   </span>
                   <div className="min-w-0">
                     <p className="text-xs font-mono text-text-secondary leading-relaxed">{rule.name}</p>
-                    <p className="text-[10px] font-mono text-text-muted mt-0.5">{rule.checks}</p>
+                    <p className="text-xs font-mono text-text-muted mt-0.5">{rule.checks}</p>
                   </div>
                   <span
-                    className={`ml-auto shrink-0 px-2 py-0.5 rounded border text-[8px] font-black uppercase tracking-widest ${
+                    className={`ml-auto shrink-0 px-2 py-0.5 rounded border text-xs font-black uppercase tracking-widest ${
                       rule.severity === 'critical' ? 'border-danger/40 text-danger' : rule.severity === 'high' ? 'border-warning/40 text-warning' : 'border-border/40 text-text-muted'
                     }`}
                   >
@@ -207,14 +207,14 @@ const AmanirenasPage = () => {
                 </div>
               ))}
             </div>
-            <p className="text-[11px] font-mono text-text-muted leading-relaxed">
+            <p className="text-xs font-mono text-text-muted leading-relaxed">
               Every finding carries a deterministic ID derived from the rule: AMN-&lt;nnn&gt;, with at least one Evidence record capturing the exact observation that triggered it.
             </p>
             <div>
-              <span className="text-[9px] font-black uppercase tracking-widest text-text-muted block mb-1.5">Confidence</span>
+              <span className="text-xs font-black uppercase tracking-widest text-text-muted block mb-1.5">Confidence</span>
               <div className="flex flex-wrap gap-1.5">
                 {CONFIDENCE_STATES.map((s) => (
-                  <span key={s} className="px-2.5 py-1 rounded-lg border border-border/20 bg-bg text-[9px] font-mono text-text-muted">
+                  <span key={s} className="px-2.5 py-1 rounded-lg border border-border/20 bg-bg text-xs font-mono text-text-muted">
                     {s}
                   </span>
                 ))}
@@ -252,7 +252,7 @@ const AmanirenasPage = () => {
                 </div>
               ))}
             </div>
-            <p className="text-[10px] font-mono text-text-muted leading-relaxed">
+            <p className="text-xs font-mono text-text-muted leading-relaxed">
               Raw scores are capped at 100. Reproduce any number exactly by running the same session again — the formula is a pure function of the recorded evidence.
             </p>
           </div>
@@ -263,11 +263,11 @@ const AmanirenasPage = () => {
               {RISK_THRESHOLDS.map((th) => (
                 <div key={th.level} className="flex items-center justify-between rounded-xl border border-border/20 bg-bg-elevated px-4 py-2.5">
                   <span className="text-xs font-black uppercase tracking-widest text-text-secondary">{th.level}</span>
-                  <span className="font-mono text-[11px] text-accent">{th.range}</span>
+                  <span className="font-mono text-xs text-accent">{th.range}</span>
                 </div>
               ))}
             </div>
-            <p className="text-[10px] font-mono text-text-muted leading-relaxed">
+            <p className="text-xs font-mono text-text-muted leading-relaxed">
               Aggregate risk is the mean per-finding score across the session, so a single cluster of critical findings cannot inflate the summary.
             </p>
           </div>
@@ -311,7 +311,7 @@ const AmanirenasPage = () => {
                 href={GITHUB_URL}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-accent hover:underline w-fit"
+                className="inline-flex items-center gap-2 text-xs font-black uppercase tracking-widest text-accent hover:underline w-fit"
               >
                 GitHub Repository <IconArrowRight size={14} />
               </a>
@@ -324,14 +324,14 @@ const AmanirenasPage = () => {
                 </div>
                 <div>
                   <h4 className="text-xs font-black text-text-primary leading-tight">Requirements</h4>
-                  <p className="text-[9px] font-mono text-text-muted mt-0.5">What you need on PATH</p>
+                  <p className="text-xs font-mono text-text-muted mt-0.5">What you need on PATH</p>
                 </div>
               </div>
               <ul className="space-y-1.5">
                 {REQUIREMENTS.map((req) => (
                   <li key={req} className="flex items-start gap-2 rounded-lg border border-border/20 bg-bg px-3 py-2">
                     <ChevronRight className="w-3.5 h-3.5 text-accent shrink-0 mt-0.5" />
-                    <span className="text-[10px] md:text-xs text-text-secondary leading-snug">{req}</span>
+                    <span className="text-xs md:text-xs text-text-secondary leading-snug">{req}</span>
                   </li>
                 ))}
               </ul>
@@ -345,7 +345,7 @@ const AmanirenasPage = () => {
               </div>
               <div className="min-w-0">
                 <h4 className="text-xs font-black text-text-primary leading-tight">Build steps</h4>
-                <p className="text-[9px] font-mono text-text-muted mt-0.5">{BUILD_FROM_SOURCE.requirements}</p>
+                <p className="text-xs font-mono text-text-muted mt-0.5">{BUILD_FROM_SOURCE.requirements}</p>
               </div>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-3">
@@ -353,7 +353,7 @@ const AmanirenasPage = () => {
                 <div key={cmd} className="space-y-1.5">
                   <CodeBlock code={`$ ${cmd}`} lang="sh" copyable />
                   {note && (
-                    <p className="text-[9px] font-mono text-text-muted leading-snug">{note}</p>
+                    <p className="text-xs font-mono text-text-muted leading-snug">{note}</p>
                   )}
                 </div>
               ))}
@@ -376,9 +376,9 @@ const AmanirenasPage = () => {
               <span className="w-2.5 h-2.5 rounded-full bg-danger/70" />
               <span className="w-2.5 h-2.5 rounded-full bg-warning/70" />
               <span className="w-2.5 h-2.5 rounded-full bg-accent/70" />
-              <span className="ml-2 text-[9px] font-mono text-text-muted">amanirenas, zsh</span>
+              <span className="ml-2 text-xs font-mono text-text-muted">amanirenas, zsh</span>
             </div>
-            <div className="p-4 md:p-5 font-mono text-[11px] md:text-xs space-y-2">
+            <div className="p-4 md:p-5 font-mono text-xs md:text-xs space-y-2">
               <div className="flex items-center gap-2">
                 <span className="text-accent">$</span>
                 <span className="text-text-primary">amanirenas assess --sim</span>
@@ -395,7 +395,7 @@ const AmanirenasPage = () => {
                   { label: 'report', text: 'score 56 / medium - findings 14 - report -f json' },
                 ].map((line) => (
                   <div key={line.label} className="flex items-start gap-2">
-                    <span className="text-[9px] md:text-[10px] font-black uppercase tracking-widest text-accent shrink-0 pt-0.5">
+                    <span className="text-xs md:text-xs font-black uppercase tracking-widest text-accent shrink-0 pt-0.5">
                       [{line.label}]
                     </span>
                     <span className="text-text-muted leading-relaxed break-words">{line.text}</span>
@@ -416,7 +416,7 @@ const AmanirenasPage = () => {
               </div>
               <div>
                 <h4 className="text-xs font-black text-text-primary leading-tight">Usage</h4>
-                <p className="text-[9px] font-mono text-text-muted mt-0.5">Assess, inspect, report</p>
+                <p className="text-xs font-mono text-text-muted mt-0.5">Assess, inspect, report</p>
               </div>
             </div>
             <CodeBlock
@@ -425,7 +425,7 @@ const AmanirenasPage = () => {
               copyable
               className="mt-auto"
             />
-            <p className="text-[9px] font-mono text-text-muted leading-relaxed">
+            <p className="text-xs font-mono text-text-muted leading-relaxed">
               Analyze only app packages you own or have explicit written permission to assess.
             </p>
           </div>

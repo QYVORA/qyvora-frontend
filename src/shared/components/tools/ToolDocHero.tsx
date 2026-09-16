@@ -46,7 +46,7 @@ const ToolDocHero: React.FC<ToolDocHeroProps> = ({
               <span className="text-xl md:text-2xl font-black text-accent font-mono">
                 {stat.value}
               </span>
-              <span className="text-[10px] font-black uppercase tracking-widest text-text-muted">
+              <span className="text-xs font-black uppercase tracking-widest text-text-muted">
                 {stat.label}
               </span>
             </div>
