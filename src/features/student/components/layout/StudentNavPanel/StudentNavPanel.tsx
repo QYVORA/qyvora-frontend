@@ -258,7 +258,7 @@ const StudentNavPanel: React.FC<StudentNavPanelProps> = ({
           <span className="flex items-center gap-2 text-sm font-black uppercase tracking-widest text-text-primary">
             <span className="truncate">{item.label}</span>
             {item.badge ? (
-              <span className="flex h-4 min-w-4 items-center justify-center rounded-full bg-accent px-1 text-[10px] font-black uppercase leading-none text-on-accent tabular-nums">
+              <span className="flex h-4 min-w-4 items-center justify-center rounded-full bg-accent px-1 text-xs font-black uppercase leading-none text-on-accent tabular-nums">
                 {item.badge > 99 ? '99+' : item.badge}
               </span>
             ) : null}
@@ -354,7 +354,7 @@ const StudentNavPanel: React.FC<StudentNavPanelProps> = ({
                 <div className="space-y-6 md:space-y-8">
                   {groups.map((group) => (
                     <section key={group.key}>
-                      <h3 className="mb-2.5 text-[10px] font-black uppercase tracking-[0.25em] text-accent md:mb-3">
+                      <h3 className="mb-2.5 text-xs font-black uppercase tracking-[0.25em] text-accent md:mb-3">
                         {group.title}
                       </h3>
                       <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
@@ -375,7 +375,7 @@ const StudentNavPanel: React.FC<StudentNavPanelProps> = ({
                       <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-bg-elevated text-accent">
                         <Wrench size={16} />
                       </span>
-                      <span className="flex-1 min-w-0 text-[10px] font-black uppercase tracking-widest text-text-primary">
+                      <span className="flex-1 min-w-0 text-xs font-black uppercase tracking-widest text-text-primary">
                         {t('student.tools.title', 'Tools')}
                       </span>
                       <IconChevronRight
@@ -403,9 +403,9 @@ const StudentNavPanel: React.FC<StudentNavPanelProps> = ({
                                 >
                                   <TIcon size={16} className="shrink-0 text-text-secondary" />
                                   <span className="min-w-0 flex-1">
-                                    <span className="block truncate text-[11px] font-bold text-text-primary">{tool.label}</span>
+                                    <span className="block truncate text-xs font-bold text-text-primary">{tool.label}</span>
                                   </span>
-                                  <span className="hidden shrink-0 font-mono text-[9px] text-text-muted/50 sm:block">{tool.shortcut}</span>
+                                  <span className="hidden shrink-0 font-mono text-xs text-text-muted/50 sm:block">{tool.shortcut}</span>
                                 </button>
                               );
                             })}

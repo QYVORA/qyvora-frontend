@@ -65,7 +65,7 @@ const InstallBanner = () => {
                 <button
                   onClick={handleInstall}
                   disabled={installing}
-                  className="px-3 py-1.5 rounded-2xl bg-accent text-on-accent text-[10px] font-black uppercase tracking-widest hover:brightness-110 transition-[filter] duration-[var(--dur-fast)] ease-[var(--ease-smooth)] disabled:opacity-50"
+                  className="px-3 py-1.5 rounded-2xl bg-accent text-on-accent text-xs font-black uppercase tracking-widest hover:brightness-110 transition-[filter] duration-[var(--dur-fast)] ease-[var(--ease-smooth)] disabled:opacity-50"
                 >
                   {installing ? t('button.installing') : t('student.installBanner.install')}
                 </button>
