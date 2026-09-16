@@ -62,7 +62,7 @@ const ShakaPage = () => {
             <button type="button" onClick={() => openToolInstall('shaka')} className="btn-primary inline-flex items-center gap-2 px-6 py-2.5">
               <Download className="w-4 h-4" /> Install Now <IconArrowRight size={14} />
             </button>
-            <span className="inline-flex items-center gap-2 px-2.5 py-1 rounded-lg border border-border/50 bg-bg-card text-[9px] font-black uppercase tracking-widest text-text-muted">
+            <span className="inline-flex items-center gap-2 px-2.5 py-1 rounded-lg border border-border/50 bg-bg-card text-xs font-black uppercase tracking-widest text-text-muted">
               <span className="font-black text-[#00ADD8]">Go</span> 1.22+
             </span>
           </>
@@ -92,9 +92,9 @@ const ShakaPage = () => {
 
           <div className="rounded-2xl border border-border/50 bg-bg-card p-5 md:p-6 flex flex-col gap-4">
             <div className="flex items-center gap-3">
-              <span className="text-[9px] font-black uppercase tracking-[0.3em] text-accent">Assessment Guarantees</span>
+              <span className="text-xs font-black uppercase tracking-[0.3em] text-accent">Assessment Guarantees</span>
               <span className="h-px flex-1 bg-border/30" />
-              <span className="font-mono text-[9px] uppercase tracking-widest text-text-muted">Safe by Design</span>
+              <span className="font-mono text-xs uppercase tracking-widest text-text-muted">Safe by Design</span>
             </div>
             {[
               'Explicit authorization gate prevents unintended scans on live corporate directories.',
@@ -130,7 +130,7 @@ const ShakaPage = () => {
                   <stage.icon size={16} className="text-accent" />
                 </div>
                 <div className="min-w-0">
-                  <span className="text-[8px] font-black uppercase tracking-widest text-accent">
+                  <span className="text-xs font-black uppercase tracking-widest text-accent">
                     Stage {stage.id}
                   </span>
                   <h4 className="text-xs font-black text-text-primary leading-tight">
@@ -138,7 +138,7 @@ const ShakaPage = () => {
                   </h4>
                 </div>
               </div>
-              <p className="text-[11px] font-mono text-text-muted leading-relaxed">
+              <p className="text-xs font-mono text-text-muted leading-relaxed">
                 {stage.desc}
               </p>
               <CodeBlock
@@ -182,7 +182,7 @@ const ShakaPage = () => {
 
           <div className="rounded-2xl border border-border/50 bg-bg-card p-5 md:p-6 space-y-4">
             <h3 className="text-sm font-black uppercase tracking-widest text-accent">Source layout</h3>
-            <div className="font-mono text-[11px] space-y-1.5">
+            <div className="font-mono text-xs space-y-1.5">
               {[
                 'internal/graph/        directed graph structure & traversals',
                 'internal/directory/    LDAP object normalization & offline simulator',
@@ -210,9 +210,9 @@ const ShakaPage = () => {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
           {RULES.map((rule) => (
             <div key={rule.id} className="rounded-2xl border border-border/50 bg-bg-card p-4 md:p-5 space-y-2">
-              <span className="text-[9px] font-black uppercase tracking-widest text-accent font-mono">{rule.id}</span>
+              <span className="text-xs font-black uppercase tracking-widest text-accent font-mono">{rule.id}</span>
               <h4 className="text-xs font-black text-text-primary">{rule.title}</h4>
-              <p className="text-[11px] font-mono text-text-muted leading-relaxed">{rule.desc}</p>
+              <p className="text-xs font-mono text-text-muted leading-relaxed">{rule.desc}</p>
             </div>
           ))}
         </div>

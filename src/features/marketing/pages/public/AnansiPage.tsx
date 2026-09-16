@@ -65,7 +65,7 @@ const AnansiPage = () => {
             <button type="button" onClick={() => openToolInstall('anansi')} className="btn-primary inline-flex items-center gap-2 px-6 py-2.5">
               <Download className="w-4 h-4" /> Install Now <IconArrowRight size={14} />
             </button>
-            <span className="inline-flex items-center gap-2 px-2.5 py-1 rounded-lg border border-border/50 bg-bg-card text-[9px] font-black uppercase tracking-widest text-text-muted">
+            <span className="inline-flex items-center gap-2 px-2.5 py-1 rounded-lg border border-border/50 bg-bg-card text-xs font-black uppercase tracking-widest text-text-muted">
               <span className="font-black text-[#00ADD8]">Go</span> 1.22+
             </span>
           </>
@@ -93,7 +93,7 @@ const AnansiPage = () => {
                     <Icon size={16} className="text-accent" />
                   </div>
                   <div className="min-w-0">
-                    <span className="text-[8px] font-black uppercase tracking-widest text-accent">
+                    <span className="text-xs font-black uppercase tracking-widest text-accent">
                       Phase {phase.id}
                     </span>
                     <h4 className="text-xs font-black text-text-primary leading-tight">
@@ -101,7 +101,7 @@ const AnansiPage = () => {
                     </h4>
                   </div>
                 </div>
-                <p className="text-[11px] font-mono text-text-muted leading-relaxed">
+                <p className="text-xs font-mono text-text-muted leading-relaxed">
                   {phase.desc}
                 </p>
                 <CodeBlock
@@ -148,7 +148,7 @@ const AnansiPage = () => {
           {/* Right: source tree */}
           <div className="rounded-2xl border border-border/50 bg-bg-card p-5 md:p-6 space-y-4">
             <h3 className="text-sm font-black uppercase tracking-widest text-accent">Source layout</h3>
-            <div className="font-mono text-[11px] space-y-1.5">
+            <div className="font-mono text-xs space-y-1.5">
               {[
                 'cmd/                 Cobra command layer',
                 'internal/discovery/  CT logs + DNS discovery',
@@ -217,7 +217,7 @@ const AnansiPage = () => {
                 </div>
                 <div className="min-w-0">
                   <h4 className="text-xs font-black text-text-primary leading-tight">One-Line Installer</h4>
-                  <p className="text-[9px] font-mono text-text-muted mt-0.5">Auto-detects OS, CPU and shell.</p>
+                  <p className="text-xs font-mono text-text-muted mt-0.5">Auto-detects OS, CPU and shell.</p>
                 </div>
               </div>
               <CodeBlock code={ONE_LINER} lang="sh" badge="shell" copyable />
@@ -225,7 +225,7 @@ const AnansiPage = () => {
                 href={GITHUB_URL}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-accent hover:underline"
+                className="inline-flex items-center gap-2 text-xs font-black uppercase tracking-widest text-accent hover:underline"
               >
                 GitHub Repository <IconArrowRight size={14} />
               </a>
@@ -240,7 +240,7 @@ const AnansiPage = () => {
               </div>
               <div className="min-w-0">
                 <h4 className="text-xs font-black text-text-primary leading-tight">Build From Source</h4>
-                <p className="text-[9px] font-mono text-text-muted mt-0.5">{BUILD_FROM_SOURCE.requirements}</p>
+                <p className="text-xs font-mono text-text-muted mt-0.5">{BUILD_FROM_SOURCE.requirements}</p>
               </div>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-3">
@@ -248,7 +248,7 @@ const AnansiPage = () => {
                 <div key={cmd} className="space-y-1.5">
                   <CodeBlock code={`$ ${cmd}`} lang="sh" copyable />
                   {note && (
-                    <p className="text-[9px] font-mono text-text-muted leading-snug">{note}</p>
+                    <p className="text-xs font-mono text-text-muted leading-snug">{note}</p>
                   )}
                 </div>
               ))}
@@ -257,17 +257,17 @@ const AnansiPage = () => {
 
           {/* Direct downloads */}
           <div>
-            <span className="text-[9px] font-black uppercase tracking-widest text-text-muted block mb-2">
+            <span className="text-xs font-black uppercase tracking-widest text-text-muted block mb-2">
               Direct Download{release.version ? ` · ${release.version}` : ''}
             </span>
             <div className="flex gap-2 scroll-x no-scrollbar">
               {release.status === 'loading' && (
-                <span className="inline-flex items-center gap-1.5 rounded-lg border border-border/20 bg-bg px-3 py-2 text-[9px] uppercase tracking-widest text-text-muted">
+                <span className="inline-flex items-center gap-1.5 rounded-lg border border-border/20 bg-bg px-3 py-2 text-xs uppercase tracking-widest text-text-muted">
                   <Loader2 className="h-3 w-3 animate-spin" /> Checking release…
                 </span>
               )}
               {release.status === 'unavailable' && (
-                <span className="rounded-lg border border-amber-500/30 bg-amber-500/5 px-3 py-2 text-[9px] uppercase tracking-widest text-text-muted">
+                <span className="rounded-lg border border-amber-500/30 bg-amber-500/5 px-3 py-2 text-xs uppercase tracking-widest text-text-muted">
                   No release published yet, use the installer above
                 </span>
               )}
@@ -282,11 +282,11 @@ const AnansiPage = () => {
                       rel="noopener noreferrer"
                       className="shrink-0 flex items-center gap-2 rounded-lg border border-border/20 bg-bg px-3 py-2 transition-colors hover:border-accent/40"
                     >
-                      <span className="text-[9px] font-black uppercase tracking-widest text-text-primary">
+                      <span className="text-xs font-black uppercase tracking-widest text-text-primary">
                         {rel.label} <span className="text-text-muted">{rel.arch}</span>
                       </span>
                       {size ? (
-                        <span className="text-[9px] font-mono text-accent">{formatBytes(size)}</span>
+                        <span className="text-xs font-mono text-accent">{formatBytes(size)}</span>
                       ) : null}
                     </a>
                   );
@@ -311,9 +311,9 @@ const AnansiPage = () => {
               <span className="w-2.5 h-2.5 rounded-full bg-danger/70" />
               <span className="w-2.5 h-2.5 rounded-full bg-warning/70" />
               <span className="w-2.5 h-2.5 rounded-full bg-accent/70" />
-              <span className="ml-2 text-[9px] font-mono text-text-muted">anansi, zsh</span>
+              <span className="ml-2 text-xs font-mono text-text-muted">anansi, zsh</span>
             </div>
-            <div className="p-4 md:p-5 font-mono text-[11px] md:text-xs space-y-2">
+            <div className="p-4 md:p-5 font-mono text-xs md:text-xs space-y-2">
               <div className="flex items-center gap-2">
                 <span className="text-accent">$</span>
                 <span className="text-text-primary">anansi target.com --deep</span>
@@ -321,7 +321,7 @@ const AnansiPage = () => {
               <div className="pl-4 space-y-1.5 border-l border-accent/30">
                 {SCAN_OUTPUT.slice(0, 5).map((line) => (
                   <div key={line.label} className="flex items-start gap-2">
-                    <span className="text-[9px] md:text-[10px] font-black uppercase tracking-widest text-accent shrink-0 pt-0.5">
+                    <span className="text-xs md:text-xs font-black uppercase tracking-widest text-accent shrink-0 pt-0.5">
                       [{line.label}]
                     </span>
                     <span className="text-text-muted leading-relaxed break-words">{line.text}</span>
@@ -343,7 +343,7 @@ const AnansiPage = () => {
               </div>
               <div>
                 <h4 className="text-xs font-black text-text-primary leading-tight">Usage</h4>
-                <p className="text-[9px] font-mono text-text-muted mt-0.5">Flags and pipelines</p>
+                <p className="text-xs font-mono text-text-muted mt-0.5">Flags and pipelines</p>
               </div>
             </div>
             <CodeBlock
@@ -352,7 +352,7 @@ const AnansiPage = () => {
               copyable
               className="mt-auto"
             />
-            <p className="text-[9px] font-mono text-text-muted leading-relaxed">
+            <p className="text-xs font-mono text-text-muted leading-relaxed">
               Only scan targets you own or have explicit written permission to test.
             </p>
           </div>

@@ -23,7 +23,7 @@ const DocFooterNav: React.FC<DocFooterNavProps> = ({ currentPath }) => {
       <div className="px-3 md:px-4 lg:px-6 flex flex-col gap-10 md:gap-14">
         <div>
           <div className="mb-6">
-            <p className="text-[10px] font-black uppercase tracking-[0.3em] text-text-muted">
+            <p className="text-xs font-black uppercase tracking-[0.3em] text-text-muted">
               Continue reading
             </p>
           </div>
@@ -39,13 +39,13 @@ const DocFooterNav: React.FC<DocFooterNavProps> = ({ currentPath }) => {
                   className="text-accent shrink-0 transition-transform duration-200 group-hover:-translate-x-1"
                 />
                 <span className="min-w-0">
-                  <span className="block text-[9px] font-black uppercase tracking-widest text-text-muted">
+                  <span className="block text-xs font-black uppercase tracking-widest text-text-muted">
                     Previous
                   </span>
                   <span className="mt-1 block text-sm font-black text-text-primary truncate">
                     {prev.title}
                   </span>
-                  <span className="mt-0.5 line-clamp-1 block text-[11px] font-mono text-text-muted">
+                  <span className="mt-0.5 line-clamp-1 block text-xs font-mono text-text-muted">
                     {prev.desc}
                   </span>
                 </span>
@@ -60,13 +60,13 @@ const DocFooterNav: React.FC<DocFooterNavProps> = ({ currentPath }) => {
                 className="group flex gap-4 items-center justify-end rounded-2xl border border-border/50 bg-bg-card p-4 md:p-5 text-right transition-colors hover:border-accent/40 hover:bg-bg-elevated"
               >
                 <span className="min-w-0">
-                  <span className="block text-[9px] font-black uppercase tracking-widest text-text-muted">
+                  <span className="block text-xs font-black uppercase tracking-widest text-text-muted">
                     Next
                   </span>
                   <span className="mt-1 block text-sm font-black text-text-primary truncate">
                     {next.title}
                   </span>
-                  <span className="mt-0.5 line-clamp-1 block text-[11px] font-mono text-text-muted">
+                  <span className="mt-0.5 line-clamp-1 block text-xs font-mono text-text-muted">
                     {next.desc}
                   </span>
                 </span>

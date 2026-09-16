@@ -15,7 +15,7 @@ const ToolSectionHeader: React.FC<ToolSectionHeaderProps> = ({
   description,
 }) => (
   <div className="space-y-4">
-    <p className="text-[10px] font-black uppercase tracking-[0.3em] text-accent">{kicker}</p>
+    <p className="text-xs font-black uppercase tracking-[0.3em] text-accent">{kicker}</p>
     <h2 className="text-3xl md:text-5xl lg:text-7xl font-black text-text-primary tracking-tighter leading-tight">
       {title} <span className="text-accent">{accent}</span>
     </h2>
