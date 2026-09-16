@@ -1,53 +1,66 @@
-import { Link } from 'react-router-dom';
-import { Zap } from 'lucide-react';
-import { IconArrowRight } from '@/shared/components/icons';
+import { useTranslation } from 'react-i18next';
+import { ArrowRight } from 'lucide-react';
 import SEO from '@/shared/components/SEO';
-import PublicPageLayout from '@/shared/components/PublicPageLayout';
-import StudentHeroSection, { PUBLIC_HERO_TITLE_CLASS } from '@/shared/components/StudentHeroSection';
-import { Footer } from '@/shared/components/layout';
-import { useAuth } from '@/core/contexts/AuthContext';
-import LandingFinalCtaSection from '@/features/marketing/components/landing/LandingFinalCtaSection';
-import { COURSES } from '@/features/student/data/courses';
-import CoursesCarousel from '@/features/marketing/components/CoursesCarousel';
+import PageHeader from '@/shared/components/ui/PageHeader';
+import Button from '@/shared/components/ui/Button';
+import { LearningCatalogue } from '@/shared/components/learning';
+import type { LearningCatalogueItem } from '@/shared/components/learning';
+import { COURSES, COURSE_ICON_MAP } from '@/features/student/data/courses';
 
 const CoursesPage = () => {
-  const { user } = useAuth();
+  const { t } = useTranslation();
+
+  const items: LearningCatalogueItem[] = COURSES.map((course) => {
+    const cfg = COURSE_ICON_MAP[course.id];
+    return {
+      key: course.id,
+      type: 'course',
+      to: `/dashboard/courses/${course.id}`,
+      icon: cfg ? <cfg.icon className="h-5 w-5" /> : undefined,
+      title: course.title,
+      description: course.overview,
+      difficulty: course.skillLevel,
+      duration: `${course.estimatedMinutes} min`,
+      lessonsCount: course.lessons.length,
+      price: `${course.cpCost} CP`,
+      actionLabel: t('coursesPage.cardCta', 'Start Course'),
+    };
+  });
 
   return (
-    <div className="bg-bg min-h-full">
-      <SEO title="Courses - QYVORA" description="Master offensive security with QYVORA's structured courses." />
-      <PublicPageLayout>
-        {/* Hero */}
-        <section className="relative w-full min-h-dvh bg-bg">
-          <StudentHeroSection
-            title="Offensive"
-            accentWord="Courses"
-            titleClassName={PUBLIC_HERO_TITLE_CLASS}
-            showGlobe
-            typewrite
-            description="Structured offensive security courses from terminal mastery to web exploitation."
-          >
-            <Link to="/register" className="btn-primary inline-flex items-center gap-2 px-6 py-2.5">
-              <Zap className="w-4 h-4" /> Get Started <IconArrowRight size={14} />
-            </Link>
-          </StudentHeroSection>
-        </section>
+    <div className="w-full bg-canvas">
+      <SEO
+        title={t('coursesPage.seo.title', 'Courses | QYVORA')}
+        description={t('coursesPage.seo.description', "Master offensive security with QYVORA's structured courses.")}
+      />
+      <div className="w-full px-3 pb-20 pt-24 md:px-4 md:pb-24 md:pt-28 lg:px-6 lg:pt-32">
+        <PageHeader
+          kicker={t('coursesPage.kicker', 'QYVORA · Learn')}
+          title={t('coursesPage.title', 'Courses')}
+          description={t(
+            'coursesPage.description',
+            'Structured offensive security courses from terminal mastery to web exploitation. Start free and progress with Cyber Coin.',
+          )}
+          actions={
+            <Button to="/register">
+              {t('coursesPage.cta', 'Start free')}
+              <ArrowRight className="h-4 w-4" aria-hidden="true" />
+            </Button>
+          }
+        />
 
-        {/* Courses Carousel — one full section per course */}
-        <section className="relative w-full min-h-dvh bg-bg-alt">
-          <CoursesCarousel courses={COURSES} />
-        </section>
-
-        {/* CTA */}
-        <section className="relative w-full min-h-dvh bg-bg">
-          <LandingFinalCtaSection user={user} />
-        </section>
-
-        {/* Footer */}
-        <section className="w-full bg-bg pt-10 md:pt-0">
-          <Footer />
-        </section>
-      </PublicPageLayout>
+        <LearningCatalogue
+          className="mt-10"
+          items={items}
+          showSearch
+          searchPlaceholder={t('coursesPage.searchPlaceholder', 'Search courses...')}
+          emptyTitle={t('coursesPage.empty.title', 'No courses match this filter')}
+          emptyDescription={t(
+            'coursesPage.empty.description',
+            'Try a different difficulty or check back soon — new courses ship frequently.',
+          )}
+        />
+      </div>
     </div>
   );
 };
