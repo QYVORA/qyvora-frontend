@@ -1,8 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Terminal, Shield, Trophy } from 'lucide-react';
+import { ArrowLeft, Terminal, Shield, Trophy } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import { IconArrowLeft } from '@/shared/components/icons';
 
 const authBullets = [
   { icon: Terminal, key: 'labs' },
@@ -10,41 +9,38 @@ const authBullets = [
   { icon: Trophy, key: 'ctf' },
 ];
 
+/**
+ * AuthHero — the calm left-hand value statement on desktop auth screens.
+ * No globe, no grid, no pulsing accents. Just copy and a few quiet features.
+ */
 const AuthHero: React.FC = () => {
   const { t } = useTranslation();
   return (
-    <div className="hidden md:flex relative w-full min-h-dvh flex-col overflow-hidden">
-      <div className="absolute top-6 left-6 z-20">
+    <div className="relative hidden min-h-dvh w-full flex-col overflow-hidden md:flex">
+      <div className="shrink-0 pt-10 pl-6">
         <Link
           to="/"
-          className="inline-flex items-center gap-2 px-4 py-2 text-text-primary rounded-lg text-[10px] font-black uppercase tracking-[0.2em] transition-[opacity,transform] duration-[var(--dur-fast)] ease-[var(--ease-smooth)] hover:opacity-70 active:scale-95"
+          className="inline-flex min-h-[44px] items-center gap-2 px-2 text-sm font-bold text-text-secondary transition-colors hover:text-text-primary"
         >
-          <IconArrowLeft size={16} /> {t('button.backToHome')}
+          <ArrowLeft className="h-4 w-4" aria-hidden="true" />
+          {t('button.backToHome')}
         </Link>
       </div>
 
-      <div className="relative z-10 w-full flex-1 flex flex-col items-start justify-center px-3 md:px-4 lg:px-6 py-24 lg:py-32">
-        <div className="w-full max-w-xl space-y-10 lg:space-y-12">
-          <div className="inline-flex items-center gap-2 px-4 py-2.5 border border-border/50 bg-bg-elevated/50 rounded-lg">
-            <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse flex-none" />
-            <span className="font-mono text-[10px] sm:text-[11px] font-black uppercase tracking-[0.3em] text-text-muted">
-              {t('hero.tagline')}
-            </span>
-          </div>
+      <div className="flex w-full flex-1 flex-col justify-center px-3 py-16 md:px-4 lg:px-6">
+        <div className="w-full max-w-xl">
+          <h1 className="type-display mb-6 font-black uppercase tracking-tight text-text-primary">
+            {t('hero.welcomeTo')} <span className="text-accent">QYVORA</span>
+          </h1>
+          <p className="type-body mt-2 max-w-xl">{t('hero.description')}</p>
 
-          <div>
-            <h2 className="text-4xl md:text-5xl font-black text-text-primary tracking-tighter leading-none">
-              {t('hero.welcomeTo')} <span className="text-accent">QYVORA</span>
-            </h2>
-            <p className="text-base text-text-muted mt-6 max-w-xl leading-relaxed">
-              {t('hero.description')}
-            </p>
-          </div>
-
-          <ul className="grid gap-4">
+          <ul className="mt-10 grid gap-4">
             {authBullets.map(({ icon: Icon, key }) => (
-              <li key={key} className="flex items-center gap-3 text-sm text-text-muted font-mono leading-tight">
-                <Icon className="w-4 h-4 text-accent flex-none" /> {t(`auth.bullets.${key}`)}
+              <li key={key} className="flex items-center gap-3 text-sm text-text-secondary">
+                <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-border-subtle bg-surface text-accent">
+                  <Icon className="h-4 w-4" aria-hidden="true" />
+                </span>
+                {t(`auth.bullets.${key}`)}
               </li>
             ))}
           </ul>
