@@ -12,7 +12,7 @@ All interactive simulation systems in one place.
 
 ```
 ┌─────────────────────────────────────────────────────────┐
-│  StudentLayout                                          │
+│  AppShell                                               │
 │  ┌───────────────────────────────────────────────────┐  │
 │  │  SimulationProvider (global state)                │  │
 │  │  ┌─────────┐ ┌─────────┐ ┌─────────┐ ┌────────┐ │  │
@@ -87,7 +87,7 @@ All interactive simulation systems in one place.
 | Utility | `clear`, `help`, `history`, `alias`, `export`, `exit`, `man`, `which`, `reset`, `nano`, `vi` |
 
 **Where used:**
-- `StudentLayout` — global terminal (Ctrl+` or event)
+- `AppShell` — global terminal (Ctrl+` or event)
 - `CourseLessonPage` — inline terminal in lessons with `hasTerminal: true`
 - `NetworksPage` — modal terminal for network lab
 - All 5 lab pages — breakout terminal (primary simulation)

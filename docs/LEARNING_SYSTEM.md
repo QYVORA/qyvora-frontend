@@ -76,4 +76,4 @@ Progress is tracked at multiple levels:
 - **Lab completion:** Scenario solved → flag verified → CP awarded
 - **Course progress:** Lessons viewed → quiz score → completion percentage
 - **Bootcamp progress:** Steps viewed → room completion → phase progress
-- **Overall:** Dashboard shows aggregate stats via `LearningOverviewCard`
+- **Overall:** Dashboard shows aggregate stats via the `ProgressionPanel` / `SkillMatrix` widgets

@@ -6,9 +6,9 @@
 |---|---|---|
 | `/dashboard/profile` | `ProfilePage.tsx` | Authenticated user's own profile |
 | `/dashboard/profile/:username` | `ProfilePage.tsx` | Viewing another user's profile (within dashboard) |
-| `/@:handle` | `PublicProfilePage.tsx` | Public-facing profile (outside dashboard, includes `<Navbar />`) |
+| `/@:handle` | `PublicProfilePage.tsx` | Public-facing profile (rendered inside `PublicShell`) |
 
-Both pages share the same visual components but differ in chrome: `ProfilePage` renders inside the student dashboard shell (no extra navbar), while `PublicProfilePage` renders with a `<Navbar />` at the top and a larger top padding (`pt-28 md:pt-24`).
+Both pages share the same visual components but differ in chrome: `ProfilePage` renders inside the student dashboard shell (`AppShell`, no extra nav), while `PublicProfilePage` renders inside `PublicShell` (which owns `PublicNavigation` + `PublicFooter` and provides navbar clearance).
 
 ---
 
@@ -36,7 +36,7 @@ Both pages share the same visual components but differ in chrome: `ProfilePage` 
 
 ```
 <div className="min-h-screen w-full bg-bg">       ← Full viewport, dark bg
-  <Navbar />                                       ← Top navigation bar
+  (PublicNavigation owned by PublicShell)          ← Top navigation bar
   <SEO ... />
   <div className="px-4 md:px-12 lg:px-16 pt-28 md:pt-24 pb-20 lg:pb-24 space-y-6">
                                                    ← Wider side padding for public context
@@ -54,13 +54,13 @@ Public page uses wider horizontal padding (`px-4 md:px-12 lg:px-16`) and extra t
 
 ## Component 1: LearningOverviewCard (Hero / Profile Overview)
 
-**File:** `src/features/student/components/learning/LearningOverviewCard.tsx`
+> **Historical.** `src/features/student/components/learning/LearningOverviewCard.tsx` was removed during the Phase-2 UI reconciliation; the profile pages no longer ship a bespoke oversized overview banner. The canonical, frozen identity surface is `ProfileIdentityBlock` (identicon/identity card) backed by the stats strip `ProfileMetricsStrip` — see AGENTS "Profile Pages — protected cards, never modify". The spec below is retained for reference only.
 
 This is the **dominant visual element** — a large accent-colored banner card.
 
 ### Outer wrapper
 ```
-data-nav-invert attribute    ← Signals navbar to invert colors over this card
+Standard card wrapper (no nav-invert — that behavior was removed)
 ```
 
 ### Card itself

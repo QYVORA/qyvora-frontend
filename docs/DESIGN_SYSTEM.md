@@ -138,10 +138,6 @@ p-3 md:p-5 transition-all duration-300 hover:border-accent/30 flex flex-col text
 
 **Media variant (bootcamp phases):** a centered `HpbAvatar` fills the `flex-1` area instead of an icon chip (`HpbPage`).
 
-## Public Hero Right Column (Avatars)
-
-`StudentHeroSection` renders `rightContent` as a grid column. On mobile the avatar/image must remain visible — use `md:hidden lg:flex` on the wrapper (never `hidden lg:flex`) so it shows below the hero text on phones and on the right column from `lg` up. Keep the image bounded on mobile (e.g. `max-w-[220px] sm:max-w-[260px] lg:max-w-[80%]`).
-
 ## Z-Index Scale
 
 | Layer | Z-Index |
@@ -161,7 +157,7 @@ p-3 md:p-5 transition-all duration-300 hover:border-accent/30 flex flex-col text
 
 | Context | Size |
 |---------|------|
-| Marketing hero | `text-[2rem]` to `text-[3rem]` (responsive via PublicHeroSection). Use `text-text-primary` for main text, `text-accent` for highlighted words. |
+| Marketing hero | `text-4xl` to `text-6xl` (responsive, see `HeroBlock`). Use `text-text-primary` for main text, `text-accent` for highlighted words. |
 | Dashboard | `text-4xl md:text-5xl` |
 | Admin | `text-4xl md:text-5xl lg:text-6xl` |
 | Auth forms | `text-3xl md:text-4xl lg:text-5xl` |

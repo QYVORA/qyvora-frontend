@@ -2,6 +2,8 @@
 
 **Scope:** entire `src/` (352 `.tsx` / 174 `.ts` components). Original read-only audit snapshot — no source files were modified *at audit time*. Fixes applied afterwards are tracked in **Resolution Status** below.
 
+> **Historical snapshot.** Shell/component names below predate the current architecture and are retained for the audit record only. Current equivalents: `LandingLayout` → `PublicShell`, `StudentLayout` → `AppShell`; `Navbar` → `PublicNavigation`, `Footer` → `PublicFooter`. `RoomTopBar`, `StudentHeroSection`, `PublicHeroSection`, `PublicSnapSection`, `PublicBottomNav`, `GoCodeCarousel`, `RoomTopBar`, `useNavInvert`, `OverlayManager`, and `WalkthroughToolbar` have since been deleted. `StudentHeroSection`/`PublicHeroSection` → `PageHeader`. See `AGENTS.md` for the canonical rules.
+
 ## Executive Summary
 
 The design system is defined cleanly in `src/styles/index.css` (accent `#06B66F`, elevation steps, JetBrains Mono + Space Grotesk, duration/easing tokens), but actual usage diverges in three compounding ways. **(1) Semantic tokens are bypassed**: despite `--color-*` tokens, components use Tailwind palette classes (`text-red-400`, `bg-yellow-400`, `border-amber-500`…) and raw hex liberally — including inside canonical primitives (`Badge.tsx`, `Button.tsx`, `Input.tsx`, `ErrorState.tsx`, `.btn-danger`, `.badge-beginner`) and in 114 inline `rgb()/rgba()` strings. **(2) Component families are duplicated 2–8×**: buttons exist as `Button.tsx` (used in 8 files), CSS `.btn-*` classes (124 uses), and raw inline `<button>` styles (347 elements); badge styles exist as `ui/Badge`, `badge-*` CSS utilities, and per-card inline maps; card padding/radius drift across `CardBase`, `ScenarioCard`, `StudentBootcampCard`, `StatCard`, `RoomCard`, `LearningCard`. **(3) The type scale is out of band**: `text-[10px]` (495) and `text-[9px]` (382) lead all sizes, `leading-relaxed` (194) is used where the blog/walkthrough token is `leading-[2]`, and there is no single heading scale — page `h1/h2/h3` sizing is picked per file with no source of truth.
@@ -332,7 +334,7 @@ Padding: public sections `px-3 md:px-4 lg:px-6` (`PublicSnapSection.tsx:31`); to
 |---|---|---|
 | Accent `#06B66F` only, never `#66B870`/other green | **Partial** | `#66B870` absent, but `#22c55e`, `green-400`, `emerald-*` used for "success" everywhere instead of `--color-success` |
 | Radius: cards `rounded-2xl`, buttons/inputs `rounded-xl`, badges `rounded-lg`/`full` | **Partial** | `LearningCard`/`WalkthroughLayout`/`NetworkBuilder` cards use `rounded-lg`; `rounded-3xl` ×4 |
-| Buttons `btn-primary/secondary/danger` | **Partial** | CSS classes exist but are duplicated by `Button.tsx`; both used interchangeably |
+| Buttons `btn-primary/secondary/danger` | **RESOLVED** | `.btn-*` classes and `Button.tsx` variants are the two sanctioned implementations (CSS classes for raw CTAs, `<Button>` for component CTAs). All raw `<button>` elements are now `.btn-*`-classed, inside a shared primitive, or one of the documented accessibility exceptions (`docs/UI-PATTERN-INVENTORY.md` §2b-i). |
 | Semantic status/difficulty tokens | **Violated** | `--color-success/warning/danger/info` unused; palette classes hard-coded, incl. inside `Badge.tsx` |
 | Tokens only, no raw hex in components | **Violated** | §1.3 (all non-exception hex) + §1.5 |
 
