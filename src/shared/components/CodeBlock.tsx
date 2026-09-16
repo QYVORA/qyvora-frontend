@@ -193,18 +193,18 @@ const CodeBlock: React.FC<CodeBlockProps> = ({
       {hasHeader && (
         <div className="flex items-center justify-between gap-2 border-b border-border/20 bg-bg-elevated px-3 py-2">
           {filename ? (
-            <span className="min-w-0 truncate font-mono text-[10px] text-text-muted">{filename}</span>
+            <span className="min-w-0 truncate font-mono text-xs text-text-muted">{filename}</span>
           ) : (
             <span />
           )}
           <div className="flex shrink-0 items-center gap-2">
-            {badge && <span className="text-[9px] font-black uppercase tracking-widest text-accent">{badge}</span>}
+            {badge && <span className="text-xs font-black uppercase tracking-widest text-accent">{badge}</span>}
             {copyable && (
               <button
                 type="button"
                 onClick={copy}
                 aria-label="Copy command"
-                className="inline-flex items-center gap-1 rounded-lg border border-border/20 bg-bg px-2 py-1 text-[9px] font-black uppercase tracking-widest text-text-muted transition-colors hover:border-accent/40 hover:text-accent"
+                className="inline-flex items-center gap-1 rounded-lg border border-border/20 bg-bg px-2 py-1 text-xs font-black uppercase tracking-widest text-text-muted transition-colors hover:border-accent/40 hover:text-accent"
               >
                 {copied ? <Check className="h-3 w-3" /> : <Copy className="h-3 w-3" />}
                 {copied ? 'Copied' : 'Copy'}

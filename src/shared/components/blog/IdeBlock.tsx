@@ -81,7 +81,7 @@ const IdeBlock: React.FC<{
           <div className="w-3 h-3 rounded-full bg-[#ffbd2e]" />
           <div className="w-3 h-3 rounded-full bg-[#27c93f]" />
         </div>
-        <div className="flex items-center gap-2 ml-2 text-[11px] text-gray-400 font-mono">
+        <div className="flex items-center gap-2 ml-2 text-xs text-gray-400 font-mono">
           <svg className="w-3.5 h-3.5 text-blue-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
             <polyline points="16 18 22 12 16 6" />
             <polyline points="8 6 2 12 8 18" />
@@ -114,7 +114,7 @@ const IdeBlock: React.FC<{
       </div>
 
       {/* ── Bottom Bar ── */}
-      <div className="bg-[#007acc] px-4 py-1 flex items-center justify-between text-[11px] text-white/80 font-mono select-none">
+      <div className="bg-[#007acc] px-4 py-1 flex items-center justify-between text-xs text-white/80 font-mono select-none">
         <div className="flex items-center gap-4">
           <span>Ln {lines.length}, Col 1</span>
           <span>Spaces: 2</span>

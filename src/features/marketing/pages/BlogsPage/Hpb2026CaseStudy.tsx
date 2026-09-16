@@ -17,7 +17,7 @@ const StatRow = ({ icon, label, value }: { icon: React.ReactNode; label: string;
       {icon}
     </div>
     <div className="min-w-0">
-      <div className="text-[10px] font-black uppercase tracking-widest text-text-muted">{label}</div>
+      <div className="text-xs font-black uppercase tracking-widest text-text-muted">{label}</div>
       <div className="text-base md:text-lg font-black text-text-primary break-words">{value}</div>
     </div>
   </div>

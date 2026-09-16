@@ -11,7 +11,7 @@ const StatRow = ({ icon, label, value }: { icon: React.ReactNode; label: string;
       {icon}
     </div>
     <div className="min-w-0">
-      <div className="text-[10px] font-black uppercase tracking-widest text-text-muted">{label}</div>
+      <div className="text-xs font-black uppercase tracking-widest text-text-muted">{label}</div>
       <div className="text-base md:text-lg font-black text-text-primary break-words">{value}</div>
     </div>
   </div>
@@ -171,10 +171,10 @@ export const HackerProtocolBootcampBlog: React.FC = () => {
               </div>
               <div className="min-w-0 flex-1">
                 <div className="flex items-center gap-3 mb-2 flex-wrap">
-                  <span className="text-[9px] font-black uppercase tracking-widest px-2.5 py-1 rounded-lg border border-accent/20 bg-accent/10 text-accent">
+                  <span className="text-xs font-black uppercase tracking-widest px-2.5 py-1 rounded-lg border border-accent/20 bg-accent/10 text-accent">
                     Phase {p.phase}
                   </span>
-                  <span className="text-[9px] font-black uppercase tracking-widest text-text-muted">
+                  <span className="text-xs font-black uppercase tracking-widest text-text-muted">
                     {p.rooms} rooms
                   </span>
                   <span className="w-2 h-2 rounded-full shrink-0" style={{ backgroundColor: p.color }} aria-hidden="true" />

@@ -33,7 +33,7 @@ const OutputBlock: React.FC<{
           <span className="h-2.5 w-2.5 rounded-full bg-text-muted/40" />
           <span className="h-2.5 w-2.5 rounded-full bg-text-muted/20" />
         </div>
-        <span className="text-[10px] font-mono text-text-muted uppercase tracking-[0.15em]">{title}</span>
+        <span className="text-xs font-mono text-text-muted uppercase tracking-[0.15em]">{title}</span>
       </div>
 
       <div
