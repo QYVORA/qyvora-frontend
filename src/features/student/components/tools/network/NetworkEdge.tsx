@@ -132,7 +132,7 @@ const NetworkEdge: React.FC<EdgeProps> = ({
             transform: `translate(-50%, -50%) translate(${labelX}px,${labelY}px)`,
           }}
         >
-          <span className="text-[7px] font-mono text-text-muted/50 bg-bg/70 px-1.5 py-0.5 rounded border border-border/10">
+          <span className="text-micro font-mono text-text-muted/50 bg-bg/70 px-1.5 py-0.5 rounded border border-border/10">
             {mediumLabel}
           </span>
         </div>

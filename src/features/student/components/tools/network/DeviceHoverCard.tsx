@@ -28,12 +28,12 @@ const DeviceHoverCard: React.FC<DeviceHoverCardProps> = ({ data }) => {
             <def.icon size={12} style={{ color: def.color }} />
           </div>
           <div className="flex-1 min-w-0">
-            <div className="text-[10px] font-bold text-text-primary truncate">{data.label}</div>
-            <div className="text-[8px] font-mono text-text-muted">{data.ip}</div>
+            <div className="text-xs font-bold text-text-primary truncate">{data.label}</div>
+            <div className="text-xs font-mono text-text-muted">{data.ip}</div>
           </div>
           <div className="flex items-center gap-1">
             <svg width="6" height="6"><circle cx="3" cy="3" r="3" fill={statusColor} opacity="0.8" /></svg>
-            <span className="text-[8px] font-mono capitalize" style={{ color: statusColor }}>{data.status}</span>
+            <span className="text-xs font-mono capitalize" style={{ color: statusColor }}>{data.status}</span>
           </div>
         </div>
 
@@ -41,25 +41,25 @@ const DeviceHoverCard: React.FC<DeviceHoverCardProps> = ({ data }) => {
         <div className="grid grid-cols-3 gap-2">
           {data.cpu !== undefined && (
             <div>
-              <div className="text-[7px] text-text-muted uppercase tracking-wider">CPU</div>
-              <div className="text-[9px] font-mono text-text-primary">{data.cpu}%</div>
+              <div className="text-micro text-text-muted uppercase tracking-wider">CPU</div>
+              <div className="text-xs font-mono text-text-primary">{data.cpu}%</div>
             </div>
           )}
           {data.memory !== undefined && (
             <div>
-              <div className="text-[7px] text-text-muted uppercase tracking-wider">RAM</div>
-              <div className="text-[9px] font-mono text-text-primary">{data.memory}%</div>
+              <div className="text-micro text-text-muted uppercase tracking-wider">RAM</div>
+              <div className="text-xs font-mono text-text-primary">{data.memory}%</div>
             </div>
           )}
           <div>
-            <div className="text-[7px] text-text-muted uppercase tracking-wider">Ports</div>
-            <div className="text-[9px] font-mono text-text-primary">{upIfaces}/{totalIfaces} up</div>
+            <div className="text-micro text-text-muted uppercase tracking-wider">Ports</div>
+            <div className="text-xs font-mono text-text-primary">{upIfaces}/{totalIfaces} up</div>
           </div>
         </div>
 
         {/* Uptime */}
         {data.uptime && (
-          <div className="mt-1.5 text-[8px] font-mono text-text-muted">
+          <div className="mt-1.5 text-xs font-mono text-text-muted">
             Up {data.uptime}
           </div>
         )}
