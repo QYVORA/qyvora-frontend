@@ -1,110 +1,118 @@
 import React from 'react';
-import { Link, Navigate, useParams } from 'react-router-dom';
+import { Navigate, useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { Zap } from 'lucide-react';
-import { IconArrowLeft, IconArrowRight } from '@/shared/components/icons';
+import { ArrowRight, Clock } from 'lucide-react';
 import SEO from '@/shared/components/SEO';
-import PublicPageLayout from '@/shared/components/PublicPageLayout';
-import RelatedContentSection from '@/shared/components/RelatedContentSection';
-import StudentHeroSection, { PUBLIC_HERO_TITLE_CLASS } from '@/shared/components/StudentHeroSection';
-import { Footer } from '@/shared/components/layout';
-import { useAuth } from '@/core/contexts/AuthContext';
-import LandingFinalCtaSection from '@/features/marketing/components/landing/LandingFinalCtaSection';
-import HpbAvatar, { type HpbVariant } from '@/shared/components/HpbAvatar';
+import Button from '@/shared/components/ui/Button';
+import { LearningCard, LearningDetailShell } from '@/shared/components/learning';
 import { BOOTCAMP_CONFIG } from '@/features/student/constants/bootcampStructure';
 import { PHASES } from '@/features/marketing/data/learnData';
-import RoomSection from './cards/RoomSection';
 
 const HpbPhasePage: React.FC = () => {
   const { t } = useTranslation();
-  const { user } = useAuth();
   const { phaseId } = useParams<{ phaseId: string }>();
 
   const phase = BOOTCAMP_CONFIG.phases.find((p) => p.id === phaseId);
+  const phaseIndex = BOOTCAMP_CONFIG.phases.findIndex((p) => p.id === phaseId);
   const learnPhase = PHASES.find((p) => p.id === phaseId?.replace('phase', '').padStart(2, '0'));
 
   if (!phase) return <Navigate to="/hpb" replace />;
 
   const roomCount = phase.rooms?.length || 0;
-  const totalMinutes = (phase.rooms || []).reduce((sum, room) => sum + (room.estimatedMinutes || 0), 0);
+  const totalMinutes = (phase.rooms || []).reduce(
+    (sum, room) => sum + (room.estimatedMinutes || 0),
+    0,
+  );
   const totalHours = Math.max(1, Math.round((totalMinutes / 60) * 10) / 10);
 
-  // Sibling phases for the related-content listing at the page bottom.
-  const otherPhases = BOOTCAMP_CONFIG.phases
-    .filter((p) => p.id !== phase.id)
-    .map((p) => ({
-      to: `/hpb/${p.id}`,
-      title: p.title,
-      badge: p.codename,
-      icon: <HpbAvatar variant={p.id as HpbVariant} className="h-full w-auto object-contain" />,
-    }));
+  const otherPhases = BOOTCAMP_CONFIG.phases.filter((p) => p.id !== phase.id);
 
   return (
-    <div className="bg-bg min-h-full">
+    <div className="w-full bg-canvas">
       <SEO
         title={`${phase.title} - Hacker Protocol Bootcamp`}
         description={learnPhase?.desc ?? `${phase.title}. Hacker Protocol Bootcamp.`}
         breadcrumbName={phase.title}
       />
-      <PublicPageLayout>
-        {/* Phase hero */}
-        <section id={phase.id} className="relative w-full min-h-dvh bg-bg">
-          <StudentHeroSection
-            title={phase.title}
-            accentWord={phase.codename}
-            titleClassName={PUBLIC_HERO_TITLE_CLASS}
-            showGlobe
-            typewrite
-            description={learnPhase?.desc ?? `${phase.title}. Hacker Protocol Bootcamp.`}
-            stats={[
-              { label: 'Rooms', value: roomCount },
-              { label: 'Est. Time', value: `${totalHours}h` },
-            ]}
-            rightContent={
-              <div className="md:hidden lg:flex items-center justify-center w-full h-full py-6 lg:py-0">
-                <div className="relative w-full max-w-[220px] sm:max-w-[260px] lg:max-w-[80%] 2xl:max-w-[75%] max-h-[60vh] flex items-center justify-center">
-                  <HpbAvatar variant={phase.id as HpbVariant} className="w-full h-full object-contain" />
+      <div className="w-full px-3 pb-20 pt-24 md:px-4 md:pb-24 md:pt-28 lg:px-6 lg:pt-32">
+        <LearningDetailShell
+          backTo="/hpb"
+          backLabel={t('hpbPhasePage.allPhases', 'All phases')}
+          kicker={`${t('hpbPhasePage.kicker', 'Hacker Protocol Bootcamp')} · Phase ${phaseIndex + 1} of ${BOOTCAMP_CONFIG.phases.length}`}
+          title={phase.title}
+          description={learnPhase?.desc ?? `${phase.title}. Hacker Protocol Bootcamp.`}
+          metadata={
+            <>
+              <span className="type-meta">
+                {roomCount} {t('hpbPhasePage.rooms', 'rooms')}
+              </span>
+              <span className="type-meta">{totalHours}h {t('hpbPhasePage.estimatedTime', 'estimated')}</span>
+            </>
+          }
+          actions={
+            <Button to="/register">
+              {t('hpbPhasePage.cta', 'Enroll now')}
+              <ArrowRight className="h-4 w-4" aria-hidden="true" />
+            </Button>
+          }
+          relatedTitle={t('hpbPhasePage.related', 'Other phases')}
+          related={
+            otherPhases.map((other) => {
+              const learn = PHASES.find(
+                (p) => p.id === other.id.replace('phase', '').padStart(2, '0'),
+              );
+              const Icon = learn?.icon;
+              const minutes = (other.rooms || []).reduce(
+                (sum, room) => sum + (room.estimatedMinutes || 0),
+                0,
+              );
+              const hours = Math.max(1, Math.round((minutes / 60) * 10) / 10);
+              return (
+                <LearningCard
+                  key={other.id}
+                  type="bootcamp"
+                  to={`/hpb/${other.id}`}
+                  icon={Icon ? <Icon className="h-5 w-5" /> : undefined}
+                  title={other.title}
+                  description={learn?.desc ?? other.codename}
+                  duration={`${hours}h`}
+                  modulesCount={`${other.rooms?.length || 0} ${t('hpbPhasePage.rooms', 'rooms')}`}
+                  actionLabel={t('hpbPhasePage.explore', 'Explore')}
+                />
+              );
+            })
+          }
+        >
+          <div className="mt-10">
+            <h2 className="type-h2 font-black uppercase tracking-tight text-text-primary">
+              {t('hpbPhasePage.curriculum', 'Curriculum')}
+            </h2>
+            <div className="mt-5 flex flex-col gap-3">
+              {phase.rooms.map((room, index) => (
+                <div
+                  key={room.id}
+                  id={room.id}
+                  className="flex flex-col gap-2 rounded-xl border border-border-subtle bg-surface px-4 py-4 md:px-5 md:py-5 sm:flex-row sm:items-start sm:gap-4"
+                >
+                  <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-border-subtle bg-surface-raised font-mono text-sm font-black text-accent">
+                    {index + 1}
+                  </span>
+                  <div className="min-w-0 flex-1">
+                    <h3 className="type-h3 font-black uppercase tracking-tight text-text-primary">
+                      {room.title}
+                    </h3>
+                    <p className="type-body-sm mt-1 line-clamp-2">{room.overview}</p>
+                  </div>
+                  <span className="flex shrink-0 items-center gap-1.5 type-meta pt-0.5">
+                    <Clock className="h-3.5 w-3.5" aria-hidden="true" />
+                    {room.estimatedMinutes} min
+                  </span>
                 </div>
-              </div>
-            }
-          >
-            <div className="flex flex-wrap items-center gap-3">
-              <Link to="/register" className="btn-primary inline-flex items-center gap-2 px-6 py-2.5">
-                <Zap className="w-4 h-4" /> Enroll Now <IconArrowRight size={14} />
-              </Link>
-              <Link to="/hpb" className="btn-secondary inline-flex items-center gap-2 px-6 py-2.5">
-                <IconArrowLeft size={14} /> All Phases
-              </Link>
+              ))}
             </div>
-          </StudentHeroSection>
-        </section>
-
-        {/* One full-viewport section per room */}
-        {phase.rooms.map((room, index) => (
-          <section
-            key={room.id}
-            id={room.id}
-            className={`relative w-full min-h-dvh flex items-center ${
-              index % 2 === 0 ? 'bg-bg-alt' : 'bg-bg'
-            }`}
-          >
-            <RoomSection room={room} roomIndex={index} />
-          </section>
-        ))}
-
-        {/* Related phases */}
-        <RelatedContentSection items={otherPhases} />
-
-        {/* CTA */}
-        <section id="cta" className="relative w-full min-h-dvh bg-bg-alt">
-          <LandingFinalCtaSection user={user} />
-        </section>
-
-        {/* Footer */}
-        <section id="footer" className="w-full bg-bg pt-10 md:pt-0">
-          <Footer />
-        </section>
-      </PublicPageLayout>
+          </div>
+        </LearningDetailShell>
+      </div>
     </div>
   );
 };
