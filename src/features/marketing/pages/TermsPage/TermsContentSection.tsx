@@ -26,7 +26,7 @@ const TermsContentSection: React.FC = () => {
         {/* Page header */}
         <div className="mb-8 md:mb-12">
           <div className="flex items-center gap-3 mb-3">
-            <span className="text-[10px] font-black text-accent uppercase tracking-[0.35em]">Legal Framework</span>
+            <span className="text-xs font-black text-accent uppercase tracking-[0.35em]">Legal Framework</span>
           </div>
           <SimpleHeading text="Terms of Service" align="left" compact accentWords={1} accentPlacement="end" className="mb-4" />
           <p className="text-text-secondary text-sm leading-relaxed max-w-2xl">
@@ -54,7 +54,7 @@ const TermsContentSection: React.FC = () => {
                   className="w-full flex items-center justify-between gap-4 px-5 py-4 text-left group"
                 >
                   <div className="flex items-center gap-4 min-w-0">
-                    <span className="text-[10px] font-black text-accent/60 font-mono w-6 shrink-0">
+                    <span className="text-xs font-black text-accent/60 font-mono w-6 shrink-0">
                       {String(idx + 1).padStart(2, '0')}
                     </span>
                     <h3 className="text-sm font-black text-text-primary uppercase tracking-tight truncate">
