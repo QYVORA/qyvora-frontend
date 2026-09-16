@@ -15,13 +15,17 @@ import { Bot, X } from 'lucide-react';
 import { useAuth } from '../core/contexts/AuthContext';
 import ErrorBoundary from '../shared/components/ErrorBoundary';
 import Dobia from '../shared/components/Dobia';
+import ConsentBanner from '../shared/components/ConsentBanner';
+import ContactModalHost from '@/features/marketing/components/ContactModal';
+import ServiceRequestModalHost from '@/features/marketing/components/ServiceRequestModal';
+import ToolInstallModalHost from '@/features/marketing/components/ToolInstallModal';
 
 // ─── Layouts (lazy-loaded) ─────────────────────────────────────────────────────
 
 
-const LandingLayout = lazy(() => import('../shared/layouts/LandingLayout'));
+const PublicShell = lazy(() => import('../shared/layouts/PublicShell'));
 const ToolDocLayout = lazy(() => import('../shared/layouts/ToolDocLayout'));
-const StudentLayout = lazy(() => import('../features/student/layouts/StudentLayout'));
+const AppShell = lazy(() => import('../features/student/layouts/AppShell'));
 const AdminLayout = lazy(() => import('../features/admin/layouts/AdminLayout'));
 
 // Shared pages
@@ -43,6 +47,9 @@ const StandardPentestPage = lazy(() => import('../features/marketing/pages/publi
 const EmployeeBootcampPage = lazy(() => import('../features/marketing/pages/public/services/EmployeeBootcampPage'));
 const LeaderboardPage   = lazy(() => import('../features/marketing/pages/public/LeaderboardPage'));
 const MarketPage        = lazy(() => import('../features/marketing/pages/public/MarketPage'));
+const ToolsIndexPage    = lazy(() => import('../features/marketing/pages/public/ToolsIndexPage'));
+const LearnPage         = lazy(() => import('../features/marketing/pages/public/LearnPage'));
+const AboutPage         = lazy(() => import('../features/marketing/pages/public/AboutPage'));
 const AnansiPage        = lazy(() => import('../features/marketing/pages/public/AnansiPage'));
 const Toha3eePage       = lazy(() => import('../features/marketing/pages/public/Toha3eePage'));
 const JabariPage        = lazy(() => import('../features/marketing/pages/public/JabariPage'));
@@ -187,7 +194,6 @@ export const AppRouter = () => {
     '/dashboard/labs/kill-chain',
     '/dashboard/networks',
     '/dashboard/courses/',
-    '/dashboard/tools',
   ];
 
   const isBootcampRoom =
@@ -221,12 +227,25 @@ export const AppRouter = () => {
   const dobiaVisible = !dobiaBlocked && (dobiaOverride ?? !dobiaHiddenByDefault);
 
   return (
-    <div className="min-h-screen flex flex-col relative">
+    <div className="min-h-dvh flex flex-col relative">
       <AnimatePresence mode="wait">
         <Routes location={location} key={location.pathname}>
 
         {/* ── Public marketing routes ─────────────────── */}
-        <Route element={<LandingLayout />}>
+        <Route
+          element={
+            <PublicShell
+              overlayHosts={
+                <>
+                  <ContactModalHost />
+                  <ServiceRequestModalHost />
+                  <ToolInstallModalHost />
+                  <ConsentBanner />
+                </>
+              }
+            />
+          }
+        >
           <Route path="/" element={<Wrap scope="Landing"><LandingPage /></Wrap>} />
           <Route path="/terms" element={<Wrap scope="Terms of Service"><TermsPage /></Wrap>} />
           
@@ -234,7 +253,7 @@ export const AppRouter = () => {
           <Route path="/courses" element={<Wrap scope="Courses"><CoursesPage /></Wrap>} />
           <Route path="/hpb" element={<Wrap scope="HPB"><HpbPage /></Wrap>} />
           <Route path="/hpb/:phaseId" element={<Wrap scope="HPB Phase"><HpbPhasePage /></Wrap>} />
-          <Route path="/learn" element={<Navigate to="/hpb" replace />} />
+          <Route path="/learn" element={<Wrap scope="Learn"><LearnPage /></Wrap>} />
           <Route path="/labs" element={<Wrap scope="Labs"><PublicLabsPage /></Wrap>} />
           <Route path="/services" element={<Wrap scope="Services"><ServicesPage /></Wrap>} />
           <Route path="/services/basic-web-application-pentest" element={<Wrap scope="Basic Pentest"><BasicPentestPage /></Wrap>} />
@@ -242,6 +261,8 @@ export const AppRouter = () => {
           <Route path="/services/employee-cybersecurity-bootcamp" element={<Wrap scope="Employee Bootcamp"><EmployeeBootcampPage /></Wrap>} />
           <Route path="/leaderboard" element={<Wrap scope="Leaderboard"><LeaderboardPage /></Wrap>} />
           <Route path="/leaderboard/all" element={<Navigate to="/leaderboard" replace />} />
+          <Route path="/tools" element={<Wrap scope="Tools"><ToolsIndexPage /></Wrap>} />
+          <Route path="/about" element={<Wrap scope="About"><AboutPage /></Wrap>} />
           <Route path="/zero-day-market" element={<Wrap scope="Market"><MarketPage /></Wrap>} />
           <Route path="/blogs" element={<Wrap scope="Blogs"><BlogsPage /></Wrap>} />
           <Route path="/team" element={<Wrap scope="Team"><TeamPage /></Wrap>} />
@@ -255,6 +276,9 @@ export const AppRouter = () => {
 
           {/* Blog post route (individual posts still accessible) */}
           <Route path="/blogs/:slug" element={<Wrap scope="Blog"><BlogPostPage /></Wrap>} />
+
+          {/* Public profile route — validates @ prefix inside component */}
+          <Route path="/:handle" element={<Wrap scope="Profile"><PublicProfilePage /></Wrap>} />
         </Route>
 
         {/* ── Tool documentation routes (no public navbar) ────────── */}
@@ -281,7 +305,7 @@ export const AppRouter = () => {
         <Route path={ADMIN_PATH}        element={<Wrap scope="Admin Login"><LoginPage /></Wrap>} />
 
         {/* ── Student routes ──────────────── */}
-        <Route element={<StudentLayout />}>
+        <Route element={<AppShell />}>
           <Route path="/dashboard" element={<Wrap scope="Dashboard"><StudentOnly><DashboardPage /></StudentOnly></Wrap>} />
           <Route path="/dashboard/bootcamps" element={<Navigate to="/dashboard/bootcamps/bc_1775270338500" replace />} />
           <Route path="/dashboard/bootcamps/:bootcampId" element={<Wrap scope="Bootcamp Course"><StudentOnly><BootcampCoursePage /></StudentOnly></Wrap>} />
@@ -328,9 +352,6 @@ export const AppRouter = () => {
           <Route path={`${ADMIN_PATH}/dashboard`} element={<Wrap scope="Admin Dashboard"><AdminOnly><AdminDashboardPage /></AdminOnly></Wrap>} />
         </Route>
 
-        {/* ── Public profile route — validates @ prefix inside component ─────── */}
-        <Route path="/:handle" element={<Wrap scope="Profile"><PublicProfilePage /></Wrap>} />
-        
         {/* Catch-all 404 for any other invalid routes */}
         <Route path="*" element={<Wrap><NotFoundPage /></Wrap>} />
 
@@ -344,7 +365,7 @@ export const AppRouter = () => {
         <div className="block min-[420px]:hidden" style={{ marginRight: -26 }}>
           <div className="flex flex-col items-end">
             <div key={msgIdx} className="animate-fade-in" style={{ marginRight: 32, marginBottom: -7 }}>
-              <span className="block px-2 py-1 rounded-xl bg-bg-card border border-border/50 text-[8px] font-mono text-text-secondary leading-relaxed max-w-[min(120px,45vw)] text-right whitespace-normal break-words">{DOBIA_TIPS[msgIdx]}</span>
+              <span className="block px-2 py-1 rounded-xl bg-bg-card border border-border/50 text-xs font-mono text-text-secondary leading-relaxed max-w-[min(120px,45vw)] text-right whitespace-normal break-words">{DOBIA_TIPS[msgIdx]}</span>
               <div className="flex justify-end -mt-px"><div className="w-1.5 h-1.5 rotate-45 bg-bg-card border-r border-b border-border/50 mr-3" /></div>
             </div>
             <div><Dobia expression={dobiaExpr} size={128} /></div>
@@ -355,7 +376,7 @@ export const AppRouter = () => {
         <div className="hidden min-[420px]:block sm:hidden" style={{ marginRight: -33 }}>
           <div className="flex flex-col items-end">
             <div key={msgIdx} className="animate-fade-in" style={{ marginRight: 41, marginBottom: -9 }}>
-              <span className="block px-2.5 py-1 rounded-xl bg-bg-card border border-border/50 text-[8px] font-mono text-text-secondary leading-relaxed max-w-[min(140px,50vw)] text-right whitespace-normal break-words">{DOBIA_TIPS[msgIdx]}</span>
+              <span className="block px-2.5 py-1 rounded-xl bg-bg-card border border-border/50 text-xs font-mono text-text-secondary leading-relaxed max-w-[min(140px,50vw)] text-right whitespace-normal break-words">{DOBIA_TIPS[msgIdx]}</span>
               <div className="flex justify-end -mt-px"><div className="w-1.5 h-1.5 rotate-45 bg-bg-card border-r border-b border-border/50 mr-3.5" /></div>
             </div>
             <div><Dobia expression={dobiaExpr} size={160} /></div>
@@ -366,7 +387,7 @@ export const AppRouter = () => {
         <div className="hidden sm:block md:hidden" style={{ marginRight: -40 }}>
           <div className="flex flex-col items-end">
             <div key={msgIdx} className="animate-fade-in" style={{ marginRight: 50, marginBottom: -11 }}>
-              <span className="block px-2.5 py-1.5 rounded-xl bg-bg-card border border-border/50 text-[9px] font-mono text-text-secondary leading-relaxed max-w-[min(160px,55vw)] text-right whitespace-normal break-words">{DOBIA_TIPS[msgIdx]}</span>
+              <span className="block px-2.5 py-1.5 rounded-xl bg-bg-card border border-border/50 text-xs font-mono text-text-secondary leading-relaxed max-w-[min(160px,55vw)] text-right whitespace-normal break-words">{DOBIA_TIPS[msgIdx]}</span>
               <div className="flex justify-end -mt-px"><div className="w-2 h-2 rotate-45 bg-bg-card border-r border-b border-border/50 mr-4" /></div>
             </div>
             <div><Dobia expression={dobiaExpr} size={192} /></div>
@@ -377,7 +398,7 @@ export const AppRouter = () => {
         <div className="hidden md:block lg:hidden" style={{ marginRight: -53 }}>
           <div className="flex flex-col items-end">
             <div key={msgIdx} className="animate-fade-in" style={{ marginRight: 65, marginBottom: -14 }}>
-              <span className="block px-3 py-1.5 rounded-xl bg-bg-card border border-border/50 text-[10px] font-mono text-text-secondary leading-relaxed max-w-[min(200px,55vw)] text-right whitespace-normal break-words">{DOBIA_TIPS[msgIdx]}</span>
+              <span className="block px-3 py-1.5 rounded-xl bg-bg-card border border-border/50 text-xs font-mono text-text-secondary leading-relaxed max-w-[min(200px,55vw)] text-right whitespace-normal break-words">{DOBIA_TIPS[msgIdx]}</span>
               <div className="flex justify-end -mt-px"><div className="w-2 h-2 rotate-45 bg-bg-card border-r border-b border-border/50 mr-5" /></div>
             </div>
             <div><Dobia expression={dobiaExpr} size={256} /></div>
@@ -388,7 +409,7 @@ export const AppRouter = () => {
         <div className="hidden lg:block xl:hidden" style={{ marginRight: -66 }}>
           <div className="flex flex-col items-end">
             <div key={msgIdx} className="animate-fade-in" style={{ marginRight: 82, marginBottom: -18 }}>
-              <span className="block px-3 py-1.5 rounded-xl bg-bg-card border border-border/50 text-[10px] font-mono text-text-secondary leading-relaxed max-w-[min(240px,55vw)] text-right whitespace-normal break-words">{DOBIA_TIPS[msgIdx]}</span>
+              <span className="block px-3 py-1.5 rounded-xl bg-bg-card border border-border/50 text-xs font-mono text-text-secondary leading-relaxed max-w-[min(240px,55vw)] text-right whitespace-normal break-words">{DOBIA_TIPS[msgIdx]}</span>
               <div className="flex justify-end -mt-px"><div className="w-2 h-2 rotate-45 bg-bg-card border-r border-b border-border/50 mr-6" /></div>
             </div>
             <div><Dobia expression={dobiaExpr} size={320} /></div>
@@ -399,7 +420,7 @@ export const AppRouter = () => {
         <div className="hidden xl:block 2xl:hidden" style={{ marginRight: -83 }}>
           <div className="flex flex-col items-end">
             <div key={msgIdx} className="animate-fade-in" style={{ marginRight: 103, marginBottom: -22 }}>
-              <span className="block px-4 py-2 rounded-xl bg-bg-card border border-border/50 text-[11px] font-mono text-text-secondary leading-relaxed max-w-[min(280px,55vw)] text-right whitespace-normal break-words">{DOBIA_TIPS[msgIdx]}</span>
+              <span className="block px-4 py-2 rounded-xl bg-bg-card border border-border/50 text-xs font-mono text-text-secondary leading-relaxed max-w-[min(280px,55vw)] text-right whitespace-normal break-words">{DOBIA_TIPS[msgIdx]}</span>
               <div className="flex justify-end -mt-px"><div className="w-2.5 h-2.5 rotate-45 bg-bg-card border-r border-b border-border/50 mr-7" /></div>
             </div>
             <div><Dobia expression={dobiaExpr} size={400} /></div>
