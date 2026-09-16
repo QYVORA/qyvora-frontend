@@ -63,7 +63,7 @@ const HandleSuggestions = ({ name, email, onSelect, selectedHandle }: HandleSugg
     <div className="space-y-2">
       <div className="flex items-center gap-2">
         <Sparkles className="w-3 h-3 text-accent" />
-        <span className="text-[10px] font-bold text-text-muted uppercase tracking-widest">
+        <span className="text-xs font-bold text-text-muted uppercase tracking-widest">
           {t('components.handleSuggestions.label')}
         </span>
         {suggestions.length > 0 && (
@@ -71,7 +71,8 @@ const HandleSuggestions = ({ name, email, onSelect, selectedHandle }: HandleSugg
             type="button"
             onClick={() => fetchSuggestions(debouncedName)}
             disabled={loading}
-            className="ml-auto text-[10px] text-accent hover:text-accent/80 font-bold uppercase tracking-wider transition-colors disabled:opacity-50"
+            aria-label={t('components.handleSuggestions.refresh', 'Refresh suggestions')}
+            className="ml-auto text-xs text-accent hover:text-accent/80 font-bold uppercase tracking-wider transition-colors disabled:opacity-50"
           >
             <RefreshCw className={`w-3 h-3 ${loading ? 'animate-spin' : ''}`} />
           </button>
@@ -89,7 +90,7 @@ const HandleSuggestions = ({ name, email, onSelect, selectedHandle }: HandleSugg
             ))}
           </div>
         ) : error ? (
-          <p className="text-[10px] text-danger">{error}</p>
+          <p className="text-xs text-danger">{error}</p>
         ) : suggestions.length > 0 ? (
           <div className="flex gap-2 flex-wrap">
             {suggestions.map((handle) => (

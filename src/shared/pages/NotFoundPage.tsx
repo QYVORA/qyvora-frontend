@@ -24,7 +24,7 @@ const NotFoundPage = () => {
             aria-hidden
             className="absolute -top-1.5 left-1/2 -translate-x-1/2 w-3 h-3 rotate-45 border-l border-t border-border/50 bg-bg-card"
           />
-          <p className="inline-flex items-center gap-2 font-mono text-[10px] font-black uppercase tracking-widest text-accent mb-3">
+          <p className="inline-flex items-center gap-2 font-mono text-xs font-black uppercase tracking-widest text-accent mb-3">
             <IconTerminal size={14} /> // {t('seo.notFoundTitle', '404 - Node Not Found')}
           </p>
           <h1 className="text-3xl sm:text-4xl font-black uppercase tracking-tight text-text-primary leading-none">

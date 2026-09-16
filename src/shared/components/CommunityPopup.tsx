@@ -101,7 +101,7 @@ const CommunityPopup: React.FC = () => {
                 </h4>
                 <div className="flex items-center gap-2 mb-4">
                   <span className="flex h-1.5 w-1.5 rounded-full bg-accent animate-pulse" />
-                  <span className="text-[10px] font-mono font-bold text-text-muted uppercase tracking-widest">
+                  <span className="text-xs font-mono font-bold text-text-muted uppercase tracking-widest">
                     {t('components.community.liveOps')}
                   </span>
                 </div>
@@ -124,7 +124,7 @@ const CommunityPopup: React.FC = () => {
                   }}
                   className="
                     group relative flex-1 flex items-center justify-center gap-2 overflow-hidden
-                    rounded-2xl bg-accent py-3.5 text-[10px] font-black uppercase tracking-widest
+                    rounded-2xl bg-accent py-3.5 text-xs font-black uppercase tracking-widest
                     text-on-accent transition-[background-color] hover:bg-accent/90
                   "
                 >
@@ -137,7 +137,7 @@ const CommunityPopup: React.FC = () => {
                   className="
                     px-5 flex items-center justify-center rounded-2xl
                     border border-border bg-transparent py-3
-                    text-[10px] font-black uppercase tracking-widest
+                    text-xs font-black uppercase tracking-widest
                     text-text-muted transition-[color,border-color] hover:border-accent/50 hover:text-accent
                   "
                 >

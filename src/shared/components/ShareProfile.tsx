@@ -81,7 +81,7 @@ const ShareProfile = ({ handle }: { handle: string }) => {
     <>
       <button
         onClick={() => setOpen(true)}
-        className="flex items-center gap-2 px-4 py-2 bg-bg-elevated border border-border hover:bg-bg-card rounded-xl text-[10px] font-black uppercase tracking-[0.08em] text-text-muted transition-[background-color,transform] duration-[var(--dur-base)] active:scale-95"
+        className="flex items-center gap-2 px-4 py-2 bg-bg-elevated border border-border hover:bg-bg-card rounded-xl text-xs font-black uppercase tracking-[0.08em] text-text-muted transition-[background-color,transform] duration-[var(--dur-base)] active:scale-95"
         aria-label="Share profile"
       >
         <Share2 className="w-3.5 h-3.5" />
@@ -101,7 +101,7 @@ const ShareProfile = ({ handle }: { handle: string }) => {
             </div>
 
             <div className="space-y-2">
-              <p className="text-[10px] font-black uppercase tracking-widest text-text-muted">
+              <p className="text-xs font-black uppercase tracking-widest text-text-muted">
                 {t('components.share.choosePlatform')}
               </p>
               <div className="grid grid-cols-2 gap-2">
