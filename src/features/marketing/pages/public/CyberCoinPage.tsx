@@ -1,19 +1,13 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { motion } from 'motion/react';
-import { FlaskConical, Zap, Clock } from 'lucide-react';
+import { FlaskConical, Zap, Clock, Trophy } from 'lucide-react';
 import { IconArrowRight as IconArrow } from '@/shared/components/icons';
 import SEO from '@/shared/components/SEO';
-import PublicPageLayout from '@/shared/components/PublicPageLayout';
-import PublicPageSection from '@/shared/components/PublicPageSection';
-import StudentHeroSection, { PUBLIC_HERO_TITLE_CLASS } from '@/shared/components/StudentHeroSection';
 import ScrollReveal from '@/shared/components/ScrollReveal';
-import { Footer } from '@/shared/components/layout';
+import PageHeader from '@/shared/components/ui/PageHeader';
 import { CpLogo } from '@/shared/components';
 import { SimpleHeading } from '@/shared/components/ui';
-import { useReducedMotion } from '@/shared/hooks/useReducedMotion';
 import { Carousel } from '@/shared/components/carousel';
-import DragMarquee from '@/shared/components/carousel/DragMarquee';
 import { COURSES, getCategoryById } from '@/features/student/data/courses';
 import CourseBadge from '@/shared/components/CourseBadge';
 import { DifficultyBadge } from '@/shared/components/learning/LearningCard';
@@ -39,57 +33,38 @@ const STATUS_STYLES: Record<CpActivityStatus, { dot: string; text: string }> = {
 // ─── Page ─────────────────────────────────────────────────────────────────────
 
 const CyberCoinPage: React.FC = () => {
-  const prefersReducedMotion = useReducedMotion();
-
   return (
-    <div className="bg-bg min-h-full">
+    <div className="min-h-full w-full bg-canvas">
       <SEO
         title="Cyber Coin - QYVORA"
         description="CP: the QYVORA Cyber Coin. The reward layer connecting learning, execution, and achievement across the QYVORA cybersecurity ecosystem. Learn. Execute. Earn."
       />
 
-      <PublicPageLayout>
-
-        {/* ── 01 · HERO ─────────────────────────────────────────────────── */}
-        <section className="relative w-full min-h-dvh bg-bg">
-          <StudentHeroSection
-            title="CP"
-            accentWord="Cyber Coin"
-            titleClassName={PUBLIC_HERO_TITLE_CLASS}
-            showGlobe
-            description={CP_HERO.description}
-            stats={[
-              { label: 'Ecosystem', value: 'QYVORA' },
-              { label: 'Protocol', value: 'Reward' },
-            ]}
-            rightContent={
-              <div className="relative md:hidden lg:flex items-center justify-center w-full h-full py-6 lg:py-0">
-                <CpLogo
-                  className="w-[55%] xl:w-[48%] max-h-[56vh] object-contain"
-                  alt="CP | QYVORA Cyber Coin logo"
-                />
-              </div>
-            }
-          >
-            <div className="flex flex-wrap items-center gap-3">
-              <button
-                type="button"
-                onClick={() => document.getElementById('what-is-cp')?.scrollIntoView({ behavior: 'smooth', block: 'start' })}
-                className="btn-primary inline-flex items-center gap-2 px-6 py-2.5"
-              >
-                Explore CP <IconArrow size={14} />
-              </button>
-              <span className="inline-flex items-center gap-2 px-2.5 py-1 rounded-lg border border-border/50 bg-bg-card text-[9px] font-black uppercase tracking-widest text-text-muted">
-                <span className="w-1.5 h-1.5 rounded-full bg-accent" aria-hidden="true" />
-                {CP_HERO.label}
-              </span>
-            </div>
-          </StudentHeroSection>
-        </section>
+      <div className="w-full px-3 pb-20 pt-24 md:px-4 md:pb-24 md:pt-28 lg:px-6 lg:pt-32">
+        <PageHeader
+          kicker="QYVORA · Economy"
+          title="CP Cyber Coin"
+          description={CP_HERO.description}
+          metadata={
+            <span className="type-meta inline-flex items-center gap-2">
+              <Trophy className="h-3.5 w-3.5 text-accent" aria-hidden="true" />
+              {CP_HERO.label}
+            </span>
+          }
+          actions={
+            <button
+              type="button"
+              onClick={() => document.getElementById('what-is-cp')?.scrollIntoView({ behavior: 'smooth', block: 'start' })}
+              className="btn-primary inline-flex min-h-[44px] items-center justify-center gap-2 px-6"
+            >
+              Explore CP <IconArrow size={14} />
+            </button>
+          }
+        />
 
         {/* ── 02 · WHAT IS CP ───────────────────────────────────────────── */}
-        <PublicPageSection id="what-is-cp">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
+        <section id="what-is-cp" className="w-full py-10 md:py-14">
+          <div className="grid grid-cols-1 items-center gap-8 lg:grid-cols-2 lg:gap-12">
             <ScrollReveal>
               <SimpleHeading
                 text="A Reward System Built Around Capability."
@@ -101,22 +76,22 @@ const CyberCoinPage: React.FC = () => {
               />
             </ScrollReveal>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
               {CP_PILLARS.map((pillar, i) => {
                 const Icon = pillar.icon;
                 return (
                   <ScrollReveal key={pillar.id} delay={i * 0.08}>
-                    <div className="terminal-card group relative h-full rounded-2xl border border-border/50 bg-bg-card p-5 md:p-6 transition-colors duration-300 hover:border-accent/40">
+                    <div className="group relative h-full rounded-2xl border border-border/50 bg-bg-card p-5 transition-colors duration-300 hover:border-accent/40 md:p-6">
                       <div className="flex items-start justify-between">
-                        <div className="w-10 h-10 rounded-xl bg-accent/10 border border-accent/20 flex items-center justify-center">
-                          <Icon className="w-5 h-5 text-accent" aria-hidden="true" />
+                        <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-accent/20 bg-accent/10">
+                          <Icon className="h-5 w-5 text-accent" aria-hidden="true" />
                         </div>
-                        <span className="font-mono text-[10px] text-text-muted">{pillar.index}</span>
+                        <span className="type-meta">{pillar.index}</span>
                       </div>
-                      <h3 className="text-sm font-black uppercase tracking-widest text-text-primary mt-5">
+                      <h3 className="mt-5 text-sm font-black uppercase tracking-widest text-text-primary">
                         {pillar.title}
                       </h3>
-                      <p className="text-xs text-text-muted leading-relaxed mt-2">
+                      <p className="mt-2 text-xs leading-relaxed text-text-muted">
                         {pillar.description}
                       </p>
                     </div>
@@ -125,11 +100,11 @@ const CyberCoinPage: React.FC = () => {
               })}
             </div>
           </div>
-        </PublicPageSection>
+        </section>
 
         {/* ── 03 · PHILOSOPHY ───────────────────────────────────────────── */}
-        <PublicPageSection id="philosophy">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
+        <section id="philosophy" className="w-full py-10 md:py-14">
+          <div className="grid grid-cols-1 items-center gap-8 lg:grid-cols-2 lg:gap-12">
             <ScrollReveal>
               <SimpleHeading
                 text="Knowledge Is Only the Beginning."
@@ -143,23 +118,14 @@ const CyberCoinPage: React.FC = () => {
 
             <ScrollReveal direction="left">
               <div className="relative rounded-2xl border border-border/50 bg-bg-card p-5 md:p-7">
-                <div className="absolute left-[39px] md:left-[47px] top-10 bottom-10 w-px bg-border/30" aria-hidden="true" />
-                {!prefersReducedMotion && (
-                  <motion.span
-                    className="absolute left-[35px] md:left-[43px] w-[9px] h-[9px] rounded-full bg-accent"
-                    style={{ boxShadow: '0 0 8px var(--color-hero-glow)' }}
-                    animate={{ top: ['12%', '88%'], opacity: [0, 1, 1, 0] }}
-                    transition={{ duration: 4.5, repeat: Infinity, ease: 'linear', times: [0, 0.1, 0.9, 1] }}
-                    aria-hidden="true"
-                  />
-                )}
+                <div className="absolute bottom-10 left-[39px] top-10 w-px bg-border/30 md:left-[47px]" aria-hidden="true" />
                 <ol className="relative space-y-6">
                   {CP_PHILOSOPHY_STAGES.map((stage, i) => {
                     const isReward = stage.id === 'reward';
                     return (
                       <li key={stage.id} className="flex items-center gap-4">
                         <span
-                          className={`relative z-10 w-8 h-8 md:w-9 md:h-9 rounded-lg border flex items-center justify-center font-mono text-[10px] font-black shrink-0 ${
+                          className={`relative z-10 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border font-mono text-xs font-black md:h-9 md:w-9 ${
                             isReward
                               ? 'border-accent bg-accent text-on-accent'
                               : 'border-border/40 bg-bg-elevated text-text-muted'
@@ -168,12 +134,12 @@ const CyberCoinPage: React.FC = () => {
                           {String(i + 1).padStart(2, '0')}
                         </span>
                         <div className="min-w-0">
-                          <p className={`text-sm md:text-base font-black uppercase tracking-widest ${isReward ? 'text-accent' : 'text-text-primary'}`}>
+                          <p className={`text-sm font-black uppercase tracking-widest md:text-base ${isReward ? 'text-accent' : 'text-text-primary'}`}>
                             {stage.label}
                           </p>
                         </div>
                         {isReward && (
-                          <span className="ml-auto inline-flex items-center rounded-lg border border-accent/30 bg-accent/5 px-2 py-0.5 text-[8px] font-black uppercase tracking-widest text-accent shrink-0">
+                          <span className="ml-auto inline-flex shrink-0 items-center rounded-lg border border-accent/30 bg-accent/5 px-2 py-0.5 text-xs font-black uppercase tracking-widest text-accent">
                             + CP
                           </span>
                         )}
@@ -184,11 +150,11 @@ const CyberCoinPage: React.FC = () => {
               </div>
             </ScrollReveal>
           </div>
-        </PublicPageSection>
+        </section>
 
         {/* ── 04 · HOW YOU EARN CP — learning loop ──────────────────────── */}
-        <PublicPageSection id="earn">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
+        <section id="earn" className="w-full py-10 md:py-14">
+          <div className="grid grid-cols-1 items-center gap-8 lg:grid-cols-2 lg:gap-12">
             <ScrollReveal>
               <SimpleHeading
                 text="How You Earn CP."
@@ -202,23 +168,14 @@ const CyberCoinPage: React.FC = () => {
 
             <ScrollReveal direction="left">
               <div className="relative rounded-2xl border border-border/50 bg-bg-card p-5 md:p-7">
-                <div className="absolute left-[39px] md:left-[47px] top-10 bottom-10 w-px bg-border/30" aria-hidden="true" />
-                {!prefersReducedMotion && (
-                  <motion.span
-                    className="absolute left-[35px] md:left-[43px] w-[9px] h-[9px] rounded-full bg-accent"
-                    style={{ boxShadow: '0 0 8px var(--color-hero-glow)' }}
-                    animate={{ top: ['8%', '92%'], opacity: [0, 1, 1, 0] }}
-                    transition={{ duration: 5, repeat: Infinity, ease: 'linear', times: [0, 0.1, 0.9, 1] }}
-                    aria-hidden="true"
-                  />
-                )}
+                <div className="absolute bottom-10 left-[39px] top-10 w-px bg-border/30 md:left-[47px]" aria-hidden="true" />
                 <ol className="relative space-y-5">
                   {CP_LEARNING_LOOP.map((stage, i) => {
                     const isEarn = stage.id === 'earn';
                     return (
                       <li key={stage.id} className="flex items-center gap-4">
                         <span
-                          className={`relative z-10 w-8 h-8 md:w-9 md:h-9 rounded-lg border flex items-center justify-center font-mono text-[10px] font-black shrink-0 ${
+                          className={`relative z-10 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border font-mono text-xs font-black md:h-9 md:w-9 ${
                             isEarn
                               ? 'border-on-accent bg-accent text-on-accent'
                               : 'border-border/40 bg-bg-elevated text-text-muted'
@@ -227,10 +184,10 @@ const CyberCoinPage: React.FC = () => {
                           {stage.index}
                         </span>
                         <div className="min-w-0 flex-1">
-                          <p className={`text-sm md:text-base font-black uppercase tracking-widest ${isEarn ? 'text-accent' : 'text-text-primary'}`}>
+                          <p className={`text-sm font-black uppercase tracking-widest md:text-base ${isEarn ? 'text-accent' : 'text-text-primary'}`}>
                             {stage.label}
                           </p>
-                          <p className="text-[10px] font-mono text-text-muted leading-relaxed mt-0.5 line-clamp-1">
+                          <p className="mt-0.5 font-mono text-xs leading-relaxed text-text-muted line-clamp-1">
                             {stage.description}
                           </p>
                         </div>
@@ -241,11 +198,11 @@ const CyberCoinPage: React.FC = () => {
               </div>
             </ScrollReveal>
           </div>
-        </PublicPageSection>
+        </section>
 
         {/* ── 05 · REWARD MATRIX ────────────────────────────────────────── */}
-        <PublicPageSection id="rewards">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
+        <section id="rewards" className="w-full py-10 md:py-14">
+          <div className="grid grid-cols-1 items-center gap-8 lg:grid-cols-2 lg:gap-12">
             <ScrollReveal>
               <SimpleHeading
                 text="Verified Activity Rewards."
@@ -259,24 +216,24 @@ const CyberCoinPage: React.FC = () => {
 
             <div className="space-y-6">
               <ScrollReveal>
-                <div className="rounded-2xl border border-border/50 bg-bg-card overflow-hidden">
-                  <div className="hidden sm:grid grid-cols-[1.5fr_1fr_120px_150px] gap-4 px-5 md:px-6 py-3.5 border-b border-border/50 bg-bg-elevated">
-                    <span className="text-[9px] font-black uppercase tracking-widest text-text-muted">Activity</span>
-                    <span className="text-[9px] font-black uppercase tracking-widest text-text-muted">Category</span>
-                    <span className="text-[9px] font-black uppercase tracking-widest text-text-muted">Reward</span>
-                    <span className="text-[9px] font-black uppercase tracking-widest text-text-muted text-right sm:text-left">Status</span>
+                <div className="overflow-hidden rounded-2xl border border-border/50 bg-bg-card">
+                  <div className="hidden bg-bg-elevated sm:grid grid-cols-[1.5fr_1fr_120px_150px] gap-4 border-b border-border/50 px-5 py-3.5 md:px-6">
+                    <span className="type-meta font-black uppercase tracking-widest text-text-muted">Activity</span>
+                    <span className="type-meta font-black uppercase tracking-widest text-text-muted">Category</span>
+                    <span className="type-meta font-black uppercase tracking-widest text-text-muted">Reward</span>
+                    <span className="type-meta font-black uppercase tracking-widest text-right text-text-muted sm:text-left">Status</span>
                   </div>
                   <ul className="divide-y divide-border/20">
                     {CP_REWARD_MATRIX.slice(0, 3).map((row) => {
                       const status = STATUS_STYLES[row.status];
                       return (
-                        <li key={row.id} className="grid grid-cols-[1fr_auto] sm:grid-cols-[1.5fr_1fr_120px_150px] gap-x-4 gap-y-1.5 px-5 md:px-6 py-4 transition-colors duration-300 hover:bg-bg-elevated">
-                          <span className="text-sm font-bold text-text-primary self-center">{row.activity}</span>
-                          <span className="hidden sm:block text-[9px] font-black uppercase tracking-widest text-text-muted self-center">{row.category}</span>
-                          <span className="col-start-2 sm:col-start-3 row-start-1 font-mono text-sm font-black text-accent self-center text-right sm:text-left">{row.reward}</span>
-                          <span className="col-span-2 sm:col-span-1 col-start-1 sm:col-start-4 inline-flex items-center gap-2 justify-end sm:justify-start">
+                        <li key={row.id} className="grid grid-cols-[1fr_auto] gap-x-4 gap-y-1.5 px-5 py-4 transition-colors duration-300 hover:bg-bg-elevated sm:grid-cols-[1.5fr_1fr_120px_150px] md:px-6">
+                          <span className="self-center text-sm font-bold text-text-primary">{row.activity}</span>
+                          <span className="hidden self-center type-meta font-black uppercase tracking-widest text-text-muted sm:block">{row.category}</span>
+                          <span className="col-start-2 self-center font-mono text-sm font-black text-right text-accent sm:col-start-3 sm:row-start-1 sm:text-left">{row.reward}</span>
+                          <span className="col-span-2 col-start-1 inline-flex items-center gap-2 justify-end self-center sm:col-span-1 sm:col-start-4 sm:justify-start">
                             <span className={`w-1.5 h-1.5 rounded-full ${status.dot}`} aria-hidden="true" />
-                            <span className={`text-[9px] font-black uppercase tracking-widest ${status.text}`}>{row.status}</span>
+                            <span className={`type-meta font-black uppercase tracking-widest ${status.text}`}>{row.status}</span>
                           </span>
                         </li>
                       );
@@ -286,11 +243,11 @@ const CyberCoinPage: React.FC = () => {
               </ScrollReveal>
             </div>
           </div>
-        </PublicPageSection>
+        </section>
 
         {/* ── 06 · REWARD ACTIVITIES ─────────────────────────────────────── */}
-        <PublicPageSection id="activities">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
+        <section id="activities" className="w-full py-10 md:py-14">
+          <div className="grid grid-cols-1 items-center gap-8 lg:grid-cols-2 lg:gap-12">
             <ScrollReveal>
               <SimpleHeading
                 text="All Verified Activities."
@@ -304,18 +261,18 @@ const CyberCoinPage: React.FC = () => {
 
             <div className="space-y-6">
               <ScrollReveal>
-                <div className="rounded-2xl border border-border/50 bg-bg-card overflow-hidden">
+                <div className="overflow-hidden rounded-2xl border border-border/50 bg-bg-card">
                   <ul className="divide-y divide-border/20">
                     {CP_REWARD_MATRIX.slice(3).map((row) => {
                       const status = STATUS_STYLES[row.status];
                       return (
-                        <li key={row.id} className="grid grid-cols-[1fr_auto] sm:grid-cols-[1.5fr_1fr_120px_150px] gap-x-4 gap-y-1.5 px-5 md:px-6 py-4 transition-colors duration-300 hover:bg-bg-elevated">
-                          <span className="text-sm font-bold text-text-primary self-center">{row.activity}</span>
-                          <span className="hidden sm:block text-[9px] font-black uppercase tracking-widest text-text-muted self-center">{row.category}</span>
-                          <span className="col-start-2 sm:col-start-3 row-start-1 font-mono text-sm font-black text-accent self-center text-right sm:text-left">{row.reward}</span>
-                          <span className="col-span-2 sm:col-span-1 col-start-1 sm:col-start-4 inline-flex items-center gap-2 justify-end sm:justify-start">
+                        <li key={row.id} className="grid grid-cols-[1fr_auto] gap-x-4 gap-y-1.5 px-5 py-4 transition-colors duration-300 hover:bg-bg-elevated sm:grid-cols-[1.5fr_1fr_120px_150px] md:px-6">
+                          <span className="self-center text-sm font-bold text-text-primary">{row.activity}</span>
+                          <span className="hidden self-center type-meta font-black uppercase tracking-widest text-text-muted sm:block">{row.category}</span>
+                          <span className="col-start-2 self-center font-mono text-sm font-black text-right text-accent sm:col-start-3 sm:row-start-1 sm:text-left">{row.reward}</span>
+                          <span className="col-span-2 col-start-1 inline-flex items-center gap-2 justify-end self-center sm:col-span-1 sm:col-start-4 sm:justify-start">
                             <span className={`w-1.5 h-1.5 rounded-full ${status.dot}`} aria-hidden="true" />
-                            <span className={`text-[9px] font-black uppercase tracking-widest ${status.text}`}>{row.status}</span>
+                            <span className={`type-meta font-black uppercase tracking-widest ${status.text}`}>{row.status}</span>
                           </span>
                         </li>
                       );
@@ -323,14 +280,15 @@ const CyberCoinPage: React.FC = () => {
                   </ul>
                 </div>
               </ScrollReveal>
-              <p className="text-[9px] md:text-[10px] font-mono text-text-muted leading-relaxed md:text-right">
+              <p className="font-mono text-xs leading-relaxed text-text-muted md:text-right">
                 Reward values are defined per activity by the QYVORA protocol. Values shown are placeholders. Concrete CP amounts are issued by the platform on verification.
               </p>
             </div>
           </div>
-        </PublicPageSection>
+        </section>
+
         {/* ── 07 · FUTURE / BLOCKCHAIN LAYER ────────────────────────────── */}
-        <PublicPageSection id="future">
+        <section id="future" className="w-full py-10 md:py-14">
           <div className="space-y-8">
             <ScrollReveal>
               <SimpleHeading
@@ -343,55 +301,51 @@ const CyberCoinPage: React.FC = () => {
               />
             </ScrollReveal>
 
-            <div className="-mx-3 md:-mx-4 lg:-mx-6 overflow-x-clip overflow-y-visible">
-              <DragMarquee speed={20} trackClassName="gap-4 px-2" className="overflow-hidden w-full">
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
               {CP_FUTURE_CHAIN.map((step, i) => (
-                <React.Fragment key={step.id}>
-                  <div
-                    className={`shrink-0 w-[220px] md:w-[260px] rounded-2xl border p-5 md:p-6 ${
-                      step.planned
-                        ? 'border-dashed border-border/40 bg-transparent'
-                        : 'border-accent/50 bg-bg-card'
-                    }`}
-                  >
-                    <div className="flex items-center justify-between gap-2 mb-3">
-                      <span className="font-mono text-[9px] text-text-muted">{String(i + 1).padStart(2, '0')}</span>
-                      <span
-                        className={`inline-flex items-center rounded-lg px-2 py-0.5 text-[8px] font-black uppercase tracking-widest ${
-                          step.planned
-                            ? 'border border-dashed border-border/50 text-text-muted'
-                            : 'border border-accent/30 bg-accent/5 text-accent'
-                        }`}
-                      >
-                        {step.planned ? 'Planned' : 'Active'}
-                      </span>
-                    </div>
-                    <p className={`text-xs md:text-sm font-black uppercase tracking-widest ${step.planned ? 'text-text-muted' : 'text-text-primary'}`}>
-                      {step.label}
-                    </p>
+                <div
+                  key={step.id}
+                  className={`rounded-2xl border p-5 md:p-6 ${
+                    step.planned
+                      ? 'border-dashed border-border/40 bg-transparent'
+                      : 'border-accent/50 bg-bg-card'
+                  }`}
+                >
+                  <div className="mb-3 flex items-center justify-between gap-2">
+                    <span className="type-meta">{String(i + 1).padStart(2, '0')}</span>
+                    <span
+                      className={`inline-flex items-center rounded-lg px-2 py-0.5 text-xs font-black uppercase tracking-widest ${
+                        step.planned
+                          ? 'border border-dashed border-border/50 text-text-muted'
+                          : 'border border-accent/30 bg-accent/5 text-accent'
+                      }`}
+                    >
+                      {step.planned ? 'Planned' : 'Active'}
+                    </span>
                   </div>
-                  <IconArrow size={16} className="shrink-0 text-accent/40 self-center" aria-hidden="true" />
-                </React.Fragment>
+                  <p className={`text-xs font-black uppercase tracking-widest md:text-sm ${step.planned ? 'text-text-muted' : 'text-text-primary'}`}>
+                    {step.label}
+                  </p>
+                </div>
               ))}
-            </DragMarquee>
             </div>
 
             <ScrollReveal>
-              <div className="rounded-2xl border border-border/50 bg-bg-card p-4 md:p-5 flex items-start gap-3">
-                <FlaskConical className="w-4 h-4 text-accent shrink-0 mt-0.5" aria-hidden="true" />
-                <p className="text-[10px] md:text-xs font-mono text-text-muted leading-relaxed">
+              <div className="flex items-start gap-3 rounded-2xl border border-border/50 bg-bg-card p-4 md:p-5">
+                <FlaskConical className="mt-0.5 h-4 w-4 shrink-0 text-accent" aria-hidden="true" />
+                <p className="font-mono text-xs leading-relaxed text-text-muted md:text-sm">
                   CP currently functions as the QYVORA platform reward system. Blockchain-backed settlement and portable digital proof are planned future layers. They are not deployed, and CP is not a publicly tradable asset.
                 </p>
               </div>
             </ScrollReveal>
           </div>
-        </PublicPageSection>
+        </section>
 
         {/* ── 08 · START YOUR JOURNEY ───────────────────────────────────── */}
-        <PublicPageSection id="journey">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 lg:items-stretch">
+        <section id="journey" className="w-full py-10 pb-2 md:py-14">
+          <div className="grid grid-cols-1 gap-8 lg:grid-cols-2 lg:items-stretch lg:gap-12">
             <ScrollReveal>
-              <div className="shrink-0 lg:w-[420px] xl:w-[480px] flex flex-col lg:justify-center">
+              <div className="flex shrink-0 flex-col lg:w-[420px] lg:justify-center xl:w-[480px]">
                 <SimpleHeading
                   text="Begin With Your First Course."
                   accentWords={1}
@@ -402,14 +356,14 @@ const CyberCoinPage: React.FC = () => {
                 />
                 <Link
                   to="/courses"
-                  className="btn-secondary inline-flex items-center justify-center gap-2 !px-5 !py-2.5 self-start shrink-0 mt-6"
+                  className="btn-secondary mt-6 inline-flex min-h-[44px] shrink-0 items-center justify-center gap-2 self-start !px-5"
                 >
                   View All Courses <IconArrow size={14} />
                 </Link>
               </div>
             </ScrollReveal>
 
-            <div className="relative flex-1 min-h-0 min-w-0 overflow-hidden flex items-center">
+            <div className="relative flex min-h-0 min-w-0 flex-1 items-center overflow-hidden">
               <Carousel
                 slides={STARTER_COURSES}
                 showArrows={false}
@@ -419,25 +373,25 @@ const CyberCoinPage: React.FC = () => {
                   return (
                     <Link
                       to={`/courses/${course.id}`}
-                      className="group relative overflow-hidden flex flex-col md:flex-row bg-bg-card rounded-2xl border border-border/50 transition-[transform,box-shadow,border-color,background-color] duration-[var(--dur-base)] ease-[var(--ease-smooth)] hover:border-accent/40 h-full min-h-[340px] md:min-h-[280px]"
+                      className="group relative flex h-full min-h-[340px] flex-col overflow-hidden rounded-2xl border border-border/50 bg-bg-card transition-[transform,box-shadow,border-color,background-color] duration-[var(--dur-base)] ease-[var(--ease-smooth)] hover:border-accent/40 md:min-h-[280px] md:flex-row"
                     >
-                      <div className="relative flex flex-col items-start text-left p-5 sm:p-6 md:p-7 flex-1 min-w-0">
-                        <div className="flex items-center gap-2 flex-wrap mb-3">
+                      <div className="relative flex min-w-0 flex-1 flex-col items-start p-5 text-left sm:p-6 md:p-7">
+                        <div className="mb-3 flex flex-wrap items-center gap-2">
                           {category && (
-                            <span className="px-2.5 py-1 text-[9px] font-black uppercase tracking-widest bg-accent/10 border border-accent/20 rounded-full text-accent">
+                            <span className="rounded-full border border-accent/20 bg-accent/10 px-2.5 py-1 text-xs font-black uppercase tracking-widest text-accent">
                               {category.name}
                             </span>
                           )}
                           <DifficultyBadge difficulty={course.skillLevel} />
                         </div>
-                        <h3 className="text-lg md:text-xl lg:text-2xl font-black uppercase tracking-tight text-text-primary transition-colors duration-300 group-hover:text-accent line-clamp-2 mb-2">
+                        <h3 className="mb-2 line-clamp-2 text-lg font-black uppercase tracking-tight text-text-primary transition-colors duration-300 group-hover:text-accent md:text-xl lg:text-2xl">
                           {course.title}
                         </h3>
-                        <p className="text-xs sm:text-sm text-text-secondary leading-relaxed font-mono border-l-2 border-accent/40 pl-3 py-1.5 mb-4 line-clamp-3 flex-1">
+                        <p className="mb-4 flex-1 border-l-2 border-accent/40 py-1.5 pl-3 font-mono text-xs leading-relaxed text-text-secondary line-clamp-3 sm:text-sm">
                           {course.description}
                         </p>
-                        <div className="flex items-center justify-between gap-3 w-full pt-3 mt-auto">
-                          <div className="flex items-center gap-3 text-[10px] sm:text-[11px] font-mono text-text-muted shrink-0 min-w-0">
+                        <div className="mt-auto flex w-full items-center justify-between gap-3 pt-3">
+                          <div className="flex shrink-0 items-center gap-3 font-mono text-xs text-text-muted min-w-0">
                             <span className="flex items-center gap-1 whitespace-nowrap min-w-0">
                               <Clock size={12} className="shrink-0" /> {course.estimatedMinutes}min
                             </span>
@@ -445,13 +399,13 @@ const CyberCoinPage: React.FC = () => {
                               <Zap size={12} className="shrink-0" /> {course.lessons.length || 0} lessons
                             </span>
                           </div>
-                          <span className="flex items-center gap-1 text-[10px] sm:text-[11px] font-black uppercase tracking-widest text-accent group-hover:gap-1.5 transition-[gap] duration-[var(--dur-base)] ease-[var(--ease-smooth)] whitespace-nowrap shrink-0 min-w-0">
+                          <span className="flex shrink-0 items-center gap-1 whitespace-nowrap text-xs font-black uppercase tracking-widest text-accent transition-[gap] duration-[var(--dur-base)] ease-[var(--ease-smooth)] group-hover:gap-1.5 min-w-0">
                             View Course <IconArrow size={12} className="shrink-0" />
                           </span>
                         </div>
                       </div>
-                      <div className="hidden md:flex relative w-[140px] lg:w-[160px] shrink-0 items-center justify-center border-l border-border/30">
-                        <CourseBadge courseId={course.id} className="w-24 h-24 lg:w-28 lg:h-28" />
+                      <div className="hidden shrink-0 items-center justify-center border-l border-border/30 md:flex md:w-[140px] lg:w-[160px]">
+                        <CourseBadge courseId={course.id} className="h-24 w-24 lg:h-28 lg:w-28" />
                       </div>
                     </Link>
                   );
@@ -459,14 +413,8 @@ const CyberCoinPage: React.FC = () => {
               />
             </div>
           </div>
-        </PublicPageSection>
-
-        {/* ── 09 · FOOTER ───────────────────────────────────────────────── */}
-        <section className="w-full bg-bg pt-10 md:pt-0">
-          <Footer />
         </section>
-
-      </PublicPageLayout>
+      </div>
     </div>
   );
 };

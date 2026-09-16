@@ -1,6 +1,7 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { motion, AnimatePresence, useReducedMotion } from 'motion/react';
 import { ChevronLeft } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { IconChevronRight } from '@/shared/components/icons';
 import { useAutoPlay } from '@/core/hooks/useAutoPlay';
 import { useSwipeNav } from '@/core/hooks/useSwipeNav';
@@ -24,6 +25,7 @@ function Carousel<T extends { id: string }>({
   const [direction, setDirection] = useState(0);
   const total = slides.length;
   const prefersReducedMotion = useReducedMotion();
+  const { t } = useTranslation();
 
   const next = useCallback(() => {
     const nextIndex = current + 1 >= total ? 0 : current + 1;
@@ -88,12 +90,14 @@ function Carousel<T extends { id: string }>({
         <>
           <button
             onClick={prev}
+            aria-label={t('components.carousel.prev', 'Previous slide')}
             className="absolute left-2 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full border border-border/50 bg-bg-card flex items-center justify-center text-text-secondary hover:border-accent/40 hover:text-accent active:scale-95 transition-[color,background-color,border-color,transform] duration-[var(--dur-base)] ease-[var(--ease-smooth)] shadow-lg"
           >
             <ChevronLeft className="w-4 h-4" />
           </button>
           <button
             onClick={next}
+            aria-label={t('components.carousel.next', 'Next slide')}
             className="absolute right-2 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full border border-border/50 bg-bg-card flex items-center justify-center text-text-secondary hover:border-accent/40 hover:text-accent active:scale-95 transition-[color,background-color,border-color,transform] duration-[var(--dur-base)] ease-[var(--ease-smooth)] shadow-lg"
           >
             <IconChevronRight size={16} />
