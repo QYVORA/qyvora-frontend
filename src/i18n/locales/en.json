@@ -1,4 +1,16 @@
 {
+  "learningCatalogue": {
+    "filter": {
+      "all": "All",
+      "beginner": "Beginner",
+      "intermediate": "Intermediate",
+      "advanced": "Advanced"
+    },
+    "results": "{{count}} items",
+    "empty": {
+      "title": "No items match this filter"
+    }
+  },
   "nav": {
     "home": "Home",
     "platform": "Platform",
@@ -1183,6 +1195,21 @@
         "cp": "CP Earned",
         "streak": "Streak",
         "rooms": "Rooms Completed"
+      },
+      "sections": {
+        "continue": "Continue",
+        "today": "Today",
+        "todayDesc": "What's on for today.",
+        "recent": "Recent learning",
+        "recentDesc": "Pick up any of your recent work, or start something new.",
+        "emptyCourses": "No courses yet.",
+        "emptyCoursesDesc": "Browse the catalogue and start your first course.",
+        "emptyLabs": "No labs attempted yet.",
+        "emptyLabsDesc": "Attack labs are waiting for you.",
+        "emptyMarket": "No intelligence assets yet.",
+        "emptyMarketDesc": "Browse the marketplace to spend your CP.",
+        "emptyTools": "Your workbench is empty.",
+        "emptyToolsDesc": "Open a tool and start operating."
       },
       "action": {
         "startLearning": "Start Learning"
@@ -2698,6 +2725,149 @@
     },
     "platform": "Platform",
     "footer": "Footer"
+  },
+  "landing3": {
+    "hero": {
+      "kicker": "Africa's Offensive Security Platform",
+      "title": "Train like an operator.",
+      "titleAccent": "Prove it on-chain.",
+      "description": "Learn offensive security through structured courses, hands-on attack labs, and the Hacker Protocol Bootcamp. Earn CyberPoints that verify your skill — no experience required.",
+      "primaryCta": "Start learning",
+      "secondaryCta": "Explore learning",
+      "proofLabel": "operators trained",
+      "proofCount": "{{count}}"
+    },
+    "paths": {
+      "kicker": "Choose your path",
+      "title": "Learn. Practice. Prove.",
+      "description": "Three ways in. Your journey through the platform depends on what you want out of it.",
+      "learn": {
+        "title": "Learn",
+        "desc": "Master foundations with self-paced courses covering Linux, networking, web security, and exploitation — one skill at a time.",
+        "cta": "Browse learning"
+      },
+      "practice": {
+        "title": "Practice",
+        "desc": "Execute real exploits in simulated attack labs. Capture flags and chain vulnerabilities in production-mirror environments.",
+        "cta": "Open the labs"
+      },
+      "work": {
+        "title": "Work with us",
+        "desc": "Penetration testing, red team exercises, and security awareness training for African organizations — scoped to your stack.",
+        "cta": "Start an engagement"
+      }
+    },
+    "featured": {
+      "kicker": "Featured learning",
+      "title": "Start where foundations begin.",
+      "description": "A proven first course and two attack labs to get you operating fast.",
+      "courseCta": "Browse courses",
+      "labsCta": "Browse labs"
+    },
+    "proof": {
+      "kicker": "Proof, not promises",
+      "title": "Built in Africa, for real defenders.",
+      "description": "Every number below is earned by operators on the platform — not marketing filler.",
+      "students": "Operators trained",
+      "vulnerabilities": "Vulnerabilities identified across engagements",
+      "bootcamps": "Bootcamp launches",
+      "cpPool": "CP distributed to operators"
+    },
+    "tools": {
+      "kicker": "Tools and research",
+      "title": "Combat-ready open-source tooling.",
+      "description": "Thirteen offensive security tools, built in the open and documented for operators — plus research from the QuiteRoot collective.",
+      "toolsCta": "Browse the tools",
+      "researchCta": "Read the research"
+    },
+    "final": {
+      "kicker": "Start learning",
+      "title": "Your first module is minutes away.",
+      "description": "Create a free account, pick a path, and earn your first CyberPoints today.",
+      "cta": "Start learning"
+    }
+  },
+  "toolsIndex": {
+    "seo": {
+      "title": "Tools | QYVORA",
+      "description": "Open-source offensive security tools, documented for operators."
+    },
+    "kicker": "Open-source tooling",
+    "title": "Combat-ready tools, documented for operators.",
+    "description": "Thirteen offensive security tools built by the QuiteRoot collective. Each tool has full documentation, install guides, and walkthroughs.",
+    "docs": "Docs"
+  },
+  "learnPage": {
+    "seo": {
+      "title": "Learn | QYVORA",
+      "description": "Courses, labs, the Hacker Protocol Bootcamp, and more."
+    },
+    "tabs": {
+      "courses": "Courses",
+      "labs": "Labs",
+      "bootcamp": "Bootcamp",
+      "simulations": "Simulations",
+      "cp": "CyberPoints"
+    },
+    "courses": {
+      "kicker": "Self-paced courses",
+      "title": "Master one skill at a time.",
+      "description": "Beginner-friendly courses that take you from zero to offensive, one focused skill per course.",
+      "cta": "Browse courses"
+    },
+    "labs": {
+      "kicker": "Attack labs",
+      "title": "Break things safely, at scale.",
+      "description": "Realistic environments that mirror production infrastructure. Chain vulnerabilities, capture flags, earn CP rewards.",
+      "cta": "Browse labs"
+    },
+    "bootcamp": {
+      "kicker": "Flagship program",
+      "title": "The Hacker Protocol Bootcamp.",
+      "description": "Our structured, phase-by-phase offensive security training. Progress through rooms, earn CP, and prove yourself on-chain.",
+      "cta": "Explore the bootcamp"
+    },
+    "simulations": {
+      "kicker": "Networking simulations",
+      "title": "Practice inside simulated networks.",
+      "description": "Corporation-scale environments for terminal and networking practice without any of the risk.",
+      "cta": "Open simulations"
+    },
+    "cp": {
+      "kicker": "Verifiable credentials",
+      "title": "Earn CyberPoints on-chain.",
+      "description": "Every verified achievement across courses, labs, and bootcamp rooms earns CP — a verifiable record of your skill.",
+      "cta": "About CyberPoints"
+    }
+  },
+  "aboutPage": {
+    "seo": {
+      "title": "About | QYVORA",
+      "description": "The team, the research collective, and the mission behind QYVORA."
+    },
+    "kicker": "About QYVORA",
+    "title": "Built in Africa, for African defenders.",
+    "description": "QYVORA is an offensive security training platform and services team. Get to know the people and mission driving it.",
+    "team": {
+      "title": "The team",
+      "desc": "Meet the operators and engineers building QYVORA.",
+      "cta": "Meet the team"
+    },
+    "quiteroot": {
+      "title": "QuiteRoot",
+      "desc": "The intelligence and engineering collective behind our tooling and research.",
+      "cta": "Explore QuiteRoot"
+    },
+    "contact": {
+      "title": "Contact",
+      "desc": "Reach the desk directly — partnerships, services, and research inquiries.",
+      "cta": "Contact the desk"
+    },
+    "legal": {
+      "title": "Legal",
+      "desc": "Terms of service governing use of the platform.",
+      "cta": "Read the terms"
+    }
   },
   "coursesPage": {
     "hero": {
