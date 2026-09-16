@@ -5,6 +5,8 @@
 **Baseline:** `docs/LEARNING_SYSTEM_AUDIT.md` (read-only audit, completed prior).
 **Design decision (confirmed):** Focused-step expansion — same route/page, all steps still on one page, only the current step fully expanded; completed/next steps collapse to compact status rows. Applied to Bootcamp rooms, Courses, and Labs.
 
+> **Historical snapshot.** References to `StudentLayout` below predate the current architecture (`StudentLayout` → `AppShell`); `WalkthroughToolbar` and `RoomTopBar` have since been deleted. See `AGENTS.md`.
+
 ---
 
 ## 1. Summary

@@ -4,6 +4,8 @@
 **Scope:** `qyvora-frontend` — read-only forensic analysis of the learner-facing frontend.
 **Mode:** Audit only. No source files were modified. All findings cite `file:line` evidence from the repository.
 
+> **Historical snapshot.** References to `StudentLayout`/`RoomTopBar`/`WalkthroughToolbar` below predate the current architecture. Current equivalents: `StudentLayout` → `AppShell`; `WalkthroughToolbar` and `RoomTopBar` have been deleted (`LearningToolbar` is the sole toolbar). See `AGENTS.md`.
+
 ---
 
 ## Executive Summary

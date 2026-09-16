@@ -68,5 +68,4 @@ Key metrics to watch:
 - **Virtual scrolling:** Not implemented (content fits viewport)
 - **Debounced inputs:** Search, filters use debounced state
 - **Intersection Observer:** ScrollReveal animations
-- **requestAnimationFrame:** useNavInvert hook
 - **Passive event listeners:** Scroll, resize handlers

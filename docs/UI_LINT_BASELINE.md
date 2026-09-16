@@ -8,6 +8,10 @@
 > **Severity at capture time:** `warn` (report-only). After this baseline snapshot
 > the rules were flipped to `error` so future `npm run lint` runs fail on any row
 > not yet swept — nothing here can be silently dropped.
+>
+> **Status (current):** resolved. `npm run lint` is clean — 0 violations on both
+> rules. The row-by-row table below is the original Phase-2 baseline snapshot kept
+> for the record.
 
 ## Totals
 

@@ -48,7 +48,7 @@ Defined in `src/styles/index.css` `@theme` block. **Use Tailwind utilities, neve
 
 - `CodeBlock.tsx` - IdeMock syntax colors
 - `Ide.tsx`, `IdeBlock.tsx` - VS Code simulation
-- `LandingSimulationsSection.tsx`, `SimulationsPage.tsx` - Terminal mocks
+- `SimulationsPage.tsx` - Terminal mocks
 - `topicMap.ts` - Course/topic category colors (data layer)
 
 ---
@@ -152,7 +152,7 @@ Content fills the viewport with consistent padding: `px-3 md:px-4 lg:px-6`.
 | Context | Clearance |
 |---------|-----------|
 | Snap sections | `pt-24 md:pt-28 lg:pt-32`, bottom `pb-6 md:pb-8 lg:pb-10` |
-| PublicSnapSection | `pt-24 md:pt-28 lg:pt-32` + `scroll-mt-24 md:scroll-mt-28` |
+| Full-viewport section | `pt-24 md:pt-28 lg:pt-32` + `scroll-mt-24 md:scroll-mt-28` |
 | Student/admin topbar | `pt-20 md:pt-24` |
 | Sidebar sections | `py-12 sm:py-10 md:py-16 lg:py-20` |
 
@@ -166,7 +166,7 @@ Snap container: `.snap-container { scroll-snap-type: y mandatory }` on md+ — o
 one section.
 Mobile: snap is off, `section[id]` has `scroll-margin-top: 80px`.
 
-### PublicSnapSection
+### Full-viewport section
 
 ```tsx
 <section className="relative w-full min-h-dvh snap-section flex flex-col odd:bg-bg even:bg-bg-alt px-3 md:px-4 lg:px-6 pt-24 pb-8 md:pt-28 md:pb-10 lg:pt-32 lg:pb-12 scroll-mt-24 md:scroll-mt-28">
@@ -291,7 +291,7 @@ Use `@/` alias everywhere. Never use relative imports beyond one level.
 
 ### Icons
 
-`lucide-react` only. Named imports. No emoji as icons. No custom SVG icon system (except brand logo / HackerGlobe).
+`lucide-react` only. Named imports. No emoji as icons. No custom SVG icon system (except brand logo).
 
 ### i18n
 
@@ -399,7 +399,7 @@ Where content varies between slides/views, use stable internal regions:
 AdminLayout
 ├── AdminTopbar (z-[100], fixed top)
 ├── Content area (pt-20 md:pt-24)
-│   ├── LearningOverviewCard (hero banner)
+│   ├── Stats strip (StatCard row)
 │   ├── Tab content (one of 9 tabs)
 │   │   ├── OverviewTab → StatCard + DataTable
 │   │   ├── UsersTab → StatCard + DataTable

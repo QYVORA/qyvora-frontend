@@ -27,8 +27,8 @@ applied globally (Space Grotesk) — never add a `font-display` class.
 |---|---|---|---|
 | `h1` | page hero | `text-4xl md:text-6xl` | `dashboard/PageHeader.tsx` |
 | `h1` | split-screen hero | `text-4xl md:text-6xl lg:text-7xl` | `ToolDocHero` |
-| `h1` | panel (constrained card/rail) | `text-3xl md:text-4xl lg:text-5xl` | `AuthForm`, `RoomHeader` |
-| `h1` | fluid marketing hero | current arbitrary/fluid tuning; normalize breakpoints in the breakpoint-sweep phase | `PublicHeroSection` title |
+| `h1` | panel (constrained card/rail) | `text-3xl md:text-4xl lg:text-5xl` | `AuthForm`, `LearningWorkspaceShell` |
+| `h1` | fluid marketing hero | current arbitrary/fluid tuning; normalize breakpoints in the breakpoint-sweep phase | `HeroBlock` title |
 | `h2` | page / standard section | `text-3xl md:text-5xl` | — |
 | `h2` | split-screen | `text-3xl md:text-5xl lg:text-7xl` | `ServiceDetailPage`, `ToolSectionHeader` |
 | `h2` | compact bento / carousel rail | `text-lg` (title only, no description) | Carousel inline heads |
@@ -61,5 +61,6 @@ heading (`h3`/`h4`) as a kicker.
   already use the token utilities. Bulk sweep is a follow-up (spacing/radius phase).
   The size/space arbitrary-value ban is deliberately deferred until the sweep —
   `qyvora-local` currently enforces color only.
-- `h2` used as section title with a heading element at the wrong level: fixed in
-  `ToolsCarousel` (h3 → h2 on the slide title).
+- `h2` used as section title with a heading element at the wrong level: resolved
+  during the landing redesign (the `ToolsCarousel`/`CoursesCarousel` family was
+  removed in favour of the shared `Carousel` + inline card pattern).

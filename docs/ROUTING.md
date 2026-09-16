@@ -10,7 +10,7 @@ Routes are defined in `src/app/router.tsx` — the single source of truth for al
 
 ## Route Table
 
-### Public Routes (LandingLayout)
+### Public Routes (PublicShell)
 
 | Path | Type | Component | Description |
 |------|------|-----------|-------------|
@@ -47,7 +47,7 @@ Routes are defined in `src/app/router.tsx` — the single source of truth for al
 | `/change-password` | ChangePasswordPage | Password change |
 | `{ADMIN_PATH}` | LoginPage | Admin login (base64-encoded `/mr-robot`) |
 
-### Student Routes (StudentLayout)
+### Student Routes (AppShell)
 
 | Path | Component | Description |
 |------|-----------|-------------|
@@ -83,7 +83,7 @@ Routes are defined in `src/app/router.tsx` — the single source of truth for al
 | `/settings` | `/dashboard/settings` |
 | `/courses/:courseId` | `/dashboard/courses/:courseId` |
 
-### Tool Full-Screen Routes (StudentOnly, no layout chrome)
+### Tool Full-Screen Routes (ImmersiveToolShell, no AppShell chrome)
 
 | Path | Component | Description |
 |------|-----------|-------------|

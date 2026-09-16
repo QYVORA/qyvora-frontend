@@ -306,12 +306,27 @@ Location: `src/shared/components/learning/` (barrel `index.ts`).
 ### 4.6 `LabPage`
 `.../learning/LabPage.tsx`
 
-Generic lab page shell. **Props:** `{ title; accentWord; description?; villain?; activeScenario; listingContent; walkthroughContent; celebrationShow; celebrationTitle?; celebrationCp?; relatedContent?; noIndex? }`. **Shape:** SEO + LabCelebration + LearningToolbar(fullscreen when activeScenario) + `StudentHeroSection` (listing) else `walkthroughContent` on `bg-bg-alt`. **Used in:** KillChain/Osint/Password/Privesc/SqlInjection labs.
+Generic lab page shell. **Props:** `{ title; accentWord; description?; villain?; activeScenario; listingContent; walkthroughContent; celebrationShow; celebrationTitle?; celebrationCp?; relatedContent?; noIndex? }`. **Shape:** SEO + LabCelebration + LearningToolbar(fullscreen when `activeScenario`) + `LearningWorkspaceShell` (listing) else `walkthroughContent` on `bg-bg-alt`. **Used in:** KillChain/Osint/Password/Privesc/SqlInjection labs.
 
 ### 4.7 `TerminalWrapper`
 `.../learning/TerminalWrapper.tsx`
 
-**Props:** `{ open; onOpenChange; context?; initialCommands?; mode?: 'modal'|'inline'|'raw'; title? }`. Wraps `TerminalShell`. `modal` → Radix dialog (`z-[200]/[201]`, fullscreen `inset-2`); `inline` → `<div class="wc-terminal">`; `raw` → bare shell. **Used in:** SimulationPage, Ide, StudentLayout, NetworksPage, TerminalToolPage.
+**Props:** `{ open; onOpenChange; context?; initialCommands?; mode?: 'modal'|'inline'|'raw'; title? }`. Wraps `TerminalShell`. `modal` → Radix dialog (`z-[200]/[201]`, fullscreen `inset-2`); `inline` → `<div class="wc-terminal">`; `raw` → bare shell. **Used in:** SimulationPage, Ide, AppShell, NetworksPage, TerminalToolPage.
+
+### 4.8 `LearningFilterStrip`
+`.../learning/LearningFilterStrip.tsx`
+
+**Props:** `{ filters: {id; label; count?}[]; activeFilter: string; onFilterChange: (id) => void }`. `rounded-xl border border-border/50 bg-bg-card p-1.5` horizontal chip strip (`scroll-x no-scrollbar`), active chip `bg-accent text-on-accent`, `aria-pressed`. Returns null when no filters. **Used in:** catalogue + student discovery pages (MyCourses, BootcampCourse, Labs).
+
+### 4.9 `LearningCatalogue`
+`.../learning/LearningCatalogue.tsx`
+
+**Props:** `{ items: (LearningCardProps & {key})[]; className?; gridClassName?; showFilter?=true; showSearch?=false; searchPlaceholder?; filterLabel?(id)=>string; renderItem?(item)=>ReactNode; emptyTitle?; emptyDescription? }`. Shared catalogue for public AND signed-in discovery: derives beginner/intermediate/advanced difficulty counts from items (first `-` segment), renders `LearningFilterStrip` + optional search input + filtered `role="status"` result count + responsive `LearningCard` grid (`mt-6 grid gap-4 md:grid-cols-2 lg:grid-cols-3`), or an empty state card. `renderItem` lets owners inject signed-in state (e.g. completion-aware `LabCard`); progress/owned/price states pass through to `LearningCard` otherwise. **Used in:** public CoursesPage, public LabsPage, signed-in LabsPage. **Boundary:** `MyCoursesPage` stays bespoke — its filter tabs are enrollment-state (All/In Progress/Completed), it renders a locked-courses grid + purchase modal + ScrollReveal, and thus is an entitlement workspace, not a discovery catalogue.
+
+### 4.10 `LearningDetailShell`
+`.../learning/LearningDetailShell.tsx`
+
+**Props:** `{ backTo; backLabel; kicker; title; description?; metadata?; actions?; children; relatedTitle?; related? }`. Detail-page scaffold: ghost back link + `PageHeader` (kicker/title/description/metadata/actions) + children; optional `related` renders a titled `type-h2` tail section with `grid gap-4 md:grid-cols-2 lg:grid-cols-4`. **Used in:** HpbPhasePage.
 
 ---
 
@@ -326,7 +341,7 @@ Generic lab page shell. **Props:** `{ title; accentWord; description?; villain?;
 
 **Props:** `{ slides: T[] (T extends {id:string}); renderCard; className?; autoPlayInterval?=5000; showArrows? }`.
 
-**Shape:** auto-advancing deck via `useAutoPlay` (off on reduced-motion/single slide), `useSwipeNav`, ArrowLeft/Right keyboard, `AnimatePresence mode="wait"` directional x-slide ease `[0.25,0.46,0.45,0.94]` .4s; container `overflow-hidden rounded-2xl border bg-accent-dim`; floating round arrows `w-9 h-9 rounded-full border bg-bg-card`. Returns null on empty. **Used in:** ActDivider, LandingBlogs, LandingServices, CoursesPage, CyberCoinPage, LabsPage.
+**Shape:** auto-advancing deck via `useAutoPlay` (off on reduced-motion/single slide), `useSwipeNav`, ArrowLeft/Right keyboard, `AnimatePresence mode="wait"` directional x-slide ease `[0.25,0.46,0.45,0.94]` .4s; container `overflow-hidden rounded-2xl border bg-accent-dim`; floating round arrows `w-9 h-9 rounded-full border bg-bg-card`. Returns null on empty. **Used in:** CyberCoinPage (STARTER_COURSES deck).
 
 ### 5.3 `DragMarquee` — `carousel/` (not in barrel)
 `src/shared/components/carousel/DragMarquee.tsx`
@@ -358,23 +373,24 @@ All popups coordinate through `usePopupManager` (priority queue; lower number = 
 
 Location: `src/shared/components/layout/`.
 
-### 7.1 `Navbar` — default (`React.memo`)
-`src/shared/components/layout/Navbar.tsx`
+### 7.1 `PublicNavigation` — default (`React.memo`)
+`src/shared/components/layout/PublicNavigation.tsx`
 
-Public navigation. `fixed top-0 w-full z-[100] h-[80px]`; inner `w-full px-3 md:px-4 lg:px-6 flex justify-between`; logo/actions `z-[110]`; mobile overlay `fixed inset-0 z-[90] md:hidden bg-bg/95 backdrop-blur-xl` (scroll-locked); desktop nav `px-4 py-2 text-xs font-black uppercase tracking-widest rounded-xl border` (active `border-accent/40 text-accent bg-accent/5`, idle `border-border/30 text-text-primary/80`); hover dropdowns with 150ms leave timeout. Data-driven from `SITE_CONFIG.nav`.
+Public navigation. `fixed inset-x-0 top-0 z-[100] h-[80px]`; inner `w-full px-3 md:px-4 lg:px-6 flex justify-between`; logo/actions `z-[110]`; mobile drawer `z-[90]` (scroll-locked, Escape closes, focus moves into panel); five flat links (Learn, Tools, Research, Services, About) — no borders on links; one contextual CTA + `LanguageSwitcher`. Skip link `#main-content`.
 
-### 7.2 `Footer` — default
-`src/shared/components/layout/Footer.tsx`
+### 7.2 `PublicFooter` — default
+`src/shared/components/layout/PublicFooter.tsx`
 
-Outer `px-3 py-10 md:px-4 md:py-20 lg:px-6` (no max-width), 4-col grid (Learning/Platform/Community/Company), social links from `SITE_CONFIG.social`, logo + `LanguageSwitcher`. Last snap area on landing pages.
+Outer `px-3 py-10 md:px-4 md:py-20 lg:px-6` (no max-width), 4-col grid (Learning/Platform/Community/Company), social links from `socialLinks.ts`, logo + `LanguageSwitcher`. Last snap area on landing pages.
 
-### 7.3 `RoomTopBar` — default
-Bootcamp room top bar (back nav, breadcrumbs, actions). Props `RoomTopBarProps`, `BreadcrumbItem`, `RoomTopBarAction`.
+### 7.3 `AuthFormLayout` — default
+`src/shared/components/layout/AuthFormLayout.tsx`
+
+Auth page shell: 2-col grid, `max-w-lg` form, globe pinned bottom-right.
 
 ### 7.4 Hero / section primitives (shared)
-- **`PublicHeroSection`** (default): `min-h-dvh`, 2-col grid on `lg` (growable), `HackerGlobe` (Three.js) on `md+`, `px-3 md:px-4 lg:px-6 pt-20 pb-14`, `GridBoxedBackground` behind, `mask` variant. Child slots: `<Badge>`, `<h1>`/accent span, `<p>`, `<Button>`.
-- **`StudentHeroSection`** (default; exports canonical `PUBLIC_HERO_TITLE_CLASS`): same visual scale; used for Courses/Labs/Services/Bootcamp/Sims + dashboard PageHeader. Props `{title, accentWord, description?, villain?, fullHeight?}`.
-- **`PublicSnapLayout` / `PublicSnapSection`** (defaults, `src/shared/components/PublicSnapSection.tsx`): `PublicSnapSection` auto-applies `relative w-full min-h-dvh snap-section flex flex-col odd:bg-bg even:bg-bg-alt px-3 md:px-4 lg:px-6 pt-24 pb-8 md:pt-28 lg:pt-32 scroll-mt-24` with inner `w-full my-auto`. `PublicSnapLayout` is the page-level snap container.
+- **`HeroBlock`** (`features/marketing/components/landing/blocks/HeroBlock.tsx`): landing hero — `min-h-dvh`, single column `justify-center`, kicker + `type-display` title with accent `block` span, primary + ghost CTA. No canvas, no globe, no marquee.
+- **`PageHeader`** (`shared/components/ui/PageHeader.tsx`; `shared/components/dashboard/PageHeader.tsx`): shared page/section title primitive (title + back/nav + CTAs), replaced the former `StudentHeroSection`/`PublicHeroSection`.
 - **`ScrollReveal`** (default, canonical reveal): `useInView({once:true, amount:0.1})`, `scale:0.95`, skips on reduced-motion/mobile. Props `{direction, delay, amount, scale, staggerChildren}`.
 - **`SEO`** (default): head meta/title/og per page.
 - **`RelatedContent` / `RelatedContentSection`** (default): related-item list/grid (snap variant), built from data, uses LearningCard-style cards.
@@ -427,28 +443,20 @@ Location: `src/shared/components/leaderboard/` (barrel `index.ts`).
 
 ## 11. Marketing landing sections
 
-Location: `src/features/marketing/components/landing/`. Each is a self-contained `PublicSnapSection` composition, ordered in `src/features/marketing/pages/LandingPage/index.tsx`.
+Location: `src/features/marketing/components/landing/blocks/`. Each is a self-contained section composition, ordered in `src/features/marketing/pages/LandingPage/index.tsx`.
 
-| Section | File | Purpose / composition |
+| Block | File | Purpose / composition |
 |---|---|---|
-| `LandingHeroSection` | `LandingHeroSection.tsx` | full-viewport hero: `HackerGlobe` + `GridBoxedBackground` + Badge + giant h1 (accent span) + sub + CTA + mobile CTA `mt-auto`. `mask` variant. |
-| `LandingCoursesSection` | `LandingCoursesSection.tsx` | full-section `Carousel`/`DragMarquee` of `CourseCard`s; `min-h-dvh my-auto overflow-x-clip line-clamp-*`. |
-| `LandingLabsSection` | `LandingLabsSection.tsx` | drag marquee of `LabCard`s + `DottedMapOverlay`. |
-| `LandingServicesSection` | `LandingServicesSection.tsx` | enterprise services cards + `DottedMapOverlay`. |
-| `LandingPillarsSection` | `LandingPillarsSection.tsx` | platform pillars with dotted overlay. |
-| `LandingSimulationsSection` | `LandingSimulationsSection.tsx` | terminal/IDE/network sim previews. |
-| `LandingBootcampSection` | `LandingBootcampSection.tsx` | HPB bootcamp promo. |
-| `LandingTeamSection` | `LandingTeamSection.tsx` | drag marquee of team members. |
-| `LandingBlogsSection` | `LandingBlogsSection.tsx` | `Carousel` of blog cards. |
-| `LandingMarketSection` | `LandingMarketSection.tsx` | zero-day market products (`AuthImage` covers). |
-| `LandingLeaderboardSection` | `LandingLeaderboardSection.tsx` | `LeaderboardRow`s + `FilterTabs` + `ErrorState`. |
-| `LandingFinalCtaSection` | `LandingFinalCtaSection.tsx` | closing CTA (last snap, no Footer). |
-| `LandingOpenSourceToolsSection` | `LandingOpenSourceToolsSection.tsx` | drag marquee of open-source tools. |
-| `LandingQuiteRootSection` | `LandingQuiteRootSection.tsx` | research collective promo. |
-| `ActDividerSection` | `ActDividerSection.tsx` | `Carousel` act divider. |
-| `HeroGridAnimation` | `HeroGridAnimation.tsx` | animated hero grid decoration (helpers in `helpers.ts`). |
+| `HeroBlock` | `HeroBlock.tsx` | landing hero: `min-h-dvh`, single column, kicker + `type-display` title (accent span) + primary/ghost CTA. No canvas, no globe, no marquee. |
+| `PathBlock` | `PathBlock.tsx` | learning path presentation. |
+| `ProofBlock` | `ProofBlock.tsx` | proof / stats statement. |
+| `FeaturedLearningBlock` | `FeaturedLearningBlock.tsx` | featured courses/labs. |
+| `ToolsResearchBlock` | `ToolsResearchBlock.tsx` | open-source tools + research. |
+| `FinalCtaBlock` | `FinalCtaBlock.tsx` | closing CTA. |
 
-Composition primitives also in `src/features/marketing/components/`: `CoursesCarousel`, `LabsCarousel`, `ToolsCarousel`, `HackerGlobe` (+`hacker-globe/` with `useFluidGlobe`, `countries.ts`), `ContactModal`, `ServiceRequestModal`, `ToolInstallModal` (exports `openToolInstall`), and tool-page chemistry (`ToolSourceSection`, `ToolSectionHeader` with `text-kicker` + `text-3xl md:text-5xl lg:text-7xl font-black` title, `ToolModulesSection`).
+Shared landing helpers/types live in `landing/helpers.ts` + `landing/types.ts`.
+
+Composition primitives also in `src/features/marketing/components/`: `LabsCarousel`, `ContactModal`, `ServiceRequestModal`, `ToolInstallModal` (exports `openToolInstall`), and tool-page chemistry (`ToolSourceSection`, `ToolSectionHeader` with `text-kicker` + `text-3xl md:text-5xl lg:text-7xl font-black` title, `ToolModulesSection`).
 
 ---
 
@@ -456,7 +464,7 @@ Composition primitives also in `src/features/marketing/components/`: `CoursesCar
 
 ### Public pages (`src/features/marketing/pages/`)
 - **`LandingPage`** (`.../LandingPage/index.tsx`): composes all landing sections.
-- **`CoursesPage`**: `StudentHeroSection` + `CourseCollection` (filter strip + grid/carousel of `CourseCard`). `/courses`.
+- **`CoursesPage`**: `PageHeader` + `CourseCollection` (filter strip + grid/carousel of `CourseCard`). `/courses`.
 - **`LabsPage`**: hero + `LabCollection`/`LabCard`. `/labs`.
 - **`MarketPage`**: hero + `ProductCard` grid (`CourseCollection` wrapper). `/zero-day-market`.
 - **`CyberCoinPage`**: CP economy explainer. `/cp`.
@@ -478,7 +486,7 @@ Composition primitives also in `src/features/marketing/components/`: `CoursesCar
 
 ## 13. Student experience components
 
-Location: `src/features/student/`. Shell = `StudentLayout` (clearance `pt-20 md:pt-24`), `StudentTopbar` (auto-hides on scroll-down, reveals on scroll-up; layout reservation static — slides over content), `StudentNavPanel`.
+Location: `src/features/student/`. Shell = `AppShell` (clearance `pt-20 md:pt-24`, desktop rail `lg:pl-[264px]`), `StudentTopbar` (auto-hides on scroll-down, reveals on scroll-up; layout reservation static — slides over content), `StudentNavPanel`.
 
 ### 13.1 `StudentTour` + `SpotlightTour` (the onboarding/tour pair)
 - **`StudentTour`** (`features/student/components/StudentTour.tsx`): post-onboarding guided tour. Steps: welcome → nav → learning → cp → profile → done, each resolved via `[data-tour-id]` selectors on the live DOM. Auto-triggers via `usePopupManager('onboarding-tour', 2)` or the "Take a Tour" replay button (`qyvora:start-tutorial`). Completing calls `POST /profile/onboarding/complete` only for fresh users. `getTarget` maps responsive selectors (prefers on-screen elements among `tour-cp-desktop|tour-cp-dashboard|tour-cp-mobile`, etc.).
@@ -492,8 +500,8 @@ Location: `src/features/student/`. Shell = `StudentLayout` (clearance `pt-20 md:
 
 ### 13.4 Bootcamp room & course (`features/student/components/bootcamp-*`, `learning`)
 - **bootcamp-course/**: `PhaseHeroSection`, `PhaseSection`, `RoomCard` (supports canvas doodle annotation → localStorage `card_doodle_*`).
-- **bootcamp-room/**: `RoomHeader`, `RoomProgress`, `RoomSidebar`, `StepCard` (keyboard nav Arrow/Enter/Space), `StepJumpMenu`, `StepImage`, `CopyButton`, `ImageLightbox` (portal + scroll-lock, wheel zoom 1–5x, drag pan), `QuizModal`, `QuizGateModal`, `ReportIssueModal` (`POST /student/report-issue`, type `bootcamp_room`), `RoomCompletionCelebration`.
-- **learning/**: `LearningOverviewCard`, `LearningFilterStrip`.
+- **bootcamp-room/**: `RoomSidebar`, `StepCard` (keyboard nav Arrow/Enter/Space), `StepJumpMenu`, `StepImage`, `CopyButton`, `ImageLightbox` (portal + scroll-lock, wheel zoom 1–5x, drag pan), `QuizModal`, `QuizGateModal`, `ReportIssueModal` (`POST /student/report-issue`, type `bootcamp_room`), `RoomCompletionCelebration`. Room framing (header title/stats/progress) uses the shared `LearningWorkspaceShell` from `BootcampRoomPage`.
+- **learning/**: `LearningFilterStrip` (shared — difficulty/count chip strip), `LearningCatalogue` (shared — filter strip + count + responsive `LearningCard` grid + empty state), `LearningDetailShell` (shared — back link + `PageHeader` + children + optional related section).
 
 ### 13.5 Simulations (`features/student/components/simulations/`)
 - **`SimulationContext`** exports 4 nested contexts: `SimulationProvider`, `useSimulation`, `useDiscovery` (persists `qyvora_discovered_ips`, listens `qyvora:ip-discovered`), `useNetworkProfile`, `useBrowserSim`.
@@ -514,9 +522,9 @@ Location: `src/features/student/`. Shell = `StudentLayout` (clearance `pt-20 md:
 |---|---|
 | **Student dashboard** | `StatCard`, `SectionButton` (local), `DashboardHero`, `DailyMissionCard`, `WeeklyOperationCard`, `WeekActivity`, `ActiveDeployments`, `CpEarnHint`, `ProgressionPanel`, `SkillMatrix`, `LearningCard`, `FadeIn`, `ErrorState`, `StudentOnboardingModal`, `StudentTour` |
 | **Admin** | `StatCard`, `DataTable`, `Skeleton`, `ErrorState`, `Badge`, `Tooltip`, `Dialog`/`ConfirmDialog`, `SyncIndicator`, `AuthImage`, `BottomSheet` | 
-| **Marketing landing** | `PublicSnapSection`, `ScrollReveal`, `HackerGlobe`, `Carousel`, `DragMarquee`, `DottedMapOverlay`, `LearningCard`/`CourseCard`/`LabCard`, `FilterTabs`, `LeaderboardRow`, `ErrorState`, `Skeleton` |
+| **Marketing landing** | `ScrollReveal`, `Carousel`, `DragMarquee`, `LearningCard`/`CourseCard`/`LabCard`, `FilterTabs`, `LeaderboardRow`, `ErrorState`, `Skeleton` |
 | **Public collections** | `CardCollection`, `ViewToggle`, `BatchPagination`, `Carousel`, `LearningCard` wrappers |
-| **Courses/labs/bootcamp learning** | `LearningToolbar`, `LearningNav`, `StepRenderer`, `StepNumberHeader`, `LearningAccordion`, `LabPage`, `TerminalWrapper`, `LearningCard` |
+| **Courses/labs/bootcamp learning** | `LearningToolbar`, `LearningNav`, `StepRenderer`, `StepNumberHeader`, `LearningAccordion`, `LabPage`, `TerminalWrapper`, `LearningCard`, `LearningCatalogue`, `LearningFilterStrip`, `LearningDetailShell` |
 | **Student profile** | `ProfileIdentityBlock`, `ProfileMetricsStrip`, `ModuleHeader`, `CoursesModule`, `LabsModule`, `TrophyCabinet`, `AchievementsSection`, `ActivityTimeline`, `ContributionCalendar` |
 | **Public profile** | same profile set + `ShareProfile` |
 | **Auth** | `AuthFormLayout`, `Input`, `Button`, `PasswordInput`, `AuthHero`, `AuthImage` |
@@ -532,7 +540,6 @@ These exist but have **no active usage** — don't build on them, and prefer the
 |---|---|---|
 | `CardBase` / `CardMedia` / `CardStat` | exported, unused outside `Card.tsx` | `LearningCard` |
 | `StatCounter` | exported, zero usages | `useCountUp` directly or `StatCard` |
-| `PageHeader` | defined, no app-page import | `StudentHeroSection` |
 | `RankBadge` | only used internally by `LeaderboardRow` | — |
 | `DragMarquee` | **not** re-exported from `carousel/index.ts` barrel (inconsistent) | import from its file |
 

@@ -29,8 +29,6 @@ src/
 │   │   ├── ErrorBoundary.test.tsx
 │   │   ├── ScenarioCard.test.tsx
 │   │   └── ...
-│   ├── hooks/__tests__/
-│   │   └── useNavInvert.test.ts
 │   └── utils/__tests__/
 │       └── cn.test.ts
 ├── features/
@@ -72,7 +70,7 @@ React component rendering:
 ### Hook Tests
 
 Custom hook behavior:
-- `useNavInvert.test.ts` — Nav inversion detection
+- `usePopupManager.test.tsx` — Canonical overlay queue gating
 
 ### Data Tests
 

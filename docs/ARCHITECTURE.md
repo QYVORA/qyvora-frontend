@@ -205,10 +205,10 @@ features/
 |---|---|---|
 | `components/` | ErrorBoundary, PageLoader, SEO, ScrollReveal, ScrollToTop, Identicon, ConsentBanner, CommunityPopup | All features |
 | `components/ui/` | Dialog, BottomSheet, Tooltip, Card, Skeleton, SimpleHeading, StatCounter | All features |
-| `components/layout/` | Navbar, Footer, AuthFormLayout, RoomTopBar | Layouts |
+| `components/layout/` | PublicNavigation, PublicFooter, AuthFormLayout | Layouts |
 | `components/brand/` | Logo, QyvoraLogotype, QyvoraMark | All features |
 | `components/backgrounds/` | GridBoxedBackground, AdinkraBackground | All features |
-| `layouts/` | LandingLayout | Router only |
+| `layouts/` | PublicShell, ToolDocLayout | Router only |
 | `utils/` | cn, cpBalance, formatNumber, resolveImg, etc. | All features |
 
 **Anti-pattern:** Do not put domain-specific components in `shared/`. If a component is only used by one feature, keep it in that feature. If it is used by two or more features, put it in `shared/`.
@@ -229,13 +229,15 @@ features/
 
 ### 5.6 Layout System
 
-Four layouts, each with different chrome:
+Each layout has different chrome:
 
-| Layout | Navbar | Footer | Bottom Nav | Used For |
+| Layout | Navigation | Footer | Bottom Nav | Used For |
 |--------|--------|--------|------------|----------|
-| `LandingLayout` | Fixed top (with nav invert support) | Embedded in last scroll section | None | Marketing homepage |
-| `StudentLayout` | `StudentTopbar` (fixed) | None | Student mobile nav | Authenticated student pages |
+| `PublicShell` | `PublicNavigation` (fixed top) | `PublicFooter` | None | Public marketing pages |
+| `AppShell` | `StudentTopbar` (fixed) + desktop rail | None | Student mobile nav | Authenticated student pages |
 | `AdminLayout` | `AdminTopbar` (fixed) | None | Admin mobile nav | Admin dashboard |
+| `ToolDocLayout` | `ToolDocTopbar` (page-owned) | None | None | Tool documentation |
+| `AuthFormLayout` | None | None | None | Auth pages (standalone) |
 
 **Layout padding rules:**
 - Layouts must provide top padding to clear the fixed navbar (`pt-20 md:pt-24`)

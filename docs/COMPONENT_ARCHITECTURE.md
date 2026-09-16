@@ -19,9 +19,12 @@ The root component is a configuration shell — no visible UI. It wraps the enti
 
 | Layout | Route Scope | Source |
 |--------|-------------|--------|
-| `LandingLayout` | `/`, `/terms`, `/anansi`, `/team`, `/hpb`, `/courses`, etc. | `src/shared/layouts/` |
-| `StudentLayout` | `/dashboard/**` | `src/features/student/layouts/` |
+| `PublicShell` | `/`, `/terms`, `/anansi`, `/team`, `/hpb`, `/courses`, etc. | `src/shared/layouts/` |
+| `ToolDocLayout` | Tool documentation pages | `src/shared/layouts/` |
+| `AppShell` | `/dashboard/**` | `src/features/student/layouts/` |
 | `AdminLayout` | `{ADMIN_PATH}/**` | `src/features/admin/layouts/` |
+| `AuthFormLayout` | Auth routes (standalone) | `src/shared/components/layout/` |
+| `ImmersiveToolShell` | Full-screen tool routes | `src/shared/components/tools/` |
 
 All layouts are loaded via `React.lazy()` with `<Suspense>` fallback.
 
@@ -43,15 +46,15 @@ graph TD
     D --> F[ScrollToTop]
     D --> G[AppRouter]
     G --> H{Layout?}
-    H -->|/| I[LandingLayout]
-    H -->|/dashboard| K[StudentLayout]
+    H -->|/| I[PublicShell]
+    H -->|/dashboard| K[AppShell]
     H -->|admin| L[AdminLayout]
     H -->|/:handle| M[PublicProfile]
     H -->|/*| N[NotFoundPage]
-    I --> O[PublicHeroSection]
+    I --> O[PublicNavigation + PublicFooter]
     I --> P[Marketing Pages]
     K --> Q[StudentTopbar]
-    K --> R[Sidebar]
+    K --> R[Desktop Rail]
     K --> S[Student Pages]
 ```
 
@@ -65,6 +68,7 @@ graph TD
 | `Card` | Card primitives (CardBase, CardMedia, CardStat) |
 | `Dialog` | Radix dialog wrapper with `DialogContent` |
 | `SimpleHeading` | Reusable section heading |
+| `PageHeader` | Page/section title with back/nav + CTAs |
 | `Skeleton` | Loading skeleton placeholder |
 | `StatCounter` | Animated number counter |
 | `Tooltip` | Radix tooltip wrapper |
@@ -73,8 +77,10 @@ graph TD
 
 | Component | Purpose |
 |-----------|---------|
-| `Navbar` | Public/marketing page navigation |
-| `Footer` | Public page footer |
+| `PublicNavigation` | Public/marketing page navigation |
+| `PublicFooter` | Public page footer |
+| `AuthFormLayout` | Auth page shell (2-col grid) |
+| `socialLinks` | Shared social link data |
 
 ### Standalone Components
 
@@ -84,7 +90,6 @@ graph TD
 | `ScrollReveal` | Intersection Observer scroll animations |
 | `ScrollToTop` | Reset scroll on route change |
 | `SEO` | Dynamic meta tags via react-helmet-async |
-| `PublicHeroSection` | Public page hero with Globe, dark bg (`bg-bg`), `data-nav-invert` |
 | `ScenarioCard` | Lab scenario selection card |
 | `ShareProfile` | Profile sharing modal |
 | `LanguageSwitcher` | i18n language selector |
@@ -128,13 +133,12 @@ features/student/
 │   ├── bootcamp-room/   # StepCard, progress tracking
 │   ├── bootcamp-course/ # RoomCard, curriculum browser
 │   ├── dashboard/       # DashboardHero, stats widgets
-│   ├── learning/        # LearningOverviewCard, progress
 │   ├── SimulatedTerminal/ # Terminal engine
 │   └── simulations/     # Lab simulation content
 ├── constants/           # bootcampConfig (4028 lines)
 ├── data/                # Static data (courses, labs, quizzes)
 ├── hooks/               # Student-specific hooks
-├── layouts/             # StudentLayout
+├── layouts/             # AppShell
 ├── pages/               # 20+ page components
 ├── services/            # lab.service, pwa
 └── utils/               # Student utilities

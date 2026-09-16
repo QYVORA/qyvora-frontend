@@ -18,7 +18,7 @@ graph TD
     E[URL State] --> F[React Router]
     G[Server State] --> H[Axios + Interceptors]
     I[Local State] --> J[useState/useReducer]
-    K[Custom Hooks] --> L[useNavInvert]
+    K[Custom Hooks] --> L[usePopupManager]
     K --> M[useGsap]
     K --> N[usePreferences]
 ```
@@ -78,7 +78,8 @@ All server state flows through the Axios client (`src/core/services/api.ts`):
 
 | Hook | Source | Purpose |
 |------|--------|---------|
-| `useNavInvert` | `src/shared/hooks/useNavInvert.ts` | Detect `data-nav-invert` element overlap with navbar |
+| `usePopupManager` | `src/core/hooks/usePopupManager.ts` | Single canonical overlay queue (onboard/consent/tour/community/install) |
+| `useAutoPlay` | `src/core/hooks/useAutoPlay.ts` | Carousel auto-advance with reduced-motion support |
 | `useGsap` | `src/shared/hooks/useGsap.ts` | GSAP animation setup |
 | `usePreferences` | `src/shared/hooks/usePreferences.ts` | User preference persistence |
 

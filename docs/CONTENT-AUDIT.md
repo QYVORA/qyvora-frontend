@@ -2,6 +2,8 @@
 
 **Date:** 2026-09-02 · **Mode:** read-only content audit (no files changed) · **Root:** `/home/wsuits6/WORK/QYVORA/core`
 
+> **Historical snapshot.** Several marketing components cited below (`LandingCoursesSection`, `LandingLabsSection`, `CoursesCarousel`) were removed during the landing redesign; marketing course/lab inventories now render from the shared `LearningCard` grid. Findings are retained as the audit record.
+
 **Verification:** every P0/P1 terminal-engine claim was re-checked directly in SimulatedTerminal source during a follow-up pass (command registry, handlers, parser, VFS payloads, mission templates) — findings confirmed at the cited lines, with one correction noted inside D.4 (redirection `>` does work) and E9 corrected (the `database` field was misdescribed).
 
 **Scope:** every repository surface that delivers learning content — courses, Hacker Protocol Bootcamp (frontend + backend), rooms, lab simulations, missions, room gate quizzes, the SimulatedTerminal (VFS payloads + help text + handlers), walkthrough UI that carries instructional copy, marketing/landing copy that describes the curriculum, and i18n strings.

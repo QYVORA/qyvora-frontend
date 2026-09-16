@@ -104,7 +104,18 @@ All: `font-black uppercase tracking-[0.08em] rounded-xl px-7 py-3`.
 
 Sizes: `sm` (`px-4 py-2 text-[10px]`), `md` (`px-7 py-3 text-[10px]`), `lg` (`px-8 py-3.5 text-xs`).
 
-**Rule**: Prefer `<Button>` over raw `<button>` for all CTAs.
+**Rule**: Prefer `<Button>` over raw `<button>` for all CTAs. Raw `<button>` is allowed when it uses `.btn-primary` / `.btn-secondary` / `.btn-danger`, or lives inside a shared primitive (`FilterTabs`, `Toggle`, `Tooltip`, `LearningFilterStrip`, `LearningAccordion`, walkthrough/card internals), or falls into one of the **documented accessibility exceptions** below:
+
+### 2b-i. Documented raw-button exceptions
+1. **Learning/simulation interactives** — `bootcamp-room` (StepCard nav/cheat, Quiz(,)GateModal, ReportIssueModal), `walkthrough/*`, `courses/*` (InlineQuiz, CodePlayground, StepNotes), `tools/*` (Ide, NetworkBuilder, ToolChooserModal, SimulatedTerminal), `simulations/*` (all sim controls).
+2. **Canvas/drag/menu controls** — `NetworkBuilder` ContextMenu/DeviceNode, `NetworkEdge`, lightbox/drag pan/wheel-zoom controls (step image/lightbox).
+3. **Input adornment icons** — password eye, token copy, search affordances positioned inside `<input>` rows (`absolute right-3`), where 44px `IconButton` sizing would break the field layout; keep `aria-label` + `min-w-[44px]`-equivalent hit area where possible.
+4. **Custom control roles** — `role="switch"` toggles (settings-row switch variant; shared `Toggle` ships a label-row wrapper so settings rows keep the control-only variant), segmented `aria-pressed` pairs (accent/theme Dark-Light).
+5. **Row-level action links** — inline uppercase `tracking-widest` text actions inside list rows (revoke session, view details, `text-danger` clear/revoke-all), rendered as `<button type="button">` with explicit hit/padding, not `<Button size>` (which would add container chrome).
+6. **Admin table action buttons** — `DataTable` row actions per AGENTS Admin rules (44px touch targets, tokens only).
+7. **Nav/rail icon toggles** — fixed 44px+ icon buttons in nav rails/bars rendered with `flex-1` equal-width distribution (e.g. `StudentSidebar` terminal/ide/network/settings); `IconButton`'s fixed `h-11 w-11` square would break the flex-row layout, so they stay raw with `aria-label` + `focus-visible`.
+
+The theme Dark/Light control is a segmented `aria-pressed` pair (exception 4), not `FilterTabs` (which is `role="tablist"`).
 
 ### 2c. Interactive Button Patterns
 
@@ -269,19 +280,17 @@ Inline error display within pages/cards.
 
 ## 7. Navigation Patterns
 
-### 7a. Public Navbar
+### 7a. Public Navigation
 
-**Implementation**: `src/shared/components/layout/Navbar.tsx`
+**Implementation**: `src/shared/components/layout/PublicNavigation.tsx`
 
-- `React.memo`, `fixed top-0 w-full z-[100] h-[80px]`
+- `React.memo`, `fixed inset-x-0 top-0 z-[100] h-[80px]`
 - Inner: `w-full px-3 md:px-4 lg:px-6 flex items-center justify-between`
 - Logo/actions: `z-[110]`
-- Mobile overlay: `fixed inset-0 z-[90] md:hidden bg-bg/95 backdrop-blur-xl` (scroll-locked)
-- Desktop nav buttons: `flex items-center gap-1.5 px-4 py-2 text-xs font-black uppercase tracking-widest rounded-xl border`
-- Active: `border-accent/40 text-accent bg-accent/5`
-- Idle: `border-border/30 text-text-primary/80 hover:border-accent/40 hover:text-accent`
-- Dropdowns: hover-open with 150ms leave timeout
-- Data-driven menu: `SITE_CONFIG.nav.groups` + i18n keys
+- Mobile drawer: `z-[90]` overlay (scroll-locked, Escape closes, focus moves into panel)
+- Five flat nav links (Learn, Tools, Research, Services, About) — **no borders on links**; borders stay on badges/status indicators only
+- One contextual CTA + `LanguageSwitcher`
+- Skip link: `#main-content`
 
 ### 7b. Student Topbar
 
@@ -296,7 +305,7 @@ Inline error display within pages/cards.
 
 ### 7d. Footer
 
-**Implementation**: `src/shared/components/layout/Footer.tsx`
+**Implementation**: `src/shared/components/layout/PublicFooter.tsx`
 
 - Outer: `px-3 py-10 md:px-4 md:py-20 lg:px-6` (no max-width)
 - 4-column grid (Learning, Platform, Community, Company)
@@ -307,33 +316,26 @@ Inline error display within pages/cards.
 
 ## 8. Hero Patterns
 
-### 8a. PublicHeroSection (Landing pages)
+### 8a. Landing Hero
 
-**Implementation**: `src/shared/components/PublicHeroSection.tsx`
+**Implementation**: `src/features/marketing/components/landing/blocks/HeroBlock.tsx`
 
 ```tsx
-<PublicHeroSection mask="right" showGlobe rightContent={<div>...</div>}>
-  <Badge>...</Badge>
-  <h1>Title <span className="text-accent">accent</span></h1>
-  <p>Description</p>
-  <Button variant="primary">CTA</Button>
-</PublicHeroSection>
+<HeroBlock stats={stats} />
 ```
 
 **Visual traits**:
-- Container: `min-h-dvh`, `bg-bg`, 2-col grid on `lg` (growable, never fixed `md:h-dvh`)
-- Globe: `hidden md:flex`, `HackerGlobe` (Three.js)
-- Left padding: `px-3 md:px-4 lg:px-6 pt-20 sm:pt-20 lg:pt-24 pb-14 sm:pb-16 lg:pb-16`
-- Inner text: `space-y-5 sm:space-y-6`
-- Mobile CTA: `mt-auto`
-- Mask: `"right"` (gradient mask on globe) | `"none"` (single-column)
-- Background: `GridBoxedBackground blur={0} mask="right"` (behind)
+- Container: `relative flex min-h-dvh w-full bg-canvas`
+- Inner: `mx-auto flex w-full max-w-[1320px] flex-col justify-center px-3 py-24 pt-32 md:px-4 md:py-28 lg:px-6`
+- Kicker (`type-label uppercase tracking-[0.12em] text-accent`) + `h1` (`type-display font-black uppercase tracking-tight`) with the accent line as a `block` span
+- One primary CTA (`Button to="/register"`) + one ghost secondary link
+- No canvas, no globe, no marquee — clean typography only
 
-### 8b. StudentHeroSection (Public inner pages + dashboard)
+### 8b. Page Header (Public inner pages + dashboard)
 
-**Implementation**: `src/shared/components/StudentHeroSection.tsx`
+**Implementation**: `src/shared/components/ui/PageHeader.tsx` and `src/shared/components/dashboard/PageHeader.tsx`
 
-Same visual scale as PublicHeroSection (`PUBLIC_HERO_TITLE_CLASS`). Used for Courses, Labs, Services, Bootcamp, Simulations, and the student dashboard `PageHeader`.
+Shared title primitive used across public inner pages (Courses, Labs, Services, Bootcamp, Simulations) and the student dashboard. Replaced the former `StudentHeroSection`/`PublicHeroSection`.
 
 ---
 
@@ -384,13 +386,9 @@ Sequential kill-chain visualization. Container: `wc-diagram`.
 - Container: `overflow-hidden rounded-2xl md:rounded-3xl border border-border/30 bg-accent-dim`
 - Arrows: absolute positioned, `w-9 h-9 rounded-full`
 
-### 10b. CoursesCarousel
+### 10b. Lesson carousels
 
-Standalone carousel for the courses page. Same pattern as generic but with 8s interval.
-
-### 10c. LandingCoursesSection (inline)
-
-Raw `setInterval` at 3s. Respects reduced-motion. No keyboard or pause-on-hover.
+Course lessons render via the shared `Carousel` (`src/shared/components/carousel/`) with `useAutoPlay` (respects reduced-motion), ArrowLeft/Right keyboard support, and `AnimatePresence mode="wait"`. The former bespoke `CoursesCarousel`/`LabsCarousel`/`ToolsCarousel` components and the inline `LandingCoursesSection` interval were removed during the landing redesign; public Courses/Labs pages now render a plain `LearningCard` grid.
 
 ---
 
@@ -551,12 +549,12 @@ Prefer `ScrollReveal` over this pattern.
 Alternate `bg-bg` / `bg-bg-alt`. Footer is last snap section (no `min-h-dvh`; snaps to `end` via
 `.snap-section:last-child`). Never a fixed `h-dvh`/`lg:h-dvh` on content sections — they must grow.
 
-### 16b. PublicSnapSection
+### 16b. Full-viewport section (snap)
 
 ```tsx
-<PublicSnapSection>
-  {children}
-</PublicSnapSection>
+<section className="relative w-full min-h-dvh snap-section flex flex-col odd:bg-bg even:bg-bg-alt px-3 md:px-4 lg:px-6 pt-24 pb-8 md:pt-28 md:pb-10 lg:pt-32 lg:pb-12 scroll-mt-24 md:scroll-mt-28">
+  <div className="w-full my-auto">{children}</div>
+</section>
 ```
 
 Auto-applies: `relative w-full min-h-dvh snap-section flex flex-col odd:bg-bg even:bg-bg-alt px-3 md:px-4 lg:px-6 pt-24 pb-8 md:pt-28 md:pb-10 lg:pt-32 lg:pb-12 scroll-mt-24 md:scroll-mt-28`. Inner wrapper: `w-full my-auto`.
