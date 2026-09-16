@@ -1,70 +1,45 @@
-import React, { lazy, Suspense } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { IconArrowLeft } from '@/shared/components/icons';
-import { GridBoxedBackground } from '@/shared/components/backgrounds';
-import ErrorBoundary from '@/shared/components/ErrorBoundary';
+import { ArrowLeft } from 'lucide-react';
 import AuthHero from '@/features/auth/components/AuthHero';
-
-const HackerGlobe = lazy(() => import('@/features/marketing/components/HackerGlobe'));
 
 interface AuthFormLayoutProps {
   children: React.ReactNode;
 }
 
+/**
+ * AuthFormLayout — quiet authentication shell. One split: a calm value
+ * statement on the left (desktop), the form on the right. No globe, no grid
+ * background — just surfaces, borders, and readable type.
+ */
 const AuthFormLayout: React.FC<AuthFormLayoutProps> = ({ children }) => {
   const { t } = useTranslation();
+
   return (
-    <div className="relative min-h-dvh">
-      {/* Mobile background layer */}
-      <div className="md:hidden fixed inset-0 bg-bg -z-10">
-        <GridBoxedBackground blur={0} mask="right" />
-      </div>
-
-      {/* Desktop blank ground — full-page decorative backdrop behind hero + form.
-          The form column and form cards stay translucent so this shows through. */}
-      <div className="hidden md:block absolute inset-0 bg-bg overflow-hidden" aria-hidden="true">
-        <GridBoxedBackground blur={0} mask="right" />
-      </div>
-
-      {/* Globe — belongs to the page, not the hero. Spans the whole viewport in
-          the bottom-right corner so hero and form share one canvas and the
-          globe is never clipped at the column boundary. Fixed so it stays pinned
-          to the bottom-right corner on mobile while the form scrolls; the globe
-          has no scroll-exit animation, it stays anchored to its backdrop. */}
-      <div className="fixed inset-0 z-0 flex items-end justify-end overflow-hidden pointer-events-none" aria-hidden="true">
-        <div className="relative w-full h-full flex items-end justify-end">
-          <ErrorBoundary scope="HackerGlobe" fallback={null}>
-            <Suspense fallback={null}>
-              <HackerGlobe fluid />
-            </Suspense>
-          </ErrorBoundary>
-        </div>
-      </div>
-
-      <div className="min-h-dvh relative md:grid md:grid-cols-2">
+    <div className="relative min-h-dvh bg-canvas">
+      <div className="relative h-dvh md:grid md:grid-cols-2">
         <AuthHero />
 
-        {/* Mobile: hero + form stacked — translucent so the backdrop shows through */}
-        <div className="md:hidden relative w-full min-h-dvh flex flex-col" >
-          <div className="absolute top-6 left-6 z-20">
-            <Link to="/" className="inline-flex items-center gap-2 px-4 py-2 text-text-primary rounded-lg text-[10px] font-black uppercase tracking-[0.2em] transition-[opacity,transform] duration-[var(--dur-base)] ease-[var(--ease-smooth)] hover:opacity-70 active:scale-95">
-              <IconArrowLeft size={16} /> {t('button.backToHome')}
+        {/* Mobile: back link + form, stacked */}
+        <div className="md:hidden relative flex min-h-dvh w-full flex-col overflow-y-auto">
+          <div className="shrink-0 pt-6 pl-3 md:pl-4">
+            <Link
+              to="/"
+              className="inline-flex min-h-[44px] items-center gap-2 px-4 text-sm font-bold text-text-secondary transition-colors hover:text-text-primary"
+            >
+              <ArrowLeft className="h-4 w-4" aria-hidden="true" />
+              {t('button.backToHome')}
             </Link>
           </div>
-
-          <div className="relative z-10 w-full flex-1 flex flex-col items-start justify-start px-3 pt-20 sm:pt-20 pb-12 sm:pb-14">
-            <div className="w-full">
-              {children}
-            </div>
+          <div className="flex w-full flex-1 flex-col justify-center px-3 pb-12 md:px-4">
+            {children}
           </div>
         </div>
 
-        {/* Desktop: form column — natural height (no forced scroll), translucent */}
-        <div className="hidden md:flex flex-col items-center px-3 md:px-4 lg:px-6 py-12 md:py-16 relative min-h-dvh">
-          <div className="w-full max-w-lg relative z-10 my-auto">
-            {children}
-          </div>
+        {/* Desktop: form column */}
+        <div className="hidden md:flex flex-col items-center px-3 py-16 md:px-4 lg:px-6">
+          <div className="my-auto w-full max-w-lg">{children}</div>
         </div>
       </div>
     </div>
