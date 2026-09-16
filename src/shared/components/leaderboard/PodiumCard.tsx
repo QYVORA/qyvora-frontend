@@ -56,7 +56,7 @@ const PodiumCard = ({ entry, rank, className = '' }: PodiumCardProps) => {
         <Medal className="w-4 h-4" />
       </div>
 
-      <span className={`px-2 py-0.5 rounded-lg text-[9px] font-black uppercase tracking-widest border ${s.chip}`}>
+      <span className={`px-2 py-0.5 rounded-lg text-xs font-black uppercase tracking-widest border ${s.chip}`}>
         Rank #{rank}
       </span>
 
@@ -74,15 +74,15 @@ const PodiumCard = ({ entry, rank, className = '' }: PodiumCardProps) => {
           <BootcampBadge completed={bootcampCompleted} className="w-5 h-5 shrink-0" />
         </div>
         {entry.organization && (
-          <div className="text-[10px] font-mono text-text-muted truncate mt-0.5">{entry.organization}</div>
+          <div className="text-xs font-mono text-text-muted truncate mt-0.5">{entry.organization}</div>
         )}
       </div>
 
       <div className="mt-auto flex flex-col items-center gap-1 pt-1 w-full">
         <span className="text-base md:text-xl font-black font-mono text-text-primary">
-          {Number(entry.cp).toLocaleString()} <span className="text-[9px] uppercase tracking-widest text-accent">CP</span>
+          {Number(entry.cp).toLocaleString()} <span className="text-xs uppercase tracking-widest text-accent">CP</span>
         </span>
-        <span className="text-[9px] font-bold uppercase tracking-widest text-text-muted">
+        <span className="text-xs font-bold uppercase tracking-widest text-text-muted">
           {entry.progression?.rank || entry.rankLabel}
         </span>
       </div>

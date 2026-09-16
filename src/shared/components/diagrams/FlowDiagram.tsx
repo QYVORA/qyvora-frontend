@@ -53,7 +53,7 @@ function FlowArrowHorizontal({ arrow }: { arrow: FlowArrow }) {
         />
       </svg>
       {arrow.label && (
-        <span className="text-[8px] font-mono text-text-muted/60 mt-0.5 whitespace-nowrap">{arrow.label}</span>
+        <span className="text-xs font-mono text-text-muted/60 mt-0.5 whitespace-nowrap">{arrow.label}</span>
       )}
     </div>
   );
@@ -77,7 +77,7 @@ function FlowArrowVertical({ arrow }: { arrow: FlowArrow }) {
         />
       </svg>
       {arrow.label && (
-        <span className="absolute text-[8px] font-mono text-text-muted/60 ml-8">{arrow.label}</span>
+        <span className="absolute text-xs font-mono text-text-muted/60 ml-8">{arrow.label}</span>
       )}
     </div>
   );
@@ -95,9 +95,9 @@ function FlowNodeBox({ node }: { node: FlowNode }) {
           {node.icon}
         </span>
       )}
-      <span className="text-[10px] md:text-xs font-black uppercase tracking-wider leading-tight">{node.label}</span>
+      <span className="text-xs md:text-xs font-black uppercase tracking-wider leading-tight">{node.label}</span>
       {node.sublabel && (
-        <span className="text-[8px] md:text-[9px] font-mono opacity-70 mt-0.5">{node.sublabel}</span>
+        <span className="text-xs md:text-xs font-mono opacity-70 mt-0.5">{node.sublabel}</span>
       )}
     </div>
   );
