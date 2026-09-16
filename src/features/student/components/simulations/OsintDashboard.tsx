@@ -38,7 +38,7 @@ export function OsintDashboard({ modules }: OsintDashboardProps) {
   return (
     <div className="flex flex-col h-full rounded-2xl border border-border/50 bg-bg-card overflow-hidden">
       <div className="px-4 py-3 bg-bg-elevated border-b border-border/20">
-        <p className="text-[10px] font-black uppercase tracking-widest text-accent">OSINT Dashboard</p>
+        <p className="text-xs font-black uppercase tracking-widest text-accent">OSINT Dashboard</p>
       </div>
 
       <div className="flex-1 min-h-0 flex">
@@ -52,7 +52,7 @@ export function OsintDashboard({ modules }: OsintDashboardProps) {
                   activeModule === m.id ? 'bg-accent/10 text-accent' : 'text-text-muted hover:bg-white/5'
                 }`}>
                 <MIcon size={12} />
-                <span className="text-[10px] font-mono">{m.label}</span>
+                <span className="text-xs font-mono">{m.label}</span>
               </button>
             );
           })}
@@ -73,10 +73,11 @@ export function OsintDashboard({ modules }: OsintDashboardProps) {
                 value={queries[current.id] || ''}
                 onChange={e => setQueries(prev => ({ ...prev, [current.id]: e.target.value }))}
                 placeholder={`Enter ${current.type} query...`}
-                className="flex-1 px-3 py-2 rounded-lg bg-black/40 border border-border/50 text-[11px] font-mono text-text-primary outline-none focus:border-accent/50"
+                aria-label={`Enter ${current.type} query`}
+                className="flex-1 px-3 py-2 rounded-lg bg-black/40 border border-border/50 text-xs font-mono text-text-primary outline-none focus:border-accent/50"
               />
               <button onClick={handleSearch} disabled={searching}
-                className="px-3 py-2 rounded-lg bg-accent/10 border border-accent/30 text-[9px] font-black uppercase tracking-wider text-accent disabled:opacity-50">
+                className="px-3 py-2 rounded-lg bg-accent/10 border border-accent/30 text-xs font-black uppercase tracking-wider text-accent disabled:opacity-50">
                 {searching ? 'Searching...' : 'Search'}
               </button>
             </div>
@@ -84,9 +85,9 @@ export function OsintDashboard({ modules }: OsintDashboardProps) {
             {/* Result */}
             <div className="flex-1 overflow-auto bg-black/40 rounded-lg p-3">
               {results[current.id] ? (
-                <pre className="text-[10px] font-mono text-text-muted whitespace-pre-wrap">{results[current.id]}</pre>
+                <pre className="text-xs font-mono text-text-muted whitespace-pre-wrap">{results[current.id]}</pre>
               ) : (
-                <div className="flex items-center justify-center h-full text-text-muted/50 text-[10px] font-mono">
+                <div className="flex items-center justify-center h-full text-text-muted/50 text-xs font-mono">
                   Enter a query and click Search
                 </div>
               )}

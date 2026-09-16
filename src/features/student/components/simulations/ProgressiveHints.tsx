@@ -19,7 +19,7 @@ export function ProgressiveHints({ hints, maxLevel = 4 }: ProgressiveHintsProps)
       <button onClick={() => setExpanded(!expanded)}
         className="w-full flex items-center gap-2 px-3 py-2 text-left hover:bg-white/5 transition-colors">
         <Lightbulb size={12} className="text-warning" />
-        <span className="text-[9px] font-black uppercase tracking-widest text-text-muted">
+        <span className="text-xs font-black uppercase tracking-widest text-text-muted">
           Hints ({visibleHints.length}/{hints.filter(h => h.level <= maxLevel).length})
         </span>
         <span className="ml-auto">
@@ -31,16 +31,16 @@ export function ProgressiveHints({ hints, maxLevel = 4 }: ProgressiveHintsProps)
         <div className="px-3 pb-3 space-y-2">
           {visibleHints.map(hint => (
             <div key={hint.level} className="p-2 rounded bg-black/30 border border-border/10">
-              <p className="text-[8px] font-black uppercase tracking-widest text-warning mb-1">
+              <p className="text-xs font-black uppercase tracking-widest text-warning mb-1">
                 Hint {hint.level}
               </p>
-              <p className="text-[10px] font-mono text-text-muted leading-relaxed">{hint.content}</p>
+              <p className="text-xs font-mono text-text-muted leading-relaxed">{hint.content}</p>
             </div>
           ))}
 
           {nextHint && (
             <button onClick={() => setRevealedLevel(prev => prev + 1)}
-              className="w-full px-3 py-1.5 rounded bg-warning/5 border border-warning/20 text-[9px] font-black uppercase tracking-wider text-warning hover:bg-warning/10 transition-colors">
+              className="w-full px-3 py-1.5 rounded bg-warning/5 border border-warning/20 text-xs font-black uppercase tracking-wider text-warning hover:bg-warning/10 transition-colors">
               Reveal Hint {nextHint.level}
             </button>
           )}

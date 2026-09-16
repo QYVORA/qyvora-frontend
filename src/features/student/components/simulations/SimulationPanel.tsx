@@ -34,7 +34,7 @@ export function SimulationPanel({ simulations, defaultHeight = 'h-[50vh] md:h-[6
           </div>
         ))}
         {simulations.length === 0 && (
-          <div className="flex items-center justify-center h-full text-text-muted/50 text-[10px] font-mono">
+          <div className="flex items-center justify-center h-full text-text-muted/50 text-xs font-mono">
             No simulation loaded
           </div>
         )}
