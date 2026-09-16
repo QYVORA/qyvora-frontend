@@ -94,6 +94,7 @@ function DataTable<T>({
               value={query}
               onChange={(e) => { setQuery(e.target.value); setPage(1); }}
               placeholder={searchPlaceholder ?? t('components.dataTable.searchPlaceholder')}
+              aria-label={searchPlaceholder ?? t('components.dataTable.searchAria', 'Search')}
               className="w-full bg-bg border border-border/60 rounded-xl pl-9 pr-4 py-2.5 text-sm text-text-primary focus:outline-none focus:border-accent transition-[border-color]"
             />
           </div>
@@ -129,7 +130,7 @@ function DataTable<T>({
                       .map((col) => (
                         <th
                           key={col.key}
-                          className={`px-6 py-5 text-[10px] font-black uppercase tracking-[0.25em] text-text-muted/60 ${col.sortable ? 'cursor-pointer hover:text-accent select-none' : ''} ${col.headerClassName ?? ''}`}
+                          className={`px-6 py-5 text-xs font-black uppercase tracking-[0.25em] text-text-muted/60 ${col.sortable ? 'cursor-pointer hover:text-accent select-none' : ''} ${col.headerClassName ?? ''}`}
                           onClick={() => col.sortable && handleSort(col.key)}
                           onKeyDown={(e) => { if (col.sortable && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); handleSort(col.key); } }}
                           {...(col.sortable ? { role: 'button', tabIndex: 0 } : {})}
@@ -137,7 +138,7 @@ function DataTable<T>({
                           <span className="flex items-center gap-2">
                             {col.header}
                             {sortKey === col.key && (
-                              <span className="text-accent text-[8px]">{sortDir === 'asc' ? '▲' : '▼'}</span>
+                              <span className="text-accent text-xs">{sortDir === 'asc' ? '▲' : '▼'}</span>
                             )}
                           </span>
                         </th>
@@ -168,13 +169,14 @@ function DataTable<T>({
                 <select
                   value={pageSize}
                   onChange={(e) => { setPageSize(Number(e.target.value)); setPage(1); }}
-                  className="bg-bg-elevated rounded-lg px-3 py-2 text-[10px] font-black text-text-primary outline-none cursor-pointer"
+                  aria-label={t('components.dataTable.itemsPerPageAria', 'Items per page')}
+                  className="bg-bg-elevated rounded-lg px-3 py-2 text-xs font-black text-text-primary outline-none cursor-pointer"
                 >
                   {[10, 25, 50, 100].map((n) => (
                     <option key={n} value={n}>{t('components.dataTable.itemsPerPage', { n })}</option>
                   ))}
                 </select>
-                <span className="text-[10px] font-mono text-text-muted">
+                <span className="text-xs font-mono text-text-muted">
                   {t('components.dataTable.pageOf', { page: safePage, total: totalPages })}
                 </span>
               </div>
@@ -182,6 +184,7 @@ function DataTable<T>({
                 <button
                   onClick={() => setPage((p) => Math.max(1, p - 1))}
                   disabled={safePage <= 1}
+                  aria-label={t('components.dataTable.prevAria', 'Previous page')}
                   className="w-11 h-11 flex items-center justify-center rounded-lg bg-bg-elevated text-text-muted disabled:opacity-50 hover:text-accent transition-[color,transform] duration-[var(--dur-base)] active:scale-90 shadow-sm"
                 >
                   <ChevronLeft className="w-5 h-5" />
@@ -189,6 +192,7 @@ function DataTable<T>({
                 <button
                   onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
                   disabled={safePage >= totalPages}
+                  aria-label={t('components.dataTable.nextAria', 'Next page')}
                   className="w-11 h-11 flex items-center justify-center rounded-lg bg-bg-elevated text-text-muted disabled:opacity-50 hover:text-accent transition-[color,transform] duration-[var(--dur-base)] active:scale-90 shadow-sm"
                 >
                   <IconChevronRight size={20} />
