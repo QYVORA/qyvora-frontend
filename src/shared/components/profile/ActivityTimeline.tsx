@@ -114,14 +114,14 @@ const ActivityTimeline: React.FC<ActivityTimelineProps> = ({ profile, className 
                       {event.title}
                     </p>
                     {event.description && (
-                      <p className="text-[10px] text-text-muted mt-0.5">
+                      <p className="text-xs text-text-muted mt-0.5">
                         {event.description}
                       </p>
                     )}
                   </div>
 
                   {/* Timestamp */}
-                  <span className="text-[9px] font-mono text-text-muted/60 shrink-0 pt-1">
+                  <span className="text-xs font-mono text-text-muted/60 shrink-0 pt-1">
                     {formatTimestamp(event.timestamp)}
                   </span>
                 </motion.div>

@@ -31,7 +31,7 @@ const LabsModule: React.FC<LabsModuleProps> = ({
         title={t('profile.labs.title', 'Labs')}
         trailing={
           totalLabs > 0 ? (
-            <span className="px-2 py-1 bg-danger/10 text-danger text-[9px] font-black rounded-lg">
+            <span className="px-2 py-1 bg-danger/10 text-danger text-xs font-black rounded-lg">
               {totalLabs}
             </span>
           ) : undefined

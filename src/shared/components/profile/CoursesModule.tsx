@@ -38,10 +38,10 @@ const CoursesModule: React.FC<CoursesModuleProps> = ({
     >
       <CourseBadge courseId={entry.id} className="w-12 h-12 sm:w-14 sm:h-14 shrink-0" />
       <div className="min-w-0">
-        <p className="text-[10px] font-black uppercase tracking-widest text-text-primary truncate">
+        <p className="text-xs font-black uppercase tracking-widest text-text-primary truncate">
           {entry.course?.title}
         </p>
-        <p className="text-[9px] text-text-muted truncate">{entry.course?.categoryId}</p>
+        <p className="text-xs text-text-muted truncate">{entry.course?.categoryId}</p>
       </div>
     </motion.div>
   );
@@ -54,7 +54,7 @@ const CoursesModule: React.FC<CoursesModuleProps> = ({
         title={t('profile.courses.title', 'Courses')}
         trailing={
           coursesCompleted > 0 ? (
-            <span className="px-2 py-1 bg-info/10 text-info text-[9px] font-black rounded-lg">
+            <span className="px-2 py-1 bg-info/10 text-info text-xs font-black rounded-lg">
               {coursesCompleted}
             </span>
           ) : undefined
@@ -74,7 +74,7 @@ const CoursesModule: React.FC<CoursesModuleProps> = ({
           <div className="flex items-center gap-4 min-w-0">
             <QyvoraMark className="w-12 h-12 sm:w-14 sm:h-14 shrink-0" />
             <div className="min-w-0">
-              <p className="text-[10px] font-black uppercase tracking-widest text-text-primary truncate">
+              <p className="text-xs font-black uppercase tracking-widest text-text-primary truncate">
                 {t('profile.courses.completedCount', { count: coursesCompleted, defaultValue: '{{count}} courses completed' })}
               </p>
             </div>
