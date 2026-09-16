@@ -68,7 +68,7 @@ const StatCard = ({
             {icon}
           </div>
         )}
-        <span className="text-[10px] font-black uppercase tracking-[0.2em] text-text-muted">{label}</span>
+        <span className="text-xs font-black uppercase tracking-[0.2em] text-text-muted">{label}</span>
       </div>
       <div className="flex items-end gap-3">
         <div className={`font-mono text-2xl font-black leading-none tabular-nums ${
@@ -77,12 +77,12 @@ const StatCard = ({
           {value}
         </div>
         {trend && (
-          <div className={`flex items-center gap-1 text-[11px] font-bold font-mono ${
+          <div className={`flex items-center gap-1 text-xs font-bold font-mono ${
             trend.direction === 'up' ? 'text-accent' : trend.direction === 'down' ? 'text-danger' : 'text-text-muted'
           }`}>
             <TrendIcon direction={trend.direction} />
             {trend.value}
-            {trend.label && <span className="text-text-muted/60 text-[9px]">({trend.label})</span>}
+            {trend.label && <span className="text-text-muted/60 text-xs">({trend.label})</span>}
           </div>
         )}
       </div>
