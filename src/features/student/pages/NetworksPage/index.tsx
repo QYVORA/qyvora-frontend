@@ -10,7 +10,8 @@ import {
   getHiddenIps,
 } from '@/features/student/data/fakeNetwork';
 import { useSimulation } from '@/features/student/components/simulations';
-import StudentHeroSection from '@/shared/components/StudentHeroSection';
+import PageHeader from '@/shared/components/ui/PageHeader';
+import Button from '@/shared/components/ui/Button';
 
 const SubnetBadge = () => (
   <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-accent/30 bg-accent-dim/20 text-accent text-xs font-mono font-bold">
@@ -25,7 +26,7 @@ const InfoCard = ({ icon, label, value }: { icon: React.ReactNode; label: string
       {icon}
     </div>
     <div className="min-w-0">
-      <p className="text-[10px] font-black uppercase tracking-widest text-text-muted">{label}</p>
+      <p className="text-xs font-black uppercase tracking-widest text-text-muted">{label}</p>
       <p className="text-sm font-mono font-bold text-text-primary truncate">{value}</p>
     </div>
   </div>
@@ -43,12 +44,12 @@ const DeviceRow = ({ device, index, discovered }: { device: typeof DEVICES[0]; i
   <div className={`grid grid-cols-[24px_1fr_auto] md:grid-cols-[24px_1fr_140px] gap-2 md:gap-4 px-4 py-3 rounded-2xl border transition-[background-color,border-color] duration-[var(--dur-base)] ease-[var(--ease-smooth)] items-center ${
     discovered ? 'border-border/50 bg-bg-card hover:border-accent/50' : 'border-border/10 bg-bg-card/50 opacity-50'
   }`}>
-    <span className="text-[10px] font-mono font-bold text-text-muted/40">{index + 1}</span>
+    <span className="text-xs font-mono font-bold text-text-muted/40">{index + 1}</span>
     <div className="flex items-center gap-2 min-w-0">
       <OSIcon os={device.os} />
       <div className="min-w-0">
         <p className="text-xs font-bold text-text-primary truncate">{discovered ? device.hostname : 'Unknown Device'}</p>
-        <p className="text-[9px] font-mono text-text-muted truncate">{discovered ? device.vendor : '???'}</p>
+        <p className="text-xs font-mono text-text-muted truncate">{discovered ? device.vendor : '???'}</p>
       </div>
     </div>
     <p className="text-xs font-mono font-bold text-text-primary text-right md:text-left">
@@ -66,27 +67,29 @@ const NetworksPage = () => {
   const discoveredCount = knownDevices.filter(d => discovery.discoveredIps.includes(d.ip)).length;
 
   return (
-    <div className="min-h-full">
+    <div className="min-h-full bg-canvas">
       <SEO title="Network Lab" description="Simulated corporate network environment for terminal practice." noindex />
 
-      <div className="bg-bg px-3 md:px-4 lg:px-6 pt-8 pb-10">
-        <StudentHeroSection
-          fullHeight={false}
+      <div className="w-full px-3 pb-16 pt-6 md:px-4 md:pb-20 md:pt-8 lg:px-6 lg:pb-24">
+        <PageHeader
+          kicker="QYVORA · Practice"
           title="Network Lab"
           description="Simulated corporate network environment for terminal practice"
-          stats={[{ label: 'Subnet', value: `${NETWORK_CONFIG.subnet}/${NETWORK_CONFIG.cidr}` }]}
-        >
-          <button
-            onClick={() => setTerminalOpen(true)}
-            className="btn-primary inline-flex items-center gap-2 px-6 py-2.5"
-          >
-            <Terminal className="w-4 h-4" />
-            Open Terminal
-          </button>
-        </StudentHeroSection>
-      </div>
+          metadata={
+            <span className="type-meta inline-flex items-center gap-2">
+              <span className="font-bold text-text-primary">{NETWORK_CONFIG.subnet}/{NETWORK_CONFIG.cidr}</span>
+              Subnet · <span className="font-bold text-text-primary">{discoveredCount}/{knownDevices.length}</span> Discovered
+            </span>
+          }
+          actions={
+            <Button onClick={() => setTerminalOpen(true)}>
+              <Terminal className="h-4 w-4" />
+              Open Terminal
+            </Button>
+          }
+        />
 
-      <div className="bg-bg-alt px-3 md:px-4 lg:px-6 py-10 pb-20 lg:pb-24 space-y-10">
+        <div className="w-full space-y-10">
 
         {/* Simulation notice */}
         <div className="flex items-start gap-3 px-5 py-4 rounded-2xl border border-border/50 bg-bg-card">
@@ -113,26 +116,26 @@ const NetworksPage = () => {
         <div className="rounded-2xl border border-border/50 bg-bg-card p-5 md:p-6">
           <div className="flex items-center gap-2 mb-4">
             <Monitor className="w-4 h-4 text-accent" />
-            <span className="text-[10px] font-black uppercase tracking-widest text-accent">Your Machine (Kali)</span>
+            <span className="text-xs font-black uppercase tracking-widest text-accent">Your Machine (Kali)</span>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
             <div>
-              <span className="text-[9px] font-black uppercase tracking-widest text-text-muted block">IP Address</span>
+              <span className="text-xs font-black uppercase tracking-widest text-text-muted block">IP Address</span>
               <span className="font-mono font-bold text-text-primary">{STUDENT_IP}</span>
             </div>
             <div>
-              <span className="text-[9px] font-black uppercase tracking-widest text-text-muted block">MAC</span>
+              <span className="text-xs font-black uppercase tracking-widest text-text-muted block">MAC</span>
               <span className="font-mono font-bold text-text-primary">{STUDENT_MAC}</span>
             </div>
             <div>
-              <span className="text-[9px] font-black uppercase tracking-widest text-text-muted block">Hostname</span>
+              <span className="text-xs font-black uppercase tracking-widest text-text-muted block">Hostname</span>
               <span className="font-mono font-bold text-text-primary">{STUDENT_HOSTNAME}</span>
             </div>
           </div>
         </div>
 
         {/* Legend */}
-        <div className="flex flex-wrap items-center gap-4 text-[10px] font-mono">
+        <div className="flex flex-wrap items-center gap-4 text-xs font-mono">
           <div className="flex items-center gap-1.5">
             <div className="w-2.5 h-2.5 rounded-full bg-success" />
             <span className="text-text-muted">Discovered ({discoveredCount}/{knownDevices.length})</span>
@@ -150,7 +153,7 @@ const NetworksPage = () => {
         </div>
 
         {/* Device list header */}
-        <div className="hidden md:grid grid-cols-[24px_1fr_140px] gap-4 px-4 py-3 text-[9px] font-black uppercase tracking-widest text-text-muted/50 border-b border-border/50">
+        <div className="hidden md:grid grid-cols-[24px_1fr_140px] gap-4 px-4 py-3 text-xs font-black uppercase tracking-widest text-text-muted/50 border-b border-border/50">
           <span>#</span>
           <span>Hostname</span>
           <span className="text-right">IP</span>
@@ -171,7 +174,7 @@ const NetworksPage = () => {
           )}
           {/* Show placeholders for undiscovered */}
           {discoveredCount > 0 && discoveredCount < knownDevices.length && (
-            <div className="px-4 py-3 text-center text-[10px] text-text-muted/50 font-mono border border-dashed border-border/20 rounded-xl">
+            <div className="px-4 py-3 text-center text-xs text-text-muted/50 font-mono border border-dashed border-border/20 rounded-xl">
               {knownDevices.length - discoveredCount} more device(s) to discover
             </div>
           )}
@@ -182,7 +185,7 @@ const NetworksPage = () => {
           <div className="flex items-start gap-3">
             <Terminal className="w-5 h-5 text-accent shrink-0 mt-0.5" />
             <div>
-              <p className="text-[10px] font-black uppercase tracking-widest text-accent mb-2">Try it yourself</p>
+              <p className="text-xs font-black uppercase tracking-widest text-accent mb-2">Try it yourself</p>
               <p className="text-xs text-text-muted font-mono leading-relaxed">
                 Open the terminal and practice network scanning techniques:
               </p>
@@ -197,6 +200,7 @@ const NetworksPage = () => {
             </div>
           </div>
         </div>
+      </div>
       </div>
 
       {/* Simulated Terminal */}

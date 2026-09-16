@@ -15,7 +15,7 @@ import { SETTINGS_SECTIONS, type SettingsSectionId } from '../constants/settings
 
 const INPUT_CLS = 'w-full bg-bg border border-border rounded-xl py-3 px-4 text-sm text-text-primary placeholder:text-text-muted focus:border-accent outline-none transition-[border-color] duration-[var(--dur-base)] ease-[var(--ease-smooth)] font-mono';
 
-const LABEL_CLS = 'text-[10px] font-black uppercase tracking-widest text-text-muted block mb-1.5';
+const LABEL_CLS = 'text-xs font-black uppercase tracking-widest text-text-muted block mb-1.5';
 
 const SectionHeader: React.FC<{ title: string; description?: string }> = ({ title, description }) => (
   <div className="mb-6">
@@ -41,11 +41,12 @@ const PasswordField: React.FC<{ name: string; placeholder?: string; label: strin
   );
 };
 
-const Toggle: React.FC<{ checked: boolean; onChange: (v: boolean) => void; disabled?: boolean }> = ({ checked, onChange, disabled }) => (
+const Toggle: React.FC<{ label: string; checked: boolean; onChange: (v: boolean) => void; disabled?: boolean }> = ({ label, checked, onChange, disabled }) => (
   <button
     type="button"
     role="switch"
     aria-checked={checked}
+    aria-label={label}
     aria-disabled={disabled}
     onClick={() => onChange(!checked)}
     disabled={disabled}
@@ -262,16 +263,16 @@ const Settings: React.FC = () => {
     <>
       <SEO title={t('student.settings.seoTitle')} description={t('student.settings.seoDesc')} noindex />
 
-      <div className="bg-bg min-h-full px-3 md:px-4 lg:px-6 pt-8 pb-16 md:pb-20">
+      <div className="bg-canvas min-h-full px-3 md:px-4 lg:px-6 pt-8 pb-16 md:pb-20">
 
         {/* Page header */}
-        <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-8">
+        <div className="mb-8 flex flex-col gap-6">
           <div>
-            <h1 className="text-4xl md:text-5xl font-black tracking-tight text-text-primary">{sectionHeader[activeSection].title}</h1>
-            <p className="text-sm md:text-base text-text-muted mt-2">{sectionHeader[activeSection].description}</p>
-          </div>
-          <div className="md:hidden">
-            <span className="text-[9px] font-black uppercase tracking-[0.25em] text-accent leading-none mb-0.5">CONFIGURE</span>
+            <p className="type-meta mb-2 uppercase tracking-[0.25em] text-accent">
+              {t('student.settings.configure', 'Configure')}
+            </p>
+            <h1 className="text-3xl font-black tracking-tight text-text-primary md:text-4xl lg:text-5xl">{sectionHeader[activeSection].title}</h1>
+            <p className="mt-2 text-sm text-text-muted md:text-base">{sectionHeader[activeSection].description}</p>
           </div>
         </div>
 
@@ -283,21 +284,21 @@ const Settings: React.FC = () => {
               <div>
                 <SettingsRow label={t('student.settings.appearance.theme')} description={t('student.settings.appearance.themeDesc')}>
                   <div className="flex gap-1 bg-bg rounded-xl p-1 border border-border/50">
-                    <button onClick={() => handleThemeChange('dark')}
+                    <button onClick={() => handleThemeChange('dark')} aria-pressed={theme === 'dark'}
                       className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-colors ${theme === 'dark' ? 'bg-accent text-on-accent' : 'text-text-muted hover:text-text-primary'}`}>
                       {t('student.settings.appearance.dark')}
                     </button>
-                    <button onClick={() => handleThemeChange('light')}
+                    <button onClick={() => handleThemeChange('light')} aria-pressed={theme === 'light'}
                       className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-colors ${theme === 'light' ? 'bg-accent text-on-accent' : 'text-text-muted hover:text-text-primary'}`}>
                       {t('student.settings.appearance.light')}
                     </button>
                   </div>
                 </SettingsRow>
                 <SettingsRow label={t('student.settings.appearance.compactMode')} description={t('student.settings.appearance.compactModeDesc')}>
-                  <Toggle checked={preferences.display.compactMode} onChange={(v) => updateDisplay('compactMode', v)} disabled={prefsSaving} />
+                  <Toggle label={t('student.settings.appearance.compactMode')} checked={preferences.display.compactMode} onChange={(v) => updateDisplay('compactMode', v)} disabled={prefsSaving} />
                 </SettingsRow>
                 <SettingsRow label={t('student.settings.appearance.showAnimations')} description={t('student.settings.appearance.showAnimationsDesc')}>
-                  <Toggle checked={preferences.display.showAnimations} onChange={(v) => updateDisplay('showAnimations', v)} disabled={prefsSaving} />
+                  <Toggle label={t('student.settings.appearance.showAnimations')} checked={preferences.display.showAnimations} onChange={(v) => updateDisplay('showAnimations', v)} disabled={prefsSaving} />
                 </SettingsRow>
                 <SettingsRow label={t('student.settings.appearance.fontSize')}>
                   <SelectField id="settings-font-size" ariaLabel={t('student.settings.appearance.fontSize')} value={preferences.display.fontSize} onChange={(v) => updateDisplay('fontSize', v)}>
@@ -307,7 +308,7 @@ const Settings: React.FC = () => {
                   </SelectField>
                 </SettingsRow>
                 <SettingsRow label={t('student.settings.dataStorage.dataSaver')} description={t('student.settings.dataStorage.dataSaverDesc')}>
-                  <Toggle checked={dataSaver} onChange={handleDataSaverToggle} />
+                  <Toggle label={t('student.settings.dataStorage.dataSaver')} checked={dataSaver} onChange={handleDataSaverToggle} />
                 </SettingsRow>
                 <SettingsRow label={t('student.settings.languageSection.title')} description={t('student.settings.languageSection.description')}>
                   <SelectField id="settings-language" ariaLabel={t('student.settings.languageSection.title')} value={preferences.display.language || i18n.language} onChange={handleLanguageChange}>
@@ -336,22 +337,22 @@ const Settings: React.FC = () => {
             <div className="bg-bg-card border border-border/50 rounded-2xl p-5 md:p-8">
               <div>
                 <SettingsRow label={t('student.settings.notifications.email')} description={t('student.settings.notifications.receiveEmail')}>
-                  <Toggle checked={preferences.notifications.email} onChange={(v) => updateNotification('email', v)} disabled={prefsSaving} />
+                  <Toggle label={t('student.settings.notifications.email')} checked={preferences.notifications.email} onChange={(v) => updateNotification('email', v)} disabled={prefsSaving} />
                 </SettingsRow>
                 <SettingsRow label={t('student.settings.notifications.push')} description={t('student.settings.notifications.receivePush')}>
-                  <Toggle checked={preferences.notifications.push} onChange={(v) => updateNotification('push', v)} disabled={prefsSaving} />
+                  <Toggle label={t('student.settings.notifications.push')} checked={preferences.notifications.push} onChange={(v) => updateNotification('push', v)} disabled={prefsSaving} />
                 </SettingsRow>
                 <SettingsRow label={t('student.settings.notifications.mission')} description={t('student.settings.notifications.courseAndMission')}>
-                  <Toggle checked={preferences.notifications.courseUpdates} onChange={(v) => updateNotification('courseUpdates', v)} disabled={prefsSaving} />
+                  <Toggle label={t('student.settings.notifications.mission')} checked={preferences.notifications.courseUpdates} onChange={(v) => updateNotification('courseUpdates', v)} disabled={prefsSaving} />
                 </SettingsRow>
                 <SettingsRow label={t('student.settings.notifications.cpAlerts')} description={t('student.settings.notifications.cpAlertsDesc')}>
-                  <Toggle checked={preferences.notifications.competitiveEvents} onChange={(v) => updateNotification('competitiveEvents', v)} disabled={prefsSaving} />
+                  <Toggle label={t('student.settings.notifications.cpAlerts')} checked={preferences.notifications.competitiveEvents} onChange={(v) => updateNotification('competitiveEvents', v)} disabled={prefsSaving} />
                 </SettingsRow>
                 <SettingsRow label={t('student.settings.notifications.marketing')} description={t('student.settings.notifications.productService')}>
-                  <Toggle checked={preferences.notifications.newBlogs} onChange={(v) => updateNotification('newBlogs', v)} disabled={prefsSaving} />
+                  <Toggle label={t('student.settings.notifications.marketing')} checked={preferences.notifications.newBlogs} onChange={(v) => updateNotification('newBlogs', v)} disabled={prefsSaving} />
                 </SettingsRow>
                 <SettingsRow label={t('student.settings.notifications.systemUpdates')} description={t('student.settings.notifications.systemUpdatesDesc')}>
-                  <Toggle checked={preferences.notifications.systemUpdates} onChange={(v) => updateNotification('systemUpdates', v)} disabled={prefsSaving} />
+                  <Toggle label={t('student.settings.notifications.systemUpdates')} checked={preferences.notifications.systemUpdates} onChange={(v) => updateNotification('systemUpdates', v)} disabled={prefsSaving} />
                 </SettingsRow>
               </div>
             </div>
@@ -371,16 +372,17 @@ const Settings: React.FC = () => {
                 <SettingsRow label={t('student.settings.learningPrefs.weeklyGoal')}>
                   <input id="settings-weekly-goal" type="number" min={0} max={80} value={preferences.learning.weeklyGoalHours}
                     onChange={(e) => updateLearning('weeklyGoalHours', Number(e.target.value))}
+                    aria-label={t('student.settings.learningPrefs.weeklyGoal')}
                     className="w-24 bg-bg border border-border rounded-xl px-3 py-2.5 text-sm font-bold text-text-primary text-center focus:border-accent outline-none" />
                 </SettingsRow>
                 <SettingsRow label={t('student.settings.learningPrefs.showHints')} description={t('student.settings.learningPrefs.showHintsDesc')}>
-                  <Toggle checked={preferences.learning.showHints} onChange={(v) => updateLearning('showHints', v)} disabled={prefsSaving} />
+                  <Toggle label={t('student.settings.learningPrefs.showHints')} checked={preferences.learning.showHints} onChange={(v) => updateLearning('showHints', v)} disabled={prefsSaving} />
                 </SettingsRow>
                 <SettingsRow label={t('student.settings.learningPrefs.autoPlayVideos')} description={t('student.settings.learningPrefs.autoPlayVideosDesc')}>
-                  <Toggle checked={preferences.learning.autoPlayVideos} onChange={(v) => updateLearning('autoPlayVideos', v)} disabled={prefsSaving} />
+                  <Toggle label={t('student.settings.learningPrefs.autoPlayVideos')} checked={preferences.learning.autoPlayVideos} onChange={(v) => updateLearning('autoPlayVideos', v)} disabled={prefsSaving} />
                 </SettingsRow>
                 <SettingsRow label={t('student.settings.learningPrefs.showCodeExamples')} description={t('student.settings.learningPrefs.showCodeExamplesDesc')}>
-                  <Toggle checked={preferences.learning.showCodeExamples} onChange={(v) => updateLearning('showCodeExamples', v)} disabled={prefsSaving} />
+                  <Toggle label={t('student.settings.learningPrefs.showCodeExamples')} checked={preferences.learning.showCodeExamples} onChange={(v) => updateLearning('showCodeExamples', v)} disabled={prefsSaving} />
                 </SettingsRow>
               </div>
             </div>
@@ -418,9 +420,9 @@ const Settings: React.FC = () => {
                   {liveToken ? (
                     <div className="space-y-4">
                       <div className="p-4 bg-accent-dim/30 border border-accent/30 rounded-xl">
-                        <p className="text-[10px] font-black text-accent uppercase tracking-widest mb-2">{t('student.settings.recovery.copyNowWarning')}</p>
+                        <p className="text-xs font-black text-accent uppercase tracking-widest mb-2">{t('student.settings.recovery.copyNowWarning')}</p>
                         <div className="relative">
-                          <input id="settings-recovery-token" type="text" readOnly value={liveToken} className={`${INPUT_CLS} pr-12 select-all cursor-text bg-bg`} onFocus={(e) => e.target.select()} />
+                          <input id="settings-recovery-token" type="text" readOnly value={liveToken} aria-label={t('student.settings.recovery.copyNowWarning')} className={`${INPUT_CLS} pr-12 select-all cursor-text bg-bg`} onFocus={(e) => e.target.select()} />
                           <button type="button" onClick={copyToken} aria-label={t('aria.copyToken')} className="absolute right-3 top-1/2 -translate-y-1/2 text-text-muted hover:text-accent active:scale-95 transition-colors">
                             {copied ? <CheckCircle2 className="w-4 h-4 text-accent" /> : <Copy className="w-4 h-4" />}
                           </button>
@@ -436,19 +438,19 @@ const Settings: React.FC = () => {
                         <div className="w-8 h-8 rounded-lg bg-accent-dim flex items-center justify-center shrink-0"><Key className="w-4 h-4 text-accent" /></div>
                         <div className="min-w-0">
                           <div className="text-sm font-bold text-text-primary">{recoveryAcked ? t('student.settings.recovery.tokenSaved') : t('student.settings.recovery.tokenExists')}</div>
-                          {recoveryAcked && <div className="flex items-center gap-1 text-[10px] text-accent font-bold mt-0.5"><CheckCircle2 className="w-3 h-3" /> {t('student.settings.recovery.acknowledged')}</div>}
+                          {recoveryAcked && <div className="flex items-center gap-1 text-xs text-accent font-bold mt-0.5"><CheckCircle2 className="w-3 h-3" /> {t('student.settings.recovery.acknowledged')}</div>}
                         </div>
                       </div>
                       {!confirmRegenerate ? (
-                        <button onClick={() => setConfirmRegenerate(true)} className="w-full sm:w-auto flex items-center justify-center gap-2 px-4 py-2.5 border border-border rounded-xl text-sm font-bold text-text-muted hover:text-accent active:scale-[0.98] transition-colors">
+                        <button onClick={() => setConfirmRegenerate(true)} className="w-full sm:w-auto btn-secondary flex items-center justify-center gap-2 !text-sm">
                           <RefreshCw className="w-4 h-4" /> {t('student.settings.recovery.generate')}
                         </button>
                       ) : (
                         <div className="p-4 border border-warning/30 rounded-xl bg-warning/5 space-y-3">
                           <p className="text-xs text-warning font-bold">{t('student.settings.recovery.invalidateWarning')}</p>
                           <div className="flex flex-col sm:flex-row gap-2">
-                            <button onClick={() => setConfirmRegenerate(false)} className="flex-1 px-3 py-2 border border-border rounded-xl text-xs font-bold text-text-muted active:scale-[0.98] transition-colors">{t('button.cancel')}</button>
-                            <button onClick={() => void regenerateToken()} disabled={regenerating} className="flex-1 px-3 py-2 border border-warning/40 rounded-xl text-xs font-bold text-warning hover:bg-warning/10 active:scale-[0.98] transition-colors disabled:opacity-50 flex items-center justify-center gap-1.5">
+                            <button onClick={() => setConfirmRegenerate(false)} className="flex-1 btn-secondary !text-xs">{t('button.cancel')}</button>
+                            <button onClick={() => void regenerateToken()} disabled={regenerating} className="flex-1 btn-danger !text-xs disabled:opacity-50 flex items-center justify-center gap-1.5">
                               {regenerating ? <><Loader2 className="w-3.5 h-3.5 animate-spin" /> {t('student.settings.recovery.generating')}</> : <><RefreshCw className="w-3.5 h-3.5" /> {t('student.settings.recovery.regenerate')}</>}
                             </button>
                           </div>
@@ -474,7 +476,7 @@ const Settings: React.FC = () => {
                     <p className="text-sm text-text-muted">{t('student.settings.sessions.description')}</p>
                   </div>
                   {sessions.length > 1 && (
-                    <button onClick={handleRevokeAll} className="shrink-0 text-[10px] font-black uppercase tracking-widest text-danger hover:text-danger active:opacity-70 transition-colors">
+                    <button onClick={handleRevokeAll} className="shrink-0 text-xs font-black uppercase tracking-widest text-danger hover:text-danger active:opacity-70 transition-colors">
                       {t('student.settings.sessions.revokeAll')}
                     </button>
                   )}
@@ -490,12 +492,12 @@ const Settings: React.FC = () => {
                         <div className="min-w-0">
                           <div className="flex items-center gap-2">
                             <p className="text-sm font-bold text-text-primary truncate">{session.userAgent || t('student.settings.sessions.unknown')}</p>
-                            {session.isCurrent && <span className="text-[9px] font-black uppercase tracking-widest text-accent bg-accent/10 px-2 py-0.5 rounded-lg">{t('student.settings.sessions.current')}</span>}
+                            {session.isCurrent && <span className="text-xs font-black uppercase tracking-widest text-accent bg-accent/10 px-2 py-0.5 rounded-lg">{t('student.settings.sessions.current')}</span>}
                           </div>
-                          <p className="text-[10px] text-text-muted font-mono mt-0.5">{session.ipAddress} · {new Date(session.createdAt).toLocaleDateString()}</p>
+                          <p className="text-xs text-text-muted font-mono mt-0.5">{session.ipAddress} · {new Date(session.createdAt).toLocaleDateString()}</p>
                         </div>
                         {!session.isCurrent && (
-                          <button onClick={() => handleRevokeSession(session.id)} className="text-[10px] font-black uppercase tracking-widest text-text-muted hover:text-danger active:opacity-70 transition-colors shrink-0">
+                          <button onClick={() => handleRevokeSession(session.id)} className="text-xs font-black uppercase tracking-widest text-text-muted hover:text-danger active:opacity-70 transition-colors shrink-0">
                             {t('student.settings.sessions.revoke')}
                           </button>
                         )}
@@ -524,7 +526,7 @@ const Settings: React.FC = () => {
                       <div className="p-4 border border-danger/30 rounded-xl bg-danger/5 space-y-3">
                         <p className="text-xs text-danger font-bold">{t('student.settings.dangerZone.deleteConfirmDesc')}</p>
                         <div className="flex flex-col sm:flex-row gap-2">
-                          <button onClick={() => setConfirmDelete(false)} className="flex-1 px-3 py-2 border border-border rounded-xl text-xs font-bold text-text-muted active:scale-[0.98] transition-colors">{t('button.cancel')}</button>
+                          <button onClick={() => setConfirmDelete(false)} className="flex-1 btn-secondary !text-xs">{t('button.cancel')}</button>
                           <button onClick={handleDeleteAccount} disabled={deleting} className="flex-1 px-3 py-2 btn-danger !text-xs disabled:opacity-50 flex items-center justify-center gap-1.5">
                             {deleting ? <><Loader2 className="w-3.5 h-3.5 animate-spin" /> {t('student.settings.dangerZone.deleting')}</> : <><Trash2 className="w-3.5 h-3.5" /> {t('student.settings.dangerZone.confirmDelete')}</>}
                           </button>
