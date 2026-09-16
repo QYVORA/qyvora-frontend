@@ -103,7 +103,7 @@ const AdminNavPanel: React.FC<AdminNavPanelProps> = ({ open, onOpenChange, handl
               <div className="space-y-6 md:space-y-8">
                 {NAV_GROUPS.map((group) => (
                   <section key={group.titleKey}>
-                    <h3 className="mb-2.5 text-[10px] font-black uppercase tracking-[0.25em] text-accent md:mb-3">
+                    <h3 className="mb-2.5 text-xs font-black uppercase tracking-[0.25em] text-accent md:mb-3">
                       {t(group.titleKey)}
                     </h3>
                     <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">

@@ -145,7 +145,7 @@ const IncidentsTab = () => {
       {showForm && (
         <div className="rounded-2xl border border-border/40 bg-bg-card p-5 space-y-4" aria-label={t('admin.incidents.newIncident')}>
           <div>
-            <label htmlFor="incident-title" className="block text-[10px] font-black uppercase tracking-widest text-text-muted mb-1.5">
+            <label htmlFor="incident-title" className="block text-xs font-black uppercase tracking-widest text-text-muted mb-1.5">
               {t('admin.incidents.titleLabel')}
             </label>
             <input
@@ -158,7 +158,7 @@ const IncidentsTab = () => {
             />
           </div>
           <div>
-            <label htmlFor="incident-description" className="block text-[10px] font-black uppercase tracking-widest text-text-muted mb-1.5">
+            <label htmlFor="incident-description" className="block text-xs font-black uppercase tracking-widest text-text-muted mb-1.5">
               {t('admin.incidents.descriptionLabel')}
             </label>
             <textarea
@@ -172,7 +172,7 @@ const IncidentsTab = () => {
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label htmlFor="incident-severity" className="block text-[10px] font-black uppercase tracking-widest text-text-muted mb-1.5">
+              <label htmlFor="incident-severity" className="block text-xs font-black uppercase tracking-widest text-text-muted mb-1.5">
                 {t('admin.incidents.severityLabel')}
               </label>
               <select
@@ -188,7 +188,7 @@ const IncidentsTab = () => {
               </select>
             </div>
             <div>
-              <label htmlFor="incident-correlation" className="block text-[10px] font-black uppercase tracking-widest text-text-muted mb-1.5">
+              <label htmlFor="incident-correlation" className="block text-xs font-black uppercase tracking-widest text-text-muted mb-1.5">
                 {t('admin.incidents.correlationLabel')}
               </label>
               <input
@@ -233,14 +233,14 @@ const IncidentsTab = () => {
                 <Badge variant={SEVERITY_VARIANT[incident.severity]}>{incident.severity}</Badge>
                 <Badge variant={STATUS_VARIANT[incident.status]}>{incident.status}</Badge>
                 <span className="font-bold text-sm text-text-primary truncate">{incident.title}</span>
-                <span className="ml-auto text-[10px] font-mono text-text-muted/60 whitespace-nowrap">
+                <span className="ml-auto text-xs font-mono text-text-muted/60 whitespace-nowrap">
                   {new Date(incident.createdAt).toLocaleString()}
                 </span>
               </div>
               {incident.description && (
                 <p className="text-xs text-text-secondary break-words">{incident.description}</p>
               )}
-              <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-[10px] font-mono text-text-muted/70">
+              <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-xs font-mono text-text-muted/70">
                 <span>{t('admin.incidents.createdBy')}: {incident.createdBy?.name || t('common2.unknown')}</span>
                 {incident.resolvedAt && (
                   <span>{t('admin.incidents.resolvedAt')}: {new Date(incident.resolvedAt).toLocaleString()}</span>
@@ -282,7 +282,7 @@ const IncidentsTab = () => {
           >
             <ChevronLeft className="w-5 h-5" />
           </button>
-          <span className="text-[10px] font-mono text-text-muted px-2">{t('components.dataTable.pageOf', { page, total: totalPages })}</span>
+          <span className="text-xs font-mono text-text-muted px-2">{t('components.dataTable.pageOf', { page, total: totalPages })}</span>
           <button
             onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
             disabled={page >= totalPages}

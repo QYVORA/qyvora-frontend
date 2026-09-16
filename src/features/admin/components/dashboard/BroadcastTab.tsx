@@ -51,7 +51,7 @@ const BroadcastTab = () => {
         </div>
 
         <div className="space-y-1.5">
-          <label className="text-[10px] font-bold text-text-muted uppercase tracking-wider">{t('form.title')}</label>
+          <label className="text-xs font-bold text-text-muted uppercase tracking-wider">{t('form.title')}</label>
           <input
             type="text"
             value={title}
@@ -63,7 +63,7 @@ const BroadcastTab = () => {
         </div>
 
         <div className="space-y-1.5">
-          <label className="text-[10px] font-bold text-text-muted uppercase tracking-wider">{t('form.message')}</label>
+          <label className="text-xs font-bold text-text-muted uppercase tracking-wider">{t('form.message')}</label>
           <textarea
             value={message}
             onChange={(e) => setMessage(e.target.value)}
@@ -74,7 +74,7 @@ const BroadcastTab = () => {
         </div>
 
         <div className="space-y-1.5">
-          <label className="text-[10px] font-bold text-text-muted uppercase tracking-wider">{t('admin.broadcast.targetAudience')}</label>
+          <label className="text-xs font-bold text-text-muted uppercase tracking-wider">{t('admin.broadcast.targetAudience')}</label>
           <div className="flex flex-wrap gap-2">
             {([
               { value: 'all', label: t('admin.broadcast.allUsers'), icon: Users },
@@ -115,7 +115,7 @@ const BroadcastTab = () => {
         {/* Preview */}
         {title.trim() && (
           <div className="rounded-xl border border-border bg-bg p-4 space-y-2">
-            <div className="text-[10px] font-bold text-text-muted uppercase tracking-wider">{t('admin.broadcast.preview')}</div>
+            <div className="text-xs font-bold text-text-muted uppercase tracking-wider">{t('admin.broadcast.preview')}</div>
             <div className="rounded-lg border border-accent/20 bg-accent-dim/5 p-3 space-y-1">
               <div className="text-sm font-bold text-text-primary">{title}</div>
               {message.trim() && <div className="text-xs text-text-secondary leading-relaxed">{message}</div>}

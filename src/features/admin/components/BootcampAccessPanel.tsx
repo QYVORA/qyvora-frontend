@@ -92,7 +92,7 @@ const BootcampAccessPanel: React.FC<Props> = ({ addToast }) => {
         <div className="min-w-0">
           <div className="mb-2 flex flex-wrap items-center gap-2">
             <span className="text-base font-black uppercase tracking-wide text-text-primary md:text-lg">{t('admin.bootcamps.bootcampLive')}</span>
-            <span className={`rounded-full px-2.5 py-0.5 text-[10px] font-black uppercase tracking-widest ${started ? 'bg-accent/20 text-accent' : 'bg-border text-text-muted'}`}>
+            <span className={`rounded-full px-2.5 py-0.5 text-xs font-black uppercase tracking-widest ${started ? 'bg-accent/20 text-accent' : 'bg-border text-text-muted'}`}>
               {started ? t('admin.bootcamps.live') : t('admin.bootcamps.paused')}
             </span>
           </div>
@@ -174,7 +174,7 @@ const BootcampAccessPanel: React.FC<Props> = ({ addToast }) => {
                   <div className="truncate text-sm font-bold text-text-primary md:text-base">{mod.title}</div>
                   <div className="text-xs text-text-muted">{t('admin.bootcamps.rooms', { count: mod.rooms })}</div>
                 </div>
-                {unlocked && <span className="shrink-0 text-[10px] font-black uppercase tracking-widest text-accent">{t('badge.unlocked')}</span>}
+                {unlocked && <span className="shrink-0 text-xs font-black uppercase tracking-widest text-accent">{t('badge.unlocked')}</span>}
               </div>
             );
           })}

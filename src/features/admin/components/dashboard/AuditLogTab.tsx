@@ -118,19 +118,19 @@ const AuditLogTab = () => {
                   <span className="font-mono">{entry.targetType}:{entry.targetId?.slice(0, 20)}</span>
                 </span>
                 <span className="flex flex-col items-end gap-0.5">
-                  <span className="text-[10px] font-mono text-text-muted/60">{entry.ipAddress}</span>
+                  <span className="text-xs font-mono text-text-muted/60">{entry.ipAddress}</span>
                   {entry.correlationId ? (
                     <button
                       onClick={() => navigate(`?tab=security&requestId=${encodeURIComponent(entry.correlationId!)}`)}
                       title={t('admin.audit.viewSecurityEvents')}
                       aria-label={t('admin.audit.viewSecurityEvents')}
-                      className="inline-flex items-center gap-1 text-[10px] font-mono text-accent/80 hover:text-accent transition-colors min-h-[44px]"
+                      className="inline-flex items-center gap-1 text-xs font-mono text-accent/80 hover:text-accent transition-colors min-h-[44px]"
                     >
                       <Link2 size={10} />
                       {entry.correlationId.slice(0, 8)}
                     </button>
                   ) : (
-                    <span className="text-[10px] font-mono text-text-muted/30">—</span>
+                    <span className="text-xs font-mono text-text-muted/30">—</span>
                   )}
                 </span>
               </div>
@@ -149,7 +149,7 @@ const AuditLogTab = () => {
           >
             <ChevronLeft className="w-5 h-5" />
           </button>
-          <span className="text-[10px] font-mono text-text-muted px-2">{t('components.dataTable.pageOf', { page, total: totalPages })}</span>
+          <span className="text-xs font-mono text-text-muted px-2">{t('components.dataTable.pageOf', { page, total: totalPages })}</span>
           <button
             onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
             disabled={page >= totalPages}

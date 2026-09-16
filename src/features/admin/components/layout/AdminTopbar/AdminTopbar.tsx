@@ -148,7 +148,7 @@ const AdminTopbar = () => {
             <Logo size="md" variant="mark" />
             <span className="hidden sm:inline-flex items-center gap-1.5 rounded-lg border border-accent/20 bg-accent-dim/40 px-2 py-0.5">
               <IconShield size={12} className="text-accent" />
-              <span className="text-[9px] font-black text-accent font-mono tracking-[0.2em]">{t('nav.admin')}</span>
+              <span className="text-xs font-black text-accent font-mono tracking-[0.2em]">{t('nav.admin')}</span>
             </span>
           </Link>
 
@@ -161,7 +161,7 @@ const AdminTopbar = () => {
                 <Link
                   key={item.path}
                   to={item.path}
-                  className={`relative flex flex-col items-center gap-1.5 px-5 py-2 text-[10px] font-black uppercase tracking-widest transition-colors shrink-0 ${
+                  className={`relative flex flex-col items-center gap-1.5 px-5 py-2 text-xs font-black uppercase tracking-widest transition-colors shrink-0 ${
                     active ? 'text-accent' : 'text-text-secondary hover:text-text-primary active:opacity-70'
                   }`}
                 >
@@ -188,7 +188,7 @@ const AdminTopbar = () => {
               >
                 <IconNotification size={24} />
                 {unreadCount > 0 && (
-                  <span className="absolute top-2 right-2 min-w-4 h-4 px-1 bg-accent text-on-accent text-[9px] font-black rounded-full flex items-center justify-center leading-none">
+                  <span className="absolute top-2 right-2 min-w-4 h-4 px-1 bg-accent text-on-accent text-xs font-black rounded-full flex items-center justify-center leading-none">
                     {unreadCount > 9 ? '9+' : unreadCount}
                   </span>
                 )}

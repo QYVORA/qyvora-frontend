@@ -83,7 +83,7 @@ const OverviewTab = ({ data, status, onRetry }: OverviewTabProps) => {
 
   const signupColumns: Column<OverviewData['recentSignups'][number]>[] = [
     { key: 'name', header: t('form.name'), render: (u) => <div><div className="text-sm font-bold text-text-primary">{u.name || t('common2.unknown')}</div><div className="text-xs text-text-muted font-mono">{u.email}</div></div> },
-    { key: 'createdAt', header: t('common2.date'), render: (u) => <span className="text-[10px] text-text-muted font-mono">{new Date(u.createdAt).toLocaleDateString()}</span>, className: 'text-right' },
+    { key: 'createdAt', header: t('common2.date'), render: (u) => <span className="text-xs text-text-muted font-mono">{new Date(u.createdAt).toLocaleDateString()}</span>, className: 'text-right' },
   ];
 
   const signupMobileCard = (u: OverviewData['recentSignups'][number]) => (
@@ -93,14 +93,14 @@ const OverviewTab = ({ data, status, onRetry }: OverviewTabProps) => {
           <div className="text-sm font-bold text-text-primary truncate">{u.name || t('common2.unknown')}</div>
           <div className="text-xs text-text-muted font-mono truncate">{u.email}</div>
         </div>
-        <span className="text-[10px] text-text-muted font-mono whitespace-nowrap shrink-0">{new Date(u.createdAt).toLocaleDateString()}</span>
+        <span className="text-xs text-text-muted font-mono whitespace-nowrap shrink-0">{new Date(u.createdAt).toLocaleDateString()}</span>
       </div>
     </div>
   );
 
   const StatSection = ({ title, className, children }: { title: string; className: string; children: ReactNode }) => (
     <section>
-      <h3 className="mb-2.5 text-[10px] font-black uppercase tracking-[0.25em] text-accent">{title}</h3>
+      <h3 className="mb-2.5 text-xs font-black uppercase tracking-[0.25em] text-accent">{title}</h3>
       <div className={className}>{children}</div>
     </section>
   );
