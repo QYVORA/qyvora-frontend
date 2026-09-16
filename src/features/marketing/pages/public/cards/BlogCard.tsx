@@ -13,7 +13,7 @@ interface BlogCardProps {
 const Tags: React.FC<{ post: BlogPost }> = ({ post }) => (
   <div className="flex items-center gap-2 flex-wrap">
     {post.tags?.slice(0, 2).map((tag) => (
-      <span key={tag} className="px-2 py-0.5 rounded-lg bg-accent/10 text-[9px] font-black uppercase tracking-widest text-accent border border-accent/20">
+      <span key={tag} className="px-2 py-0.5 rounded-lg bg-accent/10 text-xs font-black uppercase tracking-widest text-accent border border-accent/20">
         {tag}
       </span>
     ))}
@@ -49,7 +49,7 @@ const BlogCard: React.FC<BlogCardProps> = ({ post, view }) => {
               {post.excerpt}
             </p>
           </div>
-          <div className="flex items-center justify-between pt-2 text-[10px] text-text-muted font-mono">
+          <div className="flex items-center justify-between pt-2 text-xs text-text-muted font-mono">
             <span className="flex items-center gap-1 truncate min-w-0">
               <User className="w-3 h-3 shrink-0" /> <span className="truncate">{post.author?.name}</span>
             </span>
@@ -57,7 +57,7 @@ const BlogCard: React.FC<BlogCardProps> = ({ post, view }) => {
               <span className="flex items-center gap-1">
                 <IconClock className="w-3 h-3" /> {post.readTime}
               </span>
-              <span className="flex items-center gap-1 text-accent font-black uppercase tracking-widest text-[9px]">
+              <span className="flex items-center gap-1 text-accent font-black uppercase tracking-widest text-xs">
                 Read <IconArrowRight size={12} />
               </span>
             </div>
@@ -94,7 +94,7 @@ const BlogCard: React.FC<BlogCardProps> = ({ post, view }) => {
             {post.excerpt}
           </p>
         </div>
-        <div className="flex items-center justify-between pt-2 text-[10px] text-text-muted font-mono">
+        <div className="flex items-center justify-between pt-2 text-xs text-text-muted font-mono">
           <span className="flex items-center gap-1 truncate">
             <User className="w-3 h-3" /> {post.author?.name}
           </span>

@@ -132,7 +132,7 @@ const ContactModalHost: React.FC = () => {
             
             {/* Contact Type Toggle */}
             <div className="flex items-center justify-between pb-4">
-              <span className="text-[10px] font-black text-text-muted uppercase tracking-[0.25em]">
+              <span className="text-xs font-black text-text-muted uppercase tracking-[0.25em]">
                 {t('contact2.category')}
               </span>
               <div className="flex bg-bg/50 border border-border p-1 rounded-xl w-full md:w-60">
@@ -140,7 +140,7 @@ const ContactModalHost: React.FC = () => {
                   type="button"
                   onClick={() => setContactType('student')}
                   className={cn(
-                    'flex-1 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-wider transition-[background-color,color,box-shadow] duration-[var(--dur-fast)] ease-[var(--ease-smooth)]',
+                    'flex-1 py-1.5 rounded-lg text-xs font-bold uppercase tracking-wider transition-[background-color,color,box-shadow] duration-[var(--dur-fast)] ease-[var(--ease-smooth)]',
                     contactType === 'student'
                       ? 'bg-accent text-on-accent font-black'
                       : 'text-text-muted hover:text-text-primary'
@@ -152,7 +152,7 @@ const ContactModalHost: React.FC = () => {
                   type="button"
                   onClick={() => setContactType('business')}
                   className={cn(
-                    'flex-1 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-wider transition-[background-color,color,box-shadow] duration-[var(--dur-fast)] ease-[var(--ease-smooth)]',
+                    'flex-1 py-1.5 rounded-lg text-xs font-bold uppercase tracking-wider transition-[background-color,color,box-shadow] duration-[var(--dur-fast)] ease-[var(--ease-smooth)]',
                     contactType === 'business'
                       ? 'bg-accent text-on-accent font-black'
                       : 'text-text-muted hover:text-text-primary'
@@ -165,7 +165,7 @@ const ContactModalHost: React.FC = () => {
 
             {/* Name Field */}
             <div className="space-y-2">
-              <label className="text-[10px] font-black text-text-muted uppercase tracking-[0.25em] flex items-center gap-2">
+              <label className="text-xs font-black text-text-muted uppercase tracking-[0.25em] flex items-center gap-2">
                 <User className="w-3 h-3" />
                 {t('contact2.yourName')}
               </label>
@@ -181,7 +181,7 @@ const ContactModalHost: React.FC = () => {
 
             {/* Email Field */}
             <div className="space-y-2">
-              <label className="text-[10px] font-black text-text-muted uppercase tracking-[0.25em] flex items-center gap-2">
+              <label className="text-xs font-black text-text-muted uppercase tracking-[0.25em] flex items-center gap-2">
                 <Mail className="w-3 h-3" />
                 {t('contact2.yourEmail')}
               </label>
@@ -196,7 +196,7 @@ const ContactModalHost: React.FC = () => {
 
             {/* Message Field */}
             <div className="space-y-2">
-              <label className="text-[10px] font-black text-text-muted uppercase tracking-[0.25em] flex items-center gap-2">
+              <label className="text-xs font-black text-text-muted uppercase tracking-[0.25em] flex items-center gap-2">
                 <MessageSquare className="w-3 h-3" />
                 {t('form.message')}
               </label>

@@ -92,7 +92,7 @@ const ServiceRequestModalHost: React.FC = () => {
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                 {/* Full Name */}
                 <div className="space-y-1.5">
-                  <label className="text-[10px] font-bold text-text-muted uppercase tracking-widest flex items-center gap-2">
+                  <label className="text-xs font-bold text-text-muted uppercase tracking-widest flex items-center gap-2">
                     <UserIcon className="w-3 h-3" /> {t('services2.fullName')}
                   </label>
                   <input
@@ -106,7 +106,7 @@ const ServiceRequestModalHost: React.FC = () => {
 
                 {/* Email Address */}
                 <div className="space-y-1.5">
-                  <label className="text-[10px] font-bold text-text-muted uppercase tracking-widest flex items-center gap-2">
+                  <label className="text-xs font-bold text-text-muted uppercase tracking-widest flex items-center gap-2">
                     <Send className="w-3 h-3" /> {t('services2.emailAddress')}
                   </label>
                   <input
@@ -120,7 +120,7 @@ const ServiceRequestModalHost: React.FC = () => {
 
                 {/* Business Name */}
                 <div className="space-y-1.5">
-                  <label className="text-[10px] font-bold text-text-muted uppercase tracking-widest flex items-center gap-2">
+                  <label className="text-xs font-bold text-text-muted uppercase tracking-widest flex items-center gap-2">
                     <Building2 className="w-3 h-3" /> {t('services2.businessName')}
                   </label>
                   <input
@@ -133,7 +133,7 @@ const ServiceRequestModalHost: React.FC = () => {
 
                 {/* Phone Number */}
                 <div className="space-y-1.5">
-                  <label className="text-[10px] font-bold text-text-muted uppercase tracking-widest flex items-center gap-2">
+                  <label className="text-xs font-bold text-text-muted uppercase tracking-widest flex items-center gap-2">
                     <Phone className="w-3 h-3" /> {t('services2.phoneNumber')}
                   </label>
                   <input
@@ -147,7 +147,7 @@ const ServiceRequestModalHost: React.FC = () => {
 
               {/* Website URL */}
               <div className="space-y-1.5">
-                <label className="text-[10px] font-bold text-text-muted uppercase tracking-widest flex items-center gap-2">
+                <label className="text-xs font-bold text-text-muted uppercase tracking-widest flex items-center gap-2">
                   <Globe className="w-3 h-3" /> {t('services2.websiteUrl')}
                 </label>
                 <input
@@ -160,7 +160,7 @@ const ServiceRequestModalHost: React.FC = () => {
 
               {/* Message / Notes */}
               <div className="space-y-1.5">
-                <label className="text-[10px] font-bold text-text-muted uppercase tracking-widest">
+                <label className="text-xs font-bold text-text-muted uppercase tracking-widest">
                   {t('services2.optionalNotes')}
                 </label>
                 <textarea
