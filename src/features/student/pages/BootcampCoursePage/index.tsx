@@ -15,11 +15,12 @@ import { useAuth } from '@/core/contexts/AuthContext';
 import { formatSyncLabel, getLastSync, resolveNextRoomPath, setLastSyncNow } from '@/features/student/utils/studentExperience';
 import useStudentOverview from '@/features/student/hooks/useStudentOverview';
 import SEO from '@/shared/components/SEO';
-import FadeIn from '../../../../shared/components/ui/FadeIn';
+import FadeIn from '@/shared/components/ui/FadeIn';
+import PageHeader from '@/shared/components/ui/PageHeader';
+import Button from '@/shared/components/ui/Button';
 import { BootcampCourseSkeleton } from '@/features/student/components/StudentSkeletons';
 import PhaseSection from '@/features/student/components/bootcamp-course/PhaseSection';
-import { LearningFilterStrip } from '@/features/student/components/learning';
-import StudentHeroSection from '@/shared/components/StudentHeroSection';
+import { LearningFilterStrip } from '@/shared/components/learning';
 import type { Course } from '@/features/student/components/bootcamp-course/types';
 
 const BootcampCourse: React.FC = () => {
@@ -137,35 +138,33 @@ const BootcampCourse: React.FC = () => {
 
   return (
     <FadeIn>
-    <div className="min-h-full">
+    <div className="min-h-full bg-canvas">
       <SEO
         title={course?.title || t('student.bootcampCourse.header.label', 'Bootcamp')}
         description={`${t('student.bootcampCourse.journeyProgress', 'Track your progress through')} ${course?.title || t('student.bootcampCourse.header.label', 'the bootcamp')} | ${progressValue} complete.`}
         noindex
       />
 
-      <div className="bg-bg pt-8 pb-10">
-        <StudentHeroSection
-          fullHeight={false}
+      <div className="w-full px-3 pb-16 pt-6 md:px-4 md:pb-20 md:pt-8 lg:px-6 lg:pb-24">
+        <PageHeader
+          kicker={t('student.bootcampCourse.eyebrow', 'QYVORA · Bootcamp')}
           title={course?.title || t('student.bootcampCourse.header.label', 'Bootcamp')}
           description={syncError || `${t('student.bootcampCourse.journeyProgress', 'Track your progress through')} ${course?.title || t('student.bootcampCourse.header.label', 'the bootcamp')}. ${formatSyncLabel(lastSync)}`}
-          stats={[
-            { label: t('student.bootcampCourse.modules', 'Modules'), value: `${doneModules}/${totalModules}` },
-            { label: t('student.bootcampCourse.rooms', 'Rooms'), value: `${doneRooms}/${totalRooms}` },
-          ]}
-        >
-          {nextRoomPath && (
-            <Link
-              to={nextRoomPath}
-              className="btn-primary inline-flex items-center gap-2 px-6 py-2.5"
-            >
-              {t('student.bootcampCourse.continueTraining', 'Continue Training')}
-            </Link>
-          )}
-        </StudentHeroSection>
-      </div>
+          metadata={
+            <span className="type-meta inline-flex items-center gap-2">
+              <span className="font-bold text-accent">{doneModules}/{totalModules}</span> {t('student.bootcampCourse.modules', 'Modules')} · <span className="font-bold text-text-primary">{doneRooms}/{totalRooms}</span> {t('student.bootcampCourse.rooms', 'Rooms')}
+            </span>
+          }
+          actions={
+            nextRoomPath ? (
+              <Button to={nextRoomPath}>
+                {t('student.bootcampCourse.continueTraining', 'Continue Training')}
+              </Button>
+            ) : undefined
+          }
+        />
 
-      <div className="bg-bg-alt px-3 md:px-4 lg:px-6 py-10 pb-20 lg:pb-24 space-y-8">
+        <div className="w-full space-y-8">
 
         <LearningFilterStrip
           filters={phaseFilters}
@@ -181,7 +180,7 @@ const BootcampCourse: React.FC = () => {
                   <TrendingUp className="h-5 w-5 text-accent" />
                 </div>
                 <div className="min-w-0">
-                  <p className="text-[10px] font-black uppercase tracking-widest text-accent truncate">{t('student.bootcampCourse.recommendedNext', 'Recommended Next')}</p>
+                  <p className="text-xs font-black uppercase tracking-widest text-accent truncate">{t('student.bootcampCourse.recommendedNext', 'Recommended Next')}</p>
                   <p className="text-sm font-bold text-text-primary">{nextRoomLabel.phase}, {nextRoomLabel.room}</p>
                 </div>
               </div>
@@ -207,6 +206,7 @@ const BootcampCourse: React.FC = () => {
             />
           );
         })}
+      </div>
       </div>
     </div>
     </FadeIn>
