@@ -78,7 +78,7 @@ const KillChainLab = () => {
               description: s.description,
               difficulty: s.difficulty,
               meta: (
-                <span className="text-[9px] font-black uppercase tracking-widest text-accent">
+                <span className="text-xs font-black uppercase tracking-widest text-accent">
                   {s.cpReward} CP
                 </span>
               ),
@@ -134,7 +134,7 @@ const KillChainLab = () => {
             </div>
 
             <div className="rounded-2xl border border-border/50 bg-bg-card p-4 md:p-5 mb-2">
-              <div className="flex items-center gap-2 mb-4"><Radar className="w-4 h-4 text-accent" /><span className="text-[9px] font-black uppercase tracking-widest text-accent">Kill Chain Progress</span></div>
+              <div className="flex items-center gap-2 mb-4"><Radar className="w-4 h-4 text-accent" /><span className="text-xs font-black uppercase tracking-widest text-accent">Kill Chain Progress</span></div>
               <KillChainDiagramSimple
                 phases={activeScenario.phases.map(p => p.name)}
                 currentPhaseIndex={activePhaseIndex}
@@ -169,7 +169,7 @@ const KillChainLab = () => {
                       onComplete={() => handleCommandComplete(currentPhase.id, cmdIdx)}
                     >
                       {cmd.isRequired && (
-                        <span className="inline-flex px-2 py-0.5 rounded bg-warning/10 text-[8px] font-black uppercase tracking-widest text-warning">Required</span>
+                        <span className="inline-flex px-2 py-0.5 rounded bg-warning/10 text-xs font-black uppercase tracking-widest text-warning">Required</span>
                       )}
                     </WalkthroughStep>
                   );
@@ -177,7 +177,7 @@ const KillChainLab = () => {
 
                 {currentPhase.commands.filter(c => c.isRequired).every((_, i) => completedCommands.has(`${currentPhase.id}-${i}`)) && (
                   <div className="flex justify-end mt-2">
-                    <button onClick={handlePhaseComplete} className="btn-primary !rounded-xl !text-[10px] px-6 py-2.5 flex items-center gap-2">
+                    <button onClick={handlePhaseComplete} className="btn-primary !rounded-xl !text-xs px-6 py-2.5 flex items-center gap-2">
                       {activePhaseIndex < activeScenario.phases.length - 1 ? <>Complete Phase & Move Next</> : <>All Phases Complete <CheckCircle className="w-3.5 h-3.5" /></>}
                     </button>
                   </div>

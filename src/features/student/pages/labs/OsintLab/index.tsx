@@ -95,7 +95,7 @@ const OsintLab = () => {
               description: challenge.description,
               difficulty: challenge.difficulty,
               meta: (
-                <span className="text-[9px] font-black uppercase tracking-widest text-accent">
+                <span className="text-xs font-black uppercase tracking-widest text-accent">
                   {challenge.cpReward} CP
                 </span>
               ),

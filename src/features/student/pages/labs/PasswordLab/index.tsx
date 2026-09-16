@@ -131,7 +131,7 @@ const PasswordLab = () => {
               description: scenario.description,
               difficulty: scenario.difficulty,
               meta: (
-                <span className="text-[9px] font-black uppercase tracking-widest text-accent">
+                <span className="text-xs font-black uppercase tracking-widest text-accent">
                   {scenario.cpReward} CP
                 </span>
               ),

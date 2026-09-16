@@ -2,17 +2,17 @@ import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { useParams, Link, useSearchParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { ArrowLeft, ArrowRight, Lock, Target, Minimize2, Maximize2 } from 'lucide-react';
-import { FadeIn } from '@/shared/components/ui';
+import { FadeIn, EmptyState } from '@/shared/components/ui';
 import SEO from '@/shared/components/SEO';
-import { getCourseById } from '@/features/student/data/courses';
+import { getCourseById, getCategoryById } from '@/features/student/data/courses';
 import { EducationalMarkdownRenderer } from '@/shared/components/courses/CodeBlockRenderer';
 import InlineQuiz from '@/shared/components/courses/InlineQuiz';
 import CodePlayground from '@/shared/components/courses/CodePlayground';
-import StudentHeroSection from '@/shared/components/StudentHeroSection';
 import StepRenderer from '@/shared/components/learning/StepRenderer';
 import LearningNav from '@/shared/components/learning/LearningNav';
 import LearningToolbar from '@/shared/components/learning/LearningToolbar';
 import FocusedStepList from '@/shared/components/learning/FocusedStepList';
+import LearningWorkspaceShell from '@/shared/components/learning/LearningWorkspaceShell';
 import WalkthroughScrollControls from '@/shared/components/learning/WalkthroughScrollControls';
 import { CourseLessonSkeleton } from '@/features/student/components/StudentSkeletons';
 import api from '@/core/services/api';
@@ -20,6 +20,7 @@ import CelebrationModal from '@/shared/components/CelebrationModal';
 import { useCelebrationTrigger } from '@/shared/hooks/useCelebrationTrigger';
 import { useRoomSession } from '@/features/student/hooks/useRoomSession';
 import { useReducedMotion } from '@/shared/hooks/useReducedMotion';
+import Button from '@/shared/components/ui/Button';
 import type { Lesson } from '@/features/student/data/courses';
 
 const STORAGE_KEY = 'qyvora_course_progress';
@@ -44,13 +45,13 @@ const LessonViewer: React.FC<{
       badges={
         <>
           {lesson.hasQuiz && (
-            <span className="px-1.5 py-0.5 rounded-lg bg-accent/10 text-[8px] font-black uppercase tracking-widest text-accent">QUIZ</span>
+            <span className="px-1.5 py-0.5 rounded-lg bg-accent/10 text-xs font-black uppercase tracking-widest text-accent">QUIZ</span>
           )}
           {lesson.hasTerminal && (
-            <span className="px-1.5 py-0.5 rounded-lg bg-accent/10 text-[8px] font-black uppercase tracking-widest text-accent">TERM</span>
+            <span className="px-1.5 py-0.5 rounded-lg bg-accent/10 text-xs font-black uppercase tracking-widest text-accent">TERM</span>
           )}
           {lesson.hasCodePlayground && (
-            <span className="px-1.5 py-0.5 rounded-lg bg-accent/10 text-[8px] font-black uppercase tracking-widest text-accent">CODE</span>
+            <span className="px-1.5 py-0.5 rounded-lg bg-accent/10 text-xs font-black uppercase tracking-widest text-accent">CODE</span>
           )}
         </>
       }
@@ -63,7 +64,7 @@ const LessonViewer: React.FC<{
         <div className="mt-8 md:mt-10">
           <div className="flex items-center gap-2 mb-4">
             <Target className="h-4 w-4 text-accent" />
-            <span className="text-[10px] font-black uppercase tracking-widest text-accent">Code Playground</span>
+            <span className="text-xs font-black uppercase tracking-widest text-accent">Code Playground</span>
           </div>
           <CodePlayground
             initialCode={lesson.codePlaygroundInitial || ''}
@@ -215,11 +216,17 @@ const CourseLessonPage: React.FC = () => {
 
   if (!course) {
     return (
-      <div className="min-h-screen bg-bg flex items-center justify-center">
-        <div className="text-center">
-          <p className="text-text-muted text-lg font-mono">Course not found.</p>
-          <Link to="/dashboard/courses" className="text-accent hover:underline mt-4 inline-block font-mono">← Back to My Courses</Link>
-        </div>
+      <div className="min-h-dvh w-full bg-canvas px-3 py-16 md:px-4 lg:px-6">
+        <EmptyState
+          title={t('courseLesson.notFoundTitle', 'Course not found.')}
+          description={t('courseLesson.notFoundDescription', 'The course you are looking for does not exist or was removed.')}
+          action={
+            <Button to="/dashboard/courses" variant="secondary">
+              <ArrowLeft className="h-4 w-4" aria-hidden="true" />
+              {t('courseLesson.backToCourses', 'Back to My Courses')}
+            </Button>
+          }
+        />
       </div>
     );
   }
@@ -230,133 +237,116 @@ const CourseLessonPage: React.FC = () => {
 
   if (!purchased) {
     return (
-      <div className="min-h-screen bg-bg flex items-center justify-center">
-        <div className="text-center space-y-4 max-w-md mx-auto px-4">
-          <Lock className="h-12 w-12 text-text-muted/30 mx-auto" />
-          <h1 className="text-3xl font-black text-text-primary font-mono">Course Not Unlocked</h1>
-          <p className="text-sm text-text-muted leading-relaxed">
-            You haven't unlocked {course.title} yet. Unlock it from the marketplace to start learning.
-          </p>
-          <Link
-            to="/dashboard/marketplace"
-            className="inline-flex items-center gap-2 px-6 py-3 bg-accent text-on-accent rounded-xl text-[10px] font-black uppercase tracking-widest transition-[filter] duration-[var(--dur-base)] ease-[var(--ease-smooth)] hover:brightness-110 font-mono"
-          >
-            Unlock Course <ArrowRight className="h-3.5 h-3.5" />
-          </Link>
-        </div>
+      <div className="min-h-dvh w-full bg-canvas px-3 py-16 md:px-4 lg:px-6">
+        <EmptyState
+          icon={<Lock className="h-6 w-6" aria-hidden="true" />}
+          title={t('courseLesson.lockedTitle', 'Course Not Unlocked')}
+          description={t('courseLesson.lockedDescription', 'You have not unlocked {{title}} yet. Unlock it from the marketplace to start learning.', { title: course.title })}
+          action={
+            <Button to="/dashboard/marketplace">
+              {t('courseLesson.unlock', 'Unlock Course')}
+              <ArrowRight className="h-4 w-4" aria-hidden="true" />
+            </Button>
+          }
+        />
       </div>
     );
   }
 
+  const category = getCategoryById(course.categoryId);
+
   return (
     <FadeIn>
-    <div className="bg-bg">
-      <SEO title={course.title} description={course.description} noindex />
+      <div className="w-full bg-canvas">
+        <SEO title={course.title} description={course.description} noindex />
 
-      <CelebrationModal
-        open={celebrationOpen}
-        onClose={() => setCelebrationOpen(false)}
-        badge={t('student.celebration.courseBadge')}
-        title={t('student.celebration.courseTitle')}
-        description={t('student.celebration.courseDescription', { title: course.title })}
-        ctaLabel={t('student.celebration.continue')}
-      />
+        <CelebrationModal
+          open={celebrationOpen}
+          onClose={() => setCelebrationOpen(false)}
+          badge={t('student.celebration.courseBadge')}
+          title={t('student.celebration.courseTitle')}
+          description={t('student.celebration.courseDescription', { title: course.title })}
+          ctaLabel={t('student.celebration.continue')}
+        />
 
-      <LearningToolbar
-        actions={[
-          {
-            id: 'fullscreen',
-            icon: fullscreen ? <Minimize2 className="h-4 w-4" /> : <Maximize2 className="h-4 w-4" />,
-            label: fullscreen ? 'Exit Fullscreen' : 'Enter Fullscreen',
-            onClick: toggleFullscreen,
-          },
-        ]}
-      />
-
-      <WalkthroughScrollControls />
-
-      <div className="px-3 md:px-4 lg:px-6 pt-8 pb-20 lg:pb-24 space-y-8">
-        <StudentHeroSection
-          fullHeight={false}
-          title={course.title}
-          description={`${completedCount} of ${totalLessons} lessons completed`}
-          stats={[
-            { label: 'Progress', value: `${progress}%`, accent: true },
-            { label: 'Lessons', value: `${completedCount}/${totalLessons}` },
+        <LearningToolbar
+          actions={[
+            {
+              id: 'fullscreen',
+              icon: fullscreen ? <Minimize2 className="h-4 w-4" /> : <Maximize2 className="h-4 w-4" />,
+              label: fullscreen ? 'Exit Fullscreen' : 'Enter Fullscreen',
+              onClick: toggleFullscreen,
+            },
           ]}
         />
 
-        {/* Progress bar */}
-        {totalLessons > 0 && (
-          <div className="rounded-2xl border border-border/50 bg-bg-card px-4 py-4 md:px-6 md:py-5">
-            <div className="mb-3 flex items-center justify-between gap-2">
-              <span className="text-xs font-black uppercase tracking-[0.2em] text-text-muted">{t('learning.progress.title')}</span>
-              <span className="font-mono text-base font-black text-accent">
-                {completedCount}/{totalLessons}
-              </span>
-            </div>
-            <div className="h-2 overflow-hidden rounded-full bg-accent-dim border border-border/40">
-              <div
-                className="h-full bg-accent transition-[width] duration-700 ease-out rounded-full"
-                style={{ width: `${progress}%` }}
-                role="progressbar"
-                aria-valuenow={progress}
-                aria-valuemin={0}
-                aria-valuemax={100}
-                aria-label={`${progress}% complete`}
+        <WalkthroughScrollControls />
+
+        <LearningWorkspaceShell
+          kicker={category?.name}
+          title={course.title}
+          description={course.description}
+          backTo="/dashboard/courses"
+          backLabel={t('courseLesson.backToCourses', 'Back to Courses')}
+          stats={[
+            { label: t('courseLesson.progress', 'Progress'), value: `${progress}%`, accent: true },
+            { label: t('courseLesson.lessons', 'Lessons'), value: `${completedCount}/${totalLessons}` },
+            { label: t('courseLesson.cpCost', 'CP cost'), value: `${course.cpCost} CP` },
+            { label: t('courseLesson.level', 'Level'), value: course.skillLevel },
+          ]}
+          progress={{
+            value: progress,
+            label: `${completedCount}/${totalLessons}`,
+          }}
+        >
+          {/* All lessons on one page — focused presentation */}
+          <FocusedStepList
+            idPrefix="lesson"
+            items={course.lessons.map((lesson, i) => ({
+              index: i,
+              number: i + 1,
+              title: lesson.title,
+              isActive: i === currentLessonIdx,
+              isCompleted: completedLessons.has(lesson.id),
+              isLocked: false,
+            }))}
+            onSelect={(i) => scrollToLesson(i)}
+            renderActive={(i) => (
+              <LessonViewer
+                lesson={course.lessons[i]}
+                number={i + 1}
+                isActive
+                isCompleted={completedLessons.has(course.lessons[i].id)}
+                courseId={courseId}
+                backUrl="/dashboard/courses"
+                showBack={i === 0}
               />
-            </div>
-          </div>
-        )}
+            )}
+          />
 
-        {/* All lessons on one page — focused presentation */}
-        <FocusedStepList
-          idPrefix="lesson"
-          items={course.lessons.map((lesson, i) => ({
-            index: i,
-            number: i + 1,
-            title: lesson.title,
-            isActive: i === currentLessonIdx,
-            isCompleted: completedLessons.has(lesson.id),
-            isLocked: false,
-          }))}
-          onSelect={(i) => scrollToLesson(i)}
-          renderActive={(i) => (
-            <LessonViewer
-              lesson={course.lessons[i]}
-              number={i + 1}
-              isActive
-              isCompleted={completedLessons.has(course.lessons[i].id)}
-              courseId={courseId}
-              backUrl="/dashboard/courses"
-              showBack={i === 0}
-            />
-          )}
-        />
-
-        <LearningNav
-          currentStep={currentLessonIdx}
-          totalSteps={totalLessons}
-          isLastStep={currentLessonIdx === totalLessons - 1}
-          isComplete={allComplete}
-          onPrev={currentLessonIdx > 0 ? goPrev : undefined}
-          onNext={currentLessonIdx < totalLessons - 1 ? goNext : undefined}
-          onComplete={!allComplete && !completedLessons.has(course.lessons[currentLessonIdx]?.id) ? markComplete : undefined}
-          completeLabel={t('learning.nav.complete')}
-          nextLabel="Next Lesson"
-          nextLabelMobile="Next"
-          finishContent={
-            <Link
-              to="/dashboard/courses"
-              className="btn-primary inline-flex flex-1 md:flex-none items-center justify-center gap-1.5 sm:flex-none !rounded-xl !text-[10px] !font-black !uppercase !tracking-widest px-5 py-2.5"
-            >
-              <span>Back to Courses</span>
-              <ArrowRight className="h-3.5 h-3.5 shrink-0" />
-            </Link>
-          }
-        />
+          <LearningNav
+            currentStep={currentLessonIdx}
+            totalSteps={totalLessons}
+            isLastStep={currentLessonIdx === totalLessons - 1}
+            isComplete={allComplete}
+            onPrev={currentLessonIdx > 0 ? goPrev : undefined}
+            onNext={currentLessonIdx < totalLessons - 1 ? goNext : undefined}
+            onComplete={!allComplete && !completedLessons.has(course.lessons[currentLessonIdx]?.id) ? markComplete : undefined}
+            completeLabel={t('learning.nav.complete')}
+            nextLabel="Next Lesson"
+            nextLabelMobile="Next"
+            finishContent={
+              <Link
+                to="/dashboard/courses"
+                className="btn-primary inline-flex flex-1 md:flex-none items-center justify-center gap-1.5 sm:flex-none !rounded-xl !text-xs !font-black !uppercase !tracking-widest px-5 py-2.5"
+              >
+                <span>Back to Courses</span>
+                <ArrowRight className="h-3.5 h-3.5 shrink-0" />
+              </Link>
+            }
+          />
+        </LearningWorkspaceShell>
       </div>
-    </div>
     </FadeIn>
   );
 };

@@ -107,7 +107,7 @@ const SqlInjectionLab = () => {
               description: target.description,
               difficulty: target.difficulty,
               meta: (
-                <span className="text-[9px] font-black uppercase tracking-widest text-accent">
+                <span className="text-xs font-black uppercase tracking-widest text-accent">
                   {target.cpReward} CP
                 </span>
               ),
