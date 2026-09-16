@@ -4,14 +4,12 @@ import { motion, AnimatePresence } from 'motion/react';
 import { User, Mail, LogIn } from 'lucide-react';
 import { cn } from '@/shared/utils/cn';
 import { useReducedMotion } from '@/shared/hooks/useReducedMotion';
-import AthenaBoxes from '@/shared/components/AthenaBoxes';
 import PasswordInput from './PasswordInput';
 import HandleSuggestions from '@/shared/components/HandleSuggestions';
 import Input from '@/shared/components/ui/Input';
+import Button from '@/shared/components/ui/Button';
 
 export type AuthMode = 'login' | 'register';
-
-const AUTH_INPUT_SIZE = 'lg:py-4';
 
 interface AuthFormProps {
   mode: AuthMode;
@@ -28,6 +26,10 @@ interface AuthFormProps {
   onLoginSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
   onRegisterSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
 }
+
+const labels = {
+  base: 'type-label mb-2 block uppercase tracking-[0.12em] text-text-tertiary',
+};
 
 const AuthForm: React.FC<AuthFormProps> = ({
   mode,
@@ -47,135 +49,119 @@ const AuthForm: React.FC<AuthFormProps> = ({
   const { t } = useTranslation();
   const prefersReduced = useReducedMotion();
 
+  const modes: AuthMode[] = ['login', 'register'];
+  const modeLabels: Record<AuthMode, string> = {
+    login: t('button.logIn'),
+    register: t('button.createAccount'),
+  };
+
+  const panelMotion = prefersReduced
+    ? { initial: false, exit: { opacity: 0 } }
+    : { initial: { opacity: 0, y: 8 }, exit: { opacity: 0, y: -8 } };
+
   return (
     <div className="w-full space-y-5">
       <p className="sr-only" aria-live="polite">{formMessage}</p>
 
-      {/* Toggle between login and register */}
-      <div className="w-full flex bg-bg/40 border border-border/50 p-1.5 rounded-xl backdrop-blur-sm">
-        <button
-          type="button"
-          onClick={() => onModeChange('login')}
-          className={cn(
-            'flex-1 py-2.5 rounded-lg text-[10px] font-bold uppercase tracking-wider transition-[background-color,color,box-shadow] duration-[var(--dur-fast)] ease-[var(--ease-smooth)]',
-            mode === 'login'
-              ? 'bg-accent text-on-accent shadow-[0_0_12px_var(--color-accent-glow)] font-black'
-              : 'text-text-muted hover:text-text-primary'
-          )}
-        >
-          {t('button.logIn')}
-        </button>
-        <button
-          type="button"
-          onClick={() => onModeChange('register')}
-          className={cn(
-            'flex-1 py-2.5 rounded-lg text-[10px] font-bold uppercase tracking-wider transition-[background-color,color,box-shadow] duration-[var(--dur-fast)] ease-[var(--ease-smooth)]',
-            mode === 'register'
-              ? 'bg-accent text-on-accent shadow-[0_0_12px_var(--color-accent-glow)] font-black'
-              : 'text-text-muted hover:text-text-primary'
-          )}
-        >
-          {t('button.createAccount')}
-        </button>
+      {/* Quiet mode toggle */}
+      <div role="group" aria-label={t('auth.chooseMode', 'Choose sign in or register')} className="flex w-full rounded-lg bg-surface-raised p-1">
+        {modes.map((m) => {
+          const selected = mode === m;
+          return (
+            <button
+              key={m}
+              type="button"
+              aria-pressed={selected}
+              onClick={() => onModeChange(m)}
+              className={cn(
+                'min-h-[44px] flex-1 rounded-lg text-sm font-bold transition-[background-color,color] duration-[var(--dur-fast)] ease-[var(--ease-smooth)]',
+                'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent',
+                selected ? 'bg-accent text-on-accent' : 'text-text-tertiary hover:text-text-primary',
+              )}
+            >
+              {modeLabels[m]}
+            </button>
+          );
+        })}
       </div>
 
-      {/* Forms */}
-      <AnimatePresence mode="wait">
+      <AnimatePresence mode="wait" initial={false}>
         {mode === 'login' ? (
           <motion.div
             key="login"
-            initial={prefersReduced ? false : { opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={prefersReduced ? { opacity: 0 } : { opacity: 0, x: 20 }}
-            transition={prefersReduced ? { duration: 0 } : { duration: 0.2 }}
-            className="w-full rounded-2xl border border-border/50 bg-bg/40 backdrop-blur-md p-4 sm:p-6 lg:p-8"
+            {...panelMotion}
+            animate={{ opacity: 1, y: 0 }}
+            transition={prefersReduced ? { duration: 0 } : { duration: 0.2, ease: [0.22, 1, 0.36, 1] }}
+            className="w-full rounded-xl border border-border-subtle bg-surface p-5 sm:p-8"
           >
-              <div className="mb-8">
-                <h1 className="text-3xl md:text-4xl lg:text-5xl font-black text-text-primary uppercase tracking-tighter mb-1">
-                  {t('hero.welcomeBack')} <span className="text-accent">{t('hero.operator')}</span>
-                </h1>
-                <p className="text-text-muted text-sm">{t('auth.signIntoContinue')}</p>
-              </div>
+            <div className="mb-8">
+              <h1 className="type-h2 mb-1 font-black uppercase tracking-tight text-text-primary">
+                {t('hero.welcomeBack')} <span className="text-accent">{t('hero.operator')}</span>
+              </h1>
+              <p className="type-body-sm">{t('auth.signIntoContinue')}</p>
+            </div>
 
-              <form className="space-y-4" onSubmit={onLoginSubmit} noValidate>
+            <form className="space-y-5" onSubmit={onLoginSubmit} noValidate>
               <div className="space-y-2">
-                <label htmlFor="login-email" className="text-kicker font-black text-text-muted uppercase tracking-widest">{t('form.email')}</label>
+                <label htmlFor="login-email" className={labels.base}>{t('form.email')}</label>
                 <Input
-                    id="login-email"
-                    type="email"
-                    name="email"
-                    required
-                    autoComplete="email"
-                    inputMode="email"
-                    placeholder={t('auth.emailPlaceholder')}
-                    icon={<Mail className="w-4 h-4 lg:w-5 lg:h-5" />}
-                    className={AUTH_INPUT_SIZE}
-                  />
+                  id="login-email"
+                  type="email"
+                  name="email"
+                  required
+                  autoComplete="email"
+                  inputMode="email"
+                  placeholder={t('auth.emailPlaceholder')}
+                  icon={<Mail className="h-4 w-4 lg:h-5 lg:w-5" />}
+                />
               </div>
 
               <div className="space-y-2">
-                <label htmlFor="login-password" className="text-[10px] font-black text-text-muted uppercase tracking-widest">{t('form.password')}</label>
+                <label htmlFor="login-password" className={labels.base}>{t('form.password')}</label>
                 <PasswordInput
                   id="login-password"
                   name="password"
                   autoComplete="current-password"
                   shake={shakePassword}
                   onAnimationEnd={onShakeEnd}
-                  className={AUTH_INPUT_SIZE}
                 />
               </div>
 
-              <button
-                type="submit"
-                disabled={isLoading}
-                className="w-full btn-primary !py-4 flex items-center justify-center gap-3 disabled:opacity-50 disabled:cursor-not-allowed transition-[filter,transform,background-color,color,border-color,box-shadow] duration-[var(--dur-base)] ease-[var(--ease-smooth)]"
-              >
-                {isLoading ? (
-                  <>
-                    <AthenaBoxes />
-                    <span className="text-[10px]">{t('button.signingIn')}</span>
-                  </>
-                ) : (
-                  <>
-                    <span className="text-[10px]">{t('button.signIn')}</span>
-                    <LogIn className="w-5 h-5" />
-                  </>
-                )}
-              </button>
+              <Button type="submit" size="lg" className="w-full" disabled={isLoading} loading={isLoading}>
+                {t('button.signIn')}
+              </Button>
             </form>
           </motion.div>
         ) : (
           <motion.div
             key="register"
-            initial={prefersReduced ? false : { opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={prefersReduced ? { opacity: 0 } : { opacity: 0, x: -20 }}
-            transition={prefersReduced ? { duration: 0 } : { duration: 0.2 }}
-            className="w-full rounded-2xl border border-border/50 bg-bg/40 backdrop-blur-md p-4 sm:p-6 lg:p-8"
+            {...panelMotion}
+            animate={{ opacity: 1, y: 0 }}
+            transition={prefersReduced ? { duration: 0 } : { duration: 0.2, ease: [0.22, 1, 0.36, 1] }}
+            className="w-full rounded-xl border border-border-subtle bg-surface p-5 sm:p-8"
           >
             <div className="mb-8">
-              <h1 className="text-3xl md:text-4xl lg:text-5xl font-black text-text-primary uppercase tracking-tighter mb-1">
+              <h1 className="type-h2 mb-1 font-black uppercase tracking-tight text-text-primary">
                 {t('button.join')} <span className="text-accent">QYVORA</span>
               </h1>
-              <p className="text-text-muted text-sm">{t('auth2.registerDescription')}</p>
+              <p className="type-body-sm">{t('auth2.registerDescription')}</p>
             </div>
 
-            <form className="space-y-4" onSubmit={onRegisterSubmit}>
+            <form className="space-y-5" onSubmit={onRegisterSubmit}>
               <div className="space-y-2">
-                <label htmlFor="register-handle" className="text-[10px] font-black text-text-muted uppercase tracking-widest">{t('form.operatorHandle')}</label>
-                <Input 
-                    ref={handleRef} 
-                    id="register-handle" 
-                    type="text" 
-                    name="handle" 
-                    required 
-                    autoComplete="username"
-                    pattern="^[a-zA-Z0-9][a-zA-Z0-9\-]{0,38}[a-zA-Z0-9]$"
-                    title={t('validation.handleRules')}
-                    placeholder={t('auth.handlePlaceholder')}
-                    icon={<User className="w-4 h-4 lg:w-5 lg:h-5" />}
-                    className={AUTH_INPUT_SIZE}
-                  />
+                <label htmlFor="register-handle" className={labels.base}>{t('form.operatorHandle')}</label>
+                <Input
+                  ref={handleRef}
+                  id="register-handle"
+                  type="text"
+                  name="handle"
+                  required
+                  autoComplete="username"
+                  pattern="^[a-zA-Z0-9][a-zA-Z0-9\-]{0,38}[a-zA-Z0-9]$"
+                  title={t('validation.handleRules')}
+                  placeholder={t('auth.handlePlaceholder')}
+                  icon={<User className="h-4 w-4 lg:h-5 lg:w-5" />}
+                />
                 <HandleSuggestions
                   name={fullName}
                   onSelect={onSuggestionSelect}
@@ -183,69 +169,54 @@ const AuthForm: React.FC<AuthFormProps> = ({
                 />
               </div>
 
-              <div className="grid gap-3 sm:grid-cols-2">
+              <div className="grid gap-5 sm:grid-cols-2">
                 <div className="space-y-2">
-                  <label htmlFor="register-full-name" className="text-[10px] font-black text-text-muted uppercase tracking-widest">{t('form.fullName')}</label>
-                  <Input 
-                      id="register-full-name" 
-                      type="text" 
-                      name="full_name" 
-                      required 
-                      autoComplete="name" 
-                      placeholder={t('auth.namePlaceholder')}
-                      value={fullName}
-                      onChange={(e) => onFullNameChange(e.target.value)}
-                      icon={<User className="w-4 h-4 lg:w-5 lg:h-5" />}
-                      className={AUTH_INPUT_SIZE}
-                    />
+                  <label htmlFor="register-full-name" className={labels.base}>{t('form.fullName')}</label>
+                  <Input
+                    id="register-full-name"
+                    type="text"
+                    name="full_name"
+                    required
+                    autoComplete="name"
+                    placeholder={t('auth.namePlaceholder')}
+                    value={fullName}
+                    onChange={(e) => onFullNameChange(e.target.value)}
+                    icon={<User className="h-4 w-4 lg:h-5 lg:w-5" />}
+                  />
                 </div>
 
                 <div className="space-y-2">
-                  <label htmlFor="register-email" className="text-[10px] font-black text-text-muted uppercase tracking-widest">{t('form.email')}</label>
-                  <Input 
-                      id="register-email" 
-                      type="email" 
-                      name="email" 
-                      required 
-                      autoComplete="email" 
-                      inputMode="email" 
-                      placeholder={t('auth.emailPlaceholder')}
-                      icon={<Mail className="w-4 h-4 lg:w-5 lg:h-5" />}
-                      className={AUTH_INPUT_SIZE}
-                    />
+                  <label htmlFor="register-email" className={labels.base}>{t('form.email')}</label>
+                  <Input
+                    id="register-email"
+                    type="email"
+                    name="email"
+                    required
+                    autoComplete="email"
+                    inputMode="email"
+                    placeholder={t('auth.emailPlaceholder')}
+                    icon={<Mail className="h-4 w-4 lg:h-5 lg:w-5" />}
+                  />
                 </div>
               </div>
 
-              <div className="grid gap-3 sm:grid-cols-2">
+              <div className="grid gap-5 sm:grid-cols-2">
                 <div className="space-y-2">
-                  <label htmlFor="register-password" className="text-[10px] font-black text-text-muted uppercase tracking-widest">{t('form.password')}</label>
-                  <PasswordInput id="register-password" name="password" autoComplete="new-password" className={AUTH_INPUT_SIZE} />
+                  <label htmlFor="register-password" className={labels.base}>{t('form.password')}</label>
+                  <PasswordInput id="register-password" name="password" autoComplete="new-password" />
                 </div>
 
                 <div className="space-y-2">
-                  <label htmlFor="register-confirm-password" className="text-[10px] font-black text-text-muted uppercase tracking-widest">{t('form.confirmPassword')}</label>
-                  <PasswordInput id="register-confirm-password" name="confirm_password" autoComplete="new-password" className={AUTH_INPUT_SIZE} />
+                  <label htmlFor="register-confirm-password" className={labels.base}>{t('form.confirmPassword')}</label>
+                  <PasswordInput id="register-confirm-password" name="confirm_password" autoComplete="new-password" />
                 </div>
               </div>
 
-              <p className="text-[10px] text-text-muted/70">{t('validation.handleRules')}</p>
+              <p className="type-meta" role="note">{t('validation.handleRules')}</p>
 
-              <button 
-                type="submit" 
-                disabled={isLoading}
-                className="w-full btn-primary !py-4 flex items-center justify-center gap-3 disabled:opacity-50"
-              >
-                {isLoading ? (
-                  <>
-                    <AthenaBoxes />
-                    <span className="text-[10px]">{t('button.creatingAccount')}</span>
-                  </>
-                ) : (
-                  <>
-                    <span className="text-[10px]">{t('button.createAccount')}</span> <LogIn className="w-5 h-5" />
-                  </>
-                )}
-              </button>
+              <Button type="submit" size="lg" className="w-full" disabled={isLoading} loading={isLoading}>
+                {t('button.createAccount')}
+              </Button>
             </form>
           </motion.div>
         )}

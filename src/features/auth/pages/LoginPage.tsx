@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef, useCallback } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { Mail, LogIn } from 'lucide-react';
+import { Mail } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useAuth, MustChangePasswordError } from '../../../core/contexts/AuthContext';
 import { useToast } from '../../../core/contexts/ToastContext';
@@ -11,7 +11,7 @@ import PasswordInput from '../components/PasswordInput';
 import api from '../../../core/services/api';
 import ADMIN_PATH from '@/shared/utils/adminPath';
 import Input from '@/shared/components/ui/Input';
-import AthenaBoxes from '@/shared/components/AthenaBoxes';
+import Button from '@/shared/components/ui/Button';
 import AuthForm, { type AuthMode } from '../components/AuthForm';
 
 const LoginPage: React.FC = () => {  const { t } = useTranslation();
@@ -133,20 +133,20 @@ const LoginPage: React.FC = () => {  const { t } = useTranslation();
     return (
       <>
         <SEO title="Admin Login" description="Sign in to QYVORA admin workspace." noindex />
-        <div className="min-h-dvh flex items-center justify-center px-4 py-8 bg-bg">
+        <div className="min-h-dvh flex items-center justify-center bg-canvas px-3 py-8 md:px-4 lg:px-6">
           <div className="w-full max-w-lg">
             <p className="sr-only" aria-live="polite">{formMessage}</p>
-            <div className="rounded-2xl border border-border/50 bg-bg-card p-6 md:p-8">
+            <div className="rounded-xl border border-border-subtle bg-surface p-5 sm:p-8">
               <div className="mb-8">
-                <h1 className="text-3xl md:text-4xl lg:text-5xl font-black uppercase tracking-tighter mb-1 text-text-primary">
+                <h1 className="type-h2 mb-1 font-black uppercase tracking-tight text-text-primary">
                   {t('heading.workspaceAccess1')} <span className="text-accent">{t('heading.workspaceAccess2')}</span>
                 </h1>
-                <p className="text-sm text-text-muted">{t('auth.enterCredentials')}</p>
+                <p className="type-body-sm">{t('auth.enterCredentials')}</p>
               </div>
 
-            <form className="space-y-6" onSubmit={handleLoginSubmit} noValidate>
+            <form className="space-y-5" onSubmit={handleLoginSubmit} noValidate>
                 <div className="space-y-2">
-                  <label htmlFor="login-email" className="text-[10px] font-black text-text-muted uppercase tracking-widest">{t('form.email')}</label>
+                  <label htmlFor="login-email" className="type-label mb-2 block uppercase tracking-[0.12em] text-text-tertiary">{t('form.email')}</label>
                   <Input
                       id="login-email"
                       type="email"
@@ -155,39 +155,24 @@ const LoginPage: React.FC = () => {  const { t } = useTranslation();
                       autoComplete="email"
                       inputMode="email"
                       placeholder={t('auth.emailPlaceholder')}
-                      icon={<Mail className="w-4 h-4 lg:w-5 lg:h-5" />}
-                      className="lg:py-4"
+                      icon={<Mail className="h-4 w-4 lg:h-5 lg:w-5" />}
                     />
                 </div>
 
                 <div className="space-y-2">
-                  <label htmlFor="login-password" className="text-[10px] font-black text-text-muted uppercase tracking-widest">{t('form.password')}</label>
+                  <label htmlFor="login-password" className="type-label mb-2 block uppercase tracking-[0.12em] text-text-tertiary">{t('form.password')}</label>
                   <PasswordInput
                     id="login-password"
                     name="password"
                     autoComplete="current-password"
                     shake={shakePassword}
                     onAnimationEnd={() => setShakePassword(false)}
-                    className="lg:py-4"
                   />
                 </div>
 
-                <button
-                  type="submit"
-                  disabled={isLoading}
-                  className="w-full bg-bg-card border border-border text-text-primary hover:border-accent/40 active:scale-[0.98] !rounded-xl !py-4 flex items-center justify-center gap-3 disabled:opacity-50 text-[10px] font-black uppercase tracking-widest transition-[border-color,transform] duration-[var(--dur-base)] ease-[var(--ease-smooth)]"
-                >
-                  {isLoading ? (
-                    <>
-                      <AthenaBoxes />
-                      <span className="text-[10px]">{t('button.signingIn')}</span>
-                    </>
-                  ) : (
-                    <>
-                      <span className="text-[10px]">{t('button.signIn')}</span> <LogIn className="w-5 h-5" />
-                    </>
-                  )}
-                </button>
+                <Button type="submit" size="lg" className="w-full" disabled={isLoading} loading={isLoading}>
+                  {t('button.signIn')}
+                </Button>
               </form>
             </div>
           </div>

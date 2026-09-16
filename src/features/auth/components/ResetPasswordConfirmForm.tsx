@@ -29,11 +29,11 @@ const ResetPasswordConfirmForm: React.FC<ResetPasswordConfirmFormProps> = ({
       </div>
       <form className="space-y-6" onSubmit={onSubmit}>
         <div className="space-y-2">
-          <label htmlFor="reset-new-password" className="text-[10px] font-black text-text-muted uppercase tracking-widest">{t('form.newPassword')}</label>
+          <label htmlFor="reset-new-password" className="text-xs font-black text-text-muted uppercase tracking-widest">{t('form.newPassword')}</label>
           <PasswordInput id="reset-new-password" name="new_password" placeholder={t('auth2.reset.minLength')} autoComplete="new-password" />
         </div>
         <div className="space-y-2">
-          <label htmlFor="reset-confirm-password" className="text-[10px] font-black text-text-muted uppercase tracking-widest">{t('form.confirmPassword')}</label>
+          <label htmlFor="reset-confirm-password" className="text-xs font-black text-text-muted uppercase tracking-widest">{t('form.confirmPassword')}</label>
           <PasswordInput id="reset-confirm-password" name="confirm_password" autoComplete="new-password" />
         </div>
         <button type="submit" disabled={isLoading}
@@ -41,11 +41,11 @@ const ResetPasswordConfirmForm: React.FC<ResetPasswordConfirmFormProps> = ({
           {isLoading ? (
             <>
               <AthenaBoxes />
-              <span className="text-[10px]">{t('auth2.reset.resetting')}</span>
+              <span className="text-xs">{t('auth2.reset.resetting')}</span>
             </>
           ) : (
             <>
-              <span className="text-[10px]">{t('auth2.reset.resetPassword')}</span> <IconCheck size={20} />
+              <span className="text-xs">{t('auth2.reset.resetPassword')}</span> <IconCheck size={20} />
             </>
           )}
         </button>

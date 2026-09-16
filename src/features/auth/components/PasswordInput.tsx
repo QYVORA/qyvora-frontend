@@ -3,7 +3,8 @@ import { useTranslation } from 'react-i18next';
 import { IconLock, IconEye, IconEyeOff } from '@/shared/components/icons';
 import { cn } from '@/shared/utils/cn';
 
-const INPUT_BASE = 'w-full bg-bg-card border border-border rounded-xl py-3 pl-12 pr-12 text-text-primary placeholder:text-text-muted focus:border-accent outline-none transition-[border-color] duration-[var(--dur-base)] ease-[var(--ease-smooth)] font-mono text-sm';
+const INPUT_BASE =
+  'w-full min-h-[44px] bg-surface border border-border-subtle rounded-lg pl-11 pr-12 text-body-sm text-text-primary placeholder:text-text-tertiary focus:border-accent outline-none transition-colors duration-[var(--dur-base)] ease-[var(--ease-smooth)]';
 
 interface PasswordInputProps {
   id?: string;
@@ -42,11 +43,11 @@ const PasswordInput: React.FC<PasswordInputProps> = ({
         autoComplete={autoComplete}
         className={cn(INPUT_BASE, className, shake && 'input-error')}
       />
-      <IconLock size={20} className="absolute left-4 top-1/2 -translate-y-1/2 text-text-muted pointer-events-none" />
+      <IconLock size={18} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-text-muted pointer-events-none" />
       <button
         type="button"
         onClick={() => setShow((s) => !s)}
-        className="absolute right-4 top-1/2 -translate-y-1/2 text-text-muted hover:text-accent transition-colors rounded focus:outline-none focus-visible:ring-2 focus-visible:ring-accent/50"
+        className="absolute right-3 top-1/2 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-lg text-text-muted hover:text-accent transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-accent/50"
         aria-label={show ? t('aria.hidePassword', 'Hide password') : t('aria.showPassword', 'Show password')}
         aria-pressed={show}
       >
