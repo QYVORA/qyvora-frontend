@@ -157,13 +157,13 @@ const ImageLightbox: React.FC<Props> = ({ src, alt, onClose }) => {
             {scale > 1 && (
               <button
                 onClick={resetZoom}
-                className="ml-1 px-2.5 h-11 rounded-lg border border-white/15 text-[10px] font-bold uppercase tracking-widest text-white/50 hover:text-white hover:border-white/30 transition-colors"
+                className="ml-1 px-2.5 h-11 rounded-lg border border-white/15 text-xs font-bold uppercase tracking-widest text-white/50 hover:text-white hover:border-white/30 transition-colors"
               >
                 Reset
               </button>
             )}
           </div>
-          <p className="hidden sm:block text-[10px] font-bold uppercase tracking-widest text-white/30">
+          <p className="hidden sm:block text-xs font-bold uppercase tracking-widest text-white/30">
             {scale > 1 ? 'Drag to pan · Scroll to zoom' : 'Scroll or pinch to zoom · Double-click to zoom in'}
           </p>
           <button
@@ -198,7 +198,7 @@ const ImageLightbox: React.FC<Props> = ({ src, alt, onClose }) => {
           />
         </div>
 
-        <div className="sm:hidden shrink-0 py-2 text-center text-[10px] font-bold uppercase tracking-widest text-white/25">
+        <div className="sm:hidden shrink-0 py-2 text-center text-xs font-bold uppercase tracking-widest text-white/25">
           Double-tap to zoom · Pinch to scale
         </div>
       </motion.div>

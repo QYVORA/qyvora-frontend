@@ -144,7 +144,7 @@ const QuizModal: React.FC<QuizModalProps> = ({ moduleId, roomId, courseId, onClo
                               <ClipboardList className="h-4 w-4" />
                             </span>
                             <p className="text-sm font-bold text-text-primary leading-snug">
-                              <span className="text-text-muted font-mono text-[10px] mr-1">Q{idx + 1}.</span>
+                              <span className="text-text-muted font-mono text-xs mr-1">Q{idx + 1}.</span>
                               {q.text}
                             </p>
                           </div>
@@ -166,8 +166,8 @@ const QuizModal: React.FC<QuizModalProps> = ({ moduleId, roomId, courseId, onClo
                                 <div key={optIdx} className={`rounded-lg border px-3 py-2 text-xs flex items-center gap-2 ${cls}`}>
                                   <span className="font-mono opacity-50 shrink-0">{String.fromCharCode(65 + optIdx)}.</span>
                                   <span>{opt}</span>
-                                  {isChosenOpt && <span className="ml-auto text-[10px] font-black shrink-0">{ansResult.correct ? t('student.bootcampRoom.quiz.correct') : t('student.bootcampRoom.quiz.wrong')}</span>}
-                                  {showCorrect && <span className="ml-auto text-[10px] font-black text-accent shrink-0">{t('student.bootcampRoom.quiz.correctAnswer')}</span>}
+                                  {isChosenOpt && <span className="ml-auto text-xs font-black shrink-0">{ansResult.correct ? t('student.bootcampRoom.quiz.correct') : t('student.bootcampRoom.quiz.wrong')}</span>}
+                                  {showCorrect && <span className="ml-auto text-xs font-black text-accent shrink-0">{t('student.bootcampRoom.quiz.correctAnswer')}</span>}
                                 </div>
                               );
                             })}
@@ -206,7 +206,7 @@ const QuizModal: React.FC<QuizModalProps> = ({ moduleId, roomId, courseId, onClo
                 {quiz.questions.map((q, idx) => (
                   <div key={q.id || idx} className="space-y-3">
                     <div className="flex items-start gap-2">
-                      <span className="mt-0.5 shrink-0 rounded border border-border bg-bg px-2 py-0.5 font-mono text-[10px] font-black text-text-muted">
+                      <span className="mt-0.5 shrink-0 rounded border border-border bg-bg px-2 py-0.5 font-mono text-xs font-black text-text-muted">
                         Q{idx + 1}
                       </span>
                       <p className="text-sm font-bold leading-snug text-text-primary">{q.text}</p>
@@ -225,7 +225,7 @@ const QuizModal: React.FC<QuizModalProps> = ({ moduleId, roomId, courseId, onClo
                                 : 'border-border text-text-secondary hover:border-accent/50 hover:bg-accent-dim/20'
                             }`}
                           >
-                            <span className="mr-2 font-mono text-[10px] opacity-50">
+                            <span className="mr-2 font-mono text-xs opacity-50">
                               {String.fromCharCode(65 + optIdx)}.
                             </span>
                             {opt}
@@ -253,7 +253,7 @@ const QuizModal: React.FC<QuizModalProps> = ({ moduleId, roomId, courseId, onClo
                   )}
                 </button>
                 {Object.keys(answers).length < quiz.questions.length && (
-                  <p className="text-center text-[10px] text-text-muted">
+                  <p className="text-center text-xs text-text-muted">
                     {t('student.bootcampRoom.quiz.remaining', { count: quiz.questions.length - Object.keys(answers).length })}
                   </p>
                 )}

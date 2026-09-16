@@ -48,7 +48,7 @@ const StepImage: React.FC<Props> = ({ src, alt, stepNum }) => {
         {status === 'error' && (
           <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 bg-bg-card rounded-xl">
             <ImageOff className="h-6 w-6 text-text-muted opacity-25" />
-            <span className="text-[10px] font-bold uppercase tracking-widest text-text-muted opacity-40">
+            <span className="text-xs font-bold uppercase tracking-widest text-text-muted opacity-40">
               Step {stepNum} image not available
             </span>
           </div>
@@ -64,7 +64,7 @@ const StepImage: React.FC<Props> = ({ src, alt, stepNum }) => {
             <div className="absolute inset-0 flex items-center justify-center rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none">
               <div className="flex items-center gap-1.5 rounded-lg bg-black/60 backdrop-blur-sm px-3 py-1.5 border border-white/10">
                 <Maximize2 className="h-3.5 w-3.5 text-white" />
-                <span className="text-[10px] font-bold uppercase tracking-widest text-white">Expand</span>
+                <span className="text-xs font-bold uppercase tracking-widest text-white">Expand</span>
               </div>
             </div>
           </button>

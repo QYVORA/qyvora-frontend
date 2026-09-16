@@ -18,7 +18,7 @@ const QuizGateModal: React.FC<QuizGateModalProps> = ({ onClose, onTakeQuiz }) =>
           <Dobia expression="thinking" size="lg" />
         </div>
         <h2 className="mb-2 text-lg font-black text-text-primary">{t('student.bootcampRoom.quizGate.heading')}</h2>
-        <p className="mb-6 text-sm text-text-muted leading-relaxed">
+        <p className="mb-6 text-sm text-text-muted leading-[2] md:leading-[2.2]">
           {t('student.bootcampRoom.quizGate.description')}
         </p>
         <div className="flex flex-col gap-3">
