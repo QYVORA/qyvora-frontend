@@ -44,7 +44,7 @@ const StudentBootcampCard: React.FC<Props> = ({ data, index = 0, onEnroll, onLoc
       : 'hover:border-accent/50'
   }`;
 
-  const BtnBase = 'px-3 py-1.5 rounded-lg text-[9px] sm:text-[10px] md:text-xs font-black uppercase tracking-widest bg-accent text-on-accent transition-[filter,transform] duration-[var(--dur-fast)] ease-[var(--ease-smooth)] group-hover/card:brightness-110 group-active:scale-95';
+  const BtnBase = 'px-3 py-1.5 rounded-lg text-xs sm:text-xs md:text-xs font-black uppercase tracking-widest bg-accent text-on-accent transition-[filter,transform] duration-[var(--dur-fast)] ease-[var(--ease-smooth)] group-hover/card:brightness-110 group-active:scale-95';
 
   const inner = (
     <>
@@ -52,22 +52,22 @@ const StudentBootcampCard: React.FC<Props> = ({ data, index = 0, onEnroll, onLoc
         <div className="min-w-0"></div>
         <div className="flex items-center gap-2 shrink-0">
           {level && (
-            <span className="px-2 py-0.5 rounded-lg text-[9px] font-black uppercase tracking-widest border border-accent/20 bg-accent/10 text-accent">
+            <span className="px-2 py-0.5 rounded-lg text-xs font-black uppercase tracking-widest border border-accent/20 bg-accent/10 text-accent">
               {level}
             </span>
           )}
           {isLocked && (
-            <span className="px-2 py-0.5 rounded-lg text-[9px] font-black uppercase tracking-widest bg-bg-elevated text-text-muted border border-border/50 flex items-center gap-1">
+            <span className="px-2 py-0.5 rounded-lg text-xs font-black uppercase tracking-widest bg-bg-elevated text-text-muted border border-border/50 flex items-center gap-1">
               <IconLock size={10} /> {t('student.studentBootcampCard.comingSoon')}
             </span>
           )}
           {isComplete && !isLocked && (
-            <span className="px-2 py-0.5 rounded-lg bg-accent text-on-accent text-[9px] font-black uppercase tracking-widest flex items-center gap-1">
+            <span className="px-2 py-0.5 rounded-lg bg-accent text-on-accent text-xs font-black uppercase tracking-widest flex items-center gap-1">
               <IconCheck size={10} /> {t('badge.completed')}
             </span>
           )}
           {isEnrolled && !isComplete && !isLocked && (
-            <span className="px-2 py-0.5 rounded-lg bg-accent/20 text-accent text-[9px] font-black uppercase tracking-widest flex items-center gap-1">
+            <span className="px-2 py-0.5 rounded-lg bg-accent/20 text-accent text-xs font-black uppercase tracking-widest flex items-center gap-1">
               <IconPlay size={8} /> {t('badge.active')}
             </span>
           )}
@@ -93,7 +93,7 @@ const StudentBootcampCard: React.FC<Props> = ({ data, index = 0, onEnroll, onLoc
       {progress > 0 && !isLocked && (
         <div className="mb-2">
           <div className="flex items-center justify-between mb-1">
-            <span className="text-[8px] font-mono text-text-muted">{progress}%</span>
+            <span className="text-xs font-mono text-text-muted">{progress}%</span>
           </div>
           <div className="h-1.5 bg-bg-elevated rounded-full overflow-hidden">
             <div className="h-full bg-accent transition-[width] duration-700" style={{ width: `${progress}%` }} />
@@ -103,16 +103,16 @@ const StudentBootcampCard: React.FC<Props> = ({ data, index = 0, onEnroll, onLoc
 
       <div className="flex flex-wrap items-center gap-x-3 gap-y-1 mt-auto pt-2">
         {duration && (
-          <span className="flex items-center gap-1.5 text-[9px] sm:text-[10px] font-black uppercase tracking-widest text-text-muted">
+          <span className="flex items-center gap-1.5 text-xs sm:text-xs font-black uppercase tracking-widest text-text-muted">
             <IconClock size={12} /> {duration}
           </span>
         )}
         {priceLabel && (
-          <span className="text-[9px] sm:text-[10px] font-black uppercase tracking-widest text-accent">{priceLabel}</span>
+          <span className="text-xs sm:text-xs font-black uppercase tracking-widest text-accent">{priceLabel}</span>
         )}
         <div className="ml-auto">
           {isLocked ? (
-            <span className="px-3 py-1.5 rounded-lg text-[9px] sm:text-[10px] font-black uppercase tracking-widest bg-bg-elevated text-text-muted border border-border/50">
+            <span className="px-3 py-1.5 rounded-lg text-xs sm:text-xs font-black uppercase tracking-widest bg-bg-elevated text-text-muted border border-border/50">
               {t('student.studentBootcampCard.comingSoon')}
             </span>
           ) : isEnrolled ? (
@@ -151,6 +151,7 @@ const StudentBootcampCard: React.FC<Props> = ({ data, index = 0, onEnroll, onLoc
           onClick={() => onLocked(data)}
           role="button"
           tabIndex={0}
+          aria-label={`${title} (locked)`}
           onKeyDown={(e) => { if (e.key === 'Enter') onLocked(data); if (e.key === ' ') { e.preventDefault(); onLocked(data); } }}
         >
           {inner}

@@ -20,7 +20,7 @@ const EmptyDeployments = () => {
       <p className="mb-4 text-sm text-text-muted">{t('student.dashboard.activeDeployments.empty')}</p>
       <Link
         to="/dashboard/bootcamps"
-        className="btn-primary !text-[10px] !px-6 !py-2.5 flex items-center gap-1.5"
+        className="btn-primary !text-xs !px-6 !py-2.5 flex items-center gap-1.5"
       >
         {t('button.startTraining')} <IconArrowRight size={14} className="inline-block ml-1.5" />
       </Link>
@@ -34,7 +34,7 @@ const ActiveDeployments = ({ bootcamps }: ActiveDeploymentsProps) => {
     <div className="flex flex-col gap-6 h-full">
       <div className="flex items-center justify-between">
         <h3 className="text-xs font-black uppercase tracking-[0.3em] text-text-muted">{t('student.dashboard.activeDeployments.title')}</h3>
-        <Link to="/dashboard/bootcamps" className="text-[10px] font-black uppercase tracking-widest text-accent hover:underline">{t('button.viewAll')}</Link>
+        <Link to="/dashboard/bootcamps" className="text-xs font-black uppercase tracking-widest text-accent hover:underline">{t('button.viewAll')}</Link>
       </div>
       {bootcamps.length === 0 ? (
         <EmptyDeployments />

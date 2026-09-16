@@ -66,7 +66,7 @@ const SkillStats = ({ modules }: SkillStatsProps) => {
           <h3 className="text-xs font-black uppercase tracking-[0.25em] text-text-primary">
             {t('student.dashboard.skillStats', 'Skill Progress')}
           </h3>
-          <p className="text-[10px] font-bold uppercase tracking-widest text-text-muted mt-0.5">
+          <p className="text-xs font-bold uppercase tracking-widest text-text-muted mt-0.5">
             {t('student.dashboard.skillStatsSub', 'Completion')}
           </p>
         </div>
@@ -85,7 +85,7 @@ const SkillStats = ({ modules }: SkillStatsProps) => {
                   className="w-2 h-2 rounded-full shrink-0"
                   style={{ backgroundColor: skill.color, boxShadow: `0 0 6px ${skill.color}` }}
                 />
-                <span className="text-[9px] md:text-[10px] font-black uppercase tracking-widest text-text-muted truncate">
+                <span className="text-xs md:text-xs font-black uppercase tracking-widest text-text-muted truncate">
                   {skill.shortLabel}
                 </span>
               </span>
@@ -100,7 +100,7 @@ const SkillStats = ({ modules }: SkillStatsProps) => {
                 }}
               />
             </div>
-            <span className="text-[9px] md:text-[10px] font-black text-text-primary w-12 md:w-14 lg:w-16 text-right tabular-nums shrink-0">
+            <span className="text-xs md:text-xs font-black text-text-primary w-12 md:w-14 lg:w-16 text-right tabular-nums shrink-0">
               {skill.completed}/{skill.total}
             </span>
           </div>

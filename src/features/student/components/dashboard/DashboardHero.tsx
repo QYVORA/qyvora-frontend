@@ -1,9 +1,6 @@
-import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { IconArrowRight } from '@/shared/components/icons';
-import { GridBoxedBackground } from '@/shared/components/backgrounds';
-import { motion } from 'motion/react';
-import Dobia from '@/shared/components/Dobia';
+import { ArrowRight } from 'lucide-react';
+import Button from '@/shared/components/ui/Button';
 
 interface DashboardHeroProps {
   isEnrolled: boolean;
@@ -14,193 +11,48 @@ interface DashboardHeroProps {
   username?: string;
 }
 
+/**
+ * DashboardHero — the Continue banner: one current objective, one action.
+ * No grid backdrop, no mascot, no decorative layers — a calm surface.
+ */
 const DashboardHero = ({
   isEnrolled, allDone, nextMission, continuePath, currentPhaseTitle, username,
 }: DashboardHeroProps) => {
   const { t } = useTranslation();
   const displayName = username ? `@${username}` : t('student.dashboard.hero.operatorFallback');
 
-  const cardClass = "relative rounded-2xl border border-border/50 bg-bg-card p-6 sm:p-10 lg:p-14 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 sm:gap-6";
-
-  if (allDone) {
-    return (
-      <div >
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.5 }}
-          className={cardClass}
-        >
-          <GridBoxedBackground blur={0} mask="right" />
-          <div className="relative z-10 w-full sm:w-auto flex flex-col sm:self-stretch gap-4 sm:gap-6">
-            <div>
-              <motion.div
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.4, delay: 0.2 }}
-                className="hero-text text-xs font-black uppercase tracking-[0.3em] text-text-muted mb-2"
-              >
-                {t('student.dashboard.hero.welcomeBack')} <span className="text-text-primary font-black">{displayName}</span>
-              </motion.div>
-              <motion.h2
-                initial={{ opacity: 0, y: 15 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.3 }}
-                className="hero-title text-xl sm:text-2xl lg:text-3xl font-black text-text-primary tracking-tight"
-              >
-                {t('student.dashboard.hero.allMissionsComplete')}
-              </motion.h2>
-              <motion.p
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.4, delay: 0.4 }}
-                className="hero-sub text-sm text-text-secondary mt-1.5"
-              >
-                {t('student.dashboard.hero.allRoomsComplete')}
-              </motion.p>
-            </div>
-            <motion.div
-              className="mt-auto"
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.4, delay: 0.5, type: 'spring', stiffness: 200, damping: 20 }}
-            >
-              <Link to={continuePath} className="hero-cta btn-primary shrink-0 !text-xs w-full sm:w-auto text-center relative z-10 whitespace-nowrap" aria-label={t('student.dashboard.hero.reviewCurriculum')}>
-                {t('student.dashboard.hero.reviewCurriculum')} <IconArrowRight size={14} className="inline" />
-              </Link>
-            </motion.div>
-          </div>
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.4, delay: 0.6, type: 'spring', stiffness: 200, damping: 20 }}
-            className="hidden sm:flex shrink-0"
-          >
-            <Dobia expression="success" size="xl" />
-          </motion.div>
-        </motion.div>
-      </div>
-    );
-  }
+  let kicker = t('student.dashboard.hero.welcome') + ' ' + displayName;
+  let title = t('student.dashboard.hero.beginJourney');
+  let body = t('student.dashboard.hero.startHpb');
+  let ctaLabel = t('student.dashboard.hero.startTraining');
 
   if (isEnrolled) {
-    return (
-      <div >
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.5 }}
-          className={cardClass}
-        >
-          <GridBoxedBackground blur={0} mask="right" />
-          <div className="relative z-10 w-full sm:w-auto flex flex-col sm:self-stretch gap-4 sm:gap-6">
-            <div>
-              <motion.div
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.4, delay: 0.2 }}
-                className="hero-text text-xs font-black uppercase tracking-[0.3em] text-text-muted mb-2"
-              >
-                {t('student.dashboard.hero.welcomeBack')} <span className="text-text-primary font-black">{displayName}</span>
-              </motion.div>
-              <motion.h2
-                initial={{ opacity: 0, y: 15 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.3 }}
-                className="hero-title text-xl sm:text-2xl lg:text-3xl font-black text-text-primary tracking-tight break-words"
-              >
-                {nextMission?.title || currentPhaseTitle || t('student.dashboard.hero.continueTraining')}
-              </motion.h2>
-              <motion.p
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.4, delay: 0.4 }}
-                className="hero-sub text-sm text-text-secondary mt-1.5"
-              >
-                {t('student.dashboard.hero.pickUpWhere')}
-              </motion.p>
-            </div>
-            <motion.div
-              className="mt-auto"
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.4, delay: 0.5, type: 'spring', stiffness: 200, damping: 20 }}
-            >
-              <Link to={continuePath} className="hero-cta btn-primary shrink-0 !text-xs w-full sm:w-auto text-center relative z-10 whitespace-nowrap" aria-label={t('student.dashboard.hero.continueTraining')}>
-                {t('student.dashboard.hero.continue')} <IconArrowRight size={14} className="inline" />
-              </Link>
-            </motion.div>
-          </div>
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.4, delay: 0.6, type: 'spring', stiffness: 200, damping: 20 }}
-            className="hidden sm:flex shrink-0"
-          >
-            <Dobia expression="idle" size="xl" />
-          </motion.div>
-        </motion.div>
-      </div>
-    );
+    kicker = `${t('student.dashboard.hero.welcomeBack')} ${displayName}`;
+    title = nextMission?.title || currentPhaseTitle || t('student.dashboard.hero.continueTraining');
+    body = t('student.dashboard.hero.pickUpWhere');
+    ctaLabel = t('student.dashboard.hero.continue');
+  }
+
+  if (allDone) {
+    kicker = `${t('student.dashboard.hero.welcomeBack')} ${displayName}`;
+    title = t('student.dashboard.hero.allMissionsComplete');
+    body = t('student.dashboard.hero.allRoomsComplete');
+    ctaLabel = t('student.dashboard.hero.reviewCurriculum');
   }
 
   return (
-    <div >
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.5 }}
-        className={cardClass}
-      >
-        <GridBoxedBackground blur={0} mask="right" />
-        <div className="relative z-10 w-full sm:w-auto flex flex-col sm:self-stretch gap-4 sm:gap-6">
-          <div>
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.4, delay: 0.2 }}
-              className="hero-text text-xs font-black uppercase tracking-[0.3em] text-text-muted mb-2"
-            >
-              {t('student.dashboard.hero.welcome')} <span className="text-text-primary font-black">{displayName}</span>
-            </motion.div>
-            <motion.h2
-              initial={{ opacity: 0, y: 15 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.3 }}
-              className="hero-title text-xl sm:text-2xl lg:text-3xl font-black text-text-primary tracking-tight"
-            >
-              {t('student.dashboard.hero.beginJourney')}
-            </motion.h2>
-            <motion.p
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.4, delay: 0.4 }}
-              className="hero-sub text-sm text-text-secondary mt-1.5"
-            >
-              {t('student.dashboard.hero.startHpb')}
-            </motion.p>
-          </div>
-          <motion.div
-            className="mt-auto"
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.4, delay: 0.5, type: 'spring', stiffness: 200, damping: 20 }}
-          >
-            <Link to={continuePath} className="hero-cta btn-primary shrink-0 !text-xs w-full sm:w-auto text-center relative z-10 whitespace-nowrap" aria-label={t('student.dashboard.hero.startTraining')}>
-              {t('student.dashboard.hero.startTraining')} <IconArrowRight size={14} className="inline" />
-            </Link>
-          </motion.div>
-        </div>
-        <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.4, delay: 0.6, type: 'spring', stiffness: 200, damping: 20 }}
-            className="hidden sm:flex shrink-0"
-          >
-            <Dobia expression="greeting" size="xl" />
-          </motion.div>
-      </motion.div>
-    </div>
+    <section className="flex min-h-[220px] flex-col justify-between gap-6 rounded-xl border border-border-subtle bg-surface p-6 sm:p-8">
+      <div>
+        <p className="type-label mb-2 uppercase tracking-[0.12em] text-accent">{kicker}</p>
+        <h2 className="type-h2 font-black uppercase tracking-tight text-text-primary">{title}</h2>
+        <p className="type-body-sm mt-2">{body}</p>
+      </div>
+      <div className="flex flex-wrap items-center gap-3">
+        <Button to={continuePath} trailingIcon={<ArrowRight className="h-4 w-4" aria-hidden="true" />}>
+          {ctaLabel}
+        </Button>
+      </div>
+    </section>
   );
 };
 

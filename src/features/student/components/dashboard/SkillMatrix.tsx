@@ -48,7 +48,7 @@ const SkillMatrix = ({ modules }: SkillMatrixProps) => {
           <h2 className="text-lg md:text-xl font-black uppercase tracking-tight text-text-primary">
             {t('student.dashboard.skillMatrix', 'Skill Matrix')}
           </h2>
-          <p className="text-[10px] md:text-xs font-bold uppercase tracking-widest text-text-muted mt-1">
+          <p className="text-xs md:text-xs font-bold uppercase tracking-widest text-text-muted mt-1">
             {t('student.dashboard.skillMatrixSub', 'Overall')} &middot; {average}%
           </p>
         </div>
