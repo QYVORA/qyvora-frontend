@@ -43,7 +43,7 @@ const CURRENT_YEAR = new Date().getFullYear();
  */
 const PublicFooter: React.FC = React.memo(() => {
   return (
-    <footer className="border-t border-border-subtle bg-canvas">
+    <footer className="border-t border-border-subtle bg-canvas" data-theme-persist="dark">
       <div className="px-3 py-12 md:px-4 lg:px-6">
         <div className="grid grid-cols-1 gap-10 md:grid-cols-[minmax(0,320px)_1fr]">
           <div>

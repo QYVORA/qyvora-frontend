@@ -865,6 +865,17 @@ html[data-animations="off"] * {
   --color-code-path: #a78bfa;
   --card-shimmer: inset 0 1px 0 rgba(255, 255, 255, 0.05);
   --card-shadow: 0 12px 40px rgba(0, 0, 0, 0.30);
+  /* Calm-system tokens — keep migrated surfaces dark inside a light page */
+  --color-canvas:            #0b0d0e;
+  --color-surface:           #121617;
+  --color-surface-raised:    #181d1e;
+  --color-border-subtle:     rgba(178, 193, 194, 0.13);
+  --color-text-tertiary:     rgba(238, 240, 238, 0.55);
+  --elevation-raised:        0 8px 24px rgba(0, 0, 0, 0.45);
+  --color-semantic-danger:   #f87171;
+  --color-semantic-warning:  #fbbf24;
+  --color-semantic-info:     #38bdf8;
+  --color-semantic-success:  #06b66f;
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
@@ -895,6 +906,25 @@ html[data-animations="off"] * {
   --color-semantic-warning:   #fbbf24;
   --color-semantic-info:      #38bdf8;
   --color-semantic-success:   #06b66f;
+}
+
+/* ── Calm-system light theme overrides ────────────────────────────────────
+   The calm surface tokens live in a later @theme block, so they need a
+   higher-specificity selector (:root[data-theme]) to win over the layered
+   defaults and the unlayered :root block above. Values deliberately mirror
+   the legacy light ramp (bg → bg-card → bg-elevated) so pages that mix the
+   two token systems stay seamless. Soft green-greys, never pure white. */
+:root[data-theme="light"] {
+  --color-canvas:            #D9DED5;   /* page background */
+  --color-surface:           #E1E6DC;   /* cards, fields, static panels */
+  --color-surface-raised:    #E8EBE4;   /* menus, sheets, utility panels */
+  --color-border-subtle:     rgba(22, 26, 21, 0.16);
+  --color-text-tertiary:     rgba(38, 43, 35, 0.62);
+  --elevation-raised:        0 8px 24px rgba(20, 32, 24, 0.12);
+  --color-semantic-danger:   #dc2626;
+  --color-semantic-warning:  #b45309;
+  --color-semantic-info:     #0284c7;
+  --color-semantic-success:  #047A48;
 }
 
 :root {
