@@ -204,15 +204,15 @@ const Dashboard = () => {
             </Card>
           )}
         </div>
-        <Card className="mt-4 p-4">
+        <Card className="mt-5 p-4 md:p-5">
           <CpEarnHint engagement={engagement} loading={engagementLoading} />
         </Card>
       </div>
 
       {/* 3. Three metrics — CP / rank / streak */}
       <div className="bg-canvas px-3 pb-6 md:px-4 lg:px-6">
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-          <Card className="p-6">
+        <div className="grid grid-cols-1 gap-4 md:gap-5 sm:grid-cols-3">
+          <Card className="p-6 md:p-7">
             <Metric
               icon={<CpLogo className="h-5 w-5" />}
               label={"CP"}
@@ -220,14 +220,14 @@ const Dashboard = () => {
               accent
             />
           </Card>
-          <Card className="p-6">
+          <Card className="p-6 md:p-7">
             <Metric
               icon={<Crown className="h-5 w-5" aria-hidden="true" />}
               label={"Rank"}
               value={rankName}
             />
           </Card>
-          <Card className="p-6">
+          <Card className="p-6 md:p-7">
             <Metric
               icon={<Flame className="h-5 w-5" aria-hidden="true" />}
               label={"Streak"}
@@ -274,7 +274,7 @@ const Dashboard = () => {
         {/* Bootcamps */}
         {enrolledBootcamps.length > 0 && (
           <div className="mt-8">
-            <div className="mb-3 flex items-center justify-between">
+            <div className="mb-4 flex items-center justify-between">
               <h3 className="type-label uppercase tracking-[0.12em] text-text-tertiary">{"Bootcamp"}</h3>
               <Button to="/dashboard/bootcamps" variant="ghost" size="sm">
                 {"View All"}
@@ -286,7 +286,7 @@ const Dashboard = () => {
 
         {/* Courses */}
         <div className="mt-8">
-          <div className="mb-3 flex items-center justify-between">
+          <div className="mb-4 flex items-center justify-between">
             <h3 className="type-label uppercase tracking-[0.12em] text-text-tertiary">{"Courses"}</h3>
             <Button to="/dashboard/courses" variant="ghost" size="sm">
               {"View All"}
@@ -312,7 +312,7 @@ const Dashboard = () => {
 
         {/* Labs */}
         <div className="mt-8">
-          <div className="mb-3 flex items-center justify-between">
+          <div className="mb-4 flex items-center justify-between">
             <h3 className="type-label uppercase tracking-[0.12em] text-text-tertiary">{"Labs"}</h3>
             <Button to="/dashboard/labs" variant="ghost" size="sm">
               {"View All"}
@@ -337,7 +337,7 @@ const Dashboard = () => {
 
         {/* Tools */}
         <div className="mt-8">
-          <div className="mb-3 flex items-center justify-between">
+          <div className="mb-4 flex items-center justify-between">
             <h3 className="type-label uppercase tracking-[0.12em] text-text-tertiary">{"Tools"}</h3>
           </div>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -360,7 +360,7 @@ const Dashboard = () => {
 
         {/* Marketplace */}
         <div className="mt-8">
-          <div className="mb-3 flex items-center justify-between">
+          <div className="mb-4 flex items-center justify-between">
             <h3 className="type-label uppercase tracking-[0.12em] text-text-tertiary">{"Marketplace"}</h3>
             <Button to="/dashboard/marketplace" variant="ghost" size="sm">
               {"View All"}

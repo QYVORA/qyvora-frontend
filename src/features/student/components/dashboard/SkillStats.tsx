@@ -58,7 +58,7 @@ const SkillStats = ({ modules }: SkillStatsProps) => {
   const prefersReduced = useReducedMotion();
 
   return (
-    <div className="flex flex-col gap-4 md:gap-5 h-full">
+    <div className="flex flex-col gap-5 md:gap-6 h-full">
       <div className="flex items-center justify-between gap-3">
         <div>
           <h3 className="text-xs font-black uppercase tracking-[0.25em] text-text-primary">
@@ -68,13 +68,13 @@ const SkillStats = ({ modules }: SkillStatsProps) => {
             {"Completion"}
           </p>
         </div>
-        <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-surface-raised border border-border-subtle">
+        <div className="flex items-center gap-2.5 px-3.5 py-2 rounded-xl bg-surface-raised border border-border-subtle">
           <CpLogo className="w-4 h-4" />
           <span className="text-sm font-black text-accent tabular-nums">{average}%</span>
         </div>
       </div>
 
-      <div className="flex-1 flex flex-col justify-around gap-3 md:gap-4">
+      <div className="flex-1 flex flex-col justify-around gap-4 md:gap-5">
         {skills.map((skill, i) => (
           <div key={skill.key} className="flex items-center gap-3 md:gap-3.5 lg:gap-4">
             <span className="shrink-0 w-[72px] md:w-[84px] lg:w-[96px]">
@@ -88,7 +88,7 @@ const SkillStats = ({ modules }: SkillStatsProps) => {
                 </span>
               </span>
             </span>
-            <div className="flex-1 h-3 md:h-3.5 lg:h-4 rounded-full bg-accent-dim/15 overflow-hidden">
+            <div className="flex-1 h-3.5 md:h-4 lg:h-5 rounded-full bg-accent-dim/15 overflow-hidden">
               <div
                 className="h-full rounded-full origin-left"
                 style={{

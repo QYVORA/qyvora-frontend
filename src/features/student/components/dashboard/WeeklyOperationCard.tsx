@@ -22,8 +22,8 @@ const WeeklyOperationCard = ({ engagement, loading }: WeeklyOperationCardProps) 
   }
 
   return (
-    <div className="card-accent bg-surface p-5 md:p-6">
-      <div className="flex items-center gap-3 mb-3">
+    <div className="card-accent bg-surface p-6 md:p-7">
+      <div className="flex items-center gap-3 mb-4">
         <div className="w-9 h-9 rounded-xl flex items-center justify-center bg-accent/10 shrink-0">
           <IconTarget size={18} className="text-accent" />
         </div>
@@ -35,16 +35,16 @@ const WeeklyOperationCard = ({ engagement, loading }: WeeklyOperationCardProps) 
         </Badge>
       </div>
 
-      <h3 className="text-lg md:text-xl font-black text-text-primary mb-2">
+      <h3 className="text-lg md:text-xl font-black text-text-primary mb-3">
         {operation.title}
       </h3>
 
-      <p className="text-sm md:text-base text-text-muted mb-4 line-clamp-2">
+      <p className="text-sm md:text-base text-text-muted mb-5 line-clamp-2">
         {operation.brief}
       </p>
 
-      <div className="mb-5">
-        <div className="flex items-center justify-between mb-2">
+      <div className="mb-6">
+        <div className="flex items-center justify-between mb-2.5">
           <span className="text-xs font-mono text-text-muted">
             {operation.steps.filter(s => s.completed).length}/{operation.steps.length} {"steps"}
           </span>
@@ -52,7 +52,7 @@ const WeeklyOperationCard = ({ engagement, loading }: WeeklyOperationCardProps) 
             +{operation.cpReward} CP
           </span>
         </div>
-        <div className="h-2.5 bg-surface-raised rounded-full overflow-hidden">
+        <div className="h-3 bg-surface-raised rounded-full overflow-hidden">
           <div
             className="h-full bg-accent rounded-full transition-[width] duration-700"
             style={{ width: `${Math.min(progress * 100, 100)}%` }}
@@ -60,7 +60,7 @@ const WeeklyOperationCard = ({ engagement, loading }: WeeklyOperationCardProps) 
         </div>
       </div>
 
-      <div className="space-y-3 mb-5">
+      <div className="space-y-4 mb-6">
         {operation.steps.map(step => (
           <div key={step.id} className="flex items-center gap-3">
             <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center shrink-0 ${step.completed ? 'bg-accent border-accent' : 'border-border'}`}>

@@ -30,7 +30,7 @@ const DailyMissionCard = ({ engagement, loading }: DailyMissionCardProps) => {
 
   return (
     <div className="card-accent bg-surface p-6 md:p-8">
-      <div className="flex items-center gap-3 mb-4">
+      <div className="flex items-center gap-3 mb-5">
         <div className="w-10 h-10 rounded-xl flex items-center justify-center bg-accent/10">
           <IconFire size={20} className="text-accent" />
         </div>
@@ -42,15 +42,15 @@ const DailyMissionCard = ({ engagement, loading }: DailyMissionCardProps) => {
         </Badge>
       </div>
 
-      <h3 className="text-xl md:text-2xl font-black text-text-primary mb-2">
+      <h3 className="text-xl md:text-2xl font-black text-text-primary mb-3">
         {mission.title}
       </h3>
 
-      <p className="text-sm md:text-base text-text-muted mb-4 line-clamp-2">
+      <p className="text-sm md:text-base text-text-muted mb-5 line-clamp-2">
         {mission.brief}
       </p>
 
-      <div className="flex items-center gap-4 mb-5">
+      <div className="flex items-center gap-5 mb-6">
         <span className="text-xs font-mono text-text-muted">
           {mission.estimatedTime}
         </span>
