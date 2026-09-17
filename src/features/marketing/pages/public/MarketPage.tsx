@@ -85,7 +85,7 @@ const MarketPage = () => {
                 onChange={(e) => handleQueryChange(e.target.value)}
                 placeholder="Search products..."
                 aria-label="Search products"
-                className="w-full rounded-xl border border-border/40 bg-bg-card py-3 pl-10 pr-3 text-sm text-text-primary transition-colors outline-none focus:border-accent"
+                className="w-full rounded-xl border border-border-subtle bg-surface py-3 pl-10 pr-3 text-sm text-text-primary transition-colors outline-none focus:border-accent"
               />
             </div>
             <ViewToggle value={view} onChange={setView} label="Market view mode" />
@@ -94,7 +94,7 @@ const MarketPage = () => {
           {loading ? (
             <div className="grid grid-cols-1 items-stretch gap-4 md:grid-cols-2 md:gap-6 lg:grid-cols-3">
               {Array.from({ length: 3 }).map((_, i) => (
-                <div key={i} className="card-accent overflow-hidden bg-bg-card">
+                <div key={i} className="card-accent overflow-hidden bg-surface">
                   <Skeleton className="aspect-[16/9] w-full rounded-none" />
                   <div className="flex flex-col gap-2.5 p-4">
                     <Skeleton className="h-5 w-3/4 rounded" />

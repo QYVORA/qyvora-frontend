@@ -200,7 +200,7 @@ const SimulationPage = () => {
                 {features.map((feature, i) => (
                   <div
                     key={i}
-                    className="card-accent flex items-center gap-3 bg-bg-card px-4 py-4"
+                    className="card-accent flex items-center gap-3 bg-surface px-4 py-4"
                   >
                     <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-lg border border-accent/20 bg-accent/10">
                       <Zap className="h-3 w-3 text-accent" />

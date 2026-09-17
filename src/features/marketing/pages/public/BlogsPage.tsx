@@ -97,7 +97,7 @@ const BlogsPage = () => {
                   onChange={(e) => handleQueryChange(e.target.value)}
                   placeholder="Search articles..."
                   aria-label="Search articles"
-                  className="w-full rounded-xl border border-border/40 bg-bg-card py-3 pl-10 pr-3 text-sm text-text-primary transition-colors outline-none focus:border-accent"
+                  className="w-full rounded-xl border border-border-subtle bg-surface py-3 pl-10 pr-3 text-sm text-text-primary transition-colors outline-none focus:border-accent"
                 />
               </div>
               <ViewToggle value={view} onChange={setView} label="Blog view mode" />

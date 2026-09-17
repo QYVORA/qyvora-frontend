@@ -144,7 +144,7 @@ const LeaderboardPage = () => {
               {Array.from({ length: 3 }).map((_, i) => (
                 <div
                   key={i}
-                  className={`flex h-full flex-col items-center gap-3 rounded-2xl border border-border/50 bg-bg-card p-6 text-center md:order-2 md:p-8 ${i === 0 ? 'md:order-2' : i === 1 ? 'md:order-1' : 'md:order-3'}`}
+                  className={`flex h-full flex-col items-center gap-3 rounded-2xl border border-border-subtle bg-surface p-6 text-center md:order-2 md:p-8 ${i === 0 ? 'md:order-2' : i === 1 ? 'md:order-1' : 'md:order-3'}`}
                 >
                   <Skeleton variant="icon" className="h-24 w-24 rounded-full md:h-28 md:w-28" />
                   <Skeleton variant="title" className="mt-2 w-32" />
@@ -200,7 +200,7 @@ const LeaderboardRestSection: React.FC<{ rest: any[]; user: any; total: number }
 
   return (
     <div className="overflow-hidden rounded-2xl border border-border-subtle bg-surface">
-      <div className="hidden md:grid grid-cols-[48px_1fr_140px_100px_80px] gap-4 px-6 py-3 border-b border-border/40 type-meta font-black uppercase tracking-widest text-text-muted/50">
+      <div className="hidden md:grid grid-cols-[48px_1fr_140px_100px_80px] gap-4 px-6 py-3 border-b border-border-subtle type-meta font-black uppercase tracking-widest text-text-muted/50">
         <span>{"#"}</span>
         <span>{"Operator"}</span>
         <span>{"Rank"}</span>
@@ -226,7 +226,7 @@ const LeaderboardRestSection: React.FC<{ rest: any[]; user: any; total: number }
                 youLabel="You"
                 roomsLabel={"rooms"}
                 avatarShape="rounded-xl"
-                normalBorderColor="border-border/50"
+                normalBorderColor="border-border-subtle"
               />
             </motion.div>
           ))}
