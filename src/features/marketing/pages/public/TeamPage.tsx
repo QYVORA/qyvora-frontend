@@ -4,6 +4,7 @@ import { BrandGithubIcon, BrandLinkedinIcon, BrandXIcon, BrandYoutubeIcon, Brand
 import { ScrollReveal } from '@/shared/components';
 import SEO from '@/shared/components/SEO';
 import PageHeader from '@/shared/components/ui/PageHeader';
+import PublicContainer from '@/shared/components/layout/PublicContainer';
 import { teamData, type TeamMember } from '@/features/marketing/content/teamData';
 
 const SOCIAL_ICONS: Record<string, React.ElementType> = {
@@ -103,7 +104,7 @@ const TeamPage = () => {
   return (
     <div className="min-h-dvh bg-canvas">
       <SEO title="Team - QYVORA" description="The team behind QYVORA | operators, engineers, and security researchers." />
-      <div className="w-full px-3 pb-20 pt-24 md:px-4 md:pb-24 md:pt-28 lg:px-6 lg:pt-32">
+      <PublicContainer className="pb-20 pt-24 md:pb-24 md:pt-28 lg:pt-32">
         <PageHeader
           kicker="QYVORA · Operators"
           title="Our Team"
@@ -120,7 +121,7 @@ const TeamPage = () => {
         <div className="mt-10 space-y-12 md:mt-14 md:space-y-16">
           {teamData.map((member) => <TeamMemberSection key={member.id} member={member} />)}
         </div>
-      </div>
+      </PublicContainer>
     </div>
   );
 };

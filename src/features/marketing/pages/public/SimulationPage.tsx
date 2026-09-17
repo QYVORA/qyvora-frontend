@@ -5,6 +5,7 @@ import { IconArrowRight, IconTerminal, IconCode, IconNetwork } from '@/shared/co
 import SEO from '@/shared/components/SEO';
 import CodeBlock from '@/shared/components/CodeBlock';
 import PageHeader from '@/shared/components/ui/PageHeader';
+import PublicContainer from '@/shared/components/layout/PublicContainer';
 import Button from '@/shared/components/ui/Button';
 import { SimpleHeading } from '@/shared/components/ui';
 import { useAuth } from '@/core/contexts/AuthContext';
@@ -127,7 +128,7 @@ const SimulationPage = () => {
         description={SIM_CONTENT[key].description}
       />
       <SimulationProvider>
-        <div className="w-full px-3 pb-20 pt-24 md:px-4 md:pb-24 md:pt-28 lg:px-6 lg:pt-32">
+        <PublicContainer className="pb-20 pt-24 md:pb-24 md:pt-28 lg:pt-32">
           <PageHeader
             kicker={"QYVORA · Simulations"}
             title={`${SIM_CONTENT[key].title} ${SIM_CONTENT[key].titleAccent}`}
@@ -220,7 +221,7 @@ const SimulationPage = () => {
           </section>
 
           <RelatedContentSection items={otherSimulations} />
-        </div>
+        </PublicContainer>
 
         {/* Live tool modals */}
         {key === 'terminal' && (

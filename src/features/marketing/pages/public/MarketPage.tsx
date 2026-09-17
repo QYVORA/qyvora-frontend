@@ -7,6 +7,7 @@ import api from '@/core/services/api';
 import { Skeleton, ErrorState, BatchPagination } from '@/shared/components/ui';
 import SEO from '@/shared/components/SEO';
 import PageHeader from '@/shared/components/ui/PageHeader';
+import PublicContainer from '@/shared/components/layout/PublicContainer';
 import Button from '@/shared/components/ui/Button';
 import EmptyState from '@/shared/components/ui/EmptyState';
 import { useAuth } from '@/core/contexts/AuthContext';
@@ -55,7 +56,7 @@ const MarketPage = () => {
   return (
     <div className="min-h-full w-full bg-canvas">
       <SEO title="Zero Day Market - QYVORA" description="Intelligence assets, guides, papers, and tools available for CP." />
-      <div className="w-full px-3 pb-20 pt-24 md:px-4 md:pb-24 md:pt-28 lg:px-6 lg:pt-32">
+      <PublicContainer className="pb-20 pt-24 md:pb-24 md:pt-28 lg:pt-32">
         <PageHeader
           kicker={"QYVORA · Market"}
           title="Zero Day Market"
@@ -130,7 +131,7 @@ const MarketPage = () => {
             </div>
           )}
         </div>
-      </div>
+      </PublicContainer>
     </div>
   );
 };

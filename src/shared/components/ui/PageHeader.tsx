@@ -31,8 +31,12 @@ const PageHeader: React.FC<PageHeaderProps> = ({
         {kicker && (
           <p className="mb-2 type-label text-accent uppercase tracking-[0.12em]">{kicker}</p>
         )}
-        <h1 className="type-h1 text-text-primary">{title}</h1>
-        {description && <p className="mt-3 type-body max-w-prose">{description}</p>}
+        <h1 className="text-3xl font-black uppercase tracking-tight text-text-primary md:text-4xl lg:text-5xl">
+          {title}
+        </h1>
+        {description && (
+          <p className="mt-3 max-w-2xl text-base text-text-secondary md:text-lg">{description}</p>
+        )}
       </div>
       {actions && <div className="flex flex-wrap items-center gap-3">{actions}</div>}
     </div>

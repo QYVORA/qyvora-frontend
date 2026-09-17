@@ -2,6 +2,7 @@ import React from 'react';
 import { Navigate, useParams } from 'react-router-dom';
 import { ArrowRight, Clock } from 'lucide-react';
 import SEO from '@/shared/components/SEO';
+import PublicContainer from '@/shared/components/layout/PublicContainer';
 import Button from '@/shared/components/ui/Button';
 import { LearningCard, LearningDetailShell } from '@/shared/components/learning';
 import { BOOTCAMP_CONFIG } from '@/features/student/constants/bootcampStructure';
@@ -32,7 +33,7 @@ const HpbPhasePage: React.FC = () => {
         description={learnPhase?.desc ?? `${phase.title}. Hacker Protocol Bootcamp.`}
         breadcrumbName={phase.title}
       />
-      <div className="w-full px-3 pb-20 pt-24 md:px-4 md:pb-24 md:pt-28 lg:px-6 lg:pt-32">
+      <PublicContainer className="pb-20 pt-24 md:pb-24 md:pt-28 lg:pt-32">
         <LearningDetailShell
           backTo="/hpb"
           backLabel={"All phases"}
@@ -110,7 +111,7 @@ const HpbPhasePage: React.FC = () => {
             </div>
           </div>
         </LearningDetailShell>
-      </div>
+      </PublicContainer>
     </div>
   );
 };

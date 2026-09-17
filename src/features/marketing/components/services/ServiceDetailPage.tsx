@@ -6,6 +6,7 @@ import { openServiceRequestModal } from '@/features/marketing/components/Service
 import { DottedMapOverlay, SimpleHeading } from '@/shared/components/ui';
 import SEO from '@/shared/components/SEO';
 import PageHeader from '@/shared/components/ui/PageHeader';
+import PublicContainer from '@/shared/components/layout/PublicContainer';
 import { REQUEST_ASSESSMENT_LABEL, PENTEST_PHILOSOPHY, SERVICES, type ServiceConfig } from '@/features/marketing/content/servicesConfig';
 import { buildService } from '@/shared/seo/schema';
 import ScrollReveal from '@/shared/components/ScrollReveal';
@@ -35,7 +36,7 @@ const ServiceDetailPage: React.FC<{ svc: ServiceConfig }> = ({ svc }) => {
         schemaData={buildService(svc)}
       />
 
-      <div className="w-full px-3 pb-20 pt-24 md:px-4 md:pb-24 md:pt-28 lg:px-6 lg:pt-32">
+      <PublicContainer className="pb-20 pt-24 md:pb-24 md:pt-28 lg:pt-32">
         <PageHeader
           kicker={svc.badge}
           title={svc.title}
@@ -258,7 +259,7 @@ const ServiceDetailPage: React.FC<{ svc: ServiceConfig }> = ({ svc }) => {
           {/* ── Related services ─────────────────────────────────────────── */}
           <RelatedContentSection items={otherServices} />
         </div>
-      </div>
+      </PublicContainer>
     </div>
   );
 };

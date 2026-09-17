@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { ChevronDown } from 'lucide-react';
 import SimpleHeading from '@/shared/components/ui/SimpleHeading';
+import PublicContainer from '@/shared/components/layout/PublicContainer';
 import { ContactTrigger } from '@/features/marketing/components/ContactModal';
 import { termsData } from './termsData';
 
@@ -22,7 +23,7 @@ const TermsContentSection: React.FC = () => {
 
   return (
     <div className="min-h-full flex flex-col py-12 md:py-16 lg:py-20">
-      <div className="w-full px-3 md:px-4 lg:px-6">
+      <PublicContainer>
         {/* Page header */}
         <div className="mb-8 md:mb-12">
           <div className="flex items-center gap-3 mb-3">
@@ -139,7 +140,7 @@ const TermsContentSection: React.FC = () => {
             </div>
           ))}
         </div>
-      </div>
+      </PublicContainer>
     </div>
   );
 };

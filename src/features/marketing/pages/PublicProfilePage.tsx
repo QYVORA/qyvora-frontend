@@ -6,6 +6,7 @@ import NotFoundPage from '../../../shared/pages/NotFoundPage';
 import api from '../../../core/services/api';
 import PageLoader from '../../../shared/components/PageLoader';
 import SEO from '../../../shared/components/SEO';
+import PublicContainer from '../../../shared/components/layout/PublicContainer';
 import ProfileIdentityBlock from '../../../shared/components/profile/ProfileIdentityBlock';
 import CpLogo from '../../../shared/components/CpLogo';
 import ProfileMetricsStrip from '../../../shared/components/profile/ProfileMetricsStrip';
@@ -125,7 +126,7 @@ const PublicProfile: React.FC = () => {
         breadcrumbName={handle ? `@${handle}` : 'Profile'}
       />
 
-      <div className="w-full px-3 md:px-4 lg:px-6 pt-24 md:pt-28 pb-20 lg:pb-24">
+      <PublicContainer className="pt-24 md:pt-28 pb-20 lg:pb-24">
           {/* Main content */}
           <div className="space-y-6">
             {/* ── Identity Section ── */}
@@ -216,7 +217,7 @@ const PublicProfile: React.FC = () => {
               <TrophyCabinet profile={profile} />
             </section>
           </div>
-      </div>
+      </PublicContainer>
     </div>
   );
 };

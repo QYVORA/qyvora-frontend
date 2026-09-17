@@ -3,6 +3,7 @@ import { Binary, Cpu, Palette, ShieldCheck, Users } from 'lucide-react';
 import { IconArrowRight } from '@/shared/components/icons';
 import { ScrollReveal } from '@/shared/components';
 import SEO from '@/shared/components/SEO';
+import PublicContainer from '@/shared/components/layout/PublicContainer';
 import Button from '@/shared/components/ui/Button';
 import { researchersData, type Researcher } from '@/features/marketing/content/researchersData';
 import quiteRootLogo from '@/assets/quiteRoot/ChatGPT Image Jul 3, 2026, 02_45_59 AM.webp';
@@ -60,7 +61,7 @@ const QuiteRootPage = () => {
   return (
     <div className="min-h-dvh bg-canvas">
       <SEO title="QuiteRoot - QYVORA" description="QuiteRoot, a network of security researchers pushing the boundaries of offensive security." />
-      <div className="w-full px-3 pb-20 pt-24 md:px-4 md:pb-24 md:pt-28 lg:px-6 lg:pt-32">
+      <PublicContainer className="pb-20 pt-24 md:pb-24 md:pt-28 lg:pt-32">
         <div className="grid w-full grid-cols-1 items-center gap-10 lg:grid-cols-[minmax(0,1fr)_auto]">
           <div className="flex min-w-0 flex-col justify-center">
             <span className="text-xs font-black uppercase tracking-[0.3em] text-accent">
@@ -99,7 +100,7 @@ const QuiteRootPage = () => {
         <div className="mt-10 space-y-12 md:mt-14 md:space-y-16">
           {researchersData.map((researcher) => <ResearcherSection key={researcher.id} researcher={researcher} />)}
         </div>
-      </div>
+      </PublicContainer>
     </div>
   );
 };
