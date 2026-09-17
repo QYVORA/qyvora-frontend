@@ -825,6 +825,14 @@ html[data-animations="off"] * {
   --color-code-path:      #7c3aed;
   --card-shimmer:         inset 0 1px 0 rgba(255, 255, 255, 0.5);
   --card-shadow:          0 12px 40px rgba(20, 32, 24, 0.14);
+  /* Status & difficulty — darken 400-level hues for legibility on light */
+  --color-danger:                      #dc2626;
+  --color-warning:                     #b45309;
+  --color-info:                        #0284c7;
+  --color-success:                     #047A48;
+  --color-difficulty-beginner:         #0284c7;
+  --color-difficulty-intermediate:     #b45309;
+  --color-difficulty-advanced:         #dc2626;
 }
 
 [data-theme="light"] ::-webkit-scrollbar-track {
