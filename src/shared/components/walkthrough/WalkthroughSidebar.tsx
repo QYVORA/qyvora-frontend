@@ -121,7 +121,7 @@ export function WalkthroughSidebar({
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.2 }}
-              className="fixed inset-0 z-[60] bg-black/65 backdrop-blur-sm md:hidden"
+              className="fixed inset-0 z-[60] bg-black/65 backdrop-blur-sm"
               onClick={onMobileClose}
             />
             <motion.aside
@@ -129,7 +129,7 @@ export function WalkthroughSidebar({
               animate={{ x: 0 }}
               exit={{ x: '-100%' }}
               transition={{ type: 'spring', damping: 28, stiffness: 240 }}
-              className="fixed left-0 top-0 bottom-0 z-[70] w-[92vw] max-w-[360px] flex flex-col bg-bg md:hidden overflow-y-auto"
+              className="fixed left-0 top-0 bottom-0 z-[70] w-[92vw] max-w-[360px] flex flex-col bg-bg overflow-y-auto"
             >
               <div className="flex items-center justify-between border-b border-border px-4 py-3.5 bg-bg/95 backdrop-blur-md shrink-0">
                 <div>

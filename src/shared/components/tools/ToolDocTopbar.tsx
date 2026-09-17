@@ -127,8 +127,8 @@ const ToolDocTopbar: React.FC<ToolDocTopbarProps> = ({
         className={cn(
           'fixed top-0 left-0 w-full z-[100] transition-[background-color,border-color,backdrop-filter] duration-200',
           scrolled || isMenuOpen
-            ? 'bg-bg/95 backdrop-blur-xl border-b border-border/50'
-            : 'bg-bg/80 md:bg-transparent backdrop-blur-md md:backdrop-blur-none border-b border-border/20 md:border-transparent'
+            ? 'bg-canvas/95 backdrop-blur-xl border-b border-border/50'
+            : 'bg-canvas/80 md:bg-transparent backdrop-blur-md md:backdrop-blur-none border-b border-border/20 md:border-transparent'
         )}
       >
         <div className="flex items-center justify-between h-14 md:h-16 px-3 md:px-4 lg:px-6">
@@ -220,7 +220,7 @@ const ToolDocTopbar: React.FC<ToolDocTopbarProps> = ({
         {!isMenuOpen && sections.length > 0 && (
           <nav
             aria-label="Document Sections"
-            className="flex md:hidden items-center gap-1.5 px-3 py-1.5 border-t border-border/20 bg-bg-card/90 backdrop-blur-md scroll-x no-scrollbar"
+            className="flex md:hidden items-center gap-1.5 px-3 py-1.5 border-t border-border/20 bg-surface/90 backdrop-blur-md scroll-x no-scrollbar"
           >
             {sections.map((s) => (
               <button
@@ -231,7 +231,7 @@ const ToolDocTopbar: React.FC<ToolDocTopbarProps> = ({
                   'px-2.5 py-1 text-xs font-black uppercase tracking-widest whitespace-nowrap rounded-lg transition-colors shrink-0',
                   activeSection === s.id
                     ? 'bg-accent/10 text-accent border border-accent/40'
-                    : 'text-text-muted hover:text-text-primary bg-bg-elevated/40 border border-border/30'
+                    : 'text-text-muted hover:text-text-primary bg-surface-raised/40 border border-border/30'
                 )}
               >
                 {s.label}
@@ -249,7 +249,7 @@ const ToolDocTopbar: React.FC<ToolDocTopbarProps> = ({
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.2 }}
-            className="fixed inset-0 z-[90] md:hidden bg-bg/95 backdrop-blur-xl"
+            className="fixed inset-0 z-[90] md:hidden bg-canvas/95 backdrop-blur-xl"
           >
             <motion.div
               initial={{ opacity: 0, y: -12 }}

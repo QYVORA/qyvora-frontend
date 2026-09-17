@@ -70,7 +70,7 @@ const SkillStats = ({ modules }: SkillStatsProps) => {
             {t('student.dashboard.skillStatsSub', 'Completion')}
           </p>
         </div>
-        <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-bg-elevated border border-border/50">
+        <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-surface-raised border border-border-subtle">
           <CpLogo className="w-4 h-4" />
           <span className="text-sm font-black text-accent tabular-nums">{average}%</span>
         </div>

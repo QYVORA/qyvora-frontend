@@ -3,7 +3,7 @@ import { useParams, Link, useNavigate, useSearchParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next';
 import {
   ArrowLeft, Lock, BookOpen,
-  List, Minimize2, Maximize2, Loader2, ChevronRight,
+  List, Minimize2, Maximize2, Loader2, ChevronRight, PanelLeft,
 } from 'lucide-react';
 import { IconArrowRight, IconCheck } from '@/shared/components/icons';
 import { AnimatePresence } from 'motion/react';
@@ -178,14 +178,6 @@ const BootcampRoomPage: React.FC = () => {
       navigate('/dashboard/bootcamps', { replace: true });
     }
   }, [apiLoading, bootcampStatus, navigate]);
-
-  useEffect(() => {
-    const sidebarHandler = () => setSidebarOpen(true);
-    window.addEventListener('bootcamp:openSidebar', sidebarHandler);
-    return () => {
-      window.removeEventListener('bootcamp:openSidebar', sidebarHandler);
-    };
-  }, []);
 
   useEffect(() => {
     const step = searchParams.get('step');
@@ -378,6 +370,12 @@ const BootcampRoomPage: React.FC = () => {
 
       <LearningToolbar
         actions={[
+          {
+            id: 'room-navigator',
+            icon: <PanelLeft className="h-4 w-4" />,
+            label: t('student.bootcampRoom.sidebar.roomNavigator'),
+            onClick: () => setSidebarOpen(true),
+          },
           {
             id: 'jump-menu',
             icon: <List className="h-4 w-4" />,

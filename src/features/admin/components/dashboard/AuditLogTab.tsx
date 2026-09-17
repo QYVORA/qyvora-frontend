@@ -109,15 +109,15 @@ const AuditLogTab = () => {
           {entries.map((entry) => (
             <div key={entry.id} className="flex items-center gap-3 px-4 py-2.5 rounded-xl border border-border bg-bg-card text-xs">
               <div className="w-2 h-2 rounded-full bg-accent/60 shrink-0" />
-              <div className="flex-1 min-w-0 grid grid-cols-[120px_100px_1fr_auto] gap-3 items-center">
-                <span className="font-mono text-text-muted">{new Date(entry.createdAt).toLocaleString()}</span>
-                <span className="font-bold text-text-primary truncate">{entry.admin?.name || t('common2.unknown')}</span>
-                <span className="text-text-secondary truncate">
+              <div className="flex-1 min-w-0 grid grid-cols-[minmax(0,1fr)_auto] gap-x-3 gap-y-1 items-center sm:grid-cols-[120px_100px_minmax(0,1fr)_auto] sm:gap-y-0">
+                <span className="font-mono text-text-muted min-w-0 truncate col-start-1 row-start-1 sm:col-start-1 sm:row-start-auto">{new Date(entry.createdAt).toLocaleString()}</span>
+                <span className="font-bold text-text-primary truncate col-start-2 row-start-1 sm:col-start-2 sm:row-start-auto">{entry.admin?.name || t('common2.unknown')}</span>
+                <span className="text-text-secondary truncate col-start-1 min-w-0 row-start-2 sm:col-start-3 sm:row-start-auto">
                   <span className="font-bold text-accent">{entry.action.replace(/_/g, ' ')}</span>
                   <span className="text-text-muted/60 mx-1">→</span>
                   <span className="font-mono">{entry.targetType}:{entry.targetId?.slice(0, 20)}</span>
                 </span>
-                <span className="flex flex-col items-end gap-0.5">
+                <span className="flex flex-col items-end gap-0.5 col-start-2 row-start-2 sm:col-start-4 sm:row-start-auto">
                   <span className="text-xs font-mono text-text-muted/60">{entry.ipAddress}</span>
                   {entry.correlationId ? (
                     <button

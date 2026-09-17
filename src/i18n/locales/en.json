@@ -72,7 +72,8 @@
     "adminConsole": "Admin Console",
     "signUp": "Sign Up",
     "profile": "Profile",
-    "cp": "Cyber Coin"
+    "cp": "Cyber Coin",
+    "menu": "Menu"
   },
   "button": {
     "startTraining": "Start Training",
@@ -398,7 +399,8 @@
     "copyToken": "Copy token",
     "close": "Close",
     "notifications": "Notifications",
-    "sessionTerminated": "Session terminated"
+    "sessionTerminated": "Session terminated",
+    "internalTerminal": "Internal terminal"
   },
   "auth": {
     "signIntoContinue": "Sign in to continue your training.",
@@ -413,7 +415,8 @@
       "labs": "Hands-on penetration testing labs",
       "scenarios": "Real-world offensive security scenarios",
       "ctf": "Capture the flag challenges & rankings"
-    }
+    },
+    "chooseMode": "Choose sign in or register"
   },
   "typewriter": {
     "trainLikeA": "Train Like a",
@@ -1016,7 +1019,9 @@
         "Subnet grouping",
         "Drag and connect nodes"
       ]
-    }
+    },
+    "eyebrow": "QYVORA · Simulations",
+    "kicker": "QYVORA · Tools"
   },
   "student": {
     "layout": {
@@ -1044,7 +1049,22 @@
       "viewProfile": "View Profile",
       "rooms": "Rooms",
       "cp": "CP",
-      "streak": "Streak"
+      "streak": "Streak",
+      "main": "Main",
+      "home": "Home",
+      "bootcamp": "Bootcamp",
+      "labs": "Labs",
+      "marketplace": "Marketplace",
+      "practice": "Practice",
+      "competitive": "Competitive",
+      "networks": "Networks",
+      "account": "Account",
+      "profile": "Profile",
+      "notifications": "Notifications",
+      "settings": "Settings",
+      "collapse": "Collapse sidebar",
+      "expand": "Expand sidebar",
+      "label": "Primary"
     },
     "topbar": {
       "search": {
@@ -1084,7 +1104,8 @@
         "lessons": "Lessons",
         "room": "Room",
         "dashboard": "Dashboard"
-      }
+      },
+      "continueMission": "Continue Mission"
     },
     "search": {
       "placeholder": "Search courses, labs, rooms…",
@@ -1099,7 +1120,9 @@
       "terminal": "Terminal",
       "terminalDesc": "Kali Linux terminal emulator",
       "networkVisualizer": "Network Visualizer",
-      "networkVisualizerDesc": "Build and explore network topologies"
+      "networkVisualizerDesc": "Build and explore network topologies",
+      "network": "Network Lab",
+      "settings": "Settings"
     },
     "installBanner": {
       "title": "Install QYVORA",
@@ -1117,7 +1140,6 @@
       "menu": "Menu",
       "navigation": "Navigation"
     },
-
     "onboardingModal": {
       "step0": {
         "title": "Welcome to QYVORA",
@@ -1228,7 +1250,9 @@
         "info": "Complete one room or lab per day to maintain your streak.",
         "label": "Streak",
         "activeDays": "active days",
-        "hint": "Complete a room or lab daily to keep your streak going."
+        "hint": "Complete a room or lab daily to keep your streak going.",
+        "ariaWeek": "Activity: {{active}} of {{total}} days this week",
+        "thisWeek": "this week"
       },
       "roomsDone": "Rooms Done",
       "courses": "Courses",
@@ -1298,53 +1322,54 @@
       "upNext": "Up next: {{name}}",
       "untilNext": "{{points}} pts to {{name}}"
     },
-  "myCourses": {
-    "seoTitle": "My Courses",
-    "seoDesc": "Your purchased courses.",
-    "title": "My Courses",
-    "description": "Your enrolled bootcamps and progress.",
-    "filter": {
-      "all": "All",
-      "active": "Active",
-      "inProgress": "In Progress",
-      "completed": "Completed"
+    "myCourses": {
+      "seoTitle": "My Courses",
+      "seoDesc": "Your purchased courses.",
+      "title": "My Courses",
+      "description": "Your enrolled bootcamps and progress.",
+      "filter": {
+        "all": "All",
+        "active": "Active",
+        "inProgress": "In Progress",
+        "completed": "Completed"
+      },
+      "searchPlaceholder": "Search courses…",
+      "empty": {
+        "search": "No courses match your search.",
+        "enrolled": "You aren't enrolled in any bootcamps yet.",
+        "cta": "Browse bootcamps"
+      },
+      "continue": "Continue",
+      "start": "Start",
+      "review": "Review",
+      "completed": "Completed",
+      "progress": "{{percent}}% complete",
+      "enrolled": "Enrolled",
+      "lockedCourses": "Locked Courses",
+      "viewDetails": "View Details",
+      "fetchError": "Failed to load your courses.",
+      "fetchErrorDesc": "Check your connection and try again.",
+      "action": {
+        "browse": "Browse Bootcamps"
+      },
+      "eyebrow": "QYVORA · Learn"
     },
-    "searchPlaceholder": "Search courses…",
-    "empty": {
-      "search": "No courses match your search.",
-      "enrolled": "You aren't enrolled in any bootcamps yet.",
-      "cta": "Browse bootcamps"
-    },
-    "continue": "Continue",
-    "start": "Start",
-    "review": "Review",
-    "completed": "Completed",
-    "progress": "{{percent}}% complete",
-    "enrolled": "Enrolled",
-    "lockedCourses": "Locked Courses",
-    "viewDetails": "View Details",
-    "fetchError": "Failed to load your courses.",
-    "fetchErrorDesc": "Check your connection and try again.",
-    "action": {
-      "browse": "Browse Bootcamps"
-    }
-  },
-  "bootcampCourse": {
-    "seoSuffix": "Bootcamp",
-    "breadcrumb": "Learning Path",
-    "journeyMap": "Journey Map",
-    "journeyProgress": "Journey Progress",
-    "start": "Start",
-    "continue": "Continue",
-    "continueTraining": "Continue Training",
-    "completed": "Completed",
-    "locked": "Locked",
-    "recommendedNext": "Recommended Next",
-    "jumpTo": "Jump to",
-    "allPhases": "All Phases",
-    "modules": "Modules",
-    "rooms": "Rooms",
-    "phaseCount": "{{phase}} of {{total}} phases",
+    "bootcampCourse": {
+      "seoSuffix": "Bootcamp",
+      "breadcrumb": "Learning Path",
+      "journeyMap": "Journey Map",
+      "journeyProgress": "Journey Progress",
+      "start": "Start",
+      "continue": "Continue",
+      "continueTraining": "Continue Training",
+      "completed": "Completed",
+      "locked": "Locked",
+      "recommendedNext": "Recommended Next",
+      "jumpTo": "Jump to",
+      "allPhases": "All Phases",
+      "modules": "Modules",
+      "rooms": "Rooms",
+      "phaseCount": "{{phase}} of {{total}} phases",
       "empty": "No phases found.",
       "phaseLabel": "Phase {{n}}",
       "phaseSection": {
@@ -1374,7 +1399,8 @@
         "percent": "{{percent}}% complete",
         "phases": "Phases",
         "phaseLabel": "Phase {{n}}"
-      }
+      },
+      "eyebrow": "QYVORA · Bootcamp"
     },
     "bootcampRoom": {
       "seoTitle": "Bootcamp Room",
@@ -1662,7 +1688,8 @@
         "revokeAllSuccess": "All other sessions revoked.",
         "empty": "No active sessions found.",
         "unknown": "Unknown device"
-      }
+      },
+      "configure": "Configure"
     },
     "profile": {
       "seoTitle": "Profile",
@@ -1731,7 +1758,8 @@
       "loadMore": "Load more ({{count}} remaining)",
       "unread": "Unread",
       "fetchError": "Failed to load notifications.",
-      "fetchErrorDesc": "Check your connection and try again."
+      "fetchErrorDesc": "Check your connection and try again.",
+      "eyebrow": "Inbox"
     },
     "newsFeed": {
       "seoTitle": "News Feed",
@@ -1779,7 +1807,8 @@
       "download": "Download",
       "unlock": "Unlock",
       "cpBalance": "CP Balance",
-      "loadMore": "Load more ({{count}} remaining)"
+      "loadMore": "Load more ({{count}} remaining)",
+      "eyebrow": "Marketplace"
     },
     "competitive": {
       "seoTitle": "Competitive Leaderboard",
@@ -1817,7 +1846,8 @@
       "anonymous": "Anonymous",
       "rooms": "rooms",
       "showMore": "Show more",
-      "loadingMore": "Loading…"
+      "loadingMore": "Loading…",
+      "eyebrow": "QYVORA · Battle"
     },
     "networks": {
       "seoTitle": "Network Lab",
@@ -1871,7 +1901,8 @@
       },
       "labCard": {
         "start": "Start",
-        "reward": "{{range}} CP"
+        "reward": "{{range}} CP",
+        "completed": "Completed"
       },
       "list": {
         "privesc": {
@@ -1928,7 +1959,8 @@
         "missionComplete": "Mission Complete!",
         "completePhase": "Complete Phase & Move Next",
         "allPhasesComplete": "All Phases Complete"
-      }
+      },
+      "eyebrow": "QYVORA · Practice"
     },
     "courseLesson": {
       "seoTitle": "Course Lesson",
@@ -1953,6 +1985,41 @@
         "intermediate": "Intermediate",
         "advanced": "Advanced"
       }
+    },
+    "bottomNav": {
+      "label": "Primary",
+      "home": "Home",
+      "learn": "Learn",
+      "practice": "Practice",
+      "progress": "Progress",
+      "profile": "Profile"
+    },
+    "navPanel": {
+      "account": "ACCOUNT",
+      "bootcampDesc": "Follow the full Hacker Protocol Bootcamp curriculum phase by phase.",
+      "bootcampTitle": "Bootcamp",
+      "competitiveDesc": "Rankings and competitive challenges.",
+      "competitiveTitle": "Competitive",
+      "continueDesc": "Resume your active bootcamp where you left off.",
+      "coursesDesc": "Learn through structured lessons and guided walkthroughs.",
+      "coursesTitle": "Courses",
+      "dashboardDesc": "Overview of your progress, cyber points and quick actions.",
+      "dashboardTitle": "Dashboard",
+      "labsDesc": "Practice hands-on offensive security in a live sandbox.",
+      "labsTitle": "Labs",
+      "learn": "LEARN",
+      "marketplaceDesc": "Browse and unlock courses to grow your skills.",
+      "marketplaceTitle": "Marketplace",
+      "more": "MORE",
+      "networkLabDesc": "Build and explore network topologies.",
+      "networkLabTitle": "Network Lab",
+      "notificationsDesc": "Alerts, updates and activity on your account.",
+      "notificationsTitle": "Notifications",
+      "profileDesc": "Your rank, achievements and everything you have completed.",
+      "profileTitle": "Profile",
+      "settingsDesc": "Appearance, notifications, learning, security and account.",
+      "settingsTitle": "Settings",
+      "title": "Navigation"
     }
   },
   "components": {
@@ -2049,7 +2116,13 @@
       "resultsCount": "{{count}} results",
       "noData": "No data",
       "itemsPerPage": "{{n}} / page",
-      "pageOf": "Page {{page}} of {{total}}"
+      "pageOf": "Page {{page}} of {{total}}",
+      "itemsPerPageAria": "Items per page",
+      "nextAria": "Next page",
+      "nextPage": "Next page",
+      "prevAria": "Previous page",
+      "prevPage": "Previous page",
+      "searchAria": "Search"
     },
     "batchPagination": {
       "prev": "Prev",
@@ -2068,7 +2141,8 @@
     },
     "handleSuggestions": {
       "error": "Could not load suggestions.",
-      "label": "Suggested handles"
+      "label": "Suggested handles",
+      "refresh": "Refresh suggestions"
     },
     "bootcampBadge": {
       "alt": "HPB Bootcamp Completed",
@@ -2093,7 +2167,8 @@
       "reset": "Reset",
       "hideHint": "Hide hint",
       "showHint": "Show hint",
-      "expectedOutputLabel": "Expected output:"
+      "expectedOutputLabel": "Expected output:",
+      "editor": "Code editor"
     },
     "stepNotes": {
       "hideNotes": "Hide Notes",
@@ -2116,7 +2191,8 @@
       "retry": "Retry",
       "next": "Next",
       "remaining": "{{count}} remaining",
-      "empty": "No questions available."
+      "empty": "No questions available.",
+      "progress": "Quiz progress"
     },
     "annotate": {
       "freehand": "Freehand draw",
@@ -2240,6 +2316,10 @@
       "errorExpired": "Session expired. Please log in and try again.",
       "errorCsrf": "Security token mismatch. Please refresh the page and try again.",
       "errorGeneric": "Failed to submit review. Please try again."
+    },
+    "carousel": {
+      "next": "Next slide",
+      "prev": "Previous slide"
     }
   },
   "auth2": {
@@ -2529,7 +2609,8 @@
       "actions": "Actions",
       "freeAccess": "Free Access",
       "operational": "Operational",
-      "unavailable": "Market inventory could not be loaded."
+      "unavailable": "Market inventory could not be loaded.",
+      "empty": "No market listings right now. New intelligence assets arrive soon."
     },
     "bootcamps": {
       "loadingPanel": "Loading control panel…",
@@ -2893,7 +2974,10 @@
     },
     "resultsCount_one": "{{count}} course",
     "resultsCount_other": "{{count}} courses",
-    "empty": "No courses found matching your criteria.",
+    "empty": {
+      "description": "Try a different difficulty or check back soon — new courses ship frequently.",
+      "title": "No courses match this filter"
+    },
     "clearFilters": "Clear filters",
     "badge": {
       "top": "Top"
@@ -2902,7 +2986,16 @@
     "levels": {
       "advanced": "Advanced"
     },
-    "resultsCount": "{{count}} results"
+    "resultsCount": "{{count}} results",
+    "cardCta": "Start Course",
+    "cta": "Start free",
+    "description": "Structured offensive security courses from terminal mastery to web exploitation. Start free and progress with Cyber Coin.",
+    "kicker": "QYVORA · Learn",
+    "seo": {
+      "description": "Master offensive security with QYVORA",
+      "title": "Courses | QYVORA"
+    },
+    "title": "Courses"
   },
   "eventsPage": {
     "hero": {
@@ -2966,7 +3059,8 @@
       "chainBadge": "CP verified on QYVORA Chain",
       "operatorsStat": "Operators",
       "totalCpStat": "Total CP",
-      "topCpStat": "Top CP"
+      "topCpStat": "Top CP",
+      "kicker": "QYVORA · Operators"
     },
     "periods": {
       "all": "All Time",
@@ -3132,7 +3226,11 @@
   "common": {
     "prev": "Previous",
     "next": "Next",
-    "updating": "Updating..."
+    "updating": "Updating...",
+    "complete": "complete",
+    "inSession": "in session",
+    "min": "min",
+    "steps": "steps"
   },
   "profile": {
     "contributionCalendar": {
@@ -3154,7 +3252,28 @@
       "labsCompletedDesc": "{{count}} labs completed",
       "coursesCompleted": "Course Graduate",
       "coursesCompletedDesc": "{{count}} courses completed",
-      "roomCompleted": "Room completed"
+      "roomCompleted": "Room completed",
+      "bootcampPhases": "Bootcamp Phases",
+      "courses": "Courses",
+      "labs": "Labs",
+      "skills": "Skill Badges"
+    },
+    "activity": {
+      "empty": "No activity yet. Complete labs and courses to see your timeline.",
+      "title": "Recent Activity"
+    },
+    "courses": {
+      "completedCount": "{{count}} courses completed",
+      "empty": "No courses completed yet.",
+      "title": "Courses"
+    },
+    "labs": {
+      "empty": "No labs completed yet.",
+      "title": "Labs"
+    },
+    "trophy": {
+      "empty": "No trophies earned yet. Keep pushing!",
+      "title": "Trophy Cabinet"
     }
   },
   "seo": {
@@ -3170,7 +3289,8 @@
     "startAttack": "Start Attack",
     "startMission": "Start Mission",
     "enterRoom": "Enter Room",
-    "startOperation": "Start Operation"
+    "startOperation": "Start Operation",
+    "backToLabs": "Back to Labs"
   },
   "learning": {
     "progress": {
@@ -3189,12 +3309,100 @@
     },
     "toolbar": {
       "label": "Learning controls",
-      "toggle": "Toggle fullscreen"
+      "toggle": "Toggle fullscreen",
+      "enterFullscreen": "Enter fullscreen",
+      "exitFullscreen": "Exit fullscreen"
     },
     "focused": {
       "done": "Done",
       "locked": "Locked",
       "upcoming": "Next"
     }
+  },
+  "blogsPage": {
+    "articles": "Articles",
+    "empty": "No articles found.",
+    "kicker": "QYVORA · Intelligence"
+  },
+  "courseLesson": {
+    "backToCourses": "Back to My Courses",
+    "cpCost": "CP cost",
+    "lessons": "Lessons",
+    "level": "Level",
+    "lockedDescription": "You have not unlocked {{title}} yet. Unlock it from the marketplace to start learning.",
+    "lockedTitle": "Course Not Unlocked",
+    "notFoundDescription": "The course you are looking for does not exist or was removed.",
+    "notFoundTitle": "Course not found.",
+    "progress": "Progress",
+    "unlock": "Unlock Course"
+  },
+  "hpbPage": {
+    "cardCta": "Explore phase",
+    "cta": "Enroll now",
+    "description": "A phased offensive security curriculum designed to take you from operator to expert. Explore each phase, its rooms, and the outcome you train toward.",
+    "kicker": "QYVORA · Bootcamp",
+    "seo": {
+      "description": "Train as an offensive security operator across 5 phases: hacker mindset, Linux foundations, networking, web & backend, and social engineering.",
+      "title": "Hacker Protocol Bootcamp | QYVORA"
+    },
+    "title": "Hacker Protocol Bootcamp"
+  },
+  "hpbPhasePage": {
+    "allPhases": "All phases",
+    "cta": "Enroll now",
+    "curriculum": "Curriculum",
+    "estimatedTime": "estimated",
+    "explore": "Explore",
+    "kicker": "Hacker Protocol Bootcamp",
+    "related": "Other phases",
+    "rooms": "rooms"
+  },
+  "labsPage": {
+    "cardCta": "Launch",
+    "cta": "Start training",
+    "description": "Real-world offensive security labs in a sandboxed environment. Practice privilege escalation, password attacks, SQL injection, OSINT, and full kill-chain operations.",
+    "empty": {
+      "description": "Try a different difficulty or check back soon — new labs ship frequently.",
+      "title": "No labs match this filter"
+    },
+    "kicker": "QYVORA · Practice",
+    "searchPlaceholder": "Search labs...",
+    "seo": {
+      "description": "Hands-on offensive security labs covering privilege escalation, password cracking, SQL injection, OSINT, and the full kill chain.",
+      "title": "Attack Labs | QYVORA"
+    },
+    "title": "Attack Labs"
+  },
+  "lesson": "lessons",
+  "marketPage": {
+    "kicker": "QYVORA · Market",
+    "openMarket": "Open the CP marketplace"
+  },
+  "relatedContent": {
+    "keepReading": "Keep Reading",
+    "view": "View"
+  },
+  "walkthrough": {
+    "complete": {
+      "banner": "Walkthrough complete! Claim your CP below."
+    },
+    "connection": {
+      "connect": "Connect to Lab",
+      "connectHint": "Connect to a live lab machine to run commands and complete this walkthrough. Your progress, commands and captured flags are saved as you go.",
+      "connected": "Connected",
+      "connecting": "Connecting...",
+      "disconnect": "Disconnect",
+      "flags": "Flags",
+      "live": "Live Instance",
+      "persists": "Persists",
+      "saved": "Session saved",
+      "target": "Target",
+      "title": "Lab Connection",
+      "usingHint": "Use the terminal below to run commands against the live machine. Progress is tracked automatically.",
+      "verified": "Verified on submit"
+    },
+    "difficulty": "Difficulty",
+    "estimatedTime": "Est. time",
+    "lab": "Lab"
   }
 }

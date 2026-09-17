@@ -209,7 +209,7 @@ const SkillRadarChart = ({ data }: SkillRadarChartProps) => {
               cx={p.x}
               cy={p.y}
               r={4.5}
-              fill="var(--color-bg-card)"
+              fill="var(--color-surface)"
               stroke={color}
               strokeWidth={2.5}
               className={prefersReduced ? '' : 'animate-dot-pop'}
@@ -249,7 +249,7 @@ const SkillRadarChart = ({ data }: SkillRadarChartProps) => {
       {/* Tooltip — rendered outside SVG so it never gets clipped */}
       {hoveredData && hoveredPoint && (
         <div
-          className="pointer-events-none absolute z-10 bg-bg-card border border-border/50 rounded-lg px-2.5 py-1.5 shadow-lg text-center"
+          className="pointer-events-none absolute z-10 bg-surface border border-border-subtle rounded-lg px-2.5 py-1.5 shadow-lg text-center"
           style={{
             left: `${(hoveredPoint.x / 400) * 100}%`,
             top: `${(hoveredPoint.y / 400) * 100}%`,

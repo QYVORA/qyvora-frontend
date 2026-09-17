@@ -114,7 +114,7 @@ const CelebrationModal: React.FC<CelebrationModalProps> = ({
             transition={{ type: 'spring', stiffness: 260, damping: 22 }}
             className="relative z-10 w-full max-w-md mx-4 outline-none"
           >
-            <div className="relative overflow-hidden rounded-2xl border border-border/40 bg-bg-card text-center">
+            <div className="relative overflow-hidden rounded-2xl border border-border-subtle bg-surface text-center">
 
               {/* Burst */}
               <div className="pointer-events-none absolute left-1/2 top-20 -translate-x-1/2">

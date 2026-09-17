@@ -96,8 +96,8 @@ export const DialogContent = React.forwardRef<
         maxWidth === 'max-w-7xl' && 'max-w-7xl',
         !maxWidth.startsWith('max-w-') && maxWidth,
 
-        // Surface — matches card-qyvora
-        'terminal-card bg-bg-card border border-border rounded-2xl overflow-hidden',
+        // Surface — matches Card
+        'bg-surface border border-border rounded-2xl overflow-hidden',
         // Radix data-state animations
         'data-[state=open]:animate-in data-[state=closed]:animate-out',
         'data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0',
@@ -110,7 +110,7 @@ export const DialogContent = React.forwardRef<
       {...props}
     >
       {/* Header — Fixed at top */}
-      <div className="flex-none flex items-center justify-between px-5 py-4 border-b border-border bg-bg-card/50 backdrop-blur-md z-10">
+      <div className="flex-none flex items-center justify-between px-5 py-4 border-b border-border-subtle bg-surface/60 backdrop-blur-md z-10">
         <RadixDialog.Title className="text-xs sm:text-sm font-black text-text-primary uppercase tracking-widest">
           {title}
         </RadixDialog.Title>

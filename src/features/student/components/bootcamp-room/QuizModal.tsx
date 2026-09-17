@@ -206,7 +206,7 @@ const QuizModal: React.FC<QuizModalProps> = ({ moduleId, roomId, courseId, onClo
                 {quiz.questions.map((q, idx) => (
                   <div key={q.id || idx} className="space-y-3">
                     <div className="flex items-start gap-2">
-                      <span className="mt-0.5 shrink-0 rounded border border-border bg-bg px-2 py-0.5 font-mono text-xs font-black text-text-muted">
+                      <span className="mt-0.5 shrink-0 rounded border border-border bg-surface-raised px-2 py-0.5 font-mono text-xs font-black text-text-muted">
                         Q{idx + 1}
                       </span>
                       <p className="text-sm font-bold leading-snug text-text-primary">{q.text}</p>

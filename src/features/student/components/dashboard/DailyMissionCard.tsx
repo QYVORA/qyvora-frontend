@@ -21,7 +21,7 @@ const DailyMissionCard = ({ engagement, loading }: DailyMissionCardProps) => {
 
   if (loading) {
     return (
-      <div className="card-accent bg-bg-card p-6 md:p-8 animate-pulse">
+      <div className="card-accent bg-surface p-6 md:p-8 animate-pulse">
         <div className="h-5 w-40 bg-border/30 rounded mb-4" />
         <div className="h-7 w-56 bg-border/30 rounded mb-3" />
         <div className="h-4 w-full bg-border/20 rounded mb-5" />
@@ -31,7 +31,7 @@ const DailyMissionCard = ({ engagement, loading }: DailyMissionCardProps) => {
   }
 
   return (
-    <div className="card-accent bg-bg-card p-6 md:p-8">
+    <div className="card-accent bg-surface p-6 md:p-8">
       <div className="flex items-center gap-3 mb-4">
         <div className="w-10 h-10 rounded-xl flex items-center justify-center bg-accent/10">
           <IconFire size={20} className="text-accent" />

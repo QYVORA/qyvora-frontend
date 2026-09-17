@@ -159,11 +159,11 @@ const Notifications: React.FC = () => {
         ) : (
           <div className="mt-8 space-y-3">
             {visible.map((n) => {
-              const colorCls = TYPE_COLORS[n.type] || 'text-text-primary border-border bg-bg-card';
+              const colorCls = TYPE_COLORS[n.type] || 'text-text-primary border-border-subtle bg-surface';
               return (
                 <ScrollReveal key={n.id}>
                   <div className={`relative rounded-2xl border p-5 transition-[background-color,border-color,opacity] duration-[var(--dur-base)] ease-[var(--ease-smooth)] ${
-                    n.read ? 'border-border bg-bg-card opacity-60' : `${colorCls} border`
+                    n.read ? 'border-border-subtle bg-surface opacity-60' : `${colorCls} border`
                   }`}>
                     {!n.read && (
                       <div className="absolute right-4 top-4 h-2 w-2 rounded-full bg-accent" />
@@ -175,7 +175,7 @@ const Notifications: React.FC = () => {
                       <div className="min-w-0 flex-1">
                         <div className="mb-1 flex flex-wrap items-center gap-2 break-words pr-4">
                           <span className="text-xs font-black uppercase tracking-wide text-text-primary">{n.title}</span>
-                          <span className="type-meta rounded border border-border bg-bg px-1.5 py-0.5">
+                          <span className="type-meta rounded border border-border bg-surface-raised px-1.5 py-0.5">
                             {n.type.replace(/_/g, ' ')}
                           </span>
                         </div>
@@ -204,7 +204,7 @@ const Notifications: React.FC = () => {
               <div className="pt-2 text-center">
                 <button
                   onClick={() => setVisibleCount((prev) => prev + PAGE_SIZE)}
-                  className="min-h-[44px] rounded-xl border border-border bg-bg-card px-4 text-xs font-bold text-text-primary transition-colors hover:border-accent/40"
+                  className="min-h-[44px] rounded-xl border border-border bg-surface px-4 text-xs font-bold text-text-primary transition-colors hover:border-accent/40"
                 >
                   {t('student.notificationsPage.loadMore', { count: displayed.length - visibleCount })}
                 </button>

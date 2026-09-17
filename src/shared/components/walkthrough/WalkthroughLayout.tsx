@@ -1,4 +1,4 @@
-import { Unplug, Loader2 } from 'lucide-react';
+import { Unplug, Loader2, Minimize2, Maximize2 } from 'lucide-react';
 import { Children, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import type { ReactNode } from 'react';
@@ -8,7 +8,10 @@ import FocusedStepList from '@/shared/components/learning/FocusedStepList';
 import type { FocusedStepListItem } from '@/shared/components/learning/FocusedStepList';
 import LearningWorkspaceShell from '@/shared/components/learning/LearningWorkspaceShell';
 import type { WorkspaceStat } from '@/shared/components/learning/LearningWorkspaceShell';
+import LearningToolbar from '@/shared/components/learning/LearningToolbar';
+import LearningNav from '@/shared/components/learning/LearningNav';
 import { useLabConnection } from '@/features/student/hooks/useLabConnection';
+import { useRoomSession } from '@/features/student/hooks/useRoomSession';
 import { SimulationPanel, useSimulation, getNetworkProfileForLab, type SimulationType } from '@/features/student/components/simulations';
 
 export interface WalkthroughLayoutProps {
@@ -29,11 +32,6 @@ export interface WalkthroughLayoutProps {
   simulations?: { type: SimulationType; content: React.ReactNode; breakout?: boolean }[];
   headerMetadata?: React.ReactNode;
   headerActions?: React.ReactNode;
-  sidebar?: React.ReactNode;
-  sidebarOpen?: boolean;
-  onSidebarToggle?: () => void;
-  toolbar?: React.ReactNode;
-  navigation?: React.ReactNode;
   headerContent?: React.ReactNode;
   footer?: React.ReactNode;
   progressContent?: React.ReactNode;
@@ -64,9 +62,6 @@ export function WalkthroughLayout({
   simulations,
   headerMetadata,
   headerActions,
-  sidebar,
-  toolbar,
-  navigation,
   headerContent,
   footer,
   progressContent,
@@ -79,6 +74,7 @@ export function WalkthroughLayout({
   const allDone = totalSteps > 0 && completedCount === totalSteps;
   const { connection, isConnected, isLoading, error, connect, disconnect } = useLabConnection();
   const { network, browser } = useSimulation();
+  const { fullscreen, toggleFullscreen } = useRoomSession();
 
   useEffect(() => {
     const profile = getNetworkProfileForLab(labId);
@@ -108,12 +104,19 @@ export function WalkthroughLayout({
       {/* Walkthrough scroll controls (fixed to viewport) */}
       <WalkthroughScrollControls />
 
-      {/* Desktop Toolbar (right side) */}
-      {toolbar && (
-        <div className="hidden lg:block">
-          {toolbar}
-        </div>
-      )}
+      {/* Fullscreen toolbar — desktop rail + mobile floating panel */}
+      <LearningToolbar
+        actions={[
+          {
+            id: 'fullscreen',
+            icon: fullscreen ? <Minimize2 className="h-4 w-4" /> : <Maximize2 className="h-4 w-4" />,
+            label: fullscreen
+              ? t('learning.toolbar.exitFullscreen', 'Exit fullscreen')
+              : t('learning.toolbar.enterFullscreen', 'Enter fullscreen'),
+            onClick: toggleFullscreen,
+          },
+        ]}
+      />
 
       <LearningWorkspaceShell
         icon={icon}
@@ -230,6 +233,29 @@ export function WalkthroughLayout({
           )}
         </div>
 
+        {/* Navigation — previous / next step, matching course & bootcamp pattern */}
+        {stepList && stepList.length > 0 && activeStepIndex !== undefined && onStepSelect && (
+          <LearningNav
+            currentStep={activeStepIndex}
+            totalSteps={stepList.length}
+            isLastStep={activeStepIndex === stepList.length - 1}
+            isComplete={allDone}
+            onPrev={activeStepIndex > 0 ? () => onStepSelect(activeStepIndex - 1) : undefined}
+            onNext={activeStepIndex < stepList.length - 1 ? () => onStepSelect(activeStepIndex + 1) : undefined}
+            finishContent={
+              allDone && onBack ? (
+                <button
+                  type="button"
+                  onClick={onBack}
+                  className="btn-secondary inline-flex min-h-[44px] flex-1 md:flex-none items-center justify-center gap-1.5 px-5 py-2.5"
+                >
+                  {backLabel ?? 'Back'}
+                </button>
+              ) : undefined
+            }
+          />
+        )}
+
         {/* Progress */}
         {progressContent || (
           <div className="rounded-xl border border-border-subtle bg-surface px-4 py-4 md:px-5 md:py-5">
@@ -262,13 +288,6 @@ export function WalkthroughLayout({
             <span className="text-xs font-black uppercase tracking-widest text-accent">
               {t('walkthrough.complete.banner', 'Walkthrough complete! Claim your CP below.')}
             </span>
-          </div>
-        )}
-
-        {/* Bottom Navigation */}
-        {navigation && (
-          <div>
-            {navigation}
           </div>
         )}
 

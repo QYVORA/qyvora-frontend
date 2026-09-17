@@ -45,12 +45,12 @@ const ToolChooserModal: React.FC<ToolChooserModalProps> = ({
         <RadixDialog.Overlay className="fixed inset-0 z-[200] bg-black/80 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0" />
         <RadixDialog.Content
           aria-label={t('components.toolChooser.openTool', { tool: toolLabel })}
-          className="fixed z-[201] left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[calc(100vw-2rem)] max-w-md bg-bg-card border border-border/50 rounded-2xl overflow-hidden shadow-2xl shadow-black/40 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 duration-150"
+          className="fixed z-[201] left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[calc(100vw-2rem)] max-w-md bg-surface border border-border-subtle rounded-2xl overflow-hidden shadow-2xl shadow-black/40 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 duration-150"
         >
           <RadixDialog.Title className="sr-only">{t('components.toolChooser.openTool', { tool: toolLabel })}</RadixDialog.Title>
 
           {/* Header */}
-          <div className="flex items-center justify-between px-5 py-4 border-b border-border/20">
+          <div className="flex items-center justify-between px-5 py-4 border-b border-border-subtle">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 rounded-xl bg-accent/10 flex items-center justify-center">
                 <Icon size={18} className="text-accent" />
@@ -71,9 +71,9 @@ const ToolChooserModal: React.FC<ToolChooserModalProps> = ({
           <div className="p-5 space-y-3">
             <button
               onClick={handlePanel}
-              className="w-full flex items-center gap-4 p-4 rounded-xl border border-border/50 hover:border-accent/40 bg-bg-elevated hover:bg-accent-dim/30 transition-[background-color,border-color] duration-[var(--dur-base)] ease-[var(--ease-smooth)] text-left group"
+              className="w-full flex items-center gap-4 p-4 rounded-xl border border-border-subtle hover:border-accent/40 bg-surface-raised hover:bg-accent-dim/30 transition-[background-color,border-color] duration-[var(--dur-base)] ease-[var(--ease-smooth)] text-left group"
             >
-              <div className="w-12 h-12 rounded-xl bg-bg border border-border/50 flex items-center justify-center shrink-0 group-hover:border-accent/50 group-hover:bg-accent/10 transition-colors">
+              <div className="w-12 h-12 rounded-xl bg-surface border border-border-subtle flex items-center justify-center shrink-0 group-hover:border-accent/50 group-hover:bg-accent/10 transition-colors">
                 <LayoutPanelLeft size={22} className="text-text-muted group-hover:text-accent transition-colors" />
               </div>
               <div className="flex-1 min-w-0">
@@ -88,9 +88,9 @@ const ToolChooserModal: React.FC<ToolChooserModalProps> = ({
 
             <button
               onClick={handleFullscreen}
-              className="w-full flex items-center gap-4 p-4 rounded-xl border border-border/50 hover:border-accent/40 bg-bg-elevated hover:bg-accent-dim/30 active:scale-[0.98] transition-[background-color,border-color,transform] duration-[var(--dur-base)] ease-[var(--ease-smooth)] text-left group"
+              className="w-full flex items-center gap-4 p-4 rounded-xl border border-border-subtle hover:border-accent/40 bg-surface-raised hover:bg-accent-dim/30 active:scale-[0.98] transition-[background-color,border-color,transform] duration-[var(--dur-base)] ease-[var(--ease-smooth)] text-left group"
             >
-              <div className="w-12 h-12 rounded-xl bg-bg border border-border/50 flex items-center justify-center shrink-0 group-hover:border-accent/50 group-hover:bg-accent/10 transition-colors">
+              <div className="w-12 h-12 rounded-xl bg-surface border border-border-subtle flex items-center justify-center shrink-0 group-hover:border-accent/50 group-hover:bg-accent/10 transition-colors">
                 <Maximize2 size={22} className="text-text-muted group-hover:text-accent transition-colors" />
               </div>
               <div className="flex-1 min-w-0">

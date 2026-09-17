@@ -75,7 +75,7 @@ const ConsentBanner: React.FC = React.memo(() => {
           transition={prefersReduced ? { duration: 0 } : { duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
           className="fixed bottom-0 left-0 right-0 sm:bottom-6 sm:left-6 sm:right-auto z-[150] md:max-w-2xl sm:max-w-lg w-full"
         >
-          <div className="bg-bg-card/95 backdrop-blur-xl border-t sm:border border-border rounded-2xl shadow-2xl p-5 sm:p-6 overflow-hidden">
+          <div className="bg-surface/95 backdrop-blur-xl border-t sm:border border-border rounded-2xl shadow-2xl p-5 sm:p-6 overflow-hidden">
             <div className="flex items-start gap-4 mb-6">
               <div className="p-2.5 rounded-lg bg-accent/10 text-accent flex-none">
                 <IconShield size={20} />

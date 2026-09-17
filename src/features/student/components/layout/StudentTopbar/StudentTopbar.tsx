@@ -24,13 +24,13 @@ import { getBootcampProgressMap, resolveNextRoomPath } from '@/features/student/
 // Single definition of the mobile CP badge. Every topbar mode renders this one
 // component so the `tour-cp-mobile` tour anchor is defined exactly once.
 const MobileCpBadge = ({ balance }: { balance: number }) => (
-  <div data-tour-id="tour-cp-mobile" className="flex items-center gap-2 px-3 py-2 rounded-xl bg-bg-card">
+  <div data-tour-id="tour-cp-mobile" className="flex items-center gap-2 px-3 py-2 rounded-xl bg-surface">
     <CpLogo className="w-4 h-4" />
     <span className="text-xs font-black text-accent">{balance.toLocaleString()}</span>
   </div>
 );
 
-const StudentTopbar = () => {
+const StudentTopbar = ({ railCollapsed = false }: { railCollapsed?: boolean }) => {
   const { t } = useTranslation();
   const { user, logout } = useAuth();
 
@@ -62,52 +62,21 @@ const StudentTopbar = () => {
   const activeRoomMatch = roomMatch ?? roomMatchLegacy;
   const isRoomPage = Boolean(activeRoomMatch) || isCoursePage;
 
+  // The sidebar rail exists only on non-walkthrough, non-tool screens at lg+.
+  // When present, the topbar is inset to the content column so it never
+  // renders on top of the rail.
+  const isToolScreen = location.pathname.startsWith('/dashboard/tools/');
+  const hasRail = !isRoomPage && !isLabPage && !isToolScreen;
+
   const roomBootcampId = activeRoomMatch?.params?.bootcampId ?? '';
   const roomPhaseId = roomMatch?.params?.phaseId
     ?? (roomMatchLegacy?.params?.moduleId ? `phase${roomMatchLegacy.params.moduleId}` : '');
   const roomRoomId = activeRoomMatch?.params?.roomId ?? '';
 
   // Student topbars (dashboard, courses, bootcamps, labs, rooms, settings):
-  // auto-hide the topbar while scrolling down past the first viewport,
-  // reveal again on scroll up. Layout reservation stays static — the bar
-  // slides over content, giving the student more reading space.
-  const [topbarHidden, setTopbarHidden] = useState(false);
-  const lastScrollYRef = useRef(0);
+  // static and fully transparent — only the buttons on it show. On lg+, the
+  // bar spans only the content column so it never covers the sidebar rail.
   const [navOpen, setNavOpen] = useState(false);
-
-  // When the nav panel is open the topbar acts as its header — keep it sticky.
-  useEffect(() => {
-    if (navOpen) setTopbarHidden(false);
-  }, [navOpen]);
-
-  useEffect(() => {
-    setTopbarHidden(false);
-    lastScrollYRef.current = window.scrollY;
-    let ticking = false;
-    const onScroll = () => {
-      if (navOpen) {
-        setTopbarHidden(false);
-        return;
-      }
-      if (ticking) return;
-      ticking = true;
-      requestAnimationFrame(() => {
-        const y = window.scrollY;
-        const prev = lastScrollYRef.current;
-        if (y <= 80) {
-          setTopbarHidden(false);
-        } else if (y > prev + 8) {
-          setTopbarHidden(true);
-        } else if (y < prev - 8) {
-          setTopbarHidden(false);
-        }
-        lastScrollYRef.current = y;
-        ticking = false;
-      });
-    };
-    window.addEventListener('scroll', onScroll, { passive: true });
-    return () => window.removeEventListener('scroll', onScroll);
-  }, [location.pathname, navOpen]);
 
   const [roomBreadcrumb, setRoomBreadcrumb] = useState<{ phaseTitle?: string; roomTitle?: string } | null>(null);
 
@@ -208,7 +177,9 @@ const StudentTopbar = () => {
       </a>
 
       <header
-        className={`fixed top-0 left-0 w-full z-[100] bg-transparent pt-[env(safe-area-inset-top)] transition-transform duration-300 ${topbarHidden ? '-translate-y-full' : 'translate-y-0'}`}
+        className={`fixed top-0 inset-x-0 z-[100] pt-[env(safe-area-inset-top)] ${
+          hasRail ? (railCollapsed ? 'lg:left-[76px] transition-[left] duration-[var(--dur-base)] ease-[var(--ease-smooth)]' : 'lg:left-[264px] transition-[left] duration-[var(--dur-base)] ease-[var(--ease-smooth)]') : ''
+        }`}
       >
         {isRoomPage ? (
           isCoursePage ? (
@@ -409,7 +380,7 @@ const StudentTopbar = () => {
             </nav>
 
             <div className="flex items-center gap-1.5 md:gap-2 shrink-0 ml-auto">
-              <span className="hidden md:block">
+              <span className="hidden md:block lg:hidden">
                 <NavMenuTrigger open={navOpen} onClick={() => setNavOpen((v) => !v)} />
               </span>
             </div>
@@ -428,14 +399,14 @@ const StudentTopbar = () => {
           /* ══ DASHBOARD MODE ══ */
           <div className=" px-3 md:px-4 lg:px-6 h-20 md:h-24 flex items-center gap-2 md:gap-3">
 
-            {/* Logo — also the "nav" tour anchor on md..lg, where the desktop
-                nav is hidden and there is no other in-bar navigation */}
-            <Link to="/dashboard" className="flex-none shrink-0" data-tour-id="tour-nav-md">
+{/* Logo — tour nav anchor fallback; primary nav lives in the sidebar rail (lg+) or the tabs below */}
+            <Link to="/dashboard" className="lg:hidden flex-none shrink-0" data-tour-id="tour-nav-md">
               <Logo size="xl" variant="mark" />
             </Link>
 
-            {/* Nav tabs — desktop only (lg+), flex-1 pushes right actions to the far right */}
-            <nav className="hidden lg:flex items-center justify-start flex-1 min-w-0 gap-1" data-tour-id="tour-nav-desktop">
+            {/* Nav tabs — md..lg only (lg+ the sidebar rail owns primary nav),
+                flex-1 pushes right actions to the far right */}
+            <nav className="hidden md:flex lg:hidden items-center justify-start flex-1 min-w-0 gap-1" data-tour-id="tour-nav-desktop">
               {DESKTOP_NAV_ITEMS.map((item) => {
                 const active = isActive(item.path);
                 return (
@@ -454,18 +425,18 @@ const StudentTopbar = () => {
               })}
             </nav>
 
-            {/* Spacer — keeps right actions right-aligned on md..lg, where the desktop nav (flex-1) is hidden */}
-            <div className="hidden lg:hidden md:flex flex-1" aria-hidden="true" />
+            {/* Spacer — keeps right actions right-aligned on lg+, where the nav tabs are hidden and the sidebar rail owns nav */}
+            <div className="hidden lg:block flex-1" aria-hidden="true" />
 
-            {/* Right actions — separated from nav by flex-1 spacer */}
+            {/* Right actions — separated from nav by flex-1 */}
             <div className="hidden md:flex items-center gap-1.5 md:gap-2.5 shrink-0">
               {/* CP Coin badge */}
-              <div className={`hidden md:flex items-center gap-2 px-3 py-2 rounded-xl bg-bg-card`} data-tour-id="tour-cp-desktop">
+              <div className={`hidden md:flex items-center gap-2 px-3 py-2 rounded-xl bg-surface`} data-tour-id="tour-cp-desktop">
                 <CpLogo className="w-5 h-5" />
                 <span className="text-xs font-black text-accent">{cpBalance.toLocaleString()}</span>
               </div>
 
-              <span data-tour-id="tour-profile-desktop">
+              <span className="lg:hidden" data-tour-id="tour-profile-desktop">
                 <NavMenuTrigger open={navOpen} onClick={() => setNavOpen((v) => !v)} />
               </span>
             </div>

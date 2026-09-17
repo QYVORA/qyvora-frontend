@@ -251,7 +251,7 @@ const StudentNavPanel: React.FC<StudentNavPanelProps> = ({
     const Icon = item.icon;
     const inner = (
       <>
-        <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-bg-elevated text-accent transition-colors group-hover:bg-accent/10">
+        <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-surface-raised text-accent transition-colors group-hover:bg-accent/10">
           <Icon size={20} strokeWidth={2.25} />
         </span>
         <span className="flex-1 min-w-0">
@@ -276,7 +276,7 @@ const StudentNavPanel: React.FC<StudentNavPanelProps> = ({
     const cls = `group flex items-start gap-3 rounded-2xl border border-border/50 p-4 text-left transition-colors focus:outline-none focus-visible:border-accent focus-visible:ring-1 focus-visible:ring-accent active:scale-[0.99] ${
       item.accent
         ? 'bg-accent text-on-accent hover:brightness-110'
-        : 'bg-bg-card text-text-primary hover:border-accent/50 hover:bg-accent-dim/10'
+        : 'bg-surface text-text-primary hover:border-accent/50 hover:bg-accent-dim/10'
     }`;
 
     if (item.to) {
@@ -325,7 +325,7 @@ const StudentNavPanel: React.FC<StudentNavPanelProps> = ({
               animate={{ opacity: 1, y: 0 }}
               exit={prefersReduced ? { opacity: 1 } : { opacity: 0, y: -12 }}
               transition={{ duration: 0.24, ease: [0.22, 1, 0.36, 1] }}
-              className="fixed inset-x-0 bottom-0 top-20 md:top-24 z-[96] overflow-y-auto bg-bg-alt"
+              className="fixed inset-x-0 bottom-0 top-20 md:top-24 z-[96] overflow-y-auto bg-canvas"
             >
               <div className="w-full px-3 pb-5 pt-2 md:px-4 md:pb-8 md:pt-3 lg:px-6">
                 {/* Continue Mission — prominent accent card */}
@@ -366,13 +366,13 @@ const StudentNavPanel: React.FC<StudentNavPanelProps> = ({
 
                 {/* Tools + Logout */}
                 <div className="mt-6 flex flex-col gap-3 md:mt-8 sm:flex-row sm:items-stretch">
-                  <div className="flex-1 rounded-2xl border border-border/50 bg-bg-card p-3">
+                  <div className="flex-1 rounded-2xl border border-border/50 bg-surface p-3">
                     <button
                       onClick={() => setToolsOpen((v) => !v)}
                       aria-expanded={toolsOpen}
                       className="flex w-full items-center gap-2.5 px-3 py-2.5 rounded-xl text-left transition-colors hover:bg-accent-dim/10"
                     >
-                      <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-bg-elevated text-accent">
+                      <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-surface-raised text-accent">
                         <Wrench size={16} />
                       </span>
                       <span className="flex-1 min-w-0 text-xs font-black uppercase tracking-widest text-text-primary">
@@ -403,7 +403,7 @@ const StudentNavPanel: React.FC<StudentNavPanelProps> = ({
                                 >
                                   <TIcon size={16} className="shrink-0 text-text-secondary" />
                                   <span className="min-w-0 flex-1">
-                                    <span className="block truncate text-xs font-bold text-text-primary">{tool.label}</span>
+                                    <span className="block truncate text-xs font-bold text-text-primary">{t(tool.labelKey)}</span>
                                   </span>
                                   <span className="hidden shrink-0 font-mono text-xs text-text-muted/50 sm:block">{tool.shortcut}</span>
                                 </button>
@@ -433,7 +433,7 @@ const StudentNavPanel: React.FC<StudentNavPanelProps> = ({
           open={chooserOpen}
           onOpenChange={setChooserOpen}
           toolId={chosenTool.id}
-          toolLabel={chosenTool.label}
+          toolLabel={t(chosenTool.labelKey)}
           onSelectPanel={handleSelectPanel}
           onSelectFullscreen={handleSelectFullscreen}
         />
