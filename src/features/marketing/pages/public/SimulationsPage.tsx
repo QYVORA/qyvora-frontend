@@ -2,6 +2,7 @@ import React from 'react';
 import { ArrowRight } from 'lucide-react';
 import SEO from '@/shared/components/SEO';
 import PageHeader from '@/shared/components/ui/PageHeader';
+import PublicContainer from '@/shared/components/layout/PublicContainer';
 import Button from '@/shared/components/ui/Button';
 import { Card } from '@/shared/components/ui/Card';
 import ScrollReveal from '@/shared/components/ScrollReveal';
@@ -27,7 +28,7 @@ const SimulationsPage = () => {
   return (
     <div className="w-full bg-canvas">
       <SEO title={"Simulations - QYVORA"} description={"Try QYVORA's simulation tools live: a browser terminal, a code playground, and a network visualizer. No account required."} />
-      <div className="w-full px-3 pb-20 pt-24 md:px-4 md:pb-24 md:pt-28 lg:px-6 lg:pt-32">
+      <PublicContainer className="pb-20 pt-24 md:pb-24 md:pt-28 lg:pt-32">
         <PageHeader
           kicker={"QYVORA · Tools"}
           title={"Simulation"}
@@ -70,7 +71,7 @@ const SimulationsPage = () => {
             );
           })}
         </div>
-      </div>
+      </PublicContainer>
     </div>
   );
 };

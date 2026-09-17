@@ -7,6 +7,7 @@ import api from '@/core/services/api';
 import { LeaderboardRow, PodiumCard, useLeaderboard, PERIODS } from '@/shared/components/leaderboard';
 import SEO from '@/shared/components/SEO';
 import PageHeader from '@/shared/components/ui/PageHeader';
+import PublicContainer from '@/shared/components/layout/PublicContainer';
 import EmptyState from '@/shared/components/ui/EmptyState';
 import { ErrorState, BatchPagination, Skeleton } from '@/shared/components/ui';
 import type { Period } from '@/shared/components/leaderboard';
@@ -72,7 +73,7 @@ const LeaderboardPage = () => {
         title={"Leaderboard | QYVORA"}
         description={"Ranking Africa's top cybersecurity operators by CyberPoints earned."}
       />
-      <div className="w-full px-3 pb-20 pt-24 md:px-4 md:pb-24 md:pt-28 lg:px-6 lg:pt-32">
+      <PublicContainer className="pb-20 pt-24 md:pb-24 md:pt-28 lg:pt-32">
         <PageHeader
           kicker={"QYVORA · Operators"}
           title={"Operator"}
@@ -185,7 +186,7 @@ const LeaderboardPage = () => {
 
           {rest.length > 0 && <LeaderboardRestSection rest={rest} user={user} total={total} />}
         </div>
-      </div>
+      </PublicContainer>
     </div>
   );
 };

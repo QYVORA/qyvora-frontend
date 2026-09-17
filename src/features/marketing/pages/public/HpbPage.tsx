@@ -1,6 +1,7 @@
 import { ArrowRight } from 'lucide-react';
 import SEO from '@/shared/components/SEO';
 import PageHeader from '@/shared/components/ui/PageHeader';
+import PublicContainer from '@/shared/components/layout/PublicContainer';
 import Button from '@/shared/components/ui/Button';
 import { LearningCard } from '@/shared/components/learning/LearningCard';
 import { BOOTCAMP_CONFIG } from '@/features/student/constants/bootcampStructure';
@@ -15,7 +16,7 @@ const HpbPage = () => {
         title={"Hacker Protocol Bootcamp | QYVORA"}
         description={"Train as an offensive security operator across 5 phases: hacker mindset, Linux foundations, networking, web & backend, and social engineering."}
       />
-      <div className="w-full px-3 pb-20 pt-24 md:px-4 md:pb-24 md:pt-28 lg:px-6 lg:pt-32">
+      <PublicContainer className="pb-20 pt-24 md:pb-24 md:pt-28 lg:pt-32">
         <PageHeader
           kicker={"QYVORA · Bootcamp"}
           title={"Hacker Protocol Bootcamp"}
@@ -54,7 +55,7 @@ const HpbPage = () => {
             );
           })}
         </div>
-      </div>
+      </PublicContainer>
     </div>
   );
 };

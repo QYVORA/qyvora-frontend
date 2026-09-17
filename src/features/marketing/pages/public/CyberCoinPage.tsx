@@ -5,6 +5,7 @@ import { IconArrowRight as IconArrow } from '@/shared/components/icons';
 import SEO from '@/shared/components/SEO';
 import ScrollReveal from '@/shared/components/ScrollReveal';
 import PageHeader from '@/shared/components/ui/PageHeader';
+import PublicContainer from '@/shared/components/layout/PublicContainer';
 import { CpLogo } from '@/shared/components';
 import { SimpleHeading } from '@/shared/components/ui';
 import { Carousel } from '@/shared/components/carousel';
@@ -40,7 +41,7 @@ const CyberCoinPage: React.FC = () => {
         description="CP: the QYVORA Cyber Coin. The reward layer connecting learning, execution, and achievement across the QYVORA cybersecurity ecosystem. Learn. Execute. Earn."
       />
 
-      <div className="w-full px-3 pb-20 pt-24 md:px-4 md:pb-24 md:pt-28 lg:px-6 lg:pt-32">
+      <PublicContainer className="pb-20 pt-24 md:pb-24 md:pt-28 lg:pt-32">
         <PageHeader
           kicker="QYVORA · Economy"
           title="CP Cyber Coin"
@@ -414,7 +415,7 @@ const CyberCoinPage: React.FC = () => {
             </div>
           </div>
         </section>
-      </div>
+      </PublicContainer>
     </div>
   );
 };

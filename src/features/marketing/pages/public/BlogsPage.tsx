@@ -3,6 +3,7 @@ import { Search, FileText } from 'lucide-react';
 import { ScrollReveal } from '@/shared/components';
 import SEO from '@/shared/components/SEO';
 import PageHeader from '@/shared/components/ui/PageHeader';
+import PublicContainer from '@/shared/components/layout/PublicContainer';
 import EmptyState from '@/shared/components/ui/EmptyState';
 import { BLOG_POSTS } from '@/features/marketing/pages/BlogsPage/blogContent';
 import { BatchPagination } from '@/shared/components/ui';
@@ -48,7 +49,7 @@ const BlogsPage = () => {
   return (
     <div className="min-h-full w-full bg-canvas">
       <SEO title="Blogs - QYVORA" description="Security research, tutorials, and updates from the QYVORA team." />
-      <div className="w-full px-3 pb-20 pt-24 md:px-4 md:pb-24 md:pt-28 lg:px-6 lg:pt-32">
+      <PublicContainer className="pb-20 pt-24 md:pb-24 md:pt-28 lg:pt-32">
         <PageHeader
           kicker={"QYVORA · Intelligence"}
           title="Intelligence Reports"
@@ -125,7 +126,7 @@ const BlogsPage = () => {
             </div>
           )}
         </div>
-      </div>
+      </PublicContainer>
     </div>
   );
 };

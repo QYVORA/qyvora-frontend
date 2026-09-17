@@ -1,6 +1,7 @@
 import { ArrowRight } from 'lucide-react';
 import SEO from '@/shared/components/SEO';
 import PageHeader from '@/shared/components/ui/PageHeader';
+import PublicContainer from '@/shared/components/layout/PublicContainer';
 import Button from '@/shared/components/ui/Button';
 import { LearningCatalogue } from '@/shared/components/learning';
 import type { LearningCatalogueItem } from '@/shared/components/learning';
@@ -27,7 +28,7 @@ const LabsPage = () => {
         title={"Attack Labs | QYVORA"}
         description={"Hands-on offensive security labs covering privilege escalation, password cracking, SQL injection, OSINT, and the full kill chain."}
       />
-      <div className="w-full px-3 pb-20 pt-24 md:px-4 md:pb-24 md:pt-28 lg:px-6 lg:pt-32">
+      <PublicContainer className="pb-20 pt-24 md:pb-24 md:pt-28 lg:pt-32">
         <PageHeader
           kicker={"QYVORA · Practice"}
           title={"Attack Labs"}
@@ -48,7 +49,7 @@ const LabsPage = () => {
           emptyTitle={"No labs match this filter"}
           emptyDescription={"Try a different difficulty or check back soon — new labs ship frequently."}
         />
-      </div>
+      </PublicContainer>
     </div>
   );
 };

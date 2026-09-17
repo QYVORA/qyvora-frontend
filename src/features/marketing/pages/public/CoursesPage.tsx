@@ -1,6 +1,7 @@
 import { ArrowRight } from 'lucide-react';
 import SEO from '@/shared/components/SEO';
 import PageHeader from '@/shared/components/ui/PageHeader';
+import PublicContainer from '@/shared/components/layout/PublicContainer';
 import Button from '@/shared/components/ui/Button';
 import { LearningCatalogue } from '@/shared/components/learning';
 import type { LearningCatalogueItem } from '@/shared/components/learning';
@@ -31,7 +32,7 @@ const CoursesPage = () => {
         title={"Courses | QYVORA"}
         description={"Master offensive security with QYVORA"}
       />
-      <div className="w-full px-3 pb-20 pt-24 md:px-4 md:pb-24 md:pt-28 lg:px-6 lg:pt-32">
+      <PublicContainer className="pb-20 pt-24 md:pb-24 md:pt-28 lg:pt-32">
         <PageHeader
           kicker={"QYVORA · Learn"}
           title={"Courses"}
@@ -52,7 +53,7 @@ const CoursesPage = () => {
           emptyTitle={"No courses match this filter"}
           emptyDescription={"Try a different difficulty or check back soon — new courses ship frequently."}
         />
-      </div>
+      </PublicContainer>
     </div>
   );
 };

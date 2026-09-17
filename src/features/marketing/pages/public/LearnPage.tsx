@@ -6,6 +6,7 @@ import { LABS } from '@/features/student/constants/labs';
 import { PHASES } from '@/features/marketing/data/learnData';
 import { Card } from '@/shared/components/ui/Card';
 import PageHeader from '@/shared/components/ui/PageHeader';
+import PublicContainer from '@/shared/components/layout/PublicContainer';
 import ScrollReveal from '@/shared/components/ScrollReveal';
 import SEO from '@/shared/components/SEO';
 import Button from '@/shared/components/ui/Button';
@@ -116,7 +117,7 @@ const LearnPage: React.FC = () => {
         title={"Learn | QYVORA"}
         description={"Courses, labs, the Hacker Protocol Bootcamp, and more."}
       />
-      <div className="w-full px-3 pb-20 pt-24 md:px-4 md:pb-24 md:pt-28 lg:px-6 lg:pt-32">
+      <PublicContainer className="pb-20 pt-24 md:pb-24 md:pt-28 lg:pt-32">
         <PageHeader
           kicker="QYVORA"
           title={"Learn | QYVORA".replace(' | QYVORA', '')}
@@ -215,7 +216,7 @@ const LearnPage: React.FC = () => {
             {TAB_CTA_LABELS[active]}
           </Button>
         </div>
-      </div>
+      </PublicContainer>
     </div>
   );
 };
