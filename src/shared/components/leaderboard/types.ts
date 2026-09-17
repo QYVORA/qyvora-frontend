@@ -17,9 +17,9 @@ export interface LeaderboardEntry {
 export type Period = 'all' | 'week' | 'month';
 
 export const PERIODS = [
-  { key: 'all' as const, labelKey: 'leaderboardPage.periods.all' },
-  { key: 'week' as const, labelKey: 'leaderboardPage.periods.week' },
-  { key: 'month' as const, labelKey: 'leaderboardPage.periods.month' },
+  { key: 'all' as const, label: 'All Time' },
+  { key: 'week' as const, label: 'This Week' },
+  { key: 'month' as const, label: 'This Month' },
 ];
 
 export const TOP_THREE_COLORS = [

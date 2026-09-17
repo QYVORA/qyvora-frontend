@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { useTranslation } from 'react-i18next';
 import { IconLock, IconEye, IconEyeOff } from '@/shared/components/icons';
 import { cn } from '@/shared/utils/cn';
 
@@ -28,7 +27,6 @@ const PasswordInput: React.FC<PasswordInputProps> = ({
   className,
 }) => {
   const [show, setShow] = useState(false);
-  const { t } = useTranslation();
   return (
     <div
       className={`relative${shake ? ' animate-shake-x' : ''}`}
@@ -48,7 +46,7 @@ const PasswordInput: React.FC<PasswordInputProps> = ({
         type="button"
         onClick={() => setShow((s) => !s)}
         className="absolute right-3 top-1/2 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-lg text-text-muted hover:text-accent transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-accent/50"
-        aria-label={show ? t('aria.hidePassword', 'Hide password') : t('aria.showPassword', 'Show password')}
+        aria-label={show ? "Hide password" : "Show password"}
         aria-pressed={show}
       >
         {show ? <IconEyeOff size={20} /> : <IconEye size={20} />}

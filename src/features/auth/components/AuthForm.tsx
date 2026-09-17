@@ -1,5 +1,4 @@
 import React from 'react';
-import { useTranslation } from 'react-i18next';
 import { motion, AnimatePresence } from 'motion/react';
 import { User, Mail, LogIn } from 'lucide-react';
 import { cn } from '@/shared/utils/cn';
@@ -46,13 +45,12 @@ const AuthForm: React.FC<AuthFormProps> = ({
   onLoginSubmit,
   onRegisterSubmit,
 }) => {
-  const { t } = useTranslation();
   const prefersReduced = useReducedMotion();
 
   const modes: AuthMode[] = ['login', 'register'];
   const modeLabels: Record<AuthMode, string> = {
-    login: t('button.logIn'),
-    register: t('button.createAccount'),
+    login: "Log In",
+    register: "Create Account",
   };
 
   const panelMotion = prefersReduced
@@ -64,7 +62,7 @@ const AuthForm: React.FC<AuthFormProps> = ({
       <p className="sr-only" aria-live="polite">{formMessage}</p>
 
       {/* Quiet mode toggle */}
-      <div role="group" aria-label={t('auth.chooseMode', 'Choose sign in or register')} className="flex w-full rounded-lg bg-surface-raised p-1">
+      <div role="group" aria-label={"Choose sign in or register"} className="flex w-full rounded-lg bg-surface-raised p-1">
         {modes.map((m) => {
           const selected = mode === m;
           return (
@@ -96,14 +94,14 @@ const AuthForm: React.FC<AuthFormProps> = ({
           >
             <div className="mb-8">
               <h1 className="type-h2 mb-1 font-black uppercase tracking-tight text-text-primary">
-                {t('hero.welcomeBack')} <span className="text-accent">{t('hero.operator')}</span>
+                {"Welcome back,"} <span className="text-accent">{"Operator"}</span>
               </h1>
-              <p className="type-body-sm">{t('auth.signIntoContinue')}</p>
+              <p className="type-body-sm">{"Sign in to continue your training."}</p>
             </div>
 
             <form className="space-y-5" onSubmit={onLoginSubmit} noValidate>
               <div className="space-y-2">
-                <label htmlFor="login-email" className={labels.base}>{t('form.email')}</label>
+                <label htmlFor="login-email" className={labels.base}>{"Email"}</label>
                 <Input
                   id="login-email"
                   type="email"
@@ -111,13 +109,13 @@ const AuthForm: React.FC<AuthFormProps> = ({
                   required
                   autoComplete="email"
                   inputMode="email"
-                  placeholder={t('auth.emailPlaceholder')}
+                  placeholder={"operator@qyvora.africa"}
                   icon={<Mail className="h-4 w-4 lg:h-5 lg:w-5" />}
                 />
               </div>
 
               <div className="space-y-2">
-                <label htmlFor="login-password" className={labels.base}>{t('form.password')}</label>
+                <label htmlFor="login-password" className={labels.base}>{"Password"}</label>
                 <PasswordInput
                   id="login-password"
                   name="password"
@@ -128,7 +126,7 @@ const AuthForm: React.FC<AuthFormProps> = ({
               </div>
 
               <Button type="submit" size="lg" className="w-full" disabled={isLoading} loading={isLoading}>
-                {t('button.signIn')}
+                {"Sign In"}
               </Button>
             </form>
           </motion.div>
@@ -142,14 +140,14 @@ const AuthForm: React.FC<AuthFormProps> = ({
           >
             <div className="mb-8">
               <h1 className="type-h2 mb-1 font-black uppercase tracking-tight text-text-primary">
-                {t('button.join')} <span className="text-accent">QYVORA</span>
+                {"Join"} <span className="text-accent">QYVORA</span>
               </h1>
-              <p className="type-body-sm">{t('auth2.registerDescription')}</p>
+              <p className="type-body-sm">{"Create your account to start learning."}</p>
             </div>
 
             <form className="space-y-5" onSubmit={onRegisterSubmit}>
               <div className="space-y-2">
-                <label htmlFor="register-handle" className={labels.base}>{t('form.operatorHandle')}</label>
+                <label htmlFor="register-handle" className={labels.base}>{"Operator Handle"}</label>
                 <Input
                   ref={handleRef}
                   id="register-handle"
@@ -158,8 +156,8 @@ const AuthForm: React.FC<AuthFormProps> = ({
                   required
                   autoComplete="username"
                   pattern="^[a-zA-Z0-9][a-zA-Z0-9\-]{0,38}[a-zA-Z0-9]$"
-                  title={t('validation.handleRules')}
-                  placeholder={t('auth.handlePlaceholder')}
+                  title={"Letters, numbers, and hyphens only. No spaces."}
+                  placeholder={"Pick a handle or choose one below"}
                   icon={<User className="h-4 w-4 lg:h-5 lg:w-5" />}
                 />
                 <HandleSuggestions
@@ -171,14 +169,14 @@ const AuthForm: React.FC<AuthFormProps> = ({
 
               <div className="grid gap-5 sm:grid-cols-2">
                 <div className="space-y-2">
-                  <label htmlFor="register-full-name" className={labels.base}>{t('form.fullName')}</label>
+                  <label htmlFor="register-full-name" className={labels.base}>{"Full Name"}</label>
                   <Input
                     id="register-full-name"
                     type="text"
                     name="full_name"
                     required
                     autoComplete="name"
-                    placeholder={t('auth.namePlaceholder')}
+                    placeholder={"Kwame Mensah"}
                     value={fullName}
                     onChange={(e) => onFullNameChange(e.target.value)}
                     icon={<User className="h-4 w-4 lg:h-5 lg:w-5" />}
@@ -186,7 +184,7 @@ const AuthForm: React.FC<AuthFormProps> = ({
                 </div>
 
                 <div className="space-y-2">
-                  <label htmlFor="register-email" className={labels.base}>{t('form.email')}</label>
+                  <label htmlFor="register-email" className={labels.base}>{"Email"}</label>
                   <Input
                     id="register-email"
                     type="email"
@@ -194,7 +192,7 @@ const AuthForm: React.FC<AuthFormProps> = ({
                     required
                     autoComplete="email"
                     inputMode="email"
-                    placeholder={t('auth.emailPlaceholder')}
+                    placeholder={"operator@qyvora.africa"}
                     icon={<Mail className="h-4 w-4 lg:h-5 lg:w-5" />}
                   />
                 </div>
@@ -202,20 +200,20 @@ const AuthForm: React.FC<AuthFormProps> = ({
 
               <div className="grid gap-5 sm:grid-cols-2">
                 <div className="space-y-2">
-                  <label htmlFor="register-password" className={labels.base}>{t('form.password')}</label>
+                  <label htmlFor="register-password" className={labels.base}>{"Password"}</label>
                   <PasswordInput id="register-password" name="password" autoComplete="new-password" />
                 </div>
 
                 <div className="space-y-2">
-                  <label htmlFor="register-confirm-password" className={labels.base}>{t('form.confirmPassword')}</label>
+                  <label htmlFor="register-confirm-password" className={labels.base}>{"Confirm Password"}</label>
                   <PasswordInput id="register-confirm-password" name="confirm_password" autoComplete="new-password" />
                 </div>
               </div>
 
-              <p className="type-meta" role="note">{t('validation.handleRules')}</p>
+              <p className="type-meta" role="note">{"Letters, numbers, and hyphens only. No spaces."}</p>
 
               <Button type="submit" size="lg" className="w-full" disabled={isLoading} loading={isLoading}>
-                {t('button.createAccount')}
+                {"Create Account"}
               </Button>
             </form>
           </motion.div>

@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import { useTranslation } from 'react-i18next';
 import { useSearchParams } from 'react-router-dom';
 import { Trophy, Users, TrendingUp, Shield } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
@@ -20,7 +19,6 @@ interface Cohort {
 }
 
 const LeaderboardPage = () => {
-  const { t } = useTranslation();
   const { user } = useAuth();
   const [searchParams, setSearchParams] = useSearchParams();
 
@@ -31,8 +29,8 @@ const LeaderboardPage = () => {
     limit: 50,
     cohortId,
     errorMessages: {
-      loadFailed: t('leaderboardPage.loadError'),
-      networkFailed: t('leaderboardPage.loadErrorNetwork'),
+      loadFailed: "Failed to load leaderboard.",
+      networkFailed: "Failed to load leaderboard. Check connection and try again.",
     },
   });
 
@@ -71,19 +69,19 @@ const LeaderboardPage = () => {
   return (
     <div className="min-h-full w-full bg-canvas">
       <SEO
-        title={t('leaderboardPage.seo.title')}
-        description={t('leaderboardPage.seo.description')}
+        title={"Leaderboard | QYVORA"}
+        description={"Ranking Africa's top cybersecurity operators by CyberPoints earned."}
       />
       <div className="w-full px-3 pb-20 pt-24 md:px-4 md:pb-24 md:pt-28 lg:px-6 lg:pt-32">
         <PageHeader
-          kicker={t('leaderboardPage.hero.kicker', 'QYVORA · Operators')}
-          title={t('leaderboardPage.hero.title')}
-          description={t('leaderboardPage.hero.description')}
+          kicker={"QYVORA · Operators"}
+          title={"Operator"}
+          description={"Ranking Africa's top cybersecurity operators by CyberPoints earned on the QYVORA Chain."}
           metadata={
             <span className="type-meta inline-flex items-center gap-2">
               <TrendingUp className="h-3.5 w-3.5 text-accent" aria-hidden="true" />
               <span className="font-bold text-text-primary">{Number(total).toLocaleString()}</span>
-              {t('leaderboardPage.hero.operatorsStat')}
+              {"Operators"}
             </span>
           }
         />
@@ -101,7 +99,7 @@ const LeaderboardPage = () => {
                     : 'border border-border bg-surface-raised text-text-muted hover:border-accent/50 hover:text-accent'
                 }`}
               >
-                {t(p.labelKey)}
+                {p.label}
               </button>
             ))}
           </div>
@@ -118,7 +116,7 @@ const LeaderboardPage = () => {
                 }`}
               >
                 <Users className="mr-1.5 inline-block h-3.5 w-3.5" />
-                {t('leaderboardPage.hero.operatorsStat')}
+                {"Operators"}
               </button>
               {myCohorts.map((cohort) => (
                 <button
@@ -157,8 +155,8 @@ const LeaderboardPage = () => {
           ) : podium.length === 0 ? (
             <EmptyState
               icon={<Trophy className="h-6 w-6" />}
-              title={t('leaderboardPage.empty.title')}
-              description={t('leaderboardPage.empty.description')}
+              title={"No operators ranked yet"}
+              description={"Complete bootcamp rooms to earn CP and appear on the leaderboard."}
             />
           ) : (
             <div className="grid grid-cols-1 items-stretch gap-4 md:grid-cols-3 md:gap-6">
@@ -193,7 +191,6 @@ const LeaderboardPage = () => {
 };
 
 const LeaderboardRestSection: React.FC<{ rest: any[]; user: any; total: number }> = ({ rest, user, total }) => {
-  const { t } = useTranslation();
   const [page, setPage] = useState(0);
   const BATCH_SIZE = 5;
 
@@ -203,11 +200,11 @@ const LeaderboardRestSection: React.FC<{ rest: any[]; user: any; total: number }
   return (
     <div className="overflow-hidden rounded-2xl border border-border-subtle bg-surface">
       <div className="hidden md:grid grid-cols-[48px_1fr_140px_100px_80px] gap-4 px-6 py-3 border-b border-border/40 type-meta font-black uppercase tracking-widest text-text-muted/50">
-        <span>{t('leaderboardPage.table.rank')}</span>
-        <span>{t('leaderboardPage.table.operator')}</span>
-        <span>{t('leaderboardPage.table.rankLabel')}</span>
-        <span className="text-right">{t('leaderboardPage.table.cp')}</span>
-        <span className="text-right">{t('leaderboardPage.table.streak')}</span>
+        <span>{"#"}</span>
+        <span>{"Operator"}</span>
+        <span>{"Rank"}</span>
+        <span className="text-right">{"CP"}</span>
+        <span className="text-right">{"Streak"}</span>
       </div>
       <div className="space-y-2 py-2">
         <AnimatePresence mode="popLayout">
@@ -224,9 +221,9 @@ const LeaderboardRestSection: React.FC<{ rest: any[]; user: any; total: number }
                 entry={entry}
                 user={user}
                 rank={entry.rank}
-                anonymousLabel={t('leaderboardPage.hero.operatorsStat')}
+                anonymousLabel={"Operators"}
                 youLabel="You"
-                roomsLabel={t('leaderboardPage.rooms')}
+                roomsLabel={"rooms"}
                 avatarShape="rounded-xl"
                 normalBorderColor="border-border/50"
               />
@@ -237,7 +234,7 @@ const LeaderboardRestSection: React.FC<{ rest: any[]; user: any; total: number }
       <BatchPagination page={page} totalPages={totalPages} onPageChange={setPage} />
       <div className="type-meta flex items-center justify-center gap-2 pb-4 font-bold uppercase tracking-widest text-text-muted/40">
         <Shield className="h-3 w-3 text-accent" />
-        {t('leaderboardPage.footer', { count: Number(total).toLocaleString() })}
+        {`CP balances verified on QYVORA Chain · ${Number(total).toLocaleString()} operators`}
       </div>
     </div>
   );

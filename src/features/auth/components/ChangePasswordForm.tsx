@@ -1,7 +1,6 @@
 import React from 'react';
 import { KeyRound } from 'lucide-react';
 import { ShieldCheck } from 'lucide-react';
-import { useTranslation } from 'react-i18next';
 import PasswordInput from './PasswordInput';
 import Input from '@/shared/components/ui/Input';
 import Button from '@/shared/components/ui/Button';
@@ -19,7 +18,6 @@ const ChangePasswordForm: React.FC<ChangePasswordFormProps> = ({
   isLoading,
   token,
 }) => {
-  const { t } = useTranslation();
   return (
     <div className="w-full rounded-xl border border-border-subtle bg-surface p-5 sm:p-8">
       <div className="mb-8">
@@ -28,29 +26,29 @@ const ChangePasswordForm: React.FC<ChangePasswordFormProps> = ({
             <ShieldCheck className="h-5 w-5" aria-hidden="true" />
           </span>
           <h1 className="type-h2 font-black uppercase tracking-tight text-text-primary">
-            {t('auth2.changePassword.title1')} <span className="text-accent">{t('auth2.changePassword.title2')}</span>
+            {"Password Change"} <span className="text-accent">{"Required"}</span>
           </h1>
         </div>
-        <p className="type-body-sm">{t('auth2.changePassword.description')}</p>
+        <p className="type-body-sm">{"Your account requires a password change before continuing."}</p>
       </div>
       <form className="space-y-5" onSubmit={onSubmit}>
         {!token && (
           <div className="space-y-2">
-            <label htmlFor="change-token" className={labelClass}>{t('auth2.changePassword.tokenLabel')}</label>
-              <Input id="change-token" type="text" name="change_token" required placeholder={t('auth2.changePassword.tokenPlaceholder')}
+            <label htmlFor="change-token" className={labelClass}>{"Change Token"}</label>
+              <Input id="change-token" type="text" name="change_token" required placeholder={"Paste token from login response"}
                 icon={<KeyRound className="h-4 w-4" />} />
           </div>
         )}
         <div className="space-y-2">
-          <label htmlFor="change-new-password" className={labelClass}>{t('form.newPassword')}</label>
-          <PasswordInput id="change-new-password" name="new_password" placeholder={t('auth2.changePassword.minLength')} autoComplete="new-password" />
+          <label htmlFor="change-new-password" className={labelClass}>{"New Password"}</label>
+          <PasswordInput id="change-new-password" name="new_password" placeholder={"Min 8 characters"} autoComplete="new-password" />
         </div>
         <div className="space-y-2">
-          <label htmlFor="change-confirm-password" className={labelClass}>{t('form.confirmPassword')}</label>
+          <label htmlFor="change-confirm-password" className={labelClass}>{"Confirm Password"}</label>
           <PasswordInput id="change-confirm-password" name="confirm_password" autoComplete="new-password" />
         </div>
         <Button type="submit" size="lg" className="w-full" disabled={isLoading} loading={isLoading}>
-          {t('auth2.changePassword.setNewPassword')}
+          {"Set New Password"}
         </Button>
       </form>
     </div>

@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { useTranslation } from 'react-i18next';
 import { RotateCcw, Copy } from 'lucide-react';
 import { IconPlay, IconCheck, IconTerminal } from '@/shared/components/icons';
 
@@ -42,7 +41,6 @@ const CodePlayground: React.FC<CodePlaygroundProps> = ({
   title = 'Code Playground',
   className = '',
 }) => {
-  const { t } = useTranslation();
   const [code, setCode] = useState(initialCode);
   const [output, setOutput] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -55,21 +53,21 @@ const CodePlayground: React.FC<CodePlaygroundProps> = ({
 
     const runner = RUNNERS[language];
     if (!runner) {
-      setError(t('components.playground.langNotSupported', { language }));
+      setError(`Language "${language}" is not supported in this sandbox.`);
       return;
     }
 
     try {
       const result = runner(code);
-      setOutput(result || t('components.playground.noOutput'));
+      setOutput(result || "(no output)");
 
       if (expectedOutput !== undefined && result !== expectedOutput) {
-        setError(t('components.playground.unexpectedOutput', { expected: expectedOutput, result }));
+        setError(`Expected output: "${expectedOutput}" but got: "${result}"`);
       } else if (expectedOutput !== undefined) {
-        setOutput(`${result}\n\n${t('components.playground.outputMatches')}`);
+        setOutput(`${result}\n\n${"✓ Output matches expected!"}`);
       }
     } catch (e: any) {
-      setError(e.message || t('components.playground.executionError'));
+      setError(e.message || "Execution error");
     }
   };
 
@@ -97,10 +95,10 @@ const CodePlayground: React.FC<CodePlaygroundProps> = ({
           )}
         </div>
         <div className="flex items-center gap-2">
-          <button onClick={handleCopy} className="min-h-[44px] min-w-[44px] flex items-center justify-center text-text-muted hover:text-accent active:scale-95 transition-colors" title={t('components.playground.copyCode', 'Copy code')} aria-label={t('components.playground.copyCode', 'Copy code')}>
+          <button onClick={handleCopy} className="min-h-[44px] min-w-[44px] flex items-center justify-center text-text-muted hover:text-accent active:scale-95 transition-colors" title={"Copy code"} aria-label={"Copy code"}>
             {copied ? <IconCheck size={14} className="text-accent" /> : <Copy className="h-3.5 w-3.5" />}
           </button>
-          <button onClick={handleReset} className="min-h-[44px] min-w-[44px] flex items-center justify-center text-text-muted hover:text-accent active:scale-95 transition-colors" title={t('components.playground.reset', 'Reset')} aria-label={t('components.playground.reset', 'Reset code')}>
+          <button onClick={handleReset} className="min-h-[44px] min-w-[44px] flex items-center justify-center text-text-muted hover:text-accent active:scale-95 transition-colors" title={"Reset"} aria-label={"Reset"}>
             <RotateCcw className="h-3.5 w-3.5" />
           </button>
         </div>
@@ -110,7 +108,7 @@ const CodePlayground: React.FC<CodePlaygroundProps> = ({
         <textarea
           value={code}
           onChange={(e) => setCode(e.target.value)}
-          aria-label={t('components.playground.editor', 'Code editor')}
+          aria-label={"Code editor"}
           className="w-full bg-transparent text-text-primary font-mono text-sm p-4 sm:p-5 border-none outline-none resize-none min-h-[120px] leading-relaxed caret-accent"
           spellCheck={false}
           style={{ tabSize: 2 }}
@@ -119,11 +117,11 @@ const CodePlayground: React.FC<CodePlaygroundProps> = ({
 
       <div className="flex items-center gap-3 px-5 py-3 bg-bg-card border-t border-border">
         <button onClick={handleRun} className="btn-primary text-xs py-2 px-5 inline-flex items-center gap-1.5">
-          <IconPlay size={12} /> {t('components.playground.run')}
+          <IconPlay size={12} /> {"Run"}
         </button>
         {expectedOutput && (
           <button onClick={() => setShowHint(!showHint)} className="min-h-[44px] px-2 text-xs font-mono text-text-muted hover:text-accent active:opacity-70 transition-colors">
-            {showHint ? t('components.playground.hideHint') : t('components.playground.showHint')}
+            {showHint ? "Hide hint" : "Show hint"}
           </button>
         )}
       </div>
@@ -131,7 +129,7 @@ const CodePlayground: React.FC<CodePlaygroundProps> = ({
       {showHint && expectedOutput && (
         <div className="px-5 py-3 bg-accent-dim border-t border-border/50">
           <p className="text-xs font-mono text-text-muted">
-            {t('components.playground.expectedOutputLabel')} <span className="text-accent">{expectedOutput}</span>
+            {"Expected output:"} <span className="text-accent">{expectedOutput}</span>
           </p>
         </div>
       )}

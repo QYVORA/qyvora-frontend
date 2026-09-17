@@ -6,15 +6,15 @@ export interface SettingsSectionConfig {
   id: SettingsSectionId;
   path: string;
   icon: LucideIcon;
-  labelKey: string;
+  label: string;
 }
 
 export const SETTINGS_SECTIONS: SettingsSectionConfig[] = [
-  { id: 'appearance', path: '/dashboard/settings/appearance', icon: Palette, labelKey: 'student.settings.tabs.appearance' },
-  { id: 'notifications', path: '/dashboard/settings/notifications', icon: Bell, labelKey: 'student.settings.tabs.notifications' },
-  { id: 'learning', path: '/dashboard/settings/learning', icon: BookOpen, labelKey: 'student.settings.tabs.learning' },
-  { id: 'security', path: '/dashboard/settings/security', icon: Shield, labelKey: 'student.settings.tabs.security' },
-  { id: 'account', path: '/dashboard/settings/account', icon: Trash2, labelKey: 'student.settings.tabs.account' },
+  { id: 'appearance', path: '/dashboard/settings/appearance', icon: Palette, label: 'Appearance' },
+  { id: 'notifications', path: '/dashboard/settings/notifications', icon: Bell, label: 'Notifications' },
+  { id: 'learning', path: '/dashboard/settings/learning', icon: BookOpen, label: 'Learning' },
+  { id: 'security', path: '/dashboard/settings/security', icon: Shield, label: 'Security' },
+  { id: 'account', path: '/dashboard/settings/account', icon: Trash2, label: 'Account' },
 ];
 
 export function isSettingsPath(pathname: string): boolean {

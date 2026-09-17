@@ -1,5 +1,4 @@
 import { useMemo } from 'react';
-import { useTranslation } from 'react-i18next';
 import SEO from '@/shared/components/SEO';
 import LabCard from './LabCard';
 import PageHeader from '@/shared/components/ui/PageHeader';
@@ -9,7 +8,6 @@ import type { LearningCatalogueItem } from '@/shared/components/learning';
 import { LABS } from '@/features/student/constants/labs';
 
 const LabsPage = () => {
-  const { t } = useTranslation();
 
   const items: LearningCatalogueItem[] = useMemo(
     () =>
@@ -21,10 +19,10 @@ const LabsPage = () => {
         accentColor: lab.accentColor,
         difficulty: lab.difficulty,
         cpReward: lab.cpReward,
-        title: t(`student.labs.list.${lab.id}.title`),
-        description: t(`student.labs.list.${lab.id}.description`),
+        title: lab.title,
+        description: lab.desc,
       })),
-    [t],
+    [],
   );
 
   const totalCpMin = LABS.reduce((sum, lab) => sum + parseInt(lab.cpReward.split('-')[0]), 0);
@@ -32,20 +30,20 @@ const LabsPage = () => {
 
   return (
     <div className="min-h-full bg-canvas">
-      <SEO title={t('student.labs.seoTitle')} description={t('student.labs.seoDesc')} noindex />
+      <SEO title={"Attack Labs"} description={"Hands-on offensive security simulations on QYVORA."} noindex />
       <div className="w-full space-y-8 px-3 pb-16 pt-6 md:px-4 md:pb-20 md:pt-8 lg:px-6 lg:pb-24">
         <PageHeader
-          kicker={t('student.labs.eyebrow', 'QYVORA · Practice')}
-          title={t('student.labs.title')}
-          description={t('student.labs.description')}
+          kicker={"QYVORA · Practice"}
+          title={"Attack Labs"}
+          description={"Hands-on offensive security simulations. Practice real-world attack techniques in isolated environments."}
           metadata={
             <span className="type-meta inline-flex items-center gap-2">
-              <span className="font-bold text-accent">{LABS.length}</span> {t('stat.labs')} · <span className="font-bold text-text-primary">{totalCpMin}-{totalCpMax}</span> {t('stat.cpRange')}
+              <span className="font-bold text-accent">{LABS.length}</span> {"Labs"} · <span className="font-bold text-text-primary">{totalCpMin}-{totalCpMax}</span> {"CP Range"}
             </span>
           }
           actions={
             <Button to={LABS[0]?.route || '/dashboard/labs'}>
-              {t('button.startFirstLab')}
+              {"Start First Lab"}
             </Button>
           }
         />
@@ -54,10 +52,10 @@ const LabsPage = () => {
           items={items}
           gridClassName="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-6 lg:grid-cols-3"
           showSearch
-          searchPlaceholder={t('student.labs.searchPlaceholder')}
+          searchPlaceholder={"Search labs…"}
           filterLabel={(id) =>
             id === 'all'
-              ? t('student.labs.filter.all')
+              ? "All Labs"
               : id.charAt(0).toUpperCase() + id.slice(1)
           }
           renderItem={(item) => (
@@ -71,8 +69,8 @@ const LabsPage = () => {
               accentColor={item.accentColor ?? ''}
             />
           )}
-          emptyTitle={t('student.labs.empty.title')}
-          emptyDescription={t('student.labs.empty.description')}
+          emptyTitle={"No labs found"}
+          emptyDescription={"Try adjusting your search or filter criteria."}
         />
       </div>
     </div>

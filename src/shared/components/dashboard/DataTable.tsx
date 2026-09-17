@@ -1,5 +1,4 @@
 import { useState, useMemo, type ReactNode } from 'react';
-import { useTranslation } from 'react-i18next';
 import { ChevronLeft } from 'lucide-react';
 import { IconChevronRight, IconSearch } from '@/shared/components/icons';
 import { Skeleton } from '@/shared/components/ui';
@@ -35,7 +34,6 @@ function DataTable<T>({
   searchFilter, pageSize: initialPageSize = 25, emptyIcon, emptyTitle, emptyAction,
   mobileCard, minWidth = 'min-w-[640px]',
 }: DataTableProps<T>) {
-  const { t } = useTranslation();
   const [query, setQuery] = useState('');
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(initialPageSize);
@@ -93,19 +91,19 @@ function DataTable<T>({
               type="text"
               value={query}
               onChange={(e) => { setQuery(e.target.value); setPage(1); }}
-              placeholder={searchPlaceholder ?? t('components.dataTable.searchPlaceholder')}
-              aria-label={searchPlaceholder ?? t('components.dataTable.searchAria', 'Search')}
+              placeholder={searchPlaceholder ?? "Search…"}
+              aria-label={searchPlaceholder ?? "Search"}
               className="w-full bg-bg border border-border/60 rounded-xl pl-9 pr-4 py-2.5 text-sm text-text-primary focus:outline-none focus:border-accent transition-[border-color]"
             />
           </div>
-          <span className="text-xs text-text-muted font-mono">{t('components.dataTable.resultsCount', { count: sorted.length })}</span>
+          <span className="text-xs text-text-muted font-mono">{`${sorted.length} results`}</span>
         </div>
       )}
 
       {paginated.length === 0 ? (
         <div className="rounded-2xl border-2 border-dashed border-border py-12 text-center">
           {emptyIcon && <div className="mx-auto mb-3 opacity-30">{emptyIcon}</div>}
-          <p className="text-sm text-text-muted font-bold">{emptyTitle ?? t('components.dataTable.noData')}</p>
+          <p className="text-sm text-text-muted font-bold">{emptyTitle ?? "No data"}</p>
           {emptyAction}
         </div>
       ) : (
@@ -169,22 +167,22 @@ function DataTable<T>({
                 <select
                   value={pageSize}
                   onChange={(e) => { setPageSize(Number(e.target.value)); setPage(1); }}
-                  aria-label={t('components.dataTable.itemsPerPageAria', 'Items per page')}
+                  aria-label={"Items per page"}
                   className="bg-bg-elevated rounded-lg px-3 py-2 text-xs font-black text-text-primary outline-none cursor-pointer"
                 >
                   {[10, 25, 50, 100].map((n) => (
-                    <option key={n} value={n}>{t('components.dataTable.itemsPerPage', { n })}</option>
+                    <option key={n} value={n}>{`${n} / page`}</option>
                   ))}
                 </select>
                 <span className="text-xs font-mono text-text-muted">
-                  {t('components.dataTable.pageOf', { page: safePage, total: totalPages })}
+                  {`Page ${safePage} of ${totalPages}`}
                 </span>
               </div>
               <div className="flex items-center gap-2">
                 <button
                   onClick={() => setPage((p) => Math.max(1, p - 1))}
                   disabled={safePage <= 1}
-                  aria-label={t('components.dataTable.prevAria', 'Previous page')}
+                  aria-label={"Previous page"}
                   className="w-11 h-11 flex items-center justify-center rounded-lg bg-bg-elevated text-text-muted disabled:opacity-50 hover:text-accent transition-[color,transform] duration-[var(--dur-base)] active:scale-90 shadow-sm"
                 >
                   <ChevronLeft className="w-5 h-5" />
@@ -192,7 +190,7 @@ function DataTable<T>({
                 <button
                   onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
                   disabled={safePage >= totalPages}
-                  aria-label={t('components.dataTable.nextAria', 'Next page')}
+                  aria-label={"Next page"}
                   className="w-11 h-11 flex items-center justify-center rounded-lg bg-bg-elevated text-text-muted disabled:opacity-50 hover:text-accent transition-[color,transform] duration-[var(--dur-base)] active:scale-90 shadow-sm"
                 >
                   <IconChevronRight size={20} />

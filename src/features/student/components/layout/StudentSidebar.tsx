@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { NavLink, useLocation, useNavigate } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
 import {
   Home,
   BookOpen,
@@ -37,28 +36,28 @@ interface NavEntry {
 
 const NAV_SECTIONS: { title: string; items: NavEntry[] }[] = [
   {
-    title: 'student.sidebar.main',
+    title: 'Main',
     items: [
-      { key: 'dashboard', label: 'student.sidebar.home', icon: Home, to: '/dashboard' },
-      { key: 'courses', label: 'student.sidebar.courses', icon: BookOpen, to: '/dashboard/courses' },
-      { key: 'bootcamp', label: 'student.sidebar.bootcamp', icon: TerminalIcon, to: '/dashboard/bootcamps' },
-      { key: 'labs', label: 'student.sidebar.labs', icon: FlaskConical, to: '/dashboard/labs' },
-      { key: 'marketplace', label: 'student.sidebar.marketplace', icon: ShoppingBag, to: '/dashboard/marketplace' },
+      { key: 'dashboard', label: 'Home', icon: Home, to: '/dashboard' },
+      { key: 'courses', label: 'Courses', icon: BookOpen, to: '/dashboard/courses' },
+      { key: 'bootcamp', label: 'Bootcamp', icon: TerminalIcon, to: '/dashboard/bootcamps' },
+      { key: 'labs', label: 'Labs', icon: FlaskConical, to: '/dashboard/labs' },
+      { key: 'marketplace', label: 'Marketplace', icon: ShoppingBag, to: '/dashboard/marketplace' },
     ],
   },
   {
-    title: 'student.sidebar.practice',
+    title: 'Practice',
     items: [
-      { key: 'competitive', label: 'student.sidebar.competitive', icon: Swords, to: '/dashboard/competitive' },
-      { key: 'networks', label: 'student.sidebar.networks', icon: Network, to: '/dashboard/networks' },
+      { key: 'competitive', label: 'Competitive', icon: Swords, to: '/dashboard/competitive' },
+      { key: 'networks', label: 'Networks', icon: Network, to: '/dashboard/networks' },
     ],
   },
   {
-    title: 'student.sidebar.account',
+    title: 'Account',
     items: [
-      { key: 'profile', label: 'student.sidebar.profile', icon: User, to: '/dashboard/profile' },
-      { key: 'notifications', label: 'student.sidebar.notifications', icon: Bell, to: '/dashboard/notifications', badgeKey: 'notifications' },
-      { key: 'settings', label: 'student.sidebar.settings', icon: Settings, to: '/dashboard/settings' },
+      { key: 'profile', label: 'Profile', icon: User, to: '/dashboard/profile' },
+      { key: 'notifications', label: 'Notifications', icon: Bell, to: '/dashboard/notifications', badgeKey: 'notifications' },
+      { key: 'settings', label: 'Settings', icon: Settings, to: '/dashboard/settings' },
     ],
   },
 ];
@@ -73,7 +72,6 @@ const StudentSidebar: React.FC<{ collapsed?: boolean; onToggleCollapse?: () => v
   collapsed = false,
   onToggleCollapse,
 }) => {
-  const { t } = useTranslation();
   const { user, logout } = useAuth();
   const { addToast } = useToast();
   const navigate = useNavigate();
@@ -107,7 +105,7 @@ const StudentSidebar: React.FC<{ collapsed?: boolean; onToggleCollapse?: () => v
 
   const handleLogout = async () => {
     await logout();
-    addToast(t('toast.sessionTerminated'), 'info');
+    addToast("Security session terminated.", 'info');
     navigate('/login');
   };
 
@@ -124,12 +122,12 @@ const StudentSidebar: React.FC<{ collapsed?: boolean; onToggleCollapse?: () => v
         {collapsed ? <QyvoraMark className="h-7 w-7" /> : <Logo size="md" />}
       </div>
 
-      <nav aria-label={t('student.sidebar.label', 'Primary')} className="flex-1 overflow-y-auto px-3 py-4">
+      <nav aria-label={"Primary"} className="flex-1 overflow-y-auto px-3 py-4">
         {NAV_SECTIONS.map((section) => (
           <section key={section.title} className="mb-5">
             {!collapsed && (
               <h3 className="mb-1 type-label px-3 text-text-tertiary uppercase tracking-[0.12em]">
-                {t(section.title)}
+                {section.title}
               </h3>
             )}
             <ul className="space-y-0.5">
@@ -138,7 +136,7 @@ const StudentSidebar: React.FC<{ collapsed?: boolean; onToggleCollapse?: () => v
                 const active = isSectionActive(item.to);
                 return (
                   <li key={item.key} className={collapsed ? 'flex justify-center' : ''}>
-                    <Tooltip content={t(item.label)} side="right" disabled={!collapsed}>
+                    <Tooltip content={item.label} side="right" disabled={!collapsed}>
                       <NavLink
                         to={item.to}
                         data-tour-id={item.key === 'profile' ? 'tour-profile-sidebar' : undefined}
@@ -149,7 +147,7 @@ const StudentSidebar: React.FC<{ collapsed?: boolean; onToggleCollapse?: () => v
                         }`}
                       >
                         <Icon className="h-[18px] w-[18px] shrink-0" strokeWidth={2} aria-hidden="true" />
-                        {!collapsed && <span className="flex-1 truncate">{t(item.label)}</span>}
+                        {!collapsed && <span className="flex-1 truncate">{item.label}</span>}
                         {item.badgeKey === 'notifications' && unread > 0 && (
                           <span className="flex h-5 min-w-5 items-center justify-center rounded-full bg-accent px-1 text-xs font-bold text-on-accent tabular-nums">
                             {unread > 99 ? '99+' : unread}
@@ -179,23 +177,23 @@ const StudentSidebar: React.FC<{ collapsed?: boolean; onToggleCollapse?: () => v
           }`}
         >
           <TooltipProvider>
-            <Tooltip content={t('student.tools.terminal', 'Terminal')}>
-              <button type="button" onClick={openTerminal} aria-label={t('student.tools.terminal', 'Terminal')} className={`flex min-h-[44px] min-w-[44px] ${collapsed ? 'w-full' : 'flex-1'} items-center justify-center rounded-lg border border-transparent text-text-secondary transition-colors hover:border-border-subtle hover:text-accent focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-accent`}>
+            <Tooltip content={"Terminal"}>
+              <button type="button" onClick={openTerminal} aria-label={"Terminal"} className={`flex min-h-[44px] min-w-[44px] ${collapsed ? 'w-full' : 'flex-1'} items-center justify-center rounded-lg border border-transparent text-text-secondary transition-colors hover:border-border-subtle hover:text-accent focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-accent`}>
                 <TerminalIcon className="h-[18px] w-[18px]" aria-hidden="true" />
               </button>
             </Tooltip>
-            <Tooltip content={t('student.tools.ide', 'Code Playground')}>
-              <button type="button" onClick={openIde} aria-label={t('student.tools.ide', 'Code Playground')} className={`flex min-h-[44px] min-w-[44px] ${collapsed ? 'w-full' : 'flex-1'} items-center justify-center rounded-lg border border-transparent text-text-secondary transition-colors hover:border-border-subtle hover:text-accent focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-accent`}>
+            <Tooltip content={"IDE"}>
+              <button type="button" onClick={openIde} aria-label={"IDE"} className={`flex min-h-[44px] min-w-[44px] ${collapsed ? 'w-full' : 'flex-1'} items-center justify-center rounded-lg border border-transparent text-text-secondary transition-colors hover:border-border-subtle hover:text-accent focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-accent`}>
                 <Code2 className="h-[18px] w-[18px]" aria-hidden="true" />
               </button>
             </Tooltip>
-            <Tooltip content={t('student.tools.network', 'Network Lab')}>
-              <button type="button" onClick={openNetwork} aria-label={t('student.tools.network', 'Network Lab')} className={`flex min-h-[44px] min-w-[44px] ${collapsed ? 'w-full' : 'flex-1'} items-center justify-center rounded-lg border border-transparent text-text-secondary transition-colors hover:border-border-subtle hover:text-accent focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-accent`}>
+            <Tooltip content={"Network Lab"}>
+              <button type="button" onClick={openNetwork} aria-label={"Network Lab"} className={`flex min-h-[44px] min-w-[44px] ${collapsed ? 'w-full' : 'flex-1'} items-center justify-center rounded-lg border border-transparent text-text-secondary transition-colors hover:border-border-subtle hover:text-accent focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-accent`}>
                 <Network className="h-[18px] w-[18px]" aria-hidden="true" />
               </button>
             </Tooltip>
-            <Tooltip content={t('student.tools.settings', 'Settings')}>
-              <button type="button" onClick={() => navigate('/dashboard/settings')} aria-label={t('student.tools.settings', 'Settings')} className={`flex min-h-[44px] min-w-[44px] ${collapsed ? 'w-full' : 'flex-1'} items-center justify-center rounded-lg border border-transparent text-text-secondary transition-colors hover:border-border-subtle hover:text-accent focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-accent`}>
+            <Tooltip content={"Settings"}>
+              <button type="button" onClick={() => navigate('/dashboard/settings')} aria-label={"Settings"} className={`flex min-h-[44px] min-w-[44px] ${collapsed ? 'w-full' : 'flex-1'} items-center justify-center rounded-lg border border-transparent text-text-secondary transition-colors hover:border-border-subtle hover:text-accent focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-accent`}>
                 <Cog className="h-[18px] w-[18px]" aria-hidden="true" />
               </button>
             </Tooltip>
@@ -206,7 +204,7 @@ const StudentSidebar: React.FC<{ collapsed?: boolean; onToggleCollapse?: () => v
           type="button"
           onClick={onToggleCollapse}
           aria-expanded={!collapsed}
-          aria-label={collapsed ? t('student.sidebar.expand', 'Expand sidebar') : t('student.sidebar.collapse', 'Collapse sidebar')}
+          aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}
           className={`flex min-h-[44px] w-full items-center rounded-lg py-2 text-sm text-text-secondary transition-colors hover:bg-surface-raised hover:text-text-primary focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-accent ${
             collapsed ? 'justify-center px-0' : 'gap-3 px-3'
           }`}
@@ -216,7 +214,7 @@ const StudentSidebar: React.FC<{ collapsed?: boolean; onToggleCollapse?: () => v
           ) : (
             <PanelLeftClose className="h-[18px] w-[18px] shrink-0" aria-hidden="true" />
           )}
-          {!collapsed && <span>{t('student.sidebar.collapse', 'Collapse sidebar')}</span>}
+          {!collapsed && <span>{"Collapse sidebar"}</span>}
         </button>
 
         <button
@@ -227,7 +225,7 @@ const StudentSidebar: React.FC<{ collapsed?: boolean; onToggleCollapse?: () => v
           }`}
         >
           <LogOut className="h-[18px] w-[18px] shrink-0" aria-hidden="true" />
-          {!collapsed && <span>{t('button.logOut')}</span>}
+          {!collapsed && <span>{"Log Out"}</span>}
         </button>
       </div>
     </aside>

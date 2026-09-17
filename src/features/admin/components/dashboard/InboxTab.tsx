@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import { Mail } from 'lucide-react';
-import { useTranslation } from 'react-i18next';
 import { IconShield, IconSearch } from '@/shared/components/icons';
 import api from '@/core/services/api';
 import { useToast } from '@/core/contexts/ToastContext';
@@ -15,7 +14,6 @@ type InboxItem = {
 };
 
 const InboxTab = () => {
-  const { t } = useTranslation();
   const { addToast } = useToast();
   const [items, setItems] = useState<InboxItem[]>([]);
   const [loading, setLoading] = useState(true);
@@ -60,7 +58,7 @@ const InboxTab = () => {
       setTotal(merged.length);
     } catch {
       setError(true);
-      addToast(t('admin.inbox.loadFailed'), 'error');
+      addToast("Failed to load inbox", 'error');
     } finally {
       setLoading(false);
     }
@@ -71,17 +69,17 @@ const InboxTab = () => {
   const updateContactStatus = async (id: string, status: string) => {
     try {
       await api.patch(`/admin/contact-messages/${id}`, { status });
-      addToast(t('admin.inbox.updated'), 'success');
+      addToast("Inbox updated", 'success');
       fetchAll(page);
-    } catch { addToast(t('admin.inbox.updateFailed'), 'error'); }
+    } catch { addToast("Failed to update", 'error'); }
   };
 
   const updateServiceStatus = async (id: string, status: string) => {
     try {
       await api.patch(`/admin/service-requests/${id}`, { status });
-      addToast(t('admin.inbox.updated'), 'success');
+      addToast("Inbox updated", 'success');
       fetchAll(page);
-    } catch { addToast(t('admin.inbox.updateFailed'), 'error'); }
+    } catch { addToast("Failed to update", 'error'); }
   };
 
   const handleDeleteConfirm = async () => {
@@ -90,9 +88,9 @@ const InboxTab = () => {
     const endpoint = confirmDelete.type === 'contact' ? 'contact-messages' : 'service-requests';
     try {
       await api.delete(`/admin/${endpoint}/${id}`);
-      addToast(t('admin.inbox.deleted'), 'success');
+      addToast("Deleted", 'success');
       fetchAll(page);
-    } catch { addToast(t('admin.inbox.deleteFailed'), 'error'); }
+    } catch { addToast("Failed to delete", 'error'); }
     finally { setConfirmDelete(null); }
   };
 
@@ -115,7 +113,7 @@ const InboxTab = () => {
                 filter === f ? 'btn-primary' : 'btn-secondary'
               }`}
             >
-              {f === 'all' ? t('button.all') : f === 'contact' ? t('admin.inbox.contact') : t('admin.inbox.service')}
+              {f === 'all' ? "All" : f === 'contact' ? "Contact" : "Service"}
             </button>
           ))}
         </div>
@@ -125,19 +123,19 @@ const InboxTab = () => {
             type="text"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            placeholder={t('admin.inbox.searchPlaceholder')}
+            placeholder={"Search by name or email..."}
             className="w-full bg-bg border border-border rounded-xl pl-9 pr-3 py-2 text-xs text-text-primary focus:border-accent outline-none transition-colors"
           />
         </div>
-        <span className="text-xs text-text-muted font-mono">{t('admin.inbox.itemsCount', { count: total })}</span>
+        <span className="text-xs text-text-muted font-mono">{`${total} items`}</span>
       </div>
 
       {loading ? (
         <div className="space-y-2" role="status">{Array.from({ length: 8 }).map((_, i) => <div key={i} className="h-14 rounded-xl bg-bg-card border border-border animate-pulse" />)}</div>
       ) : error ? (
-        <ErrorState message={t('admin.inbox.loadFailed')} title={t('admin.inbox.unavailable')} />
+        <ErrorState message={"Failed to load inbox"} title={"Inbox could not be loaded."} />
       ) : items.length === 0 ? (
-        <EmptyState icon={<Mail className="w-10 h-10 text-text-muted" />} title={t('admin.inbox.empty')} />
+        <EmptyState icon={<Mail className="w-10 h-10 text-text-muted" />} title={"No messages yet"} />
       ) : (
         <div className="space-y-2">
           {items.map((item) => {
@@ -158,7 +156,7 @@ const InboxTab = () => {
                     <span className={`px-2.5 py-1 rounded-lg text-xs font-black uppercase tracking-widest shrink-0 whitespace-nowrap ${
                       isContact ? 'bg-bg-elevated text-text-muted' : 'bg-accent/10 text-accent'
                     }`}>
-                      {isContact ? t('admin.inbox.contact') : t('admin.inbox.service')}
+                      {isContact ? "Contact" : "Service"}
                     </span>
                     <span className={`px-2.5 py-1 rounded-lg text-xs font-black uppercase tracking-widest shrink-0 whitespace-nowrap ${
                       d.status === 'new' ? 'bg-accent/10 text-accent' :
@@ -191,7 +189,7 @@ const InboxTab = () => {
                   <span className={`px-2 py-1 rounded-lg text-xs font-bold uppercase tracking-wider ${
                     isContact ? 'bg-bg-elevated text-text-muted' : 'bg-accent/10 text-accent'
                   }`}>
-                      {isContact ? t('admin.inbox.contactMessage') : t('admin.inbox.serviceInquiry')}
+                      {isContact ? "Contact Message" : "Service Inquiry"}
                   </span>
                   <span className={`px-2 py-1 rounded-lg text-xs font-bold uppercase tracking-wider ${
                     d.status === 'new' ? 'bg-accent/10 text-accent' :
@@ -204,50 +202,50 @@ const InboxTab = () => {
 
                 <div className="grid grid-cols-2 gap-4 text-sm">
                   <div>
-                    <span className="text-xs font-bold text-text-muted uppercase tracking-wider block mb-1">{t('form.name')}</span>
+                    <span className="text-xs font-bold text-text-muted uppercase tracking-wider block mb-1">{"Name"}</span>
                     <span className="font-bold text-text-primary">{d.name}</span>
                   </div>
                   <div>
-                    <span className="text-xs font-bold text-text-muted uppercase tracking-wider block mb-1">{t('form.email')}</span>
+                    <span className="text-xs font-bold text-text-muted uppercase tracking-wider block mb-1">{"Email"}</span>
                     <span className="font-mono text-text-primary">{d.email}</span>
                   </div>
                   {!isContact && (
                     <>
                       <div>
-                        <span className="text-xs font-bold text-text-muted uppercase tracking-wider block mb-1">{t('form.business')}</span>
+                        <span className="text-xs font-bold text-text-muted uppercase tracking-wider block mb-1">{"Business"}</span>
                         <span className="text-text-primary">{(d as any).businessName || '-'}</span>
                       </div>
                       <div>
-                        <span className="text-xs font-bold text-text-muted uppercase tracking-wider block mb-1">{t('form.phone')}</span>
+                        <span className="text-xs font-bold text-text-muted uppercase tracking-wider block mb-1">{"Phone"}</span>
                         <span className="text-text-primary">{(d as any).phone || '-'}</span>
                       </div>
                       <div className="col-span-2">
-                        <span className="text-xs font-bold text-text-muted uppercase tracking-wider block mb-1">{t('form.website')}</span>
+                        <span className="text-xs font-bold text-text-muted uppercase tracking-wider block mb-1">{"Website"}</span>
                         <span className="text-text-primary font-mono text-xs">{(d as any).websiteUrl || '-'}</span>
                       </div>
                       <div className="col-span-2">
-                        <span className="text-xs font-bold text-text-muted uppercase tracking-wider block mb-1">{t('form.packageServiceType')}</span>
+                        <span className="text-xs font-bold text-text-muted uppercase tracking-wider block mb-1">{"Package / Service Type"}</span>
                         <span className="text-text-primary">{(d as any).packageTier || (d as any).serviceType || '-'}</span>
                       </div>
                     </>
                   )}
                   {isContact && (
                     <div className="col-span-2">
-                      <span className="text-xs font-bold text-text-muted uppercase tracking-wider block mb-1">{t('form.subject')}</span>
+                      <span className="text-xs font-bold text-text-muted uppercase tracking-wider block mb-1">{"Subject"}</span>
                       <span className="text-text-primary">{(d as any).subject || '-'}</span>
                     </div>
                   )}
                 </div>
 
                 <div>
-                  <span className="text-xs font-bold text-text-muted uppercase tracking-wider block mb-2">{t('form.message')}</span>
+                  <span className="text-xs font-bold text-text-muted uppercase tracking-wider block mb-2">{"Message"}</span>
                   <div className="rounded-xl border border-border bg-bg p-4 text-sm text-text-secondary leading-relaxed whitespace-pre-wrap">
-                    {d.message || t('admin.inbox.noMessage')}
+                    {d.message || "No message"}
                   </div>
                 </div>
 
                 <div className="flex items-center gap-2 flex-wrap pt-2">
-                  <span className="text-xs font-bold text-text-muted uppercase tracking-wider">{t('admin.inbox.updateStatus')}:</span>
+                  <span className="text-xs font-bold text-text-muted uppercase tracking-wider">{"Update Status:"}:</span>
                   {(isContact ? statusOptions.contact : statusOptions.service).map((s) => (
                     <button
                       key={s}
@@ -270,7 +268,7 @@ const InboxTab = () => {
                       }}
                       className="ml-auto px-2.5 py-1 rounded-lg text-xs font-bold uppercase tracking-wider border border-danger/30 text-danger hover:bg-danger/10 transition-colors"
                     >
-                      {t('button.delete')}
+                      {"Delete"}
                     </button>
                 </div>
               </div>
@@ -282,10 +280,10 @@ const InboxTab = () => {
       <ConfirmDialog
         open={confirmDelete !== null}
         onOpenChange={(o) => { if (!o) setConfirmDelete(null); }}
-        title={t('admin.inbox.deleteTitle')}
-        description={t('admin.inbox.deleteDescription', { type: confirmDelete?.type === 'contact' ? t('admin.inbox.contactMessage') : t('admin.inbox.serviceRequest') })}
-        confirmLabel={t('button.delete')}
-        cancelLabel={t('button.cancel')}
+        title={"Delete Inquiry"}
+        description={"This action cannot be undone."}
+        confirmLabel={"Delete"}
+        cancelLabel={"Cancel"}
         destructive
         onConfirm={handleDeleteConfirm}
       />

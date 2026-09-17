@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { useTranslation } from 'react-i18next';
 import { Mail, Send, MessageSquare, AlertCircle, User } from 'lucide-react';
 import { IconCheck } from '@/shared/components/icons';
 import api from '../../../core/services/api';
@@ -67,7 +66,6 @@ export const ContactTrigger: React.FC<ContactTriggerProps> = ({
 type ContactType = 'student' | 'business';
 
 const ContactModalHost: React.FC = () => {
-  const { t } = useTranslation();
   const [open, setOpen] = useState(false);
   const [status, setStatus] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle');
   const [contactType, setContactType] = useState<ContactType>('student');
@@ -106,7 +104,7 @@ const ContactModalHost: React.FC = () => {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogContent
-        title={t('nav.contact')}
+        title={"Contact"}
         maxWidth="max-w-xl"
         className="max-h-[calc(100svh-2rem)] overflow-y-auto"
       >
@@ -115,16 +113,16 @@ const ContactModalHost: React.FC = () => {
             <div className="w-16 h-16 rounded-2xl bg-accent/10 border-2 border-accent/30 flex items-center justify-center">
               <IconCheck size={32} className="text-accent" />
             </div>
-            <h3 className="text-xl font-black text-text-primary uppercase tracking-wide">{t('contact2.messageSent')}</h3>
+            <h3 className="text-xl font-black text-text-primary uppercase tracking-wide">{"Message Sent!"}</h3>
             <p className="text-sm text-text-muted max-w-md leading-relaxed break-words">
-              {t('contact2.thankYou')}
+              {"Thank you for reaching out. We'll get back to you within 24-48 hours."}
             </p>
             <button
               type="button"
               onClick={() => setStatus('idle')}
               className="bg-accent text-on-accent font-bold uppercase tracking-[0.08em] rounded-xl px-8 py-3 transition-[filter,transform,box-shadow] duration-[var(--dur-base)] ease-[var(--ease-smooth)] hover:brightness-110 active:scale-95 hover:shadow-[0_0_20px_var(--color-accent-glow)] text-sm mt-2"
             >
-              {t('button.sendAnother')}
+              {"Send Another"}
             </button>
           </div>
         ) : (
@@ -133,7 +131,7 @@ const ContactModalHost: React.FC = () => {
             {/* Contact Type Toggle */}
             <div className="flex items-center justify-between pb-4">
               <span className="text-xs font-black text-text-muted uppercase tracking-[0.25em]">
-                {t('contact2.category')}
+                {"Category"}
               </span>
               <div className="flex bg-bg/50 border border-border p-1 rounded-xl w-full md:w-60">
                 <button
@@ -146,7 +144,7 @@ const ContactModalHost: React.FC = () => {
                       : 'text-text-muted hover:text-text-primary'
                   )}
                 >
-                  {t('contact2.student')}
+                  {"Student"}
                 </button>
                 <button
                   type="button"
@@ -158,7 +156,7 @@ const ContactModalHost: React.FC = () => {
                       : 'text-text-muted hover:text-text-primary'
                   )}
                 >
-                  {t('contact2.business')}
+                  {"Business"}
                 </button>
               </div>
             </div>
@@ -167,7 +165,7 @@ const ContactModalHost: React.FC = () => {
             <div className="space-y-2">
               <label className="text-xs font-black text-text-muted uppercase tracking-[0.25em] flex items-center gap-2">
                 <User className="w-3 h-3" />
-                {t('contact2.yourName')}
+                {"Your Name"}
               </label>
               <input
                 name="name"
@@ -183,7 +181,7 @@ const ContactModalHost: React.FC = () => {
             <div className="space-y-2">
               <label className="text-xs font-black text-text-muted uppercase tracking-[0.25em] flex items-center gap-2">
                 <Mail className="w-3 h-3" />
-                {t('contact2.yourEmail')}
+                {"Your Email"}
               </label>
               <input
                 name="email"
@@ -198,7 +196,7 @@ const ContactModalHost: React.FC = () => {
             <div className="space-y-2">
               <label className="text-xs font-black text-text-muted uppercase tracking-[0.25em] flex items-center gap-2">
                 <MessageSquare className="w-3 h-3" />
-                {t('form.message')}
+                {"Message"}
               </label>
               <textarea
                 name="message"
@@ -228,11 +226,11 @@ const ContactModalHost: React.FC = () => {
               className="w-full !font-bold !tracking-[0.1em] !px-8 !py-4 !text-sm gap-3"
             >
               {status === 'sending' ? (
-                t('contact2.sendingMessage')
+                "Sending Message..."
               ) : (
                 <>
                   <Send className="w-5 h-5" />
-                  {t('contact2.sendMessage')}
+                  {"Send Message"}
                 </>
               )}
             </Button>

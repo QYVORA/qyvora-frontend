@@ -1,4 +1,3 @@
-import { useTranslation } from 'react-i18next';
 import {
   SKILL_DEFINITIONS,
   computeAllSkills,
@@ -55,7 +54,6 @@ export const computeSkillStats = (modules: OverviewModule[]): SkillStatsResult =
 };
 
 const SkillStats = ({ modules }: SkillStatsProps) => {
-  const { t } = useTranslation();
   const { skills, average } = computeSkillStats(modules);
   const prefersReduced = useReducedMotion();
 
@@ -64,10 +62,10 @@ const SkillStats = ({ modules }: SkillStatsProps) => {
       <div className="flex items-center justify-between gap-3">
         <div>
           <h3 className="text-xs font-black uppercase tracking-[0.25em] text-text-primary">
-            {t('student.dashboard.skillStats', 'Skill Progress')}
+            {"Skill Progress"}
           </h3>
           <p className="text-xs font-bold uppercase tracking-widest text-text-muted mt-0.5">
-            {t('student.dashboard.skillStatsSub', 'Completion')}
+            {"Completion"}
           </p>
         </div>
         <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-surface-raised border border-border-subtle">

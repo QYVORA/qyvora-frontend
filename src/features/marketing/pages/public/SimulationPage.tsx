@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Navigate, Link, useParams } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
 import { Zap, ArrowLeft, Play } from 'lucide-react';
 import { IconArrowRight, IconTerminal, IconCode, IconNetwork } from '@/shared/components/icons';
 import SEO from '@/shared/components/SEO';
@@ -86,6 +85,12 @@ echo "Current dir: $(pwd)"
   },
 ];
 
+const SIM_CONTENT: Record<'terminal' | 'ide' | 'network', { title: string; titleAccent: string; description: string; tag: string; demoTitle: string; demoDescription: string; features: string[] }> = {
+  terminal: {"title": "Browser Terminal", "titleAccent": "Linux Shell", "description": "A full Linux shell running in your browser. Navigate a realistic filesystem, inspect permissions, and chain commands with pipes and redirects.", "tag": "Linux Shell", "demoTitle": "Live Terminal", "demoDescription": "This is a real simulated shell. Type help or run commands like ls, cat, whoami, and history.", "features": ["Realistic Linux filesystem", "Pipes, redirects, and environment variables", "Persistent session state", "Typed output with realistic timing"]},
+  ide: {"title": "Code", "titleAccent": "Playground", "description": "A browser-based IDE with Python, JavaScript, and Bash. Write code, run it, and see output, with a terminal docked right underneath.", "tag": "3 Languages", "demoTitle": "Live IDE", "demoDescription": "Edit any file and hit Run. The built-in terminal is fully interactive.", "features": ["Python, JavaScript and Bash", "Syntax-highlighted editor", "Interactive output console", "Built-in terminal"]},
+  network: {"title": "Network", "titleAccent": "Visualizer", "description": "Map live network topologies: hosts, subnets, ports, and services, the same way operators build a picture of a target environment.", "tag": "Topology Mapper", "demoTitle": "Live Network Map", "demoDescription": "Inspect hosts, subnets, and connections. Click nodes to see service details.", "features": ["Interactive topology canvas", "Host and service discovery", "Subnet grouping", "Drag and connect nodes"]},
+};
+
 const SIM_META: Record<'terminal' | 'ide' | 'network', { slug: string; icon: React.ComponentType<{ className?: string }> }> = {
   terminal: { slug: '/simulations/terminal', icon: IconTerminal },
   ide: { slug: '/simulations/ide', icon: IconCode },
@@ -94,7 +99,6 @@ const SIM_META: Record<'terminal' | 'ide' | 'network', { slug: string; icon: Rea
 
 const SimulationPage = () => {
   const { slug } = useParams<{ slug: string }>();
-  const { t } = useTranslation();
   const { user } = useAuth();
   const [demoOpen, setDemoOpen] = useState(false);
 
@@ -108,39 +112,39 @@ const SimulationPage = () => {
     .filter((k) => k !== key)
     .map((k) => ({
       to: SIM_META[k].slug,
-      title: t(`simulations.${k}.title`),
-      subtitle: t(`simulations.${k}.description`),
-      badge: t(`simulations.${k}.tag`),
+      title: SIM_CONTENT[k].title,
+      subtitle: SIM_CONTENT[k].description,
+      badge: SIM_CONTENT[k].tag,
       icon: React.createElement(SIM_META[k].icon, { className: 'w-16 h-16' }),
     }));
 
-  const features = (t(`simulations.${key}.features`, { returnObjects: true }) as unknown as string[]) ?? [];
+  const features = SIM_CONTENT[key].features;
 
   return (
     <div className="min-h-full w-full bg-canvas">
       <SEO
-        title={`${t(`simulations.${key}.title`)} | ${t('simulations.metaTitle')}`}
-        description={t(`simulations.${key}.description`)}
+        title={`${SIM_CONTENT[key].title} | Simulations - QYVORA`}
+        description={SIM_CONTENT[key].description}
       />
       <SimulationProvider>
         <div className="w-full px-3 pb-20 pt-24 md:px-4 md:pb-24 md:pt-28 lg:px-6 lg:pt-32">
           <PageHeader
-            kicker={t('simulations.eyebrow', 'QYVORA · Simulations')}
-            title={`${t(`simulations.${key}.title`)} ${t(`simulations.${key}.titleAccent`)}`}
-            description={t(`simulations.${key}.description`)}
+            kicker={"QYVORA · Simulations"}
+            title={`${SIM_CONTENT[key].title} ${SIM_CONTENT[key].titleAccent}`}
+            description={SIM_CONTENT[key].description}
             metadata={
               <span className="type-meta inline-flex items-center gap-1.5">
                 <span className="h-1.5 w-1.5 rounded-full bg-accent" aria-hidden="true" />
-                {t(`simulations.${key}.tag`)}
+                {SIM_CONTENT[key].tag}
               </span>
             }
             actions={
               <>
                 <Button to="/register">
-                  <Zap className="h-4 w-4" /> {t('simulations.startTraining')} <IconArrowRight size={14} />
+                  <Zap className="h-4 w-4" /> {"Start Training"} <IconArrowRight size={14} />
                 </Button>
                 <Button to="/simulations" variant="secondary">
-                  <ArrowLeft className="h-4 w-4" /> {t('simulations.backToAll')}
+                  <ArrowLeft className="h-4 w-4" /> {"Back to All Simulations"}
                 </Button>
               </>
             }
@@ -155,22 +159,22 @@ const SimulationPage = () => {
                 </span>
                 <div>
                   <span className="type-meta mb-2 block font-black uppercase tracking-[0.3em] text-accent">
-                    {t(`simulations.${key}.tag`)}
+                    {SIM_CONTENT[key].tag}
                   </span>
                   <SimpleHeading
-                    text={t(`simulations.${key}.demoTitle`)}
+                    text={SIM_CONTENT[key].demoTitle}
                     align="left"
                   />
                 </div>
                 <p className="max-w-xl font-mono text-base leading-relaxed text-text-secondary sm:text-lg">
-                  {t(`simulations.${key}.demoDescription`)}
+                  {SIM_CONTENT[key].demoDescription}
                 </p>
                 <div className="mt-2 flex flex-col gap-4 sm:flex-row sm:items-center">
                   <Button onClick={() => setDemoOpen(true)}>
-                    <Play className="h-4 w-4" /> {t('simulations.runDemo')} <IconArrowRight size={14} />
+                    <Play className="h-4 w-4" /> {"Run the Demo"} <IconArrowRight size={14} />
                   </Button>
                   <span className="max-w-[220px] font-mono text-xs leading-snug text-text-muted">
-                    {t('simulations.statsNoAccount')} · live in your browser
+                    {"No Account"} · live in your browser
                   </span>
                 </div>
               </div>
@@ -187,8 +191,8 @@ const SimulationPage = () => {
           <section className="w-full py-10 md:py-14">
             <div className="flex flex-col gap-6 lg:gap-8">
               <SimpleHeading
-                text={t(`simulations.${key}.demoTitle`)}
-                accentText={t('simulations.heroAccent')}
+                text={SIM_CONTENT[key].demoTitle}
+                accentText={"Playground"}
                 align="left"
               />
               <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 md:gap-3">
@@ -210,7 +214,7 @@ const SimulationPage = () => {
                 to="/register"
                 className="inline-flex w-fit items-center gap-2 text-xs font-black uppercase tracking-widest text-accent hover:underline"
               >
-                {t('simulations.startTraining')} <IconArrowRight size={14} />
+                {"Start Training"} <IconArrowRight size={14} />
               </Link>
             </div>
           </section>

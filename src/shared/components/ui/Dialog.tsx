@@ -21,7 +21,6 @@
  */
 
 import React from 'react';
-import { useTranslation } from 'react-i18next';
 import * as RadixDialog from '@radix-ui/react-dialog';
 import { IconX } from '../icons';
 import { cn } from '../../utils/cn';
@@ -69,7 +68,6 @@ export const DialogContent = React.forwardRef<
   React.ElementRef<typeof RadixDialog.Content>,
   DialogContentProps
 >(({ className, title, description, hideClose, maxWidth = 'max-w-xl', children, ...props }, ref) => {
-  const { t } = useTranslation();
   return (
   <RadixDialog.Portal>
     <DialogOverlay />
@@ -117,7 +115,7 @@ export const DialogContent = React.forwardRef<
         {!hideClose && (
           <RadixDialog.Close
             className="min-h-[44px] min-w-[44px] flex items-center justify-center rounded-lg text-text-muted hover:text-accent hover:bg-accent-dim/50 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-accent/40"
-            aria-label={t('components.dialog.close')}
+            aria-label={"Close"}
           >
             <IconX size={16} />
           </RadixDialog.Close>
@@ -156,14 +154,13 @@ interface ConfirmDialogProps {
 }
 
 export const ConfirmDialog: React.FC<ConfirmDialogProps> = (props) => {
-  const { t } = useTranslation();
   const {
     open,
     onOpenChange,
     title,
     description,
-    confirmLabel = t('components.dialog.confirm'),
-    cancelLabel = t('components.dialog.cancel'),
+    confirmLabel = "Confirm",
+    cancelLabel = "Cancel",
     destructive = false,
     onConfirm,
   } = props;

@@ -4,13 +4,6 @@ import { MemoryRouter } from 'react-router-dom';
 import { AuthProvider } from '@/core/contexts/AuthContext';
 import LabsPage from '../LabsPage';
 
-vi.mock('react-i18next', () => ({
-  useTranslation: () => ({
-    t: (key: string) => translations[key] || key,
-    i18n: { language: 'en' },
-  }),
-}));
-
 const translations: Record<string, string> = {
   'student.labs.title': 'Attack Labs',
   'student.labs.list.privesc.title': 'Privilege Escalation',

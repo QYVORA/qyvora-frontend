@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
 import { Key, Eye, EyeOff, Loader2, Save, Copy, CheckCircle2, AlertTriangle, RefreshCw, Trash2, ChevronDown } from 'lucide-react';
 import api from '../../../core/services/api';
 import { useToast } from '../../../core/contexts/ToastContext';
@@ -20,7 +19,6 @@ const INPUT_CLS = 'w-full bg-bg border border-border rounded-xl py-3 px-4 text-s
 const LABEL_CLS = 'text-xs font-black uppercase tracking-widest text-text-muted block mb-1.5';
 
 const PasswordField: React.FC<{ name: string; placeholder?: string; label: string; shake?: boolean; onAnimationEnd?: () => void; id: string }> = ({ name, placeholder = '••••••••', label, shake = false, onAnimationEnd, id }) => {
-  const { t } = useTranslation();
   const [show, setShow] = useState(false);
   return (
     <div>
@@ -28,7 +26,7 @@ const PasswordField: React.FC<{ name: string; placeholder?: string; label: strin
       <div className={`relative${shake ? ' animate-shake-x' : ''}`} onAnimationEnd={onAnimationEnd}>
         <input id={id} type={show ? 'text' : 'password'} name={name} required placeholder={placeholder} className={`${INPUT_CLS} pr-11${shake ? ' input-error' : ''}`} />
         <button type="button" onClick={() => setShow((s) => !s)}
-          aria-label={t('aria.togglePassword')} className="absolute right-3 top-1/2 -translate-y-1/2 text-text-muted hover:text-accent transition-colors" tabIndex={-1}>
+          aria-label={"Toggle password visibility"} className="absolute right-3 top-1/2 -translate-y-1/2 text-text-muted hover:text-accent transition-colors" tabIndex={-1}>
           {show ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
         </button>
       </div>
@@ -83,7 +81,6 @@ const SelectField: React.FC<{ id: string; ariaLabel: string; value: string; onCh
 );
 
 const Settings: React.FC = () => {
-  const { t, i18n } = useTranslation();
   const { addToast } = useToast();
   const { preferences, loading: prefsLoading, saving: prefsSaving, updatePreferences, updateNotification, updateLearning, updateDisplay } = usePreferences();
   const { theme, setTheme } = useThemeContext();
@@ -94,11 +91,11 @@ const Settings: React.FC = () => {
     : 'appearance';
 
   const sectionHeader: Record<SettingsSectionId, { title: string; description: string }> = {
-    appearance: { title: t('student.settings.appearance.title'), description: t('student.settings.appearance.description') },
-    notifications: { title: t('student.settings.notifications.title'), description: t('student.settings.notifications.description') },
-    learning: { title: t('student.settings.learningPrefs.title'), description: t('student.settings.learningPrefs.description') },
-    security: { title: t('student.settings.security.title'), description: t('student.settings.security.description') },
-    account: { title: t('student.settings.dangerZone.title'), description: t('student.settings.dangerZone.description') },
+    appearance: { title: "Appearance", description: "Customize the visual appearance of your dashboard." },
+    notifications: { title: "Notification Preferences", description: "Control how and when you receive notifications." },
+    learning: { title: "Learning Preferences", description: "Customize your learning experience and goals." },
+    security: { title: "Security", description: "Manage your account security and authentication." },
+    account: { title: "Danger Zone", description: "Permanent account actions." },
   };
 
   const [changingPwd, setChangingPwd] = useState(false);
@@ -160,16 +157,16 @@ const Settings: React.FC = () => {
     const currentPassword = String(fd.get('current_password') || '');
     const newPassword = String(fd.get('new_password') || '');
     const confirmPassword = String(fd.get('confirm_password') || '');
-    if (newPassword !== confirmPassword) { addToast(t('validation.passwordMismatch'), 'error'); return; }
-    if (newPassword.length < 8) { addToast(t('toast.passwordMinLength'), 'error'); return; }
+    if (newPassword !== confirmPassword) { addToast("Passwords do not match.", 'error'); return; }
+    if (newPassword.length < 8) { addToast("Password must be at least 8 characters.", 'error'); return; }
     setChangingPwd(true);
     try {
       await api.put('/profile/password', { currentPassword, newPassword });
-      addToast(t('toast.passwordUpdated'), 'success');
+      addToast("Password updated successfully.", 'success');
       form.reset();
     } catch (err: any) {
       setShakeCurrentPwd(true);
-      addToast(err?.response?.data?.error || t('toast.passwordChangeFailed'), 'error');
+      addToast(err?.response?.data?.error || "Password change failed.", 'error');
     } finally { setChangingPwd(false); }
   };
 
@@ -179,7 +176,7 @@ const Settings: React.FC = () => {
       await navigator.clipboard.writeText(liveToken);
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
-    } catch { addToast(t('toast.copyFailed'), 'error'); }
+    } catch { addToast("Failed to copy to clipboard.", 'error'); }
   };
 
   const acknowledgeToken = async () => {
@@ -188,8 +185,8 @@ const Settings: React.FC = () => {
       await api.post('/profile/recovery-token/ack', {});
       setRecoveryAcked(true);
       setLiveToken('');
-      addToast(t('toast.recoveryTokenAcknowledged'), 'success');
-    } catch { addToast(t('toast.couldNotAcknowledgeToken'), 'error'); }
+      addToast("Recovery token acknowledged.", 'success');
+    } catch { addToast("Could not acknowledge token.", 'error'); }
     finally { setAcking(false); }
   };
 
@@ -202,9 +199,9 @@ const Settings: React.FC = () => {
       setTokenAvailable(true);
       setRecoveryAcked(false);
       setRecoveryCreatedAt(res.data?.createdAt || new Date().toISOString());
-      addToast(t('toast.newRecoveryTokenGenerated'), 'success');
+      addToast("New recovery token generated.", 'success');
     } catch (err: any) {
-      addToast(err?.response?.data?.error || t('toast.failedToGenerateToken'), 'error');
+      addToast(err?.response?.data?.error || "Failed to generate token.", 'error');
     } finally { setRegenerating(false); }
   };
 
@@ -212,8 +209,8 @@ const Settings: React.FC = () => {
     try {
       await api.post(`/profile/sessions/${sessionId}/revoke`);
       setSessions((prev) => prev.filter((s) => s.id !== sessionId));
-      addToast(t('student.settings.sessions.revokeSuccess'), 'success');
-    } catch { addToast(t('toast.failedToRevokeSession'), 'error'); }
+      addToast("Session revoked.", 'success');
+    } catch { addToast("Failed to revoke session.", 'error'); }
   };
 
   const handleRevokeAll = async () => {
@@ -221,29 +218,24 @@ const Settings: React.FC = () => {
       await api.post('/profile/sessions/revoke-all');
       const currentUA = navigator.userAgent;
       setSessions((prev) => prev.filter((s) => s.userAgent === currentUA));
-      addToast(t('student.settings.sessions.revokeAllSuccess'), 'success');
-    } catch { addToast(t('toast.failedToRevokeSessions'), 'error'); }
+      addToast("All other sessions revoked.", 'success');
+    } catch { addToast("Failed to revoke sessions.", 'error'); }
   };
 
   const handleDeleteAccount = async () => {
     setDeleting(true);
     try {
       await api.delete('/profile/account');
-      addToast(t('student.settings.dangerZone.deleteSuccess'), 'success');
+      addToast("Account deleted successfully.", 'success');
       window.location.href = '/';
     } catch (err: any) {
-      addToast(err?.response?.data?.error || t('student.settings.dangerZone.deleteFailed'), 'error');
+      addToast(err?.response?.data?.error || "Failed to delete account.", 'error');
     } finally { setDeleting(false); setConfirmDelete(false); }
   };
 
   const handleThemeChange = async (newTheme: 'dark' | 'light') => {
     setTheme(newTheme);
     await updateDisplay('theme', newTheme);
-  };
-
-  const handleLanguageChange = async (lang: string) => {
-    await updateDisplay('language', lang);
-    i18n.changeLanguage(lang).then(() => window.location.reload());
   };
 
   const handleDataSaverToggle = (enabled: boolean) => {
@@ -256,13 +248,13 @@ const Settings: React.FC = () => {
   return (
     <FadeIn>
     <>
-      <SEO title={t('student.settings.seoTitle')} description={t('student.settings.seoDesc')} noindex />
+      <SEO title={"Settings"} description={"Account and learning preferences."} noindex />
 
       <div className="bg-canvas min-h-full px-3 md:px-4 lg:px-6 pt-8 pb-16 md:pb-20">
 
         {/* Page header */}
         <PageHeader
-          kicker={t('student.settings.configure', 'Configure')}
+          kicker={"Configure"}
           title={sectionHeader[activeSection].title}
           description={sectionHeader[activeSection].description}
         />
@@ -273,51 +265,33 @@ const Settings: React.FC = () => {
           {activeSection === 'appearance' && (
             <div className="bg-bg-card border border-border/50 rounded-2xl p-5 md:p-8">
               <div>
-                <SettingsRow label={t('student.settings.appearance.theme')} description={t('student.settings.appearance.themeDesc')}>
+                <SettingsRow label={"Theme"} description={"Choose between dark and light mode"}>
                   <div className="flex gap-1 bg-bg rounded-xl p-1 border border-border/50">
                     <button onClick={() => handleThemeChange('dark')} aria-pressed={theme === 'dark'}
                       className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-colors ${theme === 'dark' ? 'bg-accent text-on-accent' : 'text-text-muted hover:text-text-primary'}`}>
-                      {t('student.settings.appearance.dark')}
+                      {"Dark"}
                     </button>
                     <button onClick={() => handleThemeChange('light')} aria-pressed={theme === 'light'}
                       className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-colors ${theme === 'light' ? 'bg-accent text-on-accent' : 'text-text-muted hover:text-text-primary'}`}>
-                      {t('student.settings.appearance.light')}
+                      {"Light"}
                     </button>
                   </div>
                 </SettingsRow>
-                <SettingsRow label={t('student.settings.appearance.compactMode')} description={t('student.settings.appearance.compactModeDesc')}>
-                  <Toggle label={t('student.settings.appearance.compactMode')} checked={preferences.display.compactMode} onChange={(v) => updateDisplay('compactMode', v)} disabled={prefsSaving} />
+                <SettingsRow label={"Compact Mode"} description={"Reduce spacing and padding throughout the interface"}>
+                  <Toggle label={"Compact Mode"} checked={preferences.display.compactMode} onChange={(v) => updateDisplay('compactMode', v)} disabled={prefsSaving} />
                 </SettingsRow>
-                <SettingsRow label={t('student.settings.appearance.showAnimations')} description={t('student.settings.appearance.showAnimationsDesc')}>
-                  <Toggle label={t('student.settings.appearance.showAnimations')} checked={preferences.display.showAnimations} onChange={(v) => updateDisplay('showAnimations', v)} disabled={prefsSaving} />
+                <SettingsRow label={"Animations"} description={"Enable motion and transition effects"}>
+                  <Toggle label={"Animations"} checked={preferences.display.showAnimations} onChange={(v) => updateDisplay('showAnimations', v)} disabled={prefsSaving} />
                 </SettingsRow>
-                <SettingsRow label={t('student.settings.appearance.fontSize')}>
-                  <SelectField id="settings-font-size" ariaLabel={t('student.settings.appearance.fontSize')} value={preferences.display.fontSize} onChange={(v) => updateDisplay('fontSize', v)}>
-                    <option value="small">{t('student.settings.appearance.small')}</option>
-                    <option value="medium">{t('student.settings.appearance.medium')}</option>
-                    <option value="large">{t('student.settings.appearance.large')}</option>
+                <SettingsRow label={"Font Size"}>
+                  <SelectField id="settings-font-size" ariaLabel={"Font Size"} value={preferences.display.fontSize} onChange={(v) => updateDisplay('fontSize', v)}>
+                    <option value="small">{"Small"}</option>
+                    <option value="medium">{"Medium"}</option>
+                    <option value="large">{"Large"}</option>
                   </SelectField>
                 </SettingsRow>
-                <SettingsRow label={t('student.settings.dataStorage.dataSaver')} description={t('student.settings.dataStorage.dataSaverDesc')}>
-                  <Toggle label={t('student.settings.dataStorage.dataSaver')} checked={dataSaver} onChange={handleDataSaverToggle} />
-                </SettingsRow>
-                <SettingsRow label={t('student.settings.languageSection.title')} description={t('student.settings.languageSection.description')}>
-                  <SelectField id="settings-language" ariaLabel={t('student.settings.languageSection.title')} value={preferences.display.language || i18n.language} onChange={handleLanguageChange}>
-                    <option value="en">English</option>
-                    <option value="fr">Français</option>
-                    <option value="es">Español</option>
-                    <option value="pt">Português</option>
-                    <option value="ar">العربية</option>
-                    <option value="hi">हिन्दी</option>
-                    <option value="zh">中文</option>
-                    <option value="de">Deutsch</option>
-                    <option value="ja">日本語</option>
-                    <option value="ru">Русский</option>
-                    <option value="ha">Hausa</option>
-                    <option value="yo">Yorùbá</option>
-                    <option value="ig">Igbo</option>
-                    <option value="sw">Kiswahili</option>
-                  </SelectField>
+                <SettingsRow label={"Data Saver"} description={"Limit API responses to reduce bandwidth usage"}>
+                  <Toggle label={"Data Saver"} checked={dataSaver} onChange={handleDataSaverToggle} />
                 </SettingsRow>
               </div>
             </div>
@@ -327,23 +301,23 @@ const Settings: React.FC = () => {
           {activeSection === 'notifications' && (
             <div className="bg-bg-card border border-border/50 rounded-2xl p-5 md:p-8">
               <div>
-                <SettingsRow label={t('student.settings.notifications.email')} description={t('student.settings.notifications.receiveEmail')}>
-                  <Toggle label={t('student.settings.notifications.email')} checked={preferences.notifications.email} onChange={(v) => updateNotification('email', v)} disabled={prefsSaving} />
+                <SettingsRow label={"Email notifications"} description={"Receive email notifications"}>
+                  <Toggle label={"Email notifications"} checked={preferences.notifications.email} onChange={(v) => updateNotification('email', v)} disabled={prefsSaving} />
                 </SettingsRow>
-                <SettingsRow label={t('student.settings.notifications.push')} description={t('student.settings.notifications.receivePush')}>
-                  <Toggle label={t('student.settings.notifications.push')} checked={preferences.notifications.push} onChange={(v) => updateNotification('push', v)} disabled={prefsSaving} />
+                <SettingsRow label={"Push notifications"} description={"Receive push notifications"}>
+                  <Toggle label={"Push notifications"} checked={preferences.notifications.push} onChange={(v) => updateNotification('push', v)} disabled={prefsSaving} />
                 </SettingsRow>
-                <SettingsRow label={t('student.settings.notifications.mission')} description={t('student.settings.notifications.courseAndMission')}>
-                  <Toggle label={t('student.settings.notifications.mission')} checked={preferences.notifications.courseUpdates} onChange={(v) => updateNotification('courseUpdates', v)} disabled={prefsSaving} />
+                <SettingsRow label={"Mission updates"} description={"Course and mission updates"}>
+                  <Toggle label={"Mission updates"} checked={preferences.notifications.courseUpdates} onChange={(v) => updateNotification('courseUpdates', v)} disabled={prefsSaving} />
                 </SettingsRow>
-                <SettingsRow label={t('student.settings.notifications.cpAlerts')} description={t('student.settings.notifications.cpAlertsDesc')}>
-                  <Toggle label={t('student.settings.notifications.cpAlerts')} checked={preferences.notifications.competitiveEvents} onChange={(v) => updateNotification('competitiveEvents', v)} disabled={prefsSaving} />
+                <SettingsRow label={"CP alerts"} description={"CyberPoints alerts"}>
+                  <Toggle label={"CP alerts"} checked={preferences.notifications.competitiveEvents} onChange={(v) => updateNotification('competitiveEvents', v)} disabled={prefsSaving} />
                 </SettingsRow>
-                <SettingsRow label={t('student.settings.notifications.marketing')} description={t('student.settings.notifications.productService')}>
-                  <Toggle label={t('student.settings.notifications.marketing')} checked={preferences.notifications.newBlogs} onChange={(v) => updateNotification('newBlogs', v)} disabled={prefsSaving} />
+                <SettingsRow label={"Marketing emails"} description={"Product and service updates"}>
+                  <Toggle label={"Marketing emails"} checked={preferences.notifications.newBlogs} onChange={(v) => updateNotification('newBlogs', v)} disabled={prefsSaving} />
                 </SettingsRow>
-                <SettingsRow label={t('student.settings.notifications.systemUpdates')} description={t('student.settings.notifications.systemUpdatesDesc')}>
-                  <Toggle label={t('student.settings.notifications.systemUpdates')} checked={preferences.notifications.systemUpdates} onChange={(v) => updateNotification('systemUpdates', v)} disabled={prefsSaving} />
+                <SettingsRow label={"System updates"} description={"Platform and system notifications"}>
+                  <Toggle label={"System updates"} checked={preferences.notifications.systemUpdates} onChange={(v) => updateNotification('systemUpdates', v)} disabled={prefsSaving} />
                 </SettingsRow>
               </div>
             </div>
@@ -353,27 +327,27 @@ const Settings: React.FC = () => {
           {activeSection === 'learning' && (
             <div className="bg-bg-card border border-border/50 rounded-2xl p-5 md:p-8">
               <div>
-                <SettingsRow label={t('student.settings.learningPrefs.difficulty')}>
-                  <SelectField id="settings-preferred-difficulty" ariaLabel={t('student.settings.learningPrefs.difficulty')} value={preferences.learning.preferredDifficulty} onChange={(v) => updateLearning('preferredDifficulty', v)}>
-                    <option value="beginner">{t('student.settings.learningPrefs.beginner')}</option>
-                    <option value="intermediate">{t('student.settings.learningPrefs.intermediate')}</option>
-                    <option value="advanced">{t('student.settings.learningPrefs.advanced')}</option>
+                <SettingsRow label={"Preferred Difficulty"}>
+                  <SelectField id="settings-preferred-difficulty" ariaLabel={"Preferred Difficulty"} value={preferences.learning.preferredDifficulty} onChange={(v) => updateLearning('preferredDifficulty', v)}>
+                    <option value="beginner">{"Beginner"}</option>
+                    <option value="intermediate">{"Intermediate"}</option>
+                    <option value="advanced">{"Advanced"}</option>
                   </SelectField>
                 </SettingsRow>
-                <SettingsRow label={t('student.settings.learningPrefs.weeklyGoal')}>
+                <SettingsRow label={"Weekly Study Goal (hours)"}>
                   <input id="settings-weekly-goal" type="number" min={0} max={80} value={preferences.learning.weeklyGoalHours}
                     onChange={(e) => updateLearning('weeklyGoalHours', Number(e.target.value))}
-                    aria-label={t('student.settings.learningPrefs.weeklyGoal')}
+                    aria-label={"Weekly Study Goal (hours)"}
                     className="w-24 bg-bg border border-border rounded-xl px-3 py-2.5 text-sm font-bold text-text-primary text-center focus:border-accent outline-none" />
                 </SettingsRow>
-                <SettingsRow label={t('student.settings.learningPrefs.showHints')} description={t('student.settings.learningPrefs.showHintsDesc')}>
-                  <Toggle label={t('student.settings.learningPrefs.showHints')} checked={preferences.learning.showHints} onChange={(v) => updateLearning('showHints', v)} disabled={prefsSaving} />
+                <SettingsRow label={"Show Hints"} description={"Display hints and suggestions during learning"}>
+                  <Toggle label={"Show Hints"} checked={preferences.learning.showHints} onChange={(v) => updateLearning('showHints', v)} disabled={prefsSaving} />
                 </SettingsRow>
-                <SettingsRow label={t('student.settings.learningPrefs.autoPlayVideos')} description={t('student.settings.learningPrefs.autoPlayVideosDesc')}>
-                  <Toggle label={t('student.settings.learningPrefs.autoPlayVideos')} checked={preferences.learning.autoPlayVideos} onChange={(v) => updateLearning('autoPlayVideos', v)} disabled={prefsSaving} />
+                <SettingsRow label={"Auto-play Videos"} description={"Automatically play video content"}>
+                  <Toggle label={"Auto-play Videos"} checked={preferences.learning.autoPlayVideos} onChange={(v) => updateLearning('autoPlayVideos', v)} disabled={prefsSaving} />
                 </SettingsRow>
-                <SettingsRow label={t('student.settings.learningPrefs.showCodeExamples')} description={t('student.settings.learningPrefs.showCodeExamplesDesc')}>
-                  <Toggle label={t('student.settings.learningPrefs.showCodeExamples')} checked={preferences.learning.showCodeExamples} onChange={(v) => updateLearning('showCodeExamples', v)} disabled={prefsSaving} />
+                <SettingsRow label={"Show Code Examples"} description={"Display code examples alongside explanations"}>
+                  <Toggle label={"Show Code Examples"} checked={preferences.learning.showCodeExamples} onChange={(v) => updateLearning('showCodeExamples', v)} disabled={prefsSaving} />
                 </SettingsRow>
               </div>
             </div>
@@ -385,15 +359,15 @@ const Settings: React.FC = () => {
               {/* Password */}
               <div className="bg-bg-card border border-border/50 rounded-2xl p-5 md:p-8">
                 <SectionHeader 
-                  title={t('student.settings.password.title')}
+                  title={"Change Password"}
                 />
                 <form onSubmit={handlePasswordChange} className="space-y-4">
-                  <PasswordField name="current_password" id="settings-current-password" label={t('student.settings.password.currentLabel')} placeholder={t('student.settings.password.currentPlaceholder')} shake={shakeCurrentPwd} onAnimationEnd={() => setShakeCurrentPwd(false)} />
-                  <PasswordField name="new_password" id="settings-new-password" label={t('student.settings.password.newLabel')} placeholder={t('student.settings.password.newPlaceholder')} />
-                  <PasswordField name="confirm_password" id="settings-confirm-password" label={t('student.settings.password.confirmLabel')} placeholder={t('student.settings.password.confirmPlaceholder')} />
+                  <PasswordField name="current_password" id="settings-current-password" label={"Current Password"} placeholder={"Enter current password"} shake={shakeCurrentPwd} onAnimationEnd={() => setShakeCurrentPwd(false)} />
+                  <PasswordField name="new_password" id="settings-new-password" label={"New Password"} placeholder={"Enter new password"} />
+                  <PasswordField name="confirm_password" id="settings-confirm-password" label={"Confirm Password"} placeholder={"Confirm new password"} />
                   <Button type="submit" loading={changingPwd}
                     className="w-full sm:w-auto !py-2.5 text-sm px-6">
-                    {changingPwd ? t('common.updating') : <><Save className="w-4 h-4" /> {t('student.settings.password.update')}</>}
+                    {changingPwd ? "Updating..." : <><Save className="w-4 h-4" /> {"Update Password"}</>}
                   </Button>
                 </form>
               </div>
@@ -401,26 +375,26 @@ const Settings: React.FC = () => {
               {/* Recovery Token */}
               <div className="bg-bg-card border border-border/50 rounded-2xl p-5 md:p-8">
                 <SectionHeader 
-                  title={t('student.settings.recovery.title')}
+                  title={"Recovery Token"}
                 />
                 <div className="space-y-5">
                   <div className="flex items-start gap-3 p-4 bg-yellow-500/5 border border-yellow-500/20 rounded-xl">
                     <AlertTriangle className="w-4 h-4 text-yellow-500 flex-none mt-0.5" />
-                    <p className="text-xs text-text-secondary leading-relaxed">{t('student.settings.recovery.description')}</p>
+                    <p className="text-xs text-text-secondary leading-relaxed">{"Your recovery token is used to restore access to your account."}</p>
                   </div>
                   {liveToken ? (
                     <div className="space-y-4">
                       <div className="p-4 bg-accent-dim/30 border border-accent/30 rounded-xl">
-                        <p className="text-xs font-black text-accent uppercase tracking-widest mb-2">{t('student.settings.recovery.copyNowWarning')}</p>
+                        <p className="text-xs font-black text-accent uppercase tracking-widest mb-2">{"Copy this now. It won't be shown again"}</p>
                         <div className="relative">
-                          <input id="settings-recovery-token" type="text" readOnly value={liveToken} aria-label={t('student.settings.recovery.copyNowWarning')} className={`${INPUT_CLS} pr-12 select-all cursor-text bg-bg`} onFocus={(e) => e.target.select()} />
-                          <button type="button" onClick={copyToken} aria-label={t('aria.copyToken')} className="absolute right-3 top-1/2 -translate-y-1/2 text-text-muted hover:text-accent active:scale-95 transition-colors">
+                          <input id="settings-recovery-token" type="text" readOnly value={liveToken} aria-label={"Copy this now. It won't be shown again"} className={`${INPUT_CLS} pr-12 select-all cursor-text bg-bg`} onFocus={(e) => e.target.select()} />
+                          <button type="button" onClick={copyToken} aria-label={"Copy token"} className="absolute right-3 top-1/2 -translate-y-1/2 text-text-muted hover:text-accent active:scale-95 transition-colors">
                             {copied ? <CheckCircle2 className="w-4 h-4 text-accent" /> : <Copy className="w-4 h-4" />}
                           </button>
                         </div>
                       </div>
                       <Button onClick={acknowledgeToken} loading={acking} className="w-full sm:w-auto !py-2.5 text-sm px-6">
-                        {acking ? t('student.settings.recovery.acknowledging') : <><CheckCircle2 className="w-4 h-4" /> {t('student.settings.recovery.savedToken')}</>}
+                        {acking ? "Acknowledging..." : <><CheckCircle2 className="w-4 h-4" /> {"I've saved my token"}</>}
                       </Button>
                     </div>
                   ) : tokenAvailable ? (
@@ -428,21 +402,21 @@ const Settings: React.FC = () => {
                       <div className="flex items-center gap-3 p-4 bg-bg border border-border rounded-xl">
                         <div className="w-8 h-8 rounded-lg bg-accent-dim flex items-center justify-center shrink-0"><Key className="w-4 h-4 text-accent" /></div>
                         <div className="min-w-0">
-                          <div className="text-sm font-bold text-text-primary">{recoveryAcked ? t('student.settings.recovery.tokenSaved') : t('student.settings.recovery.tokenExists')}</div>
-                          {recoveryAcked && <div className="flex items-center gap-1 text-xs text-accent font-bold mt-0.5"><CheckCircle2 className="w-3 h-3" /> {t('student.settings.recovery.acknowledged')}</div>}
+                          <div className="text-sm font-bold text-text-primary">{recoveryAcked ? "Token saved" : "Token exists"}</div>
+                          {recoveryAcked && <div className="flex items-center gap-1 text-xs text-accent font-bold mt-0.5"><CheckCircle2 className="w-3 h-3" /> {"Acknowledged"}</div>}
                         </div>
                       </div>
                       {!confirmRegenerate ? (
                         <button onClick={() => setConfirmRegenerate(true)} className="w-full sm:w-auto btn-secondary flex items-center justify-center gap-2 !text-sm">
-                          <RefreshCw className="w-4 h-4" /> {t('student.settings.recovery.generate')}
+                          <RefreshCw className="w-4 h-4" /> {"Generate New Token"}
                         </button>
                       ) : (
                         <div className="p-4 border border-warning/30 rounded-xl bg-warning/5 space-y-3">
-                          <p className="text-xs text-warning font-bold">{t('student.settings.recovery.invalidateWarning')}</p>
+                          <p className="text-xs text-warning font-bold">{"This will invalidate your current token. Are you sure?"}</p>
                           <div className="flex flex-col sm:flex-row gap-2">
-                            <button onClick={() => setConfirmRegenerate(false)} className="flex-1 btn-secondary !text-xs">{t('button.cancel')}</button>
+                            <button onClick={() => setConfirmRegenerate(false)} className="flex-1 btn-secondary !text-xs">{"Cancel"}</button>
                             <button onClick={() => void regenerateToken()} disabled={regenerating} className="flex-1 btn-danger !text-xs disabled:opacity-50 flex items-center justify-center gap-1.5">
-                              {regenerating ? <><Loader2 className="w-3.5 h-3.5 animate-spin" /> {t('student.settings.recovery.generating')}</> : <><RefreshCw className="w-3.5 h-3.5" /> {t('student.settings.recovery.regenerate')}</>}
+                              {regenerating ? <><Loader2 className="w-3.5 h-3.5 animate-spin" /> {"Generating..."}</> : <><RefreshCw className="w-3.5 h-3.5" /> {"Regenerate"}</>}
                             </button>
                           </div>
                         </div>
@@ -450,9 +424,9 @@ const Settings: React.FC = () => {
                     </div>
                   ) : (
                     <div className="space-y-4">
-                      <p className="text-sm text-text-muted">{t('student.settings.recovery.noTokenYet')}</p>
+                      <p className="text-sm text-text-muted">{"No recovery token yet. Generate one to protect your account."}</p>
                       <Button onClick={() => void regenerateToken()} loading={regenerating} className="w-full sm:w-auto !py-2.5 text-sm px-6">
-                        {regenerating ? t('student.settings.recovery.generating') : <><Key className="w-4 h-4" /> {t('student.settings.recovery.generate')}</>}
+                        {regenerating ? "Generating..." : <><Key className="w-4 h-4" /> {"Generate New Token"}</>}
                       </Button>
                     </div>
                   )}
@@ -463,33 +437,33 @@ const Settings: React.FC = () => {
               <div className="bg-bg-card border border-border/50 rounded-2xl p-5 md:p-8">
                 <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4 mb-6">
                   <div>
-                    <h2 className="text-2xl font-black text-text-primary mb-2">{t('student.settings.sessions.title')}</h2>
-                    <p className="text-sm text-text-muted">{t('student.settings.sessions.description')}</p>
+                    <h2 className="text-2xl font-black text-text-primary mb-2">{"Active Sessions"}</h2>
+                    <p className="text-sm text-text-muted">{"Devices currently logged into your account."}</p>
                   </div>
                   {sessions.length > 1 && (
                     <button onClick={handleRevokeAll} className="shrink-0 text-xs font-black uppercase tracking-widest text-danger hover:text-danger active:opacity-70 transition-colors">
-                      {t('student.settings.sessions.revokeAll')}
+                      {"Revoke All Others"}
                     </button>
                   )}
                 </div>
                 {loadingSessions ? (
                   <div className="flex items-center justify-center py-8"><Loader2 className="w-5 h-5 animate-spin text-accent" /></div>
                 ) : sessions.length === 0 ? (
-                  <p className="text-sm text-text-muted text-center py-4">{t('student.settings.sessions.empty')}</p>
+                  <p className="text-sm text-text-muted text-center py-4">{"No active sessions found."}</p>
                 ) : (
                   <div className="space-y-3">
                     {sessions.map((session) => (
                       <div key={session.id} className="flex items-center justify-between gap-3 p-3 bg-bg border border-border/50 rounded-xl">
                         <div className="min-w-0">
                           <div className="flex items-center gap-2">
-                            <p className="text-sm font-bold text-text-primary truncate">{session.userAgent || t('student.settings.sessions.unknown')}</p>
-                            {session.isCurrent && <span className="text-xs font-black uppercase tracking-widest text-accent bg-accent/10 px-2 py-0.5 rounded-lg">{t('student.settings.sessions.current')}</span>}
+                            <p className="text-sm font-bold text-text-primary truncate">{session.userAgent || "Unknown device"}</p>
+                            {session.isCurrent && <span className="text-xs font-black uppercase tracking-widest text-accent bg-accent/10 px-2 py-0.5 rounded-lg">{"Current"}</span>}
                           </div>
                           <p className="text-xs text-text-muted font-mono mt-0.5">{session.ipAddress} · {new Date(session.createdAt).toLocaleDateString()}</p>
                         </div>
                         {!session.isCurrent && (
                           <button onClick={() => handleRevokeSession(session.id)} className="text-xs font-black uppercase tracking-widest text-text-muted hover:text-danger active:opacity-70 transition-colors shrink-0">
-                            {t('student.settings.sessions.revoke')}
+                            {"Revoke"}
                           </button>
                         )}
                       </div>
@@ -507,19 +481,19 @@ const Settings: React.FC = () => {
                 <div className="flex items-start gap-3">
                   <AlertTriangle className="w-5 h-5 text-danger flex-none mt-0.5" />
                   <div>
-                    <h3 className="text-base font-black text-danger mb-2">{t('student.settings.dangerZone.deleteAccount')}</h3>
-                    <p className="text-sm text-text-muted mb-4">{t('student.settings.dangerZone.deleteDescription')}</p>
+                    <h3 className="text-base font-black text-danger mb-2">{"Delete Account"}</h3>
+                    <p className="text-sm text-text-muted mb-4">{"This action is irreversible. All your data will be permanently deleted."}</p>
                     {!confirmDelete ? (
                       <button onClick={() => setConfirmDelete(true)} className="btn-danger !py-2.5 text-sm flex items-center justify-center gap-2">
-                        <Trash2 className="w-4 h-4" /> {t('student.settings.dangerZone.deleteAccount')}
+                        <Trash2 className="w-4 h-4" /> {"Delete Account"}
                       </button>
                     ) : (
                       <div className="p-4 border border-danger/30 rounded-xl bg-danger/5 space-y-3">
-                        <p className="text-xs text-danger font-bold">{t('student.settings.dangerZone.deleteConfirmDesc')}</p>
+                        <p className="text-xs text-danger font-bold">{"This will permanently delete your account and all associated data. This action cannot be undone."}</p>
                         <div className="flex flex-col sm:flex-row gap-2">
-                          <button onClick={() => setConfirmDelete(false)} className="flex-1 btn-secondary !text-xs">{t('button.cancel')}</button>
+                          <button onClick={() => setConfirmDelete(false)} className="flex-1 btn-secondary !text-xs">{"Cancel"}</button>
                           <button onClick={handleDeleteAccount} disabled={deleting} className="flex-1 px-3 py-2 btn-danger !text-xs disabled:opacity-50 flex items-center justify-center gap-1.5">
-                            {deleting ? <><Loader2 className="w-3.5 h-3.5 animate-spin" /> {t('student.settings.dangerZone.deleting')}</> : <><Trash2 className="w-3.5 h-3.5" /> {t('student.settings.dangerZone.confirmDelete')}</>}
+                            {deleting ? <><Loader2 className="w-3.5 h-3.5 animate-spin" /> {"Deleting..."}</> : <><Trash2 className="w-3.5 h-3.5" /> {"I understand, delete my account"}</>}
                           </button>
                         </div>
                       </div>

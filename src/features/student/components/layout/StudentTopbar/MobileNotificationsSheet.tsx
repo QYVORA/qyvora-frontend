@@ -1,5 +1,4 @@
 import React from 'react';
-import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { Loader2 } from 'lucide-react';
 import { IconX } from '@/shared/components/icons';
@@ -25,22 +24,21 @@ const MobileNotificationsSheet: React.FC<MobileNotificationsSheetProps> = ({
   markAllNotificationsRead,
   onMarkRead,
 }) => {
-  const { t } = useTranslation();
   return (
     <BottomSheet open={open} onOpenChange={onOpenChange}>
-      <BottomSheetContent ariaLabel={t('student.topbar.notifications.title')} className="md:hidden max-h-[75svh] flex flex-col">
+      <BottomSheetContent ariaLabel={"Notifications"} className="md:hidden max-h-[75svh] flex flex-col">
         <div className="flex justify-center pt-3 pb-1 flex-none">
           <div className="w-10 h-1 rounded-full bg-border" />
         </div>
         <div className="px-5 py-3 border-b border-border flex items-center justify-between flex-none">
           <div>
-            <div className="text-sm font-black uppercase tracking-widest text-text-primary">{t('student.topbar.notifications.title')}</div>
-            <div className="text-xs text-text-muted">{t('common2.unreadCount', { count: unreadCount })}</div>
+            <div className="text-sm font-black uppercase tracking-widest text-text-primary">{"Notifications"}</div>
+            <div className="text-xs text-text-muted">{`${unreadCount} unread`}</div>
           </div>
           <div className="flex items-center gap-3">
             {unreadCount > 0 && (
               <button onClick={markAllNotificationsRead} className="min-h-[44px] px-2 text-xs font-bold text-accent">
-                {t('student.topbar.notifications.markAllRead')}
+                {"Mark all as read"}
               </button>
             )}
             <BottomSheetClose className="p-1.5 text-text-muted hover:text-accent transition-colors">
@@ -50,9 +48,9 @@ const MobileNotificationsSheet: React.FC<MobileNotificationsSheetProps> = ({
         </div>
         <div className="flex-1 overflow-y-auto">
           {notifLoading ? (
-            <div className="p-5 text-sm text-text-muted text-center"><Loader2 className="h-6 w-6 animate-spin inline-block" /> {t('components.common.loading')}</div>
+            <div className="p-5 text-sm text-text-muted text-center"><Loader2 className="h-6 w-6 animate-spin inline-block" /> {"Loading…"}</div>
           ) : notificationsPreview.length === 0 ? (
-            <div className="p-5 text-sm text-text-muted text-center">{t('empty.noNotifications')}</div>
+            <div className="p-5 text-sm text-text-muted text-center">{"No notifications yet."}</div>
           ) : (
             notificationsPreview.map((item) => (
               <div
@@ -82,7 +80,7 @@ const MobileNotificationsSheet: React.FC<MobileNotificationsSheetProps> = ({
             onClick={() => onOpenChange(false)}
             className="block w-full text-center py-3 rounded-xl border border-accent/30 text-sm font-bold text-accent hover:bg-accent-dim transition-colors"
           >
-            {t('student.topbar.notifications.viewAll')}
+            {"View all notifications"}
           </Link>
         </div>
       </BottomSheetContent>

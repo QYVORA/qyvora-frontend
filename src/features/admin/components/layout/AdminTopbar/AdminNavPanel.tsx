@@ -1,6 +1,5 @@
 import React, { useEffect, useRef } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
 import { AnimatePresence, motion } from 'motion/react';
 import { LogOut, ArrowRightLeft } from 'lucide-react';
 import { IconChevronRight } from '@/shared/components/icons';
@@ -15,7 +14,6 @@ interface AdminNavPanelProps {
 }
 
 const AdminNavPanel: React.FC<AdminNavPanelProps> = ({ open, onOpenChange, handleLogout }) => {
-  const { t } = useTranslation();
   const prefersReduced = useReducedMotion();
   const panelRef = useRef<HTMLDivElement>(null);
   const location = useLocation();
@@ -63,8 +61,8 @@ const AdminNavPanel: React.FC<AdminNavPanelProps> = ({ open, onOpenChange, handl
           <Icon size={20} strokeWidth={2.25} />
         </span>
         <span className="min-w-0 flex-1">
-          <span className="block text-sm font-black uppercase tracking-widest text-text-primary">{t(item.labelKey)}</span>
-          <span className="mt-1 block text-xs leading-relaxed text-text-muted">{t(item.descKey)}</span>
+          <span className="block text-sm font-black uppercase tracking-widest text-text-primary">{item.label}</span>
+          <span className="mt-1 block text-xs leading-relaxed text-text-muted">{item.desc}</span>
         </span>
         <IconChevronRight size={14} className="shrink-0 text-text-muted/30 transition-colors group-hover:text-accent" />
       </Link>
@@ -92,7 +90,7 @@ const AdminNavPanel: React.FC<AdminNavPanelProps> = ({ open, onOpenChange, handl
             ref={panelRef}
             role="dialog"
             aria-modal="true"
-            aria-label={t('nav.more')}
+            aria-label={"More"}
             initial={prefersReduced ? { opacity: 1 } : { opacity: 0, y: -12 }}
             animate={{ opacity: 1, y: 0 }}
             exit={prefersReduced ? { opacity: 1 } : { opacity: 0, y: -12 }}
@@ -102,9 +100,9 @@ const AdminNavPanel: React.FC<AdminNavPanelProps> = ({ open, onOpenChange, handl
             <div className="w-full px-3 pb-10 pt-3 md:px-4 md:pt-4 lg:px-6">
               <div className="space-y-6 md:space-y-8">
                 {NAV_GROUPS.map((group) => (
-                  <section key={group.titleKey}>
+                  <section key={group.title}>
                     <h3 className="mb-2.5 text-xs font-black uppercase tracking-[0.25em] text-accent md:mb-3">
-                      {t(group.titleKey)}
+                      {group.title}
                     </h3>
                     <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                       {group.items.map(renderItem)}
@@ -120,13 +118,13 @@ const AdminNavPanel: React.FC<AdminNavPanelProps> = ({ open, onOpenChange, handl
                   onClick={close}
                   className="flex flex-1 items-center justify-center gap-2.5 rounded-2xl border border-accent/50 px-6 py-3.5 text-sm font-bold uppercase tracking-widest text-accent transition-colors hover:bg-accent/10 active:scale-[0.98]"
                 >
-                  <ArrowRightLeft className="h-4 w-4" /> {t('nav.operator')}
+                  <ArrowRightLeft className="h-4 w-4" /> {"Operator"}
                 </Link>
                 <button
                   onClick={handleLogout}
                   className="flex flex-1 items-center justify-center gap-2.5 rounded-2xl border border-danger/20 px-6 py-3.5 text-sm font-bold uppercase tracking-widest text-danger transition-colors hover:bg-danger/10 active:scale-[0.98]"
                 >
-                  <LogOut className="h-4 w-4" /> {t('button.logOut')}
+                  <LogOut className="h-4 w-4" /> {"Log Out"}
                 </button>
               </div>
             </div>

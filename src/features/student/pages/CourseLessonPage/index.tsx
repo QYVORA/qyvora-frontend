@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { useParams, Link, useSearchParams } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
 import { ArrowLeft, ArrowRight, Lock, Target, Minimize2, Maximize2 } from 'lucide-react';
 import { FadeIn, EmptyState } from '@/shared/components/ui';
 import SEO from '@/shared/components/SEO';
@@ -91,7 +90,6 @@ const CourseLessonPage: React.FC = () => {
   const { courseId } = useParams<{ courseId: string }>();
   const [searchParams, setSearchParams] = useSearchParams();
   const course = getCourseById(courseId || '');
-  const { t } = useTranslation();
 
   const [purchased, setPurchased] = useState<boolean | null>(null);
   const [checkingAccess, setCheckingAccess] = useState(true);
@@ -218,12 +216,12 @@ const CourseLessonPage: React.FC = () => {
     return (
       <div className="min-h-dvh w-full bg-canvas px-3 py-16 md:px-4 lg:px-6">
         <EmptyState
-          title={t('courseLesson.notFoundTitle', 'Course not found.')}
-          description={t('courseLesson.notFoundDescription', 'The course you are looking for does not exist or was removed.')}
+          title={"Course not found."}
+          description={"The course you are looking for does not exist or was removed."}
           action={
             <Button to="/dashboard/courses" variant="secondary">
               <ArrowLeft className="h-4 w-4" aria-hidden="true" />
-              {t('courseLesson.backToCourses', 'Back to My Courses')}
+              {"Back to My Courses"}
             </Button>
           }
         />
@@ -240,11 +238,11 @@ const CourseLessonPage: React.FC = () => {
       <div className="min-h-dvh w-full bg-canvas px-3 py-16 md:px-4 lg:px-6">
         <EmptyState
           icon={<Lock className="h-6 w-6" aria-hidden="true" />}
-          title={t('courseLesson.lockedTitle', 'Course Not Unlocked')}
-          description={t('courseLesson.lockedDescription', 'You have not unlocked {{title}} yet. Unlock it from the marketplace to start learning.', { title: course.title })}
+          title={"Course Not Unlocked"}
+          description={`You have not unlocked ${course.title} yet. Unlock it from the marketplace to start learning.`}
           action={
             <Button to="/dashboard/marketplace">
-              {t('courseLesson.unlock', 'Unlock Course')}
+              {"Unlock Course"}
               <ArrowRight className="h-4 w-4" aria-hidden="true" />
             </Button>
           }
@@ -263,10 +261,10 @@ const CourseLessonPage: React.FC = () => {
         <CelebrationModal
           open={celebrationOpen}
           onClose={() => setCelebrationOpen(false)}
-          badge={t('student.celebration.courseBadge')}
-          title={t('student.celebration.courseTitle')}
-          description={t('student.celebration.courseDescription', { title: course.title })}
-          ctaLabel={t('student.celebration.continue')}
+          badge={"Course Complete"}
+          title={"Course Complete"}
+          description={`You completed every lesson in ${course.title}. Outstanding work.`}
+          ctaLabel={"Continue"}
         />
 
         <LearningToolbar
@@ -287,12 +285,12 @@ const CourseLessonPage: React.FC = () => {
           title={course.title}
           description={course.description}
           backTo="/dashboard/courses"
-          backLabel={t('courseLesson.backToCourses', 'Back to Courses')}
+          backLabel={"Back to My Courses"}
           stats={[
-            { label: t('courseLesson.progress', 'Progress'), value: `${progress}%`, accent: true },
-            { label: t('courseLesson.lessons', 'Lessons'), value: `${completedCount}/${totalLessons}` },
-            { label: t('courseLesson.cpCost', 'CP cost'), value: `${course.cpCost} CP` },
-            { label: t('courseLesson.level', 'Level'), value: course.skillLevel },
+            { label: "Progress", value: `${progress}%`, accent: true },
+            { label: "Lessons", value: `${completedCount}/${totalLessons}` },
+            { label: "CP cost", value: `${course.cpCost} CP` },
+            { label: "Level", value: course.skillLevel },
           ]}
           progress={{
             value: progress,
@@ -332,7 +330,7 @@ const CourseLessonPage: React.FC = () => {
             onPrev={currentLessonIdx > 0 ? goPrev : undefined}
             onNext={currentLessonIdx < totalLessons - 1 ? goNext : undefined}
             onComplete={!allComplete && !completedLessons.has(course.lessons[currentLessonIdx]?.id) ? markComplete : undefined}
-            completeLabel={t('learning.nav.complete')}
+            completeLabel={"Complete"}
             nextLabel="Next Lesson"
             nextLabelMobile="Next"
             finishContent={

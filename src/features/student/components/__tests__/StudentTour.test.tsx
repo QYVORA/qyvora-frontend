@@ -16,13 +16,6 @@ const api = vi.hoisted(() => ({ post: vi.fn() }));
 
 vi.mock('@/core/services/api', () => ({ default: api }));
 
-vi.mock('react-i18next', () => ({
-  useTranslation: () => ({
-    t: (key: string) => key,
-    i18n: { language: 'en' },
-  }),
-}));
-
 const originalMatchMedia = window.matchMedia;
 const originalRAF = window.requestAnimationFrame;
 const originalCAF = window.cancelAnimationFrame;
@@ -86,8 +79,8 @@ beforeEach(() => {
   localStorage.clear();
 });
 
-const WELCOME = 'student.tour.welcome.title';
-const SKIP = 'student.tour.controls.skip';
+const WELCOME = 'Welcome, operator.';
+const SKIP = 'Skip';
 
 const renderTour = () =>
   render(<StudentTour cpBalance={1500} username="tester" />);
@@ -122,8 +115,8 @@ describe('StudentTour', () => {
           <StudentTour cpBalance={1500} username="tester" />
         </div>,
       );
-      await user.click(screen.getByText('student.tour.controls.next'));
-      expect(screen.getByText('student.tour.nav.title')).toBeInTheDocument();
+      await user.click(screen.getByText('Next'));
+      expect(screen.getByText('Main navigation')).toBeInTheDocument();
       await waitFor(
         () => expect(document.querySelector('div.border-2.border-accent')).not.toBeNull(),
         { timeout: 2000 },

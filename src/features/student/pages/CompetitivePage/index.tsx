@@ -1,5 +1,4 @@
 import { useEffect } from 'react';
-import { useTranslation } from 'react-i18next';
 import { useSearchParams } from 'react-router-dom';
 import { Trophy, Shield } from 'lucide-react';
 import { useAuth } from '@/core/contexts/AuthContext';
@@ -13,7 +12,6 @@ import FadeIn from '@/shared/components/ui/FadeIn';
 import type { Period } from '@/shared/components/leaderboard';
 
 const CompetitivePage = () => {
-  const { t } = useTranslation();
   const { user } = useAuth();
   const [searchParams, setSearchParams] = useSearchParams();
 
@@ -22,8 +20,8 @@ const CompetitivePage = () => {
   const { entries, loading, loadingMore, error, total, hasMore, fetchLeaderboard, loadMore } = useLeaderboard({
     limit: 50,
     errorMessages: {
-      loadFailed: t('toast.leaderboardLoadFailed'),
-      networkFailed: t('toast.leaderboardLoadFailedNetwork'),
+      loadFailed: "Failed to load leaderboard.",
+      networkFailed: "Failed to load leaderboard. Check connection and try again.",
     },
   });
 
@@ -38,24 +36,24 @@ const CompetitivePage = () => {
   return (
     <FadeIn>
     <div className="min-h-full bg-canvas">
-      <SEO title={t('student.competitive.seoTitle')} description={t('student.competitive.seoDesc')} noindex />
+      <SEO title={"Competitive Leaderboard"} description={"Operator leaderboard ranked by CP earned."} noindex />
 
       <div className="w-full px-3 pb-16 pt-6 md:px-4 md:pb-20 md:pt-8 lg:px-6 lg:pb-24">
         <PageHeader
-          kicker={t('student.competitive.eyebrow', 'QYVORA · Battle')}
-          title={t('student.competitive.title')}
-          description={t('student.competitive.description', { count: total })}
+          kicker={"QYVORA · Battle"}
+          title={"Competitive Leaderboard"}
+          description={`${total} operators ranked by CyberPoints`}
           metadata={
             <span className="type-meta inline-flex items-center gap-2">
               <Trophy className="h-3.5 w-3.5 text-accent" aria-hidden="true" />
               <span className="font-bold text-text-primary">{Number(total).toLocaleString()}</span>
-              {t('stat.operators')}
+              {"Operators"}
             </span>
           }
           actions={
             <Button to="/leaderboard">
               <Trophy className="h-4 w-4" />
-              {t('button.viewPublicBoard')}
+              {"View Public Board"}
             </Button>
           }
         />
@@ -75,7 +73,7 @@ const CompetitivePage = () => {
                   : 'bg-bg-card border border-border text-text-muted hover:border-accent/50 hover:text-accent'
               }`}
             >
-              {t(`student.competitive.periods.${p.key}`)}
+              {p.label}
             </button>
           ))}
         </div>
@@ -91,18 +89,18 @@ const CompetitivePage = () => {
         ) : entries.length === 0 ? (
           <div className="rounded-2xl border-2 border-dashed border-border py-16 text-center">
             <Trophy className="mx-auto mb-4 h-14 w-14 text-text-muted opacity-30" />
-            <p className="text-lg text-text-muted font-bold">{t('student.competitive.empty.title')}</p>
-            <p className="text-sm text-text-muted mt-1">{t('student.competitive.empty.description')}</p>
+            <p className="text-lg text-text-muted font-bold">{"No operators ranked yet"}</p>
+            <p className="text-sm text-text-muted mt-1">{"Complete bootcamp rooms to earn CP and appear on the leaderboard."}</p>
           </div>
         ) : (
           <div>
             {/* Desktop header row */}
             <div className="hidden md:grid grid-cols-[48px_1fr_140px_100px_80px] gap-4 px-6 py-3 text-xs font-black uppercase tracking-widest text-text-muted/50 border-b border-border/40">
-              <span>{t('student.competitive.tableHeaders.rank')}</span>
-              <span>{t('student.competitive.tableHeaders.operator')}</span>
-              <span>{t('student.competitive.tableHeaders.rankLabel')}</span>
-              <span className="text-right">{t('student.competitive.tableHeaders.cp')}</span>
-              <span className="text-right">{t('student.competitive.tableHeaders.streak')}</span>
+              <span>{"#"}</span>
+              <span>{"Operator"}</span>
+              <span>{"Rank"}</span>
+              <span className="text-right">{"CP"}</span>
+              <span className="text-right">{"Streak"}</span>
             </div>
 
             {/* Entries */}
@@ -113,9 +111,9 @@ const CompetitivePage = () => {
                     entry={entry}
                     user={user}
                     rank={entry.rank}
-                    anonymousLabel={t('student.competitive.anonymous')}
-                    youLabel={t('student.competitive.youBadge')}
-                    roomsLabel={t('student.competitive.rooms')}
+                    anonymousLabel={"Anonymous"}
+                    youLabel={"You"}
+                    roomsLabel={"rooms"}
                     avatarShape="rounded-xl"
                     normalBorderColor="border-border/50"
                   />
@@ -130,7 +128,7 @@ const CompetitivePage = () => {
                   disabled={loadingMore}
                   className="px-6 py-2.5 rounded-xl text-xs font-black uppercase tracking-widest border border-border/50 bg-bg-card text-text-muted hover:border-accent/50 hover:text-accent transition-[border-color,color] duration-[var(--dur-base)] ease-[var(--ease-smooth)] disabled:opacity-50"
                 >
-                  {loadingMore ? t('student.competitive.loadingMore') : t('student.competitive.showMore')}
+                  {loadingMore ? "Loading…" : "Show more"}
                 </button>
               </div>
             )}
@@ -138,7 +136,7 @@ const CompetitivePage = () => {
             {/* Chain verification badge */}
             <div className="flex items-center justify-center gap-2 pt-4 text-xs font-bold uppercase tracking-widest text-text-muted/40">
               <Shield className="w-3 h-3 text-accent" />
-              {t('student.competitive.footer', { count: total })}
+              {`CP balances verified on QYVORA Chain · ${total} operators`}
             </div>
           </div>
         )}

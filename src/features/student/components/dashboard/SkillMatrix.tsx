@@ -1,5 +1,4 @@
 import { useMemo } from 'react';
-import { useTranslation } from 'react-i18next';
 import {
   SKILL_DEFINITIONS,
   computeAllSkills,
@@ -21,7 +20,6 @@ interface SkillMatrixProps {
 }
 
 const SkillMatrix = ({ modules }: SkillMatrixProps) => {
-  const { t } = useTranslation();
 
   const radarData = useMemo(() => {
     const bootcampCompleted = extractBootcampCompletedIds(modules);
@@ -46,10 +44,10 @@ const SkillMatrix = ({ modules }: SkillMatrixProps) => {
       <div className="flex items-center justify-between gap-3 mb-4 md:mb-6">
         <div>
           <h2 className="text-lg md:text-xl font-black uppercase tracking-tight text-text-primary">
-            {t('student.dashboard.skillMatrix', 'Skill Matrix')}
+            {"Skill Matrix"}
           </h2>
           <p className="text-xs md:text-xs font-bold uppercase tracking-widest text-text-muted mt-1">
-            {t('student.dashboard.skillMatrixSub', 'Overall')} &middot; {average}%
+            {"Overall"} &middot; {average}%
           </p>
         </div>
       </div>

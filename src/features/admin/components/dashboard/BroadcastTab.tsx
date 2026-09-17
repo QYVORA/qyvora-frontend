@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { Send, Megaphone, Users } from 'lucide-react';
-import { useTranslation } from 'react-i18next';
 import { IconWarning } from '@/shared/components/icons';
 import api from '@/core/services/api';
 import { useToast } from '@/core/contexts/ToastContext';
@@ -8,7 +7,6 @@ import { ConfirmDialog } from '@/shared/components/ui/Dialog';
 import { INPUT_CLS, BTN_CLS } from '../../types/admin.types';
 
 const BroadcastTab = () => {
-  const { t } = useTranslation();
   const { addToast } = useToast();
   const [title, setTitle] = useState('');
   const [message, setMessage] = useState('');
@@ -24,13 +22,13 @@ const BroadcastTab = () => {
       const payload: Record<string, unknown> = { title: title.trim(), message: message.trim(), targetFilter };
       if (targetFilter === 'by_role') payload.role = role;
       const res = await api.post('/admin/announcements', payload);
-      addToast(t('admin.broadcast.sent', { count: res.data?.sentCount || 0 }), 'success');
+      addToast("Broadcast sent", 'success');
       setTitle('');
       setMessage('');
       setTargetFilter('all');
       setRole('');
     } catch (e: any) {
-      addToast(e?.response?.data?.error || t('admin.broadcast.sendFailed'), 'error');
+      addToast(e?.response?.data?.error || "Failed to send broadcast", 'error');
     } finally {
       setSending(false);
       setShowConfirm(false);
@@ -45,41 +43,41 @@ const BroadcastTab = () => {
             <Megaphone className="w-5 h-5 text-accent" />
           </div>
           <div>
-            <h3 className="text-sm font-black uppercase tracking-wide text-text-primary">{t('admin.broadcast.newAnnouncement')}</h3>
-            <p className="text-xs text-text-muted">{t('admin.broadcast.description')}</p>
+            <h3 className="text-sm font-black uppercase tracking-wide text-text-primary">{"New Announcement"}</h3>
+            <p className="text-xs text-text-muted">{"Send a broadcast notification to platform users"}</p>
           </div>
         </div>
 
         <div className="space-y-1.5">
-          <label className="text-xs font-bold text-text-muted uppercase tracking-wider">{t('form.title')}</label>
+          <label className="text-xs font-bold text-text-muted uppercase tracking-wider">{"Title"}</label>
           <input
             type="text"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
-            placeholder={t('admin.broadcast.titlePlaceholder')}
+            placeholder={"e.g., Platform Maintenance Tomorrow"}
             className={INPUT_CLS}
             maxLength={200}
           />
         </div>
 
         <div className="space-y-1.5">
-          <label className="text-xs font-bold text-text-muted uppercase tracking-wider">{t('form.message')}</label>
+          <label className="text-xs font-bold text-text-muted uppercase tracking-wider">{"Message"}</label>
           <textarea
             value={message}
             onChange={(e) => setMessage(e.target.value)}
-            placeholder={t('admin.broadcast.messagePlaceholder')}
+            placeholder={"Write your announcement message..."}
             className={`${INPUT_CLS} min-h-[120px] resize-none`}
             maxLength={5000}
           />
         </div>
 
         <div className="space-y-1.5">
-          <label className="text-xs font-bold text-text-muted uppercase tracking-wider">{t('admin.broadcast.targetAudience')}</label>
+          <label className="text-xs font-bold text-text-muted uppercase tracking-wider">{"Target Audience"}</label>
           <div className="flex flex-wrap gap-2">
             {([
-              { value: 'all', label: t('admin.broadcast.allUsers'), icon: Users },
-              { value: 'bootcamp_enrolled', label: t('admin.broadcast.bootcampEnrolled'), icon: Users },
-              { value: 'by_role', label: t('admin.broadcast.byRole'), icon: IconWarning },
+              { value: 'all', label: "All Users", icon: Users },
+              { value: 'bootcamp_enrolled', label: "Bootcamp Enrolled", icon: Users },
+              { value: 'by_role', label: "By Role", icon: IconWarning },
             ] as const).map((opt) => {
               const Icon = opt.icon;
               return (
@@ -104,9 +102,9 @@ const BroadcastTab = () => {
                 onChange={(e) => setRole(e.target.value)}
                 className={INPUT_CLS}
               >
-                <option value="">{t('admin.broadcast.selectRole')}</option>
-                <option value="student">{t('admin.broadcast.student')}</option>
-                <option value="admin">{t('admin.broadcast.admin')}</option>
+                <option value="">{"Select role..."}</option>
+                <option value="student">{"Student"}</option>
+                <option value="admin">{"Admin"}</option>
               </select>
             </div>
           )}
@@ -115,7 +113,7 @@ const BroadcastTab = () => {
         {/* Preview */}
         {title.trim() && (
           <div className="rounded-xl border border-border bg-bg p-4 space-y-2">
-            <div className="text-xs font-bold text-text-muted uppercase tracking-wider">{t('admin.broadcast.preview')}</div>
+            <div className="text-xs font-bold text-text-muted uppercase tracking-wider">{"Preview"}</div>
             <div className="rounded-lg border border-accent/20 bg-accent-dim/5 p-3 space-y-1">
               <div className="text-sm font-bold text-text-primary">{title}</div>
               {message.trim() && <div className="text-xs text-text-secondary leading-relaxed">{message}</div>}
@@ -128,17 +126,17 @@ const BroadcastTab = () => {
           disabled={!title.trim() || !message.trim()}
           className="btn-primary w-full disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          <Send className="w-4 h-4" /> {t('button.send')}
+          <Send className="w-4 h-4" /> {"Send"}
         </button>
       </div>
 
       <ConfirmDialog
         open={showConfirm}
         onOpenChange={setShowConfirm}
-        title={t('admin.broadcast.confirmTitle')}
-        description={t('admin.broadcast.confirmDescription', { title: title.slice(0, 80), audience: targetFilter === 'all' ? t('admin.broadcast.allUsers').toLowerCase() : targetFilter === 'bootcamp_enrolled' ? t('admin.broadcast.bootcampEnrolled').toLowerCase() : `${role} ${t('admin.broadcast.users').toLowerCase()}` })}
-        confirmLabel={sending ? t('admin.broadcast.sending') : t('button.send')}
-        cancelLabel={t('button.cancel')}
+        title={"Confirm Broadcast"}
+        description={targetFilter === 'all' ? "Are you sure you want to send this broadcast to all users?" : targetFilter === 'bootcamp_enrolled' ? "Are you sure you want to send this broadcast to bootcamp enrolled users?" : `Are you sure you want to send this broadcast to ${role} users?`}
+        confirmLabel={sending ? "Sending..." : "Send"}
+        cancelLabel={"Cancel"}
         onConfirm={handleSend}
       />
     </div>

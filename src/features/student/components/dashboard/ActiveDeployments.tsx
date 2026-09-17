@@ -1,5 +1,4 @@
 import { Link } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
 import { IconArrowRight } from '@/shared/components/icons';
 import type { StudentBootcampCardData } from '@/features/student/components/StudentBootcampCard';
 import StudentBootcampCard from '@/features/student/components/StudentBootcampCard';
@@ -11,30 +10,28 @@ interface ActiveDeploymentsProps {
 }
 
 const EmptyDeployments = () => {
-  const { t } = useTranslation();
   return (
     <div className="relative overflow-hidden rounded-2xl border-2 border-dashed border-border/20 py-12 text-center h-full min-h-[220px] flex flex-col items-center justify-center bg-transparent">
       <div className="mx-auto mb-3">
         <Dobia expression="confused" size="xl" />
       </div>
-      <p className="mb-4 text-sm text-text-muted">{t('student.dashboard.activeDeployments.empty')}</p>
+      <p className="mb-4 text-sm text-text-muted">{"No active deployments."}</p>
       <Link
         to="/dashboard/bootcamps"
         className="btn-primary !text-xs !px-6 !py-2.5 flex items-center gap-1.5"
       >
-        {t('button.startTraining')} <IconArrowRight size={14} className="inline-block ml-1.5" />
+        {"Start Training"} <IconArrowRight size={14} className="inline-block ml-1.5" />
       </Link>
     </div>
   );
 };
 
 const ActiveDeployments = ({ bootcamps }: ActiveDeploymentsProps) => {
-  const { t } = useTranslation();
   return (
     <div className="flex flex-col gap-6 h-full">
       <div className="flex items-center justify-between">
-        <h3 className="text-xs font-black uppercase tracking-[0.3em] text-text-muted">{t('student.dashboard.activeDeployments.title')}</h3>
-        <Link to="/dashboard/bootcamps" className="text-xs font-black uppercase tracking-widest text-accent hover:underline">{t('button.viewAll')}</Link>
+        <h3 className="text-xs font-black uppercase tracking-[0.3em] text-text-muted">{"Active Deployments"}</h3>
+        <Link to="/dashboard/bootcamps" className="text-xs font-black uppercase tracking-widest text-accent hover:underline">{"View All"}</Link>
       </div>
       {bootcamps.length === 0 ? (
         <EmptyDeployments />

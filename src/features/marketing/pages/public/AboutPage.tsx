@@ -1,5 +1,4 @@
 import React from 'react';
-import { useTranslation } from 'react-i18next';
 import { ArrowRight, Users, FlaskConical, PhoneCall, ScrollText } from 'lucide-react';
 import { Card } from '@/shared/components/ui/Card';
 import PageHeader from '@/shared/components/ui/PageHeader';
@@ -11,26 +10,25 @@ import SEO from '@/shared/components/SEO';
  * contact, and legal. One tile per destination, all within the public shell.
  */
 const AboutPage: React.FC = () => {
-  const { t } = useTranslation();
 
   const tiles = [
-    { key: 'team', to: '/team', icon: <Users className="h-5 w-5" aria-hidden="true" /> },
-    { key: 'quiteroot', to: '/quiteroot', icon: <FlaskConical className="h-5 w-5" aria-hidden="true" /> },
-    { key: 'contact', to: '/services', icon: <PhoneCall className="h-5 w-5" aria-hidden="true" /> },
-    { key: 'legal', to: '/terms', icon: <ScrollText className="h-5 w-5" aria-hidden="true" /> },
+    { key: 'team', to: '/team', icon: <Users className="h-5 w-5" aria-hidden="true" />, title: 'The team', desc: 'Meet the operators and engineers building QYVORA.', cta: 'Meet the team' },
+    { key: 'quiteroot', to: '/quiteroot', icon: <FlaskConical className="h-5 w-5" aria-hidden="true" />, title: 'QuiteRoot', desc: 'The intelligence and engineering collective behind our tooling and research.', cta: 'Explore QuiteRoot' },
+    { key: 'contact', to: '/services', icon: <PhoneCall className="h-5 w-5" aria-hidden="true" />, title: 'Contact', desc: 'Reach the desk directly — partnerships, services, and research inquiries.', cta: 'Contact the desk' },
+    { key: 'legal', to: '/terms', icon: <ScrollText className="h-5 w-5" aria-hidden="true" />, title: 'Legal', desc: 'Terms of service governing use of the platform.', cta: 'Read the terms' },
   ];
 
   return (
     <div className="w-full bg-canvas">
       <SEO
-        title={t('aboutPage.seo.title')}
-        description={t('aboutPage.seo.description')}
+        title={"About | QYVORA"}
+        description={"The team, the research collective, and the mission behind QYVORA."}
       />
       <div className="w-full px-3 pb-20 pt-24 md:px-4 md:pb-24 md:pt-28 lg:px-6 lg:pt-32">
         <PageHeader
-          kicker={t('aboutPage.kicker')}
-          title={t('aboutPage.title')}
-          description={t('aboutPage.description')}
+          kicker={"About QYVORA"}
+          title={"Built in Africa, for African defenders."}
+          description={"QYVORA is an offensive security training platform and services team. Get to know the people and mission driving it."}
         />
 
         <div className="grid gap-4 sm:grid-cols-2">
@@ -41,11 +39,11 @@ const AboutPage: React.FC = () => {
                   {tile.icon}
                 </span>
                 <h3 className="type-h3 font-black uppercase tracking-tight text-text-primary">
-                  {t(`aboutPage.${tile.key}.title`)}
+                  {tile.title}
                 </h3>
-                <p className="type-body-sm flex-1">{t(`aboutPage.${tile.key}.desc`)}</p>
+                <p className="type-body-sm flex-1">{tile.desc}</p>
                 <span className="flex min-h-[48px] items-center gap-2 text-sm font-bold text-accent">
-                  {t(`aboutPage.${tile.key}.cta`)}
+                  {tile.cta}
                   <ArrowRight className="h-4 w-4" aria-hidden="true" />
                 </span>
               </Card>

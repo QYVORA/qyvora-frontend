@@ -1,10 +1,8 @@
 import React, { useEffect, useRef } from 'react';
 import { Link, NavLink, useLocation } from 'react-router-dom';
 import { AnimatePresence, motion } from 'motion/react';
-import { useTranslation } from 'react-i18next';
 import { Menu } from 'lucide-react';
 import { Logo } from '@/shared/components/brand';
-import LanguageSwitcher from '@/shared/components/LanguageSwitcher';
 import { useAuth } from '@/core/contexts/AuthContext';
 import { useScrollLock } from '@/core/hooks/useScrollLock';
 import { useReducedMotion } from '@/shared/hooks/useReducedMotion';
@@ -31,7 +29,6 @@ const LINKS: NavLinkDef[] = [
  * glow, no border on links — borders stay on badges/status indicators only.
  */
 const PublicNavigation: React.FC = React.memo(() => {
-  const { t } = useTranslation();
   const { user } = useAuth();
   const [open, setOpen] = React.useState(false);
   const location = useLocation();
@@ -64,7 +61,7 @@ const PublicNavigation: React.FC = React.memo(() => {
         href="#main-content"
         className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[200] focus:rounded-md focus:bg-accent focus:px-4 focus:py-2 focus:text-on-accent"
       >
-        {t('aria.skipToContent')}
+        {"Skip to content"}
       </a>
 
       <nav
@@ -96,7 +93,7 @@ const PublicNavigation: React.FC = React.memo(() => {
               >
                 {({ isActive }) => (
                   <span className="flex flex-col items-center gap-1">
-                    <span>{t(link.label)}</span>
+                    <span>{link.label}</span>
                     <span
                       aria-hidden="true"
                       className={`h-px w-full transition-colors ${isActive ? 'bg-accent' : 'bg-transparent group-hover:bg-border'}`}
@@ -108,25 +105,24 @@ const PublicNavigation: React.FC = React.memo(() => {
           </div>
 
           <div className="relative z-[110] flex shrink-0 items-center gap-3">
-            <LanguageSwitcher />
             <div className="hidden items-center gap-2 md:flex">
               {user ? (
                 <Button to="/dashboard" size="sm">
-                  {t('nav.dashboard', 'Dashboard')}
+                  {"Dashboard"}
                 </Button>
               ) : (
                 <>
                   <Button to="/login" variant="secondary" size="sm">
-                    {t('button.logIn')}
+                    {"Log In"}
                   </Button>
                   <Button to="/register" size="sm">
-                    {t('landing3.hero.primaryCta')}
+                    {"Start learning"}
                   </Button>
                 </>
               )}
             </div>
             <IconButton
-              label={t('nav.menu', 'Menu')}
+              label={"Menu"}
               tooltip={false}
               variant="default"
               className="md:hidden"
@@ -155,35 +151,35 @@ const PublicNavigation: React.FC = React.memo(() => {
               ref={panelRef}
               role="dialog"
               aria-modal="true"
-              aria-label={t('nav.menu', 'Menu')}
+              aria-label={"Menu"}
               initial={ctx}
               animate={{ opacity: 1, y: 0 }}
               exit={ctx}
               transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }}
               className="fixed inset-x-0 top-[80px] z-[96] max-h-[calc(100dvh-80px)] overflow-y-auto border-t border-border-subtle bg-surface"
             >
-              <nav aria-label={t('nav.menu', 'Menu')} className="flex flex-col px-3 py-4 md:px-4">
+              <nav aria-label={"Menu"} className="flex flex-col px-3 py-4 md:px-4">
                 {LINKS.map((link) => (
                   <Link
                     key={link.key}
                     to={link.to}
                     className="flex min-h-[48px] items-center justify-between border-b border-border-subtle text-base font-medium text-text-primary transition-colors hover:text-accent"
                   >
-                    {t(link.label)}
+                    {link.label}
                   </Link>
                 ))}
                 <div className="mt-4 flex flex-col gap-2">
                   {user ? (
                     <Button to="/dashboard" className="w-full">
-                      {t('nav.dashboard', 'Dashboard')}
+                      {"Dashboard"}
                     </Button>
                   ) : (
                     <>
                       <Button to="/register" className="w-full">
-                        {t('landing3.hero.primaryCta')}
+                        {"Start learning"}
                       </Button>
                       <Button to="/login" variant="secondary" className="w-full">
-                        {t('button.logIn')}
+                        {"Log In"}
                       </Button>
                     </>
                   )}

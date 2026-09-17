@@ -1,5 +1,4 @@
 import { useMemo, useState } from 'react';
-import { useTranslation } from 'react-i18next';
 import { Search, FileText } from 'lucide-react';
 import { ScrollReveal } from '@/shared/components';
 import SEO from '@/shared/components/SEO';
@@ -11,7 +10,6 @@ import { CardCollection, ViewToggle, type ViewMode } from '@/shared/components/c
 import BlogCard from './cards/BlogCard';
 
 const BlogsPage = () => {
-  const { t } = useTranslation();
   const [query, setQuery] = useState('');
   const [activeTag, setActiveTag] = useState('');
   const [page, setPage] = useState(0);
@@ -52,14 +50,14 @@ const BlogsPage = () => {
       <SEO title="Blogs - QYVORA" description="Security research, tutorials, and updates from the QYVORA team." />
       <div className="w-full px-3 pb-20 pt-24 md:px-4 md:pb-24 md:pt-28 lg:px-6 lg:pt-32">
         <PageHeader
-          kicker={t('blogsPage.kicker', 'QYVORA · Intelligence')}
+          kicker={"QYVORA · Intelligence"}
           title="Intelligence Reports"
           description="Security research, walkthroughs, and platform updates from the QYVORA team."
           metadata={
             <span className="type-meta inline-flex items-center gap-2">
               <FileText className="h-3.5 w-3.5 text-accent" aria-hidden="true" />
               <span className="font-bold text-text-primary">{BLOG_POSTS.length}</span>
-              {t('blogsPage.articles', 'Articles')}
+              {"Articles"}
             </span>
           }
         />
@@ -108,7 +106,7 @@ const BlogsPage = () => {
           {filtered.length === 0 ? (
             <EmptyState
               icon={<FileText className="h-6 w-6" />}
-              title={t('blogsPage.empty', 'No articles found.')}
+              title={"No articles found."}
             />
           ) : (
             <div className="space-y-6">

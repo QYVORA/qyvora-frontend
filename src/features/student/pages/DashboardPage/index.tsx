@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import { useTranslation } from 'react-i18next';
 import { useAuth } from '@/core/contexts/AuthContext';
 import { useToast } from '@/core/contexts/ToastContext';
 import api from '@/core/services/api';
@@ -49,9 +48,9 @@ const BOOTCAMP_COVER_IMGS: Record<string, string> = { bc_1775270338500: hpbCover
 const BOOTCAMP_FALLBACK_IMG = hpbCoverImg;
 
 const TOOLS = [
-  { id: 'ide', labelKey: 'student.tools.ide', descKey: 'student.tools.ideDesc', route: '/dashboard/tools/ide', icon: IconCode },
-  { id: 'terminal', labelKey: 'student.tools.terminal', descKey: 'student.tools.terminalDesc', route: '/dashboard/tools/terminal', icon: IconTerminal },
-  { id: 'network-visualizer', labelKey: 'student.tools.networkVisualizer', descKey: 'student.tools.networkVisualizerDesc', route: '/dashboard/tools/network-visualizer', icon: IconNetwork },
+  { id: 'ide', label: 'IDE', desc: 'Write and run Python/Bash for course exercises', route: '/dashboard/tools/ide', icon: IconCode },
+  { id: 'terminal', label: 'Terminal', desc: 'Kali Linux terminal emulator', route: '/dashboard/tools/terminal', icon: IconTerminal },
+  { id: 'network-visualizer', label: 'Network Visualizer', desc: 'Build and explore network topologies', route: '/dashboard/tools/network-visualizer', icon: IconNetwork },
 ];
 
 function pickCpBalance(userCp: number, overview: any, cpBalance: number | null): number {
@@ -62,7 +61,6 @@ function pickCpBalance(userCp: number, overview: any, cpBalance: number | null):
 }
 
 const Dashboard = () => {
-  const { t } = useTranslation();
   const { user } = useAuth();
   const { addToast } = useToast();
   const { data: overview, loading: overviewLoading } = useStudentOverview();
@@ -105,8 +103,8 @@ const Dashboard = () => {
         setCpBalance(user?.cp ?? 0);
         setSyncError('');
       } catch {
-        setSyncError(t('empty.syncError'));
-        addToast(t('toast.loadFailed'), 'error');
+        setSyncError("Could not sync. Showing cached data.");
+        addToast("Failed to load dashboard data", 'error');
       } finally {
         if (mounted) setLoading(false);
       }
@@ -122,7 +120,7 @@ const Dashboard = () => {
     .slice(0, 4)
     .map(({ item, prog }) => ({
       id: String(item.id || ''),
-      title: item.title || t('student.courses.bootcamp'),
+      title: item.title || "Bootcamp",
       description: String(item.description || '').trim(),
       level: String(item.level || '').trim(),
       duration: String(item.duration || '').trim(),
@@ -138,7 +136,7 @@ const Dashboard = () => {
   const isEnrolled = (overview?.bootcampStatus || 'not_enrolled') !== 'not_enrolled';
   const cpBalance = pickCpBalance(user?.cp ?? 0, overview, cpBalanceState);
   const progression = overview?.xpSummary?.progression ?? null;
-  const effectiveRankName = progression?.rank || t('stat.candidate');
+  const effectiveRankName = progression?.rank || "Candidate";
   const nextMission = (overview?.learningPath || []).find((m: any) => m.status === 'in-progress' || m.status === 'next');
 
   const overviewModules = Array.isArray(overview?.modules) ? overview.modules : [];
@@ -154,7 +152,7 @@ const Dashboard = () => {
   return (
     <FadeIn>
     <div>
-      <SEO title={t('student.dashboard.seoTitle')} description={t('student.dashboard.seoDesc')} noindex />
+      <SEO title={"Dashboard"} description={"Operator dashboard | QYVORA"} noindex />
       <StudentOnboardingModal />
       <StudentTour cpBalance={cpBalance} username={user?.username ?? ''} />
 
@@ -187,10 +185,10 @@ const Dashboard = () => {
       <div className="bg-canvas px-3 pb-6 md:px-4 lg:px-6">
         <div className="mb-4">
           <p className="type-label mb-1.5 uppercase tracking-[0.12em] text-accent">
-            {t('student.dashboard.sections.today')}
+            {"Today"}
           </p>
           <h2 className="type-h2 font-black uppercase tracking-tight text-text-primary">
-            {t('student.dashboard.sections.todayDesc')}
+            {"What's on for today."}
           </h2>
         </div>
         <div className="grid grid-cols-1 gap-4 lg:grid-cols-2 lg:gap-6">
@@ -200,7 +198,7 @@ const Dashboard = () => {
           {visitDates.length > 0 && (
             <Card className="flex flex-col p-5 md:p-6">
               <p className="type-label mb-3 uppercase tracking-[0.12em] text-text-tertiary">
-                {t('student.dashboard.weekActivity.title')}
+                {"Week at a Glance"}
               </p>
               <WeekActivity visitDates={visitDates} visitDurations={visitDurations} />
             </Card>
@@ -217,7 +215,7 @@ const Dashboard = () => {
           <Card className="p-6">
             <Metric
               icon={<CpLogo className="h-5 w-5" />}
-              label={t('student.dashboard.cp')}
+              label={"CP"}
               value={cpBalance.toLocaleString()}
               accent
             />
@@ -225,14 +223,14 @@ const Dashboard = () => {
           <Card className="p-6">
             <Metric
               icon={<Crown className="h-5 w-5" aria-hidden="true" />}
-              label={t('student.dashboard.rank')}
+              label={"Rank"}
               value={rankName}
             />
           </Card>
           <Card className="p-6">
             <Metric
               icon={<Flame className="h-5 w-5" aria-hidden="true" />}
-              label={t('student.dashboard.streak.title')}
+              label={"Streak"}
               value={`${streakDays ?? 0}d`}
             />
           </Card>
@@ -248,12 +246,12 @@ const Dashboard = () => {
                 <Download className="h-5 w-5" aria-hidden="true" />
               </span>
               <div className="min-w-0">
-                <p className="text-sm font-bold text-text-primary">{t('student.installBanner.title')}</p>
-                <p className="type-meta">{t('student.installBanner.description')}</p>
+                <p className="text-sm font-bold text-text-primary">{"Install QYVORA"}</p>
+                <p className="type-meta">{"Get the full experience with our desktop app."}</p>
               </div>
             </div>
             <Button onClick={handleInstall} disabled={installing} loading={installing} className="sm:ml-auto">
-              {t('button.install')}
+              {"Install"}
             </Button>
           </Card>
         </div>
@@ -264,12 +262,12 @@ const Dashboard = () => {
         <ScrollReveal>
           <div className="mb-6">
             <p className="type-label mb-1.5 uppercase tracking-[0.12em] text-accent">
-              {t('student.dashboard.sections.recent')}
+              {"Recent learning"}
             </p>
             <h2 className="type-h2 font-black uppercase tracking-tight text-text-primary">
-              {t('student.dashboard.sections.recent')}
+              {"Recent learning"}
             </h2>
-            <p className="type-body mt-2 max-w-prose">{t('student.dashboard.sections.recentDesc')}</p>
+            <p className="type-body mt-2 max-w-prose">{"Pick up any of your recent work, or start something new."}</p>
           </div>
         </ScrollReveal>
 
@@ -277,9 +275,9 @@ const Dashboard = () => {
         {enrolledBootcamps.length > 0 && (
           <div className="mt-8">
             <div className="mb-3 flex items-center justify-between">
-              <h3 className="type-label uppercase tracking-[0.12em] text-text-tertiary">{t('nav.bootcamp')}</h3>
+              <h3 className="type-label uppercase tracking-[0.12em] text-text-tertiary">{"Bootcamp"}</h3>
               <Button to="/dashboard/bootcamps" variant="ghost" size="sm">
-                {t('student.dashboard.viewAll')}
+                {"View All"}
               </Button>
             </div>
             <ActiveDeployments bootcamps={enrolledBootcamps} />
@@ -289,9 +287,9 @@ const Dashboard = () => {
         {/* Courses */}
         <div className="mt-8">
           <div className="mb-3 flex items-center justify-between">
-            <h3 className="type-label uppercase tracking-[0.12em] text-text-tertiary">{t('student.dashboard.courses')}</h3>
+            <h3 className="type-label uppercase tracking-[0.12em] text-text-tertiary">{"Courses"}</h3>
             <Button to="/dashboard/courses" variant="ghost" size="sm">
-              {t('student.dashboard.viewAll')}
+              {"View All"}
             </Button>
           </div>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -306,7 +304,7 @@ const Dashboard = () => {
                 difficulty={course.skillLevel}
                 lessonsCount={course.lessons.length}
                 cpReward={course.cpCost}
-                actionLabel={t('student.dashboard.view')}
+                actionLabel={"View"}
               />
             ))}
           </div>
@@ -315,9 +313,9 @@ const Dashboard = () => {
         {/* Labs */}
         <div className="mt-8">
           <div className="mb-3 flex items-center justify-between">
-            <h3 className="type-label uppercase tracking-[0.12em] text-text-tertiary">{t('nav.labs')}</h3>
+            <h3 className="type-label uppercase tracking-[0.12em] text-text-tertiary">{"Labs"}</h3>
             <Button to="/dashboard/labs" variant="ghost" size="sm">
-              {t('student.dashboard.viewAll')}
+              {"View All"}
             </Button>
           </div>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -326,12 +324,12 @@ const Dashboard = () => {
                 key={lab.id}
                 type="lab"
                 to={lab.route}
-                title={t(lab.titleKey ?? '', lab.id)}
-                description={t(lab.descKey ?? '', '')}
+                title={lab.title}
+                description={lab.desc}
                 icon={<FlaskConical className="h-4 w-4" aria-hidden="true" />}
                 difficulty={lab.difficulty}
                 cpReward={lab.cpReward}
-                actionLabel={t('student.dashboard.view')}
+                actionLabel={"View"}
               />
             ))}
           </div>
@@ -340,7 +338,7 @@ const Dashboard = () => {
         {/* Tools */}
         <div className="mt-8">
           <div className="mb-3 flex items-center justify-between">
-            <h3 className="type-label uppercase tracking-[0.12em] text-text-tertiary">{t('student.tools.title')}</h3>
+            <h3 className="type-label uppercase tracking-[0.12em] text-text-tertiary">{"Tools"}</h3>
           </div>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {TOOLS.map((tool) => {
@@ -350,10 +348,10 @@ const Dashboard = () => {
                   key={tool.id}
                   type="resource"
                   to={tool.route}
-                  title={t(tool.labelKey)}
-                  description={t(tool.descKey)}
+                  title={tool.label}
+                  description={tool.desc}
                   icon={<ToolIcon className="h-4 w-4" aria-hidden="true" />}
-                  actionLabel={t('student.dashboard.view')}
+                  actionLabel={"View"}
                 />
               );
             })}
@@ -363,17 +361,17 @@ const Dashboard = () => {
         {/* Marketplace */}
         <div className="mt-8">
           <div className="mb-3 flex items-center justify-between">
-            <h3 className="type-label uppercase tracking-[0.12em] text-text-tertiary">{t('nav.marketplace')}</h3>
+            <h3 className="type-label uppercase tracking-[0.12em] text-text-tertiary">{"Marketplace"}</h3>
             <Button to="/dashboard/marketplace" variant="ghost" size="sm">
-              {t('student.dashboard.viewAll')}
+              {"View All"}
             </Button>
           </div>
           {products.length > 0 ? (
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
               {products.slice(0, 3).map((product: any) => {
                 const id = String(product?.id || '');
-                const title = String(product?.title || t('student.dashboard.intelligenceAsset'));
-                const description = String(product?.description || t('student.dashboard.intelligenceDesc'));
+                const title = String(product?.title || "Intelligence Asset");
+                const description = String(product?.description || "Secure intelligence report for offensive security operatives.");
                 return (
                   <LearningCard
                     key={id || title}
@@ -384,7 +382,7 @@ const Dashboard = () => {
                     icon={<ShoppingBag className="h-4 w-4" aria-hidden="true" />}
                     isFree={product?.isFree}
                     price={product?.isFree ? undefined : `${Number(product?.cpPrice || 0).toLocaleString()} CP`}
-                    actionLabel={t('student.dashboard.view')}
+                    actionLabel={"View"}
                   />
                 );
               })}
@@ -392,9 +390,9 @@ const Dashboard = () => {
           ) : (
             <EmptyState
               icon={<ShoppingBag className="h-5 w-5" aria-hidden="true" />}
-              title={t('student.dashboard.sections.emptyMarket')}
-              description={t('student.dashboard.sections.emptyMarketDesc')}
-              action={<Button to="/dashboard/marketplace" variant="secondary" size="sm">{t('student.dashboard.viewAll')}</Button>}
+              title={"No intelligence assets yet."}
+              description={"Browse the marketplace to spend your CP."}
+              action={<Button to="/dashboard/marketplace" variant="secondary" size="sm">{"View All"}</Button>}
             />
           )}
         </div>

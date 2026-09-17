@@ -1,6 +1,5 @@
 import React from 'react';
 import { AnimatePresence, motion } from 'motion/react';
-import { useTranslation } from 'react-i18next';
 import { NotificationItem } from './types';
 
 interface NotificationsDropdownProps {
@@ -20,7 +19,6 @@ const NotificationsDropdown: React.FC<NotificationsDropdownProps> = ({
   notificationsPreview,
   markAllNotificationsRead,
 }) => {
-  const { t } = useTranslation();
   return (
     <AnimatePresence>
       {open && (
@@ -32,19 +30,19 @@ const NotificationsDropdown: React.FC<NotificationsDropdownProps> = ({
         >
           <div className="px-4 py-3 border-b border-border flex items-center justify-between">
             <div>
-              <div className="text-xs font-black uppercase tracking-widest text-text-primary">{t('student.topbar.notifications.title')}</div>
-              <div className="text-xs text-text-muted">{t('student.topbar.notifications.unreadCount', { count: unreadCount })}</div>
+              <div className="text-xs font-black uppercase tracking-widest text-text-primary">{"Notifications"}</div>
+              <div className="text-xs text-text-muted">{`${unreadCount} unread`}</div>
             </div>
             {unreadCount > 0 && (
               <button onClick={markAllNotificationsRead} className="text-xs font-bold text-accent hover:underline whitespace-nowrap">
-                {t('button.markAllRead')}
+                {"Mark all read"}
               </button>
             )}
           </div>
           {notifLoading ? (
-            <div className="p-4 text-xs text-text-muted">{t('empty.loading')}</div>
+            <div className="p-4 text-xs text-text-muted">{"Loading..."}</div>
           ) : notificationsPreview.length === 0 ? (
-            <div className="p-4 text-xs text-text-muted">{t('student.topbar.notifications.empty')}</div>
+            <div className="p-4 text-xs text-text-muted">{"No new notifications"}</div>
           ) : (
             <div className="max-h-80 overflow-auto">
               {notificationsPreview.map((item) => (
@@ -63,7 +61,7 @@ const NotificationsDropdown: React.FC<NotificationsDropdownProps> = ({
           )}
           <div className="px-4 py-3 border-t border-border">
             <button onClick={onClose} className="block w-full text-center text-xs font-bold text-accent hover:underline">
-              {t('button.close')}
+              {"Close"}
             </button>
           </div>
         </motion.div>

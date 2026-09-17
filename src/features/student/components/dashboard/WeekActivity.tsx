@@ -1,5 +1,4 @@
 import { useMemo } from 'react';
-import { useTranslation } from 'react-i18next';
 
 interface WeekActivityProps {
   visitDates?: string[];
@@ -49,7 +48,6 @@ const DayBar = ({
 };
 
 const WeekActivity = ({ visitDates = [], visitDurations = {} }: WeekActivityProps) => {
-  const { t } = useTranslation();
 
   const { days, activeDays } = useMemo(() => {
     const today = new Date();
@@ -88,11 +86,7 @@ const WeekActivity = ({ visitDates = [], visitDurations = {} }: WeekActivityProp
       <div
         className="flex items-stretch gap-1 w-full pt-2 flex-1 min-h-[140px]"
         role="img"
-        aria-label={t('student.dashboard.streak.ariaWeek', {
-          total: activeDays,
-          active: activeDays,
-          defaultValue: `Activity: ${activeDays} of 7 days this week`,
-        })}
+        aria-label={`Activity: ${activeDays} of ${activeDays} days this week`}
       >
         {days.map((d) => (
           <DayBar
@@ -107,8 +101,8 @@ const WeekActivity = ({ visitDates = [], visitDurations = {} }: WeekActivityProp
       <div className="mt-3 text-center shrink-0">
         <span className="text-xs font-mono text-text-muted">
           {activeDays}{' '}
-          {t('student.dashboard.streak.activeDays', 'active days')}{' '}
-          {t('student.dashboard.streak.thisWeek', 'this week')}
+          {"active days"}{' '}
+          {"this week"}
         </span>
       </div>
     </div>

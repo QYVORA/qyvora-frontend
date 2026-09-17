@@ -1,5 +1,4 @@
 import React from 'react';
-import { useTranslation } from 'react-i18next';
 import { IconX } from '@/shared/components/icons';
 import { BottomSheet, BottomSheetClose, BottomSheetContent } from '@/shared/components/ui/BottomSheet';
 import { NotificationItem } from './types';
@@ -21,21 +20,20 @@ const MobileNotificationsSheet: React.FC<MobileNotificationsSheetProps> = ({
   notificationsPreview,
   markAllNotificationsRead,
 }) => {
-  const { t } = useTranslation();
   return (
     <BottomSheet open={open} onOpenChange={onOpenChange}>
-      <BottomSheetContent ariaLabel={t('aria.notifications')} className="z-[70] md:hidden max-h-[75svh] flex flex-col">
+      <BottomSheetContent ariaLabel={"Notifications"} className="z-[70] md:hidden max-h-[75svh] flex flex-col">
         <div className="flex justify-center pt-3 pb-1 flex-none">
           <div className="w-10 h-1 rounded-full bg-border" />
         </div>
         <div className="px-5 py-3 border-b border-border flex items-center justify-between flex-none">
           <div>
-            <div className="text-sm font-black uppercase tracking-widest text-text-primary">{t('student.topbar.notifications.title')}</div>
-            <div className="text-xs text-text-muted">{t('student.topbar.notifications.unreadCount', { count: unreadCount })}</div>
+            <div className="text-sm font-black uppercase tracking-widest text-text-primary">{"Notifications"}</div>
+            <div className="text-xs text-text-muted">{`${unreadCount} unread`}</div>
           </div>
           <div className="flex items-center gap-3">
             {unreadCount > 0 && (
-              <button onClick={markAllNotificationsRead} className="text-xs font-bold text-accent">{t('button.markAllRead')}</button>
+              <button onClick={markAllNotificationsRead} className="text-xs font-bold text-accent">{"Mark all read"}</button>
             )}
             <BottomSheetClose className="p-1.5 text-text-muted hover:text-accent transition-colors">
               <IconX size={20} />
@@ -44,9 +42,9 @@ const MobileNotificationsSheet: React.FC<MobileNotificationsSheetProps> = ({
         </div>
         <div className="flex-1 overflow-y-auto">
           {notifLoading ? (
-            <div className="p-5 text-sm text-text-muted text-center">{t('empty.loading')}</div>
+            <div className="p-5 text-sm text-text-muted text-center">{"Loading..."}</div>
           ) : notificationsPreview.length === 0 ? (
-            <div className="p-5 text-sm text-text-muted text-center">{t('student.topbar.notifications.empty')}</div>
+            <div className="p-5 text-sm text-text-muted text-center">{"No new notifications"}</div>
           ) : notificationsPreview.map((item) => (
             <div key={item.id} className={`px-5 py-4 ${item.read ? 'opacity-60' : ''}`} role="listitem">
               <div className="flex items-center gap-2">
@@ -65,7 +63,7 @@ const MobileNotificationsSheet: React.FC<MobileNotificationsSheetProps> = ({
             onClick={() => onOpenChange(false)}
             className="block w-full text-center py-3 rounded-xl border border-accent/30 text-sm font-bold text-accent hover:bg-accent-dim transition-colors"
           >
-            {t('button.close')}
+            {"Close"}
           </button>
         </div>
       </BottomSheetContent>

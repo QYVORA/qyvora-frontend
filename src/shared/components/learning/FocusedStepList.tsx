@@ -1,5 +1,4 @@
 import React from 'react';
-import { useTranslation } from 'react-i18next';
 import { Check, Lock, ChevronRight } from 'lucide-react';
 import { cn } from '@/shared/utils/cn';
 
@@ -45,13 +44,12 @@ interface FocusedStepRowProps {
 }
 
 function FocusedStepRow({ item, onSelect }: FocusedStepRowProps) {
-  const { t } = useTranslation();
   const locked = !!item.isLocked;
   const statusText = locked
-    ? t('learning.focused.locked', 'Locked')
+    ? "Locked"
     : item.isCompleted
-    ? t('learning.focused.done', 'Done')
-    : t('learning.focused.upcoming', 'Next');
+    ? "Done"
+    : "Next";
 
   return (
     <button

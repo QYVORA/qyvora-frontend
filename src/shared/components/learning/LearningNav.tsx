@@ -1,5 +1,4 @@
 import React from 'react';
-import { useTranslation } from 'react-i18next';
 import { ChevronLeft, ChevronRight, Loader2 } from 'lucide-react';
 
 export interface LearningNavProps {
@@ -35,10 +34,9 @@ const LearningNav: React.FC<LearningNavProps> = ({
   className = '',
   leading,
 }) => {
-  const { t } = useTranslation();
-  const lblNext = nextLabel || t('learning.nav.nextStep');
-  const lblNextMobile = nextLabelMobile || t('learning.nav.next');
-  const lblComplete = completeLabel || t('learning.nav.complete');
+  const lblNext = nextLabel || "Next Step";
+  const lblNextMobile = nextLabelMobile || "Next";
+  const lblComplete = completeLabel || "Complete";
 
   return (
     <div
@@ -50,10 +48,10 @@ const LearningNav: React.FC<LearningNavProps> = ({
         <button
           onClick={onPrev}
           className="btn-secondary inline-flex min-h-[44px] flex-1 items-center justify-center gap-1.5 disabled:opacity-50 sm:flex-none px-3.5 py-2"
-          aria-label={t('learning.nav.prev')}
+          aria-label={"Previous"}
         >
           <ChevronLeft className="h-3.5 w-3.5 shrink-0" />
-          <span>{t('learning.nav.prev')}</span>
+          <span>{"Previous"}</span>
         </button>
       )}
 
@@ -79,7 +77,7 @@ const LearningNav: React.FC<LearningNavProps> = ({
             {completing ? (
               <>
                 <Loader2 className="h-3.5 w-3.5 animate-spin" />
-                <span>{t('learning.nav.processing')}</span>
+                <span>{"Processing…"}</span>
               </>
             ) : (
               <>
@@ -101,7 +99,7 @@ const LearningNav: React.FC<LearningNavProps> = ({
           {completing ? (
             <>
               <Loader2 className="h-3.5 w-3.5 animate-spin" />
-              <span>{t('learning.nav.processing')}</span>
+              <span>{"Processing…"}</span>
             </>
           ) : (
             <span>{lblComplete}</span>

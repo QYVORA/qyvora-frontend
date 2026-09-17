@@ -1,4 +1,3 @@
-import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { IconFire, IconTarget } from '@/shared/components/icons';
 import type { EngagementResponse } from '@/features/student/data/missions';
@@ -9,7 +8,6 @@ interface CpEarnHintProps {
 }
 
 const CpEarnHint = ({ engagement, loading }: CpEarnHintProps) => {
-  const { t } = useTranslation();
 
   if (loading || !engagement) return null;
 
@@ -22,7 +20,7 @@ const CpEarnHint = ({ engagement, loading }: CpEarnHintProps) => {
         className="flex items-center gap-2 px-3 py-2 rounded-xl bg-accent/5 border border-accent/10 text-xs font-mono text-accent hover:bg-accent/10 transition-colors"
       >
         <IconFire size={14} className="shrink-0" />
-        <span>{t('student.dashboard.cpEarnHint.dailyMission', { cp: mission.cpReward })}</span>
+        <span>{`Complete today's mission for +${mission.cpReward} CP`}</span>
       </Link>
     );
   }
@@ -35,7 +33,7 @@ const CpEarnHint = ({ engagement, loading }: CpEarnHintProps) => {
         className="flex items-center gap-2 px-3 py-2 rounded-xl bg-accent/5 border border-accent/10 text-xs font-mono text-accent hover:bg-accent/10 transition-colors"
       >
         <IconTarget size={14} className="shrink-0" />
-        <span>{t('student.dashboard.cpEarnHint.weeklyOperation', { cp: remaining })}</span>
+        <span>{`Continue your weekly operation for +${remaining} CP`}</span>
       </Link>
     );
   }
@@ -46,7 +44,7 @@ const CpEarnHint = ({ engagement, loading }: CpEarnHintProps) => {
       className="flex items-center gap-2 px-3 py-2 rounded-xl bg-accent/5 border border-accent/10 text-xs font-mono text-accent hover:bg-accent/10 transition-colors"
     >
       <IconFire size={14} className="shrink-0" />
-      <span>{t('student.dashboard.cpEarnHint.general')}</span>
+      <span>{"Complete labs and courses to earn CP"}</span>
     </Link>
   );
 };

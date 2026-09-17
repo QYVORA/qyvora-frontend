@@ -7,7 +7,6 @@ import {
 } from 'lucide-react';
 import { AnimatePresence, motion } from 'motion/react';
 import { BOOTCAMP_CONFIG } from '@/features/student/constants/bootcampConfig';
-import { useTranslation } from 'react-i18next';
 import ScrollReveal from '@/shared/components/ScrollReveal';
 import api from '@/core/services/api';
 import { useToast } from '@/core/contexts/ToastContext';
@@ -24,7 +23,6 @@ import { LearningFilterStrip } from '@/shared/components/learning';
 import type { Course } from '@/features/student/components/bootcamp-course/types';
 
 const BootcampCourse: React.FC = () => {
-  const { t } = useTranslation();
   const { bootcampId } = useParams<{ bootcampId?: string }>();
   const { addToast } = useToast();
   const { refreshMe } = useAuth();
@@ -117,16 +115,16 @@ const BootcampCourse: React.FC = () => {
   })();
 
   const phaseFilters = useMemo(() => {
-    if (!course?.modules) return [{ id: 'all', label: t('student.bootcampCourse.allPhases', 'All Phases') }];
+    if (!course?.modules) return [{ id: 'all', label: "All Phases" }];
     return [
-      { id: 'all', label: t('student.bootcampCourse.allPhases', 'All Phases'), count: totalModules },
+      { id: 'all', label: "All Phases", count: totalModules },
       ...course.modules.map((mod) => ({
         id: String(mod.moduleId),
         label: mod.title,
         count: mod.rooms?.length,
       })),
     ];
-  }, [course, totalModules, t]);
+  }, [course, totalModules]);
 
   const filteredModules = useMemo(() => {
     if (!course?.modules) return [];
@@ -140,25 +138,25 @@ const BootcampCourse: React.FC = () => {
     <FadeIn>
     <div className="min-h-full bg-canvas">
       <SEO
-        title={course?.title || t('student.bootcampCourse.header.label', 'Bootcamp')}
-        description={`${t('student.bootcampCourse.journeyProgress', 'Track your progress through')} ${course?.title || t('student.bootcampCourse.header.label', 'the bootcamp')} | ${progressValue} complete.`}
+        title={course?.title || "Bootcamp"}
+        description={`${"Journey Progress"} ${course?.title || "Bootcamp"} | ${progressValue} complete.`}
         noindex
       />
 
       <div className="w-full px-3 pb-16 pt-6 md:px-4 md:pb-20 md:pt-8 lg:px-6 lg:pb-24">
         <PageHeader
-          kicker={t('student.bootcampCourse.eyebrow', 'QYVORA · Bootcamp')}
-          title={course?.title || t('student.bootcampCourse.header.label', 'Bootcamp')}
-          description={syncError || `${t('student.bootcampCourse.journeyProgress', 'Track your progress through')} ${course?.title || t('student.bootcampCourse.header.label', 'the bootcamp')}. ${formatSyncLabel(lastSync)}`}
+          kicker={"QYVORA · Bootcamp"}
+          title={course?.title || "Bootcamp"}
+          description={syncError || `${"Journey Progress"} ${course?.title || "Bootcamp"}. ${formatSyncLabel(lastSync)}`}
           metadata={
             <span className="type-meta inline-flex items-center gap-2">
-              <span className="font-bold text-accent">{doneModules}/{totalModules}</span> {t('student.bootcampCourse.modules', 'Modules')} · <span className="font-bold text-text-primary">{doneRooms}/{totalRooms}</span> {t('student.bootcampCourse.rooms', 'Rooms')}
+              <span className="font-bold text-accent">{doneModules}/{totalModules}</span> {"Modules"} · <span className="font-bold text-text-primary">{doneRooms}/{totalRooms}</span> {"Rooms"}
             </span>
           }
           actions={
             nextRoomPath ? (
               <Button to={nextRoomPath}>
-                {t('student.bootcampCourse.continueTraining', 'Continue Training')}
+                {"Continue Training"}
               </Button>
             ) : undefined
           }
@@ -180,7 +178,7 @@ const BootcampCourse: React.FC = () => {
                   <TrendingUp className="h-5 w-5 text-accent" />
                 </div>
                 <div className="min-w-0">
-                  <p className="text-xs font-black uppercase tracking-widest text-accent truncate">{t('student.bootcampCourse.recommendedNext', 'Recommended Next')}</p>
+                  <p className="text-xs font-black uppercase tracking-widest text-accent truncate">{"Recommended Next"}</p>
                   <p className="text-sm font-bold text-text-primary">{nextRoomLabel.phase}, {nextRoomLabel.room}</p>
                 </div>
               </div>
@@ -188,7 +186,7 @@ const BootcampCourse: React.FC = () => {
                 to={nextRoomLabel.path}
                 className="btn-primary inline-flex items-center gap-1.5 px-4 py-2.5 shrink-0"
               >
-                {t('student.bootcampCourse.continue', 'Continue')} <Play className="h-3 w-3" />
+                {"Continue"} <Play className="h-3 w-3" />
               </Link>
             </div>
           </div>

@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { useTranslation } from 'react-i18next';
 import { Save } from 'lucide-react';
 import { useToast } from '../../../../core/contexts/ToastContext';
 import api from '../../../../core/services/api';
@@ -15,7 +14,6 @@ interface EditModalProps {
 }
 
 const EditModal: React.FC<EditModalProps> = ({ open, onOpenChange, initial, onSaved }) => {
-  const { t } = useTranslation();
   const { addToast } = useToast();
   const [form, setForm] = useState(initial);
   const [saving, setSaving] = useState(false);
@@ -36,10 +34,10 @@ const EditModal: React.FC<EditModalProps> = ({ open, onOpenChange, initial, onSa
         organization: form.organization.trim(),
       });
       onSaved(res.data);
-      addToast(t('toast.profileUpdated'), 'success');
+      addToast("Profile updated!", 'success');
       onOpenChange(false);
     } catch (err: any) {
-      addToast(err?.response?.data?.error || t('toast.profileUpdateFailed'), 'error');
+      addToast(err?.response?.data?.error || "Failed to update profile.", 'error');
     } finally {
       setSaving(false);
     }
@@ -50,14 +48,14 @@ const EditModal: React.FC<EditModalProps> = ({ open, onOpenChange, initial, onSa
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent title={t('student.profile.editModal.title')} maxWidth="max-w-2xl">
+      <DialogContent title={"Edit Profile"} maxWidth="max-w-2xl">
         <form onSubmit={handleSave} className="space-y-4 -mt-2">
           <div>
-            <label htmlFor="edit-display-name" className={labelCls}>{t('student.profile.editModal.displayName')}</label>
-            <input id="edit-display-name" value={form.name} onChange={set('name')} placeholder={t('student.profile.editModal.displayNamePlaceholder')} className={inputCls} />
+            <label htmlFor="edit-display-name" className={labelCls}>{"Display Name"}</label>
+            <input id="edit-display-name" value={form.name} onChange={set('name')} placeholder={"Enter your display name"} className={inputCls} />
           </div>
           <div>
-            <label htmlFor="edit-handle" className={labelCls}>{t('student.profile.editModal.handle')}</label>
+            <label htmlFor="edit-handle" className={labelCls}>{"Operator Handle"}</label>
             <input id="edit-handle" value={form.hackerHandle} onChange={set('hackerHandle')} placeholder="kwame-operator" className={inputCls} />
             <div className="mt-2">
               <HandleSuggestions
@@ -69,23 +67,23 @@ const EditModal: React.FC<EditModalProps> = ({ open, onOpenChange, initial, onSa
             </div>
           </div>
           <div>
-            <label htmlFor="edit-organization" className={labelCls}>{t('student.profile.editModal.org')}</label>
-            <input id="edit-organization" value={form.organization} onChange={set('organization')} placeholder={t('student.profile.editModal.orgPlaceholder')} className={inputCls} />
+            <label htmlFor="edit-organization" className={labelCls}>{"Organization"}</label>
+            <input id="edit-organization" value={form.organization} onChange={set('organization')} placeholder={"Your organization (optional)"} className={inputCls} />
           </div>
           <div>
-            <label htmlFor="edit-bio" className={labelCls}>{t('student.profile.editModal.bio')}</label>
+            <label htmlFor="edit-bio" className={labelCls}>{"Bio"}</label>
             <textarea id="edit-bio"
               value={form.bio}
               onChange={set('bio')}
               rows={3}
-              placeholder={t('student.profile.editModal.bioPlaceholder')}
+              placeholder={"Tell us about yourself…"}
               className={`${inputCls} resize-none`}
             />
           </div>
           <div className="flex gap-3 pt-2">
-            <button type="button" onClick={() => onOpenChange(false)} className="flex-1 btn-secondary !py-2.5 text-xs">{t('button.cancel')}</button>
+            <button type="button" onClick={() => onOpenChange(false)} className="flex-1 btn-secondary !py-2.5 text-xs">{"Cancel"}</button>
             <Button type="submit" loading={saving} className="flex-1 !py-2.5 !text-xs">
-              {saving ? t('student.profile.editModal.saving') : <><Save className="w-3 h-3" /> {t('student.profile.editModal.save')}</>}
+              {saving ? "Saving..." : <><Save className="w-3 h-3" /> {"Save Changes"}</>}
             </Button>
           </div>
         </form>

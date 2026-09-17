@@ -1,5 +1,4 @@
 import { Link } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
 import { IconArrowLeft, IconCheck } from '@/shared/components/icons';
 import { cn } from '@/shared/utils/cn';
 
@@ -26,7 +25,6 @@ export function StepNumberHeader({
   backLabel = 'Back',
   onBack,
 }: StepNumberHeaderProps) {
-  const { t } = useTranslation();
   const showBack = !!(backUrl || onBack);
 
   const backElement = backUrl ? (
@@ -86,7 +84,7 @@ export function StepNumberHeader({
         )}
         {isCompleted && !statusLabel && (
           <span className="text-xs font-black uppercase tracking-widest text-accent">
-            {t('components.accordion.done', 'Done')}
+            {"Done"}
           </span>
         )}
       </div>

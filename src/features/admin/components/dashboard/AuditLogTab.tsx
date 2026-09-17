@@ -1,14 +1,12 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ChevronLeft, Filter, Link2 } from 'lucide-react';
-import { useTranslation } from 'react-i18next';
 import { IconChevronRight, IconClock } from '@/shared/components/icons';
 import api from '@/core/services/api';
 import { Skeleton, ErrorState } from '@/shared/components/ui';
 import type { AuditLogEntry } from '@/features/admin/types/admin.types';
 
 const AuditLogTab = () => {
-  const { t } = useTranslation();
   const navigate = useNavigate();
   const [entries, setEntries] = useState<AuditLogEntry[]>([]);
   const [loading, setLoading] = useState(true);
@@ -39,7 +37,7 @@ const AuditLogTab = () => {
       setPage(Math.max(1, Number(res.data?.page || p)));
       if (res.data?.availableActions) setAvailableActions(res.data.availableActions);
     } catch {
-      setError(t('admin.audit.loadFailed'));
+      setError("Audit log could not be loaded.");
     } finally {
       setLoading(false);
     }
@@ -57,7 +55,7 @@ const AuditLogTab = () => {
             onChange={(e) => { setActionFilter(e.target.value); setPage(1); }}
             className="w-full bg-bg border border-border rounded-xl pl-9 pr-3 py-2 text-xs text-text-primary focus:border-accent outline-none transition-colors appearance-none"
           >
-            <option value="">{t('admin.audit.allActions')}</option>
+            <option value="">{"All Actions"}</option>
             {availableActions.map((a) => (
               <option key={a} value={a}>{a.replace(/_/g, ' ')}</option>
             ))}
@@ -67,14 +65,14 @@ const AuditLogTab = () => {
           type="date"
           value={dateFrom}
           onChange={(e) => setDateFrom(e.target.value)}
-          aria-label={t('admin.audit.dateFrom')}
+          aria-label={"From date"}
           className="bg-bg border border-border rounded-xl px-3 py-2 text-xs text-text-primary focus:border-accent outline-none"
         />
         <input
           type="date"
           value={dateTo}
           onChange={(e) => setDateTo(e.target.value)}
-          aria-label={t('admin.audit.dateTo')}
+          aria-label={"To date"}
           className="bg-bg border border-border rounded-xl px-3 py-2 text-xs text-text-primary focus:border-accent outline-none"
         />
         <input
@@ -82,27 +80,27 @@ const AuditLogTab = () => {
           value={correlationFilter}
           onChange={(e) => setCorrelationFilter(e.target.value)}
           onKeyDown={(e) => { if (e.key === 'Enter') fetchLogs(1); }}
-          placeholder={t('admin.audit.correlationId')}
-          aria-label={t('admin.audit.correlationId')}
+          placeholder={"Correlation ID"}
+          aria-label={"Correlation ID"}
           className="w-44 bg-bg border border-border rounded-xl px-3 py-2 text-xs font-mono text-text-primary focus:border-accent outline-none"
         />
         <button
           onClick={() => fetchLogs(1)}
           className="btn-primary px-3 py-2"
         >
-          {t('admin.audit.filter')}
+          {"Filter"}
         </button>
-        <span className="text-xs text-text-muted font-mono">{t('admin.audit.entriesCount', { count: total })}</span>
+        <span className="text-xs text-text-muted font-mono">{`${total} entries`}</span>
       </div>
 
       {loading ? (
         <div className="space-y-2" role="status">{Array.from({ length: 10 }).map((_, i) => <Skeleton key={i} variant="card" className="h-12 rounded-xl bg-bg-card border border-border" />)}</div>
       ) : error ? (
-        <ErrorState message={error} title={t('admin.audit.unavailable')} />
+        <ErrorState message={error} title={"Audit log unavailable"} />
       ) : entries.length === 0 ? (
         <div className="rounded-2xl border-2 border-dashed border-border py-12 text-center">
           <IconClock size={40} className="mx-auto mb-3 text-text-muted opacity-30" />
-          <p className="text-sm text-text-muted font-bold">{t('admin.audit.empty')}</p>
+          <p className="text-sm text-text-muted font-bold">{"No audit log entries"}</p>
         </div>
       ) : (
         <div className="space-y-1">
@@ -111,7 +109,7 @@ const AuditLogTab = () => {
               <div className="w-2 h-2 rounded-full bg-accent/60 shrink-0" />
               <div className="flex-1 min-w-0 grid grid-cols-[minmax(0,1fr)_auto] gap-x-3 gap-y-1 items-center sm:grid-cols-[120px_100px_minmax(0,1fr)_auto] sm:gap-y-0">
                 <span className="font-mono text-text-muted min-w-0 truncate col-start-1 row-start-1 sm:col-start-1 sm:row-start-auto">{new Date(entry.createdAt).toLocaleString()}</span>
-                <span className="font-bold text-text-primary truncate col-start-2 row-start-1 sm:col-start-2 sm:row-start-auto">{entry.admin?.name || t('common2.unknown')}</span>
+                <span className="font-bold text-text-primary truncate col-start-2 row-start-1 sm:col-start-2 sm:row-start-auto">{entry.admin?.name || "Unknown"}</span>
                 <span className="text-text-secondary truncate col-start-1 min-w-0 row-start-2 sm:col-start-3 sm:row-start-auto">
                   <span className="font-bold text-accent">{entry.action.replace(/_/g, ' ')}</span>
                   <span className="text-text-muted/60 mx-1">→</span>
@@ -122,8 +120,8 @@ const AuditLogTab = () => {
                   {entry.correlationId ? (
                     <button
                       onClick={() => navigate(`?tab=security&requestId=${encodeURIComponent(entry.correlationId!)}`)}
-                      title={t('admin.audit.viewSecurityEvents')}
-                      aria-label={t('admin.audit.viewSecurityEvents')}
+                      title={"View related security events"}
+                      aria-label={"View related security events"}
                       className="inline-flex items-center gap-1 text-xs font-mono text-accent/80 hover:text-accent transition-colors min-h-[44px]"
                     >
                       <Link2 size={10} />
@@ -144,16 +142,16 @@ const AuditLogTab = () => {
           <button
             onClick={() => setPage((p) => Math.max(1, p - 1))}
             disabled={page <= 1}
-            aria-label={t('components.dataTable.prevPage')}
+            aria-label={"Previous page"}
             className="w-11 h-11 flex items-center justify-center rounded-lg bg-bg-elevated text-text-muted disabled:opacity-50 hover:text-accent transition-[color,transform] duration-[var(--dur-fast)] ease-[var(--ease-smooth)] active:scale-90"
           >
             <ChevronLeft className="w-5 h-5" />
           </button>
-          <span className="text-xs font-mono text-text-muted px-2">{t('components.dataTable.pageOf', { page, total: totalPages })}</span>
+          <span className="text-xs font-mono text-text-muted px-2">{`Page ${page} of ${totalPages}`}</span>
           <button
             onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
             disabled={page >= totalPages}
-            aria-label={t('components.dataTable.nextPage')}
+            aria-label={"Next page"}
             className="w-11 h-11 flex items-center justify-center rounded-lg bg-bg-elevated text-text-muted disabled:opacity-50 hover:text-accent transition-[color,transform] duration-[var(--dur-fast)] ease-[var(--ease-smooth)] active:scale-90"
           >
             <IconChevronRight size={20} />

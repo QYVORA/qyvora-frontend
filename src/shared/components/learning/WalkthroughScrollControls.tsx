@@ -1,5 +1,4 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
-import { useTranslation } from 'react-i18next';
 import { ChevronUp, ChevronDown } from 'lucide-react';
 import { useReducedMotion } from '@/shared/hooks/useReducedMotion';
 import { cn } from '@/shared/utils/cn';
@@ -12,7 +11,6 @@ interface WalkthroughScrollControlsProps {
 }
 
 const WalkthroughScrollControls: React.FC<WalkthroughScrollControlsProps> = ({ className }) => {
-  const { t } = useTranslation();
   const prefersReducedMotion = useReducedMotion();
   const [scrolledPast, setScrolledPast] = useState(false);
   const [engaged, setEngaged] = useState(false);
@@ -69,8 +67,8 @@ const WalkthroughScrollControls: React.FC<WalkthroughScrollControlsProps> = ({ c
       <button
         type="button"
         onClick={scrollTop}
-        aria-label={t('aria.scrollUp')}
-        title={t('aria.scrollUp')}
+        aria-label={"Scroll up in walkthrough"}
+        title={"Scroll up in walkthrough"}
         className={baseBtn}
       >
         <ChevronUp className="h-4 w-4" />
@@ -78,8 +76,8 @@ const WalkthroughScrollControls: React.FC<WalkthroughScrollControlsProps> = ({ c
       <button
         type="button"
         onClick={scrollDown}
-        aria-label={t('aria.scrollDown')}
-        title={t('aria.scrollDown')}
+        aria-label={"Scroll down in walkthrough"}
+        title={"Scroll down in walkthrough"}
         className={baseBtn}
       >
         <ChevronDown className="h-4 w-4" />

@@ -1,5 +1,4 @@
 import React from 'react';
-import { useTranslation } from 'react-i18next';
 import { useSearchParams } from 'react-router-dom';
 import { ArrowRight, BookOpen, Bug, ShieldCheck, Globe, Coins } from 'lucide-react';
 import { COURSES, COURSE_ICON_MAP } from '@/features/student/data/courses';
@@ -13,13 +12,21 @@ import Button from '@/shared/components/ui/Button';
 
 type TabId = 'courses' | 'labs' | 'bootcamp' | 'simulations' | 'cp';
 
-const TABS: { id: TabId; icon: React.ReactNode }[] = [
-  { id: 'courses', icon: <BookOpen className="h-4 w-4" aria-hidden="true" /> },
-  { id: 'labs', icon: <Bug className="h-4 w-4" aria-hidden="true" /> },
-  { id: 'bootcamp', icon: <ShieldCheck className="h-4 w-4" aria-hidden="true" /> },
-  { id: 'simulations', icon: <Globe className="h-4 w-4" aria-hidden="true" /> },
-  { id: 'cp', icon: <Coins className="h-4 w-4" aria-hidden="true" /> },
+const TABS: { id: TabId; label: string; icon: React.ReactNode }[] = [
+  { id: 'courses', label: 'Courses', icon: <BookOpen className="h-4 w-4" aria-hidden="true" /> },
+  { id: 'labs', label: 'Labs', icon: <Bug className="h-4 w-4" aria-hidden="true" /> },
+  { id: 'bootcamp', label: 'Bootcamp', icon: <ShieldCheck className="h-4 w-4" aria-hidden="true" /> },
+  { id: 'simulations', label: 'Simulations', icon: <Globe className="h-4 w-4" aria-hidden="true" /> },
+  { id: 'cp', label: 'CyberPoints', icon: <Coins className="h-4 w-4" aria-hidden="true" /> },
 ];
+
+const TAB_CTA_LABELS: Record<TabId, string> = {
+  courses: 'Browse courses',
+  labs: 'Browse labs',
+  bootcamp: 'Explore the bootcamp',
+  simulations: 'Open simulations',
+  cp: 'About CyberPoints',
+};
 
 const SUGGESTED_CTA: Record<TabId, string> = {
   courses: '/register',
@@ -37,7 +44,6 @@ const TAB_IDS = TABS.map((tab) => tab.id);
  * is the single primary action for the active tab.
  */
 const LearnPage: React.FC = () => {
-  const { t } = useTranslation();
   const [searchParams] = useSearchParams();
   const initialTab = searchParams.get('tab');
   const [active, setActive] = React.useState<TabId>(() =>
@@ -74,10 +80,10 @@ const LearnPage: React.FC = () => {
           <Card key={lab.id} to={lab.route} interactive className="flex min-h-[170px] flex-col gap-2 p-6">
             <span className="type-meta">{lab.difficulty}</span>
             <h3 className="type-h3 font-black uppercase tracking-tight text-text-primary">
-              {t(lab.titleKey ?? '', lab.id)}
+              {lab.title}
             </h3>
             <p className="type-body-sm flex-1 line-clamp-3">
-              {t(lab.descKey ?? '', '')}
+              {lab.desc}
             </p>
             <div className="flex flex-wrap gap-x-5 gap-y-1">
               <span className="type-meta">{lab.cpReward} CP</span>
@@ -107,19 +113,19 @@ const LearnPage: React.FC = () => {
   return (
     <div className="w-full bg-canvas">
       <SEO
-        title={t('learnPage.seo.title')}
-        description={t('learnPage.seo.description')}
+        title={"Learn | QYVORA"}
+        description={"Courses, labs, the Hacker Protocol Bootcamp, and more."}
       />
       <div className="w-full px-3 pb-20 pt-24 md:px-4 md:pb-24 md:pt-28 lg:px-6 lg:pt-32">
         <PageHeader
           kicker="QYVORA"
-          title={t('learnPage.seo.title', 'Learn').replace(' | QYVORA', '')}
-          description={t('learnPage.seo.description')}
+          title={"Learn | QYVORA".replace(' | QYVORA', '')}
+          description={"Courses, labs, the Hacker Protocol Bootcamp, and more."}
         />
 
         <div
           role="tablist"
-          aria-label={t('learnPage.seo.title')}
+          aria-label={"Learn | QYVORA"}
           className="mb-10 mt-10 flex flex-wrap gap-2 border-b border-border-subtle pb-4"
         >
           {TABS.map((tab) => {
@@ -142,7 +148,7 @@ const LearnPage: React.FC = () => {
                 ].join(' ')}
               >
                 {tab.icon}
-                {t(`learnPage.tabs.${tab.id}`)}
+                {tab.label}
               </button>
             );
           })}
@@ -170,11 +176,11 @@ const LearnPage: React.FC = () => {
             <ScrollReveal>
               <Card to="/simulations/terminal" interactive className="flex min-h-[160px] flex-col gap-3 p-6">
                 <h3 className="type-h3 font-black uppercase tracking-tight text-text-primary">
-                  {t('learnPage.simulations.title')}
+                  {"Practice inside simulated networks."}
                 </h3>
-                <p className="type-body-sm flex-1">{t('learnPage.simulations.description')}</p>
+                <p className="type-body-sm flex-1">{"Corporation-scale environments for terminal and networking practice without any of the risk."}</p>
                 <span className="flex min-h-[48px] items-center gap-2 text-sm font-bold text-accent">
-                  {t('learnPage.simulations.cta')}
+                  {"Open simulations"}
                   <ArrowRight className="h-4 w-4" aria-hidden="true" />
                 </span>
               </Card>
@@ -192,11 +198,11 @@ const LearnPage: React.FC = () => {
             <ScrollReveal>
               <Card to="/cp" interactive className="flex min-h-[160px] flex-col gap-3 p-6">
                 <h3 className="type-h3 font-black uppercase tracking-tight text-text-primary">
-                  {t('learnPage.cp.title')}
+                  {"Earn CyberPoints on-chain."}
                 </h3>
-                <p className="type-body-sm flex-1">{t('learnPage.cp.description')}</p>
+                <p className="type-body-sm flex-1">{"Every verified achievement across courses, labs, and bootcamp rooms earns CP — a verifiable record of your skill."}</p>
                 <span className="flex min-h-[48px] items-center gap-2 text-sm font-bold text-accent">
-                  {t('learnPage.cp.cta')}
+                  {"About CyberPoints"}
                   <ArrowRight className="h-4 w-4" aria-hidden="true" />
                 </span>
               </Card>
@@ -206,7 +212,7 @@ const LearnPage: React.FC = () => {
 
         <div className="mt-10">
           <Button to={SUGGESTED_CTA[active]}>
-            {t(`learnPage.${active}.cta`, t(`learnPage.tabs.${active}`))}
+            {TAB_CTA_LABELS[active]}
           </Button>
         </div>
       </div>

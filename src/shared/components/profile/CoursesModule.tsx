@@ -1,4 +1,3 @@
-import { useTranslation } from 'react-i18next';
 import { motion } from 'motion/react';
 import { useReducedMotion } from '@/shared/hooks/useReducedMotion';
 import { GraduationCap } from 'lucide-react';
@@ -20,7 +19,6 @@ const CoursesModule: React.FC<CoursesModuleProps> = ({
   courseIds = [],
   className = '',
 }) => {
-  const { t } = useTranslation();
   const prefersReduced = useReducedMotion();
 
   const completed = courseIds
@@ -51,7 +49,7 @@ const CoursesModule: React.FC<CoursesModuleProps> = ({
       <ModuleHeader
         icon={<GraduationCap className="w-4 h-4 text-info" />}
         iconClassName="bg-info/10"
-        title={t('profile.courses.title', 'Courses')}
+        title={"Courses"}
         trailing={
           coursesCompleted > 0 ? (
             <span className="px-2 py-1 bg-info/10 text-info text-xs font-black rounded-lg">
@@ -64,7 +62,7 @@ const CoursesModule: React.FC<CoursesModuleProps> = ({
       <div className="mt-4">
         {coursesCompleted === 0 && completed.length === 0 ? (
           <p className="text-xs text-text-muted text-center py-4">
-            {t('profile.courses.empty', 'No courses completed yet.')}
+            {"No courses completed yet."}
           </p>
         ) : completed.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -75,7 +73,7 @@ const CoursesModule: React.FC<CoursesModuleProps> = ({
             <QyvoraMark className="w-12 h-12 sm:w-14 sm:h-14 shrink-0" />
             <div className="min-w-0">
               <p className="text-xs font-black uppercase tracking-widest text-text-primary truncate">
-                {t('profile.courses.completedCount', { count: coursesCompleted, defaultValue: '{{count}} courses completed' })}
+                {`${coursesCompleted} courses completed`}
               </p>
             </div>
           </div>

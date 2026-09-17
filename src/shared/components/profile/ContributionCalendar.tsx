@@ -1,5 +1,4 @@
 import { useMemo } from 'react';
-import { useTranslation } from 'react-i18next';
 import { getDateKey } from '@/shared/utils/dateUtils';
 
 interface ContributionCalendarProps {
@@ -96,7 +95,6 @@ const ContributionCalendar: React.FC<ContributionCalendarProps> = ({
   totalDays = 365,
   className,
 }) => {
-  const { t } = useTranslation();
 
   const totalWeeks = Math.ceil(totalDays / 7);
 
@@ -141,10 +139,10 @@ const ContributionCalendar: React.FC<ContributionCalendarProps> = ({
       {/* Header */}
       <div className="flex items-center justify-between mb-3">
         <h3 className="text-xs font-black uppercase tracking-widest text-text-muted">
-          {t('profile.contributionCalendar.title')}
+          {"Activity"}
         </h3>
         <span className="text-xs font-mono text-text-muted/60">
-          {totalActivities} {t('profile.contributionCalendar.activities')} &middot; {activeDays} {t('profile.contributionCalendar.activeDays')}
+          {totalActivities} {"activities"} &middot; {activeDays} {"active days"}
         </span>
       </div>
 
@@ -204,7 +202,7 @@ const ContributionCalendar: React.FC<ContributionCalendarProps> = ({
                   ry={2}
                   className={`${colorClass} ${cell.isToday ? 'stroke-accent stroke-1' : ''}`}
                 >
-                  <title>{`${cell.date}: ${cell.count} ${t('profile.contributionCalendar.activities')}`}</title>
+                  <title>{`${cell.date}: ${cell.count} ${"activities"}`}</title>
                 </rect>
               </g>
             );
@@ -214,14 +212,14 @@ const ContributionCalendar: React.FC<ContributionCalendarProps> = ({
 
       {/* Legend */}
       <div className="flex items-center gap-2 mt-2 text-xs font-mono text-text-muted/50">
-        <span>{t('profile.contributionCalendar.less')}</span>
+        <span>{"Less"}</span>
         {INTENSITY_LEVELS.map((cls, i) => (
           <div
             key={i}
             className={`w-2.5 h-2.5 rounded-sm ${cls}`}
           />
         ))}
-        <span>{t('profile.contributionCalendar.more')}</span>
+        <span>{"More"}</span>
       </div>
     </div>
   );

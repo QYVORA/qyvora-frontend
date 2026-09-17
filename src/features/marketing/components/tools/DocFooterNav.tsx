@@ -1,6 +1,5 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
 import { IconArrowRight, IconArrowLeft } from '@/shared/components/icons';
 import { getToolNeighbors, getRelatedTools } from '@/features/marketing/data/relatedTools';
 import RelatedContentSection from '@/shared/components/RelatedContentSection';
@@ -15,8 +14,7 @@ interface DocFooterNavProps {
  * the full related-tools strip. Replaces the marketing-style "Ready to…" CTA.
  */
 const DocFooterNav: React.FC<DocFooterNavProps> = ({ currentPath }) => {
-  const { t } = useTranslation();
-  const { prev, next } = getToolNeighbors(t, currentPath);
+  const { prev, next } = getToolNeighbors(currentPath);
 
   return (
     <div className="w-full py-16 md:py-24 border-t border-border/10">
@@ -81,7 +79,7 @@ const DocFooterNav: React.FC<DocFooterNavProps> = ({ currentPath }) => {
           </div>
         </div>
 
-        <RelatedContentSection items={getRelatedTools(t, currentPath)} />
+        <RelatedContentSection items={getRelatedTools(currentPath)} />
       </div>
     </div>
   );

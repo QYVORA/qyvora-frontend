@@ -1,5 +1,4 @@
 import { useCallback, useEffect, useState } from 'react';
-import { useTranslation } from 'react-i18next';
 import { Bookmark, Flag } from 'lucide-react';
 import { IconCheck } from '@/shared/components/icons';
 import type { BootcampStep } from '../../constants/bootcampConfig';
@@ -37,7 +36,6 @@ const StepCard: React.FC<Props> = ({
   onNext, onPrev,
   onGotIt, gotIt = false,
 }) => {
-  const { t } = useTranslation();
 
   // The card container wraps interactive content (quizzes, copy buttons, flag
   // inputs, links). Clicking/activating those controls must NOT bubble up to the
@@ -82,11 +80,11 @@ const StepCard: React.FC<Props> = ({
       title={step.title}
       isActive={isActive}
       isCompleted={isViewed && !isActive}
-      statusLabel={isActive ? t('student.bootcampRoom.stepCard.currentFocus') : undefined}
+      statusLabel={isActive ? "Current Focus" : undefined}
       notesStorageKey={`step_notes_${phaseId}_${roomId}_${stepNum}`}
-      headerAction={<button onClick={(e) => { e.stopPropagation(); onToggleBookmark(); }} className={`absolute top-12 md:top-16 right-0 z-10 min-h-[44px] min-w-[44px] p-2 rounded-lg border transition-[border-color,color,opacity] duration-[var(--dur-fast)] ease-[var(--ease-smooth)] ${isBookmarked ? 'border-accent/30 text-yellow-500' : 'bg-transparent border-border text-text-muted hover:text-accent opacity-100 lg:opacity-0 lg:group-hover:opacity-100'}`} aria-label={isBookmarked ? t('student.bootcampRoom.stepCard.removeBookmark') : t('student.bootcampRoom.stepCard.addBookmark')}><Bookmark className={`h-4 w-4 ${isBookmarked ? 'fill-current' : ''}`} /></button>}
-      afterContent={<div className="mt-8 flex flex-wrap items-start gap-4" onClick={(e) => e.stopPropagation()}><button onClick={() => onGotIt?.(stepNum, !gotIt)} className={`inline-flex min-h-[44px] items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-black uppercase tracking-widest border transition-[background-color,border-color,color] duration-[var(--dur-base)] ease-[var(--ease-smooth)] ${gotIt ? 'bg-accent text-on-accent border-accent' : 'border-border text-text-muted hover:border-accent/50 hover:text-accent'}`}><IconCheck size={12} className={gotIt ? '' : 'opacity-50'} />{gotIt ? t('student.bootcampRoom.stepCard.gotIt') : t('student.bootcampRoom.stepCard.markGotIt')}</button></div>}
-      footer={<div className="flex items-center justify-between border-t border-border/5 pt-6" onClick={(e) => e.stopPropagation()}><button onClick={onReportIssue} className="min-h-[44px] text-xs font-bold uppercase tracking-widest text-text-muted hover:text-accent transition-colors flex items-center gap-1.5 opacity-100 lg:opacity-0 lg:group-hover:opacity-100"><Flag className="h-3 w-3" />{t('student.bootcampRoom.stepCard.reportIssue')}</button>{isActive && !isViewed && <span className="text-xs font-bold uppercase tracking-widest text-accent/40">{t('student.bootcampRoom.stepCard.unread')}</span>}</div>}
+      headerAction={<button onClick={(e) => { e.stopPropagation(); onToggleBookmark(); }} className={`absolute top-12 md:top-16 right-0 z-10 min-h-[44px] min-w-[44px] p-2 rounded-lg border transition-[border-color,color,opacity] duration-[var(--dur-fast)] ease-[var(--ease-smooth)] ${isBookmarked ? 'border-accent/30 text-yellow-500' : 'bg-transparent border-border text-text-muted hover:text-accent opacity-100 lg:opacity-0 lg:group-hover:opacity-100'}`} aria-label={isBookmarked ? "Remove bookmark" : "Bookmark this step"}><Bookmark className={`h-4 w-4 ${isBookmarked ? 'fill-current' : ''}`} /></button>}
+      afterContent={<div className="mt-8 flex flex-wrap items-start gap-4" onClick={(e) => e.stopPropagation()}><button onClick={() => onGotIt?.(stepNum, !gotIt)} className={`inline-flex min-h-[44px] items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-black uppercase tracking-widest border transition-[background-color,border-color,color] duration-[var(--dur-base)] ease-[var(--ease-smooth)] ${gotIt ? 'bg-accent text-on-accent border-accent' : 'border-border text-text-muted hover:border-accent/50 hover:text-accent'}`}><IconCheck size={12} className={gotIt ? '' : 'opacity-50'} />{gotIt ? "Got It!" : "Mark as Got It"}</button></div>}
+      footer={<div className="flex items-center justify-between border-t border-border/5 pt-6" onClick={(e) => e.stopPropagation()}><button onClick={onReportIssue} className="min-h-[44px] text-xs font-bold uppercase tracking-widest text-text-muted hover:text-accent transition-colors flex items-center gap-1.5 opacity-100 lg:opacity-0 lg:group-hover:opacity-100"><Flag className="h-3 w-3" />{"Report Issue"}</button>{isActive && !isViewed && <span className="text-xs font-bold uppercase tracking-widest text-accent/40">{"Unread Step"}</span>}</div>}
     >
 
     <div className={`w-full text-sm md:text-base font-mono leading-[2] md:leading-[2.2] overflow-x-auto transition-colors ${isActive ? 'text-text-primary' : 'text-text-secondary'} mb-6 md:mb-8`}>

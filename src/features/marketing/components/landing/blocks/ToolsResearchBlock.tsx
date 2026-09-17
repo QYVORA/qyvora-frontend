@@ -1,5 +1,4 @@
 import React from 'react';
-import { useTranslation } from 'react-i18next';
 import { ArrowRight, Wrench, FlaskConical } from 'lucide-react';
 import { Card } from '@/shared/components/ui/Card';
 import ScrollReveal from '@/shared/components/ScrollReveal';
@@ -9,20 +8,19 @@ import ScrollReveal from '@/shared/components/ScrollReveal';
  * tool index and the research feed. No eight-tool grid on the landing.
  */
 const ToolsResearchBlock: React.FC = () => {
-  const { t } = useTranslation();
 
   const tiles = [
     {
       key: 'tools',
       to: '/tools',
       icon: <Wrench className="h-5 w-5" aria-hidden="true" />,
-      ctaKey: 'landing3.tools.toolsCta',
+      cta: 'Browse the tools',
     },
     {
       key: 'research',
       to: '/blogs',
       icon: <FlaskConical className="h-5 w-5" aria-hidden="true" />,
-      ctaKey: 'landing3.tools.researchCta',
+      cta: 'Read the research',
     },
   ];
 
@@ -32,12 +30,12 @@ const ToolsResearchBlock: React.FC = () => {
         <ScrollReveal>
           <div className="mb-10 max-w-2xl">
             <p className="type-label mb-1.5 uppercase tracking-[0.12em] text-accent">
-              {t('landing3.tools.kicker')}
+              {"Tools and research"}
             </p>
             <h2 className="type-h2 text-3xl font-black uppercase tracking-tight text-text-primary md:text-5xl">
-              {t('landing3.tools.title')}
+              {"Combat-ready open-source tooling."}
             </h2>
-            <p className="type-body mt-2">{t('landing3.tools.description')}</p>
+            <p className="type-body mt-2">{"Thirteen offensive security tools, built in the open and documented for operators — plus research from the QuiteRoot collective."}</p>
           </div>
         </ScrollReveal>
 
@@ -51,7 +49,7 @@ const ToolsResearchBlock: React.FC = () => {
                 <span className="flex flex-1 items-center justify-between gap-3">
                   <span className="type-meta text-text-secondary">/{tile.to.replace(/^\//, '')}</span>
                   <span className="flex min-h-[48px] items-center gap-2 text-sm font-bold text-accent">
-                    {t(tile.ctaKey)}
+                    {tile.cta}
                     <ArrowRight className="h-4 w-4" aria-hidden="true" />
                   </span>
                 </span>

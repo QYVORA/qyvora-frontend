@@ -1,5 +1,4 @@
 import React from 'react';
-import { useTranslation } from 'react-i18next';
 import LearningCard from '@/shared/components/learning/LearningCard';
 import { getAllCompletedLabIds } from '@/features/student/utils/labProgress';
 import { useAuth } from '@/core/contexts/AuthContext';
@@ -28,7 +27,6 @@ const LAB_PREFIXES: Record<string, string> = {
 };
 
 const LabCard: React.FC<LabCardProps> = ({ id, title, description, difficulty, cpReward, route, accentColor }) => {
-  const { t } = useTranslation();
   const { user } = useAuth();
 
   const prefix = LAB_PREFIXES[id];
@@ -37,8 +35,8 @@ const LabCard: React.FC<LabCardProps> = ({ id, title, description, difficulty, c
     : false;
 
   const actionLabel = completed
-    ? t('student.labs.labCard.completed', 'Completed')
-    : t('student.labs.labCard.start');
+    ? "Completed"
+    : "Start";
 
   return (
     <LearningCard

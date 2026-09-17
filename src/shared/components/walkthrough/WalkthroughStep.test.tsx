@@ -6,13 +6,6 @@ import { WalkthroughStep, ProgressiveHintLevel } from './WalkthroughStep';
 const mockFlagSubmit = vi.fn<(step: string, flag: string) => Promise<{ correct: boolean }>>();
 const onComplete = vi.fn();
 
-vi.mock('react-i18next', () => ({
-  useTranslation: () => ({
-    t: (key: string) => key,
-    i18n: { language: 'en' },
-  }),
-}));
-
 vi.mock('@/shared/components/courses/CodeBlockRenderer', () => ({
   EducationalMarkdownRenderer: ({ text }: { text: string }) => (
     <div data-testid="narrative">{text}</div>

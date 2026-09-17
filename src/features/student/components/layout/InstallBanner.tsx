@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import { useTranslation } from 'react-i18next';
 import { motion, AnimatePresence } from 'motion/react';
 import { Loader2 } from 'lucide-react';
 import { IconDownload, IconX } from '@/shared/components/icons';
@@ -9,7 +8,6 @@ import { usePopupManager } from '@/core/hooks/usePopupManager';
 const DISMISS_KEY = 'qyvora_install_dismissed';
 
 const InstallBanner = () => {
-  const { t } = useTranslation();
   const [dismissed, setDismissed] = useState(() => {
     try { return localStorage.getItem(DISMISS_KEY) === '1'; } catch { return false; }
   });
@@ -56,9 +54,9 @@ const InstallBanner = () => {
                 )}
               </div>
               <div className="flex-1 min-w-0">
-                <p className="text-sm font-bold text-text-primary">{t('student.installBanner.title')}</p>
+                <p className="text-sm font-bold text-text-primary">{"Install QYVORA"}</p>
                 <p className="text-xs text-text-muted mt-0.5">
-                  {installing ? t('button.installing') : t('student.installBanner.description')}
+                  {installing ? "Installing…" : "Get the full experience with our desktop app."}
                 </p>
               </div>
               <div className="flex items-center gap-2 shrink-0">
@@ -67,7 +65,7 @@ const InstallBanner = () => {
                   disabled={installing}
                   className="px-3 py-1.5 rounded-2xl bg-accent text-on-accent text-xs font-black uppercase tracking-widest hover:brightness-110 transition-[filter] duration-[var(--dur-fast)] ease-[var(--ease-smooth)] disabled:opacity-50"
                 >
-                  {installing ? t('button.installing') : t('student.installBanner.install')}
+                  {installing ? "Installing…" : "Install"}
                 </button>
                 <button
                   onClick={handleDismiss}

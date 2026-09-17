@@ -1,5 +1,4 @@
 import React from 'react';
-import { useTranslation } from 'react-i18next';
 import { Activity, ArrowDownLeft, ArrowUpRight } from 'lucide-react';
 import { CpTx } from './types';
 import { fmt } from './utils';
@@ -30,21 +29,20 @@ const TransactionLedger: React.FC<TransactionLedgerProps> = ({
   loading,
   totalPages,
 }) => {
-  const { t } = useTranslation();
 
   return (
     <div className="rounded-2xl border border-border/50 bg-bg-card overflow-hidden">
       <div className="flex flex-wrap items-center justify-between gap-3 border-b border-border px-5 py-4">
         <div className="flex items-center gap-2">
           <Activity className="w-4 h-4 text-accent" />
-          <span className="text-sm font-black uppercase tracking-wide text-text-primary">{t('admin.cp.ledger')}</span>
-          <span className="text-xs font-mono text-text-muted">{t('admin.cp.totalTransactions', { count: txTotal })}</span>
+          <span className="text-sm font-black uppercase tracking-wide text-text-primary">{"Transaction Ledger"}</span>
+          <span className="text-xs font-mono text-text-muted">{`${txTotal} total`}</span>
         </div>
         <div className="flex flex-wrap items-center gap-2">
           <input
             value={txSearch}
             onChange={e => setTxSearch(e.target.value)}
-            placeholder={t('admin.cp.searchUser')}
+            placeholder={"Search user…"}
             className="bg-bg border border-border rounded-xl px-3 py-1.5 text-xs text-text-primary focus:outline-none focus:border-accent w-36"
           />
           <select
@@ -52,10 +50,10 @@ const TransactionLedger: React.FC<TransactionLedgerProps> = ({
             onChange={e => setTxFilter(e.target.value as any)}
             className="bg-bg border border-border rounded-xl px-2 py-1.5 text-xs text-text-primary focus:outline-none focus:border-accent"
           >
-            <option value="all">{t('admin.cp.filterAll')}</option>
-            <option value="credit">{t('admin.cp.filterCredit')}</option>
-            <option value="purchase">{t('admin.cp.filterPurchase')}</option>
-            <option value="deduct">{t('admin.cp.filterDeduct')}</option>
+            <option value="all">{"All types"}</option>
+            <option value="credit">{"Credit"}</option>
+            <option value="purchase">{"Purchase"}</option>
+            <option value="deduct">{"Deduct"}</option>
           </select>
         </div>
       </div>
@@ -74,7 +72,7 @@ const TransactionLedger: React.FC<TransactionLedgerProps> = ({
           ))}
         </div>
       ) : txs.length === 0 ? (
-        <div className="py-12 text-center text-sm text-text-muted">{t('admin.cp.noTransactions')}</div>
+        <div className="py-12 text-center text-sm text-text-muted">{"No transactions found."}</div>
       ) : (
         <>
           {/* Mobile */}
@@ -111,7 +109,7 @@ const TransactionLedger: React.FC<TransactionLedgerProps> = ({
             <table className="w-full text-left min-w-[700px]">
               <thead className="bg-bg-elevated/50">
                 <tr>
-                  {[t('admin.cp.colUser'), t('admin.cp.colType'), t('admin.cp.colPoints'), t('admin.cp.colBalanceAfter'), t('admin.cp.colNote'), t('admin.cp.colDate')].map(h => (
+                  {["User", "Type", "Points", "Balance After", "Note", "Date"].map(h => (
                     <th key={h} className="px-4 py-3 text-xs font-black uppercase tracking-[0.25em] text-text-muted/60">{h}</th>
                   ))}
                 </tr>
@@ -156,7 +154,7 @@ const TransactionLedger: React.FC<TransactionLedgerProps> = ({
           {totalPages > 1 && (
             <div className="flex items-center justify-between gap-3 border-t border-border px-5 py-3">
               <span className="text-xs text-text-muted">
-                {t('admin.cp.pageOf', { page: txPage, total: totalPages, count: txTotal })}
+                {`Page ${txPage} of ${totalPages} · ${txTotal} transactions`}
               </span>
               <div className="flex items-center gap-1.5">
                 <button

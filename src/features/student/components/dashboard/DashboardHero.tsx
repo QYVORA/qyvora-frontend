@@ -1,4 +1,3 @@
-import { useTranslation } from 'react-i18next';
 import { ArrowRight } from 'lucide-react';
 import Button from '@/shared/components/ui/Button';
 
@@ -18,26 +17,25 @@ interface DashboardHeroProps {
 const DashboardHero = ({
   isEnrolled, allDone, nextMission, continuePath, currentPhaseTitle, username,
 }: DashboardHeroProps) => {
-  const { t } = useTranslation();
-  const displayName = username ? `@${username}` : t('student.dashboard.hero.operatorFallback');
+  const displayName = username ? `@${username}` : "Operator";
 
-  let kicker = t('student.dashboard.hero.welcome') + ' ' + displayName;
-  let title = t('student.dashboard.hero.beginJourney');
-  let body = t('student.dashboard.hero.startHpb');
-  let ctaLabel = t('student.dashboard.hero.startTraining');
+  let kicker = "Welcome," + ' ' + displayName;
+  let title = "Begin your journey";
+  let body = "Start the Hacker Protocol Bootcamp and earn your first CP.";
+  let ctaLabel = "Start Training";
 
   if (isEnrolled) {
-    kicker = `${t('student.dashboard.hero.welcomeBack')} ${displayName}`;
-    title = nextMission?.title || currentPhaseTitle || t('student.dashboard.hero.continueTraining');
-    body = t('student.dashboard.hero.pickUpWhere');
-    ctaLabel = t('student.dashboard.hero.continue');
+    kicker = `${"Welcome back,"} ${displayName}`;
+    title = nextMission?.title || currentPhaseTitle || "Continue your training";
+    body = "Pick up where you left off.";
+    ctaLabel = "Continue";
   }
 
   if (allDone) {
-    kicker = `${t('student.dashboard.hero.welcomeBack')} ${displayName}`;
-    title = t('student.dashboard.hero.allMissionsComplete');
-    body = t('student.dashboard.hero.allRoomsComplete');
-    ctaLabel = t('student.dashboard.hero.reviewCurriculum');
+    kicker = `${"Welcome back,"} ${displayName}`;
+    title = "All missions complete";
+    body = "You have completed every available room.";
+    ctaLabel = "Review Curriculum";
   }
 
   return (

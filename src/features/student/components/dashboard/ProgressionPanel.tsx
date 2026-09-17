@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { useTranslation } from 'react-i18next';
 import { ChevronDown, ChevronUp, Award } from 'lucide-react';
 import type { ProgressionStats } from '@/shared/types/profile';
 import { IconRank } from '@/shared/components/icons';
@@ -15,7 +14,6 @@ interface ProgressionPanelProps {
 }
 
 export const ProgressionPanel = ({ progression, fallbackLabel }: ProgressionPanelProps) => {
-  const { t } = useTranslation();
   const [expanded, setExpanded] = useState(false);
 
   const hasData = Boolean(progression);
@@ -38,8 +36,8 @@ export const ProgressionPanel = ({ progression, fallbackLabel }: ProgressionPane
           <span className="flex items-center gap-2 text-xs font-black uppercase tracking-widest text-text-muted">
             <Award size={16} className="text-accent" />
             {capped
-              ? t('student.dashboard.rank')
-              : t('heading.target')}
+              ? "Rank"
+              : "Target:"}
             {nextName && !capped && (
               <span className="text-accent">{nextName}</span>
             )}
@@ -78,7 +76,7 @@ export const ProgressionPanel = ({ progression, fallbackLabel }: ProgressionPane
             {currentLabel}
           </span>
           {nextName && !capped && (
-            <span>{pointsToNext?.toLocaleString()} {t('student.progression.pointsToNext', 'pts to next')}</span>
+            <span>{pointsToNext?.toLocaleString()} {"pts to next"}</span>
           )}
         </div>
       </button>
@@ -88,7 +86,7 @@ export const ProgressionPanel = ({ progression, fallbackLabel }: ProgressionPane
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
             <div className="rounded-xl bg-surface-raised p-4">
               <span className="block text-xs font-black uppercase tracking-widest text-text-muted">
-                {t('student.progression.points', 'Progression Points')}
+                {"Progression Points"}
               </span>
               <span className="mt-1 block font-mono text-xl font-black text-accent">
                 {points.toLocaleString()}
@@ -96,7 +94,7 @@ export const ProgressionPanel = ({ progression, fallbackLabel }: ProgressionPane
             </div>
             <div className="rounded-xl bg-surface-raised p-4">
               <span className="block text-xs font-black uppercase tracking-widest text-text-muted">
-                {t('student.progression.currentRank', 'Current Rank')}
+                {"Current Rank"}
               </span>
               <span className="mt-1 block font-mono text-xl font-black text-text-primary">
                 {currentLabel || '—'}
@@ -105,15 +103,15 @@ export const ProgressionPanel = ({ progression, fallbackLabel }: ProgressionPane
             <div className="rounded-xl bg-surface-raised p-4">
               <span className="block text-xs font-black uppercase tracking-widest text-text-muted">
                 {capped
-                  ? t('student.progression.capped', 'Max Rank')
-                  : t('student.progression.nextRank', 'Next Rank')}
+                  ? "Max Rank"
+                  : "Next Rank"}
               </span>
               <span className="mt-1 block font-mono text-xl font-black text-text-primary">
                 {capped ? '—' : (nextName ?? '—')}
               </span>
               {!capped && pointsToNext !== null && (
                 <span className="mt-1 block text-xs font-mono text-text-muted/70">
-                  {pointsToNext.toLocaleString()} {t('student.progression.remaining', 'remaining')}
+                  {pointsToNext.toLocaleString()} {"remaining"}
                 </span>
               )}
             </div>

@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { useTranslation } from 'react-i18next';
 import { Send, Building2, Globe, Phone, User as UserIcon } from 'lucide-react';
 import { IconCheck } from '@/shared/components/icons';
 import api from '../../../core/services/api';
@@ -13,7 +12,6 @@ export function openServiceRequestModal(packageTier?: string) {
 }
 
 const ServiceRequestModalHost: React.FC = () => {
-  const { t } = useTranslation();
   const [open, setOpen] = useState(false);
   const [status, setStatus] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle');
   const [packageTier, setPackageTier] = useState<string | undefined>();
@@ -59,8 +57,8 @@ const ServiceRequestModalHost: React.FC = () => {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogContent
-        title={t('services2.requestAssessment')}
-        description={packageTier ? t('services2.inquiryFor', { packageTier }) : t('services2.description')}
+        title={"Request Assessment"}
+        description={packageTier ? `Inquiry for ${packageTier}` : "Describe your needs and we'll get back to you."}
         maxWidth="max-w-2xl"
       >
         {status === 'sent' ? (
@@ -68,23 +66,23 @@ const ServiceRequestModalHost: React.FC = () => {
             <div className="w-14 h-14 rounded-2xl bg-accent-dim border border-accent/30 flex items-center justify-center">
               <IconCheck size={28} className="text-accent" />
             </div>
-            <h3 className="text-lg font-bold text-text-primary">{t('services2.requestReceived')}</h3>
+            <h3 className="text-lg font-bold text-text-primary">{"Request Received"}</h3>
             <p className="text-sm text-text-muted">
-              {t('services2.requestReceivedDesc')}
+              {"Your request has been received. We'll contact you shortly."}
             </p>
             <button
               type="button"
               onClick={() => setOpen(false)}
               className="btn-secondary text-xs !py-2 !px-5 mt-2"
             >
-              {t('button.close')}
+              {"Close"}
             </button>
           </div>
         ) : (
           <div className="space-y-5">
             <div className="rounded-2xl border border-border bg-accent/5 p-4">
               <p className="text-xs text-text-secondary">
-                {t('services2.introText')} <strong className="text-accent">{t('services2.bootcampsHighlight')}</strong> {t('services2.introTextEnd')}
+                {"We offer comprehensive cybersecurity services including "} <strong className="text-accent">{"bootcamps, training, "}</strong> {"and consulting."}
               </p>
             </div>
 
@@ -93,7 +91,7 @@ const ServiceRequestModalHost: React.FC = () => {
                 {/* Full Name */}
                 <div className="space-y-1.5">
                   <label className="text-xs font-bold text-text-muted uppercase tracking-widest flex items-center gap-2">
-                    <UserIcon className="w-3 h-3" /> {t('services2.fullName')}
+                    <UserIcon className="w-3 h-3" /> {"Full Name"}
                   </label>
                   <input
                     name="name"
@@ -107,7 +105,7 @@ const ServiceRequestModalHost: React.FC = () => {
                 {/* Email Address */}
                 <div className="space-y-1.5">
                   <label className="text-xs font-bold text-text-muted uppercase tracking-widest flex items-center gap-2">
-                    <Send className="w-3 h-3" /> {t('services2.emailAddress')}
+                    <Send className="w-3 h-3" /> {"Email Address"}
                   </label>
                   <input
                     name="email"
@@ -121,7 +119,7 @@ const ServiceRequestModalHost: React.FC = () => {
                 {/* Business Name */}
                 <div className="space-y-1.5">
                   <label className="text-xs font-bold text-text-muted uppercase tracking-widest flex items-center gap-2">
-                    <Building2 className="w-3 h-3" /> {t('services2.businessName')}
+                    <Building2 className="w-3 h-3" /> {"Business Name"}
                   </label>
                   <input
                     name="businessName"
@@ -134,7 +132,7 @@ const ServiceRequestModalHost: React.FC = () => {
                 {/* Phone Number */}
                 <div className="space-y-1.5">
                   <label className="text-xs font-bold text-text-muted uppercase tracking-widest flex items-center gap-2">
-                    <Phone className="w-3 h-3" /> {t('services2.phoneNumber')}
+                    <Phone className="w-3 h-3" /> {"Phone Number"}
                   </label>
                   <input
                     name="phone"
@@ -148,7 +146,7 @@ const ServiceRequestModalHost: React.FC = () => {
               {/* Website URL */}
               <div className="space-y-1.5">
                 <label className="text-xs font-bold text-text-muted uppercase tracking-widest flex items-center gap-2">
-                  <Globe className="w-3 h-3" /> {t('services2.websiteUrl')}
+                  <Globe className="w-3 h-3" /> {"Website URL"}
                 </label>
                 <input
                   name="websiteUrl"
@@ -161,7 +159,7 @@ const ServiceRequestModalHost: React.FC = () => {
               {/* Message / Notes */}
               <div className="space-y-1.5">
                 <label className="text-xs font-bold text-text-muted uppercase tracking-widest">
-                  {t('services2.optionalNotes')}
+                  {"Optional Notes / Message"}
                 </label>
                 <textarea
                   name="message"
@@ -173,7 +171,7 @@ const ServiceRequestModalHost: React.FC = () => {
 
               {status === 'error' && (
                 <p className="text-xs text-danger font-mono">
-                  {t('services2.sendError')}
+                  {"Failed to send request. Please try again."}
                 </p>
               )}
 
@@ -183,8 +181,8 @@ const ServiceRequestModalHost: React.FC = () => {
                 className="w-full !py-4 gap-3"
               >
                 {status === 'sending'
-                  ? t('services2.transmitting')
-                  : <><Send className="w-4 h-4" /> {t('services2.submitRequest')}</>}
+                  ? "Transmitting..."
+                  : <><Send className="w-4 h-4" /> {"Submit Request"}</>}
               </Button>
             </form>
           </div>

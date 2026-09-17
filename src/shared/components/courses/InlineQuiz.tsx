@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { useTranslation } from 'react-i18next';
 import { XCircle } from 'lucide-react';
 import { IconCheck, IconChevronRight } from '@/shared/components/icons';
 
@@ -26,8 +25,7 @@ const InlineQuiz: React.FC<InlineQuizProps> = ({
   onComplete,
   className = '',
 }) => {
-  const { t } = useTranslation();
-  const resolvedTitle = title ?? t('components.quiz.defaultTitle');
+  const resolvedTitle = title ?? "Knowledge Check";
   const [currentQ, setCurrentQ] = useState(0);
   const [answers, setAnswers] = useState<Record<string, number>>({});
   const [submitted, setSubmitted] = useState(false);
@@ -36,7 +34,7 @@ const InlineQuiz: React.FC<InlineQuizProps> = ({
   if (!questions || questions.length === 0) {
     return (
       <div className={`wc-interactive border border-border bg-bg-card rounded-xl p-6 text-center ${className}`}>
-        <p className="text-sm text-text-muted">{t('components.quiz.empty', 'No questions available.')}</p>
+        <p className="text-sm text-text-muted">{"No questions available."}</p>
       </div>
     );
   }
@@ -90,7 +88,7 @@ const InlineQuiz: React.FC<InlineQuizProps> = ({
             {score}%
           </div>
           <div className={`flex items-center justify-center gap-1.5 text-sm font-bold uppercase tracking-widest ${passed ? 'text-accent' : 'text-danger'}`}>
-            {passed ? <><IconCheck size={16} /> {t('components.quiz.passed')}</> : <><XCircle className="h-4 w-4" /> {t('components.quiz.needsReview')}</>}
+            {passed ? <><IconCheck size={16} /> {"Passed"}</> : <><XCircle className="h-4 w-4" /> {"Needs Review"}</>}
           </div>
           <p className="text-xs text-text-muted mt-2">{correct} of {questions.length} correct ({(passThreshold)}% to pass)</p>
         </div>
@@ -107,9 +105,9 @@ const InlineQuiz: React.FC<InlineQuizProps> = ({
                   </span>
                   <div>
                     <p className="text-sm font-bold text-text-primary">{q.question}</p>
-                    <p className="text-xs text-text-muted mt-1">{t('components.quiz.yourAnswer')}<span className={isCorrect ? 'text-accent' : 'text-danger'}>{q.options[chosen]}</span></p>
+                    <p className="text-xs text-text-muted mt-1">{"Your answer: "}<span className={isCorrect ? 'text-accent' : 'text-danger'}>{q.options[chosen]}</span></p>
                     {!isCorrect && (
-                      <p className="text-xs text-accent mt-0.5">{t('components.quiz.correctAnswer')}{q.options[q.correctIndex]}</p>
+                      <p className="text-xs text-accent mt-0.5">{"Correct answer: "}{q.options[q.correctIndex]}</p>
                     )}
                   </div>
                 </div>
@@ -120,7 +118,7 @@ const InlineQuiz: React.FC<InlineQuizProps> = ({
         </div>
 
         <div className="flex gap-3 justify-center">
-          <button onClick={handleRetry} className="btn-secondary text-xs py-2.5">{t('components.quiz.retry')}</button>
+          <button onClick={handleRetry} className="btn-secondary text-xs py-2.5">{"Retry"}</button>
         </div>
       </div>
     );
@@ -139,7 +137,7 @@ const InlineQuiz: React.FC<InlineQuizProps> = ({
         aria-valuenow={allAnswered ? questions.length : currentQ + (selectedIdx >= 0 ? 1 : 0)}
         aria-valuemin={0}
         aria-valuemax={questions.length}
-        aria-label={t('components.quiz.progress', { defaultValue: 'Quiz progress' })}
+        aria-label={"Quiz progress"}
       >
         <div className="h-full bg-accent transition-[width] duration-[var(--dur-slow)] ease-[var(--ease-smooth)]" style={{ width: `${((allAnswered ? questions.length : currentQ + (selectedIdx >= 0 ? 1 : 0)) / questions.length) * 100}%` }} />
       </div>
@@ -172,7 +170,7 @@ const InlineQuiz: React.FC<InlineQuizProps> = ({
             disabled={selectedIdx < 0}
             className="btn-primary text-xs py-2.5 inline-flex items-center gap-1.5 disabled:opacity-50"
           >
-            {t('components.quiz.next')} <IconChevronRight size={14} />
+            {"Next"} <IconChevronRight size={14} />
           </button>
         ) : (
           <button
@@ -180,12 +178,12 @@ const InlineQuiz: React.FC<InlineQuizProps> = ({
             disabled={!allAnswered}
             className="btn-primary text-xs py-2.5 disabled:opacity-50"
           >
-            {t('components.common.submit')}
+            {"Submit"}
           </button>
         )}
         {!allAnswered && (
           <p className="text-xs text-text-muted self-center ml-2">
-            {t('components.quiz.remaining', { count: questions.length - totalAnswered })}
+            {`${questions.length - totalAnswered} remaining`}
           </p>
         )}
       </div>

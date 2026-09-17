@@ -1,5 +1,4 @@
 import { Link, useLocation, useNavigate, useMatch } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
 import {
   IconTerminal,
   IconLabs,
@@ -31,14 +30,13 @@ const MobileCpBadge = ({ balance }: { balance: number }) => (
 );
 
 const StudentTopbar = ({ railCollapsed = false }: { railCollapsed?: boolean }) => {
-  const { t } = useTranslation();
   const { user, logout } = useAuth();
 
   const DESKTOP_NAV_ITEMS = [
-    { label: t('nav.myCourses'), icon: IconCode, path: '/dashboard/courses' },
-    { label: t('nav.bootcamp'), icon: IconTerminal, path: '/dashboard/bootcamps' },
-    { label: t('nav.labs'), icon: IconLabs, path: '/dashboard/labs' },
-    { label: t('nav.marketplace'), icon: IconMarketplace, path: '/dashboard/marketplace' },
+    { label: "My Courses", icon: IconCode, path: '/dashboard/courses' },
+    { label: "Bootcamp", icon: IconTerminal, path: '/dashboard/bootcamps' },
+    { label: "Labs", icon: IconLabs, path: '/dashboard/labs' },
+    { label: "Marketplace", icon: IconMarketplace, path: '/dashboard/marketplace' },
   ];
 
   const { addToast } = useToast();
@@ -150,7 +148,7 @@ const StudentTopbar = ({ railCollapsed = false }: { railCollapsed?: boolean }) =
 
   const handleLogout = async () => {
     await logout();
-    addToast(t('toast.sessionTerminated'), 'info');
+    addToast("Security session terminated.", 'info');
     navigate('/login');
   };
 
@@ -173,7 +171,7 @@ const StudentTopbar = ({ railCollapsed = false }: { railCollapsed?: boolean }) =
         href="#main-content"
         className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-[100] focus:px-4 focus:py-2 focus:bg-accent focus:text-on-accent focus:rounded-lg focus:text-sm focus:font-bold focus:outline-none"
       >
-        {t('aria.skipToContent')}
+        {"Skip to content"}
       </a>
 
       <header
@@ -189,13 +187,13 @@ const StudentTopbar = ({ railCollapsed = false }: { railCollapsed?: boolean }) =
                 <button
                   onClick={() => navigate('/dashboard/courses')}
                   className={`flex h-10 w-10 md:h-12 md:w-12 shrink-0 items-center justify-center rounded-xl transition-colors text-text-secondary hover:text-accent active:scale-95`}
-                  aria-label={t('aria.backToCourses')}
+                  aria-label={"Back to courses"}
                 >
                   <IconArrowLeft size={20} strokeWidth={2.5} />
                 </button>
                 <div className={`hidden sm:flex items-center gap-1.5 text-xs font-bold uppercase tracking-widest min-w-0 flex-1 text-text-muted`}>
                   <Link to="/dashboard/courses" className={`transition-colors shrink-0 hover:text-accent active:opacity-70`}>
-                    {t('student.topbar.breadcrumb.courses')}
+                    {"Courses"}
                   </Link>
                   {courseConfig && (
                     <>
@@ -205,8 +203,8 @@ const StudentTopbar = ({ railCollapsed = false }: { railCollapsed?: boolean }) =
                   )}
                 </div>
                 <div className="flex sm:hidden flex-col min-w-0 flex-1">
-                  <span className="text-xs font-black uppercase tracking-[0.25em] text-accent leading-none mb-0.5">{t('student.topbar.breadcrumb.course')}</span>
-                  <span className="text-sm font-black text-text-primary truncate leading-tight">{courseConfig?.title ?? t('student.topbar.breadcrumb.course')}</span>
+                  <span className="text-xs font-black uppercase tracking-[0.25em] text-accent leading-none mb-0.5">{"Course"}</span>
+                  <span className="text-sm font-black text-text-primary truncate leading-tight">{courseConfig?.title ?? "Course"}</span>
                 </div>
                 <div className="flex items-center gap-1.5 md:gap-2 shrink-0 ml-auto">
                   {courseMeta && (
@@ -244,13 +242,13 @@ const StudentTopbar = ({ railCollapsed = false }: { railCollapsed?: boolean }) =
               <button
                 onClick={() => navigate(`/dashboard/bootcamps/${roomBootcampId}`)}
                 className={`flex h-10 w-10 md:h-12 md:w-12 shrink-0 items-center justify-center rounded-xl transition-colors text-text-secondary hover:text-accent active:scale-95`}
-                aria-label={t('aria.backToCurriculum')}
+                aria-label={"Back to curriculum"}
               >
                 <IconArrowLeft size={20} strokeWidth={2.5} />
               </button>
               <div className={`hidden sm:flex items-center gap-1.5 text-xs font-bold uppercase tracking-widest min-w-0 flex-1 text-text-muted`}>
                 <Link to={`/dashboard/bootcamps/${roomBootcampId}`} className="hover:text-accent active:opacity-70 transition-colors shrink-0">
-                  {t('student.topbar.breadcrumb.curriculum')}
+                  {"Curriculum"}
                 </Link>
                 {roomBreadcrumb?.phaseTitle && (
                   <>
@@ -272,7 +270,7 @@ const StudentTopbar = ({ railCollapsed = false }: { railCollapsed?: boolean }) =
                   </span>
                 )}
                 <span className="text-sm font-black text-text-primary truncate leading-tight">
-                  {roomBreadcrumb?.roomTitle ?? t('student.topbar.breadcrumb.room')}
+                  {roomBreadcrumb?.roomTitle ?? "Room"}
                 </span>
               </div>
               <div className="flex items-center gap-1.5 md:gap-2 shrink-0">
@@ -298,13 +296,13 @@ const StudentTopbar = ({ railCollapsed = false }: { railCollapsed?: boolean }) =
             <button
               onClick={() => navigate('/dashboard/labs')}
               className={`flex h-10 w-10 md:h-12 md:w-12 shrink-0 items-center justify-center rounded-xl transition-colors text-text-secondary hover:text-accent active:scale-95`}
-              aria-label={t('aria.backToLabs')}
+              aria-label={"Back to labs"}
             >
               <IconArrowLeft size={20} strokeWidth={2.5} />
             </button>
             <div className={`hidden sm:flex items-center gap-1.5 text-xs font-bold uppercase tracking-widest min-w-0 flex-1 text-text-muted`}>
               <Link to="/dashboard/labs" className="hover:text-accent active:opacity-70 transition-colors shrink-0">
-                {t('student.topbar.breadcrumb.labs')}
+                {"Labs"}
               </Link>
               <IconChevronRight size={12} className="opacity-40 shrink-0" />
               <span className="text-text-primary font-black truncate">
@@ -312,9 +310,9 @@ const StudentTopbar = ({ railCollapsed = false }: { railCollapsed?: boolean }) =
               </span>
             </div>
             <div className="flex sm:hidden flex-col min-w-0 flex-1">
-              <span className="text-xs font-black uppercase tracking-[0.25em] text-accent leading-none mb-0.5">{t('student.topbar.breadcrumb.lab')}</span>
+              <span className="text-xs font-black uppercase tracking-[0.25em] text-accent leading-none mb-0.5">{"Lab"}</span>
               <span className="text-sm font-black text-text-primary truncate leading-tight">
-                {labMatch?.params?.labType?.replace(/-/g, ' ') || t('student.topbar.breadcrumb.lab')}
+                {labMatch?.params?.labType?.replace(/-/g, ' ') || "Lab"}
               </span>
             </div>
             <div className="flex items-center gap-1.5 md:gap-2 shrink-0">
@@ -340,13 +338,13 @@ const StudentTopbar = ({ railCollapsed = false }: { railCollapsed?: boolean }) =
             <button
               onClick={() => navigate('/dashboard')}
               className={`flex h-10 w-10 md:h-12 md:w-12 shrink-0 items-center justify-center rounded-xl transition-colors text-text-secondary hover:text-accent active:scale-95`}
-              aria-label={t('aria.backToDashboard')}
+              aria-label={"Back to dashboard"}
             >
               <IconArrowLeft size={20} strokeWidth={2.5} />
             </button>
             <div className={`hidden sm:flex items-center gap-1.5 text-xs font-bold uppercase tracking-widest min-w-0 text-text-muted`}>
               <Link to="/dashboard" className={`transition-colors shrink-0 hover:text-accent active:opacity-70`}>
-                {t('student.topbar.breadcrumb.dashboard')}
+                {"Dashboard"}
               </Link>
               <IconChevronRight size={12} className={`opacity-40 shrink-0 `} />
               <span className="text-text-primary font-black truncate">Settings</span>
@@ -370,7 +368,7 @@ const StudentTopbar = ({ railCollapsed = false }: { railCollapsed?: boolean }) =
                     }`}
                   >
                     <Icon size={30} strokeWidth={2.5} className={active ? 'text-accent' : 'text-text-secondary'} />
-                    <span>{t(section.labelKey)}</span>
+                    <span>{section.label}</span>
                     {active && (
                       <span className="absolute bottom-0 left-1/4 right-1/4 h-0.5 rounded-full bg-accent" />
                     )}

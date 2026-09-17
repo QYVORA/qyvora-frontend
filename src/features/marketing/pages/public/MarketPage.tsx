@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { Search, ArrowRight, ShoppingBag } from 'lucide-react';
 import { IconLock, IconMarketplace } from '@/shared/components/icons';
@@ -15,7 +14,6 @@ import { CardCollection, ViewToggle, type ViewMode } from '@/shared/components/c
 import ProductCard, { type MarketProduct } from './cards/ProductCard';
 
 const MarketPage = () => {
-  const { t } = useTranslation();
   const { user } = useAuth();
   const [products, setProducts] = useState<MarketProduct[]>([]);
   const [loading, setLoading] = useState(true);
@@ -59,7 +57,7 @@ const MarketPage = () => {
       <SEO title="Zero Day Market - QYVORA" description="Intelligence assets, guides, papers, and tools available for CP." />
       <div className="w-full px-3 pb-20 pt-24 md:px-4 md:pb-24 md:pt-28 lg:px-6 lg:pt-32">
         <PageHeader
-          kicker={t('marketPage.kicker', 'QYVORA · Market')}
+          kicker={"QYVORA · Market"}
           title="Zero Day Market"
           description="Intelligence assets, research papers, guides, and offensive security tools. Available for CP."
           actions={
@@ -69,7 +67,7 @@ const MarketPage = () => {
               </Button>
             ) : (
               <Button to="/dashboard/marketplace">
-                <ShoppingBag className="h-4 w-4" /> {t('marketPage.openMarket', 'Open the CP marketplace')}
+                <ShoppingBag className="h-4 w-4" /> {"Open the CP marketplace"}
                 <ArrowRight className="h-4 w-4" />
               </Button>
             )

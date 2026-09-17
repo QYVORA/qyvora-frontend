@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { useTranslation } from 'react-i18next';
 import { Flag, Loader2 } from 'lucide-react';
 import api from '../../../../core/services/api';
 import { useToast } from '../../../../core/contexts/ToastContext';
@@ -13,14 +12,13 @@ interface Props {
 }
 
 const ReportIssueModal: React.FC<Props> = ({ phaseId, roomId, stepIdx, onClose }) => {
-  const { t } = useTranslation();
   const [issueText, setIssueText] = useState('');
   const [submitting, setSubmitting] = useState(false);
   const { addToast } = useToast();
 
   const submit = async () => {
     if (!issueText.trim()) {
-      addToast(t('validation.describeIssue'), 'error');
+      addToast("Please describe the issue", 'error');
       return;
     }
     setSubmitting(true);
@@ -33,10 +31,10 @@ const ReportIssueModal: React.FC<Props> = ({ phaseId, roomId, stepIdx, onClose }
         description: issueText,
         url: window.location.href,
       });
-      addToast(t('toast.issueReported'), 'success');
+      addToast("Issue reported, thank you!", 'success');
       onClose();
     } catch (err: any) {
-      addToast(err?.response?.data?.error || t('toast.issueReportFailed'), 'error');
+      addToast(err?.response?.data?.error || "Could not submit report", 'error');
     } finally {
       setSubmitting(false);
     }
@@ -44,19 +42,19 @@ const ReportIssueModal: React.FC<Props> = ({ phaseId, roomId, stepIdx, onClose }
 
   return (
     <Dialog open onOpenChange={(open) => { if (!open) onClose(); }}>
-      <DialogContent title={t('student.bootcampRoom.reportIssue.title')} maxWidth="max-w-xl" className="shadow-none">
+      <DialogContent title={"Report Issue"} maxWidth="max-w-xl" className="shadow-none">
         <div className="flex items-center gap-2 mb-4">
           <Flag className="h-4 w-4 text-accent" />
-          <h3 className="text-sm font-black uppercase tracking-widest text-text-primary">{t('student.bootcampRoom.reportIssue.feedbackLabel')}</h3>
+          <h3 className="text-sm font-black uppercase tracking-widest text-text-primary">{"Room Feedback"}</h3>
         </div>
         <p className="text-sm text-text-muted mb-4">
-          {t('student.bootcampRoom.reportIssue.description')}
+          {"Found a typo, broken image, or unclear instruction? Let us know and we'll fix it."}
         </p>
         <textarea
           value={issueText}
           onChange={(e) => setIssueText(e.target.value)}
-          placeholder={t('student.bootcampRoom.reportIssue.placeholder')}
-          aria-label={t('student.bootcampRoom.reportIssue.feedbackLabel')}
+          placeholder={"Describe the issue…"}
+          aria-label={"Room Feedback"}
           className="w-full h-32 px-4 py-3 rounded-xl border border-border bg-bg-card text-text-primary text-sm resize-none focus:border-accent outline-none"
           autoFocus
         />
@@ -67,11 +65,11 @@ const ReportIssueModal: React.FC<Props> = ({ phaseId, roomId, stepIdx, onClose }
             className="btn-primary flex-1 py-2.5 text-sm disabled:opacity-50"
           >
             {submitting
-              ? <><Loader2 className="h-3.5 w-3.5 animate-spin inline mr-2" />{t('student.bootcampRoom.reportIssue.submitting')}</>
-              : t('student.bootcampRoom.reportIssue.submit')}
+              ? <><Loader2 className="h-3.5 w-3.5 animate-spin inline mr-2" />{"Submitting…"}</>
+              : "Submit Report"}
           </button>
           <button onClick={onClose} className="btn-secondary px-4 py-2.5 text-sm">
-            {t('button.cancel')}
+            {"Cancel"}
           </button>
         </div>
       </DialogContent>

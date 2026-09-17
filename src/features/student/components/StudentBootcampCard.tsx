@@ -1,5 +1,4 @@
 import React from 'react';
-import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import {
   IconPlay,
@@ -34,7 +33,6 @@ interface Props {
 }
 
 const StudentBootcampCard: React.FC<Props> = ({ data, index = 0, onEnroll, onLocked }) => {
-  const { t } = useTranslation();
   const { id, title, description, level, duration, priceLabel, progress, isEnrolled, isLocked } = data;
   const isComplete = progress === 100;
 
@@ -58,17 +56,17 @@ const StudentBootcampCard: React.FC<Props> = ({ data, index = 0, onEnroll, onLoc
           )}
           {isLocked && (
             <span className="px-2 py-0.5 rounded-lg text-xs font-black uppercase tracking-widest bg-bg-elevated text-text-muted border border-border/50 flex items-center gap-1">
-              <IconLock size={10} /> {t('student.studentBootcampCard.comingSoon')}
+              <IconLock size={10} /> {"Coming Soon"}
             </span>
           )}
           {isComplete && !isLocked && (
             <span className="px-2 py-0.5 rounded-lg bg-accent text-on-accent text-xs font-black uppercase tracking-widest flex items-center gap-1">
-              <IconCheck size={10} /> {t('badge.completed')}
+              <IconCheck size={10} /> {"Completed"}
             </span>
           )}
           {isEnrolled && !isComplete && !isLocked && (
             <span className="px-2 py-0.5 rounded-lg bg-accent/20 text-accent text-xs font-black uppercase tracking-widest flex items-center gap-1">
-              <IconPlay size={8} /> {t('badge.active')}
+              <IconPlay size={8} /> {"Active"}
             </span>
           )}
         </div>
@@ -113,28 +111,28 @@ const StudentBootcampCard: React.FC<Props> = ({ data, index = 0, onEnroll, onLoc
         <div className="ml-auto">
           {isLocked ? (
             <span className="px-3 py-1.5 rounded-lg text-xs sm:text-xs font-black uppercase tracking-widest bg-bg-elevated text-text-muted border border-border/50">
-              {t('student.studentBootcampCard.comingSoon')}
+              {"Coming Soon"}
             </span>
           ) : isEnrolled ? (
             <Link
               to={`/dashboard/bootcamps/${id}`}
               className={BtnBase}
             >
-              {isComplete ? t('student.studentBootcampCard.reviewCurriculum') : t('student.studentBootcampCard.continueTraining')}
+              {isComplete ? "Review Curriculum" : "Continue Training"}
             </Link>
           ) : onEnroll ? (
             <button
               onClick={() => onEnroll(data)}
               className={BtnBase}
             >
-              {t('student.studentBootcampCard.enrollNow')}
+              {"Enroll Now"}
             </button>
           ) : (
             <Link
               to={`/dashboard/bootcamps/${id}`}
               className={BtnBase}
             >
-              {t('student.studentBootcampCard.enrollNow')}
+              {"Enroll Now"}
             </Link>
           )}
         </div>

@@ -1,6 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useParams, Link, useNavigate, useSearchParams } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
 import {
   ArrowLeft, Lock, BookOpen,
   List, Minimize2, Maximize2, Loader2, ChevronRight, PanelLeft,
@@ -63,7 +62,6 @@ const BootcampRoomPage: React.FC = () => {
   const phaseId = phaseIdParam || (moduleId ? `phase${moduleId}` : undefined);
   const navigate = useNavigate();
   const { addToast } = useToast();
-  const { t } = useTranslation();
 
   const mountedRef = useRef(true);
   const redirectCountRef = useRef(0);
@@ -120,7 +118,7 @@ const BootcampRoomPage: React.FC = () => {
       const courseRes = await api.get(`/student/course${query}`).catch(() => null);
       if (!mountedRef.current) return;
       if (courseRes?.data) setApiCourse(courseRes.data as ApiCourse);
-    } catch { addToast(t('toast.courseLoadFailed'), 'error'); }
+    } catch { addToast("Failed to load course data", 'error'); }
     finally { if (mountedRef.current) setApiLoading(false); }
   }, [bootcampId]);
 
@@ -143,7 +141,7 @@ const BootcampRoomPage: React.FC = () => {
         return;
       }
       console.error('Failed to complete room:', err?.response?.data || err);
-      addToast(t('toast.roomCompleteFailed'), 'error');
+      addToast("Failed to mark room as complete", 'error');
     }
   };
 
@@ -165,7 +163,7 @@ const BootcampRoomPage: React.FC = () => {
         if (err?.name === 'CanceledError' || err?.name === 'AbortError') return;
         if (err?.response?.status === 403) return;
         console.error('Failed to open room session:', err?.response?.data || err?.message || err);
-        addToast(t('toast.sessionOpenFailed'), 'error');
+        addToast("Failed to open room session", 'error');
       }
     };
     callSessionOpen();
@@ -292,7 +290,7 @@ const BootcampRoomPage: React.FC = () => {
 
   if (apiLoading) return <BootcampRoomSkeleton />;
 
-  const roomTitle = room?.title || t('stat.room');
+  const roomTitle = room?.title || "Room";
 
   if (!phase || !room || isRoomLocked) {
     return (
@@ -307,12 +305,12 @@ const BootcampRoomPage: React.FC = () => {
             {!phase || !room ? (
               <EmptyState
                 icon={<BookOpen className="h-6 w-6" aria-hidden="true" />}
-                title={t('student.bootcampRoom.notFound')}
-                description={t('student.bootcampRoom.notFoundDesc')}
+                title={"Room not found."}
+                description={"This room doesn't exist in the bootcamp config."}
                 action={
                   <Button to={`/dashboard/bootcamps/${bootcampId}`} variant="secondary">
                     <ArrowLeft className="h-4 w-4" aria-hidden="true" />
-                    {t('student.bootcampRoom.backToBootcamp')}
+                    {"Back to Bootcamp"}
                   </Button>
                 }
               />
@@ -320,11 +318,11 @@ const BootcampRoomPage: React.FC = () => {
               <EmptyState
                 icon={<Lock className="h-6 w-6" aria-hidden="true" />}
                 title={room.title}
-                description={t('student.bootcampRoom.roomLocked')}
+                description={"This room is locked. Your instructor will unlock it when it's time."}
                 action={
                   <Button to={`/dashboard/bootcamps/${bootcampId}`} variant="secondary">
                     <ArrowLeft className="h-4 w-4" aria-hidden="true" />
-                    {t('student.bootcampRoom.backToBootcamp')}
+                    {"Back to Bootcamp"}
                   </Button>
                 }
               />
@@ -373,21 +371,21 @@ const BootcampRoomPage: React.FC = () => {
           {
             id: 'room-navigator',
             icon: <PanelLeft className="h-4 w-4" />,
-            label: t('student.bootcampRoom.sidebar.roomNavigator'),
+            label: "Room Navigator",
             onClick: () => setSidebarOpen(true),
           },
           {
             id: 'jump-menu',
             icon: <List className="h-4 w-4" />,
-            label: t('student.bootcampRoom.desktopToolbar.jump'),
+            label: "Jump to step",
             onClick: () => setJumpMenuOpen(true),
           },
           {
             id: 'fullscreen',
             icon: fullscreen ? <Minimize2 className="h-4 w-4" /> : <Maximize2 className="h-4 w-4" />,
             label: fullscreen
-              ? t('student.bootcampRoom.desktopToolbar.exitFullscreen')
-              : t('student.bootcampRoom.desktopToolbar.enterFullscreen'),
+              ? "Exit fullscreen"
+              : "Enter fullscreen",
             onClick: toggleFullscreen,
           },
           {
@@ -402,12 +400,12 @@ const BootcampRoomPage: React.FC = () => {
             label: isLastStep
               ? isRoomComplete
                 ? nextRoom
-                  ? t('student.bootcampRoom.desktopToolbar.continueToNext')
-                  : t('student.bootcampRoom.desktopToolbar.finishModule')
+                  ? "Continue to Next Room"
+                  : "Finish Module"
                 : quizModuleId
-                ? t('student.bootcampRoom.desktopToolbar.quizAndComplete')
-                : t('student.bootcampRoom.desktopToolbar.completeRoom')
-              : t('student.bootcampRoom.desktopToolbar.nextStep'),
+                ? "Take Quiz & Complete"
+                : "Complete Room"
+              : "Next Step",
             onClick: async () => {
               if (!isLastStep) {
                 goToStep(currentStepIdx + 1);
@@ -424,29 +422,29 @@ const BootcampRoomPage: React.FC = () => {
       <RoomSidebar phases={BOOTCAMP_CONFIG.phases} activePhaseId={phaseId || ''} activeRoomId={roomId || ''} completedRooms={completedRooms} lockedRooms={lockedRooms} bootcampId={bootcampId || ''} onNavigate={handleNavigate} mobileOpen={sidebarOpen} onMobileClose={() => setSidebarOpen(false)} />
       <WalkthroughScrollControls />
       <LearningWorkspaceShell
-        kicker={t('student.bootcampRoom.header.phaseLabel', { codename: phase.codename, phase: phase.title })}
+        kicker={`${phase.codename} - ${phase.title}`}
         title={room.title}
         description={room.overview}
         backTo={`/dashboard/bootcamps/${bootcampId}`}
-        backLabel={t('student.bootcampRoom.backToBootcamp')}
+        backLabel={"Back to Bootcamp"}
         stats={[
-          { label: t('common.min', 'min'), value: room.estimatedMinutes },
-          { label: t('common.steps', 'steps'), value: room.steps.length },
-          { label: t('common.inSession', 'in session'), value: formatTime(timeSpent) },
+          { label: "min", value: room.estimatedMinutes },
+          { label: "steps", value: room.steps.length },
+          { label: "in session", value: formatTime(timeSpent) },
           ...(isRoomComplete
-            ? [{ label: t('common.complete', 'complete'), value: '\u2713', accent: true }]
+            ? [{ label: "complete", value: '\u2713', accent: true }]
             : []),
         ]}
         progress={{
           value: room.steps.length > 0 ? (viewedSteps.size / room.steps.length) * 100 : 0,
-          label: t('student.bootcampRoom.progress.stepsCount', { viewed: viewedSteps.size, total: room.steps.length }),
+          label: `${viewedSteps.size} / ${room.steps.length} steps`,
         }}
       >
           {room.steps.length === 0 && !apiLoading ? (
                 <div className="flex flex-col items-center justify-center py-20 text-center">
                   <BookOpen className="h-12 w-12 text-text-muted opacity-20 mb-4" />
-                  <p className="text-base font-bold text-text-muted">{t('student.bootcampRoom.noStepsAvailable')}</p>
-                  <p className="text-sm text-text-muted/60 mt-1">{t('student.bootcampRoom.checkBackLater')}</p>
+                  <p className="text-base font-bold text-text-muted">{"No steps available yet"}</p>
+                  <p className="text-sm text-text-muted/60 mt-1">{"Check back later for new content"}</p>
                 </div>
               ) : (
                 <>
@@ -489,7 +487,7 @@ const BootcampRoomPage: React.FC = () => {
               )}
               {phaseId && roomId && (
                 <div className="mb-8">
-                  <RelatedContent {...getRelatedContentForHpbRoom(phaseId, roomId)} title={t('student.labs.relatedContent.title')} />
+                  <RelatedContent {...getRelatedContentForHpbRoom(phaseId, roomId)} title={"Continue This Topic"} />
                 </div>
               )}
               <LearningNav
@@ -503,17 +501,17 @@ const BootcampRoomPage: React.FC = () => {
                 onComplete={!isLastStep ? undefined : isRoomComplete ? undefined : handleComplete}
                 completeLabel={
                   quizModuleId && !quizPassed
-                    ? t('learning.nav.quizAndComplete')
-                    : t('learning.nav.completeRoom')
+                    ? "Take Quiz & Complete"
+                    : "Complete Room"
                 }
-                nextLabel={t('learning.nav.nextStep')}
-                nextLabelMobile={t('learning.nav.next')}
+                nextLabel={"Next Step"}
+                nextLabelMobile={"Next"}
                 leading={
                   <>
                     <button
                       onClick={() => setJumpMenuOpen(true)}
                       className="btn-secondary md:hidden inline-flex items-center gap-1.5 !rounded-xl !text-xs !font-black !uppercase !tracking-widest px-3.5 py-2"
-                      aria-label={t('student.bootcampRoom.desktopToolbar.jump')}
+                      aria-label={"Jump to step"}
                     >
                       <List className="h-3.5 w-3.5" />
                     </button>
@@ -527,21 +525,21 @@ const BootcampRoomPage: React.FC = () => {
                         onClick={() => handleNavigate(nextRoom.phaseId, nextRoom.roomId)}
                         className="btn-primary inline-flex min-h-[44px] flex-1 md:flex-none items-center justify-center gap-1.5 px-5 py-2.5"
                       >
-                        {t('student.bootcampRoom.desktopToolbar.continueToNext')}
+                        {"Continue to Next Room"}
                         <ChevronRight className="h-3.5 w-3.5 shrink-0" />
                       </button>
                     ) : (
                       <span className="flex-1 text-center sm:text-left font-mono text-xs font-semibold text-text-muted">
                         {!nextRoom
-                          ? t('student.bootcampRoom.bootcampComplete', 'Bootcamp complete — all rooms finished.')
-                          : t('student.bootcampRoom.roomCompleteNextLocked', 'Room complete. The next room unlocks when the phase is ready.')}
+                          ? "Bootcamp complete — all rooms finished."
+                          : "Room complete. The next room unlocks when the phase is ready."}
                       </span>
                     )}
                     <Link
                       to={`/dashboard/bootcamps/${bootcampId}`}
                       className="btn-secondary inline-flex min-h-[44px] flex-1 md:flex-none items-center justify-center gap-1.5 px-5 py-2.5"
                     >
-                      {t('student.bootcampRoom.backToBootcamp')}
+                      {"Back to Bootcamp"}
                     </Link>
                   </div>
                 }

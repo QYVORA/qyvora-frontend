@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { RefreshCw } from 'lucide-react';
-import { useTranslation } from 'react-i18next';
 import SEO from '@/shared/components/SEO';
 import { Button, PageHeader } from '@/shared/components/ui';
 
@@ -57,7 +56,6 @@ const INITIAL_STATUSES: Record<'overview' | 'users' | 'cp' | 'securitySummary' |
 
 // ── Main component ────────────────────────────────────────────────────────────
 const AdminDashboardPage: React.FC = () => {
-  const { t } = useTranslation();
   const { user } = useAuth();
   const { addToast } = useToast();
   const navigate = useNavigate();
@@ -134,7 +132,7 @@ const AdminDashboardPage: React.FC = () => {
       setSecurityEvents(Array.isArray(eventsRes.value?.data?.items) ? eventsRes.value.data.items : []);
     }
 
-    if (Object.values(outcomes).some((s) => s === 'error')) setSyncError(t('admin.syncError'));
+    if (Object.values(outcomes).some((s) => s === 'error')) setSyncError("Failed to sync. Some data may be stale.");
     setLastSync(new Date().toLocaleTimeString());
     setLoading(false);
   };
@@ -148,7 +146,7 @@ const AdminDashboardPage: React.FC = () => {
       await api.patch(`/admin/users/${encodeURIComponent(id)}`, payload);
       addToast(msg, 'success');
       await loadAll();
-    } catch (e: any) { addToast(e?.response?.data?.error || t('admin.updateFailed'), 'error'); }
+    } catch (e: any) { addToast(e?.response?.data?.error || "Update failed", 'error'); }
   };
 
   const handleUserBlockToggle = async (target: AdminUser) => {
@@ -158,13 +156,13 @@ const AdminDashboardPage: React.FC = () => {
       // The action succeeds even when the audit write failed — surface that
       // as a warning instead of reporting silent success.
       if (res?.data?.audited === false) {
-        addToast(t('admin.audit.unauditedWarning'), 'warning');
+        addToast("Action applied, but its audit entry could not be written. Please verify and retry.", 'warning');
       } else {
-        addToast(wasBlocked ? t('admin.users.unblocked') : t('admin.users.blockedToast'), 'success');
+        addToast(wasBlocked ? "User unblocked" : "User blocked", 'success');
       }
       await loadAll();
     } catch (e: any) {
-      addToast(e?.response?.data?.error || t('admin.users.blockFailed'), 'error');
+      addToast(e?.response?.data?.error || "Block action failed", 'error');
       await loadAll();
     }
   };
@@ -172,9 +170,9 @@ const AdminDashboardPage: React.FC = () => {
   const handleDeleteUserConfirmed = async (target: AdminUser) => {
     try {
       await api.delete(`/admin/users/${encodeURIComponent(target.id)}`);
-      addToast(t('admin.users.deletedToast'), 'success');
+      addToast("User deleted", 'success');
       await loadAll();
-    } catch (e: any) { addToast(e?.response?.data?.error || t('admin.users.deleteFailed'), 'error'); }
+    } catch (e: any) { addToast(e?.response?.data?.error || "Delete failed", 'error'); }
   };
 
   const saveProduct = async (form: any, coverFile: File | null, productFile: File | null) => {
@@ -193,7 +191,7 @@ const AdminDashboardPage: React.FC = () => {
         fileMeta = { fileId: String(res.data?.fileId || ''), fileName: String(res.data?.originalName || ''), fileSize: Number(res.data?.size || 0), fileMime: String(res.data?.mime || '') };
       }
 
-      if (!form.id && !fileMeta) { addToast(t('admin.market.pdfRequired'), 'error'); return; }
+      if (!form.id && !fileMeta) { addToast("Product PDF is required for new products.", 'error'); return; }
 
       const payload: Record<string, unknown> = {
         title: form.title, description: form.description,
@@ -206,13 +204,13 @@ const AdminDashboardPage: React.FC = () => {
 
       if (form.id) {
         await api.patch(`/admin/cp-products/${encodeURIComponent(form.id)}`, payload);
-        addToast(t('admin.market.productUpdated'), 'success');
+        addToast("Product updated", 'success');
       } else {
         await api.post('/admin/cp-products', payload);
-        addToast(t('admin.market.productCreated'), 'success');
+        addToast("Product created", 'success');
       }
       await loadAll();
-    } catch (e: any) { addToast(e?.response?.data?.error || t('admin.market.productSaveFailed'), 'error'); }
+    } catch (e: any) { addToast(e?.response?.data?.error || "Failed to save product", 'error'); }
   };
 
   const deleteProduct = async (id: string) => {
@@ -221,20 +219,20 @@ const AdminDashboardPage: React.FC = () => {
 
   const handleDeleteProductConfirmed = async () => {
     if (!confirmDeleteProduct) return;
-    try { await api.delete(`/admin/cp-products/${encodeURIComponent(confirmDeleteProduct)}`); addToast(t('admin.market.productDeleted'), 'success'); await loadAll(); }
-    catch (e: any) { addToast(e?.response?.data?.error || t('admin.market.productDeleteFailed'), 'error'); }
+    try { await api.delete(`/admin/cp-products/${encodeURIComponent(confirmDeleteProduct)}`); addToast("Product deleted", 'success'); await loadAll(); }
+    catch (e: any) { addToast(e?.response?.data?.error || "Failed to delete product", 'error'); }
     finally { setConfirmDeleteProduct(null); }
   };
 
   // ── Tab label lookup ─────────────────────────────────────────────────────────
-  const TAB_LABEL_KEYS: Record<AdminTab, string> = {
-    overview: 'admin.tabs.overview',
-    users: 'admin.tabs.users', bootcamps: 'admin.tabs.bootcamps',
-    zero_day: 'admin.tabs.zero_day', cp: 'admin.tabs.points',
-    inbox: 'admin.tabs.inbox', broadcast: 'admin.tabs.broadcast', audit: 'admin.tabs.audit',
-    security: 'admin.tabs.security', incidents: 'admin.tabs.incidents',
+  const TAB_LABELS: Record<AdminTab, string> = {
+    overview: 'Overview',
+    users: 'Users', bootcamps: 'Bootcamps',
+    zero_day: 'Market', cp: 'Points',
+    inbox: 'Inbox', broadcast: 'Broadcast', audit: 'Audit',
+    security: 'Security', incidents: 'Incidents',
   };
-  const activeLabelKey = TAB_LABEL_KEYS[activeTab] ?? 'admin.tabs.overview';
+  const activeLabel = TAB_LABELS[activeTab] ?? 'Overview';
 
   // ── Render ────────────────────────────────────────────────────────────────────
   return (
@@ -249,20 +247,20 @@ const AdminDashboardPage: React.FC = () => {
 
           {/* ── Page header ─────────────────────────────────────────────── */}
           <PageHeader
-            kicker={`${t('nav.admin')} · ${t('nav.adminConsole')}`}
-            title={t(activeLabelKey)}
-            description={loading ? t('admin.syncing') : t('admin.managingDescription', { section: t(activeLabelKey).toLowerCase() })}
+            kicker={`${"ADMIN"} · ${"Admin Console"}`}
+            title={activeLabel}
+            description={loading ? "Synchronizing encrypted data…" : `Managing the ${activeLabel.toLowerCase()} module.`}
             actions={
               <div className="flex items-center gap-3 sm:gap-5 shrink-0">
                 {overview && (
                   <div className="hidden sm:flex items-center gap-5">
                     <div className="text-right">
                       <div className="font-mono text-sm font-black text-accent leading-none tabular-nums">{overview.users.total}</div>
-                      <div className="mt-1 text-xs font-black uppercase tracking-widest text-text-muted">{t('admin.tabs.users')}</div>
+                      <div className="mt-1 text-xs font-black uppercase tracking-widest text-text-muted">{"Users"}</div>
                     </div>
                     <div className="text-right">
                       <div className="font-mono text-sm font-black text-accent leading-none tabular-nums">{products.length}</div>
-                      <div className="mt-1 text-xs font-black uppercase tracking-widest text-text-muted">{t('admin.tabs.market')}</div>
+                      <div className="mt-1 text-xs font-black uppercase tracking-widest text-text-muted">{"Market"}</div>
                     </div>
                   </div>
                 )}
@@ -272,7 +270,7 @@ const AdminDashboardPage: React.FC = () => {
                   onClick={() => void loadAll()}
                   icon={<RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />}
                 >
-                  {loading ? t('admin.syncing') : t('button.refresh')}
+                  {loading ? "Synchronizing encrypted data…" : "Refresh"}
                 </Button>
               </div>
             }
@@ -360,10 +358,10 @@ const AdminDashboardPage: React.FC = () => {
     <ConfirmDialog
       open={confirmDeleteUser !== null}
       onOpenChange={(open) => { if (!open) setConfirmDeleteUser(null); }}
-      title={t('admin.users.authorizeTermination')}
-      description={t('admin.users.deleteConfirm')}
-      confirmLabel={t('admin.users.terminate')}
-      cancelLabel={t('admin.users.abort')}
+      title={"Authorize User Termination"}
+      description={"Are you sure you want to permanently delete this user? This action cannot be undone."}
+      confirmLabel={"Terminate"}
+      cancelLabel={"Abort"}
       destructive
       onConfirm={() => { if (confirmDeleteUser) void handleDeleteUserConfirmed(confirmDeleteUser); }}
     />
@@ -371,10 +369,10 @@ const AdminDashboardPage: React.FC = () => {
     <ConfirmDialog
       open={confirmDeleteProduct !== null}
       onOpenChange={(open) => { if (!open) setConfirmDeleteProduct(null); }}
-      title={t('admin.market.deleteProduct')}
-      description={t('admin.market.deleteProductConfirm')}
-      confirmLabel={t('button.delete')}
-      cancelLabel={t('button.cancel')}
+      title={"Delete Product"}
+      description={"Are you sure you want to delete this product? This action cannot be undone."}
+      confirmLabel={"Delete"}
+      cancelLabel={"Cancel"}
       destructive
       onConfirm={handleDeleteProductConfirmed}
     />

@@ -1,7 +1,6 @@
 import React from 'react';
 import { IconArrowLeft, IconCheck } from '@/shared/components/icons';
 import { KeyRound } from 'lucide-react';
-import { useTranslation } from 'react-i18next';
 import PasswordInput from './PasswordInput';
 import Input from '@/shared/components/ui/Input';
 import AthenaBoxes from '@/shared/components/AthenaBoxes';
@@ -17,23 +16,22 @@ const ResetPasswordConfirmForm: React.FC<ResetPasswordConfirmFormProps> = ({
   isLoading,
   onBack,
 }) => {
-  const { t } = useTranslation();
   return (
     <div className="rounded-2xl border border-border/50 bg-bg/40 backdrop-blur-md p-4 sm:p-6 lg:p-8">
       <button onClick={onBack} className="flex items-center gap-2 text-text-muted hover:text-accent active:opacity-70 mb-8 transition-colors">
-        <IconArrowLeft size={16} /> {t('button.back')}
+        <IconArrowLeft size={16} /> {"Back"}
       </button>
       <div className="mb-8">
-        <h1 className="text-3xl md:text-4xl lg:text-5xl font-black text-text-primary uppercase tracking-tighter mb-1">{t('auth2.reset.title1')} <span className="text-accent">{t('auth2.reset.title2')}</span></h1>
+        <h1 className="text-3xl md:text-4xl lg:text-5xl font-black text-text-primary uppercase tracking-tighter mb-1">{"Set New"} <span className="text-accent">{"Password"}</span></h1>
         <p className="text-text-muted text-sm">Create a new password for your account.</p>
       </div>
       <form className="space-y-6" onSubmit={onSubmit}>
         <div className="space-y-2">
-          <label htmlFor="reset-new-password" className="text-xs font-black text-text-muted uppercase tracking-widest">{t('form.newPassword')}</label>
-          <PasswordInput id="reset-new-password" name="new_password" placeholder={t('auth2.reset.minLength')} autoComplete="new-password" />
+          <label htmlFor="reset-new-password" className="text-xs font-black text-text-muted uppercase tracking-widest">{"New Password"}</label>
+          <PasswordInput id="reset-new-password" name="new_password" placeholder={"Min 8 characters"} autoComplete="new-password" />
         </div>
         <div className="space-y-2">
-          <label htmlFor="reset-confirm-password" className="text-xs font-black text-text-muted uppercase tracking-widest">{t('form.confirmPassword')}</label>
+          <label htmlFor="reset-confirm-password" className="text-xs font-black text-text-muted uppercase tracking-widest">{"Confirm Password"}</label>
           <PasswordInput id="reset-confirm-password" name="confirm_password" autoComplete="new-password" />
         </div>
         <button type="submit" disabled={isLoading}
@@ -41,11 +39,11 @@ const ResetPasswordConfirmForm: React.FC<ResetPasswordConfirmFormProps> = ({
           {isLoading ? (
             <>
               <AthenaBoxes />
-              <span className="text-xs">{t('auth2.reset.resetting')}</span>
+              <span className="text-xs">{"Resetting..."}</span>
             </>
           ) : (
             <>
-              <span className="text-xs">{t('auth2.reset.resetPassword')}</span> <IconCheck size={20} />
+              <span className="text-xs">{"Reset Password"}</span> <IconCheck size={20} />
             </>
           )}
         </button>

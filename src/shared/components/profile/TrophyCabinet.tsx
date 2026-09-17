@@ -1,5 +1,4 @@
 import { useMemo } from 'react';
-import { useTranslation } from 'react-i18next';
 import { motion } from 'motion/react';
 import { useReducedMotion } from '@/shared/hooks/useReducedMotion';
 import { Trophy } from 'lucide-react';
@@ -30,7 +29,6 @@ function TrophyVisual({ id, profile }: { id: string; profile: ProfileData }) {
 }
 
 const TrophyCabinet: React.FC<TrophyCabinetProps> = ({ profile, className = '' }) => {
-  const { t } = useTranslation();
   const prefersReduced = useReducedMotion();
 
   const trophies = useMemo(() => deriveTrophies(profile), [profile]);
@@ -41,10 +39,10 @@ const TrophyCabinet: React.FC<TrophyCabinetProps> = ({ profile, className = '' }
         <ModuleHeader
           icon={<Trophy className="w-4 h-4 text-warning" />}
           iconClassName="bg-warning/10"
-          title={t('profile.trophy.title', 'Trophy Cabinet')}
+          title={"Trophy Cabinet"}
         />
         <p className="text-xs text-text-muted text-center py-4">
-          {t('profile.trophy.empty', 'No trophies earned yet. Keep pushing!')}
+          {"No trophies earned yet. Keep pushing!"}
         </p>
       </div>
     );
@@ -55,7 +53,7 @@ const TrophyCabinet: React.FC<TrophyCabinetProps> = ({ profile, className = '' }
       <ModuleHeader
         icon={<Trophy className="w-4 h-4 text-warning" />}
         iconClassName="bg-warning/10"
-        title={t('profile.trophy.title', 'Trophy Cabinet')}
+        title={"Trophy Cabinet"}
         trailing={
           <span className="px-2 py-1 bg-warning/10 text-warning text-xs font-black rounded-lg">
             {trophies.length}

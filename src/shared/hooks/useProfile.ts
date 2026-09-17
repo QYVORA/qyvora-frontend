@@ -1,5 +1,4 @@
 import { useState, useEffect, useMemo, useCallback } from 'react';
-import { useTranslation } from 'react-i18next';
 import api from '../../core/services/api';
 import type { ProfileApiResponse, ProfileData, CompletedRoom, ProgressionStats } from '../types/profile';
 
@@ -27,7 +26,6 @@ interface UseProfileResult {
 }
 
 export function useProfile({ paramUsername, authUser }: UseProfileOptions): UseProfileResult {
-  const { t } = useTranslation();
   const [rawProfile, setRawProfile] = useState<ProfileApiResponse | null>(null);
   const [loading, setLoading] = useState(true);
   const [activityDates, setActivityDates] = useState<Record<string, number>>({});
@@ -92,7 +90,7 @@ export function useProfile({ paramUsername, authUser }: UseProfileOptions): UseP
         api.xpSummary?.rank ||
         api.rank ||
         authUser?.rank ||
-        t('stat.candidate')
+        "Candidate"
       ),
       progression,
       bio: String(api.bio || ''),
@@ -118,7 +116,7 @@ export function useProfile({ paramUsername, authUser }: UseProfileOptions): UseP
       linkedin: String(api.linkedin || ''),
       twitter: String(api.twitter || ''),
     };
-  }, [rawProfile, authUser, isOwnProfile, displayHandle, t]);
+  }, [rawProfile, authUser, isOwnProfile, displayHandle]);
 
   const setProfileFromSave = useCallback((data: ProfileApiResponse) => {
     setRawProfile(data);
