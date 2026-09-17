@@ -15,8 +15,10 @@ import {
   LogOut,
   Cog,
   Code2,
+  PanelLeftClose,
+  PanelLeftOpen,
 } from 'lucide-react';
-import { Logo } from '@/shared/components/brand';
+import { Logo, QyvoraMark } from '@/shared/components/brand';
 import CpLogo from '@/shared/components/CpLogo';
 import { useAuth } from '@/core/contexts/AuthContext';
 import { useToast } from '@/core/contexts/ToastContext';
@@ -64,9 +66,13 @@ const NAV_SECTIONS: { title: string; items: NavEntry[] }[] = [
 /**
  * StudentSidebar — desktop (lg+) fixed navigation rail. Main / Practice /
  * Account sections, utilities (terminal · code · network) and quick logout.
- * Companion to the mobile StudentBottomNav.
+ * Companion to the mobile StudentBottomNav. `collapsed` narrows the rail to
+ * icons only; the collapse control is owned by the App shell.
  */
-const StudentSidebar: React.FC = () => {
+const StudentSidebar: React.FC<{ collapsed?: boolean; onToggleCollapse?: () => void }> = ({
+  collapsed = false,
+  onToggleCollapse,
+}) => {
   const { t } = useTranslation();
   const { user, logout } = useAuth();
   const { addToast } = useToast();
@@ -109,37 +115,48 @@ const StudentSidebar: React.FC = () => {
     to === '/dashboard' ? location.pathname === '/dashboard' : location.pathname.startsWith(to);
 
   return (
-    <aside className="fixed inset-y-0 left-0 z-[90] hidden w-[264px] flex-col border-r border-border-subtle bg-canvas lg:flex">
-      <div className="flex h-[80px] items-center border-b border-border-subtle px-5">
-        <Logo size="md" />
+    <aside
+      className={`fixed inset-y-0 left-0 z-[90] hidden flex-col border-r border-border-subtle bg-canvas transition-[width] duration-[var(--dur-base)] ease-[var(--ease-smooth)] lg:flex ${
+        collapsed ? 'w-[76px]' : 'w-[264px]'
+      }`}
+    >
+      <div className={`flex h-[80px] items-center border-b border-border-subtle ${collapsed ? 'justify-center px-0' : 'px-5'}`}>
+        {collapsed ? <QyvoraMark className="h-7 w-7" /> : <Logo size="md" />}
       </div>
 
       <nav aria-label={t('student.sidebar.label', 'Primary')} className="flex-1 overflow-y-auto px-3 py-4">
         {NAV_SECTIONS.map((section) => (
           <section key={section.title} className="mb-5">
-            <h3 className="mb-1 type-label px-3 text-text-tertiary uppercase tracking-[0.12em]">
-              {t(section.title)}
-            </h3>
+            {!collapsed && (
+              <h3 className="mb-1 type-label px-3 text-text-tertiary uppercase tracking-[0.12em]">
+                {t(section.title)}
+              </h3>
+            )}
             <ul className="space-y-0.5">
               {section.items.map((item) => {
                 const Icon = item.icon;
                 const active = isSectionActive(item.to);
                 return (
-                  <li key={item.key}>
-                    <NavLink
-                      to={item.to}
-                      className={`flex min-h-[44px] items-center gap-3 rounded-lg px-3 py-2 text-sm transition-colors focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-accent ${
-                        active ? 'bg-accent/10 text-accent' : 'text-text-secondary hover:bg-surface-raised hover:text-text-primary'
-                      }`}
-                    >
-                      <Icon className="h-[18px] w-[18px] shrink-0" strokeWidth={2} aria-hidden="true" />
-                      <span className="flex-1 truncate">{t(item.label)}</span>
-                      {item.badgeKey === 'notifications' && unread > 0 && (
-                        <span className="flex h-5 min-w-5 items-center justify-center rounded-full bg-accent px-1 text-xs font-bold text-on-accent tabular-nums">
-                          {unread > 99 ? '99+' : unread}
-                        </span>
-                      )}
-                    </NavLink>
+                  <li key={item.key} className={collapsed ? 'flex justify-center' : ''}>
+                    <Tooltip content={t(item.label)} side="right" disabled={!collapsed}>
+                      <NavLink
+                        to={item.to}
+                        data-tour-id={item.key === 'profile' ? 'tour-profile-sidebar' : undefined}
+                        className={`flex min-h-[44px] items-center rounded-lg py-2 text-sm transition-colors focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-accent ${
+                          collapsed ? 'justify-center px-0' : 'gap-3 px-3'
+                        } ${
+                          active ? 'bg-accent/10 text-accent' : 'text-text-secondary hover:bg-surface-raised hover:text-text-primary'
+                        }`}
+                      >
+                        <Icon className="h-[18px] w-[18px] shrink-0" strokeWidth={2} aria-hidden="true" />
+                        {!collapsed && <span className="flex-1 truncate">{t(item.label)}</span>}
+                        {item.badgeKey === 'notifications' && unread > 0 && (
+                          <span className="flex h-5 min-w-5 items-center justify-center rounded-full bg-accent px-1 text-xs font-bold text-on-accent tabular-nums">
+                            {unread > 99 ? '99+' : unread}
+                          </span>
+                        )}
+                      </NavLink>
+                    </Tooltip>
                   </li>
                 );
               })}
@@ -149,30 +166,36 @@ const StudentSidebar: React.FC = () => {
       </nav>
 
       <div className="border-t border-border-subtle px-3 py-3">
-        <div className="mb-2 flex items-center justify-between gap-2 px-2">
-          <CpLogo className="h-4 w-4" />
-          <span className="type-label font-bold text-accent tabular-nums">{cpBalance.toLocaleString()}</span>
-        </div>
+        {!collapsed && (
+          <div className="mb-2 flex items-center justify-between gap-2 px-2">
+            <CpLogo className="h-4 w-4" />
+            <span className="type-label font-bold text-accent tabular-nums">{cpBalance.toLocaleString()}</span>
+          </div>
+        )}
 
-        <div className="mb-2 flex items-center justify-center gap-1.5 rounded-lg bg-surface-raised p-1.5">
+        <div
+          className={`mb-2 flex items-center justify-center gap-1.5 rounded-lg bg-surface-raised p-1.5 ${
+            collapsed ? 'flex-col' : ''
+          }`}
+        >
           <TooltipProvider>
             <Tooltip content={t('student.tools.terminal', 'Terminal')}>
-              <button type="button" onClick={openTerminal} aria-label={t('student.tools.terminal', 'Terminal')} className="flex min-h-[44px] min-w-[44px] flex-1 items-center justify-center rounded-lg border border-transparent text-text-secondary transition-colors hover:border-border-subtle hover:text-accent focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-accent">
+              <button type="button" onClick={openTerminal} aria-label={t('student.tools.terminal', 'Terminal')} className={`flex min-h-[44px] min-w-[44px] ${collapsed ? 'w-full' : 'flex-1'} items-center justify-center rounded-lg border border-transparent text-text-secondary transition-colors hover:border-border-subtle hover:text-accent focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-accent`}>
                 <TerminalIcon className="h-[18px] w-[18px]" aria-hidden="true" />
               </button>
             </Tooltip>
             <Tooltip content={t('student.tools.ide', 'Code Playground')}>
-              <button type="button" onClick={openIde} aria-label={t('student.tools.ide', 'Code Playground')} className="flex min-h-[44px] min-w-[44px] flex-1 items-center justify-center rounded-lg border border-transparent text-text-secondary transition-colors hover:border-border-subtle hover:text-accent focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-accent">
+              <button type="button" onClick={openIde} aria-label={t('student.tools.ide', 'Code Playground')} className={`flex min-h-[44px] min-w-[44px] ${collapsed ? 'w-full' : 'flex-1'} items-center justify-center rounded-lg border border-transparent text-text-secondary transition-colors hover:border-border-subtle hover:text-accent focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-accent`}>
                 <Code2 className="h-[18px] w-[18px]" aria-hidden="true" />
               </button>
             </Tooltip>
             <Tooltip content={t('student.tools.network', 'Network Lab')}>
-              <button type="button" onClick={openNetwork} aria-label={t('student.tools.network', 'Network Lab')} className="flex min-h-[44px] min-w-[44px] flex-1 items-center justify-center rounded-lg border border-transparent text-text-secondary transition-colors hover:border-border-subtle hover:text-accent focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-accent">
+              <button type="button" onClick={openNetwork} aria-label={t('student.tools.network', 'Network Lab')} className={`flex min-h-[44px] min-w-[44px] ${collapsed ? 'w-full' : 'flex-1'} items-center justify-center rounded-lg border border-transparent text-text-secondary transition-colors hover:border-border-subtle hover:text-accent focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-accent`}>
                 <Network className="h-[18px] w-[18px]" aria-hidden="true" />
               </button>
             </Tooltip>
             <Tooltip content={t('student.tools.settings', 'Settings')}>
-              <button type="button" onClick={() => navigate('/dashboard/settings')} aria-label={t('student.tools.settings', 'Settings')} className="flex min-h-[44px] min-w-[44px] flex-1 items-center justify-center rounded-lg border border-transparent text-text-secondary transition-colors hover:border-border-subtle hover:text-accent focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-accent">
+              <button type="button" onClick={() => navigate('/dashboard/settings')} aria-label={t('student.tools.settings', 'Settings')} className={`flex min-h-[44px] min-w-[44px] ${collapsed ? 'w-full' : 'flex-1'} items-center justify-center rounded-lg border border-transparent text-text-secondary transition-colors hover:border-border-subtle hover:text-accent focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-accent`}>
                 <Cog className="h-[18px] w-[18px]" aria-hidden="true" />
               </button>
             </Tooltip>
@@ -181,11 +204,30 @@ const StudentSidebar: React.FC = () => {
 
         <button
           type="button"
-          onClick={handleLogout}
-          className="flex min-h-[44px] w-full items-center gap-3 rounded-lg px-3 py-2 text-sm text-text-secondary transition-colors hover:bg-semantic-danger/5 hover:text-semantic-danger focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-accent"
+          onClick={onToggleCollapse}
+          aria-expanded={!collapsed}
+          aria-label={collapsed ? t('student.sidebar.expand', 'Expand sidebar') : t('student.sidebar.collapse', 'Collapse sidebar')}
+          className={`flex min-h-[44px] w-full items-center rounded-lg py-2 text-sm text-text-secondary transition-colors hover:bg-surface-raised hover:text-text-primary focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-accent ${
+            collapsed ? 'justify-center px-0' : 'gap-3 px-3'
+          }`}
         >
-          <LogOut className="h-[18px] w-[18px]" aria-hidden="true" />
-          <span>{t('button.logOut')}</span>
+          {collapsed ? (
+            <PanelLeftOpen className="h-[18px] w-[18px] shrink-0" aria-hidden="true" />
+          ) : (
+            <PanelLeftClose className="h-[18px] w-[18px] shrink-0" aria-hidden="true" />
+          )}
+          {!collapsed && <span>{t('student.sidebar.collapse', 'Collapse sidebar')}</span>}
+        </button>
+
+        <button
+          type="button"
+          onClick={handleLogout}
+          className={`flex min-h-[44px] w-full items-center rounded-lg py-2 text-sm text-text-secondary transition-colors hover:bg-semantic-danger/5 hover:text-semantic-danger focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-accent ${
+            collapsed ? 'justify-center px-0' : 'gap-3 px-3'
+          }`}
+        >
+          <LogOut className="h-[18px] w-[18px] shrink-0" aria-hidden="true" />
+          {!collapsed && <span>{t('button.logOut')}</span>}
         </button>
       </div>
     </aside>

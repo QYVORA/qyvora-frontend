@@ -38,6 +38,24 @@ const AppShell = () => {
   const [ideOpen, setIdeOpen] = useState(false);
   const [networkVizOpen, setNetworkVizOpen] = useState(false);
   const [walkthroughTerminalOpen, setWalkthroughTerminalOpen] = useState(false);
+  const [railCollapsed, setRailCollapsed] = useState(() => {
+    try {
+      return localStorage.getItem('qyvora:sidebar-collapsed') === '1';
+    } catch {
+      return false;
+    }
+  });
+
+  const toggleRail = () =>
+    setRailCollapsed((prev) => {
+      const next = !prev;
+      try {
+        localStorage.setItem('qyvora:sidebar-collapsed', next ? '1' : '');
+      } catch {
+        /* storage unavailable */
+      }
+      return next;
+    });
 
   useEffect(() => {
     initPWA();
@@ -94,13 +112,17 @@ const AppShell = () => {
   const isWalkthroughPage = Boolean(roomMatch || roomMatchLegacy || courseMatch || labMatch);
   const isToolScreen = location.pathname.startsWith('/dashboard/tools/');
   const useRail = !isWalkthroughPage && !isToolScreen;
+  const railPad = useRail ? (railCollapsed ? 'lg:pl-[76px]' : 'lg:pl-[264px]') : '';
 
   return (
     <SimulationProvider>
-      <div className="bg-bg min-h-dvh">
-        <StudentTopbar />
-        {useRail && <StudentSidebar />}
-        <div id="main-content" className={`${TOPBAR_H} md:pb-6 ${useRail ? 'lg:pl-[264px]' : ''}`}>
+      <div className="bg-canvas min-h-dvh">
+        <StudentTopbar railCollapsed={railCollapsed} />
+        {useRail && <StudentSidebar collapsed={railCollapsed} onToggleCollapse={toggleRail} />}
+        <div
+          id="main-content"
+          className={`${TOPBAR_H} md:pb-6 ${useRail ? 'transition-[padding-left] duration-[var(--dur-base)] ease-[var(--ease-smooth)]' : ''} ${railPad}`}
+        >
           <Outlet />
         </div>
         {useRail && <StudentBottomNav />}

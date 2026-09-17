@@ -32,9 +32,9 @@ const NotificationsDropdown: React.FC<NotificationsDropdownProps> = ({
           initial={{ opacity: 0, y: -6 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -6 }}
-          className="hidden md:block absolute right-0 top-full mt-2 w-80 max-w-[calc(100vw-2rem)] rounded-xl border border-border bg-bg-card shadow-2xl z-[80] overflow-hidden"
+          className="hidden md:block absolute right-0 top-full mt-2 w-80 max-w-[calc(100vw-2rem)] rounded-xl border border-border-subtle bg-surface shadow-2xl shadow-black/30 z-[80] overflow-hidden"
         >
-          <div className="px-4 py-3 border-b border-border flex items-center justify-between">
+          <div className="px-4 py-3 border-b border-border-subtle flex items-center justify-between">
             <div>
               <div className="text-xs font-black uppercase tracking-widest text-text-primary">{t('student.topbar.notifications.title')}</div>
               <div className="text-xs text-text-muted">{unreadCount} {t('badge.unread')}</div>
@@ -73,7 +73,7 @@ const NotificationsDropdown: React.FC<NotificationsDropdownProps> = ({
               ))}
             </div>
           )}
-          <div className="px-4 py-3 border-t border-border">
+          <div className="px-4 py-3 border-t border-border-subtle">
             <Link to="/dashboard/notifications" onClick={onClose} className="block w-full text-center text-xs font-bold text-accent hover:underline active:opacity-70">
               {t('student.topbar.notifications.viewAll')}
             </Link>

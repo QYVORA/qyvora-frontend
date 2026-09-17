@@ -146,7 +146,7 @@ export const StudentTour: React.FC<StudentTourProps> = ({
         return md ? firstVisible('tour-cp-desktop', 'tour-cp-dashboard', 'tour-cp-mobile')
                   : firstVisible('tour-cp-dashboard', 'tour-cp-mobile', 'tour-cp-desktop');
       case 'tour-profile':
-        return md ? firstVisible('tour-profile-desktop', 'tour-profile-mobile')
+        return md ? firstVisible('tour-profile-desktop', 'tour-profile-sidebar', 'tour-profile-mobile')
                   : firstVisible('tour-profile-mobile', 'tour-profile-desktop');
       default:
         return queryTarget(targetId);

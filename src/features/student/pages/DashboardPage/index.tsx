@@ -30,17 +30,16 @@ import Button from '@/shared/components/ui/Button';
 import {
   BookOpen,
   FlaskConical,
-  Wrench,
   ShoppingBag,
-  ArrowRight,
   Flame,
   Crown,
   Download,
 } from 'lucide-react';
 import { IconCode, IconTerminal, IconNetwork } from '@/shared/components/icons';
+import LearningCard from '@/shared/components/learning/LearningCard';
 import { LABS } from '@/features/student/constants/labs';
 import CpLogo from '@/shared/components/CpLogo';
-import { COURSES, getCategoryById } from '@/features/student/data/courses';
+import { COURSES } from '@/features/student/data/courses';
 import { isInstallable, showInstallPrompt } from '@/features/student/services/pwa';
 import type { LabDef } from '@/features/student/constants/labs';
 
@@ -61,30 +60,6 @@ function pickCpBalance(userCp: number, overview: any, cpBalance: number | null):
   if (typeof cpBalance === 'number' && Number.isFinite(cpBalance) && cpBalance > 0) return cpBalance;
   return userCp;
 }
-
-interface LibraryTileProps {
-  to: string;
-  title: string;
-  meta: React.ReactNode;
-  icon: React.ReactNode;
-  children?: React.ReactNode;
-}
-
-const LibraryTile: React.FC<LibraryTileProps> = ({ to, title, meta, icon, children }) => (
-  <Card to={to} interactive className="flex min-h-[168px] flex-col gap-3 p-6">
-    <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border border-border-subtle bg-surface-raised text-accent">
-      {icon}
-    </span>
-    <h3 className="type-h3 font-black uppercase tracking-tight text-text-primary">{title}</h3>
-    {children}
-    <div className="mt-auto flex items-center justify-between gap-3">
-      <span className="type-meta text-text-tertiary">{meta}</span>
-      <span className="flex min-h-[44px] items-center gap-1.5 text-sm font-bold text-accent">
-        <ArrowRight className="h-4 w-4" aria-hidden="true" />
-      </span>
-    </div>
-  </Card>
-);
 
 const Dashboard = () => {
   const { t } = useTranslation();
@@ -320,21 +295,20 @@ const Dashboard = () => {
             </Button>
           </div>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {COURSES.slice(0, 3).map((course) => {
-              const category = getCategoryById(course.categoryId);
-              return (
-                <LibraryTile
-                  key={course.id}
-                  to={`/dashboard/courses/${course.id}`}
-                  title={course.title}
-                  icon={<BookOpen className="h-4 w-4" aria-hidden="true" />}
-                  meta={`${course.lessons.length} lessons · ${course.cpCost} CP`}
-                >
-                  <p className="type-body-sm line-clamp-2">{course.description}</p>
-                  <span className="type-meta text-text-tertiary">{category?.name} · {course.skillLevel}</span>
-                </LibraryTile>
-              );
-            })}
+            {COURSES.slice(0, 3).map((course) => (
+              <LearningCard
+                key={course.id}
+                type="course"
+                to={`/dashboard/courses/${course.id}`}
+                title={course.title}
+                description={course.description}
+                icon={<BookOpen className="h-4 w-4" aria-hidden="true" />}
+                difficulty={course.skillLevel}
+                lessonsCount={course.lessons.length}
+                cpReward={course.cpCost}
+                actionLabel={t('student.dashboard.view')}
+              />
+            ))}
           </div>
         </div>
 
@@ -348,16 +322,17 @@ const Dashboard = () => {
           </div>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {LABS.slice(0, 3).map((lab: LabDef) => (
-              <LibraryTile
+              <LearningCard
                 key={lab.id}
+                type="lab"
                 to={lab.route}
                 title={t(lab.titleKey ?? '', lab.id)}
+                description={t(lab.descKey ?? '', '')}
                 icon={<FlaskConical className="h-4 w-4" aria-hidden="true" />}
-                meta={lab.difficulty}
-              >
-                <p className="type-body-sm line-clamp-2">{t(lab.descKey ?? '', '')}</p>
-                <span className="type-meta text-accent">{lab.cpReward} CP</span>
-              </LibraryTile>
+                difficulty={lab.difficulty}
+                cpReward={lab.cpReward}
+                actionLabel={t('student.dashboard.view')}
+              />
             ))}
           </div>
         </div>
@@ -371,15 +346,15 @@ const Dashboard = () => {
             {TOOLS.map((tool) => {
               const ToolIcon = tool.icon;
               return (
-                <LibraryTile
+                <LearningCard
                   key={tool.id}
+                  type="resource"
                   to={tool.route}
                   title={t(tool.labelKey)}
+                  description={t(tool.descKey)}
                   icon={<ToolIcon className="h-4 w-4" aria-hidden="true" />}
-                  meta={t('student.dashboard.view')}
-                >
-                  <p className="type-body-sm line-clamp-2">{t(tool.descKey)}</p>
-                </LibraryTile>
+                  actionLabel={t('student.dashboard.view')}
+                />
               );
             })}
           </div>
@@ -400,15 +375,17 @@ const Dashboard = () => {
                 const title = String(product?.title || t('student.dashboard.intelligenceAsset'));
                 const description = String(product?.description || t('student.dashboard.intelligenceDesc'));
                 return (
-                  <LibraryTile
+                  <LearningCard
                     key={id || title}
+                    type="product"
                     to="/dashboard/marketplace"
                     title={title}
+                    description={description}
                     icon={<ShoppingBag className="h-4 w-4" aria-hidden="true" />}
-                    meta={product?.isFree ? t('student.dashboard.free') : `${Number(product?.cpPrice || 0).toLocaleString()} CP`}
-                  >
-                    <p className="type-body-sm line-clamp-2">{description}</p>
-                  </LibraryTile>
+                    isFree={product?.isFree}
+                    price={product?.isFree ? undefined : `${Number(product?.cpPrice || 0).toLocaleString()} CP`}
+                    actionLabel={t('student.dashboard.view')}
+                  />
                 );
               })}
             </div>
@@ -424,7 +401,7 @@ const Dashboard = () => {
       </div>
 
       {/* 5. Skill matrix */}
-      <div className="bg-surface px-3 py-10 md:px-4 lg:px-6">
+      <div className="bg-canvas px-3 py-10 md:px-4 lg:px-6">
         <SkillMatrix modules={overviewModules} />
       </div>
 

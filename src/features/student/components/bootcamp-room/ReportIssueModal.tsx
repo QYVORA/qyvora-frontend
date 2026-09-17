@@ -57,7 +57,7 @@ const ReportIssueModal: React.FC<Props> = ({ phaseId, roomId, stepIdx, onClose }
           onChange={(e) => setIssueText(e.target.value)}
           placeholder={t('student.bootcampRoom.reportIssue.placeholder')}
           aria-label={t('student.bootcampRoom.reportIssue.feedbackLabel')}
-          className="w-full h-32 px-4 py-3 rounded-xl border border-border bg-bg text-text-primary text-sm resize-none focus:border-accent outline-none"
+          className="w-full h-32 px-4 py-3 rounded-xl border border-border bg-bg-card text-text-primary text-sm resize-none focus:border-accent outline-none"
           autoFocus
         />
         <div className="flex gap-3 mt-4">

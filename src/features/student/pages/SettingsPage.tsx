@@ -8,6 +8,8 @@ import { getDataSaverEnabled, setDataSaverEnabled } from '../utils/studentExperi
 import SEO from '../../../shared/components/SEO';
 import Button from '../../../shared/components/ui/Button';
 import FadeIn from '../../../shared/components/ui/FadeIn';
+import PageHeader from '../../../shared/components/ui/PageHeader';
+import SectionHeader from '../../../shared/components/ui/SectionHeader';
 import { SettingsSkeleton } from '../components/StudentSkeletons';
 import { usePreferences } from '../../../shared/hooks/usePreferences';
 import { useThemeContext } from '../../../core/contexts/ThemeContext';
@@ -16,13 +18,6 @@ import { SETTINGS_SECTIONS, type SettingsSectionId } from '../constants/settings
 const INPUT_CLS = 'w-full bg-bg border border-border rounded-xl py-3 px-4 text-sm text-text-primary placeholder:text-text-muted focus:border-accent outline-none transition-[border-color] duration-[var(--dur-base)] ease-[var(--ease-smooth)] font-mono';
 
 const LABEL_CLS = 'text-xs font-black uppercase tracking-widest text-text-muted block mb-1.5';
-
-const SectionHeader: React.FC<{ title: string; description?: string }> = ({ title, description }) => (
-  <div className="mb-6">
-    <h2 className="text-2xl font-black text-text-primary mb-2">{title}</h2>
-    {description && <p className="text-sm text-text-muted">{description}</p>}
-  </div>
-);
 
 const PasswordField: React.FC<{ name: string; placeholder?: string; label: string; shake?: boolean; onAnimationEnd?: () => void; id: string }> = ({ name, placeholder = '••••••••', label, shake = false, onAnimationEnd, id }) => {
   const { t } = useTranslation();
@@ -266,15 +261,11 @@ const Settings: React.FC = () => {
       <div className="bg-canvas min-h-full px-3 md:px-4 lg:px-6 pt-8 pb-16 md:pb-20">
 
         {/* Page header */}
-        <div className="mb-8 flex flex-col gap-6">
-          <div>
-            <p className="type-meta mb-2 uppercase tracking-[0.25em] text-accent">
-              {t('student.settings.configure', 'Configure')}
-            </p>
-            <h1 className="text-3xl font-black tracking-tight text-text-primary md:text-4xl lg:text-5xl">{sectionHeader[activeSection].title}</h1>
-            <p className="mt-2 text-sm text-text-muted md:text-base">{sectionHeader[activeSection].description}</p>
-          </div>
-        </div>
+        <PageHeader
+          kicker={t('student.settings.configure', 'Configure')}
+          title={sectionHeader[activeSection].title}
+          description={sectionHeader[activeSection].description}
+        />
 
         <div className="w-full space-y-6 md:space-y-8">
 

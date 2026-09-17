@@ -3,7 +3,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { RefreshCw } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import SEO from '@/shared/components/SEO';
-import { Button } from '@/shared/components/ui';
+import { Button, PageHeader } from '@/shared/components/ui';
 
 import CpAnalytics from '../components/CpAnalytics';
 import BootcampAccessPanel from '../components/BootcampAccessPanel';
@@ -248,40 +248,35 @@ const AdminDashboardPage: React.FC = () => {
         <div className="px-3 md:px-4 lg:px-6 pt-8 pb-20 lg:pb-24 space-y-6">
 
           {/* ── Page header ─────────────────────────────────────────────── */}
-          <header className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between rounded-2xl border border-border/50 bg-bg-card p-5 sm:p-6">
-            <div className="min-w-0">
-              <div className="mb-1 text-xs font-black uppercase tracking-[0.3em] text-accent">
-                {t('nav.admin')} · {t('nav.adminConsole')}
+          <PageHeader
+            kicker={`${t('nav.admin')} · ${t('nav.adminConsole')}`}
+            title={t(activeLabelKey)}
+            description={loading ? t('admin.syncing') : t('admin.managingDescription', { section: t(activeLabelKey).toLowerCase() })}
+            actions={
+              <div className="flex items-center gap-3 sm:gap-5 shrink-0">
+                {overview && (
+                  <div className="hidden sm:flex items-center gap-5">
+                    <div className="text-right">
+                      <div className="font-mono text-sm font-black text-accent leading-none tabular-nums">{overview.users.total}</div>
+                      <div className="mt-1 text-xs font-black uppercase tracking-widest text-text-muted">{t('admin.tabs.users')}</div>
+                    </div>
+                    <div className="text-right">
+                      <div className="font-mono text-sm font-black text-accent leading-none tabular-nums">{products.length}</div>
+                      <div className="mt-1 text-xs font-black uppercase tracking-widest text-text-muted">{t('admin.tabs.market')}</div>
+                    </div>
+                  </div>
+                )}
+                <Button
+                  variant="secondary"
+                  size="sm"
+                  onClick={() => void loadAll()}
+                  icon={<RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />}
+                >
+                  {loading ? t('admin.syncing') : t('button.refresh')}
+                </Button>
               </div>
-              <h1 className="text-xl md:text-2xl font-black text-text-primary tracking-tight">{t(activeLabelKey)}</h1>
-              <p className="mt-1 text-xs text-text-secondary font-mono">
-                {loading ? t('admin.syncing') : t('admin.managingDescription', { section: t(activeLabelKey).toLowerCase() })}
-              </p>
-            </div>
-
-            <div className="flex items-center gap-3 sm:gap-5 shrink-0">
-              {overview && (
-                <div className="hidden sm:flex items-center gap-5">
-                  <div className="text-right">
-                    <div className="font-mono text-sm font-black text-accent leading-none tabular-nums">{overview.users.total}</div>
-                    <div className="mt-1 text-xs font-black uppercase tracking-widest text-text-muted">{t('admin.tabs.users')}</div>
-                  </div>
-                  <div className="text-right">
-                    <div className="font-mono text-sm font-black text-accent leading-none tabular-nums">{products.length}</div>
-                    <div className="mt-1 text-xs font-black uppercase tracking-widest text-text-muted">{t('admin.tabs.market')}</div>
-                  </div>
-                </div>
-              )}
-              <Button
-                variant="secondary"
-                size="sm"
-                onClick={() => void loadAll()}
-                icon={<RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />}
-              >
-                {loading ? t('admin.syncing') : t('button.refresh')}
-              </Button>
-            </div>
-          </header>
+            }
+          />
 
           {/* ── MAIN CONTENT ────────────────────────────────────────────── */}
           {loading ? (

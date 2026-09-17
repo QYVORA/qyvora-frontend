@@ -68,9 +68,8 @@ export const Tooltip: React.FC<TooltipProps> = ({
           sideOffset={sideOffset}
           className={cn(
             // Surface
-            'terminal-card z-[300] px-2.5 py-1.5 rounded-lg',
-            'bg-bg-card border border-border/50',
-            'shadow-lg shadow-black/30',
+            'z-[300] px-2.5 py-1.5 rounded-lg',
+            'bg-surface border border-border-subtle shadow-lg shadow-black/30',
             // Typography
             'text-xs font-bold text-text-primary uppercase tracking-widest font-mono',
             // Radix data-state animations

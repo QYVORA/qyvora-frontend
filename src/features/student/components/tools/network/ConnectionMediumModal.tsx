@@ -29,12 +29,12 @@ const ConnectionMediumModal: React.FC<ConnectionMediumModalProps> = ({
         <RadixDialog.Overlay className="fixed inset-0 z-[210] bg-black/70 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0" />
         <RadixDialog.Content
           aria-label="Select connection medium"
-          className="fixed z-[211] left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[calc(100vw-2rem)] max-w-md bg-bg-card border border-border/50 rounded-2xl shadow-2xl shadow-black/40 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 duration-150"
+          className="fixed z-[211] left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[calc(100vw-2rem)] max-w-md bg-surface border border-border-subtle rounded-2xl shadow-2xl shadow-black/40 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 duration-150"
         >
           <RadixDialog.Title className="sr-only">Select Connection Medium</RadixDialog.Title>
 
           {/* Header */}
-          <div className="flex items-center justify-between px-5 py-4 border-b border-border/20">
+          <div className="flex items-center justify-between px-5 py-4 border-b border-border-subtle">
             <div>
               <div className="text-xs font-black uppercase tracking-widest text-accent">Connection Medium</div>
               <div className="text-xs text-text-muted mt-0.5">
@@ -66,7 +66,7 @@ const ConnectionMediumModal: React.FC<ConnectionMediumModalProps> = ({
                           onSelect(medium.id, medium.label);
                           onOpenChange(false);
                         }}
-                        className="flex items-center gap-2.5 px-3 py-2.5 rounded-xl border border-border/20 text-left transition-[background-color,border-color,transform] duration-[var(--dur-base)] ease-[var(--ease-smooth)] hover:bg-accent-dim/50 hover:border-accent/20 active:scale-[0.98] group"
+                        className="flex items-center gap-2.5 px-3 py-2.5 rounded-xl border border-border-subtle text-left transition-[background-color,border-color,transform] duration-[var(--dur-base)] ease-[var(--ease-smooth)] hover:bg-accent-dim/50 hover:border-accent/20 active:scale-[0.98] group"
                       >
                         <medium.icon size={14} className="text-text-muted group-hover:text-accent transition-colors" />
                         <span className="text-xs font-bold text-text-muted group-hover:text-text-primary transition-colors">

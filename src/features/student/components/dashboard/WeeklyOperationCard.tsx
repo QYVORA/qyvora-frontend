@@ -14,7 +14,7 @@ const WeeklyOperationCard = ({ engagement, loading }: WeeklyOperationCardProps) 
 
   if (loading) {
     return (
-      <div className="card-accent bg-bg-card p-5 md:p-6 animate-pulse">
+      <div className="card-accent bg-surface p-5 md:p-6 animate-pulse">
         <div className="h-5 w-40 bg-border/30 rounded mb-4" />
         <div className="h-6 w-56 bg-border/30 rounded mb-3" />
         <div className="h-4 w-full bg-border/20 rounded mb-5" />
@@ -24,7 +24,7 @@ const WeeklyOperationCard = ({ engagement, loading }: WeeklyOperationCardProps) 
   }
 
   return (
-    <div className="card-accent bg-bg-card p-5 md:p-6">
+    <div className="card-accent bg-surface p-5 md:p-6">
       <div className="flex items-center gap-3 mb-3">
         <div className="w-9 h-9 rounded-xl flex items-center justify-center bg-accent/10 shrink-0">
           <IconTarget size={18} className="text-accent" />
@@ -54,7 +54,7 @@ const WeeklyOperationCard = ({ engagement, loading }: WeeklyOperationCardProps) 
             +{operation.cpReward} CP
           </span>
         </div>
-        <div className="h-2.5 bg-bg-elevated rounded-full overflow-hidden">
+        <div className="h-2.5 bg-surface-raised rounded-full overflow-hidden">
           <div
             className="h-full bg-accent rounded-full transition-[width] duration-700"
             style={{ width: `${Math.min(progress * 100, 100)}%` }}
