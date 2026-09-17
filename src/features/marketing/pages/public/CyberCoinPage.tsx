@@ -82,7 +82,7 @@ const CyberCoinPage: React.FC = () => {
                 const Icon = pillar.icon;
                 return (
                   <ScrollReveal key={pillar.id} delay={i * 0.08}>
-                    <div className="group relative h-full rounded-2xl border border-border/50 bg-bg-card p-5 transition-colors duration-300 hover:border-accent/40 md:p-6">
+                    <div className="group relative h-full rounded-2xl border border-border-subtle bg-surface p-5 transition-colors duration-300 hover:border-accent/40 md:p-6">
                       <div className="flex items-start justify-between">
                         <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-accent/20 bg-accent/10">
                           <Icon className="h-5 w-5 text-accent" aria-hidden="true" />
@@ -118,7 +118,7 @@ const CyberCoinPage: React.FC = () => {
             </ScrollReveal>
 
             <ScrollReveal direction="left">
-              <div className="relative rounded-2xl border border-border/50 bg-bg-card p-5 md:p-7">
+              <div className="relative rounded-2xl border border-border-subtle bg-surface p-5 md:p-7">
                 <div className="absolute bottom-10 left-[39px] top-10 w-px bg-border/30 md:left-[47px]" aria-hidden="true" />
                 <ol className="relative space-y-6">
                   {CP_PHILOSOPHY_STAGES.map((stage, i) => {
@@ -129,7 +129,7 @@ const CyberCoinPage: React.FC = () => {
                           className={`relative z-10 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border font-mono text-xs font-black md:h-9 md:w-9 ${
                             isReward
                               ? 'border-accent bg-accent text-on-accent'
-                              : 'border-border/40 bg-bg-elevated text-text-muted'
+                              : 'border-border-subtle bg-surface-raised text-text-muted'
                           }`}
                         >
                           {String(i + 1).padStart(2, '0')}
@@ -168,7 +168,7 @@ const CyberCoinPage: React.FC = () => {
             </ScrollReveal>
 
             <ScrollReveal direction="left">
-              <div className="relative rounded-2xl border border-border/50 bg-bg-card p-5 md:p-7">
+              <div className="relative rounded-2xl border border-border-subtle bg-surface p-5 md:p-7">
                 <div className="absolute bottom-10 left-[39px] top-10 w-px bg-border/30 md:left-[47px]" aria-hidden="true" />
                 <ol className="relative space-y-5">
                   {CP_LEARNING_LOOP.map((stage, i) => {
@@ -179,7 +179,7 @@ const CyberCoinPage: React.FC = () => {
                           className={`relative z-10 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border font-mono text-xs font-black md:h-9 md:w-9 ${
                             isEarn
                               ? 'border-on-accent bg-accent text-on-accent'
-                              : 'border-border/40 bg-bg-elevated text-text-muted'
+                              : 'border-border-subtle bg-surface-raised text-text-muted'
                           }`}
                         >
                           {stage.index}
@@ -217,8 +217,8 @@ const CyberCoinPage: React.FC = () => {
 
             <div className="space-y-6">
               <ScrollReveal>
-                <div className="overflow-hidden rounded-2xl border border-border/50 bg-bg-card">
-                  <div className="hidden bg-bg-elevated sm:grid grid-cols-[1.5fr_1fr_120px_150px] gap-4 border-b border-border/50 px-5 py-3.5 md:px-6">
+                <div className="overflow-hidden rounded-2xl border border-border-subtle bg-surface">
+                  <div className="hidden bg-surface-raised sm:grid grid-cols-[1.5fr_1fr_120px_150px] gap-4 border-b border-border-subtle px-5 py-3.5 md:px-6">
                     <span className="type-meta font-black uppercase tracking-widest text-text-muted">Activity</span>
                     <span className="type-meta font-black uppercase tracking-widest text-text-muted">Category</span>
                     <span className="type-meta font-black uppercase tracking-widest text-text-muted">Reward</span>
@@ -228,7 +228,7 @@ const CyberCoinPage: React.FC = () => {
                     {CP_REWARD_MATRIX.slice(0, 3).map((row) => {
                       const status = STATUS_STYLES[row.status];
                       return (
-                        <li key={row.id} className="grid grid-cols-[1fr_auto] gap-x-4 gap-y-1.5 px-5 py-4 transition-colors duration-300 hover:bg-bg-elevated sm:grid-cols-[1.5fr_1fr_120px_150px] md:px-6">
+                        <li key={row.id} className="grid grid-cols-[1fr_auto] gap-x-4 gap-y-1.5 px-5 py-4 transition-colors duration-300 hover:bg-surface-raised sm:grid-cols-[1.5fr_1fr_120px_150px] md:px-6">
                           <span className="self-center text-sm font-bold text-text-primary">{row.activity}</span>
                           <span className="hidden self-center type-meta font-black uppercase tracking-widest text-text-muted sm:block">{row.category}</span>
                           <span className="col-start-2 self-center font-mono text-sm font-black text-right text-accent sm:col-start-3 sm:row-start-1 sm:text-left">{row.reward}</span>
@@ -262,12 +262,12 @@ const CyberCoinPage: React.FC = () => {
 
             <div className="space-y-6">
               <ScrollReveal>
-                <div className="overflow-hidden rounded-2xl border border-border/50 bg-bg-card">
+                <div className="overflow-hidden rounded-2xl border border-border-subtle bg-surface">
                   <ul className="divide-y divide-border/20">
                     {CP_REWARD_MATRIX.slice(3).map((row) => {
                       const status = STATUS_STYLES[row.status];
                       return (
-                        <li key={row.id} className="grid grid-cols-[1fr_auto] gap-x-4 gap-y-1.5 px-5 py-4 transition-colors duration-300 hover:bg-bg-elevated sm:grid-cols-[1.5fr_1fr_120px_150px] md:px-6">
+                        <li key={row.id} className="grid grid-cols-[1fr_auto] gap-x-4 gap-y-1.5 px-5 py-4 transition-colors duration-300 hover:bg-surface-raised sm:grid-cols-[1.5fr_1fr_120px_150px] md:px-6">
                           <span className="self-center text-sm font-bold text-text-primary">{row.activity}</span>
                           <span className="hidden self-center type-meta font-black uppercase tracking-widest text-text-muted sm:block">{row.category}</span>
                           <span className="col-start-2 self-center font-mono text-sm font-black text-right text-accent sm:col-start-3 sm:row-start-1 sm:text-left">{row.reward}</span>
@@ -308,8 +308,8 @@ const CyberCoinPage: React.FC = () => {
                   key={step.id}
                   className={`rounded-2xl border p-5 md:p-6 ${
                     step.planned
-                      ? 'border-dashed border-border/40 bg-transparent'
-                      : 'border-accent/50 bg-bg-card'
+                      ? 'border-dashed border-border-subtle bg-transparent'
+                      : 'border-accent/50 bg-surface'
                   }`}
                 >
                   <div className="mb-3 flex items-center justify-between gap-2">
@@ -317,7 +317,7 @@ const CyberCoinPage: React.FC = () => {
                     <span
                       className={`inline-flex items-center rounded-lg px-2 py-0.5 text-xs font-black uppercase tracking-widest ${
                         step.planned
-                          ? 'border border-dashed border-border/50 text-text-muted'
+                          ? 'border border-dashed border-border-subtle text-text-muted'
                           : 'border border-accent/30 bg-accent/5 text-accent'
                       }`}
                     >
@@ -332,7 +332,7 @@ const CyberCoinPage: React.FC = () => {
             </div>
 
             <ScrollReveal>
-              <div className="flex items-start gap-3 rounded-2xl border border-border/50 bg-bg-card p-4 md:p-5">
+              <div className="flex items-start gap-3 rounded-2xl border border-border-subtle bg-surface p-4 md:p-5">
                 <FlaskConical className="mt-0.5 h-4 w-4 shrink-0 text-accent" aria-hidden="true" />
                 <p className="font-mono text-xs leading-relaxed text-text-muted md:text-sm">
                   CP currently functions as the QYVORA platform reward system. Blockchain-backed settlement and portable digital proof are planned future layers. They are not deployed, and CP is not a publicly tradable asset.
@@ -374,7 +374,7 @@ const CyberCoinPage: React.FC = () => {
                   return (
                     <Link
                       to={`/courses/${course.id}`}
-                      className="group relative flex h-full min-h-[340px] flex-col overflow-hidden rounded-2xl border border-border/50 bg-bg-card transition-[transform,box-shadow,border-color,background-color] duration-[var(--dur-base)] ease-[var(--ease-smooth)] hover:border-accent/40 md:min-h-[280px] md:flex-row"
+                      className="group relative flex h-full min-h-[340px] flex-col overflow-hidden rounded-2xl border border-border-subtle bg-surface transition-[transform,box-shadow,border-color,background-color] duration-[var(--dur-base)] ease-[var(--ease-smooth)] hover:border-accent/40 md:min-h-[280px] md:flex-row"
                     >
                       <div className="relative flex min-w-0 flex-1 flex-col items-start p-5 text-left sm:p-6 md:p-7">
                         <div className="mb-3 flex flex-wrap items-center gap-2">
