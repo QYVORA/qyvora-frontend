@@ -22,16 +22,16 @@ const DayBar = ({
     : 12;
 
   return (
-    <div className="flex flex-col items-center gap-2 flex-1 min-h-0">
-      <div className="relative w-full flex-1 flex justify-center min-h-[80px]">
+    <div className="flex flex-col items-center gap-3 flex-1 min-h-0">
+      <div className="relative w-full flex-1 flex justify-center min-h-[96px]">
         <div
-          className={`absolute bottom-0 w-full max-w-[28px] rounded-t-md transition-[height,background-color] duration-500 ${
+          className={`absolute bottom-0 w-full max-w-[34px] rounded-t-md transition-[height,background-color] duration-500 ${
             active ? 'bg-accent' : 'bg-border/20'
           }`}
           style={{ height: `${heightPercent}%` }}
         />
       </div>
-      <div className="flex flex-col items-center gap-0.5">
+      <div className="flex flex-col items-center gap-1">
         <span
           className={`text-xs font-bold uppercase tracking-wider ${
             active ? 'text-accent/80' : 'text-text-muted/30'
@@ -84,7 +84,7 @@ const WeekActivity = ({ visitDates = [], visitDurations = {} }: WeekActivityProp
   return (
     <div className="flex flex-col flex-1 min-h-0">
       <div
-        className="flex items-stretch gap-1 w-full pt-2 flex-1 min-h-[140px]"
+        className="flex items-stretch gap-2 md:gap-3 w-full pt-3 flex-1 min-h-[160px]"
         role="img"
         aria-label={`Activity: ${activeDays} of ${activeDays} days this week`}
       >
@@ -98,7 +98,7 @@ const WeekActivity = ({ visitDates = [], visitDurations = {} }: WeekActivityProp
           />
         ))}
       </div>
-      <div className="mt-3 text-center shrink-0">
+      <div className="mt-4 text-center shrink-0">
         <span className="text-xs font-mono text-text-muted">
           {activeDays}{' '}
           {"active days"}{' '}

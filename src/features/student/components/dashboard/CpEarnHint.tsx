@@ -17,9 +17,9 @@ const CpEarnHint = ({ engagement, loading }: CpEarnHintProps) => {
     return (
       <Link
         to={mission.actionType === 'lab_flag' ? '/dashboard/labs' : '/dashboard/courses'}
-        className="flex items-center gap-2 px-3 py-2 rounded-xl bg-accent/5 border border-accent/10 text-xs font-mono text-accent hover:bg-accent/10 transition-colors"
+        className="flex items-center gap-3 px-4 py-3 rounded-xl bg-accent/5 border border-accent/10 text-sm font-mono text-accent hover:bg-accent/10 transition-colors"
       >
-        <IconFire size={14} className="shrink-0" />
+        <IconFire size={16} className="shrink-0" />
         <span>{`Complete today's mission for +${mission.cpReward} CP`}</span>
       </Link>
     );
@@ -30,9 +30,9 @@ const CpEarnHint = ({ engagement, loading }: CpEarnHintProps) => {
     return (
       <Link
         to="/dashboard"
-        className="flex items-center gap-2 px-3 py-2 rounded-xl bg-accent/5 border border-accent/10 text-xs font-mono text-accent hover:bg-accent/10 transition-colors"
+        className="flex items-center gap-3 px-4 py-3 rounded-xl bg-accent/5 border border-accent/10 text-sm font-mono text-accent hover:bg-accent/10 transition-colors"
       >
-        <IconTarget size={14} className="shrink-0" />
+        <IconTarget size={16} className="shrink-0" />
         <span>{`Continue your weekly operation for +${remaining} CP`}</span>
       </Link>
     );
@@ -41,9 +41,9 @@ const CpEarnHint = ({ engagement, loading }: CpEarnHintProps) => {
   return (
     <Link
       to="/dashboard/labs"
-      className="flex items-center gap-2 px-3 py-2 rounded-xl bg-accent/5 border border-accent/10 text-xs font-mono text-accent hover:bg-accent/10 transition-colors"
+      className="flex items-center gap-3 px-4 py-3 rounded-xl bg-accent/5 border border-accent/10 text-sm font-mono text-accent hover:bg-accent/10 transition-colors"
     >
-      <IconFire size={14} className="shrink-0" />
+      <IconFire size={16} className="shrink-0" />
       <span>{"Complete labs and courses to earn CP"}</span>
     </Link>
   );
