@@ -26,30 +26,26 @@ const PageLoader: React.FC = () => {
 
   return (
     <div className="fixed inset-0 z-[9999] bg-canvas flex items-center justify-center overflow-hidden select-none touch-none px-6">
-      <div role="status" aria-live="polite" className="flex flex-col items-center gap-5 text-center">
+      <div role="status" aria-live="polite" className="flex items-center justify-center">
         <span className="sr-only">Loading QYVORA</span>
         <p
           aria-hidden="true"
-          className="font-mono text-lg sm:text-xl md:text-2xl font-bold leading-none whitespace-nowrap"
+          className="font-mono text-xl sm:text-2xl md:text-3xl font-bold leading-none whitespace-nowrap"
         >
-          <span className="text-text-muted">{PROMPT}&nbsp;</span>
+          <span className="text-accent">{PROMPT}&nbsp;</span>
           <span className="text-text-primary">{typed}</span>
-          <span className="page-loader-caret ml-1.5" />
-        </p>
-        <p
-          aria-hidden="true"
-          className="font-mono text-xs uppercase tracking-[0.35em] text-text-muted/60"
-        >
-          Loading
+          <span className="page-loader-caret ml-2" />
         </p>
       </div>
       <style>{`
         .page-loader-caret {
           display: inline-block;
-          width: 3px;
+          width: 4px;
           height: 1.25em;
+          border-radius: 1px;
           transform: translateY(0.26em);
           background: var(--color-accent);
+          box-shadow: 0 0 10px var(--color-accent-glow);
           animation: page-loader-blink 1.05s steps(1, end) infinite;
         }
         @keyframes page-loader-blink {
