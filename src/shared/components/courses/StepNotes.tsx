@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { useTranslation } from 'react-i18next';
 import { StickyNote, Trash2 } from 'lucide-react';
 
 interface StepNotesProps {
@@ -8,7 +7,6 @@ interface StepNotesProps {
 }
 
 const StepNotes: React.FC<StepNotesProps> = ({ storageKey, className = '' }) => {
-  const { t } = useTranslation();
   const [notes, setNotes] = useState('');
   const [expanded, setExpanded] = useState(false);
 
@@ -36,7 +34,7 @@ const StepNotes: React.FC<StepNotesProps> = ({ storageKey, className = '' }) => 
         className="w-full flex items-center gap-2 px-4 py-3 bg-bg-card text-text-muted hover:text-accent active:opacity-70 transition-colors text-xs font-black uppercase tracking-widest"
       >
         <StickyNote className="h-3.5 w-3.5" />
-        {expanded ? t('components.stepNotes.hideNotes') : t('components.stepNotes.myNotes')}
+        {expanded ? "Hide Notes" : "My Notes"}
         {notes && <span className="ml-auto w-2 h-2 rounded-full bg-accent" />}
       </button>
       {expanded && (
@@ -44,14 +42,14 @@ const StepNotes: React.FC<StepNotesProps> = ({ storageKey, className = '' }) => 
           <textarea
             value={notes}
             onChange={(e) => handleChange(e.target.value)}
-            placeholder={t('components.stepNotes.placeholder')}
-            aria-label={t('components.stepNotes.myNotes')}
+            placeholder={"Write your notes for this step…"}
+            aria-label={"My Notes"}
             className="w-full bg-bg-elevated border border-border rounded-lg p-3 text-sm font-mono text-text-primary placeholder:text-text-muted/30 outline-none resize-none min-h-[80px] caret-accent"
             spellCheck={false}
           />
           {notes && (
             <button onClick={handleClear} className="mt-2 flex items-center gap-1 text-xs font-mono text-text-muted hover:text-danger transition-colors">
-              <Trash2 className="h-3 w-3" /> {t('components.stepNotes.clearNotes')}
+              <Trash2 className="h-3 w-3" /> {"Clear notes"}
             </button>
           )}
         </div>

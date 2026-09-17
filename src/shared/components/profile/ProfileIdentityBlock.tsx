@@ -1,7 +1,6 @@
 import { type ReactNode } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'motion/react';
-import { useTranslation } from 'react-i18next';
 import { useReducedMotion } from '@/shared/hooks/useReducedMotion';
 import { Globe, Github, Linkedin, Calendar, Flame } from 'lucide-react';
 import ShareProfile from '@/shared/components/ShareProfile';
@@ -70,7 +69,6 @@ const ProfileIdentityBlock: React.FC<ProfileIdentityBlockProps> = ({
   linkedin,
   twitter,
 }) => {
-  const { t } = useTranslation();
   const prefersReduced = useReducedMotion();
 
   const xpPercent = xpToNext && xpToNext > 0
@@ -207,7 +205,7 @@ const ProfileIdentityBlock: React.FC<ProfileIdentityBlockProps> = ({
               to={publicViewPath}
               className="btn-secondary flex items-center gap-2"
             >
-              {t('student.profile.publicView')}
+              {"Public View"}
             </Link>
           )}
           {showShare && <ShareProfile handle={handle} />}

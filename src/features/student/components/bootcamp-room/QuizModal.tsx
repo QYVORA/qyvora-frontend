@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { useTranslation } from 'react-i18next';
 import { Loader2, ClipboardList, XCircle } from 'lucide-react';
 import { IconX, IconCheck } from '@/shared/components/icons';
 import Dobia from '@/shared/components/Dobia';
@@ -18,7 +17,6 @@ interface QuizModalProps {
 }
 
 const QuizModal: React.FC<QuizModalProps> = ({ moduleId, roomId, courseId, onClose, onPassed }) => {
-  const { t } = useTranslation();
   const { addToast } = useToast();
   const [loading, setLoading] = useState(true);
   const [quiz, setQuiz] = useState<RoomQuiz | null>(null);
@@ -47,7 +45,7 @@ const QuizModal: React.FC<QuizModalProps> = ({ moduleId, roomId, courseId, onClo
         questions,
       });
     } catch (err: any) {
-      setError(t('student.bootcampRoom.quiz.loadError'));
+      setError("Could not load quiz.");
     } finally {
       setLoading(false);
     }
@@ -56,7 +54,7 @@ const QuizModal: React.FC<QuizModalProps> = ({ moduleId, roomId, courseId, onClo
   const submit = async () => {
     if (!quiz) return;
     if (Object.keys(answers).length < quiz.questions.length) {
-      addToast(t('toast.quizAnswerAll'), 'error');
+      addToast("Answer all questions before submitting.", 'error');
       return;
     }
     setSubmitting(true);
@@ -71,13 +69,13 @@ const QuizModal: React.FC<QuizModalProps> = ({ moduleId, roomId, courseId, onClo
       }));
       setResult({ score, passed, reward, questions: quiz.questions, answerResults });
       if (passed) {
-        addToast(t('toast.quizPassed', { score, cp: reward }), 'success');
+        addToast(`Quiz passed! ${score}% · +${reward} CP`, 'success');
         // Let the user see the "Passed" screen and click "Continue" themselves
       } else {
-        addToast(t('toast.quizScore', { score }), 'info');
+        addToast(`Score: ${score}% · need 70% to pass`, 'info');
       }
     } catch (err: any) {
-      addToast(err?.response?.data?.error || t('toast.quizSubmitError'), 'error');
+      addToast(err?.response?.data?.error || "Could not submit quiz.", 'error');
     } finally {
       setSubmitting(false);
     }
@@ -85,18 +83,18 @@ const QuizModal: React.FC<QuizModalProps> = ({ moduleId, roomId, courseId, onClo
 
   return (
     <Dialog open onOpenChange={(open) => { if (!open) onClose(); }}>
-      <DialogContent title={t('student.bootcampRoom.quiz.title')} maxWidth="max-w-5xl" className="shadow-none">
+      <DialogContent title={"Room Quiz"} maxWidth="max-w-5xl" className="shadow-none">
         <div>
           {loading && (
             <div className="flex items-center justify-center gap-2 py-10 text-sm text-text-muted">
               <Loader2 className="h-4 w-4 animate-spin text-accent" />
-              {t('student.bootcampRoom.quiz.loading')}
+              {"Loading quiz…"}
             </div>
           )}
 
           {!loading && !quiz && !result && (
             <p className={`py-8 text-center text-sm ${error ? 'text-danger' : 'text-text-muted'}`}>
-              {error || t('student.bootcampRoom.quiz.notAvailable')}
+              {error || "Quiz not available for this room yet."}
             </p>
           )}
 
@@ -108,25 +106,25 @@ const QuizModal: React.FC<QuizModalProps> = ({ moduleId, roomId, courseId, onClo
                 </div>
                 <div className={`flex items-center justify-center gap-1.5 text-sm font-bold uppercase tracking-widest ${result.passed ? 'text-accent' : 'text-danger'}`}>
                   {result.passed
-                    ? <><IconCheck size={16} /> {t('student.bootcampRoom.quiz.passed')}</>
-                    : <><XCircle className="h-4 w-4" /> {t('student.bootcampRoom.quiz.failed')}</>
+                    ? <><IconCheck size={16} /> {"Passed"}</>
+                    : <><XCircle className="h-4 w-4" /> {"Not quite - 70% needed"}</>
                   }
                 </div>
                 {result.passed && result.reward > 0 && (
-                  <div className="mt-1 text-xs text-text-muted">+{result.reward} {t('student.bootcampRoom.quiz.cpEarned')}</div>
+                  <div className="mt-1 text-xs text-text-muted">+{result.reward} CP earned</div>
                 )}
               </div>
 
               {result.passed ? (
                 <div className="rounded-2xl border-2 border-accent/20 bg-accent-dim/30 p-6 text-center">
                   <p className="text-sm text-text-primary font-bold mb-4">
-                    {t('student.bootcampRoom.quiz.excellent')}
+                    {"Excellent work! You've mastered the concepts in this room."}
                   </p>
                   <button
                     onClick={onPassed}
                     className="btn-primary w-full py-3 text-sm font-black uppercase"
                   >
-                    {t('button.continue')}
+                    {"Continue"}
                   </button>
                 </div>
               ) : (
@@ -166,8 +164,8 @@ const QuizModal: React.FC<QuizModalProps> = ({ moduleId, roomId, courseId, onClo
                                 <div key={optIdx} className={`rounded-lg border px-3 py-2 text-xs flex items-center gap-2 ${cls}`}>
                                   <span className="font-mono opacity-50 shrink-0">{String.fromCharCode(65 + optIdx)}.</span>
                                   <span>{opt}</span>
-                                  {isChosenOpt && <span className="ml-auto text-xs font-black shrink-0">{ansResult.correct ? t('student.bootcampRoom.quiz.correct') : t('student.bootcampRoom.quiz.wrong')}</span>}
-                                  {showCorrect && <span className="ml-auto text-xs font-black text-accent shrink-0">{t('student.bootcampRoom.quiz.correctAnswer')}</span>}
+                                  {isChosenOpt && <span className="ml-auto text-xs font-black shrink-0">{ansResult.correct ? "Correct" : "Wrong"}</span>}
+                                  {showCorrect && <span className="ml-auto text-xs font-black text-accent shrink-0">{"Correct answer"}</span>}
                                 </div>
                               );
                             })}
@@ -182,10 +180,10 @@ const QuizModal: React.FC<QuizModalProps> = ({ moduleId, roomId, courseId, onClo
                       onClick={() => { setResult(null); setAnswers({}); }}
                       className="btn-primary text-sm py-3"
                     >
-                      {t('button.tryAgain')}
+                      {"Try Again"}
                     </button>
                     <button onClick={onClose} className="btn-secondary text-sm py-3">
-                      {t('button.close')}
+                      {"Close"}
                     </button>
                   </div>
                 </>
@@ -246,15 +244,15 @@ const QuizModal: React.FC<QuizModalProps> = ({ moduleId, roomId, courseId, onClo
                   {submitting ? (
                     <>
                       <Loader2 className="h-4 w-4 animate-spin" />
-                      {t('student.bootcampRoom.quiz.scoring')}
+                      {"Scoring…"}
                     </>
                   ) : (
-                    t('student.bootcampRoom.quiz.submit')
+                    "Submit Quiz"
                   )}
                 </button>
                 {Object.keys(answers).length < quiz.questions.length && (
                   <p className="text-center text-xs text-text-muted">
-                    {t('student.bootcampRoom.quiz.remaining', { count: quiz.questions.length - Object.keys(answers).length })}
+                    {`${quiz.questions.length - Object.keys(answers).length} question(s) remaining`}
                   </p>
                 )}
               </div>

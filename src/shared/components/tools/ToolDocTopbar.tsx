@@ -1,13 +1,11 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'motion/react';
-import { useTranslation } from 'react-i18next';
 import { useScrollLock } from '@/core/hooks/useScrollLock';
 import { useAuth } from '@/core/contexts/AuthContext';
 import { Logo } from '@/shared/components/brand';
 import { SITE_CONFIG } from '@/features/marketing/content/siteConfig';
 import { ContactTrigger } from '@/features/marketing/components/ContactModal';
-import LanguageSwitcher from '@/shared/components/LanguageSwitcher';
 import Identicon from '@/shared/components/Identicon';
 import { IconMenu, IconX, IconChevronRight } from '@/shared/components/icons';
 import { LogIn, BookOpen } from 'lucide-react';
@@ -29,34 +27,34 @@ interface ToolDocTopbarProps {
 }
 
 const NAV_GROUP_LABELS: Record<string, string> = {
-  learning: 'nav.learning',
-  community: 'nav.community',
-  company: 'nav.company',
-  platform: 'nav.platform',
-  tools: 'nav.tools',
+  learning: 'Learning',
+  community: 'Community',
+  company: 'Company',
+  platform: 'Platform',
+  tools: 'Tools',
 };
 
 const NAV_ITEM_LABELS: Record<string, string> = {
-  courses: 'nav.courses',
-  bootcamp: 'nav.bootcamp',
-  labs: 'nav.labs',
-  cp: 'nav.cp',
-  simulations: 'nav.simulations',
-  blogs: 'nav.blogs',
-  leaderboard: 'nav.leaderboard',
-  market: 'nav.market',
-  team: 'nav.team',
-  quiteroot: 'nav.quiteroot',
-  terms: 'footer.termsOfService',
-  anansi: 'nav.anansi',
-  toha3ee: 'nav.toha3ee',
-  shaka: 'nav.shaka',
-  nzinga: 'nav.nzinga',
-  jabari: 'nav.jabari',
-  aksum: 'nav.aksum',
-  sekhmet: 'nav.sekhmet',
-  mansa: 'nav.mansa',
-  services: 'nav.services',
+  courses: 'Courses',
+  bootcamp: 'Bootcamp',
+  labs: 'Labs',
+  cp: 'Cyber Coin',
+  simulations: 'Simulations',
+  blogs: 'Blogs',
+  leaderboard: 'Leaderboard',
+  market: 'Market',
+  team: 'Team',
+  quiteroot: 'QuiteRoot',
+  terms: 'Terms of Service',
+  anansi: 'anansi',
+  toha3ee: 'toha3ee',
+  shaka: 'shaka',
+  nzinga: 'nzinga',
+  jabari: 'jabari',
+  aksum: 'aksum',
+  sekhmet: 'sekhmet',
+  mansa: 'mansa',
+  services: 'Services',
 };
 
 const ToolDocTopbar: React.FC<ToolDocTopbarProps> = ({
@@ -67,7 +65,6 @@ const ToolDocTopbar: React.FC<ToolDocTopbarProps> = ({
   installLabel = 'Install',
   onInstall,
 }) => {
-  const { t } = useTranslation();
   const { user } = useAuth();
   const location = useLocation();
 
@@ -177,8 +174,6 @@ const ToolDocTopbar: React.FC<ToolDocTopbarProps> = ({
 
           {/* Right actions */}
           <div className="flex items-center gap-2 shrink-0 relative z-[110]">
-            <LanguageSwitcher inverted={false} />
-
             {githubUrl && (
               <a
                 href={githubUrl}
@@ -209,7 +204,7 @@ const ToolDocTopbar: React.FC<ToolDocTopbarProps> = ({
               type="button"
               onClick={handleMenuToggle}
               className="md:hidden p-2 -mr-1 transition-colors relative z-[110] text-text-primary hover:text-accent flex items-center justify-center min-h-[44px] min-w-[44px]"
-              aria-label={isMenuOpen ? t('aria.closeMenu', 'Close Menu') : t('aria.openMenu', 'Open Menu')}
+              aria-label={isMenuOpen ? "Close menu" : "Open menu"}
             >
               {isMenuOpen ? <IconX size={22} /> : <IconMenu size={22} />}
             </button>
@@ -324,7 +319,7 @@ const ToolDocTopbar: React.FC<ToolDocTopbarProps> = ({
                     : 'text-text-primary/70 border-transparent hover:text-accent hover:border-accent/50'
                 )}
               >
-                {t('nav.home', 'Home')}
+                {"Home"}
               </Link>
 
               {/* Grouped nav links (Learning, Community, Company, Platform) */}
@@ -337,7 +332,7 @@ const ToolDocTopbar: React.FC<ToolDocTopbarProps> = ({
                       onClick={() => toggleMobileGroup(group.key, isOpen)}
                       className="w-full flex items-center justify-between pl-4 pr-2 py-3 text-sm font-black uppercase tracking-[0.25em] transition-colors text-text-primary/70 hover:text-accent min-h-[44px]"
                     >
-                      {t(NAV_GROUP_LABELS[group.key] || group.label)}
+                      {NAV_GROUP_LABELS[group.key] ?? group.label}
                       <IconChevronRight
                         size={16}
                         className={cn(
@@ -371,7 +366,7 @@ const ToolDocTopbar: React.FC<ToolDocTopbarProps> = ({
                                     className={linkClasses}
                                     onOpen={closeMenu}
                                   >
-                                    {t(NAV_ITEM_LABELS[item.key] || item.label)}
+                                    {NAV_ITEM_LABELS[item.key] ?? item.label}
                                   </ContactTrigger>
                                 );
                               }
@@ -383,7 +378,7 @@ const ToolDocTopbar: React.FC<ToolDocTopbarProps> = ({
                                   onClick={closeMenu}
                                   className={linkClasses}
                                 >
-                                  {t(NAV_ITEM_LABELS[item.key] || item.label)}
+                                  {NAV_ITEM_LABELS[item.key] ?? item.label}
                                 </Link>
                               );
                             })}
@@ -431,7 +426,7 @@ const ToolDocTopbar: React.FC<ToolDocTopbarProps> = ({
                       className="w-full flex items-center justify-center gap-2.5 border border-accent/50 text-accent font-bold uppercase tracking-widest rounded-xl px-6 py-3.5 text-sm transition-[background-color,color] duration-200 hover:bg-accent/10 active:scale-[0.98] min-h-[48px]"
                       onOpen={closeMenu}
                     >
-                      {t('nav.contact', 'Contact')}
+                      {"Contact"}
                     </ContactTrigger>
                   </>
                 ) : (
@@ -440,14 +435,14 @@ const ToolDocTopbar: React.FC<ToolDocTopbarProps> = ({
                       className="w-full flex items-center justify-center gap-2.5 bg-accent text-on-accent font-bold uppercase tracking-widest rounded-xl px-6 py-3.5 text-sm transition-[filter,transform] duration-200 hover:brightness-110 active:scale-[0.98] min-h-[48px]"
                       onOpen={closeMenu}
                     >
-                      {t('nav.contact', 'Contact')}
+                      {"Contact"}
                     </ContactTrigger>
                     <Link
                       to="/login"
                       onClick={closeMenu}
                       className="w-full flex items-center justify-center gap-2.5 border border-accent/50 text-accent font-bold uppercase tracking-widest rounded-xl px-6 py-3.5 text-sm transition-[background-color,color] duration-200 hover:bg-accent/10 active:scale-[0.98] min-h-[48px]"
                     >
-                      <LogIn className="w-4 h-4" /> {t('button.logIn', 'Log In')}
+                      <LogIn className="w-4 h-4" /> {"Log In"}
                     </Link>
                   </>
                 )}

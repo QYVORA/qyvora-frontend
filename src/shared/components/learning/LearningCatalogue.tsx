@@ -1,5 +1,4 @@
 import React, { useMemo, useState } from 'react';
-import { useTranslation } from 'react-i18next';
 import { Search } from 'lucide-react';
 import LearningCard from './LearningCard';
 import type { LearningCardProps } from './LearningCard';
@@ -39,7 +38,6 @@ const LearningCatalogue: React.FC<LearningCatalogueProps> = ({
   emptyTitle,
   emptyDescription,
 }) => {
-  const { t } = useTranslation();
   const [activeFilter, setActiveFilter] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
 
@@ -55,20 +53,18 @@ const LearningCatalogue: React.FC<LearningCatalogueProps> = ({
       id: level,
       label:
         filterLabel?.(level) ??
-        t(`learningCatalogue.filter.${level}`, {
-          defaultValue: level.charAt(0).toUpperCase() + level.slice(1),
-        }),
+        level.charAt(0).toUpperCase() + level.slice(1),
       count: counts[level],
     }));
     return [
       {
         id: 'all',
-        label: filterLabel?.('all') ?? t('learningCatalogue.filter.all', { defaultValue: 'All' }),
+        label: filterLabel?.('all') ?? "All",
         count: counts.all,
       },
       ...difficultyFilters,
     ];
-  }, [filterLabel, items, t]);
+  }, [filterLabel, items]);
 
   const filteredItems = useMemo(() => {
     let result = items;
@@ -113,16 +109,13 @@ const LearningCatalogue: React.FC<LearningCatalogueProps> = ({
       )}
 
       <p className="mt-4 text-xs font-mono uppercase tracking-widest text-text-muted" role="status">
-        {t('learningCatalogue.results', {
-          defaultValue: '{{count}} items',
-          count: filteredItems.length,
-        })}
+        {`${filteredItems.length} items`}
       </p>
 
       {showEmpty ? (
         <div className="mt-6 flex flex-col items-start gap-2 rounded-2xl border border-border/50 bg-bg-card p-8">
           <h3 className="text-sm font-black uppercase tracking-tight text-text-primary">
-            {emptyTitle ?? t('learningCatalogue.empty.title', { defaultValue: 'No items match this filter' })}
+            {emptyTitle ?? "No items match this filter"}
           </h3>
           {emptyDescription && (
             <p className="text-sm font-mono text-text-muted">{emptyDescription}</p>

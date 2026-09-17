@@ -1,5 +1,4 @@
 import React from 'react';
-import { useTranslation } from 'react-i18next';
 import { Users, Bug, ShieldCheck, Coins } from 'lucide-react';
 import { Metric } from '@/shared/components/ui/Card';
 import ScrollReveal from '@/shared/components/ScrollReveal';
@@ -19,13 +18,12 @@ const formatNumber = (value: number): string => {
  * backend figure; nothing is hardcoded marketing filler.
  */
 const ProofBlock: React.FC<ProofBlockProps> = ({ stats }) => {
-  const { t } = useTranslation();
   const s = stats?.stats;
   const metrics = [
-    { label: t('landing3.proof.students'), value: formatNumber(s?.learnersTrained ?? 0), icon: <Users className="h-4 w-4" aria-hidden="true" />, accent: true },
-    { label: t('landing3.proof.vulnerabilities'), value: formatNumber(s?.vulnerabilitiesIdentified ?? 0), icon: <Bug className="h-4 w-4" aria-hidden="true" /> },
-    { label: t('landing3.proof.bootcamps'), value: formatNumber(s?.bootcampsCount ?? 0), icon: <ShieldCheck className="h-4 w-4" aria-hidden="true" /> },
-    { label: t('landing3.proof.cpPool'), value: formatNumber(s?.cpPoolSize ?? 0), icon: <Coins className="h-4 w-4" aria-hidden="true" /> },
+    { label: "Operators trained", value: formatNumber(s?.learnersTrained ?? 0), icon: <Users className="h-4 w-4" aria-hidden="true" />, accent: true },
+    { label: "Vulnerabilities identified across engagements", value: formatNumber(s?.vulnerabilitiesIdentified ?? 0), icon: <Bug className="h-4 w-4" aria-hidden="true" /> },
+    { label: "Bootcamp launches", value: formatNumber(s?.bootcampsCount ?? 0), icon: <ShieldCheck className="h-4 w-4" aria-hidden="true" /> },
+    { label: "CP distributed to operators", value: formatNumber(s?.cpPoolSize ?? 0), icon: <Coins className="h-4 w-4" aria-hidden="true" /> },
   ];
 
   return (
@@ -34,12 +32,12 @@ const ProofBlock: React.FC<ProofBlockProps> = ({ stats }) => {
         <ScrollReveal>
           <div className="mb-10 max-w-2xl">
             <p className="type-label mb-1.5 uppercase tracking-[0.12em] text-accent">
-              {t('landing3.proof.kicker')}
+              {"Proof, not promises"}
             </p>
             <h2 className="type-h2 text-3xl font-black uppercase tracking-tight text-text-primary md:text-5xl">
-              {t('landing3.proof.title')}
+              {"Built in Africa, for real defenders."}
             </h2>
-            <p className="type-body mt-2">{t('landing3.proof.description')}</p>
+            <p className="type-body mt-2">{"Every number below is earned by operators on the platform — not marketing filler."}</p>
           </div>
         </ScrollReveal>
 

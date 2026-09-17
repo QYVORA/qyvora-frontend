@@ -1,7 +1,6 @@
 import React from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useLocation } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
 import { SITE_CONFIG } from '../../features/marketing/content/siteConfig';
 import {
   buildOrganization,
@@ -45,7 +44,6 @@ const SEO: React.FC<SEOProps> = ({
   noindex,
 }) => {
   const location = useLocation();
-  const { i18n } = useTranslation();
   const siteUrl = SITE_CONFIG.brand.siteUrl; 
   const defaultTitle = SITE_CONFIG.brand.name;
   const seoTitle = title ? `${title} | ${defaultTitle}` : `${defaultTitle} | Africa's Offensive Security Platform`;
@@ -89,7 +87,7 @@ const SEO: React.FC<SEOProps> = ({
       <meta name="description" content={seoDescription} />
       <link rel="canonical" href={seoCanonical} />
       <meta name="robots" content={noindex ? 'noindex,nofollow' : 'index,follow,max-image-preview:large'} />
-      <html lang={i18n.language} />
+      <html lang="en" />
 
       <meta property="og:type" content={article ? 'article' : 'website'} />
       <meta property="og:title" content={seoTitle} />

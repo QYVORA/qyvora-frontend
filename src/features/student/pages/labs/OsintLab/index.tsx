@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { Globe } from 'lucide-react';
-import { useTranslation } from 'react-i18next';
 import { WalkthroughLayout, WalkthroughStep } from '@/shared/components/walkthrough/';
 import type { FocusedStepListItem } from '@/shared/components/learning/FocusedStepList';
 import { OSINT_CHALLENGES } from '@/features/student/data/simulations';
@@ -16,7 +15,6 @@ import { getLabCpCost } from '@/features/student/data/simulations/labAccess';
 type OsintChallenge = typeof OSINT_CHALLENGES[number];
 
 const OsintLab = () => {
-  const { t } = useTranslation();
   const { activeScenario: activeChallenge, completedSteps, handleFlagSubmit, getStepState, allDone, startScenario, exitScenario } =
     useLabScenario<OsintChallenge>({
       labId: 'osint',
@@ -100,7 +98,7 @@ const OsintLab = () => {
                 </span>
               ),
               onStart: () => startScenario(challenge),
-              startLabel: t('labs.startMission', 'Start Mission'),
+              startLabel: "Start Mission",
               locked,
               cpCost: locked ? cpCost ?? undefined : undefined,
               onUnlock: cpCost ? async () => {

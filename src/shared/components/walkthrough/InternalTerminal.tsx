@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import * as RadixDialog from '@radix-ui/react-dialog';
-import { useTranslation } from 'react-i18next';
 import { IconTerminal } from '@/shared/components/icons';
 import { TerminalShell } from '@/features/student/components/SimulatedTerminal/TerminalShell';
 import type { TerminalContext } from '@/features/student/components/SimulatedTerminal/types';
@@ -44,7 +43,6 @@ const useIsDesktop = () => {
  * bottom-left corner (the bottom-right corner belongs to the Dobia toggle).
  */
 export const InternalTerminal: React.FC<InternalTerminalProps> = ({ open, onOpenChange, context }) => {
-  const { t } = useTranslation();
   const isDesktop = useIsDesktop();
 
   const handleClose = () => onOpenChange(false);
@@ -65,7 +63,7 @@ export const InternalTerminal: React.FC<InternalTerminalProps> = ({ open, onOpen
         <button
           type="button"
           onClick={() => onOpenChange(true)}
-          aria-label={t('aria.openTerminal')}
+          aria-label={"Open terminal"}
           className="fixed bottom-4 left-4 z-[110] lg:hidden flex h-11 w-11 shrink-0 aspect-square items-center justify-center rounded-full border border-border bg-bg-card text-accent transition-colors hover:border-accent/40 hover:text-text-primary active:scale-90"
           style={{ marginBottom: 'env(safe-area-inset-bottom)' }}
         >
@@ -77,7 +75,7 @@ export const InternalTerminal: React.FC<InternalTerminalProps> = ({ open, onOpen
         <RadixDialog.Root open={open} onOpenChange={onOpenChange} modal={false}>
           <RadixDialog.Portal>
             <RadixDialog.Content
-              aria-label={t('aria.internalTerminal')}
+              aria-label={"Internal terminal"}
               onKeyDown={(e) => {
                 if (e.key === 'Tab') e.stopPropagation();
               }}
@@ -90,7 +88,7 @@ export const InternalTerminal: React.FC<InternalTerminalProps> = ({ open, onOpen
                 data-[state=open]:slide-in-from-right data-[state=closed]:slide-out-to-right
                 duration-200"
             >
-              <RadixDialog.Title className="sr-only">{t('aria.internalTerminal')}</RadixDialog.Title>
+              <RadixDialog.Title className="sr-only">{"Internal terminal"}</RadixDialog.Title>
               <div className="flex-1 min-h-0">{shell}</div>
             </RadixDialog.Content>
           </RadixDialog.Portal>
@@ -104,7 +102,7 @@ export const InternalTerminal: React.FC<InternalTerminalProps> = ({ open, onOpen
                 data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 duration-200"
             />
             <RadixDialog.Content
-              aria-label={t('aria.internalTerminal')}
+              aria-label={"Internal terminal"}
               onKeyDown={(e) => {
                 if (e.key === 'Tab') e.stopPropagation();
               }}
@@ -114,7 +112,7 @@ export const InternalTerminal: React.FC<InternalTerminalProps> = ({ open, onOpen
                 duration-200"
               style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}
             >
-              <RadixDialog.Title className="sr-only">{t('aria.internalTerminal')}</RadixDialog.Title>
+              <RadixDialog.Title className="sr-only">{"Internal terminal"}</RadixDialog.Title>
               <div aria-hidden="true" className="flex justify-center pt-2 pb-1 shrink-0">
                 <span className="w-10 h-1 rounded-full bg-border" />
               </div>

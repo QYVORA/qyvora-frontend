@@ -1,5 +1,4 @@
 import React, { useState, useMemo } from 'react';
-import { useTranslation } from 'react-i18next';
 import { motion, AnimatePresence } from 'motion/react';
 import { useReducedMotion } from '@/shared/hooks/useReducedMotion';
 import { Award, ChevronDown, ChevronUp, FlaskConical } from 'lucide-react';
@@ -29,7 +28,6 @@ interface AchievementsSectionProps {
   completedPhaseIds?: string[];
   completedCourseIds?: string[];
   skillAchievements?: SkillAchievement[];
-  i18nPrefix?: string;
 }
 
 const PINNED_RARITIES = new Set(['rare', 'epic', 'legendary']);
@@ -44,11 +42,8 @@ const AchievementsSection: React.FC<AchievementsSectionProps> = ({
   completedPhaseIds = [],
   completedCourseIds = [],
   skillAchievements = [],
-  i18nPrefix,
 }) => {
-  const { t } = useTranslation();
   const prefersReduced = useReducedMotion();
-  const prefix = i18nPrefix || 'student.profile';
   const [expanded, setExpanded] = useState(false);
 
   const phaseAchievements = useMemo(() => {
@@ -101,10 +96,10 @@ const AchievementsSection: React.FC<AchievementsSectionProps> = ({
         <ModuleHeader
           icon={<Award className="w-4 h-4 text-accent" />}
           iconClassName="bg-accent/10"
-          title={t('profile.achievements.title', 'Achievements')}
+          title={"Achievements"}
         />
         <p className="text-xs text-text-muted text-center py-4">
-          {t('profile.achievements.empty', 'No achievements yet. Start learning to earn your first!')}
+          {"No achievements yet. Start learning to earn your first!"}
         </p>
       </div>
     );
@@ -122,10 +117,10 @@ const AchievementsSection: React.FC<AchievementsSectionProps> = ({
           <BootcampBadge completed className="w-24 sm:w-28" />
           <div>
             <h3 className="text-sm font-black text-text-primary">
-              {t(`${prefix}.achievements.hpbGraduate`, 'HPB Graduate')}
+              HPB Graduate
             </h3>
             <p className="text-xs text-text-muted">
-              {t(`${prefix}.achievements.hpbGraduateDesc`, 'Completed the Hacker Protocol Bootcamp')}
+              Completed the Hacker Protocol Bootcamp
             </p>
           </div>
         </motion.div>
@@ -137,7 +132,7 @@ const AchievementsSection: React.FC<AchievementsSectionProps> = ({
           <ModuleHeader
             icon={<Award className="w-4 h-4 text-accent" />}
             iconClassName="bg-accent/10"
-            title={t('profile.achievements.bootcampPhases', 'Bootcamp Phases')}
+            title={"Bootcamp Phases"}
             trailing={
               <span className="px-2 py-1 bg-accent/10 text-accent text-xs font-black rounded-lg">
                 {phaseAchievements.length}
@@ -186,7 +181,7 @@ const AchievementsSection: React.FC<AchievementsSectionProps> = ({
           <ModuleHeader
             icon={<Award className="w-4 h-4 text-info" />}
             iconClassName="bg-info/10"
-            title={t('profile.achievements.courses', 'Courses')}
+            title={"Courses"}
             trailing={
               <span className="px-2 py-1 bg-info/10 text-info text-xs font-black rounded-lg">
                 {courseAchievements.length}
@@ -236,7 +231,7 @@ const AchievementsSection: React.FC<AchievementsSectionProps> = ({
           <ModuleHeader
             icon={<FlaskConical className="w-4 h-4 text-danger" />}
             iconClassName="bg-danger/10"
-            title={t('profile.achievements.labs', 'Labs')}
+            title={"Labs"}
             trailing={
               <span className="px-2 py-1 bg-danger/10 text-danger text-xs font-black rounded-lg">
                 {labCount}
@@ -250,10 +245,10 @@ const AchievementsSection: React.FC<AchievementsSectionProps> = ({
           </div>
           <div className="flex flex-wrap items-center gap-x-3 gap-y-2 px-5 pb-5">
             <h4 className="text-xs font-black uppercase tracking-widest text-text-primary">
-              {t('profile.achievements.labsCompleted', 'Lab Operator')}
+              {"Lab Operator"}
             </h4>
             <p className="text-xs text-text-muted leading-snug">
-              {t('profile.achievements.labsCompletedDesc', { count: labCount, defaultValue: `${labCount} lab${labCount !== 1 ? 's' : ''} completed` })}
+              {`${labCount} labs completed`}
             </p>
             {(labCount >= 5 || labCount >= 10) && (
               <span className={`px-1.5 py-0.5 rounded text-micro font-black uppercase tracking-wider ${
@@ -274,7 +269,7 @@ const AchievementsSection: React.FC<AchievementsSectionProps> = ({
           <ModuleHeader
             icon={<Award className="w-4 h-4 text-accent" />}
             iconClassName="bg-accent/10"
-            title={t('profile.achievements.skills', 'Skill Badges')}
+            title={"Skill Badges"}
             trailing={
               <span className="px-2 py-1 bg-accent/10 text-accent text-xs font-black rounded-lg">
                 {skillAchievements.length}

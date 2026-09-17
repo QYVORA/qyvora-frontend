@@ -1,5 +1,4 @@
 import React, { useMemo, useState } from 'react';
-import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router-dom';
 import { Edit3, User, FlaskConical, GraduationCap, Zap, Flame } from 'lucide-react';
 import { useAuth } from '../../../core/contexts/AuthContext';
@@ -20,7 +19,6 @@ import TrophyCabinet from '../../../shared/components/profile/TrophyCabinet';
 import type { ProfileSectionId } from '../../../shared/types/profile';
 
 const Profile: React.FC = () => {
-  const { t } = useTranslation();
   const { username: paramUsername } = useParams<{ username?: string }>();
   const { user: authUser } = useAuth();
   const [editOpen, setEditOpen] = useState(false);
@@ -77,7 +75,7 @@ const Profile: React.FC = () => {
             organization={profile.organization || undefined}
             email={isOwnProfile ? profile.email : undefined}
             actions={isOwnProfile ? [
-              { label: t('student.profile.edit'), onClick: () => setEditOpen(true), icon: <Edit3 className="w-3.5 h-3.5" /> },
+              { label: "Edit Profile", onClick: () => setEditOpen(true), icon: <Edit3 className="w-3.5 h-3.5" /> },
             ] : []}
             showShare
             showPublicView={isOwnProfile}

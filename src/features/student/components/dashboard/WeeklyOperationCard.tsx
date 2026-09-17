@@ -1,4 +1,3 @@
-import { useTranslation } from 'react-i18next';
 import { Badge } from '@/shared/components/ui';
 import { IconTarget } from '@/shared/components/icons';
 import type { EngagementResponse } from '@/features/student/data/missions';
@@ -9,7 +8,6 @@ interface WeeklyOperationCardProps {
 }
 
 const WeeklyOperationCard = ({ engagement, loading }: WeeklyOperationCardProps) => {
-  const { t } = useTranslation();
   const { weeklyOperation: operation, weeklyStatus: status, weeklyDaysRemaining: daysRemaining, weeklyProgress: progress, weeklyCpAwarded: cpAwarded } = engagement;
 
   if (loading) {
@@ -30,10 +28,10 @@ const WeeklyOperationCard = ({ engagement, loading }: WeeklyOperationCardProps) 
           <IconTarget size={18} className="text-accent" />
         </div>
         <span className="text-xs font-black uppercase tracking-widest text-text-muted">
-          {t('student.dashboard.weeklyOperation.title')}
+          {"Weekly Operation"}
         </span>
         <Badge variant="info" size="sm">
-          {daysRemaining} {t('student.dashboard.weeklyOperation.daysLeft')}
+          {daysRemaining} {"days left"}
         </Badge>
       </div>
 
@@ -48,7 +46,7 @@ const WeeklyOperationCard = ({ engagement, loading }: WeeklyOperationCardProps) 
       <div className="mb-5">
         <div className="flex items-center justify-between mb-2">
           <span className="text-xs font-mono text-text-muted">
-            {operation.steps.filter(s => s.completed).length}/{operation.steps.length} {t('student.dashboard.weeklyOperation.steps')}
+            {operation.steps.filter(s => s.completed).length}/{operation.steps.length} {"steps"}
           </span>
           <span className="text-xs font-mono text-accent font-bold">
             +{operation.cpReward} CP
@@ -85,7 +83,7 @@ const WeeklyOperationCard = ({ engagement, loading }: WeeklyOperationCardProps) 
       {status === 'completed' ? (
         <div className="flex items-center gap-2">
           <Badge variant="success" size="sm">
-            {t('student.dashboard.weeklyOperation.completed')}
+            {"Completed"}
           </Badge>
           <Badge variant="accent" size="sm">
             {operation.badge}
@@ -94,7 +92,7 @@ const WeeklyOperationCard = ({ engagement, loading }: WeeklyOperationCardProps) 
         </div>
       ) : (
         <div className="flex items-center gap-4 text-xs font-mono text-text-muted">
-          <span>+{operation.steps.filter(s => !s.completed).reduce((sum, s) => sum + s.cpReward, 0)} CP {t('student.dashboard.weeklyOperation.remaining')}</span>
+          <span>+{operation.steps.filter(s => !s.completed).reduce((sum, s) => sum + s.cpReward, 0)} CP {"remaining"}</span>
         </div>
       )}
     </div>

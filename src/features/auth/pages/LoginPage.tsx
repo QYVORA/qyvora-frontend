@@ -1,7 +1,6 @@
 import React, { useEffect, useState, useRef, useCallback } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Mail } from 'lucide-react';
-import { useTranslation } from 'react-i18next';
 import { useAuth, MustChangePasswordError } from '../../../core/contexts/AuthContext';
 import { useToast } from '../../../core/contexts/ToastContext';
 import SEO from '@/shared/components/SEO';
@@ -14,7 +13,7 @@ import Input from '@/shared/components/ui/Input';
 import Button from '@/shared/components/ui/Button';
 import AuthForm, { type AuthMode } from '../components/AuthForm';
 
-const LoginPage: React.FC = () => {  const { t } = useTranslation();
+const LoginPage: React.FC = () => {
   const { login, user: sessionUser, loading: sessionLoading } = useAuth();
   const { addToast } = useToast();
   const navigate = useNavigate();
@@ -139,14 +138,14 @@ const LoginPage: React.FC = () => {  const { t } = useTranslation();
             <div className="rounded-xl border border-border-subtle bg-surface p-5 sm:p-8">
               <div className="mb-8">
                 <h1 className="type-h2 mb-1 font-black uppercase tracking-tight text-text-primary">
-                  {t('heading.workspaceAccess1')} <span className="text-accent">{t('heading.workspaceAccess2')}</span>
+                  {"Workspace"} <span className="text-accent">{"Access"}</span>
                 </h1>
-                <p className="type-body-sm">{t('auth.enterCredentials')}</p>
+                <p className="type-body-sm">{"Enter your credentials to continue."}</p>
               </div>
 
             <form className="space-y-5" onSubmit={handleLoginSubmit} noValidate>
                 <div className="space-y-2">
-                  <label htmlFor="login-email" className="type-label mb-2 block uppercase tracking-[0.12em] text-text-tertiary">{t('form.email')}</label>
+                  <label htmlFor="login-email" className="type-label mb-2 block uppercase tracking-[0.12em] text-text-tertiary">{"Email"}</label>
                   <Input
                       id="login-email"
                       type="email"
@@ -154,13 +153,13 @@ const LoginPage: React.FC = () => {  const { t } = useTranslation();
                       required
                       autoComplete="email"
                       inputMode="email"
-                      placeholder={t('auth.emailPlaceholder')}
+                      placeholder={"operator@qyvora.africa"}
                       icon={<Mail className="h-4 w-4 lg:h-5 lg:w-5" />}
                     />
                 </div>
 
                 <div className="space-y-2">
-                  <label htmlFor="login-password" className="type-label mb-2 block uppercase tracking-[0.12em] text-text-tertiary">{t('form.password')}</label>
+                  <label htmlFor="login-password" className="type-label mb-2 block uppercase tracking-[0.12em] text-text-tertiary">{"Password"}</label>
                   <PasswordInput
                     id="login-password"
                     name="password"
@@ -171,7 +170,7 @@ const LoginPage: React.FC = () => {  const { t } = useTranslation();
                 </div>
 
                 <Button type="submit" size="lg" className="w-full" disabled={isLoading} loading={isLoading}>
-                  {t('button.signIn')}
+                  {"Sign In"}
                 </Button>
               </form>
             </div>

@@ -1,5 +1,4 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
-import { useTranslation } from 'react-i18next';
 import { Sparkles, RefreshCw } from 'lucide-react';
 import { IconCheck } from '@/shared/components/icons';
 import api from '@/core/services/api';
@@ -12,7 +11,6 @@ interface HandleSuggestionsProps {
 }
 
 const HandleSuggestions = ({ name, email, onSelect, selectedHandle }: HandleSuggestionsProps) => {
-  const { t } = useTranslation();
   const [debouncedName, setDebouncedName] = useState('');
   const [suggestions, setSuggestions] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
@@ -30,12 +28,12 @@ const HandleSuggestions = ({ name, email, onSelect, selectedHandle }: HandleSugg
       const list: string[] = res.data?.suggestions || [];
       setSuggestions(list.filter((h: string) => h !== selectedHandleRef.current).slice(0, 4));
     } catch {
-      setError(t('components.handleSuggestions.error'));
+      setError("Could not load suggestions.");
       setSuggestions([]);
     } finally {
       setLoading(false);
     }
-  }, [email, t]);
+  }, [email]);
 
   useEffect(() => {
     const trimmed = name.trim();
@@ -64,14 +62,14 @@ const HandleSuggestions = ({ name, email, onSelect, selectedHandle }: HandleSugg
       <div className="flex items-center gap-2">
         <Sparkles className="w-3 h-3 text-accent" />
         <span className="text-xs font-bold text-text-muted uppercase tracking-widest">
-          {t('components.handleSuggestions.label')}
+          {"Suggested handles"}
         </span>
         {suggestions.length > 0 && (
           <button
             type="button"
             onClick={() => fetchSuggestions(debouncedName)}
             disabled={loading}
-            aria-label={t('components.handleSuggestions.refresh', 'Refresh suggestions')}
+            aria-label={"Refresh suggestions"}
             className="ml-auto text-xs text-accent hover:text-accent/80 font-bold uppercase tracking-wider transition-colors disabled:opacity-50"
           >
             <RefreshCw className={`w-3 h-3 ${loading ? 'animate-spin' : ''}`} />

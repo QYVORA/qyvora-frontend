@@ -1,5 +1,4 @@
 import { Component, type ErrorInfo, type ReactNode } from 'react';
-import { useTranslation } from 'react-i18next';
 import { Button } from '@/shared/components/ui';
 import { RefreshCw, Home } from 'lucide-react';
 import Dobia from './Dobia';
@@ -10,8 +9,6 @@ interface Props {
   fallback?: ReactNode;
   /** Scope label shown in the error card (e.g. "Dashboard", "Bootcamp") */
   scope?: string;
-  /** Injected by the wrapper — do not pass manually */
-  t?: (key: string, options?: Record<string, unknown>) => string;
 }
 
 interface State {
@@ -63,7 +60,7 @@ class ErrorBoundaryInner extends Component<Props, State> {
 
   render() {
     const { hasError, resetKey } = this.state;
-    const { children, fallback, scope, t } = this.props;
+    const { children, fallback, scope } = this.props;
 
     if (!hasError) {
       // Key forces full remount of children after a reset
@@ -88,11 +85,11 @@ class ErrorBoundaryInner extends Component<Props, State> {
           {/* Heading */}
           <div className="space-y-2">
             <p className="text-xs font-bold text-danger uppercase tracking-[0.3em]">
-              {t?.('components.errorBoundary.renderError', { defaultValue: 'Error' })}
+              {'Error'}
             </p>
-            <h2 className="text-xl font-black text-text-primary">{t?.('components.errorBoundary.title', { defaultValue: 'Something went wrong' })}</h2>
+            <h2 className="text-xl font-black text-text-primary">{'Something went wrong'}</h2>
             <p className="text-sm text-text-muted leading-relaxed">
-              {t?.('components.errorBoundary.description', { defaultValue: 'This section crashed unexpectedly. The rest of the app is still running.' })}
+              {'This section crashed unexpectedly. The rest of the app is still running.'}
             </p>
           </div>
 
@@ -106,7 +103,7 @@ class ErrorBoundaryInner extends Component<Props, State> {
               className="px-5 py-2.5 text-sm"
             >
               <RefreshCw className="w-4 h-4" />
-              {t?.('components.errorBoundary.tryAgain', { defaultValue: 'Try Again' })}
+              {'Try Again'}
             </Button>
             <button
               type="button"
@@ -114,7 +111,7 @@ class ErrorBoundaryInner extends Component<Props, State> {
               className="inline-flex items-center justify-center gap-2 px-5 py-2.5 border border-border text-text-muted rounded-xl text-sm font-bold uppercase tracking-widest hover:border-accent/40 hover:text-accent active:scale-[0.98] transition-[color,border-color,transform]"
             >
               <RefreshCw className="w-4 h-4" />
-              {t?.('components.errorBoundary.reloadPage', { defaultValue: 'Refresh Page' })}
+              {'Refresh Page'}
             </button>
             <button
               type="button"
@@ -122,7 +119,7 @@ class ErrorBoundaryInner extends Component<Props, State> {
               className="inline-flex items-center justify-center gap-2 px-5 py-2.5 border border-border text-text-muted rounded-xl text-sm font-bold uppercase tracking-widest hover:border-accent/40 hover:text-accent active:scale-[0.98] transition-[color,border-color,transform]"
             >
               <Home className="w-4 h-4" />
-              {t?.('components.errorBoundary.dashboard', { defaultValue: 'Dashboard' })}
+              {'Dashboard'}
             </button>
           </div>
 
@@ -132,10 +129,4 @@ class ErrorBoundaryInner extends Component<Props, State> {
   }
 }
 
-/** Wrapper that injects the `t` function via useTranslation hook */
-const ErrorBoundary: React.FC<Omit<Props, 't'>> = (props) => {
-  const { t } = useTranslation();
-  return <ErrorBoundaryInner {...props} t={t} />;
-};
-
-export default ErrorBoundary;
+export default ErrorBoundaryInner;

@@ -1,5 +1,4 @@
 import React, { useEffect, useState, useMemo } from 'react';
-import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import {
   Clock, ArrowRight, GraduationCap, Search, CheckCircle2,
@@ -24,7 +23,6 @@ const STORAGE_KEY = 'qyvora_course_progress';
 type CourseTab = 'all' | 'in-progress' | 'completed';
 
 const MyCoursesPage: React.FC = () => {
-  const { t } = useTranslation();
   const [purchased, setPurchased] = useState<Set<string>>(new Set());
   const [loading, setLoading] = useState(true);
   const [fetchError, setFetchError] = useState(false);
@@ -126,29 +124,29 @@ const MyCoursesPage: React.FC = () => {
   }, [availableCourses, courseProgress]);
 
   const filterTabs = useMemo(() => [
-    { id: 'all', label: t('student.myCourses.filter.all', 'All'), count: totalCourses },
-    { id: 'in-progress', label: t('student.myCourses.filter.inProgress', 'In Progress'), count: inProgressCourses },
-    { id: 'completed', label: t('student.myCourses.filter.completed', 'Completed'), count: completedCourses },
-  ], [totalCourses, inProgressCourses, completedCourses, t]);
+    { id: 'all', label: "All", count: totalCourses },
+    { id: 'in-progress', label: "In Progress", count: inProgressCourses },
+    { id: 'completed', label: "Completed", count: completedCourses },
+  ], [totalCourses, inProgressCourses, completedCourses]);
 
   return (
     <FadeIn>
     <div className="min-h-full bg-canvas">
-      <SEO title={t('student.myCourses.seoTitle', 'My Courses')} description={t('student.myCourses.seoDesc', 'Your purchased courses.')} noindex />
+      <SEO title={"My Courses"} description={"Your purchased courses."} noindex />
 
       <div className="w-full px-3 pb-16 pt-6 md:px-4 md:pb-20 md:pt-8 lg:px-6 lg:pb-24">
         <PageHeader
-          kicker={t('student.myCourses.eyebrow', 'QYVORA · Learn')}
-          title={t('student.myCourses.title')}
-          description={t('student.myCourses.description')}
+          kicker={"QYVORA · Learn"}
+          title={"My Courses"}
+          description={"Your enrolled bootcamps and progress."}
           metadata={
             <span className="type-meta inline-flex items-center gap-2">
-              <span className="font-bold text-accent">{totalCourses}</span> {t('student.myCourses.enrolled', 'Enrolled')} · <span className="font-bold text-text-primary">{inProgressCourses}</span> {t('student.myCourses.filter.inProgress', 'In Progress')} · <span className="font-bold text-text-primary">{completedCourses}</span> {t('student.myCourses.filter.completed', 'Completed')}
+              <span className="font-bold text-accent">{totalCourses}</span> {"Enrolled"} · <span className="font-bold text-text-primary">{inProgressCourses}</span> {"In Progress"} · <span className="font-bold text-text-primary">{completedCourses}</span> {"Completed"}
             </span>
           }
           actions={
             <Button to={continuePath}>
-              {totalCourses > 0 ? t('student.myCourses.continue') : t('student.myCourses.action.browse')}
+              {totalCourses > 0 ? "Continue" : "Browse Bootcamps"}
             </Button>
           }
         />
@@ -170,8 +168,8 @@ const MyCoursesPage: React.FC = () => {
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder={t('student.myCourses.searchPlaceholder')}
-              aria-label={t('student.myCourses.searchPlaceholder', 'Search courses…')}
+              placeholder={"Search courses…"}
+              aria-label={"Search courses…"}
               className="w-full bg-bg border border-border rounded-xl py-3 pl-11 pr-4 text-sm font-mono text-text-primary placeholder:text-text-muted/30 outline-none focus:border-accent transition-colors caret-accent"
             />
           </div>
@@ -181,8 +179,8 @@ const MyCoursesPage: React.FC = () => {
 
         {!loading && fetchError && (
           <ErrorState
-            title={t('student.myCourses.fetchError', 'Failed to load your courses.')}
-            message={t('student.myCourses.fetchErrorDesc', 'Check your connection and try again.')}
+            title={"Failed to load your courses."}
+            message={"Check your connection and try again."}
           />
         )}
 
@@ -209,10 +207,10 @@ const MyCoursesPage: React.FC = () => {
                     difficulty={course.skillLevel}
                     actionLabel={
                       isComplete
-                        ? t('student.myCourses.completed')
+                        ? "Completed"
                         : canResume
-                        ? t('student.myCourses.continue')
-                        : t('student.myCourses.start')
+                        ? "Continue"
+                        : "Start"
                     }
                   />
                 </ScrollReveal>
@@ -224,9 +222,9 @@ const MyCoursesPage: React.FC = () => {
         {!loading && availableCourses.length > 0 && filteredAvailable.length === 0 && (
           <div className="text-center py-16 space-y-3">
             <Search className="h-10 w-10 text-text-muted/20 mx-auto" />
-            <p className="text-text-muted text-sm">{t('student.myCourses.empty.search')}</p>
+            <p className="text-text-muted text-sm">{"No courses match your search."}</p>
             <button onClick={() => { setSearchQuery(''); setActiveTab('all'); }} className="text-accent text-xs font-black uppercase tracking-widest hover:underline">
-              {t('button.clear')}
+              {"Clear"}
             </button>
           </div>
         )}
@@ -234,7 +232,7 @@ const MyCoursesPage: React.FC = () => {
         {!loading && lockedCourses.length > 0 && (
           <div>
               <h2 className="text-sm font-black text-text-muted uppercase tracking-widest mb-4">
-                {t('student.myCourses.lockedCourses', 'Locked Courses')}
+                {"Locked Courses"}
               </h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
               {lockedCourses.map((course) => {
@@ -260,7 +258,7 @@ const MyCoursesPage: React.FC = () => {
                         onClick={() => setSelectedCourseId(course.id)}
                         className="inline-flex items-center gap-1.5 text-xs sm:text-xs font-black uppercase tracking-widest text-accent hover:gap-2 transition-[gap] duration-[var(--dur-base)] ease-[var(--ease-smooth)]"
                       >
-                        {t('student.myCourses.viewDetails', 'View Details')} <ArrowRight className="h-2.5 w-2.5" />
+                        {"View Details"} <ArrowRight className="h-2.5 w-2.5" />
                       </button>
                     </div>
                   </div>
@@ -273,12 +271,12 @@ const MyCoursesPage: React.FC = () => {
         {!loading && !fetchError && availableCourses.length === 0 && (
           <div className="text-center py-20 space-y-4">
             <GraduationCap className="h-16 w-16 text-text-muted/20 mx-auto" />
-            <p className="text-text-muted">{t('student.myCourses.empty.enrolled')}</p>
+            <p className="text-text-muted">{"You aren't enrolled in any bootcamps yet."}</p>
             <Link
               to="/dashboard"
               className="inline-flex items-center gap-2 px-6 py-3 bg-accent text-on-accent rounded-xl text-xs font-black uppercase tracking-widest transition-[filter] duration-[var(--dur-base)] ease-[var(--ease-smooth)] hover:brightness-110"
             >
-              {t('student.myCourses.action.browse')} <ArrowRight className="h-3 w-3" />
+              {"Browse Bootcamps"} <ArrowRight className="h-3 w-3" />
             </Link>
           </div>
         )}

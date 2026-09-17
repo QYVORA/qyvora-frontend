@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
 import { AnimatePresence, motion } from 'motion/react';
 import {
   IconDashboard,
@@ -39,11 +38,10 @@ interface NavMenuTriggerProps {
 }
 
 export const NavMenuTrigger: React.FC<NavMenuTriggerProps & React.ButtonHTMLAttributes<HTMLButtonElement>> = ({ open, onClick, className = '', ...rest }) => {
-  const { t } = useTranslation();
   return (
     <button
       onClick={onClick}
-      aria-label={open ? t('aria.closeMenu', 'Close menu') : t('aria.openMenu', 'Open menu')}
+      aria-label={open ? "Close menu" : "Open menu"}
       aria-expanded={open}
       aria-controls="student-nav-panel"
       aria-haspopup="dialog"
@@ -93,7 +91,6 @@ const StudentNavPanel: React.FC<StudentNavPanelProps> = ({
   onOpenNetworkVisualizer,
   handleLogout,
 }) => {
-  const { t } = useTranslation();
   const prefersReduced = useReducedMotion();
   const panelRef = useRef<HTMLDivElement>(null);
   const [toolsOpen, setToolsOpen] = useState(false);
@@ -158,33 +155,33 @@ const StudentNavPanel: React.FC<StudentNavPanelProps> = ({
   const groups: { key: string; title: string; items: NavItem[] }[] = [
     {
       key: 'learn',
-      title: t('student.navPanel.learn', 'LEARN'),
+      title: "LEARN",
       items: [
         {
           key: 'courses',
-          label: t('student.navPanel.coursesTitle', 'Courses'),
-          description: t('student.navPanel.coursesDesc', 'Learn through structured lessons and guided walkthroughs.'),
+          label: "Courses",
+          description: "Learn through structured lessons and guided walkthroughs.",
           icon: IconCode,
           to: '/dashboard/courses',
         },
         {
           key: 'bootcamp',
-          label: t('student.navPanel.bootcampTitle', 'Bootcamp'),
-          description: t('student.navPanel.bootcampDesc', 'Follow the full Hacker Protocol Bootcamp curriculum phase by phase.'),
+          label: "Bootcamp",
+          description: "Follow the full Hacker Protocol Bootcamp curriculum phase by phase.",
           icon: IconTerminal,
           to: '/dashboard/bootcamps',
         },
         {
           key: 'labs',
-          label: t('student.navPanel.labsTitle', 'Labs'),
-          description: t('student.navPanel.labsDesc', 'Practice hands-on offensive security in a live sandbox.'),
+          label: "Labs",
+          description: "Practice hands-on offensive security in a live sandbox.",
           icon: IconLabs,
           to: '/dashboard/labs',
         },
         {
           key: 'marketplace',
-          label: t('student.navPanel.marketplaceTitle', 'Marketplace'),
-          description: t('student.navPanel.marketplaceDesc', 'Browse and unlock courses to grow your skills.'),
+          label: "Marketplace",
+          description: "Browse and unlock courses to grow your skills.",
           icon: IconMarketplace,
           to: '/dashboard/marketplace',
         },
@@ -192,33 +189,33 @@ const StudentNavPanel: React.FC<StudentNavPanelProps> = ({
     },
     {
       key: 'account',
-      title: t('student.navPanel.account', 'ACCOUNT'),
+      title: "ACCOUNT",
       items: [
         {
           key: 'dashboard',
-          label: t('student.navPanel.dashboardTitle', 'Dashboard'),
-          description: t('student.navPanel.dashboardDesc', 'Overview of your progress, cyber points and quick actions.'),
+          label: "Dashboard",
+          description: "Overview of your progress, cyber points and quick actions.",
           icon: IconDashboard,
           to: '/dashboard',
         },
         {
           key: 'profile',
-          label: t('student.navPanel.profileTitle', 'Profile'),
-          description: t('student.navPanel.profileDesc', 'Your rank, achievements and everything you have completed.'),
+          label: "Profile",
+          description: "Your rank, achievements and everything you have completed.",
           icon: IconProfile,
           to: '/dashboard/profile',
         },
         {
           key: 'network-lab',
-          label: t('student.navPanel.networkLabTitle', 'Network Lab'),
-          description: t('student.navPanel.networkLabDesc', 'Build and explore network topologies.'),
+          label: "Network Lab",
+          description: "Build and explore network topologies.",
           icon: IconNetwork,
           to: '/dashboard/networks',
         },
         {
           key: 'notifications',
-          label: t('student.navPanel.notificationsTitle', 'Notifications'),
-          description: t('student.navPanel.notificationsDesc', 'Alerts, updates and activity on your account.'),
+          label: "Notifications",
+          description: "Alerts, updates and activity on your account.",
           icon: IconNotification,
           to: '/dashboard/notifications',
           badge: unreadCount,
@@ -227,19 +224,19 @@ const StudentNavPanel: React.FC<StudentNavPanelProps> = ({
     },
     {
       key: 'more',
-      title: t('student.navPanel.more', 'MORE'),
+      title: "MORE",
       items: [
         {
           key: 'competitive',
-          label: t('student.navPanel.competitiveTitle', 'Competitive'),
-          description: t('student.navPanel.competitiveDesc', 'Rankings and competitive challenges.'),
+          label: "Competitive",
+          description: "Rankings and competitive challenges.",
           icon: IconLeaderboard,
           to: '/dashboard/competitive',
         },
         {
           key: 'settings',
-          label: t('student.navPanel.settingsTitle', 'Settings'),
-          description: t('student.navPanel.settingsDesc', 'Appearance, notifications, learning, security and account.'),
+          label: "Settings",
+          description: "Appearance, notifications, learning, security and account.",
           icon: IconSettings,
           to: '/dashboard/settings',
         },
@@ -320,7 +317,7 @@ const StudentNavPanel: React.FC<StudentNavPanelProps> = ({
               ref={panelRef}
               role="dialog"
               aria-modal="true"
-              aria-label={t('student.navPanel.title', 'Navigation')}
+              aria-label={"Navigation"}
               initial={prefersReduced ? { opacity: 1 } : { opacity: 0, y: -12 }}
               animate={{ opacity: 1, y: 0 }}
               exit={prefersReduced ? { opacity: 1 } : { opacity: 0, y: -12 }}
@@ -340,10 +337,10 @@ const StudentNavPanel: React.FC<StudentNavPanelProps> = ({
                     </span>
                     <span className="flex-1 min-w-0">
                       <span className="block text-sm font-black uppercase tracking-widest">
-                        {t('student.topbar.continueMission', 'Continue Mission')}
+                        {"Continue Mission"}
                       </span>
                       <span className="mt-0.5 block text-xs leading-relaxed text-on-accent/80">
-                        {t('student.navPanel.continueDesc', 'Resume your active bootcamp where you left off.')}
+                        {"Resume your active bootcamp where you left off."}
                       </span>
                     </span>
                     <IconChevronRight size={16} className="shrink-0 text-on-accent/60" />
@@ -376,7 +373,7 @@ const StudentNavPanel: React.FC<StudentNavPanelProps> = ({
                         <Wrench size={16} />
                       </span>
                       <span className="flex-1 min-w-0 text-xs font-black uppercase tracking-widest text-text-primary">
-                        {t('student.tools.title', 'Tools')}
+                        {"Tools"}
                       </span>
                       <IconChevronRight
                         size={13}
@@ -403,7 +400,7 @@ const StudentNavPanel: React.FC<StudentNavPanelProps> = ({
                                 >
                                   <TIcon size={16} className="shrink-0 text-text-secondary" />
                                   <span className="min-w-0 flex-1">
-                                    <span className="block truncate text-xs font-bold text-text-primary">{t(tool.labelKey)}</span>
+                                    <span className="block truncate text-xs font-bold text-text-primary">{tool.label}</span>
                                   </span>
                                   <span className="hidden shrink-0 font-mono text-xs text-text-muted/50 sm:block">{tool.shortcut}</span>
                                 </button>
@@ -419,7 +416,7 @@ const StudentNavPanel: React.FC<StudentNavPanelProps> = ({
                     onClick={() => navigateAndClose(handleLogout)}
                     className="flex items-center justify-center gap-2 rounded-2xl border border-danger/20 px-5 py-3 text-xs font-bold uppercase tracking-widest text-danger transition-colors hover:bg-danger/10 active:scale-[0.99]"
                   >
-                    <LogOut className="h-4 w-4" /> {t('button.logOut')}
+                    <LogOut className="h-4 w-4" /> {"Log Out"}
                   </button>
                 </div>
               </div>
@@ -433,7 +430,7 @@ const StudentNavPanel: React.FC<StudentNavPanelProps> = ({
           open={chooserOpen}
           onOpenChange={setChooserOpen}
           toolId={chosenTool.id}
-          toolLabel={t(chosenTool.labelKey)}
+          toolLabel={chosenTool.label}
           onSelectPanel={handleSelectPanel}
           onSelectFullscreen={handleSelectFullscreen}
         />

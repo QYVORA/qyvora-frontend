@@ -121,17 +121,16 @@ export type ProfileSectionId =
 export interface ProfileSection {
   id: ProfileSectionId;
   label: string;
-  labelKey: string;
 }
 
 export const PROFILE_SECTIONS: ProfileSection[] = [
-  { id: 'identity',     label: 'Identity',     labelKey: 'profile.nav.identity' },
-  { id: 'stats',        label: 'Statistics',    labelKey: 'profile.nav.stats' },
-  { id: 'activity',     label: 'Activity',      labelKey: 'profile.nav.activity' },
-  { id: 'achievements', label: 'Achievements',  labelKey: 'profile.nav.achievements' },
-  { id: 'labs',         label: 'Labs',          labelKey: 'profile.nav.labs' },
-  { id: 'courses',      label: 'Courses',       labelKey: 'profile.nav.courses' },
-  { id: 'trophy',       label: 'Trophy Cabinet', labelKey: 'profile.nav.trophy' },
+  { id: 'identity', label: 'Identity' },
+  { id: 'stats',        label: 'Statistics' },
+  { id: 'activity', label: 'Activity' },
+  { id: 'achievements', label: 'Achievements' },
+  { id: 'labs',         label: 'Labs' },
+  { id: 'courses',      label: 'Courses' },
+  { id: 'trophy',       label: 'Trophy Cabinet' },
 ];
 
 // ── Activity timeline ──────────────────────────────────────────────────────────

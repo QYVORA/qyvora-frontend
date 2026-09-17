@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { Database, Keyboard, Search, Server } from 'lucide-react';
-import { useTranslation } from 'react-i18next';
 import { WalkthroughLayout, WalkthroughStep } from '@/shared/components/walkthrough/';
 import type { FocusedStepListItem } from '@/shared/components/learning/FocusedStepList';
 import { SQL_INJECTION_TARGETS } from '@/features/student/data/simulations';
@@ -28,7 +27,6 @@ const SQL_ATTACK_FLOW_ARROWS = [
 type SqlInjectionTarget = typeof SQL_INJECTION_TARGETS[number];
 
 const SqlInjectionLab = () => {
-  const { t } = useTranslation();
   const { activeScenario: activeTarget, completedSteps, handleFlagSubmit, getStepState, allDone, startScenario, exitScenario } =
     useLabScenario<SqlInjectionTarget>({
       labId: 'sql-injection',
@@ -112,7 +110,7 @@ const SqlInjectionLab = () => {
                 </span>
               ),
               onStart: () => startScenario(target),
-              startLabel: t('labs.startAttack', 'Start Attack'),
+              startLabel: "Start Attack",
               locked,
               cpCost: locked ? cpCost ?? undefined : undefined,
               onUnlock: cpCost ? async () => {

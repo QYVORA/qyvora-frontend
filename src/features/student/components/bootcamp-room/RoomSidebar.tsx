@@ -1,4 +1,3 @@
-import { useTranslation } from 'react-i18next';
 import { WalkthroughSidebar } from '@/shared/components/walkthrough/WalkthroughSidebar';
 import type { BootcampPhase } from '../../constants/bootcampConfig';
 
@@ -19,7 +18,6 @@ const RoomSidebar: React.FC<Props> = ({
   completedRooms, lockedRooms, bootcampId,
   onNavigate, mobileOpen, onMobileClose,
 }) => {
-  const { t } = useTranslation();
 
   const sections = phases.map((phase) => ({
     label: `${phase.codename} | ${phase.title}`,
@@ -40,11 +38,11 @@ const RoomSidebar: React.FC<Props> = ({
     <WalkthroughSidebar
       sections={sections}
       backHref={`/dashboard/bootcamps/${bootcampId}`}
-      backLabel={t('student.bootcampRoom.backToCurriculum')}
+      backLabel={"Back to Curriculum"}
       mobileOpen={mobileOpen}
       onMobileClose={onMobileClose}
-      title={t('student.bootcampRoom.sidebar.roomNavigator')}
-      subtitle={t('student.bootcampRoom.sidebar.curriculum')}
+      title={"Room Navigator"}
+      subtitle={"Curriculum"}
     />
   );
 };

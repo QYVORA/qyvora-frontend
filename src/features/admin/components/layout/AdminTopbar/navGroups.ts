@@ -4,55 +4,55 @@ import { IconShield, IconClock, IconWarning, IconDashboard } from '@/shared/comp
 import ADMIN_PATH from '@/shared/utils/adminPath';
 
 export interface AdminNavItem {
-  labelKey: string;
-  descKey: string;
+  label: string;
+  desc: string;
   icon: ElementType;
   path: string;
   tab: string;
 }
 
 export interface AdminNavGroup {
-  titleKey: string;
+  title: string;
   items: AdminNavItem[];
 }
 
 export const NAV_GROUPS: AdminNavGroup[] = [
   {
-    titleKey: 'admin.navGroups.manage',
+    title: 'Manage',
     items: [
-      { labelKey: 'admin.tabs.overview', descKey: 'admin.navDescs.overview',   icon: IconDashboard, tab: 'overview',  path: `${ADMIN_PATH}/dashboard?tab=overview` },
-      { labelKey: 'admin.tabs.users',    descKey: 'admin.navDescs.users',      icon: Users,         tab: 'users',     path: `${ADMIN_PATH}/dashboard?tab=users` },
-      { labelKey: 'admin.tabs.bootcamps', descKey: 'admin.navDescs.bootcamps', icon: IconShield,    tab: 'bootcamps', path: `${ADMIN_PATH}/dashboard?tab=bootcamps` },
+      { label: 'Overview', desc: 'System overview, health and signups', icon: IconDashboard, tab: 'overview',  path: `${ADMIN_PATH}/dashboard?tab=overview` },
+      { label: 'Users', desc: 'Manage operators and access control', icon: Users, tab: 'users', path: `${ADMIN_PATH}/dashboard?tab=users` },
+      { label: 'Bootcamps', desc: 'Phase admission and enrollment', icon: IconShield, tab: 'bootcamps', path: `${ADMIN_PATH}/dashboard?tab=bootcamps` },
     ],
   },
   {
-    titleKey: 'admin.navGroups.content',
+    title: 'Content',
     items: [
-      { labelKey: 'admin.tabs.market', descKey: 'admin.navDescs.market', icon: Database, tab: 'zero_day', path: `${ADMIN_PATH}/dashboard?tab=zero_day` },
-      { labelKey: 'admin.tabs.points', descKey: 'admin.navDescs.points', icon: Coins,    tab: 'cp',       path: `${ADMIN_PATH}/dashboard?tab=cp` },
+      { label: 'Market', desc: 'Zero-day vault catalogue', icon: Database, tab: 'zero_day', path: `${ADMIN_PATH}/dashboard?tab=zero_day` },
+      { label: 'Points', desc: 'Cyber Point analytics and balances', icon: Coins, tab: 'cp', path: `${ADMIN_PATH}/dashboard?tab=cp` },
     ],
   },
   {
-    titleKey: 'admin.navGroups.communications',
+    title: 'Communications',
     items: [
-      { labelKey: 'admin.tabs.inbox',     descKey: 'admin.navDescs.inbox',     icon: Mail,      tab: 'inbox',     path: `${ADMIN_PATH}/dashboard?tab=inbox` },
-      { labelKey: 'admin.tabs.broadcast', descKey: 'admin.navDescs.broadcast', icon: Megaphone, tab: 'broadcast', path: `${ADMIN_PATH}/dashboard?tab=broadcast` },
+      { label: 'Inbox', desc: 'Contact and service requests', icon: Mail, tab: 'inbox', path: `${ADMIN_PATH}/dashboard?tab=inbox` },
+      { label: 'Broadcast', desc: 'Send announcements to users', icon: Megaphone, tab: 'broadcast', path: `${ADMIN_PATH}/dashboard?tab=broadcast` },
     ],
   },
   {
-    titleKey: 'admin.navGroups.monitor',
+    title: 'Monitor',
     items: [
-      { labelKey: 'admin.tabs.audit',     descKey: 'admin.navDescs.audit',     icon: IconClock,    tab: 'audit',     path: `${ADMIN_PATH}/dashboard?tab=audit` },
-      { labelKey: 'admin.tabs.security',  descKey: 'admin.navDescs.security',  icon: IconWarning,  tab: 'security',  path: `${ADMIN_PATH}/dashboard?tab=security` },
-      { labelKey: 'admin.tabs.incidents', descKey: 'admin.navDescs.incidents', icon: OctagonAlert, tab: 'incidents', path: `${ADMIN_PATH}/dashboard?tab=incidents` },
+      { label: 'Audit', desc: 'Admin action log', icon: IconClock, tab: 'audit', path: `${ADMIN_PATH}/dashboard?tab=audit` },
+      { label: 'Security', desc: 'Security events and summary', icon: IconWarning, tab: 'security', path: `${ADMIN_PATH}/dashboard?tab=security` },
+      { label: 'Incidents', desc: 'Incident tracking and resolution', icon: OctagonAlert, tab: 'incidents', path: `${ADMIN_PATH}/dashboard?tab=incidents` },
     ],
   },
 ];
 
 // Topbar quick tabs — mirror the student dashboard desktop nav pattern.
 export const ADMIN_QUICK_TABS: AdminNavItem[] = [
-  { labelKey: 'admin.tabs.overview', descKey: 'admin.navDescs.overview',  icon: IconDashboard, tab: 'overview',  path: `${ADMIN_PATH}/dashboard?tab=overview` },
-  { labelKey: 'admin.tabs.users',    descKey: 'admin.navDescs.users',     icon: Users,         tab: 'users',     path: `${ADMIN_PATH}/dashboard?tab=users` },
-  { labelKey: 'admin.tabs.bootcamps', descKey: 'admin.navDescs.bootcamps', icon: IconShield,   tab: 'bootcamps', path: `${ADMIN_PATH}/dashboard?tab=bootcamps` },
-  { labelKey: 'admin.tabs.points',   descKey: 'admin.navDescs.points',    icon: Coins,         tab: 'cp',        path: `${ADMIN_PATH}/dashboard?tab=cp` },
+  { label: 'Overview', desc: 'System overview, health and signups', icon: IconDashboard, tab: 'overview', path: `${ADMIN_PATH}/dashboard?tab=overview` },
+  { label: 'Users', desc: 'Manage operators and access control', icon: Users, tab: 'users', path: `${ADMIN_PATH}/dashboard?tab=users` },
+  { label: 'Bootcamps', desc: 'Phase admission and enrollment', icon: IconShield, tab: 'bootcamps', path: `${ADMIN_PATH}/dashboard?tab=bootcamps` },
+  { label: 'Points', desc: 'Cyber Point analytics and balances', icon: Coins, tab: 'cp', path: `${ADMIN_PATH}/dashboard?tab=cp` },
 ];

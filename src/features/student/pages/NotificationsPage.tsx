@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { useTranslation } from 'react-i18next';
 import { useSearchParams } from 'react-router-dom';
 import { Bell, CheckCheck, Loader2 } from 'lucide-react';
 import ScrollReveal from '@/shared/components/ScrollReveal';
@@ -62,7 +61,6 @@ const matchesFilter = (n: Notification, filter: Filter): boolean => {
 };
 
 const Notifications: React.FC = () => {
-  const { t } = useTranslation();
   const { addToast } = useToast();
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [loading, setLoading]             = useState(true);
@@ -77,7 +75,7 @@ const Notifications: React.FC = () => {
   useEffect(() => {
     api.get('/notifications')
       .then((res) => setNotifications(Array.isArray(res.data) ? res.data : []))
-      .catch(() => { setNotifications([]); setFetchError(true); addToast(t('toast.notificationsLoadFailed'), 'error'); })
+      .catch(() => { setNotifications([]); setFetchError(true); addToast("Failed to load notifications", 'error'); })
       .finally(() => setLoading(false));
   }, []);
 
@@ -86,7 +84,7 @@ const Notifications: React.FC = () => {
       await api.post(`/notifications/${id}/read`, {});
       setNotifications((prev) => prev.map((n) => n.id === id ? { ...n, read: true } : n));
     } catch {
-      addToast(t('toast.markReadError'), 'error');
+      addToast("Could not mark as read.", 'error');
     }
   };
 
@@ -95,9 +93,9 @@ const Notifications: React.FC = () => {
     try {
       await api.post('/notifications/read-all', {});
       setNotifications((prev) => prev.map((n) => ({ ...n, read: true })));
-      addToast(t('toast.markAllSuccess'), 'success');
+      addToast("All notifications marked as read.", 'success');
     } catch {
-      addToast(t('toast.markAllError'), 'error');
+      addToast("Could not mark all as read.", 'error');
     } finally {
       setMarkingAll(false);
     }
@@ -113,11 +111,11 @@ const Notifications: React.FC = () => {
   if (fetchError) {
     return (
       <div className="min-h-full bg-canvas">
-        <SEO title={t('student.notificationsPage.seoTitle', 'Notifications')} description={t('student.notificationsPage.seoDesc', 'Notification inbox.')} />
+        <SEO title={"Notifications"} description={"System alerts, mission updates, and activity notifications on QYVORA."} />
         <div className="w-full px-3 pb-16 pt-6 md:px-4 md:pb-20 md:pt-8 lg:px-6 lg:pb-24">
-          <PageHeader title={t('student.notificationsPage.title', 'Notifications')} />
+          <PageHeader title={"Notifications"} />
           <div className="mt-8">
-            <ErrorState title={t('student.notificationsPage.fetchError', 'Failed to load notifications.')} message={t('student.notificationsPage.fetchErrorDesc', 'Check your connection and try again.')} />
+            <ErrorState title={"Failed to load notifications."} message={"Check your connection and try again."} />
           </div>
         </div>
       </div>
@@ -126,24 +124,24 @@ const Notifications: React.FC = () => {
 
   return (
     <div className="min-h-full bg-canvas">
-      <SEO title={t('student.notificationsPage.seoTitle')} description={t('student.notificationsPage.seoDesc')} noindex />
+      <SEO title={"Notifications"} description={"System alerts, mission updates, and activity notifications on QYVORA."} noindex />
 
       <div className="w-full px-3 pb-16 pt-6 md:px-4 md:pb-20 md:pt-8 lg:px-6 lg:pb-24">
         <PageHeader
-          kicker={t('student.notificationsPage.eyebrow', 'Inbox')}
-          title={t('student.notificationsPage.title')}
-          description={t('student.notificationsPage.description')}
+          kicker={"Inbox"}
+          title={"Notifications"}
+          description={"System alerts and mission updates."}
           metadata={
             <span className="type-meta">
               <span className="font-bold text-accent">{unreadCount}</span>
-              {' '}{t('student.notificationsPage.unread')}
+              {' '}{"Unread"}
             </span>
           }
           actions={
             unreadCount > 0 ? (
               <Button variant="secondary" onClick={markAllRead} disabled={markingAll}>
                 {markingAll ? <Loader2 className="h-4 w-4 animate-spin" /> : <CheckCheck className="h-4 w-4" />}
-                {t('student.notificationsPage.markAllRead')}
+                {"Mark All Read"}
               </Button>
             ) : undefined
           }
@@ -153,7 +151,7 @@ const Notifications: React.FC = () => {
           <div className="mt-8">
             <EmptyState
               icon={<Bell className="h-6 w-6" />}
-              title={filter === 'unread' ? t('student.notificationsPage.empty.unread') : t('student.notificationsPage.empty.all')}
+              title={filter === 'unread' ? "No unread notifications." : "No notifications yet. You're clear."}
             />
           </div>
         ) : (
@@ -189,7 +187,7 @@ const Notifications: React.FC = () => {
                               onClick={() => markRead(n.id)}
                               className="inline-flex items-center gap-1 text-xs font-bold text-accent hover:underline"
                             >
-                              <CheckCheck className="h-3 w-3" /> {t('student.notificationsPage.markRead')}
+                              <CheckCheck className="h-3 w-3" /> {"Mark read"}
                             </button>
                           )}
                         </div>
@@ -206,7 +204,7 @@ const Notifications: React.FC = () => {
                   onClick={() => setVisibleCount((prev) => prev + PAGE_SIZE)}
                   className="min-h-[44px] rounded-xl border border-border bg-surface px-4 text-xs font-bold text-text-primary transition-colors hover:border-accent/40"
                 >
-                  {t('student.notificationsPage.loadMore', { count: displayed.length - visibleCount })}
+                  {`Load more (${displayed.length - visibleCount} remaining)`}
                 </button>
               </div>
             )}

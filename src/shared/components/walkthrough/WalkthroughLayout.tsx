@@ -1,6 +1,5 @@
 import { Unplug, Loader2, Minimize2, Maximize2 } from 'lucide-react';
 import { Children, useEffect } from 'react';
-import { useTranslation } from 'react-i18next';
 import type { ReactNode } from 'react';
 import { IconTerminal } from '@/shared/components/icons';
 import WalkthroughScrollControls from '@/shared/components/learning/WalkthroughScrollControls';
@@ -70,7 +69,6 @@ export function WalkthroughLayout({
   onStepSelect,
   stepIdPrefix,
 }: WalkthroughLayoutProps) {
-  const { t } = useTranslation();
   const allDone = totalSteps > 0 && completedCount === totalSteps;
   const { connection, isConnected, isLoading, error, connect, disconnect } = useLabConnection();
   const { network, browser } = useSimulation();
@@ -92,12 +90,12 @@ export function WalkthroughLayout({
 
   const headerStats: WorkspaceStat[] = [];
   if (difficulty) {
-    headerStats.push({ label: t('walkthrough.difficulty', 'Difficulty'), value: difficulty });
+    headerStats.push({ label: "Difficulty", value: difficulty });
   }
   if (estimatedMinutes) {
-    headerStats.push({ label: t('walkthrough.estimatedTime', 'Est. time'), value: `${estimatedMinutes} min` });
+    headerStats.push({ label: "Est. time", value: `${estimatedMinutes} min` });
   }
-  headerStats.push({ label: t('walkthrough.lab', 'Lab'), value: labId });
+  headerStats.push({ label: "Lab", value: labId });
 
   return (
     <div className="w-full bg-canvas min-h-dvh">
@@ -111,8 +109,8 @@ export function WalkthroughLayout({
             id: 'fullscreen',
             icon: fullscreen ? <Minimize2 className="h-4 w-4" /> : <Maximize2 className="h-4 w-4" />,
             label: fullscreen
-              ? t('learning.toolbar.exitFullscreen', 'Exit fullscreen')
-              : t('learning.toolbar.enterFullscreen', 'Enter fullscreen'),
+              ? "Exit fullscreen"
+              : "Enter fullscreen",
             onClick: toggleFullscreen,
           },
         ]}
@@ -144,30 +142,30 @@ export function WalkthroughLayout({
                 <IconTerminal size={18} />
               </div>
               <h3 className="type-h3 font-black uppercase tracking-tight text-text-primary">
-                {t('walkthrough.connection.title', 'Lab Connection')}
+                {"Lab Connection"}
               </h3>
               <span className="type-meta rounded-md border border-accent/30 bg-accent/10 px-2 py-1 text-accent">
-                {t('walkthrough.connection.live', 'Live Instance')}
+                {"Live Instance"}
               </span>
             </div>
 
             {!isConnected ? (
               <div className="space-y-4">
                 <p className="text-sm md:text-base text-text-secondary font-mono leading-[2] md:leading-[2.2]">
-                  {t('walkthrough.connection.connectHint', 'Connect to a live lab machine to run commands and complete this walkthrough. Your progress, commands and captured flags are saved as you go.')}
+                  {"Connect to a live lab machine to run commands and complete this walkthrough. Your progress, commands and captured flags are saved as you go."}
                 </p>
                 <div className="grid gap-2 sm:grid-cols-3">
                   <div className="rounded-xl border border-border/20 bg-surface-raised px-3.5 py-3">
-                    <p className="type-meta font-black uppercase tracking-widest text-text-tertiary mb-1">{t('walkthrough.connection.target', 'Target')}</p>
+                    <p className="type-meta font-black uppercase tracking-widest text-text-tertiary mb-1">{"Target"}</p>
                     <p className="text-sm font-mono text-text-primary">Linux VM</p>
                   </div>
                   <div className="rounded-xl border border-border/20 bg-surface-raised px-3.5 py-3">
-                    <p className="type-meta font-black uppercase tracking-widest text-text-tertiary mb-1">{t('walkthrough.connection.persists', 'Persists')}</p>
-                    <p className="text-sm font-mono text-text-primary">{t('walkthrough.connection.saved', 'Session saved')}</p>
+                    <p className="type-meta font-black uppercase tracking-widest text-text-tertiary mb-1">{"Persists"}</p>
+                    <p className="text-sm font-mono text-text-primary">{"Session saved"}</p>
                   </div>
                   <div className="rounded-xl border border-border/20 bg-surface-raised px-3.5 py-3">
-                    <p className="type-meta font-black uppercase tracking-widest text-text-tertiary mb-1">{t('walkthrough.connection.flags', 'Flags')}</p>
-                    <p className="text-sm font-mono text-text-primary">{t('walkthrough.connection.verified', 'Verified on submit')}</p>
+                    <p className="type-meta font-black uppercase tracking-widest text-text-tertiary mb-1">{"Flags"}</p>
+                    <p className="text-sm font-mono text-text-primary">{"Verified on submit"}</p>
                   </div>
                 </div>
                 <div className="flex flex-col sm:flex-row sm:items-center gap-3">
@@ -177,7 +175,7 @@ export function WalkthroughLayout({
                     className="inline-flex items-center justify-center gap-2 min-h-[44px] px-5 rounded-xl btn-primary"
                   >
                     {isLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : <IconTerminal size={16} />}
-                    {isLoading ? t('walkthrough.connection.connecting', 'Connecting...') : t('walkthrough.connection.connect', 'Connect to Lab')}
+                    {isLoading ? "Connecting..." : "Connect to Lab"}
                   </button>
                   {error && <span className="text-xs text-danger">{error}</span>}
                 </div>
@@ -188,10 +186,10 @@ export function WalkthroughLayout({
                   <div className="flex flex-wrap items-center gap-3">
                     <span className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-success/10 text-xs font-black uppercase tracking-widest text-success">
                       <span className="w-1.5 h-1.5 rounded-full bg-success animate-pulse" />
-                      {t('walkthrough.connection.connected', 'Connected')}
+                      {"Connected"}
                     </span>
                     <span className="px-3 py-1.5 rounded-lg bg-surface-raised text-xs font-mono text-text-secondary">
-                      {t('walkthrough.connection.target', 'Target')}: <span className="text-text-primary">{connection?.targetIp}</span>
+                      {"Target"}: <span className="text-text-primary">{connection?.targetIp}</span>
                     </span>
                   </div>
                   <button
@@ -200,11 +198,11 @@ export function WalkthroughLayout({
                     className="inline-flex min-h-[44px] items-center gap-2 rounded-xl border border-danger/30 bg-danger/10 px-4 text-xs font-black uppercase tracking-widest text-danger transition-colors hover:bg-danger/20 disabled:opacity-50 w-fit"
                   >
                     {isLoading ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Unplug className="w-3.5 h-3.5" />}
-                    {t('walkthrough.connection.disconnect', 'Disconnect')}
+                    {"Disconnect"}
                   </button>
                 </div>
                 <p className="text-sm text-text-secondary font-mono leading-[2] md:leading-[2.2]">
-                  {t('walkthrough.connection.usingHint', 'Use the terminal below to run commands against the live machine. Progress is tracked automatically.')}
+                  {"Use the terminal below to run commands against the live machine. Progress is tracked automatically."}
                 </p>
               </div>
             )}
@@ -261,10 +259,10 @@ export function WalkthroughLayout({
           <div className="rounded-xl border border-border-subtle bg-surface px-4 py-4 md:px-5 md:py-5">
             <div className="mb-3 flex items-center justify-between gap-4">
               <span className="type-meta font-black uppercase tracking-widest text-text-tertiary">
-                {t('learning.progress.title')}
+                {"Progress"}
               </span>
               <span className="text-sm font-bold text-text-secondary">
-                {t('learning.progress.steps', { completed: completedCount, total: totalSteps })}
+                {`${completedCount}/${totalSteps} steps`}
               </span>
             </div>
             <div
@@ -273,7 +271,7 @@ export function WalkthroughLayout({
               aria-valuenow={totalSteps > 0 ? Math.round((completedCount / totalSteps) * 100) : 0}
               aria-valuemin={0}
               aria-valuemax={100}
-              aria-label={t('learning.progress.stepsComplete', { completed: completedCount, total: totalSteps })}
+              aria-label={`${completedCount}/${totalSteps} steps complete`}
             >
               <div
                 className="h-full bg-accent transition-[width] duration-700 ease-out rounded-full"
@@ -286,7 +284,7 @@ export function WalkthroughLayout({
         {allDone && (
           <div className="rounded-xl border border-accent/20 bg-accent/5 px-6 py-5 text-center">
             <span className="text-xs font-black uppercase tracking-widest text-accent">
-              {t('walkthrough.complete.banner', 'Walkthrough complete! Claim your CP below.')}
+              {"Walkthrough complete! Claim your CP below."}
             </span>
           </div>
         )}

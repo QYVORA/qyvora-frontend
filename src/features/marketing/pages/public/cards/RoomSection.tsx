@@ -1,6 +1,5 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
 import { Clock } from 'lucide-react';
 import { IconTerminal, IconArrowRight } from '@/shared/components/icons';
 import type { BootcampRoom } from '@/features/student/constants/bootcampConfig';
@@ -11,7 +10,6 @@ interface RoomSectionProps {
 }
 
 const RoomSection: React.FC<RoomSectionProps> = ({ room, roomIndex }) => {
-  const { t } = useTranslation();
 
   return (
     <article className="relative w-full px-3 md:px-4 lg:px-6 pt-24 md:pt-28 lg:pt-32 pb-6 md:pb-8 lg:pb-10">
@@ -42,7 +40,7 @@ const RoomSection: React.FC<RoomSectionProps> = ({ room, roomIndex }) => {
         {room.steps.length > 0 && (
           <div className="mt-6 md:mt-8">
             <h4 className="text-xs font-black uppercase tracking-[0.3em] text-text-muted mb-3">
-              {t('landing.curriculum.stepCount', { count: room.steps.length })}
+              {`${room.steps.length} steps`}
             </h4>
             <ol className="grid grid-cols-1 md:grid-cols-2 gap-2 md:gap-3">
               {room.steps.map((step, i) => (
@@ -70,7 +68,7 @@ const RoomSection: React.FC<RoomSectionProps> = ({ room, roomIndex }) => {
             to="/register"
             className="btn-primary inline-flex items-center gap-2 px-5 py-2.5 text-xs"
           >
-            {t('landing.bootcamp.startPhase')} <IconArrowRight size={14} />
+            {"Start Phase"} <IconArrowRight size={14} />
           </Link>
         </div>
       </div>

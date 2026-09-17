@@ -1,6 +1,5 @@
 import React, { useState, useRef } from 'react';
 import { RefreshCw, Trash2 } from 'lucide-react';
-import { useTranslation } from 'react-i18next';
 import { IconSearch } from '@/shared/components/icons';
 import { CPProduct } from '../../types/admin.types';
 import { INPUT_CLS } from '../../types/admin.types';
@@ -21,7 +20,6 @@ interface ZeroDayMarketTabProps {
 const ZeroDayMarketTab: React.FC<ZeroDayMarketTabProps> = ({
   products, status = 'loaded', onRetry, saveProduct, deleteProduct,
 }) => {
-  const { t } = useTranslation();
   const [productForm, setProductForm] = useState({ id: '', title: '', description: '', cpPrice: 0, type: 'book', sortOrder: 0, isActive: true, isFree: false });
   const [coverFile, setCoverFile] = useState<File | null>(null);
   const [productFile, setProductFile] = useState<File | null>(null);
@@ -48,7 +46,7 @@ const ZeroDayMarketTab: React.FC<ZeroDayMarketTabProps> = ({
   const columns: Column<CPProduct>[] = [
     {
       key: 'title',
-      header: t('admin.market.asset'),
+      header: "Asset",
       sortable: true,
       render: (item) => (
         <div className="flex items-center gap-4">
@@ -64,47 +62,47 @@ const ZeroDayMarketTab: React.FC<ZeroDayMarketTabProps> = ({
     },
     {
       key: 'cpPrice',
-      header: t('admin.market.valuation'),
+      header: "Valuation",
       sortable: true,
       render: (item) => (
         item.isFree
-          ? <span className="text-xs font-black text-accent bg-accent/10 px-2.5 py-1 rounded-lg uppercase tracking-widest border border-accent/20">{t('admin.market.freeAccess')}</span>
+          ? <span className="text-xs font-black text-accent bg-accent/10 px-2.5 py-1 rounded-lg uppercase tracking-widest border border-accent/20">{"Free Access"}</span>
           : <div className="flex items-center gap-2 font-mono font-bold text-text-primary"><CpLogo className="w-4 h-4" />{Number(item.cpPrice || 0).toLocaleString()}</div>
       ),
     },
     {
       key: 'type',
-      header: t('admin.market.classification'),
+      header: "Classification (Type)",
       render: (item) => (
         <span className="px-2.5 py-1 rounded-lg bg-accent-dim text-xs font-black uppercase tracking-widest text-accent whitespace-nowrap border border-accent/10">{item.type}</span>
       ),
     },
     {
       key: 'isActive',
-      header: t('admin.market.status'),
+      header: "Status",
       render: (item) => (
         <span className={`px-2.5 py-1 rounded-lg text-xs font-black uppercase tracking-widest border ${item.isActive ? 'bg-accent/10 text-accent border-accent/20' : 'bg-danger/10 text-danger border-danger/20'}`}>
-          {item.isActive ? t('admin.market.operational') : t('badge.offline')}
+          {item.isActive ? "Operational" : "Offline"}
         </span>
       ),
     },
     {
       key: 'actions',
-      header: t('admin.market.actions'),
+      header: "Actions",
       className: 'text-right',
       headerClassName: 'text-right',
       render: (item) => (
         <div className="flex items-center justify-end gap-3">
           <button
             onClick={() => editProduct(item)}
-            aria-label={t('admin.market.modify')}
+            aria-label={"Modify"}
             className="min-h-[44px] min-w-[44px] inline-flex items-center justify-center rounded-xl bg-bg-elevated text-text-muted hover:text-accent transition-[color,transform] duration-[var(--dur-fast)] ease-[var(--ease-smooth)] active:scale-90"
           >
             <IconSearch size={18} />
           </button>
           <button
             onClick={() => void deleteProduct(item._id)}
-            aria-label={t('admin.market.terminate')}
+            aria-label={"Terminate"}
             className="min-h-[44px] min-w-[44px] inline-flex items-center justify-center rounded-xl bg-danger/5 text-danger/60 hover:bg-danger/10 hover:text-danger transition-[background-color,color,transform] duration-[var(--dur-fast)] ease-[var(--ease-smooth)] active:scale-90"
           >
             <Trash2 className="w-4.5 h-4.5" />
@@ -122,14 +120,14 @@ const ZeroDayMarketTab: React.FC<ZeroDayMarketTabProps> = ({
           <div className="font-black text-base text-text-primary leading-tight">{item.title}</div>
           <div className="flex flex-wrap items-center gap-2 mt-2">
             <span className="px-2 py-0.5 rounded-lg bg-accent-dim text-xs font-black uppercase tracking-widest text-accent border border-accent/10">{item.type}</span>
-            <span className="text-xs font-mono font-bold text-text-secondary inline-flex items-center gap-1">{item.isFree ? <span className="text-accent">{t('admin.market.freeAccess')}</span> : <>{item.cpPrice} <CpLogo className="w-3 h-3" /></>}</span>
-            <span className={`px-2 py-0.5 rounded-lg text-xs font-black uppercase tracking-widest border ${item.isActive ? 'bg-accent/10 text-accent border-accent/20' : 'bg-danger/10 text-danger border-danger/20'}`}>{item.isActive ? t('badge.active') : t('badge.offline')}</span>
+            <span className="text-xs font-mono font-bold text-text-secondary inline-flex items-center gap-1">{item.isFree ? <span className="text-accent">{"Free Access"}</span> : <>{item.cpPrice} <CpLogo className="w-3 h-3" /></>}</span>
+            <span className={`px-2 py-0.5 rounded-lg text-xs font-black uppercase tracking-widest border ${item.isActive ? 'bg-accent/10 text-accent border-accent/20' : 'bg-danger/10 text-danger border-danger/20'}`}>{item.isActive ? "Active" : "Offline"}</span>
           </div>
         </div>
       </div>
       <div className="grid grid-cols-2 gap-3 pt-2">
-        <button onClick={() => editProduct(item)} className="btn-secondary py-3 active:scale-95">{t('admin.market.modify')}</button>
-        <button onClick={() => void deleteProduct(item._id)} className="py-3 rounded-xl border border-danger/20 text-danger/60 hover:bg-danger/10 hover:text-danger text-xs font-black uppercase tracking-widest active:scale-95 transition-[background-color,color,transform] duration-[var(--dur-fast)] ease-[var(--ease-smooth)]">{t('admin.market.terminate')}</button>
+        <button onClick={() => editProduct(item)} className="btn-secondary py-3 active:scale-95">{"Modify"}</button>
+        <button onClick={() => void deleteProduct(item._id)} className="py-3 rounded-xl border border-danger/20 text-danger/60 hover:bg-danger/10 hover:text-danger text-xs font-black uppercase tracking-widest active:scale-95 transition-[background-color,color,transform] duration-[var(--dur-fast)] ease-[var(--ease-smooth)]">{"Terminate"}</button>
       </div>
     </div>
   );
@@ -137,41 +135,41 @@ const ZeroDayMarketTab: React.FC<ZeroDayMarketTabProps> = ({
   return (
     <div className="space-y-6">
       {status === 'error' && (
-        <ErrorState message={t('admin.market.unavailable')} title={t('admin.dataUnavailable')} />
+        <ErrorState message={"Market inventory could not be loaded."} title={"Data currently unavailable"} />
       )}
 
       <div ref={productFormRef} className={`rounded-2xl p-6 md:p-8 space-y-6 transition-[background-color] duration-[var(--dur-base)] ease-[var(--ease-smooth)] border border-border/40 ${productForm.id ? 'bg-accent/5' : 'bg-bg-card'}`}>
         <div className="flex items-center justify-between pb-4">
-          <div className={`text-xs font-black uppercase tracking-[0.2em] flex items-center gap-2 ${productForm.id ? 'text-accent' : 'text-text-muted'}`}>{productForm.id ? <><RefreshCw className="w-4 h-4 animate-spin-slow" /> {t('admin.market.editingAsset')}: {productForm.title}</> : t('admin.market.initializeNewAsset')}</div>
-          {productForm.id && <button onClick={resetProductForm} className="text-xs font-black text-text-muted hover:text-accent uppercase tracking-[0.2em] transition-colors border border-border/40 px-3 py-1 rounded-lg">{t('admin.market.abortProtocol')}</button>}
+          <div className={`text-xs font-black uppercase tracking-[0.2em] flex items-center gap-2 ${productForm.id ? 'text-accent' : 'text-text-muted'}`}>{productForm.id ? <><RefreshCw className="w-4 h-4 animate-spin-slow" /> {"Editing Asset"}: {productForm.title}</> : "Initialize New Asset"}</div>
+          {productForm.id && <button onClick={resetProductForm} className="text-xs font-black text-text-muted hover:text-accent uppercase tracking-[0.2em] transition-colors border border-border/40 px-3 py-1 rounded-lg">{"✕ Abort Protocol"}</button>}
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           <div className="space-y-6">
-            <label className="block space-y-2"><span className="text-xs font-black uppercase text-text-muted/60 tracking-[0.2em]">{t('admin.market.assetTitle')} *</span><input value={productForm.title} onChange={e => setProductForm(p => ({ ...p, title: e.target.value }))} placeholder={t('admin.market.assetTitlePlaceholder')} className={INPUT_CLS} /></label>
-            <label className="block space-y-2"><span className="text-xs font-black uppercase text-text-muted/60 tracking-[0.2em]">{t('admin.market.assetDescription')}</span><textarea value={productForm.description} onChange={e => setProductForm(p => ({ ...p, description: e.target.value }))} placeholder={t('admin.market.assetDescriptionPlaceholder')} rows={4} className={`${INPUT_CLS} resize-none`} /></label>
+            <label className="block space-y-2"><span className="text-xs font-black uppercase text-text-muted/60 tracking-[0.2em]">{"Asset Title *"} *</span><input value={productForm.title} onChange={e => setProductForm(p => ({ ...p, title: e.target.value }))} placeholder={"Enter asset title"} className={INPUT_CLS} /></label>
+            <label className="block space-y-2"><span className="text-xs font-black uppercase text-text-muted/60 tracking-[0.2em]">{"Asset Intelligence (Description)"}</span><textarea value={productForm.description} onChange={e => setProductForm(p => ({ ...p, description: e.target.value }))} placeholder={"Enter asset description"} rows={4} className={`${INPUT_CLS} resize-none`} /></label>
           </div>
           <div className="space-y-6">
             <div className="grid grid-cols-2 gap-4">
-              <label className="block space-y-2"><span className="text-xs font-black uppercase text-text-muted/60 tracking-[0.2em]">{t('admin.market.cpValuation')} {productForm.isFree && <span className="text-accent">({t('admin.market.zeroCost')})</span>}</span><div className="relative"><input type="number" min={0} value={productForm.isFree ? 0 : productForm.cpPrice} onChange={e => setProductForm(p => ({ ...p, cpPrice: Number(e.target.value || 0) }))} disabled={productForm.isFree} className={`${INPUT_CLS} pr-10 disabled:opacity-50`} /><CpLogo className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 opacity-50" /></div></label>
-              <label className="block space-y-2"><span className="text-xs font-black uppercase text-text-muted/60 tracking-[0.2em]">{t('admin.market.sequenceOrder')}</span><input type="number" min={0} value={productForm.sortOrder} onChange={e => setProductForm(p => ({ ...p, sortOrder: Number(e.target.value || 0) }))} placeholder="0" className={INPUT_CLS} /></label>
+              <label className="block space-y-2"><span className="text-xs font-black uppercase text-text-muted/60 tracking-[0.2em]">{"CP Valuation"} {productForm.isFree && <span className="text-accent">({"Zero Cost"})</span>}</span><div className="relative"><input type="number" min={0} value={productForm.isFree ? 0 : productForm.cpPrice} onChange={e => setProductForm(p => ({ ...p, cpPrice: Number(e.target.value || 0) }))} disabled={productForm.isFree} className={`${INPUT_CLS} pr-10 disabled:opacity-50`} /><CpLogo className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 opacity-50" /></div></label>
+              <label className="block space-y-2"><span className="text-xs font-black uppercase text-text-muted/60 tracking-[0.2em]">{"Sequence Order"}</span><input type="number" min={0} value={productForm.sortOrder} onChange={e => setProductForm(p => ({ ...p, sortOrder: Number(e.target.value || 0) }))} placeholder="0" className={INPUT_CLS} /></label>
             </div>
-            <label className="block space-y-2"><span className="text-xs font-black uppercase text-text-muted/60 tracking-[0.2em]">{t('admin.market.classification')}</span><input value={productForm.type} onChange={e => setProductForm(p => ({ ...p, type: e.target.value }))} placeholder={t('admin.market.classificationPlaceholder')} className={INPUT_CLS} /></label>
+            <label className="block space-y-2"><span className="text-xs font-black uppercase text-text-muted/60 tracking-[0.2em]">{"Classification (Type)"}</span><input value={productForm.type} onChange={e => setProductForm(p => ({ ...p, type: e.target.value }))} placeholder={"Select classification"} className={INPUT_CLS} /></label>
             <div className="flex flex-wrap gap-6 pt-2">
-              <label className="flex items-center gap-3 text-xs font-black uppercase tracking-widest text-text-secondary cursor-pointer group"><input type="checkbox" checked={productForm.isActive} onChange={e => setProductForm(p => ({ ...p, isActive: e.target.checked }))} className="accent-accent w-4.5 h-4.5" /><span className="group-hover:text-accent transition-colors">{t('admin.market.deploymentActive')}</span></label>
-              <label className="flex items-center gap-3 text-xs font-black uppercase tracking-widest text-text-secondary cursor-pointer group"><input type="checkbox" checked={productForm.isFree} onChange={e => setProductForm(p => ({ ...p, isFree: e.target.checked, cpPrice: e.target.checked ? 0 : p.cpPrice }))} className="accent-accent w-4.5 h-4.5" /><span className="group-hover:text-accent transition-colors">{t('admin.market.publicDomainFree')}</span></label>
+              <label className="flex items-center gap-3 text-xs font-black uppercase tracking-widest text-text-secondary cursor-pointer group"><input type="checkbox" checked={productForm.isActive} onChange={e => setProductForm(p => ({ ...p, isActive: e.target.checked }))} className="accent-accent w-4.5 h-4.5" /><span className="group-hover:text-accent transition-colors">{"Deployment Active"}</span></label>
+              <label className="flex items-center gap-3 text-xs font-black uppercase tracking-widest text-text-secondary cursor-pointer group"><input type="checkbox" checked={productForm.isFree} onChange={e => setProductForm(p => ({ ...p, isFree: e.target.checked, cpPrice: e.target.checked ? 0 : p.cpPrice }))} className="accent-accent w-4.5 h-4.5" /><span className="group-hover:text-accent transition-colors">{"Public Domain (Free)"}</span></label>
             </div>
           </div>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 pt-4">
-          <label className="block space-y-2"><span className="text-xs font-black uppercase text-text-muted/60 tracking-[0.2em]">{t('admin.market.coverImage')}</span><input type="file" accept="image/*" onChange={e => setCoverFile(e.target.files?.[0] || null)} className="block w-full text-xs text-text-muted file:mr-4 file:py-2.5 file:px-5 file:rounded-xl file:border-0 file:bg-accent/10 file:text-xs file:font-black file:uppercase file:tracking-widest file:text-accent file:cursor-pointer hover:file:bg-accent/20 file:transition-colors" /></label>
-          <label className="block space-y-2"><span className="text-xs font-black uppercase text-text-muted/60 tracking-[0.2em]">{t('admin.market.productPdf')} *</span><input type="file" accept="application/pdf" onChange={e => setProductFile(e.target.files?.[0] || null)} className="block w-full text-xs text-text-muted file:mr-4 file:py-2.5 file:px-5 file:rounded-xl file:border-0 file:bg-accent/10 file:text-xs file:font-black file:uppercase file:tracking-widest file:text-accent file:cursor-pointer hover:file:bg-accent/20 file:transition-colors" /></label>
+          <label className="block space-y-2"><span className="text-xs font-black uppercase text-text-muted/60 tracking-[0.2em]">{"Visual Identification (Cover Image)"}</span><input type="file" accept="image/*" onChange={e => setCoverFile(e.target.files?.[0] || null)} className="block w-full text-xs text-text-muted file:mr-4 file:py-2.5 file:px-5 file:rounded-xl file:border-0 file:bg-accent/10 file:text-xs file:font-black file:uppercase file:tracking-widest file:text-accent file:cursor-pointer hover:file:bg-accent/20 file:transition-colors" /></label>
+          <label className="block space-y-2"><span className="text-xs font-black uppercase text-text-muted/60 tracking-[0.2em]">{"Data Core (Product PDF) *"} *</span><input type="file" accept="application/pdf" onChange={e => setProductFile(e.target.files?.[0] || null)} className="block w-full text-xs text-text-muted file:mr-4 file:py-2.5 file:px-5 file:rounded-xl file:border-0 file:bg-accent/10 file:text-xs file:font-black file:uppercase file:tracking-widest file:text-accent file:cursor-pointer hover:file:bg-accent/20 file:transition-colors" /></label>
         </div>
 
         <div className="flex gap-4 pt-4">
-          <button onClick={handleSave} disabled={saving} className="btn-primary flex-1 disabled:opacity-50 disabled:cursor-not-allowed">{saving ? t('admin.market.processing') : productForm.id ? t('admin.market.authorizeUpdate') : t('admin.market.initializeAsset')}</button>
-          <button onClick={resetProductForm} className="btn-secondary px-8 active:scale-[0.98]">{t('button.purge')}</button>
+          <button onClick={handleSave} disabled={saving} className="btn-primary flex-1 disabled:opacity-50 disabled:cursor-not-allowed">{saving ? "Processing..." : productForm.id ? "Authorize Update" : "Initialize Asset"}</button>
+          <button onClick={resetProductForm} className="btn-secondary px-8 active:scale-[0.98]">{"Purge"}</button>
         </div>
       </div>
 
@@ -180,7 +178,7 @@ const ZeroDayMarketTab: React.FC<ZeroDayMarketTabProps> = ({
         columns={columns}
         keyExtractor={(p) => p._id}
         mobileCard={mobileCard}
-        emptyTitle={t('admin.market.empty')}
+        emptyTitle={"No market listings right now. New intelligence assets arrive soon."}
         emptyIcon={<RefreshCw className="w-10 h-10 text-text-muted" />}
         minWidth="min-w-[720px]"
       />

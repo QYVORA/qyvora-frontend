@@ -10,7 +10,6 @@ import { useEffect, useState, Suspense, lazy } from 'react';
 import type { ReactNode } from 'react';
 import { Routes, Route, Navigate, useLocation, useParams } from 'react-router-dom';
 import { AnimatePresence, motion } from 'motion/react';
-import { useTranslation } from 'react-i18next';
 import { Bot, X } from 'lucide-react';
 import { useAuth } from '../core/contexts/AuthContext';
 import ErrorBoundary from '../shared/components/ErrorBoundary';
@@ -165,7 +164,6 @@ const LegacyCourseRedirect = () => {
 // ─── Router ───────────────────────────────────────────────────────────────────
 export const AppRouter = () => {
   const location = useLocation();
-  const { t } = useTranslation();
 
   const [dobiaExpr, setDobiaExpr] = useState<'greeting' | 'confused' | 'alert' | 'waving'>('waving');
   const [msgIdx, setMsgIdx] = useState(0);
@@ -444,7 +442,7 @@ export const AppRouter = () => {
       <button
         type="button"
         onClick={() => setDobiaOverride(!dobiaVisible)}
-        aria-label={t(dobiaVisible ? 'aria.dobiaDismiss' : 'aria.dobiaSummon')}
+        aria-label={dobiaVisible ? 'Hide Dobia' : 'Show Dobia'}
         className="fixed bottom-4 right-4 z-[50] w-11 h-11 aspect-square shrink-0 rounded-full border border-border/50 bg-bg-card text-text-secondary hover:text-accent hover:border-accent/40 active:scale-95 flex items-center justify-center transition-[color,border-color,transform] duration-[var(--dur-fast)] ease-[var(--ease-smooth)] shadow-lg"
       >
         {dobiaVisible ? <X size={18} /> : <Bot size={20} />}

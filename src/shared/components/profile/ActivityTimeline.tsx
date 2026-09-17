@@ -1,5 +1,4 @@
 import { useMemo } from 'react';
-import { useTranslation } from 'react-i18next';
 import { motion } from 'motion/react';
 import { useReducedMotion } from '@/shared/hooks/useReducedMotion';
 import {
@@ -47,7 +46,6 @@ function formatTimestamp(iso: string): string {
 }
 
 const ActivityTimeline: React.FC<ActivityTimelineProps> = ({ profile, className = '' }) => {
-  const { t } = useTranslation();
   const prefersReduced = useReducedMotion();
 
   const events = useMemo(() => deriveActivityEvents(profile), [profile]);
@@ -58,10 +56,10 @@ const ActivityTimeline: React.FC<ActivityTimelineProps> = ({ profile, className 
         <ModuleHeader
           icon={<Clock className="w-4 h-4 text-accent" />}
           iconClassName="bg-accent/10"
-          title={t('profile.activity.title', 'Recent Activity')}
+          title={"Recent Activity"}
         />
         <p className="text-xs text-text-muted text-center py-4">
-          {t('profile.activity.empty', 'No activity yet. Complete labs and courses to see your timeline.')}
+          {"No activity yet. Complete labs and courses to see your timeline."}
         </p>
       </div>
     );
@@ -72,7 +70,7 @@ const ActivityTimeline: React.FC<ActivityTimelineProps> = ({ profile, className 
       <ModuleHeader
         icon={<Clock className="w-4 h-4 text-accent" />}
         iconClassName="bg-accent/10"
-        title={t('profile.activity.title', 'Recent Activity')}
+        title={"Recent Activity"}
       />
 
       <div className="p-5">

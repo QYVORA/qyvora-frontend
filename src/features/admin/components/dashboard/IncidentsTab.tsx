@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ChevronLeft, Link2, OctagonAlert, Plus } from 'lucide-react';
-import { useTranslation } from 'react-i18next';
 import { IconChevronRight } from '@/shared/components/icons';
 import api from '@/core/services/api';
 import { useToast } from '@/core/contexts/ToastContext';
@@ -22,7 +21,6 @@ const SEVERITY_VARIANT: Record<IncidentSeverity, 'default' | 'accent' | 'warning
 };
 
 const IncidentsTab = () => {
-  const { t } = useTranslation();
   const navigate = useNavigate();
   const { addToast } = useToast();
 
@@ -52,7 +50,7 @@ const IncidentsTab = () => {
       setTotalPages(Math.max(1, Number(res.data?.pages || 1)));
       setPage(Math.max(1, Number(res.data?.page || p)));
     } catch {
-      setError(t('admin.incidents.loadFailed'));
+      setError("Incidents could not be loaded.");
     } finally {
       setLoading(false);
     }
@@ -71,15 +69,15 @@ const IncidentsTab = () => {
         correlationId: form.correlationId.trim(),
       });
       if (res?.data?.audited === false) {
-        addToast(t('admin.audit.unauditedWarning'), 'warning');
+        addToast("Action applied, but its audit entry could not be written. Please verify and retry.", 'warning');
       } else {
-        addToast(t('admin.incidents.created'), 'success');
+        addToast("Incident created", 'success');
       }
       setForm({ title: '', description: '', severity: 'medium', correlationId: '' });
       setShowForm(false);
       await fetchIncidents(1);
     } catch (e: any) {
-      addToast(e?.response?.data?.error || t('admin.incidents.createFailed'), 'error');
+      addToast(e?.response?.data?.error || "Could not create incident", 'error');
     } finally {
       setCreating(false);
     }
@@ -89,21 +87,21 @@ const IncidentsTab = () => {
     try {
       const res = await api.patch(`/admin/incidents/${encodeURIComponent(incident.id)}/status`, { status });
       if (res?.data?.audited === false) {
-        addToast(t('admin.audit.unauditedWarning'), 'warning');
+        addToast("Action applied, but its audit entry could not be written. Please verify and retry.", 'warning');
       } else {
-        addToast(t('admin.incidents.statusUpdated'), 'success');
+        addToast("Incident status updated", 'success');
       }
       await fetchIncidents(page);
     } catch (e: any) {
-      addToast(e?.response?.data?.error || t('admin.incidents.statusUpdateFailed'), 'error');
+      addToast(e?.response?.data?.error || "Could not update incident status", 'error');
     }
   };
 
   const nextActions = (incident: IncidentItem): Array<{ label: string; status: IncidentStatus }> => {
     switch (incident.status) {
-      case 'open': return [{ label: t('admin.incidents.startMonitoring'), status: 'monitoring' }, { label: t('admin.incidents.resolve'), status: 'resolved' }];
-      case 'monitoring': return [{ label: t('admin.incidents.resolve'), status: 'resolved' }];
-      default: return [{ label: t('admin.incidents.reopen'), status: 'open' }];
+      case 'open': return [{ label: "Monitor", status: 'monitoring' }, { label: "Resolve", status: 'resolved' }];
+      case 'monitoring': return [{ label: "Resolve", status: 'resolved' }];
+      default: return [{ label: "Reopen", status: 'open' }];
     }
   };
 
@@ -113,40 +111,40 @@ const IncidentsTab = () => {
         <select
           value={statusFilter}
           onChange={(e) => { setStatusFilter(e.target.value); setPage(1); }}
-          aria-label={t('admin.incidents.filterStatus')}
+          aria-label={"Filter by status"}
           className="bg-bg border border-border rounded-xl px-3 py-2 text-xs text-text-primary focus:border-accent outline-none appearance-none"
         >
-          <option value="">{t('admin.incidents.allStatuses')}</option>
-          <option value="open">{t('admin.incidents.statusOpen')}</option>
-          <option value="monitoring">{t('admin.incidents.statusMonitoring')}</option>
-          <option value="resolved">{t('admin.incidents.statusResolved')}</option>
+          <option value="">{"All statuses"}</option>
+          <option value="open">{"Open"}</option>
+          <option value="monitoring">{"Monitoring"}</option>
+          <option value="resolved">{"Resolved"}</option>
         </select>
         <select
           value={severityFilter}
           onChange={(e) => { setSeverityFilter(e.target.value); setPage(1); }}
-          aria-label={t('admin.incidents.filterSeverity')}
+          aria-label={"Filter by severity"}
           className="bg-bg border border-border rounded-xl px-3 py-2 text-xs text-text-primary focus:border-accent outline-none appearance-none"
         >
-          <option value="">{t('admin.incidents.allSeverities')}</option>
-          <option value="low">{t('admin.incidents.severityLow')}</option>
-          <option value="medium">{t('admin.incidents.severityMedium')}</option>
-          <option value="high">{t('admin.incidents.severityHigh')}</option>
-          <option value="critical">{t('admin.incidents.severityCritical')}</option>
+          <option value="">{"All severities"}</option>
+          <option value="low">{"Low"}</option>
+          <option value="medium">{"Medium"}</option>
+          <option value="high">{"High"}</option>
+          <option value="critical">{"Critical"}</option>
         </select>
         <button
           onClick={() => setShowForm((v) => !v)}
           className={`${BTN_CLS} ${showForm ? 'btn-secondary' : 'btn-primary'} px-4`}
         >
           <Plus className="w-4 h-4" />
-          {t('admin.incidents.newIncident')}
+          {"New incident"}
         </button>
       </div>
 
       {showForm && (
-        <div className="rounded-2xl border border-border/40 bg-bg-card p-5 space-y-4" aria-label={t('admin.incidents.newIncident')}>
+        <div className="rounded-2xl border border-border/40 bg-bg-card p-5 space-y-4" aria-label={"New incident"}>
           <div>
             <label htmlFor="incident-title" className="block text-xs font-black uppercase tracking-widest text-text-muted mb-1.5">
-              {t('admin.incidents.titleLabel')}
+              {"Title"}
             </label>
             <input
               id="incident-title"
@@ -154,12 +152,12 @@ const IncidentsTab = () => {
               value={form.title}
               onChange={(e) => setForm((f) => ({ ...f, title: e.target.value }))}
               className={INPUT_CLS}
-              placeholder={t('admin.incidents.titlePlaceholder')}
+              placeholder={"Short incident summary"}
             />
           </div>
           <div>
             <label htmlFor="incident-description" className="block text-xs font-black uppercase tracking-widest text-text-muted mb-1.5">
-              {t('admin.incidents.descriptionLabel')}
+              {"Description"}
             </label>
             <textarea
               id="incident-description"
@@ -167,13 +165,13 @@ const IncidentsTab = () => {
               onChange={(e) => setForm((f) => ({ ...f, description: e.target.value }))}
               rows={3}
               className={`${INPUT_CLS} resize-none`}
-              placeholder={t('admin.incidents.descriptionPlaceholder')}
+              placeholder={"What happened, scope, and current impact"}
             />
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label htmlFor="incident-severity" className="block text-xs font-black uppercase tracking-widest text-text-muted mb-1.5">
-                {t('admin.incidents.severityLabel')}
+                {"Severity"}
               </label>
               <select
                 id="incident-severity"
@@ -181,15 +179,15 @@ const IncidentsTab = () => {
                 onChange={(e) => setForm((f) => ({ ...f, severity: e.target.value }))}
                 className={INPUT_CLS}
               >
-                <option value="low">{t('admin.incidents.severityLow')}</option>
-                <option value="medium">{t('admin.incidents.severityMedium')}</option>
-                <option value="high">{t('admin.incidents.severityHigh')}</option>
-                <option value="critical">{t('admin.incidents.severityCritical')}</option>
+                <option value="low">{"Low"}</option>
+                <option value="medium">{"Medium"}</option>
+                <option value="high">{"High"}</option>
+                <option value="critical">{"Critical"}</option>
               </select>
             </div>
             <div>
               <label htmlFor="incident-correlation" className="block text-xs font-black uppercase tracking-widest text-text-muted mb-1.5">
-                {t('admin.incidents.correlationLabel')}
+                {"Correlation ID (optional)"}
               </label>
               <input
                 id="incident-correlation"
@@ -197,20 +195,20 @@ const IncidentsTab = () => {
                 value={form.correlationId}
                 onChange={(e) => setForm((f) => ({ ...f, correlationId: e.target.value }))}
                 className={`${INPUT_CLS} font-mono text-xs`}
-                placeholder={t('admin.incidents.correlationPlaceholder')}
+                placeholder={"Request ID from audit or security events"}
               />
             </div>
           </div>
           <div className="flex justify-end gap-3">
             <button onClick={() => setShowForm(false)} className={`${BTN_CLS} btn-secondary px-4`}>
-              {t('button.cancel')}
+              {"Cancel"}
             </button>
             <button
               onClick={() => void handleCreate()}
               disabled={creating || !form.title.trim()}
               className={`${BTN_CLS} btn-primary px-5 disabled:opacity-50`}
             >
-              {creating ? t('admin.syncing') : t('admin.incidents.createButton')}
+              {creating ? "Synchronizing encrypted data…" : "Create incident"}
             </button>
           </div>
         </div>
@@ -219,11 +217,11 @@ const IncidentsTab = () => {
       {loading ? (
         <div className="space-y-2" role="status">{Array.from({ length: 6 }).map((_, i) => <Skeleton key={i} variant="card" className="h-16 rounded-xl bg-bg-card border border-border" />)}</div>
       ) : error ? (
-        <ErrorState message={error} title={t('admin.incidents.unavailable')} />
+        <ErrorState message={error} title={"Incident tracker unavailable"} />
       ) : incidents.length === 0 ? (
         <div className="rounded-2xl border-2 border-dashed border-border py-12 text-center">
           <OctagonAlert size={40} className="mx-auto mb-3 text-text-muted opacity-30" />
-          <p className="text-sm text-text-muted font-bold">{t('admin.incidents.empty')}</p>
+          <p className="text-sm text-text-muted font-bold">{"No incidents recorded."}</p>
         </div>
       ) : (
         <div className="space-y-2">
@@ -241,14 +239,14 @@ const IncidentsTab = () => {
                 <p className="text-xs text-text-secondary break-words">{incident.description}</p>
               )}
               <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-xs font-mono text-text-muted/70">
-                <span>{t('admin.incidents.createdBy')}: {incident.createdBy?.name || t('common2.unknown')}</span>
+                <span>{"Created by"}: {incident.createdBy?.name || "Unknown"}</span>
                 {incident.resolvedAt && (
-                  <span>{t('admin.incidents.resolvedAt')}: {new Date(incident.resolvedAt).toLocaleString()}</span>
+                  <span>{"Resolved"}: {new Date(incident.resolvedAt).toLocaleString()}</span>
                 )}
                 {incident.correlationId && (
                   <button
                     onClick={() => navigate(`?tab=security&requestId=${encodeURIComponent(incident.correlationId)}`)}
-                    aria-label={t('admin.audit.viewSecurityEvents')}
+                    aria-label={"View related security events"}
                     className="inline-flex items-center gap-1 text-accent/80 hover:text-accent transition-colors min-h-[44px]"
                   >
                     <Link2 size={11} />
@@ -277,16 +275,16 @@ const IncidentsTab = () => {
           <button
             onClick={() => setPage((p) => Math.max(1, p - 1))}
             disabled={page <= 1}
-            aria-label={t('components.dataTable.prevPage')}
+            aria-label={"Previous page"}
             className="w-11 h-11 flex items-center justify-center rounded-lg bg-bg-elevated text-text-muted disabled:opacity-50 hover:text-accent transition-[color,transform] duration-[var(--dur-fast)] ease-[var(--ease-smooth)] active:scale-90"
           >
             <ChevronLeft className="w-5 h-5" />
           </button>
-          <span className="text-xs font-mono text-text-muted px-2">{t('components.dataTable.pageOf', { page, total: totalPages })}</span>
+          <span className="text-xs font-mono text-text-muted px-2">{`Page ${page} of ${totalPages}`}</span>
           <button
             onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
             disabled={page >= totalPages}
-            aria-label={t('components.dataTable.nextPage')}
+            aria-label={"Next page"}
             className="w-11 h-11 flex items-center justify-center rounded-lg bg-bg-elevated text-text-muted disabled:opacity-50 hover:text-accent transition-[color,transform] duration-[var(--dur-fast)] ease-[var(--ease-smooth)] active:scale-90"
           >
             <IconChevronRight size={20} />

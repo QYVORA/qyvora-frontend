@@ -1,4 +1,3 @@
-import { useTranslation } from 'react-i18next';
 import { RefreshCw } from 'lucide-react';
 
 interface SyncIndicatorProps {
@@ -8,18 +7,17 @@ interface SyncIndicatorProps {
 }
 
 const SyncIndicator = ({ lastSync, error, onRetry }: SyncIndicatorProps) => {
-  const { t } = useTranslation();
   return (
     <div className="flex items-center justify-between gap-3">
       <p className={`flex items-center gap-1.5 text-xs ${error ? 'text-danger' : 'text-text-muted'}`}>
         <RefreshCw className="h-3 w-3 shrink-0" />
         {error || (lastSync
-          ? t('components.syncIndicator.lastUpdated', { time: lastSync })
-          : t('components.syncIndicator.noData'))}
+          ? `Last updated: ${lastSync}`
+          : "No data yet")}
       </p>
       {error && onRetry && (
         <button onClick={onRetry} className="text-xs font-bold text-accent hover:underline">
-          {t('components.syncIndicator.retry')}
+          {"Retry"}
         </button>
       )}
     </div>

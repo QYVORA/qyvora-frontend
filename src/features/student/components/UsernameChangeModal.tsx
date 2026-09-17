@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { useTranslation } from 'react-i18next';
 import { Dialog, DialogContent } from '@/shared/components/ui/Dialog';
 import { User, AlertCircle } from 'lucide-react';
 import { IconCheck } from '@/shared/components/icons';
@@ -11,7 +10,6 @@ import Input from '@/shared/components/ui/Input';
 const HANDLE_PATTERN = /^[a-zA-Z0-9][a-zA-Z0-9-]{0,38}[a-zA-Z0-9]$/;
 
 const UsernameChangeModal = () => {
-  const { t } = useTranslation();
   const { user, refreshMe } = useAuth();
   const [open, setOpen] = useState(false);
   const [handle, setHandle] = useState('');
@@ -27,9 +25,9 @@ const UsernameChangeModal = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const clean = handle.trim().toLowerCase();
-    if (!clean) { setError(t('validation.handleRequired')); return; }
+    if (!clean) { setError("Handle is required."); return; }
     if (!HANDLE_PATTERN.test(clean) || clean.includes('--')) {
-      setError(t('validation.handleInvalidChars'));
+      setError("Use only letters, numbers, and hyphens. No spaces or consecutive hyphens.");
       return;
     }
     setSaving(true);
@@ -39,7 +37,7 @@ const UsernameChangeModal = () => {
       await refreshMe();
       setOpen(false);
     } catch (err: any) {
-      setError(err?.response?.data?.error || t('validation.handleUpdateFailed'));
+      setError(err?.response?.data?.error || "Failed to update handle. Try again.");
     } finally {
       setSaving(false);
     }
@@ -47,7 +45,7 @@ const UsernameChangeModal = () => {
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogContent title={t('student.usernameChange.title')} description={t('student.usernameChange.description')}>
+      <DialogContent title={"Choose your hacker handle"} description={"This is how other operators will see you. Pick something unique."}>
         <div className="p-6 space-y-6">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-full bg-accent/10 flex items-center justify-center">
@@ -55,10 +53,10 @@ const UsernameChangeModal = () => {
             </div>
             <div>
               <h2 className="text-lg font-black uppercase tracking-tight text-text-primary">
-                {t('student.usernameChange.title')}
+                {"Choose your hacker handle"}
               </h2>
               <p className="text-sm text-text-muted">
-                {t('student.usernameChange.description')}
+                {"This is how other operators will see you. Pick something unique."}
               </p>
             </div>
           </div>
@@ -66,14 +64,14 @@ const UsernameChangeModal = () => {
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="space-y-2">
               <label htmlFor="username-change" className="text-xs font-bold text-text-muted uppercase tracking-widest">
-                {t('student.usernameChange.usernameLabel')}
+                {"Username"}
               </label>
               <Input
                 id="username-change"
                 type="text"
                 value={handle}
                 onChange={(e) => { setHandle(e.target.value); setError(''); }}
-                placeholder={t('student.usernameChange.placeholder')}
+                placeholder={"Enter your hacker handle…"}
                 maxLength={40}
                 autoFocus
                 className="text-base"
@@ -85,7 +83,7 @@ const UsernameChangeModal = () => {
                 selectedHandle={handle}
               />
               <p className="text-xs text-text-muted/60">
-                {t('student.usernameChange.handleRules')}
+                {"Letters, numbers, and hyphens only. No spaces. Must be unique."}
               </p>
             </div>
 
@@ -101,7 +99,7 @@ const UsernameChangeModal = () => {
               disabled={saving}
               className="w-full flex items-center justify-center gap-2 bg-accent text-on-accent font-bold uppercase tracking-wider rounded-xl py-3.5 text-sm transition-[filter,transform] duration-[var(--dur-base)] ease-[var(--ease-smooth)] hover:brightness-110 active:scale-[0.98] disabled:opacity-50"
             >
-              {saving ? t('button.signingIn') : <><IconCheck size={16} /> {t('student.usernameChange.save')}</>}
+              {saving ? "Signing you in..." : <><IconCheck size={16} /> {"Save"}</>}
             </button>
           </form>
         </div>

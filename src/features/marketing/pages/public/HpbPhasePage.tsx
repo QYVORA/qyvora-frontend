@@ -1,6 +1,5 @@
 import React from 'react';
 import { Navigate, useParams } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
 import { ArrowRight, Clock } from 'lucide-react';
 import SEO from '@/shared/components/SEO';
 import Button from '@/shared/components/ui/Button';
@@ -9,7 +8,6 @@ import { BOOTCAMP_CONFIG } from '@/features/student/constants/bootcampStructure'
 import { PHASES } from '@/features/marketing/data/learnData';
 
 const HpbPhasePage: React.FC = () => {
-  const { t } = useTranslation();
   const { phaseId } = useParams<{ phaseId: string }>();
 
   const phase = BOOTCAMP_CONFIG.phases.find((p) => p.id === phaseId);
@@ -37,25 +35,25 @@ const HpbPhasePage: React.FC = () => {
       <div className="w-full px-3 pb-20 pt-24 md:px-4 md:pb-24 md:pt-28 lg:px-6 lg:pt-32">
         <LearningDetailShell
           backTo="/hpb"
-          backLabel={t('hpbPhasePage.allPhases', 'All phases')}
-          kicker={`${t('hpbPhasePage.kicker', 'Hacker Protocol Bootcamp')} · Phase ${phaseIndex + 1} of ${BOOTCAMP_CONFIG.phases.length}`}
+          backLabel={"All phases"}
+          kicker={`${"Hacker Protocol Bootcamp"} · Phase ${phaseIndex + 1} of ${BOOTCAMP_CONFIG.phases.length}`}
           title={phase.title}
           description={learnPhase?.desc ?? `${phase.title}. Hacker Protocol Bootcamp.`}
           metadata={
             <>
               <span className="type-meta">
-                {roomCount} {t('hpbPhasePage.rooms', 'rooms')}
+                {roomCount} {"rooms"}
               </span>
-              <span className="type-meta">{totalHours}h {t('hpbPhasePage.estimatedTime', 'estimated')}</span>
+              <span className="type-meta">{totalHours}h {"estimated"}</span>
             </>
           }
           actions={
             <Button to="/register">
-              {t('hpbPhasePage.cta', 'Enroll now')}
+              {"Enroll now"}
               <ArrowRight className="h-4 w-4" aria-hidden="true" />
             </Button>
           }
-          relatedTitle={t('hpbPhasePage.related', 'Other phases')}
+          relatedTitle={"Other phases"}
           related={
             otherPhases.map((other) => {
               const learn = PHASES.find(
@@ -76,8 +74,8 @@ const HpbPhasePage: React.FC = () => {
                   title={other.title}
                   description={learn?.desc ?? other.codename}
                   duration={`${hours}h`}
-                  modulesCount={`${other.rooms?.length || 0} ${t('hpbPhasePage.rooms', 'rooms')}`}
-                  actionLabel={t('hpbPhasePage.explore', 'Explore')}
+                  modulesCount={`${other.rooms?.length || 0} ${"rooms"}`}
+                  actionLabel={"Explore"}
                 />
               );
             })
@@ -85,7 +83,7 @@ const HpbPhasePage: React.FC = () => {
         >
           <div className="mt-10">
             <h2 className="type-h2 font-black uppercase tracking-tight text-text-primary">
-              {t('hpbPhasePage.curriculum', 'Curriculum')}
+              {"Curriculum"}
             </h2>
             <div className="mt-5 flex flex-col gap-3">
               {phase.rooms.map((room, index) => (

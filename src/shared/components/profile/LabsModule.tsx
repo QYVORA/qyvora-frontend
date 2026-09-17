@@ -1,4 +1,3 @@
-import { useTranslation } from 'react-i18next';
 import { motion } from 'motion/react';
 import { useReducedMotion } from '@/shared/hooks/useReducedMotion';
 import { FlaskConical, ExternalLink } from 'lucide-react';
@@ -17,7 +16,6 @@ const LabsModule: React.FC<LabsModuleProps> = ({
   labsCompleted,
   className = '',
 }) => {
-  const { t } = useTranslation();
   const prefersReduced = useReducedMotion();
 
   const displayRooms = completedRooms.slice(-8).reverse();
@@ -28,7 +26,7 @@ const LabsModule: React.FC<LabsModuleProps> = ({
       <ModuleHeader
         icon={<FlaskConical className="w-4 h-4 text-danger" />}
         iconClassName="bg-danger/10"
-        title={t('profile.labs.title', 'Labs')}
+        title={"Labs"}
         trailing={
           totalLabs > 0 ? (
             <span className="px-2 py-1 bg-danger/10 text-danger text-xs font-black rounded-lg">
@@ -41,7 +39,7 @@ const LabsModule: React.FC<LabsModuleProps> = ({
       <div className="mt-4">
         {displayRooms.length === 0 ? (
           <p className="text-xs text-text-muted text-center py-4">
-            {t('profile.labs.empty', 'No labs completed yet.')}
+            {"No labs completed yet."}
           </p>
         ) : (
           <div className="space-y-2">

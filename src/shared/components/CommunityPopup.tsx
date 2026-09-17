@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useTranslation } from 'react-i18next';
 import { motion, AnimatePresence } from 'motion/react';
 import { IconX } from '@/shared/components/icons';
 import { Users, Zap } from 'lucide-react';
@@ -15,7 +14,6 @@ const COMMUNITY_JOINED_KEY = 'qyvora_community_joined';
 const APPEAR_DELAY_MS = 8000;
 
 const CommunityPopup: React.FC = () => {
-  const { t } = useTranslation();
   const { user } = useAuth();
   const [delayReady, setDelayReady] = useState(false);
   const observerRef = useRef<MutationObserver | null>(null);
@@ -97,19 +95,19 @@ const CommunityPopup: React.FC = () => {
             <div className="p-6 sm:p-8 flex flex-col justify-center flex-1">
               <div>
                 <h4 className="text-lg font-black text-text-primary uppercase tracking-tight leading-none mb-1.5">
-                  {t('components.community.title')}
+                  {"Hacker Community"}
                 </h4>
                 <div className="flex items-center gap-2 mb-4">
                   <span className="flex h-1.5 w-1.5 rounded-full bg-accent animate-pulse" />
                   <span className="text-xs font-mono font-bold text-text-muted uppercase tracking-widest">
-                    {t('components.community.liveOps')}
+                    {"Live Operations"}
                   </span>
                 </div>
               </div>
 
               <div className="mb-6">
                 <p className="text-xs text-text-secondary leading-relaxed font-mono opacity-80">
-                  {t('components.community.description')}
+                  {"Join Africa's elite offensive security circle. Collaborate on missions and learn from the best in real-time."}
                 </p>
               </div>
 
@@ -129,7 +127,7 @@ const CommunityPopup: React.FC = () => {
                   "
                 >
                   <BrandWhatsAppIcon className="h-4 w-4" />
-                  <span>{t('components.community.joinNow')}</span>
+                  <span>{"Join Now"}</span>
                 </a>
 
                 <button
@@ -141,7 +139,7 @@ const CommunityPopup: React.FC = () => {
                     text-text-muted transition-[color,border-color] hover:border-accent/50 hover:text-accent
                   "
                 >
-                  {t('button.dismiss')}
+                  {"Dismiss"}
                 </button>
               </div>
             </div>

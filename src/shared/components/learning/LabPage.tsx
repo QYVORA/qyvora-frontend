@@ -1,5 +1,4 @@
 import React from 'react';
-import { useTranslation } from 'react-i18next';
 import { Minimize2, Maximize2 } from 'lucide-react';
 import SEO from '@/shared/components/SEO';
 import RelatedContent from '@/shared/components/RelatedContent';
@@ -50,7 +49,6 @@ const LabPage: React.FC<LabPageProps> = ({
   relatedContent,
   noIndex = true,
 }) => {
-  const { t } = useTranslation();
   const { fullscreen, toggleFullscreen } = useRoomSession();
 
   return (
@@ -82,7 +80,7 @@ const LabPage: React.FC<LabPageProps> = ({
         <LearningWorkspaceShell
           kicker={eyebrow}
           backTo={backTo}
-          backLabel={backLabel ?? t('labs.backToLabs', 'Back to Labs')}
+          backLabel={backLabel ?? "Back to Labs"}
           title={`${title} ${accentWord}`}
           description={description || `Master ${title.toLowerCase()} techniques through hands-on challenges`}
         >

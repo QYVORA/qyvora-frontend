@@ -1,5 +1,4 @@
 import React from 'react';
-import { useTranslation } from 'react-i18next';
 import { ArrowRight } from 'lucide-react';
 import { Card } from '@/shared/components/ui/Card';
 import PageHeader from '@/shared/components/ui/PageHeader';
@@ -24,24 +23,24 @@ interface ToolEntry {
   path: string;
   name: string;
   logo: string;
-  titleKey: string;
-  descKey: string;
+  title: string;
+  desc: string;
 }
 
 const TOOLS: ToolEntry[] = [
-  { path: '/anansi', name: 'anansi', logo: anansiLogo, titleKey: 'landing.anansi.title', descKey: 'landing.anansi.description' },
-  { path: '/toha3ee', name: 'toha3ee', logo: toha3eeLogo, titleKey: 'landing.toha3ee.title', descKey: 'landing.toha3ee.description' },
-  { path: '/shaka', name: 'shaka', logo: shakaLogo, titleKey: 'landing.shaka.title', descKey: 'landing.shaka.description' },
-  { path: '/nzinga', name: 'nzinga', logo: nzingaLogo, titleKey: 'landing.nzinga.title', descKey: 'landing.nzinga.description' },
-  { path: '/jabari', name: 'jabari', logo: jabariLogo, titleKey: 'landing.jabari.title', descKey: 'landing.jabari.description' },
-  { path: '/aksum', name: 'aksum', logo: aksumLogo, titleKey: 'landing.aksum.title', descKey: 'landing.aksum.description' },
-  { path: '/sekhmet', name: 'sekhmet', logo: sekhmetLogo, titleKey: 'landing.sekhmet.title', descKey: 'landing.sekhmet.description' },
-  { path: '/mansa', name: 'mansa', logo: mansaLogo, titleKey: 'landing.mansa.title', descKey: 'landing.mansa.description' },
-  { path: '/amanirenas', name: 'amanirenas', logo: amanirenasLogo, titleKey: 'landing.amanirenas.title', descKey: 'landing.amanirenas.description' },
-  { path: '/sundiata', name: 'sundiata', logo: sundiataLogo, titleKey: 'landing.sundiata.title', descKey: 'landing.sundiata.description' },
-  { path: '/timbuktu', name: 'timbuktu', logo: timbuktuLogo, titleKey: 'landing.timbuktu.title', descKey: 'landing.timbuktu.description' },
-  { path: '/kush', name: 'kush', logo: kushLogo, titleKey: 'landing.kush.title', descKey: 'landing.kush.description' },
-  { path: '/imhotep', name: 'imhotep', logo: imhotepLogo, titleKey: 'landing.imhotep.title', descKey: 'landing.imhotep.description' },
+  { path: '/anansi', name: 'anansi', logo: anansiLogo, title: 'Anansi', desc: 'Terminal-first attack surface intelligence engine. Automate discovery, probing, and takeover detection.' },
+  { path: '/toha3ee', name: 'toha3ee', logo: toha3eeLogo, title: 'Toha3ee', desc: 'Local & network security assessment framework in Go: host and service discovery, enumeration, wireless and MITM capabilities from an interactive REPL.' },
+  { path: '/shaka', name: 'shaka', logo: shakaLogo, title: 'Shaka', desc: 'Windows & Active Directory security assessment framework in Go: domain discovery, object enumeration, graph-modeled privilege escalation, and evidence-driven reporting.' },
+  { path: '/nzinga', name: 'nzinga', logo: nzingaLogo, title: 'Nzinga', desc: 'Authorized open-source intelligence (OSINT) collection, cross-source correlation, and evidence-driven reporting in Go.' },
+  { path: '/jabari', name: 'jabari', logo: jabariLogo, title: 'Jabari', desc: 'Android security assessment framework: authorized USB and network (ADB) targets, non-destructive rule engine and evidence-driven reporting.' },
+  { path: '/aksum', name: 'aksum', logo: aksumLogo, title: 'Aksum', desc: 'Binary security assessment & reverse-engineering platform in Go: identification, disassembly, function discovery, call graphs and evidence-backed findings.' },
+  { path: '/sekhmet', name: 'sekhmet', logo: sekhmetLogo, title: 'Sekhmet', desc: 'Baseline-aware, feedback-driven fuzzing & vulnerability discovery framework in Go: profile normal behaviour, adaptive mutation, SHA-256 crash dedup and delta minimization.' },
+  { path: '/mansa', name: 'mansa', logo: mansaLogo, title: 'Mansa', desc: 'Authorized wireless security assessment framework in Go: WLAN discovery, enumeration, MITM-range analysis, deterministic rule engine and transparent risk scoring.' },
+  { path: '/amanirenas', name: 'amanirenas', logo: amanirenasLogo, title: 'Amanirenas', desc: 'Offline iOS/Android app security assessment in Go: static analysis, hardcoded secrets, weak crypto, insecure endpoints, WebView posture and evidence-backed risk scoring.' },
+  { path: '/sundiata', name: 'sundiata', logo: sundiataLogo, title: 'Sundiata', desc: 'Identity & access security assessment for Active Directory in Go: identity discovery, account posture, password policies, sensitive memberships. Credentials are never stored or printed.' },
+  { path: '/timbuktu', name: 'timbuktu', logo: timbuktuLogo, title: 'Timbuktu', desc: 'Incident response & digital forensics framework in Go: source integrity, artifact identification, filesystem lifecycle, memory postmortems, log analysis and evidence-backed timelines.' },
+  { path: '/kush', name: 'kush', logo: kushLogo, title: 'Kush', desc: 'Offline malware sample analysis framework in Go: hashing, metadata, static posture, strings, network indicators, IOC extraction and threat classification — without executing samples.' },
+  { path: '/imhotep', name: 'imhotep', logo: imhotepLogo, title: 'Imhotep', desc: 'Offline cloud snapshot analysis framework in Go: IAM posture, storage exposure, network exposure, container posture, secret redaction and misconfiguration detection.' },
 ];
 
 /**
@@ -49,19 +48,18 @@ const TOOLS: ToolEntry[] = [
  * per tool, whole card links to the documentation page.
  */
 const ToolsIndexPage: React.FC = () => {
-  const { t } = useTranslation();
 
   return (
     <div className="w-full bg-canvas">
       <SEO
-        title={t('toolsIndex.seo.title', 'Tools | QYVORA')}
-        description={t('toolsIndex.seo.description', 'Open-source offensive security tools, documented for operators.')}
+        title={"Tools | QYVORA"}
+        description={"Open-source offensive security tools, documented for operators."}
       />
       <div className="w-full px-3 pb-20 pt-24 md:px-4 md:pb-24 md:pt-28 lg:px-6 lg:pt-32">
         <PageHeader
-          kicker={t('toolsIndex.kicker', 'Open-source tooling')}
-          title={t('toolsIndex.title', 'Combat-ready tools, documented for operators.')}
-          description={t('toolsIndex.description', 'Thirteen offensive security tools built by the QuiteRoot collective. Each tool has full documentation, install guides, and walkthroughs.')}
+          kicker={"Open-source tooling"}
+          title={"Combat-ready tools, documented for operators."}
+          description={"Thirteen offensive security tools built by the QuiteRoot collective. Each tool has full documentation, install guides, and walkthroughs."}
         />
 
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -70,19 +68,19 @@ const ToolsIndexPage: React.FC = () => {
               <Card to={tool.path} interactive className="flex min-h-[180px] flex-col gap-4 p-6">
                 <img
                   src={tool.logo}
-                  alt={t(tool.titleKey)}
+                  alt={tool.title}
                   className="h-12 w-12 shrink-0 rounded-lg border border-border-subtle object-contain p-1.5"
                 />
                 <div className="flex-1">
                   <h3 className="type-h3 font-black uppercase tracking-tight text-text-primary">
-                    {t(tool.titleKey)}
+                    {tool.title}
                   </h3>
-                  <p className="type-body-sm mt-2 line-clamp-3">{t(tool.descKey)}</p>
+                  <p className="type-body-sm mt-2 line-clamp-3">{tool.desc}</p>
                 </div>
                 <div className="flex items-center justify-between">
                   <span className="type-meta text-text-tertiary">{tool.name}</span>
                   <span className="flex min-h-[44px] items-center gap-1.5 text-sm font-bold text-accent">
-                    {t('toolsIndex.docs', 'Docs')}
+                    {"Docs"}
                     <ArrowRight className="h-4 w-4" aria-hidden="true" />
                   </span>
                 </div>

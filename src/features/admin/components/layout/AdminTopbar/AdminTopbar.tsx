@@ -1,6 +1,5 @@
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { LogOut } from 'lucide-react';
-import { useTranslation } from 'react-i18next';
 import { IconShield, IconNotification } from '@/shared/components/icons';
 import { useAuth } from '@/core/contexts/AuthContext';
 import { useToast } from '@/core/contexts/ToastContext';
@@ -18,7 +17,6 @@ import type { NotificationItem } from './types';
 const NOTIF_PREVIEW_LIMIT = 6;
 
 const AdminTopbar = () => {
-  const { t } = useTranslation();
   const { user, logout } = useAuth();
   const { addToast } = useToast();
   const navigate = useNavigate();
@@ -100,9 +98,9 @@ const AdminTopbar = () => {
       await api.post('/notifications/read-all', {});
       setUnreadCount(0);
       setNotificationsPreview((prev) => prev.map((item) => ({ ...item, read: true })));
-      addToast(t('nav.notifications.markedAsRead'), 'success');
+      addToast("Marked as read", 'success');
     } catch {
-      addToast(t('nav.notifications.markAsReadFailed'), 'error');
+      addToast("Failed to mark as read", 'error');
     }
   };
 
@@ -121,7 +119,7 @@ const AdminTopbar = () => {
 
   const handleLogout = async () => {
     await logout();
-    addToast(t('aria.sessionTerminated'), 'info');
+    addToast("Session terminated", 'info');
     navigate(ADMIN_PATH);
   };
 
@@ -136,7 +134,7 @@ const AdminTopbar = () => {
         href="#main-content"
         className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-[100] focus:px-4 focus:py-2 focus:bg-accent focus:text-on-accent focus:rounded-lg focus:text-sm focus:font-bold focus:outline-none"
       >
-        {t('aria.skipToMain')}
+        {"Skip to main content"}
       </a>
 
       <header
@@ -144,11 +142,11 @@ const AdminTopbar = () => {
       >
         <div className="px-3 md:px-4 lg:px-6 h-20 md:h-24 flex items-center gap-2 md:gap-3">
           {/* Logo + ADMIN badge */}
-          <Link to={overviewPath} className="flex items-center gap-3 flex-none shrink-0" aria-label={t('nav.adminConsole')}>
+          <Link to={overviewPath} className="flex items-center gap-3 flex-none shrink-0" aria-label={"Admin Console"}>
             <Logo size="md" variant="mark" />
             <span className="hidden sm:inline-flex items-center gap-1.5 rounded-lg border border-accent/20 bg-accent-dim/40 px-2 py-0.5">
               <IconShield size={12} className="text-accent" />
-              <span className="text-xs font-black text-accent font-mono tracking-[0.2em]">{t('nav.admin')}</span>
+              <span className="text-xs font-black text-accent font-mono tracking-[0.2em]">{"ADMIN"}</span>
             </span>
           </Link>
 
@@ -166,7 +164,7 @@ const AdminTopbar = () => {
                   }`}
                 >
                   <Icon size={32} strokeWidth={2.5} className={active ? 'text-accent' : 'text-text-secondary'} />
-                  <span>{t(item.labelKey)}</span>
+                  <span>{item.label}</span>
                   {active && (
                     <span className="absolute bottom-0 left-1/4 right-1/4 h-0.5 rounded-full bg-accent" />
                   )}
@@ -206,7 +204,7 @@ const AdminTopbar = () => {
 
             {/* Admin profile chip — desktop */}
             <div
-              aria-label={t('aria.adminProfile')}
+              aria-label={"Admin profile"}
               className="hidden md:flex w-11 h-11 md:w-12 md:h-12 rounded-xl border border-accent/30 bg-accent-dim items-center justify-center text-accent font-black text-base flex-none"
             >
               {(user?.username || user?.email || 'A').substring(0, 2).toUpperCase()}
@@ -216,7 +214,7 @@ const AdminTopbar = () => {
             <button
               onClick={handleLogout}
               className="hidden md:flex p-3 md:p-3.5 text-text-muted hover:text-danger transition-colors rounded-xl hover:bg-danger/10 active:scale-95"
-              aria-label={t('aria.logOut')}
+              aria-label={"Log out"}
             >
               <LogOut className="w-6 h-6" />
             </button>

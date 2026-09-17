@@ -1,5 +1,4 @@
 import React from 'react';
-import { useTranslation } from 'react-i18next';
 import Dobia from '@/shared/components/Dobia';
 import { Dialog, DialogContent } from '../../../../shared/components/ui/Dialog';
 
@@ -9,24 +8,23 @@ interface QuizGateModalProps {
 }
 
 const QuizGateModal: React.FC<QuizGateModalProps> = ({ onClose, onTakeQuiz }) => {
-  const { t } = useTranslation();
   return (
     <Dialog open onOpenChange={(open) => { if (!open) onClose(); }}>
-      <DialogContent title={t('student.bootcampRoom.quizGate.title')} maxWidth="max-w-lg" className="shadow-none">
+      <DialogContent title={"Quiz Required"} maxWidth="max-w-lg" className="shadow-none">
         <div className="text-center py-2">
         <div className="mb-4 flex justify-center">
           <Dobia expression="thinking" size="lg" />
         </div>
-        <h2 className="mb-2 text-lg font-black text-text-primary">{t('student.bootcampRoom.quizGate.heading')}</h2>
+        <h2 className="mb-2 text-lg font-black text-text-primary">{"Not so fast, operator."}</h2>
         <p className="mb-6 text-sm text-text-muted leading-[2] md:leading-[2.2]">
-          {t('student.bootcampRoom.quizGate.description')}
+          {"You need to complete this room's quiz before moving on. No skipping. The mission requires it."}
         </p>
         <div className="flex flex-col gap-3">
           <button onClick={onTakeQuiz} className="btn-primary text-sm py-3">
-            {t('student.bootcampRoom.quizGate.takeQuiz')}
+            {"Take the Quiz"}
           </button>
           <button onClick={onClose} className="btn-secondary text-sm py-3">
-            {t('student.bootcampRoom.quizGate.stayHere')}
+            {"Stay Here"}
           </button>
         </div>
         </div>

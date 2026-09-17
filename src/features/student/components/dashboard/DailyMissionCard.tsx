@@ -1,4 +1,3 @@
-import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { Badge } from '@/shared/components/ui';
 import { IconFire } from '@/shared/components/icons';
@@ -10,7 +9,6 @@ interface DailyMissionCardProps {
 }
 
 const DailyMissionCard = ({ engagement, loading }: DailyMissionCardProps) => {
-  const { t } = useTranslation();
   const { mission, status, cpAwarded } = engagement;
 
   const difficultyVariant = {
@@ -37,7 +35,7 @@ const DailyMissionCard = ({ engagement, loading }: DailyMissionCardProps) => {
           <IconFire size={20} className="text-accent" />
         </div>
         <span className="text-xs font-black uppercase tracking-widest text-text-muted">
-          {t('student.dashboard.dailyMission.title')}
+          {"Daily Mission"}
         </span>
         <Badge variant={difficultyVariant[mission.difficulty]} size="sm">
           {mission.difficulty}
@@ -64,7 +62,7 @@ const DailyMissionCard = ({ engagement, loading }: DailyMissionCardProps) => {
       {status === 'completed' ? (
         <div className="flex items-center gap-2">
           <Badge variant="success" size="sm">
-            {t('student.dashboard.dailyMission.completed')}
+            {"Completed"}
           </Badge>
           <span className="text-xs font-mono text-accent font-bold">+{cpAwarded} CP</span>
         </div>
@@ -73,7 +71,7 @@ const DailyMissionCard = ({ engagement, loading }: DailyMissionCardProps) => {
           to={mission.actionType === 'lab_flag' ? '/dashboard/labs' : '/dashboard/courses'}
           className="btn-primary inline-flex items-center justify-center gap-2 px-5 py-2.5 text-xs w-full sm:w-auto text-center"
         >
-          {t('student.dashboard.dailyMission.start')}
+          {"Start Mission"}
         </Link>
       )}
     </div>

@@ -1,6 +1,5 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
 import { ArrowLeft } from 'lucide-react';
 import AuthHero from '@/features/auth/components/AuthHero';
 
@@ -14,7 +13,6 @@ interface AuthFormLayoutProps {
  * background — just surfaces, borders, and readable type.
  */
 const AuthFormLayout: React.FC<AuthFormLayoutProps> = ({ children }) => {
-  const { t } = useTranslation();
 
   return (
     <div className="relative min-h-dvh bg-canvas">
@@ -29,7 +27,7 @@ const AuthFormLayout: React.FC<AuthFormLayoutProps> = ({ children }) => {
               className="inline-flex min-h-[44px] items-center gap-2 px-4 text-sm font-bold text-text-secondary transition-colors hover:text-text-primary"
             >
               <ArrowLeft className="h-4 w-4" aria-hidden="true" />
-              {t('button.backToHome')}
+              {"Back to Home"}
             </Link>
           </div>
           <div className="flex w-full flex-1 flex-col justify-center px-3 pb-12 md:px-4">

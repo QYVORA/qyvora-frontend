@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { useTranslation } from 'react-i18next';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { AnimatePresence, motion } from 'motion/react';
 import { useReducedMotion } from '@/shared/hooks/useReducedMotion';
@@ -19,7 +18,6 @@ export interface LearningToolbarProps {
 }
 
 const LearningToolbar: React.FC<LearningToolbarProps> = ({ actions, className = '' }) => {
-  const { t } = useTranslation();
   const prefersReduced = useReducedMotion();
   const [expanded, setExpanded] = useState(false);
 
@@ -31,7 +29,7 @@ const LearningToolbar: React.FC<LearningToolbarProps> = ({ actions, className = 
       <aside
         className={`hidden lg:flex fixed right-6 z-[90] flex-col items-center gap-2.5 ${className}`}
         style={{ top: '5rem', bottom: '1.5rem', justifyContent: 'center' }}
-        aria-label={t('learning.toolbar.label')}
+        aria-label={"Learning controls"}
       >
         {actions.map((action) => (
           <button
@@ -86,7 +84,7 @@ const LearningToolbar: React.FC<LearningToolbarProps> = ({ actions, className = 
         <button
           onClick={() => setExpanded(!expanded)}
           className="flex h-12 w-12 items-center justify-center rounded-xl border border-border/60 bg-transparent text-text-secondary hover:text-accent hover:border-accent/50 transition-colors active:scale-95"
-          aria-label={t('learning.toolbar.toggle')}
+          aria-label={"Toggle fullscreen"}
         >
           {expanded ? (
             <ChevronRight className="h-4 w-4" />

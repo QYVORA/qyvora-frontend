@@ -1,5 +1,4 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/core/contexts/AuthContext';
 import api from '@/core/services/api';
@@ -20,7 +19,6 @@ import { IconShield, IconTarget, IconLeaderboard, IconArrowRight } from '@/share
  * After onboarding completes, the guided tutorial (priority 2) can auto-show.
  */
 const StudentOnboardingModal: React.FC = () => {
-  const { t } = useTranslation();
   const { user, refreshMe } = useAuth();
   const navigate = useNavigate();
 
@@ -53,6 +51,8 @@ const StudentOnboardingModal: React.FC = () => {
   const isEnrolled = user?.bootcampStatus !== 'not_enrolled';
   const totalSteps = 4;
 
+  const ONBOARDING_STEPS = [["Welcome to QYVORA", "Your cybersecurity training platform. Learn offensive and defensive security through hands-on bootcamps, labs, and simulations."], ["Your First Mission", "Start with the Hacker Protocol Bootcamp. This is the foundational path that teaches you the fundamentals before you tackle advanced labs and simulations."], ["Why Start Here", "The bootcamp covers the core skills you need. Once you complete the fundamentals, you'll unlock attack labs, security simulations, and advanced tooling."], ["Register for Bootcamp", "Ready to begin? Register for the Hacker Protocol Bootcamp and start earning CyberPoints."]];
+
   const handleSkip = useCallback(async () => {
     setSubmitting(true);
     try {
@@ -82,7 +82,7 @@ const StudentOnboardingModal: React.FC = () => {
   return (
     <Dialog open={isVisible} onOpenChange={(open) => { if (!open) handleSkip(); }}>
       <DialogContent
-        title={t(`student.onboardingModal.step${step}.title`)}
+        title={ONBOARDING_STEPS[step][0]}
         maxWidth="max-w-lg"
         hideClose
       >
@@ -97,7 +97,7 @@ const StudentOnboardingModal: React.FC = () => {
 
           {/* Step body */}
           <p className="text-sm text-text-muted font-mono leading-relaxed max-w-sm">
-            {t(`student.onboardingModal.step${step}.body`)}
+            {ONBOARDING_STEPS[step][1]}
           </p>
 
           {/* Step indicator */}
@@ -120,7 +120,7 @@ const StudentOnboardingModal: React.FC = () => {
                 disabled={submitting}
                 className="btn-secondary !py-2.5 !rounded-xl text-xs w-full sm:w-auto"
               >
-                {t('student.onboardingModal.skip')}
+                {"Skip"}
               </button>
             )}
             <button
@@ -129,8 +129,8 @@ const StudentOnboardingModal: React.FC = () => {
               className="btn-primary !py-2.5 !rounded-xl text-xs w-full sm:w-auto flex items-center justify-center gap-1.5"
             >
               {step === totalSteps - 1
-                ? (isEnrolled ? t('student.onboardingModal.step3.ctaEnrolled') : t('student.onboardingModal.step3.cta'))
-                : t('student.onboardingModal.next')}
+                ? (isEnrolled ? "Continue Bootcamp" : "Register for Hacker Protocol Bootcamp")
+                : "Next"}
               <IconArrowRight size={14} />
             </button>
           </div>

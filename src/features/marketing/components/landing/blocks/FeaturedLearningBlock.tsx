@@ -1,5 +1,4 @@
 import React from 'react';
-import { useTranslation } from 'react-i18next';
 import { ArrowRight } from 'lucide-react';
 import { getCourseById } from '@/features/student/data/courses/courseData';
 import { LABS } from '@/features/student/constants/labs';
@@ -15,7 +14,6 @@ const FEATURED_LAB_IDS = ['sqli', 'privesc'];
  * filled Card. Links to the public catalogue pages, not gated routes.
  */
 const FeaturedLearningBlock: React.FC = () => {
-  const { t } = useTranslation();
   const course = getCourseById(FEATURED_COURSE_ID);
   const featuredLabs = LABS.filter((lab) => FEATURED_LAB_IDS.includes(lab.id));
 
@@ -26,12 +24,12 @@ const FeaturedLearningBlock: React.FC = () => {
           <div className="mb-10 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
             <div>
               <p className="type-label mb-1.5 uppercase tracking-[0.12em] text-accent">
-                {t('landing3.featured.kicker')}
+                {"Featured learning"}
               </p>
               <h2 className="type-h2 text-3xl font-black uppercase tracking-tight text-text-primary md:text-5xl">
-                {t('landing3.featured.title')}
+                {"Start where foundations begin."}
               </h2>
-              <p className="type-body mt-2 max-w-prose">{t('landing3.featured.description')}</p>
+              <p className="type-body mt-2 max-w-prose">{"A proven first course and two attack labs to get you operating fast."}</p>
             </div>
           </div>
         </ScrollReveal>
@@ -42,20 +40,20 @@ const FeaturedLearningBlock: React.FC = () => {
               <Card to="/courses" interactive className="flex flex-col gap-3 p-6 md:flex-row md:items-center md:gap-8 md:p-8">
                 <div className="flex-1">
                   <p className="type-label mb-2 uppercase tracking-[0.12em] text-text-tertiary">
-                    {t('coursesPage.hero.badge')}
+                    {"Self-Paced Learning"}
                   </p>
                   <h3 className="type-h2 mb-2 font-black uppercase tracking-tight text-text-primary">
                     {course.title}
                   </h3>
                   <p className="type-body-sm">{course.overview}</p>
                   <div className="mt-4 flex flex-wrap gap-x-6 gap-y-2">
-                    <span className="type-meta">{course.lessons.length} {t('lesson', 'lessons')}</span>
+                    <span className="type-meta">{course.lessons.length} {"lessons"}</span>
                     <span className="type-meta">{course.estimatedMinutes} min</span>
                     <span className="type-meta text-accent">{course.cpCost} CP</span>
                   </div>
                 </div>
                 <span className="flex min-h-[48px] shrink-0 items-center gap-2 text-sm font-bold text-accent md:flex-col md:justify-center">
-                  {t('landing3.featured.courseCta')}
+                  {"Browse courses"}
                   <ArrowRight className="h-4 w-4" aria-hidden="true" />
                 </span>
               </Card>
@@ -66,12 +64,12 @@ const FeaturedLearningBlock: React.FC = () => {
             <ScrollReveal key={lab.id} delay={i * 80}>
               <Card to="/labs" interactive className="flex min-h-[200px] flex-col gap-3 p-6">
                 <p className="type-label mb-1 uppercase tracking-[0.12em] text-text-tertiary">
-                  {t('nav.labs')}
+                  {"Labs"}
                 </p>
                 <h3 className="type-h3 font-black uppercase tracking-tight text-text-primary">
-                  {t(lab.titleKey ?? '', lab.titleKey ?? lab.id)}
+                  {lab.title}
                 </h3>
-                <p className="type-body-sm flex-1">{t(lab.descKey ?? '', lab.descKey ?? '')}</p>
+                <p className="type-body-sm flex-1">{lab.desc}</p>
                 <div className="flex items-center justify-between">
                   <span className="type-meta">{lab.difficulty}</span>
                   <span className="type-meta text-accent">{lab.cpReward} CP</span>
@@ -83,7 +81,7 @@ const FeaturedLearningBlock: React.FC = () => {
 
         <div className="mt-8">
           <Button to="/learn" variant="ghost">
-            {t('landing3.paths.learn.cta')}
+            {"Browse learning"}
           </Button>
         </div>
       </div>

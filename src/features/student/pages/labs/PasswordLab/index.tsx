@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { Key, FileText, Search, Zap, KeyRound, Book, Settings, Scale, Target, Skull, NotebookPen, Trophy } from 'lucide-react';
-import { useTranslation } from 'react-i18next';
 import { WalkthroughLayout, WalkthroughStep } from '@/shared/components/walkthrough/';
 import type { FocusedStepListItem } from '@/shared/components/learning/FocusedStepList';
 import { PASSWORD_EXERCISES } from '@/features/student/data/simulations';
@@ -59,7 +58,6 @@ const PASSWORD_FLOWS: { nodes: FlowNode[]; arrows: FlowArrow[] }[] = [
 type PasswordExercise = typeof PASSWORD_EXERCISES[number];
 
 const PasswordLab = () => {
-  const { t } = useTranslation();
   const { activeScenario, completedSteps, handleFlagSubmit, getStepState, allDone, startScenario, exitScenario } =
     useLabScenario<PasswordExercise>({
       labId: 'passwords',
@@ -136,7 +134,7 @@ const PasswordLab = () => {
                 </span>
               ),
               onStart: () => startScenario(scenario),
-              startLabel: t('labs.startAttack', 'Start Attack'),
+              startLabel: "Start Attack",
               locked,
               cpCost: locked ? cpCost ?? undefined : undefined,
               onUnlock: cpCost ? async () => {

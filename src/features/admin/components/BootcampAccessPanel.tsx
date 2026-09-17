@@ -1,6 +1,5 @@
 import React from 'react';
 import { Unlock, Users, Activity, Zap } from 'lucide-react';
-import { useTranslation } from 'react-i18next';
 import { IconCheck } from '@/shared/components/icons';
 import { StatCard } from '@/shared/components/dashboard';
 import { ErrorState } from '@/shared/components/ui';
@@ -12,7 +11,6 @@ interface Props {
 }
 
 const BootcampAccessPanel: React.FC<Props> = ({ addToast }) => {
-  const { t } = useTranslation();
   const [panel, setPanel] = React.useState<any>(null);
   const [loading, setLoading] = React.useState(true);
   const [error, setError] = React.useState(false);
@@ -41,7 +39,7 @@ const BootcampAccessPanel: React.FC<Props> = ({ addToast }) => {
       }));
       addToast(msg, 'success');
     } catch (e: any) {
-      addToast(e?.response?.data?.error || t('admin.bootcamps.failed'), 'error');
+      addToast(e?.response?.data?.error || "Failed to load", 'error');
     } finally {
       setSaving(false);
     }
@@ -65,7 +63,7 @@ const BootcampAccessPanel: React.FC<Props> = ({ addToast }) => {
   }
 
   if (error) {
-    return <ErrorState message={t('admin.bootcamps.loadFailed')} title={t('admin.bootcamps.unavailable')} />;
+    return <ErrorState message={"Bootcamp control panel could not be loaded."} title={"Bootcamp control panel unavailable"} />;
   }
 
   if (!panel) return null;
@@ -82,27 +80,27 @@ const BootcampAccessPanel: React.FC<Props> = ({ addToast }) => {
     <div className="w-full space-y-8">
       {/* Key metrics */}
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-        <StatCard icon={<Users className="w-5 h-5 text-text-muted" />} label={t('admin.bootcamps.enrolledStudents')} value={enrolledStudents} />
-        <StatCard icon={<Activity className="w-5 h-5 text-accent" />} label={t('admin.bootcamps.activeStudents')} value={activeStudents} accent />
-        <StatCard icon={<Zap className="w-5 h-5 text-text-muted" />} label={t('admin.bootcamps.engagedInCurrentPhase')} value={engagement} />
+        <StatCard icon={<Users className="w-5 h-5 text-text-muted" />} label={"Enrolled students"} value={enrolledStudents} />
+        <StatCard icon={<Activity className="w-5 h-5 text-accent" />} label={"Active students"} value={activeStudents} accent />
+        <StatCard icon={<Zap className="w-5 h-5 text-text-muted" />} label={"Engaged in current phase"} value={engagement} />
       </div>
 
       {/* Live toggle */}
       <div className="flex flex-col gap-4 rounded-2xl border border-border/50 bg-bg-card p-5 sm:flex-row sm:items-center sm:justify-between sm:gap-6 md:p-6">
         <div className="min-w-0">
           <div className="mb-2 flex flex-wrap items-center gap-2">
-            <span className="text-base font-black uppercase tracking-wide text-text-primary md:text-lg">{t('admin.bootcamps.bootcampLive')}</span>
+            <span className="text-base font-black uppercase tracking-wide text-text-primary md:text-lg">{"Bootcamp live"}</span>
             <span className={`rounded-full px-2.5 py-0.5 text-xs font-black uppercase tracking-widest ${started ? 'bg-accent/20 text-accent' : 'bg-border text-text-muted'}`}>
-              {started ? t('admin.bootcamps.live') : t('admin.bootcamps.paused')}
+              {started ? "Live" : "Paused"}
             </span>
           </div>
-          <div className="text-sm text-text-muted md:text-base">{t('admin.bootcamps.whenOffDescription')}</div>
+          <div className="text-sm text-text-muted md:text-base">{"Turn off when bootcamp is not active"}</div>
         </div>
         <button
           type="button"
           role="switch"
           aria-checked={started}
-          onClick={() => void patch({ started: !started }, started ? t('admin.bootcamps.bootcampPaused') : t('admin.bootcamps.bootcampStarted'))}
+          onClick={() => void patch({ started: !started }, started ? "Bootcamp paused" : "Bootcamp started")}
           disabled={saving}
           className={`relative flex h-7 w-12 flex-none cursor-pointer items-center rounded-full px-0.5 transition-colors duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent/40 focus-visible:ring-offset-2 focus-visible:ring-offset-bg disabled:opacity-50 ${started ? 'bg-accent' : 'bg-border'}`}
         >
@@ -113,9 +111,9 @@ const BootcampAccessPanel: React.FC<Props> = ({ addToast }) => {
       {/* Phase control */}
       <div className="space-y-5 rounded-2xl border border-border/50 bg-bg-card p-5 md:p-6">
         <div>
-          <div className="mb-1 text-base font-black uppercase tracking-wide text-text-primary md:text-lg">{t('admin.bootcamps.phaseControl')}</div>
+          <div className="mb-1 text-base font-black uppercase tracking-wide text-text-primary md:text-lg">{"Phase control"}</div>
           <div className="text-sm text-text-muted md:text-base">
-            {t('admin.bootcamps.phaseControlDescription', { unlocked: unlockedModules.length, total: BOOTCAMP_MODULES.length })}
+            {`${unlockedModules.length} of ${BOOTCAMP_MODULES.length} phases unlocked · unlock adds all rooms in that phase`}
           </div>
         </div>
 
@@ -126,7 +124,7 @@ const BootcampAccessPanel: React.FC<Props> = ({ addToast }) => {
                <div className="text-base font-black uppercase tracking-wide text-text-primary">
                  {currentModule.title}
                </div>
-               <div className="mt-1 text-sm text-text-muted">{t('admin.bootcamps.roomsInPhase', { count: currentModule.roomCount })}</div>
+               <div className="mt-1 text-sm text-text-muted">{`${currentModule.roomCount} rooms in this phase`}</div>
              </div>
           </div>
         )}
@@ -134,12 +132,12 @@ const BootcampAccessPanel: React.FC<Props> = ({ addToast }) => {
         {nextModule ? (
           <button
             type="button"
-            onClick={() => void patch({ unlockNext: true }, t('admin.bootcamps.moduleUnlocked', { title: nextModule.title }))}
+            onClick={() => void patch({ unlockNext: true }, "Module unlocked")}
             disabled={saving || !started}
             className="group btn-secondary flex w-full items-center justify-between gap-4 p-4 transition-[background-color,border-color,transform] duration-[var(--dur-base)] ease-[var(--ease-smooth)] hover:border-accent/40 hover:bg-accent-dim/20 disabled:opacity-50 md:p-5"
           >
 <div className="min-w-0 text-left">
-               <div className="mb-1 text-xs font-black uppercase tracking-widest text-text-muted">{t('admin.bootcamps.unlockNextPhase')}</div>
+               <div className="mb-1 text-xs font-black uppercase tracking-widest text-text-muted">{"Unlock next phase"}</div>
                <div className="text-base font-black uppercase tracking-wide text-text-primary group-hover:text-accent transition-colors">
                  {nextModule.title}
                </div>
@@ -150,13 +148,13 @@ const BootcampAccessPanel: React.FC<Props> = ({ addToast }) => {
           </button>
         ) : (
           <div className="rounded-2xl border border-border p-4 text-center text-sm text-text-muted md:text-base">
-            {t('admin.bootcamps.allPhasesUnlocked')}
+            {"All phases are unlocked"}
           </div>
         )}
 
         {/* Module list */}
         <div className="space-y-2 pt-1">
-          <div className="text-xs font-black uppercase tracking-widest text-text-muted">{t('admin.bootcamps.allPhases')}</div>
+          <div className="text-xs font-black uppercase tracking-widest text-text-muted">{"All phases"}</div>
           {BOOTCAMP_MODULES.map(mod => {
             const unlocked = unlockedModules.includes(mod.moduleId);
             const isCurrent = currentModule?.moduleId === mod.moduleId;
@@ -172,9 +170,9 @@ const BootcampAccessPanel: React.FC<Props> = ({ addToast }) => {
                 </div>
                 <div className="min-w-0 flex-1">
                   <div className="truncate text-sm font-bold text-text-primary md:text-base">{mod.title}</div>
-                  <div className="text-xs text-text-muted">{t('admin.bootcamps.rooms', { count: mod.rooms })}</div>
+                  <div className="text-xs text-text-muted">{`${mod.rooms} Rooms`}</div>
                 </div>
-                {unlocked && <span className="shrink-0 text-xs font-black uppercase tracking-widest text-accent">{t('badge.unlocked')}</span>}
+                {unlocked && <span className="shrink-0 text-xs font-black uppercase tracking-widest text-accent">{"Unlocked"}</span>}
               </div>
             );
           })}

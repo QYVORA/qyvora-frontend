@@ -10,7 +10,6 @@
 
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
 import { IconArrowRight } from '@/shared/components/icons';
 
 export interface RelatedItem {
@@ -31,7 +30,6 @@ interface RelatedContentSectionProps {
 }
 
 const RelatedContentSection: React.FC<RelatedContentSectionProps> = ({ title, items }) => {
-  const { t } = useTranslation();
 
   if (items.length === 0) return null;
 
@@ -39,7 +37,7 @@ const RelatedContentSection: React.FC<RelatedContentSectionProps> = ({ title, it
     <section aria-labelledby="related-content-heading">
       <div className={`w-full px-3 md:px-4 lg:px-6 py-16 md:py-24`}>
         <h2 id="related-content-heading" className="text-2xl md:text-3xl mb-10 font-black uppercase tracking-tight">
-          {title ?? t('relatedContent.keepReading', { defaultValue: 'Keep Reading' })}
+          {title ?? "Keep Reading"}
         </h2>
         <div className={`grid grid-cols-1 ${items.length > 1 ? 'md:grid-cols-2' : ''} gap-8`}>
           {items.map((item) => (
@@ -78,7 +76,7 @@ const RelatedContentSection: React.FC<RelatedContentSectionProps> = ({ title, it
                   <p className="text-xs text-text-muted leading-relaxed line-clamp-2">{item.subtitle}</p>
                 )}
                 <div className="mt-4 flex items-center gap-1.5 text-xs font-black uppercase tracking-widest text-accent group-hover:gap-2.5 transition-[gap]">
-                  {t('relatedContent.view', { defaultValue: 'View' })} <IconArrowRight size={12} />
+                  {"View"} <IconArrowRight size={12} />
                 </div>
               </div>
             </Link>

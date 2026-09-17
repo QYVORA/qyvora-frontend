@@ -1,6 +1,5 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
 import { AnimatePresence, motion } from 'motion/react';
 import { Loader2 } from 'lucide-react';
 import { NotificationItem } from './types';
@@ -24,7 +23,6 @@ const NotificationsDropdown: React.FC<NotificationsDropdownProps> = ({
   markAllNotificationsRead,
   onMarkRead,
 }) => {
-  const { t } = useTranslation();
   return (
     <AnimatePresence>
       {open && (
@@ -36,19 +34,19 @@ const NotificationsDropdown: React.FC<NotificationsDropdownProps> = ({
         >
           <div className="px-4 py-3 border-b border-border-subtle flex items-center justify-between">
             <div>
-              <div className="text-xs font-black uppercase tracking-widest text-text-primary">{t('student.topbar.notifications.title')}</div>
-              <div className="text-xs text-text-muted">{unreadCount} {t('badge.unread')}</div>
+              <div className="text-xs font-black uppercase tracking-widest text-text-primary">{"Notifications"}</div>
+              <div className="text-xs text-text-muted">{unreadCount} {"unread"}</div>
             </div>
             {unreadCount > 0 && (
               <button onClick={markAllNotificationsRead} className="min-h-[44px] px-2 text-xs font-bold text-accent hover:underline active:opacity-70 whitespace-nowrap">
-                {t('button.markAllRead')}
+                {"Mark all read"}
               </button>
             )}
           </div>
           {notifLoading ? (
-            <div className="p-4 text-xs text-text-muted"><Loader2 className="h-5 w-5 animate-spin inline-block mr-2" />{t('empty.loading')}</div>
+            <div className="p-4 text-xs text-text-muted"><Loader2 className="h-5 w-5 animate-spin inline-block mr-2" />{"Loading..."}</div>
           ) : notificationsPreview.length === 0 ? (
-            <div className="p-4 text-xs text-text-muted">{t('student.topbar.notifications.empty')}</div>
+            <div className="p-4 text-xs text-text-muted">{"No new notifications"}</div>
           ) : (
             <div className="max-h-80 overflow-auto">
               {notificationsPreview.map((item) => (
@@ -75,7 +73,7 @@ const NotificationsDropdown: React.FC<NotificationsDropdownProps> = ({
           )}
           <div className="px-4 py-3 border-t border-border-subtle">
             <Link to="/dashboard/notifications" onClick={onClose} className="block w-full text-center text-xs font-bold text-accent hover:underline active:opacity-70">
-              {t('student.topbar.notifications.viewAll')}
+              {"View all notifications"}
             </Link>
           </div>
         </motion.div>

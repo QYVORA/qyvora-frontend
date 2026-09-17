@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { useTranslation } from 'react-i18next';
 import { motion, AnimatePresence } from 'motion/react';
 import { IconShield, IconInfo, IconX } from '@/shared/components/icons';
 import { getCookiePreferences, setCookiePreferences, type CookiePreferences } from '../utils/storageConsent';
@@ -10,7 +9,6 @@ const CONSENT_DISMISS_KEY = 'qyvora_consent_dismissed';
 const CONSENT_DISMISS_LEGACY = 'qyvora_cookie_dismissed';
 
 const ConsentBanner: React.FC = React.memo(() => {
-  const { t } = useTranslation();
   const prefersReduced = useReducedMotion();
   const existing = useMemo(() => getCookiePreferences(), []);
   const dismissed = useMemo(() => {
@@ -82,16 +80,16 @@ const ConsentBanner: React.FC = React.memo(() => {
               </div>
               <div className="flex-1">
                 <h3 className="text-xs sm:text-sm font-bold text-text-primary uppercase tracking-wider mb-1.5">
-                  {t('components.consent.title')}
+                  {"Privacy & Cookies"}
                 </h3>
                 <p className="text-xs sm:text-xs text-text-secondary leading-relaxed">
-                  {t('components.consent.description')}
+                  {"We use cookies to secure your session and optimize performance. No 3rd-party tracking."}
                 </p>
               </div>
               <button
                 onClick={handleDismiss}
                 className="p-2 rounded-xl text-text-muted hover:text-text-primary hover:bg-bg/80 transition-[color,background-color]"
-                aria-label={t('button.dismiss', 'Dismiss')}
+                aria-label={"Dismiss"}
               >
                 <IconX size={16} />
               </button>
@@ -105,8 +103,8 @@ const ConsentBanner: React.FC = React.memo(() => {
               >
                 <div className="flex items-center justify-between">
                   <div>
-                    <div className="text-xs sm:text-xs font-bold text-text-primary uppercase tracking-wide">{t('components.consent.strictlyNecessary')}</div>
-                    <div className="text-xs sm:text-xs text-text-muted">{t('components.consent.strictlyNecessaryDesc')}</div>
+                    <div className="text-xs sm:text-xs font-bold text-text-primary uppercase tracking-wide">{"Strictly Necessary"}</div>
+                    <div className="text-xs sm:text-xs text-text-muted">{"Authentication & Security (Always Required)"}</div>
                   </div>
                   <div className="w-9 h-5 bg-accent/40 rounded-full relative opacity-50 cursor-not-allowed">
                     <div className="absolute right-0.5 top-0.5 w-4 h-4 bg-white rounded-full" />
@@ -122,8 +120,8 @@ const ConsentBanner: React.FC = React.memo(() => {
                   tabIndex={0}
                 >
                   <div>
-                    <div className="text-xs sm:text-xs font-bold text-text-primary uppercase tracking-wide group-hover:text-accent transition-colors">{t('components.consent.functional')}</div>
-                    <div className="text-xs sm:text-xs text-text-muted">{t('components.consent.functionalDesc')}</div>
+                    <div className="text-xs sm:text-xs font-bold text-text-primary uppercase tracking-wide group-hover:text-accent transition-colors">{"Functional"}</div>
+                    <div className="text-xs sm:text-xs text-text-muted">{"Remembers your theme and UI preferences"}</div>
                   </div>
                   <div className={`w-9 h-5 rounded-full relative transition-colors ${prefs.functional ? 'bg-accent' : 'bg-border'}`}>
                     <div className={`absolute top-0.5 w-4 h-4 bg-white rounded-full transition-[left,right] ${prefs.functional ? 'right-0.5' : 'left-0.5'}`} />
@@ -139,8 +137,8 @@ const ConsentBanner: React.FC = React.memo(() => {
                   tabIndex={0}
                 >
                   <div>
-                    <div className="text-xs sm:text-xs font-bold text-text-primary uppercase tracking-wide group-hover:text-accent transition-colors">{t('components.consent.analytics')}</div>
-                    <div className="text-xs sm:text-xs text-text-muted">{t('components.consent.analyticsDesc')}</div>
+                    <div className="text-xs sm:text-xs font-bold text-text-primary uppercase tracking-wide group-hover:text-accent transition-colors">{"Analytics"}</div>
+                    <div className="text-xs sm:text-xs text-text-muted">{"Anonymized performance and caching"}</div>
                   </div>
                   <div className={`w-9 h-5 rounded-full relative transition-colors ${prefs.analytics ? 'bg-accent' : 'bg-border'}`}>
                     <div className={`absolute top-0.5 w-4 h-4 bg-white rounded-full transition-[left,right] ${prefs.analytics ? 'right-0.5' : 'left-0.5'}`} />
@@ -155,7 +153,7 @@ const ConsentBanner: React.FC = React.memo(() => {
                   onClick={handleSavePreferences}
                     className="flex-1 px-4 py-2.5 rounded-2xl bg-accent text-on-accent font-black uppercase tracking-widest text-xs transition-[filter,transform] duration-[var(--dur-base)] hover:brightness-110 active:scale-95"
                 >
-                  {t('components.consent.saveChoices')}
+                  {"Save My Choices"}
                 </button>
               ) : (
                 <>
@@ -163,13 +161,13 @@ const ConsentBanner: React.FC = React.memo(() => {
                     onClick={handleAcceptAll}
                   className="flex-1 px-4 py-2.5 rounded-2xl bg-accent text-on-accent font-black uppercase tracking-widest text-xs transition-[filter,transform] duration-[var(--dur-base)] hover:brightness-110 active:scale-95"
                   >
-                    {t('components.consent.acceptAll')}
+                    {"Accept All"}
                   </button>
                   <button
                     onClick={() => setShowDetails(true)}
                     className="flex-1 px-4 py-2.5 rounded-2xl bg-bg border border-border text-text-primary font-black uppercase tracking-widest text-xs transition-[filter,transform,background-color,color,border-color] duration-[var(--dur-base)] hover:border-accent/40 hover:bg-accent-dim/20 active:scale-95 inline-flex items-center justify-center gap-2"
                   >
-                    <IconInfo size={14} /> {t('components.consent.customize')}
+                    <IconInfo size={14} /> {"Customize"}
                   </button>
                 </>
               )}

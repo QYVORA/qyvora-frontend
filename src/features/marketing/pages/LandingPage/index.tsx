@@ -1,5 +1,4 @@
 import React from 'react';
-import { useTranslation } from 'react-i18next';
 import { useLandingData } from '@/features/marketing/hooks/useLandingData';
 
 import HeroBlock from '@/features/marketing/components/landing/blocks/HeroBlock';
@@ -18,14 +17,13 @@ import { buildOrganization } from '@/shared/seo/schema';
  * public shell owns navigation and footer; this page owns the message.
  */
 const Landing: React.FC = () => {
-  const { t } = useTranslation();
   const { stats } = useLandingData();
 
   return (
     <div className="relative w-full bg-canvas">
       <SEO
-        title={t('landing2.seo.title')}
-        description={t('landing2.seo.description')}
+        title={"QYVORA | Africa's Offensive Security Platform"}
+        description={"Training, labs, and enterprise penetration testing. Building a strong cybersecurity ecosystem in Africa."}
         schemaData={buildOrganization()}
       />
 

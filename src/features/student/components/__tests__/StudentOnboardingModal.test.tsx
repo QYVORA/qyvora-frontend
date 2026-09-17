@@ -19,13 +19,6 @@ const api = vi.hoisted(() => ({ post: vi.fn() }));
 
 vi.mock('@/core/services/api', () => ({ default: api }));
 
-vi.mock('react-i18next', () => ({
-  useTranslation: () => ({
-    t: (key: string) => key,
-    i18n: { language: 'en' },
-  }),
-}));
-
 function TourProbe() {
   const { isVisible } = usePopupManager('onboarding-tour', 2);
   return <div data-testid="tour-probe" data-visible={String(isVisible)} />;
@@ -60,16 +53,16 @@ describe('StudentOnboardingModal', () => {
     auth.user = { onboardingCompletedAt: null, onboardingSkippedAt: null, bootcampStatus: 'not_enrolled' };
     renderModal();
     expect(
-      screen.getByRole('heading', { name: 'student.onboardingModal.step0.title' }),
+      screen.getByRole('heading', { name: 'Welcome to QYVORA' }),
     ).toBeInTheDocument();
-    expect(screen.getByText('student.onboardingModal.next')).toBeInTheDocument();
+    expect(screen.getByText('Next')).toBeInTheDocument();
   });
 
   it('hides and releases the priority-0 slot for an already-onboarded user', () => {
     auth.user = { onboardingCompletedAt: '2026-01-01T00:00:00Z', onboardingSkippedAt: null };
     renderModal(<TourProbe />);
     expect(
-      screen.queryByRole('heading', { name: 'student.onboardingModal.step0.title' }),
+      screen.queryByRole('heading', { name: 'Welcome to QYVORA' }),
     ).not.toBeInTheDocument();
     expect(screen.getByTestId('tour-probe')).toHaveAttribute('data-visible', 'true');
   });
@@ -94,7 +87,7 @@ describe('StudentOnboardingModal', () => {
       </MemoryRouter>,
     );
     expect(
-      screen.queryByRole('heading', { name: 'student.onboardingModal.step0.title' }),
+      screen.queryByRole('heading', { name: 'Welcome to QYVORA' }),
     ).not.toBeInTheDocument();
     await waitFor(
       () => expect(screen.getByTestId('tour-probe')).toHaveAttribute('data-visible', 'true'),
@@ -106,8 +99,8 @@ describe('StudentOnboardingModal', () => {
     const user = userEvent.setup();
     auth.user = { onboardingCompletedAt: null, onboardingSkippedAt: null, bootcampStatus: 'not_enrolled' };
     renderModal();
-    await user.click(screen.getByText('student.onboardingModal.skip'));
+    await user.click(screen.getByText('Skip'));
     expect(api.post).toHaveBeenCalledWith('/profile/onboarding/skip');
-    expect(screen.queryByText('student.onboardingModal.step0.title')).not.toBeInTheDocument();
+    expect(screen.queryByText('Welcome to QYVORA')).not.toBeInTheDocument();
   });
 });

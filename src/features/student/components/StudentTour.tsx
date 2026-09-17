@@ -1,5 +1,4 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { useTranslation } from 'react-i18next';
 import { useAuth } from '@/core/contexts/AuthContext';
 import api from '@/core/services/api';
 import { usePopupManager } from '@/core/hooks/usePopupManager';
@@ -42,7 +41,6 @@ export const StudentTour: React.FC<StudentTourProps> = ({
   open: externalOpen,
   onOpenChange: externalOnOpenChange,
 }) => {
-  const { t } = useTranslation();
   const { user, refreshMe } = useAuth();
   const [tourAcknowledged, setTourAcknowledged] = useState(isTourAcknowledged);
   const { isVisible: popupVisible, onDismiss: popupDismiss } = usePopupManager(
@@ -157,35 +155,35 @@ export const StudentTour: React.FC<StudentTourProps> = ({
     () => [
       {
         targetId: 'tour-hero',
-        title: t('student.tour.welcome.title'),
-        body: t('student.tour.welcome.body', { username }),
+        title: "Welcome, operator.",
+        body: `This is your dashboard: mission control, ${username}. Track your rank, continue training and see what's next. Here's a quick tour.`,
       },
       {
         targetId: 'tour-nav',
-        title: t('student.tour.nav.title'),
-        body: t('student.tour.nav.body'),
+        title: "Main navigation",
+        body: "Courses, Bootcamps, Labs and the Marketplace live in this bar. One tap to jump between them.",
       },
       {
         targetId: 'tour-learning',
-        title: t('student.tour.learning.title'),
-        body: t('student.tour.learning.body'),
+        title: "Jump into training",
+        body: "Bootcamps are guided programs that take you from beginner to operator. Tap one to continue your mission.",
       },
       {
         targetId: 'tour-cp',
-        title: t('student.tour.cp.title'),
-        body: t('student.tour.cp.body', { cp: cpBalance.toLocaleString() }),
+        title: "CyberPoints (CP)",
+        body: `Your balance: ${cpBalance.toLocaleString()} CP. CP is your spendable currency. Every room you complete earns CP and builds Progression Points that move you up the ranks.`,
       },
       {
         targetId: 'tour-profile',
-        title: t('student.tour.profile.title'),
-        body: t('student.tour.profile.body'),
+        title: "Your profile",
+        body: "Manage your hacker handle, check your stats and share your progress from here.",
       },
       {
-        title: t('student.tour.done.title'),
-        body: t('student.tour.done.body'),
+        title: "You're all set!",
+        body: "Complete your first room and start earning CP. Good luck, operator.",
       },
     ],
-    [t, username, cpBalance],
+    [username, cpBalance],
   );
 
   const tourOpen = isExternallyControlled ? externalOpen : (popupVisible || replayOpen);
@@ -197,10 +195,10 @@ export const StudentTour: React.FC<StudentTourProps> = ({
       onClose={handleClose}
       getTarget={getTarget}
       labels={{
-        skip: t('student.tour.controls.skip'),
-        back: t('student.tour.controls.back'),
-        next: t('student.tour.controls.next'),
-        finish: t('student.tour.controls.finish'),
+        skip: "Skip",
+        back: "Back",
+        next: "Next",
+        finish: "Finish",
       }}
     />
   );

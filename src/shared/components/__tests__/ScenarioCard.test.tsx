@@ -2,13 +2,6 @@ import { describe, it, expect, vi } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
 import ScenarioCard from '../ScenarioCard';
 
-vi.mock('react-i18next', () => ({
-  useTranslation: () => ({
-    t: (key: string) => key,
-    i18n: { language: 'en' },
-  }),
-}));
-
 const defaultProps = {
   title: 'Buffer Overflow',
   difficulty: 'advanced',

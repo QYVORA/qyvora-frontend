@@ -1,4 +1,3 @@
-import { useTranslation } from 'react-i18next';
 import { ArrowRight } from 'lucide-react';
 import SEO from '@/shared/components/SEO';
 import PageHeader from '@/shared/components/ui/PageHeader';
@@ -8,29 +7,22 @@ import { BOOTCAMP_CONFIG } from '@/features/student/constants/bootcampStructure'
 import { PHASES } from '@/features/marketing/data/learnData';
 
 const HpbPage = () => {
-  const { t } = useTranslation();
   const phases = BOOTCAMP_CONFIG.phases || [];
 
   return (
     <div className="w-full bg-canvas">
       <SEO
-        title={t('hpbPage.seo.title', 'Hacker Protocol Bootcamp | QYVORA')}
-        description={t(
-          'hpbPage.seo.description',
-          'Train as an offensive security operator across 5 phases: hacker mindset, Linux foundations, networking, web & backend, and social engineering.',
-        )}
+        title={"Hacker Protocol Bootcamp | QYVORA"}
+        description={"Train as an offensive security operator across 5 phases: hacker mindset, Linux foundations, networking, web & backend, and social engineering."}
       />
       <div className="w-full px-3 pb-20 pt-24 md:px-4 md:pb-24 md:pt-28 lg:px-6 lg:pt-32">
         <PageHeader
-          kicker={t('hpbPage.kicker', 'QYVORA · Bootcamp')}
-          title={t('hpbPage.title', 'Hacker Protocol Bootcamp')}
-          description={t(
-            'hpbPage.description',
-            'A phased offensive security curriculum designed to take you from operator to expert. Explore each phase, its rooms, and the outcome you train toward.',
-          )}
+          kicker={"QYVORA · Bootcamp"}
+          title={"Hacker Protocol Bootcamp"}
+          description={"A phased offensive security curriculum designed to take you from operator to expert. Explore each phase, its rooms, and the outcome you train toward."}
           actions={
             <Button to="/register">
-              {t('hpbPage.cta', 'Enroll now')}
+              {"Enroll now"}
               <ArrowRight className="h-4 w-4" aria-hidden="true" />
             </Button>
           }
@@ -57,7 +49,7 @@ const HpbPage = () => {
                 description={learnPhase?.desc ?? phase.codename}
                 duration={`${hours}h`}
                 modulesCount={`${phase.rooms?.length || 0} rooms`}
-                actionLabel={t('hpbPage.cardCta', 'Explore phase')}
+                actionLabel={"Explore phase"}
               />
             );
           })}
