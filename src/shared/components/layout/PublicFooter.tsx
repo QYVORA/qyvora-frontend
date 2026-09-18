@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Logo } from '@/shared/components/brand';
+import { IconArrowRight } from '@/shared/components/icons';
 import { SOCIAL_LINKS } from './socialLinks';
 
 interface FooterCol {
@@ -15,6 +16,7 @@ const COLS: FooterCol[] = [
       { key: 'courses', label: 'Courses', to: '/courses' },
       { key: 'bootcamp', label: 'Bootcamp', to: '/hpb' },
       { key: 'labs', label: 'Labs', to: '/labs' },
+      { key: 'tools', label: 'All tools', to: '/tools' },
     ],
   },
   {
@@ -23,6 +25,7 @@ const COLS: FooterCol[] = [
       { key: 'anansi', label: 'anansi', to: '/anansi' },
       { key: 'shaka', label: 'shaka', to: '/shaka' },
       { key: 'nzinga', label: 'nzinga', to: '/nzinga' },
+      { key: 'imhotep', label: 'imhotep', to: '/imhotep' },
     ],
   },
   {
@@ -30,6 +33,7 @@ const COLS: FooterCol[] = [
     links: [
       { key: 'team', label: 'Team', to: '/team' },
       { key: 'services', label: 'Services', to: '/services' },
+      { key: 'about', label: 'About', to: '/about' },
       { key: 'terms', label: 'Terms of Service', to: '/terms' },
     ],
   },
@@ -38,17 +42,29 @@ const COLS: FooterCol[] = [
 const CURRENT_YEAR = new Date().getFullYear();
 
 /**
- * PublicFooter — compact calm footer. Brand + tagline, three columns, socials,
- * language and copyright line. Not a full-viewport showpiece.
+ * PublicFooter — structured brand footer. Brand + mission in the identity
+ * column, grouped link columns, socials, and a quiet bottom bar that ties the
+ * tagline back to the platform. Remains compact — this is wayfinding, not a
+ * brochure.
  */
 const PublicFooter: React.FC = React.memo(() => {
   return (
     <footer className="border-t border-border-subtle bg-canvas" data-theme-persist="dark">
       <div className="px-3 py-12 md:px-4 lg:px-6">
-        <div className="grid grid-cols-1 gap-10 md:grid-cols-[minmax(0,320px)_1fr]">
+        <div className="grid grid-cols-1 gap-10 md:grid-cols-[minmax(0,340px)_1fr]">
           <div>
-            <Logo size="md" />
-            <p className="mt-4 max-w-xs text-body-sm">{"Offensive Security Platform: discover, exploit, report. Africa's first dedicated offensive operations ecosystem."}</p>
+            <Link to="/" aria-label="QYVORA" className="inline-block focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent">
+              <Logo size="md" />
+            </Link>
+            <p className="mt-4 max-w-xs text-body-sm">
+              {"Building Africa's strongest cybersecurity ecosystem — one trained professional at a time."}
+            </p>
+            <Link
+              to="/register"
+              className="mt-5 inline-flex min-h-[44px] items-center gap-1.5 rounded-lg border border-accent/40 px-3 text-xs font-black uppercase tracking-widest text-accent transition-colors hover:bg-accent/10 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+            >
+              {"Join the platform"} <IconArrowRight size={12} aria-hidden="true" />
+            </Link>
             <div className="mt-6 flex flex-wrap gap-2">
               {SOCIAL_LINKS.map(({ key, label, href, Icon }) => (
                 <a
@@ -74,7 +90,7 @@ const PublicFooter: React.FC = React.memo(() => {
                     <li key={link.key}>
                       <Link
                         to={link.to}
-                        className="min-h-[44px] text-sm text-text-secondary transition-colors hover:text-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+                        className="inline-flex min-h-[44px] items-center text-sm text-text-secondary transition-colors hover:text-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
                       >
                         {link.label}
                       </Link>
@@ -86,9 +102,12 @@ const PublicFooter: React.FC = React.memo(() => {
           </nav>
         </div>
 
-        <div className="mt-12 flex flex-col gap-6 border-t border-border-subtle pt-6 md:flex-row md:items-center md:justify-between">
+        <div className="mt-12 flex flex-col gap-4 border-t border-border-subtle pt-6 md:flex-row md:items-center md:justify-between">
           <p className="type-label text-text-tertiary">
             QYVORA — GHANA, TAMALE · {CURRENT_YEAR}
+          </p>
+          <p className="type-label text-text-tertiary">
+            {"Train like a hacker, become a hacker."}
           </p>
         </div>
       </div>
