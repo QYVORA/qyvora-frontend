@@ -9,7 +9,7 @@ interface ContributionCalendarProps {
 
 const CELL_SIZE = 11;
 const CELL_GAP = 3;
-const WEEKS = 52;
+const STEP = CELL_SIZE + CELL_GAP;
 const DAYS_IN_WEEK = 7;
 
 const INTENSITY_LEVELS = [
@@ -29,27 +29,43 @@ function getIntensity(count: number): number {
   return 3;
 }
 
-function buildCalendarGrid(activityDates: Record<string, number>, totalWeeks = WEEKS) {
-  const today = new Date();
-  const todayKey = getDateKey(today);
+interface CalendarCell {
+  date: string;
+  count: number;
+  intensity: number;
+  isToday: boolean;
+}
 
-  // Find the end date (today or the last activity date)
-  const endDate = new Date(today);
-  endDate.setUTCHours(0, 0, 0, 0);
+/**
+ * Calendar window — everything is derived from one pair of (start, end) dates
+ * so the grid cells and the month labels can never drift apart. The end is
+ * always "today"; the start is pulled back `totalDays` and aligned to a
+ * Sunday so the window forms complete weeks with no future padding.
+ */
+function getCalendarWindow(totalDays: number): { start: Date; end: Date } {
+  const end = new Date();
+  end.setUTCHours(0, 0, 0, 0);
 
-  // Start from totalWeeks * 7 days ago, aligned to Sunday
-  const startDate = new Date(endDate);
-  startDate.setDate(startDate.getDate() - (totalWeeks * 7 - 1));
-  // Align to Sunday (day 0)
-  const dayOfWeek = startDate.getUTCDay();
+  const totalWeeks = Math.max(1, Math.ceil(totalDays / DAYS_IN_WEEK));
+  const start = new Date(end);
+  start.setUTCDate(end.getUTCDate() - (totalWeeks * DAYS_IN_WEEK - 1));
+  const dayOfWeek = start.getUTCDay();
   if (dayOfWeek !== 0) {
-    startDate.setDate(startDate.getDate() - dayOfWeek);
+    start.setUTCDate(start.getUTCDate() - dayOfWeek);
   }
 
-  const cells: Array<{ date: string; count: number; intensity: number; isToday: boolean }> = [];
-  const current = new Date(startDate);
+  return { start, end };
+}
 
-  while (current <= endDate) {
+function buildCells(
+  start: Date,
+  end: Date,
+  activityDates: Record<string, number>,
+  todayKey: string,
+): CalendarCell[] {
+  const cells: CalendarCell[] = [];
+  const current = new Date(start);
+  while (current.getTime() <= end.getTime()) {
     const dateKey = getDateKey(current);
     const count = activityDates[dateKey] || 0;
     cells.push({
@@ -58,33 +74,22 @@ function buildCalendarGrid(activityDates: Record<string, number>, totalWeeks = W
       intensity: getIntensity(count),
       isToday: dateKey === todayKey,
     });
-    current.setDate(current.getDate() + 1);
+    current.setUTCDate(current.getUTCDate() + 1);
   }
-
   return cells;
 }
 
-function getMonthLabels(gridWidth: number) {
-  const today = new Date();
+function buildMonthLabels(start: Date, totalCells: number): Array<{ label: string; x: number }> {
   const labels: Array<{ label: string; x: number }> = [];
-  const startDate = new Date(today);
-  startDate.setDate(startDate.getDate() - (WEEKS * 7 - 1));
-  const dayOfWeek = startDate.getUTCDay();
-  if (dayOfWeek !== 0) {
-    startDate.setDate(startDate.getDate() - dayOfWeek);
-  }
-
+  const totalWeeks = Math.ceil(totalCells / DAYS_IN_WEEK);
   let lastMonth = -1;
-  for (let week = 0; week < WEEKS; week++) {
-    const weekDate = new Date(startDate);
-    weekDate.setDate(weekDate.getDate() + week * 7);
+  for (let week = 0; week < totalWeeks; week++) {
+    const weekDate = new Date(start);
+    weekDate.setUTCDate(start.getUTCDate() + week * DAYS_IN_WEEK);
     const month = weekDate.getUTCMonth();
     if (month !== lastMonth) {
       lastMonth = month;
-      labels.push({
-        label: MONTH_LABELS[month],
-        x: week * (CELL_SIZE + CELL_GAP),
-      });
+      labels.push({ label: MONTH_LABELS[month], x: week * STEP });
     }
   }
   return labels;
@@ -95,49 +100,35 @@ const ContributionCalendar: React.FC<ContributionCalendarProps> = ({
   totalDays = 365,
   className,
 }) => {
+  const todayKey = getDateKey();
 
-  const totalWeeks = Math.ceil(totalDays / 7);
-
-  const cells = useMemo(() => buildCalendarGrid(activityDates, totalWeeks), [activityDates, totalWeeks]);
+  const { cells, weekCount, monthLabels } = useMemo(() => {
+    const { start, end } = getCalendarWindow(totalDays);
+    const built = buildCells(start, end, activityDates, todayKey);
+    return {
+      cells: built,
+      weekCount: Math.max(1, Math.ceil(built.length / DAYS_IN_WEEK)),
+      monthLabels: buildMonthLabels(start, built.length),
+    };
+  }, [activityDates, totalDays, todayKey]);
 
   const totalActivities = useMemo(
     () => Object.values(activityDates).reduce((sum, count) => sum + count, 0),
-    [activityDates]
+    [activityDates],
   );
 
   const activeDays = useMemo(
     () => Object.keys(activityDates).filter((k) => activityDates[k] > 0).length,
-    [activityDates]
+    [activityDates],
   );
 
-  const gridWidth = totalWeeks * (CELL_SIZE + CELL_GAP);
-  const gridHeight = DAYS_IN_WEEK * (CELL_SIZE + CELL_GAP);
-  const monthLabels = useMemo(() => getMonthLabels(gridWidth), [gridWidth]);
-
-  // Pad cells to fill complete weeks
-  const paddedCells = useMemo(() => {
-    const remainder = cells.length % DAYS_IN_WEEK;
-    if (remainder === 0) return cells;
-    const padding = DAYS_IN_WEEK - remainder;
-    const lastDate = cells.length > 0 ? new Date(cells[cells.length - 1].date + 'T00:00:00.000Z') : new Date();
-    const padded = [...cells];
-    for (let i = 0; i < padding; i++) {
-      const d = new Date(lastDate);
-      d.setDate(d.getDate() + (i + 1));
-      padded.push({
-        date: getDateKey(d),
-        count: 0,
-        intensity: 0,
-        isToday: false,
-      });
-    }
-    return padded;
-  }, [cells]);
+  const gridWidth = weekCount * STEP;
+  const gridHeight = DAYS_IN_WEEK * STEP;
 
   return (
     <div className={className}>
       {/* Header */}
-      <div className="flex items-center justify-between mb-3">
+      <div className="mb-3 flex items-center justify-between">
         <h3 className="text-xs font-black uppercase tracking-widest text-text-muted">
           {"Activity"}
         </h3>
@@ -147,11 +138,11 @@ const ContributionCalendar: React.FC<ContributionCalendarProps> = ({
       </div>
 
       {/* Calendar grid */}
-      <div className="overflow-x-auto pb-2 -mx-2 px-2">
+      <div className="-mx-2 overflow-x-auto px-2 pb-2">
         <svg
           width={gridWidth}
-          height={gridHeight + 20}
-          viewBox={`0 0 ${gridWidth} ${gridHeight + 20}`}
+          height={gridHeight + 22}
+          viewBox={`0 0 ${gridWidth} ${gridHeight + 22}`}
           className="block"
         >
           {/* Month labels */}
@@ -168,27 +159,27 @@ const ContributionCalendar: React.FC<ContributionCalendarProps> = ({
           ))}
 
           {/* Day labels */}
-          {DAY_LABELS.map((label, i) => (
+          {DAY_LABELS.map((label, i) =>
             label ? (
               <text
                 key={`day-${i}`}
                 x={-4}
-                y={20 + i * (CELL_SIZE + CELL_GAP) + CELL_SIZE / 2 + 3}
+                y={14 + i * STEP + CELL_SIZE / 2 + 3}
                 textAnchor="end"
                 className="fill-text-muted/40"
                 style={{ fontSize: '9px', fontFamily: 'inherit' }}
               >
                 {label}
               </text>
-            ) : null
-          ))}
+            ) : null,
+          )}
 
           {/* Contribution cells */}
-          {paddedCells.map((cell, idx) => {
+          {cells.map((cell, idx) => {
             const week = Math.floor(idx / DAYS_IN_WEEK);
             const day = idx % DAYS_IN_WEEK;
-            const x = week * (CELL_SIZE + CELL_GAP);
-            const y = 14 + day * (CELL_SIZE + CELL_GAP);
+            const x = week * STEP;
+            const y = 14 + day * STEP;
             const colorClass = INTENSITY_LEVELS[cell.intensity];
 
             return (
@@ -211,13 +202,10 @@ const ContributionCalendar: React.FC<ContributionCalendarProps> = ({
       </div>
 
       {/* Legend */}
-      <div className="flex items-center gap-2 mt-2 text-xs font-mono text-text-muted/50">
+      <div className="mt-2 flex items-center gap-2 text-xs font-mono text-text-muted/50">
         <span>{"Less"}</span>
         {INTENSITY_LEVELS.map((cls, i) => (
-          <div
-            key={i}
-            className={`w-2.5 h-2.5 rounded-sm ${cls}`}
-          />
+          <div key={i} className={`h-2.5 w-2.5 rounded-sm ${cls}`} />
         ))}
         <span>{"More"}</span>
       </div>
