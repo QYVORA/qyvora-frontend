@@ -1,14 +1,25 @@
 import React from 'react';
 import Button from '@/shared/components/ui/Button';
+import TypewriterText from '@/shared/components/TypewriterText';
 import type { BackendStats } from '@/features/marketing/components/landing/types';
 
 interface HeroBlockProps {
   stats: BackendStats | null;
 }
 
+/** Phrases typed after "Train like a hacker," — the tagline rotates, the proof stays. */
+const ROTATING_WORDS = [
+  'become a hacker.',
+  'prove it on-chain.',
+  'earn the badge.',
+  'defend what matters.',
+];
+
 /**
- * HeroBlock — one audience statement, one real proof point, one primary CTA
- * and one secondary link. Clean typography; no canvas, no globe, no marquee.
+ * HeroBlock — retargeted around the QYVORA tagline ("Train like a hacker,
+ * become a hacker") with a typewriter rotation, plus the mission and the
+ * 100,000-professionals goal. One audience statement, one real proof point,
+ * one primary CTA and one secondary link.
  */
 const HeroBlock: React.FC<HeroBlockProps> = ({ stats }) => {
   const trained = stats?.stats?.learnersTrained ?? 0;
@@ -20,12 +31,14 @@ const HeroBlock: React.FC<HeroBlockProps> = ({ stats }) => {
           <p className="type-label uppercase tracking-[0.12em] text-accent">{"Africa's Offensive Security Platform"}</p>
 
           <h1 className="type-display text-4xl font-black uppercase tracking-tight text-text-primary sm:text-5xl lg:text-6xl">
-            {"Train like an operator."}
-            <span className="block text-accent">{"Prove it on-chain."}</span>
+            <span className="block">{"Train like a hacker,"}</span>
+            <span className="block min-h-[1.06em] text-accent">
+              <TypewriterText words={ROTATING_WORDS} />
+            </span>
           </h1>
 
           <p className="max-w-2xl text-base text-text-secondary md:text-lg">
-            {"Learn offensive security through structured courses, hands-on attack labs, and the Hacker Protocol Bootcamp. Earn CyberPoints that verify your skill — no experience required."}
+            {"Hands-on courses, attack labs, and the Hacker Protocol Bootcamp — with CyberPoints on the chain proving every skill you earn.\u00a0QYVORA is building Africa's strongest cybersecurity ecosystem, with a goal of training 100,000 professionals across the continent."}
           </p>
 
           <div className="flex flex-wrap items-center gap-3">
@@ -38,10 +51,10 @@ const HeroBlock: React.FC<HeroBlockProps> = ({ stats }) => {
           </div>
 
           {trained > 0 && (
-<p className="mt-2 type-label uppercase tracking-[0.12em] text-text-tertiary" role="text">
-  <span className="font-black text-text-primary">{`${trained}`}</span>
-  {' '}{"operators trained"}
-</p>
+            <p className="mt-2 type-label uppercase tracking-[0.12em] text-text-tertiary" role="text">
+              <span className="font-black text-text-primary">{`${trained.toLocaleString()}`}</span>
+              {' '}{"professionals trained"}
+            </p>
           )}
         </div>
       </div>

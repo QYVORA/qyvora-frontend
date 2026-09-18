@@ -20,10 +20,10 @@ const formatNumber = (value: number): string => {
 const ProofBlock: React.FC<ProofBlockProps> = ({ stats }) => {
   const s = stats?.stats;
   const metrics = [
-    { label: "Operators trained", value: formatNumber(s?.learnersTrained ?? 0), icon: <Users className="h-4 w-4" aria-hidden="true" />, accent: true },
+    { label: "Professionals trained", value: formatNumber(s?.learnersTrained ?? 0), icon: <Users className="h-4 w-4" aria-hidden="true" />, accent: true },
     { label: "Vulnerabilities identified across engagements", value: formatNumber(s?.vulnerabilitiesIdentified ?? 0), icon: <Bug className="h-4 w-4" aria-hidden="true" /> },
     { label: "Bootcamp launches", value: formatNumber(s?.bootcampsCount ?? 0), icon: <ShieldCheck className="h-4 w-4" aria-hidden="true" /> },
-    { label: "CP distributed to operators", value: formatNumber(s?.cpPoolSize ?? 0), icon: <Coins className="h-4 w-4" aria-hidden="true" /> },
+    { label: "CP in circulation", value: formatNumber(s?.cpPoolSize ?? 0), icon: <Coins className="h-4 w-4" aria-hidden="true" /> },
   ];
 
   return (
@@ -37,11 +37,11 @@ const ProofBlock: React.FC<ProofBlockProps> = ({ stats }) => {
             <h2 className="type-h2 text-3xl font-black uppercase tracking-tight text-text-primary md:text-5xl">
               {"Built in Africa, for real defenders."}
             </h2>
-            <p className="type-body mt-2">{"Every number below is earned by operators on the platform — not marketing filler."}</p>
+            <p className="type-body mt-2">{"Every number below is earned by learners on the platform — not marketing filler."}</p>
           </div>
         </ScrollReveal>
 
-        <ScrollReveal delay={80}>
+        <ScrollReveal delay={0.08}>
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {metrics.map((metric) => (
               <div key={metric.label} className="rounded-xl border border-border-subtle bg-canvas p-6">
