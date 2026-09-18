@@ -6,14 +6,12 @@
  * all client-side routes.
  */
 
-import { useEffect, useState, Suspense, lazy } from 'react';
+import { Suspense, lazy } from 'react';
 import type { ReactNode } from 'react';
 import { Routes, Route, Navigate, useLocation, useParams } from 'react-router-dom';
 import { AnimatePresence, motion } from 'motion/react';
-import { Bot, X } from 'lucide-react';
 import { useAuth } from '../core/contexts/AuthContext';
 import ErrorBoundary from '../shared/components/ErrorBoundary';
-import Dobia from '../shared/components/Dobia';
 import ConsentBanner from '../shared/components/ConsentBanner';
 import ContactModalHost from '@/features/marketing/components/ContactModal';
 import ServiceRequestModalHost from '@/features/marketing/components/ServiceRequestModal';
@@ -111,16 +109,6 @@ import CommunityPopup from '../shared/components/CommunityPopup';
 
 import ADMIN_PATH from '@/shared/utils/adminPath';
 
-const DOBIA_TIPS = [
-  'Check out the attack labs',
-  'Try the bootcamp',
-  'Explore courses',
-  'Join the leaderboard',
-  'Visit Zero Day Market',
-];
-
-const MSG_INTERVAL = 8000;
-
 // ─── Route wrapper ────────────────────────────────────────────────────────────
 const Wrap = ({ children, scope }: { children: ReactNode; scope?: string }) => (
   <ErrorBoundary scope={scope}>
@@ -164,65 +152,6 @@ const LegacyCourseRedirect = () => {
 // ─── Router ───────────────────────────────────────────────────────────────────
 export const AppRouter = () => {
   const location = useLocation();
-
-  const [dobiaExpr, setDobiaExpr] = useState<'greeting' | 'confused' | 'alert' | 'waving'>('waving');
-  const [msgIdx, setMsgIdx] = useState(0);
-
-  useEffect(() => {
-    const handler = (e: Event) => {
-      const detail = (e as CustomEvent<'confused' | 'alert' | 'greeting' | 'waving'>).detail;
-      setDobiaExpr(detail || 'waving');
-    };
-    window.addEventListener('dobia-expression', handler);
-    return () => window.removeEventListener('dobia-expression', handler);
-  }, []);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setMsgIdx((prev) => (prev + 1) % DOBIA_TIPS.length);
-    }, MSG_INTERVAL);
-    return () => clearInterval(interval);
-  }, []);
-
-  const immersiveStudentPaths = [
-    '/dashboard/labs/privesc',
-    '/dashboard/labs/passwords',
-    '/dashboard/labs/sql-injection',
-    '/dashboard/labs/osint',
-    '/dashboard/labs/kill-chain',
-    '/dashboard/networks',
-    '/dashboard/courses/',
-  ];
-
-  const isBootcampRoom =
-    location.pathname.startsWith('/dashboard/bootcamps/') &&
-    location.pathname.includes('/rooms/');
-
-  const isToolScreen = location.pathname.startsWith('/dashboard/tools/');
-  const isAdminArea =
-    location.pathname === ADMIN_PATH ||
-    location.pathname.startsWith(`${ADMIN_PATH}/`);
-  const isAuthRoute = ['/login', '/register', '/change-password'].includes(location.pathname);
-
-  // Dobia visibility policy:
-  // - landing ('/') → hidden until the user summons it
-  // - immersive student areas (labs, rooms, courses, networks, tools) → hidden, summonable
-  // - every other page → visible by default, dismissible
-  // - auth screens, admin area and full-screen tools → never shown, no toggle
-  const dobiaBlocked = isAuthRoute || isAdminArea || isToolScreen;
-  const dobiaHiddenByDefault =
-    location.pathname === '/' ||
-    location.pathname === '/dashboard' ||
-    immersiveStudentPaths.some((p) => location.pathname.startsWith(p)) ||
-    isBootcampRoom;
-
-  const [dobiaOverride, setDobiaOverride] = useState<boolean | null>(null);
-
-  useEffect(() => {
-    setDobiaOverride(null);
-  }, [location.pathname]);
-
-  const dobiaVisible = !dobiaBlocked && (dobiaOverride ?? !dobiaHiddenByDefault);
 
   return (
     <div className="min-h-dvh flex flex-col relative">
@@ -356,98 +285,6 @@ export const AppRouter = () => {
       </Routes>
     </AnimatePresence>
     <MotionCommunityPopup />
-    {dobiaVisible && (
-      <div className="fixed bottom-[76px] right-4 z-[9999] pointer-events-none flex flex-col items-end overflow-hidden">
-
-        {/* 128px – mobile */}
-        <div className="block min-[420px]:hidden" style={{ marginRight: -26 }}>
-          <div className="flex flex-col items-end">
-            <div key={msgIdx} className="animate-fade-in" style={{ marginRight: 32, marginBottom: -7 }}>
-              <span className="block px-2 py-1 rounded-xl bg-bg-card border border-border/50 text-xs font-mono text-text-secondary leading-relaxed max-w-[min(120px,45vw)] text-right whitespace-normal break-words">{DOBIA_TIPS[msgIdx]}</span>
-              <div className="flex justify-end -mt-px"><div className="w-1.5 h-1.5 rotate-45 bg-bg-card border-r border-b border-border/50 mr-3" /></div>
-            </div>
-            <div><Dobia expression={dobiaExpr} size={128} /></div>
-          </div>
-        </div>
-
-        {/* 160px – min-[420px] */}
-        <div className="hidden min-[420px]:block sm:hidden" style={{ marginRight: -33 }}>
-          <div className="flex flex-col items-end">
-            <div key={msgIdx} className="animate-fade-in" style={{ marginRight: 41, marginBottom: -9 }}>
-              <span className="block px-2.5 py-1 rounded-xl bg-bg-card border border-border/50 text-xs font-mono text-text-secondary leading-relaxed max-w-[min(140px,50vw)] text-right whitespace-normal break-words">{DOBIA_TIPS[msgIdx]}</span>
-              <div className="flex justify-end -mt-px"><div className="w-1.5 h-1.5 rotate-45 bg-bg-card border-r border-b border-border/50 mr-3.5" /></div>
-            </div>
-            <div><Dobia expression={dobiaExpr} size={160} /></div>
-          </div>
-        </div>
-
-        {/* 192px – sm */}
-        <div className="hidden sm:block md:hidden" style={{ marginRight: -40 }}>
-          <div className="flex flex-col items-end">
-            <div key={msgIdx} className="animate-fade-in" style={{ marginRight: 50, marginBottom: -11 }}>
-              <span className="block px-2.5 py-1.5 rounded-xl bg-bg-card border border-border/50 text-xs font-mono text-text-secondary leading-relaxed max-w-[min(160px,55vw)] text-right whitespace-normal break-words">{DOBIA_TIPS[msgIdx]}</span>
-              <div className="flex justify-end -mt-px"><div className="w-2 h-2 rotate-45 bg-bg-card border-r border-b border-border/50 mr-4" /></div>
-            </div>
-            <div><Dobia expression={dobiaExpr} size={192} /></div>
-          </div>
-        </div>
-
-        {/* 256px – md */}
-        <div className="hidden md:block lg:hidden" style={{ marginRight: -53 }}>
-          <div className="flex flex-col items-end">
-            <div key={msgIdx} className="animate-fade-in" style={{ marginRight: 65, marginBottom: -14 }}>
-              <span className="block px-3 py-1.5 rounded-xl bg-bg-card border border-border/50 text-xs font-mono text-text-secondary leading-relaxed max-w-[min(200px,55vw)] text-right whitespace-normal break-words">{DOBIA_TIPS[msgIdx]}</span>
-              <div className="flex justify-end -mt-px"><div className="w-2 h-2 rotate-45 bg-bg-card border-r border-b border-border/50 mr-5" /></div>
-            </div>
-            <div><Dobia expression={dobiaExpr} size={256} /></div>
-          </div>
-        </div>
-
-        {/* 320px – lg */}
-        <div className="hidden lg:block xl:hidden" style={{ marginRight: -66 }}>
-          <div className="flex flex-col items-end">
-            <div key={msgIdx} className="animate-fade-in" style={{ marginRight: 82, marginBottom: -18 }}>
-              <span className="block px-3 py-1.5 rounded-xl bg-bg-card border border-border/50 text-xs font-mono text-text-secondary leading-relaxed max-w-[min(240px,55vw)] text-right whitespace-normal break-words">{DOBIA_TIPS[msgIdx]}</span>
-              <div className="flex justify-end -mt-px"><div className="w-2 h-2 rotate-45 bg-bg-card border-r border-b border-border/50 mr-6" /></div>
-            </div>
-            <div><Dobia expression={dobiaExpr} size={320} /></div>
-          </div>
-        </div>
-
-        {/* 400px – xl */}
-        <div className="hidden xl:block 2xl:hidden" style={{ marginRight: -83 }}>
-          <div className="flex flex-col items-end">
-            <div key={msgIdx} className="animate-fade-in" style={{ marginRight: 103, marginBottom: -22 }}>
-              <span className="block px-4 py-2 rounded-xl bg-bg-card border border-border/50 text-xs font-mono text-text-secondary leading-relaxed max-w-[min(280px,55vw)] text-right whitespace-normal break-words">{DOBIA_TIPS[msgIdx]}</span>
-              <div className="flex justify-end -mt-px"><div className="w-2.5 h-2.5 rotate-45 bg-bg-card border-r border-b border-border/50 mr-7" /></div>
-            </div>
-            <div><Dobia expression={dobiaExpr} size={400} /></div>
-          </div>
-        </div>
-
-        {/* 480px – 2xl+ */}
-        <div className="hidden 2xl:block" style={{ marginRight: -99 }}>
-          <div className="flex flex-col items-end">
-            <div key={msgIdx} className="animate-fade-in" style={{ marginRight: 123, marginBottom: -27 }}>
-              <span className="block px-4 py-2 rounded-xl bg-bg-card border border-border/50 text-[12px] font-mono text-text-secondary leading-relaxed max-w-[min(320px,55vw)] text-right whitespace-normal break-words">{DOBIA_TIPS[msgIdx]}</span>
-              <div className="flex justify-end -mt-px"><div className="w-2.5 h-2.5 rotate-45 bg-bg-card border-r border-b border-border/50 mr-8" /></div>
-            </div>
-            <div><Dobia expression={dobiaExpr} size={480} /></div>
-          </div>
-        </div>
-
-      </div>
-    )}
-    {!dobiaBlocked && (
-      <button
-        type="button"
-        onClick={() => setDobiaOverride(!dobiaVisible)}
-        aria-label={dobiaVisible ? 'Hide Dobia' : 'Show Dobia'}
-        className="fixed bottom-4 right-4 z-[50] w-11 h-11 aspect-square shrink-0 rounded-full border border-border/50 bg-bg-card text-text-secondary hover:text-accent hover:border-accent/40 active:scale-95 flex items-center justify-center transition-[color,border-color,transform] duration-[var(--dur-fast)] ease-[var(--ease-smooth)] shadow-lg"
-      >
-        {dobiaVisible ? <X size={18} /> : <Bot size={20} />}
-      </button>
-    )}
   </div>
   );
 };

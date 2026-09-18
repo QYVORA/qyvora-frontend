@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { useParams, Link, useSearchParams } from 'react-router-dom';
-import { ArrowLeft, ArrowRight, Lock, Target, Minimize2, Maximize2 } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Lock, Target } from 'lucide-react';
 import { FadeIn, EmptyState } from '@/shared/components/ui';
 import SEO from '@/shared/components/SEO';
 import { getCourseById, getCategoryById } from '@/features/student/data/courses';
@@ -9,15 +9,12 @@ import InlineQuiz from '@/shared/components/courses/InlineQuiz';
 import CodePlayground from '@/shared/components/courses/CodePlayground';
 import StepRenderer from '@/shared/components/learning/StepRenderer';
 import LearningNav from '@/shared/components/learning/LearningNav';
-import LearningToolbar from '@/shared/components/learning/LearningToolbar';
 import FocusedStepList from '@/shared/components/learning/FocusedStepList';
 import LearningWorkspaceShell from '@/shared/components/learning/LearningWorkspaceShell';
-import WalkthroughScrollControls from '@/shared/components/learning/WalkthroughScrollControls';
 import { CourseLessonSkeleton } from '@/features/student/components/StudentSkeletons';
 import api from '@/core/services/api';
 import CelebrationModal from '@/shared/components/CelebrationModal';
 import { useCelebrationTrigger } from '@/shared/hooks/useCelebrationTrigger';
-import { useRoomSession } from '@/features/student/hooks/useRoomSession';
 import { useReducedMotion } from '@/shared/hooks/useReducedMotion';
 import Button from '@/shared/components/ui/Button';
 import type { Lesson } from '@/features/student/data/courses';
@@ -131,7 +128,6 @@ const CourseLessonPage: React.FC = () => {
   const progress = totalLessons > 0 ? Math.round((completedCount / totalLessons) * 100) : 0;
   const allComplete = totalLessons > 0 && completedLessons.size === totalLessons;
   const [celebrationOpen, setCelebrationOpen] = useCelebrationTrigger(allComplete);
-  const { fullscreen, toggleFullscreen } = useRoomSession();
   const prefersReducedMotion = useReducedMotion();
 
   const scrollToLesson = useCallback((idx: number) => {
@@ -266,19 +262,6 @@ const CourseLessonPage: React.FC = () => {
           description={`You completed every lesson in ${course.title}. Outstanding work.`}
           ctaLabel={"Continue"}
         />
-
-        <LearningToolbar
-          actions={[
-            {
-              id: 'fullscreen',
-              icon: fullscreen ? <Minimize2 className="h-4 w-4" /> : <Maximize2 className="h-4 w-4" />,
-              label: fullscreen ? 'Exit Fullscreen' : 'Enter Fullscreen',
-              onClick: toggleFullscreen,
-            },
-          ]}
-        />
-
-        <WalkthroughScrollControls />
 
         <LearningWorkspaceShell
           kicker={category?.name}

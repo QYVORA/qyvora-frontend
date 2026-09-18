@@ -1,11 +1,8 @@
 import React from 'react';
-import { Minimize2, Maximize2 } from 'lucide-react';
 import SEO from '@/shared/components/SEO';
 import RelatedContent from '@/shared/components/RelatedContent';
 import { LabCelebration } from '@/shared/components/LabCelebration';
-import LearningToolbar from '@/shared/components/learning/LearningToolbar';
 import LearningWorkspaceShell from '@/shared/components/learning/LearningWorkspaceShell';
-import { useRoomSession } from '@/features/student/hooks/useRoomSession';
 
 export interface LabPageProps {
   title: string;
@@ -49,8 +46,6 @@ const LabPage: React.FC<LabPageProps> = ({
   relatedContent,
   noIndex = true,
 }) => {
-  const { fullscreen, toggleFullscreen } = useRoomSession();
-
   return (
     <div className="w-full bg-canvas min-h-dvh">
       <SEO title={`${title} ${accentWord} | QYVORA`} description={description || `${title} ${accentWord} lab`} noindex={noIndex} />
@@ -60,19 +55,6 @@ const LabPage: React.FC<LabPageProps> = ({
         title={celebrationTitle}
         rewardCp={celebrationCp}
       />
-
-      {activeScenario && (
-        <LearningToolbar
-          actions={[
-            {
-              id: 'fullscreen',
-              icon: fullscreen ? <Minimize2 className="h-4 w-4" /> : <Maximize2 className="h-4 w-4" />,
-              label: fullscreen ? 'Exit Fullscreen' : 'Enter Fullscreen',
-              onClick: toggleFullscreen,
-            },
-          ]}
-        />
-      )}
 
       {activeScenario ? (
         walkthroughContent

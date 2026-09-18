@@ -2,9 +2,8 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useParams, Link, useNavigate, useSearchParams } from 'react-router-dom';
 import {
   ArrowLeft, Lock, BookOpen,
-  List, Minimize2, Maximize2, Loader2, ChevronRight, PanelLeft,
+  List, ChevronRight,
 } from 'lucide-react';
-import { IconArrowRight, IconCheck } from '@/shared/components/icons';
 import { AnimatePresence } from 'motion/react';
 import FadeIn from '@/shared/components/ui/FadeIn';
 import EmptyState from '@/shared/components/ui/EmptyState';
@@ -22,10 +21,8 @@ import QuizModal from '@/features/student/components/bootcamp-room/QuizModal';
 import QuizGateModal from '@/features/student/components/bootcamp-room/QuizGateModal';
 import RoomCompletionCelebration from '@/features/student/components/bootcamp-room/RoomCompletionCelebration';
 import LearningNav from '@/shared/components/learning/LearningNav';
-import LearningToolbar from '@/shared/components/learning/LearningToolbar';
 import LearningWorkspaceShell from '@/shared/components/learning/LearningWorkspaceShell';
 import FocusedStepList from '@/shared/components/learning/FocusedStepList';
-import WalkthroughScrollControls from '@/shared/components/learning/WalkthroughScrollControls';
 import { useReducedMotion } from '@/shared/hooks/useReducedMotion';
 import { useRoomSession } from '@/features/student/hooks/useRoomSession';
 import useStudentOverview from '@/features/student/hooks/useStudentOverview';
@@ -103,7 +100,7 @@ const BootcampRoomPage: React.FC = () => {
   const [reportStepIdx, setReportStepIdx] = useState(0);
   const [jumpMenuOpen, setJumpMenuOpen] = useState(false);
 
-  const { timeSpent, fullscreen, toggleFullscreen, resetSession } = useRoomSession();
+  const { timeSpent, resetSession } = useRoomSession();
   const prefersReducedMotion = useReducedMotion();
 
   const bootcampStatus = (() => {
@@ -366,61 +363,7 @@ const BootcampRoomPage: React.FC = () => {
         }}
       />
 
-      <LearningToolbar
-        actions={[
-          {
-            id: 'room-navigator',
-            icon: <PanelLeft className="h-4 w-4" />,
-            label: "Room Navigator",
-            onClick: () => setSidebarOpen(true),
-          },
-          {
-            id: 'jump-menu',
-            icon: <List className="h-4 w-4" />,
-            label: "Jump to step",
-            onClick: () => setJumpMenuOpen(true),
-          },
-          {
-            id: 'fullscreen',
-            icon: fullscreen ? <Minimize2 className="h-4 w-4" /> : <Maximize2 className="h-4 w-4" />,
-            label: fullscreen
-              ? "Exit fullscreen"
-              : "Enter fullscreen",
-            onClick: toggleFullscreen,
-          },
-          {
-            id: 'next-complete',
-            icon: completing ? (
-              <Loader2 className="h-4 w-4 animate-spin" />
-            ) : isLastStep ? (
-              isRoomComplete ? <IconArrowRight size={16} /> : <IconCheck size={16} />
-            ) : (
-              <IconArrowRight size={16} />
-            ),
-            label: isLastStep
-              ? isRoomComplete
-                ? nextRoom
-                  ? "Continue to Next Room"
-                  : "Finish Module"
-                : quizModuleId
-                ? "Take Quiz & Complete"
-                : "Complete Room"
-              : "Next Step",
-            onClick: async () => {
-              if (!isLastStep) {
-                goToStep(currentStepIdx + 1);
-              } else {
-                await handleComplete();
-              }
-            },
-            variant: isLastStep ? 'accent' : 'default',
-            active: isLastStep,
-          },
-        ]}
-      />
-
       <RoomSidebar phases={BOOTCAMP_CONFIG.phases} activePhaseId={phaseId || ''} activeRoomId={roomId || ''} completedRooms={completedRooms} lockedRooms={lockedRooms} bootcampId={bootcampId || ''} onNavigate={handleNavigate} mobileOpen={sidebarOpen} onMobileClose={() => setSidebarOpen(false)} />
-      <WalkthroughScrollControls />
       <LearningWorkspaceShell
         kicker={`${phase.codename} - ${phase.title}`}
         title={room.title}

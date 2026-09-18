@@ -56,7 +56,7 @@ h2 compact bento sections: **title only, no description**.
 - **Dialogs**: desktop use `DialogContent` (Radix), mobile use `BottomSheet`. Always pass `title`, always have `aria-describedby`
 - **Icons**: `lucide-react` only. Named imports. No emoji as icons
 - **i18n**: all user-facing strings through `useTranslation()`
-- **LearningToolbar**: all walkthrough pages (labs, courses, bootcamp rooms) must include `LearningToolbar` with a fullscreen toggle using `useRoomSession()`. Never place the fullscreen button inline in page content — it belongs exclusively in the toolbar (desktop fixed sidebar + mobile floating panel). Use `<Minimize2>`/`<Maximize2>` icons from lucide-react. If the page already has a `LearningToolbar`, add the fullscreen action to its existing `actions` array. Never mount `WalkthroughToolbar` in `StudentLayout`.
+- **Walkthrough floating controls — removed**: fullscreen `LearningToolbar`, `WalkthroughScrollControls`, the scroll-to-top button, the walkthrough terminal launcher, and the floating Dobia widget are intentionally removed from all walkthrough pages. Do not reintroduce any floating toolbar/control chrome over walkthrough content. The fixed student sidebar is the single dashboard navigation component on every student page. Never mount `WalkthroughToolbar` in `StudentLayout`.
 - **Walkthrough text styling**: all walkthrough/learning page text must match the blog page text styling. Body text: `text-sm md:text-base text-text-secondary font-mono leading-[2] md:leading-[2.2] mb-6 md:mb-8`. The walkthrough is inspired by the blog styling — clean, bold, well-spaced monospaced text. Never use `leading-relaxed` on walkthrough text — always `leading-[2] md:leading-[2.2]`. **Headings in walkthrough narrative text** (via `CodeBlockRenderer` markdown) must match blog heading components exactly:
   - h2 (blog `Heading`): `text-2xl md:text-4xl font-black uppercase tracking-tight mb-6 md:mb-8 text-text-primary`
   - h3 (blog `SubHeading`): `text-xl md:text-2xl font-black uppercase tracking-tight mb-5 md:mb-6 text-accent`
@@ -110,7 +110,8 @@ h2 compact bento sections: **title only, no description**.
 - Fixed `lg:h-dvh` or `h-dvh` on content sections (always use `min-h-dvh`)
 - Navbar scroll-hide/invert behavior
 - `zustand` or `@tanstack/react-query` (installed but unused)
-- Inline fullscreen buttons on walkthrough pages (use `LearningToolbar` instead)
+- `StudentNavPanel` hamburger dropdown (sidebar rail + `StudentBottomNav` are the only dashboard navigation)
+- Inline fullscreen buttons on walkthrough pages (walkthrough fullscreen toolbars are removed — keep interactive controls inside page content/sidebar)
 - Navbar link buttons with borders (borders only on badges and status indicators)
 
 ## Layouts Reference

@@ -7,18 +7,15 @@ import {
   IconCode,
   IconChevronRight,
 } from '@/shared/components/icons';
-import StudentNavPanel, { NavMenuTrigger } from '../StudentNavPanel/StudentNavPanel';
 import { SETTINGS_SECTIONS, type SettingsSectionId } from '../../../constants/settingsSections';
 import { getCourseById } from '../../../data/courses';
 import { useAuth } from '../../../../../core/contexts/AuthContext';
-import { useToast } from '../../../../../core/contexts/ToastContext';
 import Logo from '../../../../../shared/components/brand/Logo';
 import CpLogo from '../../../../../shared/components/CpLogo';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import api from '../../../../../core/services/api';
 import { extractCpBalance } from '@/shared/utils/cpBalance';
 import useStudentOverview from '@/features/student/hooks/useStudentOverview';
-import { getBootcampProgressMap, resolveNextRoomPath } from '@/features/student/utils/studentExperience';
 
 // Single definition of the mobile CP badge. Every topbar mode renders this one
 // component so the `tour-cp-mobile` tour anchor is defined exactly once.
@@ -30,7 +27,7 @@ const MobileCpBadge = ({ balance }: { balance: number }) => (
 );
 
 const StudentTopbar = ({ railCollapsed = false }: { railCollapsed?: boolean }) => {
-  const { user, logout } = useAuth();
+  const { user } = useAuth();
 
   const DESKTOP_NAV_ITEMS = [
     { label: "My Courses", icon: IconCode, path: '/dashboard/courses' },
@@ -39,7 +36,6 @@ const StudentTopbar = ({ railCollapsed = false }: { railCollapsed?: boolean }) =
     { label: "Marketplace", icon: IconMarketplace, path: '/dashboard/marketplace' },
   ];
 
-  const { addToast } = useToast();
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -60,11 +56,10 @@ const StudentTopbar = ({ railCollapsed = false }: { railCollapsed?: boolean }) =
   const activeRoomMatch = roomMatch ?? roomMatchLegacy;
   const isRoomPage = Boolean(activeRoomMatch) || isCoursePage;
 
-  // The sidebar rail exists only on non-walkthrough, non-tool screens at lg+.
-  // When present, the topbar is inset to the content column so it never
+  // The sidebar rail is the single dashboard navigation component on every
+  // student page, so the topbar always insets to the content column and never
   // renders on top of the rail.
-  const isToolScreen = location.pathname.startsWith('/dashboard/tools/');
-  const hasRail = !isRoomPage && !isLabPage && !isToolScreen;
+  const hasRail = true;
 
   const roomBootcampId = activeRoomMatch?.params?.bootcampId ?? '';
   const roomPhaseId = roomMatch?.params?.phaseId
@@ -74,8 +69,6 @@ const StudentTopbar = ({ railCollapsed = false }: { railCollapsed?: boolean }) =
   // Student topbars (dashboard, courses, bootcamps, labs, rooms, settings):
   // static and fully transparent — only the buttons on it show. On lg+, the
   // bar spans only the content column so it never covers the sidebar rail.
-  const [navOpen, setNavOpen] = useState(false);
-
   const [roomBreadcrumb, setRoomBreadcrumb] = useState<{ phaseTitle?: string; roomTitle?: string } | null>(null);
 
   useEffect(() => {
@@ -111,31 +104,7 @@ const StudentTopbar = ({ railCollapsed = false }: { railCollapsed?: boolean }) =
     return () => window.removeEventListener('course:updateMeta', handler as EventListener);
   }, []);
 
-  const [unreadCount, setUnreadCount] = useState(0);
   const [cpBalance, setCpBalance] = useState<number>(user?.cp ?? 0);
-  const lastNotifFetchRef = useRef<number>(0);
-  const NOTIF_THROTTLE_MS = 30000;
-
-  const loadNotificationsSnapshot = async () => {
-    try {
-      const res = await api.get('/notifications');
-      const items = Array.isArray(res.data) ? res.data : [];
-      setUnreadCount(items.filter((n: any) => !n.read).length);
-    } catch {
-      /* silent */
-    }
-  };
-
-  useEffect(() => {
-    const now = Date.now();
-    if (now - lastNotifFetchRef.current < NOTIF_THROTTLE_MS) return;
-    lastNotifFetchRef.current = now;
-    loadNotificationsSnapshot();
-  }, [location.pathname]);
-
-  useEffect(() => {
-    setNavOpen(false);
-  }, [location.pathname]);
 
   const { data: overview } = useStudentOverview();
 
@@ -146,24 +115,10 @@ const StudentTopbar = ({ railCollapsed = false }: { railCollapsed?: boolean }) =
     }
   }, [overview, user?.uid]);
 
-  const handleLogout = async () => {
-    await logout();
-    addToast("Security session terminated.", 'info');
-    navigate('/login');
-  };
-
   const isActive = (path: string) => {
     if (path === '/dashboard') return location.pathname === '/dashboard';
     return location.pathname.startsWith(path);
   };
-
-  const continuePath = (() => {
-    if (!overview) return null;
-    const progressMap = getBootcampProgressMap(overview);
-    const activeBootcamp = progressMap.size > 0 ? Array.from(progressMap.values())[0] : null;
-    if (!activeBootcamp) return null;
-    return resolveNextRoomPath(String(activeBootcamp.bootcampId || activeBootcamp.id || ''));
-  })();
 
   return (
     <>
@@ -176,7 +131,7 @@ const StudentTopbar = ({ railCollapsed = false }: { railCollapsed?: boolean }) =
 
       <header
         className={`fixed top-0 inset-x-0 z-[100] pt-[env(safe-area-inset-top)] ${
-          hasRail ? (railCollapsed ? 'lg:left-[76px] transition-[left] duration-[var(--dur-base)] ease-[var(--ease-smooth)]' : 'lg:left-[264px] transition-[left] duration-[var(--dur-base)] ease-[var(--ease-smooth)]') : ''
+          railCollapsed ? 'lg:left-[76px] transition-[left] duration-[var(--dur-base)] ease-[var(--ease-smooth)]' : 'lg:left-[264px] transition-[left] duration-[var(--dur-base)] ease-[var(--ease-smooth)]'
         }`}
       >
         {isRoomPage ? (
@@ -214,20 +169,11 @@ const StudentTopbar = ({ railCollapsed = false }: { railCollapsed?: boolean }) =
                       </span>
                     </>
                   )}
-
-                  <span className="hidden md:block">
-                    <NavMenuTrigger open={navOpen} onClick={() => setNavOpen((v) => !v)} />
-                  </span>
                 </div>
 
-            {/* Mobile CP badge + menu trigger — right-aligned */}
+            {/* Mobile CP badge — right-aligned */}
             <div className="md:hidden flex items-center gap-2 ml-auto">
               <MobileCpBadge balance={cpBalance} />
-              <span data-tour-id="tour-profile-mobile">
-                <span data-tour-id="tour-nav-mobile">
-                  <NavMenuTrigger open={navOpen} onClick={() => setNavOpen((v) => !v)} />
-                </span>
-              </span>
             </div>
               </div>
               {courseMeta && (
@@ -273,20 +219,10 @@ const StudentTopbar = ({ railCollapsed = false }: { railCollapsed?: boolean }) =
                   {roomBreadcrumb?.roomTitle ?? "Room"}
                 </span>
               </div>
-              <div className="flex items-center gap-1.5 md:gap-2 shrink-0">
-                <span className="hidden md:block">
-                  <NavMenuTrigger open={navOpen} onClick={() => setNavOpen((v) => !v)} />
-                </span>
-              </div>
 
-              {/* Mobile CP badge + menu trigger — right-aligned */}
+              {/* Mobile CP badge — right-aligned */}
               <div className="md:hidden flex items-center gap-2 ml-auto">
                 <MobileCpBadge balance={cpBalance} />
-                <span data-tour-id="tour-profile-mobile">
-                  <span data-tour-id="tour-nav-mobile">
-                    <NavMenuTrigger open={navOpen} onClick={() => setNavOpen((v) => !v)} />
-                  </span>
-                </span>
               </div>
             </div>
           )
@@ -315,20 +251,10 @@ const StudentTopbar = ({ railCollapsed = false }: { railCollapsed?: boolean }) =
                 {labMatch?.params?.labType?.replace(/-/g, ' ') || "Lab"}
               </span>
             </div>
-            <div className="flex items-center gap-1.5 md:gap-2 shrink-0">
-              <span className="hidden md:block">
-                <NavMenuTrigger open={navOpen} onClick={() => setNavOpen((v) => !v)} />
-              </span>
-            </div>
 
-            {/* Mobile CP badge + menu trigger — right-aligned */}
+            {/* Mobile CP badge — right-aligned */}
             <div className="md:hidden flex items-center gap-2 ml-auto">
               <MobileCpBadge balance={cpBalance} />
-              <span data-tour-id="tour-profile-mobile">
-                <span data-tour-id="tour-nav-mobile">
-                  <NavMenuTrigger open={navOpen} onClick={() => setNavOpen((v) => !v)} />
-                </span>
-              </span>
             </div>
             </div>
 
@@ -377,20 +303,11 @@ const StudentTopbar = ({ railCollapsed = false }: { railCollapsed?: boolean }) =
               })}
             </nav>
 
-            <div className="flex items-center gap-1.5 md:gap-2 shrink-0 ml-auto">
-              <span className="hidden md:block lg:hidden">
-                <NavMenuTrigger open={navOpen} onClick={() => setNavOpen((v) => !v)} />
-              </span>
-            </div>
+            <div className="flex items-center gap-1.5 md:gap-2 shrink-0 ml-auto" />
 
-            {/* Mobile CP badge + menu trigger — right-aligned */}
+            {/* Mobile CP badge — right-aligned */}
             <div className="md:hidden flex items-center gap-2 ml-auto">
               <MobileCpBadge balance={cpBalance} />
-              <span data-tour-id="tour-profile-mobile">
-                <span data-tour-id="tour-nav-mobile">
-                  <NavMenuTrigger open={navOpen} onClick={() => setNavOpen((v) => !v)} />
-                </span>
-              </span>
             </div>
           </div>
         ) : (
@@ -433,36 +350,15 @@ const StudentTopbar = ({ railCollapsed = false }: { railCollapsed?: boolean }) =
                 <CpLogo className="w-5 h-5" />
                 <span className="text-xs font-black text-accent">{cpBalance.toLocaleString()}</span>
               </div>
-
-              <span className="lg:hidden" data-tour-id="tour-profile-desktop">
-                <NavMenuTrigger open={navOpen} onClick={() => setNavOpen((v) => !v)} />
-              </span>
             </div>
 
-            {/* Mobile CP badge + menu trigger — right-aligned */}
+            {/* Mobile CP badge — right-aligned */}
             <div className="md:hidden flex items-center gap-2 ml-auto">
               <MobileCpBadge balance={cpBalance} />
-              <span data-tour-id="tour-profile-mobile">
-                <span data-tour-id="tour-nav-mobile">
-                  <NavMenuTrigger open={navOpen} onClick={() => setNavOpen((v) => !v)} />
-                </span>
-              </span>
             </div>
           </div>
         )}
       </header>
-
-      {/* Canonical viewport-level navigation panel */}
-      <StudentNavPanel
-        open={navOpen}
-        onOpenChange={setNavOpen}
-        unreadCount={unreadCount}
-        continuePath={continuePath}
-        onOpenTerminal={() => window.dispatchEvent(new CustomEvent('qyvora:open-terminal'))}
-        onOpenIDE={() => window.dispatchEvent(new CustomEvent('qyvora:open-ide'))}
-        onOpenNetworkVisualizer={() => window.dispatchEvent(new CustomEvent('qyvora:open-network-visualizer'))}
-        handleLogout={handleLogout}
-      />
     </>
   );
 };

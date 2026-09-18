@@ -1,21 +1,13 @@
-import { useState, useEffect, useCallback } from 'react';
-import { useLocation, useMatch } from 'react-router-dom';
-import { ArrowUp } from 'lucide-react';
+import { useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 
-const SCROLL_THRESHOLD = 150;
-
+/**
+ * ScrollToTop — resets window scroll to the top on every route change.
+ * (The floating scroll-to-top button was intentionally removed — the fixed
+ * student sidebar is the only persistent dashboard chrome.)
+ */
 const ScrollToTop = () => {
   const { pathname } = useLocation();
-  const [visible, setVisible] = useState(false);
-
-  const walkthroughRoomMatch = useMatch('/dashboard/bootcamps/:bootcampId/phases/:phaseId/rooms/:roomId');
-  const walkthroughRoomMatchLegacy = useMatch('/dashboard/bootcamps/:bootcampId/modules/:moduleId/rooms/:roomId');
-  const walkthroughCourseMatch = useMatch('/dashboard/courses/:courseId');
-  const walkthroughLabMatch = useMatch('/dashboard/labs/:labType');
-
-  const isWalkthroughPage = Boolean(
-    walkthroughRoomMatch || walkthroughRoomMatchLegacy || walkthroughCourseMatch || walkthroughLabMatch
-  );
 
   useEffect(() => {
     const raf = requestAnimationFrame(() => {
@@ -26,27 +18,7 @@ const ScrollToTop = () => {
     return () => cancelAnimationFrame(raf);
   }, [pathname]);
 
-  useEffect(() => {
-    const check = () => setVisible(window.scrollY > SCROLL_THRESHOLD);
-    window.addEventListener('scroll', check, { passive: true });
-    return () => window.removeEventListener('scroll', check);
-  }, []);
-
-  const scrollToTop = useCallback(() => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }, []);
-
-  if (!visible || isWalkthroughPage) return null;
-
-  return (
-    <button
-      onClick={scrollToTop}
-      aria-label="Scroll to top"
-      className="fixed bottom-4 left-4 z-[9997] flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-border bg-bg-card text-accent transition-[color,border-color,transform] duration-[var(--dur-base)] ease-[var(--ease-smooth)] hover:border-accent/40 hover:text-text-primary active:scale-90"
-    >
-      <ArrowUp className="h-4 w-4" />
-    </button>
-  );
+  return null;
 };
 
 export default ScrollToTop;

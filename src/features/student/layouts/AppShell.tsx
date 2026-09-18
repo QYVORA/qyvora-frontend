@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Outlet, useMatch, useLocation } from 'react-router-dom';
+import { Outlet, useMatch } from 'react-router-dom';
 import StudentTopbar from '@/features/student/components/layout/StudentTopbar';
 import StudentSidebar from '@/features/student/components/layout/StudentSidebar';
 import StudentBottomNav from '@/features/student/components/layout/StudentBottomNav';
@@ -33,7 +33,6 @@ const AppShell = () => {
   const roomMatchLegacy = useMatch('/dashboard/bootcamps/:bootcampId/modules/:moduleId/rooms/:roomId');
   const courseMatch = useMatch('/dashboard/courses/:courseId');
   const labMatch = useMatch('/dashboard/labs/:labType');
-  const location = useLocation();
   const [terminalOpen, setTerminalOpen] = useState(false);
   const [ideOpen, setIdeOpen] = useState(false);
   const [networkVizOpen, setNetworkVizOpen] = useState(false);
@@ -107,12 +106,11 @@ const AppShell = () => {
     ? { type: 'lab', labId: String(labMatch.params.labType || '') }
     : { type: 'dashboard' };
 
-  // Walkthrough pages (rooms, courses, labs) don't carry the shell rail so
-  // learners keep full focus width; standalone tool screens too.
+  // Walkthrough pages (rooms, courses, labs) keep the full shell — the
+  // sidebar rail is the single navigation component on every dashboard page.
   const isWalkthroughPage = Boolean(roomMatch || roomMatchLegacy || courseMatch || labMatch);
-  const isToolScreen = location.pathname.startsWith('/dashboard/tools/');
-  const useRail = !isWalkthroughPage && !isToolScreen;
-  const railPad = useRail ? (railCollapsed ? 'lg:pl-[76px]' : 'lg:pl-[264px]') : '';
+  const useRail = true;
+  const railPad = railCollapsed ? 'lg:pl-[76px]' : 'lg:pl-[264px]';
 
   return (
     <SimulationProvider>

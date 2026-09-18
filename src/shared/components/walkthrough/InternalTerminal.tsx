@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import * as RadixDialog from '@radix-ui/react-dialog';
-import { IconTerminal } from '@/shared/components/icons';
 import { TerminalShell } from '@/features/student/components/SimulatedTerminal/TerminalShell';
 import type { TerminalContext } from '@/features/student/components/SimulatedTerminal/types';
 
@@ -39,8 +38,7 @@ const useIsDesktop = () => {
  * dismisses it.
  *
  * Mobile (<lg): bottom sheet that slides up over a dimmed overlay; tapping
- * the overlay closes it. While closed, a small launcher button sits in the
- * bottom-left corner (the bottom-right corner belongs to the Dobia toggle).
+ * the overlay closes it.
  */
 export const InternalTerminal: React.FC<InternalTerminalProps> = ({ open, onOpenChange, context }) => {
   const isDesktop = useIsDesktop();
@@ -57,21 +55,7 @@ export const InternalTerminal: React.FC<InternalTerminalProps> = ({ open, onOpen
   );
 
   return (
-    <>
-      {/* Mobile launcher — bottom-left corner, clear of the Dobia toggle */}
-      {!open && (
-        <button
-          type="button"
-          onClick={() => onOpenChange(true)}
-          aria-label={"Open terminal"}
-          className="fixed bottom-4 left-4 z-[110] lg:hidden flex h-11 w-11 shrink-0 aspect-square items-center justify-center rounded-full border border-border bg-bg-card text-accent transition-colors hover:border-accent/40 hover:text-text-primary active:scale-90"
-          style={{ marginBottom: 'env(safe-area-inset-bottom)' }}
-        >
-          <IconTerminal size={18} />
-        </button>
-      )}
-
-      {isDesktop ? (
+    <>{isDesktop ? (
         <RadixDialog.Root open={open} onOpenChange={onOpenChange} modal={false}>
           <RadixDialog.Portal>
             <RadixDialog.Content

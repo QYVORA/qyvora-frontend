@@ -8,8 +8,6 @@ import ADMIN_PATH from '@/shared/utils/adminPath';
 import { useEffect, useRef, useState } from 'react';
 import api from '@/core/services/api';
 import { ADMIN_QUICK_TABS } from './navGroups';
-import AdminNavPanel from './AdminNavPanel';
-import { NavMenuTrigger } from '@/features/student/components/layout/StudentNavPanel/StudentNavPanel';
 import NotificationsDropdown from './NotificationsDropdown';
 import MobileNotificationsSheet from './MobileNotificationsSheet';
 import type { NotificationItem } from './types';
@@ -28,7 +26,6 @@ const AdminTopbar = () => {
   const [notifOpen, setNotifOpen] = useState(false);
   const [notifLoading, setNotifLoading] = useState(false);
   const [notificationsPreview, setNotificationsPreview] = useState<NotificationItem[]>([]);
-  const [navOpen, setNavOpen] = useState(false);
 
   // Mirrors the student dashboard topbar: auto-hide while scrolling down past
   // the first viewport, reveal again on scroll up. Layout reservation stays
@@ -37,18 +34,10 @@ const AdminTopbar = () => {
   const lastScrollYRef = useRef(0);
 
   useEffect(() => {
-    if (navOpen) setTopbarHidden(false);
-  }, [navOpen]);
-
-  useEffect(() => {
     setTopbarHidden(false);
     lastScrollYRef.current = window.scrollY;
     let ticking = false;
     const onScroll = () => {
-      if (navOpen) {
-        setTopbarHidden(false);
-        return;
-      }
       if (ticking) return;
       ticking = true;
       requestAnimationFrame(() => {
@@ -67,7 +56,7 @@ const AdminTopbar = () => {
     };
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
-  }, [location.pathname, navOpen]);
+  }, [location.pathname]);
 
   const notifRef = useRef<HTMLDivElement>(null);
 
@@ -105,7 +94,7 @@ const AdminTopbar = () => {
   };
 
   useEffect(() => { loadNotificationsSnapshot(); }, [location.pathname]);
-  useEffect(() => { setNotifOpen(false); setNavOpen(false); }, [location.search]);
+  useEffect(() => { setNotifOpen(false); }, [location.search]);
 
   useEffect(() => {
     if (!notifOpen) return;
@@ -218,10 +207,6 @@ const AdminTopbar = () => {
             >
               <LogOut className="w-6 h-6" />
             </button>
-
-            {/* Single menu trigger — opens the full admin navigation panel on
-                all breakpoints (mirrors the student dashboard dropdown). */}
-            <NavMenuTrigger open={navOpen} onClick={() => setNavOpen((v) => !v)} />
           </div>
         </div>
       </header>
@@ -234,8 +219,6 @@ const AdminTopbar = () => {
         notificationsPreview={notificationsPreview}
         markAllNotificationsRead={markAllNotificationsRead}
       />
-
-      <AdminNavPanel open={navOpen} onOpenChange={setNavOpen} handleLogout={handleLogout} />
     </>
   );
 };

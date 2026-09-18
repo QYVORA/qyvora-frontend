@@ -1,16 +1,13 @@
-import { Unplug, Loader2, Minimize2, Maximize2 } from 'lucide-react';
+import { Unplug, Loader2 } from 'lucide-react';
 import { Children, useEffect } from 'react';
 import type { ReactNode } from 'react';
 import { IconTerminal } from '@/shared/components/icons';
-import WalkthroughScrollControls from '@/shared/components/learning/WalkthroughScrollControls';
 import FocusedStepList from '@/shared/components/learning/FocusedStepList';
 import type { FocusedStepListItem } from '@/shared/components/learning/FocusedStepList';
 import LearningWorkspaceShell from '@/shared/components/learning/LearningWorkspaceShell';
 import type { WorkspaceStat } from '@/shared/components/learning/LearningWorkspaceShell';
-import LearningToolbar from '@/shared/components/learning/LearningToolbar';
 import LearningNav from '@/shared/components/learning/LearningNav';
 import { useLabConnection } from '@/features/student/hooks/useLabConnection';
-import { useRoomSession } from '@/features/student/hooks/useRoomSession';
 import { SimulationPanel, useSimulation, getNetworkProfileForLab, type SimulationType } from '@/features/student/components/simulations';
 
 export interface WalkthroughLayoutProps {
@@ -72,7 +69,6 @@ export function WalkthroughLayout({
   const allDone = totalSteps > 0 && completedCount === totalSteps;
   const { connection, isConnected, isLoading, error, connect, disconnect } = useLabConnection();
   const { network, browser } = useSimulation();
-  const { fullscreen, toggleFullscreen } = useRoomSession();
 
   useEffect(() => {
     const profile = getNetworkProfileForLab(labId);
@@ -99,23 +95,6 @@ export function WalkthroughLayout({
 
   return (
     <div className="w-full bg-canvas min-h-dvh">
-      {/* Walkthrough scroll controls (fixed to viewport) */}
-      <WalkthroughScrollControls />
-
-      {/* Fullscreen toolbar — desktop rail + mobile floating panel */}
-      <LearningToolbar
-        actions={[
-          {
-            id: 'fullscreen',
-            icon: fullscreen ? <Minimize2 className="h-4 w-4" /> : <Maximize2 className="h-4 w-4" />,
-            label: fullscreen
-              ? "Exit fullscreen"
-              : "Enter fullscreen",
-            onClick: toggleFullscreen,
-          },
-        ]}
-      />
-
       <LearningWorkspaceShell
         icon={icon}
         title={title}

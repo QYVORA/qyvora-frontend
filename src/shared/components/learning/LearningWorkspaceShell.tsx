@@ -36,8 +36,9 @@ interface LearningWorkspaceShellProps {
 /**
  * LearningWorkspaceShell — the calm chrome for course lesson, bootcamp room
  * and lab workspaces. Back link, one title, factual stats, optional progress,
- * then full-width step content. Walkthrough controls (LearningToolbar) and
- * step navigation stay inside the page, not in the layout.
+ * then full-width step content. Step navigation stays inside the page, not in
+ * the layout; floating walkthrough toolbars were removed — the sidebar rail is
+ * the single dashboard navigation.
  */
 const LearningWorkspaceShell: React.FC<LearningWorkspaceShellProps> = ({
   kicker,

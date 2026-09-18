@@ -1,30 +1,20 @@
 import React, { useCallback } from 'react';
-import { BookOpen } from 'lucide-react';
 import { cn } from '@/shared/utils/cn';
 import { useDocScrollSpy } from '@/shared/hooks/useDocScrollSpy';
-import Button from '@/shared/components/ui/Button';
 import type { ToolDocSection as ToolDocSectionItem } from './ToolDocTopbar';
 
 interface DocTocProps {
-  toolName: string;
   sections: ToolDocSectionItem[];
-  installLabel?: string;
-  onInstall?: () => void;
   onNavigate?: () => void;
 }
 
 /**
  * DocToc — "On this page" rail for tool documentation. Scroll-spies the same
- * section ids as the topbar pills. Used in the DocsShell sidebar (lg+) and the
- * mobile On-this-page sheet. `onNavigate` closes the sheet after a jump.
+ * section ids as the topbar pills. Used in the fixed desktop docs rail (lg+)
+ * and the mobile On-this-page sheet; `onNavigate` closes the sheet after a
+ * jump. Nav styling mirrors the StudentSidebar items.
  */
-const DocToc: React.FC<DocTocProps> = ({
-  toolName,
-  sections,
-  installLabel = 'Install',
-  onInstall,
-  onNavigate,
-}) => {
+const DocToc: React.FC<DocTocProps> = ({ sections, onNavigate }) => {
   const activeSection = useDocScrollSpy(sections.map((s) => s.id), 130);
 
   const scrollTo = useCallback((id: string) => {
@@ -42,7 +32,7 @@ const DocToc: React.FC<DocTocProps> = ({
 
   return (
     <nav aria-label="On this page" className="flex flex-col gap-0.5">
-      <p className="type-label mb-2 px-1 text-text-tertiary uppercase tracking-[0.12em]">
+      <p className="type-label mb-1 px-3 text-text-tertiary uppercase tracking-[0.12em]">
         On this page
       </p>
 
@@ -62,20 +52,6 @@ const DocToc: React.FC<DocTocProps> = ({
           {s.label}
         </button>
       ))}
-
-      {onInstall && (
-        <div className="mt-6 flex flex-col gap-3 border-t border-border-subtle pt-5">
-          <div className="flex items-center gap-2">
-            <BookOpen className="h-4 w-4 shrink-0 text-accent" aria-hidden="true" />
-            <span className="type-label truncate text-text-tertiary">
-              {toolName} docs
-            </span>
-          </div>
-          <Button size="sm" onClick={onInstall} className="w-full">
-            {installLabel}
-          </Button>
-        </div>
-      )}
     </nav>
   );
 };
