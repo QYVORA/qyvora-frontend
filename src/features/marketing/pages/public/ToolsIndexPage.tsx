@@ -59,13 +59,14 @@ const ToolsIndexPage: React.FC = () => {
       <PublicContainer className="pb-20 pt-24 md:pb-24 md:pt-28 lg:pt-32">
         <PageHeader
           kicker={"Open-source tooling"}
-          title={"Combat-ready tools, documented for operators."}
+          title={"Combat-ready tools, documented end to end."}
+
           description={"Thirteen offensive security tools built by the QuiteRoot collective. Each tool has full documentation, install guides, and walkthroughs."}
         />
 
         <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {TOOLS.map((tool, i) => (
-            <ScrollReveal key={tool.path} delay={(i % 3) * 80} className="h-full">
+            <ScrollReveal key={tool.path} delay={(i % 3) * 0.08} className="h-full">
               <Card to={tool.path} interactive className="flex h-full flex-col gap-5 p-6">
                 <div className="flex items-center gap-3">
                   <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl border border-border-subtle bg-canvas">
@@ -86,7 +87,7 @@ const ToolsIndexPage: React.FC = () => {
 
                 <p className="type-body-sm flex-1 line-clamp-3">{tool.desc}</p>
 
-                <span className="flex items-center gap-1.5 border-t border-border-subtle pt-4 text-sm font-bold text-accent">
+                <span className="flex items-center gap-1.5 pt-1 text-sm font-bold text-accent">
                   {"Read the docs"}
                   <ArrowRight className="h-4 w-4" aria-hidden="true" />
                 </span>

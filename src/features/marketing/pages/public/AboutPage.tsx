@@ -34,7 +34,7 @@ const AboutPage: React.FC = () => {
 
         <div className="mt-10 grid gap-4 sm:grid-cols-2">
           {tiles.map((tile, i) => (
-            <ScrollReveal key={tile.key} delay={(i % 2) * 80} className="h-full">
+            <ScrollReveal key={tile.key} delay={(i % 2) * 0.08} className="h-full">
               <Card to={tile.to} interactive className="flex h-full min-h-[160px] flex-col gap-3 p-6">
                 <span className="flex h-11 w-11 items-center justify-center rounded-lg border border-border-subtle bg-surface-raised text-accent">
                   {tile.icon}

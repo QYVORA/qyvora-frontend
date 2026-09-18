@@ -61,7 +61,7 @@ const FeaturedLearningBlock: React.FC = () => {
           )}
 
           {featuredLabs.map((lab, i) => (
-            <ScrollReveal key={lab.id} delay={i * 80}>
+            <ScrollReveal key={lab.id} delay={i * 0.08}>
               <Card to="/labs" interactive className="flex min-h-[200px] flex-col gap-3 p-6">
                 <p className="type-label mb-1 uppercase tracking-[0.12em] text-text-tertiary">
                   {"Labs"}

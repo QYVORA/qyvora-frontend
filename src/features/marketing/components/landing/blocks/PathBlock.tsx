@@ -42,7 +42,7 @@ const PathBlock: React.FC = () => {
 
         <div className="grid gap-4 md:grid-cols-3">
           {PATHS.map((path, i) => (
-            <ScrollReveal key={path.key} delay={i * 80}>
+            <ScrollReveal key={path.key} delay={i * 0.08}>
               <Card to={path.to} interactive className="flex min-h-[220px] flex-col gap-3 p-6">
                 <h3 className="type-h3 font-black uppercase tracking-tight text-text-primary">
                   {path.title}

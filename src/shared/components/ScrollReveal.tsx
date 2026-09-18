@@ -5,6 +5,7 @@ import { useAdaptiveUi } from '../../core/hooks/useAdaptiveUi';
 interface ScrollRevealProps {
   children: React.ReactNode;
   className?: string;
+  /** Reveal delay in seconds (motion.js units), e.g. `0.08`, not milliseconds. */
   delay?: number;
   direction?: 'up' | 'down' | 'left' | 'right' | 'none';
   amount?: number;
