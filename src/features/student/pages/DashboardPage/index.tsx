@@ -27,8 +27,6 @@ import { Card, Metric } from '@/shared/components/ui/Card';
 import ScrollReveal from '@/shared/components/ScrollReveal';
 import Button from '@/shared/components/ui/Button';
 import {
-  BookOpen,
-  FlaskConical,
   ShoppingBag,
   Flame,
   Crown,
@@ -36,6 +34,7 @@ import {
 } from 'lucide-react';
 import { IconCode, IconTerminal, IconNetwork } from '@/shared/components/icons';
 import LearningCard from '@/shared/components/learning/LearningCard';
+import CourseBadge from '@/shared/components/CourseBadge';
 import { LABS } from '@/features/student/constants/labs';
 import CpLogo from '@/shared/components/CpLogo';
 import { COURSES } from '@/features/student/data/courses';
@@ -265,7 +264,7 @@ const Dashboard = () => {
               {"Recent learning"}
             </p>
             <h2 className="type-h2 font-black uppercase tracking-tight text-text-primary">
-              {"Recent learning"}
+              {"Your catalog"}
             </h2>
             <p className="type-body mt-2 max-w-prose">{"Pick up any of your recent work, or start something new."}</p>
           </div>
@@ -300,7 +299,7 @@ const Dashboard = () => {
                 to={`/dashboard/courses/${course.id}`}
                 title={course.title}
                 description={course.description}
-                icon={<BookOpen className="h-4 w-4" aria-hidden="true" />}
+                badge={<CourseBadge courseId={course.id} className="h-11 w-11 shrink-0" />}
                 difficulty={course.skillLevel}
                 lessonsCount={course.lessons.length}
                 cpReward={course.cpCost}
@@ -322,11 +321,11 @@ const Dashboard = () => {
             {LABS.slice(0, 3).map((lab: LabDef) => (
               <LearningCard
                 key={lab.id}
+                id={lab.id}
                 type="lab"
                 to={lab.route}
                 title={lab.title}
                 description={lab.desc}
-                icon={<FlaskConical className="h-4 w-4" aria-hidden="true" />}
                 difficulty={lab.difficulty}
                 cpReward={lab.cpReward}
                 actionLabel={"View"}
