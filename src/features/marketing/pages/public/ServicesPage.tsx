@@ -9,7 +9,7 @@ import PublicContainer from '@/shared/components/layout/PublicContainer';
 import Button from '@/shared/components/ui/Button';
 import { Card } from '@/shared/components/ui/Card';
 import { SimpleHeading } from '@/shared/components/ui';
-import { SERVICES, REQUEST_ASSESSMENT_LABEL, LEARN_MORE_LABEL, type ServiceConfig } from '@/features/marketing/content/servicesConfig';
+import { SERVICES, REQUEST_ASSESSMENT_LABEL, LEARN_MORE_LABEL, PENTEST_PHILOSOPHY, type ServiceConfig } from '@/features/marketing/content/servicesConfig';
 
 const ServiceSection: React.FC<{ svc: ServiceConfig; index: number }> = ({ svc, index }) => {
   const Icon = svc.icon;
@@ -140,6 +140,15 @@ const ServicesPage = () => {
             <ServiceSection key={svc.id} svc={svc} index={idx} />
           ))}
         </div>
+
+        <section className="mt-16 grid gap-8 rounded-2xl border border-border-subtle bg-surface p-6 md:mt-24 md:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] md:gap-12 md:p-10 lg:items-center">
+          <h2 className="max-w-md text-2xl font-black uppercase tracking-tight text-text-primary md:text-3xl">
+            {PENTEST_PHILOSOPHY.heading}
+          </h2>
+          <p className="font-mono text-sm leading-[2] text-text-secondary md:text-base">
+            {PENTEST_PHILOSOPHY.body}
+          </p>
+        </section>
       </PublicContainer>
     </div>
   );
