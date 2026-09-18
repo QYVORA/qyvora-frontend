@@ -19,7 +19,40 @@ interface TrophyCabinetProps {
 const RANK_TROPHY_ID_PREFIX = 'rank-';
 const COURSE_TROPHY_IDS = new Set(['scholar', 'course-graduate', 'first-course']);
 
+/**
+ * Trophy artwork — real webp assets live in `src/assets/trophies/<id>.webp`
+ * (see docs/TROPHY-SPECS.md for the generation prompts). When an asset exists
+ * it wins; the branded SVG visuals only act as fallbacks.
+ */
+const TROPHY_ASSETS = import.meta.glob<string>('/src/assets/trophies/*.webp', {
+  eager: true,
+  import: 'default',
+});
+
+function resolveTrophyArt(id: string): string | undefined {
+  if (TROPHY_ASSETS[`/src/assets/trophies/${id}.webp`]) {
+    return TROPHY_ASSETS[`/src/assets/trophies/${id}.webp`];
+  }
+  if (id.startsWith(RANK_TROPHY_ID_PREFIX) && TROPHY_ASSETS['/src/assets/trophies/rank.webp']) {
+    return TROPHY_ASSETS['/src/assets/trophies/rank.webp'];
+  }
+  return undefined;
+}
+
 function TrophyVisual({ id, profile }: { id: string; profile: ProfileData }) {
+  const art = resolveTrophyArt(id);
+  if (art) {
+    return (
+      <img
+        src={art}
+        alt=""
+        aria-hidden="true"
+        loading="lazy"
+        draggable={false}
+        className="h-12 w-12 object-contain"
+      />
+    );
+  }
   if (id === 'hpb-graduate') return <BootcampBadge completed className="w-12 h-12" />;
   if (id.startsWith(RANK_TROPHY_ID_PREFIX)) return <CpLogo className="w-8 h-8" />;
   if (COURSE_TROPHY_IDS.has(id) && profile.completedCourseIds?.[0]) {
