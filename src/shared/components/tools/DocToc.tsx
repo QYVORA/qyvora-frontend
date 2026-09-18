@@ -53,10 +53,10 @@ const DocToc: React.FC<DocTocProps> = ({
           onClick={() => jump(s.id)}
           aria-current={activeSection === s.id ? 'true' : undefined}
           className={cn(
-            'min-h-[44px] rounded-lg border-l-2 px-3 py-2 text-left text-sm font-medium transition-colors focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-accent',
+            'w-full min-h-[44px] rounded-lg px-3 py-2 text-left text-sm font-medium transition-colors focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-accent',
             activeSection === s.id
-              ? 'border-accent bg-accent/10 text-accent'
-              : 'border-transparent text-text-secondary hover:border-accent/40 hover:text-text-primary',
+              ? 'bg-accent/10 text-accent'
+              : 'text-text-secondary hover:bg-surface-raised hover:text-text-primary',
           )}
         >
           {s.label}

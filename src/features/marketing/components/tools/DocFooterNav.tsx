@@ -2,7 +2,6 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { IconArrowRight, IconArrowLeft } from '@/shared/components/icons';
 import { getToolNeighbors, getRelatedTools } from '@/features/marketing/data/relatedTools';
-import RelatedContentSection from '@/shared/components/RelatedContentSection';
 
 interface DocFooterNavProps {
   currentPath: string;
@@ -10,76 +9,118 @@ interface DocFooterNavProps {
 
 /**
  * DocFooterNav — closing block for tool documentation pages.
- * Previous/Next cards keep the reader moving through the toolkit, followed by
- * the full related-tools strip. Replaces the marketing-style "Ready to…" CTA.
+ * A lightweight previous/next row keeps the reader moving through the toolkit,
+ * followed by a compact related-tools strip using the real tool logos. No
+ * heavyweight cards — wayfinding stays subordinate to the reading columns.
  */
 const DocFooterNav: React.FC<DocFooterNavProps> = ({ currentPath }) => {
   const { prev, next } = getToolNeighbors(currentPath);
+  const related = getRelatedTools(currentPath);
 
   return (
-    <div className="w-full py-16 md:py-24 border-t border-border/10">
-      <div className="px-3 md:px-4 lg:px-6 flex flex-col gap-10 md:gap-14">
+    <div className="w-full border-t border-border/10 py-16 md:py-24">
+      <div className="flex flex-col gap-12 px-3 md:px-4 md:gap-16 lg:px-6">
         <div>
-          <div className="mb-6">
-            <p className="text-xs font-black uppercase tracking-[0.3em] text-text-muted">
+          <div className="mb-5">
+            <p className="text-micro font-black uppercase tracking-[0.3em] text-text-muted">
               Continue reading
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
             {prev ? (
               <Link
                 to={prev.path}
-                className="group flex gap-4 items-center rounded-2xl border border-border/50 bg-bg-card p-4 md:p-5 transition-colors hover:border-accent/40 hover:bg-bg-elevated"
+                className="group flex min-h-[56px] items-center gap-3 rounded-xl border border-border/40 bg-bg-card px-4 py-3 transition-colors hover:border-accent/40 hover:bg-bg-elevated"
               >
                 <IconArrowLeft
-                  size={18}
-                  className="text-accent shrink-0 transition-transform duration-200 group-hover:-translate-x-1"
+                  size={16}
+                  className="shrink-0 text-accent transition-transform duration-200 group-hover:-translate-x-0.5"
                 />
                 <span className="min-w-0">
-                  <span className="block text-xs font-black uppercase tracking-widest text-text-muted">
+                  <span className="block text-micro font-black uppercase tracking-widest text-text-muted">
                     Previous
                   </span>
-                  <span className="mt-1 block text-sm font-black text-text-primary truncate">
+                  <span className="block truncate text-sm font-black text-text-primary transition-colors group-hover:text-accent">
                     {prev.title}
-                  </span>
-                  <span className="mt-0.5 line-clamp-1 block text-xs font-mono text-text-muted">
-                    {prev.desc}
                   </span>
                 </span>
               </Link>
             ) : (
-              <span className="hidden md:block" />
+              <span className="hidden sm:block" />
             )}
 
             {next ? (
               <Link
                 to={next.path}
-                className="group flex gap-4 items-center justify-end rounded-2xl border border-border/50 bg-bg-card p-4 md:p-5 text-right transition-colors hover:border-accent/40 hover:bg-bg-elevated"
+                className="group flex min-h-[56px] items-center justify-end gap-3 rounded-xl border border-border/40 bg-bg-card px-4 py-3 text-right transition-colors hover:border-accent/40 hover:bg-bg-elevated"
               >
                 <span className="min-w-0">
-                  <span className="block text-xs font-black uppercase tracking-widest text-text-muted">
+                  <span className="block text-micro font-black uppercase tracking-widest text-text-muted">
                     Next
                   </span>
-                  <span className="mt-1 block text-sm font-black text-text-primary truncate">
+                  <span className="block truncate text-sm font-black text-text-primary transition-colors group-hover:text-accent">
                     {next.title}
-                  </span>
-                  <span className="mt-0.5 line-clamp-1 block text-xs font-mono text-text-muted">
-                    {next.desc}
                   </span>
                 </span>
                 <IconArrowRight
-                  size={18}
-                  className="text-accent shrink-0 transition-transform duration-200 group-hover:translate-x-1"
+                  size={16}
+                  className="shrink-0 text-accent transition-transform duration-200 group-hover:translate-x-0.5"
                 />
               </Link>
             ) : (
-              <span className="hidden md:block" />
+              <span className="hidden sm:block" />
             )}
           </div>
         </div>
 
-        <RelatedContentSection items={getRelatedTools(currentPath)} />
+        {related.length > 0 && (
+          <div>
+            <div className="mb-5 flex items-center justify-between gap-4">
+              <p className="text-micro font-black uppercase tracking-[0.3em] text-text-muted">
+                More from the toolkit
+              </p>
+              <Link
+                to="/tools"
+                className="flex min-h-[44px] items-center gap-1.5 text-xs font-black uppercase tracking-widest text-accent transition-colors hover:text-text-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+              >
+                {"All tools"} <IconArrowRight size={12} aria-hidden="true" />
+              </Link>
+            </div>
+
+            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+              {related.map((tool) => (
+                <Link
+                  key={tool.to}
+                  to={tool.to}
+                  className="group flex min-h-[56px] items-center gap-3 rounded-xl border border-border/40 bg-bg-card px-4 py-3 transition-colors hover:border-accent/40 hover:bg-bg-elevated"
+                >
+                  {tool.image && (
+                    <img
+                      src={tool.image}
+                      alt=""
+                      aria-hidden="true"
+                      loading="lazy"
+                      className="h-8 w-8 shrink-0 rounded-lg object-contain opacity-90 transition-opacity group-hover:opacity-100"
+                    />
+                  )}
+                  <span className="min-w-0 flex-1">
+                    <span className="block truncate text-sm font-black text-text-primary transition-colors group-hover:text-accent">
+                      {tool.title}
+                    </span>
+                    <span className="block truncate text-xs font-mono text-text-muted">
+                      {tool.subtitle}
+                    </span>
+                  </span>
+                  <IconArrowRight
+                    size={14}
+                    className="shrink-0 text-text-muted transition-transform duration-200 group-hover:translate-x-0.5 group-hover:text-accent"
+                  />
+                </Link>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
