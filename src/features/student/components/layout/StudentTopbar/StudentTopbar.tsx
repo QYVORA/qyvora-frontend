@@ -7,7 +7,6 @@ import {
   IconCode,
   IconChevronRight,
 } from '@/shared/components/icons';
-import { SETTINGS_SECTIONS, type SettingsSectionId } from '../../../constants/settingsSections';
 import { getCourseById } from '../../../data/courses';
 import { useAuth } from '../../../../../core/contexts/AuthContext';
 import Logo from '../../../../../shared/components/brand/Logo';
@@ -43,16 +42,9 @@ const StudentTopbar = ({ railCollapsed = false }: { railCollapsed?: boolean }) =
   const roomMatchLegacy = useMatch('/dashboard/bootcamps/:bootcampId/modules/:moduleId/rooms/:roomId');
   const courseMatch = useMatch('/dashboard/courses/:courseId');
   const labMatch = useMatch('/dashboard/labs/:labType');
-  const settingsMatch = useMatch('/dashboard/settings/*');
-
-  const settingsPath = location.pathname.replace(/^\/dashboard\/settings\/?/, '');
-  const activeSettingsSection: SettingsSectionId = (SETTINGS_SECTIONS as { id: string }[]).some((s) => s.id === settingsPath)
-    ? (settingsPath as SettingsSectionId)
-    : 'appearance';
 
   const isCoursePage = Boolean(courseMatch);
   const isLabPage = Boolean(labMatch);
-  const isSettingsPage = Boolean(settingsMatch);
   const activeRoomMatch = roomMatch ?? roomMatchLegacy;
   const isRoomPage = Boolean(activeRoomMatch) || isCoursePage;
 
@@ -258,58 +250,6 @@ const StudentTopbar = ({ railCollapsed = false }: { railCollapsed?: boolean }) =
             </div>
             </div>
 
-          ) : isSettingsPage ? (
-          /* ══ SETTINGS MODE ══ */
-          <div className="px-4 md:px-6 h-20 md:h-24 flex items-center gap-1.5 md:gap-3">
-            <button
-              onClick={() => navigate('/dashboard')}
-              className={`flex h-10 w-10 md:h-12 md:w-12 shrink-0 items-center justify-center rounded-xl transition-colors text-text-secondary hover:text-accent active:scale-95`}
-              aria-label={"Back to dashboard"}
-            >
-              <IconArrowLeft size={20} strokeWidth={2.5} />
-            </button>
-            <div className={`hidden sm:flex items-center gap-1.5 text-xs font-bold uppercase tracking-widest min-w-0 text-text-muted`}>
-              <Link to="/dashboard" className={`transition-colors shrink-0 hover:text-accent active:opacity-70`}>
-                {"Dashboard"}
-              </Link>
-              <IconChevronRight size={12} className={`opacity-40 shrink-0 `} />
-              <span className="text-text-primary font-black truncate">Settings</span>
-            </div>
-            <div className="flex sm:hidden flex-col min-w-0 flex-1">
-              <span className="text-xs font-black uppercase tracking-[0.25em] text-accent leading-none mb-0.5">CONFIGURE</span>
-              <span className="text-sm font-black text-text-primary truncate leading-tight">Settings</span>
-            </div>
-
-            {/* Settings section nav — desktop (md+) */}
-            <nav className="hidden md:flex items-center justify-start flex-1 min-w-0 gap-1" data-tour-id="tour-settings-nav">
-              {SETTINGS_SECTIONS.map((section) => {
-                const active = activeSettingsSection === section.id;
-                const Icon = section.icon;
-                return (
-                  <Link
-                    key={section.id}
-                    to={section.path}
-                    className={`relative flex flex-col items-center gap-1.5 px-4 py-2 text-xs font-black uppercase tracking-widest transition-colors shrink-0 ${
-                      active ? 'text-accent' : 'text-text-secondary hover:text-text-primary active:opacity-70'
-                    }`}
-                  >
-                    <Icon size={30} strokeWidth={2.5} className={active ? 'text-accent' : 'text-text-secondary'} />
-                    <span>{section.label}</span>
-                    {active && (
-                      <span className="absolute bottom-0 left-1/4 right-1/4 h-0.5 rounded-full bg-accent" />
-                    )}
-                  </Link>
-                );
-              })}
-            </nav>
-
-            <div className="flex items-center gap-1.5 md:gap-2 shrink-0 ml-auto" />
-
-            {/* Mobile CP badge — right-aligned */}
-            <div className="md:hidden flex items-center gap-2 ml-auto">
-              <MobileCpBadge balance={cpBalance} />
-            </div>
-          </div>
         ) : (
           /* ══ DASHBOARD MODE ══ */
           <div className=" px-3 md:px-4 lg:px-6 h-20 md:h-24 flex items-center gap-2 md:gap-3">

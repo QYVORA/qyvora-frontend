@@ -196,9 +196,14 @@ const Dashboard = () => {
           )}
           {visitDates.length > 0 && (
             <Card className="flex flex-col p-5 md:p-6">
-              <p className="type-label mb-3 uppercase tracking-[0.12em] text-text-tertiary">
-                {"Week at a Glance"}
-              </p>
+              <div className="mb-2">
+                <p className="type-label mb-1.5 uppercase tracking-[0.12em] text-accent">
+                  {"Weekly track"}
+                </p>
+                <h3 className="type-h2 font-black uppercase tracking-tight text-text-primary">
+                  {"Week at a Glance"}
+                </h3>
+              </div>
               <WeekActivity visitDates={visitDates} visitDurations={visitDurations} />
             </Card>
           )}

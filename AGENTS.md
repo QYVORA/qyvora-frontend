@@ -111,6 +111,7 @@ h2 compact bento sections: **title only, no description**.
 - Navbar scroll-hide/invert behavior
 - `zustand` or `@tanstack/react-query` (installed but unused)
 - `StudentNavPanel` hamburger dropdown (sidebar rail + `StudentBottomNav` are the only dashboard navigation)
+- Settings-mode topbar variant in `StudentTopbar` (across the whole UI, incl. `tour-settings-nav`): settings pages use the standard dashboard topbar, never a Settings-mode topbar variant. Settings section navigation lives in-page on `SettingsPage`, not in the topbar. Do not reintroduce `isSettingsPage`/`settingsMatch`/`SETTINGS_SECTIONS` render variants in `StudentTopbar`.
 - Inline fullscreen buttons on walkthrough pages (walkthrough fullscreen toolbars are removed — keep interactive controls inside page content/sidebar)
 - Navbar link buttons with borders (borders only on badges and status indicators)
 
