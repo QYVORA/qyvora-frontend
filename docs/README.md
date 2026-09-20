@@ -1,6 +1,6 @@
 # QYVORA Frontend Documentation
 
-> **Last Updated:** 2026-08-04
+> **Last Updated:** 2026-09-20
 
 Welcome to the QYVORA Frontend documentation. This guide helps you navigate all available documentation.
 
@@ -10,7 +10,6 @@ Welcome to the QYVORA Frontend documentation. This guide helps you navigate all 
 
 ### Getting Started
 - **[ARCHITECTURE.md](ARCHITECTURE.md)** - Complete system architecture overview (start here)
-- **[_ROADMAP.md](_ROADMAP.md)** - Feature implementation status and future plans
 
 ### Core Systems
 - **[AUTHENTICATION.md](AUTHENTICATION.md)** - JWT auth, CSRF, session management
@@ -24,10 +23,18 @@ Welcome to the QYVORA Frontend documentation. This guide helps you navigate all 
 - **[LEARNING_SYSTEM.md](LEARNING_SYSTEM.md)** - Labs, courses, bootcamp overview
 - **[BOOTCAMP.md](BOOTCAMP.md)** - Hacker Protocol Bootcamp details + recent room features
 
-### UI/UX
+### UI/UX (canonical, enforced)
+- **[UI-PRINCIPLES.md](UI-PRINCIPLES.md)** - Enforced design rules (dark theme, accent, layout)
+- **[UI-PATTERN-INVENTORY.md](UI-PATTERN-INVENTORY.md)** - Existing pattern implementations
+- **[TYPOGRAPHY.md](TYPOGRAPHY.md)** - Heading scale source of truth
 - **[DESIGN_SYSTEM.md](DESIGN_SYSTEM.md)** - Colors, typography, buttons, spacing
+- **[COMPONENTS.md](COMPONENTS.md)** - Full component reference
 - **[COMPONENT_ARCHITECTURE.md](COMPONENT_ARCHITECTURE.md)** - Component structure
 - **[ACCESSIBILITY.md](ACCESSIBILITY.md)** - WCAG 2.1 AA compliance, keyboard nav
+- **[PROFILE_PAGE_UI.md](PROFILE_PAGE_UI.md)** - Profile page UI design and layout
+
+### Game / Reward Systems
+- **[TROPHY-SPECS.md](TROPHY-SPECS.md)** - Trophy, badge, and HPB reward specifications
 
 ### Development
 - **[BUILD_PIPELINE.md](BUILD_PIPELINE.md)** - Vite 6, TypeScript, ESLint setup
@@ -42,10 +49,7 @@ Welcome to the QYVORA Frontend documentation. This guide helps you navigate all 
 ### Planned Features
 - **[LEARNING_PATHS.md](LEARNING_PATHS.md)** - 5 guided learning tracks (not yet implemented)
 - **[CTF_PLAN.md](CTF_PLAN.md)** - CTF platform implementation plan (not yet implemented)
-- **[PLATFORM_ILLUSTRATION_SYSTEM.md](PLATFORM_ILLUSTRATION_SYSTEM.md)** - Unified visual identity with SVG illustrations and platform entities
-
-### Archive
-- **[archive/](archive/)** - Historical audit docs and command reference (read-only)
+- **[PLATFORM_ILLUSTRATION_SYSTEM.md](PLATFORM_ILLUSTRATION_SYSTEM.md)** - Unified visual identity with SVG illustrations and platform entities (planned)
 
 ---
 
@@ -54,8 +58,8 @@ Welcome to the QYVORA Frontend documentation. This guide helps you navigate all 
 ### For New Developers
 1. **[ARCHITECTURE.md](ARCHITECTURE.md)** - System overview
 2. **[ROUTING.md](ROUTING.md)** - Page structure
-3. **[DESIGN_SYSTEM.md](DESIGN_SYSTEM.md)** - UI patterns
-4. **[STATE_MANAGEMENT.md](STATE_MANAGEMENT.md)** - Data flow
+3. **[UI-PRINCIPLES.md](UI-PRINCIPLES.md)** - Enforced UI rules
+4. **[DESIGN_SYSTEM.md](DESIGN_SYSTEM.md)** - UI patterns
 
 ### For Backend Developers
 1. **[AUTHENTICATION.md](AUTHENTICATION.md)** - Token flow and security
@@ -63,13 +67,16 @@ Welcome to the QYVORA Frontend documentation. This guide helps you navigate all 
 3. **[ERROR_HANDLING.md](ERROR_HANDLING.md)** - Error response patterns
 
 ### For UI/UX Designers
-1. **[DESIGN_SYSTEM.md](DESIGN_SYSTEM.md)** - Design tokens and patterns
-2. **[ACCESSIBILITY.md](ACCESSIBILITY.md)** - Accessibility standards
+1. **[UI-PRINCIPLES.md](UI-PRINCIPLES.md)** - Enforced design rules
+2. **[UI-PATTERN-INVENTORY.md](UI-PATTERN-INVENTORY.md)** - Pattern implementations
+3. **[TYPOGRAPHY.md](TYPOGRAPHY.md)** - Heading scale
+4. **[DESIGN_SYSTEM.md](DESIGN_SYSTEM.md)** - Design tokens and patterns
+5. **[ACCESSIBILITY.md](ACCESSIBILITY.md)** - Accessibility standards
 
 ### For QA/Testers
 1. **[TESTING.md](TESTING.md)** - Test framework and patterns
 2. **[ERROR_HANDLING.md](ERROR_HANDLING.md)** - Error scenarios
-3. **[_ROADMAP.md](_ROADMAP.md)** - What's implemented vs planned
+3. **[ROADMAP.md](ROADMAP.md)** - What's implemented vs planned
 
 ### For DevOps
 1. **[DEPLOYMENT.md](DEPLOYMENT.md)** - Netlify configuration
@@ -83,7 +90,6 @@ Welcome to the QYVORA Frontend documentation. This guide helps you navigate all 
 ```
 docs/
 ├── README.md                    # This file - documentation index
-├── _ROADMAP.md                  # Implementation status and plans
 │
 ├── Core System Docs
 │   ├── ARCHITECTURE.md          # System overview (start here)
@@ -99,10 +105,18 @@ docs/
 │   ├── LEARNING_SYSTEM.md
 │   └── BOOTCAMP.md
 │
-├── UI/UX Docs
+├── UI/UX Docs (canonical)
+│   ├── UI-PRINCIPLES.md         # Enforced rules - source of truth
+│   ├── UI-PATTERN-INVENTORY.md  # Pattern implementations
+│   ├── TYPOGRAPHY.md            # Heading scale
 │   ├── DESIGN_SYSTEM.md
+│   ├── COMPONENTS.md            # Full component reference
+│   ├── COMPONENT_ARCHITECTURE.md
 │   ├── ACCESSIBILITY.md
 │   └── PROFILE_PAGE_UI.md       # Profile page UI design and layout
+│
+├── Game / Reward Systems
+│   └── TROPHY-SPECS.md          # Trophy, badge, HPB reward specs
 │
 ├── Development Docs
 │   ├── BUILD_PIPELINE.md
@@ -114,12 +128,10 @@ docs/
 ├── Advanced Features
 │   └── PWA.md
 │
-├── Planned Features
-│   ├── LEARNING_PATHS.md        # Not yet implemented
-│   ├── CTF_PLAN.md              # Not yet implemented
-│   └── PLATFORM_ILLUSTRATION_SYSTEM.md  # Not yet implemented
-│
-└── archive/                     # (not created yet - reserved for historical reference)
+└── Planned Features
+    ├── LEARNING_PATHS.md        # Not yet implemented
+    ├── CTF_PLAN.md              # Not yet implemented
+    └── PLATFORM_ILLUSTRATION_SYSTEM.md  # Planned
 ```
 
 Root-level docs (outside `docs/`):
@@ -144,10 +156,10 @@ Root-level docs (outside `docs/`):
 - State management: **[STATE_MANAGEMENT.md](STATE_MANAGEMENT.md)**
 
 ### UI Components
+- Enforced rules: **[UI-PRINCIPLES.md](UI-PRINCIPLES.md)**
+- Pattern implementations: **[UI-PATTERN-INVENTORY.md](UI-PATTERN-INVENTORY.md)**
 - Design tokens: **[DESIGN_SYSTEM.md](DESIGN_SYSTEM.md)**
-- Button styles: **[DESIGN_SYSTEM.md](DESIGN_SYSTEM.md)** - "Button System"
-- Identicon defaults: **[DESIGN_SYSTEM.md](DESIGN_SYSTEM.md)** - "Identicon Defaults"
-- Component structure: **[COMPONENT_ARCHITECTURE.md](COMPONENT_ARCHITECTURE.md)**
+- Component reference: **[COMPONENTS.md](COMPONENTS.md)**
 
 ### Learning Features
 - Lab simulations: **[SIMULATIONS.md](SIMULATIONS.md)**
@@ -166,11 +178,11 @@ Root-level docs (outside `docs/`):
 ## Important Notes
 
 ### About Planned Features
-Documents marked as planned (LEARNING_PATHS.md, CTF_PLAN.md) describe features that do NOT exist yet. They are design documents, not implementation documentation.
+Documents marked as planned (`LEARNING_PATHS.md`, `CTF_PLAN.md`, `PLATFORM_ILLUSTRATION_SYSTEM.md`) describe features that do NOT exist yet. They are design documents, not implementation documentation.
 
 ### Keeping Documentation Current
 When making code changes:
 1. Update relevant documentation files
 2. Keep status headers accurate
-3. Update **[_ROADMAP.md](_ROADMAP.md)** if adding/removing features
+3. Update `ROADMAP.md` if adding/removing features
 4. Use present tense for implemented features, future tense for planned ones
