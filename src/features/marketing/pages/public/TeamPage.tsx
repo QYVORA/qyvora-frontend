@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
-import { ArrowUpRight, Cpu, MapPin, Palette, ShieldCheck, Terminal, Users } from 'lucide-react';
-import { BrandGithubIcon, BrandLinkedinIcon, BrandXIcon, BrandYoutubeIcon, BrandMediumIcon } from '@/shared/components/icons';
+import { ArrowUpRight, Cpu, MapPin, Palette, ShieldCheck, Target, Terminal, Users } from 'lucide-react';
+import { BrandGithubIcon, BrandInstagramIcon, BrandLinkedinIcon, BrandXIcon, BrandYoutubeIcon, BrandMediumIcon } from '@/shared/components/icons';
 import { ScrollReveal } from '@/shared/components';
 import SEO from '@/shared/components/SEO';
 import PageHeader from '@/shared/components/ui/PageHeader';
@@ -13,6 +13,7 @@ const SOCIAL_ICONS: Record<string, React.ElementType> = {
   twitter: BrandXIcon,
   youtube: BrandYoutubeIcon,
   medium: BrandMediumIcon,
+  instagram: BrandInstagramIcon,
 };
 
 const MEMBER_ICONS: Record<string, React.ElementType> = {
@@ -20,6 +21,8 @@ const MEMBER_ICONS: Record<string, React.ElementType> = {
   sopt4: Palette,
   mohammedRafiq: Cpu,
   ghostVenom: ShieldCheck,
+  cyberX6: Target,
+  abdulKarimHamid: Users,
 };
 
 const MEMBER_LAYOUTS: Record<string, { imageFirst: boolean; imagePosition: string; marker: string }> = {
@@ -27,6 +30,8 @@ const MEMBER_LAYOUTS: Record<string, { imageFirst: boolean; imagePosition: strin
   sopt4: { imageFirst: true, imagePosition: 'object-[center_20%]', marker: '02' },
   mohammedRafiq: { imageFirst: false, imagePosition: 'object-[center_20%]', marker: '03' },
   ghostVenom: { imageFirst: true, imagePosition: 'object-[center_20%]', marker: '04' },
+  cyberX6: { imageFirst: false, imagePosition: 'object-[center_20%]', marker: '05' },
+  abdulKarimHamid: { imageFirst: true, imagePosition: 'object-[center_20%]', marker: '06' },
 };
 
 const TeamMemberSection = ({ member }: { member: TeamMember }) => {

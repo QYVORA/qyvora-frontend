@@ -2,6 +2,8 @@ import wsuits6Img from '@/assets/team/wsuits6.webp';
 import sopt4Img from '@/assets/team/sopt4.webp';
 import rafiqImg from '@/assets/team/mohammed_rafiq.webp';
 import ghostImg from '@/assets/quiteRoot/WhatsApp Image 2026-07-16 at 10.45.41 PM.webp';
+import cyberX6Img from '@/assets/team/cyberX6.webp';
+import karimHamidImg from '@/assets/team/karim_hamid.webp';
 
 export interface TeamSocials {
   youtube?: string;
@@ -97,6 +99,39 @@ export const teamData: TeamMember[] = [
     height: 1254,
     socials: {
       linkedin: 'https://www.linkedin.com/in/ghost-malware-222ab4285/',
+    },
+  },
+  {
+    id: 'cyberX6',
+    name: 'CYBER_X6',
+    role: 'Lead Penetration Tester',
+    bio: 'Lead penetration tester focused on exploitation, attack paths, and real-world security research from Lagos.',
+    profile: 'CYBER_X6 is the online alias of Peter O., QYVORA\'s Lead Penetration Tester. Based in Lagos, Nigeria, he works across penetration testing, exploit development, and security research — pressure-testing systems, tracing attack paths, and turning real findings into practical security improvements for QYVORA\'s engagements.',
+    disciplines: ['Penetration testing', 'Exploit development', 'Security research'],
+    location: 'Lagos, Nigeria',
+    image: cyberX6Img,
+    width: 720,
+    height: 1080,
+    socials: {
+      github: 'https://github.com/The-cyberX6',
+      linkedin: 'https://www.linkedin.com/in/The-cyberX6/',
+      twitter: 'https://x.com/The_cyberX6',
+    },
+  },
+  {
+    id: 'abdulKarimHamid',
+    name: 'Abdul Karim Hamid',
+    role: 'Human Resources Manager',
+    bio: 'Human resources lead keeping QYVORA\'s operator crew staffed, connected, and growing from Tamale.',
+    profile: 'Abdul Karim Hamid is QYVORA\'s Human Resources Manager. Based in Tamale, he oversees the people side of the operation — hiring, culture, and keeping operators connected across the team as QYVORA expands its workforce across Ghana and Nigeria.',
+    disciplines: ['Human resources', 'People operations', 'Team building'],
+    location: 'Tamale, Ghana',
+    image: karimHamidImg,
+    width: 560,
+    height: 560,
+    socials: {
+      linkedin: 'https://gh.linkedin.com/in/karim-hamid-659345384',
+      instagram: 'https://www.instagram.com/hybrid_hamid',
     },
   },
 ];
