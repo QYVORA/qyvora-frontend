@@ -38,7 +38,7 @@ const BlogCard: React.FC<BlogCardProps> = ({ post }) => (
     <div className="flex flex-col gap-2 p-4 md:p-5 flex-1 justify-between">
       <div>
         <Tags post={post} />
-        <h3 className="text-sm sm:text-base font-black text-text-primary group-hover:text-accent transition-colors leading-snug line-clamp-2">
+        <h3 className="mt-2 text-sm sm:text-base font-black text-text-primary group-hover:text-accent transition-colors leading-snug line-clamp-2">
           {post.title}
         </h3>
         <p className="text-xs text-text-muted leading-relaxed line-clamp-2 mt-1">

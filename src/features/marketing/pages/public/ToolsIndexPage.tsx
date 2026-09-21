@@ -82,12 +82,12 @@ const ToolsIndexPage: React.FC = () => {
           description={"Thirteen offensive security tools built by the QuiteRoot collective. Each tool has full documentation, install guides, and walkthroughs."}
         />
 
-        <div className="flex flex-col gap-3">
+        <div className="mt-10 flex flex-col gap-3">
           <div className="scroll-x no-scrollbar flex w-full flex-nowrap items-center gap-1.5">
             <button
               onClick={() => setActiveCategory('')}
               aria-pressed={!activeCategory}
-              className={`min-h-[44px] shrink-0 whitespace-nowrap rounded-xl px-3 text-xs font-black uppercase tracking-widest transition-colors ${
+              className={`inline-flex min-h-[44px] shrink-0 items-center justify-center whitespace-nowrap rounded-xl px-3 text-xs font-black uppercase tracking-widest transition-colors ${
                 !activeCategory ? 'bg-accent text-on-accent' : 'border border-border bg-surface-raised text-text-muted hover:border-accent/50 hover:text-accent'
               }`}
             >
@@ -98,7 +98,7 @@ const ToolsIndexPage: React.FC = () => {
                 key={category}
                 onClick={() => setActiveCategory(category)}
                 aria-pressed={activeCategory === category}
-                className={`min-h-[44px] shrink-0 whitespace-nowrap rounded-xl px-3 text-xs font-black uppercase tracking-widest transition-colors ${
+                className={`inline-flex min-h-[44px] shrink-0 items-center justify-center whitespace-nowrap rounded-xl px-3 text-xs font-black uppercase tracking-widest transition-colors ${
                   activeCategory === category ? 'bg-accent text-on-accent' : 'border border-border bg-surface-raised text-text-muted hover:border-accent/50 hover:text-accent'
                 }`}
               >

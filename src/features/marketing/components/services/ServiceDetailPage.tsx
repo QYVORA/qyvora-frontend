@@ -203,7 +203,7 @@ const ServiceDetailPage: React.FC<{ svc: ServiceConfig }> = ({ svc }) => {
           ──────────────────────────────────────────────────────────────────── */}
           <div className="grid w-full grid-cols-1 items-center gap-10 lg:grid-cols-2 lg:gap-16">
             <ScrollReveal>
-              <div className="relative h-full overflow-hidden rounded-2xl border border-accent/40 bg-accent/5 p-10">
+              <div className="relative mx-auto h-full w-full max-w-3xl overflow-hidden rounded-2xl border border-accent/40 bg-accent/5 px-6 py-14 md:px-12 md:py-16">
                 <DottedMapOverlay className="rounded-2xl" />
                 <div className="relative flex flex-col items-start space-y-6 text-left">
                   <h3 className="text-2xl font-black tracking-tight text-text-primary md:text-3xl">

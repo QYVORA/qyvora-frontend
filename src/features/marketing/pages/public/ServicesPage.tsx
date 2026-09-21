@@ -59,7 +59,7 @@ const ServicesPage = () => {
 
         {/* Final CTA — the conversion surface */}
         <ScrollReveal>
-          <div className="relative mt-14 overflow-hidden rounded-2xl border border-accent/40 bg-accent/5 px-6 py-14 md:mt-20 md:px-12 md:py-16">
+          <div className="relative mx-auto mt-14 w-full max-w-3xl overflow-hidden rounded-2xl border border-accent/40 bg-accent/5 px-6 py-14 md:mt-20 md:px-12 md:py-16">
             <DottedMapOverlay className="rounded-2xl" />
             <div className="relative flex flex-col items-start gap-6 md:items-center md:text-center">
               <p className="type-label uppercase tracking-[0.12em] text-accent">

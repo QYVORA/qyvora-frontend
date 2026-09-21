@@ -95,7 +95,7 @@ export const BulletList = ({ items }: { items: { icon: React.ReactNode; text: Re
 );
 
 export const CTA = ({ title, desc, href, label }: { title: string; desc: string; href: string; label: string }) => (
-  <div className="relative overflow-hidden p-8 md:p-14 rounded-2xl border border-accent/40 bg-accent/5">
+  <div className="relative mx-auto w-full max-w-3xl overflow-hidden rounded-2xl border border-accent/40 bg-accent/5 px-6 py-14 md:px-12 md:py-16">
     <DottedMapOverlay className="rounded-2xl" />
     <div className="relative">
       <h2 className="text-3xl md:text-5xl font-black uppercase tracking-tight mb-6">

@@ -63,7 +63,7 @@ const DocTocNav: React.FC<DocTocNavProps> = ({ sections }) => {
             onClick={jumpTo(section.id)}
             aria-current={activeId === section.id ? 'true' : undefined}
             className={cn(
-              'min-h-[44px] shrink-0 whitespace-nowrap rounded-xl px-3 text-xs font-black uppercase tracking-widest transition-colors',
+              'inline-flex min-h-[44px] shrink-0 items-center justify-center whitespace-nowrap rounded-xl px-3 text-xs font-black uppercase tracking-widest transition-colors',
               activeId === section.id
                 ? 'bg-accent text-on-accent'
                 : 'border border-border bg-surface-raised text-text-muted hover:border-accent/50 hover:text-accent',

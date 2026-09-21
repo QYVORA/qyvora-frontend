@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { Link, NavLink, useLocation } from 'react-router-dom';
 import { AnimatePresence, motion } from 'motion/react';
-import { Menu } from 'lucide-react';
+import { User } from 'lucide-react';
 import { Logo } from '@/shared/components/brand';
 import { useAuth } from '@/core/contexts/AuthContext';
 import { useScrollLock } from '@/core/hooks/useScrollLock';
@@ -24,9 +24,11 @@ const LINKS: NavLinkDef[] = [
 ];
 
 /**
- * PublicNavigation — calm public nav. Five sections, one contextual CTA and a
- * language switcher. Mobile gets a plain drawer (list, not card grids). No
- * glow, no border on links — borders stay on badges/status indicators only.
+ * PublicNavigation — calm public nav. Five sections and one contextual CTA.
+ * Desktop shows the section links inline; mobile relies on PublicBottomNav for
+ * primary navigation, so the mobile trigger is an account-only menu (Dashboard
+ * or Log In / Start learning) — never a second copy of the section links.
+ * No glow, no border on links — borders stay on badges/status indicators only.
  */
 const PublicNavigation: React.FC = React.memo(() => {
   const { user } = useAuth();
@@ -122,12 +124,12 @@ const PublicNavigation: React.FC = React.memo(() => {
               )}
             </div>
             <IconButton
-              label={"Menu"}
+              label={"Account"}
               tooltip={false}
               variant="default"
               className="md:hidden"
               onClick={() => setOpen((v) => !v)}
-              icon={<Menu className="h-5 w-5" aria-hidden="true" />}
+              icon={<User className="h-5 w-5" aria-hidden="true" />}
               active={open}
             />
           </div>
@@ -151,39 +153,28 @@ const PublicNavigation: React.FC = React.memo(() => {
               ref={panelRef}
               role="dialog"
               aria-modal="true"
-              aria-label={"Menu"}
+              aria-label={"Account"}
               initial={ctx}
               animate={{ opacity: 1, y: 0 }}
               exit={ctx}
               transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }}
               className="fixed inset-x-0 top-[80px] z-[96] max-h-[calc(100dvh-80px)] overflow-y-auto border-t border-border-subtle bg-surface"
             >
-              <nav aria-label={"Menu"} className="flex flex-col px-3 py-4 md:px-4">
-                {LINKS.map((link) => (
-                  <Link
-                    key={link.key}
-                    to={link.to}
-                    className="flex min-h-[48px] items-center justify-between border-b border-border-subtle text-base font-medium text-text-primary transition-colors hover:text-accent"
-                  >
-                    {link.label}
-                  </Link>
-                ))}
-                <div className="mt-4 flex flex-col gap-2">
-                  {user ? (
-                    <Button to="/dashboard" className="w-full">
-                      {"Dashboard"}
+              <nav aria-label={"Account"} className="flex flex-col gap-2 px-3 py-4 md:px-4">
+                {user ? (
+                  <Button to="/dashboard" className="w-full">
+                    {"Dashboard"}
+                  </Button>
+                ) : (
+                  <>
+                    <Button to="/register" className="w-full">
+                      {"Start learning"}
                     </Button>
-                  ) : (
-                    <>
-                      <Button to="/register" className="w-full">
-                        {"Start learning"}
-                      </Button>
-                      <Button to="/login" variant="secondary" className="w-full">
-                        {"Log In"}
-                      </Button>
-                    </>
-                  )}
-                </div>
+                    <Button to="/login" variant="secondary" className="w-full">
+                      {"Log In"}
+                    </Button>
+                  </>
+                )}
               </nav>
             </motion.div>
           </>

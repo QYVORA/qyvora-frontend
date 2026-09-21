@@ -139,7 +139,7 @@ const LearnPage: React.FC = () => {
         <div
           role="tablist"
           aria-label={"Learn | QYVORA"}
-          className="mb-10 mt-10 flex flex-wrap gap-2 border-b border-border-subtle pb-4"
+          className="mb-8 mt-10 flex flex-wrap gap-2 border-b border-border-subtle pb-4"
         >
           {TABS.map((tab) => {
             const selected = active === tab.id;

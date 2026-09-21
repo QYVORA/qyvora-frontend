@@ -94,7 +94,7 @@ const LeaderboardPage = () => {
                 key={p.key}
                 onClick={() => handlePeriodChange(p.key)}
                 aria-pressed={period === p.key}
-                className={`min-h-[44px] rounded-xl px-4 text-xs font-black uppercase tracking-widest transition-colors ${
+                className={`inline-flex min-h-[44px] items-center justify-center rounded-xl px-4 text-xs font-black uppercase tracking-widest transition-colors ${
                   period === p.key
                     ? 'bg-accent text-on-accent'
                     : 'border border-border bg-surface-raised text-text-muted hover:border-accent/50 hover:text-accent'
@@ -110,7 +110,7 @@ const LeaderboardPage = () => {
               <button
                 onClick={() => handleCohortChange(null)}
                 aria-pressed={!cohortId}
-                className={`min-h-[44px] rounded-xl px-4 text-xs font-black uppercase tracking-widest transition-colors ${
+                className={`inline-flex min-h-[44px] items-center justify-center rounded-xl px-4 text-xs font-black uppercase tracking-widest transition-colors ${
                   !cohortId
                     ? 'bg-accent text-on-accent'
                     : 'border border-border bg-surface-raised text-text-muted hover:border-accent/50 hover:text-accent'
@@ -124,7 +124,7 @@ const LeaderboardPage = () => {
                   key={cohort.id}
                   onClick={() => handleCohortChange(cohort.id)}
                   aria-pressed={cohortId === cohort.id}
-                  className={`min-h-[44px] rounded-xl px-4 text-xs font-black uppercase tracking-widest transition-colors ${
+                  className={`inline-flex min-h-[44px] items-center justify-center rounded-xl px-4 text-xs font-black uppercase tracking-widest transition-colors ${
                     cohortId === cohort.id
                       ? 'bg-accent text-on-accent'
                       : 'border border-border bg-surface-raised text-text-muted hover:border-accent/50 hover:text-accent'

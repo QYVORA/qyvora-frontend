@@ -45,13 +45,13 @@ const BlogsPage = () => {
           }
         />
 
-        <div className="mt-10 space-y-6">
+        <div className="mt-10">
           <div className="flex flex-col gap-3">
             <div className="scroll-x no-scrollbar flex w-full flex-nowrap items-center gap-1.5">
               <button
                 onClick={() => setActiveTag('')}
                 aria-pressed={!activeTag}
-                className={`min-h-[44px] shrink-0 whitespace-nowrap rounded-xl px-3 text-xs font-black uppercase tracking-widest transition-colors ${
+                className={`inline-flex min-h-[44px] shrink-0 items-center justify-center whitespace-nowrap rounded-xl px-3 text-xs font-black uppercase tracking-widest transition-colors ${
                   !activeTag ? 'bg-accent text-on-accent' : 'border border-border bg-surface-raised text-text-muted hover:border-accent/50 hover:text-accent'
                 }`}
               >
@@ -62,7 +62,7 @@ const BlogsPage = () => {
                   key={tag}
                   onClick={() => setActiveTag(tag)}
                   aria-pressed={activeTag === tag}
-                  className={`min-h-[44px] shrink-0 whitespace-nowrap rounded-xl px-3 text-xs font-black uppercase tracking-widest transition-colors ${
+                  className={`inline-flex min-h-[44px] shrink-0 items-center justify-center whitespace-nowrap rounded-xl px-3 text-xs font-black uppercase tracking-widest transition-colors ${
                     activeTag === tag ? 'bg-accent text-on-accent' : 'border border-border bg-surface-raised text-text-muted hover:border-accent/50 hover:text-accent'
                   }`}
                 >
@@ -87,9 +87,10 @@ const BlogsPage = () => {
             <EmptyState
               icon={<FileText className="h-6 w-6" />}
               title={"No articles found."}
+              className="mt-8"
             />
           ) : (
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 md:gap-4 items-stretch">
+            <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 md:gap-4 items-stretch">
               {filtered.map((post) => (
                 <ScrollReveal amount={0.05} className="h-full" key={post.slug}>
                   <BlogCard post={post} />
