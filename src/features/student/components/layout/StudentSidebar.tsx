@@ -13,7 +13,6 @@ import {
   Settings,
   LogOut,
   Cog,
-  Code2,
   PanelLeftClose,
   PanelLeftOpen,
 } from 'lucide-react';
@@ -100,7 +99,6 @@ const StudentSidebar: React.FC<{ collapsed?: boolean; onToggleCollapse?: () => v
   }, []);
 
   const openTerminal = () => window.dispatchEvent(new CustomEvent('qyvora:open-terminal'));
-  const openIde = () => window.dispatchEvent(new CustomEvent('qyvora:open-ide'));
   const openNetwork = () => window.dispatchEvent(new CustomEvent('qyvora:open-network-visualizer'));
 
   const handleLogout = async () => {
@@ -141,7 +139,7 @@ const StudentSidebar: React.FC<{ collapsed?: boolean; onToggleCollapse?: () => v
                         to={item.to}
                         data-tour-id={item.key === 'profile' ? 'tour-profile-sidebar' : undefined}
                         className={`flex min-h-[44px] items-center rounded-lg py-2 text-sm transition-colors focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-accent ${
-                          collapsed ? 'justify-center px-0' : 'gap-3 px-3'
+                          collapsed ? 'h-11 w-11 justify-center px-0' : 'gap-3 px-3'
                         } ${
                           active ? 'bg-accent/10 text-accent' : 'text-text-secondary hover:bg-surface-raised hover:text-text-primary'
                         }`}
@@ -180,11 +178,6 @@ const StudentSidebar: React.FC<{ collapsed?: boolean; onToggleCollapse?: () => v
             <Tooltip content={"Terminal"}>
               <button type="button" onClick={openTerminal} aria-label={"Terminal"} className={`flex min-h-[44px] min-w-[44px] ${collapsed ? 'w-full' : 'flex-1'} items-center justify-center rounded-lg border border-transparent text-text-secondary transition-colors hover:border-border-subtle hover:text-accent focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-accent`}>
                 <TerminalIcon className="h-[18px] w-[18px]" aria-hidden="true" />
-              </button>
-            </Tooltip>
-            <Tooltip content={"IDE"}>
-              <button type="button" onClick={openIde} aria-label={"IDE"} className={`flex min-h-[44px] min-w-[44px] ${collapsed ? 'w-full' : 'flex-1'} items-center justify-center rounded-lg border border-transparent text-text-secondary transition-colors hover:border-border-subtle hover:text-accent focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-accent`}>
-                <Code2 className="h-[18px] w-[18px]" aria-hidden="true" />
               </button>
             </Tooltip>
             <Tooltip content={"Network Lab"}>

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Navigate, Link, useParams } from 'react-router-dom';
 import { Zap, ArrowLeft, Play } from 'lucide-react';
-import { IconArrowRight, IconTerminal, IconCode, IconNetwork } from '@/shared/components/icons';
+import { IconArrowRight, IconTerminal, IconNetwork } from '@/shared/components/icons';
 import SEO from '@/shared/components/SEO';
 import CodeBlock from '@/shared/components/CodeBlock';
 import PageHeader from '@/shared/components/ui/PageHeader';
@@ -12,18 +12,15 @@ import { useAuth } from '@/core/contexts/AuthContext';
 import { SimulationProvider } from '@/features/student/components/simulations';
 import RelatedContentSection from '@/shared/components/RelatedContentSection';
 import { TerminalWrapper } from '@/shared/components/learning/TerminalWrapper';
-import Ide from '@/features/student/components/tools/Ide';
 import NetworkBuilder from '@/features/student/components/tools/NetworkBuilder';
 
-const SLUG_KEYS: Record<string, 'terminal' | 'ide' | 'network'> = {
+const SLUG_KEYS: Record<string, 'terminal' | 'network'> = {
   terminal: 'terminal',
-  ide: 'ide',
   'network-visualizer': 'network',
 };
 
-const SIM_ICONS: Record<'terminal' | 'ide' | 'network', React.ComponentType<{ className?: string }>> = {
+const SIM_ICONS: Record<'terminal' | 'network', React.ComponentType<{ className?: string }>> = {
   terminal: IconTerminal,
-  ide: IconCode,
   network: IconNetwork,
 };
 
@@ -86,15 +83,13 @@ echo "Current dir: $(pwd)"
   },
 ];
 
-const SIM_CONTENT: Record<'terminal' | 'ide' | 'network', { title: string; titleAccent: string; description: string; tag: string; demoTitle: string; demoDescription: string; features: string[] }> = {
+const SIM_CONTENT: Record<'terminal' | 'network', { title: string; titleAccent: string; description: string; tag: string; demoTitle: string; demoDescription: string; features: string[] }> = {
   terminal: {"title": "Browser Terminal", "titleAccent": "Linux Shell", "description": "A full Linux shell running in your browser. Navigate a realistic filesystem, inspect permissions, and chain commands with pipes and redirects.", "tag": "Linux Shell", "demoTitle": "Live Terminal", "demoDescription": "This is a real simulated shell. Type help or run commands like ls, cat, whoami, and history.", "features": ["Realistic Linux filesystem", "Pipes, redirects, and environment variables", "Persistent session state", "Typed output with realistic timing"]},
-  ide: {"title": "Code", "titleAccent": "Playground", "description": "A browser-based IDE with Python, JavaScript, and Bash. Write code, run it, and see output, with a terminal docked right underneath.", "tag": "3 Languages", "demoTitle": "Live IDE", "demoDescription": "Edit any file and hit Run. The built-in terminal is fully interactive.", "features": ["Python, JavaScript and Bash", "Syntax-highlighted editor", "Interactive output console", "Built-in terminal"]},
   network: {"title": "Network", "titleAccent": "Visualizer", "description": "Map live network topologies: hosts, subnets, ports, and services, the same way operators build a picture of a target environment.", "tag": "Topology Mapper", "demoTitle": "Live Network Map", "demoDescription": "Inspect hosts, subnets, and connections. Click nodes to see service details.", "features": ["Interactive topology canvas", "Host and service discovery", "Subnet grouping", "Drag and connect nodes"]},
 };
 
-const SIM_META: Record<'terminal' | 'ide' | 'network', { slug: string; icon: React.ComponentType<{ className?: string }> }> = {
+const SIM_META: Record<'terminal' | 'network', { slug: string; icon: React.ComponentType<{ className?: string }> }> = {
   terminal: { slug: '/simulations/terminal', icon: IconTerminal },
-  ide: { slug: '/simulations/ide', icon: IconCode },
   network: { slug: '/simulations/network-visualizer', icon: IconNetwork },
 };
 
@@ -227,16 +222,9 @@ const SimulationPage = () => {
         {key === 'terminal' && (
           <TerminalWrapper open={demoOpen} onOpenChange={setDemoOpen} context={{ type: 'dashboard' }} mode="modal" />
         )}
-        {key === 'ide' && (
-          <Ide
-            open={demoOpen}
-            onOpenChange={setDemoOpen}
-            title="Code Playground"
-            terminalContext={{ type: 'dashboard' }}
-            files={DEMO_FILES}
-          />
-        )}
-        {key === 'network' && <NetworkBuilder open={demoOpen} onOpenChange={setDemoOpen} />}
+        {
+          key === 'network' && <NetworkBuilder open={demoOpen} onOpenChange={setDemoOpen} />
+        }
       </SimulationProvider>
     </div>
   );

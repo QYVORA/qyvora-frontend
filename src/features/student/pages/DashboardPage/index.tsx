@@ -32,7 +32,7 @@ import {
   Crown,
   Download,
 } from 'lucide-react';
-import { IconCode, IconTerminal, IconNetwork } from '@/shared/components/icons';
+import { IconTerminal, IconNetwork } from '@/shared/components/icons';
 import LearningCard from '@/shared/components/learning/LearningCard';
 import CourseBadge from '@/shared/components/CourseBadge';
 import { LABS } from '@/features/student/constants/labs';
@@ -47,7 +47,6 @@ const BOOTCAMP_COVER_IMGS: Record<string, string> = { bc_1775270338500: hpbCover
 const BOOTCAMP_FALLBACK_IMG = hpbCoverImg;
 
 const TOOLS = [
-  { id: 'ide', label: 'IDE', desc: 'Write and run Python/Bash for course exercises', route: '/dashboard/tools/ide', icon: IconCode },
   { id: 'terminal', label: 'Terminal', desc: 'Kali Linux terminal emulator', route: '/dashboard/tools/terminal', icon: IconTerminal },
   { id: 'network-visualizer', label: 'Network Visualizer', desc: 'Build and explore network topologies', route: '/dashboard/tools/network-visualizer', icon: IconNetwork },
 ];

@@ -26,19 +26,22 @@ const DayBar = ({ label, minutes, isToday, maxMinutes }: DayBarProps) => {
 
   return (
     <div
-      className="flex flex-col items-center gap-2 flex-1 min-w-0 group"
+      className="group flex min-w-0 flex-1 flex-col items-center"
       title={active ? `${label} · ${minutesLabel}` : label}
     >
-      <div className="relative w-full flex-1 flex items-end justify-center min-h-[104px]">
-        <span
-          className={`mb-auto transition-opacity duration-200 ${
-            active ? 'opacity-100 text-[10px] font-mono font-black text-accent' : 'opacity-0'
-          }`}
-        >
-          {active ? minutesLabel : ''}
-        </span>
+      {/* Minutes value — reserved line so every bar shares one top edge */}
+      <span
+        className={`mb-1.5 text-[10px] font-mono font-black transition-opacity duration-200 ${
+          active ? 'text-accent opacity-100' : 'opacity-0'
+        }`}
+      >
+        {minutesLabel || '0m'}
+      </span>
+
+      {/* Bar track — bottom-anchored, grows into the reserved zone above */}
+      <div className="flex min-h-[72px] w-full flex-1 items-end justify-center">
         <div
-          className={`w-full max-w-[34px] rounded-t-md transition-[height,background-color] duration-500 aspect-[1/4] ${
+          className={`w-full max-w-[34px] rounded-t-md transition-[height,background-color] duration-500 ${
             isToday
               ? 'bg-gradient-to-t from-accent/40 via-accent/70 to-accent'
               : active
@@ -48,7 +51,9 @@ const DayBar = ({ label, minutes, isToday, maxMinutes }: DayBarProps) => {
           style={{ height: `${heightPercent}%` }}
         />
       </div>
-      <div className="flex flex-col items-center gap-1">
+
+      {/* Day label */}
+      <div className="flex flex-col items-center gap-1 pt-1.5">
         <span
           className={`text-[11px] font-bold uppercase tracking-wider transition-colors ${
             isToday ? 'text-accent' : active ? 'text-text-secondary' : 'text-text-muted/40'
@@ -56,7 +61,7 @@ const DayBar = ({ label, minutes, isToday, maxMinutes }: DayBarProps) => {
         >
           {label}
         </span>
-        {isToday && <span className="w-1 h-1 rounded-full bg-accent" />}
+        {isToday && <span className="h-1 w-1 rounded-full bg-accent" />}
       </div>
     </div>
   );
@@ -101,9 +106,9 @@ const WeekActivity = ({ visitDates = [], visitDurations = {} }: WeekActivityProp
     : `${Math.round(totalMinutes)}m`;
 
   return (
-    <div className="flex flex-col flex-1 min-h-0">
+    <div className="flex min-h-0 flex-1 flex-col">
       <div
-        className="flex items-stretch gap-2 md:gap-3 w-full pt-2 flex-1 min-h-[164px]"
+        className="flex min-h-[164px] w-full flex-1 items-stretch gap-2 pt-2 md:gap-3"
         role="img"
         aria-label={`Activity: ${activeDays} of 7 active days this week — ${summaryMinutes} total`}
       >
@@ -117,7 +122,7 @@ const WeekActivity = ({ visitDates = [], visitDurations = {} }: WeekActivityProp
           />
         ))}
       </div>
-      <div className="mt-54 text-center shrink-0">
+      <div className="mt-4 text-center">
         <span className="type-label text-text-muted">
           {summaryMinutes}
           {" · "}

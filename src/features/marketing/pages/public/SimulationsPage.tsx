@@ -19,7 +19,6 @@ const SIMULATIONS: {
   features: string[];
 }[] = [
   { id: 'terminal', slug: '/simulations/terminal', icon: IconTerminal, title: 'Browser Terminal', description: 'A full Linux shell running in your browser. Navigate a realistic filesystem, inspect permissions, and chain commands with pipes and redirects.', features: ['Realistic Linux filesystem', 'Pipes, redirects, and environment variables', 'Persistent session state', 'Typed output with realistic timing'] },
-  { id: 'ide', slug: '/simulations/ide', icon: IconCode, title: 'Code', description: 'A browser-based IDE with Python, JavaScript, and Bash. Write code, run it, and see output, with a terminal docked right underneath.', features: ['Python, JavaScript and Bash', 'Syntax-highlighted editor', 'Interactive output console', 'Built-in terminal'] },
   { id: 'network', slug: '/simulations/network-visualizer', icon: IconNetwork, title: 'Network', description: 'Map live network topologies: hosts, subnets, ports, and services, the same way operators build a picture of a target environment.', features: ['Interactive topology canvas', 'Host and service discovery', 'Subnet grouping', 'Drag and connect nodes'] },
 ];
 

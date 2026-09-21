@@ -96,7 +96,6 @@ const OsintLab          = lazy(() => import('../features/student/pages/labs/Osin
 const KillChainLab      = lazy(() => import('../features/student/pages/labs/KillChainLab'));
 
 // Tool full-screen pages
-const IdeToolPage         = lazy(() => import('../features/student/pages/tools/IdeToolPage'));
 const TerminalToolPage    = lazy(() => import('../features/student/pages/tools/TerminalToolPage'));
 const NetworkVizToolPage  = lazy(() => import('../features/student/pages/tools/NetworkVizToolPage'));
 
@@ -270,7 +269,6 @@ export const AppRouter = () => {
         </Route>
 
         {/* ── Tool full-screen pages (no layout chrome) ──────── */}
-        <Route path="/dashboard/tools/ide" element={<Wrap scope="IDE Tool"><StudentOnly><IdeToolPage /></StudentOnly></Wrap>} />
         <Route path="/dashboard/tools/terminal" element={<Wrap scope="Terminal Tool"><StudentOnly><TerminalToolPage /></StudentOnly></Wrap>} />
         <Route path="/dashboard/tools/network-visualizer" element={<Wrap scope="Network Visualizer Tool"><StudentOnly><NetworkVizToolPage /></StudentOnly></Wrap>} />
 

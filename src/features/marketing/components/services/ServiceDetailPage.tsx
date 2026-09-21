@@ -60,35 +60,36 @@ const ServiceDetailPage: React.FC<{ svc: ServiceConfig }> = ({ svc }) => {
         />
 
         <div className="mt-10 space-y-12 md:mt-14 md:space-y-16">
-          {/* ── SECTION 2: Scope & What's Included ─────────────────────────
-              Desktop: LEFT = header + scope text, RIGHT = included items card
+          {/* ── SECTION 1: What This Engagement Covers ─────────────────────
+              Desktop: LEFT = heading + scope + pricing, RIGHT = included card
           ──────────────────────────────────────────────────────────────────── */}
-          <div className="w-full grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center">
-            {/* Left: Header */}
+          <div className="grid w-full grid-cols-1 items-center gap-10 lg:grid-cols-2 lg:gap-16">
             <div className="flex flex-col justify-center">
               <ScrollReveal>
                 <div className="space-y-5">
                   <SimpleHeading
+                    compact
                     text="What This Engagement Covers"
                     accentWords={1}
                     accentPlacement="end"
                     kicker="Scope of Work"
                     align="left"
                     description={svc.scope}
+                    descriptionWidth="max-w-xl"
                   />
                   {svc.price && (
                     <div className="pt-2">
-                      <span className="text-xs font-black uppercase tracking-widest text-text-muted flex items-center gap-1.5 mb-3">
-                        <Target className="w-3 h-3" /> Pricing
+                      <span className="mb-3 flex items-center gap-1.5 text-xs font-black uppercase tracking-widest text-text-muted">
+                        <Target className="h-3 w-3" /> Pricing
                       </span>
                       <div className="flex flex-wrap items-baseline gap-x-4 gap-y-1">
                         <span className={`font-black ${svc.featured ? 'text-accent text-2xl sm:text-3xl' : 'text-text-primary text-xl sm:text-2xl'}`}>
                           {svc.price}
                         </span>
-                        <span className="text-sm sm:text-base text-text-muted font-mono">{svc.priceLocal}</span>
+                        <span className="text-sm font-mono text-text-muted sm:text-base">{svc.priceLocal}</span>
                       </div>
                       {svc.priceNote && (
-                        <p className="text-sm text-text-muted leading-relaxed mt-2 font-mono">{svc.priceNote}</p>
+                        <p className="mt-2 font-mono text-sm leading-relaxed text-text-muted">{svc.priceNote}</p>
                       )}
                     </div>
                   )}
@@ -96,112 +97,100 @@ const ServiceDetailPage: React.FC<{ svc: ServiceConfig }> = ({ svc }) => {
               </ScrollReveal>
             </div>
 
-            {/* Right: Included items */}
             <ScrollReveal delay={0.1}>
-              <div className="relative h-full rounded-2xl border border-border/50 bg-bg-card p-6 lg:p-7 overflow-hidden">
-                <DottedMapOverlay className="rounded-2xl" />
-                <div className="relative">
-                  <span className="text-xs font-black uppercase tracking-widest text-text-muted mb-4 block">
-                    What&apos;s Included
-                  </span>
-                  <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                    {svc.included.map((item) => (
-                      <li key={item} className="flex items-start gap-3 rounded-xl border border-border/50 bg-bg-elevated/60 px-3 py-1.5">
-                        <span className="w-6 h-6 rounded-lg bg-accent/10 flex items-center justify-center shrink-0 mt-0.5">
-                          <CheckCircle2 className="w-4 h-4 text-accent" />
-                        </span>
-                        <span className="text-sm sm:text-base text-text-secondary leading-relaxed flex-1">{item}</span>
-                      </li>
-                    ))}
-                  </ul>
-                  {svc.highlight && (
-                    <div className="mt-4 rounded-xl border border-accent/30 bg-accent/5 px-4 py-3">
-                      <p className="text-sm sm:text-base text-accent font-mono leading-relaxed">{svc.highlight}</p>
-                    </div>
-                  )}
-                </div>
+              <div className="h-full rounded-2xl border border-border-subtle bg-surface p-6 lg:p-7">
+                <span className="mb-4 block text-xs font-black uppercase tracking-widest text-text-muted">
+                  What&apos;s Included
+                </span>
+                <ul className="grid grid-cols-1 gap-2 sm:grid-cols-2">
+                  {svc.included.map((item) => (
+                    <li key={item} className="flex items-start gap-3 rounded-xl border border-border-subtle bg-surface-raised px-3 py-2">
+                      <span className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-lg bg-accent/10">
+                        <CheckCircle2 className="h-4 w-4 text-accent" />
+                      </span>
+                      <span className="flex-1 text-sm leading-relaxed text-text-secondary sm:text-base">{item}</span>
+                    </li>
+                  ))}
+                </ul>
+                {svc.highlight && (
+                  <div className="mt-4 rounded-xl border border-accent/30 bg-accent/5 px-4 py-3">
+                    <p className="font-mono text-sm leading-relaxed text-accent sm:text-base">{svc.highlight}</p>
+                  </div>
+                )}
               </div>
             </ScrollReveal>
           </div>
 
-          {/* ── SECTION 3: Benefits (reversed) ─────────────────────────────
-              Desktop: LEFT = benefits cards, RIGHT = header
+          {/* ── SECTION 2: Benefits ───────────────────────────────────────
+              Centered heading + a two-by-two grid of benefit cards. Breaks
+              the alternating split rhythm while staying on the card system.
           ──────────────────────────────────────────────────────────────────── */}
-          <div className="w-full grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center">
-            {/* Left: Benefits cards */}
+          <div className="flex flex-col items-center gap-8">
             <ScrollReveal>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                {svc.benefits.map((benefit, idx) => (
-                  <ScrollReveal key={benefit} delay={idx * 0.05} className="h-full">
-                    <div className="relative h-full rounded-2xl border border-border/50 bg-bg-card p-6 lg:p-7 overflow-hidden">
-                      <DottedMapOverlay className="rounded-2xl" />
-                      <div className="relative flex items-start gap-4">
-                        <div className="w-10 h-10 rounded-xl bg-accent/10 border border-accent/30 flex items-center justify-center shrink-0">
-                          <Target className="w-5 h-5 text-accent" />
-                        </div>
-                        <p className="text-sm sm:text-base text-text-secondary leading-relaxed font-mono flex-1">
-                          {benefit}
-                        </p>
-                      </div>
-                    </div>
-                  </ScrollReveal>
-                ))}
-              </div>
+              <SimpleHeading
+                compact
+                text="What You Gain"
+                accentWords={1}
+                accentPlacement="end"
+                kicker="Benefits"
+                align="center"
+                description="Every engagement delivers actionable results, not just a report that sits on a shelf."
+                descriptionWidth="max-w-xl"
+                className="max-w-2xl"
+              />
             </ScrollReveal>
 
-            {/* Right: Header */}
-            <div className="flex flex-col justify-center">
-              <ScrollReveal delay={0.1}>
-                <SimpleHeading
-                  text="What You Gain"
-                  accentWords={1}
-                  accentPlacement="end"
-                  kicker="Benefits"
-                  align="left"
-                  description="Every engagement delivers actionable results, not just a report that sits on a shelf."
-                />
-              </ScrollReveal>
+            <div className="grid w-full grid-cols-1 gap-4 sm:grid-cols-2">
+              {svc.benefits.map((benefit, idx) => (
+                <ScrollReveal key={benefit} delay={idx * 0.05} className="h-full">
+                  <div className="flex h-full items-start gap-4 rounded-2xl border border-border-subtle bg-surface p-5">
+                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-accent/30 bg-accent/10">
+                      <Target className="h-5 w-5 text-accent" />
+                    </div>
+                    <p className="flex-1 pt-1 font-mono text-sm leading-relaxed text-text-secondary sm:text-base">
+                      {benefit}
+                    </p>
+                  </div>
+                </ScrollReveal>
+              ))}
             </div>
           </div>
 
-          {/* ── SECTION 4: Deliverables ────────────────────────────────────
-              Desktop: LEFT = header, RIGHT = deliverables cards
+          {/* ── SECTION 3: Deliverables ────────────────────────────────────
+              Desktop: LEFT = heading, RIGHT = deliverables cards
           ──────────────────────────────────────────────────────────────────── */}
-          <div className="w-full grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center">
-            {/* Left: Header */}
+          <div className="grid w-full grid-cols-1 items-center gap-10 lg:grid-cols-2 lg:gap-16">
             <div className="flex flex-col justify-center">
               <ScrollReveal>
                 <SimpleHeading
+                  compact
                   text="The Security Report"
                   accentWords={1}
                   accentPlacement="end"
                   kicker="Deliverables"
                   align="left"
                   description="You receive a professional security report that covers everything from executive summaries to detailed remediation steps."
+                  descriptionWidth="max-w-xl"
                 />
               </ScrollReveal>
             </div>
 
-            {/* Right: Deliverables */}
             <ScrollReveal delay={0.1}>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
                 {svc.deliverables.map((deliverable, idx) => (
                   <ScrollReveal key={deliverable.label} delay={idx * 0.05} className="h-full">
-                    <div className="relative h-full rounded-2xl border border-border/50 bg-bg-card p-4 overflow-hidden">
-                      <DottedMapOverlay className="rounded-2xl" />
-                      <div className="relative">
-                        <div className="flex items-center gap-3 mb-2.5">
-                          <div className="w-8 h-8 rounded-lg bg-accent/10 border border-accent/30 flex items-center justify-center shrink-0">
-                            <FileText className="w-4 h-4 text-accent" />
-                          </div>
-                          <h3 className="text-sm font-black text-text-primary uppercase tracking-widest">
-                            {deliverable.label}
-                          </h3>
+                    <div className="h-full rounded-2xl border border-border-subtle bg-surface p-4">
+                      <div className="mb-2.5 flex items-center gap-3">
+                        <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-accent/30 bg-accent/10">
+                          <FileText className="h-4 w-4 text-accent" />
                         </div>
-                        <p className="text-sm text-text-muted leading-relaxed font-mono">
-                          {deliverable.desc}
-                        </p>
+                        <h3 className="text-sm font-black uppercase tracking-widest text-text-primary">
+                          {deliverable.label}
+                        </h3>
                       </div>
+                      <p className="text-sm leading-relaxed text-text-muted">
+                        {deliverable.desc}
+                      </p>
                     </div>
                   </ScrollReveal>
                 ))}
@@ -209,21 +198,21 @@ const ServiceDetailPage: React.FC<{ svc: ServiceConfig }> = ({ svc }) => {
             </ScrollReveal>
           </div>
 
-          {/* ── SECTION 5: Philosophy & CTA (reversed) ─────────────────────
-              Desktop: LEFT = CTA card, RIGHT = header + philosophy
+          {/* ── SECTION 4: CTA + Philosophy ────────────────────────────────
+              Desktop: LEFT = CTA card (premium mapped background), RIGHT = heading
           ──────────────────────────────────────────────────────────────────── */}
-          <div className="w-full grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center">
-            {/* Left: CTA card */}
+          <div className="grid w-full grid-cols-1 items-center gap-10 lg:grid-cols-2 lg:gap-16">
             <ScrollReveal>
-              <div className="relative h-full rounded-2xl border border-accent/40 bg-accent/5 p-10 overflow-hidden">
-                <div className="relative flex flex-col items-start text-left space-y-6">
-                  <h3 className="text-2xl md:text-3xl font-black text-text-primary tracking-tight">
+              <div className="relative h-full overflow-hidden rounded-2xl border border-accent/40 bg-accent/5 p-10">
+                <DottedMapOverlay className="rounded-2xl" />
+                <div className="relative flex flex-col items-start space-y-6 text-left">
+                  <h3 className="text-2xl font-black tracking-tight text-text-primary md:text-3xl">
                     Ready to get started?
                   </h3>
-                  <p className="text-base text-text-muted font-mono">
+                  <p className="font-mono text-base text-text-muted">
                     Request an assessment or explore the full range of services.
                   </p>
-                  <div className="flex flex-col sm:flex-row sm:flex-wrap items-stretch gap-4 pt-2 w-full">
+                  <div className="flex w-full flex-col items-stretch gap-4 pt-2 sm:flex-row sm:flex-wrap">
                     <button
                       onClick={() => openServiceRequestModal(svc.title)}
                       className="btn-primary inline-flex items-center justify-center gap-2.5"
@@ -241,10 +230,10 @@ const ServiceDetailPage: React.FC<{ svc: ServiceConfig }> = ({ svc }) => {
               </div>
             </ScrollReveal>
 
-            {/* Right: Philosophy header */}
             <div className="flex flex-col justify-center">
               <ScrollReveal delay={0.1}>
                 <SimpleHeading
+                  compact
                   text="Thorough Assessment,"
                   accentText="Not Checkbox Audits"
                   kicker={PENTEST_PHILOSOPHY.heading}
