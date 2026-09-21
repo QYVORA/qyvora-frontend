@@ -18,7 +18,7 @@ const DocFooterNav: React.FC<DocFooterNavProps> = ({ currentPath }) => {
   const related = getRelatedTools(currentPath);
 
   return (
-    <div className="w-full border-t border-border/10 py-16 md:py-24">
+    <div className="w-full py-16 md:py-20">
       <div className="flex flex-col gap-12 px-3 md:px-4 md:gap-16 lg:px-6">
         <div>
           <div className="mb-5">

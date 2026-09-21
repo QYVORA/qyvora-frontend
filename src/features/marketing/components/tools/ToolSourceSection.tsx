@@ -31,7 +31,7 @@ const ToolSourceSection: React.FC<ToolSourceSectionProps> = ({
   if (!examples.length) return null;
 
   return (
-    <div id={id} className="relative w-full border-t border-border/10 py-16 md:py-24">
+    <div id={id} className="doc-anchor relative w-full py-16 md:py-20">
       <div className="w-full px-3 md:px-4 lg:px-6">
         <div className="flex flex-col gap-8 md:gap-10">
           <ToolSectionHeader kicker={kicker} title={title} accent={accent} description={description} />

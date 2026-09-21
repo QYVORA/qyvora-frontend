@@ -26,7 +26,10 @@ const ToolDocSection: React.FC<ToolDocSectionProps> = ({
   className,
   children,
 }) => (
-  <section id={id} className={cn('border-t border-border/10 py-16 md:py-24', className)}>
+  <section
+    id={id}
+    className={cn('doc-anchor py-16 md:py-20', className)}
+  >
     <div className="w-full px-3 md:px-4 lg:px-6">
       {(kicker || title) && (
         <div className="mb-8 md:mb-10">

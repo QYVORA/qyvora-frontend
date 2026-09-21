@@ -1,8 +1,14 @@
 import React from 'react';
 import PageHeader from '@/shared/components/ui/PageHeader';
 import PublicContainer from '@/shared/components/layout/PublicContainer';
+import DocTocNav from '@/shared/components/tools/DocTocNav';
 import { ContactTrigger } from '@/features/marketing/components/ContactModal';
 import { termsData } from './termsData';
+
+const TOC_SECTIONS = termsData.sections.map((section, idx) => ({
+  id: `terms-${idx + 1}`,
+  label: section.title,
+}));
 
 const TermsContentSection: React.FC = () => {
   return (
@@ -32,9 +38,11 @@ const TermsContentSection: React.FC = () => {
           }
         />
 
-        <div className="mt-12 border-t border-border-subtle md:mt-16">
+        <DocTocNav sections={TOC_SECTIONS} />
+
+        <div className="mt-12 md:mt-16">
           {termsData.sections.map((section, idx) => (
-            <section key={idx} className="border-b border-border/10 py-10 md:py-14">
+            <section key={idx} id={`terms-${idx + 1}`} className="doc-anchor py-10 md:py-14">
               <h2 className="flex items-baseline gap-4 text-2xl font-black uppercase tracking-tight text-text-primary md:text-4xl">
                 <span className="shrink-0 font-mono text-sm font-black text-accent md:text-xl">
                   {String(idx + 1).padStart(2, '0')}

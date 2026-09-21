@@ -22,7 +22,7 @@ const ToolDocHero: React.FC<ToolDocHeroProps> = ({
   logo,
   actions,
 }) => (
-  <section className="relative w-full border-b border-border/10 pb-12 md:pb-16">
+  <section className="relative w-full pb-12 md:pb-16">
     <div className="w-full px-3 md:px-4 lg:px-6">
       <div className="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
         <div className="max-w-2xl">

@@ -747,10 +747,19 @@
 }
 
 
+/* ── Anchor targets below the fixed navbar + sticky "On this page" chip bar ── */
+.doc-anchor {
+  scroll-margin-top: 150px;
+}
+
 /* ── Mobile section spacing ── */
 @media (max-width: 767px) {
   section[id] {
     scroll-margin-top: 80px;
+  }
+
+  section.doc-anchor {
+    scroll-margin-top: 150px;
   }
 
   .py-32 { padding-top: 3rem !important; padding-bottom: 3rem !important; }
