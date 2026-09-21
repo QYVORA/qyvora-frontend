@@ -19,8 +19,7 @@ The root component is a configuration shell — no visible UI. It wraps the enti
 
 | Layout | Route Scope | Source |
 |--------|-------------|--------|
-| `PublicShell` | `/`, `/terms`, `/anansi`, `/team`, `/hpb`, `/courses`, etc. | `src/shared/layouts/` |
-| `ToolDocLayout` | Tool documentation pages | `src/shared/layouts/` |
+| `PublicShell` | `/`, `/terms`, `/team`, `/hpb`, `/courses`, `/anansi` (tool docs), etc. | `src/shared/layouts/` |
 | `AppShell` | `/dashboard/**` | `src/features/student/layouts/` |
 | `AdminLayout` | `{ADMIN_PATH}/**` | `src/features/admin/layouts/` |
 | `AuthFormLayout` | Auth routes (standalone) | `src/shared/components/layout/` |

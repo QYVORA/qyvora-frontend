@@ -119,8 +119,7 @@ h2 compact bento sections: **title only, no description**.
 
 | Layout | Clearance | Notes |
 |--------|-----------|-------|
-| `PublicShell` | None (hero clears own space) | Public marketing; owns `PublicNavigation` + `PublicFooter` |
-| `ToolDocLayout` | None | Tool docs; page owns `ToolDocTopbar` |
+| `PublicShell` | None (hero clears own space) | Public marketing + tool docs; owns `PublicNavigation` + `PublicFooter` + `PublicBottomNav`. Tool docs clear the navbar themselves (`ToolDocPage` `pt-24 md:pt-28 lg:pt-32`). |
 | `AppShell` | `pt-20 md:pt-24` | Student topbar + desktop rail (`lg:pl-[264px]`) + mobile bottom nav |
 | `AdminLayout` | `pt-20 md:pt-24` | Forced dark, `data-theme-persist="dark"` |
 | `AuthFormLayout` | 2-col grid, `max-w-lg` form | Globe pinned bottom-right |

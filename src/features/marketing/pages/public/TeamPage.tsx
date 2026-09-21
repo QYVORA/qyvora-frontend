@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { ArrowUpRight, Cpu, MapPin, Palette, ShieldCheck, Target, Terminal, Users } from 'lucide-react';
+import { ArrowUpRight, MapPin, Users } from 'lucide-react';
 import { BrandGithubIcon, BrandInstagramIcon, BrandLinkedinIcon, BrandXIcon, BrandYoutubeIcon, BrandMediumIcon } from '@/shared/components/icons';
 import { ScrollReveal } from '@/shared/components';
 import SEO from '@/shared/components/SEO';
@@ -16,94 +16,95 @@ const SOCIAL_ICONS: Record<string, React.ElementType> = {
   instagram: BrandInstagramIcon,
 };
 
-const MEMBER_ICONS: Record<string, React.ElementType> = {
-  wsuits6: Terminal,
-  sopt4: Palette,
-  mohammedRafiq: Cpu,
-  ghostVenom: ShieldCheck,
-  cyberX6: Target,
-  abdulKarimHamid: Users,
-};
+const TeamMemberCard = ({ member }: { member: TeamMember }) => (
+  <ScrollReveal className="h-full">
+    <article className="flex h-full flex-col overflow-hidden rounded-2xl border border-border bg-bg-card">
+      <div className="relative aspect-[4/3] w-full overflow-hidden bg-surface">
+        <img
+          src={member.image}
+          alt={member.name}
+          width={member.width}
+          height={member.height}
+          loading="lazy"
+          className="h-full w-full object-cover object-[center_20%] transition-transform duration-700 hover:scale-105"
+        />
+      </div>
 
-const MEMBER_LAYOUTS: Record<string, { imageFirst: boolean; imagePosition: string; marker: string }> = {
-  wsuits6: { imageFirst: false, imagePosition: 'object-[center_20%]', marker: '01' },
-  sopt4: { imageFirst: true, imagePosition: 'object-[center_20%]', marker: '02' },
-  mohammedRafiq: { imageFirst: false, imagePosition: 'object-[center_20%]', marker: '03' },
-  ghostVenom: { imageFirst: true, imagePosition: 'object-[center_20%]', marker: '04' },
-  cyberX6: { imageFirst: false, imagePosition: 'object-[center_20%]', marker: '05' },
-  abdulKarimHamid: { imageFirst: true, imagePosition: 'object-[center_20%]', marker: '06' },
-};
-
-const TeamMemberSection = ({ member }: { member: TeamMember }) => {
-  const layout = MEMBER_LAYOUTS[member.id];
-  const MemberIcon = MEMBER_ICONS[member.id] ?? ShieldCheck;
-
-  return (
-    <ScrollReveal amount={0.08} className="h-full w-full">
-      <article className="relative grid w-full grid-cols-1 gap-3 sm:gap-4 lg:grid-cols-2 lg:gap-12">
-        <div className={`relative h-64 max-h-[70vh] overflow-hidden rounded-2xl border border-border-subtle bg-surface sm:h-80 lg:h-full ${layout.imageFirst ? 'lg:order-1' : 'lg:order-2'}`}>
-          <img
-            src={member.image}
-            alt={member.name}
-            width={member.width}
-            height={member.height}
-            className={`h-full w-full object-cover ${layout.imagePosition} transition-transform duration-700 hover:scale-105`}
-            loading="lazy"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-bg-card via-transparent to-transparent" />
-          <div className="absolute left-3 top-3 flex h-9 w-9 items-center justify-center rounded-lg border border-border-subtle bg-canvas/80 text-xs font-black tracking-widest text-accent backdrop-blur-sm sm:left-5 sm:top-5 sm:h-11 sm:w-11">
-            {layout.marker}
-          </div>
-          <div className="absolute bottom-3 left-3 right-3 flex items-end justify-between gap-4 sm:bottom-5 sm:left-5 sm:right-5">
-            <div>
-              <p className="mb-1 text-xs font-black uppercase tracking-widest text-text-muted sm:mb-2">Qyvora operator</p>
-              <p className="text-xs font-black uppercase tracking-tight text-text-primary sm:text-sm">{member.name}</p>
-            </div>
-            <MemberIcon className="h-6 w-6 shrink-0 text-accent" aria-hidden="true" />
-          </div>
+      <div className="flex flex-1 flex-col p-5">
+        <div className="flex items-center justify-between gap-3">
+          <span className="rounded-lg border border-accent/30 bg-accent/10 px-2 py-0.5 text-tiny font-black uppercase tracking-widest text-accent">
+            {member.role}
+          </span>
+          {member.handle && (
+            <span className="text-tiny font-black uppercase tracking-widest text-text-muted">
+              @{member.handle}
+            </span>
+          )}
         </div>
 
-        <div className={`flex min-h-0 min-w-0 flex-col justify-center ${layout.imageFirst ? 'lg:order-2' : 'lg:order-1'}`}>
-          <div className="mb-2 flex flex-wrap items-center gap-2 sm:mb-3 sm:gap-3 lg:mb-5">
-            <span className="px-2.5 py-1 rounded-lg border border-accent/30 bg-accent/10 text-xs font-black uppercase tracking-widest text-accent">{member.role}</span>
-            {member.location && (
-              <span className="inline-flex items-center gap-1.5 text-xs font-black uppercase tracking-widest text-text-muted"><MapPin className="h-3.5 w-3.5 text-accent" />{member.location}</span>
-            )}
-          </div>
-          <h2 className="text-2xl md:text-4xl lg:text-6xl font-black uppercase tracking-tight leading-[.95] text-text-primary break-words">
-            {member.name}
-          </h2>
-          {member.handle && <p className="mt-2 text-xs font-black uppercase tracking-widest text-accent sm:mt-3">@{member.handle}</p>}
-          <p className="mt-3 max-w-2xl text-xs leading-[1.45] text-text-secondary sm:mt-4 sm:text-sm sm:leading-relaxed lg:mt-6 lg:text-base">{member.profile}</p>
+        <h3 className="mt-3 text-lg font-black uppercase tracking-tight leading-tight text-text-primary break-words">
+          {member.name}
+        </h3>
 
-          <div className="mt-3 flex flex-wrap gap-1.5 sm:mt-4 sm:gap-2 lg:mt-7">
-            {member.disciplines.map((discipline) => (
-              <span key={discipline} className="px-2 py-0.5 rounded-lg border border-border-subtle bg-surface text-xs font-black uppercase tracking-widest text-text-muted sm:px-2.5 sm:py-1">{discipline}</span>
-            ))}
-          </div>
+        {member.location && (
+          <p className="mt-1.5 inline-flex items-center gap-1.5 text-tiny font-black uppercase tracking-widest text-text-muted">
+            <MapPin className="h-3.5 w-3.5 text-accent" aria-hidden="true" />
+            {member.location}
+          </p>
+        )}
 
-          <div className="mt-4 flex flex-wrap items-center gap-x-5 gap-y-2 pt-3 sm:mt-5 sm:pt-4 lg:mt-8 lg:pt-5">
-            {member.handle && (
-              <Link to={`/@${member.handle}`} className="inline-flex items-center gap-2 text-xs font-black uppercase tracking-widest text-accent transition-colors hover:text-text-primary">
+        <p className="mt-3 text-xs font-mono leading-relaxed text-text-secondary line-clamp-3">
+          {member.profile}
+        </p>
+
+        <div className="mt-4 flex flex-wrap gap-1.5">
+          {member.disciplines.map((discipline) => (
+            <span
+              key={discipline}
+              className="rounded-md border border-border-subtle bg-surface px-2 py-0.5 text-tiny font-black uppercase tracking-widest text-text-muted"
+            >
+              {discipline}
+            </span>
+          ))}
+        </div>
+
+        <div className="mt-auto pt-4">
+          <div className="flex items-center justify-between gap-3 border-t border-border-subtle pt-4">
+            {member.handle ? (
+              <Link
+                to={`/@${member.handle}`}
+                className="inline-flex min-h-[44px] items-center gap-1.5 text-xs font-black uppercase tracking-widest text-accent transition-colors hover:text-text-primary"
+              >
                 View profile <ArrowUpRight className="h-3.5 w-3.5" />
               </Link>
+            ) : (
+              <span />
             )}
-            {Object.entries(member.socials).map(([platform, url]) => {
-              if (!url) return null;
-              const Icon = SOCIAL_ICONS[platform];
-              if (!Icon) return null;
-              return (
-                <a key={platform} href={url} target="_blank" rel="noopener noreferrer" aria-label={`${member.name} on ${platform}`} className="text-text-muted transition-colors hover:text-accent">
-                  <Icon className="h-4 w-4" />
-                </a>
-              );
-            })}
+            <div className="flex items-center gap-3">
+              {Object.entries(member.socials).map(([platform, url]) => {
+                if (!url) return null;
+                const Icon = SOCIAL_ICONS[platform];
+                if (!Icon) return null;
+                return (
+                  <a
+                    key={platform}
+                    href={url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={`${member.name} on ${platform}`}
+                    className="flex h-11 w-11 items-center justify-center rounded-lg border border-border/50 text-text-muted transition-colors hover:border-accent/40 hover:text-accent"
+                  >
+                    <Icon className="h-4 w-4" />
+                  </a>
+                );
+              })}
+            </div>
           </div>
         </div>
-      </article>
-    </ScrollReveal>
-  );
-};
+      </div>
+    </article>
+  </ScrollReveal>
+);
 
 const TeamPage = () => {
   return (
@@ -123,8 +124,8 @@ const TeamPage = () => {
           }
         />
 
-        <div className="mt-10 space-y-12 md:mt-14 md:space-y-16">
-          {teamData.map((member) => <TeamMemberSection key={member.id} member={member} />)}
+        <div className="mt-10 grid grid-cols-1 gap-4 md:mt-14 sm:grid-cols-2 lg:grid-cols-3 lg:gap-5">
+          {teamData.map((member) => <TeamMemberCard key={member.id} member={member} />)}
         </div>
       </PublicContainer>
     </div>

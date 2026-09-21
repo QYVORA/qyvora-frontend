@@ -21,7 +21,6 @@ import ToolInstallModalHost from '@/features/marketing/components/ToolInstallMod
 
 
 const PublicShell = lazy(() => import('../shared/layouts/PublicShell'));
-const ToolDocLayout = lazy(() => import('../shared/layouts/ToolDocLayout'));
 const AppShell = lazy(() => import('../features/student/layouts/AppShell'));
 const AdminLayout = lazy(() => import('../features/admin/layouts/AdminLayout'));
 
@@ -205,10 +204,8 @@ export const AppRouter = () => {
 
           {/* Public profile route — validates @ prefix inside component */}
           <Route path="/:handle" element={<Wrap scope="Profile"><PublicProfilePage /></Wrap>} />
-        </Route>
 
-        {/* ── Tool documentation routes (no public navbar) ────────── */}
-        <Route element={<ToolDocLayout />}>
+          {/* Tool documentation routes (read in the public shell) */}
           <Route path="/anansi" element={<Wrap scope="Anansi"><AnansiPage /></Wrap>} />
           <Route path="/toha3ee" element={<Wrap scope="Toha3ee"><Toha3eePage /></Wrap>} />
           <Route path="/jabari" element={<Wrap scope="Jabari"><JabariPage /></Wrap>} />

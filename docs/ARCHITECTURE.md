@@ -208,7 +208,7 @@ features/
 | `components/layout/` | PublicNavigation, PublicFooter, AuthFormLayout | Layouts |
 | `components/brand/` | Logo, QyvoraLogotype, QyvoraMark | All features |
 | `components/backgrounds/` | GridBoxedBackground, AdinkraBackground | All features |
-| `layouts/` | PublicShell, ToolDocLayout | Router only |
+| `layouts/` | PublicShell | Router only |
 | `utils/` | cn, cpBalance, formatNumber, resolveImg, etc. | All features |
 
 **Anti-pattern:** Do not put domain-specific components in `shared/`. If a component is only used by one feature, keep it in that feature. If it is used by two or more features, put it in `shared/`.
@@ -236,8 +236,9 @@ Each layout has different chrome:
 | `PublicShell` | `PublicNavigation` (fixed top) | `PublicFooter` | None | Public marketing pages |
 | `AppShell` | `StudentTopbar` (fixed) + desktop rail | None | Student mobile nav | Authenticated student pages |
 | `AdminLayout` | `AdminTopbar` (fixed) | None | Admin mobile nav | Admin dashboard |
-| `ToolDocLayout` | `ToolDocTopbar` (page-owned) | None | None | Tool documentation |
 | `AuthFormLayout` | None | None | None | Auth pages (standalone) |
+
+Tool documentation pages render inside `PublicShell` (public navigation + footer + mobile bottom nav); `ToolDocPage` is the reading-material doc shell and clears the navbar itself (`pt-24 md:pt-28 lg:pt-32`).
 
 **Layout padding rules:**
 - Layouts must provide top padding to clear the fixed navbar (`pt-20 md:pt-24`)

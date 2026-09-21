@@ -31,7 +31,7 @@ const DocFooterNav: React.FC<DocFooterNavProps> = ({ currentPath }) => {
             {prev ? (
               <Link
                 to={prev.path}
-                className="group flex min-h-[56px] items-center gap-3 rounded-xl border border-border/40 bg-bg-card px-4 py-3 transition-colors hover:border-accent/40 hover:bg-bg-elevated"
+                className="group flex min-h-[56px] items-center gap-3 rounded-2xl border border-border/40 bg-bg-card px-4 py-3 transition-colors hover:border-accent/40 hover:bg-bg-elevated"
               >
                 <IconArrowLeft
                   size={16}
@@ -53,7 +53,7 @@ const DocFooterNav: React.FC<DocFooterNavProps> = ({ currentPath }) => {
             {next ? (
               <Link
                 to={next.path}
-                className="group flex min-h-[56px] items-center justify-end gap-3 rounded-xl border border-border/40 bg-bg-card px-4 py-3 text-right transition-colors hover:border-accent/40 hover:bg-bg-elevated"
+                className="group flex min-h-[56px] items-center justify-end gap-3 rounded-2xl border border-border/40 bg-bg-card px-4 py-3 text-right transition-colors hover:border-accent/40 hover:bg-bg-elevated"
               >
                 <span className="min-w-0">
                   <span className="block text-micro font-black uppercase tracking-widest text-text-muted">
@@ -93,7 +93,7 @@ const DocFooterNav: React.FC<DocFooterNavProps> = ({ currentPath }) => {
                 <Link
                   key={tool.to}
                   to={tool.to}
-                  className="group flex min-h-[56px] items-center gap-3 rounded-xl border border-border/40 bg-bg-card px-4 py-3 transition-colors hover:border-accent/40 hover:bg-bg-elevated"
+className="group flex min-h-[56px] items-center gap-3 rounded-2xl border border-border/40 bg-bg-card px-4 py-3 transition-colors hover:border-accent/40 hover:bg-bg-elevated"
                 >
                   {tool.image && (
                     <img
