@@ -5,11 +5,13 @@ import type { ToolDocSectionItem } from './ToolDocPage';
 
 interface DocTocNavProps {
   sections: ToolDocSectionItem[];
+  /** Align the chip row to the centered content column while the sticky bar stays full-bleed. */
+  contained?: boolean;
 }
 
 const STICKY_BAR_HEIGHT = 60;
 
-const DocTocNav: React.FC<DocTocNavProps> = ({ sections }) => {
+const DocTocNav: React.FC<DocTocNavProps> = ({ sections, contained = false }) => {
   const prefersReduced = useReducedMotion();
   const [activeId, setActiveId] = useState(sections[0]?.id ?? '');
 
@@ -52,27 +54,32 @@ const DocTocNav: React.FC<DocTocNavProps> = ({ sections }) => {
 
   return (
     <div className="sticky top-[80px] z-[85] bg-canvas">
-      <nav
-        aria-label="On this page"
-        className="scroll-x no-scrollbar flex w-full flex-nowrap items-center gap-1.5 overflow-x-auto px-3 py-2 md:px-4 lg:px-6"
-      >
-        {sections.map((section) => (
-          <a
-            key={section.id}
-            href={`#${section.id}`}
-            onClick={jumpTo(section.id)}
-            aria-current={activeId === section.id ? 'true' : undefined}
-            className={cn(
-              'inline-flex min-h-[44px] shrink-0 items-center justify-center whitespace-nowrap rounded-xl px-3 text-xs font-black uppercase tracking-widest transition-colors',
-              activeId === section.id
-                ? 'bg-accent text-on-accent'
-                : 'border border-border bg-surface-raised text-text-muted hover:border-accent/50 hover:text-accent',
-            )}
-          >
-            {section.label}
-          </a>
-        ))}
-      </nav>
+      <div className={cn(contained && 'mx-auto w-full max-w-[1320px] px-3 md:px-4 lg:px-6')}>
+        <nav
+          aria-label="On this page"
+          className={cn(
+            'scroll-x no-scrollbar flex w-full flex-nowrap items-center gap-1.5 overflow-x-auto py-2',
+            !contained && 'px-3 md:px-4 lg:px-6',
+          )}
+        >
+          {sections.map((section) => (
+            <a
+              key={section.id}
+              href={`#${section.id}`}
+              onClick={jumpTo(section.id)}
+              aria-current={activeId === section.id ? 'true' : undefined}
+              className={cn(
+                'inline-flex min-h-[44px] shrink-0 items-center justify-center whitespace-nowrap rounded-xl px-3 text-xs font-black uppercase tracking-widest transition-colors',
+                activeId === section.id
+                  ? 'bg-accent text-on-accent'
+                  : 'border border-border bg-surface-raised text-text-muted hover:border-accent/50 hover:text-accent',
+              )}
+            >
+              {section.label}
+            </a>
+          ))}
+        </nav>
+      </div>
     </div>
   );
 };

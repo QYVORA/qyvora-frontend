@@ -1,5 +1,7 @@
 export interface TermsSection {
   title: string;
+  /** Compact label for the sticky on-page nav; falls back to `title`. */
+  shortTitle?: string;
   body: string;
   bullets: string[];
 }
@@ -18,6 +20,7 @@ export const termsData: TermsData = {
   sections: [
     {
       title: "Acceptance of Terms",
+      shortTitle: "Acceptance",
       body: "By accessing, browsing, or using the QYVORA platform (the \"Platform\"), including all websites, applications, APIs, training environments, laboratories, and related services (collectively, the \"Services\"), you acknowledge that you have read, understood, and agree to be legally bound by these Terms of Service (\"Terms\") and our Privacy Policy. If you do not agree to these Terms in their entirety, you must immediately discontinue all use of the Services.",
       bullets: [
         "These Terms constitute a legally binding agreement between you (\"User,\" \"you,\" or \"your\") and QYVORA OFFSEC (\"QYVORA,\" \"we,\" \"us,\" or \"our\").",
@@ -28,6 +31,7 @@ export const termsData: TermsData = {
     },
     {
       title: "Eligibility & Account Registration",
+      shortTitle: "Eligibility",
       body: "The Services are intended solely for individuals and entities that can form legally binding agreements under applicable law. By registering an account, you represent and warrant that all information provided is accurate, complete, and current, and that you will maintain and promptly update such information.",
       bullets: [
         "You are solely responsible for maintaining the confidentiality of your account credentials and for all activities that occur under your account.",
@@ -39,6 +43,7 @@ export const termsData: TermsData = {
     },
     {
       title: "Permitted Use & Prohibited Conduct",
+      shortTitle: "Permitted Use",
       body: "QYVORA provides a platform for cybersecurity education, offensive security training, and professional engagement. All use of the Services must comply with applicable local, national, and international laws and regulations. You are granted a limited, non-exclusive, non-transferable, and revocable license to use the Services for their intended purpose.",
       bullets: [
         "You may use the Platform solely for lawful educational, research, and professional purposes directly related to cybersecurity.",
@@ -52,6 +57,7 @@ export const termsData: TermsData = {
     },
     {
       title: "Training Programs & Laboratories",
+      shortTitle: "Training",
       body: "QYVORA offers structured training programs, hands-on laboratories, bootcamps, and certification pathways. All training content, lab environments, exercises, and associated materials are proprietary and protected under applicable intellectual property laws.",
       bullets: [
         "Training materials, lab configurations, challenge designs, and course content are owned by QYVORA and may not be reproduced, distributed, or shared without explicit written permission.",
@@ -63,6 +69,7 @@ export const termsData: TermsData = {
     },
     {
       title: "Professional Services & Engagements",
+      shortTitle: "Services",
       body: "QYVORA may provide professional cybersecurity services including penetration testing, security assessments, consulting, and advisory engagements. These services are governed by separate agreements and statements of work executed between the parties.",
       bullets: [
         "Professional engagements require execution of a formal Statement of Work (SOW) or Master Service Agreement (MSA) prior to commencement.",
@@ -73,6 +80,7 @@ export const termsData: TermsData = {
     },
     {
       title: "Intellectual Property Rights",
+      shortTitle: "IP Rights",
       body: "All content, materials, trademarks, service marks, trade names, logos, designs, source code, algorithms, documentation, and other intellectual property associated with the Platform and Services are the exclusive property of QYVORA or its licensors and are protected by applicable intellectual property laws.",
       bullets: [
         "No license or right to use any QYVORA intellectual property is granted except the limited right to use the Services as expressly permitted under these Terms.",
@@ -83,6 +91,7 @@ export const termsData: TermsData = {
     },
     {
       title: "Payment, Billing & Refunds",
+      shortTitle: "Billing",
       body: "Certain features and services on the Platform require payment. All fees are stated in United States Dollars (USD) unless otherwise specified. By selecting a paid service, you authorize QYVORA to charge the applicable fees to your designated payment method.",
       bullets: [
         "All payments are non-refundable unless expressly stated otherwise in writing or required by applicable consumer protection laws.",
@@ -94,6 +103,7 @@ export const termsData: TermsData = {
     },
     {
       title: "Cancellations & Termination by User",
+      shortTitle: "Cancellations",
       body: "You may cancel your account at any time by contacting QYVORA support or through the account settings on the Platform. Cancellation does not entitle you to a refund unless required by applicable law.",
       bullets: [
         "Upon cancellation, your access to the Platform and all associated services will be revoked at the end of the current billing period.",
@@ -103,6 +113,7 @@ export const termsData: TermsData = {
     },
     {
       title: "Termination by QYVORA",
+      shortTitle: "Termination",
       body: "QYVORA reserves the right to suspend or terminate your access to the Services immediately, without prior notice or liability, for any reason, including but not limited to a breach of these Terms, suspected fraudulent or illegal activity, or conduct that QYVORA, in its sole discretion, deems harmful to other users, the Platform, or third parties.",
       bullets: [
         "Upon termination, all rights and licenses granted to you under these Terms will immediately cease.",
@@ -113,6 +124,7 @@ export const termsData: TermsData = {
     },
     {
       title: "Limitation of Liability",
+      shortTitle: "Liability",
       body: "TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW, QYVORA, ITS DIRECTORS, EMPLOYEES, PARTNERS, AGENTS, SUPPLIERS, AND AFFILIATES SHALL NOT BE LIABLE FOR ANY INDIRECT, INCIDENTAL, SPECIAL, CONSEQUENTIAL, OR PUNITIVE DAMAGES, INCLUDING BUT NOT LIMITED TO LOSS OF PROFITS, DATA, USE, GOODWILL, OR OTHER INTANGIBLE LOSSES, RESULTING FROM YOUR ACCESS TO OR USE OF OR INABILITY TO ACCESS OR USE THE SERVICES.",
       bullets: [
         "QYVORA's total aggregate liability to you for all claims arising out of or relating to the use of or inability to use the Services shall not exceed the greater of one hundred US dollars (USD $100.00) or the amount paid by you to QYVORA in the twelve (12) months immediately preceding the event giving rise to the claim.",
@@ -134,6 +146,7 @@ export const termsData: TermsData = {
     },
     {
       title: "Disclaimer of Warranties",
+      shortTitle: "Warranties",
       body: "THE SERVICES ARE PROVIDED ON AN \"AS IS\" AND \"AS AVAILABLE\" BASIS WITHOUT WARRANTIES OF ANY KIND, WHETHER EXPRESS, IMPLIED, OR STATUTORY, INCLUDING BUT NOT LIMITED TO IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, TITLE, AND NON-INFRINGEMENT.",
       bullets: [
         "QYVORA does not warrant that the Services will be uninterrupted, timely, secure, error-free, or free of viruses or other harmful components.",
@@ -144,6 +157,7 @@ export const termsData: TermsData = {
     },
     {
       title: "Data Protection & Privacy",
+      shortTitle: "Privacy",
       body: "Your use of the Services is also governed by our Privacy Policy, which describes how we collect, use, store, and disclose your personal information. By using the Services, you consent to the collection and use of your data as described in the Privacy Policy.",
       bullets: [
         "QYVORA processes personal data in accordance with applicable data protection laws, including the Ghana Data Protection Act, 2012 (Act 843) and other relevant legislation.",
@@ -163,6 +177,7 @@ export const termsData: TermsData = {
     },
     {
       title: "Governing Law & Dispute Resolution",
+      shortTitle: "Governing Law",
       body: "These Terms shall be governed by and construed in accordance with the laws of the Republic of Ghana, without regard to its conflict of law provisions. Any dispute arising out of or relating to these Terms or the Services shall be resolved in accordance with the provisions set forth below.",
       bullets: [
         "You agree to first attempt to resolve any dispute informally by contacting QYVORA at the email address provided in these Terms. The parties shall attempt to resolve the dispute through good-faith negotiation for a period of thirty (30) days before initiating formal proceedings.",
@@ -199,6 +214,7 @@ export const termsData: TermsData = {
     },
     {
       title: "Contact Information",
+      shortTitle: "Contact",
       body: "If you have any questions, concerns, or notices regarding these Terms of Service, please contact QYVORA at:",
       bullets: [
         "Email: qyvorasec@gmail.com",

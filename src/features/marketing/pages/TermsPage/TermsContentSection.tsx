@@ -7,7 +7,7 @@ import { termsData } from './termsData';
 
 const TOC_SECTIONS = termsData.sections.map((section, idx) => ({
   id: `terms-${idx + 1}`,
-  label: section.title,
+  label: section.shortTitle ?? section.title,
 }));
 
 const TermsContentSection: React.FC = () => {
@@ -37,9 +37,11 @@ const TermsContentSection: React.FC = () => {
             </span>
           }
         />
+      </PublicContainer>
 
-        <DocTocNav sections={TOC_SECTIONS} />
+      <DocTocNav sections={TOC_SECTIONS} contained />
 
+      <PublicContainer>
         <div className="mt-12 md:mt-16">
           {termsData.sections.map((section, idx) => (
             <section key={idx} id={`terms-${idx + 1}`} className="doc-anchor py-10 md:py-14">
