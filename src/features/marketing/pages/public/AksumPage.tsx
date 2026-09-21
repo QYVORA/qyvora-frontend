@@ -10,6 +10,7 @@ import { STAGES, CHECKS, CONFIDENCE_STATES, GITHUB_URL, BUILD_FROM_SOURCE, QUICK
 import aksumLogo from '@/assets/aksum/aksum-main-logo.webp';
 import { ToolDocPage, ToolDocSection, ToolDocHero } from '@/shared/components/tools';
 import type { ToolDocSectionItem } from '@/shared/components/tools';
+import { DottedMapOverlay } from '@/shared/components/ui';
 
 const REQUIREMENTS = [
   'Linux ELF binaries (x86/x86-64), other formats degrade honestly to strings-only RAW mode',
@@ -263,7 +264,9 @@ const AksumPage = () => {
       >
         <div className="space-y-6">
           <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,2fr)_minmax(0,3fr)] gap-4 md:gap-6">
-            <div className="rounded-2xl border border-accent/50 bg-accent/5 p-5 md:p-6 flex flex-col justify-between gap-4">
+            <div className="relative overflow-hidden rounded-2xl border border-accent/50 bg-accent/5">
+              <DottedMapOverlay className="rounded-2xl" />
+              <div className="relative flex flex-col justify-between gap-4 p-5 md:p-6">
               <div className="flex items-start gap-3">
                 <div className="w-10 h-10 rounded-xl bg-accent/10 border border-accent/20 flex items-center justify-center shrink-0">
                   <Download className="w-5 h-5 text-accent" />
@@ -282,6 +285,7 @@ const AksumPage = () => {
               >
                 <Download className="w-4 h-4" /> Auto-install
               </button>
+              </div>
             </div>
 
             <div className="rounded-2xl border border-border/50 bg-bg-card p-5 md:p-6 space-y-4">

@@ -1,9 +1,12 @@
 import React from 'react';
 import Button from '@/shared/components/ui/Button';
 import ScrollReveal from '@/shared/components/ScrollReveal';
+import { DottedMapOverlay } from '@/shared/components/ui';
 
 /**
  * FinalCtaBlock — the last conversion point on the landing. One CTA, calm.
+ * The mapped background lands on this final conversion card only — it stays
+ * off the normal content sections above.
  */
 const FinalCtaBlock: React.FC = () => {
 
@@ -12,7 +15,8 @@ const FinalCtaBlock: React.FC = () => {
       <div className="mx-auto w-full max-w-[1320px] px-3 py-20 md:px-4 md:py-24 lg:px-6">
         <ScrollReveal>
           <div className="relative mx-auto w-full max-w-3xl overflow-hidden rounded-2xl border border-accent/40 bg-accent/5 px-6 py-14 md:px-12 md:py-16">
-            <div className="flex flex-col items-start gap-6 md:items-center md:text-center">
+            <DottedMapOverlay className="rounded-2xl" />
+            <div className="relative flex flex-col items-start gap-6 md:items-center md:text-center">
               <p className="type-label uppercase tracking-[0.12em] text-accent">
                 {"Start learning"}
               </p>

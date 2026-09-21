@@ -5,6 +5,9 @@ import { COURSES, COURSE_ICON_MAP } from '@/features/student/data/courses';
 import { LABS } from '@/features/student/constants/labs';
 import { PHASES } from '@/features/marketing/data/learnData';
 import { Card } from '@/shared/components/ui/Card';
+import LabBadge from '@/shared/components/LabBadge';
+import HpbAvatar, { type HpbVariant } from '@/shared/components/HpbAvatar';
+import { SIMULATIONS } from '@/features/marketing/pages/public/SimulationsPage';
 import PageHeader from '@/shared/components/ui/PageHeader';
 import PublicContainer from '@/shared/components/layout/PublicContainer';
 import ScrollReveal from '@/shared/components/ScrollReveal';
@@ -78,31 +81,40 @@ const LearnPage: React.FC = () => {
         });
       case 'labs':
         return LABS.map((lab) => (
-          <Card key={lab.id} to={lab.route} interactive className="flex min-h-[170px] flex-col gap-2 p-6">
-            <span className="type-meta">{lab.difficulty}</span>
+          <Card key={lab.id} to={lab.route} interactive className="flex min-h-[190px] flex-col gap-3 p-6">
+            <div className="flex items-center gap-3">
+              <LabBadge labId={lab.id} accentColor={lab.accentColor} className="w-14 h-14 shrink-0" />
+              <span className="type-meta">{lab.difficulty}</span>
+            </div>
             <h3 className="type-h3 font-black uppercase tracking-tight text-text-primary">
               {lab.title}
             </h3>
             <p className="type-body-sm flex-1 line-clamp-3">
               {lab.desc}
             </p>
-            <div className="flex flex-wrap gap-x-5 gap-y-1">
-              <span className="type-meta">{lab.cpReward} CP</span>
+            <div className="flex flex-wrap items-center gap-x-5 gap-y-1 border-t border-border-subtle pt-3">
+              <span className="type-meta text-accent">{lab.cpReward} CP</span>
             </div>
           </Card>
         ));
       case 'bootcamp':
         return PHASES.map((phase) => {
-          const Icon = phase.icon;
+          const hpbVariant = `phase${Number(phase.id)}` as HpbVariant;
           return (
-            <Card key={phase.id} to={`/hpb/phase${Number(phase.id)}`} interactive className="flex min-h-[170px] flex-col gap-2 p-6">
-              <span className="flex h-10 w-10 items-center justify-center rounded-lg border border-border-subtle bg-surface-raised text-accent">
-                <Icon className="h-4 w-4" aria-hidden="true" />
-              </span>
+            <Card key={phase.id} to={`/hpb/phase${Number(phase.id)}`} interactive className="flex min-h-[190px] flex-col gap-3 p-6">
+              <div className="flex items-center gap-3">
+                <div className="flex h-16 w-16 shrink-0 items-center justify-center overflow-hidden rounded-xl border border-border-subtle bg-surface-raised">
+                  <HpbAvatar variant={hpbVariant} className="h-full w-auto max-h-full max-w-full" />
+                </div>
+                <span className="type-meta">Phase {phase.id}</span>
+              </div>
               <h3 className="type-h3 font-black uppercase tracking-tight text-text-primary">
-                <span className="text-text-tertiary">{phase.id} · </span>{phase.name}
+                {phase.name}
               </h3>
               <p className="type-body-sm flex-1 line-clamp-3">{phase.desc}</p>
+              <div className="flex flex-wrap items-center gap-x-5 gap-y-1 border-t border-border-subtle pt-3">
+                <span className="type-meta">Hacker Protocol Bootcamp</span>
+              </div>
             </Card>
           );
         });
@@ -172,20 +184,29 @@ const LearnPage: React.FC = () => {
             role="tabpanel"
             id="learn-panel-simulations"
             aria-labelledby="learn-tab-simulations"
-            className="max-w-2xl"
+            className="grid gap-4 md:grid-cols-2 lg:grid-cols-3"
           >
-            <ScrollReveal>
-              <Card to="/simulations/terminal" interactive className="flex min-h-[160px] flex-col gap-3 p-6">
-                <h3 className="type-h3 font-black uppercase tracking-tight text-text-primary">
-                  {"Practice inside simulated networks."}
-                </h3>
-                <p className="type-body-sm flex-1">{"Corporation-scale environments for terminal and networking practice without any of the risk."}</p>
-                <span className="flex min-h-[48px] items-center gap-2 text-sm font-bold text-accent">
-                  {"Open simulations"}
-                  <ArrowRight className="h-4 w-4" aria-hidden="true" />
-                </span>
-              </Card>
-            </ScrollReveal>
+            {SIMULATIONS.map((sim) => {
+              const Icon = sim.icon;
+              return (
+                <Card key={sim.id} to={sim.slug} interactive className="flex min-h-[190px] flex-col gap-3 p-6">
+                  <div className="flex items-center gap-3">
+                    <span className="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl border border-border-subtle bg-surface-raised text-accent">
+                      <Icon className="h-7 w-7" aria-hidden="true" />
+                    </span>
+                    <span className="type-meta">Live demo</span>
+                  </div>
+                  <h3 className="type-h3 font-black uppercase tracking-tight text-text-primary">
+                    {sim.title}
+                  </h3>
+                  <p className="type-body-sm flex-1 line-clamp-3">{sim.description}</p>
+                  <div className="flex items-center gap-2 pt-3 text-sm font-bold text-accent">
+                    {"Open simulation"}
+                    <ArrowRight className="h-4 w-4" aria-hidden="true" />
+                  </div>
+                </Card>
+              );
+            })}
           </div>
         )}
 

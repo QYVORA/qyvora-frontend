@@ -10,7 +10,7 @@ import { IconTerminal, IconCode, IconNetwork } from '@/shared/components/icons';
 
 type SimKey = 'terminal' | 'ide' | 'network';
 
-const SIMULATIONS: {
+export const SIMULATIONS: {
   id: SimKey;
   slug: string;
   icon: React.ComponentType<{ className?: string }>;

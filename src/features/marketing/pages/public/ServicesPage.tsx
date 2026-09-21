@@ -91,7 +91,7 @@ const ServiceCard: React.FC<{ svc: ServiceConfig; index: number }> = ({ svc, ind
       <Card
         to={svc.path}
         interactive
-        className="flex min-h-[340px] flex-col gap-4 p-6"
+        className="flex h-full min-h-[340px] flex-col gap-4 p-6"
       >
         <div className="flex items-center justify-between gap-3">
           <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-border-subtle bg-surface-raised text-accent">

@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { Terminal } from '@/shared/components/blog/Terminal';
 import { OutputBlock as OutputBlockComponent } from '@/shared/components/blog/OutputBlock';
 import { IdeBlock } from '@/shared/components/blog/IdeBlock';
+import { DottedMapOverlay } from '@/shared/components/ui';
 
 export const Section = ({ children }: { children: React.ReactNode }) => (
   <div className="mb-20 md:mb-28 last:mb-0">
@@ -94,8 +95,10 @@ export const BulletList = ({ items }: { items: { icon: React.ReactNode; text: Re
 );
 
 export const CTA = ({ title, desc, href, label }: { title: string; desc: string; href: string; label: string }) => (
-  <div className="p-8 md:p-14 rounded-2xl border border-border/50 bg-bg-card">
-    <h2 className="text-3xl md:text-5xl font-black uppercase tracking-tight mb-6">
+  <div className="relative overflow-hidden p-8 md:p-14 rounded-2xl border border-accent/40 bg-accent/5">
+    <DottedMapOverlay className="rounded-2xl" />
+    <div className="relative">
+      <h2 className="text-3xl md:text-5xl font-black uppercase tracking-tight mb-6">
       {title}
     </h2>
     <p className="text-sm md:text-lg text-text-secondary font-mono max-w-2xl leading-relaxed md:leading-[2] mb-8 md:mb-10">
@@ -118,6 +121,7 @@ export const CTA = ({ title, desc, href, label }: { title: string; desc: string;
         {label}
       </a>
     )}
+    </div>
   </div>
 );
 

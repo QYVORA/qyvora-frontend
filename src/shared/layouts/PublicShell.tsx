@@ -1,6 +1,7 @@
 import React from 'react';
 import { Outlet } from 'react-router-dom';
 import PublicNavigation from '@/shared/components/layout/PublicNavigation';
+import PublicBottomNav from '@/shared/components/layout/PublicBottomNav';
 import PublicFooter from '@/shared/components/layout/PublicFooter';
 
 interface PublicShellProps {
@@ -24,6 +25,7 @@ const PublicShell: React.FC<PublicShellProps> = ({ overlayHosts }) => (
       <Outlet />
     </main>
     <PublicFooter />
+    <PublicBottomNav />
     {overlayHosts}
   </>
 );

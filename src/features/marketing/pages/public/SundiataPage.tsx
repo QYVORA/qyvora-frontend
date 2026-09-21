@@ -9,6 +9,7 @@ import DocFooterNav from '@/features/marketing/components/tools/DocFooterNav';
 import sundiataLogo from '@/assets/sundiata/sundiata-main-logo.webp';
 import { ToolDocPage, ToolDocSection, ToolDocHero } from '@/shared/components/tools';
 import type { ToolDocSectionItem } from '@/shared/components/tools';
+import { DottedMapOverlay } from '@/shared/components/ui';
 
 const REQUIREMENTS = [
   'Go 1.26+ toolchain to build',
@@ -295,7 +296,9 @@ const SundiataPage = () => {
       >
         <div className="space-y-6">
           <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,2fr)_minmax(0,3fr)] gap-4 md:gap-6">
-            <div className="rounded-2xl border border-accent/50 bg-accent/5 p-5 md:p-6 flex flex-col justify-between gap-4">
+            <div className="relative overflow-hidden rounded-2xl border border-accent/50 bg-accent/5">
+              <DottedMapOverlay className="rounded-2xl" />
+              <div className="relative flex flex-col justify-between gap-4 p-5 md:p-6">
               <div className="flex items-start gap-3">
                 <div className="w-10 h-10 rounded-xl bg-accent/10 border border-accent/20 flex items-center justify-center shrink-0">
                   <Download className="w-5 h-5 text-accent" />
@@ -315,6 +318,7 @@ const SundiataPage = () => {
               >
                 GitHub Repository <IconArrowRight size={14} />
               </a>
+              </div>
             </div>
 
             <div className="rounded-2xl border border-border/50 bg-bg-card p-5 md:p-6 space-y-4">

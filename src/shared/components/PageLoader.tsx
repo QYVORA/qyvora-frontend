@@ -1,28 +1,31 @@
 import React, { useEffect, useState } from 'react';
 import { useReducedMotion } from '@/shared/hooks/useReducedMotion';
 
-const PROMPT = 'qyvora@core:~$';
-const COMMAND = 'boot qyvora';
-const TYPE_MS = 34;
+const PROMPT = 'qyvora@core:~$ ';
+const COMMAND = 'boot';
+const FULL_LINE = PROMPT + COMMAND;
+const TYPE_MS = 55;
 
 const PageLoader: React.FC = () => {
   const prefersReduced = useReducedMotion();
-  const [typed, setTyped] = useState(prefersReduced ? COMMAND : '');
+  const [count, setCount] = useState(prefersReduced ? FULL_LINE.length : 0);
 
   useEffect(() => {
     if (prefersReduced) {
-      setTyped(COMMAND);
+      setCount(FULL_LINE.length);
       return;
     }
+    setCount(0);
     let i = 0;
-    setTyped('');
     const timer = setInterval(() => {
       i += 1;
-      setTyped(COMMAND.slice(0, i));
-      if (i >= COMMAND.length) clearInterval(timer);
+      setCount(i);
+      if (i >= FULL_LINE.length) clearInterval(timer);
     }, TYPE_MS);
     return () => clearInterval(timer);
   }, [prefersReduced]);
+
+  const typed = FULL_LINE.slice(0, count);
 
   return (
     <div className="fixed inset-0 z-[9999] bg-canvas flex items-center justify-center overflow-hidden select-none touch-none px-6">
@@ -30,22 +33,23 @@ const PageLoader: React.FC = () => {
         <span className="sr-only">Loading QYVORA</span>
         <p
           aria-hidden="true"
-          className="font-mono text-xl sm:text-2xl md:text-3xl font-bold leading-none whitespace-nowrap"
+          className="font-mono text-sm sm:text-base md:text-lg font-medium leading-none whitespace-nowrap text-text-primary"
         >
-          <span className="text-accent">{PROMPT}&nbsp;</span>
-          <span className="text-text-primary">{typed}</span>
-          <span className="page-loader-caret ml-2" />
+          <span className="text-accent">{typed.slice(0, PROMPT.length)}</span>
+          <span>{typed.slice(PROMPT.length)}</span>
+          <span className="page-loader-caret" />
         </p>
       </div>
       <style>{`
         .page-loader-caret {
           display: inline-block;
-          width: 4px;
-          height: 1.25em;
+          width: 0.11em;
+          height: 0.95em;
+          margin-left: 0.22em;
           border-radius: 1px;
-          transform: translateY(0.26em);
+          transform: translateY(0.14em);
           background: var(--color-accent);
-          box-shadow: 0 0 10px var(--color-accent-glow);
+          box-shadow: 0 0 6px var(--color-accent-glow);
           animation: page-loader-blink 1.05s steps(1, end) infinite;
         }
         @keyframes page-loader-blink {
@@ -64,7 +68,7 @@ const PageLoader: React.FC = () => {
  * Suspense fallback that stays invisible for fast/cached chunk loads and only
  * shows the full-screen loader once loading exceeds `delay` ms.
  */
-export const DelayedPageLoader: React.FC<{ delay?: number }> = ({ delay = 180 }) => {
+export const DelayedPageLoader: React.FC<{ delay?: number }> = ({ delay = 120 }) => {
   const [show, setShow] = useState(false);
 
   useEffect(() => {
