@@ -50,6 +50,12 @@ const KillChainLab = () => {
 
   const currentPhase = activeScenario?.phases[activePhaseIndex] ?? null;
   const allPhasesCompleted = activeScenario && completedPhases.size === activeScenario.phases.length;
+  const requiredCommandKeys = currentPhase
+    ? currentPhase.commands
+        .map((cmd: any, idx: number) => (cmd.isRequired ? `${currentPhase.id}-${idx}` : null))
+        .filter((key: string | null): key is string => key !== null)
+    : [];
+  const requiredCommandsComplete = requiredCommandKeys.every((key: string) => completedCommands.has(key));
   const firstScenarioWithVillain = KILL_CHAIN_SCENARIOS.find(s => s.villain);
 
   if (loading) return <LabListingSkeleton />;
@@ -173,7 +179,7 @@ const KillChainLab = () => {
                   );
                 })}
 
-                {currentPhase.commands.filter(c => c.isRequired).every((_, i) => completedCommands.has(`${currentPhase.id}-${i}`)) && (
+                {requiredCommandsComplete && (
                   <div className="flex justify-end mt-2">
                     <button onClick={handlePhaseComplete} className="btn-primary !rounded-xl !text-xs px-6 py-2.5 flex items-center gap-2">
                       {activePhaseIndex < activeScenario.phases.length - 1 ? <>Complete Phase & Move Next</> : <>All Phases Complete <CheckCircle className="w-3.5 h-3.5" /></>}

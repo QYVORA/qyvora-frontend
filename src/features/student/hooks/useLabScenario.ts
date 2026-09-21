@@ -1,6 +1,11 @@
-import { useState, useCallback, useMemo } from 'react';
+import { useState, useCallback, useEffect, useMemo } from 'react';
 import { verifyLabFlag } from '@/features/student/services/lab.service';
-import { isLabCompleted } from '@/features/student/utils/labProgress';
+import {
+  isLabCompleted,
+  markLabCompleted,
+  markStepCompleted,
+  getCompletedSteps,
+} from '@/features/student/utils/labProgress';
 
 interface UseLabScenarioOptions<T> {
   labId: string;
@@ -27,9 +32,15 @@ function useLabScenario<T>({
   const [activeScenario, setActiveScenario] = useState<T | null>(null);
   const [completedSteps, setCompletedSteps] = useState<Set<string>>(new Set());
 
-  const handleComplete = useCallback((stepId: string) => {
-    setCompletedSteps((prev) => new Set(prev).add(stepId));
-  }, []);
+  const handleComplete = useCallback(
+    (stepId: string) => {
+      setCompletedSteps((prev) => new Set(prev).add(stepId));
+      if (activeScenario) {
+        markStepCompleted(getScenarioId(activeScenario), stepId);
+      }
+    },
+    [activeScenario, getScenarioId]
+  );
 
   const handleFlagSubmit = useCallback(
     async (stepId: string, flag: string) => {
@@ -68,9 +79,20 @@ function useLabScenario<T>({
     [stepIds, completedSteps]
   );
 
+  useEffect(() => {
+    if (activeScenario && allDone) {
+      markLabCompleted(getScenarioId(activeScenario));
+    }
+  }, [activeScenario, allDone, getScenarioId]);
+
   const startScenario = useCallback((scenario: T) => {
     setActiveScenario(scenario);
-    if (isLabCompleted(getScenarioId(scenario))) {
+    const scenarioId = getScenarioId(scenario);
+    const persisted = getCompletedSteps(scenarioId);
+    if (persisted.size > 0) {
+      setCompletedSteps(persisted);
+    } else if (isLabCompleted(scenarioId)) {
+      // Legacy completions predate per-step tracking — treat the scenario as done.
       setCompletedSteps(new Set(getStepIds(scenario)));
     } else {
       setCompletedSteps(new Set());

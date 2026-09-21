@@ -1,6 +1,6 @@
 import type { ElementType } from 'react';
-import { Users, Database, Coins, Mail, Megaphone, OctagonAlert } from 'lucide-react';
-import { IconShield, IconClock, IconWarning, IconDashboard } from '@/shared/components/icons';
+import { Users, Database, Coins, Mail, Megaphone, OctagonAlert, ShieldCheck } from 'lucide-react';
+import { IconClock, IconWarning, IconDashboard } from '@/shared/components/icons';
 import ADMIN_PATH from '@/shared/utils/adminPath';
 
 export interface AdminNavItem {
@@ -22,7 +22,7 @@ export const NAV_GROUPS: AdminNavGroup[] = [
     items: [
       { label: 'Overview', desc: 'System overview, health and signups', icon: IconDashboard, tab: 'overview',  path: `${ADMIN_PATH}/dashboard?tab=overview` },
       { label: 'Users', desc: 'Manage operators and access control', icon: Users, tab: 'users', path: `${ADMIN_PATH}/dashboard?tab=users` },
-      { label: 'Bootcamps', desc: 'Phase admission and enrollment', icon: IconShield, tab: 'bootcamps', path: `${ADMIN_PATH}/dashboard?tab=bootcamps` },
+      { label: 'Bootcamps', desc: 'Phase admission and enrollment', icon: ShieldCheck, tab: 'bootcamps', path: `${ADMIN_PATH}/dashboard?tab=bootcamps` },
     ],
   },
   {
@@ -53,6 +53,6 @@ export const NAV_GROUPS: AdminNavGroup[] = [
 export const ADMIN_QUICK_TABS: AdminNavItem[] = [
   { label: 'Overview', desc: 'System overview, health and signups', icon: IconDashboard, tab: 'overview', path: `${ADMIN_PATH}/dashboard?tab=overview` },
   { label: 'Users', desc: 'Manage operators and access control', icon: Users, tab: 'users', path: `${ADMIN_PATH}/dashboard?tab=users` },
-  { label: 'Bootcamps', desc: 'Phase admission and enrollment', icon: IconShield, tab: 'bootcamps', path: `${ADMIN_PATH}/dashboard?tab=bootcamps` },
+  { label: 'Bootcamps', desc: 'Phase admission and enrollment', icon: ShieldCheck, tab: 'bootcamps', path: `${ADMIN_PATH}/dashboard?tab=bootcamps` },
   { label: 'Points', desc: 'Cyber Point analytics and balances', icon: Coins, tab: 'cp', path: `${ADMIN_PATH}/dashboard?tab=cp` },
 ];

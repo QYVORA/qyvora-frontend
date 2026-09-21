@@ -135,12 +135,6 @@ const AppShell = () => {
           context={terminalContext}
           mode="modal"
         />
-        <TerminalWrapper
-          open={terminalOpen}
-          onOpenChange={setTerminalOpen}
-          context={terminalContext}
-          mode="modal"
-        />
 
         <NetworkBuilder open={networkVizOpen} onOpenChange={setNetworkVizOpen} />
       </div>

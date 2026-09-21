@@ -6,7 +6,6 @@
  * ever exposed in the client-side JavaScript bundle.
  */
 import api from '../../../core/services/api';
-import { markLabCompleted } from '@/features/student/utils/labProgress';
 
 // ─── Types ──────────────────────────────────────────────────────────────────
 
@@ -19,7 +18,10 @@ export interface FlagVerificationResult {
 
 /**
  * Verify a lab flag against the backend.
- * Automatically persists completion to localStorage on success.
+ *
+ * Completion is tracked per-step by the caller (`useLabScenario`): a scenario
+ * is only marked complete once every step has been checked off, so verifying a
+ * single flag must not persist scenario-level completion on its own.
  *
  * @param labId      - The lab identifier (e.g., 'privesc', 'passwords')
  * @param scenarioId - The scenario/exercise identifier (e.g., 'privesc-001')
@@ -37,9 +39,6 @@ export const verifyLabFlag = async (
       scenarioId,
       flag: flag.trim(),
     });
-    if (data.correct) {
-      markLabCompleted(scenarioId);
-    }
     return data;
   } catch {
     return {

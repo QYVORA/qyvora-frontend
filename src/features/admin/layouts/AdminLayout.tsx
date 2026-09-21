@@ -5,6 +5,7 @@
 
 import { Outlet } from 'react-router-dom';
 import AdminTopbar from '@/features/admin/components/layout/AdminTopbar';
+import AdminBottomNav from '@/features/admin/components/layout/AdminBottomNav';
 
 const TOPBAR_H = 'pt-20 md:pt-24';
 const CONTENT_PB = 'md:pb-6';
@@ -15,6 +16,7 @@ const AdminLayout = () => (
     <div id="main-content" className={`${TOPBAR_H} ${CONTENT_PB}`}>
       <Outlet />
     </div>
+    <AdminBottomNav />
   </div>
 );
 

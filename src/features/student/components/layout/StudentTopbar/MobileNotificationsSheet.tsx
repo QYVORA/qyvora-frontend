@@ -26,7 +26,7 @@ const MobileNotificationsSheet: React.FC<MobileNotificationsSheetProps> = ({
 }) => {
   return (
     <BottomSheet open={open} onOpenChange={onOpenChange}>
-      <BottomSheetContent ariaLabel={"Notifications"} className="md:hidden max-h-[75svh] flex flex-col">
+      <BottomSheetContent ariaLabel={"Notifications"} className="lg:hidden max-h-[75svh] flex flex-col">
         <div className="flex justify-center pt-3 pb-1 flex-none">
           <div className="w-10 h-1 rounded-full bg-border" />
         </div>

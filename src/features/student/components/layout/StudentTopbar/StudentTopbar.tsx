@@ -1,12 +1,10 @@
 import { Link, useLocation, useNavigate, useMatch } from 'react-router-dom';
 import {
-  IconTerminal,
-  IconLabs,
-  IconMarketplace,
   IconArrowLeft,
-  IconCode,
   IconChevronRight,
+  IconNotification,
 } from '@/shared/components/icons';
+import { BookOpen, ShieldCheck, Bug, ShoppingBag } from 'lucide-react';
 import { getCourseById } from '../../../data/courses';
 import { useAuth } from '../../../../../core/contexts/AuthContext';
 import Logo from '../../../../../shared/components/brand/Logo';
@@ -15,6 +13,8 @@ import { useEffect, useState } from 'react';
 import api from '../../../../../core/services/api';
 import { extractCpBalance } from '@/shared/utils/cpBalance';
 import useStudentOverview from '@/features/student/hooks/useStudentOverview';
+import MobileNotificationsSheet from './MobileNotificationsSheet';
+import type { NotificationItem } from './types';
 
 // Single definition of the mobile CP badge. Every topbar mode renders this one
 // component so the `tour-cp-mobile` tour anchor is defined exactly once.
@@ -29,10 +29,10 @@ const StudentTopbar = ({ railCollapsed = false }: { railCollapsed?: boolean }) =
   const { user } = useAuth();
 
   const DESKTOP_NAV_ITEMS = [
-    { label: "My Courses", icon: IconCode, path: '/dashboard/courses' },
-    { label: "Bootcamp", icon: IconTerminal, path: '/dashboard/bootcamps' },
-    { label: "Labs", icon: IconLabs, path: '/dashboard/labs' },
-    { label: "Marketplace", icon: IconMarketplace, path: '/dashboard/marketplace' },
+    { label: "My Courses", icon: BookOpen, path: '/dashboard/courses' },
+    { label: "Bootcamp", icon: ShieldCheck, path: '/dashboard/bootcamps' },
+    { label: "Labs", icon: Bug, path: '/dashboard/labs' },
+    { label: "Marketplace", icon: ShoppingBag, path: '/dashboard/marketplace' },
   ];
 
   const navigate = useNavigate();
@@ -106,6 +106,59 @@ const StudentTopbar = ({ railCollapsed = false }: { railCollapsed?: boolean }) =
       setCpBalance(cp);
     }
   }, [overview, user?.uid]);
+
+  // Notifications — surfaced in the topbar below `lg`. On desktop the sidebar
+  // rail owns the notifications link, so the bell is hidden there.
+  const [notifOpen, setNotifOpen] = useState(false);
+  const [notifLoading, setNotifLoading] = useState(false);
+  const [unreadCount, setUnreadCount] = useState(0);
+  const [notificationsPreview, setNotificationsPreview] = useState<NotificationItem[]>([]);
+
+  const loadNotificationsSnapshot = async () => {
+    setNotifLoading(true);
+    try {
+      const res = await api.get('/notifications');
+      const items = Array.isArray(res.data) ? res.data : [];
+      setUnreadCount(items.filter((n: { read?: boolean }) => !n.read).length);
+      setNotificationsPreview(
+        items.slice(0, 6).map((item: NotificationItem) => ({
+          id: String(item?.id || ''),
+          title: String(item?.title || 'Notification'),
+          message: String(item?.message || ''),
+          read: Boolean(item?.read),
+          createdAt: String(item?.createdAt || ''),
+        }))
+      );
+    } catch {
+      setNotificationsPreview([]);
+    } finally {
+      setNotifLoading(false);
+    }
+  };
+
+  const markNotificationRead = async (id: string) => {
+    try {
+      await api.post(`/notifications/${id}/read`, {});
+      setNotificationsPreview((prev) => prev.map((n) => (n.id === id ? { ...n, read: true } : n)));
+      setUnreadCount((prev) => Math.max(0, prev - 1));
+    } catch {
+      /* ignore */
+    }
+  };
+
+  const markAllNotificationsRead = async () => {
+    try {
+      await api.post('/notifications/read-all', {});
+      setUnreadCount(0);
+      setNotificationsPreview((prev) => prev.map((n) => ({ ...n, read: true })));
+    } catch {
+      /* ignore */
+    }
+  };
+
+  useEffect(() => {
+    loadNotificationsSnapshot();
+  }, [location.pathname]);
 
   const isActive = (path: string) => {
     if (path === '/dashboard') return location.pathname === '/dashboard';
@@ -284,21 +337,46 @@ const StudentTopbar = ({ railCollapsed = false }: { railCollapsed?: boolean }) =
             <div className="hidden lg:block flex-1" aria-hidden="true" />
 
             {/* Right actions — separated from nav by flex-1 */}
-            <div className="hidden md:flex items-center gap-1.5 md:gap-2.5 shrink-0">
-              {/* CP Coin badge */}
-              <div className={`hidden md:flex items-center gap-2 px-3 py-2 rounded-xl bg-surface`} data-tour-id="tour-cp-desktop">
+            <div className="flex items-center gap-1.5 md:gap-2.5 shrink-0 ml-auto">
+              {/* CP Coin badge — tablet and up */}
+              <div className="hidden md:flex items-center gap-2 px-3 py-2 rounded-xl bg-surface" data-tour-id="tour-cp-desktop">
                 <CpLogo className="w-5 h-5" />
                 <span className="text-xs font-black text-accent">{cpBalance.toLocaleString()}</span>
               </div>
-            </div>
 
-            {/* Mobile CP badge — right-aligned */}
-            <div className="md:hidden flex items-center gap-2 ml-auto">
-              <MobileCpBadge balance={cpBalance} />
+              {/* Notifications — below lg (desktop sidebar owns notifications) */}
+              <button
+                type="button"
+                onClick={() => { loadNotificationsSnapshot(); setNotifOpen(true); }}
+                className="lg:hidden relative flex min-h-12 min-w-12 items-center justify-center rounded-xl text-text-secondary transition-colors hover:bg-surface hover:text-accent focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-accent"
+                aria-label={`Notifications${unreadCount > 0 ? ` (${unreadCount} unread)` : ''}`}
+              >
+                <IconNotification size={22} />
+                {unreadCount > 0 && (
+                  <span className="absolute right-1.5 top-1.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-accent px-1 text-xs font-black leading-none text-on-accent">
+                    {unreadCount > 9 ? '9+' : unreadCount}
+                  </span>
+                )}
+              </button>
+
+              {/* Mobile CP badge */}
+              <div className="md:hidden flex items-center gap-2">
+                <MobileCpBadge balance={cpBalance} />
+              </div>
             </div>
           </div>
         )}
       </header>
+
+      <MobileNotificationsSheet
+        open={notifOpen}
+        onOpenChange={setNotifOpen}
+        unreadCount={unreadCount}
+        notifLoading={notifLoading}
+        notificationsPreview={notificationsPreview}
+        markAllNotificationsRead={markAllNotificationsRead}
+        onMarkRead={markNotificationRead}
+      />
     </>
   );
 };
