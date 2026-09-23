@@ -1,5 +1,6 @@
 import React from 'react';
 import { ArrowRight, ShieldCheck } from 'lucide-react';
+import { IconCheck } from '@/shared/components/icons';
 import { openServiceRequestModal } from '@/features/marketing/components/ServiceRequestModal';
 import SEO from '@/shared/components/SEO';
 import PageHeader from '@/shared/components/ui/PageHeader';
@@ -90,18 +91,20 @@ const ServiceCard: React.FC<{ svc: ServiceConfig; index: number }> = ({ svc, ind
     <Card
       to={svc.path}
       interactive
-      className="flex h-full min-h-[340px] flex-col gap-4 p-6"
+      className={`flex h-full min-h-[360px] flex-col gap-5 p-6 ${
+        svc.featured ? 'border-accent/40' : ''
+      }`}
     >
       <div className="flex items-start justify-between gap-3">
-        <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-border-subtle bg-surface-raised text-accent">
+        <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl border border-accent/20 bg-accent/10 text-accent">
           <Icon className="h-5 w-5" aria-hidden="true" />
         </span>
         <div className="flex flex-col items-end gap-2">
           <span className="type-meta font-mono text-text-tertiary">{`0${index}`}</span>
           <span className={`rounded-lg border px-2.5 py-1 text-[10px] font-black uppercase tracking-widest ${
             svc.featured
-              ? 'border-accent/30 bg-accent/10 text-accent'
-              : 'border-border-subtle bg-surface text-text-secondary'
+              ? 'border-accent/40 bg-accent/15 text-accent'
+              : 'border-border-subtle bg-surface-raised text-text-secondary'
           }`}>
             {svc.badge}
           </span>
@@ -113,20 +116,24 @@ const ServiceCard: React.FC<{ svc: ServiceConfig; index: number }> = ({ svc, ind
       </h3>
       <p className="type-body-sm flex-1">{svc.overview}</p>
 
-      <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
-        <span className={`font-black ${svc.featured ? 'text-xl text-accent' : 'text-lg text-text-primary'}`}>
-          {svc.price}
+      <div className="mt-auto flex flex-col gap-4 border-t border-border-subtle pt-4">
+        <div className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1">
+          <span className={`font-black ${svc.featured ? 'text-xl text-accent' : 'text-lg text-text-primary'}`}>
+            {svc.price}
+          </span>
+          <span className="text-xs text-text-muted">{svc.priceLocal}</span>
+        </div>
+        {svc.highlight && (
+          <p className="flex items-start gap-2 rounded-lg border border-accent/20 bg-accent/5 px-3 py-2 text-xs leading-relaxed text-accent/90">
+            <IconCheck className="h-3.5 w-3.5 shrink-0 mt-0.5" aria-hidden="true" />
+            {svc.highlight}
+          </p>
+        )}
+        <span className="flex min-h-[44px] items-center gap-2 text-sm font-bold text-accent">
+          {LEARN_MORE_LABEL}
+          <ArrowRight className="h-4 w-4" aria-hidden="true" />
         </span>
-        <span className="text-xs text-text-muted">{svc.priceLocal}</span>
       </div>
-      {svc.highlight && (
-        <p className="text-xs leading-relaxed text-accent/90">{svc.highlight}</p>
-      )}
-
-      <span className="flex min-h-[44px] items-center gap-2 text-sm font-bold text-accent">
-        {LEARN_MORE_LABEL}
-        <ArrowRight className="h-4 w-4" aria-hidden="true" />
-      </span>
     </Card>
   );
 };

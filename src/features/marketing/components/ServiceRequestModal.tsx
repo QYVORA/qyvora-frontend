@@ -63,11 +63,11 @@ const ServiceRequestModalHost: React.FC = () => {
         maxWidth="max-w-2xl"
       >
         {status === 'sent' ? (
-          <div className="flex flex-col items-center justify-center py-10 gap-4 text-center">
-            <div className="w-14 h-14 rounded-2xl bg-accent-dim border border-accent/30 flex items-center justify-center">
+          <div className="flex flex-col items-center justify-center rounded-xl border border-border-subtle bg-surface py-10 px-6 gap-4 text-center">
+            <div className="w-14 h-14 rounded-xl bg-accent/10 border border-accent/30 flex items-center justify-center">
               <IconCheck size={28} className="text-accent" />
             </div>
-            <h3 className="text-lg font-bold text-text-primary">{"Request Received"}</h3>
+            <h3 className="type-h3 font-black uppercase tracking-tight text-text-primary">{"Request Received"}</h3>
             <p className="text-sm text-text-muted">
               {"Your request has been received. We'll contact you shortly."}
             </p>
@@ -80,10 +80,12 @@ const ServiceRequestModalHost: React.FC = () => {
             </button>
           </div>
         ) : (
-          <div className="space-y-5">
-            <div className="rounded-2xl border border-border bg-accent/5 p-4">
-              <p className="text-xs text-text-secondary">
-                {"We offer comprehensive cybersecurity services including "} <strong className="text-accent">{"bootcamps, training, "}</strong> {"and consulting."}
+          <div className="rounded-xl border border-border-subtle bg-surface p-5 sm:p-6 space-y-5">
+            <div className="rounded-lg border border-border-subtle bg-surface-raised px-4 py-3">
+              <p className="text-xs font-mono leading-relaxed text-text-secondary">
+                {packageTier
+                  ? <>{"Assessment requested for "}<span className="font-black text-accent">{packageTier}</span>{"."}</>
+                  : "Describe your needs and we'll get back to you."}
               </p>
             </div>
 
@@ -178,7 +180,7 @@ const ServiceRequestModalHost: React.FC = () => {
                   name="message"
                   rows={4}
                   placeholder="Describe your project scope, timeline, or any specific security concerns..."
-                  className="w-full min-h-[44px] bg-surface border border-border-subtle rounded-lg py-3 px-4 text-body-sm text-text-primary placeholder:text-text-tertiary outline-none transition-[border-color,box-shadow] focus:border-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent resize-none"
+                  className="w-full min-h-[44px] bg-surface border border-border-subtle rounded-xl py-3 px-4 text-body-sm text-text-primary placeholder:text-text-tertiary outline-none transition-[border-color,box-shadow] focus:border-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent resize-none"
                 />
               </div>
 

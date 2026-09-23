@@ -34,7 +34,7 @@ const SocialLinks = ({ member }: { member: TeamMember }) => (
           target="_blank"
           rel="noopener noreferrer"
           aria-label={`${member.name} on ${platform}`}
-          className="flex h-10 w-10 items-center justify-center rounded-lg border border-border/50 text-text-muted transition-colors hover:border-accent/40 hover:text-accent"
+          className="flex h-10 w-10 items-center justify-center rounded-lg border border-border-subtle text-text-muted transition-colors hover:border-accent/40 hover:text-accent"
         >
           <Icon className="h-4 w-4" />
         </a>
@@ -44,7 +44,7 @@ const SocialLinks = ({ member }: { member: TeamMember }) => (
 );
 
 const FounderCard = ({ member }: { member: TeamMember }) => (
-  <article className="flex flex-col items-center gap-4 rounded-2xl border border-border bg-bg-card p-6 text-center">
+  <article className="flex flex-col items-center gap-4 rounded-2xl border border-border-subtle bg-surface p-6 text-center">
     <div className="relative">
       <span className="absolute -inset-1.5 rounded-full border border-accent/30" aria-hidden="true" />
       <img
@@ -78,7 +78,7 @@ const FounderCard = ({ member }: { member: TeamMember }) => (
         {member.disciplines.map((discipline) => (
           <span
             key={discipline}
-            className="rounded-md border border-border-subtle bg-surface px-2 py-0.5 text-tiny font-black uppercase tracking-widest text-text-muted"
+            className="rounded-md border border-border-subtle bg-surface-raised px-2 py-0.5 text-tiny font-black uppercase tracking-widest text-text-muted"
           >
             {discipline}
           </span>
@@ -100,8 +100,8 @@ const FounderCard = ({ member }: { member: TeamMember }) => (
 );
 
 const OperatorCard = ({ member }: { member: TeamMember }) => (
-  <article className="flex h-full flex-col overflow-hidden rounded-2xl border border-border bg-bg-card">
-    <div className="relative aspect-[4/3] w-full overflow-hidden bg-surface">
+  <article className="flex h-full flex-col overflow-hidden rounded-2xl border border-border-subtle bg-surface">
+    <div className="relative aspect-[4/3] w-full overflow-hidden bg-surface-raised">
       <img
         src={member.image}
         alt={member.name}
@@ -143,7 +143,7 @@ const OperatorCard = ({ member }: { member: TeamMember }) => (
         {member.disciplines.map((discipline) => (
           <span
             key={discipline}
-            className="rounded-md border border-border-subtle bg-surface px-2 py-0.5 text-tiny font-black uppercase tracking-widest text-text-muted"
+            className="rounded-md border border-border-subtle bg-surface-raised px-2 py-0.5 text-tiny font-black uppercase tracking-widest text-text-muted"
           >
             {discipline}
           </span>

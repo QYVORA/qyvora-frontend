@@ -14,7 +14,7 @@ const authBullets = [
  */
 const AuthHero: React.FC = () => {
   return (
-    <div className="relative hidden min-h-dvh w-full flex-col overflow-hidden md:flex">
+    <div className="relative hidden h-full w-full flex-col overflow-hidden md:flex">
       <div className="shrink-0 pt-10 pl-6">
         <Link
           to="/"

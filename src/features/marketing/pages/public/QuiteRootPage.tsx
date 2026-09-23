@@ -88,8 +88,8 @@ const QuiteRootPage = () => {
           }
         />
 
-        <div className="overflow-hidden rounded-2xl border border-border bg-bg-card">
-          <div className="flex items-center justify-between gap-3 border-b border-border-subtle bg-surface px-5 py-3">
+        <div className="overflow-hidden rounded-2xl border border-border-subtle bg-surface">
+          <div className="flex items-center justify-between gap-3 border-b border-border-subtle bg-surface-raised px-5 py-3">
             <p className="text-[10px] font-black uppercase tracking-[0.3em] text-accent">
               Research registry
             </p>
@@ -97,14 +97,14 @@ const QuiteRootPage = () => {
               nodes // {researchersData.length}
             </span>
           </div>
-          <ul className="divide-y divide-border/30">
+          <ul className="divide-y divide-border-subtle">
             {researchersData.map((researcher) => (
               <ResearcherRow key={researcher.id} researcher={researcher} />
             ))}
           </ul>
         </div>
 
-        <div className="mt-10 flex flex-col gap-3 rounded-2xl border border-border/50 bg-bg-card p-5 md:mt-14 md:p-6">
+        <div className="mt-10 flex flex-col gap-3 rounded-2xl border border-border-subtle bg-surface p-5 md:mt-14 md:p-6">
           <p className="text-kicker font-black uppercase tracking-[0.3em] text-accent">
             Independent research collective
           </p>
