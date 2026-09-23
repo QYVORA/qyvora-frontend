@@ -103,8 +103,8 @@ const LearnPage: React.FC = () => {
           return (
             <Card key={phase.id} to={`/hpb/phase${Number(phase.id)}`} interactive className="flex min-h-[190px] flex-col gap-3 p-6">
               <div className="flex items-center gap-3">
-                <div className="flex h-16 w-16 shrink-0 items-center justify-center overflow-hidden rounded-xl border border-border-subtle bg-surface-raised">
-                  <HpbAvatar variant={hpbVariant} className="h-full w-auto max-h-full max-w-full" />
+                <div className="flex h-16 w-16 shrink-0 items-center justify-center overflow-hidden rounded-xl border border-border-subtle bg-surface-raised p-1.5">
+                  <HpbAvatar variant={hpbVariant} className="h-full w-auto max-h-full max-w-full object-contain" />
                 </div>
                 <span className="type-meta">Phase {phase.id}</span>
               </div>

@@ -48,10 +48,9 @@ const FeaturedLearningBlock: React.FC = () => {
             className="relative flex min-h-[320px] flex-col justify-between gap-6 overflow-hidden p-6 lg:col-span-2 md:p-8"
           >
             <div aria-hidden="true" className="pointer-events-none absolute inset-0 select-none">
-              <div className="absolute -right-12 bottom-0 hidden h-56 w-56 md:block">
+              <div className="absolute bottom-8 right-8 hidden h-48 w-48 md:block">
                 <HpbAvatar variant="phase5" className="h-full w-full opacity-90" />
               </div>
-              <div className="absolute inset-0 bg-gradient-to-r from-canvas via-canvas/80 to-transparent" />
             </div>
 
             <div className="relative flex flex-wrap items-center gap-2">
@@ -74,9 +73,9 @@ const FeaturedLearningBlock: React.FC = () => {
                   <span
                     key={phase.id}
                     title={`Phase ${phase.id} · ${phase.name}`}
-                    className="flex h-10 w-10 items-center justify-center overflow-hidden rounded-lg border border-border-subtle bg-surface-raised"
+                    className="flex h-10 w-10 items-center justify-center overflow-hidden rounded-lg border border-border-subtle bg-surface-raised p-1"
                   >
-                    <HpbAvatar variant={`phase${Number(phase.id)}` as HpbVariant} className="h-full w-auto" />
+                    <HpbAvatar variant={`phase${Number(phase.id)}` as HpbVariant} className="h-full w-auto object-contain" />
                   </span>
                 ))}
                 <span className="ml-1 flex min-h-[44px] items-center gap-2 text-sm font-bold text-accent">

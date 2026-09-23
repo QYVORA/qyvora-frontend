@@ -73,8 +73,8 @@ const HpbPhasePage: React.FC = () => {
                   type="bootcamp"
                   to={`/hpb/${other.id}`}
                   badge={
-                    <div className="flex h-16 w-16 items-center justify-center overflow-hidden rounded-xl border border-accent/20 bg-accent/10">
-                      <HpbAvatar variant={`phase${phaseNumber}` as HpbVariant} className="h-full w-auto max-h-full max-w-full" />
+                    <div className="flex h-16 w-16 items-center justify-center overflow-hidden rounded-xl border border-accent/20 bg-accent/10 p-1.5">
+                      <HpbAvatar variant={`phase${phaseNumber}` as HpbVariant} className="h-full w-auto max-h-full max-w-full object-contain" />
                     </div>
                   }
                   title={other.title}

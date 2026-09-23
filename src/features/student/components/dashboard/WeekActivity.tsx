@@ -43,7 +43,7 @@ const DayBar = ({ label, minutes, isToday, maxMinutes }: DayBarProps) => {
         <div
           className={`w-full max-w-[34px] rounded-t-md transition-[height,background-color] duration-500 ${
             isToday
-              ? 'bg-gradient-to-t from-accent/40 via-accent/70 to-accent'
+              ? 'bg-accent'
               : active
                 ? 'bg-accent/70'
                 : 'bg-border/25'

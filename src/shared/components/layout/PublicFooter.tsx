@@ -60,45 +60,47 @@ const PublicFooter: React.FC = React.memo(() => {
             <p className="mt-3 max-w-xs text-body-sm">
               {"Building Africa's strongest cybersecurity ecosystem - one trained professional at a time."}
             </p>
-            <a
-              href="mailto:qyvorasec@gmail.com"
-              className="mt-2 inline-flex min-h-[44px] items-center gap-1.5 text-type-body text-text-secondary transition-colors hover:text-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
-            >
-              <IconMail size={14} aria-hidden="true" />
-              {"qyvorasec@gmail.com"}
-            </a>
-            <Link
-              to="/register"
-              className="mt-4 inline-flex min-h-[44px] items-center gap-1.5 rounded-lg border border-accent/40 px-3 text-xs font-black uppercase tracking-widest text-accent transition-colors hover:bg-accent/10 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
-            >
-              {"Join the platform"} <IconArrowRight size={12} aria-hidden="true" />
-            </Link>
-            <div className="mt-5 flex flex-wrap gap-2">
-              {SOCIAL_LINKS.map(({ key, label, href, Icon }) => (
-                <a
-                  key={key}
-                  href={href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label={label}
-                  className="flex h-10 w-10 items-center justify-center rounded-lg border border-border-subtle text-text-secondary transition-colors hover:border-accent/40 hover:text-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
-                >
-                  <Icon className="h-4 w-4" />
-                </a>
-              ))}
+            <div className="mt-8 flex flex-col gap-2">
+              <a
+                href="mailto:qyvorasec@gmail.com"
+                className="inline-flex min-h-[44px] items-center gap-1.5 text-type-body text-text-secondary transition-colors hover:text-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+              >
+                <IconMail size={14} aria-hidden="true" />
+                {"qyvorasec@gmail.com"}
+              </a>
+              <Link
+                to="/register"
+                className="mt-1 inline-flex min-h-[44px] w-fit items-center gap-1.5 rounded-lg border border-accent/40 px-3 text-xs font-black uppercase tracking-widest text-accent transition-colors hover:bg-accent/10 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+              >
+                {"Join the platform"} <IconArrowRight size={12} aria-hidden="true" />
+              </Link>
+              <div className="mt-2 flex flex-wrap gap-2">
+                {SOCIAL_LINKS.map(({ key, label, href, Icon }) => (
+                  <a
+                    key={key}
+                    href={href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={label}
+                    className="flex h-10 w-10 items-center justify-center rounded-lg border border-border-subtle text-text-secondary transition-colors hover:border-accent/40 hover:text-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+                  >
+                    <Icon className="h-4 w-4" />
+                  </a>
+                ))}
+              </div>
             </div>
           </div>
 
-          <nav aria-label="Footer" className="grid grid-cols-2 gap-8 sm:grid-cols-3">
+          <nav aria-label="Footer" className="grid grid-cols-2 gap-x-6 gap-y-8 sm:grid-cols-3">
             {COLS.map((col) => (
               <div key={col.title}>
                 <h3 className="type-label text-accent">{col.title}</h3>
-                <ul className="mt-3 space-y-1">
+                <ul className="mt-3 space-y-0.5">
                   {col.links.map((link) => (
                     <li key={link.key}>
                       <Link
                         to={link.to}
-                        className="inline-flex min-h-[44px] items-center text-sm text-text-secondary transition-colors hover:text-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+                        className="inline-flex py-1 text-sm text-text-secondary transition-colors hover:text-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
                       >
                         {link.label}
                       </Link>

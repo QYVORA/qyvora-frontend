@@ -58,7 +58,7 @@ const DocTocNav: React.FC<DocTocNavProps> = ({ sections, contained = false }) =>
         <nav
           aria-label="On this page"
           className={cn(
-            'scroll-x no-scrollbar flex w-full flex-nowrap items-center gap-1.5 overflow-x-auto py-2',
+            'flex w-full flex-wrap items-center gap-1.5 py-2',
             !contained && 'px-3 md:px-4 lg:px-6',
           )}
         >
@@ -69,7 +69,7 @@ const DocTocNav: React.FC<DocTocNavProps> = ({ sections, contained = false }) =>
               onClick={jumpTo(section.id)}
               aria-current={activeId === section.id ? 'true' : undefined}
               className={cn(
-                'inline-flex min-h-[44px] shrink-0 items-center justify-center whitespace-nowrap rounded-xl px-3 text-xs font-black uppercase tracking-widest transition-colors',
+                'inline-flex min-h-[44px] items-center justify-center whitespace-nowrap rounded-xl px-2.5 text-xs font-black uppercase tracking-widest transition-colors sm:px-3',
                 activeId === section.id
                   ? 'bg-accent text-on-accent'
                   : 'border border-border bg-surface-raised text-text-muted hover:border-accent/50 hover:text-accent',

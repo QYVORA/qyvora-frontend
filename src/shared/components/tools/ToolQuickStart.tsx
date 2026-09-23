@@ -24,8 +24,9 @@ interface ToolQuickStartProps {
 /**
  * ToolQuickStart — reader-centred command + sample-output block for tool
  * documentation pages. Real copyable CodeBlocks, flat hierarchy: no decorative
- * terminal chrome and no cards-in-cards. Structured output renders as labelled
- * plain-text lines so the section reads like documentation, not a mock window.
+ * terminal chrome and no cards-in-cards. Structured output renders as a
+ * labelled two-column list so the section reads like documentation, not a mock
+ * window.
  */
 const ToolQuickStart: React.FC<ToolQuickStartProps> = ({
   command,
@@ -35,11 +36,10 @@ const ToolQuickStart: React.FC<ToolQuickStartProps> = ({
   usage,
   footer,
 }) => {
-  const outputLines = output?.map((line) => `[${line.label.toLowerCase()}] ${line.text}`);
   const sessionLines = session ?? [];
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-[1.15fr_1fr] gap-4 md:gap-6">
+    <div className="grid grid-cols-1 lg:grid-cols-[1.15fr_1fr] gap-4 md:gap-6 items-start">
       <div className="flex flex-col gap-5">
         <div className="space-y-2">
           <p className="text-[10px] font-black uppercase tracking-[0.3em] text-accent">Run it</p>
@@ -49,10 +49,26 @@ const ToolQuickStart: React.FC<ToolQuickStartProps> = ({
           )}
         </div>
 
-        {outputLines.length > 0 && (
+        {output && output.length > 0 && (
           <div className="space-y-2">
             <p className="text-[10px] font-black uppercase tracking-[0.3em] text-accent">Sample output</p>
-            <CodeBlock code={outputLines.join('\n')} lang="text" badge="output" />
+            <div className="overflow-hidden rounded-xl border border-border/50 bg-bg-card">
+              <ul className="divide-y divide-border/30">
+                {output.map((line, index) => (
+                  <li
+                    key={index}
+                    className="flex flex-col gap-1 px-4 py-2.5 md:flex-row md:items-baseline md:gap-4"
+                  >
+                    <span className="w-32 shrink-0 font-mono text-xs font-black uppercase tracking-widest text-accent/80">
+                      {line.label}
+                    </span>
+                    <span className="font-mono text-xs text-text-secondary leading-relaxed">
+                      {line.text}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            </div>
           </div>
         )}
 

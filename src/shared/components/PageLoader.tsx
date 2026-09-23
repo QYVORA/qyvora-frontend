@@ -4,54 +4,58 @@ import { useReducedMotion } from '@/shared/hooks/useReducedMotion';
 const PROMPT = 'qyvora@core:~$ ';
 const COMMAND = 'boot';
 const FULL_LINE = PROMPT + COMMAND;
-const TYPE_MS = 55;
-const COMPLETE_DELAY_MS = 260;
-const HOLD_MS = 700;
+const TYPE_START_MS = 200;
+const TYPE_MS = 80;
+const HOLD_MS = 600;
 const FADE_MS = 400;
 
-type LoaderPhase = 'typing' | 'done' | 'fading';
+type LoaderPhase = 'typing' | 'fading';
 
 const PageLoader: React.FC = () => {
   const prefersReduced = useReducedMotion();
   const [count, setCount] = useState(prefersReduced ? FULL_LINE.length : 0);
-  const [phase, setPhase] = useState<LoaderPhase>(prefersReduced ? 'done' : 'typing');
+  const [phase, setPhase] = useState<LoaderPhase>('typing');
   const [gone, setGone] = useState(false);
 
   useEffect(() => {
     if (prefersReduced) {
       setCount(FULL_LINE.length);
-      setPhase('done');
-      return;
+      setPhase('typing');
+      const timers = [
+        window.setTimeout(() => setPhase('fading'), HOLD_MS),
+        window.setTimeout(() => setGone(true), HOLD_MS + FADE_MS),
+      ];
+      return () => timers.forEach((t) => window.clearTimeout(t));
     }
     setCount(0);
     setPhase('typing');
     let i = 0;
-    const timers: number[] = [];
-    const interval = window.setInterval(() => {
-      i += 1;
-      setCount(i);
-      if (i >= FULL_LINE.length) {
-        window.clearInterval(interval);
-        timers.push(window.setTimeout(() => setPhase('done'), COMPLETE_DELAY_MS));
-        timers.push(window.setTimeout(() => setPhase('fading'), COMPLETE_DELAY_MS + HOLD_MS));
-        timers.push(window.setTimeout(() => setGone(true), COMPLETE_DELAY_MS + HOLD_MS + FADE_MS));
-      }
-    }, TYPE_MS);
+    let interval: number | undefined;
+    const initial = window.setTimeout(() => {
+      interval = window.setInterval(() => {
+        i += 1;
+        setCount(i);
+        if (i >= FULL_LINE.length) {
+          window.clearInterval(interval);
+          window.setTimeout(() => setPhase('fading'), HOLD_MS);
+          window.setTimeout(() => setGone(true), HOLD_MS + FADE_MS);
+        }
+      }, TYPE_MS);
+    }, TYPE_START_MS);
     return () => {
-      window.clearInterval(interval);
-      timers.forEach((t) => window.clearTimeout(t));
+      window.clearTimeout(initial);
+      if (interval) window.clearInterval(interval);
     };
   }, [prefersReduced]);
 
   if (gone) return null;
 
   const typed = FULL_LINE.slice(0, count);
-  const revealed = phase === 'done' || phase === 'fading';
   const fading = phase === 'fading';
 
   return (
     <div
-      className={`fixed inset-0 z-[9999] bg-canvas flex items-center justify-center overflow-hidden select-none touch-none px-6 transition-opacity ease-[var(--ease-smooth)] ${revealed ? 'duration-[400ms]' : ''} ${fading ? 'opacity-0' : 'opacity-100'}`}
+      className={`fixed inset-0 z-[9999] bg-canvas flex items-center justify-center overflow-hidden select-none touch-none px-6 transition-opacity duration-[400ms] ease-[var(--ease-smooth)] ${fading ? 'opacity-0' : 'opacity-100'}`}
     >
       <div
         role="status"
@@ -62,13 +66,8 @@ const PageLoader: React.FC = () => {
         <p aria-hidden="true" className="text-text-primary">
           <span className="text-accent">{typed.slice(0, PROMPT.length)}</span>
           <span>{typed.slice(PROMPT.length)}</span>
-          <span className="page-loader-caret" />
+          {count < FULL_LINE.length && <span className="page-loader-caret" />}
         </p>
-        {revealed && (
-          <p aria-hidden="true" className="page-loader-done mt-2 text-accent">
-            boot complete
-          </p>
-        )}
       </div>
       <style>{`
         .page-loader-caret {
