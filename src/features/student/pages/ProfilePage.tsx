@@ -1,6 +1,6 @@
 import React, { useMemo, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { Edit3, User, FlaskConical, GraduationCap, Zap, Flame } from 'lucide-react';
+import { Edit3, User, FlaskConical, GraduationCap, Calendar, Flame } from 'lucide-react';
 import { useAuth } from '../../../core/contexts/AuthContext';
 import { useProfile } from '../../../shared/hooks/useProfile';
 import { useSkillAchievements } from '../../../shared/hooks/useSkillAchievements';
@@ -99,7 +99,7 @@ const Profile: React.FC = () => {
             { icon: <FlaskConical className="w-5 h-5" />, value: profile.labsCompleted || profile.completedRooms.length },
             { icon: <GraduationCap className="w-5 h-5" />, value: profile.coursesCompleted },
             { icon: <Flame className="w-5 h-5" />, value: profile.xpLevel },
-            { icon: <Zap className="w-5 h-5" />, value: `Lv.${profile.xpLevel}` },
+            { icon: <Calendar className="w-5 h-5" />, value: profile.joinDate ? new Date(profile.joinDate).getFullYear() : '—' },
           ]} />
         </section>
 

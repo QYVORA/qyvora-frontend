@@ -22,7 +22,7 @@ const LabsModule: React.FC<LabsModuleProps> = ({
   const totalLabs = labsCompleted || completedRooms.length;
 
   return (
-    <div className={className}>
+    <div className={`rounded-2xl border border-border/50 bg-bg-card overflow-hidden ${className}`}>
       <ModuleHeader
         icon={<FlaskConical className="w-4 h-4 text-danger" />}
         iconClassName="bg-danger/10"
@@ -36,7 +36,7 @@ const LabsModule: React.FC<LabsModuleProps> = ({
         }
       />
 
-      <div className="mt-4">
+      <div className="p-5 pt-4">
         {displayRooms.length === 0 ? (
           <p className="text-xs text-text-muted text-center py-4">
             {"No labs completed yet."}

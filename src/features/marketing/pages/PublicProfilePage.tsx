@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { IconArrowLeft } from '@/shared/components/icons';
-import { User, FlaskConical, GraduationCap, Zap, Flame } from 'lucide-react';
+import { User, FlaskConical, GraduationCap, Calendar, Flame } from 'lucide-react';
 import NotFoundPage from '../../../shared/pages/NotFoundPage';
 import api from '../../../core/services/api';
 import PageLoader from '../../../shared/components/PageLoader';
@@ -126,9 +126,9 @@ const PublicProfile: React.FC = () => {
         breadcrumbName={handle ? `@${handle}` : 'Profile'}
       />
 
-      <PublicContainer className="pt-24 md:pt-28 pb-20 lg:pb-24">
+      <PublicContainer className="pt-24 md:pt-28 lg:pt-32 pb-20 lg:pb-24">
           {/* Main content */}
-          <div className="space-y-6">
+          <div className="space-y-10">
             {/* ── Identity Section ── */}
             <section id="profile-section-identity">
               <ProfileIdentityBlock
@@ -161,8 +161,8 @@ const PublicProfile: React.FC = () => {
                 { icon: <User className="w-5 h-5" />, value: profile.rank },
                 { icon: <FlaskConical className="w-5 h-5" />, value: profile.labsCompleted || profile.completedRooms.length },
                 { icon: <GraduationCap className="w-5 h-5" />, value: profile.coursesCompleted },
-                { icon: <Flame className="w-5 h-5" />, value: profile.xpLevel },
-                { icon: <Zap className="w-5 h-5" />, value: `Lv.${profile.xpLevel}` },
+{ icon: <Flame className="w-5 h-5" />, value: profile.xpLevel },
+            { icon: <Calendar className="w-5 h-5" />, value: profile.joinDate ? new Date(profile.joinDate).getFullYear() : '—' },
               ]} />
             </section>
 

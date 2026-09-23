@@ -45,7 +45,7 @@ const CoursesModule: React.FC<CoursesModuleProps> = ({
   );
 
   return (
-    <div className={className}>
+    <div className={`rounded-2xl border border-border/50 bg-bg-card overflow-hidden ${className}`}>
       <ModuleHeader
         icon={<GraduationCap className="w-4 h-4 text-info" />}
         iconClassName="bg-info/10"
@@ -59,7 +59,7 @@ const CoursesModule: React.FC<CoursesModuleProps> = ({
         }
       />
 
-      <div className="mt-4">
+      <div className="p-5 pt-4">
         {coursesCompleted === 0 && completed.length === 0 ? (
           <p className="text-xs text-text-muted text-center py-4">
             {"No courses completed yet."}

@@ -106,40 +106,51 @@ const AchievementsSection: React.FC<AchievementsSectionProps> = ({
   }
 
   return (
-    <div className="space-y-4">
-      {bootcampCompleted && (
-        <motion.div
-          initial={prefersReduced ? false : { opacity: 0, y: 8 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: prefersReduced ? 0 : 0.35 }}
-          className="flex items-center gap-4"
-        >
-          <BootcampBadge completed className="w-24 sm:w-28" />
-          <div>
-            <h3 className="text-sm font-black text-text-primary">
-              HPB Graduate
-            </h3>
-            <p className="text-xs text-text-muted">
-              Completed the Hacker Protocol Bootcamp
-            </p>
-          </div>
-        </motion.div>
-      )}
+    <div className="rounded-2xl border border-border/50 bg-bg-card overflow-hidden">
+      <ModuleHeader
+        icon={<Award className="w-4 h-4 text-accent" />}
+        iconClassName="bg-accent/10"
+        title={"Achievements"}
+        trailing={
+          <span className="px-2 py-1 bg-accent/10 text-accent text-xs font-black rounded-lg">
+            {totalAchievements}
+          </span>
+        }
+      />
 
-      {/* Bootcamp Phases */}
-      {phaseAchievements.length > 0 && (
-        <div>
-          <ModuleHeader
-            icon={<Award className="w-4 h-4 text-accent" />}
-            iconClassName="bg-accent/10"
-            title={"Bootcamp Phases"}
-            trailing={
+      <div className="p-5 space-y-8">
+        {bootcampCompleted && (
+          <motion.div
+            initial={prefersReduced ? false : { opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: prefersReduced ? 0 : 0.35 }}
+            className="flex items-center gap-4 rounded-xl border border-border/50 bg-bg-elevated/60 px-4 py-3"
+          >
+            <BootcampBadge completed className="w-16 sm:w-20" />
+            <div>
+              <h3 className="text-sm font-black text-text-primary">
+                HPB Graduate
+              </h3>
+              <p className="text-xs text-text-muted">
+                Completed the Hacker Protocol Bootcamp
+              </p>
+            </div>
+          </motion.div>
+        )}
+
+        {/* Bootcamp Phases */}
+        {phaseAchievements.length > 0 && (
+          <div>
+            <div className="mb-3 flex items-center gap-2">
+              <Award className="w-4 h-4 text-accent" />
+              <h4 className="text-xs font-black uppercase tracking-widest text-text-muted">
+                Bootcamp Phases
+              </h4>
               <span className="px-2 py-1 bg-accent/10 text-accent text-xs font-black rounded-lg">
                 {phaseAchievements.length}
               </span>
-            }
-          />
-          <div className="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
+            </div>
+            <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
             <AnimatePresence mode="popLayout">
               {phaseAchievements.map((a, idx) => (
                 <motion.div
@@ -149,7 +160,7 @@ const AchievementsSection: React.FC<AchievementsSectionProps> = ({
                   animate={{ opacity: 1, scale: 1 }}
                   exit={prefersReduced ? undefined : { opacity: 0, scale: 0.9 }}
                   transition={{ duration: prefersReduced ? 0 : 0.3, delay: prefersReduced ? 0 : idx * 0.03 }}
-                  className="relative group flex flex-col items-center text-center p-4 rounded-xl border border-border/50 bg-bg-card transition-[transform,background-color,border-color,color,box-shadow] duration-[var(--dur-base)] hover:scale-[1.02] cursor-default"
+                  className="relative group flex flex-col items-center text-center p-4 rounded-xl border border-border/50 bg-bg-elevated/60 transition-[transform,background-color,border-color,color,box-shadow] duration-[var(--dur-base)] hover:scale-[1.02] cursor-default"
                 >
                   <div className="w-12 h-12 rounded-xl flex items-center justify-center mb-3 bg-bg-elevated">
                     {a.iconNode}
@@ -178,17 +189,16 @@ const AchievementsSection: React.FC<AchievementsSectionProps> = ({
       {/* Courses */}
       {courseAchievements.length > 0 && (
         <div>
-          <ModuleHeader
-            icon={<Award className="w-4 h-4 text-info" />}
-            iconClassName="bg-info/10"
-            title={"Courses"}
-            trailing={
-              <span className="px-2 py-1 bg-info/10 text-info text-xs font-black rounded-lg">
-                {courseAchievements.length}
-              </span>
-            }
-          />
-          <div className="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
+          <div className="mb-3 flex items-center gap-2">
+            <Award className="w-4 h-4 text-info" />
+            <h4 className="text-xs font-black uppercase tracking-widest text-text-muted">
+              Courses
+            </h4>
+            <span className="px-2 py-1 bg-info/10 text-info text-xs font-black rounded-lg">
+              {courseAchievements.length}
+            </span>
+          </div>
+          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
             <AnimatePresence mode="popLayout">
               {courseAchievements.map((a, idx) => {
                 const IconComp = a.IconComponent;
@@ -200,7 +210,7 @@ const AchievementsSection: React.FC<AchievementsSectionProps> = ({
                     animate={{ opacity: 1, scale: 1 }}
                     exit={prefersReduced ? undefined : { opacity: 0, scale: 0.9 }}
                     transition={{ duration: prefersReduced ? 0 : 0.3, delay: prefersReduced ? 0 : idx * 0.03 }}
-                  className="relative group flex flex-col items-center text-center p-4 rounded-xl border border-border/50 bg-bg-card transition-[transform,background-color,border-color,color,box-shadow] duration-[var(--dur-base)] hover:scale-[1.02] cursor-default"
+                  className="relative group flex flex-col items-center text-center p-4 rounded-xl border border-border/50 bg-bg-elevated/60 transition-[transform,background-color,border-color,color,box-shadow] duration-[var(--dur-base)] hover:scale-[1.02] cursor-default"
                   >
                     <div className="w-12 h-12 rounded-xl flex items-center justify-center mb-3 bg-info/10">
                       {IconComp ? (
@@ -228,22 +238,21 @@ const AchievementsSection: React.FC<AchievementsSectionProps> = ({
       {/* Labs */}
       {labCount > 0 && (
         <div>
-          <ModuleHeader
-            icon={<FlaskConical className="w-4 h-4 text-danger" />}
-            iconClassName="bg-danger/10"
-            title={"Labs"}
-            trailing={
-              <span className="px-2 py-1 bg-danger/10 text-danger text-xs font-black rounded-lg">
-                {labCount}
-              </span>
-            }
-          />
-          <div className="flex items-center justify-between gap-3 sm:gap-6 px-5 py-5">
+          <div className="mb-3 flex items-center gap-2">
+            <FlaskConical className="w-4 h-4 text-danger" />
+            <h4 className="text-xs font-black uppercase tracking-widest text-text-muted">
+              Labs
+            </h4>
+            <span className="px-2 py-1 bg-danger/10 text-danger text-xs font-black rounded-lg">
+              {labCount}
+            </span>
+          </div>
+          <div className="mb-3 flex items-center justify-between gap-3 sm:gap-6 rounded-xl border border-border/50 bg-bg-elevated/40 px-4 py-4">
             {LAB_BADGE_IDS.map((labId) => (
               <LabBadge key={labId} labId={labId} className="w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20" />
             ))}
           </div>
-          <div className="flex flex-wrap items-center gap-x-3 gap-y-2 px-5 pb-5">
+          <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
             <h4 className="text-xs font-black uppercase tracking-widest text-text-primary">
               {"Lab Operator"}
             </h4>
@@ -266,17 +275,16 @@ const AchievementsSection: React.FC<AchievementsSectionProps> = ({
       {/* Skill Achievements */}
       {skillAchievements.length > 0 && (
         <div>
-          <ModuleHeader
-            icon={<Award className="w-4 h-4 text-accent" />}
-            iconClassName="bg-accent/10"
-            title={"Skill Badges"}
-            trailing={
-              <span className="px-2 py-1 bg-accent/10 text-accent text-xs font-black rounded-lg">
-                {skillAchievements.length}
-              </span>
-            }
-          />
-          <div className="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
+          <div className="mb-3 flex items-center gap-2">
+            <Award className="w-4 h-4 text-accent" />
+            <h4 className="text-xs font-black uppercase tracking-widest text-text-muted">
+              Skill Badges
+            </h4>
+            <span className="px-2 py-1 bg-accent/10 text-accent text-xs font-black rounded-lg">
+              {skillAchievements.length}
+            </span>
+          </div>
+          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
             <AnimatePresence mode="popLayout">
               {skillAchievements.map((sa, idx) => {
                 const rarity = sa.rarity || 'common';
@@ -325,6 +333,7 @@ const AchievementsSection: React.FC<AchievementsSectionProps> = ({
           </div>
         </div>
       )}
+      </div>
     </div>
   );
 };
