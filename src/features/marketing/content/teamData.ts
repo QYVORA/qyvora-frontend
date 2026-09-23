@@ -2,6 +2,7 @@ import wsuits6Img from '@/assets/team/wsuits6.webp';
 import sopt4Img from '@/assets/team/sopt4.webp';
 import rafiqImg from '@/assets/team/mohammed_rafiq.webp';
 import ghostImg from '@/assets/quiteRoot/WhatsApp Image 2026-07-16 at 10.45.41 PM.webp';
+import juniorPentesterImg from '@/assets/team/junior_pentester.webp';
 import cyberX6Img from '@/assets/team/cyberX6.webp';
 import karimHamidImg from '@/assets/team/karim_hamid.webp';
 
@@ -132,6 +133,23 @@ export const teamData: TeamMember[] = [
     socials: {
       linkedin: 'https://gh.linkedin.com/in/karim-hamid-659345384',
       instagram: 'https://www.instagram.com/hybrid_hamid',
+    },
+  },
+  {
+    id: 'juniorPentester',
+    name: 'Abdul Rahman Peligah',
+    handle: 'Abdul_Peligah',
+    role: 'Junior Pentester',
+    bio: 'Junior pentester cutting his teeth on capture-the-flag, web security, and bug reports alongside QYVORA\'s senior operators.',
+    profile: 'Abdul Rahman Peligah is QYVORA\'s Junior Pentester. Still on the grind from the learner side, he is putting QYVORA\'s own bootcamp material to work — running labs, chasing flags, and growing into offensive security under the direct mentorship of the senior crew.',
+    disciplines: ['Web security', 'Capture the flag', 'Bug hunting'],
+    location: 'Tamale, Ghana',
+    image: juniorPentesterImg,
+    width: 960,
+    height: 960,
+    socials: {
+      twitter: 'https://x.com/Abdul_Peligah',
+      linkedin: 'https://www.linkedin.com/in/mahamud-abdul-rahaman/',
     },
   },
 ];
