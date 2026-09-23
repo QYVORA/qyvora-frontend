@@ -91,15 +91,15 @@ interface TerminalShellProps {
 }
 
 const KALI_BG = '#0c0c0c';
-const KALI_GREEN = '#00ff41';
+const KALI_GREEN = '#06B66F';
 const KALI_OUTPUT = '#d4d4d4';
 const KALI_ERROR = '#ff3333';
 const KALI_SYSTEM = '#d4d4d4';
-const KALI_CURSOR = '#00ff41';
+const KALI_CURSOR = '#06B66F';
 const KALI_TITLE_BG = '#1a1a1a';
 const KALI_BORDER = '#2a2a2a';
 const KALI_DIR = '#569cd6';
-const KALI_EXEC = '#00ff41';
+const KALI_EXEC = '#06B66F';
 
 export const TerminalShell: React.FC<TerminalShellProps> = ({
   context,

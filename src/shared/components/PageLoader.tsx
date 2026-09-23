@@ -5,40 +5,70 @@ const PROMPT = 'qyvora@core:~$ ';
 const COMMAND = 'boot';
 const FULL_LINE = PROMPT + COMMAND;
 const TYPE_MS = 55;
+const COMPLETE_DELAY_MS = 260;
+const HOLD_MS = 700;
+const FADE_MS = 400;
+
+type LoaderPhase = 'typing' | 'done' | 'fading';
 
 const PageLoader: React.FC = () => {
   const prefersReduced = useReducedMotion();
   const [count, setCount] = useState(prefersReduced ? FULL_LINE.length : 0);
+  const [phase, setPhase] = useState<LoaderPhase>(prefersReduced ? 'done' : 'typing');
+  const [gone, setGone] = useState(false);
 
   useEffect(() => {
     if (prefersReduced) {
       setCount(FULL_LINE.length);
+      setPhase('done');
       return;
     }
     setCount(0);
+    setPhase('typing');
     let i = 0;
-    const timer = setInterval(() => {
+    const timers: number[] = [];
+    const interval = window.setInterval(() => {
       i += 1;
       setCount(i);
-      if (i >= FULL_LINE.length) clearInterval(timer);
+      if (i >= FULL_LINE.length) {
+        window.clearInterval(interval);
+        timers.push(window.setTimeout(() => setPhase('done'), COMPLETE_DELAY_MS));
+        timers.push(window.setTimeout(() => setPhase('fading'), COMPLETE_DELAY_MS + HOLD_MS));
+        timers.push(window.setTimeout(() => setGone(true), COMPLETE_DELAY_MS + HOLD_MS + FADE_MS));
+      }
     }, TYPE_MS);
-    return () => clearInterval(timer);
+    return () => {
+      window.clearInterval(interval);
+      timers.forEach((t) => window.clearTimeout(t));
+    };
   }, [prefersReduced]);
 
+  if (gone) return null;
+
   const typed = FULL_LINE.slice(0, count);
+  const revealed = phase === 'done' || phase === 'fading';
+  const fading = phase === 'fading';
 
   return (
-    <div className="fixed inset-0 z-[9999] bg-canvas flex items-center justify-center overflow-hidden select-none touch-none px-6">
-      <div role="status" aria-live="polite" className="flex items-center justify-center">
+    <div
+      className={`fixed inset-0 z-[9999] bg-canvas flex items-center justify-center overflow-hidden select-none touch-none px-6 transition-opacity ease-[var(--ease-smooth)] ${revealed ? 'duration-[400ms]' : ''} ${fading ? 'opacity-0' : 'opacity-100'}`}
+    >
+      <div
+        role="status"
+        aria-live="polite"
+        className="font-mono text-sm sm:text-base md:text-lg font-medium leading-none whitespace-nowrap"
+      >
         <span className="sr-only">Loading QYVORA</span>
-        <p
-          aria-hidden="true"
-          className="font-mono text-sm sm:text-base md:text-lg font-medium leading-none whitespace-nowrap text-text-primary"
-        >
+        <p aria-hidden="true" className="text-text-primary">
           <span className="text-accent">{typed.slice(0, PROMPT.length)}</span>
           <span>{typed.slice(PROMPT.length)}</span>
           <span className="page-loader-caret" />
         </p>
+        {revealed && (
+          <p aria-hidden="true" className="page-loader-done mt-2 text-accent">
+            boot complete
+          </p>
+        )}
       </div>
       <style>{`
         .page-loader-caret {
