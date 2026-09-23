@@ -5,6 +5,7 @@ import SEO from '@/shared/components/SEO';
 import PublicContainer from '@/shared/components/layout/PublicContainer';
 import Button from '@/shared/components/ui/Button';
 import { LearningCard, LearningDetailShell } from '@/shared/components/learning';
+import HpbAvatar, { type HpbVariant } from '@/shared/components/HpbAvatar';
 import { BOOTCAMP_CONFIG } from '@/features/student/constants/bootcampStructure';
 import { PHASES } from '@/features/marketing/data/learnData';
 
@@ -60,7 +61,7 @@ const HpbPhasePage: React.FC = () => {
               const learn = PHASES.find(
                 (p) => p.id === other.id.replace('phase', '').padStart(2, '0'),
               );
-              const Icon = learn?.icon;
+              const phaseNumber = Number(other.id.replace('phase', '').padStart(2, '0'));
               const minutes = (other.rooms || []).reduce(
                 (sum, room) => sum + (room.estimatedMinutes || 0),
                 0,
@@ -71,7 +72,11 @@ const HpbPhasePage: React.FC = () => {
                   key={other.id}
                   type="bootcamp"
                   to={`/hpb/${other.id}`}
-                  icon={Icon ? <Icon className="h-5 w-5" /> : undefined}
+                  badge={
+                    <div className="flex h-16 w-16 items-center justify-center overflow-hidden rounded-xl border border-accent/20 bg-accent/10">
+                      <HpbAvatar variant={`phase${phaseNumber}` as HpbVariant} className="h-full w-auto max-h-full max-w-full" />
+                    </div>
+                  }
                   title={other.title}
                   description={learn?.desc ?? other.codename}
                   duration={`${hours}h`}

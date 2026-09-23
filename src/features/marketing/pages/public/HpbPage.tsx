@@ -4,6 +4,7 @@ import PageHeader from '@/shared/components/ui/PageHeader';
 import PublicContainer from '@/shared/components/layout/PublicContainer';
 import Button from '@/shared/components/ui/Button';
 import { LearningCard } from '@/shared/components/learning/LearningCard';
+import HpbAvatar, { type HpbVariant } from '@/shared/components/HpbAvatar';
 import { BOOTCAMP_CONFIG } from '@/features/student/constants/bootcampStructure';
 import { PHASES } from '@/features/marketing/data/learnData';
 
@@ -31,10 +32,8 @@ const HpbPage = () => {
 
         <div className="mt-10 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
           {phases.map((phase) => {
-            const learnPhase = PHASES.find(
-              (p) => p.id === phase.id.replace('phase', '').padStart(2, '0'),
-            );
-            const Icon = learnPhase?.icon;
+            const phaseNumber = Number(phase.id.replace('phase', '').padStart(2, '0'));
+            const learnPhase = PHASES.find((p) => p.id === phase.id.replace('phase', '').padStart(2, '0'));
             const minutes = (phase.rooms || []).reduce(
               (sum, room) => sum + (room.estimatedMinutes || 0),
               0,
@@ -45,7 +44,11 @@ const HpbPage = () => {
                 key={phase.id}
                 type="bootcamp"
                 to={`/hpb/${phase.id}`}
-                icon={Icon ? <Icon className="h-5 w-5" /> : undefined}
+                badge={
+                  <div className="flex h-16 w-16 items-center justify-center overflow-hidden rounded-xl border border-accent/20 bg-accent/10">
+                    <HpbAvatar variant={`phase${phaseNumber}` as HpbVariant} className="h-full w-auto max-h-full max-w-full" />
+                  </div>
+                }
                 title={phase.title}
                 description={learnPhase?.desc ?? phase.codename}
                 duration={`${hours}h`}

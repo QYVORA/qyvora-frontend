@@ -23,20 +23,20 @@ export const PERIODS = [
 ];
 
 export const TOP_THREE_COLORS = [
-  'text-warning',
-  'text-gray-300',
-  'text-amber-600',
+  'text-accent',
+  'text-accent/80',
+  'text-accent/50',
 ];
 
 export const RANK_COLORS: Record<string, string> = {
   // Legacy CP-based ladder (kept for backward compatibility)
   Vanguard: 'text-accent',
   Architect: 'text-warning',
-  Specialist: 'text-purple-400',
+  Specialist: 'text-info',
   Contributor: 'text-info',
-  Candidate: 'text-zinc-400',
+  Candidate: 'text-text-muted',
   // Progression ladder (backend-driven)
-  'Seeker': 'text-zinc-400',
+  'Seeker': 'text-text-muted',
   'Operator': 'text-info',
   'Agent': 'text-warning',
   'Strategist': 'text-accent',
