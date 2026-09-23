@@ -133,12 +133,12 @@ const ToolsIndexPage: React.FC = () => {
           {filtered.map((tool) => (
             <Card key={tool.path} to={tool.path} interactive className="flex h-full flex-col gap-5 p-6">
               <div className="flex items-center gap-3">
-                <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl border border-border-subtle bg-canvas">
+                <span className="flex h-16 w-16 shrink-0 items-center justify-center rounded-xl border border-border-subtle bg-canvas p-2">
                   <img
                     src={tool.logo}
                     alt=""
                     aria-hidden="true"
-                    className="h-7 w-7 object-contain"
+                    className="h-full w-full object-contain"
                   />
                 </span>
                 <div className="min-w-0">

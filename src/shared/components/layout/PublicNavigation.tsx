@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { Link, NavLink, useLocation } from 'react-router-dom';
 import { AnimatePresence, motion } from 'motion/react';
-import { User } from 'lucide-react';
+import { Maximize, Minimize, User } from 'lucide-react';
 import { Logo } from '@/shared/components/brand';
 import { useAuth } from '@/core/contexts/AuthContext';
 import { useScrollLock } from '@/core/hooks/useScrollLock';
@@ -33,12 +33,27 @@ const LINKS: NavLinkDef[] = [
 const PublicNavigation: React.FC = React.memo(() => {
   const { user } = useAuth();
   const [open, setOpen] = React.useState(false);
+  const [isFullscreen, setIsFullscreen] = React.useState(false);
   const location = useLocation();
   const prefersReduced = useReducedMotion();
   const panelRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => setOpen(false), [location.pathname]);
   useScrollLock(open);
+
+  useEffect(() => {
+    const handleFullscreenChange = () => setIsFullscreen(Boolean(document.fullscreenElement));
+    document.addEventListener('fullscreenchange', handleFullscreenChange);
+    return () => document.removeEventListener('fullscreenchange', handleFullscreenChange);
+  }, []);
+
+  const toggleFullscreen = () => {
+    if (document.fullscreenElement) {
+      document.exitFullscreen().catch(() => {});
+    } else {
+      document.documentElement.requestFullscreen?.().catch(() => {});
+    }
+  };
 
   useEffect(() => {
     if (!open) return;
@@ -107,6 +122,14 @@ const PublicNavigation: React.FC = React.memo(() => {
           </div>
 
           <div className="relative z-[110] flex shrink-0 items-center gap-3">
+            <IconButton
+              label={isFullscreen ? "Exit fullscreen" : "Fullscreen"}
+              tooltip={false}
+              variant="default"
+              onClick={toggleFullscreen}
+              icon={isFullscreen ? <Minimize className="h-5 w-5" aria-hidden="true" /> : <Maximize className="h-5 w-5" aria-hidden="true" />}
+              active={isFullscreen}
+            />
             <div className="hidden items-center gap-2 md:flex">
               {user ? (
                 <Button to="/dashboard" size="sm">

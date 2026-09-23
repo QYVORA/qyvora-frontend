@@ -830,6 +830,17 @@ html[data-animations="off"] * {
   --color-code-path:      #7c3aed;
   --card-shimmer:         inset 0 1px 0 rgba(255, 255, 255, 0.5);
   --card-shadow:          0 12px 40px rgba(20, 32, 24, 0.14);
+  /* Calm-system tokens — light surfaces so migrated UI follows the OS theme */
+  --color-canvas:            #D9DED5;          /* page background */
+  --color-surface:           #E1E6DC;          /* cards, form fields, static panels */
+  --color-surface-raised:    #E8EBE4;          /* menus, sheets, active utility panels */
+  --color-border-subtle:     rgba(22, 26, 21, 0.14);
+  --color-text-tertiary:     rgba(38, 43, 35, 0.55);
+  --elevation-raised:        0 8px 24px rgba(20, 32, 24, 0.10);
+  --color-semantic-danger:   #dc2626;
+  --color-semantic-warning:  #b45309;
+  --color-semantic-info:     #0284c7;
+  --color-semantic-success:  #047A48;
   /* Status & difficulty — darken 400-level hues for legibility on light */
   --color-danger:                      #dc2626;
   --color-warning:                     #b45309;

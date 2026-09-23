@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useState, useCallback, useMemo } from 'react';
+import { createContext, useContext, useEffect, useState, useCallback, useMemo, useRef } from 'react';
 
 type Theme = 'dark' | 'light';
 
@@ -19,20 +19,26 @@ function getSystemTheme(): Theme {
   return 'dark';
 }
 
-function getInitialTheme(): Theme {
+function readStoredTheme(): Theme | null {
   try {
     const stored = localStorage.getItem(THEME_STORAGE_KEY);
     if (stored === 'light' || stored === 'dark') return stored;
   } catch {}
-  return getSystemTheme();
+  return null;
+}
+
+function getInitialTheme(): Theme {
+  return readStoredTheme() ?? getSystemTheme();
 }
 
 export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [theme, setThemeState] = useState<Theme>(getInitialTheme);
+  // The user's explicit choice is persisted; a system-derived theme is not, so
+  // the page always tracks the OS theme until the user toggles it manually.
+  const userPinnedRef = useRef<boolean>(readStoredTheme() !== null);
 
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme);
-    try { localStorage.setItem(THEME_STORAGE_KEY, theme); } catch {}
     if (theme === 'dark') {
       document.documentElement.classList.add('dark');
       document.documentElement.classList.remove('light');
@@ -40,13 +46,15 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       document.documentElement.classList.add('light');
       document.documentElement.classList.remove('dark');
     }
+    if (userPinnedRef.current) {
+      try { localStorage.setItem(THEME_STORAGE_KEY, theme); } catch {}
+    }
   }, [theme]);
 
   useEffect(() => {
     const mq = window.matchMedia('(prefers-color-scheme: light)');
     const handler = (e: MediaQueryListEvent) => {
-      const stored = localStorage.getItem(THEME_STORAGE_KEY);
-      if (!stored) {
+      if (!userPinnedRef.current) {
         setThemeState(e.matches ? 'light' : 'dark');
       }
     };
@@ -55,10 +63,12 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   }, []);
 
   const toggleTheme = useCallback(() => {
+    userPinnedRef.current = true;
     setThemeState((prev) => (prev === 'dark' ? 'light' : 'dark'));
   }, []);
 
   const setTheme = useCallback((t: Theme) => {
+    userPinnedRef.current = true;
     setThemeState(t);
   }, []);
 

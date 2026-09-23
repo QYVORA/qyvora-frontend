@@ -73,7 +73,7 @@ const FeaturedLearningBlock: React.FC = () => {
                   <span
                     key={phase.id}
                     title={`Phase ${phase.id} · ${phase.name}`}
-                    className="flex h-10 w-10 items-center justify-center overflow-hidden rounded-lg border border-border-subtle bg-surface-raised p-1"
+                    className="flex h-14 w-14 items-center justify-center overflow-hidden rounded-xl border border-border-subtle bg-surface-raised p-1.5"
                   >
                     <HpbAvatar variant={`phase${Number(phase.id)}` as HpbVariant} className="h-full w-auto object-contain" />
                   </span>
@@ -137,8 +137,8 @@ const FeaturedLearningBlock: React.FC = () => {
 
           {/* Cyber Points */}
           <Card to="/cp" interactive className="flex min-h-[240px] flex-col gap-3 p-6">
-            <span className="flex h-11 w-11 items-center justify-center rounded-xl border border-border-subtle bg-surface-raised">
-              <CpLogo className="h-6 w-6" />
+            <span className="flex h-14 w-14 items-center justify-center rounded-xl border border-border-subtle bg-surface-raised">
+              <CpLogo className="h-9 w-9" />
             </span>
             <p className="type-label mt-1 uppercase tracking-[0.12em] text-text-tertiary">{"Cyber Points"}</p>
             <h3 className="type-h3 font-black uppercase tracking-tight text-text-primary">
