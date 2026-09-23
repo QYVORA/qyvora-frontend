@@ -13,6 +13,10 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - Student dashboard now stays independent of public pages: course cards link to `/dashboard/courses/:id`, "View All" → `/dashboard/courses`, locked-course fallback and "Course Not Unlocked" CTA route inside the dashboard
 - `/courses/:courseId` legacy redirect now routes to `/dashboard/courses/:courseId` (via `LegacyCourseRedirect`) instead of the public `/courses` page
 - Removed the CP cost badge from dashboard course cards — the CP price stands alone
+- Public site theme now follows the OS (light/dark), with larger bootcamp/tool/CP nav icons and a navbar fullscreen toggle
+- Added `gap-1.5` between mobile bottom-nav buttons; stabilized the landing hero typewriter layout with an invisible longest-phrase placeholder
+- `CyberCoinPage` (`/cp`) restructured to the canonical public-page rhythm: `space-y-12 md:space-y-16` section stack, `compact` `SimpleHeading` scale, alternating split/stacked sections, and full-width reward/activity matrices
+- QuiteRoot page: the researcher "registry" panel was replaced with a simple per-member card grid (small photo avatar, role badge, research-node id, discipline glyph, bio)
 
 ### SEO
 - Fixed JSON-LD serialization in prerendered HTML — scripts now render JSON as text content instead of a bogus `innerHTML` attribute
@@ -30,11 +34,14 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - `DotMapBackground.tsx` — Dot map component (no remaining consumers)
 
 ### Added
+- Generated dark background art across the key marketing regions — landing hero (desktop + mobile scenes), featured-learning squad band, HPB and CP header bands, final-CTA Dobia card, auth hero panel, and the 404 page — committed as `.webp` in `src/assets/backgrounds/` (PNG sources gitignored). Each region pins dark tokens via `data-theme-persist="dark"` with no scrim/opacity/blur over the art
 - Tests for `ScenarioCard`, `LabCard`, `useNavInvert` hook (26 new tests, 192 total)
 
 ### Documentation
 - Consolidated docs: removed 12 redundant/stale files, merged content into living references
 - Moved `QYVORA_TERMINAL_ENGINEERING_AUDIT.md` and `QYVORA_TERMINAL_SIMULATION_COMMANDS.md` to `docs/archive/`
+- Wrote the generated background-art system into `docs/BACKGROUNDS.md` (region table, linearised `.webp` delivery, the fixed implementation pattern, and the no-scrim rule); updated the landing-hero and dark-persistence references in `docs/UI-PATTERN-INVENTORY.md`, `docs/COMPONENTS.md`, `docs/DESIGN_SYSTEM.md`, and `docs/AVATARS.md`
+- Documented the `/cp` section restructure and the QuiteRoot simple-card grid in `docs/UI-PRINCIPLES.md` heading scale and `docs/UI-PATTERN-INVENTORY.md`
 - Fixed accent color (`#66B870` → `#06B66F`) in `docs/ARCHITECTURE.md`
 - Fixed deployment info in root `README.md` (Vercel → Netlify)
 - Updated route table in root `README.md` to match actual router

@@ -325,11 +325,12 @@ Inline error display within pages/cards.
 ```
 
 **Visual traits**:
-- Container: `relative flex min-h-dvh w-full bg-canvas`
+- Container: `relative flex min-h-dvh w-full bg-canvas` with `data-theme-persist="dark"` (copy stays light-on-dark in both themes)
+- Generated background art: desktop scene `hero-desktop.webp` (`hidden lg:block`) + portrait mobile scene `hero-mobile.webp` (`object-bottom`, `lg:hidden`), both as a decorative `absolute inset-0 object-cover` image and **never** dimmed with a scrim (see `docs/BACKGROUNDS.md`)
 - Inner: `mx-auto flex w-full max-w-[1320px] flex-col justify-center px-3 py-24 pt-32 md:px-4 md:py-28 lg:px-6`
 - Kicker (`type-label uppercase tracking-[0.12em] text-accent`) + `h1` (`type-display font-black uppercase tracking-tight`) with the accent line as a `block` span
 - One primary CTA (`Button to="/register"`) + one ghost secondary link
-- No canvas, no globe, no marquee — clean typography only
+- No canvas, no globe, no marquee — art + clean typography only
 
 ### 8b. Page Header (Public inner pages + dashboard)
 
@@ -459,13 +460,18 @@ top-level map:
 - **Base**: pages on `bg-canvas`; cards lift through the token surface ladder
   (`bg` → `bg-alt` → `bg-card` → `bg-elevated`), never raw hex blacks.
 - **Bands**: alternating sections on `bg-surface` for rhythm.
-- **Canvas fades**: `bg-gradient-to-r from-canvas via-canvas/85 to-transparent`
-  (hero + carousel edge masks) to blend avatar art into the page.
+- **Generated art**: a curated set of dark scenes in `src/assets/backgrounds/`
+  backs the landing hero, featured-learning band, HPB/CP header bands, final
+  CTA, auth panel, and 404 (webp-only in repo). Pattern: `relative overflow-hidden`
+  root + decorative `absolute inset-0 object-cover` image + `relative` content +
+  `data-theme-persist="dark"` on the root. **No scrim/opacity/blur over the art.**
+  See `docs/BACKGROUNDS.md`.
 - **Texture utilities** (available, verified before use): `.dot-grid` (24px
   accent dot), `.grid-fade` (faint column grid), `.border-beam` /
   `.nav-border-beam` (animated accent borders).
 - **Dark persistence**: `data-theme-persist="dark"` forces dark tokens on a
-  subtree in light mode (`PublicFooter`, `AdminLayout`, `CodeBlock`).
+  subtree in light mode (`PublicFooter`, `AdminLayout`, `AuthFormLayout`,
+  `CodeBlock`, `NotFoundPage`, + every generated-art region).
 
 > Note: `GridBoxedBackground` has been removed (Phase A item 3) — it no longer
 > exists in the codebase and must not be reintroduced.

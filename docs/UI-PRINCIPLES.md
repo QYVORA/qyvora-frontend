@@ -74,6 +74,7 @@ Defined in `src/styles/index.css` `@theme` block. **Use Tailwind utilities, neve
 |------|---------|---------|
 | Hero-adjacent | `text-3xl md:text-5xl lg:text-6xl` | Market, Blogs |
 | Standard | `text-2xl md:text-4xl lg:text-5xl` | Team, QuiteRoot, Leaderboard, OpenSourceTools, ActDivider |
+| Compact section (`SimpleHeading` `compact`) | `text-3xl md:text-4xl lg:text-5xl` | ServicesPage, ServiceDetailPage, `/cp` |
 | Compact bento | `text-lg md:text-xl lg:text-2xl` | Courses, Labs, Bootcamp (shrink-0 header row) |
 
 All h2: `font-black text-text-primary tracking-tighter leading-none`. Accent word inside h2:

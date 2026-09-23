@@ -209,7 +209,7 @@ ConfirmDialog: { open; onOpenChange; title; description; confirmLabel?; cancelLa
 - **`AuthImage`** (named): fetches auth-gated `/uploads/bootcamps/` blobs through axios (Bearer + 401 refresh), fallback for guests, pulse placeholder. Props `extends ImgHTMLAttributes {src?, fallback?}`. Used in market/bootcamp imagery.
 - **`StatCounter`** (default): count-up number. **DEAD — no usages.**
 - **`DottedMapOverlay`** (default): `absolute inset-0 pointer-events-none` accent dotted world map. Props `{opacity?=.24, className?}`. Used in LandingLabs/Pillars/Services + ServiceDetailPage.
-- **`SimpleHeading`** (default): **canonical dynamic section heading** — a huge `<h2>` (`font-black tracking-tight leading-[1.06]`, `compact text-3xl→5xl`, standard `text-4xl→7xl`) split into accent+primary spans, so a section heading fills/dominates its split-screen area instead of reading as a small strip. Props `{text, align?, compact?, accentWords?, accentPlacement?, accentText?, kicker?, description?, variant?, className?}`. `accentWords`/`accentPlacement` split by word count; `accentText` renders a verbatim accent phrase (for i18n two-key `title`+`titleAccent` pairs); `kicker` renders the uppercase eyebrow above; `description` renders muted mono text below (wrapped in a `space-y-4` block when kicker/description present). Now the standard for all split-screen section headings: used in `/cp`, ServicesPage, ServiceDetailPage, SimulationsPage, SimulationPage, and the landing sections (Market, Blogs, QuiteRoot, OpenSourceTools, Leaderboard, Team), plus TermsContentSection.
+- **`SimpleHeading`** (default): **canonical dynamic section heading** — a huge `<h2>` (`font-black tracking-tight leading-[1.06]`, `compact text-3xl→5xl`, standard `text-4xl→7xl`) split into accent+primary spans, so a section heading fills/dominates its split-screen area instead of reading as a small strip. Props `{text, align?, compact?, accentWords?, accentPlacement?, accentText?, kicker?, description?, variant?, className?}`. `accentWords`/`accentPlacement` split by word count; `accentText` renders a verbatim accent phrase (for i18n two-key `title`+`titleAccent` pairs); `kicker` renders the uppercase eyebrow above; `description` renders muted mono text below (wrapped in a `space-y-4` block when kicker/description present). Now the standard for all split-screen section headings: used in `/cp` (all `compact`), ServicesPage, ServiceDetailPage, SimulationsPage, SimulationPage, and the landing sections (Market, Blogs, QuiteRoot, OpenSourceTools, Leaderboard, Team), plus TermsContentSection.
 - **`BatchPagination`** (default): centered prev/next + dot pagination, `min-h-[44px] min-w-[44px]`, returns null if `totalPages<=1`. Used in BlogsPage, LeaderboardPage, MarketPage.
 
 ---
@@ -389,7 +389,7 @@ Outer `px-3 py-10 md:px-4 md:py-20 lg:px-6` (no max-width), 4-col grid (Learning
 Auth page shell: 2-col grid, `max-w-lg` form, globe pinned bottom-right.
 
 ### 7.4 Hero / section primitives (shared)
-- **`HeroBlock`** (`features/marketing/components/landing/blocks/HeroBlock.tsx`): landing hero — `min-h-dvh`, single column `justify-center`, kicker + `type-display` title with accent `block` span, primary + ghost CTA. No canvas, no globe, no marquee.
+- **`HeroBlock`** (`features/marketing/components/landing/blocks/HeroBlock.tsx`): landing hero — `min-h-dvh`, single column `justify-center`, kicker + `type-display` title with accent `block` span, primary + ghost CTA. Backed by the generated background art (`hero-desktop`/`hero-mobile.webp`, `object-cover`, no scrim) with the root pinned `data-theme-persist="dark"`. No canvas, no globe, no marquee.
 - **`PageHeader`** (`shared/components/ui/PageHeader.tsx`; `shared/components/dashboard/PageHeader.tsx`): shared page/section title primitive (title + back/nav + CTAs), replaced the former `StudentHeroSection`/`PublicHeroSection`.
 - **`ScrollReveal`** (default, canonical reveal): `useInView({once:true, amount:0.1})`, `scale:0.95`, skips on reduced-motion/mobile. Props `{direction, delay, amount, scale, staggerChildren}`.
 - **`SEO`** (default): head meta/title/og per page.
@@ -447,12 +447,12 @@ Location: `src/features/marketing/components/landing/blocks/`. Each is a self-co
 
 | Block | File | Purpose / composition |
 |---|---|---|
-| `HeroBlock` | `HeroBlock.tsx` | landing hero: `min-h-dvh`, single column, kicker + `type-display` title (accent span) + primary/ghost CTA. No canvas, no globe, no marquee. |
+| `HeroBlock` | `HeroBlock.tsx` | landing hero: `min-h-dvh`, single column, kicker + `type-display` title (accent span) + primary/ghost CTA. Generated background art (desktop/mobile scenes, no scrim), root pinned `data-theme-persist="dark"`. No canvas, no globe, no marquee. |
 | `PathBlock` | `PathBlock.tsx` | learning path presentation. |
 | `ProofBlock` | `ProofBlock.tsx` | proof / stats statement. |
-| `FeaturedLearningBlock` | `FeaturedLearningBlock.tsx` | featured courses/labs. |
+| `FeaturedLearningBlock` | `FeaturedLearningBlock.tsx` | featured courses/labs; squad-patrol band art behind the grid, root pinned `data-theme-persist="dark"`. |
 | `ToolsResearchBlock` | `ToolsResearchBlock.tsx` | open-source tools + research. |
-| `FinalCtaBlock` | `FinalCtaBlock.tsx` | closing CTA. |
+| `FinalCtaBlock` | `FinalCtaBlock.tsx` | closing CTA card; Dobia sign-off background art (replaced the dotted-map overlay), card pinned `data-theme-persist="dark"`. |
 
 Shared landing helpers/types live in `landing/helpers.ts` + `landing/types.ts`.
 

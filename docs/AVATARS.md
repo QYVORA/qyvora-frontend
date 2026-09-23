@@ -31,8 +31,10 @@ All branded SVGs resolve accent through `var(--color-accent)` in their default
   `LearningCard`, `ScenarioCard` — course/lab visuals are first-class section
   visuals, never card decoration toggled on state.
 - **Bootcamp pages**: `HpbPage`/`HpbPhasePage` face cards show the per-phase
-  avatar (phase card and related-phase list). Landing uses the same avatars in
-  hero, featured-learning, and path blocks.
+  avatar (phase card and related-phase list). On the landing page the hero and
+  featured-learning band are backed by generated background art (the squad is
+  rendered into the art itself), while the landing path blocks and the
+  featured-learning cards still render the avatar components directly.
 - **Team page**: founding/core team cards use circular cropped photos; public/
   community faces use the avatar system — two distinct treatments, never mixed.
 

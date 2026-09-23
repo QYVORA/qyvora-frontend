@@ -163,7 +163,7 @@ p-3 md:p-5 transition-all duration-300 hover:border-accent/30 flex flex-col text
 | Auth forms | `text-3xl md:text-4xl lg:text-5xl` |
 | Not found | `text-4xl md:text-6xl` |
 
-**Important:** Hero sections use `bg-bg` (black) backgrounds. All hero children must use dark-theme text colors (`text-text-primary`, `text-text-secondary`, `text-text-muted`, `text-accent`). Never use `text-bg` on dark backgrounds — it is invisible.
+**Important:** Hero sections use `bg-bg` (black) backgrounds. All hero children must use dark-theme text colors (`text-text-primary`, `text-text-secondary`, `text-text-muted`, `text-accent`). Never use `text-bg` on dark backgrounds — it is invisible. Where a hero/band is backed by the generated dark background art (landing hero, featured-learning block, HPB/CP headers, final CTA, auth, 404 — see `docs/BACKGROUNDS.md`), the region carries `data-theme-persist="dark"` and the same dark-theme text rule applies.
 
 ## Container Widths
 
