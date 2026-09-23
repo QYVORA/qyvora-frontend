@@ -196,5 +196,5 @@ export const PENTEST_PHILOSOPHY = {
   body: 'We do not perform penetration tests to check a box or generate revenue. The objective is to identify real vulnerabilities, help you strengthen your security posture, and deliver meaningful security improvements. Client satisfaction matters, but the focus is thorough, high-quality assessments that uncover genuine weaknesses with practical remediation guidance.',
 };
 
-export const REQUEST_ASSESSMENT_LABEL = 'Request an Assessment';
+export const REQUEST_ASSESSMENT_LABEL = 'Secure Your Company';
 export const LEARN_MORE_LABEL = 'Learn More';
