@@ -36,26 +36,21 @@ const ToolSourceSection: React.FC<ToolSourceSectionProps> = ({
         <div className="flex flex-col gap-8 md:gap-10">
           <ToolSectionHeader kicker={kicker} title={title} accent={accent} description={description} />
 
-          <div className="flex flex-col gap-4">
+          <div className="flex flex-col gap-6 md:gap-8">
             {examples.map((example) => (
-              <div
-                key={example.id}
-                className="rounded-2xl border border-border/50 bg-bg-card p-4 md:p-5"
-              >
+              <div key={example.id} className="space-y-2.5">
                 <p className="text-xs font-black uppercase tracking-widest text-accent">
                   {example.label}
                 </p>
-                <p className="mt-2 max-w-2xl text-xs font-mono leading-relaxed text-text-muted">
+                <p className="max-w-2xl text-xs font-mono leading-relaxed text-text-muted">
                   {example.description}
                 </p>
-                <div className="mt-4">
-                  <CodeBlock
-                    code={example.code}
-                    lang="go"
-                    filename={example.filename}
-                    maxHeight="max-h-[45vh]"
-                  />
-                </div>
+                <CodeBlock
+                  code={example.code}
+                  lang="go"
+                  filename={example.filename}
+                  maxHeight="max-h-[45vh]"
+                />
               </div>
             ))}
           </div>

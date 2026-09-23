@@ -41,7 +41,7 @@ const TOOLS: ToolRef[] = [
   { path: '/amanirenas', title: 'Amanirenas', desc: 'Offline iOS/Android app security assessment in Go: static analysis, hardcoded secrets, weak crypto, insecure endpoints, WebView posture and evidence-backed risk scoring.', logo: amanirenasLogo },
   { path: '/sundiata', title: 'Sundiata', desc: 'Identity & access security assessment for Active Directory in Go: identity discovery, account posture, password policies, sensitive memberships. Credentials are never stored or printed.', logo: sundiataLogo },
   { path: '/timbuktu', title: 'Timbuktu', desc: 'Incident response & digital forensics framework in Go: source integrity, artifact identification, filesystem lifecycle, memory postmortems, log analysis and evidence-backed timelines.', logo: timbuktuLogo },
-  { path: '/kush', title: 'Kush', desc: 'Offline malware sample analysis framework in Go: hashing, metadata, static posture, strings, network indicators, IOC extraction and threat classification — without executing samples.', logo: kushLogo },
+  { path: '/kush', title: 'Kush', desc: 'Offline malware sample analysis framework in Go: hashing, metadata, static posture, strings, network indicators, IOC extraction and threat classification, without executing samples.', logo: kushLogo },
   { path: '/imhotep', title: 'Imhotep', desc: 'Offline cloud snapshot analysis framework in Go: IAM posture, storage exposure, network exposure, container posture, secret redaction and misconfiguration detection.', logo: imhotepLogo },
 ];
 

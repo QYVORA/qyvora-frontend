@@ -11,7 +11,7 @@ export interface MansaStage {
 export const STAGES: MansaStage[] = [
   { id: '01', name: 'DISCOVER', icon: Antenna, desc: 'List wireless interfaces and their capabilities (name, state, mode, supported features). Live drivers via iw dev, or the deterministic simulated dataset in --sim.' },
   { id: '02', name: 'ENUMERATE', icon: ScanSearch, desc: 'Scan for access points and record the radio-level profile: BSSID, SSID, channel, band, RSSI, supported protocols and cipher suites.' },
-  { id: '03', name: 'OBSERVE', icon: Activity, desc: 'Track station behavior, association patterns and signal readings from the session — fully exercised in --sim, while live capture awaits monitor-mode support.' },
+  { id: '03', name: 'OBSERVE', icon: Activity, desc: 'Track station behavior, association patterns and signal readings from the session: fully exercised in --sim, while live capture awaits monitor-mode support.' },
   { id: '04', name: 'ANALYZE', icon: BrainCircuit, desc: 'Run the deterministic rule engine (WLAN-001+) over the session: every rule is a pure function that returns identical findings for identical input.' },
   { id: '05', name: 'VALIDATE', icon: ShieldCheck, desc: 'Cross-check each finding against raw evidence; confidence is upgraded or held until the observation is confirmed on the recorded data.' },
   { id: '06', name: 'FINDINGS', icon: ListChecks, desc: 'Deterministic finding IDs derived from the rule (WLAN-<category>-<hash>), each carrying the triggering evidence record for independent verification.' },
@@ -107,7 +107,7 @@ export const SOURCE_EXAMPLES: ToolSourceExample[] = [
     id: 'pipeline',
     filename: 'internal/pipeline/pipeline.go',
     label: 'Deterministic stage runner',
-    description: 'Eight sequential stages — discover → enumerate → observe → analyze → validate → findings → risk → report. RunUntil lets a command stop after any stage while keeping the sequence canonical.',
+    description: 'Eight sequential stages: discover → enumerate → observe → analyze → validate → findings → risk → report. RunUntil lets a command stop after any stage while keeping the sequence canonical.',
     code: 'const StageDiscover = "discover"\n// ... StageEnumerate, StageObserve, StageAnalyze,\n//     StageValidate, StageFindings, StageRisk, StageReport\n\nvar StageOrder = []string{\n\tStageDiscover, StageEnumerate, StageObserve, StageAnalyze,\n\tStageValidate, StageFindings, StageRisk, StageReport,\n}',
   },
   {
@@ -121,7 +121,7 @@ export const SOURCE_EXAMPLES: ToolSourceExample[] = [
     id: 'risk',
     filename: 'internal/risk/risk.go',
     label: 'Transparent risk scoring',
-    description: 'Aggregate risk is the average per-finding ScoreFor value — severity_weight × confidence × (exposure ÷ 5) × 35 with exposure defaulting to 3, capped at 100 — mapped to a level via LevelFromScore.',
+    description: 'Aggregate risk is the average per-finding ScoreFor value (severity_weight × confidence × (exposure ÷ 5) × 35 with exposure defaulting to 3, capped at 100) mapped to a level via LevelFromScore.',
     code: 'total := 0\nfor _, f := range findings {\n\ttotal += models.ScoreFor(f)\n}\navg := total / len(findings)\nreturn avg, string(models.LevelFromScore(avg))',
   },
   {

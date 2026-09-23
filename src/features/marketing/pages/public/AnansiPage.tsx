@@ -1,4 +1,4 @@
-import { Download, GitBranch, Loader2, Terminal } from 'lucide-react';
+import { Download, GitBranch, Loader2 } from 'lucide-react';
 import { useAuth } from '@/core/contexts/AuthContext';
 import { IconArrowRight } from '@/shared/components/icons';
 import CodeBlock from '@/shared/components/CodeBlock';
@@ -8,7 +8,7 @@ import { useToolRelease } from '@/features/marketing/hooks/useToolRelease';
 import DocFooterNav from '@/features/marketing/components/tools/DocFooterNav';
 import { PHASES, RELEASES, ONE_LINER, BUILD_FROM_SOURCE, USAGE_EXAMPLES, SCAN_OUTPUT, SOURCE_EXAMPLES } from '@/features/marketing/data/anansiData';
 import anansiLogo from '@/assets/anansi/anansi-main-logo.webp';
-import { ToolDocPage, ToolDocSection, ToolDocHero } from '@/shared/components/tools';
+import { ToolDocPage, ToolDocSection, ToolDocHero, ToolQuickStart } from '@/shared/components/tools';
 import type { ToolDocSectionItem } from '@/shared/components/tools';
 import { DottedMapOverlay } from '@/shared/components/ui';
 
@@ -81,13 +81,13 @@ const AnansiPage = () => {
         accent="Phases"
         description="A multi-phase recon pipeline that covers everything from subdomain discovery to exploit-chain analysis."
       >
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-5">
           {PHASES.map((phase) => {
             const Icon = phase.icon;
             return (
               <div
                 key={phase.id}
-                className="rounded-2xl border border-border/50 bg-bg-card p-4 md:p-5 space-y-3"
+                className="flex flex-col gap-3"
               >
                 <div className="flex items-center gap-3">
                   <div className="w-9 h-9 rounded-xl bg-accent/10 border border-accent/20 flex items-center justify-center shrink-0">
@@ -214,7 +214,7 @@ const AnansiPage = () => {
               </div>
             </div>
 
-            <div className="rounded-2xl border border-border/50 bg-bg-card p-5 md:p-6 space-y-4">
+            <div className="space-y-3">
               <div className="flex items-center gap-3">
                 <div className="w-9 h-9 rounded-xl bg-accent/10 border border-accent/20 flex items-center justify-center shrink-0">
                   <Download className="w-4 h-4 text-accent" />
@@ -237,7 +237,7 @@ const AnansiPage = () => {
           </div>
 
           {/* Build from source */}
-          <div className="rounded-2xl border border-border/50 bg-bg-card p-5 md:p-6 space-y-4">
+          <div className="space-y-4">
             <div className="flex items-center gap-3">
               <div className="w-9 h-9 rounded-xl bg-accent/10 border border-accent/20 flex items-center justify-center shrink-0">
                 <GitBranch className="w-4 h-4 text-accent" />
@@ -308,59 +308,13 @@ const AnansiPage = () => {
         accent="One Line"
         description="Point anansi at a target and watch it walk the full pipeline."
       >
-        <div className="grid grid-cols-1 lg:grid-cols-[1.15fr_1fr] gap-4 md:gap-6">
-          {/* Terminal mock */}
-          <div className="rounded-2xl border border-border/50 bg-bg-card overflow-hidden">
-            <div className="flex items-center gap-2 px-4 py-2.5 bg-bg">
-              <span className="w-2.5 h-2.5 rounded-full bg-danger/70" />
-              <span className="w-2.5 h-2.5 rounded-full bg-warning/70" />
-              <span className="w-2.5 h-2.5 rounded-full bg-accent/70" />
-              <span className="ml-2 text-xs font-mono text-text-muted">anansi, zsh</span>
-            </div>
-            <div className="p-4 md:p-5 font-mono text-xs md:text-xs space-y-2">
-              <div className="flex items-center gap-2">
-                <span className="text-accent">$</span>
-                <span className="text-text-primary">anansi target.com --deep</span>
-              </div>
-              <div className="pl-4 space-y-1.5 border-l border-accent/30">
-                {SCAN_OUTPUT.slice(0, 5).map((line) => (
-                  <div key={line.label} className="flex items-start gap-2">
-                    <span className="text-xs md:text-xs font-black uppercase tracking-widest text-accent shrink-0 pt-0.5">
-                      [{line.label}]
-                    </span>
-                    <span className="text-text-muted leading-relaxed break-words">{line.text}</span>
-                  </div>
-                ))}
-              </div>
-              <div className="flex items-center gap-2">
-                <span className="text-accent">$</span>
-                <span className="text-text-primary animate-pulse">{'\u258B'}</span>
-              </div>
-            </div>
-          </div>
-
-          {/* Usage commands */}
-          <div className="rounded-2xl border border-border/50 bg-bg-card p-5 md:p-6 flex flex-col gap-4">
-            <div className="flex items-center gap-3">
-              <div className="w-9 h-9 rounded-xl bg-accent/10 border border-accent/20 flex items-center justify-center shrink-0">
-                <Terminal className="w-4 h-4 text-accent" />
-              </div>
-              <div>
-                <h4 className="text-xs font-black text-text-primary leading-tight">Usage</h4>
-                <p className="text-xs font-mono text-text-muted mt-0.5">Flags and pipelines</p>
-              </div>
-            </div>
-            <CodeBlock
-              code={USAGE_EXAMPLES.map((cmd) => `$ ${cmd}`).join('\n')}
-              lang="sh"
-              copyable
-              className="mt-auto"
-            />
-            <p className="text-xs font-mono text-text-muted leading-relaxed">
-              Only scan targets you own or have explicit written permission to test.
-            </p>
-          </div>
-        </div>
+        <ToolQuickStart
+          command="anansi target.com --deep"
+          commandNote="Walks discovery, probe, TLS, headers, paths, tech startup, takeover, OSINT and exploit-chain phases against the target."
+          output={SCAN_OUTPUT}
+          usage={USAGE_EXAMPLES}
+          footer="Only scan targets you own or have explicit written permission to test."
+        />
       </ToolDocSection>
 
       {/* ── Related + Continue reading ───────────────────────────────────── */}

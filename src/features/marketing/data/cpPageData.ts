@@ -133,22 +133,7 @@ export const CP_LEARNING_LOOP: CpLoopStage[] = [
   { id: 'earn', index: '06', label: 'EARN', description: 'Receive CP for verified progress.' },
 ];
 
-// ─── 06 · Anansi terminal ─────────────────────────────────────────────────────
-
-export const CP_ANANSI_TERMINAL = {
-  title: 'anansi, zsh',
-  command: 'anansi target.example --modules chain',
-  lines: [
-    { text: '> initializing reconnaissance', accent: false },
-    { text: '> attack surface discovered', accent: false },
-    { text: '> intelligence collected', accent: false },
-    { text: '> mission complete', accent: false },
-    { text: '> reward eligibility verified', accent: false },
-    { text: '> CP + REWARD', accent: true },
-  ],
-};
-
-// ─── 07 · Future chain ────────────────────────────────────────────────────────
+// ─── 06 · Future chain ────────────────────────────────────────────────────────
 
 export interface CpFutureStep {
   id: string;

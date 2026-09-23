@@ -96,7 +96,7 @@ export const SOURCE_EXAMPLES: ToolSourceExample[] = [
     id: 'pipeline',
     filename: 'internal/analysis/analyst.go',
     label: 'Sequential assessment stages',
-    description: 'The offline pipeline runs in a fixed order — acquisition → integrity → artifacts → filesystem → memory → logs → timeline → indicators → rule analysis → risk.',
+    description: 'The offline pipeline runs in a fixed order: acquisition → integrity → artifacts → filesystem → memory → logs → timeline → indicators → rule analysis → risk.',
     code: 'func Stages(reg *rules.Registry, cfg map[string]any, maxEntries int) []pipeline.Stage {\n\treturn []pipeline.Stage{\n\t\t{ID: "acquisition", Name: "Evidence acquisition", ...},\n\t\t{ID: "integrity", Name: "Evidence integrity", ...},\n\t\t// artifacts, filesystem, memory, logs, timeline, indicators, risk\n\t}\n}',
   },
   {

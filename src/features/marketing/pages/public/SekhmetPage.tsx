@@ -1,4 +1,4 @@
-import { Download, GitBranch, Bug, Fence, ChevronRight } from 'lucide-react';
+import { Download, GitBranch, Bug, ChevronRight } from 'lucide-react';
 import { IconArrowRight } from '@/shared/components/icons';
 import { useAuth } from '@/core/contexts/AuthContext';
 import CodeBlock from '@/shared/components/CodeBlock';
@@ -8,7 +8,7 @@ import { openToolInstall } from '@/features/marketing/components/ToolInstallModa
 import { STAGES, DETECTORS, CONFIDENCE_STATES, GITHUB_URL, BUILD_FROM_SOURCE, QUICK_START, AUTHORIZED_WARNING, SOURCE_EXAMPLES } from '@/features/marketing/data/sekhmetData';
 import DocFooterNav from '@/features/marketing/components/tools/DocFooterNav';
 import sekhmetLogo from '@/assets/sekhmet/sekhmet-main-logo.webp';
-import { ToolDocPage, ToolDocSection, ToolDocHero } from '@/shared/components/tools';
+import { ToolDocPage, ToolDocSection, ToolDocHero, ToolQuickStart } from '@/shared/components/tools';
 import type { ToolDocSectionItem } from '@/shared/components/tools';
 import { DottedMapOverlay } from '@/shared/components/ui';
 
@@ -119,13 +119,13 @@ const SekhmetPage = () => {
         kicker="Baseline-aware pipeline"
         title="Understand"
         accent="Before Fuzzing"
-        description="SEKHMET first profiles a target's normal behaviour — exit codes, signals, runtime and output variance — then only mutates and executes against that understanding. Everything that follows is judged relative to the baseline, not guessed at."
+        description="SEKHMET first profiles a target's normal behaviour (exit codes, signals, runtime and output variance), then only mutates and executes against that understanding. Everything that follows is judged relative to the baseline, not guessed at."
       >
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-5">
           {STAGES.map((stage) => (
             <div
               key={stage.id}
-              className="rounded-2xl border border-border/50 bg-bg-card p-4 md:p-5 space-y-3"
+              className="flex flex-col gap-3"
             >
               <div className="flex items-center gap-3">
                 <div className="w-9 h-9 rounded-xl bg-accent/10 border border-accent/20 flex items-center justify-center shrink-0">
@@ -160,7 +160,7 @@ const SekhmetPage = () => {
         kicker="Feedback-driven mutation"
         title="Aimed"
         accent="not random"
-        description="Novelty scoring over behavioral, edge, and block coverage keeps the campaign pointed at code it has not reached yet. The power scheduler — fast / explore / exploit / rare / balanced / adaptive — turns that feedback into allocation, not brute force."
+        description="Novelty scoring over behavioral, edge, and block coverage keeps the campaign pointed at code it has not reached yet. The power scheduler (fast / explore / exploit / rare / balanced / adaptive) turns that feedback into allocation, not brute force."
       >
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <div className="rounded-2xl border border-border/50 bg-bg-card p-5 md:p-6 space-y-4">
@@ -251,7 +251,7 @@ const SekhmetPage = () => {
           kicker="Go source"
           title="Structured"
           accent="contracts"
-          description="Results carry typed signals and classes, findings deduplicate by fingerprint, coverage hashes into affordable buckets — every stage is testable against fixtures, including the race detector."
+          description="Results carry typed signals and classes, findings deduplicate by fingerprint, coverage hashes into affordable buckets: every stage is testable against fixtures, including the race detector."
           examples={SOURCE_EXAMPLES}
         />
       </div>
@@ -324,7 +324,7 @@ const SekhmetPage = () => {
             </div>
           </div>
 
-          <div className="rounded-2xl border border-border/50 bg-bg-card p-5 md:p-6 space-y-4">
+          <div className="space-y-4">
             <div className="flex items-center gap-3">
               <div className="w-9 h-9 rounded-xl bg-accent/10 border border-accent/20 flex items-center justify-center shrink-0">
                 <GitBranch className="w-4 h-4 text-accent" />
@@ -364,64 +364,20 @@ const SekhmetPage = () => {
         accent="One Command"
         description="Set a simulation target to see the whole pipeline offline, or register a process target and profile it before fuzzing."
       >
-        <div className="grid grid-cols-1 lg:grid-cols-[1.15fr_1fr] gap-4 md:gap-6">
-          <div className="rounded-2xl border border-border/50 bg-bg-card overflow-hidden">
-            <div className="flex items-center gap-2 px-4 py-2.5 bg-bg">
-              <span className="w-2.5 h-2.5 rounded-full bg-danger/70" />
-              <span className="w-2.5 h-2.5 rounded-full bg-warning/70" />
-              <span className="w-2.5 h-2.5 rounded-full bg-accent/70" />
-              <span className="ml-2 text-xs font-mono text-text-muted">sekhmet, zsh</span>
-            </div>
-            <div className="p-4 md:p-5 font-mono text-xs md:text-xs space-y-2">
-              <div className="flex items-center gap-2">
-                <span className="text-accent">$</span>
-                <span className="text-text-primary">sekhmet fuzz --target sim --runs 100000</span>
-              </div>
-              <div className="pl-4 space-y-1.5 border-l border-accent/30">
-                {[
-                  { label: 'baseline', text: 'simulation target profiled - exit 0, ~1ms runtime, stable output' },
-                  { label: 'corpus', text: '2 seeds loaded - SHA-256 dedup active' },
-                  { label: 'mutate', text: '17 operators - seeded RNG (deterministic run)' },
-                  { label: 'classify', text: 'SEKHMET_CRASH input -> signal "segmentation violation"' },
-                  { label: 'dedup', text: '91 crashes collapsed to 1 unique finding' },
-                  { label: 'report', text: 'critical 0 - high 1 - medium 0 - low 0 - informational 0' },
-                ].map((line) => (
-                  <div key={line.label} className="flex items-start gap-2">
-                    <span className="text-xs md:text-xs font-black uppercase tracking-widest text-accent shrink-0 pt-0.5">
-                      [{line.label}]
-                    </span>
-                    <span className="text-text-muted leading-relaxed break-words">{line.text}</span>
-                  </div>
-                ))}
-              </div>
-              <div className="flex items-center gap-2">
-                <span className="text-accent">$</span>
-                <span className="text-text-primary animate-pulse">{'\u258B'}</span>
-              </div>
-            </div>
-          </div>
-
-          <div className="rounded-2xl border border-border/50 bg-bg-card p-5 md:p-6 flex flex-col gap-4">
-            <div className="flex items-center gap-3">
-              <div className="w-9 h-9 rounded-xl bg-accent/10 border border-accent/20 flex items-center justify-center shrink-0">
-                <Fence className="w-4 h-4 text-accent" />
-              </div>
-              <div>
-                <h4 className="text-xs font-black text-text-primary leading-tight">Usage</h4>
-                <p className="text-xs font-mono text-text-muted mt-0.5">Baseline, fuzz, triage, report</p>
-              </div>
-            </div>
-            <CodeBlock
-              code={QUICK_START.map((cmd) => `$ ${cmd}`).join('\n')}
-              lang="sh"
-              copyable
-              className="mt-auto"
-            />
-            <p className="text-xs font-mono text-text-muted leading-relaxed">
-              Fuzz only software you own or have explicit written permission to test.
-            </p>
-          </div>
-        </div>
+        <ToolQuickStart
+          command="sekhmet fuzz --target sim --runs 100000"
+          commandNote="Profiles the simulation target, then mutates and executes against the baseline in one deterministic campaign."
+          output={[
+            { label: 'baseline', text: 'simulation target profiled - exit 0, ~1ms runtime, stable output' },
+            { label: 'corpus', text: '2 seeds loaded - SHA-256 dedup active' },
+            { label: 'mutate', text: '17 operators - seeded RNG (deterministic run)' },
+            { label: 'classify', text: 'SEKHMET_CRASH input - signal "segmentation violation"' },
+            { label: 'dedup', text: '91 crashes collapsed to 1 unique finding' },
+            { label: 'report', text: 'critical 0 - high 1 - medium 0 - low 0 - informational 0' },
+          ]}
+          usage={QUICK_START}
+          footer="Fuzz only software you own or have explicit written permission to test."
+        />
       </ToolDocSection>
 
       {/* ── Related + Continue reading ───────────────────────────────────── */}

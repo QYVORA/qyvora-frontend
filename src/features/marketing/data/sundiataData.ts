@@ -12,7 +12,7 @@ export const STAGES: SundiataStage[] = [
   { id: '01', name: 'DISCOVER', icon: Search, desc: 'Identity discovery: source, tenant and the identities and groups present in the offline directory snapshot.' },
   { id: '02', name: 'ENUMERATE', icon: Users, desc: 'Account and group enumeration: users, service accounts, apps and their enabled state.' },
   { id: '03', name: 'AUTHENTICATE', icon: KeyRound, desc: 'Authentication and MFA posture: password policies, session lifetime and missing MFA on privileged identities.' },
-  { id: '04', name: 'CREDENTIALS', icon: Fingerprint, desc: 'Credential exposure, rotation and reuse — material is redacted before output and never stored.' },
+  { id: '04', name: 'CREDENTIALS', icon: Fingerprint, desc: 'Credential exposure, rotation and reuse; material is redacted before output and never stored.' },
   { id: '05', name: 'PRIVILEGE', icon: ShieldCheck, desc: 'Privilege and relationship mapping: memberships, impersonation and sensitive-group affiliations.' },
   { id: '06', name: 'SECRETS', icon: Lock, desc: 'Secret artifact discovery across identity records, redacted at collection time.' },
   { id: '07', name: 'ATTACK-PATH', icon: GitMerge, desc: 'Identity attack-path analysis: reachable sensitive groups through chained relationships.' },
@@ -96,7 +96,7 @@ export const SOURCE_EXAMPLES: ToolSourceExample[] = [
     id: 'pipeline',
     filename: 'internal/analysis/analyst.go',
     label: 'Sequential assessment stages',
-    description: 'The offline pipeline runs in a fixed order — discovery → enumeration → authentication → credentials → privilege → secrets → attack-path → rule analysis → risk.',
+    description: 'The offline pipeline runs in a fixed order: discovery → enumeration → authentication → credentials → privilege → secrets → attack-path → rule analysis → risk.',
     code: 'func Stages(reg *rules.Registry, cfg map[string]any, maxEntries int) []pipeline.Stage {\n\treturn []pipeline.Stage{\n\t\t{ID: "discovery", Name: "Identity discovery", ...},\n\t\t{ID: "enumeration", Name: "Account and group enumeration", ...},\n\t\t// authentication, credentials, privilege, secrets, attack-path, risk\n\t}\n}',
   },
   {

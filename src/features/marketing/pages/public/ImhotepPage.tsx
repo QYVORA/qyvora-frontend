@@ -7,14 +7,14 @@ import { openToolInstall } from '@/features/marketing/components/ToolInstallModa
 import { STAGES, RULES, RULE_CATEGORIES, CONFIDENCE_STATES, RISK_THRESHOLDS, GITHUB_URL, BUILD_FROM_SOURCE, QUICK_START, AUTHORIZED_WARNING, SOURCE_EXAMPLES } from '@/features/marketing/data/imhotepData';
 import DocFooterNav from '@/features/marketing/components/tools/DocFooterNav';
 import imhotepLogo from '@/assets/imhotep/imhotep-main-logo.webp';
-import { ToolDocPage, ToolDocSection, ToolDocHero } from '@/shared/components/tools';
+import { ToolDocPage, ToolDocSection, ToolDocHero, ToolQuickStart } from '@/shared/components/tools';
 import type { ToolDocSectionItem } from '@/shared/components/tools';
 import { DottedMapOverlay } from '@/shared/components/ui';
 
 const REQUIREMENTS = [
   'Go 1.26+ toolchain to build',
   'No external runtime dependencies, a single static binary',
-  'Offline snapshot analysis — live provider collection is refused honestly',
+  'Offline snapshot analysis: live provider collection is refused honestly',
 ];
 
 const STAGE_EVENTS = [
@@ -52,7 +52,7 @@ const ImhotepPage = () => {
       {/* ── Hero ─────────────────────────────────────────────────────────── */}
       <ToolDocHero
         toolName="imhotep"
-        description="Cloud snapshot analysis in Go. Analyze offline cloud snapshots for IAM policy posture, storage exposure, network exposure, container posture, secret redaction and misconfiguration detection — without touching live provider APIs."
+        description="Cloud snapshot analysis in Go. Analyze offline cloud snapshots for IAM policy posture, storage exposure, network exposure, container posture, secret redaction and misconfiguration detection, without touching live provider APIs."
         stats={[
           { label: 'Pipeline Stages', value: STAGES.length },
           { label: 'Rules', value: RULES.length },
@@ -95,7 +95,7 @@ const ImhotepPage = () => {
             className="lg:self-start"
           >
             Live provider collection is not implemented and is refused honestly. imhotep reads only
-            the recorded snapshots you point it at — never live provider APIs, never your credentials.
+            the recorded snapshots you point it at: never live provider APIs, never your credentials.
           </Callout>
 
           <div className="rounded-2xl border border-border/50 bg-bg-card p-5 md:p-6 flex flex-col gap-4">
@@ -105,9 +105,9 @@ const ImhotepPage = () => {
               <span className="font-mono text-xs uppercase tracking-widest text-text-muted">offline by design</span>
             </div>
             {[
-              'Snapshots are analyzed offline — live provider APIs are never contacted.',
+              'Snapshots are analyzed offline: live provider APIs are never contacted.',
               'Secret material is redacted at collection time and never stored or printed.',
-              'Deterministic rule engine — every rule is a pure function, so identical input produces identical findings.',
+              'Deterministic rule engine: every rule is a pure function, so identical input produces identical findings.',
             ].map((rule) => (
               <div key={rule} className="flex items-start gap-3 rounded-xl border border-border/20 bg-bg-elevated px-4 py-3">
                 <span className="w-6 h-6 rounded-lg bg-accent/10 border border-accent/20 flex items-center justify-center shrink-0 mt-0.5">
@@ -128,11 +128,11 @@ const ImhotepPage = () => {
         accent="End to End"
         description="From provider detection to risk scoring, every stage writes to the session and emits a machine-readable event. Each event records exactly what the stage observed."
       >
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-5">
           {STAGES.map((stage, i) => (
             <div
               key={stage.id}
-              className="rounded-2xl border border-border/50 bg-bg-card p-4 md:p-5 space-y-3"
+              className="flex flex-col gap-3"
             >
               <div className="flex items-center gap-3">
                 <div className="w-9 h-9 rounded-xl bg-accent/10 border border-accent/20 flex items-center justify-center shrink-0">
@@ -232,7 +232,7 @@ const ImhotepPage = () => {
         kicker="Transparent scoring"
         title="Risk"
         accent="On the Record"
-        description="Scores are computed from severity weight, confidence and a per-category exposure heuristic — every number is traceable back to the evidence that produced it."
+        description="Scores are computed from severity weight, confidence and a per-category exposure heuristic, and every number is traceable back to the evidence that produced it."
       >
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <div className="rounded-2xl border border-border/50 bg-bg-card p-5 md:p-6 space-y-4">
@@ -246,7 +246,7 @@ const ImhotepPage = () => {
               {[
                 'severity_weight: critical=4, high=3, medium=2, low=1, else 0',
                 'confidence: confirmed=1.0, observed=0.9, probable=0.7, possible=0.5, unknown=0.3, not_observed=0.1',
-                'exposure (0–5): per-category heuristic — publicly writable storage and exposed databases score higher',
+                'exposure (0–5): per-category heuristic, where publicly writable storage and exposed databases score higher',
               ].map((line) => (
                 <div key={line} className="flex items-start gap-2.5">
                   <span className="w-1.5 h-1.5 rounded-full bg-accent shrink-0 mt-1.5" />
@@ -255,7 +255,7 @@ const ImhotepPage = () => {
               ))}
             </div>
             <p className="text-xs font-mono text-text-muted leading-relaxed">
-              Raw scores are capped at 100. Reproduce any number exactly by running the same session again — the formula is a pure function of the recorded evidence.
+              Raw scores are capped at 100. Reproduce any number exactly by running the same session again; the formula is a pure function of the recorded evidence.
             </p>
           </div>
 
@@ -282,7 +282,7 @@ const ImhotepPage = () => {
           kicker="Go source"
           title="Structured"
           accent="contracts"
-          description="Stages, rules, evidence and risk are all typed contracts — a rule is a pure function, a finding carries evidence, and the pipeline can stop after any stage."
+          description="Stages, rules, evidence and risk are all typed contracts: a rule is a pure function, a finding carries evidence, and the pipeline can stop after any stage."
           examples={SOURCE_EXAMPLES}
         />
       </div>
@@ -293,7 +293,7 @@ const ImhotepPage = () => {
         kicker="Install"
         title="Build &"
         accent="Install"
-        description="imhotep ships as source today — build a single static binary with Go 1.26+ and install it to your PATH. Prebuilt release downloads are wired in but not yet published."
+        description="imhotep ships as source today; build a single static binary with Go 1.26+ and install it to your PATH. Prebuilt release downloads are wired in but not yet published."
       >
         <div className="space-y-6">
           <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,2fr)_minmax(0,3fr)] gap-4 md:gap-6">
@@ -307,7 +307,7 @@ const ImhotepPage = () => {
                 <div>
                   <h4 className="text-sm font-black text-text-primary">Build from source</h4>
                   <p className="text-xs text-text-muted mt-1 leading-relaxed">
-                    No package manager or prebuilt download needed — a plain Go build produces the imhotep binary.
+                    No package manager or prebuilt download needed: a plain Go build produces the imhotep binary.
                   </p>
                 </div>
               </div>
@@ -343,7 +343,7 @@ const ImhotepPage = () => {
             </div>
           </div>
 
-          <div className="rounded-2xl border border-border/50 bg-bg-card p-5 md:p-6 space-y-4">
+          <div className="space-y-4">
             <div className="flex items-center gap-3">
               <div className="w-9 h-9 rounded-xl bg-accent/10 border border-accent/20 flex items-center justify-center shrink-0">
                 <GitBranch className="w-4 h-4 text-accent" />
@@ -375,65 +375,21 @@ const ImhotepPage = () => {
         accent="One Command"
         description="Run the whole offline pipeline with --sim, or point it at your own snapshot file with --snapshot."
       >
-        <div className="grid grid-cols-1 lg:grid-cols-[1.15fr_1fr] gap-4 md:gap-6">
-          <div className="rounded-2xl border border-border/50 bg-bg-card overflow-hidden">
-            <div className="flex items-center gap-2 px-4 py-2.5 bg-bg">
-              <span className="w-2.5 h-2.5 rounded-full bg-danger/70" />
-              <span className="w-2.5 h-2.5 rounded-full bg-warning/70" />
-              <span className="w-2.5 h-2.5 rounded-full bg-accent/70" />
-              <span className="ml-2 text-xs font-mono text-text-muted">imhotep, zsh</span>
-            </div>
-            <div className="p-4 md:p-5 font-mono text-xs md:text-xs space-y-2">
-              <div className="flex items-center gap-2">
-                <span className="text-accent">$</span>
-                <span className="text-text-primary">imhotep assess --sim</span>
-              </div>
-              <div className="pl-4 space-y-1.5 border-l border-accent/30">
-                {[
-                  { label: 'provider', text: 'aws detected - region us-east-1' },
-                  { label: 'iam', text: '2 wildcard action policies, 1 wildcard resource scope' },
-                  { label: 'storage', text: '1 publicly writable bucket, 2 unencrypted stores' },
-                  { label: 'network', text: '1 database publicly exposed, 2 admin ports on 0.0.0.0/0' },
-                  { label: 'containers', text: '3 privileged capabilities, 1 host network namespace' },
-                  { label: 'secrets', text: '2 secrets detected and redacted' },
-                  { label: 'risk', text: 'level high - score 76 - findings 15' },
-                ].map((line) => (
-                  <div key={line.label} className="flex items-start gap-2">
-                    <span className="text-xs md:text-xs font-black uppercase tracking-widest text-accent shrink-0 pt-0.5">
-                      [{line.label}]
-                    </span>
-                    <span className="text-text-muted leading-relaxed break-words">{line.text}</span>
-                  </div>
-                ))}
-              </div>
-              <div className="flex items-center gap-2">
-                <span className="text-accent">$</span>
-                <span className="text-text-primary animate-pulse">{'\u258B'}</span>
-              </div>
-            </div>
-          </div>
-
-          <div className="rounded-2xl border border-border/50 bg-bg-card p-5 md:p-6 flex flex-col gap-4">
-            <div className="flex items-center gap-3">
-              <div className="w-9 h-9 rounded-xl bg-accent/10 border border-accent/20 flex items-center justify-center shrink-0">
-                <ShieldCheck className="w-4 h-4 text-accent" />
-              </div>
-              <div>
-                <h4 className="text-xs font-black text-text-primary leading-tight">Usage</h4>
-                <p className="text-xs font-mono text-text-muted mt-0.5">Snapshots, findings, report</p>
-              </div>
-            </div>
-            <CodeBlock
-              code={QUICK_START.map((cmd) => `$ ${cmd}`).join('\n')}
-              lang="sh"
-              copyable
-              className="mt-auto"
-            />
-            <p className="text-xs font-mono text-text-muted leading-relaxed">
-              Analyze only snapshots of environments you are explicitly authorized to handle.
-            </p>
-          </div>
-        </div>
+        <ToolQuickStart
+          command="imhotep assess --sim"
+          commandNote="Runs the entire offline analysis pipeline against a simulated snapshot, from provider detection to risk scoring."
+          output={[
+            { label: 'provider', text: 'aws detected - region us-east-1' },
+            { label: 'iam', text: '2 wildcard action policies, 1 wildcard resource scope' },
+            { label: 'storage', text: '1 publicly writable bucket, 2 unencrypted stores' },
+            { label: 'network', text: '1 database publicly exposed, 2 admin ports on 0.0.0.0/0' },
+            { label: 'containers', text: '3 privileged capabilities, 1 host network namespace' },
+            { label: 'secrets', text: '2 secrets detected and redacted' },
+            { label: 'risk', text: 'level high - score 76 - findings 15' },
+          ]}
+          usage={QUICK_START}
+          footer="Analyze only snapshots of environments you are explicitly authorized to handle."
+        />
       </ToolDocSection>
 
       {/* ── Related + Continue reading ───────────────────────────────────── */}

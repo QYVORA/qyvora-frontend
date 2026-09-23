@@ -1,4 +1,4 @@
-import { Download, GitBranch, Binary, Terminal, ChevronRight } from 'lucide-react';
+import { Download, GitBranch, Binary, ChevronRight } from 'lucide-react';
 import { IconArrowRight } from '@/shared/components/icons';
 import { useAuth } from '@/core/contexts/AuthContext';
 import CodeBlock from '@/shared/components/CodeBlock';
@@ -8,7 +8,7 @@ import DocFooterNav from '@/features/marketing/components/tools/DocFooterNav';
 import { openToolInstall } from '@/features/marketing/components/ToolInstallModal';
 import { STAGES, CHECKS, CONFIDENCE_STATES, GITHUB_URL, BUILD_FROM_SOURCE, QUICK_START, AUTHORIZED_WARNING, SOURCE_EXAMPLES } from '@/features/marketing/data/aksumData';
 import aksumLogo from '@/assets/aksum/aksum-main-logo.webp';
-import { ToolDocPage, ToolDocSection, ToolDocHero } from '@/shared/components/tools';
+import { ToolDocPage, ToolDocSection, ToolDocHero, ToolQuickStart } from '@/shared/components/tools';
 import type { ToolDocSectionItem } from '@/shared/components/tools';
 import { DottedMapOverlay } from '@/shared/components/ui';
 
@@ -87,7 +87,7 @@ const AksumPage = () => {
             className="lg:self-start"
           >
             aksum reads the file you point it at and nothing else. It never executes the target and
-            never touches a network — dynamic planning is policy-bounded and refuses without an
+            never touches a network. Dynamic planning is policy-bounded and refuses without an
             explicit consent flag, and this build ships no executor at all.
           </Callout>
 
@@ -120,11 +120,11 @@ const AksumPage = () => {
         title="Ten"
         accent="Stages"
       >
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-5">
           {STAGES.map((stage) => (
             <div
               key={stage.id}
-              className="rounded-2xl border border-border/50 bg-bg-card p-4 md:p-5 space-y-3"
+              className="flex flex-col gap-3"
             >
               <div className="flex items-center gap-3">
                 <div className="w-9 h-9 rounded-xl bg-accent/10 border border-accent/20 flex items-center justify-center shrink-0">
@@ -322,7 +322,7 @@ const AksumPage = () => {
             </div>
           </div>
 
-          <div className="rounded-2xl border border-border/50 bg-bg-card p-5 md:p-6 space-y-4">
+          <div className="space-y-4">
             <div className="flex items-center gap-3">
               <div className="w-9 h-9 rounded-xl bg-accent/10 border border-accent/20 flex items-center justify-center shrink-0">
                 <GitBranch className="w-4 h-4 text-accent" />
@@ -362,64 +362,20 @@ const AksumPage = () => {
         accent="One Command"
         description="Point aksum at any binary, identification runs first, then the full pipeline down to evidence-backed findings."
       >
-        <div className="grid grid-cols-1 lg:grid-cols-[1.15fr_1fr] gap-4 md:gap-6">
-          <div className="rounded-2xl border border-border/50 bg-bg-card overflow-hidden">
-            <div className="flex items-center gap-2 px-4 py-2.5 bg-bg">
-              <span className="w-2.5 h-2.5 rounded-full bg-danger/70" />
-              <span className="w-2.5 h-2.5 rounded-full bg-warning/70" />
-              <span className="w-2.5 h-2.5 rounded-full bg-accent/70" />
-              <span className="ml-2 text-xs font-mono text-text-muted">aksum, zsh</span>
-            </div>
-            <div className="p-4 md:p-5 font-mono text-xs md:text-xs space-y-2">
-              <div className="flex items-center gap-2">
-                <span className="text-accent">$</span>
-                <span className="text-text-primary">aksum analyze /usr/bin/ls</span>
-              </div>
-              <div className="pl-4 space-y-1.5 border-l border-accent/30">
-                {[
-                  { label: 'identify', text: 'ELF x86-64 - PIE enabled - NX enabled - RELRO full' },
-                  { label: 'functions', text: '259 functions discovered - symbols + entry + call targets' },
-                  { label: 'dataflow', text: '168 call sites resolved through .plt to import names' },
-                  { label: 'checks', text: 'hardening-properties OBSERVED - dangerous-imports CANDIDATE' },
-                  { label: 'validated', text: 'system() called with static string, escalated VALIDATED' },
-                  { label: 'summary', text: 'critical 0 - high 1 - medium 1 - low 2 - info 3' },
-                ].map((line) => (
-                  <div key={line.label} className="flex items-start gap-2">
-                    <span className="text-xs md:text-xs font-black uppercase tracking-widest text-accent shrink-0 pt-0.5">
-                      [{line.label}]
-                    </span>
-                    <span className="text-text-muted leading-relaxed break-words">{line.text}</span>
-                  </div>
-                ))}
-              </div>
-              <div className="flex items-center gap-2">
-                <span className="text-accent">$</span>
-                <span className="text-text-primary animate-pulse">{'\u258B'}</span>
-              </div>
-            </div>
-          </div>
-
-          <div className="rounded-2xl border border-border/50 bg-bg-card p-5 md:p-6 flex flex-col gap-4">
-            <div className="flex items-center gap-3">
-              <div className="w-9 h-9 rounded-xl bg-accent/10 border border-accent/20 flex items-center justify-center shrink-0">
-                <Terminal className="w-4 h-4 text-accent" />
-              </div>
-              <div>
-                <h4 className="text-xs font-black text-text-primary leading-tight">Usage</h4>
-                <p className="text-xs font-mono text-text-muted mt-0.5">Analysis, surface, reporting</p>
-              </div>
-            </div>
-            <CodeBlock
-              code={QUICK_START.map((cmd) => `$ ${cmd}`).join('\n')}
-              lang="sh"
-              copyable
-              className="mt-auto"
-            />
-            <p className="text-xs font-mono text-text-muted leading-relaxed">
-              Only analyze software you own or have explicit written permission to assess.
-            </p>
-          </div>
-        </div>
+        <ToolQuickStart
+          command="aksum analyze /usr/bin/ls"
+          commandNote="Runs the identification pass first, then the full pipeline from dataflow through validated findings."
+          output={[
+            { label: 'identify', text: 'ELF x86-64 - PIE enabled - NX enabled - RELRO full' },
+            { label: 'functions', text: '259 functions discovered - symbols + entry + call targets' },
+            { label: 'dataflow', text: '168 call sites resolved through .plt to import names' },
+            { label: 'checks', text: 'hardening-properties OBSERVED - dangerous-imports CANDIDATE' },
+            { label: 'validated', text: 'system() called with static string, escalated VALIDATED' },
+            { label: 'summary', text: 'critical 0 - high 1 - medium 1 - low 2 - info 3' },
+          ]}
+          usage={QUICK_START}
+          footer="Only analyze software you own or have explicit written permission to assess."
+        />
       </ToolDocSection>
 
       {/* ── Related + Continue reading ───────────────────────────────────── */}

@@ -7,14 +7,14 @@ import { openToolInstall } from '@/features/marketing/components/ToolInstallModa
 import { STAGES, RULES, RULE_CATEGORIES, CONFIDENCE_STATES, RISK_THRESHOLDS, GITHUB_URL, BUILD_FROM_SOURCE, QUICK_START, AUTHORIZED_WARNING, SOURCE_EXAMPLES } from '@/features/marketing/data/timbuktuData';
 import DocFooterNav from '@/features/marketing/components/tools/DocFooterNav';
 import timbuktuLogo from '@/assets/timbuktu/timbuktu-main-logo.webp';
-import { ToolDocPage, ToolDocSection, ToolDocHero } from '@/shared/components/tools';
+import { ToolDocPage, ToolDocSection, ToolDocHero, ToolQuickStart } from '@/shared/components/tools';
 import type { ToolDocSectionItem } from '@/shared/components/tools';
 import { DottedMapOverlay } from '@/shared/components/ui';
 
 const REQUIREMENTS = [
   'Go 1.26+ toolchain to build',
   'No external runtime dependencies, a single static binary',
-  'Offline forensic case files only — no live host or endpoint required',
+  'Offline forensic case files only: no live host or endpoint required',
 ];
 
 const STAGE_EVENTS = [
@@ -52,7 +52,7 @@ const TimbuktuPage = () => {
       {/* ── Hero ─────────────────────────────────────────────────────────── */}
       <ToolDocHero
         toolName="timbuktu"
-        description="Digital forensics investigation in Go. Analyze offline forensic cases and deterministic simulations for evidence integrity, artifact, filesystem, memory, timeline, log and indicator risk — with deterministic rules and transparent risk scoring."
+        description="Digital forensics investigation in Go. Analyze offline forensic cases and deterministic simulations for evidence integrity, artifact, filesystem, memory, timeline, log and indicator risk, with deterministic rules and transparent risk scoring."
         stats={[
           { label: 'Pipeline Stages', value: STAGES.length },
           { label: 'Rules', value: RULES.length },
@@ -107,7 +107,7 @@ const TimbuktuPage = () => {
             </div>
             {[
               'Evidence integrity is verified before analysis; failed items surface as findings.',
-              'Deterministic rule engine — every rule is a pure function, so identical input produces identical findings.',
+              'Deterministic rule engine: every rule is a pure function, so identical input produces identical findings.',
               'Risk scores are transparent and auditable: severity × confidence × exposure, capped at 100.',
             ].map((rule) => (
               <div key={rule} className="flex items-start gap-3 rounded-xl border border-border/20 bg-bg-elevated px-4 py-3">
@@ -129,11 +129,11 @@ const TimbuktuPage = () => {
         accent="End to End"
         description="From evidence acquisition to indicator extraction, every stage writes to the session and emits a machine-readable event. Each event records exactly what the stage observed."
       >
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-5">
           {STAGES.map((stage, i) => (
             <div
               key={stage.id}
-              className="rounded-2xl border border-border/50 bg-bg-card p-4 md:p-5 space-y-3"
+              className="flex flex-col gap-3"
             >
               <div className="flex items-center gap-3">
                 <div className="w-9 h-9 rounded-xl bg-accent/10 border border-accent/20 flex items-center justify-center shrink-0">
@@ -231,7 +231,7 @@ const TimbuktuPage = () => {
         kicker="Transparent scoring"
         title="Risk"
         accent="On the Record"
-        description="Scores are computed from severity weight, confidence and a per-category exposure heuristic — every number is traceable back to the evidence that produced it."
+        description="Scores are computed from severity weight, confidence and a per-category exposure heuristic, and every number is traceable back to the evidence that produced it."
       >
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <div className="rounded-2xl border border-border/50 bg-bg-card p-5 md:p-6 space-y-4">
@@ -245,7 +245,7 @@ const TimbuktuPage = () => {
               {[
                 'severity_weight: critical=4, high=3, medium=2, low=1, else 0',
                 'confidence: confirmed=1.0, observed=0.9, probable=0.7, possible=0.5, unknown=0.3, not_observed=0.1',
-                'exposure (0–5): per-category heuristic — persistence, execution and memory score higher',
+                'exposure (0–5): per-category heuristic, where persistence, execution and memory score higher',
               ].map((line) => (
                 <div key={line} className="flex items-start gap-2.5">
                   <span className="w-1.5 h-1.5 rounded-full bg-accent shrink-0 mt-1.5" />
@@ -254,7 +254,7 @@ const TimbuktuPage = () => {
               ))}
             </div>
             <p className="text-xs font-mono text-text-muted leading-relaxed">
-              Raw scores are capped at 100. Reproduce any number exactly by running the same session again — the formula is a pure function of the recorded evidence.
+              Raw scores are capped at 100. Reproduce any number exactly by running the same session again; the formula is a pure function of the recorded evidence.
             </p>
           </div>
 
@@ -281,7 +281,7 @@ const TimbuktuPage = () => {
           kicker="Go source"
           title="Structured"
           accent="contracts"
-          description="Stages, rules, evidence and risk are all typed contracts — a rule is a pure function, a finding carries evidence, and the pipeline can stop after any stage."
+          description="Stages, rules, evidence and risk are all typed contracts: a rule is a pure function, a finding carries evidence, and the pipeline can stop after any stage."
           examples={SOURCE_EXAMPLES}
         />
       </div>
@@ -292,7 +292,7 @@ const TimbuktuPage = () => {
         kicker="Install"
         title="Build &"
         accent="Install"
-        description="timbuktu ships as source today — build a single static binary with Go 1.26+ and install it to your PATH. Prebuilt release downloads are wired in but not yet published."
+        description="timbuktu ships as source today; build a single static binary with Go 1.26+ and install it to your PATH. Prebuilt release downloads are wired in but not yet published."
       >
         <div className="space-y-6">
           <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,2fr)_minmax(0,3fr)] gap-4 md:gap-6">
@@ -306,7 +306,7 @@ const TimbuktuPage = () => {
                 <div>
                   <h4 className="text-sm font-black text-text-primary">Build from source</h4>
                   <p className="text-xs text-text-muted mt-1 leading-relaxed">
-                    No package manager or prebuilt download needed — a plain Go build produces the timbuktu binary.
+                    No package manager or prebuilt download needed: a plain Go build produces the timbuktu binary.
                   </p>
                 </div>
               </div>
@@ -342,7 +342,7 @@ const TimbuktuPage = () => {
             </div>
           </div>
 
-          <div className="rounded-2xl border border-border/50 bg-bg-card p-5 md:p-6 space-y-4">
+          <div className="space-y-4">
             <div className="flex items-center gap-3">
               <div className="w-9 h-9 rounded-xl bg-accent/10 border border-accent/20 flex items-center justify-center shrink-0">
                 <GitBranch className="w-4 h-4 text-accent" />
@@ -374,66 +374,22 @@ const TimbuktuPage = () => {
         accent="One Command"
         description="Run the whole offline pipeline with --sim, or point it at your own forensic case with --case."
       >
-        <div className="grid grid-cols-1 lg:grid-cols-[1.15fr_1fr] gap-4 md:gap-6">
-          <div className="rounded-2xl border border-border/50 bg-bg-card overflow-hidden">
-            <div className="flex items-center gap-2 px-4 py-2.5 bg-bg">
-              <span className="w-2.5 h-2.5 rounded-full bg-danger/70" />
-              <span className="w-2.5 h-2.5 rounded-full bg-warning/70" />
-              <span className="w-2.5 h-2.5 rounded-full bg-accent/70" />
-              <span className="ml-2 text-xs font-mono text-text-muted">timbuktu, zsh</span>
-            </div>
-            <div className="p-4 md:p-5 font-mono text-xs md:text-xs space-y-2">
-              <div className="flex items-center gap-2">
-                <span className="text-accent">$</span>
-                <span className="text-text-primary">timbuktu assess --sim</span>
-              </div>
-              <div className="pl-4 space-y-1.5 border-l border-accent/30">
-                {[
-                  { label: 'acquire', text: 'case INC-2026-1207 - 7 evidence items from disk' },
-                  { label: 'integrity', text: '6 verified, 1 failed integrity check' },
-                  { label: 'artifacts', text: '9 artifacts identified - all suspicious' },
-                  { label: 'filesystem', text: '1 volume, 6 files in unusual locations' },
-                  { label: 'memory', text: '10 processes, 4 suspicious' },
-                  { label: 'logs', text: '11 entries, 9 logon anomalies' },
-                  { label: 'timeline', text: '59 entries reconstructed' },
-                  { label: 'risk', text: 'level high - score 62 - findings 28' },
-                ].map((line) => (
-                  <div key={line.label} className="flex items-start gap-2">
-                    <span className="text-xs md:text-xs font-black uppercase tracking-widest text-accent shrink-0 pt-0.5">
-                      [{line.label}]
-                    </span>
-                    <span className="text-text-muted leading-relaxed break-words">{line.text}</span>
-                  </div>
-                ))}
-              </div>
-              <div className="flex items-center gap-2">
-                <span className="text-accent">$</span>
-                <span className="text-text-primary animate-pulse">{'\u258B'}</span>
-              </div>
-            </div>
-          </div>
-
-          <div className="rounded-2xl border border-border/50 bg-bg-card p-5 md:p-6 flex flex-col gap-4">
-            <div className="flex items-center gap-3">
-              <div className="w-9 h-9 rounded-xl bg-accent/10 border border-accent/20 flex items-center justify-center shrink-0">
-                <ShieldCheck className="w-4 h-4 text-accent" />
-              </div>
-              <div>
-                <h4 className="text-xs font-black text-text-primary leading-tight">Usage</h4>
-                <p className="text-xs font-mono text-text-muted mt-0.5">Assess, inspect, report</p>
-              </div>
-            </div>
-            <CodeBlock
-              code={QUICK_START.map((cmd) => `$ ${cmd}`).join('\n')}
-              lang="sh"
-              copyable
-              className="mt-auto"
-            />
-            <p className="text-xs font-mono text-text-muted leading-relaxed">
-              Investigate only cases you own or have explicit written authorization to review.
-            </p>
-          </div>
-        </div>
+        <ToolQuickStart
+          command="timbuktu assess --sim"
+          commandNote="Runs the whole offline pipeline with --sim, or points it at your own forensic case with --case."
+          output={[
+            { label: 'acquire', text: 'case INC-2026-1207 - 7 evidence items from disk' },
+            { label: 'integrity', text: '6 verified, 1 failed integrity check' },
+            { label: 'artifacts', text: '9 artifacts identified - all suspicious' },
+            { label: 'filesystem', text: '1 volume, 6 files in unusual locations' },
+            { label: 'memory', text: '10 processes, 4 suspicious' },
+            { label: 'logs', text: '11 entries, 9 logon anomalies' },
+            { label: 'timeline', text: '59 entries reconstructed' },
+            { label: 'risk', text: 'level high - score 62 - findings 28' },
+          ]}
+          usage={QUICK_START}
+          footer="Investigate only cases you own or have explicit written authorization to review."
+        />
       </ToolDocSection>
 
       {/* ── Related + Continue reading ───────────────────────────────────── */}

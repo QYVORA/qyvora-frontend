@@ -7,14 +7,14 @@ import { openToolInstall } from '@/features/marketing/components/ToolInstallModa
 import { STAGES, RULES, RULE_CATEGORIES, CONFIDENCE_STATES, RISK_THRESHOLDS, GITHUB_URL, BUILD_FROM_SOURCE, QUICK_START, AUTHORIZED_WARNING, SOURCE_EXAMPLES } from '@/features/marketing/data/kushData';
 import DocFooterNav from '@/features/marketing/components/tools/DocFooterNav';
 import kushLogo from '@/assets/kush/kush-main-logo.webp';
-import { ToolDocPage, ToolDocSection, ToolDocHero } from '@/shared/components/tools';
+import { ToolDocPage, ToolDocSection, ToolDocHero, ToolQuickStart } from '@/shared/components/tools';
 import type { ToolDocSectionItem } from '@/shared/components/tools';
 import { DottedMapOverlay } from '@/shared/components/ui';
 
 const REQUIREMENTS = [
   'Go 1.26+ toolchain to build',
   'No external runtime dependencies, a single static binary',
-  'Static analysis only — samples are never executed on the developer host',
+  'Static analysis only: samples are never executed on the developer host',
 ];
 
 const STAGE_EVENTS = [
@@ -52,7 +52,7 @@ const KushPage = () => {
       {/* ── Hero ─────────────────────────────────────────────────────────── */}
       <ToolDocHero
         toolName="kush"
-        description="Malware sample analysis in Go. Analyze offline sample documents for hashes, metadata, static posture, strings, network indicators, IOC extraction and threat classification — without ever executing the sample on the developer host."
+        description="Malware sample analysis in Go. Analyze offline sample documents for hashes, metadata, static posture, strings, network indicators, IOC extraction and threat classification, without ever executing the sample on the developer host."
         stats={[
           { label: 'Pipeline Stages', value: STAGES.length },
           { label: 'Rules', value: RULES.length },
@@ -106,8 +106,8 @@ const KushPage = () => {
               <span className="font-mono text-xs uppercase tracking-widest text-text-muted">static by design</span>
             </div>
             {[
-              'Samples are hashed and analyzed statically — nothing is executed on the developer host.',
-              'Deterministic rule engine — every rule is a pure function, so identical input produces identical findings.',
+              'Samples are hashed and analyzed statically: nothing is executed on the developer host.',
+              'Deterministic rule engine: every rule is a pure function, so identical input produces identical findings.',
               'Risk scores are transparent and auditable: severity × confidence × exposure, capped at 100.',
             ].map((rule) => (
               <div key={rule} className="flex items-start gap-3 rounded-xl border border-border/20 bg-bg-elevated px-4 py-3">
@@ -129,11 +129,11 @@ const KushPage = () => {
         accent="End to End"
         description="From sample intake to IOC extraction, every stage writes to the session and emits a machine-readable event. Each event records exactly what the stage observed."
       >
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-5">
           {STAGES.map((stage, i) => (
             <div
               key={stage.id}
-              className="rounded-2xl border border-border/50 bg-bg-card p-4 md:p-5 space-y-3"
+              className="flex flex-col gap-3"
             >
               <div className="flex items-center gap-3">
                 <div className="w-9 h-9 rounded-xl bg-accent/10 border border-accent/20 flex items-center justify-center shrink-0">
@@ -231,7 +231,7 @@ const KushPage = () => {
         kicker="Transparent scoring"
         title="Risk"
         accent="On the Record"
-        description="Scores are computed from severity weight, confidence and a per-category exposure heuristic — every number is traceable back to the evidence that produced it."
+        description="Scores are computed from severity weight, confidence and a per-category exposure heuristic, and every number is traceable back to the evidence that produced it."
       >
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <div className="rounded-2xl border border-border/50 bg-bg-card p-5 md:p-6 space-y-4">
@@ -245,7 +245,7 @@ const KushPage = () => {
               {[
                 'severity_weight: critical=4, high=3, medium=2, low=1, else 0',
                 'confidence: confirmed=1.0, observed=0.9, probable=0.7, possible=0.5, unknown=0.3, not_observed=0.1',
-                'exposure (0–5): per-category heuristic — command-and-control, persistence and exfiltration score higher',
+                'exposure (0–5): per-category heuristic, where command-and-control, persistence and exfiltration score higher',
               ].map((line) => (
                 <div key={line} className="flex items-start gap-2.5">
                   <span className="w-1.5 h-1.5 rounded-full bg-accent shrink-0 mt-1.5" />
@@ -254,7 +254,7 @@ const KushPage = () => {
               ))}
             </div>
             <p className="text-xs font-mono text-text-muted leading-relaxed">
-              Raw scores are capped at 100. Reproduce any number exactly by running the same session again — the formula is a pure function of the recorded evidence.
+              Raw scores are capped at 100. Reproduce any number exactly by running the same session again; the formula is a pure function of the recorded evidence.
             </p>
           </div>
 
@@ -281,7 +281,7 @@ const KushPage = () => {
           kicker="Go source"
           title="Structured"
           accent="contracts"
-          description="Stages, rules, evidence and risk are all typed contracts — a rule is a pure function, a finding carries evidence, and the pipeline can stop after any stage."
+          description="Stages, rules, evidence and risk are all typed contracts: a rule is a pure function, a finding carries evidence, and the pipeline can stop after any stage."
           examples={SOURCE_EXAMPLES}
         />
       </div>
@@ -292,7 +292,7 @@ const KushPage = () => {
         kicker="Install"
         title="Build &"
         accent="Install"
-        description="kush ships as source today — build a single static binary with Go 1.26+ and install it to your PATH. Prebuilt release downloads are wired in but not yet published."
+        description="kush ships as source today; build a single static binary with Go 1.26+ and install it to your PATH. Prebuilt release downloads are wired in but not yet published."
       >
         <div className="space-y-6">
           <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,2fr)_minmax(0,3fr)] gap-4 md:gap-6">
@@ -306,7 +306,7 @@ const KushPage = () => {
                 <div>
                   <h4 className="text-sm font-black text-text-primary">Build from source</h4>
                   <p className="text-xs text-text-muted mt-1 leading-relaxed">
-                    No package manager or prebuilt download needed — a plain Go build produces the kush binary.
+                    No package manager or prebuilt download needed: a plain Go build produces the kush binary.
                   </p>
                 </div>
               </div>
@@ -342,7 +342,7 @@ const KushPage = () => {
             </div>
           </div>
 
-          <div className="rounded-2xl border border-border/50 bg-bg-card p-5 md:p-6 space-y-4">
+          <div className="space-y-4">
             <div className="flex items-center gap-3">
               <div className="w-9 h-9 rounded-xl bg-accent/10 border border-accent/20 flex items-center justify-center shrink-0">
                 <GitBranch className="w-4 h-4 text-accent" />
@@ -374,66 +374,22 @@ const KushPage = () => {
         accent="One Command"
         description="Run the whole offline pipeline with --sim, or point it at your own sample document with --sample."
       >
-        <div className="grid grid-cols-1 lg:grid-cols-[1.15fr_1fr] gap-4 md:gap-6">
-          <div className="rounded-2xl border border-border/50 bg-bg-card overflow-hidden">
-            <div className="flex items-center gap-2 px-4 py-2.5 bg-bg">
-              <span className="w-2.5 h-2.5 rounded-full bg-danger/70" />
-              <span className="w-2.5 h-2.5 rounded-full bg-warning/70" />
-              <span className="w-2.5 h-2.5 rounded-full bg-accent/70" />
-              <span className="ml-2 text-xs font-mono text-text-muted">kush, zsh</span>
-            </div>
-            <div className="p-4 md:p-5 font-mono text-xs md:text-xs space-y-2">
-              <div className="flex items-center gap-2">
-                <span className="text-accent">$</span>
-                <span className="text-text-primary">kush assess --sim</span>
-              </div>
-              <div className="pl-4 space-y-1.5 border-l border-accent/30">
-                {[
-                  { label: 'intake', text: 'invoice-1147_2310.doc.exe - exe - email attachment' },
-                  { label: 'hash', text: 'md5 + sha1 + sha256 fingerprints computed' },
-                  { label: 'metadata', text: 'windows x86 - mingw32 - upx packed (7.42 entropy)' },
-                  { label: 'static', text: '6 sections, 3 suspicious imports, 3 embedded' },
-                  { label: 'strings', text: 'encoded command launcher present, 7 notable strings' },
-                  { label: 'behavior', text: '5 sandbox observations - no local execution' },
-                  { label: 'network', text: '2 C2 indicators out of 4 network artifacts' },
-                  { label: 'risk', text: 'level high - score 73 - findings 16' },
-                ].map((line) => (
-                  <div key={line.label} className="flex items-start gap-2">
-                    <span className="text-xs md:text-xs font-black uppercase tracking-widest text-accent shrink-0 pt-0.5">
-                      [{line.label}]
-                    </span>
-                    <span className="text-text-muted leading-relaxed break-words">{line.text}</span>
-                  </div>
-                ))}
-              </div>
-              <div className="flex items-center gap-2">
-                <span className="text-accent">$</span>
-                <span className="text-text-primary animate-pulse">{'\u258B'}</span>
-              </div>
-            </div>
-          </div>
-
-          <div className="rounded-2xl border border-border/50 bg-bg-card p-5 md:p-6 flex flex-col gap-4">
-            <div className="flex items-center gap-3">
-              <div className="w-9 h-9 rounded-xl bg-accent/10 border border-accent/20 flex items-center justify-center shrink-0">
-                <ShieldCheck className="w-4 h-4 text-accent" />
-              </div>
-              <div>
-                <h4 className="text-xs font-black text-text-primary leading-tight">Usage</h4>
-                <p className="text-xs font-mono text-text-muted mt-0.5">Assess, inspect, report</p>
-              </div>
-            </div>
-            <CodeBlock
-              code={QUICK_START.map((cmd) => `$ ${cmd}`).join('\n')}
-              lang="sh"
-              copyable
-              className="mt-auto"
-            />
-            <p className="text-xs font-mono text-text-muted leading-relaxed">
-              Analyze only samples you are explicitly authorized to handle.
-            </p>
-          </div>
-        </div>
+        <ToolQuickStart
+          command="kush assess --sim"
+          commandNote="Runs the whole offline pipeline in simulated mode against a bundled sample."
+          output={[
+            { label: 'intake', text: 'invoice-1147_2310.doc.exe - exe - email attachment' },
+            { label: 'hash', text: 'md5 + sha1 + sha256 fingerprints computed' },
+            { label: 'metadata', text: 'windows x86 - mingw32 - upx packed (7.42 entropy)' },
+            { label: 'static', text: '6 sections, 3 suspicious imports, 3 embedded' },
+            { label: 'strings', text: 'encoded command launcher present, 7 notable strings' },
+            { label: 'behavior', text: '5 sandbox observations - no local execution' },
+            { label: 'network', text: '2 C2 indicators out of 4 network artifacts' },
+            { label: 'risk', text: 'level high - score 73 - findings 16' },
+          ]}
+          usage={QUICK_START}
+          footer="Analyze only samples you are explicitly authorized to handle."
+        />
       </ToolDocSection>
 
       {/* ── Related + Continue reading ───────────────────────────────────── */}

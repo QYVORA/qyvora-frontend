@@ -1,4 +1,4 @@
-import { Download, GitBranch, Terminal, ChevronRight } from 'lucide-react';
+import { Download, ChevronRight } from 'lucide-react';
 import { IconArrowRight } from '@/shared/components/icons';
 import { useAuth } from '@/core/contexts/AuthContext';
 import CodeBlock from '@/shared/components/CodeBlock';
@@ -8,7 +8,7 @@ import { openToolInstall } from '@/features/marketing/components/ToolInstallModa
 import { STAGES, RULES, GITHUB_URL, BUILD_FROM_SOURCE, QUICK_START, AUTHORIZED_WARNING, SOURCE_EXAMPLES } from '@/features/marketing/data/nzingaData';
 import DocFooterNav from '@/features/marketing/components/tools/DocFooterNav';
 import nzingaLogo from '@/assets/nzinga/nzinga-main-logo.webp';
-import { ToolDocPage, ToolDocSection, ToolDocHero } from '@/shared/components/tools';
+import { ToolDocPage, ToolDocSection, ToolDocHero, ToolQuickStart } from '@/shared/components/tools';
 import type { ToolDocSectionItem } from '@/shared/components/tools';
 
 const REQUIREMENTS = [
@@ -119,11 +119,11 @@ const NzingaPage = () => {
         title="Seven"
         accent="Stages"
       >
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-5">
           {STAGES.map((stage) => (
             <div
               key={stage.id}
-              className="rounded-2xl border border-border/50 bg-bg-card p-4 md:p-5 space-y-3"
+              className="flex flex-col gap-3"
             >
               <div className="flex items-center gap-3">
                 <div className="w-9 h-9 rounded-xl bg-accent/10 border border-accent/20 flex items-center justify-center shrink-0">
@@ -206,7 +206,7 @@ const NzingaPage = () => {
         kicker="Rule Engine"
         title="Built-in"
         accent="Rules"
-        description="nzinga ships deterministic correlation rules (OSINT-001..004) that surface evidence-backed findings with confidence, severity, and remediation — never absence-as-proof."
+        description="nzinga ships deterministic correlation rules (OSINT-001..004) that surface evidence-backed findings with confidence, severity, and remediation: never absence-as-proof."
       >
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
           {RULES.map((rule) => (
@@ -239,7 +239,7 @@ const NzingaPage = () => {
         description="Single binary distribution for Linux, macOS, and Windows. Build from source or run via the official install helper."
       >
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <div className="rounded-2xl border border-border/50 bg-bg-card p-5 md:p-6 space-y-4">
+          <div className="space-y-4">
             <h3 className="text-sm font-black uppercase tracking-widest text-accent">Quick Install</h3>
             <CodeBlock
               code="curl -fsSL https://raw.githubusercontent.com/QYVORA/qyvora-nzinga/main/install.sh | bash"
@@ -258,7 +258,7 @@ const NzingaPage = () => {
             </div>
           </div>
 
-          <div className="rounded-2xl border border-border/50 bg-bg-card p-5 md:p-6 space-y-4">
+          <div className="space-y-4">
             <h3 className="text-sm font-black uppercase tracking-widest text-accent">Build from Source</h3>
             <p className="text-xs font-mono text-text-muted">{BUILD_FROM_SOURCE.requirements}</p>
             <div className="space-y-2">
@@ -278,28 +278,19 @@ const NzingaPage = () => {
         accent="Collection"
         description="Run nzinga against the offline simulator or point it at an authorized target with the authorization gate enabled."
       >
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <div className="rounded-2xl border border-border/50 bg-bg-card p-5 md:p-6 space-y-3">
-            <h3 className="text-xs font-black uppercase tracking-widest text-accent">Common Commands</h3>
-            <div className="space-y-2">
-              {QUICK_START.map((cmd, idx) => (
-                <CodeBlock key={idx} code={cmd} lang="sh" copyable />
-              ))}
-            </div>
-          </div>
-
-          <div className="rounded-2xl border border-border/50 bg-bg-card p-5 md:p-6 space-y-4">
-            <h3 className="text-xs font-black uppercase tracking-widest text-accent">Interactive REPL</h3>
-            <p className="text-xs font-mono text-text-muted leading-relaxed">
-              Running bare <code className="text-accent">nzinga</code> launches the interactive console with the brand banner, command history, tab completion, and built-in offline demo exploration:
-            </p>
-            <CodeBlock
-              code={`$ nzinga\n\n[NZINGA BRAND BANNER]\n\nnzinga> assess --sim\nnzinga> sources list\nnzinga> findings\nnzinga> relationship graph\nnzinga> exit`}
-              lang="text"
-              badge="interactive"
-            />
-          </div>
-        </div>
+        <ToolQuickStart
+          command="nzinga assess --sim"
+          commandNote="Runs the whole intelligence pipeline against the offline simulator, or targets an authorized public estate with the authorization gate enabled."
+          session={[
+            'nzinga> assess --sim',
+            'nzinga> sources list',
+            'nzinga> findings',
+            'nzinga> relationship graph',
+            'nzinga> exit',
+          ]}
+          usage={QUICK_START}
+          footer="Collect only from targets you own or have explicit written permission to investigate."
+        />
       </ToolDocSection>
 
       {/* ── Related + Continue reading ───────────────────────────────────── */}

@@ -12,7 +12,7 @@ export const STAGES: KushStage[] = [
   { id: '01', name: 'INTAKE', icon: FileSearch, desc: 'Sample intake: sample id, format, name and source recorded from the offline document.' },
   { id: '02', name: 'HASH', icon: Hash, desc: 'Sample hashing: md5, sha1 and sha256 fingerprints computed for correlation and reporting.' },
   { id: '03', name: 'METADATA', icon: FileText, desc: 'Metadata extraction: compiler, architecture, target OS, entropy and packer detection.' },
-  { id: '04', name: 'STATIC', icon: FileCode2, desc: 'Static analysis: imports, sections, embedded content and suspicious routines — nothing executes.' },
+  { id: '04', name: 'STATIC', icon: FileCode2, desc: 'Static analysis: imports, sections, embedded content and suspicious routines; nothing executes.' },
   { id: '05', name: 'STRINGS', icon: Scroll, desc: 'Strings analysis: notable strings, URL/socket literals and encoded command launchers.' },
   { id: '06', name: 'BEHAVIOR', icon: Activity, desc: 'Behavioral surface: reads sandbox observations only; samples are never executed on the developer host.' },
   { id: '07', name: 'NETWORK', icon: Network, desc: 'Network indicators: C2 domains, IPs and other network artifacts extracted from the sample.' },
@@ -97,7 +97,7 @@ export const SOURCE_EXAMPLES: ToolSourceExample[] = [
     id: 'pipeline',
     filename: 'internal/analysis/analyst.go',
     label: 'Sequential assessment stages',
-    description: 'The offline pipeline runs in a fixed order — intake → hashing → metadata → static → strings → behavior → network → IOC → rule analysis → risk.',
+    description: 'The offline pipeline runs in a fixed order: intake → hashing → metadata → static → strings → behavior → network → IOC → rule analysis → risk.',
     code: 'func Stages(reg *rules.Registry, cfg map[string]any, maxEntries int) []pipeline.Stage {\n\treturn []pipeline.Stage{\n\t\t{ID: "intake", Name: "Sample intake", ...},\n\t\t{ID: "hashing", Name: "Hashing", ...},\n\t\t// metadata, static, strings, behavior, network, ioc, risk\n\t}\n}',
   },
   {

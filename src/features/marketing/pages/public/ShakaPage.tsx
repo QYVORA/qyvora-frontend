@@ -1,4 +1,4 @@
-import { Download, GitBranch, Terminal, ChevronRight } from 'lucide-react';
+import { Download, ChevronRight } from 'lucide-react';
 import { IconArrowRight } from '@/shared/components/icons';
 import { useAuth } from '@/core/contexts/AuthContext';
 import CodeBlock from '@/shared/components/CodeBlock';
@@ -8,7 +8,7 @@ import { openToolInstall } from '@/features/marketing/components/ToolInstallModa
 import { STAGES, RULES, GITHUB_URL, BUILD_FROM_SOURCE, QUICK_START, AUTHORIZED_WARNING, SOURCE_EXAMPLES } from '@/features/marketing/data/shakaData';
 import DocFooterNav from '@/features/marketing/components/tools/DocFooterNav';
 import shakaLogo from '@/assets/shaka/shaka-main-logo.webp';
-import { ToolDocPage, ToolDocSection, ToolDocHero } from '@/shared/components/tools';
+import { ToolDocPage, ToolDocSection, ToolDocHero, ToolQuickStart } from '@/shared/components/tools';
 import type { ToolDocSectionItem } from '@/shared/components/tools';
 
 const REQUIREMENTS = [
@@ -119,11 +119,11 @@ const ShakaPage = () => {
         title="Seven"
         accent="Stages"
       >
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-5">
           {STAGES.map((stage) => (
             <div
               key={stage.id}
-              className="rounded-2xl border border-border/50 bg-bg-card p-4 md:p-5 space-y-3"
+              className="flex flex-col gap-3"
             >
               <div className="flex items-center gap-3">
                 <div className="w-9 h-9 rounded-xl bg-accent/10 border border-accent/20 flex items-center justify-center shrink-0">
@@ -238,7 +238,7 @@ const ShakaPage = () => {
         description="Single binary distribution for Linux, macOS, and Windows. Build from source or run via the official install helper."
       >
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <div className="rounded-2xl border border-border/50 bg-bg-card p-5 md:p-6 space-y-4">
+          <div className="space-y-4">
             <h3 className="text-sm font-black uppercase tracking-widest text-accent">Quick Install</h3>
             <CodeBlock
               code="curl -fsSL https://raw.githubusercontent.com/QYVORA/qyvora-shaka/main/install.sh | bash"
@@ -257,7 +257,7 @@ const ShakaPage = () => {
             </div>
           </div>
 
-          <div className="rounded-2xl border border-border/50 bg-bg-card p-5 md:p-6 space-y-4">
+          <div className="space-y-4">
             <h3 className="text-sm font-black uppercase tracking-widest text-accent">Build from Source</h3>
             <p className="text-xs font-mono text-text-muted">{BUILD_FROM_SOURCE.requirements}</p>
             <div className="space-y-2">
@@ -277,28 +277,18 @@ const ShakaPage = () => {
         accent="Execution"
         description="Run shaka against the offline simulator or point it at an authorized Active Directory domain controller."
       >
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <div className="rounded-2xl border border-border/50 bg-bg-card p-5 md:p-6 space-y-3">
-            <h3 className="text-xs font-black uppercase tracking-widest text-accent">Common Commands</h3>
-            <div className="space-y-2">
-              {QUICK_START.map((cmd, idx) => (
-                <CodeBlock key={idx} code={cmd} lang="sh" copyable />
-              ))}
-            </div>
-          </div>
-
-          <div className="rounded-2xl border border-border/50 bg-bg-card p-5 md:p-6 space-y-4">
-            <h3 className="text-xs font-black uppercase tracking-widest text-accent">Interactive REPL</h3>
-            <p className="text-xs font-mono text-text-muted leading-relaxed">
-              Running bare <code className="text-accent">shaka</code> launches the interactive console with the brand banner, command history, tab completion, and built-in offline demo exploration:
-            </p>
-            <CodeBlock
-              code={`$ shaka\n\n[SHAKA BRAND BANNER]\n\nshaka> assess\nshaka> graph\nshaka> findings\nshaka> exit`}
-              lang="text"
-              badge="interactive"
-            />
-          </div>
-        </div>
+        <ToolQuickStart
+          command="shaka assess --sim"
+          commandNote="Runs the full Assessment pipeline against the built-in offline simulator, or point it at an authorized Active Directory domain controller."
+          session={[
+            'shaka> assess',
+            'shaka> graph',
+            'shaka> findings',
+            'shaka> exit',
+          ]}
+          usage={QUICK_START}
+          footer="Assess only Active Directory domains you own or have explicit written permission to test."
+        />
       </ToolDocSection>
 
       {/* ── Related + Continue reading ───────────────────────────────────── */}

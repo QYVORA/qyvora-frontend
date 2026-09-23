@@ -7,7 +7,7 @@ import { openToolInstall } from '@/features/marketing/components/ToolInstallModa
 import { STAGES, RULES, RULE_CATEGORIES, CONFIDENCE_STATES, RISK_THRESHOLDS, GITHUB_URL, BUILD_FROM_SOURCE, QUICK_START, AUTHORIZED_WARNING, SOURCE_EXAMPLES } from '@/features/marketing/data/mansaData';
 import DocFooterNav from '@/features/marketing/components/tools/DocFooterNav';
 import mansaLogo from '@/assets/mansa/mansa-main-logo.webp';
-import { ToolDocPage, ToolDocSection, ToolDocHero } from '@/shared/components/tools';
+import { ToolDocPage, ToolDocSection, ToolDocHero, ToolQuickStart } from '@/shared/components/tools';
 import type { ToolDocSectionItem } from '@/shared/components/tools';
 import { DottedMapOverlay } from '@/shared/components/ui';
 
@@ -41,7 +41,7 @@ const MansaPage = () => {
       {/* ── Hero ─────────────────────────────────────────────────────────── */}
       <ToolDocHero
         toolName="mansa"
-        description="Authorized wireless security assessment in Go. Discover, enumerate, observe, and analyze WLAN deployments — with deterministic rules, transparent risk scoring, and a terminal-first console that mirrors the one-shot CLI."
+        description="Authorized wireless security assessment in Go. Discover, enumerate, observe, and analyze WLAN deployments, with deterministic rules, transparent risk scoring, and a terminal-first console that mirrors the one-shot CLI."
         stats={[
           { label: 'Pipeline Stages', value: STAGES.length },
           { label: 'Rule Families', value: RULE_CATEGORIES.length },
@@ -96,7 +96,7 @@ const MansaPage = () => {
             </div>
             {[
               'Never runs against undisclosed targets: every session is bound to a declared interface or simulation.',
-              'Deterministic rule engine — every rule is a pure function, so identical input produces identical findings.',
+              'Deterministic rule engine: every rule is a pure function, so identical input produces identical findings.',
               'Risk scores are transparent and auditable: severity × confidence × exposure, capped at 100.',
             ].map((rule) => (
               <div key={rule} className="flex items-start gap-3 rounded-xl border border-border/20 bg-bg-elevated px-4 py-3">
@@ -118,11 +118,11 @@ const MansaPage = () => {
         accent="End to End"
         description="From interface discovery to report, every stage writes to the session. Each step is available as a one-shot command with flags identical to the console commands."
       >
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-5">
           {STAGES.map((stage) => (
             <div
               key={stage.id}
-              className="rounded-2xl border border-border/50 bg-bg-card p-4 md:p-5 space-y-3"
+              className="flex flex-col gap-3"
             >
               <div className="flex items-center gap-3">
                 <div className="w-9 h-9 rounded-xl bg-accent/10 border border-accent/20 flex items-center justify-center shrink-0">
@@ -220,7 +220,7 @@ const MansaPage = () => {
         kicker="Transparent scoring"
         title="Risk"
         accent="On the Record"
-        description="Scores are computed from severity weight, confidence, and an RF exposure heuristic — every number is traceable back to the evidence that produced it."
+        description="Scores are computed from severity weight, confidence, and an RF exposure heuristic, and every number is traceable back to the evidence that produced it."
       >
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <div className="rounded-2xl border border-border/50 bg-bg-card p-5 md:p-6 space-y-4">
@@ -243,7 +243,7 @@ const MansaPage = () => {
               ))}
             </div>
             <p className="text-xs font-mono text-text-muted leading-relaxed">
-              Raw scores are capped at 100. Reproduce any number exactly by running the same session again — the formula is a pure function of the recorded evidence.
+              Raw scores are capped at 100. Reproduce any number exactly by running the same session again. The formula is a pure function of the recorded evidence.
             </p>
           </div>
 
@@ -270,7 +270,7 @@ const MansaPage = () => {
           kicker="Go source"
           title="Structured"
           accent="contracts"
-          description="Stages, rules, evidence and risk are all typed contracts — a rule is a pure function, a finding carries evidence, and the pipeline can stop after any stage."
+          description="Stages, rules, evidence and risk are all typed contracts: a rule is a pure function, a finding carries evidence, and the pipeline can stop after any stage."
           examples={SOURCE_EXAMPLES}
         />
       </div>
@@ -340,7 +340,7 @@ const MansaPage = () => {
             </div>
           </div>
 
-          <div className="rounded-2xl border border-border/50 bg-bg-card p-5 md:p-6 space-y-4">
+          <div className="space-y-4">
             <div className="flex items-center gap-3">
               <div className="w-9 h-9 rounded-xl bg-accent/10 border border-accent/20 flex items-center justify-center shrink-0">
                 <GitBranch className="w-4 h-4 text-accent" />
@@ -380,64 +380,20 @@ const MansaPage = () => {
         accent="One Command"
         description="Run the whole offline pipeline with --sim, or walk each stage one-shot with flags identical to the console commands."
       >
-        <div className="grid grid-cols-1 lg:grid-cols-[1.15fr_1fr] gap-4 md:gap-6">
-          <div className="rounded-2xl border border-border/50 bg-bg-card overflow-hidden">
-            <div className="flex items-center gap-2 px-4 py-2.5 bg-bg">
-              <span className="w-2.5 h-2.5 rounded-full bg-danger/70" />
-              <span className="w-2.5 h-2.5 rounded-full bg-warning/70" />
-              <span className="w-2.5 h-2.5 rounded-full bg-accent/70" />
-              <span className="ml-2 text-xs font-mono text-text-muted">mansa, zsh</span>
-            </div>
-            <div className="p-4 md:p-5 font-mono text-xs md:text-xs space-y-2">
-              <div className="flex items-center gap-2">
-                <span className="text-accent">$</span>
-                <span className="text-text-primary">mansa assess --sim</span>
-              </div>
-              <div className="pl-4 space-y-1.5 border-l border-accent/30">
-                {[
-                  { label: 'discover', text: '2 simulated interfaces - iw dev, capabilities resolved' },
-                  { label: 'enumerate', text: '23 access points - BSSID, SSID, channel, band, protocols' },
-                  { label: 'observe', text: '38 stations + traffic observations collected' },
-                  { label: 'analyze', text: 'WLAN-001..WLAN-030 applied - deterministic output' },
-                  { label: 'risk', text: 'critical 0 - high 2 - medium 4 - low 6 - none 11' },
-                  { label: 'report', text: 'session stored - report -f json --out report.json' },
-                ].map((line) => (
-                  <div key={line.label} className="flex items-start gap-2">
-                    <span className="text-xs md:text-xs font-black uppercase tracking-widest text-accent shrink-0 pt-0.5">
-                      [{line.label}]
-                    </span>
-                    <span className="text-text-muted leading-relaxed break-words">{line.text}</span>
-                  </div>
-                ))}
-              </div>
-              <div className="flex items-center gap-2">
-                <span className="text-accent">$</span>
-                <span className="text-text-primary animate-pulse">{'\u258B'}</span>
-              </div>
-            </div>
-          </div>
-
-          <div className="rounded-2xl border border-border/50 bg-bg-card p-5 md:p-6 flex flex-col gap-4">
-            <div className="flex items-center gap-3">
-              <div className="w-9 h-9 rounded-xl bg-accent/10 border border-accent/20 flex items-center justify-center shrink-0">
-                <Network className="w-4 h-4 text-accent" />
-              </div>
-              <div>
-                <h4 className="text-xs font-black text-text-primary leading-tight">Usage</h4>
-                <p className="text-xs font-mono text-text-muted mt-0.5">Assess, enumerate, report</p>
-              </div>
-            </div>
-            <CodeBlock
-              code={QUICK_START.map((cmd) => `$ ${cmd}`).join('\n')}
-              lang="sh"
-              copyable
-              className="mt-auto"
-            />
-            <p className="text-xs font-mono text-text-muted leading-relaxed">
-              Assess only wireless networks you own or have explicit written permission to test.
-            </p>
-          </div>
-        </div>
+        <ToolQuickStart
+          command="mansa assess --sim"
+          commandNote="Runs the whole offline pipeline deterministically against simulated interfaces, with flags identical to the console commands."
+          output={[
+            { label: 'discover', text: '2 simulated interfaces - iw dev, capabilities resolved' },
+            { label: 'enumerate', text: '23 access points - BSSID, SSID, channel, band, protocols' },
+            { label: 'observe', text: '38 stations + traffic observations collected' },
+            { label: 'analyze', text: 'WLAN-001..WLAN-030 applied - deterministic output' },
+            { label: 'risk', text: 'critical 0 - high 2 - medium 4 - low 6 - none 11' },
+            { label: 'report', text: 'session stored - report -f json --out report.json' },
+          ]}
+          usage={QUICK_START}
+          footer="Assess only wireless networks you own or have explicit written permission to test."
+        />
       </ToolDocSection>
 
       {/* ── Related + Continue reading ───────────────────────────────────── */}

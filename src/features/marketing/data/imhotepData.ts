@@ -14,7 +14,7 @@ export const STAGES: ImhotepStage[] = [
   { id: '03', name: 'STORAGE', icon: Database, desc: 'Storage exposure analysis: publicly readable or writable buckets and unencrypted stores.' },
   { id: '04', name: 'NETWORK', icon: Network, desc: 'Network configuration analysis: exposed admin ports, publicly accessible databases and workloads.' },
   { id: '05', name: 'CONTAINERS', icon: Cpu, desc: 'Container and Kubernetes analysis: capabilities, network namespace and image tag behavior.' },
-  { id: '06', name: 'SECRETS', icon: Lock, desc: 'Secret exposure detection across config and manifests — values redacted at collection time.' },
+  { id: '06', name: 'SECRETS', icon: Lock, desc: 'Secret exposure detection across config and manifests; values redacted at collection time.' },
   { id: '07', name: 'MISCONFIG', icon: Fence, desc: 'Misconfiguration detection across the snapshot surface.' },
   { id: '08', name: 'RISK', icon: Gauge, desc: 'Rule analysis (IAM/STG/NET/CNT/SEC+) and transparent risk scoring, capped at 100.' },
 ];
@@ -82,7 +82,7 @@ export const AUTHORIZED_WARNING = {
   title: 'Offline',
   accent: 'Cloud Snapshots',
   description:
-    'IMHOTEP analyzes only the cloud snapshots it is explicitly pointed at. Live provider collection is not implemented and is refused honestly — it reads recorded snapshots, never live provider APIs.',
+    'IMHOTEP analyzes only the cloud snapshots it is explicitly pointed at. Live provider collection is not implemented and is refused honestly; it reads recorded snapshots, never live provider APIs.',
 };
 
 export const SOURCE_EXAMPLES: ToolSourceExample[] = [
@@ -97,7 +97,7 @@ export const SOURCE_EXAMPLES: ToolSourceExample[] = [
     id: 'pipeline',
     filename: 'internal/analysis/analyst.go',
     label: 'Sequential assessment stages',
-    description: 'The offline pipeline runs in a fixed order — provider detection → asset discovery → configuration inventory → rule analysis → risk.',
+    description: 'The offline pipeline runs in a fixed order: provider detection → asset discovery → configuration inventory → rule analysis → risk.',
     code: 'func Stages(reg *rules.Registry, cfg map[string]any, maxEntries int) []pipeline.Stage {\n\treturn []pipeline.Stage{\n\t\t{ID: "provider", Name: "Provider detection", ...},\n\t\t{ID: "discovery", Name: "Asset discovery", ...},\n\t\t// inventory, analysis, risk\n\t}\n}',
   },
   {

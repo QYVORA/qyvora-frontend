@@ -7,14 +7,14 @@ import { openToolInstall } from '@/features/marketing/components/ToolInstallModa
 import { STAGES, RULES, RULE_CATEGORIES, CONFIDENCE_STATES, RISK_THRESHOLDS, GITHUB_URL, BUILD_FROM_SOURCE, QUICK_START, AUTHORIZED_WARNING, SOURCE_EXAMPLES } from '@/features/marketing/data/amanirenasData';
 import DocFooterNav from '@/features/marketing/components/tools/DocFooterNav';
 import amanirenasLogo from '@/assets/amanirenas/amanirenas-main-logo.webp';
-import { ToolDocPage, ToolDocSection, ToolDocHero } from '@/shared/components/tools';
+import { ToolDocPage, ToolDocSection, ToolDocHero, ToolQuickStart } from '@/shared/components/tools';
 import type { ToolDocSectionItem } from '@/shared/components/tools';
 import { DottedMapOverlay } from '@/shared/components/ui';
 
 const REQUIREMENTS = [
   'Go 1.26+ toolchain to build',
   'No external runtime dependencies, a single static binary',
-  'Offline app profiles / IPA snapshots only — no device or runtime required',
+  'Offline app profiles / IPA snapshots only: no device or runtime required',
 ];
 
 const STAGE_EVENTS = [
@@ -52,7 +52,7 @@ const AmanirenasPage = () => {
       {/* ── Hero ─────────────────────────────────────────────────────────── */}
       <ToolDocHero
         toolName="amanirenas"
-        description="Mobile application security assessment in Go. Analyze offline app profiles and IPA snapshots for metadata, static binary, configuration, API and secrets risk — with deterministic rules, transparent risk scoring, and a terminal-first console that mirrors the one-shot CLI."
+        description="Mobile application security assessment in Go. Analyze offline app profiles and IPA snapshots for metadata, static binary, configuration, API and secrets risk, with deterministic rules, transparent risk scoring, and a terminal-first console that mirrors the one-shot CLI."
         stats={[
           { label: 'Pipeline Stages', value: STAGES.length },
           { label: 'Rules', value: RULES.length },
@@ -107,7 +107,7 @@ const AmanirenasPage = () => {
             </div>
             {[
               'Never executes app code: findings are derived from the recorded profile, never a running binary.',
-              'Deterministic rule engine — every rule is a pure function, so identical input produces identical findings.',
+              'Deterministic rule engine: every rule is a pure function, so identical input produces identical findings.',
               'Risk scores are transparent and auditable: severity × confidence × exposure, capped at 100.',
             ].map((rule) => (
               <div key={rule} className="flex items-start gap-3 rounded-xl border border-border/20 bg-bg-elevated px-4 py-3">
@@ -129,11 +129,11 @@ const AmanirenasPage = () => {
         accent="End to End"
         description="From application identification to risk scoring, every stage writes to the session and emits a machine-readable event. Each event records exactly what the stage observed."
       >
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-5">
           {STAGES.map((stage, i) => (
             <div
               key={stage.id}
-              className="rounded-2xl border border-border/50 bg-bg-card p-4 md:p-5 space-y-3"
+              className="flex flex-col gap-3"
             >
               <div className="flex items-center gap-3">
                 <div className="w-9 h-9 rounded-xl bg-accent/10 border border-accent/20 flex items-center justify-center shrink-0">
@@ -231,7 +231,7 @@ const AmanirenasPage = () => {
         kicker="Transparent scoring"
         title="Risk"
         accent="On the Record"
-        description="Scores are computed from severity weight, confidence and a per-category exposure heuristic — every number is traceable back to the evidence that produced it."
+        description="Scores are computed from severity weight, confidence and a per-category exposure heuristic, and every number is traceable back to the evidence that produced it."
       >
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <div className="rounded-2xl border border-border/50 bg-bg-card p-5 md:p-6 space-y-4">
@@ -245,7 +245,7 @@ const AmanirenasPage = () => {
               {[
                 'severity_weight: critical=4, high=3, medium=2, low=1, else 0',
                 'confidence: confirmed=1.0, observed=0.9, probable=0.7, possible=0.5, unknown=0.3, not_observed=0.1',
-                'exposure (0–5): per-category heuristic — secrets, storage and credentials score higher',
+                'exposure (0–5): per-category heuristic, where secrets, storage and credentials score higher',
               ].map((line) => (
                 <div key={line} className="flex items-start gap-2.5">
                   <span className="w-1.5 h-1.5 rounded-full bg-accent shrink-0 mt-1.5" />
@@ -254,7 +254,7 @@ const AmanirenasPage = () => {
               ))}
             </div>
             <p className="text-xs font-mono text-text-muted leading-relaxed">
-              Raw scores are capped at 100. Reproduce any number exactly by running the same session again — the formula is a pure function of the recorded evidence.
+              Raw scores are capped at 100. Reproduce any number exactly by running the same session again; the formula is a pure function of the recorded evidence.
             </p>
           </div>
 
@@ -281,7 +281,7 @@ const AmanirenasPage = () => {
           kicker="Go source"
           title="Structured"
           accent="contracts"
-          description="Stages, rules, evidence and risk are all typed contracts — a rule is a pure function, a finding carries evidence, and the pipeline can stop after any stage."
+          description="Stages, rules, evidence and risk are all typed contracts: a rule is a pure function, a finding carries evidence, and the pipeline can stop after any stage."
           examples={SOURCE_EXAMPLES}
         />
       </div>
@@ -292,7 +292,7 @@ const AmanirenasPage = () => {
         kicker="Install"
         title="Build &"
         accent="Install"
-        description="amanirenas ships as source today — build a single static binary with Go 1.26+ and install it to your PATH. Prebuilt release downloads are wired in but not yet published."
+        description="amanirenas ships as source today; build a single static binary with Go 1.26+ and install it to your PATH. Prebuilt release downloads are wired in but not yet published."
       >
         <div className="space-y-6">
           <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,2fr)_minmax(0,3fr)] gap-4 md:gap-6">
@@ -306,7 +306,7 @@ const AmanirenasPage = () => {
                 <div>
                   <h4 className="text-sm font-black text-text-primary">Build from source</h4>
                   <p className="text-xs text-text-muted mt-1 leading-relaxed">
-                    No package manager or prebuilt download needed — a plain Go build produces the amanirenas binary.
+                    No package manager or prebuilt download needed: a plain Go build produces the amanirenas binary.
                   </p>
                 </div>
               </div>
@@ -342,7 +342,7 @@ const AmanirenasPage = () => {
             </div>
           </div>
 
-          <div className="rounded-2xl border border-border/50 bg-bg-card p-5 md:p-6 space-y-4">
+          <div className="space-y-4">
             <div className="flex items-center gap-3">
               <div className="w-9 h-9 rounded-xl bg-accent/10 border border-accent/20 flex items-center justify-center shrink-0">
                 <GitBranch className="w-4 h-4 text-accent" />
@@ -374,66 +374,22 @@ const AmanirenasPage = () => {
         accent="One Command"
         description="Run the whole offline pipeline with --sim, or point it at your own app profile with --app."
       >
-        <div className="grid grid-cols-1 lg:grid-cols-[1.15fr_1fr] gap-4 md:gap-6">
-          <div className="rounded-2xl border border-border/50 bg-bg-card overflow-hidden">
-            <div className="flex items-center gap-2 px-4 py-2.5 bg-bg">
-              <span className="w-2.5 h-2.5 rounded-full bg-danger/70" />
-              <span className="w-2.5 h-2.5 rounded-full bg-warning/70" />
-              <span className="w-2.5 h-2.5 rounded-full bg-accent/70" />
-              <span className="ml-2 text-xs font-mono text-text-muted">amanirenas, zsh</span>
-            </div>
-            <div className="p-4 md:p-5 font-mono text-xs md:text-xs space-y-2">
-              <div className="flex items-center gap-2">
-                <span className="text-accent">$</span>
-                <span className="text-text-primary">amanirenas assess --sim</span>
-              </div>
-              <div className="pl-4 space-y-1.5 border-l border-accent/30">
-                {[
-                  { label: 'identify', text: 'com.acme.paysecure 3.2.1 (build 118, ipa source)' },
-                  { label: 'intake', text: '7 entries - arm64,armv7 - ad-hoc signature' },
-                  { label: 'metadata', text: 'min_os 12.0, team ABCDE12345, 7 assets' },
-                  { label: 'static', text: '2 hardcoded secrets, 2 weak crypto, 1 WebView' },
-                  { label: 'config', text: 'backup_enabled true, debug_enabled true, 2 http loads' },
-                  { label: 'api', text: '4 endpoints - 4 insecure, 1 unpinned' },
-                  { label: 'risk', text: 'critical 2 - high 1 - medium 8 - low 2 - info 1' },
-                  { label: 'report', text: 'score 56 / medium - findings 14 - report -f json' },
-                ].map((line) => (
-                  <div key={line.label} className="flex items-start gap-2">
-                    <span className="text-xs md:text-xs font-black uppercase tracking-widest text-accent shrink-0 pt-0.5">
-                      [{line.label}]
-                    </span>
-                    <span className="text-text-muted leading-relaxed break-words">{line.text}</span>
-                  </div>
-                ))}
-              </div>
-              <div className="flex items-center gap-2">
-                <span className="text-accent">$</span>
-                <span className="text-text-primary animate-pulse">{'\u258B'}</span>
-              </div>
-            </div>
-          </div>
-
-          <div className="rounded-2xl border border-border/50 bg-bg-card p-5 md:p-6 flex flex-col gap-4">
-            <div className="flex items-center gap-3">
-              <div className="w-9 h-9 rounded-xl bg-accent/10 border border-accent/20 flex items-center justify-center shrink-0">
-                <ShieldCheck className="w-4 h-4 text-accent" />
-              </div>
-              <div>
-                <h4 className="text-xs font-black text-text-primary leading-tight">Usage</h4>
-                <p className="text-xs font-mono text-text-muted mt-0.5">Assess, inspect, report</p>
-              </div>
-            </div>
-            <CodeBlock
-              code={QUICK_START.map((cmd) => `$ ${cmd}`).join('\n')}
-              lang="sh"
-              copyable
-              className="mt-auto"
-            />
-            <p className="text-xs font-mono text-text-muted leading-relaxed">
-              Analyze only app packages you own or have explicit written permission to assess.
-            </p>
-          </div>
-        </div>
+        <ToolQuickStart
+          command="amanirenas assess --sim"
+          commandNote="Runs the whole offline pipeline with --sim, or point it at your own app profile with --app."
+          output={[
+            { label: 'identify', text: 'com.acme.paysecure 3.2.1 (build 118, ipa source)' },
+            { label: 'intake', text: '7 entries - arm64,armv7 - ad-hoc signature' },
+            { label: 'metadata', text: 'min_os 12.0, team ABCDE12345, 7 assets' },
+            { label: 'static', text: '2 hardcoded secrets, 2 weak crypto, 1 WebView' },
+            { label: 'config', text: 'backup_enabled true, debug_enabled true, 2 http loads' },
+            { label: 'api', text: '4 endpoints - 4 insecure, 1 unpinned' },
+            { label: 'risk', text: 'critical 2 - high 1 - medium 8 - low 2 - info 1' },
+            { label: 'report', text: 'score 56 / medium - findings 14 - report -f json' },
+          ]}
+          usage={QUICK_START}
+          footer="Analyze only app packages you own or have explicit written permission to assess."
+        />
       </ToolDocSection>
 
       {/* ── Related + Continue reading ───────────────────────────────────── */}

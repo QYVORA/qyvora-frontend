@@ -1,4 +1,4 @@
-import { Download, GitBranch, Smartphone, Terminal, ChevronRight } from 'lucide-react';
+import { Download, GitBranch, Smartphone, ChevronRight } from 'lucide-react';
 import { IconArrowRight } from '@/shared/components/icons';
 import { useAuth } from '@/core/contexts/AuthContext';
 import CodeBlock from '@/shared/components/CodeBlock';
@@ -8,7 +8,7 @@ import { openToolInstall } from '@/features/marketing/components/ToolInstallModa
 import { STAGES, RULES, PROFILES, GITHUB_URL, BUILD_FROM_SOURCE, QUICK_START, AUTHORIZED_WARNING, SOURCE_EXAMPLES } from '@/features/marketing/data/jabariData';
 import DocFooterNav from '@/features/marketing/components/tools/DocFooterNav';
 import jabariLogo from '@/assets/jabari/jabari-main-logo.webp';
-import { ToolDocPage, ToolDocSection, ToolDocHero } from '@/shared/components/tools';
+import { ToolDocPage, ToolDocSection, ToolDocHero, ToolQuickStart } from '@/shared/components/tools';
 import type { ToolDocSectionItem } from '@/shared/components/tools';
 import { DottedMapOverlay } from '@/shared/components/ui';
 
@@ -90,7 +90,7 @@ const JabariPage = () => {
             prompt on a TTY, or <code className="text-warning">-y</code> /{' '}
             <code className="text-warning">authorized: true</code> for non-interactive runs. The
             authorized flag is recorded on the session for the audit trail, and jabari assesses the
-            single USB device or IP you point it at — never the surrounding subnet.
+            single USB device or IP you point it at, never the surrounding subnet.
           </Callout>
 
           <div className="rounded-2xl border border-border/50 bg-bg-card p-5 md:p-6 flex flex-col gap-4">
@@ -122,11 +122,11 @@ const JabariPage = () => {
         title="Seven"
         accent="Stages"
       >
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-5">
           {STAGES.map((stage) => (
             <div
               key={stage.id}
-              className="rounded-2xl border border-border/50 bg-bg-card p-4 md:p-5 space-y-3"
+              className="flex flex-col gap-3"
             >
               <div className="flex items-center gap-3">
                 <div className="w-9 h-9 rounded-xl bg-accent/10 border border-accent/20 flex items-center justify-center shrink-0">
@@ -327,7 +327,7 @@ const JabariPage = () => {
             </div>
           </div>
 
-          <div className="rounded-2xl border border-border/50 bg-bg-card p-5 md:p-6 space-y-4">
+          <div className="space-y-4">
             <div className="flex items-center gap-3">
               <div className="w-9 h-9 rounded-xl bg-accent/10 border border-accent/20 flex items-center justify-center shrink-0">
                 <GitBranch className="w-4 h-4 text-accent" />
@@ -367,67 +367,19 @@ const JabariPage = () => {
         accent="One Command"
         description="Point jabari at a connected device or an authorized IP: the authorization gate runs, then the pipeline begins."
       >
-        <div className="grid grid-cols-1 lg:grid-cols-[1.15fr_1fr] gap-4 md:gap-6">
-          <div className="rounded-2xl border border-border/50 bg-bg-card overflow-hidden">
-            <div className="flex items-center gap-2 px-4 py-2.5 bg-bg">
-              <span className="w-2.5 h-2.5 rounded-full bg-danger/70" />
-              <span className="w-2.5 h-2.5 rounded-full bg-warning/70" />
-              <span className="w-2.5 h-2.5 rounded-full bg-accent/70" />
-              <span className="ml-2 text-xs font-mono text-text-muted">jabari, zsh</span>
-            </div>
-            <div className="p-4 md:p-5 font-mono text-xs md:text-xs space-y-2">
-              <div className="flex items-center gap-2">
-                <span className="text-accent">$</span>
-                <span className="text-text-primary">jabari assess usb</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <span className="text-accent">$</span>
-                <span className="text-text-muted">[authorized] target: device via USB: session recorded</span>
-              </div>
-              <div className="pl-4 space-y-1.5 border-l border-accent/30">
-                {[
-                  { label: 'discovery', text: 'Galaxy S24 - Android 14 - patch 2024-11-01' },
-                  { label: 'enumeration', text: 'package inventory + posture facts collected' },
-                  { label: 'analysis', text: 'AND-001 debuggable (high) - AND-002 outdated patch (medium)' },
-                  { label: 'risk', text: 'critical 0 - high 1 - medium 1 - low 0' },
-                  { label: 'reporting', text: 'session saved -> reports/session-<id>.json' },
-                ].map((line) => (
-                  <div key={line.label} className="flex items-start gap-2">
-                    <span className="text-xs md:text-xs font-black uppercase tracking-widest text-accent shrink-0 pt-0.5">
-                      [{line.label}]
-                    </span>
-                    <span className="text-text-muted leading-relaxed break-words">{line.text}</span>
-                  </div>
-                ))}
-              </div>
-              <div className="flex items-center gap-2">
-                <span className="text-accent">$</span>
-                <span className="text-text-primary animate-pulse">{'\u258B'}</span>
-              </div>
-            </div>
-          </div>
-
-          <div className="rounded-2xl border border-border/50 bg-bg-card p-5 md:p-6 flex flex-col gap-4">
-            <div className="flex items-center gap-3">
-              <div className="w-9 h-9 rounded-xl bg-accent/10 border border-accent/20 flex items-center justify-center shrink-0">
-                <Terminal className="w-4 h-4 text-accent" />
-              </div>
-              <div>
-                <h4 className="text-xs font-black text-text-primary leading-tight">Usage</h4>
-                <p className="text-xs font-mono text-text-muted mt-0.5">USB, network and reporting</p>
-              </div>
-            </div>
-            <CodeBlock
-              code={QUICK_START.map((cmd) => `$ ${cmd}`).join('\n')}
-              lang="sh"
-              copyable
-              className="mt-auto"
-            />
-            <p className="text-xs font-mono text-text-muted leading-relaxed">
-              Only assess devices you own or have explicit written permission to test.
-            </p>
-          </div>
-        </div>
+        <ToolQuickStart
+          command="jabari assess usb"
+          commandNote="Assesses a connected device or authorized IP, running the authorization gate before the pipeline begins."
+          output={[
+            { label: 'discovery', text: 'Galaxy S24 - Android 14 - patch 2024-11-01' },
+            { label: 'enumeration', text: 'package inventory + posture facts collected' },
+            { label: 'analysis', text: 'AND-001 debuggable (high) - AND-002 outdated patch (medium)' },
+            { label: 'risk', text: 'critical 0 - high 1 - medium 1 - low 0' },
+            { label: 'reporting', text: 'session saved -> reports/session-<id>.json' },
+          ]}
+          usage={QUICK_START}
+          footer="Only assess devices you own or have explicit written permission to test."
+        />
       </ToolDocSection>
 
       {/* ── Related + Continue reading ───────────────────────────────────── */}

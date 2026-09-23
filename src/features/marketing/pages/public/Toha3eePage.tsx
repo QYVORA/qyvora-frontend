@@ -1,4 +1,4 @@
-import { Download, GitBranch, ShieldAlert, ShieldCheck, Terminal } from 'lucide-react';
+import { Download, GitBranch, ShieldAlert, ShieldCheck } from 'lucide-react';
 import { IconArrowRight } from '@/shared/components/icons';
 import { useAuth } from '@/core/contexts/AuthContext';
 import CodeBlock from '@/shared/components/CodeBlock';
@@ -8,7 +8,7 @@ import { openToolInstall } from '@/features/marketing/components/ToolInstallModa
 import { MODULES, INSTALLERS, BUILD_FROM_SOURCE, QUICK_START, CONSOLE_SESSION, GITHUB_URL, SOURCE_EXAMPLES } from '@/features/marketing/data/toha3eeData';
 import DocFooterNav from '@/features/marketing/components/tools/DocFooterNav';
 import toha3eeLogo from '@/assets/toha3ee/toha3ee-main-logo.webp';
-import { ToolDocPage, ToolDocSection, ToolDocHero } from '@/shared/components/tools';
+import { ToolDocPage, ToolDocSection, ToolDocHero, ToolQuickStart } from '@/shared/components/tools';
 import type { ToolDocSectionItem } from '@/shared/components/tools';
 import { DottedMapOverlay } from '@/shared/components/ui';
 
@@ -113,11 +113,11 @@ const Toha3eePage = () => {
         title="Attack"
         accent="Categories"
       >
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-5">
           {MODULES.map((category, i) => (
             <div
               key={category.id}
-              className="rounded-2xl border border-border/50 bg-bg-card p-4 md:p-5 space-y-3"
+              className="flex flex-col gap-3"
             >
               <div className="flex items-center gap-3">
                 <div className="w-9 h-9 rounded-xl bg-accent/10 border border-accent/20 flex items-center justify-center shrink-0">
@@ -241,7 +241,7 @@ const Toha3eePage = () => {
               </div>
             </div>
 
-            <div className="rounded-2xl border border-border/50 bg-bg-card p-5 md:p-6 space-y-4">
+            <div className="space-y-3">
               <div className="flex items-center gap-3">
                 <div className="w-9 h-9 rounded-xl bg-accent/10 border border-accent/20 flex items-center justify-center shrink-0">
                   <Download className="w-4 h-4 text-accent" />
@@ -262,7 +262,7 @@ const Toha3eePage = () => {
             </div>
           </div>
 
-          <div className="rounded-2xl border border-border/50 bg-bg-card p-5 md:p-6 space-y-4">
+          <div className="space-y-4">
             <div className="flex items-center gap-3">
               <div className="w-9 h-9 rounded-xl bg-accent/10 border border-accent/20 flex items-center justify-center shrink-0">
                 <GitBranch className="w-4 h-4 text-accent" />
@@ -302,60 +302,13 @@ const Toha3eePage = () => {
         accent="The Console"
         description="Bare toha3ee opens a bettercap/metasploit-style REPL: grouped output with status glyphs."
       >
-        <div className="grid grid-cols-1 lg:grid-cols-[1.15fr_1fr] gap-4 md:gap-6">
-          <div className="rounded-2xl border border-border/50 bg-bg-card overflow-hidden">
-            <div className="flex items-center gap-2 px-4 py-2.5 bg-bg">
-              <span className="w-2.5 h-2.5 rounded-full bg-danger/70" />
-              <span className="w-2.5 h-2.5 rounded-full bg-warning/70" />
-              <span className="w-2.5 h-2.5 rounded-full bg-accent/70" />
-              <span className="ml-2 text-xs font-mono text-text-muted">toha3ee, zsh</span>
-            </div>
-            <div className="p-4 md:p-5 font-mono text-xs md:text-xs space-y-2">
-              <div className="flex items-center gap-2">
-                <span className="text-accent">$</span>
-                <span className="text-text-primary">sudo ./toha3ee --iface eth0</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <span className="text-accent">$</span>
-                <span className="text-text-muted">[+] session ready. type 'help' for commands.</span>
-              </div>
-              <div className="pl-4 space-y-1.5 border-l border-accent/30">
-                {CONSOLE_SESSION.map((line) => (
-                  <div key={line.cmd} className="flex items-start gap-2 min-w-0">
-                    <span className="text-accent shrink-0 pt-0.5">toha3ee&gt;</span>
-                    <span className="text-text-primary min-w-0 break-words">{line.cmd}</span>
-                    <span className="text-text-muted leading-relaxed break-words">, {line.note}</span>
-                  </div>
-                ))}
-              </div>
-              <div className="flex items-center gap-2">
-                <span className="text-accent">$</span>
-                <span className="text-text-primary animate-pulse">{'\u258B'}</span>
-              </div>
-            </div>
-          </div>
-
-          <div className="rounded-2xl border border-border/50 bg-bg-card p-5 md:p-6 flex flex-col gap-4">
-            <div className="flex items-center gap-3">
-              <div className="w-9 h-9 rounded-xl bg-accent/10 border border-accent/20 flex items-center justify-center shrink-0">
-                <Terminal className="w-4 h-4 text-accent" />
-              </div>
-              <div>
-                <h4 className="text-xs font-black text-text-primary leading-tight">Usage</h4>
-                <p className="text-xs font-mono text-text-muted mt-0.5">One-shot and scripted runs</p>
-              </div>
-            </div>
-            <CodeBlock
-              code={QUICK_START.map((cmd) => `$ ${cmd}`).join('\n')}
-              lang="sh"
-              copyable
-              className="mt-auto"
-            />
-            <p className="text-xs font-mono text-text-muted leading-relaxed">
-              Most attack modules require root. Use only on networks you own.
-            </p>
-          </div>
-        </div>
+        <ToolQuickStart
+          command="sudo ./toha3ee --iface eth0"
+          commandNote="Bare toha3ee opens the REPL directly; tab completion, history and preflight checks are on."
+          output={CONSOLE_SESSION.map((line) => ({ label: 'toha3ee>', text: `${line.cmd} · ${line.note}` }))}
+          usage={QUICK_START}
+          footer="Most attack modules require root. Use only on networks you own."
+        />
       </ToolDocSection>
 
       {/* ── Related + Continue reading ───────────────────────────────────── */}

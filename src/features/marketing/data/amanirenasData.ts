@@ -80,7 +80,7 @@ export const AUTHORIZED_WARNING = {
   title: 'Offline',
   accent: 'App Assessment',
   description:
-    'AMANIRENAS analyzes only the app profiles and IPA snapshots you explicitly point it at. Runtime assessment and live device acquisition are not implemented and are refused honestly — nothing here executes app code or touches a device.',
+    'AMANIRENAS analyzes only the app profiles and IPA snapshots you explicitly point it at. Runtime assessment and live device acquisition are not implemented and are refused honestly; nothing here executes app code or touches a device.',
 };
 
 export const SOURCE_EXAMPLES: ToolSourceExample[] = [
@@ -95,7 +95,7 @@ export const SOURCE_EXAMPLES: ToolSourceExample[] = [
     id: 'pipeline',
     filename: 'internal/analysis/analyst.go',
     label: 'Sequential assessment stages',
-    description: 'The offline pipeline runs in a fixed order — identification → intake → metadata → static → config → api → evidence → rule analysis → risk. A per-run cache on the step lets stages and rules share derived values.',
+    description: 'The offline pipeline runs in a fixed order: identification → intake → metadata → static → config → api → evidence → rule analysis → risk. A per-run cache on the step lets stages and rules share derived values.',
     code: 'func Stages(reg *rules.Registry, cfg map[string]any, maxEntries int) []pipeline.Stage {\n\treturn []pipeline.Stage{\n\t\t{ID: "identification", Name: "Application identification", ...},\n\t\t{ID: "ipa", Name: "IPA intake", ...},\n\t\t{ID: "metadata", Name: "Metadata extraction", ...},\n\t\t// static, config, api, evidence, analysis, risk\n\t}\n}',
   },
   {
