@@ -2,7 +2,6 @@ import { Link } from 'react-router-dom';
 import { IconArrowRight, IconTerminal } from '@/shared/components/icons';
 import SEO from '../components/SEO';
 import Dobia from '@/shared/components/Dobia';
-import { GridBoxedBackground } from '@/shared/components/backgrounds';
 
 const NotFoundPage = () => {
   return (
@@ -12,8 +11,6 @@ const NotFoundPage = () => {
         description={"The requested page could not be located on the QYVORA network."}
         noindex
       />
-      <GridBoxedBackground blur={0} mask="none" />
-
       <div className="relative z-10 flex flex-col items-center text-center max-w-2xl">
         <Dobia expression="confused" size="xl" />
 

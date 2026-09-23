@@ -113,7 +113,7 @@ const CommunityPopup: React.FC = () => {
 
               <div className="flex flex-col sm:flex-row gap-3">
                 <a
-                  href={SITE_CONFIG.social.find(s => s.key === 'whatsapp')?.href || 'https://chat.whatsapp.com/Ja8pR0FZQAI2pceGjQpji5'}
+                  href={SITE_CONFIG.social.find(s => s.key === 'whatsapp')?.href || 'https://whatsapp.com/channel/0029Vb8Aw6L5EjxzLY6L2m1V'}
                   target="_blank"
                    rel="noopener noreferrer"
                   onClick={() => {

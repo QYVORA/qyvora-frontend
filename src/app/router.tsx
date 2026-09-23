@@ -141,6 +141,29 @@ const AdminOnly = ({ children }: { children: ReactNode }) => {
   return <>{children}</>;
 };
 
+/**
+ * StudentShellGate — gates the student AppShell chrome itself.
+ *
+ * Previously the dashboard shell (topbar/sidebar/bottom-nav, plus several
+ * overlay hosts) mounted unconditionally because the route guard only wrapped
+ * the leaf page content nested inside an already-mounted layout. That caused a
+ * flash of the dashboard chrome for unauthenticated visitors navigating straight
+ * to a /dashboard/* route — the guards redirected, but not before the shell
+ * rendered a frame.
+ *
+ * By gating at the layout-element level we guarantee the dashboard chrome is
+ * never mounted, not even for a single frame, unless the observer has a valid
+ * authenticated user. While the auth session is still being restored the
+ * full-screen boot PageLoader covers the whole viewport instead.
+ */
+const StudentShellGate = ({ children }: { children: ReactNode }) => {
+  const { user, loading } = useAuth();
+  if (loading) return <PageLoader />;
+  if (!user) return <Navigate to="/login" replace />;
+  if (user.isAdmin) return <Navigate to={ADMIN_PATH} replace />;
+  return <>{children}</>;
+};
+
 // Legacy /courses/:courseId links stay inside the student dashboard.
 const LegacyCourseRedirect = () => {
   const { courseId } = useParams();
@@ -228,7 +251,11 @@ export const AppRouter = () => {
         <Route path={ADMIN_PATH}        element={<Wrap scope="Admin Login"><LoginPage /></Wrap>} />
 
         {/* ── Student routes ──────────────── */}
-        <Route element={<AppShell />}>
+        {/* The AppShell (dashboard chrome) itself is gated through
+            StudentShellGate so the topbar/sidebar/bottom-nav never mount
+            for guests or while the session is still being restored — no
+            dashboard flash for unauthenticated visitors. */}
+        <Route element={<StudentShellGate><AppShell /></StudentShellGate>}>
           <Route path="/dashboard" element={<Wrap scope="Dashboard"><StudentOnly><DashboardPage /></StudentOnly></Wrap>} />
           <Route path="/dashboard/bootcamps" element={<Navigate to="/dashboard/bootcamps/bc_1775270338500" replace />} />
           <Route path="/dashboard/bootcamps/:bootcampId" element={<Wrap scope="Bootcamp Course"><StudentOnly><BootcampCoursePage /></StudentOnly></Wrap>} />

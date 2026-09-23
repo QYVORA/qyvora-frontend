@@ -23,5 +23,5 @@ export const SOCIAL_LINKS: SocialLink[] = [
   { key: 'youtube',  label: 'YouTube',  href: 'https://www.youtube.com/@QYVORASEC',     Icon: BrandYoutubeIcon },
   { key: 'medium',   label: 'Medium',   href: 'https://medium.com/@qyvorasec',         Icon: BrandMediumIcon },
   { key: 'tiktok',   label: 'TikTok',   href: 'https://www.tiktok.com/@qyvorasecurity', Icon: BrandTikTokIcon },
-  { key: 'whatsapp', label: 'WhatsApp', href: 'https://wa.me/233535535222',            Icon: BrandWhatsAppIcon },
+  { key: 'whatsapp', label: 'WhatsApp', href: 'https://whatsapp.com/channel/0029Vb8Aw6L5EjxzLY6L2m1V', Icon: BrandWhatsAppIcon },
 ];
