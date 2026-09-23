@@ -53,7 +53,7 @@ const ServicesPage = () => {
         {/* Services — one landing-style card per engagement */}
         <div className="mt-10 grid gap-4 md:mt-12 md:grid-cols-3">
           {SERVICES.map((svc, i) => (
-            <ServiceCard key={svc.id} svc={svc} index={i} />
+            <ServiceCard key={svc.id} svc={svc} index={i + 1} />
           ))}
         </div>
 
@@ -87,16 +87,17 @@ const ServiceCard: React.FC<{ svc: ServiceConfig; index: number }> = ({ svc, ind
   const Icon = svc.icon;
 
   return (
-    <ScrollReveal delay={index * 0.08} className="h-full">
-      <Card
-        to={svc.path}
-        interactive
-        className="flex h-full min-h-[340px] flex-col gap-4 p-6"
-      >
-        <div className="flex items-center justify-between gap-3">
-          <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-border-subtle bg-surface-raised text-accent">
-            <Icon className="h-5 w-5" aria-hidden="true" />
-          </span>
+    <Card
+      to={svc.path}
+      interactive
+      className="flex h-full min-h-[340px] flex-col gap-4 p-6"
+    >
+      <div className="flex items-start justify-between gap-3">
+        <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-border-subtle bg-surface-raised text-accent">
+          <Icon className="h-5 w-5" aria-hidden="true" />
+        </span>
+        <div className="flex flex-col items-end gap-2">
+          <span className="type-meta font-mono text-text-tertiary">{`0${index}`}</span>
           <span className={`rounded-lg border px-2.5 py-1 text-[10px] font-black uppercase tracking-widest ${
             svc.featured
               ? 'border-accent/30 bg-accent/10 text-accent'
@@ -105,28 +106,28 @@ const ServiceCard: React.FC<{ svc: ServiceConfig; index: number }> = ({ svc, ind
             {svc.badge}
           </span>
         </div>
+      </div>
 
-        <h3 className="type-h3 font-black uppercase tracking-tight text-text-primary">
-          {svc.title}
-        </h3>
-        <p className="type-body-sm flex-1">{svc.overview}</p>
+      <h3 className="type-h3 font-black uppercase tracking-tight text-text-primary">
+        {svc.title}
+      </h3>
+      <p className="type-body-sm flex-1">{svc.overview}</p>
 
-        <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
-          <span className={`font-black ${svc.featured ? 'text-xl text-accent' : 'text-lg text-text-primary'}`}>
-            {svc.price}
-          </span>
-          <span className="text-xs text-text-muted">{svc.priceLocal}</span>
-        </div>
-        {svc.highlight && (
-          <p className="text-xs leading-relaxed text-accent/90">{svc.highlight}</p>
-        )}
-
-        <span className="flex min-h-[44px] items-center gap-2 text-sm font-bold text-accent">
-          {LEARN_MORE_LABEL}
-          <ArrowRight className="h-4 w-4" aria-hidden="true" />
+      <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+        <span className={`font-black ${svc.featured ? 'text-xl text-accent' : 'text-lg text-text-primary'}`}>
+          {svc.price}
         </span>
-      </Card>
-    </ScrollReveal>
+        <span className="text-xs text-text-muted">{svc.priceLocal}</span>
+      </div>
+      {svc.highlight && (
+        <p className="text-xs leading-relaxed text-accent/90">{svc.highlight}</p>
+      )}
+
+      <span className="flex min-h-[44px] items-center gap-2 text-sm font-bold text-accent">
+        {LEARN_MORE_LABEL}
+        <ArrowRight className="h-4 w-4" aria-hidden="true" />
+      </span>
+    </Card>
   );
 };
 
