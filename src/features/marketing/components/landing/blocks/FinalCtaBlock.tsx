@@ -1,7 +1,7 @@
 import React from 'react';
 import Button from '@/shared/components/ui/Button';
 import ScrollReveal from '@/shared/components/ScrollReveal';
-import { DottedMapOverlay } from '@/shared/components/ui';
+import finalCtaDobia from '@/assets/backgrounds/final-cta-dobia.webp';
 
 /**
  * FinalCtaBlock — the last conversion point on the landing. One CTA, calm.
@@ -14,9 +14,14 @@ const FinalCtaBlock: React.FC = () => {
     <section className="w-full bg-surface">
       <div className="mx-auto w-full max-w-[1320px] px-3 py-20 md:px-4 md:py-24 lg:px-6">
         <ScrollReveal>
-          <div className="relative mx-auto w-full max-w-3xl overflow-hidden rounded-2xl border border-accent/40 bg-accent/5 px-6 py-14 md:px-12 md:py-16">
-            <DottedMapOverlay className="rounded-2xl" />
-            <div className="relative flex flex-col items-start gap-6 md:items-center md:text-center">
+          <div className="relative mx-auto w-full max-w-3xl overflow-hidden rounded-2xl border border-accent/40" data-theme-persist="dark">
+            <img
+              src={finalCtaDobia}
+              alt=""
+              aria-hidden="true"
+              className="pointer-events-none absolute inset-0 h-full w-full select-none object-cover"
+            />
+            <div className="relative flex min-h-[360px] flex-col items-start justify-center gap-6 px-6 py-14 md:items-center md:px-12 md:py-16 md:text-center">
               <p className="type-label uppercase tracking-[0.12em] text-accent">
                 {"Start learning"}
               </p>

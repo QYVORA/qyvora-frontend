@@ -21,6 +21,7 @@ import {
   CP_FUTURE_CHAIN,
 } from '@/features/marketing/data/cpPageData';
 import type { CpActivityStatus } from '@/features/marketing/data/cpPageData';
+import cpHeaderBg from '@/assets/backgrounds/cp-header.webp';
 
 /** Beginner-friendly starter courses for the "Start Your Journey" carousel. */
 const STARTER_COURSES = COURSES.filter((c) => c.skillLevel === 'beginner').slice(0, 6);
@@ -42,26 +43,36 @@ const CyberCoinPage: React.FC = () => {
       />
 
       <PublicContainer className="pb-20 pt-24 md:pb-24 md:pt-28 lg:pt-32">
-        <PageHeader
-          kicker="QYVORA · Economy"
-          title="CP Cyber Coin"
-          description={CP_HERO.description}
-          metadata={
-            <span className="type-meta inline-flex items-center gap-2">
-              <Trophy className="h-3.5 w-3.5 text-accent" aria-hidden="true" />
-              {CP_HERO.label}
-            </span>
-          }
-          actions={
-            <button
-              type="button"
-              onClick={() => document.getElementById('what-is-cp')?.scrollIntoView({ behavior: 'smooth', block: 'start' })}
-              className="btn-primary inline-flex min-h-[44px] items-center justify-center gap-2 px-6"
-            >
-              Explore CP <IconArrow size={14} />
-            </button>
-          }
-        />
+        <div className="relative overflow-hidden rounded-2xl" data-theme-persist="dark">
+          <img
+            src={cpHeaderBg}
+            alt=""
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-0 h-full w-full select-none object-cover"
+          />
+          <div className="relative px-4 py-10 sm:px-6 md:px-8 md:py-14 lg:flex lg:min-h-[440px] lg:flex-col lg:justify-center">
+            <PageHeader
+              kicker="QYVORA · Economy"
+              title="CP Cyber Coin"
+              description={CP_HERO.description}
+              metadata={
+                <span className="type-meta inline-flex items-center gap-2">
+                  <Trophy className="h-3.5 w-3.5 text-accent" aria-hidden="true" />
+                  {CP_HERO.label}
+                </span>
+              }
+              actions={
+                <button
+                  type="button"
+                  onClick={() => document.getElementById('what-is-cp')?.scrollIntoView({ behavior: 'smooth', block: 'start' })}
+                  className="btn-primary inline-flex min-h-[44px] items-center justify-center gap-2 px-6"
+                >
+                  Explore CP <IconArrow size={14} />
+                </button>
+              }
+            />
+          </div>
+        </div>
 
         {/* ── 02 · WHAT IS CP ───────────────────────────────────────────── */}
         <section id="what-is-cp" className="w-full py-10 md:py-14">

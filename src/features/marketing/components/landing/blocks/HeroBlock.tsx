@@ -2,6 +2,8 @@ import React from 'react';
 import Button from '@/shared/components/ui/Button';
 import TypewriterText from '@/shared/components/TypewriterText';
 import type { BackendStats } from '@/features/marketing/components/landing/types';
+import heroDesktopBg from '@/assets/backgrounds/hero-desktop.webp';
+import heroMobileBg from '@/assets/backgrounds/hero-mobile.webp';
 
 interface HeroBlockProps {
   stats: BackendStats | null;
@@ -30,7 +32,22 @@ const HeroBlock: React.FC<HeroBlockProps> = ({ stats }) => {
   const trained = stats?.stats?.learnersTrained ?? 0;
 
   return (
-    <section className="relative flex min-h-dvh w-full overflow-hidden bg-canvas">
+    <section
+      className="relative flex min-h-dvh w-full overflow-hidden bg-canvas"
+      data-theme-persist="dark"
+    >
+      <img
+        src={heroDesktopBg}
+        alt=""
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 hidden h-full w-full select-none object-cover lg:block"
+      />
+      <img
+        src={heroMobileBg}
+        alt=""
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 block h-full w-full select-none object-cover object-bottom lg:hidden"
+      />
       <div className="relative mx-auto flex w-full max-w-[1320px] flex-col justify-center px-3 py-24 pt-32 md:px-4 md:py-28 lg:px-6">
         <div className="flex max-w-2xl flex-col items-start gap-6 md:gap-8">
           <p className="type-label uppercase tracking-[0.12em] text-accent">{"Africa's Offensive Security Platform"}</p>

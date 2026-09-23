@@ -2,10 +2,20 @@ import { Link } from 'react-router-dom';
 import { IconArrowRight, IconTerminal } from '@/shared/components/icons';
 import SEO from '../components/SEO';
 import Dobia from '@/shared/components/Dobia';
+import notFoundDobiaBg from '@/assets/backgrounds/notfound-dobia.webp';
 
 const NotFoundPage = () => {
   return (
-    <div className="relative min-h-dvh bg-bg flex flex-col items-center justify-center overflow-hidden px-3 md:px-4 lg:px-6 py-20" >
+    <div
+      className="relative min-h-dvh overflow-hidden bg-bg flex flex-col items-center justify-center px-3 md:px-4 lg:px-6 py-20"
+      data-theme-persist="dark"
+    >
+      <img
+        src={notFoundDobiaBg}
+        alt=""
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 h-full w-full select-none object-cover"
+      />
       <SEO
         title={"404 - Node Not Found"}
         description={"The requested page could not be located on the QYVORA network."}

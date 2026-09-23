@@ -9,6 +9,7 @@ import HpbAvatar, { type HpbVariant } from '@/shared/components/HpbAvatar';
 import CpLogo from '@/shared/components/CpLogo';
 import Button from '@/shared/components/ui/Button';
 import ScrollReveal from '@/shared/components/ScrollReveal';
+import featuredLearningBand from '@/assets/backgrounds/featured-learning-band.webp';
 
 /**
  * FeaturedLearningBlock — the full learning ecosystem on one landing section.
@@ -18,8 +19,14 @@ import ScrollReveal from '@/shared/components/ScrollReveal';
  */
 const FeaturedLearningBlock: React.FC = () => {
   return (
-    <section className="w-full bg-canvas">
-      <div className="mx-auto w-full max-w-[1320px] px-3 py-20 md:px-4 md:py-24 lg:px-6">
+    <section className="relative w-full overflow-hidden bg-canvas" data-theme-persist="dark">
+      <img
+        src={featuredLearningBand}
+        alt=""
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 h-full w-full select-none object-cover"
+      />
+      <div className="relative mx-auto w-full max-w-[1320px] px-3 py-20 md:px-4 md:py-24 lg:px-6">
         <ScrollReveal>
           <div className="mb-10 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
             <div>

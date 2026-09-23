@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowLeft, Terminal, Shield, Trophy } from 'lucide-react';
+import authDobiaBg from '@/assets/backgrounds/auth-dobia.webp';
 
 const authBullets = [
   { icon: Terminal, text: 'Hands-on penetration testing labs' },
@@ -15,7 +16,13 @@ const authBullets = [
 const AuthHero: React.FC = () => {
   return (
     <div className="relative hidden h-full w-full flex-col overflow-hidden md:flex">
-      <div className="shrink-0 pt-10 pl-6">
+      <img
+        src={authDobiaBg}
+        alt=""
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 h-full w-full select-none object-cover"
+      />
+      <div className="relative shrink-0 pt-10 pl-6">
         <Link
           to="/"
           className="inline-flex min-h-[44px] items-center gap-2 px-2 text-sm font-bold text-text-secondary transition-colors hover:text-text-primary"
@@ -25,7 +32,7 @@ const AuthHero: React.FC = () => {
         </Link>
       </div>
 
-      <div className="flex w-full flex-1 flex-col justify-center px-3 py-16 md:px-4 lg:px-6">
+      <div className="relative flex w-full flex-1 flex-col justify-center px-3 py-16 md:px-4 lg:px-6">
         <div className="w-full max-w-xl">
           <h1 className="type-display mb-6 font-black uppercase tracking-tight text-text-primary">
             {"Welcome to"} <span className="text-accent">QYVORA</span>

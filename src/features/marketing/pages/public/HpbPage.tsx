@@ -7,6 +7,7 @@ import { LearningCard } from '@/shared/components/learning/LearningCard';
 import HpbAvatar, { type HpbVariant } from '@/shared/components/HpbAvatar';
 import { BOOTCAMP_CONFIG } from '@/features/student/constants/bootcampStructure';
 import { PHASES } from '@/features/marketing/data/learnData';
+import hpbHeaderBg from '@/assets/backgrounds/hpb-header.webp';
 
 const HpbPage = () => {
   const phases = BOOTCAMP_CONFIG.phases || [];
@@ -18,17 +19,27 @@ const HpbPage = () => {
         description={"Train as an offensive security operator across 5 phases: hacker mindset, Linux foundations, networking, web & backend, and social engineering."}
       />
       <PublicContainer className="pb-20 pt-24 md:pb-24 md:pt-28 lg:pt-32">
-        <PageHeader
-          kicker={"QYVORA · Bootcamp"}
-          title={"Hacker Protocol Bootcamp"}
-          description={"A phased offensive security curriculum designed to take you from operator to expert. Explore each phase, its rooms, and the outcome you train toward."}
-          actions={
-            <Button to="/register">
-              {"Enroll now"}
-              <ArrowRight className="h-4 w-4" aria-hidden="true" />
-            </Button>
-          }
-        />
+        <div className="relative overflow-hidden rounded-2xl" data-theme-persist="dark">
+          <img
+            src={hpbHeaderBg}
+            alt=""
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-0 h-full w-full select-none object-cover"
+          />
+          <div className="relative px-4 py-10 sm:px-6 md:px-8 md:py-14 lg:flex lg:min-h-[440px] lg:flex-col lg:justify-center">
+            <PageHeader
+              kicker={"QYVORA · Bootcamp"}
+              title={"Hacker Protocol Bootcamp"}
+              description={"A phased offensive security curriculum designed to take you from operator to expert. Explore each phase, its rooms, and the outcome you train toward."}
+              actions={
+                <Button to="/register">
+                  {"Enroll now"}
+                  <ArrowRight className="h-4 w-4" aria-hidden="true" />
+                </Button>
+              }
+            />
+          </div>
+        </div>
 
         <div className="mt-10 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
           {phases.map((phase) => {

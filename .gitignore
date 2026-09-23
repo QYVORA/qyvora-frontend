@@ -28,3 +28,6 @@ Thumbs.db
 
 # TypeScript
 *.tsbuildinfo
+
+# background image sources (large PNGs); webp builds are committed
+src/assets/backgrounds/*.png
