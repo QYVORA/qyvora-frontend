@@ -4,6 +4,7 @@ import { IconCheck } from '@/shared/components/icons';
 import api from '../../../core/services/api';
 import { Dialog, DialogContent } from '../../../shared/components/ui/Dialog';
 import Button from '../../../shared/components/ui/Button';
+import Input from '../../../shared/components/ui/Input';
 
 const SERVICE_REQUEST_MODAL_EVENT = 'qyvora:open-service-request-modal';
 
@@ -86,86 +87,98 @@ const ServiceRequestModalHost: React.FC = () => {
               </p>
             </div>
 
-            <form onSubmit={handleSubmit} className="space-y-5">
+            <form onSubmit={handleSubmit} className="space-y-5" noValidate>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                 {/* Full Name */}
-                <div className="space-y-1.5">
-                  <label className="text-xs font-bold text-text-muted uppercase tracking-widest flex items-center gap-2">
-                    <UserIcon className="w-3 h-3" /> {"Full Name"}
+                <div className="space-y-2">
+                  <label htmlFor="sr-name" className="type-label block uppercase tracking-[0.12em] text-text-tertiary">
+                    {"Full Name"}
                   </label>
-                  <input
+                  <Input
+                    id="sr-name"
                     name="name"
                     type="text"
                     required
+                    autoComplete="name"
                     placeholder="Alhassan Boateng"
-                    className="w-full bg-bg border border-border rounded-xl py-3 px-4 text-text-primary focus:border-accent hover:border-border/80 outline-none font-mono text-sm transition-colors"
+                    icon={<UserIcon className="h-4 w-4" aria-hidden="true" />}
                   />
                 </div>
 
                 {/* Email Address */}
-                <div className="space-y-1.5">
-                  <label className="text-xs font-bold text-text-muted uppercase tracking-widest flex items-center gap-2">
-                    <Send className="w-3 h-3" /> {"Email Address"}
+                <div className="space-y-2">
+                  <label htmlFor="sr-email" className="type-label block uppercase tracking-[0.12em] text-text-tertiary">
+                    {"Email Address"}
                   </label>
-                  <input
+                  <Input
+                    id="sr-email"
                     name="email"
                     type="email"
                     required
+                    autoComplete="email"
+                    inputMode="email"
                     placeholder="operations@yourcompany.africa"
-                    className="w-full bg-bg border border-border rounded-xl py-3 px-4 text-text-primary focus:border-accent hover:border-border/80 outline-none font-mono text-sm transition-colors"
+                    icon={<Send className="h-4 w-4" aria-hidden="true" />}
                   />
                 </div>
 
                 {/* Business Name */}
-                <div className="space-y-1.5">
-                  <label className="text-xs font-bold text-text-muted uppercase tracking-widest flex items-center gap-2">
-                    <Building2 className="w-3 h-3" /> {"Business Name"}
+                <div className="space-y-2">
+                  <label htmlFor="sr-business" className="type-label block uppercase tracking-[0.12em] text-text-tertiary">
+                    {"Business Name"}
                   </label>
-                  <input
+                  <Input
+                    id="sr-business"
                     name="businessName"
                     type="text"
+                    autoComplete="organization"
                     placeholder="QYVORA Africa"
-                    className="w-full bg-bg border border-border rounded-xl py-3 px-4 text-text-primary focus:border-accent hover:border-border/80 outline-none font-mono text-sm transition-colors"
+                    icon={<Building2 className="h-4 w-4" aria-hidden="true" />}
                   />
                 </div>
 
                 {/* Phone Number */}
-                <div className="space-y-1.5">
-                  <label className="text-xs font-bold text-text-muted uppercase tracking-widest flex items-center gap-2">
-                    <Phone className="w-3 h-3" /> {"Phone Number"}
+                <div className="space-y-2">
+                  <label htmlFor="sr-phone" className="type-label block uppercase tracking-[0.12em] text-text-tertiary">
+                    {"Phone Number"}
                   </label>
-                  <input
+                  <Input
+                    id="sr-phone"
                     name="phone"
                     type="tel"
+                    autoComplete="tel"
                     placeholder="+233 00 000 0000"
-                    className="w-full bg-bg border border-border rounded-xl py-3 px-4 text-text-primary focus:border-accent hover:border-border/80 outline-none font-mono text-sm transition-colors"
+                    icon={<Phone className="h-4 w-4" aria-hidden="true" />}
                   />
                 </div>
               </div>
 
               {/* Website URL */}
-              <div className="space-y-1.5">
-                <label className="text-xs font-bold text-text-muted uppercase tracking-widest flex items-center gap-2">
-                  <Globe className="w-3 h-3" /> {"Website URL"}
+              <div className="space-y-2">
+                <label htmlFor="sr-website" className="type-label block uppercase tracking-[0.12em] text-text-tertiary">
+                  {"Website URL"}
                 </label>
-                <input
+                <Input
+                  id="sr-website"
                   name="websiteUrl"
                   type="url"
+                  inputMode="url"
                   placeholder="https://your-application.com"
-                  className="w-full bg-bg border border-border rounded-xl py-3 px-4 text-text-primary focus:border-accent hover:border-border/80 outline-none font-mono text-sm transition-colors"
+                  icon={<Globe className="h-4 w-4" aria-hidden="true" />}
                 />
               </div>
 
               {/* Message / Notes */}
-              <div className="space-y-1.5">
-                <label className="text-xs font-bold text-text-muted uppercase tracking-widest">
+              <div className="space-y-2">
+                <label htmlFor="sr-message" className="type-label block uppercase tracking-[0.12em] text-text-tertiary">
                   {"Optional Notes / Message"}
                 </label>
                 <textarea
+                  id="sr-message"
                   name="message"
                   rows={4}
                   placeholder="Describe your project scope, timeline, or any specific security concerns..."
-                  className="w-full bg-bg border border-border rounded-xl py-3 px-4 text-text-primary focus:border-accent hover:border-border/80 outline-none font-mono text-sm resize-none transition-colors"
+                  className="w-full min-h-[44px] bg-surface border border-border-subtle rounded-lg py-3 px-4 text-body-sm text-text-primary placeholder:text-text-tertiary outline-none transition-[border-color,box-shadow] focus:border-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent resize-none"
                 />
               </div>
 
@@ -177,12 +190,13 @@ const ServiceRequestModalHost: React.FC = () => {
 
               <Button
                 type="submit"
+                size="lg"
                 loading={status === 'sending'}
-                className="w-full !py-4 gap-3"
+                className="w-full"
               >
                 {status === 'sending'
                   ? "Transmitting..."
-                  : <><Send className="w-4 h-4" /> {"Submit Request"}</>}
+                  : <><Send className="h-4 w-4" /> {"Submit Request"}</>}
               </Button>
             </form>
           </div>

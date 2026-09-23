@@ -21,9 +21,9 @@ export const termsData: TermsData = {
     {
       title: "Acceptance of Terms",
       shortTitle: "Acceptance",
-      body: "By accessing, browsing, or using the QYVORA platform (the \"Platform\"), including all websites, applications, APIs, training environments, laboratories, and related services (collectively, the \"Services\"), you acknowledge that you have read, understood, and agree to be legally bound by these Terms of Service (\"Terms\") and our Privacy Policy. If you do not agree to these Terms in their entirety, you must immediately discontinue all use of the Services.",
+      body: "By accessing, browsing, or using the QYVORA platform, including all websites, applications, APIs, training environments, laboratories, and related services, you acknowledge that you have read, understood, and agree to be legally bound by these Terms of Service and our Privacy Policy. If you do not agree to these Terms in their entirety, you must immediately discontinue all use of the Services.",
       bullets: [
-        "These Terms constitute a legally binding agreement between you (\"User,\" \"you,\" or \"your\") and QYVORA OFFSEC (\"QYVORA,\" \"we,\" \"us,\" or \"our\").",
+        "These Terms constitute a legally binding agreement between you and QYVORA OFFSEC.",
         "Your continued use of the Services following any changes to these Terms constitutes your acceptance of such changes.",
         "We reserve the right to modify, suspend, or discontinue any part of the Services at any time without prior notice or liability.",
         "By creating an account, you confirm that you are at least 18 years of age or the age of legal majority in your jurisdiction, whichever is greater."

@@ -1,6 +1,7 @@
 import React from 'react';
-import { Users, Bug, ShieldCheck, Coins } from 'lucide-react';
+import { Users, Bug, ShieldCheck } from 'lucide-react';
 import { Metric } from '@/shared/components/ui/Card';
+import CpLogo from '@/shared/components/CpLogo';
 import ScrollReveal from '@/shared/components/ScrollReveal';
 import type { BackendStats } from '@/features/marketing/components/landing/types';
 
@@ -23,7 +24,7 @@ const ProofBlock: React.FC<ProofBlockProps> = ({ stats }) => {
     { label: "Professionals trained", value: formatNumber(s?.learnersTrained ?? 0), icon: <Users className="h-4 w-4" aria-hidden="true" />, accent: true },
     { label: "Vulnerabilities identified across engagements", value: formatNumber(s?.vulnerabilitiesIdentified ?? 0), icon: <Bug className="h-4 w-4" aria-hidden="true" /> },
     { label: "Bootcamp launches", value: formatNumber(s?.bootcampsCount ?? 0), icon: <ShieldCheck className="h-4 w-4" aria-hidden="true" /> },
-    { label: "CP in circulation", value: formatNumber(s?.cpPoolSize ?? 0), icon: <Coins className="h-4 w-4" aria-hidden="true" /> },
+    { label: "CP in circulation", value: formatNumber(s?.cpPoolSize ?? 0), icon: <CpLogo className="h-4 w-4" aria-hidden="true" /> },
   ];
 
   return (
@@ -37,7 +38,7 @@ const ProofBlock: React.FC<ProofBlockProps> = ({ stats }) => {
             <h2 className="type-h2 text-3xl font-black uppercase tracking-tight text-text-primary md:text-5xl">
               {"Built in Africa, for real defenders."}
             </h2>
-            <p className="type-body mt-2">{"Every number below is earned by learners on the platform — not marketing filler."}</p>
+            <p className="type-body mt-2">{"Every number below is earned by learners on the platform, not marketing filler."}</p>
           </div>
         </ScrollReveal>
 

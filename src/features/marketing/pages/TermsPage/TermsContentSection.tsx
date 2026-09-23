@@ -1,8 +1,8 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import PageHeader from '@/shared/components/ui/PageHeader';
 import PublicContainer from '@/shared/components/layout/PublicContainer';
 import DocTocNav from '@/shared/components/tools/DocTocNav';
-import { ContactTrigger } from '@/features/marketing/components/ContactModal';
 import { termsData } from './termsData';
 
 const TOC_SECTIONS = termsData.sections.map((section, idx) => ({
@@ -20,8 +20,8 @@ const TermsContentSection: React.FC = () => {
           description={
             <>
               These terms govern your use of all QYVORA platforms, training programs, and
-              professional services. Questions? Reach out via our{' '}
-              <ContactTrigger type="link" className="text-accent hover:underline">contact modal</ContactTrigger>.
+              professional services. Questions? Reach out via the{' '}
+              <Link to="/contact" className="text-accent hover:underline">contact page</Link>.
             </>
           }
           metadata={
@@ -65,7 +65,7 @@ const TermsContentSection: React.FC = () => {
                       key={i}
                       className="flex items-start gap-3 text-sm font-mono text-text-secondary leading-[2] md:text-base md:leading-[2.2]"
                     >
-                      <span className="mt-0.5 shrink-0 font-black text-accent">&gt;</span>
+                      <span className="mt-[0.95rem] h-1.5 w-1.5 shrink-0 rounded-full bg-accent" />
                       {bullet}
                     </li>
                   ))}

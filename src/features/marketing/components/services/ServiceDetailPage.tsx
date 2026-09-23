@@ -141,17 +141,15 @@ const ServiceDetailPage: React.FC<{ svc: ServiceConfig }> = ({ svc }) => {
             </ScrollReveal>
 
             <div className="grid w-full grid-cols-1 gap-4 sm:grid-cols-2">
-              {svc.benefits.map((benefit, idx) => (
-                <ScrollReveal key={benefit} delay={idx * 0.05} className="h-full">
-                  <div className="flex h-full items-start gap-4 rounded-2xl border border-border-subtle bg-surface p-5">
-                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-accent/30 bg-accent/10">
-                      <Target className="h-5 w-5 text-accent" />
-                    </div>
-                    <p className="flex-1 pt-1 font-mono text-sm leading-relaxed text-text-secondary sm:text-base">
-                      {benefit}
-                    </p>
+              {svc.benefits.map((benefit) => (
+                <div key={benefit} className="flex h-full items-start gap-4 rounded-2xl border border-border-subtle bg-surface p-5">
+                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-accent/30 bg-accent/10">
+                    <Target className="h-5 w-5 text-accent" />
                   </div>
-                </ScrollReveal>
+                  <p className="flex-1 pt-1 font-mono text-sm leading-relaxed text-text-secondary sm:text-base">
+                    {benefit}
+                  </p>
+                </div>
               ))}
             </div>
           </div>
@@ -177,22 +175,20 @@ const ServiceDetailPage: React.FC<{ svc: ServiceConfig }> = ({ svc }) => {
 
             <ScrollReveal delay={0.1}>
               <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-                {svc.deliverables.map((deliverable, idx) => (
-                  <ScrollReveal key={deliverable.label} delay={idx * 0.05} className="h-full">
-                    <div className="h-full rounded-2xl border border-border-subtle bg-surface p-4">
-                      <div className="mb-2.5 flex items-center gap-3">
-                        <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-accent/30 bg-accent/10">
-                          <FileText className="h-4 w-4 text-accent" />
-                        </div>
-                        <h3 className="text-sm font-black uppercase tracking-widest text-text-primary">
-                          {deliverable.label}
-                        </h3>
+                {svc.deliverables.map((deliverable) => (
+                  <div key={deliverable.label} className="h-full rounded-2xl border border-border-subtle bg-surface p-4">
+                    <div className="mb-2.5 flex items-center gap-3">
+                      <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-accent/30 bg-accent/10">
+                        <FileText className="h-4 w-4 text-accent" />
                       </div>
-                      <p className="text-sm leading-relaxed text-text-muted">
-                        {deliverable.desc}
-                      </p>
+                      <h3 className="text-sm font-black uppercase tracking-widest text-text-primary">
+                        {deliverable.label}
+                      </h3>
                     </div>
-                  </ScrollReveal>
+                    <p className="text-sm leading-relaxed text-text-muted">
+                      {deliverable.desc}
+                    </p>
+                  </div>
                 ))}
               </div>
             </ScrollReveal>

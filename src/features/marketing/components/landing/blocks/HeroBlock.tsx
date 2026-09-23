@@ -34,13 +34,15 @@ const HeroBlock: React.FC<HeroBlockProps> = ({ stats }) => {
     <section className="relative flex min-h-dvh w-full overflow-hidden bg-canvas">
       {/* Avatar background composition — desktop reads it as the hero's visual, mobile it sinks behind the copy */}
       <div aria-hidden="true" className="pointer-events-none absolute inset-0 select-none">
-        <div className="absolute right-[-6%] top-1/2 -translate-y-1/2 hidden opacity-80 lg:block">
+        <div className="absolute right-[-6%] top-1/2 hidden -translate-y-1/2 lg:block">
+          <div className="absolute -inset-16 rounded-full bg-accent/10 blur-3xl" />
           <Dobia expression="success" size="hero" />
         </div>
         <div className="absolute inset-x-0 bottom-0 flex justify-center opacity-25 lg:hidden">
           <Dobia expression="idle" size="xl" />
         </div>
         <div className="absolute inset-0 bg-gradient-to-r from-canvas via-canvas/85 to-transparent" />
+        <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-canvas to-transparent lg:hidden" />
       </div>
 
       <div className="relative mx-auto flex w-full max-w-[1320px] flex-col justify-center px-3 py-24 pt-32 md:px-4 md:py-28 lg:px-6">

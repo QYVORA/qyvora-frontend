@@ -34,6 +34,7 @@ const COLS: FooterCol[] = [
       { key: 'team', label: 'Team', to: '/team' },
       { key: 'services', label: 'Services', to: '/services' },
       { key: 'about', label: 'About', to: '/about' },
+      { key: 'contact', label: 'Contact', to: '/contact' },
       { key: 'terms', label: 'Terms of Service', to: '/terms' },
     ],
   },
@@ -50,29 +51,29 @@ const CURRENT_YEAR = new Date().getFullYear();
 const PublicFooter: React.FC = React.memo(() => {
   return (
     <footer className="border-t border-border-subtle bg-canvas" data-theme-persist="dark">
-      <div className="px-3 py-12 md:px-4 lg:px-6">
-        <div className="grid grid-cols-1 gap-10 md:grid-cols-[minmax(0,340px)_1fr]">
+      <div className="px-3 py-10 md:px-4 lg:px-6">
+        <div className="grid grid-cols-1 gap-8 md:grid-cols-[minmax(0,340px)_1fr]">
           <div>
             <Link to="/" aria-label="QYVORA" className="inline-block focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent">
               <Logo size="md" />
             </Link>
-            <p className="mt-4 max-w-xs text-body-sm">
+            <p className="mt-3 max-w-xs text-body-sm">
               {"Building Africa's strongest cybersecurity ecosystem - one trained professional at a time."}
             </p>
             <a
               href="mailto:qyvorasec@gmail.com"
-              className="mt-3 inline-flex min-h-[44px] items-center gap-1.5 text-type-body text-text-secondary transition-colors hover:text-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+              className="mt-2 inline-flex min-h-[44px] items-center gap-1.5 text-type-body text-text-secondary transition-colors hover:text-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
             >
               <IconMail size={14} aria-hidden="true" />
               {"qyvorasec@gmail.com"}
             </a>
             <Link
               to="/register"
-              className="mt-5 inline-flex min-h-[44px] items-center gap-1.5 rounded-lg border border-accent/40 px-3 text-xs font-black uppercase tracking-widest text-accent transition-colors hover:bg-accent/10 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+              className="mt-4 inline-flex min-h-[44px] items-center gap-1.5 rounded-lg border border-accent/40 px-3 text-xs font-black uppercase tracking-widest text-accent transition-colors hover:bg-accent/10 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
             >
               {"Join the platform"} <IconArrowRight size={12} aria-hidden="true" />
             </Link>
-            <div className="mt-6 flex flex-wrap gap-2">
+            <div className="mt-5 flex flex-wrap gap-2">
               {SOCIAL_LINKS.map(({ key, label, href, Icon }) => (
                 <a
                   key={key}
@@ -92,7 +93,7 @@ const PublicFooter: React.FC = React.memo(() => {
             {COLS.map((col) => (
               <div key={col.title}>
                 <h3 className="type-label text-accent">{col.title}</h3>
-                <ul className="mt-4 space-y-3">
+                <ul className="mt-3 space-y-1">
                   {col.links.map((link) => (
                     <li key={link.key}>
                       <Link
@@ -109,7 +110,7 @@ const PublicFooter: React.FC = React.memo(() => {
           </nav>
         </div>
 
-        <div className="mt-12 flex flex-col gap-4 border-t border-border-subtle pt-6 md:flex-row md:items-center md:justify-between">
+        <div className="mt-10 flex flex-col gap-4 border-t border-border-subtle pt-6 md:flex-row md:items-center md:justify-between">
           <p className="type-label text-text-tertiary">
             {"QYVORA · GHANA, TAMALE · "}{CURRENT_YEAR}
           </p>

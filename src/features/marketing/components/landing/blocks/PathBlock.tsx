@@ -41,19 +41,17 @@ const PathBlock: React.FC = () => {
         </ScrollReveal>
 
         <div className="grid gap-4 md:grid-cols-3">
-          {PATHS.map((path, i) => (
-            <ScrollReveal key={path.key} delay={i * 0.08}>
-              <Card to={path.to} interactive className="flex min-h-[220px] flex-col gap-3 p-6">
-                <h3 className="type-h3 font-black uppercase tracking-tight text-text-primary">
-                  {path.title}
-                </h3>
-                <p className="type-body-sm flex-1">{path.desc}</p>
-                <span className="flex min-h-[48px] items-center gap-2 text-sm font-bold text-accent">
-                  {path.cta}
-                  <ArrowRight className="h-4 w-4" aria-hidden="true" />
-                </span>
-              </Card>
-            </ScrollReveal>
+          {PATHS.map((path) => (
+            <Card key={path.key} to={path.to} interactive className="flex min-h-[220px] flex-col gap-3 p-6">
+              <h3 className="type-h3 font-black uppercase tracking-tight text-text-primary">
+                {path.title}
+              </h3>
+              <p className="type-body-sm flex-1">{path.desc}</p>
+              <span className="flex min-h-[48px] items-center gap-2 text-sm font-bold text-accent">
+                {path.cta}
+                <ArrowRight className="h-4 w-4" aria-hidden="true" />
+              </span>
+            </Card>
           ))}
         </div>
       </div>
