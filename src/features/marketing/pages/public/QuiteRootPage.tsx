@@ -20,48 +20,47 @@ const RESEARCHER_MARKERS: Record<string, string> = {
   r4: '04',
 };
 
-const ResearcherRow = ({ researcher }: { researcher: Researcher }) => {
+const ResearcherCard = ({ researcher }: { researcher: Researcher }) => {
   const ResearcherIcon = RESEARCHER_ICONS[researcher.id] ?? ShieldCheck;
 
   return (
-    <li className="flex flex-col gap-3 p-5 md:flex-row md:items-start md:gap-4">
-      <img
-        src={researcher.image}
-        alt={researcher.name}
-        width={researcher.width}
-        height={researcher.height}
-        loading="lazy"
-        className="h-16 w-16 shrink-0 rounded-lg border border-border-subtle object-cover object-[center_20%]"
-      />
+    <article className="flex h-full flex-col gap-3 rounded-2xl border border-border-subtle bg-surface p-5">
+      <div className="flex items-center justify-between gap-3">
+        <span className="font-mono text-xs font-black tracking-widest text-accent">
+          {RESEARCHER_MARKERS[researcher.id]}
+        </span>
+        <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-border-subtle bg-surface-raised text-accent">
+          <ResearcherIcon className="h-4 w-4" aria-hidden="true" />
+        </span>
+      </div>
 
-      <div className="min-w-0 flex-1">
-        <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5">
-          <span className="font-mono text-xs font-black tracking-widest text-accent">
-            {RESEARCHER_MARKERS[researcher.id]}
-          </span>
-          <h3 className="text-sm font-black uppercase tracking-tight leading-tight text-text-primary">
+      <div className="flex items-center gap-3">
+        <img
+          src={researcher.image}
+          alt={researcher.name}
+          width={researcher.width}
+          height={researcher.height}
+          loading="lazy"
+          className="h-10 w-10 shrink-0 rounded-lg border border-border-subtle object-cover object-[center_20%]"
+        />
+        <div className="flex min-w-0 flex-col items-start gap-1.5">
+          <h3 className="text-lg font-black uppercase tracking-tight leading-tight text-text-primary break-words">
             {researcher.name}
           </h3>
           <span className="rounded border border-accent/30 bg-accent/10 px-1.5 py-0.5 text-tiny font-black uppercase tracking-widest text-accent">
             {researcher.role}
           </span>
         </div>
-
-        <p className="mt-1.5 text-tiny font-black uppercase tracking-widest text-text-muted">
-          Research node // {researcher.id.toUpperCase()}
-        </p>
-
-        <p className="mt-2 text-xs font-mono leading-relaxed text-text-secondary">
-          {researcher.bio}
-        </p>
       </div>
 
-      <span
-        className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-border-subtle bg-surface-raised text-accent md:mt-1"
-      >
-        <ResearcherIcon className="h-4 w-4" aria-hidden="true" />
-      </span>
-    </li>
+      <p className="text-tiny font-black uppercase tracking-widest text-text-muted">
+        Research node // {researcher.id.toUpperCase()}
+      </p>
+
+      <p className="text-xs font-mono leading-relaxed text-text-secondary">
+        {researcher.bio}
+      </p>
+    </article>
   );
 };
 
@@ -88,20 +87,10 @@ const QuiteRootPage = () => {
           }
         />
 
-        <div className="overflow-hidden rounded-2xl border border-border-subtle bg-surface">
-          <div className="flex items-center justify-between gap-3 border-b border-border-subtle bg-surface-raised px-5 py-3">
-            <p className="text-[10px] font-black uppercase tracking-[0.3em] text-accent">
-              Research registry
-            </p>
-            <span className="text-tiny font-mono uppercase tracking-widest text-text-muted">
-              nodes // {researchersData.length}
-            </span>
-          </div>
-          <ul className="divide-y divide-border-subtle">
-            {researchersData.map((researcher) => (
-              <ResearcherRow key={researcher.id} researcher={researcher} />
-            ))}
-          </ul>
+        <div className="mt-10 grid grid-cols-1 gap-4 sm:grid-cols-2 md:mt-14 lg:grid-cols-3 lg:gap-5">
+          {researchersData.map((researcher) => (
+            <ResearcherCard key={researcher.id} researcher={researcher} />
+          ))}
         </div>
 
         <div className="mt-10 flex flex-col gap-3 rounded-2xl border border-border-subtle bg-surface p-5 md:mt-14 md:p-6">

@@ -74,21 +74,24 @@ const CyberCoinPage: React.FC = () => {
           </div>
         </div>
 
-        {/* ── 02 · WHAT IS CP ───────────────────────────────────────────── */}
-        <section id="what-is-cp" className="w-full py-10 md:py-14">
-          <div className="grid grid-cols-1 items-center gap-8 lg:grid-cols-2 lg:gap-12">
+        <div className="mt-10 space-y-12 md:mt-14 md:space-y-16">
+          {/* ── 02 · WHAT IS CP — centered heading + pillars grid ─────────── */}
+          <section id="what-is-cp" className="flex w-full scroll-mt-24 flex-col items-center gap-8">
             <ScrollReveal>
               <SimpleHeading
+                compact
                 text="A Reward System Built Around Capability."
                 accentWords={1}
                 accentPlacement="end"
                 kicker="What is CP"
-                align="left"
+                align="center"
                 description="CP connects achievement with cybersecurity development. Instead of rewarding passive engagement, QYVORA rewards operators for actually progressing through its ecosystem."
+                descriptionWidth="max-w-xl"
+                className="max-w-2xl"
               />
             </ScrollReveal>
 
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+            <div className="grid w-full grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
               {CP_PILLARS.map((pillar) => {
                 const Icon = pillar.icon;
                 return (
@@ -109,24 +112,26 @@ const CyberCoinPage: React.FC = () => {
                 );
               })}
             </div>
-          </div>
-        </section>
+          </section>
 
-        {/* ── 03 · PHILOSOPHY ───────────────────────────────────────────── */}
-        <section id="philosophy" className="w-full py-10 md:py-14">
-          <div className="grid grid-cols-1 items-center gap-8 lg:grid-cols-2 lg:gap-12">
-            <ScrollReveal>
-              <SimpleHeading
-                text="Knowledge Is Only the Beginning."
-                accentWords={1}
-                accentPlacement="end"
-                kicker="The CP Philosophy"
-                align="left"
-                description="QYVORA is designed around the transition from consuming cybersecurity knowledge to actually executing it. The reward system reinforces that progression: every stage must be proven before the next one pays out."
-              />
-            </ScrollReveal>
+          {/* ── 03 · PHILOSOPHY — split: heading left, stages card right ──── */}
+          <section id="philosophy" className="grid w-full scroll-mt-24 grid-cols-1 items-center gap-10 lg:grid-cols-2 lg:gap-16">
+            <div className="flex flex-col justify-center">
+              <ScrollReveal>
+                <SimpleHeading
+                  compact
+                  text="Knowledge Is Only the Beginning."
+                  accentWords={1}
+                  accentPlacement="end"
+                  kicker="The CP Philosophy"
+                  align="left"
+                  description="QYVORA is designed around the transition from consuming cybersecurity knowledge to actually executing it. The reward system reinforces that progression: every stage must be proven before the next one pays out."
+                  descriptionWidth="max-w-xl"
+                />
+              </ScrollReveal>
+            </div>
 
-            <ScrollReveal direction="left">
+            <ScrollReveal delay={0.1}>
               <div className="relative rounded-2xl border border-border-subtle bg-surface p-5 md:p-7">
                 <div className="absolute bottom-10 left-[39px] top-10 w-px bg-border/30 md:left-[47px]" aria-hidden="true" />
                 <ol className="relative space-y-6">
@@ -159,24 +164,11 @@ const CyberCoinPage: React.FC = () => {
                 </ol>
               </div>
             </ScrollReveal>
-          </div>
-        </section>
+          </section>
 
-        {/* ── 04 · HOW YOU EARN CP — learning loop ──────────────────────── */}
-        <section id="earn" className="w-full py-10 md:py-14">
-          <div className="grid grid-cols-1 items-center gap-8 lg:grid-cols-2 lg:gap-12">
+          {/* ── 04 · HOW YOU EARN CP — split (reversed): loop card left ───── */}
+          <section id="earn" className="grid w-full scroll-mt-24 grid-cols-1 items-center gap-10 lg:grid-cols-2 lg:gap-16">
             <ScrollReveal>
-              <SimpleHeading
-                text="How You Earn CP."
-                accentWords={1}
-                accentPlacement="end"
-                kicker="Reward Protocol"
-                align="left"
-                description="Progress through the QYVORA learning loop: learn, practice, break, build, verify, and every verified step is mapped to a CP issuance."
-              />
-            </ScrollReveal>
-
-            <ScrollReveal direction="left">
               <div className="relative rounded-2xl border border-border-subtle bg-surface p-5 md:p-7">
                 <div className="absolute bottom-10 left-[39px] top-10 w-px bg-border/30 md:left-[47px]" aria-hidden="true" />
                 <ol className="relative space-y-5">
@@ -207,111 +199,125 @@ const CyberCoinPage: React.FC = () => {
                 </ol>
               </div>
             </ScrollReveal>
-          </div>
-        </section>
 
-        {/* ── 05 · REWARD MATRIX ────────────────────────────────────────── */}
-        <section id="rewards" className="w-full py-10 md:py-14">
-          <div className="grid grid-cols-1 items-center gap-8 lg:grid-cols-2 lg:gap-12">
+            <div className="flex flex-col justify-center">
+              <ScrollReveal delay={0.1}>
+                <SimpleHeading
+                  compact
+                  text="How You Earn CP."
+                  accentWords={1}
+                  accentPlacement="end"
+                  kicker="Reward Protocol"
+                  align="left"
+                  description="Progress through the QYVORA learning loop: learn, practice, break, build, verify, and every verified step is mapped to a CP issuance."
+                  descriptionWidth="max-w-xl"
+                />
+              </ScrollReveal>
+            </div>
+          </section>
+
+          {/* ── 05 · REWARD MATRIX — stacked heading + full-width table ───── */}
+          <section id="rewards" className="flex w-full scroll-mt-24 flex-col gap-8">
             <ScrollReveal>
               <SimpleHeading
+                compact
                 text="Verified Activity Rewards."
                 accentWords={1}
                 accentPlacement="end"
                 kicker="Reward Matrix"
                 align="left"
                 description="No logins, no clicks: only completed, verified missions earn rewards. Every CP amount is issued by the platform on verification."
+                descriptionWidth="max-w-2xl"
+                className="max-w-2xl"
               />
             </ScrollReveal>
 
-            <div className="space-y-6">
-              <ScrollReveal>
-                <div className="overflow-hidden rounded-2xl border border-border-subtle bg-surface">
-                  <div className="hidden bg-surface-raised sm:grid grid-cols-[1.5fr_1fr_120px_150px] gap-4 border-b border-border-subtle px-5 py-3.5 md:px-6">
-                    <span className="type-meta font-black uppercase tracking-widest text-text-muted">Activity</span>
-                    <span className="type-meta font-black uppercase tracking-widest text-text-muted">Category</span>
-                    <span className="type-meta font-black uppercase tracking-widest text-text-muted">Reward</span>
-                    <span className="type-meta font-black uppercase tracking-widest text-right text-text-muted sm:text-left">Status</span>
-                  </div>
-                  <ul className="divide-y divide-border/20">
-                    {CP_REWARD_MATRIX.slice(0, 3).map((row) => {
-                      const status = STATUS_STYLES[row.status];
-                      return (
-                        <li key={row.id} className="grid grid-cols-[1fr_auto] gap-x-4 gap-y-1.5 px-5 py-4 transition-colors duration-300 hover:bg-surface-raised sm:grid-cols-[1.5fr_1fr_120px_150px] md:px-6">
-                          <span className="self-center text-sm font-bold text-text-primary">{row.activity}</span>
-                          <span className="hidden self-center type-meta font-black uppercase tracking-widest text-text-muted sm:block">{row.category}</span>
-                          <span className="col-start-2 self-center font-mono text-sm font-black text-right text-accent sm:col-start-3 sm:row-start-1 sm:text-left">{row.reward}</span>
-                          <span className="col-span-2 col-start-1 inline-flex items-center gap-2 justify-end self-center sm:col-span-1 sm:col-start-4 sm:justify-start">
-                            <span className={`w-1.5 h-1.5 rounded-full ${status.dot}`} aria-hidden="true" />
-                            <span className={`type-meta font-black uppercase tracking-widest ${status.text}`}>{row.status}</span>
-                          </span>
-                        </li>
-                      );
-                    })}
-                  </ul>
+            <ScrollReveal>
+              <div className="overflow-hidden rounded-2xl border border-border-subtle bg-surface">
+                <div className="hidden bg-surface-raised sm:grid grid-cols-[1.5fr_1fr_120px_150px] gap-4 border-b border-border-subtle px-5 py-3.5 md:px-6">
+                  <span className="type-meta font-black uppercase tracking-widest text-text-muted">Activity</span>
+                  <span className="type-meta font-black uppercase tracking-widest text-text-muted">Category</span>
+                  <span className="type-meta font-black uppercase tracking-widest text-text-muted">Reward</span>
+                  <span className="type-meta font-black uppercase tracking-widest text-right text-text-muted sm:text-left">Status</span>
                 </div>
-              </ScrollReveal>
-            </div>
-          </div>
-        </section>
+                <ul className="divide-y divide-border/20">
+                  {CP_REWARD_MATRIX.slice(0, 3).map((row) => {
+                    const status = STATUS_STYLES[row.status];
+                    return (
+                      <li key={row.id} className="grid grid-cols-[1fr_auto] gap-x-4 gap-y-1.5 px-5 py-4 transition-colors duration-300 hover:bg-surface-raised sm:grid-cols-[1.5fr_1fr_120px_150px] md:px-6">
+                        <span className="self-center text-sm font-bold text-text-primary">{row.activity}</span>
+                        <span className="hidden self-center type-meta font-black uppercase tracking-widest text-text-muted sm:block">{row.category}</span>
+                        <span className="col-start-2 self-center font-mono text-sm font-black text-right text-accent sm:col-start-3 sm:row-start-1 sm:text-left">{row.reward}</span>
+                        <span className="col-span-2 col-start-1 inline-flex items-center gap-2 justify-end self-center sm:col-span-1 sm:col-start-4 sm:justify-start">
+                          <span className={`w-1.5 h-1.5 rounded-full ${status.dot}`} aria-hidden="true" />
+                          <span className={`type-meta font-black uppercase tracking-widest ${status.text}`}>{row.status}</span>
+                        </span>
+                      </li>
+                    );
+                  })}
+                </ul>
+              </div>
+            </ScrollReveal>
+          </section>
 
-        {/* ── 06 · REWARD ACTIVITIES ─────────────────────────────────────── */}
-        <section id="activities" className="w-full py-10 md:py-14">
-          <div className="grid grid-cols-1 items-center gap-8 lg:grid-cols-2 lg:gap-12">
+          {/* ── 06 · REWARD ACTIVITIES — stacked heading + full-width list ── */}
+          <section id="activities" className="flex w-full scroll-mt-24 flex-col gap-8">
             <ScrollReveal>
               <SimpleHeading
+                compact
                 text="All Verified Activities."
                 accentWords={1}
                 accentPlacement="end"
                 kicker="Activity Matrix"
                 align="left"
                 description="Every completed, verified activity earns CP. The full matrix of rewarded activities and their categories."
+                descriptionWidth="max-w-2xl"
+                className="max-w-2xl"
               />
             </ScrollReveal>
 
-            <div className="space-y-6">
-              <ScrollReveal>
-                <div className="overflow-hidden rounded-2xl border border-border-subtle bg-surface">
-                  <ul className="divide-y divide-border/20">
-                    {CP_REWARD_MATRIX.slice(3).map((row) => {
-                      const status = STATUS_STYLES[row.status];
-                      return (
-                        <li key={row.id} className="grid grid-cols-[1fr_auto] gap-x-4 gap-y-1.5 px-5 py-4 transition-colors duration-300 hover:bg-surface-raised sm:grid-cols-[1.5fr_1fr_120px_150px] md:px-6">
-                          <span className="self-center text-sm font-bold text-text-primary">{row.activity}</span>
-                          <span className="hidden self-center type-meta font-black uppercase tracking-widest text-text-muted sm:block">{row.category}</span>
-                          <span className="col-start-2 self-center font-mono text-sm font-black text-right text-accent sm:col-start-3 sm:row-start-1 sm:text-left">{row.reward}</span>
-                          <span className="col-span-2 col-start-1 inline-flex items-center gap-2 justify-end self-center sm:col-span-1 sm:col-start-4 sm:justify-start">
-                            <span className={`w-1.5 h-1.5 rounded-full ${status.dot}`} aria-hidden="true" />
-                            <span className={`type-meta font-black uppercase tracking-widest ${status.text}`}>{row.status}</span>
-                          </span>
-                        </li>
-                      );
-                    })}
-                  </ul>
-                </div>
-              </ScrollReveal>
-              <p className="font-mono text-xs leading-relaxed text-text-muted md:text-right">
-                Reward values are defined per activity by the QYVORA protocol. Values shown are placeholders. Concrete CP amounts are issued by the platform on verification.
-              </p>
-            </div>
-          </div>
-        </section>
+            <ScrollReveal>
+              <div className="overflow-hidden rounded-2xl border border-border-subtle bg-surface">
+                <ul className="divide-y divide-border/20">
+                  {CP_REWARD_MATRIX.slice(3).map((row) => {
+                    const status = STATUS_STYLES[row.status];
+                    return (
+                      <li key={row.id} className="grid grid-cols-[1fr_auto] gap-x-4 gap-y-1.5 px-5 py-4 transition-colors duration-300 hover:bg-surface-raised sm:grid-cols-[1.5fr_1fr_120px_150px] md:px-6">
+                        <span className="self-center text-sm font-bold text-text-primary">{row.activity}</span>
+                        <span className="hidden self-center type-meta font-black uppercase tracking-widest text-text-muted sm:block">{row.category}</span>
+                        <span className="col-start-2 self-center font-mono text-sm font-black text-right text-accent sm:col-start-3 sm:row-start-1 sm:text-left">{row.reward}</span>
+                        <span className="col-span-2 col-start-1 inline-flex items-center gap-2 justify-end self-center sm:col-span-1 sm:col-start-4 sm:justify-start">
+                          <span className={`w-1.5 h-1.5 rounded-full ${status.dot}`} aria-hidden="true" />
+                          <span className={`type-meta font-black uppercase tracking-widest ${status.text}`}>{row.status}</span>
+                        </span>
+                      </li>
+                    );
+                  })}
+                </ul>
+              </div>
+            </ScrollReveal>
+            <p className="font-mono text-xs leading-relaxed text-text-muted md:text-right">
+              Reward values are defined per activity by the QYVORA protocol. Values shown are placeholders. Concrete CP amounts are issued by the platform on verification.
+            </p>
+          </section>
 
-        {/* ── 07 · FUTURE / BLOCKCHAIN LAYER ────────────────────────────── */}
-        <section id="future" className="w-full py-10 md:py-14">
-          <div className="space-y-8">
+          {/* ── 07 · FUTURE / BLOCKCHAIN LAYER — stacked heading + steps ──── */}
+          <section id="future" className="flex w-full scroll-mt-24 flex-col gap-8">
             <ScrollReveal>
               <SimpleHeading
+                compact
                 text="Built for the Next Layer."
                 accentWords={1}
                 accentPlacement="end"
                 kicker="Future Architecture // Planned"
                 align="left"
                 description="CP is designed with a future-ready architecture that can connect verified cybersecurity achievements with a blockchain-backed reward infrastructure."
+                descriptionWidth="max-w-2xl"
+                className="max-w-2xl"
               />
             </ScrollReveal>
 
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            <div className="grid w-full grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
               {CP_FUTURE_CHAIN.map((step, i) => (
                 <div
                   key={step.id}
@@ -348,30 +354,32 @@ const CyberCoinPage: React.FC = () => {
                 </p>
               </div>
             </ScrollReveal>
-          </div>
-        </section>
+          </section>
 
-        {/* ── 08 · START YOUR JOURNEY ───────────────────────────────────── */}
-        <section id="journey" className="w-full py-10 pb-2 md:py-14">
-          <div className="grid grid-cols-1 gap-8 lg:grid-cols-2 lg:items-stretch lg:gap-12">
-            <ScrollReveal>
-              <div className="flex shrink-0 flex-col lg:w-[420px] lg:justify-center xl:w-[480px]">
-                <SimpleHeading
-                  text="Begin With Your First Course."
-                  accentWords={1}
-                  accentPlacement="end"
-                  kicker="Start Your Journey"
-                  align="left"
-                  description="Every completed course is verified and feeds your CP balance. Start where every operator starts, the fundamentals."
-                />
-                <Link
-                  to="/courses"
-                  className="btn-secondary mt-6 inline-flex min-h-[44px] shrink-0 items-center justify-center gap-2 self-start !px-5"
-                >
-                  View All Courses <IconArrow size={14} />
-                </Link>
-              </div>
-            </ScrollReveal>
+          {/* ── 08 · START YOUR JOURNEY — split: heading + carousel ───────── */}
+          <section id="journey" className="grid w-full scroll-mt-24 grid-cols-1 items-stretch gap-10 lg:grid-cols-2 lg:gap-16">
+            <div className="flex flex-col justify-center">
+              <ScrollReveal>
+                <div className="flex shrink-0 flex-col lg:w-[420px] lg:justify-center xl:w-[480px]">
+                  <SimpleHeading
+                    compact
+                    text="Begin With Your First Course."
+                    accentWords={1}
+                    accentPlacement="end"
+                    kicker="Start Your Journey"
+                    align="left"
+                    description="Every completed course is verified and feeds your CP balance. Start where every operator starts, the fundamentals."
+                    descriptionWidth="max-w-xl"
+                  />
+                  <Link
+                    to="/courses"
+                    className="btn-secondary mt-6 inline-flex min-h-[44px] shrink-0 items-center justify-center gap-2 self-start !px-5"
+                  >
+                    View All Courses <IconArrow size={14} />
+                  </Link>
+                </div>
+              </ScrollReveal>
+            </div>
 
             <div className="relative flex min-h-0 min-w-0 flex-1 items-center overflow-hidden">
               <Carousel
@@ -422,8 +430,8 @@ const CyberCoinPage: React.FC = () => {
                 }}
               />
             </div>
-          </div>
-        </section>
+          </section>
+        </div>
       </PublicContainer>
     </div>
   );
