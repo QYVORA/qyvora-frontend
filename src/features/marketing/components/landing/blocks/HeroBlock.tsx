@@ -15,6 +15,11 @@ const ROTATING_WORDS = [
   'defend what matters.',
 ];
 
+/** Longest rotating phrase — rendered invisibly to reserve stable line height. */
+const LONGEST_WORD = ROTATING_WORDS.reduce((longest, word) =>
+  word.length > longest.length ? word : longest,
+);
+
 /**
  * HeroBlock — retargeted around the QYVORA tagline ("Train like a hacker,
  * become a hacker") with a typewriter rotation, plus the mission and the
@@ -32,8 +37,13 @@ const HeroBlock: React.FC<HeroBlockProps> = ({ stats }) => {
 
           <h1 className="type-display text-4xl font-black uppercase tracking-tight text-text-primary sm:text-5xl lg:text-6xl">
             <span className="block">{"Train like a hacker,"}</span>
-            <span className="block min-h-[1.06em] text-accent">
-              <TypewriterText words={ROTATING_WORDS} />
+            <span className="relative block text-accent">
+              <span aria-hidden="true" className="invisible block select-none pr-1.5">
+                {LONGEST_WORD}
+              </span>
+              <span aria-hidden="false" className="absolute inset-0">
+                <TypewriterText words={ROTATING_WORDS} />
+              </span>
             </span>
           </h1>
 

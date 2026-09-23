@@ -28,7 +28,7 @@ const PublicBottomNav: React.FC = () => (
       aria-label="Primary"
       className="border-t border-border-subtle bg-surface pb-[env(safe-area-inset-bottom)] md:hidden fixed inset-x-0 bottom-0 z-[90]"
     >
-      <div className="flex items-stretch justify-around px-2">
+      <div className="flex items-stretch justify-around gap-1.5 px-2">
         {ITEMS.map((item) => {
           const Icon = item.icon;
           return (
