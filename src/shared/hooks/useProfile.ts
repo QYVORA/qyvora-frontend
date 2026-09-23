@@ -118,7 +118,7 @@ export function useProfile({ paramUsername, authUser }: UseProfileOptions): UseP
     };
   }, [rawProfile, authUser, isOwnProfile, displayHandle]);
 
-  const setProfileFromSave = useCallback((data: ProfileApiResponse) => {
+  const setProfileFromSave = useCallback((data: ProfileApiResponse | null) => {
     setRawProfile(data);
   }, []);
 
