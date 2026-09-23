@@ -1,5 +1,6 @@
 import { cn } from '@/shared/utils/cn';
 import { Shield, Target, Crosshair, Bug, Wifi, Eye, FileText, Lock } from 'lucide-react';
+import { DiagramFrame } from './DiagramFrame';
 
 export interface KillChainPhaseData {
   id: string;
@@ -27,11 +28,11 @@ interface KillChainDiagramProps {
 
 export function KillChainDiagram({ currentPhaseIndex = -1, completedPhaseIds = [], className }: KillChainDiagramProps) {
   return (
-    <div className={cn('wc-diagram relative overflow-hidden rounded-xl border border-border/50 bg-bg-card p-4', className)}>
-      <div className="flex items-center gap-2 mb-4">
-        <Shield className="w-4 h-4 text-accent" />
-        <span className="text-xs font-black uppercase tracking-widest text-accent">Kill Chain Phases</span>
-      </div>
+    <DiagramFrame
+      title="Kill Chain Phases"
+      icon={<Shield className="w-4 h-4 text-accent" />}
+      className={className}
+    >
       <div className="flex flex-wrap items-center justify-center gap-2 md:gap-3">
         {KILL_CHAIN_PHASES.map((phase, idx) => {
           const isCompleted = completedPhaseIds.includes(phase.id);
@@ -69,7 +70,7 @@ export function KillChainDiagram({ currentPhaseIndex = -1, completedPhaseIds = [
           );
         })}
       </div>
-    </div>
+    </DiagramFrame>
   );
 }
 
@@ -82,11 +83,11 @@ interface KillChainDiagramSimpleProps {
 
 export function KillChainDiagramSimple({ phases, currentPhaseIndex = -1, completedPhaseIds = [], className }: KillChainDiagramSimpleProps) {
   return (
-    <div className={cn('wc-diagram relative overflow-hidden rounded-xl border border-border/50 bg-bg-card p-3 md:p-4', className)}>
-      <div className="flex items-center gap-2 mb-3">
-        <Shield className="w-3.5 h-3.5 text-accent" />
-        <span className="text-xs font-black uppercase tracking-widest text-accent">Kill Chain Progress</span>
-      </div>
+    <DiagramFrame
+      title="Kill Chain Progress"
+      icon={<Shield className="w-3.5 h-3.5 text-accent" />}
+      className={className}
+    >
       <div className="flex flex-wrap items-center gap-2">
         {phases.map((phase, idx) => {
           const isCompleted = completedPhaseIds.includes(phase);
@@ -110,6 +111,6 @@ export function KillChainDiagramSimple({ phases, currentPhaseIndex = -1, complet
           );
         })}
       </div>
-    </div>
+    </DiagramFrame>
   );
 }

@@ -1,4 +1,5 @@
 import { cn } from '@/shared/utils/cn';
+import { DiagramFrame } from './DiagramFrame';
 
 export interface FlowNode {
   id: string;
@@ -109,7 +110,7 @@ export function FlowDiagram({ nodes, arrows, direction = 'horizontal', className
 
   if (direction === 'horizontal') {
     return (
-      <div className={cn('wc-diagram relative overflow-hidden rounded-xl border border-border/50 bg-bg-card p-4 md:p-6 overflow-x-auto', className)}>
+      <DiagramFrame className="overflow-x-auto p-4 md:p-6">
         <div className="flex items-center min-w-max gap-0">
           {arrows.map((arrow, i) => {
             const fromNode = nodeMap.get(arrow.from);
@@ -124,12 +125,12 @@ export function FlowDiagram({ nodes, arrows, direction = 'horizontal', className
             );
           })}
         </div>
-      </div>
+      </DiagramFrame>
     );
   }
 
   return (
-    <div className={cn('wc-diagram relative overflow-hidden rounded-xl border border-border/50 bg-bg-card p-4 md:p-6', className)}>
+    <DiagramFrame>
       <div className="flex flex-col items-center gap-0">
         {arrows.map((arrow, i) => {
           const fromNode = nodeMap.get(arrow.from);
@@ -144,6 +145,6 @@ export function FlowDiagram({ nodes, arrows, direction = 'horizontal', className
           );
         })}
       </div>
-    </div>
+    </DiagramFrame>
   );
 }
