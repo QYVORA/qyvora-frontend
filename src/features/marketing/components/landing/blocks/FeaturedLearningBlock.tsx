@@ -45,7 +45,7 @@ const FeaturedLearningBlock: React.FC = () => {
           <Card
             to="/hpb"
             interactive
-            className="relative flex min-h-[320px] flex-col justify-between gap-6 overflow-hidden p-6 lg:col-span-2 md:p-8"
+            className="relative flex min-h-[320px] flex-col justify-between gap-6 overflow-hidden p-6 lg:col-span-2 md:p-8 bg-gradient-to-tl from-accent/20 via-accent/5 to-transparent"
           >
             <div aria-hidden="true" className="pointer-events-none absolute inset-0 select-none">
               <div className="absolute bottom-8 right-8 hidden h-48 w-48 md:block">
