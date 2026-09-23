@@ -351,10 +351,11 @@ Shared title primitive used across public inner pages (Courses, Labs, Services, 
 
 - Languages: `go`, `sh`, `text`
 - Syntax palette: keywords `#c678dd`, strings `#e5c07b`, numbers `#d19a66`, types `#56b6c2`, builtins `#61afef`, funcs/commands `text-accent`
-- Container: `wc-code overflow-hidden rounded-xl border border-border/30 bg-bg`
-- Header: `bg-bg-elevated px-3 py-2 border-b border-border/20`
-- Copy button: `rounded-lg border border-border/20 bg-bg px-2 py-1 text-[9px] font-black uppercase tracking-widest`
-- Code: `whitespace-pre-wrap break-words p-4 font-mono text-[11px] leading-relaxed sm:text-xs`
+- Container: `data-theme-persist="dark"` `wc-code overflow-hidden rounded-xl border border-border/50 bg-bg`
+- Header: `bg-bg-elevated px-3 py-2 border-b border-border/20` (dark-persisted)
+- Copy button: `rounded-lg border border-border/20 bg-bg px-2 py-1 text-xs font-black uppercase tracking-widest`
+- Code: `whitespace-pre overflow-x-auto overflow-y-auto p-4 font-mono text-xs leading-relaxed sm:text-[13px]` with `role="region"` + `aria-label` and a focus ring (`focus-visible:ring-accent/50`) for intentional keyboard scroll (Phase D item 15)
+- The whole surface is pinned dark via `data-theme-persist="dark"`, so code blocks stay dark technical in light mode (Phase G item 27)
 
 ### 9b. FlowDiagram
 
@@ -452,23 +453,22 @@ Navigation scrolls to the newly-activated id via `scrollIntoView`; because the f
 
 ## 13. Background & Texture
 
-### 13a. GridBoxedBackground
+See `docs/BACKGROUNDS.md` for the full background/texture system. Follow this
+top-level map:
 
-**Implementation**: `src/shared/components/backgrounds/GridBoxedBackground.tsx`
+- **Base**: pages on `bg-canvas`; cards lift through the token surface ladder
+  (`bg` → `bg-alt` → `bg-card` → `bg-elevated`), never raw hex blacks.
+- **Bands**: alternating sections on `bg-surface` for rhythm.
+- **Canvas fades**: `bg-gradient-to-r from-canvas via-canvas/85 to-transparent`
+  (hero + carousel edge masks) to blend avatar art into the page.
+- **Texture utilities** (available, verified before use): `.dot-grid` (24px
+  accent dot), `.grid-fade` (faint column grid), `.border-beam` /
+  `.nav-border-beam` (animated accent borders).
+- **Dark persistence**: `data-theme-persist="dark"` forces dark tokens on a
+  subtree in light mode (`PublicFooter`, `AdminLayout`, `CodeBlock`).
 
-```tsx
-<GridBoxedBackground blur={0} mask="right" opacity={0.6} reduced={false} />
-```
-
-The ONLY background component. Canvas-based grid with accent `[6,182,111]`. Always `absolute inset-0 z-0 overflow-hidden pointer-events-none`.
-
-### 13b. Dot Grid
-
-CSS `.dot-grid` — 24px radial dot texture via `--dot-color` (`rgba(6,182,111,0.05)`).
-
-### 13c. Border Beam
-
-CSS `.border-beam` — animated 1px conic border (`@property --beam-angle`, 4.8s loop). Inner content needs `relative z-[2]`.
+> Note: `GridBoxedBackground` has been removed (Phase A item 3) — it no longer
+> exists in the codebase and must not be reintroduced.
 
 ---
 
@@ -730,3 +730,60 @@ Admin dialogs use shared `Dialog`, `DialogContent`, and `ConfirmDialog`:
   onConfirm={handleConfirm}
 />
 ```
+
+---
+
+## 21. Reconciliation additions
+
+### 21a. ToolQuickStart (tool docs, Phase D)
+
+**Implementation**: `src/shared/components/tools/ToolQuickStart.tsx`
+
+The reader-first quickstart used on every `/anansi /toha3ee /sekhmet ...` tool
+page (replaced the fake-terminal + usage-card pairs):
+
+```tsx
+<ToolQuickStart
+  command="sekhmet fuzz --target sim --runs 100000"
+  commandNote="Simulated, deterministic, offline."
+  output={[{ label: 'baseline', text: 'simulation target profiled' }, /* … */]}
+  session={['shaka> assess', 'shaka> exit']}
+  usage={['sekhmet install', 'sekhmet docs']}
+  footer="Fuzz only software you own or have explicit written permission to test."
+/>
+```
+
+- `command` is required; `commandNote` sits under it when the run is simulated.
+- Either `output` (flat `[label] text` lines) or `session` (REPL lines shown
+  verbatim), not both.
+- Built on `CodeBlock` — so it is dark-persisted in light mode.
+
+### 21b. PageLoader boot lifecycle (Phase G)
+
+**Implementation**: `src/shared/components/PageLoader.tsx` (exports `PageLoader`,
+`DelayedPageLoader`).
+
+Types `qyvora@core:~$ boot`, then a `boot complete` line, holds, and fades the
+whole overlay out (typing → completion → hold → fade). Timings: 55ms/char,
+260ms to the completion line, 700ms hold, 400ms fade. Reduced-motion: the full
+line renders immediately, no fade, and uses the accessibility-safe caret.
+Rendered at `z-[9999]`; used by the router for auth boot and route suspense.
+
+### 21c. Leaderboard color ladder (Phase F)
+
+**Implementation**: `src/shared/components/leaderboard/{types,PodiumCard}.ts`
+
+- Top-three colors: `text-accent`, `text-accent/80`, `text-accent/50`.
+- Podium tiers: #1 `border-accent/70` + `shadow-accent/30` glow + crown (scaled
+  up), #2 `border-accent/30` + `shadow-accent/15`, #3 neutral
+  `border-border/50` with no glow.
+- `RANK_COLORS`: Vanguard/Strategist/Master Operator `text-accent`, Agent/
+  Architect `text-warning`, Specialist/Contributor/Operator `text-info`,
+  Candidate/Seeker `text-text-muted`. No material purple/zinc/amber.
+
+### 21d. Per-phase HPB avatars (Phase F)
+
+`HpbPhasePage` related-phase cards render the phase's own `HpbAvatar`
+(variant `phase1`..`phase5` from `@/shared/components/HpbAvatar.tsx`) in a
+bordered tile, matching the landing per-phase-avatar language. See
+`docs/AVATARS.md`.

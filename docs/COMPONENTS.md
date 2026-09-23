@@ -509,7 +509,7 @@ Location: `src/features/student/`. Shell = `AppShell` (clearance `pt-20 md:pt-24
 - Individual simulators (named): `BrowserSimulation`, `HttpInspector`, `EmailClient`, `PacketViewer`, `FileExplorer`, `LogViewer`, `SqlConsole`, `ApiExplorer`, `PasswordCracker`, `NetworkTopology`, `OsintDashboard`, `TimelineInvestigation`, `ProgressiveHints`. Data: `networkProfiles.ts`, `labSimulationContent.tsx`.
 
 ### 13.6 Tools (`features/student/components/tools/`)
-- **`SimulatedTerminal`**: `TerminalShell` (named, export `clearTerminalStorage`), engine (`state`, `streaming`, `commands`), contexts (`bootcampContent`, `courseContent`, `labContent`), KALI palette consts (`#0c0c0c`, `#00ff41`); Tab completion, Ctrl+U/E/K/A/W/R, history, streaming, persistence `qyvora_terminal_lines`/`qyvora_terminal_state`, dispatches `qyvora:ip-discovered`.
+- **`SimulatedTerminal`**: `TerminalShell` (named, export `clearTerminalStorage`), engine (`state`, `streaming`, `commands`), contexts (`bootcampContent`, `courseContent`, `labContent`), KALI palette consts (`#0c0c0c`, `#06B66F`); Tab completion, Ctrl+U/E/K/A/W/R, history, streaming, persistence `qyvora_terminal_lines`/`qyvora_terminal_state`, dispatches `qyvora:ip-discovered`.
 - **`Ide`**: VS Code-style editor sim (`IdeBlock`, hex syntax colors).
 - **`NetworkBuilder`** + **`network/`**: full network topology builder (`DeviceNode`, `NetworkEdge`, `packetEngine`, `trafficEngine`, `topologyStore`, `useSmartConnection`, `useTrafficSimulation`, `ContextMenu`, `DeviceLeds`, `DeviceHoverCard`, `ConnectionMediumModal`).
 - **`ToolChooserModal`**: "Open in Panel" vs "Open Fullscreen".
