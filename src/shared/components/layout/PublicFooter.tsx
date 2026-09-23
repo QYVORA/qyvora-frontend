@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Logo } from '@/shared/components/brand';
-import { IconArrowRight } from '@/shared/components/icons';
+import { IconArrowRight, IconMail } from '@/shared/components/icons';
 import { SOCIAL_LINKS } from './socialLinks';
 
 interface FooterCol {

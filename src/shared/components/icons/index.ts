@@ -82,6 +82,9 @@ export { default as BrandMediumIcon } from './BrandMediumIcon';
 export { default as BrandTikTokIcon } from './BrandTikTokIcon';
 export { default as BrandInstagramIcon } from './BrandInstagramIcon';
 
+// Contact
+export { Mail as IconMail } from 'lucide-react';
+
 // Course icons (vector-traced artwork, one per course)
 export {
   LinuxTerminal101Icon,
