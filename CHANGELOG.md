@@ -17,6 +17,7 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - Added `gap-1.5` between mobile bottom-nav buttons; stabilized the landing hero typewriter layout with an invisible longest-phrase placeholder
 - `CyberCoinPage` (`/cp`) restructured to the canonical public-page rhythm: `space-y-12 md:space-y-16` section stack, `compact` `SimpleHeading` scale, alternating split/stacked sections, and full-width reward/activity matrices
 - QuiteRoot page: the researcher "registry" panel was replaced with a simple per-member card grid (small photo avatar, role badge, research-node id, discipline glyph, bio)
+- Profile pages (student `/dashboard/profile` + public `@/:handle`) redesigned as a two-column portfolio grid: sticky identity rail — new `ProfileIdentityBlock` (identicon with rank chip, name/handle, bio, org/joined/location meta grid, socials incl. X, XP progress, actions) — with a main column holding a labeled `Overview` stats strip, achievements, activity calendar + timeline, courses, labs, and trophy cabinet
 
 ### SEO
 - Fixed JSON-LD serialization in prerendered HTML — scripts now render JSON as text content instead of a bogus `innerHTML` attribute

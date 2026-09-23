@@ -139,7 +139,8 @@ h2 compact bento sections: **title only, no description**.
 
 - **SVG logos, not icon packs**: on the profile pages (student `/dashboard/profile`, public `@/:username`) never use `lucide-react` icons (or custom `Icon*` glyphs) to represent achievements or completed rooms/bootcamp phases/labs/courses — use their dedicated SVG logo assets: `HpbAvatar` (bootcamp phases), `BootcampBadge` (bootcamp), `CpLogo` (CP), and the course icons from `COURSE_ICON_MAP`. The recent-activity feed (`ActivityTimeline`) must reuse those same SVGs
 - **Compact, organised cards**: profile content and cards must stay compact and well organised — consistent `rounded-2xl` cards, tight `gap`s, aligned module headers, `line-clamp`/truncate on variable text. No oversized or sprawling card stacks
-- **Protected cards — never modify**: the stats/overview strip (`ProfileMetricsStrip`) and the identicon/identity card (`ProfileIdentityBlock`) are frozen. Do not restyle, resize, or restructure them
+- **Two-column portfolio grid**: both profile pages (student `/dashboard/profile`, public `@/:username`) use a `lg:grid-cols-12` layout — identity card in a sticky left rail (`lg:col-span-4`, `lg:sticky lg:top-24`) and a main column (`lg:col-span-8`, `space-y-6`) holding Overview stats, achievements, activity, courses, labs, and trophies. Collapses to a single column on mobile
+- **Hero cards are editable**: `ProfileIdentityBlock` (identicon, rank chip, bio, meta grid, socials incl. X, XP bar, actions) and `ProfileMetricsStrip` (Overview card with labeled stat tiles) are part of the profile re-design and may be restyled
 
 ## Admin Dashboard Rules
 

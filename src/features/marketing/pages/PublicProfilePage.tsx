@@ -1,22 +1,22 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { IconArrowLeft } from '@/shared/components/icons';
-import { User, FlaskConical, GraduationCap, Calendar, Flame } from 'lucide-react';
-import NotFoundPage from '../../../shared/pages/NotFoundPage';
-import api from '../../../core/services/api';
-import PageLoader from '../../../shared/components/PageLoader';
-import SEO from '../../../shared/components/SEO';
-import PublicContainer from '../../../shared/components/layout/PublicContainer';
-import ProfileIdentityBlock from '../../../shared/components/profile/ProfileIdentityBlock';
-import CpLogo from '../../../shared/components/CpLogo';
-import ProfileMetricsStrip from '../../../shared/components/profile/ProfileMetricsStrip';
-import AchievementsSection from '../../../shared/components/profile/AchievementsSection';
-import ContributionCalendar from '../../../shared/components/profile/ContributionCalendar';
-import ActivityTimeline from '../../../shared/components/profile/ActivityTimeline';
-import LabsModule from '../../../shared/components/profile/LabsModule';
-import CoursesModule from '../../../shared/components/profile/CoursesModule';
-import TrophyCabinet from '../../../shared/components/profile/TrophyCabinet';
-import type { ProfileData, ProfileApiResponse, CompletedRoom, ProfileSectionId } from '../../../shared/types/profile';
+import { User, FlaskConical, GraduationCap, TrendingUp, Calendar } from 'lucide-react';
+import NotFoundPage from '@/shared/pages/NotFoundPage';
+import api from '@/core/services/api';
+import PageLoader from '@/shared/components/PageLoader';
+import SEO from '@/shared/components/SEO';
+import PublicContainer from '@/shared/components/layout/PublicContainer';
+import ProfileIdentityBlock from '@/shared/components/profile/ProfileIdentityBlock';
+import CpLogo from '@/shared/components/CpLogo';
+import ProfileMetricsStrip from '@/shared/components/profile/ProfileMetricsStrip';
+import AchievementsSection from '@/shared/components/profile/AchievementsSection';
+import ContributionCalendar from '@/shared/components/profile/ContributionCalendar';
+import ActivityTimeline from '@/shared/components/profile/ActivityTimeline';
+import LabsModule from '@/shared/components/profile/LabsModule';
+import CoursesModule from '@/shared/components/profile/CoursesModule';
+import TrophyCabinet from '@/shared/components/profile/TrophyCabinet';
+import type { ProfileData, ProfileApiResponse, CompletedRoom, ProfileSectionId } from '@/shared/types/profile';
 
 const PublicProfile: React.FC = () => {
   const { handle: rawHandle } = useParams<{ handle: string }>();
@@ -127,60 +127,47 @@ const PublicProfile: React.FC = () => {
       />
 
       <PublicContainer className="pt-24 md:pt-28 lg:pt-32 pb-20 lg:pb-24">
-          {/* Main content */}
-          <div className="space-y-10">
-            {/* ── Identity Section ── */}
-            <section id="profile-section-identity">
-              <ProfileIdentityBlock
-                id={profile.id}
-                handle={profile.username}
-                name={profile.displayName || undefined}
-                bio={profile.bio || undefined}
-                rank={profile.rank}
-                organization={profile.organization || undefined}
-                actions={[
-                  { label: 'Back to Home', to: '/', icon: <IconArrowLeft className="w-3.5 h-3.5" /> },
-                ]}
-                showShare
-                xpLevel={profile.xpLevel}
-                xpCurrent={profile.xpCurrent}
-                xpToNext={profile.xpToNext}
-                joinDate={profile.joinDate || undefined}
-                country={profile.country || undefined}
-                website={profile.website || undefined}
-                github={profile.github || undefined}
-                linkedin={profile.linkedin || undefined}
-                twitter={profile.twitter || undefined}
-              />
-            </section>
+        <div className="grid gap-6 lg:grid-cols-12 lg:gap-8">
+          <aside className="lg:col-span-4">
+            <div className="space-y-6 lg:sticky lg:top-24">
+              <section id="profile-section-identity">
+                <ProfileIdentityBlock
+                  id={profile.id}
+                  handle={profile.username}
+                  name={profile.displayName || undefined}
+                  bio={profile.bio || undefined}
+                  rank={profile.rank}
+                  organization={profile.organization || undefined}
+                  actions={[
+                    { label: 'Back to Home', to: '/', icon: <IconArrowLeft className="w-3.5 h-3.5" /> },
+                  ]}
+                  showShare
+                  xpLevel={profile.xpLevel}
+                  xpCurrent={profile.xpCurrent}
+                  xpToNext={profile.xpToNext}
+                  joinDate={profile.joinDate || undefined}
+                  country={profile.country || undefined}
+                  website={profile.website || undefined}
+                  github={profile.github || undefined}
+                  linkedin={profile.linkedin || undefined}
+                  twitter={profile.twitter || undefined}
+                />
+              </section>
+            </div>
+          </aside>
 
-            {/* ── Metrics Strip ── */}
+          <main className="lg:col-span-8 space-y-6">
             <section id="profile-section-stats">
               <ProfileMetricsStrip metrics={[
-                { icon: <CpLogo className="w-5 h-5" />, value: profile.cp.toLocaleString(), accent: true },
-                { icon: <User className="w-5 h-5" />, value: profile.rank },
-                { icon: <FlaskConical className="w-5 h-5" />, value: profile.labsCompleted || profile.completedRooms.length },
-                { icon: <GraduationCap className="w-5 h-5" />, value: profile.coursesCompleted },
-{ icon: <Flame className="w-5 h-5" />, value: profile.xpLevel },
-            { icon: <Calendar className="w-5 h-5" />, value: profile.joinDate ? new Date(profile.joinDate).getFullYear() : '—' },
+                { icon: <CpLogo className="w-5 h-5" />, value: profile.cp.toLocaleString(), accent: true, label: 'CP' },
+                { icon: <User className="w-5 h-5" />, value: profile.rank, label: 'Rank' },
+                { icon: <FlaskConical className="w-5 h-5" />, value: profile.labsCompleted || profile.completedRooms.length, label: 'Labs' },
+                { icon: <GraduationCap className="w-5 h-5" />, value: profile.coursesCompleted, label: 'Courses' },
+                { icon: <TrendingUp className="w-5 h-5" />, value: profile.xpLevel, label: 'Level' },
+                { icon: <Calendar className="w-5 h-5" />, value: profile.joinDate ? new Date(profile.joinDate).getFullYear() : '—', label: 'Since' },
               ]} />
             </section>
 
-            {/* ── Activity Section ── */}
-            {visibleSections.includes('activity') && (
-              <section id="profile-section-activity">
-                <div className="flex flex-col gap-6">
-                  <ActivityTimeline profile={profile} />
-                  {Object.keys(activityDates).length > 0 && (
-                    <div className="rounded-2xl border border-border/50 bg-bg-card p-5">
-                      <ContributionCalendar activityDates={activityDates} />
-                    </div>
-                  )}
-                </div>
-              </section>
-            )}
-
-            {/* ── Achievements Section ── */}
             <section id="profile-section-achievements">
               <AchievementsSection
                 rooms={profile.completedRooms}
@@ -192,7 +179,28 @@ const PublicProfile: React.FC = () => {
               />
             </section>
 
-            {/* ── Labs Section ── */}
+            {visibleSections.includes('activity') && (
+              <section id="profile-section-activity">
+                <div className="space-y-6">
+                  <ActivityTimeline profile={profile} />
+                  {Object.keys(activityDates).length > 0 && (
+                    <div className="rounded-2xl border border-border/50 bg-bg-card p-5">
+                      <ContributionCalendar activityDates={activityDates} />
+                    </div>
+                  )}
+                </div>
+              </section>
+            )}
+
+            {visibleSections.includes('courses') && (
+              <section id="profile-section-courses">
+                <CoursesModule
+                  coursesCompleted={profile.coursesCompleted}
+                  courseIds={profile.completedCourseIds}
+                />
+              </section>
+            )}
+
             {visibleSections.includes('labs') && (
               <section id="profile-section-labs">
                 <LabsModule
@@ -202,21 +210,11 @@ const PublicProfile: React.FC = () => {
               </section>
             )}
 
-            {/* ── Courses Section ── */}
-            {visibleSections.includes('courses') && (
-              <section id="profile-section-courses">
-                <CoursesModule
-                coursesCompleted={profile.coursesCompleted}
-                courseIds={profile.completedCourseIds}
-              />
-              </section>
-            )}
-
-            {/* ── Trophy Cabinet Section ── */}
             <section id="profile-section-trophy">
               <TrophyCabinet profile={profile} />
             </section>
-          </div>
+          </main>
+        </div>
       </PublicContainer>
     </div>
   );

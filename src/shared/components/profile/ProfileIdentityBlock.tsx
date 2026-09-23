@@ -2,7 +2,7 @@ import { type ReactNode } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'motion/react';
 import { useReducedMotion } from '@/shared/hooks/useReducedMotion';
-import { Globe, Github, Linkedin, Calendar, Flame } from 'lucide-react';
+import { Globe, Github, Linkedin, Twitter, Calendar, MapPin, Building2, Mail } from 'lucide-react';
 import ShareProfile from '@/shared/components/ShareProfile';
 import Identicon from '@/shared/components/Identicon';
 
@@ -46,6 +46,11 @@ export interface ProfileIdentityBlockProps {
   twitter?: string;
 }
 
+interface MetaRow {
+  icon: ReactNode;
+  text: string;
+}
+
 const ProfileIdentityBlock: React.FC<ProfileIdentityBlockProps> = ({
   id,
   handle,
@@ -79,71 +84,75 @@ const ProfileIdentityBlock: React.FC<ProfileIdentityBlockProps> = ({
     { url: website, icon: <Globe className="w-3.5 h-3.5" />, label: 'Website' },
     { url: github, icon: <Github className="w-3.5 h-3.5" />, label: 'GitHub' },
     { url: linkedin, icon: <Linkedin className="w-3.5 h-3.5" />, label: 'LinkedIn' },
+    { url: twitter, icon: <Twitter className="w-3.5 h-3.5" />, label: 'X' },
   ].filter((l) => l.url);
 
   const formattedJoinDate = joinDate
     ? new Date(joinDate).toLocaleDateString('en-US', { month: 'short', year: 'numeric' })
     : null;
 
-  const profileInfoCard = (
+  const metaRows: MetaRow[] = [];
+    if (organization) metaRows.push({ icon: <Building2 className="w-3.5 h-3.5" />, text: organization });
+    if (email) metaRows.push({ icon: <Mail className="w-3.5 h-3.5" />, text: email });
+    if (formattedJoinDate) metaRows.push({ icon: <Calendar className="w-3.5 h-3.5" />, text: `Joined ${formattedJoinDate}` });
+    if (country) metaRows.push({ icon: <MapPin className="w-3.5 h-3.5" />, text: country });
+
+  return (
     <motion.div
       initial={prefersReduced ? false : { opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: prefersReduced ? 0 : 0.45, delay: prefersReduced ? 0 : 0.05 }}
-      className={`min-w-0 flex-1 rounded-2xl border border-border/50 bg-bg-card overflow-hidden ${className}`}
+      className={`relative rounded-2xl border border-border/50 bg-bg-card overflow-hidden ${className}`}
     >
-      <div className="h-1 w-full bg-accent" />
+      <div className="h-1.5 w-full bg-accent" />
 
-      <div className="p-5 sm:p-6">
-        <div className="min-w-0">
-          {/* Name + handle + badges */}
-          <div className="flex flex-wrap items-center gap-2 mb-1">
-            {name && (
-              <h2 className="text-lg sm:text-xl font-black text-text-primary truncate">
-                {name}
-              </h2>
-            )}
-            <span className="px-2 py-0.5 rounded-lg bg-bg-elevated border border-border/50 text-xs font-black uppercase tracking-widest text-accent font-mono">
-              @{handle}
-            </span>
+      <div className="space-y-5 p-5 sm:p-6">
+        <div className="flex items-center gap-4">
+          <div className="relative shrink-0">
+            <div className="h-20 w-20 sm:h-24 sm:w-24 overflow-hidden rounded-2xl border-2 border-accent bg-black">
+              <Identicon value={handle} size={400} className="h-full w-full" />
+            </div>
             {rank && (
-              <span className="px-2 py-0.5 rounded-lg bg-accent/10 border border-accent/20 text-xs font-black uppercase tracking-widest text-accent">
+              <span className="absolute -bottom-2 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full border border-accent/30 bg-accent/10 px-2 py-0.5 font-mono text-[9px] font-black uppercase tracking-widest text-accent">
                 {rank}
               </span>
             )}
           </div>
 
-          {/* Bio */}
-          {bio && (
-            <p className="text-sm text-text-secondary leading-relaxed mt-1.5 line-clamp-2">
-              {bio}
-            </p>
-          )}
-
-          {/* Meta line: org + email + join date + country */}
-          <div className="flex flex-wrap items-center gap-3 mt-2 text-xs text-text-muted">
-            {organization && <span>{organization}</span>}
-            {email && <span className="hidden sm:inline">{email}</span>}
-            {formattedJoinDate && (
-              <span className="inline-flex items-center gap-1">
-                <Calendar className="w-3 h-3" />
-                Joined {formattedJoinDate}
-              </span>
+          <div className="min-w-0 flex-1">
+            {name && (
+              <h2 className="truncate text-xl font-black uppercase tracking-tight text-text-primary sm:text-2xl">
+                {name}
+              </h2>
             )}
-            {country && <span>{country}</span>}
+            <p className="mt-0.5 truncate font-mono text-sm text-accent">@{handle}</p>
           </div>
         </div>
 
-        {/* Social links */}
+        {bio && (
+          <p className="text-sm leading-relaxed text-text-secondary">{bio}</p>
+        )}
+
+        {metaRows.length > 0 && (
+          <dl className="grid grid-cols-1 gap-x-4 gap-y-2 sm:grid-cols-2">
+            {metaRows.map((row, i) => (
+              <div key={i} className="flex items-center gap-2 text-xs text-text-muted">
+                <span className="shrink-0 text-text-muted/70">{row.icon}</span>
+                <span className="truncate">{row.text}</span>
+              </div>
+            ))}
+          </dl>
+        )}
+
         {socialLinks.length > 0 && (
-          <div className="flex items-center gap-2 mt-2">
+          <div className="flex items-center gap-2">
             {socialLinks.map((link) => (
               <a
                 key={link.label}
                 href={link.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-7 h-7 rounded-lg bg-bg-elevated border border-border/50 flex items-center justify-center text-text-muted hover:text-accent hover:border-accent/50 transition-colors"
+                className="flex h-8 w-8 items-center justify-center rounded-lg border border-border/50 bg-bg-elevated text-text-muted transition-colors hover:border-accent/50 hover:text-accent"
                 aria-label={link.label}
               >
                 {link.icon}
@@ -152,18 +161,17 @@ const ProfileIdentityBlock: React.FC<ProfileIdentityBlockProps> = ({
           </div>
         )}
 
-        {/* XP Progress Bar */}
         {xpLevel != null && xpToNext != null && xpToNext > 0 && (
-          <div className="mt-5 p-3 rounded-xl bg-bg-elevated border border-border/20">
-            <div className="flex items-center justify-between mb-2">
+          <div className="rounded-xl border border-border/20 bg-bg-elevated p-3">
+            <div className="mb-2 flex items-center justify-between">
               <span className="text-xs font-black uppercase tracking-widest text-text-muted">
                 Level {xpLevel}
               </span>
-              <span className="text-xs font-mono text-text-muted/60">
+              <span className="font-mono text-xs text-text-muted/60">
                 {(xpCurrent || 0).toLocaleString()} / {xpToNext.toLocaleString()} XP
               </span>
             </div>
-            <div className="h-2 rounded-full bg-border/20 overflow-hidden">
+            <div className="h-2 overflow-hidden rounded-full bg-border/20">
               <motion.div
                 initial={prefersReduced ? false : { width: 0 }}
                 animate={{ width: `${xpPercent}%` }}
@@ -174,58 +182,45 @@ const ProfileIdentityBlock: React.FC<ProfileIdentityBlockProps> = ({
           </div>
         )}
 
-        {/* Action buttons row */}
-        <div className="flex flex-wrap items-center gap-2 mt-5">
-          {actions.map((action, i) => {
-            if (action.to) {
+        {(actions.length > 0 || showPublicView || showShare) && (
+          <div className="flex flex-wrap items-center gap-2 pt-1">
+            {actions.map((action, i) => {
+              if (action.to) {
+                return (
+                  <Link
+                    key={i}
+                    to={action.to}
+                    className="btn-secondary flex items-center gap-2"
+                  >
+                    {action.icon}
+                    {action.label}
+                  </Link>
+                );
+              }
               return (
-                <Link
+                <button
                   key={i}
-                  to={action.to}
+                  onClick={action.onClick}
                   className="btn-secondary flex items-center gap-2"
                 >
                   {action.icon}
                   {action.label}
-                </Link>
+                </button>
               );
-            }
-            return (
-              <button
-                key={i}
-                onClick={action.onClick}
+            })}
+            {showPublicView && publicViewPath && (
+              <Link
+                to={publicViewPath}
                 className="btn-secondary flex items-center gap-2"
               >
-                {action.icon}
-                {action.label}
-              </button>
-            );
-          })}
-          {showPublicView && publicViewPath && (
-            <Link
-              to={publicViewPath}
-              className="btn-secondary flex items-center gap-2"
-            >
-              {"Public View"}
-            </Link>
-          )}
-          {showShare && <ShareProfile handle={handle} />}
-        </div>
+                {"Public View"}
+              </Link>
+            )}
+            {showShare && <ShareProfile handle={handle} />}
+          </div>
+        )}
       </div>
     </motion.div>
-  );
-
-  return (
-    <div className="space-y-4 sm:space-y-5">
-      <div className="flex flex-col gap-3 sm:flex-row sm:items-stretch sm:gap-4">
-        <div
-          className="aspect-square w-full shrink-0 overflow-hidden rounded-2xl border-2 border-accent bg-black sm:w-auto sm:self-stretch"
-          aria-label={`Identicon for @${handle}`}
-        >
-          <Identicon value={handle} size={400} className="w-full h-full" />
-        </div>
-        {profileInfoCard}
-      </div>
-    </div>
   );
 };
 
