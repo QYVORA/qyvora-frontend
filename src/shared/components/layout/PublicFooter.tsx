@@ -57,8 +57,15 @@ const PublicFooter: React.FC = React.memo(() => {
               <Logo size="md" />
             </Link>
             <p className="mt-4 max-w-xs text-body-sm">
-              {"Building Africa's strongest cybersecurity ecosystem — one trained professional at a time."}
+              {"Building Africa's strongest cybersecurity ecosystem - one trained professional at a time."}
             </p>
+            <a
+              href="mailto:qyvorasec@gmail.com"
+              className="mt-3 inline-flex min-h-[44px] items-center gap-1.5 text-type-body text-text-secondary transition-colors hover:text-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+            >
+              <IconMail size={14} aria-hidden="true" />
+              {"qyvorasec@gmail.com"}
+            </a>
             <Link
               to="/register"
               className="mt-5 inline-flex min-h-[44px] items-center gap-1.5 rounded-lg border border-accent/40 px-3 text-xs font-black uppercase tracking-widest text-accent transition-colors hover:bg-accent/10 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
@@ -84,7 +91,7 @@ const PublicFooter: React.FC = React.memo(() => {
           <nav aria-label="Footer" className="grid grid-cols-2 gap-8 sm:grid-cols-3">
             {COLS.map((col) => (
               <div key={col.title}>
-                <h3 className="type-label text-text-tertiary">{col.title}</h3>
+                <h3 className="type-label text-accent">{col.title}</h3>
                 <ul className="mt-4 space-y-3">
                   {col.links.map((link) => (
                     <li key={link.key}>
@@ -104,7 +111,7 @@ const PublicFooter: React.FC = React.memo(() => {
 
         <div className="mt-12 flex flex-col gap-4 border-t border-border-subtle pt-6 md:flex-row md:items-center md:justify-between">
           <p className="type-label text-text-tertiary">
-            QYVORA — GHANA, TAMALE · {CURRENT_YEAR}
+            {"QYVORA · GHANA, TAMALE · "}{CURRENT_YEAR}
           </p>
           <p className="type-label text-text-tertiary">
             {"Train like a hacker, become a hacker."}
