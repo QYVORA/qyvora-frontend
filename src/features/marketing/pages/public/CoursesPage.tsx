@@ -51,7 +51,7 @@ const CoursesPage = () => {
           showSearch
           searchPlaceholder={"Search courses..."}
           emptyTitle={"No courses match this filter"}
-          emptyDescription={"Try a different difficulty or check back soon — new courses ship frequently."}
+          emptyDescription={"Try a different difficulty or check back soon: new courses ship frequently."}
         />
       </PublicContainer>
     </div>

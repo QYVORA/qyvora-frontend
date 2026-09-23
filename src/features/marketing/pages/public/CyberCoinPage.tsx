@@ -78,25 +78,23 @@ const CyberCoinPage: React.FC = () => {
             </ScrollReveal>
 
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-              {CP_PILLARS.map((pillar, i) => {
+              {CP_PILLARS.map((pillar) => {
                 const Icon = pillar.icon;
                 return (
-                  <ScrollReveal key={pillar.id} delay={i * 0.08}>
-                    <div className="group relative h-full rounded-2xl border border-border-subtle bg-surface p-5 transition-colors duration-300 hover:border-accent/40 md:p-6">
-                      <div className="flex items-start justify-between">
-                        <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-accent/20 bg-accent/10">
-                          <Icon className="h-5 w-5 text-accent" aria-hidden="true" />
-                        </div>
-                        <span className="type-meta">{pillar.index}</span>
+                  <div key={pillar.id} className="group relative h-full rounded-2xl border border-border-subtle bg-surface p-5 transition-colors duration-300 hover:border-accent/40 md:p-6">
+                    <div className="flex items-start justify-between">
+                      <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-accent/20 bg-accent/10">
+                        <Icon className="h-5 w-5 text-accent" aria-hidden="true" />
                       </div>
-                      <h3 className="mt-5 text-sm font-black uppercase tracking-widest text-text-primary">
-                        {pillar.title}
-                      </h3>
-                      <p className="mt-2 text-xs leading-relaxed text-text-muted">
-                        {pillar.description}
-                      </p>
+                      <span className="type-meta">{pillar.index}</span>
                     </div>
-                  </ScrollReveal>
+                    <h3 className="mt-5 text-sm font-black uppercase tracking-widest text-text-primary">
+                      {pillar.title}
+                    </h3>
+                    <p className="mt-2 text-xs leading-relaxed text-text-muted">
+                      {pillar.description}
+                    </p>
+                  </div>
                 );
               })}
             </div>

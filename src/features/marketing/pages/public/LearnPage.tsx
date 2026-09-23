@@ -222,7 +222,7 @@ const LearnPage: React.FC = () => {
                 <h3 className="type-h3 font-black uppercase tracking-tight text-text-primary">
                   {"Earn CyberPoints on-chain."}
                 </h3>
-                <p className="type-body-sm flex-1">{"Every verified achievement across courses, labs, and bootcamp rooms earns CP — a verifiable record of your skill."}</p>
+                <p className="type-body-sm flex-1">{"Every verified achievement across courses, labs, and bootcamp rooms earns CP: a verifiable record of your skill."}</p>
                 <span className="flex min-h-[48px] items-center gap-2 text-sm font-bold text-accent">
                   {"About CyberPoints"}
                   <ArrowRight className="h-4 w-4" aria-hidden="true" />

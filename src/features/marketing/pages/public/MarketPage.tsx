@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Search, ArrowRight, ShoppingBag } from 'lucide-react';
 import { IconLock, IconMarketplace } from '@/shared/components/icons';
-import { ScrollReveal } from '@/shared/components';
 import api from '@/core/services/api';
 import { Skeleton, ErrorState, BatchPagination } from '@/shared/components/ui';
 import SEO from '@/shared/components/SEO';
@@ -122,9 +121,7 @@ const MarketPage = () => {
                 keyOf={(prod, idx) => prod.id || idx}
                 gridClassName="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 items-stretch"
                 renderItem={(prod) => (
-                  <ScrollReveal amount={0.05} className="h-full">
-                    <ProductCard product={prod} isLoggedIn={!!user} view={view} />
-                  </ScrollReveal>
+                  <ProductCard product={prod} isLoggedIn={!!user} view={view} />
                 )}
               />
               <BatchPagination page={page} totalPages={totalPages} onPageChange={setPage} />

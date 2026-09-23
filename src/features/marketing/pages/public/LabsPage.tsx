@@ -47,7 +47,7 @@ const LabsPage = () => {
           showSearch
           searchPlaceholder={"Search labs..."}
           emptyTitle={"No labs match this filter"}
-          emptyDescription={"Try a different difficulty or check back soon — new labs ship frequently."}
+          emptyDescription={"Try a different difficulty or check back soon: new labs ship frequently."}
         />
       </PublicContainer>
     </div>

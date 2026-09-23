@@ -1,9 +1,8 @@
-import React, { useMemo, useState } from 'react';
+import React, { useMemo, useRef, useState } from 'react';
 import { ArrowRight, Search } from 'lucide-react';
 import { Card } from '@/shared/components/ui/Card';
 import PageHeader from '@/shared/components/ui/PageHeader';
 import PublicContainer from '@/shared/components/layout/PublicContainer';
-import ScrollReveal from '@/shared/components/ScrollReveal';
 import SEO from '@/shared/components/SEO';
 
 import anansiLogo from '@/assets/anansi/anansi-main-logo.webp';
@@ -41,7 +40,7 @@ const TOOLS: ToolEntry[] = [
   { path: '/amanirenas', name: 'amanirenas', logo: amanirenasLogo, title: 'Amanirenas', category: 'Mobile', desc: 'Offline iOS/Android app security assessment in Go: static analysis, hardcoded secrets, weak crypto, insecure endpoints, WebView posture and evidence-backed risk scoring.' },
   { path: '/sundiata', name: 'sundiata', logo: sundiataLogo, title: 'Sundiata', category: 'Active Directory', desc: 'Identity & access security assessment for Active Directory in Go: identity discovery, account posture, password policies, sensitive memberships. Credentials are never stored or printed.' },
   { path: '/timbuktu', name: 'timbuktu', logo: timbuktuLogo, title: 'Timbuktu', category: 'Forensics', desc: 'Incident response & digital forensics framework in Go: source integrity, artifact identification, filesystem lifecycle, memory postmortems, log analysis and evidence-backed timelines.' },
-  { path: '/kush', name: 'kush', logo: kushLogo, title: 'Kush', category: 'Malware', desc: 'Offline malware sample analysis framework in Go: hashing, metadata, static posture, strings, network indicators, IOC extraction and threat classification — without executing samples.' },
+  { path: '/kush', name: 'kush', logo: kushLogo, title: 'Kush', category: 'Malware', desc: 'Offline malware sample analysis framework in Go: hashing, metadata, static posture, strings, network indicators, IOC extraction and threat classification, without executing samples.' },
   { path: '/imhotep', name: 'imhotep', logo: imhotepLogo, title: 'Imhotep', category: 'Cloud', desc: 'Offline cloud snapshot analysis framework in Go: IAM posture, storage exposure, network exposure, container posture, secret redaction and misconfiguration detection.' },
 ];
 
@@ -53,6 +52,7 @@ const TOOLS: ToolEntry[] = [
 const ToolsIndexPage: React.FC = () => {
   const [query, setQuery] = useState('');
   const [activeCategory, setActiveCategory] = useState('');
+  const resultsRef = useRef<HTMLDivElement>(null);
 
   const allCategories = useMemo(() => Array.from(new Set(TOOLS.map((t) => t.category))).sort(), []);
 
@@ -67,6 +67,11 @@ const ToolsIndexPage: React.FC = () => {
     }
     return result;
   }, [activeCategory, query]);
+
+  const chooseCategory = (category: string) => {
+    setActiveCategory(category);
+    requestAnimationFrame(() => resultsRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' }));
+  };
 
   return (
     <div className="w-full bg-canvas">
@@ -83,11 +88,11 @@ const ToolsIndexPage: React.FC = () => {
         />
 
         <div className="mt-10 flex flex-col gap-3">
-          <div className="scroll-x no-scrollbar flex w-full flex-nowrap items-center gap-1.5">
+          <div className="flex flex-wrap items-center gap-1.5">
             <button
-              onClick={() => setActiveCategory('')}
+              onClick={() => chooseCategory('')}
               aria-pressed={!activeCategory}
-              className={`inline-flex min-h-[44px] shrink-0 items-center justify-center whitespace-nowrap rounded-xl px-3 text-xs font-black uppercase tracking-widest transition-colors ${
+              className={`inline-flex min-h-[44px] items-center justify-center whitespace-nowrap rounded-xl px-3 text-xs font-black uppercase tracking-widest transition-colors ${
                 !activeCategory ? 'bg-accent text-on-accent' : 'border border-border bg-surface-raised text-text-muted hover:border-accent/50 hover:text-accent'
               }`}
             >
@@ -96,9 +101,9 @@ const ToolsIndexPage: React.FC = () => {
             {allCategories.map((category) => (
               <button
                 key={category}
-                onClick={() => setActiveCategory(category)}
+                onClick={() => chooseCategory(category)}
                 aria-pressed={activeCategory === category}
-                className={`inline-flex min-h-[44px] shrink-0 items-center justify-center whitespace-nowrap rounded-xl px-3 text-xs font-black uppercase tracking-widest transition-colors ${
+                className={`inline-flex min-h-[44px] items-center justify-center whitespace-nowrap rounded-xl px-3 text-xs font-black uppercase tracking-widest transition-colors ${
                   activeCategory === category ? 'bg-accent text-on-accent' : 'border border-border bg-surface-raised text-text-muted hover:border-accent/50 hover:text-accent'
                 }`}
               >
@@ -117,37 +122,40 @@ const ToolsIndexPage: React.FC = () => {
               className="w-full rounded-xl border border-border-subtle bg-surface py-3 pl-10 pr-3 text-sm text-text-primary transition-colors outline-none focus:border-accent"
             />
           </div>
+          <p className="type-meta" role="status" aria-live="polite">
+            {filtered.length === TOOLS.length
+              ? `${TOOLS.length} tools`
+              : `${filtered.length} of ${TOOLS.length} tools${activeCategory ? ` · ${activeCategory}` : ''}`}
+          </p>
         </div>
 
-        <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {filtered.map((tool, i) => (
-            <ScrollReveal key={tool.path} delay={(i % 3) * 0.08} className="h-full">
-              <Card to={tool.path} interactive className="flex h-full flex-col gap-5 p-6">
-                <div className="flex items-center gap-3">
-                  <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl border border-border-subtle bg-canvas">
-                    <img
-                      src={tool.logo}
-                      alt=""
-                      aria-hidden="true"
-                      className="h-7 w-7 object-contain"
-                    />
-                  </span>
-                  <div className="min-w-0">
-                    <h3 className="text-lg font-black uppercase tracking-tight text-text-primary">
-                      {tool.title}
-                    </h3>
-                    <span className="type-meta text-text-tertiary">{tool.name}</span>
-                  </div>
-                </div>
-
-                <p className="type-body-sm flex-1 line-clamp-3">{tool.desc}</p>
-
-                <span className="flex items-center gap-1.5 pt-1 text-sm font-bold text-accent">
-                  {"Read the docs"}
-                  <ArrowRight className="h-4 w-4" aria-hidden="true" />
+        <div ref={resultsRef} className="mt-8 scroll-mt-24 grid gap-4 sm:grid-cols-2 lg:grid-cols-3" tabIndex={-1}>
+          {filtered.map((tool) => (
+            <Card key={tool.path} to={tool.path} interactive className="flex h-full flex-col gap-5 p-6">
+              <div className="flex items-center gap-3">
+                <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl border border-border-subtle bg-canvas">
+                  <img
+                    src={tool.logo}
+                    alt=""
+                    aria-hidden="true"
+                    className="h-7 w-7 object-contain"
+                  />
                 </span>
-              </Card>
-            </ScrollReveal>
+                <div className="min-w-0">
+                  <h3 className="text-lg font-black uppercase tracking-tight text-text-primary">
+                    {tool.title}
+                  </h3>
+                  <span className="type-meta text-text-tertiary">{tool.name}</span>
+                </div>
+              </div>
+
+              <p className="type-body-sm flex-1 line-clamp-3">{tool.desc}</p>
+
+              <span className="flex items-center gap-1.5 pt-1 text-sm font-bold text-accent">
+                {"Read the docs"}
+                <ArrowRight className="h-4 w-4" aria-hidden="true" />
+              </span>
+            </Card>
           ))}
         </div>
       </PublicContainer>

@@ -20,7 +20,7 @@ const LearningFilterStrip: React.FC<LearningFilterStripProps> = ({
   if (!filters || filters.length === 0) return null;
 
   return (
-    <div className="border border-border/50 rounded-xl bg-bg-card p-1.5 flex items-center gap-1 scroll-x no-scrollbar flex-nowrap">
+    <div className="border border-border/50 rounded-xl bg-bg-card p-1.5 flex flex-wrap items-center gap-1">
       {filters.map((filter) => {
         const isActive = activeFilter === filter.id;
         return (
@@ -28,7 +28,7 @@ const LearningFilterStrip: React.FC<LearningFilterStripProps> = ({
             key={filter.id}
             onClick={() => onFilterChange(filter.id)}
             aria-pressed={isActive}
-            className={`flex-1 flex items-center justify-center gap-1.5 px-4 py-2 rounded-lg text-xs font-black uppercase tracking-widest transition-[background-color,color,box-shadow] whitespace-nowrap ${
+            className={`min-h-[44px] flex items-center justify-center gap-1.5 px-4 py-2 rounded-lg text-xs font-black uppercase tracking-widest transition-[background-color,color,box-shadow] ${
               isActive
                 ? 'bg-accent text-on-accent shadow-sm'
                 : 'text-text-muted hover:text-accent hover:bg-bg-elevated'

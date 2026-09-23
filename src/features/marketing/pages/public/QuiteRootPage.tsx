@@ -1,6 +1,5 @@
 import { Binary, Cpu, Palette, ShieldCheck, Users } from 'lucide-react';
 import { IconArrowRight } from '@/shared/components/icons';
-import { ScrollReveal } from '@/shared/components';
 import SEO from '@/shared/components/SEO';
 import PageHeader from '@/shared/components/ui/PageHeader';
 import PublicContainer from '@/shared/components/layout/PublicContainer';
@@ -25,44 +24,42 @@ const ResearcherCard = ({ researcher }: { researcher: Researcher }) => {
   const ResearcherIcon = RESEARCHER_ICONS[researcher.id] ?? ShieldCheck;
 
   return (
-    <ScrollReveal className="h-full">
-      <article className="flex h-full flex-col overflow-hidden rounded-2xl border border-border bg-bg-card">
-        <div className="relative aspect-[4/3] w-full overflow-hidden bg-surface">
-          <img
-            src={researcher.image}
-            alt={researcher.name}
-            width={researcher.width}
-            height={researcher.height}
-            loading="lazy"
-            className="h-full w-full object-cover transition-transform duration-700 hover:scale-105"
-          />
-          <span className="absolute left-3 top-3 flex h-8 w-8 items-center justify-center rounded-lg border border-border-subtle bg-bg-card/90 font-mono text-xs font-black tracking-widest text-accent">
-            {RESEARCHER_MARKERS[researcher.id]}
+    <article className="flex h-full flex-col overflow-hidden rounded-2xl border border-border bg-bg-card">
+      <div className="relative aspect-[4/3] w-full overflow-hidden bg-surface">
+        <img
+          src={researcher.image}
+          alt={researcher.name}
+          width={researcher.width}
+          height={researcher.height}
+          loading="lazy"
+          className="h-full w-full object-cover transition-transform duration-700 hover:scale-105"
+        />
+        <span className="absolute left-3 top-3 flex h-8 w-8 items-center justify-center rounded-lg border border-border-subtle bg-bg-card/90 font-mono text-xs font-black tracking-widest text-accent">
+          {RESEARCHER_MARKERS[researcher.id]}
+        </span>
+      </div>
+
+      <div className="flex flex-1 flex-col p-5">
+        <div className="flex items-center justify-between gap-3">
+          <span className="rounded-lg border border-accent/30 bg-accent/10 px-2 py-0.5 text-tiny font-black uppercase tracking-widest text-accent">
+            {researcher.role}
           </span>
+          <ResearcherIcon className="h-4 w-4 shrink-0 text-accent" aria-hidden="true" />
         </div>
 
-        <div className="flex flex-1 flex-col p-5">
-          <div className="flex items-center justify-between gap-3">
-            <span className="rounded-lg border border-accent/30 bg-accent/10 px-2 py-0.5 text-tiny font-black uppercase tracking-widest text-accent">
-              {researcher.role}
-            </span>
-            <ResearcherIcon className="h-4 w-4 shrink-0 text-accent" aria-hidden="true" />
-          </div>
+        <h3 className="mt-3 text-lg font-black uppercase tracking-tight leading-tight text-text-primary break-words">
+          {researcher.name}
+        </h3>
 
-          <h3 className="mt-3 text-lg font-black uppercase tracking-tight leading-tight text-text-primary break-words">
-            {researcher.name}
-          </h3>
+        <p className="mt-1.5 text-tiny font-black uppercase tracking-widest text-accent">
+          Research node // {researcher.id.toUpperCase()}
+        </p>
 
-          <p className="mt-1.5 text-tiny font-black uppercase tracking-widest text-accent">
-            Research node // {researcher.id.toUpperCase()}
-          </p>
-
-          <p className="mt-3 text-xs font-mono leading-relaxed text-text-secondary line-clamp-3">
-            {researcher.bio}
-          </p>
-        </div>
-      </article>
-    </ScrollReveal>
+        <p className="mt-3 text-xs font-mono leading-relaxed text-text-secondary line-clamp-3">
+          {researcher.bio}
+        </p>
+      </div>
+    </article>
   );
 };
 

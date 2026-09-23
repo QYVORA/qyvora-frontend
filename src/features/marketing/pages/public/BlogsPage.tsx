@@ -1,6 +1,5 @@
-import { useMemo, useState } from 'react';
+import { useMemo, useRef, useState } from 'react';
 import { Search, FileText } from 'lucide-react';
-import { ScrollReveal } from '@/shared/components';
 import SEO from '@/shared/components/SEO';
 import PageHeader from '@/shared/components/ui/PageHeader';
 import PublicContainer from '@/shared/components/layout/PublicContainer';
@@ -11,6 +10,7 @@ import BlogCard from './cards/BlogCard';
 const BlogsPage = () => {
   const [query, setQuery] = useState('');
   const [activeTag, setActiveTag] = useState('');
+  const resultsRef = useRef<HTMLDivElement>(null);
 
   const allTags = useMemo(() => {
     const tags = new Set<string>();
@@ -27,6 +27,11 @@ const BlogsPage = () => {
     }
     return result;
   }, [activeTag, query]);
+
+  const chooseTag = (tag: string) => {
+    setActiveTag(tag);
+    requestAnimationFrame(() => resultsRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' }));
+  };
 
   return (
     <div className="min-h-full w-full bg-canvas">
@@ -47,11 +52,11 @@ const BlogsPage = () => {
 
         <div className="mt-10">
           <div className="flex flex-col gap-3">
-            <div className="scroll-x no-scrollbar flex w-full flex-nowrap items-center gap-1.5">
+            <div className="flex flex-wrap items-center gap-1.5">
               <button
-                onClick={() => setActiveTag('')}
+                onClick={() => chooseTag('')}
                 aria-pressed={!activeTag}
-                className={`inline-flex min-h-[44px] shrink-0 items-center justify-center whitespace-nowrap rounded-xl px-3 text-xs font-black uppercase tracking-widest transition-colors ${
+                className={`inline-flex min-h-[44px] items-center justify-center whitespace-nowrap rounded-xl px-3 text-xs font-black uppercase tracking-widest transition-colors ${
                   !activeTag ? 'bg-accent text-on-accent' : 'border border-border bg-surface-raised text-text-muted hover:border-accent/50 hover:text-accent'
                 }`}
               >
@@ -60,9 +65,9 @@ const BlogsPage = () => {
               {allTags.map((tag) => (
                 <button
                   key={tag}
-                  onClick={() => setActiveTag(tag)}
+                  onClick={() => chooseTag(tag)}
                   aria-pressed={activeTag === tag}
-                  className={`inline-flex min-h-[44px] shrink-0 items-center justify-center whitespace-nowrap rounded-xl px-3 text-xs font-black uppercase tracking-widest transition-colors ${
+                  className={`inline-flex min-h-[44px] items-center justify-center whitespace-nowrap rounded-xl px-3 text-xs font-black uppercase tracking-widest transition-colors ${
                     activeTag === tag ? 'bg-accent text-on-accent' : 'border border-border bg-surface-raised text-text-muted hover:border-accent/50 hover:text-accent'
                   }`}
                 >
@@ -81,6 +86,11 @@ const BlogsPage = () => {
                 className="w-full rounded-xl border border-border-subtle bg-surface py-3 pl-10 pr-3 text-sm text-text-primary transition-colors outline-none focus:border-accent"
               />
             </div>
+            <p className="type-meta" role="status" aria-live="polite">
+              {filtered.length === BLOG_POSTS.length
+                ? `${BLOG_POSTS.length} articles`
+                : `${filtered.length} of ${BLOG_POSTS.length} articles${activeTag ? ` · ${activeTag}` : ''}`}
+            </p>
           </div>
 
           {filtered.length === 0 ? (
@@ -90,11 +100,9 @@ const BlogsPage = () => {
               className="mt-8"
             />
           ) : (
-            <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 md:gap-4 items-stretch">
+            <div ref={resultsRef} className="mt-8 scroll-mt-24 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 md:gap-4 items-stretch" tabIndex={-1}>
               {filtered.map((post) => (
-                <ScrollReveal amount={0.05} className="h-full" key={post.slug}>
-                  <BlogCard post={post} />
-                </ScrollReveal>
+                <BlogCard key={post.slug} post={post} />
               ))}
             </div>
           )}

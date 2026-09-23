@@ -5,7 +5,6 @@ import PageHeader from '@/shared/components/ui/PageHeader';
 import PublicContainer from '@/shared/components/layout/PublicContainer';
 import Button from '@/shared/components/ui/Button';
 import { Card } from '@/shared/components/ui/Card';
-import ScrollReveal from '@/shared/components/ScrollReveal';
 import { IconTerminal, IconCode, IconNetwork } from '@/shared/components/icons';
 
 type SimKey = 'terminal' | 'ide' | 'network';
@@ -45,28 +44,26 @@ const SimulationsPage = () => {
             const Icon = sim.icon;
             const features = sim.features;
             return (
-              <ScrollReveal key={sim.id}>
-                <Card interactive className="flex h-full min-h-[240px] flex-col gap-3 p-6">
-                  <span className="flex h-10 w-10 items-center justify-center rounded-lg border border-border-subtle bg-surface-raised text-accent">
-                    <Icon className="h-5 w-5" aria-hidden="true" />
-                  </span>
-                  <h3 className="type-h3 font-black uppercase tracking-tight text-text-primary">
-                    {sim.title}
-                  </h3>
-                  <p className="type-body-sm flex-1">{sim.description}</p>
-                  <div className="flex flex-wrap gap-1.5">
-                    {features.slice(0, 3).map((feature, i) => (
-                      <span key={i} className="type-meta rounded-md border border-border-subtle bg-surface-raised px-2 py-1">
-                        {feature}
-                      </span>
-                    ))}
-                  </div>
-                  <Button to={sim.slug} variant="secondary" size="sm">
-                    {"Run the Demo"}
-                    <ArrowRight className="h-4 w-4" aria-hidden="true" />
-                  </Button>
-                </Card>
-              </ScrollReveal>
+              <Card key={sim.id} interactive className="flex h-full min-h-[240px] flex-col gap-3 p-6">
+                <span className="flex h-10 w-10 items-center justify-center rounded-lg border border-border-subtle bg-surface-raised text-accent">
+                  <Icon className="h-5 w-5" aria-hidden="true" />
+                </span>
+                <h3 className="type-h3 font-black uppercase tracking-tight text-text-primary">
+                  {sim.title}
+                </h3>
+                <p className="type-body-sm flex-1">{sim.description}</p>
+                <div className="flex flex-wrap gap-1.5">
+                  {features.slice(0, 3).map((feature, i) => (
+                    <span key={i} className="type-meta rounded-md border border-border-subtle bg-surface-raised px-2 py-1">
+                      {feature}
+                    </span>
+                  ))}
+                </div>
+                <Button to={sim.slug} variant="secondary" size="sm">
+                  {"Run the Demo"}
+                  <ArrowRight className="h-4 w-4" aria-hidden="true" />
+                </Button>
+              </Card>
             );
           })}
         </div>
