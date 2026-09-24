@@ -462,7 +462,7 @@ top-level map:
 - **Bands**: alternating sections on `bg-surface` for rhythm.
 - **Generated art**: a curated set of dark scenes in `src/assets/backgrounds/`
   backs the landing hero, featured-learning band, HPB/CP header bands, final
-  CTA, auth panel, and 404 (webp-only in repo). Pattern: `relative overflow-hidden`
+  CTA, and auth panel (webp-only in repo). Pattern: `relative overflow-hidden`
   root + decorative `absolute inset-0 object-cover` image + `relative` content +
   `data-theme-persist="dark"` on the root. **No scrim/opacity/blur over the art.**
   See `docs/BACKGROUNDS.md`.

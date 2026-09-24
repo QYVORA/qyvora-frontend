@@ -1,51 +1,71 @@
-import { Link } from 'react-router-dom';
-import { IconArrowRight, IconTerminal } from '@/shared/components/icons';
+import { ArrowRight, LayoutDashboard } from 'lucide-react';
 import SEO from '../components/SEO';
-import Dobia from '@/shared/components/Dobia';
-import notFoundDobiaBg from '@/assets/backgrounds/notfound-dobia.webp';
+import Button from '@/shared/components/ui/Button';
+import { useAuth } from '@/core/contexts/AuthContext';
+import ADMIN_PATH from '@/shared/utils/adminPath';
 
 const NotFoundPage = () => {
+  const { user, loading } = useAuth();
+  const dashboardHref = user?.isAdmin ? `${ADMIN_PATH}/dashboard` : '/dashboard';
+
   return (
     <div
-      className="relative min-h-dvh overflow-hidden bg-bg flex flex-col items-center justify-center px-3 md:px-4 lg:px-6 py-20"
+      className="flex min-h-dvh w-full flex-col items-center justify-center bg-bg px-3 py-20 md:px-4 lg:px-6"
       data-theme-persist="dark"
     >
-      <img
-        src={notFoundDobiaBg}
-        alt=""
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-0 h-full w-full select-none object-cover"
-      />
       <SEO
-        title={"404 - Node Not Found"}
-        description={"The requested page could not be located on the QYVORA network."}
+        title="404 - Node Not Found"
+        description="The requested page could not be located on the QYVORA network."
         noindex
       />
-      <div className="relative z-10 flex flex-col items-center text-center max-w-2xl">
-        <Dobia expression="confused" size="xl" />
 
-        <div className="relative mt-5 w-full rounded-2xl border border-border/50 bg-bg-card px-6 sm:px-8 py-5 sm:py-6 shadow-[var(--card-shimmer)]">
-          <span
-            aria-hidden
-            className="absolute -top-1.5 left-1/2 -translate-x-1/2 w-3 h-3 rotate-45 border-l border-t border-border/50 bg-bg-card"
-          />
-          <p className="inline-flex items-center gap-2 font-mono text-xs font-black uppercase tracking-widest text-accent mb-3">
-            <IconTerminal size={14} /> // {"404 - Node Not Found"}
-          </p>
-          <h1 className="text-3xl sm:text-4xl font-black uppercase tracking-tight text-text-primary leading-none">
-            {"Lost in the Network?"}
-          </h1>
-          <p className="text-sm sm:text-base text-text-secondary leading-relaxed mt-3 font-mono">
-            {"The page you were looking for has been scrubbed from the network. Let's get you back to base."}
-          </p>
+      <div className="w-full max-w-xl overflow-hidden rounded-2xl border border-border/50 bg-bg-card shadow-[var(--card-shadow)]">
+        <div className="flex items-center justify-between gap-2 border-b border-border/20 bg-bg-elevated px-4 py-3">
+          <span className="truncate font-mono text-xs text-text-muted">
+            {"qyvora@core:~$"}
+          </span>
+          <span className="shrink-0 font-mono text-xs font-black uppercase tracking-widest text-accent">
+            {"HTTP 404"}
+          </span>
         </div>
 
-        <Link
-          to="/"
-          className="btn-primary inline-flex items-center justify-center gap-2.5 !px-8 sm:!px-10 !py-3 sm:!py-4 whitespace-nowrap mt-6"
-        >
-          {"Return to Base"} <IconArrowRight size={18} />
-        </Link>
+        <div className="px-5 py-10 text-center sm:px-10 sm:py-14">
+          <span
+            aria-hidden="true"
+            className="block leading-none tracking-tight text-text-primary text-6xl font-black md:text-8xl"
+          >
+            404
+          </span>
+          <h1 className="mt-4 text-2xl font-black uppercase tracking-tight text-text-primary md:text-3xl">
+            {"Lost in the Network?"}
+          </h1>
+          <p className="mx-auto mt-4 max-w-md font-mono text-sm leading-relaxed text-text-secondary md:text-base">
+            {"The page you were looking for has been scrubbed from the network or moved to a new address. Let's get you back to base."}
+          </p>
+
+          <div className="mt-9 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-center">
+            <Button
+              to="/"
+              variant="secondary"
+              size="lg"
+              className="w-full sm:w-auto"
+              icon={<ArrowRight className="h-4 w-4 rotate-180" />}
+            >
+              {"Return to Base"}
+            </Button>
+            {!loading && user && (
+              <Button
+                to={dashboardHref}
+                variant="primary"
+                size="lg"
+                className="w-full sm:w-auto"
+                trailingIcon={<LayoutDashboard className="h-4 w-4" />}
+              >
+                {"Go to Dashboard"}
+              </Button>
+            )}
+          </div>
+        </div>
       </div>
     </div>
   );

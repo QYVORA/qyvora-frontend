@@ -34,7 +34,6 @@ backs high-emphasis marketing regions:
 | CP page header band | `CyberCoinPage` | `cp-header` |
 | Final CTA card (Dobia signs off) | `FinalCtaBlock` | `final-cta-dobia` |
 | Auth hero panel | `AuthHero` | `auth-dobia` (Dobia keeps watch) |
-| 404 page | `NotFoundPage` | `notfound-dobia` (Dobia is lost) |
 
 **Delivery**: one `.webp` (quality 80) per image is committed; the large `.png`
 sources are gitignored (`src/assets/backgrounds/*.png`) and kept outside the
