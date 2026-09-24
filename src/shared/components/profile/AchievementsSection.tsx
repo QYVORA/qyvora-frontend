@@ -1,14 +1,13 @@
-import React, { useState, useMemo } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
+import { useMemo } from 'react';
+import { motion } from 'motion/react';
 import { useReducedMotion } from '@/shared/hooks/useReducedMotion';
-import { Award, ChevronDown, ChevronUp, FlaskConical } from 'lucide-react';
-import { type Achievement, RARITY_STYLES } from './AchievementCard';
+import { RARITY_STYLES } from './AchievementCard';
 import HpbAvatar from '@/shared/components/HpbAvatar';
 import BootcampBadge from '@/shared/components/BootcampBadge';
 import LabBadge from '@/shared/components/LabBadge';
 import { QyvoraMark } from '@/shared/components/brand';
 import ModuleHeader from './ModuleHeader';
-import { BOOTCAMP_CONFIG, PHASE_COLORS } from '@/features/student/constants/bootcampStructure';
+import { BOOTCAMP_CONFIG } from '@/features/student/constants/bootcampStructure';
 import { COURSES } from '@/features/student/data/courses/courseData';
 import { COURSE_ICON_MAP } from '@/features/student/data/courses/courseIcons';
 
@@ -30,9 +29,15 @@ interface AchievementsSectionProps {
   skillAchievements?: SkillAchievement[];
 }
 
-const PINNED_RARITIES = new Set(['rare', 'epic', 'legendary']);
-
 const LAB_BADGE_IDS = ['privesc', 'passwords', 'sqli', 'osint', 'killchain'] as const;
+
+function CountBadge({ count }: { count: number }) {
+  return (
+    <span className="rounded-md bg-accent/10 px-2 py-0.5 text-[10px] font-black uppercase tracking-widest text-accent">
+      {count}
+    </span>
+  );
+}
 
 const AchievementsSection: React.FC<AchievementsSectionProps> = ({
   rooms,
@@ -44,7 +49,6 @@ const AchievementsSection: React.FC<AchievementsSectionProps> = ({
   skillAchievements = [],
 }) => {
   const prefersReduced = useReducedMotion();
-  const [expanded, setExpanded] = useState(false);
 
   const phaseAchievements = useMemo(() => {
     const phaseMap = new Map(BOOTCAMP_CONFIG.phases.map((p) => [p.id, p]));
@@ -58,7 +62,6 @@ const AchievementsSection: React.FC<AchievementsSectionProps> = ({
         description: phase!.codename,
         rarity: 'uncommon' as const,
         iconNode: <HpbAvatar variant={phase!.id as 'phase1'} size="xs" />,
-        color: PHASE_COLORS[phase!.id] || '#06B66F',
       }));
   }, [completedPhaseIds]);
 
@@ -81,258 +84,189 @@ const AchievementsSection: React.FC<AchievementsSectionProps> = ({
   }, [completedCourseIds]);
 
   const labCount = labsCompleted || rooms.length;
-
-  const pinnedPhaseCount = phaseAchievements.filter((a) => PINNED_RARITIES.has(a.rarity)).length;
-  const pinnedCourseCount = courseAchievements.filter((a) => PINNED_RARITIES.has(a.rarity)).length;
-  const pinnedLabCount = labCount >= 10 ? 1 : 0;
-  const pinnedSkillCount = skillAchievements.filter((sa) => PINNED_RARITIES.has(sa.rarity)).length;
-  const totalPinned = pinnedPhaseCount + pinnedCourseCount + pinnedLabCount + pinnedSkillCount;
-
   const totalAchievements = phaseAchievements.length + courseAchievements.length + (labCount > 0 ? 1 : 0) + skillAchievements.length;
 
   if (totalAchievements === 0) {
     return (
-      <div className="rounded-2xl border border-border/50 bg-bg-card p-6">
-        <ModuleHeader
-          icon={<Award className="w-4 h-4 text-accent" />}
-          iconClassName="bg-accent/10"
-          title={"Achievements"}
-        />
-        <p className="text-xs text-text-muted text-center py-4">
-          {"No achievements yet. Start learning to earn your first!"}
+      <div className="rounded-2xl border border-border-subtle bg-surface p-5 md:p-6">
+        <ModuleHeader icon={<QyvoraMark className="h-4 w-4" />} title="Achievements" />
+        <p className="py-4 text-center text-sm text-text-muted">
+          No achievements yet. Start learning to earn your first!
         </p>
       </div>
     );
   }
 
   return (
-    <div className="rounded-2xl border border-border/50 bg-bg-card overflow-hidden">
+    <div className="rounded-2xl border border-border-subtle bg-surface p-5 md:p-6">
       <ModuleHeader
-        icon={<Award className="w-4 h-4 text-accent" />}
-        iconClassName="bg-accent/10"
-        title={"Achievements"}
-        trailing={
-          <span className="px-2 py-1 bg-accent/10 text-accent text-xs font-black rounded-lg">
-            {totalAchievements}
-          </span>
-        }
+        icon={<QyvoraMark className="h-4 w-4" />}
+        title="Achievements"
+        trailing={<CountBadge count={totalAchievements} />}
       />
 
-      <div className="p-5 space-y-8">
+      <div className="space-y-8">
         {bootcampCompleted && (
           <motion.div
             initial={prefersReduced ? false : { opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: prefersReduced ? 0 : 0.35 }}
-            className="flex items-center gap-4 rounded-xl border border-border/50 bg-bg-elevated/60 px-4 py-3"
+            className="flex items-center gap-4 rounded-xl border border-border-subtle bg-surface-raised/60 px-4 py-3"
           >
-            <BootcampBadge completed className="w-16 sm:w-20" />
-            <div>
-              <h3 className="text-sm font-black text-text-primary">
-                HPB Graduate
-              </h3>
-              <p className="text-xs text-text-muted">
+            <BootcampBadge completed className="w-16 shrink-0 sm:w-20" />
+            <div className="min-w-0">
+              <h3 className="text-sm font-black text-text-primary">HPB Graduate</h3>
+              <p className="truncate text-xs text-text-muted">
                 Completed the Hacker Protocol Bootcamp
               </p>
             </div>
           </motion.div>
         )}
 
-        {/* Bootcamp Phases */}
         {phaseAchievements.length > 0 && (
           <div>
-            <div className="mb-3 flex items-center gap-2">
-              <Award className="w-4 h-4 text-accent" />
-              <h4 className="text-xs font-black uppercase tracking-widest text-text-muted">
+            <div className="mb-3 flex items-center justify-between gap-2">
+              <h4 className="text-[10px] font-black uppercase tracking-widest text-text-muted">
                 Bootcamp Phases
               </h4>
-              <span className="px-2 py-1 bg-accent/10 text-accent text-xs font-black rounded-lg">
-                {phaseAchievements.length}
-              </span>
+              <CountBadge count={phaseAchievements.length} />
             </div>
             <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
-            <AnimatePresence mode="popLayout">
               {phaseAchievements.map((a, idx) => (
                 <motion.div
                   key={a.id}
-                  layout
-                  initial={prefersReduced ? false : { opacity: 0, scale: 0.9 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={prefersReduced ? undefined : { opacity: 0, scale: 0.9 }}
+                  initial={prefersReduced ? false : { opacity: 0, y: 6 }}
+                  animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: prefersReduced ? 0 : 0.3, delay: prefersReduced ? 0 : idx * 0.03 }}
-                  className="relative group flex flex-col items-center text-center p-4 rounded-xl border border-border/50 bg-bg-elevated/60 transition-[transform,background-color,border-color,color,box-shadow] duration-[var(--dur-base)] hover:scale-[1.02] cursor-default"
+                  className="flex flex-col items-center rounded-xl border border-border-subtle bg-surface-raised/60 p-4 text-center"
                 >
-                  <div className="w-12 h-12 rounded-xl flex items-center justify-center mb-3 bg-bg-elevated">
+                  <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-xl bg-surface">
                     {a.iconNode}
                   </div>
-                  <h4 className="text-xs font-black uppercase tracking-widest text-text-primary leading-tight mb-1">
+                  <h4 className="mb-1 text-xs font-black uppercase tracking-widest leading-tight text-text-primary">
                     {a.title}
                   </h4>
                   {a.description && (
-                    <p className="text-xs text-text-muted leading-snug line-clamp-2">
+                    <p className="line-clamp-2 text-xs leading-snug text-text-muted">
                       {a.description}
                     </p>
                   )}
-                  {a.color && (
-                    <span
-                      className="mt-2 inline-block w-2 h-2 rounded-full"
-                      style={{ backgroundColor: a.color }}
-                    />
-                  )}
                 </motion.div>
               ))}
-            </AnimatePresence>
+            </div>
           </div>
-        </div>
-      )}
+        )}
 
-      {/* Courses */}
-      {courseAchievements.length > 0 && (
-        <div>
-          <div className="mb-3 flex items-center gap-2">
-            <Award className="w-4 h-4 text-info" />
-            <h4 className="text-xs font-black uppercase tracking-widest text-text-muted">
-              Courses
-            </h4>
-            <span className="px-2 py-1 bg-info/10 text-info text-xs font-black rounded-lg">
-              {courseAchievements.length}
-            </span>
-          </div>
-          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
-            <AnimatePresence mode="popLayout">
+        {courseAchievements.length > 0 && (
+          <div>
+            <div className="mb-3 flex items-center justify-between gap-2">
+              <h4 className="text-[10px] font-black uppercase tracking-widest text-text-muted">
+                Courses
+              </h4>
+              <CountBadge count={courseAchievements.length} />
+            </div>
+            <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
               {courseAchievements.map((a, idx) => {
                 const IconComp = a.IconComponent;
                 return (
                   <motion.div
                     key={a.id}
-                    layout
-                    initial={prefersReduced ? false : { opacity: 0, scale: 0.9 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    exit={prefersReduced ? undefined : { opacity: 0, scale: 0.9 }}
+                    initial={prefersReduced ? false : { opacity: 0, y: 6 }}
+                    animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: prefersReduced ? 0 : 0.3, delay: prefersReduced ? 0 : idx * 0.03 }}
-                  className="relative group flex flex-col items-center text-center p-4 rounded-xl border border-border/50 bg-bg-elevated/60 transition-[transform,background-color,border-color,color,box-shadow] duration-[var(--dur-base)] hover:scale-[1.02] cursor-default"
+                    className="flex flex-col items-center rounded-xl border border-border-subtle bg-surface-raised/60 p-4 text-center"
                   >
-                    <div className="w-12 h-12 rounded-xl flex items-center justify-center mb-3 bg-info/10">
+                    <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-xl bg-surface">
                       {IconComp ? (
-                        <IconComp className="w-6 h-6 text-info" />
+                        <IconComp className="h-6 w-6" />
                       ) : (
-                        <QyvoraMark className="w-5 h-5" />
+                        <QyvoraMark className="h-5 w-5" />
                       )}
                     </div>
-                    <h4 className="text-xs font-black uppercase tracking-widest text-text-primary leading-tight mb-1">
+                    <h4 className="mb-1 text-xs font-black uppercase tracking-widest leading-tight text-text-primary">
                       {a.title}
                     </h4>
                     {a.description && (
-                      <p className="text-xs text-text-muted leading-snug line-clamp-2">
+                      <p className="line-clamp-2 text-xs leading-snug text-text-muted">
                         {a.description}
                       </p>
                     )}
                   </motion.div>
                 );
               })}
-            </AnimatePresence>
+            </div>
           </div>
-        </div>
-      )}
+        )}
 
-      {/* Labs */}
-      {labCount > 0 && (
-        <div>
-          <div className="mb-3 flex items-center gap-2">
-            <FlaskConical className="w-4 h-4 text-danger" />
-            <h4 className="text-xs font-black uppercase tracking-widest text-text-muted">
-              Labs
-            </h4>
-            <span className="px-2 py-1 bg-danger/10 text-danger text-xs font-black rounded-lg">
-              {labCount}
-            </span>
+        {labCount > 0 && (
+          <div>
+            <div className="mb-3 flex items-center justify-between gap-2">
+              <h4 className="text-[10px] font-black uppercase tracking-widest text-text-muted">
+                Labs
+              </h4>
+              <CountBadge count={labCount} />
+            </div>
+            <div className="mb-3 flex items-center justify-between gap-3 rounded-xl border border-border-subtle bg-surface-raised/60 px-4 py-4 sm:gap-6">
+              {LAB_BADGE_IDS.map((labId) => (
+                <LabBadge key={labId} labId={labId} className="w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20" />
+              ))}
+            </div>
+            <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
+              <h4 className="text-xs font-black uppercase tracking-widest text-text-primary">
+                Lab Operator
+              </h4>
+              <p className="text-xs leading-snug text-text-muted">
+                {`${labCount} labs completed`}
+              </p>
+              {labCount >= 5 && (
+                <span className="rounded px-1.5 py-0.5 text-[10px] font-black uppercase tracking-wider bg-accent/10 text-accent">
+                  {labCount >= 10 ? 'rare' : 'uncommon'}
+                </span>
+              )}
+            </div>
           </div>
-          <div className="mb-3 flex items-center justify-between gap-3 sm:gap-6 rounded-xl border border-border/50 bg-bg-elevated/40 px-4 py-4">
-            {LAB_BADGE_IDS.map((labId) => (
-              <LabBadge key={labId} labId={labId} className="w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20" />
-            ))}
-          </div>
-          <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
-            <h4 className="text-xs font-black uppercase tracking-widest text-text-primary">
-              {"Lab Operator"}
-            </h4>
-            <p className="text-xs text-text-muted leading-snug">
-              {`${labCount} labs completed`}
-            </p>
-            {(labCount >= 5 || labCount >= 10) && (
-              <span className={`px-1.5 py-0.5 rounded text-micro font-black uppercase tracking-wider ${
-                labCount >= 10
-? 'bg-info/20 text-info'
-                  : 'bg-accent/20 text-accent'
-              }`}>
-                {labCount >= 10 ? 'rare' : 'uncommon'}
-              </span>
-            )}
-          </div>
-        </div>
-      )}
+        )}
 
-      {/* Skill Achievements */}
-      {skillAchievements.length > 0 && (
-        <div>
-          <div className="mb-3 flex items-center gap-2">
-            <Award className="w-4 h-4 text-accent" />
-            <h4 className="text-xs font-black uppercase tracking-widest text-text-muted">
-              Skill Badges
-            </h4>
-            <span className="px-2 py-1 bg-accent/10 text-accent text-xs font-black rounded-lg">
-              {skillAchievements.length}
-            </span>
-          </div>
-          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
-            <AnimatePresence mode="popLayout">
+        {skillAchievements.length > 0 && (
+          <div>
+            <div className="mb-3 flex items-center justify-between gap-2">
+              <h4 className="text-[10px] font-black uppercase tracking-widest text-text-muted">
+                Skill Badges
+              </h4>
+              <CountBadge count={skillAchievements.length} />
+            </div>
+            <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
               {skillAchievements.map((sa, idx) => {
                 const rarity = sa.rarity || 'common';
                 const styles = RARITY_STYLES[rarity];
                 return (
                   <motion.div
                     key={`skill-${sa.skill}`}
-                    layout
-                    initial={prefersReduced ? false : { opacity: 0, scale: 0.9 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    exit={prefersReduced ? undefined : { opacity: 0, scale: 0.9 }}
+                    initial={prefersReduced ? false : { opacity: 0, y: 6 }}
+                    animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: prefersReduced ? 0 : 0.3, delay: prefersReduced ? 0 : idx * 0.03 }}
-                    className={`
-                      relative group flex flex-col items-center text-center p-4 rounded-xl border
-                      transition-[transform,background-color,border-color,color,box-shadow] duration-[var(--dur-base)] hover:scale-[1.02] cursor-default
-                      ${styles.border} ${styles.bg} ${styles.glow}
-                    `}
+                    className={`flex flex-col items-center rounded-xl border p-4 text-center ${styles.border} ${styles.bg}`}
                   >
-                    <div
-                      className="w-12 h-12 rounded-xl flex items-center justify-center mb-3"
-                      style={{ backgroundColor: `${sa.color}15` }}
-                    >
-                      <Award className="w-5 h-5" style={{ color: sa.color }} />
+                    <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-xl bg-surface">
+                      <QyvoraMark className="h-5 w-5" />
                     </div>
-                    <h4 className="text-xs font-black uppercase tracking-widest text-text-primary leading-tight mb-1">
+                    <h4 className="mb-1 text-xs font-black uppercase tracking-widest leading-tight text-text-primary">
                       {sa.label}
                     </h4>
-                    <p className="text-xs text-text-muted leading-snug line-clamp-2">
+                    <p className="line-clamp-2 text-xs leading-snug text-text-muted">
                       {sa.scenariosCompleted} scenario{sa.scenariosCompleted !== 1 ? 's' : ''} completed
                     </p>
                     {rarity !== 'common' && (
-                      <span className={`
-                        mt-2 px-1.5 py-0.5 rounded text-micro font-black uppercase tracking-wider
-                        ${rarity === 'legendary' ? 'bg-warning/20 text-warning' :
-                          rarity === 'epic' ? 'bg-purple-400/20 text-purple-400' :
-                          rarity === 'rare' ? 'bg-info/20 text-info' :
-                          'bg-accent/20 text-accent'}
-                      `}>
+                      <span className="mt-2 rounded bg-accent/10 px-1.5 py-0.5 text-[10px] font-black uppercase tracking-wider text-accent">
                         {rarity}
                       </span>
                     )}
                   </motion.div>
                 );
               })}
-            </AnimatePresence>
+            </div>
           </div>
-        </div>
-      )}
+        )}
       </div>
     </div>
   );

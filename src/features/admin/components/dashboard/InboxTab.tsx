@@ -4,8 +4,7 @@ import { IconShield, IconSearch } from '@/shared/components/icons';
 import api from '@/core/services/api';
 import { useToast } from '@/core/contexts/ToastContext';
 import type { ContactMessage, ServiceRequestItem } from '../../types/admin.types';
-import { Skeleton, ErrorState } from '@/shared/components/ui';
-import EmptyState from '@/shared/components/dashboard/EmptyState';
+import { Skeleton, ErrorState, EmptyState } from '@/shared/components/ui';
 import { Dialog, DialogContent, ConfirmDialog } from '@/shared/components/ui/Dialog';
 
 type InboxItem = {

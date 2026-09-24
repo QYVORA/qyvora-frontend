@@ -102,8 +102,9 @@ With icon: `pl-12 pr-4` (handled by shared `Input` component via `icon` prop).
 
 Canonical pattern:
 ```
-px-2.5 py-1 rounded-lg text-[9px] font-black uppercase tracking-widest
+px-2.5 py-1 rounded-lg text-tiny font-black uppercase tracking-widest
 ```
+(`text-tiny` is the migration token for the legacy `text-[9px]`.)
 
 ## Card Styles
 
@@ -177,18 +178,30 @@ The entire site uses a **unified stretched layout** — no `max-w-*` constraints
 
 ## Color Palette
 
-Defined in `src/styles/index.css` via `@theme`:
+Full token reference: **`docs/TOKENS.md`** (canonical). Highlights from
+`src/styles/index.css` `@theme`:
 
 ```css
 --color-bg:           #000000;
 --color-bg-card:      #050505;
 --color-bg-elevated:  #0b0b0b;
+--color-bg-alt:       #080808;
 --color-accent:       #06B66F;
+--color-on-accent:    #000000;
 --color-text-primary: #EEF0EE;
 --color-text-secondary: rgba(238, 240, 238, 0.70);
 --color-text-muted:   rgba(238, 240, 238, 0.40);
---color-border:       rgba(171, 181, 192, 0.12);
+--color-border:       rgba(171, 181, 192, 0.18);
+--color-border-strong: rgba(6, 182, 111, 0.26);
 ```
+
+Semantic + difficulty tokens: `danger` `#f87171`, `warning` `#fbbf24`, `info`
+`#38bdf8`, `success` `#06B66F` (== accent); `difficulty-beginner` `#38bdf8`,
+`difficulty-intermediate` `#fbbf24`, `difficulty-advanced` `#f87171`.
+
+Calm surface family (dashboard/profile/admin): `bg-canvas` `#0b0d0e`,
+`bg-surface` `#121617`, `bg-surface-raised` `#181d1e`,
+`border-border-subtle` `rgba(178, 193, 194, 0.13)`, `text-text-tertiary`.
 
 ## Animation
 

@@ -26,8 +26,13 @@ Welcome to the QYVORA Frontend documentation. This guide helps you navigate all 
 ### UI/UX (canonical, enforced)
 - **[UI-PRINCIPLES.md](UI-PRINCIPLES.md)** - Enforced design rules (dark theme, accent, layout)
 - **[UI-PATTERN-INVENTORY.md](UI-PATTERN-INVENTORY.md)** - Existing pattern implementations
+- **[TOKENS.md](TOKENS.md)** - Design token single source of truth (colors, spacing, radius, motion, z-index)
 - **[TYPOGRAPHY.md](TYPOGRAPHY.md)** - Heading scale source of truth
 - **[DESIGN_SYSTEM.md](DESIGN_SYSTEM.md)** - Colors, typography, buttons, spacing
+- **[PAGE_PATTERNS.md](PAGE_PATTERNS.md)** - Shells, headers, grids, and page composition recipes
+- **[RESPONSIVE.md](RESPONSIVE.md)** - Breakpoint matrix and layout behavior
+- **[COMPONENT_STATES.md](COMPONENT_STATES.md)** - Interactive and loading state matrix
+- **[DEVELOPER_RULES.md](DEVELOPER_RULES.md)** - Pre-write checklist + definition of done
 - **[COMPONENTS.md](COMPONENTS.md)** - Full component reference
 - **[COMPONENT_ARCHITECTURE.md](COMPONENT_ARCHITECTURE.md)** - Component structure
 - **[ACCESSIBILITY.md](ACCESSIBILITY.md)** - WCAG 2.1 AA compliance, keyboard nav
@@ -68,10 +73,12 @@ Welcome to the QYVORA Frontend documentation. This guide helps you navigate all 
 
 ### For UI/UX Designers
 1. **[UI-PRINCIPLES.md](UI-PRINCIPLES.md)** - Enforced design rules
-2. **[UI-PATTERN-INVENTORY.md](UI-PATTERN-INVENTORY.md)** - Pattern implementations
-3. **[TYPOGRAPHY.md](TYPOGRAPHY.md)** - Heading scale
-4. **[DESIGN_SYSTEM.md](DESIGN_SYSTEM.md)** - Design tokens and patterns
-5. **[ACCESSIBILITY.md](ACCESSIBILITY.md)** - Accessibility standards
+2. **[TOKENS.md](TOKENS.md)** - Design token reference
+3. **[UI-PATTERN-INVENTORY.md](UI-PATTERN-INVENTORY.md)** - Pattern implementations
+4. **[TYPOGRAPHY.md](TYPOGRAPHY.md)** - Heading scale
+5. **[DESIGN_SYSTEM.md](DESIGN_SYSTEM.md)** - Design tokens and patterns
+6. **[PAGE_PATTERNS.md](PAGE_PATTERNS.md)** - Page composition recipes
+7. **[ACCESSIBILITY.md](ACCESSIBILITY.md)** - Accessibility standards
 
 ### For QA/Testers
 1. **[TESTING.md](TESTING.md)** - Test framework and patterns
@@ -108,8 +115,13 @@ docs/
 ├── UI/UX Docs (canonical)
 │   ├── UI-PRINCIPLES.md         # Enforced rules - source of truth
 │   ├── UI-PATTERN-INVENTORY.md  # Pattern implementations
+│   ├── TOKENS.md                # Design tokens single source of truth
 │   ├── TYPOGRAPHY.md            # Heading scale
 │   ├── DESIGN_SYSTEM.md
+│   ├── PAGE_PATTERNS.md         # Shells, headers, grids, recipes
+│   ├── RESPONSIVE.md            # Breakpoint matrix
+│   ├── COMPONENT_STATES.md      # State matrix
+│   ├── DEVELOPER_RULES.md       # Pre-write checklist + DoD
 │   ├── COMPONENTS.md            # Full component reference
 │   ├── COMPONENT_ARCHITECTURE.md
 │   ├── ACCESSIBILITY.md

@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { IconArrowLeft } from '@/shared/components/icons';
-import { User, FlaskConical, GraduationCap, TrendingUp, Calendar } from 'lucide-react';
+import { User, TrendingUp, Calendar } from 'lucide-react';
 import NotFoundPage from '@/shared/pages/NotFoundPage';
 import api from '@/core/services/api';
 import PageLoader from '@/shared/components/PageLoader';
@@ -9,6 +9,7 @@ import SEO from '@/shared/components/SEO';
 import PublicContainer from '@/shared/components/layout/PublicContainer';
 import ProfileIdentityBlock from '@/shared/components/profile/ProfileIdentityBlock';
 import CpLogo from '@/shared/components/CpLogo';
+import { QyvoraMark } from '@/shared/components/brand';
 import ProfileMetricsStrip from '@/shared/components/profile/ProfileMetricsStrip';
 import AchievementsSection from '@/shared/components/profile/AchievementsSection';
 import ContributionCalendar from '@/shared/components/profile/ContributionCalendar';
@@ -161,8 +162,8 @@ const PublicProfile: React.FC = () => {
               <ProfileMetricsStrip metrics={[
                 { icon: <CpLogo className="w-5 h-5" />, value: profile.cp.toLocaleString(), accent: true, label: 'CP' },
                 { icon: <User className="w-5 h-5" />, value: profile.rank, label: 'Rank' },
-                { icon: <FlaskConical className="w-5 h-5" />, value: profile.labsCompleted || profile.completedRooms.length, label: 'Labs' },
-                { icon: <GraduationCap className="w-5 h-5" />, value: profile.coursesCompleted, label: 'Courses' },
+                { icon: <QyvoraMark className="w-4 h-4" />, value: profile.labsCompleted || profile.completedRooms.length, label: 'Labs' },
+                { icon: <QyvoraMark className="w-4 h-4" />, value: profile.coursesCompleted, label: 'Courses' },
                 { icon: <TrendingUp className="w-5 h-5" />, value: profile.xpLevel, label: 'Level' },
                 { icon: <Calendar className="w-5 h-5" />, value: profile.joinDate ? new Date(profile.joinDate).getFullYear() : '—', label: 'Since' },
               ]} />
@@ -184,7 +185,7 @@ const PublicProfile: React.FC = () => {
                 <div className="space-y-6">
                   <ActivityTimeline profile={profile} />
                   {Object.keys(activityDates).length > 0 && (
-                    <div className="rounded-2xl border border-border/50 bg-bg-card p-5">
+                    <div className="rounded-2xl border border-border-subtle bg-surface p-5 md:p-6">
                       <ContributionCalendar activityDates={activityDates} />
                     </div>
                   )}

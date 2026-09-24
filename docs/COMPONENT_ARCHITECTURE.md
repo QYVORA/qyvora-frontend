@@ -110,8 +110,8 @@ graph TD
 | `brand/` | Logo component |
 | `carousel/` | Carousel component with auto-play |
 | `courses/` | Course-specific components |
-| `dashboard/` | EmptyState and dashboard primitives |
-| `icons/` | 45+ custom SVG icons (see ICON_SYSTEM.md) |
+| `dashboard/` | StatCard, DataTable, SyncIndicator dashboard primitives |
+| `icons/` | lucide `Icon*` aliases + `Brand*` SVGs + course glyphs (`index.ts`; see `src/shared/components/icons/README.md`) |
 | `walkthrough/` | WalkthroughLayout and WalkthroughStep |
 
 ## Feature Components (`src/features/`)

@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { ChevronDown } from 'lucide-react';
 import { cn } from '@/shared/utils/cn';
+import { DifficultyBadge } from './LearningCard';
 
 export type LearningAccordionDifficulty = 'beginner' | 'intermediate' | 'advanced';
 
@@ -24,20 +25,6 @@ interface LearningAccordionProps {
   items: LearningAccordionItem[];
   className?: string;
   defaultOpen?: number;
-}
-
-const DIFFICULTY_STYLES: Record<string, string> = {
-  beginner: 'bg-success/10 text-success border-success/20',
-  intermediate: 'bg-warning/10 text-warning border-warning/20',
-  advanced: 'bg-danger/10 text-danger border-danger/20',
-};
-
-function DifficultyBadge({ difficulty }: { difficulty: LearningAccordionDifficulty }) {
-  return (
-    <span className={cn('px-2 py-0.5 rounded-lg text-xs font-black uppercase tracking-widest border', DIFFICULTY_STYLES[difficulty])}>
-      {difficulty}
-    </span>
-  );
 }
 
 function StartButton({ label, onClick, locked, cpCost, onUnlock }: { label: string; onClick?: () => void; locked?: boolean; cpCost?: number; onUnlock?: () => void }) {

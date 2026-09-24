@@ -1,12 +1,11 @@
 import { useMemo } from 'react';
 import { motion } from 'motion/react';
 import { useReducedMotion } from '@/shared/hooks/useReducedMotion';
-import { Trophy } from 'lucide-react';
 import BootcampBadge from '@/shared/components/BootcampBadge';
 import CpLogo from '@/shared/components/CpLogo';
 import CourseBadge from '@/shared/components/CourseBadge';
 import { QyvoraMark } from '@/shared/components/brand';
-import type { ProfileData, Trophy as TrophyType, TrophyTier } from '@/shared/types/profile';
+import type { ProfileData } from '@/shared/types/profile';
 import { TIER_STYLES } from '@/shared/types/profile';
 import { deriveTrophies } from '@/shared/utils/profileDerivations';
 import ModuleHeader from './ModuleHeader';
@@ -68,33 +67,26 @@ const TrophyCabinet: React.FC<TrophyCabinetProps> = ({ profile, className = '' }
 
   if (trophies.length === 0) {
     return (
-      <div className={`rounded-2xl border border-border/50 bg-bg-card p-6 ${className}`}>
-        <ModuleHeader
-          icon={<Trophy className="w-4 h-4 text-warning" />}
-          iconClassName="bg-warning/10"
-          title={"Trophy Cabinet"}
-        />
-        <p className="text-xs text-text-muted text-center py-4">
-          {"No trophies earned yet. Keep pushing!"}
-        </p>
+      <div className={`rounded-2xl border border-border-subtle bg-surface p-5 md:p-6 ${className}`}>
+        <ModuleHeader icon={<QyvoraMark className="h-4 w-4" />} title="Trophy Cabinet" />
+        <p className="py-4 text-center text-sm text-text-muted">No trophies earned yet. Keep pushing!</p>
       </div>
     );
   }
 
   return (
-    <div className={`rounded-2xl border border-border/50 bg-bg-card overflow-hidden ${className}`}>
+    <div className={`rounded-2xl border border-border-subtle bg-surface p-5 md:p-6 ${className}`}>
       <ModuleHeader
-        icon={<Trophy className="w-4 h-4 text-warning" />}
-        iconClassName="bg-warning/10"
-        title={"Trophy Cabinet"}
+        icon={<QyvoraMark className="h-4 w-4" />}
+        title="Trophy Cabinet"
         trailing={
-          <span className="px-2 py-1 bg-warning/10 text-warning text-xs font-black rounded-lg">
+          <span className="rounded-md bg-accent/10 px-2 py-0.5 text-[10px] font-black uppercase tracking-widest text-accent">
             {trophies.length}
           </span>
         }
       />
 
-      <div className="p-5 grid grid-cols-2 sm:grid-cols-3 gap-3">
+      <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
         {trophies.map((trophy, idx) => {
           const styles = TIER_STYLES[trophy.tier];
           return (
@@ -103,25 +95,18 @@ const TrophyCabinet: React.FC<TrophyCabinetProps> = ({ profile, className = '' }
               initial={prefersReduced ? false : { opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: prefersReduced ? 0 : 0.3, delay: prefersReduced ? 0 : idx * 0.05 }}
-              className={`
-                relative flex flex-col items-center text-center p-4 rounded-xl border
-                transition-[transform,background-color,border-color,color,box-shadow] duration-[var(--dur-base)] hover:scale-[1.02] cursor-default
-                ${styles.border} ${styles.bg} ${styles.glow}
-              `}
+              className={`relative flex flex-col items-center rounded-xl border p-4 text-center ${styles.border} ${styles.bg}`}
             >
-              <div className={`w-12 h-12 rounded-xl flex items-center justify-center mb-2 ${styles.bg}`}>
+              <div className={`mb-2 flex h-12 w-12 items-center justify-center rounded-xl ${styles.bg}`}>
                 <TrophyVisual id={trophy.id} profile={profile} />
               </div>
-              <h4 className="text-xs font-black uppercase tracking-widest text-text-primary leading-tight mb-1">
+              <h4 className="mb-1 text-xs font-black uppercase tracking-widest leading-tight text-text-primary">
                 {trophy.title}
               </h4>
-              <p className="text-xs text-text-muted leading-snug line-clamp-2">
+              <p className="line-clamp-2 text-xs leading-snug text-text-muted">
                 {trophy.description}
               </p>
-              <span className={`
-                mt-2 px-1.5 py-0.5 rounded text-micro font-black uppercase tracking-wider
-                ${styles.text} ${styles.bg}
-              `}>
+              <span className={`mt-2 rounded px-1.5 py-0.5 text-[10px] font-black uppercase tracking-wider ${styles.text} ${styles.bg}`}>
                 {trophy.tier}
               </span>
             </motion.div>

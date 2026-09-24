@@ -2,7 +2,8 @@ import { type ReactNode } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'motion/react';
 import { useReducedMotion } from '@/shared/hooks/useReducedMotion';
-import { Globe, Github, Linkedin, Twitter, Calendar, MapPin, Building2, Mail } from 'lucide-react';
+import { Globe, Calendar, MapPin, Building2, Mail } from 'lucide-react';
+import { BrandGithubIcon, BrandLinkedinIcon, BrandXIcon } from '@/shared/components/icons';
 import ShareProfile from '@/shared/components/ShareProfile';
 import Identicon from '@/shared/components/Identicon';
 
@@ -82,9 +83,9 @@ const ProfileIdentityBlock: React.FC<ProfileIdentityBlockProps> = ({
 
   const socialLinks = [
     { url: website, icon: <Globe className="w-3.5 h-3.5" />, label: 'Website' },
-    { url: github, icon: <Github className="w-3.5 h-3.5" />, label: 'GitHub' },
-    { url: linkedin, icon: <Linkedin className="w-3.5 h-3.5" />, label: 'LinkedIn' },
-    { url: twitter, icon: <Twitter className="w-3.5 h-3.5" />, label: 'X' },
+    { url: github, icon: <BrandGithubIcon className="w-3.5 h-3.5" />, label: 'GitHub' },
+    { url: linkedin, icon: <BrandLinkedinIcon className="w-3.5 h-3.5" />, label: 'LinkedIn' },
+    { url: twitter, icon: <BrandXIcon className="w-3.5 h-3.5" />, label: 'X' },
   ].filter((l) => l.url);
 
   const formattedJoinDate = joinDate
@@ -102,10 +103,8 @@ const ProfileIdentityBlock: React.FC<ProfileIdentityBlockProps> = ({
       initial={prefersReduced ? false : { opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: prefersReduced ? 0 : 0.45, delay: prefersReduced ? 0 : 0.05 }}
-      className={`relative rounded-2xl border border-border/50 bg-bg-card overflow-hidden ${className}`}
+      className={`relative rounded-2xl border border-border-subtle bg-surface ${className}`}
     >
-      <div className="h-1.5 w-full bg-accent" />
-
       <div className="space-y-5 p-5 sm:p-6">
         <div className="flex items-center gap-4">
           <div className="relative shrink-0">
@@ -152,7 +151,7 @@ const ProfileIdentityBlock: React.FC<ProfileIdentityBlockProps> = ({
                 href={link.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex h-8 w-8 items-center justify-center rounded-lg border border-border/50 bg-bg-elevated text-text-muted transition-colors hover:border-accent/50 hover:text-accent"
+                className="flex h-8 w-8 items-center justify-center rounded-lg border border-border-subtle bg-surface-raised text-text-muted transition-colors hover:border-accent/40 hover:text-accent"
                 aria-label={link.label}
               >
                 {link.icon}
@@ -162,16 +161,16 @@ const ProfileIdentityBlock: React.FC<ProfileIdentityBlockProps> = ({
         )}
 
         {xpLevel != null && xpToNext != null && xpToNext > 0 && (
-          <div className="rounded-xl border border-border/20 bg-bg-elevated p-3">
+          <div className="rounded-xl border border-border-subtle bg-surface-raised p-3">
             <div className="mb-2 flex items-center justify-between">
-              <span className="text-xs font-black uppercase tracking-widest text-text-muted">
+              <span className="text-[10px] font-black uppercase tracking-widest text-text-muted">
                 Level {xpLevel}
               </span>
-              <span className="font-mono text-xs text-text-muted/60">
+              <span className="font-mono text-xs text-text-muted/70">
                 {(xpCurrent || 0).toLocaleString()} / {xpToNext.toLocaleString()} XP
               </span>
             </div>
-            <div className="h-2 overflow-hidden rounded-full bg-border/20">
+            <div className="h-2 overflow-hidden rounded-full bg-border/30">
               <motion.div
                 initial={prefersReduced ? false : { width: 0 }}
                 animate={{ width: `${xpPercent}%` }}

@@ -1,7 +1,7 @@
-import { type ReactNode } from 'react';
+import { memo, type ReactNode } from 'react';
 import { motion } from 'motion/react';
 import { useReducedMotion } from '@/shared/hooks/useReducedMotion';
-import { LayoutGrid } from 'lucide-react';
+import { QyvoraMark } from '@/shared/components/brand';
 import ModuleHeader from './ModuleHeader';
 
 export interface ProfileMetric {
@@ -19,37 +19,33 @@ const ProfileMetricsStrip: React.FC<ProfileMetricsStripProps> = ({ metrics }) =>
   const prefersReduced = useReducedMotion();
 
   return (
-    <div className="rounded-2xl border border-border/50 bg-bg-card overflow-hidden">
-      <ModuleHeader
-        icon={<LayoutGrid className="w-4 h-4 text-accent" />}
-        iconClassName="bg-accent/10"
-        title="Overview"
-      />
+    <div className="rounded-2xl border border-border-subtle bg-surface p-5 md:p-6">
+      <ModuleHeader icon={<QyvoraMark className="h-4 w-4" />} title="Overview" />
 
-      <div className="grid grid-cols-2 gap-3 p-5 sm:grid-cols-3">
+      <div className="mt-1 grid grid-cols-2 gap-x-4 gap-y-6 sm:grid-cols-3">
         {metrics.map((metric, index) => (
           <motion.div
             key={index}
             initial={prefersReduced ? false : { opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: prefersReduced ? 0 : 0.3, delay: prefersReduced ? 0 : index * 0.04 }}
-            className="flex items-center gap-3 rounded-xl border border-border/50 bg-bg-elevated/40 px-3 py-3"
+            className="flex min-w-0 items-center gap-3"
           >
-            <span className={metric.accent ? 'text-accent shrink-0' : 'text-text-muted shrink-0'}>
+            <span className={metric.accent ? 'shrink-0 text-accent' : 'shrink-0 text-text-muted/70'}>
               {metric.icon}
             </span>
             <div className="min-w-0">
               <div
                 className={
                   metric.accent
-                    ? 'font-mono text-lg font-black tabular-nums leading-tight text-accent truncate'
-                    : 'font-mono text-lg font-black tabular-nums leading-tight text-text-primary truncate'
+                    ? 'truncate font-mono text-xl font-black tabular-nums leading-tight text-accent'
+                    : 'truncate font-mono text-xl font-black tabular-nums leading-tight text-text-primary'
                 }
               >
                 {metric.value}
               </div>
               {metric.label && (
-                <div className="text-[9px] font-black uppercase tracking-widest leading-tight text-text-muted/70 truncate">
+                <div className="mt-0.5 truncate text-[10px] font-black uppercase tracking-widest leading-tight text-text-muted/70">
                   {metric.label}
                 </div>
               )}
@@ -61,4 +57,4 @@ const ProfileMetricsStrip: React.FC<ProfileMetricsStripProps> = ({ metrics }) =>
   );
 };
 
-export default ProfileMetricsStrip;
+export default memo(ProfileMetricsStrip);

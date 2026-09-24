@@ -2,6 +2,7 @@ import type { ReactNode } from 'react';
 
 interface ModuleHeaderProps {
   icon: ReactNode;
+  /** Color class for the icon (accent only). */
   iconClassName?: string;
   title: string;
   trailing?: ReactNode;
@@ -9,25 +10,23 @@ interface ModuleHeaderProps {
 
 const ModuleHeader: React.FC<ModuleHeaderProps> = ({
   icon,
-  iconClassName = 'bg-accent/10',
+  iconClassName = 'text-accent',
   title,
   trailing,
 }) => {
   return (
-    <div className="px-5 py-4 border-b border-border/50">
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <div
-            className={`w-8 h-8 rounded-lg flex items-center justify-center ${iconClassName}`}
-          >
-            {icon}
-          </div>
-          <h3 className="text-xs font-black uppercase tracking-widest text-text-muted">
-            {title}
-          </h3>
-        </div>
-        {trailing && <span>{trailing}</span>}
+    <div className="mb-5 flex items-center justify-between gap-3">
+      <div className="flex items-center gap-2.5">
+        <span
+          className={`flex h-9 w-9 items-center justify-center rounded-lg border border-border-subtle bg-surface-raised ${iconClassName}`}
+        >
+          {icon}
+        </span>
+        <h3 className="type-label uppercase tracking-[0.12em] text-text-muted">
+          {title}
+        </h3>
       </div>
+      {trailing && <span className="shrink-0">{trailing}</span>}
     </div>
   );
 };

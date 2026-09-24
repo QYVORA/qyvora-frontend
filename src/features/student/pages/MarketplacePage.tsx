@@ -143,7 +143,7 @@ const Marketplace: React.FC = () => {
           <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             {tab === 'market' && (
               <div className="relative w-full sm:w-72">
-                <input id="marketplace-search" type="text" value={query} onChange={(e) => setQuery(e.target.value)} placeholder={"Search items…"} className="w-full rounded-xl border border-border/40 bg-bg-card py-3 pl-11 pr-4 text-sm text-text-primary transition-colors outline-none focus:border-accent focus:border-accent" />
+                <input id="marketplace-search" type="text" value={query} onChange={(e) => setQuery(e.target.value)} placeholder={"Search items…"} className="w-full rounded-xl border border-border/40 bg-bg-card py-3 pl-11 pr-4 text-sm text-text-primary transition-colors outline-none focus:border-accent" />
                 <label htmlFor="marketplace-search" className="sr-only">{"Search items…"}</label>
                 <Search className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-text-muted" />
               </div>

@@ -180,9 +180,9 @@ export interface Trophy {
 }
 
 export const TIER_STYLES: Record<TrophyTier, { border: string; bg: string; glow: string; text: string }> = {
-  bronze:   { border: 'border-amber-600/30',   bg: 'bg-amber-600/5',   glow: '',                              text: 'text-amber-600' },
-  silver:   { border: 'border-gray-300/30',     bg: 'bg-gray-300/5',    glow: '',                              text: 'text-gray-300' },
-  gold:     { border: 'border-warning/30',  bg: 'bg-warning/5', glow: 'hover:shadow-[0_0_20px] hover:shadow-warning/15', text: 'text-warning' },
-  platinum: { border: 'border-accent/30',   bg: 'bg-accent/5',  glow: 'hover:shadow-[0_0_20px] hover:shadow-accent/15',  text: 'text-accent' },
-  diamond:  { border: 'border-purple-400/30', bg: 'bg-purple-400/5', glow: 'hover:shadow-[0_0_20px] hover:shadow-accent/15', text: 'text-purple-400' },
+  bronze:   { border: 'border-border-subtle', bg: 'bg-surface-raised',     glow: '', text: 'text-text-muted' },
+  silver:   { border: 'border-border-subtle', bg: 'bg-surface-raised',     glow: '', text: 'text-text-secondary' },
+  gold:     { border: 'border-accent/30',     bg: 'bg-accent/5',          glow: '', text: 'text-accent' },
+  platinum: { border: 'border-accent/40',     bg: 'bg-accent/10',         glow: '', text: 'text-accent' },
+  diamond:  { border: 'border-accent/50',     bg: 'bg-accent/15',         glow: '', text: 'text-accent' },
 };

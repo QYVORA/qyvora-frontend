@@ -36,9 +36,6 @@ const HeroSkeleton = ({ stats = 0, action = false }: { stats?: number; action?: 
 );
 
 /* ─── Shared: Section title skeleton ──────────────────────────────────────── */
-const SectionTitle = ({ className = '' }: { className?: string }) => (
-  <S className={`h-4 w-32 rounded ${className}`} />
-);
 
 /* ─── Dashboard Skeleton ──────────────────────────────────────────────────── */
 export const DashboardSkeleton = () => (
@@ -148,87 +145,72 @@ export const DashboardSkeleton = () => (
 
 /* ─── Profile Page Skeleton ───────────────────────────────────────────────── */
 export const ProfileSkeleton = () => (
-  <div className="bg-bg">
-    {/* Identity block */}
-    <div className="bg-bg px-3 md:px-4 lg:px-6 pt-8 pb-10">
-      <div className="rounded-2xl border border-border/50 bg-bg-card overflow-hidden">
-        <div className="h-1 w-full bg-accent/30" />
-        <div className="p-5 sm:p-6 space-y-5">
-          <div className="flex items-start gap-4 sm:gap-5">
-            <S className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl shrink-0" circle={false} />
-            <div className="flex-1 space-y-3 pt-2">
-              <S className="h-6 w-40 rounded" />
-              <S className="h-4 w-56 rounded" />
+  <div className="min-h-full bg-canvas">
+    <div className="w-full px-3 pb-16 pt-6 md:px-4 md:pb-20 md:pt-8 lg:px-6 lg:pb-24">
+      <div className="grid gap-6 lg:grid-cols-12 lg:gap-8">
+        <aside className="lg:col-span-4">
+          <div className="space-y-6 lg:sticky lg:top-24">
+            <div className="space-y-5 rounded-2xl border border-border-subtle bg-surface p-5 sm:p-6">
+              <div className="flex items-center gap-4">
+                <S className="h-20 w-20 shrink-0 rounded-2xl sm:h-24 sm:w-24" circle={false} />
+                <div className="flex-1 space-y-3 pt-2">
+                  <S className="h-6 w-40 rounded" />
+                  <S className="h-3 w-24 rounded" />
+                </div>
+              </div>
+              <S className="h-16 w-full rounded" />
+              <div className="space-y-2 rounded-xl border border-border/20 bg-bg-elevated/50 p-3">
+                <div className="flex items-center justify-between">
+                  <S className="h-3 w-16 rounded" />
+                  <S className="h-3 w-24 rounded" />
+                </div>
+                <S className="h-2 w-full rounded-full" />
+              </div>
+              <div className="flex gap-2">
+                <S className="h-9 w-24 rounded-xl" />
+                <S className="h-9 w-9 rounded-lg" />
+              </div>
             </div>
           </div>
-          {/* XP bar */}
-          <div className="p-3 rounded-xl bg-bg-elevated border border-border/20 space-y-2">
-            <div className="flex items-center justify-between">
-              <S className="h-3 w-16 rounded" />
-              <S className="h-3 w-24 rounded" />
+        </aside>
+
+        <div className="space-y-6 lg:col-span-8">
+          <div className="space-y-4 rounded-2xl border border-border-subtle bg-surface p-5 md:p-6">
+            <S className="h-4 w-24 rounded" />
+            <div className="grid grid-cols-2 gap-x-4 gap-y-6 sm:grid-cols-3">
+              {Array.from({ length: 6 }).map((_, i) => (
+                <div key={i} className="space-y-2">
+                  <div className="flex items-center gap-3">
+                    <S className="h-6 w-6 rounded-lg" />
+                    <S className="h-5 w-16 rounded" />
+                  </div>
+                  <S className="h-2.5 w-12 rounded" />
+                </div>
+              ))}
             </div>
-            <S className="h-2 w-full rounded-full" />
           </div>
-          <div className="flex gap-2">
-            <S className="h-9 w-24 rounded-xl" />
+
+          <div className="space-y-4 rounded-2xl border border-border-subtle bg-surface p-5 md:p-6">
+            <S className="h-4 w-28 rounded" />
+            <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+              {Array.from({ length: 4 }).map((_, i) => (
+                <S key={i} className="h-24 rounded-xl" />
+              ))}
+            </div>
           </div>
-        </div>
-      </div>
-    </div>
 
-    {/* Stats grid */}
-    <div className="bg-bg-alt px-3 md:px-4 lg:px-6 py-10">
-      <div className="grid grid-cols-2 gap-4">
-        {Array.from({ length: 6 }).map((_, i) => (
-          <div key={i} className={`rounded-2xl border p-5 flex flex-col gap-3 ${
-            i === 0 ? 'border-accent/20 bg-accent/5' : 'border-border/50 bg-bg-card'
-          }`}>
-            <S className="w-10 h-10 rounded-xl" />
-            <S className="h-6 w-20 rounded" />
-            <S className="h-2.5 w-14 rounded" />
-          </div>
-        ))}
-      </div>
-    </div>
-
-    {/* Activity */}
-    <div className="bg-bg px-3 md:px-4 lg:px-6 py-10">
-      <div className="rounded-2xl border border-border/50 bg-bg-card p-5 space-y-4">
-        <SectionTitle />
-        <S className="h-[118px] w-full rounded-lg" />
-        {Array.from({ length: 2 }).map((_, i) => (
-          <div key={i} className="flex items-center gap-3">
-            <S className="w-8 h-8 rounded-lg shrink-0" />
-            <S className="h-4 flex-1 rounded" />
-          </div>
-        ))}
-      </div>
-    </div>
-
-    {/* Achievements */}
-    <div className="bg-bg-alt px-3 md:px-4 lg:px-6 py-10">
-      <div className="rounded-2xl border border-border/50 bg-bg-card p-5 space-y-4">
-        <SectionTitle />
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-          {Array.from({ length: 4 }).map((_, i) => (
-            <S key={i} className="h-24 rounded-xl" />
-          ))}
-        </div>
-      </div>
-    </div>
-
-    {/* Labs + Courses + Trophy */}
-    <div className="bg-bg px-3 md:px-4 lg:px-6 py-10 pb-20 lg:pb-24 space-y-6">
-      {Array.from({ length: 3 }).map((_, i) => (
-        <div key={i} className="rounded-2xl border border-border/50 bg-bg-card p-5 space-y-4">
-          <SectionTitle />
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            {Array.from({ length: 2 }).map((_, j) => (
-              <S key={j} className="h-28 rounded-xl" />
+          <div className="space-y-4 rounded-2xl border border-border-subtle bg-surface p-5 md:p-6">
+            <S className="h-4 w-28 rounded" />
+            <S className="h-[118px] w-full rounded-lg" />
+            {Array.from({ length: 2 }).map((_, i) => (
+              <div key={i} className="flex items-center gap-3">
+                <S className="h-8 w-8 shrink-0 rounded-lg" />
+                <S className="h-4 flex-1 rounded" />
+              </div>
             ))}
           </div>
         </div>
-      ))}
+      </div>
     </div>
   </div>
 );
