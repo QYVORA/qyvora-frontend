@@ -2,111 +2,219 @@ import React, { useEffect, useState } from 'react';
 import { useReducedMotion } from '@/shared/hooks/useReducedMotion';
 
 const PROMPT = 'qyvora@core:~$ ';
-const COMMAND = 'boot';
-const FULL_LINE = PROMPT + COMMAND;
-const TYPE_START_MS = 200;
-const TYPE_MS = 80;
-const HOLD_MS = 600;
-const FADE_MS = 400;
+const COMMAND = './qyvora boot --offensive';
 
-type LoaderPhase = 'typing' | 'fading';
+const INITIAL_DELAY_MS = 180;
+const DELAYED_LOADER_MS = 140;
+const TYPE_MIN_MS = 6;
+const TYPE_MAX_MS = 18;
 
-const PageLoader: React.FC = () => {
+const textSecondary = 'text-text-secondary';
+
+interface BootSeg {
+  text: string;
+  cls: string;
+}
+
+interface BootLine {
+  instant: BootSeg[];
+  stream: BootSeg[];
+}
+
+const BOOT_LINES: BootLine[] = [
+  {
+    instant: [],
+    stream: [
+      { text: PROMPT, cls: 'text-accent' },
+      { text: COMMAND, cls: 'text-text-primary' },
+    ],
+  },
+  {
+    instant: [{ text: '[ OK ] ', cls: 'text-accent' }],
+    stream: [{ text: 'mounting /dev/knowledge → /mnt/toolkit', cls: textSecondary }],
+  },
+  {
+    instant: [{ text: '[ OK ] ', cls: 'text-accent' }],
+    stream: [{ text: 'resolving modules · recon · privesc · web · wireless', cls: textSecondary }],
+  },
+  {
+    instant: [{ text: '[ OK ] ', cls: 'text-accent' }],
+    stream: [{ text: 'handshaking with chain · stratum-01 · peers 19', cls: textSecondary }],
+  },
+  {
+    instant: [{ text: '[ OK ] ', cls: 'text-accent' }],
+    stream: [{ text: 'loading shell · /usr/bin/qyvora', cls: textSecondary }],
+  },
+  {
+    instant: [],
+    stream: [{ text: 'ready.', cls: 'text-accent' }],
+  },
+];
+
+interface StreamUnit {
+  line: number;
+  seg: number;
+}
+
+const STREAM: StreamUnit[] = [];
+const LINE_STREAM_START: number[] = [];
+const LINE_STREAM_LEN: number[] = [];
+let rolling = 0;
+
+BOOT_LINES.forEach((line, li) => {
+  LINE_STREAM_START.push(rolling);
+  let lineLen = 0;
+  line.stream.forEach((seg, si) => {
+    for (let i = 0; i < seg.text.length; i++) {
+      STREAM.push({ line: li, seg: si });
+    }
+    lineLen += seg.text.length;
+  });
+  LINE_STREAM_LEN.push(lineLen);
+  rolling += lineLen;
+});
+
+const TOTAL_STREAM = rolling;
+
+function nextTypeDelay(): number {
+  return TYPE_MIN_MS + Math.random() * (TYPE_MAX_MS - TYPE_MIN_MS);
+}
+
+interface PageLoaderProps {
+  onStateChange?: (state: string) => void;
+}
+
+/**
+ * Full-screen QYVORA boot loader.
+ *
+ * Types a realistic kernel-boot transcript (`qyvora@core` prompt, `[ OK ]`
+ * module stamps, trailing `ready.`) with a human typing cadence and a blinking
+ * caret that stays locked to the current reveal position. Styling mirrors the
+ * Kali-style terminal chrome used across the platform (dark surface, mono
+ * output, accent green). Reduced-motion users get the full log instantly, no
+ * typing, no caret.
+ */
+const PageLoader: React.FC<PageLoaderProps> = ({ onStateChange }) => {
   const prefersReduced = useReducedMotion();
-  const [count, setCount] = useState(prefersReduced ? FULL_LINE.length : 0);
-  const [phase, setPhase] = useState<LoaderPhase>('typing');
-  const [gone, setGone] = useState(false);
+  const [revealed, setRevealed] = useState(prefersReduced ? TOTAL_STREAM : 0);
 
   useEffect(() => {
     if (prefersReduced) {
-      setCount(FULL_LINE.length);
-      setPhase('typing');
-      const timers = [
-        window.setTimeout(() => setPhase('fading'), HOLD_MS),
-        window.setTimeout(() => setGone(true), HOLD_MS + FADE_MS),
-      ];
-      return () => timers.forEach((t) => window.clearTimeout(t));
+      setRevealed(TOTAL_STREAM);
+      return;
     }
-    setCount(0);
-    setPhase('typing');
-    let i = 0;
-    let interval: number | undefined;
-    const initial = window.setTimeout(() => {
-      interval = window.setInterval(() => {
-        i += 1;
-        setCount(i);
-        if (i >= FULL_LINE.length) {
-          window.clearInterval(interval);
-          window.setTimeout(() => setPhase('fading'), HOLD_MS);
-          window.setTimeout(() => setGone(true), HOLD_MS + FADE_MS);
-        }
-      }, TYPE_MS);
-    }, TYPE_START_MS);
+
+    let current = 0;
+    let cancelled = false;
+    let timeout = 0;
+
+    const step = () => {
+      if (cancelled || current >= TOTAL_STREAM) return;
+      current += 1;
+      setRevealed(current);
+      timeout = window.setTimeout(step, nextTypeDelay());
+    };
+
+    timeout = window.setTimeout(step, INITIAL_DELAY_MS);
+
     return () => {
-      window.clearTimeout(initial);
-      if (interval) window.clearInterval(interval);
+      cancelled = true;
+      window.clearTimeout(timeout);
     };
   }, [prefersReduced]);
 
-  if (gone) return null;
+  useEffect(() => {
+    onStateChange?.(revealed >= TOTAL_STREAM ? 'ready' : 'boot');
+  }, [revealed, onStateChange]);
 
-  const typed = FULL_LINE.slice(0, count);
-  const fading = phase === 'fading';
+  const done = revealed >= TOTAL_STREAM;
+  const caretLine = revealed > 0 ? STREAM[revealed - 1].line : 0;
+  const percent = Math.min(100, Math.round((revealed / TOTAL_STREAM) * 100));
 
   return (
     <div
-      className={`fixed inset-0 z-[9999] bg-canvas flex items-center justify-center overflow-hidden select-none touch-none px-6 transition-opacity duration-[400ms] ease-[var(--ease-smooth)] ${fading ? 'opacity-0' : 'opacity-100'}`}
+      role="status"
+      aria-live="polite"
+      className="fixed inset-0 z-[9999] flex items-center justify-center bg-bg px-4"
     >
-      <div
-        role="status"
-        aria-live="polite"
-        className="font-mono text-sm sm:text-base md:text-lg font-medium leading-none whitespace-nowrap"
-      >
-        <span className="sr-only">Loading QYVORA</span>
-        <p aria-hidden="true" className="text-text-primary">
-          <span className="text-accent">{typed.slice(0, PROMPT.length)}</span>
-          <span>{typed.slice(PROMPT.length)}</span>
-          {count < FULL_LINE.length && <span className="page-loader-caret" />}
-        </p>
+      <div className="w-full wc-terminal">
+        <div className="mb-3 text-center">
+          <p className="text-[10px] font-black uppercase tracking-[0.3em] text-accent">
+            {done ? 'system ready' : 'initialising'}
+          </p>
+          <p className="text-base font-black uppercase tracking-tight text-text-primary">
+            qyvora boot
+          </p>
+        </div>
+
+        <div className="overflow-hidden rounded-2xl border border-border bg-bg-card">
+          <div className="flex items-center justify-between border-b border-border bg-bg-elevated px-3 py-1.5">
+            <span className="select-none text-xs font-mono tracking-[0.2em] text-text-muted">
+              _boot
+            </span>
+            <span className="select-none text-xs font-mono text-text-muted/60">v2.0</span>
+          </div>
+
+          <div className="px-4 py-3 font-mono text-xs leading-6 md:px-5 md:py-4 md:text-sm">
+            {BOOT_LINES.map((line, li) => {
+              const start = LINE_STREAM_START[li];
+              const len = LINE_STREAM_LEN[li];
+              const shown = Math.max(0, Math.min(len, revealed - start));
+              let consumed = 0;
+
+              return (
+                <div key={li} className="flex flex-wrap whitespace-pre-wrap">
+                  {line.instant.map((seg, si) => (
+                    <span key={si} className={seg.cls}>
+                      {shown > 0 ? seg.text : ''}
+                    </span>
+                  ))}
+                  {line.stream.map((seg, si) => {
+                    const segShown = Math.max(0, Math.min(seg.text.length, shown - consumed));
+                    consumed += seg.text.length;
+                    return (
+                      <span key={si} className={seg.cls}>
+                        {seg.text.slice(0, segShown)}
+                      </span>
+                    );
+                  })}
+                  {li === caretLine && (
+                    <span className="ml-0.5 inline-block h-[1.1em] w-[0.55em] animate-pulse bg-accent align-text-bottom" />
+                  )}
+                </div>
+              );
+            })}
+          </div>
+
+          <div className="flex items-center justify-between gap-3 border-t border-border bg-bg-elevated px-4 py-2 font-mono text-xs">
+            <span className="tracking-[0.2em] text-text-muted">
+              {done ? 'ready.' : 'loading'}
+            </span>
+            <div className="flex items-center gap-3">
+              <span className="text-accent tabular-nums">{percent}%</span>
+              <div className="h-1 w-24 overflow-hidden rounded-full bg-bg">
+                <div
+                  className="h-full rounded-full bg-accent transition-[width] duration-100"
+                  style={{ width: `${percent}%` }}
+                />
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-      <style>{`
-        .page-loader-caret {
-          display: inline-block;
-          width: 0.11em;
-          height: 0.95em;
-          margin-left: 0.22em;
-          border-radius: 1px;
-          transform: translateY(0.14em);
-          background: var(--color-accent);
-          box-shadow: 0 0 6px var(--color-accent-glow);
-          animation: page-loader-blink 1.05s steps(1, end) infinite;
-        }
-        @keyframes page-loader-blink {
-          0%, 49% { opacity: 1; }
-          50%, 100% { opacity: 0; }
-        }
-        @media (prefers-reduced-motion: reduce) {
-          .page-loader-caret { animation: none; opacity: 1; }
-        }
-      `}</style>
     </div>
   );
 };
 
-/**
- * Suspense fallback that stays invisible for fast/cached chunk loads and only
- * shows the full-screen loader once loading exceeds `delay` ms.
- */
-export const DelayedPageLoader: React.FC<{ delay?: number }> = ({ delay = 120 }) => {
+export const DelayedPageLoader: React.FC = () => {
   const [show, setShow] = useState(false);
 
   useEffect(() => {
-    const timer = setTimeout(() => setShow(true), delay);
-    return () => clearTimeout(timer);
-  }, [delay]);
+    const timeout = window.setTimeout(() => setShow(true), DELAYED_LOADER_MS);
+    return () => window.clearTimeout(timeout);
+  }, []);
 
-  if (!show) return null;
-  return <PageLoader />;
+  return show ? <PageLoader /> : null;
 };
 
 export default PageLoader;
