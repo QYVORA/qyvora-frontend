@@ -95,18 +95,16 @@ const TrophyCabinet: React.FC<TrophyCabinetProps> = ({ profile, className = '' }
               initial={prefersReduced ? false : { opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: prefersReduced ? 0 : 0.3, delay: prefersReduced ? 0 : idx * 0.05 }}
-              className={`relative flex flex-col items-center rounded-xl border p-4 text-center ${styles.border} ${styles.bg}`}
+              className="flex flex-col items-center text-center p-4"
             >
-              <div className={`mb-2 flex h-12 w-12 items-center justify-center rounded-xl ${styles.bg}`}>
-                <TrophyVisual id={trophy.id} profile={profile} />
-              </div>
-              <h4 className="mb-1 text-xs font-black uppercase tracking-widest leading-tight text-text-primary">
+              <TrophyVisual id={trophy.id} profile={profile} />
+              <h4 className="mt-3 mb-1 text-xs font-black uppercase tracking-widest leading-tight text-text-primary">
                 {trophy.title}
               </h4>
               <p className="line-clamp-2 text-xs leading-snug text-text-muted">
                 {trophy.description}
               </p>
-              <span className={`mt-2 rounded px-1.5 py-0.5 text-[10px] font-black uppercase tracking-wider ${styles.text} ${styles.bg}`}>
+              <span className={`mt-2 rounded-full px-1.5 py-0.5 text-[10px] font-black uppercase tracking-wider ${styles.text} ${styles.bg}`}>
                 {trophy.tier}
               </span>
             </motion.div>

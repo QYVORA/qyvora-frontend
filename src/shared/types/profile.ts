@@ -55,6 +55,11 @@ export interface ProfileApiResponse {
   handle?: string;
   hackerHandle?: string;
   bio?: string;
+  website?: string;
+  github?: string;
+  linkedin?: string;
+  twitter?: string;
+  country?: string;
   organization?: string;
   email?: string;
   cpPoints?: number;
@@ -71,11 +76,6 @@ export interface ProfileApiResponse {
     completedRooms?: CompletedRoom[];
   };
   createdAt?: string;
-  country?: string;
-  website?: string;
-  github?: string;
-  linkedin?: string;
-  twitter?: string;
 }
 
 // ── Derived profile data (used by components) ──────────────────────────────────

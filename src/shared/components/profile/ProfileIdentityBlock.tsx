@@ -81,6 +81,9 @@ const ProfileIdentityBlock: React.FC<ProfileIdentityBlockProps> = ({
     ? Math.min(Math.round(((xpCurrent || 0) / xpToNext) * 100), 100)
     : 0;
 
+  const normalizeUrl = (value: string) =>
+    /^[a-z][a-z0-9+.-]*:\/\//i.test(value) ? value : `https://${value}`;
+
   const socialLinks = [
     { url: website, icon: <Globe className="w-3.5 h-3.5" />, label: 'Website' },
     { url: github, icon: <BrandGithubIcon className="w-3.5 h-3.5" />, label: 'GitHub' },
@@ -148,11 +151,12 @@ const ProfileIdentityBlock: React.FC<ProfileIdentityBlockProps> = ({
             {socialLinks.map((link) => (
               <a
                 key={link.label}
-                href={link.url}
+                href={normalizeUrl(link.url as string)}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex h-8 w-8 items-center justify-center rounded-lg border border-border-subtle bg-surface-raised text-text-muted transition-colors hover:border-accent/40 hover:text-accent"
                 aria-label={link.label}
+                title={link.label}
               >
                 {link.icon}
               </a>

@@ -40,7 +40,22 @@ const Profile: React.FC = () => {
     hackerHandle: profile.username,
     bio: profile.bio,
     organization: profile.organization,
-  } : { name: '', hackerHandle: '', bio: '', organization: '' };
+    website: profile.website,
+    github: profile.github,
+    linkedin: profile.linkedin,
+    twitter: profile.twitter,
+    country: profile.country,
+  } : {
+    name: '',
+    hackerHandle: '',
+    bio: '',
+    organization: '',
+    website: '',
+    github: '',
+    linkedin: '',
+    twitter: '',
+    country: '',
+  };
 
   const visibleSections: ProfileSectionId[] = useMemo(() => {
     if (!profile) return [];
@@ -61,7 +76,6 @@ const Profile: React.FC = () => {
       <SEO
         title={`@${profile.username}'s Profile`}
         description={`View the operator profile, rank, and accomplishments of @${profile.username} on QYVORA. - ${profile.rank} | ${profile.cp.toLocaleString()} CP earned.`}
-        image="https://qyvora.netlify.app/og-image.svg"
         noindex
       />
 

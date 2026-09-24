@@ -220,3 +220,26 @@ export function buildService(svc: ServiceConfig) {
   }
   return schema;
 }
+
+export interface PersonProfileMeta {
+  handle: string;
+  name: string;
+  bio: string;
+  url: string;
+  sameAs?: string[];
+}
+
+export function buildPersonProfile(meta: PersonProfileMeta) {
+  const sameAs = Array.isArray(meta.sameAs)
+    ? meta.sameAs.filter((u) => u && u.startsWith('http'))
+    : [];
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'Person',
+    name: meta.name || meta.handle,
+    alternateName: `@${meta.handle}`,
+    description: meta.bio || `${meta.handle} on QYVORA`,
+    url: meta.url.startsWith('http') ? meta.url : toAbsoluteUrl(meta.url),
+    ...(sameAs.length > 0 ? { sameAs } : {}),
+  };
+}

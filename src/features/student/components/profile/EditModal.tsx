@@ -9,16 +9,42 @@ import HandleSuggestions from '../../../../shared/components/HandleSuggestions';
 interface EditModalProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  initial: { name: string; hackerHandle: string; bio: string; organization: string };
+  initial: {
+    name: string;
+    hackerHandle: string;
+    bio: string;
+    organization: string;
+    website?: string;
+    github?: string;
+    linkedin?: string;
+    twitter?: string;
+    country?: string;
+  };
   onSaved: (data: any) => void;
 }
+
+const SOCIAL_HINTS: Record<string, string> = {
+  website: 'https://…',
+  github: 'github.com/handle',
+  linkedin: 'linkedin.com/in/handle',
+  twitter: 'x.com/handle',
+};
+
+const normalizeUrl = (value: string) => {
+  const trimmed = value.trim();
+  if (!trimmed) return '';
+  if (/^[a-z][a-z0-9+.-]*:\/\//i.test(trimmed)) return trimmed;
+  return `https://${trimmed}`;
+};
 
 const EditModal: React.FC<EditModalProps> = ({ open, onOpenChange, initial, onSaved }) => {
   const { addToast } = useToast();
   const [form, setForm] = useState(initial);
   const [saving, setSaving] = useState(false);
 
-  useEffect(() => { setForm(initial); }, [initial.name, initial.hackerHandle, initial.bio, initial.organization]);
+  useEffect(() => {
+    setForm(initial);
+  }, [initial.name, initial.hackerHandle, initial.bio, initial.organization, initial.website, initial.github, initial.linkedin, initial.twitter, initial.country]);
 
   const set = (k: keyof typeof form) => (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
     setForm((f) => ({ ...f, [k]: e.target.value }));
@@ -32,6 +58,11 @@ const EditModal: React.FC<EditModalProps> = ({ open, onOpenChange, initial, onSa
         hackerHandle: form.hackerHandle.trim(),
         bio: form.bio.trim(),
         organization: form.organization.trim(),
+        website: normalizeUrl(form.website || ''),
+        github: normalizeUrl(form.github || ''),
+        linkedin: normalizeUrl(form.linkedin || ''),
+        twitter: normalizeUrl(form.twitter || ''),
+        country: form.country?.trim() || '',
       });
       onSaved(res.data);
       addToast("Profile updated!", 'success');
@@ -80,6 +111,19 @@ const EditModal: React.FC<EditModalProps> = ({ open, onOpenChange, initial, onSa
               className={`${inputCls} resize-none`}
             />
           </div>
+          <div>
+            <label htmlFor="edit-country" className={labelCls}>{"Country"}</label>
+            <input id="edit-country" value={form.country || ''} onChange={set('country')} placeholder={"Where are you based? (optional)"} className={inputCls} />
+          </div>
+          <fieldset className="space-y-3">
+            <legend className="pb-1 text-xs font-bold text-text-muted uppercase tracking-widest">{"Links"}</legend>
+            {(['website', 'github', 'linkedin', 'twitter'] as const).map((key) => (
+              <div key={key}>
+                <label htmlFor={`edit-${key}`} className={labelCls}>{key}</label>
+                <input id={`edit-${key}`} value={form[key] || ''} onChange={set(key)} placeholder={SOCIAL_HINTS[key]} className={inputCls} />
+              </div>
+            ))}
+          </fieldset>
           <div className="flex gap-3 pt-2">
             <button type="button" onClick={() => onOpenChange(false)} className="flex-1 btn-secondary !py-2.5 text-xs">{"Cancel"}</button>
             <Button type="submit" loading={saving} className="flex-1 !py-2.5 !text-xs">

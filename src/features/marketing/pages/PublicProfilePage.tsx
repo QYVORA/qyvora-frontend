@@ -6,6 +6,7 @@ import NotFoundPage from '@/shared/pages/NotFoundPage';
 import api from '@/core/services/api';
 import PageLoader from '@/shared/components/PageLoader';
 import SEO from '@/shared/components/SEO';
+import { buildPersonProfile, toAbsoluteUrl } from '@/shared/seo/schema';
 import PublicContainer from '@/shared/components/layout/PublicContainer';
 import ProfileIdentityBlock from '@/shared/components/profile/ProfileIdentityBlock';
 import CpLogo from '@/shared/components/CpLogo';
@@ -105,7 +106,6 @@ const PublicProfile: React.FC = () => {
     return (
       <div className="min-h-dvh bg-canvas flex flex-col items-center justify-center gap-6 px-4">
         <SEO
-          noindex
           title="Operator Not Found"
           description={`The QYVORA operator profile @${handle} could not be found.`}
         />
@@ -122,9 +122,20 @@ const PublicProfile: React.FC = () => {
   return (
     <div className="min-h-dvh w-full bg-canvas">
       <SEO
-        title={`@${handle}'s Profile`}
-        description={`View the operator profile, achievements, and ranking of @${handle} on QYVORA.`}
-        breadcrumbName={handle ? `@${handle}` : 'Profile'}
+        title={`@${handle} — Operator Profile | QYVORA`}
+        description={profile.bio ? profile.bio : `Operator @${handle} on QYVORA — achievements, rank, and activity.`}
+        breadcrumbName={`@${handle}`}
+        schemaData={buildPersonProfile({
+          handle: profile.username,
+          name: profile.displayName,
+          bio: profile.bio,
+          url: `/${handle ? `@${handle}` : ''}`,
+          sameAs: [
+            profile.github,
+            profile.linkedin,
+            profile.twitter,
+          ].filter((url) => url && url.startsWith('http')) as string[],
+        })}
       />
 
       <PublicContainer className="pt-24 md:pt-28 lg:pt-32 pb-20 lg:pb-24">
