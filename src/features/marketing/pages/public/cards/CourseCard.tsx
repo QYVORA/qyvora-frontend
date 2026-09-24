@@ -18,7 +18,7 @@ const CourseCard: React.FC<CourseCardProps> = ({ course, view = 'grid' }) => {
       description={course.description}
       to={`/courses/${course.id}`}
       difficulty={course.skillLevel}
-      badge={<CourseBadge courseId={course.id} className="w-11 h-11 shrink-0" />}
+      badge={<CourseBadge courseId={course.id} className="w-14 h-14 shrink-0" />}
       duration={`${course.estimatedMinutes}min`}
       cpReward={course.cpCost}
       actionLabel="Start Course"

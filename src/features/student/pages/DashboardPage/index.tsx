@@ -303,7 +303,7 @@ const Dashboard = () => {
                 to={`/dashboard/courses/${course.id}`}
                 title={course.title}
                 description={course.description}
-                badge={<CourseBadge courseId={course.id} className="h-11 w-11 shrink-0" />}
+                badge={<CourseBadge courseId={course.id} className="w-14 h-14 shrink-0" />}
                 difficulty={course.skillLevel}
                 lessonsCount={course.lessons.length}
                 cpReward={course.cpCost}
@@ -353,7 +353,7 @@ const Dashboard = () => {
                   to={tool.route}
                   title={tool.label}
                   description={tool.desc}
-                  icon={<ToolIcon className="h-4 w-4" aria-hidden="true" />}
+                  icon={<ToolIcon className="h-7 w-7" aria-hidden="true" />}
                   actionLabel={"View"}
                 />
               );
@@ -382,7 +382,7 @@ const Dashboard = () => {
                     to="/dashboard/marketplace"
                     title={title}
                     description={description}
-                    icon={<ShoppingBag className="h-4 w-4" aria-hidden="true" />}
+                    icon={<ShoppingBag className="h-7 w-7" aria-hidden="true" />}
                     isFree={product?.isFree}
                     price={product?.isFree ? undefined : `${Number(product?.cpPrice || 0).toLocaleString()} CP`}
                     actionLabel={"View"}

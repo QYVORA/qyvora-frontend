@@ -1,11 +1,12 @@
 import React from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { ArrowRight, BookOpen, Bug, ShieldCheck, Globe, Coins } from 'lucide-react';
-import { COURSES, COURSE_ICON_MAP } from '@/features/student/data/courses';
+import { COURSES } from '@/features/student/data/courses';
 import { LABS } from '@/features/student/constants/labs';
 import { PHASES } from '@/features/marketing/data/learnData';
 import { Card } from '@/shared/components/ui/Card';
 import LabBadge from '@/shared/components/LabBadge';
+import CourseBadge from '@/shared/components/CourseBadge';
 import HpbAvatar, { type HpbVariant } from '@/shared/components/HpbAvatar';
 import { SIMULATIONS } from '@/features/marketing/pages/public/SimulationsPage';
 import PageHeader from '@/shared/components/ui/PageHeader';
@@ -57,33 +58,26 @@ const LearnPage: React.FC = () => {
   const renderItems = () => {
     switch (active) {
       case 'courses':
-        return COURSES.map((course) => {
-          const cfg = COURSE_ICON_MAP[course.id];
-          return (
-            <Card key={course.id} to={`/dashboard/courses/${course.id}`} interactive className="flex min-h-[170px] flex-col gap-2 p-6">
-              <div className="flex items-center gap-2">
-                {cfg && (
-                  <span className="flex h-8 w-8 items-center justify-center rounded-lg border border-border-subtle bg-surface-raised text-accent">
-                    <cfg.icon className="h-4 w-4" aria-hidden="true" />
-                  </span>
-                )}
-                <span className="type-meta">{course.skillLevel}</span>
-              </div>
-              <h3 className="type-h3 font-black uppercase tracking-tight text-text-primary">{course.title}</h3>
-              <p className="type-body-sm flex-1 line-clamp-3">{course.overview}</p>
-              <div className="flex flex-wrap gap-x-5 gap-y-1">
-                <span className="type-meta">{course.lessons.length} lessons</span>
-                <span className="type-meta">{course.estimatedMinutes} min</span>
-                <span className="type-meta text-accent">{course.cpCost} CP</span>
-              </div>
-            </Card>
-          );
-        });
+        return COURSES.map((course) => (
+          <Card key={course.id} to={`/dashboard/courses/${course.id}`} interactive className="flex min-h-[170px] flex-col gap-3 p-6">
+            <div className="flex items-center gap-3">
+              <CourseBadge courseId={course.id} className="h-16 w-16 shrink-0" />
+              <span className="type-meta">{course.skillLevel}</span>
+            </div>
+            <h3 className="type-h3 font-black uppercase tracking-tight text-text-primary">{course.title}</h3>
+            <p className="type-body-sm flex-1 line-clamp-3">{course.overview}</p>
+            <div className="flex flex-wrap gap-x-5 gap-y-1">
+              <span className="type-meta">{course.lessons.length} lessons</span>
+              <span className="type-meta">{course.estimatedMinutes} min</span>
+              <span className="type-meta text-accent">{course.cpCost} CP</span>
+            </div>
+          </Card>
+        ));
       case 'labs':
         return LABS.map((lab) => (
           <Card key={lab.id} to={lab.route} interactive className="flex min-h-[190px] flex-col gap-3 p-6">
             <div className="flex items-center gap-3">
-              <LabBadge labId={lab.id} accentColor={lab.accentColor} className="w-14 h-14 shrink-0" />
+              <LabBadge labId={lab.id} accentColor={lab.accentColor} className="h-16 w-16 shrink-0" />
               <span className="type-meta">{lab.difficulty}</span>
             </div>
             <h3 className="type-h3 font-black uppercase tracking-tight text-text-primary">

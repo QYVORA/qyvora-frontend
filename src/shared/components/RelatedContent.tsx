@@ -44,7 +44,7 @@ export function RelatedContent({ courses = [], labs = [], hpbRooms = [], title }
                 description={item.subtitle}
                 to={item.route}
                 badgeText={cfg.label}
-                icon={<Icon className="h-5 w-5" />}
+                icon={<Icon className="h-7 w-7" />}
                 actionLabel="Open"
               />
             </ScrollReveal>

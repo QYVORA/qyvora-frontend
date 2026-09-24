@@ -201,7 +201,7 @@ const MyCoursesPage: React.FC = () => {
                     description={course.description}
                     to={`/dashboard/courses/${course.id}${canResume ? `?lesson=${progress.lastLesson}` : ''}`}
                     badgeText={category?.name}
-                    badge={<CourseBadge courseId={course.id} className="w-11 h-11 shrink-0" />}
+                    badge={<CourseBadge courseId={course.id} className="w-14 h-14 shrink-0" />}
                     duration={`${course.estimatedMinutes} min`}
                     progress={pct}
                     difficulty={course.skillLevel}
@@ -251,7 +251,7 @@ const MyCoursesPage: React.FC = () => {
                           {course.title}
                         </h3>
                       </div>
-                      <CourseBadge courseId={course.id} className="w-12 h-12 shrink-0" />
+                      <CourseBadge courseId={course.id} className="w-14 h-14 shrink-0" />
                     </div>
                     <div className="relative z-10 mt-auto pt-2">
                       <button

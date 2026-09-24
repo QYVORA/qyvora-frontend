@@ -5,26 +5,24 @@ import PublicContainer from '@/shared/components/layout/PublicContainer';
 import Button from '@/shared/components/ui/Button';
 import { LearningCatalogue } from '@/shared/components/learning';
 import type { LearningCatalogueItem } from '@/shared/components/learning';
-import { COURSES, COURSE_ICON_MAP } from '@/features/student/data/courses';
+import { COURSES } from '@/features/student/data/courses';
+import CourseBadge from '@/shared/components/CourseBadge';
 
 const CoursesPage = () => {
 
-  const items: LearningCatalogueItem[] = COURSES.map((course) => {
-    const cfg = COURSE_ICON_MAP[course.id];
-    return {
-      key: course.id,
-      type: 'course',
-      to: `/dashboard/courses/${course.id}`,
-      icon: cfg ? <cfg.icon className="h-5 w-5" /> : undefined,
-      title: course.title,
-      description: course.overview,
-      difficulty: course.skillLevel,
-      duration: `${course.estimatedMinutes} min`,
-      lessonsCount: course.lessons.length,
-      price: `${course.cpCost} CP`,
-      actionLabel: "Start Course",
-    };
-  });
+  const items: LearningCatalogueItem[] = COURSES.map((course) => ({
+    key: course.id,
+    type: 'course',
+    to: `/dashboard/courses/${course.id}`,
+    badge: <CourseBadge courseId={course.id} className="w-14 h-14 shrink-0" />,
+    title: course.title,
+    description: course.overview,
+    difficulty: course.skillLevel,
+    duration: `${course.estimatedMinutes} min`,
+    lessonsCount: course.lessons.length,
+    price: `${course.cpCost} CP`,
+    actionLabel: "Start Course",
+  }));
 
   return (
     <div className="w-full bg-canvas">

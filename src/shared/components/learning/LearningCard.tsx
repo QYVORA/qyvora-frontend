@@ -112,11 +112,11 @@ export const LearningCard: React.FC<LearningCardProps> = ({
   const renderVisualSlot = () => {
     if (badge) return badge;
     if (id && type === 'lab') {
-      return <LabBadge labId={id} accentColor={accentColor} className="w-11 h-11 shrink-0" />;
+      return <LabBadge labId={id} accentColor={accentColor} className="w-14 h-14 shrink-0" />;
     }
     if (icon) {
       return (
-        <div className="w-10 h-10 rounded-xl bg-accent/10 border border-accent/20 flex items-center justify-center text-accent shrink-0">
+        <div className="w-14 h-14 rounded-xl bg-accent/10 border border-accent/20 flex items-center justify-center text-accent shrink-0">
           {icon}
         </div>
       );
