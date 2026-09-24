@@ -121,7 +121,7 @@ const StudentSidebar: React.FC<{ collapsed?: boolean; onToggleCollapse?: () => v
         {collapsed ? <QyvoraMark className="h-7 w-7" /> : <Logo size="md" />}
       </div>
 
-      <nav aria-label={"Primary"} className="flex-1 overflow-y-auto px-3 py-4">
+      <nav aria-label={"Primary"} className="custom-scrollbar flex-1 overflow-y-auto px-3 py-4">
         {NAV_SECTIONS.map((section) => (
           <section key={section.title} className="mb-5">
             {!collapsed && (
@@ -139,12 +139,15 @@ const StudentSidebar: React.FC<{ collapsed?: boolean; onToggleCollapse?: () => v
                       <NavLink
                         to={item.to}
                         data-tour-id={item.key === 'profile' ? 'tour-profile-sidebar' : undefined}
-                        className={`flex min-h-[44px] items-center rounded-lg py-2 text-sm transition-colors focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-accent ${
-                          collapsed ? 'h-11 w-11 justify-center px-0' : 'gap-3 px-3'
+                        className={`relative flex min-h-[48px] items-center rounded-xl py-2 text-sm transition-colors focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-accent ${
+                          collapsed ? 'h-12 w-12 justify-center px-0' : 'gap-3 px-3'
                         } ${
                           active ? 'bg-accent/10 text-accent' : 'text-text-secondary hover:bg-surface-raised hover:text-text-primary'
                         }`}
                       >
+                        {active && (
+                          <span className="absolute left-0 top-1/2 h-6 w-0.5 -translate-y-1/2 rounded-full bg-accent" aria-hidden="true" />
+                        )}
                         <Icon className="h-[18px] w-[18px] shrink-0" strokeWidth={2} aria-hidden="true" />
                         {!collapsed && <span className="flex-1 truncate">{item.label}</span>}
                         {item.badgeKey === 'notifications' && unread > 0 && (
@@ -163,31 +166,40 @@ const StudentSidebar: React.FC<{ collapsed?: boolean; onToggleCollapse?: () => v
       </nav>
 
       <div className="border-t border-border-subtle px-3 py-3">
-        {!collapsed && (
+        {!collapsed ? (
           <div className="mb-2 flex items-center justify-between gap-2 px-2">
             <CpLogo className="h-4 w-4" />
             <span className="type-label font-bold text-accent tabular-nums">{cpBalance.toLocaleString()}</span>
           </div>
+        ) : (
+          <div className="mb-2 flex justify-center">
+            <Tooltip content={`${cpBalance.toLocaleString()} CP`} side="right">
+              <div className="flex min-h-[48px] min-w-[48px] flex-col items-center justify-center gap-0.5 rounded-xl bg-surface-raised px-1 py-1.5">
+                <CpLogo className="h-4 w-4" />
+                <span className="text-[9px] font-bold leading-tight text-accent tabular-nums">{cpBalance.toLocaleString()}</span>
+              </div>
+            </Tooltip>
+          </div>
         )}
 
         <div
-          className={`mb-2 flex items-center justify-center gap-1.5 rounded-lg bg-surface-raised p-1.5 ${
+          className={`mb-2 flex items-center justify-center gap-1.5 rounded-xl bg-surface-raised p-1.5 ${
             collapsed ? 'flex-col' : ''
           }`}
         >
           <TooltipProvider>
             <Tooltip content={"Terminal"}>
-              <button type="button" onClick={openTerminal} aria-label={"Terminal"} className={`flex min-h-[44px] min-w-[44px] ${collapsed ? 'w-full' : 'flex-1'} items-center justify-center rounded-lg border border-transparent text-text-secondary transition-colors hover:border-border-subtle hover:text-accent focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-accent`}>
+              <button type="button" onClick={openTerminal} aria-label={"Terminal"} className={`flex min-h-[48px] min-w-[48px] ${collapsed ? 'w-full' : 'flex-1'} items-center justify-center rounded-xl border border-transparent text-text-secondary transition-colors hover:border-border-subtle hover:text-accent focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-accent`}>
                 <TerminalIcon className="h-[18px] w-[18px]" aria-hidden="true" />
               </button>
             </Tooltip>
             <Tooltip content={"Network Lab"}>
-              <button type="button" onClick={openNetwork} aria-label={"Network Lab"} className={`flex min-h-[44px] min-w-[44px] ${collapsed ? 'w-full' : 'flex-1'} items-center justify-center rounded-lg border border-transparent text-text-secondary transition-colors hover:border-border-subtle hover:text-accent focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-accent`}>
+              <button type="button" onClick={openNetwork} aria-label={"Network Lab"} className={`flex min-h-[48px] min-w-[48px] ${collapsed ? 'w-full' : 'flex-1'} items-center justify-center rounded-xl border border-transparent text-text-secondary transition-colors hover:border-border-subtle hover:text-accent focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-accent`}>
                 <Network className="h-[18px] w-[18px]" aria-hidden="true" />
               </button>
             </Tooltip>
             <Tooltip content={"Settings"}>
-              <button type="button" onClick={() => navigate('/dashboard/settings')} aria-label={"Settings"} className={`flex min-h-[44px] min-w-[44px] ${collapsed ? 'w-full' : 'flex-1'} items-center justify-center rounded-lg border border-transparent text-text-secondary transition-colors hover:border-border-subtle hover:text-accent focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-accent`}>
+              <button type="button" onClick={() => navigate('/dashboard/settings')} aria-label={"Settings"} className={`flex min-h-[48px] min-w-[48px] ${collapsed ? 'w-full' : 'flex-1'} items-center justify-center rounded-xl border border-transparent text-text-secondary transition-colors hover:border-border-subtle hover:text-accent focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-accent`}>
                 <Cog className="h-[18px] w-[18px]" aria-hidden="true" />
               </button>
             </Tooltip>
@@ -199,7 +211,7 @@ const StudentSidebar: React.FC<{ collapsed?: boolean; onToggleCollapse?: () => v
           onClick={onToggleCollapse}
           aria-expanded={!collapsed}
           aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}
-          className={`flex min-h-[44px] w-full items-center rounded-lg py-2 text-sm text-text-secondary transition-colors hover:bg-surface-raised hover:text-text-primary focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-accent ${
+          className={`flex min-h-[48px] w-full items-center rounded-xl py-2 text-sm text-text-secondary transition-colors hover:bg-surface-raised hover:text-text-primary focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-accent ${
             collapsed ? 'justify-center px-0' : 'gap-3 px-3'
           }`}
         >
@@ -214,7 +226,7 @@ const StudentSidebar: React.FC<{ collapsed?: boolean; onToggleCollapse?: () => v
         <button
           type="button"
           onClick={handleLogout}
-          className={`flex min-h-[44px] w-full items-center rounded-lg py-2 text-sm text-text-secondary transition-colors hover:bg-semantic-danger/5 hover:text-semantic-danger focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-accent ${
+          className={`flex min-h-[48px] w-full items-center rounded-xl py-2 text-sm text-text-secondary transition-colors hover:bg-semantic-danger/5 hover:text-semantic-danger focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-accent ${
             collapsed ? 'justify-center px-0' : 'gap-3 px-3'
           }`}
         >

@@ -14,7 +14,7 @@ import type { NotificationItem } from './types';
 
 const NOTIF_PREVIEW_LIMIT = 6;
 
-const AdminTopbar = () => {
+const AdminTopbar = ({ railCollapsed = false }: { railCollapsed?: boolean }) => {
   const { user, logout } = useAuth();
   const { addToast } = useToast();
   const navigate = useNavigate();
@@ -127,11 +127,15 @@ const AdminTopbar = () => {
       </a>
 
       <header
-        className={`fixed top-0 left-0 w-full z-[100] bg-transparent pt-[env(safe-area-inset-top)] transition-transform duration-300 ${topbarHidden ? '-translate-y-full' : 'translate-y-0'}`}
+        className={`fixed top-0 inset-x-0 z-[100] bg-transparent pt-[env(safe-area-inset-top)] transition-[left,transform] duration-[var(--dur-base)] ease-[var(--ease-smooth)] ${
+          topbarHidden ? '-translate-y-full' : 'translate-y-0'
+        } ${
+          railCollapsed ? 'lg:left-[76px]' : 'lg:left-[264px]'
+        }`}
       >
         <div className="px-3 md:px-4 lg:px-6 h-20 md:h-24 flex items-center gap-2 md:gap-3">
-          {/* Logo + ADMIN badge */}
-          <Link to={overviewPath} className="flex items-center gap-3 flex-none shrink-0" aria-label={"Admin Console"}>
+          {/* Logo + ADMIN badge — lg:hidden; the sidebar rail owns branding at lg+ */}
+          <Link to={overviewPath} className="lg:hidden flex items-center gap-3 flex-none shrink-0" aria-label={"Admin Console"}>
             <Logo size="md" variant="mark" />
             <span className="hidden sm:inline-flex items-center gap-1.5 rounded-lg border border-accent/20 bg-accent-dim/40 px-2 py-0.5">
               <IconShield size={12} className="text-accent" />
@@ -139,8 +143,9 @@ const AdminTopbar = () => {
             </span>
           </Link>
 
-          {/* Quick tabs — desktop only (lg+), flex-1 pushes right actions to the far right */}
-          <nav className="hidden lg:flex items-center justify-start flex-1 min-w-0 gap-1">
+          {/* Quick tabs — tablet only (md..lg); the sidebar rail owns desktop
+              (lg+) navigation, mirroring the student dashboard pattern */}
+          <nav className="hidden md:flex lg:hidden items-center justify-start flex-1 min-w-0 gap-1">
             {ADMIN_QUICK_TABS.map((item) => {
               const Icon = item.icon;
               const active = isTabActive(item.tab);
@@ -161,9 +166,6 @@ const AdminTopbar = () => {
               );
             })}
           </nav>
-
-          {/* Spacer — keeps right actions right-aligned on md..lg, where the desktop nav (flex-1) is hidden */}
-          <div className="hidden lg:hidden md:flex flex-1" aria-hidden="true" />
 
           {/* Right actions */}
           <div className="flex items-center gap-1.5 md:gap-2.5 shrink-0 ml-auto">
@@ -202,7 +204,7 @@ const AdminTopbar = () => {
             {/* Logout — desktop */}
             <button
               onClick={handleLogout}
-              className="hidden md:flex p-3 md:p-3.5 text-text-muted hover:text-danger transition-colors rounded-xl hover:bg-danger/10 active:scale-95"
+              className="hidden md:flex p-3 md:p-3.5 text-text-muted hover:text-semantic-danger transition-colors rounded-xl hover:bg-semantic-danger/5 active:scale-95"
               aria-label={"Log out"}
             >
               <LogOut className="w-6 h-6" />
