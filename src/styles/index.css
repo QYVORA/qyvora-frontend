@@ -27,6 +27,7 @@
   --text-micro:     7px;
   /* ── Dark theme (default) ── */
   --color-bg:             #000000;
+  --color-canvas:         #0b0d0e;  /* page background (charcoal, not black) */
   --color-bg-card:        #050505;
   --color-bg-elevated:    #0b0b0b;
   --color-bg-alt:         #080808;
@@ -85,7 +86,7 @@
   }
 
   body {
-    @apply bg-bg text-text-primary font-mono selection:bg-accent selection:text-on-accent;
+    @apply bg-canvas text-text-primary font-mono selection:bg-accent selection:text-on-accent;
     overflow-x: hidden;
     min-height: 100%;
     -webkit-tap-highlight-color: transparent;
@@ -424,10 +425,10 @@
   }
 
   ::-webkit-scrollbar { width: 10px; height: 10px; }
-  ::-webkit-scrollbar-track { background: var(--color-bg); border-radius: 999px; }
-  ::-webkit-scrollbar-thumb { background: var(--color-accent); border-radius: 999px; border: 2px solid var(--color-bg); }
+  ::-webkit-scrollbar-track { background: var(--color-canvas); border-radius: 999px; }
+  ::-webkit-scrollbar-thumb { background: var(--color-accent); border-radius: 999px; border: 2px solid var(--color-canvas); }
   ::-webkit-scrollbar-thumb:hover { filter: brightness(1.15); }
-  ::-webkit-scrollbar-corner { background: var(--color-bg); }
+  ::-webkit-scrollbar-corner { background: var(--color-canvas); }
 
 }
 

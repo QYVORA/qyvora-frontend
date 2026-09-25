@@ -26,13 +26,16 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
 
 const variantClasses: Record<ButtonVariant, string> = {
   primary:
-    'bg-accent text-on-accent font-bold border-2 border-on-accent hover:brightness-110',
+    'bg-accent text-on-accent font-bold border-2 border-on-accent hover:brightness-110 ' +
+    'shadow-[0_3px_0_var(--color-on-accent)] active:translate-y-[2px] active:shadow-[0_1px_0_var(--color-on-accent)]',
   secondary:
-    'bg-bg-elevated text-accent font-bold border border-border hover:bg-bg-card',
+    'bg-bg-elevated text-accent font-bold border border-border hover:bg-bg-card ' +
+    'shadow-[0_3px_0_var(--color-border-strong)] active:translate-y-[2px] active:shadow-[0_1px_0_var(--color-border-strong)]',
   danger:
-    'bg-danger/10 text-danger font-bold border border-danger/40 hover:bg-danger/20',
+    'bg-danger/10 text-danger font-bold border border-danger/40 hover:bg-danger/20 ' +
+    'shadow-[0_3px_0_color-mix(in_srgb,var(--color-danger)_55%,transparent)] active:translate-y-[2px] active:shadow-[0_1px_0_color-mix(in_srgb,var(--color-danger)_55%,transparent)]',
   ghost:
-    'bg-transparent text-text-secondary font-bold border border-transparent hover:bg-bg-elevated hover:text-text-primary',
+    'bg-transparent text-text-secondary font-bold border border-transparent hover:bg-bg-elevated hover:text-text-primary active:translate-y-[2px]',
 };
 
 const sizeClasses: Record<ButtonSize, string> = {
