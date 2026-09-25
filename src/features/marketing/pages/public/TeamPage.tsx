@@ -18,6 +18,7 @@ const SOCIAL_ICONS: Record<string, React.ElementType> = {
 const FOUNDERS: Record<string, boolean> = {
   wsuits6: true,
   sopt4: true,
+  ghostVenom: true,
 };
 
 const SocialLinks = ({ member }: { member: TeamMember }) => (
