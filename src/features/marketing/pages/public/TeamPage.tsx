@@ -43,62 +43,6 @@ const SocialLinks = ({ member }: { member: TeamMember }) => (
   </div>
 );
 
-const FounderCard = ({ member }: { member: TeamMember }) => (
-  <article className="flex flex-col items-center gap-4 rounded-2xl border border-border-subtle bg-surface p-6 text-center">
-    <div className="relative">
-      <span className="absolute -inset-1.5 rounded-full border border-accent/30" aria-hidden="true" />
-      <img
-        src={member.image}
-        alt={member.name}
-        width={member.width}
-        height={member.height}
-        loading="lazy"
-        className="h-28 w-28 rounded-full border-2 border-surface object-cover object-[center_20%]"
-      />
-    </div>
-    <div className="flex flex-col items-center gap-1">
-      <h3 className="text-lg font-black uppercase tracking-tight leading-tight text-text-primary break-words">
-        {member.name}
-      </h3>
-      <span className="rounded-lg border border-accent/30 bg-accent/10 px-2 py-0.5 text-tiny font-black uppercase tracking-widest text-accent">
-        {member.role}
-      </span>
-      {member.location && (
-        <p className="mt-1 inline-flex items-center gap-1.5 text-tiny font-black uppercase tracking-widest text-text-muted">
-          <MapPin className="h-3.5 w-3.5 text-accent" aria-hidden="true" />
-          {member.location}
-        </p>
-      )}
-    </div>
-    <p className="text-xs font-mono leading-relaxed text-text-secondary line-clamp-3">
-      {member.profile}
-    </p>
-    <div className="mt-auto flex flex-col items-center gap-3 pt-1">
-      <div className="flex flex-wrap justify-center gap-1.5">
-        {member.disciplines.map((discipline) => (
-          <span
-            key={discipline}
-            className="rounded-md border border-border-subtle bg-surface-raised px-2 py-0.5 text-tiny font-black uppercase tracking-widest text-text-muted"
-          >
-            {discipline}
-          </span>
-        ))}
-      </div>
-      <div className="flex items-center gap-2">
-        <SocialLinks member={member} />
-        {member.handle && (
-          <Link
-            to={`/@${member.handle}`}
-            className="inline-flex min-h-[44px] items-center gap-1.5 text-xs font-black uppercase tracking-widest text-accent transition-colors hover:text-text-primary"
-          >
-            Profile <ArrowUpRight className="h-3.5 w-3.5" />
-          </Link>
-        )}
-      </div>
-    </div>
-  </article>
-);
-
 const OperatorCard = ({ member }: { member: TeamMember }) => (
   <article className="flex h-full flex-col overflow-hidden rounded-2xl border border-border-subtle bg-surface">
     <div className="relative aspect-[4/3] w-full overflow-hidden bg-surface-raised">
@@ -198,7 +142,7 @@ const TeamPage = () => {
             </h2>
           </div>
           <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-            {founders.map((member) => <FounderCard key={member.id} member={member} />)}
+            {founders.map((member) => <OperatorCard key={member.id} member={member} />)}
           </div>
         </section>
 
