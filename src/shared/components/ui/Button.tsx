@@ -59,7 +59,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       <>
         {loading && <Loader2 className="h-4 w-4 animate-spin shrink-0" aria-hidden="true" />}
         {!loading && icon}
-        <span className="truncate">{children}</span>
+        <span className="min-w-0 whitespace-normal text-balance">{children}</span>
         {!loading && trailingIcon}
       </>
     );
