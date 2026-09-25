@@ -32,9 +32,9 @@ const TrendIcon = ({ direction }: { direction: TrendData['direction'] }) => {
 };
 
 export const StatCardSkeleton = () => (
-  <div className="card-accent bg-bg-card p-5 space-y-4">
+  <div className="rounded-2xl border border-border-subtle bg-surface p-5 space-y-4">
     <div className="flex items-center gap-3">
-      <Skeleton className="w-10 h-10 rounded-xl bg-bg-elevated shrink-0" />
+      <Skeleton className="w-10 h-10 rounded-xl bg-surface-raised shrink-0" />
       <Skeleton className="h-3 w-24 bg-border/30 rounded" />
     </div>
     <Skeleton className="h-8 w-16 bg-border/30 rounded" />
@@ -53,9 +53,9 @@ const StatCard = ({
 
   return (
     <Tag
-      className={`card-accent bg-bg-card p-5 transition-[border-color,box-shadow,transform] duration-[var(--dur-base)] ease-[var(--ease-smooth)] ${
+      className={`rounded-2xl border border-border-subtle bg-surface p-5 transition-[border-color,box-shadow,transform] duration-[var(--dur-base)] ease-[var(--ease-smooth)] ${
         accent ? 'border-accent/55' : ''
-      } ${onClick || href ? 'cursor-pointer hover:shadow-sm active:scale-[0.98]' : ''} ${className ?? ''}`}
+      } ${onClick || href ? 'cursor-pointer hover:border-accent/40 active:scale-[0.98]' : ''} ${className ?? ''}`}
       {...hrefProps}
       {...clickProps}
       {...rest}
@@ -63,12 +63,12 @@ const StatCard = ({
       <div className="flex items-center gap-3 mb-3">
         {icon && (
           <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${
-            accent ? 'bg-accent/10' : 'bg-bg-elevated'
+            accent ? 'bg-accent/10' : 'bg-surface-raised'
           }`}>
             {icon}
           </div>
         )}
-        <span className="text-xs font-black uppercase tracking-[0.2em] text-text-muted">{label}</span>
+        <span className="text-xs font-black uppercase tracking-widest text-text-tertiary">{label}</span>
       </div>
       <div className="flex items-end gap-3">
         <div className={`font-mono text-2xl font-black leading-none tabular-nums ${

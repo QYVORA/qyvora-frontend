@@ -98,15 +98,12 @@ export const LearningCard: React.FC<LearningCardProps> = ({
   const isExpanded = view === 'expanded';
 
   const containerClasses = [
-    'group/card relative rounded-2xl border transition-[border-color,box-shadow,background-color] duration-[var(--dur-base)] ease-[var(--ease-smooth)] flex flex-col text-left',
-    active ? 'border-accent shadow-[0_0_16px_var(--color-accent-dim)]' : 'card-accent',
-    'bg-bg-card',
+    'group/card relative rounded-2xl border border-border-subtle bg-surface transition-[border-color,box-shadow,background-color] duration-[var(--dur-base)] ease-[var(--ease-smooth)] flex flex-col text-left',
+    active ? 'border-accent/60' : '',
     isExpanded ? 'p-4 md:p-5 gap-2' : 'h-full min-h-[220px] p-4 md:p-5 justify-between',
-    muted ? 'opacity-60 cursor-default' : 'hover:border-accent/80 hover:shadow-[var(--card-shimmer)]',
+    muted ? 'opacity-60 cursor-default' : 'hover:border-accent/40',
     className,
   ].join(' ');
-
-  const cardStyle = { boxShadow: 'var(--card-shimmer)' };
 
   // ── Card Header (Badges / Visual Slot) ───────────────────────────────────
   const renderVisualSlot = () => {
@@ -218,7 +215,7 @@ export const LearningCard: React.FC<LearningCardProps> = ({
         )}
 
         {typeof progress === 'number' && (
-          <div className="w-full bg-bg-elevated h-1.5 rounded-full overflow-hidden my-1">
+          <div className="w-full bg-surface-raised h-1.5 rounded-full overflow-hidden my-1">
             <div className="bg-accent h-full rounded-full transition-[width] duration-[var(--dur-slow)] ease-[var(--ease-smooth)]" style={{ width: `${progress}%` }} />
           </div>
         )}
@@ -244,26 +241,26 @@ export const LearningCard: React.FC<LearningCardProps> = ({
 
     if (linkTarget && !external) {
       return (
-        <Link to={linkTarget} className={containerClasses} style={cardStyle}>
+        <Link to={linkTarget} className={containerClasses}>
           {expandedContent}
         </Link>
       );
     }
     if (linkTarget && external) {
       return (
-        <a href={linkTarget} target="_blank" rel="noopener noreferrer" className={containerClasses} style={cardStyle}>
+        <a href={linkTarget} target="_blank" rel="noopener noreferrer" className={containerClasses}>
           {expandedContent}
         </a>
       );
     }
     if (onClick) {
       return (
-        <div role="button" tabIndex={0} onClick={onClick} aria-label={title} onKeyDown={(e) => (e.key === 'Enter' || e.key === ' ') && onClick()} className={containerClasses} style={cardStyle}>
+        <div role="button" tabIndex={0} onClick={onClick} aria-label={title} onKeyDown={(e) => (e.key === 'Enter' || e.key === ' ') && onClick()} className={containerClasses}>
           {expandedContent}
         </div>
       );
     }
-    return <div className={containerClasses} style={cardStyle}>{expandedContent}</div>;
+    return <div className={containerClasses}>{expandedContent}</div>;
   }
 
   // ── STANDARD (GRID) VIEW ─────────────────────────────────────────────────
@@ -326,7 +323,7 @@ export const LearningCard: React.FC<LearningCardProps> = ({
 
         {/* Progress Bar */}
         {typeof progress === 'number' && (
-          <div className="w-full bg-bg-elevated h-1.5 rounded-full overflow-hidden my-2">
+          <div className="w-full bg-surface-raised h-1.5 rounded-full overflow-hidden my-2">
             <div className="bg-accent h-full rounded-full transition-[width] duration-[var(--dur-slow)] ease-[var(--ease-smooth)]" style={{ width: `${progress}%` }} />
           </div>
         )}
@@ -354,26 +351,26 @@ export const LearningCard: React.FC<LearningCardProps> = ({
 
   if (linkTarget && !external) {
     return (
-      <Link to={linkTarget} className={containerClasses} style={cardStyle}>
+      <Link to={linkTarget} className={containerClasses}>
         {gridContent}
       </Link>
     );
   }
   if (linkTarget && external) {
     return (
-      <a href={linkTarget} target="_blank" rel="noopener noreferrer" className={containerClasses} style={cardStyle}>
+      <a href={linkTarget} target="_blank" rel="noopener noreferrer" className={containerClasses}>
         {gridContent}
       </a>
     );
   }
   if (onClick) {
     return (
-      <div role="button" tabIndex={0} onClick={onClick} aria-label={title} onKeyDown={(e) => (e.key === 'Enter' || e.key === ' ') && onClick()} className={containerClasses} style={cardStyle}>
+      <div role="button" tabIndex={0} onClick={onClick} aria-label={title} onKeyDown={(e) => (e.key === 'Enter' || e.key === ' ') && onClick()} className={containerClasses}>
         {gridContent}
       </div>
     );
   }
-  return <div className={containerClasses} style={cardStyle}>{gridContent}</div>;
+  return <div className={containerClasses}>{gridContent}</div>;
 };
 
 export default LearningCard;

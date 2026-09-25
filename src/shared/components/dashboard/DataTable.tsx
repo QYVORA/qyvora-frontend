@@ -75,7 +75,7 @@ function DataTable<T>({
     return (
       <div className="space-y-2">
         {Array.from({ length: 8 }).map((_, i) => (
-          <div key={i} className="h-14 rounded-xl bg-bg-card border border-border animate-pulse" />
+          <div key={i} className="h-14 rounded-xl bg-surface border border-border-subtle animate-pulse" />
         ))}
       </div>
     );
@@ -121,14 +121,14 @@ function DataTable<T>({
           <div className="hidden md:block bg-transparent overflow-hidden">
             <div className="overflow-x-auto">
               <table className={`w-full text-left ${minWidth}`}>
-                <thead className="bg-bg-elevated/50 backdrop-blur-sm">
+                <thead className="bg-surface-raised/50">
                   <tr>
                     {columns
                       .filter((c) => !c.hideOnMobile)
                       .map((col) => (
                         <th
                           key={col.key}
-                          className={`px-6 py-5 text-xs font-black uppercase tracking-[0.25em] text-text-muted/60 ${col.sortable ? 'cursor-pointer hover:text-accent select-none' : ''} ${col.headerClassName ?? ''}`}
+                          className={`px-6 py-3 text-xs font-black uppercase tracking-[0.25em] text-text-muted/60 ${col.sortable ? 'cursor-pointer hover:text-accent select-none' : ''} ${col.headerClassName ?? ''}`}
                           onClick={() => col.sortable && handleSort(col.key)}
                           onKeyDown={(e) => { if (col.sortable && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); handleSort(col.key); } }}
                           {...(col.sortable ? { role: 'button', tabIndex: 0 } : {})}
@@ -149,7 +149,7 @@ function DataTable<T>({
                       {columns
                         .filter((c) => !c.hideOnMobile)
                         .map((col) => (
-                          <td key={col.key} className={`px-6 py-6 ${col.className ?? ''}`}>
+                          <td key={col.key} className={`px-6 py-4 ${col.className ?? ''}`}>
                             {col.render(item)}
                           </td>
                         ))}
@@ -168,7 +168,7 @@ function DataTable<T>({
                   value={pageSize}
                   onChange={(e) => { setPageSize(Number(e.target.value)); setPage(1); }}
                   aria-label={"Items per page"}
-                  className="bg-bg-elevated rounded-lg px-3 py-2 text-xs font-black text-text-primary outline-none cursor-pointer"
+                  className="bg-surface-raised rounded-lg px-3 py-2 text-xs font-black text-text-primary outline-none cursor-pointer"
                 >
                   {[10, 25, 50, 100].map((n) => (
                     <option key={n} value={n}>{`${n} / page`}</option>
@@ -183,7 +183,7 @@ function DataTable<T>({
                   onClick={() => setPage((p) => Math.max(1, p - 1))}
                   disabled={safePage <= 1}
                   aria-label={"Previous page"}
-                  className="w-11 h-11 flex items-center justify-center rounded-lg bg-bg-elevated text-text-muted disabled:opacity-50 hover:text-accent transition-[color,transform] duration-[var(--dur-base)] active:scale-90 shadow-sm"
+                  className="w-11 h-11 flex items-center justify-center rounded-lg bg-surface-raised text-text-muted disabled:opacity-50 hover:text-accent transition-[color,transform] duration-[var(--dur-base)] active:scale-90 shadow-sm"
                 >
                   <ChevronLeft className="w-5 h-5" />
                 </button>
@@ -191,7 +191,7 @@ function DataTable<T>({
                   onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
                   disabled={safePage >= totalPages}
                   aria-label={"Next page"}
-                  className="w-11 h-11 flex items-center justify-center rounded-lg bg-bg-elevated text-text-muted disabled:opacity-50 hover:text-accent transition-[color,transform] duration-[var(--dur-base)] active:scale-90 shadow-sm"
+                  className="w-11 h-11 flex items-center justify-center rounded-lg bg-surface-raised text-text-muted disabled:opacity-50 hover:text-accent transition-[color,transform] duration-[var(--dur-base)] active:scale-90 shadow-sm"
                 >
                   <IconChevronRight size={20} />
                 </button>

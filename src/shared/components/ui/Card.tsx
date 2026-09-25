@@ -270,7 +270,7 @@ export const Card: React.FC<CardProps> = ({
 }) => {
   const Tag = as as React.ElementType;
   const classes = [
-    'bg-surface rounded-xl border border-border-subtle',
+    'bg-surface rounded-2xl border border-border-subtle',
     selected ? 'border-accent/60' : '',
     interactive ? 'hover:border-border' : '',
     muted ? 'opacity-55 cursor-default' : '',

@@ -72,7 +72,7 @@ export function LearningAccordion({ items, className, defaultOpen = 0 }: Learnin
         return (
           <div
             key={item.id}
-            className="hidden md:block rounded-xl border border-border/50 bg-bg-card overflow-hidden transition-colors hover:border-border/50"
+            className="hidden md:block rounded-2xl border border-border-subtle bg-surface overflow-hidden transition-colors hover:border-accent/40"
           >
             {/* Strip header — always visible */}
             <button
@@ -143,7 +143,7 @@ export function LearningAccordion({ items, className, defaultOpen = 0 }: Learnin
       {/* Mobile: stacked terminal cards (always expanded) */}
       <div className="md:hidden flex flex-col gap-4">
         {items.map((item, idx) => (
-          <div key={item.id} className="terminal-card relative rounded-2xl border border-border bg-bg-card overflow-hidden">
+          <div key={item.id} className="relative rounded-2xl border border-border-subtle bg-surface overflow-hidden">
             <div className="relative p-5">
               <div
                 className="absolute top-3 right-4 font-mono text-2xl font-black leading-none select-none pointer-events-none"

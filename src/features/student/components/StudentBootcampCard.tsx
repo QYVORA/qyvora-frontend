@@ -36,10 +36,10 @@ const StudentBootcampCard: React.FC<Props> = ({ data, index = 0, onEnroll, onLoc
   const { id, title, description, level, duration, priceLabel, progress, isEnrolled, isLocked } = data;
   const isComplete = progress === 100;
 
-  const cardClasses = `relative aspect-square rounded-2xl border border-border/50 bg-bg-card p-4 md:p-5 transition-[transform,box-shadow,border-color] duration-[var(--dur-base)] ease-[var(--ease-smooth)] flex flex-col text-left ${
+  const cardClasses = `relative aspect-square rounded-2xl border border-border-subtle bg-surface p-4 md:p-5 transition-[transform,box-shadow,border-color] duration-[var(--dur-base)] ease-[var(--ease-smooth)] flex flex-col text-left ${
     isLocked
       ? 'opacity-40 cursor-default'
-      : 'hover:border-accent/50'
+      : 'hover:border-accent/40'
   }`;
 
   const BtnBase = 'px-3 py-1.5 rounded-lg text-xs sm:text-xs md:text-xs font-black uppercase tracking-widest bg-accent text-on-accent transition-[filter,transform] duration-[var(--dur-fast)] ease-[var(--ease-smooth)] group-hover/card:brightness-110 group-active:scale-95';
@@ -55,7 +55,7 @@ const StudentBootcampCard: React.FC<Props> = ({ data, index = 0, onEnroll, onLoc
             </span>
           )}
           {isLocked && (
-            <span className="px-2 py-0.5 rounded-lg text-xs font-black uppercase tracking-widest bg-bg-elevated text-text-muted border border-border/50 flex items-center gap-1">
+            <span className="px-2 py-0.5 rounded-lg text-xs font-black uppercase tracking-widest bg-surface-raised text-text-muted border border-border-subtle flex items-center gap-1">
               <IconLock size={10} /> {"Coming Soon"}
             </span>
           )}
@@ -93,7 +93,7 @@ const StudentBootcampCard: React.FC<Props> = ({ data, index = 0, onEnroll, onLoc
           <div className="flex items-center justify-between mb-1">
             <span className="text-xs font-mono text-text-muted">{progress}%</span>
           </div>
-          <div className="h-1.5 bg-bg-elevated rounded-full overflow-hidden">
+          <div className="h-1.5 bg-surface-raised rounded-full overflow-hidden">
             <div className="h-full bg-accent transition-[width] duration-700" style={{ width: `${progress}%` }} />
           </div>
         </div>
@@ -110,7 +110,7 @@ const StudentBootcampCard: React.FC<Props> = ({ data, index = 0, onEnroll, onLoc
         )}
         <div className="ml-auto">
           {isLocked ? (
-            <span className="px-3 py-1.5 rounded-lg text-xs sm:text-xs font-black uppercase tracking-widest bg-bg-elevated text-text-muted border border-border/50">
+            <span className="px-3 py-1.5 rounded-lg text-xs sm:text-xs font-black uppercase tracking-widest bg-surface-raised text-text-muted border border-border-subtle">
               {"Coming Soon"}
             </span>
           ) : isEnrolled ? (

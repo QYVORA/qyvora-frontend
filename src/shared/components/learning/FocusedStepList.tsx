@@ -60,8 +60,8 @@ function FocusedStepRow({ item, onSelect }: FocusedStepRowProps) {
       className={cn(
         'group w-full flex items-center gap-3 rounded-2xl border px-4 py-3.5 text-left transition-colors min-h-[48px]',
         locked
-          ? 'border-border/30 bg-bg-card/40 cursor-not-allowed'
-          : 'border-border/50 bg-bg-card hover:border-accent/40 hover:bg-accent-dim/5 cursor-pointer',
+          ? 'border-border-subtle bg-surface/40 cursor-not-allowed'
+          : 'border-border-subtle bg-surface hover:border-accent/40 hover:bg-surface-raised cursor-pointer',
       )}
     >
       <span
@@ -69,7 +69,7 @@ function FocusedStepRow({ item, onSelect }: FocusedStepRowProps) {
           'flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border font-mono text-sm font-black transition-colors',
           item.isCompleted
             ? 'border-accent/40 bg-accent-dim/20 text-accent'
-            : 'border-border bg-bg-elevated text-text-muted',
+            : 'border-border-subtle bg-surface-raised text-text-muted',
         )}
         aria-hidden="true"
       >

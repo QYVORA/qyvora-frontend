@@ -113,10 +113,10 @@ const RoomCard: React.FC<RoomCardProps> = ({
 
   const inner = (
     <div
-      className={`group/card relative aspect-square rounded-2xl border border-border/50 bg-bg-card p-3 md:p-5 transition-[transform,box-shadow,border-color,opacity] duration-[var(--dur-base)] ease-[var(--ease-smooth)] flex flex-col text-left ${
+      className={`group/card relative aspect-square rounded-2xl border border-border-subtle bg-surface p-3 md:p-5 transition-[transform,box-shadow,border-color,opacity] duration-[var(--dur-base)] ease-[var(--ease-smooth)] flex flex-col text-left ${
         isRoomLocked
           ? 'opacity-40 cursor-not-allowed pointer-events-none'
-          : 'hover:border-accent/50'
+          : 'hover:border-accent/40'
       }`}
     >
       <div className="flex items-center gap-2 mb-2">
@@ -143,7 +143,7 @@ const RoomCard: React.FC<RoomCardProps> = ({
         </div>
 
         {isRoomLocked && (
-          <span className="px-2 py-0.5 rounded-lg text-xs font-black uppercase tracking-widest bg-bg-elevated text-text-muted border border-border/50 flex items-center gap-1">
+          <span className="px-2 py-0.5 rounded-lg text-xs font-black uppercase tracking-widest bg-surface-raised text-text-muted border border-border-subtle flex items-center gap-1">
             <IconLock size={10} /> Locked
           </span>
         )}
@@ -157,7 +157,7 @@ const RoomCard: React.FC<RoomCardProps> = ({
               className={`rounded-lg px-2 py-1 text-xs font-black uppercase tracking-widest transition-[background-color,color] duration-[var(--dur-fast)] ease-[var(--ease-smooth)] flex items-center gap-1 ${
                 annotateMode
                   ? 'bg-accent text-on-accent'
-                  : 'bg-bg-elevated text-text-muted hover:text-accent border border-border/50'
+                  : 'bg-surface-raised text-text-muted hover:text-accent border border-border-subtle'
               }`}
             >
               <Pencil className="h-2.5 w-2.5" />

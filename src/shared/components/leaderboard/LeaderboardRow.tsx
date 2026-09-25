@@ -24,7 +24,7 @@ const LeaderboardRow = ({
   youLabel = 'You',
   roomsLabel = 'rooms',
   avatarShape = 'rounded-full',
-  normalBorderColor = 'border-border',
+  normalBorderColor = 'border-border-subtle',
 }: LeaderboardRowProps) => {
   const effectiveRank = rank ?? entry.rank;
   const isTopThree = effectiveRank <= 3;
@@ -41,7 +41,7 @@ const LeaderboardRow = ({
           ? 'border-accent/40 bg-accent-dim/10'
           : isTopThree
           ? 'border-accent/20 bg-accent-dim/5 shadow-[0_0_20px_-8px] shadow-accent/10'
-          : `${normalBorderColor} bg-bg-card hover:border-accent/20`
+          : `${normalBorderColor} bg-surface hover:border-accent/20`
         }
         hover:brightness-110 active:scale-[0.99]
       `}
