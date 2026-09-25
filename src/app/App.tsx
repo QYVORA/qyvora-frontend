@@ -23,6 +23,7 @@ import ScrollToTop from '../shared/components/ScrollToTop';
 import ErrorBoundary from '../shared/components/ErrorBoundary';
 import AdaptiveMode from '../shared/components/AdaptiveMode';
 import PreferencesApplier from '../shared/components/PreferencesApplier';
+import { SplashLoader } from '../shared/components/PageLoader';
 
 export default function App() {
   useEffect(() => {
@@ -45,6 +46,16 @@ export default function App() {
       making them easy to triage in production error tracking tools.
     */
     <ErrorBoundary scope="App">
+      {/*
+        SplashLoader
+        ─────────────────────────────────────────────────────────────────────
+        A one-time, self-completing boot overlay mounted at the top of the app
+        tree, independent of Suspense and auth. On every full page load / hard
+        refresh it plays its full animation (hold → fade → remove) no matter
+        how fast the page underneath resolves, so the loader never "just
+        flashes". It removes itself and never re-appears on SPA navigation.
+      */}
+      <SplashLoader />
 
       {/*
         MotionConfig (animation defaults)
