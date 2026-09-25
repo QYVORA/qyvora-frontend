@@ -13,7 +13,7 @@ const AboutPage: React.FC = () => {
 
   const tiles = [
     { key: 'team', to: '/team', icon: <Users className="h-5 w-5" aria-hidden="true" />, title: 'The team', desc: 'Meet the operators and engineers building QYVORA.', cta: 'Meet the team' },
-    { key: 'quiteroot', to: '/quiteroot', icon: <FlaskConical className="h-5 w-5" aria-hidden="true" />, title: 'QuiteRoot', desc: 'The intelligence and engineering collective behind our tooling and research.', cta: 'Explore QuiteRoot' },
+    { key: 'quiteroot', to: '/quiteroot', icon: <FlaskConical className="h-5 w-5" aria-hidden="true" />, title: 'QuiteRoot', desc: 'QYVORA\u2019s technical team — currently no active members, open to applications.', cta: 'Explore QuiteRoot' },
     { key: 'contact', to: '/contact', icon: <PhoneCall className="h-5 w-5" aria-hidden="true" />, title: 'Contact', desc: 'Reach the desk directly: partnerships, services, and research inquiries.', cta: 'Contact the desk' },
     { key: 'legal', to: '/terms', icon: <ScrollText className="h-5 w-5" aria-hidden="true" />, title: 'Legal', desc: 'Terms of service governing use of the platform.', cta: 'Read the terms' },
   ];

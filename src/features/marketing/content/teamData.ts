@@ -1,6 +1,5 @@
 import wsuits6Img from '@/assets/team/wsuits6.webp';
 import sopt4Img from '@/assets/team/sopt4.webp';
-import rafiqImg from '@/assets/team/mohammed_rafiq.webp';
 import ghostImg from '@/assets/quiteRoot/WhatsApp Image 2026-07-16 at 10.45.41 PM.webp';
 import juniorPentesterImg from '@/assets/team/junior_pentester.webp';
 import cyberX6Img from '@/assets/team/cyberX6.webp';
@@ -68,23 +67,6 @@ export const teamData: TeamMember[] = [
       github: 'https://github.com/sethabbey987',
       linkedin: 'https://www.linkedin.com/in/seth-abbey-599029379/',
       twitter: 'https://x.com/qyvorasec',
-    },
-  },
-  {
-    id: 'mohammedRafiq',
-    name: 'Mohammed Rafiq',
-    role: 'CFO',
-    bio: 'Computer hardware engineer, IT graduate, and hands-on troubleshooter based in Tamale.',
-    profile: 'Sulemana Mohammed Rafiq is a professional computer hardware engineer and troubleshooter with a BTech in Information Technology. He is the Managing Director of Conda Computers in Tamale, bringing practical technical leadership, diagnostics expertise, and a grounded understanding of the hardware that keeps people connected.',
-    disciplines: ['Hardware engineering', 'IT troubleshooting', 'Technical operations'],
-    location: 'Tamale, Ghana',
-    image: rafiqImg,
-    width: 1080,
-    height: 1080,
-    socials: {
-      twitter: 'https://x.com/nyabubiyoona1?s=11',
-      facebook: 'https://www.facebook.com/share/1E1NGivdg1/?mibextid=wwXIfr',
-      website: 'https://msiieautel.com/reg?code=y64x7d',
     },
   },
   {

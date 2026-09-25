@@ -171,7 +171,7 @@ export const Hpb2026CaseStudy: React.FC = () => {
             <div className="min-w-0">
               <h3 className="text-base md:text-lg font-black uppercase tracking-wider mb-2 text-text-primary break-words">QuiteRoot. The Tech Team</h3>
               <p className="text-sm font-mono text-text-secondary leading-[2]">
-                From the HPB cohort, we identified the most <Highlight>serious and dedicated learners</Highlight> and formed <Highlight>QuiteRoot</Highlight> | QYVORA's offensive research and engineering collective. QuiteRoot is responsible for building the tools, frameworks, and intelligence capabilities that power QYVORA's platform. The team emerged organically from the bootcamp because the curriculum itself was a filter: those who completed all 20 rooms demonstrated the <Highlight>grit, curiosity, and technical aptitude</Highlight> that makes a great operator.
+                From the HPB cohort, we identified the most <Highlight>serious and dedicated learners</Highlight> and formed <Highlight>QuiteRoot</Highlight> | QYVORA's engineering and research team. The team emerged organically from the bootcamp because the curriculum itself was a filter: those who completed all 20 rooms demonstrated the <Highlight>grit, curiosity, and technical aptitude</Highlight> that makes a great operator. The team is currently being rebuilt and is open to applications.
               </p>
             </div>
           </div>

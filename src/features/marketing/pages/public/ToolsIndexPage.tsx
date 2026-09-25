@@ -84,7 +84,7 @@ const ToolsIndexPage: React.FC = () => {
           kicker={"Open-source tooling"}
           title={"Combat-ready tools, documented end to end."}
 
-          description={"Thirteen offensive security tools built by the QuiteRoot collective. Each tool has full documentation, install guides, and walkthroughs."}
+          description={"Thirteen open-source offensive security tools, built and documented for operators. Each tool has full documentation, install guides, and walkthroughs."}
         />
 
         <div className="mt-10 flex flex-col gap-3">

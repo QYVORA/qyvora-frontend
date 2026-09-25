@@ -35,7 +35,7 @@ const ToolsResearchBlock: React.FC = () => {
             <h2 className="type-h2 text-3xl font-black uppercase tracking-tight text-text-primary md:text-5xl">
               {"Combat-ready open-source tooling."}
             </h2>
-            <p className="type-body mt-2">{"Thirteen offensive security tools, built in the open and documented for operators, plus research from the QuiteRoot collective."}</p>
+            <p className="type-body mt-2">{"Thirteen offensive security tools, built in the open and documented for operators."}</p>
           </div>
         </ScrollReveal>
 

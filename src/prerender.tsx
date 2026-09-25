@@ -495,21 +495,16 @@ const routeContent: Record<string, RouteContent> = {
   },
   '/quiteroot': {
     title: 'QuiteRoot | QYVORA',
-    description: 'Advanced security tools and utilities for penetration testers.',
+    description: 'QYVORA\'s technical team. Currently no active members \u2014 open to applications through the Contact page.',
     h1: 'QuiteRoot',
-    lead: 'QuiteRoot: a network of security researchers pushing the boundaries of offensive security.',
+    lead: 'QYVORA\'s technical team. Currently being rebuilt \u2014 a clean slate for people who bring demonstrated skill.',
     sections: [
       {
-        heading: 'The researchers',
-        bullets: [
-          'Awalle Grammator - Graphic designer turning ideas into visually compelling designs.',
-          'L. Giant - Software Engineer specialising in development and automation for detection engineering.',
-          'Zero Mind - Security Researcher focused on hands-on research and web application testing.',
-          'Ghost Venom - Penetration Tester building skills across the cybersecurity stack.',
-        ],
+        heading: 'No active members yet',
+        body: 'QuiteRoot is QYVORA\'s technical team. We are open to applications across frontend, backend, penetration testing, security research, tooling, and design. Applications are reviewed before anyone joins.',
       },
     ],
-    links: [{ label: 'Meet the QYVORA Team', href: '/team' }],
+    links: [{ label: 'Apply on the Contact page', href: '/contact' }],
   },
   '/anansi': {
     title: 'anansi | QYVORA',
@@ -1046,7 +1041,6 @@ const routeContent: Record<string, RouteContent> = {
         bullets: [
           'wsuits6 - CEO. "I don\'t follow paths, I burn them then I write my own in code."',
           'sopt4 - COO. "I don\'t break systems, I find the flaws so others don\'t."',
-          'Mohammed Rafiq: CFO. "I don\'t protect assets. I grow them wisely."',
           'Ghost Venom - CMO. "I am the whisper in the code, the shadow in the system."',
         ],
       },
