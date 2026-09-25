@@ -112,7 +112,7 @@ const IncidentsTab = () => {
           value={statusFilter}
           onChange={(e) => { setStatusFilter(e.target.value); setPage(1); }}
           aria-label={"Filter by status"}
-          className="bg-bg border border-border rounded-xl px-3 py-2 text-xs text-text-primary focus:border-accent outline-none appearance-none"
+          className="bg-surface border border-border-subtle rounded-xl px-3 py-2 text-xs text-text-primary focus:border-accent outline-none appearance-none"
         >
           <option value="">{"All statuses"}</option>
           <option value="open">{"Open"}</option>
@@ -123,7 +123,7 @@ const IncidentsTab = () => {
           value={severityFilter}
           onChange={(e) => { setSeverityFilter(e.target.value); setPage(1); }}
           aria-label={"Filter by severity"}
-          className="bg-bg border border-border rounded-xl px-3 py-2 text-xs text-text-primary focus:border-accent outline-none appearance-none"
+          className="bg-surface border border-border-subtle rounded-xl px-3 py-2 text-xs text-text-primary focus:border-accent outline-none appearance-none"
         >
           <option value="">{"All severities"}</option>
           <option value="low">{"Low"}</option>
@@ -141,7 +141,7 @@ const IncidentsTab = () => {
       </div>
 
       {showForm && (
-        <div className="rounded-2xl border border-border/40 bg-bg-card p-5 space-y-4" aria-label={"New incident"}>
+        <div className="rounded-2xl border border-border-subtle bg-surface p-5 space-y-4" aria-label={"New incident"}>
           <div>
             <label htmlFor="incident-title" className="block text-xs font-black uppercase tracking-widest text-text-muted mb-1.5">
               {"Title"}
@@ -215,7 +215,7 @@ const IncidentsTab = () => {
       )}
 
       {loading ? (
-        <div className="space-y-2" role="status">{Array.from({ length: 6 }).map((_, i) => <Skeleton key={i} variant="card" className="h-16 rounded-xl bg-bg-card border border-border" />)}</div>
+        <div className="space-y-2" role="status">{Array.from({ length: 6 }).map((_, i) => <Skeleton key={i} variant="card" className="h-16 rounded-xl bg-surface border border-border-subtle" />)}</div>
       ) : error ? (
         <ErrorState message={error} title={"Incident tracker unavailable"} />
       ) : incidents.length === 0 ? (
@@ -226,7 +226,7 @@ const IncidentsTab = () => {
       ) : (
         <div className="space-y-2">
           {incidents.map((incident) => (
-            <div key={incident.id} className="rounded-xl border border-border bg-bg-card p-4 space-y-3">
+            <div key={incident.id} className="rounded-xl border border-border-subtle bg-surface p-4 space-y-3">
               <div className="flex flex-wrap items-center gap-2">
                 <Badge variant={SEVERITY_VARIANT[incident.severity]}>{incident.severity}</Badge>
                 <Badge variant={STATUS_VARIANT[incident.status]}>{incident.status}</Badge>
@@ -276,7 +276,7 @@ const IncidentsTab = () => {
             onClick={() => setPage((p) => Math.max(1, p - 1))}
             disabled={page <= 1}
             aria-label={"Previous page"}
-            className="w-11 h-11 flex items-center justify-center rounded-lg bg-bg-elevated text-text-muted disabled:opacity-50 hover:text-accent transition-[color,transform] duration-[var(--dur-fast)] ease-[var(--ease-smooth)] active:scale-90"
+            className="w-11 h-11 flex items-center justify-center rounded-lg bg-surface-raised text-text-muted disabled:opacity-50 hover:text-accent transition-[color,transform] duration-[var(--dur-fast)] ease-[var(--ease-smooth)] active:scale-90"
           >
             <ChevronLeft className="w-5 h-5" />
           </button>
@@ -285,7 +285,7 @@ const IncidentsTab = () => {
             onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
             disabled={page >= totalPages}
             aria-label={"Next page"}
-            className="w-11 h-11 flex items-center justify-center rounded-lg bg-bg-elevated text-text-muted disabled:opacity-50 hover:text-accent transition-[color,transform] duration-[var(--dur-fast)] ease-[var(--ease-smooth)] active:scale-90"
+            className="w-11 h-11 flex items-center justify-center rounded-lg bg-surface-raised text-text-muted disabled:opacity-50 hover:text-accent transition-[color,transform] duration-[var(--dur-fast)] ease-[var(--ease-smooth)] active:scale-90"
           >
             <IconChevronRight size={20} />
           </button>

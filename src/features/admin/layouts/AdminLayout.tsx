@@ -35,7 +35,7 @@ const AdminLayout = () => {
   const railPad = railCollapsed ? 'lg:pl-[76px]' : 'lg:pl-[264px]';
 
   return (
-    <div className="bg-bg min-h-dvh" data-theme-persist="dark">
+    <div className="bg-canvas min-h-dvh" data-theme-persist="dark">
       <AdminTopbar railCollapsed={railCollapsed} />
       <AdminSidebar collapsed={railCollapsed} onToggleCollapse={toggleRail} />
       <div

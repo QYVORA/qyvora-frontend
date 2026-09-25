@@ -20,9 +20,9 @@ const OverviewTab = ({ data, status, onRetry }: OverviewTabProps) => {
 
   if (status === 'loading' || !data) {
     return (
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3" role="status">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4" role="status">
         {Array.from({ length: 6 }).map((_, i) => (
-          <div key={i} className="rounded-2xl border border-border/50 bg-bg-card p-5 space-y-3 animate-pulse">
+          <div key={i} className="rounded-2xl border border-border-subtle bg-surface p-5 space-y-3 animate-pulse">
             <div className="h-4 w-24 bg-border/30 rounded" />
             <div className="h-8 w-20 bg-border/30 rounded" />
           </div>
@@ -85,7 +85,7 @@ const OverviewTab = ({ data, status, onRetry }: OverviewTabProps) => {
   ];
 
   const signupMobileCard = (u: OverviewData['recentSignups'][number]) => (
-    <div className="bg-bg-card border border-border/50 rounded-2xl p-4 space-y-2">
+    <div className="bg-surface border border-border-subtle rounded-2xl p-4 space-y-2">
       <div className="flex items-center justify-between gap-4">
         <div className="min-w-0">
           <div className="text-sm font-bold text-text-primary truncate">{u.name || "Unknown"}</div>
@@ -98,21 +98,21 @@ const OverviewTab = ({ data, status, onRetry }: OverviewTabProps) => {
 
   const StatSection = ({ title, className, children }: { title: string; className: string; children: ReactNode }) => (
     <section>
-      <h3 className="mb-2.5 text-xs font-black uppercase tracking-[0.25em] text-accent">{title}</h3>
+      <h3 className="mb-3 type-label text-accent uppercase tracking-[0.12em] font-black">{title}</h3>
       <div className={className}>{children}</div>
     </section>
   );
 
   return (
-    <div className="space-y-6 md:space-y-8">
-      <StatSection title={"Platform"} className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+    <div className="space-y-8">
+      <StatSection title={"Platform"} className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {statCards.map((card) => (
           <StatCard key={card.label} icon={card.icon} label={card.label} value={card.value} accent={card.accent} />
         ))}
       </StatSection>
 
       {health && healthCards.length > 0 && (
-        <StatSection title={"System health"} className="grid grid-cols-2 gap-3 lg:grid-cols-4">
+        <StatSection title={"System health"} className="grid grid-cols-2 gap-4 lg:grid-cols-4">
           {healthCards.map((card) => (
             <StatCard key={card.label} icon={card.icon} label={card.label} value={card.value} accent={card.accent} />
           ))}
@@ -120,7 +120,7 @@ const OverviewTab = ({ data, status, onRetry }: OverviewTabProps) => {
       )}
 
       {health?.bootcamp && (
-        <StatSection title={"Bootcamp health"} className="grid grid-cols-2 gap-3 lg:grid-cols-4">
+        <StatSection title={"Bootcamp health"} className="grid grid-cols-2 gap-4 lg:grid-cols-4">
           <StatCard icon={<BookOpen className="w-5 h-5 text-text-muted" />} label={"Bootcamp enrolled"} value={health.bootcamp.enrolled} />
           <StatCard icon={<Activity className="w-5 h-5 text-accent" />} label={"Bootcamp active"} value={health.bootcamp.active} accent />
           <StatCard icon={<Users className="w-5 h-5 text-text-muted" />} label={"In current module"} value={health.bootcamp.engagementCurrentModule} />
@@ -133,8 +133,8 @@ const OverviewTab = ({ data, status, onRetry }: OverviewTabProps) => {
         </StatSection>
       )}
 
-      <StatSection title={"Recent Signups"} className="grid grid-cols-1 gap-3">
-        <div className="rounded-2xl border border-border/50 bg-bg-card p-5">
+      <StatSection title={"Recent Signups"} className="grid grid-cols-1 gap-4">
+        <div className="rounded-2xl border border-border-subtle bg-surface p-5">
           <DataTable
             data={data.recentSignups}
             columns={signupColumns}

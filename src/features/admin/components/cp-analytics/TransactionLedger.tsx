@@ -31,11 +31,11 @@ const TransactionLedger: React.FC<TransactionLedgerProps> = ({
 }) => {
 
   return (
-    <div className="rounded-2xl border border-border/50 bg-bg-card overflow-hidden">
-      <div className="flex flex-wrap items-center justify-between gap-3 border-b border-border px-5 py-4">
+    <div className="rounded-2xl border border-border-subtle bg-surface overflow-hidden">
+      <div className="flex flex-wrap items-center justify-between gap-3 border-b border-border-subtle px-5 py-4">
         <div className="flex items-center gap-2">
           <Activity className="w-4 h-4 text-accent" />
-          <span className="text-sm font-black uppercase tracking-wide text-text-primary">{"Transaction Ledger"}</span>
+          <span className="type-h2 font-black uppercase tracking-tight text-text-primary text-lg">{"Transaction Ledger"}</span>
           <span className="text-xs font-mono text-text-muted">{`${txTotal} total`}</span>
         </div>
         <div className="flex flex-wrap items-center gap-2">
@@ -43,12 +43,12 @@ const TransactionLedger: React.FC<TransactionLedgerProps> = ({
             value={txSearch}
             onChange={e => setTxSearch(e.target.value)}
             placeholder={"Search user…"}
-            className="bg-bg border border-border rounded-xl px-3 py-1.5 text-xs text-text-primary focus:outline-none focus:border-accent w-36"
+            className="bg-surface-raised border border-border-subtle rounded-xl px-3 py-1.5 text-xs text-text-primary focus:outline-none focus:border-accent w-36"
           />
           <select
             value={txFilter}
             onChange={e => setTxFilter(e.target.value as any)}
-            className="bg-bg border border-border rounded-xl px-2 py-1.5 text-xs text-text-primary focus:outline-none focus:border-accent"
+            className="bg-surface-raised border border-border-subtle rounded-xl px-2 py-1.5 text-xs text-text-primary focus:outline-none focus:border-accent"
           >
             <option value="all">{"All types"}</option>
             <option value="credit">{"Credit"}</option>
@@ -107,7 +107,7 @@ const TransactionLedger: React.FC<TransactionLedgerProps> = ({
           {/* Desktop */}
           <div className="hidden md:block overflow-x-auto">
             <table className="w-full text-left min-w-[700px]">
-              <thead className="bg-bg-elevated/50">
+              <thead className="bg-surface-raised/50">
                 <tr>
                   {["User", "Type", "Points", "Balance After", "Note", "Date"].map(h => (
                     <th key={h} className="px-4 py-3 text-xs font-black uppercase tracking-[0.25em] text-text-muted/60">{h}</th>
@@ -152,7 +152,7 @@ const TransactionLedger: React.FC<TransactionLedgerProps> = ({
 
           {/* Pagination */}
           {totalPages > 1 && (
-            <div className="flex items-center justify-between gap-3 border-t border-border px-5 py-3">
+            <div className="flex items-center justify-between gap-3 border-t border-border-subtle px-5 py-3">
               <span className="text-xs text-text-muted">
                 {`Page ${txPage} of ${totalPages} · ${txTotal} transactions`}
               </span>

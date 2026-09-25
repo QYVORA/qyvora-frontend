@@ -36,20 +36,20 @@ const BroadcastTab = () => {
   };
 
   return (
-    <div className="max-w-2xl space-y-6">
-      <div className="rounded-2xl border border-border/50 bg-bg-card p-6 space-y-5">
+    <div className="space-y-6">
+      <div className="rounded-2xl border border-border-subtle bg-surface p-6 md:p-8 space-y-5">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-accent/10 flex items-center justify-center">
+          <div className="w-10 h-10 rounded-xl bg-surface-raised flex items-center justify-center">
             <Megaphone className="w-5 h-5 text-accent" />
           </div>
           <div>
-            <h3 className="text-sm font-black uppercase tracking-wide text-text-primary">{"New Announcement"}</h3>
-            <p className="text-xs text-text-muted">{"Send a broadcast notification to platform users"}</p>
+            <h3 className="type-h2 font-black uppercase tracking-tight text-text-primary">{"New Announcement"}</h3>
+            <p className="type-meta mt-1">{"Send a broadcast notification to platform users"}</p>
           </div>
         </div>
 
         <div className="space-y-1.5">
-          <label className="text-xs font-bold text-text-muted uppercase tracking-wider">{"Title"}</label>
+          <label className="type-label text-text-muted font-bold uppercase tracking-widest">{"Title"}</label>
           <input
             type="text"
             value={title}
@@ -61,7 +61,7 @@ const BroadcastTab = () => {
         </div>
 
         <div className="space-y-1.5">
-          <label className="text-xs font-bold text-text-muted uppercase tracking-wider">{"Message"}</label>
+          <label className="type-label text-text-muted font-bold uppercase tracking-widest">{"Message"}</label>
           <textarea
             value={message}
             onChange={(e) => setMessage(e.target.value)}
@@ -72,7 +72,7 @@ const BroadcastTab = () => {
         </div>
 
         <div className="space-y-1.5">
-          <label className="text-xs font-bold text-text-muted uppercase tracking-wider">{"Target Audience"}</label>
+          <label className="type-label text-text-muted font-bold uppercase tracking-widest">{"Target Audience"}</label>
           <div className="flex flex-wrap gap-2">
             {([
               { value: 'all', label: "All Users", icon: Users },
@@ -112,8 +112,8 @@ const BroadcastTab = () => {
 
         {/* Preview */}
         {title.trim() && (
-          <div className="rounded-xl border border-border bg-bg p-4 space-y-2">
-            <div className="text-xs font-bold text-text-muted uppercase tracking-wider">{"Preview"}</div>
+          <div className="rounded-xl border border-border-subtle bg-surface-raised p-4 space-y-2">
+            <div className="type-label text-text-muted font-bold uppercase tracking-widest">{"Preview"}</div>
             <div className="rounded-lg border border-accent/20 bg-accent-dim/5 p-3 space-y-1">
               <div className="text-sm font-bold text-text-primary">{title}</div>
               {message.trim() && <div className="text-xs text-text-secondary leading-relaxed">{message}</div>}

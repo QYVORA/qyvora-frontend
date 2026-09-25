@@ -77,12 +77,12 @@ const CpAnalytics: React.FC<CpAnalyticsProps> = ({ users, addToast }) => {
     }
     const colors: Record<string, string> = {
       credit: 'var(--color-accent)', signup: 'var(--color-accent)', grant: 'var(--color-accent)',
-      purchase: '#f87171', deduct: '#f87171',
-      set: '#60a5fa',
+      purchase: 'var(--color-semantic-danger)', deduct: 'var(--color-semantic-danger)',
+      set: 'var(--color-semantic-info)',
     };
     return [...counts.entries()]
       .sort((a, b) => b[1] - a[1])
-      .map(([label, value]) => ({ label, value, color: colors[label] ?? '#6b7280' }));
+      .map(([label, value]) => ({ label, value, color: colors[label] ?? 'var(--color-text-secondary)' }));
   }, [allTxs, rangeDays]);
 
   const runCpAction = async () => {
@@ -106,7 +106,7 @@ const CpAnalytics: React.FC<CpAnalyticsProps> = ({ users, addToast }) => {
   const totalPages = Math.max(1, Math.ceil(txTotal / TX_PAGE_SIZE));
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
           <h2 className="text-lg font-black uppercase tracking-tight text-text-primary flex items-center gap-2">
@@ -131,7 +131,7 @@ const CpAnalytics: React.FC<CpAnalyticsProps> = ({ users, addToast }) => {
         </div>
       </div>
 
-      <div className="grid grid-cols-2 gap-3 lg:grid-cols-3">
+      <div className="grid grid-cols-2 gap-4 lg:grid-cols-3">
         <StatCard
           icon={<ArrowDownLeft className="w-5 h-5 text-accent" />}
           label={`CP Issued (${range})`}
@@ -168,7 +168,7 @@ const CpAnalytics: React.FC<CpAnalyticsProps> = ({ users, addToast }) => {
       </div>
 
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
-        <div className="rounded-2xl border border-border/50 bg-bg-card p-5">
+        <div className="rounded-2xl border border-border-subtle bg-surface p-5 md:p-6">
           <div className="mb-4 flex items-center gap-2">
             <BarChart2 className="w-4 h-4 text-accent" />
             <span className="text-sm font-black uppercase tracking-wide text-text-primary">{"By Type"}</span>

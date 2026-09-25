@@ -26,7 +26,7 @@ const NotificationsDropdown: React.FC<NotificationsDropdownProps> = ({
           initial={{ opacity: 0, y: -6 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -6 }}
-          className="hidden md:block absolute right-0 top-full mt-2 w-80 max-w-[calc(100vw-2rem)] rounded-xl border border-border bg-bg-card shadow-2xl z-[80] overflow-hidden"
+          className="hidden md:block absolute right-0 top-full mt-2 w-80 max-w-[calc(100vw-2rem)] rounded-xl border border-border bg-surface shadow-2xl z-[80] overflow-hidden"
         >
           <div className="px-4 py-3 border-b border-border flex items-center justify-between">
             <div>

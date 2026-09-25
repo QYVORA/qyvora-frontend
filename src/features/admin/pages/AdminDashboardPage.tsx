@@ -238,7 +238,7 @@ const AdminDashboardPage: React.FC = () => {
   return (
     <>
     <SEO title="Admin Dashboard" description="QYVORA administrator control panel." noindex />
-    <div className="bg-bg text-text-primary">
+    <div className="bg-canvas text-text-primary">
       <div
         className="scroll-hover lg:fixed lg:left-0 lg:right-0 lg:bottom-0 lg:top-24 lg:overflow-y-auto lg:overscroll-contain"
         style={{ scrollBehavior: 'smooth' }}
@@ -278,12 +278,12 @@ const AdminDashboardPage: React.FC = () => {
 
           {/* ── MAIN CONTENT ────────────────────────────────────────────── */}
           {loading ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4" role="status">
               {[0,1,2,3].map(i => (
-                <div key={i} className="rounded-2xl border border-border/50 bg-bg-card p-5 space-y-3">
-                  <div className="h-4 w-24 bg-border/30 rounded animate-pulse" />
-                  <div className="h-8 w-20 bg-border/30 rounded animate-pulse" />
-                  <div className="h-3 w-32 bg-border/30 rounded animate-pulse" />
+                <div key={i} className="rounded-2xl border border-border-subtle bg-surface p-5 space-y-4 animate-pulse">
+                  <div className="h-10 w-10 rounded-xl bg-surface-raised" />
+                  <div className="h-3 w-20 bg-surface-raised rounded animate-pulse" />
+                  <div className="h-6 w-24 bg-surface-raised rounded animate-pulse" />
                 </div>
               ))}
             </div>

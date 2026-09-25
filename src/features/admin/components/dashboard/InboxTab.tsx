@@ -123,14 +123,14 @@ const InboxTab = () => {
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder={"Search by name or email..."}
-            className="w-full bg-bg border border-border rounded-xl pl-9 pr-3 py-2 text-xs text-text-primary focus:border-accent outline-none transition-colors"
+            className="w-full bg-surface border border-border-subtle rounded-xl pl-9 pr-3 py-2 text-xs text-text-primary focus:border-accent outline-none transition-colors"
           />
         </div>
         <span className="text-xs text-text-muted font-mono">{`${total} items`}</span>
       </div>
 
       {loading ? (
-        <div className="space-y-2" role="status">{Array.from({ length: 8 }).map((_, i) => <div key={i} className="h-14 rounded-xl bg-bg-card border border-border animate-pulse" />)}</div>
+        <div className="space-y-2" role="status">{Array.from({ length: 8 }).map((_, i) => <div key={i} className="h-14 rounded-xl bg-surface border border-border-subtle animate-pulse" />)}</div>
       ) : error ? (
         <ErrorState message={"Failed to load inbox"} title={"Inbox could not be loaded."} />
       ) : items.length === 0 ? (
@@ -143,23 +143,23 @@ const InboxTab = () => {
             return (
               <div
                 key={`${item.type}-${d.id}`}
-                className="flex items-center gap-3 px-4 py-3 rounded-xl border border-border bg-bg-card hover:border-accent/20 transition-[border-color] duration-[var(--dur-base)] ease-[var(--ease-smooth)] cursor-pointer"
+                className="flex items-center gap-3 px-4 py-3 rounded-xl border border-border-subtle bg-surface hover:border-accent/20 transition-[border-color] duration-[var(--dur-base)] ease-[var(--ease-smooth)] cursor-pointer"
                 onClick={() => setSelectedItem(item)}
               >
-                <div className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 ${isContact ? 'bg-accent/10' : 'bg-bg-elevated'}`}>
+                <div className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 ${isContact ? 'bg-accent/10' : 'bg-surface-raised'}`}>
                   {isContact ? <Mail className="w-4 h-4 text-accent" /> : <IconShield size={16} className="text-accent" />}
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 min-w-0">
                     <span className="text-sm font-bold text-text-primary truncate flex-1 min-w-0">{d.name}</span>
                     <span className={`px-2.5 py-1 rounded-lg text-xs font-black uppercase tracking-widest shrink-0 whitespace-nowrap ${
-                      isContact ? 'bg-bg-elevated text-text-muted' : 'bg-accent/10 text-accent'
+                      isContact ? 'bg-surface-raised text-text-muted' : 'bg-accent/10 text-accent'
                     }`}>
                       {isContact ? "Contact" : "Service"}
                     </span>
                     <span className={`px-2.5 py-1 rounded-lg text-xs font-black uppercase tracking-widest shrink-0 whitespace-nowrap ${
                       d.status === 'new' ? 'bg-accent/10 text-accent' :
-                      d.status === 'archived' ? 'bg-bg-elevated text-text-muted' :
+                      d.status === 'archived' ? 'bg-surface-raised text-text-muted' :
                       'bg-accent/5 text-accent/70'
                     }`}>
                       {d.status}
@@ -186,13 +186,13 @@ const InboxTab = () => {
               <div className="space-y-5">
                 <div className="flex items-center gap-2 flex-wrap">
                   <span className={`px-2 py-1 rounded-lg text-xs font-bold uppercase tracking-wider ${
-                    isContact ? 'bg-bg-elevated text-text-muted' : 'bg-accent/10 text-accent'
+                    isContact ? 'bg-surface-raised text-text-muted' : 'bg-accent/10 text-accent'
                   }`}>
                       {isContact ? "Contact Message" : "Service Inquiry"}
                   </span>
                   <span className={`px-2 py-1 rounded-lg text-xs font-bold uppercase tracking-wider ${
                     d.status === 'new' ? 'bg-accent/10 text-accent' :
-                    d.status === 'archived' ? 'bg-bg-elevated text-text-muted' :
+                    d.status === 'archived' ? 'bg-surface-raised text-text-muted' :
                     'bg-accent/5 text-accent/70'
                   }`}>
                     {d.status}
@@ -238,7 +238,7 @@ const InboxTab = () => {
 
                 <div>
                   <span className="text-xs font-bold text-text-muted uppercase tracking-wider block mb-2">{"Message"}</span>
-                  <div className="rounded-xl border border-border bg-bg p-4 text-sm text-text-secondary leading-relaxed whitespace-pre-wrap">
+                  <div className="rounded-xl border border-border-subtle bg-surface p-4 text-sm text-text-secondary leading-relaxed whitespace-pre-wrap">
                     {d.message || "No message"}
                   </div>
                 </div>

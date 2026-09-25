@@ -50,7 +50,7 @@ const ZeroDayMarketTab: React.FC<ZeroDayMarketTabProps> = ({
       sortable: true,
       render: (item) => (
         <div className="flex items-center gap-4">
-          <div className="w-14 h-14 rounded-xl overflow-hidden border border-border/40 shrink-0">
+          <div className="w-14 h-14 rounded-xl overflow-hidden border border-border-subtle shrink-0">
             <AuthImage src={item.coverUrl} alt={item.title} width={56} height={56} className="w-full h-full object-cover" loading="lazy" />
           </div>
           <div className="min-w-0">
@@ -96,7 +96,7 @@ const ZeroDayMarketTab: React.FC<ZeroDayMarketTabProps> = ({
           <button
             onClick={() => editProduct(item)}
             aria-label={"Modify"}
-            className="min-h-[44px] min-w-[44px] inline-flex items-center justify-center rounded-xl bg-bg-elevated text-text-muted hover:text-accent transition-[color,transform] duration-[var(--dur-fast)] ease-[var(--ease-smooth)] active:scale-90"
+            className="min-h-[44px] min-w-[44px] inline-flex items-center justify-center rounded-xl bg-surface-raised text-text-muted hover:text-accent transition-[color,transform] duration-[var(--dur-fast)] ease-[var(--ease-smooth)] active:scale-90"
           >
             <IconSearch size={18} />
           </button>
@@ -113,9 +113,9 @@ const ZeroDayMarketTab: React.FC<ZeroDayMarketTabProps> = ({
   ];
 
   const mobileCard = (item: CPProduct) => (
-    <div className="bg-bg-card border border-border/40 rounded-2xl p-5 space-y-4">
+    <div className="bg-surface border border-border-subtle rounded-2xl p-5 space-y-4">
       <div className="flex items-start gap-4">
-        <div className="w-20 h-20 rounded-xl overflow-hidden shrink-0 border border-border/40"><AuthImage src={item.coverUrl} alt={item.title} width={80} height={80} className="w-full h-full object-cover" loading="lazy" /></div>
+        <div className="w-20 h-20 rounded-xl overflow-hidden shrink-0 border border-border-subtle"><AuthImage src={item.coverUrl} alt={item.title} width={80} height={80} className="w-full h-full object-cover" loading="lazy" /></div>
         <div className="min-w-0 flex-1">
           <div className="font-black text-base text-text-primary leading-tight">{item.title}</div>
           <div className="flex flex-wrap items-center gap-2 mt-2">
@@ -138,10 +138,10 @@ const ZeroDayMarketTab: React.FC<ZeroDayMarketTabProps> = ({
         <ErrorState message={"Market inventory could not be loaded."} title={"Data currently unavailable"} />
       )}
 
-      <div ref={productFormRef} className={`rounded-2xl p-6 md:p-8 space-y-6 transition-[background-color] duration-[var(--dur-base)] ease-[var(--ease-smooth)] border border-border/40 ${productForm.id ? 'bg-accent/5' : 'bg-bg-card'}`}>
+      <div ref={productFormRef} className={`rounded-2xl p-6 md:p-8 space-y-6 transition-[background-color] duration-[var(--dur-base)] ease-[var(--ease-smooth)] border border-border-subtle ${productForm.id ? 'bg-accent/5' : 'bg-surface'}`}>
         <div className="flex items-center justify-between pb-4">
-          <div className={`text-xs font-black uppercase tracking-[0.2em] flex items-center gap-2 ${productForm.id ? 'text-accent' : 'text-text-muted'}`}>{productForm.id ? <><RefreshCw className="w-4 h-4 animate-spin-slow" /> {"Editing Asset"}: {productForm.title}</> : "Initialize New Asset"}</div>
-          {productForm.id && <button onClick={resetProductForm} className="text-xs font-black text-text-muted hover:text-accent uppercase tracking-[0.2em] transition-colors border border-border/40 px-3 py-1 rounded-lg">{"✕ Abort Protocol"}</button>}
+          <div className={`text-xs font-black uppercase tracking-[0.12em] flex items-center gap-2 ${productForm.id ? 'text-accent' : 'text-text-muted'}`}>{productForm.id ? <><RefreshCw className="w-4 h-4 animate-spin-slow" /> {"Editing Asset"}: {productForm.title}</> : "Initialize New Asset"}</div>
+          {productForm.id && <button onClick={resetProductForm} className="text-xs font-black text-text-muted hover:text-accent uppercase tracking-[0.1em] transition-colors border border-border-subtle px-3 py-1 rounded-lg">{"✕ Abort Protocol"}</button>}
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">

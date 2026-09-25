@@ -13,11 +13,11 @@ const BarChart: React.FC<BarChartProps> = ({ data }) => {
       {data.map((d, i) => (
         <div key={i} className="flex items-center gap-3">
           <div className="w-20 text-xs font-mono text-text-muted uppercase tracking-wider truncate">{d.label}</div>
-          <div className="flex-1 h-5 bg-bg rounded-full overflow-hidden">
+          <div className="flex-1 h-5 bg-surface-raised rounded-full overflow-hidden">
             <motion.div
               initial={{ width: 0 }}
               animate={{ width: `${(d.value / max) * 100}%` }}
-              transition={{ duration: 0.8, delay: i * 0.05, ease: 'easeOut' }}
+              transition={{ duration: 0.8, delay: i * 0.05, ease: [0.22, 1, 0.36, 1] }}
               className="h-full rounded-full"
               style={{ backgroundColor: d.color }}
             />

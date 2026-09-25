@@ -53,7 +53,7 @@ const AuditLogTab = () => {
           <select
             value={actionFilter}
             onChange={(e) => { setActionFilter(e.target.value); setPage(1); }}
-            className="w-full bg-bg border border-border rounded-xl pl-9 pr-3 py-2 text-xs text-text-primary focus:border-accent outline-none transition-colors appearance-none"
+            className="w-full bg-surface border border-border-subtle rounded-xl pl-9 pr-3 py-2 text-xs text-text-primary focus:border-accent outline-none transition-colors appearance-none"
           >
             <option value="">{"All Actions"}</option>
             {availableActions.map((a) => (
@@ -66,14 +66,14 @@ const AuditLogTab = () => {
           value={dateFrom}
           onChange={(e) => setDateFrom(e.target.value)}
           aria-label={"From date"}
-          className="bg-bg border border-border rounded-xl px-3 py-2 text-xs text-text-primary focus:border-accent outline-none"
+          className="bg-surface border border-border-subtle rounded-xl px-3 py-2 text-xs text-text-primary focus:border-accent outline-none"
         />
         <input
           type="date"
           value={dateTo}
           onChange={(e) => setDateTo(e.target.value)}
           aria-label={"To date"}
-          className="bg-bg border border-border rounded-xl px-3 py-2 text-xs text-text-primary focus:border-accent outline-none"
+          className="bg-surface border border-border-subtle rounded-xl px-3 py-2 text-xs text-text-primary focus:border-accent outline-none"
         />
         <input
           type="text"
@@ -82,7 +82,7 @@ const AuditLogTab = () => {
           onKeyDown={(e) => { if (e.key === 'Enter') fetchLogs(1); }}
           placeholder={"Correlation ID"}
           aria-label={"Correlation ID"}
-          className="w-44 bg-bg border border-border rounded-xl px-3 py-2 text-xs font-mono text-text-primary focus:border-accent outline-none"
+          className="w-44 bg-surface border border-border-subtle rounded-xl px-3 py-2 text-xs font-mono text-text-primary focus:border-accent outline-none"
         />
         <button
           onClick={() => fetchLogs(1)}
@@ -94,7 +94,7 @@ const AuditLogTab = () => {
       </div>
 
       {loading ? (
-        <div className="space-y-2" role="status">{Array.from({ length: 10 }).map((_, i) => <Skeleton key={i} variant="card" className="h-12 rounded-xl bg-bg-card border border-border" />)}</div>
+        <div className="space-y-2" role="status">{Array.from({ length: 10 }).map((_, i) => <Skeleton key={i} variant="card" className="h-12 rounded-xl bg-surface border border-border-subtle" />)}</div>
       ) : error ? (
         <ErrorState message={error} title={"Audit log unavailable"} />
       ) : entries.length === 0 ? (
@@ -105,7 +105,7 @@ const AuditLogTab = () => {
       ) : (
         <div className="space-y-1">
           {entries.map((entry) => (
-            <div key={entry.id} className="flex items-center gap-3 px-4 py-2.5 rounded-xl border border-border bg-bg-card text-xs">
+            <div key={entry.id} className="flex items-center gap-3 px-4 py-2.5 rounded-xl border border-border-subtle bg-surface text-xs">
               <div className="w-2 h-2 rounded-full bg-accent/60 shrink-0" />
               <div className="flex-1 min-w-0 grid grid-cols-[minmax(0,1fr)_auto] gap-x-3 gap-y-1 items-center sm:grid-cols-[120px_100px_minmax(0,1fr)_auto] sm:gap-y-0">
                 <span className="font-mono text-text-muted min-w-0 truncate col-start-1 row-start-1 sm:col-start-1 sm:row-start-auto">{new Date(entry.createdAt).toLocaleString()}</span>
@@ -143,7 +143,7 @@ const AuditLogTab = () => {
             onClick={() => setPage((p) => Math.max(1, p - 1))}
             disabled={page <= 1}
             aria-label={"Previous page"}
-            className="w-11 h-11 flex items-center justify-center rounded-lg bg-bg-elevated text-text-muted disabled:opacity-50 hover:text-accent transition-[color,transform] duration-[var(--dur-fast)] ease-[var(--ease-smooth)] active:scale-90"
+            className="w-11 h-11 flex items-center justify-center rounded-lg bg-surface-raised text-text-muted disabled:opacity-50 hover:text-accent transition-[color,transform] duration-[var(--dur-fast)] ease-[var(--ease-smooth)] active:scale-90"
           >
             <ChevronLeft className="w-5 h-5" />
           </button>
@@ -152,7 +152,7 @@ const AuditLogTab = () => {
             onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
             disabled={page >= totalPages}
             aria-label={"Next page"}
-            className="w-11 h-11 flex items-center justify-center rounded-lg bg-bg-elevated text-text-muted disabled:opacity-50 hover:text-accent transition-[color,transform] duration-[var(--dur-fast)] ease-[var(--ease-smooth)] active:scale-90"
+            className="w-11 h-11 flex items-center justify-center rounded-lg bg-surface-raised text-text-muted disabled:opacity-50 hover:text-accent transition-[color,transform] duration-[var(--dur-fast)] ease-[var(--ease-smooth)] active:scale-90"
           >
             <IconChevronRight size={20} />
           </button>

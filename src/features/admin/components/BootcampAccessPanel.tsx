@@ -50,14 +50,14 @@ const BootcampAccessPanel: React.FC<Props> = ({ addToast }) => {
       <div className="w-full space-y-8" role="status">
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
           {[0, 1, 2].map(i => (
-            <div key={i} className="rounded-2xl border border-border/50 bg-bg-card p-5 space-y-3 animate-pulse">
+            <div key={i} className="rounded-2xl border border-border-subtle bg-surface p-5 space-y-3 animate-pulse">
               <div className="h-4 w-24 bg-border/30 rounded" />
               <div className="h-8 w-16 bg-border/30 rounded" />
             </div>
           ))}
         </div>
-        <div className="h-28 rounded-2xl border border-border/50 bg-bg-card animate-pulse" />
-        <div className="h-64 rounded-2xl border border-border/50 bg-bg-card animate-pulse" />
+        <div className="h-28 rounded-2xl border border-border-subtle bg-surface animate-pulse" />
+        <div className="h-64 rounded-2xl border border-border-subtle bg-surface animate-pulse" />
       </div>
     );
   }
@@ -86,7 +86,7 @@ const BootcampAccessPanel: React.FC<Props> = ({ addToast }) => {
       </div>
 
       {/* Live toggle */}
-      <div className="flex flex-col gap-4 rounded-2xl border border-border/50 bg-bg-card p-5 sm:flex-row sm:items-center sm:justify-between sm:gap-6 md:p-6">
+      <div className="flex flex-col gap-4 rounded-2xl border border-border-subtle bg-surface p-5 sm:flex-row sm:items-center sm:justify-between sm:gap-6 md:p-6">
         <div className="min-w-0">
           <div className="mb-2 flex flex-wrap items-center gap-2">
             <span className="text-base font-black uppercase tracking-wide text-text-primary md:text-lg">{"Bootcamp live"}</span>
@@ -104,12 +104,12 @@ const BootcampAccessPanel: React.FC<Props> = ({ addToast }) => {
           disabled={saving}
           className={`relative flex h-7 w-12 flex-none cursor-pointer items-center rounded-full px-0.5 transition-colors duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent/40 focus-visible:ring-offset-2 focus-visible:ring-offset-bg disabled:opacity-50 ${started ? 'bg-accent' : 'bg-border'}`}
         >
-          <span className={`pointer-events-none block h-6 w-6 shrink-0 rounded-full bg-white shadow-md transition-transform duration-200 ease-out ${started ? 'translate-x-5' : 'translate-x-0'}`} />
+          <span className={`pointer-events-none block h-6 w-6 shrink-0 rounded-full bg-surface shadow-md transition-transform duration-200 ease-out ${started ? 'translate-x-5' : 'translate-x-0'}`} />
         </button>
       </div>
 
       {/* Phase control */}
-      <div className="space-y-5 rounded-2xl border border-border/50 bg-bg-card p-5 md:p-6">
+      <div className="space-y-5 rounded-2xl border border-border-subtle bg-surface p-5 md:p-6">
         <div>
           <div className="mb-1 text-base font-black uppercase tracking-wide text-text-primary md:text-lg">{"Phase control"}</div>
           <div className="text-sm text-text-muted md:text-base">
@@ -162,10 +162,10 @@ const BootcampAccessPanel: React.FC<Props> = ({ addToast }) => {
               <div
                 key={mod.moduleId}
                 className={`flex items-center gap-3 rounded-xl border px-4 py-3 transition-colors md:px-5 md:py-3.5 ${
-                  isCurrent ? 'border-accent/30 bg-accent-dim/30' : unlocked ? 'border-border bg-bg' : 'border-border/50 bg-bg/80 opacity-50'
+                  isCurrent ? 'border-accent/30 bg-accent-dim/30' : unlocked ? 'border-border-subtle bg-surface-raised' : 'border-border-subtle bg-surface opacity-50'
                 }`}
               >
-                <div className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-xs font-black ${unlocked ? 'bg-accent text-on-accent' : 'border border-border bg-bg text-text-muted'}`}>
+                <div className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-xs font-black ${unlocked ? 'bg-accent text-on-accent' : 'border border-border-subtle bg-surface text-text-muted'}`}>
                   {unlocked ? <IconCheck size={16} /> : String(mod.moduleId).padStart(2, '0')}
                 </div>
                 <div className="min-w-0 flex-1">

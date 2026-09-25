@@ -104,5 +104,5 @@ export const isUserBlocked = (u: AdminUser) =>
   Boolean(u.blockedUntil && new Date(u.blockedUntil).getTime() > Date.now());
 
 // Shared form input / button class strings
-export const INPUT_CLS = 'w-full bg-bg border border-border rounded-xl px-3 py-2.5 text-sm text-text-primary focus:outline-none focus:border-accent transition-colors placeholder:text-text-muted';
+export const INPUT_CLS = 'w-full bg-surface-raised border border-border-subtle rounded-xl px-3 py-2.5 text-sm text-text-primary focus:outline-none focus:border-accent transition-colors placeholder:text-text-muted';
 export const BTN_CLS   = 'inline-flex items-center justify-center gap-1.5 px-3 py-2.5 rounded-xl border text-xs font-bold uppercase tracking-wide transition-colors min-h-[44px]';

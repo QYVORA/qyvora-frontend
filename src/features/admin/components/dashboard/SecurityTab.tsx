@@ -39,13 +39,13 @@ const SecurityTab: React.FC<SecurityTabProps> = ({ securitySummary, securityEven
   ];
 
   const mobileCard = (item: SecurityEventItem) => (
-    <div className="bg-bg-card border border-border/40 rounded-2xl p-5 space-y-3 text-xs">
+    <div className="bg-surface border border-border-subtle rounded-2xl p-5 space-y-3 text-xs">
       <div className="flex justify-between items-center">
         <span className="font-black text-accent uppercase tracking-[0.2em] text-xs">{item.eventType}</span>
         <span className="text-xs text-text-muted/60 font-mono">{item.createdAt ? new Date(item.createdAt).toLocaleString() : '-'}</span>
       </div>
       <div className="font-black text-text-primary uppercase tracking-tighter text-sm">{item.action}</div>
-      <div className="bg-bg px-4 py-3 rounded-xl font-mono text-xs text-accent/70 border border-border/40 whitespace-nowrap overflow-x-auto no-scrollbar shadow-sm">
+      <div className="bg-surface-raised px-4 py-3 rounded-xl font-mono text-xs text-accent/70 border border-border-subtle whitespace-nowrap overflow-x-auto no-scrollbar">
         {item.path || '-'}
       </div>
       <div className="flex justify-between items-center pt-2 text-xs font-black text-text-muted/40 uppercase tracking-widest">

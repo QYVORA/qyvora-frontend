@@ -113,12 +113,12 @@ const UsersTab: React.FC<UsersTabProps> = ({
       render: (item) => (
         item.recoveryToken ? (
           <div className="flex items-center gap-3 group/token">
-            <div className="max-w-[120px] truncate font-mono text-xs text-accent/70 bg-bg-elevated px-3 py-1.5 rounded-lg shadow-sm">
+            <div className="max-w-[120px] truncate font-mono text-xs text-accent/70 bg-surface-raised px-3 py-1.5 rounded-lg shadow-sm">
               {item.recoveryToken}
             </div>
             <button
               onClick={() => { navigator.clipboard.writeText(item.recoveryToken || ''); addToast("Token copied to clipboard", 'success'); }}
-              className="p-2 rounded-lg hover:bg-bg-elevated text-text-muted hover:text-accent transition-[background-color,color] duration-[var(--dur-fast)] ease-[var(--ease-smooth)]"
+              className="p-2 rounded-lg hover:bg-surface-raised text-text-muted hover:text-accent transition-[background-color,color] duration-[var(--dur-fast)] ease-[var(--ease-smooth)]"
             >
               <Copy className="w-4 h-4" />
             </button>
@@ -158,7 +158,7 @@ const UsersTab: React.FC<UsersTabProps> = ({
           <Tooltip content={isUserBlocked(item) ? "Unblock User" : "Block User"} side="left">
             <button
               onClick={() => void handleUserBlockToggle(item)}
-              className="inline-flex items-center justify-center w-11 h-11 rounded-xl bg-bg-elevated text-text-muted hover:text-accent transition-[color,transform] duration-[var(--dur-fast)] ease-[var(--ease-smooth)] active:scale-90 shadow-sm"
+              className="inline-flex items-center justify-center w-11 h-11 rounded-xl bg-surface-raised text-text-muted hover:text-accent transition-[color,transform] duration-[var(--dur-fast)] ease-[var(--ease-smooth)] active:scale-90 shadow-sm"
             >
               {isUserBlocked(item) ? <Unlock className="w-4.5 h-4.5" /> : <Ban className="w-4.5 h-4.5" />}
             </button>
@@ -206,7 +206,7 @@ const UsersTab: React.FC<UsersTabProps> = ({
           <div className="mt-3 text-xs font-black uppercase text-text-muted/40 tracking-widest">{"Never"}</div>
         )}
         {item.recoveryToken && (
-          <div className="flex items-center gap-3 mt-4 p-3 bg-bg-elevated rounded-xl shadow-sm">
+          <div className="flex items-center gap-3 mt-4 p-3 bg-surface-raised rounded-xl shadow-sm">
             <IconShield size={16} className="text-accent" />
             <span className="font-mono text-xs text-accent/70 truncate flex-1">{item.recoveryToken}</span>
             <button onClick={() => { navigator.clipboard.writeText(item.recoveryToken || ''); addToast("Token copied to clipboard", 'success'); }} className="p-1.5 hover:text-accent transition-colors">

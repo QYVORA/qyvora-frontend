@@ -29,19 +29,19 @@ const PointsControl: React.FC<PointsControlProps> = ({
   saving,
 }) => {
   return (
-    <div className="rounded-2xl border border-border/50 bg-bg-card p-5">
+    <div className="rounded-2xl border border-border-subtle bg-surface p-5 md:p-6">
       <div className="mb-4 flex items-center gap-2">
         <Coins className="w-4 h-4 text-accent" />
-        <span className="text-sm font-black uppercase tracking-wide text-text-primary">{"Points Control"}</span>
+        <span className="type-h2 font-black uppercase tracking-tight text-text-primary text-lg">{"Points Control"}</span>
       </div>
       <div className="space-y-3">
         <div>
-          <label className="text-xs uppercase text-text-muted tracking-widest block mb-1.5">{"User"}</label>
+          <label className="type-label text-text-muted uppercase tracking-widest block mb-1.5">{"User"}</label>
           <div className="relative">
             <select
               value={cpUserId}
               onChange={e => setCpUserId(e.target.value)}
-              className="w-full bg-bg border border-border rounded-xl px-3 py-2.5 text-sm text-text-primary focus:outline-none focus:border-accent appearance-none pr-8"
+              className="w-full bg-surface-raised border border-border-subtle rounded-xl px-3 py-2.5 text-sm text-text-primary focus:outline-none focus:border-accent appearance-none pr-8"
             >
               {users.map(u => (
                 <option key={u.id} value={u.id}>
@@ -70,13 +70,13 @@ const PointsControl: React.FC<PointsControlProps> = ({
           value={cpValue || ''}
           onChange={e => setCpValue(Number(e.target.value || 0))}
           placeholder={cpAction === 'set' ? "Target value" : "Points amount"}
-          className="w-full bg-bg border border-border rounded-xl px-3 py-2.5 text-sm text-text-primary focus:outline-none focus:border-accent"
+          className="w-full bg-surface-raised border border-border-subtle rounded-xl px-3 py-2.5 text-sm text-text-primary focus:outline-none focus:border-accent"
         />
         <input
           value={cpReason}
           onChange={e => setCpReason(e.target.value)}
           placeholder={"Reason (optional)"}
-          className="w-full bg-bg border border-border rounded-xl px-3 py-2.5 text-sm text-text-primary focus:outline-none focus:border-accent"
+          className="w-full bg-surface-raised border border-border-subtle rounded-xl px-3 py-2.5 text-sm text-text-primary focus:outline-none focus:border-accent"
         />
         <button
           onClick={() => void runCpAction()}
