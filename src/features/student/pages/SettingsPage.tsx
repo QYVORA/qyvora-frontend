@@ -14,9 +14,9 @@ import { usePreferences } from '../../../shared/hooks/usePreferences';
 import { useThemeContext } from '../../../core/contexts/ThemeContext';
 import { SETTINGS_SECTIONS, type SettingsSectionId } from '../constants/settingsSections';
 
-const INPUT_CLS = 'w-full bg-bg border border-border rounded-xl py-3 px-4 text-sm text-text-primary placeholder:text-text-muted focus:border-accent outline-none transition-[border-color] duration-[var(--dur-base)] ease-[var(--ease-smooth)] font-mono';
+const INPUT_CLS = 'w-full bg-surface-raised border border-border-subtle rounded-xl py-3 px-4 text-sm font-mono text-text-primary placeholder:text-text-muted focus:border-accent focus:outline-none outline-none transition-colors';
 
-const LABEL_CLS = 'text-xs font-black uppercase tracking-widest text-text-muted block mb-1.5';
+const LABEL_CLS = 'type-label text-text-muted uppercase tracking-widest block mb-1.5';
 
 const PasswordField: React.FC<{ name: string; placeholder?: string; label: string; shake?: boolean; onAnimationEnd?: () => void; id: string }> = ({ name, placeholder = '••••••••', label, shake = false, onAnimationEnd, id }) => {
   const [show, setShow] = useState(false);
@@ -51,7 +51,7 @@ const Toggle: React.FC<{ label: string; checked: boolean; onChange: (v: boolean)
       }`}
     >
       <span
-        className={`inline-block rounded-full bg-bg shadow-sm transition-transform duration-200 ${
+        className={`inline-block rounded-full bg-surface shadow-sm transition-transform duration-200 ${
           checked ? 'translate-x-6' : 'translate-x-1'
         }`}
         style={{ width: '20px', height: '20px' }}
@@ -73,7 +73,7 @@ const SettingsRow: React.FC<{ label: string; description?: string; children: Rea
 const SelectField: React.FC<{ id: string; ariaLabel: string; value: string; onChange: (v: string) => void; children: React.ReactNode }> = ({ id, ariaLabel, value, onChange, children }) => (
   <div className="relative">
     <select id={id} aria-label={ariaLabel} value={value} onChange={(e) => onChange(e.target.value)}
-      className="appearance-none w-full sm:w-auto min-w-[9rem] bg-bg border border-border rounded-xl py-2.5 pl-3.5 pr-9 text-sm font-bold text-text-primary focus:border-accent outline-none transition-[border-color] duration-[var(--dur-base)] ease-[var(--ease-smooth)] cursor-pointer">
+      className="appearance-none w-full sm:w-auto min-w-[9rem] bg-surface-raised border border-border-subtle rounded-xl py-2.5 pl-3.5 pr-9 text-sm font-bold text-text-primary focus:border-accent outline-none transition-colors cursor-pointer">
       {children}
     </select>
     <ChevronDown className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-text-muted" />
@@ -263,10 +263,10 @@ const Settings: React.FC = () => {
 
           {/* Appearance Section */}
           {activeSection === 'appearance' && (
-            <div className="bg-bg-card border border-border/50 rounded-2xl p-5 md:p-8">
+            <div className="bg-surface border border-border-subtle rounded-2xl p-5 md:p-8">
               <div>
                 <SettingsRow label={"Theme"} description={"Choose between dark and light mode"}>
-                  <div className="flex gap-1 bg-bg rounded-xl p-1 border border-border/50">
+                  <div className="flex gap-1 bg-surface-raised rounded-xl p-1 border border-border-subtle">
                     <button onClick={() => handleThemeChange('dark')} aria-pressed={theme === 'dark'}
                       className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-colors ${theme === 'dark' ? 'bg-accent text-on-accent' : 'text-text-muted hover:text-text-primary'}`}>
                       {"Dark"}
@@ -299,7 +299,7 @@ const Settings: React.FC = () => {
 
           {/* Notifications Section */}
           {activeSection === 'notifications' && (
-            <div className="bg-bg-card border border-border/50 rounded-2xl p-5 md:p-8">
+            <div className="bg-surface border border-border-subtle rounded-2xl p-5 md:p-8">
               <div>
                 <SettingsRow label={"Email notifications"} description={"Receive email notifications"}>
                   <Toggle label={"Email notifications"} checked={preferences.notifications.email} onChange={(v) => updateNotification('email', v)} disabled={prefsSaving} />
@@ -325,7 +325,7 @@ const Settings: React.FC = () => {
 
           {/* Learning Section */}
           {activeSection === 'learning' && (
-            <div className="bg-bg-card border border-border/50 rounded-2xl p-5 md:p-8">
+            <div className="bg-surface border border-border-subtle rounded-2xl p-5 md:p-8">
               <div>
                 <SettingsRow label={"Preferred Difficulty"}>
                   <SelectField id="settings-preferred-difficulty" ariaLabel={"Preferred Difficulty"} value={preferences.learning.preferredDifficulty} onChange={(v) => updateLearning('preferredDifficulty', v)}>
@@ -338,7 +338,7 @@ const Settings: React.FC = () => {
                   <input id="settings-weekly-goal" type="number" min={0} max={80} value={preferences.learning.weeklyGoalHours}
                     onChange={(e) => updateLearning('weeklyGoalHours', Number(e.target.value))}
                     aria-label={"Weekly Study Goal (hours)"}
-                    className="w-24 bg-bg border border-border rounded-xl px-3 py-2.5 text-sm font-bold text-text-primary text-center focus:border-accent outline-none" />
+                    className="w-24 bg-surface-raised border border-border-subtle rounded-xl px-3 py-2.5 text-sm font-bold text-text-primary text-center focus:border-accent outline-none" />
                 </SettingsRow>
                 <SettingsRow label={"Show Hints"} description={"Display hints and suggestions during learning"}>
                   <Toggle label={"Show Hints"} checked={preferences.learning.showHints} onChange={(v) => updateLearning('showHints', v)} disabled={prefsSaving} />
@@ -357,7 +357,7 @@ const Settings: React.FC = () => {
           {activeSection === 'security' && (
             <div className="space-y-6 md:space-y-8">
               {/* Password */}
-              <div className="bg-bg-card border border-border/50 rounded-2xl p-5 md:p-8">
+              <div className="bg-surface border border-border-subtle rounded-2xl p-5 md:p-8">
                 <SectionHeader 
                   title={"Change Password"}
                 />
@@ -373,13 +373,13 @@ const Settings: React.FC = () => {
               </div>
 
               {/* Recovery Token */}
-              <div className="bg-bg-card border border-border/50 rounded-2xl p-5 md:p-8">
+              <div className="bg-surface border border-border-subtle rounded-2xl p-5 md:p-8">
                 <SectionHeader 
                   title={"Recovery Token"}
                 />
                 <div className="space-y-5">
-                  <div className="flex items-start gap-3 p-4 bg-yellow-500/5 border border-yellow-500/20 rounded-xl">
-                    <AlertTriangle className="w-4 h-4 text-yellow-500 flex-none mt-0.5" />
+                  <div className="flex items-start gap-3 p-4 bg-warning/5 border border-warning/20 rounded-xl">
+                    <AlertTriangle className="w-4 h-4 text-warning flex-none mt-0.5" />
                     <p className="text-xs text-text-secondary leading-relaxed">{"Your recovery token is used to restore access to your account."}</p>
                   </div>
                   {liveToken ? (
@@ -399,7 +399,7 @@ const Settings: React.FC = () => {
                     </div>
                   ) : tokenAvailable ? (
                     <div className="space-y-4">
-                      <div className="flex items-center gap-3 p-4 bg-bg border border-border rounded-xl">
+                      <div className="flex items-center gap-3 p-4 bg-surface-raised border border-border-subtle rounded-xl">
                         <div className="w-8 h-8 rounded-lg bg-accent-dim flex items-center justify-center shrink-0"><Key className="w-4 h-4 text-accent" /></div>
                         <div className="min-w-0">
                           <div className="text-sm font-bold text-text-primary">{recoveryAcked ? "Token saved" : "Token exists"}</div>
@@ -434,11 +434,11 @@ const Settings: React.FC = () => {
               </div>
 
               {/* Sessions */}
-              <div className="bg-bg-card border border-border/50 rounded-2xl p-5 md:p-8">
+              <div className="bg-surface border border-border-subtle rounded-2xl p-5 md:p-8">
                 <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4 mb-6">
                   <div>
-                    <h2 className="text-2xl font-black text-text-primary mb-2">{"Active Sessions"}</h2>
-                    <p className="text-sm text-text-muted">{"Devices currently logged into your account."}</p>
+                    <h2 className="type-h2 font-black uppercase tracking-tight text-text-primary mb-2">{"Active Sessions"}</h2>
+                    <p className="type-meta mt-1.5">{"Devices currently logged into your account."}</p>
                   </div>
                   {sessions.length > 1 && (
                     <button onClick={handleRevokeAll} className="shrink-0 text-xs font-black uppercase tracking-widest text-danger hover:text-danger active:opacity-70 transition-colors">
@@ -453,7 +453,7 @@ const Settings: React.FC = () => {
                 ) : (
                   <div className="space-y-3">
                     {sessions.map((session) => (
-                      <div key={session.id} className="flex items-center justify-between gap-3 p-3 bg-bg border border-border/50 rounded-xl">
+                      <div key={session.id} className="flex items-center justify-between gap-3 p-3 bg-surface-raised border border-border-subtle rounded-xl">
                         <div className="min-w-0">
                           <div className="flex items-center gap-2">
                             <p className="text-sm font-bold text-text-primary truncate">{session.userAgent || "Unknown device"}</p>
@@ -476,7 +476,7 @@ const Settings: React.FC = () => {
 
           {/* Account / Danger Zone */}
           {activeSection === 'account' && (
-            <div className="bg-bg-card border border-danger/20 rounded-2xl p-5 md:p-8">
+            <div className="bg-surface border border-danger/20 rounded-2xl p-5 md:p-8">
               <div className="bg-danger/5 border border-danger/20 rounded-xl p-6 space-y-4">
                 <div className="flex items-start gap-3">
                   <AlertTriangle className="w-5 h-5 text-danger flex-none mt-0.5" />

@@ -207,9 +207,9 @@ const Dashboard = () => {
             </Card>
           )}
         </div>
-        <Card className="mt-5 p-4 md:p-5">
+        <div className="mt-5">
           <CpEarnHint engagement={engagement} loading={engagementLoading} />
-        </Card>
+        </div>
       </div>
 
       {/* 3. Three metrics — CP / rank / streak */}

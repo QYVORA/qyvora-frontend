@@ -143,7 +143,7 @@ const Marketplace: React.FC = () => {
           <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             {tab === 'market' && (
               <div className="relative w-full sm:w-72">
-                <input id="marketplace-search" type="text" value={query} onChange={(e) => setQuery(e.target.value)} placeholder={"Search items…"} className="w-full rounded-xl border border-border/40 bg-bg-card py-3 pl-11 pr-4 text-sm text-text-primary transition-colors outline-none focus:border-accent" />
+                <input id="marketplace-search" type="text" value={query} onChange={(e) => setQuery(e.target.value)} placeholder={"Search items…"} className="w-full rounded-xl border border-border-subtle bg-surface py-3 pl-11 pr-4 text-sm text-text-primary transition-colors outline-none focus:border-accent" />
                 <label htmlFor="marketplace-search" className="sr-only">{"Search items…"}</label>
                 <Search className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-text-muted" />
               </div>
@@ -156,7 +156,7 @@ const Marketplace: React.FC = () => {
                 className={`inline-flex min-h-[44px] items-center gap-1.5 rounded-xl px-4 text-xs font-black uppercase tracking-widest transition-colors ${
                   tab === 'market'
                     ? 'bg-accent text-on-accent'
-                    : 'text-text-muted hover:text-text-primary border border-border/40'
+                    : 'text-text-muted hover:text-text-primary border border-border-subtle'
                 }`}
               >
                 <ShoppingBag className="h-3.5 w-3.5" />
@@ -168,7 +168,7 @@ const Marketplace: React.FC = () => {
                 className={`inline-flex min-h-[44px] items-center gap-1.5 rounded-xl px-4 text-xs font-black uppercase tracking-widest transition-colors ${
                   tab === 'history'
                     ? 'bg-accent text-on-accent'
-                    : 'text-text-muted hover:text-text-primary border border-border/40'
+                    : 'text-text-muted hover:text-text-primary border border-border-subtle'
                 }`}
               >
                 <Zap className="h-3.5 w-3.5" />
@@ -192,7 +192,7 @@ const Marketplace: React.FC = () => {
                   const hasPurchased = purchased.has(id);
                   return (
                     <motion.div key={id || idx} initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.45, delay: idx * 0.08, ease: [0.16, 1, 0.3, 1] }}>
-                      <div className="group flex flex-col overflow-hidden rounded-2xl border border-border-subtle bg-bg-card transition-colors duration-[var(--dur-base)] ease-[var(--ease-smooth)] hover:border-accent/40">
+                      <div className="group flex flex-col overflow-hidden rounded-2xl border border-border-subtle bg-surface transition-colors duration-[var(--dur-base)] ease-[var(--ease-smooth)] hover:border-accent/40">
                         <div className="relative aspect-[16/9] overflow-hidden bg-accent/5">
                           <AuthImage
                             src={prod.coverUrl}
@@ -295,7 +295,7 @@ const Marketplace: React.FC = () => {
                       <div className="flex justify-center px-5 py-4">
                         <button
                           onClick={() => setVisibleCount((prev) => prev + PAGE_SIZE)}
-                          className="min-h-[44px] rounded-xl border border-border bg-bg px-4 text-xs font-bold text-text-primary transition-colors hover:border-accent/40"
+                          className="min-h-[44px] rounded-xl border border-border-subtle bg-surface px-4 text-xs font-bold text-text-primary transition-colors hover:border-accent/40"
                         >
                           {`Load more (${txRows.length - visibleCount} remaining)`}
                         </button>

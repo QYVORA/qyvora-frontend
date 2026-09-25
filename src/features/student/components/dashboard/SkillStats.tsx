@@ -61,10 +61,10 @@ const SkillStats = ({ modules }: SkillStatsProps) => {
     <div className="flex flex-col gap-5 md:gap-6 h-full">
       <div className="flex items-center justify-between gap-3">
         <div>
-          <h3 className="text-xs font-black uppercase tracking-[0.25em] text-text-primary">
+          <h3 className="type-label uppercase tracking-[0.12em] text-text-primary">
             {"Skill Progress"}
           </h3>
-          <p className="text-xs font-bold uppercase tracking-widest text-text-muted mt-0.5">
+          <p className="type-meta mt-0.5">
             {"Completion"}
           </p>
         </div>

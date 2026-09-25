@@ -170,7 +170,7 @@ const MyCoursesPage: React.FC = () => {
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder={"Search courses…"}
               aria-label={"Search courses…"}
-              className="w-full bg-bg border border-border rounded-xl py-3 pl-11 pr-4 text-sm font-mono text-text-primary placeholder:text-text-muted/30 outline-none focus:border-accent transition-colors caret-accent"
+              className="w-full bg-surface border border-border-subtle rounded-xl py-3 pl-11 pr-4 text-sm font-mono text-text-primary placeholder:text-text-muted/30 outline-none focus:border-accent transition-colors caret-accent"
             />
           </div>
         )}
@@ -231,7 +231,7 @@ const MyCoursesPage: React.FC = () => {
 
         {!loading && lockedCourses.length > 0 && (
           <div>
-              <h2 className="text-sm font-black text-text-muted uppercase tracking-widest mb-4">
+              <h2 className="type-label text-text-muted uppercase tracking-[0.12em] mb-4">
                 {"Locked Courses"}
               </h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
@@ -240,11 +240,11 @@ const MyCoursesPage: React.FC = () => {
                 return (
                   <div
                     key={course.id}
-                    className="relative aspect-square rounded-2xl border border-border/50 bg-bg-card/50 opacity-60 p-3 md:p-5 flex flex-col overflow-hidden"
+                    className="relative aspect-[16/9] rounded-2xl border border-border-subtle bg-surface opacity-60 p-3 md:p-5 flex flex-col overflow-hidden"
                   >
                     <div className="grid grid-cols-[minmax(0,1fr)_auto] items-start gap-3 mb-2 opacity-50">
                       <div className="min-w-0">
-                        <span className="px-2 py-0.5 rounded-lg bg-bg-elevated text-xs font-black uppercase tracking-widest text-text-muted border border-border/20">
+                        <span className="px-2 py-0.5 rounded-lg bg-surface-raised text-xs font-black uppercase tracking-widest text-text-muted border border-border-subtle">
                           {category?.name}
                         </span>
                         <h3 className="text-sm sm:text-base md:text-lg lg:text-xl font-black text-text-muted leading-snug break-words mt-1">

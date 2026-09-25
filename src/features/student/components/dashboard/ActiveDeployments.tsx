@@ -11,7 +11,7 @@ interface ActiveDeploymentsProps {
 
 const EmptyDeployments = () => {
   return (
-    <div className="relative overflow-hidden rounded-2xl border-2 border-dashed border-border/20 py-12 text-center h-full min-h-[220px] flex flex-col items-center justify-center bg-transparent">
+    <div className="relative overflow-hidden rounded-2xl border-2 border-dashed border-border-subtle py-12 text-center h-full min-h-[220px] flex flex-col items-center justify-center bg-transparent">
       <div className="mx-auto mb-3">
         <Dobia expression="confused" size="xl" />
       </div>
@@ -30,7 +30,7 @@ const ActiveDeployments = ({ bootcamps }: ActiveDeploymentsProps) => {
   return (
     <div className="flex flex-col gap-6 h-full">
       <div className="flex items-center justify-between">
-        <h3 className="text-xs font-black uppercase tracking-[0.3em] text-text-muted">{"Active Deployments"}</h3>
+        <h3 className="type-label uppercase tracking-[0.12em] text-text-tertiary">{"Active Deployments"}</h3>
         <Link to="/dashboard/bootcamps" className="text-xs font-black uppercase tracking-widest text-accent hover:underline">{"View All"}</Link>
       </div>
       {bootcamps.length === 0 ? (

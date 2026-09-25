@@ -70,7 +70,7 @@ const CompetitivePage = () => {
               className={`px-5 py-2.5 rounded-xl text-xs font-black uppercase tracking-wider transition-[background-color,color,border-color] duration-[var(--dur-base)] ease-[var(--ease-smooth)] ${
                 period === p.key
                   ? 'bg-accent text-on-accent'
-                  : 'bg-bg-card border border-border text-text-muted hover:border-accent/50 hover:text-accent'
+                  : 'bg-surface border border-border-subtle text-text-muted hover:border-accent/40 hover:text-accent'
               }`}
             >
               {p.label}
@@ -95,7 +95,7 @@ const CompetitivePage = () => {
         ) : (
           <div>
             {/* Desktop header row */}
-            <div className="hidden md:grid grid-cols-[48px_1fr_140px_100px_80px] gap-4 px-6 py-3 text-xs font-black uppercase tracking-widest text-text-muted/50 border-b border-border/40">
+            <div className="hidden md:grid grid-cols-[48px_1fr_140px_100px_80px] gap-4 px-6 py-3 text-xs font-black uppercase tracking-widest text-text-muted/50 border-b border-border-subtle">
               <span>{"#"}</span>
               <span>{"Operator"}</span>
               <span>{"Rank"}</span>
@@ -115,7 +115,7 @@ const CompetitivePage = () => {
                     youLabel={"You"}
                     roomsLabel={"rooms"}
                     avatarShape="rounded-xl"
-                    normalBorderColor="border-border/50"
+                    normalBorderColor="border-border-subtle"
                   />
                 </ScrollReveal>
               ))}
@@ -126,7 +126,7 @@ const CompetitivePage = () => {
                 <button
                   onClick={() => loadMore(period)}
                   disabled={loadingMore}
-                  className="px-6 py-2.5 rounded-xl text-xs font-black uppercase tracking-widest border border-border/50 bg-bg-card text-text-muted hover:border-accent/50 hover:text-accent transition-[border-color,color] duration-[var(--dur-base)] ease-[var(--ease-smooth)] disabled:opacity-50"
+                  className="px-6 py-2.5 rounded-xl text-xs font-black uppercase tracking-widest border border-border-subtle bg-surface text-text-muted hover:border-accent/40 hover:text-accent transition-[border-color,color] duration-[var(--dur-base)] ease-[var(--ease-smooth)] disabled:opacity-50"
                 >
                   {loadingMore ? "Loading…" : "Show more"}
                 </button>

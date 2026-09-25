@@ -43,10 +43,10 @@ const SkillMatrix = ({ modules }: SkillMatrixProps) => {
       {/* Section header */}
       <div className="flex items-center justify-between gap-3 mb-4 md:mb-6">
         <div>
-          <h2 className="text-lg md:text-xl font-black uppercase tracking-tight text-text-primary">
+          <h2 className="type-h2 font-black uppercase tracking-tight text-text-primary">
             {"Skill Matrix"}
           </h2>
-          <p className="text-xs md:text-xs font-bold uppercase tracking-widest text-text-muted mt-1.5">
+          <p className="type-meta mt-1.5">
             {"Overall"} &middot; {average}%
           </p>
         </div>

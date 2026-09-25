@@ -173,7 +173,7 @@ const Notifications: React.FC = () => {
                       <div className="min-w-0 flex-1">
                         <div className="mb-1 flex flex-wrap items-center gap-2 break-words pr-4">
                           <span className="text-xs font-black uppercase tracking-wide text-text-primary">{n.title}</span>
-                          <span className="type-meta rounded border border-border bg-surface-raised px-1.5 py-0.5">
+                          <span className="type-meta rounded border border-border-subtle bg-surface-raised px-1.5 py-0.5">
                             {n.type.replace(/_/g, ' ')}
                           </span>
                         </div>
@@ -202,7 +202,7 @@ const Notifications: React.FC = () => {
               <div className="pt-2 text-center">
                 <button
                   onClick={() => setVisibleCount((prev) => prev + PAGE_SIZE)}
-                  className="min-h-[44px] rounded-xl border border-border bg-surface px-4 text-xs font-bold text-text-primary transition-colors hover:border-accent/40"
+                  className="min-h-[44px] rounded-xl border border-border-subtle bg-surface px-4 text-xs font-bold text-text-primary transition-colors hover:border-accent/40"
                 >
                   {`Load more (${displayed.length - visibleCount} remaining)`}
                 </button>
