@@ -129,10 +129,10 @@ const ServiceCard: React.FC<{ svc: ServiceConfig; index: number }> = ({ svc, ind
       <h3 className="mt-3 type-h3 font-black uppercase tracking-tight text-text-primary">
         {svc.title}
       </h3>
-      <p className="mt-2 type-body-sm text-text-secondary">{svc.overview}</p>
+      <p className="mt-2 type-body text-text-secondary">{svc.overview}</p>
 
-      {/* Scope */}
-      <p className="mt-3 flex items-start gap-2 text-sm leading-relaxed text-text-muted">
+      {/* Scope — the concrete "what's covered" line */}
+      <p className="mt-3 flex items-start gap-2 text-sm font-medium leading-relaxed text-text-secondary">
         <Target className="mt-0.5 h-4 w-4 shrink-0 text-accent" aria-hidden="true" />
         {svc.scope}
       </p>
@@ -142,15 +142,16 @@ const ServiceCard: React.FC<{ svc: ServiceConfig; index: number }> = ({ svc, ind
         {svc.included.slice(0, 3).map((item) => (
           <span
             key={item}
-            className="inline-flex items-center gap-1.5 rounded-md border border-border-subtle bg-surface-raised px-2 py-1 text-xs text-text-secondary"
+            className="inline-flex items-center gap-1 rounded-md border border-border-subtle bg-surface-raised px-2 py-1 text-xs text-text-primary"
           >
             <IconCheck className="h-3 w-3 shrink-0 text-accent" aria-hidden="true" />
             {item}
           </span>
         ))}
         {svc.included.length > 3 && (
-          <span className="inline-flex items-center px-2 py-1 text-xs text-text-muted">
-            {`+${svc.included.length - 3} more`}
+          <span className="inline-flex items-center gap-1 rounded-md border border-border-subtle bg-surface-raised px-2 py-1 text-xs text-text-tertiary">
+            <IconCheck className="h-3 w-3 shrink-0 text-accent" aria-hidden="true" />
+            {`${svc.included.length - 3} more`}
           </span>
         )}
       </div>
@@ -159,14 +160,16 @@ const ServiceCard: React.FC<{ svc: ServiceConfig; index: number }> = ({ svc, ind
       <div className="mt-auto flex flex-col gap-3 pt-5">
         <div className="flex flex-col gap-3 border-t border-border-subtle pt-4">
           <div className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1">
-            <span className={`font-black ${svc.featured ? 'text-xl text-accent' : 'text-lg text-text-primary'}`}>
+            <span className={`font-black tracking-tight ${
+              svc.featured ? 'text-2xl text-accent' : 'text-xl text-text-primary'
+            }`}>
               {svc.price}
             </span>
-            <span className="text-xs text-text-muted">{svc.priceLocal}</span>
+            <span className="text-xs font-medium text-text-secondary">{svc.priceLocal}</span>
           </div>
           {svc.highlight && (
-            <p className="flex items-start gap-2 rounded-lg border border-accent/20 bg-accent/5 px-3 py-2 text-xs leading-relaxed text-accent/90">
-              <IconCheck className="mt-0.5 h-3.5 w-3.5 shrink-0" aria-hidden="true" />
+            <p className="flex items-start gap-2 rounded-lg border border-accent/30 bg-accent/10 px-3 py-2 text-sm font-bold leading-relaxed text-accent">
+              <IconCheck className="mt-0.5 h-4 w-4 shrink-0" aria-hidden="true" />
               {svc.highlight}
             </p>
           )}
