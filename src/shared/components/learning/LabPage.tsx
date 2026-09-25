@@ -11,11 +11,6 @@ export interface LabPageProps {
   eyebrow?: string;
   backTo?: string;
   backLabel?: string;
-  villain?: {
-    name: string;
-    alias: string;
-    description: string;
-  };
 
   activeScenario: unknown | null;
 

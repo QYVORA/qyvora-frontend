@@ -3,7 +3,7 @@ import { Copy, Terminal } from 'lucide-react';
 import { IconCheck } from '@/shared/components/icons';
 import { cn } from '@/shared/utils/cn';
 
-export function CommandBlock({ command, labId }: { command: string; labId: string }) {
+export function CommandBlock({ command, labId, showConnect = true }: { command: string; labId: string; showConnect?: boolean }) {
   const [copied, setCopied] = useState(false);
   const handleCopy = async () => {
     await navigator.clipboard.writeText(command);
@@ -37,7 +37,7 @@ export function CommandBlock({ command, labId }: { command: string; labId: strin
           </div>
         </div>
       </div>
-      <p className="text-xs text-text-muted font-mono">Connect: <span className="text-accent">qyvora connect {labId}</span></p>
+      {showConnect && <p className="text-xs text-text-muted font-mono">Connect: <span className="text-accent">qyvora connect {labId}</span></p>}
     </div>
   );
 }

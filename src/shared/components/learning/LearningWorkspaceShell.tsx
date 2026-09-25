@@ -8,7 +8,7 @@ export interface WorkspaceStat {
   accent?: boolean;
 }
 
-export interface WorkspaceProgress {
+interface WorkspaceProgress {
   /** 0–100 completion percent. */
   value: number;
   label: React.ReactNode;

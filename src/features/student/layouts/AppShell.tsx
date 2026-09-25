@@ -7,7 +7,6 @@ import InstallBanner from '@/features/student/components/layout/InstallBanner';
 import UsernameChangeModal from '@/features/student/components/UsernameChangeModal';
 import ConsentBanner from '@/shared/components/ConsentBanner';
 import { TerminalWrapper } from '@/shared/components/learning/TerminalWrapper';
-import { InternalTerminal } from '@/shared/components/walkthrough/InternalTerminal';
 import { SimulationProvider } from '@/features/student/components/simulations';
 import NetworkBuilder from '@/features/student/components/tools/NetworkBuilder';
 import { initPWA, tryAutoSubscribePush } from '@/features/student/services/pwa';
@@ -20,8 +19,8 @@ const TOPBAR_H = 'pt-20 md:pt-24';
  *
  * Desktop (lg+): persistent left Sidebar + fixed topbar for utilities/breadcrumbs.
  * Mobile: compact topbar + fixed bottom navigation (Home · Learn · Practice ·
- * Progress · Profile). Walkthrough routes (rooms, courses, labs) drop the
- * sidebar/nav rail so the learner keeps full viewport width.
+ * Progress · Profile). Walkthrough routes (rooms, courses, labs) keep the full
+ * shell — the sidebar rail is the single dashboard navigation.
  *
  * Shell behaviours: SimulationProvider, terminal/IDE/network window-event
  * triggers, Ctrl+` toggle and PWA init.
@@ -33,7 +32,6 @@ const AppShell = () => {
   const labMatch = useMatch('/dashboard/labs/:labType');
   const [terminalOpen, setTerminalOpen] = useState(false);
   const [networkVizOpen, setNetworkVizOpen] = useState(false);
-  const [walkthroughTerminalOpen, setWalkthroughTerminalOpen] = useState(false);
   const [railCollapsed, setRailCollapsed] = useState(() => {
     try {
       return localStorage.getItem('qyvora:sidebar-collapsed') === '1';
@@ -65,12 +63,6 @@ const AppShell = () => {
   }, []);
 
   useEffect(() => {
-    const handler = () => setWalkthroughTerminalOpen(true);
-    window.addEventListener('qyvora:open-walkthrough-terminal', handler);
-    return () => window.removeEventListener('qyvora:open-walkthrough-terminal', handler);
-  }, []);
-
-  useEffect(() => {
     const handler = () => setNetworkVizOpen(true);
     window.addEventListener('qyvora:open-network-visualizer', handler);
     return () => window.removeEventListener('qyvora:open-network-visualizer', handler);
@@ -99,7 +91,6 @@ const AppShell = () => {
 
   // Walkthrough pages (rooms, courses, labs) keep the full shell — the
   // sidebar rail is the single navigation component on every dashboard page.
-  const isWalkthroughPage = Boolean(roomMatch || roomMatchLegacy || courseMatch || labMatch);
   const useRail = true;
   const railPad = railCollapsed ? 'lg:pl-[76px]' : 'lg:pl-[264px]';
 
@@ -118,15 +109,6 @@ const AppShell = () => {
         <ConsentBanner />
         <InstallBanner />
         <UsernameChangeModal />
-
-        {/* Compact walkthrough terminal — for all walkthrough pages (desktop dock / mobile sheet) */}
-        {isWalkthroughPage && (
-          <InternalTerminal
-            open={walkthroughTerminalOpen}
-            onOpenChange={setWalkthroughTerminalOpen}
-            context={terminalContext}
-          />
-        )}
 
         {/* Full terminal modal — for standalone terminal access */}
         <TerminalWrapper

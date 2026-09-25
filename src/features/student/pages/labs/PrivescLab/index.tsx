@@ -15,12 +15,6 @@ import useLabAccess from '@/features/student/hooks/useLabAccess';
 import useLabScenario from '@/features/student/hooks/useLabScenario';
 import { getLabCpCost } from '@/features/student/data/simulations/labAccess';
 
-const DIFFICULTY_STYLES: Record<string, string> = {
-  beginner: 'bg-success/10 text-success border-success/20',
-  intermediate: 'bg-warning/10 text-warning border-warning/20',
-  advanced: 'bg-danger/10 text-danger border-danger/20',
-};
-
 const PRIVESC_FLOW_NODES = [
   { id: 'you', label: 'You', icon: <User className="w-4 h-4" />, status: 'active' as const },
   { id: 'filesystem', label: 'Filesystem', icon: <Folder className="w-4 h-4" />, status: 'default' as const },
@@ -45,7 +39,6 @@ const PrivescLab = () => {
   const [viewStepIdx, setViewStepIdx] = useState<number | null>(null);
 
   const chapters = activeScenario?.story?.chapters ?? [];
-  const firstScenarioWithVillain = PRIVESC_SCENARIOS.find(s => s.villain);
 
   const firstIncomplete = chapters.findIndex((_, i) => !getStepState(i).isCompleted);
   const defaultActiveIndex = firstIncomplete === -1 ? chapters.length + 1 : firstIncomplete + 1;
@@ -77,6 +70,7 @@ const PrivescLab = () => {
           title: 'Mission Debrief',
           isActive: activeIndex === chapters.length + 1,
           isCompleted: allDone,
+          isLocked: !allDone,
         },
       ]
     : [];
@@ -88,7 +82,6 @@ const PrivescLab = () => {
       title="Privilege"
       accentWord="Escalation"
       description="Escalate from low-privilege user to root using Linux misconfigurations."
-      villain={firstScenarioWithVillain?.villain}
       activeScenario={activeScenario}
       celebrationShow={allDone}
       celebrationTitle={activeScenario?.title || ''}
@@ -112,7 +105,7 @@ const PrivescLab = () => {
               onStart: () => {
                 startScenario(scenario);
               },
-              startLabel: "Enter Room",
+              startLabel: "Start",
               locked,
               cpCost: locked ? cpCost ?? undefined : undefined,
               onUnlock: cpCost ? async () => {
@@ -133,7 +126,6 @@ const PrivescLab = () => {
             subtitle={activeScenario.technique}
             icon={<Shield className="w-6 h-6" />}
             difficulty={activeScenario.difficulty}
-            difficultyColor={DIFFICULTY_STYLES[activeScenario.difficulty]}
             labId="privesc"
             scenarioId={activeScenario.id}
             onBack={exitScenario}
@@ -203,7 +195,7 @@ const PrivescLab = () => {
               title="Mission Debrief"
               narrative={`## Mission Complete\n\nYou successfully exploited the **${activeScenario.technique}** vulnerability to escalate from a low-privilege user to root.\n\n### Key Takeaways\n\n- **${activeScenario.technique}** is a common privilege escalation vector\n- Always audit SUID binaries and their configurations\n- Understanding the underlying technique is critical for both attack and defense\n\n### What to Remember\n\nThis technique applies to real-world Linux environments. Always follow responsible disclosure when discovering vulnerabilities.`}
               reflection={`What did you learn about the ${activeScenario.technique} technique? How would you defend against this in a production environment?`}
-              isLocked={false}
+              isLocked={!allDone}
               isCompleted={allDone}
               isActive={false}
               flagId="debrief"

@@ -75,11 +75,10 @@ const SqlInjectionLab = () => {
           title: 'Mission Debrief',
           isActive: activeIndex === stepCount + 2,
           isCompleted: allDone,
+          isLocked: !allDone,
         },
       ]
     : [];
-
-  const firstTargetWithVillain = SQL_INJECTION_TARGETS.find(t => t.villain);
 
   if (loading) return <LabListingSkeleton />;
 
@@ -88,7 +87,6 @@ const SqlInjectionLab = () => {
       title="SQL Injection"
       accentWord="Deep Dive"
       description="Explore and exploit SQL injection vulnerabilities across different target systems."
-      villain={firstTargetWithVillain?.villain}
       activeScenario={activeTarget}
       celebrationShow={allDone}
       celebrationTitle={activeTarget?.name || ''}
@@ -110,7 +108,7 @@ const SqlInjectionLab = () => {
                 </span>
               ),
               onStart: () => startScenario(target),
-              startLabel: "Start Attack",
+              startLabel: "Start",
               locked,
               cpCost: locked ? cpCost ?? undefined : undefined,
               onUnlock: cpCost ? async () => {
@@ -207,7 +205,7 @@ const SqlInjectionLab = () => {
               title="Mission Debrief"
               narrative={`## Attack Complete\n\nYou successfully exploited the **${activeTarget.injectionType}** vulnerability on ${activeTarget.name}.\n\n### Key Takeaways\n\n- **${activeTarget.injectionType}** injection allows data extraction through crafted queries\n- Always validate and sanitize user input\n- Use parameterized queries to prevent SQL injection\n- The ${activeTarget.dbms} database was vulnerable to this technique\n\n### What to Remember\n\nSQL injection remains one of the most common web vulnerabilities. Understanding the attack vector is essential for building secure applications.`}
               reflection={`What did you learn about ${activeTarget.injectionType} injection? How would you secure this application against this attack?`}
-              isLocked={false}
+              isLocked={!allDone}
               isCompleted={allDone}
               isActive={false}
               flagId="debrief"

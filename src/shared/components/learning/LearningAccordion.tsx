@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { ChevronDown } from 'lucide-react';
+import { ChevronDown, Lock } from 'lucide-react';
 import { cn } from '@/shared/utils/cn';
 import { DifficultyBadge } from './LearningCard';
 
@@ -31,9 +31,7 @@ function StartButton({ label, onClick, locked, cpCost, onUnlock }: { label: stri
   if (locked && cpCost) {
     return (
       <button type="button" onClick={onUnlock} className="btn-secondary !rounded-xl !text-xs px-5 py-2.5 mt-4 flex items-center gap-2">
-        <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-          <path strokeLinecap="round" strokeLinejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-        </svg>
+        <Lock className="w-3 h-3" aria-hidden="true" />
         {`Unlock for ${cpCost} CP`}
       </button>
     );
@@ -100,9 +98,7 @@ export function LearningAccordion({ items, className, defaultOpen = 0 }: Learnin
               <div className="flex items-center gap-3 shrink-0">
                 {item.difficulty && <DifficultyBadge difficulty={item.difficulty} />}
                 {item.locked && (
-                  <svg className="w-4 h-4 text-text-muted" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-                  </svg>
+                  <Lock className="w-4 h-4 text-text-muted" aria-hidden="true" />
                 )}
                 {item.meta}
                 <ChevronDown
@@ -123,7 +119,7 @@ export function LearningAccordion({ items, className, defaultOpen = 0 }: Learnin
                   className="overflow-hidden"
                 >
                   <div id={`accordion-panel-${item.id}`} role="region" className="px-6 pb-6 pl-15">
-                    <p className="text-base text-text-primary leading-[2] md:leading-[2.2] mb-4 pl-10 max-w-2xl">
+                    <p className="text-base text-text-primary leading-[2] md:leading-[2.2] mb-4 pl-10 wc-prose">
                       {item.description}
                     </p>
                     {item.body}
@@ -163,9 +159,7 @@ export function LearningAccordion({ items, className, defaultOpen = 0 }: Learnin
               <div className="flex items-center gap-2 mb-4">
                 {item.difficulty && <DifficultyBadge difficulty={item.difficulty} />}
                 {item.locked && (
-                  <svg className="w-4 h-4 text-text-muted" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-                  </svg>
+                  <Lock className="w-4 h-4 text-text-muted" aria-hidden="true" />
                 )}
                 {item.meta}
               </div>

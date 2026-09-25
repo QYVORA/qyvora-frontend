@@ -86,7 +86,6 @@ const StudentTopbar = ({ railCollapsed = false }: { railCollapsed?: boolean }) =
     currentLessonIdx: number;
     totalLessons: number;
     progress: number;
-    lesson: { hasTerminal?: boolean; hasCodePlayground?: boolean; quiz?: { length: number } } | null;
   }
   const [courseMeta, setCourseMeta] = useState<CourseLessonMeta | null>(null);
 

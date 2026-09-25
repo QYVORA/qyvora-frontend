@@ -4,9 +4,6 @@ import ScrollReveal from '../../../../shared/components/ScrollReveal';
 import RoomCard from './RoomCard';
 import PhaseHeroSection from './PhaseHeroSection';
 import { BOOTCAMP_CONFIG } from '../../constants/bootcampStructure';
-import hpbCoverImg from '@/assets/bootcamp/hpb-cover.webp';
-
-const PHASE_ROOM_IMAGES: Record<string, string> = {};
 
 interface PhaseSectionProps {
   bootcampId: string;
@@ -66,10 +63,6 @@ const PhaseSection: React.FC<PhaseSectionProps> = ({
                 const configRoom = configPhase?.rooms.find(
                   (r) => r.title.toLowerCase() === String(room.title || '').toLowerCase()
                 ) || configPhase?.rooms[roomIdx];
-                const roomImg = configPhase
-                  ? PHASE_ROOM_IMAGES[configPhase.id] ?? hpbCoverImg
-
-                  : hpbCoverImg;
                 return (
                   <div key={room.roomId} className="aspect-square">
                     <RoomCard
@@ -78,7 +71,6 @@ const PhaseSection: React.FC<PhaseSectionProps> = ({
                       roomIdx={roomIdx}
                       configPhase={configPhase}
                       configRoom={configRoom}
-                      roomImg={roomImg}
                     />
                   </div>
                 );

@@ -15,7 +15,6 @@ export interface WalkthroughLayoutProps {
   subtitle: string;
   icon: React.ReactNode;
   difficulty?: string;
-  difficultyColor?: string;
   estimatedMinutes?: number;
   labId: string;
   scenarioId?: string;
@@ -45,7 +44,6 @@ export function WalkthroughLayout({
   subtitle,
   icon,
   difficulty,
-  difficultyColor,
   estimatedMinutes,
   labId,
   scenarioId,
@@ -218,7 +216,11 @@ export function WalkthroughLayout({
             isLastStep={activeStepIndex === stepList.length - 1}
             isComplete={allDone}
             onPrev={activeStepIndex > 0 ? () => onStepSelect(activeStepIndex - 1) : undefined}
-            onNext={activeStepIndex < stepList.length - 1 ? () => onStepSelect(activeStepIndex + 1) : undefined}
+            onNext={
+              activeStepIndex < stepList.length - 1 && !stepList[activeStepIndex + 1].isLocked
+                ? () => onStepSelect(activeStepIndex + 1)
+                : undefined
+            }
             finishContent={
               allDone && onBack ? (
                 <button
@@ -263,7 +265,7 @@ export function WalkthroughLayout({
         {allDone && (
           <div className="rounded-xl border border-accent/20 bg-accent/5 px-6 py-5 text-center">
             <span className="text-xs font-black uppercase tracking-widest text-accent">
-              {"Walkthrough complete! Claim your CP below."}
+              {"Operation complete. Mission debrief available above."}
             </span>
           </div>
         )}

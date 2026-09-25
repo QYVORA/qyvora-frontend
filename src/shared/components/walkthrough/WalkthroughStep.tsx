@@ -144,7 +144,7 @@ export function WalkthroughStep({
                   <p className="text-xs font-black uppercase tracking-widest text-warning/60 mb-1">
                     Hint {ph.level}, {HINT_LEVEL_LABELS[ph.level - 1]}
                   </p>
-                  <p className="text-sm font-mono text-yellow-300/80 leading-[2] md:leading-[2.2]">{ph.content}</p>
+                  <p className="text-sm font-mono text-warning/80 leading-[2] md:leading-[2.2]">{ph.content}</p>
                 </div>
               </div>
             ))}
@@ -170,7 +170,7 @@ export function WalkthroughStep({
             {showHint ? (
               <div className="rounded-xl border border-warning/20 bg-warning/5 px-5 py-4 flex items-start gap-2">
                 <Lightbulb className="w-4 h-4 text-warning shrink-0 mt-0.5" />
-                <p className="text-sm font-mono text-yellow-300/80 leading-[2] md:leading-[2.2]">{hint}</p>
+                <p className="text-sm font-mono text-warning/80 leading-[2] md:leading-[2.2]">{hint}</p>
               </div>
             ) : (
               <button
@@ -208,7 +208,7 @@ export function WalkthroughStep({
 
         {/* Flag Input — embedded naturally in the reading flow */}
         {!isCompleted && !skipFlag && (
-          <FlagInput flagId={flagId} disabled={false} onFlagSubmit={onFlagSubmit} onCorrect={handleCorrect} />
+          <FlagInput flagId={flagId} disabled={isLocked} onFlagSubmit={onFlagSubmit} onCorrect={handleCorrect} />
         )}
 
         {flagSuccess && <StepComplete />}

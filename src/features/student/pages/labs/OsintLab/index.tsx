@@ -63,11 +63,10 @@ const OsintLab = () => {
           title: 'Mission Debrief',
           isActive: activeIndex === stepCount + 2,
           isCompleted: allDone,
+          isLocked: !allDone,
         },
       ]
     : [];
-
-  const firstChallengeWithVillain = OSINT_CHALLENGES.find(c => c.villain);
 
   if (loading) return <LabListingSkeleton />;
 
@@ -76,7 +75,6 @@ const OsintLab = () => {
       title="OSINT Recon"
       accentWord="Challenge"
       description="Master open-source intelligence gathering with guided reconnaissance exercises."
-      villain={firstChallengeWithVillain?.villain}
       activeScenario={activeChallenge}
       celebrationShow={allDone}
       celebrationTitle={activeChallenge?.title || ''}
@@ -98,7 +96,7 @@ const OsintLab = () => {
                 </span>
               ),
               onStart: () => startScenario(challenge),
-              startLabel: "Start Mission",
+              startLabel: "Start",
               locked,
               cpCost: locked ? cpCost ?? undefined : undefined,
               onUnlock: cpCost ? async () => {
@@ -188,7 +186,7 @@ const OsintLab = () => {
               title="Mission Debrief"
               narrative={`## Mission Complete\n\nYou successfully gathered open-source intelligence on **${activeChallenge.targetName}**.\n\n### Key Takeaways\n\n- OSINT tools provide powerful reconnaissance capabilities\n- Public data can reveal sensitive information\n- Understanding OSINT is essential for both offense and defense\n- Always consider what your digital footprint reveals\n\n### What to Remember\n\nOSINT is a critical skill for security professionals. The same techniques used for reconnaissance can be used for defensive intelligence gathering.`}
               reflection={`What did you learn about OSINT reconnaissance? How could you use these techniques to improve an organization's security posture?`}
-              isLocked={false}
+              isLocked={!allDone}
               isCompleted={allDone}
               isActive={false}
               flagId="debrief"

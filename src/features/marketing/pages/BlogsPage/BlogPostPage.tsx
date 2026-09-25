@@ -132,7 +132,7 @@ const BlogPostPage: React.FC = () => {
 
       {/* ── Article Body ── */}
       <div className="w-full px-3 md:px-4 lg:px-6 pb-32">
-        <article className="prose-custom max-w-none">
+        <article className="max-w-none">
           <Suspense fallback={<div className="animate-pulse h-40 bg-border/20 rounded-2xl" />}>
             {renderContent()}
           </Suspense>

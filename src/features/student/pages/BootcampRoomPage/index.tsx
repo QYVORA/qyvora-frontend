@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useParams, Link, useNavigate, useSearchParams } from 'react-router-dom';
 import {
   ArrowLeft, Lock, BookOpen,
-  List, ChevronRight,
+  ChevronRight, Flag,
 } from 'lucide-react';
 import { AnimatePresence } from 'motion/react';
 import FadeIn from '@/shared/components/ui/FadeIn';
@@ -10,15 +10,10 @@ import EmptyState from '@/shared/components/ui/EmptyState';
 import Button from '@/shared/components/ui/Button';
 import api from '@/core/services/api';
 import { useToast } from '@/core/contexts/ToastContext';
-import {
-  BOOTCAMP_CONFIG,
-} from '@/features/student/constants/bootcampConfig';
-import StepJumpMenu from '@/features/student/components/bootcamp-room/StepJumpMenu';
+import { BOOTCAMP_CONFIG } from '@/features/student/constants/bootcampConfig';
 import ReportIssueModal from '@/features/student/components/bootcamp-room/ReportIssueModal';
 import StepCard from '@/features/student/components/bootcamp-room/StepCard';
-import RoomSidebar from '@/features/student/components/bootcamp-room/RoomSidebar';
 import QuizModal from '@/features/student/components/bootcamp-room/QuizModal';
-import QuizGateModal from '@/features/student/components/bootcamp-room/QuizGateModal';
 import RoomCompletionCelebration from '@/features/student/components/bootcamp-room/RoomCompletionCelebration';
 import LearningNav from '@/shared/components/learning/LearningNav';
 import LearningWorkspaceShell from '@/shared/components/learning/LearningWorkspaceShell';
@@ -89,16 +84,12 @@ const BootcampRoomPage: React.FC = () => {
   const persistViewedSteps = (next: Set<number>) => {
     try { localStorage.setItem(viewedStepsKey, JSON.stringify([...next])); } catch { /* ignore */ }
   };
-  const [sidebarOpen, setSidebarOpen] = useState(false);
   const [quizOpen, setQuizOpen] = useState(false);
-  const [quizGateOpen, setQuizGateOpen] = useState(false);
   const [quizPassed, setQuizPassed] = useState(false);
   const [showCompleteOverlay, setShowCompleteOverlay] = useState(false);
   const [completionCpEarned, setCompletionCpEarned] = useState(250);
   const [completing, setCompleting] = useState(false);
   const [reportIssueOpen, setReportIssueOpen] = useState(false);
-  const [reportStepIdx, setReportStepIdx] = useState(0);
-  const [jumpMenuOpen, setJumpMenuOpen] = useState(false);
 
   const { timeSpent, resetSession } = useRoomSession();
   const prefersReducedMotion = useReducedMotion();
@@ -117,7 +108,7 @@ const BootcampRoomPage: React.FC = () => {
       if (courseRes?.data) setApiCourse(courseRes.data as ApiCourse);
     } catch { addToast("Failed to load course data", 'error'); }
     finally { if (mountedRef.current) setApiLoading(false); }
-  }, [bootcampId]);
+  }, [bootcampId, addToast]);
 
   const markRoomComplete = async (phId: string, rmId: string) => {
     try {
@@ -128,13 +119,13 @@ const BootcampRoomPage: React.FC = () => {
       if (response.data?.reward?.points) setCompletionCpEarned(response.data.reward.points);
       setShowCompleteOverlay(true);
       loadCourseData();
-      refetchOverview(); 
+      refetchOverview();
     } catch (err: any) {
       // Server enforces the quiz gate (F-04): if completion was rejected
       // because no graded quiz pass exists, route the user back to the quiz.
       if (err?.response?.status === 403 && err?.response?.data?.code === 'quiz_required') {
         setQuizPassed(false);
-        setQuizGateOpen(true);
+        setQuizOpen(true);
         return;
       }
       console.error('Failed to complete room:', err?.response?.data || err);
@@ -165,7 +156,7 @@ const BootcampRoomPage: React.FC = () => {
     };
     callSessionOpen();
     return () => controller.abort();
-  }, [phaseId, roomId, bootcampId, apiLoading, bootcampStatus]);
+  }, [phaseId, roomId, bootcampId, apiLoading, bootcampStatus, addToast]);
 
   useEffect(() => {
     if (!apiLoading && bootcampStatus === 'not_enrolled' && redirectCountRef.current < MAX_REDIRECTS) {
@@ -187,7 +178,7 @@ const BootcampRoomPage: React.FC = () => {
     });
     setQuizPassed(false);
     resetSession();
-  }, [phaseId, roomId]);
+  }, [phaseId, roomId, searchParams, viewedStepsKey, resetSession]);
 
   const completedRooms = new Set<string>();
   const lockedRooms = new Set<string>();
@@ -222,36 +213,6 @@ const BootcampRoomPage: React.FC = () => {
   const quizCourseId = apiCourse?.id || bootcampId || '';
   const quizRoomId = room ? String(phase?.rooms.findIndex((r) => r.id === roomId) + 1) : '';
 
-  const bookmarksKey = `hpb_bookmarks_${bootcampId || 'hpb'}`;
-  const [bookmarkedSteps, setBookmarkedSteps] = useState<Set<string>>(() => {
-    try { const raw = localStorage.getItem(bookmarksKey); return raw ? new Set(JSON.parse(raw)) : new Set(); }
-    catch { return new Set(); }
-  });
-
-  const gotItKey = `gotit_${phaseId}_${roomId}`;
-  const [gotItSteps, setGotItSteps] = useState<Set<number>>(() => {
-    try { const raw = localStorage.getItem(gotItKey); return raw ? new Set(JSON.parse(raw)) : new Set(); }
-    catch { return new Set(); }
-  });
-  const handleGotIt = useCallback((stepNum: number, val: boolean) => {
-    setGotItSteps((prev) => {
-      const next = new Set(prev);
-      if (val) next.add(stepNum); else next.delete(stepNum);
-      try { localStorage.setItem(gotItKey, JSON.stringify([...next])); } catch {}
-      return next;
-    });
-  }, [gotItKey]);
-  const toggleBookmark = (stepIdx: number) => {
-    const key = `${phaseId}:${roomId}:${stepIdx}`;
-    setBookmarkedSteps(prev => {
-      const next = new Set(prev);
-      if (next.has(key)) next.delete(key); else next.add(key);
-      try { localStorage.setItem(bookmarksKey, JSON.stringify([...next])); } catch (_e) { /* ignore */ }
-      return next;
-    });
-  };
-  const isStepBookmarked = (stepIdx: number) => bookmarkedSteps.has(`${phaseId}:${roomId}:${stepIdx}`);
-
   const handleNavigate = (pId: string, rId: string) => navigate(`/dashboard/bootcamps/${bootcampId}/phases/${pId}/rooms/${rId}`);
   const goToStep = (idx: number) => {
     setCurrentStepIdx(idx);
@@ -280,7 +241,7 @@ const BootcampRoomPage: React.FC = () => {
       const allViewed = new Set(allStepIdxs);
       persistViewedSteps(allViewed);
       setViewedSteps(allViewed);
-      if (!quizPassed && quizModuleId) { setQuizGateOpen(true); return; }
+      if (!quizPassed && quizModuleId) { setQuizOpen(true); return; }
       if (phaseId && roomId) await markRoomComplete(phaseId, roomId); else setShowCompleteOverlay(true);
     } finally { setCompleting(false); }
   };
@@ -338,20 +299,13 @@ const BootcampRoomPage: React.FC = () => {
         description={`Complete the "${roomTitle}" room in the Hacker Protocol Bootcamp on QYVORA.`}
         noindex
       />
-      <AnimatePresence>
-        {quizGateOpen && <QuizGateModal onClose={() => setQuizGateOpen(false)} onTakeQuiz={() => { setQuizGateOpen(false); setQuizOpen(true); }} />}
-      </AnimatePresence>
 
       {quizOpen && quizModuleId && (
         <QuizModal moduleId={quizModuleId} roomId={quizRoomId} courseId={quizCourseId} onClose={() => setQuizOpen(false)} onPassed={() => { setQuizPassed(true); setQuizOpen(false); if (phaseId && roomId) markRoomComplete(phaseId, roomId); }} />
       )}
 
       <AnimatePresence>
-        {jumpMenuOpen && <StepJumpMenu steps={room.steps} currentStepIdx={currentStepIdx} viewedSteps={viewedSteps} onJump={goToStep} isOpen={jumpMenuOpen} onClose={() => setJumpMenuOpen(false)} />}
-      </AnimatePresence>
-
-      <AnimatePresence>
-        {reportIssueOpen && phaseId && roomId && <ReportIssueModal phaseId={phaseId} roomId={roomId} stepIdx={reportStepIdx} onClose={() => setReportIssueOpen(false)} />}
+        {reportIssueOpen && phaseId && roomId && <ReportIssueModal phaseId={phaseId} roomId={roomId} stepIdx={currentStepIdx} onClose={() => setReportIssueOpen(false)} />}
       </AnimatePresence>
 
       <RoomCompletionCelebration
@@ -363,7 +317,6 @@ const BootcampRoomPage: React.FC = () => {
         }}
       />
 
-      <RoomSidebar phases={BOOTCAMP_CONFIG.phases} activePhaseId={phaseId || ''} activeRoomId={roomId || ''} completedRooms={completedRooms} lockedRooms={lockedRooms} bootcampId={bootcampId || ''} onNavigate={handleNavigate} mobileOpen={sidebarOpen} onMobileClose={() => setSidebarOpen(false)} />
       <LearningWorkspaceShell
         kicker={`${phase.codename} - ${phase.title}`}
         title={room.title}
@@ -412,16 +365,6 @@ const BootcampRoomPage: React.FC = () => {
                           roomId={roomId || ''}
                           isActive
                           isViewed={viewedSteps.has(i)}
-                          isBookmarked={isStepBookmarked(i)}
-                          gotIt={gotItSteps.has(i + 1)}
-                          onGotIt={handleGotIt}
-                          phaseColor={phase.color}
-                          footer={null}
-                          onToggleBookmark={() => toggleBookmark(i)}
-                          onReportIssue={() => { setReportStepIdx(i); setReportIssueOpen(true); }}
-                          onClick={() => goToStep(i)}
-                          onNext={() => goToStep(Math.min(i + 1, room.steps.length - 1))}
-                          onPrev={() => goToStep(Math.max(i - 1, 0))}
                         />
                       )}
                     />
@@ -442,24 +385,9 @@ const BootcampRoomPage: React.FC = () => {
                 onPrev={currentStepIdx > 0 ? () => goToStep(currentStepIdx - 1) : undefined}
                 onNext={!isLastStep ? () => goToStep(currentStepIdx + 1) : undefined}
                 onComplete={!isLastStep ? undefined : isRoomComplete ? undefined : handleComplete}
-                completeLabel={
-                  quizModuleId && !quizPassed
-                    ? "Take Quiz & Complete"
-                    : "Complete Room"
-                }
+                completeLabel={"Complete Room"}
                 nextLabel={"Next Step"}
                 nextLabelMobile={"Next"}
-                leading={
-                  <>
-                    <button
-                      onClick={() => setJumpMenuOpen(true)}
-                      className="btn-secondary md:hidden inline-flex items-center gap-1.5 !rounded-xl !text-xs !font-black !uppercase !tracking-widest px-3.5 py-2"
-                      aria-label={"Jump to step"}
-                    >
-                      <List className="h-3.5 w-3.5" />
-                    </button>
-                  </>
-                }
                 finishContent={
                   <div className="flex flex-col sm:flex-row flex-wrap items-stretch sm:items-center gap-3 w-full">
                     {nextRoom && !lockedRooms.has(`${nextRoom.phaseId}:${nextRoom.roomId}`) ? (
@@ -487,6 +415,16 @@ const BootcampRoomPage: React.FC = () => {
                   </div>
                 }
               />
+              <div className="pb-16">
+                <button
+                  type="button"
+                  onClick={() => setReportIssueOpen(true)}
+                  className="min-h-[44px] inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-widest text-text-muted hover:text-accent transition-colors"
+                >
+                  <Flag className="h-3 w-3" />
+                  {"Report Issue"}
+                </button>
+              </div>
       </LearningWorkspaceShell>
     </div>
     </FadeIn>

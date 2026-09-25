@@ -1,12 +1,13 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { useParams, Link, useSearchParams } from 'react-router-dom';
-import { ArrowLeft, ArrowRight, Lock, Target } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Lock, Target, Terminal } from 'lucide-react';
 import { FadeIn, EmptyState } from '@/shared/components/ui';
 import SEO from '@/shared/components/SEO';
 import { getCourseById, getCategoryById } from '@/features/student/data/courses';
 import { EducationalMarkdownRenderer } from '@/shared/components/courses/CodeBlockRenderer';
 import InlineQuiz from '@/shared/components/courses/InlineQuiz';
 import CodePlayground from '@/shared/components/courses/CodePlayground';
+import { CommandBlock } from '@/shared/components/walkthrough/StepParts';
 import StepRenderer from '@/shared/components/learning/StepRenderer';
 import LearningNav from '@/shared/components/learning/LearningNav';
 import FocusedStepList from '@/shared/components/learning/FocusedStepList';
@@ -41,10 +42,7 @@ const LessonViewer: React.FC<{
       badges={
         <>
           {lesson.hasQuiz && (
-            <span className="px-1.5 py-0.5 rounded-lg bg-accent/10 text-xs font-black uppercase tracking-widest text-accent">QUIZ</span>
-          )}
-          {lesson.hasTerminal && (
-            <span className="px-1.5 py-0.5 rounded-lg bg-accent/10 text-xs font-black uppercase tracking-widest text-accent">TERM</span>
+            <span className="px-1.5 py-0.5 rounded-lg bg-accent/10 text-xs font-black uppercase tracking-widest text-accent">CHECKPOINT</span>
           )}
           {lesson.hasCodePlayground && (
             <span className="px-1.5 py-0.5 rounded-lg bg-accent/10 text-xs font-black uppercase tracking-widest text-accent">CODE</span>
@@ -55,6 +53,20 @@ const LessonViewer: React.FC<{
       <div className="text-sm md:text-base text-text-secondary font-mono leading-[2] md:leading-[2.2] mb-6 md:mb-8 max-w-none overflow-x-auto">
         <EducationalMarkdownRenderer text={lesson.instruction} />
       </div>
+
+      {lesson.hasTerminal && lesson.terminalCommands && lesson.terminalCommands.length > 0 && (
+        <div className="mt-8 md:mt-10">
+          <div className="flex items-center gap-2 mb-4">
+            <Terminal className="h-4 w-4 text-accent" />
+            <span className="text-xs font-black uppercase tracking-widest text-accent">Terminal</span>
+          </div>
+          <div className="space-y-3">
+            {lesson.terminalCommands.map((cmd, ci) => (
+              <CommandBlock key={ci} command={cmd} labId={courseId || 'course'} showConnect={false} />
+            ))}
+          </div>
+        </div>
+      )}
 
       {lesson.hasCodePlayground && (
         <div className="mt-8 md:mt-10">
@@ -75,7 +87,7 @@ const LessonViewer: React.FC<{
         <div className="mt-10 md:mt-14">
           <InlineQuiz
             questions={lesson.quiz}
-            title={`Lesson Quiz: ${lesson.title}`}
+            title={`Checkpoint: ${lesson.title}`}
           />
         </div>
       )}
@@ -174,7 +186,8 @@ const CourseLessonPage: React.FC = () => {
 
   useEffect(() => {
     const handleKey = (e: KeyboardEvent) => {
-      if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) return;
+      const target = e.target as HTMLElement | null;
+      if (target && target.closest('button, a, input, textarea, select, [role="button"], [contenteditable="true"]')) return;
       if (e.key === 'ArrowRight') goNext();
       if (e.key === 'ArrowLeft') goPrev();
     };
@@ -199,14 +212,9 @@ const CourseLessonPage: React.FC = () => {
         currentLessonIdx,
         totalLessons,
         progress,
-        lesson: course?.lessons[currentLessonIdx] ? {
-          hasTerminal: course.lessons[currentLessonIdx].hasTerminal,
-          hasCodePlayground: course.lessons[currentLessonIdx].hasCodePlayground,
-          quiz: course.lessons[currentLessonIdx].quiz,
-        } : null,
       },
     }));
-  }, [currentLessonIdx, totalLessons, progress, course]);
+  }, [currentLessonIdx, totalLessons, progress]);
 
   if (!course) {
     return (

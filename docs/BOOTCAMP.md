@@ -95,7 +95,6 @@ Displays a room in the curriculum browser:
 - Lock/completed status indicators
 - Step count badge
 - Estimated duration
-- Canvas doodle annotations (user can draw on the card)
 - Progress bar (3px accent bar)
 
 ### StepCard
@@ -106,10 +105,7 @@ Renders individual steps within a room:
 - Step number (or checkmark if viewed)
 - Instruction content via `CodeBlockRenderer`
 - Optional `StepImage`
-- Bookmark toggle
-- "Got It" toggle for progress tracking
 - Step notes
-- Report issue link
 
 ## Progress Tracking
 
@@ -119,14 +115,9 @@ Renders individual steps within a room:
 - Session timer tracks time spent in room
 - Progress persisted via API calls
 
-## Keyboard Navigation
+## Step Navigation
 
-| Key | Action |
-|-----|--------|
-| `←` / `→` | Previous/next step |
-| `Q` | Toggle quiz |
-| `J` | Jump to step menu |
-| `F` | Toggle fullscreen |
+Steps use the shared walkthrough model (`FocusedStepList` + `LearningNav`): one expanded step at a time, compact Done/Next/Locked rows for the rest, Previous/Next buttons (single `Complete` on the final step). See `docs/LEARNING-WALKTHROUGH-REFACTOR.md`.
 
 ## Navigation
 
@@ -134,8 +125,6 @@ Renders individual steps within a room:
 - **Public phase page:** `/hpb/:phaseId` (`HpbPhasePage`) — phase hero + room cards (`Start Phase` → `/register`)
 - **Curriculum browser:** `/dashboard/bootcamps/:bootcampId`
 - **Room view:** `/dashboard/bootcamps/:bootcampId/phases/:phaseId/rooms/:roomId`
-- **Sidebar:** Phase/room tree navigation (desktop + mobile)
-- **Jump menu:** Quick step navigation overlay
 
 ## Public Phase/Room Cards
 
@@ -143,15 +132,11 @@ The landing page's bootcamp section renders a mobile-only static list of all 5 p
 
 ## Recent Room Features (Implemented)
 
-The following features were added to the bootcamp room page and are now part of the living codebase:
+The following features are part of the current bootcamp room page:
 
-- **Keyboard Navigation** — Arrow keys (prev/next step), Q (quiz), J (jump menu), F (fullscreen). Ignores keypresses when typing in inputs or modals open. Visual hints on desktop.
-- **Copy Code Buttons** — Auto-detects code blocks via regex, inline copy on hover, 2s "Copied" confirmation.
 - **Estimated Time Display** — Shows `estimatedMinutes` per room, total step count, and live session timer.
-- **Jump-to-Step Menu** — Quick navigation overlay for jumping to any step in the current room.
-- **Step Bookmarking** — localStorage-persisted bookmarks per bootcamp (`hpb_bookmarks_{bootcampId}`).
-- **Report Issue Modal** — `POST /student/report-issue` endpoint for flagging content problems.
+- **Report Issue Modal** — `POST /student/report-issue` endpoint for flagging content problems, linked from the page footer.
 - **Session Timer** — Tracks time spent in room, displayed in header.
-- **Fullscreen Mode** — Toggle via F key or button, uses Fullscreen API.
+- **Room Quiz** — single graded quiz (`QuizModal`, `POST /student/quiz`) gating room completion; per-step chrome (bookmark, "Got It", inline quiz, report button) removed.
 
-Key components: `CopyButton`, `InstructionWithCodeBlocks`, `KeyboardHints`, `JumpMenu`, `ReportIssueModal`.
+Key components: `StepCard`, `QuizModal`, `ReportIssueModal`, `RoomCompletionCelebration`.
