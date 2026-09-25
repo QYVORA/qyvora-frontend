@@ -97,7 +97,7 @@ const CyberCoinPage: React.FC = () => {
                 return (
                   <div key={pillar.id} className="group relative h-full rounded-2xl border border-border-subtle bg-surface p-5 transition-colors duration-300 hover:border-accent/40 md:p-6">
                     <div className="flex items-start justify-between">
-                      <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-accent/20 bg-accent/10">
+                      <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-accent/20 bg-accent/5">
                         <Icon className="h-5 w-5 text-accent" aria-hidden="true" />
                       </div>
                       <span className="type-meta">{pillar.index}</span>
@@ -133,7 +133,7 @@ const CyberCoinPage: React.FC = () => {
 
             <ScrollReveal delay={0.1}>
               <div className="relative rounded-2xl border border-border-subtle bg-surface p-5 md:p-7">
-                <div className="absolute bottom-10 left-[39px] top-10 w-px bg-border/30 md:left-[47px]" aria-hidden="true" />
+                <div className="absolute bottom-10 left-[39px] top-10 w-px bg-border-subtle md:left-[47px]" aria-hidden="true" />
                 <ol className="relative space-y-6">
                   {CP_PHILOSOPHY_STAGES.map((stage, i) => {
                     const isReward = stage.id === 'reward';
@@ -154,7 +154,7 @@ const CyberCoinPage: React.FC = () => {
                           </p>
                         </div>
                         {isReward && (
-                          <span className="ml-auto inline-flex shrink-0 items-center rounded-lg border border-accent/30 bg-accent/5 px-2 py-0.5 text-xs font-black uppercase tracking-widest text-accent">
+                          <span className="ml-auto inline-flex shrink-0 items-center rounded-lg border border-accent/20 bg-accent/5 px-2 py-0.5 text-xs font-black uppercase tracking-widest text-accent">
                             + CP
                           </span>
                         )}
@@ -170,7 +170,7 @@ const CyberCoinPage: React.FC = () => {
           <section id="earn" className="grid w-full scroll-mt-24 grid-cols-1 items-center gap-10 lg:grid-cols-2 lg:gap-16">
             <ScrollReveal>
               <div className="relative rounded-2xl border border-border-subtle bg-surface p-5 md:p-7">
-                <div className="absolute bottom-10 left-[39px] top-10 w-px bg-border/30 md:left-[47px]" aria-hidden="true" />
+                <div className="absolute bottom-10 left-[39px] top-10 w-px bg-border-subtle md:left-[47px]" aria-hidden="true" />
                 <ol className="relative space-y-5">
                   {CP_LEARNING_LOOP.map((stage, i) => {
                     const isEarn = stage.id === 'earn';
@@ -240,7 +240,7 @@ const CyberCoinPage: React.FC = () => {
                   <span className="type-meta font-black uppercase tracking-widest text-text-muted">Reward</span>
                   <span className="type-meta font-black uppercase tracking-widest text-right text-text-muted sm:text-left">Status</span>
                 </div>
-                <ul className="divide-y divide-border/20">
+                <ul className="divide-y divide-border-subtle">
                   {CP_REWARD_MATRIX.slice(0, 3).map((row) => {
                     const status = STATUS_STYLES[row.status];
                     return (
@@ -278,7 +278,7 @@ const CyberCoinPage: React.FC = () => {
 
             <ScrollReveal>
               <div className="overflow-hidden rounded-2xl border border-border-subtle bg-surface">
-                <ul className="divide-y divide-border/20">
+                <ul className="divide-y divide-border-subtle">
                   {CP_REWARD_MATRIX.slice(3).map((row) => {
                     const status = STATUS_STYLES[row.status];
                     return (
@@ -333,7 +333,7 @@ const CyberCoinPage: React.FC = () => {
                       className={`inline-flex items-center rounded-lg px-2 py-0.5 text-xs font-black uppercase tracking-widest ${
                         step.planned
                           ? 'border border-dashed border-border-subtle text-text-muted'
-                          : 'border border-accent/30 bg-accent/5 text-accent'
+                          : 'border border-accent/20 bg-accent/5 text-accent'
                       }`}
                     >
                       {step.planned ? 'Planned' : 'Active'}
@@ -357,7 +357,7 @@ const CyberCoinPage: React.FC = () => {
           </section>
 
           {/* ── 08 · START YOUR JOURNEY — split: heading + carousel ───────── */}
-          <section id="journey" className="grid w-full scroll-mt-24 grid-cols-1 items-stretch gap-10 lg:grid-cols-2 lg:gap-16">
+          <section id="journey" className="grid w-full scroll-mt-24 grid-cols-1 items-center gap-10 lg:grid-cols-2 lg:gap-16">
             <div className="flex flex-col justify-center">
               <ScrollReveal>
                 <div className="flex shrink-0 flex-col lg:w-[420px] lg:justify-center xl:w-[480px]">
@@ -396,7 +396,7 @@ const CyberCoinPage: React.FC = () => {
                       <div className="relative flex min-w-0 flex-1 flex-col items-start p-5 text-left sm:p-6 md:p-7">
                         <div className="mb-3 flex flex-wrap items-center gap-2">
                           {category && (
-                            <span className="rounded-full border border-accent/20 bg-accent/10 px-2.5 py-1 text-xs font-black uppercase tracking-widest text-accent">
+                            <span className="rounded-full border border-accent/20 bg-accent/5 px-2.5 py-1 text-xs font-black uppercase tracking-widest text-accent">
                               {category.name}
                             </span>
                           )}
@@ -422,7 +422,7 @@ const CyberCoinPage: React.FC = () => {
                           </span>
                         </div>
                       </div>
-                      <div className="hidden shrink-0 items-center justify-center border-l border-border/30 md:flex md:w-[140px] lg:w-[160px]">
+                      <div className="hidden shrink-0 items-center justify-center border-l border-border-subtle md:flex md:w-[140px] lg:w-[160px]">
                         <CourseBadge courseId={course.id} className="h-24 w-24 lg:h-28 lg:w-28" />
                       </div>
                     </Link>
