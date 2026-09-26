@@ -13,7 +13,7 @@ interface PathDef {
 
 const PATHS: PathDef[] = [
   { key: 'learn', to: '/learn', title: 'Learn', desc: 'Master foundations with self-paced courses covering Linux, networking, web security, and exploitation, one skill at a time.', cta: 'Browse learning' },
-  { key: 'practice', to: '/labs', title: 'Practice', desc: 'Execute real exploits in simulated attack labs. Capture flags and chain vulnerabilities in production-mirror environments.', cta: 'Open the labs' },
+  { key: 'practice', to: '/learn?tab=labs', title: 'Practice', desc: 'Execute real exploits in simulated attack labs. Capture flags and chain vulnerabilities in production-mirror environments.', cta: 'Browse labs' },
   { key: 'work', to: '/services', title: 'Work with us', desc: 'Penetration testing, red team exercises, and security awareness training for African organizations, scoped to your stack.', cta: 'Start an engagement' },
 ];
 

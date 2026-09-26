@@ -12,6 +12,8 @@ import CodeBlock from '../../../shared/components/CodeBlock';
 
 const TOOL_INSTALL_EVENT = 'qyvora:open-tool-install';
 
+export type { ToolArch, ToolInstallKey, ToolPlatform } from '../data/toolInstallConfig';
+
 export function openToolInstall(tool: ToolInstallKey) {
   window.dispatchEvent(new CustomEvent(TOOL_INSTALL_EVENT, { detail: { tool } }));
 }

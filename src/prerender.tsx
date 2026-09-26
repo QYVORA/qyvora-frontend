@@ -45,8 +45,7 @@ const routeContent: Record<string, RouteContent> = {
     ],
     links: [
       { label: 'Hacker Protocol Bootcamp', href: '/hpb' },
-      { label: 'Courses', href: '/courses' },
-      { label: 'Attack Labs', href: '/labs' },
+      { label: 'Learn', href: '/learn' },
       { label: 'Services', href: '/services' },
       { label: 'anansi', href: '/anansi' },
       { label: 'toha3ee', href: '/toha3ee' },
@@ -96,78 +95,6 @@ const routeContent: Record<string, RouteContent> = {
         body: 'Understand the human factor in the defensive boundary. Study pretexting, psychological vectors, coordinates of trust, and human spoofing.',
       },
     ],
-    links: [
-      { label: 'Phase 1 - Hacker Mindset', href: '/hpb/phase1' },
-      { label: 'Phase 2 - Linux Foundations', href: '/hpb/phase2' },
-      { label: 'Phase 3 - Networking', href: '/hpb/phase3' },
-      { label: 'Phase 4 - Web & Backend Systems', href: '/hpb/phase4' },
-      { label: 'Phase 5 - Social Engineering', href: '/hpb/phase5' },
-    ],
-  },
-  '/hpb/phase1': {
-    title: 'Hacker Mindset - Hacker Protocol Bootcamp | QYVORA',
-    description: 'Train to find weaknesses before adversaries do by understanding the legal boundaries, scopes, and coordinator rules.',
-    h1: 'Phase 1 - Hacker Mindset',
-    lead: 'Offensive security is a proactive mindset. Train to find weaknesses before adversaries do by understanding the legal boundaries, scopes, and coordinator rules.',
-    sections: [
-      {
-        heading: 'About this phase',
-        body: 'The first phase of the Hacker Protocol Bootcamp builds the discipline behind offensive security: operating within legal boundaries, defining scope, and following coordinator rules.',
-      },
-    ],
-    links: [{ label: 'Back to Hacker Protocol Bootcamp', href: '/hpb' }],
-  },
-  '/hpb/phase2': {
-    title: 'Linux Foundations - Hacker Protocol Bootcamp | QYVORA',
-    description: 'Master navigation, user privilege escalation, file permissions, and directory structures on the Linux terminal.',
-    h1: 'Phase 2 - Linux Foundations',
-    lead: 'Master navigation, user privilege escalation, file permissions, and directory structures. Transition from a GUI observer to a terminal-proficient operator.',
-    sections: [
-      {
-        heading: 'About this phase',
-        body: 'The second phase of the Hacker Protocol Bootcamp builds terminal fluency, the foundation every operator depends on for the rest of the program.',
-      },
-    ],
-    links: [{ label: 'Back to Hacker Protocol Bootcamp', href: '/hpb' }],
-  },
-  '/hpb/phase3': {
-    title: 'Networking - Hacker Protocol Bootcamp | QYVORA',
-    description: 'Establish total visibility over the network stack. Audit TCP/IP, OSI layers, routing protocols, and intercept packets at the raw bytecode level.',
-    h1: 'Phase 3 - Networking',
-    lead: 'Establish total visibility over the network stack. Audit TCP/IP, OSI layers, routing protocols, and intercept packets at the raw bytecode level.',
-    sections: [
-      {
-        heading: 'About this phase',
-        body: 'The third phase of the Hacker Protocol Bootcamp covers the network stack in depth, the visibility every offensive operator needs to move laterally.',
-      },
-    ],
-    links: [{ label: 'Back to Hacker Protocol Bootcamp', href: '/hpb' }],
-  },
-  '/hpb/phase4': {
-    title: 'Web & Backend Systems - Hacker Protocol Bootcamp | QYVORA',
-    description: 'Analyze web server frameworks, dissect HTTP protocol traffic, manipulate REST APIs, and compromise backend database persistence layers.',
-    h1: 'Phase 4 - Web & Backend Systems',
-    lead: 'Analyze web server frameworks, dissect HTTP protocol traffic, manipulate REST APIs, and compromise backend database persistence layers.',
-    sections: [
-      {
-        heading: 'About this phase',
-        body: 'The fourth phase of the Hacker Protocol Bootcamp dissects modern web architecture, from the HTTP request to the database behind it.',
-      },
-    ],
-    links: [{ label: 'Back to Hacker Protocol Bootcamp', href: '/hpb' }],
-  },
-  '/hpb/phase5': {
-    title: 'Social Engineering - Hacker Protocol Bootcamp | QYVORA',
-    description: 'Learn the human element of security through persuasion, pretexting, and awareness-building techniques.',
-    h1: 'Phase 5 - Social Engineering',
-    lead: 'Understand the human factor in the defensive boundary. Study pretexting, psychological vectors, coordinates of trust, and human spoofing.',
-    sections: [
-      {
-        heading: 'About this phase',
-        body: 'The final phase of the Hacker Protocol Bootcamp studies the human element of security, the boundary no firewall can fully defend.',
-      },
-    ],
-    links: [{ label: 'Back to Hacker Protocol Bootcamp', href: '/hpb' }],
   },
   '/services': {
     title: 'Services | QYVORA',
@@ -440,45 +367,6 @@ const routeContent: Record<string, RouteContent> = {
       },
     ],
     links: [{ label: 'All Blog Posts', href: '/blogs' }],
-  },
-  '/courses': {
-    title: 'Courses | QYVORA',
-    description: 'Master offensive security with QYVORA\'s structured courses.',
-    h1: 'Offensive Courses',
-    lead: 'Structured courses that teach the fundamentals of offensive security, from the command line to wireless attacks.',
-    sections: [
-      {
-        heading: 'Course categories',
-        bullets: [
-          'Terminal: master the command line, the hacker\'s primary interface.',
-          'Networking: understand how data moves across networks and the internet.',
-          'Programming: write code that automates, exploits, and defends.',
-          'Web Security: explore web technologies and how to secure them.',
-          'Wireless Security: understand wireless networks and their unique attack surface.',
-          'Tools: get hands-on with the essential tools of the trade.',
-        ],
-      },
-    ],
-    links: [{ label: 'Hacker Protocol Bootcamp', href: '/hpb' }],
-  },
-  '/labs': {
-    title: 'Labs | QYVORA',
-    description: 'Hands-on penetration testing labs and offensive security challenges.',
-    h1: 'Attack Labs',
-    lead: 'Hands-on offensive security labs covering privilege escalation, password cracking, SQL injection, OSINT, and the full kill chain.',
-    sections: [
-      {
-        heading: 'Available labs',
-        bullets: [
-          'Privilege Escalation',
-          'Password Cracking',
-          'SQL Injection',
-          'OSINT',
-          'Kill Chain',
-        ],
-      },
-    ],
-    links: [{ label: 'Courses', href: '/courses' }],
   },
   '/zero-day-market': {
     title: 'Zero Day Market | QYVORA',
@@ -1024,8 +912,7 @@ const routeContent: Record<string, RouteContent> = {
     ],
     links: [
       { label: 'Hacker Protocol Bootcamp', href: '/hpb' },
-      { label: 'Courses', href: '/courses' },
-      { label: 'Attack Labs', href: '/labs' },
+      { label: 'Learn', href: '/learn' },
       { label: 'anansi', href: '/anansi' },
       { label: 'Leaderboard', href: '/leaderboard' },
     ],

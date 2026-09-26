@@ -94,7 +94,7 @@ const FeaturedLearningBlock: React.FC = () => {
           </Card>
 
           {/* Courses */}
-          <Card to="/courses" interactive className="flex min-h-[240px] flex-col gap-3 p-6">
+          <Card to="/learn?tab=courses" interactive className="flex min-h-[240px] flex-col gap-3 p-6">
             <span className="flex h-11 w-11 items-center justify-center rounded-xl border border-border-subtle bg-surface-raised text-accent">
               <BookOpen className="h-5 w-5" aria-hidden="true" />
             </span>
@@ -110,7 +110,7 @@ const FeaturedLearningBlock: React.FC = () => {
           </Card>
 
           {/* Labs */}
-          <Card to="/labs" interactive className="flex min-h-[240px] flex-col gap-3 p-6">
+          <Card to="/learn?tab=labs" interactive className="flex min-h-[240px] flex-col gap-3 p-6">
             <span className="flex h-11 w-11 items-center justify-center rounded-xl border border-border-subtle bg-surface-raised text-accent">
               <Bug className="h-5 w-5" aria-hidden="true" />
             </span>

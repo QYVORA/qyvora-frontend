@@ -19,9 +19,9 @@ describe('buildAutoBreadcrumbs', () => {
       { name: 'Home', item: '/' },
       { name: 'Blogs', item: '/blogs' },
     ]);
-    expect(buildAutoBreadcrumbs('/courses')).toEqual([
+    expect(buildAutoBreadcrumbs('/learn')).toEqual([
       { name: 'Home', item: '/' },
-      { name: 'Courses', item: '/courses' },
+      { name: 'Learn', item: '/learn' },
     ]);
     expect(buildAutoBreadcrumbs('/hpb')).toEqual([
       { name: 'Home', item: '/' },
@@ -35,10 +35,10 @@ describe('buildAutoBreadcrumbs', () => {
       { name: 'Blogs', item: '/blogs' },
       { name: 'Anansi CLI: Attack Surface Intelligence', item: '/blogs/anansi-cli' },
     ]);
-    expect(buildAutoBreadcrumbs('/hpb/phase1', 'Hacker Mindset')).toEqual([
+    expect(buildAutoBreadcrumbs('/simulations/terminal', 'Browser Terminal')).toEqual([
       { name: 'Home', item: '/' },
-      { name: 'Hacker Protocol Bootcamp', item: '/hpb' },
-      { name: 'Hacker Mindset', item: '/hpb/phase1' },
+      { name: 'Simulations', item: '/simulations' },
+      { name: 'Browser Terminal', item: '/simulations/terminal' },
     ]);
   });
 

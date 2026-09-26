@@ -372,7 +372,7 @@ const CyberCoinPage: React.FC = () => {
                     descriptionWidth="max-w-xl"
                   />
                   <Link
-                    to="/courses"
+                    to="/learn?tab=courses"
                     className="btn-secondary mt-6 inline-flex min-h-[44px] shrink-0 items-center justify-center gap-2 self-start !px-5"
                   >
                     View All Courses <IconArrow size={14} />
@@ -390,7 +390,7 @@ const CyberCoinPage: React.FC = () => {
                   const category = getCategoryById(course.categoryId);
                   return (
                     <Link
-                      to={`/courses/${course.id}`}
+                      to={`/dashboard/courses/${course.id}`}
                       className="group relative flex h-full min-h-[340px] flex-col overflow-hidden rounded-2xl border border-border-subtle bg-surface transition-[transform,box-shadow,border-color,background-color] duration-[var(--dur-base)] ease-[var(--ease-smooth)] hover:border-accent/40 md:min-h-[280px] md:flex-row"
                     >
                       <div className="relative flex min-w-0 flex-1 flex-col items-start p-5 text-left sm:p-6 md:p-7">

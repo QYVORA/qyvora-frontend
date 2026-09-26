@@ -13,9 +13,9 @@ const COLS: FooterCol[] = [
   {
     title: 'Learning',
     links: [
-      { key: 'courses', label: 'Courses', to: '/courses' },
+      { key: 'learn', label: 'Learn', to: '/learn' },
       { key: 'bootcamp', label: 'Bootcamp', to: '/hpb' },
-      { key: 'labs', label: 'Labs', to: '/labs' },
+      { key: 'simulations', label: 'Simulations', to: '/simulations' },
       { key: 'tools', label: 'All tools', to: '/tools' },
     ],
   },

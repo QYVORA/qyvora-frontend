@@ -1,35 +1,31 @@
-import React from 'react';
 import { ArrowRight } from 'lucide-react';
 import SEO from '@/shared/components/SEO';
 import PageHeader from '@/shared/components/ui/PageHeader';
 import PublicContainer from '@/shared/components/layout/PublicContainer';
 import Button from '@/shared/components/ui/Button';
 import { Card } from '@/shared/components/ui/Card';
-import { IconTerminal, IconCode, IconNetwork } from '@/shared/components/icons';
+import { SIMULATIONS } from '@/features/marketing/data/simulationsData';
 
-type SimKey = 'terminal' | 'ide' | 'network';
-
-export const SIMULATIONS: {
-  id: SimKey;
-  slug: string;
-  icon: React.ComponentType<{ className?: string }>;
-  title: string;
-  description: string;
-  features: string[];
-}[] = [
-  { id: 'terminal', slug: '/simulations/terminal', icon: IconTerminal, title: 'Browser Terminal', description: 'A full Linux shell running in your browser. Navigate a realistic filesystem, inspect permissions, and chain commands with pipes and redirects.', features: ['Realistic Linux filesystem', 'Pipes, redirects, and environment variables', 'Persistent session state', 'Typed output with realistic timing'] },
-  { id: 'network', slug: '/simulations/network-visualizer', icon: IconNetwork, title: 'Network', description: 'Map live network topologies: hosts, subnets, ports, and services, the same way operators build a picture of a target environment.', features: ['Interactive topology canvas', 'Host and service discovery', 'Subnet grouping', 'Drag and connect nodes'] },
-];
+/**
+ * Re-exported for backwards compatibility: LearnPage imports the catalogue
+ * from this module. The data itself now lives in `simulationsData.ts` so the
+ * listing and `/simulations/:slug` cannot drift apart.
+ */
+export { SIMULATIONS };
 
 const SimulationsPage = () => {
-
   return (
     <div className="w-full bg-canvas">
-      <SEO title={"Simulations - QYVORA"} description={"Try QYVORA's simulation tools live: a browser terminal, a code playground, and a network visualizer. No account required."} />
+      <SEO
+        title={"Simulations - QYVORA"}
+        description={`Try QYVORA's simulation tools live in your browser: ${SIMULATIONS
+          .map((sim) => sim.title.toLowerCase())
+          .join(' and a ')}. No account required.`}
+      />
       <PublicContainer className="pb-20 pt-24 md:pb-24 md:pt-28 lg:pt-32">
         <PageHeader
           kicker={"QYVORA · Tools"}
-          title={"Simulation"}
+          title={"Simulations"}
           description={"Try the tools before you commit. Every simulation runs live in your browser, with no account and no setup."}
           actions={
             <Button to="/register">
@@ -39,34 +35,60 @@ const SimulationsPage = () => {
           }
         />
 
-        <div className="mt-10 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-          {SIMULATIONS.map((sim) => {
-            const Icon = sim.icon;
-            const features = sim.features;
-            return (
-              <Card key={sim.id} interactive className="flex h-full min-h-[240px] flex-col gap-3 p-6">
-                <span className="flex h-10 w-10 items-center justify-center rounded-lg border border-border-subtle bg-surface-raised text-accent">
-                  <Icon className="h-5 w-5" aria-hidden="true" />
-                </span>
-                <h3 className="type-h3 font-black uppercase tracking-tight text-text-primary">
-                  {sim.title}
-                </h3>
-                <p className="type-body-sm flex-1">{sim.description}</p>
-                <div className="flex flex-wrap gap-1.5">
-                  {features.slice(0, 3).map((feature, i) => (
-                    <span key={i} className="type-meta rounded-md border border-border-subtle bg-surface-raised px-2 py-1">
-                      {feature}
+        {SIMULATIONS.length === 0 ? (
+          <div
+            role="status"
+            className="mt-10 flex flex-col items-center gap-3 rounded-2xl border border-dashed border-border-subtle px-6 py-16 text-center"
+          >
+            <p className="type-h3 font-black uppercase tracking-tight text-text-primary">
+              {"No simulations published yet"}
+            </p>
+            <p className="type-body-sm max-w-md text-text-muted">
+              {"The catalogue is empty. Check back shortly, or browse the full tool list in the meantime."}
+            </p>
+            <Button to="/tools" variant="secondary" size="sm">
+              {"Browse all tools"}
+              <ArrowRight className="h-4 w-4" aria-hidden="true" />
+            </Button>
+          </div>
+        ) : (
+          <div className="mt-10 grid gap-4 md:grid-cols-2">
+            {SIMULATIONS.map((sim) => {
+              const Icon = sim.icon;
+              return (
+                <Card
+                  key={sim.id}
+                  to={sim.slug}
+                  interactive
+                  className="flex h-full min-h-[240px] flex-col gap-3 p-6"
+                >
+                  <span className="flex h-10 w-10 items-center justify-center rounded-lg border border-border-subtle bg-surface-raised text-accent">
+                    <Icon className="h-5 w-5" aria-hidden="true" />
+                  </span>
+                  <h2 className="type-h3 font-black uppercase tracking-tight text-text-primary">
+                    {sim.title}
+                  </h2>
+                  <p className="type-body-sm flex-1">{sim.description}</p>
+                  <ul className="flex flex-col gap-1.5">
+                    {sim.features.map((feature) => (
+                      <li key={feature} className="type-meta flex items-start gap-2 text-text-muted">
+                        <span className="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-accent" aria-hidden="true" />
+                        {feature}
+                      </li>
+                    ))}
+                  </ul>
+                  <div className="mt-auto flex items-center justify-between gap-3 border-t border-border-subtle pt-4">
+                    <span className="type-meta text-accent">{"No account required"}</span>
+                    <span className="inline-flex items-center gap-2 text-sm font-bold text-accent">
+                      {"Open simulation"}
+                      <ArrowRight className="h-4 w-4" aria-hidden="true" />
                     </span>
-                  ))}
-                </div>
-                <Button to={sim.slug} variant="secondary" size="sm">
-                  {"Run the Demo"}
-                  <ArrowRight className="h-4 w-4" aria-hidden="true" />
-                </Button>
-              </Card>
-            );
-          })}
-        </div>
+                  </div>
+                </Card>
+              );
+            })}
+          </div>
+        )}
       </PublicContainer>
     </div>
   );

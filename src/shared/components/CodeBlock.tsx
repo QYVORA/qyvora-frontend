@@ -44,6 +44,24 @@ interface Token {
   cls: TokenClass;
 }
 
+/** The language union every code surface in the product shares. */
+export type CodeLang = 'go' | 'sh' | 'json' | 'text';
+
+/**
+ * Tokenize a snippet with the same highlighter CodeBlock uses, so any surface
+ * that shows code (inline commands, table cells, list items) gets identical
+ * colouring instead of falling back to flat text.
+ */
+export const tokenizeCode = (code: string, lang: CodeLang = 'text'): Token[] => {
+  if (lang === 'go') return tokenizeGo(code);
+  if (lang === 'sh') return tokenizeShell(code);
+  if (lang === 'json') return tokenizeJson(code);
+  return [{ text: code, cls: 'plain' as TokenClass }];
+};
+
+/** Class list for a token category — exported so inline renderers match CodeBlock. */
+export const codeTokenClass = (cls: TokenClass): string => TOKEN_CLASSES[cls];
+
 // ── Go ───────────────────────────────────────────────────────────────────────
 const GO_KEYWORDS = new Set([
   'break', 'case', 'chan', 'const', 'continue', 'default', 'defer', 'else',
@@ -92,8 +110,13 @@ function tokenizeGo(code: string): Token[] {
 }
 
 // ── Shell ────────────────────────────────────────────────────────────────────
+// The word class includes `-` so hyphenated words (repo names, URLs, package
+// paths) stay one token. Without it `qyvora-mansa` splits at the hyphen and the
+// tail is mistaken for a flag. Flags are tried first in the alternation, so a
+// leading `--flag` still wins, and the lookbehind stops a flag from starting
+// mid-token.
 const SH_TOK_RE =
-  /(#[^\n]*)|("(?:[^"\\\n]|\\.)*"|'[^'\n]*')|(\|\||&&|\||;)|(--?[A-Za-z][A-Za-z0-9-]*)|(\b[A-Za-z_][A-Za-z0-9_./+:]*\b)|(\s+)/g;
+  /(#[^\n]*)|("(?:[^"\\\n]|\\.)*"|'[^'\n]*')|(\|\||&&|\||;)|((?<=^|[\s=(])--?[A-Za-z][A-Za-z0-9-]*)|(\b[A-Za-z_][A-Za-z0-9_./+:-]*)|(\s+)/g;
 
 function tokenizeShellRest(text: string, out: Token[]): void {
   let last = 0;
@@ -148,10 +171,33 @@ function tokenizeShell(code: string): Token[] {
   return out;
 }
 
+// ── JSON ──────────────────────────────────────────────────────────────────────
+const JSON_KEY_RE = /("(?:[^"\\\n]|\\.)*"\s*:)|("(?:[^"\\\n]|\\.)*")|(-?\d+(?:\.\d+)?(?:[eE][+-]?\d+)?)|(\btrue\b|\bfalse\b|\bnull\b)|([{}()[\],:])|(\s+)/g;
+
+function tokenizeJson(code: string): Token[] {
+  const out: Token[] = [];
+  let last = 0;
+  let m: RegExpExecArray | null;
+  JSON_KEY_RE.lastIndex = 0;
+  while ((m = JSON_KEY_RE.exec(code)) !== null) {
+    if (m.index > last) out.push({ text: code.slice(last, m.index), cls: 'plain' });
+    const [, key, str, num, lit, punct, ws] = m;
+    if (key) out.push({ text: m[0], cls: 'type' });
+    else if (str) out.push({ text: m[0], cls: 'string' });
+    else if (num) out.push({ text: m[0], cls: 'number' });
+    else if (lit) out.push({ text: m[0], cls: 'keyword' });
+    else if (punct) out.push({ text: m[0], cls: 'op' });
+    else if (ws) out.push({ text: m[0], cls: 'plain' });
+    last = JSON_KEY_RE.lastIndex;
+  }
+  if (last < code.length) out.push({ text: code.slice(last), cls: 'plain' });
+  return out;
+}
+
 // ── Component ────────────────────────────────────────────────────────────────
 export interface CodeBlockProps {
   code: string;
-  lang?: 'go' | 'sh' | 'text';
+  lang?: CodeLang;
   filename?: string;
   /** Small label shown in the header, e.g. "Go" or "shell". */
   badge?: string;
@@ -170,11 +216,7 @@ const CodeBlock: React.FC<CodeBlockProps> = ({
   maxHeight,
 }) => {
   const [copied, setCopied] = React.useState(false);
-  const tokens = React.useMemo<Token[]>(() => {
-    if (lang === 'go') return tokenizeGo(code);
-    if (lang === 'sh') return tokenizeShell(code);
-    return [{ text: code, cls: 'plain' as TokenClass }];
-  }, [code, lang]);
+  const tokens = React.useMemo<Token[]>(() => tokenizeCode(code, lang), [code, lang]);
 
   const copy = async () => {
     try {

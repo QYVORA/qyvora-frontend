@@ -1,46 +1,51 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 /**
- * useDocScrollSpy — tracks which section (by id) is currently above an
- * offset from the viewport top. Used by the tool-docs topbar pills and the
- * "On this page" sidebar TOC so both highlight the active section together.
+ * useDocScrollSpy — reports which section anchor is currently in view.
+ *
+ * Takes a comma-joined id list so the effect depends on a stable string rather
+ * than on a fresh array identity on every render. A section becomes active once
+ * its top edge passes `offset`; before the first section does, the first id is
+ * reported so the sidebar always has a selection.
  */
-export function useDocScrollSpy(ids: string[], offset = 130): string {
+export const useDocScrollSpy = (idsKey: string, offset = 96): string => {
+  const ids = idsKey.split(',').filter(Boolean);
   const [activeId, setActiveId] = useState(ids[0] ?? '');
-  const idsKey = ids.join('|');
 
   useEffect(() => {
-    const sectionIds = idsKey.split('|').filter(Boolean);
-    if (sectionIds.length === 0) return;
+    if (!ids.length) {
+      setActiveId('');
+      return;
+    }
 
     let raf = 0;
-    const onScroll = () => {
-      cancelAnimationFrame(raf);
-      raf = requestAnimationFrame(() => {
-        const offsets = sectionIds.map((id) => {
-          const el = document.getElementById(id);
-          return { id, top: el ? el.getBoundingClientRect().top : Infinity };
-        });
 
-        const current = offsets.reduce(
-          (closest, s) => {
-            if (s.top <= offset && s.top > closest.top) return s;
-            return closest;
-          },
-          { id: sectionIds[0], top: -Infinity }
-        );
-
-        if (current.id) setActiveId(current.id);
-      });
+    const update = () => {
+      let current = ids[0];
+      for (const id of ids) {
+        const element = document.getElementById(id);
+        if (element && element.getBoundingClientRect().top <= offset) {
+          current = id;
+        }
+      }
+      setActiveId(current);
     };
 
-    onScroll();
+    const onScroll = () => {
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(update);
+    };
+
+    update();
     window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll);
+
     return () => {
       cancelAnimationFrame(raf);
       window.removeEventListener('scroll', onScroll);
+      window.removeEventListener('resize', onScroll);
     };
   }, [idsKey, offset]);
 
   return activeId;
-}
+};
