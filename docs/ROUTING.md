@@ -16,10 +16,10 @@ Routes are defined in `src/app/router.tsx` — the single source of truth for al
 |------|------|-----------|-------------|
 | `/` | Page | LandingPage | Marketing landing page (scroll-snap sections) |
 | `/terms` | Page | TermsPage | Terms of service |
-| `/courses` | Page | CoursesPage | Public courses listing |
-| `/hpb` | Page | HpbPage | Hacker Protocol Bootcamp overview |
-| `/hpb/:phaseId` | Page | HpbPhasePage | Bootcamp phase page (rooms curriculum) |
-| `/labs` | Page | PublicLabsPage | Public attack labs listing |
+| `/hpb` | Page | HpbPage | Hacker Protocol Bootcamp overview (single public page — no per-phase routes) |
+| `/learn` | Page | LearnPage | Public learning hub (courses/labs/bootcamp/simulations/CP tabs; `?tab=` deep-links) |
+| `/simulations` | Page | SimulationsPage | Public simulation catalogue |
+| `/simulations/:slug` | Page | SimulationPage | Single simulation detail (no nested public sim routes) |
 | `/services` | Page | ServicesPage | Enterprise services overview |
 | `/services/basic-web-application-pentest` | Page | BasicPentestPage | Basic pentest service detail |
 | `/services/standard-web-application-pentest` | Page | StandardPentestPage | Standard pentest service detail |

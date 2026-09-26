@@ -326,7 +326,7 @@ Generic lab page shell. **Props:** `{ title; accentWord; description?; villain?;
 ### 4.10 `LearningDetailShell`
 `.../learning/LearningDetailShell.tsx`
 
-**Props:** `{ backTo; backLabel; kicker; title; description?; metadata?; actions?; children; relatedTitle?; related? }`. Detail-page scaffold: ghost back link + `PageHeader` (kicker/title/description/metadata/actions) + children; optional `related` renders a titled `type-h2` tail section with `grid gap-4 md:grid-cols-2 lg:grid-cols-4`. **Used in:** HpbPhasePage.
+**Props:** `{ backTo; backLabel; kicker; title; description?; metadata?; actions?; children; relatedTitle?; related? }`. Detail-page scaffold: ghost back link + `PageHeader` (kicker/title/description/metadata/actions) + children; optional `related` renders a titled `type-h2` tail section with `grid gap-4 md:grid-cols-2 lg:grid-cols-4`. **Used in:** removed with the per-phase public routes.
 
 ---
 
@@ -464,11 +464,12 @@ Composition primitives also in `src/features/marketing/components/`: `LabsCarous
 
 ### Public pages (`src/features/marketing/pages/`)
 - **`LandingPage`** (`.../LandingPage/index.tsx`): composes all landing sections.
-- **`CoursesPage`**: `PageHeader` + `CourseCollection` (filter strip + grid/carousel of `CourseCard`). `/courses`.
-- **`LabsPage`**: hero + `LabCollection`/`LabCard`. `/labs`.
 - **`MarketPage`**: hero + `ProductCard` grid (`CourseCollection` wrapper). `/zero-day-market`.
 - **`CyberCoinPage`**: CP economy explainer. `/cp`.
-- **`HpbPage` / `HpbPhasePage`**: bootcamp landing + per-phase. `/hpb`, `/hpb/phases/:phaseId`.
+- **`HpbPage`**: the single public bootcamp page — phase summary cards + `Rooms by phase` disclosure. `/hpb`.
+- **`LearnPage`**: public learning hub with tabbed panels; `?tab=courses|labs|bootcamp|simulations|cp`. `/learn`.
+- **`SimulationsPage` / `SimulationPage`**: simulation catalogue and detail. `/simulations`, `/simulations/:slug`.
+  Both render from `features/marketing/data/simulationsData.ts` (single source of truth).
 - **`TeamPage` / `ServicesPage` / `ServiceDetailPage` / `BasicPentestPage` / `EmployeeBootcampPage` / `StandardPentestPage`**: team + services.
 - **`SimulationsPage` / `SimulationPage`**: sim demos (`/simulations/terminal|ide|network-visualizer`).
 - **Open-source tool pages**: `AnansiPage`, `Toha3eePage`, `ShakaPage`, `NzingaPage`, `JabariPage`, `AksumPage` — composed from `ToolDoc*` + `Tool*Section` with data from `anansiData.ts` etc.
@@ -477,7 +478,7 @@ Composition primitives also in `src/features/marketing/components/`: `LabsCarous
 - **Pub cards:** `CourseCard`, `LabCard`, `ProductCard`, `BlogCard`, `RoomSection` (in `.../public/cards/`).
 
 ### Card wrapping (marketing)
-- `CourseCard`: wraps `LearningCard` `type="course"` + `CourseBadge`, `to={/courses/${id}}`, duration `${min}min`, `cpReward={cpCost}`, action "Start Course".
+- `CourseCard`: wraps `LearningCard` `type="course"` + `CourseBadge`, duration `${min}min`, `cpReward={cpCost}`, action "Start Course".
 - `LabCard`: wraps `LearningCard` `type="lab"`, `to={lab.route}`.
 - `ProductCard`: market product; `AuthImage` cover, `CpLogo` price, "Intelligence Asset" tag; grid/expanded; logged-in vs login CTA.
 - `BlogCard`: link card with tags/author/readTime, `Read ›` CTA.

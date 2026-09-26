@@ -789,7 +789,7 @@ Rendered at `z-[9999]`; used by the router for auth boot and route suspense.
 
 ### 21d. Per-phase HPB avatars (Phase F)
 
-`HpbPhasePage` related-phase cards render the phase's own `HpbAvatar`
+`HpbPage` phase summary cards render the phase's own `HpbAvatar`
 (variant `phase1`..`phase5` from `@/shared/components/HpbAvatar.tsx`) in a
 bordered tile, matching the landing per-phase-avatar language. See
 `docs/AVATARS.md`.

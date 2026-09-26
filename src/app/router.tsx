@@ -21,11 +21,27 @@ import ToolInstallModalHost from '@/features/marketing/components/ToolInstallMod
 
 
 const PublicShell = lazy(() => import('../shared/layouts/PublicShell'));
+const DocsShell = lazy(() => import('../shared/layouts/DocsShell'));
 const AppShell = lazy(() => import('../features/student/layouts/AppShell'));
 const AdminLayout = lazy(() => import('../features/admin/layouts/AdminLayout'));
 
 // Shared pages
 import NotFoundPage from '../shared/pages/NotFoundPage';
+
+// ─── Tool documentation ───────────────────────────────────────────────────────
+import ToolDocView from '@/features/marketing/components/tools/ToolDocView';
+import { getToolDoc } from '@/features/marketing/data/tools';
+
+/**
+ * Renders one tool's documentation document. Paths are written out per route
+ * rather than derived from a `:tool` param so every existing URL stays exactly
+ * where it was.
+ */
+const toolDoc = (slug: string) => {
+  const doc = getToolDoc(slug);
+  if (!doc) throw new Error(`No documentation data for tool "${slug}"`);
+  return <ToolDocView doc={doc} />;
+};
 
 // ─── Lazy page imports ────────────────────────────────────────────────────────
 const LandingPage       = lazy(() => import('../features/marketing/pages/LandingPage'));
@@ -43,19 +59,6 @@ const MarketPage        = lazy(() => import('../features/marketing/pages/public/
 const ToolsIndexPage    = lazy(() => import('../features/marketing/pages/public/ToolsIndexPage'));
 const LearnPage         = lazy(() => import('../features/marketing/pages/public/LearnPage'));
 const AboutPage         = lazy(() => import('../features/marketing/pages/public/AboutPage'));
-const AnansiPage        = lazy(() => import('../features/marketing/pages/public/AnansiPage'));
-const Toha3eePage       = lazy(() => import('../features/marketing/pages/public/Toha3eePage'));
-const JabariPage        = lazy(() => import('../features/marketing/pages/public/JabariPage'));
-const AksumPage         = lazy(() => import('../features/marketing/pages/public/AksumPage'));
-const ShakaPage         = lazy(() => import('../features/marketing/pages/public/ShakaPage'));
-const NzingaPage        = lazy(() => import('../features/marketing/pages/public/NzingaPage'));
-const SekhmetPage       = lazy(() => import('../features/marketing/pages/public/SekhmetPage'));
-const MansaPage         = lazy(() => import('../features/marketing/pages/public/MansaPage'));
-const AmanirenasPage    = lazy(() => import('../features/marketing/pages/public/AmanirenasPage'));
-const SundiataPage      = lazy(() => import('../features/marketing/pages/public/SundiataPage'));
-const TimbuktuPage      = lazy(() => import('../features/marketing/pages/public/TimbuktuPage'));
-const KushPage          = lazy(() => import('../features/marketing/pages/public/KushPage'));
-const ImhotepPage       = lazy(() => import('../features/marketing/pages/public/ImhotepPage'));
 const BlogsPage         = lazy(() => import('../features/marketing/pages/public/BlogsPage'));
 const TeamPage          = lazy(() => import('../features/marketing/pages/public/TeamPage'));
 const QuiteRootPage     = lazy(() => import('../features/marketing/pages/public/QuiteRootPage'));
@@ -223,21 +226,24 @@ export const AppRouter = () => {
 
           {/* Public profile route — validates @ prefix inside component */}
           <Route path="/:handle" element={<Wrap scope="Profile"><PublicProfilePage /></Wrap>} />
+        </Route>
 
-          {/* Tool documentation routes (read in the public shell) */}
-          <Route path="/anansi" element={<Wrap scope="Anansi"><AnansiPage /></Wrap>} />
-          <Route path="/toha3ee" element={<Wrap scope="Toha3ee"><Toha3eePage /></Wrap>} />
-          <Route path="/jabari" element={<Wrap scope="Jabari"><JabariPage /></Wrap>} />
-          <Route path="/aksum" element={<Wrap scope="Aksum"><AksumPage /></Wrap>} />
-          <Route path="/shaka" element={<Wrap scope="Shaka"><ShakaPage /></Wrap>} />
-          <Route path="/nzinga" element={<Wrap scope="Nzinga"><NzingaPage /></Wrap>} />
-          <Route path="/sekhmet" element={<Wrap scope="Sekhmet"><SekhmetPage /></Wrap>} />
-          <Route path="/mansa" element={<Wrap scope="Mansa"><MansaPage /></Wrap>} />
-          <Route path="/amanirenas" element={<Wrap scope="Amanirenas"><AmanirenasPage /></Wrap>} />
-          <Route path="/sundiata" element={<Wrap scope="Sundiata"><SundiataPage /></Wrap>} />
-          <Route path="/timbuktu" element={<Wrap scope="Timbuktu"><TimbuktuPage /></Wrap>} />
-          <Route path="/kush" element={<Wrap scope="Kush"><KushPage /></Wrap>} />
-          <Route path="/imhotep" element={<Wrap scope="Imhotep"><ImhotepPage /></Wrap>} />
+        {/* ── Tool documentation routes (docs shell, not the public shell) ─ */}
+        <Route element={<DocsShell />}>
+          <Route path="/anansi" element={toolDoc('anansi')} />
+          <Route path="/toha3ee" element={toolDoc('toha3ee')} />
+          <Route path="/jabari" element={toolDoc('jabari')} />
+          <Route path="/aksum" element={toolDoc('aksum')} />
+          <Route path="/shaka" element={toolDoc('shaka')} />
+          <Route path="/nzinga" element={toolDoc('nzinga')} />
+          <Route path="/sekhmet" element={toolDoc('sekhmet')} />
+          <Route path="/mansa" element={toolDoc('mansa')} />
+          <Route path="/amanirenas" element={toolDoc('amanirenas')} />
+          <Route path="/sundiata" element={toolDoc('sundiata')} />
+          <Route path="/timbuktu" element={toolDoc('timbuktu')} />
+          <Route path="/kush" element={toolDoc('kush')} />
+          <Route path="/imhotep" element={toolDoc('imhotep')} />
+          <Route path="/qyvora-common" element={toolDoc('qyvora-common')} />
         </Route>
 
         {/* ── Auth routes ───────── */}

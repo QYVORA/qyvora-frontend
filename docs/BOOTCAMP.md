@@ -2,7 +2,7 @@
 
 > **Status:** ✅ FULLY IMPLEMENTED  
 > **Config:** `src/features/student/constants/bootcampConfig.ts` (4028 lines)  
-> **Pages:** `HpbPage`, `HpbPhasePage` (public) · `BootcampCoursePage`, `BootcampRoomPage` (student)
+> **Pages:** `HpbPage` (public, single page) · `BootcampCoursePage`, `BootcampRoomPage` (student)
 
 ## Overview
 
@@ -121,8 +121,8 @@ Steps use the shared walkthrough model (`FocusedStepList` + `LearningNav`): one 
 
 ## Navigation
 
-- **Public overview:** `/hpb` (`HpbPage`) — phase cards with `Explore` buttons linking to each phase page
-- **Public phase page:** `/hpb/:phaseId` (`HpbPhasePage`) — phase hero + room cards (`Start Phase` → `/register`)
+- **Public overview:** `/hpb` (`HpbPage`) — the single public bootcamp page. Phase summary cards plus a
+  `Rooms by phase` disclosure list carry the full curriculum inline; there are no per-phase public routes.
 - **Curriculum browser:** `/dashboard/bootcamps/:bootcampId`
 - **Room view:** `/dashboard/bootcamps/:bootcampId/phases/:phaseId/rooms/:roomId`
 
