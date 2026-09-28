@@ -41,7 +41,7 @@ const MansaPage = () => {
       {/* ── Hero ─────────────────────────────────────────────────────────── */}
       <ToolDocHero
         toolName="mansa"
-        description="Authorized wireless security assessment in Go. Discover, enumerate, observe, and analyze WLAN deployments, with deterministic rules, transparent risk scoring, and a terminal-first console that mirrors the one-shot CLI."
+        description="Authorized wireless security assessment in Go. Discover, enumerate, observe, and analyze WLAN deployments, with deterministic rules, transparent risk scoring, and a shared qyvora-tui terminal with an F1 capability view."
         stats={[
           { label: 'Pipeline Stages', value: STAGES.length },
           { label: 'Rule Families', value: RULE_CATEGORIES.length },

@@ -52,7 +52,7 @@ const AmanirenasPage = () => {
       {/* ── Hero ─────────────────────────────────────────────────────────── */}
       <ToolDocHero
         toolName="amanirenas"
-        description="Mobile application security assessment in Go. Analyze offline app profiles and IPA snapshots for metadata, static binary, configuration, API and secrets risk, with deterministic rules, transparent risk scoring, and a terminal-first console that mirrors the one-shot CLI."
+        description="Mobile application security assessment in Go. Analyze offline app profiles and IPA snapshots for metadata, static binary, configuration, API and secrets risk, with deterministic rules, transparent risk scoring, and a shared qyvora-tui terminal with an F1 capability view."
         stats={[
           { label: 'Pipeline Stages', value: STAGES.length },
           { label: 'Rules', value: RULES.length },

@@ -11,7 +11,7 @@ const doc: ToolDoc = {
   slug: 'nzinga',
   seoTitle: 'NZINGA — Public-source OSINT collection',
   seoDescription:
-    'NZINGA collects, normalizes, correlates and reports what can be learned about a target exclusively from public sources. Six collectors, five correlation rules, an SSRF-guarded authorization gate, and five report formats.',
+    'NZINGA collects, normalizes, correlates and reports what can be learned about a target exclusively from public sources. Six collectors plus an opt-in search source, five correlation rules, an SSRF-guarded authorization gate, and five report formats.',
   summary:
     'NZINGA answers one question: what can be learned about a target exclusively from public, open sources? It collects from certificate transparency, DNS, WHOIS, search, GitHub and abuse feeds; normalizes what comes back into entities and relationships; correlates observations into claims; and reports only what the evidence supports. It never reports the absence of something as proof that it is absent.',
 
@@ -161,7 +161,7 @@ const doc: ToolDoc = {
             { term: 'evidence', detail: 'Show the observations behind a claim or finding.' },
             { term: 'report', detail: 'Render a report — `report session` for the whole session.' },
             { term: 'sources', detail: 'List or show configured public sources.' },
-            { term: 'dorks', detail: 'List and run the bundled dork packs.' },
+            { term: 'dorks', detail: 'List and show the embedded dork catalogue; `nzinga dork` runs it.' },
             { term: 'target', detail: 'Set and inspect the target.' },
             { term: 'show', detail: 'Show a stored entity, claim or observation.' },
             { term: 'capabilities', detail: 'The machine-readable tool contract.' },
@@ -184,9 +184,9 @@ const doc: ToolDoc = {
             { term: '--json', detail: 'Shorthand for JSON output.' },
             { term: '--dry-run', detail: 'Plan the run without executing any source.' },
             { term: '--events', detail: 'JSONL event stream.' },
-            { term: '--dork-provider', detail: 'Search provider to run dork packs through.' },
-            { term: '--dork-category', detail: 'Dork pack: general, documents, exposed_services, technology, social.' },
-            { term: '--max-queries', detail: 'Cap the number of dork queries in a run.' },
+            { term: '--provider', detail: 'Search provider: simulation or api (default search.provider).' },
+            { term: '--category', detail: 'Comma-separated dork categories from the 12-category catalogue.' },
+            { term: '--max-queries', detail: 'Cap the number of dork queries in a run (default sources.search.max_queries).' },
             { term: '-c, --config', detail: 'Path to a config file.' },
             { term: '-q, --quiet', detail: 'Suppress progress output.' },
           ],
@@ -221,7 +221,7 @@ const doc: ToolDoc = {
             { source: 'crt.sh', yields: 'Certificates issued for the domain, and the hostnames in their SANs.' },
             { source: 'dns', yields: 'Resolution of discovered hostnames — which names actually point somewhere.' },
             { source: 'whois', yields: 'Registry metadata: registrant, dates, nameservers.' },
-            { source: 'search', yields: 'Search-engine results, and the substrate for dork packs.' },
+            { source: 'search', yields: 'Opt-in dorked results from a configured provider: curated queries over domain, username or organization targets, marked unverified.' },
             { source: 'github', yields: 'Public accounts, repositories and commit metadata under a username or organisation.' },
             { source: 'abuseipdb', yields: 'Reputation context for discovered addresses.' },
           ],
@@ -270,7 +270,7 @@ type OperationMetadata struct {
             { label: 'internal/intelligence/sources', href: 'https://github.com/QYVORA/qyvora-nzinga/tree/main/internal/intelligence/sources', note: 'The six collectors.' },
             { label: 'internal/intelligence/correlation', href: 'https://github.com/QYVORA/qyvora-nzinga/tree/main/internal/intelligence/correlation', note: 'Observation to claim to finding.' },
             { label: 'internal/rules/builtin/builtin.go', href: 'https://github.com/QYVORA/qyvora-nzinga/blob/main/internal/rules/builtin/builtin.go', note: 'The five rules.' },
-            { label: 'internal/search/dorks', href: 'https://github.com/QYVORA/qyvora-nzinga/tree/main/internal/search/dorks', note: 'Five dork packs as YAML. Edit these to add your own.' },
+            { label: 'internal/search/dorks', href: 'https://github.com/QYVORA/qyvora-nzinga/tree/main/internal/search/dorks', note: 'The 12-category dork catalogue as YAML (477 templates).' },
             { label: 'internal/reporting', href: 'https://github.com/QYVORA/qyvora-nzinga/tree/main/internal/reporting', note: 'Five renderers over one session model.' },
             { label: 'docs/Architecture.md', href: 'https://github.com/QYVORA/qyvora-nzinga/blob/main/docs/Architecture.md', note: 'Design and decisions.' },
             { label: 'docs/Security-Model.md', href: 'https://github.com/QYVORA/qyvora-nzinga/blob/main/docs/Security-Model.md', note: 'Authorization, SSRF guard, size caps, honest confidence.' },
@@ -316,7 +316,7 @@ type OperationMetadata struct {
         },
         {
           kind: 'prose',
-          text: 'Five dork packs ship as YAML under `internal/search/dorks`: `general`, `documents`, `exposed_services`, `technology` and `social`. Each is a plain list of queries, so adding coverage is a YAML edit rather than a code change. Runs are bounded by `--max-queries`, and the provider is selected with `--dork-provider`.',
+          text: 'Twelve dork categories ship as YAML under `internal/search/dorks` — 477 templates in all: human-focused `username` (430), `name`, `email` and `employer`; infrastructure-focused `exposed-services`, `exposed-docs`, `login-panels` and `subdomains`; plus `general`, `documents`, `social` and `technology`. The 430 username templates are `site:`/`inurl:` search expressions derived from the MIT-licensed Sherlock project — not profile-URL checks. A custom wordlist loads from `sources.search.custom_wordlist_path` and merges with (or, with `builtin_enabled=false`, replaces) the built-in catalogue. Runs are opt-in, bounded by `--max-queries` (default 25), and the provider is selected with `--provider`. Results are never treated as confirmed: nzinga reports challenges and rate limits instead of bypassing them.',
         },
         {
           kind: 'subheading',
