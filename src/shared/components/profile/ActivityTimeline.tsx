@@ -1,11 +1,11 @@
 import { useMemo } from 'react';
 import { motion } from 'motion/react';
 import { useReducedMotion } from '@/shared/hooks/useReducedMotion';
+import { History } from 'lucide-react';
 import type { ActivityEvent, ProfileData } from '@/shared/types/profile';
 import { deriveActivityEvents } from '@/shared/utils/profileDerivations';
 import BootcampBadge from '@/shared/components/BootcampBadge';
 import CourseBadge from '@/shared/components/CourseBadge';
-import { QyvoraMark } from '@/shared/components/brand';
 import ModuleHeader from './ModuleHeader';
 
 interface ActivityTimelineProps {
@@ -42,7 +42,7 @@ const ActivityTimeline: React.FC<ActivityTimelineProps> = ({ profile, className 
   if (events.length === 0) {
     return (
       <div className={`rounded-2xl border border-border-subtle bg-surface p-5 md:p-6 ${className}`}>
-        <ModuleHeader icon={<QyvoraMark className="h-4 w-4" />} title="Recent Activity" />
+        <ModuleHeader icon={<History className="h-4 w-4" />} title="Recent Activity" />
         <p className="py-4 text-center text-sm text-text-muted">
           No activity yet. Complete labs and courses to see your timeline.
         </p>
@@ -52,7 +52,7 @@ const ActivityTimeline: React.FC<ActivityTimelineProps> = ({ profile, className 
 
   return (
     <div className={`rounded-2xl border border-border-subtle bg-surface p-5 md:p-6 ${className}`}>
-      <ModuleHeader icon={<QyvoraMark className="h-4 w-4" />} title="Recent Activity" />
+      <ModuleHeader icon={<History className="h-4 w-4" />} title="Recent Activity" />
 
       <div className="relative">
         <div className="absolute bottom-3 left-[15px] top-3 w-px bg-border/30" />
@@ -97,10 +97,10 @@ function eventIcon(event: ActivityEvent, profile: ProfileData): React.ReactNode 
     return courseId ? (
       <CourseBadge courseId={courseId} className="h-8 w-8 shrink-0" />
     ) : (
-      <GenericBadge icon={<QyvoraMark className="h-4 w-4" />} />
+      <GenericBadge icon={<History className="h-4 w-4" />} />
     );
   }
-  return <GenericBadge icon={<QyvoraMark className="h-4 w-4" />} />;
+  return <GenericBadge icon={<History className="h-4 w-4" />} />;
 }
 
 export default ActivityTimeline;

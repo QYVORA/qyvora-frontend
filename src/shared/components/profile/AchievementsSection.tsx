@@ -1,11 +1,11 @@
 import { useMemo } from 'react';
 import { motion } from 'motion/react';
 import { useReducedMotion } from '@/shared/hooks/useReducedMotion';
+import { Award, BookOpen } from 'lucide-react';
 import { RARITY_STYLES } from './AchievementCard';
 import HpbAvatar from '@/shared/components/HpbAvatar';
 import BootcampBadge from '@/shared/components/BootcampBadge';
 import LabBadge from '@/shared/components/LabBadge';
-import { QyvoraMark } from '@/shared/components/brand';
 import ModuleHeader from './ModuleHeader';
 import { BOOTCAMP_CONFIG } from '@/features/student/constants/bootcampStructure';
 import { COURSES } from '@/features/student/data/courses/courseData';
@@ -89,7 +89,7 @@ const AchievementsSection: React.FC<AchievementsSectionProps> = ({
   if (totalAchievements === 0) {
     return (
       <div className="rounded-2xl border border-border-subtle bg-surface p-5 md:p-6">
-        <ModuleHeader icon={<QyvoraMark className="h-4 w-4" />} title="Achievements" />
+        <ModuleHeader icon={<Award className="h-4 w-4" />} title="Achievements" />
         <p className="py-4 text-center text-sm text-text-muted">
           No achievements yet. Start learning to earn your first!
         </p>
@@ -100,7 +100,7 @@ const AchievementsSection: React.FC<AchievementsSectionProps> = ({
   return (
     <div className="rounded-2xl border border-border-subtle bg-surface p-5 md:p-6">
       <ModuleHeader
-        icon={<QyvoraMark className="h-4 w-4" />}
+        icon={<Award className="h-4 w-4" />}
         title="Achievements"
         trailing={<CountBadge count={totalAchievements} />}
       />
@@ -180,7 +180,7 @@ const AchievementsSection: React.FC<AchievementsSectionProps> = ({
                       {IconComp ? (
                         <IconComp className="h-6 w-6" />
                       ) : (
-                        <QyvoraMark className="h-5 w-5" />
+                        <BookOpen className="h-5 w-5" />
                       )}
                     </div>
                     <h4 className="mb-1 text-xs font-black uppercase tracking-widest leading-tight text-text-primary">
@@ -248,7 +248,7 @@ const AchievementsSection: React.FC<AchievementsSectionProps> = ({
                     className={`flex flex-col items-center rounded-xl border p-4 text-center ${styles.border} ${styles.bg}`}
                   >
                     <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-xl bg-surface">
-                      <QyvoraMark className="h-5 w-5" />
+                      <Award className="h-5 w-5" />
                     </div>
                     <h4 className="mb-1 text-xs font-black uppercase tracking-widest leading-tight text-text-primary">
                       {sa.label}

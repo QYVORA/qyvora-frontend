@@ -1,7 +1,7 @@
 import { motion } from 'motion/react';
 import { useReducedMotion } from '@/shared/hooks/useReducedMotion';
+import { BookOpen } from 'lucide-react';
 import CourseBadge from '@/shared/components/CourseBadge';
-import { QyvoraMark } from '@/shared/components/brand';
 import { getCourseById } from '@/features/student/data/courses/courseData';
 import ModuleHeader from './ModuleHeader';
 
@@ -46,7 +46,7 @@ const CoursesModule: React.FC<CoursesModuleProps> = ({
   return (
     <div className={`rounded-2xl border border-border-subtle bg-surface p-5 md:p-6 ${className}`}>
       <ModuleHeader
-        icon={<QyvoraMark className="h-4 w-4" />}
+        icon={<BookOpen className="h-4 w-4" />}
         title="Courses"
         trailing={
           coursesCompleted > 0 ? (
@@ -65,7 +65,9 @@ const CoursesModule: React.FC<CoursesModuleProps> = ({
         </div>
       ) : (
         <div className="flex min-w-0 items-center gap-4">
-          <QyvoraMark className="h-12 w-12 shrink-0 sm:h-14 sm:w-14" />
+          <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-surface text-accent sm:h-14 sm:w-14">
+            <BookOpen className="h-6 w-6" />
+          </span>
           <div className="min-w-0">
             <p className="truncate text-xs font-black uppercase tracking-widest text-text-primary">
               {`${coursesCompleted} courses completed`}

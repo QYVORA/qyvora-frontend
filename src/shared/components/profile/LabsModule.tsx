@@ -1,9 +1,8 @@
 import { motion } from 'motion/react';
 import { useReducedMotion } from '@/shared/hooks/useReducedMotion';
-import { ExternalLink } from 'lucide-react';
+import { ExternalLink, Bug } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import type { CompletedRoom } from '@/shared/types/profile';
-import { QyvoraMark } from '@/shared/components/brand';
 import ModuleHeader from './ModuleHeader';
 
 interface LabsModuleProps {
@@ -25,7 +24,7 @@ const LabsModule: React.FC<LabsModuleProps> = ({
   return (
     <div className={`rounded-2xl border border-border-subtle bg-surface p-5 md:p-6 ${className}`}>
       <ModuleHeader
-        icon={<QyvoraMark className="h-4 w-4" />}
+        icon={<Bug className="h-4 w-4" />}
         title="Labs"
         trailing={
           totalLabs > 0 ? (
@@ -49,7 +48,7 @@ const LabsModule: React.FC<LabsModuleProps> = ({
               className="group flex items-center gap-3 rounded-xl border border-border-subtle bg-surface-raised/60 px-3 py-2.5 transition-colors hover:border-accent/30 hover:bg-surface-raised"
             >
               <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-surface text-accent">
-                <QyvoraMark className="h-3.5 w-3.5" />
+                <Bug className="h-3.5 w-3.5" />
               </span>
               <span className="flex-1 truncate text-sm font-bold text-text-primary">
                 {room.title}

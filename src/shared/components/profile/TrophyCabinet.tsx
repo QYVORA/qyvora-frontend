@@ -1,10 +1,10 @@
 import { useMemo } from 'react';
 import { motion } from 'motion/react';
 import { useReducedMotion } from '@/shared/hooks/useReducedMotion';
+import { Trophy } from 'lucide-react';
 import BootcampBadge from '@/shared/components/BootcampBadge';
 import CpLogo from '@/shared/components/CpLogo';
 import CourseBadge from '@/shared/components/CourseBadge';
-import { QyvoraMark } from '@/shared/components/brand';
 import type { ProfileData } from '@/shared/types/profile';
 import { TIER_STYLES } from '@/shared/types/profile';
 import { deriveTrophies } from '@/shared/utils/profileDerivations';
@@ -57,7 +57,7 @@ function TrophyVisual({ id, profile }: { id: string; profile: ProfileData }) {
   if (COURSE_TROPHY_IDS.has(id) && profile.completedCourseIds?.[0]) {
     return <CourseBadge courseId={profile.completedCourseIds[0]} className="w-10 h-10" />;
   }
-  return <QyvoraMark className="w-8 h-8" />;
+  return <Trophy className="w-8 h-8" />;
 }
 
 const TrophyCabinet: React.FC<TrophyCabinetProps> = ({ profile, className = '' }) => {
@@ -68,7 +68,7 @@ const TrophyCabinet: React.FC<TrophyCabinetProps> = ({ profile, className = '' }
   if (trophies.length === 0) {
     return (
       <div className={`rounded-2xl border border-border-subtle bg-surface p-5 md:p-6 ${className}`}>
-        <ModuleHeader icon={<QyvoraMark className="h-4 w-4" />} title="Trophy Cabinet" />
+        <ModuleHeader icon={<Trophy className="h-4 w-4" />} title="Trophy Cabinet" />
         <p className="py-4 text-center text-sm text-text-muted">No trophies earned yet. Keep pushing!</p>
       </div>
     );
@@ -77,7 +77,7 @@ const TrophyCabinet: React.FC<TrophyCabinetProps> = ({ profile, className = '' }
   return (
     <div className={`rounded-2xl border border-border-subtle bg-surface p-5 md:p-6 ${className}`}>
       <ModuleHeader
-        icon={<QyvoraMark className="h-4 w-4" />}
+        icon={<Trophy className="h-4 w-4" />}
         title="Trophy Cabinet"
         trailing={
           <span className="rounded-md bg-accent/10 px-2 py-0.5 text-[10px] font-black uppercase tracking-widest text-accent">

@@ -1,7 +1,7 @@
 import { memo, type ReactNode } from 'react';
 import { motion } from 'motion/react';
 import { useReducedMotion } from '@/shared/hooks/useReducedMotion';
-import { QyvoraMark } from '@/shared/components/brand';
+import { Activity } from 'lucide-react';
 import ModuleHeader from './ModuleHeader';
 
 export interface ProfileMetric {
@@ -20,7 +20,7 @@ const ProfileMetricsStrip: React.FC<ProfileMetricsStripProps> = ({ metrics }) =>
 
   return (
     <div className="rounded-2xl border border-border-subtle bg-surface p-5 md:p-6">
-      <ModuleHeader icon={<QyvoraMark className="h-4 w-4" />} title="Overview" />
+      <ModuleHeader icon={<Activity className="h-4 w-4" />} title="Overview" />
 
       <div className="mt-1 grid grid-cols-2 gap-x-4 gap-y-6 sm:grid-cols-3">
         {metrics.map((metric, index) => (

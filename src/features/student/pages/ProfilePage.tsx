@@ -1,6 +1,6 @@
 import React, { useMemo, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { Edit3, User, TrendingUp, Calendar } from 'lucide-react';
+import { Edit3, User, TrendingUp, Calendar, Bug, BookOpen } from 'lucide-react';
 import { useAuth } from '../../../core/contexts/AuthContext';
 import { useProfile } from '../../../shared/hooks/useProfile';
 import { useSkillAchievements } from '../../../shared/hooks/useSkillAchievements';
@@ -10,7 +10,6 @@ import SEO from '../../../shared/components/SEO';
 import PageBody from '@/shared/components/layout/PageBody';
 import ProfileIdentityBlock from '../../../shared/components/profile/ProfileIdentityBlock';
 import CpLogo from '../../../shared/components/CpLogo';
-import { QyvoraMark } from '../../../shared/components/brand';
 import ProfileMetricsStrip from '../../../shared/components/profile/ProfileMetricsStrip';
 import AchievementsSection from '../../../shared/components/profile/AchievementsSection';
 import ContributionCalendar from '../../../shared/components/profile/ContributionCalendar';
@@ -118,8 +117,8 @@ const Profile: React.FC = () => {
               <ProfileMetricsStrip metrics={[
                 { icon: <CpLogo className="w-5 h-5" />, value: profile.cp.toLocaleString(), accent: true, label: 'CP' },
                 { icon: <User className="w-5 h-5" />, value: profile.rank, label: 'Rank' },
-                { icon: <QyvoraMark className="w-4 h-4" />, value: profile.labsCompleted || profile.completedRooms.length, label: 'Labs' },
-                { icon: <QyvoraMark className="w-4 h-4" />, value: profile.coursesCompleted, label: 'Courses' },
+                { icon: <Bug className="w-5 h-5" />, value: profile.labsCompleted || profile.completedRooms.length, label: 'Labs' },
+                { icon: <BookOpen className="w-5 h-5" />, value: profile.coursesCompleted, label: 'Courses' },
                 { icon: <TrendingUp className="w-5 h-5" />, value: profile.xpLevel, label: 'Level' },
                 { icon: <Calendar className="w-5 h-5" />, value: profile.joinDate ? new Date(profile.joinDate).getFullYear() : '—', label: 'Since' },
               ]} />
