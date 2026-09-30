@@ -66,6 +66,12 @@ control inventory and several contradictory signals for "done".
 - Imposter TERM badge removed from course lessons (terminal commands render as command blocks instead).
 - "Claim your CP below" banner removed (the celebration modal owns completion).
 - Start verbs standardized to `Start`.
+- Redundant exit chrome removed: the `LearningWorkspaceShell` no longer renders its own route-based
+  "Back" button, and the student topbar carries no back button either — the sidebar rail owns exit
+  navigation on every learning page. Topbar breadcrumbs are context-only (no links).
+- Mixed cross-type links removed from bootcamp rooms: the "Continue This Topic" block (other rooms +
+  labs + courses in one grid) is gone from the room walkthrough. `RelatedContent` now survives only on
+  lab landing/listing views.
 
 ## 6. Validation
 

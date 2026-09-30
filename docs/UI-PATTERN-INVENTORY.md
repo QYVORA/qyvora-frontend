@@ -294,8 +294,18 @@ Inline error display within pages/cards.
 
 ### 7b. Student Topbar
 
-- `z-[110]`, `h-[64px]` (`TOPBAR_H = 'pt-20 md:pt-24'`)
-- Split mobile/desktop into separate renderers
+- `z-[100]` (rail is the only other chrome), `h-20 md:h-24` (`BAR`), clearance `pt-20 md:pt-24`
+- Fixed, **transparent** (no background, no backdrop, no bottom border); sits over content
+- **Not a navigation surface**: primary nav is the sidebar rail (`lg+`) + `StudentBottomNav` (`<lg`); that rail owns exit navigation, so learning pages have **no topbar back button**
+- Left cluster depends on context:
+  - Dashboard: mobile logo (`Logo size="md" variant="mark"`, `lg:hidden`) + spacer
+  - Learning pages (room/course/lab): `Breadcrumb` — static context-only crumbs (ancestors muted, current `font-black`, `aria-current="page"`), no links, chevron separators
+- Right cluster:
+  - Dashboard context: CP stat (desktop `md+`, `tour-cp-desktop`), notifications bell (all screens), mobile CP badge (`md-`)
+  - Learning context (room/course/lab): course progress chip (lesson `n/N`) on `md+`, course pages only, + mobile CP badge (`md-`); no bell
+- Course page: `h-1` progress hairline under the bar (accent fill by `courseMeta.progress`)
+- Notifications: bell opens a desktop `NotificationsDialog` (`(min-width: 1024px)`) or mobile `BottomSheet`
+- Skip link: `#main-content`
 
 ### 7c. Admin Topbar
 
@@ -575,7 +585,7 @@ Two-column on `md`: left hero (`AuthHero`), right form (`max-w-lg`). Mobile: sta
 
 ### 16e. Student/Admin Topbar Layout
 
-`pt-20 md:pt-24` clearance. Sidebar + main content area.
+`pt-20 md:pt-24` clearance. Sidebar rail (`lg:pl-[264px]`, collapsed `lg:pl-[76px]`) + main content area. Topbar is fixed and transparent; the sidebar rail owns navigation (no back button in the topbar, on learning pages or otherwise).
 
 ---
 

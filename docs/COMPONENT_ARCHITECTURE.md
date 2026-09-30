@@ -99,7 +99,7 @@ graph TD
 | `ChainLogo` | QYVORA chain logo |
 | `CpLogo` | Cyber Points logo |
 | `BootcampBadge` | Bootcamp completion badge |
-| `RelatedContent` | Related learning content recommendations |
+| `RelatedContent` | Related learning content recommendations (lab landing views only; removed from bootcamp rooms) |
 
 ### Feature Directories
 

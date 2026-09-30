@@ -316,7 +316,7 @@ Generic lab page shell. **Props:** `{ title; accentWord; description?; villain?;
 ### 4.8 `LearningFilterStrip`
 `.../learning/LearningFilterStrip.tsx`
 
-**Props:** `{ filters: {id; label; count?}[]; activeFilter: string; onFilterChange: (id) => void }`. `rounded-xl border border-border/50 bg-bg-card p-1.5` horizontal chip strip (`scroll-x no-scrollbar`), active chip `bg-accent text-on-accent`, `aria-pressed`. Returns null when no filters. **Used in:** catalogue + student discovery pages (MyCourses, BootcampCourse, Labs).
+**Props:** `{ filters: {id; label; count?}[]; activeFilter: string; onFilterChange: (id) => void }`. `rounded-xl border border-border-subtle bg-surface p-1.5` chip strip; each chip `min-h-[44px]`, mobile spans half the strip (`flex-1 basis-[calc(50%-4px)]`, 2-up), `sm+` returns to natural-width `flex-1` stretching one row. Active chip `bg-accent text-on-accent`, `aria-pressed`. Returns null when no filters. **Used in:** catalogue + student discovery pages (MyCourses, BootcampCourse, Labs).
 
 ### 4.9 `LearningCatalogue`
 `.../learning/LearningCatalogue.tsx`
@@ -393,7 +393,7 @@ Auth page shell: 2-col grid, `max-w-lg` form, globe pinned bottom-right.
 - **`PageHeader`** (`shared/components/ui/PageHeader.tsx`; `shared/components/dashboard/PageHeader.tsx`): shared page/section title primitive (title + back/nav + CTAs), replaced the former `StudentHeroSection`/`PublicHeroSection`.
 - **`ScrollReveal`** (default, canonical reveal): `useInView({once:true, amount:0.1})`, `scale:0.95`, skips on reduced-motion/mobile. Props `{direction, delay, amount, scale, staggerChildren}`.
 - **`SEO`** (default): head meta/title/og per page.
-- **`RelatedContent` / `RelatedContentSection`** (default): related-item list/grid (snap variant), built from data, uses LearningCard-style cards.
+- **`RelatedContent` / `RelatedContentSection`** (default): related-item list/grid (snap variant), built from data, uses LearningCard-style cards. The mixed cross-type block ("Continue This Topic") was removed from the bootcamp room walkthrough — rooms no longer surface it; it survives on lab landing/listing views only.
 - **`CodeBlock`** (default): code display. Languages `go|sh|text`; syntax palette (keywords `#c678dd`, strings `#e5c07b`, numbers `#d19a66`, types `#56b6c2`, builtins `#61afef`, commands `text-accent`); container `wc-code overflow-hidden rounded-xl border border-border/30 bg-bg`; copy button.
 - **`Dobia`** (default): mascot with expressions (`angry`, `confused`) + sizes.
 - **`Identicon`** (default): jdenticon SVG avatar (`aspect-square overflow-hidden bg-black`; caller owns border, e.g. `rounded-xl border-2 border-accent`).
@@ -487,7 +487,7 @@ Composition primitives also in `src/features/marketing/components/`: `LabsCarous
 
 ## 13. Student experience components
 
-Location: `src/features/student/`. Shell = `AppShell` (clearance `pt-20 md:pt-24`, desktop rail `lg:pl-[264px]`), `StudentTopbar` (auto-hides on scroll-down, reveals on scroll-up; layout reservation static — slides over content), `StudentNavPanel`.
+Location: `src/features/student/`. Shell = `AppShell` (clearance `pt-20 md:pt-24`, desktop rail `lg:pl-[264px]`), `StudentTopbar` (fixed, transparent, no scroll-hide; navigation lives in the sidebar rail + mobile bottom nav — no topbar back button, even on learning pages), `StudentNavPanel`.
 
 ### 13.1 `StudentTour` + `SpotlightTour` (the onboarding/tour pair)
 - **`StudentTour`** (`features/student/components/StudentTour.tsx`): post-onboarding guided tour. Steps: welcome → nav → learning → cp → profile → done, each resolved via `[data-tour-id]` selectors on the live DOM. Auto-triggers via `usePopupManager('onboarding-tour', 2)` or the "Take a Tour" replay button (`qyvora:start-tutorial`). Completing calls `POST /profile/onboarding/complete` only for fresh users. `getTarget` maps responsive selectors (prefers on-screen elements among `tour-cp-desktop|tour-cp-dashboard|tour-cp-mobile`, etc.).

@@ -624,6 +624,8 @@ transition: transform 500ms ease;
 }
 ```
 
+> **Scroll behavior**: there is **no global `scroll-behavior: smooth`** on `html`. It inherits into every scroll container (sidebar rail, panels, code blocks) and makes wheel/touch scrolling feel laggy. Programmatic scrolling requests smooth explicitly via `scrollIntoView({ behavior: 'smooth' })`; horizontal `.scroll-x` strips opt in to smooth themselves. The reduced-motion override above still forces `auto` everywhere as a safety net.
+
 ---
 
 ## 8. Icon System
