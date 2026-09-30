@@ -3,6 +3,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { RefreshCw } from 'lucide-react';
 import SEO from '@/shared/components/SEO';
 import { Button, PageHeader } from '@/shared/components/ui';
+import PageBody from '@/shared/components/layout/PageBody';
 
 import CpAnalytics from '../components/CpAnalytics';
 import BootcampAccessPanel from '../components/BootcampAccessPanel';
@@ -243,7 +244,7 @@ const AdminDashboardPage: React.FC = () => {
         className="scroll-hover lg:fixed lg:left-0 lg:right-0 lg:bottom-0 lg:top-24 lg:overflow-y-auto lg:overscroll-contain"
         style={{ scrollBehavior: 'smooth' }}
       >
-        <div className="px-3 md:px-4 lg:px-6 pt-8 pb-20 lg:pb-24 space-y-6">
+        <PageBody spacing="sections">
 
           {/* ── Page header ─────────────────────────────────────────────── */}
           <PageHeader
@@ -351,7 +352,7 @@ const AdminDashboardPage: React.FC = () => {
           <div className="mt-6">
             <SyncIndicator lastSync={lastSync} error={syncError} onRetry={() => void loadAll()} />
           </div>
-        </div>
+        </PageBody>
       </div>
     </div>
 

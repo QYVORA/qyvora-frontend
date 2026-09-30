@@ -7,7 +7,6 @@ import Logo from '@/shared/components/brand/Logo';
 import ADMIN_PATH from '@/shared/utils/adminPath';
 import { useEffect, useRef, useState } from 'react';
 import api from '@/core/services/api';
-import { ADMIN_QUICK_TABS } from './navGroups';
 import NotificationsDropdown from './NotificationsDropdown';
 import MobileNotificationsSheet from './MobileNotificationsSheet';
 import type { NotificationItem } from './types';
@@ -20,43 +19,10 @@ const AdminTopbar = ({ railCollapsed = false }: { railCollapsed?: boolean }) => 
   const navigate = useNavigate();
   const location = useLocation();
 
-  const currentTab = new URLSearchParams(location.search).get('tab') || 'overview';
-
   const [unreadCount, setUnreadCount] = useState(0);
   const [notifOpen, setNotifOpen] = useState(false);
   const [notifLoading, setNotifLoading] = useState(false);
   const [notificationsPreview, setNotificationsPreview] = useState<NotificationItem[]>([]);
-
-  // Mirrors the student dashboard topbar: auto-hide while scrolling down past
-  // the first viewport, reveal again on scroll up. Layout reservation stays
-  // static — the bar slides over content, giving the admin more reading space.
-  const [topbarHidden, setTopbarHidden] = useState(false);
-  const lastScrollYRef = useRef(0);
-
-  useEffect(() => {
-    setTopbarHidden(false);
-    lastScrollYRef.current = window.scrollY;
-    let ticking = false;
-    const onScroll = () => {
-      if (ticking) return;
-      ticking = true;
-      requestAnimationFrame(() => {
-        const y = window.scrollY;
-        const prev = lastScrollYRef.current;
-        if (y <= 80) {
-          setTopbarHidden(false);
-        } else if (y > prev + 8) {
-          setTopbarHidden(true);
-        } else if (y < prev - 8) {
-          setTopbarHidden(false);
-        }
-        lastScrollYRef.current = y;
-        ticking = false;
-      });
-    };
-    window.addEventListener('scroll', onScroll, { passive: true });
-    return () => window.removeEventListener('scroll', onScroll);
-  }, [location.pathname]);
 
   const notifRef = useRef<HTMLDivElement>(null);
 
@@ -112,8 +78,6 @@ const AdminTopbar = ({ railCollapsed = false }: { railCollapsed?: boolean }) => 
     navigate(ADMIN_PATH);
   };
 
-  const isTabActive = (tab: string) => tab === currentTab;
-
   const overviewPath = `${ADMIN_PATH}/dashboard?tab=overview`;
 
   return (
@@ -127,9 +91,7 @@ const AdminTopbar = ({ railCollapsed = false }: { railCollapsed?: boolean }) => 
       </a>
 
       <header
-        className={`fixed top-0 inset-x-0 z-[100] bg-transparent pt-[env(safe-area-inset-top)] transition-[left,transform] duration-[var(--dur-base)] ease-[var(--ease-smooth)] ${
-          topbarHidden ? '-translate-y-full' : 'translate-y-0'
-        } ${
+        className={`fixed top-0 inset-x-0 z-[100] bg-bg border-b border-border-subtle pt-[env(safe-area-inset-top)] transition-[left] duration-[var(--dur-base)] ease-[var(--ease-smooth)] ${
           railCollapsed ? 'lg:left-[76px]' : 'lg:left-[264px]'
         }`}
       >
@@ -142,30 +104,6 @@ const AdminTopbar = ({ railCollapsed = false }: { railCollapsed?: boolean }) => 
               <span className="text-xs font-black text-accent font-mono tracking-[0.2em]">{"ADMIN"}</span>
             </span>
           </Link>
-
-          {/* Quick tabs — tablet only (md..lg); the sidebar rail owns desktop
-              (lg+) navigation, mirroring the student dashboard pattern */}
-          <nav className="hidden md:flex lg:hidden items-center justify-start flex-1 min-w-0 gap-1">
-            {ADMIN_QUICK_TABS.map((item) => {
-              const Icon = item.icon;
-              const active = isTabActive(item.tab);
-              return (
-                <Link
-                  key={item.path}
-                  to={item.path}
-                  className={`relative flex flex-col items-center gap-1.5 px-5 py-2 text-xs font-black uppercase tracking-widest transition-colors shrink-0 ${
-                    active ? 'text-accent' : 'text-text-secondary hover:text-text-primary active:opacity-70'
-                  }`}
-                >
-                  <Icon size={32} strokeWidth={2.5} className={active ? 'text-accent' : 'text-text-secondary'} />
-                  <span>{item.label}</span>
-                  {active && (
-                    <span className="absolute bottom-0 left-1/4 right-1/4 h-0.5 rounded-full bg-accent" />
-                  )}
-                </Link>
-              );
-            })}
-          </nav>
 
           {/* Right actions */}
           <div className="flex items-center gap-1.5 md:gap-2.5 shrink-0 ml-auto">
