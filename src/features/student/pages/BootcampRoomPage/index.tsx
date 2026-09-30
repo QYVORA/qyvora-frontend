@@ -24,8 +24,6 @@ import useStudentOverview from '@/features/student/hooks/useStudentOverview';
 import type { ApiCourse } from '@/features/student/components/bootcamp-room/types';
 import SEO from '@/shared/components/SEO';
 import { BootcampRoomSkeleton } from '@/features/student/components/StudentSkeletons';
-import { getRelatedContentForHpbRoom } from '@/shared/constants/topicMap';
-import RelatedContent from '@/shared/components/RelatedContent';
 
 // ─────────────────────────────────────────────────────────────────────────────
 // UTILITY: Format time
@@ -370,11 +368,6 @@ const BootcampRoomPage: React.FC = () => {
                     />
                   </div>
                 </>
-              )}
-              {phaseId && roomId && (
-                <div className="mb-8">
-                  <RelatedContent {...getRelatedContentForHpbRoom(phaseId, roomId)} title={"Continue This Topic"} />
-                </div>
               )}
               <LearningNav
                 currentStep={currentStepIdx}
