@@ -1,6 +1,5 @@
 import { motion } from 'motion/react';
 import { useReducedMotion } from '@/shared/hooks/useReducedMotion';
-import CourseBadge from '@/shared/components/CourseBadge';
 import { QyvoraMark } from '@/shared/components/brand';
 import { getCourseById } from '@/features/student/data/courses/courseData';
 import ModuleHeader from './ModuleHeader';
@@ -33,7 +32,7 @@ const CoursesModule: React.FC<CoursesModuleProps> = ({
       transition={{ duration: prefersReduced ? 0 : 0.3, delay: prefersReduced ? 0 : idx * 0.05 }}
       className="flex min-w-0 items-center gap-4 rounded-xl border border-border-subtle bg-surface-raised/60 px-3 py-2.5"
     >
-      <CourseBadge courseId={entry.id} className="h-12 w-12 shrink-0 sm:h-14 sm:w-14" />
+      <QyvoraMark className="h-12 w-12 shrink-0 sm:h-14 sm:w-14" />
       <div className="min-w-0">
         <p className="truncate text-xs font-black uppercase tracking-widest text-text-primary">
           {entry.course?.title}

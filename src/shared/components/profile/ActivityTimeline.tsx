@@ -1,10 +1,8 @@
 import { useMemo } from 'react';
 import { motion } from 'motion/react';
 import { useReducedMotion } from '@/shared/hooks/useReducedMotion';
-import type { ActivityEvent, ProfileData } from '@/shared/types/profile';
+import type { ProfileData } from '@/shared/types/profile';
 import { deriveActivityEvents } from '@/shared/utils/profileDerivations';
-import BootcampBadge from '@/shared/components/BootcampBadge';
-import CourseBadge from '@/shared/components/CourseBadge';
 import { QyvoraMark } from '@/shared/components/brand';
 import ModuleHeader from './ModuleHeader';
 
@@ -66,7 +64,7 @@ const ActivityTimeline: React.FC<ActivityTimelineProps> = ({ profile, className 
               transition={{ duration: prefersReduced ? 0 : 0.3, delay: prefersReduced ? 0 : idx * 0.05 }}
               className="relative flex items-start gap-3 py-3 pl-1"
             >
-              {eventIcon(event, profile)}
+              {eventIcon()}
 
               <div className="min-w-0 flex-1 pt-0.5">
                 <p className="truncate text-sm font-bold leading-snug text-text-primary">
@@ -88,18 +86,7 @@ const ActivityTimeline: React.FC<ActivityTimelineProps> = ({ profile, className 
   );
 };
 
-function eventIcon(event: ActivityEvent, profile: ProfileData): React.ReactNode {
-  if (event.type === 'bootcamp_completed') {
-    return <BootcampBadge completed className="h-8 w-8 shrink-0" />;
-  }
-  if (event.type === 'course_completed') {
-    const courseId = profile.completedCourseIds?.[0];
-    return courseId ? (
-      <CourseBadge courseId={courseId} className="h-8 w-8 shrink-0" />
-    ) : (
-      <GenericBadge icon={<QyvoraMark className="h-4 w-4" />} />
-    );
-  }
+function eventIcon(): React.ReactNode {
   return <GenericBadge icon={<QyvoraMark className="h-4 w-4" />} />;
 }
 
