@@ -17,6 +17,26 @@
       }
     </style>
 
+    <!-- Theme bootstrap: apply the stored preference or the OS theme before the
+         first paint so light-mode devices never flash dark. Reads the same
+         'qyvora_theme' key as ThemeContext ('dark'|'light'|'system'). -->
+    <script>
+      (function () {
+        var theme = 'dark';
+        try {
+          var stored = localStorage.getItem('qyvora_theme');
+          if (stored === 'dark') theme = 'dark';
+          else if (stored === 'light') theme = 'light';
+          else if (stored === 'system' || !stored) {
+            if (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) theme = 'light';
+          }
+        } catch (e) {}
+        var el = document.documentElement;
+        el.setAttribute('data-theme', theme);
+        el.classList.add(theme);
+      })();
+    </script>
+
     <!-- Per-route title, description, canonical, OG, and Twitter tags are injected
          by the prerender script (src/prerender.tsx) during the build, and managed
          client-side by the SEO component for non-prerendered routes. -->

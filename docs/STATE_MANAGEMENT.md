@@ -43,7 +43,7 @@ The user object contains: `uid`, `username`, `email`, `role`, `cp`, `displayName
 
 **Source:** `src/core/contexts/ThemeContext.tsx`
 
-Manages dark/light theme switching. Currently the app is dark-only, but the provider exists for future theme support.
+Manages dark/light theme switching. The default mode is `system` — a device-following theme (`prefers-color-scheme`), tracked live via `matchMedia`; the inline `index.html` bootstrap applies it before first paint to avoid a flash. Users may pin `dark`/`light` or return to `system` from Settings. Explicit choices persist in `qyvora_theme`. `data-theme-persist="dark"` isolates dark-only surfaces (admin, code blocks).
 
 ### ToastContext
 

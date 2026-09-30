@@ -274,7 +274,7 @@ Tool documentation pages render inside `PublicShell` (public navigation + footer
 - Use `cn()` (clsx + tailwind-merge) for conditional class merging
 - Global component classes (`.btn-primary`, `.btn-secondary`, `.card-qyvora`) are defined in `src/styles/index.css`
 - All headings must use the JetBrains Mono font (set globally via `--font-mono`)
-- Dark theme only (`data-theme="dark"` forced by `ThemeContext`)
+- Theme follows the device by default (`ThemeContext` + an inline `index.html` bootstrap that sets `data-theme` before first paint). Modes: `dark` / `light` / `system`; explicit choices persist in `qyvora_theme`. Light ramp and dark isolation (`data-theme-persist="dark"`) live in `src/styles/index.css`
 - Use `lucide-react` for all interface icons; custom SVG icons in `src/shared/components/icons/` only for brand social icons
 
 ---

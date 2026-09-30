@@ -84,7 +84,7 @@ const SelectField: React.FC<{ id: string; ariaLabel: string; value: string; onCh
 const Settings: React.FC = () => {
   const { addToast } = useToast();
   const { preferences, loading: prefsLoading, saving: prefsSaving, updatePreferences, updateNotification, updateLearning, updateDisplay } = usePreferences();
-  const { theme, setTheme } = useThemeContext();
+  const { mode, setMode } = useThemeContext();
   const { section: sectionParam } = useParams<{ section?: string }>();
 
   const activeSection: SettingsSectionId = SETTINGS_SECTIONS.some((s) => s.id === sectionParam)
@@ -234,9 +234,11 @@ const Settings: React.FC = () => {
     } finally { setDeleting(false); setConfirmDelete(false); }
   };
 
-  const handleThemeChange = async (newTheme: 'dark' | 'light') => {
-    setTheme(newTheme);
-    await updateDisplay('theme', newTheme);
+  const handleThemeChange = async (newMode: 'dark' | 'light' | 'system') => {
+    setMode(newMode);
+    if (newMode !== 'system') {
+      await updateDisplay('theme', newMode);
+    }
   };
 
   const handleDataSaverToggle = (enabled: boolean) => {
@@ -266,15 +268,19 @@ const Settings: React.FC = () => {
           {activeSection === 'appearance' && (
             <div className="bg-surface border border-border-subtle rounded-2xl p-5 md:p-8">
               <div>
-                <SettingsRow label={"Theme"} description={"Choose between dark and light mode"}>
+                <SettingsRow label={"Theme"} description={"Follow your device or choose dark and light mode"}>
                   <div className="flex gap-1 bg-surface-raised rounded-xl p-1 border border-border-subtle">
-                    <button onClick={() => handleThemeChange('dark')} aria-pressed={theme === 'dark'}
-                      className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-colors ${theme === 'dark' ? 'bg-accent text-on-accent' : 'text-text-muted hover:text-text-primary'}`}>
+                    <button onClick={() => handleThemeChange('dark')} aria-pressed={mode === 'dark'}
+                      className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-colors ${mode === 'dark' ? 'bg-accent text-on-accent' : 'text-text-muted hover:text-text-primary'}`}>
                       {"Dark"}
                     </button>
-                    <button onClick={() => handleThemeChange('light')} aria-pressed={theme === 'light'}
-                      className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-colors ${theme === 'light' ? 'bg-accent text-on-accent' : 'text-text-muted hover:text-text-primary'}`}>
+                    <button onClick={() => handleThemeChange('light')} aria-pressed={mode === 'light'}
+                      className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-colors ${mode === 'light' ? 'bg-accent text-on-accent' : 'text-text-muted hover:text-text-primary'}`}>
                       {"Light"}
+                    </button>
+                    <button onClick={() => handleThemeChange('system')} aria-pressed={mode === 'system'}
+                      className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-colors ${mode === 'system' ? 'bg-accent text-on-accent' : 'text-text-muted hover:text-text-primary'}`}>
+                      {"System"}
                     </button>
                   </div>
                 </SettingsRow>
