@@ -35,19 +35,20 @@ interface LearningWorkspaceShellProps {
 
 /**
  * LearningWorkspaceShell — the calm chrome for course lesson, bootcamp room
- * and lab workspaces. Back link, one title, factual stats, optional progress,
- * then full-width step content. Step navigation stays inside the page, not in
- * the layout; floating walkthrough toolbars were removed — the sidebar rail is
- * the single dashboard navigation.
+ * and lab workspaces. One title, factual stats, optional progress, then
+ * full-width step content. Exit navigation belongs to the topbar BackButton
+ * (this shell no longer renders its own route-based back link); an `onBack`
+ * callback is kept for scenarios that need a non-route exit. Step navigation
+ * stays inside the page, not in the layout; floating walkthrough toolbars were
+ * removed — the sidebar rail is the single dashboard navigation.
  */
 const LearningWorkspaceShell: React.FC<LearningWorkspaceShellProps> = ({
   kicker,
   icon,
   title,
   description,
-  backTo,
-  backLabel,
   onBack,
+  backLabel,
   stats,
   progress,
   actions,
@@ -56,17 +57,12 @@ const LearningWorkspaceShell: React.FC<LearningWorkspaceShellProps> = ({
   <div className="min-h-dvh w-full bg-canvas">
     <div className="w-full space-y-8 px-3 pb-16 pt-5 md:px-4 md:pb-20 md:pt-8 lg:px-6 lg:pb-24">
       <header className="flex flex-col gap-6">
-        {backTo ? (
-          <Button to={backTo} variant="ghost" className="-ml-2 w-fit">
-            <ArrowLeft className="h-4 w-4" aria-hidden="true" />
-            {backLabel ?? 'Back'}
-          </Button>
-        ) : onBack ? (
+        {onBack && (
           <Button variant="ghost" onClick={onBack} className="-ml-2 w-fit">
             <ArrowLeft className="h-4 w-4" aria-hidden="true" />
             {backLabel ?? 'Back'}
           </Button>
-        ) : null}
+        )}
         <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
           <div className="max-w-2xl">
             {kicker && (

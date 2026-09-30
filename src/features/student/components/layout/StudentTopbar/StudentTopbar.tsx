@@ -1,5 +1,5 @@
-import { Link, useLocation, useNavigate, useMatch } from 'react-router-dom';
-import { IconArrowLeft, IconNotification } from '@/shared/components/icons';
+import { Link, useLocation, useMatch } from 'react-router-dom';
+import { IconNotification } from '@/shared/components/icons';
 import { getCourseById } from '../../../data/courses';
 import { useAuth } from '../../../../../core/contexts/AuthContext';
 import Logo from '../../../../../shared/components/brand/Logo';
@@ -21,21 +21,10 @@ const GUTTER = 'px-3 md:px-4 lg:px-6';
 // Single definition of the mobile CP badge. Every topbar mode renders this one
 // component so the `tour-cp-mobile` tour anchor is defined exactly once.
 const MobileCpBadge = ({ balance }: { balance: number }) => (
-  <div data-tour-id="tour-cp-mobile" className="flex items-center gap-2 px-3 py-2 rounded-xl bg-surface">
+  <div data-tour-id="tour-cp-mobile" className="flex min-h-[44px] items-center gap-2 px-3 rounded-xl bg-surface">
     <CpLogo className="w-4 h-4" />
     <span className="text-xs font-black text-accent">{balance.toLocaleString()}</span>
   </div>
-);
-
-const BackButton = ({ onClick, label }: { onClick: () => void; label: string }) => (
-  <button
-    type="button"
-    onClick={onClick}
-    className="flex h-10 w-10 md:h-12 md:w-12 shrink-0 items-center justify-center rounded-xl transition-colors text-text-secondary hover:bg-surface-raised hover:text-accent active:scale-95 focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-accent"
-    aria-label={label}
-  >
-    <IconArrowLeft size={20} strokeWidth={2.5} />
-  </button>
 );
 
 /**
@@ -43,14 +32,13 @@ const BackButton = ({ onClick, label }: { onClick: () => void; label: string }) 
  *
  * It is NOT a second navigation surface: the sidebar rail owns primary
  * navigation at `lg+` and StudentBottomNav owns it below `lg`, so this bar only
- * carries (a) back navigation and the nested-route hierarchy on learning pages,
+ * carries (a) the nested-route hierarchy (context crumbs) on learning pages,
  * (b) account utilities (CP balance, notifications), and (c) a course progress
  * hairline. Primary navigation is deliberately absent here.
  */
 const StudentTopbar = ({ railCollapsed = false }: { railCollapsed?: boolean }) => {
   const { user } = useAuth();
 
-  const navigate = useNavigate();
   const location = useLocation();
 
   const roomMatch = useMatch('/dashboard/bootcamps/:bootcampId/phases/:phaseId/rooms/:roomId');
@@ -179,32 +167,18 @@ const StudentTopbar = ({ railCollapsed = false }: { railCollapsed?: boolean }) =
 
   // One crumb chain for every nested learning route, so the hierarchy reads the
   // same on a course lesson, a bootcamp room and a lab walkthrough.
+  // Exit navigation is owned by the sidebar rail; these crumbs are context only.
   let crumbs: BreadcrumbItem[] = [];
-  let backTo = '';
-  let backLabel = '';
 
   if (isRoomPage) {
-    backTo = `/dashboard/bootcamps/${roomBootcampId}`;
-    backLabel = 'Back to curriculum';
     crumbs = [
-      { label: 'Bootcamp', to: backTo },
       ...(roomBreadcrumb?.phaseTitle ? [{ label: roomBreadcrumb.phaseTitle }] : []),
       { label: roomBreadcrumb?.roomTitle ?? 'Room' },
     ];
   } else if (isCoursePage) {
-    backTo = '/dashboard/courses';
-    backLabel = 'Back to courses';
-    crumbs = [
-      { label: 'Courses', to: backTo },
-      { label: courseTitle ?? 'Course' },
-    ];
+    crumbs = [{ label: courseTitle ?? 'Course' }];
   } else if (isLabPage) {
-    backTo = '/dashboard/labs';
-    backLabel = 'Back to labs';
-    crumbs = [
-      { label: 'Labs', to: backTo },
-      { label: (labMatch?.params?.labType ?? 'Lab').replace(/-/g, ' ') },
-    ];
+    crumbs = [{ label: (labMatch?.params?.labType ?? 'Lab').replace(/-/g, ' ') }];
   }
 
   return (
@@ -225,13 +199,11 @@ const StudentTopbar = ({ railCollapsed = false }: { railCollapsed?: boolean }) =
           /* ══ LEARNING CONTEXT — back + nested hierarchy + utilities ══ */
           <div className={`flex flex-col ${BAR}`}>
             <div className={`flex flex-1 items-center gap-2 md:gap-3 ${GUTTER}`}>
-              <BackButton onClick={() => navigate(backTo)} label={backLabel} />
-
               <Breadcrumb items={crumbs} className="flex-1" />
 
               <div className="flex shrink-0 items-center gap-1.5 md:gap-2.5">
                 {isCoursePage && courseMeta && (
-                  <span className="hidden font-mono text-xs text-text-muted sm:inline">
+                  <span className="hidden min-h-[44px] items-center rounded-xl border border-border-subtle bg-surface px-3 font-mono text-xs font-bold text-text-primary sm:flex">
                     {courseMeta.currentLessonIdx + 1}/{courseMeta.totalLessons}
                   </span>
                 )}
