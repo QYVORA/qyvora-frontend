@@ -52,11 +52,11 @@ const BlogsPage = () => {
 
         <div className="mt-10">
           <div className="flex flex-col gap-3">
-            <div className="flex flex-wrap items-center gap-1.5">
+            <div className="flex flex-wrap items-stretch gap-1.5">
               <button
                 onClick={() => chooseTag('')}
                 aria-pressed={!activeTag}
-                className={`inline-flex min-h-[44px] items-center justify-center whitespace-nowrap rounded-xl px-3 text-xs font-black uppercase tracking-widest transition-colors ${
+                className={`inline-flex min-h-[44px] flex-1 basis-[calc(50%-3px)] sm:basis-auto items-center justify-center whitespace-nowrap rounded-xl px-3 text-xs font-black uppercase tracking-widest transition-colors ${
                   !activeTag ? 'bg-accent text-on-accent' : 'border border-border bg-surface-raised text-text-muted hover:border-accent/50 hover:text-accent'
                 }`}
               >
@@ -67,7 +67,7 @@ const BlogsPage = () => {
                   key={tag}
                   onClick={() => chooseTag(tag)}
                   aria-pressed={activeTag === tag}
-                  className={`inline-flex min-h-[44px] items-center justify-center whitespace-nowrap rounded-xl px-3 text-xs font-black uppercase tracking-widest transition-colors ${
+                  className={`inline-flex min-h-[44px] flex-1 basis-[calc(50%-3px)] sm:basis-auto items-center justify-center whitespace-nowrap rounded-xl px-3 text-xs font-black uppercase tracking-widest transition-colors ${
                     activeTag === tag ? 'bg-accent text-on-accent' : 'border border-border bg-surface-raised text-text-muted hover:border-accent/50 hover:text-accent'
                   }`}
                 >
