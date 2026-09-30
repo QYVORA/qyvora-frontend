@@ -13,16 +13,12 @@ import {
   Bell,
   Settings,
   LogOut,
-  Cog,
   PanelLeftClose,
   PanelLeftOpen,
 } from 'lucide-react';
 import { Logo, QyvoraMark } from '@/shared/components/brand';
-import CpLogo from '@/shared/components/CpLogo';
 import { useAuth } from '@/core/contexts/AuthContext';
 import { useToast } from '@/core/contexts/ToastContext';
-import useStudentOverview from '@/features/student/hooks/useStudentOverview';
-import { extractCpBalance } from '@/shared/utils/cpBalance';
 import api from '@/core/services/api';
 import { Tooltip, TooltipProvider } from '@/shared/components/ui/Tooltip';
 
@@ -72,17 +68,11 @@ const StudentSidebar: React.FC<{ collapsed?: boolean; onToggleCollapse?: () => v
   collapsed = false,
   onToggleCollapse,
 }) => {
-  const { user, logout } = useAuth();
+  const { logout } = useAuth();
   const { addToast } = useToast();
   const navigate = useNavigate();
   const location = useLocation();
-  const { data: overview } = useStudentOverview();
-  const [cpBalance, setCpBalance] = useState(user?.cp ?? 0);
   const [unread, setUnread] = useState(0);
-
-  useEffect(() => {
-    if (overview) setCpBalance(extractCpBalance(overview?.xpSummary) ?? user?.cp ?? 0);
-  }, [overview, user?.uid]);
 
   useEffect(() => {
     let mounted = true;
@@ -117,7 +107,9 @@ const StudentSidebar: React.FC<{ collapsed?: boolean; onToggleCollapse?: () => v
         collapsed ? 'w-[76px]' : 'w-[264px]'
       }`}
     >
-      <div className={`flex h-[80px] items-center border-b border-border-subtle ${collapsed ? 'justify-center px-0' : 'px-5'}`}>
+      {/* Brand header height matches the shell topbar so the two horizontal
+          rules line up across the sidebar / content divide. */}
+      <div className={`flex h-20 items-center border-b border-border-subtle md:h-24 ${collapsed ? 'justify-center px-0' : 'px-5'}`}>
         {collapsed ? <QyvoraMark className="h-7 w-7" /> : <Logo size="md" />}
       </div>
 
@@ -166,22 +158,9 @@ const StudentSidebar: React.FC<{ collapsed?: boolean; onToggleCollapse?: () => v
       </nav>
 
       <div className="border-t border-border-subtle px-3 py-3">
-        {!collapsed ? (
-          <div className="mb-2 flex items-center justify-between gap-2 px-2">
-            <CpLogo className="h-4 w-4" />
-            <span className="type-label font-bold text-accent tabular-nums">{cpBalance.toLocaleString()}</span>
-          </div>
-        ) : (
-          <div className="mb-2 flex justify-center">
-            <Tooltip content={`${cpBalance.toLocaleString()} CP`} side="right">
-              <div className="flex min-h-[48px] min-w-[48px] flex-col items-center justify-center gap-0.5 rounded-xl bg-surface-raised px-1 py-1.5">
-                <CpLogo className="h-4 w-4" />
-                <span className="text-[9px] font-bold leading-tight text-accent tabular-nums">{cpBalance.toLocaleString()}</span>
-              </div>
-            </Tooltip>
-          </div>
-        )}
-
+        {/* Utility cluster — tools that live outside the page navigation tree.
+            Persistent navigation stays in the sections above, so Settings is
+            not repeated here. */}
         <div
           className={`mb-2 flex items-center justify-center gap-1.5 rounded-xl bg-surface-raised p-1.5 ${
             collapsed ? 'flex-col' : ''
@@ -196,11 +175,6 @@ const StudentSidebar: React.FC<{ collapsed?: boolean; onToggleCollapse?: () => v
             <Tooltip content={"Network Lab"}>
               <button type="button" onClick={openNetwork} aria-label={"Network Lab"} className={`flex min-h-[48px] min-w-[48px] ${collapsed ? 'w-full' : 'flex-1'} items-center justify-center rounded-xl border border-transparent text-text-secondary transition-colors hover:border-border-subtle hover:text-accent focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-accent`}>
                 <Network className="h-[18px] w-[18px]" aria-hidden="true" />
-              </button>
-            </Tooltip>
-            <Tooltip content={"Settings"}>
-              <button type="button" onClick={() => navigate('/dashboard/settings')} aria-label={"Settings"} className={`flex min-h-[48px] min-w-[48px] ${collapsed ? 'w-full' : 'flex-1'} items-center justify-center rounded-xl border border-transparent text-text-secondary transition-colors hover:border-border-subtle hover:text-accent focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-accent`}>
-                <Cog className="h-[18px] w-[18px]" aria-hidden="true" />
               </button>
             </Tooltip>
           </TooltipProvider>
