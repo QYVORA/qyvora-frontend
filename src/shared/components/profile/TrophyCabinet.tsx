@@ -1,6 +1,9 @@
 import { useMemo } from 'react';
 import { motion } from 'motion/react';
 import { useReducedMotion } from '@/shared/hooks/useReducedMotion';
+import BootcampBadge from '@/shared/components/BootcampBadge';
+import CpLogo from '@/shared/components/CpLogo';
+import CourseBadge from '@/shared/components/CourseBadge';
 import { QyvoraMark } from '@/shared/components/brand';
 import type { ProfileData } from '@/shared/types/profile';
 import { TIER_STYLES } from '@/shared/types/profile';
@@ -13,6 +16,7 @@ interface TrophyCabinetProps {
 }
 
 const RANK_TROPHY_ID_PREFIX = 'rank-';
+const COURSE_TROPHY_IDS = new Set(['scholar', 'course-graduate', 'first-course']);
 
 /**
  * Trophy artwork — real webp assets live in `src/assets/trophies/<id>.webp`
@@ -34,7 +38,7 @@ function resolveTrophyArt(id: string): string | undefined {
   return undefined;
 }
 
-function TrophyVisual({ id }: { id: string }) {
+function TrophyVisual({ id, profile }: { id: string; profile: ProfileData }) {
   const art = resolveTrophyArt(id);
   if (art) {
     return (
@@ -48,7 +52,12 @@ function TrophyVisual({ id }: { id: string }) {
       />
     );
   }
-  return <QyvoraMark className="w-10 h-10" />;
+  if (id === 'hpb-graduate') return <BootcampBadge completed className="w-12 h-12" />;
+  if (id.startsWith(RANK_TROPHY_ID_PREFIX)) return <CpLogo className="w-8 h-8" />;
+  if (COURSE_TROPHY_IDS.has(id) && profile.completedCourseIds?.[0]) {
+    return <CourseBadge courseId={profile.completedCourseIds[0]} className="w-10 h-10" />;
+  }
+  return <QyvoraMark className="w-8 h-8" />;
 }
 
 const TrophyCabinet: React.FC<TrophyCabinetProps> = ({ profile, className = '' }) => {
@@ -88,7 +97,7 @@ const TrophyCabinet: React.FC<TrophyCabinetProps> = ({ profile, className = '' }
               transition={{ duration: prefersReduced ? 0 : 0.3, delay: prefersReduced ? 0 : idx * 0.05 }}
               className="flex flex-col items-center text-center p-4"
             >
-              <TrophyVisual id={trophy.id} />
+              <TrophyVisual id={trophy.id} profile={profile} />
               <h4 className="mt-3 mb-1 text-xs font-black uppercase tracking-widest leading-tight text-text-primary">
                 {trophy.title}
               </h4>
