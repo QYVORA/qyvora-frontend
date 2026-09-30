@@ -8,6 +8,7 @@ import SEO from '@/shared/components/SEO';
 import CpLogo from '@/shared/components/CpLogo';
 import { AuthImage } from '@/shared/components/ui';
 import PageHeader from '@/shared/components/ui/PageHeader';
+import PageBody from '@/shared/components/layout/PageBody';
 import EmptyState from '@/shared/components/ui/EmptyState';
 import { extractCpBalance } from '@/shared/utils/cpBalance';
 import { formatNumber } from '@/shared/utils/formatNumber';
@@ -123,7 +124,7 @@ const Marketplace: React.FC = () => {
   return (
     <div className="min-h-full bg-canvas">
       <SEO title={"Marketplace"} description={"Redeem your CyberPoints for gear, courses, and rewards."} noindex />
-      <div className="w-full space-y-8 px-3 pb-16 md:px-4 md:pb-20 lg:px-6 lg:pb-24">
+      <PageBody spacing="sections">
         <PageHeader
           kicker={"Marketplace"}
           title={"Marketplace"}
@@ -307,7 +308,7 @@ const Marketplace: React.FC = () => {
             </div>
           )}
         </div>
-      </div>
+      </PageBody>
     </div>
   );
 };

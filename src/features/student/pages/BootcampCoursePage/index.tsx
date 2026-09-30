@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState, useMemo } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import {
   ArrowLeft, ChevronRight, Lock, CheckCircle2,
   Loader2, ArrowRight, Play, ListChecks,
@@ -17,6 +17,7 @@ import SEO from '@/shared/components/SEO';
 import FadeIn from '@/shared/components/ui/FadeIn';
 import PageHeader from '@/shared/components/ui/PageHeader';
 import Button from '@/shared/components/ui/Button';
+import PageBody from '@/shared/components/layout/PageBody';
 import { BootcampCourseSkeleton } from '@/features/student/components/StudentSkeletons';
 import PhaseSection from '@/features/student/components/bootcamp-course/PhaseSection';
 import { LearningFilterStrip } from '@/shared/components/learning';
@@ -143,7 +144,7 @@ const BootcampCourse: React.FC = () => {
         noindex
       />
 
-      <div className="w-full px-3 pb-16 pt-6 md:px-4 md:pb-20 md:pt-8 lg:px-6 lg:pb-24">
+      <PageBody spacing="sections">
         <PageHeader
           kicker={"QYVORA · Bootcamp"}
           title={course?.title || "Bootcamp"}
@@ -161,8 +162,6 @@ const BootcampCourse: React.FC = () => {
             ) : undefined
           }
         />
-
-        <div className="w-full space-y-8">
 
         <LearningFilterStrip
           filters={phaseFilters}
@@ -182,12 +181,13 @@ const BootcampCourse: React.FC = () => {
                   <p className="text-sm font-bold text-text-primary">{nextRoomLabel.phase}, {nextRoomLabel.room}</p>
                 </div>
               </div>
-              <Link
+              <Button
                 to={nextRoomLabel.path}
-                className="btn-primary inline-flex items-center gap-1.5 px-4 py-2.5 shrink-0"
+                trailingIcon={<Play className="h-3 w-3" />}
+                className="shrink-0"
               >
-                {"Continue"} <Play className="h-3 w-3" />
-              </Link>
+                {"Continue"}
+              </Button>
             </div>
           </div>
         )}
@@ -204,8 +204,7 @@ const BootcampCourse: React.FC = () => {
             />
           );
         })}
-      </div>
-      </div>
+      </PageBody>
     </div>
     </FadeIn>
   );

@@ -8,6 +8,7 @@ import SEO from '../../../shared/components/SEO';
 import Button from '../../../shared/components/ui/Button';
 import FadeIn from '../../../shared/components/ui/FadeIn';
 import PageHeader from '../../../shared/components/ui/PageHeader';
+import PageBody from '@/shared/components/layout/PageBody';
 import SectionHeader from '../../../shared/components/ui/SectionHeader';
 import { SettingsSkeleton } from '../components/StudentSkeletons';
 import { usePreferences } from '../../../shared/hooks/usePreferences';
@@ -250,7 +251,7 @@ const Settings: React.FC = () => {
     <>
       <SEO title={"Settings"} description={"Account and learning preferences."} noindex />
 
-      <div className="bg-canvas min-h-full px-3 md:px-4 lg:px-6 pt-8 pb-16 md:pb-20">
+      <PageBody>
 
         {/* Page header */}
         <PageHeader
@@ -505,7 +506,7 @@ const Settings: React.FC = () => {
           )}
 
         </div>
-      </div>
+      </PageBody>
     </>
     </FadeIn>
   );

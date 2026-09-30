@@ -7,6 +7,7 @@ import { useSkillAchievements } from '../../../shared/hooks/useSkillAchievements
 import EditModal from '../components/profile/EditModal';
 import { ProfileSkeleton } from '../components/StudentSkeletons';
 import SEO from '../../../shared/components/SEO';
+import PageBody from '@/shared/components/layout/PageBody';
 import ProfileIdentityBlock from '../../../shared/components/profile/ProfileIdentityBlock';
 import CpLogo from '../../../shared/components/CpLogo';
 import { QyvoraMark } from '../../../shared/components/brand';
@@ -79,8 +80,8 @@ const Profile: React.FC = () => {
         noindex
       />
 
-      <div className="w-full px-3 pb-16 pt-6 md:px-4 md:pb-20 md:pt-8 lg:px-6 lg:pb-24">
-        <div className="grid gap-6 lg:grid-cols-12 lg:gap-8">
+      <PageBody>
+    <div className="grid gap-6 lg:grid-cols-12 lg:gap-8">
           <aside className="lg:col-span-4">
             <div className="space-y-6 lg:sticky lg:top-24">
               <section id="profile-section-identity">
@@ -172,7 +173,7 @@ const Profile: React.FC = () => {
             </section>
           </main>
         </div>
-      </div>
+      </PageBody>
 
       {isOwnProfile && (
         <EditModal

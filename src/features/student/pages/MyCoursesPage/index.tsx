@@ -1,5 +1,4 @@
 import React, { useEffect, useState, useMemo } from 'react';
-import { Link } from 'react-router-dom';
 import {
   Clock, ArrowRight, GraduationCap, Search, CheckCircle2,
   Play, BarChart3,
@@ -11,6 +10,9 @@ import CourseBadge from '@/shared/components/CourseBadge';
 import api from '@/core/services/api';
 import { MyCoursesSkeleton } from '@/features/student/components/StudentSkeletons';
 import ErrorState from '@/shared/components/ui/ErrorState';
+import Input from '@/shared/components/ui/Input';
+import EmptyState from '@/shared/components/ui/EmptyState';
+import PageBody from '@/shared/components/layout/PageBody';
 import PageHeader from '@/shared/components/ui/PageHeader';
 import Button from '@/shared/components/ui/Button';
 import { LearningFilterStrip } from '@/shared/components/learning';
@@ -134,7 +136,7 @@ const MyCoursesPage: React.FC = () => {
     <div className="min-h-full bg-canvas">
       <SEO title={"My Courses"} description={"Your purchased courses."} noindex />
 
-      <div className="w-full px-3 pb-16 pt-6 md:px-4 md:pb-20 md:pt-8 lg:px-6 lg:pb-24">
+      <PageBody spacing="sections">
         <PageHeader
           kicker={"QYVORA · Learn"}
           title={"My Courses"}
@@ -151,8 +153,6 @@ const MyCoursesPage: React.FC = () => {
           }
         />
 
-        <div className="w-full space-y-8">
-
         {!loading && availableCourses.length > 0 && (
           <LearningFilterStrip
             filters={filterTabs}
@@ -162,17 +162,15 @@ const MyCoursesPage: React.FC = () => {
         )}
 
         {!loading && availableCourses.length > 0 && (
-          <div className="relative">
-            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-text-muted" />
-            <input
-              type="text"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder={"Search courses…"}
-              aria-label={"Search courses…"}
-              className="w-full bg-surface border border-border-subtle rounded-xl py-3 pl-11 pr-4 text-sm font-mono text-text-primary placeholder:text-text-muted/30 outline-none focus:border-accent transition-colors caret-accent"
-            />
-          </div>
+          <Input
+            icon={<Search className="h-4 w-4" />}
+            type="text"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            placeholder={"Search courses…"}
+            aria-label={"Search courses…"}
+            className="rounded-xl bg-surface"
+          />
         )}
 
         {loading && <MyCoursesSkeleton />}
@@ -220,13 +218,20 @@ const MyCoursesPage: React.FC = () => {
         )}
 
         {!loading && availableCourses.length > 0 && filteredAvailable.length === 0 && (
-          <div className="text-center py-16 space-y-3">
-            <Search className="h-10 w-10 text-text-muted/20 mx-auto" />
-            <p className="text-text-muted text-sm">{"No courses match your search."}</p>
-            <button onClick={() => { setSearchQuery(''); setActiveTab('all'); }} className="text-accent text-xs font-black uppercase tracking-widest hover:underline">
-              {"Clear"}
-            </button>
-          </div>
+          <EmptyState
+            icon={<Search className="h-5 w-5" aria-hidden="true" />}
+            title={"No courses match your search."}
+            description={"Try a different keyword or clear your filters."}
+            action={
+              <Button
+                onClick={() => { setSearchQuery(''); setActiveTab('all'); }}
+                variant="secondary"
+                size="sm"
+              >
+                {"Clear"}
+              </Button>
+            }
+          />
         )}
 
         {!loading && lockedCourses.length > 0 && (
@@ -269,19 +274,14 @@ const MyCoursesPage: React.FC = () => {
         )}
 
         {!loading && !fetchError && availableCourses.length === 0 && (
-          <div className="text-center py-20 space-y-4">
-            <GraduationCap className="h-16 w-16 text-text-muted/20 mx-auto" />
-            <p className="text-text-muted">{"You aren't enrolled in any bootcamps yet."}</p>
-            <Link
-              to="/dashboard"
-              className="inline-flex items-center gap-2 px-6 py-3 bg-accent text-on-accent rounded-xl text-xs font-black uppercase tracking-widest transition-[filter] duration-[var(--dur-base)] ease-[var(--ease-smooth)] hover:brightness-110"
-            >
-              {"Browse Bootcamps"} <ArrowRight className="h-3 w-3" />
-            </Link>
-          </div>
+          <EmptyState
+            icon={<GraduationCap className="h-5 w-5" aria-hidden="true" />}
+            title={"You aren't enrolled in any bootcamps yet."}
+            description={"Browse the Hacker Protocol Bootcamp to begin your first module."}
+            action={<Button to="/dashboard" trailingIcon={<ArrowRight className="h-3 w-3" />}>{"Browse Bootcamps"}</Button>}
+          />
         )}
-      </div>
-      </div>
+      </PageBody>
 
       {selectedCourseId && (
         <CoursePurchaseModal

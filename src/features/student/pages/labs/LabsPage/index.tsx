@@ -2,6 +2,7 @@ import { useMemo } from 'react';
 import SEO from '@/shared/components/SEO';
 import LabCard from './LabCard';
 import PageHeader from '@/shared/components/ui/PageHeader';
+import PageBody from '@/shared/components/layout/PageBody';
 import Button from '@/shared/components/ui/Button';
 import { LearningCatalogue } from '@/shared/components/learning';
 import type { LearningCatalogueItem } from '@/shared/components/learning';
@@ -31,7 +32,7 @@ const LabsPage = () => {
   return (
     <div className="min-h-full bg-canvas">
       <SEO title={"Attack Labs"} description={"Hands-on offensive security simulations on QYVORA."} noindex />
-      <div className="w-full space-y-8 px-3 pb-16 pt-6 md:px-4 md:pb-20 md:pt-8 lg:px-6 lg:pb-24">
+      <PageBody spacing="sections">
         <PageHeader
           kicker={"QYVORA · Practice"}
           title={"Attack Labs"}
@@ -72,7 +73,7 @@ const LabsPage = () => {
           emptyTitle={"No labs found"}
           emptyDescription={"Try adjusting your search or filter criteria."}
         />
-      </div>
+      </PageBody>
     </div>
   );
 };

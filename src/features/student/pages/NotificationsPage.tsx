@@ -8,6 +8,7 @@ import SEO from '@/shared/components/SEO';
 import ErrorState from '@/shared/components/ui/ErrorState';
 import EmptyState from '@/shared/components/ui/EmptyState';
 import PageHeader from '@/shared/components/ui/PageHeader';
+import PageBody from '@/shared/components/layout/PageBody';
 import Button from '@/shared/components/ui/Button';
 import { NotificationsSkeleton } from '../components/StudentSkeletons';
 
@@ -112,12 +113,12 @@ const Notifications: React.FC = () => {
     return (
       <div className="min-h-full bg-canvas">
         <SEO title={"Notifications"} description={"System alerts, mission updates, and activity notifications on QYVORA."} />
-        <div className="w-full px-3 pb-16 pt-6 md:px-4 md:pb-20 md:pt-8 lg:px-6 lg:pb-24">
+        <PageBody>
           <PageHeader title={"Notifications"} />
           <div className="mt-8">
             <ErrorState title={"Failed to load notifications."} message={"Check your connection and try again."} />
           </div>
-        </div>
+        </PageBody>
       </div>
     );
   }
@@ -126,7 +127,7 @@ const Notifications: React.FC = () => {
     <div className="min-h-full bg-canvas">
       <SEO title={"Notifications"} description={"System alerts, mission updates, and activity notifications on QYVORA."} noindex />
 
-      <div className="w-full px-3 pb-16 pt-6 md:px-4 md:pb-20 md:pt-8 lg:px-6 lg:pb-24">
+      <PageBody>
         <PageHeader
           kicker={"Inbox"}
           title={"Notifications"}
@@ -210,7 +211,7 @@ const Notifications: React.FC = () => {
             )}
           </div>
         )}
-      </div>
+      </PageBody>
     </div>
   );
 };
