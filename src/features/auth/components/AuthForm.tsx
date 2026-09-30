@@ -1,14 +1,40 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { User, Mail, LogIn } from 'lucide-react';
+import { User, Mail } from 'lucide-react';
 import { cn } from '@/shared/utils/cn';
 import { useReducedMotion } from '@/shared/hooks/useReducedMotion';
+import { useToast } from '@/core/contexts/ToastContext';
+import { BrandGithubIcon, BrandGoogleIcon } from '@/shared/components/icons';
 import PasswordInput from './PasswordInput';
 import HandleSuggestions from '@/shared/components/HandleSuggestions';
 import Input from '@/shared/components/ui/Input';
 import Button from '@/shared/components/ui/Button';
 
 export type AuthMode = 'login' | 'register';
+
+/**
+ * OAuthIcons — GitHub + Google sign-in, icon-only row rendered below the main
+ * credentials form. Providers are not wired up yet, so clicking one surfaces a
+ * "coming soon" toast instead of starting a flow.
+ */
+const OAuthIcons = ({ onOAuthClick }: { onOAuthClick: (provider: 'GitHub' | 'Google') => void }) => {
+  const iconBtn =
+    'flex h-12 w-12 items-center justify-center rounded-xl border border-border-subtle bg-surface-raised ' +
+    'text-text-secondary transition-[background-color,border-color,color] duration-[var(--dur-base)] ease-[var(--ease-smooth)] ' +
+    'hover:border-accent/40 hover:text-accent active:scale-95 ' +
+    'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent';
+
+  return (
+    <div className="flex items-center justify-center gap-3">
+      <button type="button" onClick={() => onOAuthClick('GitHub')} className={iconBtn} aria-label={"Continue with GitHub"}>
+        <BrandGithubIcon className="h-5 w-5" />
+      </button>
+      <button type="button" onClick={() => onOAuthClick('Google')} className={iconBtn} aria-label={"Continue with Google"}>
+        <BrandGoogleIcon className="h-5 w-5" />
+      </button>
+    </div>
+  );
+};
 
 interface AuthFormProps {
   mode: AuthMode;
@@ -46,6 +72,11 @@ const AuthForm: React.FC<AuthFormProps> = ({
   onRegisterSubmit,
 }) => {
   const prefersReduced = useReducedMotion();
+  const { addToast } = useToast();
+
+  const handleOAuthClick = (provider: 'GitHub' | 'Google') => {
+    addToast(`${provider} sign-in is coming soon.`, 'info');
+  };
 
   const modes: AuthMode[] = ['login', 'register'];
   const modeLabels: Record<AuthMode, string> = {
@@ -58,7 +89,7 @@ const AuthForm: React.FC<AuthFormProps> = ({
     : { initial: { opacity: 0, y: 8 }, exit: { opacity: 0, y: -8 } };
 
   return (
-    <div className="w-full space-y-5">
+    <div className="w-full space-y-4 md:space-y-5">
       <p className="sr-only" aria-live="polite">{formMessage}</p>
 
       {/* Quiet mode toggle */}
@@ -92,14 +123,14 @@ const AuthForm: React.FC<AuthFormProps> = ({
             transition={prefersReduced ? { duration: 0 } : { duration: 0.2, ease: [0.22, 1, 0.36, 1] }}
             className="w-full rounded-xl border border-border-subtle bg-surface p-5 sm:p-8"
           >
-            <div className="mb-8">
+            <div className="mb-5 md:mb-8">
               <h1 className="type-h2 mb-1 font-black uppercase tracking-tight text-text-primary">
                 {"Welcome back,"} <span className="text-accent">{"Operator"}</span>
               </h1>
               <p className="type-body-sm">{"Sign in to continue your training."}</p>
             </div>
 
-            <form className="space-y-5" onSubmit={onLoginSubmit} noValidate>
+            <form className="space-y-4 md:space-y-5" onSubmit={onLoginSubmit} noValidate>
               <div className="space-y-2">
                 <label htmlFor="login-email" className={labels.base}>{"Email"}</label>
                 <Input
@@ -128,6 +159,10 @@ const AuthForm: React.FC<AuthFormProps> = ({
               <Button type="submit" size="lg" className="w-full" disabled={isLoading} loading={isLoading}>
                 {"Sign In"}
               </Button>
+
+              <div className="border-t border-border-subtle pt-4 md:pt-5">
+                <OAuthIcons onOAuthClick={handleOAuthClick} />
+              </div>
             </form>
           </motion.div>
         ) : (
@@ -138,14 +173,14 @@ const AuthForm: React.FC<AuthFormProps> = ({
             transition={prefersReduced ? { duration: 0 } : { duration: 0.2, ease: [0.22, 1, 0.36, 1] }}
             className="w-full rounded-xl border border-border-subtle bg-surface p-5 sm:p-8"
           >
-            <div className="mb-8">
+            <div className="mb-5 md:mb-8">
               <h1 className="type-h2 mb-1 font-black uppercase tracking-tight text-text-primary">
                 {"Join"} <span className="text-accent">QYVORA</span>
               </h1>
               <p className="type-body-sm">{"Create your account to start learning."}</p>
             </div>
 
-            <form className="space-y-5" onSubmit={onRegisterSubmit}>
+            <form className="space-y-4 md:space-y-5" onSubmit={onRegisterSubmit}>
               <div className="space-y-2">
                 <label htmlFor="register-handle" className={labels.base}>{"Operator Handle"}</label>
                 <Input
@@ -167,7 +202,7 @@ const AuthForm: React.FC<AuthFormProps> = ({
                 />
               </div>
 
-              <div className="grid gap-5 sm:grid-cols-2">
+              <div className="grid gap-4 sm:grid-cols-2 md:gap-5">
                 <div className="space-y-2">
                   <label htmlFor="register-full-name" className={labels.base}>{"Full Name"}</label>
                   <Input
@@ -198,7 +233,7 @@ const AuthForm: React.FC<AuthFormProps> = ({
                 </div>
               </div>
 
-              <div className="grid gap-5 sm:grid-cols-2">
+              <div className="grid gap-4 sm:grid-cols-2 md:gap-5">
                 <div className="space-y-2">
                   <label htmlFor="register-password" className={labels.base}>{"Password"}</label>
                   <PasswordInput id="register-password" name="password" autoComplete="new-password" />
@@ -215,6 +250,10 @@ const AuthForm: React.FC<AuthFormProps> = ({
               <Button type="submit" size="lg" className="w-full" disabled={isLoading} loading={isLoading}>
                 {"Create Account"}
               </Button>
+
+              <div className="border-t border-border-subtle pt-4 md:pt-5">
+                <OAuthIcons onOAuthClick={handleOAuthClick} />
+              </div>
             </form>
           </motion.div>
         )}
