@@ -5,7 +5,6 @@ import {
   IconCheck,
   IconLock,
   IconClock,
-  IconDashboard,
 } from '@/shared/components/icons';
 import HpbAvatar from '@/shared/components/HpbAvatar';
 import ScrollReveal from '../../../shared/components/ScrollReveal';
@@ -36,7 +35,9 @@ const StudentBootcampCard: React.FC<Props> = ({ data, index = 0, onEnroll, onLoc
   const { id, title, description, level, duration, priceLabel, progress, isEnrolled, isLocked } = data;
   const isComplete = progress === 100;
 
-  const cardClasses = `relative aspect-square rounded-2xl border border-border-subtle bg-surface p-4 md:p-5 transition-[transform,box-shadow,border-color] duration-[var(--dur-base)] ease-[var(--ease-smooth)] flex flex-col text-left ${
+  // Matches the catalogue row geometry used by LearningCard so bootcamp, course
+  // and lab cards share one height inside the same grid.
+  const cardClasses = `relative h-full min-h-[220px] rounded-2xl border border-border-subtle bg-surface p-4 md:p-5 transition-[border-color] duration-[var(--dur-base)] ease-[var(--ease-smooth)] flex flex-col text-left ${
     isLocked
       ? 'opacity-40 cursor-default'
       : 'hover:border-accent/40'

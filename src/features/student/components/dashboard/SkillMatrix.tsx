@@ -1,4 +1,5 @@
 import { useMemo } from 'react';
+import SectionHeader from '@/shared/components/ui/SectionHeader';
 import {
   SKILL_DEFINITIONS,
   computeAllSkills,
@@ -40,19 +41,16 @@ const SkillMatrix = ({ modules }: SkillMatrixProps) => {
 
   return (
     <div className="relative">
-      {/* Section header */}
-      <div className="flex items-center justify-between gap-3 mb-4 md:mb-6">
-        <div>
-          <h2 className="type-h2 font-black uppercase tracking-tight text-text-primary">
-            {"Skill Matrix"}
-          </h2>
-          <p className="type-meta mt-1.5">
-            {"Overall"} &middot; {average}%
-          </p>
-        </div>
-      </div>
+      <SectionHeader
+        title={"Skill Matrix"}
+        actions={
+          <span className="type-meta">
+            {"Overall"} &middot; <span className="font-mono font-black text-text-primary">{average}%</span>
+          </span>
+        }
+      />
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-5 lg:h-[480px]">
+      <div className="mt-4 grid grid-cols-1 gap-4 md:gap-5 lg:grid-cols-2 lg:h-[480px]">
         {/* Radar Chart Card */}
         <div className="rounded-2xl border border-border-subtle bg-surface p-5 md:p-6 flex flex-col min-h-[420px] lg:min-h-0">
           <div className="flex-1 min-h-0 flex items-center justify-center">

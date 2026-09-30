@@ -1,5 +1,6 @@
 import { Badge } from '@/shared/components/ui';
-import { IconTarget } from '@/shared/components/icons';
+import { Check } from 'lucide-react';
+import Skeleton from '@/shared/components/ui/Skeleton';
 import type { EngagementResponse } from '@/features/student/data/missions';
 
 interface WeeklyOperationCardProps {
@@ -12,21 +13,21 @@ const WeeklyOperationCard = ({ engagement, loading }: WeeklyOperationCardProps) 
 
   if (loading) {
     return (
-      <div className="card-accent bg-surface p-5 md:p-6 animate-pulse">
-        <div className="h-5 w-40 bg-border/30 rounded mb-4" />
-        <div className="h-6 w-56 bg-border/30 rounded mb-3" />
-        <div className="h-4 w-full bg-border/20 rounded mb-5" />
-        <div className="h-9 w-28 bg-border/30 rounded" />
+      <div className="rounded-2xl border border-border-subtle bg-surface p-5 md:p-6">
+        <Skeleton className="mb-4 h-4 w-32" />
+        <Skeleton className="mb-3 h-6 w-48" />
+        <Skeleton className="mb-5 h-4 w-full" />
+        <Skeleton className="h-10 w-28" />
       </div>
     );
   }
 
+  const doneSteps = operation.steps.filter(s => s.completed).length;
+  const remainingCp = operation.steps.filter(s => !s.completed).reduce((sum, s) => sum + s.cpReward, 0);
+
   return (
-    <div className="card-accent bg-surface p-6 md:p-7">
-      <div className="flex items-center gap-3 mb-4">
-        <div className="w-9 h-9 rounded-xl flex items-center justify-center bg-accent/10 shrink-0">
-          <IconTarget size={18} className="text-accent" />
-        </div>
+    <div className="rounded-2xl border border-border-subtle bg-surface p-5 md:p-6">
+      <div className="mb-4 flex flex-wrap items-center gap-3">
         <span className="text-xs font-black uppercase tracking-widest text-text-muted">
           {"Weekly Operation"}
         </span>
@@ -35,65 +36,56 @@ const WeeklyOperationCard = ({ engagement, loading }: WeeklyOperationCardProps) 
         </Badge>
       </div>
 
-      <h3 className="text-lg md:text-xl font-black text-text-primary mb-3">
+      <h3 className="mb-3 text-lg font-black leading-tight text-text-primary md:text-xl">
         {operation.title}
       </h3>
 
-      <p className="text-sm md:text-base text-text-muted mb-5 line-clamp-2">
-        {operation.brief}
-      </p>
+      <p className="mb-5 line-clamp-2 text-sm text-text-secondary">{operation.brief}</p>
 
       <div className="mb-6">
-        <div className="flex items-center justify-between mb-2.5">
-          <span className="text-xs font-mono text-text-muted">
-            {operation.steps.filter(s => s.completed).length}/{operation.steps.length} {"steps"}
-          </span>
-          <span className="text-xs font-mono text-accent font-bold">
-            +{operation.cpReward} CP
-          </span>
+        <div className="mb-2.5 flex items-center justify-between">
+          <span className="type-meta">{doneSteps}/{operation.steps.length} {"steps"}</span>
+          <span className="font-mono text-xs font-bold text-accent">+{operation.cpReward} CP</span>
         </div>
-        <div className="h-3 bg-surface-raised rounded-full overflow-hidden">
+        <div className="h-1.5 overflow-hidden rounded-full bg-surface-raised">
           <div
-            className="h-full bg-accent rounded-full transition-[width] duration-700"
+            className="h-full rounded-full bg-accent transition-[width] duration-[var(--dur-slow)] ease-[var(--ease-smooth)]"
             style={{ width: `${Math.min(progress * 100, 100)}%` }}
           />
         </div>
       </div>
 
-      <div className="space-y-4 mb-6">
+      <ul className="mb-6 space-y-3">
         {operation.steps.map(step => (
-          <div key={step.id} className="flex items-center gap-3">
-            <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center shrink-0 ${step.completed ? 'bg-accent border-accent' : 'border-border'}`}>
-              {step.completed && (
-                <svg className="w-3.5 h-3.5 text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-                </svg>
-              )}
-            </div>
+          <li key={step.id} className="flex items-center gap-3">
+            <span
+              className={`flex h-5 w-5 shrink-0 items-center justify-center rounded-full border ${
+                step.completed ? 'border-accent bg-accent' : 'border-border-subtle'
+              }`}
+              aria-hidden="true"
+            >
+              {step.completed && <Check className="h-3 w-3 text-on-accent" strokeWidth={3} />}
+            </span>
             <span className={`text-sm ${step.completed ? 'text-text-muted line-through' : 'text-text-primary'}`}>
               {step.label}
             </span>
-            <span className="text-xs font-mono text-accent ml-auto font-bold">
-              +{step.cpReward}
-            </span>
-          </div>
+            <span className="ml-auto font-mono text-xs font-bold text-accent">+{step.cpReward}</span>
+          </li>
         ))}
-      </div>
+      </ul>
 
       {status === 'completed' ? (
-        <div className="flex items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2">
           <Badge variant="success" size="sm">
             {"Completed"}
           </Badge>
           <Badge variant="accent" size="sm">
             {operation.badge}
           </Badge>
-          <span className="text-xs font-mono text-accent font-bold">+{cpAwarded} CP</span>
+          <span className="font-mono text-xs font-bold text-accent">+{cpAwarded} CP</span>
         </div>
       ) : (
-        <div className="flex items-center gap-4 text-xs font-mono text-text-muted">
-          <span>+{operation.steps.filter(s => !s.completed).reduce((sum, s) => sum + s.cpReward, 0)} CP {"remaining"}</span>
-        </div>
+        <span className="type-meta">+{remainingCp} CP {"remaining"}</span>
       )}
     </div>
   );

@@ -1,47 +1,42 @@
-import { Link } from 'react-router-dom';
-import { IconArrowRight } from '@/shared/components/icons';
+import { EmptyState } from '@/shared/components/ui';
 import type { StudentBootcampCardData } from '@/features/student/components/StudentBootcampCard';
 import StudentBootcampCard from '@/features/student/components/StudentBootcampCard';
-import Dobia from '@/shared/components/Dobia';
+import { BookOpen } from 'lucide-react';
 
 interface ActiveDeploymentsProps {
   bootcamps: StudentBootcampCardData[];
-  loading?: boolean;
+  /** Cap the number of cards so the catalogue row stays predictable. */
+  limit?: number;
+  className?: string;
 }
 
-const EmptyDeployments = () => {
-  return (
-    <div className="relative overflow-hidden rounded-2xl border-2 border-dashed border-border-subtle py-12 text-center h-full min-h-[220px] flex flex-col items-center justify-center bg-transparent">
-      <div className="mx-auto mb-3">
-        <Dobia expression="confused" size="xl" />
-      </div>
-      <p className="mb-4 text-sm text-text-muted">{"No active deployments."}</p>
-      <Link
-        to="/dashboard/bootcamps"
-        className="btn-primary !text-xs !px-6 !py-2.5 flex items-center gap-1.5"
-      >
-        {"Start Training"} <IconArrowRight size={14} className="inline-block ml-1.5" />
-      </Link>
-    </div>
-  );
-};
+const GRID = 'grid gap-4 sm:grid-cols-2 lg:grid-cols-3 md:gap-5';
 
-const ActiveDeployments = ({ bootcamps }: ActiveDeploymentsProps) => {
+/**
+ * ActiveDeployments — the bootcamp row of the dashboard catalogue.
+ *
+ * Owns its own grid (or the empty state) but deliberately renders no section
+ * title or "View all" link: the dashboard page owns those, so a second header
+ * inside would duplicate it.
+ */
+const ActiveDeployments = ({ bootcamps, limit = 3, className = '' }: ActiveDeploymentsProps) => {
+  const visible = bootcamps.slice(0, limit);
+
+  if (visible.length === 0) {
+    return (
+      <EmptyState
+        icon={<BookOpen className="h-5 w-5" aria-hidden="true" />}
+        title={"No active deployments."}
+        description={"Enrol in the Hacker Protocol Bootcamp to begin your first mission."}
+      />
+    );
+  }
+
   return (
-    <div className="flex flex-col gap-6 h-full">
-      <div className="flex items-center justify-between">
-        <h3 className="type-label uppercase tracking-[0.12em] text-text-tertiary">{"Active Deployments"}</h3>
-        <Link to="/dashboard/bootcamps" className="text-xs font-black uppercase tracking-widest text-accent hover:underline">{"View All"}</Link>
-      </div>
-      {bootcamps.length === 0 ? (
-        <EmptyDeployments />
-      ) : (
-        bootcamps.slice(0, 1).map((item, idx) => (
-          <div key={item.id} className="h-full">
-            <StudentBootcampCard data={item} index={idx} />
-          </div>
-        ))
-      )}
+    <div className={`${GRID} ${className}`}>
+      {visible.map((item, idx) => (
+        <StudentBootcampCard key={item.id} data={item} index={idx} />
+      ))}
     </div>
   );
 };

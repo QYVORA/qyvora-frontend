@@ -30,7 +30,7 @@ export const ProgressionPanel = ({ progression, fallbackLabel }: ProgressionPane
         type="button"
         onClick={() => setExpanded((v) => !v)}
         aria-expanded={expanded}
-        className="w-full p-6 md:p-8 lg:p-10 text-left"
+        className="w-full p-5 md:p-6 text-left"
       >
         <div className="flex items-center justify-between mb-3">
           <span className="flex items-center gap-2 text-xs font-black uppercase tracking-widest text-text-muted">
@@ -82,9 +82,9 @@ export const ProgressionPanel = ({ progression, fallbackLabel }: ProgressionPane
       </button>
 
       {expanded && (
-        <div className="px-6 pb-6 md:px-8 lg:px-10 border-t border-border-subtle pt-4">
+        <div className="px-5 pb-5 md:px-6 md:pb-6 border-t border-border-subtle pt-4">
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-            <div className="rounded-xl bg-surface-raised p-4">
+            <div className="rounded-xl bg-surface-raised p-3.5">
               <span className="block text-xs font-black uppercase tracking-widest text-text-muted">
                 {"Progression Points"}
               </span>
@@ -92,7 +92,7 @@ export const ProgressionPanel = ({ progression, fallbackLabel }: ProgressionPane
                 {points.toLocaleString()}
               </span>
             </div>
-            <div className="rounded-xl bg-surface-raised p-4">
+            <div className="rounded-xl bg-surface-raised p-3.5">
               <span className="block text-xs font-black uppercase tracking-widest text-text-muted">
                 {"Current Rank"}
               </span>
@@ -100,7 +100,7 @@ export const ProgressionPanel = ({ progression, fallbackLabel }: ProgressionPane
                 {currentLabel || '—'}
               </span>
             </div>
-            <div className="rounded-xl bg-surface-raised p-4">
+            <div className="rounded-xl bg-surface-raised p-3.5">
               <span className="block text-xs font-black uppercase tracking-widest text-text-muted">
                 {capped
                   ? "Max Rank"

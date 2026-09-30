@@ -1,6 +1,5 @@
-import { Link } from 'react-router-dom';
-import { Badge } from '@/shared/components/ui';
-import { IconFire } from '@/shared/components/icons';
+import { Badge, Button } from '@/shared/components/ui';
+import Skeleton from '@/shared/components/ui/Skeleton';
 import type { EngagementResponse } from '@/features/student/data/missions';
 
 interface DailyMissionCardProps {
@@ -19,21 +18,18 @@ const DailyMissionCard = ({ engagement, loading }: DailyMissionCardProps) => {
 
   if (loading) {
     return (
-      <div className="card-accent bg-surface p-6 md:p-8 animate-pulse">
-        <div className="h-5 w-40 bg-border/30 rounded mb-4" />
-        <div className="h-7 w-56 bg-border/30 rounded mb-3" />
-        <div className="h-4 w-full bg-border/20 rounded mb-5" />
-        <div className="h-9 w-28 bg-border/30 rounded" />
+      <div className="rounded-2xl border border-border-subtle bg-surface p-5 md:p-6">
+        <Skeleton className="mb-4 h-4 w-32" />
+        <Skeleton className="mb-3 h-6 w-48" />
+        <Skeleton className="mb-5 h-4 w-full" />
+        <Skeleton className="h-10 w-28" />
       </div>
     );
   }
 
   return (
-    <div className="card-accent bg-surface p-6 md:p-8">
-      <div className="flex items-center gap-3 mb-5">
-        <div className="w-10 h-10 rounded-xl flex items-center justify-center bg-accent/10">
-          <IconFire size={20} className="text-accent" />
-        </div>
+    <div className="rounded-2xl border border-border-subtle bg-surface p-5 md:p-6">
+      <div className="mb-5 flex flex-wrap items-center gap-3">
         <span className="text-xs font-black uppercase tracking-widest text-text-muted">
           {"Daily Mission"}
         </span>
@@ -42,21 +38,15 @@ const DailyMissionCard = ({ engagement, loading }: DailyMissionCardProps) => {
         </Badge>
       </div>
 
-      <h3 className="text-xl md:text-2xl font-black text-text-primary mb-3">
+      <h3 className="mb-3 text-lg font-black leading-tight text-text-primary md:text-xl">
         {mission.title}
       </h3>
 
-      <p className="text-sm md:text-base text-text-muted mb-5 line-clamp-2">
-        {mission.brief}
-      </p>
+      <p className="mb-5 line-clamp-2 text-sm text-text-secondary">{mission.brief}</p>
 
-      <div className="flex items-center gap-5 mb-6">
-        <span className="text-xs font-mono text-text-muted">
-          {mission.estimatedTime}
-        </span>
-        <span className="text-xs font-mono text-accent font-bold">
-          +{mission.cpReward} CP
-        </span>
+      <div className="mb-6 flex flex-wrap items-center gap-x-5 gap-y-2">
+        <span className="type-meta">{mission.estimatedTime}</span>
+        <span className="font-mono text-xs font-bold text-accent">+{mission.cpReward} CP</span>
       </div>
 
       {status === 'completed' ? (
@@ -64,15 +54,15 @@ const DailyMissionCard = ({ engagement, loading }: DailyMissionCardProps) => {
           <Badge variant="success" size="sm">
             {"Completed"}
           </Badge>
-          <span className="text-xs font-mono text-accent font-bold">+{cpAwarded} CP</span>
+          <span className="font-mono text-xs font-bold text-accent">+{cpAwarded} CP</span>
         </div>
       ) : (
-        <Link
+        <Button
           to={mission.actionType === 'lab_flag' ? '/dashboard/labs' : '/dashboard/courses'}
-          className="btn-primary inline-flex items-center justify-center gap-2 px-5 py-2.5 text-xs w-full sm:w-auto text-center"
+          size="sm"
         >
           {"Start Mission"}
-        </Link>
+        </Button>
       )}
     </div>
   );

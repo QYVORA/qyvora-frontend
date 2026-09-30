@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import type { ReactNode } from 'react';
 import { useAuth } from '@/core/contexts/AuthContext';
 import { useToast } from '@/core/contexts/ToastContext';
 import api from '@/core/services/api';
@@ -9,7 +10,8 @@ import {
 } from '@/features/student/utils/studentExperience';
 import useStudentOverview from '@/features/student/hooks/useStudentOverview';
 import useEngagement from '@/features/student/hooks/useEngagement';
-import { ErrorState, FadeIn, EmptyState } from '@/shared/components/ui';
+import { Button, Card, EmptyState, ErrorState, FadeIn, PageHeader, SectionHeader } from '@/shared/components/ui';
+import PageBody from '@/shared/components/layout/PageBody';
 import { DashboardSkeleton } from '@/features/student/components/StudentSkeletons';
 import SEO from '@/shared/components/SEO';
 import StudentTour from '@/features/student/components/StudentTour';
@@ -23,20 +25,12 @@ import WeekActivity from '@/features/student/components/dashboard/WeekActivity';
 import ActiveDeployments from '@/features/student/components/dashboard/ActiveDeployments';
 import SkillMatrix from '@/features/student/components/dashboard/SkillMatrix';
 import ProgressionPanel from '@/features/student/components/dashboard/ProgressionPanel';
-import { Card, Metric } from '@/shared/components/ui/Card';
 import ScrollReveal from '@/shared/components/ScrollReveal';
-import Button from '@/shared/components/ui/Button';
-import {
-  ShoppingBag,
-  Flame,
-  Crown,
-  Download,
-} from 'lucide-react';
+import { ShoppingBag, Download } from 'lucide-react';
 import { IconTerminal, IconNetwork } from '@/shared/components/icons';
 import LearningCard from '@/shared/components/learning/LearningCard';
 import CourseBadge from '@/shared/components/CourseBadge';
 import { LABS } from '@/features/student/constants/labs';
-import CpLogo from '@/shared/components/CpLogo';
 import { COURSES } from '@/features/student/data/courses';
 import { isInstallable, showInstallPrompt } from '@/features/student/services/pwa';
 import type { LabDef } from '@/features/student/constants/labs';
@@ -50,6 +44,30 @@ const TOOLS = [
   { id: 'terminal', label: 'Terminal', desc: 'Kali Linux terminal emulator', route: '/dashboard/tools/terminal', icon: IconTerminal },
   { id: 'network-visualizer', label: 'Network Visualizer', desc: 'Build and explore network topologies', route: '/dashboard/tools/network-visualizer', icon: IconNetwork },
 ];
+
+const GRID = 'grid gap-4 sm:grid-cols-2 lg:grid-cols-3 md:gap-5';
+
+/**
+ * CatalogueGroup — one labelled row of learning items inside the catalogue
+ * section. The dashboard repeats this five times (bootcamps, courses, labs,
+ * tools, marketplace); the label, the "View all" action and the grid are
+ * identical each time, so they live here instead of being copy-pasted.
+ */
+const CatalogueGroup = ({
+  label, viewAllTo, children,
+}: { label: string; viewAllTo?: string; children: ReactNode }) => (
+  <div>
+    <div className="mb-4 flex items-center justify-between gap-4">
+      <h3 className="type-label uppercase tracking-[0.12em] text-text-tertiary">{label}</h3>
+      {viewAllTo && (
+        <Button to={viewAllTo} variant="ghost" size="sm">
+          {"View All"}
+        </Button>
+      )}
+    </div>
+    {children}
+  </div>
+);
 
 function pickCpBalance(userCp: number, overview: any, cpBalance: number | null): number {
   const fromOverview = extractCpBalance(overview?.xpSummary) ?? extractCpBalance(overview);
@@ -140,279 +158,230 @@ const Dashboard = () => {
   const overviewModules = Array.isArray(overview?.modules) ? overview.modules : [];
   const totalRoomsDone = overviewModules.reduce((sum: number, m: any) => sum + Number(m.roomsCompleted || 0), 0);
   const allDone = isEnrolled && !nextMission && totalRoomsDone > 0;
-  const streakDays = overview?.xpSummary?.streakDays ?? null;
+  const streakDays = overview?.xpSummary?.streakDays ?? 0;
   const visitDates = overview?.xpSummary?.visitDates ?? [];
   const visitDurations = overview?.xpSummary?.visitDurations ?? {};
   const rankName = effectiveRankName;
 
-  if (loading) return <DashboardSkeleton />;
+  if (loading || overviewLoading) return <DashboardSkeleton />;
+
+  // One objective, one CTA — the hero owns the page's only primary action.
+  const hero = allDone
+    ? {
+        title: 'All missions complete',
+        body: 'You have completed every available room. Review the curriculum or pick up a lab.',
+        ctaLabel: 'Review Curriculum',
+      }
+    : isEnrolled
+      ? {
+          title: nextMission?.title || overview?.progressMeta?.currentPhase?.title || 'Continue your training',
+          body: 'Pick up where you left off.',
+          ctaLabel: 'Continue',
+        }
+      : {
+          title: 'Begin your journey',
+          body: 'Start the Hacker Protocol Bootcamp and earn your first CP.',
+          ctaLabel: 'Start Training',
+        };
 
   return (
     <FadeIn>
-    <div>
-      <SEO title={"Dashboard"} description={"Operator dashboard | QYVORA"} noindex />
-      <StudentOnboardingModal />
-      <StudentTour cpBalance={cpBalance} username={user?.username ?? ''} />
+      <div className="min-h-full bg-canvas">
+        <SEO title={"Dashboard"} description={"Operator dashboard | QYVORA"} noindex />
+        <StudentOnboardingModal />
+        <StudentTour cpBalance={cpBalance} username={user?.username ?? ''} />
 
-      {syncError && (
-        <div className="bg-canvas px-3 pt-8 md:px-4 lg:px-6">
-          <ErrorState message={syncError} title="Sync Failed" />
-        </div>
-      )}
-
-      {/* 1. Continue — current objective + daily mission */}
-      <div className="bg-canvas px-3 pb-6 pt-8 md:px-4 lg:px-6">
-        <ScrollReveal>
-          <div className="grid grid-cols-1 gap-4 lg:grid-cols-[1fr_340px] lg:gap-6">
-            <DashboardHero
-              isEnrolled={isEnrolled}
-              allDone={allDone}
-              nextMission={nextMission}
-              continuePath={continuePath}
-              currentPhaseTitle={overview?.progressMeta?.currentPhase?.title}
-              username={user?.username}
-            />
-            {engagement && (
-              <DailyMissionCard engagement={engagement} loading={engagementLoading} />
-            )}
-          </div>
-        </ScrollReveal>
-      </div>
-
-      {/* 2. Today — weekly operation + streak */}
-      <div className="bg-canvas px-3 pb-6 md:px-4 lg:px-6">
-        <div className="mb-4">
-          <p className="type-label mb-1.5 uppercase tracking-[0.12em] text-accent">
-            {"Today"}
-          </p>
-          <h2 className="type-h2 font-black uppercase tracking-tight text-text-primary">
-            {"What's on for today."}
-          </h2>
-        </div>
-        <div className="grid grid-cols-1 gap-4 lg:grid-cols-2 lg:gap-6">
-          {engagement && (
-            <WeeklyOperationCard engagement={engagement} loading={engagementLoading} />
-          )}
-          {visitDates.length > 0 && (
-            <Card className="flex flex-col p-5 md:p-6">
-              <div className="mb-2">
-                <p className="type-label mb-1.5 uppercase tracking-[0.12em] text-accent">
-                  {"Weekly track"}
-                </p>
-                <h3 className="type-h2 font-black uppercase tracking-tight text-text-primary">
-                  {"Week at a Glance"}
-                </h3>
+        <PageBody spacing="sections">
+          <PageHeader
+            kicker={"QYVORA · Dashboard"}
+            title={"Dashboard"}
+            description={"Resume your training, track progress, and pick up something new."}
+            metadata={
+              <div className="flex flex-wrap items-center gap-x-6 gap-y-2">
+                <span className="type-meta">
+                  <span className="font-mono text-sm font-black text-accent">{cpBalance.toLocaleString()}</span> CP
+                </span>
+                <span className="type-meta">
+                  <span className="font-mono text-sm font-black text-text-primary">{rankName}</span> Rank
+                </span>
+                <span className="type-meta">
+                  <span className="font-mono text-sm font-black text-text-primary">{streakDays}d</span> Streak
+                </span>
               </div>
-              <WeekActivity visitDates={visitDates} visitDurations={visitDurations} />
+            }
+          />
+
+          {syncError && (
+            <ErrorState message={syncError} title="Sync Failed" />
+          )}
+
+          {/* 1. Primary — the single most important thing on the page */}
+          <ScrollReveal>
+            <SectionHeader title={"Continue"} />
+            <div className="mt-4 grid grid-cols-1 gap-4 lg:grid-cols-[minmax(0,1fr)_340px] lg:gap-6">
+              <DashboardHero
+                username={user?.username}
+                title={hero.title}
+                body={hero.body}
+                ctaLabel={hero.ctaLabel}
+                continuePath={continuePath}
+              />
+              {engagement && <DailyMissionCard engagement={engagement} loading={engagementLoading} />}
+            </div>
+          </ScrollReveal>
+
+          {/* 2. Secondary — today's engagement */}
+          <ScrollReveal>
+            <SectionHeader title={"Today"} />
+            <div className="mt-4 grid grid-cols-1 gap-4 lg:grid-cols-2 lg:gap-6">
+              {engagement ? (
+                <WeeklyOperationCard engagement={engagement} loading={engagementLoading} />
+              ) : (
+                <Card className="flex flex-col justify-center p-5 md:p-6">
+                  <p className="type-label uppercase tracking-[0.12em] text-text-tertiary">
+                    {"Weekly Operation"}
+                  </p>
+                  <p className="type-body-sm mt-2">{"No weekly operation is active right now."}</p>
+                </Card>
+              )}
+              {visitDates.length > 0 && (
+                <Card className="flex flex-col p-5 md:p-6">
+                  <h3 className="type-h3 mb-4 text-text-primary">{"Week at a Glance"}</h3>
+                  <WeekActivity visitDates={visitDates} visitDurations={visitDurations} />
+                </Card>
+              )}
+            </div>
+            <div className="mt-4">
+              <CpEarnHint engagement={engagement} loading={engagementLoading} />
+            </div>
+          </ScrollReveal>
+
+          {/* 3. Tertiary — the permanent catalogue */}
+          <ScrollReveal>
+            <SectionHeader
+              title={"Your Learning"}
+              description={"Everything you are enrolled in, plus the tools you work with."}
+            />
+            <div className="mt-6 space-y-8">
+              <CatalogueGroup label={"Bootcamp"} viewAllTo="/dashboard/bootcamps">
+                <ActiveDeployments bootcamps={enrolledBootcamps} />
+              </CatalogueGroup>
+
+              <CatalogueGroup label={"Courses"} viewAllTo="/dashboard/courses">
+                <div className={GRID}>
+                  {COURSES.slice(0, 3).map((course) => (
+                    <LearningCard
+                      key={course.id}
+                      type="course"
+                      to={`/dashboard/courses/${course.id}`}
+                      title={course.title}
+                      description={course.description}
+                      badge={<CourseBadge courseId={course.id} className="w-14 h-14 shrink-0" />}
+                      difficulty={course.skillLevel}
+                      lessonsCount={course.lessons.length}
+                      cpReward={course.cpCost}
+                      actionLabel={"View"}
+                    />
+                  ))}
+                </div>
+              </CatalogueGroup>
+
+              <CatalogueGroup label={"Labs"} viewAllTo="/dashboard/labs">
+                <div className={GRID}>
+                  {LABS.slice(0, 3).map((lab: LabDef) => (
+                    <LearningCard
+                      key={lab.id}
+                      id={lab.id}
+                      type="lab"
+                      to={lab.route}
+                      title={lab.title}
+                      description={lab.desc}
+                      difficulty={lab.difficulty}
+                      cpReward={lab.cpReward}
+                      actionLabel={"View"}
+                    />
+                  ))}
+                </div>
+              </CatalogueGroup>
+
+              <CatalogueGroup label={"Tools"}>
+                <div className={GRID}>
+                  {TOOLS.map((tool) => {
+                    const ToolIcon = tool.icon;
+                    return (
+                      <LearningCard
+                        key={tool.id}
+                        type="resource"
+                        to={tool.route}
+                        title={tool.label}
+                        description={tool.desc}
+                        icon={<ToolIcon className="h-7 w-7" aria-hidden="true" />}
+                        actionLabel={"View"}
+                      />
+                    );
+                  })}
+                </div>
+              </CatalogueGroup>
+
+              <CatalogueGroup label={"Marketplace"} viewAllTo="/dashboard/marketplace">
+                {products.length > 0 ? (
+                  <div className={GRID}>
+                    {products.slice(0, 3).map((product: any) => {
+                      const id = String(product?.id || '');
+                      const title = String(product?.title || "Intelligence Asset");
+                      const description = String(product?.description || "Secure intelligence report for offensive security operatives.");
+                      return (
+                        <LearningCard
+                          key={id || title}
+                          type="product"
+                          to="/dashboard/marketplace"
+                          title={title}
+                          description={description}
+                          icon={<ShoppingBag className="h-7 w-7" aria-hidden="true" />}
+                          isFree={product?.isFree}
+                          price={product?.isFree ? undefined : `${Number(product?.cpPrice || 0).toLocaleString()} CP`}
+                          actionLabel={"View"}
+                        />
+                      );
+                    })}
+                  </div>
+                ) : (
+                  <EmptyState
+                    icon={<ShoppingBag className="h-5 w-5" aria-hidden="true" />}
+                    title={"No intelligence assets yet."}
+                    description={"Browse the marketplace to spend your CP."}
+                    action={<Button to="/dashboard/marketplace" variant="secondary" size="sm">{"View All"}</Button>}
+                  />
+                )}
+              </CatalogueGroup>
+            </div>
+          </ScrollReveal>
+
+          {/* 4. Skill coverage */}
+          <SkillMatrix modules={overviewModules} />
+
+          {/* 5. Rank progression */}
+          {progression && <ProgressionPanel progression={progression} fallbackLabel={rankName} />}
+
+          {/* 6. Tertiary — platform prompt */}
+          {canInstall && (
+            <Card className="flex flex-col gap-4 p-5 sm:flex-row sm:items-center md:p-6">
+              <div className="flex flex-1 items-center gap-3">
+                <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg border border-border-subtle bg-surface-raised text-accent">
+                  <Download className="h-5 w-5" aria-hidden="true" />
+                </span>
+                <div className="min-w-0">
+                  <p className="text-sm font-bold text-text-primary">{"Install QYVORA"}</p>
+                  <p className="type-meta">{"Get the full experience with our desktop app."}</p>
+                </div>
+              </div>
+              <Button onClick={handleInstall} disabled={installing} loading={installing} className="sm:ml-auto">
+                {"Install"}
+              </Button>
             </Card>
           )}
-        </div>
-        <div className="mt-5">
-          <CpEarnHint engagement={engagement} loading={engagementLoading} />
-        </div>
+        </PageBody>
       </div>
-
-      {/* 3. Three metrics — CP / rank / streak */}
-      <div className="bg-canvas px-3 pb-6 md:px-4 lg:px-6">
-        <div className="grid grid-cols-1 gap-4 md:gap-5 sm:grid-cols-3">
-          <Card className="p-6 md:p-7">
-            <Metric
-              icon={<CpLogo className="h-5 w-5" />}
-              label={"CP"}
-              value={cpBalance.toLocaleString()}
-              accent
-            />
-          </Card>
-          <Card className="p-6 md:p-7">
-            <Metric
-              icon={<Crown className="h-5 w-5" aria-hidden="true" />}
-              label={"Rank"}
-              value={rankName}
-            />
-          </Card>
-          <Card className="p-6 md:p-7">
-            <Metric
-              icon={<Flame className="h-5 w-5" aria-hidden="true" />}
-              label={"Streak"}
-              value={`${streakDays ?? 0}d`}
-            />
-          </Card>
-        </div>
-      </div>
-
-      {/* PWA install */}
-      {canInstall && (
-        <div className="bg-canvas px-3 pb-6 md:px-4 lg:px-6">
-          <Card className="flex flex-col gap-4 p-5 sm:flex-row sm:items-center md:p-6">
-            <div className="flex flex-1 items-center gap-3">
-              <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg border border-border-subtle bg-surface-raised text-accent">
-                <Download className="h-5 w-5" aria-hidden="true" />
-              </span>
-              <div className="min-w-0">
-                <p className="text-sm font-bold text-text-primary">{"Install QYVORA"}</p>
-                <p className="type-meta">{"Get the full experience with our desktop app."}</p>
-              </div>
-            </div>
-            <Button onClick={handleInstall} disabled={installing} loading={installing} className="sm:ml-auto">
-              {"Install"}
-            </Button>
-          </Card>
-        </div>
-      )}
-
-      {/* 4. Recent learning — permanent library, no toggles */}
-      <div className="bg-canvas px-3 pb-10 md:px-4 lg:px-6">
-        <ScrollReveal>
-          <div className="mb-6">
-            <p className="type-label mb-1.5 uppercase tracking-[0.12em] text-accent">
-              {"Recent learning"}
-            </p>
-            <h2 className="type-h2 font-black uppercase tracking-tight text-text-primary">
-              {"Your catalog"}
-            </h2>
-            <p className="type-body mt-2 max-w-prose">{"Pick up any of your recent work, or start something new."}</p>
-          </div>
-        </ScrollReveal>
-
-        {/* Bootcamps */}
-        {enrolledBootcamps.length > 0 && (
-          <div className="mt-8">
-            <div className="mb-4 flex items-center justify-between">
-              <h3 className="type-label uppercase tracking-[0.12em] text-text-tertiary">{"Bootcamp"}</h3>
-              <Button to="/dashboard/bootcamps" variant="ghost" size="sm">
-                {"View All"}
-              </Button>
-            </div>
-            <ActiveDeployments bootcamps={enrolledBootcamps} />
-          </div>
-        )}
-
-        {/* Courses */}
-        <div className="mt-8">
-          <div className="mb-4 flex items-center justify-between">
-            <h3 className="type-label uppercase tracking-[0.12em] text-text-tertiary">{"Courses"}</h3>
-            <Button to="/dashboard/courses" variant="ghost" size="sm">
-              {"View All"}
-            </Button>
-          </div>
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {COURSES.slice(0, 3).map((course) => (
-              <LearningCard
-                key={course.id}
-                type="course"
-                to={`/dashboard/courses/${course.id}`}
-                title={course.title}
-                description={course.description}
-                badge={<CourseBadge courseId={course.id} className="w-14 h-14 shrink-0" />}
-                difficulty={course.skillLevel}
-                lessonsCount={course.lessons.length}
-                cpReward={course.cpCost}
-                actionLabel={"View"}
-              />
-            ))}
-          </div>
-        </div>
-
-        {/* Labs */}
-        <div className="mt-8">
-          <div className="mb-4 flex items-center justify-between">
-            <h3 className="type-label uppercase tracking-[0.12em] text-text-tertiary">{"Labs"}</h3>
-            <Button to="/dashboard/labs" variant="ghost" size="sm">
-              {"View All"}
-            </Button>
-          </div>
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {LABS.slice(0, 3).map((lab: LabDef) => (
-              <LearningCard
-                key={lab.id}
-                id={lab.id}
-                type="lab"
-                to={lab.route}
-                title={lab.title}
-                description={lab.desc}
-                difficulty={lab.difficulty}
-                cpReward={lab.cpReward}
-                actionLabel={"View"}
-              />
-            ))}
-          </div>
-        </div>
-
-        {/* Tools */}
-        <div className="mt-8">
-          <div className="mb-4 flex items-center justify-between">
-            <h3 className="type-label uppercase tracking-[0.12em] text-text-tertiary">{"Tools"}</h3>
-          </div>
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {TOOLS.map((tool) => {
-              const ToolIcon = tool.icon;
-              return (
-                <LearningCard
-                  key={tool.id}
-                  type="resource"
-                  to={tool.route}
-                  title={tool.label}
-                  description={tool.desc}
-                  icon={<ToolIcon className="h-7 w-7" aria-hidden="true" />}
-                  actionLabel={"View"}
-                />
-              );
-            })}
-          </div>
-        </div>
-
-        {/* Marketplace */}
-        <div className="mt-8">
-          <div className="mb-4 flex items-center justify-between">
-            <h3 className="type-label uppercase tracking-[0.12em] text-text-tertiary">{"Marketplace"}</h3>
-            <Button to="/dashboard/marketplace" variant="ghost" size="sm">
-              {"View All"}
-            </Button>
-          </div>
-          {products.length > 0 ? (
-            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-              {products.slice(0, 3).map((product: any) => {
-                const id = String(product?.id || '');
-                const title = String(product?.title || "Intelligence Asset");
-                const description = String(product?.description || "Secure intelligence report for offensive security operatives.");
-                return (
-                  <LearningCard
-                    key={id || title}
-                    type="product"
-                    to="/dashboard/marketplace"
-                    title={title}
-                    description={description}
-                    icon={<ShoppingBag className="h-7 w-7" aria-hidden="true" />}
-                    isFree={product?.isFree}
-                    price={product?.isFree ? undefined : `${Number(product?.cpPrice || 0).toLocaleString()} CP`}
-                    actionLabel={"View"}
-                  />
-                );
-              })}
-            </div>
-          ) : (
-            <EmptyState
-              icon={<ShoppingBag className="h-5 w-5" aria-hidden="true" />}
-              title={"No intelligence assets yet."}
-              description={"Browse the marketplace to spend your CP."}
-              action={<Button to="/dashboard/marketplace" variant="secondary" size="sm">{"View All"}</Button>}
-            />
-          )}
-        </div>
-      </div>
-
-      {/* 5. Skill matrix */}
-      <div className="bg-canvas px-3 py-10 md:px-4 lg:px-6">
-        <SkillMatrix modules={overviewModules} />
-      </div>
-
-      {/* 6. Progression */}
-      {progression && (
-        <div className="bg-canvas px-3 pb-20 pt-10 lg:px-6 lg:pb-24">
-          <ProgressionPanel progression={progression} fallbackLabel={rankName} />
-        </div>
-      )}
-    </div>
     </FadeIn>
   );
 };
