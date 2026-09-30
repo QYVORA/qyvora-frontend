@@ -24,7 +24,7 @@ export const DiagramFrame: React.FC<DiagramFrameProps> = ({
   className,
   children,
 }) => (
-  <div className={cn('wc-diagram relative overflow-hidden rounded-xl border border-border/50 bg-bg-card p-4 md:p-5', className)}>
+  <div data-theme-persist="dark" className={cn('wc-diagram relative overflow-hidden rounded-xl border border-border/50 bg-bg-card p-4 md:p-5', className)}>
     {title && (
       <div className="mb-4 flex items-center gap-2">
         {icon}

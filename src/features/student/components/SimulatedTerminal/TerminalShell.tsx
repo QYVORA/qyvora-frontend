@@ -535,7 +535,7 @@ export const TerminalShell: React.FC<TerminalShellProps> = ({
   const prefix = getInputPrefix(stateRef.current);
 
   return (
-    <div className="flex flex-col h-full" style={{ background: KALI_BG }}>
+    <div data-theme-persist="dark" className="flex flex-col h-full" style={{ background: KALI_BG }}>
       {showChrome && (
         <div
           className="flex items-center justify-between px-2.5 py-1 shrink-0 border-b"

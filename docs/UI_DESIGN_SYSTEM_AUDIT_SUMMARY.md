@@ -212,7 +212,7 @@ All measurements are implementation-level, not generic descriptions.
 **Surface Ladder:**
 - Dark: #000000 → #080808 → #050505 → #0b0b0b
 - Calm: #0b0d0e → #121617 → #181d1e
-- Light: #D9DED5 → #E1E6DC → #E8EBE4 (soft green-grey)
+- Light: #E9ECE4 → #DFE3D8 → #D3D9CB (soft green-grey; surfaces deepen as they lift)
 
 **Generated Art (7 regions only):**
 1. Landing hero (desktop + mobile)

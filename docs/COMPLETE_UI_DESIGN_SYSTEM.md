@@ -158,19 +158,20 @@ const TOKEN_CLASSES = {
 
 ```css
 [data-theme="light"] {
-  --color-canvas:         #D9DED5    /* Soft green-grey, not white */
-  --color-bg-card:        #E1E6DC
-  --color-bg-elevated:    #E8EBE4
-  --color-bg-alt:         #C7CEC1
-  --color-text-primary:   #262B23
-  --color-text-secondary: rgba(38, 43, 35, 0.86)
-  --color-text-muted:     rgba(38, 43, 35, 0.64)
-  --color-border:         rgba(22, 26, 21, 0.24)
-  /* Accent stays #06B66F */
+  --color-canvas:         #E9ECE4    /* Soft green-grey, not white */
+  --color-bg-card:        #DFE3D8
+  --color-bg-elevated:    #D3D9CB
+  --color-bg-alt:         #C9CFBE
+  --color-text-primary:   #161C15
+  --color-text-secondary: rgba(22, 28, 21, 0.86)
+  --color-text-muted:     rgba(22, 28, 21, 0.70)
+  --color-border:         rgba(22, 28, 21, 0.16)
+  /* Accent fills/borders stay #06B66F; text accent resolves to the deeper
+     --color-accent-text (#0B6937) so text passes AA on light surfaces. */
 }
 ```
 
-**Critical:** Light mode is NOT "everything white". Soft green-grey surfaces with intentional contrast. Code blocks and terminals stay dark via `data-theme-persist="dark"`.
+**Critical:** Light mode is NOT "everything white". Soft green-grey surfaces with intentional contrast. Surfaces *deepen* as they lift (page is the lightest step, cards/sheets step darker — the mirror of the dark ramp). Code blocks, terminals, simulations, diagrams and cyber panels stay dark via `data-theme-persist="dark"`.
 
 ### Acceptable Raw Hex Exceptions
 

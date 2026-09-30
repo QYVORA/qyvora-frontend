@@ -289,7 +289,7 @@ const NetworkBuilderInner: React.FC<NetworkBuilderProps> = ({ open, onOpenChange
   // ── Shell ────────────────────────────────────────────────────────────────
 
   const shell = (
-    <div className="flex flex-col h-full bg-bg">
+    <div data-theme-persist="dark" className="flex flex-col h-full bg-bg">
       {/* Title bar */}
       <div className="flex items-center justify-between px-3 py-2 bg-bg-elevated border-b border-border/20 shrink-0">
         <div className="flex items-center gap-2">

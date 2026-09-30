@@ -85,7 +85,7 @@ const CodePlayground: React.FC<CodePlaygroundProps> = ({
   };
 
   return (
-    <div className={`wc-interactive border border-border rounded-xl overflow-hidden my-8 ${className}`}>
+    <div data-theme-persist="dark" className={`wc-interactive border border-border rounded-xl overflow-hidden my-8 ${className}`}>
       <div className="flex items-center justify-between bg-bg-card px-5 py-3 border-b border-border">
         <div className="flex items-center gap-2">
           <IconTerminal size={16} className="text-accent" />

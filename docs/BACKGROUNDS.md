@@ -78,8 +78,9 @@ they are needed for a feature before using; do not stack them.
 ## Light theme behavior (Phase G.27)
 
 - Light mode is not "everything white": `[data-theme="light"]` overrides in
-  `index.css` set soft green-grey counters (`#D9DED5` canvas) with intentional
-  shadows and stronger borders.
+  `index.css` set soft green-grey counters (`#E9ECE4` canvas) with intentional
+  shadows and stronger borders; surfaces deepen as they lift
+  (`#DFE3D8` → `#D3D9CB`), mirroring the dark ramp.
 - Terminals and code blocks stay dark technical in light mode: `CodeBlock`
   carries `data-theme-persist="dark"`, and `SimulatedTerminal` is hardcoded
   dark (`#0c0c0c`) with the accent-green cursor/exec palette.

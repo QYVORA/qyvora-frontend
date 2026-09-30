@@ -36,7 +36,7 @@ const OSIcon = ({ os }: { os: string }) => {
   if (os.toLowerCase().includes('windows')) return <Monitor className="w-3.5 h-3.5 text-info" />;
   if (os.toLowerCase().includes('ubuntu') || os.toLowerCase().includes('debian') || os.toLowerCase().includes('fedora') || os.toLowerCase().includes('linux')) return <Server className="w-3.5 h-3.5 text-accent" />;
   if (os.toLowerCase().includes('cisco')) return <Router className="w-3.5 h-3.5 text-warning" />;
-  if (os.toLowerCase().includes('embedded')) return <HardDrive className="w-3.5 h-3.5 text-purple-400" />;
+  if (os.toLowerCase().includes('embedded')) return <HardDrive className="w-3.5 h-3.5 text-code-path" />;
   return <Monitor className="w-3.5 h-3.5 text-text-muted" />;
 };
 

@@ -85,7 +85,7 @@ const PublicNavigation: React.FC = React.memo(() => {
         aria-label="Primary"
         className={[
           'fixed inset-x-0 top-0 z-[100] flex h-[80px] items-center',
-          open ? 'bg-surface' : 'bg-transparent',
+          open ? 'bg-surface' : 'bg-surface/85 backdrop-blur-md',
           'transition-colors duration-300',
         ].join(' ')}
       >

@@ -99,7 +99,7 @@ const SimulationPage = () => {
                 {demoError && (
                   <p
                     role="alert"
-                    className="rounded-xl border border-red-500/40 bg-red-500/10 px-4 py-3 font-mono text-sm text-red-300"
+                    className="rounded-xl border border-danger/40 bg-danger/10 px-4 py-3 font-mono text-sm text-danger"
                   >
                     {demoError}
                   </p>

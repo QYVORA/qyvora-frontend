@@ -25,14 +25,17 @@ CodeBlock syntax colors).
 | `--color-border-subtle` | `border-border-subtle` | `rgba(178, 193, 194, 0.13)` |
 | `--color-text-tertiary` | `text-text-tertiary` | `rgba(238, 240, 238, 0.55)` |
 
-Light-theme variants of the calm family exist under `.light`/`dark` variants
-(`#D9DED5` canvas etc.) — dark is the shipped default.
+Light-theme variants of the calm family exist under the `[data-theme="light"]`
+override (`#E9ECE4` canvas, surfaces deepen to `#DFE3D8` → `#D3D9CB`) — dark is
+the shipped default. Text `<->` `--color-accent-text` (`#0B6937` in light,
+`#06B66F` elsewhere) keeps accent text AA-legible on light surfaces.
 
 ## Accent
 
 | Token | Utility | Value |
 |---|---|---|
-| `--color-accent` | `text-accent` / `bg-accent` | `#06B66F` |
+| `--color-accent` | `bg-accent` / `border-accent` | `#06B66F` |
+| `--color-accent-text` | `text-accent` / `text-accent-text` | `#06B66F` default; `#0B6937` in light |
 | `--color-accent-dim` | `bg-accent-dim` | `rgba(6, 182, 111, 0.05)` |
 | `--color-accent-glow` | `bg-accent-glow` | `rgba(6, 182, 111, 0.12)` |
 | `--color-on-accent` | `text-on-accent` | `#000000` (text on accent fills) |

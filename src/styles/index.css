@@ -32,6 +32,7 @@
   --color-bg-elevated:    #0b0b0b;
   --color-bg-alt:         #080808;
   --color-accent:         #06B66F;
+  --color-accent-text:    #06B66F;
   --color-accent-rgb:     6, 182, 111;
   --color-accent-dim:     rgba(6, 182, 111, 0.05);
   --color-accent-glow:    rgba(6, 182, 111, 0.12);
@@ -129,7 +130,7 @@
   }
 
   .text-accent {
-    color: var(--color-accent);
+    color: var(--color-accent-text, var(--color-accent));
   }
 
   :root {
@@ -603,7 +604,7 @@
   }
 
   .btn-secondary {
-    @apply bg-bg-elevated text-accent font-black uppercase tracking-[0.08em] rounded-xl px-7 py-3 cursor-pointer hover:bg-bg-card active:scale-95 border;
+    @apply bg-bg-elevated text-accent-text font-black uppercase tracking-[0.08em] rounded-xl px-7 py-3 cursor-pointer hover:bg-bg-card active:scale-95 border;
     border-color: var(--color-border);
     transition-property: filter, transform, background-color, color, border-color, box-shadow;
     transition-duration: var(--dur-base);
@@ -628,7 +629,7 @@
     @apply text-difficulty-advanced border-difficulty-advanced/30 bg-difficulty-advanced/10;
   }
   .badge-accent {
-    @apply text-accent border-accent/30 bg-accent/10;
+    @apply text-accent-text border-accent/30 bg-accent/10;
   }
   .badge-muted {
     @apply text-text-muted border-border/50 bg-bg-elevated;
@@ -803,22 +804,24 @@ html[data-animations="off"] * {
 }
 
 /* ── Light theme overrides ────────────────────────────────────────────────
-   Dark-theme parity: the page background is the deepest tone and surfaces
-   lift in subtle steps (bg → bg-alt → bg-card → bg-elevated). Surfaces are
-   soft, green-tinted greys — never pure white — for visual comfort and
-   WCAG-conscious contrast. Borders are near-black and clearly visible.
+   Dark-theme parity: the page background is the lightest tone and surfaces
+   deepen in subtle steps (bg → bg-card → bg-elevated), mirroring how dark
+   surfaces lift. Soft, green-tinted greys — never pure white — for visual
+   comfort and WCAG-conscious contrast. Accent text resolves to a deeper
+   green (text-accent) while fills/borders keep the brand accent. Borders
+   are near-black and clearly visible.
    ───────────────────────────────────────────────────────────────────────── */
 [data-theme="light"] {
   color-scheme: light;
-  --color-bg:             #D9DED5;
-  --color-bg-card:        #E1E6DC;
-  --color-bg-elevated:    #E8EBE4;
-  --color-bg-alt:         #C7CEC1;
-  --color-text-primary:   #262B23;
-  --color-text-secondary: rgba(38, 43, 35, 0.86);
-  --color-text-muted:     rgba(38, 43, 35, 0.64);
-  --color-border:         rgba(22, 26, 21, 0.24);
-  --color-border-strong:  rgba(6, 182, 111, 0.42);
+  --color-bg:             #E9ECE4;
+  --color-bg-card:        #DFE3D8;
+  --color-bg-elevated:    #D3D9CB;
+  --color-bg-alt:         #C9CFBE;
+  --color-text-primary:   #161C15;
+  --color-text-secondary: rgba(22, 28, 21, 0.86);
+  --color-text-muted:     rgba(22, 28, 21, 0.70);
+  --color-border:         rgba(22, 28, 21, 0.16);
+  --color-border-strong:  rgba(6, 182, 111, 0.35);
   --color-accent-dim:     rgba(6, 182, 111, 0.10);
   --color-accent-glow:    rgba(6, 182, 111, 0.14);
   --dot-color:            rgba(6, 182, 111, 0.10);
@@ -832,27 +835,29 @@ html[data-animations="off"] * {
   --color-code-number:    #b45309;
   --color-code-flag:      #2563eb;
   --color-code-path:      #7c3aed;
-  --card-shimmer:         inset 0 1px 0 rgba(255, 255, 255, 0.5);
+  --card-shimmer:         inset 0 1px 0 rgba(255, 255, 255, 0.40);
   --card-shadow:          0 12px 40px rgba(20, 32, 24, 0.14);
   /* Calm-system tokens — light surfaces so migrated UI follows the OS theme */
-  --color-canvas:            #D9DED5;          /* page background */
-  --color-surface:           #E1E6DC;          /* cards, form fields, static panels */
-  --color-surface-raised:    #E8EBE4;          /* menus, sheets, active utility panels */
-  --color-border-subtle:     rgba(22, 26, 21, 0.14);
-  --color-text-tertiary:     rgba(38, 43, 35, 0.55);
+  --color-canvas:            #E9ECE4;          /* page background */
+  --color-surface:           #DFE3D8;          /* cards, form fields, static panels */
+  --color-surface-raised:    #D3D9CB;          /* menus, sheets, active utility panels */
+  --color-border-subtle:     rgba(22, 28, 21, 0.10);
+  --color-text-tertiary:     rgba(22, 28, 21, 0.62);
   --elevation-raised:        0 8px 24px rgba(20, 32, 24, 0.10);
-  --color-semantic-danger:   #dc2626;
-  --color-semantic-warning:  #b45309;
-  --color-semantic-info:     #0284c7;
+  --color-semantic-danger:   #B91C1C;
+  --color-semantic-warning:  #92400E;
+  --color-semantic-info:     #0369A1;
   --color-semantic-success:  #047A48;
+  /* Accent text — deeper QYVORA green for legibility on light surfaces */
+  --color-accent-text:       #0B6937;
   /* Status & difficulty — darken 400-level hues for legibility on light */
-  --color-danger:                      #dc2626;
-  --color-warning:                     #b45309;
-  --color-info:                        #0284c7;
+  --color-danger:                      #B91C1C;
+  --color-warning:                     #92400E;
+  --color-info:                        #0369A1;
   --color-success:                     #047A48;
-  --color-difficulty-beginner:         #0284c7;
-  --color-difficulty-intermediate:     #b45309;
-  --color-difficulty-advanced:         #dc2626;
+  --color-difficulty-beginner:         #0369A1;
+  --color-difficulty-intermediate:     #92400E;
+  --color-difficulty-advanced:         #B91C1C;
 }
 
 [data-theme="light"] ::-webkit-scrollbar-track {
@@ -866,12 +871,25 @@ html[data-animations="off"] * {
   background: var(--color-bg);
 }
 
+/* Light-theme accent legibility — text accent resolves to the deeper
+   accent-text green on light surfaces while bg/border accent keep the
+   brand #06B66F. Inside [data-theme-persist="dark"] subtrees the
+   accent-text variable is re-set to the brand green, so dark regions
+   keep their vivid accent. */
+[data-theme="light"] .text-accent,
+[data-theme="light"] [class*=" text-accent"],
+[data-theme="light"] [class*=":text-accent"] {
+  color: var(--color-accent-text);
+}
+
 /* ── Admin dark-theme isolation ─────────────────────────────────────────── */
 [data-theme-persist="dark"] {
   --color-bg: #000000;
   --color-bg-card: #050505;
   --color-bg-elevated: #0b0b0b;
+  --color-bg-alt: #080808;
   --color-accent: #06B66F;
+  --color-accent-text: #06B66F;
   --color-accent-rgb: 6, 182, 111;
   --color-accent-dim: rgba(6, 182, 111, 0.05);
   --color-accent-glow: rgba(6, 182, 111, 0.12);
@@ -893,6 +911,15 @@ html[data-animations="off"] * {
   --color-code-path: #a78bfa;
   --card-shimmer: inset 0 1px 0 rgba(255, 255, 255, 0.05);
   --card-shadow: 0 12px 40px rgba(0, 0, 0, 0.30);
+  /* Semantic status & difficulty — light-theme variants must not leak into
+     persisted-dark regions, so re-declare the dark defaults here. */
+  --color-danger:                      #f87171;
+  --color-warning:                     #fbbf24;
+  --color-info:                        #38bdf8;
+  --color-success:                     #06b66f;
+  --color-difficulty-beginner:         #38bdf8;
+  --color-difficulty-intermediate:     #fbbf24;
+  --color-difficulty-advanced:         #f87171;
   /* Calm-system tokens — keep migrated surfaces dark inside a light page */
   --color-canvas:            #0b0d0e;
   --color-surface:           #121617;
@@ -943,15 +970,16 @@ html[data-animations="off"] * {
    the legacy light ramp (bg → bg-card → bg-elevated) so pages that mix the
    two token systems stay seamless. Soft green-greys, never pure white. */
 :root[data-theme="light"] {
-  --color-canvas:            #D9DED5;   /* page background */
-  --color-surface:           #E1E6DC;   /* cards, fields, static panels */
-  --color-surface-raised:    #E8EBE4;   /* menus, sheets, utility panels */
-  --color-border-subtle:     rgba(22, 26, 21, 0.16);
-  --color-text-tertiary:     rgba(38, 43, 35, 0.62);
+  --color-canvas:            #E9ECE4;   /* page background */
+  --color-surface:           #DFE3D8;   /* cards, fields, static panels */
+  --color-surface-raised:    #D3D9CB;   /* menus, sheets, utility panels */
+  --color-border-subtle:     rgba(22, 28, 21, 0.10);
+  --color-text-tertiary:     rgba(22, 28, 21, 0.62);
   --elevation-raised:        0 8px 24px rgba(20, 32, 24, 0.12);
-  --color-semantic-danger:   #dc2626;
-  --color-semantic-warning:  #b45309;
-  --color-semantic-info:     #0284c7;
+  --color-accent-text:       #0B6937;
+  --color-semantic-danger:   #B91C1C;
+  --color-semantic-warning:  #92400E;
+  --color-semantic-info:     #0369A1;
   --color-semantic-success:  #047A48;
 }
 

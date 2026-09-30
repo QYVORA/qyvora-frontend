@@ -107,7 +107,7 @@ const ConsentBanner: React.FC = React.memo(() => {
                     <div className="text-xs sm:text-xs text-text-muted">{"Authentication & Security (Always Required)"}</div>
                   </div>
                   <div className="w-9 h-5 bg-accent/40 rounded-full relative opacity-50 cursor-not-allowed">
-                    <div className="absolute right-0.5 top-0.5 w-4 h-4 bg-white rounded-full" />
+                    <div className="absolute right-0.5 top-0.5 w-4 h-4 bg-text-primary rounded-full" />
                   </div>
                 </div>
 
@@ -124,7 +124,7 @@ const ConsentBanner: React.FC = React.memo(() => {
                     <div className="text-xs sm:text-xs text-text-muted">{"Remembers your theme and UI preferences"}</div>
                   </div>
                   <div className={`w-9 h-5 rounded-full relative transition-colors ${prefs.functional ? 'bg-accent' : 'bg-border'}`}>
-                    <div className={`absolute top-0.5 w-4 h-4 bg-white rounded-full transition-[left,right] ${prefs.functional ? 'right-0.5' : 'left-0.5'}`} />
+                    <div className={`absolute top-0.5 w-4 h-4 bg-text-primary rounded-full transition-[left,right] ${prefs.functional ? 'right-0.5' : 'left-0.5'}`} />
                   </div>
                 </div>
 
@@ -141,7 +141,7 @@ const ConsentBanner: React.FC = React.memo(() => {
                     <div className="text-xs sm:text-xs text-text-muted">{"Anonymized performance and caching"}</div>
                   </div>
                   <div className={`w-9 h-5 rounded-full relative transition-colors ${prefs.analytics ? 'bg-accent' : 'bg-border'}`}>
-                    <div className={`absolute top-0.5 w-4 h-4 bg-white rounded-full transition-[left,right] ${prefs.analytics ? 'right-0.5' : 'left-0.5'}`} />
+                    <div className={`absolute top-0.5 w-4 h-4 bg-text-primary rounded-full transition-[left,right] ${prefs.analytics ? 'right-0.5' : 'left-0.5'}`} />
                   </div>
                 </div>
               </motion.div>

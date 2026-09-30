@@ -40,7 +40,7 @@ const Toggle: React.FC<ToggleProps> = ({
     >
       <span
         className={cn(
-          'absolute top-[3px] h-[18px] w-[18px] rounded-full bg-white transition-all',
+          'absolute top-[3px] h-[18px] w-[18px] rounded-full bg-text-primary transition-all',
           checked ? 'left-[25px]' : 'left-[3px]',
         )}
       />
