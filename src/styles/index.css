@@ -75,7 +75,10 @@
   html {
     -webkit-text-size-adjust: 100%;
     text-size-adjust: 100%;
-    scroll-behavior: smooth;
+    /* NOTE: no global `scroll-behavior: smooth` — it inherits into every scroll
+       container (sidebar rail, panels) and makes wheel/touch scrolling feel
+       laggy. Programmatic smooth scrolling is requested explicitly in JS
+       (scrollIntoView). Horizontal .scroll-x strips opt in themselves. */
     overflow-x: hidden;
     height: 100%;
     color-scheme: dark;
