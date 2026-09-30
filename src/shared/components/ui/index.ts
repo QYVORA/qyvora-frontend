@@ -22,6 +22,8 @@ export { default as DottedMapOverlay } from './DottedMapOverlay';
 export { default as BatchPagination } from './BatchPagination';
 export { default as PageHeader } from './PageHeader';
 export { default as SectionHeader } from './SectionHeader';
+export { default as Breadcrumb } from './Breadcrumb';
+export type { BreadcrumbItem } from './Breadcrumb';
 export { default as EmptyState } from './EmptyState';
 export { default as InlineAlert } from './InlineAlert';
 export { default as StatusIndicator } from './StatusIndicator';

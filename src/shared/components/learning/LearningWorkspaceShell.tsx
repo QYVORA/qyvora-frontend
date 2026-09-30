@@ -78,11 +78,13 @@ const LearningWorkspaceShell: React.FC<LearningWorkspaceShellProps> = ({
                   {icon}
                 </span>
               )}
-              <h1 className="type-h1 font-black uppercase tracking-tight text-text-primary">
+              {/* Same scale as PageHeader so a learning workspace and a listing
+                  page read as one title system across Courses / Labs / Bootcamps. */}
+              <h1 className="text-3xl font-black uppercase tracking-tight text-text-primary md:text-4xl lg:text-5xl">
                 {title}
               </h1>
             </div>
-            {description && <p className="mt-3 type-body max-w-prose">{description}</p>}
+            {description && <p className="mt-3 max-w-2xl text-base text-text-secondary md:text-lg">{description}</p>}
           </div>
           {actions && <div className="flex flex-wrap items-center gap-3">{actions}</div>}
         </div>
