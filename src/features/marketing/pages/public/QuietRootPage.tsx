@@ -1,4 +1,6 @@
-import { Boxes, Layers, ShieldCheck } from 'lucide-react';
+import React from 'react';
+import { useSearchParams } from 'react-router-dom';
+import { Boxes, Code2, Layers, ShieldCheck } from 'lucide-react';
 import { IconArrowRight } from '@/shared/components/icons';
 import SEO from '@/shared/components/SEO';
 import PageHeader from '@/shared/components/ui/PageHeader';
@@ -12,17 +14,36 @@ import {
   QUIETROOT_TEAMS,
 } from '@/features/marketing/content/quietRootData';
 
+type BranchId = (typeof QUIETROOT_TEAMS)[number]['id'];
+
+const BRANCH_ICONS: Record<BranchId, React.ElementType> = {
+  tech: Code2,
+  security: ShieldCheck,
+};
+
+const BRANCH_IDS = QUIETROOT_TEAMS.map((team) => team.id);
+
 /**
  * QuietRoot — QYVORA's technical team.
  *
+ * One tab per documented branch, mirroring the /learn discovery pattern: pick a
+ * branch, then read that branch's header card and every role it holds — filled
+ * seats naming their holder, vacant seats published as open with the capability
+ * evidence that qualifies and a route to apply.
+ *
  * Roles, capability bars, holder names and branch names come from the QuietRoot
- * documentation in knowledge/qyvora-docs/03-people/quiteroot/. Vacant roles are
- * rendered as OPEN with a silhouette placeholder and an application CTA — never
- * as a stand-in person.
+ * documentation in knowledge/qyvora-docs/03-people/quiteroot/.
  */
-const QuietRootPage = () => {
+const QuietRootPage: React.FC = () => {
+  const [searchParams] = useSearchParams();
+  const initialBranch = searchParams.get('team');
+  const [active, setActive] = React.useState<BranchId>(() =>
+    BRANCH_IDS.includes(initialBranch as BranchId) ? (initialBranch as BranchId) : BRANCH_IDS[0],
+  );
+
   const openRoleCount = QUIETROOT_OPEN_ROLES.length;
   const filledRoleCount = QUIETROOT_ROLE_COUNT - openRoleCount;
+  const activeTeam = QUIETROOT_TEAMS.find((team) => team.id === active) ?? QUIETROOT_TEAMS[0];
 
   return (
     <div className="min-h-dvh bg-canvas">
@@ -65,42 +86,46 @@ const QuietRootPage = () => {
           }
         />
 
-        <section aria-labelledby="quietroot-structure-title" className="mt-10 md:mt-14">
-          <div className="rounded-2xl border border-border-subtle bg-surface px-5 py-10 md:px-10 md:py-14">
-            <div className="mx-auto flex w-full max-w-2xl flex-col items-center gap-6 text-center">
-              <p className="type-kicker uppercase tracking-[0.3em] text-accent">
-                How QuietRoot works
-              </p>
-              <h2
-                id="quietroot-structure-title"
-                className="type-h2 font-black uppercase tracking-tight text-text-primary md:text-3xl"
+        <div
+          role="tablist"
+          aria-label="QuietRoot branches"
+          className="mb-8 mt-10 flex flex-wrap gap-2 border-b border-border-subtle pb-4"
+        >
+          {QUIETROOT_TEAMS.map((team) => {
+            const selected = active === team.id;
+            const Icon = BRANCH_ICONS[team.id];
+            return (
+              <button
+                key={team.id}
+                type="button"
+                role="tab"
+                id={`quietroot-tab-${team.id}`}
+                aria-selected={selected}
+                aria-controls={`quietroot-panel-${team.id}`}
+                onClick={() => setActive(team.id)}
+                className={[
+                  'flex min-h-[44px] items-center gap-2 rounded-lg px-4 text-sm font-bold transition-colors',
+                  'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent',
+                  selected
+                    ? 'bg-accent/10 text-accent'
+                    : 'text-text-tertiary hover:bg-surface-raised hover:text-text-primary',
+                ].join(' ')}
               >
-                Every role is published.
-              </h2>
-              <p className="max-w-xl text-sm font-mono leading-[2] text-text-secondary md:text-base">
-                A person is placed in a QuietRoot role because QYVORA has demonstrated what
-                they can do — never because the seat needs filling. Roles with no appointed
-                team member yet are published as open, with the evidence that qualifies, so
-                you can see exactly what is being looked for before you apply.
-              </p>
-              <div className="h-px w-full bg-border-subtle" aria-hidden="true" />
-              <div className="flex flex-col items-center gap-3">
-                <Button to="/contact">
-                  Apply to QuietRoot <IconArrowRight size={14} />
-                </Button>
-                <p className="max-w-xl text-xs font-mono leading-relaxed text-text-muted">
-                  Applications are reviewed before anyone joins. When you contact us, include
-                  evidence of your work: GitHub, portfolio, projects, security research, tools
-                  you've built, designs, or relevant experience.
-                </p>
-              </div>
-            </div>
-          </div>
-        </section>
+                {Icon && <Icon className="h-4 w-4" aria-hidden="true" />}
+                {team.name.replace('QuietRoot ', '')}
+              </button>
+            );
+          })}
+        </div>
 
-        {QUIETROOT_TEAMS.map((team) => (
-          <QuietRootTeamSection key={team.id} team={team} />
-        ))}
+        <div
+          key={active}
+          role="tabpanel"
+          id={`quietroot-panel-${active}`}
+          aria-labelledby={`quietroot-tab-${active}`}
+        >
+          <QuietRootTeamSection team={activeTeam} />
+        </div>
       </PublicContainer>
     </div>
   );

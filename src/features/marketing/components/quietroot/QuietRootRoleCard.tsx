@@ -76,6 +76,11 @@ const OpenPortrait = () => (
  * One QuietRoot role. Renders either the documented holder (photo, location,
  * disciplines, profile links) or an OPEN vacancy (silhouette, capability bar,
  * and an application CTA routed through the QYVORA contact page).
+ *
+ * The apply CTA belongs to open roles only: a filled seat is not advertised, so
+ * it carries no application button. Where the documentation records that a role
+ * is closed to intake (`openToApplications: false`), that fact is stated instead
+ * of offering a route that does not exist.
  */
 const QuietRootRoleCard = ({
   role,
@@ -85,7 +90,8 @@ const QuietRootRoleCard = ({
   applyLabel?: string;
 }) => {
   const filled = role.holder !== null;
-  const applies = !filled || role.openToApplications !== false;
+  const isOpen = !filled;
+  const closedToIntake = filled && role.openToApplications === false;
 
   return (
     <article className="flex h-full flex-col overflow-hidden rounded-2xl border border-border-subtle bg-surface">
@@ -145,21 +151,20 @@ const QuietRootRoleCard = ({
           </p>
         </div>
 
-        <div className="mt-auto pt-4">
-          {applies ? (
-            <Button to="/contact" variant={filled ? 'ghost' : 'secondary'} size="sm" className="w-full">
+        {isOpen && (
+          <div className="mt-auto pt-4">
+            <Button to="/contact" variant="secondary" size="sm" className="w-full">
               {applyLabel}
               <ArrowUpRight className="h-3.5 w-3.5" aria-hidden="true" />
             </Button>
-          ) : (
-            <Link
-              to="/contact"
-              className="inline-flex min-h-[44px] items-center gap-1.5 text-xs font-black uppercase tracking-widest text-text-muted transition-colors hover:text-text-primary"
-            >
-              Contact QYVORA <ArrowUpRight className="h-3.5 w-3.5" aria-hidden="true" />
-            </Link>
-          )}
-        </div>
+          </div>
+        )}
+
+        {closedToIntake && (
+          <p className="mt-auto pt-4 text-tiny font-black uppercase tracking-widest text-text-muted">
+            Not open to applicants
+          </p>
+        )}
       </div>
     </article>
   );
