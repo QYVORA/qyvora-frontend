@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 
 export function useRoomSession() {
   const [sessionStart, setSessionStart] = useState<number>(Date.now());
@@ -20,18 +20,21 @@ export function useRoomSession() {
     return () => document.removeEventListener('fullscreenchange', handleFullscreenChange);
   }, []);
 
-  const toggleFullscreen = () => {
+  // Memoised: these are used inside effect dependency lists by consumers. A new
+  // identity on every render makes those effects re-run on every render, which
+  // re-renders again and loops forever.
+  const toggleFullscreen = useCallback(() => {
     if (!document.fullscreenElement) {
       document.documentElement.requestFullscreen().catch(() => {});
     } else {
       document.exitFullscreen().catch(() => {});
     }
-  };
+  }, []);
 
-  const resetSession = () => {
+  const resetSession = useCallback(() => {
     setSessionStart(Date.now());
     setTimeSpent(0);
-  };
+  }, []);
 
   return {
     timeSpent,

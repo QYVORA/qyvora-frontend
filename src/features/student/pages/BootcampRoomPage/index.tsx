@@ -164,9 +164,16 @@ const BootcampRoomPage: React.FC = () => {
     }
   }, [apiLoading, bootcampStatus, navigate]);
 
+  // The URL is the source of truth for the active step. Only the step is synced
+  // here — session, quiz and viewed-step state are per-room, not per-step, and
+  // resetting them on every step change wiped the "in session" timer and cleared
+  // a passed quiz the moment you moved between steps.
   useEffect(() => {
     const step = searchParams.get('step');
     setCurrentStepIdx(step ? Math.max(0, parseInt(step, 10) || 0) : 0);
+  }, [searchParams]);
+
+  useEffect(() => {
     setViewedSteps(() => {
       try {
         const raw = localStorage.getItem(viewedStepsKey);
@@ -177,7 +184,7 @@ const BootcampRoomPage: React.FC = () => {
     });
     setQuizPassed(false);
     resetSession();
-  }, [phaseId, roomId, searchParams, viewedStepsKey, resetSession]);
+  }, [phaseId, roomId, viewedStepsKey, resetSession]);
 
   const completedRooms = new Set<string>();
   const lockedRooms = new Set<string>();
