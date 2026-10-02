@@ -1,6 +1,5 @@
 import React from 'react';
 import { StepNumberHeader } from '@/shared/components/learning/StepNumberHeader';
-import StepNotes from '@/shared/components/courses/StepNotes';
 
 export interface StepRendererProps {
   stepNumber: number;
@@ -16,7 +15,6 @@ export interface StepRendererProps {
   headerAction?: React.ReactNode;
   afterContent?: React.ReactNode;
   footer?: React.ReactNode;
-  notesStorageKey?: string;
   className?: string;
 }
 
@@ -34,7 +32,6 @@ const StepRenderer: React.FC<StepRendererProps> = ({
   headerAction,
   afterContent,
   footer,
-  notesStorageKey,
   className = '',
 }) => {
   return (
@@ -55,12 +52,6 @@ const StepRenderer: React.FC<StepRendererProps> = ({
       {children}
 
       {afterContent}
-
-      {notesStorageKey && (
-        <div className="mt-6">
-          <StepNotes storageKey={notesStorageKey} />
-        </div>
-      )}
 
       {footer && (
         <div className="mt-10 md:mt-14">

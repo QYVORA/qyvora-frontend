@@ -21,7 +21,6 @@ const StepCard: React.FC<Props> = ({ step, stepNum, phaseId, roomId, isActive, i
       isActive={isActive}
       isCompleted={isViewed && !isActive}
       statusLabel={isActive ? "Current Focus" : undefined}
-      notesStorageKey={`step_notes_${phaseId}_${roomId}_${stepNum}`}
     >
       <div className={`w-full text-sm md:text-base font-mono leading-[2] md:leading-[2.2] overflow-x-auto transition-colors ${isActive ? 'text-text-primary' : 'text-text-secondary'} mb-6 md:mb-8`}>
         <EducationalMarkdownRenderer text={step.instruction} />
