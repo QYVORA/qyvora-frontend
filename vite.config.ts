@@ -15,6 +15,7 @@ export default defineConfig(() => ({
       additionalPrerenderRoutes: [
         '/',
         '/hpb',
+        '/qose',
         '/learn',
         '/simulations',
         '/services',

@@ -99,7 +99,7 @@ const ROUTE_LABELS: ReadonlyArray<readonly [string, string]> = [
   ['/timbuktu', 'timbuktu'],
   ['/kush', 'kush'],
   ['/imhotep', 'imhotep'],
-  ['/quiteroot', 'QuiteRoot'],
+  ['/quiteroot', 'QuietRoot'],
   ['/leaderboard', 'Leaderboard'],
   ['/zero-day-market', 'Zero Day Market'],
   ['/team', 'Team'],

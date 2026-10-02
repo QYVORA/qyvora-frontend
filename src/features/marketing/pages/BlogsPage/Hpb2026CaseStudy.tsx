@@ -163,7 +163,7 @@ export const Hpb2026CaseStudy: React.FC = () => {
           <div className="p-6 rounded-xl border border-accent/10 bg-accent/5 flex flex-col md:flex-row items-center md:items-start gap-5 md:gap-6">
             <img
               src={quiteRootLogo}
-              alt="QuiteRoot logo"
+              alt="QuietRoot logo"
               width={80}
               height={80}
               className="w-16 h-16 md:w-20 md:h-20 rounded-xl object-cover shrink-0"

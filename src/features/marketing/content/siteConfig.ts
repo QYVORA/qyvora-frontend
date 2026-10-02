@@ -144,7 +144,7 @@ export const SITE_CONFIG = {
         label: 'Company',
         items: [
           { key: 'team', label: 'Team', path: '/team', desc: 'Our team' },
-          { key: 'quiteroot', label: 'QuiteRoot', path: '/quiteroot', desc: 'QYVORA\u2019s technical team — open to applications' },
+          { key: 'quiteroot', label: 'QuietRoot', path: '/quiteroot', desc: 'QYVORA\u2019s technical team \u2014 open to applications' },
           { key: 'terms', label: 'Terms of Service', path: '/terms', desc: 'Terms of Service' },
         ],
       },

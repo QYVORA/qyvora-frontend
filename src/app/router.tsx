@@ -16,6 +16,7 @@ import ConsentBanner from '../shared/components/ConsentBanner';
 import ContactModalHost from '@/features/marketing/components/ContactModal';
 import ServiceRequestModalHost from '@/features/marketing/components/ServiceRequestModal';
 import ToolInstallModalHost from '@/features/marketing/components/ToolInstallModal';
+import BootcampAccessModalHost from '@/features/marketing/components/bootcamp/BootcampAccessModal';
 
 // ─── Layouts (lazy-loaded) ─────────────────────────────────────────────────────
 
@@ -50,6 +51,7 @@ const BlogPostPage      = lazy(() => import('../features/marketing/pages/BlogsPa
 
 // Public marketing pages
 const HpbPage           = lazy(() => import('../features/marketing/pages/public/HpbPage'));
+const QosePage          = lazy(() => import('../features/marketing/pages/public/QosePage'));
 const ServicesPage      = lazy(() => import('../features/marketing/pages/public/ServicesPage'));
 const BasicPentestPage  = lazy(() => import('../features/marketing/pages/public/services/BasicPentestPage'));
 const StandardPentestPage = lazy(() => import('../features/marketing/pages/public/services/StandardPentestPage'));
@@ -61,7 +63,7 @@ const LearnPage         = lazy(() => import('../features/marketing/pages/public/
 const AboutPage         = lazy(() => import('../features/marketing/pages/public/AboutPage'));
 const BlogsPage         = lazy(() => import('../features/marketing/pages/public/BlogsPage'));
 const TeamPage          = lazy(() => import('../features/marketing/pages/public/TeamPage'));
-const QuiteRootPage     = lazy(() => import('../features/marketing/pages/public/QuiteRootPage'));
+const QuietRootPage     = lazy(() => import('../features/marketing/pages/public/QuietRootPage'));
 const SimulationsPage   = lazy(() => import('../features/marketing/pages/public/SimulationsPage'));
 const SimulationPage    = lazy(() => import('../features/marketing/pages/public/SimulationPage'));
 const CyberCoinPage     = lazy(() => import('../features/marketing/pages/public/CyberCoinPage'));
@@ -189,6 +191,7 @@ export const AppRouter = () => {
                   <ContactModalHost />
                   <ServiceRequestModalHost />
                   <ToolInstallModalHost />
+                  <BootcampAccessModalHost />
                   <ConsentBanner />
                 </>
               }
@@ -200,6 +203,7 @@ export const AppRouter = () => {
           
           {/* Public marketing pages (formerly redirects to landing sections) */}
           <Route path="/hpb" element={<Wrap scope="HPB"><HpbPage /></Wrap>} />
+          <Route path="/qose" element={<Wrap scope="QOSE"><QosePage /></Wrap>} />
           <Route path="/learn" element={<Wrap scope="Learn"><LearnPage /></Wrap>} />
           <Route path="/services" element={<Wrap scope="Services"><ServicesPage /></Wrap>} />
           <Route path="/services/basic-web-application-pentest" element={<Wrap scope="Basic Pentest"><BasicPentestPage /></Wrap>} />
@@ -212,7 +216,7 @@ export const AppRouter = () => {
           <Route path="/zero-day-market" element={<Wrap scope="Market"><MarketPage /></Wrap>} />
           <Route path="/blogs" element={<Wrap scope="Blogs"><BlogsPage /></Wrap>} />
           <Route path="/team" element={<Wrap scope="Team"><TeamPage /></Wrap>} />
-          <Route path="/quiteroot" element={<Wrap scope="QuiteRoot"><QuiteRootPage /></Wrap>} />
+          <Route path="/quiteroot" element={<Wrap scope="QuietRoot"><QuietRootPage /></Wrap>} />
           <Route path="/simulations" element={<Wrap scope="Simulations"><SimulationsPage /></Wrap>} />
           <Route path="/simulations/:slug" element={<Wrap scope="Simulation"><SimulationPage /></Wrap>} />
           <Route path="/cp" element={<Wrap scope="Cyber Coin"><CyberCoinPage /></Wrap>} />

@@ -61,7 +61,7 @@ const routeContent: Record<string, RouteContent> = {
       { label: 'kush', href: '/kush' },
       { label: 'imhotep', href: '/imhotep' },
       { label: 'Zero Day Market', href: '/zero-day-market' },
-      { label: 'QuiteRoot', href: '/quiteroot' },
+      { label: 'QuietRoot', href: '/quiteroot' },
       { label: 'Blog', href: '/blogs' },
       { label: 'Team', href: '/team' },
       { label: 'Leaderboard', href: '/leaderboard' },
@@ -382,17 +382,28 @@ const routeContent: Record<string, RouteContent> = {
     links: [{ label: 'Leaderboard', href: '/leaderboard' }],
   },
   '/quiteroot': {
-    title: 'QuiteRoot | QYVORA',
-    description: 'QYVORA\'s technical team. Currently no active members \u2014 open to applications through the Contact page.',
-    h1: 'QuiteRoot',
-    lead: 'QYVORA\'s technical team. Currently being rebuilt \u2014 a clean slate for people who bring demonstrated skill.',
+    title: 'QuietRoot | QYVORA',
+    description: "QuietRoot is QYVORA's technical team: a Tech Team and a Security Team. Every role is published, filled or open, and open roles are advertised on the Contact page.",
+    h1: 'QuietRoot',
+    lead: "QYVORA's technical team, split into two branches: the Tech Team that builds QYVORA's products and interfaces, and the Security Team that runs its offensive-security tooling, research and authorized security work.",
     sections: [
       {
-        heading: 'No active members yet',
-        body: 'QuiteRoot is QYVORA\'s technical team. We are open to applications across frontend, backend, penetration testing, security research, tooling, and design. Applications are reviewed before anyone joins.',
+        heading: 'QuietRoot Tech Team',
+        body: 'Junior and Senior Frontend Developers, Junior and Senior Backend Developers, a Full-Stack Developer, a UI/UX Designer and a Graphic & Brand Designer. Every documented role is published, whether it is filled or open.',
+      },
+      {
+        heading: 'QuietRoot Security Team',
+        body: 'A Senior Penetration Tester, a Junior Penetration Tester, a Security Researcher, an Offensive Security Engineer and a Security Tool Developer. No testing without written authorization.',
+      },
+      {
+        heading: 'Every role is published',
+        body: 'A person is placed in a QuietRoot role because QYVORA has demonstrated what they can do, never because the seat needs filling. Open roles show the evidence that qualifies, so you can see exactly what is being looked for before you apply.',
       },
     ],
-    links: [{ label: 'Apply on the Contact page', href: '/contact' }],
+    links: [
+      { label: 'Apply on the Contact page', href: '/contact' },
+      { label: 'Team', href: '/team' },
+    ],
   },
   '/anansi': {
     title: 'anansi | QYVORA',
@@ -932,7 +943,7 @@ const routeContent: Record<string, RouteContent> = {
         ],
       },
     ],
-    links: [{ label: 'QuiteRoot', href: '/quiteroot' }],
+    links: [{ label: 'QuietRoot', href: '/quiteroot' }],
   },
   '/leaderboard': {
     title: 'Leaderboard | QYVORA',

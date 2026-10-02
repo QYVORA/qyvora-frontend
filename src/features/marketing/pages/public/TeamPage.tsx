@@ -1,10 +1,16 @@
 import { Link } from 'react-router-dom';
-import { ArrowUpRight, MapPin, Users } from 'lucide-react';
+import { ArrowUpRight, MapPin, Shield, Users } from 'lucide-react';
 import { BrandGithubIcon, BrandInstagramIcon, BrandLinkedinIcon, BrandXIcon, BrandYoutubeIcon, BrandMediumIcon } from '@/shared/components/icons';
 import SEO from '@/shared/components/SEO';
 import PageHeader from '@/shared/components/ui/PageHeader';
 import PublicContainer from '@/shared/components/layout/PublicContainer';
+import Badge from '@/shared/components/ui/Badge';
+import Button from '@/shared/components/ui/Button';
 import { teamData, type TeamMember } from '@/features/marketing/content/teamData';
+import {
+  QUIETROOT_ROLE_COUNT,
+  QUIETROOT_TEAMS,
+} from '@/features/marketing/content/quietRootData';
 
 const SOCIAL_ICONS: Record<string, React.ElementType> = {
   github: BrandGithubIcon,
@@ -113,23 +119,92 @@ const OperatorCard = ({ member }: { member: TeamMember }) => (
   </article>
 );
 
+/**
+ * QYVORA's technical community is a separate structure from the leadership
+ * team above: capability placement, not officer appointment. It is surfaced
+ * here as a route into /quiteroot rather than as company team members.
+ */
+const QuietRootCallout = () => (
+  <div className="flex h-full flex-col gap-6 rounded-2xl border border-border-subtle bg-surface p-5 md:p-8">
+    <div className="flex flex-col gap-3">
+      <span className="type-kicker block text-accent">QYVORA · Technical team</span>
+      <h2 className="type-h2 font-black uppercase tracking-tight text-text-primary">
+        QuietRoot
+      </h2>
+      <p className="type-body text-text-secondary">
+        Engineering and security at QYVORA is organised as QuietRoot — a technical
+        community placed by demonstrated capability rather than by appointment. Every
+        defined role is published, whether it is filled or open.
+      </p>
+    </div>
+
+    <ul className="flex flex-col gap-3">
+      {QUIETROOT_TEAMS.map((team) => (
+        <li
+          key={team.id}
+          className="flex items-center gap-4 rounded-2xl border border-border-subtle bg-surface-raised p-4"
+        >
+          <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl border border-border-subtle bg-surface p-1.5">
+            <img
+              src={team.logo}
+              alt=""
+              aria-hidden="true"
+              width={team.logoWidth}
+              height={team.logoHeight}
+              loading="lazy"
+              className="h-full w-full object-contain"
+            />
+          </div>
+          <div className="min-w-0">
+            <p className="text-sm font-black uppercase tracking-tight text-text-primary">
+              {team.name}
+            </p>
+            <p className="type-meta mt-1 text-text-muted">
+              {`${team.roles.length} roles · ${team.roles.filter((role) => role.holder === null).length} open`}
+            </p>
+          </div>
+        </li>
+      ))}
+    </ul>
+
+    <div className="mt-auto flex flex-wrap items-center gap-3 border-t border-border-subtle pt-5">
+      <Button to="/quiteroot" variant="secondary" size="md">
+        Meet QuietRoot
+        <ArrowUpRight className="h-3.5 w-3.5" aria-hidden="true" />
+      </Button>
+      <Badge variant="default" size="sm">
+        <Shield className="mr-1.5 h-3 w-3" aria-hidden="true" />
+        {`${QUIETROOT_ROLE_COUNT} roles published`}
+      </Badge>
+    </div>
+  </div>
+);
+
+/**
+ * Leadership page — the four officer roles. QuietRoot is presented separately
+ * because it is a technical community, not an officer appointment.
+ */
 const TeamPage = () => {
   const founders = teamData.filter((m) => FOUNDERS[m.id]);
   const operators = teamData.filter((m) => !FOUNDERS[m.id]);
 
   return (
     <div className="min-h-dvh bg-canvas">
-      <SEO title="Team - QYVORA" description="The team behind QYVORA | operators, engineers, and security researchers." />
+      <SEO
+        title="Team - QYVORA"
+        description="The team behind QYVORA | operators, engineers, and security researchers."
+        breadcrumbName="Team"
+      />
       <PublicContainer className="pb-20 pt-24 md:pb-24 md:pt-28 lg:pt-32">
         <PageHeader
-          kicker="QYVORA · Operators"
+          kicker="QYVORA · Leadership"
           title="Our Team"
-          description="Operators, engineers, and researchers building Africa's offensive security ecosystem."
+          description="The people accountable for QYVORA's direction, operations and people — plus QuietRoot, the technical community that builds and secures the platform."
           metadata={
             <span className="type-meta inline-flex items-center gap-2">
               <Users className="h-3.5 w-3.5 text-accent" aria-hidden="true" />
               <span className="font-bold text-text-primary">{teamData.length}</span>
-              Members
+              Leadership roles
             </span>
           }
         />
@@ -146,15 +221,22 @@ const TeamPage = () => {
           </div>
         </section>
 
-        <section aria-label="Operators" className="mt-14 md:mt-20">
+        <section aria-label="Operations and technical team" className="mt-14 md:mt-20">
           <div className="mb-6 flex flex-col gap-2">
-            <p className="type-label uppercase tracking-[0.12em] text-accent">{"The operators"}</p>
+            <p className="type-label uppercase tracking-[0.12em] text-accent">{"Operations & engineering"}</p>
             <h2 className="text-2xl font-black uppercase tracking-tight text-text-primary md:text-3xl">
               {"The crew running the day-to-day"}
             </h2>
           </div>
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 lg:gap-5">
-            {operators.map((member) => <OperatorCard key={member.id} member={member} />)}
+          <div className="grid grid-cols-1 gap-4 lg:grid-cols-12 lg:gap-5">
+            <div className="lg:col-span-5">
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-1">
+                {operators.map((member) => <OperatorCard key={member.id} member={member} />)}
+              </div>
+            </div>
+            <div className="lg:col-span-7">
+              <QuietRootCallout />
+            </div>
           </div>
         </section>
       </PublicContainer>
