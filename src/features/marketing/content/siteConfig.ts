@@ -107,7 +107,8 @@ export const SITE_CONFIG = {
         label: 'Learning',
         items: [
           { key: 'learn', label: 'Learn', path: '/learn', desc: 'Courses, labs and bootcamps' },
-          { key: 'bootcamp', label: 'Bootcamp', path: '/hpb', desc: 'Hacker Protocol Bootcamp' },
+          { key: 'hpb', label: 'HPB', path: '/hpb', desc: 'Hacker Protocol Bootcamp' },
+          { key: 'qose', label: 'QOSE', path: '/qose', desc: 'Offensive Security Engineer Bootcamp' },
           { key: 'simulations', label: 'Simulations', path: '/simulations', desc: 'Live tool demos' },
           { key: 'blogs', label: 'Blogs', path: '/blogs', desc: 'Security articles' },
         ],
@@ -160,7 +161,8 @@ export const SITE_CONFIG = {
     platform: [
       { key: 'services', label: 'Services', path: '/services', desc: 'Enterprise security services' },
       { key: 'learn', label: 'Learn', path: '/learn', desc: 'Courses, labs and bootcamps' },
-      { key: 'bootcamp', label: 'Bootcamp', path: '/hpb', desc: 'Hacker Protocol Bootcamp' },
+      { key: 'hpb', label: 'HPB', path: '/hpb', desc: 'Hacker Protocol Bootcamp' },
+      { key: 'qose', label: 'QOSE', path: '/qose', desc: 'Offensive Security Engineer Bootcamp' },
       { key: 'simulations', label: 'Simulations', path: '/simulations', desc: 'Live tool demos' },
       { key: 'anansi', label: 'anansi', path: '/anansi', desc: 'Attack Surface Intelligence' },
       { key: 'toha3ee', label: 'toha3ee', path: '/toha3ee', desc: 'Local & network security assessment framework' },
@@ -187,7 +189,8 @@ export const SITE_CONFIG = {
     links: [
       { label: 'Terms of Service', path: '/terms' },
       { label: 'Learn', path: '/learn' },
-      { label: 'Bootcamp', path: '/hpb' },
+      { label: 'HPB', path: '/hpb' },
+      { label: 'QOSE', path: '/qose' },
       { label: 'Simulations', path: '/simulations' },
     ],
   },

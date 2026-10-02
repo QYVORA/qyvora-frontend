@@ -405,6 +405,31 @@ const routeContent: Record<string, RouteContent> = {
       { label: 'Team', href: '/team' },
     ],
   },
+  '/qose': {
+    title: 'Offensive Security Engineer Bootcamp (QOSE) | QYVORA',
+    description: 'QOSE is a 12-week, practical-first online bootcamp that turns Hacker Protocol Bootcamp graduates into entry-level offensive-security practitioners.',
+    h1: 'QYVORA Offensive Security Engineer Bootcamp',
+    lead: 'Twelve weeks from certified foundation to structured, authorized assessment work. QOSE is currently in pre-registration.',
+    sections: [
+      {
+        heading: 'What it covers',
+        body: 'Offensive security operations and the engagement lifecycle, professional reconnaissance and attack-surface mapping, web application security, network and systems security, enterprise security, offensive security engineering, and advanced security exposure.',
+      },
+      {
+        heading: 'Who it is for',
+        body: 'Learners who have completed the Hacker Protocol Bootcamp or hold equivalent grounding in the Linux terminal, networking, scripting, reconnaissance, web security and OSINT. Delivery is online, on Kali Linux with VMs and containerized labs.',
+      },
+      {
+        heading: 'Pre-registration',
+        body: 'QOSE is being prepared for launch and enrollment is not open on the website yet. Registration is being handled through the QOSE community group until the cohort opens.',
+      },
+    ],
+    links: [
+      { label: 'Hacker Protocol Bootcamp', href: '/hpb' },
+      { label: 'Learn', href: '/learn' },
+      { label: 'QuietRoot', href: '/quiteroot' },
+    ],
+  },
   '/anansi': {
     title: 'anansi | QYVORA',
     description: 'anansi – attack surface intelligence from the terminal: a nine-phase recon pipeline from subdomain discovery to exploit-chain analysis.',

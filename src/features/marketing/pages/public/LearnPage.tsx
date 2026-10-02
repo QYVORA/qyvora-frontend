@@ -4,7 +4,9 @@ import { ArrowRight, BookOpen, Bug, ShieldCheck, Globe, Coins } from 'lucide-rea
 import { COURSES } from '@/features/student/data/courses';
 import { LABS } from '@/features/student/constants/labs';
 import { PHASES } from '@/features/marketing/data/learnData';
+import { BOOTCAMPS } from '@/features/marketing/content/bootcampData';
 import { Card } from '@/shared/components/ui/Card';
+import Badge from '@/shared/components/ui/Badge';
 import LabBadge from '@/shared/components/LabBadge';
 import CourseBadge from '@/shared/components/CourseBadge';
 import HpbAvatar, { type HpbVariant } from '@/shared/components/HpbAvatar';
@@ -92,26 +94,56 @@ const LearnPage: React.FC = () => {
           </Card>
         ));
       case 'bootcamp':
-        return PHASES.map((phase) => {
-          const hpbVariant = `phase${Number(phase.id)}` as HpbVariant;
-          return (
-            <Card key={phase.id} to="/hpb" interactive className="flex min-h-[190px] flex-col gap-3 p-6">
-              <div className="flex items-center gap-3">
-                <div className="flex h-16 w-16 shrink-0 items-center justify-center overflow-hidden rounded-xl border border-border-subtle bg-surface-raised p-1.5">
-                  <HpbAvatar variant={hpbVariant} className="h-full w-auto max-h-full max-w-full object-contain" />
+        return [
+          <Card
+            key="qose"
+            to={BOOTCAMPS.qose.path}
+            interactive
+            className="flex min-h-[190px] flex-col gap-3 p-6"
+          >
+            <div className="flex items-center gap-3">
+              <div className="flex h-16 w-16 shrink-0 items-center justify-center overflow-hidden rounded-xl border border-border-subtle bg-surface-raised p-1.5">
+                <img
+                  src={BOOTCAMPS.qose.logo}
+                  alt={BOOTCAMPS.qose.logoAlt}
+                  width={BOOTCAMPS.qose.logoWidth}
+                  height={BOOTCAMPS.qose.logoHeight}
+                  className="h-full w-auto max-h-full max-w-full object-contain"
+                />
+              </div>
+              <Badge variant="warning" size="sm">
+                {BOOTCAMPS.qose.statusLabel}
+              </Badge>
+            </div>
+            <h3 className="type-h3 font-black uppercase tracking-tight text-text-primary">
+              {BOOTCAMPS.qose.name}
+            </h3>
+            <p className="type-body-sm flex-1 line-clamp-3">{BOOTCAMPS.qose.tagline}</p>
+            <div className="flex flex-wrap items-center gap-x-5 gap-y-1 border-t border-border-subtle pt-3">
+              <span className="type-meta">{`12 weeks · Online`}</span>
+            </div>
+          </Card>,
+          ...PHASES.map((phase) => {
+            const hpbVariant = `phase${Number(phase.id)}` as HpbVariant;
+            return (
+              <Card key={phase.id} to="/hpb" interactive className="flex min-h-[190px] flex-col gap-3 p-6">
+                <div className="flex items-center gap-3">
+                  <div className="flex h-16 w-16 shrink-0 items-center justify-center overflow-hidden rounded-xl border border-border-subtle bg-surface-raised p-1.5">
+                    <HpbAvatar variant={hpbVariant} className="h-full w-auto max-h-full max-w-full object-contain" />
+                  </div>
+                  <span className="type-meta">Phase {phase.id}</span>
                 </div>
-                <span className="type-meta">Phase {phase.id}</span>
-              </div>
-              <h3 className="type-h3 font-black uppercase tracking-tight text-text-primary">
-                {phase.name}
-              </h3>
-              <p className="type-body-sm flex-1 line-clamp-3">{phase.desc}</p>
-              <div className="flex flex-wrap items-center gap-x-5 gap-y-1 border-t border-border-subtle pt-3">
-                <span className="type-meta">Hacker Protocol Bootcamp</span>
-              </div>
-            </Card>
-          );
-        });
+                <h3 className="type-h3 font-black uppercase tracking-tight text-text-primary">
+                  {phase.name}
+                </h3>
+                <p className="type-body-sm flex-1 line-clamp-3">{phase.desc}</p>
+                <div className="flex flex-wrap items-center gap-x-5 gap-y-1 border-t border-border-subtle pt-3">
+                  <span className="type-meta">Hacker Protocol Bootcamp</span>
+                </div>
+              </Card>
+            );
+          }),
+        ];
       default:
         return null;
     }
