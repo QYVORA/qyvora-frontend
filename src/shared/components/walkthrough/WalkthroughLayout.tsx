@@ -1,5 +1,5 @@
 import { Unplug, Loader2 } from 'lucide-react';
-import { Children, useEffect } from 'react';
+import { Children, useCallback, useEffect } from 'react';
 import type { ReactNode } from 'react';
 import { IconTerminal } from '@/shared/components/icons';
 import FocusedStepList from '@/shared/components/learning/FocusedStepList';
@@ -7,6 +7,8 @@ import type { FocusedStepListItem } from '@/shared/components/learning/FocusedSt
 import LearningWorkspaceShell from '@/shared/components/learning/LearningWorkspaceShell';
 import type { WorkspaceStat } from '@/shared/components/learning/LearningWorkspaceShell';
 import LearningNav from '@/shared/components/learning/LearningNav';
+import { useReducedMotion } from '@/shared/hooks/useReducedMotion';
+import { scrollToStepId } from '@/shared/utils/scrollToStep';
 import { useLabConnection } from '@/features/student/hooks/useLabConnection';
 import { SimulationPanel, useSimulation, getNetworkProfileForLab, type SimulationType } from '@/features/student/components/simulations';
 
@@ -67,6 +69,23 @@ export function WalkthroughLayout({
   const allDone = totalSteps > 0 && completedCount === totalSteps;
   const { connection, isConnected, isLoading, error, connect, disconnect } = useLabConnection();
   const { network, browser } = useSimulation();
+  const prefersReducedMotion = useReducedMotion();
+
+  /**
+   * Every step stays mounted on this page, so selecting a step has to scroll to
+   * that step's anchor as well as swap which one is expanded — otherwise Next
+   * changes the page but leaves the reader looking at where they already were,
+   * which reads as a dead button.
+   */
+  const handleStepSelect = useCallback((index: number) => {
+    onStepSelect?.(index);
+    const target = stepList?.[index];
+    if (!target) return;
+    scrollToStepId(
+      `${stepIdPrefix ?? 'step'}-${target.number}`,
+      prefersReducedMotion ? 'auto' : 'smooth',
+    );
+  }, [onStepSelect, stepList, stepIdPrefix, prefersReducedMotion]);
 
   useEffect(() => {
     const profile = getNetworkProfileForLab(labId);
@@ -199,7 +218,7 @@ export function WalkthroughLayout({
             <FocusedStepList
               idPrefix={stepIdPrefix}
               items={stepList}
-              onSelect={onStepSelect}
+              onSelect={handleStepSelect}
               renderActive={(i) => Children.toArray(children)[i] ?? null}
               className="space-y-4"
             />
@@ -215,10 +234,10 @@ export function WalkthroughLayout({
             totalSteps={stepList.length}
             isLastStep={activeStepIndex === stepList.length - 1}
             isComplete={allDone}
-            onPrev={activeStepIndex > 0 ? () => onStepSelect(activeStepIndex - 1) : undefined}
+            onPrev={activeStepIndex > 0 ? () => handleStepSelect(activeStepIndex - 1) : undefined}
             onNext={
               activeStepIndex < stepList.length - 1 && !stepList[activeStepIndex + 1].isLocked
-                ? () => onStepSelect(activeStepIndex + 1)
+                ? () => handleStepSelect(activeStepIndex + 1)
                 : undefined
             }
             finishContent={

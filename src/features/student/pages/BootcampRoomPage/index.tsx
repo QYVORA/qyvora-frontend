@@ -19,6 +19,7 @@ import LearningNav from '@/shared/components/learning/LearningNav';
 import LearningWorkspaceShell from '@/shared/components/learning/LearningWorkspaceShell';
 import FocusedStepList from '@/shared/components/learning/FocusedStepList';
 import { useReducedMotion } from '@/shared/hooks/useReducedMotion';
+import { scrollToStepId } from '@/shared/utils/scrollToStep';
 import { useRoomSession } from '@/features/student/hooks/useRoomSession';
 import useStudentOverview from '@/features/student/hooks/useStudentOverview';
 import type { ApiCourse } from '@/features/student/components/bootcamp-room/types';
@@ -220,17 +221,11 @@ const BootcampRoomPage: React.FC = () => {
     }, { replace: true });
     setViewedSteps((prev) => { const next = new Set(prev); next.add(idx); persistViewedSteps(next); return next; });
     const behavior = prefersReducedMotion ? 'auto' : 'smooth';
-    const attemptScroll = (tries = 0) => {
-      if (tries > 20) return;
-      if (idx === 0) {
-        window.scrollTo({ top: 0, behavior });
-        return;
-      }
-      const el = document.getElementById(`step-${idx + 1}`);
-      if (el) el.scrollIntoView({ behavior, block: 'start' });
-      else window.setTimeout(() => attemptScroll(tries + 1), 50);
-    };
-    requestAnimationFrame(() => attemptScroll());
+    if (idx === 0) {
+      window.scrollTo({ top: 0, behavior });
+      return;
+    }
+    scrollToStepId(`step-${idx + 1}`, behavior);
   };
   const handleComplete = async () => {
     if (completing) return; setCompleting(true);

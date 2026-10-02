@@ -17,6 +17,7 @@ import api from '@/core/services/api';
 import CelebrationModal from '@/shared/components/CelebrationModal';
 import { useCelebrationTrigger } from '@/shared/hooks/useCelebrationTrigger';
 import { useReducedMotion } from '@/shared/hooks/useReducedMotion';
+import { scrollToStepId } from '@/shared/utils/scrollToStep';
 import Button from '@/shared/components/ui/Button';
 import type { Lesson } from '@/features/student/data/courses';
 
@@ -151,13 +152,7 @@ const CourseLessonPage: React.FC = () => {
       return next;
     }, { replace: true });
     const behavior = prefersReducedMotion ? 'auto' : 'smooth';
-    const attemptScroll = (tries = 0) => {
-      if (tries > 20) return;
-      const el = document.getElementById(`lesson-${clamped + 1}`);
-      if (el) el.scrollIntoView({ behavior, block: 'start' });
-      else window.setTimeout(() => attemptScroll(tries + 1), 50);
-    };
-    requestAnimationFrame(() => attemptScroll());
+    scrollToStepId(`lesson-${clamped + 1}`, behavior);
   }, [totalLessons, setSearchParams, prefersReducedMotion]);
 
   const saveProgress = useCallback((lessons: Set<string>, idx: number) => {
