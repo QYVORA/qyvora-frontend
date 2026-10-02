@@ -1,4 +1,4 @@
-import { ArrowRight, ChevronDown } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import SEO from '@/shared/components/SEO';
 import PageHeader from '@/shared/components/ui/PageHeader';
 import PublicContainer from '@/shared/components/layout/PublicContainer';
@@ -108,7 +108,7 @@ const HpbPage = () => {
               {"Five phases, nineteen rooms"}
             </h2>
             <p className="type-body mt-3 max-w-3xl text-text-secondary">
-              {"Every phase below is part of the same continuous track. Expand a phase to see the rooms it contains and what each one covers."}
+              {"Every phase below is part of the same continuous track, with the rooms it contains and what each one covers."}
             </p>
           </div>
 
@@ -147,11 +147,11 @@ const HpbPage = () => {
 
           <div className="flex flex-col gap-3">
             {phases.map((phase) => (
-              <details
+              <div
                 key={phase.id}
-                className="group rounded-2xl border border-border-subtle bg-surface-raised"
+                className="rounded-2xl border border-border-subtle bg-surface-raised"
               >
-                <summary className="flex min-h-[56px] cursor-pointer list-none items-center justify-between gap-4 px-4 py-4 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent md:px-6">
+                <div className="flex min-h-[56px] items-center justify-between gap-4 px-4 py-4 md:px-6">
                   <span className="flex min-w-0 items-center gap-3">
                     <span className="type-label shrink-0 uppercase tracking-[0.12em] text-text-tertiary">
                       {`Phase ${phase.id.replace('phase', '')}`}
@@ -160,14 +160,10 @@ const HpbPage = () => {
                       {phase.title}
                     </span>
                   </span>
-                  <span className="type-meta flex shrink-0 items-center gap-3">
+                  <span className="type-meta shrink-0">
                     {`${phase.rooms?.length || 0} rooms`}
-                    <ChevronDown
-                      className="h-4 w-4 text-accent transition-transform duration-200 group-open:rotate-180"
-                      aria-hidden="true"
-                    />
                   </span>
-                </summary>
+                </div>
 
                 <ul className="border-t border-border-subtle">
                   {(phase.rooms || []).map((room) => (
@@ -190,7 +186,7 @@ const HpbPage = () => {
                     </li>
                   ))}
                 </ul>
-              </details>
+              </div>
             ))}
           </div>
         </section>
