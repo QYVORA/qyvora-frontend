@@ -12,7 +12,7 @@ import PageBody from '@/shared/components/layout/PageBody';
 import SectionHeader from '../../../shared/components/ui/SectionHeader';
 import { SettingsSkeleton } from '../components/StudentSkeletons';
 import { usePreferences } from '../../../shared/hooks/usePreferences';
-import { useThemeContext } from '../../../core/contexts/ThemeContext';
+import { useThemeContext, LIGHT_THEME_ENABLED } from '../../../core/contexts/ThemeContext';
 import { SETTINGS_SECTIONS, type SettingsSectionId } from '../constants/settingsSections';
 
 const INPUT_CLS = 'w-full bg-surface-raised border border-border-subtle rounded-xl py-3 px-4 text-sm font-mono text-text-primary placeholder:text-text-muted focus:border-accent focus:outline-none outline-none transition-colors';
@@ -268,22 +268,27 @@ const Settings: React.FC = () => {
           {activeSection === 'appearance' && (
             <div className="bg-surface border border-border-subtle rounded-2xl p-5 md:p-8">
               <div>
-                <SettingsRow label={"Theme"} description={"Follow your device or choose dark and light mode"}>
-                  <div className="flex gap-1 bg-surface-raised rounded-xl p-1 border border-border-subtle">
-                    <button onClick={() => handleThemeChange('dark')} aria-pressed={mode === 'dark'}
-                      className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-colors ${mode === 'dark' ? 'bg-accent text-on-accent' : 'text-text-muted hover:text-text-primary'}`}>
-                      {"Dark"}
-                    </button>
-                    <button onClick={() => handleThemeChange('light')} aria-pressed={mode === 'light'}
-                      className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-colors ${mode === 'light' ? 'bg-accent text-on-accent' : 'text-text-muted hover:text-text-primary'}`}>
-                      {"Light"}
-                    </button>
-                    <button onClick={() => handleThemeChange('system')} aria-pressed={mode === 'system'}
-                      className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-colors ${mode === 'system' ? 'bg-accent text-on-accent' : 'text-text-muted hover:text-text-primary'}`}>
-                      {"System"}
-                    </button>
-                  </div>
-                </SettingsRow>
+                {/* Light theme is an unbuilt experiment — the picker is hidden
+                    while LIGHT_THEME_ENABLED is false, not deleted. Dark is the
+                    only shipped theme, so there is nothing to choose between. */}
+                {LIGHT_THEME_ENABLED && (
+                  <SettingsRow label={"Theme"} description={"Follow your device or choose dark and light mode"}>
+                    <div className="flex gap-1 bg-surface-raised rounded-xl p-1 border border-border-subtle">
+                      <button onClick={() => handleThemeChange('dark')} aria-pressed={mode === 'dark'}
+                        className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-colors ${mode === 'dark' ? 'bg-accent text-on-accent' : 'text-text-muted hover:text-text-primary'}`}>
+                        {"Dark"}
+                      </button>
+                      <button onClick={() => handleThemeChange('light')} aria-pressed={mode === 'light'}
+                        className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-colors ${mode === 'light' ? 'bg-accent text-on-accent' : 'text-text-muted hover:text-text-primary'}`}>
+                        {"Light"}
+                      </button>
+                      <button onClick={() => handleThemeChange('system')} aria-pressed={mode === 'system'}
+                        className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-colors ${mode === 'system' ? 'bg-accent text-on-accent' : 'text-text-muted hover:text-text-primary'}`}>
+                        {"System"}
+                      </button>
+                    </div>
+                  </SettingsRow>
+                )}
                 <SettingsRow label={"Compact Mode"} description={"Reduce spacing and padding throughout the interface"}>
                   <Toggle label={"Compact Mode"} checked={preferences.display.compactMode} onChange={(v) => updateDisplay('compactMode', v)} disabled={prefsSaving} />
                 </SettingsRow>
