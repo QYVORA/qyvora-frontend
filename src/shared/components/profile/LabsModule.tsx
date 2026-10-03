@@ -55,7 +55,7 @@ const LabsModule: React.FC<LabsModuleProps> = ({
               </span>
               <Link
                 to={`/labs/${room.roomId}`}
-                className="text-text-muted opacity-0 transition-opacity hover:text-accent group-hover:opacity-100"
+                className="-mr-1 flex h-11 w-11 shrink-0 items-center justify-center rounded-lg text-text-muted transition-opacity transition-colors hover:bg-accent-dim/40 hover:text-accent sm:opacity-0 sm:group-hover:opacity-100 sm:focus-visible:opacity-100"
                 aria-label={`Open ${room.title}`}
               >
                 <ExternalLink className="h-3.5 w-3.5" />

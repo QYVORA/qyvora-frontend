@@ -11,6 +11,10 @@ const CELL_SIZE = 11;
 const CELL_GAP = 3;
 const STEP = CELL_SIZE + CELL_GAP;
 const DAYS_IN_WEEK = 7;
+/** Horizontal room reserved for the Mon/Wed/Fri row labels, and top room for month labels. */
+const LABEL_GUTTER = 20;
+const TOP_PAD = 14;
+const BOTTOM_PAD = 10;
 
 const INTENSITY_LEVELS = [
   'bg-accent/5',
@@ -124,32 +128,36 @@ const ContributionCalendar: React.FC<ContributionCalendarProps> = ({
 
   const gridWidth = weekCount * STEP;
   const gridHeight = DAYS_IN_WEEK * STEP;
+  const svgWidth = LABEL_GUTTER + gridWidth;
+  const svgHeight = TOP_PAD + gridHeight + BOTTOM_PAD;
 
   return (
     <div className={className}>
       {/* Header */}
-      <div className="mb-3 flex items-center justify-between">
+      <div className="mb-3 flex flex-wrap items-center justify-between gap-x-3 gap-y-1">
         <h3 className="text-xs font-black uppercase tracking-widest text-text-muted">
           {"Activity"}
         </h3>
-        <span className="text-xs font-mono text-text-muted/60">
+        <span className="whitespace-nowrap text-xs font-mono text-text-muted/60">
           {totalActivities} {"activities"} &middot; {activeDays} {"active days"}
         </span>
       </div>
 
-      {/* Calendar grid */}
+      {/* Calendar grid — the window is wider than a phone, so it scrolls horizontally */}
       <div className="-mx-2 overflow-x-auto px-2 pb-2">
         <svg
-          width={gridWidth}
-          height={gridHeight + 22}
-          viewBox={`0 0 ${gridWidth} ${gridHeight + 22}`}
+          width={svgWidth}
+          height={svgHeight}
+          viewBox={`0 0 ${svgWidth} ${svgHeight}`}
           className="block"
+          role="img"
+          aria-label={`Contribution calendar: ${totalActivities} activities across ${activeDays} active days`}
         >
           {/* Month labels */}
           {monthLabels.map((m, i) => (
             <text
               key={`month-${i}`}
-              x={m.x}
+              x={LABEL_GUTTER + m.x}
               y={8}
               className="fill-text-muted/50"
               style={{ fontSize: '9px', fontFamily: 'inherit' }}
@@ -163,8 +171,8 @@ const ContributionCalendar: React.FC<ContributionCalendarProps> = ({
             label ? (
               <text
                 key={`day-${i}`}
-                x={-4}
-                y={14 + i * STEP + CELL_SIZE / 2 + 3}
+                x={LABEL_GUTTER - 6}
+                y={TOP_PAD + i * STEP + CELL_SIZE / 2 + 3}
                 textAnchor="end"
                 className="fill-text-muted/40"
                 style={{ fontSize: '9px', fontFamily: 'inherit' }}
@@ -178,8 +186,8 @@ const ContributionCalendar: React.FC<ContributionCalendarProps> = ({
           {cells.map((cell, idx) => {
             const week = Math.floor(idx / DAYS_IN_WEEK);
             const day = idx % DAYS_IN_WEEK;
-            const x = week * STEP;
-            const y = 14 + day * STEP;
+            const x = LABEL_GUTTER + week * STEP;
+            const y = TOP_PAD + day * STEP;
             const colorClass = INTENSITY_LEVELS[cell.intensity];
 
             return (
@@ -200,6 +208,10 @@ const ContributionCalendar: React.FC<ContributionCalendarProps> = ({
           })}
         </svg>
       </div>
+
+      <p className="mt-1 text-[10px] font-mono uppercase tracking-widest text-text-muted/50 sm:hidden">
+        {"Swipe the grid to see older activity"}
+      </p>
 
       {/* Legend */}
       <div className="mt-2 flex items-center gap-2 text-xs font-mono text-text-muted/50">

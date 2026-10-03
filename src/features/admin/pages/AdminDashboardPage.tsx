@@ -240,120 +240,115 @@ const AdminDashboardPage: React.FC = () => {
     <>
     <SEO title="Admin Dashboard" description="QYVORA administrator control panel." noindex />
     <div className="bg-canvas text-text-primary">
-      <div
-        className="scroll-hover lg:fixed lg:left-0 lg:right-0 lg:bottom-0 lg:top-24 lg:overflow-y-auto lg:overscroll-contain"
-        style={{ scrollBehavior: 'smooth' }}
-      >
-        <PageBody spacing="sections">
+      <PageBody spacing="sections">
 
-          {/* ── Page header ─────────────────────────────────────────────── */}
-          <PageHeader
-            kicker={`${"ADMIN"} · ${"Admin Console"}`}
-            title={activeLabel}
-            description={loading ? "Synchronizing encrypted data…" : `Managing the ${activeLabel.toLowerCase()} module.`}
-            actions={
-              <div className="flex items-center gap-3 sm:gap-5 shrink-0">
-                {overview && (
-                  <div className="hidden sm:flex items-center gap-5">
-                    <div className="text-right">
-                      <div className="font-mono text-sm font-black text-accent leading-none tabular-nums">{overview.users.total}</div>
-                      <div className="mt-1 text-xs font-black uppercase tracking-widest text-text-muted">{"Users"}</div>
-                    </div>
-                    <div className="text-right">
-                      <div className="font-mono text-sm font-black text-accent leading-none tabular-nums">{products.length}</div>
-                      <div className="mt-1 text-xs font-black uppercase tracking-widest text-text-muted">{"Market"}</div>
-                    </div>
+        {/* ── Page header ─────────────────────────────────────────────── */}
+        <PageHeader
+          kicker={`${"ADMIN"} · ${"Admin Console"}`}
+          title={activeLabel}
+          description={loading ? "Synchronizing encrypted data…" : `Managing the ${activeLabel.toLowerCase()} module.`}
+          actions={
+            <div className="flex items-center gap-3 sm:gap-5 shrink-0">
+              {overview && (
+                <div className="hidden sm:flex items-center gap-5">
+                  <div className="text-right">
+                    <div className="font-mono text-sm font-black text-accent leading-none tabular-nums">{overview.users.total}</div>
+                    <div className="mt-1 text-xs font-black uppercase tracking-widest text-text-muted">{"Users"}</div>
                   </div>
-                )}
-                <Button
-                  variant="secondary"
-                  size="sm"
-                  onClick={() => void loadAll()}
-                  icon={<RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />}
-                >
-                  {loading ? "Synchronizing encrypted data…" : "Refresh"}
-                </Button>
-              </div>
-            }
-          />
-
-          {/* ── MAIN CONTENT ────────────────────────────────────────────── */}
-          {loading ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4" role="status">
-              {[0,1,2,3].map(i => (
-                <div key={i} className="rounded-2xl border border-border-subtle bg-surface p-5 space-y-4 animate-pulse">
-                  <div className="h-10 w-10 rounded-xl bg-surface-raised" />
-                  <div className="h-3 w-20 bg-surface-raised rounded animate-pulse" />
-                  <div className="h-6 w-24 bg-surface-raised rounded animate-pulse" />
+                  <div className="text-right">
+                    <div className="font-mono text-sm font-black text-accent leading-none tabular-nums">{products.length}</div>
+                    <div className="mt-1 text-xs font-black uppercase tracking-widest text-text-muted">{"Market"}</div>
+                  </div>
                 </div>
-              ))}
+              )}
+              <Button
+                variant="secondary"
+                size="sm"
+                onClick={() => void loadAll()}
+                icon={<RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />}
+              >
+                {loading ? "Synchronizing encrypted data…" : "Refresh"}
+              </Button>
             </div>
-          ) : (
-            <div>
-              {/* ── OVERVIEW ──────────────────────────────────────────────── */}
-              {activeTab === 'overview' && <OverviewTab data={overview} status={statuses.overview} onRetry={() => void loadAll()} />}
+          }
+        />
 
-              {/* ── USERS ─────────────────────────────────────────────────── */}
-              {activeTab === 'users' && (
-                <UsersTab
-                  users={users}
-                  overview={overview}
-                  status={statuses.users}
-                  onRetry={() => void loadAll()}
-                  addToast={addToast}
-                  patchUser={patchUser}
-                  handleUserBlockToggle={handleUserBlockToggle}
-                  handleDeleteUser={(target) => { setConfirmDeleteUser(target); return Promise.resolve(); }}
-                />
-              )}
-
-              {/* ── BOOTCAMPS ─────────────────────────────────────────────── */}
-              {activeTab === 'bootcamps' && <BootcampAccessPanel addToast={addToast} />}
-
-              {/* ── ZERO-DAY MARKET ───────────────────────────────────────── */}
-              {activeTab === 'zero_day' && (
-                <ZeroDayMarketTab
-                  products={products}
-                  status={statuses.cp}
-                  onRetry={() => void loadAll()}
-                  saveProduct={saveProduct}
-                  deleteProduct={deleteProduct}
-                />
-              )}
-
-              {/* ── POINTS / CP ANALYTICS ────────────────────────────────── */}
-              {activeTab === 'cp' && <CpAnalytics users={users} addToast={addToast} />}
-
-              {/* ── INBOX (Contacts + Service Requests) ──────────────────── */}
-              {activeTab === 'inbox' && <InboxTab />}
-
-              {/* ── BROADCAST ─────────────────────────────────────────────── */}
-              {activeTab === 'broadcast' && <BroadcastTab />}
-
-              {/* ── AUDIT LOG ─────────────────────────────────────────────── */}
-              {activeTab === 'audit' && <AuditLogTab />}
-
-              {/* ── INCIDENTS ─────────────────────────────────────────────── */}
-              {activeTab === 'incidents' && <IncidentsTab />}
-
-              {/* ── SECURITY ──────────────────────────────────────────────── */}
-              {activeTab === 'security' && (
-                <SecurityTab
-                  securitySummary={securitySummary}
-                  securityEvents={securityEvents}
-                  summaryStatus={statuses.securitySummary}
-                  eventsStatus={statuses.securityEvents}
-                  onRetry={() => void loadAll()}
-                />
-              )}
-            </div>
-          )}
-
-          <div className="mt-6">
-            <SyncIndicator lastSync={lastSync} error={syncError} onRetry={() => void loadAll()} />
+        {/* ── MAIN CONTENT ────────────────────────────────────────────── */}
+        {loading ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4" role="status">
+            {[0,1,2,3].map(i => (
+              <div key={i} className="rounded-2xl border border-border-subtle bg-surface p-5 space-y-4 animate-pulse">
+                <div className="h-10 w-10 rounded-xl bg-surface-raised" />
+                <div className="h-3 w-20 bg-surface-raised rounded animate-pulse" />
+                <div className="h-6 w-24 bg-surface-raised rounded animate-pulse" />
+              </div>
+            ))}
           </div>
-        </PageBody>
-      </div>
+        ) : (
+          <div>
+            {/* ── OVERVIEW ──────────────────────────────────────────────── */}
+            {activeTab === 'overview' && <OverviewTab data={overview} status={statuses.overview} onRetry={() => void loadAll()} />}
+
+            {/* ── USERS ─────────────────────────────────────────────────── */}
+            {activeTab === 'users' && (
+              <UsersTab
+                users={users}
+                overview={overview}
+                status={statuses.users}
+                onRetry={() => void loadAll()}
+                addToast={addToast}
+                patchUser={patchUser}
+                handleUserBlockToggle={handleUserBlockToggle}
+                handleDeleteUser={(target) => { setConfirmDeleteUser(target); return Promise.resolve(); }}
+              />
+            )}
+
+            {/* ── BOOTCAMPS ─────────────────────────────────────────────── */}
+            {activeTab === 'bootcamps' && <BootcampAccessPanel addToast={addToast} />}
+
+            {/* ── ZERO-DAY MARKET ───────────────────────────────────────── */}
+            {activeTab === 'zero_day' && (
+              <ZeroDayMarketTab
+                products={products}
+                status={statuses.cp}
+                onRetry={() => void loadAll()}
+                saveProduct={saveProduct}
+                deleteProduct={deleteProduct}
+              />
+            )}
+
+            {/* ── POINTS / CP ANALYTICS ────────────────────────────────── */}
+            {activeTab === 'cp' && <CpAnalytics users={users} addToast={addToast} />}
+
+            {/* ── INBOX (Contacts + Service Requests) ──────────────────── */}
+            {activeTab === 'inbox' && <InboxTab />}
+
+            {/* ── BROADCAST ─────────────────────────────────────────────── */}
+            {activeTab === 'broadcast' && <BroadcastTab />}
+
+            {/* ── AUDIT LOG ─────────────────────────────────────────────── */}
+            {activeTab === 'audit' && <AuditLogTab />}
+
+            {/* ── INCIDENTS ─────────────────────────────────────────────── */}
+            {activeTab === 'incidents' && <IncidentsTab />}
+
+            {/* ── SECURITY ──────────────────────────────────────────────── */}
+            {activeTab === 'security' && (
+              <SecurityTab
+                securitySummary={securitySummary}
+                securityEvents={securityEvents}
+                summaryStatus={statuses.securitySummary}
+                eventsStatus={statuses.securityEvents}
+                onRetry={() => void loadAll()}
+              />
+            )}
+          </div>
+        )}
+
+        <div className="mt-6">
+          <SyncIndicator lastSync={lastSync} error={syncError} onRetry={() => void loadAll()} />
+        </div>
+      </PageBody>
     </div>
 
     <ConfirmDialog

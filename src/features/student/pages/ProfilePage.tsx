@@ -80,9 +80,9 @@ const Profile: React.FC = () => {
       />
 
       <PageBody>
-    <div className="grid gap-6 lg:grid-cols-12 lg:gap-8">
+    <div className="grid gap-4 sm:gap-5 lg:grid-cols-12 lg:gap-8">
           <aside className="lg:col-span-4">
-            <div className="space-y-6 lg:sticky lg:top-24">
+            <div className="space-y-4 sm:space-y-5 lg:space-y-6 lg:sticky lg:top-24">
               <section id="profile-section-identity">
                 <ProfileIdentityBlock
                   id={profile.id}
@@ -112,7 +112,7 @@ const Profile: React.FC = () => {
             </div>
           </aside>
 
-          <main className="lg:col-span-8 space-y-6">
+          <main className="space-y-4 sm:space-y-5 lg:col-span-8 lg:space-y-6">
             <section id="profile-section-stats">
               <ProfileMetricsStrip metrics={[
                 { icon: <CpLogo className="w-5 h-5" />, value: profile.cp.toLocaleString(), accent: true, label: 'CP' },

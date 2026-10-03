@@ -39,7 +39,7 @@ const AdminSidebar = ({ collapsed = false, onToggleCollapse }: AdminSidebarProps
         collapsed ? 'w-[76px]' : 'w-[264px]'
       }`}
     >
-      <div className={`flex h-[80px] items-center border-b border-border-subtle ${collapsed ? 'justify-center px-0' : 'px-5'}`}>
+      <div className={`flex h-20 items-center border-b border-border-subtle md:h-24 ${collapsed ? 'justify-center px-0' : 'px-5'}`}>
         {collapsed ? <QyvoraMark className="h-7 w-7" /> : <Logo size="md" />}
       </div>
 
