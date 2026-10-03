@@ -3,13 +3,16 @@ import react from '@vitejs/plugin-react';
 import path from 'path';
 import { defineConfig } from 'vite';
 import webpConversion from './vite-plugin-webp-conversion';
+import swPrecache from './vite-plugin-sw-precache';
 import { vitePrerenderPlugin } from 'vite-prerender-plugin';
 
 export default defineConfig(() => ({
   plugins: [
     react(),
     tailwindcss(),
-    webpConversion(),
+    // public/icons holds the PWA manifest icons — they must stay PNG.
+    webpConversion({ exclude: ['public/icons'] }),
+    swPrecache(),
     vitePrerenderPlugin({
       renderTarget: '#root',
       additionalPrerenderRoutes: [

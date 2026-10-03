@@ -1280,7 +1280,7 @@ z-[100] — Navbar / PublicNavigation / bottom nav
 z-[110] — Navbar logo/actions, StudentTopbar, AdminTopbar
 z-[120] — BottomSheet overlay
 z-[130] — BottomSheet content
-z-[140] — InstallBanner
+z-[140] — PwaStatus host (update / offline / install cards)
 z-[145] — CommunityPopup
 z-[150] — ConsentBanner
 z-[200] — Dialog overlay

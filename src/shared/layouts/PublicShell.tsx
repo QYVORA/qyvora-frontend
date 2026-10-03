@@ -3,6 +3,7 @@ import { Outlet } from 'react-router-dom';
 import PublicNavigation from '@/shared/components/layout/PublicNavigation';
 import PublicBottomNav from '@/shared/components/layout/PublicBottomNav';
 import PublicFooter from '@/shared/components/layout/PublicFooter';
+import PwaStatus from '@/shared/components/layout/PwaStatus';
 
 interface PublicShellProps {
   /** Feature-owned overlay hosts to mount at shell level (e.g. contact modals). */
@@ -26,6 +27,7 @@ const PublicShell: React.FC<PublicShellProps> = ({ overlayHosts }) => (
     </main>
     <PublicFooter />
     <PublicBottomNav />
+    <PwaStatus />
     {overlayHosts}
   </>
 );

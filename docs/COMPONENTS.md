@@ -360,7 +360,8 @@ All popups coordinate through `usePopupManager` (priority queue; lower number = 
 | `StudentTour` (spotlight) | `features/student/components/StudentTour.tsx` | `2` | Post-onboarding guided tour; see §13.1. |
 | `ConsentBanner` | `shared/components/ConsentBanner.tsx` | `1` | cookie consent popup. |
 | `CommunityPopup` | `shared/components/CommunityPopup.tsx` | `3` | WhatsApp CTA, 30s delay, 4h dismissal. |
-| `InstallBanner` | `features/student/components/layout/InstallBanner.tsx` | `5` | PWA install prompt. |
+| `InstallBanner` | `shared/components/layout/InstallBanner.tsx` | `5` | PWA install prompt (iOS shows share-sheet instructions); hosted by `PwaStatus`. |
+| `PwaStatus` | `shared/components/layout/PwaStatus.tsx` | — | Single fixed column (`z-[140]`) hosting the PWA notices: update-ready card, `// OFFLINE` strip and `InstallBanner`. Mounted in `PublicShell` + `AppShell`. |
 | `CelebrationModal` | `shared/components/CelebrationModal.tsx` | — | reward celebration dialog (CP/badge/CTA). Wrapped by `LabCelebration`. |
 | `ErrorBoundary` | `shared/components/ErrorBoundary.tsx` | — | Dobia mascot + Try Again / Refresh / Dashboard. |
 | `ScrollToTop` | `shared/components/ScrollToTop.tsx` | — | route-change scroll; `ArrowUp` button `bottom-4 left-4 z-[9997]` after 150px. |

@@ -26,13 +26,12 @@ import ActiveDeployments from '@/features/student/components/dashboard/ActiveDep
 import SkillMatrix from '@/features/student/components/dashboard/SkillMatrix';
 import ProgressionPanel from '@/features/student/components/dashboard/ProgressionPanel';
 import ScrollReveal from '@/shared/components/ScrollReveal';
-import { ShoppingBag, Download } from 'lucide-react';
+import { ShoppingBag } from 'lucide-react';
 import { IconTerminal, IconNetwork } from '@/shared/components/icons';
 import LearningCard from '@/shared/components/learning/LearningCard';
 import CourseBadge from '@/shared/components/CourseBadge';
 import { LABS } from '@/features/student/constants/labs';
 import { COURSES } from '@/features/student/data/courses';
-import { isInstallable, showInstallPrompt } from '@/features/student/services/pwa';
 import type { LabDef } from '@/features/student/constants/labs';
 
 import hpbCoverImg from '@/assets/bootcamp/hpb-cover.webp';
@@ -87,23 +86,6 @@ const Dashboard = () => {
   const [loading, setLoading] = useState(true);
   const [syncError, setSyncError] = useState('');
   const [products, setProducts] = useState<any[]>([]);
-  const [installing, setInstalling] = useState(false);
-  const [canInstall, setCanInstall] = useState(false);
-
-  useEffect(() => {
-    setCanInstall(isInstallable());
-    const interval = setInterval(() => setCanInstall(isInstallable()), 2000);
-    return () => clearInterval(interval);
-  }, []);
-
-  const handleInstall = async () => {
-    setInstalling(true);
-    try {
-      await showInstallPrompt();
-    } finally {
-      setInstalling(false);
-    }
-  };
 
   useEffect(() => {
     let mounted = true;
@@ -362,24 +344,6 @@ const Dashboard = () => {
 
           {/* 5. Rank progression */}
           {progression && <ProgressionPanel progression={progression} fallbackLabel={rankName} />}
-
-          {/* 6. Tertiary — platform prompt */}
-          {canInstall && (
-            <Card className="flex flex-col gap-4 p-5 sm:flex-row sm:items-center md:p-6">
-              <div className="flex flex-1 items-center gap-3">
-                <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg border border-border-subtle bg-surface-raised text-accent">
-                  <Download className="h-5 w-5" aria-hidden="true" />
-                </span>
-                <div className="min-w-0">
-                  <p className="text-sm font-bold text-text-primary">{"Install QYVORA"}</p>
-                  <p className="type-meta">{"Get the full experience with our desktop app."}</p>
-                </div>
-              </div>
-              <Button onClick={handleInstall} disabled={installing} loading={installing} className="sm:ml-auto">
-                {"Install"}
-              </Button>
-            </Card>
-          )}
         </PageBody>
       </div>
     </FadeIn>

@@ -1,26 +1,65 @@
 {
-  "name": "QYVORA Student Dashboard",
+  "id": "/",
+  "name": "QYVORA",
   "short_name": "QYVORA",
-  "description": "Africa's Offensive Security Platform — Student Dashboard",
-  "start_url": "/dashboard/",
-  "scope": "/dashboard/",
+  "description": "Offensive security training for African defenders — labs, bootcamp rooms, courses and network simulators.",
+  "lang": "en",
+  "dir": "ltr",
+  "start_url": "/?source=pwa",
+  "scope": "/",
   "display": "standalone",
-  "background_color": "#050706",
+  "display_override": ["standalone", "minimal-ui", "browser"],
+  "background_color": "#000000",
   "theme_color": "#06B66F",
-  "orientation": "portrait",
-  "categories": ["education", "security"],
+  "categories": ["education", "security", "productivity"],
+  "prefer_related_applications": false,
   "icons": [
     {
-      "src": "/favicon.webp",
+      "src": "/icons/icon-192.png",
       "sizes": "192x192",
-      "type": "image/webp",
+      "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "/favicon.webp",
+      "src": "/icons/icon-512.png",
       "sizes": "512x512",
-      "type": "image/webp",
-      "purpose": "any maskable"
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-maskable-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "/icons/icon-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Dashboard",
+      "short_name": "Dashboard",
+      "description": "Your labs, rooms and progress",
+      "url": "/dashboard",
+      "icons": [{ "src": "/icons/icon-192.png", "sizes": "192x192", "type": "image/png" }]
+    },
+    {
+      "name": "Learn",
+      "short_name": "Learn",
+      "description": "Courses and bootcamp rooms",
+      "url": "/dashboard/courses",
+      "icons": [{ "src": "/icons/icon-192.png", "sizes": "192x192", "type": "image/png" }]
+    },
+    {
+      "name": "Terminal",
+      "short_name": "Terminal",
+      "description": "Practice in the Linux terminal simulator",
+      "url": "/simulations/terminal",
+      "icons": [{ "src": "/icons/icon-192.png", "sizes": "192x192", "type": "image/png" }]
     }
   ]
 }

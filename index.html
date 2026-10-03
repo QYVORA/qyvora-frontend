@@ -57,11 +57,19 @@
 
     <!-- Favicon -->
     <link rel="icon" type="image/webp" href="/favicon.webp" />
-    <link rel="apple-touch-icon" href="/favicon.webp" />
+    <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" />
     <link rel="manifest" href="/manifest.webmanifest" />
     <link rel="author" href="/humans.txt" />
     <link rel="shortcut icon" href="/favicon.webp" />
-    <meta name="msapplication-TileImage" content="/favicon.webp" />
+
+    <!-- PWA (installable, offline-capable) -->
+    <link rel="icon" type="image/png" sizes="192x192" href="/icons/icon-192.png" />
+    <link rel="icon" type="image/png" sizes="512x512" href="/icons/icon-512.png" />
+    <link rel="mask-icon" href="/favicon.webp" color="#06B66F" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-title" content="QYVORA" />
+    <meta name="msapplication-TileImage" content="/icons/icon-192.png" />
     <meta name="msapplication-TileColor" content="#06B66F" />
 
     <!-- Performance: resource hints -->

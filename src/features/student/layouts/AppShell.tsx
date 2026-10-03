@@ -3,13 +3,13 @@ import { Outlet, useMatch } from 'react-router-dom';
 import StudentTopbar from '@/features/student/components/layout/StudentTopbar';
 import StudentSidebar from '@/features/student/components/layout/StudentSidebar';
 import StudentBottomNav from '@/features/student/components/layout/StudentBottomNav';
-import InstallBanner from '@/features/student/components/layout/InstallBanner';
 import UsernameChangeModal from '@/features/student/components/UsernameChangeModal';
 import ConsentBanner from '@/shared/components/ConsentBanner';
 import { TerminalWrapper } from '@/shared/components/learning/TerminalWrapper';
 import { SimulationProvider } from '@/features/student/components/simulations';
 import NetworkBuilder from '@/features/student/components/tools/NetworkBuilder';
-import { initPWA, tryAutoSubscribePush } from '@/features/student/services/pwa';
+import PwaStatus from '@/shared/components/layout/PwaStatus';
+import { tryAutoSubscribePush } from '@/core/services/pwa';
 import type { TerminalContext } from '@/features/student/components/SimulatedTerminal/types';
 
 const TOPBAR_H = 'pt-20 md:pt-24';
@@ -23,7 +23,7 @@ const TOPBAR_H = 'pt-20 md:pt-24';
  * shell — the sidebar rail is the single dashboard navigation.
  *
  * Shell behaviours: SimulationProvider, terminal/IDE/network window-event
- * triggers, Ctrl+` toggle and PWA init.
+ * triggers, Ctrl+` toggle, PWA status host and push subscription.
  */
 const AppShell = () => {
   const roomMatch = useMatch('/dashboard/bootcamps/:bootcampId/phases/:phaseId/rooms/:roomId');
@@ -52,7 +52,6 @@ const AppShell = () => {
     });
 
   useEffect(() => {
-    initPWA();
     tryAutoSubscribePush();
   }, []);
 
@@ -107,7 +106,7 @@ const AppShell = () => {
         </div>
         {useRail && <StudentBottomNav />}
         <ConsentBanner />
-        <InstallBanner />
+        <PwaStatus />
         <UsernameChangeModal />
 
         {/* Full terminal modal — for standalone terminal access */}

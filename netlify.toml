@@ -13,11 +13,6 @@
   status = 200
 
 [[redirects]]
-  from = "/icon-*.png"
-  to = "/icon-:splat.png"
-  status = 200
-
-[[redirects]]
   from = "/blogs/hacker-protocol-book"
   to = "/blogs/hacker-protocol-bootcamp"
   status = 301
@@ -59,7 +54,15 @@
     Content-Type = "application/manifest+json"
     Cache-Control = "no-cache"
 
+# Installability icons are content-addressed by hand (see scripts/generate-pwa-icons.mjs)
+# but never change name on a deploy, so revalidate them on every load.
 [[headers]]
-  for = "/icon-*.png"
+  for = "/icons/*"
   [headers.values]
-    Cache-Control = "public, max-age=31536000, immutable"
+    Cache-Control = "public, max-age=86400, stale-while-revalidate"
+
+# The service worker's offline fallback must never be served stale.
+[[headers]]
+  for = "/offline.html"
+  [headers.values]
+    Cache-Control = "no-cache"

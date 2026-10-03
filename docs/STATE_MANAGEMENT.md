@@ -79,6 +79,7 @@ All server state flows through the Axios client (`src/core/services/api.ts`):
 | Hook | Source | Purpose |
 |------|--------|---------|
 | `usePopupManager` | `src/core/hooks/usePopupManager.ts` | Single canonical overlay queue (onboard/consent/tour/community/install) |
+| `usePWA` | `src/core/hooks/usePWA.ts` | Mirrors the PWA service singleton: install prompt, worker update, online status |
 | `useAutoPlay` | `src/core/hooks/useAutoPlay.ts` | Carousel auto-advance with reduced-motion support |
 | `useGsap` | `src/shared/hooks/useGsap.ts` | GSAP animation setup |
 | `usePreferences` | `src/shared/hooks/usePreferences.ts` | User preference persistence |

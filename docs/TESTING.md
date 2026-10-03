@@ -72,6 +72,11 @@ React component rendering:
 Custom hook behavior:
 - `usePopupManager.test.tsx` — Canonical overlay queue gating
 
+### Service Tests
+
+Framework-free browser integrations:
+- `core/services/__tests__/pwa.test.ts` — Service worker registration, install prompt capture, update lifecycle, connectivity
+
 ### Data Tests
 
 Static data validation:

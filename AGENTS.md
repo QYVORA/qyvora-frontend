@@ -96,7 +96,17 @@ h2 compact bento sections: **title only, no description**.
 
 ## Z-Index Quick Reference
 
-`z-[90]` mobile nav overlay / `z-[100]` navbar / `z-[110]` navbar logo / `z-[120]` BottomSheet overlay / `z-[130]` BottomSheet content / `z-[150]` ConsentBanner / `z-[200]` Dialog overlay / `z-[201]` dialog content / `z-[300]` tooltip / `z-[500]` toast / `z-[9999]` page loader
+`z-[90]` mobile nav overlay / `z-[100]` navbar / `z-[110]` navbar logo / `z-[120]` BottomSheet overlay / `z-[130]` BottomSheet content / `z-[140]` PwaStatus host / `z-[150]` ConsentBanner / `z-[200]` Dialog overlay / `z-[201]` dialog content / `z-[300]` tooltip / `z-[500]` toast / `z-[9999]` page loader
+
+## PWA
+
+- **Service**: `src/core/services/pwa.ts` is a framework-free singleton (worker registration, install prompt, update lifecycle, web push). React bindings live in `src/core/hooks/usePWA.ts` (`useInstallPrompt`, `useServiceWorkerUpdate`, `useOnlineStatus`) — components never touch the browser APIs directly
+- **UI host**: `shared/components/layout/PwaStatus.tsx`, mounted once per shell (`PublicShell`, `AppShell`). It stacks the update-ready card, the `// OFFLINE` strip and `InstallBanner` (popup-manager priority `5`) in one `pointer-events-none` column. Add new PWA notices there, never as another floating element
+- **Registration** happens in `src/app/main.tsx`, never in a shell. Dev skips it unless `VITE_ENABLE_SW_IN_DEV=true` (a worker caching Vite's module graph breaks HMR)
+- **Never** let `public/sw.js` call `skipWaiting()` on install — updates are announced in-app and applied by `applyUpdate()` (posts `SKIP_WAITING`, reloads on `controllerchange`)
+- `dist/sw.js` is stamped by `vite-plugin-sw-precache.ts` (`CACHE_VERSION` = hash of the precache list, `BUILD_ASSETS` = hashed entry graph). Route chunks stay runtime-cached on purpose (~15 MB total); do not widen the precache to all assets
+- Manifest icons are PNG in `public/icons` (WebP manifest icons are not universally supported). Regenerate with `npm run icons:pwa`; the webp plugin is configured to skip that folder
+- Details: **[docs/PWA.md](docs/PWA.md)**
 
 ## Do Not Reintroduce
 

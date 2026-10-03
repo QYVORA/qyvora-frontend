@@ -17,6 +17,10 @@
  *
  * Global styles are imported here so they are bundled once and apply to
  * the entire app regardless of which route is active.
+ *
+ * The PWA service worker is registered from here rather than from a shell, so
+ * the whole site — public pages and dashboard alike — is installable and
+ * offline-capable. It is a no-op where service workers are unsupported.
  */
 
 import { StrictMode } from 'react';
@@ -27,7 +31,10 @@ import '../styles/index.css'; // Global CSS: resets, CSS variables, base typogra
 import { AuthProvider } from '../core/contexts/AuthContext';
 import { ToastProvider } from '../core/contexts/ToastContext';
 import { ThemeProvider } from '../core/contexts/ThemeContext';
+import { initPWA } from '../core/services/pwa';
 import { TooltipProvider } from '../shared/components/ui/Tooltip';
+
+initPWA();
 
 /*
   createRoot(document.getElementById('root')!)

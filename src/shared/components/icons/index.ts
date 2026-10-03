@@ -48,6 +48,11 @@ export {
   Upload as IconUpload,
   Play as IconPlay,
   Square as IconStop,
+  Share2 as IconShare,
+  RefreshCw as IconRefresh,
+
+  // Connectivity
+  WifiOff as IconWifiOff,
 
   // Feedback
   CheckCircle as IconCheck,

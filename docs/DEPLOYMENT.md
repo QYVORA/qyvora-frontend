@@ -75,11 +75,19 @@ form-action 'self'
 | `/favicon.ico` | `public, max-age=604800` |
 | `/sw.js` | `no-cache` |
 | `/manifest.webmanifest` | `no-cache` |
-| `/icon-*.png` | `public, max-age=31536000, immutable` |
+| `/icons/*` | `public, max-age=86400, stale-while-revalidate` |
+| `/offline.html` | `no-cache` |
 
 ## PWA Assets
 
 Service worker and manifest served with `no-cache` to ensure updates propagate.
+
+`vite-plugin-sw-precache` rewrites two placeholders in the emitted `dist/sw.js`
+at build time: `CACHE_VERSION` (a hash of the precached asset list, so every
+deploy starts a fresh cache pair and prunes the previous one) and `BUILD_ASSETS`
+(the hashed entry graph — entry chunk, static vendor imports and CSS). Without
+it a hand-written worker cannot know Vite's hashed filenames and the first page
+load's JS is never cached. See **[PWA.md](PWA.md)**.
 
 ## SEO Assets
 

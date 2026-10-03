@@ -8,6 +8,12 @@ interface WebpOptions {
   dirs?: string[];
   extensions?: string[];
   quality?: number;
+  /**
+   * Directories whose images must stay in their original format. PWA icons are
+   * the canonical case: manifest icons have to be PNG, so a WebP twin would be
+   * dead weight in the deploy.
+   */
+  exclude?: string[];
 }
 
 export default function webpConversion(options: WebpOptions = {}): Plugin {
@@ -15,11 +21,15 @@ export default function webpConversion(options: WebpOptions = {}): Plugin {
     dirs = ['public', 'src/assets'],
     extensions = ['.png', '.jpg', '.jpeg'],
     quality = 80,
+    exclude = [],
   } = options;
+
+  const excluded = exclude.map((dir) => path.resolve(process.cwd(), dir));
 
   const convertImage = async (filePath: string) => {
     const ext = path.extname(filePath).toLowerCase();
     if (!extensions.includes(ext)) return;
+    if (excluded.some((dir) => filePath.startsWith(dir + path.sep))) return;
 
     const webpPath = filePath.replace(new RegExp(`\\${ext}$`, 'i'), '.webp');
 
