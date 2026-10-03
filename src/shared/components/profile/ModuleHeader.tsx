@@ -15,8 +15,8 @@ const ModuleHeader: React.FC<ModuleHeaderProps> = ({
   trailing,
 }) => {
   return (
-    <div className="mb-5 flex items-center justify-between gap-3">
-      <div className="flex items-center gap-2.5">
+    <div className="mb-5 flex min-w-0 items-center justify-between gap-3">
+      <div className="flex min-w-0 items-center gap-2.5">
         <span
           className={`flex h-9 w-9 items-center justify-center rounded-lg border border-border-subtle bg-surface-raised ${iconClassName}`}
         >

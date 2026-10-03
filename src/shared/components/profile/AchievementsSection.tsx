@@ -206,9 +206,9 @@ const AchievementsSection: React.FC<AchievementsSectionProps> = ({
               </h4>
               <CountBadge count={labCount} />
             </div>
-            <div className="mb-3 flex items-center justify-between gap-3 rounded-xl border border-border-subtle bg-surface-raised/60 px-4 py-4 sm:gap-6">
+            <div className="mb-3 flex items-center justify-center gap-1.5 rounded-xl border border-border-subtle bg-surface-raised/60 px-2 py-3 sm:justify-between sm:gap-3 sm:px-4 sm:py-4 md:gap-6">
               {LAB_BADGE_IDS.map((labId) => (
-                <LabBadge key={labId} labId={labId} className="w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20" />
+                <LabBadge key={labId} labId={labId} className="h-10 w-10 shrink-0 sm:h-12 sm:w-12 md:h-16 md:w-16 lg:h-20 lg:w-20" />
               ))}
             </div>
             <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
