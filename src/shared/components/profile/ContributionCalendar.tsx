@@ -144,7 +144,7 @@ const ContributionCalendar: React.FC<ContributionCalendarProps> = ({
       </div>
 
       {/* Calendar grid — the window is wider than a phone, so it scrolls horizontally */}
-      <div className="-mx-2 overflow-x-auto px-2 pb-2">
+      <div className="w-full overflow-x-auto pb-2">
         <svg
           width={svgWidth}
           height={svgHeight}

@@ -131,7 +131,7 @@ const AchievementsSection: React.FC<AchievementsSectionProps> = ({
               </h4>
               <CountBadge count={phaseAchievements.length} />
             </div>
-            <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
+            <div className="grid w-full grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
               {phaseAchievements.map((a, idx) => (
                 <motion.div
                   key={a.id}
@@ -165,7 +165,7 @@ const AchievementsSection: React.FC<AchievementsSectionProps> = ({
               </h4>
               <CountBadge count={courseAchievements.length} />
             </div>
-            <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
+            <div className="grid w-full grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
               {courseAchievements.map((a, idx) => {
                 const IconComp = a.IconComponent;
                 return (
@@ -235,7 +235,7 @@ const AchievementsSection: React.FC<AchievementsSectionProps> = ({
               </h4>
               <CountBadge count={skillAchievements.length} />
             </div>
-            <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
+            <div className="grid w-full grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
               {skillAchievements.map((sa, idx) => {
                 const rarity = sa.rarity || 'common';
                 const styles = RARITY_STYLES[rarity];

@@ -64,7 +64,7 @@ const ActivityTimeline: React.FC<ActivityTimelineProps> = ({ profile, className 
               initial={prefersReduced ? false : { opacity: 0, x: -8 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: prefersReduced ? 0 : 0.3, delay: prefersReduced ? 0 : idx * 0.05 }}
-              className="relative flex items-start gap-3 py-3 pl-1"
+              className="relative flex w-full items-start gap-3 overflow-hidden py-3 pl-1"
             >
               {eventIcon(event, profile)}
 
@@ -77,7 +77,7 @@ const ActivityTimeline: React.FC<ActivityTimelineProps> = ({ profile, className 
                 )}
               </div>
 
-              <span className="shrink-0 pt-1 font-mono text-xs text-text-muted/60">
+              <span className="shrink-0 whitespace-nowrap pt-1 font-mono text-xs text-text-muted/60">
                 {formatTimestamp(event.timestamp)}
               </span>
             </motion.div>

@@ -132,7 +132,7 @@ const ProfileIdentityBlock: React.FC<ProfileIdentityBlockProps> = ({
         </div>
 
         {bio && (
-          <p className="text-sm leading-relaxed text-text-secondary">{bio}</p>
+          <p className="break-words text-sm leading-relaxed text-text-secondary">{bio}</p>
         )}
 
         {metaRows.length > 0 && (
@@ -140,7 +140,7 @@ const ProfileIdentityBlock: React.FC<ProfileIdentityBlockProps> = ({
             {metaRows.map((row, i) => (
               <div key={i} className="flex items-center gap-2 text-xs text-text-muted">
                 <span className="shrink-0 text-text-muted/70">{row.icon}</span>
-                <span className="truncate">{row.text}</span>
+                <span className="min-w-0 truncate">{row.text}</span>
               </div>
             ))}
           </dl>
@@ -186,7 +186,7 @@ const ProfileIdentityBlock: React.FC<ProfileIdentityBlockProps> = ({
         )}
 
         {(actions.length > 0 || showPublicView || showShare) && (
-          <div className="flex flex-wrap items-center gap-2 pt-1">
+          <div className="flex w-full flex-wrap items-center gap-2 pt-1">
             {actions.map((action, i) => {
               if (action.to) {
                 return (

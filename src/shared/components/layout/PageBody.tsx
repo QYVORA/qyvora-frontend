@@ -21,7 +21,7 @@ interface PageBodyProps {
 const PageBody: React.FC<PageBodyProps> = ({ children, spacing = 'none', className }) => (
   <div
     className={cn(
-      'w-full px-3 pb-16 pt-6 md:px-4 md:pb-20 md:pt-8 lg:px-6 lg:pb-24',
+      'w-full overflow-x-hidden px-3 pb-16 pt-6 md:px-4 md:pb-20 md:pt-8 lg:px-6 lg:pb-24',
       spacing === 'sections' && 'space-y-8',
       className,
     )}

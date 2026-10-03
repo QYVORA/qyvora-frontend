@@ -22,14 +22,14 @@ const ProfileMetricsStrip: React.FC<ProfileMetricsStripProps> = ({ metrics }) =>
     <div className="rounded-2xl border border-border-subtle bg-surface p-5 md:p-6">
       <ModuleHeader icon={<Activity className="h-4 w-4" />} title="Overview" />
 
-      <div className="mt-1 grid grid-cols-2 gap-x-4 gap-y-5 sm:grid-cols-3 sm:gap-y-6">
+      <div className="mt-1 grid w-full grid-cols-2 gap-x-4 gap-y-5 sm:grid-cols-3 sm:gap-y-6">
         {metrics.map((metric, index) => (
           <motion.div
             key={index}
             initial={prefersReduced ? false : { opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: prefersReduced ? 0 : 0.3, delay: prefersReduced ? 0 : index * 0.04 }}
-            className="flex min-w-0 flex-col items-start gap-1.5 sm:flex-row sm:items-center sm:gap-3"
+            className="flex w-full min-w-0 flex-col items-start gap-1.5 sm:flex-row sm:items-center sm:gap-3"
           >
             <span className={metric.accent ? 'shrink-0 text-accent' : 'shrink-0 text-text-muted/70'}>
               {metric.icon}

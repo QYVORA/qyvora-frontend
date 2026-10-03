@@ -45,7 +45,7 @@ const LabsModule: React.FC<LabsModuleProps> = ({
               initial={prefersReduced ? false : { opacity: 0, x: -8 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: prefersReduced ? 0 : 0.3, delay: prefersReduced ? 0 : idx * 0.04 }}
-              className="group flex items-center gap-3 rounded-xl border border-border-subtle bg-surface-raised/60 px-3 py-2.5 transition-colors hover:border-accent/30 hover:bg-surface-raised"
+              className="group flex w-full items-center gap-3 overflow-hidden rounded-xl border border-border-subtle bg-surface-raised/60 px-3 py-2.5 transition-colors hover:border-accent/30 hover:bg-surface-raised"
             >
               <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-surface text-accent">
                 <Bug className="h-3.5 w-3.5" />

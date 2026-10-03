@@ -16,7 +16,7 @@ interface PublicContainerProps {
  * public page shares one measuring line.
  */
 const PublicContainer: React.FC<PublicContainerProps> = ({ children, className }) => (
-  <div className={cn('mx-auto w-full max-w-[1320px] px-3 md:px-4 lg:px-6', className)}>
+  <div className={cn('mx-auto w-full max-w-[1320px] overflow-x-hidden px-3 md:px-4 lg:px-6', className)}>
     {children}
   </div>
 );
