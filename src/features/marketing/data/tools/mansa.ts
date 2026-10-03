@@ -41,14 +41,14 @@ const doc: ToolDoc = {
         {
           kind: 'stages',
           items: [
-            { name: '01 · discover', detail: 'Detect wireless interfaces and their capabilities.' },
-            { name: '02 · enumerate', detail: 'Scan for nearby access points and build the inventory.' },
-            { name: '03 · observe', detail: 'Collect associated client/station observations.' },
-            { name: '04 · analyze', detail: 'Apply the deterministic WLAN rules.' },
-            { name: '05 · validate', detail: 'Validate and normalize findings and collected data.' },
-            { name: '06 · findings', detail: 'Aggregate and deduplicate findings.' },
-            { name: '07 · risk', detail: 'Compute risk scores and assign a risk level.' },
-            { name: '08 · report', detail: 'Render the requested output format.' },
+            { name: 'discover', detail: 'Detect wireless interfaces and their capabilities.' },
+            { name: 'enumerate', detail: 'Scan for nearby access points and build the inventory.' },
+            { name: 'observe', detail: 'Collect associated client/station observations.' },
+            { name: 'analyze', detail: 'Apply the deterministic WLAN rules.' },
+            { name: 'validate', detail: 'Validate and normalize findings and collected data.' },
+            { name: 'findings', detail: 'Aggregate and deduplicate findings.' },
+            { name: 'risk', detail: 'Compute risk scores and assign a risk level.' },
+            { name: 'report', detail: 'Render the requested output format.' },
           ],
         },
         {

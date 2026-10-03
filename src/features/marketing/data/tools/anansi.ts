@@ -35,54 +35,54 @@ const doc: ToolDoc = {
           kind: 'stages',
           items: [
             {
-              name: '01 · Discovery',
+              name: 'Discovery',
               detail:
                 'Subdomains from crt.sh certificate-transparency logs plus DNS brute-force against the subdomain wordlist, with a 60-second TTL cache so later phases never re-query the same name.',
               emits: 'hostnames',
             },
             {
-              name: '02 · Probe',
+              name: 'Probe',
               detail:
                 'Live HTTP/HTTPS hosts, collected in parallel: status codes, servers, redirect chains and page titles.',
               emits: 'live hosts',
             },
             {
-              name: '03 · TLS',
+              name: 'TLS',
               detail:
                 'Certificate expiry, subject alternative names, protocol version, cipher selection and self-signed detection.',
             },
             {
-              name: '04 · Headers',
+              name: 'Headers',
               detail:
                 'Missing security headers and CORS misconfiguration, checked against a header expectations table.',
             },
             {
-              name: '05 · Paths',
+              name: 'Paths',
               detail:
                 'Exposed files and directories: .env, .git, configuration files, admin panels, backups and API documentation. A per-host 404 baseline is fetched concurrently so catch-all servers do not produce false positives.',
             },
             {
-              name: '06 · Tech-stack',
+              name: 'Tech-stack',
               detail:
                 'Deep audit of any detected platform. Versions are read from generator meta tags, changelog endpoints and static-asset query strings already in the page body; plugins and extensions are enumerated from the same body rather than by extra requests.',
               emits: 'fingerprints',
             },
             {
-              name: '07 · Takeover',
+              name: 'Takeover',
               detail:
                 'Dangling CNAMEs pointing at unclaimed cloud services, restricted to subdomains with verified dead CNAME records.',
             },
             {
-              name: '08 · OSINT',
+              name: 'OSINT',
               detail: 'Emails, phone numbers, employee references and WHOIS registrant data.' },
             {
-              name: '09 · Chain',
+              name: 'Chain',
               detail:
                 'Assembles every discovered vulnerability into multi-step escalation paths, scored and ranked, from a low-severity foothold to full compromise.',
               emits: 'exploit chains',
             },
             {
-              name: '10 · Exploit',
+              name: 'Exploit',
               detail:
                 'Actively proves findings against the authorized target with live request/response evidence. Gated behind --authorized; validation-only behind --exploit-dry-run.',
               emits: 'exploit evidence',
