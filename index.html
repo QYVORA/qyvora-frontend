@@ -18,36 +18,10 @@
     </style>
 
     <!-- Theme bootstrap: applies the theme before the first paint so the page
-         never flashes the wrong one. Reads the same 'qyvora_theme' key as
-         ThemeContext ('dark'|'light'|'system').
-
-         LIGHT_THEME_ENABLED: light theme is an unbuilt experiment — every branch
-         below is retained, but the flag pins the document to dark and normalises
-         any stale stored 'light'/'system' preference. Mirrors the identically
-         named export in src/core/contexts/ThemeContext.tsx, which cannot be
-         imported here. -->
-    <script>
-      (function () {
-        var LIGHT_THEME_ENABLED = false;
-        var theme = 'dark';
-        if (LIGHT_THEME_ENABLED) {
-          try {
-            var stored = localStorage.getItem('qyvora_theme');
-            if (stored === 'dark') theme = 'dark';
-            else if (stored === 'light') theme = 'light';
-            else if (stored === 'system' || !stored) {
-              if (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) theme = 'light';
-            }
-          } catch (e) {}
-        }
-        var el = document.documentElement;
-        el.setAttribute('data-theme', theme);
-        el.classList.add(theme);
-        if (!LIGHT_THEME_ENABLED) {
-          try { localStorage.setItem('qyvora_theme', 'dark'); } catch (e) {}
-        }
-      })();
-    </script>
+         never flashes the wrong one. External, not inline, so it runs under the
+         deployed CSP (script-src 'self'). Reads the same 'qyvora_theme' key as
+         ThemeContext ('dark'|'light'|'system'). Source: public/theme-init.js -->
+    <script src="/theme-init.js"></script>
 
     <!-- Per-route title, description, canonical, OG, and Twitter tags are injected
          by the prerender script (src/prerender.tsx) during the build, and managed

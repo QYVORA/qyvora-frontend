@@ -22,6 +22,7 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - `InstallBanner` moved to `shared/components/layout/`, rebuilt on `useInstallPrompt` (it previously polled a module-level flag every 2s from the dashboard and only reacted on unrelated re-renders)
 - Removed the duplicate "Install QYVORA" card from the dashboard overview — the single popup-managed banner owns that prompt now
 - Push notification click handling focuses or navigates an existing tab of the same origin instead of blindly opening a window
+- Fixed theme bootstrap: extracted the inline first-paint theme script into `public/theme-init.js` and referenced it with `<script src>`, because the deployed CSP (`script-src 'self'`) was blocking inline execution on every page load
 
 ### Changed
 - Removed all card illustrations (numbered badges, DotMap backgrounds, radial patterns, cover images) from lab and course cards
