@@ -1,48 +1,44 @@
 import React, { useMemo, useRef, useState } from 'react';
-import { ArrowRight, Search } from 'lucide-react';
+import { ArrowRight, Library, Search } from 'lucide-react';
 import { Card } from '@/shared/components/ui/Card';
 import PageHeader from '@/shared/components/ui/PageHeader';
 import PublicContainer from '@/shared/components/layout/PublicContainer';
 import SEO from '@/shared/components/SEO';
+import {
+  TOOLS as TOOL_REGISTRY,
+  TOOL_DOMAIN_LABELS,
+  TOOL_DOMAIN_ORDER,
+  type ToolDomain,
+} from '@/features/marketing/data/tools/registry';
 
-import anansiLogo from '@/assets/anansi/anansi-main-logo.webp';
-import toha3eeLogo from '@/assets/toha3ee/toha3ee-main-logo.webp';
-import jabariLogo from '@/assets/jabari/jabari-main-logo.webp';
-import aksumLogo from '@/assets/aksum/aksum-main-logo.webp';
-import shakaLogo from '@/assets/shaka/shaka-main-logo.webp';
-import nzingaLogo from '@/assets/nzinga/nzinga-main-logo.webp';
-import sekhmetLogo from '@/assets/sekhmet/sekhmet-main-logo.webp';
-import mansaLogo from '@/assets/mansa/mansa-main-logo.webp';
-import amanirenasLogo from '@/assets/amanirenas/amanirenas-main-logo.webp';
-import sundiataLogo from '@/assets/sundiata/sundiata-main-logo.webp';
-import timbuktuLogo from '@/assets/timbuktu/timbuktu-main-logo.webp';
-import kushLogo from '@/assets/kush/kush-main-logo.webp';
-import imhotepLogo from '@/assets/imhotep/imhotep-main-logo.webp';
-
-interface ToolEntry {
+interface ToolCard {
   path: string;
   name: string;
-  logo: string;
+  logo?: string;
   title: string;
-  category: string;
+  category: ToolDomain;
   desc: string;
 }
 
-const TOOLS: ToolEntry[] = [
-  { path: '/anansi', name: 'anansi', logo: anansiLogo, title: 'Anansi', category: 'Attack Surface', desc: 'Terminal-first attack surface intelligence engine. Automate discovery, probing, and takeover detection.' },
-  { path: '/toha3ee', name: 'toha3ee', logo: toha3eeLogo, title: 'Toha3ee', category: 'Network', desc: 'Local & network security assessment framework in Go: host and service discovery, enumeration, wireless and MITM capabilities from an interactive REPL.' },
-  { path: '/shaka', name: 'shaka', logo: shakaLogo, title: 'Shaka', category: 'Active Directory', desc: 'Windows & Active Directory security assessment framework in Go: domain discovery, object enumeration, graph-modeled privilege escalation, and evidence-driven reporting.' },
-  { path: '/nzinga', name: 'nzinga', logo: nzingaLogo, title: 'Nzinga', category: 'OSINT', desc: 'Authorized open-source intelligence (OSINT) collection, cross-source correlation, and evidence-driven reporting in Go.' },
-  { path: '/jabari', name: 'jabari', logo: jabariLogo, title: 'Jabari', category: 'Android', desc: 'Android security assessment framework: authorized USB and network (ADB) targets, non-destructive rule engine and evidence-driven reporting.' },
-  { path: '/aksum', name: 'aksum', logo: aksumLogo, title: 'Aksum', category: 'Binary', desc: 'Binary security assessment & reverse-engineering platform in Go: identification, disassembly, function discovery, call graphs and evidence-backed findings.' },
-  { path: '/sekhmet', name: 'sekhmet', logo: sekhmetLogo, title: 'Sekhmet', category: 'Fuzzing', desc: 'Baseline-aware, feedback-driven fuzzing & vulnerability discovery framework in Go: profile normal behaviour, adaptive mutation, SHA-256 crash dedup and delta minimization.' },
-  { path: '/mansa', name: 'mansa', logo: mansaLogo, title: 'Mansa', category: 'Wireless', desc: 'Authorized wireless security assessment framework in Go: WLAN discovery, enumeration, MITM-range analysis, deterministic rule engine and transparent risk scoring.' },
-  { path: '/amanirenas', name: 'amanirenas', logo: amanirenasLogo, title: 'Amanirenas', category: 'Mobile', desc: 'Offline iOS/Android app security assessment in Go: static analysis, hardcoded secrets, weak crypto, insecure endpoints, WebView posture and evidence-backed risk scoring.' },
-  { path: '/sundiata', name: 'sundiata', logo: sundiataLogo, title: 'Sundiata', category: 'Active Directory', desc: 'Identity & access security assessment for Active Directory in Go: identity discovery, account posture, password policies, sensitive memberships. Credentials are never stored or printed.' },
-  { path: '/timbuktu', name: 'timbuktu', logo: timbuktuLogo, title: 'Timbuktu', category: 'Forensics', desc: 'Incident response & digital forensics framework in Go: source integrity, artifact identification, filesystem lifecycle, memory postmortems, log analysis and evidence-backed timelines.' },
-  { path: '/kush', name: 'kush', logo: kushLogo, title: 'Kush', category: 'Malware', desc: 'Offline malware sample analysis framework in Go: hashing, metadata, static posture, strings, network indicators, IOC extraction and threat classification, without executing samples.' },
-  { path: '/imhotep', name: 'imhotep', logo: imhotepLogo, title: 'Imhotep', category: 'Cloud', desc: 'Offline cloud snapshot analysis framework in Go: IAM posture, storage exposure, network exposure, container posture, secret redaction and misconfiguration detection.' },
-];
+/**
+ * The index is a projection of the tool registry, never a second hand-written
+ * list. Registry entries own the name, logo and one-line summary, so a card can
+ * never advertise a description that has drifted from the tool's own page — and
+ * a tool that gains a registry entry (with a route, a doc page and a sitemap
+ * entry) appears here automatically.
+ *
+ * Categories use `TOOL_DOMAIN_LABELS` so the chips match the grouping used by
+ * the tool sidebar, instead of a second, finer taxonomy that only existed here.
+ */
+const TOOLS: ToolCard[] = TOOL_REGISTRY.map((tool) => ({
+  path: tool.path,
+  name: tool.name,
+  logo: tool.logo,
+  title: tool.displayName,
+  category: tool.domain,
+  desc: tool.summary,
+}));
+
 
 /**
  * ToolsIndexPage — calm index of the open-source tool docs. One compact card
@@ -51,10 +47,14 @@ const TOOLS: ToolEntry[] = [
  */
 const ToolsIndexPage: React.FC = () => {
   const [query, setQuery] = useState('');
-  const [activeCategory, setActiveCategory] = useState('');
+  const [activeCategory, setActiveCategory] = useState<ToolDomain | ''>('');
   const resultsRef = useRef<HTMLDivElement>(null);
 
-  const allCategories = useMemo(() => Array.from(new Set(TOOLS.map((t) => t.category))).sort(), []);
+  // Registry order, so the chips read in the same order as the tool sidebar.
+  const allCategories = useMemo(
+    () => TOOL_DOMAIN_ORDER.filter((domain) => TOOLS.some((t) => t.category === domain)),
+    [],
+  );
 
   const filtered = useMemo(() => {
     let result = TOOLS;
@@ -62,13 +62,13 @@ const ToolsIndexPage: React.FC = () => {
     if (query) {
       const q = query.toLowerCase();
       result = result.filter(
-        (t) => t.title?.toLowerCase().includes(q) || t.name?.toLowerCase().includes(q) || t.desc?.toLowerCase().includes(q),
+        (t) => t.title.toLowerCase().includes(q) || t.name.toLowerCase().includes(q) || t.desc.toLowerCase().includes(q),
       );
     }
     return result;
   }, [activeCategory, query]);
 
-  const chooseCategory = (category: string) => {
+  const chooseCategory = (category: ToolDomain | '') => {
     setActiveCategory(category);
     requestAnimationFrame(() => resultsRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' }));
   };
@@ -84,7 +84,7 @@ const ToolsIndexPage: React.FC = () => {
           kicker={"Open-source tooling"}
           title={"Combat-ready tools, documented end to end."}
 
-          description={"Thirteen open-source offensive security tools, built and documented for operators. Each tool has full documentation, install guides, and walkthroughs."}
+          description={`${TOOLS.length} open-source offensive security tools, built and documented for operators. Each tool has full documentation, install guides, and walkthroughs.`}
         />
 
         <div className="mt-10 flex flex-col gap-3">
@@ -107,7 +107,7 @@ const ToolsIndexPage: React.FC = () => {
                   activeCategory === category ? 'bg-accent text-on-accent' : 'border border-border bg-surface-raised text-text-muted hover:border-accent/50 hover:text-accent'
                 }`}
               >
-                {category}
+                {TOOL_DOMAIN_LABELS[category]}
               </button>
             ))}
           </div>
@@ -125,7 +125,7 @@ const ToolsIndexPage: React.FC = () => {
           <p className="type-meta" role="status" aria-live="polite">
             {filtered.length === TOOLS.length
               ? `${TOOLS.length} tools`
-              : `${filtered.length} of ${TOOLS.length} tools${activeCategory ? ` · ${activeCategory}` : ''}`}
+              : `${filtered.length} of ${TOOLS.length} tools${activeCategory ? ` · ${TOOL_DOMAIN_LABELS[activeCategory]}` : ''}`}
           </p>
         </div>
 
@@ -134,12 +134,16 @@ const ToolsIndexPage: React.FC = () => {
             <Card key={tool.path} to={tool.path} interactive className="flex h-full flex-col gap-5 p-6">
               <div className="flex items-center gap-3">
                 <span className="flex h-16 w-16 shrink-0 items-center justify-center rounded-xl border border-border-subtle bg-canvas p-2">
-                  <img
-                    src={tool.logo}
-                    alt=""
-                    aria-hidden="true"
-                    className="h-full w-full object-contain"
-                  />
+                  {tool.logo ? (
+                    <img
+                      src={tool.logo}
+                      alt=""
+                      aria-hidden="true"
+                      className="h-full w-full object-contain"
+                    />
+                  ) : (
+                    <Library className="h-7 w-7 text-accent" aria-hidden="true" />
+                  )}
                 </span>
                 <div className="min-w-0">
                   <h3 className="text-lg font-black uppercase tracking-tight text-text-primary">

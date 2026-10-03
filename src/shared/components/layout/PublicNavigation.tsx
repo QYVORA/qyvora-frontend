@@ -85,7 +85,10 @@ const PublicNavigation: React.FC = React.memo(() => {
         aria-label="Primary"
         className={[
           'fixed inset-x-0 top-0 z-[100] flex h-[80px] items-center',
-          open ? 'bg-surface' : 'bg-surface/85 backdrop-blur-md',
+          // Resting state is fully transparent so page content reads through the
+          // bar; only the logo, links and buttons paint. The mobile menu keeps an
+          // opaque surface so the open panel is readable over page content.
+          open ? 'bg-surface' : 'bg-transparent',
           'transition-colors duration-300',
         ].join(' ')}
       >

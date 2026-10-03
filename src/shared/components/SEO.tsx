@@ -8,6 +8,7 @@ import {
   buildBreadcrumbList,
   buildAutoBreadcrumbs,
 } from '@/shared/seo/schema';
+import { canonicalUrl, pageTitle } from '@/shared/seo/metadata';
 const ogImageSrc = '/og-image.png';
 
 interface SEOProps {
@@ -46,13 +47,13 @@ const SEO: React.FC<SEOProps> = ({
   const location = useLocation();
   const siteUrl = SITE_CONFIG.brand.siteUrl; 
   const defaultTitle = SITE_CONFIG.brand.name;
-  const seoTitle = title ? `${title} | ${defaultTitle}` : `${defaultTitle} | Africa's Offensive Security Platform`;
+  const seoTitle = pageTitle(title);
   const seoDescription = description || SITE_CONFIG.brand.description;
   
   const imagePath = image || ogImageSrc;
   const seoImage = imagePath.startsWith('http') ? imagePath : `${siteUrl}${imagePath}`;
   
-  const seoCanonical = canonical || `${siteUrl}${location.pathname}`;
+  const seoCanonical = canonical || canonicalUrl(location.pathname);
 
   const seoImageType = seoImage.endsWith('.webp')
     ? 'image/webp'

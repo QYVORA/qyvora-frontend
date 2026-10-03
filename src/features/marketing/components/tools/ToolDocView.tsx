@@ -6,6 +6,7 @@ import DocPager, { DocColophon } from './DocPager';
 import type { DocFact } from '@/shared/components/docs/DocFacts';
 import { getToolOrThrow, type ToolEntry } from '@/features/marketing/data/tools/registry';
 import type { ToolDoc } from '@/features/marketing/data/tools/types';
+import { getToolSeo } from '@/shared/seo/toolSeo';
 
 /** Facts derived from the registry, so no page repeats tool metadata by hand. */
 const factsFor = (tool: ToolEntry): DocFact[] => {
@@ -40,10 +41,18 @@ interface ToolDocViewProps {
  */
 const ToolDocView: React.FC<ToolDocViewProps> = ({ doc }) => {
   const tool = getToolOrThrow(doc.slug);
+  const seo = getToolSeo(doc.slug);
 
   return (
     <>
-      <SEO title={doc.seoTitle} description={doc.seoDescription} />
+      <SEO
+        title={seo?.title ?? doc.seoTitle}
+        description={seo?.description ?? doc.seoDescription}
+        canonical={seo?.canonical}
+        image={seo?.image}
+        schemaData={seo?.schema}
+        breadcrumbName={tool.displayName}
+      />
 
       <article className="wc-prose mx-auto w-full px-4 py-10 md:px-6 md:py-14 lg:px-10">
         <DocHeader tool={tool} summary={doc.summary} facts={factsFor(tool)} />

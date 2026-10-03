@@ -1,6 +1,9 @@
 import type { PrerenderArguments, PrerenderResult } from 'vite-prerender-plugin';
+import { buildOrganization } from '@/shared/seo/schema';
+import { canonicalUrl } from '@/shared/seo/metadata';
+import { loadToolSeoByPath } from '@/shared/seo/toolSeoForPrerender';
 
-const SITE_URL = 'https://qyvora.netlify.app';
+const SITE_URL = canonicalUrl('/');
 const DEFAULT_OG_IMAGE = `${SITE_URL}/og-image.png`;
 
 interface Section {
@@ -10,8 +13,13 @@ interface Section {
 }
 
 interface RouteContent {
-  title: string;
-  description: string;
+  /**
+   * Omitted for tool routes: those read their title/description from the tool
+   * registry + doc data via `getToolSeoByPath`, so the static head and the
+   * client head are generated from one source.
+   */
+  title?: string;
+  description?: string;
   h1: string;
   lead: string;
   sections?: Section[];
@@ -19,6 +27,12 @@ interface RouteContent {
   canonical?: string;
 }
 
+/**
+ * Prerendered body copy for indexable public routes.
+ *
+ * The `<h1>`, lead, sections and links below are crawler-visible text that the
+ * client bundle would otherwise only produce after hydration.
+ */
 const routeContent: Record<string, RouteContent> = {
   '/': {
     title: 'QYVORA | Africa\'s Offensive Security Platform',
@@ -66,6 +80,171 @@ const routeContent: Record<string, RouteContent> = {
       { label: 'Team', href: '/team' },
       { label: 'Leaderboard', href: '/leaderboard' },
       { label: 'Terms of Service', href: '/terms' },
+    ],
+  },
+  '/learn': {
+    title: 'Learn | QYVORA',
+    description: 'Courses, labs, the Hacker Protocol Bootcamp, and more.',
+    h1: 'Learn',
+    lead: 'Courses, labs, the Hacker Protocol Bootcamp, and more.',
+    sections: [
+      {
+        heading: 'What is here',
+        body: 'Everything QYVORA teaches is collected on one page and grouped by how you want to learn.',
+        bullets: [
+          'COURSES: structured offensive security material you can work through at your own pace',
+          'LABS: hands-on exercises against deliberately vulnerable targets',
+          'BOOTCAMP: the Hacker Protocol Bootcamp, our structured cohort programme',
+          'SIMULATIONS: browser-based tooling you can try with no account and no setup',
+          'CYBERPOINTS: the points system that tracks your progress across the platform',
+        ],
+      },
+    ],
+    links: [
+      { label: 'Hacker Protocol Bootcamp', href: '/hpb' },
+      { label: 'Simulations', href: '/simulations' },
+      { label: 'Services', href: '/services' },
+      { label: 'Zero Day Market', href: '/zero-day-market' },
+    ],
+  },
+  '/simulations': {
+    title: 'Simulations | QYVORA',
+    description:
+      "Try QYVORA's simulation tools live in your browser: browser terminal and a network visualizer. No account required.",
+    h1: 'Simulations',
+    lead: "Try the tools before you commit. Every simulation runs live in your browser, with no account and no setup.",
+    sections: [
+      {
+        heading: 'Browser Terminal — Linux Shell',
+        body: 'A full Linux shell running in your browser. Navigate a realistic filesystem, inspect permissions, and chain commands with pipes and redirects.',
+        bullets: [
+          'Realistic Linux filesystem',
+          'Pipes, redirects, and environment variables',
+          'Persistent session state',
+          'Typed output with realistic timing',
+        ],
+      },
+      {
+        heading: 'Network — Visualizer',
+        body: 'Map live network topologies: hosts, subnets, ports, and services, the same way operators build a picture of a target environment.',
+        bullets: [
+          'Interactive topology canvas',
+          'Host and service discovery',
+          'Subnet grouping',
+          'Drag and connect nodes',
+        ],
+      },
+    ],
+    links: [
+      { label: 'Browser Terminal', href: '/simulations/terminal' },
+      { label: 'Network', href: '/simulations/network-visualizer' },
+      { label: 'Learn', href: '/learn' },
+      { label: 'Hacker Protocol Bootcamp', href: '/hpb' },
+    ],
+  },
+  '/tools': {
+    title: 'Tools | QYVORA',
+    description: 'Open-source offensive security tools, documented for operators.',
+    h1: 'Combat-ready tools, documented end to end.',
+    lead: 'Open-source offensive security tools, built and documented for operators. Each tool has full documentation, install guides, and walkthroughs.',
+    sections: [
+      {
+        heading: 'Web & OSINT',
+        bullets: ['anansi — attack surface intelligence from the terminal', 'nzinga — authorized OSINT collection and correlation'],
+      },
+      {
+        heading: 'Network & Directory',
+        bullets: ['toha3ee — local and network security assessment', 'shaka — Windows and Active Directory assessment', 'mansa — authorized wireless security assessment'],
+      },
+      {
+        heading: 'Binary & Fuzzing',
+        bullets: ['aksum — binary assessment and reverse engineering', 'kush — offline malware sample analysis', 'sekhmet — baseline-aware fuzzing and vulnerability discovery'],
+      },
+      {
+        heading: 'Mobile',
+        bullets: ['jabari — Android device assessment', 'amanirenas — offline iOS and Android app assessment'],
+      },
+      {
+        heading: 'Infrastructure',
+        bullets: ['imhotep — offline cloud snapshot analysis', 'sundiata — identity and access assessment for Active Directory', 'timbuktu — incident response and digital forensics'],
+      },
+      {
+        heading: 'Shared',
+        bullets: ['qyvora-common — the contract and conformance suite every QYVORA framework is built against'],
+      },
+    ],
+    links: [
+      { label: 'Learn', href: '/learn' },
+      { label: 'Simulations', href: '/simulations' },
+      { label: 'Hacker Protocol Bootcamp', href: '/hpb' },
+    ],
+  },
+  '/about': {
+    title: 'About | QYVORA',
+    description: 'The team, the research collective, and the mission behind QYVORA.',
+    h1: 'Built in Africa, for African defenders.',
+    lead: 'QYVORA is an offensive security training platform and services team. Get to know the people and mission driving it.',
+    links: [
+      { label: 'Team', href: '/team' },
+      { label: 'Contact', href: '/contact' },
+      { label: 'Blog', href: '/blogs' },
+    ],
+  },
+  '/contact': {
+    title: 'Contact | QYVORA',
+    description: 'Reach the QYVORA operations desk: email, WhatsApp channel, and the secure message form.',
+    h1: 'Contact the Desk',
+    lead: 'Establishing a secure channel for inquiries, partnerships, and operational support.',
+    links: [
+      { label: 'About QYVORA', href: '/about' },
+      { label: 'Services', href: '/services' },
+      { label: 'Blog', href: '/blogs' },
+    ],
+  },
+  '/simulations/terminal': {
+    title: 'Browser Terminal — Linux Shell | QYVORA',
+    description:
+      'A full Linux shell running in your browser. Navigate a realistic filesystem, inspect permissions, and chain commands with pipes and redirects.',
+    h1: 'Browser Terminal — Linux Shell',
+    lead: 'A full Linux shell running in your browser. Navigate a realistic filesystem, inspect permissions, and chain commands with pipes and redirects.',
+    sections: [
+      {
+        heading: 'What you get',
+        bullets: [
+          'Realistic Linux filesystem',
+          'Pipes, redirects, and environment variables',
+          'Persistent session state',
+          'Typed output with realistic timing',
+        ],
+      },
+    ],
+    links: [
+      { label: 'Network Visualizer', href: '/simulations/network-visualizer' },
+      { label: 'All simulations', href: '/simulations' },
+      { label: 'Learn', href: '/learn' },
+    ],
+  },
+  '/simulations/network-visualizer': {
+    title: 'Network — Visualizer | QYVORA',
+    description:
+      'Map live network topologies: hosts, subnets, ports, and services, the same way operators build a picture of a target environment.',
+    h1: 'Network — Visualizer',
+    lead: 'Map live network topologies: hosts, subnets, ports, and services, the same way operators build a picture of a target environment.',
+    sections: [
+      {
+        heading: 'What you get',
+        bullets: [
+          'Interactive topology canvas',
+          'Host and service discovery',
+          'Subnet grouping',
+          'Drag and connect nodes',
+        ],
+      },
+    ],
+    links: [
+      { label: 'Browser Terminal', href: '/simulations/terminal' },
+      { label: 'All simulations', href: '/simulations' },
+      { label: 'Learn', href: '/learn' },
     ],
   },
   '/hpb': {
@@ -431,8 +610,6 @@ const routeContent: Record<string, RouteContent> = {
     ],
   },
   '/anansi': {
-    title: 'anansi | QYVORA',
-    description: 'anansi – attack surface intelligence from the terminal: a nine-phase recon pipeline from subdomain discovery to exploit-chain analysis.',
     h1: 'anansi',
     lead: 'anansi – attack surface intelligence from the terminal. A nine-phase recon pipeline from subdomain discovery to exploit-chain analysis.',
     sections: [
@@ -470,8 +647,6 @@ const routeContent: Record<string, RouteContent> = {
     ],
   },
   '/toha3ee': {
-    title: 'toha3ee | QYVORA',
-    description: 'Local & network security assessment framework written in Go: host and service discovery, enumeration, credential auditing, wireless and MITM capabilities from an interactive REPL.',
     h1: 'toha3ee',
     lead: 'Local & network security assessment framework written in Go. Ten module categories spanning recon, enumeration, OSINT, auth, web, switch, wireless, MITM and post-exploitation, driven from an interactive REPL.',
     sections: [
@@ -502,8 +677,6 @@ const routeContent: Record<string, RouteContent> = {
     links: [{ label: 'anansi', href: '/anansi' }],
   },
   '/jabari': {
-    title: 'jabari | QYVORA',
-    description: 'Android security assessment framework in Go: authorized USB and network (ADB) targets, non-destructive rule engine and evidence-driven reporting.',
     h1: 'jabari',
     lead: 'Android security assessment from the terminal. Connect via USB or Wi-Fi (ADB) to evaluate device posture, application hardening, and system exposures with reproducible evidence.',
     sections: [
@@ -539,8 +712,6 @@ const routeContent: Record<string, RouteContent> = {
     links: [{ label: 'aksum', href: '/aksum' }],
   },
   '/aksum': {
-    title: 'aksum | QYVORA',
-    description: 'Binary security assessment & reverse-engineering framework in Go, identification, disassembly, function discovery, dataflow-corroborated findings and honest confidence states.',
     h1: 'aksum',
     lead: 'Binary security assessment from the terminal. A ten-stage pipeline from identification and disassembly to dataflow-corroborated findings, with confidence states that only escalate when independent evidence agrees.',
     sections: [
@@ -580,8 +751,6 @@ const routeContent: Record<string, RouteContent> = {
     links: [{ label: 'jabari', href: '/jabari' }],
   },
   '/sekhmet': {
-    title: 'sekhmet | QYVORA',
-    description: 'Baseline-aware, feedback-driven fuzzing & vulnerability discovery framework in Go: profile normal behaviour, adaptive mutation, SHA-256 crash dedup and delta minimization.',
     h1: 'sekhmet',
     lead: 'Baseline-aware fuzzing from the terminal. Profile a target\u2019s normal behaviour first, then mutate, execute and classify crashes, hangs and anomalies against that profile instead of fuzzing blindly.',
     sections: [
@@ -623,8 +792,6 @@ const routeContent: Record<string, RouteContent> = {
     links: [{ label: 'jabari', href: '/jabari' }],
   },
   '/mansa': {
-    title: 'mansa | QYVORA',
-    description: 'Authorized wireless security assessment framework in Go: WLAN discovery, enumeration, MITM-range analysis, deterministic rule engine and transparent risk scoring.',
     h1: 'mansa',
     lead: 'Authorized wireless security assessment from the terminal. Discover interfaces, enumerate access points, observe stations, and run the deterministic rule engine with transparent risk scoring — offline with --sim or on declared live scopes.',
     sections: [
@@ -667,8 +834,6 @@ const routeContent: Record<string, RouteContent> = {
     links: [{ label: 'sekhmet', href: '/sekhmet' }],
   },
   '/amanirenas': {
-    title: 'amanirenas | QYVORA',
-    description: 'Offline iOS/Android app security assessment framework in Go: static analysis, hardcoded secrets, weak crypto, insecure endpoints, WebView posture and evidence-backed risk scoring.',
     h1: 'amanirenas',
     lead: 'Offline mobile app security assessment from the terminal. Analyze app packages (IPA/APK/AAB) for hardcoded secrets, weak cryptography, insecure endpoint usage and WebView posture — without a device, an emulator or live runtime access.',
     sections: [
@@ -700,8 +865,6 @@ const routeContent: Record<string, RouteContent> = {
     links: [{ label: 'imhotep', href: '/imhotep' }],
   },
   '/sundiata': {
-    title: 'sundiata | QYVORA',
-    description: 'Identity & access security assessment for Active Directory in Go: identity discovery, account posture, password policies and sensitive memberships. Credentials are never stored or printed.',
     h1: 'sundiata',
     lead: 'Identity & access security assessment for Windows Active Directory from the terminal. Identity discovery, account posture, password policy evaluation and sensitive group membership checks — credentials are redacted at collection time and never stored.',
     sections: [
@@ -733,8 +896,6 @@ const routeContent: Record<string, RouteContent> = {
     links: [{ label: 'timbuktu', href: '/timbuktu' }],
   },
   '/timbuktu': {
-    title: 'timbuktu | QYVORA',
-    description: 'Incident response & digital forensics framework in Go: source integrity, artifact identification, filesystem lifecycle, memory postmortems, log analysis and evidence-backed timelines.',
     h1: 'timbuktu',
     lead: 'Incident response and digital forensics from the terminal. Analyze offline case data: source integrity, artifact identification, filesystem lifecycle, memory postmortems, log analysis and evidence-backed timelines.',
     sections: [
@@ -766,8 +927,6 @@ const routeContent: Record<string, RouteContent> = {
     links: [{ label: 'kush', href: '/kush' }],
   },
   '/kush': {
-    title: 'kush | QYVORA',
-    description: 'Offline malware sample analysis framework in Go: hashing, metadata, static posture, strings, network indicators, IOC extraction and threat classification — without executing samples.',
     h1: 'kush',
     lead: 'Offline malware sample analysis from the terminal. Hash samples, extract metadata, analyze static posture and strings, surface network indicators and classify IOCs — without ever executing the sample on the developer host.',
     sections: [
@@ -799,8 +958,6 @@ const routeContent: Record<string, RouteContent> = {
     links: [{ label: 'sundiata', href: '/sundiata' }],
   },
   '/imhotep': {
-    title: 'imhotep | QYVORA',
-    description: 'Offline cloud snapshot analysis framework in Go: IAM posture, storage exposure, network exposure, container posture, secret redaction and misconfiguration detection.',
     h1: 'imhotep',
     lead: 'Offline cloud snapshot analysis from the terminal. Analyze recorded cloud snapshots for IAM posture, storage exposure, network exposure, container posture and misconfigurations — without touching live provider APIs.',
     sections: [
@@ -832,8 +989,6 @@ const routeContent: Record<string, RouteContent> = {
     links: [{ label: 'amanirenas', href: '/amanirenas' }],
   },
   '/shaka': {
-    title: 'shaka | QYVORA',
-    description: 'Windows & Active Directory security assessment framework in Go: domain discovery, object enumeration, relationship graphing, privilege analysis and evidence-driven reporting.',
     h1: 'shaka',
     lead: 'Windows & Microsoft Active Directory security assessment from the terminal. Domain discovery, directory enumeration, relationship graphs, privilege analysis and evidence-driven findings with an offline simulator.',
     sections: [
@@ -875,8 +1030,6 @@ const routeContent: Record<string, RouteContent> = {
     ],
   },
   '/nzinga': {
-    title: 'nzinga | QYVORA',
-    description: 'Authorized open-source intelligence (OSINT) collection, cross-source correlation, and evidence-driven reporting in Go.',
     h1: 'nzinga',
     lead: 'Authorized open-source intelligence from the terminal. Public-source collection, cross-source correlation, and evidence-backed reporting with an offline simulator.',
     sections: [
@@ -1081,7 +1234,16 @@ export async function prerender(data: PrerenderArguments): Promise<PrerenderResu
     lead: 'Building a strong cybersecurity ecosystem in Africa.',
   };
 
-  const canonical = `${SITE_URL}${content.canonical || url}`;
+  // Tool pages take their head metadata from the tool registry + doc data so
+  // the static head a crawler reads and the client head a visitor sees can
+  // never drift apart.
+  const toolSeo = await loadToolSeoByPath(url);
+  const title = toolSeo?.fullTitle ?? content.title;
+  const description = toolSeo?.description ?? content.description;
+  const canonical = canonicalUrl(content.canonical || url);
+  const ogImage = toolSeo?.image
+    ? `${SITE_URL}${toolSeo.image}`
+    : DEFAULT_OG_IMAGE;
 
   const html = `
     <div data-prerender="true">
@@ -1089,47 +1251,53 @@ export async function prerender(data: PrerenderArguments): Promise<PrerenderResu
     </div>
   `;
 
+  const schemas: object[] = [
+    {
+      '@context': 'https://schema.org',
+      '@type': 'WebPage',
+      name: title,
+      description,
+      url: canonical,
+      isPartOf: {
+        '@type': 'WebSite',
+        name: 'QYVORA',
+        url: SITE_URL,
+      },
+    },
+    buildOrganization(),
+  ];
+  if (toolSeo) schemas.push(toolSeo.schema);
+
   return {
     html,
     head: {
       lang: 'en',
-      title: content.title,
+      title,
       elements: new Set([
-        { type: 'meta', props: { name: 'description', content: content.description } },
+        { type: 'meta', props: { name: 'description', content: description } },
         { type: 'meta', props: { name: 'robots', content: 'index, follow, max-image-preview:large' } },
         { type: 'link', props: { rel: 'canonical', href: canonical } },
         { type: 'meta', props: { property: 'og:type', content: 'website' } },
-        { type: 'meta', props: { property: 'og:title', content: content.title } },
-        { type: 'meta', props: { property: 'og:description', content: content.description } },
+        { type: 'meta', props: { property: 'og:title', content: title } },
+        { type: 'meta', props: { property: 'og:description', content: description } },
         { type: 'meta', props: { property: 'og:url', content: canonical } },
-        { type: 'meta', props: { property: 'og:image', content: DEFAULT_OG_IMAGE } },
+        { type: 'meta', props: { property: 'og:image', content: ogImage } },
         { type: 'meta', props: { property: 'og:image:type', content: 'image/png' } },
         { type: 'meta', props: { property: 'og:image:width', content: '1200' } },
         { type: 'meta', props: { property: 'og:image:height', content: '630' } },
-        { type: 'meta', props: { property: 'og:image:alt', content: content.title } },
+        { type: 'meta', props: { property: 'og:image:alt', content: title } },
         { type: 'meta', props: { property: 'og:site_name', content: 'QYVORA' } },
         { type: 'meta', props: { name: 'twitter:card', content: 'summary_large_image' } },
         { type: 'meta', props: { name: 'twitter:site', content: '@qyvorasec' } },
-        { type: 'meta', props: { name: 'twitter:title', content: content.title } },
-        { type: 'meta', props: { name: 'twitter:description', content: content.description } },
-        { type: 'meta', props: { name: 'twitter:image', content: DEFAULT_OG_IMAGE } },
+        { type: 'meta', props: { name: 'twitter:title', content: title } },
+        { type: 'meta', props: { name: 'twitter:description', content: description } },
+        { type: 'meta', props: { name: 'twitter:image', content: ogImage } },
         {
           type: 'script',
           props: {
             type: 'application/ld+json',
           },
-          children: JSON.stringify({
-            '@context': 'https://schema.org',
-            '@type': 'WebPage',
-            name: content.title,
-            description: content.description,
-            url: canonical,
-            isPartOf: {
-              '@type': 'WebSite',
-              name: 'QYVORA',
-              url: SITE_URL,
-            },
-          }),
+          children: JSON.stringify(schemas),
         },
       ]),
     },

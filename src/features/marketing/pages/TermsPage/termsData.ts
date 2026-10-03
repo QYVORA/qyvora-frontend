@@ -1,3 +1,5 @@
+import { SITE_CONFIG } from '../../content/siteConfig';
+
 export interface TermsSection {
   title: string;
   /** Compact label for the sticky on-page nav; falls back to `title`. */
@@ -218,7 +220,7 @@ export const termsData: TermsData = {
       body: "If you have any questions, concerns, or notices regarding these Terms of Service, please contact QYVORA at:",
       bullets: [
         "Email: qyvorasec@gmail.com",
-        "Website: https://qyvora.com",
+        `Website: ${SITE_CONFIG.brand.siteUrl}`,
         "QYVORA OFFSEC - Republic of Ghana",
         "For matters requiring formal legal notice, please send written correspondence to the above email address with \"Legal Notice\" in the subject line."
       ]

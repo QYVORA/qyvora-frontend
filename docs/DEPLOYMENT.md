@@ -2,12 +2,12 @@
 
 > **Status:** ✅ IMPLEMENTED  
 > **Platform:** Netlify  
-> **Domain:** qyvora.com
+> **Domain:** qyvora.org
 
 ## Platform
 
 **Hosting:** Netlify
-**Domain:** qyvora.com (configured in Netlify dashboard)
+**Domain:** qyvora.org (configured in Netlify dashboard)
 
 ## Build Configuration
 
@@ -96,9 +96,9 @@ Public indexable routes are prerendered at build time (see **[BUILD_PIPELINE.md]
 
 ## Google Search Console Verification
 
-Place the GSC-provided `googlexxxxxxxx.html` in `public/`. Vite copies it to the build root (`dist/googlexxxxxxxx.html` = publish directory), and Netlify serves existing files before the `/*` rewrite, so it resolves at `https://qyvora.netlify.app/googlexxxxxxxx.html`.
+Already verified for `qyvora.org` via the DNS TXT record managed through Cloudflare, so nothing is required from this repository for verification to hold.
 
-Alternatives: `<meta name="google-site-verification">` in `index.html`, or a DNS TXT record.
+`public/google47823e83d4a4a338.html` is retained purely as a fallback for re-verifying ownership without DNS access (domain transfer, registrar change). It is redundant today and safe to delete — see `docs/SEO.md` for details.
 
 ## Deployment Process
 

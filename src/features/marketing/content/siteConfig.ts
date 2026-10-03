@@ -2,8 +2,14 @@ export const SITE_CONFIG = {
   brand: {
     name: 'QYVORA',
     description:
-      'Building a strong cybersecurity ecosystem in Africa.',
-    siteUrl: 'https://qyvora.netlify.app',
+      'Africa’s offensive security platform: bootcamps, courses and attack labs, enterprise penetration testing, and open-source security tooling built for operators.',
+    /**
+     * Canonical public origin. Single source of truth for every absolute
+     * production URL (canonicals, Open Graph, Twitter, JSON-LD, sitemap).
+     * Never hard-code this string anywhere else — read it from here so a
+     * domain change is a one-line edit.
+     */
+    siteUrl: 'https://qyvora.org',
   },
   contact: {
     opsEmail: 'qyvorasec@gmail.com',

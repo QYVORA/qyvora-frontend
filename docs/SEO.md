@@ -1,7 +1,7 @@
 # SEO
 
 > **Status:** ✅ IMPLEMENTED  
-> **Production:** https://qyvora.netlify.app  
+> **Production:** https://qyvora.org  
 > **Approach:** Static prerendering + client-side `react-helmet-async`
 
 ## Overview
@@ -85,18 +85,29 @@ The component always emits: canonical, robots, OG/Twitter (title/description/ima
 
 ## sitemap.xml and robots.txt
 
-- `public/sitemap.xml` lists only indexable public routes (home, HPB + 5 phases, services + 3 detail pages, blog + 8 posts, courses, labs, zero-day-market, quiteroot, anansi, team, leaderboard, terms). **`/events` and `/news` are excluded — they are not routed pages.**
-- `public/robots.txt` allows crawlers, disallows private sections, and declares `Sitemap: https://qyvora.netlify.app/sitemap.xml`.
-- Keep the sitemap in sync with `additionalPrerenderRoutes` (vite.config.ts) and `routeMetadata` (prerender.tsx).
+- `public/sitemap.xml` lists the 43 indexable public routes: home, HPB, QOSE, Learn, Tools index + all 14 tool doc pages, Services + 3 detail pages, Simulations + 2 labs, Blog + 8 posts, Zero Day Market, QuietRoot, Cyber Coin, Team, About, Contact, Leaderboard and Terms. **Dashboard routes, auth routes, legacy redirects (`/leaderboard/all`, `/bootcamps`, `/marketplace`, …) and user profile handles (`/:handle`) are excluded.**
+- `public/robots.txt` allows crawlers, disallows private sections, and declares `Sitemap: https://qyvora.org/sitemap.xml`.
+- Keep the sitemap in sync with `additionalPrerenderRoutes` (`vite.config.ts`) and `routeContent` (`src/prerender.tsx`).
+- Tool pages derive their title, description, canonical URL and `SoftwareApplication` JSON-LD in `src/shared/seo/toolSeoCore.ts` from the tool registry plus the tool's own doc file. Both the prerendered head and the client head call the same builder, so they cannot drift. Adding a tool to `data/tools/registry.ts` plus its doc file is all that is required — no per-tool SEO edits.
 
 ## Google Search Console verification
 
-Verification via an HTML file (recommended):
+**Status: verified.** `qyvora.org` is confirmed in Search Console via the DNS TXT
+record managed through Cloudflare. That is the authoritative proof of ownership
+and it needs nothing from this repository.
 
-1. Put `googlexxxxxxxx.html` (the file GSC provides) in `public/`.
-2. Vite copies `public/*` verbatim to the build root, so it lands at `dist/googlexxxxxxxx.html` (= Netlify publish root).
-3. Netlify serves existing files **before** the `/* → /index.html 200` rewrite, so the file is reachable at `https://qyvora.netlify.app/googlexxxxxxxx.html`.
-4. Alternatives: HTML `<meta name="google-site-verification">` tag in `index.html`, or a `google-site-verification` DNS TXT record.
+`public/google47823e83d4a4a338.html` is also still committed. It is **redundant,
+not required** — DNS verification already covers it. It is kept only as a
+fallback: if DNS or Cloudflare access is ever lost (domain transfer, registrar
+change), that file lets Search Console re-verify ownership without touching DNS.
+It is 61 bytes of static text with no runtime effect. Delete it if you would
+rather not carry it; the only consequence is losing that fallback path.
+
+If it is ever replaced, remember the mechanics: put the file GSC provides in
+`public/`. Vite copies `public/*` verbatim to the build root, so it lands at
+`dist/<token>.html` (= Netlify publish root), and Netlify serves existing files
+**before** the `/* → /index.html 200` rewrite, so it stays reachable at
+`https://qyvora.org/<token>.html`.
 
 ## Known follow-ups
 

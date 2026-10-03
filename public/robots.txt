@@ -1,13 +1,25 @@
+# QYVORA — https://qyvora.org
+#
+# Public marketing pages, tool documentation and blog posts are open to crawlers.
+# Everything below is either a student/dashboard surface or an auth flow; none of
+# it should be indexed.
+
 User-agent: *
 Allow: /
-Disallow: /admin
-Disallow: /dashboard
-Disallow: /api
+
+# Auth flows
 Disallow: /login
 Disallow: /register
-Disallow: /forgot-password
-Disallow: /reset-password
-Disallow: /verify-email
 Disallow: /change-password
 
-Sitemap: https://qyvora.netlify.app/sitemap.xml
+# Student dashboard (covers every /dashboard/* route)
+Disallow: /dashboard
+
+# Legacy redirects that land inside the dashboard
+Disallow: /bootcamps
+Disallow: /marketplace
+Disallow: /profile
+Disallow: /notifications
+Disallow: /settings
+
+Sitemap: https://qyvora.org/sitemap.xml
