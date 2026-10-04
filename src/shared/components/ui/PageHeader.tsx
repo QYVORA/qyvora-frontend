@@ -10,6 +10,8 @@ interface PageHeaderProps {
   actions?: React.ReactNode;
   /** Factual metadata row (e.g. updated date, scope). */
   metadata?: React.ReactNode;
+  /** `id` for the `h1` so an ancestor section can reference it via `aria-labelledby`. */
+  titleId?: string;
   className?: string;
 }
 
@@ -23,6 +25,7 @@ const PageHeader: React.FC<PageHeaderProps> = ({
   description,
   actions,
   metadata,
+  titleId,
   className,
 }) => (
   <div className={cn('flex flex-col gap-6', className)}>
@@ -31,7 +34,10 @@ const PageHeader: React.FC<PageHeaderProps> = ({
         {kicker && (
           <p className="mb-2 type-label text-accent uppercase tracking-[0.12em]">{kicker}</p>
         )}
-        <h1 className="text-3xl font-black uppercase tracking-tight text-text-primary md:text-4xl lg:text-5xl">
+        <h1
+          id={titleId}
+          className="text-3xl font-black uppercase tracking-tight text-text-primary md:text-4xl lg:text-5xl"
+        >
           {title}
         </h1>
         {description && (

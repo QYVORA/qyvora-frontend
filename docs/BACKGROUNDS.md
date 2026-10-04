@@ -30,9 +30,10 @@ backs high-emphasis marketing regions:
 |---|---|---|
 | Landing hero (desktop + mobile scene) | `HeroBlock` | `hero-desktop` (left-aligned scene, `hidden lg:block`), `hero-mobile` (portrait, `object-bottom`) |
 | Featured-learning band | `FeaturedLearningBlock` | `featured-learning-band` (subtle squad patrol) |
-| HPB page header band | `HpbPage` | `hpb-header` |
-| CP page header band | `CyberCoinPage` | `cp-header` |
-| Final CTA card (Dobia signs off) | `FinalCtaBlock` | `final-cta-dobia` |
+| HPB page header band | `ProgrammeHeroCard` in `HpbPage` | `hpb-header` |
+| QOSE page header band | `ProgrammeHeroCard` in `QosePage` | `qose-header` |
+| CP page header band | `ProgrammeHeroCard` in `CyberCoinPage` | `cp-header` |
+| Final CTA card (Dobia signs off) | `ProgrammeCtaCard` (programme pages), `FinalCtaBlock` (landing) | `final-cta-dobia` |
 | Auth hero panel | `AuthHero` | `auth-dobia` (Dobia keeps watch) |
 
 **Delivery**: one `.webp` (quality 80) per image is committed; the large `.png`
@@ -50,6 +51,8 @@ committed `.webp` are the source of truth.
 3. Content sits in a `relative` sibling above the image.
 4. Region root carries `data-theme-persist="dark"` so copy keeps dark-theme
    tokens (light-on-dark) even in light mode — the images are dark scenes.
+   Programme heroes and CTAs get this for free: `ProgrammeHeroCard` /
+   `ProgrammeCtaCard` hardcode the root so a page cannot forget it.
 5. **Never** put an opacity/scrim/blur overlay over the art — colors stay full.
    Readability comes from the dark art + forced-light text, not from dimming.
 
@@ -92,8 +95,13 @@ they are needed for a feature before using; do not stack them.
 
 ## Rules
 
-- Raster background art is used **only** on the seven regions listed above;
+- Raster background art is used **only** on the regions listed above;
   everything else stays on flat token surfaces.
+- Programme heroes (`/hpb`, `/qose`, `/cp`) share one composition —
+  `ProgrammeHeroCard` over its own mapped scene. Do not re-inline the
+  `relative overflow-hidden` + `<img>` + `relative` copy pattern on a page.
+- Programme CTA cards share `ProgrammeCtaCard` over `final-cta-dobia`; do not
+  hand-roll a second CTA panel over the same art.
 - No `drop-shadow` on every card; only the one raised-overlay shadow
   (`--elevation-raised`) and accent glows on high-emphasis elements.
 - In dark mode keep pure black (`#000000`) for the canvas; in light mode use the

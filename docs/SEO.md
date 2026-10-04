@@ -68,7 +68,8 @@ The component always emits: canonical, robots, OG/Twitter (title/description/ima
 - `og:image` is `/og-image.png` (1200×630, 8-bit PNG) — **SVG and WebP are not supported as social previews** (Facebook, LinkedIn, WhatsApp reject them).
 - `og:image:type` is `image/png`; width/height are declared.
 - `twitter:card` is `summary_large_image` with `@qyvorasec` as `twitter:site`/`twitter:creator`.
-- Source asset: `public/og-image.svg` (kept for on-page/brand use; PNG is derived from it).
+- **Artwork**: the QYVORA **mark alone on the brand black canvas** (`#000000`) — no wordmark, no tagline. One file serves every route, so a shared link to `qyvora.org` or any of its routes renders the same preview.
+- Source asset: `public/og-image.svg`. The PNG and WebP are **derived** — never hand-edit them. Regenerate both with `npm run og:image` (`scripts/generate-og-image.mjs`).
 
 ## Indexability
 

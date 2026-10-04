@@ -240,6 +240,8 @@ export interface CardProps {
   children: React.ReactNode;
   className?: string;
   as?: 'div' | 'article' | 'section' | 'li';
+  /** Anchor target — for `scrollIntoView` / in-page deep links. */
+  id?: string;
   /** Accent border — reserved for the single selected/active surface. */
   selected?: boolean;
   /** Link behaviour (router or external). */
@@ -259,6 +261,7 @@ export const Card: React.FC<CardProps> = ({
   children,
   className = '',
   as = 'div',
+  id,
   selected,
   to,
   href,
@@ -280,7 +283,7 @@ export const Card: React.FC<CardProps> = ({
 
   if (to) {
     return (
-      <Link to={to} className={`${classes} block focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent`}>
+      <Link to={to} id={id} className={`${classes} block focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent`}>
         {children}
       </Link>
     );
@@ -289,6 +292,7 @@ export const Card: React.FC<CardProps> = ({
     return (
       <a
         href={href}
+        id={id}
         target={external ? '_blank' : undefined}
         rel={external ? 'noopener noreferrer' : undefined}
         className={`${classes} block focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent`}
@@ -300,6 +304,7 @@ export const Card: React.FC<CardProps> = ({
   if (onClick) {
     return (
       <div
+        id={id}
         role="button"
         tabIndex={0}
         onClick={onClick}
@@ -311,7 +316,7 @@ export const Card: React.FC<CardProps> = ({
       </div>
     );
   }
-  return <Tag className={classes}>{children}</Tag>;
+  return <Tag id={id} className={classes}>{children}</Tag>;
 };
 
 // ─────────────────────────────────────────────────────────────────────────────

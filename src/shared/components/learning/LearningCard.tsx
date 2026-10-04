@@ -31,6 +31,8 @@ export interface LearningCardProps {
   tags?: string[];
   actionLabel?: string;
   actionIcon?: React.ReactNode;
+  /** Set false for informational cards with no destination (the action pill would be dead). */
+  showAction?: boolean;
   isActionDisabled?: boolean;
   isActionLoading?: boolean;
   onActionClick?: (e: React.MouseEvent) => void;
@@ -83,6 +85,7 @@ export const LearningCard: React.FC<LearningCardProps> = ({
   tags,
   actionLabel,
   actionIcon,
+  showAction = true,
   isActionDisabled = false,
   isActionLoading = false,
   onActionClick,
@@ -96,6 +99,14 @@ export const LearningCard: React.FC<LearningCardProps> = ({
 }) => {
   const linkTarget = to || href;
   const isExpanded = view === 'expanded';
+
+  /** Footer renders only when it has something to say — no empty rule, no dead pill. */
+  const hasMeta =
+    cpReward !== undefined ||
+    Boolean(duration) ||
+    Boolean(lessonsCount) ||
+    Boolean(modulesCount) ||
+    (price !== undefined && !isFree);
 
   const containerClasses = [
     'group/card relative rounded-2xl border border-border-subtle bg-surface transition-[border-color,box-shadow,background-color] duration-[var(--dur-base)] ease-[var(--ease-smooth)] flex flex-col text-left',
@@ -137,6 +148,7 @@ export const LearningCard: React.FC<LearningCardProps> = ({
 
   // ── Action Button Render ──────────────────────────────────────────────────
   const renderAction = () => {
+    if (!showAction) return null;
     const defaultLabel = type === 'lab' ? 'Launch' : type === 'course' ? 'Start Course' : 'View';
     const label = actionLabel || defaultLabel;
 
@@ -220,22 +232,24 @@ export const LearningCard: React.FC<LearningCardProps> = ({
           </div>
         )}
 
-        <div className="flex items-center justify-between pt-2 border-t border-border/20">
-          <div className="flex items-center gap-3 text-xs font-mono text-text-muted">
-            {cpReward !== undefined && (
-              <span className="font-black uppercase tracking-widest text-accent">
-                {cpReward} CP
-              </span>
-            )}
-            {duration && <span>{duration}</span>}
-            {lessonsCount && <span>{lessonsCount} lessons</span>}
-            {modulesCount && <span>{modulesCount} modules</span>}
-            {price !== undefined && !isFree && (
-              <span className="font-black text-text-primary font-mono">{price}</span>
-            )}
+        {showAction || hasMeta ? (
+          <div className="flex items-center justify-between pt-2 border-t border-border/20">
+            <div className="flex items-center gap-3 text-xs font-mono text-text-muted">
+              {cpReward !== undefined && (
+                <span className="font-black uppercase tracking-widest text-accent">
+                  {cpReward} CP
+                </span>
+              )}
+              {duration && <span>{duration}</span>}
+              {lessonsCount && <span>{lessonsCount} lessons</span>}
+              {modulesCount && <span>{modulesCount} modules</span>}
+              {price !== undefined && !isFree && (
+                <span className="font-black text-text-primary font-mono">{price}</span>
+              )}
+            </div>
+            <div className="shrink-0">{renderAction()}</div>
           </div>
-          <div className="shrink-0">{renderAction()}</div>
-        </div>
+        ) : null}
       </>
     );
 
@@ -330,22 +344,24 @@ export const LearningCard: React.FC<LearningCardProps> = ({
       </div>
 
       {/* Bottom Footer Row with Metadata and Action CTA */}
-      <div className="flex items-center justify-between mt-auto pt-3 border-t border-border/20">
-        <div className="flex items-center gap-2 text-xs sm:text-xs font-mono text-text-muted">
-          {cpReward !== undefined && (
-            <span className="font-black uppercase tracking-widest text-accent">
-              {cpReward} CP
-            </span>
-          )}
-          {duration && <span>{duration}</span>}
-          {lessonsCount && <span>{lessonsCount} lessons</span>}
-          {modulesCount && <span>{modulesCount} modules</span>}
-          {price !== undefined && !isFree && (
-            <span className="font-black text-text-primary">{price}</span>
-          )}
+      {showAction || hasMeta ? (
+        <div className="flex items-center justify-between mt-auto pt-3 border-t border-border/20">
+          <div className="flex items-center gap-2 text-xs sm:text-xs font-mono text-text-muted">
+            {cpReward !== undefined && (
+              <span className="font-black uppercase tracking-widest text-accent">
+                {cpReward} CP
+              </span>
+            )}
+            {duration && <span>{duration}</span>}
+            {lessonsCount && <span>{lessonsCount} lessons</span>}
+            {modulesCount && <span>{modulesCount} modules</span>}
+            {price !== undefined && !isFree && (
+              <span className="font-black text-text-primary">{price}</span>
+            )}
+          </div>
+          <div className="shrink-0">{renderAction()}</div>
         </div>
-        <div className="shrink-0">{renderAction()}</div>
-      </div>
+      ) : null}
     </>
   );
 

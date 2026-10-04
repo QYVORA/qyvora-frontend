@@ -65,7 +65,7 @@ const HeroBlock: React.FC<HeroBlockProps> = ({ stats }) => {
           </h1>
 
           <p className="max-w-xl text-base text-text-secondary md:text-lg">
-            {"Hands-on courses, attack labs, and the Hacker Protocol Bootcamp, proving every skill you earn in CyberPoints on the chain. QYVORA is building Africa's strongest cybersecurity ecosystem, with a goal of training 100,000 professionals across the continent."}
+            {"Hands-on courses, attack labs, and the Hacker Protocol Bootcamp — every skill you earn is verified and recorded in CyberPoints."}
           </p>
 
           <div className="flex flex-wrap items-center gap-3">

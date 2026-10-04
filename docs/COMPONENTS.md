@@ -359,7 +359,7 @@ All popups coordinate through `usePopupManager` (priority queue; lower number = 
 | `StudentOnboardingModal` | `features/student/components/StudentOnboardingModal.tsx` | `0` | 4-step Radix Dialog guiding to bootcamp; server-state authoritative; on dismiss triggers tour. |
 | `StudentTour` (spotlight) | `features/student/components/StudentTour.tsx` | `2` | Post-onboarding guided tour; see §13.1. |
 | `ConsentBanner` | `shared/components/ConsentBanner.tsx` | `1` | cookie consent popup. |
-| `CommunityPopup` | `shared/components/CommunityPopup.tsx` | `3` | WhatsApp CTA, 30s delay, 4h dismissal. |
+| `CommunityPopup` | `shared/components/CommunityPopup.tsx` | `3` | Compact WhatsApp CTA (`sm:w-[360px]`, no image panel); appears once the visitor scrolls 60% of the page or dwells 45s; public only; dismissed permanently via `qyvora_community_dismissed`/`qyvora_community_joined`. |
 | `InstallBanner` | `shared/components/layout/InstallBanner.tsx` | `5` | PWA install prompt (iOS shows share-sheet instructions); hosted by `PwaStatus`. |
 | `PwaStatus` | `shared/components/layout/PwaStatus.tsx` | — | Single fixed column (`z-[140]`) hosting the PWA notices: update-ready card, `// OFFLINE` strip and `InstallBanner`. Mounted in `PublicShell` + `AppShell`. |
 | `CelebrationModal` | `shared/components/CelebrationModal.tsx` | — | reward celebration dialog (CP/badge/CTA). Wrapped by `LabCelebration`. |

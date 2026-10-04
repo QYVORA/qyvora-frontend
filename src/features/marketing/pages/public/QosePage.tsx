@@ -3,19 +3,17 @@ import SEO from '@/shared/components/SEO';
 import PublicContainer from '@/shared/components/layout/PublicContainer';
 import Button from '@/shared/components/ui/Button';
 import Badge from '@/shared/components/ui/Badge';
+import { Card } from '@/shared/components/ui/Card';
+import { LearningCard } from '@/shared/components/learning/LearningCard';
 import ScrollReveal from '@/shared/components/ScrollReveal';
 import BootcampFacts, { BootcampLogo } from '@/features/marketing/components/bootcamp/BootcampFacts';
+import ProgrammeHeroCard from '@/features/marketing/components/programmes/ProgrammeHeroCard';
+import ProgrammeCtaCard from '@/features/marketing/components/programmes/ProgrammeCtaCard';
 import { openBootcampAccessModal } from '@/features/marketing/components/bootcamp/BootcampAccessModal';
 import { BOOTCAMPS } from '@/features/marketing/content/bootcampData';
+import qoseHeaderBg from '@/assets/backgrounds/qose-header.webp';
 
 const QOSE = BOOTCAMPS.qose;
-
-const Bullet = ({ children }: { children: React.ReactNode }) => (
-  <li className="flex gap-3">
-    <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-accent" aria-hidden="true" />
-    <span className="type-body-sm text-text-secondary">{children}</span>
-  </li>
-);
 
 /**
  * QOSE — QYVORA Offensive Security Engineer Bootcamp.
@@ -24,6 +22,10 @@ const Bullet = ({ children }: { children: React.ReactNode }) => (
  * documentation. The programme is in pre-registration, so the page states that
  * plainly and every join route opens the access dialog rather than a
  * registration form.
+ *
+ * Structure mirrors `/hpb` exactly: the same `ProgrammeHeroCard` over its own
+ * mapped scene, the same facts strip, the same card primitives and the same
+ * mapped CTA card.
  */
 const QosePage = () => {
   return (
@@ -34,48 +36,36 @@ const QosePage = () => {
         breadcrumbName="QOSE"
       />
       <PublicContainer className="pb-20 pt-24 md:pb-24 md:pt-28 lg:pt-32">
-        <section
-          aria-labelledby="qose-hero-title"
-          className="rounded-2xl border border-border-subtle bg-surface"
-        >
-          <div className="flex flex-col items-center gap-8 p-5 md:p-10 lg:flex-row lg:items-center lg:gap-12">
-            <BootcampLogo bootcamp={QOSE} size="lg" />
-
-            <div className="min-w-0 flex-1 text-center lg:text-left">
-              <span className="type-label uppercase tracking-[0.12em] text-accent">
-                {"QYVORA · Bootcamp"}
-              </span>
-              <h1
-                id="qose-hero-title"
-                className="mt-2 text-3xl font-black uppercase tracking-tight text-text-primary md:text-4xl lg:text-5xl"
-              >
-                {QOSE.name}
-              </h1>
-              <p className="mt-3 text-base text-text-secondary md:text-lg">{QOSE.tagline}</p>
-              <p className="type-body-sm mt-3 text-text-muted">
-                {`Also known as ${QOSE.acronym}.`}
-              </p>
-            </div>
-          </div>
-
-          <div className="flex flex-col items-center gap-5 border-t border-border-subtle px-5 py-6 text-center md:px-10 md:py-8 lg:flex-row lg:items-center lg:justify-between lg:text-left">
-            <div className="flex flex-col items-center gap-3 lg:items-start">
+        <ProgrammeHeroCard
+          headingId="qose-hero-title"
+          background={qoseHeaderBg}
+          mark={<BootcampLogo bootcamp={QOSE} size="sm" accent />}
+          kicker={"QYVORA · Bootcamp"}
+          status={
+            <>
               <Badge variant="warning" size="md">
                 {QOSE.statusLabel}
               </Badge>
-              <p className="type-body-sm max-w-xl text-text-secondary">{QOSE.statusNote}</p>
-            </div>
-            <div className="flex flex-wrap items-center justify-center gap-3">
+              <span className="type-meta text-text-muted">{`${QOSE.acronym} · ${QOSE.name}`}</span>
+            </>
+          }
+          title={QOSE.name}
+          description={QOSE.tagline}
+          meta={
+            <p className="type-body-sm max-w-2xl text-text-secondary">{QOSE.statusNote}</p>
+          }
+          actions={
+            <>
               <Button size="lg" onClick={() => openBootcampAccessModal('qose')}>
                 {QOSE.ctaLabel}
                 <ArrowRight className="h-4 w-4" aria-hidden="true" />
               </Button>
-              <Button to="/hpb" variant="secondary" size="md">
+              <Button to="/hpb" variant="secondary" size="lg">
                 {"Prerequisite: HPB"}
               </Button>
-            </div>
-          </div>
-        </section>
+            </>
+          }
+        />
 
         <div className="mt-4 md:mt-5">
           <BootcampFacts facts={QOSE.facts} />
@@ -84,7 +74,9 @@ const QosePage = () => {
         <ScrollReveal>
           <section aria-labelledby="qose-overview-title" className="mt-14 md:mt-20">
             <div className="mb-6 md:mb-8">
-              <span className="type-kicker block text-accent">{"What it is"}</span>
+              <span className="block text-kicker font-black uppercase tracking-[0.3em] text-accent">
+                {"What it is"}
+              </span>
               <h2
                 id="qose-overview-title"
                 className="type-h2 mt-2 font-black uppercase tracking-tight text-text-primary"
@@ -94,24 +86,27 @@ const QosePage = () => {
             </div>
 
             <div className="grid grid-cols-1 gap-4 lg:grid-cols-2 lg:gap-5">
-              <div className="flex flex-col gap-4 rounded-2xl border border-border-subtle bg-surface p-5 md:p-8">
-                <p className="type-label uppercase tracking-[0.12em] text-accent">{"Overview"}</p>
+              <Card className="flex flex-col gap-3 p-6 md:p-8">
+                <span className="block text-kicker font-black uppercase tracking-[0.3em] text-accent">
+                  {"Overview"}
+                </span>
                 <p className="type-body text-text-secondary">{QOSE.overview}</p>
-              </div>
-              <div className="flex flex-col gap-4 rounded-2xl border border-border-subtle bg-surface p-5 md:p-8">
-                <p className="type-label uppercase tracking-[0.12em] text-accent">{"Who it is for"}</p>
+              </Card>
+              <Card className="flex flex-col gap-3 p-6 md:p-8">
+                <span className="block text-kicker font-black uppercase tracking-[0.3em] text-accent">
+                  {"Who it is for"}
+                </span>
                 <p className="type-body text-text-secondary">{QOSE.audience}</p>
-              </div>
+              </Card>
             </div>
 
-            <div className="mt-4 rounded-2xl border border-border-subtle bg-surface p-5 md:p-8">
-              <p className="type-label uppercase tracking-[0.12em] text-accent">{"What it covers"}</p>
-              <ul className="mt-4 grid grid-cols-1 gap-3 md:grid-cols-2">
+            <Card className="mt-4 flex flex-col gap-4 p-6 md:p-8">
+              <span className="block text-kicker font-black uppercase tracking-[0.3em] text-accent">
+                {"What it covers"}
+              </span>
+              <ul className="grid grid-cols-1 gap-x-8 gap-y-3 md:grid-cols-2">
                 {QOSE.covers.map((item) => (
-                  <li
-                    key={item}
-                    className="flex gap-3 rounded-xl border border-border-subtle bg-surface-raised px-4 py-3"
-                  >
+                  <li key={item} className="flex gap-3">
                     <span
                       className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-accent"
                       aria-hidden="true"
@@ -120,81 +115,93 @@ const QosePage = () => {
                   </li>
                 ))}
               </ul>
-            </div>
+            </Card>
           </section>
         </ScrollReveal>
 
         <ScrollReveal>
           <section aria-labelledby="qose-phases-title" className="mt-14 md:mt-20">
             <div className="mb-6 md:mb-8">
-              <span className="type-kicker block text-accent">{"The curriculum"}</span>
+              <span className="block text-kicker font-black uppercase tracking-[0.3em] text-accent">
+                {"The curriculum"}
+              </span>
               <h2
                 id="qose-phases-title"
                 className="type-h2 mt-2 font-black uppercase tracking-tight text-text-primary"
               >
                 {"Six phases, twelve weeks, one engagement cycle"}
               </h2>
-              <p className="type-body mt-3 text-text-secondary">
-                Students move through the same engagement cycle again and again at increasing
-                depth — reconnaissance, enumeration, attack surface, validation, exploitation,
-                privilege escalation, lateral movement, evidence and report.
+              <p className="type-body mt-3 max-w-2xl text-text-secondary">
+                {"Students move through the same engagement cycle again and again at increasing depth — reconnaissance, enumeration, attack surface, validation, exploitation, privilege escalation, lateral movement, evidence and report."}
               </p>
             </div>
 
-            <ol className="flex flex-col gap-3">
+            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
               {QOSE.phases.map((phase, index) => (
-                <li
+                <LearningCard
                   key={phase.title}
-                  className="flex flex-col gap-3 rounded-2xl border border-border-subtle bg-surface p-5 md:flex-row md:items-baseline md:gap-6 md:p-6"
-                >
-                  <span className="type-label shrink-0 uppercase tracking-[0.12em] text-accent md:w-56">
-                    {`Phase ${index + 1} — ${phase.title}`}
-                  </span>
-                  <span className="type-body-sm min-w-0 flex-1 text-text-secondary">
-                    {phase.summary}
-                  </span>
-                </li>
+                  type="bootcamp"
+                  showAction={false}
+                  badge={
+                    <span className="flex h-14 w-14 items-center justify-center rounded-xl border border-accent/20 bg-accent/10 font-mono text-lg font-black text-accent">
+                      {String(index + 1).padStart(2, '0')}
+                    </span>
+                  }
+                  title={phase.title}
+                  description={phase.summary}
+                  className="min-h-[240px]"
+                />
               ))}
-            </ol>
+            </div>
           </section>
         </ScrollReveal>
 
         <ScrollReveal>
           <section aria-labelledby="qose-ethics-title" className="mt-14 md:mt-20">
-            <h2 id="qose-ethics-title" className="sr-only">
-              {"Ethics, responsibility and how to join"}
-            </h2>
+            <div className="mb-6 md:mb-8">
+              <span className="block text-kicker font-black uppercase tracking-[0.3em] text-accent">
+                {"Ground rules"}
+              </span>
+              <h2
+                id="qose-ethics-title"
+                className="type-h2 font-black uppercase tracking-tight text-text-primary"
+              >
+                {"Authorized work only"}
+              </h2>
+            </div>
+
             <div className="grid grid-cols-1 gap-4 lg:grid-cols-2 lg:gap-5">
-              <div className="flex flex-col gap-4 rounded-2xl border border-border-subtle bg-surface p-5 md:p-8">
-                <p className="type-label uppercase tracking-[0.12em] text-accent">
+              <Card className="flex flex-col gap-4 p-6 md:p-8">
+                <span className="block text-kicker font-black uppercase tracking-[0.3em] text-accent">
                   {"Ethics & responsibility"}
-                </p>
+                </span>
                 <ul className="flex flex-col gap-3">
                   {QOSE.ethics.map((item) => (
-                    <Bullet key={item}>{item}</Bullet>
+                    <li key={item} className="flex gap-3">
+                      <span
+                        className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-accent"
+                        aria-hidden="true"
+                      />
+                      <span className="type-body-sm text-text-secondary">{item}</span>
+                    </li>
                   ))}
                 </ul>
                 <p className="type-body-sm border-t border-border-subtle pt-4 text-text-muted">
                   All assessment work is carried out inside written authorization and agreed
                   rules of engagement. No testing without written authorization.
                 </p>
-              </div>
+              </Card>
 
-              <div className="flex flex-col items-center justify-center gap-5 rounded-2xl border border-border-subtle bg-surface p-5 text-center md:p-8">
-                <BootcampLogo bootcamp={QOSE} size="md" />
-                <p className="type-h3 font-black uppercase tracking-tight text-text-primary">
-                  {"Pre-registration is open"}
-                </p>
-                <p className="type-body-sm max-w-md text-text-secondary">{QOSE.statusNote}</p>
-                <Button
-                  size="lg"
-                  onClick={() => openBootcampAccessModal('qose')}
-                  className="w-full sm:w-auto"
-                >
+              <ProgrammeCtaCard
+                kicker={"Enrolment"}
+                title={"Pre-registration is open"}
+                description={QOSE.statusNote}
+              >
+                <Button size="lg" onClick={() => openBootcampAccessModal('qose')}>
                   {QOSE.ctaLabel}
                   <ArrowRight className="h-4 w-4" aria-hidden="true" />
                 </Button>
-              </div>
+              </ProgrammeCtaCard>
             </div>
           </section>
         </ScrollReveal>

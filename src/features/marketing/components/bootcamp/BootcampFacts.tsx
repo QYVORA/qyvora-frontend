@@ -19,27 +19,37 @@ const BootcampFacts = ({ facts }: { facts: BootcampFact[] }) => (
 
 /**
  * Official programme logo on a transparent surface. The supplied artwork is used
- * unmodified — no recolouring, filters, shadows or gradients — and scales from
- * the hero down to card size.
+ * unmodified — no recolouring, filters, shadows or gradients.
+ *
+ * Sizes are deliberately small: the logo is an identity mark inside a
+ * composition, never a showcase tile. `sm` is the inline hero lockup, `md` sits
+ * in a CTA card and `lg` is the largest standalone placement.
  */
 const BootcampLogo = ({
   bootcamp,
   size = 'md',
+  accent = false,
   className = '',
 }: {
   bootcamp: Pick<Bootcamp, 'logo' | 'logoAlt' | 'logoWidth' | 'logoHeight' | 'acronym'>;
   size?: 'sm' | 'md' | 'lg';
+  /** Accent-tinted tile — for lockups that sit next to accent copy. */
+  accent?: boolean;
   className?: string;
 }) => {
   const frame = {
-    sm: 'h-16 w-16 p-2 rounded-xl',
-    md: 'h-28 w-28 p-3 rounded-2xl',
-    lg: 'h-40 w-40 p-4 rounded-2xl md:h-48 md:w-48',
+    sm: 'h-16 w-16 rounded-xl p-2.5',
+    md: 'h-20 w-20 rounded-2xl p-3.5',
+    lg: 'h-24 w-24 rounded-2xl p-4',
   }[size];
+
+  const tone = accent
+    ? 'border-accent/25 bg-accent/10'
+    : 'border-border-subtle bg-surface-raised';
 
   return (
     <div
-      className={`flex shrink-0 items-center justify-center border border-border-subtle bg-surface-raised ${frame} ${className}`}
+      className={`flex shrink-0 items-center justify-center rounded-xl border ${tone} ${frame} ${className}`}
     >
       <img
         src={bootcamp.logo}

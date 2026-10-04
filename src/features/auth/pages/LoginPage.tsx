@@ -69,13 +69,16 @@ const LoginPage: React.FC = () => {
 
       // login() already calls /auth/me and sets user state internally.
       // Determine redirect based on isAdminRoute to avoid a redundant API call.
+      //
+      // No success toast: the destination screen already confirms the session
+      // (dashboard chrome + onboarding modal), and a toast fired on this tick is
+      // immediately covered by the onboarding dialog — it reads as late and
+      // redundant. Errors still toast, since the form stays on screen.
       if (isAdminLoginRoute) {
-        addToast('Session established.', 'success');
         navigate(`${ADMIN_PATH}/dashboard`);
         return;
       }
 
-      addToast('Session established. Welcome back, Operator.', 'success');
       setFormMessage('Login successful.');
       navigate('/dashboard');
     } catch (err: any) {
@@ -115,7 +118,6 @@ const LoginPage: React.FC = () => {
       });
 
       await login({ email, password });
-      addToast('Session established. Welcome, Operator.', 'success');
       setFormMessage('Account created successfully.');
       navigate('/dashboard');
     } catch (err: any) {

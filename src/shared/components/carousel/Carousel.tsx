@@ -11,6 +11,12 @@ export interface CarouselProps<T extends { id: string }> {
   className?: string;
   autoPlayInterval?: number;
   showArrows?: boolean;
+  /**
+   * Drop the viewport frame so the slide supplies its own card chrome. Use when
+   * `renderCard` already returns a bordered, rounded surface — otherwise the two
+   * frames stack and read as a mis-rendered box-in-box.
+   */
+  bare?: boolean;
 }
 
 function Carousel<T extends { id: string }>({
@@ -19,6 +25,7 @@ function Carousel<T extends { id: string }>({
   className = '',
   autoPlayInterval = 5000,
   showArrows = true,
+  bare = false,
 }: CarouselProps<T>) {
   const [current, setCurrent] = useState(0);
   const [direction, setDirection] = useState(0);
@@ -61,7 +68,9 @@ function Carousel<T extends { id: string }>({
   return (
     <div className={`relative group ${className}`} {...containerProps}>
       <div
-        className="overflow-hidden rounded-2xl border border-border/50 bg-accent-dim cursor-grab touch-pan-y select-none active:cursor-grabbing"
+        className={`overflow-hidden cursor-grab touch-pan-y select-none active:cursor-grabbing${
+          bare ? '' : ' rounded-2xl border border-border/50 bg-accent-dim'
+        }`}
         {...swipeHandlers}
       >
         <AnimatePresence mode="wait" custom={direction}>
