@@ -123,7 +123,7 @@ const SEO: React.FC<SEOProps> = ({
       'url': siteUrl,
       'logo': {
         '@type': 'ImageObject',
-        'url': `${siteUrl}/favicon.webp`
+        'url': `${siteUrl}/favicon.png`
       }
     },
     'offers': {

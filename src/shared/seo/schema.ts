@@ -31,7 +31,7 @@ function organizationNode() {
   return {
     name: SITE_NAME,
     url: SITE_URL,
-    logo: `${SITE_URL}/favicon.webp`,
+    logo: `${SITE_URL}/favicon.png`,
     description: SITE_CONFIG.brand.description,
     email: SITE_CONFIG.contact.opsEmail,
     contactPoint: [
@@ -232,7 +232,7 @@ export function buildBlogPosting(post: BlogPostingMeta) {
       url: SITE_URL,
       logo: {
         '@type': 'ImageObject',
-        url: `${SITE_URL}/favicon.webp`,
+        url: `${SITE_URL}/favicon.png`,
       },
     },
   };
