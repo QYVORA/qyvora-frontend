@@ -64,7 +64,7 @@ const ServiceDetailPage: React.FC<{ svc: ServiceConfig }> = ({ svc }) => {
               Desktop: LEFT = heading + scope + pricing, RIGHT = included card
           ──────────────────────────────────────────────────────────────────── */}
           <div className="grid w-full grid-cols-1 items-center gap-10 lg:grid-cols-2 lg:gap-16">
-            <div className="flex flex-col justify-center">
+            <div className="flex flex-col justify-center lg:justify-center">
               <ScrollReveal>
                 <div className="space-y-5">
                   <SimpleHeading
@@ -75,11 +75,10 @@ const ServiceDetailPage: React.FC<{ svc: ServiceConfig }> = ({ svc }) => {
                     kicker="Scope of Work"
                     align="left"
                     description={svc.scope}
-                    descriptionWidth="max-w-xl"
                   />
                   {svc.price && (
                     <div className="pt-2">
-                      <span className="mb-3 flex items-center gap-1.5 text-xs font-black uppercase tracking-widest text-text-muted">
+                      <span className="mb-3 flex items-center gap-1.5 text-kicker font-black uppercase tracking-[0.3em] text-text-muted">
                         <Target className="h-3 w-3" /> Pricing
                       </span>
                       <div className="flex flex-wrap items-baseline gap-x-4 gap-y-1">
@@ -135,7 +134,6 @@ const ServiceDetailPage: React.FC<{ svc: ServiceConfig }> = ({ svc }) => {
                 kicker="Benefits"
                 align="center"
                 description="Every engagement delivers actionable results, not just a report that sits on a shelf."
-                descriptionWidth="max-w-xl"
                 className="max-w-2xl"
               />
             </ScrollReveal>
@@ -158,7 +156,7 @@ const ServiceDetailPage: React.FC<{ svc: ServiceConfig }> = ({ svc }) => {
               Desktop: LEFT = heading, RIGHT = deliverables cards
           ──────────────────────────────────────────────────────────────────── */}
           <div className="grid w-full grid-cols-1 items-center gap-10 lg:grid-cols-2 lg:gap-16">
-            <div className="flex flex-col justify-center">
+            <div className="flex flex-col justify-center lg:justify-center">
               <ScrollReveal>
                 <SimpleHeading
                   compact
@@ -168,7 +166,6 @@ const ServiceDetailPage: React.FC<{ svc: ServiceConfig }> = ({ svc }) => {
                   kicker="Deliverables"
                   align="left"
                   description="You receive a professional security report that covers everything from executive summaries to detailed remediation steps."
-                  descriptionWidth="max-w-xl"
                 />
               </ScrollReveal>
             </div>
@@ -226,7 +223,7 @@ const ServiceDetailPage: React.FC<{ svc: ServiceConfig }> = ({ svc }) => {
               </div>
             </ScrollReveal>
 
-            <div className="flex flex-col justify-center">
+            <div className="flex flex-col justify-center lg:justify-center">
               <ScrollReveal delay={0.1}>
                 <SimpleHeading
                   compact
@@ -235,7 +232,6 @@ const ServiceDetailPage: React.FC<{ svc: ServiceConfig }> = ({ svc }) => {
                   kicker={PENTEST_PHILOSOPHY.heading}
                   align="left"
                   description={PENTEST_PHILOSOPHY.body}
-                  descriptionWidth="max-w-2xl"
                 />
               </ScrollReveal>
             </div>
