@@ -2,9 +2,11 @@ import type { PrerenderArguments, PrerenderResult } from 'vite-prerender-plugin'
 import { buildOrganization } from '@/shared/seo/schema';
 import { canonicalUrl } from '@/shared/seo/metadata';
 import { loadToolSeoByPath } from '@/shared/seo/toolSeoForPrerender';
+import { SITE_CONFIG } from '@/features/marketing/content/siteConfig';
+import { TOOLS } from '@/features/marketing/data/tools/registry';
 
 const SITE_URL = canonicalUrl('/');
-const DEFAULT_OG_IMAGE = `${SITE_URL}/og-image.png`;
+const DEFAULT_OG_IMAGE = `${SITE_URL}og-image.png`;
 
 interface Section {
   heading: string;
@@ -1268,6 +1270,23 @@ export async function prerender(data: PrerenderArguments): Promise<PrerenderResu
   ];
   if (toolSeo) schemas.push(toolSeo.schema);
 
+  // Check if this is a tool page
+  const currentTool = TOOLS.find(tool => tool.path === url);
+  
+  // Build social media rel="me" links
+  const socialLinks = SITE_CONFIG.social.map(social => ({
+    type: 'link' as const,
+    props: { rel: 'me', href: social.href }
+  }));
+  
+  // Build tool-specific meta tags if this is a tool page
+  const toolMetaTags = currentTool ? [
+    { type: 'meta' as const, props: { name: 'keywords', content: `${currentTool.name}, cybersecurity tool, penetration testing, security assessment, ${currentTool.domain}, offensive security, QYVORA` } },
+    { type: 'meta' as const, props: { name: 'github:repo', content: currentTool.repo } },
+    { type: 'meta' as const, props: { name: 'github:url', content: currentTool.github } },
+    { type: 'meta' as const, props: { property: 'article:author', content: SITE_CONFIG.contact.opsEmail } },
+  ] : [];
+
   return {
     html,
     head: {
@@ -1292,6 +1311,8 @@ export async function prerender(data: PrerenderArguments): Promise<PrerenderResu
         { type: 'meta', props: { name: 'twitter:title', content: title } },
         { type: 'meta', props: { name: 'twitter:description', content: description } },
         { type: 'meta', props: { name: 'twitter:image', content: ogImage } },
+        ...socialLinks,
+        ...toolMetaTags,
         {
           type: 'script',
           props: {

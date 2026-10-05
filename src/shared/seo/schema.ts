@@ -13,7 +13,10 @@ export const SITE_URL = SITE_CONFIG.brand.siteUrl;
 
 export const SITE_NAME = SITE_CONFIG.brand.name;
 
-/** Public QYVORA properties. WhatsApp is a community invite link, not a profile — excluded from sameAs. */
+/** All social profiles including community channels for comprehensive SEO coverage */
+const ALL_SOCIAL_PROFILES = SITE_CONFIG.social.map(s => s.href);
+
+/** Public QYVORA properties for primary structured data (excludes WhatsApp community invite) */
 const REAL_SOCIAL_PROFILES = new Set(['x', 'linkedin', 'github', 'youtube', 'medium', 'tiktok']);
 
 export const toAbsoluteUrl = (pathOrUrl: string): string =>
@@ -31,14 +34,49 @@ function organizationNode() {
     logo: `${SITE_URL}/favicon.webp`,
     description: SITE_CONFIG.brand.description,
     email: SITE_CONFIG.contact.opsEmail,
-    contactPoint: {
-      '@type': 'ContactPoint',
-      email: SITE_CONFIG.contact.opsEmail,
-      contactType: 'customer support',
-    },
+    contactPoint: [
+      {
+        '@type': 'ContactPoint',
+        email: SITE_CONFIG.contact.opsEmail,
+        contactType: 'customer support',
+        availableLanguage: ['en'],
+      },
+      {
+        '@type': 'ContactPoint',
+        email: SITE_CONFIG.contact.securityDeskEmail,
+        contactType: 'security',
+        availableLanguage: ['en'],
+      }
+    ],
     sameAs: SITE_CONFIG.social
       .filter((s) => REAL_SOCIAL_PROFILES.has(s.key))
       .map((s) => s.href),
+    // Additional rich organization data
+    foundingDate: '2024',
+    foundingLocation: {
+      '@type': 'Place',
+      name: 'Africa'
+    },
+    areaServed: {
+      '@type': 'Place',
+      name: 'Africa'
+    },
+    knowsAbout: [
+      'Cybersecurity',
+      'Penetration Testing', 
+      'Offensive Security',
+      'Security Assessment',
+      'OSINT',
+      'Network Security',
+      'Web Security',
+      'Mobile Security',
+      'Cloud Security',
+      'Incident Response',
+      'Digital Forensics',
+      'Security Training',
+      'Ethical Hacking'
+    ],
+    slogan: 'Africa\'s Offensive Security Platform'
   };
 }
 
@@ -57,6 +95,20 @@ export function buildWebSite() {
     name: SITE_NAME,
     url: SITE_URL,
     description: SITE_CONFIG.brand.description,
+    inLanguage: 'en',
+    copyrightYear: new Date().getFullYear(),
+    publisher: {
+      '@type': 'Organization',
+      ...organizationNode()
+    },
+    potentialAction: {
+      '@type': 'SearchAction',
+      target: {
+        '@type': 'EntryPoint',
+        urlTemplate: `${SITE_URL}/search?q={search_term_string}`
+      },
+      'query-input': 'required name=search_term_string'
+    }
   };
 }
 

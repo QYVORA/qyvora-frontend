@@ -9,6 +9,7 @@ import {
   buildAutoBreadcrumbs,
 } from '@/shared/seo/schema';
 import { canonicalUrl, pageTitle } from '@/shared/seo/metadata';
+import { TOOLS } from '@/features/marketing/data/tools/registry';
 const ogImageSrc = '/og-image.png';
 
 interface SEOProps {
@@ -51,7 +52,9 @@ const SEO: React.FC<SEOProps> = ({
   const seoDescription = description || SITE_CONFIG.brand.description;
   
   const imagePath = image || ogImageSrc;
-  const seoImage = imagePath.startsWith('http') ? imagePath : `${siteUrl}${imagePath}`;
+  const seoImage = imagePath.startsWith('http') 
+    ? imagePath 
+    : `${siteUrl.replace(/\/$/, '')}${imagePath.startsWith('/') ? imagePath : `/${imagePath}`}`;
   
   const seoCanonical = canonical || canonicalUrl(location.pathname);
 
@@ -64,6 +67,15 @@ const SEO: React.FC<SEOProps> = ({
   const crumbs = breadcrumbs ?? buildAutoBreadcrumbs(location.pathname, breadcrumbName);
   const breadcrumbSchema = crumbs ? buildBreadcrumbList(crumbs) : null;
 
+  // Enhanced WebPage schema with social media links and tool information
+  const allSocialProfiles = SITE_CONFIG.social.map(s => s.href);
+  
+  // Check if this is a tool page and build enhanced schema
+  const isToolPage = location.pathname.startsWith('/') && 
+    TOOLS.some(tool => tool.path === location.pathname);
+  
+  const currentTool = isToolPage ? TOOLS.find(tool => tool.path === location.pathname) : undefined;
+  
   const webPageSchema = {
     '@context': 'https://schema.org',
     '@type': 'WebPage',
@@ -74,11 +86,62 @@ const SEO: React.FC<SEOProps> = ({
       '@type': 'WebSite',
       'name': defaultTitle,
       'url': siteUrl
+    },
+    // Add all social media profiles
+    'sameAs': allSocialProfiles,
+    // Add author/publisher information
+    'author': {
+      '@type': 'Organization',
+      'name': defaultTitle,
+      'url': siteUrl,
+      'sameAs': allSocialProfiles
     }
   };
 
+  // If this is a tool page, add SoftwareApplication schema
+  const toolSchema = currentTool ? {
+    '@context': 'https://schema.org',
+    '@type': 'SoftwareApplication',
+    'name': currentTool.displayName,
+    'alternateName': currentTool.name,
+    'description': currentTool.summary,
+    'applicationCategory': 'SecurityApplication',
+    'operatingSystem': 'Linux, macOS, Windows',
+    'url': `${siteUrl}${currentTool.path}`,
+    'codeRepository': currentTool.github,
+    'programmingLanguage': 'Go',
+    'license': currentTool.license ? `https://spdx.org/licenses/${currentTool.license}.html` : undefined,
+    'author': {
+      '@type': 'Organization',
+      'name': defaultTitle,
+      'url': siteUrl,
+      'sameAs': allSocialProfiles
+    },
+    'publisher': {
+      '@type': 'Organization',
+      'name': defaultTitle,
+      'url': siteUrl,
+      'logo': {
+        '@type': 'ImageObject',
+        'url': `${siteUrl}/favicon.webp`
+      }
+    },
+    'offers': {
+      '@type': 'Offer',
+      'price': '0',
+      'priceCurrency': 'USD',
+      'availability': 'https://schema.org/InStock'
+    },
+    'downloadUrl': `${currentTool.github}/releases`,
+    'softwareVersion': 'latest',
+    'releaseNotes': `${currentTool.github}/releases`,
+    'keywords': `cybersecurity, penetration testing, security assessment, offensive security, ${currentTool.domain}, ${currentTool.name}`,
+    'isAccessibleForFree': true
+  } : null;
+
   const schemas: object[] = [webPageSchema];
   if (breadcrumbSchema) schemas.push(breadcrumbSchema);
+  if (toolSchema) schemas.push(toolSchema);
   schemas.push(schemaData ?? buildOrganization());
   if (!noindex && location.pathname === '/') schemas.push(buildWebSite());
 
@@ -112,6 +175,23 @@ const SEO: React.FC<SEOProps> = ({
       <meta name="author" content="QYVORA" />
       <meta name="application-name" content="QYVORA" />
       <meta name="apple-mobile-web-app-title" content="QYVORA" />
+
+      {/* Additional social media meta tags for enhanced discovery */}
+      {SITE_CONFIG.social.map((social) => (
+        <link key={social.key} rel="me" href={social.href} />
+      ))}
+
+      {/* Tool-specific meta tags for GitHub and development platforms */}
+      {currentTool && (
+        <>
+          <meta property="og:type" content="website" />
+          <meta name="keywords" content={`${currentTool.name}, cybersecurity tool, penetration testing, security assessment, ${currentTool.domain}, offensive security, QYVORA`} />
+          <link rel="alternate" type="application/json+oembed" href={`${siteUrl}/oembed?url=${encodeURIComponent(seoCanonical)}`} />
+          <meta property="article:author" content={SITE_CONFIG.contact.opsEmail} />
+          <meta name="github:repo" content={currentTool.repo} />
+          <meta name="github:url" content={currentTool.github} />
+        </>
+      )}
 
       <meta name="theme-color" content="#06B66F" />
 
