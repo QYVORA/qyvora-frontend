@@ -97,6 +97,9 @@ const SqlInjectionLab   = lazy(() => import('../features/student/pages/labs/SqlI
 const OsintLab          = lazy(() => import('../features/student/pages/labs/OsintLab'));
 const KillChainLab      = lazy(() => import('../features/student/pages/labs/KillChainLab'));
 
+// Learning V2 Demo
+const LearningV2Demo    = lazy(() => import('../features/student/pages/LearningV2Demo'));
+
 // Tool full-screen pages
 const TerminalToolPage    = lazy(() => import('../features/student/pages/tools/TerminalToolPage'));
 const NetworkVizToolPage  = lazy(() => import('../features/student/pages/tools/NetworkVizToolPage'));
@@ -263,6 +266,10 @@ export const AppRouter = () => {
             dashboard flash for unauthenticated visitors. */}
         <Route element={<StudentShellGate><AppShell /></StudentShellGate>}>
           <Route path="/dashboard" element={<Wrap scope="Dashboard"><StudentOnly><DashboardPage /></StudentOnly></Wrap>} />
+          
+          {/* Learning V2 Demo - Architecture showcase */}
+          <Route path="/dashboard/learning-v2-demo" element={<Wrap scope="Learning V2 Demo"><StudentOnly><LearningV2Demo /></StudentOnly></Wrap>} />
+          
           <Route path="/dashboard/bootcamps" element={<Navigate to="/dashboard/bootcamps/bc_1775270338500" replace />} />
           <Route path="/dashboard/bootcamps/:bootcampId" element={<Wrap scope="Bootcamp Course"><StudentOnly><BootcampCoursePage /></StudentOnly></Wrap>} />
           <Route path="/dashboard/bootcamps/:bootcampId/modules/:moduleId/rooms/:roomId" element={<Wrap scope="Bootcamp Room"><StudentOnly><BootcampRoomPage /></StudentOnly></Wrap>} />
