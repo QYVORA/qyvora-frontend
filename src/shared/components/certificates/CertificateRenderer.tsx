@@ -1,6 +1,7 @@
 import React from 'react';
 import qoseLogo from '@/assets/bootcamp/QOSE-Logo.png';
-import qyvoraLogo from '@/assets/brand/logo-compact.svg';
+
+const qyvoraLogo = '/favicon.webp';
 
 export interface CertificateData {
   recipientName: string;
