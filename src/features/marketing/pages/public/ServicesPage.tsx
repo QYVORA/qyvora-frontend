@@ -90,94 +90,57 @@ const ServiceCard: React.FC<{ svc: ServiceConfig; index: number }> = ({ svc, ind
   return (
     <Card
       to={svc.path}
-      interactive={!svc.featured}
-      className={`group relative flex h-full min-h-[440px] flex-col overflow-hidden rounded-2xl p-6 ${
+      interactive
+      className={`group relative flex h-full flex-col overflow-hidden rounded-2xl p-6 ${
         svc.featured
           ? 'border-accent/40 bg-gradient-to-br from-accent/15 via-accent/[0.04] to-transparent'
           : ''
       }`}
     >
-      {/* Header — index + service icon tile */}
-      <div className="flex items-start justify-between gap-3">
-        <span className="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl border border-accent/25 bg-accent/10 text-accent transition-colors duration-[var(--dur-base)] ease-[var(--ease-smooth)] group-hover:border-accent/40">
-          <Icon className="h-6 w-6 md:h-7 md:w-7" strokeWidth={1.75} aria-hidden="true" />
-        </span>
-        <div className="flex flex-col items-end gap-1.5">
-          <span className="type-label uppercase tracking-[0.12em] text-text-tertiary">
-            {"Service"}
-          </span>
-          <span className="type-meta font-mono text-text-tertiary">{`0${index}`}</span>
+      {/* Header — icon + badge */}
+      <div className="mb-4 flex items-start justify-between gap-3">
+        <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl border border-accent/25 bg-accent/10 text-accent transition-colors duration-[var(--dur-base)] ease-[var(--ease-smooth)] group-hover:border-accent/40 group-hover:bg-accent/15">
+          <Icon className="h-6 w-6" strokeWidth={1.75} aria-hidden="true" />
         </div>
-      </div>
-
-      {/* Badges */}
-      <div className="mt-4 flex flex-wrap items-center gap-2">
-        <span className={`rounded-lg border px-2.5 py-1 text-[10px] font-black uppercase tracking-widest ${
+        <span className={`rounded-lg border px-2.5 py-1 text-[9px] font-black uppercase tracking-widest ${
           svc.featured
             ? 'border-accent/40 bg-accent/15 text-accent'
-            : 'border-border-subtle bg-surface-raised text-text-secondary'
+            : 'border-border-subtle bg-surface-raised text-text-muted'
         }`}>
           {svc.badge}
         </span>
-        {svc.featured && (
-          <span className="rounded-lg border border-accent/40 bg-accent px-2.5 py-1 text-[10px] font-black uppercase tracking-widest text-on-accent">
-            {"Most Popular"}
-          </span>
-        )}
       </div>
 
-      <h3 className="mt-3 type-h3 font-black uppercase tracking-tight text-text-primary">
+      {/* Title + overview */}
+      <h3 className="mb-2 text-lg font-black uppercase leading-tight tracking-tight text-text-primary md:text-xl">
         {svc.title}
       </h3>
-      <p className="mt-2 type-body text-text-secondary">{svc.overview}</p>
-
-      {/* Scope — the concrete "what's covered" line */}
-      <p className="mt-3 flex items-start gap-2 text-sm font-medium leading-relaxed text-text-secondary">
-        <Target className="mt-0.5 h-4 w-4 shrink-0 text-accent" aria-hidden="true" />
-        {svc.scope}
+      <p className="mb-4 text-sm leading-relaxed text-text-secondary">
+        {svc.overview}
       </p>
 
-      {/* Included preview */}
-      <div className="mt-4 flex flex-wrap gap-1.5">
-        {svc.included.slice(0, 3).map((item) => (
-          <span
-            key={item}
-            className="inline-flex items-center gap-1 rounded-md border border-border-subtle bg-surface-raised px-2 py-1 text-xs text-text-primary"
-          >
-            <IconCheck className="h-3 w-3 shrink-0 text-accent" aria-hidden="true" />
-            {item}
-          </span>
-        ))}
-        {svc.included.length > 3 && (
-          <span className="inline-flex items-center gap-1 rounded-md border border-border-subtle bg-surface-raised px-2 py-1 text-xs text-text-tertiary">
-            <IconCheck className="h-3 w-3 shrink-0 text-accent" aria-hidden="true" />
-            {`${svc.included.length - 3} more`}
-          </span>
-        )}
+      {/* Scope with icon */}
+      <div className="mb-5 flex items-start gap-2 border-t border-border-subtle pt-4">
+        <Target className="mt-0.5 h-4 w-4 shrink-0 text-accent" aria-hidden="true" />
+        <p className="flex-1 text-sm leading-relaxed text-text-secondary">
+          {svc.scope}
+        </p>
       </div>
 
       {/* Footer — pricing + CTA */}
-      <div className="mt-auto flex flex-col gap-3 pt-5">
-        <div className="flex flex-col gap-3 border-t border-border-subtle pt-4">
-          <div className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1">
-            <span className={`font-black tracking-tight ${
-              svc.featured ? 'text-2xl text-accent' : 'text-xl text-text-primary'
-            }`}>
-              {svc.price}
-            </span>
-            <span className="text-xs font-medium text-text-secondary">{svc.priceLocal}</span>
-          </div>
-          {svc.highlight && (
-            <p className="flex items-start gap-2 rounded-lg border border-accent/30 bg-accent/10 px-3 py-2 text-sm font-bold leading-relaxed text-accent">
-              <IconCheck className="mt-0.5 h-4 w-4 shrink-0" aria-hidden="true" />
-              {svc.highlight}
-            </p>
-          )}
+      <div className="mt-auto">
+        <div className="mb-3 flex items-baseline justify-between gap-3">
+          <span className={`font-black tracking-tight ${
+            svc.featured ? 'text-2xl text-accent' : 'text-xl text-text-primary'
+          }`}>
+            {svc.price}
+          </span>
+          <span className="font-mono text-xs text-text-muted">{svc.priceLocal}</span>
         </div>
-        <span className="flex min-h-[44px] items-center gap-2 text-sm font-bold text-accent">
+        <div className="flex items-center gap-2 text-sm font-bold text-accent">
           {LEARN_MORE_LABEL}
           <ArrowRight className="h-4 w-4 transition-transform duration-[var(--dur-fast)] ease-[var(--ease-smooth)] group-hover:translate-x-1" aria-hidden="true" />
-        </span>
+        </div>
       </div>
     </Card>
   );
