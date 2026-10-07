@@ -15,6 +15,7 @@ import InboxTab from '../components/dashboard/InboxTab';
 import BroadcastTab from '../components/dashboard/BroadcastTab';
 import AuditLogTab from '../components/dashboard/AuditLogTab';
 import IncidentsTab from '../components/dashboard/IncidentsTab';
+import TemplatesPage from './certificates/TemplatesPage';
 import ADMIN_PATH from '@/shared/utils/adminPath';
 import { useAuth } from '@/core/contexts/AuthContext';
 import { useToast } from '@/core/contexts/ToastContext';
@@ -232,6 +233,7 @@ const AdminDashboardPage: React.FC = () => {
     zero_day: 'Market', cp: 'Points',
     inbox: 'Inbox', broadcast: 'Broadcast', audit: 'Audit',
     security: 'Security', incidents: 'Incidents',
+    certificates: 'Certificates',
   };
   const activeLabel = TAB_LABELS[activeTab] ?? 'Overview';
 
@@ -331,6 +333,9 @@ const AdminDashboardPage: React.FC = () => {
 
             {/* ── INCIDENTS ─────────────────────────────────────────────── */}
             {activeTab === 'incidents' && <IncidentsTab />}
+
+            {/* ── CERTIFICATES ─────────────────────────────────────────── */}
+            {activeTab === 'certificates' && <TemplatesPage />}
 
             {/* ── SECURITY ──────────────────────────────────────────────── */}
             {activeTab === 'security' && (

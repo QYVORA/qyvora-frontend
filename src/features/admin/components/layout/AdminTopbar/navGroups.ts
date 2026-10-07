@@ -1,5 +1,5 @@
 import type { ElementType } from 'react';
-import { Users, Database, Coins, Mail, Megaphone, OctagonAlert, ShieldCheck } from 'lucide-react';
+import { Users, Database, Coins, Mail, Megaphone, OctagonAlert, ShieldCheck, Award } from 'lucide-react';
 import { IconClock, IconWarning, IconDashboard } from '@/shared/components/icons';
 import ADMIN_PATH from '@/shared/utils/adminPath';
 
@@ -30,6 +30,7 @@ export const NAV_GROUPS: AdminNavGroup[] = [
     items: [
       { label: 'Market', desc: 'Zero-day vault catalogue', icon: Database, tab: 'zero_day', path: `${ADMIN_PATH}/dashboard?tab=zero_day` },
       { label: 'Points', desc: 'Cyber Point analytics and balances', icon: Coins, tab: 'cp', path: `${ADMIN_PATH}/dashboard?tab=cp` },
+      { label: 'Certificates', desc: 'Certificate templates & issuance', icon: Award, tab: 'certificates', path: `${ADMIN_PATH}/dashboard?tab=certificates` },
     ],
   },
   {

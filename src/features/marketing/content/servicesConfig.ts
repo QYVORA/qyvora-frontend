@@ -6,6 +6,17 @@ export interface ServiceDeliverable {
   desc: string;
 }
 
+export interface ServiceMethodologyStep {
+  title: string;
+  desc: string;
+}
+
+export interface ServiceMethodology {
+  title?: string;
+  description?: string;
+  steps?: ServiceMethodologyStep[];
+}
+
 export interface ServiceConfig {
   id: string;
   key: string;
@@ -24,6 +35,7 @@ export interface ServiceConfig {
   deliverables: ServiceDeliverable[];
   featured?: boolean;
   highlight?: string;
+  methodology?: ServiceMethodology;
 }
 
 /**
@@ -79,6 +91,16 @@ export const SERVICES: ServiceConfig[] = [
         desc: 'Clear, practical guidance for fixing each finding.',
       },
     ],
+    methodology: {
+      title: 'How We Do It',
+      description: 'Manual-first assessment covering critical paths with real exploitation focus.',
+      steps: [
+        { title: 'Scoping', desc: 'Confirm up to 5 pages/endpoints and rules of engagement.' },
+        { title: 'Recon & Mapping', desc: 'Map flows and identify high-value attack paths.' },
+        { title: 'Targeted Testing', desc: 'OWASP Top 10 testing with manual validation.' },
+        { title: 'Evidence & Report', desc: 'Reproducible findings with practical remediation.' },
+      ],
+    },
   },
   {
     id: 'standard',
@@ -137,6 +159,28 @@ export const SERVICES: ServiceConfig[] = [
         desc: 'One free re-assessment after remediation to verify every fix.',
       },
     ],
+    methodology: {
+      title: 'How We Do It',
+      description: 'Manual-first assessment aligned with OWASP Top 10, focused on real exploitation and actionable remediation.',
+      steps: [
+        {
+          title: 'Scoping & Rules of Engagement',
+          desc: 'Define in-scope assets, testing window, access, and safety boundaries before testing begins.',
+        },
+        {
+          title: 'Reconnaissance & Mapping',
+          desc: 'Understand endpoints, auth flows, and attack surface to identify high-impact targets.',
+        },
+        {
+          title: 'Manual Testing + Validation',
+          desc: 'Combine targeted manual testing with guided automation to validate real exploitability.',
+        },
+        {
+          title: 'Reporting & Remediation',
+          desc: 'Deliver clear findings with evidence, risk ratings, and practical fixes.',
+        },
+      ],
+    },
     featured: true,
   },
   {
@@ -170,6 +214,28 @@ export const SERVICES: ServiceConfig[] = [
       'Curriculum tailored to your industry and risk profile',
       'Hands-on drills and simulations employees will remember',
     ],
+    methodology: {
+      title: 'How We Deliver',
+      description: 'Scenario-based, hands-on training designed for retention and real-world application.',
+      steps: [
+        {
+          title: 'Assess Risk Profile',
+          desc: 'Tailor curriculum to your industry, threats, and employee roles.',
+        },
+        {
+          title: 'Hands-On Drills',
+          desc: 'Run phishing simulations, social engineering, and incident response exercises.',
+        },
+        {
+          title: 'Practice & Reinforce',
+          desc: 'Apply learnings through realistic scenarios that reinforce safe behaviors.',
+        },
+        {
+          title: 'Track & Guide',
+          desc: 'Measure engagement and provide post-training guidance for ongoing improvement.',
+        },
+      ],
+    },
     deliverables: [
       {
         label: 'Tailored curriculum',

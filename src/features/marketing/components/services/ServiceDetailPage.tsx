@@ -120,9 +120,37 @@ const ServiceDetailPage: React.FC<{ svc: ServiceConfig }> = ({ svc }) => {
             </ScrollReveal>
           </div>
 
-          {/* ── SECTION 2: Benefits ───────────────────────────────────────
-              Centered heading + a two-by-two grid of benefit cards. Breaks
-              the alternating split rhythm while staying on the card system.
+          {/* ── SECTION 2: How We Do It ─────────────────────────────────── */}
+          {svc.methodology && (
+            <div className="flex flex-col gap-8">
+              <ScrollReveal>
+                <SimpleHeading
+                  compact
+                  text={svc.methodology.title || "How We Do It"}
+                  accentWords={1}
+                  accentPlacement="end"
+                  kicker="Methodology"
+                  align="left"
+                  description={svc.methodology.description || "Practical, manual-first approach focused on real impact."}
+                />
+              </ScrollReveal>
+              <div className="grid w-full grid-cols-1 gap-4 md:grid-cols-2">
+                {svc.methodology.steps?.map((step) => (
+                  <div key={step.title} className="h-full rounded-2xl border border-border-subtle bg-surface p-5">
+                    <h3 className="mb-2 text-sm font-black uppercase tracking-widest text-text-primary">
+                      {step.title}
+                    </h3>
+                    <p className="text-sm leading-relaxed text-text-secondary sm:text-base">
+                      {step.desc}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* ── SECTION 3: Benefits ───────────────────────────────────────
+              Centered heading + a two-by-two grid of benefit cards.
           ──────────────────────────────────────────────────────────────────── */}
           <div className="flex flex-col items-center gap-8">
             <ScrollReveal>
