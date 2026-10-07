@@ -1,8 +1,15 @@
 # QYVORA Frontend Documentation
 
-> **Last Updated:** 2026-09-20
+> **Last Updated:** 2026-10-07
 
 Welcome to the QYVORA Frontend documentation. This guide helps you navigate all available documentation.
+
+**Recent Updates (2026-10-07):**
+- ✅ Learning System V2 architecture documentation
+- ✅ PWA implementation details
+- ✅ Certificate system documentation
+- ✅ Performance optimization strategies
+- ✅ Updated stack versions (React 19.2.7, Vite 6.2.0, Tailwind 4.1.14)
 
 ---
 
@@ -40,16 +47,17 @@ Welcome to the QYVORA Frontend documentation. This guide helps you navigate all 
 
 ### Game / Reward Systems
 - **[TROPHY-SPECS.md](TROPHY-SPECS.md)** - Trophy, badge, and HPB reward specifications
+- **[CERTIFICATES.md](CERTIFICATES.md)** - Certificate template system and management
 
 ### Development
-- **[BUILD_PIPELINE.md](BUILD_PIPELINE.md)** - Vite 6, TypeScript, ESLint setup
+- **[BUILD_PIPELINE.md](BUILD_PIPELINE.md)** - Vite 6.2.0, TypeScript 5.8.2, ESLint setup
 - **[TESTING.md](TESTING.md)** - Vitest, React Testing Library
-- **[PERFORMANCE.md](PERFORMANCE.md)** - Bundle optimization, lazy loading
+- **[PERFORMANCE.md](PERFORMANCE.md)** - Bundle optimization, WebP conversion, PWA caching
 - **[DEPLOYMENT.md](DEPLOYMENT.md)** - Netlify configuration, security headers
-- **[SEO.md](SEO.md)** - Prerendering, meta tags, structured data, GSC verification
+- **[SEO.md](SEO.md)** - Prerendering, qyvora.org canonical, structured data, GSC verification
 
 ### Advanced Features
-- **[PWA.md](PWA.md)** - Progressive Web App setup, offline support
+- **[PWA.md](PWA.md)** - Progressive Web App (whole-site, offline-capable, installable)
 
 ### Planned Features
 - **[LEARNING_PATHS.md](LEARNING_PATHS.md)** - 5 guided learning tracks (not yet implemented)
@@ -108,9 +116,13 @@ docs/
 │   └── ERROR_HANDLING.md
 │
 ├── Learning System Docs
+│   ├── LEARNING_SYSTEM.md       # Learning System V2 overview
+│   ├── LEARNING_V2_STATUS.md    # V2 migration status
+│   ├── LEARNING_V2_IMPLEMENTATION_GUIDE.md
+│   ├── LEARNING_CONTENT_ARCHITECTURE.md
+│   ├── LEARNING_BLOCKS_UI_REFERENCE.md
 │   ├── SIMULATIONS.md           # Complete simulation reference
-│   ├── LEARNING_SYSTEM.md
-│   └── BOOTCAMP.md
+│   └── BOOTCAMP.md              # HPB with V2 details
 │
 ├── UI/UX Docs (canonical)
 │   ├── UI-PRINCIPLES.md         # Enforced rules - source of truth
@@ -128,7 +140,8 @@ docs/
 │   └── PROFILE_PAGE_UI.md       # Profile page UI design and layout
 │
 ├── Game / Reward Systems
-│   └── TROPHY-SPECS.md          # Trophy, badge, HPB reward specs
+│   ├── TROPHY-SPECS.md          # Trophy, badge, HPB reward specs
+│   └── CERTIFICATES.md          # Certificate template system
 │
 ├── Development Docs
 │   ├── BUILD_PIPELINE.md

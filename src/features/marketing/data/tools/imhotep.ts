@@ -1,19 +1,21 @@
 import type { ToolDoc } from './types';
 
 /**
- * IMHOTEP — offline cloud configuration assessment.
+ * IMHOTEP — Offline Cloud Snapshot Analysis Framework.
  *
- * Rule IDs and default severities come from the table in `README.md`, which
- * matches the `metadata(...)` calls in `internal/rules/builtin/builtin.go`.
- * Committed report figures come from `reports/result.json`.
+ * Eight-stage pipeline: SNAPSHOT → IAM → STORAGE → NETWORK → CONTAINERS →
+ * SECRETS → MISCONFIG → RISK. Fourteen rules (IAM-001/002, STG-001/002/003,
+ * NET-001/002/003, DBE-001, CNT-001/002/003/004, SEC-001) in
+ * `internal/rules/builtin/builtin.go`. Simulation risk: 76/100 (high). v0.1.0
+ * shipped, cloud.live disabled (provider APIs never contacted).
  */
 const doc: ToolDoc = {
   slug: 'imhotep',
-  seoTitle: 'IMHOTEP — Offline cloud configuration assessment',
+  seoTitle: 'IMHOTEP — Offline Cloud Snapshot Analysis Framework',
   seoDescription:
-    'IMHOTEP is a terminal-native cloud security assessment engine. It analyses offline cloud snapshots for IAM, storage, network, database, container and secret exposure with 14 built-in rules.',
+    'Imhotep is QYVORA\'s open-source framework for cloud security assessment. It analyzes recorded cloud snapshots (and deterministic simulations) to evaluate IAM posture, storage exposure, network exposure, container posture, secret exposure and misconfigurations — without touching live provider APIs. Shipped v0.1.0: full pipeline, rule engine (IAM/STG/NET/DBE/CNT/SEC rules), evidence system, simulation mode and reporting. Offline snapshot analysis only; live provider collection not implemented and refused. Redaction first: secret material detected, redacted, never stored or printed — only fact of exposure reported. No provider credentials read, required, or embedded.',
   summary:
-    'IMHOTEP reads a cloud snapshot — a record of IAM bindings, storage policies, network exposure, database configuration, container manifests and secret material — and reports what can be established from it: wildcard permissions, publicly readable or writable storage, unencrypted data at rest, internet-exposed administration and databases, privileged or root-running containers, and hardcoded secrets. Provider APIs are never contacted, and secret values are redacted before they reach a finding.',
+    'IMHOTEP runs an eight-stage pipeline: SNAPSHOT (detect provider, region, scope from snapshot file), IAM (analyze identity and access policies for wildcard grants), STORAGE (detect public reads/writes and encryption-at-rest gaps), NETWORK (detect exposed admin ports, databases, compute), CONTAINERS (analyze container/Kubernetes posture and image tags), SECRETS (detect secret material with values redacted), MISCONFIG (detect misconfigurations across snapshot surface), RISK (score severity × confidence × exposure, cap at 100). Fourteen rules: wildcard action granted (high), wildcard resource scope (high), publicly readable storage (high), publicly writable storage (critical), unencrypted storage at rest (medium), administrative port exposed to internet (high), publicly accessible database (critical), publicly exposed compute workload (high), unencrypted database at rest (medium), privileged container capability (high), host network namespace (medium), immutability-breaking image tag (low), container runs as root (medium), hardcoded secret material (critical). Simulation (--sim): acme tenant, 9 assets, risk 76/100 (high).',
 
   sections: [
     {

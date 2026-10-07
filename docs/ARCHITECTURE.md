@@ -1,6 +1,6 @@
 # QYVORA Architecture
 
-> **Status:** Approved · **Last updated:** 2026-07-04
+> **Status:** Approved · **Last updated:** 2026-10-07
 > **Scope:** qyvora-frontend, qyvora-backend, qyvora-chain
 > **Audience:** Senior engineers maintaining or extending the QYVORA platform
 > **Authority:** This document is the single source of truth for architectural decisions. Future implementations must follow these rules. If code conflicts with this document, the code is wrong unless a deviation is explicitly documented below.
@@ -60,7 +60,7 @@ This document defines the intended architecture of all three services, documents
 
 | Service | Role | Key Technology | Port (dev) |
 |---------|------|----------------|------------|
-| `qyvora-frontend` | React SPA — marketing pages, student dashboard, admin panel | React 19, Vite 6, Tailwind CSS v4 | 5173 |
+| `qyvora-frontend` | React SPA — marketing pages, student dashboard, admin panel, PWA | React 19.2.7, Vite 6.2.0, Tailwind CSS 4.1.14 | 5173 |
 | `qyvora-backend` | Express API — auth, bootcamps, CP ledger, admin ops, file uploads, bridge to chain | Express 4, Mongoose, Joi | 3000 |
 | `qyvora-chain` | Private PoA ledger — immutable event recording, CP token source of truth | Express 4, SHA-256, HMAC | 4100 |
 
@@ -72,9 +72,17 @@ This document defines the intended architecture of all three services, documents
 
 ### 2.4 Deployment
 
-- **Frontend:** Deploys to Netlify. SPA redirect via `/* → /index.html`. CSP and security headers set in `netlify.toml`.
+- **Frontend:** Deploys to Netlify. SPA redirect via `/* → /index.html`. CSP and security headers set in `netlify.toml`. PWA-enabled with service worker for offline support and installability.
 - **Backend:** Deploys to Render. Health endpoint at `/health`. Chain outbox worker starts automatically.
 - **Chain:** Deploys to Render. Persistent disk for JSON ledger. Cron job keeps service awake every 14 minutes.
+
+**Recent additions (2026):**
+- **Learning System V2:** Semantic block architecture with 13 component types for structured learning content
+- **PWA Support:** Service worker registration, offline fallback, installable manifest
+- **Certificate System:** Certificate template system with admin management tab
+- **Services Methodology:** Expanded service offering documentation and booking system
+- **Badge Primitives:** Reusable badge/trophy component system for achievements
+- **WebP Optimization:** Automatic image conversion via custom Vite plugin
 
 **Rule:** Each service must have a `/health` endpoint that returns 200 OK.
 **Rule:** Each service must validate its environment at startup and refuse to start with placeholder or missing secrets.
@@ -169,6 +177,8 @@ src/
   features/             # Domain modules (marketing, auth, student, admin)
   shared/               # Reusable UI, layouts, utils
   styles/               # Tailwind CSS v4 with @theme tokens
+  test/                 # Test utilities and setup
+  prerender.tsx         # SSR/prerender entry for SEO
 ```
 
 ### 5.2 Routing
@@ -187,11 +197,16 @@ src/
 
 ```
 features/
-  admin/        # Admin dashboard, CP analytics
+  admin/        # Admin dashboard, CP analytics, certificates management
   auth/         # Login, register, password flow
   marketing/    # Landing page, blogs, courses, team, services, simulations, hpb
-  student/      # Dashboard, bootcamps, marketplace, wallet, profile, settings
+  student/      # Dashboard, bootcamps (Learning V2), marketplace, wallet, profile, settings
 ```
+
+**Recent feature additions:**
+- `admin/components/certificates/` - Certificate template system and management
+- `student/` now uses Learning System V2 semantic block architecture (13 component types)
+- `marketing/components/services/` - Services methodology and booking system
 
 **Known violations (technical debt):**
 - `PublicProfilePage` (marketing) imports from `features/student/utils/walkthroughImages`. Fixed by moving walkthrough helpers to `src/shared/utils/`.
@@ -209,7 +224,13 @@ features/
 | `components/brand/` | Logo, QyvoraLogotype, QyvoraMark | All features |
 | `components/backgrounds/` | GridBoxedBackground, AdinkraBackground | All features |
 | `layouts/` | PublicShell | Router only |
+| `pages/` | NotFoundPage | Router only |
 | `utils/` | cn, cpBalance, formatNumber, resolveImg, etc. | All features |
+
+**Recent additions to `shared/`:**
+- `components/badges/` - Badge primitives for trophies and achievements
+- `components/certificates/` - Certificate template components
+- Enhanced PWA support components (install prompt, offline indicator)
 
 **Anti-pattern:** Do not put domain-specific components in `shared/`. If a component is only used by one feature, keep it in that feature. If it is used by two or more features, put it in `shared/`.
 
@@ -258,6 +279,12 @@ Tool documentation pages render inside `PublicShell` (public navigation + footer
 - `--color-border`: `rgba(171,181,192,0.12)` — default borders
 - `--color-border-strong`: `rgba(6,182,111,0.18)` — accent borders
 
+**PWA Configuration:**
+- Manifest: `/manifest.json` with theme colors, icons, start_url
+- Service Worker: Precaches critical assets, provides offline fallback
+- Install prompt: Native install UI on supported browsers
+- Offline indicator: Shows connection status in navigation
+
 **No-Gos (must never appear in frontend code):**
 1. No gradient backgrounds
 2. No CRT scanlines or vignette overlays
@@ -276,6 +303,11 @@ Tool documentation pages render inside `PublicShell` (public navigation + footer
 - All headings must use the JetBrains Mono font (set globally via `--font-mono`)
 - Theme follows the device by default (`ThemeContext` + an inline `index.html` bootstrap that sets `data-theme` before first paint). Modes: `dark` / `light` / `system`; explicit choices persist in `qyvora_theme`. Light ramp and dark isolation (`data-theme-persist="dark"`) live in `src/styles/index.css`
 - Use `lucide-react` for all interface icons; custom SVG icons in `src/shared/components/icons/` only for brand social icons
+
+**Image Optimization:**
+- WebP automatic conversion: Custom Vite plugin converts PNG/JPG to WebP during build
+- Images served with optimized format and caching headers
+- Lazy loading via native `loading="lazy"` attribute
 
 ---
 

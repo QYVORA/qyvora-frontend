@@ -1,19 +1,20 @@
 import type { ToolDoc } from './types';
 
 /**
- * AKSUM — binary security assessment.
+ * AKSUM — binary security assessment & reverse-engineering.
  *
- * The nine pipeline stages are the commands in the README table; the seven
- * static checks are the `check*` functions in `internal/checks/checks.go`;
- * confidence levels and finding IDs are in `internal/findings`.
+ * The ten pipeline stages are: IDENTIFY, ENUMERATE, STRINGS, DISASSEMBLY,
+ * FUNCTIONS, GRAPHS, DATAFLOW, VALIDATION, SURFACE, REPORT; confidence
+ * levels (OBSERVED, CANDIDATE, SUSPECTED, VALIDATED, CONFIRMED) are in
+ * `internal/findings`.
  */
 const doc: ToolDoc = {
   slug: 'aksum',
-  seoTitle: 'AKSUM — Binary security assessment',
+  seoTitle: 'AKSUM — Binary Security Assessment & Reverse-Engineering Platform',
   seoDescription:
-    'AKSUM is a terminal-first binary-security assessment platform for ELF binaries. Structure enumeration, string classification, disassembly, function discovery, call and control-flow graphs, cross-references, and evidence-backed findings with explicit confidence — tri-state hardening properties, seven static checks, deterministic finding IDs.',
+    'Aksum is one of QYVORA\'s eight open-source security frameworks for binary analysis. It takes an ELF executable, identifies it, enumerates its structure, disassembles it, discovers functions, and reports candidate weaknesses as evidence-backed findings with explicit confidence states. The defining design rule is honesty under uncertainty: properties the file does not declare print as unknown; unsupported architectures produce a typed refusal instead of a guess. ELF x86/x86-64 and AArch64 fully supported.',
   summary:
-    'AKSUM takes an ELF binary and tells you what is actually in it. It enumerates structure, extracts and classifies strings, disassembles code, discovers functions with provenance, builds call and control-flow graphs, maps cross-references, and reports candidate weaknesses as findings with explicit confidence. Its discipline is honesty: a property it cannot determine is reported as `unknown`, and a dangerous import on its own is a CANDIDATE, never a verdict.',
+    'AKSUM executes a ten-stage pipeline: IDENTIFY (format, arch, PIE/NX/RELRO/canary posture), ENUMERATE (sections, segments, symbols, imports), STRINGS (URL/path/command/crypto classification), DISASSEMBLY (x86/x86-64 and AArch64 linear sweep, CET-aware), FUNCTIONS (multi-source discovery with provenance), GRAPHS (CFGs, call graph, xrefs), DATAFLOW (call-site argument tracking, PLT resolution), VALIDATION (escalation to VALIDATED on corroboration), SURFACE (attack-surface aggregation), REPORT (terminal/JSON with schema_version-1.0). Dataflow-corroborated findings: dangerous import alone is CANDIDATE; becomes VALIDATED when call site with statically materialized argument is resolved.',
 
   sections: [
     {
@@ -38,7 +39,7 @@ const doc: ToolDoc = {
         },
         {
           kind: 'table',
-          caption: 'Nine stages, each available as its own command.',
+          caption: 'Ten stages, each available as its own command.',
           columns: [
             { key: 'n', label: '#', mono: true },
             { key: 'cmd', label: 'Command', mono: true },
@@ -48,12 +49,13 @@ const doc: ToolDoc = {
             { n: '01', cmd: 'aksum binary', produces: 'Format, architecture, linking, and PIE / NX / RELRO / canary / fortify as honest tri-state values.' },
             { n: '02', cmd: 'aksum sections / segments / symbols / imports', produces: 'Structural enumeration with permissions, plus classification of security-relevant APIs.' },
             { n: '03', cmd: 'aksum strings', produces: 'Printable strings classified as URL, path, command, crypto or credential. Works on ELF and RAW files.' },
-            { n: '04', cmd: 'aksum disassemble', produces: 'Linear-sweep disassembly for x86 and x86-64, with branch targets resolved.' },
+            { n: '04', cmd: 'aksum disassemble', produces: 'Linear-sweep disassembly for x86/x86-64 and AArch64, with branch targets resolved, CET-aware.' },
             { n: '05', cmd: 'aksum functions', produces: 'Function discovery from three sources — symbols, entry point, call targets — each with provenance and confidence.' },
-            { n: '06', cmd: 'aksum calls / cfg', produces: 'The direct-call graph, and per-function basic-block metrics: blocks, edges, loops, unreachable blocks.' },
-            { n: '07', cmd: 'aksum xrefs', produces: 'Cross-references to code addresses (--addr) and data strings (--string).' },
-            { n: '08', cmd: 'aksum analyze', produces: 'The full pipeline: dataflow-resolved call sites, every static rule, validation escalation, deduplicated findings, severity and confidence summary.' },
-            { n: '09', cmd: 'aksum surface', produces: 'Attack-surface aggregation: entry points, risky import categories, exports, string classes.' },
+            { n: '06', cmd: 'aksum calls / cfg', produces: 'The direct-call graph, and per-function basic-block CFGs: blocks, edges, loops, unreachable blocks.' },
+            { n: '07', cmd: 'aksum xrefs', produces: 'Cross-references to code addresses (--addr) and data strings (--string), code/data xrefs.' },
+            { n: '08', cmd: 'aksum dataflow', produces: 'Call-site argument tracking through registers and stack; PLT stubs resolved to import names.' },
+            { n: '09', cmd: 'aksum analyze', produces: 'Full pipeline with validation: dataflow-resolved call sites, static rules, escalation to VALIDATED on corroboration, deduplicated findings.' },
+            { n: '10', cmd: 'aksum surface', produces: 'Attack-surface aggregation: entry points, risky import categories, exports, string classes.' },
           ],
         },
         {

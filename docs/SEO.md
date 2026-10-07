@@ -1,7 +1,8 @@
 # SEO
 
 > **Status:** ✅ IMPLEMENTED  
-> **Production:** https://qyvora.org  
+> **Last Updated:** 2026-10-07  
+> **Production:** https://qyvora.org (canonical origin)  
 > **Approach:** Static prerendering + client-side `react-helmet-async`
 
 ## Overview

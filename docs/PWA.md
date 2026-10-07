@@ -1,6 +1,7 @@
 # Progressive Web App
 
 > **Status:** ✅ IMPLEMENTED — whole-site scope  
+> **Last Updated:** 2026-10-07  
 > **Service Worker:** app-shell precache + runtime caching, offline navigations  
 > **Install:** browser install prompt (with iOS instructions)  
 > **Updates:** announced in-app, applied on accept

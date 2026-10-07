@@ -10,11 +10,11 @@ import type { ToolDoc } from './types';
  */
 const doc: ToolDoc = {
   slug: 'anansi',
-  seoTitle: 'ANANSI — Attack surface intelligence engine',
+  seoTitle: 'ANANSI — Web application penetration testing & reconnaissance',
   seoDescription:
-    'ANANSI is a terminal-first attack surface intelligence engine. Ten phases covering discovery, probing, TLS, headers, paths, tech-stack fingerprinting, takeover, OSINT, exploit chains and active proof-of-exploit, with JSON, Markdown and HTML output.',
+    'QYVORA Anansi is an open-source command-line web application penetration testing and reconnaissance tool. It executes a comprehensive 10-phase assessment pipeline against authorized web targets, from subdomain discovery through active exploitation validation. Built for penetration testers, security researchers, and bug bounty hunters, Anansi automates the web application security testing workflow while keeping the operator in control through a terminal-first interface.',
   summary:
-    'ANANSI takes a domain and runs a ten-phase intelligence pipeline over it: subdomain discovery, live host probing, TLS analysis, security-header checks, path exposure, deep tech-stack fingerprinting, takeover detection, OSINT collection, exploit-chain assembly, and — with explicit authorization — active proof of the findings it discovered. It is the only QYVORA tool that makes live requests, and the only one with an authorization gate. Output is terminal, JSON, Markdown or HTML, and every phase emits JSONL events.',
+    'ANANSI takes a domain and runs a ten-phase intelligence pipeline: subdomain discovery, live host probing, TLS analysis, security-header checks, path exposure, deep tech-stack fingerprinting (CMS/framework versions, plugin enumeration), takeover detection, OSINT collection, exploit-chain assembly (30 vulnerability classes, ranked multi-step paths), and active proof-of-exploit validation. Eight built-in exploit modules prove findings with live HTTP requests and evidence capture. Requires explicit authorization for exploit phase; `--exploit-dry-run` validates without proof requests.',
 
   sections: [
     {
@@ -384,7 +384,7 @@ var defaultModules = []string{
         },
         {
           kind: 'prose',
-          text: 'Six modules ship in the box. Module eligibility is derived from the finding\'s vulnerability class, so a finding only ever matches modules that are compatible with it.',
+          text: 'Eight modules ship in the box. Module eligibility is derived from the finding\'s vulnerability class, so a finding only ever matches modules that are compatible with it.',
         },
         {
           kind: 'definitions',
@@ -394,6 +394,8 @@ var defaultModules = []string{
             { term: 'web/path-traversal', detail: 'Documented directory traversal.' },
             { term: 'web/open-redirect', detail: 'Server-side redirect confirmation.' },
             { term: 'web/reflected-input', detail: 'Input reflected back in the response.' },
+            { term: 'web/reflected-xss', detail: 'Context-aware XSS proof (script body, event-handler/url attribute, JS string).' },
+            { term: 'web/sqli', detail: 'SQL injection probe payloads with response delta detection.' },
             { term: 'web/directory-listing', detail: 'Auto-index disclosure.' },
           ],
         },

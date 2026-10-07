@@ -1,19 +1,21 @@
 import type { ToolDoc } from './types';
 
 /**
- * AMANIRENAS — offline mobile application assessment.
+ * AMANIRENAS — Offline Mobile App Security Assessment Framework.
  *
- * Rule IDs and default severities are taken from the table in `README.md`,
- * which matches the `metadata(...)` calls in `internal/rules/builtin/builtin.go`.
- * Committed report figures come from `reports/result.json`.
+ * Eight-stage pipeline: INTAKE → METADATA → STATIC → CONFIG → API → SECRETS →
+ * EVIDENCE → RISK. Twelve rules (AMN-001..AMN-012) in
+ * `internal/rules/builtin/builtin.go`. Simulation produces 14 findings, risk
+ * 56/100 (medium). v0.1.0 shipped, runtime assessment disabled (mobile.runtime
+ * = false).
  */
 const doc: ToolDoc = {
   slug: 'amanirenas',
-  seoTitle: 'AMANIRENAS — Offline mobile app assessment',
+  seoTitle: 'AMANIRENAS — Offline Mobile App Security Assessment Framework',
   seoDescription:
-    'AMANIRENAS is a terminal-native offline mobile application security assessment engine. It analyses app profiles and IPA snapshots for secrets, transport, storage, permissions and signing posture with 12 built-in rules.',
+    'Amanirenas is QYVORA\'s open-source framework for offline mobile app security assessment. It analyzes app profiles and IPA snapshots statically — bundle metadata, binary surface, configuration, API endpoints and secrets — and produces evidence-backed findings with transparent risk scoring. Shipped v0.1.0: full pipeline, rule engine (AMN-001..AMN-012), evidence system, simulation mode and reporting. Offline by design: only the app profile is read; no device, emulator, or live runtime. Dynamic runtime assessment is registered but disabled. Redaction first: secret values never leak into reports.',
   summary:
-    'AMANIRENAS reads a mobile application profile — the metadata, permissions, configuration, binaries and API surface recorded from an app — and reports what can be established from it: hardcoded secrets, transport and certificate-pinning posture, local storage handling, WebView usage, cryptography choices, permissions and signing. It never runs app code, and runtime assessment and live device acquisition are refused rather than approximated. Twelve built-in rules produce evidence-backed findings in five output formats.',
+    'AMANIRENAS runs an eight-stage pipeline: INTAKE (accept app profile/IPA snapshot), METADATA (extract bundle metadata), STATIC (analyze binary surface, permissions, WebView), CONFIG (ATS/transport allowances, storage flags), API (inventory endpoints and transport posture), SECRETS (detect hardcoded secrets with values redacted), EVIDENCE (collect evidence records), RISK (score severity × confidence × exposure, cap at 100). Twelve rules: hardcoded secrets (critical), insecure transport (critical), missing pinning (medium), legacy WebView (medium), weak crypto (medium), insecure storage (high), clipboard exposure (medium), sensitive logs (low), excessive permissions (medium), outdated min OS (low), ad-hoc signing (medium), no jailbreak detection (medium). Simulation (--sim): 14 findings, risk 56/100 (medium).',
 
   sections: [
     {

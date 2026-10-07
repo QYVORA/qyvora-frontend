@@ -1,19 +1,21 @@
 import type { ToolDoc } from './types';
 
 /**
- * NZINGA — public-source OSINT collection.
+ * NZINGA — OSINT & Intelligence Framework.
  *
- * Sources live in `internal/intelligence/sources`, the safety contract in
- * `internal/safety/safety.go`, the five rules in
- * `internal/rules/builtin/builtin.go`, and dork packs in `internal/search`.
+ * Pipeline stages: COLLECT → NORMALIZE → CORRELATE → ANALYZE → RISK → REPORT.
+ * Sources in `internal/intelligence/sources`: crt.sh, DNS, WHOIS, GitHub,
+ * AbuseIPDB, search (opt-in with 477 dork templates), simulate. Safety
+ * contract in `internal/safety/safety.go`, five rules (OSINT-001..005) in
+ * `internal/rules/builtin/builtin.go`.
  */
 const doc: ToolDoc = {
   slug: 'nzinga',
-  seoTitle: 'NZINGA — Public-source OSINT collection',
+  seoTitle: 'NZINGA — OSINT & Intelligence Framework',
   seoDescription:
-    'NZINGA collects, normalizes, correlates and reports what can be learned about a target exclusively from public sources. Six collectors plus an opt-in search source, five correlation rules, an SSRF-guarded authorization gate, and five report formats.',
+    'Nzinga is QYVORA\'s open-source framework for authorized Open-Source Intelligence (OSINT) and intelligence collection. It collects information from public sources, normalizes it, correlates observations into claims, applies deterministic rules, and produces evidence-backed intelligence reports in terminal, JSON, Markdown, HTML, and YAML. Maintains strict collection boundaries. Shipped August 31, 2026. Seven implemented sources: crt.sh, DNS, WHOIS, GitHub, AbuseIPDB, search (477 dork templates across 12 categories), simulate.',
   summary:
-    'NZINGA answers one question: what can be learned about a target exclusively from public, open sources? It collects from certificate transparency, DNS, WHOIS, search, GitHub and abuse feeds; normalizes what comes back into entities and relationships; correlates observations into claims; and reports only what the evidence supports. It never reports the absence of something as proof that it is absent.',
+    'NZINGA runs a six-stage pipeline: COLLECT → NORMALIZE → CORRELATE → ANALYZE → RISK → REPORT. Collects from seven public sources (crt.sh certificates, DNS records, WHOIS registration, GitHub metadata, AbuseIPDB reputation, opt-in search with 477 curated dork query templates across 12 categories, offline simulation). Normalizes into common observation model, correlates observations into intelligence claims with provenance, applies five deterministic rules (OSINT-001..005 including correlation claim surfacing), computes risk, renders reports. Evidence-backed intelligence with source attribution. Authorization gate requires explicit consent. SSRF guards prevent unintended internal access.',
 
   sections: [
     {

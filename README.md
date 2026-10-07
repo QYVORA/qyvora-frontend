@@ -1,20 +1,33 @@
 # QYVORA OFFSEC — Frontend
 
-React 19 + Vite frontend for the QYVORA offensive security training platform.
+**Last Updated:** 2026-10-07
+
+React 19 + Vite 6 frontend for the QYVORA offensive security training platform.
+
+## Recent Features (2026)
+
+- **Learning System V2** - Semantic block architecture with 13 component types
+- **PWA Support** - Installable, offline-capable progressive web app
+- **Certificate System** - Certificate template system with admin management
+- **Services Methodology** - Expanded service offering documentation
+- **Badge Primitives** - Reusable badge/trophy component system
+- **WebP Optimization** - Automatic image conversion for faster loading
 
 ## Stack
 
-| Layer | Technology |
-|---|---|
-| Framework | React 19 + Vite 6 |
-| Language | TypeScript |
-| Styling | Tailwind CSS v4 |
-| Routing | React Router v6 |
-| Animation | Motion (Framer Motion) |
-| 3D Globe | Three.js |
-| Icons | Lucide React |
-| HTTP | Axios |
-| State | Context API (Auth, Theme, Toast) |
+| Layer | Technology | Version |
+|---|---|---|
+| Framework | React + Vite | React 19.2.7, Vite 6.2.0 |
+| Language | TypeScript | 5.8.2 |
+| Styling | Tailwind CSS | 4.1.14 |
+| Routing | React Router | 7.18.2 |
+| Animation | Motion | 12.23.24 |
+| Icons | Lucide React | 0.546.0 |
+| HTTP Client | Axios | 1.15.2 |
+| State | Context API | Auth, Theme, Toast, Modal |
+| UI Primitives | Radix UI | Dialog, Tooltip |
+| Markdown | React Markdown | 10.1.0 |
+| Diagrams | XYFlow React | 12.11.2 |
 
 ## Quick Start
 

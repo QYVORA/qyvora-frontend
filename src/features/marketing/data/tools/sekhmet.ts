@@ -1,20 +1,20 @@
 import type { ToolDoc } from './types';
 
 /**
- * SEKHMET — controllable fuzzing campaigns.
+ * SEKHMET — Baseline-Aware, Feedback-Driven Fuzzing & Vulnerability Discovery.
  *
- * The campaign loop is documented in the README and implemented across
- * `internal/`; the 17 operators are the `Op*` constants in
- * `internal/mutation/mutation.go`; the six power-scheduling strategies are the
- * `Strategy*` constants.
+ * Ten-stage pipeline: BASELINE → CORPUS → MUTATE → EXECUTE → CLASSIFY → DEDUP
+ * → FEEDBACK → SCHEDULE → MINIMIZE → REPORT. 17 mutation operators in
+ * `internal/mutation/mutation.go`; six power-scheduling strategies (fast,
+ * explore, exploit, rare, balanced, adaptive); shell-free execution templates.
  */
 const doc: ToolDoc = {
   slug: 'sekhmet',
-  seoTitle: 'SEKHMET — Fuzzing campaign framework',
+  seoTitle: 'SEKHMET — Baseline-Aware, Feedback-Driven Fuzzing & Vulnerability Discovery Framework',
   seoDescription:
-    'SEKHMET runs a controllable fuzzing campaign against an authorized target: baseline profiling, corpus management, 17 mutation operators, feedback-directed power scheduling, crash classification with SHA-256 dedup, delta-debugging minimization and replay. Process, HTTP and deterministic simulation targets.',
+    'SEKHMET is QYVORA\'s open-source framework for authorized fuzzing and vulnerability discovery. It profiles a target\'s normal behaviour (exit codes, signals, runtime, output variance), mutates structured inputs through an adaptive operator set, executes them via process / HTTP / simulation modes, classifies every result relative to the baseline, deduplicates crashes by SHA-256 signatures, and minimizes interesting inputs into readable reproducers. Full pipeline shipped: baseline → mutate → execute → classify → dedup → feedback → minimize → report. Shell-free execution, authorization gate for remote targets.',
   summary:
-    'SEKHMET runs a fuzzing campaign you can actually control. It profiles the target\'s normal behaviour first, so every result is classified against a baseline rather than against a guess. It mutates a corpus with 17 structured operators, schedules operator power from observed coverage novelty, deduplicates crashes by SHA-256 signature, and minimizes anything interesting down to a minimal reproducer.',
+    'SEKHMET runs a ten-stage fuzzing pipeline: BASELINE (profile normal exit codes, signals, runtime, output variance), CORPUS (persistent seed store with SHA-256 dedup), MUTATE (17 structured operators on seeded RNG), EXECUTE (process {fuzz}/{stdin} templates or HTTP, shell-free), CLASSIFY (crash/hang/anomaly classification vs baseline, sanitizer matching), DEDUP (SHA-256 signatures collapse near-identical crashes), FEEDBACK (novelty scoring over behaviour/edge/block coverage), SCHEDULE (six power strategies), MINIMIZE (delta-debugging reducer), REPORT (terminal/JSON/YAML + JSONL events). Exit classes: normal_success, normal_failure, expected_error, unexpected_behavior, crash, hang, resource_anomaly. Safety: authorization gate, execution budgets, size caps.',
 
   sections: [
     {

@@ -1,20 +1,20 @@
 import type { ToolDoc } from './types';
 
 /**
- * TOHA3EE — local and network security assessment.
+ * TOHA3EE — Local & Network Security Assessment Framework.
  *
- * Modules self-register through `init()` under `internal/attacks/*`; the ten
- * categories are recon, enum, osint, mitm, auth, espionage, post, switch, web
- * and wlan. `docs/Declined-Techniques.md` is the reference for what is
- * deliberately absent and why.
+ * Ten module categories with 70 registered modules: recon, enumeration, OSINT,
+ * MITM (ARP/DHCP/DNS/IPv6 poisoning, inline HTTP/HTTPS interception), wireless,
+ * switch-layer, web, auth, espionage, post-exploitation. Self-registering
+ * `init()` pattern under `internal/attacks/*`. Scriptable via `.toha3ee` files.
  */
 const doc: ToolDoc = {
   slug: 'toha3ee',
-  seoTitle: 'TOHA3EE — Network security assessment framework',
+  seoTitle: 'TOHA3EE — Local & Network Security Assessment Framework',
   seoDescription:
-    'TOHA3EE is a Go network and local security assessment framework covering discovery, enumeration, credential auditing, vulnerability identification and authorised exploitation, with 73 modules across ten categories, driven from an interactive REPL, a guided wizard or one-shot commands.',
+    'Toha3ee is QYVORA\'s network exploitation and MITM framework — a Go tool covering the full network assessment pipeline: host and service discovery, enumeration, credential auditing, vulnerability identification, and authorized exploitation. Driven from an interactive REPL (toha3eeλ > console), guided wizard, one-shot --eval sequences, or .toha3ee pipeline scripts. Ten module categories with 70 registered modules: recon, enumeration, OSINT, MITM (ARP/DHCP/DNS/IPv6 poisoning, inline HTTP/HTTPS), wireless, switch-layer, web, auth, espionage, post-exploitation. Most attack modules require root; auto-escalates via sudo.',
   summary:
-    'TOHA3EE is the broadest framework in the toolkit. It covers the network assessment pipeline end to end — host and service discovery, enumeration, credential auditing, vulnerability identification and authorised exploitation — plus MITM, wireless and switch-layer capability, across ten module categories and 73 modules. It is driven from an interactive REPL, a guided wizard, or one-shot command sequences, and it is scriptable end to end.',
+    'TOHA3EE spans ten module categories with 70 registered modules: recon (net.scan, net.recon, service.synscan, service.fingerprint, service.tls procedural chain), enum (smb.enum, snmp.enum, ldap.enum, smtp.enum, nfs.enum), osint (osint.dns, osint.ct, osint.bucket, osint.shodan, osint.harvest, osint.github), mitm (arp.spoof, http.proxy, https.proxy, dhcp6.spoof, dns.spoof), wireless (wlan.eviltwin, wlan.handshake) / switch / web / auth / post. Scriptable: .toha3ee files chain set → on → report into repeatable pipelines (run executes, build dry-runs). Safety: ARP spoof restore before capture close, mutex-guarded config, honest preflight (declare prerequisites, refuse/degrade when missing), JSONL events + schema-versioned reports. Procedural recon: builds on prior discoveries. web.dir ships ~700-entry curated wordlist. High/critical-risk modules prompt for confirmation.',
 
   sections: [
     {

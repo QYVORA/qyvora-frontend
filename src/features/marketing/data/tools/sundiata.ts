@@ -1,19 +1,20 @@
 import type { ToolDoc } from './types';
 
 /**
- * SUNDIATA — offline identity and access assessment.
+ * SUNDIATA — Identity & Access Security Assessment Framework.
  *
- * Rule IDs and default severities come from the table in `README.md`, which
- * matches the `metadata(...)` calls in `internal/rules/builtin/builtin.go`.
- * Committed report figures come from `reports/result.json`.
+ * Eight-stage pipeline: IDENTITY → ACCOUNT → AUTHENTICATION → CREDENTIALS →
+ * PRIVILEGE → SECRETS → ATTACK-PATH → RISK. Thirteen rules (SDT-001..SDT-013)
+ * in `internal/rules/builtin/builtin.go`. Simulation risk: 80/100 (critical).
+ * v0.1.0 shipped, identity.live disabled.
  */
 const doc: ToolDoc = {
   slug: 'sundiata',
-  seoTitle: 'SUNDIATA — Offline identity directory assessment',
+  seoTitle: 'SUNDIATA — Identity & Access Security Assessment Framework',
   seoDescription:
-    'SUNDIATA is a terminal-native identity and access security assessment engine. It analyses offline identity directory snapshots for credential exposure, MFA, privilege mapping and attack paths with 13 built-in rules.',
+    'Sundiata is QYVORA\'s open-source framework for identity & access security assessment of Active Directory environments. It reads recorded directory files (and deterministic simulations) to discover identities, enumerate accounts and groups, analyze authentication posture, and map privilege and attack paths — all offline, with credential material redacted and never stored. Shipped v0.1.0: full pipeline, rule engine (SDT-001..SDT-013), evidence system, simulation mode and reporting. Offline directory-file analysis only; live identity source collection not implemented and refused. Credentials never leak: redacted at detection, only fingerprints and posture facts emitted.',
   summary:
-    'SUNDIATA reads an identity directory snapshot and reports what can be established from it: plaintext credential exposure, rotation state, MFA coverage on privileged identities, group membership, excessive privilege and the paths between them. Credential values are redacted before output and never stored, and live directory collection is refused rather than approximated. Thirteen built-in rules produce evidence-backed findings, including a graph-derived attack-path rule that reasons about relationships between identities rather than one account at a time.',
+    'SUNDIATA runs an eight-stage pipeline: IDENTITY (read recorded sources, discover identities/groups), ACCOUNT (enumerate accounts, memberships, attributes), AUTHENTICATION (evaluate MFA posture, password policy, session lifetime), CREDENTIALS (flag exposure, rotation overdue, reuse, legacy hashes), PRIVILEGE (map privilege memberships and impersonation relationships), SECRETS (discover secret artifacts with values redacted), ATTACK-PATH (find identity attack paths to sensitive groups), RISK (score severity × confidence × exposure, cap at 100). Thirteen rules: plaintext credential exposure (critical), rotation overdue (medium), privileged identity without MFA (high), password never expires (medium), disabled identity retains access (medium), credential reuse (high), secret material in files (high), excess privilege membership (high), identity attack path to sensitive group (critical), impersonation relationship (medium), legacy privileged account (high), excessive session lifetime (low), legacy authentication hash exposure (high). Simulation (--sim): tenant acme, risk 80/100 (critical).',
 
   sections: [
     {

@@ -9,11 +9,11 @@ import type { ToolDoc } from './types';
  */
 const doc: ToolDoc = {
   slug: 'shaka',
-  seoTitle: 'SHAKA — Active Directory assessment framework',
+  seoTitle: 'SHAKA — Windows / Active Directory Security Assessment Framework',
   seoDescription:
-    'SHAKA assesses a single authorized Active Directory domain through a six-stage pipeline — DISCOVER, VERIFY, DEEPEN, CORRELATE, ANALYZE, REPORT — with 18 deterministic rules, a relationship graph, and terminal, JSON, Markdown, HTML and YAML reporting.',
+    'SHAKA is QYVORA\'s open-source framework for authorized Microsoft Active Directory / Windows security assessment. It discovers a domain and its domain controllers, enumerates directory objects, models relationships as a graph, analyzes authentication and trust configuration, produces security findings backed by evidence, scores risk, and renders evidence-driven reports. The framework is directory-centric and deliberately disciplined: it assesses only the authorized target environment, requires explicit authorization for live targets, and ships a deterministic offline demo (--sim).',
   summary:
-    'SHAKA assesses one authorized Active Directory domain and reports what it found. Six stages run in order: discovery seeds the graph, verification and deepening expand it, correlation completes it, analysis runs 18 deterministic rules over it, and reporting renders the result. Everything is read-only, every run passes an authorization gate, and a built-in offline simulator lets you walk the entire pipeline without a live directory.',
+    'SHAKA assesses one authorized Active Directory domain through a six-stage pipeline: DISCOVER → VERIFY → DEEPEN → CORRELATE → ANALYZE → REPORT. Discovery seeds the graph, verification and deepening expand it, correlation completes it, analysis runs 18 deterministic rules (ADM-001 to ADM-014, AUTH-001 to AUTH-004) over it, and reporting renders the result. Graph-driven relationship analysis, authorization as an architectural gate, machine-first contract with JSONL events. Offline simulator (--sim) produces 24 nodes, 36 edges, 18 findings across 15 rules, risk 43/100 (medium).',
 
   sections: [
     {

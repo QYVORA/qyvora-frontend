@@ -11,9 +11,9 @@ const doc: ToolDoc = {
   slug: 'mansa',
   seoTitle: 'MANSA — Wireless security assessment framework',
   seoDescription:
-    'Mansa assesses wireless networks through an eight-stage pipeline with 21 deterministic WLAN rules, evidence-backed findings and transparent risk scoring. Deterministic --sim mode runs the full pipeline with no wireless hardware and is CI-ready.',
+    'Mansa is QYVORA\'s open-source framework for authorized wireless security assessment. It discovers and enumerates wireless access points and stations, analyzes WLAN security configurations, and produces evidence-backed findings with transparent risk scoring. Mansa runs as both a one-shot CLI and a shared interactive console with identical commands.',
   summary:
-    'Mansa assesses wireless networks. It runs the same commands from a terminal-first console and from a one-shot CLI, is deterministic and offline-first under `--sim`, gates live scope behind an authorization check, and produces findings that each carry the observations that produced them. Twenty-one rules cover encryption posture, WPS, management-frame protection, rogue access points and radio conditions.',
+    'Mansa assesses wireless networks through an eight-stage pipeline with 21 deterministic WLAN rules, evidence-backed findings and transparent risk scoring. Simulation mode (`mansa assess --sim`) produces a reproducible 23-AP, 7-station, 57-finding result set (risk 31/100, low) verified on 2026-10-04. The tool runs as both a one-shot CLI and an interactive console with identical commands, gates live scope behind authorization, and produces findings that carry the observations that produced them.',
 
   sections: [
     {

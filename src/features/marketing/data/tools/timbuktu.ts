@@ -1,19 +1,20 @@
 import type { ToolDoc } from './types';
 
 /**
- * TIMBUKTU — offline incident response and digital forensics.
+ * TIMBUKTU — Incident Response & Digital Forensics Framework.
  *
- * Rule IDs and default severities come from the table in `README.md`, which
- * matches the `metadata(...)` calls in `internal/rules/builtin/builtin.go`.
- * Committed report figures come from `reports/result.json`.
+ * Nine-stage pipeline: SOURCE → INTEGRITY → ARTIFACTS → FILESYSTEM → MEMORY →
+ * LOGS → TIMELINE → INDICATORS → RISK. Thirteen rules (DFI-001..DFI-013) in
+ * `internal/rules/builtin/builtin.go`. Simulation risk: 62/100 (high). v0.1.0
+ * shipped, forensics.live disabled (live host acquisition refused).
  */
 const doc: ToolDoc = {
   slug: 'timbuktu',
-  seoTitle: 'TIMBUKTU — Offline incident response and forensics',
+  seoTitle: 'TIMBUKTU — Incident Response & Digital Forensics Framework',
   seoDescription:
-    'TIMBUKTU is a terminal-native incident response and digital forensics engine. It analyses offline forensic case files for evidence integrity, persistence, artifacts, credential exposure, timelines and IOCs with 13 built-in rules.',
+    'Timbuktu is QYVORA\'s open-source framework for incident response and digital forensics. It analyzes recorded forensic case files (and deterministic simulations) to verify evidence integrity, identify artifacts, analyze filesystem and memory surfaces, review logs, build evidence-backed timelines and extract indicators of compromise. Shipped v0.1.0: full pipeline, rule engine (DFI-001..DFI-013), evidence system, simulation mode and reporting. Offline case-file analysis only; live host acquisition not implemented and refused. Chain of custody first: every evidence item carries content hash; DFI-001 fires when declared hash fails verification. Evidence never modified.',
   summary:
-    'TIMBUKTU reads a forensic case file — a record of evidence items, filesystem artifacts, process and logon activity, memory observations and network indicators — and reports what it can establish: whether the evidence is intact, what persistence was installed, what was executed, what credentials were exposed, and where the timeline has gaps. Every evidence item is content-hashed and integrity-verified, and the tool never modifies evidence. Thirteen built-in rules produce findings in five output formats.',
+    'TIMBUKTU runs a nine-stage pipeline: SOURCE (detect and register evidence sources), INTEGRITY (verify declared hashes against content for chain of custody), ARTIFACTS (identify autoruns, tasks, services, web shells), FILESYSTEM (analyze files, unusual locations, credentials on disk), MEMORY (review process activity and masquerading binaries), LOGS (flag logon anomalies, credential anomalies, service installs), TIMELINE (reconstruct evidence-backed event timeline), INDICATORS (extract and cross-check IOCs), RISK (score severity × confidence × exposure, cap at 100). Thirteen rules: evidence integrity failure (critical), autorun persistence (high), suspicious scheduled task (high), service with temp image path (high), web shell deployed (critical), suspicious files in unusual locations (high), suspicious process activity (critical), credential material on disk (high), logon anomalies (medium), network indicators present (medium), HOSTS file modification (medium), timeline coverage gap (low), masquerading system binary (high). Simulation (--sim): Windows workstation compromise, risk 62/100 (high).',
 
   sections: [
     {

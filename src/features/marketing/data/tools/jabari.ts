@@ -1,19 +1,20 @@
 import type { ToolDoc } from './types';
 
 /**
- * JABARI — Android security assessment.
+ * JABARI — Android Security Assessment Framework.
  *
- * The pipeline stages are orchestrated in `internal/orchestration`; the 11
- * rules live in `internal/rules/builtin/builtin.go`; the two target modes are
- * implemented in `internal/transport`.
+ * Pipeline stages: Discovery, Enumeration, Analysis, Validation, PoC
+ * (optional), Evidence, Risk, Reporting. Rules AND-001 to AND-010, AND-012 in
+ * `internal/rules/builtin/builtin.go`. Transport abstraction (USB/ADB, IP,
+ * offline static APK) in `internal/transport`.
  */
 const doc: ToolDoc = {
   slug: 'jabari',
-  seoTitle: 'JABARI — Android security assessment framework',
+  seoTitle: 'JABARI — Android Security Assessment Framework',
   seoDescription:
-    'JABARI assesses a single authorized Android device over USB (ADB) or by IP, through a seven-stage pipeline with 11 deterministic rules, hashed evidence, risk scoring and terminal, JSON, Markdown or HTML reporting.',
+    'Jabari is QYVORA\'s open-source framework for authorized Android device security assessment. It assesses a device connected over USB (via ADB) or a specific network-reachable address. Foundation implemented: core pipeline, rule engine (AND-001…AND-010, AND-012), evidence system, reporting, and offline static APK analysis. Runtime instrumentation planned. Transport abstraction supports USB (ADB), known-IP, and offline static (local APK file) targets. Authorization required for all assessments.',
   summary:
-    'JABARI assesses one authorized Android device, reached either over USB through ADB or by IP. Discovery, enumeration, analysis, validation, evidence, risk and reporting run in order, and the output is a findings set backed by hashed, reproducible evidence. It is Android-centric by design: given a network address it assesses that address and nothing else, and it never scans the surrounding subnet.',
+    'JABARI assesses one authorized Android device over USB (ADB), IP address, or offline static APK file. Pipeline stages: Discovery (identify target device), Enumeration (inventory apps, services, device posture), Analysis (run rule engine AND-001…AND-010, AND-012), Validation (confirm findings), PoC (optional offensive stage gated behind --poc / --poc-high-risk), Evidence (hashed, reproducible evidence), Risk (severity × confidence scoring), Reporting (terminal, JSON, Markdown, HTML + JSONL event stream). Assessment profiles tune depth: quick, standard, deep, application, device, network, compliance, research. Never auto-discovers or scans subnet.',
 
   sections: [
     {

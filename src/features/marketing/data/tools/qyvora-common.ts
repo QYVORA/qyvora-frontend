@@ -7,14 +7,15 @@ import type { ToolDoc } from './types';
  * is a QYVORA tool binary. `contract/contract.go` is the reference schema and
  * `conformance/runner.go` verifies real binaries against it by shelling out.
  * Note the deliberate non-import: frameworks implement the contract natively.
+ * Thirteen tools are covered.
  */
 const doc: ToolDoc = {
   slug: 'qyvora-common',
-  seoTitle: 'QYVORA-COMMON — The shared machine contract',
+  seoTitle: 'QYVORA-COMMON — The Shared Machine Contract',
   seoDescription:
-    'QYVORA-COMMON defines the minimum machine contract every QYVORA framework honours: identity blocks, a JSONL event envelope, canonical result and finding shapes, standard exit codes, and a conformance runner that verifies real binaries by shelling out to them.',
+    'QYVORA-COMMON defines the minimum machine contract every QYVORA framework honours: identity blocks, a JSONL event envelope, canonical result and finding shapes, standard exit codes, and a conformance runner that verifies real binaries by shelling out to them. Three supporting repositories: qyvora-tui (shared terminal UI v0.7.0), qyvora-common (machine contract + conformance harness, reference-only), qyvora-dist (distribution definitions for all 13). Frameworks implement the contract natively without importing this module to maintain independence.',
   summary:
-    'QYVORA-COMMON is the layer that makes thirteen separate tools behave like one toolkit. It defines the minimum contract every framework honours — identity blocks, a shared JSONL event envelope, canonical result and finding shapes, standard exit codes and semver version rules — and ships a conformance runner that verifies a real binary against it. The frameworks do not import this module. Each implements the contract natively, and the runner shells out to the actual binary to check.',
+    'QYVORA-COMMON is the layer that makes thirteen separate tools behave like one toolkit. It defines the minimum contract every framework honours — identity blocks, a shared JSONL event envelope, canonical result and finding shapes, standard exit codes and semver version rules — and ships a conformance runner that verifies a real binary against it. The frameworks do not import this module. Each implements the contract natively, and the runner shells out to the actual binary to check. Roughly 560 lines across three files (contract/contract.go 141 lines, conformance/runner.go 279 lines, cmd/ 139 lines), zero runtime dependencies. Frameworks covered: 13 (Anansi, TOHA3EE, Jabari, Aksum, Nzinga, Shaka, Sekhmet, Mansa, Amanirenas, Sundiata, Timbuktu, Kush, Imhotep).',
 
   sections: [
     {
