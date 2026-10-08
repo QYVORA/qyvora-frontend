@@ -9,7 +9,7 @@ import Input from '@/shared/components/ui/Input';
 import { Card } from '@/shared/components/ui/Card';
 import InlineAlert from '@/shared/components/ui/InlineAlert';
 import Skeleton from '@/shared/components/ui/Skeleton';
-import CertificateRenderer from '@/shared/components/certificates/CertificateRenderer';
+import CertificateFrame from '@/shared/components/certificates/CertificateFrame';
 import {
   verifyCredential,
   normalizeCredentialId,
@@ -320,7 +320,7 @@ const VerifyPage: React.FC = () => {
                 <p className="type-label uppercase tracking-[0.12em] text-accent">
                   Issued certificate · read-only
                 </p>
-                <CertificateRenderer
+                <CertificateFrame
                   className="max-w-5xl"
                   data={{
                     recipientName: credential.recipientName,

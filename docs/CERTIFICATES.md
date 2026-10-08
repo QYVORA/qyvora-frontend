@@ -32,7 +32,8 @@ Spec alignment: the credential model, wording and verification endpoint contract
 
 **Implemented:**
 - `src/shared/components/certificates/CertificateRenderer.tsx` — the certificate itself (data shape + both programme templates). Used by the admin preview and the public `/verify` result.
-- `src/features/admin/pages/certificates/TemplatesPage.tsx` — admin dashboard **Certificates** tab (`{ADMIN_PATH}/dashboard?tab=certificates`): template selector (QOSE / HPB), per-template settings, size (orientation) selector, name-length stress test, and live preview (single or both certificates).
+- `src/shared/components/certificates/CertificateFrame.tsx` — responsive preview wrapper: renders at fixed native Letter width and scales to fit (used by the admin preview and the `/verify` result); `certificate-print.css` holds the PDF export rules.
+- `src/features/admin/pages/certificates/TemplatesPage.tsx` — admin dashboard **Certificates** tab (`{ADMIN_PATH}/dashboard?tab=certificates`): template selector (QOSE / HPB), per-template settings, size (orientation) selector, name-length stress test, live preview (single or both certificates) and **Download PDF**.
 - `src/features/marketing/pages/public/VerifyPage.tsx` — public verification page at `/verify` and `/verify/:credentialId`.
 - `src/core/services/credentialVerification.ts` — verification logic (normalisation, API call, local fallback registry).
 
@@ -160,10 +161,16 @@ interface CertificateTemplate {
 - **Fluid sizing:** every font size, padding and frame element uses `max(<floor>px, <n>cqw)` — container-query units resolved against the certificate's own width (`container-type: inline-size` on `#certificate-render`). The box and all text scale from the same unit, so the layout keeps identical proportions in the admin preview, on mobile and in print
 - **Recipient name:** sized by length (≤14 / ≤26 / ≤40 / 40+ characters step down through four size steps), `break-words` + `hyphens: auto` + `overflow-wrap: anywhere` — names always fit inside the certificate and never clip out of the container
 - **Logo:** programme logo (HPB/QOSE) is rendered **bare, directly on the certificate surface — never inside a card, border or tinted panel**
-- **Lines:** minimal — four corner brackets only. No horizontal rules, tick marks, dashes or dividers across the certificate body; structure is carried by spacing
-- **Premium treatment (QOSE):** QOSE is the paid bootcamp, so its certificate is the premium edition — accent edge (`border-accent/40`), soft tinted-graphite gradient, continuous inner frame (`inset-[2.5%]` accent hairline), a low-opacity programme watermark centred behind the body, stronger corner brackets, and a double-ring **issuer seal** (QYVORA mark + "QOSE") in the footer. HPB remains the clean standard edition (neutral graphite + dotted-map backdrop, no seal)
+- **Lines:** minimal — no corner brackets, no horizontal rules, tick marks, dashes or dividers across the certificate body. Structure is carried by a single continuous inner hairline frame and spacing
+- **Backdrop:** dotted-map overlay on **both** templates
+- **Issuer seal:** every certificate carries a double-ring **issuer seal** at the bottom-right corner of the footer — diagonal micro-stripes, QYVORA mark and the programme label (QOSE / HPB)
+- **Premium treatment (QOSE):** QOSE is the paid bootcamp, so its certificate is the premium edition — accent edge (`border-accent/40`), soft tinted-graphite gradient, accent inner frame (`inset-[2.5%]` hairline), a low-opacity programme watermark centred behind the body, and a **diagonal-striped vertical side ribbon** along the left edge (content padding shifts right to clear it). HPB remains the clean standard edition (neutral graphite, neutral inner frame)
 - **Credential ID:** the full ID is printed in the footer (`break-all`) so it can be copied straight into `/verify`
 - **Verification URL:** `/verify/<credentialId>` (rendered by default when `data.verificationUrl` is omitted)
+
+**Preview frame (implemented):** `CertificateFrame` renders every certificate at a fixed native US Letter width (1100 px landscape / 850 px portrait) and uniformly `transform: scale()`s it to fit the available width, with the wrapper height measured via `ResizeObserver`. The admin preview, "Both" mode and the public `/verify` result therefore keep identical proportions at every breakpoint — the certificate never reflows and nothing is clipped.
+
+**PDF export (implemented):** the admin Certificates tab has a **Download PDF** button per preview pane (active certificate only). It opens the browser print dialog against `certificate-print.css`: everything except `.cert-export-frame` is hidden, the frame is lifted to full page width with the downscale removed (container queries resolve against the page box → exact trim), and `@page` is set to the selected orientation (`11in 8.5in` / `8.5in 11in`, margin 0). "Save as PDF" produces a print-color-exact US Letter PDF.
 
 **Print reference layout:** standard margins ~4.5% of certificate width (fluid), signature spacing 40px between signatures (planned), logo max height 120px (fluid-capped).
 
@@ -348,8 +355,8 @@ registry once `GET /api/credentials/verify/:credentialId` ships.
 
 - **Valid:** status panel (verified icon, active status, chain anchor block #), recipient /
   programme / cohort / completion / result / issued fields, full credential ID, copy-link action,
-  and a **read-only certificate preview** rendered by `CertificateRenderer` (programme artwork
-  chosen from `bootcampId`)
+  and a **read-only certificate preview** rendered through `CertificateFrame` (uniformly scaled;
+  programme artwork chosen from `bootcampId`)
 - **Revoked:** revocation notice — the credential no longer proves completion; no certificate
   preview is shown
 - **Not found / invalid / error:** clear InlineAlert or card with recovery guidance
@@ -406,10 +413,12 @@ Planned features:
 
 ```
 src/shared/components/certificates/
-└── CertificateRenderer.tsx        # ✅ Certificate rendering (HPB + QOSE templates)
+├── CertificateRenderer.tsx        # ✅ Certificate rendering (HPB + QOSE templates)
+├── CertificateFrame.tsx           # ✅ Responsive preview frame (native render + uniform scale)
+└── certificate-print.css          # ✅ PDF export print rules (.cert-export-frame)
 
 src/features/admin/pages/certificates/
-└── TemplatesPage.tsx              # ✅ Admin Certificates tab (template config + live preview)
+└── TemplatesPage.tsx              # ✅ Admin Certificates tab (template config, live preview, Download PDF)
 
 src/features/marketing/pages/public/
 └── VerifyPage.tsx                 # ✅ Public /verify + /verify/:credentialId

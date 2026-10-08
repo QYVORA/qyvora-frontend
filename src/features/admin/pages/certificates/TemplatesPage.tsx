@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
-import CertificateRenderer from '@/shared/components/certificates/CertificateRenderer';
+import React, { useEffect, useState } from 'react';
+import { Download } from 'lucide-react';
+import CertificateFrame from '@/shared/components/certificates/CertificateFrame';
 import Button from '@/shared/components/ui/Button';
 import Input from '@/shared/components/ui/Input';
 import Select from '@/shared/components/ui/Select';
@@ -54,6 +55,23 @@ const TemplatesPage: React.FC = () => {
 
   const current = settings[active];
 
+  // Size the printed page to the selected US Letter orientation so the
+  // "Download PDF" action (browser print dialog → Save as PDF) produces an
+  // exact-trim certificate PDF.
+  useEffect(() => {
+    const styleId = 'cert-print-page-style';
+    let el = document.getElementById(styleId) as HTMLStyleElement | null;
+    if (!el) {
+      el = document.createElement('style');
+      el.id = styleId;
+      document.head.appendChild(el);
+    }
+    el.textContent = `@page { size: ${orientation === 'portrait' ? '8.5in 11in' : '11in 8.5in'}; margin: 0; }`;
+    return () => {
+      el?.remove();
+    };
+  }, [orientation]);
+
   const updateCurrent = (patch: Partial<TemplateSettings>) => {
     setSettings((prev) => ({ ...prev, [active]: { ...prev[active], ...patch } }));
   };
@@ -68,14 +86,31 @@ const TemplatesPage: React.FC = () => {
 
   const previewPane = (programme: Programme) => (
     <div className="flex flex-col gap-3">
-      <div className="flex items-center gap-2 text-xs text-text-muted">
-        <span>{showBoth ? PROGRAMME_LABELS[programme] : 'Live Preview'}</span>
-        <span className="text-accent">•</span>
-        <span className="font-mono">{TEST_NAMES[testName]}</span>
-        <span className="text-accent">•</span>
-        <span className="font-mono">{orientation}</span>
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <div className="flex flex-wrap items-center gap-2 text-xs text-text-muted">
+          <span>{showBoth ? PROGRAMME_LABELS[programme] : 'Live Preview'}</span>
+          <span className="text-accent">•</span>
+          <span className="font-mono">{TEST_NAMES[testName]}</span>
+          <span className="text-accent">•</span>
+          <span className="font-mono">{orientation}</span>
+        </div>
+        <Button
+          variant="secondary"
+          size="sm"
+          icon={<Download className="h-4 w-4" />}
+          onClick={() => window.print()}
+          disabled={programme !== active}
+          title={
+            programme === active
+              ? 'Save the active certificate as PDF'
+              : 'Switch to this certificate to export it'
+          }
+        >
+          Download PDF
+        </Button>
       </div>
-      <CertificateRenderer
+      <CertificateFrame
+        printable={programme === active}
         data={buildData(programme)}
         config={{
           name: settings[programme].templateName,

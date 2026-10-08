@@ -27,6 +27,8 @@ export interface CertificateRendererProps {
   data: CertificateData;
   config?: CertificateTemplateConfig;
   className?: string;
+  /** Optional element id — only set on the certificate being exported to PDF. */
+  id?: string;
 }
 
 /**
@@ -54,52 +56,31 @@ const nameFontSize = (name: string) => {
 };
 
 /**
- * Technical frame — four corner brackets only. Deliberately no horizontal
- * rules, tick marks or dashes across the certificate body. The premium (QOSE)
- * variant carries the brackets at full accent presence.
+ * Issuer seal — a classic embossed-stamp treatment placed at the bottom-right
+ * corner of every certificate: double ring, diagonal micro-stripes (the
+ * premium ribbon motif), the QYVORA mark and the programme label. Decorative,
+ * so it is hidden from assistive tech; the programme is stated in the body.
  */
-const TechnicalFrame: React.FC<{ premium?: boolean }> = ({ premium }) => {
-  const corner = premium ? 'border-accent/70' : 'border-accent/40';
-  return (
-    <>
-      <div
-        className={`absolute left-0 top-0 border-l-2 border-t-2 ${corner}`}
-        style={{ width: fluid(26, 4), height: fluid(26, 4) }}
-      />
-      <div
-        className={`absolute right-0 top-0 border-r-2 border-t-2 ${corner}`}
-        style={{ width: fluid(26, 4), height: fluid(26, 4) }}
-      />
-      <div
-        className={`absolute bottom-0 left-0 border-b-2 border-l-2 ${corner}`}
-        style={{ width: fluid(26, 4), height: fluid(26, 4) }}
-      />
-      <div
-        className={`absolute bottom-0 right-0 border-b-2 border-r-2 ${corner}`}
-        style={{ width: fluid(26, 4), height: fluid(26, 4) }}
-      />
-    </>
-  );
-};
-
-/**
- * Premium issuer seal (QOSE only) — a classic embossed-stamp treatment:
- * double ring, QYVORA mark and programme label. Decorative, so it is hidden
- * from assistive tech; the programme is already stated in the body copy.
- */
-const PremiumSeal: React.FC = () => (
+const IssuerSeal: React.FC<{ program: 'HPB' | 'QOSE' }> = ({ program }) => (
   <div
-    className="relative mx-auto flex shrink-0 flex-col items-center justify-center gap-1 rounded-full border-2 border-accent/50 bg-white/50"
-    style={{ width: fluid(56, 8), height: fluid(56, 8) }}
+    className="relative flex shrink-0 flex-col items-center justify-center gap-[2px] rounded-full border-2 border-accent/55 bg-white/60"
+    style={{ width: fluid(58, 8.4), height: fluid(58, 8.4) }}
     aria-hidden="true"
   >
     <span className="absolute inset-[7%] rounded-full border border-accent/30" />
-    <QyvoraMark className="block h-auto" style={{ width: '50%' }} />
     <span
-      className="font-black uppercase tracking-[0.18em] text-accent"
-      style={{ fontSize: fluid(5.5, 0.8) }}
+      className="absolute inset-[13%] rounded-full"
+      style={{
+        background:
+          'repeating-linear-gradient(45deg, rgba(6,182,111,0.10) 0 4px, transparent 4px 8px)',
+      }}
+    />
+    <QyvoraMark className="relative block h-auto" style={{ width: '46%' }} />
+    <span
+      className="relative font-black uppercase tracking-[0.16em] text-accent"
+      style={{ fontSize: fluid(6, 0.85) }}
     >
-      QOSE
+      {program}
     </span>
   </div>
 );
@@ -143,6 +124,7 @@ const CertificateRenderer: React.FC<CertificateRendererProps> = ({
   data,
   config = {},
   className = '',
+  id,
 }) => {
   const {
     recipientName,
@@ -157,9 +139,13 @@ const CertificateRenderer: React.FC<CertificateRendererProps> = ({
   const certificateTitle = config.name || 'Certificate of Completion';
   const orientation = config.orientation || 'landscape';
   // QOSE is the paid bootcamp — it carries the premium treatment: accent edge,
-  // tinted graphite surface, inner frame, programme watermark and issuer seal.
-  // HPB stays the clean standard edition.
+  // tinted graphite surface, striped side ribbon, programme watermark and
+  // inner frame. HPB stays the clean standard edition. Both share the dotted
+  // map backdrop and the issuer seal.
   const premium = program === 'QOSE';
+
+  const pad = fluid(16, 4.2);
+  const ribbonWidth = fluid(14, 3.4);
 
   const formattedDate = (() => {
     const parsed = new Date(completionDate);
@@ -170,18 +156,21 @@ const CertificateRenderer: React.FC<CertificateRendererProps> = ({
   return (
     <div
       className={`relative mx-auto w-full ${className}`}
-      id="certificate-render"
+      id={id}
       style={{ containerType: 'inline-size' }}
     >
       <div
-        className={`relative flex w-full flex-col rounded-2xl border-2 shadow-2xl ${
+        className={`relative flex w-full flex-col overflow-hidden rounded-2xl border-2 shadow-2xl ${
           premium ? 'border-accent/40' : 'border-border/30'
         }`}
         style={{
           background: premium
             ? 'linear-gradient(to bottom right, #fbfbfb, #eef4f1 55%, #e3ebe7)'
             : 'linear-gradient(to bottom right, #f5f5f5, #e8e8e8)',
-          padding: fluid(16, 4.2),
+          padding: pad,
+          // The QOSE side ribbon sits outside the normal padding so the body
+          // copy stays aligned between the two templates.
+          paddingLeft: premium ? `calc(${pad} + ${ribbonWidth})` : pad,
           // Industry-standard certificate trim as a *minimum* height: US Letter
           // landscape (11 × 8.5 in → 77.27cqw) or portrait (8.5 × 11 in →
           // 129.41cqw). Content keeps the exact ratio at every normal size, but
@@ -191,8 +180,22 @@ const CertificateRenderer: React.FC<CertificateRendererProps> = ({
             orientation === 'portrait' ? '129.41cqw' : '77.27cqw',
         }}
       >
-        {premium ? (
+        {/* Dotted-map backdrop — both templates */}
+        <DottedMapOverlay className="rounded-2xl" opacity={0.08} />
+
+        {premium && (
           <>
+            {/* Diagonal-striped side ribbon — the premium edge treatment */}
+            <span
+              className="pointer-events-none absolute inset-y-0 left-0"
+              style={{
+                width: ribbonWidth,
+                borderRight: '1px solid rgba(6,182,111,0.5)',
+                background:
+                  'repeating-linear-gradient(45deg, rgba(6,182,111,0.45) 0 7px, rgba(6,182,111,0.18) 7px 14px)',
+              }}
+              aria-hidden="true"
+            />
             {/* Programme watermark — the premium surface's quiet signature */}
             <img
               src={qoseLogo}
@@ -201,15 +204,16 @@ const CertificateRenderer: React.FC<CertificateRendererProps> = ({
               className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 object-contain"
               style={{ width: '42cqw', opacity: 0.05 }}
             />
-            {/* Continuous inner frame — one border, no dashes */}
-            <span
-              className="pointer-events-none absolute inset-[2.5%] rounded-xl border border-accent/25"
-            />
           </>
-        ) : (
-          <DottedMapOverlay className="rounded-2xl" opacity={0.08} />
         )}
-        <TechnicalFrame premium={premium} />
+
+        {/* Continuous inner frame — one border, no dashes or corner angles */}
+        <span
+          className="pointer-events-none absolute inset-[2.5%] rounded-xl border"
+          style={{
+            borderColor: premium ? 'rgba(6,182,111,0.25)' : 'rgba(17,17,17,0.14)',
+          }}
+        />
 
         {/* Header — issuing authority + bare programme logo */}
         <div className="relative flex items-start justify-between gap-4">
@@ -275,8 +279,9 @@ const CertificateRenderer: React.FC<CertificateRendererProps> = ({
           </p>
         </div>
 
-        {/* Footer — credential metadata + verification. No divider line: the
-            corner frame and spacing carry the structure instead. */}
+        {/* Footer — credential metadata, then verification + issuer seal at
+            the bottom-right corner. No divider line: the inner frame and
+            spacing carry the structure instead. */}
         <div className="relative flex flex-wrap items-end justify-between gap-x-8 gap-y-4">
           <div
             className="grid min-w-0 gap-x-6 gap-y-3"
@@ -290,30 +295,32 @@ const CertificateRenderer: React.FC<CertificateRendererProps> = ({
             <MetadataBlock label="Status" value="Issued" />
           </div>
 
-          {premium && <PremiumSeal />}
-
-          <div className="flex min-w-0 flex-col gap-1">
-            <span
-              className="font-black uppercase tracking-widest text-text-muted"
-              style={{ fontSize: fluid(7, 1.05) }}
-            >
-              Verification
-            </span>
-            <span
-              className="break-all font-mono text-gray-600"
-              style={{ fontSize: fluid(8, 1.25) }}
-            >
-              {verificationUrl}
-            </span>
-            <span className="flex items-center gap-1.5">
-              <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-accent" />
+          <div className="flex flex-wrap items-end justify-end gap-x-6 gap-y-4">
+            <div className="flex min-w-0 flex-col gap-1">
               <span
-                className="font-black uppercase tracking-wider text-accent"
+                className="font-black uppercase tracking-widest text-text-muted"
                 style={{ fontSize: fluid(7, 1.05) }}
               >
-                QYVORA Chain
+                Verification
               </span>
-            </span>
+              <span
+                className="break-all font-mono text-gray-600"
+                style={{ fontSize: fluid(8, 1.25) }}
+              >
+                {verificationUrl}
+              </span>
+              <span className="flex items-center gap-1.5">
+                <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-accent" />
+                <span
+                  className="font-black uppercase tracking-wider text-accent"
+                  style={{ fontSize: fluid(7, 1.05) }}
+                >
+                  QYVORA Chain
+                </span>
+              </span>
+            </div>
+
+            <IssuerSeal program={program} />
           </div>
         </div>
       </div>
