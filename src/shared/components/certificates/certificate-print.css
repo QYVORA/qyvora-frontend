@@ -1,27 +1,28 @@
 /**
  * Certificate PDF export (admin dashboard "Download PDF").
  *
- * The printable certificate frame (`.cert-export-frame`, set by
- * CertificateFrame when `printable`) is lifted to the top of the page at full
- * width while everything else is hidden. The page size itself (@page) is
- * injected per-orientation by the admin Certificates page, so the browser
- * print dialog's "Save as PDF" produces an exact US Letter PDF.
+ * On export, CertificateFrame detaches the printable certificate into a
+ * `cert-print-clone` appended to <body>. In print:
+ *   - every other body child is `display: none` (layout fully collapses → the
+ *     export is exactly ONE page; no hidden content can bleed into trailing
+ *     pages);
+ *   - the clone stays inline-size at full page width, so the certificate's
+ *     container-query sizing resolves against the page box → exact US Letter
+ *     trim;
+ *   - the preview downscale transform is dropped;
+ *   - colors are forced through.
  *
- * Guarded with `:has()` so pages without a printable certificate are printed
+ * The page size (@page) is injected per-orientation by the admin Certificates
+ * page. Guarded with `:has()` so pages without a certificate export print
  * normally; browsers without :has support simply ignore these rules.
  */
 
 @media print {
-  html:has(.cert-export-frame) body * {
-    visibility: hidden !important;
+  html:has(.cert-print-clone) body > *:not(.cert-print-clone) {
+    display: none !important;
   }
 
-  html:has(.cert-export-frame) .cert-export-frame,
-  html:has(.cert-export-frame) .cert-export-frame * {
-    visibility: visible !important;
-  }
-
-  html:has(.cert-export-frame) .cert-export-frame {
+  html:has(.cert-print-clone) .cert-print-clone {
     position: fixed !important;
     top: 0 !important;
     left: 0 !important;
@@ -35,14 +36,14 @@
     -webkit-print-color-adjust: exact !important;
   }
 
-  html:has(.cert-export-frame) .cert-export-frame * {
+  html:has(.cert-print-clone) .cert-print-clone * {
     print-color-adjust: exact !important;
     -webkit-print-color-adjust: exact !important;
   }
 
-  /* Drop the preview downscale so the certificate prints at 100% page width
-     (container queries resolve against the page box → exact Letter trim). */
-  html:has(.cert-export-frame) .cert-export-scale {
+  /* Drop the preview downscale → certificate prints at 100% page width with
+     the container-query height giving the exact Letter trim. */
+  html:has(.cert-print-clone) .cert-print-clone .cert-export-scale {
     transform: none !important;
     width: 100% !important;
   }

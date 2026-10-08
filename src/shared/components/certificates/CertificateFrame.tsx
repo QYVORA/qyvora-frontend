@@ -16,6 +16,12 @@ export interface CertificateFrameProps {
 }
 
 /**
+ * Print trigger event — dispatched by the admin Certificates page. Only the
+ * printable frame listens, so "Both" mode still exports exactly one cert.
+ */
+export const CERTIFICATE_PRINT_EVENT = 'qy:certificate-print';
+
+/**
  * Native render size — US Letter at 100 CSS px per inch. The certificate is
  * always laid out at this fixed width (so container-query sizing is fully
  * deterministic) and then uniformly scaled down to fit its container. The
@@ -32,6 +38,12 @@ const NATIVE_WIDTH = { landscape: 1100, portrait: 850 } as const;
  * wrapper so the frame never overflows or clips its certificate — admin
  * preview, "both" mode and the public verify result all stay pixel-identical
  * in proportion across breakpoints.
+ *
+ * PDF export: when `printable` and the {@link CERTIFICATE_PRINT_EVENT} fires,
+ * the frame detaches as a self-contained clone at the end of `<body>` and
+ * prints full-bleed. The rest of the app is `display: none` in print, so the
+ * export is exactly one page — no duplicate certificates, no blank trailing
+ * pages, and every element (including the bottom-right seal) prints.
  */
 const CertificateFrame: React.FC<CertificateFrameProps> = ({
   data,
@@ -64,6 +76,37 @@ const CertificateFrame: React.FC<CertificateFrameProps> = ({
     observer.observe(cert);
     return () => observer.disconnect();
   }, [nativeWidth]);
+
+  useEffect(() => {
+    if (!printable) return;
+
+    const onPrint = () => {
+      const frame = wrapperRef.current;
+      if (!frame) return;
+
+      const clone = frame.cloneNode(true) as HTMLElement;
+      clone.classList.remove('cert-export-frame');
+      clone.classList.add('cert-print-clone');
+      document.body.appendChild(clone);
+
+      let cleaned = false;
+      const cleanup = () => {
+        if (cleaned) return;
+        cleaned = true;
+        clone.remove();
+        window.removeEventListener('afterprint', cleanup);
+      };
+
+      window.addEventListener('afterprint', cleanup);
+      requestAnimationFrame(() => requestAnimationFrame(() => {
+        window.print();
+        cleanup();
+      }));
+    };
+
+    window.addEventListener(CERTIFICATE_PRINT_EVENT, onPrint);
+    return () => window.removeEventListener(CERTIFICATE_PRINT_EVENT, onPrint);
+  }, [printable]);
 
   const ready = scale > 0 && certHeight > 0;
 

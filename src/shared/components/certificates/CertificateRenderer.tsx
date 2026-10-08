@@ -85,6 +85,40 @@ const IssuerSeal: React.FC<{ program: 'HPB' | 'QOSE' }> = ({ program }) => (
   </div>
 );
 
+/**
+ * QOSE award medallion — the certificate "seal on the ribbon". The vertical
+ * side ribbon flares into a circular rosette at its foot: a spiked dashed
+ * outer ring, a solid inner ring, and the main course badge seated inside the
+ * circle. Decorative; the programme is already stated in the body copy.
+ */
+const AwardMedallion: React.FC = () => (
+  <div
+    className="pointer-events-none absolute left-0 flex items-center justify-center"
+    style={{
+      bottom: fluid(10, 3),
+      width: fluid(54, 7.5),
+      height: fluid(54, 7.5),
+    }}
+    aria-hidden="true"
+  >
+    {/* spiked / dashed seal edge */}
+    <span
+      className="absolute inset-0 rounded-full border-2 border-dashed"
+      style={{ borderColor: 'rgba(6,182,111,0.55)' }}
+    />
+    {/* solid ring */}
+    <span
+      className="absolute inset-[11%] rounded-full border-2"
+      style={{
+        borderColor: 'rgba(6,182,111,0.7)',
+        background: 'rgba(255,255,255,0.8)',
+      }}
+    />
+    {/* main course badge */}
+    <img src={qoseLogo} alt="" className="relative w-[56%] object-contain" />
+  </div>
+);
+
 const MetadataBlock: React.FC<{ label: string; value: string; breakAll?: boolean }> = ({
   label,
   value,
@@ -196,6 +230,8 @@ const CertificateRenderer: React.FC<CertificateRendererProps> = ({
               }}
               aria-hidden="true"
             />
+            {/* The ribbon's circular foot — holds the course award badge */}
+            <AwardMedallion />
             {/* Programme watermark — the premium surface's quiet signature */}
             <img
               src={qoseLogo}
@@ -320,7 +356,9 @@ const CertificateRenderer: React.FC<CertificateRendererProps> = ({
               </span>
             </div>
 
-            <IssuerSeal program={program} />
+            {/* HPB carries the company seal at the bottom-right; QOSE's award
+                seal lives on the side ribbon medallion instead. */}
+            {!premium && <IssuerSeal program={program} />}
           </div>
         </div>
       </div>

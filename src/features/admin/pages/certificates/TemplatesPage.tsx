@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Download } from 'lucide-react';
-import CertificateFrame from '@/shared/components/certificates/CertificateFrame';
+import CertificateFrame, { CERTIFICATE_PRINT_EVENT } from '@/shared/components/certificates/CertificateFrame';
 import Button from '@/shared/components/ui/Button';
 import Input from '@/shared/components/ui/Input';
 import Select from '@/shared/components/ui/Select';
@@ -98,7 +98,7 @@ const TemplatesPage: React.FC = () => {
           variant="secondary"
           size="sm"
           icon={<Download className="h-4 w-4" />}
-          onClick={() => window.print()}
+          onClick={() => window.dispatchEvent(new Event(CERTIFICATE_PRINT_EVENT))}
           disabled={programme !== active}
           title={
             programme === active
