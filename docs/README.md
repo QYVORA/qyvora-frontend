@@ -47,7 +47,7 @@ Welcome to the QYVORA Frontend documentation. This guide helps you navigate all 
 
 ### Game / Reward Systems
 - **[TROPHY-SPECS.md](TROPHY-SPECS.md)** - Trophy, badge, and HPB reward specifications
-- **[CERTIFICATES.md](CERTIFICATES.md)** - Certificate template system and management
+- **[CERTIFICATES.md](CERTIFICATES.md)** - Certificate templates (QOSE/HPB) and public credential verification
 
 ### Development
 - **[BUILD_PIPELINE.md](BUILD_PIPELINE.md)** - Vite 6.2.0, TypeScript 5.8.2, ESLint setup

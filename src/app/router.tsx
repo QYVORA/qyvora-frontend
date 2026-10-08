@@ -68,6 +68,7 @@ const SimulationsPage   = lazy(() => import('../features/marketing/pages/public/
 const SimulationPage    = lazy(() => import('../features/marketing/pages/public/SimulationPage'));
 const CyberCoinPage     = lazy(() => import('../features/marketing/pages/public/CyberCoinPage'));
 const ContactPage       = lazy(() => import('../features/marketing/pages/public/ContactPage'));
+const VerifyPage        = lazy(() => import('../features/marketing/pages/public/VerifyPage'));
 
 // Auth pages
 const LoginPage         = lazy(() => import('../features/auth/pages/LoginPage'));
@@ -224,6 +225,11 @@ export const AppRouter = () => {
           <Route path="/simulations/:slug" element={<Wrap scope="Simulation"><SimulationPage /></Wrap>} />
           <Route path="/cp" element={<Wrap scope="Cyber Coin"><CyberCoinPage /></Wrap>} />
           <Route path="/contact" element={<Wrap scope="Contact"><ContactPage /></Wrap>} />
+
+          {/* Public credential verification — must be declared before the
+              /:handle profile catch-all so static segments win the match */}
+          <Route path="/verify" element={<Wrap scope="Credential Verification"><VerifyPage /></Wrap>} />
+          <Route path="/verify/:credentialId" element={<Wrap scope="Credential Verification"><VerifyPage /></Wrap>} />
           
           {/* Legacy slug redirect — "hacker-protocol-book" → "hacker-protocol-bootcamp" */}
           <Route path="/blogs/hacker-protocol-book" element={<Navigate to="/blogs/hacker-protocol-bootcamp" replace />} />

@@ -32,6 +32,8 @@ Routes are defined in `src/app/router.tsx` — the single source of truth for al
 | `/blogs/:slug` | Page | BlogPostPage | Individual blog post |
 | `/blogs/hacker-protocol-book` | Redirect | `→ /blogs/hacker-protocol-bootcamp` | Legacy redirect |
 | `/team` | Page | TeamPage | Team page |
+| `/verify` | Page | VerifyPage | Public credential verification (paste a credential ID) |
+| `/verify/:credentialId` | Page | VerifyPage | Public credential verification deep link |
 | `/quiteroot` | Page | QuiteRootPage | QuiteRoot researchers page |
 | `/learn` | Redirect | `→ /hpb` | Legacy redirect to bootcamp |
 
