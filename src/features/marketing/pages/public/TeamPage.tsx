@@ -140,29 +140,36 @@ const QuietRootCallout = () => (
 
     <ul className="flex flex-col gap-3">
       {QUIETROOT_TEAMS.map((team) => (
-        <li
-          key={team.id}
-          className="flex items-center gap-4 rounded-2xl border border-border-subtle bg-surface-raised p-4"
-        >
-          <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl border border-border-subtle bg-surface p-1.5">
-            <img
-              src={team.logo}
-              alt=""
+        <li key={team.id}>
+          <Link
+            to={`/quiteroot?team=${team.id}`}
+            aria-label={`View the ${team.name}`}
+            className="group relative flex items-center gap-4 rounded-2xl border border-border-subtle bg-surface-raised p-4 transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent hover:border-accent/40"
+          >
+            <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl border border-border-subtle bg-surface p-1.5">
+              <img
+                src={team.logo}
+                alt=""
+                aria-hidden="true"
+                width={team.logoWidth}
+                height={team.logoHeight}
+                loading="lazy"
+                className="h-full w-full object-contain"
+              />
+            </div>
+            <div className="min-w-0">
+              <p className="text-sm font-black uppercase tracking-tight text-text-primary">
+                {team.name}
+              </p>
+              <p className="type-meta mt-1 text-text-muted">
+                {`${team.roles.length} roles · ${team.roles.filter((role) => role.holder === null).length} open`}
+              </p>
+            </div>
+            <ArrowUpRight
+              className="pointer-events-none absolute right-4 top-1/2 h-4 w-4 -translate-y-1/2 text-accent opacity-0 transition-opacity group-hover:opacity-100 group-focus-visible:opacity-100"
               aria-hidden="true"
-              width={team.logoWidth}
-              height={team.logoHeight}
-              loading="lazy"
-              className="h-full w-full object-contain"
             />
-          </div>
-          <div className="min-w-0">
-            <p className="text-sm font-black uppercase tracking-tight text-text-primary">
-              {team.name}
-            </p>
-            <p className="type-meta mt-1 text-text-muted">
-              {`${team.roles.length} roles · ${team.roles.filter((role) => role.holder === null).length} open`}
-            </p>
-          </div>
+          </Link>
         </li>
       ))}
     </ul>

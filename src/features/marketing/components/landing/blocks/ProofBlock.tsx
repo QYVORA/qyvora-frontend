@@ -1,5 +1,6 @@
 import React from 'react';
-import { Users, Bug, ShieldCheck } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { Users, Bug, ShieldCheck, ArrowUpRight } from 'lucide-react';
 import { Metric } from '@/shared/components/ui/Card';
 import CpLogo from '@/shared/components/CpLogo';
 import ScrollReveal from '@/shared/components/ScrollReveal';
@@ -20,12 +21,14 @@ const formatNumber = (value: number): string => {
  */
 const ProofBlock: React.FC<ProofBlockProps> = ({ stats }) => {
   const s = stats?.stats;
-  const metrics = [
+  const metrics: { label: string; value: string; icon: React.ReactNode; accent?: boolean; to?: string }[] = [
     { label: "Professionals trained", value: formatNumber(s?.learnersTrained ?? 0), icon: <Users className="h-4 w-4" aria-hidden="true" />, accent: true },
     { label: "Vulnerabilities identified across engagements", value: formatNumber(s?.vulnerabilitiesIdentified ?? 0), icon: <Bug className="h-4 w-4" aria-hidden="true" /> },
     { label: "Bootcamp launches", value: formatNumber(s?.bootcampsCount ?? 0), icon: <ShieldCheck className="h-4 w-4" aria-hidden="true" /> },
-    { label: "CP in circulation", value: formatNumber(s?.cpPoolSize ?? 0), icon: <CpLogo className="h-4 w-4" aria-hidden="true" /> },
+    { label: "CP in circulation", value: formatNumber(s?.cpPoolSize ?? 0), icon: <CpLogo className="h-4 w-4" aria-hidden="true" />, to: '/cp' },
   ];
+
+  const cardClass = 'relative rounded-xl border border-border-subtle bg-canvas p-6';
 
   return (
     <section className="w-full bg-surface">
@@ -44,16 +47,36 @@ const ProofBlock: React.FC<ProofBlockProps> = ({ stats }) => {
 
         <ScrollReveal delay={0.08}>
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            {metrics.map((metric) => (
-              <div key={metric.label} className="rounded-xl border border-border-subtle bg-canvas p-6">
-                <Metric
-                  label={metric.label}
-                  value={metric.value}
-                  icon={metric.icon}
-                  accent={metric.accent}
-                />
-              </div>
-            ))}
+            {metrics.map((metric) =>
+              metric.to ? (
+                <Link
+                  key={metric.label}
+                  to={metric.to}
+                  aria-label={`View CyberPoints — ${metric.label}`}
+                  className={`group ${cardClass} transition-colors hover:border-accent/40 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent`}
+                >
+                  <Metric
+                    label={metric.label}
+                    value={metric.value}
+                    icon={metric.icon}
+                    accent={metric.accent}
+                  />
+                  <ArrowUpRight
+                    className="pointer-events-none absolute right-4 top-4 h-4 w-4 text-accent opacity-0 transition-opacity group-hover:opacity-100 group-focus-visible:opacity-100"
+                    aria-hidden="true"
+                  />
+                </Link>
+              ) : (
+                <div key={metric.label} className={cardClass}>
+                  <Metric
+                    label={metric.label}
+                    value={metric.value}
+                    icon={metric.icon}
+                    accent={metric.accent}
+                  />
+                </div>
+              ),
+            )}
           </div>
         </ScrollReveal>
       </div>
