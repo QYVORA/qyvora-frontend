@@ -39,7 +39,7 @@ const AUTH_SESSION_HINT_KEY = 'qyvora_auth_session_hint';
 // app works out-of-the-box with a local reverse proxy (e.g. vite.config.ts
 // proxy rule) without any .env file required.
 const DEFAULT_API_BASE = '/api';
-const API_BASE_URL = String(import.meta.env.VITE_API_BASE_URL || DEFAULT_API_BASE).trim();
+export const API_BASE_URL = String(import.meta.env.VITE_API_BASE_URL || DEFAULT_API_BASE).trim();
 
 // ─── In-memory auth state ─────────────────────────────────────────────────────
 

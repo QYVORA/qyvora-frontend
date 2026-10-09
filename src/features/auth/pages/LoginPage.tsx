@@ -38,6 +38,26 @@ const LoginPage: React.FC = () => {
     }
   }, [sessionLoading, sessionUser, isAdminLoginRoute, navigate]);
 
+  // Surface errors returned by the GitHub OAuth callback as a readable message.
+  useEffect(() => {
+    const errorCode = new URLSearchParams(location.search).get('oauth_error');
+    if (!errorCode) return;
+    const messages: Record<string, string> = {
+      access_denied: 'GitHub sign-in was cancelled.',
+      invalid_state: 'That sign-in link expired. Please try again.',
+      provider_not_configured: 'GitHub sign-in is not available right now.',
+      token_exchange_failed: 'GitHub could not complete sign-in. Please try again.',
+      provider_error: 'Something went wrong during GitHub sign-in. Please try again.',
+      account_exists: 'An account with this email already exists. Sign in, then connect GitHub from your profile.',
+      email_required: 'Your GitHub account needs a verified email before you can sign in with it.',
+      github_already_linked: 'That GitHub account is already linked to another QYVORA account.',
+      github_already_connected: 'This account already has a different GitHub account connected. Disconnect it first.',
+    };
+    const message = messages[errorCode] || 'GitHub sign-in could not be completed. Please try again.';
+    setFormMessage(message);
+    addToast(message, 'error');
+  }, [location.search, addToast]);
+
   const handleSuggestionSelect = useCallback((handle: string) => {
     setSelectedHandle(handle);
     if (handleRef.current) {

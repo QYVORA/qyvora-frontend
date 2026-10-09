@@ -82,9 +82,14 @@ const PublicProfile: React.FC = () => {
       joinDate: String(profileApi.createdAt || ''),
       country: String(profileApi.country || ''),
       website: String(profileApi.website || ''),
-      github: String(profileApi.github || ''),
+      github: String(profileApi.github || profileApi.githubProfileUrl || ''),
       linkedin: String(profileApi.linkedin || ''),
       twitter: String(profileApi.twitter || ''),
+      githubConnected: profileApi.githubConnected === true,
+      githubUsername: String(profileApi.githubUsername || ''),
+      githubProfileUrl: String(profileApi.githubProfileUrl || ''),
+      githubPublic: profileApi.githubPublic === true,
+      passwordSet: profileApi.passwordSet !== false,
     };
   }, [profileApi, handle]);
 

@@ -62,6 +62,13 @@ export interface ProfileApiResponse {
   country?: string;
   organization?: string;
   email?: string;
+  // GitHub OAuth connection (private profile returns all; public profile only
+  // returns the profile URL when the owner has made it public).
+  githubConnected?: boolean;
+  githubUsername?: string;
+  githubProfileUrl?: string;
+  githubPublic?: boolean;
+  passwordSet?: boolean;
   cpPoints?: number;
   rank?: string;
   progression?: ProgressionStats;
@@ -105,6 +112,12 @@ export interface ProfileData {
   github: string;
   linkedin: string;
   twitter: string;
+  // GitHub OAuth connection state.
+  githubConnected: boolean;
+  githubUsername: string;
+  githubProfileUrl: string;
+  githubPublic: boolean;
+  passwordSet: boolean;
 }
 
 // ── Profile sections ───────────────────────────────────────────────────────────

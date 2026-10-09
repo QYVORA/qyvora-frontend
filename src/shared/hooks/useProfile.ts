@@ -23,12 +23,14 @@ interface UseProfileResult {
   activityDates: Record<string, number>;
   isOwnProfile: boolean;
   setRawProfile: (data: ProfileApiResponse | null) => void;
+  refetch: () => void;
 }
 
 export function useProfile({ paramUsername, authUser }: UseProfileOptions): UseProfileResult {
   const [rawProfile, setRawProfile] = useState<ProfileApiResponse | null>(null);
   const [loading, setLoading] = useState(true);
   const [activityDates, setActivityDates] = useState<Record<string, number>>({});
+  const [reloadKey, setReloadKey] = useState(0);
 
   const isOwnProfile = !paramUsername || paramUsername === authUser?.username;
   const displayHandle = paramUsername || authUser?.username || 'operator';
@@ -50,7 +52,7 @@ export function useProfile({ paramUsername, authUser }: UseProfileOptions): UseP
       }
     })();
     return () => { mounted = false; };
-  }, [isOwnProfile, paramUsername]);
+  }, [isOwnProfile, paramUsername, reloadKey]);
 
   // Fetch activity calendar (own profile only)
   useEffect(() => {
@@ -115,12 +117,19 @@ export function useProfile({ paramUsername, authUser }: UseProfileOptions): UseP
       github: String(api.github || ''),
       linkedin: String(api.linkedin || ''),
       twitter: String(api.twitter || ''),
+      githubConnected: api.githubConnected === true,
+      githubUsername: String(api.githubUsername || ''),
+      githubProfileUrl: String(api.githubProfileUrl || ''),
+      githubPublic: api.githubPublic === true,
+      passwordSet: api.passwordSet !== false,
     };
   }, [rawProfile, authUser, isOwnProfile, displayHandle]);
 
   const setProfileFromSave = useCallback((data: ProfileApiResponse | null) => {
     setRawProfile(data);
   }, []);
+
+  const refetch = useCallback(() => setReloadKey((k) => k + 1), []);
 
   return {
     profile,
@@ -129,5 +138,6 @@ export function useProfile({ paramUsername, authUser }: UseProfileOptions): UseP
     activityDates,
     isOwnProfile,
     setRawProfile: setProfileFromSave,
+    refetch,
   };
 }

@@ -1,7 +1,8 @@
-import React, { useMemo, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import React, { useEffect, useMemo, useState } from 'react';
+import { useParams, useSearchParams } from 'react-router-dom';
 import { Edit3, User, TrendingUp, Calendar, Bug, BookOpen } from 'lucide-react';
 import { useAuth } from '../../../core/contexts/AuthContext';
+import { useToast } from '../../../core/contexts/ToastContext';
 import { useProfile } from '../../../shared/hooks/useProfile';
 import { useSkillAchievements } from '../../../shared/hooks/useSkillAchievements';
 import EditModal from '../components/profile/EditModal';
@@ -9,6 +10,7 @@ import { ProfileSkeleton } from '../components/StudentSkeletons';
 import SEO from '../../../shared/components/SEO';
 import PageBody from '@/shared/components/layout/PageBody';
 import ProfileIdentityBlock from '../../../shared/components/profile/ProfileIdentityBlock';
+import GithubConnectionCard from '../../../shared/components/profile/GithubConnectionCard';
 import CpLogo from '../../../shared/components/CpLogo';
 import ProfileMetricsStrip from '../../../shared/components/profile/ProfileMetricsStrip';
 import AchievementsSection from '../../../shared/components/profile/AchievementsSection';
@@ -22,6 +24,8 @@ import type { ProfileSectionId } from '../../../shared/types/profile';
 const Profile: React.FC = () => {
   const { username: paramUsername } = useParams<{ username?: string }>();
   const { user: authUser } = useAuth();
+  const { addToast } = useToast();
+  const [searchParams, setSearchParams] = useSearchParams();
   const [editOpen, setEditOpen] = useState(false);
 
   const {
@@ -31,9 +35,34 @@ const Profile: React.FC = () => {
     activityDates,
     isOwnProfile,
     setRawProfile,
+    refetch,
   } = useProfile({ paramUsername, authUser });
 
   const { achievements: skillAchievements } = useSkillAchievements();
+
+  // Notify the outcome of the GitHub linking flow (backend redirects back here).
+  const githubResult = searchParams.get('github');
+  const githubError = searchParams.get('github_error');
+  useEffect(() => {
+    if (!isOwnProfile || (!githubResult && !githubError)) return;
+    if (githubResult === 'connected') {
+      addToast('GitHub connected.', 'success');
+      refetch();
+    } else if (githubError) {
+      const messages: Record<string, string> = {
+        no_alternative_login: 'Set a password before disconnecting GitHub.',
+        github_already_linked: 'That GitHub account is already linked to another QYVORA account.',
+        github_already_connected: 'This account already has a different GitHub account connected.',
+        provider_not_configured: 'GitHub is not available right now.',
+      };
+      addToast(messages[githubError] || 'Could not connect GitHub.', 'error');
+    }
+    // Strip the result params so a refresh does not replay the toast.
+    const next = new URLSearchParams(searchParams);
+    next.delete('github');
+    next.delete('github_error');
+    setSearchParams(next, { replace: true });
+  }, [isOwnProfile, githubResult, githubError]);
 
   const editInitial = profile ? {
     name: profile.displayName,
@@ -104,11 +133,22 @@ const Profile: React.FC = () => {
                   joinDate={profile.joinDate || undefined}
                   country={profile.country || undefined}
                   website={profile.website || undefined}
-                  github={profile.github || undefined}
+                  github={profile.github || (profile.githubConnected ? profile.githubProfileUrl : '') || undefined}
                   linkedin={profile.linkedin || undefined}
                   twitter={profile.twitter || undefined}
                 />
               </section>
+
+              {isOwnProfile && (
+                <GithubConnectionCard
+                  connected={profile.githubConnected}
+                  username={profile.githubUsername}
+                  profileUrl={profile.githubProfileUrl}
+                  isPublic={profile.githubPublic}
+                  passwordSet={profile.passwordSet}
+                  onChanged={refetch}
+                />
+              )}
             </div>
           </aside>
 

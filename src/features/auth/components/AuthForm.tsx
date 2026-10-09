@@ -9,6 +9,7 @@ import PasswordInput from './PasswordInput';
 import HandleSuggestions from '@/shared/components/HandleSuggestions';
 import Input from '@/shared/components/ui/Input';
 import Button from '@/shared/components/ui/Button';
+import { goToGithubAuth } from '../oauth';
 
 export type AuthMode = 'login' | 'register';
 
@@ -75,6 +76,10 @@ const AuthForm: React.FC<AuthFormProps> = ({
   const { addToast } = useToast();
 
   const handleOAuthClick = (provider: 'GitHub' | 'Google') => {
+    if (provider === 'GitHub') {
+      goToGithubAuth('/dashboard');
+      return;
+    }
     addToast(`${provider} sign-in is coming soon.`, 'info');
   };
 

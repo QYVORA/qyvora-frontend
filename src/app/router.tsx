@@ -74,6 +74,7 @@ const VerifyPage        = lazy(() => import('../features/marketing/pages/public/
 const LoginPage         = lazy(() => import('../features/auth/pages/LoginPage'));
 const RegisterPage      = lazy(() => import('../features/auth/pages/RegisterPage'));
 const ChangePasswordPage = lazy(() => import('../features/auth/pages/ChangePasswordPage'));
+const AuthCallbackPage  = lazy(() => import('../features/auth/pages/AuthCallbackPage'));
 
 // Student pages
 const DashboardPage     = lazy(() => import('../features/student/pages/DashboardPage'));
@@ -262,6 +263,7 @@ export const AppRouter = () => {
         {/* ── Auth routes ───────── */}
         <Route path="/login"           element={<Wrap scope="Login"><LoginPage /></Wrap>} />
         <Route path="/register"        element={<Wrap scope="Register"><RegisterPage /></Wrap>} />
+        <Route path="/auth/callback"   element={<Wrap scope="Signing In"><AuthCallbackPage /></Wrap>} />
         <Route path="/change-password" element={<Wrap scope="Change Password"><ChangePasswordPage /></Wrap>} />
         <Route path={ADMIN_PATH}        element={<Wrap scope="Admin Login"><LoginPage /></Wrap>} />
 
