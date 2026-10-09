@@ -80,7 +80,12 @@
        container (sidebar rail, panels) and makes wheel/touch scrolling feel
        laggy. Programmatic smooth scrolling is requested explicitly in JS
        (scrollIntoView). Horizontal .scroll-x strips opt in themselves. */
-    overflow-x: hidden;
+    /* `overflow-x: clip` (not `hidden`) removes horizontal overflow WITHOUT
+       turning html/body into a scroll container. An implicit scroll container
+       is a classic cause of fixed/sticky chrome (the sidebar rail, topbar,
+       bottom nav) drifting or stuttering during page scroll. `clip` keeps the
+       vertical axis as the viewport scroller. */
+    overflow-x: clip;
     height: 100%;
     color-scheme: dark;
     /* Force exact color rendering on all devices */
@@ -91,7 +96,7 @@
 
   body {
     @apply bg-canvas text-text-primary font-mono selection:bg-accent selection:text-on-accent;
-    overflow-x: hidden;
+    overflow-x: clip;
     min-height: 100%;
     -webkit-tap-highlight-color: transparent;
     transition: background-color 0.25s ease, color 0.25s ease;
@@ -289,6 +294,25 @@
   .scroll-hover:hover::-webkit-scrollbar-thumb:hover {
     background: var(--color-accent);
     filter: brightness(1.15);
+  }
+
+  /* ── Fixed dashboard chrome scroll performance ───────────────────────────
+     The sidebar rail, topbar and bottom nav are `position: fixed`, so they
+     must stay pinned to the viewport while the page scrolls. Promoting them to
+     their own compositor layer stops the main thread from repainting them each
+     scroll frame — without it the rail visibly lags/stutters behind the page. */
+  .chrome-fixed {
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    will-change: transform;
+  }
+
+  /* The rail's internal nav is its own scroll area: contain overscroll so it
+     never chains into the page, and contain layout/paint so its scrolling
+     never repaints the rest of the chrome. */
+  .sidebar-scroll {
+    overscroll-behavior: contain;
+    contain: layout paint;
   }
 
   img {

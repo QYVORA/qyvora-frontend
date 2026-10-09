@@ -3,7 +3,7 @@
  * @description Shell layout component for ALL admin-facing pages.
  */
 
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { Outlet } from 'react-router-dom';
 import AdminTopbar from '@/features/admin/components/layout/AdminTopbar';
 import AdminSidebar from '@/features/admin/components/layout/AdminSidebar';
@@ -21,16 +21,19 @@ const AdminLayout = () => {
     }
   });
 
-  const toggleRail = () =>
-    setRailCollapsed((prev) => {
-      const next = !prev;
-      try {
-        localStorage.setItem('qyvora:admin-sidebar-collapsed', next ? '1' : '');
-      } catch {
-        /* storage unavailable */
-      }
-      return next;
-    });
+  const toggleRail = useCallback(
+    () =>
+      setRailCollapsed((prev) => {
+        const next = !prev;
+        try {
+          localStorage.setItem('qyvora:admin-sidebar-collapsed', next ? '1' : '');
+        } catch {
+          /* storage unavailable */
+        }
+        return next;
+      }),
+    [],
+  );
 
   const railPad = railCollapsed ? 'lg:pl-[76px]' : 'lg:pl-[264px]';
 

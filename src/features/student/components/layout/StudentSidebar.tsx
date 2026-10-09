@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 import {
   Home,
@@ -98,12 +98,15 @@ const StudentSidebar: React.FC<{ collapsed?: boolean; onToggleCollapse?: () => v
     navigate('/login');
   };
 
-  const isSectionActive = (to: string) =>
-    to === '/dashboard' ? location.pathname === '/dashboard' : location.pathname.startsWith(to);
+  const isSectionActive = useCallback(
+    (to: string) =>
+      to === '/dashboard' ? location.pathname === '/dashboard' : location.pathname.startsWith(to),
+    [location.pathname],
+  );
 
   return (
     <aside
-      className={`fixed inset-y-0 left-0 z-[90] hidden flex-col border-r border-border-subtle bg-canvas transition-[width] duration-[var(--dur-base)] ease-[var(--ease-smooth)] lg:flex ${
+      className={`chrome-fixed fixed inset-y-0 left-0 z-[90] hidden flex-col border-r border-border-subtle bg-canvas transition-[width] duration-[var(--dur-base)] ease-[var(--ease-smooth)] lg:flex ${
         collapsed ? 'w-[76px]' : 'w-[264px]'
       }`}
     >
@@ -113,7 +116,7 @@ const StudentSidebar: React.FC<{ collapsed?: boolean; onToggleCollapse?: () => v
         {collapsed ? <QyvoraMark className="h-7 w-7" /> : <Logo size="md" />}
       </div>
 
-      <nav aria-label={"Primary"} className="custom-scrollbar flex-1 overflow-y-auto px-3 py-4">
+      <nav aria-label={"Primary"} className="custom-scrollbar sidebar-scroll flex-1 overflow-y-auto px-3 py-4">
         {NAV_SECTIONS.map((section) => (
           <section key={section.title} className="mb-5">
             {!collapsed && (
@@ -214,4 +217,4 @@ const StudentSidebar: React.FC<{ collapsed?: boolean; onToggleCollapse?: () => v
 
 StudentSidebar.displayName = 'StudentSidebar';
 
-export default StudentSidebar;
+export default React.memo(StudentSidebar);

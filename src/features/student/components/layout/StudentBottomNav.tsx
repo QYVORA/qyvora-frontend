@@ -80,7 +80,7 @@ const StudentBottomNav: React.FC = () => {
     <>
       <nav
         aria-label={"Primary"}
-        className="fixed inset-x-0 bottom-0 z-[90] border-t border-border-subtle bg-surface pb-[env(safe-area-inset-bottom)] lg:hidden"
+        className="chrome-fixed fixed inset-x-0 bottom-0 z-[90] border-t border-border-subtle bg-surface pb-[env(safe-area-inset-bottom)] lg:hidden"
       >
         <div className="flex items-stretch justify-around gap-1.5 px-2">
           {PRIMARY_ITEMS.map((item) => {

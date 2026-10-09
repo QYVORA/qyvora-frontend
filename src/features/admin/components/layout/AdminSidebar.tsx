@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { LogOut, PanelLeftClose, PanelLeftOpen } from 'lucide-react';
 import { Logo, QyvoraMark } from '@/shared/components/brand';
@@ -35,7 +36,7 @@ const AdminSidebar = ({ collapsed = false, onToggleCollapse }: AdminSidebarProps
 
   return (
     <aside
-      className={`fixed inset-y-0 left-0 z-[90] hidden flex-col border-r border-border-subtle bg-canvas transition-[width] duration-[var(--dur-base)] ease-[var(--ease-smooth)] lg:flex ${
+      className={`chrome-fixed fixed inset-y-0 left-0 z-[90] hidden flex-col border-r border-border-subtle bg-canvas transition-[width] duration-[var(--dur-base)] ease-[var(--ease-smooth)] lg:flex ${
         collapsed ? 'w-[76px]' : 'w-[264px]'
       }`}
     >
@@ -43,7 +44,7 @@ const AdminSidebar = ({ collapsed = false, onToggleCollapse }: AdminSidebarProps
         {collapsed ? <QyvoraMark className="h-7 w-7" /> : <Logo size="md" />}
       </div>
 
-      <nav aria-label={"Admin"} className="custom-scrollbar flex-1 overflow-y-auto px-3 py-4">
+      <nav aria-label={"Admin"} className="custom-scrollbar sidebar-scroll flex-1 overflow-y-auto px-3 py-4">
         {NAV_GROUPS.map((group) => (
           <section key={group.title} className="mb-5">
             {!collapsed && (
@@ -116,4 +117,4 @@ const AdminSidebar = ({ collapsed = false, onToggleCollapse }: AdminSidebarProps
 
 AdminSidebar.displayName = 'AdminSidebar';
 
-export default AdminSidebar;
+export default memo(AdminSidebar);

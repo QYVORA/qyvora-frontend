@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useCallback, useState, useEffect } from 'react';
 import { Outlet, useMatch } from 'react-router-dom';
 import StudentTopbar from '@/features/student/components/layout/StudentTopbar';
 import StudentSidebar from '@/features/student/components/layout/StudentSidebar';
@@ -40,16 +40,19 @@ const AppShell = () => {
     }
   });
 
-  const toggleRail = () =>
-    setRailCollapsed((prev) => {
-      const next = !prev;
-      try {
-        localStorage.setItem('qyvora:sidebar-collapsed', next ? '1' : '');
-      } catch {
-        /* storage unavailable */
-      }
-      return next;
-    });
+  const toggleRail = useCallback(
+    () =>
+      setRailCollapsed((prev) => {
+        const next = !prev;
+        try {
+          localStorage.setItem('qyvora:sidebar-collapsed', next ? '1' : '');
+        } catch {
+          /* storage unavailable */
+        }
+        return next;
+      }),
+    [],
+  );
 
   useEffect(() => {
     tryAutoSubscribePush();

@@ -1,6 +1,8 @@
 import React from 'react';
 import { Logo, QyvoraMark } from '@/shared/components/brand';
 import DottedMapOverlay from '@/shared/components/ui/DottedMapOverlay';
+import CertificateCredentialRibbon from './CertificateCredentialRibbon';
+import { fluid } from './certificateFluid';
 import hpbLogo from '@/assets/bootcamp/HPB-logo.webp';
 import qoseLogo from '@/assets/bootcamp/QOSE-Logo.webp';
 
@@ -30,18 +32,6 @@ export interface CertificateRendererProps {
   /** Optional element id — only set on the certificate being exported to PDF. */
   id?: string;
 }
-
-/**
- * Fluid sizing helper.
- *
- * Every dimension on the certificate is expressed as `max(<floor>px, <n>cqw)`
- * — the value scales with the certificate's own width (container query unit)
- * so the layout keeps identical proportions at admin-preview size, on mobile
- * and in print, with a px floor so small previews stay legible. Because the
- * certificate box and all of its text scale from the same unit, long recipient
- * names can never spill out of the certificate container.
- */
-const fluid = (minPx: number, cqw: number) => `max(${minPx}px, ${cqw}cqw)`;
 
 /**
  * Recipient names are the hero element. Size steps down as the name gets
@@ -82,40 +72,6 @@ const IssuerSeal: React.FC<{ program: 'HPB' | 'QOSE' }> = ({ program }) => (
     >
       {program}
     </span>
-  </div>
-);
-
-/**
- * QOSE award medallion — the certificate "seal on the ribbon". The vertical
- * side ribbon flares into a circular rosette at its foot: a spiked dashed
- * outer ring, a solid inner ring, and the main course badge seated inside the
- * circle. Decorative; the programme is already stated in the body copy.
- */
-const AwardMedallion: React.FC = () => (
-  <div
-    className="pointer-events-none absolute left-0 flex items-center justify-center"
-    style={{
-      bottom: fluid(10, 3),
-      width: fluid(54, 7.5),
-      height: fluid(54, 7.5),
-    }}
-    aria-hidden="true"
-  >
-    {/* spiked / dashed seal edge */}
-    <span
-      className="absolute inset-0 rounded-full border-2 border-dashed"
-      style={{ borderColor: 'rgba(6,182,111,0.55)' }}
-    />
-    {/* solid ring */}
-    <span
-      className="absolute inset-[11%] rounded-full border-2"
-      style={{
-        borderColor: 'rgba(6,182,111,0.7)',
-        background: 'rgba(255,255,255,0.8)',
-      }}
-    />
-    {/* main course badge */}
-    <img src={qoseLogo} alt="" className="relative w-[56%] object-contain" />
   </div>
 );
 
@@ -173,13 +129,16 @@ const CertificateRenderer: React.FC<CertificateRendererProps> = ({
   const certificateTitle = config.name || 'Certificate of Completion';
   const orientation = config.orientation || 'landscape';
   // QOSE is the paid bootcamp — it carries the premium treatment: accent edge,
-  // tinted graphite surface, striped side ribbon, programme watermark and
-  // inner frame. HPB stays the clean standard edition. Both share the dotted
-  // map backdrop and the issuer seal.
+  // tinted graphite surface, an interior credential ribbon with a QOSE seal,
+  // programme watermark and inner frame. HPB stays the clean standard edition.
+  // Both share the dotted map backdrop and the issuer seal.
   const premium = program === 'QOSE';
 
   const pad = fluid(16, 4.2);
-  const ribbonWidth = fluid(14, 3.4);
+  // Left gutter reserved for the interior credential ribbon. It is wide enough
+  // to hold the sash and its circular seal, and it keeps the ribbon clear of
+  // every line of content without affecting the HPB template.
+  const ribbonGutter = fluid(34, 6.4);
 
   const formattedDate = (() => {
     const parsed = new Date(completionDate);
@@ -202,9 +161,9 @@ const CertificateRenderer: React.FC<CertificateRendererProps> = ({
             ? 'linear-gradient(to bottom right, #fbfbfb, #eef4f1 55%, #e3ebe7)'
             : 'linear-gradient(to bottom right, #f5f5f5, #e8e8e8)',
           padding: pad,
-          // The QOSE side ribbon sits outside the normal padding so the body
-          // copy stays aligned between the two templates.
-          paddingLeft: premium ? `calc(${pad} + ${ribbonWidth})` : pad,
+          // The QOSE credential ribbon occupies the reserved left gutter so it
+          // never overlaps the recipient, programme or verification copy.
+          paddingLeft: premium ? `calc(${pad} + ${ribbonGutter})` : pad,
           // Industry-standard certificate trim as a *minimum* height: US Letter
           // landscape (11 × 8.5 in → 77.27cqw) or portrait (8.5 × 11 in →
           // 129.41cqw). Content keeps the exact ratio at every normal size, but
@@ -219,19 +178,10 @@ const CertificateRenderer: React.FC<CertificateRendererProps> = ({
 
         {premium && (
           <>
-            {/* Diagonal-striped side ribbon — the premium edge treatment */}
-            <span
-              className="pointer-events-none absolute inset-y-0 left-0"
-              style={{
-                width: ribbonWidth,
-                borderRight: '1px solid rgba(6,182,111,0.5)',
-                background:
-                  'repeating-linear-gradient(45deg, rgba(6,182,111,0.45) 0 7px, rgba(6,182,111,0.18) 7px 14px)',
-              }}
-              aria-hidden="true"
-            />
-            {/* The ribbon's circular foot — holds the course award badge */}
-            <AwardMedallion />
+            {/* Interior credential ribbon — one broad, straight sash inset from
+                the certificate edge, ending in a circular QOSE seal. It is the
+                premium template's secondary visual anchor. */}
+            <CertificateCredentialRibbon logo={qoseLogo} label="QOSE" />
             {/* Programme watermark — the premium surface's quiet signature */}
             <img
               src={qoseLogo}
@@ -258,7 +208,7 @@ const CertificateRenderer: React.FC<CertificateRendererProps> = ({
               <Logo size="md" />
             </div>
             <span
-              className="font-black uppercase tracking-widest text-gray-500"
+              className="font-black uppercase tracking-widest text-text-secondary"
               style={{ fontSize: fluid(7, 1.05) }}
             >
               Issuing Authority
@@ -280,14 +230,14 @@ const CertificateRenderer: React.FC<CertificateRendererProps> = ({
           </p>
 
           <p
-            className="font-bold uppercase tracking-wider text-gray-500"
+            className="font-bold uppercase tracking-wider text-text-secondary"
             style={{ fontSize: fluid(11, 1.6) }}
           >
             Presented to
           </p>
 
           <p
-            className="max-w-[88%] break-words font-black uppercase tracking-tight text-gray-900 [hyphens:auto] [overflow-wrap:anywhere]"
+            className="max-w-[88%] break-words font-black uppercase tracking-tight text-text-primary [hyphens:auto] [overflow-wrap:anywhere]"
             style={{
               fontSize: nameFontSize(recipientName),
               lineHeight: 1.06,
@@ -297,20 +247,20 @@ const CertificateRenderer: React.FC<CertificateRendererProps> = ({
           </p>
 
           <p
-            className="max-w-[80%] text-gray-700"
+            className="max-w-[80%] text-text-secondary"
             style={{ fontSize: fluid(11, 1.65), lineHeight: 1.7 }}
           >
             has successfully completed the{' '}
-            <span className="font-bold text-gray-900">{programName}</span>
+            <span className="font-bold text-text-primary">{programName}</span>
           </p>
 
           {cohortIdentifier && (
-            <p className="font-mono text-gray-600" style={{ fontSize: fluid(10, 1.4) }}>
+            <p className="font-mono text-text-secondary" style={{ fontSize: fluid(10, 1.4) }}>
               {cohortIdentifier}
             </p>
           )}
 
-          <p className="font-mono text-gray-600" style={{ fontSize: fluid(10, 1.4) }}>
+          <p className="font-mono text-text-secondary" style={{ fontSize: fluid(10, 1.4) }}>
             {formattedDate}
           </p>
         </div>
@@ -340,7 +290,7 @@ const CertificateRenderer: React.FC<CertificateRendererProps> = ({
                 Verification
               </span>
               <span
-                className="break-all font-mono text-gray-600"
+                className="break-all font-mono text-text-secondary"
                 style={{ fontSize: fluid(8, 1.25) }}
               >
                 {verificationUrl}
@@ -357,7 +307,7 @@ const CertificateRenderer: React.FC<CertificateRendererProps> = ({
             </div>
 
             {/* HPB carries the company seal at the bottom-right; QOSE's award
-                seal lives on the side ribbon medallion instead. */}
+                seal lives on the interior credential ribbon instead. */}
             {!premium && <IssuerSeal program={program} />}
           </div>
         </div>
