@@ -1,274 +1,257 @@
-import { useMemo } from 'react';
-import { motion } from 'motion/react';
-import { useReducedMotion } from '@/shared/hooks/useReducedMotion';
-import { Award, BookOpen } from 'lucide-react';
-import { RARITY_STYLES } from './AchievementCard';
-import HpbAvatar from '@/shared/components/HpbAvatar';
-import BootcampBadge from '@/shared/components/BootcampBadge';
-import LabBadge from '@/shared/components/LabBadge';
-import ModuleHeader from './ModuleHeader';
-import { BOOTCAMP_CONFIG } from '@/features/student/constants/bootcampStructure';
-import { COURSES } from '@/features/student/data/courses/courseData';
-import { COURSE_ICON_MAP } from '@/features/student/data/courses/courseIcons';
-
-interface SkillAchievement {
-  skill: string;
-  label: string;
-  color: string;
-  scenariosCompleted: number;
-  rarity: 'common' | 'uncommon' | 'rare' | 'epic' | 'legendary';
-}
+import React, { useMemo, useState } from 'react';
+import { Award } from 'lucide-react';
+import AchievementBadge from './AchievementBadge';
+import {
+  getAchievementById,
+  COURSE_ACHIEVEMENTS,
+  LAB_ACHIEVEMENTS,
+  BOOTCAMP_PHASE_ACHIEVEMENTS,
+  BOOTCAMP_GRADUATE_ACHIEVEMENT,
+  type Achievement,
+} from '@/shared/constants/achievements';
 
 interface AchievementsSectionProps {
-  rooms: { roomId: number; title: string }[];
-  bootcampCompleted: boolean;
+  completedCourseIds?: string[];
+  completedLabIds?: string[];
+  completedRooms?: { roomId: number; title: string }[];
+  rooms?: { roomId: number; title: string }[];
+  completedPhaseIds?: string[];
+  bootcampCompleted?: boolean;
   labsCompleted?: number;
   coursesCompleted?: number;
-  completedPhaseIds?: string[];
-  completedCourseIds?: string[];
-  skillAchievements?: SkillAchievement[];
+  skillAchievements?: any[];
+  className?: string;
 }
 
-const LAB_BADGE_IDS = ['privesc', 'passwords', 'sqli', 'osint', 'killchain'] as const;
+type TabType = 'all' | 'courses' | 'labs' | 'bootcamp';
 
-function CountBadge({ count }: { count: number }) {
-  return (
-    <span className="rounded-md bg-accent/10 px-2 py-0.5 text-[10px] font-black uppercase tracking-widest text-accent">
-      {count}
-    </span>
-  );
-}
+const INITIAL_VISIBLE_COUNT = 16;
 
-const AchievementsSection: React.FC<AchievementsSectionProps> = ({
-  rooms,
-  bootcampCompleted,
-  labsCompleted = 0,
-  coursesCompleted = 0,
-  completedPhaseIds = [],
+export const AchievementsSection: React.FC<AchievementsSectionProps> = ({
   completedCourseIds = [],
-  skillAchievements = [],
+  completedLabIds = [],
+  completedRooms = [],
+  rooms,
+  completedPhaseIds = [],
+  bootcampCompleted = false,
+  labsCompleted = 0,
+  className = '',
 }) => {
-  const prefersReduced = useReducedMotion();
+  const [activeTab, setActiveTab] = useState<TabType>('all');
+  const [showAll, setShowAll] = useState(false);
 
-  const phaseAchievements = useMemo(() => {
-    const phaseMap = new Map(BOOTCAMP_CONFIG.phases.map((p) => [p.id, p]));
-    return completedPhaseIds
-      .map((id) => phaseMap.get(id))
-      .filter(Boolean)
-      .map((phase) => ({
-        id: `phase-${phase!.id}`,
-        type: 'bootcamp' as const,
-        title: phase!.title,
-        description: phase!.codename,
-        rarity: 'uncommon' as const,
-        iconNode: <HpbAvatar variant={phase!.id as 'phase1'} size="xs" />,
-      }));
-  }, [completedPhaseIds]);
+  const actualRooms = completedRooms.length > 0 ? completedRooms : (rooms || []);
 
-  const courseAchievements = useMemo(() => {
-    const courseMap = new Map(COURSES.map((c) => [c.id, c]));
+  // 1. Resolve earned course achievements
+  const earnedCourses = useMemo(() => {
+    const courseMap = new Map(COURSE_ACHIEVEMENTS.map((c) => [c.id, c]));
     return completedCourseIds
       .map((id) => courseMap.get(id))
-      .filter(Boolean)
-      .map((course) => {
-        const iconCfg = COURSE_ICON_MAP[course!.id];
-        return {
-          id: `course-${course!.id}`,
-          type: 'course' as const,
-          title: course!.title,
-          description: course!.categoryId,
-          rarity: 'common' as const,
-          IconComponent: iconCfg?.icon,
-        };
-      });
+      .filter((item): item is Achievement => Boolean(item));
   }, [completedCourseIds]);
 
-  const labCount = labsCompleted || rooms.length;
-  const totalAchievements = phaseAchievements.length + courseAchievements.length + (labCount > 0 ? 1 : 0) + skillAchievements.length;
+  // 2. Resolve earned lab achievements
+  // Handles either explicit completedLabIds or completed flags/rooms
+  const earnedLabs = useMemo(() => {
+    const labMap = new Map(LAB_ACHIEVEMENTS.map((l) => [l.id, l]));
+    const earned = new Map<string, Achievement>();
 
-  if (totalAchievements === 0) {
+    // From completedLabIds
+    completedLabIds.forEach((id) => {
+      const match = labMap.get(id) || getAchievementById(id);
+      if (match) earned.set(match.id, match);
+    });
+
+    // If rooms or labs were completed, ensure matching known lab IDs are included
+    const count = actualRooms.length > 0 ? actualRooms.length : labsCompleted;
+    if (earned.size === 0 && count > 0) {
+      // Map completed room counts to earned lab insignia if present
+      LAB_ACHIEVEMENTS.slice(0, Math.min(count, LAB_ACHIEVEMENTS.length)).forEach((lab) => {
+        earned.set(lab.id, lab);
+      });
+    }
+
+    return Array.from(earned.values());
+  }, [completedLabIds, actualRooms, labsCompleted]);
+
+  // 3. Resolve earned bootcamp achievements (strictly preserving existing behavior)
+  const earnedBootcamp = useMemo(() => {
+    const list: Achievement[] = [];
+    if (bootcampCompleted) {
+      list.push(BOOTCAMP_GRADUATE_ACHIEVEMENT);
+    }
+    const phaseMap = new Map(BOOTCAMP_PHASE_ACHIEVEMENTS.map((p) => [p.id.replace('phase-', ''), p]));
+    completedPhaseIds.forEach((phaseId) => {
+      const cleanId = phaseId.replace(/^phase-/, '');
+      const match = phaseMap.get(cleanId);
+      if (match) list.push(match);
+    });
+    return list;
+  }, [bootcampCompleted, completedPhaseIds]);
+
+  // All earned achievements
+  const allEarned = useMemo(() => {
+    return [...earnedCourses, ...earnedLabs, ...earnedBootcamp];
+  }, [earnedCourses, earnedLabs, earnedBootcamp]);
+
+  const displayedList = useMemo(() => {
+    switch (activeTab) {
+      case 'courses':
+        return earnedCourses;
+      case 'labs':
+        return earnedLabs;
+      case 'bootcamp':
+        return earnedBootcamp;
+      default:
+        return allEarned;
+    }
+  }, [activeTab, earnedCourses, earnedLabs, earnedBootcamp, allEarned]);
+
+  const totalCount = allEarned.length;
+
+  if (totalCount === 0) {
     return (
-      <div className="rounded-2xl border border-border-subtle bg-surface p-5 md:p-6">
-        <ModuleHeader icon={<Award className="h-4 w-4" />} title="Achievements" />
-        <p className="py-4 text-center text-sm text-text-muted">
-          No achievements yet. Start learning to earn your first!
-        </p>
-      </div>
+      <section
+        aria-labelledby="achievements-heading"
+        className={`rounded-2xl border border-border bg-bg-card p-6 md:p-8 ${className}`}
+      >
+        <div className="flex items-center justify-between border-b border-border/60 pb-4">
+          <div className="flex items-center gap-2">
+            <Award className="h-4 w-4 text-accent" />
+            <h2 id="achievements-heading" className="font-mono text-sm font-black uppercase tracking-wider text-text-primary">
+              Earned Insignia
+            </h2>
+          </div>
+          <span className="font-mono text-xs text-text-muted">0 Earned</span>
+        </div>
+        <div className="py-8 text-center">
+          <p className="font-mono text-xs text-text-muted">
+            No achievements recorded yet. Complete courses and labs to unlock earned insignia.
+          </p>
+        </div>
+      </section>
     );
   }
 
+  const visibleItems = showAll ? displayedList : displayedList.slice(0, INITIAL_VISIBLE_COUNT);
+  const hasMore = displayedList.length > INITIAL_VISIBLE_COUNT;
+
   return (
-    <div className="rounded-2xl border border-border-subtle bg-surface p-5 md:p-6">
-      <ModuleHeader
-        icon={<Award className="h-4 w-4" />}
-        title="Achievements"
-        trailing={<CountBadge count={totalAchievements} />}
-      />
+    <section
+      aria-labelledby="achievements-heading"
+      className={`rounded-2xl border border-border bg-bg-card p-6 md:p-8 ${className}`}
+    >
+      {/* Section Header */}
+      <div className="flex flex-col gap-4 border-b border-border/60 pb-4 sm:flex-row sm:items-center sm:justify-between">
+        <div className="flex items-center gap-2.5">
+          <Award className="h-4 w-4 text-accent" />
+          <h2 id="achievements-heading" className="font-mono text-sm font-black uppercase tracking-wider text-text-primary">
+            Earned Insignia
+          </h2>
+          <span className="rounded-md bg-accent/10 px-2 py-0.5 font-mono text-[10px] font-black text-accent">
+            {totalCount}
+          </span>
+        </div>
 
-      <div className="space-y-8">
-        {bootcampCompleted && (
-          <motion.div
-            initial={prefersReduced ? false : { opacity: 0, y: 8 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: prefersReduced ? 0 : 0.35 }}
-            className="flex items-center gap-4 rounded-xl border border-border-subtle bg-surface-raised/60 px-4 py-3"
+        {/* Filter Tabs */}
+        <div className="flex flex-wrap items-center gap-1.5" role="tablist" aria-label="Achievement categories">
+          <button
+            type="button"
+            role="tab"
+            aria-selected={activeTab === 'all'}
+            onClick={() => { setActiveTab('all'); setShowAll(false); }}
+            className={`rounded-lg px-2.5 py-1 font-mono text-[11px] font-bold uppercase tracking-wider transition-colors ${
+              activeTab === 'all'
+                ? 'bg-accent text-on-accent'
+                : 'text-text-muted hover:bg-surface-raised hover:text-text-primary'
+            }`}
           >
-            <BootcampBadge completed className="w-16 shrink-0 sm:w-20" />
-            <div className="min-w-0">
-              <h3 className="text-sm font-black text-text-primary">HPB Graduate</h3>
-              <p className="truncate text-xs text-text-muted">
-                Completed the Hacker Protocol Bootcamp
-              </p>
-            </div>
-          </motion.div>
-        )}
+            All ({totalCount})
+          </button>
+          {earnedCourses.length > 0 && (
+            <button
+              type="button"
+              role="tab"
+              aria-selected={activeTab === 'courses'}
+              onClick={() => { setActiveTab('courses'); setShowAll(false); }}
+              className={`rounded-lg px-2.5 py-1 font-mono text-[11px] font-bold uppercase tracking-wider transition-colors ${
+                activeTab === 'courses'
+                  ? 'bg-accent text-on-accent'
+                  : 'text-text-muted hover:bg-surface-raised hover:text-text-primary'
+              }`}
+            >
+              Courses ({earnedCourses.length})
+            </button>
+          )}
+          {earnedLabs.length > 0 && (
+            <button
+              type="button"
+              role="tab"
+              aria-selected={activeTab === 'labs'}
+              onClick={() => { setActiveTab('labs'); setShowAll(false); }}
+              className={`rounded-lg px-2.5 py-1 font-mono text-[11px] font-bold uppercase tracking-wider transition-colors ${
+                activeTab === 'labs'
+                  ? 'bg-accent text-on-accent'
+                  : 'text-text-muted hover:bg-surface-raised hover:text-text-primary'
+              }`}
+            >
+              Labs ({earnedLabs.length})
+            </button>
+          )}
+          {earnedBootcamp.length > 0 && (
+            <button
+              type="button"
+              role="tab"
+              aria-selected={activeTab === 'bootcamp'}
+              onClick={() => { setActiveTab('bootcamp'); setShowAll(false); }}
+              className={`rounded-lg px-2.5 py-1 font-mono text-[11px] font-bold uppercase tracking-wider transition-colors ${
+                activeTab === 'bootcamp'
+                  ? 'bg-accent text-on-accent'
+                  : 'text-text-muted hover:bg-surface-raised hover:text-text-primary'
+              }`}
+            >
+              Bootcamp ({earnedBootcamp.length})
+            </button>
+          )}
+        </div>
+      </div>
 
-        {phaseAchievements.length > 0 && (
-          <div>
-            <div className="mb-3 flex items-center justify-between gap-2">
-              <h4 className="text-[10px] font-black uppercase tracking-widest text-text-muted">
-                Bootcamp Phases
-              </h4>
-              <CountBadge count={phaseAchievements.length} />
-            </div>
-            <div className="grid w-full grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
-              {phaseAchievements.map((a, idx) => (
-                <motion.div
-                  key={a.id}
-                  initial={prefersReduced ? false : { opacity: 0, y: 6 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: prefersReduced ? 0 : 0.3, delay: prefersReduced ? 0 : idx * 0.03 }}
-                  className="flex flex-col items-center rounded-xl border border-border-subtle bg-surface-raised/60 p-4 text-center"
-                >
-                  <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-xl bg-surface">
-                    {a.iconNode}
-                  </div>
-                  <h4 className="mb-1 text-xs font-black uppercase tracking-widest leading-tight text-text-primary">
-                    {a.title}
-                  </h4>
-                  {a.description && (
-                    <p className="line-clamp-2 text-xs leading-snug text-text-muted">
-                      {a.description}
-                    </p>
-                  )}
-                </motion.div>
-              ))}
-            </div>
+      {/* 
+        Badge Collection:
+        Rendered directly as transparent vector logos on the page without
+        wrapping each logo in a card, tile, or background box.
+      */}
+      <div className="pt-6">
+        {displayedList.length === 0 ? (
+          <p className="py-4 text-center font-mono text-xs text-text-muted">
+            No achievements in this category.
+          </p>
+        ) : (
+          <div className="flex flex-wrap items-center gap-4 sm:gap-6 md:gap-8">
+            {visibleItems.map((achievement) => (
+              <AchievementBadge
+                key={achievement.id}
+                achievement={achievement}
+                size="md"
+              />
+            ))}
           </div>
         )}
 
-        {courseAchievements.length > 0 && (
-          <div>
-            <div className="mb-3 flex items-center justify-between gap-2">
-              <h4 className="text-[10px] font-black uppercase tracking-widest text-text-muted">
-                Courses
-              </h4>
-              <CountBadge count={courseAchievements.length} />
-            </div>
-            <div className="grid w-full grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
-              {courseAchievements.map((a, idx) => {
-                const IconComp = a.IconComponent;
-                return (
-                  <motion.div
-                    key={a.id}
-                    initial={prefersReduced ? false : { opacity: 0, y: 6 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: prefersReduced ? 0 : 0.3, delay: prefersReduced ? 0 : idx * 0.03 }}
-                    className="flex flex-col items-center rounded-xl border border-border-subtle bg-surface-raised/60 p-4 text-center"
-                  >
-                    <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-xl bg-surface">
-                      {IconComp ? (
-                        <IconComp className="h-6 w-6" />
-                      ) : (
-                        <BookOpen className="h-5 w-5" />
-                      )}
-                    </div>
-                    <h4 className="mb-1 text-xs font-black uppercase tracking-widest leading-tight text-text-primary">
-                      {a.title}
-                    </h4>
-                    {a.description && (
-                      <p className="line-clamp-2 text-xs leading-snug text-text-muted">
-                        {a.description}
-                      </p>
-                    )}
-                  </motion.div>
-                );
-              })}
-            </div>
-          </div>
-        )}
-
-        {labCount > 0 && (
-          <div>
-            <div className="mb-3 flex items-center justify-between gap-2">
-              <h4 className="text-[10px] font-black uppercase tracking-widest text-text-muted">
-                Labs
-              </h4>
-              <CountBadge count={labCount} />
-            </div>
-            <div className="mb-3 flex items-center justify-center gap-1.5 rounded-xl border border-border-subtle bg-surface-raised/60 px-2 py-3 sm:justify-between sm:gap-3 sm:px-4 sm:py-4 md:gap-6">
-              {LAB_BADGE_IDS.map((labId) => (
-                <LabBadge key={labId} labId={labId} className="h-10 w-10 shrink-0 sm:h-12 sm:w-12 md:h-16 md:w-16 lg:h-20 lg:w-20" />
-              ))}
-            </div>
-            <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
-              <h4 className="text-xs font-black uppercase tracking-widest text-text-primary">
-                Lab Operator
-              </h4>
-              <p className="text-xs leading-snug text-text-muted">
-                {`${labCount} labs completed`}
-              </p>
-              {labCount >= 5 && (
-                <span className="rounded px-1.5 py-0.5 text-[10px] font-black uppercase tracking-wider bg-accent/10 text-accent">
-                  {labCount >= 10 ? 'rare' : 'uncommon'}
-                </span>
-              )}
-            </div>
-          </div>
-        )}
-
-        {skillAchievements.length > 0 && (
-          <div>
-            <div className="mb-3 flex items-center justify-between gap-2">
-              <h4 className="text-[10px] font-black uppercase tracking-widest text-text-muted">
-                Skill Badges
-              </h4>
-              <CountBadge count={skillAchievements.length} />
-            </div>
-            <div className="grid w-full grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
-              {skillAchievements.map((sa, idx) => {
-                const rarity = sa.rarity || 'common';
-                const styles = RARITY_STYLES[rarity];
-                return (
-                  <motion.div
-                    key={`skill-${sa.skill}`}
-                    initial={prefersReduced ? false : { opacity: 0, y: 6 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: prefersReduced ? 0 : 0.3, delay: prefersReduced ? 0 : idx * 0.03 }}
-                    className={`flex flex-col items-center rounded-xl border p-4 text-center ${styles.border} ${styles.bg}`}
-                  >
-                    <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-xl bg-surface">
-                      <Award className="h-5 w-5" />
-                    </div>
-                    <h4 className="mb-1 text-xs font-black uppercase tracking-widest leading-tight text-text-primary">
-                      {sa.label}
-                    </h4>
-                    <p className="line-clamp-2 text-xs leading-snug text-text-muted">
-                      {sa.scenariosCompleted} scenario{sa.scenariosCompleted !== 1 ? 's' : ''} completed
-                    </p>
-                    {rarity !== 'common' && (
-                      <span className="mt-2 rounded bg-accent/10 px-1.5 py-0.5 text-[10px] font-black uppercase tracking-wider text-accent">
-                        {rarity}
-                      </span>
-                    )}
-                  </motion.div>
-                );
-              })}
-            </div>
+        {/* Show More / Show Less */}
+        {hasMore && (
+          <div className="mt-6 flex justify-center border-t border-border/40 pt-4">
+            <button
+              type="button"
+              onClick={() => setShowAll((prev) => !prev)}
+              className="rounded-lg border border-border px-3 py-1.5 font-mono text-xs font-bold uppercase tracking-wider text-text-secondary transition-colors hover:border-accent hover:text-accent focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent"
+            >
+              {showAll ? 'Show Fewer Insignia' : `Show All ${displayedList.length} Insignia`}
+            </button>
           </div>
         )}
       </div>
-    </div>
+    </section>
   );
 };
 

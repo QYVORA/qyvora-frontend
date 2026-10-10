@@ -75,6 +75,7 @@ const PublicProfile: React.FC = () => {
       bootcampCompleted: profileApi.bootcampStatus === 'completed' || profileApi.bootcampCompleted === true,
       completedPhaseIds: Array.isArray(profileApi.completedPhaseIds) ? profileApi.completedPhaseIds : [],
       completedCourseIds: Array.isArray(profileApi.completedCourseIds) ? profileApi.completedCourseIds : [],
+      completedLabIds: Array.isArray(profileApi.completedLabIds) ? profileApi.completedLabIds : [],
       completedRooms,
       xpLevel: Number(profileApi.xpSummary?.level || 1),
       xpCurrent: Number(profileApi.xpSummary?.xp || 0),
@@ -166,8 +167,13 @@ const PublicProfile: React.FC = () => {
                   country={profile.country || undefined}
                   website={profile.website || undefined}
                   github={profile.github || undefined}
+                  githubConnected={profile.githubConnected}
+                  githubPublic={profile.githubPublic}
+                  githubProfileUrl={profile.githubProfileUrl}
+                  githubUsername={profile.githubUsername}
                   linkedin={profile.linkedin || undefined}
                   twitter={profile.twitter || undefined}
+                  cp={profile.cp}
                 />
               </section>
             </div>

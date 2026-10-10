@@ -169,7 +169,10 @@ const CourseLessonPage: React.FC = () => {
     const next = new Set([...completedLessons, lesson.id]);
     setCompletedLessons(next);
     saveProgress(next, currentLessonIdx);
-  }, [course, completedLessons, currentLessonIdx, saveProgress]);
+    if (courseId && next.size === totalLessons) {
+      api.post(`/student/courses/${encodeURIComponent(courseId)}/complete`).catch(() => {});
+    }
+  }, [course, completedLessons, currentLessonIdx, saveProgress, courseId, totalLessons]);
 
   const goNext = useCallback(() => {
     if (currentLessonIdx < totalLessons - 1) scrollToLesson(currentLessonIdx + 1);

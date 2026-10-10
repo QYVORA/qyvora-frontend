@@ -79,6 +79,7 @@ export interface ProfileApiResponse {
   coursesCompleted?: number;
   completedPhaseIds?: string[];
   completedCourseIds?: string[];
+  completedLabIds?: string[];
   learn?: {
     completedRooms?: CompletedRoom[];
   };
@@ -102,6 +103,7 @@ export interface ProfileData {
   bootcampCompleted: boolean;
   completedPhaseIds: string[];
   completedCourseIds: string[];
+  completedLabIds: string[];
   completedRooms: CompletedRoom[];
   xpLevel: number;
   xpCurrent: number;

@@ -10,7 +10,7 @@ import { ProfileSkeleton } from '../components/StudentSkeletons';
 import SEO from '../../../shared/components/SEO';
 import PageBody from '@/shared/components/layout/PageBody';
 import ProfileIdentityBlock from '../../../shared/components/profile/ProfileIdentityBlock';
-import GithubConnectionCard from '../../../shared/components/profile/GithubConnectionCard';
+import SocialAccountConnection from '../../../shared/components/profile/SocialAccountConnection';
 import CpLogo from '../../../shared/components/CpLogo';
 import ProfileMetricsStrip from '../../../shared/components/profile/ProfileMetricsStrip';
 import AchievementsSection from '../../../shared/components/profile/AchievementsSection';
@@ -134,18 +134,26 @@ const Profile: React.FC = () => {
                   country={profile.country || undefined}
                   website={profile.website || undefined}
                   github={profile.github || (profile.githubConnected ? profile.githubProfileUrl : '') || undefined}
+                  githubConnected={profile.githubConnected}
+                  githubPublic={profile.githubPublic}
+                  githubProfileUrl={profile.githubProfileUrl}
+                  githubUsername={profile.githubUsername}
                   linkedin={profile.linkedin || undefined}
                   twitter={profile.twitter || undefined}
+                  cp={profile.cp}
                 />
               </section>
 
               {isOwnProfile && (
-                <GithubConnectionCard
-                  connected={profile.githubConnected}
-                  username={profile.githubUsername}
-                  profileUrl={profile.githubProfileUrl}
-                  isPublic={profile.githubPublic}
+                <SocialAccountConnection
+                  githubConnected={profile.githubConnected}
+                  githubUsername={profile.githubUsername}
+                  githubProfileUrl={profile.githubProfileUrl}
+                  githubPublic={profile.githubPublic}
                   passwordSet={profile.passwordSet}
+                  twitter={profile.twitter}
+                  linkedin={profile.linkedin}
+                  website={profile.website}
                   onChanged={refetch}
                 />
               )}
