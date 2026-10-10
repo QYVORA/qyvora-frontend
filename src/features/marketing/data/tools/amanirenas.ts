@@ -6,14 +6,14 @@ import type { ToolDoc } from './types';
  * Eight-stage pipeline: INTAKE → METADATA → STATIC → CONFIG → API → SECRETS →
  * EVIDENCE → RISK. Twelve rules (AMN-001..AMN-012) in
  * `internal/rules/builtin/builtin.go`. Simulation produces 14 findings, risk
- * 56/100 (medium). v0.1.0 shipped, runtime assessment disabled (mobile.runtime
+ * 56/100 (medium). v0.9.0 shipped, runtime assessment disabled (mobile.runtime
  * = false).
  */
 const doc: ToolDoc = {
   slug: 'amanirenas',
   seoTitle: 'AMANIRENAS — Offline Mobile App Security Assessment Framework',
   seoDescription:
-    'Amanirenas is QYVORA\'s open-source framework for offline mobile app security assessment. It analyzes app profiles and IPA snapshots statically — bundle metadata, binary surface, configuration, API endpoints and secrets — and produces evidence-backed findings with transparent risk scoring. Shipped v0.1.0: full pipeline, rule engine (AMN-001..AMN-012), evidence system, simulation mode and reporting. Offline by design: only the app profile is read; no device, emulator, or live runtime. Dynamic runtime assessment is registered but disabled. Redaction first: secret values never leak into reports.',
+    'Amanirenas is QYVORA\'s open-source framework for offline mobile app security assessment. It analyzes app profiles and IPA snapshots statically — bundle metadata, binary surface, configuration, API endpoints and secrets — and produces evidence-backed findings with transparent risk scoring. Shipped v0.9.0: full pipeline, rule engine (AMN-001..AMN-012), evidence system, simulation mode and reporting. Offline by design: only the app profile is read; no device, emulator, or live runtime. Dynamic runtime assessment is registered but disabled. Redaction first: secret values never leak into reports.',
   summary:
     'AMANIRENAS runs an eight-stage pipeline: INTAKE (accept app profile/IPA snapshot), METADATA (extract bundle metadata), STATIC (analyze binary surface, permissions, WebView), CONFIG (ATS/transport allowances, storage flags), API (inventory endpoints and transport posture), SECRETS (detect hardcoded secrets with values redacted), EVIDENCE (collect evidence records), RISK (score severity × confidence × exposure, cap at 100). Twelve rules: hardcoded secrets (critical), insecure transport (critical), missing pinning (medium), legacy WebView (medium), weak crypto (medium), insecure storage (high), clipboard exposure (medium), sensitive logs (low), excessive permissions (medium), outdated min OS (low), ad-hoc signing (medium), no jailbreak detection (medium). Simulation (--sim): 14 findings, risk 56/100 (medium).',
 
@@ -82,6 +82,14 @@ const doc: ToolDoc = {
       blocks: [
         {
           kind: 'commands',
+          title: 'Release installer',
+          items: [
+            { command: 'curl -fsSL https://raw.githubusercontent.com/QYVORA/qyvora-amanirenas/main/install.sh | bash', note: 'Linux and macOS. Installs the checksum-verified prebuilt binary (v0.9.0), the icon and the desktop entry.' },
+            { command: 'irm https://raw.githubusercontent.com/QYVORA/qyvora-amanirenas/main/install.ps1 | iex', note: 'Windows PowerShell one-liner.' },
+          ],
+        },
+        {
+          kind: 'commands',
           title: 'From source',
           items: [
             {
@@ -110,7 +118,7 @@ const doc: ToolDoc = {
             { label: 'Binary', value: 'amanirenas', mono: true },
             { label: 'Env namespace', value: 'QYVORA_AMANIRENAS_*', mono: true },
             { label: 'Input flag', value: '--app <profile.json>', mono: true },
-            { label: 'Installer', value: 'None — no release assets published yet' },
+            { label: 'Installer', value: 'install.sh / install.ps1 (root of the repository)' },
           ],
         },
       ],

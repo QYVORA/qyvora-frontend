@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import {
+  resolveAssetName,
   TOOL_INSTALL_CONFIG,
   ToolArch,
   ToolInstallKey,
@@ -71,16 +72,17 @@ function fetchRelease(tool: ToolInstallKey): Promise<ToolRelease> {
       if (!data || data.draft || !Array.isArray(data.assets)) return UNAVAILABLE;
 
       const assets = new Map(data.assets.map((a) => [a.name, a]));
+      const version = data.tag_name ?? '';
       const ready: ToolRelease = {
         status: 'ready',
-        version: data.tag_name ?? '',
+        version,
         publishedAt: data.published_at ?? '',
         assetUrl: (name) => assets.get(name)?.browser_download_url ?? '',
         assetSize: (name) => assets.get(name)?.size,
-        hasDownload: (platform, arch) =>
-          Boolean(
-            assets.has(TOOL_INSTALL_CONFIG[tool].assets[platform]?.[arch] ?? ''),
-          ),
+        hasDownload: (platform, arch) => {
+          const template = TOOL_INSTALL_CONFIG[tool].assets[platform]?.[arch];
+          return Boolean(template && assets.has(resolveAssetName(template, version)));
+        },
       };
       return ready;
     })

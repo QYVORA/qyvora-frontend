@@ -88,7 +88,7 @@ const doc: ToolDoc = {
           kind: 'commands',
           title: 'Release installer',
           items: [
-            { command: 'curl -fsSL https://raw.githubusercontent.com/QYVORA/qyvora-mansa/main/install.sh | sh', note: 'Installs the prebuilt release binary.' },
+            { command: 'curl -fsSL https://raw.githubusercontent.com/QYVORA/qyvora-mansa/main/install.sh | bash', note: 'Installs the prebuilt Linux release binary (amd64/arm64), verified against the published checksums. Mansa publishes prebuilts for Linux only.' },
           ],
         },
         {

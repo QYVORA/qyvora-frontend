@@ -82,9 +82,9 @@ export const MODULES: Toha3eeCategory[] = [
   },
 ];
 
-export const GITHUB_URL = 'https://github.com/qyvora/qyvora-toha3ee';
-export const INSTALLER_UNIX = 'https://raw.githubusercontent.com/qyvora/qyvora-toha3ee/main/scripts/install.sh';
-export const INSTALLER_WINDOWS = 'https://raw.githubusercontent.com/qyvora/qyvora-toha3ee/main/scripts/install.ps1';
+export const GITHUB_URL = 'https://github.com/QYVORA/qyvora-toha3ee';
+export const INSTALLER_UNIX = 'https://raw.githubusercontent.com/QYVORA/qyvora-toha3ee/main/install.sh';
+export const INSTALLER_WINDOWS = 'https://raw.githubusercontent.com/QYVORA/qyvora-toha3ee/main/install.ps1';
 
 export interface InstallOption {
   id: string;
@@ -99,7 +99,7 @@ export const INSTALLERS: InstallOption[] = [
     id: 'unix',
     label: 'Linux / macOS',
     icon: Terminal,
-    cmd: `curl -fsSL ${INSTALLER_UNIX} | sh`,
+    cmd: `curl -fsSL ${INSTALLER_UNIX} | bash`,
     note: 'Fetches the prebuilt binary, verifies its SHA-256 checksum and adds it to your PATH.',
   },
   {

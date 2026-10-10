@@ -90,7 +90,7 @@ const doc: ToolDoc = {
       blocks: [
         {
           kind: 'prose',
-          text: 'SHAKA ships a zero-config installer that detects OS, CPU and shell, downloads the matching prebuilt binary, verifies its SHA-256 against the published `checksums.txt`, and falls back to building from source when no release exists yet.',
+          text: 'SHAKA ships a zero-config installer that detects OS, CPU and shell, downloads the matching prebuilt binary, verifies its SHA-256 against the published `checksums.txt`, and falls back to a local source build when no matching prebuilt exists.',
         },
         {
           kind: 'commands',
@@ -98,12 +98,12 @@ const doc: ToolDoc = {
           items: [
             {
               command:
-                'curl -fsSL https://raw.githubusercontent.com/QYVORA/qyvora-shaka/master/install.sh | bash',
+                'curl -fsSL https://raw.githubusercontent.com/QYVORA/qyvora-shaka/main/install.sh | bash',
               note: 'SHAKA is published from the master branch, unlike the rest of the toolkit.',
             },
             {
               command:
-                'irm https://raw.githubusercontent.com/QYVORA/qyvora-shaka/master/install.ps1 | iex',
+                'irm https://raw.githubusercontent.com/QYVORA/qyvora-shaka/main/install.ps1 | iex',
               note: 'PowerShell. Installs under %LOCALAPPDATA%\\Programs\\shaka\\bin, adds it to PATH and creates a Start Menu shortcut.',
             },
             { command: 'make install', note: 'System-wide install (Linux/Unix), including the app icon and desktop entry.' },
@@ -361,16 +361,16 @@ const doc: ToolDoc = {
         {
           kind: 'links',
           items: [
-            { label: 'cmd/shaka/main.go', href: 'https://github.com/QYVORA/qyvora-shaka/blob/master/cmd/shaka/main.go', note: 'Entry point.' },
-            { label: 'internal/orchestration', href: 'https://github.com/QYVORA/qyvora-shaka/tree/master/internal/orchestration', note: 'The pipeline and its profiles.' },
-            { label: 'internal/graph', href: 'https://github.com/QYVORA/qyvora-shaka/tree/master/internal/graph', note: 'The relationship graph and shortest-path analysis.' },
-            { label: 'internal/directory', href: 'https://github.com/QYVORA/qyvora-shaka/tree/master/internal/directory', note: 'The transport abstraction.' },
-            { label: 'internal/ldap', href: 'https://github.com/QYVORA/qyvora-shaka/tree/master/internal/ldap', note: 'Low-level LDAP/BER client.' },
-            { label: 'internal/rules/builtin/builtin.go', href: 'https://github.com/QYVORA/qyvora-shaka/blob/master/internal/rules/builtin/builtin.go', note: 'All 18 rules.' },
-            { label: 'internal/risk', href: 'https://github.com/QYVORA/qyvora-shaka/tree/master/internal/risk', note: 'Severity × confidence × exposure scoring.' },
-            { label: 'docs/Security-Model.md', href: 'https://github.com/QYVORA/qyvora-shaka/blob/master/docs/Security-Model.md', note: 'Trust boundaries and safety controls.' },
-            { label: 'docs/Rules.md', href: 'https://github.com/QYVORA/qyvora-shaka/blob/master/docs/Rules.md', note: 'Rule engine documentation.' },
-            { label: 'docs/Roadmap.md', href: 'https://github.com/QYVORA/qyvora-shaka/blob/master/docs/Roadmap.md', note: 'What is planned beyond the foundation release.' },
+            { label: 'cmd/shaka/main.go', href: 'https://github.com/QYVORA/qyvora-shaka/blob/main/cmd/shaka/main.go', note: 'Entry point.' },
+            { label: 'internal/orchestration', href: 'https://github.com/QYVORA/qyvora-shaka/tree/main/internal/orchestration', note: 'The pipeline and its profiles.' },
+            { label: 'internal/graph', href: 'https://github.com/QYVORA/qyvora-shaka/tree/main/internal/graph', note: 'The relationship graph and shortest-path analysis.' },
+            { label: 'internal/directory', href: 'https://github.com/QYVORA/qyvora-shaka/tree/main/internal/directory', note: 'The transport abstraction.' },
+            { label: 'internal/ldap', href: 'https://github.com/QYVORA/qyvora-shaka/tree/main/internal/ldap', note: 'Low-level LDAP/BER client.' },
+            { label: 'internal/rules/builtin/builtin.go', href: 'https://github.com/QYVORA/qyvora-shaka/blob/main/internal/rules/builtin/builtin.go', note: 'All 18 rules.' },
+            { label: 'internal/risk', href: 'https://github.com/QYVORA/qyvora-shaka/tree/main/internal/risk', note: 'Severity × confidence × exposure scoring.' },
+            { label: 'docs/Security-Model.md', href: 'https://github.com/QYVORA/qyvora-shaka/blob/main/docs/Security-Model.md', note: 'Trust boundaries and safety controls.' },
+            { label: 'docs/Rules.md', href: 'https://github.com/QYVORA/qyvora-shaka/blob/main/docs/Rules.md', note: 'Rule engine documentation.' },
+            { label: 'docs/Roadmap.md', href: 'https://github.com/QYVORA/qyvora-shaka/blob/main/docs/Roadmap.md', note: 'What is planned beyond the foundation release.' },
           ],
         },
       ],

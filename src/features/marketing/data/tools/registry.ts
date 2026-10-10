@@ -66,8 +66,8 @@ export interface ToolEntry {
   /** `owner/repo` — also the release source for the install modal. */
   repo: string;
   /**
-   * Default branch, used to build source links. It is not uniform across the
-   * toolkit: SHAKA is published from `master`, everything else from `main`.
+   * Default branch, used to build source links. Uniform across the toolkit:
+   * every repository publishes from `main`.
    */
   defaultBranch: string;
   /** Go module path from `go.mod`. */
@@ -141,7 +141,7 @@ export const TOOLS: ToolEntry[] = [
     license: 'MIT',
     binary: 'toha3ee',
     entrypoint: 'cmd/toha3ee',
-    hasInstaller: false,
+    hasInstaller: true,
     hasSim: false,
     logo: toha3eeLogo,
   },
@@ -154,7 +154,7 @@ export const TOOLS: ToolEntry[] = [
     domain: 'network-directory',
     github: 'https://github.com/QYVORA/qyvora-shaka',
     repo: 'QYVORA/qyvora-shaka',
-    defaultBranch: 'master',
+    defaultBranch: 'main',
     module: 'github.com/QYVORA/qyvora-shaka',
     goVersion: '1.26.5',
     license: 'Apache-2.0',
@@ -217,7 +217,7 @@ export const TOOLS: ToolEntry[] = [
     license: null,
     binary: 'kush',
     entrypoint: 'cmd/kush',
-    hasInstaller: false,
+    hasInstaller: true,
     hasSim: true,
     logo: kushLogo,
   },
@@ -274,7 +274,7 @@ export const TOOLS: ToolEntry[] = [
     license: null,
     binary: 'amanirenas',
     entrypoint: 'cmd/amanirenas',
-    hasInstaller: false,
+    hasInstaller: true,
     hasSim: true,
     logo: amanirenasLogo,
   },
@@ -293,7 +293,7 @@ export const TOOLS: ToolEntry[] = [
     license: null,
     binary: 'imhotep',
     entrypoint: 'cmd/imhotep',
-    hasInstaller: false,
+    hasInstaller: true,
     hasSim: true,
     logo: imhotepLogo,
   },
@@ -312,7 +312,7 @@ export const TOOLS: ToolEntry[] = [
     license: null,
     binary: 'sundiata',
     entrypoint: 'cmd/sundiata',
-    hasInstaller: false,
+    hasInstaller: true,
     hasSim: true,
     logo: sundiataLogo,
   },
@@ -331,9 +331,27 @@ export const TOOLS: ToolEntry[] = [
     license: null,
     binary: 'timbuktu',
     entrypoint: 'cmd/timbuktu',
-    hasInstaller: false,
+    hasInstaller: true,
     hasSim: true,
     logo: timbuktuLogo,
+  },
+  {
+    slug: 'amina',
+    name: 'amina',
+    displayName: 'AMINA',
+    path: '/amina',
+    summary: 'Operational security and host exposure assessment: identity disclosure, remote-access exposure, software provenance, credential material and OS hardening.',
+    domain: 'infrastructure',
+    github: 'https://github.com/QYVORA/qyvora-amina',
+    repo: 'QYVORA/qyvora-amina',
+    defaultBranch: 'main',
+    module: 'github.com/QYVORA/qyvora-amina',
+    goVersion: '1.26.5',
+    license: null,
+    binary: 'amina',
+    entrypoint: 'cmd/amina',
+    hasInstaller: true,
+    hasSim: true,
   },
   {
     slug: 'qyvora-common',

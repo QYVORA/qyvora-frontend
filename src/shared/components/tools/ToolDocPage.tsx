@@ -20,7 +20,7 @@ interface ToolDocPageProps {
 }
 
 /**
- * DocsShell — reading-material wrapper for tool documentation pages (13 tools
+ * DocsShell — reading-material wrapper for tool documentation pages (14 tools
  * share this). Renders inside the public shell (PublicNavigation + PublicFooter)
  * with standard navbar clearance and a sticky "On this page" chip nav. Sections
  * own their reading width and spacing.

@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { Apple, Check, Download, Loader2, Terminal, TriangleAlert } from 'lucide-react';
 import {
+  resolveAssetName,
   TOOL_INSTALL_CONFIG,
   ToolArch,
   ToolInstallKey,
@@ -85,7 +86,15 @@ const ToolInstallModalHost: React.FC = () => {
   const archChoices: ToolArch[] = supportsArch ? ['amd64', 'arm64'] : ['amd64'];
   const activeArch: ToolArch = supportsArch ? arch : 'amd64';
 
-  const assetName = cfg.assets[platform]?.[activeArch];
+  const assetTemplate = cfg.assets[platform]?.[activeArch];
+  // Asset names embed the release version (e.g. aksum_0.9.0_linux_amd64.tar.gz).
+  // Until the release is resolved the template shows the expected pattern; once
+  // ready, the version makes it an exact match against the published assets.
+  const assetName = assetTemplate
+    ? release.status === 'ready'
+      ? resolveAssetName(assetTemplate, release.version)
+      : assetTemplate
+    : '';
   const assetUrl = release.status === 'ready' && assetName ? release.assetUrl(assetName) : '';
   const assetSize = release.status === 'ready' && assetName ? release.assetSize(assetName) : undefined;
   const canDownload = release.status === 'ready' && Boolean(assetUrl);

@@ -68,7 +68,7 @@ const doc: ToolDoc = {
       blocks: [
         {
           kind: 'prose',
-          text: 'NZINGA ships a zero-config installer that detects OS, CPU and shell, downloads the matching prebuilt binary, verifies it against `checksums.txt`, and falls back to building from source when no release is published. On Linux it also installs the app icon and desktop entry.',
+          text: 'NZINGA ships a zero-config installer that detects OS, CPU and shell, downloads the matching prebuilt binary, verifies it against `checksums.txt`, and falls back to a local source build when no matching prebuilt exists. On Linux it also installs the app icon and desktop entry.',
         },
         {
           kind: 'commands',

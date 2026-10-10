@@ -10,6 +10,7 @@ import type { ToolDoc } from './types';
 
 import aksumDoc from './aksum';
 import amanirenasDoc from './amanirenas';
+import aminaDoc from './amina';
 import anansiDoc from './anansi';
 import imhotepDoc from './imhotep';
 import jabariDoc from './jabari';
@@ -26,6 +27,7 @@ import toha3eeDoc from './toha3ee';
 export const TOOL_DOCS: Record<string, ToolDoc> = {
   aksum: aksumDoc,
   amanirenas: amanirenasDoc,
+  amina: aminaDoc,
   anansi: anansiDoc,
   imhotep: imhotepDoc,
   jabari: jabariDoc,

@@ -253,6 +253,7 @@ export const AppRouter = () => {
           <Route path="/sekhmet" element={toolDoc('sekhmet')} />
           <Route path="/mansa" element={toolDoc('mansa')} />
           <Route path="/amanirenas" element={toolDoc('amanirenas')} />
+          <Route path="/amina" element={toolDoc('amina')} />
           <Route path="/sundiata" element={toolDoc('sundiata')} />
           <Route path="/timbuktu" element={toolDoc('timbuktu')} />
           <Route path="/kush" element={toolDoc('kush')} />

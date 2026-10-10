@@ -5,14 +5,14 @@ import type { ToolDoc } from './types';
  *
  * Nine-stage pipeline: INTAKE → HASH → METADATA → STATIC → STRINGS → BEHAVIOR
  * → NETWORK → IOC → RISK. Fourteen rules (KSH-001..KSH-014) in
- * `internal/rules/builtin/builtin.go`. Simulation risk: 73/100 (high). v0.1.0
+ * `internal/rules/builtin/builtin.go`. Simulation risk: 73/100 (high). v0.9.0
  * shipped, kush.dynamic refused (samples never executed on developer host).
  */
 const doc: ToolDoc = {
   slug: 'kush',
   seoTitle: 'KUSH — Offline Malware Sample Analysis Framework',
   seoDescription:
-    'Kush is QYVORA\'s open-source framework for offline malware sample analysis. It ingests sample documents (and deterministic simulations) to hash them, extract metadata, analyze static posture and strings, surface network indicators, extract IOCs and classify threats — without ever executing the sample. Shipped v0.1.0: full pipeline, rule engine (KSH-001..KSH-014), evidence system, simulation mode and reporting. Static sample analysis only; samples never executed on developer host; dynamic execution refused and behavioral data may only come from strongly isolated sandbox. KSH-012 rule exists to record this refusal honestly.',
+    'Kush is QYVORA\'s open-source framework for offline malware sample analysis. It ingests sample documents (and deterministic simulations) to hash them, extract metadata, analyze static posture and strings, surface network indicators, extract IOCs and classify threats — without ever executing the sample. Shipped v0.9.0: full pipeline, rule engine (KSH-001..KSH-014), evidence system, simulation mode and reporting. Static sample analysis only; samples never executed on developer host; dynamic execution refused and behavioral data may only come from strongly isolated sandbox. KSH-012 rule exists to record this refusal honestly.',
   summary:
     'KUSH runs a nine-stage pipeline: INTAKE (accept sample document, record identity), HASH (compute md5, sha1, sha256 fingerprints), METADATA (extract compiler, architecture, target OS, entropy, packer signals), STATIC (analyze imports, sections, embedded content — nothing executes), STRINGS (extract notable strings, URL/socket literals, encoded launchers), BEHAVIOR (read sandbox observations only; never executes on host), NETWORK (surface C2 domains, IPs, network artifacts), IOC (extract and cross-check IOC set), RISK (score severity × confidence × exposure, cap at 100). Fourteen rules: suspicious process-spawning imports (high), packed/high-entropy binary (medium), unsigned binary (medium), persistent autostart (high), C2 indicators (critical), encoded command launcher (high), embedded staged payload (medium), browser user-agent impersonation (medium), socket imports with process access (medium), verified high-confidence IOC catalog (informational), behavioral anomalies from sandbox (high), dynamic execution on developer host refused (low), process injection primitives (high), writable-and-executable section (medium). Simulation (--sim): packed unsigned invoice-1147_2310.doc.exe, risk 73/100 (high).',
 
@@ -87,7 +87,15 @@ const doc: ToolDoc = {
       blocks: [
         {
           kind: 'prose',
-          text: 'KUSH ships no one-liner installer and no release assets yet, so the Makefile is the primary path. `go build ./cmd/kush` is the shortest one if you only need the binary.',
+          text: 'KUSH publishes a v0.9.0 release with prebuilt binaries and a root install script, so the one-liner installers are the primary path for Linux, macOS and Windows. `go build ./cmd/kush` is the shortest source path if you only need the binary.',
+        },
+        {
+          kind: 'commands',
+          title: 'Release installer',
+          items: [
+            { command: 'curl -fsSL https://raw.githubusercontent.com/QYVORA/qyvora-kush/main/install.sh | bash', note: 'Linux and macOS. Installs the checksum-verified prebuilt binary (v0.9.0), the icon and the desktop entry.' },
+            { command: 'irm https://raw.githubusercontent.com/QYVORA/qyvora-kush/main/install.ps1 | iex', note: 'Windows PowerShell one-liner.' },
+          ],
         },
         {
           kind: 'commands',
@@ -140,7 +148,7 @@ const doc: ToolDoc = {
             { label: 'Target state', value: '~/.config/qyvora/kush/targets.json', mono: true },
             { label: 'Default profile', value: 'standard', mono: true },
             { label: 'Default report dir', value: 'reports', mono: true },
-            { label: 'Installer', value: 'None — no release assets published yet' },
+            { label: 'Installer', value: 'install.sh / install.ps1 (root of the repository)' },
           ],
         },
         {

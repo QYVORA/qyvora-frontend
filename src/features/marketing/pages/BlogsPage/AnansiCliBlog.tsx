@@ -181,17 +181,14 @@ anansi target.com --timeout 10     # per-request timeout in seconds`} />
           Installing Anansi is a two-step process. No package manager, no runtime, no dependencies:
         </Body>
 
-        <TerminalBlock code={`# Step 1: Download the binary
-curl -L https://github.com/QYVORA/qyvora-anansi/releases/latest/download/anansi-linux-amd64 -o anansi
+        <TerminalBlock code={`# Step 1: Install the latest release
+curl -fsSL https://raw.githubusercontent.com/QYVORA/qyvora-anansi/main/install.sh | bash
 
-# Step 2: Make it executable and install
-chmod +x anansi && sudo mv anansi /usr/local/bin/
-
-# Step 3: Run it
+# Step 2: Run it
 anansi target.com`} />
 
         <Body>
-          The binary supports Linux (amd64 and arm64), macOS (Intel and Apple Silicon), and Windows. The same <Highlight>zero-dependency philosophy</Highlight> applies everywhere: download, chmod, run.
+          The installer supports Linux (amd64 and arm64), macOS (Intel and Apple Silicon), and Windows, and falls back to a local source build where no matching prebuilt exists. No package manager, no runtime, no dependencies.
         </Body>
       </Section>
 

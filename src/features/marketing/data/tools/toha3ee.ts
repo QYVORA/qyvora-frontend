@@ -76,14 +76,14 @@ const doc: ToolDoc = {
       blocks: [
         {
           kind: 'prose',
-          text: 'TOHA3EE has one-liner installers that fetch the prebuilt binary for your platform from the release page. The installers also update PATH, and the Linux installer installs a desktop entry and icon.',
+          text: 'TOHA3EE links libpcap through cgo, so the only prebuilt artifact published for v0.9.0 is Linux x86_64 (`toha3ee_0.9.0_linux_amd64.tar.gz`). The installers still auto-detect your platform: where no compatible prebuilt exists — Apple silicon, arm64 Linux, Windows — they fall back to a local source build, which needs Go 1.26+, a C toolchain and libpcap headers. Installers update PATH and, on Linux, install a desktop entry and icon.',
         },
         {
           kind: 'commands',
           title: 'One-liner install',
           items: [
-            { command: 'curl -fsSL https://raw.githubusercontent.com/QYVORA/qyvora-toha3ee/main/install.sh | bash', note: 'Linux and macOS.' },
-            { command: 'irm https://raw.githubusercontent.com/QYVORA/qyvora-toha3ee/main/install.ps1 | iex', note: 'Windows PowerShell.' },
+            { command: 'curl -fsSL https://raw.githubusercontent.com/QYVORA/qyvora-toha3ee/main/install.sh | bash', note: 'Linux x86_64 prebuilt; other targets fall back to a local source build.' },
+            { command: 'irm https://raw.githubusercontent.com/QYVORA/qyvora-toha3ee/main/install.ps1 | iex', note: 'Windows PowerShell — builds from source (no Windows prebuilt is published).' },
           ],
         },
         {
@@ -99,6 +99,8 @@ const doc: ToolDoc = {
         {
           kind: 'facts',
           items: [
+            { label: 'Latest release', value: 'v0.9.0', mono: true },
+            { label: 'Prebuilt', value: 'linux/amd64 only (libpcap via cgo); macOS, Windows and arm64 build from source', mono: true },
             { label: 'Module', value: 'github.com/QYVORA/qyvora-toha3ee', mono: true },
             { label: 'Entry point', value: 'cmd/toha3ee', mono: true },
             { label: 'Binary', value: 'toha3ee', mono: true },

@@ -5,14 +5,14 @@ import type { ToolDoc } from './types';
  *
  * Nine-stage pipeline: SOURCE → INTEGRITY → ARTIFACTS → FILESYSTEM → MEMORY →
  * LOGS → TIMELINE → INDICATORS → RISK. Thirteen rules (DFI-001..DFI-013) in
- * `internal/rules/builtin/builtin.go`. Simulation risk: 62/100 (high). v0.1.0
+ * `internal/rules/builtin/builtin.go`. Simulation risk: 62/100 (high). v0.9.0
  * shipped, forensics.live disabled (live host acquisition refused).
  */
 const doc: ToolDoc = {
   slug: 'timbuktu',
   seoTitle: 'TIMBUKTU — Incident Response & Digital Forensics Framework',
   seoDescription:
-    'Timbuktu is QYVORA\'s open-source framework for incident response and digital forensics. It analyzes recorded forensic case files (and deterministic simulations) to verify evidence integrity, identify artifacts, analyze filesystem and memory surfaces, review logs, build evidence-backed timelines and extract indicators of compromise. Shipped v0.1.0: full pipeline, rule engine (DFI-001..DFI-013), evidence system, simulation mode and reporting. Offline case-file analysis only; live host acquisition not implemented and refused. Chain of custody first: every evidence item carries content hash; DFI-001 fires when declared hash fails verification. Evidence never modified.',
+    'Timbuktu is QYVORA\'s open-source framework for incident response and digital forensics. It analyzes recorded forensic case files (and deterministic simulations) to verify evidence integrity, identify artifacts, analyze filesystem and memory surfaces, review logs, build evidence-backed timelines and extract indicators of compromise. Shipped v0.9.0: full pipeline, rule engine (DFI-001..DFI-013), evidence system, simulation mode and reporting. Offline case-file analysis only; live host acquisition not implemented and refused. Chain of custody first: every evidence item carries content hash; DFI-001 fires when declared hash fails verification. Evidence never modified.',
   summary:
     'TIMBUKTU runs a nine-stage pipeline: SOURCE (detect and register evidence sources), INTEGRITY (verify declared hashes against content for chain of custody), ARTIFACTS (identify autoruns, tasks, services, web shells), FILESYSTEM (analyze files, unusual locations, credentials on disk), MEMORY (review process activity and masquerading binaries), LOGS (flag logon anomalies, credential anomalies, service installs), TIMELINE (reconstruct evidence-backed event timeline), INDICATORS (extract and cross-check IOCs), RISK (score severity × confidence × exposure, cap at 100). Thirteen rules: evidence integrity failure (critical), autorun persistence (high), suspicious scheduled task (high), service with temp image path (high), web shell deployed (critical), suspicious files in unusual locations (high), suspicious process activity (critical), credential material on disk (high), logon anomalies (medium), network indicators present (medium), HOSTS file modification (medium), timeline coverage gap (low), masquerading system binary (high). Simulation (--sim): Windows workstation compromise, risk 62/100 (high).',
 
@@ -91,6 +91,14 @@ const doc: ToolDoc = {
       blocks: [
         {
           kind: 'commands',
+          title: 'Release installer',
+          items: [
+            { command: 'curl -fsSL https://raw.githubusercontent.com/QYVORA/qyvora-timbuktu/main/install.sh | bash', note: 'Linux and macOS. Installs the checksum-verified prebuilt binary (v0.9.0), the icon and the desktop entry.' },
+            { command: 'irm https://raw.githubusercontent.com/QYVORA/qyvora-timbuktu/main/install.ps1 | iex', note: 'Windows PowerShell one-liner.' },
+          ],
+        },
+        {
+          kind: 'commands',
           title: 'From source',
           items: [
             {
@@ -119,7 +127,7 @@ const doc: ToolDoc = {
             { label: 'Binary', value: 'timbuktu', mono: true },
             { label: 'Env namespace', value: 'QYVORA_TIMBUKTU_*', mono: true },
             { label: 'Input flag', value: '--case <case.json>', mono: true },
-            { label: 'Installer', value: 'None — no release assets published yet' },
+            { label: 'Installer', value: 'install.sh / install.ps1 (root of the repository)' },
           ],
         },
       ],

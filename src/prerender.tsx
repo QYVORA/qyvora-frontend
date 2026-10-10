@@ -670,8 +670,8 @@ const routeContent: Record<string, RouteContent> = {
       {
         heading: 'Install',
         bullets: [
-          'Linux / macOS: curl -fsSL https://raw.githubusercontent.com/qyvora/qyvora-toha3ee/main/scripts/install.sh | sh',
-          'Windows (PowerShell): irm https://raw.githubusercontent.com/qyvora/qyvora-toha3ee/main/scripts/install.ps1 | iex',
+          'Linux / macOS: curl -fsSL https://raw.githubusercontent.com/QYVORA/qyvora-toha3ee/main/install.sh | bash',
+          'Windows (PowerShell): irm https://raw.githubusercontent.com/QYVORA/qyvora-toha3ee/main/install.ps1 | iex',
           'From a checkout: make install',
         ],
       },

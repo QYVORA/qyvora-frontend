@@ -83,9 +83,9 @@ const doc: ToolDoc = {
         },
         {
           kind: 'note',
-          variant: 'warning',
-          title: 'The aksum installer has a stale URL in its own header comment',
-          text: 'The usage comment at the top of install.sh documents the one-liner as `raw.githubusercontent.com/QYVORA/qyvora-aksum-cli/main/install.sh` — note the `-cli` suffix, which is not this repository. The README and the REPO variable inside the script both correctly use QYVORA/qyvora-aksum. Use the README URL, not the comment.',
+          variant: 'info',
+          title: 'Release artifacts are versioned archives',
+          text: 'Aksum v0.9.0 publishes `aksum_<version>_<os>_<arch>.tar.gz` (`.zip` on Windows, `macos` as the darwin token) plus `checksums.txt`. The installer downloads the matching artifact, verifies its SHA-256 against that checksum file, and validates the ELF/PE format before installing.',
         },
         {
           kind: 'commands',
