@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Users, Bug, ShieldCheck, ArrowUpRight } from 'lucide-react';
+import { Users, Bug, ShieldCheck, ArrowUpRight, GraduationCap, Box, Zap } from 'lucide-react';
 import { Metric } from '@/shared/components/ui/Card';
 import CpLogo from '@/shared/components/CpLogo';
 import ScrollReveal from '@/shared/components/ScrollReveal';
@@ -22,9 +22,11 @@ const formatNumber = (value: number): string => {
 const ProofBlock: React.FC<ProofBlockProps> = ({ stats }) => {
   const s = stats?.stats;
   const metrics: { label: string; value: string; icon: React.ReactNode; accent?: boolean; to?: string }[] = [
-    { label: "Professionals trained", value: formatNumber(s?.learnersTrained ?? 0), icon: <Users className="h-4 w-4" aria-hidden="true" />, accent: true },
-    { label: "Vulnerabilities identified across engagements", value: formatNumber(s?.vulnerabilitiesIdentified ?? 0), icon: <Bug className="h-4 w-4" aria-hidden="true" /> },
+    { label: "Students enrolled", value: formatNumber(s?.studentsCount ?? 0), icon: <GraduationCap className="h-4 w-4" aria-hidden="true" />, accent: true },
+    { label: "Professionals trained", value: formatNumber(s?.learnersTrained ?? 0), icon: <Users className="h-4 w-4" aria-hidden="true" /> },
     { label: "Bootcamp launches", value: formatNumber(s?.bootcampsCount ?? 0), icon: <ShieldCheck className="h-4 w-4" aria-hidden="true" /> },
+    { label: "Zero-day products", value: formatNumber(s?.zeroDayProductsCount ?? 0), icon: <Box className="h-4 w-4" aria-hidden="true" /> },
+    { label: "Vulnerabilities identified", value: formatNumber(s?.vulnerabilitiesIdentified ?? 0), icon: <Bug className="h-4 w-4" aria-hidden="true" /> },
     { label: "CP in circulation", value: formatNumber(s?.cpPoolSize ?? 0), icon: <CpLogo className="h-4 w-4" aria-hidden="true" />, to: '/cp' },
   ];
 
@@ -46,7 +48,7 @@ const ProofBlock: React.FC<ProofBlockProps> = ({ stats }) => {
         </ScrollReveal>
 
         <ScrollReveal delay={0.08}>
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {metrics.map((metric) =>
               metric.to ? (
                 <Link
