@@ -1,6 +1,6 @@
 # QYVORA Product Roadmap
 
-**Status:** Live · 170+ users · Social channels active  
+**Status:** Live · 10+ users · Social channels active  
 **Last updated:** 2026-08-15 (merged with `docs/_ROADMAP.md` feature inventory)
 
 ---

@@ -41,7 +41,7 @@ export const Hpb2026CaseStudy: React.FC = () => {
           The Hacker Protocol Bootcamp (HPB) <Highlight>2026 Cohort</Highlight> was more than just a training program. It was a <Highlight>mission</Highlight>. We set out to find, train, and credential the next generation of offensive security operators in Africa, and what we accomplished exceeded every expectation.
         </Body>
         <Body>
-          Over the course of the bootcamp, participants moved through five intensive phases: from the hacker mindset all the way to advanced social engineering, completing <Highlight>20 rooms</Highlight> and earning <Highlight>on-chain verified CyberPoints (CP)</Highlight>. But the real story isn't the curriculum. It's the <Highlight>community, the outcomes, and the team</Highlight> that emerged from this cohort.
+          Over the course of the bootcamp, participants moved through five intensive phases: from the hacker mindset all the way to advanced social engineering, completing <Highlight>19 rooms</Highlight> and earning <Highlight>on-chain verified CyberPoints (CP)</Highlight>. But the real story isn't the curriculum. It's the <Highlight>community, the outcomes, and the team</Highlight> that emerged from this cohort.
         </Body>
         <Body>
           <Highlight>Note on our evolution:</Highlight> When the HPB 2026 Cohort launched, we operated under the name <Highlight>HSOCIETY OFFSEC</Highlight>. Since then, we have evolved into <Highlight>QYVORA</Highlight>, a unified platform for offensive security training, credentialing, and operations. The bootcamp's results and participants remain the same; only the banner has grown.
@@ -171,7 +171,7 @@ export const Hpb2026CaseStudy: React.FC = () => {
             <div className="min-w-0">
               <h3 className="text-base md:text-lg font-black uppercase tracking-wider mb-2 text-text-primary break-words">QuiteRoot. The Tech Team</h3>
               <p className="text-sm font-mono text-text-secondary leading-[2]">
-                From the HPB cohort, we identified the most <Highlight>serious and dedicated learners</Highlight> and formed <Highlight>QuiteRoot</Highlight> | QYVORA's engineering and research team. The team emerged organically from the bootcamp because the curriculum itself was a filter: those who completed all 20 rooms demonstrated the <Highlight>grit, curiosity, and technical aptitude</Highlight> that makes a great operator. The team is currently being rebuilt and is open to applications.
+                From the HPB cohort, we identified the most <Highlight>serious and dedicated learners</Highlight> and formed <Highlight>QuiteRoot</Highlight> | QYVORA's engineering and research team. The team emerged organically from the bootcamp because the curriculum itself was a filter: those who completed all 19 rooms demonstrated the <Highlight>grit, curiosity, and technical aptitude</Highlight> that makes a great operator. The team is currently being rebuilt and is open to applications.
               </p>
             </div>
           </div>
