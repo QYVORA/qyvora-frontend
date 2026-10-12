@@ -16,6 +16,9 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - iOS Safari install instructions in the install banner (it never fires `beforeinstallprompt`), and `navigator.storage.persist()` on accepted installs
 - 15 unit tests for the PWA service (`core/services/__tests__/pwa.test.ts`)
 
+### Fixed
+- Corrected the shipped lab set to the **5** labs in `features/student/constants/labs.ts` (privesc, passwords, sql-injection, osint, kill-chain). The `[0.1.0]` entry's "10 attack labs" list over-stated what ships; the site and docs were already corrected to 5.
+
 ### Changed
 - PWA service moved from `features/student/services/pwa.ts` to `core/services/pwa.ts` (whole-site scope) with React bindings in `core/hooks/usePWA.ts` (`useInstallPrompt`, `useServiceWorkerUpdate`, `useOnlineStatus`) via `useSyncExternalStore`
 - Service worker registration moved from `AppShell` to the app entry (`app/main.tsx`) and is skipped in dev unless `VITE_ENABLE_SW_IN_DEV=true` — a worker caching Vite's module graph breaks HMR

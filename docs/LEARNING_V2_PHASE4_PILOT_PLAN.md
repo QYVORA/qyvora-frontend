@@ -435,7 +435,7 @@ describe('BootcampRoomPageV2', () => {
 
 **Intentionally NOT addressed in pilot:**
 
-1. **Full content migration** — Only 1 room migrated, not all 18
+1. **Full content migration** — Only 1 room migrated, not all 19
 2. **Progress API integration** — Stubbed, not fully wired
 3. **Image optimization** — Uses existing image paths
 4. **Advanced block types** — mental-model, diagram, http, code, comparison not needed for pilot

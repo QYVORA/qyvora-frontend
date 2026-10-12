@@ -590,7 +590,7 @@ const routeContent: Record<string, RouteContent> = {
     title: 'Offensive Security Engineer Bootcamp (QOSE) | QYVORA',
     description: 'QOSE is a 12-week, practical-first online bootcamp that turns Hacker Protocol Bootcamp graduates into entry-level offensive-security practitioners.',
     h1: 'QYVORA Offensive Security Engineer Bootcamp',
-    lead: 'Twelve weeks from certified foundation to structured, authorized assessment work. QOSE is currently in pre-registration.',
+    lead: 'Three months from Hacker Protocol Bootcamp foundations to structured, authorized assessment work. QOSE is currently in pre-registration.',
     sections: [
       {
         heading: 'What it covers',

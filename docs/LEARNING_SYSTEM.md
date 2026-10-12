@@ -148,7 +148,7 @@ const Component = blockRegistry.getRenderer(block.type);
 **📋 Phase 4-9 Planned:**
 - Phase 4: HPB pilot (Phase 1, Room 1)
 - Phase 5: Iterate on feedback, add missing blocks
-- Phase 6: Complete HPB migration (18 rooms)
+- Phase 6: Complete HPB migration (19 rooms)
 - Phase 7: Migrate courses (12 courses)
 - Phase 8: Integrate labs (5 labs)
 - Phase 9: Cleanup and documentation

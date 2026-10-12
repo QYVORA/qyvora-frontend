@@ -68,7 +68,7 @@ export const BOOTCAMP_CONFIG: BootcampConfig = {
   title: 'Hacker Protocol Bootcamp',
   phases: [
 
-    // ── PHASE 1: HACKER MINDSET (moduleId: 1, 4 rooms) ──────────────────────
+    // ── PHASE 1: HACKER MINDSET (moduleId: 1, 3 rooms) ──────────────────────
     {
       id: 'phase1',
       title: 'Hacker Mindset',
@@ -101,7 +101,7 @@ export const BOOTCAMP_CONFIG: BootcampConfig = {
         }],
     },
 
-    // ── PHASE 2: LINUX FOUNDATIONS (moduleId: 2, 5 rooms) ───────────────────
+    // ── PHASE 2: LINUX FOUNDATIONS (moduleId: 2, 4 rooms) ───────────────────
     {
       id: 'phase2',
       title: 'Linux Foundations',
@@ -142,7 +142,7 @@ export const BOOTCAMP_CONFIG: BootcampConfig = {
         }],
     },
 
-    // ── PHASE 3: NETWORKING (moduleId: 3, 5 rooms) ──────────────────────────
+    // ── PHASE 3: NETWORKING (moduleId: 3, 4 rooms) ──────────────────────────
     {
       id: 'phase3',
       title: 'Networking',
@@ -183,7 +183,7 @@ export const BOOTCAMP_CONFIG: BootcampConfig = {
         }],
     },
 
-    // ── PHASE 4: WEB & BACKEND SYSTEMS (moduleId: 4, 6 rooms) ───────────────
+    // ── PHASE 4: WEB & BACKEND SYSTEMS (moduleId: 4, 5 rooms) ───────────────
     {
       id: 'phase4',
       title: 'Web & Backend Systems',
@@ -232,7 +232,7 @@ export const BOOTCAMP_CONFIG: BootcampConfig = {
         }],
     },
 
-    // ── PHASE 5: SOCIAL ENGINEERING (moduleId: 5, 4 rooms) ──────────────────
+    // ── PHASE 5: SOCIAL ENGINEERING (moduleId: 5, 3 rooms) ──────────────────
     {
       id: 'phase5',
       title: 'Social Engineering',

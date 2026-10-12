@@ -196,7 +196,7 @@ export const ConceptBlockComponent: React.FC<...> = ({ block }) => {
 
 ### Goal
 
-Migrate all 18 HPB rooms to V2 semantic blocks.
+Migrate all 19 HPB rooms to V2 semantic blocks.
 
 ### Strategy
 

@@ -32,7 +32,7 @@ const QosePage = () => {
     <div className="w-full bg-canvas">
       <SEO
         title="Offensive Security Engineer Bootcamp (QOSE) | QYVORA"
-        description="QOSE is a 12-week, practical-first online bootcamp that turns Hacker Protocol Bootcamp graduates into entry-level offensive-security practitioners."
+        description="QOSE is a 3-month, practical-first online bootcamp that turns Hacker Protocol Bootcamp graduates into entry-level offensive-security practitioners."
         breadcrumbName="QOSE"
       />
       <PublicContainer className="pb-20 pt-24 md:pb-24 md:pt-28 lg:pt-32">

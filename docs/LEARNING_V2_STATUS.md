@@ -32,7 +32,7 @@ Separation of concerns:
 
 **Key findings:**
 - Current system: 3 surfaces (HPB, Courses, Labs), all Markdown-driven
-- HPB: 4028-line config, 18 rooms, ~100+ steps
+- HPB: 4028-line config, 19 rooms, ~100+ steps
 - Labs: Structured (mission/objectives/evidence) but still Markdown-heavy
 - Courses: Very large Markdown documents (1000+ lines per lesson)
 - Problem: No semantic structure, hard to enforce pedagogy, duplication across surfaces
@@ -175,7 +175,7 @@ src/shared/learning/
 
 ### 📋 Phase 6: Complete HPB Migration (Planned)
 
-**Goal:** Migrate all 18 HPB rooms
+**Goal:** Migrate all 19 HPB rooms
 
 **Strategy:**
 - Start with Phase 1 (4 rooms) — establish patterns

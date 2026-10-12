@@ -63,7 +63,7 @@ interface BootcampStep {
 
 **Content Storage:**
 - `src/features/student/constants/bootcampConfig.ts` (4028 lines)
-- 5 phases, 18 rooms, ~100+ steps total
+- 5 phases, 19 rooms, ~100+ steps total
 - Markdown strings mixed with optional quiz data
 
 **Rendering Path:**

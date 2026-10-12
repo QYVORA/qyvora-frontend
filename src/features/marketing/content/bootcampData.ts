@@ -177,7 +177,7 @@ export const BOOTCAMPS: Record<Bootcamp['id'], Bootcamp> = {
     name: 'Offensive Security Engineer Bootcamp',
     acronym: 'QOSE',
     path: '/qose',
-    tagline: 'Twelve weeks from certified foundation to structured, authorized assessment work.',
+    tagline: 'Three months from Hacker Protocol Bootcamp foundations to structured, authorized assessment work.',
     overview:
       'A practical-first offensive security programme that turns Hacker Protocol Bootcamp graduates into entry-level offensive-security practitioners capable of conducting structured, authorized security assessments. QOSE is not HPB 2.0 — it begins where HPB ends, with one premise: you know the tools, now learn how to conduct an engagement.',
     audience:
@@ -191,7 +191,7 @@ export const BOOTCAMPS: Record<Bootcamp['id'], Bootcamp> = {
     logoHeight: LOGO_SIZE.height,
     logoAlt: 'QYVORA Offensive Security Engineer Bootcamp logo',
     facts: [
-      { label: 'Duration', value: '12 weeks' },
+      { label: 'Duration', value: '3 months' },
       { label: 'Delivery', value: 'Online' },
       { label: 'Teaching model', value: 'Practical-first' },
       { label: 'Prerequisite', value: 'Hacker Protocol Bootcamp' },

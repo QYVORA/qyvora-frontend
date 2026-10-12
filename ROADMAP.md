@@ -1,6 +1,6 @@
 # QYVORA Product Roadmap
 
-**Status:** Live · 10+ users · Social channels active  
+**Status:** Live · Social channels active  
 **Last updated:** 2026-08-15 (merged with `docs/_ROADMAP.md` feature inventory)
 
 ---
@@ -94,7 +94,7 @@
 - **Simulated Terminal** — 114+ commands, Kali Linux emulation, virtual filesystem (`TerminalShell` behind shared `TerminalWrapper`)
 - **13 Simulation Components** — Browser, HTTP Inspector, SQL Console, etc.
 - **Course System (12 courses)** — structured lessons with quizzes and code playgrounds
-- **Bootcamp System** — Hacker Protocol Bootcamp, 5 phases / 18 rooms
+- **Bootcamp System** — Hacker Protocol Bootcamp, 5 phases / 19 rooms
 - **Code Playground** — in-browser code execution (Python, Bash, JavaScript)
 - **Quiz System** — inline quizzes and bootcamp room quizzes
 

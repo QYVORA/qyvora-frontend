@@ -53,7 +53,7 @@ graph TD
 | 4 | Web & Backend | 5 | `#F59E0B` (Amber) |
 | 5 | Social Engineering | 4 | `#EF4444` (Red) |
 
-**Total: 5 modules, 18 rooms**
+**Total: 5 modules, 19 rooms**
 
 ## Room Structure
 
@@ -117,7 +117,7 @@ interface LearningUnit {
 **Migration Status:**
 - ✅ V2 architecture complete (types, renderer, 12 block components)
 - 📋 Pilot: Phase 1, Room 1 planned as first V2 migration
-- 📋 Full migration: 18 rooms to be converted to semantic blocks
+- 📋 Full migration: 19 rooms to be converted to semantic blocks
 
 ## Step Content Format
 
@@ -340,7 +340,7 @@ The Hacker Protocol Bootcamp is being migrated to Learning System V2 in phases:
 - Goal: Validate V2 architecture with real content
 
 **Phase 6 (Full Migration) - 📋 Planned:**
-- All 18 rooms converted to semantic blocks
+- All 19 rooms converted to semantic blocks
 - Legacy Markdown content replaced
 - StepCard component deprecated in favor of LearningContentRenderer
 - bootcampConfig.ts replaced with structured data files
