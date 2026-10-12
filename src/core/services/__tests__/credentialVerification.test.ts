@@ -81,23 +81,22 @@ describe('verifyCredential', () => {
     expect(result.source).toBe('api');
   });
 
-  it('falls back to the local registry when the API is unreachable', async () => {
+  it('returns an error state when the API is unreachable', async () => {
     apiGet.mockRejectedValue(networkError());
 
     const result = await verifyCredential(DEMO_CREDENTIAL_IDS.QOSE);
 
-    expect(result.state).toBe('valid');
-    expect(result.source).toBe('local');
-    expect(result.credential?.bootcampId).toBe('QOSE');
+    expect(result.state).toBe('error');
+    expect(result.credential).toBeUndefined();
   });
 
-  it('resolves the revoked demo credential from the local registry', async () => {
+  it('returns not-found when the endpoint reports no such credential', async () => {
     apiGet.mockRejectedValue(notFoundError());
 
     const result = await verifyCredential(DEMO_CREDENTIAL_IDS.REVOKED);
 
-    expect(result.state).toBe('revoked');
-    expect(result.source).toBe('local');
+    expect(result.state).toBe('not-found');
+    expect(result.credential).toBeUndefined();
   });
 
   it('returns not-found for an unknown ID when the service has no record', async () => {

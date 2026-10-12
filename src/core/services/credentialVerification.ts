@@ -11,11 +11,10 @@
  *      cohortIdentifier, completionDate, result, issuedAt, chainVerified,
  *      blockIndex } }
  *
- * While the backend endpoint is not yet live, the service falls back to a
- * small local registry of demo credentials so the verification flow is fully
- * exercisable. Fallback results are always flagged with `source: 'local'`
- * and the UI labels them as local demo records — they are never presented as
- * chain-verified backend results.
+ * Verification is API-only. The service never fabricates credentials: if the
+ * backend cannot be reached, the result is an explicit `error` state rather
+ * than a locally-invented record. A 404 from the endpoint means "no such
+ * credential" (`not-found`).
  */
 
 import axios, { AxiosError } from 'axios';
@@ -55,14 +54,14 @@ export interface VerificationResult {
   state: VerificationState;
   credentialId: string;
   credential?: VerifiedCredential;
-  /** `api` = backend credential service, `local` = bundled demo registry. */
-  source?: 'api' | 'local';
+  /** `api` = result from the backend credential service. */
+  source?: 'api';
   message?: string;
 }
 
 // ─── Demo credential IDs ──────────────────────────────────────────────────────
-// Single source of truth for the sample IDs used by the admin certificate
-// preview and the local verification registry.
+// Sample IDs used by the admin certificate template preview. These are NOT used
+// by the public verification flow, which only ever reads the live API.
 
 export const DEMO_CREDENTIAL_IDS = {
   /** QOSE Cohort 1 sample — valid. */
@@ -72,50 +71,6 @@ export const DEMO_CREDENTIAL_IDS = {
   /** Revoked sample — demonstrates the revoked state. */
   REVOKED: 'd4c1a9e7-3b52-4f80-9a11-6e2f7c3d5a10',
 } as const;
-
-// ─── Local fallback registry (temporary — removed once the API is live) ───────
-
-const LOCAL_REGISTRY: Record<string, VerifiedCredential> = {
-  [DEMO_CREDENTIAL_IDS.QOSE]: {
-    credentialId: DEMO_CREDENTIAL_IDS.QOSE,
-    recipientName: 'Alexandra Maria Constantine-Rodriguez',
-    programName: 'QYVORA Offensive Security Engineer Bootcamp',
-    cohortIdentifier: 'Cohort 1 - Nov 2026',
-    completionDate: '2026-11-30T12:00:00Z',
-    result: 'PASS',
-    issuedAt: '2026-11-30T14:30:00Z',
-    status: 'ACTIVE',
-    bootcampId: 'QOSE',
-    chainVerified: true,
-    blockIndex: 1234,
-  },
-  [DEMO_CREDENTIAL_IDS.HPB]: {
-    credentialId: DEMO_CREDENTIAL_IDS.HPB,
-    recipientName: 'Alex Johnson',
-    programName: 'Hacker Protocol Bootcamp',
-    cohortIdentifier: 'Cohort 1 - Nov 2026',
-    completionDate: '2026-10-30T12:00:00Z',
-    result: 'PASS',
-    issuedAt: '2026-10-30T14:30:00Z',
-    status: 'ACTIVE',
-    bootcampId: 'HPB',
-    chainVerified: true,
-    blockIndex: 1189,
-  },
-  [DEMO_CREDENTIAL_IDS.REVOKED]: {
-    credentialId: DEMO_CREDENTIAL_IDS.REVOKED,
-    recipientName: 'Sample Revoked Learner',
-    programName: 'Hacker Protocol Bootcamp',
-    cohortIdentifier: 'Cohort 0 - Pilot',
-    completionDate: '2026-08-30T12:00:00Z',
-    result: 'PASS',
-    issuedAt: '2026-08-30T14:30:00Z',
-    status: 'REVOKED',
-    bootcampId: 'HPB',
-    chainVerified: true,
-    blockIndex: 940,
-  },
-};
 
 // ─── Normalisation & validation ───────────────────────────────────────────────
 
@@ -194,21 +149,17 @@ function mapApiResponse(
 
 // ─── Error classification ─────────────────────────────────────────────────────
 
-function isEndpointUnavailable(error: unknown): boolean {
+function isNotFound(error: unknown): boolean {
   if (!axios.isAxiosError(error)) return false;
-  const axiosError = error as AxiosError;
-  if (!axiosError.response) return true; // network / proxy down
-  const status = axiosError.response.status;
-  // Backend has no credential endpoint yet (route missing / not implemented).
-  return status === 404 || status === 405 || status === 501 || status === 502 || status === 503;
+  return (error as AxiosError).response?.status === 404;
 }
 
 // ─── Public API ───────────────────────────────────────────────────────────────
 
 /**
- * Verifies a credential ID against the backend credential service, falling
- * back to the local demo registry when the service is unavailable or has no
- * record for the ID.
+ * Verifies a credential ID against the backend credential service. The result
+ * is always derived from the live API: an unreachable service yields an
+ * explicit `error` state, never a locally-fabricated credential.
  */
 export async function verifyCredential(raw: string): Promise<VerificationResult> {
   const credentialId = normalizeCredentialId(raw);
@@ -224,35 +175,12 @@ export async function verifyCredential(raw: string): Promise<VerificationResult>
   try {
     const { data } = await api.get(`/credentials/verify/${encodeURIComponent(credentialId)}`);
     const mapped = mapApiResponse(credentialId, data);
-    if (mapped) return { ...mapped, credentialId, source: 'api' };
     // Endpoint answered but with no usable credential — treat as not found.
-    const local = LOCAL_REGISTRY[credentialId.toLowerCase()];
-    if (local) {
-      return {
-        state: local.status === 'ACTIVE' ? 'valid' : 'revoked',
-        credentialId,
-        credential: local,
-        source: 'local',
-      };
-    }
-    return { state: 'not-found', credentialId, source: 'api' };
+    if (!mapped) return { state: 'not-found', credentialId, source: 'api' };
+    return { ...mapped, credentialId, source: 'api' };
   } catch (error) {
-    const local = LOCAL_REGISTRY[credentialId.toLowerCase()];
-    if (local) {
-      return {
-        state: local.status === 'ACTIVE' ? 'valid' : 'revoked',
-        credentialId,
-        credential: local,
-        source: 'local',
-      };
-    }
-    if (isEndpointUnavailable(error)) {
-      return {
-        state: 'not-found',
-        credentialId,
-        source: 'local',
-        message: 'No credential matches this ID. The credential service is also unreachable right now.',
-      };
+    if (isNotFound(error)) {
+      return { state: 'not-found', credentialId, source: 'api' };
     }
     return {
       state: 'error',

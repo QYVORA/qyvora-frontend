@@ -311,8 +311,6 @@ const VerifyPage: React.FC = () => {
                   {credential.chainVerified
                     ? 'The credential hash is anchored on qyvora-chain — the record is tamper-evident.'
                     : 'This record is served from the issuing registry while chain anchoring is pending.'}
-                  {result.source === 'local' &&
-                    ' Served from a local demonstration record — the credential API is not connected yet.'}
                 </InlineAlert>
               </Card>
 
