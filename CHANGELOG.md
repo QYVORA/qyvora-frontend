@@ -76,7 +76,7 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ### Added
 - Simulated terminal engine: ~149 commands, in-browser VFS, streaming output
-- 10 attack labs: privesc, passwords, webapp, sqli, phishing, proxy, traffic, osint, wireless, killchain
+- 10 attack labs: privesc, passwords, webapp, sqli, phishing, proxy, traffic, osint, wireless, killchain *(corrected: only **5** labs actually ship — privesc, passwords, sql-injection, osint, kill-chain; the other five were planned and never shipped. See the Unreleased note above.)*
 - Hacker Protocol Bootcamp walkthrough system: 5 phases, 19 rooms, 4000+ lines of content
 - Course lessons with code playground and quiz system
 - 27 locale internationalization (strong African language coverage)
