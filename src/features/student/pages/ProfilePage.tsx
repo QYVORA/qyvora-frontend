@@ -18,6 +18,8 @@ import ContributionCalendar from '../../../shared/components/profile/Contributio
 import ActivityTimeline from '../../../shared/components/profile/ActivityTimeline';
 import LabsModule from '../../../shared/components/profile/LabsModule';
 import CoursesModule from '../../../shared/components/profile/CoursesModule';
+import CertificatesModule from '../../../shared/components/profile/CertificatesModule';
+import { useUserCredentials } from '../../../shared/hooks/useUserCredentials';
 import TrophyCabinet from '../../../shared/components/profile/TrophyCabinet';
 import type { ProfileSectionId } from '../../../shared/types/profile';
 
@@ -39,6 +41,12 @@ const Profile: React.FC = () => {
   } = useProfile({ paramUsername, authUser });
 
   const { achievements: skillAchievements } = useSkillAchievements();
+
+  const {
+    credentials,
+    loading: credentialsLoading,
+    error: credentialsError,
+  } = useUserCredentials(isOwnProfile ? profile?.id : undefined);
 
   // Notify the outcome of the GitHub linking flow (backend redirects back here).
   const githubResult = searchParams.get('github');
@@ -94,9 +102,10 @@ const Profile: React.FC = () => {
     }
     if (profile.completedRooms.length > 0) sections.push('labs');
     if (profile.coursesCompleted > 0 || profile.completedCourseIds.length > 0) sections.push('courses');
+    if (isOwnProfile) sections.push('credentials');
     sections.push('trophy');
     return sections;
-  }, [profile, activityDates]);
+  }, [profile, activityDates, isOwnProfile]);
 
   if (loading || !profile) return <ProfileSkeleton />;
 
@@ -211,6 +220,16 @@ const Profile: React.FC = () => {
                 <LabsModule
                   completedRooms={profile.completedRooms}
                   labsCompleted={profile.labsCompleted}
+                />
+              </section>
+            )}
+
+            {visibleSections.includes('credentials') && (
+              <section id="profile-section-credentials">
+                <CertificatesModule
+                  credentials={credentials}
+                  loading={credentialsLoading}
+                  error={credentialsError}
                 />
               </section>
             )}

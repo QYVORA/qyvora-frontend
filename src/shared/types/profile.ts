@@ -131,6 +131,7 @@ export type ProfileSectionId =
   | 'achievements'
   | 'labs'
   | 'courses'
+  | 'credentials'
   | 'trophy';
 
 export interface ProfileSection {
@@ -145,6 +146,7 @@ export const PROFILE_SECTIONS: ProfileSection[] = [
   { id: 'achievements', label: 'Achievements' },
   { id: 'labs',         label: 'Labs' },
   { id: 'courses',      label: 'Courses' },
+  { id: 'credentials',  label: 'Certificates' },
   { id: 'trophy',       label: 'Trophy Cabinet' },
 ];
 
