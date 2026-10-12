@@ -49,7 +49,7 @@ export const git: CommandHandler = (args, state) => {
     return { output: '[main (root-commit) a1b2c3d] Initial commit\n 1 file changed, 1 insertion(+)\n create mode 100644 README.md', exitCode: 0 };
   }
   if (subcommand === 'log') {
-    return { output: 'commit a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0 (HEAD -> main)\nAuthor: QYVORA Student <student@qyvora.io>\nDate:   ' + new Date().toString() + '\n\n    Initial commit', exitCode: 0 };
+    return { output: 'commit a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0 (HEAD -> main)\nAuthor: QYVORA Student <student@qyvora.org>\nDate:   ' + new Date().toString() + '\n\n    Initial commit', exitCode: 0 };
   }
   if (subcommand === 'branch') {
     return { output: '* main\ndev\nfeature/auth', exitCode: 0 };
