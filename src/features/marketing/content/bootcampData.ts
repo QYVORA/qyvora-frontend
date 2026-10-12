@@ -2,10 +2,10 @@
  * QYVORA Bootcamps — public programme data.
  *
  * Source of truth (QYVORA documentation):
- *   07-products/hacker-protocol-bootcamp/HACKER-PROTOCOL-BOOTCAMP.md  HPB programme blueprint
- *   07-products/hacker-protocol-bootcamp/STUDENT-HANDBOOK.md            HPB handbook
- *   07-products/offensive-security-engineer-bootcamp/QOSE-MASTER-PLAN.md  QOSE curriculum
- *   07-products/offensive-security-engineer-bootcamp/QOSE-PAID-BOOTCAMP-PLAN.md  QOSE tuition & delivery
+ *   07-products/hacker-protocol-bootcamp/plans/HACKER-PROTOCOL-BOOTCAMP.md  HPB programme blueprint
+ *   07-products/hacker-protocol-bootcamp/handbook/STUDENT-HANDBOOK.md            HPB handbook
+ *   07-products/qose/plans/QOSE-MASTER-PLAN.md  QOSE curriculum
+ *   07-products/qose/plans/QOSE-PAID-BOOTCAMP-PLAN.md  QOSE tuition & delivery
  *
  * Logos are the official supplied assets, imported unmodified. The build's
  * webp plugin generates a lossless-alpha webp twin of each PNG.
