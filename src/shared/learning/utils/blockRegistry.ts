@@ -24,6 +24,9 @@ export interface BlockRenderContext {
   /** Progress callbacks */
   onCheckpointSubmit?: (blockId: string, answer: any) => Promise<{ correct: boolean }>;
   onComplete?: (unitId: string) => void;
+
+  /** Gamification signal — fired when a block resolves validation (quiz/flag/think). */
+  onReward?: (blockId: string, result: { solved: boolean }) => void;
   
   /** Lab-specific context */
   labId?: string;

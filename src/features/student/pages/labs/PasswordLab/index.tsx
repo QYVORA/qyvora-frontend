@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Key, FileText, Search, Zap, KeyRound, Book, Settings, Scale, Target, Skull, NotebookPen, Trophy } from 'lucide-react';
-import { WalkthroughLayout, WalkthroughStep } from '@/shared/components/walkthrough/';
+import { WalkthroughLayout, WalkthroughDeckStep } from '@/shared/components/walkthrough/';
 import type { FocusedStepListItem } from '@/shared/components/learning/FocusedStepList';
 import { PASSWORD_EXERCISES } from '@/features/student/data/simulations';
 import LearningAccordion from '@/shared/components/learning/LearningAccordion';
@@ -161,7 +161,7 @@ const PasswordLab = () => {
             onStepSelect={setViewStepIdx}
             stepIdPrefix="ws-step"
           >
-            <WalkthroughStep
+            <WalkthroughDeckStep
               stepIndex={0}
               title="Mission Briefing"
               narrative={`## ${activeScenario.title}\n\n${activeScenario.description}\n\n**Hash Type:** ${activeScenario.hashType}\n\n**Wordlist:** ${activeScenario.wordlist}`}
@@ -216,7 +216,7 @@ Execute the final command to complete the exercise.`,
               const flow = PASSWORD_FLOWS[index % PASSWORD_FLOWS.length];
 
               return (
-                <WalkthroughStep
+                <WalkthroughDeckStep
                   key={index}
                   stepIndex={index + 1}
                   title={`Step ${index + 1}`}
@@ -235,11 +235,11 @@ Execute the final command to complete the exercise.`,
                   onComplete={() => setViewStepIdx(null)}
                 >
                   <FlowDiagram nodes={flow.nodes} arrows={flow.arrows} direction="horizontal" />
-                </WalkthroughStep>
+                </WalkthroughDeckStep>
               );
             })}
 
-            <WalkthroughStep
+            <WalkthroughDeckStep
               stepIndex={activeScenario.steps.length + 1}
               title="Mission Debrief"
               narrative={`## Exercise Complete\n\nYou successfully cracked the **${activeScenario.hashType}** hash and recovered the plaintext password.\n\n### Key Takeaways\n\n- **${activeScenario.hashType}** hashes are vulnerable to dictionary and rule-based attacks\n- Weak passwords fall quickly to modern cracking tools\n- Password complexity and length are critical for defense\n- Organizations should enforce strong password policies\n\n### What to Remember\n\nPassword cracking is a fundamental skill for penetration testers and security auditors. Understanding the attack helps build better defenses.`}

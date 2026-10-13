@@ -32,6 +32,7 @@ export type BlockType =
   | 'hint'
   | 'challenge'
   | 'lab'
+  | 'playground'
   | 'debrief'
   | 'recall';
 
@@ -294,6 +295,15 @@ export interface LabBlock extends BaseBlock {
   estimatedMinutes?: number;
 }
 
+/** Inline code playground — run snippets in the sandbox */
+export interface PlaygroundBlock extends BaseBlock {
+  type: 'playground';
+  title?: string; // Default: "Code Playground"
+  language: string;
+  initialCode: string;
+  expectedOutput?: string;
+}
+
 // ─────────────────────────────────────────────────────────────────────────────
 // UNION TYPE
 // ─────────────────────────────────────────────────────────────────────────────
@@ -317,6 +327,7 @@ export type LearningBlock =
   | HintBlock
   | ChallengeBlock
   | LabBlock
+  | PlaygroundBlock
   | DebriefBlock
   | RecallBlock;
 
@@ -382,4 +393,8 @@ export function isChallengeBlock(block: LearningBlock): block is ChallengeBlock 
 
 export function isLabBlock(block: LearningBlock): block is LabBlock {
   return block.type === 'lab';
+}
+
+export function isPlaygroundBlock(block: LearningBlock): block is PlaygroundBlock {
+  return block.type === 'playground';
 }

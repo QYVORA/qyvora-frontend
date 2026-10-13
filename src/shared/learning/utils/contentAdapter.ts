@@ -204,30 +204,17 @@ export function adaptLabStep(
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// MARKDOWN PARSER (future enhancement)
+// MARKDOWN CHUNKER (Phase 4+)
 // ─────────────────────────────────────────────────────────────────────────────
 
-/**
- * Parse Markdown content and extract semantic structures.
- * 
- * Example: Detect patterns like:
- * - "Mission:" or "Objective:" headers → extract as semantic blocks
- * - Code fences with specific labels → CommandBlock
- * - Blockquotes with "Think:" → ThinkBlock
- * 
- * This is a future enhancement to enable smarter migration.
- */
-export function parseMarkdownToBlocks(markdown: string, baseId: string): LearningBlock[] {
-  // For now, just return a single TextBlock
-  // Future: Use regex/parser to extract semantic patterns
-  return [
-    {
-      type: 'text',
-      id: `${baseId}-parsed`,
-      content: markdown,
-    },
-  ];
-}
+export {
+  parseMarkdownToBlocks,
+  markdownToBlocks,
+  chunkMarkdown,
+  splitProse,
+  plainMarkdown,
+  MAX_PROSE_PER_CARD,
+} from './markdownChunker';
 
 // ─────────────────────────────────────────────────────────────────────────────
 // VALIDATION

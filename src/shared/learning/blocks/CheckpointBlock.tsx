@@ -30,6 +30,12 @@ export const CheckpointBlockComponent: React.FC<BlockRendererProps<CheckpointBlo
         <InlineQuiz
           questions={block.quiz.questions}
           title={title}
+          onComplete={(passed) => {
+            context?.onReward?.(block.id, { solved: passed });
+            if (passed && context?.onComplete && context.unitId) {
+              context.onComplete(context.unitId);
+            }
+          }}
         />
       </div>
     );
@@ -50,12 +56,14 @@ export const CheckpointBlockComponent: React.FC<BlockRendererProps<CheckpointBlo
         if (result.correct) {
           setFlagSuccess(true);
           setFlagError('');
+          context?.onReward?.(block.id, { solved: true });
           // Call completion callback if provided
           if (context.onComplete && context.unitId) {
             context.onComplete(context.unitId);
           }
         } else {
           setFlagError('Incorrect flag. Try again.');
+          context?.onReward?.(block.id, { solved: false });
         }
       } catch (error) {
         setFlagError('Failed to submit flag. Please try again.');

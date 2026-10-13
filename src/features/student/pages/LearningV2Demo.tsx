@@ -197,10 +197,10 @@ export default function LearningV2Demo() {
         <footer className="mt-16 pt-8 border-t border-border/30">
           <div className="text-sm font-mono text-text-muted space-y-2">
             <p>
-              <strong className="text-text-secondary">Architecture:</strong> 21 block types, 12 components implemented
+              <strong className="text-text-secondary">Architecture:</strong> 21 block types, 21 components implemented
             </p>
             <p>
-              <strong className="text-text-secondary">Status:</strong> ✅ Production ready
+              <strong className="text-text-secondary">Status:</strong> ✅ Production ready — live on courses, labs & bootcamps
             </p>
             <p>
               <strong className="text-text-secondary">Docs:</strong> See{' '}

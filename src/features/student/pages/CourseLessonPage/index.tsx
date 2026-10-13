@@ -1,13 +1,11 @@
-import React, { useState, useEffect, useCallback, useRef } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { useParams, Link, useSearchParams } from 'react-router-dom';
-import { ArrowLeft, ArrowRight, Lock, Target, Terminal } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Lock } from 'lucide-react';
 import { FadeIn, EmptyState } from '@/shared/components/ui';
 import SEO from '@/shared/components/SEO';
 import { getCourseById, getCategoryById } from '@/features/student/data/courses';
-import { EducationalMarkdownRenderer } from '@/shared/components/courses/CodeBlockRenderer';
-import InlineQuiz from '@/shared/components/courses/InlineQuiz';
-import CodePlayground from '@/shared/components/courses/CodePlayground';
-import { CommandBlock } from '@/shared/components/walkthrough/StepParts';
+import { CardDeckSurface, chunkMarkdown } from '@/shared/learning';
+import type { LearningBlock } from '@/shared/learning';
 import StepRenderer from '@/shared/components/learning/StepRenderer';
 import LearningNav from '@/shared/components/learning/LearningNav';
 import FocusedStepList from '@/shared/components/learning/FocusedStepList';
@@ -32,6 +30,43 @@ const LessonViewer: React.FC<{
   backUrl?: string;
   showBack?: boolean;
 }> = ({ lesson, number, isActive, isCompleted, courseId, backUrl, showBack }) => {
+  const blocks = useMemo<LearningBlock[]>(() => {
+    const parts: LearningBlock[] = chunkMarkdown(
+      lesson.instruction ?? '',
+      `course-${courseId}-lesson-${lesson.id}`,
+      12,
+    );
+
+    if (lesson.hasTerminal && lesson.terminalCommands && lesson.terminalCommands.length > 0) {
+      lesson.terminalCommands.forEach((cmd, ci) => {
+        parts.push({ type: 'command', id: `${lesson.id}-cmd-${ci}`, command: cmd });
+      });
+    }
+
+    if (lesson.hasCodePlayground) {
+      parts.push({
+        type: 'playground',
+        id: `${lesson.id}-playground`,
+        language: lesson.codePlaygroundLanguage || 'python',
+        initialCode: lesson.codePlaygroundInitial || '',
+        expectedOutput: lesson.codePlaygroundExpectedOutput,
+        title: lesson.title,
+      });
+    }
+
+    if (lesson.hasQuiz && lesson.quiz && lesson.quiz.length > 0) {
+      parts.push({
+        type: 'checkpoint',
+        id: `${lesson.id}-checkpoint`,
+        checkpointType: 'quiz',
+        title: `Checkpoint: ${lesson.title}`,
+        quiz: { questions: lesson.quiz },
+      });
+    }
+
+    return parts;
+  }, [lesson, courseId]);
+
   return (
     <StepRenderer
       stepNumber={number}
@@ -51,47 +86,14 @@ const LessonViewer: React.FC<{
         </>
       }
     >
-      <div className="text-sm md:text-base text-text-secondary font-mono leading-[2] md:leading-[2.2] mb-6 md:mb-8 max-w-none overflow-x-auto">
-        <EducationalMarkdownRenderer text={lesson.instruction} />
-      </div>
-
-      {lesson.hasTerminal && lesson.terminalCommands && lesson.terminalCommands.length > 0 && (
-        <div className="mt-8 md:mt-10">
-          <div className="flex items-center gap-2 mb-4">
-            <Terminal className="h-4 w-4 text-accent" />
-            <span className="text-xs font-black uppercase tracking-widest text-accent">Terminal</span>
-          </div>
-          <div className="space-y-3">
-            {lesson.terminalCommands.map((cmd, ci) => (
-              <CommandBlock key={ci} command={cmd} labId={courseId || 'course'} showConnect={false} />
-            ))}
-          </div>
-        </div>
-      )}
-
-      {lesson.hasCodePlayground && (
-        <div className="mt-8 md:mt-10">
-          <div className="flex items-center gap-2 mb-4">
-            <Target className="h-4 w-4 text-accent" />
-            <span className="text-xs font-black uppercase tracking-widest text-accent">Code Playground</span>
-          </div>
-          <CodePlayground
-            initialCode={lesson.codePlaygroundInitial || ''}
-            language={lesson.codePlaygroundLanguage || 'python'}
-            expectedOutput={lesson.codePlaygroundExpectedOutput}
-            title={lesson.title}
-          />
-        </div>
-      )}
-
-      {lesson.quiz && lesson.quiz.length > 0 && (
-        <div className="mt-10 md:mt-14">
-          <InlineQuiz
-            questions={lesson.quiz}
-            title={`Checkpoint: ${lesson.title}`}
-          />
-        </div>
-      )}
+      <CardDeckSurface
+        deckId={`course-${courseId}-lesson-${lesson.id}`}
+        surface="course"
+        sequenceId={courseId || 'course'}
+        unitId={lesson.id}
+        blocks={blocks}
+        enabled={isActive}
+      />
     </StepRenderer>
   );
 };

@@ -10,7 +10,7 @@ import { Lightbulb, Check, X } from 'lucide-react';
 import type { ThinkBlock } from '../types/blocks';
 import type { BlockRendererProps } from '../utils/blockRegistry';
 
-export const ThinkBlockComponent: React.FC<BlockRendererProps<ThinkBlock>> = ({ block }) => {
+export const ThinkBlockComponent: React.FC<BlockRendererProps<ThinkBlock>> = ({ block, context }) => {
   const [selectedOption, setSelectedOption] = useState<number | null>(null);
   const [revealed, setRevealed] = useState(false);
   
@@ -25,6 +25,9 @@ export const ThinkBlockComponent: React.FC<BlockRendererProps<ThinkBlock>> = ({ 
   
   const handleReveal = () => {
     setRevealed(true);
+    if (!isOpenEnded) {
+      context?.onReward?.(block.id, { solved: isCorrect });
+    }
   };
   
   return (

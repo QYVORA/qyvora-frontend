@@ -21,3 +21,8 @@ export * from './utils';
 
 // Block components (must be imported to register themselves)
 export * from './blocks';
+
+// Deck / gamification surfaces
+export * from './gamification';
+export * from './hooks';
+export * from './components';

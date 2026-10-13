@@ -20,6 +20,15 @@ import CommandBlockComponent from './CommandBlock';
 import DoBlockComponent from './DoBlock';
 import ThinkBlockComponent from './ThinkBlock';
 import CheckpointBlockComponent from './CheckpointBlock';
+import MentalModelBlockComponent from './MentalModelBlock';
+import DiagramBlockComponent from './DiagramBlock';
+import HttpBlockComponent from './HttpBlock';
+import CodeSnippetBlockComponent from './CodeSnippetBlock';
+import ComparisonBlockComponent from './ComparisonBlock';
+import HintBlockComponent from './HintBlock';
+import ChallengeBlockComponent from './ChallengeBlock';
+import LabBlockComponent from './LabBlock';
+import PlaygroundBlockComponent from './PlaygroundBlock';
 
 // Register all implemented blocks
 blockRegistry.register({
@@ -94,6 +103,60 @@ blockRegistry.register({
   description: 'Quiz/flag/validation gate',
 });
 
+blockRegistry.register({
+  type: 'mental-model',
+  component: MentalModelBlockComponent,
+  description: 'Node/link mental model map',
+});
+
+blockRegistry.register({
+  type: 'diagram',
+  component: DiagramBlockComponent,
+  description: 'Generic diagram (flow/sequence/network)',
+});
+
+blockRegistry.register({
+  type: 'http',
+  component: HttpBlockComponent,
+  description: 'HTTP request/response pair',
+});
+
+blockRegistry.register({
+  type: 'code',
+  component: CodeSnippetBlockComponent,
+  description: 'Syntax-highlighted code snippet',
+});
+
+blockRegistry.register({
+  type: 'comparison',
+  component: ComparisonBlockComponent,
+  description: 'Before/after side-by-side',
+});
+
+blockRegistry.register({
+  type: 'hint',
+  component: HintBlockComponent,
+  description: 'Progressive hints',
+});
+
+blockRegistry.register({
+  type: 'challenge',
+  component: ChallengeBlockComponent,
+  description: 'Reduced-scaffolding challenge',
+});
+
+blockRegistry.register({
+  type: 'lab',
+  component: LabBlockComponent,
+  description: 'Lab handoff card',
+});
+
+blockRegistry.register({
+  type: 'playground',
+  component: PlaygroundBlockComponent,
+  description: 'Inline code playground',
+});
+
 // Export all components
 export {
   TextBlockComponent,
@@ -108,7 +171,17 @@ export {
   DoBlockComponent,
   ThinkBlockComponent,
   CheckpointBlockComponent,
+  MentalModelBlockComponent,
+  DiagramBlockComponent,
+  HttpBlockComponent,
+  CodeSnippetBlockComponent,
+  ComparisonBlockComponent,
+  HintBlockComponent,
+  ChallengeBlockComponent,
+  LabBlockComponent,
+  PlaygroundBlockComponent,
 };
 
-// Note: Additional block types (mental-model, diagram, http, code, comparison,
-// hint, challenge, lab) will be implemented in Phase 5 as needed.
+// Note: all 21 block types are now registered — the semantic learning
+// vocabulary is complete across Narrative, Visual, Evidence, Interactive
+// and Practice categories.
