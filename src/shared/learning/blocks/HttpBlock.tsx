@@ -35,7 +35,7 @@ export const HttpBlockComponent: React.FC<BlockRendererProps<HttpBlock>> = ({ bl
             <span className="truncate font-mono text-xs text-text-secondary">{block.request.url}</span>
           </div>
           {(block.request.headers || block.request.body) && (
-            <pre className="overflow-x-auto p-4 text-xs font-mono leading-[2] text-text-secondary">
+            <pre className="overflow-x-auto p-4 text-xs font-mono leading-relaxed text-text-secondary">
               {block.request.headers && (
                 <span>{Object.entries(block.request.headers).map(([k, v]) => `${k}: ${v}`).join('\n')}</span>
               )}
@@ -56,7 +56,7 @@ export const HttpBlockComponent: React.FC<BlockRendererProps<HttpBlock>> = ({ bl
             <span className="font-mono text-xs text-text-muted">response</span>
           </div>
           {(block.response.headers || block.response.body) && (
-            <pre className="overflow-x-auto p-4 text-xs font-mono leading-[2] text-text-secondary">
+            <pre className="overflow-x-auto p-4 text-xs font-mono leading-relaxed text-text-secondary">
               {block.response.headers && (
                 <span>{Object.entries(block.response.headers).map(([k, v]) => `${k}: ${v}`).join('\n')}</span>
               )}
@@ -75,7 +75,7 @@ export const HttpBlockComponent: React.FC<BlockRendererProps<HttpBlock>> = ({ bl
               <span className="shrink-0 select-none text-xs font-black text-accent" aria-hidden="true">
                 {ann.target}
               </span>
-              <p className="text-sm font-mono text-text-secondary leading-[2]">
+              <p className="text-sm font-mono text-text-secondary leading-relaxed">
                 {ann.label}
                 {ann.description ? <span className="text-text-muted"> — {ann.description}</span> : null}
               </p>

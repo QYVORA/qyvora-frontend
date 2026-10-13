@@ -1,7 +1,5 @@
 import { useMemo } from 'react';
 import type { BootcampStep } from '../../constants/bootcampConfig';
-import { buildStepImagePath } from '../../constants/bootcampConfig';
-import StepImage from './StepImage';
 import StepRenderer from '@/shared/components/learning/StepRenderer';
 import { CardDeckSurface, chunkMarkdown } from '@/shared/learning';
 import type { LearningBlock } from '@/shared/learning';
@@ -13,12 +11,23 @@ interface Props {
   roomId: string;
   isActive: boolean;
   isViewed: boolean;
+  onDeckComplete?: () => void;
+  continueLabel?: string;
 }
 
-const StepCard: React.FC<Props> = ({ step, stepNum, phaseId, roomId, isActive, isViewed }) => {
+const StepCard: React.FC<Props> = ({
+  step,
+  stepNum,
+  phaseId,
+  roomId,
+  isActive,
+  isViewed,
+  onDeckComplete,
+  continueLabel,
+}) => {
   const blocks = useMemo<LearningBlock[]>(() => {
     const deckIdBase = `bootcamp-${phaseId}-${roomId}-${stepNum}`;
-    const parts: LearningBlock[] = chunkMarkdown(step.instruction ?? '', deckIdBase, 12);
+    const parts: LearningBlock[] = chunkMarkdown(step.instruction ?? '', deckIdBase);
     if (step.quiz && step.quiz.length > 0) {
       parts.push({
         type: 'checkpoint',
@@ -46,15 +55,9 @@ const StepCard: React.FC<Props> = ({ step, stepNum, phaseId, roomId, isActive, i
         unitId={step.title}
         blocks={blocks}
         enabled={isActive}
+        onDeckComplete={onDeckComplete}
+        continueLabel={continueLabel}
       />
-
-      {step.image ? (
-        <StepImage
-          src={buildStepImagePath(phaseId, roomId, step.image)}
-          alt={`${step.title}: ${step.instruction}`}
-          stepNum={stepNum}
-        />
-      ) : null}
     </StepRenderer>
   );
 };

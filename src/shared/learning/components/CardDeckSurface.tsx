@@ -21,7 +21,10 @@ import {
   ChevronLeft,
   ChevronRight,
   Flame,
+  Square,
   Trophy,
+  Volume2,
+  VolumeX,
   Zap,
   X,
 } from 'lucide-react';
@@ -31,8 +34,11 @@ import type { BlockRenderContext } from '../utils/blockRegistry';
 import '../blocks';
 import { LearningBlockRenderer } from '../renderer';
 import { useDeckGamification } from '../hooks/useDeckGamification';
+import { useReadAloud } from '../hooks/useReadAloud';
 import { comboMultiplier } from '../gamification/deckGamification';
 import { blockLabel, blockTitle, blockXp, hasValidation, truncate } from '../utils/blockMeta';
+import { cardSpeechText } from '../utils/speechText';
+import { interleavePractice } from '../utils/interleavePractice';
 import Button from '@/shared/components/ui/Button';
 
 export interface CardDeckSurfaceProps {
@@ -45,6 +51,10 @@ export interface CardDeckSurfaceProps {
   onCheckpointSubmit?: (blockId: string, answer: any) => Promise<{ correct: boolean }>;
   /** Called when the unit's completion gate fires (e.g. flag accepted). */
   onComplete?: (unitId: string) => void;
+  /** Called when the learner taps Continue after clearing the whole deck. */
+  onDeckComplete?: () => void;
+  /** Label for the end-of-deck Continue button. */
+  continueLabel?: string;
   /** Locked units award no XP and persist nothing. */
   enabled?: boolean;
   className?: string;
@@ -58,12 +68,17 @@ export const CardDeckSurface: React.FC<CardDeckSurfaceProps> = ({
   blocks,
   onCheckpointSubmit,
   onComplete,
+  onDeckComplete,
+  continueLabel,
   enabled = true,
   className,
 }) => {
   const deck = useDeckGamification({ deckId, totalCards: blocks.length, enabled });
+  const voice = useReadAloud();
+  // Duolingo pacing: pull quiz checkpoints forward so reading never runs long.
+  const cards = useMemo(() => interleavePractice(blocks), [blocks]);
   const [activeIdx, setActiveIdx] = useState(() => {
-    const firstNotDone = blocks.findIndex((b) => !deck.doneCardIds.has(b.id));
+    const firstNotDone = cards.findIndex((b) => !deck.doneCardIds.has(b.id));
     return firstNotDone >= 0 ? firstNotDone : 0;
   });
   const [justSolvedId, setJustSolvedId] = useState<string | null>(null);
@@ -72,20 +87,21 @@ export const CardDeckSurface: React.FC<CardDeckSurfaceProps> = ({
   const [levelUpRank, setLevelUpRank] = useState<string | null>(null);
   const [awardFlash, setAwardFlash] = useState<string | null>(null);
   const [prevSeenRank, setPrevSeenRank] = useState(deck.rank.index);
+  const [voiceMode, setVoiceMode] = useState(false);
 
-  const totalCards = blocks.length;
-  const current = blocks[Math.min(activeIdx, Math.max(totalCards - 1, 0))] ?? null;
+  const totalCards = cards.length;
+  const current = cards[Math.min(activeIdx, Math.max(totalCards - 1, 0))] ?? null;
   const currentDone = current ? deck.isDone(current.id) : false;
   const currentSolved = current ? solvedIds.has(current.id) : false;
 
   const findFirstNotDone = useCallback(
     (from: number): number => {
       for (let i = Math.max(0, from); i < totalCards; i += 1) {
-        if (!deck.isDone(blocks[i].id)) return i;
+        if (!deck.isDone(cards[i].id)) return i;
       }
       return -1;
     },
-    [blocks, deck, totalCards],
+    [cards, deck, totalCards],
   );
 
   // Level-up flash when the lifetime rank crosses a boundary.
@@ -109,6 +125,30 @@ export const CardDeckSurface: React.FC<CardDeckSurfaceProps> = ({
     return () => window.clearTimeout(t);
   }, [deck.lastAward]);
 
+  // Voice mode: read each card aloud as it becomes active.
+  useEffect(() => {
+    if (!voiceMode || !voice.supported || !current) return;
+    const text = cardSpeechText(current);
+    if (text) voice.speak(text);
+    return () => voice.stop();
+  }, [voiceMode, current, voice.supported, voice.speak, voice.stop]);
+
+  const handleToggleVoice = useCallback(() => {
+    setVoiceMode((on) => {
+      if (on) voice.stop();
+      return !on;
+    });
+  }, [voice]);
+
+  const handleReadCard = useCallback(() => {
+    if (!current) return;
+    if (voice.speaking) {
+      voice.stop();
+      return;
+    }
+    voice.speak(cardSpeechText(current));
+  }, [current, voice]);
+
   const advanceAfter = useCallback(
     (fromIndex: number) => {
       const next = findFirstNotDone(fromIndex);
@@ -119,14 +159,14 @@ export const CardDeckSurface: React.FC<CardDeckSurfaceProps> = ({
 
   const handleNext = useCallback(() => {
     if (!current) return;
-    const cur = blocks[activeIdx];
+    const cur = cards[activeIdx];
     if (!cur) return;
     deck.completeCard(cur.id, blockXp(cur), {
       interactive: hasValidation(cur),
       solved: false,
     });
     advanceAfter(activeIdx + 1);
-  }, [blocks, activeIdx, current, deck, advanceAfter]);
+  }, [cards, activeIdx, current, deck, advanceAfter]);
 
   const handlePrev = useCallback(() => {
     if (activeIdx > 0) setActiveIdx(activeIdx - 1);
@@ -135,7 +175,7 @@ export const CardDeckSurface: React.FC<CardDeckSurfaceProps> = ({
   const handleReward = useCallback(
     (blockId: string, result: { solved: boolean }) => {
       if (result.solved) {
-        const b = blocks.find((blk) => blk.id === blockId);
+        const b = cards.find((blk) => blk.id === blockId);
         if (!b) return;
         deck.resolveCard(blockId, blockXp(b), true);
         setSolvedIds((prev) => {
@@ -148,18 +188,18 @@ export const CardDeckSurface: React.FC<CardDeckSurfaceProps> = ({
         deck.recordMistake();
       }
     },
-    [blocks, deck],
+    [cards, deck],
   );
 
   // Auto-advance right after a solved interactive card (it's now done).
   useEffect(() => {
     if (!justSolvedId) return;
-    const idx = blocks.findIndex((b) => b.id === justSolvedId);
+    const idx = cards.findIndex((b) => b.id === justSolvedId);
     if (idx >= 0 && idx === activeIdx && idx < totalCards - 1) {
       advanceAfter(idx + 1);
     }
     setJustSolvedId(null);
-  }, [justSolvedId, blocks, activeIdx, totalCards, advanceAfter]);
+  }, [justSolvedId, cards, activeIdx, totalCards, advanceAfter]);
 
   const deckContext: BlockRenderContext = useMemo(
     () => ({
@@ -195,8 +235,7 @@ export const CardDeckSurface: React.FC<CardDeckSurfaceProps> = ({
   const multiplier = comboMultiplier(deck.combo);
   const showingComplete = deck.deckComplete;
 
-  const doneCards = blocks.filter((b) => deck.isDone(b.id));
-  const upcomingCards = blocks.filter((b, i) => !deck.isDone(b.id) && i !== activeIdx);
+  const doneCards = cards.filter((b) => deck.isDone(b.id));
 
   return (
     <div className={className}>
@@ -236,6 +275,22 @@ export const CardDeckSurface: React.FC<CardDeckSurfaceProps> = ({
           </div>
 
           <div className="ml-auto flex items-center gap-3">
+            {voice.supported && (
+              <button
+                type="button"
+                onClick={handleToggleVoice}
+                aria-pressed={voiceMode}
+                title={voiceMode ? 'Turn off read-aloud' : 'Read cards aloud'}
+                className={`flex items-center gap-1 rounded-lg border px-2 py-1 text-[10px] font-black uppercase tracking-widest transition-colors ${
+                  voiceMode
+                    ? 'border-accent/40 bg-accent/10 text-accent'
+                    : 'border-border/40 text-text-muted hover:text-text-secondary'
+                }`}
+              >
+                {voiceMode ? <Volume2 className="w-3 h-3" aria-hidden="true" /> : <VolumeX className="w-3 h-3" aria-hidden="true" />}
+                <span className="hidden sm:inline">Voice</span>
+              </button>
+            )}
             {showingComplete ? (
               <span className="flex items-center gap-1.5 rounded-lg bg-accent/10 border border-accent/30 px-2 py-1 text-xs font-black uppercase tracking-widest text-accent">
                 <Check className="w-3 h-3" aria-hidden="true" />
@@ -252,32 +307,6 @@ export const CardDeckSurface: React.FC<CardDeckSurfaceProps> = ({
           </div>
         </div>
 
-        {/* Done cards — collapsed review rows */}
-        {doneCards.length > 0 && (
-          <div className="mb-4 space-y-1.5">
-            {blocks.map((b, i) =>
-              deck.isDone(b.id) ? (
-                <button
-                  key={b.id}
-                  type="button"
-                  onClick={() => setActiveIdx(i)}
-                  aria-label={`Review ${blockLabel(b.type)} card ${i + 1}`}
-                  className={`flex w-full items-center gap-3 rounded-2xl border px-3 py-2 text-left transition-colors min-h-[44px] ${
-                    i === activeIdx
-                      ? 'border-accent/40 bg-accent/5'
-                      : 'border-border/30 bg-bg-card hover:border-border'
-                  }`}
-                >
-                  <Check className="w-3.5 h-3.5 text-accent shrink-0" aria-hidden="true" />
-                  <span className="text-xs font-mono text-text-muted shrink-0">{String(i + 1).padStart(2, '0')}</span>
-                  <span className="text-[10px] font-black uppercase tracking-widest text-text-muted shrink-0">{blockLabel(b.type)}</span>
-                  <span className="truncate text-sm font-mono text-text-secondary">{truncate(blockTitle(b))}</span>
-                </button>
-              ) : null,
-            )}
-          </div>
-        )}
-
         {/* Active card */}
         {current && (
           <article className={`rounded-2xl border bg-bg-card overflow-hidden ${currentDone ? 'border-border/40' : 'border-accent/30'}`}>
@@ -292,6 +321,16 @@ export const CardDeckSurface: React.FC<CardDeckSurfaceProps> = ({
                     <Check className="w-3 h-3" aria-hidden="true" />
                     Solved
                   </span>
+                )}
+                {voice.supported && (
+                  <button
+                    type="button"
+                    onClick={handleReadCard}
+                    aria-label={voice.speaking ? 'Stop reading card' : 'Read card aloud'}
+                    className="rounded-lg border border-border/40 p-1.5 text-text-muted transition-colors hover:text-accent"
+                  >
+                    {voice.speaking ? <Square className="h-3.5 w-3.5" aria-hidden="true" /> : <Volume2 className="h-3.5 w-3.5" aria-hidden="true" />}
+                  </button>
                 )}
                 <span className="ml-auto text-[10px] font-black uppercase tracking-widest text-text-muted shrink-0">+{blockXp(current)} XP</span>
               </div>
@@ -308,43 +347,44 @@ export const CardDeckSurface: React.FC<CardDeckSurfaceProps> = ({
                 <span className="hidden sm:inline">Prev</span>
               </Button>
               <span className="mx-auto text-[10px] font-black uppercase tracking-widest text-text-muted" aria-hidden="true">
-                {currentDone ? (showingComplete ? 'All cards cleared' : 'Card complete — review or continue') : 'View card to earn XP'}
-                {hasValidation(current) && !currentDone ? ' · solve for bonus XP' : ''}
+                {showingComplete
+                  ? onDeckComplete
+                    ? 'Unit complete'
+                    : 'All cards cleared'
+                  : currentDone
+                    ? 'Card complete — review or continue'
+                    : 'View card to earn XP'}
+                {!showingComplete && hasValidation(current) && !currentDone ? ' · solve for bonus XP' : ''}
               </span>
-              <Button
-                variant={currentDone ? 'secondary' : 'primary'}
-                size="sm"
-                trailingIcon={<ChevronRight className="h-4 w-4" aria-hidden="true" />}
-                onClick={handleNext}
-                disabled={currentDone && showingComplete}
-                ariaLabel={currentDone ? 'Next card' : 'Complete card and continue'}
-              >
-                {showingComplete ? 'Done' : 'Next'}
-              </Button>
+              {showingComplete ? (
+                onDeckComplete ? (
+                  <Button
+                    variant="primary"
+                    size="sm"
+                    trailingIcon={<ChevronRight className="h-4 w-4" aria-hidden="true" />}
+                    onClick={onDeckComplete}
+                    ariaLabel={continueLabel ?? 'Continue'}
+                  >
+                    {continueLabel ?? 'Continue'}
+                  </Button>
+                ) : (
+                  <Button variant="secondary" size="sm" disabled ariaLabel="Deck complete">
+                    Done
+                  </Button>
+                )
+              ) : (
+                <Button
+                  variant={currentDone ? 'secondary' : 'primary'}
+                  size="sm"
+                  trailingIcon={<ChevronRight className="h-4 w-4" aria-hidden="true" />}
+                  onClick={handleNext}
+                  ariaLabel={currentDone ? 'Next card' : 'Complete card and continue'}
+                >
+                  Next
+                </Button>
+              )}
             </footer>
           </article>
-        )}
-
-        {/* Upcoming cards — collapsed */}
-        {upcomingCards.length > 0 && (
-          <div className="mt-4 space-y-1.5">
-            <p className="px-1 text-[10px] font-black uppercase tracking-widest text-text-muted">Up next</p>
-            {blocks.map((b, i) =>
-              !deck.isDone(b.id) && i !== activeIdx ? (
-                <button
-                  key={b.id}
-                  type="button"
-                  onClick={() => setActiveIdx(i)}
-                  aria-label={`Jump to ${blockLabel(b.type)} card ${i + 1}`}
-                  className="flex w-full items-center gap-3 rounded-2xl border border-dashed border-border/40 bg-bg px-3 py-2 text-left transition-colors min-h-[44px] hover:border-border"
-                >
-                  <span className="text-xs font-mono text-text-muted shrink-0">{String(i + 1).padStart(2, '0')}</span>
-                  <span className="text-[10px] font-black uppercase tracking-widest text-text-muted shrink-0">{blockLabel(b.type)}</span>
-                  <span className="truncate text-sm font-mono text-text-secondary">{truncate(blockTitle(b))}</span>
-                </button>
-              ) : null,
-            )}
-          </div>
         )}
 
         {/* XP toast */}

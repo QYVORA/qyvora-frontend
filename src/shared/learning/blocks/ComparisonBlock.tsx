@@ -32,13 +32,13 @@ export const ComparisonBlockComponent: React.FC<BlockRendererProps<ComparisonBlo
                 {side.label}
               </span>
             </div>
-            <pre className="overflow-x-auto p-3 text-xs font-mono leading-[2] text-text-secondary">
+            <pre className="overflow-x-auto p-3 text-xs font-mono leading-relaxed text-text-secondary">
               {lines.map((l, i) => (
                 <div key={i}><span className="whitespace-pre text-text-primary">{l || ' '}</span></div>
               ))}
             </pre>
             {side.explanation && (
-              <p className="border-t border-border/30 bg-bg-elevated px-3 py-2 text-xs font-mono text-text-secondary leading-[2]">
+              <p className="border-t border-border/30 bg-bg-elevated px-3 py-2 text-xs font-mono text-text-secondary leading-relaxed">
                 {side.explanation}
               </p>
             )}
@@ -49,7 +49,7 @@ export const ComparisonBlockComponent: React.FC<BlockRendererProps<ComparisonBlo
       {block.keyDifference && (
         <div className="rounded-xl border border-warning/30 bg-warning/5 px-4 py-3">
           <p className="mb-1 text-[10px] font-black uppercase tracking-widest text-warning">Key Difference</p>
-          <p className="text-sm font-mono text-warning/90 leading-[2]">{block.keyDifference}</p>
+          <p className="text-sm font-mono text-warning/90 leading-relaxed">{block.keyDifference}</p>
         </div>
       )}
     </div>

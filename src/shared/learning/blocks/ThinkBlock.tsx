@@ -40,7 +40,7 @@ export const ThinkBlockComponent: React.FC<BlockRendererProps<ThinkBlock>> = ({ 
       </div>
       
       {/* Question */}
-      <p className="text-sm md:text-base font-mono text-text-primary leading-[2] md:leading-[2.2] mb-4">
+      <p className="text-sm md:text-base font-mono text-text-primary leading-relaxed mb-4">
         {block.question}
       </p>
       
@@ -80,7 +80,7 @@ export const ThinkBlockComponent: React.FC<BlockRendererProps<ThinkBlock>> = ({ 
                       )}
                     </span>
                   )}
-                  <span className="text-sm font-mono leading-[2]">{option}</span>
+                  <span className="text-sm font-mono leading-relaxed">{option}</span>
                 </div>
               </button>
             );
@@ -106,7 +106,7 @@ export const ThinkBlockComponent: React.FC<BlockRendererProps<ThinkBlock>> = ({ 
           <p className="text-xs font-black uppercase tracking-widest text-warning/60 mb-2">
             {isOpenEnded ? 'Consider This' : isCorrect ? 'Correct!' : 'Explanation'}
           </p>
-          <p className="text-sm font-mono text-text-secondary leading-[2]">
+          <p className="text-sm font-mono text-text-secondary leading-relaxed">
             {block.explanation}
           </p>
         </div>

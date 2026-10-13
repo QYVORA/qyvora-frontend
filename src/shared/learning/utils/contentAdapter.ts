@@ -61,12 +61,6 @@ export function adaptBootcampStep(
     number: stepIndex + 1,
     title: step.title,
     blocks,
-    image: step.image
-      ? {
-          src: step.image,
-          alt: `${step.title} illustration`,
-        }
-      : undefined,
     completionType: 'view', // Bootcamp steps complete on view
   };
 }

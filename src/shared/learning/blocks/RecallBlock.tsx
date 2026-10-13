@@ -26,7 +26,7 @@ export const RecallBlockComponent: React.FC<BlockRendererProps<RecallBlock>> = (
         {block.points.map((point, index) => (
           <li
             key={index}
-            className="flex items-start gap-3 text-sm md:text-base font-mono text-text-primary leading-[2] md:leading-[2.2]"
+            className="flex items-start gap-3 text-sm md:text-base font-mono text-text-primary leading-relaxed"
           >
             <span
               className="text-accent font-black shrink-0 select-none"

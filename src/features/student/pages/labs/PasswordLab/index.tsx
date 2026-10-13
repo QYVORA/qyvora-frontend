@@ -160,6 +160,7 @@ const PasswordLab = () => {
             activeStepIndex={activeIndex}
             onStepSelect={setViewStepIdx}
             stepIdPrefix="ws-step"
+            focused
           >
             <WalkthroughDeckStep
               stepIndex={0}

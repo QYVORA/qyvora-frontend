@@ -1,21 +1,17 @@
 /**
  * TEXT BLOCK
  * ==========
- * Plain explanatory text — the primary reading flow.
- * Supports Markdown for backward compatibility with legacy content.
+ * Plain explanatory text — the primary reading flow of a card.
+ * Rendered inline-only (no heading/list promotion) with compact game rhythm.
  */
 
 import React from 'react';
 import type { TextBlock } from '../types/blocks';
 import type { BlockRendererProps } from '../utils/blockRegistry';
-import { EducationalMarkdownRenderer } from '@/shared/components/courses/CodeBlockRenderer';
+import { GameProse } from './GameProse';
 
 export const TextBlockComponent: React.FC<BlockRendererProps<TextBlock>> = ({ block }) => {
-  return (
-    <div className="w-full text-sm md:text-base text-text-secondary font-mono leading-[2] md:leading-[2.2] max-w-none">
-      <EducationalMarkdownRenderer text={block.content} />
-    </div>
-  );
+  return <GameProse text={block.content} />;
 };
 
 export default TextBlockComponent;

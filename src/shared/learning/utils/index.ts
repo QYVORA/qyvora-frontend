@@ -37,6 +37,9 @@ export {
   CHECKPOINT_XP,
 } from './blockMeta';
 
+export { cardSpeechText } from './speechText';
+export { interleavePractice, MAX_READ_RUN } from './interleavePractice';
+
 export {
   RANKS,
   rankFor,

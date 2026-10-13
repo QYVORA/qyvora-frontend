@@ -59,9 +59,6 @@ export const PHASE_COLORS: Record<string, string> = {
   phase5: '#EF4444', // Red (Social)
 };
 
-// ── Image path builder ────────────────────────────────────────────────────────
-export { getWalkthroughImage as buildStepImagePath } from '../utils/walkthroughImages';
-
 // ── Config ────────────────────────────────────────────────────────────────────
 export const BOOTCAMP_CONFIG: BootcampConfig = {
   id: 'hpb',

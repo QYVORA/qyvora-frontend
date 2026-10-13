@@ -8,6 +8,7 @@
 import React from 'react';
 import type { ConceptBlock } from '../types/blocks';
 import type { BlockRendererProps } from '../utils/blockRegistry';
+import { GameProse } from './GameProse';
 
 export const ConceptBlockComponent: React.FC<BlockRendererProps<ConceptBlock>> = ({ block }) => {
   const importance = block.importance ?? 'core';
@@ -32,9 +33,7 @@ export const ConceptBlockComponent: React.FC<BlockRendererProps<ConceptBlock>> =
         {block.title}
       </h3>
       
-      <p className="text-sm md:text-base font-mono text-text-secondary leading-[2] md:leading-[2.2]">
-        {block.content}
-      </p>
+      <GameProse text={block.content} />
     </div>
   );
 };

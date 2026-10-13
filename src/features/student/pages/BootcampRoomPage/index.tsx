@@ -1,25 +1,19 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { useParams, Link, useNavigate, useSearchParams } from 'react-router-dom';
+import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
 import {
   ArrowLeft, Lock, BookOpen,
-  ChevronRight, Flag,
 } from 'lucide-react';
-import { AnimatePresence } from 'motion/react';
 import FadeIn from '@/shared/components/ui/FadeIn';
 import EmptyState from '@/shared/components/ui/EmptyState';
 import Button from '@/shared/components/ui/Button';
 import api from '@/core/services/api';
 import { useToast } from '@/core/contexts/ToastContext';
 import { BOOTCAMP_CONFIG } from '@/features/student/constants/bootcampConfig';
-import ReportIssueModal from '@/features/student/components/bootcamp-room/ReportIssueModal';
 import StepCard from '@/features/student/components/bootcamp-room/StepCard';
 import QuizModal from '@/features/student/components/bootcamp-room/QuizModal';
 import RoomCompletionCelebration from '@/features/student/components/bootcamp-room/RoomCompletionCelebration';
-import LearningNav from '@/shared/components/learning/LearningNav';
 import LearningWorkspaceShell from '@/shared/components/learning/LearningWorkspaceShell';
-import FocusedStepList from '@/shared/components/learning/FocusedStepList';
 import { useReducedMotion } from '@/shared/hooks/useReducedMotion';
-import { scrollToStepId } from '@/shared/utils/scrollToStep';
 import { useRoomSession } from '@/features/student/hooks/useRoomSession';
 import useStudentOverview from '@/features/student/hooks/useStudentOverview';
 import type { ApiCourse } from '@/features/student/components/bootcamp-room/types';
@@ -88,7 +82,6 @@ const BootcampRoomPage: React.FC = () => {
   const [showCompleteOverlay, setShowCompleteOverlay] = useState(false);
   const [completionCpEarned, setCompletionCpEarned] = useState(250);
   const [completing, setCompleting] = useState(false);
-  const [reportIssueOpen, setReportIssueOpen] = useState(false);
 
   const { timeSpent, resetSession } = useRoomSession();
   const prefersReducedMotion = useReducedMotion();
@@ -227,12 +220,7 @@ const BootcampRoomPage: React.FC = () => {
       return prev;
     }, { replace: true });
     setViewedSteps((prev) => { const next = new Set(prev); next.add(idx); persistViewedSteps(next); return next; });
-    const behavior = prefersReducedMotion ? 'auto' : 'smooth';
-    if (idx === 0) {
-      window.scrollTo({ top: 0, behavior });
-      return;
-    }
-    scrollToStepId(`step-${idx + 1}`, behavior);
+    window.scrollTo({ top: 0, behavior: prefersReducedMotion ? 'auto' : 'smooth' });
   };
   const handleComplete = async () => {
     if (completing) return; setCompleting(true);
@@ -244,6 +232,10 @@ const BootcampRoomPage: React.FC = () => {
       if (!quizPassed && quizModuleId) { setQuizOpen(true); return; }
       if (phaseId && roomId) await markRoomComplete(phaseId, roomId); else setShowCompleteOverlay(true);
     } finally { setCompleting(false); }
+  };
+  const handleStepComplete = () => {
+    if (!isLastStep) goToStep(currentStepIdx + 1);
+    else handleComplete();
   };
 
   if (apiLoading) return <BootcampRoomSkeleton />;
@@ -304,10 +296,6 @@ const BootcampRoomPage: React.FC = () => {
         <QuizModal moduleId={quizModuleId} roomId={quizRoomId} courseId={quizCourseId} onClose={() => setQuizOpen(false)} onPassed={() => { setQuizPassed(true); setQuizOpen(false); if (phaseId && roomId) markRoomComplete(phaseId, roomId); }} />
       )}
 
-      <AnimatePresence>
-        {reportIssueOpen && phaseId && roomId && <ReportIssueModal phaseId={phaseId} roomId={roomId} stepIdx={currentStepIdx} onClose={() => setReportIssueOpen(false)} />}
-      </AnimatePresence>
-
       <RoomCompletionCelebration
         show={showCompleteOverlay} roomTitle={room.title} cpEarned={completionCpEarned}
         onClose={() => {
@@ -336,90 +324,25 @@ const BootcampRoomPage: React.FC = () => {
           label: `${viewedSteps.size} / ${room.steps.length} steps`,
         }}
       >
-          {room.steps.length === 0 && !apiLoading ? (
-                <div className="flex flex-col items-center justify-center py-20 text-center">
-                  <BookOpen className="h-12 w-12 text-text-muted opacity-20 mb-4" />
-                  <p className="text-base font-bold text-text-muted">{"No steps available yet"}</p>
-                  <p className="text-sm text-text-muted/60 mt-1">{"Check back later for new content"}</p>
-                </div>
-              ) : (
-                <>
-                  <div className="mb-10">
-                    <FocusedStepList
-                      idPrefix="step"
-                      items={room.steps.map((s, i) => ({
-                        index: i,
-                        number: i + 1,
-                        title: s.title,
-                        isActive: i === currentStepIdx,
-                        isCompleted: viewedSteps.has(i) && i !== currentStepIdx,
-                        isLocked: false,
-                      }))}
-                      onSelect={goToStep}
-                      renderActive={(i) => (
-                        <StepCard
-                          key={i}
-                          step={room.steps[i]}
-                          stepNum={i + 1}
-                          phaseId={phaseId || ''}
-                          roomId={roomId || ''}
-                          isActive
-                          isViewed={viewedSteps.has(i)}
-                        />
-                      )}
-                    />
-                  </div>
-                </>
-              )}
-              <LearningNav
-                currentStep={currentStepIdx}
-                totalSteps={room.steps.length}
-                isLastStep={isLastStep}
-                isComplete={isRoomComplete}
-                completing={completing}
-                onPrev={currentStepIdx > 0 ? () => goToStep(currentStepIdx - 1) : undefined}
-                onNext={!isLastStep ? () => goToStep(currentStepIdx + 1) : undefined}
-                onComplete={!isLastStep ? undefined : isRoomComplete ? undefined : handleComplete}
-                completeLabel={"Complete Room"}
-                nextLabel={"Next Step"}
-                nextLabelMobile={"Next"}
-                finishContent={
-                  <div className="flex flex-col sm:flex-row flex-wrap items-stretch sm:items-center gap-3 w-full">
-                    {nextRoom && !lockedRooms.has(`${nextRoom.phaseId}:${nextRoom.roomId}`) ? (
-                      <button
-                        type="button"
-                        onClick={() => handleNavigate(nextRoom.phaseId, nextRoom.roomId)}
-                        className="btn-primary inline-flex min-h-[44px] flex-1 md:flex-none items-center justify-center gap-1.5 px-5 py-2.5"
-                      >
-                        {"Continue to Next Room"}
-                        <ChevronRight className="h-3.5 w-3.5 shrink-0" />
-                      </button>
-                    ) : (
-                      <span className="flex-1 text-center sm:text-left font-mono text-xs font-semibold text-text-muted">
-                        {!nextRoom
-                          ? "Bootcamp complete — all rooms finished."
-                          : "Room complete. The next room unlocks when the phase is ready."}
-                      </span>
-                    )}
-                    <Link
-                      to={`/dashboard/bootcamps/${bootcampId}`}
-                      className="btn-secondary inline-flex min-h-[44px] flex-1 md:flex-none items-center justify-center gap-1.5 px-5 py-2.5"
-                    >
-                      {"Back to Bootcamp"}
-                    </Link>
-                  </div>
-                }
-              />
-              <div className="pb-16">
-                <button
-                  type="button"
-                  onClick={() => setReportIssueOpen(true)}
-                  className="min-h-[44px] inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-widest text-text-muted hover:text-accent transition-colors"
-                >
-                  <Flag className="h-3 w-3" />
-                  {"Report Issue"}
-                </button>
-              </div>
+          {room.steps.length === 0 ? (
+            <div className="flex flex-col items-center justify-center py-20 text-center">
+              <BookOpen className="h-12 w-12 text-text-muted opacity-20 mb-4" />
+              <p className="text-base font-bold text-text-muted">{"No steps available yet"}</p>
+              <p className="text-sm text-text-muted/60 mt-1">{"Check back later for new content"}</p>
+            </div>
+          ) : (
+            <StepCard
+              key={currentStepIdx}
+              step={room.steps[currentStepIdx]}
+              stepNum={currentStepIdx + 1}
+              phaseId={phaseId || ''}
+              roomId={roomId || ''}
+              isActive
+              isViewed={viewedSteps.has(currentStepIdx)}
+              onDeckComplete={handleStepComplete}
+              continueLabel={isLastStep ? 'Complete Room' : 'Next Step'}
+            />
+          )}
       </LearningWorkspaceShell>
     </div>
     </FadeIn>

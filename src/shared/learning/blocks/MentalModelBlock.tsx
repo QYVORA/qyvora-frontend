@@ -30,7 +30,7 @@ export const MentalModelBlockComponent: React.FC<BlockRendererProps<MentalModelB
                 <div className="rounded-xl border border-border/40 bg-bg-elevated px-4 py-3">
                   <p className="text-sm md:text-base font-black text-text-primary">{node.label}</p>
                   {node.description && (
-                    <p className="mt-1 text-sm font-mono text-text-secondary leading-[2]">{node.description}</p>
+                    <p className="mt-1 text-sm font-mono text-text-secondary leading-relaxed">{node.description}</p>
                   )}
                 </div>
                 {outgoing.length > 0 && (
@@ -60,7 +60,7 @@ export const MentalModelBlockComponent: React.FC<BlockRendererProps<MentalModelB
         </ul>
       )}
 
-      {block.caption && <p className="mt-4 text-sm font-mono text-text-muted leading-[2]">{block.caption}</p>}
+      {block.caption && <p className="mt-4 text-sm font-mono text-text-muted leading-relaxed">{block.caption}</p>}
     </div>
   );
 };

@@ -39,7 +39,7 @@ export function plainMarkdown(text: string): string {
     .trim();
 }
 
-export const MAX_PROSE_PER_CARD = 160;
+export const MAX_PROSE_PER_CARD = 120;
 
 /** Split a paragraph into sentence groups each under the prose cap. */
 export function splitProse(text: string, max = MAX_PROSE_PER_CARD): string[] {
@@ -188,8 +188,6 @@ function tokenize(markdown: string): Segment[] {
 
 // ── Assembly ─────────────────────────────────────────────────────────────────
 
-const MAX_TEXT_CARDS = 6;
-
 function isWhyQuote(text: string): boolean {
   return /why this matters|^why\b/i.test(text);
 }
@@ -198,26 +196,16 @@ export function markdownToBlocks(markdown: string, baseId: string): LearningBloc
   const segments = tokenize(markdown);
   const blocks: LearningBlock[] = [];
   let sectionTitle: string | null = null;
-  let textCardCount = 0;
   let index = 0;
 
   const nextId = (kind: string) => `${baseId}-${kind}-${index++}`;
 
   const pushText = (content: string) => {
-    // Funnel any extra prose into the cap: coalesce overflow into the final card.
-    const chunks = splitProse(content);
-    for (const chunk of chunks) {
-      if (textCardCount < MAX_TEXT_CARDS) {
-        const textBlock: TextBlock = { type: 'text', id: nextId('text'), content: chunk };
-        blocks.push(textBlock);
-        textCardCount += 1;
-      } else {
-        // Merge overflow into the last text card instead of growing the deck.
-        const last = blocks[blocks.length - 1];
-        if (last && last.type === 'text') {
-          (last as TextBlock).content = `${(last as TextBlock).content}\n\n${chunk}`;
-        }
-      }
+    // Every prose chunk becomes its own short card. Never coalesce overflow
+    // into a previous card — that recreates the wall-of-text we're removing.
+    for (const chunk of splitProse(content)) {
+      const textBlock: TextBlock = { type: 'text', id: nextId('text'), content: chunk };
+      blocks.push(textBlock);
     }
   };
 
@@ -305,22 +293,11 @@ export function parseMarkdownToBlocks(markdown: string, baseId: string): Learnin
 
 /**
  * Chunk a lesson/step's Markdown and cap the number of cards so a single
- * step never grows into an unwieldy deck. Excess prose folds into the last
- * chunk rather than being dropped.
+ * step never grows into an unwieldy deck. Cards stay short; when the cap is
+ * hit the deck simply ends (no coalescing into a wall of text).
  */
-export function chunkMarkdown(markdown: string, baseId: string, maxBlocks = 12): LearningBlock[] {
+export function chunkMarkdown(markdown: string, baseId: string, maxBlocks = 40): LearningBlock[] {
   const blocks = parseMarkdownToBlocks(markdown, baseId);
   if (blocks.length <= maxBlocks) return blocks;
-
-  const kept = blocks.slice(0, Math.max(1, maxBlocks - 1));
-  const overflow = blocks.slice(maxBlocks - 1);
-  const last = kept[kept.length - 1];
-  const overflowText = overflow
-    .filter((b): b is TextBlock => b.type === 'text')
-    .map((b) => b.content)
-    .join('\n\n');
-  if (overflowText.trim() && last && last.type === 'text') {
-    (last as TextBlock).content = `${(last as TextBlock).content}\n\n${overflowText}`;
-  }
-  return kept;
+  return blocks.slice(0, Math.max(1, maxBlocks));
 }

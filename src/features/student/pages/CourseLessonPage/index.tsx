@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
-import { useParams, Link, useSearchParams } from 'react-router-dom';
+import { useParams, useSearchParams } from 'react-router-dom';
 import { ArrowLeft, ArrowRight, Lock } from 'lucide-react';
 import { FadeIn, EmptyState } from '@/shared/components/ui';
 import SEO from '@/shared/components/SEO';
@@ -7,34 +7,38 @@ import { getCourseById, getCategoryById } from '@/features/student/data/courses'
 import { CardDeckSurface, chunkMarkdown } from '@/shared/learning';
 import type { LearningBlock } from '@/shared/learning';
 import StepRenderer from '@/shared/components/learning/StepRenderer';
-import LearningNav from '@/shared/components/learning/LearningNav';
-import FocusedStepList from '@/shared/components/learning/FocusedStepList';
 import LearningWorkspaceShell from '@/shared/components/learning/LearningWorkspaceShell';
 import { CourseLessonSkeleton } from '@/features/student/components/StudentSkeletons';
 import api from '@/core/services/api';
 import CelebrationModal from '@/shared/components/CelebrationModal';
 import { useCelebrationTrigger } from '@/shared/hooks/useCelebrationTrigger';
 import { useReducedMotion } from '@/shared/hooks/useReducedMotion';
-import { scrollToStepId } from '@/shared/utils/scrollToStep';
 import Button from '@/shared/components/ui/Button';
 import type { Lesson } from '@/features/student/data/courses';
 
 const STORAGE_KEY = 'qyvora_course_progress';
 
-const LessonViewer: React.FC<{
+interface LessonViewerProps {
   lesson: Lesson;
   number: number;
-  isActive: boolean;
-  isCompleted: boolean;
   courseId?: string;
-  backUrl?: string;
-  showBack?: boolean;
-}> = ({ lesson, number, isActive, isCompleted, courseId, backUrl, showBack }) => {
+  isCompleted: boolean;
+  onDeckComplete: () => void;
+  continueLabel: string;
+}
+
+const LessonViewer: React.FC<LessonViewerProps> = ({
+  lesson,
+  number,
+  courseId,
+  isCompleted,
+  onDeckComplete,
+  continueLabel,
+}) => {
   const blocks = useMemo<LearningBlock[]>(() => {
     const parts: LearningBlock[] = chunkMarkdown(
       lesson.instruction ?? '',
       `course-${courseId}-lesson-${lesson.id}`,
-      12,
     );
 
     if (lesson.hasTerminal && lesson.terminalCommands && lesson.terminalCommands.length > 0) {
@@ -71,10 +75,7 @@ const LessonViewer: React.FC<{
     <StepRenderer
       stepNumber={number}
       title={lesson.title}
-      isActive={isActive}
       isCompleted={isCompleted}
-      backUrl={showBack ? backUrl : undefined}
-      backLabel="Back to Courses"
       badges={
         <>
           {lesson.hasQuiz && (
@@ -92,7 +93,8 @@ const LessonViewer: React.FC<{
         sequenceId={courseId || 'course'}
         unitId={lesson.id}
         blocks={blocks}
-        enabled={isActive}
+        onDeckComplete={onDeckComplete}
+        continueLabel={continueLabel}
       />
     </StepRenderer>
   );
@@ -145,7 +147,7 @@ const CourseLessonPage: React.FC = () => {
   const [celebrationOpen, setCelebrationOpen] = useCelebrationTrigger(allComplete);
   const prefersReducedMotion = useReducedMotion();
 
-  const scrollToLesson = useCallback((idx: number) => {
+  const selectLesson = useCallback((idx: number) => {
     if (totalLessons === 0) return;
     const clamped = Math.max(0, Math.min(idx, totalLessons - 1));
     setSearchParams((prev) => {
@@ -153,8 +155,7 @@ const CourseLessonPage: React.FC = () => {
       next.set('lesson', String(clamped));
       return next;
     }, { replace: true });
-    const behavior = prefersReducedMotion ? 'auto' : 'smooth';
-    scrollToStepId(`lesson-${clamped + 1}`, behavior);
+    window.scrollTo({ top: 0, behavior: prefersReducedMotion ? 'auto' : 'smooth' });
   }, [totalLessons, setSearchParams, prefersReducedMotion]);
 
   const saveProgress = useCallback((lessons: Set<string>, idx: number) => {
@@ -177,12 +178,17 @@ const CourseLessonPage: React.FC = () => {
   }, [course, completedLessons, currentLessonIdx, saveProgress, courseId, totalLessons]);
 
   const goNext = useCallback(() => {
-    if (currentLessonIdx < totalLessons - 1) scrollToLesson(currentLessonIdx + 1);
-  }, [currentLessonIdx, totalLessons, scrollToLesson]);
+    if (currentLessonIdx < totalLessons - 1) selectLesson(currentLessonIdx + 1);
+  }, [currentLessonIdx, totalLessons, selectLesson]);
 
   const goPrev = useCallback(() => {
-    if (currentLessonIdx > 0) scrollToLesson(currentLessonIdx - 1);
-  }, [currentLessonIdx, scrollToLesson]);
+    if (currentLessonIdx > 0) selectLesson(currentLessonIdx - 1);
+  }, [currentLessonIdx, selectLesson]);
+
+  const handleDeckComplete = useCallback(() => {
+    markComplete();
+    if (currentLessonIdx < totalLessons - 1) selectLesson(currentLessonIdx + 1);
+  }, [markComplete, currentLessonIdx, totalLessons, selectLesson]);
 
   useEffect(() => {
     const handleKey = (e: KeyboardEvent) => {
@@ -194,17 +200,6 @@ const CourseLessonPage: React.FC = () => {
     window.addEventListener('keydown', handleKey);
     return () => window.removeEventListener('keydown', handleKey);
   }, [goNext, goPrev]);
-
-  // Scroll to initial lesson on mount
-  useEffect(() => {
-    if (lessonParamValid) {
-      const timer = setTimeout(() => {
-        const el = document.getElementById(`lesson-${lessonParam + 1}`);
-        if (el) el.scrollIntoView({ behavior: prefersReducedMotion ? 'auto' : 'smooth', block: 'start' });
-      }, 100);
-      return () => clearTimeout(timer);
-    }
-  }, [lessonParamValid, lessonParam, prefersReducedMotion]);
 
   useEffect(() => {
     window.dispatchEvent(new CustomEvent('course:updateMeta', {
@@ -288,52 +283,18 @@ const CourseLessonPage: React.FC = () => {
             label: `${completedCount}/${totalLessons}`,
           }}
         >
-          {/* All lessons on one page — focused presentation */}
-          <FocusedStepList
-            idPrefix="lesson"
-            items={course.lessons.map((lesson, i) => ({
-              index: i,
-              number: i + 1,
-              title: lesson.title,
-              isActive: i === currentLessonIdx,
-              isCompleted: completedLessons.has(lesson.id),
-              isLocked: false,
-            }))}
-            onSelect={(i) => scrollToLesson(i)}
-            renderActive={(i) => (
-              <LessonViewer
-                lesson={course.lessons[i]}
-                number={i + 1}
-                isActive
-                isCompleted={completedLessons.has(course.lessons[i].id)}
-                courseId={courseId}
-                backUrl="/dashboard/courses"
-                showBack={i === 0}
-              />
-            )}
-          />
-
-          <LearningNav
-            currentStep={currentLessonIdx}
-            totalSteps={totalLessons}
-            isLastStep={currentLessonIdx === totalLessons - 1}
-            isComplete={allComplete}
-            onPrev={currentLessonIdx > 0 ? goPrev : undefined}
-            onNext={currentLessonIdx < totalLessons - 1 ? goNext : undefined}
-            onComplete={!allComplete && !completedLessons.has(course.lessons[currentLessonIdx]?.id) ? markComplete : undefined}
-            completeLabel={"Complete"}
-            nextLabel="Next Lesson"
-            nextLabelMobile="Next"
-            finishContent={
-              <Link
-                to="/dashboard/courses"
-                className="btn-primary inline-flex flex-1 md:flex-none items-center justify-center gap-1.5 sm:flex-none !rounded-xl !text-xs !font-black !uppercase !tracking-widest px-5 py-2.5"
-              >
-                <span>Back to Courses</span>
-                <ArrowRight className="h-3.5 h-3.5 shrink-0" />
-              </Link>
-            }
-          />
+          {/* One lesson at a time — the deck's Continue advances to the next lesson */}
+          {course.lessons[currentLessonIdx] && (
+            <LessonViewer
+              key={course.lessons[currentLessonIdx].id}
+              lesson={course.lessons[currentLessonIdx]}
+              number={currentLessonIdx + 1}
+              courseId={courseId}
+              isCompleted={completedLessons.has(course.lessons[currentLessonIdx].id)}
+              onDeckComplete={handleDeckComplete}
+              continueLabel={currentLessonIdx < totalLessons - 1 ? 'Next Lesson' : 'Finish'}
+            />
+          )}
         </LearningWorkspaceShell>
       </div>
     </FadeIn>

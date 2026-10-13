@@ -92,7 +92,7 @@ export const CheckpointBlockComponent: React.FC<BlockRendererProps<CheckpointBlo
                 <p className="text-xs font-black uppercase tracking-widest text-warning/60 mb-1">
                   Hint {hint.level}
                 </p>
-                <p className="text-sm font-mono text-warning/80 leading-[2]">
+                <p className="text-sm font-mono text-warning/80 leading-relaxed">
                   {hint.content}
                 </p>
               </div>
@@ -117,7 +117,7 @@ export const CheckpointBlockComponent: React.FC<BlockRendererProps<CheckpointBlo
             <p className="text-xs font-black uppercase tracking-widest text-warning/60 mb-1">
               Hint
             </p>
-            <p className="text-sm font-mono text-warning/80 leading-[2]">
+            <p className="text-sm font-mono text-warning/80 leading-relaxed">
               {block.flag.hint}
             </p>
           </div>
@@ -186,7 +186,7 @@ export const CheckpointBlockComponent: React.FC<BlockRendererProps<CheckpointBlo
           {title}
         </p>
         
-        <p className="text-sm md:text-base font-mono text-text-secondary leading-[2] md:leading-[2.2] mb-4">
+        <p className="text-sm md:text-base font-mono text-text-secondary leading-relaxed mb-4">
           {block.task.description}
         </p>
         
@@ -198,7 +198,7 @@ export const CheckpointBlockComponent: React.FC<BlockRendererProps<CheckpointBlo
             {block.task.verificationSteps.map((step, index) => (
               <li
                 key={index}
-                className="flex items-start gap-2 text-sm font-mono text-text-secondary leading-[2]"
+                className="flex items-start gap-2 text-sm font-mono text-text-secondary leading-relaxed"
               >
                 <span className="text-accent font-black shrink-0">
                   {index + 1}.

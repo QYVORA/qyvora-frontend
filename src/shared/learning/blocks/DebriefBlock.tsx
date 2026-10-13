@@ -22,7 +22,7 @@ export const DebriefBlockComponent: React.FC<BlockRendererProps<DebriefBlock>> =
         </p>
       </div>
       
-      <div className="text-sm md:text-base font-mono text-text-secondary leading-[2] md:leading-[2.2] whitespace-pre-wrap">
+      <div className="text-sm md:text-base font-mono text-text-secondary leading-relaxed whitespace-pre-wrap">
         {block.content}
       </div>
       
@@ -35,7 +35,7 @@ export const DebriefBlockComponent: React.FC<BlockRendererProps<DebriefBlock>> =
             {block.keyTakeaways.map((takeaway, index) => (
               <li
                 key={index}
-                className="flex items-start gap-2 text-sm font-mono text-text-secondary leading-[2]"
+                className="flex items-start gap-2 text-sm font-mono text-text-secondary leading-relaxed"
               >
                 <span className="text-accent shrink-0 select-none" aria-hidden="true">
                   •

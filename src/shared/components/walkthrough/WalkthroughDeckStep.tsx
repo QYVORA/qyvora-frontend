@@ -17,6 +17,7 @@ import { chunkMarkdown } from '@/shared/learning';
 import { CardDeckSurface } from '@/shared/learning';
 import { StepNumberHeader } from '@/shared/components/learning/StepNumberHeader';
 import type { WalkthroughStepProps, ProgressiveHintLevel } from './WalkthroughStep';
+import { useWalkthroughDeckNav } from './walkthroughDeckContext';
 
 export interface WalkthroughDeckStepProps extends WalkthroughStepProps {
   /** Disable XP/persist for locked steps (defaults to `!isLocked`). */
@@ -48,6 +49,7 @@ export function WalkthroughDeckStep({
   skipFlag,
   deckEnabled,
 }: WalkthroughDeckStepProps) {
+  const { onDeckComplete, continueLabel } = useWalkthroughDeckNav();
   const blocks = useMemo<LearningBlock[]>(() => {
     const out: LearningBlock[] = [];
     const base = `lab-${labId}-${flagId}`;
@@ -60,7 +62,7 @@ export function WalkthroughDeckStep({
       out.push({ type: 'objective', id: `${base}-objectives`, objectives });
     }
 
-    out.push(...chunkMarkdown(narrative || '', `${base}-narrative`, 8));
+    out.push(...chunkMarkdown(narrative || '', `${base}-narrative`));
 
     if (evidence && evidence.length > 0) {
       out.push({ type: 'evidence', id: `${base}-evidence`, entries: evidence, format: 'terminal' });
@@ -152,6 +154,8 @@ export function WalkthroughDeckStep({
           blocks={blocks}
           onCheckpointSubmit={async (blockId, answer) => onFlagSubmit(blockId, answer)}
           onComplete={(id) => onComplete(id)}
+          onDeckComplete={onDeckComplete}
+          continueLabel={continueLabel}
           enabled={deckEnabled ?? !isLocked}
         />
         {children}

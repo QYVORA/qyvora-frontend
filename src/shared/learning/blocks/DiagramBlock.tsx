@@ -47,7 +47,7 @@ export const DiagramBlockComponent: React.FC<BlockRendererProps<DiagramBlock>> =
               <li key={node.id}>
                 <div className="rounded-xl border border-accent/25 bg-accent-dim px-4 py-3">
                   <p className="text-sm font-black text-text-primary">{node.label ?? node.id}</p>
-                  {node.description && <p className="mt-1 text-sm font-mono text-text-secondary leading-[2]">{node.description}</p>}
+                  {node.description && <p className="mt-1 text-sm font-mono text-text-secondary leading-relaxed">{node.description}</p>}
                 </div>
                 {outgoing.length > 0 && (
                   <div className="ml-4 mt-1.5 space-y-1 text-xs font-mono text-text-muted">
@@ -64,13 +64,13 @@ export const DiagramBlockComponent: React.FC<BlockRendererProps<DiagramBlock>> =
         </ol>
       ) : (
         <div className="wc-code overflow-x-auto rounded-xl border border-border/40 bg-bg p-4">
-          <pre className="text-xs font-mono text-text-secondary leading-[2]">
+          <pre className="text-xs font-mono text-text-secondary leading-relaxed">
             {JSON.stringify(block.content, null, 2)}
           </pre>
         </div>
       )}
 
-      {block.caption && <p className="mt-4 text-sm font-mono text-text-muted leading-[2]">{block.caption}</p>}
+      {block.caption && <p className="mt-4 text-sm font-mono text-text-muted leading-relaxed">{block.caption}</p>}
     </div>
   );
 };

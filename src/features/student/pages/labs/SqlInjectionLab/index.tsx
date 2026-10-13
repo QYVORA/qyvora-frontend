@@ -136,6 +136,7 @@ const SqlInjectionLab = () => {
             activeStepIndex={activeIndex}
             onStepSelect={setViewStepIdx}
             stepIdPrefix="ws-step"
+            focused
           >
             <WalkthroughDeckStep
               stepIndex={0}

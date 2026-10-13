@@ -23,7 +23,7 @@ export const ObserveBlockComponent: React.FC<BlockRendererProps<ObserveBlock>> =
             {title}
           </p>
         </div>
-        <p className="text-sm font-mono text-text-secondary leading-[2]">
+        <p className="text-sm font-mono text-text-secondary leading-relaxed">
           {block.content}
         </p>
       </div>
@@ -36,7 +36,7 @@ export const ObserveBlockComponent: React.FC<BlockRendererProps<ObserveBlock>> =
           </span>
         </div>
         
-        <pre className="p-4 font-mono text-xs md:text-sm text-text-secondary leading-[2] overflow-x-auto">
+        <pre className="p-4 font-mono text-xs md:text-sm text-text-secondary leading-relaxed overflow-x-auto">
           <code>{block.artifactContent}</code>
         </pre>
       </div>
@@ -52,7 +52,7 @@ export const ObserveBlockComponent: React.FC<BlockRendererProps<ObserveBlock>> =
               <span className="text-accent shrink-0 select-none font-bold" aria-hidden="true">
                 →
               </span>
-              <p className="text-sm font-mono text-text-secondary leading-[2]">
+              <p className="text-sm font-mono text-text-secondary leading-relaxed">
                 {callout.text}
               </p>
             </div>

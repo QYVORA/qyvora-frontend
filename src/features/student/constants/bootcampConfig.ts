@@ -7,7 +7,7 @@
  */
 
 export type { BootcampStep, BootcampRoom, BootcampPhase, BootcampConfig } from './bootcampStructure';
-export { PHASE_COLORS, buildStepImagePath } from './bootcampStructure';
+export { PHASE_COLORS } from './bootcampStructure';
 
 // ── Config ────────────────────────────────────────────────────────────────────
 import type { BootcampConfig } from './bootcampStructure';

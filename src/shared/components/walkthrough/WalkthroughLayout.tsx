@@ -1,5 +1,5 @@
 import { Unplug, Loader2 } from 'lucide-react';
-import { Children, useCallback, useEffect } from 'react';
+import React, { Children, useCallback, useEffect } from 'react';
 import type { ReactNode } from 'react';
 import { IconTerminal } from '@/shared/components/icons';
 import FocusedStepList from '@/shared/components/learning/FocusedStepList';
@@ -7,6 +7,8 @@ import type { FocusedStepListItem } from '@/shared/components/learning/FocusedSt
 import LearningWorkspaceShell from '@/shared/components/learning/LearningWorkspaceShell';
 import type { WorkspaceStat } from '@/shared/components/learning/LearningWorkspaceShell';
 import LearningNav from '@/shared/components/learning/LearningNav';
+import { WalkthroughDeckNavContext } from './walkthroughDeckContext';
+import { WalkthroughDeckStep } from './WalkthroughDeckStep';
 import { useReducedMotion } from '@/shared/hooks/useReducedMotion';
 import { scrollToStepId } from '@/shared/utils/scrollToStep';
 import { useLabConnection } from '@/features/student/hooks/useLabConnection';
@@ -38,7 +40,14 @@ export interface WalkthroughLayoutProps {
   /** which `children` index is currently expanded (falls back to all-expanded when unset) */
   activeStepIndex?: number;
   onStepSelect?: (index: number) => void;
+  /** stepIdPrefix for anchor ids. */
   stepIdPrefix?: string;
+  /**
+   * Focused (Duolingo-style) mode: render only the active unit and let its deck
+   * own the single bottom Continue. Step rows and the previous/next nav bar are
+   * dropped — connection and simulation panels stay.
+   */
+  focused?: boolean;
 }
 
 export function WalkthroughLayout({
@@ -65,6 +74,7 @@ export function WalkthroughLayout({
   activeStepIndex,
   onStepSelect,
   stepIdPrefix,
+  focused = false,
 }: WalkthroughLayoutProps) {
   const allDone = totalSteps > 0 && completedCount === totalSteps;
   const { connection, isConnected, isLoading, error, connect, disconnect } = useLabConnection();
@@ -86,6 +96,29 @@ export function WalkthroughLayout({
       prefersReducedMotion ? 'auto' : 'smooth',
     );
   }, [onStepSelect, stepList, stepIdPrefix, prefersReducedMotion]);
+
+  const focusedActiveChild =
+    focused && stepList && stepList.length > 0 && activeStepIndex !== undefined
+      ? Children.toArray(children)[activeStepIndex] ?? null
+      : null;
+  const focusedActiveIsDeck =
+    React.isValidElement(focusedActiveChild) &&
+    focusedActiveChild.type === WalkthroughDeckStep;
+  const focusedIsLast = stepList ? activeStepIndex === stepList.length - 1 : false;
+  const focusedNextLabel = focusedIsLast ? (backLabel ?? 'Finish') : 'Next Step';
+
+  const handleDeckComplete = useCallback(() => {
+    if (!stepList || activeStepIndex === undefined) {
+      onBack?.();
+      return;
+    }
+    if (activeStepIndex < stepList.length - 1) {
+      onStepSelect?.(activeStepIndex + 1);
+      window.scrollTo({ top: 0, behavior: prefersReducedMotion ? 'auto' : 'smooth' });
+    } else {
+      onBack?.();
+    }
+  }, [stepList, activeStepIndex, onStepSelect, onBack, prefersReducedMotion]);
 
   useEffect(() => {
     const profile = getNetworkProfileForLab(labId);
@@ -109,6 +142,9 @@ export function WalkthroughLayout({
     headerStats.push({ label: "Est. time", value: `${estimatedMinutes} min` });
   }
   headerStats.push({ label: "Lab", value: labId });
+  if (totalSteps > 0) {
+    headerStats.push({ label: "steps", value: `${completedCount}/${totalSteps}` });
+  }
 
   return (
     <div className="w-full bg-canvas min-h-dvh">
@@ -212,23 +248,44 @@ export function WalkthroughLayout({
           </div>
         )}
 
-        {/* Steps — full width, matching blog text layout */}
-        <div className="space-y-12 md:space-y-16">
-          {stepList && stepList.length > 0 && activeStepIndex !== undefined && onStepSelect ? (
-            <FocusedStepList
-              idPrefix={stepIdPrefix}
-              items={stepList}
-              onSelect={handleStepSelect}
-              renderActive={(i) => Children.toArray(children)[i] ?? null}
-              className="space-y-4"
-            />
-          ) : (
-            children
-          )}
-        </div>
+        {/* Steps */}
+        {focused ? (
+          <div className="space-y-12 md:space-y-16">
+            <WalkthroughDeckNavContext.Provider
+              value={{ onDeckComplete: handleDeckComplete, continueLabel: focusedNextLabel }}
+            >
+              {focusedActiveChild}
+            </WalkthroughDeckNavContext.Provider>
+            {!focusedActiveIsDeck && focusedActiveChild && (
+              <div className="flex justify-end">
+                <button
+                  type="button"
+                  onClick={handleDeckComplete}
+                  className="btn-primary inline-flex min-h-[44px] items-center justify-center gap-1.5 rounded-xl px-6 py-2.5 text-xs font-black uppercase tracking-widest"
+                >
+                  {focusedNextLabel}
+                </button>
+              </div>
+            )}
+          </div>
+        ) : (
+          <div className="space-y-12 md:space-y-16">
+            {stepList && stepList.length > 0 && activeStepIndex !== undefined && onStepSelect ? (
+              <FocusedStepList
+                idPrefix={stepIdPrefix}
+                items={stepList}
+                onSelect={handleStepSelect}
+                renderActive={(i) => Children.toArray(children)[i] ?? null}
+                className="space-y-4"
+              />
+            ) : (
+              children
+            )}
+          </div>
+        )}
 
-        {/* Navigation — previous / next step, matching course & bootcamp pattern */}
-        {stepList && stepList.length > 0 && activeStepIndex !== undefined && onStepSelect && (
+        {/* Navigation — hidden in focused mode (the deck owns the Continue) */}
+        {!focused && stepList && stepList.length > 0 && activeStepIndex !== undefined && onStepSelect && (
           <LearningNav
             currentStep={activeStepIndex}
             totalSteps={stepList.length}
@@ -255,7 +312,7 @@ export function WalkthroughLayout({
         )}
 
         {/* Progress */}
-        {progressContent || (
+        {!focused && (progressContent || (
           <div className="rounded-xl border border-border-subtle bg-surface px-4 py-4 md:px-5 md:py-5">
             <div className="mb-3 flex items-center justify-between gap-4">
               <span className="type-meta font-black uppercase tracking-widest text-text-tertiary">
@@ -279,7 +336,7 @@ export function WalkthroughLayout({
               />
             </div>
           </div>
-        )}
+        ))}
 
         {allDone && (
           <div className="rounded-xl border border-accent/20 bg-accent/5 px-6 py-5 text-center">

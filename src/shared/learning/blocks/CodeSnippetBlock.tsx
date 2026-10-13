@@ -58,7 +58,7 @@ export const CodeSnippetBlockComponent: React.FC<BlockRendererProps<CodeBlock>> 
       </div>
 
       {block.explanation && (
-        <p className="border-t border-border/30 bg-bg-elevated px-4 py-3 text-sm font-mono text-text-secondary leading-[2]">
+        <p className="border-t border-border/30 bg-bg-elevated px-4 py-3 text-sm font-mono text-text-secondary leading-relaxed">
           {block.explanation}
         </p>
       )}

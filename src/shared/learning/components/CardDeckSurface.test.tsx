@@ -44,9 +44,9 @@ describe('CardDeckSurface', () => {
     const user = userEvent.setup();
     await user.click(screen.getByRole('button', { name: /Complete card and continue/ }));
 
-    // First card moves to the done row; the second becomes active.
+    // Second card becomes active; the first is no longer shown (no review rows).
     expect(await screen.findByText('Second card content.')).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: /Review Read card 1/ })).toBeInTheDocument();
+    expect(screen.queryByText('First card content.')).not.toBeInTheDocument();
 
     // Award flash appears in the status region.
     expect(await screen.findByRole('status', { name: 'XP awarded' })).toBeInTheDocument();
@@ -67,7 +67,6 @@ describe('CardDeckSurface', () => {
     await user.click(screen.getByRole('button', { name: /Complete card and continue/ }));
     expect(await screen.findByText('Second card content.')).toBeInTheDocument();
     expect(screen.getByText('0/3·0%')).toBeInTheDocument();
-    expect(screen.queryByRole('button', { name: /Review Read card 1/ })).not.toBeInTheDocument();
     expect(window.localStorage.getItem('qv.deck.test-deck')).toBeNull();
   });
 

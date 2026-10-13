@@ -4,6 +4,7 @@ import {
   chunkMarkdown,
   splitProse,
   plainMarkdown,
+  MAX_PROSE_PER_CARD,
 } from './markdownChunker';
 
 describe('plainMarkdown', () => {
@@ -27,7 +28,20 @@ describe('splitProse', () => {
     const long = 'One. '.repeat(40);
     const chunks = splitProse(long);
     expect(chunks.length).toBeGreaterThan(1);
-    for (const chunk of chunks) expect(chunk.length).toBeLessThanOrEqual(160 + 50);
+    for (const chunk of chunks) expect(chunk.length).toBeLessThanOrEqual(MAX_PROSE_PER_CARD * 1.5);
+  });
+
+  it('never coalesces prose into a wall of text', () => {
+    const md = Array.from(
+      { length: 30 },
+      (_, i) => `Sentence number ${i} adds a little more detail to the paragraph.`,
+    ).join(' ');
+    const blocks = parseMarkdownToBlocks(md, 'wall');
+    const texts = blocks.filter((b) => b.type === 'text');
+    expect(texts.length).toBeGreaterThan(1);
+    for (const b of texts) {
+      if (b.type === 'text') expect(b.content.length).toBeLessThanOrEqual(MAX_PROSE_PER_CARD * 1.5);
+    }
   });
 });
 
