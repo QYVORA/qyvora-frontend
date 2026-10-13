@@ -162,6 +162,7 @@ export function blockTitle(block: LearningBlock, fallback?: string): string {
     case 'recall':
       return block.title ?? 'Key Points';
     case 'text':
+      return block.title ?? fallback ?? blockLabel(block.type);
     case 'think':
     default:
       return fallback ?? blockLabel(block.type);

@@ -25,7 +25,7 @@ const sentence = (value: string, end = '.'): string => {
 export function cardSpeechText(block: LearningBlock): string {
   switch (block.type) {
     case 'text':
-      return sentence(clean(block.content));
+      return `${block.title ? sentence(clean(block.title)) : ''}${sentence(clean(block.content))}`;
 
     case 'concept':
       return `${sentence(clean(block.title))}${sentence(clean(block.content))}`;

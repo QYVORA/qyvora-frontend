@@ -49,6 +49,8 @@ export interface BaseBlock {
 export interface TextBlock extends BaseBlock {
   type: 'text';
   content: string; // Can be plain text or Markdown for migration compatibility
+  /** Optional section heading carried from the source markdown. */
+  title?: string;
 }
 
 /** Learning outcomes — what the student should be able to do */

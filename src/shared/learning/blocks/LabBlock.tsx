@@ -21,13 +21,13 @@ export const LabBlockComponent: React.FC<BlockRendererProps<LabBlock>> = ({ bloc
       </div>
 
       <h3 className="mb-2 text-lg md:text-xl font-black text-text-primary tracking-tight">{block.title}</h3>
-      <p className="mb-4 text-sm md:text-base font-mono text-text-secondary leading-relaxed">{block.summary}</p>
+      <p className="mb-4 text-base md:text-lg font-mono text-text-secondary leading-relaxed">{block.summary}</p>
 
       <div className="mb-3">
         <p className="mb-2 text-[10px] font-black uppercase tracking-widest text-accent/70">What you'll do</p>
         <ol className="space-y-2" role="list">
           {block.objectives.map((obj, i) => (
-            <li key={i} className="flex items-start gap-2 text-sm font-mono text-text-primary leading-relaxed">
+            <li key={i} className="flex items-start gap-2 text-base font-mono text-text-primary leading-relaxed">
               <span className="shrink-0 select-none font-black text-accent" aria-label={`Objective ${i + 1}`}>
                 {String(i + 1).padStart(2, '0')}
               </span>

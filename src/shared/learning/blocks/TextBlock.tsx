@@ -11,7 +11,16 @@ import type { BlockRendererProps } from '../utils/blockRegistry';
 import { GameProse } from './GameProse';
 
 export const TextBlockComponent: React.FC<BlockRendererProps<TextBlock>> = ({ block }) => {
-  return <GameProse text={block.content} />;
+  return (
+    <div className="space-y-3">
+      {block.title && (
+        <h2 className="text-lg md:text-xl font-black uppercase tracking-tight text-text-primary">
+          {block.title}
+        </h2>
+      )}
+      <GameProse text={block.content} />
+    </div>
+  );
 };
 
 export default TextBlockComponent;

@@ -49,7 +49,7 @@ export const ComparisonBlockComponent: React.FC<BlockRendererProps<ComparisonBlo
       {block.keyDifference && (
         <div className="rounded-xl border border-warning/30 bg-warning/5 px-4 py-3">
           <p className="mb-1 text-[10px] font-black uppercase tracking-widest text-warning">Key Difference</p>
-          <p className="text-sm font-mono text-warning/90 leading-relaxed">{block.keyDifference}</p>
+          <p className="text-base font-mono text-warning/90 leading-relaxed">{block.keyDifference}</p>
         </div>
       )}
     </div>

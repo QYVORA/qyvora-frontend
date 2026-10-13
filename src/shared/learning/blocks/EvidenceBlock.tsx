@@ -34,7 +34,7 @@ export const EvidenceBlockComponent: React.FC<BlockRendererProps<EvidenceBlock>>
         {block.entries.map((entry, index) => (
           <li
             key={index}
-            className="flex items-start gap-2 font-mono text-xs md:text-sm text-text-secondary leading-relaxed"
+            className="flex items-start gap-2 font-mono text-sm md:text-base text-text-secondary leading-relaxed"
           >
             {format === 'terminal' && (
               <span className="text-accent shrink-0 select-none" aria-hidden="true">

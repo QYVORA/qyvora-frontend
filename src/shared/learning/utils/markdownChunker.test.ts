@@ -25,7 +25,7 @@ describe('splitProse', () => {
   });
 
   it('splits long paragraphs at sentence boundaries under the cap', () => {
-    const long = 'One. '.repeat(40);
+    const long = 'One. '.repeat(120);
     const chunks = splitProse(long);
     expect(chunks.length).toBeGreaterThan(1);
     for (const chunk of chunks) expect(chunk.length).toBeLessThanOrEqual(MAX_PROSE_PER_CARD * 1.5);

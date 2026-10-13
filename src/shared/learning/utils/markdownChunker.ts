@@ -9,7 +9,8 @@
  *   - Blockquotes become Concept cards ("Why This Matters" when flagged as such).
  *   - Fenced code blocks become Code cards.
  *   - Bullet lists become Recall cards; numbered lists become Do cards.
- *   - Prose is split into short Text cards (hard cap per card ~160 chars).
+ *   - Prose is split into readable Text cards; the first card of a section
+ *     carries its heading (hard cap per card ~320 chars).
  *
  * Deterministic and dependency-free — safe to unit test.
  */
@@ -39,7 +40,7 @@ export function plainMarkdown(text: string): string {
     .trim();
 }
 
-export const MAX_PROSE_PER_CARD = 120;
+export const MAX_PROSE_PER_CARD = 320;
 
 /** Split a paragraph into sentence groups each under the prose cap. */
 export function splitProse(text: string, max = MAX_PROSE_PER_CARD): string[] {
@@ -201,10 +202,15 @@ export function markdownToBlocks(markdown: string, baseId: string): LearningBloc
   const nextId = (kind: string) => `${baseId}-${kind}-${index++}`;
 
   const pushText = (content: string) => {
-    // Every prose chunk becomes its own short card. Never coalesce overflow
-    // into a previous card — that recreates the wall-of-text we're removing.
+    // Every prose chunk becomes its own readable card. The first chunk of a
+    // section carries the section heading so headings are never dropped and
+    // each reading card has a clear title above its body.
     for (const chunk of splitProse(content)) {
       const textBlock: TextBlock = { type: 'text', id: nextId('text'), content: chunk };
+      if (sectionTitle) {
+        textBlock.title = sectionTitle;
+        sectionTitle = null;
+      }
       blocks.push(textBlock);
     }
   };

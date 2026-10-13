@@ -47,7 +47,7 @@ export const DiagramBlockComponent: React.FC<BlockRendererProps<DiagramBlock>> =
               <li key={node.id}>
                 <div className="rounded-xl border border-accent/25 bg-accent-dim px-4 py-3">
                   <p className="text-sm font-black text-text-primary">{node.label ?? node.id}</p>
-                  {node.description && <p className="mt-1 text-sm font-mono text-text-secondary leading-relaxed">{node.description}</p>}
+                  {node.description && <p className="mt-1 text-base font-mono text-text-secondary leading-relaxed">{node.description}</p>}
                 </div>
                 {outgoing.length > 0 && (
                   <div className="ml-4 mt-1.5 space-y-1 text-xs font-mono text-text-muted">
@@ -70,7 +70,7 @@ export const DiagramBlockComponent: React.FC<BlockRendererProps<DiagramBlock>> =
         </div>
       )}
 
-      {block.caption && <p className="mt-4 text-sm font-mono text-text-muted leading-relaxed">{block.caption}</p>}
+      {block.caption && <p className="mt-4 text-base font-mono text-text-muted leading-relaxed">{block.caption}</p>}
     </div>
   );
 };

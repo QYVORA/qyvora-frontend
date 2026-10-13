@@ -43,7 +43,7 @@ export const ObjectiveBlockComponent: React.FC<BlockRendererProps<ObjectiveBlock
               )}
             </div>
             
-            <p className="text-sm md:text-base font-mono text-text-secondary leading-relaxed pt-1 min-w-0">
+            <p className="text-base md:text-lg font-mono text-text-secondary leading-relaxed pt-1 min-w-0">
               {objective}
             </p>
           </li>

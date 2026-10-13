@@ -22,7 +22,7 @@ export const HintBlockComponent: React.FC<BlockRendererProps<HintBlock>> = ({ bl
           {hint.label && (
             <p className="mb-1 text-[10px] font-black uppercase tracking-widest text-warning/60">{hint.label}</p>
           )}
-          <p className="text-sm font-mono text-warning/80 leading-relaxed">{hint.content}</p>
+          <p className="text-base font-mono text-warning/80 leading-relaxed">{hint.content}</p>
         </div>
       ))}
 

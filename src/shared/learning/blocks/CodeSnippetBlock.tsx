@@ -47,7 +47,7 @@ export const CodeSnippetBlockComponent: React.FC<BlockRendererProps<CodeBlock>> 
       </div>
 
       <div className="overflow-x-auto">
-        <pre className="px-3 py-3 text-sm font-mono leading-relaxed">
+        <pre className="px-3 py-3 text-base font-mono leading-relaxed">
           {lines.map((line, i) => (
             <div key={i} className={`flex rounded-sm ${highlightSet.has(i + 1) ? 'bg-accent-dim' : ''}`}>
               <span className="mr-3 w-4 shrink-0 select-none text-right text-xs text-text-muted/30">{i + 1}</span>
@@ -58,7 +58,7 @@ export const CodeSnippetBlockComponent: React.FC<BlockRendererProps<CodeBlock>> 
       </div>
 
       {block.explanation && (
-        <p className="border-t border-border/30 bg-bg-elevated px-4 py-3 text-sm font-mono text-text-secondary leading-relaxed">
+        <p className="border-t border-border/30 bg-bg-elevated px-4 py-3 text-base font-mono text-text-secondary leading-relaxed">
           {block.explanation}
         </p>
       )}

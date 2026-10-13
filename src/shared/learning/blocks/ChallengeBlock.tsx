@@ -19,7 +19,7 @@ export const ChallengeBlockComponent: React.FC<BlockRendererProps<ChallengeBlock
       </div>
 
       <h3 className="mb-2 text-lg md:text-xl font-black text-text-primary tracking-tight">{block.title}</h3>
-      <p className="mb-4 text-sm md:text-base font-mono text-text-secondary leading-relaxed">{block.description}</p>
+      <p className="mb-4 text-base md:text-lg font-mono text-text-secondary leading-relaxed">{block.description}</p>
 
       {block.constraints && block.constraints.length > 0 && (
         <div className="mb-4">
@@ -29,7 +29,7 @@ export const ChallengeBlockComponent: React.FC<BlockRendererProps<ChallengeBlock
           </div>
           <ol className="space-y-2" role="list">
             {block.constraints.map((c, i) => (
-              <li key={i} className="flex items-start gap-2 text-sm font-mono text-text-secondary leading-relaxed">
+              <li key={i} className="flex items-start gap-2 text-base font-mono text-text-secondary leading-relaxed">
                 <span className="shrink-0 select-none text-text-muted" aria-hidden="true">·</span>
                 <span>{c}</span>
               </li>
@@ -46,7 +46,7 @@ export const ChallengeBlockComponent: React.FC<BlockRendererProps<ChallengeBlock
           </div>
           <ol className="space-y-2" role="list">
             {block.successCriteria.map((c, i) => (
-              <li key={i} className="flex items-start gap-2 text-sm font-mono text-text-primary leading-relaxed">
+              <li key={i} className="flex items-start gap-2 text-base font-mono text-text-primary leading-relaxed">
                 <CheckCircle2 className="mt-1 w-3.5 h-3.5 shrink-0 text-accent" aria-hidden="true" />
                 <span>{c}</span>
               </li>

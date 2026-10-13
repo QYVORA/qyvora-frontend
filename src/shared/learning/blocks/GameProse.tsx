@@ -23,7 +23,7 @@ interface Props {
 export const GameProse: React.FC<Props> = ({ text, className }) => {
   return (
     <div
-      className={`w-full font-mono text-[15px] md:text-base text-text-primary leading-relaxed space-y-3 max-w-none ${className ?? ''}`}
+      className={`w-full font-mono text-base md:text-lg text-text-primary leading-7 md:leading-8 space-y-4 max-w-none ${className ?? ''}`}
     >
       <ReactMarkdown
         remarkPlugins={[remarkGfm]}
@@ -35,7 +35,7 @@ export const GameProse: React.FC<Props> = ({ text, className }) => {
           strong: ({ children }) => <strong className="font-bold text-text-primary">{children}</strong>,
           em: ({ children }) => <em className="italic text-text-secondary">{children}</em>,
           code: ({ children }) => (
-            <code className="mx-0.5 rounded-[4px] border border-border bg-code-bg px-1.5 py-px font-mono text-xs text-accent">
+            <code className="mx-0.5 rounded-[4px] border border-border bg-code-bg px-1.5 py-px font-mono text-sm text-accent">
               {children}
             </code>
           ),

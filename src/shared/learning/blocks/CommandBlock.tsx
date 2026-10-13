@@ -67,7 +67,7 @@ export const CommandBlockComponent: React.FC<BlockRendererProps<CommandBlock>> =
               <p className="text-xs font-black uppercase tracking-widest text-text-muted mb-1">
                 What it does
               </p>
-              <p className="text-sm font-mono text-text-secondary leading-relaxed">
+              <p className="text-base font-mono text-text-secondary leading-relaxed">
                 {block.explanation.what}
               </p>
             </div>
@@ -78,7 +78,7 @@ export const CommandBlockComponent: React.FC<BlockRendererProps<CommandBlock>> =
               <p className="text-xs font-black uppercase tracking-widest text-text-muted mb-1">
                 Why
               </p>
-              <p className="text-sm font-mono text-text-secondary leading-relaxed">
+              <p className="text-base font-mono text-text-secondary leading-relaxed">
                 {block.explanation.why}
               </p>
             </div>
@@ -89,7 +89,7 @@ export const CommandBlockComponent: React.FC<BlockRendererProps<CommandBlock>> =
               <p className="text-xs font-black uppercase tracking-widest text-text-muted mb-1">
                 What to watch for
               </p>
-              <p className="text-sm font-mono text-text-secondary leading-relaxed">
+              <p className="text-base font-mono text-text-secondary leading-relaxed">
                 {block.explanation.watch}
               </p>
             </div>
@@ -105,7 +105,7 @@ export const CommandBlockComponent: React.FC<BlockRendererProps<CommandBlock>> =
           </p>
           <ul className="space-y-2" role="list">
             {block.flags.map((flag, index) => (
-              <li key={index} className="flex items-start gap-2 text-sm font-mono">
+              <li key={index} className="flex items-start gap-2 text-base font-mono">
                 <code className="text-accent shrink-0">{flag.flag}</code>
                 <span className="text-text-secondary leading-relaxed">
                   {flag.description}
@@ -122,7 +122,7 @@ export const CommandBlockComponent: React.FC<BlockRendererProps<CommandBlock>> =
           <p className="text-xs font-black uppercase tracking-widest text-text-muted mb-2">
             Expected Output
           </p>
-          <pre className="text-xs md:text-sm font-mono text-text-secondary leading-relaxed overflow-x-auto">
+          <pre className="text-xs md:text-base font-mono text-text-secondary leading-relaxed overflow-x-auto">
             <code>{block.expectedOutput}</code>
           </pre>
         </div>

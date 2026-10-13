@@ -27,7 +27,7 @@ export const DoBlockComponent: React.FC<BlockRendererProps<DoBlock>> = ({ block 
         {block.instructions.map((instruction, index) => (
           <li
             key={index}
-            className="flex items-start gap-3 text-sm md:text-base font-mono text-text-secondary leading-relaxed"
+            className="flex items-start gap-3 text-base md:text-lg font-mono text-text-secondary leading-relaxed"
           >
             <span
               className="text-accent font-black shrink-0 select-none"
@@ -46,7 +46,7 @@ export const DoBlockComponent: React.FC<BlockRendererProps<DoBlock>> = ({ block 
           <p className="text-xs font-black uppercase tracking-widest text-accent/60 mb-1">
             Expected Result
           </p>
-          <p className="text-sm font-mono text-text-secondary leading-relaxed">
+          <p className="text-base font-mono text-text-secondary leading-relaxed">
             {block.expectedResult}
           </p>
         </div>
@@ -58,7 +58,7 @@ export const DoBlockComponent: React.FC<BlockRendererProps<DoBlock>> = ({ block 
           <p className="text-xs font-black uppercase tracking-widest text-accent/60 mb-1">
             How to Verify
           </p>
-          <p className="text-sm font-mono text-text-secondary leading-relaxed">
+          <p className="text-base font-mono text-text-secondary leading-relaxed">
             {block.verificationHint}
           </p>
         </div>

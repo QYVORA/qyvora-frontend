@@ -18,11 +18,11 @@ export const MissionBlockComponent: React.FC<BlockRendererProps<MissionBlock>> =
         <p className="text-xs font-black uppercase tracking-widest text-accent mb-1">
           Mission
         </p>
-        <p className="text-sm font-mono text-text-secondary leading-relaxed">
+        <p className="text-base font-mono text-text-secondary leading-relaxed">
           {block.mission}
         </p>
         {block.context && (
-          <p className="text-sm font-mono text-text-muted leading-relaxed mt-2">
+          <p className="text-base font-mono text-text-muted leading-relaxed mt-2">
             {block.context}
           </p>
         )}

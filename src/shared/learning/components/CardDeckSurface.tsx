@@ -315,7 +315,7 @@ export const CardDeckSurface: React.FC<CardDeckSurfaceProps> = ({
               <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
                 <span className="font-mono text-xs font-black text-text-muted">{String(activeIdx + 1).padStart(2, '0')}/{String(totalCards).padStart(2, '0')}</span>
                 <span className="text-[10px] font-black uppercase tracking-widest text-accent">{blockLabel(current.type)}</span>
-                <span className="truncate text-sm font-mono text-text-primary min-w-0">{truncate(blockTitle(current))}</span>
+                <span className="truncate text-base font-mono text-text-primary min-w-0">{truncate(blockTitle(current))}</span>
                 {currentSolved && (
                   <span className="flex items-center gap-1 rounded-lg bg-accent/10 border border-accent/30 px-2 py-0.5 text-[10px] font-black uppercase tracking-widest text-accent">
                     <Check className="w-3 h-3" aria-hidden="true" />
@@ -337,7 +337,7 @@ export const CardDeckSurface: React.FC<CardDeckSurfaceProps> = ({
             </header>
 
             {/* Card body */}
-            <div className="px-3 md:px-4 py-5">
+            <div className="px-4 md:px-6 py-6 md:py-8 min-h-[200px] md:min-h-[240px]">
               <LearningBlockRenderer block={current} context={deckContext} />
             </div>
 

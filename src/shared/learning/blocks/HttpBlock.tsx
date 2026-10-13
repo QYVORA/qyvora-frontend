@@ -75,7 +75,7 @@ export const HttpBlockComponent: React.FC<BlockRendererProps<HttpBlock>> = ({ bl
               <span className="shrink-0 select-none text-xs font-black text-accent" aria-hidden="true">
                 {ann.target}
               </span>
-              <p className="text-sm font-mono text-text-secondary leading-relaxed">
+              <p className="text-base font-mono text-text-secondary leading-relaxed">
                 {ann.label}
                 {ann.description ? <span className="text-text-muted"> — {ann.description}</span> : null}
               </p>
