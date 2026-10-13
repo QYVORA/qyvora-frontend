@@ -1,9 +1,10 @@
 import type { PrerenderArguments, PrerenderResult } from 'vite-prerender-plugin';
-import { buildOrganization } from '@/shared/seo/schema';
+import { buildCourse, buildOrganization } from '@/shared/seo/schema';
 import { canonicalUrl } from '@/shared/seo/metadata';
 import { loadToolSeoByPath } from '@/shared/seo/toolSeoForPrerender';
 import { SITE_CONFIG } from '@/features/marketing/content/siteConfig';
 import { TOOLS } from '@/features/marketing/data/tools/registry';
+import { getCourseById } from '@/features/student/data/courses';
 
 const SITE_URL = canonicalUrl('/');
 const DEFAULT_OG_IMAGE = `${SITE_URL}og-image.png`;
@@ -1202,6 +1203,45 @@ const routeContent: Record<string, RouteContent> = {
   },
 };
 
+const COURSE_PREFIX = '/courses/';
+
+/**
+ * Prerendered copy for the public `/courses/:courseId` pages, derived from the
+ * same course records the client page reads so the static head, the body and
+ * the hydrated page can never drift apart. Only public fields are emitted —
+ * lesson bodies, quizzes and answer keys stay out of the static HTML.
+ */
+function loadCourseContent(path: string): RouteContent | undefined {
+  if (!path.startsWith(COURSE_PREFIX)) return undefined;
+  const course = getCourseById(path.slice(COURSE_PREFIX.length));
+  if (!course) return undefined;
+
+  const sections: Section[] = [
+    { heading: 'Overview', body: course.overview },
+  ];
+
+  if (course.learningObjectives.length > 0) {
+    sections.push({ heading: 'What you will learn', bullets: course.learningObjectives });
+  }
+
+  sections.push({
+    heading: 'Syllabus',
+    body: `A structured path through every lesson: ${course.lessons.map((lesson) => lesson.title).join(', ')}.`,
+  });
+
+  return {
+    title: `${course.title} | QYVORA`,
+    description: course.description || course.overview,
+    h1: course.title,
+    lead: course.description || course.overview,
+    sections,
+    links: [
+      { label: 'Course catalogue', href: '/learn' },
+      { label: 'Cyber Coin', href: '/cp' },
+    ],
+  };
+}
+
 function renderBody(content: RouteContent): string {
   const sections = (content.sections || [])
     .map((s) => {
@@ -1229,19 +1269,29 @@ function renderBody(content: RouteContent): string {
 export async function prerender(data: PrerenderArguments): Promise<PrerenderResult> {
   const { url } = data;
 
-  const content = routeContent[url] || {
-    title: 'QYVORA | Africa\'s Offensive Security Platform',
-    description: 'Building a strong cybersecurity ecosystem in Africa through offensive security training.',
-    h1: 'QYVORA',
-    lead: 'Building a strong cybersecurity ecosystem in Africa.',
-  };
+  const content =
+    loadCourseContent(url) ||
+    routeContent[url] || {
+      title: 'QYVORA | Africa\'s Offensive Security Platform',
+      description: 'Building a strong cybersecurity ecosystem in Africa through offensive security training.',
+      h1: 'QYVORA',
+      lead: 'Building a strong cybersecurity ecosystem in Africa.',
+    };
 
   // Tool pages take their head metadata from the tool registry + doc data so
   // the static head a crawler reads and the client head a visitor sees can
   // never drift apart.
   const toolSeo = await loadToolSeoByPath(url);
-  const title = toolSeo?.fullTitle ?? content.title;
-  const description = toolSeo?.description ?? content.description;
+
+  // Course pages do the same from the course records: the course id in the
+  // path resolves to one source for the static head and the client head.
+  const courseSeo = url.startsWith(COURSE_PREFIX)
+    ? getCourseById(url.slice(COURSE_PREFIX.length))
+    : undefined;
+  const courseDescription = courseSeo ? courseSeo.description || courseSeo.overview : undefined;
+
+  const title = courseSeo ? `${courseSeo.title} | QYVORA` : toolSeo?.fullTitle ?? content.title;
+  const description = courseDescription ?? toolSeo?.description ?? content.description;
   const canonical = canonicalUrl(content.canonical || url);
   const ogImage = toolSeo?.image
     ? `${SITE_URL}${toolSeo.image}`
@@ -1269,6 +1319,7 @@ export async function prerender(data: PrerenderArguments): Promise<PrerenderResu
     buildOrganization(),
   ];
   if (toolSeo) schemas.push(toolSeo.schema);
+  if (courseSeo) schemas.push(buildCourse(courseSeo));
 
   // Check if this is a tool page
   const currentTool = TOOLS.find(tool => tool.path === url);

@@ -61,7 +61,7 @@ const LearnPage: React.FC = () => {
     switch (active) {
       case 'courses':
         return COURSES.map((course) => (
-          <Card key={course.id} to={`/dashboard/courses/${course.id}`} interactive className="flex min-h-[170px] flex-col gap-3 p-6">
+          <Card key={course.id} to={`/courses/${course.id}`} interactive className="flex min-h-[170px] flex-col gap-3 p-6">
             <div className="flex items-center gap-3">
               <CourseBadge courseId={course.id} className="h-16 w-16 shrink-0" />
               <span className="type-meta">{course.skillLevel}</span>

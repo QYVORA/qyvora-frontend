@@ -8,7 +8,7 @@
 
 import { Suspense, lazy } from 'react';
 import type { ReactNode } from 'react';
-import { Routes, Route, Navigate, useLocation, useParams } from 'react-router-dom';
+import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { AnimatePresence, motion } from 'motion/react';
 import { useAuth } from '../core/contexts/AuthContext';
 import ErrorBoundary from '../shared/components/ErrorBoundary';
@@ -68,6 +68,7 @@ const SimulationsPage   = lazy(() => import('../features/marketing/pages/public/
 const SimulationPage    = lazy(() => import('../features/marketing/pages/public/SimulationPage'));
 const CyberCoinPage     = lazy(() => import('../features/marketing/pages/public/CyberCoinPage'));
 const ContactPage       = lazy(() => import('../features/marketing/pages/public/ContactPage'));
+const CoursePage        = lazy(() => import('../features/marketing/pages/public/CoursePage'));
 const VerifyPage        = lazy(() => import('../features/marketing/pages/public/VerifyPage'));
 
 // Auth pages
@@ -172,12 +173,6 @@ const StudentShellGate = ({ children }: { children: ReactNode }) => {
   return <>{children}</>;
 };
 
-// Legacy /courses/:courseId links stay inside the student dashboard.
-const LegacyCourseRedirect = () => {
-  const { courseId } = useParams();
-  return <Navigate to={`/dashboard/courses/${courseId ?? ''}`} replace />;
-};
-
 // ─── Router ───────────────────────────────────────────────────────────────────
 export const AppRouter = () => {
   const location = useLocation();
@@ -210,6 +205,7 @@ export const AppRouter = () => {
           <Route path="/hpb" element={<Wrap scope="HPB"><HpbPage /></Wrap>} />
           <Route path="/qose" element={<Wrap scope="QOSE"><QosePage /></Wrap>} />
           <Route path="/learn" element={<Wrap scope="Learn"><LearnPage /></Wrap>} />
+          <Route path="/courses/:courseId" element={<Wrap scope="Course"><CoursePage /></Wrap>} />
           <Route path="/services" element={<Wrap scope="Services"><ServicesPage /></Wrap>} />
           <Route path="/services/basic-web-application-pentest" element={<Wrap scope="Basic Pentest"><BasicPentestPage /></Wrap>} />
           <Route path="/services/standard-web-application-pentest" element={<Wrap scope="Standard Pentest"><StandardPentestPage /></Wrap>} />
@@ -311,7 +307,6 @@ export const AppRouter = () => {
           <Route path="/profile"          element={<Navigate to="/dashboard/profile" replace />} />
           <Route path="/notifications"    element={<Navigate to="/dashboard/notifications" replace />} />
           <Route path="/settings"         element={<Navigate to="/dashboard/settings" replace />} />
-          <Route path="/courses/:courseId" element={<LegacyCourseRedirect />} />
         </Route>
 
         {/* ── Tool full-screen pages (no layout chrome) ──────── */}

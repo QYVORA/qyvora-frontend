@@ -1,5 +1,6 @@
 import { SITE_CONFIG } from '@/features/marketing/content/siteConfig';
 import type { ServiceConfig } from '@/features/marketing/content/servicesConfig';
+import type { Course } from '@/features/student/data/courses';
 
 /**
  * Centralized JSON-LD structured data builders for QYVORA.
@@ -236,6 +237,48 @@ export function buildBlogPosting(post: BlogPostingMeta) {
       },
     },
   };
+}
+
+/**
+ * Course structured data for the public `/courses/:courseId` pages.
+ *
+ * Everything is derived from the course record — `course.description` is the
+ * meta description, `course.overview` is a fallback, `timeRequired` is built
+ * from `estimatedMinutes`, and learning objectives become `teaches` terms.
+ * Only public-facing fields are emitted; lesson bodies, quizzes and answer
+ * keys are never included.
+ */
+export function buildCourse(course: Course) {
+  const schema: Record<string, unknown> = {
+    '@context': 'https://schema.org',
+    '@type': 'Course',
+    name: course.title,
+    description: course.description || course.overview,
+    url: toAbsoluteUrl(`/courses/${course.id}`),
+    isAccessibleForFree: true,
+    learningResourceType: course.skillLevel,
+    timeRequired: `PT${course.estimatedMinutes}M`,
+    provider: {
+      '@type': 'Organization',
+      ...organizationNode(),
+    },
+  };
+
+  const lessonCount = course.lessons?.length ?? course.lessonCount;
+  if (lessonCount) schema.numberOfLessons = lessonCount;
+
+  if (course.learningObjectives?.length) {
+    schema.teaches = course.learningObjectives.map((objective) => ({
+      '@type': 'DefinedTerm',
+      name: objective,
+    }));
+  }
+
+  if (Array.isArray(course.prerequisites) && course.prerequisites.length > 0) {
+    schema.coursePrerequisites = course.prerequisites;
+  }
+
+  return schema;
 }
 
 const SERVICE_TYPE_BY_ID: Record<string, string> = {

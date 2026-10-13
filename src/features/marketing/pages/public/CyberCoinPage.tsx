@@ -405,7 +405,7 @@ const CyberCoinPage: React.FC = () => {
                   const category = getCategoryById(course.categoryId);
                   return (
                     <Link
-                      to={`/dashboard/courses/${course.id}`}
+                      to={`/courses/${course.id}`}
                       className="group/card relative flex h-full min-h-[340px] flex-col overflow-hidden rounded-2xl border border-border-subtle bg-surface transition-[border-color,background-color] duration-[var(--dur-base)] ease-[var(--ease-smooth)] hover:border-accent/40 md:min-h-[280px] md:flex-row"
                     >
                       <div className="relative flex min-w-0 flex-1 flex-col items-start p-6 text-left md:p-7">
