@@ -50,10 +50,29 @@ describe('normalizeCredentialId', () => {
     );
   });
 
+  it('extracts the ID from a verification URL with a trailing slash or query', () => {
+    expect(normalizeCredentialId(`https://qyvora.org/verify/${DEMO_CREDENTIAL_IDS.HPB}/`)).toBe(
+      DEMO_CREDENTIAL_IDS.HPB,
+    );
+    expect(normalizeCredentialId(`https://qyvora.org/verify/${DEMO_CREDENTIAL_IDS.HPB}?ref=email`)).toBe(
+      DEMO_CREDENTIAL_IDS.HPB,
+    );
+  });
+
+  it('lowercases mixed-case IDs so lookup is case-insensitive', () => {
+    expect(normalizeCredentialId(DEMO_CREDENTIAL_IDS.QOSE.toUpperCase())).toBe(
+      DEMO_CREDENTIAL_IDS.QOSE,
+    );
+    expect(normalizeCredentialId(`  ${DEMO_CREDENTIAL_IDS.HPB.toUpperCase()}  `)).toBe(
+      DEMO_CREDENTIAL_IDS.HPB,
+    );
+  });
+
   it('rejects inputs that cannot be a credential ID', () => {
     expect(normalizeCredentialId('')).toBeNull();
     expect(normalizeCredentialId('short')).toBeNull();
     expect(normalizeCredentialId('not a valid id!')).toBeNull();
+    expect(normalizeCredentialId('https://qyvora.org/somewhere-else')).toBeNull();
   });
 });
 
@@ -79,6 +98,71 @@ describe('verifyCredential', () => {
 
     expect(result.state).toBe('revoked');
     expect(result.source).toBe('api');
+  });
+
+  it('maps an API credential with SUSPENDED status to the revoked state', async () => {
+    apiGet.mockResolvedValue({
+      data: { success: true, valid: false, credential: { ...apiCredential, status: 'SUSPENDED' } },
+    });
+
+    const result = await verifyCredential(DEMO_CREDENTIAL_IDS.QOSE);
+
+    expect(result.state).toBe('revoked');
+    expect(result.credential?.status).toBe('SUSPENDED');
+  });
+
+  it('preserves chainVerified=true with its block index', async () => {
+    apiGet.mockResolvedValue({
+      data: { success: true, valid: true, credential: { ...apiCredential, chainVerified: true, blockIndex: 7 } },
+    });
+
+    const result = await verifyCredential(DEMO_CREDENTIAL_IDS.QOSE);
+
+    expect(result.state).toBe('valid');
+    expect(result.credential?.chainVerified).toBe(true);
+    expect(result.credential?.blockIndex).toBe(7);
+  });
+
+  it('preserves chainVerified=false so the UI can show the registry-only state', async () => {
+    apiGet.mockResolvedValue({
+      data: { success: true, valid: true, credential: { ...apiCredential, chainVerified: false, blockIndex: undefined } },
+    });
+
+    const result = await verifyCredential(DEMO_CREDENTIAL_IDS.QOSE);
+
+    expect(result.state).toBe('valid');
+    expect(result.credential?.chainVerified).toBe(false);
+    expect(result.credential?.blockIndex).toBeUndefined();
+  });
+
+  it('normalises mixed-case input before calling the API', async () => {
+    apiGet.mockResolvedValue({ data: { success: true, valid: true, credential: apiCredential } });
+
+    const result = await verifyCredential(DEMO_CREDENTIAL_IDS.QOSE.toUpperCase());
+
+    expect(result.state).toBe('valid');
+    expect(result.credentialId).toBe(DEMO_CREDENTIAL_IDS.QOSE);
+    expect(apiGet).toHaveBeenCalledWith(`/credentials/verify/${DEMO_CREDENTIAL_IDS.QOSE}`);
+  });
+
+  it('accepts a full verification URL as input', async () => {
+    apiGet.mockResolvedValue({ data: { success: true, valid: true, credential: apiCredential } });
+
+    const result = await verifyCredential(
+      `https://qyvora.org/verify/${DEMO_CREDENTIAL_IDS.QOSE}`,
+    );
+
+    expect(result.state).toBe('valid');
+    expect(apiGet).toHaveBeenCalledWith(`/credentials/verify/${DEMO_CREDENTIAL_IDS.QOSE}`);
+  });
+
+  it('returns not-found when the endpoint answers without a credential payload', async () => {
+    apiGet.mockResolvedValue({ data: { success: true, valid: false } });
+
+    const result = await verifyCredential(DEMO_CREDENTIAL_IDS.QOSE);
+
+    expect(result.state).toBe('not-found');
+    expect(result.credential).toBeUndefined();
   });
 
   it('returns an error state when the API is unreachable', async () => {

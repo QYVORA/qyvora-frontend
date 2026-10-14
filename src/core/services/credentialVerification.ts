@@ -80,15 +80,16 @@ const CREDENTIAL_ID_PATTERN = /^[A-Za-z0-9-]{8,64}$/;
  * Normalises free-form user input into a credential ID.
  *
  * Accepts a bare ID, an ID pasted with surrounding whitespace/newlines, or a
- * full verification URL (`https://qyvora.org/verify/<id>`). Returns `null`
- * when the input cannot be a credential ID.
+ * full verification URL (`https://qyvora.org/verify/<id>`). IDs are matched
+ * case-insensitively, so the result is lowercased. Returns `null` when the
+ * input cannot be a credential ID.
  */
 export function normalizeCredentialId(raw: string): string | null {
   if (!raw) return null;
   let value = raw.trim();
   const urlMatch = value.match(/\/verify\/([^/?#\s]+)/i);
   if (urlMatch) value = urlMatch[1];
-  value = value.replace(/\s+/g, '');
+  value = value.replace(/\s+/g, '').toLowerCase();
   if (!CREDENTIAL_ID_PATTERN.test(value)) return null;
   return value;
 }

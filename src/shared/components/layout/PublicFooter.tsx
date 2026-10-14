@@ -35,6 +35,7 @@ const COLS: FooterCol[] = [
       { key: 'services', label: 'Services', to: '/services' },
       { key: 'about', label: 'About', to: '/about' },
       { key: 'contact', label: 'Contact', to: '/contact' },
+      { key: 'verify', label: 'Verify a Credential', to: '/verify' },
       { key: 'terms', label: 'Terms of Service', to: '/terms' },
     ],
   },
