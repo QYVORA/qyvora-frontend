@@ -63,7 +63,7 @@ const LearnPage         = lazy(() => import('../features/marketing/pages/public/
 const AboutPage         = lazy(() => import('../features/marketing/pages/public/AboutPage'));
 const BlogsPage         = lazy(() => import('../features/marketing/pages/public/BlogsPage'));
 const TeamPage          = lazy(() => import('../features/marketing/pages/public/TeamPage'));
-const QuietRootPage     = lazy(() => import('../features/marketing/pages/public/QuietRootPage'));
+const QuiterootPage     = lazy(() => import('../features/marketing/pages/public/QuiterootPage'));
 const SimulationsPage   = lazy(() => import('../features/marketing/pages/public/SimulationsPage'));
 const SimulationPage    = lazy(() => import('../features/marketing/pages/public/SimulationPage'));
 const CyberCoinPage     = lazy(() => import('../features/marketing/pages/public/CyberCoinPage'));
@@ -217,7 +217,7 @@ export const AppRouter = () => {
           <Route path="/zero-day-market" element={<Wrap scope="Market"><MarketPage /></Wrap>} />
           <Route path="/blogs" element={<Wrap scope="Blogs"><BlogsPage /></Wrap>} />
           <Route path="/team" element={<Wrap scope="Team"><TeamPage /></Wrap>} />
-          <Route path="/quiteroot" element={<Wrap scope="QuietRoot"><QuietRootPage /></Wrap>} />
+          <Route path="/quiteroot" element={<Wrap scope="Quiteroot"><QuiterootPage /></Wrap>} />
           <Route path="/simulations" element={<Wrap scope="Simulations"><SimulationsPage /></Wrap>} />
           <Route path="/simulations/:slug" element={<Wrap scope="Simulation"><SimulationPage /></Wrap>} />
           <Route path="/cp" element={<Wrap scope="Cyber Coin"><CyberCoinPage /></Wrap>} />

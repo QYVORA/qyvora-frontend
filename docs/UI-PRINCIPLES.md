@@ -73,7 +73,7 @@ Defined in `src/styles/index.css` `@theme` block. **Use Tailwind utilities, neve
 | Tier | Classes | Used by |
 |------|---------|---------|
 | Hero-adjacent | `text-3xl md:text-5xl lg:text-6xl` | Market, Blogs |
-| Standard | `text-2xl md:text-4xl lg:text-5xl` | Team, QuiteRoot, Leaderboard, OpenSourceTools, ActDivider |
+| Standard | `text-2xl md:text-4xl lg:text-5xl` | Team, Quiteroot, Leaderboard, OpenSourceTools, ActDivider |
 | Compact section (`SimpleHeading` `compact`) | `text-3xl md:text-4xl lg:text-5xl` | ServicesPage, ServiceDetailPage, `/cp` |
 | Compact bento | `text-lg md:text-xl lg:text-2xl` | Courses, Labs, Bootcamp (shrink-0 header row) |
 

@@ -334,7 +334,7 @@ docs/
 | `/hpb` | Public | Redirects to `/#bootcamp` (landing section) |
 | `/courses` | Public | Redirects to `/#courses` (landing section) |
 | `/team` | Public | Redirects to `/#team` (landing section) |
-| `/quiteroot` | Public | Renders the QuiteRoot technical team page |
+| `/quiteroot` | Public | Renders the Quiteroot technical team page |
 | `/blogs` | Public | Redirects to `/#blogs` (landing section) |
 | `/leaderboard` | Public | Redirects to `/#leaderboard` (landing section) |
 | `/zero-day-market` | Public | Redirects to `/#market` (landing section) |

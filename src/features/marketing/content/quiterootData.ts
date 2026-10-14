@@ -1,5 +1,5 @@
 /**
- * QuietRoot — QYVORA's technical team.
+ * Quiteroot — QYVORA's technical team.
  *
  * Source of truth (QYVORA documentation):
  *   03-people/quiteroot/QUITEROOT-TEAM-STRUCTURE.md      QYVORA-QR-001  two teams, role placeholders, capability bars
@@ -9,7 +9,7 @@
  *   03-people/quiteroot/JUNIOR-FRONTEND-DEVELOPER.md     QYVORA-PPL-007 Tech Team role record
  *   03-people/quiteroot/JUNIOR-FRONTEND-DEVELOPER-ROLE.md QYVORA-GOV-019 role framework
  *
- * Every role listed here is a documented QuietRoot role placeholder. `holder`
+ * Every role listed here is a documented Quiteroot role placeholder. `holder`
  * is non-null only where the documentation records a named holder; every other
  * role renders as an OPEN vacancy with an application CTA — never a stand-in
  * person. Role blurbs are the documented capability bars reworded for a public
@@ -20,15 +20,15 @@
  * rendered on the page.
  */
 
-import quiterootTechLogo from '@/assets/quietRoot/quiteroot-tech-team.webp';
-import quiterootSecurityLogo from '@/assets/quietRoot/quiteroot-security-team.webp';
+import quiterootTechLogo from '@/assets/quiteroot/quiteroot-tech-team.webp';
+import quiterootSecurityLogo from '@/assets/quiteroot/quiteroot-security-team.webp';
 import abdulRahmanPeligahImg from '@/assets/team/junior_pentester.webp';
 import peterOriasotieImg from '@/assets/team/cyberX6.webp';
 
 /** Both team logos ship as 1254x1254 transparent PNGs (webp twin, same canvas). */
 const TEAM_LOGO_SIZE = { width: 1254, height: 1254 } as const;
 
-export interface QuietRootHolder {
+export interface QuiterootHolder {
   /** Legal name as recorded in the people record. */
   name: string;
   image: string;
@@ -41,14 +41,14 @@ export interface QuietRootHolder {
   socials?: Record<string, string | undefined>;
 }
 
-export interface QuietRootRole {
+export interface QuiterootRole {
   /** Documented role code. Internal key only — never rendered. */
   id: string;
   title: string;
   /** Public wording of the documented capability bar. */
   summary: string;
   /** null means the role is an open vacancy. */
-  holder: QuietRootHolder | null;
+  holder: QuiterootHolder | null;
   /**
    * QRS-LPT (Senior Penetration Tester) is not open to applicants — the
    * documentation records a confirmed holder and closes the role to intake.
@@ -56,23 +56,23 @@ export interface QuietRootRole {
   openToApplications?: boolean;
 }
 
-export interface QuietRootTeam {
+export interface QuiterootTeam {
   id: 'tech' | 'security';
-  /** Official branch name, always written as one brand word: QuietRoot. */
+  /** Official branch name, always written as one brand word: Quiteroot. */
   name: string;
   focus: string;
   logo: string;
   logoWidth: number;
   logoHeight: number;
-  roles: QuietRootRole[];
+  roles: QuiterootRole[];
   /** Documented boundary note shown under the role grid. */
   note?: string;
 }
 
-export const QUIETROOT_TEAMS: QuietRootTeam[] = [
+export const QUITEROOT_TEAMS: QuiterootTeam[] = [
   {
     id: 'tech',
-    name: 'QuietRoot Tech Team',
+    name: 'Quiteroot Tech Team',
     focus:
       'Building and maintaining QYVORA’s products, platform and interfaces — the development and design branch.',
     logo: quiterootTechLogo,
@@ -144,7 +144,7 @@ export const QUIETROOT_TEAMS: QuietRootTeam[] = [
   },
   {
     id: 'security',
-    name: 'QuietRoot Security Team',
+    name: 'Quiteroot Security Team',
     focus:
       'QYVORA’s offensive-security tooling, research and authorized security work — the cybersecurity branch.',
     logo: quiterootSecurityLogo,
@@ -201,18 +201,18 @@ export const QUIETROOT_TEAMS: QuietRootTeam[] = [
         holder: null,
       },
     ],
-    note: 'No testing without written authorization. This applies to QuietRoot members exactly as it applies to client engagements.',
+    note: 'No testing without written authorization. This applies to Quiteroot members exactly as it applies to client engagements.',
   },
 ];
 
 /** Vacant roles a prospective member can actually apply for. */
-export const QUIETROOT_OPEN_ROLES = QUIETROOT_TEAMS.flatMap((team) =>
+export const QUITEROOT_OPEN_ROLES = QUITEROOT_TEAMS.flatMap((team) =>
   team.roles.filter((role) => role.holder === null),
 );
 
-export const QUIETROOT_ROLE_COUNT = QUIETROOT_TEAMS.reduce(
+export const QUITEROOT_ROLE_COUNT = QUITEROOT_TEAMS.reduce(
   (total, team) => total + team.roles.length,
   0,
 );
 
-export const QUIETROOT_TEAM_COUNT = QUIETROOT_TEAMS.length;
+export const QUITEROOT_TEAM_COUNT = QUITEROOT_TEAMS.length;

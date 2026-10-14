@@ -1,15 +1,15 @@
 import wsuits6Img from '@/assets/team/wsuits6.webp';
 import sopt4Img from '@/assets/team/sopt4.webp';
-import ghostImg from '@/assets/quiteRoot/WhatsApp Image 2026-07-16 at 10.45.41 PM.webp';
+import ghostImg from '@/assets/quiteroot/WhatsApp Image 2026-07-16 at 10.45.41 PM.webp';
 import karimHamidImg from '@/assets/team/karim_hamid.webp';
 
 /**
  * QYVORA leadership — the four officer roles only: Founder/CEO, COO, CMO, HRM.
  *
- * QuietRoot is QYVORA's technical community and is a separate structure, not
+ * Quiteroot is QYVORA's technical community and is a separate structure, not
  * leadership. Its members are placed by assessed capability rather than by
  * officer appointment, so they are published on /quiteroot with the roles the
- * QuietRoot documentation defines — see `quietRootData.ts`.
+ * Quiteroot documentation defines — see `quiterootData.ts`.
  */
 export interface TeamSocials {
   youtube?: string;

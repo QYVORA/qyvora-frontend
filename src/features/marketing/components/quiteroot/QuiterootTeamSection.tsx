@@ -1,18 +1,18 @@
 import React from 'react';
 import { ShieldCheck } from 'lucide-react';
-import QuietRootRoleCard from '@/features/marketing/components/quietroot/QuietRootRoleCard';
-import type { QuietRootTeam } from '@/features/marketing/content/quietRootData';
+import QuiterootRoleCard from '@/features/marketing/components/quiteroot/QuiterootRoleCard';
+import type { QuiterootTeam } from '@/features/marketing/content/quiterootData';
 
 /**
- * One QuietRoot branch: official team logo, documented focus, every documented
+ * One Quiteroot branch: official team logo, documented focus, every documented
  * role, and the documented boundary note where the team has one.
  *
  * The logo is the supplied brand asset, rendered unmodified on a transparent
  * background — no filters, no shadows, no gradients, no recolouring.
  */
-const QuietRootTeamSection = ({ team }: { team: QuietRootTeam }) => {
+const QuiterootTeamSection = ({ team }: { team: QuiterootTeam }) => {
   const openCount = team.roles.filter((role) => role.holder === null).length;
-  const headingId = `quietroot-team-${team.id}`;
+  const headingId = `quiteroot-team-${team.id}`;
 
   return (
     <section aria-labelledby={headingId} className="mt-14 md:mt-20">
@@ -32,7 +32,7 @@ const QuietRootTeamSection = ({ team }: { team: QuietRootTeam }) => {
         </div>
 
         <div className="min-w-0 flex-1">
-          <span className="type-kicker block text-accent">QuietRoot branch</span>
+          <span className="type-kicker block text-accent">Quiteroot branch</span>
           <h2
             id={headingId}
             className="type-h2 mt-2 font-black uppercase tracking-tight text-text-primary"
@@ -49,7 +49,7 @@ const QuietRootTeamSection = ({ team }: { team: QuietRootTeam }) => {
 
       <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 lg:gap-5">
         {team.roles.map((role) => (
-          <QuietRootRoleCard key={role.id} role={role} applyLabel={`Apply — ${role.title}`} />
+          <QuiterootRoleCard key={role.id} role={role} applyLabel={`Apply — ${role.title}`} />
         ))}
       </div>
 
@@ -62,4 +62,4 @@ const QuietRootTeamSection = ({ team }: { team: QuietRootTeam }) => {
   );
 };
 
-export default QuietRootTeamSection;
+export default QuiterootTeamSection;

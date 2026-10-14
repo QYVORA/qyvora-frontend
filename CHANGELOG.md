@@ -37,7 +37,7 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - Public site theme now follows the OS (light/dark), with larger bootcamp/tool/CP nav icons and a navbar fullscreen toggle
 - Added `gap-1.5` between mobile bottom-nav buttons; stabilized the landing hero typewriter layout with an invisible longest-phrase placeholder
 - `CyberCoinPage` (`/cp`) restructured to the canonical public-page rhythm: `space-y-12 md:space-y-16` section stack, `compact` `SimpleHeading` scale, alternating split/stacked sections, and full-width reward/activity matrices
-- QuiteRoot page: the researcher "registry" panel was replaced with a simple per-member card grid (small photo avatar, role badge, research-node id, discipline glyph, bio)
+- Quiteroot page: the researcher "registry" panel was replaced with a simple per-member card grid (small photo avatar, role badge, research-node id, discipline glyph, bio)
 - Profile pages (student `/dashboard/profile` + public `@/:handle`) redesigned as a two-column portfolio grid: sticky identity rail — new `ProfileIdentityBlock` (identicon with rank chip, name/handle, bio, org/joined/location meta grid, socials incl. X, XP progress, actions) — with a main column holding a labeled `Overview` stats strip, achievements, activity calendar + timeline, courses, labs, and trophy cabinet
 
 ### SEO
@@ -63,7 +63,7 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - Consolidated docs: removed 12 redundant/stale files, merged content into living references
 - Moved `QYVORA_TERMINAL_ENGINEERING_AUDIT.md` and `QYVORA_TERMINAL_SIMULATION_COMMANDS.md` to `docs/archive/`
 - Wrote the generated background-art system into `docs/BACKGROUNDS.md` (region table, linearised `.webp` delivery, the fixed implementation pattern, and the no-scrim rule); updated the landing-hero and dark-persistence references in `docs/UI-PATTERN-INVENTORY.md`, `docs/COMPONENTS.md`, `docs/DESIGN_SYSTEM.md`, and `docs/AVATARS.md`
-- Documented the `/cp` section restructure and the QuiteRoot simple-card grid in `docs/UI-PRINCIPLES.md` heading scale and `docs/UI-PATTERN-INVENTORY.md`
+- Documented the `/cp` section restructure and the Quiteroot simple-card grid in `docs/UI-PRINCIPLES.md` heading scale and `docs/UI-PATTERN-INVENTORY.md`
 - Fixed accent color (`#66B870` → `#06B66F`) in `docs/ARCHITECTURE.md`
 - Fixed deployment info in root `README.md` (Vercel → Netlify)
 - Updated route table in root `README.md` to match actual router

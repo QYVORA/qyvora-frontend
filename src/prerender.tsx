@@ -78,7 +78,7 @@ const routeContent: Record<string, RouteContent> = {
       { label: 'kush', href: '/kush' },
       { label: 'imhotep', href: '/imhotep' },
       { label: 'Zero Day Market', href: '/zero-day-market' },
-      { label: 'QuietRoot', href: '/quiteroot' },
+      { label: 'Quiteroot', href: '/quiteroot' },
       { label: 'Blog', href: '/blogs' },
       { label: 'Team', href: '/team' },
       { label: 'Leaderboard', href: '/leaderboard' },
@@ -539,9 +539,9 @@ const routeContent: Record<string, RouteContent> = {
   },
   '/blogs/hpb-2026-cohort-case-study': {
     title: 'HPB 2026 Cohort Case Study | QYVORA Blog',
-    description: 'How the HPB 2026 Cohort produced a COO, formed the QuiteRoot tech team, and proved Africa\'s talent pipeline works.',
+    description: 'How the HPB 2026 Cohort produced a COO, formed the Quiteroot tech team, and proved Africa\'s talent pipeline works.',
     h1: 'HPB 2026 Cohort - Case Study',
-    lead: 'From Training to Team Building: The Hacker Protocol Bootcamp Story. How the cohort produced a COO, formed the QuiteRoot tech team, and proved Africa\'s talent pipeline works.',
+    lead: 'From Training to Team Building: The Hacker Protocol Bootcamp Story. How the cohort produced a COO, formed the Quiteroot tech team, and proved Africa\'s talent pipeline works.',
     sections: [
       {
         heading: 'Post details',
@@ -564,22 +564,22 @@ const routeContent: Record<string, RouteContent> = {
     links: [{ label: 'Leaderboard', href: '/leaderboard' }],
   },
   '/quiteroot': {
-    title: 'QuietRoot | QYVORA',
-    description: "QuietRoot is QYVORA's technical team: a Tech Team and a Security Team. Every role is published, filled or open, and open roles are advertised on the Contact page.",
-    h1: 'QuietRoot',
+    title: 'Quiteroot | QYVORA',
+    description: "Quiteroot is QYVORA's technical team: a Tech Team and a Security Team. Every role is published, filled or open, and open roles are advertised on the Contact page.",
+    h1: 'Quiteroot',
     lead: "QYVORA's technical team, split into two branches: the Tech Team that builds QYVORA's products and interfaces, and the Security Team that runs its offensive-security tooling, research and authorized security work.",
     sections: [
       {
-        heading: 'QuietRoot Tech Team',
+        heading: 'Quiteroot Tech Team',
         body: 'Junior and Senior Frontend Developers, Junior and Senior Backend Developers, a Full-Stack Developer, a UI/UX Designer and a Graphic & Brand Designer. Every documented role is published, whether it is filled or open.',
       },
       {
-        heading: 'QuietRoot Security Team',
+        heading: 'Quiteroot Security Team',
         body: 'A Senior Penetration Tester, a Junior Penetration Tester, a Security Researcher, an Offensive Security Engineer and a Security Tool Developer. No testing without written authorization.',
       },
       {
         heading: 'Every role is published',
-        body: 'A person is placed in a QuietRoot role because QYVORA has demonstrated what they can do, never because the seat needs filling. Open roles show the evidence that qualifies, so you can see exactly what is being looked for before you apply.',
+        body: 'A person is placed in a Quiteroot role because QYVORA has demonstrated what they can do, never because the seat needs filling. Open roles show the evidence that qualifies, so you can see exactly what is being looked for before you apply.',
       },
     ],
     links: [
@@ -609,7 +609,7 @@ const routeContent: Record<string, RouteContent> = {
     links: [
       { label: 'Hacker Protocol Bootcamp', href: '/hpb' },
       { label: 'Learn', href: '/learn' },
-      { label: 'QuietRoot', href: '/quiteroot' },
+      { label: 'Quiteroot', href: '/quiteroot' },
     ],
   },
   '/anansi': {
@@ -1124,7 +1124,7 @@ const routeContent: Record<string, RouteContent> = {
         ],
       },
     ],
-    links: [{ label: 'QuietRoot', href: '/quiteroot' }],
+    links: [{ label: 'Quiteroot', href: '/quiteroot' }],
   },
   '/leaderboard': {
     title: 'Leaderboard | QYVORA',

@@ -4,7 +4,7 @@ import { ArrowUpRight, MapPin, UserRound } from 'lucide-react';
 import { BrandGithubIcon, BrandInstagramIcon, BrandLinkedinIcon, BrandXIcon, BrandYoutubeIcon, BrandMediumIcon } from '@/shared/components/icons';
 import Badge from '@/shared/components/ui/Badge';
 import Button from '@/shared/components/ui/Button';
-import type { QuietRootHolder, QuietRootRole } from '@/features/marketing/content/quietRootData';
+import type { QuiterootHolder, QuiterootRole } from '@/features/marketing/content/quiterootData';
 
 const SOCIAL_ICONS: Record<string, React.ElementType> = {
   github: BrandGithubIcon,
@@ -15,11 +15,11 @@ const SOCIAL_ICONS: Record<string, React.ElementType> = {
   instagram: BrandInstagramIcon,
 };
 
-export interface QuietRootRoleSocials {
+export interface QuiterootRoleSocials {
   [platform: string]: string | undefined;
 }
 
-const HolderPortrait = ({ holder }: { holder: QuietRootHolder }) => (
+const HolderPortrait = ({ holder }: { holder: QuiterootHolder }) => (
   <>
     <div className="relative aspect-[4/3] w-full overflow-hidden bg-surface-raised">
       <img
@@ -73,7 +73,7 @@ const OpenPortrait = () => (
 );
 
 /**
- * One QuietRoot role. Renders either the documented holder (photo, location,
+ * One Quiteroot role. Renders either the documented holder (photo, location,
  * disciplines, profile links) or an OPEN vacancy (silhouette, capability bar,
  * and an application CTA routed through the QYVORA contact page).
  *
@@ -82,11 +82,11 @@ const OpenPortrait = () => (
  * is closed to intake (`openToApplications: false`), that fact is stated instead
  * of offering a route that does not exist.
  */
-const QuietRootRoleCard = ({
+const QuiterootRoleCard = ({
   role,
   applyLabel = 'Apply for this role',
 }: {
-  role: QuietRootRole;
+  role: QuiterootRole;
   applyLabel?: string;
 }) => {
   const filled = role.holder !== null;
@@ -170,4 +170,4 @@ const QuietRootRoleCard = ({
   );
 };
 
-export default QuietRootRoleCard;
+export default QuiterootRoleCard;

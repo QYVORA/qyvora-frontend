@@ -575,7 +575,7 @@ Alternate `bg-bg` / `bg-bg-alt`. Footer is last snap section (no `min-h-dvh`; sn
 
 Auto-applies: `relative w-full min-h-dvh snap-section flex flex-col odd:bg-bg even:bg-bg-alt px-3 md:px-4 lg:px-6 pt-24 pb-8 md:pt-28 md:pb-10 lg:pt-32 lg:pb-12 scroll-mt-24 md:scroll-mt-28`. Inner wrapper: `w-full my-auto`.
 
-### 16c. Sidebar Layout (Team, QuiteRoot, Anansi, etc.)
+### 16c. Sidebar Layout (Team, Quiteroot, Anansi, etc.)
 
 Outer: `py-12 sm:py-10 md:py-16 lg:py-20`. Content fills viewport width with `px-3 md:px-4 lg:px-6`.
 

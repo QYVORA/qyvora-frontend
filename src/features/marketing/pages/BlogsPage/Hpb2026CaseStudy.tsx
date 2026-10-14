@@ -4,7 +4,7 @@ import { Globe, Users, Map, Flag } from 'lucide-react';
 import { IconShield, IconTerminal, IconNetwork, IconTarget, IconSearch, IconLeaderboard } from '@/shared/components/icons';
 import { Section, Heading, Body, Highlight, CodeBlock } from './shared';
 import sopt4Img from '@/assets/team/sopt4.webp';
-import quiteRootLogo from '@/assets/quiteRoot/ChatGPT Image Jul 3, 2026, 02_45_59 AM.webp';
+import quiterootLogo from '@/assets/quiteroot/ChatGPT Image Jul 3, 2026, 02_45_59 AM.webp';
 import img01 from '@/assets/blog/01-hpb-2026-online-class-screenshot.webp';
 import img02 from '@/assets/blog/02-hpb-2026-online-class-screenshot.webp';
 import img03 from '@/assets/blog/03-hpb-2026-online-class-screenshot.webp';
@@ -162,16 +162,16 @@ export const Hpb2026CaseStudy: React.FC = () => {
 
           <div className="p-6 rounded-xl border border-accent/10 bg-accent/5 flex flex-col md:flex-row items-center md:items-start gap-5 md:gap-6">
             <img
-              src={quiteRootLogo}
-              alt="QuietRoot logo"
+              src={quiterootLogo}
+              alt="Quiteroot logo"
               width={80}
               height={80}
               className="w-16 h-16 md:w-20 md:h-20 rounded-xl object-cover shrink-0"
             />
             <div className="min-w-0">
-              <h3 className="text-base md:text-lg font-black uppercase tracking-wider mb-2 text-text-primary break-words">QuiteRoot. The Tech Team</h3>
+              <h3 className="text-base md:text-lg font-black uppercase tracking-wider mb-2 text-text-primary break-words">Quiteroot. The Tech Team</h3>
               <p className="text-sm font-mono text-text-secondary leading-[2]">
-                From the HPB cohort, we identified the most <Highlight>serious and dedicated learners</Highlight> and formed <Highlight>QuiteRoot</Highlight> | QYVORA's engineering and research team. The team emerged organically from the bootcamp because the curriculum itself was a filter: those who completed all 19 rooms demonstrated the <Highlight>grit, curiosity, and technical aptitude</Highlight> that makes a great operator. The team is currently being rebuilt and is open to applications.
+                From the HPB cohort, we identified the most <Highlight>serious and dedicated learners</Highlight> and formed <Highlight>Quiteroot</Highlight> | QYVORA's engineering and research team. The team emerged organically from the bootcamp because the curriculum itself was a filter: those who completed all 19 rooms demonstrated the <Highlight>grit, curiosity, and technical aptitude</Highlight> that makes a great operator. The team is currently being rebuilt and is open to applications.
               </p>
             </div>
           </div>

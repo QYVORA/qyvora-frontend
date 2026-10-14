@@ -8,9 +8,9 @@ import Badge from '@/shared/components/ui/Badge';
 import Button from '@/shared/components/ui/Button';
 import { teamData, type TeamMember } from '@/features/marketing/content/teamData';
 import {
-  QUIETROOT_ROLE_COUNT,
-  QUIETROOT_TEAMS,
-} from '@/features/marketing/content/quietRootData';
+  QUITEROOT_ROLE_COUNT,
+  QUITEROOT_TEAMS,
+} from '@/features/marketing/content/quiterootData';
 
 const SOCIAL_ICONS: Record<string, React.ElementType> = {
   github: BrandGithubIcon,
@@ -124,22 +124,22 @@ const OperatorCard = ({ member }: { member: TeamMember }) => (
  * team above: capability placement, not officer appointment. It is surfaced
  * here as a route into /quiteroot rather than as company team members.
  */
-const QuietRootCallout = () => (
+const QuiterootCallout = () => (
   <div className="flex h-full flex-col gap-6 rounded-2xl border border-border-subtle bg-surface p-5 md:p-8">
     <div className="flex flex-col gap-3">
       <span className="type-kicker block text-accent">QYVORA · Technical team</span>
       <h2 className="type-h2 font-black uppercase tracking-tight text-text-primary">
-        QuietRoot
+        Quiteroot
       </h2>
       <p className="type-body text-text-secondary">
-        Engineering and security at QYVORA is organised as QuietRoot — a technical
+        Engineering and security at QYVORA is organised as Quiteroot — a technical
         community placed by demonstrated capability rather than by appointment. Every
         defined role is published, whether it is filled or open.
       </p>
     </div>
 
     <ul className="flex flex-col gap-3">
-      {QUIETROOT_TEAMS.map((team) => (
+      {QUITEROOT_TEAMS.map((team) => (
         <li key={team.id}>
           <Link
             to={`/quiteroot?team=${team.id}`}
@@ -176,19 +176,19 @@ const QuietRootCallout = () => (
 
     <div className="mt-auto flex flex-wrap items-center gap-3 border-t border-border-subtle pt-5">
       <Button to="/quiteroot" variant="secondary" size="md">
-        Meet QuietRoot
+        Meet Quiteroot
         <ArrowUpRight className="h-3.5 w-3.5" aria-hidden="true" />
       </Button>
       <Badge variant="default" size="sm">
         <Shield className="mr-1.5 h-3 w-3" aria-hidden="true" />
-        {`${QUIETROOT_ROLE_COUNT} roles published`}
+        {`${QUITEROOT_ROLE_COUNT} roles published`}
       </Badge>
     </div>
   </div>
 );
 
 /**
- * Leadership page — the four officer roles. QuietRoot is presented separately
+ * Leadership page — the four officer roles. Quiteroot is presented separately
  * because it is a technical community, not an officer appointment.
  */
 const TeamPage = () => {
@@ -206,7 +206,7 @@ const TeamPage = () => {
         <PageHeader
           kicker="QYVORA · Leadership"
           title="Our Team"
-          description="The people accountable for QYVORA's direction, operations and people — plus QuietRoot, the technical community that builds and secures the platform."
+          description="The people accountable for QYVORA's direction, operations and people — plus Quiteroot, the technical community that builds and secures the platform."
           metadata={
             <span className="type-meta inline-flex items-center gap-2">
               <Users className="h-3.5 w-3.5 text-accent" aria-hidden="true" />
@@ -242,7 +242,7 @@ const TeamPage = () => {
               </div>
             </div>
             <div className="lg:col-span-7">
-              <QuietRootCallout />
+              <QuiterootCallout />
             </div>
           </div>
         </section>

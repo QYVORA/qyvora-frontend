@@ -87,7 +87,7 @@ The component always emits: canonical, robots, OG/Twitter (title/description/ima
 
 ## sitemap.xml and robots.txt
 
-- `public/sitemap.xml` lists the 43 indexable public routes: home, HPB, QOSE, Learn, Tools index + all 14 tool doc pages, Services + 3 detail pages, Simulations + 2 labs, Blog + 8 posts, Zero Day Market, QuietRoot, Cyber Coin, Team, About, Contact, Leaderboard and Terms. **Dashboard routes, auth routes, legacy redirects (`/leaderboard/all`, `/bootcamps`, `/marketplace`, …) and user profile handles (`/:handle`) are excluded.**
+- `public/sitemap.xml` lists the 43 indexable public routes: home, HPB, QOSE, Learn, Tools index + all 14 tool doc pages, Services + 3 detail pages, Simulations + 2 labs, Blog + 8 posts, Zero Day Market, Quiteroot, Cyber Coin, Team, About, Contact, Leaderboard and Terms. **Dashboard routes, auth routes, legacy redirects (`/leaderboard/all`, `/bootcamps`, `/marketplace`, …) and user profile handles (`/:handle`) are excluded.**
 - `public/robots.txt` allows crawlers, disallows private sections, and declares `Sitemap: https://qyvora.org/sitemap.xml`.
 - Keep the sitemap in sync with `additionalPrerenderRoutes` (`vite.config.ts`) and `routeContent` (`src/prerender.tsx`).
 - Tool pages derive their title, description, canonical URL and `SoftwareApplication` JSON-LD in `src/shared/seo/toolSeoCore.ts` from the tool registry plus the tool's own doc file. Both the prerendered head and the client head call the same builder, so they cannot drift. Adding a tool to `data/tools/registry.ts` plus its doc file is all that is required — no per-tool SEO edits.

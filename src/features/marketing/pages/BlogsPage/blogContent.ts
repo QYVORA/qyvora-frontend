@@ -110,7 +110,7 @@ export const BLOG_POSTS: BlogPost[] = [
     slug: 'hpb-2026-cohort-case-study',
     title: 'HPB 2026 Cohort - Case Study',
     subtitle: 'From Training to Team Building: The Hacker Protocol Bootcamp Story',
-    excerpt: 'How the HPB 2026 Cohort produced a COO, formed the QuiteRoot tech team, and proved Africa\'s talent pipeline works.',
+    excerpt: 'How the HPB 2026 Cohort produced a COO, formed the Quiteroot tech team, and proved Africa\'s talent pipeline works.',
     image: blogCaseStudyCover,
     author: { name: 'WSUITS6', handle: 'Alhassan Osman Wunpini' },
     date: '2026-07-10',

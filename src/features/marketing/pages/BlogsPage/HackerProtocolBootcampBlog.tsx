@@ -218,7 +218,7 @@ export const HackerProtocolBootcampBlog: React.FC = () => {
           We're not just training operators. We're building a <Highlight>credentialing layer</Highlight> that lets talent surface regardless of where they're from, who they know, or what school they went to.
         </Body>
         <Body>
-          To build the HPB platform and the infrastructure behind it, we formed <Highlight>QuitRoot</Highlight>, a tech team focused on building cybersecurity tools and educational systems for the African market. QuitRoot is the engineering backbone that makes the bootcamp possible, from the blockchain credentialing layer to the interactive room environments.
+          To build the HPB platform and the infrastructure behind it, we formed <Highlight>Quiteroot</Highlight>, a tech team focused on building cybersecurity tools and educational systems for the African market. Quiteroot is the engineering backbone that makes the bootcamp possible, from the blockchain credentialing layer to the interactive room environments.
         </Body>
       </Section>
 

@@ -47,7 +47,7 @@
 - **Strategy:** Add lightweight community features within the dashboard.
 - **Actions:**
   - Per-room discussion thread (solves "I'm stuck on this step")
-  - QuiteRoot public feed showing team activity, tool releases, security writeups
+  - Quiteroot public feed showing team activity, tool releases, security writeups
   - User-to-user mentoring system (high-CP users help new users)
   - Announcement banner for cohort updates and events
 - **Files affected:** New `Community` page, `RoomSidebar.tsx`, notification system
