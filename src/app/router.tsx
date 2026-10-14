@@ -99,6 +99,9 @@ const PasswordLab       = lazy(() => import('../features/student/pages/labs/Pass
 const SqlInjectionLab   = lazy(() => import('../features/student/pages/labs/SqlInjectionLab'));
 const OsintLab          = lazy(() => import('../features/student/pages/labs/OsintLab'));
 const KillChainLab      = lazy(() => import('../features/student/pages/labs/KillChainLab'));
+const AccessControlLab  = lazy(() => import('../features/student/pages/labs/AccessControlLab'));
+const ApiSecurityLab    = lazy(() => import('../features/student/pages/labs/ApiSecurityLab'));
+const AutomationLab     = lazy(() => import('../features/student/pages/labs/AutomationLab'));
 
 // Learning V2 Demo
 const LearningV2Demo    = lazy(() => import('../features/student/pages/LearningV2Demo'));
@@ -300,6 +303,9 @@ export const AppRouter = () => {
           <Route path="/dashboard/labs/sql-injection" element={<Wrap scope="SQL Injection Lab"><StudentOnly><SqlInjectionLab /></StudentOnly></Wrap>} />
           <Route path="/dashboard/labs/osint" element={<Wrap scope="OSINT Lab"><StudentOnly><OsintLab /></StudentOnly></Wrap>} />
           <Route path="/dashboard/labs/kill-chain" element={<Wrap scope="Kill Chain Lab"><StudentOnly><KillChainLab /></StudentOnly></Wrap>} />
+          <Route path="/dashboard/labs/web-access-control" element={<Wrap scope="Access Control Lab"><StudentOnly><AccessControlLab /></StudentOnly></Wrap>} />
+          <Route path="/dashboard/labs/api-security" element={<Wrap scope="API Security Lab"><StudentOnly><ApiSecurityLab /></StudentOnly></Wrap>} />
+          <Route path="/dashboard/labs/automation" element={<Wrap scope="Automation Lab"><StudentOnly><AutomationLab /></StudentOnly></Wrap>} />
 
           {/* Legacy redirects */}
           <Route path="/bootcamps"        element={<Navigate to="/dashboard/bootcamps/bc_1775270338500" replace />} />

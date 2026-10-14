@@ -42,6 +42,41 @@ export const NETWORK_PROFILES: NetworkProfile[] = [
       { ip: '10.0.0.200', hostname: 'security-cam', os: 'Embedded Linux', vendor: 'Custom', role: 'IoT', ports: [{ port: 80, protocol: 'tcp', service: 'http', version: 'GoAhead', state: 'open' }, { port: 554, protocol: 'tcp', service: 'rtsp', version: 'Live555', state: 'open' }], discoverable: false },
     ],
   },
+  {
+    id: 'web-access-control',
+    label: 'Access Control Lab',
+    subnet: '10.10.0.0/24',
+    gateway: '10.10.0.1',
+    dns: ['10.10.0.2'],
+    devices: [
+      { ip: '10.10.0.1', hostname: 'gateway', os: 'Cisco IOS 15.7', vendor: 'Cisco', role: 'Router', ports: [{ port: 22, protocol: 'tcp', service: 'ssh', version: 'OpenSSH 8.4', state: 'open' }], discoverable: true },
+      { ip: '10.10.0.10', hostname: 'lab-web-access-control', os: 'Debian 12', vendor: 'Linux', role: 'Web Server', ports: [{ port: 8080, protocol: 'tcp', service: 'http', version: 'nginx 1.24', state: 'open' }, { port: 443, protocol: 'tcp', service: 'https', version: 'nginx 1.24', state: 'open' }], discoverable: true },
+      { ip: '10.10.0.11', hostname: 'billing-db', os: 'Ubuntu 22.04 LTS', vendor: 'Linux', role: 'Database', ports: [{ port: 5432, protocol: 'tcp', service: 'postgresql', version: 'PostgreSQL 16', state: 'open' }], discoverable: true },
+    ],
+  },
+  {
+    id: 'api-security',
+    label: 'API Security Lab',
+    subnet: '10.20.0.0/24',
+    gateway: '10.20.0.1',
+    dns: ['10.20.0.2'],
+    devices: [
+      { ip: '10.20.0.1', hostname: 'gateway', os: 'Cisco IOS 15.7', vendor: 'Cisco', role: 'Router', ports: [{ port: 22, protocol: 'tcp', service: 'ssh', version: 'OpenSSH 8.4', state: 'open' }], discoverable: true },
+      { ip: '10.20.0.10', hostname: 'lab-api-security', os: 'Ubuntu 22.04 LTS', vendor: 'Linux', role: 'API Server', ports: [{ port: 3000, protocol: 'tcp', service: 'http', version: 'node 20', state: 'open' }, { port: 9090, protocol: 'tcp', service: 'http', version: 'node 20', state: 'open' }], discoverable: true },
+      { ip: '169.254.169.254', hostname: 'metadata', os: 'Cloud IMDS', vendor: 'Cloud', role: 'Metadata', ports: [{ port: 80, protocol: 'tcp', service: 'http', version: 'IMDS', state: 'open' }], discoverable: false },
+    ],
+  },
+  {
+    id: 'automation',
+    label: 'Automation Lab',
+    subnet: '10.30.0.0/24',
+    gateway: '10.30.0.1',
+    dns: ['10.30.0.2'],
+    devices: [
+      { ip: '10.30.0.1', hostname: 'gateway', os: 'Cisco IOS 15.7', vendor: 'Cisco', role: 'Router', ports: [{ port: 22, protocol: 'tcp', service: 'ssh', version: 'OpenSSH 8.4', state: 'open' }], discoverable: true },
+      { ip: '10.30.0.10', hostname: 'lab-automation', os: 'Ubuntu 22.04 LTS', vendor: 'Linux', role: 'Target', ports: [{ port: 22, protocol: 'tcp', service: 'ssh', version: 'OpenSSH 8.9', state: 'open' }, { port: 80, protocol: 'tcp', service: 'http', version: 'nginx 1.24', state: 'open' }, { port: 2200, protocol: 'tcp', service: 'http', version: 'AUTOMATION-SVC/1.0', state: 'open' }], discoverable: true },
+    ],
+  },
 ];
 
 export function getNetworkProfileForLab(labId: string): NetworkProfile {
@@ -51,6 +86,9 @@ export function getNetworkProfileForLab(labId: string): NetworkProfile {
     'sql-injection': 'sql-injection',
     osint: 'default',
     'kill-chain': 'kill-chain',
+    'web-access-control': 'web-access-control',
+    'api-security': 'api-security',
+    automation: 'automation',
   };
   return NETWORK_PROFILES.find(p => p.id === (map[labId] || 'default')) || NETWORK_PROFILES[0];
 }

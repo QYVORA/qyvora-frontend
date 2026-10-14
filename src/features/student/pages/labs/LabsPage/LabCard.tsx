@@ -24,6 +24,9 @@ const LAB_PREFIXES: Record<string, string> = {
   sqli: 'sqli-',
   osint: 'osint-',
   killchain: 'kc-',
+  'web-access-control': 'wac-',
+  'api-security': 'api-',
+  automation: 'auto-',
 };
 
 const LabCard: React.FC<LabCardProps> = ({ id, title, description, difficulty, cpReward, route, accentColor }) => {

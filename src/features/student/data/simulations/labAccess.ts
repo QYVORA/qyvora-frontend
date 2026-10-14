@@ -8,6 +8,8 @@ export const ADVANCED_LAB_COSTS: Record<string, number> = {
   'kc-web-1': 300,
   'pwd-crack-shadow-extract': 150,
   'pwd-crack-multi-hash': 150,
+  'wac-bola-1': 150,
+  'api-ssrf-1': 200,
 };
 
 export const getLabCpCost = (scenarioId: string): number | null => {

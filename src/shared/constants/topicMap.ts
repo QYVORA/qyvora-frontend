@@ -74,6 +74,16 @@ export const TOPICS: Topic[] = [
     ],
   },
   {
+    id: 'access-control',
+    label: 'Access Control',
+    icon: '403',
+    courses: ['web-technologies-101', 'burp-suite-101'],
+    labs: ['web-access-control', 'api-security'],
+    hpbRooms: [
+      { phaseId: 'phase4', roomId: 'room1' },
+    ],
+  },
+  {
     id: 'sql-injection',
     label: 'SQL Injection',
     icon: '1=1',
@@ -131,7 +141,7 @@ export const TOPICS: Topic[] = [
     label: 'Programming',
     icon: '{}',
     courses: ['python-for-hackers-101', 'git-github-101'],
-    labs: [],
+    labs: ['automation'],
     hpbRooms: [],
   },
   {
@@ -169,6 +179,9 @@ const LAB_REFS: Record<string, ContentRef> = {
   sqli: { type: 'lab', id: 'sqli', title: 'SQL Injection', subtitle: 'Extract data via SQLi', route: '/dashboard/labs/sql-injection', color: '#06B66F' },
   osint: { type: 'lab', id: 'osint', title: 'OSINT Recon', subtitle: 'Open source intelligence', route: '/dashboard/labs/osint', color: '#0EA5E9' },
   killchain: { type: 'lab', id: 'killchain', title: 'Kill Chain', subtitle: 'Full pentest walkthrough', route: '/dashboard/labs/kill-chain', color: '#DC2626' },
+  'web-access-control': { type: 'lab', id: 'web-access-control', title: 'Broken Access Control', subtitle: 'IDOR & BOLA', route: '/dashboard/labs/web-access-control', color: '#06B66F' },
+  'api-security': { type: 'lab', id: 'api-security', title: 'API Security', subtitle: 'JWT & SSRF', route: '/dashboard/labs/api-security', color: '#0EA5E9' },
+  automation: { type: 'lab', id: 'automation', title: 'Security Automation', subtitle: 'Python & Bash tooling', route: '/dashboard/labs/automation', color: '#F59E0B' },
 };
 
 const HPB_ROOM_REFS: Record<string, ContentRef> = {

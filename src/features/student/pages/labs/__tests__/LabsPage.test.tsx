@@ -53,13 +53,16 @@ describe('LabsPage', () => {
     expect(screen.getByText('Attack Labs')).toBeTruthy();
   });
 
-  it('renders all 5 lab cards', () => {
+  it('renders all lab cards', () => {
     renderLabsPage();
     expect(screen.getByText('Privilege Escalation')).toBeTruthy();
     expect(screen.getByText('Password Cracking')).toBeTruthy();
     expect(screen.getByText('SQL Injection')).toBeTruthy();
     expect(screen.getByText('OSINT Recon')).toBeTruthy();
     expect(screen.getByText('Kill Chain')).toBeTruthy();
+    expect(screen.getByText('Broken Access Control')).toBeTruthy();
+    expect(screen.getByText('API Security')).toBeTruthy();
+    expect(screen.getByText('Security Automation')).toBeTruthy();
   });
 
   it('each lab card links to the correct route', () => {
@@ -71,6 +74,9 @@ describe('LabsPage', () => {
     expect(hrefs).toContain('/dashboard/labs/sql-injection');
     expect(hrefs).toContain('/dashboard/labs/osint');
     expect(hrefs).toContain('/dashboard/labs/kill-chain');
+    expect(hrefs).toContain('/dashboard/labs/web-access-control');
+    expect(hrefs).toContain('/dashboard/labs/api-security');
+    expect(hrefs).toContain('/dashboard/labs/automation');
   });
 
   it('does not render the simulated environment banner', () => {

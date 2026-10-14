@@ -28,3 +28,13 @@ export type { PasswordExercise } from './password-exercises';
 
 export { OSINT_CHALLENGES } from './osint-data';
 export type { OsintChallenge, OsintStep } from './osint-data';
+
+export type {
+  WebLabScenario,
+  WebLabStep,
+  WebLabCategory,
+} from './web-lab-types';
+
+export { WEB_ACCESS_CONTROL_SCENARIOS } from './web-access-control-data';
+export { API_SECURITY_SCENARIOS } from './api-security-data';
+export { AUTOMATION_SCENARIOS } from './automation-data';
