@@ -9,8 +9,11 @@ import SEO from '@/shared/components/SEO';
 import PageHeader from '@/shared/components/ui/PageHeader';
 import PublicContainer from '@/shared/components/layout/PublicContainer';
 import EmptyState from '@/shared/components/ui/EmptyState';
-import { ErrorState, BatchPagination, Skeleton } from '@/shared/components/ui';
-import type { Period } from '@/shared/components/leaderboard';
+import Button from '@/shared/components/ui/Button';
+import { ErrorState, Skeleton } from '@/shared/components/ui';
+import type { Period, LeaderboardEntry } from '@/shared/components/leaderboard';
+
+type AuthUser = ReturnType<typeof useAuth>['user'];
 
 interface Cohort {
   id: string;
@@ -184,61 +187,99 @@ const LeaderboardPage = () => {
             </div>
           )}
 
-          {rest.length > 0 && <LeaderboardRestSection rest={rest} user={user} total={total} />}
+          {rest.length > 0 && (
+            <LeaderboardRestSection
+              rest={rest}
+              user={user}
+              total={total}
+              hasMore={hasMore}
+              loadingMore={loadingMore}
+              remainingCount={remainingCount}
+              onLoadMore={() => loadMore(period)}
+            />
+          )}
         </div>
       </PublicContainer>
     </div>
   );
 };
 
-const LeaderboardRestSection: React.FC<{ rest: any[]; user: any; total: number }> = ({ rest, user, total }) => {
-  const [page, setPage] = useState(0);
-  const BATCH_SIZE = 5;
+interface LeaderboardRestSectionProps {
+  rest: LeaderboardEntry[];
+  user: AuthUser;
+  total: number;
+  hasMore: boolean;
+  loadingMore: boolean;
+  remainingCount: number;
+  onLoadMore: () => void;
+}
 
-  const totalPages = Math.ceil(rest.length / BATCH_SIZE);
-  const currentBatch = rest.slice(page * BATCH_SIZE, (page + 1) * BATCH_SIZE);
-
-  return (
-    <div className="overflow-hidden rounded-2xl border border-border-subtle bg-surface">
-      <div className="hidden md:grid grid-cols-[48px_1fr_140px_100px_80px] gap-4 px-6 py-3 border-b border-border-subtle type-meta font-black uppercase tracking-widest text-text-muted/50">
-        <span>{"#"}</span>
-        <span>{"Operator"}</span>
-        <span>{"Rank"}</span>
-        <span className="text-right">{"CP"}</span>
-        <span className="text-right">{"Streak"}</span>
-      </div>
-      <div className="space-y-2 py-2">
-        <AnimatePresence mode="popLayout">
-          {currentBatch.map((entry, i) => (
-            <motion.div
-              key={entry.userId}
-              layout
-              initial={{ opacity: 0, x: -10 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: 10 }}
-              transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1], delay: i * 0.04 }}
-            >
-              <LeaderboardRow
-                entry={entry}
-                user={user}
-                rank={entry.rank}
-                anonymousLabel={"Operators"}
-                youLabel="You"
-                roomsLabel={"rooms"}
-                avatarShape="rounded-xl"
-                normalBorderColor="border-border-subtle"
-              />
-            </motion.div>
-          ))}
-        </AnimatePresence>
-      </div>
-      <BatchPagination page={page} totalPages={totalPages} onPageChange={setPage} />
-      <div className="type-meta flex items-center justify-center gap-2 pb-4 font-bold uppercase tracking-widest text-text-muted/40">
-        <Shield className="h-3 w-3 text-accent" />
-        {`CP balances verified on QYVORA Chain · ${Number(total).toLocaleString()} operators`}
-      </div>
+/**
+ * Ranks 4+ of the board. The full ranked list is fetched in pages of 50 from the
+ * API; "Load more" appends the next page (offset-based) until the backend reports
+ * no further entries. Rank numbers come from the API, so they stay correct as
+ * batches are appended.
+ */
+const LeaderboardRestSection: React.FC<LeaderboardRestSectionProps> = ({
+  rest,
+  user,
+  total,
+  hasMore,
+  loadingMore,
+  remainingCount,
+  onLoadMore,
+}) => (
+  <div className="overflow-hidden rounded-2xl border border-border-subtle bg-surface">
+    <div className="hidden md:grid grid-cols-[48px_1fr_140px_100px_80px] gap-4 px-6 py-3 border-b border-border-subtle type-meta font-black uppercase tracking-widest text-text-muted/50">
+      <span>{"#"}</span>
+      <span>{"Operator"}</span>
+      <span>{"Rank"}</span>
+      <span className="text-right">{"CP"}</span>
+      <span className="text-right">{"Streak"}</span>
     </div>
-  );
-};
+    <div className="space-y-2 py-2">
+      <AnimatePresence mode="popLayout">
+        {rest.map((entry, i) => (
+          <motion.div
+            key={entry.userId}
+            layout
+            initial={{ opacity: 0, x: -10 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: 10 }}
+            transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1], delay: Math.min(i, 8) * 0.02 }}
+          >
+            <LeaderboardRow
+              entry={entry}
+              user={user}
+              rank={entry.rank}
+              anonymousLabel={"Operators"}
+              youLabel="You"
+              roomsLabel={"rooms"}
+              avatarShape="rounded-xl"
+              normalBorderColor="border-border-subtle"
+            />
+          </motion.div>
+        ))}
+      </AnimatePresence>
+    </div>
+
+    {hasMore ? (
+      <div className="flex flex-col items-center gap-2 px-4 pb-4 pt-2">
+        <Button variant="secondary" size="sm" loading={loadingMore} onClick={onLoadMore}>
+          {loadingMore ? 'Loading operators…' : `Load more operators (${Number(remainingCount).toLocaleString()} remaining)`}
+        </Button>
+      </div>
+    ) : (
+      <p className="type-meta flex items-center justify-center gap-2 pb-4 pt-2 font-bold uppercase tracking-widest text-text-muted/40">
+        {"End of board · all operators shown"}
+      </p>
+    )}
+
+    <div className="type-meta flex items-center justify-center gap-2 pb-4 font-bold uppercase tracking-widest text-text-muted/40">
+      <Shield className="h-3 w-3 text-accent" />
+      {`CP balances verified on QYVORA Chain · ${Number(total).toLocaleString()} operators`}
+    </div>
+  </div>
+);
 
 export default LeaderboardPage;
