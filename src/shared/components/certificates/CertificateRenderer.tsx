@@ -34,6 +34,19 @@ export interface CertificateRendererProps {
 }
 
 /**
+ * The certificate is a light "paper" artifact: its surface is a fixed light
+ * gradient (see the surface styles below), so it must always use fixed dark
+ * ink — NOT the app's theme text tokens, which are near-white in the dark theme
+ * and would render the certificate text invisible (white on white). These values
+ * mirror the light-theme text tokens (#161C15 and its alphas).
+ */
+const INK = {
+  primary: '#161C15',
+  secondary: 'rgba(22, 28, 21, 0.86)',
+  muted: 'rgba(22, 28, 21, 0.70)',
+} as const;
+
+/**
  * Recipient names are the hero element. Size steps down as the name gets
  * longer so every name fits inside the certificate on one or two lines.
  */
@@ -150,7 +163,18 @@ const CertificateRenderer: React.FC<CertificateRendererProps> = ({
     <div
       className={`relative mx-auto w-full ${className}`}
       id={id}
-      style={{ containerType: 'inline-size' }}
+      style={
+        {
+          containerType: 'inline-size',
+          // Redirect the theme text tokens to fixed dark ink for the whole
+          // certificate subtree, so every `text-text-primary/secondary/muted`
+          // descendant stays legible on the light paper regardless of the app
+          // theme (otherwise: white text on white paper in the dark theme).
+          '--color-text-primary': INK.primary,
+          '--color-text-secondary': INK.secondary,
+          '--color-text-muted': INK.muted,
+        } as React.CSSProperties
+      }
     >
       <div
         className={`relative flex w-full flex-col overflow-hidden rounded-2xl border-2 shadow-2xl ${
