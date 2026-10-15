@@ -1,4 +1,4 @@
-import badgeSrc from '@/assets/bootcamp/hpb-completion-badge.webp';
+import badgeSrc from '@/assets/bootcamp/HPB-logo.webp';
 const BADGE_PATH = badgeSrc;
 
 interface BootcampBadgeProps {
@@ -12,11 +12,11 @@ const BootcampBadge: React.FC<BootcampBadgeProps> = ({ completed, className = ''
   return (
     <img
       src={BADGE_PATH}
-      alt="HPB Bootcamp Completed"
-      title="Hacker Protocol Bootcamp - Completed"
+      alt="Hacker Protocol Bootcamp"
+      title="Hacker Protocol Bootcamp"
       width={96}
       height={64}
-      className={`inline-block ${className}`}
+      className={`inline-block object-contain ${className}`}
     />
   );
 };

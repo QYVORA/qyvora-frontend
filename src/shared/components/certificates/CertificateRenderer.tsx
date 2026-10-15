@@ -1,10 +1,12 @@
 import React from 'react';
-import { Logo, QyvoraMark } from '@/shared/components/brand';
+import { Logo } from '@/shared/components/brand';
 import DottedMapOverlay from '@/shared/components/ui/DottedMapOverlay';
-import CertificateCredentialRibbon from './CertificateCredentialRibbon';
 import { fluid } from './certificateFluid';
 import hpbLogo from '@/assets/bootcamp/HPB-logo.webp';
 import qoseLogo from '@/assets/bootcamp/QOSE-Logo.webp';
+
+export type CertificateProgram = 'HPB' | 'QOSE';
+export type CertificateOrientation = 'portrait' | 'landscape';
 
 export interface CertificateData {
   recipientName: string;
@@ -18,8 +20,8 @@ export interface CertificateData {
 
 export interface CertificateTemplateConfig {
   name?: string;
-  program?: 'HPB' | 'QOSE';
-  orientation?: 'portrait' | 'landscape';
+  program?: CertificateProgram;
+  orientation?: CertificateOrientation;
   showQr?: boolean;
   showSeal?: boolean;
   accentColor?: string;
@@ -29,22 +31,80 @@ export interface CertificateRendererProps {
   data: CertificateData;
   config?: CertificateTemplateConfig;
   className?: string;
-  /** Optional element id — only set on the certificate being exported to PDF. */
+  /** Optional element id — only set on the certificate being exported. */
   id?: string;
 }
 
+const PROGRAMME_LOGO: Record<CertificateProgram, string> = { HPB: hpbLogo, QOSE: qoseLogo };
+const PROGRAMME_LOGO_ALT: Record<CertificateProgram, string> = {
+  HPB: 'Hacker Protocol Bootcamp',
+  QOSE: 'QYVORA Offensive Security Engineer Bootcamp',
+};
+const PROGRAMME_LABEL: Record<CertificateProgram, string> = {
+  HPB: 'Hacker Protocol Bootcamp',
+  QOSE: 'Offensive Security Engineer',
+};
+
 /**
- * The certificate is a light "paper" artifact: its surface is a fixed light
- * gradient (see the surface styles below), so it must always use fixed dark
- * ink — NOT the app's theme text tokens, which are near-white in the dark theme
- * and would render the certificate text invisible (white on white). These values
- * mirror the light-theme text tokens (#161C15 and its alphas).
+ * The certificate is a light "paper" artifact. Its theme text tokens must be
+ * redirected to fixed dark ink, otherwise the dark theme's near-white text
+ * renders invisibly on the light surface (white on white). These values mirror
+ * the light-theme text tokens (#161C15 and its alphas).
  */
 const INK = {
   primary: '#161C15',
-  secondary: 'rgba(22, 28, 21, 0.86)',
-  muted: 'rgba(22, 28, 21, 0.70)',
+  secondary: 'rgba(22, 28, 21, 0.82)',
+  muted: 'rgba(22, 28, 21, 0.62)',
 } as const;
+
+/** Light text used on the charcoal header / premium footer bands. */
+const ON_DARK = {
+  strong: 'rgba(244, 248, 245, 0.96)',
+  secondary: 'rgba(238, 242, 239, 0.72)',
+  muted: 'rgba(238, 242, 239, 0.50)',
+} as const;
+
+interface TemplateTokens {
+  /** Paper surface behind the light body. */
+  paper: string;
+  /** Charcoal header band behind the two logos. */
+  header: string;
+  /** Premium footer band; `null` keeps the footer on the paper surface. */
+  footer: string | null;
+  /** Outer card border. */
+  border: string;
+  /** Continuous inner hairline frame. */
+  frame: string;
+  /** Optional decorative texture laid over the header band. */
+  headerTexture?: React.CSSProperties;
+}
+
+/**
+ * Two complementary brand colours — charcoal (#0B0E0C) and QYVORA green
+ * (#06B66F) — over a warm light neutral paper. Both templates share this
+ * palette; they differ only in how much charcoal each uses, so the two
+ * certificates read as one family.
+ */
+const TEMPLATE_TOKENS: Record<CertificateProgram, TemplateTokens> = {
+  HPB: {
+    paper: 'linear-gradient(160deg, #FCFCFB 0%, #F2F5F2 58%, #E9EFEB 100%)',
+    header: 'linear-gradient(120deg, #0B0E0C 0%, #171D19 100%)',
+    footer: null,
+    border: 'rgba(17, 17, 17, 0.16)',
+    frame: 'rgba(6, 182, 111, 0.26)',
+  },
+  QOSE: {
+    paper: 'linear-gradient(160deg, #FCFCFB 0%, #EDF4EF 58%, #E0EBE4 100%)',
+    header: 'linear-gradient(120deg, #090C0A 0%, #111A14 100%)',
+    footer: 'linear-gradient(120deg, #111A14 0%, #090C0A 100%)',
+    border: 'rgba(6, 182, 111, 0.45)',
+    frame: 'rgba(6, 182, 111, 0.38)',
+    headerTexture: {
+      backgroundImage:
+        'repeating-linear-gradient(135deg, rgba(6,182,111,0.16) 0 1px, transparent 1px 14px)',
+    },
+  },
+};
 
 /**
  * Recipient names are the hero element. Size steps down as the name gets
@@ -59,50 +119,34 @@ const nameFontSize = (name: string) => {
 };
 
 /**
- * Issuer seal — a classic embossed-stamp treatment placed at the bottom-right
- * corner of every certificate: double ring, diagonal micro-stripes (the
- * premium ribbon motif), the QYVORA mark and the programme label. Decorative,
- * so it is hidden from assistive tech; the programme is stated in the body.
+ * Programme emblem — rendered bare and untinted directly on the charcoal
+ * header, never wrapped in a card, border or panel.
  */
-const IssuerSeal: React.FC<{ program: 'HPB' | 'QOSE' }> = ({ program }) => (
-  <div
-    className="relative flex shrink-0 flex-col items-center justify-center gap-[2px] rounded-full border-2 border-accent/55 bg-white/60"
-    style={{ width: fluid(58, 8.4), height: fluid(58, 8.4) }}
-    aria-hidden="true"
-  >
-    <span className="absolute inset-[7%] rounded-full border border-accent/30" />
-    <span
-      className="absolute inset-[13%] rounded-full"
-      style={{
-        background:
-          'repeating-linear-gradient(45deg, rgba(6,182,111,0.10) 0 4px, transparent 4px 8px)',
-      }}
-    />
-    <QyvoraMark className="relative block h-auto" style={{ width: '46%' }} />
-    <span
-      className="relative font-black uppercase tracking-[0.16em] text-accent"
-      style={{ fontSize: fluid(6, 0.85) }}
-    >
-      {program}
-    </span>
-  </div>
+const ProgrammeLogo: React.FC<{ program: CertificateProgram }> = ({ program }) => (
+  <img
+    src={PROGRAMME_LOGO[program]}
+    alt={PROGRAMME_LOGO_ALT[program]}
+    className="w-auto shrink-0 object-contain"
+    style={{ height: fluid(40, 6) }}
+  />
 );
 
-const MetadataBlock: React.FC<{ label: string; value: string; breakAll?: boolean }> = ({
+const MetadataBlock: React.FC<{ label: string; value: string; dark?: boolean; breakAll?: boolean }> = ({
   label,
   value,
+  dark,
   breakAll,
 }) => (
   <div className="flex min-w-0 flex-col gap-1">
     <span
-      className="font-black uppercase tracking-widest text-text-muted"
-      style={{ fontSize: fluid(7, 1.05) }}
+      className="font-black uppercase tracking-widest"
+      style={{ fontSize: fluid(7, 1), color: dark ? ON_DARK.muted : INK.muted }}
     >
       {label}
     </span>
     <span
-      className={`font-mono text-text-primary ${breakAll ? 'break-all' : 'break-words'}`}
-      style={{ fontSize: fluid(10, 1.5) }}
+      className={`font-mono ${breakAll ? 'break-all' : 'break-words'}`}
+      style={{ fontSize: fluid(9, 1.25), color: dark ? ON_DARK.secondary : INK.secondary }}
     >
       {value}
     </span>
@@ -110,19 +154,10 @@ const MetadataBlock: React.FC<{ label: string; value: string; breakAll?: boolean
 );
 
 /**
- * Programme logo — rendered bare, directly on the certificate surface.
- * The bootcamp badge/logo is intentionally NOT wrapped in a card, border or
- * tinted panel.
+ * The single canvas: a charcoal header carrying the two required logos, a
+ * warm paper body, and a compact verification footer at the very bottom. HPB
+ * and QOSE share every rule; only the amount of charcoal differs.
  */
-const ProgrammeLogo: React.FC<{ program?: 'HPB' | 'QOSE' }> = ({ program = 'QOSE' }) => (
-  <img
-    src={program === 'HPB' ? hpbLogo : qoseLogo}
-    alt={program === 'HPB' ? 'Hacker Protocol Bootcamp' : 'QYVORA Offensive Security Engineer Bootcamp'}
-    className="w-auto max-w-[38%] shrink-0 object-contain"
-    style={{ height: fluid(34, 6.5) }}
-  />
-);
-
 const CertificateRenderer: React.FC<CertificateRendererProps> = ({
   data,
   config = {},
@@ -141,17 +176,15 @@ const CertificateRenderer: React.FC<CertificateRendererProps> = ({
   const program = config.program || 'QOSE';
   const certificateTitle = config.name || 'Certificate of Completion';
   const orientation = config.orientation || 'landscape';
-  // QOSE is the paid bootcamp — it carries the premium treatment: accent edge,
-  // tinted graphite surface, an interior credential ribbon with a QOSE seal,
-  // programme watermark and inner frame. HPB stays the clean standard edition.
-  // Both share the dotted map backdrop and the issuer seal.
+  const tokens = TEMPLATE_TOKENS[program];
+  // QOSE is the paid programme — its premium edition frames the body with
+  // charcoal top *and* bottom; HPB stays the lighter standard edition.
   const premium = program === 'QOSE';
 
-  const pad = fluid(16, 4.2);
-  // Left gutter reserved for the interior credential ribbon. It is wide enough
-  // to hold the sash and its circular seal, and it keeps the ribbon clear of
-  // every line of content without affecting the HPB template.
-  const ribbonGutter = fluid(34, 6.4);
+  const pad = fluid(22, 4.6);
+  const headerPadY = fluid(20, 3.4);
+  const bodyPadY = fluid(16, 3);
+  const footerPadY = fluid(12, 2.2);
 
   const formattedDate = (() => {
     const parsed = new Date(completionDate);
@@ -166,10 +199,6 @@ const CertificateRenderer: React.FC<CertificateRendererProps> = ({
       style={
         {
           containerType: 'inline-size',
-          // Redirect the theme text tokens to fixed dark ink for the whole
-          // certificate subtree, so every `text-text-primary/secondary/muted`
-          // descendant stays legible on the light paper regardless of the app
-          // theme (otherwise: white text on white paper in the dark theme).
           '--color-text-primary': INK.primary,
           '--color-text-secondary': INK.secondary,
           '--color-text-muted': INK.muted,
@@ -177,164 +206,160 @@ const CertificateRenderer: React.FC<CertificateRendererProps> = ({
       }
     >
       <div
-        className={`relative flex w-full flex-col overflow-hidden rounded-2xl border-2 shadow-2xl ${
-          premium ? 'border-accent/40' : 'border-border/30'
-        }`}
+        className="relative flex w-full flex-col overflow-hidden rounded-2xl border-2 shadow-2xl"
         style={{
-          background: premium
-            ? 'linear-gradient(to bottom right, #fbfbfb, #eef4f1 55%, #e3ebe7)'
-            : 'linear-gradient(to bottom right, #f5f5f5, #e8e8e8)',
-          padding: pad,
-          // The QOSE credential ribbon occupies the reserved left gutter so it
-          // never overlaps the recipient, programme or verification copy.
-          paddingLeft: premium ? `calc(${pad} + ${ribbonGutter})` : pad,
+          background: tokens.paper,
+          borderColor: tokens.border,
           // Industry-standard certificate trim as a *minimum* height: US Letter
           // landscape (11 × 8.5 in → 77.27cqw) or portrait (8.5 × 11 in →
-          // 129.41cqw). Content keeps the exact ratio at every normal size, but
-          // can never be clipped if a name runs long on a small preview — the
-          // surface simply grows.
-          minHeight:
-            orientation === 'portrait' ? '129.41cqw' : '77.27cqw',
+          // 129.41cqw). Content owns the exact ratio at every normal size and
+          // the surface can only *grow*, so text is never clipped.
+          minHeight: orientation === 'portrait' ? '129.41cqw' : '77.27cqw',
         }}
       >
         {/* Dotted-map backdrop — both templates */}
-        <DottedMapOverlay className="rounded-2xl" opacity={0.08} />
+        <DottedMapOverlay className="rounded-2xl" opacity={0.07} />
 
-        {premium && (
-          <>
-            {/* Interior credential ribbon — one broad, straight sash inset from
-                the certificate edge, ending in a circular QOSE seal. It is the
-                premium template's secondary visual anchor. */}
-            <CertificateCredentialRibbon logo={qoseLogo} label="QOSE" />
-            {/* Programme watermark — the premium surface's quiet signature */}
-            <img
-              src={qoseLogo}
-              alt=""
-              aria-hidden="true"
-              className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 object-contain"
-              style={{ width: '42cqw', opacity: 0.05 }}
-            />
-          </>
-        )}
-
-        {/* Continuous inner frame — one border, no dashes or corner angles */}
+        {/* Continuous inner frame — one hairline, clear of the edge */}
         <span
-          className="pointer-events-none absolute inset-[2.5%] rounded-xl border"
-          style={{
-            borderColor: premium ? 'rgba(6,182,111,0.25)' : 'rgba(17,17,17,0.14)',
-          }}
+          className="pointer-events-none absolute inset-[2.2%] z-[2] rounded-xl border"
+          style={{ borderColor: tokens.frame }}
         />
 
-        {/* Header — issuing authority + bare programme logo */}
-        <div className="relative flex items-start justify-between gap-4">
-          <div className="flex min-w-0 flex-col gap-1">
-            <div style={{ width: fluid(130, 22), maxWidth: '100%' }}>
+        {/* ── Header band — the two required logos on charcoal ── */}
+        <header
+          className="relative z-[1] flex items-center justify-between gap-6"
+          style={{ background: tokens.header, padding: `${headerPadY} ${pad}` }}
+        >
+          {tokens.headerTexture && (
+            <span
+              aria-hidden="true"
+              className="pointer-events-none absolute inset-0"
+              style={tokens.headerTexture}
+            />
+          )}
+
+          <div className="relative flex min-w-0 flex-col gap-1.5">
+            <div style={{ width: fluid(150, 19), maxWidth: '100%' }}>
               <Logo size="md" />
             </div>
             <span
-              className="font-black uppercase tracking-widest text-text-secondary"
-              style={{ fontSize: fluid(7, 1.05) }}
+              className="font-black uppercase tracking-[0.28em]"
+              style={{ fontSize: fluid(7, 1), color: ON_DARK.muted }}
             >
               Issuing Authority
             </span>
           </div>
-          <ProgrammeLogo program={program} />
-        </div>
 
-        {/* Body */}
+          <div className="relative flex shrink-0 flex-col items-center gap-1.5">
+            <ProgrammeLogo program={program} />
+            <span
+              className="font-black uppercase tracking-[0.2em]"
+              style={{ fontSize: fluid(7, 1), color: ON_DARK.muted }}
+            >
+              {PROGRAMME_LABEL[program]}
+            </span>
+          </div>
+        </header>
+
+        {/* ── Body — the recipient's achievement on paper ── */}
         <div
-          className="relative flex flex-1 flex-col items-center justify-center gap-3 text-center"
-          style={{ paddingBlock: fluid(8, 2) }}
+          className="relative z-[1] flex flex-1 flex-col items-center justify-center gap-3 text-center"
+          style={{ padding: `${bodyPadY} ${pad}` }}
         >
           <p
-            className="font-black uppercase tracking-[0.3em] text-accent"
-            style={{ fontSize: fluid(9, 1.45) }}
+            className="font-black uppercase tracking-[0.34em] text-accent"
+            style={{ fontSize: fluid(11, 1.25) }}
           >
             {certificateTitle}
           </p>
 
+          <span className="h-[2px] w-[14%] rounded-full bg-accent/60" aria-hidden="true" />
+
           <p
             className="font-bold uppercase tracking-wider text-text-secondary"
-            style={{ fontSize: fluid(11, 1.6) }}
+            style={{ fontSize: fluid(11, 1.5) }}
           >
             Presented to
           </p>
 
           <p
             className="max-w-[88%] break-words font-black uppercase tracking-tight text-text-primary [hyphens:auto] [overflow-wrap:anywhere]"
-            style={{
-              fontSize: nameFontSize(recipientName),
-              lineHeight: 1.06,
-            }}
+            style={{ fontSize: nameFontSize(recipientName), lineHeight: 1.06 }}
           >
             {recipientName}
           </p>
 
           <p
-            className="max-w-[80%] text-text-secondary"
-            style={{ fontSize: fluid(11, 1.65), lineHeight: 1.7 }}
+            className="max-w-[78%] text-text-secondary"
+            style={{ fontSize: fluid(11, 1.6), lineHeight: 1.7 }}
           >
             has successfully completed the{' '}
             <span className="font-bold text-text-primary">{programName}</span>
           </p>
 
-          {cohortIdentifier && (
-            <p className="font-mono text-text-secondary" style={{ fontSize: fluid(10, 1.4) }}>
-              {cohortIdentifier}
-            </p>
-          )}
-
-          <p className="font-mono text-text-secondary" style={{ fontSize: fluid(10, 1.4) }}>
-            {formattedDate}
+          <p
+            className="flex flex-wrap items-center justify-center gap-x-2 gap-y-0.5 font-mono text-text-secondary"
+            style={{ fontSize: fluid(9, 1.3) }}
+          >
+            {cohortIdentifier && (
+              <>
+                <span>{cohortIdentifier}</span>
+                <span className="text-accent">·</span>
+              </>
+            )}
+            <span>{formattedDate}</span>
           </p>
         </div>
 
-        {/* Footer — credential metadata, then verification + issuer seal at
-            the bottom-right corner. No divider line: the inner frame and
-            spacing carry the structure instead. */}
-        <div className="relative flex flex-wrap items-end justify-between gap-x-8 gap-y-4">
+        {/* ── Footer — credential metadata, then a compact verification line
+            pinned to the very bottom ── */}
+        <footer
+          className="relative z-[1]"
+          style={
+            tokens.footer
+              ? { background: tokens.footer, padding: `${footerPadY} ${pad}` }
+              : { padding: `${footerPadY} ${pad}` }
+          }
+        >
+          <span
+            aria-hidden="true"
+            className="absolute inset-x-[4%] top-0 h-px"
+            style={{ background: premium ? 'rgba(255,255,255,0.14)' : 'rgba(17,17,17,0.12)' }}
+          />
+
           <div
-            className="grid min-w-0 gap-x-6 gap-y-3"
+            className="grid gap-x-6 gap-y-3"
             style={{
               gridTemplateColumns: `repeat(auto-fit, minmax(${fluid(96, 14)}, 1fr))`,
-              flex: '1 1 300px',
             }}
           >
-            <MetadataBlock label="Credential ID" value={credentialId} breakAll />
-            <MetadataBlock label="Programme" value={program} />
-            <MetadataBlock label="Status" value="Issued" />
+            <MetadataBlock label="Credential ID" value={credentialId} breakAll dark={premium} />
+            <MetadataBlock label="Programme" value={program} dark={premium} />
+            <MetadataBlock label="Status" value="Issued" dark={premium} />
           </div>
 
-          <div className="flex flex-wrap items-end justify-end gap-x-6 gap-y-4">
-            <div className="flex min-w-0 flex-col gap-1">
+          <div
+            className="mt-3 flex flex-wrap items-center justify-between gap-x-6 gap-y-1.5 border-t pt-2.5"
+            style={{ borderColor: premium ? 'rgba(255,255,255,0.10)' : 'rgba(17,17,17,0.08)' }}
+          >
+            <span
+              className="break-all font-mono"
+              style={{ fontSize: fluid(8, 1.05), color: premium ? ON_DARK.muted : INK.muted }}
+            >
+              Verify at {verificationUrl}
+            </span>
+            <span className="flex items-center gap-1.5">
+              <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-accent" aria-hidden="true" />
               <span
-                className="font-black uppercase tracking-widest text-text-muted"
-                style={{ fontSize: fluid(7, 1.05) }}
+                className="font-black uppercase tracking-[0.2em] text-accent"
+                style={{ fontSize: fluid(7, 1) }}
               >
-                Verification
+                QYVORA Chain
               </span>
-              <span
-                className="break-all font-mono text-text-secondary"
-                style={{ fontSize: fluid(8, 1.25) }}
-              >
-                {verificationUrl}
-              </span>
-              <span className="flex items-center gap-1.5">
-                <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-accent" />
-                <span
-                  className="font-black uppercase tracking-wider text-accent"
-                  style={{ fontSize: fluid(7, 1.05) }}
-                >
-                  QYVORA Chain
-                </span>
-              </span>
-            </div>
-
-            {/* HPB carries the company seal at the bottom-right; QOSE's award
-                seal lives on the interior credential ribbon instead. */}
-            {!premium && <IssuerSeal program={program} />}
+            </span>
           </div>
-        </div>
+        </footer>
       </div>
     </div>
   );

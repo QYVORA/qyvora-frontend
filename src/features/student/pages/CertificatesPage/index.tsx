@@ -1,5 +1,5 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
-import { Award, Download, ExternalLink, Eye } from 'lucide-react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { Award, ExternalLink, Eye } from 'lucide-react';
 import { useAuth } from '@/core/contexts/AuthContext';
 import { useToast } from '@/core/contexts/ToastContext';
 import { useProfile } from '@/shared/hooks/useProfile';
@@ -10,9 +10,8 @@ import {
   verifyPath,
   type LearnerCredential,
 } from '@/core/services/credentials';
-import CertificateFrame, {
-  CERTIFICATE_PRINT_EVENT,
-} from '@/shared/components/certificates/CertificateFrame';
+import CertificateFrame from '@/shared/components/certificates/CertificateFrame';
+import CertificateExportActions from '@/shared/components/certificates/CertificateExportActions';
 import CertificateClaimCard from '@/shared/components/certificates/CertificateClaimCard';
 import {
   Button,
@@ -66,23 +65,7 @@ const CertificatesPage = () => {
   const [claiming, setClaiming] = useState(false);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [selected, setSelected] = useState<LearnerCredential | null>(null);
-
-  // Size the printed page to US Letter landscape so "Download PDF" (browser
-  // print dialog → Save as PDF) produces an exact-trim certificate — the same
-  // contract the admin certificate templates rely on.
-  useEffect(() => {
-    const styleId = 'cert-print-page-style';
-    let el = document.getElementById(styleId) as HTMLStyleElement | null;
-    if (!el) {
-      el = document.createElement('style');
-      el.id = styleId;
-      document.head.appendChild(el);
-    }
-    el.textContent = '@page { size: 11in 8.5in; margin: 0; }';
-    return () => {
-      el?.remove();
-    };
-  }, []);
+  const frameRef = useRef<HTMLDivElement>(null);
 
   const load = useCallback(async () => {
     if (!user?.uid) return;
@@ -133,10 +116,6 @@ const CertificatesPage = () => {
   const openCertificate = (credential: LearnerCredential) => {
     setSelected(credential);
     setDialogOpen(true);
-  };
-
-  const handleDownload = () => {
-    window.dispatchEvent(new Event(CERTIFICATE_PRINT_EVENT));
   };
 
   return (
@@ -265,13 +244,13 @@ const CertificatesPage = () => {
         <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
           <DialogContent
             title="Certificate"
-            description="Download a PDF copy or open the public verification page."
+            description="Download a PDF, PNG or JPEG copy, or open the public verification page."
             maxWidth="max-w-4xl"
           >
             {selected && (
               <div className="space-y-5">
                 <CertificateFrame
-                  printable
+                  ref={frameRef}
                   data={{
                     recipientName: selected.recipientName || recipientName,
                     programName: selected.programName,
@@ -285,13 +264,14 @@ const CertificatesPage = () => {
                     orientation: 'landscape',
                   }}
                 />
-                <div className="flex flex-wrap gap-3">
-                  <Button
-                    icon={<Download className="h-4 w-4" aria-hidden="true" />}
-                    onClick={handleDownload}
-                  >
-                    Download PDF
-                  </Button>
+                <div className="flex flex-wrap items-center justify-between gap-3">
+                  <CertificateExportActions
+                    getNode={() => frameRef.current}
+                    program={credentialProgram(selected.programName)}
+                    orientation="landscape"
+                    credentialId={selected.credentialId}
+                    onError={(message) => addToast(message, 'error')}
+                  />
                   <Button
                     variant="secondary"
                     to={verifyPath(selected.credentialId)}

@@ -19,13 +19,13 @@ describe('CertificateRenderer — legibility', () => {
     const root = container.firstElementChild as HTMLElement;
 
     expect(root.style.getPropertyValue('--color-text-primary')).toBe('#161C15');
-    expect(root.style.getPropertyValue('--color-text-secondary')).toBe('rgba(22, 28, 21, 0.86)');
-    expect(root.style.getPropertyValue('--color-text-muted')).toBe('rgba(22, 28, 21, 0.70)');
+    expect(root.style.getPropertyValue('--color-text-secondary')).toBe('rgba(22, 28, 21, 0.82)');
+    expect(root.style.getPropertyValue('--color-text-muted')).toBe('rgba(22, 28, 21, 0.62)');
   });
 
   it('renders the recipient name and programme', () => {
     render(<CertificateRenderer data={data} config={{ program: 'HPB' }} />);
     expect(screen.getByText('Jane Doe')).toBeInTheDocument();
-    expect(screen.getByText('Hacker Protocol Bootcamp')).toBeInTheDocument();
+    expect(screen.getAllByText(/Hacker Protocol Bootcamp/i).length).toBeGreaterThan(0);
   });
 });

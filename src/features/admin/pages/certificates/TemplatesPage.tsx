@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from 'react';
-import { Download } from 'lucide-react';
-import CertificateFrame, { CERTIFICATE_PRINT_EVENT } from '@/shared/components/certificates/CertificateFrame';
+import React, { useRef, useState } from 'react';
+import CertificateFrame from '@/shared/components/certificates/CertificateFrame';
+import CertificateExportActions from '@/shared/components/certificates/CertificateExportActions';
 import Button from '@/shared/components/ui/Button';
 import Input from '@/shared/components/ui/Input';
 import Select from '@/shared/components/ui/Select';
+import { useToast } from '@/core/contexts/ToastContext';
 import { DEMO_CREDENTIAL_IDS } from '@/core/services/credentialVerification';
 
 type Programme = 'HPB' | 'QOSE';
@@ -47,30 +48,15 @@ const TEST_NAMES: Record<'short' | 'medium' | 'long', string> = {
 };
 
 const TemplatesPage: React.FC = () => {
+  const { addToast } = useToast();
   const [active, setActive] = useState<Programme>('QOSE');
   const [settings, setSettings] = useState<Record<Programme, TemplateSettings>>(TEMPLATE_DEFAULTS);
   const [orientation, setOrientation] = useState<'portrait' | 'landscape'>('landscape');
   const [testName, setTestName] = useState<'short' | 'medium' | 'long'>('medium');
   const [showBoth, setShowBoth] = useState(false);
+  const frameRef = useRef<HTMLDivElement>(null);
 
   const current = settings[active];
-
-  // Size the printed page to the selected US Letter orientation so the
-  // "Download PDF" action (browser print dialog → Save as PDF) produces an
-  // exact-trim certificate PDF.
-  useEffect(() => {
-    const styleId = 'cert-print-page-style';
-    let el = document.getElementById(styleId) as HTMLStyleElement | null;
-    if (!el) {
-      el = document.createElement('style');
-      el.id = styleId;
-      document.head.appendChild(el);
-    }
-    el.textContent = `@page { size: ${orientation === 'portrait' ? '8.5in 11in' : '11in 8.5in'}; margin: 0; }`;
-    return () => {
-      el?.remove();
-    };
-  }, [orientation]);
 
   const updateCurrent = (patch: Partial<TemplateSettings>) => {
     setSettings((prev) => ({ ...prev, [active]: { ...prev[active], ...patch } }));
@@ -94,23 +80,18 @@ const TemplatesPage: React.FC = () => {
           <span className="text-accent">•</span>
           <span className="font-mono">{orientation}</span>
         </div>
-        <Button
-          variant="secondary"
-          size="sm"
-          icon={<Download className="h-4 w-4" />}
-          onClick={() => window.dispatchEvent(new Event(CERTIFICATE_PRINT_EVENT))}
-          disabled={programme !== active}
-          title={
-            programme === active
-              ? 'Save the active certificate as PDF'
-              : 'Switch to this certificate to export it'
-          }
-        >
-          Download PDF
-        </Button>
+        {programme === active && (
+          <CertificateExportActions
+            getNode={() => frameRef.current}
+            program={programme}
+            orientation={orientation}
+            credentialId={settings[programme].credentialId}
+            onError={(message) => addToast(message, 'error')}
+          />
+        )}
       </div>
       <CertificateFrame
-        printable={programme === active}
+        ref={programme === active ? frameRef : undefined}
         data={buildData(programme)}
         config={{
           name: settings[programme].templateName,
