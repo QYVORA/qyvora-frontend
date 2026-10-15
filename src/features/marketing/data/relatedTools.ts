@@ -30,7 +30,7 @@ interface ToolRef {
 }
 
 const TOOLS: ToolRef[] = [
-  { path: '/anansi', title: 'Anansi', desc: 'Terminal-first attack surface intelligence engine. Automate discovery, probing, and takeover detection.', logo: anansiLogo },
+  { path: '/anansi', title: 'Anansi', desc: 'Terminal-first web application security testing framework. Automate discovery, probing, and takeover detection.', logo: anansiLogo },
   { path: '/toha3ee', title: 'Toha3ee', desc: 'Local & network security assessment framework in Go: host and service discovery, enumeration, wireless and MITM capabilities from an interactive REPL.', logo: toha3eeLogo },
   { path: '/shaka', title: 'Shaka', desc: 'Windows & Active Directory security assessment framework in Go: domain discovery, object enumeration, graph-modeled privilege escalation, and evidence-driven reporting.', logo: shakaLogo },
   { path: '/nzinga', title: 'Nzinga', desc: 'Authorized open-source intelligence (OSINT) collection, cross-source correlation, and evidence-driven reporting in Go.', logo: nzingaLogo },

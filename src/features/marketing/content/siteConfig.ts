@@ -123,7 +123,7 @@ export const SITE_CONFIG = {
         key: 'tools',
         label: 'Tools',
         items: [
-          { key: 'anansi', label: 'anansi', path: '/anansi', desc: 'Attack Surface Intelligence' },
+          { key: 'anansi', label: 'anansi', path: '/anansi', desc: 'Web application security testing' },
           { key: 'toha3ee', label: 'toha3ee', path: '/toha3ee', desc: 'Local & network security assessment framework' },
           { key: 'shaka', label: 'shaka', path: '/shaka', desc: 'Active Directory & Windows security assessment' },
           { key: 'nzinga', label: 'nzinga', path: '/nzinga', desc: 'OSINT intelligence collection & analysis' },
@@ -171,7 +171,7 @@ export const SITE_CONFIG = {
       { key: 'hpb', label: 'HPB', path: '/hpb', desc: 'Hacker Protocol Bootcamp' },
       { key: 'qose', label: 'QOSE', path: '/qose', desc: 'Offensive Security Engineer Bootcamp' },
       { key: 'simulations', label: 'Simulations', path: '/simulations', desc: 'Live tool demos' },
-      { key: 'anansi', label: 'anansi', path: '/anansi', desc: 'Attack Surface Intelligence' },
+      { key: 'anansi', label: 'anansi', path: '/anansi', desc: 'Web application security testing' },
       { key: 'toha3ee', label: 'toha3ee', path: '/toha3ee', desc: 'Local & network security assessment framework' },
       { key: 'shaka', label: 'shaka', path: '/shaka', desc: 'Active Directory & Windows security assessment' },
       { key: 'nzinga', label: 'nzinga', path: '/nzinga', desc: 'OSINT intelligence collection & analysis' },

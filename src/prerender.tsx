@@ -153,7 +153,7 @@ const routeContent: Record<string, RouteContent> = {
     sections: [
       {
         heading: 'Web & OSINT',
-        bullets: ['anansi — attack surface intelligence from the terminal', 'nzinga — authorized OSINT collection and correlation'],
+        bullets: ['anansi — web application security testing from the terminal', 'nzinga — authorized OSINT collection and correlation'],
       },
       {
         heading: 'Network & Directory',
@@ -614,7 +614,7 @@ const routeContent: Record<string, RouteContent> = {
   },
   '/anansi': {
     h1: 'anansi',
-    lead: 'anansi – attack surface intelligence from the terminal. A nine-phase recon pipeline from subdomain discovery to exploit-chain analysis.',
+    lead: 'anansi – web application security testing from the terminal. A nine-phase recon pipeline from subdomain discovery to exploit-chain analysis.',
     sections: [
       {
         heading: 'The nine phases',

@@ -93,7 +93,7 @@ export const TOOLS: ToolEntry[] = [
     name: 'anansi',
     displayName: 'ANANSI',
     path: '/anansi',
-    summary: 'Attack surface intelligence for web targets: discovery, TLS, headers, paths, tech-stack, takeover and exploit-chain analysis.',
+    summary: 'Web application security testing framework for authorized web targets: discovery, TLS, headers, paths, tech-stack, takeover and exploit-chain analysis.',
     domain: 'web-osint',
     github: 'https://github.com/QYVORA/qyvora-anansi',
     repo: 'QYVORA/qyvora-anansi',

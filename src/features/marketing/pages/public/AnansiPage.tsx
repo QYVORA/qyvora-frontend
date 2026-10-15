@@ -47,7 +47,7 @@ const AnansiPage = () => {
       {/* ── Hero ─────────────────────────────────────────────────────────── */}
       <ToolDocHero
         toolName="anansi"
-        description="A nine-phase recon pipeline that discovers, probes and maps attack surfaces from the terminal."
+        description="A nine-phase web application security testing pipeline: from subdomain discovery to exploit-chain analysis, from the terminal."
         stats={[
           { label: 'Modules', value: PHASES.length },
           { label: 'Platform', value: 'CLI' },

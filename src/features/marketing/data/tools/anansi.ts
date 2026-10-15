@@ -1,7 +1,7 @@
 import type { ToolDoc } from './types';
 
 /**
- * ANANSI — terminal-first attack surface intelligence.
+ * ANANSI — terminal-first web application security testing framework.
  *
  * The ten-phase pipeline and module set are declared in `cmd/console.go`
  * (`defaultModules`) and `cmd/root.go`; the phase implementations are the
@@ -25,7 +25,7 @@ const doc: ToolDoc = {
       blocks: [
         {
           kind: 'prose',
-          text: 'ANANSI is a web attack-surface engine. Give it a domain and it runs a fixed ten-phase pipeline, where each phase consumes the previous phase\'s output. Discovery feeds probing, probing feeds TLS and header analysis, the whole set feeds the tech-stack auditor, and the accumulated findings feed both the chain assembler and the exploit prover.',
+          text: 'ANANSI is a web application security testing engine. Give it a domain and it runs a fixed ten-phase pipeline, where each phase consumes the previous phase\'s output. Discovery feeds probing, probing feeds TLS and header analysis, the whole set feeds the tech-stack auditor, and the accumulated findings feed both the chain assembler and the exploit prover.',
         },
         {
           kind: 'prose',
