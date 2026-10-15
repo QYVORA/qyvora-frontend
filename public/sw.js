@@ -43,7 +43,7 @@ const PRECACHE_URLS = [
   SHELL_URL,
   OFFLINE_URL,
   '/manifest.webmanifest',
-  '/favicon.webp',
+  '/favicon.png',
   '/fonts/jetbrains-latin.woff2',
   '/icons/icon-192.png',
   '/icons/icon-512.png',

@@ -1,9 +1,10 @@
 # Certificate System
 
 > **Status:** ✅ RENDERER + PUBLIC VERIFICATION IMPLEMENTED · issuance/gallery PLANNED  
-> **Last Updated:** 2026-10-08  
+> **Last Updated:** 2026-10-15
 > **Renderer:** `src/shared/components/certificates/CertificateRenderer.tsx`  
 > **Admin preview:** `src/features/admin/pages/certificates/TemplatesPage.tsx`  
+> **Student certificates:** `/dashboard/certificates` (`src/features/student/pages/CertificatesPage/index.tsx`)
 > **Verification:** `/verify` + `/verify/:credentialId` (`src/features/marketing/pages/public/VerifyPage.tsx`)
 
 ## Overview
@@ -35,11 +36,15 @@ Spec alignment: the credential model, wording and verification endpoint contract
 - `src/shared/components/certificates/CertificateFrame.tsx` — responsive preview wrapper: renders at fixed native Letter width and scales to fit (used by the admin preview and the `/verify` result); `certificate-print.css` holds the PDF export rules.
 - `src/features/admin/pages/certificates/TemplatesPage.tsx` — admin dashboard **Certificates** tab (`{ADMIN_PATH}/dashboard?tab=certificates`): template selector (QOSE / HPB), per-template settings, size (orientation) selector, name-length stress test, live preview (single or both certificates) and **Download PDF**.
 - `src/features/marketing/pages/public/VerifyPage.tsx` — public verification page at `/verify` and `/verify/:credentialId`.
+- `src/features/student/pages/CertificatesPage/index.tsx` — student credential gallery at `/dashboard/certificates` (list, view, verify, download, legacy claim).
+- `src/shared/components/certificates/CertificateClaimCard.tsx` — shared "claim your certificate" card (dashboard banner link mode + page inline claim mode).
+- `src/features/student/components/dashboard/CertificateClaimBanner.tsx` — dashboard notice for legacy HPB completers with no HPB credential.
+- `src/core/services/credentials.ts` — learner credential records: `getUserCredentials` + idempotent `claimCredentials`.
 - `src/core/services/credentialVerification.ts` — verification logic (normalisation, API call, local fallback registry).
 
 **Planned (documented, not yet built):**
 - `CertificatesTab`, `CertificateTemplateEditor`, `CertificatePreview`, `IssueCertificateModal`, `BulkIssueCertificateModal`
-- `src/shared/components/certificates/CertificateCard`, `CertificateDownload`, `CertificateDetailModal`
+- `src/shared/components/certificates/CertificateCard`, `CertificateDetailModal`
 
 ### Data Model
 
@@ -198,9 +203,11 @@ interface CertificateTemplate {
 - `DELETE /api/admin/certificates/:id` - Revoke certificate
 
 **Student (requires `requireAuth` middleware):**
-- `GET /api/student/certificates` - List user's certificates
-- `GET /api/student/certificates/:id` - Get certificate details
-- `GET /api/student/certificates/:id/download` - Download PDF
+- `GET /api/credentials/user/:userId` - List the signed-in learner's own credentials (authenticated: self or admin)
+- `POST /api/credentials/claim` - Claim any credential(s) the learner is entitled to but has not yet been issued (idempotent backfill for legacy completers). Request body: `{ program?: 'HPB' | 'QOSE' }` (omit to let the backend issue all outstanding credentials). Returns `{ success: true, credentials: [...] }` and falls back to a single `credential` object if the backend returns it
+- `GET /api/student/certificates` - List user's certificates (legacy route)
+- `GET /api/student/certificates/:id` - Get certificate details (legacy route)
+- `GET /api/student/certificates/:id/download` - Download PDF (legacy route)
 
 **Public:**
 - `GET /api/credentials/verify/:credentialId` - Verify credential authenticity (contract per `CREDENTIAL-DATA-MODEL.md`)
@@ -272,24 +279,48 @@ interface CertificateTemplate {
 
 ## Student Experience
 
-### Viewing Certificates
+### Viewing Certificates — `/dashboard/certificates` ✅ IMPLEMENTED
 
-**Dashboard Access:**
-- Navigate to `/dashboard/certificates`
-- View all earned certificates in gallery layout
-- Certificate cards show:
-  - Certificate title
-  - Issue date
-  - Certificate type badge
-  - Credential ID
-  - Preview thumbnail
+`src/features/student/pages/CertificatesPage/index.tsx` is the learner's credential gallery.
+It is reachable from the fixed student sidebar (**Account → Certificates**) and the mobile
+bottom-nav **Learn** sheet, and is registered inside `StudentShellGate` / `AppShell` like every
+other dashboard page.
 
-### Downloading Certificates
+- Fetches the learner's own credentials via `getUserCredentials(user.uid)` → `GET /api/credentials/user/:userId`
+- Credential cards show the programme logo, programme name, completion date, result, status badge and credential ID
+- Each card exposes **View** (opens the certificate in a `DialogContent`) and **Verify** (links to `/verify/<credentialId>`)
+- Loading uses `Skeleton` with `role="status"` / `aria-live="polite"`; failure shows an `ErrorState` rather than implying the learner has none; no credentials shows an `EmptyState`
 
-1. Click certificate card → detail view
-2. Click "Download PDF"
-3. PDF generated and downloaded
-4. Filename: `QYVORA-Certificate-{Title}-{Date}.pdf`
+### Downloading Certificates ✅ IMPLEMENTED
+
+1. Click **View** on a credential card → `DialogContent` renders the certificate through `CertificateFrame` (`printable`)
+2. Click **Download PDF** → dispatches `qy:certificate-print` (the same event the admin templates use)
+3. `CertificateFrame` detaches the certificate as a self-contained print clone; the browser print dialog opens → **Save as PDF**
+4. `@page { size: 11in 8.5in; margin: 0 }` is injected by the page, so the export is an exact-trim US Letter landscape PDF
+
+The frontend never fabricates a credential or a PDF: the certificate is rendered from the
+backend-issued credential record, and the download is the browser's own print-to-PDF of that
+rendering (the same pipeline as the admin **Download PDF** action).
+
+### Claiming a legacy certificate (backfill) ✅ IMPLEMENTED
+
+Learners who completed the Hacker Protocol Bootcamp **before** the credential service issued
+certificates had no credential record. The backfill flow lets them claim it:
+
+- **Dashboard notice** — `src/features/student/components/dashboard/CertificateClaimBanner.tsx`
+  renders `CertificateClaimCard` (`to="/dashboard/certificates"`) only when the learner's
+  `bootcampStatus === 'completed'` **and** they do not yet hold an HPB credential. It renders
+  nothing while loading or on failure, so a learner who already has a certificate never sees a
+  claim prompt.
+- **Claim action** — the certificates page shows the same `CertificateClaimCard` in inline mode.
+  Clicking **Claim certificate** calls `POST /api/credentials/claim` with `{ program: 'HPB' }`,
+  then refetches the credential list and opens the newly issued certificate.
+
+**Contract:** the claim endpoint is **idempotent** — a learner who already holds the credential
+receives the existing record, never a duplicate. The **backend is the sole issuer**: the frontend
+requests a claim and displays the result; it never mints credentials, IDs or verification records
+client-side. `CertificateClaimCard` is presentational only (link mode vs. inline claim mode), so
+the dashboard and page prompts always match.
 
 ### Sharing Certificates
 
@@ -416,6 +447,7 @@ Planned features:
 src/shared/components/certificates/
 ├── CertificateRenderer.tsx        # ✅ Certificate rendering (HPB + QOSE templates)
 ├── CertificateFrame.tsx           # ✅ Responsive preview frame (native render + uniform scale)
+├── CertificateClaimCard.tsx       # ✅ Shared "claim your certificate" card (banner + page)
 └── certificate-print.css          # ✅ PDF export print rules (.cert-export-frame)
 
 src/features/admin/pages/certificates/
@@ -424,7 +456,14 @@ src/features/admin/pages/certificates/
 src/features/marketing/pages/public/
 └── VerifyPage.tsx                 # ✅ Public /verify + /verify/:credentialId
 
+src/features/student/pages/CertificatesPage/
+└── index.tsx                      # ✅ /dashboard/certificates (gallery, view, download, claim)
+
+src/features/student/components/dashboard/
+└── CertificateClaimBanner.tsx     # ✅ Dashboard notice for legacy HPB completers
+
 src/core/services/
+├── credentials.ts                 # ✅ List + idempotent claim of the learner's own credentials
 └── credentialVerification.ts      # ✅ Normalisation, API call, local fallback registry
 
 Planned:
@@ -436,9 +475,7 @@ src/features/admin/components/certificates/
 └── BulkIssueCertificateModal.tsx  # Bulk issuance modal
 
 src/shared/components/certificates/
-├── CertificateCard.tsx            # Student dashboard card
-├── CertificateDetailModal.tsx     # Full certificate view
-└── CertificateDownload.tsx        # Download button + PDF gen
+└── CertificateDetailModal.tsx     # Full certificate view (currently a DialogContent in CertificatesPage)
 ```
 
 ### State Management

@@ -93,13 +93,13 @@ export const SocialAccountConnection: React.FC<SocialAccountConnectionProps> = (
       <div className="divide-y divide-border/40 pt-4">
         {/* ── 1. GitHub (OAuth integration) ─────────────────────────────────── */}
         <div className="py-4 first:pt-0">
-          <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+          <div className="flex flex-col gap-3">
             <div className="flex items-start gap-3">
               <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-border bg-surface-raised text-text-primary">
                 <BrandGithubIcon className="h-5 w-5" />
               </span>
-              <div>
-                <div className="flex items-center gap-2">
+              <div className="min-w-0 flex-1">
+                <div className="flex flex-wrap items-center gap-2">
                   <h3 className="font-mono text-sm font-black uppercase text-text-primary">GitHub</h3>
                   {githubConnected ? (
                     <span className="inline-flex items-center gap-1 rounded bg-accent/10 px-1.5 py-0.5 font-mono text-[10px] font-bold uppercase text-accent">
@@ -133,7 +133,7 @@ export const SocialAccountConnection: React.FC<SocialAccountConnectionProps> = (
               </div>
             </div>
 
-            <div className="flex items-center gap-2 self-start sm:self-auto">
+            <div className="flex flex-wrap items-center gap-2">
               {githubConnected ? (
                 <>
                   <Button

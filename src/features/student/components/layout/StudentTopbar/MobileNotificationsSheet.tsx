@@ -1,8 +1,8 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
-import { Loader2 } from 'lucide-react';
 import { IconX } from '@/shared/components/icons';
-import { BottomSheet, BottomSheetClose, BottomSheetContent } from '../../../../../shared/components/ui/BottomSheet';
+import { BottomSheet, BottomSheetClose, BottomSheetContent } from '@/shared/components/ui/BottomSheet';
+import Button from '@/shared/components/ui/Button';
+import NotificationList from '@/shared/components/notifications/NotificationList';
 import { NotificationItem } from './types';
 
 interface MobileNotificationsSheetProps {
@@ -26,62 +26,58 @@ const MobileNotificationsSheet: React.FC<MobileNotificationsSheetProps> = ({
 }) => {
   return (
     <BottomSheet open={open} onOpenChange={onOpenChange}>
-      <BottomSheetContent ariaLabel={"Notifications"} className="lg:hidden max-h-[75svh] flex flex-col">
+      <BottomSheetContent ariaLabel="Notifications" className="lg:hidden max-h-[82svh] flex flex-col">
         <div className="flex justify-center pt-3 pb-1 flex-none">
           <div className="w-10 h-1 rounded-full bg-border" />
         </div>
-        <div className="px-5 py-3 border-b border-border flex items-center justify-between flex-none">
-          <div>
-            <div className="text-sm font-black uppercase tracking-widest text-text-primary">{"Notifications"}</div>
-            <div className="text-xs text-text-muted">{`${unreadCount} unread`}</div>
+
+        <div className="flex items-center justify-between gap-3 border-b border-border-subtle px-5 py-3 flex-none">
+          <div className="min-w-0">
+            <h2 className="text-sm font-black uppercase tracking-widest text-text-primary">
+              Notifications
+            </h2>
+            <p className="text-xs text-text-muted">
+              {unreadCount > 0 ? `${unreadCount} unread` : 'All caught up'}
+            </p>
           </div>
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-1">
             {unreadCount > 0 && (
-              <button onClick={markAllNotificationsRead} className="min-h-[44px] px-2 text-xs font-bold text-accent">
-                {"Mark all as read"}
+              <button
+                type="button"
+                onClick={markAllNotificationsRead}
+                className="min-h-[44px] px-2 text-xs font-bold text-accent transition-colors hover:text-accent/80"
+              >
+                Mark all read
               </button>
             )}
-            <BottomSheetClose className="p-1.5 text-text-muted hover:text-accent transition-colors">
+            <BottomSheetClose
+              className="flex min-h-[44px] min-w-[44px] items-center justify-center rounded-lg text-text-muted transition-colors hover:bg-accent-dim/50 hover:text-accent"
+              aria-label="Close notifications"
+            >
               <IconX size={20} />
             </BottomSheetClose>
           </div>
         </div>
-        <div className="flex-1 overflow-y-auto">
-          {notifLoading ? (
-            <div className="p-5 text-sm text-text-muted text-center"><Loader2 className="h-6 w-6 animate-spin inline-block" /> {"Loading…"}</div>
-          ) : notificationsPreview.length === 0 ? (
-            <div className="p-5 text-sm text-text-muted text-center">{"No notifications yet."}</div>
-          ) : (
-            notificationsPreview.map((item) => (
-              <div
-                key={item.id}
-                className={`px-5 py-4 cursor-pointer transition-colors ${item.read ? 'opacity-60' : 'hover:bg-accent-dim/30'}`}
-                onClick={() => { if (!item.read) onMarkRead(item.id); }}
-                onKeyDown={(e) => { if ((e.key === 'Enter' || e.key === ' ') && !item.read) { e.preventDefault(); onMarkRead(item.id); } }}
-                role="button"
-                tabIndex={0}
-                aria-label={item.read ? `${item.title} - read` : `${item.title} - unread`}
-              >
-                <div className="flex items-center gap-2">
-                  <span className="text-sm font-bold text-text-primary line-clamp-1">{item.title}</span>
-                  {!item.read && <span className="w-2 h-2 rounded-full bg-accent flex-none" />}
-                </div>
-                <p className="text-xs text-text-secondary line-clamp-2 mt-1">{item.message}</p>
-                <div className="text-xs text-text-muted mt-1">
-                  {item.createdAt ? new Date(item.createdAt).toLocaleString() : '-'}
-                </div>
-              </div>
-            ))
-          )}
+
+        <div className="flex-1 overflow-y-auto px-5 py-4">
+          <NotificationList
+            items={notificationsPreview}
+            loading={notifLoading}
+            onMarkRead={onMarkRead}
+            emptyTitle="Nothing here yet."
+            emptyMessage="Mission updates and alerts will land here."
+          />
         </div>
-        <div className="px-5 py-4 border-t border-border flex-none">
-          <Link
+
+        <div className="border-t border-border-subtle px-5 py-4 flex-none">
+          <Button
+            variant="secondary"
             to="/dashboard/notifications"
             onClick={() => onOpenChange(false)}
-            className="block w-full text-center py-3 rounded-xl border border-accent/30 text-sm font-bold text-accent hover:bg-accent-dim transition-colors"
+            className="w-full"
           >
-            {"View all notifications"}
-          </Link>
+            View all notifications
+          </Button>
         </div>
       </BottomSheetContent>
     </BottomSheet>

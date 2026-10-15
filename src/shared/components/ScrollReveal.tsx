@@ -44,21 +44,23 @@ const ScrollReveal: React.FC<ScrollRevealProps> = ({
       y: 0,
       scale: 1,
       transition: {
-        duration: 0.6,
-        delay,
+        // When animation is disabled (reduced motion / mobile) the hidden state
+        // must resolve to visible instantly rather than staying stuck at opacity 0.
+        duration: noAnimation ? 0 : 0.6,
+        delay: noAnimation ? 0 : delay,
         ease: [0.22, 1, 0.36, 1] as [number, number, number, number],
-        staggerChildren: staggerChildren || undefined,
+        staggerChildren: noAnimation ? undefined : (staggerChildren || undefined),
       },
     },
-  }), [direction, scale, delay, staggerChildren]);
+  }), [direction, scale, delay, staggerChildren, noAnimation]);
 
   return (
     <motion.div
       ref={ref}
       className={className}
-      initial={noAnimation ? false : 'hidden'}
-      animate={noAnimation ? false : (isInView ? 'visible' : 'hidden')}
-      variants={noAnimation ? undefined : variants}
+      initial={false}
+      animate={noAnimation || isInView ? 'visible' : 'hidden'}
+      variants={variants}
     >
       {children}
     </motion.div>

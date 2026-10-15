@@ -39,6 +39,7 @@ const AdminTopbar = ({ railCollapsed = false }: { railCollapsed?: boolean }) => 
           message: String(item?.message || ''),
           read: Boolean(item?.read),
           createdAt: String(item?.createdAt || ''),
+          type: item?.type ? String(item.type) : undefined,
         }))
       );
     } catch {
@@ -68,8 +69,15 @@ const AdminTopbar = ({ railCollapsed = false }: { railCollapsed?: boolean }) => 
       if (!notifRef.current || notifRef.current.contains(e.target as Node)) return;
       setNotifOpen(false);
     };
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setNotifOpen(false);
+    };
     document.addEventListener('mousedown', onPointerDown);
-    return () => document.removeEventListener('mousedown', onPointerDown);
+    document.addEventListener('keydown', onKeyDown);
+    return () => {
+      document.removeEventListener('mousedown', onPointerDown);
+      document.removeEventListener('keydown', onKeyDown);
+    };
   }, [notifOpen]);
 
   const handleLogout = async () => {

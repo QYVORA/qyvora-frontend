@@ -4,4 +4,5 @@ export interface NotificationItem {
   message: string;
   read: boolean;
   createdAt?: string;
+  type?: string;
 }

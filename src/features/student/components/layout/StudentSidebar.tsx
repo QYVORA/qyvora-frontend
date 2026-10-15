@@ -11,6 +11,7 @@ import {
   Network,
   User,
   Bell,
+  Award,
   Settings,
   LogOut,
   PanelLeftClose,
@@ -52,6 +53,7 @@ const NAV_SECTIONS: { title: string; items: NavEntry[] }[] = [
     title: 'Account',
     items: [
       { key: 'profile', label: 'Profile', icon: User, to: '/dashboard/profile' },
+      { key: 'certificates', label: 'Certificates', icon: Award, to: '/dashboard/certificates' },
       { key: 'notifications', label: 'Notifications', icon: Bell, to: '/dashboard/notifications', badgeKey: 'notifications' },
       { key: 'settings', label: 'Settings', icon: Settings, to: '/dashboard/settings' },
     ],

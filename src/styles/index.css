@@ -342,7 +342,11 @@
     touch-action: manipulation;
   }
 
-  button,
+  /* Standard controls get a full tap target. A switch is a deliberate compact
+     control — its visible track stays small and the tap target is provided by
+     the surrounding label, so the forced min-height must not stretch it into a
+     square/circle. */
+  button:not([role='switch']),
   [role='button'],
   input,
   select,

@@ -29,17 +29,17 @@
     <meta name="theme-color" content="#06B66F" />
     <meta property="og:locale" content="en_US" />
 
-    <!-- Favicon -->
-    <link rel="icon" type="image/png" href="/favicon.png" />
+    <!-- Favicon: /favicon.png is the site's single, square, transparent mark.
+         The black-backed installable icons live in the manifest (and on the
+         shortcuts/notification APIs) — they must NOT be declared as rel="icon"
+         here, or the browser tab falls back to a black square. -->
+    <link rel="icon" type="image/png" sizes="512x512" href="/favicon.png" />
+    <link rel="shortcut icon" href="/favicon.png" />
     <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" />
     <link rel="manifest" href="/manifest.webmanifest" />
     <link rel="author" href="/humans.txt" />
-    <link rel="shortcut icon" href="/favicon.png" />
 
     <!-- PWA (installable, offline-capable) -->
-    <link rel="icon" type="image/png" sizes="192x192" href="/icons/icon-192.png" />
-    <link rel="icon" type="image/png" sizes="512x512" href="/icons/icon-512.png" />
-    <link rel="mask-icon" href="/favicon.png" color="#06B66F" />
     <meta name="mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-title" content="QYVORA" />

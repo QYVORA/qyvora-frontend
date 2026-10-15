@@ -123,6 +123,7 @@ const StudentTopbar = ({ railCollapsed = false }: { railCollapsed?: boolean }) =
           message: String(item?.message || ''),
           read: Boolean(item?.read),
           createdAt: String(item?.createdAt || ''),
+          type: item?.type ? String(item.type) : undefined,
         }))
       );
     } catch {

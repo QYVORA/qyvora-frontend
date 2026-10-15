@@ -35,8 +35,13 @@ offline once cached.
   - `icon-maskable-192.png`, `icon-maskable-512.png` — `purpose: maskable`,
     mark inside the inner 80% safe zone, background bleeding to every edge
   - `apple-touch-icon.png` (180×180) — iOS home screen
-  - Regenerate with `npm run icons:pwa` (renders `public/favicon.webp` artwork
+  - Regenerate with `npm run icons:pwa` (renders `public/favicon.png` artwork
     onto the brand near-black canvas via `sharp`).
+- **Browser-tab favicon:** `public/favicon.png` is the site's single favicon —
+  a square, transparent render of the QyvoraMark. Regenerate it from the vector
+  with `npm run icons:favicon` (run it *before* `icons:pwa`, which consumes it).
+  The black-backed `icon-*.png` files are for install/OS surfaces only and are
+  never declared as `rel="icon"`.
 - **Shortcuts:** Dashboard, Learn, Terminal simulator.
 
 ## Service Worker
@@ -54,7 +59,7 @@ offline once cached.
 **App shell precache** (installed once per build):
 
 - static entries: `/`, `/index.html`, `/offline.html`, `/manifest.webmanifest`,
-  `/favicon.webp`, `/fonts/jetbrains-latin.woff2` and every icon
+  `/favicon.png`, `/fonts/jetbrains-latin.woff2` and every icon
 - `BUILD_ASSETS`: the hashed **static import graph of the entry chunks** —
   entry chunk, vendor imports (react, router, motion, radix, axios, lucide) and
   the app CSS — injected by `vite-plugin-sw-precache.ts`

@@ -21,6 +21,7 @@ import { DashboardHero } from '@/features/student/components/dashboard';
 import DailyMissionCard from '@/features/student/components/dashboard/DailyMissionCard';
 import WeeklyOperationCard from '@/features/student/components/dashboard/WeeklyOperationCard';
 import CpEarnHint from '@/features/student/components/dashboard/CpEarnHint';
+import CertificateClaimBanner from '@/features/student/components/dashboard/CertificateClaimBanner';
 import WeekActivity from '@/features/student/components/dashboard/WeekActivity';
 import ActiveDeployments from '@/features/student/components/dashboard/ActiveDeployments';
 import SkillMatrix from '@/features/student/components/dashboard/SkillMatrix';
@@ -196,6 +197,8 @@ const Dashboard = () => {
           {syncError && (
             <ErrorState message={syncError} title="Sync Failed" />
           )}
+
+          <CertificateClaimBanner />
 
           {/* 1. Primary — the single most important thing on the page */}
           <ScrollReveal>

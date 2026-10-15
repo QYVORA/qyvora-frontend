@@ -220,7 +220,7 @@ Each tool page includes:
   "@type": "Organization",
   "name": "QYVORA",
   "url": "https://qyvora.org",
-  "logo": "https://qyvora.org/favicon.webp",
+  "logo": "https://qyvora.org/favicon.png",
   "description": "Africa's offensive security platform...",
   "email": "qyvorasec@gmail.com",
   "contactPoint": [
@@ -297,7 +297,7 @@ Each tool page includes:
     "url": "https://qyvora.org/",
     "logo": {
       "@type": "ImageObject",
-      "url": "https://qyvora.org/favicon.webp"
+        "url": "https://qyvora.org/favicon.png"
     }
   },
   "offers": {

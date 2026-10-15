@@ -82,6 +82,7 @@ const DashboardPage     = lazy(() => import('../features/student/pages/Dashboard
 const MarketplacePage   = lazy(() => import('../features/student/pages/MarketplacePage'));
 
 const ProfilePage       = lazy(() => import('../features/student/pages/ProfilePage'));
+const CertificatesPage  = lazy(() => import('../features/student/pages/CertificatesPage'));
 const PublicProfilePage = lazy(() => import('../features/marketing/pages/PublicProfilePage'));
 const NotificationsPage = lazy(() => import('../features/student/pages/NotificationsPage'));
 const SettingsPage      = lazy(() => import('../features/student/pages/SettingsPage'));
@@ -290,6 +291,7 @@ export const AppRouter = () => {
           
           <Route path="/dashboard/profile"       element={<Wrap scope="Profile"><StudentOnly><ProfilePage /></StudentOnly></Wrap>} />
           <Route path="/dashboard/profile/:username" element={<Wrap scope="Profile"><StudentOnly><ProfilePage /></StudentOnly></Wrap>} />
+          <Route path="/dashboard/certificates" element={<Wrap scope="Certificates"><StudentOnly><CertificatesPage /></StudentOnly></Wrap>} />
           <Route path="/dashboard/notifications" element={<Wrap scope="Notifications"><StudentOnly><NotificationsPage /></StudentOnly></Wrap>} />
           <Route path="/dashboard/settings"      element={<Wrap scope="Settings"><StudentOnly><SettingsPage /></StudentOnly></Wrap>} />
           <Route path="/dashboard/settings/:section" element={<Wrap scope="Settings"><StudentOnly><SettingsPage /></StudentOnly></Wrap>} />

@@ -10,6 +10,7 @@ import {
   Bug,
   ShoppingBag,
   Network,
+  Award,
   ChevronRight,
 } from 'lucide-react';
 import { BottomSheet, BottomSheetContent } from '@/shared/components/ui/BottomSheet';
@@ -42,6 +43,7 @@ const PRIMARY_ITEMS: BottomNavItem[] = [
 const LEARN_LINKS: SheetLink[] = [
   { key: 'courses', label: 'My Courses', to: '/dashboard/courses', icon: BookOpen },
   { key: 'bootcamp', label: 'Bootcamp', to: '/dashboard/bootcamps', icon: ShieldCheck },
+  { key: 'certificates', label: 'Certificates', to: '/dashboard/certificates', icon: Award },
   { key: 'labs', label: 'Labs', to: '/dashboard/labs', icon: Bug },
   { key: 'marketplace', label: 'Marketplace', to: '/dashboard/marketplace', icon: ShoppingBag },
 ];

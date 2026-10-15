@@ -10,8 +10,9 @@ export default defineConfig(() => ({
   plugins: [
     react(),
     tailwindcss(),
-    // public/icons holds the PWA manifest icons — they must stay PNG.
-    webpConversion({ exclude: ['public/icons'] }),
+    // public/icons holds the PWA manifest icons and public/favicon.png is the
+    // site's only favicon — all must stay PNG (no WebP twin).
+    webpConversion({ exclude: ['public/icons', 'public/favicon.png'] }),
     swPrecache(),
     vitePrerenderPlugin({
       renderTarget: '#root',

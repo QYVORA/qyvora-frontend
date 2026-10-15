@@ -10,6 +10,7 @@ import EmptyState from '@/shared/components/ui/EmptyState';
 import PageHeader from '@/shared/components/ui/PageHeader';
 import PageBody from '@/shared/components/layout/PageBody';
 import Button from '@/shared/components/ui/Button';
+import { notificationTypeStyle } from '@/shared/components/notifications/NotificationList';
 import { NotificationsSkeleton } from '../components/StudentSkeletons';
 
 interface Notification {
@@ -21,21 +22,6 @@ interface Notification {
   createdAt: string;
   metadata?: Record<string, any>;
 }
-
-const TYPE_COLORS: Record<string, string> = {
-  cp_earned:           'text-accent border-accent/30 bg-accent/5',
-  cp_points_granted:   'text-accent border-accent/30 bg-accent/5',
-  cp_points_deducted:  'text-danger border-danger/30 bg-danger/5',
-  cp_points_set:       'text-accent border-accent/30 bg-accent/5',
-  rank_change:         'text-accent border-accent/30 bg-accent/5',
-  room_completed:      'text-accent border-accent/30 bg-accent/5',
-  payment_confirmed:   'text-accent border-accent/30 bg-accent/5',
-  payment_failed:      'text-danger border-danger/30 bg-danger/5',
-  quiz_available:      'text-accent border-accent/30 bg-accent/5',
-  quiz_result:         'text-accent border-accent/30 bg-accent/5',
-  admin_message:       'text-accent border-accent/30 bg-accent/5',
-  landing_reward:      'text-accent border-accent/30 bg-accent/5',
-};
 
 const PAGE_SIZE = 15;
 
@@ -158,7 +144,7 @@ const Notifications: React.FC = () => {
         ) : (
           <div className="mt-8 space-y-3">
             {visible.map((n) => {
-              const colorCls = TYPE_COLORS[n.type] || 'text-text-primary border-border-subtle bg-surface';
+              const colorCls = notificationTypeStyle(n.type);
               return (
                 <ScrollReveal key={n.id}>
                   <div className={`relative rounded-2xl border p-5 transition-[background-color,border-color,opacity] duration-[var(--dur-base)] ease-[var(--ease-smooth)] ${

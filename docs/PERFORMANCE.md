@@ -84,7 +84,7 @@ Vite splits vendor code into separate chunks for optimal caching:
 **Static entries:**
 - `/`, `/index.html`, `/offline.html`
 - `/manifest.webmanifest`
-- `/favicon.webp`
+- `/favicon.png`
 - `/fonts/jetbrains-latin.woff2`
 - All PWA icons (192×192, 512×512, maskable variants)
 

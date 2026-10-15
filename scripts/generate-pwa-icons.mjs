@@ -2,7 +2,7 @@
  * generate-pwa-icons.mjs
  *
  * Renders the PWA icon set from the committed brand artwork
- * (`public/favicon.webp` — the QyvoraMark) onto the brand near-black canvas.
+ * (`public/favicon.png` — the QyvoraMark) onto the brand near-black canvas.
  *
  * Installability rules this script exists to satisfy:
  * - Chromium wants a square PNG icon >= 144px with purpose "any" and a
@@ -21,7 +21,7 @@ import { fileURLToPath } from 'node:url';
 import sharp from 'sharp';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-const source = path.join(root, 'public', 'favicon.webp');
+const source = path.join(root, 'public', 'favicon.png');
 const outDir = path.join(root, 'public', 'icons');
 
 /** Brand near-black canvas (--color-bg). */

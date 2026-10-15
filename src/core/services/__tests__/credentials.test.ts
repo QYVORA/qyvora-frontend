@@ -1,13 +1,14 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 vi.mock('@/core/services/api', () => ({
-  default: { get: vi.fn() },
+  default: { get: vi.fn(), post: vi.fn() },
 }));
 
 import api from '@/core/services/api';
-import { credentialProgram, getUserCredentials } from '@/core/services/credentials';
+import { claimCredentials, credentialProgram, getUserCredentials } from '@/core/services/credentials';
 
 const apiGet = vi.mocked(api.get);
+const apiPost = vi.mocked(api.post);
 
 const apiCredential = {
   credentialId: '550e8400-e29b-41d4-a716-446655440000',
@@ -20,6 +21,7 @@ const apiCredential = {
 
 beforeEach(() => {
   apiGet.mockReset();
+  apiPost.mockReset();
 });
 
 describe('credentialProgram', () => {
@@ -73,5 +75,63 @@ describe('getUserCredentials', () => {
   it('throws when the service is unreachable so callers can show an error', async () => {
     apiGet.mockRejectedValue(new Error('Network Error'));
     await expect(getUserCredentials('user-1')).rejects.toThrow('Network Error');
+  });
+});
+
+describe('claimCredentials', () => {
+  it('calls the claim endpoint and returns the issued credentials', async () => {
+    const claimed = {
+      ...apiCredential,
+      recipientName: 'Alex Chen',
+      cohortIdentifier: 'Cohort 1 - Nov 2026',
+    };
+    apiPost.mockResolvedValue({ data: { success: true, credentials: [claimed] } });
+
+    const result = await claimCredentials('HPB');
+
+    expect(apiPost).toHaveBeenCalledWith('/credentials/claim', { program: 'HPB' });
+    expect(result).toHaveLength(1);
+    expect(result[0].recipientName).toBe('Alex Chen');
+    expect(result[0].cohortIdentifier).toBe('Cohort 1 - Nov 2026');
+  });
+
+  it('omits the programme when none is provided (backend decides)', async () => {
+    apiPost.mockResolvedValue({ data: { success: true, credentials: [] } });
+
+    await claimCredentials();
+
+    expect(apiPost).toHaveBeenCalledWith('/credentials/claim', {});
+  });
+
+  it('accepts a single credential in the response payload', async () => {
+    apiPost.mockResolvedValue({ data: { success: true, credential: apiCredential } });
+
+    const result = await claimCredentials('QOSE');
+
+    expect(result).toHaveLength(1);
+  });
+
+  it('returns an empty array when the response contains no credentials', async () => {
+    apiPost.mockResolvedValue({ data: { success: true } });
+
+    await expect(claimCredentials('HPB')).resolves.toEqual([]);
+  });
+
+  it('drops malformed claimed entries and still resolves', async () => {
+    apiPost.mockResolvedValue({
+      data: {
+        success: true,
+        credentials: [{ programName: 'broken' }, apiCredential],
+      },
+    });
+
+    const result = await claimCredentials('HPB');
+
+    expect(result).toHaveLength(1);
+  });
+
+  it('propagates errors from the claim endpoint so the caller can surface them', async () => {
+    apiPost.mockRejectedValue(new Error('Forbidden'));
+    await expect(claimCredentials('HPB')).rejects.toThrow('Forbidden');
   });
 });

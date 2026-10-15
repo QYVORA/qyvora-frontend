@@ -1,7 +1,8 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
-import { Loader2 } from 'lucide-react';
+import { CheckCheck } from 'lucide-react';
 import { Dialog, DialogContent } from '@/shared/components/ui/Dialog';
+import Button from '@/shared/components/ui/Button';
+import NotificationList from '@/shared/components/notifications/NotificationList';
 import { NotificationItem } from './types';
 
 interface NotificationsDialogProps {
@@ -25,60 +26,42 @@ const NotificationsDialog: React.FC<NotificationsDialogProps> = ({
 }) => {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent title={"Notifications"}>
-        <div className="flex items-center justify-between gap-2">
-          <span className="text-xs text-text-muted">{`${unreadCount} unread`}</span>
+      <DialogContent title="Notifications" maxWidth="max-w-lg">
+        <div className="flex items-center justify-between gap-3">
+          <span className="text-xs font-bold uppercase tracking-widest text-text-muted">
+            {unreadCount > 0 ? `${unreadCount} unread` : 'All caught up'}
+          </span>
           {unreadCount > 0 && (
-            <button
+            <Button
               type="button"
+              variant="ghost"
+              size="sm"
               onClick={markAllNotificationsRead}
-              className="min-h-[44px] px-2 text-xs font-bold text-accent hover:text-accent/80 transition-colors"
+              icon={<CheckCheck className="h-4 w-4" />}
+              className="text-accent hover:text-accent"
             >
-              {"Mark all as read"}
-            </button>
+              Mark all read
+            </Button>
           )}
         </div>
 
-        <div className="mt-2">
-          {notifLoading ? (
-            <div className="p-5 text-sm text-text-muted text-center">
-              <Loader2 className="h-6 w-6 animate-spin inline-block" /> {" Loading…"}
-            </div>
-          ) : notificationsPreview.length === 0 ? (
-            <div className="p-5 text-sm text-text-muted text-center">{"No notifications yet."}</div>
-          ) : (
-            <ul className="divide-y divide-border-subtle">
-              {notificationsPreview.map((item) => (
-                <li
-                  key={item.id}
-                  onClick={() => { if (!item.read) onMarkRead(item.id); }}
-                  onKeyDown={(e) => { if ((e.key === 'Enter' || e.key === ' ') && !item.read) { e.preventDefault(); onMarkRead(item.id); } }}
-                  role="button"
-                  tabIndex={0}
-                  aria-label={item.read ? `${item.title} - read` : `${item.title} - unread`}
-                  className={`cursor-pointer py-4 transition-colors focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-accent ${item.read ? 'opacity-60' : 'hover:bg-accent-dim/20'}`}
-                >
-                  <div className="flex items-center gap-2">
-                    <span className="text-sm font-bold text-text-primary line-clamp-1">{item.title}</span>
-                    {!item.read && <span className="w-2 h-2 rounded-full bg-accent flex-none" />}
-                  </div>
-                  <p className="text-xs text-text-secondary line-clamp-2 mt-1">{item.message}</p>
-                  <div className="text-xs text-text-muted mt-1">
-                    {item.createdAt ? new Date(item.createdAt).toLocaleString() : '-'}
-                  </div>
-                </li>
-              ))}
-            </ul>
-          )}
-        </div>
+        <NotificationList
+          className="mt-4"
+          items={notificationsPreview}
+          loading={notifLoading}
+          onMarkRead={onMarkRead}
+          emptyTitle="Nothing here yet."
+          emptyMessage="Mission updates and alerts will land here."
+        />
 
-        <Link
+        <Button
+          variant="secondary"
           to="/dashboard/notifications"
           onClick={() => onOpenChange(false)}
-          className="mt-4 block w-full text-center py-3 rounded-xl border border-accent/30 text-sm font-bold text-accent hover:bg-accent-dim transition-colors"
+          className="mt-5 w-full"
         >
-          {"View all notifications"}
-        </Link>
+          View all notifications
+        </Button>
       </DialogContent>
     </Dialog>
   );

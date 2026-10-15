@@ -9,9 +9,11 @@ interface WebpOptions {
   extensions?: string[];
   quality?: number;
   /**
-   * Directories whose images must stay in their original format. PWA icons are
-   * the canonical case: manifest icons have to be PNG, so a WebP twin would be
-   * dead weight in the deploy.
+   * Files or directories whose images must stay in their original format. PWA
+   * icons are the canonical directory case (manifest icons have to be PNG, so a
+   * WebP twin would be dead weight in the deploy); the favicon is the canonical
+   * file case — the site ships `/favicon.png` as its only favicon, so a
+   * generated `favicon.webp` twin must not be created.
    */
   exclude?: string[];
 }
@@ -24,12 +26,12 @@ export default function webpConversion(options: WebpOptions = {}): Plugin {
     exclude = [],
   } = options;
 
-  const excluded = exclude.map((dir) => path.resolve(process.cwd(), dir));
+  const excluded = exclude.map((entry) => path.resolve(process.cwd(), entry));
 
   const convertImage = async (filePath: string) => {
     const ext = path.extname(filePath).toLowerCase();
     if (!extensions.includes(ext)) return;
-    if (excluded.some((dir) => filePath.startsWith(dir + path.sep))) return;
+    if (excluded.some((entry) => filePath === entry || filePath.startsWith(entry + path.sep))) return;
 
     const webpPath = filePath.replace(new RegExp(`\\${ext}$`, 'i'), '.webp');
 
