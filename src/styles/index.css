@@ -1,5 +1,6 @@
 @import './fonts.css';
 @import "tailwindcss";
+@source not "../../docs";
 @import '@xyflow/react/dist/style.css';
 
 @plugin "@tailwindcss/typography";

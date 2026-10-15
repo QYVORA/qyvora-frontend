@@ -1,158 +1,421 @@
-# QYVORA Frontend — Execution Prompt: Credential Verification, QOSE Labs, Leaderboard Pagination
+# QYVORA Certificate System Audit, Redesign, and Implementation
 
-**Document ID:** QYVORA-EXEC-2026-10-14
-**Prepared for:** OpenCode (execution agent)
-**Repository:** `qyvora-frontend` (this repo). Secondary, only where stated: `qyvora-backend`, `qyvora-docs`.
-**Date:** 2026-10-14
-**Priority:** High — items sit on the October execution checklist with a Fri 16 Oct credential gate and a Sat 17 Oct Month-1 gate.
-**Supersedes:** the previous `PROMPT.md` (profile-system redesign). That work is preserved in git history if it is ever needed again; this file is the current execution prompt.
+## 1. Role and Objective
 
----
+You are a senior React, Vite, frontend architecture, UI/UX, and document-rendering engineer working on the QYVORA platform.
 
-## 0. Mission
+Your task is to perform a comprehensive audit of the existing certificate system, recommend the best design improvements based on your findings, and implement those improvements directly in the current repository.
 
-Implement the three open product items on the October CEO action checklist:
+This is an implementation task, not a request for a report alone.
 
-| ID | Task |
-|---|---|
-| `EX-CERT-006` | Continue the public `/verify/<credential-id>` page. |
-| `EX-BC-005` | Define and build the QOSE lab set — ethical-hacking and web/app labs, each mapped to a module. |
-| `EX-PRD-004` | Leaderboard pagination beyond 50 entries; prerender `/nzinga`. |
+The objective is to deliver a professional, visually distinctive, minimal, responsive, and technically reliable certificate system for QYVORA, with particular attention to the **Hacker Protocol Bootcamp (HPB)** and **QYVORA Offensive Security Engineer Bootcamp (QOSE)** certificates.
 
-Each task below states **WHAT / HOW / DONE WHEN / HOW TO VERIFY** exactly as the checklist defines it. Implement all three in this repo; only touch other repos where a task explicitly requires it.
+Both certificate types must look intentional, premium, and recognizably part of the QYVORA platform. They must not resemble plain white sheets with text and logos scattered across them.
 
-## 1. Mandatory execution rules
+Audit first, establish the current architecture, define the appropriate improvements, and then implement and test the changes.
 
-1. **Inspect before you change.** Read the current implementation of every file named below before editing. Do not assume an older layout.
-2. **Extend, do not fork.** Reuse the existing services, hooks, components, design tokens, and route wiring. Do not create a competing implementation of something that already exists.
-3. **Never fabricate.** No invented backend endpoints, database fields, credential records, lab flags, user counts, or "live" claims. If a capability is missing, implement it for real or document the dependency. The credential page must never output a locally-invented record.
-4. **Keep responses truthful in the UI.** A credential the API does not return is `not-found`; an unreachable API is `error`; neither may render a fake certificate.
-5. **Real files, real tests.** Run the checks in §5 and make them pass. Do not stop at a design proposal.
-6. **Preserve working behaviour.** Do not regress existing routes, tests, or the certificate/lab CP logic.
-7. **Follow the house style** in §4.
+## 2. Mandatory Repository-First Audit
 
----
+Before changing code, inspect the current repository and establish how the certificate system actually works.
 
-## 2. Task A — `EX-CERT-006`: Continue the `/verify` page
+Identify:
 
-**WHAT:** the public `/verify/<credential-id>` page, so a visitor can check a credential without trusting a PDF.
-**HOW:** continue the frontend page wired to the live verify API.
-**DONE WHEN:** the page is complete and ready to deploy.
-**HOW TO VERIFY:** the route renders and calls the API.
+- The certificate preview, rendering, and layout components.
+- The certificate templates and their relationship to HPB and QOSE.
+- The existing logo assets, their mappings, and how they are rendered.
+- The certificate verification text, verification URL, certificate ID, and any QR code or verification mechanism.
+- The PDF generation and download implementation.
+- The existing font-loading, image-loading, and page-sizing logic.
+- The certificate preview and any admin-side template configuration.
+- The backend endpoints or data structures responsible for certificate information, if applicable.
+- The current platform design system, typography, colors, spacing, and component conventions.
+- Any shared components used by certificates, badges, courses, labs, bootcamps, or public profile pages.
 
-### Current state (verify this first)
-- Page: `src/features/marketing/pages/public/VerifyPage.tsx` — form, "how it works", and five result states (`invalid`, `checking`, `error`, `not-found`, `revoked`, `valid`) are already built.
-- Service: `src/core/services/credentialVerification.ts` — `verifyCredential()`, `normalizeCredentialId()`, types; API-only, no local fallback (a demo fallback was deliberately removed in commit `6a6d3435`).
-- Related: `src/core/services/credentials.ts`, `src/core/services/credentialVerification.ts`, `src/core/services/__tests__/credentialVerification.test.ts`, `src/core/services/__tests__/credentials.test.ts`.
-- Routes: `src/app/router.tsx` — `/verify` and `/verify/:credentialId`.
-- Certificate preview: `src/shared/components/certificates/CertificateFrame.tsx`.
-- API contract (public, no auth): `GET /api/credentials/verify/:credentialId` → `{ success, valid, credential: { recipientName, programName, cohortIdentifier, completionDate, result, issuedAt, status, bootcampId, chainVerified, blockIndex } }`. A `404` means "no such credential".
-- Status: **code complete, not yet live** (commits `6a6d3435`, `53ab4f1`). The Fri 16 Oct gate is about it being finish-ready and, separately, deployed.
+Use the current repository as the source of truth. Do not rely on old screenshots, outdated branches, assumed file paths, or previous implementations that may no longer exist.
 
-### Do this
-1. Re-read the page and service against the checklist wording. Confirm every state renders correctly and that the API is called with the normalised ID.
-2. Close the remaining gaps to "ready to deploy":
-   - Confirm the API base URL / client (`src/core/services/api`) is the live configuration for production and that no mock/interceptor intercepts the verify route.
-   - Confirm SEO is correct: `noindex` (a verification result page should not be indexed), with an accurate title and description.
-   - Confirm the credential ID shown in the certificate footer and any "verify at …" copy matches this route (`/verify/<id>`), and that the link is discoverable where credentials are described.
-   - Confirm the `CertificateFrame` renders read-only for both `QOSE` and `HPB` programs and never renders for a non-`valid` result.
-   - Confirm accessibility: label/`aria-describedby`, `role="status"` + `aria-live`, keyboard submit, focus behaviour.
-   - Confirm `normalizeCredentialId()` accepts a bare ID, whitespace/newlines, and a full `https://qyvora.org/verify/<id>` URL, and rejects malformed input.
-3. Ensure the tests cover all five states and the URL/normalisation paths. Add cases for: a full URL pasted, uppercase/mixed-case ID, a 404 → `not-found`, a network failure → `error`, a `REVOKED`/`SUSPENDED` status → `revoked`, and `chainVerified` true/false branching.
-4. If you cannot test against a real issued credential ID, say so explicitly in the completion note — do not invent one. Use the documented demo IDs in `credentialVerification.ts` only as unchecked fixtures, never as real results.
+Before editing, trace the complete flow from certificate data to preview to exported document. Identify the causes of existing layout problems instead of applying superficial CSS patches.
 
-### Do not
-- Do not re-introduce any client-side demo/fallback record.
-- Do not claim third-party or "certified" verification in copy. Say the credential is checked against the issuing registry and its qyvora-chain anchor.
+Preserve existing functionality, established architecture, and valid certificate records unless a change is necessary and justified.
 
----
+## 3. Certificate Design Audit and Recommendations
 
-## 3. Task B — `EX-BC-005`: Define and build the QOSE lab set
+Evaluate the existing certificates against professional certificate-design standards.
 
-**WHAT:** the hands-on lab exercises for the bootcamp, each tied to a specific module.
-**HOW:** define the per-module labs (ethical hacking + web/app), then build and self-test them.
-**DONE WHEN:** the lab-to-module matrix is complete and the labs run.
-**HOW TO VERIFY:** open the matrix and run one lab.
+Inspect:
 
-### Where labs live today
-- Registry: `src/features/student/constants/labs.ts` (`LABS`, `LABS_IDS`) — currently five labs: `privesc`, `passwords`, `sqli`, `osint`, `killchain`, routed at `/dashboard/labs/*`.
-- Pages: `src/features/student/pages/labs/{LabsPage,PrivescLab,PasswordLab,SqlInjectionLab,OsintLab,KillChainLab}`.
-- Scenario/exercise data: `src/features/student/data/simulations/{privesc-scenarios.ts, password-exercises.ts, sql-injection-data.ts, osint-data.ts, kill-chain-data.ts, types.ts, index.ts}`.
-- Interactive components: `src/features/student/components/simulations/*` (OsintDashboard, ApiExplorer, SqlConsole, TimelineInvestigation, labSimulations, networkProfiles).
-- Flag verification (server-side only): `src/features/student/services/lab.service.ts` → `POST /api/student/labs/verify-flag` (`{ labId, scenarioId, flag }`). Backend: `qyvora-backend/src/modules/student/controllers/lab.controller.ts`, `.../routes/student.routes.ts`, `labFlagSchema`. **Flag values must never appear in the client bundle.**
-- Progress: `src/features/student/utils/labProgress.ts` (localStorage `qyvora_lab_progress`); access: `src/features/student/hooks/useLabAccess.ts`.
-- Curricula to map against (docs repo):
-  - `07-products/qose/curriculum/QOSE-3-MONTH-CURRICULUM.md` — modules `QOSE-M01`…`QOSE-M12` (Month 1 offensive ops; Month 2 infra/enterprise; Month 3 enterprise offensive engineering).
-  - `07-products/qose/plans/QOSE-MASTER-PLAN.md` — lab taxonomy (Web Labs, API Labs, Database Labs, Misc Labs, AD Lab) and the Kali + VM + containerized lab environment.
-  - `07-products/qose/curriculum/grading-rubric.md` and `07-products/qose/packages/week-*/` — assessment/production shape.
+- Visual hierarchy and readability.
+- Logo placement, sizing, alignment, and proportions.
+- Typography, font weights, and spacing.
+- Certificate title, recipient name, program name, achievement description, and issue date.
+- Decorative borders, geometric elements, dividers, and background treatments.
+- Use of the QYVORA brand identity.
+- Verification information and certificate authenticity.
+- Layout balance and whitespace.
+- Landscape or portrait orientation and the suitability of the aspect ratio.
+- Screen preview versus exported PDF consistency.
+- Long names, long course titles, missing optional fields, and other edge cases.
+- Print readability and the visual quality of downloaded certificates.
 
-### Do this
-1. **Define the matrix.** Produce a `lab → module` matrix covering `QOSE-M01`…`QOSE-M12`, classifying each lab (ethical hacking vs web/app; and where relevant API/database/AD). Identify which modules already have cover from the five existing labs and which are uncovered.
-2. **Add the missing labs** with a web/app focus, following the existing data-driven pattern (scenario objects consumed by a lab page + simulation component). Each lab must have: id, module mapping, objectives, step-by-step scenarios, hints, at least one verifiable flag (server-side), and a CP reward consistent with `constants/labs.ts`.
-3. **Register** each new lab in `constants/labs.ts`, add its route in `src/app/router.tsx`, and add its scenarios to `data/simulations/`.
-4. **Backend flags.** For each new flag, add the server-side flag definition (never client-side). Update `lab.controller.ts`/schema as needed and extend the backend tests. If a flag cannot be added server-side in this change, mark the lab explicitly as not-yet-scorable rather than shipping a client-side secret.
-5. **Self-test.** Run the lab data tests (`data/simulations/__tests__/*`) and add tests for each new lab's data integrity (every step reachable, every flag defined server-side, unique ids). Run `useLabScenario`/progress paths.
-6. **Matrix deliverable.** Write the completed lab-to-module matrix as tracked content — a data module in this repo (e.g. `src/features/student/data/labs/lab-module-matrix.ts`) and a matching Markdown table in the docs repo under `07-products/qose/curriculum/`. Keep the two in sync; state clearly which is the source of truth.
+Based on the audit, determine the best certificate layout and implement it. Do not stop after listing recommendations.
 
-### Do not
-- Do not expose flag values in the client.
-- Do not invent curriculum modules — use the real `QOSE-M01`…`M12` set.
-- Do not touch bootcamp logo assets, the bootcamp badge system, or bootcamp completion behaviour.
+Choose a coherent visual direction that makes the certificates distinctive, modern, and credible while remaining consistent with QYVORA's existing platform.
 
----
+## 4. Required Logo Changes
 
-## 4. Task C — `EX-PRD-004`: Leaderboard pagination + prerender `/nzinga`
+The certificate must contain **exactly two visible logos**:
 
-**WHAT:** the leaderboard must page beyond 50 entries, and `/nzinga` must be prerendered.
-**HOW:** add pagination to the leaderboard; prerender the route.
-**DONE WHEN:** more than 50 entries page correctly and `/nzinga` is prerendered.
-**HOW TO VERIFY:** load a leaderboard with over 50 rows and check the `/nzinga` build output.
+1. The relevant program logo at the top, such as the HPB logo on an HPB certificate.
+2. The QYVORA company logo at the top.
 
-### Current state (verify this first)
-- Page: `src/features/marketing/pages/public/LeaderboardPage.tsx` — fetches with `limit: 50`, shows a top-3 podium and a `LeaderboardRestSection` that paginates **only within the fetched 50** via `BatchPagination` (`BATCH_SIZE = 5`). The hook's `loadMore`/`hasMore`/`loadingMore` are **not wired**, so more than 50 entries can never appear.
-- Hook: `src/shared/components/leaderboard/useLeaderboard.ts` — already supports `limit`, `offset`, `loadMore`, `hasMore`, `total`. API: `GET /api/public/leaderboard?period=&limit=&offset=&cohortId=`.
-- Components: `src/shared/components/leaderboard/*` (`LeaderboardRow`, `PodiumCard`, types, `PERIODS`), and `BatchPagination` from `src/shared/components/ui`.
-- Prerender: `src/prerender.tsx` + `vite.config.ts`. `/nzinga` is already in the prerender route list and `dist/nzinga/index.html` is produced by `npm run build`.
+Requirements:
 
-### Do this
-1. **Leaderboard pagination beyond 50.** Wire real pagination so the page can display more than 50 operators, end to end:
-   - Either append batches via `loadMore` (`mode: 'append'`) with a "Load more" control bound to `hasMore`/`loadingMore`, or add numbered pages that fetch by `offset`.
-   - Keep the top-3 podium correct across pages, keep rank numbers correct, and keep the cohort/period filters working (changing either must reset to page 1/offset 0).
-   - Handle the empty, loading, error, and end-of-list states cleanly.
-   - Confirm the backend honours `offset` (it does in `public.controller.ts`) and that `total` drives the controls.
-2. **Prerender `/nzinga`.** Confirm the build emits `dist/nzinga/index.html` with prerendered body + head. If any part is missing or stale (wrong title/description, no body, missing from `vite.config.ts`), fix it so the tool route is fully prerendered.
-3. Add tests: leaderboard pagination logic (reset on filter change, append batch, `hasMore`/`total` maths) and, where feasible, a prerender assertion for `/nzinga`.
+- Increase the logos' current rendered sizes moderately so they are clearly visible and recognizable.
+- Position them within a deliberate, balanced header layout.
+- Maintain their original aspect ratios.
+- Ensure neither logo appears stretched, distorted, cropped, or pixelated.
+- Provide consistent spacing between the logos and surrounding content.
+- Make sure both logos remain correctly positioned in the certificate preview and every exported format.
+- Remove the additional badge currently appearing at the bottom of the certificate.
+- Do not render duplicate logos or introduce extra branding marks that function as additional logos.
 
-### Do not
-- **Do not edit the Nzinga tool.** `prerender /nzinga` is a frontend build concern only. The Go framework (`products/QYVORA-AI/frameworks/qyvora-nzinga`) does not need changes — leave it untouched.
+Use the correct existing logo assets and mappings. Do not substitute arbitrary images or create text-based imitations of the logos.
 
----
+The logo arrangement should feel like part of a professionally designed certificate rather than two images placed above a document.
 
-## 5. Verification (run all, per the repo)
+## 5. Verification Text and Authenticity
 
-```
-npm run typecheck      # tsc --noEmit
-npm run lint           # eslint
-npm run test           # vitest run
-npm run build          # vite build — also exercises the prerender plugin
-```
+Redesign the verification information so that it appears as a small, unobtrusive element at the very bottom of the certificate.
 
-After `npm run build`, verify `dist/nzinga/index.html` exists and contains prerendered content. If any command fails because of a pre-existing, unrelated flake, note it explicitly rather than silently ignoring it.
+The verification text must:
 
-## 6. House style and constraints
+- Be compact and readable.
+- Use restrained typography and appropriate spacing.
+- Remain visually subordinate to the recipient's name, program title, and achievement.
+- Stay within the certificate's bottom boundary.
+- Avoid competing with the main content.
+- Remain visible in the preview, PDF, and image exports.
 
-- **Brand tokens only.** Dark-first; accent is the single green `#06B66F`; canvas `#0b0d0e`, card `#050505`, text `#EEF0EE`. Tokens live in `src/styles/index.css` (Tailwind v4, no `tailwind.config.*`). Fonts: Space Grotesk (display) + JetBrains Mono (body/mono). Logo is the inline `QyvoraMark`/`QyvoraLogotype` SVG — never redraw it.
-- **No new design system.** Reuse existing UI primitives (`Button`, `Input`, `Card`, `InlineAlert`, `Skeleton`, `EmptyState`, `ErrorState`, `BatchPagination`, `PageHeader`, `PublicContainer`).
-- **Tone.** Beginner-friendly, honest about what is built vs planned. Never claim "certified"/"certification" (use "credential"), never claim the platform has users it does not, never treat QOSE as launched (launch is planned for 1 Nov 2026), never invent milestones.
-- Keep diffs focused; do not reformat unrelated files.
+Preserve the existing verification mechanism, certificate identifier, and verification URL where applicable. Do not weaken, remove, or fabricate authenticity information.
 
-## 7. Definition of done (all three)
+If the system currently supports a verification QR code, inspect its implementation before deciding whether it belongs in the final design. Any retained QR code must remain functional and must not introduce a third logo.
 
-- `EX-CERT-006`: `/verify` renders and calls the live API for all states; build and tests pass; ready to deploy (deployment is a separate gate).
-- `EX-BC-005`: lab-to-module matrix complete and in sync (code + docs); new modules' labs built, flagged server-side, and self-tested.
-- `EX-PRD-004`: leaderboard pages beyond 50 entries; `/nzinga` prerenders to real HTML.
-- `npm run typecheck && npm run lint && npm run test && npm run build` all pass.
+The goal is a subtle verification footer, not a large badge or an additional branding section.
 
-## 8. When done
+## 6. Visual Redesign: HPB and QOSE
 
-Report per task: files changed, the matrix produced, the exact verification commands and results, and anything left open or blocked (e.g. real credential ID unavailable, backend flag work outstanding). Commit with clear messages (one logical change per commit); do not push unless instructed.
+Redesign the HPB and QOSE certificates so they have a distinctive, professional appearance.
+
+### Brand direction
+
+Use QYVORA's established visual identity as the starting point. Prefer a restrained combination of two complementary brand colors, supported by neutral tones.
+
+For example, investigate combinations involving:
+
+- Deep black or charcoal.
+- QYVORA's existing green.
+- White or a warm, light neutral background.
+- Subtle secondary accents that improve visual hierarchy without introducing unnecessary decoration.
+
+Do not automatically use every color listed. Select a coherent palette after inspecting the actual platform styles and existing brand assets.
+
+### Design requirements
+
+The certificates should include:
+
+- A well-balanced header containing the two required logos.
+- A clear, prominent certificate heading.
+- A visually strong recipient-name treatment.
+- A clear program or qualification title.
+- A readable statement describing the achievement.
+- Appropriate issue-date and other existing certificate metadata.
+- A restrained verification footer at the bottom.
+- Intentional decorative elements that make the certificate look designed rather than generic.
+
+Use a considered combination of typography, spacing, borders, fine rules, geometric accents, or restrained color panels to create depth and identity.
+
+Avoid:
+
+- Plain white layouts with no meaningful design treatment.
+- Random decorative elements.
+- Excessive colors or gradients.
+- Large empty areas caused by poor alignment.
+- Excessive borders, badges, icons, or repeated branding.
+- Overlapping or clipped text.
+- Inconsistent spacing.
+- Tiny or excessively large logos.
+- Unnecessary UI controls inside the exported certificate.
+
+### HPB certificate
+
+The HPB certificate should have its own recognizable identity while remaining consistent with QYVORA's overall brand system.
+
+Use the actual HPB logo and program information. Ensure that the certificate communicates successful completion of the Hacker Protocol Bootcamp without unnecessary clutter.
+
+### QOSE certificate
+
+The QOSE certificate should feel appropriate for a more advanced, professional offensive-security training program.
+
+Use the correct QOSE program branding and qualification information. It may use a slightly different decorative treatment or color balance from HPB, but both certificates must clearly belong to the same certificate family.
+
+Do not invent accreditation, licensing, university affiliations, professional qualifications, signatures, or institutional endorsements that are not supported by the existing system.
+
+### Shared design system
+
+Prefer a shared certificate renderer with configurable templates or design tokens over two unrelated implementations.
+
+The HPB and QOSE templates should reuse the same layout logic, typography rules, logo handling, verification footer, and export infrastructure wherever practical.
+
+Program-specific colors, decorative elements, titles, and content should be configurable without duplicating the entire rendering implementation.
+
+If the current architecture already provides a sound template system, extend it rather than introducing unnecessary abstractions.
+
+## 7. Fix PDF Export and Text Clipping
+
+A critical existing problem is that some certificate text appears in the preview but is missing from the downloaded PDF.
+
+Investigate and fix the underlying cause.
+
+Check for:
+
+- Content extending beyond fixed-height containers.
+- Incorrect page dimensions or aspect ratios.
+- CSS properties unsupported by the PDF renderer.
+- Text wrapping and line-height differences.
+- Font loading failures or font substitution.
+- Images and logos that have not finished loading before export.
+- Asynchronous rendering and premature PDF capture.
+- Incorrect print styles or export-specific styles.
+- Clipping caused by overflow, transforms, or absolute positioning.
+- Content positioned outside the printable page.
+- Incorrect scaling or cropping during capture.
+- Export libraries that omit certain elements or render them inconsistently.
+
+Implement a reliable export process that ensures the complete certificate content is included.
+
+Requirements:
+
+1. The downloaded PDF must contain all intended certificate text and metadata.
+2. The page dimensions and orientation must match the intended certificate format.
+3. Logos and decorative elements must be rendered correctly.
+4. Fonts must be loaded or embedded appropriately for the chosen export method.
+5. Text must remain readable and must not be clipped, overlapped, or unexpectedly substituted.
+6. Export must wait for required fonts, images, and rendering operations to complete.
+7. The certificate must maintain correct margins and remain within the page boundaries.
+8. The exported PDF must not introduce extra blank pages or unintended UI elements.
+9. Long recipient names and program titles must be handled gracefully.
+10. Export failures must be handled clearly instead of silently producing broken files.
+
+Prefer a robust export approach compatible with the current project architecture. Do not replace the existing PDF library merely for stylistic reasons. Change it only if the audit establishes that the current approach cannot meet the requirements reliably.
+
+Avoid brittle CSS hacks designed only to make one example certificate look correct.
+
+## 8. Add Image Downloads and Recommended Formats
+
+Users must be able to download their certificates as both PDF and image files.
+
+### Required formats
+
+**PDF**
+
+- Suitable for printing, applications, and formal document submission.
+- Uses consistent page dimensions.
+- Preserves the complete certificate layout.
+
+**PNG**
+
+- Provides a high-resolution, lossless image.
+- Suitable for sharing online, displaying on profiles, and preserving fine text and decorative details.
+- Should be the primary image-download format.
+
+**JPEG**
+
+- Provides an additional image option for platforms that prefer JPEG.
+- Use a sensible quality setting and an appropriate background so transparency does not cause visual problems.
+
+Evaluate whether additional formats are genuinely useful. SVG may be appropriate if the existing renderer can produce a safe, faithful vector export. Otherwise, do not add it merely to increase the number of buttons. Do not introduce DOCX or editable source exports unless there is a clear product requirement.
+
+### Export implementation requirements
+
+- Provide clear, accessible download controls for PDF, PNG, and JPEG.
+- Use meaningful filenames containing the certificate type and recipient identifier or name where appropriate, without exposing unnecessary personal information.
+- Ensure all formats use the same certificate data and visual template.
+- Preserve the two-logo rule and verification footer across every format.
+- Produce sufficiently high-resolution images for professional sharing and printing.
+- Prevent incomplete downloads while rendering or assets are still loading.
+- Provide useful loading and error states.
+- Prevent duplicate submissions or overlapping export operations where necessary.
+- Ensure downloads work on supported desktop and mobile browsers.
+- Clean up temporary resources such as generated object URLs when appropriate.
+
+Do not simply capture the visible preview at its current screen resolution. Export quality must be independent of the size at which the preview happens to be displayed.
+
+## 9. Preview and User Interface
+
+Improve the certificate interface without introducing unnecessary clutter.
+
+The certificate preview should be the main focus.
+
+Organize the controls so users can clearly identify the available download formats. Reuse the platform's existing button styles, icons, typography, spacing, and responsive conventions.
+
+Requirements:
+
+- Keep the certificate preview visually dominant.
+- Place PDF, PNG, and JPEG download actions in a compact, understandable control area.
+- Avoid excessive buttons, duplicate actions, unnecessary cards, or decorative containers.
+- Preserve relevant existing verification and certificate-management functionality.
+- Ensure the preview is responsive on desktop and mobile.
+- Prevent the preview controls from appearing in exported certificate files.
+- Ensure the certificate itself retains its intended aspect ratio instead of becoming distorted to fit the screen.
+- Handle small screens by scaling the preview appropriately without making the actual exported document smaller or lower quality.
+
+Inspect the existing certificate admin or template-management interface before making changes. If administrators can configure templates, ensure the redesign remains compatible with that workflow and that the preview accurately reflects the final exported document.
+
+## 10. Implementation and Architecture Requirements
+
+Work within the existing QYVORA repository and its established conventions.
+
+- Reuse existing shared components, design tokens, and logo assets.
+- Maintain the current React and Vite architecture.
+- Preserve existing API contracts and certificate data structures unless a change is necessary.
+- Keep rendering, template configuration, and file-export responsibilities clearly separated.
+- Avoid duplicating layout logic between HPB and QOSE.
+- Keep the implementation maintainable, readable, and testable.
+- Avoid unnecessary dependencies and unrelated refactors.
+- Do not hardcode recipient details, certificate IDs, verification URLs, or program-specific content into shared components.
+- Preserve existing authorization and certificate ownership checks.
+- Ensure that generated exports use the actual certificate data rather than placeholder content.
+- Avoid exposing sensitive certificate data in filenames, logs, or public URLs unnecessarily.
+
+If the current architecture contains a defect that affects the required result, fix it at the appropriate level rather than concealing it with a visual workaround.
+
+## 11. Testing and Validation
+
+Do not consider the task complete simply because the page looks good in the browser.
+
+Run the relevant existing checks and add or update tests where practical.
+
+### Functional tests
+
+Verify that:
+
+- HPB certificates render with the correct HPB and QYVORA logos.
+- QOSE certificates render with the correct QOSE and QYVORA logos.
+- Exactly two visible logos appear on each certificate.
+- No unwanted bottom badge is rendered.
+- The verification footer appears at the bottom.
+- All certificate fields appear correctly.
+- PDF downloads contain the full intended content.
+- PNG downloads produce valid, high-resolution images.
+- JPEG downloads produce valid images with an appropriate background.
+- Existing certificate verification remains functional.
+- Download actions handle failures and loading states correctly.
+
+### Visual tests
+
+Inspect both certificates at realistic export dimensions.
+
+Check:
+
+- Logo sizing and alignment.
+- Typography and text hierarchy.
+- Background colors and decorative elements.
+- Margins and page boundaries.
+- Text wrapping and long names.
+- Footer placement.
+- Missing assets.
+- Unexpected blank space.
+- Content clipping and overlapping.
+- Differences between preview, PDF, PNG, and JPEG.
+
+Use screenshots or rendered-file inspection when available. Compare the actual exported files with the intended preview rather than relying exclusively on browser screenshots.
+
+### Regression tests
+
+Confirm that the changes do not break:
+
+- Existing certificate records.
+- Other programs that use the shared certificate renderer.
+- Certificate verification pages.
+- Admin-side certificate configuration.
+- Existing certificate download workflows.
+- Responsive layout.
+- Existing authentication and authorization behavior.
+
+Run the repository's applicable test suite, linting, type checks, and production build. Fix failures introduced by the changes and clearly identify any pre-existing failures.
+
+## 12. Definition of Done
+
+The task is complete only when all applicable criteria below have been met:
+
+- [ ] The existing certificate implementation has been audited.
+- [ ] The audit findings have informed an implemented design, not just a written recommendation.
+- [ ] HPB and QOSE certificates have a professional, branded two-color design.
+- [ ] Each certificate displays exactly two logos, both at the top.
+- [ ] The logos are moderately larger, correctly proportioned, and aligned.
+- [ ] The unwanted bottom badge has been removed.
+- [ ] The verification text is small, subtle, readable, and positioned at the bottom.
+- [ ] PDF export includes all intended text and metadata.
+- [ ] PNG and JPEG downloads work correctly.
+- [ ] The PDF and image exports retain the correct layout and branding.
+- [ ] Preview and exported documents have been visually checked.
+- [ ] Long names and content variations do not break the layout.
+- [ ] Existing verification, authorization, and certificate records remain intact.
+- [ ] Relevant automated checks and the production build have been run.
+- [ ] No unnecessary clutter or unrelated UI changes have been introduced.
+
+## 13. Final Report
+
+After implementation, provide a concise but technically meaningful report covering:
+
+1. **Audit findings:** What was wrong with the original certificate system and why.
+2. **Design decisions:** What design was selected for HPB and QOSE and why it fits QYVORA.
+3. **Files changed:** The important files and components modified or created.
+4. **Export improvements:** The cause of missing PDF text and the implemented fix.
+5. **Download formats:** How PDF, PNG, and JPEG generation works.
+6. **Testing:** Which tests, lint checks, builds, and export validations passed or failed.
+7. **Remaining issues:** Any limitations that could not be resolved, with their actual causes.
+
+Do not claim that a test passed unless it was actually executed and passed.
+
+## Final Instruction
+
+Start by auditing the current certificate implementation and tracing its rendering and export pipeline. Form evidence-based design recommendations, then implement the best practical solution directly in the existing codebase.
+
+Prioritize visual quality, layout precision, export reliability, maintainable architecture, and consistency with QYVORA's established design system.
+
+**Do not stop after the audit. Do not return recommendations without implementing them. Do not make superficial styling changes while leaving PDF export broken. Deliver a tested, production-ready improvement to the existing certificate system.**
+
+## 14. Additional Requirement: Fix HPB Badge and Student Profile Branding
+
+As part of this task, audit and fix the HPB badge/logo displayed throughout the student profile pages, including both public and private profiles where applicable.
+
+### The Core Requirement
+
+**The official HPB logo must be the single source of truth for HPB branding. The HPB logo itself is the badge for the Hacker Protocol Bootcamp.**
+
+The website currently displays an incorrect HPB badge. Investigate the existing badge assets, logo mappings, badge-rendering components, and profile data to identify the cause and correct it.
+
+### Required Changes
+
+1. **Replace the incorrect HPB badge:** Use the correct, existing official HPB logo asset wherever the HPB achievement badge is displayed on student profiles.
+2. **Remove duplicate HPB branding:** Do not create or retain a separate, unrelated badge design for HPB. The HPB logo itself must represent the achievement.
+3. **Audit all profile views:** Check public student profiles, private student profiles, profile achievement sections, and any shared components responsible for displaying earned bootcamp badges.
+4. **Preserve other achievements:** Do not replace QOSE badges, other bootcamp logos, course badges, lab badges, or unrelated achievements with the HPB logo.
+5. **Correct the underlying mapping:** Fix the asset-to-program mapping or badge-resolution logic responsible for the incorrect image. Do not solve this with a one-off visual workaround.
+6. **Preserve existing achievement behavior:** Keep the current earned-status checks, badge metadata, profile permissions, and achievement records intact.
+7. **Maintain visual consistency:** Display the HPB logo clearly, with appropriate sizing, aspect ratio, and alignment across desktop and mobile layouts.
+8. **Reuse shared components:** If the same badge renderer serves multiple profile or achievement views, correct the shared mapping so every relevant view uses the proper asset.
+
+### Validation
+
+After implementation:
+
+- Verify that the HPB logo appears as the HPB achievement badge on both public and private student profiles.
+- Confirm that no incorrect or duplicate HPB badge remains in the audited profile components.
+- Confirm that QOSE and all other achievement badges still display their correct logos.
+- Check that the badge is not stretched, cropped, or incorrectly scaled.
+- Run the relevant tests and inspect the actual rendered profile pages.
+
+Include this fix in the overall certificate and branding audit, and report the files and mappings changed.
+
+**Important:** The HPB logo is the HPB badge. Do not design another HPB badge, generate a replacement logo, or introduce a second HPB-specific achievement graphic. Reuse the official existing HPB logo asset and correct the underlying implementation.

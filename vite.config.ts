@@ -84,8 +84,8 @@ export default defineConfig(() => ({
   },
 
   build: {
-    // Raise the warning threshold — three.js is intentionally large
-    chunkSizeWarningLimit: 800,
+    // Raise the warning threshold — some data-heavy chunks are intentionally large
+    chunkSizeWarningLimit: 1600,
 
     rollupOptions: {
       output: {

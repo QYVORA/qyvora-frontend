@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { render, screen } from '@testing-library/react';
+import { act, render, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import CertificatesModule from '../CertificatesModule';
 import type { LearnerCredential } from '@/core/services/credentials';
@@ -49,7 +49,9 @@ describe('CertificatesModule', () => {
     Object.assign(navigator, { clipboard: { writeText } });
 
     renderModule({ credentials: [credential] });
-    screen.getByRole('button', { name: /copy verification link/i }).click();
+    await act(async () => {
+      screen.getByRole('button', { name: /copy verification link/i }).click();
+    });
 
     expect(writeText).toHaveBeenCalledWith(credential.verifyUrl);
   });

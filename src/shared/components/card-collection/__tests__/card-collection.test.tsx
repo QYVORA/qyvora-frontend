@@ -5,8 +5,8 @@ import { CardCollection, ViewToggle, type ViewMode } from '..';
 
 vi.mock('motion/react', () => ({
   motion: {
-    div: ({ children, ...props }: { children?: ReactNode } & Record<string, unknown>) => (
-      <div {...props}>{children}</div>
+    div: ({ children, layout: _layout, transition: _transition, initial: _initial, animate: _animate, exit: _exit, whileHover: _whileHover, whileTap: _whileTap, variants: _variants, style, ...props }: { children?: ReactNode } & Record<string, unknown>) => (
+      <div {...props} style={style as React.CSSProperties | undefined}>{children}</div>
     ),
   },
 }));
