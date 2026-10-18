@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import { MousePointer2 } from 'lucide-react';
+import { MousePointer2, Pointer as FingerPointer } from 'lucide-react';
 import { useReducedMotion } from '@/shared/hooks/useReducedMotion';
 
 const INTERACTIVE_SELECTOR = [
@@ -35,10 +35,12 @@ const BURST_LIMIT = 40;
  * `qyvora-cursor` to <html> (hiding the native cursor via index.css) and
  * renders an arrow-shaped pointer — lucide MousePointer2 filled with the
  * accent and stroked in on-accent, the same two-tone texture as .btn-primary.
- * The glyph tracks the pointer 1:1 (no trailing lag), scales up over
- * interactive targets, squishes on press, and fires a click burst — square
- * HUD flash plus radiating pixel sparks, driven by CSS animations so the
- * effect works in browsers without the Web Animations API.
+ * Over interactive targets it morphs like a native cursor would: the arrow
+ * swaps to a pointing finger (lucide Pointer) and a square HUD bracket frame
+ * snaps on around the target. The glyph tracks the pointer 1:1 (no trailing
+ * lag), squishes on press, and fires a click burst — square HUD flash plus
+ * radiating pixel sparks, driven by CSS animations so the effect works in
+ * browsers without the Web Animations API.
  *
  * Browser support: PointerEvent listeners fall back to mouse events, the
  * MediaQueryList listener falls back to the legacy addListener, and nothing
@@ -102,6 +104,7 @@ const CustomCursor: React.FC = () => {
 
     const applyState = () => {
       root.dataset.state = press ? 'press' : hover ? 'hover' : 'default';
+      root.dataset.hover = String(hover);
     };
 
     const removeWhenDone = (holder: HTMLElement, animated: HTMLElement, duration: number) => {
@@ -211,6 +214,7 @@ const CustomCursor: React.FC = () => {
 
     root.dataset.hidden = 'true';
     root.dataset.state = 'default';
+    root.dataset.hover = 'false';
 
     const hasPointerEvents = typeof window.PointerEvent === 'function';
     const moveType = hasPointerEvents ? 'pointermove' : 'mousemove';
@@ -249,10 +253,10 @@ const CustomCursor: React.FC = () => {
   if (!enabled) return null;
 
   return (
-    <div ref={rootRef} className="qyvora-cursor-root" data-hidden="true" data-state="default" aria-hidden="true">
+    <div ref={rootRef} className="qyvora-cursor-root" data-hidden="true" data-state="default" data-hover="false" aria-hidden="true">
       <span ref={pointerRef} className="cc-pointer-wrap">
         <MousePointer2
-          className="cc-pointer"
+          className="cc-pointer cc-arrow"
           width={30}
           height={30}
           fill="var(--color-accent)"
@@ -260,6 +264,21 @@ const CustomCursor: React.FC = () => {
           strokeWidth={2}
           aria-hidden="true"
         />
+        <FingerPointer
+          className="cc-pointer cc-finger"
+          width={30}
+          height={30}
+          fill="var(--color-accent)"
+          stroke="var(--color-on-accent)"
+          strokeWidth={2}
+          aria-hidden="true"
+        />
+        <span className="cc-lock" aria-hidden="true">
+          <i />
+          <i />
+          <i />
+          <i />
+        </span>
       </span>
       <span ref={burstRef} className="cc-burst-layer" />
     </div>

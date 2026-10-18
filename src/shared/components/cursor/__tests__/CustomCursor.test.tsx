@@ -219,6 +219,30 @@ describe('CustomCursor', () => {
     surface.remove();
   });
 
+  it('morphs into a pointing finger with a HUD lock frame over pointable targets', () => {
+    stubMatchMedia({ fine: true });
+    const { container } = render(<CustomCursor />);
+    const root = container.querySelector('.qyvora-cursor-root') as HTMLElement;
+    expect(container.querySelector('.cc-finger')).not.toBeNull();
+    expect(container.querySelector('.cc-lock')).not.toBeNull();
+    expect(root.dataset.hover).toBe('false');
+
+    const button = document.createElement('button');
+    document.body.appendChild(button);
+    dispatchPointer(button, 'pointermove', { clientX: 10, clientY: 10 });
+    expect(root.dataset.hover).toBe('true');
+    expect(root.dataset.state).toBe('hover');
+
+    // Leaving for plain content reverts to the arrow.
+    const plain = document.createElement('div');
+    document.body.appendChild(plain);
+    dispatchPointer(plain, 'pointermove', { clientX: 60, clientY: 60 });
+    expect(root.dataset.hover).toBe('false');
+    expect(root.dataset.state).toBe('default');
+    button.remove();
+    plain.remove();
+  });
+
   it('falls back to mouse events on browsers without PointerEvent', () => {
     stubMatchMedia({ fine: true });
     delete (window as { PointerEvent?: unknown }).PointerEvent;

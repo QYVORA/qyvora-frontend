@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { NavLink, useLocation, useNavigate } from 'react-router-dom';
+import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom';
 import {
   Home,
   BookOpen,
@@ -17,7 +17,7 @@ import {
   PanelLeftClose,
   PanelLeftOpen,
 } from 'lucide-react';
-import { Logo, QyvoraMark } from '@/shared/components/brand';
+import { QyvoraMark } from '@/shared/components/brand';
 import { useAuth } from '@/core/contexts/AuthContext';
 import { useToast } from '@/core/contexts/ToastContext';
 import api from '@/core/services/api';
@@ -113,9 +113,31 @@ const StudentSidebar: React.FC<{ collapsed?: boolean; onToggleCollapse?: () => v
       }`}
     >
       {/* Brand header height matches the shell topbar so the two horizontal
-          rules line up across the sidebar / content divide. */}
+          rules line up across the sidebar / content divide. The identity block
+          renders the mark + logotype + status LED directly — no cropped
+          wordmark wrapper — so it reads as a terminal identity plate. */}
       <div className={`flex h-20 items-center border-b border-border-subtle md:h-24 ${collapsed ? 'justify-center px-0' : 'px-5'}`}>
-        {collapsed ? <QyvoraMark className="h-7 w-7" /> : <Logo size="md" />}
+        <Link
+          to="/dashboard"
+          aria-label="QYVORA — Home"
+          className="group flex items-center gap-3 rounded-xl focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+        >
+          <QyvoraMark
+            className={`shrink-0 transition-transform duration-[var(--dur-fast)] ease-[var(--ease-smooth)] group-hover:scale-105 ${
+              collapsed ? 'h-7 w-7' : 'h-8 w-8'
+            }`}
+            aria-hidden="true"
+          />
+          {!collapsed && (
+            <span className="flex flex-col items-start">
+              <span className="text-sm font-black leading-none tracking-tight text-text-primary">QYVORA</span>
+              <span className="type-label mt-1.5 flex items-center gap-1.5 text-[10px] uppercase tracking-[0.14em] text-text-tertiary">
+                <span className="status-led h-1.5 w-1.5 rounded-full bg-accent" aria-hidden="true" />
+                Online
+              </span>
+            </span>
+          )}
+        </Link>
       </div>
 
       <nav aria-label={"Primary"} className="custom-scrollbar sidebar-scroll flex-1 overflow-y-auto px-3 py-4">
@@ -123,6 +145,9 @@ const StudentSidebar: React.FC<{ collapsed?: boolean; onToggleCollapse?: () => v
           <section key={section.title} className="mb-5">
             {!collapsed && (
               <h3 className="mb-1 type-label px-3 text-text-tertiary uppercase tracking-[0.12em]">
+                <span aria-hidden="true" className="text-accent">
+                  //&nbsp;
+                </span>
                 {section.title}
               </h3>
             )}
@@ -136,19 +161,33 @@ const StudentSidebar: React.FC<{ collapsed?: boolean; onToggleCollapse?: () => v
                       <NavLink
                         to={item.to}
                         data-tour-id={item.key === 'profile' ? 'tour-profile-sidebar' : undefined}
-                        className={`relative flex min-h-[48px] items-center rounded-xl py-2 text-sm transition-colors focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-accent ${
+                        className={`group relative flex min-h-[48px] items-center rounded-xl py-2 text-sm transition-colors duration-[var(--dur-fast)] ease-[var(--ease-smooth)] focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-accent ${
                           collapsed ? 'h-12 w-12 justify-center px-0' : 'gap-3 px-3'
                         } ${
-                          active ? 'bg-accent/10 text-accent' : 'text-text-secondary hover:bg-surface-raised hover:text-text-primary'
+                          active ? 'bg-accent/10 font-medium text-accent' : 'text-text-secondary hover:bg-surface-raised hover:text-text-primary'
                         }`}
                       >
                         {active && (
-                          <span className="absolute left-0 top-1/2 h-6 w-0.5 -translate-y-1/2 rounded-full bg-accent" aria-hidden="true" />
+                          <>
+                            <span className="absolute left-0 top-1/2 h-6 w-0.5 -translate-y-1/2 rounded-full bg-accent" aria-hidden="true" />
+                            {/* Corner ticks reuse the cursor's lock-on language —
+                                the active route reads as a "locked target". */}
+                            <span className="nav-ticks" aria-hidden="true">
+                              <i />
+                              <i />
+                            </span>
+                          </>
                         )}
-                        <Icon className="h-[18px] w-[18px] shrink-0" strokeWidth={2} aria-hidden="true" />
+                        <Icon
+                          className={`h-[18px] w-[18px] shrink-0 transition-transform duration-[var(--dur-fast)] ease-[var(--ease-smooth)] group-hover:translate-x-0.5 ${
+                            active ? 'text-accent' : ''
+                          }`}
+                          strokeWidth={active ? 2.5 : 2}
+                          aria-hidden="true"
+                        />
                         {!collapsed && <span className="flex-1 truncate">{item.label}</span>}
                         {item.badgeKey === 'notifications' && unread > 0 && (
-                          <span className="flex h-5 min-w-5 items-center justify-center rounded-full bg-accent px-1 text-xs font-bold text-on-accent tabular-nums">
+                          <span className="flex h-5 min-w-5 items-center justify-center rounded-md bg-accent px-1 text-[10px] font-black text-on-accent tabular-nums">
                             {unread > 99 ? '99+' : unread}
                           </span>
                         )}
@@ -166,6 +205,14 @@ const StudentSidebar: React.FC<{ collapsed?: boolean; onToggleCollapse?: () => v
         {/* Utility cluster — tools that live outside the page navigation tree.
             Persistent navigation stays in the sections above, so Settings is
             not repeated here. */}
+        {!collapsed && (
+          <p className="type-label mb-1.5 px-3 text-[10px] uppercase tracking-[0.14em] text-text-tertiary">
+            <span aria-hidden="true" className="text-accent">
+              //&nbsp;
+            </span>
+            Tools
+          </p>
+        )}
         <div
           className={`mb-2 flex items-center justify-center gap-1.5 rounded-xl bg-surface-raised p-1.5 ${
             collapsed ? 'flex-col' : ''
