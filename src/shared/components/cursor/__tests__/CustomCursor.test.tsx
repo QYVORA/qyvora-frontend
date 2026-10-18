@@ -224,6 +224,8 @@ describe('CustomCursor', () => {
     const { container } = render(<CustomCursor />);
     const root = container.querySelector('.qyvora-cursor-root') as HTMLElement;
     expect(container.querySelector('.cc-finger')).not.toBeNull();
+    // Finger layer = accent gap-patch (under) + lucide glyph (over).
+    expect(container.querySelectorAll('.cc-finger').length).toBe(2);
     expect(container.querySelector('.cc-lock')).not.toBeNull();
     expect(root.dataset.hover).toBe('false');
 

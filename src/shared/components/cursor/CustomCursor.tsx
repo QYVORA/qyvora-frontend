@@ -264,6 +264,24 @@ const CustomCursor: React.FC = () => {
           strokeWidth={2}
           aria-hidden="true"
         />
+        <svg
+          className="cc-pointer cc-finger"
+          width={30}
+          height={30}
+          viewBox="0 0 24 24"
+          fill="var(--color-accent)"
+          aria-hidden="true"
+        >
+          {/* The lucide finger is built from separate open paths — each fills
+              with its own implicit-close chord, leaving a transparent strip
+              between the finger/knuckles and the palm. This accent patch sits
+              UNDER the glyph. Its edges deliberately OVERLAP the fill chords
+              (tucked beneath the glyph's own opaque fills/strokes) so the two
+              shapes' anti-aliased edges never meet over the background — an
+              exact-boundary patch leaves a dark AA hairline. The two leftmost
+              vertices bridge the finger/thumb crease. */}
+          <path d="M5.5 13.1 10 8.5 14 9 18.44 12.22 7.44 16.22 4.4 15.7 4.2 14.3Z" />
+        </svg>
         <FingerPointer
           className="cc-pointer cc-finger"
           width={30}
