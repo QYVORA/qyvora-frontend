@@ -1144,3 +1144,135 @@ html[data-animations="off"] * {
     padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 0.5rem);
   }
 }
+
+/* ── Custom cursor (fine-pointer devices only) ───────────────────────────────
+   Mounted by CustomCursor.tsx, which toggles `qyvora-cursor` on <html> only
+   when (hover: hover) and (pointer: fine) match — touch devices never see it.
+   Arrow-shaped like a real pointer: accent fill + on-accent (black) stroke —
+   the same two-tone texture as .btn-primary. Tracks 1:1 with the pointer (no
+   trailing lag), scales up over interactive targets, squishes on press, and
+   emits a gamified click burst: square HUD flash + radiating pixel sparks,
+   driven by CSS animations so every browser gets the effect (no WAAPI
+   dependency). Text-entry surfaces get the native I-beam back. These rules
+   stay UNLAYERED on purpose: unlayered normal styles beat Tailwind's layered
+   cursor-* utilities, hiding the native cursor without any !important. */
+html.qyvora-cursor,
+html.qyvora-cursor *,
+html.qyvora-cursor *::before,
+html.qyvora-cursor *::after {
+  cursor: none;
+}
+
+html.qyvora-cursor
+  input:not([type='checkbox']):not([type='radio']):not([type='range']):not([type='button']):not([type='submit']):not([type='reset']),
+html.qyvora-cursor textarea,
+html.qyvora-cursor [contenteditable='true'] {
+  cursor: text;
+}
+
+.qyvora-cursor-root {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 900;
+  pointer-events: none;
+}
+
+.qyvora-cursor-root[data-hidden='true'] {
+  opacity: 0;
+}
+
+.cc-pointer-wrap {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+}
+
+/* 30px glyph, viewBox tip at (4,4)/24 -> 5px offset so the arrow tip sits
+   exactly on the pointer; scale states pivot on the tip via transform-origin. */
+.cc-pointer {
+  position: absolute;
+  left: -5px;
+  top: -5px;
+  width: 30px;
+  height: 30px;
+  transform: scale(1);
+  transform-origin: 16.667% 16.667%;
+  transition: transform var(--dur-fast) var(--ease-smooth);
+}
+
+.qyvora-cursor-root[data-state='hover'] .cc-pointer {
+  transform: scale(1.12);
+}
+
+.qyvora-cursor-root[data-state='press'] .cc-pointer {
+  transform: scale(0.86);
+}
+
+.cc-burst-wrap {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+}
+
+/* Square HUD flash on click — deliberately not a circle, so the burst reads
+   as a terminal lock-on rather than the old circle-cursor. */
+.cc-ripple {
+  position: absolute;
+  left: -20px;
+  top: -20px;
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  border: 1.5px solid var(--color-accent);
+  opacity: 0;
+  animation: cc-burst-ripple var(--cc-burst-duration, 380ms) var(--ease-smooth) forwards;
+}
+
+.cc-spark {
+  position: absolute;
+  left: -2.5px;
+  top: -2.5px;
+  width: 5px;
+  height: 5px;
+  border-radius: 1px;
+  background: var(--color-accent);
+  opacity: 0;
+  animation: cc-burst-spark var(--cc-burst-duration, 360ms) var(--ease-smooth) forwards;
+}
+
+@keyframes cc-burst-ripple {
+  0% {
+    transform: scale(0.4);
+    opacity: 0.95;
+  }
+  100% {
+    transform: scale(var(--cc-burst-scale, 1.6));
+    opacity: 0;
+  }
+}
+
+@keyframes cc-burst-spark {
+  0% {
+    transform: translate(calc(var(--cc-dx, 0px) * 0.3), calc(var(--cc-dy, 0px) * 0.3)) scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(var(--cc-dx, 0px), var(--cc-dy, 0px)) scale(0.4);
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cc-pointer {
+    transition: none;
+  }
+}

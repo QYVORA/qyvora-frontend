@@ -23,6 +23,7 @@ import ScrollToTop from '../shared/components/ScrollToTop';
 import ErrorBoundary from '../shared/components/ErrorBoundary';
 import AdaptiveMode from '../shared/components/AdaptiveMode';
 import PreferencesApplier from '../shared/components/PreferencesApplier';
+import CustomCursor from '@/shared/components/cursor/CustomCursor';
 import { SplashLoader } from '../shared/components/PageLoader';
 
 export default function App() {
@@ -105,6 +106,16 @@ export default function App() {
           <AdaptiveMode />
 
           <PreferencesApplier />
+
+          {/*
+            CustomCursor
+            ───────────────────────────────────────────────────────────────────
+            Site-wide desktop cursor (gamified reticle + click burst). Renderless
+            on touch devices — it self-gates on (hover: hover) and (pointer: fine)
+            and returns null everywhere else. Mounted once so every shell
+            (public, dashboard, admin, docs) shares it.
+          */}
+          <CustomCursor />
 
           {/*
             ScrollToTop
