@@ -99,7 +99,7 @@ const AdminTopbar = ({ railCollapsed = false }: { railCollapsed?: boolean }) => 
       </a>
 
       <header
-        className={`fixed top-0 inset-x-0 z-[100] pt-[env(safe-area-inset-top)] transition-[left] duration-[var(--dur-base)] ease-[var(--ease-smooth)] ${
+        className={`chrome-fixed fixed top-0 inset-x-0 z-[100] pt-[env(safe-area-inset-top)] transition-[left] duration-[var(--dur-base)] ease-[var(--ease-smooth)] ${
           railCollapsed ? 'lg:left-[76px]' : 'lg:left-[264px]'
         }`}
       >

@@ -5,13 +5,11 @@ import type { ToolDocSectionItem } from './ToolDocPage';
 
 interface DocTocNavProps {
   sections: ToolDocSectionItem[];
-  /** Align the chip row to the centered content column while the sticky bar stays full-bleed. */
-  contained?: boolean;
 }
 
 const STICKY_BAR_HEIGHT = 60;
 
-const DocTocNav: React.FC<DocTocNavProps> = ({ sections, contained = false }) => {
+const DocTocNav: React.FC<DocTocNavProps> = ({ sections }) => {
   const prefersReduced = useReducedMotion();
   const [activeId, setActiveId] = useState(sections[0]?.id ?? '');
 
@@ -54,13 +52,10 @@ const DocTocNav: React.FC<DocTocNavProps> = ({ sections, contained = false }) =>
 
   return (
     <div className="sticky top-[80px] z-[85] bg-canvas">
-      <div className={cn(contained && 'mx-auto w-full max-w-[1320px] px-3 md:px-4 lg:px-6')}>
+      <div className="px-3 md:px-4 lg:px-6">
         <nav
           aria-label="On this page"
-          className={cn(
-            'flex w-full flex-wrap items-center gap-1.5 py-2',
-            !contained && 'px-3 md:px-4 lg:px-6',
-          )}
+          className="flex w-full flex-wrap items-center gap-1.5 py-2"
         >
           {sections.map((section) => (
             <a

@@ -298,14 +298,17 @@
   }
 
   /* ── Fixed dashboard chrome scroll performance ───────────────────────────
-     The sidebar rail, topbar and bottom nav are `position: fixed`, so they
-     must stay pinned to the viewport while the page scrolls. Promoting them to
-     their own compositor layer stops the main thread from repainting them each
-     scroll frame — without it the rail visibly lags/stutters behind the page. */
+     The sidebar rail, topbar and bottom nav are `position: fixed` — already
+     pinned to the viewport, so they never reflow during page scroll. Do NOT
+     promote them with `transform: translateZ(0)` / `will-change: transform` /
+     `backface-visibility: hidden`: a permanent compositor layer on a fixed
+     element makes WebKit reposition that layer on every scroll frame, which
+     is the classic cause of the rail visibly lagging, glitching or pausing
+     behind the page during fast scroll. Paint containment is the right tool
+     instead — page-level repaints stop at the chrome boundary, without adding
+     a layer that churns during scroll. */
   .chrome-fixed {
-    transform: translateZ(0);
-    backface-visibility: hidden;
-    will-change: transform;
+    contain: layout paint;
   }
 
   /* The rail's internal nav is its own scroll area: contain overscroll so it

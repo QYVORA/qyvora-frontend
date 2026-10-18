@@ -126,7 +126,7 @@ const DocsSidebar: React.FC<DocsSidebarProps> = ({ collapsed, onToggleCollapsed 
     <aside
       aria-label="Documentation"
       className={cn(
-        'fixed inset-y-0 left-0 z-[90] hidden flex-col border-r border-border-subtle bg-canvas',
+        'chrome-fixed fixed inset-y-0 left-0 z-[90] hidden flex-col border-r border-border-subtle bg-canvas',
         'transition-[width] duration-[var(--dur-base)] ease-[var(--ease-smooth)] lg:flex',
         collapsed ? 'w-[76px]' : 'w-[264px]',
       )}
@@ -168,7 +168,7 @@ const DocsSidebar: React.FC<DocsSidebarProps> = ({ collapsed, onToggleCollapsed 
       {/* Tool list */}
       <nav
         aria-label="Tools"
-        className="custom-scrollbar flex-1 overflow-y-auto px-3 py-3"
+        className="custom-scrollbar sidebar-scroll flex-1 overflow-y-auto px-3 py-3"
       >
         {total === 0 && !collapsed && (
           <p className="px-3 py-2 text-xs leading-relaxed text-text-muted">

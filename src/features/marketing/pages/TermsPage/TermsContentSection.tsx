@@ -39,7 +39,7 @@ const TermsContentSection: React.FC = () => {
         />
       </PublicContainer>
 
-      <DocTocNav sections={TOC_SECTIONS} contained />
+      <DocTocNav sections={TOC_SECTIONS} />
 
       <PublicContainer>
         <div className="mt-12 md:mt-16">

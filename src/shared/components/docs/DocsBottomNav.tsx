@@ -52,7 +52,7 @@ const DocsBottomNav: React.FC = () => {
     <>
       <nav
         aria-label="Documentation"
-        className="fixed inset-x-0 bottom-0 z-[90] border-t border-border-subtle bg-surface pb-[env(safe-area-inset-bottom)] lg:hidden"
+        className="chrome-fixed fixed inset-x-0 bottom-0 z-[90] border-t border-border-subtle bg-surface pb-[env(safe-area-inset-bottom)] lg:hidden"
       >
         <ul className="flex items-stretch">
           <li className="flex-1">

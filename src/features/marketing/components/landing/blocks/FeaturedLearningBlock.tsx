@@ -26,7 +26,7 @@ const FeaturedLearningBlock: React.FC = () => {
         aria-hidden="true"
         className="pointer-events-none absolute inset-0 h-full w-full select-none object-cover"
       />
-      <div className="relative mx-auto w-full max-w-[1320px] px-3 py-20 md:px-4 md:py-24 lg:px-6">
+      <div className="relative w-full px-3 py-20 md:px-4 md:py-24 lg:px-6">
         <ScrollReveal>
           <div className="mb-10 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
             <div>

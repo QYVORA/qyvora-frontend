@@ -34,7 +34,7 @@ const ProofBlock: React.FC<ProofBlockProps> = ({ stats }) => {
 
   return (
     <section className="w-full bg-surface">
-      <div className="mx-auto w-full max-w-[1320px] px-3 py-20 md:px-4 md:py-24 lg:px-6">
+      <div className="w-full px-3 py-20 md:px-4 md:py-24 lg:px-6">
         <ScrollReveal>
           <div className="mb-10 max-w-2xl">
             <p className="type-label mb-1.5 uppercase tracking-[0.12em] text-accent">

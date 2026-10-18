@@ -84,7 +84,7 @@ const PublicNavigation: React.FC = React.memo(() => {
       <nav
         aria-label="Primary"
         className={[
-          'fixed inset-x-0 top-0 z-[100] flex h-[80px] items-center',
+          'chrome-fixed fixed inset-x-0 top-0 z-[100] flex h-[80px] items-center',
           // Resting state is fully transparent so page content reads through the
           // bar; only the logo, links and buttons paint. The mobile menu keeps an
           // opaque surface so the open panel is readable over page content.

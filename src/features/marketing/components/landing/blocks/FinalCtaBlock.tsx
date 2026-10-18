@@ -12,7 +12,7 @@ const FinalCtaBlock: React.FC = () => {
 
   return (
     <section className="w-full bg-surface">
-      <div className="mx-auto w-full max-w-[1320px] px-3 py-20 md:px-4 md:py-24 lg:px-6">
+      <div className="w-full px-3 py-20 md:px-4 md:py-24 lg:px-6">
         <ScrollReveal>
           <div className="relative mx-auto w-full max-w-3xl overflow-hidden rounded-2xl border border-accent/40" data-theme-persist="dark">
             <img

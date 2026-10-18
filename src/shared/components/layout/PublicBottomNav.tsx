@@ -26,7 +26,7 @@ const PublicBottomNav: React.FC = () => (
   <>
     <nav
       aria-label="Primary"
-      className="border-t border-border-subtle bg-surface pb-[env(safe-area-inset-bottom)] md:hidden fixed inset-x-0 bottom-0 z-[90]"
+      className="chrome-fixed fixed inset-x-0 bottom-0 z-[90] border-t border-border-subtle bg-surface pb-[env(safe-area-inset-bottom)] md:hidden"
     >
       <div className="flex items-stretch justify-around gap-1.5 px-2">
         {ITEMS.map((item) => {

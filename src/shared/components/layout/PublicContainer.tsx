@@ -9,14 +9,15 @@ interface PublicContainerProps {
 /**
  * PublicContainer — canonical content column for every public marketing page.
  *
- * Public pages previously stretched full-bleed while the landing page used a
- * centered 1320px canvas, so navigating from the landing into any inner page
- * made the content jump to the far left on wide screens. This matches the
- * landing canvas (`max-w-[1320px]`) and the standard public gutters so every
- * public page shares one measuring line.
+ * Full-viewport width with the standard public gutters (`px-3 md:px-4 lg:px-6`)
+ * and NO page-level max-width. Every public surface (navbar, landing blocks,
+ * inner pages, footer) shares these exact gutters so one vertical measuring
+ * line runs edge-to-edge through the whole page on every viewport — a centered
+ * max-width canvas next to full-bleed chrome is a visible misalignment on wide
+ * screens.
  */
 const PublicContainer: React.FC<PublicContainerProps> = ({ children, className }) => (
-  <div className={cn('mx-auto w-full max-w-[1320px] overflow-x-hidden px-3 md:px-4 lg:px-6', className)}>
+  <div className={cn('w-full overflow-x-hidden px-3 md:px-4 lg:px-6', className)}>
     {children}
   </div>
 );
