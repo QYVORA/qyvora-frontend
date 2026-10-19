@@ -6,7 +6,7 @@ import type { ToolDoc } from './types';
  * Nine-stage pipeline: DETECT PLATFORM → AUTHORIZE → COLLECT → CORRELATE
  * IDENTITIES → EVALUATE RULES → CORRELATE FINDINGS → FINALIZE → RENDER.
  * 23 collectors under `internal/collectors`, 52 rules, 25 capabilities.
- * Shipped: v0.9.0 published prebuilts, install.sh, self-update, simulation.
+ * Shipped: v0.10.0 published prebuilts, install.sh, self-update, simulation.
  */
 const doc: ToolDoc = {
   slug: 'amina',
@@ -14,7 +14,7 @@ const doc: ToolDoc = {
   seoDescription:
     'Amina is QYVORA\'s open-source framework for operational security and host exposure assessment. It answers one question — what does this machine reveal? — by systematically collecting evidence about identity disclosure, network and remote-access exposure, software provenance, binary integrity, credential material, filesystem leakage, developer identity, cloud identity, metadata, persistence and OS hardening, then turning that evidence into deterministic, machine-readable findings with an explicit risk score.',
   summary:
-    'AMINA examines the machine it is already running on — local host only, read-only by construction. A nine-stage pipeline runs 23 collectors and 52 rules, correlates identity disclosures, scores risk, and renders terminal, JSON, YAML, Markdown or HTML output. Version v0.9.0 ships a checksum-verified one-liner installer and prebuilt binaries for Linux, macOS and Windows (amd64 and arm64); Android/Termux installs from source. Simulation mode (`amina --simulate`) exercises the identical rule set offline, and self-update (`amina update`) is the single operation that writes to the host.',
+    'AMINA examines the machine it is already running on — local host only, read-only by construction. A nine-stage pipeline runs 23 collectors and 52 rules, correlates identity disclosures, scores risk, and renders terminal, JSON, YAML, Markdown or HTML output. Version v0.10.0 ships a checksum-verified one-liner installer and prebuilt binaries for Linux, macOS and Windows (amd64 and arm64); Android/Termux installs from source. Simulation mode (`amina --simulate`) exercises the identical rule set offline, and self-update (`amina update`) is the single operation that writes to the host.',
   sections: [
     {
       id: 'overview',
@@ -62,7 +62,7 @@ const doc: ToolDoc = {
       blocks: [
         {
           kind: 'prose',
-          text: 'Amina v0.9.0 is published as prebuilt archives for Linux, macOS and Windows (amd64 and arm64). Every repository ships a root `install.sh` / `install.ps1` installer that detects the target, downloads the matching artifact, verifies its SHA-256 against the published `checksums.txt`, validates the executable format, and installs atomically into the correct user executable directory. Installers are generated from the shared `qyvora-dist` template.',
+          text: 'Amina v0.10.0 is published as prebuilt archives for Linux, macOS and Windows (amd64 and arm64). Every repository ships a root `install.sh` / `install.ps1` installer that detects the target, downloads the matching artifact, verifies its SHA-256 against the published `checksums.txt`, validates the executable format, and installs atomically into the correct user executable directory. Installers are generated from the shared `qyvora-dist` template.',
         },
         {
           kind: 'commands',
@@ -96,7 +96,7 @@ const doc: ToolDoc = {
         {
           kind: 'facts',
           items: [
-            { label: 'Latest release', value: 'v0.9.0 (published; anansi is the only tool carrying a different tag, v1.1.0)', mono: true },
+            { label: 'Latest release', value: 'v0.10.0 (published; anansi is the only tool carrying a different tag, v1.2.0)', mono: true },
             { label: 'Module', value: 'github.com/QYVORA/qyvora-amina', mono: true },
             { label: 'Go directive', value: '1.26.5', mono: true },
             { label: 'Entry package', value: './cmd/amina', mono: true },
@@ -109,7 +109,7 @@ const doc: ToolDoc = {
           kind: 'note',
           variant: 'info',
           title: 'Version reporting',
-          text: '`amina version` prints the version (e.g. `v0.9.0`); `amina version -o json` is the contract\'s machine-readable identity. Amina has no `--version`-only contract — the `version` subcommand is the canonical probe.',
+          text: '`amina version` prints the version (e.g. `v0.10.0`); `amina version -o json` is the contract\'s machine-readable identity. Amina has no `--version`-only contract — the `version` subcommand is the canonical probe.',
         },
       ],
     },

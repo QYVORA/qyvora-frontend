@@ -76,7 +76,7 @@ const doc: ToolDoc = {
       blocks: [
         {
           kind: 'prose',
-          text: 'TOHA3EE links libpcap through cgo, so the only prebuilt artifact published for v0.9.0 is Linux x86_64 (`toha3ee_0.9.0_linux_amd64.tar.gz`). The installers still auto-detect your platform: where no compatible prebuilt exists — Apple silicon, arm64 Linux, Windows — they fall back to a local source build, which needs Go 1.26+, a C toolchain and libpcap headers. Installers update PATH and, on Linux, install a desktop entry and icon.',
+          text: 'TOHA3EE links libpcap through cgo, so the only prebuilt artifact published for v0.10.0 is Linux x86_64 (`toha3ee_0.10.0_linux_amd64.tar.gz`). The installers still auto-detect your platform: where no compatible prebuilt exists — Apple silicon, arm64 Linux, Windows — they fall back to a local source build, which needs Go 1.26+, a C toolchain and libpcap headers. Installers update PATH and, on Linux, install a desktop entry and icon.',
         },
         {
           kind: 'commands',
@@ -99,7 +99,7 @@ const doc: ToolDoc = {
         {
           kind: 'facts',
           items: [
-            { label: 'Latest release', value: 'v0.9.0', mono: true },
+            { label: 'Latest release', value: 'v0.10.0', mono: true },
             { label: 'Prebuilt', value: 'linux/amd64 only (libpcap via cgo); macOS, Windows and arm64 build from source', mono: true },
             { label: 'Module', value: 'github.com/QYVORA/qyvora-toha3ee', mono: true },
             { label: 'Entry point', value: 'cmd/toha3ee', mono: true },

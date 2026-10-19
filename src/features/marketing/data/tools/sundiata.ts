@@ -6,13 +6,13 @@ import type { ToolDoc } from './types';
  * Eight-stage pipeline: IDENTITY → ACCOUNT → AUTHENTICATION → CREDENTIALS →
  * PRIVILEGE → SECRETS → ATTACK-PATH → RISK. Thirteen rules (SDT-001..SDT-013)
  * in `internal/rules/builtin/builtin.go`. Simulation risk: 80/100 (critical).
- * v0.9.0 shipped, identity.live disabled.
+ * v0.10.0 shipped, identity.live disabled.
  */
 const doc: ToolDoc = {
   slug: 'sundiata',
   seoTitle: 'SUNDIATA — Identity & Access Security Assessment Framework',
   seoDescription:
-    'Sundiata is QYVORA\'s open-source framework for identity & access security assessment of Active Directory environments. It reads recorded directory files (and deterministic simulations) to discover identities, enumerate accounts and groups, analyze authentication posture, and map privilege and attack paths — all offline, with credential material redacted and never stored. Shipped v0.9.0: full pipeline, rule engine (SDT-001..SDT-013), evidence system, simulation mode and reporting. Offline directory-file analysis only; live identity source collection not implemented and refused. Credentials never leak: redacted at detection, only fingerprints and posture facts emitted.',
+    'Sundiata is QYVORA\'s open-source framework for identity & access security assessment of Active Directory environments. It reads recorded directory files (and deterministic simulations) to discover identities, enumerate accounts and groups, analyze authentication posture, and map privilege and attack paths — all offline, with credential material redacted and never stored. Shipped v0.10.0: full pipeline, rule engine (SDT-001..SDT-013), evidence system, simulation mode and reporting. Offline directory-file analysis only; live identity source collection not implemented and refused. Credentials never leak: redacted at detection, only fingerprints and posture facts emitted.',
   summary:
     'SUNDIATA runs an eight-stage pipeline: IDENTITY (read recorded sources, discover identities/groups), ACCOUNT (enumerate accounts, memberships, attributes), AUTHENTICATION (evaluate MFA posture, password policy, session lifetime), CREDENTIALS (flag exposure, rotation overdue, reuse, legacy hashes), PRIVILEGE (map privilege memberships and impersonation relationships), SECRETS (discover secret artifacts with values redacted), ATTACK-PATH (find identity attack paths to sensitive groups), RISK (score severity × confidence × exposure, cap at 100). Thirteen rules: plaintext credential exposure (critical), rotation overdue (medium), privileged identity without MFA (high), password never expires (medium), disabled identity retains access (medium), credential reuse (high), secret material in files (high), excess privilege membership (high), identity attack path to sensitive group (critical), impersonation relationship (medium), legacy privileged account (high), excessive session lifetime (low), legacy authentication hash exposure (high). Simulation (--sim): tenant acme, risk 80/100 (critical).',
 
@@ -93,7 +93,7 @@ const doc: ToolDoc = {
           kind: 'commands',
           title: 'Release installer',
           items: [
-            { command: 'curl -fsSL https://raw.githubusercontent.com/QYVORA/qyvora-sundiata/main/install.sh | bash', note: 'Linux and macOS. Installs the checksum-verified prebuilt binary (v0.9.0), the icon and the desktop entry.' },
+            { command: 'curl -fsSL https://raw.githubusercontent.com/QYVORA/qyvora-sundiata/main/install.sh | bash', note: 'Linux and macOS. Installs the checksum-verified prebuilt binary (v0.10.0), the icon and the desktop entry.' },
             { command: 'irm https://raw.githubusercontent.com/QYVORA/qyvora-sundiata/main/install.ps1 | iex', note: 'Windows PowerShell one-liner.' },
           ],
         },

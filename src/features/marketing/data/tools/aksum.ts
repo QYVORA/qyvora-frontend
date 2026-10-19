@@ -85,7 +85,7 @@ const doc: ToolDoc = {
           kind: 'note',
           variant: 'info',
           title: 'Release artifacts are versioned archives',
-          text: 'Aksum v0.9.0 publishes `aksum_<version>_<os>_<arch>.tar.gz` (`.zip` on Windows, `macos` as the darwin token) plus `checksums.txt`. The installer downloads the matching artifact, verifies its SHA-256 against that checksum file, and validates the ELF/PE format before installing.',
+          text: 'Aksum v0.10.0 publishes `aksum_<version>_<os>_<arch>.tar.gz` (`.zip` on Windows, `macos` as the darwin token) plus `checksums.txt`. The installer downloads the matching artifact, verifies its SHA-256 against that checksum file, and validates the ELF/PE format before installing.',
         },
         {
           kind: 'commands',
