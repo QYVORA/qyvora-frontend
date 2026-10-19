@@ -10,7 +10,7 @@
  *   03-people/quiteroot/JUNIOR-FRONTEND-DEVELOPER-ROLE.md QYVORA-GOV-019 role framework
  *
  * Every role listed here is a documented Quiteroot role placeholder. `holder`
- * is non-null only where the documentation records a named holder; every other
+ * is non-null only where a member is in place for that role; every other
  * role renders as an OPEN vacancy with an application CTA — never a stand-in
  * person. Role blurbs are the documented capability bars reworded for a public
  * audience; no biography is written where the documentation has none.
@@ -31,9 +31,13 @@ const TEAM_LOGO_SIZE = { width: 1254, height: 1254 } as const;
 export interface QuiterootHolder {
   /** Legal name as recorded in the people record. */
   name: string;
-  image: string;
-  imageWidth: number;
-  imageHeight: number;
+  /**
+   * Portrait photo. Optional: where no photograph has been supplied the role card
+   * falls back to the site's identicon placeholder instead of a broken image.
+   */
+  image?: string;
+  imageWidth?: number;
+  imageHeight?: number;
   location?: string;
   disciplines: string[];
   bio: string;
@@ -177,7 +181,17 @@ export const QUITEROOT_TEAMS: QuiterootTeam[] = [
         title: 'Junior Penetration Tester',
         summary:
           'Documented offensive practice inside a lawful scope — lab work, capture-the-flag, structured write-ups and bug reports through an authorized channel. A supervised contributor track, with no client delivery.',
-        holder: null,
+        holder: {
+          name: 'Peace Chika Mgboji',
+          // No photograph supplied — the card renders the site's identicon fallback.
+          location: 'Lagos, Nigeria',
+          disciplines: ['Penetration testing', 'Web security', 'OSINT'],
+          bio: 'Cybersecurity intern with a personal lab practice — network scanning and enumeration, web-application testing, and OSINT reconnaissance.',
+          socials: {
+            github: 'https://github.com/verm-collab',
+            linkedin: 'https://www.linkedin.com/in/peace-chika-mgboji-780468244',
+          },
+        },
       },
       {
         id: 'QRS-SR',

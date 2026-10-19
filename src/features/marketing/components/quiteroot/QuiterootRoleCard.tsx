@@ -4,6 +4,7 @@ import { ArrowUpRight, MapPin, UserRound } from 'lucide-react';
 import { BrandGithubIcon, BrandInstagramIcon, BrandLinkedinIcon, BrandXIcon, BrandYoutubeIcon, BrandMediumIcon } from '@/shared/components/icons';
 import Badge from '@/shared/components/ui/Badge';
 import Button from '@/shared/components/ui/Button';
+import Identicon from '@/shared/components/Identicon';
 import type { QuiterootHolder, QuiterootRole } from '@/features/marketing/content/quiterootData';
 
 const SOCIAL_ICONS: Record<string, React.ElementType> = {
@@ -22,14 +23,20 @@ export interface QuiterootRoleSocials {
 const HolderPortrait = ({ holder }: { holder: QuiterootHolder }) => (
   <>
     <div className="relative aspect-[4/3] w-full overflow-hidden bg-surface-raised">
-      <img
-        src={holder.image}
-        alt={holder.name}
-        width={holder.imageWidth}
-        height={holder.imageHeight}
-        loading="lazy"
-        className="h-full w-full object-cover object-[center_20%]"
-      />
+      {holder.image ? (
+        <img
+          src={holder.image}
+          alt={holder.name}
+          width={holder.imageWidth}
+          height={holder.imageHeight}
+          loading="lazy"
+          className="h-full w-full object-cover object-[center_20%]"
+        />
+      ) : (
+        <div role="img" aria-label={`Portrait of ${holder.name}`} className="h-full w-full">
+          <Identicon value={holder.name} size={400} className="h-full w-full" />
+        </div>
+      )}
     </div>
 
     {holder.socials && (
@@ -73,9 +80,10 @@ const OpenPortrait = () => (
 );
 
 /**
- * One Quiteroot role. Renders either the documented holder (photo, location,
- * disciplines, profile links) or an OPEN vacancy (silhouette, capability bar,
- * and an application CTA routed through the QYVORA contact page).
+ * One Quiteroot role. Renders either the documented holder (portrait or its
+ * identicon fallback, location, disciplines, profile links) or an OPEN vacancy
+ * (silhouette, capability bar, and an application CTA routed through the QYVORA
+ * contact page).
  *
  * The apply CTA belongs to open roles only: a filled seat is not advertised, so
  * it carries no application button. Where the documentation records that a role
