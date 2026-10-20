@@ -83,7 +83,7 @@ describe('QuiterootPage', () => {
     renderQuiteroot('?team=security');
 
     expect(QUITEROOT_ROLE_COUNT).toBe(12);
-    expect(QUITEROOT_OPEN_ROLES.length).toBe(9);
+    expect(QUITEROOT_OPEN_ROLES.length).toBe(8);
 
     // The header renders the role total straight from QUITEROOT_ROLE_COUNT.
     expect(screen.getByText('12')).toBeTruthy();

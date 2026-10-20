@@ -24,6 +24,7 @@ import quiterootTechLogo from '@/assets/quiteroot/quiteroot-tech-team.webp';
 import quiterootSecurityLogo from '@/assets/quiteroot/quiteroot-security-team.webp';
 import abdulRahmanPeligahImg from '@/assets/team/junior_pentester.webp';
 import peterOriasotieImg from '@/assets/team/cyberX6.webp';
+import princeTettehAdjeiImg from '@/assets/team/princeadjei.webp';
 
 /** Both team logos ship as 1254x1254 transparent PNGs (webp twin, same canvas). */
 const TEAM_LOGO_SIZE = { width: 1254, height: 1254 } as const;
@@ -107,7 +108,20 @@ export const QUITEROOT_TEAMS: QuiterootTeam[] = [
         title: 'Senior Frontend Developer',
         summary:
           'Frontend ownership rather than execution — architecture decisions on the interface layer, code review of other contributors’ frontend work, and accountability for the frontend workstream.',
-        holder: null,
+        holder: {
+          name: 'Prince Tetteh Adjei',
+          image: princeTettehAdjeiImg,
+          imageWidth: 900,
+          imageHeight: 990,
+          location: 'Accra, Ghana',
+          disciplines: ['React', 'TypeScript', 'JavaScript', 'Node.js', 'PostgreSQL', 'Python'],
+          bio: 'Senior frontend developer leading interface architecture and code reviews — building business systems, CRUD apps and automation with a focus on reliable, maintainable UIs.',
+          socials: {
+            github: 'https://github.com/aidynprince',
+            linkedin: 'https://linkedin.com/in/aidynprince',
+            website: 'https://www.theaidyn.com/',
+          },
+        },
       },
       {
         id: 'QRT-BE-JR',

@@ -77,6 +77,67 @@ export const NETWORK_PROFILES: NetworkProfile[] = [
       { ip: '10.30.0.10', hostname: 'lab-automation', os: 'Ubuntu 22.04 LTS', vendor: 'Linux', role: 'Target', ports: [{ port: 22, protocol: 'tcp', service: 'ssh', version: 'OpenSSH 8.9', state: 'open' }, { port: 80, protocol: 'tcp', service: 'http', version: 'nginx 1.24', state: 'open' }, { port: 2200, protocol: 'tcp', service: 'http', version: 'AUTOMATION-SVC/1.0', state: 'open' }], discoverable: true },
     ],
   },
+  {
+    id: 'methodology',
+    label: 'Methodology Lab',
+    subnet: '10.40.0.0/24',
+    gateway: '10.40.0.1',
+    dns: ['10.40.0.2'],
+    devices: [
+      { ip: '10.40.0.1', hostname: 'gateway', os: 'Cisco IOS 15.7', vendor: 'Cisco', role: 'Router', ports: [{ port: 22, protocol: 'tcp', service: 'ssh', version: 'OpenSSH 8.4', state: 'open' }], discoverable: true },
+      { ip: '10.40.0.10', hostname: 'lab-methodology', os: 'Debian 12', vendor: 'Linux', role: 'Engagement Portal', ports: [{ port: 22, protocol: 'tcp', service: 'ssh', version: 'OpenSSH 9.2', state: 'open' }, { port: 8080, protocol: 'tcp', service: 'http', version: 'nginx 1.24', state: 'open' }], discoverable: true },
+      { ip: '10.40.0.12', hostname: 'vendor-staging', os: 'Ubuntu 22.04 LTS', vendor: 'Linux', role: 'Out-of-scope staging', ports: [{ port: 80, protocol: 'tcp', service: 'http', version: 'Apache 2.4', state: 'open' }], discoverable: true },
+    ],
+  },
+  {
+    id: 'network-security',
+    label: 'Network Security Lab',
+    subnet: '10.50.0.0/24',
+    gateway: '10.50.0.1',
+    dns: ['10.50.0.2'],
+    devices: [
+      { ip: '10.50.0.1', hostname: 'gateway', os: 'Cisco IOS 15.7', vendor: 'Cisco', role: 'Router', ports: [{ port: 22, protocol: 'tcp', service: 'ssh', version: 'OpenSSH 8.4', state: 'open' }], discoverable: true },
+      { ip: '10.50.0.10', hostname: 'lab-network-security', os: 'Ubuntu 22.04 LTS', vendor: 'Linux', role: 'File Server', ports: [{ port: 21, protocol: 'tcp', service: 'ftp', version: 'vsftpd 3.0.5', state: 'open' }, { port: 22, protocol: 'tcp', service: 'ssh', version: 'OpenSSH 9.2', state: 'open' }, { port: 445, protocol: 'tcp', service: 'smb', version: 'Samba 4.17.7', state: 'open' }], discoverable: true },
+      { ip: '10.50.0.20', hostname: 'target-pc', os: 'Windows 10 Pro', vendor: 'Microsoft', role: 'Workstation', ports: [{ port: 445, protocol: 'tcp', service: 'smb', version: 'SMB 3.1.1', state: 'open' }, { port: 3389, protocol: 'tcp', service: 'rdp', version: 'RDP', state: 'open' }], discoverable: true },
+    ],
+  },
+  {
+    id: 'wlan-security',
+    label: 'Wireless Security Lab',
+    subnet: '10.60.0.0/24',
+    gateway: '10.60.0.1',
+    dns: ['10.60.0.2'],
+    devices: [
+      { ip: '10.60.0.1', hostname: 'gateway', os: 'Cisco IOS 15.7', vendor: 'Cisco', role: 'Router', ports: [{ port: 22, protocol: 'tcp', service: 'ssh', version: 'OpenSSH 8.4', state: 'open' }], discoverable: true },
+      { ip: '10.60.0.10', hostname: 'lab-wireless', os: 'Debian 12 (hostapd)', vendor: 'Linux', role: 'Access Point', ports: [{ port: 22, protocol: 'tcp', service: 'ssh', version: 'OpenSSH 9.2', state: 'open' }, { port: 8080, protocol: 'tcp', service: 'http', version: 'nginx 1.24', state: 'open' }], discoverable: true },
+      { ip: '10.60.0.20', hostname: 'station-one', os: 'Ubuntu 22.04 LTS', vendor: 'Linux', role: 'Wireless Client', ports: [{ port: 22, protocol: 'tcp', service: 'ssh', version: 'OpenSSH 8.9', state: 'open' }], discoverable: true },
+    ],
+  },
+  {
+    id: 'ad-enum',
+    label: 'AD Enumeration Lab',
+    subnet: '10.70.0.0/24',
+    gateway: '10.70.0.1',
+    dns: ['10.70.0.10'],
+    devices: [
+      { ip: '10.70.0.1', hostname: 'gateway', os: 'Cisco IOS 15.7', vendor: 'Cisco', role: 'Router', ports: [{ port: 22, protocol: 'tcp', service: 'ssh', version: 'OpenSSH 8.4', state: 'open' }], discoverable: true },
+      { ip: '10.70.0.10', hostname: 'lab-ad-enum', os: 'Windows Server 2022', vendor: 'Microsoft', role: 'Domain Controller', ports: [{ port: 53, protocol: 'tcp', service: 'dns', version: 'Windows DNS', state: 'open' }, { port: 88, protocol: 'tcp', service: 'kerberos', version: 'Windows Kerberos', state: 'open' }, { port: 389, protocol: 'tcp', service: 'ldap', version: 'Windows AD', state: 'open' }, { port: 445, protocol: 'tcp', service: 'smb', version: 'SMB 3.1.1', state: 'open' }], discoverable: true },
+      { ip: '10.70.0.20', hostname: 'ws-finance', os: 'Windows 11 Pro', vendor: 'Microsoft', role: 'Workstation', ports: [{ port: 445, protocol: 'tcp', service: 'smb', version: 'SMB 3.1.1', state: 'open' }, { port: 3389, protocol: 'tcp', service: 'rdp', version: 'RDP', state: 'open' }], discoverable: true },
+    ],
+  },
+  {
+    id: 'attack-paths',
+    label: 'Attack Paths Lab',
+    subnet: '10.80.0.0/24',
+    gateway: '10.80.0.1',
+    dns: ['10.80.0.10'],
+    devices: [
+      { ip: '10.80.0.1', hostname: 'gateway', os: 'Cisco IOS 15.7', vendor: 'Cisco', role: 'Router', ports: [{ port: 22, protocol: 'tcp', service: 'ssh', version: 'OpenSSH 8.4', state: 'open' }], discoverable: true },
+      { ip: '10.80.0.10', hostname: 'lab-attack-paths', os: 'Windows Server 2022', vendor: 'Microsoft', role: 'Domain Controller', ports: [{ port: 88, protocol: 'tcp', service: 'kerberos', version: 'Windows Kerberos', state: 'open' }, { port: 389, protocol: 'tcp', service: 'ldap', version: 'Windows AD', state: 'open' }, { port: 445, protocol: 'tcp', service: 'smb', version: 'SMB 3.1.1', state: 'open' }], discoverable: true },
+      { ip: '10.80.0.20', hostname: 'app-01', os: 'Windows Server 2019', vendor: 'Microsoft', role: 'Application Server', ports: [{ port: 445, protocol: 'tcp', service: 'smb', version: 'SMB 3.1.1', state: 'open' }, { port: 3389, protocol: 'tcp', service: 'rdp', version: 'RDP', state: 'open' }], discoverable: true },
+      { ip: '10.80.0.30', hostname: 'jump-01', os: 'Windows Server 2022', vendor: 'Microsoft', role: 'Jump Host', ports: [{ port: 5985, protocol: 'tcp', service: 'winrm', version: 'WinRM 2.0', state: 'open' }, { port: 3389, protocol: 'tcp', service: 'rdp', version: 'RDP', state: 'open' }], discoverable: true },
+    ],
+  },
 ];
 
 export function getNetworkProfileForLab(labId: string): NetworkProfile {
@@ -89,6 +150,11 @@ export function getNetworkProfileForLab(labId: string): NetworkProfile {
     'web-access-control': 'web-access-control',
     'api-security': 'api-security',
     automation: 'automation',
+    methodology: 'methodology',
+    'network-security': 'network-security',
+    'wlan-security': 'wlan-security',
+    'ad-enum': 'ad-enum',
+    'attack-paths': 'attack-paths',
   };
   return NETWORK_PROFILES.find(p => p.id === (map[labId] || 'default')) || NETWORK_PROFILES[0];
 }

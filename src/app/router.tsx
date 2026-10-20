@@ -103,6 +103,11 @@ const KillChainLab      = lazy(() => import('../features/student/pages/labs/Kill
 const AccessControlLab  = lazy(() => import('../features/student/pages/labs/AccessControlLab'));
 const ApiSecurityLab    = lazy(() => import('../features/student/pages/labs/ApiSecurityLab'));
 const AutomationLab     = lazy(() => import('../features/student/pages/labs/AutomationLab'));
+const MethodologyLab    = lazy(() => import('../features/student/pages/labs/MethodologyLab'));
+const NetworkSecurityLab = lazy(() => import('../features/student/pages/labs/NetworkSecurityLab'));
+const WlanSecurityLab   = lazy(() => import('../features/student/pages/labs/WlanSecurityLab'));
+const AdEnumLab         = lazy(() => import('../features/student/pages/labs/AdEnumLab'));
+const AttackPathsLab    = lazy(() => import('../features/student/pages/labs/AttackPathsLab'));
 
 // Learning V2 Demo
 const LearningV2Demo    = lazy(() => import('../features/student/pages/LearningV2Demo'));
@@ -308,6 +313,11 @@ export const AppRouter = () => {
           <Route path="/dashboard/labs/web-access-control" element={<Wrap scope="Access Control Lab"><StudentOnly><AccessControlLab /></StudentOnly></Wrap>} />
           <Route path="/dashboard/labs/api-security" element={<Wrap scope="API Security Lab"><StudentOnly><ApiSecurityLab /></StudentOnly></Wrap>} />
           <Route path="/dashboard/labs/automation" element={<Wrap scope="Automation Lab"><StudentOnly><AutomationLab /></StudentOnly></Wrap>} />
+          <Route path="/dashboard/labs/methodology" element={<Wrap scope="Methodology Lab"><StudentOnly><MethodologyLab /></StudentOnly></Wrap>} />
+          <Route path="/dashboard/labs/network-security" element={<Wrap scope="Network Security Lab"><StudentOnly><NetworkSecurityLab /></StudentOnly></Wrap>} />
+          <Route path="/dashboard/labs/wlan-security" element={<Wrap scope="Wireless Security Lab"><StudentOnly><WlanSecurityLab /></StudentOnly></Wrap>} />
+          <Route path="/dashboard/labs/ad-enum" element={<Wrap scope="AD Enumeration Lab"><StudentOnly><AdEnumLab /></StudentOnly></Wrap>} />
+          <Route path="/dashboard/labs/attack-paths" element={<Wrap scope="Attack Paths Lab"><StudentOnly><AttackPathsLab /></StudentOnly></Wrap>} />
 
           {/* Legacy redirects */}
           <Route path="/bootcamps"        element={<Navigate to="/dashboard/bootcamps/bc_1775270338500" replace />} />

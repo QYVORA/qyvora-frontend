@@ -93,8 +93,8 @@ const LOGO_SIZE = { width: 1254, height: 1254 } as const;
  * HPB structure counts are derived from the live curriculum in
  * `bootcampStructure.ts` — the same data the student dashboard renders — so the
  * marketing page can never advertise a room count the curriculum disagrees with.
- * (The HPB blueprint document still says 18 rooms against 19 in the curriculum;
- * the curriculum is what a student actually gets, so the curriculum wins here.)
+ * (The HPB blueprint document was reconciled to the curriculum's 19 rooms on
+ * 2026-10-20 — EX-PRD-005 — but the curriculum stays the source of truth here.)
  */
 const HPB_PHASES = BOOTCAMP_CONFIG.phases ?? [];
 const HPB_ROOM_COUNT = HPB_PHASES.reduce(

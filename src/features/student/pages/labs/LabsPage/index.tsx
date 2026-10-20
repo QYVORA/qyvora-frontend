@@ -27,7 +27,7 @@ const LabsPage = () => {
   );
 
   const totalCpMin = LABS.reduce((sum, lab) => sum + parseInt(lab.cpReward.split('-')[0]), 0);
-  const totalCpMax = LABS.reduce((sum, lab) => sum + parseInt(lab.cpReward.split('-')[1]), 0);
+  const totalCpMax = LABS.reduce((sum, lab) => sum + parseInt(lab.cpReward.split('-').pop() ?? '0'), 0);
 
   return (
     <div className="min-h-full bg-canvas">

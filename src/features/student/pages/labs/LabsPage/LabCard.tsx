@@ -27,6 +27,11 @@ const LAB_PREFIXES: Record<string, string> = {
   'web-access-control': 'wac-',
   'api-security': 'api-',
   automation: 'auto-',
+  methodology: 'meth-',
+  'network-security': 'net-',
+  'wlan-security': 'wire-',
+  'ad-enum': 'ad-',
+  'attack-paths': 'apath-',
 };
 
 const LabCard: React.FC<LabCardProps> = ({ id, title, description, difficulty, cpReward, route, accentColor }) => {

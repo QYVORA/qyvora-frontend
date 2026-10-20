@@ -9,7 +9,15 @@ import type { Difficulty, QuizQuestion } from './types';
  * teaches the technique; the learner captures the flag from the live lab
  * container and submits it for server-side verification.
  */
-export type WebLabCategory = 'web-access-control' | 'api-security' | 'automation';
+export type WebLabCategory =
+  | 'web-access-control'
+  | 'api-security'
+  | 'automation'
+  | 'methodology'
+  | 'network-security'
+  | 'wlan-security'
+  | 'ad-enum'
+  | 'attack-paths';
 
 export interface WebLabStep {
   id: string;

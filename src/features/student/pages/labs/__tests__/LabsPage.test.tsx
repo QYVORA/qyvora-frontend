@@ -63,6 +63,11 @@ describe('LabsPage', () => {
     expect(screen.getByText('Broken Access Control')).toBeTruthy();
     expect(screen.getByText('API Security')).toBeTruthy();
     expect(screen.getByText('Security Automation')).toBeTruthy();
+    expect(screen.getByText('Engagement Methodology')).toBeTruthy();
+    expect(screen.getByText('Network Security')).toBeTruthy();
+    expect(screen.getByText('Wireless Security')).toBeTruthy();
+    expect(screen.getByText('AD Enumeration')).toBeTruthy();
+    expect(screen.getByText('Enterprise Attack Paths')).toBeTruthy();
   });
 
   it('each lab card links to the correct route', () => {
@@ -77,6 +82,11 @@ describe('LabsPage', () => {
     expect(hrefs).toContain('/dashboard/labs/web-access-control');
     expect(hrefs).toContain('/dashboard/labs/api-security');
     expect(hrefs).toContain('/dashboard/labs/automation');
+    expect(hrefs).toContain('/dashboard/labs/methodology');
+    expect(hrefs).toContain('/dashboard/labs/network-security');
+    expect(hrefs).toContain('/dashboard/labs/wlan-security');
+    expect(hrefs).toContain('/dashboard/labs/ad-enum');
+    expect(hrefs).toContain('/dashboard/labs/attack-paths');
   });
 
   it('does not render the simulated environment banner', () => {

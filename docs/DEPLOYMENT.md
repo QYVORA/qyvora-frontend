@@ -25,7 +25,7 @@ Set in Netlify dashboard (not in repository):
 
 | Variable | Purpose |
 |----------|---------|
-| `VITE_API_BASE_URL` | Backend API base URL |
+| `VITE_API_BASE_URL` | Backend API base URL — production value: `https://api.qyvora.org/api` |
 
 ## SPA Routing
 

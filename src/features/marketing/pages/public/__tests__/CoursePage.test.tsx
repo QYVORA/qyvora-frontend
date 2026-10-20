@@ -2,6 +2,7 @@ import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import { MemoryRouter, Routes, Route } from 'react-router-dom';
 import CoursePage from '../CoursePage';
+import { COURSES } from '@/features/student/data/courses';
 
 vi.mock('@/shared/components/SEO', () => ({
   default: () => null,
@@ -79,5 +80,13 @@ describe('CoursePage', () => {
     renderCoursePage('not-a-real-course');
     expect(screen.getByRole('heading', { name: 'No such transmission' })).toBeTruthy();
     expect(screen.queryByText('Linux Terminal 101')).toBeNull();
+  });
+
+  it('serves every one of the 12 courses publicly without authentication', () => {
+    expect(COURSES).toHaveLength(12);
+    for (const course of COURSES) {
+      renderCoursePage(course.id);
+      expect(screen.getByRole('heading', { name: course.title })).toBeTruthy();
+    }
   });
 });

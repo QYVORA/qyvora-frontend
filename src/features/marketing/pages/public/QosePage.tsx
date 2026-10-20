@@ -9,6 +9,7 @@ import ScrollReveal from '@/shared/components/ScrollReveal';
 import BootcampFacts, { BootcampLogo } from '@/features/marketing/components/bootcamp/BootcampFacts';
 import ProgrammeHeroCard from '@/features/marketing/components/programmes/ProgrammeHeroCard';
 import ProgrammeCtaCard from '@/features/marketing/components/programmes/ProgrammeCtaCard';
+import QoseRegistrationForm from '@/features/marketing/components/bootcamp/QoseRegistrationForm';
 import { openBootcampAccessModal } from '@/features/marketing/components/bootcamp/BootcampAccessModal';
 import { BOOTCAMPS } from '@/features/marketing/content/bootcampData';
 import qoseHeaderBg from '@/assets/backgrounds/qose-header.webp';
@@ -195,12 +196,16 @@ const QosePage = () => {
               <ProgrammeCtaCard
                 kicker={"Enrolment"}
                 title={"Pre-registration is open"}
-                description={QOSE.statusNote}
+                description={"Register your interest and we will contact you with the confirmed intake, schedule and fee before anything is paid."}
               >
-                <Button size="lg" onClick={() => openBootcampAccessModal('qose')}>
-                  {QOSE.ctaLabel}
-                  <ArrowRight className="h-4 w-4" aria-hidden="true" />
-                </Button>
+                <QoseRegistrationForm bootcampId="qose" source="qose_page" />
+                <button
+                  type="button"
+                  onClick={() => openBootcampAccessModal('qose')}
+                  className="btn-secondary mt-3 text-sm"
+                >
+                  {"Prefer the community group? Join QOSE on WhatsApp"}
+                </button>
               </ProgrammeCtaCard>
             </div>
           </section>

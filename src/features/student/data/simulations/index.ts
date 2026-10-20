@@ -38,3 +38,8 @@ export type {
 export { WEB_ACCESS_CONTROL_SCENARIOS } from './web-access-control-data';
 export { API_SECURITY_SCENARIOS } from './api-security-data';
 export { AUTOMATION_SCENARIOS } from './automation-data';
+export { METHODOLOGY_SCENARIOS } from './methodology-data';
+export { NETWORK_SECURITY_SCENARIOS } from './network-security-data';
+export { WIRELESS_SCENARIOS } from './wireless-data';
+export { AD_ENUM_SCENARIOS } from './ad-enum-data';
+export { ATTACK_PATHS_SCENARIOS } from './attack-paths-data';

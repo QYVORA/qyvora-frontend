@@ -45,7 +45,7 @@ export const TOPICS: Topic[] = [
     label: 'Windows CMD',
     icon: 'C:\\',
     courses: ['windows-cmd-101'],
-    labs: ['killchain'],
+    labs: ['killchain', 'ad-enum', 'attack-paths'],
     hpbRooms: [
       { phaseId: 'phase2', roomId: 'room4' },
     ],
@@ -55,7 +55,7 @@ export const TOPICS: Topic[] = [
     label: 'Networking',
     icon: 'net',
     courses: ['networking-101'],
-    labs: [],
+    labs: ['network-security', 'wlan-security'],
     hpbRooms: [
       { phaseId: 'phase3', roomId: 'room1' },
       { phaseId: 'phase3', roomId: 'room2' },
@@ -149,7 +149,7 @@ export const TOPICS: Topic[] = [
     label: 'Hacker Mindset',
     icon: '0x',
     courses: [],
-    labs: ['killchain'],
+    labs: ['killchain', 'methodology'],
     hpbRooms: [
       { phaseId: 'phase1', roomId: 'room1' },
       { phaseId: 'phase1', roomId: 'room2' },
@@ -182,6 +182,11 @@ const LAB_REFS: Record<string, ContentRef> = {
   'web-access-control': { type: 'lab', id: 'web-access-control', title: 'Broken Access Control', subtitle: 'IDOR & BOLA', route: '/dashboard/labs/web-access-control', color: '#06B66F' },
   'api-security': { type: 'lab', id: 'api-security', title: 'API Security', subtitle: 'JWT & SSRF', route: '/dashboard/labs/api-security', color: '#0EA5E9' },
   automation: { type: 'lab', id: 'automation', title: 'Security Automation', subtitle: 'Python & Bash tooling', route: '/dashboard/labs/automation', color: '#F59E0B' },
+  methodology: { type: 'lab', id: 'methodology', title: 'Engagement Methodology', subtitle: 'Scope & attack surface', route: '/dashboard/labs/methodology', color: '#06B66F' },
+  'network-security': { type: 'lab', id: 'network-security', title: 'Network Security', subtitle: 'Service enum & traffic', route: '/dashboard/labs/network-security', color: '#3b82f6' },
+  'wlan-security': { type: 'lab', id: 'wlan-security', title: 'Wireless Security', subtitle: 'WLAN survey & handshakes', route: '/dashboard/labs/wlan-security', color: '#F59E0B' },
+  'ad-enum': { type: 'lab', id: 'ad-enum', title: 'AD Enumeration', subtitle: 'LDAP & BloodHound', route: '/dashboard/labs/ad-enum', color: '#0EA5E9' },
+  'attack-paths': { type: 'lab', id: 'attack-paths', title: 'Enterprise Attack Paths', subtitle: 'Kerberos & lateral movement', route: '/dashboard/labs/attack-paths', color: '#DC2626' },
 };
 
 const HPB_ROOM_REFS: Record<string, ContentRef> = {

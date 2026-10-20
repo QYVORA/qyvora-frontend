@@ -3,6 +3,11 @@ import {
   WEB_ACCESS_CONTROL_SCENARIOS,
   API_SECURITY_SCENARIOS,
   AUTOMATION_SCENARIOS,
+  METHODOLOGY_SCENARIOS,
+  NETWORK_SECURITY_SCENARIOS,
+  WIRELESS_SCENARIOS,
+  AD_ENUM_SCENARIOS,
+  ATTACK_PATHS_SCENARIOS,
 } from '..';
 import type { WebLabScenario } from '..';
 import { LAB_CATALOGUE, LAB_MODULE_MATRIX } from '../../labs';
@@ -11,6 +16,11 @@ const ALL: WebLabScenario[] = [
   ...WEB_ACCESS_CONTROL_SCENARIOS,
   ...API_SECURITY_SCENARIOS,
   ...AUTOMATION_SCENARIOS,
+  ...METHODOLOGY_SCENARIOS,
+  ...NETWORK_SECURITY_SCENARIOS,
+  ...WIRELESS_SCENARIOS,
+  ...AD_ENUM_SCENARIOS,
+  ...ATTACK_PATHS_SCENARIOS,
 ];
 
 const VALID_MODULES = LAB_MODULE_MATRIX.map((m) => m.module);
@@ -20,6 +30,11 @@ describe('QOSE web/application lab data', () => {
     expect(WEB_ACCESS_CONTROL_SCENARIOS.length).toBeGreaterThan(0);
     expect(API_SECURITY_SCENARIOS.length).toBeGreaterThan(0);
     expect(AUTOMATION_SCENARIOS.length).toBeGreaterThan(0);
+    expect(METHODOLOGY_SCENARIOS.length).toBeGreaterThan(0);
+    expect(NETWORK_SECURITY_SCENARIOS.length).toBeGreaterThan(0);
+    expect(WIRELESS_SCENARIOS.length).toBeGreaterThan(0);
+    expect(AD_ENUM_SCENARIOS.length).toBeGreaterThan(0);
+    expect(ATTACK_PATHS_SCENARIOS.length).toBeGreaterThan(0);
   });
 
   it('has unique scenario ids across all labs', () => {
@@ -113,6 +128,17 @@ describe('QOSE lab ↔ module matrix', () => {
 
   it('registers a catalogue entry for each new lab', () => {
     const ids = LAB_CATALOGUE.map((l) => l.labId);
-    expect(ids).toEqual(expect.arrayContaining(['web-access-control', 'api-security', 'automation']));
+    expect(ids).toEqual(
+      expect.arrayContaining([
+        'web-access-control',
+        'api-security',
+        'automation',
+        'methodology',
+        'network-security',
+        'wlan-security',
+        'ad-enum',
+        'attack-paths',
+      ]),
+    );
   });
 });

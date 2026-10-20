@@ -10,7 +10,7 @@ const tool = (over: Partial<ToolEntry> = {}): ToolEntry =>
     name: 'anansi',
     displayName: 'ANANSI',
     path: '/anansi',
-    summary: 'Attack surface intelligence engine.',
+    summary: 'Web application penetration testing framework.',
     category: 'recon',
     tags: [],
     github: 'https://github.com/QYVORA/qyvora-anansi',
@@ -22,8 +22,8 @@ const tool = (over: Partial<ToolEntry> = {}): ToolEntry =>
 const doc = (over: Partial<ToolDoc> = {}): ToolDoc =>
   ({
     slug: 'anansi',
-    seoTitle: 'ANANSI — Attack surface intelligence engine',
-    seoDescription: 'ANANSI is a terminal-first attack surface intelligence engine.',
+    seoTitle: 'ANANSI — Web application penetration testing framework',
+    seoDescription: 'ANANSI is a terminal-first web application penetration testing framework.',
     summary: 'A nine-phase recon pipeline from subdomain discovery to exploit-chain analysis.',
     ...over,
   }) as ToolDoc;
@@ -77,8 +77,8 @@ describe('buildToolSeo', () => {
   it('derives the whole head payload from the registry and the doc', () => {
     const seo = buildToolSeo(tool(), doc());
 
-    expect(seo.title).toBe('ANANSI — Attack surface intelligence engine');
-    expect(seo.fullTitle).toBe(`ANANSI — Attack surface intelligence engine | QYVORA`);
+    expect(seo.title).toBe('ANANSI — Web application penetration testing framework');
+    expect(seo.fullTitle).toBe(`ANANSI — Web application penetration testing framework | QYVORA`);
     expect(seo.description).toBe(doc().seoDescription);
     expect(seo.canonical).toBe(`${SITE_URL}/anansi`);
   });
