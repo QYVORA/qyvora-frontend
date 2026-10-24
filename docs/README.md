@@ -91,7 +91,7 @@ Welcome to the QYVORA Frontend documentation. This guide helps you navigate all 
 ### For QA/Testers
 1. **[TESTING.md](TESTING.md)** - Test framework and patterns
 2. **[ERROR_HANDLING.md](ERROR_HANDLING.md)** - Error scenarios
-3. **[ROADMAP.md](ROADMAP.md)** - What's implemented vs planned
+3. **[ROADMAP.md](../ROADMAP.md)** - What's implemented vs planned
 
 ### For DevOps
 1. **[DEPLOYMENT.md](DEPLOYMENT.md)** - Netlify configuration

@@ -377,7 +377,7 @@ npm run preview
 ```
 
 Set `VITE_API_BASE_URL` in the Netlify project environment variables to the permanent API
-host: `https://api.qyvora.org/api` (created 2026-10-19; see `core/SUBDOMAINS.md`). Never
+host: `https://api.qyvora.org/api` (created 2026-10-19; see `knowledge/qyvora-docs/00-company-records/SUBDOMAINS.md`). Never
 `https://qyvora.org/api` — that path returns `index.html`, not JSON.
 
 ## License
