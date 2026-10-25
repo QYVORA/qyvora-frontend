@@ -55,7 +55,7 @@ const DocTocNav: React.FC<DocTocNavProps> = ({ sections }) => {
       <div className="px-3 md:px-4 lg:px-6">
         <nav
           aria-label="On this page"
-          className="flex w-full flex-wrap items-center gap-1.5 py-2"
+          className="scroll-x no-scrollbar flex w-full flex-nowrap items-center gap-1.5 py-2"
         >
           {sections.map((section) => (
             <a
@@ -64,7 +64,7 @@ const DocTocNav: React.FC<DocTocNavProps> = ({ sections }) => {
               onClick={jumpTo(section.id)}
               aria-current={activeId === section.id ? 'true' : undefined}
               className={cn(
-                'inline-flex min-h-[44px] items-center justify-center whitespace-nowrap rounded-xl px-2.5 text-xs font-black uppercase tracking-widest transition-colors sm:px-3',
+                'inline-flex min-h-[44px] shrink-0 items-center justify-center whitespace-nowrap rounded-xl px-2.5 text-xs font-black uppercase tracking-widest transition-colors sm:px-3',
                 activeId === section.id
                   ? 'bg-accent text-on-accent'
                   : 'border border-border bg-surface-raised text-text-muted hover:border-accent/50 hover:text-accent',
