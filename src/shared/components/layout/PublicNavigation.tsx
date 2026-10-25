@@ -34,12 +34,24 @@ const PublicNavigation: React.FC = React.memo(() => {
   const { user } = useAuth();
   const [open, setOpen] = React.useState(false);
   const [isFullscreen, setIsFullscreen] = React.useState(false);
+  const [isScrolled, setIsScrolled] = React.useState(false);
   const location = useLocation();
   const prefersReduced = useReducedMotion();
   const panelRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => setOpen(false), [location.pathname]);
   useScrollLock(open);
+
+  useEffect(() => {
+    const updateScrollState = () => {
+      const scrolled = window.scrollY > 8;
+      setIsScrolled((current) => (current === scrolled ? current : scrolled));
+    };
+
+    updateScrollState();
+    window.addEventListener('scroll', updateScrollState, { passive: true });
+    return () => window.removeEventListener('scroll', updateScrollState);
+  }, []);
 
   useEffect(() => {
     const handleFullscreenChange = () => setIsFullscreen(Boolean(document.fullscreenElement));
@@ -85,11 +97,14 @@ const PublicNavigation: React.FC = React.memo(() => {
         aria-label="Primary"
         className={[
           'chrome-fixed fixed inset-x-0 top-0 z-[100] flex h-[80px] items-center',
-          // Resting state is fully transparent so page content reads through the
-          // bar; only the logo, links and buttons paint. The mobile menu keeps an
-          // opaque surface so the open panel is readable over page content.
-          open ? 'bg-surface' : 'bg-transparent',
-          'transition-colors duration-300',
+          // Keep the hero visible at the top; add a blurred surface once content
+          // scrolls beneath the navbar. The open mobile menu stays opaque.
+          open
+            ? 'bg-surface'
+            : isScrolled
+              ? 'border-b border-border/30 bg-bg/75 backdrop-blur-md'
+              : 'bg-transparent',
+          'transition-all duration-300',
         ].join(' ')}
       >
         <div className="flex w-full items-center justify-between px-3 md:px-4 lg:px-6">
