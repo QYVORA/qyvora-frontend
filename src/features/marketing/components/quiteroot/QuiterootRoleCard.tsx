@@ -40,7 +40,7 @@ const HolderPortrait = ({ holder }: { holder: QuiterootHolder }) => (
     </div>
 
     {holder.socials && (
-      <div className="flex flex-wrap items-center gap-2">
+      <div className="mt-3 flex flex-wrap items-center gap-2 border-t border-border-subtle px-3 pt-3 pb-3">
         {Object.entries(holder.socials).map(([platform, url]) => {
           if (!url) return null;
           const Icon = SOCIAL_ICONS[platform];
