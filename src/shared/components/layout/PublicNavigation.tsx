@@ -102,7 +102,7 @@ const PublicNavigation: React.FC = React.memo(() => {
           open
             ? 'bg-surface'
             : isScrolled
-              ? 'border-b border-border/30 bg-bg/75 backdrop-blur-md'
+              ? 'bg-bg/75 backdrop-blur-md'
               : 'bg-transparent',
           'transition-all duration-300',
         ].join(' ')}
