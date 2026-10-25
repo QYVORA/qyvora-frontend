@@ -1189,14 +1189,10 @@ html[data-animations="off"] * {
 /* ── Custom cursor (fine-pointer devices only) ───────────────────────────────
    Mounted by CustomCursor.tsx, which toggles `qyvora-cursor` on <html> only
    when (hover: hover) and (pointer: fine) match — touch devices never see it.
-   Arrow-shaped like a real pointer: accent fill + on-accent (black) stroke —
-   the same two-tone texture as .btn-primary. Tracks 1:1 with the pointer (no
-   trailing lag), scales up over interactive targets, squishes on press, and
-   emits a gamified click burst: square HUD flash + radiating pixel sparks,
-   driven by CSS animations so every browser gets the effect (no WAAPI
-   dependency). Text-entry surfaces get the native I-beam back. These rules
-   stay UNLAYERED on purpose: unlayered normal styles beat Tailwind's layered
-   cursor-* utilities, hiding the native cursor without any !important. */
+   The arrow follows the pointer directly; a square flash and sparks are
+   reserved for button clicks. Text-entry surfaces keep the native I-beam.
+   These rules stay UNLAYERED on purpose: unlayered normal styles beat
+   Tailwind's layered cursor-* utilities without !important. */
 html.qyvora-cursor,
 html.qyvora-cursor *,
 html.qyvora-cursor *::before,
@@ -1232,19 +1228,13 @@ html.qyvora-cursor [contenteditable='true'] {
   width: 0;
   height: 0;
   pointer-events: none;
+  will-change: transform;
 }
 
-/* Two stacked glyphs share one hotspot: the 30px arrow (viewBox tip at
-   (4,4)/24 -> 5px offset) and the pointing finger (topmost tip at (8,2)/24 ->
-   10px/2.5px offset). Hover cross-fades them like a native cursor swap,
-   pivoting each glyph on its own tip via transform-origin. The base rule
-   hides both; each glyph opts back IN (opacity: 1) for its resting state. */
+/* Keep the arrow fixed to one hotspot. Avoid transitions on the pointer glyph
+   so it never trails or jitters when the pointer moves or crosses controls. */
 .cc-pointer {
   position: absolute;
-  opacity: 0;
-  transition:
-    opacity 140ms var(--ease-smooth),
-    transform var(--dur-fast) var(--ease-smooth);
 }
 
 .cc-arrow {
@@ -1252,100 +1242,6 @@ html.qyvora-cursor [contenteditable='true'] {
   top: -5px;
   width: 30px;
   height: 30px;
-  opacity: 1;
-  transform: scale(1);
-  transform-origin: 16.667% 16.667%;
-}
-
-.cc-finger {
-  left: -10px;
-  top: -2.5px;
-  width: 30px;
-  height: 30px;
-  transform: scale(0.6) rotate(-14deg);
-  transform-origin: 33.333% 8.333%;
-}
-
-.qyvora-cursor-root[data-hover='true'] .cc-arrow {
-  opacity: 0;
-  transform: scale(0.55);
-}
-
-.qyvora-cursor-root[data-hover='true'] .cc-finger {
-  opacity: 1;
-  transform: scale(1.12) rotate(0deg);
-}
-
-/* Press squishes whichever glyph is showing. Combo selectors outrank the
-   hover rules so state=press on a button wins over hover's 1.12 scale; the
-   :not guard keeps blank-space clicks on the squished arrow (finger + lock
-   stay hidden because hover is false there). */
-.qyvora-cursor-root[data-state='press']:not([data-hover='true']) .cc-arrow {
-  transform: scale(0.86);
-}
-
-.qyvora-cursor-root[data-hover='true'][data-state='press'] .cc-finger {
-  transform: scale(0.9) rotate(0deg);
-}
-
-/* Square HUD bracket frame — snaps on over pointable targets so the hover
-   state reads as "target locked", matching the square click burst. */
-.cc-lock {
-  position: absolute;
-  left: -21px;
-  top: -21px;
-  width: 42px;
-  height: 42px;
-  opacity: 0;
-  transform: scale(0.7);
-  transition:
-    opacity 140ms var(--ease-smooth),
-    transform var(--dur-fast) var(--ease-smooth);
-}
-
-.cc-lock i {
-  position: absolute;
-  width: 9px;
-  height: 9px;
-  border: 1.5px solid var(--color-accent);
-}
-
-.cc-lock i:nth-child(1) {
-  top: 0;
-  left: 0;
-  border-right: 0;
-  border-bottom: 0;
-}
-
-.cc-lock i:nth-child(2) {
-  top: 0;
-  right: 0;
-  border-left: 0;
-  border-bottom: 0;
-}
-
-.cc-lock i:nth-child(3) {
-  bottom: 0;
-  left: 0;
-  border-right: 0;
-  border-top: 0;
-}
-
-.cc-lock i:nth-child(4) {
-  right: 0;
-  bottom: 0;
-  border-left: 0;
-  border-top: 0;
-}
-
-.qyvora-cursor-root[data-hover='true'] .cc-lock {
-  opacity: 0.9;
-  transform: scale(1);
-}
-
-.qyvora-cursor-root[data-hover='true'][data-state='press'] .cc-lock {
-  opacity: 0.75;
-  transform: scale(0.82);
 }
 
 .cc-burst-wrap {
@@ -1357,8 +1253,7 @@ html.qyvora-cursor [contenteditable='true'] {
   pointer-events: none;
 }
 
-/* Square HUD flash on click — deliberately not a circle, so the burst reads
-   as a terminal lock-on rather than the old circle-cursor. */
+/* Square click flash. This burst is only created for an enabled button click. */
 .cc-ripple {
   position: absolute;
   left: -20px;
@@ -1402,12 +1297,5 @@ html.qyvora-cursor [contenteditable='true'] {
   100% {
     transform: translate(var(--cc-dx, 0px), var(--cc-dy, 0px)) scale(0.4);
     opacity: 0;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .cc-pointer,
-  .cc-lock {
-    transition: none;
   }
 }

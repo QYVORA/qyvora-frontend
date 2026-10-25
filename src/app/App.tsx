@@ -110,7 +110,7 @@ export default function App() {
           {/*
             CustomCursor
             ───────────────────────────────────────────────────────────────────
-            Site-wide desktop cursor (gamified reticle + click burst). Renderless
+            Site-wide desktop cursor (steady arrow + button click burst). Renderless
             on touch devices — it self-gates on (hover: hover) and (pointer: fine)
             and returns null everywhere else. Mounted once so every shell
             (public, dashboard, admin, docs) shares it.

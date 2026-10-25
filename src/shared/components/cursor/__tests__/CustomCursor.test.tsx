@@ -90,7 +90,7 @@ describe('CustomCursor', () => {
     surface.remove();
   });
 
-  it('locks on over interactive elements and releases over plain surfaces', () => {
+  it('keeps the same cursor over buttons and plain surfaces without a target frame', () => {
     stubMatchMedia({ fine: true });
     const { container } = render(<CustomCursor />);
     const root = container.querySelector('.qyvora-cursor-root') as HTMLElement;
@@ -98,18 +98,20 @@ describe('CustomCursor', () => {
     const button = document.createElement('button');
     document.body.appendChild(button);
     dispatchPointer(button, 'pointermove', { clientX: 10, clientY: 20 });
-    expect(root.dataset.state).toBe('hover');
+    expect(root.querySelector('.cc-arrow')).not.toBeNull();
+    expect(root.querySelector('.cc-lock')).toBeNull();
 
     const plain = document.createElement('div');
     document.body.appendChild(plain);
     dispatchPointer(plain, 'pointermove', { clientX: 30, clientY: 40 });
-    expect(root.dataset.state).toBe('default');
+    expect(root.querySelector('.cc-arrow')).not.toBeNull();
+    expect(root.querySelector('.cc-lock')).toBeNull();
 
     button.remove();
     plain.remove();
   });
 
-  it('does not lock on disabled controls', () => {
+  it('does not animate disabled controls', () => {
     stubMatchMedia({ fine: true });
     const { container } = render(<CustomCursor />);
     const root = container.querySelector('.qyvora-cursor-root') as HTMLElement;
@@ -118,7 +120,7 @@ describe('CustomCursor', () => {
     disabled.disabled = true;
     document.body.appendChild(disabled);
     dispatchPointer(disabled, 'pointermove', { clientX: 10, clientY: 20 });
-    expect(root.dataset.state).toBe('default');
+    expect(root.dataset.state).toBeUndefined();
     disabled.remove();
   });
 
@@ -134,7 +136,7 @@ describe('CustomCursor', () => {
     textarea.remove();
   });
 
-  it('enters press state and spawns the click burst on interactive press', () => {
+  it('spawns the click burst only after an enabled button click', () => {
     stubMatchMedia({ fine: true });
     const { container } = render(<CustomCursor />);
     const root = container.querySelector('.qyvora-cursor-root') as HTMLElement;
@@ -143,20 +145,17 @@ describe('CustomCursor', () => {
     const button = document.createElement('button');
     document.body.appendChild(button);
     dispatchPointer(button, 'pointermove', { clientX: 12, clientY: 24 });
-    dispatchPointer(button, 'pointerdown', { clientX: 12, clientY: 24 });
+    dispatchPointer(button, 'click', { clientX: 12, clientY: 24 });
 
-    expect(root.dataset.state).toBe('press');
     // 1 ripple + 8 sparks on an interactive target
     expect(burst.querySelectorAll('.cc-burst-wrap').length).toBe(9);
     expect(burst.querySelectorAll('.cc-ripple').length).toBe(1);
     expect(burst.querySelectorAll('.cc-spark').length).toBe(8);
 
-    dispatchPointer(button, 'pointerup', { clientX: 12, clientY: 24 });
-    expect(root.dataset.state).toBe('hover');
     button.remove();
   });
 
-  it('spawns a lighter burst on non-interactive surfaces', () => {
+  it('does not spawn a burst on non-button surfaces', () => {
     stubMatchMedia({ fine: true });
     const { container } = render(<CustomCursor />);
     const root = container.querySelector('.qyvora-cursor-root') as HTMLElement;
@@ -165,10 +164,9 @@ describe('CustomCursor', () => {
     const plain = document.createElement('div');
     document.body.appendChild(plain);
     dispatchPointer(plain, 'pointermove', { clientX: 5, clientY: 5 });
-    dispatchPointer(plain, 'pointerdown', { clientX: 5, clientY: 5 });
+    dispatchPointer(plain, 'click', { clientX: 5, clientY: 5 });
 
-    expect(burst.querySelectorAll('.cc-ripple').length).toBe(1);
-    expect(burst.querySelectorAll('.cc-spark').length).toBe(4);
+    expect(burst.childElementCount).toBe(0);
     plain.remove();
   });
 
@@ -193,13 +191,13 @@ describe('CustomCursor', () => {
     const root = container.querySelector('.qyvora-cursor-root') as HTMLElement;
     const burst = root.querySelector('.cc-burst-layer') as HTMLElement;
 
-    const plain = document.createElement('div');
-    document.body.appendChild(plain);
-    dispatchPointer(plain, 'pointermove', { clientX: 5, clientY: 5 });
-    dispatchPointer(plain, 'pointerdown', { clientX: 5, clientY: 5 });
+    const button = document.createElement('button');
+    document.body.appendChild(button);
+    dispatchPointer(button, 'pointermove', { clientX: 5, clientY: 5 });
+    dispatchPointer(button, 'click', { clientX: 5, clientY: 5 });
 
     expect(burst.childElementCount).toBe(0);
-    plain.remove();
+    button.remove();
   });
 
   it('renders an arrow-shaped glyph and tracks the pointer 1:1 (no lag)', () => {
@@ -219,28 +217,25 @@ describe('CustomCursor', () => {
     surface.remove();
   });
 
-  it('morphs into a pointing finger with a HUD lock frame over pointable targets', () => {
+  it('uses a steady arrow without finger or target graphics over buttons', () => {
     stubMatchMedia({ fine: true });
     const { container } = render(<CustomCursor />);
     const root = container.querySelector('.qyvora-cursor-root') as HTMLElement;
-    expect(container.querySelector('.cc-finger')).not.toBeNull();
-    // Finger layer = accent gap-patch (under) + lucide glyph (over).
-    expect(container.querySelectorAll('.cc-finger').length).toBe(2);
-    expect(container.querySelector('.cc-lock')).not.toBeNull();
-    expect(root.dataset.hover).toBe('false');
+    expect(container.querySelector('.cc-finger')).toBeNull();
+    expect(container.querySelector('.cc-lock')).toBeNull();
 
     const button = document.createElement('button');
     document.body.appendChild(button);
     dispatchPointer(button, 'pointermove', { clientX: 10, clientY: 10 });
-    expect(root.dataset.hover).toBe('true');
-    expect(root.dataset.state).toBe('hover');
+    expect(root.dataset.hover).toBeUndefined();
+    expect(root.dataset.state).toBeUndefined();
 
-    // Leaving for plain content reverts to the arrow.
+    // The pointer remains a plain arrow over non-interactive content.
     const plain = document.createElement('div');
     document.body.appendChild(plain);
     dispatchPointer(plain, 'pointermove', { clientX: 60, clientY: 60 });
-    expect(root.dataset.hover).toBe('false');
-    expect(root.dataset.state).toBe('default');
+    expect(root.dataset.hover).toBeUndefined();
+    expect(root.dataset.state).toBeUndefined();
     button.remove();
     plain.remove();
   });
@@ -259,7 +254,7 @@ describe('CustomCursor', () => {
     expect(wrap.style.transform).toBe('translate3d(33px, 77px, 0)');
 
     dispatchPointer(surface, 'mousedown', { clientX: 33, clientY: 77 });
-    expect(root.dataset.state).toBe('press');
+    expect(root.dataset.state).toBeUndefined();
     surface.remove();
   });
 });
