@@ -75,7 +75,7 @@ export function WalkthroughStep({
             <Target className="w-4 h-4 text-accent shrink-0 mt-0.5" />
             <div>
               <p className="text-xs font-black uppercase tracking-widest text-accent mb-1">Mission</p>
-              <p className="text-sm font-mono text-text-secondary leading-[2]">{mission}</p>
+              <p className="text-base font-mono text-text-secondary leading-[1.9] md:text-lg">{mission}</p>
             </div>
           </div>
         )}
@@ -98,7 +98,7 @@ export function WalkthroughStep({
                       <span aria-hidden="true" className="absolute top-7 -bottom-5 left-1/2 -translate-x-1/2 w-px bg-border/40" />
                     )}
                   </div>
-                  <p className="text-sm md:text-base font-mono text-text-secondary leading-[2] md:leading-[2.2] pt-1 min-w-0">{obj}</p>
+                  <p className="text-base md:text-lg font-mono text-text-secondary leading-[1.9] md:leading-[2] pt-1 min-w-0">{obj}</p>
                 </li>
               ))}
             </ol>
@@ -106,7 +106,7 @@ export function WalkthroughStep({
         )}
 
         {/* Narrative — continuous reading flow */}
-        <div className="w-full text-sm md:text-base text-text-secondary font-mono leading-[2] md:leading-[2.2] mb-6 md:mb-8">
+        <div className="w-full text-base md:text-lg text-text-secondary font-mono leading-[1.9] md:leading-[2] mb-6 md:mb-8">
           <EducationalMarkdownRenderer text={narrative} />
         </div>
 
@@ -124,7 +124,7 @@ export function WalkthroughStep({
             </div>
             <ul className="p-4 space-y-1.5">
               {evidence.map((item, i) => (
-                <li key={i} className="flex items-start gap-2 font-mono text-xs md:text-sm text-text-secondary leading-[2] md:leading-[2.2]">
+                <li key={i} className="flex items-start gap-2 font-mono text-sm md:text-base text-text-secondary leading-[1.9] md:leading-[2]">
                   <span className="text-accent shrink-0 select-none">{'>'}</span>
                   <span className="whitespace-pre-wrap break-words min-w-0">{item}</span>
                 </li>
@@ -148,7 +148,7 @@ export function WalkthroughStep({
                   <p className="text-xs font-black uppercase tracking-widest text-warning/60 mb-1">
                     Hint {ph.level}, {HINT_LEVEL_LABELS[ph.level - 1]}
                   </p>
-                  <p className="text-sm font-mono text-warning/80 leading-[2] md:leading-[2.2]">{ph.content}</p>
+                  <p className="text-base font-mono text-warning/80 leading-[1.9] md:text-lg md:leading-[2]">{ph.content}</p>
                 </div>
               </div>
             ))}
@@ -174,7 +174,7 @@ export function WalkthroughStep({
             {showHint ? (
               <div className="rounded-xl border border-warning/20 bg-warning/5 px-5 py-4 flex items-start gap-2">
                 <Lightbulb className="w-4 h-4 text-warning shrink-0 mt-0.5" />
-                <p className="text-sm font-mono text-warning/80 leading-[2] md:leading-[2.2]">{hint}</p>
+                <p className="text-base font-mono text-warning/80 leading-[1.9] md:text-lg md:leading-[2]">{hint}</p>
               </div>
             ) : (
               <button
@@ -218,7 +218,7 @@ export function WalkthroughStep({
               <MessageSquare className="w-4 h-4 text-accent" />
               <p className="text-xs font-black uppercase tracking-widest text-accent">Reflection</p>
             </div>
-            <p className="text-sm font-mono text-text-secondary leading-[2] md:leading-[2.2] whitespace-pre-wrap">{reflection}</p>
+            <p className="text-base font-mono text-text-secondary leading-[1.9] md:text-lg md:leading-[2] whitespace-pre-wrap">{reflection}</p>
           </div>
         )}
 

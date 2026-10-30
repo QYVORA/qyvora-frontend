@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Copy } from 'lucide-react';
 import { IconCheck, IconTerminal } from '@/shared/components/icons';
 import { tokeniseBash, TOKEN_CLASS } from './bashTokenizer';
+import { CommandExplanation } from '@/shared/components/learning/CommandExplanation';
 
 // ── Copy button ───────────────────────────────────────────────────────────────
 const CopyBtn: React.FC<{ text: string }> = ({ text }) => {
@@ -52,11 +53,11 @@ const FencedCodeBlock: React.FC<{ code: string; lang: string }> = ({ code, lang 
 
       {/* Code area */}
       <div className="overflow-x-auto">
-        <pre className="px-3 py-3 text-sm font-mono leading-relaxed">
+        <pre className="px-4 py-4 text-base font-mono leading-relaxed md:text-lg">
           {lines.map((line, lineIdx) => (
             <div key={lineIdx} className="flex">
               {/* Line number */}
-              <span className="select-none mr-3 text-xs text-text-muted/30 w-4 shrink-0 text-right">
+              <span className="mr-3 w-5 shrink-0 select-none text-right text-sm text-text-muted/30">
                 {lineIdx + 1}
               </span>
               {/* Tokenised line */}
@@ -74,6 +75,7 @@ const FencedCodeBlock: React.FC<{ code: string; lang: string }> = ({ code, lang 
           ))}
         </pre>
       </div>
+      {isBash && <CommandExplanation command={code} collapsible />}
     </div>
   );
 };

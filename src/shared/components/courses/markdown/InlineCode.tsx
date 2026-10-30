@@ -20,7 +20,7 @@ const InlineCode: React.FC<{ code: string }> = ({ code }) => {
       type="button"
       onClick={copy}
       title="Click to copy"
-      className={`group/inline inline-flex items-center gap-1 mx-0.5 px-1.5 py-px rounded-[4px] border font-mono text-xs leading-snug transition-[border-color,background-color,color] align-middle whitespace-nowrap ${
+      className={`group/inline inline-flex items-center gap-1 mx-0.5 px-1.5 py-px rounded-[4px] border font-mono text-sm leading-snug transition-[border-color,background-color,color] align-middle whitespace-nowrap ${
         copied
           ? 'border-accent/50 bg-accent-dim text-accent'
           : 'border-border bg-code-bg text-accent hover:border-accent/40'

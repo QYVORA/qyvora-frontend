@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Copy, Terminal } from 'lucide-react';
 import { IconCheck } from '@/shared/components/icons';
+import { CommandExplanation } from '@/shared/components/learning/CommandExplanation';
 import { cn } from '@/shared/utils/cn';
 
 export function CommandBlock({ command, labId, showConnect = true }: { command: string; labId: string; showConnect?: boolean }) {
@@ -33,11 +34,12 @@ export function CommandBlock({ command, labId, showConnect = true }: { command: 
         <div className="px-3 py-2 font-mono overflow-x-auto">
           <div className="flex items-center gap-2 min-w-0">
             <span className="text-accent shrink-0">$</span>
-            <code className="text-xs md:text-sm text-accent break-all whitespace-pre-wrap">{command}</code>
+            <code className="text-sm md:text-base text-accent break-all whitespace-pre-wrap">{command}</code>
           </div>
         </div>
       </div>
-      {showConnect && <p className="text-xs text-text-muted font-mono">Connect: <span className="text-accent">qyvora connect {labId}</span></p>}
+      <CommandExplanation command={command} />
+      {showConnect && <p className="text-sm text-text-muted font-mono">Connect: <span className="text-accent">qyvora connect {labId}</span></p>}
     </div>
   );
 }

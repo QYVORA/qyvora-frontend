@@ -10,11 +10,13 @@ import { Copy, Check } from 'lucide-react';
 import { IconTerminal } from '@/shared/components/icons';
 import type { CodeBlock } from '../types/blocks';
 import type { BlockRendererProps } from '../utils/blockRegistry';
+import { CommandExplanation } from '@/shared/components/learning/CommandExplanation';
 
 export const CodeSnippetBlockComponent: React.FC<BlockRendererProps<CodeBlock>> = ({ block }) => {
   const [copied, setCopied] = useState(false);
   const lines = block.code.split('\n');
   const highlightSet = new Set(block.highlights ?? []);
+  const isShell = ['bash', 'sh', 'shell'].includes(block.language.toLowerCase());
 
   const copy = async (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -47,7 +49,7 @@ export const CodeSnippetBlockComponent: React.FC<BlockRendererProps<CodeBlock>> 
       </div>
 
       <div className="overflow-x-auto">
-        <pre className="px-3 py-3 text-base font-mono leading-relaxed">
+        <pre className="px-4 py-4 text-base font-mono leading-relaxed md:text-lg">
           {lines.map((line, i) => (
             <div key={i} className={`flex rounded-sm ${highlightSet.has(i + 1) ? 'bg-accent-dim' : ''}`}>
               <span className="mr-3 w-4 shrink-0 select-none text-right text-xs text-text-muted/30">{i + 1}</span>
@@ -56,6 +58,8 @@ export const CodeSnippetBlockComponent: React.FC<BlockRendererProps<CodeBlock>> 
           ))}
         </pre>
       </div>
+
+      {isShell && <CommandExplanation command={block.code} collapsible />}
 
       {block.explanation && (
         <p className="border-t border-border/30 bg-bg-elevated px-4 py-3 text-base font-mono text-text-secondary leading-relaxed">

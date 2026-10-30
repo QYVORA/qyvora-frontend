@@ -25,6 +25,8 @@ interface FlowDiagramProps {
   icon?: ReactNode;
   caption?: string;
   className?: string;
+  /** Smaller nodes and arrows for section maps with many items. */
+  compact?: boolean;
 }
 
 const STATUS_STYLES = {
@@ -36,20 +38,22 @@ const STATUS_STYLES = {
   success: 'border-accent/60 bg-accent/10 text-accent',
 };
 
-const NODE_SIZE = 'w-28 h-20 md:w-36 md:h-24';
+const NODE_SIZE = 'w-32 h-24 md:w-40 md:h-28';
+const COMPACT_NODE_SIZE = 'w-24 h-20 md:w-[7.5rem] md:h-24';
 
-function FlowArrowHorizontal({ arrow }: { arrow: FlowArrow }) {
+function FlowArrowHorizontal({ arrow, compact = false }: { arrow: FlowArrow; compact?: boolean }) {
   const dashStyle = arrow.type === 'dashed' ? 'stroke-dasharray="6 3"' : arrow.type === 'dotted' ? 'stroke-dasharray="2 2"' : '';
+  const width = compact ? 32 : 60;
   return (
     <div className="flex flex-col items-center justify-center px-1">
-      <svg width="60" height="24" viewBox="0 0 60 24" className="shrink-0">
+      <svg width={width} height="24" viewBox={`0 0 ${width} 24`} className="shrink-0">
         <defs>
           <marker id={`arrowhead-${arrow.from}-${arrow.to}`} markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
             <polygon points="0 0, 8 3, 0 6" fill="currentColor" className="text-accent/60" />
           </marker>
         </defs>
         <line
-          x1="0" y1="12" x2="50" y2="12"
+          x1="0" y1="12" x2={width - 10} y2="12"
           stroke="currentColor"
           strokeWidth="2"
           className="text-accent/40"
@@ -88,10 +92,10 @@ function FlowArrowVertical({ arrow }: { arrow: FlowArrow }) {
   );
 }
 
-function FlowNodeBox({ node }: { node: FlowNode }) {
+function FlowNodeBox({ node, compact = false }: { node: FlowNode; compact?: boolean }) {
   return (
     <div className={cn(
-      NODE_SIZE,
+      compact ? COMPACT_NODE_SIZE : NODE_SIZE,
       'rounded-xl border flex flex-col items-center justify-center text-center px-2 transition-[border-color,background-color,color,box-shadow,transform]',
       STATUS_STYLES[node.status || 'default'],
     )}>
@@ -100,15 +104,15 @@ function FlowNodeBox({ node }: { node: FlowNode }) {
           {node.icon}
         </span>
       )}
-      <span className="text-xs md:text-xs font-black uppercase tracking-wider leading-tight">{node.label}</span>
+      <span className={cn('font-black uppercase tracking-wide leading-tight', compact ? 'text-[10px] md:text-xs' : 'text-xs md:text-sm')}>{node.label}</span>
       {node.sublabel && (
-        <span className="text-xs md:text-xs font-mono opacity-70 mt-0.5">{node.sublabel}</span>
+        <span className={cn('font-mono opacity-70 mt-1', compact ? 'text-[10px] md:text-[11px]' : 'text-[11px] md:text-xs')}>{node.sublabel}</span>
       )}
     </div>
   );
 }
 
-export function FlowDiagram({ nodes, arrows, direction = 'horizontal', title, icon, caption, className }: FlowDiagramProps) {
+export function FlowDiagram({ nodes, arrows, direction = 'horizontal', title, icon, caption, className, compact = false }: FlowDiagramProps) {
   const nodeMap = new Map(nodes.map(n => [n.id, n]));
   const ArrowComponent = direction === 'horizontal' ? FlowArrowHorizontal : FlowArrowVertical;
 
@@ -122,9 +126,9 @@ export function FlowDiagram({ nodes, arrows, direction = 'horizontal', title, ic
             if (!fromNode || !toNode) return null;
             return (
               <div key={i} className="flex items-center">
-                {i === 0 && <FlowNodeBox node={fromNode} />}
-                <ArrowComponent arrow={arrow} />
-                <FlowNodeBox node={toNode} />
+                {i === 0 && <FlowNodeBox node={fromNode} compact={compact} />}
+                <ArrowComponent arrow={arrow} compact={compact} />
+                <FlowNodeBox node={toNode} compact={compact} />
               </div>
             );
           })}
@@ -143,9 +147,9 @@ export function FlowDiagram({ nodes, arrows, direction = 'horizontal', title, ic
           if (!fromNode || !toNode) return null;
           return (
             <div key={i} className="flex flex-col items-center">
-              {i === 0 && <FlowNodeBox node={fromNode} />}
-              <ArrowComponent arrow={arrow} />
-              <FlowNodeBox node={toNode} />
+              {i === 0 && <FlowNodeBox node={fromNode} compact={compact} />}
+              <ArrowComponent arrow={arrow} compact={compact} />
+              <FlowNodeBox node={toNode} compact={compact} />
             </div>
           );
         })}

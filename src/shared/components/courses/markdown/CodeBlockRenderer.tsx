@@ -61,14 +61,14 @@ const CodeBlockRenderer: React.FC<{ text: string }> = ({ text }) => {
           <li className="leading-[2] md:leading-[2.2]">{children}</li>
         ),
         blockquote: ({ children }) => (
-          <blockquote className="border-l-2 border-accent/40 pl-4 md:pl-6 italic text-text-secondary font-mono leading-[2] md:leading-[2.2] mb-6 md:mb-8 max-w-none">
+          <blockquote className="border-l-2 border-accent/40 pl-4 md:pl-6 italic text-text-secondary font-mono text-base leading-[1.9] md:text-lg md:leading-[2] mb-6 md:mb-8 max-w-none">
             {children}
           </blockquote>
         ),
         hr: () => <hr className="my-10 md:my-12 border-border/30" />,
         table: ({ children }) => (
           <div className="wc-table my-8 md:my-10 overflow-x-auto rounded-xl border border-border/50 bg-bg-card">
-            <table className="w-full min-w-[520px] border-collapse text-left text-sm md:text-base font-mono">
+            <table className="w-full min-w-[520px] border-collapse text-left text-base md:text-lg font-mono">
               {children}
             </table>
           </div>

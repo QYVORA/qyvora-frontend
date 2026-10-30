@@ -111,7 +111,7 @@ describe('WalkthroughLayout continuous rendering', () => {
 
   it('renders an outline with one link per step', () => {
     renderWalkthrough(<StatefulHarness />);
-    expect(screen.getByRole('navigation', { name: /on this page/i })).toBeInTheDocument();
+    expect(screen.getByRole('navigation', { name: /learning sections/i })).toBeInTheDocument();
     for (const title of STEP_TITLES) {
       expect(screen.getByRole('link', { name: title })).toHaveAttribute(
         'href',

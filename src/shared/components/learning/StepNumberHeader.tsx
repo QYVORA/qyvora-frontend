@@ -52,7 +52,7 @@ export function StepNumberHeader({
       <div className="mb-8 md:mb-12 flex items-center gap-4">
         <div
           className={cn(
-            'flex h-12 w-12 shrink-0 items-center justify-center rounded-xl border font-mono text-lg font-black',
+            'flex h-14 w-14 shrink-0 items-center justify-center rounded-xl border font-mono text-xl font-black md:h-16 md:w-16 md:text-2xl',
             isActive
               ? 'bg-accent border-accent text-on-accent'
               : isCompleted
@@ -66,11 +66,11 @@ export function StepNumberHeader({
             String(stepNumber).padStart(2, '0')
           )}
         </div>
-        <div className="flex-1 min-w-0 flex items-center gap-3 flex-wrap">
+        <div className="flex min-w-0 flex-1 flex-wrap items-center gap-3">
           <span
             className={cn(
-              'block font-black uppercase tracking-[0.25em] transition-colors duration-300',
-              isActive ? 'text-accent text-xs' : isCompleted ? 'text-accent text-xs' : 'text-text-muted text-xs',
+              'block font-black uppercase tracking-tight transition-colors duration-300',
+              isActive ? 'text-accent text-2xl md:text-3xl' : isCompleted ? 'text-accent text-2xl md:text-3xl' : 'text-text-muted text-2xl md:text-3xl',
             )}
           >
             {title}

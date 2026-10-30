@@ -9,6 +9,7 @@ import React, { useState } from 'react';
 import { Copy, Check, Terminal } from 'lucide-react';
 import type { CommandBlock } from '../types/blocks';
 import type { BlockRendererProps } from '../utils/blockRegistry';
+import { CommandExplanation } from '@/shared/components/learning/CommandExplanation';
 
 export const CommandBlockComponent: React.FC<BlockRendererProps<CommandBlock>> = ({ block }) => {
   const [copied, setCopied] = useState(false);
@@ -55,9 +56,15 @@ export const CommandBlockComponent: React.FC<BlockRendererProps<CommandBlock>> =
       </div>
       
       {/* Command */}
-      <pre className="px-3 py-2 font-mono text-xs md:text-sm text-accent overflow-x-auto">
+      <pre className="px-4 py-3 font-mono text-sm md:text-base text-accent overflow-x-auto">
         <code>{block.command}</code>
       </pre>
+
+      {!block.explanation && (
+        <div className="border-t border-border/20 p-3">
+          <CommandExplanation command={block.command} />
+        </div>
+      )}
       
       {/* Explanation sections */}
       {block.explanation && (
@@ -67,7 +74,7 @@ export const CommandBlockComponent: React.FC<BlockRendererProps<CommandBlock>> =
               <p className="text-xs font-black uppercase tracking-widest text-text-muted mb-1">
                 What it does
               </p>
-              <p className="text-base font-mono text-text-secondary leading-relaxed">
+              <p className="text-lg font-mono text-text-secondary leading-relaxed">
                 {block.explanation.what}
               </p>
             </div>
@@ -78,7 +85,7 @@ export const CommandBlockComponent: React.FC<BlockRendererProps<CommandBlock>> =
               <p className="text-xs font-black uppercase tracking-widest text-text-muted mb-1">
                 Why
               </p>
-              <p className="text-base font-mono text-text-secondary leading-relaxed">
+              <p className="text-lg font-mono text-text-secondary leading-relaxed">
                 {block.explanation.why}
               </p>
             </div>
@@ -89,7 +96,7 @@ export const CommandBlockComponent: React.FC<BlockRendererProps<CommandBlock>> =
               <p className="text-xs font-black uppercase tracking-widest text-text-muted mb-1">
                 What to watch for
               </p>
-              <p className="text-base font-mono text-text-secondary leading-relaxed">
+              <p className="text-lg font-mono text-text-secondary leading-relaxed">
                 {block.explanation.watch}
               </p>
             </div>
@@ -122,7 +129,7 @@ export const CommandBlockComponent: React.FC<BlockRendererProps<CommandBlock>> =
           <p className="text-xs font-black uppercase tracking-widest text-text-muted mb-2">
             Expected Output
           </p>
-          <pre className="text-xs md:text-base font-mono text-text-secondary leading-relaxed overflow-x-auto">
+          <pre className="text-xs md:text-lg font-mono text-text-secondary leading-relaxed overflow-x-auto">
             <code>{block.expectedOutput}</code>
           </pre>
         </div>
