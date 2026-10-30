@@ -8,6 +8,11 @@ export interface WorkspaceStat {
   accent?: boolean;
 }
 
+export interface LearningOutlineItem {
+  id: string;
+  label: React.ReactNode;
+}
+
 interface WorkspaceProgress {
   /** 0–100 completion percent. */
   value: number;
@@ -30,6 +35,8 @@ interface LearningWorkspaceShellProps {
   progress?: WorkspaceProgress;
   /** Right-aligned contextual action slot (connections, status chips). */
   actions?: React.ReactNode;
+  /** Sticky in-page section navigation for continuous learning pages. */
+  outline?: LearningOutlineItem[];
   children?: React.ReactNode;
 }
 
@@ -52,6 +59,7 @@ const LearningWorkspaceShell: React.FC<LearningWorkspaceShellProps> = ({
   stats,
   progress,
   actions,
+  outline,
   children,
 }) => (
   <div className="min-h-dvh w-full bg-canvas">
@@ -120,7 +128,30 @@ const LearningWorkspaceShell: React.FC<LearningWorkspaceShellProps> = ({
         )}
       </header>
 
-      {children}
+      {outline && outline.length > 0 ? (
+        <div className="flex flex-col gap-8 lg:flex-row lg:items-start lg:gap-10">
+          <aside className="lg:w-56 lg:shrink-0">
+            <nav aria-label="On this page" className="lg:sticky lg:top-24">
+              <p className="mb-2 type-label uppercase tracking-[0.12em] text-text-muted">On this page</p>
+              <ol className="flex gap-2 overflow-x-auto pb-2 lg:flex-col lg:overflow-visible lg:pb-0">
+                {outline.map((item) => (
+                  <li key={item.id} className="shrink-0 lg:shrink">
+                    <a
+                      href={`#${item.id}`}
+                      className="block rounded-lg border border-transparent px-3 py-2 text-sm font-bold text-text-secondary transition-colors hover:border-border/30 hover:bg-surface-raised hover:text-accent"
+                    >
+                      {item.label}
+                    </a>
+                  </li>
+                ))}
+              </ol>
+            </nav>
+          </aside>
+          <div className="min-w-0 flex-1">{children}</div>
+        </div>
+      ) : (
+        children
+      )}
     </div>
   </div>
 );

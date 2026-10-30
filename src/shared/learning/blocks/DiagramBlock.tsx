@@ -1,77 +1,91 @@
 /**
  * DIAGRAM BLOCK
  * =============
- * Generic diagram renderer. Supports a `nodes`+`connections` graph payload
- * (flow/sequence/network) and falls back to a serialised view for custom data.
+ * Generic diagram renderer. Flow/sequence/network payloads render through the
+ * shared FlowDiagram/DiagramFrame primitives; kill-chain payloads render through
+ * the existing KillChainDiagramSimple. Unknown payloads fall back to JSON.
  */
 
 import React from 'react';
 import { ChartSpline } from 'lucide-react';
 import type { DiagramBlock } from '../types/blocks';
 import type { BlockRendererProps } from '../utils/blockRegistry';
+import {
+  FlowDiagram,
+  type FlowArrow,
+  type FlowNode,
+} from '@/shared/components/diagrams/FlowDiagram';
+import { KillChainDiagramSimple } from '@/shared/components/diagrams/KillChainDiagram';
+import { DiagramFrame } from '@/shared/components/diagrams/DiagramFrame';
 
-interface NamedNode {
-  id: string;
-  label?: string;
-  description?: string;
+interface FlowPayload {
+  nodes: FlowNode[];
+  arrows?: FlowArrow[];
+  connections?: Array<{ from: string; to: string; label?: string }>;
+  direction?: 'horizontal' | 'vertical';
 }
 
-interface NamedConnection {
-  from: string;
-  to: string;
-  label?: string;
+interface KillChainPayload {
+  variant: 'kill-chain';
+  phases: string[];
+  currentPhaseIndex?: number;
+  completedPhaseIds?: string[];
 }
 
-const isGraphPayload = (content: any): content is { nodes: NamedNode[]; connections?: NamedConnection[] } =>
+const isFlowPayload = (content: any): content is FlowPayload =>
   Boolean(content && Array.isArray(content.nodes));
+
+const isKillChainPayload = (content: any): content is KillChainPayload =>
+  Boolean(content && content.variant === 'kill-chain' && Array.isArray(content.phases));
 
 export const DiagramBlockComponent: React.FC<BlockRendererProps<DiagramBlock>> = ({ block }) => {
   const title = block.title ?? 'Diagram';
-  const { diagramType } = block;
+  const { diagramType, content, caption } = block;
+
+  if (isKillChainPayload(content)) {
+    return (
+      <KillChainDiagramSimple
+        phases={content.phases}
+        currentPhaseIndex={content.currentPhaseIndex}
+        completedPhaseIds={content.completedPhaseIds}
+      />
+    );
+  }
+
+  if (isFlowPayload(content)) {
+    const arrows: FlowArrow[] =
+      content.arrows ??
+      (content.connections ?? []).map((connection) => ({
+        from: connection.from,
+        to: connection.to,
+        label: connection.label,
+      }));
+
+    return (
+      <FlowDiagram
+        title={title}
+        nodes={content.nodes}
+        arrows={arrows}
+        direction={content.direction ?? (diagramType === 'flow' ? 'horizontal' : 'vertical')}
+        caption={caption}
+      />
+    );
+  }
 
   return (
-    <div className="rounded-2xl border border-border/50 bg-bg-card px-5 py-4">
-      <div className="flex items-center gap-2 mb-4">
-        <ChartSpline className="w-4 h-4 text-accent" aria-hidden="true" />
-        <p className="text-xs font-black uppercase tracking-widest text-accent">{title}</p>
+    <DiagramFrame title={title} icon={<ChartSpline className="w-4 h-4 text-accent" />}>
+      <div className="mb-3 flex items-center gap-2">
         <span className="ml-auto rounded-md border border-border/30 bg-bg-elevated px-2 py-0.5 text-[10px] font-mono uppercase tracking-widest text-text-muted">
           {diagramType}
         </span>
       </div>
-
-      {isGraphPayload(block.content) ? (
-        <ol className="space-y-3" role="list">
-          {block.content.nodes.map((node) => {
-            const outgoing = (block.content?.connections ?? []).filter((c) => c.from === node.id);
-            return (
-              <li key={node.id}>
-                <div className="rounded-xl border border-accent/25 bg-accent-dim px-4 py-3">
-                  <p className="text-sm font-black text-text-primary">{node.label ?? node.id}</p>
-                  {node.description && <p className="mt-1 text-base font-mono text-text-secondary leading-relaxed">{node.description}</p>}
-                </div>
-                {outgoing.length > 0 && (
-                  <div className="ml-4 mt-1.5 space-y-1 text-xs font-mono text-text-muted">
-                    {outgoing.map((c, i) => (
-                      <p key={i}>
-                        → {c.label ? `${c.label} ` : ''}{block.content?.nodes.find((n) => n.id === c.to)?.label ?? c.to}
-                      </p>
-                    ))}
-                  </div>
-                )}
-              </li>
-            );
-          })}
-        </ol>
-      ) : (
-        <div className="wc-code overflow-x-auto rounded-xl border border-border/40 bg-bg p-4">
-          <pre className="text-xs font-mono text-text-secondary leading-relaxed">
-            {JSON.stringify(block.content, null, 2)}
-          </pre>
-        </div>
-      )}
-
-      {block.caption && <p className="mt-4 text-base font-mono text-text-muted leading-relaxed">{block.caption}</p>}
-    </div>
+      <div className="wc-code overflow-x-auto rounded-xl border border-border/40 bg-bg p-4">
+        <pre className="text-xs font-mono text-text-secondary leading-relaxed">
+          {JSON.stringify(content, null, 2)}
+        </pre>
+      </div>
+      {caption && <p className="mt-4 text-base font-mono text-text-muted leading-relaxed">{caption}</p>}
+    </DiagramFrame>
   );
 };
 

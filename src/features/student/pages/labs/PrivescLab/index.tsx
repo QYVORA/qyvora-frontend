@@ -3,7 +3,7 @@ import { Shield, User, Folder, Cog, Crown } from 'lucide-react';
 import LearningAccordion from '@/shared/components/learning/LearningAccordion';
 import LabPage from '@/shared/components/learning/LabPage';
 import { WalkthroughLayout } from '@/shared/components/walkthrough/WalkthroughLayout';
-import { WalkthroughDeckStep } from '@/shared/components/walkthrough/';
+import { WalkthroughStep } from '@/shared/components/walkthrough/';
 import type { FocusedStepListItem } from '@/shared/components/learning/FocusedStepList';
 import { PRIVESC_SCENARIOS } from '@/features/student/data/simulations';
 import type { PrivescScenario } from '@/features/student/data/simulations';
@@ -135,9 +135,8 @@ const PrivescLab = () => {
             activeStepIndex={activeIndex}
             onStepSelect={setViewStepIdx}
             stepIdPrefix="ws-step"
-            focused
           >
-            <WalkthroughDeckStep
+            <WalkthroughStep
               stepIndex={0}
               title="Mission Briefing"
               narrative={`## ${activeScenario.title}\n\n${activeScenario.description}\n\n**Technique:** ${activeScenario.technique}\n\n**Difficulty:** ${activeScenario.difficulty.charAt(0).toUpperCase() + activeScenario.difficulty.slice(1)}`}
@@ -161,7 +160,7 @@ const PrivescLab = () => {
             {chapters.map((chapter, i) => {
               const { isLocked, isCompleted, isActive } = getStepState(i);
               return (
-                <WalkthroughDeckStep
+                <WalkthroughStep
                   key={chapter.id}
                   stepIndex={i + 1}
                   title={chapter.title}
@@ -187,11 +186,11 @@ const PrivescLab = () => {
                       direction="horizontal"
                     />
                   )}
-                </WalkthroughDeckStep>
+                </WalkthroughStep>
               );
             })}
 
-            <WalkthroughDeckStep
+            <WalkthroughStep
               stepIndex={chapters.length + 1}
               title="Mission Debrief"
               narrative={`## Mission Complete\n\nYou successfully exploited the **${activeScenario.technique}** vulnerability to escalate from a low-privilege user to root.\n\n### Key Takeaways\n\n- **${activeScenario.technique}** is a common privilege escalation vector\n- Always audit SUID binaries and their configurations\n- Understanding the underlying technique is critical for both attack and defense\n\n### What to Remember\n\nThis technique applies to real-world Linux environments. Always follow responsible disclosure when discovering vulnerabilities.`}

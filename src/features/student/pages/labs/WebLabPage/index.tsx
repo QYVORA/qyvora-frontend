@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { WalkthroughLayout, WalkthroughDeckStep } from '@/shared/components/walkthrough/';
+import { WalkthroughLayout, WalkthroughStep } from '@/shared/components/walkthrough/';
 import type { FocusedStepListItem } from '@/shared/components/learning/FocusedStepList';
 import LearningAccordion from '@/shared/components/learning/LearningAccordion';
 import LabPage from '@/shared/components/learning/LabPage';
@@ -143,9 +143,8 @@ const WebLabPage: React.FC<WebLabPageProps> = ({
             activeStepIndex={activeIndex}
             onStepSelect={setViewStepIdx}
             stepIdPrefix="ws-step"
-            focused
           >
-            <WalkthroughDeckStep
+            <WalkthroughStep
               stepIndex={0}
               title="Mission Briefing"
               narrative={`## ${activeScenario.name}\n\n${activeScenario.narrative || activeScenario.description}\n\n**Module:** ${activeScenario.module}\n\n**Target:** ${activeScenario.url}\n\n**Technique:** ${activeScenario.technique}`}
@@ -172,7 +171,7 @@ const WebLabPage: React.FC<WebLabPageProps> = ({
               const stepId = `${activeScenario.id}-step-${index}`;
 
               return (
-                <WalkthroughDeckStep
+                <WalkthroughStep
                   key={index}
                   stepIndex={index + 1}
                   title={`Step ${index + 1}`}
@@ -203,7 +202,7 @@ const WebLabPage: React.FC<WebLabPageProps> = ({
               );
             })}
 
-            <WalkthroughDeckStep
+            <WalkthroughStep
               stepIndex={activeScenario.steps.length + 1}
               title="Mission Debrief"
               narrative={`## ${activeScenario.technique} Complete\n\nYou successfully executed the **${activeScenario.technique}** technique against ${activeScenario.name}.\n\n### Key Takeaways\n\n${activeScenario.objectives.map((o) => `- ${o}`).join('\n')}\n\n### What to Remember\n\nEvery finding follows the same discipline: understand, discover, validate, exploit in the lab, collect evidence, and report. The flag you captured proves the exploit worked — now write it up as you would in a real assessment.`}

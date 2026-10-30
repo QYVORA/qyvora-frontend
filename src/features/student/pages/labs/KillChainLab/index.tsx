@@ -1,6 +1,6 @@
 import { useState, useMemo } from 'react';
 import { Target } from 'lucide-react';
-import { WalkthroughLayout, WalkthroughDeckStep } from '@/shared/components/walkthrough/';
+import { WalkthroughLayout, WalkthroughStep } from '@/shared/components/walkthrough/';
 import LearningAccordion from '@/shared/components/learning/LearningAccordion';
 import LabPage from '@/shared/components/learning/LabPage';
 import type { FocusedStepListItem } from '@/shared/components/learning/FocusedStepList';
@@ -179,9 +179,8 @@ const KillChainLab = () => {
             activeStepIndex={activeIndex}
             onStepSelect={setViewStepIdx}
             stepIdPrefix="ws-step"
-            focused
           >
-            <WalkthroughDeckStep
+            <WalkthroughStep
               stepIndex={0}
               title="Mission Briefing"
               narrative={`## ${activeScenario.title}\n\n${activeScenario.description}\n\n**Target:** ${activeScenario.targetDescription}\n\n**Phases:** ${activeScenario.phases.length}`}
@@ -212,7 +211,7 @@ const KillChainLab = () => {
                   completedPhaseIds={completedPhaseIds}
                 />
               </div>
-            </WalkthroughDeckStep>
+            </WalkthroughStep>
 
             {commandSteps.map((st, i) => {
               const { isLocked, isCompleted, isActive } = getStepState(i);
@@ -225,7 +224,7 @@ const KillChainLab = () => {
                 : `## ${st.phase.name}. Command ${st.cmdIdx + 1}\n\n${st.command.explanation}\n\nExecute the command below to advance the kill chain.`;
 
               return (
-                <WalkthroughDeckStep
+                <WalkthroughStep
                   key={`${st.phase.id}-${st.cmdIdx}`}
                   stepIndex={i + 1}
                   title={`${st.phase.name} — Command ${st.cmdIdx + 1}`}
@@ -250,7 +249,7 @@ const KillChainLab = () => {
               );
             })}
 
-            <WalkthroughDeckStep
+            <WalkthroughStep
               stepIndex={stepCount + 1}
               title="Mission Debrief"
               narrative={`## Kill Chain Complete\n\nYou successfully executed the full kill chain against **${activeScenario.title}**.\n\n### Key Takeaways\n\n- The kill chain model provides a structured approach to penetration testing\n- Each phase builds on the previous one\n- Reconnaissance is critical for identifying attack vectors\n- Lateral movement and privilege escalation are key to achieving objectives\n\n### What to Remember\n\nUnderstanding the kill chain helps defenders identify and mitigate attacks at each stage. This model is foundational for both offensive and defensive security.`}

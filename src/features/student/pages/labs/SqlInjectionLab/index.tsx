@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Database, Keyboard, Search, Server } from 'lucide-react';
-import { WalkthroughLayout, WalkthroughDeckStep } from '@/shared/components/walkthrough/';
+import { WalkthroughLayout, WalkthroughStep } from '@/shared/components/walkthrough/';
 import type { FocusedStepListItem } from '@/shared/components/learning/FocusedStepList';
 import { SQL_INJECTION_TARGETS } from '@/features/student/data/simulations';
 import LearningAccordion from '@/shared/components/learning/LearningAccordion';
@@ -136,9 +136,8 @@ const SqlInjectionLab = () => {
             activeStepIndex={activeIndex}
             onStepSelect={setViewStepIdx}
             stepIdPrefix="ws-step"
-            focused
           >
-            <WalkthroughDeckStep
+            <WalkthroughStep
               stepIndex={0}
               title="Mission Briefing"
               narrative={`## ${activeTarget.name}\n\n${activeTarget.description}\n\n**Target URL:** ${activeTarget.url}\n\n**Injection Type:** ${activeTarget.injectionType}\n\n**Database:** ${activeTarget.dbms}`}
@@ -171,7 +170,7 @@ const SqlInjectionLab = () => {
               const narrative = `## SQL Injection. Step ${index + 1}\n\n${step.explanation}\n\nExecute the command below to proceed.`;
 
               return (
-                <WalkthroughDeckStep
+                <WalkthroughStep
                   key={index}
                   stepIndex={index + 1}
                   title={`Step ${index + 1}`}
@@ -197,11 +196,11 @@ const SqlInjectionLab = () => {
                       direction="horizontal"
                     />
                   )}
-                </WalkthroughDeckStep>
+                </WalkthroughStep>
               );
             })}
 
-            <WalkthroughDeckStep
+            <WalkthroughStep
               stepIndex={activeTarget.steps.length + 1}
               title="Mission Debrief"
               narrative={`## Attack Complete\n\nYou successfully exploited the **${activeTarget.injectionType}** vulnerability on ${activeTarget.name}.\n\n### Key Takeaways\n\n- **${activeTarget.injectionType}** injection allows data extraction through crafted queries\n- Always validate and sanitize user input\n- Use parameterized queries to prevent SQL injection\n- The ${activeTarget.dbms} database was vulnerable to this technique\n\n### What to Remember\n\nSQL injection remains one of the most common web vulnerabilities. Understanding the attack vector is essential for building secure applications.`}

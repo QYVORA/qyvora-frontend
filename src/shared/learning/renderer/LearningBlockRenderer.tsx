@@ -43,8 +43,13 @@ export const LearningBlockRenderer: React.FC<LearningBlockRendererProps> = ({
     return null;
   }
   
-  // Render the block with its registered component
-  return <BlockComponent block={block} context={context} />;
+  // Render the block with its registered component. The wrapper gives every
+  // block a stable anchor so page outlines can link to content sections.
+  return (
+    <div id={block.id} className="scroll-mt-20 md:scroll-mt-24">
+      <BlockComponent block={block} context={context} />
+    </div>
+  );
 };
 
 export default LearningBlockRenderer;

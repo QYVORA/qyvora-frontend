@@ -13,7 +13,9 @@ import StepCard from '@/features/student/components/bootcamp-room/StepCard';
 import QuizModal from '@/features/student/components/bootcamp-room/QuizModal';
 import RoomCompletionCelebration from '@/features/student/components/bootcamp-room/RoomCompletionCelebration';
 import LearningWorkspaceShell from '@/shared/components/learning/LearningWorkspaceShell';
+import LearningNav from '@/shared/components/learning/LearningNav';
 import { useReducedMotion } from '@/shared/hooks/useReducedMotion';
+import { scrollToStepId } from '@/shared/utils/scrollToStep';
 import { useRoomSession } from '@/features/student/hooks/useRoomSession';
 import useStudentOverview from '@/features/student/hooks/useStudentOverview';
 import type { ApiCourse } from '@/features/student/components/bootcamp-room/types';
@@ -74,10 +76,9 @@ const BootcampRoomPage: React.FC = () => {
     } catch { /* ignore */ }
     return new Set([0]);
   });
-  const persistViewedSteps = (next: Set<number>) => {
+  const persistViewedSteps = useCallback((next: Set<number>) => {
     try { localStorage.setItem(viewedStepsKey, JSON.stringify([...next])); } catch { /* ignore */ }
-  };
-  const [quizOpen, setQuizOpen] = useState(false);
+  }, [viewedStepsKey]);
   const [quizPassed, setQuizPassed] = useState(false);
   const [showCompleteOverlay, setShowCompleteOverlay] = useState(false);
   const [completionCpEarned, setCompletionCpEarned] = useState(250);
@@ -117,7 +118,7 @@ const BootcampRoomPage: React.FC = () => {
       // because no graded quiz pass exists, route the user back to the quiz.
       if (err?.response?.status === 403 && err?.response?.data?.code === 'quiz_required') {
         setQuizPassed(false);
-        setQuizOpen(true);
+        scrollToStepId('room-final-quiz', prefersReducedMotion ? 'auto' : 'smooth');
         return;
       }
       console.error('Failed to complete room:', err?.response?.data || err);
@@ -179,6 +180,43 @@ const BootcampRoomPage: React.FC = () => {
     resetSession();
   }, [phaseId, roomId, viewedStepsKey, resetSession]);
 
+  useEffect(() => {
+    if (apiLoading || typeof IntersectionObserver === 'undefined') return;
+    const sections = Array.from(document.querySelectorAll<HTMLElement>('[data-room-step]'));
+    if (sections.length === 0) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        setViewedSteps((prev) => {
+          const next = new Set(prev);
+          let changed = false;
+          for (const entry of entries) {
+            if (!entry.isIntersecting) continue;
+            const index = Number((entry.target as HTMLElement).dataset.roomStep);
+            if (Number.isInteger(index) && !next.has(index)) {
+              next.add(index);
+              changed = true;
+            }
+          }
+          if (changed) persistViewedSteps(next);
+          return changed ? next : prev;
+        });
+      },
+      { rootMargin: '-15% 0px -60% 0px' },
+    );
+
+    sections.forEach((section) => observer.observe(section));
+    return () => observer.disconnect();
+  }, [apiLoading, phaseId, roomId, viewedStepsKey, persistViewedSteps]);
+
+  useEffect(() => {
+    if (apiLoading || !phaseId || !roomId) return;
+    scrollToStepId(
+      `${phaseId}-${roomId}-step-${currentStepIdx + 1}`,
+      prefersReducedMotion ? 'auto' : 'smooth',
+    );
+  }, [apiLoading, phaseId, roomId, currentStepIdx, prefersReducedMotion]);
+
   const completedRooms = new Set<string>();
   const lockedRooms = new Set<string>();
   if (apiCourse) {
@@ -204,7 +242,6 @@ const BootcampRoomPage: React.FC = () => {
   const room = phase?.rooms.find((r) => r.id === roomId);
   const isRoomLocked = lockedRooms.has(`${phaseId}:${roomId}`);
   const isRoomComplete = completedRooms.has(`${phaseId}:${roomId}`);
-  const isLastStep = room ? currentStepIdx === room.steps.length - 1 : false;
   const currentRoomIdx = allRooms.findIndex((r) => r.phaseId === phaseId && r.roomId === roomId);
   const nextRoom = currentRoomIdx < allRooms.length - 1 ? allRooms[currentRoomIdx + 1] : null;
   const apiModule = apiCourse?.modules.find((m) => m.title.toLowerCase() === phase?.title.toLowerCase());
@@ -220,7 +257,10 @@ const BootcampRoomPage: React.FC = () => {
       return prev;
     }, { replace: true });
     setViewedSteps((prev) => { const next = new Set(prev); next.add(idx); persistViewedSteps(next); return next; });
-    window.scrollTo({ top: 0, behavior: prefersReducedMotion ? 'auto' : 'smooth' });
+    scrollToStepId(
+      `${phaseId}-${roomId}-step-${idx + 1}`,
+      prefersReducedMotion ? 'auto' : 'smooth',
+    );
   };
   const handleComplete = async () => {
     if (completing) return; setCompleting(true);
@@ -229,13 +269,12 @@ const BootcampRoomPage: React.FC = () => {
       const allViewed = new Set(allStepIdxs);
       persistViewedSteps(allViewed);
       setViewedSteps(allViewed);
-      if (!quizPassed && quizModuleId) { setQuizOpen(true); return; }
+      if (!quizPassed && quizModuleId) {
+        scrollToStepId('room-final-quiz', prefersReducedMotion ? 'auto' : 'smooth');
+        return;
+      }
       if (phaseId && roomId) await markRoomComplete(phaseId, roomId); else setShowCompleteOverlay(true);
     } finally { setCompleting(false); }
-  };
-  const handleStepComplete = () => {
-    if (!isLastStep) goToStep(currentStepIdx + 1);
-    else handleComplete();
   };
 
   if (apiLoading) return <BootcampRoomSkeleton />;
@@ -292,10 +331,6 @@ const BootcampRoomPage: React.FC = () => {
         noindex
       />
 
-      {quizOpen && quizModuleId && (
-        <QuizModal moduleId={quizModuleId} roomId={quizRoomId} courseId={quizCourseId} onClose={() => setQuizOpen(false)} onPassed={() => { setQuizPassed(true); setQuizOpen(false); if (phaseId && roomId) markRoomComplete(phaseId, roomId); }} />
-      )}
-
       <RoomCompletionCelebration
         show={showCompleteOverlay} roomTitle={room.title} cpEarned={completionCpEarned}
         onClose={() => {
@@ -323,6 +358,10 @@ const BootcampRoomPage: React.FC = () => {
           value: room.steps.length > 0 ? (viewedSteps.size / room.steps.length) * 100 : 0,
           label: `${viewedSteps.size} / ${room.steps.length} steps`,
         }}
+        outline={room.steps.map((step, index) => ({
+          id: `${phaseId}-${roomId}-step-${index + 1}`,
+          label: step.title,
+        }))}
       >
           {room.steps.length === 0 ? (
             <div className="flex flex-col items-center justify-center py-20 text-center">
@@ -331,17 +370,59 @@ const BootcampRoomPage: React.FC = () => {
               <p className="text-sm text-text-muted/60 mt-1">{"Check back later for new content"}</p>
             </div>
           ) : (
-            <StepCard
-              key={currentStepIdx}
-              step={room.steps[currentStepIdx]}
-              stepNum={currentStepIdx + 1}
-              phaseId={phaseId || ''}
-              roomId={roomId || ''}
-              isActive
-              isViewed={viewedSteps.has(currentStepIdx)}
-              onDeckComplete={handleStepComplete}
-              continueLabel={isLastStep ? 'Complete Room' : 'Next Step'}
-            />
+            <>
+              <div className="space-y-12 md:space-y-16">
+                {room.steps.map((step, index) => (
+                  <div
+                    key={`${step.title}-${index}`}
+                    id={`${phaseId}-${roomId}-step-${index + 1}`}
+                    data-room-step={index}
+                    className="scroll-mt-20 md:scroll-mt-24"
+                  >
+                    <StepCard
+                      step={step}
+                      stepNum={index + 1}
+                      phaseId={phaseId || ''}
+                      roomId={roomId || ''}
+                      isActive={index === currentStepIdx}
+                      isViewed={viewedSteps.has(index)}
+                    />
+                  </div>
+                ))}
+              </div>
+
+              {quizModuleId && (
+                <div className="mt-12">
+                  <QuizModal
+                    inline
+                    moduleId={quizModuleId}
+                    roomId={quizRoomId}
+                    courseId={quizCourseId}
+                    onClose={() => {}}
+                    onPassed={() => {
+                      setQuizPassed(true);
+                      if (phaseId && roomId) markRoomComplete(phaseId, roomId);
+                    }}
+                  />
+                </div>
+              )}
+
+              <LearningNav
+                currentStep={currentStepIdx}
+                totalSteps={room.steps.length}
+                isLastStep={currentStepIdx === room.steps.length - 1}
+                isComplete={isRoomComplete}
+                onPrev={currentStepIdx > 0 ? () => goToStep(currentStepIdx - 1) : undefined}
+                onNext={
+                  currentStepIdx < room.steps.length - 1
+                    ? () => goToStep(currentStepIdx + 1)
+                    : undefined
+                }
+                onComplete={handleComplete}
+                nextLabel="Next Step"
+                completeLabel={quizModuleId && !quizPassed ? 'Go to Checkpoint' : 'Complete Room'}
+              />
+            </>
           )}
       </LearningWorkspaceShell>
     </div>

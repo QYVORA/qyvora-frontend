@@ -4,10 +4,12 @@ import { ArrowLeft, ArrowRight, Lock } from 'lucide-react';
 import { FadeIn, EmptyState } from '@/shared/components/ui';
 import SEO from '@/shared/components/SEO';
 import { getCourseById, getCategoryById } from '@/features/student/data/courses';
-import { CardDeckSurface, chunkMarkdown } from '@/shared/learning';
+import { LearningContentRenderer, parseMarkdownToBlocks } from '@/shared/learning';
 import type { LearningBlock } from '@/shared/learning';
 import StepRenderer from '@/shared/components/learning/StepRenderer';
 import LearningWorkspaceShell from '@/shared/components/learning/LearningWorkspaceShell';
+import type { LearningOutlineItem } from '@/shared/components/learning/LearningWorkspaceShell';
+import LearningNav from '@/shared/components/learning/LearningNav';
 import { CourseLessonSkeleton } from '@/features/student/components/StudentSkeletons';
 import api from '@/core/services/api';
 import CelebrationModal from '@/shared/components/CelebrationModal';
@@ -18,59 +20,73 @@ import type { Lesson } from '@/features/student/data/courses';
 
 const STORAGE_KEY = 'qyvora_course_progress';
 
+function buildLessonBlocks(lesson: Lesson, courseId?: string): LearningBlock[] {
+  const parts: LearningBlock[] = parseMarkdownToBlocks(
+    lesson.instruction ?? '',
+    `course-${courseId}-lesson-${lesson.id}`,
+    { continuous: true },
+  );
+
+  if (lesson.hasTerminal && lesson.terminalCommands && lesson.terminalCommands.length > 0) {
+    lesson.terminalCommands.forEach((cmd, ci) => {
+      parts.push({ type: 'command', id: `${lesson.id}-cmd-${ci}`, command: cmd });
+    });
+  }
+
+  if (lesson.hasCodePlayground) {
+    parts.push({
+      type: 'playground',
+      id: `${lesson.id}-playground`,
+      language: lesson.codePlaygroundLanguage || 'python',
+      initialCode: lesson.codePlaygroundInitial || '',
+      expectedOutput: lesson.codePlaygroundExpectedOutput,
+      title: lesson.title,
+    });
+  }
+
+  if (lesson.hasQuiz && lesson.quiz && lesson.quiz.length > 0) {
+    parts.push({
+      type: 'checkpoint',
+      id: `${lesson.id}-checkpoint`,
+      checkpointType: 'quiz',
+      title: `Checkpoint: ${lesson.title}`,
+      quiz: { questions: lesson.quiz },
+    });
+  }
+
+  return parts;
+}
+
+function buildLessonOutline(blocks: LearningBlock[], fallback: string): LearningOutlineItem[] {
+  const items = blocks.flatMap((block) => {
+    const title = (block as { title?: string }).title;
+    return title ? [{ id: block.id, label: title }] : [];
+  });
+  if (items.length > 0) return items;
+  return blocks[0] ? [{ id: blocks[0].id, label: fallback }] : [];
+}
+
 interface LessonViewerProps {
   lesson: Lesson;
   number: number;
-  courseId?: string;
+  totalLessons: number;
   isCompleted: boolean;
-  onDeckComplete: () => void;
-  continueLabel: string;
+  blocks: LearningBlock[];
+  onLessonComplete: () => void;
+  onPrevious: () => void;
+  onContinue: () => void;
 }
 
 const LessonViewer: React.FC<LessonViewerProps> = ({
   lesson,
   number,
-  courseId,
+  totalLessons,
   isCompleted,
-  onDeckComplete,
-  continueLabel,
+  blocks,
+  onLessonComplete,
+  onPrevious,
+  onContinue,
 }) => {
-  const blocks = useMemo<LearningBlock[]>(() => {
-    const parts: LearningBlock[] = chunkMarkdown(
-      lesson.instruction ?? '',
-      `course-${courseId}-lesson-${lesson.id}`,
-    );
-
-    if (lesson.hasTerminal && lesson.terminalCommands && lesson.terminalCommands.length > 0) {
-      lesson.terminalCommands.forEach((cmd, ci) => {
-        parts.push({ type: 'command', id: `${lesson.id}-cmd-${ci}`, command: cmd });
-      });
-    }
-
-    if (lesson.hasCodePlayground) {
-      parts.push({
-        type: 'playground',
-        id: `${lesson.id}-playground`,
-        language: lesson.codePlaygroundLanguage || 'python',
-        initialCode: lesson.codePlaygroundInitial || '',
-        expectedOutput: lesson.codePlaygroundExpectedOutput,
-        title: lesson.title,
-      });
-    }
-
-    if (lesson.hasQuiz && lesson.quiz && lesson.quiz.length > 0) {
-      parts.push({
-        type: 'checkpoint',
-        id: `${lesson.id}-checkpoint`,
-        checkpointType: 'quiz',
-        title: `Checkpoint: ${lesson.title}`,
-        quiz: { questions: lesson.quiz },
-      });
-    }
-
-    return parts;
-  }, [lesson, courseId]);
-
   return (
     <StepRenderer
       stepNumber={number}
@@ -87,14 +103,32 @@ const LessonViewer: React.FC<LessonViewerProps> = ({
         </>
       }
     >
-      <CardDeckSurface
-        deckId={`course-${courseId}-lesson-${lesson.id}`}
-        surface="course"
-        sequenceId={courseId || 'course'}
-        unitId={lesson.id}
-        blocks={blocks}
-        onDeckComplete={onDeckComplete}
-        continueLabel={continueLabel}
+      <LearningContentRenderer
+        unit={{
+          id: lesson.id,
+          number,
+          title: lesson.title,
+          blocks,
+          completionType: lesson.hasQuiz ? 'checkpoint' : 'view',
+        }}
+        context={{
+          surface: 'course',
+          sequenceId: lesson.id,
+          unitId: lesson.id,
+          onComplete: onLessonComplete,
+        }}
+      />
+
+      <LearningNav
+        currentStep={number - 1}
+        totalSteps={totalLessons}
+        isLastStep={number === totalLessons}
+        isComplete={isCompleted}
+        onPrev={number > 1 ? onPrevious : undefined}
+        onNext={onContinue}
+        onComplete={onContinue}
+        nextLabel="Next Lesson"
+        completeLabel="Complete Lesson"
       />
     </StepRenderer>
   );
@@ -141,6 +175,16 @@ const CourseLessonPage: React.FC = () => {
       ? Math.min(resumeIdx, Math.max(totalLessons - 1, 0))
       : 0;
 
+  const currentLesson = course?.lessons[currentLessonIdx];
+  const lessonBlocks = useMemo(
+    () => (currentLesson ? buildLessonBlocks(currentLesson, courseId) : []),
+    [currentLesson, courseId],
+  );
+  const lessonOutline = useMemo(
+    () => (currentLesson ? buildLessonOutline(lessonBlocks, currentLesson.title) : []),
+    [currentLesson, lessonBlocks],
+  );
+
   const completedCount = completedLessons.size;
   const progress = totalLessons > 0 ? Math.round((completedCount / totalLessons) * 100) : 0;
   const allComplete = totalLessons > 0 && completedLessons.size === totalLessons;
@@ -177,29 +221,14 @@ const CourseLessonPage: React.FC = () => {
     }
   }, [course, completedLessons, currentLessonIdx, saveProgress, courseId, totalLessons]);
 
-  const goNext = useCallback(() => {
-    if (currentLessonIdx < totalLessons - 1) selectLesson(currentLessonIdx + 1);
-  }, [currentLessonIdx, totalLessons, selectLesson]);
-
   const goPrev = useCallback(() => {
     if (currentLessonIdx > 0) selectLesson(currentLessonIdx - 1);
   }, [currentLessonIdx, selectLesson]);
 
-  const handleDeckComplete = useCallback(() => {
+  const handleContinue = useCallback(() => {
     markComplete();
     if (currentLessonIdx < totalLessons - 1) selectLesson(currentLessonIdx + 1);
   }, [markComplete, currentLessonIdx, totalLessons, selectLesson]);
-
-  useEffect(() => {
-    const handleKey = (e: KeyboardEvent) => {
-      const target = e.target as HTMLElement | null;
-      if (target && target.closest('button, a, input, textarea, select, [role="button"], [contenteditable="true"]')) return;
-      if (e.key === 'ArrowRight') goNext();
-      if (e.key === 'ArrowLeft') goPrev();
-    };
-    window.addEventListener('keydown', handleKey);
-    return () => window.removeEventListener('keydown', handleKey);
-  }, [goNext, goPrev]);
 
   useEffect(() => {
     window.dispatchEvent(new CustomEvent('course:updateMeta', {
@@ -282,17 +311,19 @@ const CourseLessonPage: React.FC = () => {
             value: progress,
             label: `${completedCount}/${totalLessons}`,
           }}
+          outline={lessonOutline}
         >
-          {/* One lesson at a time — the deck's Continue advances to the next lesson */}
-          {course.lessons[currentLessonIdx] && (
+          {currentLesson && (
             <LessonViewer
-              key={course.lessons[currentLessonIdx].id}
-              lesson={course.lessons[currentLessonIdx]}
+              key={currentLesson.id}
+              lesson={currentLesson}
               number={currentLessonIdx + 1}
-              courseId={courseId}
-              isCompleted={completedLessons.has(course.lessons[currentLessonIdx].id)}
-              onDeckComplete={handleDeckComplete}
-              continueLabel={currentLessonIdx < totalLessons - 1 ? 'Next Lesson' : 'Finish'}
+              totalLessons={totalLessons}
+              isCompleted={completedLessons.has(currentLesson.id)}
+              blocks={lessonBlocks}
+              onLessonComplete={markComplete}
+              onPrevious={goPrev}
+              onContinue={handleContinue}
             />
           )}
         </LearningWorkspaceShell>

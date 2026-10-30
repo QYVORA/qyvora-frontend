@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Globe } from 'lucide-react';
-import { WalkthroughLayout, WalkthroughDeckStep } from '@/shared/components/walkthrough/';
+import { WalkthroughLayout, WalkthroughStep } from '@/shared/components/walkthrough/';
 import type { FocusedStepListItem } from '@/shared/components/learning/FocusedStepList';
 import { OSINT_CHALLENGES } from '@/features/student/data/simulations';
 import LearningAccordion from '@/shared/components/learning/LearningAccordion';
@@ -124,9 +124,8 @@ const OsintLab = () => {
             activeStepIndex={activeIndex}
             onStepSelect={setViewStepIdx}
             stepIdPrefix="ws-step"
-            focused
           >
-            <WalkthroughDeckStep
+            <WalkthroughStep
               stepIndex={0}
               title="Mission Briefing"
               narrative={`## ${activeChallenge.title}\n\n${activeChallenge.description}\n\n**Target:** ${activeChallenge.targetName}\n\n**Skills:** ${activeChallenge.skills.join(', ')}`}
@@ -160,7 +159,7 @@ const OsintLab = () => {
                 : `## OSINT Reconnaissance - Step ${index + 1}\n\nTool: ${step.tool}\n\n${step.explanation}\n\nExecute the command below to gather intelligence.`;
 
               return (
-                <WalkthroughDeckStep
+                <WalkthroughStep
                   key={index}
                   stepIndex={index + 1}
                   title={`Step ${index + 1} | ${step.tool}`}
@@ -182,7 +181,7 @@ const OsintLab = () => {
               );
             })}
 
-            <WalkthroughDeckStep
+            <WalkthroughStep
               stepIndex={activeChallenge.steps.length + 1}
               title="Mission Debrief"
               narrative={`## Mission Complete\n\nYou successfully gathered open-source intelligence on **${activeChallenge.targetName}**.\n\n### Key Takeaways\n\n- OSINT tools provide powerful reconnaissance capabilities\n- Public data can reveal sensitive information\n- Understanding OSINT is essential for both offense and defense\n- Always consider what your digital footprint reveals\n\n### What to Remember\n\nOSINT is a critical skill for security professionals. The same techniques used for reconnaissance can be used for defensive intelligence gathering.`}

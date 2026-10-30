@@ -193,7 +193,19 @@ function isWhyQuote(text: string): boolean {
   return /why this matters|^why\b/i.test(text);
 }
 
-export function markdownToBlocks(markdown: string, baseId: string): LearningBlock[] {
+export interface MarkdownToBlocksOptions {
+  /**
+   * Preserve paragraph-level prose instead of splitting it into short card
+   * chunks. Used by continuous reading pages (course/lab/bootcamp articles).
+   */
+  continuous?: boolean;
+}
+
+export function markdownToBlocks(
+  markdown: string,
+  baseId: string,
+  options: MarkdownToBlocksOptions = {},
+): LearningBlock[] {
   const segments = tokenize(markdown);
   const blocks: LearningBlock[] = [];
   let sectionTitle: string | null = null;
@@ -202,10 +214,12 @@ export function markdownToBlocks(markdown: string, baseId: string): LearningBloc
   const nextId = (kind: string) => `${baseId}-${kind}-${index++}`;
 
   const pushText = (content: string) => {
-    // Every prose chunk becomes its own readable card. The first chunk of a
-    // section carries the section heading so headings are never dropped and
-    // each reading card has a clear title above its body.
-    for (const chunk of splitProse(content)) {
+    // In card mode every prose chunk becomes its own readable card. In
+    // continuous mode prose stays at paragraph level so the page reads as an
+    // article instead of a stack of cards. The first chunk of a section carries
+    // the section heading so headings are never dropped.
+    const chunks = options.continuous ? [content] : splitProse(content);
+    for (const chunk of chunks) {
       const textBlock: TextBlock = { type: 'text', id: nextId('text'), content: chunk };
       if (sectionTitle) {
         textBlock.title = sectionTitle;
@@ -293,8 +307,12 @@ export function markdownToBlocks(markdown: string, baseId: string): LearningBloc
 /**
  * Public chunker entry point (kept name-compatible with the Phase 2 stub).
  */
-export function parseMarkdownToBlocks(markdown: string, baseId: string): LearningBlock[] {
-  return markdownToBlocks(markdown, baseId);
+export function parseMarkdownToBlocks(
+  markdown: string,
+  baseId: string,
+  options: MarkdownToBlocksOptions = {},
+): LearningBlock[] {
+  return markdownToBlocks(markdown, baseId, options);
 }
 
 /**

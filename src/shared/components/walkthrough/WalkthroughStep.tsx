@@ -6,6 +6,8 @@ import InlineQuiz, { QuizQuestion } from '@/shared/components/courses/InlineQuiz
 import { CommandBlock, FlagInput, StepComplete } from './StepParts';
 import { StepNumberHeader } from '@/shared/components/learning/StepNumberHeader';
 import { EducationalMarkdownRenderer } from '@/shared/components/courses/CodeBlockRenderer';
+import { LearningContentRenderer } from '@/shared/learning';
+import type { LearningBlock } from '@/shared/learning';
 
 export interface ProgressiveHintLevel {
   level: 1 | 2 | 3 | 4;
@@ -24,6 +26,8 @@ export interface WalkthroughStepProps {
   evidence?: string[];
   reflection?: string;
   quiz?: QuizQuestion[];
+  /** Extra semantic blocks (e.g. diagrams) rendered inline in the reading flow. */
+  extraBlocks?: LearningBlock[];
   isLocked: boolean;
   isCompleted: boolean;
   isActive: boolean;
@@ -38,8 +42,8 @@ export interface WalkthroughStepProps {
 const HINT_LEVEL_LABELS = ['General Guidance', 'Approach', 'Tool Hint', 'Example Command'];
 
 export function WalkthroughStep({
-  stepIndex, title, narrative, hint, progressiveHints, commandInstruction,
-  mission, objectives, evidence, reflection, quiz,
+  stepIndex, title,   narrative, hint, progressiveHints, commandInstruction,
+  mission, objectives, evidence, reflection, quiz, extraBlocks,
   isLocked, isCompleted, isActive, flagId, labId,
   onFlagSubmit, onComplete, children, skipFlag,
 }: WalkthroughStepProps) {
@@ -183,6 +187,18 @@ export function WalkthroughStep({
               </button>
             )}
           </div>
+        )}
+
+        {extraBlocks && extraBlocks.length > 0 && (
+          <LearningContentRenderer
+            unit={{
+              id: `${labId}-${flagId}-extras`,
+              number: stepIndex + 1,
+              title,
+              blocks: extraBlocks,
+            }}
+            context={{ surface: 'lab', sequenceId: labId, unitId: flagId }}
+          />
         )}
 
         {children}

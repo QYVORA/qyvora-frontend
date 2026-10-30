@@ -20,6 +20,7 @@ export {
   plainMarkdown,
   MAX_PROSE_PER_CARD,
 } from './markdownChunker';
+export type { MarkdownToBlocksOptions } from './markdownChunker';
 
 export {
   BLOCK_LABELS,
@@ -37,7 +38,6 @@ export {
   CHECKPOINT_XP,
 } from './blockMeta';
 
-export { cardSpeechText } from './speechText';
 export { interleavePractice, MAX_READ_RUN } from './interleavePractice';
 
 export {

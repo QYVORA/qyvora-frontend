@@ -2,13 +2,10 @@ import { Unplug, Loader2 } from 'lucide-react';
 import React, { Children, useCallback, useEffect } from 'react';
 import type { ReactNode } from 'react';
 import { IconTerminal } from '@/shared/components/icons';
-import FocusedStepList from '@/shared/components/learning/FocusedStepList';
 import type { FocusedStepListItem } from '@/shared/components/learning/FocusedStepList';
 import LearningWorkspaceShell from '@/shared/components/learning/LearningWorkspaceShell';
-import type { WorkspaceStat } from '@/shared/components/learning/LearningWorkspaceShell';
+import type { LearningOutlineItem, WorkspaceStat } from '@/shared/components/learning/LearningWorkspaceShell';
 import LearningNav from '@/shared/components/learning/LearningNav';
-import { WalkthroughDeckNavContext } from './walkthroughDeckContext';
-import { WalkthroughDeckStep } from './WalkthroughDeckStep';
 import { useReducedMotion } from '@/shared/hooks/useReducedMotion';
 import { scrollToStepId } from '@/shared/utils/scrollToStep';
 import { useLabConnection } from '@/features/student/hooks/useLabConnection';
@@ -34,20 +31,13 @@ export interface WalkthroughLayoutProps {
   headerContent?: React.ReactNode;
   footer?: React.ReactNode;
   progressContent?: React.ReactNode;
-  /** steps metadata (in the same order as `children`). When provided, the walkthrough
-      collapses non-active steps into focused compact rows instead of a long scroll. */
+  /** Step metadata in the same order as `children`. Used for anchors, outline and nav. */
   stepList?: FocusedStepListItem[];
-  /** which `children` index is currently expanded (falls back to all-expanded when unset) */
+  /** Index used to highlight/scroll the current step in the bottom navigation. */
   activeStepIndex?: number;
   onStepSelect?: (index: number) => void;
   /** stepIdPrefix for anchor ids. */
   stepIdPrefix?: string;
-  /**
-   * Focused (Duolingo-style) mode: render only the active unit and let its deck
-   * own the single bottom Continue. Step rows and the previous/next nav bar are
-   * dropped — connection and simulation panels stay.
-   */
-  focused?: boolean;
 }
 
 export function WalkthroughLayout({
@@ -74,7 +64,6 @@ export function WalkthroughLayout({
   activeStepIndex,
   onStepSelect,
   stepIdPrefix,
-  focused = false,
 }: WalkthroughLayoutProps) {
   const allDone = totalSteps > 0 && completedCount === totalSteps;
   const { connection, isConnected, isLoading, error, connect, disconnect } = useLabConnection();
@@ -82,10 +71,8 @@ export function WalkthroughLayout({
   const prefersReducedMotion = useReducedMotion();
 
   /**
-   * Every step stays mounted on this page, so selecting a step has to scroll to
-   * that step's anchor as well as swap which one is expanded — otherwise Next
-   * changes the page but leaves the reader looking at where they already were,
-   * which reads as a dead button.
+   * Every step stays mounted on this page, so selecting a step scrolls to that
+   * step's anchor instead of swapping the visible content.
    */
   const handleStepSelect = useCallback((index: number) => {
     onStepSelect?.(index);
@@ -96,29 +83,6 @@ export function WalkthroughLayout({
       prefersReducedMotion ? 'auto' : 'smooth',
     );
   }, [onStepSelect, stepList, stepIdPrefix, prefersReducedMotion]);
-
-  const focusedActiveChild =
-    focused && stepList && stepList.length > 0 && activeStepIndex !== undefined
-      ? Children.toArray(children)[activeStepIndex] ?? null
-      : null;
-  const focusedActiveIsDeck =
-    React.isValidElement(focusedActiveChild) &&
-    focusedActiveChild.type === WalkthroughDeckStep;
-  const focusedIsLast = stepList ? activeStepIndex === stepList.length - 1 : false;
-  const focusedNextLabel = focusedIsLast ? (backLabel ?? 'Finish') : 'Next Step';
-
-  const handleDeckComplete = useCallback(() => {
-    if (!stepList || activeStepIndex === undefined) {
-      onBack?.();
-      return;
-    }
-    if (activeStepIndex < stepList.length - 1) {
-      onStepSelect?.(activeStepIndex + 1);
-      window.scrollTo({ top: 0, behavior: prefersReducedMotion ? 'auto' : 'smooth' });
-    } else {
-      onBack?.();
-    }
-  }, [stepList, activeStepIndex, onStepSelect, onBack, prefersReducedMotion]);
 
   useEffect(() => {
     const profile = getNetworkProfileForLab(labId);
@@ -146,6 +110,11 @@ export function WalkthroughLayout({
     headerStats.push({ label: "steps", value: `${completedCount}/${totalSteps}` });
   }
 
+  const outline: LearningOutlineItem[] = (stepList ?? []).map((item) => ({
+    id: `${stepIdPrefix ?? 'step'}-${item.number}`,
+    label: item.title,
+  }));
+
   return (
     <div className="w-full bg-canvas min-h-dvh">
       <LearningWorkspaceShell
@@ -155,6 +124,7 @@ export function WalkthroughLayout({
         onBack={onBack}
         backLabel={backLabel}
         stats={headerStats}
+        outline={outline}
         actions={
           (headerMetadata || headerActions) ? (
             <div className="flex flex-wrap items-center gap-2">
@@ -248,44 +218,21 @@ export function WalkthroughLayout({
           </div>
         )}
 
-        {/* Steps */}
-        {focused ? (
-          <div className="space-y-12 md:space-y-16">
-            <WalkthroughDeckNavContext.Provider
-              value={{ onDeckComplete: handleDeckComplete, continueLabel: focusedNextLabel }}
-            >
-              {focusedActiveChild}
-            </WalkthroughDeckNavContext.Provider>
-            {!focusedActiveIsDeck && focusedActiveChild && (
-              <div className="flex justify-end">
-                <button
-                  type="button"
-                  onClick={handleDeckComplete}
-                  className="btn-primary inline-flex min-h-[44px] items-center justify-center gap-1.5 rounded-xl px-6 py-2.5 text-xs font-black uppercase tracking-widest"
-                >
-                  {focusedNextLabel}
-                </button>
+        {/* Steps — every section stays expanded on the page. */}
+        <div className="space-y-12 md:space-y-16">
+          {Children.toArray(children).map((child, index) => {
+            const item = stepList?.[index];
+            const id = item ? `${stepIdPrefix ?? 'step'}-${item.number}` : undefined;
+            return (
+              <div key={index} id={id} className="scroll-mt-20 md:scroll-mt-24">
+                {child}
               </div>
-            )}
-          </div>
-        ) : (
-          <div className="space-y-12 md:space-y-16">
-            {stepList && stepList.length > 0 && activeStepIndex !== undefined && onStepSelect ? (
-              <FocusedStepList
-                idPrefix={stepIdPrefix}
-                items={stepList}
-                onSelect={handleStepSelect}
-                renderActive={(i) => Children.toArray(children)[i] ?? null}
-                className="space-y-4"
-              />
-            ) : (
-              children
-            )}
-          </div>
-        )}
+            );
+          })}
+        </div>
 
-        {/* Navigation — hidden in focused mode (the deck owns the Continue) */}
-        {!focused && stepList && stepList.length > 0 && activeStepIndex !== undefined && onStepSelect && (
+        {/* Navigation */}
+        {stepList && stepList.length > 0 && activeStepIndex !== undefined && onStepSelect && (
           <LearningNav
             currentStep={activeStepIndex}
             totalSteps={stepList.length}
@@ -312,7 +259,7 @@ export function WalkthroughLayout({
         )}
 
         {/* Progress */}
-        {!focused && (progressContent || (
+        {progressContent || (
           <div className="rounded-xl border border-border-subtle bg-surface px-4 py-4 md:px-5 md:py-5">
             <div className="mb-3 flex items-center justify-between gap-4">
               <span className="type-meta font-black uppercase tracking-widest text-text-tertiary">
@@ -336,7 +283,7 @@ export function WalkthroughLayout({
               />
             </div>
           </div>
-        ))}
+        )}
 
         {allDone && (
           <div className="rounded-xl border border-accent/20 bg-accent/5 px-6 py-5 text-center">

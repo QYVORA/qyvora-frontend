@@ -1,3 +1,4 @@
+import type { ReactNode } from 'react';
 import { cn } from '@/shared/utils/cn';
 import { DiagramFrame } from './DiagramFrame';
 
@@ -5,7 +6,7 @@ export interface FlowNode {
   id: string;
   label: string;
   sublabel?: string;
-  icon?: React.ReactNode;
+  icon?: ReactNode;
   status?: 'default' | 'active' | 'completed' | 'danger' | 'warning' | 'success';
 }
 
@@ -20,6 +21,9 @@ interface FlowDiagramProps {
   nodes: FlowNode[];
   arrows: FlowArrow[];
   direction?: 'horizontal' | 'vertical';
+  title?: string;
+  icon?: ReactNode;
+  caption?: string;
   className?: string;
 }
 
@@ -104,13 +108,13 @@ function FlowNodeBox({ node }: { node: FlowNode }) {
   );
 }
 
-export function FlowDiagram({ nodes, arrows, direction = 'horizontal', className }: FlowDiagramProps) {
+export function FlowDiagram({ nodes, arrows, direction = 'horizontal', title, icon, caption, className }: FlowDiagramProps) {
   const nodeMap = new Map(nodes.map(n => [n.id, n]));
   const ArrowComponent = direction === 'horizontal' ? FlowArrowHorizontal : FlowArrowVertical;
 
   if (direction === 'horizontal') {
     return (
-      <DiagramFrame className="overflow-x-auto p-4 md:p-6">
+      <DiagramFrame title={title} icon={icon} className={cn('overflow-x-auto p-4 md:p-6', className)}>
         <div className="flex items-center min-w-max gap-0">
           {arrows.map((arrow, i) => {
             const fromNode = nodeMap.get(arrow.from);
@@ -125,12 +129,13 @@ export function FlowDiagram({ nodes, arrows, direction = 'horizontal', className
             );
           })}
         </div>
+        {caption && <p className="mt-3 text-center text-xs font-mono text-text-muted">{caption}</p>}
       </DiagramFrame>
     );
   }
 
   return (
-    <DiagramFrame>
+    <DiagramFrame title={title} icon={icon} className={className}>
       <div className="flex flex-col items-center gap-0">
         {arrows.map((arrow, i) => {
           const fromNode = nodeMap.get(arrow.from);
@@ -145,6 +150,7 @@ export function FlowDiagram({ nodes, arrows, direction = 'horizontal', className
           );
         })}
       </div>
+      {caption && <p className="mt-3 text-center text-xs font-mono text-text-muted">{caption}</p>}
     </DiagramFrame>
   );
 }

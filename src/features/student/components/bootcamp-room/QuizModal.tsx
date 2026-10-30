@@ -14,9 +14,10 @@ interface QuizModalProps {
   courseId: string;
   onClose: () => void;
   onPassed: () => void;
+  inline?: boolean;
 }
 
-const QuizModal: React.FC<QuizModalProps> = ({ moduleId, roomId, courseId, onClose, onPassed }) => {
+const QuizModal: React.FC<QuizModalProps> = ({ moduleId, roomId, courseId, onClose, onPassed, inline = false }) => {
   const { addToast } = useToast();
   const [loading, setLoading] = useState(true);
   const [quiz, setQuiz] = useState<RoomQuiz | null>(null);
@@ -81,10 +82,8 @@ const QuizModal: React.FC<QuizModalProps> = ({ moduleId, roomId, courseId, onClo
     }
   };
 
-  return (
-    <Dialog open onOpenChange={(open) => { if (!open) onClose(); }}>
-      <DialogContent title={"Room Quiz"} maxWidth="max-w-5xl" className="shadow-none">
-        <div>
+  const content = (
+    <div>
           {loading && (
             <div className="flex items-center justify-center gap-2 py-10 text-sm text-text-muted">
               <Loader2 className="h-4 w-4 animate-spin text-accent" />
@@ -182,9 +181,11 @@ const QuizModal: React.FC<QuizModalProps> = ({ moduleId, roomId, courseId, onClo
                     >
                       {"Try Again"}
                     </button>
-                    <button onClick={onClose} className="btn-secondary text-sm py-3">
-                      {"Close"}
-                    </button>
+                    {!inline && (
+                      <button onClick={onClose} className="btn-secondary text-sm py-3">
+                        {"Close"}
+                      </button>
+                    )}
                   </div>
                 </>
               )}
@@ -259,6 +260,21 @@ const QuizModal: React.FC<QuizModalProps> = ({ moduleId, roomId, courseId, onClo
             </>
           )}
         </div>
+  );
+
+  if (inline) {
+    return (
+      <section id="room-final-quiz" className="scroll-mt-20 rounded-2xl border border-border bg-surface p-5 md:scroll-mt-24 md:p-7">
+        <h2 className="mb-6 text-xl font-black tracking-tight text-text-primary">Room Checkpoint</h2>
+        {content}
+      </section>
+    );
+  }
+
+  return (
+    <Dialog open onOpenChange={(open) => { if (!open) onClose(); }}>
+      <DialogContent title={"Room Quiz"} maxWidth="max-w-5xl" className="shadow-none">
+        {content}
       </DialogContent>
     </Dialog>
   );

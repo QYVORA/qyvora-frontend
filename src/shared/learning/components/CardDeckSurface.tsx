@@ -21,10 +21,7 @@ import {
   ChevronLeft,
   ChevronRight,
   Flame,
-  Square,
   Trophy,
-  Volume2,
-  VolumeX,
   Zap,
   X,
 } from 'lucide-react';
@@ -34,10 +31,8 @@ import type { BlockRenderContext } from '../utils/blockRegistry';
 import '../blocks';
 import { LearningBlockRenderer } from '../renderer';
 import { useDeckGamification } from '../hooks/useDeckGamification';
-import { useReadAloud } from '../hooks/useReadAloud';
 import { comboMultiplier } from '../gamification/deckGamification';
 import { blockLabel, blockTitle, blockXp, hasValidation, truncate } from '../utils/blockMeta';
-import { cardSpeechText } from '../utils/speechText';
 import { interleavePractice } from '../utils/interleavePractice';
 import Button from '@/shared/components/ui/Button';
 
@@ -74,7 +69,6 @@ export const CardDeckSurface: React.FC<CardDeckSurfaceProps> = ({
   className,
 }) => {
   const deck = useDeckGamification({ deckId, totalCards: blocks.length, enabled });
-  const voice = useReadAloud();
   // Duolingo pacing: pull quiz checkpoints forward so reading never runs long.
   const cards = useMemo(() => interleavePractice(blocks), [blocks]);
   const [activeIdx, setActiveIdx] = useState(() => {
@@ -87,7 +81,6 @@ export const CardDeckSurface: React.FC<CardDeckSurfaceProps> = ({
   const [levelUpRank, setLevelUpRank] = useState<string | null>(null);
   const [awardFlash, setAwardFlash] = useState<string | null>(null);
   const [prevSeenRank, setPrevSeenRank] = useState(deck.rank.index);
-  const [voiceMode, setVoiceMode] = useState(false);
 
   const totalCards = cards.length;
   const current = cards[Math.min(activeIdx, Math.max(totalCards - 1, 0))] ?? null;
@@ -124,30 +117,6 @@ export const CardDeckSurface: React.FC<CardDeckSurfaceProps> = ({
     const t = window.setTimeout(() => setAwardFlash(null), 2600);
     return () => window.clearTimeout(t);
   }, [deck.lastAward]);
-
-  // Voice mode: read each card aloud as it becomes active.
-  useEffect(() => {
-    if (!voiceMode || !voice.supported || !current) return;
-    const text = cardSpeechText(current);
-    if (text) voice.speak(text);
-    return () => voice.stop();
-  }, [voiceMode, current, voice.supported, voice.speak, voice.stop]);
-
-  const handleToggleVoice = useCallback(() => {
-    setVoiceMode((on) => {
-      if (on) voice.stop();
-      return !on;
-    });
-  }, [voice]);
-
-  const handleReadCard = useCallback(() => {
-    if (!current) return;
-    if (voice.speaking) {
-      voice.stop();
-      return;
-    }
-    voice.speak(cardSpeechText(current));
-  }, [current, voice]);
 
   const advanceAfter = useCallback(
     (fromIndex: number) => {
@@ -275,22 +244,6 @@ export const CardDeckSurface: React.FC<CardDeckSurfaceProps> = ({
           </div>
 
           <div className="ml-auto flex items-center gap-3">
-            {voice.supported && (
-              <button
-                type="button"
-                onClick={handleToggleVoice}
-                aria-pressed={voiceMode}
-                title={voiceMode ? 'Turn off read-aloud' : 'Read cards aloud'}
-                className={`flex items-center gap-1 rounded-lg border px-2 py-1 text-[10px] font-black uppercase tracking-widest transition-colors ${
-                  voiceMode
-                    ? 'border-accent/40 bg-accent/10 text-accent'
-                    : 'border-border/40 text-text-muted hover:text-text-secondary'
-                }`}
-              >
-                {voiceMode ? <Volume2 className="w-3 h-3" aria-hidden="true" /> : <VolumeX className="w-3 h-3" aria-hidden="true" />}
-                <span className="hidden sm:inline">Voice</span>
-              </button>
-            )}
             {showingComplete ? (
               <span className="flex items-center gap-1.5 rounded-lg bg-accent/10 border border-accent/30 px-2 py-1 text-xs font-black uppercase tracking-widest text-accent">
                 <Check className="w-3 h-3" aria-hidden="true" />
@@ -321,16 +274,6 @@ export const CardDeckSurface: React.FC<CardDeckSurfaceProps> = ({
                     <Check className="w-3 h-3" aria-hidden="true" />
                     Solved
                   </span>
-                )}
-                {voice.supported && (
-                  <button
-                    type="button"
-                    onClick={handleReadCard}
-                    aria-label={voice.speaking ? 'Stop reading card' : 'Read card aloud'}
-                    className="rounded-lg border border-border/40 p-1.5 text-text-muted transition-colors hover:text-accent"
-                  >
-                    {voice.speaking ? <Square className="h-3.5 w-3.5" aria-hidden="true" /> : <Volume2 className="h-3.5 w-3.5" aria-hidden="true" />}
-                  </button>
                 )}
                 <span className="ml-auto text-[10px] font-black uppercase tracking-widest text-text-muted shrink-0">+{blockXp(current)} XP</span>
               </div>

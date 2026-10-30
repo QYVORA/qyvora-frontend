@@ -1,6 +1,5 @@
 import { describe, it, expect } from 'vitest';
 import { interleavePractice, MAX_READ_RUN } from './interleavePractice';
-import { cardSpeechText } from './speechText';
 import type { LearningBlock } from '../types/blocks';
 
 const read = (i: number): LearningBlock => ({ type: 'text', id: `t${i}`, content: `Card ${i}` });
@@ -53,30 +52,5 @@ describe('interleavePractice', () => {
 
   it('uses MAX_READ_RUN = 3', () => {
     expect(MAX_READ_RUN).toBe(3);
-  });
-});
-
-describe('cardSpeechText', () => {
-  it('reads concept title and body', () => {
-    const block: LearningBlock = { type: 'concept', id: 'c', title: 'Hashing', content: 'One way.' };
-    expect(cardSpeechText(block)).toContain('Hashing');
-    expect(cardSpeechText(block)).toContain('One way');
-  });
-
-  it('strips markdown from prose', () => {
-    const block: LearningBlock = { type: 'text', id: 't', content: '**Bold** and `code`' };
-    const text = cardSpeechText(block);
-    expect(text).not.toContain('*');
-    expect(text).toContain('Bold');
-  });
-
-  it('returns just the label for a bare playground', () => {
-    const block: LearningBlock = {
-      type: 'playground',
-      id: 'p',
-      language: 'python',
-      initialCode: 'print(1)',
-    };
-    expect(cardSpeechText(block).toLowerCase()).toContain('code playground');
   });
 });
