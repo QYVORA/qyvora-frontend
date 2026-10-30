@@ -1187,24 +1187,53 @@ html[data-animations="off"] * {
 }
 
 /* ── Custom cursor (fine-pointer devices only) ───────────────────────────────
-   Mounted by CustomCursor.tsx, which toggles `qyvora-cursor` on <html> only
-   when (hover: hover) and (pointer: fine) match — touch devices never see it.
-   The arrow follows the pointer directly; a square flash and sparks are
-   reserved for button clicks. Text-entry surfaces keep the native I-beam.
-   These rules stay UNLAYERED on purpose: unlayered normal styles beat
-   Tailwind's layered cursor-* utilities without !important. */
+   CustomCursor.tsx toggles `qyvora-cursor` on <html> only when
+   (hover: hover) and (pointer: fine) match — touch devices never see it.
+   The arrow is a native CSS image cursor, so the browser composites it in sync
+   with the OS pointer. There is no JS tracking, no full-screen cursor overlay
+   and no z-index race with dialogs. Native cursor semantics are restored for
+   text entry, native pickers and drag/resize/disabled states. */
 html.qyvora-cursor,
 html.qyvora-cursor *,
 html.qyvora-cursor *::before,
 html.qyvora-cursor *::after {
-  cursor: none;
+  cursor: url('/cursors/qyvora-arrow.svg') 5 6, auto;
 }
 
 html.qyvora-cursor
   input:not([type='checkbox']):not([type='radio']):not([type='range']):not([type='button']):not([type='submit']):not([type='reset']),
 html.qyvora-cursor textarea,
-html.qyvora-cursor [contenteditable='true'] {
+html.qyvora-cursor [contenteditable='true'],
+html.qyvora-cursor .cursor-text {
   cursor: text;
+}
+
+html.qyvora-cursor select,
+html.qyvora-cursor input[type='date'],
+html.qyvora-cursor input[type='time'],
+html.qyvora-cursor input[type='color'],
+html.qyvora-cursor input[type='file'],
+html.qyvora-cursor .cursor-default {
+  cursor: default;
+}
+
+html.qyvora-cursor [draggable='true'],
+html.qyvora-cursor .cursor-grab {
+  cursor: grab;
+}
+
+html.qyvora-cursor .cursor-grabbing {
+  cursor: grabbing;
+}
+
+html.qyvora-cursor .cursor-not-allowed,
+html.qyvora-cursor [disabled],
+html.qyvora-cursor [aria-disabled='true'] {
+  cursor: not-allowed;
+}
+
+html.qyvora-cursor .cursor-help {
+  cursor: help;
 }
 
 .qyvora-cursor-root {
@@ -1213,35 +1242,8 @@ html.qyvora-cursor [contenteditable='true'] {
   right: 0;
   bottom: 0;
   left: 0;
-  z-index: 900;
+  z-index: 2147483647;
   pointer-events: none;
-}
-
-.qyvora-cursor-root[data-hidden='true'] {
-  opacity: 0;
-}
-
-.cc-pointer-wrap {
-  position: fixed;
-  left: 0;
-  top: 0;
-  width: 0;
-  height: 0;
-  pointer-events: none;
-  will-change: transform;
-}
-
-/* Keep the arrow fixed to one hotspot. Avoid transitions on the pointer glyph
-   so it never trails or jitters when the pointer moves or crosses controls. */
-.cc-pointer {
-  position: absolute;
-}
-
-.cc-arrow {
-  left: -5px;
-  top: -5px;
-  width: 30px;
-  height: 30px;
 }
 
 .cc-burst-wrap {
