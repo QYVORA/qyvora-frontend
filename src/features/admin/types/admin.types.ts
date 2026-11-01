@@ -1,5 +1,5 @@
 export type AdminTab =
-  | 'overview' | 'users' | 'bootcamps' | 'zero_day' | 'cp'
+  | 'overview' | 'users' | 'bootcamps' | 'instructor' | 'zero_day' | 'cp'
   | 'inbox' | 'broadcast' | 'audit' | 'security' | 'incidents'
   | 'certificates';
 
@@ -99,6 +99,64 @@ export type IncidentItem = {
   resolvedAt: string | null;
   createdAt: string;
   updatedAt: string;
+};
+
+export type InstructorRisk = 'blocked' | 'stalled' | 'on_track' | 'completed';
+export type InstructorEscalationReason =
+  | 'blocked_access' | 'no_progress' | 'missed_sessions' | 'technical_issue' | 'other';
+export type InstructorEscalationStatus = 'open' | 'acknowledged' | 'resolved';
+
+export type InstructorEscalationItem = {
+  id: string;
+  cohortId: string;
+  studentId: string;
+  instructorId: string;
+  reason: InstructorEscalationReason;
+  note: string;
+  status: InstructorEscalationStatus;
+  resolvedAt: string | null;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type InstructorLearner = {
+  id: string;
+  name: string;
+  email: string;
+  hackerHandle: string;
+  bootcampId: string;
+  bootcampStatus: string;
+  cpPoints: number;
+  progressPercent: number;
+  completedRooms: number;
+  totalRooms: number;
+  completedModules: number;
+  totalModules: number;
+  currentModule: { moduleId: number; title: string } | null;
+  lastActivityAt: string | null;
+  daysSinceActivity: number | null;
+  risk: InstructorRisk;
+  escalations: InstructorEscalationItem[];
+};
+
+export type InstructorCohortSummary = {
+  id: string;
+  name: string;
+  description: string;
+  capacity: number | null;
+  memberCount: number;
+  completedCount: number;
+  blockedCount: number;
+  stalledCount: number;
+  openEscalations: number;
+  activeEscalations: number;
+  averageProgress: number;
+  startDate: string | null;
+  endDate: string | null;
+};
+
+export type InstructorCohortDetail = InstructorCohortSummary & {
+  members: InstructorLearner[];
 };
 
 export const isUserBlocked = (u: AdminUser) =>

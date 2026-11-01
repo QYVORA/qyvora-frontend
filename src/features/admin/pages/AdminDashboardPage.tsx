@@ -7,6 +7,7 @@ import PageBody from '@/shared/components/layout/PageBody';
 
 import CpAnalytics from '../components/CpAnalytics';
 import BootcampAccessPanel from '../components/BootcampAccessPanel';
+import InstructorTab from '../components/dashboard/InstructorTab';
 import UsersTab from '../components/dashboard/UsersTab';
 import ZeroDayMarketTab from '../components/dashboard/ZeroDayMarketTab';
 import SecurityTab from '../components/dashboard/SecurityTab';
@@ -229,7 +230,7 @@ const AdminDashboardPage: React.FC = () => {
   // ── Tab label lookup ─────────────────────────────────────────────────────────
   const TAB_LABELS: Record<AdminTab, string> = {
     overview: 'Overview',
-    users: 'Users', bootcamps: 'Bootcamps',
+    users: 'Users', bootcamps: 'Bootcamps', instructor: 'Instructor',
     zero_day: 'Market', cp: 'Points',
     inbox: 'Inbox', broadcast: 'Broadcast', audit: 'Audit',
     security: 'Security', incidents: 'Incidents',
@@ -307,6 +308,8 @@ const AdminDashboardPage: React.FC = () => {
 
             {/* ── BOOTCAMPS ─────────────────────────────────────────────── */}
             {activeTab === 'bootcamps' && <BootcampAccessPanel addToast={addToast} />}
+
+            {activeTab === 'instructor' && <InstructorTab />}
 
             {/* ── ZERO-DAY MARKET ───────────────────────────────────────── */}
             {activeTab === 'zero_day' && (
