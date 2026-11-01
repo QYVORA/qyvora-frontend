@@ -41,6 +41,45 @@ describe('AchievementsSection', () => {
     expect(screen.queryByRole('button', { name: /privilege escalation/i })).not.toBeInTheDocument();
   });
 
+  it('renders skill achievements from the API-shaped prop (LEARN-BUG-001)', () => {
+    render(
+      <AchievementsSection
+        skillAchievements={[
+          {
+            skill: 'web',
+            label: 'Web Security',
+            color: '#F59E0B',
+            scenariosCompleted: 4,
+            rarity: 'rare',
+          },
+        ]}
+      />
+    );
+
+    expect(screen.getByText('Web Security')).toBeInTheDocument();
+    expect(screen.getByText(/Rare · 4/)).toBeInTheDocument();
+    expect(screen.getByRole('tab', { name: /skills \(1\)/i })).toBeInTheDocument();
+  });
+
+  it('does not render zero-scenario skill rows', () => {
+    render(
+      <AchievementsSection
+        skillAchievements={[
+          {
+            skill: 'linux',
+            label: 'Linux / Terminal',
+            color: '#60A5FA',
+            scenariosCompleted: 0,
+            rarity: 'common',
+          },
+        ]}
+      />
+    );
+
+    expect(screen.queryByText('Linux / Terminal')).not.toBeInTheDocument();
+    expect(screen.getByText(/no achievements recorded yet/i)).toBeInTheDocument();
+  });
+
   it('handles empty achievements state cleanly without broken containers', () => {
     render(<AchievementsSection />);
     expect(screen.getByText(/no achievements recorded yet/i)).toBeInTheDocument();

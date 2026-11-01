@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from 'react';
-import { Award } from 'lucide-react';
+import { Award, Sparkles } from 'lucide-react';
 import AchievementBadge from './AchievementBadge';
 import {
   getAchievementById,
@@ -10,6 +10,14 @@ import {
   type Achievement,
 } from '@/shared/constants/achievements';
 
+export interface SkillAchievementSummary {
+  skill: string;
+  label: string;
+  color: string;
+  scenariosCompleted: number;
+  rarity: 'common' | 'uncommon' | 'rare' | 'epic' | 'legendary';
+}
+
 interface AchievementsSectionProps {
   completedCourseIds?: string[];
   completedLabIds?: string[];
@@ -19,11 +27,19 @@ interface AchievementsSectionProps {
   bootcampCompleted?: boolean;
   labsCompleted?: number;
   coursesCompleted?: number;
-  skillAchievements?: any[];
+  skillAchievements?: SkillAchievementSummary[];
   className?: string;
 }
 
-type TabType = 'all' | 'courses' | 'labs' | 'bootcamp';
+type TabType = 'all' | 'courses' | 'labs' | 'bootcamp' | 'skills';
+
+const RARITY_LABELS: Record<SkillAchievementSummary['rarity'], string> = {
+  common: 'Common',
+  uncommon: 'Uncommon',
+  rare: 'Rare',
+  epic: 'Epic',
+  legendary: 'Legendary',
+};
 
 const INITIAL_VISIBLE_COUNT = 16;
 
@@ -35,6 +51,7 @@ export const AchievementsSection: React.FC<AchievementsSectionProps> = ({
   completedPhaseIds = [],
   bootcampCompleted = false,
   labsCompleted = 0,
+  skillAchievements = [],
   className = '',
 }) => {
   const [activeTab, setActiveTab] = useState<TabType>('all');
@@ -107,7 +124,21 @@ export const AchievementsSection: React.FC<AchievementsSectionProps> = ({
     }
   }, [activeTab, earnedCourses, earnedLabs, earnedBootcamp, allEarned]);
 
-  const totalCount = allEarned.length;
+  // LEARN-BUG-001: skill achievements come from /student/skill-achievements and
+  // previously never rendered. They are a distinct badge type, not an
+  // `Achievement`, because the earned skill is derived from scenario counts.
+  const earnedSkills = useMemo(
+    () =>
+      (skillAchievements || []).filter(
+        (skill): skill is SkillAchievementSummary =>
+          Boolean(skill?.skill) && Boolean(skill?.label) && Number(skill?.scenariosCompleted) > 0
+      ),
+    [skillAchievements]
+  );
+
+  const totalCount = allEarned.length + earnedSkills.length;
+  const showSkills = activeTab === 'all' || activeTab === 'skills';
+  const showInsignia = activeTab !== 'skills';
 
   if (totalCount === 0) {
     return (
@@ -213,6 +244,21 @@ export const AchievementsSection: React.FC<AchievementsSectionProps> = ({
               Bootcamp ({earnedBootcamp.length})
             </button>
           )}
+          {earnedSkills.length > 0 && (
+            <button
+              type="button"
+              role="tab"
+              aria-selected={activeTab === 'skills'}
+              onClick={() => { setActiveTab('skills'); setShowAll(false); }}
+              className={`rounded-lg px-2.5 py-1 font-mono text-[11px] font-bold uppercase tracking-wider transition-colors ${
+                activeTab === 'skills'
+                  ? 'bg-accent text-on-accent'
+                  : 'text-text-muted hover:bg-surface-raised hover:text-text-primary'
+              }`}
+            >
+              Skills ({earnedSkills.length})
+            </button>
+          )}
         </div>
       </div>
 
@@ -222,24 +268,56 @@ export const AchievementsSection: React.FC<AchievementsSectionProps> = ({
         wrapping each logo in a card, tile, or background box.
       */}
       <div className="pt-6">
-        {displayedList.length === 0 ? (
-          <p className="py-4 text-center font-mono text-xs text-text-muted">
-            No achievements in this category.
-          </p>
-        ) : (
-          <div className="flex flex-wrap items-center gap-4 sm:gap-6 md:gap-8">
-            {visibleItems.map((achievement) => (
-              <AchievementBadge
-                key={achievement.id}
-                achievement={achievement}
-                size="md"
-              />
-            ))}
+        {showInsignia && (
+          displayedList.length === 0 ? (
+            (showSkills && earnedSkills.length > 0) ? null : (
+              <p className="py-4 text-center font-mono text-xs text-text-muted">
+                No achievements in this category.
+              </p>
+            )
+          ) : (
+            <div className="flex flex-wrap items-center gap-4 sm:gap-6 md:gap-8">
+              {visibleItems.map((achievement) => (
+                <AchievementBadge
+                  key={achievement.id}
+                  achievement={achievement}
+                  size="md"
+                />
+              ))}
+            </div>
+          )
+        )}
+
+        {showSkills && earnedSkills.length > 0 && (
+          <div
+            className={
+              showInsignia && displayedList.length > 0
+                ? 'mt-6 border-t border-border/40 pt-6'
+                : ''
+            }
+          >
+            <ul className="flex flex-wrap gap-2.5" aria-label="Skill achievements">
+              {earnedSkills.map((skill) => (
+                <li
+                  key={skill.skill}
+                  className="inline-flex items-center gap-2 rounded-lg border border-border bg-surface-raised px-3 py-1.5"
+                  style={{ borderColor: `${skill.color}66` }}
+                >
+                  <Sparkles className="h-3.5 w-3.5" style={{ color: skill.color }} aria-hidden="true" />
+                  <span className="font-mono text-[11px] font-bold text-text-primary">
+                    {skill.label}
+                  </span>
+                  <span className="font-mono text-[10px] uppercase tracking-wider text-text-muted">
+                    {RARITY_LABELS[skill.rarity] || skill.rarity} · {skill.scenariosCompleted}
+                  </span>
+                </li>
+              ))}
+            </ul>
           </div>
         )}
 
         {/* Show More / Show Less */}
-        {hasMore && (
+        {showInsignia && hasMore && (
           <div className="mt-6 flex justify-center border-t border-border/40 pt-4">
             <button
               type="button"
