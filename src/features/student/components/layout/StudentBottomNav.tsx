@@ -14,6 +14,9 @@ import {
   ChevronRight,
 } from 'lucide-react';
 import { BottomSheet, BottomSheetContent } from '@/shared/components/ui/BottomSheet';
+import { useLearningContext } from '@/core/hooks/useLearningContext';
+import { CurriculumBottomSheet } from '@/shared/components/learning/CurriculumBottomSheet';
+import { getCourseById } from '@/features/student/data/courses';
 
 type SheetKey = 'learn' | 'practice';
 
@@ -67,6 +70,8 @@ const SHEETS: Record<SheetKey, { label: string; links: SheetLink[] }> = {
 const StudentBottomNav: React.FC = () => {
   const { pathname } = useLocation();
   const [sheet, setSheet] = useState<SheetKey | null>(null);
+  const learningContext = useLearningContext();
+  const [curriculumOpen, setCurriculumOpen] = useState(false);
 
   const isRouteActive = (to?: string) => {
     if (!to) return false;
@@ -75,6 +80,36 @@ const StudentBottomNav: React.FC = () => {
 
   const isSheetActive = (key: SheetKey) =>
     SHEETS[key].links.some((link) => pathname.startsWith(link.to));
+  
+  const handleLearnClick = () => {
+    if (learningContext) {
+      // In learning mode, show curriculum sheet
+      setCurriculumOpen(true);
+    } else {
+      // In dashboard mode, show standard learn links
+      setSheet('learn');
+    }
+  };
+  
+  // Helper to get current curriculum item ID based on learning context
+  const getCurrentCurriculumItemId = (context: typeof learningContext) => {
+    if (!context) return '';
+    
+    if (context.type === 'bootcamp' && context.roomId) {
+      return context.roomId;
+    }
+    
+    if (context.type === 'course' && context.currentLessonIdx !== undefined) {
+      const course = getCourseById(context.courseId);
+      return course?.lessons[context.currentLessonIdx]?.id || `lesson-${context.currentLessonIdx}`;
+    }
+    
+    if (context.type === 'lab' && context.currentScenarioIdx !== undefined) {
+      return `scenario-${context.currentScenarioIdx}`;
+    }
+    
+    return '';
+  };
 
   const activeSheet = sheet ? SHEETS[sheet] : null;
 
@@ -105,8 +140,8 @@ const StudentBottomNav: React.FC = () => {
                 <button
                   key={item.key}
                   type="button"
-                  onClick={() => setSheet(item.sheet!)}
-                  aria-expanded={sheet === item.sheet}
+                  onClick={item.sheet === 'learn' ? handleLearnClick : () => setSheet(item.sheet!)}
+                  aria-expanded={sheet === item.sheet || (item.sheet === 'learn' && curriculumOpen)}
                   aria-haspopup="dialog"
                   className="flex min-h-[56px] flex-1 items-center justify-center transition-colors hover:text-text-primary focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-accent"
                 >
@@ -160,6 +195,17 @@ const StudentBottomNav: React.FC = () => {
           )}
         </BottomSheetContent>
       </BottomSheet>
+
+      {/* Curriculum Bottom Sheet for Learning Mode */}
+      {learningContext && (
+        <CurriculumBottomSheet
+          open={curriculumOpen}
+          onOpenChange={setCurriculumOpen}
+          curriculum={learningContext.curriculum}
+          activeId={getCurrentCurriculumItemId(learningContext)}
+          title={learningContext.title}
+        />
+      )}
 
       {/* Spacer so page content clears the fixed bar and safe area */}
       <div className="h-16 lg:hidden" aria-hidden="true" />
