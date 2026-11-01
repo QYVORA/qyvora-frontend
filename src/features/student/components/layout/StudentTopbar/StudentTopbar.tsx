@@ -12,6 +12,8 @@ import useStudentOverview from '@/features/student/hooks/useStudentOverview';
 import MobileNotificationsSheet from './MobileNotificationsSheet';
 import NotificationsDialog from './NotificationsDialog';
 import type { NotificationItem } from './types';
+import { useLearningContext } from '@/core/hooks/useLearningContext';
+import { buildLearningBreadcrumbs } from '@/shared/utils/breadcrumbBuilders';
 
 // One shell row for every dashboard context (PROMPT §14: height, typography,
 // gutters and spacing are shared, so the same product owns every screen).
@@ -40,6 +42,7 @@ const StudentTopbar = ({ railCollapsed = false }: { railCollapsed?: boolean }) =
   const { user } = useAuth();
 
   const location = useLocation();
+  const learningContext = useLearningContext();
 
   const roomMatch = useMatch('/dashboard/bootcamps/:bootcampId/phases/:phaseId/rooms/:roomId');
   const roomMatchLegacy = useMatch('/dashboard/bootcamps/:bootcampId/modules/:moduleId/rooms/:roomId');
@@ -168,10 +171,14 @@ const StudentTopbar = ({ railCollapsed = false }: { railCollapsed?: boolean }) =
 
   // One crumb chain for every nested learning route, so the hierarchy reads the
   // same on a course lesson, a bootcamp room and a lab walkthrough.
-  // Exit navigation is owned by the sidebar rail; these crumbs are context only.
+  // Exit navigation is owned by the sidebar rail; these crumbs are context AND navigation.
   let crumbs: BreadcrumbItem[] = [];
 
-  if (isRoomPage) {
+  if (learningContext) {
+    // Use the enhanced breadcrumb builder for learning contexts
+    crumbs = buildLearningBreadcrumbs(learningContext);
+  } else if (isRoomPage) {
+    // Fallback for any edge cases not caught by useLearningContext
     crumbs = [
       ...(roomBreadcrumb?.phaseTitle ? [{ label: roomBreadcrumb.phaseTitle }] : []),
       { label: roomBreadcrumb?.roomTitle ?? 'Room' },
