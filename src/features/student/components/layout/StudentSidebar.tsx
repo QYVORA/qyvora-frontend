@@ -16,12 +16,16 @@ import {
   LogOut,
   PanelLeftClose,
   PanelLeftOpen,
+  ArrowLeft,
 } from 'lucide-react';
 import { QyvoraMark } from '@/shared/components/brand';
 import { useAuth } from '@/core/contexts/AuthContext';
 import { useToast } from '@/core/contexts/ToastContext';
 import api from '@/core/services/api';
 import { Tooltip, TooltipProvider } from '@/shared/components/ui/Tooltip';
+import { useLearningContext } from '@/core/hooks/useLearningContext';
+import { LearningCurriculumTree } from '@/shared/components/learning/LearningCurriculumTree';
+import Button from '@/shared/components/ui/Button';
 
 interface NavEntry {
   key: string;
@@ -75,6 +79,10 @@ const StudentSidebar: React.FC<{ collapsed?: boolean; onToggleCollapse?: () => v
   const navigate = useNavigate();
   const location = useLocation();
   const [unread, setUnread] = useState(0);
+  
+  // Detect if we're on a learning page
+  const learningContext = useLearningContext();
+  const isLearningMode = Boolean(learningContext);
 
   useEffect(() => {
     let mounted = true;
@@ -105,6 +113,25 @@ const StudentSidebar: React.FC<{ collapsed?: boolean; onToggleCollapse?: () => v
       to === '/dashboard' ? location.pathname === '/dashboard' : location.pathname.startsWith(to),
     [location.pathname],
   );
+  
+  // Helper to get current curriculum item ID based on learning context
+  const getCurrentCurriculumItemId = (context: typeof learningContext) => {
+    if (!context) return '';
+    
+    if (context.type === 'bootcamp' && context.roomId) {
+      return context.roomId;
+    }
+    
+    if (context.type === 'course' && context.currentLessonIdx !== undefined) {
+      return `lesson-${context.currentLessonIdx}`;
+    }
+    
+    if (context.type === 'lab' && context.currentScenarioIdx !== undefined) {
+      return `scenario-${context.currentScenarioIdx}`;
+    }
+    
+    return '';
+  };
 
   return (
     <aside
@@ -140,8 +167,51 @@ const StudentSidebar: React.FC<{ collapsed?: boolean; onToggleCollapse?: () => v
         </Link>
       </div>
 
-      <nav aria-label={"Primary"} className="custom-scrollbar sidebar-scroll flex-1 overflow-y-auto px-3 py-4">
-        {NAV_SECTIONS.map((section) => (
+      <nav aria-label={isLearningMode ? "Learning curriculum" : "Primary"} className="custom-scrollbar sidebar-scroll flex-1 overflow-y-auto px-3 py-4">
+        {isLearningMode && learningContext ? (
+          /* ══════════════════════════════════════════════════════════════
+             LEARNING MODE - Curriculum tree navigation
+             ══════════════════════════════════════════════════════════════ */
+          <>
+            {/* Back to Dashboard button */}
+            {!collapsed && (
+              <div className="mb-4">
+                <Button
+                  variant="ghost"
+                  onClick={() => navigate(learningContext.exitPath)}
+                  className="-ml-2 w-full justify-start gap-2 text-text-secondary hover:text-accent"
+                >
+                  <ArrowLeft className="h-4 w-4" />
+                  Back to Dashboard
+                </Button>
+              </div>
+            )}
+            
+            {/* Context title */}
+            {!collapsed && (
+              <div className="mb-3">
+                <h3 className="type-label px-3 text-text-tertiary uppercase tracking-[0.12em]">
+                  <span aria-hidden="true" className="text-accent">
+                    //&nbsp;
+                  </span>
+                  {learningContext.title}
+                </h3>
+              </div>
+            )}
+            
+            {/* Curriculum tree */}
+            <LearningCurriculumTree
+              items={learningContext.curriculum}
+              activeId={getCurrentCurriculumItemId(learningContext)}
+              collapsed={collapsed}
+            />
+          </>
+        ) : (
+          /* ══════════════════════════════════════════════════════════════
+             DASHBOARD MODE - Standard navigation sections
+             ══════════════════════════════════════════════════════════════ */
+          <>
+            {NAV_SECTIONS.map((section) => (
           <section key={section.title} className="mb-5">
             {!collapsed && (
               <h3 className="mb-1 type-label px-3 text-text-tertiary uppercase tracking-[0.12em]">
@@ -199,6 +269,8 @@ const StudentSidebar: React.FC<{ collapsed?: boolean; onToggleCollapse?: () => v
             </ul>
           </section>
         ))}
+          </>
+        )}
       </nav>
 
       <div className="border-t border-border-subtle px-3 py-3">
