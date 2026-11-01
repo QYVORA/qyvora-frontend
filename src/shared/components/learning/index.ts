@@ -24,3 +24,9 @@ export type { LearningDetailShellProps } from './LearningDetailShell';
 
 export { default as FocusedStepList } from './FocusedStepList';
 export type { FocusedStepListProps, FocusedStepListItem } from './FocusedStepList';
+
+export { LearningCurriculumTree, default as LearningCurriculumTreeComponent } from './LearningCurriculumTree';
+
+export { CurriculumBottomSheet, default as CurriculumBottomSheetComponent } from './CurriculumBottomSheet';
+
+export { DocsCodeBlock, DocsInlineCode, DocsCommandBlock } from './DocsCodeBlock';
