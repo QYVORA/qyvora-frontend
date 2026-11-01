@@ -2,12 +2,16 @@
  * Quiteroot — QYVORA's technical team.
  *
  * Source of truth (QYVORA documentation):
+ *   03-people/quiteroot-role-taxonomy.md                 canonical role codes/titles (DR-006)
  *   03-people/quiteroot/QUITEROOT-TEAM-STRUCTURE.md      QYVORA-QR-001  two teams, role placeholders, capability bars
  *   03-people/quiteroot/QUITEROOT-MEMBER-REGISTER.md     QYVORA-QR-002  live roster
  *   03-people/quiteroot/LEAD-PENETRATION-TESTER.md       QYVORA-PPL-006 Security Team delivery role record
  *   03-people/quiteroot/LEAD-PENETRATION-TESTER-ROLE.md  QYVORA-GOV-018 role framework
  *   03-people/quiteroot/JUNIOR-FRONTEND-DEVELOPER.md     QYVORA-PPL-007 Tech Team role record
  *   03-people/quiteroot/JUNIOR-FRONTEND-DEVELOPER-ROLE.md QYVORA-GOV-019 role framework
+ *
+ * EX-TEAM-010: the role list below is the published taxonomy. Do not add a
+ * role that is not in quiteroot-role-taxonomy.md; one person keeps one role.
  *
  * Every role listed here is a documented Quiteroot role placeholder. `holder`
  * is non-null only where a member is in place for that role; every other
@@ -124,17 +128,10 @@ export const QUITEROOT_TEAMS: QuiterootTeam[] = [
         },
       },
       {
-        id: 'QRT-BE-JR',
-        title: 'Junior Backend Developer',
+        id: 'QRT-BE',
+        title: 'Backend Developer',
         summary:
-          'Shipped backend work — APIs, services, data modelling and error handling.',
-        holder: null,
-      },
-      {
-        id: 'QRT-BE-SR',
-        title: 'Senior Backend Developer',
-        summary:
-          'Backend ownership rather than execution — service and data-model decisions, review of other contributors’ backend work, and accountability for the backend workstream.',
+          'Backend implementation — APIs, services, data modelling, validation and error handling.',
         holder: null,
       },
       {
@@ -215,17 +212,10 @@ export const QUITEROOT_TEAMS: QuiterootTeam[] = [
         holder: null,
       },
       {
-        id: 'QRS-OSE',
-        title: 'Offensive Security Engineer',
+        id: 'QRS-OTD',
+        title: 'Security Research Tool Builder',
         summary:
-          'Structured offensive security work — reconnaissance, attack-surface analysis, vulnerability validation and reporting — carried out only inside written authorization and agreed rules of engagement.',
-        holder: null,
-      },
-      {
-        id: 'QRS-STD',
-        title: 'Security Tool Developer',
-        summary:
-          'Built tooling — a framework, scanner, parser or enumeration tool — with a test or conformance story.',
+          'Built tooling — a framework, scanner, parser or enumeration tool — with a test or conformance story and documented limitations.',
         holder: null,
       },
     ],

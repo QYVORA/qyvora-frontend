@@ -82,19 +82,19 @@ describe('QuiterootPage', () => {
   it('derives roster counts from the data rather than hardcoding them', () => {
     renderQuiteroot('?team=security');
 
-    expect(QUITEROOT_ROLE_COUNT).toBe(12);
-    expect(QUITEROOT_OPEN_ROLES.length).toBe(8);
+    expect(QUITEROOT_ROLE_COUNT).toBe(10);
+    expect(QUITEROOT_OPEN_ROLES.length).toBe(6);
 
     // The header renders the role total straight from QUITEROOT_ROLE_COUNT.
-    expect(screen.getByText('12')).toBeTruthy();
+    expect(screen.getByText('10')).toBeTruthy();
   });
 
   it('keeps filled seats free of an application CTA while open seats stay applyable', () => {
     renderQuiteroot('?team=security');
 
-    // Peter + Peace are in place; the remaining three Security roles stay open.
+    // Peter + Peace are in place; the remaining two Security roles stay open.
     expect(screen.getAllByText('In place').length).toBe(2);
-    expect(screen.getAllByRole('link', { name: /^Apply —/i }).length).toBe(3);
+    expect(screen.getAllByRole('link', { name: /^Apply —/i }).length).toBe(2);
     expect(screen.getByText('Not open to applicants')).toBeTruthy();
   });
 });
