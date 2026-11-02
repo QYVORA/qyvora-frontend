@@ -78,45 +78,25 @@ const InlineQuiz: React.FC<InlineQuizProps> = ({
     const passed = score >= passThreshold;
 
     return (
-      <div className={`wc-interactive border border-border bg-bg-card rounded-xl p-6 space-y-5 ${className}`}>
+      <div className={`wc-interactive border border-border bg-bg-card rounded-xl p-6 space-y-6 ${className}`}>
+        {/* Simple score display */}
         <div
           aria-live="polite"
           aria-atomic="true"
-          className="text-center py-4"
+          className="text-center py-6"
         >
-          <div className={`text-5xl font-black font-mono mb-2 ${passed ? 'text-accent' : 'text-danger'}`}>
+          <div className={`text-5xl font-black font-mono mb-3 ${passed ? 'text-accent' : 'text-danger'}`}>
             {score}%
           </div>
-          <div className={`flex items-center justify-center gap-1.5 text-sm font-bold uppercase tracking-widest ${passed ? 'text-accent' : 'text-danger'}`}>
-            {passed ? <><IconCheck size={16} /> {"Passed"}</> : <><XCircle className="h-4 w-4" /> {"Needs Review"}</>}
+          <div className={`text-sm font-bold uppercase tracking-widest mb-2 ${passed ? 'text-accent' : 'text-danger'}`}>
+            {passed ? 'Passed' : 'Needs Review'}
           </div>
-          <p className="text-xs text-text-muted mt-2">{correct} of {questions.length} correct ({(passThreshold)}% to pass)</p>
+          <p className="text-xs text-text-muted mt-2">
+            {correct} of {questions.length} correct ({passThreshold}% to pass)
+          </p>
         </div>
 
-        <div className="space-y-4">
-          {questions.map((q, idx) => {
-            const chosen = answers[q.id];
-            const isCorrect = chosen === q.correctIndex;
-            return (
-              <div key={q.id} className="border border-border rounded-lg p-4 space-y-3">
-                <div className="flex items-start gap-2">
-                  <span className={`shrink-0 mt-0.5 ${isCorrect ? 'text-accent' : 'text-danger'}`}>
-                    {isCorrect ? <IconCheck size={16} /> : <XCircle className="h-4 w-4" />}
-                  </span>
-                  <div>
-                    <p className="text-sm font-bold text-text-primary">{q.question}</p>
-                    <p className="text-xs text-text-muted mt-1">{"Your answer: "}<span className={isCorrect ? 'text-accent' : 'text-danger'}>{q.options[chosen]}</span></p>
-                    {!isCorrect && (
-                      <p className="text-xs text-accent mt-0.5">{"Correct answer: "}{q.options[q.correctIndex]}</p>
-                    )}
-                  </div>
-                </div>
-                <p className="text-xs text-text-muted/70 pt-2">{q.explanation}</p>
-              </div>
-            );
-          })}
-        </div>
-
+        {/* Action button */}
         <div className="flex gap-3 justify-center">
           <button onClick={handleRetry} className="btn-secondary text-xs py-2.5">{"Retry"}</button>
         </div>

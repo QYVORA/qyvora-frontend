@@ -81,6 +81,7 @@ const routeContent: Record<string, RouteContent> = {
       { label: 'Quiteroot', href: '/quiteroot' },
       { label: 'Blog', href: '/blogs' },
       { label: 'Team', href: '/team' },
+      { label: 'Leadership', href: '/leadership' },
       { label: 'Leaderboard', href: '/leaderboard' },
       { label: 'Terms of Service', href: '/terms' },
     ],
@@ -1111,20 +1112,46 @@ const routeContent: Record<string, RouteContent> = {
   },
   '/team': {
     title: 'Team | QYVORA',
-    description: 'Meet the team behind QYVORA - cybersecurity experts building Africa\'s security ecosystem.',
+    description: 'Meet the complete QYVORA team - leadership, security operators, and engineers building Africa\'s offensive security platform.',
     h1: 'Our Team',
-    lead: 'The operators, engineers, and security researchers behind QYVORA.',
+    lead: 'The complete QYVORA team directory — leadership, security operators, and engineers.',
     sections: [
       {
-        heading: 'The core team',
+        heading: 'Three organizational sections',
         bullets: [
-          'wsuits6 - CEO. "I don\'t follow paths, I burn them then I write my own in code."',
-          'sopt4 - COO. "I don\'t break systems, I find the flaws so others don\'t."',
-          'Ghost Venom - CMO. "I am the whisper in the code, the shadow in the system."',
+          'Founding & Leadership — Six executive positions steering the company',
+          'QYVORA Security Team — Offensive security operators and researchers',
+          'QYVORA Tech Team — Engineers and designers building the platform',
         ],
       },
     ],
-    links: [{ label: 'Quiteroot', href: '/quiteroot' }],
+    links: [
+      { label: 'Leadership', href: '/leadership' },
+      { label: 'Quiteroot', href: '/quiteroot' },
+    ],
+  },
+  '/leadership': {
+    title: 'Leadership | QYVORA',
+    description: 'QYVORA\'s founding and executive leadership team - the six core positions driving the company\'s vision and operations.',
+    h1: 'Founding & Executive Team',
+    lead: 'The six founding and executive leaders steering QYVORA across Africa\'s cybersecurity landscape.',
+    sections: [
+      {
+        heading: 'Leadership positions',
+        bullets: [
+          'CEO - Chief Executive Officer',
+          'COO - Chief Operating Officer',
+          'CFO - Chief Financial Officer',
+          'CMO - Chief Marketing Officer',
+          'HRM - Human Resources Manager',
+          'CM - Community Manager',
+        ],
+      },
+    ],
+    links: [
+      { label: 'Full Team Directory', href: '/team' },
+      { label: 'Contact', href: '/contact' },
+    ],
   },
   '/leaderboard': {
     title: 'Leaderboard | QYVORA',

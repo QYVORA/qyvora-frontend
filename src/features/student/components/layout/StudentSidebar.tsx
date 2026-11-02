@@ -18,7 +18,7 @@ import {
   PanelLeftOpen,
   ArrowLeft,
 } from 'lucide-react';
-import { QyvoraMark } from '@/shared/components/brand';
+import { QyvoraMark, Logo } from '@/shared/components/brand';
 import { useAuth } from '@/core/contexts/AuthContext';
 import { useToast } from '@/core/contexts/ToastContext';
 import api from '@/core/services/api';
@@ -147,22 +147,18 @@ const StudentSidebar: React.FC<{ collapsed?: boolean; onToggleCollapse?: () => v
         <Link
           to="/dashboard"
           aria-label="QYVORA — Home"
-          className="group flex items-center gap-3 rounded-xl focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+          className="group rounded-xl focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
         >
-          <QyvoraMark
-            className={`shrink-0 transition-transform duration-[var(--dur-fast)] ease-[var(--ease-smooth)] group-hover:scale-105 ${
-              collapsed ? 'h-7 w-7' : 'h-8 w-8'
-            }`}
-            aria-hidden="true"
-          />
-          {!collapsed && (
-            <span className="flex flex-col items-start">
-              <span className="text-sm font-black leading-none tracking-tight text-text-primary">QYVORA</span>
-              <span className="type-label mt-1.5 flex items-center gap-1.5 text-[10px] uppercase tracking-[0.14em] text-text-tertiary">
-                <span className="status-led h-1.5 w-1.5 rounded-full bg-accent" aria-hidden="true" />
-                Online
-              </span>
-            </span>
+          {collapsed ? (
+            <QyvoraMark
+              className="h-8 w-8 shrink-0 transition-transform duration-[var(--dur-fast)] ease-[var(--ease-smooth)] group-hover:scale-105"
+              aria-hidden="true"
+            />
+          ) : (
+            <Logo
+              className="h-8 transition-transform duration-[var(--dur-fast)] ease-[var(--ease-smooth)] group-hover:scale-105"
+              aria-hidden="true"
+            />
           )}
         </Link>
       </div>
@@ -191,9 +187,6 @@ const StudentSidebar: React.FC<{ collapsed?: boolean; onToggleCollapse?: () => v
             {!collapsed && (
               <div className="mb-3">
                 <h3 className="type-label px-3 text-text-tertiary uppercase tracking-[0.12em]">
-                  <span aria-hidden="true" className="text-accent">
-                    //&nbsp;
-                  </span>
                   {learningContext.title}
                 </h3>
               </div>
@@ -215,9 +208,6 @@ const StudentSidebar: React.FC<{ collapsed?: boolean; onToggleCollapse?: () => v
           <section key={section.title} className="mb-5">
             {!collapsed && (
               <h3 className="mb-1 type-label px-3 text-text-tertiary uppercase tracking-[0.12em]">
-                <span aria-hidden="true" className="text-accent">
-                  //&nbsp;
-                </span>
                 {section.title}
               </h3>
             )}
@@ -238,15 +228,7 @@ const StudentSidebar: React.FC<{ collapsed?: boolean; onToggleCollapse?: () => v
                         }`}
                       >
                         {active && (
-                          <>
-                            <span className="absolute left-0 top-1/2 h-6 w-0.5 -translate-y-1/2 rounded-full bg-accent" aria-hidden="true" />
-                            {/* Corner ticks reuse the cursor's lock-on language —
-                                the active route reads as a "locked target". */}
-                            <span className="nav-ticks" aria-hidden="true">
-                              <i />
-                              <i />
-                            </span>
-                          </>
+                          <span className="absolute left-0 top-1/2 h-6 w-0.5 -translate-y-1/2 rounded-full bg-accent" aria-hidden="true" />
                         )}
                         <Icon
                           className={`h-[18px] w-[18px] shrink-0 transition-transform duration-[var(--dur-fast)] ease-[var(--ease-smooth)] group-hover:translate-x-0.5 ${

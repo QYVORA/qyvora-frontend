@@ -31,7 +31,7 @@ export const LearningContentRenderer: React.FC<LearningContentRendererProps> = (
   return (
     <div className={className}>
       {/* Render all blocks in sequence */}
-      <div className="space-y-10 md:space-y-14">
+      <div className="space-y-6 md:space-y-8">
         {unit.blocks.map((block) => (
           <LearningBlockRenderer
             key={block.id}
@@ -43,7 +43,7 @@ export const LearningContentRenderer: React.FC<LearningContentRendererProps> = (
       
       {/* Optional image (legacy compatibility) */}
       {unit.image && (
-        <div className="wc-media mt-10 md:mt-14">
+        <div className="wc-media mt-8 md:mt-10">
           <img
             src={unit.image.src}
             alt={unit.image.alt}

@@ -99,96 +99,49 @@ const QuizModal: React.FC<QuizModalProps> = ({ moduleId, roomId, courseId, onClo
 
           {!loading && result && (
             <div className="space-y-6">
-              <div aria-live="polite" aria-atomic="true" className="text-center py-4">
-                <div className={`text-6xl font-black mb-2 ${result.passed ? 'text-accent' : 'text-danger'}`}>
+              {/* Simple score display */}
+              <div aria-live="polite" aria-atomic="true" className="text-center py-6">
+                <div className={`text-6xl font-black mb-3 ${result.passed ? 'text-accent' : 'text-danger'}`}>
                   {result.score}%
                 </div>
-                <div className={`flex items-center justify-center gap-1.5 text-sm font-bold uppercase tracking-widest ${result.passed ? 'text-accent' : 'text-danger'}`}>
-                  {result.passed
-                    ? <><IconCheck size={16} /> {"Passed"}</>
-                    : <><XCircle className="h-4 w-4" /> {"Not quite - 70% needed"}</>
-                  }
+                <div className={`text-sm font-bold uppercase tracking-widest mb-2 ${result.passed ? 'text-accent' : 'text-danger'}`}>
+                  {result.passed ? 'Passed' : 'Try Again'}
                 </div>
                 {result.passed && result.reward > 0 && (
-                  <div className="mt-1 text-xs text-text-muted">+{result.reward} CP earned</div>
+                  <div className="text-xs text-text-muted">+{result.reward} CP earned</div>
+                )}
+                {!result.passed && (
+                  <p className="text-sm text-text-muted mt-3">
+                    Review the content and retry when ready.
+                  </p>
                 )}
               </div>
 
-              {result.passed ? (
-                <div className="rounded-2xl border-2 border-accent/20 bg-accent-dim/30 p-6 text-center">
-                  <p className="text-sm text-text-primary font-bold mb-4">
-                    {"Excellent work! You've mastered the concepts in this room."}
-                  </p>
+              {/* Action buttons */}
+              <div className="flex flex-col gap-3">
+                {result.passed ? (
                   <button
                     onClick={onPassed}
                     className="btn-primary w-full py-3 text-sm font-black uppercase"
                   >
                     {"Continue"}
                   </button>
-                </div>
-              ) : (
-                <>
-                  <div className="flex justify-center mb-6">
-                    <Dobia expression="angry" size="lg" />
-                  </div>
-                  <div className="space-y-5">
-                    {result.questions.map((q, idx) => {
-                      const chosen  = answers[q.id];
-                      return (
-                        <div key={q.id} className="rounded-2xl border border-border/50 bg-bg-card p-4">
-                          <div className="flex items-start gap-2 mb-3">
-                            <span className="shrink-0 mt-0.5 text-text-muted">
-                              <ClipboardList className="h-4 w-4" />
-                            </span>
-                            <p className="text-sm font-bold text-text-primary leading-snug">
-                              <span className="text-text-muted font-mono text-xs mr-1">Q{idx + 1}.</span>
-                              {q.text}
-                            </p>
-                          </div>
-                          <div className="space-y-1.5 pl-5">
-                            {q.options.map((opt, optIdx) => {
-                              const isChosenOpt  = optIdx === chosen;
-                              const ansResult = result.answerResults[idx];
-                              const isCorrectOpt = ansResult.correct && opt === ansResult.correctAnswer;
-                              const showCorrect = isCorrectOpt && !isChosenOpt;
-                              let cls = 'border-border text-text-muted';
-                              if (isChosenOpt) {
-                                cls = ansResult.correct
-                                  ? 'border-accent/50 bg-accent/10 text-accent font-bold'
-                                  : 'border-danger/50 bg-danger/10 text-danger font-bold';
-                              } else if (showCorrect) {
-                                cls = 'border-accent/30 bg-accent/5 text-accent';
-                              }
-                              return (
-                                <div key={optIdx} className={`rounded-lg border px-3 py-2 text-xs flex items-center gap-2 ${cls}`}>
-                                  <span className="font-mono opacity-50 shrink-0">{String.fromCharCode(65 + optIdx)}.</span>
-                                  <span>{opt}</span>
-                                  {isChosenOpt && <span className="ml-auto text-xs font-black shrink-0">{ansResult.correct ? "Correct" : "Wrong"}</span>}
-                                  {showCorrect && <span className="ml-auto text-xs font-black text-accent shrink-0">{"Correct answer"}</span>}
-                                </div>
-                              );
-                            })}
-                          </div>
-                        </div>
-                      );
-                    })}
-                  </div>
-
-                  <div className="flex flex-col gap-3 pt-2">
+                ) : (
+                  <>
                     <button
                       onClick={() => { setResult(null); setAnswers({}); }}
                       className="btn-primary text-sm py-3"
                     >
-                      {"Try Again"}
+                      {"Retry Quiz"}
                     </button>
                     {!inline && (
                       <button onClick={onClose} className="btn-secondary text-sm py-3">
                         {"Close"}
                       </button>
                     )}
-                  </div>
-                </>
-              )}
+                  </>
+                )}
+              </div>
             </div>
           )}
 
@@ -201,15 +154,13 @@ const QuizModal: React.FC<QuizModalProps> = ({ moduleId, roomId, courseId, onClo
                 />
               </div>
 
-              <div className="space-y-7">
+              <div className="space-y-6">
                 {quiz.questions.map((q, idx) => (
                   <div key={q.id || idx} className="space-y-3">
-                    <div className="flex items-start gap-2">
-                      <span className="mt-0.5 shrink-0 rounded border border-border bg-surface-raised px-2 py-0.5 font-mono text-xs font-black text-text-muted">
-                        Q{idx + 1}
-                      </span>
-                      <p className="text-sm font-bold leading-snug text-text-primary">{q.text}</p>
-                    </div>
+                    <p className="text-sm font-bold text-text-primary">
+                      <span className="text-accent font-mono mr-2">Q{idx + 1}.</span>
+                      {q.text}
+                    </p>
                     <div className="space-y-2">
                       {(q.options || []).map((opt, optIdx) => {
                         const selected = Number(answers[q.id]) === optIdx;
@@ -218,13 +169,13 @@ const QuizModal: React.FC<QuizModalProps> = ({ moduleId, roomId, courseId, onClo
                             key={`${q.id}-${optIdx}`}
                             onClick={() => setAnswers((prev) => ({ ...prev, [q.id]: optIdx }))}
                             aria-pressed={selected}
-                            className={`w-full rounded-xl border px-4 py-3 text-left text-sm transition-[background-color,border-color,color] duration-[var(--dur-base)] ease-[var(--ease-smooth)] ${
+                            className={`w-full text-left text-sm border-l-2 px-3 py-2.5 transition-colors ${
                               selected
-                                ? 'border-accent bg-accent-dim font-bold text-accent'
-                                : 'border-border text-text-secondary hover:border-accent/50 hover:bg-accent-dim/20'
+                                ? 'border-accent bg-accent/5 text-text-primary'
+                                : 'border-transparent hover:border-accent/30 text-text-secondary hover:text-text-primary'
                             }`}
                           >
-                            <span className="mr-2 font-mono text-xs opacity-50">
+                            <span className="font-mono text-accent mr-2">
                               {String.fromCharCode(65 + optIdx)}.
                             </span>
                             {opt}

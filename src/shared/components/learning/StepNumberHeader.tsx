@@ -49,44 +49,37 @@ export function StepNumberHeader({
   return (
     <>
       {showBack && backElement}
-      <div className="mb-8 md:mb-12 flex items-center gap-4">
-        <div
-          className={cn(
-            'flex h-14 w-14 shrink-0 items-center justify-center rounded-xl border font-mono text-xl font-black md:h-16 md:w-16 md:text-2xl',
-            isActive
-              ? 'bg-accent border-accent text-on-accent'
-              : isCompleted
-              ? 'bg-accent-dim border-accent/20 text-accent'
-              : 'bg-bg-elevated border-border text-text-muted',
-          )}
-        >
-          {isCompleted ? (
-            <IconCheck size={24} />
-          ) : (
-            String(stepNumber).padStart(2, '0')
-          )}
-        </div>
-        <div className="flex min-w-0 flex-1 flex-wrap items-center gap-3">
+      <div className="mb-6 md:mb-8">
+        <div className="flex items-baseline gap-3 flex-wrap">
           <span
             className={cn(
-              'block font-black uppercase tracking-tight transition-colors duration-300',
-              isActive ? 'text-accent text-2xl md:text-3xl' : isCompleted ? 'text-accent text-2xl md:text-3xl' : 'text-text-muted text-2xl md:text-3xl',
+              'font-mono text-sm font-bold',
+              isActive || isCompleted ? 'text-accent' : 'text-text-muted'
+            )}
+          >
+            {stepNumber}.
+          </span>
+          <h2
+            className={cn(
+              'font-black uppercase tracking-tight flex-1 min-w-0',
+              'text-2xl md:text-3xl',
+              isActive || isCompleted ? 'text-text-primary' : 'text-text-muted'
             )}
           >
             {title}
-          </span>
+          </h2>
           {badges}
+          {statusLabel && (
+            <span className="shrink-0 text-accent text-xs font-black uppercase tracking-widest">
+              {statusLabel}
+            </span>
+          )}
+          {isCompleted && !statusLabel && (
+            <span className="text-xs font-black uppercase tracking-widest text-accent">
+              {"Done"}
+            </span>
+          )}
         </div>
-        {statusLabel && (
-          <span className="shrink-0 text-accent text-xs font-black uppercase tracking-widest px-2 py-1">
-            {statusLabel}
-          </span>
-        )}
-        {isCompleted && !statusLabel && (
-          <span className="text-xs font-black uppercase tracking-widest text-accent">
-            {"Done"}
-          </span>
-        )}
       </div>
     </>
   );

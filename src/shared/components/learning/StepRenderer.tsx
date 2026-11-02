@@ -35,7 +35,7 @@ const StepRenderer: React.FC<StepRendererProps> = ({
   className = '',
 }) => {
   return (
-    <section className={`relative w-full border-t border-border/10 first:border-t-0 py-12 md:py-16 ${className}`}>
+    <section className={`relative w-full py-6 md:py-8 ${className}`}>
       {headerAction}
       <StepNumberHeader
         stepNumber={stepNumber}
@@ -54,7 +54,7 @@ const StepRenderer: React.FC<StepRendererProps> = ({
       {afterContent}
 
       {footer && (
-        <div className="mt-10 md:mt-14">
+        <div className="mt-8 md:mt-10">
           {footer}
         </div>
       )}

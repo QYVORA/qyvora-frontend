@@ -120,21 +120,15 @@ const PublicNavigation: React.FC = React.memo(() => {
                 to={link.to}
                 className={({ isActive }) =>
                   [
-                    'group flex min-h-[48px] items-center px-4 py-2 text-sm font-medium',
-                    'transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent',
-                    isActive ? 'text-accent' : 'text-text-secondary hover:text-text-primary',
+                    'group relative flex min-h-[48px] items-center gap-2 rounded-xl px-4 py-2 text-sm font-bold uppercase tracking-widest',
+                    'transition-all duration-200 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent',
+                    isActive 
+                      ? 'bg-accent/10 text-accent' 
+                      : 'text-text-secondary hover:bg-surface-raised hover:text-text-primary',
                   ].join(' ')
                 }
               >
-                {({ isActive }) => (
-                  <span className="flex flex-col items-center gap-1">
-                    <span>{link.label}</span>
-                    <span
-                      aria-hidden="true"
-                      className={`h-px w-full transition-colors ${isActive ? 'bg-accent' : 'bg-transparent group-hover:bg-border'}`}
-                    />
-                  </span>
-                )}
+                {link.label}
               </NavLink>
             ))}
           </div>

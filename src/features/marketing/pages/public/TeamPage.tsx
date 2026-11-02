@@ -5,12 +5,8 @@ import SEO from '@/shared/components/SEO';
 import PageHeader from '@/shared/components/ui/PageHeader';
 import PublicContainer from '@/shared/components/layout/PublicContainer';
 import Badge from '@/shared/components/ui/Badge';
-import Button from '@/shared/components/ui/Button';
 import { teamData, type TeamMember } from '@/features/marketing/content/teamData';
-import {
-  QUITEROOT_ROLE_COUNT,
-  QUITEROOT_TEAMS,
-} from '@/features/marketing/content/quiterootData';
+import { QUITEROOT_TEAMS, type QuiterootRole, type QuiterootHolder } from '@/features/marketing/content/quiterootData';
 
 const SOCIAL_ICONS: Record<string, React.ElementType> = {
   github: BrandGithubIcon,
@@ -21,42 +17,39 @@ const SOCIAL_ICONS: Record<string, React.ElementType> = {
   instagram: BrandInstagramIcon,
 };
 
-const FOUNDERS: Record<string, boolean> = {
-  wsuits6: true,
-  sopt4: true,
-  ghostVenom: true,
+const SocialLinks = ({ member }: { member: TeamMember | QuiterootHolder }) => {
+  const socials = member.socials || {};
+  return (
+    <div className="flex items-center gap-2">
+      {Object.entries(socials).map(([platform, url]) => {
+        if (!url) return null;
+        const Icon = SOCIAL_ICONS[platform];
+        if (!Icon) return null;
+        return (
+          <a
+            key={platform}
+            href={url}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={`${member.name} on ${platform}`}
+            className="flex h-10 w-10 items-center justify-center rounded-lg border border-border-subtle text-text-muted transition-colors hover:border-accent/40 hover:text-accent"
+          >
+            <Icon className="h-4 w-4" />
+          </a>
+        );
+      })}
+    </div>
+  );
 };
 
-const SocialLinks = ({ member }: { member: TeamMember }) => (
-  <div className="flex items-center gap-2">
-    {Object.entries(member.socials).map(([platform, url]) => {
-      if (!url) return null;
-      const Icon = SOCIAL_ICONS[platform];
-      if (!Icon) return null;
-      return (
-        <a
-          key={platform}
-          href={url}
-          target="_blank"
-          rel="noopener noreferrer"
-          aria-label={`${member.name} on ${platform}`}
-          className="flex h-10 w-10 items-center justify-center rounded-lg border border-border-subtle text-text-muted transition-colors hover:border-accent/40 hover:text-accent"
-        >
-          <Icon className="h-4 w-4" />
-        </a>
-      );
-    })}
-  </div>
-);
-
-const OperatorCard = ({ member }: { member: TeamMember }) => (
+const TeamMemberCard = ({ member, handle }: { member: TeamMember | QuiterootHolder; handle?: string }) => (
   <article className="flex h-full flex-col overflow-hidden rounded-2xl border border-border-subtle bg-surface">
     <div className="relative aspect-[4/3] w-full overflow-hidden bg-surface-raised">
       <img
-        src={member.image}
+        src={'image' in member ? member.image : ''}
         alt={member.name}
-        width={member.width}
-        height={member.height}
+        width={'imageWidth' in member ? member.imageWidth : 560}
+        height={'imageHeight' in member ? member.imageHeight : 560}
         loading="lazy"
         className="h-full w-full object-cover object-[center_20%] transition-transform duration-700 hover:scale-105"
       />
@@ -65,11 +58,11 @@ const OperatorCard = ({ member }: { member: TeamMember }) => (
     <div className="flex flex-1 flex-col p-5">
       <div className="flex items-center justify-between gap-3">
         <span className="rounded-lg border border-accent/30 bg-accent/10 px-2 py-0.5 text-tiny font-black uppercase tracking-widest text-accent">
-          {member.role}
+          {'role' in member && 'bio' in member && 'profile' in member ? member.role : 'Team Member'}
         </span>
-        {member.handle && (
+        {handle && (
           <span className="text-tiny font-black uppercase tracking-widest text-text-muted">
-            @{member.handle}
+            @{handle}
           </span>
         )}
       </div>
@@ -86,7 +79,7 @@ const OperatorCard = ({ member }: { member: TeamMember }) => (
       )}
 
       <p className="mt-3 text-xs font-mono leading-relaxed text-text-secondary line-clamp-3">
-        {member.profile}
+        {member.bio}
       </p>
 
       <div className="mt-4 flex flex-wrap gap-1.5">
@@ -102,9 +95,9 @@ const OperatorCard = ({ member }: { member: TeamMember }) => (
 
       <div className="mt-auto pt-4">
         <div className="flex items-center justify-between gap-3 border-t border-border-subtle pt-4">
-          {member.handle ? (
+          {handle ? (
             <Link
-              to={`/@${member.handle}`}
+              to={`/@${handle}`}
               className="inline-flex min-h-[44px] items-center gap-1.5 text-xs font-black uppercase tracking-widest text-accent transition-colors hover:text-text-primary"
             >
               View profile <ArrowUpRight className="h-3.5 w-3.5" />
@@ -120,129 +113,146 @@ const OperatorCard = ({ member }: { member: TeamMember }) => (
 );
 
 /**
- * QYVORA's technical community is a separate structure from the leadership
- * team above: capability placement, not officer appointment. It is surfaced
- * here as a route into /quiteroot rather than as company team members.
- */
-const QuiterootCallout = () => (
-  <div className="flex h-full flex-col gap-6 rounded-2xl border border-border-subtle bg-surface p-5 md:p-8">
-    <div className="flex flex-col gap-3">
-      <span className="type-kicker block text-accent">QYVORA · Technical team</span>
-      <h2 className="type-h2 font-black uppercase tracking-tight text-text-primary">
-        Quiteroot
-      </h2>
-      <p className="type-body text-text-secondary">
-        Engineering and security at QYVORA is organised as Quiteroot — a technical
-        community placed by demonstrated capability rather than by appointment. Every
-        defined role is published, whether it is filled or open.
-      </p>
-    </div>
-
-    <ul className="flex flex-col gap-3">
-      {QUITEROOT_TEAMS.map((team) => (
-        <li key={team.id}>
-          <Link
-            to={`/quiteroot?team=${team.id}`}
-            aria-label={`View the ${team.name}`}
-            className="group relative flex items-center gap-4 rounded-2xl border border-border-subtle bg-surface-raised p-4 transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent hover:border-accent/40"
-          >
-            <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl border border-border-subtle bg-surface p-1.5">
-              <img
-                src={team.logo}
-                alt=""
-                aria-hidden="true"
-                width={team.logoWidth}
-                height={team.logoHeight}
-                loading="lazy"
-                className="h-full w-full object-contain"
-              />
-            </div>
-            <div className="min-w-0">
-              <p className="text-sm font-black uppercase tracking-tight text-text-primary">
-                {team.name}
-              </p>
-              <p className="type-meta mt-1 text-text-muted">
-                {`${team.roles.length} roles · ${team.roles.filter((role) => role.holder === null).length} open`}
-              </p>
-            </div>
-            <ArrowUpRight
-              className="pointer-events-none absolute right-4 top-1/2 h-4 w-4 -translate-y-1/2 text-accent opacity-0 transition-opacity group-hover:opacity-100 group-focus-visible:opacity-100"
-              aria-hidden="true"
-            />
-          </Link>
-        </li>
-      ))}
-    </ul>
-
-    <div className="mt-auto flex flex-wrap items-center gap-3 border-t border-border-subtle pt-5">
-      <Button to="/quiteroot" variant="secondary" size="md">
-        Meet Quiteroot
-        <ArrowUpRight className="h-3.5 w-3.5" aria-hidden="true" />
-      </Button>
-      <Badge variant="default" size="sm">
-        <Shield className="mr-1.5 h-3 w-3" aria-hidden="true" />
-        {`${QUITEROOT_ROLE_COUNT} roles published`}
-      </Badge>
-    </div>
-  </div>
-);
-
-/**
- * Leadership page — the four officer roles. Quiteroot is presented separately
- * because it is a technical community, not an officer appointment.
+ * Complete QYVORA team directory — Leadership, Security Team, and Tech Team.
+ * 
+ * This page consolidates all QYVORA personnel into one organized directory with three
+ * distinct sections representing the company's organizational structure.
  */
 const TeamPage = () => {
-  const founders = teamData.filter((m) => FOUNDERS[m.id]);
-  const operators = teamData.filter((m) => !FOUNDERS[m.id]);
+  const securityTeam = QUITEROOT_TEAMS.find((t) => t.id === 'security');
+  const techTeam = QUITEROOT_TEAMS.find((t) => t.id === 'tech');
+
+  const securityMembers = securityTeam?.roles.filter((role) => role.holder !== null) || [];
+  const techMembers = techTeam?.roles.filter((role) => role.holder !== null) || [];
+
+  const totalCount = teamData.length + securityMembers.length + techMembers.length;
 
   return (
     <div className="min-h-dvh bg-canvas">
       <SEO
         title="Team - QYVORA"
-        description="The team behind QYVORA | operators, engineers, and security researchers."
+        description="The complete QYVORA team | leadership, security operators, and engineers building Africa's offensive security platform."
         breadcrumbName="Team"
       />
       <PublicContainer className="pb-20 pt-24 md:pb-24 md:pt-28 lg:pt-32">
         <PageHeader
-          kicker="QYVORA · Leadership"
+          kicker="QYVORA · Team Directory"
           title="Our Team"
-          description="The people accountable for QYVORA's direction, operations and people — plus Quiteroot, the technical community that builds and secures the platform."
+          description="The people behind QYVORA — from founding leadership to security operators and engineers — all working to build Africa's premier offensive security training platform and services team."
           metadata={
             <span className="type-meta inline-flex items-center gap-2">
               <Users className="h-3.5 w-3.5 text-accent" aria-hidden="true" />
-              <span className="font-bold text-text-primary">{teamData.length}</span>
-              Leadership roles
+              <span className="font-bold text-text-primary">{totalCount}</span>
+              Team members
             </span>
           }
         />
 
-        <section aria-label="Founding team" className="mt-12 md:mt-16">
+        {/* Section 01: Founding & Leadership Team */}
+        <section aria-label="Founding & Leadership Team" className="mt-12 md:mt-16">
           <div className="mb-6 flex flex-col gap-2">
-            <p className="type-label uppercase tracking-[0.12em] text-accent">{"The founding crew"}</p>
+            <p className="type-label uppercase tracking-[0.12em] text-accent">01. Founding & Leadership</p>
             <h2 className="text-2xl font-black uppercase tracking-tight text-text-primary md:text-3xl">
-              {"From Tamale, building the platform"}
+              Executive Team
             </h2>
+            <p className="type-body text-text-secondary max-w-3xl">
+              QYVORA's founding and executive leadership — the six core positions responsible for the company's direction, operations, and growth.
+            </p>
           </div>
-          <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-            {founders.map((member) => <OperatorCard key={member.id} member={member} />)}
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {teamData.map((member) => (
+              <TeamMemberCard key={member.id} member={member} handle={member.handle} />
+            ))}
           </div>
         </section>
 
-        <section aria-label="Operations and technical team" className="mt-14 md:mt-20">
+        {/* Section 02: QYVORA Security Team */}
+        <section aria-label="QYVORA Security Team" className="mt-14 md:mt-20">
           <div className="mb-6 flex flex-col gap-2">
-            <p className="type-label uppercase tracking-[0.12em] text-accent">{"Operations & engineering"}</p>
+            <p className="type-label uppercase tracking-[0.12em] text-accent">02. QYVORA Security Team</p>
             <h2 className="text-2xl font-black uppercase tracking-tight text-text-primary md:text-3xl">
-              {"The crew running the day-to-day"}
+              Security Operations & Research
             </h2>
+            <p className="type-body text-text-secondary max-w-3xl">
+              The security professionals conducting offensive security research, penetration testing, and authorized security work for QYVORA and its clients.
+            </p>
           </div>
-          <div className="grid grid-cols-1 gap-4 lg:grid-cols-12 lg:gap-5">
-            <div className="lg:col-span-5">
-              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-1">
-                {operators.map((member) => <OperatorCard key={member.id} member={member} />)}
-              </div>
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {securityMembers.map((role: QuiterootRole) => role.holder && (
+              <TeamMemberCard key={role.id} member={role.holder} />
+            ))}
+          </div>
+          {securityMembers.length === 0 && (
+            <div className="rounded-2xl border border-border-subtle bg-surface p-8 text-center">
+              <Shield className="mx-auto h-12 w-12 text-text-muted" aria-hidden="true" />
+              <p className="mt-4 type-body text-text-secondary">
+                Security team positions are being filled. Check back soon or visit{' '}
+                <Link to="/quiteroot?team=security" className="text-accent hover:underline">
+                  Quiteroot
+                </Link>{' '}
+                to see open roles.
+              </p>
             </div>
-            <div className="lg:col-span-7">
-              <QuiterootCallout />
+          )}
+        </section>
+
+        {/* Section 03: QYVORA Tech Team */}
+        <section aria-label="QYVORA Tech Team" className="mt-14 md:mt-20">
+          <div className="mb-6 flex flex-col gap-2">
+            <p className="type-label uppercase tracking-[0.12em] text-accent">03. QYVORA Tech Team</p>
+            <h2 className="text-2xl font-black uppercase tracking-tight text-text-primary md:text-3xl">
+              Engineering & Development
+            </h2>
+            <p className="type-body text-text-secondary max-w-3xl">
+              The engineers and designers building QYVORA's platform, products, and interfaces — turning security training and tooling into scalable, accessible technology.
+            </p>
+          </div>
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {techMembers.map((role: QuiterootRole) => role.holder && (
+              <TeamMemberCard key={role.id} member={role.holder} />
+            ))}
+          </div>
+          {techMembers.length === 0 && (
+            <div className="rounded-2xl border border-border-subtle bg-surface p-8 text-center">
+              <Users className="mx-auto h-12 w-12 text-text-muted" aria-hidden="true" />
+              <p className="mt-4 type-body text-text-secondary">
+                Tech team positions are being filled. Check back soon or visit{' '}
+                <Link to="/quiteroot?team=tech" className="text-accent hover:underline">
+                  Quiteroot
+                </Link>{' '}
+                to see open roles.
+              </p>
+            </div>
+          )}
+        </section>
+
+        {/* Call to action: Join the team */}
+        <section className="mt-14 md:mt-20">
+          <div className="rounded-2xl border border-border-subtle bg-surface p-8 md:p-12 text-center">
+            <Badge variant="default" size="sm" className="mx-auto">
+              <Shield className="mr-1.5 h-3 w-3" aria-hidden="true" />
+              We're hiring
+            </Badge>
+            <h2 className="mt-4 text-2xl font-black uppercase tracking-tight text-text-primary md:text-3xl">
+              Join QYVORA
+            </h2>
+            <p className="mt-3 type-body text-text-secondary max-w-2xl mx-auto">
+              We're building Africa's offensive security platform and services team. Explore open positions across security and engineering on Quiteroot, or reach out directly if you'd like to discuss opportunities.
+            </p>
+            <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
+              <Link
+                to="/quiteroot"
+                className="inline-flex min-h-[48px] items-center gap-2 rounded-xl bg-accent px-6 py-3 text-sm font-black uppercase tracking-widest text-on-accent transition-colors hover:bg-accent/90"
+              >
+                View open roles
+                <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
+              </Link>
+              <Link
+                to="/contact"
+                className="inline-flex min-h-[48px] items-center gap-2 rounded-xl border border-border-subtle bg-surface px-6 py-3 text-sm font-black uppercase tracking-widest text-text-primary transition-colors hover:border-accent/40 hover:text-accent"
+              >
+                Get in touch
+              </Link>
             </div>
           </div>
         </section>

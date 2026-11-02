@@ -136,79 +136,37 @@ export function WalkthroughLayout({
       >
         {headerContent}
 
-        {/* Connection Panel */}
+        {/* Connection Banner */}
         {scenarioId && showConnectionGuide && (
-          <div className="rounded-xl border border-border-subtle bg-surface p-5 md:p-6">
-            <div className="flex flex-wrap items-center gap-3 mb-4">
-              <div className="flex h-9 w-9 items-center justify-center rounded-xl border border-border-subtle bg-surface-raised text-accent">
-                <IconTerminal size={18} />
-              </div>
-              <h3 className="type-h3 font-black uppercase tracking-tight text-text-primary">
-                {"Lab Connection"}
-              </h3>
-              <span className="type-meta rounded-md border border-accent/30 bg-accent/10 px-2 py-1 text-accent">
-                {"Live Instance"}
+          !isConnected ? (
+            <div className="flex items-center justify-between px-4 py-3 rounded-lg border border-border bg-bg-card mb-6">
+              <span className="text-sm text-text-secondary">
+                Connect to lab environment to begin
               </span>
+              <button
+                onClick={handleConnect}
+                disabled={isLoading}
+                className="btn-primary text-xs px-4 py-2 inline-flex items-center gap-2 min-h-[44px]"
+              >
+                {isLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : <IconTerminal size={16} />}
+                {isLoading ? "Connecting..." : "Connect"}
+              </button>
             </div>
-
-            {!isConnected ? (
-              <div className="space-y-4">
-                <p className="text-sm md:text-base text-text-secondary font-mono leading-[2] md:leading-[2.2]">
-                  {"Connect to a live lab machine to run commands and complete this walkthrough. Your progress, commands and captured flags are saved as you go."}
-                </p>
-                <div className="grid gap-2 sm:grid-cols-3">
-                  <div className="rounded-xl border border-border/20 bg-surface-raised px-3.5 py-3">
-                    <p className="type-meta font-black uppercase tracking-widest text-text-tertiary mb-1">{"Target"}</p>
-                    <p className="text-sm font-mono text-text-primary">Linux VM</p>
-                  </div>
-                  <div className="rounded-xl border border-border/20 bg-surface-raised px-3.5 py-3">
-                    <p className="type-meta font-black uppercase tracking-widest text-text-tertiary mb-1">{"Persists"}</p>
-                    <p className="text-sm font-mono text-text-primary">{"Session saved"}</p>
-                  </div>
-                  <div className="rounded-xl border border-border/20 bg-surface-raised px-3.5 py-3">
-                    <p className="type-meta font-black uppercase tracking-widest text-text-tertiary mb-1">{"Flags"}</p>
-                    <p className="text-sm font-mono text-text-primary">{"Verified on submit"}</p>
-                  </div>
-                </div>
-                <div className="flex flex-col sm:flex-row sm:items-center gap-3">
-                  <button
-                    onClick={handleConnect}
-                    disabled={isLoading}
-                    className="inline-flex items-center justify-center gap-2 min-h-[44px] px-5 rounded-xl btn-primary"
-                  >
-                    {isLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : <IconTerminal size={16} />}
-                    {isLoading ? "Connecting..." : "Connect to Lab"}
-                  </button>
-                  {error && <span className="text-xs text-danger">{error}</span>}
-                </div>
-              </div>
-            ) : (
-              <div className="flex flex-col gap-4">
-                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-                  <div className="flex flex-wrap items-center gap-3">
-                    <span className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-success/10 text-xs font-black uppercase tracking-widest text-success">
-                      <span className="w-1.5 h-1.5 rounded-full bg-success animate-pulse" />
-                      {"Connected"}
-                    </span>
-                    <span className="px-3 py-1.5 rounded-lg bg-surface-raised text-xs font-mono text-text-secondary">
-                      {"Target"}: <span className="text-text-primary">{connection?.targetIp}</span>
-                    </span>
-                  </div>
-                  <button
-                    onClick={disconnect}
-                    disabled={isLoading}
-                    className="inline-flex min-h-[44px] items-center gap-2 rounded-xl border border-danger/30 bg-danger/10 px-4 text-xs font-black uppercase tracking-widest text-danger transition-colors hover:bg-danger/20 disabled:opacity-50 w-fit"
-                  >
-                    {isLoading ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Unplug className="w-3.5 h-3.5" />}
-                    {"Disconnect"}
-                  </button>
-                </div>
-                <p className="text-sm text-text-secondary font-mono leading-[2] md:leading-[2.2]">
-                  {"Use the terminal below to run commands against the live machine. Progress is tracked automatically."}
-                </p>
-              </div>
-            )}
-          </div>
+          ) : (
+            <div className="flex items-center gap-3 px-4 py-2.5 rounded-lg bg-success/10 border border-success/20 mb-6">
+              <span className="w-2 h-2 rounded-full bg-success animate-pulse" />
+              <span className="text-xs font-mono text-success flex-1">
+                Connected: {connection?.targetIp}
+              </span>
+              <button
+                onClick={disconnect}
+                disabled={isLoading}
+                className="text-xs text-danger hover:text-danger/80 transition-colors min-h-[44px] px-2"
+              >
+                Disconnect
+              </button>
+            </div>
+          )
         )}
 
         {/* Simulation Panel */}

@@ -9,7 +9,7 @@ const ROOT_CLASS = 'qyvora-cursor';
 const BURST_LIMIT = 40;
 
 /**
- * CustomCursor — site-wide desktop pointer with a button press animation.
+ * CustomCursor — site-wide desktop pointer with a double-click burst animation.
  *
  * The pointer itself is a native CSS image cursor (`public/cursors/qyvora-arrow.svg`),
  * so the browser composites it without JavaScript, z-index overlays or per-frame
@@ -17,9 +17,10 @@ const BURST_LIMIT = 40;
  * cursor semantics (text, select, grab, not-allowed), and means it cannot fall
  * behind modals or disappear when an overlay unmounts.
  *
- * This component only owns the decorative click/press burst. It mounts once in
- * App.tsx, self-gates on `(hover: hover) and (pointer: fine)`, and does nothing
- * on touch devices or when reduced motion is requested.
+ * This component owns the decorative click/press burst that appears on button clicks
+ * and double-clicks anywhere in the document. It mounts once in App.tsx, self-gates
+ * on `(hover: hover) and (pointer: fine)`, and does nothing on touch devices or
+ * when reduced motion is requested.
  */
 const CustomCursor: React.FC = () => {
   const prefersReduced = useReducedMotion();
@@ -120,13 +121,20 @@ const CustomCursor: React.FC = () => {
       spawnBurst(e.clientX, e.clientY);
     };
 
+    const onDoubleClick = (e: MouseEvent) => {
+      if (!Number.isFinite(e.clientX) || !Number.isFinite(e.clientY)) return;
+      spawnBurst(e.clientX, e.clientY);
+    };
+
     const hasPointerEvents = typeof window.PointerEvent === 'function';
     const pressType = hasPointerEvents ? 'pointerdown' : 'mousedown';
 
     document.addEventListener(pressType, onPress, { capture: true, passive: true });
+    document.addEventListener('dblclick', onDoubleClick, { capture: true, passive: true });
 
     return () => {
       document.removeEventListener(pressType, onPress, true);
+      document.removeEventListener('dblclick', onDoubleClick, true);
       if (typeof layer.replaceChildren === 'function') {
         layer.replaceChildren();
       } else {

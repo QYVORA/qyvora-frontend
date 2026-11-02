@@ -1138,30 +1138,6 @@ html[data-animations="off"] * {
       opacity: 0.3;
     }
   }
-  .nav-ticks {
-    position: absolute;
-    inset: 7px 8px;
-    pointer-events: none;
-  }
-  .nav-ticks i {
-    position: absolute;
-    width: 7px;
-    height: 7px;
-    border: 1.5px solid var(--color-accent);
-    opacity: 0.7;
-  }
-  .nav-ticks i:first-child {
-    top: 0;
-    left: 0;
-    border-right: 0;
-    border-bottom: 0;
-  }
-  .nav-ticks i:last-child {
-    right: 0;
-    bottom: 0;
-    border-left: 0;
-    border-top: 0;
-  }
 
   /* ── Calm surface primitives ── */
   .surface {

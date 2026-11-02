@@ -10,17 +10,16 @@ import { SimulationProvider } from '@/features/student/components/simulations';
 import NetworkBuilder from '@/features/student/components/tools/NetworkBuilder';
 import PwaStatus from '@/shared/components/layout/PwaStatus';
 import { tryAutoSubscribePush } from '@/core/services/pwa';
+import { useLearningContext } from '@/core/hooks/useLearningContext';
 import type { TerminalContext } from '@/features/student/components/SimulatedTerminal/types';
 
-const TOPBAR_H = 'pt-20 md:pt-24';
-
 /**
- * AppShell — the student application shell (non-walkthrough pages).
+ * AppShell — the student application shell.
  *
- * Desktop (lg+): persistent left Sidebar + fixed topbar for utilities/breadcrumbs.
- * Mobile: compact topbar + fixed bottom navigation (Home · Learn · Practice ·
- * Progress · Profile). Walkthrough routes (rooms, courses, labs) keep the full
- * shell — the sidebar rail is the single dashboard navigation.
+ * Desktop (lg+): persistent left Sidebar + optional topbar.
+ * Learning pages (bootcamp rooms, courses, labs): sidebar-only navigation, no topbar.
+ * Dashboard pages: sidebar + topbar with breadcrumbs and utilities.
+ * Mobile: compact topbar (dashboard only) + fixed bottom navigation.
  *
  * Shell behaviours: SimulationProvider, terminal/IDE/network window-event
  * triggers, Ctrl+` toggle, PWA status host and push subscription.
@@ -39,6 +38,10 @@ const AppShell = () => {
       return false;
     }
   });
+
+  // Detect if we're on a learning page (bootcamp room, course lesson, lab)
+  const learningContext = useLearningContext();
+  const isLearningPage = Boolean(learningContext);
 
   const toggleRail = useCallback(
     () =>
@@ -91,19 +94,23 @@ const AppShell = () => {
     ? { type: 'lab', labId: String(labMatch.params.labType || '') }
     : { type: 'dashboard' };
 
-  // Walkthrough pages (rooms, courses, labs) keep the full shell — the
-  // sidebar rail is the single navigation component on every dashboard page.
+  // Sidebar rail is present on all pages
   const useRail = true;
   const railPad = railCollapsed ? 'lg:pl-[76px]' : 'lg:pl-[264px]';
+  
+  // Learning pages don't have topbar, so no top padding needed
+  const topbarPadding = isLearningPage ? '' : 'pt-20 md:pt-24';
 
   return (
     <SimulationProvider>
       <div className="bg-canvas min-h-dvh">
-        <StudentTopbar railCollapsed={railCollapsed} />
+        {/* Topbar only on dashboard pages, not on learning pages */}
+        {!isLearningPage && <StudentTopbar railCollapsed={railCollapsed} />}
+        
         {useRail && <StudentSidebar collapsed={railCollapsed} onToggleCollapse={toggleRail} />}
         <div
           id="main-content"
-          className={`${TOPBAR_H} md:pb-6 ${useRail ? 'transition-[padding-left] duration-[var(--dur-base)] ease-[var(--ease-smooth)]' : ''} ${railPad}`}
+          className={`${topbarPadding} md:pb-6 ${useRail ? 'transition-[padding-left] duration-[var(--dur-base)] ease-[var(--ease-smooth)]' : ''} ${railPad}`}
         >
           <Outlet />
         </div>

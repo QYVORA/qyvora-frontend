@@ -32,6 +32,7 @@ const COLS: FooterCol[] = [
     title: 'Company',
     links: [
       { key: 'team', label: 'Team', to: '/team' },
+      { key: 'leadership', label: 'Leadership', to: '/leadership' },
       { key: 'services', label: 'Services', to: '/services' },
       { key: 'about', label: 'About', to: '/about' },
       { key: 'contact', label: 'Contact', to: '/contact' },
