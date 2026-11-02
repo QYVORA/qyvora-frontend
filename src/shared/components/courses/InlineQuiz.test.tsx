@@ -30,14 +30,14 @@ describe('InlineQuiz — quiz feedback', () => {
     await waitFor(() => expect(onComplete).toHaveBeenCalledWith(true, 100));
   });
 
-  it('reports a fail and shows the correct answer on review', async () => {
+  it('reports a fail and shows the score on review', async () => {
     render(<InlineQuiz questions={questions} title="Check your understanding" onComplete={onComplete} />);
     const user = userEvent.setup();
     await user.click(screen.getByRole('button', { name: /3306/ }));
     await user.click(screen.getByRole('button', { name: 'Submit' }));
     expect(screen.getByText('0%')).toBeInTheDocument();
     expect(screen.getByText('Needs Review')).toBeInTheDocument();
-    expect(screen.getByText(/Correct answer: /)).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Retry' })).toBeInTheDocument();
     await waitFor(() => expect(onComplete).toHaveBeenCalledWith(false, 0));
   });
 
