@@ -39,13 +39,13 @@ const ProfileCompletionBanner: React.FC<ProfileCompletionBannerProps> = ({ compl
   return (
     <div className={`rounded-2xl border p-5 ${
       isLowCompletion 
-        ? 'border-red-400/20 bg-red-400/5' 
+        ? 'border-danger/20 bg-danger/5' 
         : 'border-accent/20 bg-accent/5'
     }`}>
       <div className="flex items-start gap-4">
         <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-surface">
           {isLowCompletion ? (
-            <AlertCircle className="h-5 w-5 text-red-400" />
+            <AlertCircle className="h-5 w-5 text-danger" />
           ) : (
             <CheckCircle2 className="h-5 w-5 text-accent" />
           )}
@@ -55,7 +55,7 @@ const ProfileCompletionBanner: React.FC<ProfileCompletionBannerProps> = ({ compl
           <div className="mb-2 flex items-center justify-between">
             <h3 className="type-h4 font-black uppercase tracking-tight text-text-primary">
               {"Profile "}
-              <span className={isLowCompletion ? 'text-red-400' : 'text-accent'}>
+              <span className={isLowCompletion ? 'text-danger' : 'text-accent'}>
                 {percentage}% Complete
               </span>
             </h3>
