@@ -4,6 +4,8 @@ import { IconArrowRight as IconArrow } from '@/shared/components/icons';
 import SEO from '@/shared/components/SEO';
 import ScrollReveal from '@/shared/components/ScrollReveal';
 import Button from '@/shared/components/ui/Button';
+import PageHeader from '@/shared/components/ui/PageHeader';
+import PublicContainer from '@/shared/components/layout/PublicContainer';
 import CpLogo from '@/shared/components/CpLogo';
 
 /**
@@ -18,23 +20,21 @@ const CyberCoinPage: React.FC = () => {
         description="CP: QYVORA's learning verification and credential ecosystem. Verifiable proof of cybersecurity skills earned through hands-on learning, labs, and real-world challenges."
       />
 
-      {/* ── 01 · HERO — Clear explanation of verification system ─────────── */}
-      <section className="relative w-full px-3 py-24 md:px-4 md:py-32 lg:px-6 lg:py-40">
-        <div className="mx-auto flex max-w-4xl flex-col items-center text-center">
-          <ScrollReveal>
-            <div className="mb-6 flex h-20 w-20 items-center justify-center rounded-2xl border border-accent/25 bg-accent/10 p-3">
-              <CpLogo alt="CP Cyber Coin" className="h-full w-full" />
-            </div>
-            <p className="type-label mb-3 uppercase tracking-[0.12em] text-accent">
-              {"Learning Verification"}
-            </p>
-            <h1 className="type-h1 mb-6 text-4xl font-black uppercase tracking-tight text-text-primary md:text-6xl lg:text-7xl">
-              {"Verifiable Proof of Cybersecurity Skills"}
-            </h1>
-            <p className="type-body mb-8 max-w-2xl text-lg text-text-secondary md:text-xl">
-              {"CP (CyberPoints) is QYVORA's learning verification system. Every point you earn represents verifiable proof of completed labs, challenges, and real-world cybersecurity work — not just course completion certificates."}
-            </p>
-            <div className="flex flex-wrap items-center justify-center gap-4">
+      <PublicContainer className="pb-20 pt-24 md:pb-24 md:pt-28 lg:pt-32">
+        {/* ── HERO ─────────────────────────────────────────────────────── */}
+        <PageHeader
+          kicker="QYVORA · Economy"
+          title={
+            <span className="flex flex-col items-start gap-3 sm:flex-row sm:items-center">
+              <span className="flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl border border-accent/25 bg-accent/10 p-2.5">
+                <CpLogo alt="CP" className="h-full w-full" />
+              </span>
+              <span>{"CyberPoints (CP)"}</span>
+            </span>
+          }
+          description="QYVORA's learning verification system. Every point you earn represents verifiable proof of completed labs, challenges, and real-world cybersecurity work — not just course completion certificates."
+          actions={
+            <>
               <Button size="lg" to="/register">
                 {"Start Learning"}
                 <IconArrow size={14} />
@@ -42,26 +42,25 @@ const CyberCoinPage: React.FC = () => {
               <Button variant="secondary" size="lg" to="/bootcamp">
                 {"View Bootcamp"}
               </Button>
+            </>
+          }
+        />
+
+        {/* ── 02 · HOW IT WORKS — The verification process ─────────── */}
+        <section className="mt-14 w-full md:mt-20">
+          <ScrollReveal>
+            <div className="mb-12 max-w-2xl">
+              <p className="type-label mb-1.5 uppercase tracking-[0.12em] text-accent">
+                {"How It Works"}
+              </p>
+              <h2 className="type-h2 text-3xl font-black uppercase tracking-tight text-text-primary md:text-5xl">
+                {"Earn CP Through Real Work"}
+              </h2>
+              <p className="type-body mt-3 text-text-secondary">
+                {"Unlike traditional certificates, CP tracks every practical task you complete. Each action is verified, recorded, and contributes to your public cybersecurity profile."}
+              </p>
             </div>
           </ScrollReveal>
-        </div>
-      </section>
-
-      {/* ── 02 · HOW IT WORKS — The verification process ─────────── */}
-      <section className="w-full bg-surface px-3 py-20 md:px-4 md:py-24 lg:px-6">
-        <ScrollReveal>
-          <div className="mb-12 max-w-2xl">
-            <p className="type-label mb-1.5 uppercase tracking-[0.12em] text-accent">
-              {"How It Works"}
-            </p>
-            <h2 className="type-h2 text-3xl font-black uppercase tracking-tight text-text-primary md:text-5xl">
-              {"Earn CP Through Real Work"}
-            </h2>
-            <p className="type-body mt-3 text-text-secondary">
-              {"Unlike traditional certificates, CP tracks every practical task you complete. Each action is verified, recorded, and contributes to your public cybersecurity profile."}
-            </p>
-          </div>
-        </ScrollReveal>
 
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
           {[
@@ -104,7 +103,7 @@ const CyberCoinPage: React.FC = () => {
       </section>
 
       {/* ── 03 · WHY IT MATTERS — Credential verification value ─────────── */}
-      <section className="w-full px-3 py-20 md:px-4 md:py-24 lg:px-6">
+      <section className="mt-14 w-full md:mt-20">
         <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-2 lg:gap-16">
           <ScrollReveal>
             <div>
@@ -175,7 +174,7 @@ const CyberCoinPage: React.FC = () => {
       </section>
 
       {/* ── 04 · START EARNING — Simple CTA to learning ─────────── */}
-      <section className="w-full bg-surface px-3 py-20 md:px-4 md:py-24 lg:px-6">
+      <section className="mt-14 w-full md:mt-20">
         <div className="mx-auto flex max-w-3xl flex-col items-center text-center">
           <ScrollReveal>
             <p className="type-label mb-3 uppercase tracking-[0.12em] text-accent">
@@ -199,7 +198,8 @@ const CyberCoinPage: React.FC = () => {
           </ScrollReveal>
         </div>
       </section>
-    </div>
+    </PublicContainer>
+  </div>
   );
 };
 
