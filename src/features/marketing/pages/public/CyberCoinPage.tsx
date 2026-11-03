@@ -6,6 +6,7 @@ import ScrollReveal from '@/shared/components/ScrollReveal';
 import Button from '@/shared/components/ui/Button';
 import PageHeader from '@/shared/components/ui/PageHeader';
 import PublicContainer from '@/shared/components/layout/PublicContainer';
+import ProgrammeCtaCard from '@/features/marketing/components/programmes/ProgrammeCtaCard';
 import CpLogo from '@/shared/components/CpLogo';
 
 /**
@@ -175,28 +176,19 @@ const CyberCoinPage: React.FC = () => {
 
       {/* ── 04 · START EARNING — Simple CTA to learning ─────────── */}
       <section className="mt-14 w-full md:mt-20">
-        <div className="mx-auto flex max-w-3xl flex-col items-center text-center">
-          <ScrollReveal>
-            <p className="type-label mb-3 uppercase tracking-[0.12em] text-accent">
-              {"Ready to Start"}
-            </p>
-            <h2 className="type-h2 mb-4 text-3xl font-black uppercase tracking-tight text-text-primary md:text-5xl">
-              {"Build Your Verified Cybersecurity Profile"}
-            </h2>
-            <p className="type-body mb-8 max-w-2xl text-text-secondary">
-              {"Join QYVORA's Hacker Protocol Bootcamp and start earning CP for every lab, challenge, and skill you master. Your verifiable cybersecurity journey starts here."}
-            </p>
-            <div className="flex flex-wrap items-center justify-center gap-4">
-              <Button size="lg" to="/bootcamp">
-                {"View Bootcamp"}
-                <IconArrow size={14} />
-              </Button>
-              <Button variant="secondary" size="lg" to="/register">
-                {"Create Account"}
-              </Button>
-            </div>
-          </ScrollReveal>
-        </div>
+        <ProgrammeCtaCard
+          kicker="Ready to Start"
+          title="Build Your Verified Cybersecurity Profile"
+          description="Join QYVORA's Hacker Protocol Bootcamp and start earning CP for every lab, challenge, and skill you master. Your verifiable cybersecurity journey starts here."
+        >
+          <Button size="lg" to="/bootcamp">
+            {"View Bootcamp"}
+            <IconArrow size={14} />
+          </Button>
+          <Button variant="secondary" size="lg" to="/register">
+            {"Create Account"}
+          </Button>
+        </ProgrammeCtaCard>
       </section>
     </PublicContainer>
   </div>
