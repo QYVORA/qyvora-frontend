@@ -117,9 +117,12 @@ const CyberCoinPage: React.FC = () => {
               <p className="type-body mb-6 text-text-secondary">
                 {"Traditional cybersecurity certificates don't prove you can do the work. CP changes that by creating a transparent, verifiable record of every practical task you've completed."}
               </p>
-              <p className="type-body text-text-secondary">
+              <p className="type-body mb-6 text-text-secondary">
                 {"Employers, clients, and teams can see exactly what you've accomplished — not just which courses you've taken, but which vulnerabilities you've found, which systems you've secured, and which challenges you've solved."}
               </p>
+              <Button to="/verify" variant="secondary" size="lg">
+                {"Verify a Credential"}
+              </Button>
             </div>
           </ScrollReveal>
 
