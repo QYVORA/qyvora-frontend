@@ -224,18 +224,56 @@ const AuthForm: React.FC<AuthFormProps> = ({
                 </div>
 
                 <div className="space-y-2">
-                  <label htmlFor="register-email" className={labels.base}>{"Email"}</label>
-                  <Input
-                    id="register-email"
-                    type="email"
-                    name="email"
+                  <label htmlFor="register-country" className={labels.base}>{"Country"}</label>
+                  <select
+                    id="register-country"
+                    name="country"
                     required
-                    autoComplete="email"
-                    inputMode="email"
-                    placeholder={"operator@qyvora.africa"}
-                    icon={<Mail className="h-4 w-4 lg:h-5 lg:w-5" />}
-                  />
+                    autoComplete="country"
+                    className="w-full rounded-xl border border-border bg-bg-card px-4 py-3 font-mono text-sm text-text-primary outline-none transition-colors focus:border-accent"
+                  >
+                    <option value="">{"Select your country"}</option>
+                    <optgroup label="Africa">
+                      <option value="DZ">🇩🇿 Algeria</option>
+                      <option value="AO">🇦🇴 Angola</option>
+                      <option value="BJ">🇧🇯 Benin</option>
+                      <option value="BW">🇧🇼 Botswana</option>
+                      <option value="BF">🇧🇫 Burkina Faso</option>
+                      <option value="CM">🇨🇲 Cameroon</option>
+                      <option value="EG">🇪🇬 Egypt</option>
+                      <option value="ET">🇪🇹 Ethiopia</option>
+                      <option value="GH">🇬🇭 Ghana</option>
+                      <option value="KE">🇰🇪 Kenya</option>
+                      <option value="MA">🇲🇦 Morocco</option>
+                      <option value="NG">🇳🇬 Nigeria</option>
+                      <option value="RW">🇷🇼 Rwanda</option>
+                      <option value="ZA">🇿🇦 South Africa</option>
+                      <option value="TZ">🇹🇿 Tanzania</option>
+                      <option value="UG">🇺🇬 Uganda</option>
+                      <option value="ZW">🇿🇼 Zimbabwe</option>
+                    </optgroup>
+                    <optgroup label="Other Regions">
+                      <option value="US">🇺🇸 United States</option>
+                      <option value="GB">🇬🇧 United Kingdom</option>
+                      <option value="CA">🇨🇦 Canada</option>
+                      <option value="OTHER">🌍 Other</option>
+                    </optgroup>
+                  </select>
                 </div>
+              </div>
+
+              <div className="space-y-2">
+                <label htmlFor="register-email" className={labels.base}>{"Email"}</label>
+                <Input
+                  id="register-email"
+                  type="email"
+                  name="email"
+                  required
+                  autoComplete="email"
+                  inputMode="email"
+                  placeholder={"operator@qyvora.africa"}
+                  icon={<Mail className="h-4 w-4 lg:h-5 lg:w-5" />}
+                />
               </div>
 
               <div className="grid gap-4 sm:grid-cols-2 md:gap-5">

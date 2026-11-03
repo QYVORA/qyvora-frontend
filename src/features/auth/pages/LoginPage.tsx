@@ -123,6 +123,7 @@ const LoginPage: React.FC = () => {
       const password = String(formData.get('password') || '');
       const handle = String(formData.get('handle') || '').trim();
       const fullName = String(formData.get('full_name') || '').trim();
+      const country = String(formData.get('country') || '').trim();
       const confirmPassword = String(formData.get('confirm_password') || '');
 
       if (password !== confirmPassword) {
@@ -133,7 +134,7 @@ const LoginPage: React.FC = () => {
       const res = await api.post('/auth/register', {
         role: 'student',
         inviteCode: '',
-        profile: { fullName, organization: '', handle },
+        profile: { fullName, organization: '', handle, country },
         credentials: { email, password },
       });
 
