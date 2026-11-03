@@ -15,20 +15,16 @@ import EmptyState from '@/shared/components/ui/EmptyState';
 import PageBody from '@/shared/components/layout/PageBody';
 import PageHeader from '@/shared/components/ui/PageHeader';
 import Button from '@/shared/components/ui/Button';
-import { LearningFilterStrip } from '@/shared/components/learning';
 import CoursePurchaseModal from '@/shared/components/CoursePurchaseModal';
 import FadeIn from '@/shared/components/ui/FadeIn';
 import LearningCard from '@/shared/components/learning/LearningCard';
 
 const STORAGE_KEY = 'qyvora_course_progress';
 
-type CourseTab = 'all' | 'in-progress' | 'completed';
-
 const MyCoursesPage: React.FC = () => {
   const [purchased, setPurchased] = useState<Set<string>>(new Set());
   const [loading, setLoading] = useState(true);
   const [fetchError, setFetchError] = useState(false);
-  const [activeTab, setActiveTab] = useState<CourseTab>('all');
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCourseId, setSelectedCourseId] = useState<string | null>(null);
 
@@ -73,23 +69,6 @@ const MyCoursesPage: React.FC = () => {
       );
     }
 
-    switch (activeTab) {
-      case 'in-progress': {
-        result = result.filter((c) => {
-          const p = courseProgress[c.id];
-          return p && p.completed > 0 && p.completed < p.total;
-        });
-        break;
-      }
-      case 'completed': {
-        result = result.filter((c) => {
-          const p = courseProgress[c.id];
-          return p && p.completed >= p.total;
-        });
-        break;
-      }
-    }
-
     result.sort((a, b) => {
       const pA = courseProgress[a.id]?.completed || 0;
       const pB = courseProgress[b.id]?.completed || 0;
@@ -97,18 +76,9 @@ const MyCoursesPage: React.FC = () => {
     });
 
     return result;
-  }, [availableCourses, searchQuery, activeTab, courseProgress]);
+  }, [availableCourses, searchQuery, courseProgress]);
 
   const totalCourses = availableCourses.length;
-  const completedCourses = availableCourses.filter((c) => {
-    const p = courseProgress[c.id];
-    return p && p.completed >= p.total;
-  }).length;
-  const inProgressCourses = availableCourses.filter((c) => {
-    const p = courseProgress[c.id];
-    return p && p.completed > 0 && p.completed < p.total;
-  }).length;
-  const overallPct = totalCourses > 0 ? Math.round((completedCourses / totalCourses) * 100) : 0;
 
   const continuePath = useMemo(() => {
     const inProgress = availableCourses.find((c) => {
@@ -125,12 +95,6 @@ const MyCoursesPage: React.FC = () => {
     return '/dashboard/courses';
   }, [availableCourses, courseProgress]);
 
-  const filterTabs = useMemo(() => [
-    { id: 'all', label: "All", count: totalCourses },
-    { id: 'in-progress', label: "In Progress", count: inProgressCourses },
-    { id: 'completed', label: "Completed", count: completedCourses },
-  ], [totalCourses, inProgressCourses, completedCourses]);
-
   return (
     <FadeIn>
     <div className="min-h-full bg-canvas">
@@ -140,26 +104,13 @@ const MyCoursesPage: React.FC = () => {
         <PageHeader
           kicker={"QYVORA · Learn"}
           title={"My Courses"}
-          description={"Your enrolled bootcamps and progress."}
-          metadata={
-            <span className="type-meta inline-flex items-center gap-2">
-              <span className="font-bold text-accent">{totalCourses}</span> {"Enrolled"} · <span className="font-bold text-text-primary">{inProgressCourses}</span> {"In Progress"} · <span className="font-bold text-text-primary">{completedCourses}</span> {"Completed"}
-            </span>
-          }
+          description={"Your enrolled courses and progress."}
           actions={
             <Button to={continuePath}>
-              {totalCourses > 0 ? "Continue" : "Browse Bootcamps"}
+              {totalCourses > 0 ? "Continue" : "Browse Courses"}
             </Button>
           }
         />
-
-        {!loading && availableCourses.length > 0 && (
-          <LearningFilterStrip
-            filters={filterTabs}
-            activeFilter={activeTab}
-            onFilterChange={(id) => setActiveTab(id as CourseTab)}
-          />
-        )}
 
         {!loading && availableCourses.length > 0 && (
           <Input
@@ -224,7 +175,7 @@ const MyCoursesPage: React.FC = () => {
             description={"Try a different keyword or clear your filters."}
             action={
               <Button
-                onClick={() => { setSearchQuery(''); setActiveTab('all'); }}
+                onClick={() => setSearchQuery('')}
                 variant="secondary"
                 size="sm"
               >

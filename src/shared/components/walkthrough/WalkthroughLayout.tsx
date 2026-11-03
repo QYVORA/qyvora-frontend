@@ -110,11 +110,6 @@ export function WalkthroughLayout({
     headerStats.push({ label: "steps", value: `${completedCount}/${totalSteps}` });
   }
 
-  const outline: LearningOutlineItem[] = (stepList ?? []).map((item) => ({
-    id: `${stepIdPrefix ?? 'step'}-${item.number}`,
-    label: item.title,
-  }));
-
   return (
     <div className="w-full bg-canvas min-h-dvh">
       <LearningWorkspaceShell
@@ -124,7 +119,6 @@ export function WalkthroughLayout({
         onBack={onBack}
         backLabel={backLabel}
         stats={headerStats}
-        outline={outline}
         actions={
           (headerMetadata || headerActions) ? (
             <div className="flex flex-wrap items-center gap-2">

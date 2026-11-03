@@ -2,8 +2,8 @@ import React, { useEffect, useRef, useState, useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 import {
   ArrowLeft, ChevronRight, Lock, CheckCircle2,
-  Loader2, ArrowRight, Play, ListChecks,
-  BarChart3, Layers, Trophy, Github, FileText, TrendingUp,
+  Loader2, ArrowRight, ListChecks,
+  BarChart3, Layers, Trophy, Github, FileText,
 } from 'lucide-react';
 import { AnimatePresence, motion } from 'motion/react';
 import { BOOTCAMP_CONFIG } from '@/features/student/constants/bootcampConfig';
@@ -148,12 +148,7 @@ const BootcampCourse: React.FC = () => {
         <PageHeader
           kicker={"QYVORA · Bootcamp"}
           title={course?.title || "Bootcamp"}
-          description={syncError || `${"Journey Progress"} ${course?.title || "Bootcamp"}. ${formatSyncLabel(lastSync)}`}
-          metadata={
-            <span className="type-meta inline-flex items-center gap-2">
-              <span className="font-bold text-accent">{doneModules}/{totalModules}</span> {"Modules"} · <span className="font-bold text-text-primary">{doneRooms}/{totalRooms}</span> {"Rooms"}
-            </span>
-          }
+          description={syncError || `${progressValue} complete`}
           actions={
             nextRoomPath ? (
               <Button to={nextRoomPath}>
@@ -168,29 +163,6 @@ const BootcampCourse: React.FC = () => {
           activeFilter={activePhase}
           onFilterChange={setActivePhase}
         />
-
-        {nextRoomLabel && nextRoomLabel.path && (
-          <div className="border border-accent/20 rounded-2xl bg-accent-dim/20 p-5">
-            <div className="flex items-center justify-between gap-4">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-accent/20 flex items-center justify-center">
-                  <TrendingUp className="h-5 w-5 text-accent" />
-                </div>
-                <div className="min-w-0">
-                  <p className="text-xs font-black uppercase tracking-widest text-accent truncate">{"Recommended Next"}</p>
-                  <p className="text-sm font-bold text-text-primary">{nextRoomLabel.phase}, {nextRoomLabel.room}</p>
-                </div>
-              </div>
-              <Button
-                to={nextRoomLabel.path}
-                trailingIcon={<Play className="h-3 w-3" />}
-                className="shrink-0"
-              >
-                {"Continue"}
-              </Button>
-            </div>
-          </div>
-        )}
 
         {filteredModules.map((mod, modIdx) => {
           const originalIdx = course?.modules ? course.modules.indexOf(mod) : modIdx;
