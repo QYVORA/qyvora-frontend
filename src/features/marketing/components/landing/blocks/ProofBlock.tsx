@@ -11,7 +11,15 @@ interface ProofBlockProps {
 }
 
 const formatNumber = (value: number): string => {
-  if (value >= 1000) return `${(value / 1000).toFixed(value >= 100000 ? 0 : 1)}k`;
+  if (value >= 1_000_000_000) {
+    return `${(value / 1_000_000_000).toFixed(value >= 10_000_000_000 ? 0 : 1)}B`;
+  }
+  if (value >= 1_000_000) {
+    return `${(value / 1_000_000).toFixed(value >= 10_000_000 ? 0 : 1)}M`;
+  }
+  if (value >= 1_000) {
+    return `${(value / 1_000).toFixed(value >= 100_000 ? 0 : 1)}k`;
+  }
   return `${value}`;
 };
 
