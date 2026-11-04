@@ -1,8 +1,7 @@
 import { useCallback, useState, useEffect } from 'react';
 import { Outlet, useMatch } from 'react-router-dom';
 import StudentTopbar from '@/features/student/components/layout/StudentTopbar';
-import StudentSidebar from '@/features/student/components/layout/StudentSidebar';
-import StudentBottomNav from '@/features/student/components/layout/StudentBottomNav';
+import StudentSidebarRedesigned from '@/features/student/components/layout/StudentSidebarRedesigned';
 import UsernameChangeModal from '@/features/student/components/UsernameChangeModal';
 import ConsentBanner from '@/shared/components/ConsentBanner';
 import { TerminalWrapper } from '@/shared/components/learning/TerminalWrapper';
@@ -19,7 +18,7 @@ import type { TerminalContext } from '@/features/student/components/SimulatedTer
  * Desktop (lg+): persistent left Sidebar + optional topbar.
  * Learning pages (bootcamp rooms, courses, labs): sidebar-only navigation, no topbar.
  * Dashboard pages: sidebar + topbar with breadcrumbs and utilities.
- * Mobile: compact topbar (dashboard only) + fixed bottom navigation.
+ * Mobile (<lg): topbar with hamburger + full-screen overlay sidebar (no bottom nav).
  *
  * Shell behaviours: SimulationProvider, terminal/IDE/network window-event
  * triggers, Ctrl+` toggle, PWA status host and push subscription.
@@ -31,6 +30,7 @@ const AppShell = () => {
   const labMatch = useMatch('/dashboard/labs/:labType');
   const [terminalOpen, setTerminalOpen] = useState(false);
   const [networkVizOpen, setNetworkVizOpen] = useState(false);
+  const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
   const [railCollapsed, setRailCollapsed] = useState(() => {
     try {
       return localStorage.getItem('qyvora:sidebar-collapsed') === '1';
@@ -105,16 +105,27 @@ const AppShell = () => {
     <SimulationProvider>
       <div className="bg-canvas min-h-dvh">
         {/* Topbar only on dashboard pages, not on learning pages */}
-        {!isLearningPage && <StudentTopbar railCollapsed={railCollapsed} />}
+        {!isLearningPage && (
+          <StudentTopbar 
+            railCollapsed={railCollapsed}
+            onMobileMenuOpen={() => setMobileSidebarOpen(true)}
+          />
+        )}
         
-        {useRail && <StudentSidebar collapsed={railCollapsed} onToggleCollapse={toggleRail} />}
+        {useRail && (
+          <StudentSidebarRedesigned
+            collapsed={railCollapsed}
+            onToggleCollapse={toggleRail}
+            isMobileOpen={mobileSidebarOpen}
+            onMobileClose={() => setMobileSidebarOpen(false)}
+          />
+        )}
         <div
           id="main-content"
           className={`${topbarPadding} md:pb-6 ${useRail ? 'transition-[padding-left] duration-[var(--dur-base)] ease-[var(--ease-smooth)]' : ''} ${railPad}`}
         >
           <Outlet />
         </div>
-        {useRail && <StudentBottomNav />}
         <ConsentBanner />
         <PwaStatus />
         <UsernameChangeModal />

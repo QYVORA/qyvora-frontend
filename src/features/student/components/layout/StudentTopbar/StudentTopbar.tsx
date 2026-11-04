@@ -1,4 +1,5 @@
 import { Link, useLocation, useMatch } from 'react-router-dom';
+import { Menu } from 'lucide-react';
 import { IconNotification } from '@/shared/components/icons';
 import { getCourseById } from '../../../data/courses';
 import { useAuth } from '../../../../../core/contexts/AuthContext';
@@ -33,12 +34,18 @@ const MobileCpBadge = ({ balance }: { balance: number }) => (
  * StudentTopbar — lightweight context bar for the dashboard shell.
  *
  * It is NOT a second navigation surface: the sidebar rail owns primary
- * navigation at `lg+` and StudentBottomNav owns it below `lg`, so this bar only
- * carries (a) the nested-route hierarchy (context crumbs) on learning pages,
- * (b) account utilities (CP balance, notifications), and (c) a course progress
- * hairline. Primary navigation is deliberately absent here.
+ * navigation at `lg+` and the mobile overlay sidebar owns it below `lg`, so
+ * this bar only carries (a) the nested-route hierarchy (context crumbs) on
+ * learning pages, (b) account utilities (CP balance, notifications), and (c) a
+ * course progress hairline. Primary navigation is deliberately absent here.
  */
-const StudentTopbar = ({ railCollapsed = false }: { railCollapsed?: boolean }) => {
+const StudentTopbar = ({ 
+  railCollapsed = false,
+  onMobileMenuOpen,
+}: { 
+  railCollapsed?: boolean;
+  onMobileMenuOpen?: () => void;
+}) => {
   const { user } = useAuth();
 
   const location = useLocation();
@@ -233,6 +240,16 @@ const StudentTopbar = ({ railCollapsed = false }: { railCollapsed?: boolean }) =
         ) : (
           /* ══ DASHBOARD CONTEXT — identity + account utilities only ══ */
           <div className={`flex items-center gap-2 md:gap-3 ${BAR} ${GUTTER}`}>
+            {/* Mobile hamburger menu */}
+            <button
+              type="button"
+              onClick={onMobileMenuOpen}
+              aria-label="Open menu"
+              className="flex min-h-[48px] min-w-[48px] shrink-0 items-center justify-center rounded-xl text-text-secondary transition-colors hover:bg-surface-raised hover:text-accent focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-accent lg:hidden"
+            >
+              <Menu className="h-5 w-5" aria-hidden="true" />
+            </button>
+
             <Link to="/dashboard" className="flex-none shrink-0 lg:hidden" data-tour-id="tour-nav-md">
               <Logo size="md" variant="mark" />
             </Link>
