@@ -182,20 +182,20 @@ export const BOOTCAMPS: Record<Bootcamp['id'], Bootcamp> = {
       'A practical-first offensive security programme that turns Hacker Protocol Bootcamp graduates into entry-level offensive-security practitioners capable of conducting structured, authorized security assessments. QOSE is not HPB 2.0 — it begins where HPB ends, with one premise: you know the tools, now learn how to conduct an engagement.',
     audience:
       'Learners who have completed the Hacker Protocol Bootcamp or hold equivalent grounding in the Linux terminal, networking, scripting, reconnaissance, web security, OSINT and basic privilege escalation. Delivery is online, on Kali Linux with VMs and containerized labs.',
-    status: 'pre-registration',
-    statusLabel: 'Pre-registration — preparing for launch',
+    status: 'open',
+    statusLabel: 'Registration open · Cohort starts 1 December 2026',
     statusNote:
-      'QOSE is being prepared for launch. Enrollment is not open yet, so registration is being handled through the QOSE community group until the cohort opens.',
+      'Registration is open for the cohort starting 1 December 2026. Your seat is confirmed with the GH₵300 first instalment; the remaining two instalments are GH₵250 each. Submit the registration form and we will send payment instructions.',
     logo: qoseLogo,
     logoWidth: LOGO_SIZE.width,
     logoHeight: LOGO_SIZE.height,
     logoAlt: 'QYVORA Offensive Security Engineer Bootcamp logo',
     facts: [
+      { label: 'Cohort starts', value: '1 December 2026' },
       { label: 'Duration', value: '3 months' },
       { label: 'Delivery', value: 'Online' },
-      { label: 'Teaching model', value: 'Practical-first' },
+      { label: 'Tuition', value: 'GH₵800 · 3 instalments' },
       { label: 'Prerequisite', value: 'Hacker Protocol Bootcamp' },
-      { label: 'Environment', value: 'Kali Linux · VMs · containerized labs' },
     ],
     covers: [
       'Offensive security operations — engagement lifecycle, scope, authorization and rules of engagement',
@@ -240,7 +240,7 @@ export const BOOTCAMPS: Record<Bootcamp['id'], Bootcamp> = {
     ],
     ethics: ETHICS_COMMON,
     whatsappUrl: BOOTCAMP_WHATSAPP_URLS.qose,
-    ctaLabel: 'Join the QOSE group',
+    ctaLabel: 'Reserve your seat',
   },
 };
 

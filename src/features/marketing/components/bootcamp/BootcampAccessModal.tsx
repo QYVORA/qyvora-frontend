@@ -111,7 +111,11 @@ const BootcampAccessModalHost: React.FC = () => {
 
           <div className="flex flex-col gap-3">
             {isOpenForEnrollment ? (
-              <Button to="/register" size="lg" className="w-full">
+              <Button
+                to={bootcamp.id === 'qose' ? '/qose' : '/register'}
+                size="lg"
+                className="w-full"
+              >
                 Register for {bootcamp.acronym}
                 <ArrowRight className="h-4 w-4" aria-hidden="true" />
               </Button>

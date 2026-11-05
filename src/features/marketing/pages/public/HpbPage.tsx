@@ -256,7 +256,7 @@ const HpbPage = () => {
               kicker={"Next level"}
               title={"Ready for the next level?"}
               description={
-                "QOSE is the 12-week offensive security engineer bootcamp built on top of HPB, and it is currently in pre-registration."
+                "QOSE is the 12-week offensive security engineer bootcamp built on top of HPB. Registration is open for the cohort starting 1 December 2026."
               }
             >
               <Button to="/qose" size="lg">

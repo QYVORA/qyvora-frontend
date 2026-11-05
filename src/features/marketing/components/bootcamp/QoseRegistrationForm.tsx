@@ -19,17 +19,17 @@ const fieldLabel =
   'type-label block uppercase tracking-[0.12em] text-text-tertiary';
 
 /**
- * QOSE pre-registration form (EX-BC-011).
+ * QOSE registration form (EX-BC-011).
  *
- * Captures a lead — name, contact and source — for a bootcamp cohort and posts
- * it to `/public/bootcamp-registration`. This registers *interest*: it does not
- * reserve a seat or take payment (see EX-BC-007/EX-BC-008). A hidden honeypot
- * field (`companyWebsite`) matches the backend's bot filter.
+ * Captures a seat request — name, contact and source — for the QOSE cohort and
+ * posts it to `/public/bootcamp-registration`. This records the request and
+ * triggers payment instructions; it does not take payment (see EX-BC-007/EX-BC-008).
+ * A hidden honeypot field (`companyWebsite`) matches the backend's bot filter.
  */
 const QoseRegistrationForm: React.FC<QoseRegistrationFormProps> = ({
   bootcampId,
   source,
-  submitLabel = 'Register interest',
+  submitLabel = 'Reserve my seat',
 }) => {
   const [status, setStatus] = useState<RegStatus>('idle');
   const idp = `reg-${bootcampId}`;
@@ -62,7 +62,8 @@ const QoseRegistrationForm: React.FC<QoseRegistrationFormProps> = ({
       >
         <CheckCircle2 className="h-6 w-6 text-accent" aria-hidden="true" />
         <p className="type-body-sm text-text-primary">
-          You are on the list. We will contact you with the next intake and schedule.
+          Your seat request is in. We will send payment instructions for the GH₵300
+          first instalment and confirm your place once it is received.
         </p>
       </div>
     );
@@ -131,8 +132,9 @@ const QoseRegistrationForm: React.FC<QoseRegistrationFormProps> = ({
       </Button>
 
       <p className="type-meta text-text-muted">
-        Pre-registration records your interest only — it does not reserve a seat or take
-        payment. We will confirm the intake before any fee.
+        Registration begins with the GH₵300 first instalment. Submitting this form
+        does not take payment — we will send payment instructions and confirm your
+        seat once the first instalment is received.
       </p>
     </form>
   );

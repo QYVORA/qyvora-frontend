@@ -1,4 +1,4 @@
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, CalendarDays, CheckCircle2, Wallet } from 'lucide-react';
 import SEO from '@/shared/components/SEO';
 import PublicContainer from '@/shared/components/layout/PublicContainer';
 import Button from '@/shared/components/ui/Button';
@@ -10,19 +10,44 @@ import BootcampFacts, { BootcampLogo } from '@/features/marketing/components/boo
 import ProgrammeHeroCard from '@/features/marketing/components/programmes/ProgrammeHeroCard';
 import ProgrammeCtaCard from '@/features/marketing/components/programmes/ProgrammeCtaCard';
 import QoseRegistrationForm from '@/features/marketing/components/bootcamp/QoseRegistrationForm';
-import { openBootcampAccessModal } from '@/features/marketing/components/bootcamp/BootcampAccessModal';
 import { BOOTCAMPS } from '@/features/marketing/content/bootcampData';
 import qoseHeaderBg from '@/assets/backgrounds/qose-header.webp';
 
 const QOSE = BOOTCAMPS.qose;
 
+const QOSE_INSTALMENTS = [
+  {
+    month: 'Month 1',
+    amount: 'GH₵300',
+    note: 'Confirms your seat and covers the first month of coursework, labs and cohort support.',
+  },
+  {
+    month: 'Month 2',
+    amount: 'GH₵250',
+    note: 'Covers the second month of coursework, labs and assessments.',
+  },
+  {
+    month: 'Month 3',
+    amount: 'GH₵250',
+    note: 'Covers the final month, the capstone and your professional report.',
+  },
+];
+
+const QOSE_COHORT_DETAILS = [
+  'Registration opens November 2026',
+  'Cohort starts 1 December 2026',
+  'Three months, delivered online',
+  'Kali Linux, VMs and containerized labs',
+  'Prerequisite: Hacker Protocol Bootcamp',
+];
+
 /**
  * QOSE — QYVORA Offensive Security Engineer Bootcamp.
  *
  * Programme facts, phases and audience come from the QOSE programme
- * documentation. The programme is in pre-registration, so the page states that
- * plainly and every join route opens the access dialog rather than a
- * registration form.
+ * documentation. Registration is open for the 1 December 2026 cohort: the page
+ * states the dates and instalments plainly, and the registration form records
+ * a seat request without taking payment.
  *
  * Structure mirrors `/hpb` exactly: the same `ProgrammeHeroCard` over its own
  * mapped scene, the same facts strip, the same card primitives and the same
@@ -44,7 +69,8 @@ const QosePage = () => {
           kicker={"QYVORA · Bootcamp"}
           status={
             <>
-              <Badge variant="warning" size="md">
+              <Badge variant="success" size="md">
+                <CheckCircle2 className="mr-1.5 h-3 w-3" aria-hidden="true" />
                 {QOSE.statusLabel}
               </Badge>
               <span className="type-meta text-text-muted">{`${QOSE.acronym} · ${QOSE.name}`}</span>
@@ -57,7 +83,7 @@ const QosePage = () => {
           }
           actions={
             <>
-              <Button size="lg" onClick={() => openBootcampAccessModal('qose')}>
+              <Button href="#qose-enrol" size="lg">
                 {QOSE.ctaLabel}
                 <ArrowRight className="h-4 w-4" aria-hidden="true" />
               </Button>
@@ -71,6 +97,75 @@ const QosePage = () => {
         <div className="mt-4 md:mt-5">
           <BootcampFacts facts={QOSE.facts} />
         </div>
+
+        <ScrollReveal>
+          <section aria-labelledby="qose-tuition-title" className="mt-14 md:mt-20">
+            <div className="mb-6 md:mb-8">
+              <span className="block text-kicker font-black uppercase tracking-[0.3em] text-accent">
+                {"Tuition & dates"}
+              </span>
+              <h2
+                id="qose-tuition-title"
+                className="type-h2 mt-2 font-black uppercase tracking-tight text-text-primary"
+              >
+                {"One programme. Three instalments."}
+              </h2>
+              <p className="type-body mt-3 max-w-2xl text-text-secondary">
+                {"Registration opens in November 2026 for the cohort starting 1 December 2026. The first instalment confirms your seat; the remaining two instalments cover months two and three."}
+              </p>
+            </div>
+
+            <div className="grid gap-4 md:grid-cols-3">
+              {QOSE_INSTALMENTS.map((instalment) => (
+                <Card key={instalment.month} className="flex flex-col gap-3 p-6">
+                  <div className="flex items-center justify-between gap-3">
+                    <span className="type-label uppercase tracking-[0.12em] text-text-tertiary">
+                      {instalment.month}
+                    </span>
+                    <Wallet className="h-5 w-5 text-accent" aria-hidden="true" />
+                  </div>
+                  <p className="text-3xl font-black tracking-tight text-text-primary">
+                    {instalment.amount}
+                  </p>
+                  <p className="type-body-sm text-text-secondary">{instalment.note}</p>
+                </Card>
+              ))}
+            </div>
+
+            <Card className="mt-4 flex flex-col gap-5 p-6 md:flex-row md:items-start md:justify-between md:p-8">
+              <div className="max-w-xl">
+                <span className="block text-kicker font-black uppercase tracking-[0.3em] text-accent">
+                  {"Total tuition"}
+                </span>
+                <p className="mt-2 text-3xl font-black tracking-tight text-text-primary">
+                  {'GH₵800'}
+                </p>
+                <p className="type-body-sm mt-2 text-text-secondary">
+                  {"Payable as GH₵300 in month one, then GH₵250 in months two and three. Submitting the registration form does not take payment — we send payment instructions and confirm your seat once the first instalment is received."}
+                </p>
+              </div>
+              <div className="w-full max-w-md rounded-xl border border-border-subtle bg-surface-raised p-4">
+                <div className="mb-3 flex items-center gap-2">
+                  <CalendarDays className="h-4 w-4 text-accent" aria-hidden="true" />
+                  <span className="type-label uppercase tracking-[0.12em] text-text-tertiary">
+                    {"Cohort details"}
+                  </span>
+                </div>
+                <ul className="flex flex-col gap-2">
+                  {QOSE_COHORT_DETAILS.map((detail) => (
+                    <li key={detail} className="flex gap-2">
+                      <CheckCircle2
+                        className="mt-0.5 h-4 w-4 shrink-0 text-accent"
+                        aria-hidden="true"
+                      />
+                      <span className="type-body-sm text-text-secondary">{detail}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </Card>
+          </section>
+        </ScrollReveal>
 
         <ScrollReveal>
           <section aria-labelledby="qose-overview-title" className="mt-14 md:mt-20">
@@ -193,20 +288,27 @@ const QosePage = () => {
                 </p>
               </Card>
 
-              <ProgrammeCtaCard
-                kicker={"Enrolment"}
-                title={"Pre-registration is open"}
-                description={"Register your interest and we will contact you with the confirmed intake, schedule and fee before anything is paid."}
-              >
-                <QoseRegistrationForm bootcampId="qose" source="qose_page" />
-                <button
-                  type="button"
-                  onClick={() => openBootcampAccessModal('qose')}
-                  className="btn-secondary mt-3 text-sm"
+              <div id="qose-enrol" className="scroll-mt-24">
+                <ProgrammeCtaCard
+                  kicker={"Enrolment"}
+                  title={"Reserve your seat for 1 December 2026"}
+                  description={"Registration is open. Submit your details and we will send payment instructions for the GH₵300 first instalment. Your seat is confirmed once that payment is received."}
                 >
-                  {"Prefer the community group? Join QOSE on WhatsApp"}
-                </button>
-              </ProgrammeCtaCard>
+                  <QoseRegistrationForm
+                    bootcampId="qose"
+                    source="qose_page"
+                    submitLabel="Reserve my seat"
+                  />
+                  <Button
+                    href={QOSE.whatsappUrl}
+                    external
+                    variant="secondary"
+                    className="mt-3 text-sm"
+                  >
+                    {"Join the QOSE WhatsApp group"}
+                  </Button>
+                </ProgrammeCtaCard>
+              </div>
             </div>
           </section>
         </ScrollReveal>
