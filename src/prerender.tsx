@@ -86,6 +86,210 @@ const routeContent: Record<string, RouteContent> = {
       { label: 'Terms of Service', href: '/terms' },
     ],
   },
+  '/privacy': {
+    title: 'Privacy Policy | QYVORA',
+    description: 'How QYVORA collects, uses, shares, and protects personal data across its platform, training programmes, and professional services.',
+    h1: 'Privacy Policy',
+    lead: 'How QYVORA collects, uses, shares, and protects personal data across the platform, training programmes, and professional services.',
+    sections: [
+      {
+        heading: 'Data we collect',
+        bullets: [
+          'Account, authentication, and security data',
+          'Learning, certificate, and credential data',
+          'Programme registration and payment-confirmation references',
+          'Communications, usage, and device diagnostics',
+        ],
+      },
+      {
+        heading: 'How we use personal data',
+        body: 'We use personal data to provide and secure the platform, deliver training and services, issue and verify credentials, process registrations, support users, improve performance, and meet legal obligations.',
+      },
+      {
+        heading: 'Your rights',
+        body: 'Subject to applicable law, you may access, correct, delete, restrict, or object to our processing, request a portable copy, and withdraw consent. Privacy requests can be sent to the operations desk with the subject "Privacy request".',
+      },
+      {
+        heading: 'Cookies',
+        body: 'Cookies and browser storage are used for authentication, security, preferences, and consent-gated performance measurement. See the Cookie Policy for categories and controls.',
+      },
+    ],
+    links: [
+      { label: 'Cookie Policy', href: '/cookies' },
+      { label: 'Security & Responsible Disclosure', href: '/security' },
+      { label: 'Terms of Service', href: '/terms' },
+      { label: 'Contact', href: '/contact' },
+    ],
+  },
+  '/cookies': {
+    title: 'Cookie Policy | QYVORA',
+    description: 'The cookies and browser storage QYVORA uses, why we use them, and how you can change your choices at any time.',
+    h1: 'Cookie Policy',
+    lead: 'The cookies and browser storage QYVORA uses, why we use them, and how you can change your choices at any time.',
+    sections: [
+      {
+        heading: 'Strictly necessary',
+        body: 'Required for authentication, session security, CSRF protection, rate limiting, and remembering your consent choices. These cannot be switched off through the banner.',
+      },
+      {
+        heading: 'Functional',
+        body: 'Optional storage for appearance, layout, install prompts, onboarding, and browser-only learning progress.',
+      },
+      {
+        heading: 'Analytics and performance',
+        body: 'Consent-gated performance measurement and landing-page caching. We do not use third-party advertising or cross-site tracking cookies.',
+      },
+      {
+        heading: 'Managing preferences',
+        body: 'Use the "Manage cookie preferences" button on this page, the "Customize" option in the consent banner, or your browser settings. Blocking strictly necessary items prevents sign-in and weakens security protections.',
+      },
+    ],
+    links: [
+      { label: 'Privacy Policy', href: '/privacy' },
+      { label: 'Terms of Service', href: '/terms' },
+    ],
+  },
+  '/security': {
+    title: 'Security & Responsible Disclosure | QYVORA',
+    description: 'How to report a security vulnerability to QYVORA, what is in scope, our safe-harbour commitment, and what you can expect from us.',
+    h1: 'Security & Responsible Disclosure',
+    lead: 'How to report a security vulnerability to QYVORA, what is in scope, our safe-harbour commitment, and what you can expect from us.',
+    sections: [
+      {
+        heading: 'Report a vulnerability',
+        body: 'Send reports privately to the security desk with the subject "Security report". Include a clear description, reproduction steps, impact, and a short proof of concept that does not damage data or disrupt service.',
+      },
+      {
+        heading: 'In scope',
+        body: 'qyvora.org and its public pages, the QYVORA API, authentication and account flows, the credential registry and verification flow, and QYVORA-owned open-source tools.',
+      },
+      {
+        heading: 'Out of scope',
+        body: 'Social engineering, physical attacks, denial-of-service, automated high-volume scanning, accessing other users\u2019 data, third-party services, and public disclosure before a coordinated date.',
+      },
+      {
+        heading: 'Safe harbour',
+        body: 'Good-faith research that follows this policy will not lead to legal action from QYVORA for the research itself. Do not access, retain, or share data that does not belong to you.',
+      },
+      {
+        heading: 'Our response',
+        body: 'We aim to acknowledge reports within 3 business days and complete initial triage within 10 business days where the report is complete. We prefer coordinated disclosure and will agree a realistic timeline with you.',
+      },
+    ],
+    links: [
+      { label: 'security.txt', href: '/.well-known/security.txt' },
+      { label: 'Privacy Policy', href: '/privacy' },
+      { label: 'Contact', href: '/contact' },
+    ],
+  },
+  '/refund-policy': {
+    title: 'Refund & Cancellation Policy | QYVORA',
+    description: 'How cancellations, refunds, and instalment payments work for QYVORA bootcamps, courses, and professional services.',
+    h1: 'Refund & Cancellation Policy',
+    lead: 'How cancellations, refunds, and instalment payments work for QYVORA bootcamps, courses, and professional services.',
+    sections: [
+      {
+        heading: 'Bootcamp tuition and instalments',
+        body: 'QOSE is a three-month programme with a total tuition of GH\u20b5800, paid in three instalments. The first instalment is GH\u20b5300 and confirms your place; the remaining instalments are set out on the QOSE programme page.',
+      },
+      {
+        heading: 'Cancelling before the programme starts',
+        body: 'If you cancel before the cohort start date, contact us. We will refund tuition for content that has not started, less non-recoverable payment-processing costs, unless the law requires a different outcome.',
+      },
+      {
+        heading: 'Cancelling after the programme starts',
+        body: 'The instalment for a stage that has started is non-refundable. Future instalments that are not yet due can be cancelled, and paid-ahead months that have not started can be refunded.',
+      },
+      {
+        heading: 'Courses and professional services',
+        body: 'Self-paced digital courses are generally non-refundable once started. Professional engagements follow the cancellation and payment terms in the applicable statement of work.',
+      },
+      {
+        heading: 'How to request a refund',
+        body: 'Email the operations desk with the subject "Refund request", including your name, programme or service, registration email, payment reference, and reason. We aim to acknowledge within 3 business days and decide within 10 business days once we have the information we need.',
+      },
+    ],
+    links: [
+      { label: 'Terms of Service', href: '/terms' },
+      { label: 'QOSE programme', href: '/qose' },
+      { label: 'Contact', href: '/contact' },
+    ],
+  },
+  '/accessibility': {
+    title: 'Accessibility Statement | QYVORA',
+    description: "QYVORA's commitment to making the platform and learning materials usable by as many people as possible.",
+    h1: 'Accessibility Statement',
+    lead: 'QYVORA\u2019s commitment to making the platform and learning materials usable by as many people as possible.',
+    sections: [
+      {
+        heading: 'Our commitment',
+        body: 'We aim to meet WCAG 2.2 Level AA for public pages and core learning flows, and we treat accessibility as ongoing work rather than a one-time checklist.',
+      },
+      {
+        heading: 'What we do',
+        bullets: [
+          'Semantic HTML, labelled forms, and logical headings',
+          'Keyboard navigation, visible focus, and a skip link',
+          'Contrast checks and reduced-motion support',
+          'Responsive layouts and accessible names for icon controls',
+          'Captions or transcripts where available',
+        ],
+      },
+      {
+        heading: 'Known limitations',
+        body: 'Some older PDFs and downloads may not be fully tagged, third-party embeds are outside our direct control, and complex terminal or lab simulations may need additional assistance for some users.',
+      },
+      {
+        heading: 'Feedback',
+        body: 'Contact the operations desk with the subject "Accessibility" and tell us the page or feature, what happened, and the assistive technology you used if you are comfortable sharing it. We aim to acknowledge within 5 business days.',
+      },
+    ],
+    links: [
+      { label: 'Terms of Service', href: '/terms' },
+      { label: 'Privacy Policy', href: '/privacy' },
+      { label: 'Contact', href: '/contact' },
+    ],
+  },
+  '/acceptable-use': {
+    title: 'Acceptable Use & Community Guidelines | QYVORA',
+    description: "The standards we expect from everyone using QYVORA's platform, labs, programmes, and community channels.",
+    h1: 'Acceptable Use & Community Guidelines',
+    lead: 'The standards we expect from everyone using QYVORA\u2019s platform, labs, programmes, and community channels.',
+    sections: [
+      {
+        heading: 'Authorized use only',
+        body: 'Only test systems you own or have explicit written permission to test. Lab exercises must stay inside the in-scope lab environment. Never use QYVORA skills or tools for unauthorized access or harm.',
+      },
+      {
+        heading: 'Respect and privacy',
+        body: 'No harassment, threats, hate speech, discrimination, doxxing, or sharing another learner\u2019s private information. Do not impersonate staff, instructors, or other learners.',
+      },
+      {
+        heading: 'Prohibited conduct',
+        bullets: [
+          'Illegal activity, malware, extortion, fraud, or stolen data and access',
+          'Spam, unsolicited advertising, or repetitive low-value posting',
+          'Scraping or bulk collection without written permission',
+          'Circumventing access controls, paywalls, or rate limits',
+          'Sharing account credentials',
+          'Interfering with the platform or other learners',
+        ],
+      },
+      {
+        heading: 'Learning integrity',
+        body: 'Do not complete assessments for another person, forge or misrepresent credentials, or share live assessment answers. Collaborate only where the exercise allows it.',
+      },
+      {
+        heading: 'Enforcement',
+        body: 'We may warn, remove content, suspend, or terminate accounts, and may report serious conduct to authorities. Appeals can be sent with the subject "Community appeal".',
+      },
+    ],
+    links: [
+      { label: 'Terms of Service', href: '/terms' },
+      { label: 'Security & Responsible Disclosure', href: '/security' },
+      { label: 'Privacy Policy', href: '/privacy' },
+    ],
+  },
   '/learn': {
     title: 'Learn | QYVORA',
     description: 'Courses, labs, the Hacker Protocol Bootcamp, and more.',
@@ -1179,6 +1383,142 @@ const routeContent: Record<string, RouteContent> = {
       },
     ],
     links: [{ label: 'Zero Day Market', href: '/zero-day-market' }],
+  },
+  '/faq': {
+    title: 'FAQ | QYVORA',
+    description: 'Answers about QYVORA bootcamps, services, platform access, credentials, and support.',
+    h1: 'Frequently Asked Questions',
+    lead: 'Answers about QYVORA bootcamps, services, platform access, credentials, and support.',
+    sections: [
+      {
+        heading: 'Bootcamps and registration',
+        body: 'QOSE registration is open for the 1 December 2026 cohort. The total fee is GH\u20b5800, payable in three instalments of GH\u20b5300, GH\u20b5250, and GH\u20b5250. Submitting the registration form reserves a seat request; it does not take payment.',
+      },
+      {
+        heading: 'Credentials and verification',
+        body: 'Every QYVORA certificate carries a credential ID that can be checked publicly at /verify against the issuing registry and its QYVORA Chain anchor.',
+      },
+      {
+        heading: 'Services and support',
+        body: 'Professional pentest and training engagements start from the services page or a request-a-call form on the contact page. Support and privacy requests go to the operations desk.',
+      },
+    ],
+    links: [
+      { label: 'QOSE', href: '/qose' },
+      { label: 'Hacker Protocol Bootcamp', href: '/hpb' },
+      { label: 'Credentials', href: '/credentials' },
+      { label: 'Contact', href: '/contact' },
+    ],
+  },
+  '/resources': {
+    title: 'Cheat Sheets & Resources | QYVORA',
+    description: 'QYVORA framework cheat sheets and practical command references for recon, web, network, exploitation, post-exploitation, and reversing work.',
+    h1: 'Cheat Sheets & Resources',
+    lead: 'QYVORA framework cheat sheets and practical command references for recon, web, network, exploitation, post-exploitation, and reversing work.',
+    sections: [
+      {
+        heading: 'QYVORA framework sheets',
+        body: 'Quick-reference sheets for anansi, toha3ee, shaka, nzinga, jabari, aksum, sekhmet, mansa, amanirenas, imhotep, sundiata, timbuktu, and kush.',
+      },
+      {
+        heading: 'Popular tool references',
+        body: 'Grouped command references covering reconnaissance and OSINT, web testing, network assessment, exploitation, post-exploitation, reversing, wireless, and general operator workflows.',
+      },
+      {
+        heading: 'Authorized use',
+        body: 'These references are for authorized security testing, labs, and education only. Never run them against systems you do not own or have written permission to test.',
+      },
+    ],
+    links: [
+      { label: 'All tools', href: '/tools' },
+      { label: 'Tool changelog', href: '/changelog' },
+      { label: 'Learn', href: '/learn' },
+    ],
+  },
+  '/changelog': {
+    title: 'Tool Changelog | QYVORA',
+    description: 'Release notes and recent changes across the QYVORA offensive security framework collection.',
+    h1: 'Tool Changelog',
+    lead: 'Release notes and recent changes across the QYVORA offensive security framework collection.',
+    sections: [
+      {
+        heading: 'Release tracker',
+        body: 'Current releases are tracked per framework, with version, release date, and highlights. Detailed notes link to each repository CHANGELOG.md.',
+      },
+      {
+        heading: 'Recent changes',
+        body: 'Highlights cover new capabilities, reliability fixes, documentation updates, and compatibility changes across the collection.',
+      },
+    ],
+    links: [
+      { label: 'Cheat sheets', href: '/resources' },
+      { label: 'All tools', href: '/tools' },
+    ],
+  },
+  '/credentials': {
+    title: 'Credentials | QYVORA',
+    description: 'How QYVORA bootcamp credentials work: what they record, how public verification checks the registry and chain, and how revocation is handled.',
+    h1: 'Credentials that can be checked',
+    lead: 'A QYVORA credential is more than a PDF. Each one has a public ID, a registry record, and a chain anchor that anyone can verify.',
+    sections: [
+      {
+        heading: 'What is recorded',
+        body: 'Issued credentials record the recipient, programme, cohort, completion date, result, and a unique credential ID.',
+      },
+      {
+        heading: 'Registry and chain anchoring',
+        body: 'The registry record is the source of truth. A hash anchor on QYVORA Chain detects tampering or substitution, while revocation takes effect immediately without reissuing the certificate file.',
+      },
+      {
+        heading: 'Public verification',
+        body: 'Anyone can paste a credential ID at /verify to get a clear verdict: valid, revoked, suspended, or not found. No account is required.',
+      },
+    ],
+    links: [
+      { label: 'Verify a credential', href: '/verify' },
+      { label: 'QOSE', href: '/qose' },
+      { label: 'Contact', href: '/contact' },
+    ],
+  },
+  '/status': {
+    title: 'System Status | QYVORA',
+    description: 'Live status for the QYVORA API, database and chain, plus published incident updates.',
+    h1: 'System Status',
+    lead: 'Live health for the QYVORA platform services, plus incident updates published by the operations desk.',
+    sections: [
+      {
+        heading: 'Live health checks',
+        body: 'The page checks the API, database connection, and QYVORA Chain health probe, refreshing every 60 seconds.',
+      },
+      {
+        heading: 'Published incidents',
+        body: 'Only incidents explicitly published by an administrator appear here. Internal incidents, creator identities, and correlation IDs are never exposed.',
+      },
+    ],
+    links: [
+      { label: 'Contact the desk', href: '/contact' },
+      { label: 'Security', href: '/security' },
+    ],
+  },
+  '/sitemap': {
+    title: 'Sitemap | QYVORA',
+    description: 'A human-readable index of every public QYVORA page, including learning, tools, services, credentials, status, and legal documents.',
+    h1: 'Every public page',
+    lead: 'A human-readable index of the public site. Search engines can use the machine-readable version at /sitemap.xml.',
+    sections: [
+      {
+        heading: 'Start here',
+        bullets: ['Home', 'Learn', 'Hacker Protocol Bootcamp', 'QOSE', 'Simulations', 'Tools', 'Cheat sheets', 'Changelog'],
+      },
+      {
+        heading: 'Company and trust',
+        bullets: ['About', 'Team', 'Leadership', 'Services', 'Contact', 'FAQ', 'Credentials', 'Verify a credential', 'System status'],
+      },
+      {
+        heading: 'Legal',
+        bullets: ['Terms of Service', 'Privacy Policy', 'Cookie Policy', 'Refund and cancellation', 'Acceptable use', 'Security policy', 'Accessibility statement'],
+      },
+    ],
   },
   '/terms': {
     title: 'Terms of Service | QYVORA',

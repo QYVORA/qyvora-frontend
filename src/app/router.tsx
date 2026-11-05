@@ -47,6 +47,12 @@ const toolDoc = (slug: string) => {
 // ─── Lazy page imports ────────────────────────────────────────────────────────
 const LandingPage       = lazy(() => import('../features/marketing/pages/LandingPage'));
 const TermsPage         = lazy(() => import('../features/marketing/pages/TermsPage'));
+const PrivacyPage       = lazy(() => import('../features/marketing/pages/legal/PrivacyPage'));
+const CookiePolicyPage  = lazy(() => import('../features/marketing/pages/legal/CookiePolicyPage'));
+const SecurityPage      = lazy(() => import('../features/marketing/pages/legal/SecurityPage'));
+const RefundPolicyPage  = lazy(() => import('../features/marketing/pages/legal/RefundPolicyPage'));
+const AccessibilityPage = lazy(() => import('../features/marketing/pages/legal/AccessibilityPage'));
+const AcceptableUsePage = lazy(() => import('../features/marketing/pages/legal/AcceptableUsePage'));
 const BlogPostPage      = lazy(() => import('../features/marketing/pages/BlogsPage/BlogPostPage'));
 
 // Public marketing pages
@@ -69,8 +75,14 @@ const SimulationsPage   = lazy(() => import('../features/marketing/pages/public/
 const SimulationPage    = lazy(() => import('../features/marketing/pages/public/SimulationPage'));
 const CyberCoinPage     = lazy(() => import('../features/marketing/pages/public/CyberCoinPage'));
 const ContactPage       = lazy(() => import('../features/marketing/pages/public/ContactPage'));
+const FaqPage           = lazy(() => import('../features/marketing/pages/public/FaqPage'));
+const ResourcesPage     = lazy(() => import('../features/marketing/pages/public/ResourcesPage'));
+const ChangelogPage     = lazy(() => import('../features/marketing/pages/public/ChangelogPage'));
 const CoursePage        = lazy(() => import('../features/marketing/pages/public/CoursePage'));
 const VerifyPage        = lazy(() => import('../features/marketing/pages/public/VerifyPage'));
+const CredentialsPage   = lazy(() => import('../features/marketing/pages/public/CredentialsPage'));
+const StatusPage        = lazy(() => import('../features/marketing/pages/public/StatusPage'));
+const SitemapPage       = lazy(() => import('../features/marketing/pages/public/SitemapPage'));
 
 // Auth pages
 const LoginPage         = lazy(() => import('../features/auth/pages/LoginPage'));
@@ -210,6 +222,14 @@ export const AppRouter = () => {
         >
           <Route path="/" element={<Wrap scope="Landing"><LandingPage /></Wrap>} />
           <Route path="/terms" element={<Wrap scope="Terms of Service"><TermsPage /></Wrap>} />
+
+          {/* Legal & trust — declared before the /:handle catch-all */}
+          <Route path="/privacy" element={<Wrap scope="Privacy Policy"><PrivacyPage /></Wrap>} />
+          <Route path="/cookies" element={<Wrap scope="Cookie Policy"><CookiePolicyPage /></Wrap>} />
+          <Route path="/security" element={<Wrap scope="Security & Responsible Disclosure"><SecurityPage /></Wrap>} />
+          <Route path="/refund-policy" element={<Wrap scope="Refund & Cancellation Policy"><RefundPolicyPage /></Wrap>} />
+          <Route path="/accessibility" element={<Wrap scope="Accessibility Statement"><AccessibilityPage /></Wrap>} />
+          <Route path="/acceptable-use" element={<Wrap scope="Acceptable Use & Community Guidelines"><AcceptableUsePage /></Wrap>} />
           
           {/* Public marketing pages (formerly redirects to landing sections) */}
           <Route path="/hpb" element={<Wrap scope="HPB"><HpbPage /></Wrap>} />
@@ -233,9 +253,15 @@ export const AppRouter = () => {
           <Route path="/simulations/:slug" element={<Wrap scope="Simulation"><SimulationPage /></Wrap>} />
           <Route path="/cp" element={<Wrap scope="Cyber Coin"><CyberCoinPage /></Wrap>} />
           <Route path="/contact" element={<Wrap scope="Contact"><ContactPage /></Wrap>} />
+          <Route path="/faq" element={<Wrap scope="FAQ"><FaqPage /></Wrap>} />
+          <Route path="/resources" element={<Wrap scope="Resources"><ResourcesPage /></Wrap>} />
+          <Route path="/changelog" element={<Wrap scope="Changelog"><ChangelogPage /></Wrap>} />
 
-          {/* Public credential verification — must be declared before the
-              /:handle profile catch-all so static segments win the match */}
+          {/* Trust and utility pages — declared before the /:handle profile
+              catch-all so static segments win the match */}
+          <Route path="/credentials" element={<Wrap scope="Credentials"><CredentialsPage /></Wrap>} />
+          <Route path="/status" element={<Wrap scope="System Status"><StatusPage /></Wrap>} />
+          <Route path="/sitemap" element={<Wrap scope="Sitemap"><SitemapPage /></Wrap>} />
           <Route path="/verify" element={<Wrap scope="Credential Verification"><VerifyPage /></Wrap>} />
           <Route path="/verify/:credentialId" element={<Wrap scope="Credential Verification"><VerifyPage /></Wrap>} />
           
