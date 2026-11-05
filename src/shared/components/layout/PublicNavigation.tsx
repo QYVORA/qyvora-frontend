@@ -18,6 +18,7 @@ interface NavLinkDef {
 
 const LINKS: NavLinkDef[] = [
   { key: 'learn', label: 'Learn', to: '/learn' },
+  { key: 'bootcamp', label: 'Bootcamp', to: '/hpb' },
   { key: 'tools', label: 'Tools', to: '/tools' },
   { key: 'research', label: 'Research', to: '/blogs' },
   { key: 'services', label: 'Services', to: '/services' },
@@ -25,7 +26,7 @@ const LINKS: NavLinkDef[] = [
 ];
 
 /**
- * PublicNavigation — calm public nav. Five sections and one contextual CTA.
+ * PublicNavigation — calm public nav. Six sections and one contextual CTA.
  * Desktop shows the section links inline; mobile relies on PublicBottomNav for
  * primary navigation, so the mobile trigger is an account-only menu (Dashboard
  * or Log In / Start learning) — never a second copy of the section links.
@@ -121,7 +122,7 @@ const PublicNavigation: React.FC = React.memo(() => {
                 to={link.to}
                 className={({ isActive }) =>
                   [
-                    'group relative flex min-h-[48px] items-center gap-2 rounded-xl px-4 py-2 text-sm font-bold uppercase tracking-widest',
+                    'group relative flex min-h-[48px] items-center gap-2 rounded-xl px-2 py-2 text-xs font-bold uppercase tracking-wide lg:px-4 lg:text-sm lg:tracking-widest',
                     'transition-all duration-200 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent',
                     isActive 
                       ? 'bg-accent/10 text-accent' 

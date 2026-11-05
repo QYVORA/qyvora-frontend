@@ -18,6 +18,7 @@ const COLS: FooterCol[] = [
       { key: 'bootcamp', label: 'Bootcamp', to: '/hpb' },
       { key: 'simulations', label: 'Simulations', to: '/simulations' },
       { key: 'tools', label: 'All tools', to: '/tools' },
+      { key: 'resources', label: 'Cheat sheets', to: '/resources' },
     ],
   },
   {
@@ -27,6 +28,7 @@ const COLS: FooterCol[] = [
       { key: 'shaka', label: 'shaka', to: '/shaka' },
       { key: 'nzinga', label: 'nzinga', to: '/nzinga' },
       { key: 'imhotep', label: 'imhotep', to: '/imhotep' },
+      { key: 'changelog', label: 'Changelog', to: '/changelog' },
     ],
   },
   {
@@ -36,8 +38,22 @@ const COLS: FooterCol[] = [
       { key: 'leadership', label: 'Leadership', to: '/leadership' },
       { key: 'services', label: 'Services', to: '/services' },
       { key: 'about', label: 'About', to: '/about' },
+      { key: 'faq', label: 'FAQ', to: '/faq' },
       { key: 'contact', label: 'Contact', to: '/contact' },
+      { key: 'credentials', label: 'Credentials', to: '/credentials' },
       { key: 'verify', label: 'Verify a Credential', to: '/verify' },
+      { key: 'status', label: 'System Status', to: '/status' },
+    ],
+  },
+  {
+    title: 'Legal',
+    links: [
+      { key: 'privacy', label: 'Privacy Policy', to: '/privacy' },
+      { key: 'cookies', label: 'Cookie Policy', to: '/cookies' },
+      { key: 'security', label: 'Security', to: '/security' },
+      { key: 'refunds', label: 'Refund & Cancellation', to: '/refund-policy' },
+      { key: 'accessibility', label: 'Accessibility', to: '/accessibility' },
+      { key: 'acceptable-use', label: 'Community Guidelines', to: '/acceptable-use' },
       { key: 'terms', label: 'Terms of Service', to: '/terms' },
     ],
   },
@@ -100,7 +116,7 @@ const PublicFooter: React.FC = React.memo(() => {
             </div>
           </div>
 
-          <nav aria-label="Footer" className="grid grid-cols-2 gap-x-6 gap-y-8 sm:grid-cols-3">
+          <nav aria-label="Footer" className="grid grid-cols-2 gap-x-6 gap-y-8 sm:grid-cols-4">
             {COLS.map((col) => (
               <div key={col.title}>
                 <h3 className="type-label text-accent">{col.title}</h3>
@@ -125,9 +141,17 @@ const PublicFooter: React.FC = React.memo(() => {
           <p className="type-label text-text-tertiary">
             {"QYVORA · GHANA, TAMALE · "}{CURRENT_YEAR}
           </p>
-          <p className="type-label text-text-tertiary">
-            {"Train like a hacker, become a hacker."}
-          </p>
+          <div className="flex flex-wrap items-center gap-4">
+            <p className="type-label text-text-tertiary">
+              {"Train like a hacker, become a hacker."}
+            </p>
+            <Link
+              to="/sitemap"
+              className="type-label text-text-tertiary transition-colors hover:text-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+            >
+              {"Sitemap"}
+            </Link>
+          </div>
         </div>
       </div>
     </footer>

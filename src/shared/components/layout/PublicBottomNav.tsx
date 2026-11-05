@@ -1,6 +1,6 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { BookOpen, Wrench, FlaskConical, ShieldCheck, CircleUserRound } from 'lucide-react';
+import { BookOpen, GraduationCap, Wrench, FlaskConical, ShieldCheck, CircleUserRound } from 'lucide-react';
 
 interface BottomNavItem {
   key: string;
@@ -11,6 +11,7 @@ interface BottomNavItem {
 
 const ITEMS: BottomNavItem[] = [
   { key: 'learn', label: 'Learn', icon: BookOpen, to: '/learn' },
+  { key: 'bootcamp', label: 'Bootcamp', icon: GraduationCap, to: '/hpb' },
   { key: 'tools', label: 'Tools', icon: Wrench, to: '/tools' },
   { key: 'research', label: 'Research', icon: FlaskConical, to: '/blogs' },
   { key: 'services', label: 'Services', icon: ShieldCheck, to: '/services' },
@@ -19,8 +20,8 @@ const ITEMS: BottomNavItem[] = [
 
 /**
  * PublicBottomNav — mobile-only bottom navigation for the public marketing
- * shell (audit pattern: Learn · Tools · Research · Services · About, mirroring
- * the top PublicNavigation links). fixed, safe-area aware, hidden on md+.
+ * shell (Learn · Bootcamp · Tools · Research · Services · About), mirroring
+ * the top PublicNavigation links. Fixed, safe-area aware, hidden on md+.
  */
 const PublicBottomNav: React.FC = () => (
   <>
@@ -44,7 +45,7 @@ const PublicBottomNav: React.FC = () => (
                   }`}
                 >
                   <Icon className="h-5 w-5" strokeWidth={2} aria-hidden="true" />
-                  <span className="text-xs font-medium leading-none">{item.label}</span>
+                  <span className="whitespace-nowrap text-[10px] font-medium leading-none sm:text-xs">{item.label}</span>
                 </span>
               )}
             </NavLink>
