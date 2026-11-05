@@ -84,22 +84,22 @@ const StudentDesktopTopbar: React.FC<StudentDesktopTopbarProps> = ({ onMobileMen
       </a>
 
       <header className="fixed top-0 inset-x-0 z-[100] border-b border-border-subtle bg-canvas pt-[env(safe-area-inset-top)]">
-        <div className="flex h-20 items-center gap-3 px-3 md:h-24 md:gap-4 md:px-4 lg:gap-6 lg:px-6">
+        <div className="flex h-16 items-center gap-3 px-3 md:h-20 md:gap-4 md:px-4 lg:h-24 lg:gap-6 lg:px-6">
           {/* Mobile hamburger menu (hidden on desktop) */}
           <button
             type="button"
             onClick={onMobileMenuOpen}
             aria-label="Open menu"
-            className="flex min-h-[48px] min-w-[48px] shrink-0 items-center justify-center rounded-xl text-text-secondary transition-all duration-200 hover:bg-surface-raised hover:text-accent hover:scale-105 focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-accent lg:hidden"
+            className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl text-text-secondary transition-all duration-200 hover:bg-surface-raised hover:text-accent hover:scale-105 focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-accent md:h-12 md:w-12 lg:hidden"
           >
             <Menu className="h-5 w-5 transition-transform duration-200" aria-hidden="true" />
           </button>
 
-          {/* Logo */}
+          {/* Logo - Desktop only */}
           <Link
             to="/dashboard"
             aria-label="QYVORA — Home"
-            className="group shrink-0 rounded-xl focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+            className="group hidden shrink-0 rounded-xl focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent lg:block"
           >
             <Logo
               className="h-8 transition-transform duration-[var(--dur-fast)] ease-[var(--ease-smooth)] group-hover:scale-105"
@@ -243,8 +243,8 @@ const StudentDesktopTopbar: React.FC<StudentDesktopTopbarProps> = ({ onMobileMen
           <div className="flex-1" aria-hidden="true" />
 
           {/* Right Side Utilities */}
-          <div className="flex shrink-0 items-center gap-1 sm:gap-1.5 md:gap-2">
-            {/* Search (desktop only) */}
+          <div className="flex flex-1 items-center justify-end gap-3 sm:gap-4 lg:flex-none lg:gap-2">
+            {/* Search (all screens) */}
             <button
               type="button"
               onClick={() => {
@@ -252,43 +252,40 @@ const StudentDesktopTopbar: React.FC<StudentDesktopTopbarProps> = ({ onMobileMen
                 console.log('Search clicked');
               }}
               aria-label="Search"
-              className="hidden min-h-[48px] min-w-[48px] items-center justify-center rounded-xl text-text-secondary transition-all duration-200 hover:bg-surface-raised hover:text-accent hover:scale-105 focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-accent lg:flex"
+              className="flex h-10 w-10 shrink-0 items-center justify-center text-text-secondary transition-all duration-200 hover:text-accent hover:scale-105 focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-accent md:h-12 md:w-12 lg:rounded-xl lg:hover:bg-surface-raised"
             >
-              <Search className="h-[18px] w-[18px] transition-transform duration-200" aria-hidden="true" />
+              <Search className="h-5 w-5 transition-transform duration-200" aria-hidden="true" />
             </button>
 
             {/* Notifications */}
             <button
               type="button"
               onClick={() => navigate('/dashboard/notifications')}
-              className="relative flex h-10 w-10 shrink-0 items-center justify-center rounded-xl text-text-secondary transition-all duration-200 hover:bg-surface-raised hover:text-accent focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-accent md:h-12 md:w-12"
+              className="relative flex h-10 w-10 shrink-0 items-center justify-center text-text-secondary transition-all duration-200 hover:text-accent hover:scale-105 focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-accent md:h-12 md:w-12 lg:rounded-xl lg:hover:bg-surface-raised"
               aria-label={`Notifications${unread > 0 ? ` (${unread} unread)` : ''}`}
             >
-              <Bell className="h-[18px] w-[18px] transition-transform duration-200 hover:scale-110" aria-hidden="true" />
+              <Bell className="h-5 w-5 transition-transform duration-200" aria-hidden="true" />
               {unread > 0 && (
-                <span className="absolute right-1 top-1 flex h-4 min-w-4 items-center justify-center rounded-full bg-accent px-1 text-[10px] font-black leading-none text-on-accent tabular-nums animate-in fade-in zoom-in duration-200 md:right-1.5 md:top-1.5">
+                <span className="absolute right-0 top-0 flex h-5 min-w-5 items-center justify-center rounded-full bg-accent px-1 text-[10px] font-black leading-none text-on-accent tabular-nums animate-in fade-in zoom-in duration-200">
                   {unread > 9 ? '9+' : unread}
                 </span>
               )}
             </button>
 
-            {/* Streak Counter (mobile and desktop) */}
-            <div className="flex shrink-0 items-center gap-1.5 rounded-xl bg-surface px-2 py-1.5 transition-all duration-200 hover:bg-surface-raised hover:shadow-md sm:gap-2 sm:px-3 sm:py-2">
-              <StreakIcon size={18} className="shrink-0 transition-transform duration-200 hover:scale-110 sm:h-5 sm:w-5" />
-              <span className="text-xs font-black text-text-primary tabular-nums">{streakDays}</span>
+            {/* Streak Counter - Natural, no background */}
+            <div className="flex shrink-0 items-center gap-1.5 sm:gap-2">
+              <StreakIcon size={24} className="shrink-0 transition-transform duration-200 hover:scale-110" />
+              <span className="text-base font-black text-text-primary tabular-nums sm:text-lg">{streakDays}</span>
             </div>
 
             {/* User Avatar */}
             <Link
               to="/dashboard/profile"
-              className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border-2 border-border-subtle bg-surface text-sm font-black text-accent transition-all duration-200 hover:border-accent hover:shadow-md hover:scale-105 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent md:h-12 md:w-12"
+              className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border-2 border-border-subtle bg-surface text-sm font-black text-accent transition-all duration-200 hover:border-accent hover:shadow-md hover:scale-105 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent md:h-12 md:w-12"
               aria-label="Profile"
             >
               {userInitial}
             </Link>
-
-            {/* CP Points Badge (mobile only) - REMOVED */}
-            {/* Mobile now shows only: Hamburger, Logo, Notifications, Streak, Avatar */}
           </div>
         </div>
       </header>

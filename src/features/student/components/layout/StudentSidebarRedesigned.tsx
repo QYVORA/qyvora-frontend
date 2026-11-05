@@ -266,7 +266,7 @@ const StudentSidebarRedesigned: React.FC<StudentSidebarRedesignedProps> = ({
     return (
       <>
         {/* Brand Header */}
-        <div className={`flex h-20 items-center border-b border-border-subtle md:h-24 ${
+        <div className={`flex h-16 items-center md:h-20 ${
           showFullContent ? 'justify-between px-5' : 'justify-center px-0'
         }`}>
           <Link
@@ -305,14 +305,14 @@ const StudentSidebarRedesigned: React.FC<StudentSidebarRedesignedProps> = ({
         <div className="custom-scrollbar sidebar-scroll flex-1 overflow-y-auto">
           {/* User Profile Section (only when expanded/mobile) */}
           {showFullContent && !isLearningMode && (
-            <div className="border-b border-border-subtle px-5 py-4">
+            <div className="px-5 py-5">
               <Link
                 to="/dashboard/profile"
                 onClick={handleNavClick}
                 className="group flex items-center gap-3 rounded-xl p-2 transition-colors hover:bg-surface-raised focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-accent"
               >
                 {/* Avatar */}
-                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl border-2 border-border-subtle bg-surface text-lg font-black text-accent">
+                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full border-2 border-border-subtle bg-surface text-lg font-black text-accent">
                   {userInitial}
                 </div>
                 
@@ -332,45 +332,12 @@ const StudentSidebarRedesigned: React.FC<StudentSidebarRedesignedProps> = ({
             </div>
           )}
           
-          {/* Statistics Cards (only when expanded/mobile, not in learning mode) */}
-          {showFullContent && !isLearningMode && (
-            <div className="border-b border-border-subtle px-5 py-4">
-              <div className="grid grid-cols-3 gap-2">
-                {/* Day Streak */}
-                <div className="flex flex-col items-center rounded-xl border border-border-subtle bg-surface p-3 text-center">
+          {/* Statistics Cards (only when expanded/mobile, not in learning mode) - REMOVED */}
+          {/* We'll show stats naturally in the navigation flow instead */}
                   <StreakIcon size={20} className="mb-2" />
                   <p className="text-lg font-black text-text-primary tabular-nums">
                     {streakDays}
                   </p>
-                  <p className="type-meta text-text-muted">
-                    Day streak
-                  </p>
-                </div>
-                
-                {/* CP Points */}
-                <div className="flex flex-col items-center rounded-xl border border-border-subtle bg-surface p-3 text-center">
-                  <Trophy className="mb-2 h-5 w-5 text-accent" aria-hidden="true" />
-                  <p className="text-lg font-black text-text-primary tabular-nums">
-                    {cpBalance.toLocaleString()}
-                  </p>
-                  <p className="type-meta text-text-muted">
-                    Points
-                  </p>
-                </div>
-                
-                {/* Rank */}
-                <div className="flex flex-col items-center rounded-xl border border-border-subtle bg-surface p-3 text-center">
-                  <Hash className="mb-2 h-5 w-5 text-accent" aria-hidden="true" />
-                  <p className="truncate w-full text-sm font-black text-text-primary">
-                    {rankName}
-                  </p>
-                  <p className="type-meta text-text-muted">
-                    Rank
-                  </p>
-                </div>
-              </div>
-            </div>
-          )}
           
           {/* Navigation */}
           <nav aria-label={isLearningMode ? "Learning curriculum" : "Primary"} className="px-3 py-4">
@@ -427,25 +394,27 @@ const StudentSidebarRedesigned: React.FC<StudentSidebarRedesignedProps> = ({
                   const showSectionContent = !isSectionCollapsed || !showFullContent;
                   
                   return (
-                    <section key={section.title} className="mb-5">
+                    <section key={section.title} className="mb-6">
                       {showFullContent && (
-                        <div className="mb-1 flex items-center justify-between px-3">
-                          <h3 className="type-label text-text-tertiary uppercase tracking-[0.12em]">
-                            {section.title}
-                          </h3>
-                          {section.collapsible && (
-                            <button
-                              type="button"
-                              onClick={() => toggleSection(section.title)}
-                              aria-expanded={!isSectionCollapsed}
-                              className="flex h-6 w-6 items-center justify-center rounded text-text-tertiary transition-colors hover:text-accent focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-accent"
-                            >
-                              <ChevronDown
-                                className={`h-4 w-4 transition-transform ${isSectionCollapsed ? '-rotate-90' : ''}`}
-                                aria-hidden="true"
-                              />
-                            </button>
-                          )}
+                        <div className="mb-2 px-3">
+                          <div className="flex items-center justify-between">
+                            <h3 className="text-xs font-black uppercase tracking-wider text-text-tertiary">
+                              {section.title}
+                            </h3>
+                            {section.collapsible && (
+                              <button
+                                type="button"
+                                onClick={() => toggleSection(section.title)}
+                                aria-expanded={!isSectionCollapsed}
+                                className="flex h-6 w-6 items-center justify-center rounded text-text-tertiary transition-colors hover:text-accent focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-accent"
+                              >
+                                <ChevronDown
+                                  className={`h-4 w-4 transition-transform ${isSectionCollapsed ? '-rotate-90' : ''}`}
+                                  aria-hidden="true"
+                                />
+                              </button>
+                            )}
+                          </div>
                         </div>
                       )}
                       
@@ -495,12 +464,12 @@ const StudentSidebarRedesigned: React.FC<StudentSidebarRedesignedProps> = ({
         </div>
         
         {/* Footer - Logout only */}
-        <div className="border-t border-border-subtle px-3 py-3">
+        <div className="px-3 py-4">
           {/* Logout Button */}
           <button
             type="button"
             onClick={handleLogout}
-            className="flex min-h-[48px] w-full items-center gap-3 rounded-xl px-3 py-2 text-sm text-text-secondary transition-colors hover:bg-semantic-danger/5 hover:text-semantic-danger focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-accent"
+            className="flex min-h-[48px] w-full items-center gap-3 rounded-xl px-3 py-2 text-sm text-text-secondary transition-colors hover:bg-semantic-danger/10 hover:text-semantic-danger focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-accent"
           >
             <LogOut className="h-[18px] w-[18px] shrink-0" aria-hidden="true" />
             <span>Log Out</span>
