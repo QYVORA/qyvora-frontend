@@ -1,6 +1,7 @@
 import React, { useMemo, useRef, useState } from 'react';
 import { ArrowRight, Library, Search } from 'lucide-react';
 import { Card } from '@/shared/components/ui/Card';
+import Button from '@/shared/components/ui/Button';
 import PageHeader from '@/shared/components/ui/PageHeader';
 import PublicContainer from '@/shared/components/layout/PublicContainer';
 import SEO from '@/shared/components/SEO';
@@ -85,6 +86,11 @@ const ToolsIndexPage: React.FC = () => {
           title={"Combat-ready tools, documented end to end."}
 
           description={`${TOOLS.length} open-source offensive security tools, built and documented for operators. Each tool has full documentation, install guides, and walkthroughs.`}
+          actions={
+            <Button to="/changelog" variant="secondary" size="lg">
+              Release changelog
+            </Button>
+          }
         />
 
         <div className="mt-10 flex flex-col gap-3">
