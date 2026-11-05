@@ -83,23 +83,23 @@ const StudentDesktopTopbar: React.FC<StudentDesktopTopbarProps> = ({ onMobileMen
         Skip to content
       </a>
 
-      <header className="fixed top-0 inset-x-0 z-[100] border-b border-border-subtle bg-canvas pt-[env(safe-area-inset-top)]">
-        <div className="flex h-16 items-center gap-3 px-3 md:h-20 md:gap-4 md:px-4 lg:h-24 lg:gap-6 lg:px-6">
+      <header className="chrome-fixed fixed top-0 inset-x-0 z-[100] border-b border-border-subtle bg-canvas pt-[env(safe-area-inset-top)]">
+        <div className="flex h-20 items-center gap-3 px-3 md:h-24 md:gap-4 md:px-4 lg:gap-6 lg:px-6">
           {/* Mobile hamburger menu (hidden on desktop) */}
           <button
             type="button"
             onClick={onMobileMenuOpen}
             aria-label="Open menu"
-            className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl text-text-secondary transition-all duration-200 hover:bg-surface-raised hover:text-accent hover:scale-105 focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-accent md:h-12 md:w-12 lg:hidden"
+            className="flex min-h-[48px] min-w-[48px] shrink-0 items-center justify-center rounded-xl text-text-secondary transition-colors hover:bg-surface-raised hover:text-accent focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-accent lg:hidden"
           >
-            <Menu className="h-5 w-5 transition-transform duration-200" aria-hidden="true" />
+            <Menu className="h-5 w-5" aria-hidden="true" />
           </button>
 
-          {/* Logo - Desktop only */}
+          {/* Logo */}
           <Link
             to="/dashboard"
             aria-label="QYVORA — Home"
-            className="group hidden shrink-0 rounded-xl focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent lg:block"
+            className="group shrink-0 rounded-xl focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
           >
             <Logo
               className="h-8 transition-transform duration-[var(--dur-fast)] ease-[var(--ease-smooth)] group-hover:scale-105"
@@ -114,17 +114,17 @@ const StudentDesktopTopbar: React.FC<StudentDesktopTopbarProps> = ({ onMobileMen
               to="/dashboard"
               end
               className={({ isActive }) =>
-                `group flex min-h-[48px] items-center gap-2 rounded-xl px-4 py-2 text-sm transition-all duration-200 ${
+                `group flex min-h-[48px] items-center gap-2 rounded-xl px-4 py-2 text-sm transition-colors ${
                   isActive
-                    ? 'bg-accent/10 font-bold text-accent scale-[1.02]'
-                    : 'text-text-secondary hover:bg-surface-raised hover:text-text-primary hover:scale-[1.02]'
+                    ? 'bg-accent/10 font-bold text-accent'
+                    : 'text-text-secondary hover:bg-surface-raised hover:text-text-primary'
                 }`
               }
             >
               {({ isActive }) => (
                 <>
                   <Home
-                    className="h-[18px] w-[18px] shrink-0 transition-transform duration-200"
+                    className="h-[18px] w-[18px] shrink-0"
                     strokeWidth={isActive ? 2.5 : 2}
                     aria-hidden="true"
                   />
@@ -137,17 +137,17 @@ const StudentDesktopTopbar: React.FC<StudentDesktopTopbarProps> = ({ onMobileMen
             <NavLink
               to="/dashboard/courses"
               className={({ isActive }) =>
-                `group flex min-h-[48px] items-center gap-2 rounded-xl px-4 py-2 text-sm transition-all duration-200 ${
+                `group flex min-h-[48px] items-center gap-2 rounded-xl px-4 py-2 text-sm transition-colors ${
                   isActive
-                    ? 'bg-accent/10 font-bold text-accent scale-[1.02]'
-                    : 'text-text-secondary hover:bg-surface-raised hover:text-text-primary hover:scale-[1.02]'
+                    ? 'bg-accent/10 font-bold text-accent'
+                    : 'text-text-secondary hover:bg-surface-raised hover:text-text-primary'
                 }`
               }
             >
               {({ isActive }) => (
                 <>
                   <BookOpen
-                    className="h-[18px] w-[18px] shrink-0 transition-transform duration-200"
+                    className="h-[18px] w-[18px] shrink-0"
                     strokeWidth={isActive ? 2.5 : 2}
                     aria-hidden="true"
                   />
@@ -160,26 +160,26 @@ const StudentDesktopTopbar: React.FC<StudentDesktopTopbarProps> = ({ onMobileMen
             <div className="group relative z-[150]">
               <button
                 type="button"
-                className="flex min-h-[48px] items-center gap-2 rounded-xl px-4 py-2 text-sm text-text-secondary transition-all duration-200 hover:bg-surface-raised hover:text-text-primary hover:scale-[1.02] focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-accent"
+                className="flex min-h-[48px] items-center gap-2 rounded-xl px-4 py-2 text-sm text-text-secondary transition-colors hover:bg-surface-raised hover:text-text-primary focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-accent"
               >
-                <Target className="h-[18px] w-[18px] shrink-0 transition-transform duration-200" strokeWidth={2} aria-hidden="true" />
+                <Target className="h-[18px] w-[18px] shrink-0" strokeWidth={2} aria-hidden="true" />
                 <span>Practice</span>
-                <ChevronDown className="h-4 w-4 transition-transform duration-200 group-hover:rotate-180" aria-hidden="true" />
+                <ChevronDown className="h-4 w-4" aria-hidden="true" />
               </button>
               
               {/* Dropdown menu */}
-              <div className="absolute left-0 top-full z-[150] hidden min-w-[200px] pt-2 group-hover:block group-focus-within:block">
-                <div className="rounded-xl border border-border-subtle bg-canvas p-2 shadow-lg animate-in fade-in slide-in-from-top-2 duration-200">
+              <div className="absolute left-0 top-full hidden min-w-[200px] pt-2 group-hover:block group-focus-within:block">
+                <div className="rounded-xl border border-border-subtle bg-canvas p-2 shadow-lg">
                   <Link
                     to="/dashboard/bootcamps"
-                    className="flex items-center gap-3 rounded-lg px-3 py-2 text-sm text-text-secondary transition-all duration-150 hover:bg-surface-raised hover:text-text-primary hover:translate-x-1"
+                    className="flex items-center gap-3 rounded-lg px-3 py-2 text-sm text-text-secondary transition-colors hover:bg-surface-raised hover:text-text-primary"
                   >
                     <ShieldCheck className="h-[18px] w-[18px]" aria-hidden="true" />
                     <span>Bootcamp</span>
                   </Link>
                   <Link
                     to="/dashboard/labs"
-                    className="flex items-center gap-3 rounded-lg px-3 py-2 text-sm text-text-secondary transition-all duration-150 hover:bg-surface-raised hover:text-text-primary hover:translate-x-1"
+                    className="flex items-center gap-3 rounded-lg px-3 py-2 text-sm text-text-secondary transition-colors hover:bg-surface-raised hover:text-text-primary"
                   >
                     <Bug className="h-[18px] w-[18px]" aria-hidden="true" />
                     <span>Labs</span>
@@ -192,19 +192,19 @@ const StudentDesktopTopbar: React.FC<StudentDesktopTopbarProps> = ({ onMobileMen
             <div className="group relative z-[150]">
               <button
                 type="button"
-                className="flex min-h-[48px] items-center gap-2 rounded-xl px-4 py-2 text-sm text-text-secondary transition-all duration-200 hover:bg-surface-raised hover:text-text-primary hover:scale-[1.02] focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-accent"
+                className="flex min-h-[48px] items-center gap-2 rounded-xl px-4 py-2 text-sm text-text-secondary transition-colors hover:bg-surface-raised hover:text-text-primary focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-accent"
               >
-                <Trophy className="h-[18px] w-[18px] shrink-0 transition-transform duration-200" strokeWidth={2} aria-hidden="true" />
+                <Trophy className="h-[18px] w-[18px] shrink-0" strokeWidth={2} aria-hidden="true" />
                 <span>Compete</span>
-                <ChevronDown className="h-4 w-4 transition-transform duration-200 group-hover:rotate-180" aria-hidden="true" />
+                <ChevronDown className="h-4 w-4" aria-hidden="true" />
               </button>
               
               {/* Dropdown menu */}
-              <div className="absolute left-0 top-full z-[150] hidden min-w-[200px] pt-2 group-hover:block group-focus-within:block">
-                <div className="rounded-xl border border-border-subtle bg-canvas p-2 shadow-lg animate-in fade-in slide-in-from-top-2 duration-200">
+              <div className="absolute left-0 top-full hidden min-w-[200px] pt-2 group-hover:block group-focus-within:block">
+                <div className="rounded-xl border border-border-subtle bg-canvas p-2 shadow-lg">
                   <Link
                     to="/dashboard/competitive"
-                    className="flex items-center gap-3 rounded-lg px-3 py-2 text-sm text-text-secondary transition-all duration-150 hover:bg-surface-raised hover:text-text-primary hover:translate-x-1"
+                    className="flex items-center gap-3 rounded-lg px-3 py-2 text-sm text-text-secondary transition-colors hover:bg-surface-raised hover:text-text-primary"
                   >
                     <Swords className="h-[18px] w-[18px]" aria-hidden="true" />
                     <span>Competitive</span>
@@ -217,19 +217,19 @@ const StudentDesktopTopbar: React.FC<StudentDesktopTopbarProps> = ({ onMobileMen
             <div className="group relative z-[150]">
               <button
                 type="button"
-                className="flex min-h-[48px] items-center gap-2 rounded-xl px-4 py-2 text-sm text-text-secondary transition-all duration-200 hover:bg-surface-raised hover:text-text-primary hover:scale-[1.02] focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-accent"
+                className="flex min-h-[48px] items-center gap-2 rounded-xl px-4 py-2 text-sm text-text-secondary transition-colors hover:bg-surface-raised hover:text-text-primary focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-accent"
               >
-                <TerminalIcon className="h-[18px] w-[18px] shrink-0 transition-transform duration-200" strokeWidth={2} aria-hidden="true" />
+                <TerminalIcon className="h-[18px] w-[18px] shrink-0" strokeWidth={2} aria-hidden="true" />
                 <span>Develop</span>
-                <ChevronDown className="h-4 w-4 transition-transform duration-200 group-hover:rotate-180" aria-hidden="true" />
+                <ChevronDown className="h-4 w-4" aria-hidden="true" />
               </button>
               
               {/* Dropdown menu */}
-              <div className="absolute left-0 top-full z-[150] hidden min-w-[200px] pt-2 group-hover:block group-focus-within:block">
-                <div className="rounded-xl border border-border-subtle bg-canvas p-2 shadow-lg animate-in fade-in slide-in-from-top-2 duration-200">
+              <div className="absolute left-0 top-full hidden min-w-[200px] pt-2 group-hover:block group-focus-within:block">
+                <div className="rounded-xl border border-border-subtle bg-canvas p-2 shadow-lg">
                   <Link
                     to="/dashboard/networks"
-                    className="flex items-center gap-3 rounded-lg px-3 py-2 text-sm text-text-secondary transition-all duration-150 hover:bg-surface-raised hover:text-text-primary hover:translate-x-1"
+                    className="flex items-center gap-3 rounded-lg px-3 py-2 text-sm text-text-secondary transition-colors hover:bg-surface-raised hover:text-text-primary"
                   >
                     <Network className="h-[18px] w-[18px]" aria-hidden="true" />
                     <span>Networks</span>
@@ -281,7 +281,7 @@ const StudentDesktopTopbar: React.FC<StudentDesktopTopbarProps> = ({ onMobileMen
             {/* User Avatar */}
             <Link
               to="/dashboard/profile"
-              className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border-2 border-border-subtle bg-surface text-sm font-black text-accent transition-all duration-200 hover:border-accent hover:shadow-md hover:scale-105 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent md:h-12 md:w-12"
+              className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border-2 border-accent bg-surface text-sm font-black text-accent transition-all duration-200 hover:shadow-lg hover:shadow-accent/20 hover:scale-105 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent md:h-12 md:w-12"
               aria-label="Profile"
             >
               {userInitial}

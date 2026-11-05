@@ -312,7 +312,7 @@ const StudentSidebarRedesigned: React.FC<StudentSidebarRedesignedProps> = ({
                 className="group flex items-center gap-3 rounded-xl p-2 transition-colors hover:bg-surface-raised focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-accent"
               >
                 {/* Avatar */}
-                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full border-2 border-border-subtle bg-surface text-lg font-black text-accent">
+                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full border-2 border-accent bg-surface text-lg font-black text-accent transition-all duration-200 group-hover:shadow-lg group-hover:shadow-accent/20">
                   {userInitial}
                 </div>
                 
@@ -334,10 +334,6 @@ const StudentSidebarRedesigned: React.FC<StudentSidebarRedesignedProps> = ({
           
           {/* Statistics Cards (only when expanded/mobile, not in learning mode) - REMOVED */}
           {/* We'll show stats naturally in the navigation flow instead */}
-                  <StreakIcon size={20} className="mb-2" />
-                  <p className="text-lg font-black text-text-primary tabular-nums">
-                    {streakDays}
-                  </p>
           
           {/* Navigation */}
           <nav aria-label={isLearningMode ? "Learning curriculum" : "Primary"} className="px-3 py-4">
@@ -384,11 +380,6 @@ const StudentSidebarRedesigned: React.FC<StudentSidebarRedesignedProps> = ({
                  DASHBOARD MODE - Standard navigation sections
                  ══════════════════════════════════════════════════════════════ */
               <>
-                {/* Menu heading */}
-                <div className="mb-4 px-3">
-                  <h2 className="text-sm font-bold text-text-primary">Menu</h2>
-                </div>
-                
                 {NAV_SECTIONS.map((section) => {
                   const isSectionCollapsed = collapsedSections.has(section.title);
                   const showSectionContent = !isSectionCollapsed || !showFullContent;
@@ -406,10 +397,10 @@ const StudentSidebarRedesigned: React.FC<StudentSidebarRedesignedProps> = ({
                                 type="button"
                                 onClick={() => toggleSection(section.title)}
                                 aria-expanded={!isSectionCollapsed}
-                                className="flex h-6 w-6 items-center justify-center rounded text-text-tertiary transition-colors hover:text-accent focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-accent"
+                                className="flex h-6 w-6 items-center justify-center rounded text-accent transition-all duration-200 hover:bg-accent/10 focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-accent"
                               >
                                 <ChevronDown
-                                  className={`h-4 w-4 transition-transform ${isSectionCollapsed ? '-rotate-90' : ''}`}
+                                  className={`h-4 w-4 transition-transform duration-200 ${isSectionCollapsed ? '-rotate-90' : ''}`}
                                   aria-hidden="true"
                                 />
                               </button>
@@ -437,8 +428,8 @@ const StudentSidebarRedesigned: React.FC<StudentSidebarRedesignedProps> = ({
                                     <span className="absolute left-0 top-1/2 h-6 w-0.5 -translate-y-1/2 rounded-full bg-accent" aria-hidden="true" />
                                   )}
                                   <Icon
-                                    className={`h-[18px] w-[18px] shrink-0 transition-transform duration-[var(--dur-fast)] ease-[var(--ease-smooth)] group-hover:translate-x-0.5 ${
-                                      active ? 'text-accent' : ''
+                                    className={`h-[18px] w-[18px] shrink-0 transition-all duration-200 group-hover:translate-x-0.5 group-hover:scale-110 ${
+                                      active ? 'text-accent' : 'text-accent/70'
                                     }`}
                                     strokeWidth={active ? 2.5 : 2}
                                     aria-hidden="true"
