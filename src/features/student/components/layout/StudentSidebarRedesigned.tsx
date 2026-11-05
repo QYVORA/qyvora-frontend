@@ -3,7 +3,6 @@ import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom';
 import {
   Home,
   BookOpen,
-  Terminal as TerminalIcon,
   Bug,
   ShieldCheck,
   ShoppingBag,
@@ -14,25 +13,22 @@ import {
   Award,
   Settings,
   LogOut,
-  PanelLeftClose,
-  PanelLeftOpen,
-  ArrowLeft,
   X,
-  Flame,
   Trophy,
   Hash,
   ChevronDown,
+  ArrowLeft,
 } from 'lucide-react';
 import { QyvoraMark, Logo } from '@/shared/components/brand';
 import { useAuth } from '@/core/contexts/AuthContext';
 import { useToast } from '@/core/contexts/ToastContext';
 import api from '@/core/services/api';
-import { Tooltip, TooltipProvider } from '@/shared/components/ui/Tooltip';
 import { useLearningContext } from '@/core/hooks/useLearningContext';
 import { LearningCurriculumTree } from '@/shared/components/learning/LearningCurriculumTree';
 import Button from '@/shared/components/ui/Button';
 import useStudentOverview from '@/features/student/hooks/useStudentOverview';
 import { extractCpBalance } from '@/shared/utils/cpBalance';
+import StreakIcon from '@/shared/components/icons/StreakIcon';
 
 interface NavEntry {
   key: string;
@@ -46,24 +42,39 @@ interface NavSection {
   title: string;
   items: NavEntry[];
   collapsible?: boolean;
+  defaultCollapsed?: boolean;
 }
 
 const NAV_SECTIONS: NavSection[] = [
   {
     title: 'Main',
     items: [
-      { key: 'dashboard', label: 'Home', icon: Home, to: '/dashboard' },
-      { key: 'courses', label: 'Courses', icon: BookOpen, to: '/dashboard/courses' },
-      { key: 'bootcamp', label: 'Bootcamp', icon: ShieldCheck, to: '/dashboard/bootcamps' },
-      { key: 'labs', label: 'Labs', icon: Bug, to: '/dashboard/labs' },
-      { key: 'marketplace', label: 'Marketplace', icon: ShoppingBag, to: '/dashboard/marketplace' },
+      { key: 'dashboard', label: 'Dashboard', icon: Home, to: '/dashboard' },
+      { key: 'courses', label: 'Learn', icon: BookOpen, to: '/dashboard/courses' },
     ],
   },
   {
     title: 'Practice',
     collapsible: true,
+    defaultCollapsed: false,
+    items: [
+      { key: 'bootcamp', label: 'Bootcamp', icon: ShieldCheck, to: '/dashboard/bootcamps' },
+      { key: 'labs', label: 'Labs', icon: Bug, to: '/dashboard/labs' },
+    ],
+  },
+  {
+    title: 'Compete',
+    collapsible: true,
+    defaultCollapsed: false,
     items: [
       { key: 'competitive', label: 'Competitive', icon: Swords, to: '/dashboard/competitive' },
+    ],
+  },
+  {
+    title: 'Develop',
+    collapsible: true,
+    defaultCollapsed: false,
+    items: [
       { key: 'networks', label: 'Networks', icon: Network, to: '/dashboard/networks' },
     ],
   },
@@ -74,6 +85,7 @@ const NAV_SECTIONS: NavSection[] = [
       { key: 'certificates', label: 'Certificates', icon: Award, to: '/dashboard/certificates' },
       { key: 'notifications', label: 'Notifications', icon: Bell, to: '/dashboard/notifications', badgeKey: 'notifications' },
       { key: 'settings', label: 'Settings', icon: Settings, to: '/dashboard/settings' },
+      { key: 'marketplace', label: 'Marketplace', icon: ShoppingBag, to: '/dashboard/marketplace' },
     ],
   },
 ];
@@ -86,23 +98,19 @@ interface StudentSidebarRedesignedProps {
 }
 
 /**
- * StudentSidebarRedesigned — TryHackMe-inspired sidebar for student dashboard
+ * StudentSidebarRedesigned — Mobile-only sidebar for student dashboard
  * 
- * Desktop (lg+): Fixed left rail with collapse/expand
- * - Expanded: 264px with full logo, profile, stats, navigation
- * - Collapsed: 76px with mark logo, icon-only navigation
- * 
- * Mobile (<lg): Full-screen overlay sidebar
+ * Mobile (<lg): Full-screen overlay sidebar with collapsible sections
  * - Opens from hamburger in topbar
  * - Full viewport width and height
  * - Close X button, backdrop click, navigation selection, or Escape key
- * 
- * Features:
  * - User profile section with avatar, name, rank
  * - Three statistics cards: Streak, CP Points, Rank
- * - Collapsible navigation sections
+ * - Collapsible navigation sections (Practice, Compete, Develop)
  * - Learning mode curriculum tree
- * - Tools footer with Terminal, Network, Collapse, Logout
+ * - Footer with Terminal, Network, Logout
+ * 
+ * Desktop (lg+): Hidden - desktop uses horizontal topbar navigation
  */
 const StudentSidebarRedesigned: React.FC<StudentSidebarRedesignedProps> = ({
   collapsed = false,
@@ -115,11 +123,20 @@ const StudentSidebarRedesigned: React.FC<StudentSidebarRedesignedProps> = ({
   const navigate = useNavigate();
   const location = useLocation();
   const [unread, setUnread] = useState(0);
-  const [collapsedSections, setCollapsedSections] = useState<Set<string>>(new Set());
-  
   // Detect if we're on a learning page
   const learningContext = useLearningContext();
   const isLearningMode = Boolean(learningContext);
+  
+  // Initialize collapsed sections state (sections can be collapsed by default)
+  const [collapsedSections, setCollapsedSections] = useState<Set<string>>(() => {
+    const initial = new Set<string>();
+    NAV_SECTIONS.forEach(section => {
+      if (section.collapsible && section.defaultCollapsed) {
+        initial.add(section.title);
+      }
+    });
+    return initial;
+  });
   
   // Fetch student statistics
   const { data: overview } = useStudentOverview();
@@ -160,9 +177,6 @@ const StudentSidebarRedesigned: React.FC<StudentSidebarRedesignedProps> = ({
     window.addEventListener('keydown', handleEscape);
     return () => window.removeEventListener('keydown', handleEscape);
   }, [isMobileOpen, onMobileClose]);
-
-  const openTerminal = () => window.dispatchEvent(new CustomEvent('qyvora:open-terminal'));
-  const openNetwork = () => window.dispatchEvent(new CustomEvent('qyvora:open-network-visualizer'));
 
   const handleLogout = async () => {
     await logout();
@@ -224,18 +238,7 @@ const StudentSidebarRedesigned: React.FC<StudentSidebarRedesignedProps> = ({
     }
   };
   
-  // Desktop sidebar (always visible at lg+)
-  const desktopSidebar = (
-    <aside
-      className={`chrome-fixed fixed inset-y-0 left-0 z-[90] hidden flex-col border-r border-border-subtle bg-canvas transition-[width] duration-[var(--dur-base)] ease-[var(--ease-smooth)] lg:flex ${
-        collapsed ? 'w-[76px]' : 'w-[264px]'
-      }`}
-    >
-      {renderSidebarContent(false)}
-    </aside>
-  );
-  
-  // Mobile sidebar (full-screen overlay)
+  // Only render mobile sidebar (desktop uses horizontal topbar)
   const mobileSidebar = isMobileOpen && (
     <>
       {/* Backdrop */}
@@ -258,7 +261,7 @@ const StudentSidebarRedesigned: React.FC<StudentSidebarRedesignedProps> = ({
   );
   
   function renderSidebarContent(isMobile: boolean) {
-    const showFullContent = isMobile || !collapsed;
+    const showFullContent = true; // Mobile sidebar always shows full content
     
     return (
       <>
@@ -335,7 +338,7 @@ const StudentSidebarRedesigned: React.FC<StudentSidebarRedesignedProps> = ({
               <div className="grid grid-cols-3 gap-2">
                 {/* Day Streak */}
                 <div className="flex flex-col items-center rounded-xl border border-border-subtle bg-surface p-3 text-center">
-                  <Flame className="mb-2 h-5 w-5 text-accent" aria-hidden="true" />
+                  <StreakIcon size={20} className="mb-2" />
                   <p className="text-lg font-black text-text-primary tabular-nums">
                     {streakDays}
                   </p>
@@ -414,6 +417,11 @@ const StudentSidebarRedesigned: React.FC<StudentSidebarRedesignedProps> = ({
                  DASHBOARD MODE - Standard navigation sections
                  ══════════════════════════════════════════════════════════════ */
               <>
+                {/* Menu heading */}
+                <div className="mb-4 px-3">
+                  <h2 className="text-sm font-bold text-text-primary">Menu</h2>
+                </div>
+                
                 {NAV_SECTIONS.map((section) => {
                   const isSectionCollapsed = collapsedSections.has(section.title);
                   const showSectionContent = !isSectionCollapsed || !showFullContent;
@@ -447,36 +455,32 @@ const StudentSidebarRedesigned: React.FC<StudentSidebarRedesignedProps> = ({
                             const Icon = item.icon;
                             const active = isSectionActive(item.to);
                             return (
-                              <li key={item.key} className={!showFullContent ? 'flex justify-center' : ''}>
-                                <Tooltip content={item.label} side="right" disabled={showFullContent}>
-                                  <NavLink
-                                    to={item.to}
-                                    onClick={handleNavClick}
-                                    data-tour-id={item.key === 'profile' ? 'tour-profile-sidebar' : undefined}
-                                    className={`group relative flex min-h-[48px] items-center rounded-xl py-2 text-sm transition-colors duration-[var(--dur-fast)] ease-[var(--ease-smooth)] focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-accent ${
-                                      !showFullContent ? 'h-12 w-12 justify-center px-0' : 'gap-3 px-3'
-                                    } ${
-                                      active ? 'bg-accent/10 font-medium text-accent' : 'text-text-secondary hover:bg-surface-raised hover:text-text-primary'
+                              <li key={item.key}>
+                                <NavLink
+                                  to={item.to}
+                                  onClick={handleNavClick}
+                                  data-tour-id={item.key === 'profile' ? 'tour-profile-sidebar' : undefined}
+                                  className={`group relative flex min-h-[48px] items-center gap-3 rounded-xl px-3 py-2 text-sm transition-colors duration-[var(--dur-fast)] ease-[var(--ease-smooth)] focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-accent ${
+                                    active ? 'bg-accent/10 font-medium text-accent' : 'text-text-secondary hover:bg-surface-raised hover:text-text-primary'
+                                  }`}
+                                >
+                                  {active && (
+                                    <span className="absolute left-0 top-1/2 h-6 w-0.5 -translate-y-1/2 rounded-full bg-accent" aria-hidden="true" />
+                                  )}
+                                  <Icon
+                                    className={`h-[18px] w-[18px] shrink-0 transition-transform duration-[var(--dur-fast)] ease-[var(--ease-smooth)] group-hover:translate-x-0.5 ${
+                                      active ? 'text-accent' : ''
                                     }`}
-                                  >
-                                    {active && (
-                                      <span className="absolute left-0 top-1/2 h-6 w-0.5 -translate-y-1/2 rounded-full bg-accent" aria-hidden="true" />
-                                    )}
-                                    <Icon
-                                      className={`h-[18px] w-[18px] shrink-0 transition-transform duration-[var(--dur-fast)] ease-[var(--ease-smooth)] group-hover:translate-x-0.5 ${
-                                        active ? 'text-accent' : ''
-                                      }`}
-                                      strokeWidth={active ? 2.5 : 2}
-                                      aria-hidden="true"
-                                    />
-                                    {showFullContent && <span className="flex-1 truncate">{item.label}</span>}
-                                    {item.badgeKey === 'notifications' && unread > 0 && (
-                                      <span className="flex h-5 min-w-5 items-center justify-center rounded-md bg-accent px-1 text-[10px] font-black text-on-accent tabular-nums">
-                                        {unread > 99 ? '99+' : unread}
-                                      </span>
-                                    )}
-                                  </NavLink>
-                                </Tooltip>
+                                    strokeWidth={active ? 2.5 : 2}
+                                    aria-hidden="true"
+                                  />
+                                  <span className="flex-1 truncate">{item.label}</span>
+                                  {item.badgeKey === 'notifications' && unread > 0 && (
+                                    <span className="flex h-5 min-w-5 items-center justify-center rounded-md bg-accent px-1 text-[10px] font-black text-on-accent tabular-nums">
+                                      {unread > 99 ? '99+' : unread}
+                                    </span>
+                                  )}
+                                </NavLink>
                               </li>
                             );
                           })}
@@ -490,80 +494,16 @@ const StudentSidebarRedesigned: React.FC<StudentSidebarRedesignedProps> = ({
           </nav>
         </div>
         
-        {/* Footer Tools */}
+        {/* Footer - Logout only */}
         <div className="border-t border-border-subtle px-3 py-3">
-          {showFullContent && (
-            <p className="type-label mb-1.5 px-3 text-[10px] uppercase tracking-[0.14em] text-text-tertiary">
-              <span aria-hidden="true" className="text-accent">
-                //&nbsp;
-              </span>
-              Tools
-            </p>
-          )}
-          
-          <div
-            className={`mb-2 flex items-center justify-center gap-1.5 rounded-xl bg-surface-raised p-1.5 ${
-              !showFullContent ? 'flex-col' : ''
-            }`}
-          >
-            <TooltipProvider>
-              <Tooltip content={"Terminal"}>
-                <button
-                  type="button"
-                  onClick={openTerminal}
-                  aria-label={"Terminal"}
-                  className={`flex min-h-[48px] min-w-[48px] ${
-                    !showFullContent ? 'w-full' : 'flex-1'
-                  } items-center justify-center rounded-xl border border-transparent text-text-secondary transition-colors hover:border-border-subtle hover:text-accent focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-accent`}
-                >
-                  <TerminalIcon className="h-[18px] w-[18px]" aria-hidden="true" />
-                </button>
-              </Tooltip>
-              <Tooltip content={"Network Lab"}>
-                <button
-                  type="button"
-                  onClick={openNetwork}
-                  aria-label={"Network Lab"}
-                  className={`flex min-h-[48px] min-w-[48px] ${
-                    !showFullContent ? 'w-full' : 'flex-1'
-                  } items-center justify-center rounded-xl border border-transparent text-text-secondary transition-colors hover:border-border-subtle hover:text-accent focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-accent`}
-                >
-                  <Network className="h-[18px] w-[18px]" aria-hidden="true" />
-                </button>
-              </Tooltip>
-            </TooltipProvider>
-          </div>
-          
-          {/* Desktop Collapse Button (not on mobile) */}
-          {!isMobile && (
-            <button
-              type="button"
-              onClick={onToggleCollapse}
-              aria-expanded={!collapsed}
-              aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}
-              className={`flex min-h-[48px] w-full items-center rounded-xl py-2 text-sm text-text-secondary transition-colors hover:bg-surface-raised hover:text-text-primary focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-accent ${
-                !showFullContent ? 'justify-center px-0' : 'gap-3 px-3'
-              }`}
-            >
-              {!showFullContent ? (
-                <PanelLeftOpen className="h-[18px] w-[18px] shrink-0" aria-hidden="true" />
-              ) : (
-                <PanelLeftClose className="h-[18px] w-[18px] shrink-0" aria-hidden="true" />
-              )}
-              {showFullContent && <span>{"Collapse sidebar"}</span>}
-            </button>
-          )}
-          
           {/* Logout Button */}
           <button
             type="button"
             onClick={handleLogout}
-            className={`flex min-h-[48px] w-full items-center rounded-xl py-2 text-sm text-text-secondary transition-colors hover:bg-semantic-danger/5 hover:text-semantic-danger focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-accent ${
-              !showFullContent ? 'justify-center px-0' : 'gap-3 px-3'
-            }`}
+            className="flex min-h-[48px] w-full items-center gap-3 rounded-xl px-3 py-2 text-sm text-text-secondary transition-colors hover:bg-semantic-danger/5 hover:text-semantic-danger focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-accent"
           >
             <LogOut className="h-[18px] w-[18px] shrink-0" aria-hidden="true" />
-            {showFullContent && <span>{"Log Out"}</span>}
+            <span>Log Out</span>
           </button>
         </div>
       </>
@@ -572,7 +512,6 @@ const StudentSidebarRedesigned: React.FC<StudentSidebarRedesignedProps> = ({
   
   return (
     <>
-      {desktopSidebar}
       {mobileSidebar}
     </>
   );
