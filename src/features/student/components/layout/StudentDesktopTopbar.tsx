@@ -95,11 +95,11 @@ const StudentDesktopTopbar: React.FC<StudentDesktopTopbarProps> = ({ onMobileMen
             <Menu className="h-5 w-5" aria-hidden="true" />
           </button>
 
-          {/* Logo */}
+          {/* Logo - Desktop only */}
           <Link
             to="/dashboard"
             aria-label="QYVORA — Home"
-            className="group shrink-0 rounded-xl focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+            className="group hidden shrink-0 rounded-xl focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent lg:block"
           >
             <Logo
               className="h-8 transition-transform duration-[var(--dur-fast)] ease-[var(--ease-smooth)] group-hover:scale-105"
@@ -243,7 +243,7 @@ const StudentDesktopTopbar: React.FC<StudentDesktopTopbarProps> = ({ onMobileMen
           <div className="flex-1" aria-hidden="true" />
 
           {/* Right Side Utilities */}
-          <div className="flex flex-1 items-center justify-end gap-3 sm:gap-4 lg:flex-none lg:gap-2">
+          <div className="flex shrink-0 items-center justify-end gap-1 sm:gap-1.5 md:gap-2">
             {/* Search (all screens) */}
             <button
               type="button"
