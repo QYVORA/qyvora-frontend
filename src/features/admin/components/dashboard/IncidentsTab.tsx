@@ -36,7 +36,7 @@ const IncidentsTab = () => {
   // Create form
   const [showForm, setShowForm] = useState(false);
   const [creating, setCreating] = useState(false);
-  const [form, setForm] = useState({ title: '', description: '', severity: 'medium', correlationId: '' });
+  const [form, setForm] = useState({ title: '', description: '', severity: 'medium', isPublic: false, correlationId: '' });
 
   const fetchIncidents = async (p = 1) => {
     setLoading(true);
@@ -66,6 +66,7 @@ const IncidentsTab = () => {
         title: form.title.trim(),
         description: form.description.trim(),
         severity: form.severity,
+        isPublic: form.isPublic,
         correlationId: form.correlationId.trim(),
       });
       if (res?.data?.audited === false) {
@@ -73,13 +74,30 @@ const IncidentsTab = () => {
       } else {
         addToast("Incident created", 'success');
       }
-      setForm({ title: '', description: '', severity: 'medium', correlationId: '' });
+      setForm({ title: '', description: '', severity: 'medium', isPublic: false, correlationId: '' });
       setShowForm(false);
       await fetchIncidents(1);
     } catch (e: any) {
       addToast(e?.response?.data?.error || "Could not create incident", 'error');
     } finally {
       setCreating(false);
+    }
+  };
+
+  const handleVisibilityToggle = async (incident: IncidentItem) => {
+    try {
+      const res = await api.patch(`/admin/incidents/${encodeURIComponent(incident.id)}/status`, {
+        status: incident.status,
+        isPublic: !incident.isPublic,
+      });
+      if (res?.data?.audited === false) {
+        addToast("Action applied, but its audit entry could not be written. Please verify and retry.", 'warning');
+      } else {
+        addToast(incident.isPublic ? "Incident unpublished" : "Incident published", 'success');
+      }
+      await fetchIncidents(page);
+    } catch (e: any) {
+      addToast(e?.response?.data?.error || "Could not update incident visibility", 'error');
     }
   };
 
@@ -199,6 +217,15 @@ const IncidentsTab = () => {
               />
             </div>
           </div>
+          <label className="flex items-center gap-3 text-xs text-text-secondary">
+            <input
+              type="checkbox"
+              checked={form.isPublic}
+              onChange={(e) => setForm((f) => ({ ...f, isPublic: e.target.checked }))}
+              className="h-4 w-4 rounded border-border-subtle accent-accent"
+            />
+            {"Publish this incident on the public status page"}
+          </label>
           <div className="flex justify-end gap-3">
             <button onClick={() => setShowForm(false)} className={`${BTN_CLS} btn-secondary px-4`}>
               {"Cancel"}
@@ -230,6 +257,9 @@ const IncidentsTab = () => {
               <div className="flex flex-wrap items-center gap-2">
                 <Badge variant={SEVERITY_VARIANT[incident.severity]}>{incident.severity}</Badge>
                 <Badge variant={STATUS_VARIANT[incident.status]}>{incident.status}</Badge>
+                <Badge variant={incident.isPublic ? 'accent' : 'default'}>
+                  {incident.isPublic ? 'public' : 'internal'}
+                </Badge>
                 <span className="font-bold text-sm text-text-primary truncate">{incident.title}</span>
                 <span className="ml-auto text-xs font-mono text-text-muted/60 whitespace-nowrap">
                   {new Date(incident.createdAt).toLocaleString()}
@@ -254,6 +284,12 @@ const IncidentsTab = () => {
                   </button>
                 )}
                 <span className="ml-auto flex items-center gap-2">
+                  <button
+                    onClick={() => void handleVisibilityToggle(incident)}
+                    className={`${BTN_CLS} btn-secondary px-3 py-1.5`}
+                  >
+                    {incident.isPublic ? 'Unpublish' : 'Publish'}
+                  </button>
                   {nextActions(incident).map((action) => (
                     <button
                       key={action.status}

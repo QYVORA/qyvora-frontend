@@ -93,6 +93,8 @@ export type IncidentItem = {
   description: string;
   status: IncidentStatus;
   severity: IncidentSeverity;
+  /** Published on the public status page when true. */
+  isPublic: boolean;
   correlationId: string;
   createdBy: { id: string; name: string; email: string } | null;
   resolvedBy: { id: string; name: string; email: string } | null;
