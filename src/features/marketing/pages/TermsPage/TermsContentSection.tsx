@@ -73,6 +73,28 @@ const TermsContentSection: React.FC = () => {
               )}
             </section>
           ))}
+
+          <div className="mt-6 border-t border-border-subtle pt-6">
+            <h2 className="type-label text-accent">Related policies</h2>
+            <div className="mt-3 flex flex-wrap gap-x-5 gap-y-2">
+              {[
+                { label: 'Privacy Policy', to: '/privacy' },
+                { label: 'Cookie Policy', to: '/cookies' },
+                { label: 'Security & Responsible Disclosure', to: '/security' },
+                { label: 'Refund & Cancellation', to: '/refund-policy' },
+                { label: 'Accessibility', to: '/accessibility' },
+                { label: 'Community Guidelines', to: '/acceptable-use' },
+              ].map((link) => (
+                <Link
+                  key={link.to}
+                  to={link.to}
+                  className="inline-flex min-h-[44px] items-center text-sm font-bold text-text-secondary transition-colors hover:text-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+                >
+                  {link.label}
+                </Link>
+              ))}
+            </div>
+          </div>
         </div>
       </PublicContainer>
     </div>

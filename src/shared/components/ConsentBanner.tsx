@@ -1,7 +1,9 @@
 import React, { useState, useEffect, useMemo } from 'react';
+import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'motion/react';
 import { IconShield, IconInfo, IconX } from '@/shared/components/icons';
 import { getCookiePreferences, setCookiePreferences, type CookiePreferences } from '../utils/storageConsent';
+import { OPEN_COOKIE_PREFERENCES_EVENT } from '@/shared/utils/cookiePreferences';
 import { usePopupManager } from '../../core/hooks/usePopupManager';
 import { useReducedMotion } from '@/shared/hooks/useReducedMotion';
 
@@ -29,6 +31,7 @@ const ConsentBanner: React.FC = React.memo(() => {
 
   const [delayReady, setDelayReady] = useState(false);
   const [showDetails, setShowDetails] = useState(false);
+  const [manuallyOpened, setManuallyOpened] = useState(false);
   const [prefs, setPrefs] = useState<Omit<CookiePreferences, 'consentedAt'>>({
     strictly_necessary: true,
     functional: true,
@@ -41,20 +44,46 @@ const ConsentBanner: React.FC = React.memo(() => {
     return () => clearTimeout(timer);
   }, [needsConsent]);
 
-  const isVisible = needsConsent && delayReady && managerVisible;
+  // The Cookie Policy page (and any future surface) can reopen these choices
+  // after a preference has already been saved or the banner was dismissed.
+  useEffect(() => {
+    const open = () => {
+      const stored = getCookiePreferences();
+      if (stored) {
+        setPrefs({
+          strictly_necessary: true,
+          functional: stored.functional,
+          analytics: stored.analytics,
+        });
+      }
+      setShowDetails(true);
+      setManuallyOpened(true);
+    };
+    window.addEventListener(OPEN_COOKIE_PREFERENCES_EVENT, open);
+    return () => window.removeEventListener(OPEN_COOKIE_PREFERENCES_EVENT, open);
+  }, []);
+
+  const isVisible = manuallyOpened || (needsConsent && delayReady && managerVisible);
 
   const handleAcceptAll = () => {
     setCookiePreferences({ strictly_necessary: true, functional: true, analytics: true });
+    setManuallyOpened(false);
     managerDismiss();
   };
 
   const handleDismiss = () => {
+    if (manuallyOpened) {
+      setManuallyOpened(false);
+      managerDismiss();
+      return;
+    }
     try { localStorage.setItem(CONSENT_DISMISS_KEY, '1'); } catch {}
     managerDismiss();
   };
 
   const handleSavePreferences = () => {
     setCookiePreferences(prefs);
+    setManuallyOpened(false);
     managerDismiss();
   };
 
@@ -84,6 +113,15 @@ const ConsentBanner: React.FC = React.memo(() => {
                 </h3>
                 <p className="text-xs sm:text-xs text-text-secondary leading-relaxed">
                   {"We use cookies to secure your session and optimize performance. No 3rd-party tracking."}
+                </p>
+                <p className="mt-1.5 text-xs text-text-muted">
+                  <Link to="/cookies" className="font-bold text-accent hover:underline">
+                    {"Cookie Policy"}
+                  </Link>
+                  {" · "}
+                  <Link to="/privacy" className="font-bold text-accent hover:underline">
+                    {"Privacy Policy"}
+                  </Link>
                 </p>
               </div>
               <button
