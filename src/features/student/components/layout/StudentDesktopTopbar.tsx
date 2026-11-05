@@ -243,7 +243,7 @@ const StudentDesktopTopbar: React.FC<StudentDesktopTopbarProps> = ({ onMobileMen
           <div className="flex-1" aria-hidden="true" />
 
           {/* Right Side Utilities */}
-          <div className="flex shrink-0 items-center gap-1.5 md:gap-2">
+          <div className="flex shrink-0 items-center gap-1 sm:gap-1.5 md:gap-2">
             {/* Search (desktop only) */}
             <button
               type="button"
@@ -261,27 +261,27 @@ const StudentDesktopTopbar: React.FC<StudentDesktopTopbarProps> = ({ onMobileMen
             <button
               type="button"
               onClick={() => navigate('/dashboard/notifications')}
-              className="relative flex min-h-[48px] min-w-[48px] items-center justify-center rounded-xl text-text-secondary transition-all duration-200 hover:bg-surface-raised hover:text-accent focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-accent"
+              className="relative flex h-10 w-10 shrink-0 items-center justify-center rounded-xl text-text-secondary transition-all duration-200 hover:bg-surface-raised hover:text-accent focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-accent md:h-12 md:w-12"
               aria-label={`Notifications${unread > 0 ? ` (${unread} unread)` : ''}`}
             >
               <Bell className="h-[18px] w-[18px] transition-transform duration-200 hover:scale-110" aria-hidden="true" />
               {unread > 0 && (
-                <span className="absolute right-1.5 top-1.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-accent px-1 text-[10px] font-black leading-none text-on-accent tabular-nums animate-in fade-in zoom-in duration-200">
+                <span className="absolute right-1 top-1 flex h-4 min-w-4 items-center justify-center rounded-full bg-accent px-1 text-[10px] font-black leading-none text-on-accent tabular-nums animate-in fade-in zoom-in duration-200 md:right-1.5 md:top-1.5">
                   {unread > 9 ? '9+' : unread}
                 </span>
               )}
             </button>
 
             {/* Streak Counter (mobile and desktop) */}
-            <div className="flex items-center gap-2 rounded-xl bg-surface px-3 py-2 transition-all duration-200 hover:bg-surface-raised hover:shadow-md">
-              <StreakIcon size={20} className="transition-transform duration-200 hover:scale-110" />
+            <div className="flex shrink-0 items-center gap-1.5 rounded-xl bg-surface px-2 py-1.5 transition-all duration-200 hover:bg-surface-raised hover:shadow-md sm:gap-2 sm:px-3 sm:py-2">
+              <StreakIcon size={18} className="shrink-0 transition-transform duration-200 hover:scale-110 sm:h-5 sm:w-5" />
               <span className="text-xs font-black text-text-primary tabular-nums">{streakDays}</span>
             </div>
 
             {/* User Avatar */}
             <Link
               to="/dashboard/profile"
-              className="flex min-h-[48px] min-w-[48px] items-center justify-center rounded-xl border-2 border-border-subtle bg-surface text-sm font-black text-accent transition-all duration-200 hover:border-accent hover:shadow-md hover:scale-105 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+              className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border-2 border-border-subtle bg-surface text-sm font-black text-accent transition-all duration-200 hover:border-accent hover:shadow-md hover:scale-105 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent md:h-12 md:w-12"
               aria-label="Profile"
             >
               {userInitial}
