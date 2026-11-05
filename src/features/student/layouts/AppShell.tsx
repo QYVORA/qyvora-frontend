@@ -1,6 +1,6 @@
 import { useCallback, useState, useEffect } from 'react';
 import { Outlet, useMatch } from 'react-router-dom';
-import StudentTopbar from '@/features/student/components/layout/StudentTopbar';
+import StudentDesktopTopbar from '@/features/student/components/layout/StudentDesktopTopbar';
 import StudentSidebarRedesigned from '@/features/student/components/layout/StudentSidebarRedesigned';
 import UsernameChangeModal from '@/features/student/components/UsernameChangeModal';
 import ConsentBanner from '@/shared/components/ConsentBanner';
@@ -15,10 +15,18 @@ import type { TerminalContext } from '@/features/student/components/SimulatedTer
 /**
  * AppShell — the student application shell.
  *
- * Desktop (lg+): persistent left Sidebar + optional topbar.
- * Learning pages (bootcamp rooms, courses, labs): sidebar-only navigation, no topbar.
- * Dashboard pages: sidebar + topbar with breadcrumbs and utilities.
- * Mobile (<lg): topbar with hamburger + full-screen overlay sidebar (no bottom nav).
+ * Desktop (lg+): Horizontal topbar navigation (TryHackMe-style)
+ * - All pages show the horizontal topbar with primary navigation
+ * - No left sidebar on desktop
+ * - Full-width content area
+ * 
+ * Mobile (<lg): Topbar with hamburger + full-screen overlay sidebar
+ * - Hamburger menu opens full-screen mobile sidebar
+ * - Sidebar has collapsible sections for Practice, Compete, Develop
+ * 
+ * Learning pages (bootcamp rooms, courses, labs): 
+ * - Desktop: horizontal topbar navigation
+ * - Mobile: sidebar-only navigation (no topbar)
  *
  * Shell behaviours: SimulationProvider, terminal/IDE/network window-event
  * triggers, Ctrl+` toggle, PWA status host and push subscription.
@@ -31,31 +39,10 @@ const AppShell = () => {
   const [terminalOpen, setTerminalOpen] = useState(false);
   const [networkVizOpen, setNetworkVizOpen] = useState(false);
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
-  const [railCollapsed, setRailCollapsed] = useState(() => {
-    try {
-      return localStorage.getItem('qyvora:sidebar-collapsed') === '1';
-    } catch {
-      return false;
-    }
-  });
 
   // Detect if we're on a learning page (bootcamp room, course lesson, lab)
   const learningContext = useLearningContext();
   const isLearningPage = Boolean(learningContext);
-
-  const toggleRail = useCallback(
-    () =>
-      setRailCollapsed((prev) => {
-        const next = !prev;
-        try {
-          localStorage.setItem('qyvora:sidebar-collapsed', next ? '1' : '');
-        } catch {
-          /* storage unavailable */
-        }
-        return next;
-      }),
-    [],
-  );
 
   useEffect(() => {
     tryAutoSubscribePush();
@@ -94,35 +81,28 @@ const AppShell = () => {
     ? { type: 'lab', labId: String(labMatch.params.labType || '') }
     : { type: 'dashboard' };
 
-  // Sidebar rail is present on all pages
-  const useRail = true;
-  const railPad = railCollapsed ? 'lg:pl-[76px]' : 'lg:pl-[264px]';
-  
-  // Learning pages don't have topbar, so no top padding needed
-  const topbarPadding = isLearningPage ? '' : 'pt-20 md:pt-24';
+  // All pages have topbar on desktop (lg+), mobile has hamburger that opens sidebar
+  // Desktop: no sidebar, horizontal topbar navigation
+  // Mobile: overlay sidebar, topbar with hamburger (except on learning pages where sidebar is primary)
+  const topbarPadding = 'pt-20 md:pt-24';
 
   return (
     <SimulationProvider>
       <div className="bg-canvas min-h-dvh">
-        {/* Topbar only on dashboard pages, not on learning pages */}
-        {!isLearningPage && (
-          <StudentTopbar 
-            railCollapsed={railCollapsed}
-            onMobileMenuOpen={() => setMobileSidebarOpen(true)}
-          />
-        )}
+        {/* Desktop Topbar - Always visible on desktop (lg+), hidden on mobile learning pages */}
+        <div className={isLearningPage ? 'hidden lg:block' : ''}>
+          <StudentDesktopTopbar onMobileMenuOpen={() => setMobileSidebarOpen(true)} />
+        </div>
         
-        {useRail && (
-          <StudentSidebarRedesigned
-            collapsed={railCollapsed}
-            onToggleCollapse={toggleRail}
-            isMobileOpen={mobileSidebarOpen}
-            onMobileClose={() => setMobileSidebarOpen(false)}
-          />
-        )}
+        {/* Mobile Sidebar - Only visible when open on mobile (<lg) */}
+        <StudentSidebarRedesigned
+          isMobileOpen={mobileSidebarOpen}
+          onMobileClose={() => setMobileSidebarOpen(false)}
+        />
+        
         <div
           id="main-content"
-          className={`${topbarPadding} md:pb-6 ${useRail ? 'transition-[padding-left] duration-[var(--dur-base)] ease-[var(--ease-smooth)]' : ''} ${railPad}`}
+          className={topbarPadding}
         >
           <Outlet />
         </div>
