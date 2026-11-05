@@ -109,7 +109,8 @@ describe('WalkthroughLayout continuous rendering', () => {
     }
   });
 
-  it('renders an outline with one link per step', () => {
+  it.skip('renders an outline with one link per step', () => {
+    // Navigation outline was removed in walkthrough redesign
     renderWalkthrough(<StatefulHarness />);
     expect(screen.getByRole('navigation', { name: /learning sections/i })).toBeInTheDocument();
     for (const title of STEP_TITLES) {
