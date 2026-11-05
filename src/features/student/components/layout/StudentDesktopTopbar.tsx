@@ -24,6 +24,7 @@ import useStudentOverview from '@/features/student/hooks/useStudentOverview';
 import { extractCpBalance } from '@/shared/utils/cpBalance';
 import CpLogo from '@/shared/components/CpLogo';
 import StreakIcon from '@/shared/components/icons/StreakIcon';
+import StudentSearchDialog from './StudentSearchDialog';
 
 interface StudentDesktopTopbarProps {
   onMobileMenuOpen?: () => void;
@@ -47,6 +48,7 @@ const StudentDesktopTopbar: React.FC<StudentDesktopTopbarProps> = ({ onMobileMen
   const { user } = useAuth();
   const navigate = useNavigate();
   const [unread, setUnread] = useState(0);
+  const [searchOpen, setSearchOpen] = useState(false);
 
   // Fetch student statistics
   const { data: overview } = useStudentOverview();
@@ -247,11 +249,9 @@ const StudentDesktopTopbar: React.FC<StudentDesktopTopbarProps> = ({ onMobileMen
             {/* Search (all screens) */}
             <button
               type="button"
-              onClick={() => {
-                // TODO: Implement search functionality
-                console.log('Search clicked');
-              }}
+              onClick={() => setSearchOpen(true)}
               aria-label="Search"
+              title="Search (Ctrl+K)"
               className="flex h-10 w-10 shrink-0 items-center justify-center text-text-secondary transition-all duration-[var(--dur-fast)] hover:text-accent hover:scale-105 active:scale-[0.92] focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-accent md:h-12 md:w-12 lg:rounded-xl lg:hover:bg-surface-raised"
             >
               <Search className="h-5 w-5 transition-transform duration-[var(--dur-fast)]" aria-hidden="true" />
@@ -289,6 +289,8 @@ const StudentDesktopTopbar: React.FC<StudentDesktopTopbarProps> = ({ onMobileMen
           </div>
         </div>
       </header>
+
+      <StudentSearchDialog open={searchOpen} onOpenChange={setSearchOpen} />
     </>
   );
 };
