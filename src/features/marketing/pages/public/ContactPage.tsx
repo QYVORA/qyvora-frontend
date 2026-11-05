@@ -7,6 +7,7 @@ import PublicContainer from '@/shared/components/layout/PublicContainer';
 import Button from '@/shared/components/ui/Button';
 import Input from '@/shared/components/ui/Input';
 import { Card } from '@/shared/components/ui/Card';
+import CallRequestForm from '@/features/marketing/components/CallRequestForm';
 import { SITE_CONFIG } from '@/features/marketing/content/siteConfig';
 import api from '@/core/services/api';
 
@@ -77,6 +78,11 @@ const ContactPage: React.FC = () => {
           kicker={"QYVORA · Contact"}
           title={"Contact the Desk"}
           description={"Establishing a secure channel for inquiries, partnerships, and operational support."}
+          actions={
+            <Button to="/faq" variant="secondary" size="lg">
+              {"Browse the FAQ"}
+            </Button>
+          }
         />
 
         <div className="mt-10 grid gap-4 lg:grid-cols-2">
@@ -221,6 +227,23 @@ const ContactPage: React.FC = () => {
                 </Button>
               </form>
             )}
+          </Card>
+        </div>
+
+        <div id="book-a-call" className="mt-4 scroll-mt-24 md:mt-5">
+          <Card className="flex flex-col gap-5 p-5 md:p-8">
+            <div className="flex flex-col gap-1">
+              <p className="type-label uppercase tracking-[0.12em] text-accent">
+                {"Request a call"}
+              </p>
+              <h2 className="text-xl font-black uppercase tracking-tight text-text-primary md:text-2xl">
+                {"Book a conversation with the desk"}
+              </h2>
+              <p className="type-body-sm max-w-2xl text-text-secondary">
+                {"Tell us what you want to discuss and a preferred date and time. We will reply by email to confirm a slot. For programme questions, the FAQ may answer it faster."}
+              </p>
+            </div>
+            <CallRequestForm />
           </Card>
         </div>
       </PublicContainer>
