@@ -16,10 +16,15 @@
 @theme {
   --font-mono: 'JetBrains Mono', monospace;
   --font-display: 'Space Grotesk', sans-serif;
-  --ease-smooth: cubic-bezier(0.22, 1, 0.36, 1);
-  --dur-fast: 160ms;
-  --dur-base: 260ms;
-  --dur-slow: 420ms;
+  
+  /* ── Motion System ── */
+  --ease-smooth: cubic-bezier(0.22, 1, 0.36, 1);      /* Standard ease-out for most transitions */
+  --ease-spring: cubic-bezier(0.16, 1, 0.3, 1);       /* Bouncy ease-out for entrances */
+  --ease-in: cubic-bezier(0.4, 0, 1, 1);              /* Ease-in for exits */
+  --dur-instant: 120ms;                                /* Press/active feedback */
+  --dur-fast: 160ms;                                   /* Hover, focus states */
+  --dur-base: 260ms;                                   /* State changes, color transitions */
+  --dur-slow: 420ms;                                   /* Panels, drawers, complex animations */
 
   /* ── Micro type scale (replaces the text-xs/[9px]/[8px]/[7px] drift) ── */
   --text-kicker:    10px;
@@ -518,6 +523,8 @@
    shake-x  — horizontal shake for wrong input (password, flag, form errors)
    pulse-error — border pulse for invalid fields
    success-pop — scale pop for correct answers / successful actions
+   success-flash — brief green flash for successful async operations
+   slide-down/up — dropdown and panel animations
 ───────────────────────────────────────────────────────────────────────────── */
 @keyframes shake-x {
   0%, 100% { transform: translateX(0); }
@@ -539,6 +546,21 @@
   40%  { transform: scale(1.04); }
   70%  { transform: scale(0.97); }
   100% { transform: scale(1); }
+}
+
+@keyframes success-flash {
+  0%, 100% { border-color: var(--color-accent); box-shadow: 0 0 0 0 transparent; }
+  50%       { border-color: var(--color-accent); box-shadow: 0 0 0 4px color-mix(in srgb, var(--color-accent) 20%, transparent); }
+}
+
+@keyframes slide-down {
+  from { opacity: 0; transform: translateY(-8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slide-up {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
 @keyframes glow-error {
@@ -618,6 +640,22 @@
 
 .animate-shake-x {
   animation: shake-x 0.55s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+}
+
+.animate-success-pop {
+  animation: success-pop 0.4s var(--ease-spring) both;
+}
+
+.animate-success-flash {
+  animation: success-flash 0.6s ease-in-out both;
+}
+
+.animate-slide-down {
+  animation: slide-down 0.2s var(--ease-spring) both;
+}
+
+.animate-slide-up {
+  animation: slide-up 0.2s var(--ease-spring) both;
 }
 
 /* Input error state — red border + glow */
