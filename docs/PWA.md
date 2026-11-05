@@ -113,6 +113,22 @@ not render at all.
 On acceptance the service calls `navigator.storage.persist()` (best-effort) so
 the offline shell survives eviction.
 
+### Manual install points
+
+`shared/components/ui/PwaInstallButton.tsx` gives visitors an explicit way to
+install without waiting for the passive `InstallBanner`. It reuses
+`useInstallPrompt()` and mirrors the banner's states:
+
+- hidden when the app is already running standalone
+- native prompt on Chromium (`canPrompt`)
+- Share → Add to Home Screen instructions on iOS Safari
+- brief `Installed!` confirmation, or a dimmed "Maybe later" after dismissal
+
+It is mounted in three places on the public site: the landing hero next to the
+primary CTAs (desktop), the footer brand column (all breakpoints), and the
+mobile account drawer in `PublicNavigation`. Keep new entry points on this
+component — do not call `promptInstall()` directly from pages.
+
 ## PWA status host
 
 `PwaStatus` is mounted once per shell (`PublicShell` and `AppShell`) and stacks

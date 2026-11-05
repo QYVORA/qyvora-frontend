@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Logo } from '@/shared/components/brand';
 import { IconArrowRight, IconMail } from '@/shared/components/icons';
+import PwaInstallButton from '@/shared/components/ui/PwaInstallButton';
 import { SOCIAL_LINKS } from './socialLinks';
 
 interface FooterCol {
@@ -76,6 +77,12 @@ const PublicFooter: React.FC = React.memo(() => {
               >
                 {"Join the platform"} <IconArrowRight size={12} aria-hidden="true" />
               </Link>
+              <PwaInstallButton 
+                variant="ghost" 
+                size="sm"
+                label="Download App"
+                className="mt-1 w-fit justify-start"
+              />
               <div className="mt-2 flex flex-wrap gap-2">
                 {SOCIAL_LINKS.map(({ key, label, href, Icon }) => (
                   <a

@@ -8,6 +8,7 @@ import { useScrollLock } from '@/core/hooks/useScrollLock';
 import { useReducedMotion } from '@/shared/hooks/useReducedMotion';
 import Button from '@/shared/components/ui/Button';
 import IconButton from '@/shared/components/ui/IconButton';
+import PwaInstallButton from '@/shared/components/ui/PwaInstallButton';
 
 interface NavLinkDef {
   key: string;
@@ -210,6 +211,12 @@ const PublicNavigation: React.FC = React.memo(() => {
                     </Button>
                   </>
                 )}
+                <PwaInstallButton 
+                  variant="ghost" 
+                  size="md"
+                  label="Install App"
+                  className="w-full"
+                />
               </nav>
             </motion.div>
           </>

@@ -1,5 +1,6 @@
 import React from 'react';
 import Button from '@/shared/components/ui/Button';
+import PwaInstallButton from '@/shared/components/ui/PwaInstallButton';
 import TypewriterText from '@/shared/components/TypewriterText';
 import type { BackendStats } from '@/features/marketing/components/landing/types';
 import heroDesktopBg from '@/assets/backgrounds/hero-desktop.webp';
@@ -75,6 +76,12 @@ const HeroBlock: React.FC<HeroBlockProps> = ({ stats }) => {
             <Button to="/learn" variant="ghost" size="lg">
               {"Explore learning"}
             </Button>
+            <PwaInstallButton 
+              variant="secondary" 
+              size="lg"
+              label="Install App"
+              className="hidden sm:flex"
+            />
           </div>
 
           {trained > 0 && (
