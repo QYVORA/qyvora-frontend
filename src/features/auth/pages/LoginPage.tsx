@@ -15,7 +15,7 @@ import AuthForm, { type AuthMode } from '../components/AuthForm';
 
 const LoginPage: React.FC = () => {
   const { login, user: sessionUser, loading: sessionLoading } = useAuth();
-  const { addToast } = useToast();
+  const { addToast, clearToasts } = useToast();
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -55,8 +55,9 @@ const LoginPage: React.FC = () => {
     };
     const message = messages[errorCode] || 'GitHub sign-in could not be completed. Please try again.';
     setFormMessage(message);
+    clearToasts();
     addToast(message, 'error');
-  }, [location.search, addToast]);
+  }, [location.search, addToast, clearToasts]);
 
   const handleSuggestionSelect = useCallback((handle: string) => {
     setSelectedHandle(handle);
@@ -88,12 +89,11 @@ const LoginPage: React.FC = () => {
       await login({ email, password, isAdminRoute: isAdminLoginRoute });
 
       // login() already calls /auth/me and sets user state internally.
-      // Determine redirect based on isAdminRoute to avoid a redundant API call.
-      //
-      // No success toast: the destination screen already confirms the session
-      // (dashboard chrome + onboarding modal), and a toast fired on this tick is
-      // immediately covered by the onboarding dialog — it reads as late and
-      // redundant. Errors still toast, since the form stays on screen.
+      // Clear any stale logout notice, then confirm the new session with the
+      // same toast treatment used across the app.
+      clearToasts();
+      addToast('Signed in successfully.', 'success');
+
       if (isAdminLoginRoute) {
         navigate(`${ADMIN_PATH}/dashboard`);
         return;
@@ -108,6 +108,7 @@ const LoginPage: React.FC = () => {
       const msg = sanitizeError(err, 'login');
       setFormMessage(msg);
       setShakePassword(true);
+      clearToasts();
       addToast(msg, 'error');
       setIsLoading(false);
     }
@@ -139,11 +140,14 @@ const LoginPage: React.FC = () => {
       });
 
       await login({ email, password });
+      clearToasts();
+      addToast('Account created successfully.', 'success');
       setFormMessage('Account created successfully.');
       navigate('/dashboard');
     } catch (err: any) {
       const msg = sanitizeError(err, 'register');
       setFormMessage(msg);
+      clearToasts();
       addToast(msg, 'error');
     } finally {
       setIsLoading(false);

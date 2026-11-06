@@ -15,7 +15,7 @@ import { sanitizeReturnPath } from '../oauth';
  */
 const AuthCallbackPage: React.FC = () => {
   const { refreshMe } = useAuth();
-  const { addToast } = useToast();
+  const { addToast, clearToasts } = useToast();
   const navigate = useNavigate();
   const [params] = useSearchParams();
   const [failed, setFailed] = useState(false);
@@ -30,13 +30,16 @@ const AuthCallbackPage: React.FC = () => {
     (async () => {
       try {
         await refreshMe();
+        clearToasts();
+        addToast('Signed in successfully.', 'success');
         navigate(redirect, { replace: true });
       } catch {
         setFailed(true);
+        clearToasts();
         addToast('Could not complete GitHub sign-in. Please try again.', 'error');
       }
     })();
-  }, [params, refreshMe, navigate, addToast]);
+  }, [params, refreshMe, navigate, addToast, clearToasts]);
 
   return (
     <AuthFormLayout>

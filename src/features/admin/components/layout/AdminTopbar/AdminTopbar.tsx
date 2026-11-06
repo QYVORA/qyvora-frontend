@@ -15,7 +15,7 @@ const NOTIF_PREVIEW_LIMIT = 6;
 
 const AdminTopbar = ({ railCollapsed = false }: { railCollapsed?: boolean }) => {
   const { user, logout } = useAuth();
-  const { addToast } = useToast();
+  const { addToast, clearToasts } = useToast();
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -82,7 +82,8 @@ const AdminTopbar = ({ railCollapsed = false }: { railCollapsed?: boolean }) => 
 
   const handleLogout = async () => {
     await logout();
-    addToast("Session terminated", 'info');
+    clearToasts();
+    addToast('Signed out successfully.', 'info');
     navigate(ADMIN_PATH);
   };
 

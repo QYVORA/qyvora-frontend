@@ -22,7 +22,7 @@ interface AdminSidebarProps {
  */
 const AdminSidebar = ({ collapsed = false, onToggleCollapse }: AdminSidebarProps) => {
   const { logout } = useAuth();
-  const { addToast } = useToast();
+  const { addToast, clearToasts } = useToast();
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -30,7 +30,8 @@ const AdminSidebar = ({ collapsed = false, onToggleCollapse }: AdminSidebarProps
 
   const handleLogout = async () => {
     await logout();
-    addToast("Session terminated", 'info');
+    clearToasts();
+    addToast('Signed out successfully.', 'info');
     navigate(ADMIN_PATH);
   };
 

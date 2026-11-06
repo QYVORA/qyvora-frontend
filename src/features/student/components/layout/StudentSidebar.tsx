@@ -75,7 +75,7 @@ const StudentSidebar: React.FC<{ collapsed?: boolean; onToggleCollapse?: () => v
   onToggleCollapse,
 }) => {
   const { logout } = useAuth();
-  const { addToast } = useToast();
+  const { addToast, clearToasts } = useToast();
   const navigate = useNavigate();
   const location = useLocation();
   const [unread, setUnread] = useState(0);
@@ -104,7 +104,8 @@ const StudentSidebar: React.FC<{ collapsed?: boolean; onToggleCollapse?: () => v
 
   const handleLogout = async () => {
     await logout();
-    addToast("Security session terminated.", 'info');
+    clearToasts();
+    addToast('Signed out successfully.', 'info');
     navigate('/login');
   };
 

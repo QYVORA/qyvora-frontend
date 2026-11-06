@@ -119,7 +119,7 @@ const StudentSidebarRedesigned: React.FC<StudentSidebarRedesignedProps> = ({
   onMobileClose,
 }) => {
   const { user, logout } = useAuth();
-  const { addToast } = useToast();
+  const { addToast, clearToasts } = useToast();
   const navigate = useNavigate();
   const location = useLocation();
   const [unread, setUnread] = useState(0);
@@ -180,7 +180,8 @@ const StudentSidebarRedesigned: React.FC<StudentSidebarRedesignedProps> = ({
 
   const handleLogout = async () => {
     await logout();
-    addToast("Security session terminated.", 'info');
+    clearToasts();
+    addToast('Signed out successfully.', 'info');
     navigate('/login');
     onMobileClose?.();
   };
