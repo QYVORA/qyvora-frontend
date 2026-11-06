@@ -3,12 +3,13 @@ import { render, screen, act, fireEvent, waitFor } from '@testing-library/react'
 import { ToastProvider, useToast } from '../ToastContext';
 
 function Consumer() {
-  const { addToast } = useToast();
+  const { addToast, clearToasts } = useToast();
   return (
     <div>
       <button onClick={() => addToast('It worked', 'success')}>Success</button>
       <button onClick={() => addToast('Oh no', 'error')}>Error</button>
       <button onClick={() => addToast('FYI', 'info')}>Info</button>
+      <button onClick={clearToasts}>Clear</button>
     </div>
   );
 }
@@ -60,11 +61,35 @@ describe('ToastContext', () => {
     expect(screen.getByText('It worked')).toBeInTheDocument();
 
     await act(async () => {
-      fireEvent.click(screen.getByLabelText('Dismiss'));
+      fireEvent.click(screen.getByLabelText('Dismiss notification'));
     });
 
     await waitFor(() => {
       expect(screen.queryByText('It worked')).not.toBeInTheDocument();
+    });
+  });
+
+  it('clearToasts removes every visible toast', async () => {
+    render(
+      <ToastProvider>
+        <Consumer />
+      </ToastProvider>,
+    );
+
+    await act(async () => {
+      fireEvent.click(screen.getByText('Success'));
+      fireEvent.click(screen.getByText('Error'));
+    });
+    expect(screen.getByText('It worked')).toBeInTheDocument();
+    expect(screen.getByText('Oh no')).toBeInTheDocument();
+
+    await act(async () => {
+      fireEvent.click(screen.getByText('Clear'));
+    });
+
+    await waitFor(() => {
+      expect(screen.queryByText('It worked')).not.toBeInTheDocument();
+      expect(screen.queryByText('Oh no')).not.toBeInTheDocument();
     });
   });
 

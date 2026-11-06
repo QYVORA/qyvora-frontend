@@ -5,19 +5,31 @@
  * Any component can call `addToast()` to push a temporary message into the UI
  * without needing to manage its own state or pass props down the tree.
  *
- * Toasts auto-dismiss after 5 seconds and can also be manually closed.
- * Animations are handled by Framer Motion's AnimatePresence.
+ * Toasts auto-dismiss after a consistent 5 seconds and can also be manually
+ * closed. Animations are handled by Framer Motion's AnimatePresence.
  *
  * Usage: wrap the app root with <ToastProvider> and call addToast() from
  * any descendant via the `useToast()` hook.
  */
 
-import React, { createContext, useCallback, useContext, useMemo, useState } from 'react';
-import { AnimatePresence, motion } from 'motion/react';
+import React, {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
+import { AnimatePresence, motion, useReducedMotion } from 'motion/react';
 import { Info, TriangleAlert } from 'lucide-react';
 import { IconShield, IconCheck, IconX } from '@/shared/components/icons';
 
 // ─── Types ────────────────────────────────────────────────────────────────────
+
+type ToastType = 'success' | 'error' | 'info' | 'warning';
+
+const TOAST_DURATION_MS = 5000;
 
 /**
  * A single notification entry.
@@ -27,7 +39,7 @@ import { IconShield, IconCheck, IconX } from '@/shared/components/icons';
 interface Toast {
   id: string;
   message: string;
-  type: 'success' | 'error' | 'info' | 'warning';
+  type: ToastType;
 }
 
 /** Public API exposed to consumers via useToast(). */
@@ -37,8 +49,36 @@ interface ToastContextType {
    * @param message - Human-readable message to display.
    * @param type    - Visual severity: 'success' | 'error' | 'info' | 'warning'
    */
-  addToast: (message: string, type: Toast['type']) => void;
+  addToast: (message: string, type: ToastType) => void;
+  /** Remove every visible toast immediately. Useful across auth transitions. */
+  clearToasts: () => void;
 }
+
+const TOAST_META: Record<
+  ToastType,
+  { icon: React.ReactNode; iconClassName: string; barClassName: string }
+> = {
+  success: {
+    icon: <IconCheck size={18} aria-hidden="true" />,
+    iconClassName: 'border-semantic-success/25 bg-semantic-success/10 text-semantic-success',
+    barClassName: 'bg-semantic-success',
+  },
+  error: {
+    icon: <IconShield size={18} aria-hidden="true" />,
+    iconClassName: 'border-semantic-danger/25 bg-semantic-danger/10 text-semantic-danger',
+    barClassName: 'bg-semantic-danger',
+  },
+  warning: {
+    icon: <TriangleAlert size={18} aria-hidden="true" />,
+    iconClassName: 'border-semantic-warning/25 bg-semantic-warning/10 text-semantic-warning',
+    barClassName: 'bg-semantic-warning',
+  },
+  info: {
+    icon: <Info size={18} aria-hidden="true" />,
+    iconClassName: 'border-semantic-info/25 bg-semantic-info/10 text-semantic-info',
+    barClassName: 'bg-semantic-info',
+  },
+};
 
 // ─── Context creation ─────────────────────────────────────────────────────────
 
@@ -63,6 +103,30 @@ export const ToastProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   // `toasts` holds all currently visible notifications.
   // Each entry is removed either after 5 s or when the user clicks X.
   const [toasts, setToasts] = useState<Toast[]>([]);
+  const timersRef = useRef<Map<string, ReturnType<typeof setTimeout>>>(new Map());
+  const prefersReducedMotion = useReducedMotion();
+
+  const clearTimer = useCallback((id: string) => {
+    const timer = timersRef.current.get(id);
+    if (timer !== undefined) {
+      clearTimeout(timer);
+      timersRef.current.delete(id);
+    }
+  }, []);
+
+  const removeToast = useCallback(
+    (id: string) => {
+      clearTimer(id);
+      setToasts((prev) => prev.filter((toast) => toast.id !== id));
+    },
+    [clearTimer],
+  );
+
+  const clearToasts = useCallback(() => {
+    timersRef.current.forEach((timer) => clearTimeout(timer));
+    timersRef.current.clear();
+    setToasts([]);
+  }, []);
 
   /**
    * Adds a new toast to the stack and schedules its automatic removal.
@@ -71,18 +135,34 @@ export const ToastProvider: React.FC<{ children: React.ReactNode }> = ({ childre
    * This is sufficient for a short-lived UI list — cryptographic uniqueness
    * is not required here since IDs are never persisted or used for security.
    *
-   * The timeout captures the `id` constant so it removes only its own toast,
-   * even if other toasts have been added or removed in the meantime.
+   * All toast types use the same duration so auth and product feedback behave
+   * predictably. Timers are tracked and cleared on manual dismiss/unmount so a
+   * stale logout notice cannot outlive its route or fire on a later screen.
    */
-  const addToast = useCallback((message: string, type: Toast['type']) => {
+  const addToast = useCallback((message: string, type: ToastType) => {
     const id = Math.random().toString(36).slice(2, 11);
     setToasts((prev) => [...prev, { id, message, type }]);
-    setTimeout(() => {
-      setToasts((prev) => prev.filter((t) => t.id !== id));
-    }, 5000);
+
+    const timer = setTimeout(() => {
+      timersRef.current.delete(id);
+      setToasts((prev) => prev.filter((toast) => toast.id !== id));
+    }, TOAST_DURATION_MS);
+
+    timersRef.current.set(id, timer);
   }, []);
 
-  const contextValue = useMemo(() => ({ addToast }), [addToast]);
+  useEffect(
+    () => () => {
+      timersRef.current.forEach((timer) => clearTimeout(timer));
+      timersRef.current.clear();
+    },
+    [],
+  );
+
+  const contextValue = useMemo(
+    () => ({ addToast, clearToasts }),
+    [addToast, clearToasts],
+  );
 
   return (
     <ToastContext.Provider value={contextValue}>
@@ -90,102 +170,74 @@ export const ToastProvider: React.FC<{ children: React.ReactNode }> = ({ childre
 
       {/*
         ── Toast container ────────────────────────────────────────────────────
-        Positioned fixed so it is always visible regardless of scroll position.
+        Fixed top-right so notifications stay clear of the mobile bottom nav and
+        never shift page layout. Width is capped on desktop and edge-safe on
+        mobile. aria-live="polite" queues announcements after current speech;
+        aria-atomic="true" re-reads the region as a unit.
 
-        Layout:
-        • Mobile: sits above the bottom navigation bar (bottom-[88px]),
-          spans full width with horizontal padding.
-        • Desktop (md+): anchored to the bottom-right corner, fixed width.
-
-        aria-live="polite" tells screen readers to announce new toasts after
-        the current speech finishes, appropriate for non-critical notifications.
-        aria-atomic="true" means the whole region is re-read as a unit when
-        updated, preventing partial announcements.
-
-        pointer-events-none on the wrapper prevents the invisible container
-        from blocking clicks on content beneath it; pointer-events-auto is
-        restored on each individual toast so they remain interactive.
+        pointer-events-none on the wrapper prevents the container from blocking
+        content beneath it; pointer-events-auto is restored per toast.
       */}
       <div
-        className="fixed top-20 right-4 md:top-24 md:right-8 z-[500] flex flex-col gap-3 pointer-events-none w-[calc(100vw-2rem)] sm:max-w-lg md:max-w-[32rem] overflow-hidden"
+        className="pointer-events-none fixed top-20 right-4 z-[500] flex w-[calc(100vw-2rem)] max-w-md flex-col gap-2.5 md:top-24 md:right-6"
         aria-live="polite"
         aria-atomic="true"
       >
         {/*
           AnimatePresence tracks toast mount/unmount and runs the exit animation
-          before actually removing the element from the DOM. Without it, React
-          would remove the element instantly and no exit animation would play.
+          before removing the element from the DOM.
         */}
         <AnimatePresence>
-          {toasts.map((toast) => (
-            <motion.div
-              key={toast.id}
-              // Enter: fade in, slide up slightly, scale from 95% to 100%
-              initial={{ opacity: 0, y: 12, scale: 0.95 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              // Exit: fade out, slide down slightly, scale back to 95%
-              exit={{ opacity: 0, y: 8, scale: 0.95 }}
-              transition={{ duration: 0.2 }}
-              className={`pointer-events-auto px-5 py-4 rounded-2xl bg-bg-card border shadow-2xl flex items-start gap-3.5 w-full ${
-                // Border colour changes to reflect severity at a glance
-                toast.type === 'success'
-                  ? 'border-accent/40'
-                  : toast.type === 'error'
-                  ? 'border-danger/40'
-                  : toast.type === 'warning'
-                  ? 'border-warning/40'
-                  : 'border-accent/40'
-              }`}
-              >
-              {/*
-                ── Severity icon ─────────────────────────────────────────────
-                Icon colour mirrors the border colour for visual consistency.
-                flex-none prevents the icon from shrinking on long messages.
-              */}
-              <div
-                className={`flex-none mt-0.5 ${
-                  toast.type === 'success'
-                    ? 'text-accent'
-                    : toast.type === 'error'
-                    ? 'text-danger'
-                    : toast.type === 'warning'
-                    ? 'text-warning'
-                    : 'text-info'
-                }`}
-              >
-                {toast.type === 'success' && <IconCheck size={20} />}
-                {toast.type === 'error' && <IconShield size={20} />}
-                {toast.type === 'warning' && <TriangleAlert className="w-5 h-5" />}
-                {toast.type === 'info' && <Info className="w-5 h-5" />}
-              </div>
+          {toasts.map((toast) => {
+            const meta = TOAST_META[toast.type];
 
-              {/*
-                ── Message text ───────────────────────────────────────────────
-                flex-1 allows the text to fill the remaining space between the
-                icon and the dismiss button. leading-snug tightens multi-line
-                messages without making single-line ones feel cramped.
-              */}
-              <p className="text-base text-text-primary flex-1 leading-snug">
-                {toast.message}
-              </p>
-
-              {/*
-                ── Dismiss button ─────────────────────────────────────────────
-                Manually removes this specific toast by filtering it out of state.
-                aria-label="Dismiss" gives screen-reader users a meaningful label
-                since the button contains only an icon.
-              */}
-              <button
-                onClick={() =>
-                  setToasts((prev) => prev.filter((t) => t.id !== toast.id))
+            return (
+              <motion.div
+                key={toast.id}
+                initial={
+                  prefersReducedMotion
+                    ? { opacity: 0 }
+                    : { opacity: 0, y: -8, scale: 0.98 }
                 }
-                className="flex-none text-text-muted hover:text-text-primary transition-colors mt-0.5"
-                aria-label="Dismiss"
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                exit={
+                  prefersReducedMotion
+                    ? { opacity: 0 }
+                    : { opacity: 0, y: -6, scale: 0.98 }
+                }
+                transition={{
+                  duration: prefersReducedMotion ? 0.12 : 0.22,
+                  ease: [0.22, 1, 0.36, 1],
+                }}
+                className="pointer-events-auto relative flex w-full items-start gap-3 overflow-hidden rounded-xl border border-border-subtle bg-surface-raised p-4 shadow-[var(--elevation-raised)]"
+                role={toast.type === 'error' ? 'alert' : 'status'}
               >
-                <IconX size={20} />
-              </button>
-            </motion.div>
-          ))}
+                <span
+                  className={`absolute inset-y-0 left-0 w-1 ${meta.barClassName}`}
+                  aria-hidden="true"
+                />
+
+                <div
+                  className={`mt-0.5 flex h-8 w-8 flex-none items-center justify-center rounded-lg border ${meta.iconClassName}`}
+                >
+                  {meta.icon}
+                </div>
+
+                <p className="min-w-0 flex-1 pt-0.5 font-sans text-sm font-medium leading-snug text-text-primary">
+                  {toast.message}
+                </p>
+
+                <button
+                  type="button"
+                  onClick={() => removeToast(toast.id)}
+                  className="-m-1 flex h-8 w-8 flex-none items-center justify-center rounded-lg text-text-tertiary transition-colors hover:bg-surface hover:text-text-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+                  aria-label="Dismiss notification"
+                >
+                  <IconX size={16} aria-hidden="true" />
+                </button>
+              </motion.div>
+            );
+          })}
         </AnimatePresence>
       </div>
     </ToastContext.Provider>
