@@ -460,7 +460,9 @@ const StudentSidebarRedesigned: React.FC<StudentSidebarRedesignedProps> = ({
           <button
             type="button"
             onClick={handleLogout}
-            className="flex min-h-[48px] w-full items-center gap-3 rounded-xl px-3 py-2 text-sm text-text-secondary transition-colors hover:bg-semantic-danger/10 hover:text-semantic-danger focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-accent"
+            title="Log out"
+            aria-label="Log out"
+            className="flex min-h-[48px] w-full items-center gap-3 rounded-xl border border-semantic-danger/25 bg-semantic-danger/10 px-3 py-2 text-sm font-bold text-semantic-danger transition-colors hover:bg-semantic-danger/15 focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-semantic-danger"
           >
             <LogOut className="h-[18px] w-[18px] shrink-0" aria-hidden="true" />
             <span>Log Out</span>

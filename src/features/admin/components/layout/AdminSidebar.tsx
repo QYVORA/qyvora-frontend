@@ -103,7 +103,9 @@ const AdminSidebar = ({ collapsed = false, onToggleCollapse }: AdminSidebarProps
         <button
           type="button"
           onClick={handleLogout}
-          className={`flex min-h-[48px] w-full items-center rounded-xl py-2 text-sm text-text-secondary transition-colors hover:bg-semantic-danger/5 hover:text-semantic-danger focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-accent ${
+          title="Log out"
+          aria-label="Log out"
+          className={`flex min-h-[48px] w-full items-center rounded-xl border border-semantic-danger/25 bg-semantic-danger/10 py-2 text-sm font-bold text-semantic-danger transition-colors hover:bg-semantic-danger/15 focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-semantic-danger ${
             collapsed ? 'justify-center px-0' : 'gap-3 px-3'
           }`}
         >

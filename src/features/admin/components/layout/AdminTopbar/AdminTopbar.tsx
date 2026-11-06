@@ -150,7 +150,8 @@ const AdminTopbar = ({ railCollapsed = false }: { railCollapsed?: boolean }) => 
             {/* Logout — desktop */}
             <button
               onClick={handleLogout}
-              className="hidden md:flex p-3 md:p-3.5 text-text-muted hover:text-semantic-danger transition-colors rounded-xl hover:bg-semantic-danger/5 active:scale-95"
+              className="hidden md:flex rounded-xl border border-semantic-danger/25 bg-semantic-danger/10 p-3 text-semantic-danger transition-colors hover:bg-semantic-danger/15 active:scale-95 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-semantic-danger md:p-3.5"
+              title="Log out"
               aria-label={"Log out"}
             >
               <LogOut className="w-6 h-6" />
