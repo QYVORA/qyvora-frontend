@@ -316,6 +316,13 @@
     contain: layout paint;
   }
 
+  /* Interactive topbars host absolutely-positioned hover/click menus that
+     intentionally extend below the bar. Paint containment would clip those
+     menus to the header box, so keep layout containment only. */
+  .chrome-fixed.chrome-fixed-overflow {
+    contain: layout;
+  }
+
   /* The rail's internal nav is its own scroll area: contain overscroll so it
      never chains into the page, and contain layout/paint so its scrolling
      never repaints the rest of the chrome. */

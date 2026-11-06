@@ -85,7 +85,7 @@ const StudentDesktopTopbar: React.FC<StudentDesktopTopbarProps> = ({ onMobileMen
         Skip to content
       </a>
 
-      <header className="chrome-fixed fixed top-0 inset-x-0 z-[100] border-b border-border-subtle bg-canvas pt-[env(safe-area-inset-top)]">
+      <header className="chrome-fixed chrome-fixed-overflow fixed top-0 inset-x-0 z-[100] border-b border-border-subtle bg-canvas pt-[env(safe-area-inset-top)]">
         <div className="flex h-20 items-center gap-3 px-3 md:h-24 md:gap-4 md:px-4 lg:gap-6 lg:px-6">
           {/* Mobile hamburger menu (hidden on desktop) */}
           <button
