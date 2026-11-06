@@ -1,11 +1,15 @@
 import { Unplug, Loader2 } from 'lucide-react';
-import React, { Children, useCallback, useEffect } from 'react';
-import type { ReactNode } from 'react';
+import React, { Children, cloneElement, isValidElement, useCallback, useEffect } from 'react';
+import type { ReactElement, ReactNode } from 'react';
 import { IconTerminal } from '@/shared/components/icons';
 import type { FocusedStepListItem } from '@/shared/components/learning/FocusedStepList';
 import LearningWorkspaceShell from '@/shared/components/learning/LearningWorkspaceShell';
-import type { LearningOutlineItem, WorkspaceStat } from '@/shared/components/learning/LearningWorkspaceShell';
+import type { WorkspaceStat } from '@/shared/components/learning/LearningWorkspaceShell';
+import Button from '@/shared/components/ui/Button';
 import LearningNav from '@/shared/components/learning/LearningNav';
+import { LearningTaskAccordion } from '@/shared/components/learning/LearningTaskAccordion';
+import type { LearningTask } from '@/shared/components/learning/LearningTaskAccordion';
+import { WalkthroughStep } from './WalkthroughStep';
 import { useReducedMotion } from '@/shared/hooks/useReducedMotion';
 import { scrollToStepId } from '@/shared/utils/scrollToStep';
 import { useLabConnection } from '@/features/student/hooks/useLabConnection';
@@ -78,10 +82,12 @@ export function WalkthroughLayout({
     onStepSelect?.(index);
     const target = stepList?.[index];
     if (!target) return;
-    scrollToStepId(
-      `${stepIdPrefix ?? 'step'}-${target.number}`,
-      prefersReducedMotion ? 'auto' : 'smooth',
-    );
+    window.requestAnimationFrame(() => {
+      scrollToStepId(
+        `${stepIdPrefix ?? 'step'}-${target.number}`,
+        prefersReducedMotion ? 'auto' : 'smooth',
+      );
+    });
   }, [onStepSelect, stepList, stepIdPrefix, prefersReducedMotion]);
 
   useEffect(() => {
@@ -110,6 +116,37 @@ export function WalkthroughLayout({
     headerStats.push({ label: "steps", value: `${completedCount}/${totalSteps}` });
   }
 
+  const childArray = Children.toArray(children);
+  const tasks: LearningTask[] = childArray.map((child, index) => {
+    const item = stepList?.[index];
+    const id = item
+      ? `${stepIdPrefix ?? 'step'}-${item.number}`
+      : `${stepIdPrefix ?? 'step'}-${index + 1}`;
+    const content =
+      isValidElement(child) && child.type === WalkthroughStep
+        ? cloneElement(child as ReactElement<{ hideHeader?: boolean }>, { hideHeader: true })
+        : child;
+
+    return {
+      id,
+      title: item?.title ?? `Task ${index + 1}`,
+      description: item?.isCompleted ? 'Completed' : item?.isActive ? 'Current task' : undefined,
+      completed: item?.isCompleted,
+      locked: item?.isLocked,
+      content,
+    };
+  });
+  const activeTaskId =
+    activeStepIndex !== undefined ? tasks[activeStepIndex]?.id : undefined;
+  const nextTaskIndex = stepList?.findIndex((item) => !item.isCompleted && !item.isLocked) ?? -1;
+  const continueIndex = nextTaskIndex >= 0 ? nextTaskIndex : 0;
+  const continueAction =
+    stepList && stepList.length > 0 && onStepSelect ? (
+      <Button variant="secondary" onClick={() => handleStepSelect(continueIndex)}>
+        {completedCount > 0 ? (allDone ? 'Review lab' : 'Continue lab') : 'Start lab'}
+      </Button>
+    ) : null;
+
   return (
     <div className="w-full bg-canvas min-h-dvh">
       <LearningWorkspaceShell
@@ -119,11 +156,20 @@ export function WalkthroughLayout({
         onBack={onBack}
         backLabel={backLabel}
         stats={headerStats}
+        progress={
+          totalSteps > 0
+            ? {
+                value: Math.round((completedCount / totalSteps) * 100),
+                label: `${completedCount}/${totalSteps} tasks`,
+              }
+            : undefined
+        }
         actions={
-          (headerMetadata || headerActions) ? (
+          (headerMetadata || headerActions || continueAction) ? (
             <div className="flex flex-wrap items-center gap-2">
               {headerMetadata}
               {headerActions}
+              {continueAction}
             </div>
           ) : undefined
         }
@@ -170,18 +216,15 @@ export function WalkthroughLayout({
           </div>
         )}
 
-        {/* Steps — every section stays expanded on the page. */}
-        <div className="space-y-12 md:space-y-16">
-          {Children.toArray(children).map((child, index) => {
-            const item = stepList?.[index];
-            const id = item ? `${stepIdPrefix ?? 'step'}-${item.number}` : undefined;
-            return (
-              <div key={index} id={id} className="scroll-mt-20 md:scroll-mt-24">
-                {child}
-              </div>
-            );
-          })}
-        </div>
+        {/* Tasks — one accordion item per step, current task open. */}
+        <LearningTaskAccordion
+          tasks={tasks}
+          activeId={activeTaskId}
+          onActiveChange={(id) => {
+            const index = tasks.findIndex((task) => task.id === id);
+            if (index >= 0) handleStepSelect(index);
+          }}
+        />
 
         {/* Navigation */}
         {stepList && stepList.length > 0 && activeStepIndex !== undefined && onStepSelect && (
@@ -210,32 +253,8 @@ export function WalkthroughLayout({
           />
         )}
 
-        {/* Progress */}
-        {progressContent || (
-          <div className="rounded-xl border border-border-subtle bg-surface px-4 py-4 md:px-5 md:py-5">
-            <div className="mb-3 flex items-center justify-between gap-4">
-              <span className="type-meta font-black uppercase tracking-widest text-text-tertiary">
-                {"Progress"}
-              </span>
-              <span className="text-sm font-bold text-text-secondary">
-                {`${completedCount}/${totalSteps} steps`}
-              </span>
-            </div>
-            <div
-              className="h-2 overflow-hidden rounded-full bg-surface-raised"
-              role="progressbar"
-              aria-valuenow={totalSteps > 0 ? Math.round((completedCount / totalSteps) * 100) : 0}
-              aria-valuemin={0}
-              aria-valuemax={100}
-              aria-label={`${completedCount}/${totalSteps} steps complete`}
-            >
-              <div
-                className="h-full bg-accent transition-[width] duration-700 ease-out rounded-full"
-                style={{ width: `${totalSteps > 0 ? (completedCount / totalSteps) * 100 : 0}%` }}
-              />
-            </div>
-          </div>
-        )}
+        {/* Optional page-specific progress detail; the hero owns the main bar. */}
+        {progressContent}
 
         {allDone && (
           <div className="rounded-xl border border-accent/20 bg-accent/5 px-6 py-5 text-center">

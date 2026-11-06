@@ -11,6 +11,7 @@ interface Props {
   roomId: string;
   isActive: boolean;
   isViewed: boolean;
+  hideHeader?: boolean;
 }
 
 const StepCard: React.FC<Props> = ({
@@ -20,6 +21,7 @@ const StepCard: React.FC<Props> = ({
   roomId,
   isActive,
   isViewed,
+  hideHeader = false,
 }) => {
   const blocks = useMemo<LearningBlock[]>(() => {
     const baseId = `bootcamp-${phaseId}-${roomId}-${stepNum}`;
@@ -39,6 +41,7 @@ const StepCard: React.FC<Props> = ({
   return (
     <StepRenderer
       stepNumber={stepNum}
+      hideHeader={hideHeader}
       title={step.title}
       isActive={isActive}
       isCompleted={isViewed && !isActive}

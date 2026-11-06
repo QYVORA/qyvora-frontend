@@ -76,7 +76,7 @@ function scrolledIds(): string[] {
   return spy.mock.instances.map((node) => (node as Element)?.id).filter(Boolean);
 }
 
-describe('WalkthroughLayout continuous rendering', () => {
+describe('WalkthroughLayout task accordion', () => {
   beforeEach(() => {
     vi.clearAllMocks();
     Element.prototype.scrollIntoView = vi.fn();
@@ -92,20 +92,20 @@ describe('WalkthroughLayout continuous rendering', () => {
     })) as unknown as typeof window.matchMedia;
   });
 
-  it('renders every step on the page, not only the active one', () => {
+  it('renders only the active task content on first paint', () => {
     renderWalkthrough(<StatefulHarness />);
-    for (const title of STEP_TITLES) {
-      expect(screen.getByText(`${title} content`)).toBeInTheDocument();
+    expect(screen.getByText('Mission Briefing content')).toBeInTheDocument();
+    for (const title of STEP_TITLES.slice(1)) {
+      expect(screen.queryByText(`${title} content`)).not.toBeInTheDocument();
     }
   });
 
-  it('gives every step a stable scroll-target id', () => {
+  it('gives every task a stable scroll-target id', () => {
     renderWalkthrough(<StatefulHarness />);
     for (let i = 0; i < STEP_TITLES.length; i += 1) {
       const section = document.getElementById(`ws-step-${i + 1}`);
       expect(section).toBeInTheDocument();
-      expect(section?.className).toContain('scroll-mt-20');
-      expect(section?.className).toContain('md:scroll-mt-24');
+      expect(section?.className).toContain('scroll-mt-24');
     }
   });
 
@@ -121,15 +121,26 @@ describe('WalkthroughLayout continuous rendering', () => {
     }
   });
 
-  it('scrolls to the next step anchor without collapsing the current step', async () => {
+  it('opens the next task and closes the current one', async () => {
     const user = userEvent.setup();
     renderWalkthrough(<StatefulHarness />);
 
     await user.click(screen.getByRole('button', { name: /next/i }));
 
     await waitFor(() => expect(scrolledIds()).toContain('ws-step-2'));
-    expect(screen.getByText('Mission Briefing content')).toBeInTheDocument();
     expect(screen.getByText('Enumeration content')).toBeInTheDocument();
+    await waitFor(() => expect(screen.queryByText('Mission Briefing content')).not.toBeInTheDocument());
+  });
+
+  it('opens a task when its accordion header is clicked', async () => {
+    const user = userEvent.setup();
+    renderWalkthrough(<StatefulHarness />);
+
+    const header = screen.getByRole('button', { name: /Exploitation/i });
+    await user.click(header);
+
+    await waitFor(() => expect(screen.getByText('Exploitation content')).toBeInTheDocument());
+    expect(header).toHaveAttribute('aria-expanded', 'true');
   });
 
   it('scrolls back to the previous step anchor', async () => {

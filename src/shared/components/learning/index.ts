@@ -8,6 +8,8 @@ export { default as LabPage } from './LabPage';
 export type { LabPageProps } from './LabPage';
 
 export { default as LearningAccordion } from './LearningAccordion';
+export { LearningTaskAccordion, default as LearningTaskAccordionComponent } from './LearningTaskAccordion';
+export type { LearningTask, LearningTaskAccordionProps } from './LearningTaskAccordion';
 export { default as StepNumberHeader } from './StepNumberHeader';
 
 export { default as LearningCard, LearningCard as LearningCardComponent, DifficultyBadge } from './LearningCard';

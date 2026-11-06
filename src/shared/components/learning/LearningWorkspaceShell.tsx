@@ -1,18 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
+import { Link } from 'react-router-dom';
 import { ArrowLeft } from 'lucide-react';
 import Button from '@/shared/components/ui/Button';
-import { cn } from '@/shared/utils/cn';
-import { LearningPathDiagram } from './LearningPathDiagram';
 
 export interface WorkspaceStat {
   label: React.ReactNode;
   value: React.ReactNode;
   accent?: boolean;
-}
-
-export interface LearningOutlineItem {
-  id: string;
-  label: React.ReactNode;
 }
 
 interface WorkspaceProgress {
@@ -27,86 +21,71 @@ interface LearningWorkspaceShellProps {
   icon?: React.ReactNode;
   title: React.ReactNode;
   description?: React.ReactNode;
-  /** Router back destination (or use `onBack` for a callback). */
+  /** Hero breadcrumb; defaults to a link back to `backTo`. */
+  breadcrumb?: React.ReactNode;
+  /** Router back destination used by the default breadcrumb. */
   backTo?: string;
   backLabel?: React.ReactNode;
   /** Callback back link (for non-route exits, e.g. exiting a lab scenario). */
   onBack?: () => void;
-  /** Factual metadata (rooms, time, CP…) shown under the header. */
+  /** Factual metadata (difficulty, time, CP…) shown under the header. */
   stats?: WorkspaceStat[];
   progress?: WorkspaceProgress;
-  /** Right-aligned contextual action slot (connections, status chips). */
+  /** Right-aligned primary/contextual action slot. */
   actions?: React.ReactNode;
-  /** Sticky in-page section navigation for continuous learning pages. */
-  outline?: LearningOutlineItem[];
   children?: React.ReactNode;
 }
 
 /**
- * LearningWorkspaceShell — the calm chrome for course lesson, bootcamp room
- * and lab workspaces. One title, factual stats, optional progress, then
- * full-width step content. Exit navigation belongs to the topbar BackButton
- * (this shell no longer renders its own route-based back link); an `onBack`
- * callback is kept for scenarios that need a non-route exit. Step navigation
- * stays inside the page, not in the layout; floating walkthrough toolbars were
- * removed — the sidebar rail is the single dashboard navigation.
+ * LearningWorkspaceShell — shared learning hero and content column.
+ *
+ * The shell deliberately has no learning sidebar, outline rail or floating
+ * step navigation. The dashboard topbar is the only global navigation; tasks
+ * live in one centered column so courses, bootcamp rooms and labs read as the
+ * same product surface.
  */
 const LearningWorkspaceShell: React.FC<LearningWorkspaceShellProps> = ({
   kicker,
   icon,
   title,
   description,
-  onBack,
+  breadcrumb,
+  backTo,
   backLabel,
+  onBack,
   stats,
   progress,
   actions,
-  outline,
   children,
 }) => {
-  const outlineItems = outline ?? [];
-  const outlineIdsKey = outlineItems.map((item) => item.id).join('|');
-  const [activeOutlineId, setActiveOutlineId] = useState('');
-
-  useEffect(() => {
-    const ids = outlineIdsKey ? outlineIdsKey.split('|') : [];
-    if (ids.length === 0) {
-      setActiveOutlineId('');
-      return;
-    }
-
-    setActiveOutlineId((current) => (ids.includes(current) ? current : ids[0]));
-
-    if (typeof IntersectionObserver === 'undefined') return;
-    const sections = ids
-      .map((id) => document.getElementById(id))
-      .filter((section): section is HTMLElement => Boolean(section));
-    if (sections.length === 0) return;
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const visible = entries
-          .filter((entry) => entry.isIntersecting)
-          .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
-        if (visible[0]) setActiveOutlineId(visible[0].target.id);
-      },
-      { rootMargin: '-12% 0px -68% 0px', threshold: [0, 1] },
-    );
-
-    sections.forEach((section) => observer.observe(section));
-    return () => observer.disconnect();
-  }, [outlineIdsKey]);
+  const defaultBreadcrumb =
+    backTo && backLabel ? (
+      <Link
+        to={backTo}
+        className="inline-flex items-center gap-1.5 text-sm font-semibold text-text-tertiary transition-colors duration-150 hover:text-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+      >
+        <ArrowLeft className="h-3.5 w-3.5" aria-hidden="true" />
+        {backLabel}
+      </Link>
+    ) : null;
 
   return (
     <div className="min-h-dvh w-full bg-canvas">
-      <div className="w-full space-y-8 px-3 pb-16 pt-5 md:px-4 md:pb-20 md:pt-8 lg:px-6 lg:pb-24">
+      <div className="mx-auto w-full max-w-[1120px] px-4 pb-16 pt-6 sm:px-6 md:pb-20 md:pt-8 lg:px-8 lg:pb-24">
         <header className="flex flex-col gap-6">
-          {onBack && (
-            <Button variant="ghost" onClick={onBack} className="-ml-2 w-fit">
-              <ArrowLeft className="h-4 w-4" aria-hidden="true" />
-              {backLabel ?? 'Back'}
-            </Button>
+          {(breadcrumb || defaultBreadcrumb || onBack) && (
+            <div className="flex flex-wrap items-center gap-3">
+              {onBack ? (
+                <Button variant="ghost" onClick={onBack} className="-ml-2 w-fit">
+                  <ArrowLeft className="h-4 w-4" aria-hidden="true" />
+                  {backLabel ?? 'Back'}
+                </Button>
+              ) : (
+                (breadcrumb ?? defaultBreadcrumb)
+              )}
+            </div>
           )}
+
           <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
             <div className="max-w-2xl">
               {kicker && (
@@ -118,13 +97,13 @@ const LearningWorkspaceShell: React.FC<LearningWorkspaceShellProps> = ({
                     {icon}
                   </span>
                 )}
-                {/* Same scale as PageHeader so a learning workspace and a listing
-                    page read as one title system across Courses / Labs / Bootcamps. */}
                 <h1 className="text-3xl font-black uppercase tracking-tight text-text-primary md:text-4xl lg:text-5xl">
                   {title}
                 </h1>
               </div>
-              {description && <p className="mt-3 max-w-2xl text-lg text-text-secondary md:text-xl">{description}</p>}
+              {description && (
+                <p className="mt-3 max-w-2xl text-lg text-text-secondary md:text-xl">{description}</p>
+              )}
             </div>
             {actions && <div className="flex flex-wrap items-center gap-3">{actions}</div>}
           </div>
@@ -164,62 +143,7 @@ const LearningWorkspaceShell: React.FC<LearningWorkspaceShellProps> = ({
           )}
         </header>
 
-        {outlineItems.length > 0 ? (
-          <div className="flex flex-col gap-8 lg:grid lg:grid-cols-[minmax(0,1fr)_16rem] lg:items-start lg:gap-10">
-            <aside className="order-1 lg:sticky lg:top-24 lg:order-2">
-              <nav aria-label="Learning sections">
-                <div className="mb-3 flex items-center justify-between gap-3">
-                  <p className="type-label uppercase tracking-[0.12em] text-text-muted">Sections</p>
-                  <span className="rounded-md border border-border/30 bg-surface-raised px-2 py-0.5 font-mono text-xs font-black text-text-tertiary">
-                    {outlineItems.length}
-                  </span>
-                </div>
-                <ol className="flex gap-2 overflow-x-auto pb-2 lg:flex-col lg:gap-1 lg:overflow-visible lg:pb-0">
-                  {outlineItems.map((item, index) => {
-                    const isActive = item.id === activeOutlineId;
-                    return (
-                      <li key={item.id} className="min-w-[13rem] shrink-0 lg:min-w-0 lg:shrink">
-                        <a
-                          href={`#${item.id}`}
-                          aria-current={isActive ? 'location' : undefined}
-                          className={cn(
-                            'group flex items-start gap-3 rounded-xl border px-3 py-2.5 transition-colors',
-                            isActive
-                              ? 'border-accent/40 bg-accent/10 text-accent'
-                              : 'border-transparent text-text-secondary hover:border-border/30 hover:bg-surface-raised hover:text-accent',
-                          )}
-                        >
-                          <span
-                            aria-hidden="true"
-                            className={cn(
-                              'mt-0.5 shrink-0 font-mono text-xs font-black',
-                              isActive ? 'text-accent' : 'text-text-muted',
-                            )}
-                          >
-                            {String(index + 1).padStart(2, '0')}
-                          </span>
-                          <span className="min-w-0 text-sm font-bold leading-snug lg:text-base">
-                            {item.label}
-                          </span>
-                        </a>
-                      </li>
-                    );
-                  })}
-                </ol>
-              </nav>
-            </aside>
-            <div className="order-2 min-w-0 lg:order-1">
-              <LearningPathDiagram
-                items={outlineItems}
-                activeId={activeOutlineId}
-                className="mb-8 md:mb-10"
-              />
-              {children}
-            </div>
-          </div>
-        ) : (
-          children
-        )}
+        <div className="mt-8 w-full md:mt-10">{children}</div>
       </div>
     </div>
   );

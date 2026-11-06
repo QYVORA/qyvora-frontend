@@ -15,6 +15,8 @@ import {
   Menu,
   ChevronDown,
   User,
+  Maximize,
+  Minimize,
 } from 'lucide-react';
 import { Logo } from '@/shared/components/brand';
 import { useAuth } from '@/core/contexts/AuthContext';
@@ -22,6 +24,7 @@ import api from '@/core/services/api';
 import Button from '@/shared/components/ui/Button';
 import useStudentOverview from '@/features/student/hooks/useStudentOverview';
 import { extractCpBalance } from '@/shared/utils/cpBalance';
+import { useFullscreen } from '@/shared/hooks/useFullscreen';
 import CpLogo from '@/shared/components/CpLogo';
 import StreakIcon from '@/shared/components/icons/StreakIcon';
 import StudentSearchDialog from './StudentSearchDialog';
@@ -49,6 +52,7 @@ const StudentDesktopTopbar: React.FC<StudentDesktopTopbarProps> = ({ onMobileMen
   const navigate = useNavigate();
   const [unread, setUnread] = useState(0);
   const [searchOpen, setSearchOpen] = useState(false);
+  const { isFullscreen, toggleFullscreen } = useFullscreen();
 
   // Fetch student statistics
   const { data: overview } = useStudentOverview();
@@ -246,6 +250,21 @@ const StudentDesktopTopbar: React.FC<StudentDesktopTopbarProps> = ({ onMobileMen
 
           {/* Right Side Utilities */}
           <div className="flex shrink-0 items-center justify-end gap-1 sm:gap-1.5 md:gap-2">
+            {/* Fullscreen (desktop) */}
+            <button
+              type="button"
+              onClick={toggleFullscreen}
+              aria-label={isFullscreen ? 'Exit fullscreen' : 'Enter fullscreen'}
+              title={isFullscreen ? 'Exit fullscreen' : 'Enter fullscreen'}
+              className="hidden h-10 w-10 shrink-0 items-center justify-center text-text-secondary transition-all duration-[var(--dur-fast)] hover:text-accent hover:scale-105 active:scale-[0.92] focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-accent md:h-12 md:w-12 lg:flex lg:rounded-xl lg:hover:bg-surface-raised"
+            >
+              {isFullscreen ? (
+                <Minimize className="h-5 w-5" aria-hidden="true" />
+              ) : (
+                <Maximize className="h-5 w-5" aria-hidden="true" />
+              )}
+            </button>
+
             {/* Search (all screens) */}
             <button
               type="button"

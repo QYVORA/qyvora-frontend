@@ -9,7 +9,6 @@ import { SimulationProvider } from '@/features/student/components/simulations';
 import NetworkBuilder from '@/features/student/components/tools/NetworkBuilder';
 import PwaStatus from '@/shared/components/layout/PwaStatus';
 import { tryAutoSubscribePush } from '@/core/services/pwa';
-import { useLearningContext } from '@/core/hooks/useLearningContext';
 import type { TerminalContext } from '@/features/student/components/SimulatedTerminal/types';
 
 /**
@@ -24,9 +23,8 @@ import type { TerminalContext } from '@/features/student/components/SimulatedTer
  * - Hamburger menu opens full-screen mobile sidebar
  * - Sidebar has collapsible sections for Practice, Compete, Develop
  * 
- * Learning pages (bootcamp rooms, courses, labs): 
- * - Desktop: horizontal topbar navigation
- * - Mobile: sidebar-only navigation (no topbar)
+ * Learning pages use the same topbar on every viewport; the learning content
+ * itself is a single centered column with no second navigation rail.
  *
  * Shell behaviours: SimulationProvider, terminal/IDE/network window-event
  * triggers, Ctrl+` toggle, PWA status host and push subscription.
@@ -39,10 +37,6 @@ const AppShell = () => {
   const [terminalOpen, setTerminalOpen] = useState(false);
   const [networkVizOpen, setNetworkVizOpen] = useState(false);
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
-
-  // Detect if we're on a learning page (bootcamp room, course lesson, lab)
-  const learningContext = useLearningContext();
-  const isLearningPage = Boolean(learningContext);
 
   useEffect(() => {
     tryAutoSubscribePush();
@@ -81,18 +75,14 @@ const AppShell = () => {
     ? { type: 'lab', labId: String(labMatch.params.labType || '') }
     : { type: 'dashboard' };
 
-  // All pages have topbar on desktop (lg+), mobile has hamburger that opens sidebar
-  // Desktop: no sidebar, horizontal topbar navigation
-  // Mobile: overlay sidebar, topbar with hamburger (except on learning pages where sidebar is primary)
-  const topbarPadding = 'pt-20 md:pt-24';
+  // Every page uses the dashboard topbar. Mobile opens the overlay sidebar from it.
+  const topbarPadding = 'pt-[calc(5rem+env(safe-area-inset-top))] md:pt-[calc(6rem+env(safe-area-inset-top))]';
 
   return (
     <SimulationProvider>
       <div className="bg-canvas min-h-dvh">
-        {/* Desktop Topbar - Always visible on desktop (lg+), hidden on mobile learning pages */}
-        <div className={isLearningPage ? 'hidden lg:block' : ''}>
-          <StudentDesktopTopbar onMobileMenuOpen={() => setMobileSidebarOpen(true)} />
-        </div>
+        {/* Shared dashboard topbar for every page, including learning workspaces. */}
+        <StudentDesktopTopbar onMobileMenuOpen={() => setMobileSidebarOpen(true)} />
         
         {/* Mobile Sidebar - Only visible when open on mobile (<lg) */}
         <StudentSidebarRedesigned

@@ -37,6 +37,8 @@ export interface WalkthroughStepProps {
   onComplete: (stepId: string) => void;
   children?: React.ReactNode;
   skipFlag?: boolean;
+  /** Hide the inline step heading when the step is rendered inside a task accordion. */
+  hideHeader?: boolean;
 }
 
 const HINT_LEVEL_LABELS = ['General Guidance', 'Approach', 'Tool Hint', 'Example Command'];
@@ -45,7 +47,7 @@ export function WalkthroughStep({
   stepIndex, title,   narrative, hint, progressiveHints, commandInstruction,
   mission, objectives, evidence, reflection, quiz, extraBlocks,
   isLocked, isCompleted, isActive, flagId, labId,
-  onFlagSubmit, onComplete, children, skipFlag,
+  onFlagSubmit, onComplete, children, skipFlag, hideHeader = false,
 }: WalkthroughStepProps) {
   const [showHint, setShowHint] = useState(false);
   const [visibleHintLevel, setVisibleHintLevel] = useState(0);
@@ -56,16 +58,18 @@ export function WalkthroughStep({
   return (
     <div
       className={cn(
-        'w-full border-t border-border/10 first:border-t-0',
+        'w-full',
       )}
     >
       {/* Step Header */}
-      <StepNumberHeader
-        stepNumber={stepIndex + 1}
-        title={title}
-        isActive={isActive}
-        isCompleted={isCompleted}
-      />
+      {!hideHeader && (
+        <StepNumberHeader
+          stepNumber={stepIndex + 1}
+          title={title}
+          isActive={isActive}
+          isCompleted={isCompleted}
+        />
+      )}
 
       {/* Step Content — always visible */}
       <div className="space-y-10 md:space-y-14 pb-14 md:pb-20">

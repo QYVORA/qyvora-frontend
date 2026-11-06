@@ -19,8 +19,8 @@ interface LegalDocumentPageProps {
 /**
  * LegalDocumentPage — the shared reading surface for every public policy page.
  *
- * Mirrors the Terms of Service composition exactly (PageHeader, sticky on-page
- * nav, numbered sections) so all legal pages feel like one set.
+ * Mirrors the Terms of Service composition exactly (PageHeader, wrapping
+ * on-page nav, numbered sections) so all legal pages feel like one set.
  */
 const LegalDocumentPage: React.FC<LegalDocumentPageProps> = ({ doc, actions, related }) => {
   const tocSections = doc.sections.map((section, idx) => ({
@@ -54,9 +54,8 @@ const LegalDocumentPage: React.FC<LegalDocumentPageProps> = ({ doc, actions, rel
               </span>
             }
           />
+          <DocTocNav sections={tocSections} />
         </PublicContainer>
-
-        <DocTocNav sections={tocSections} />
 
         <PublicContainer>
           <div className="mt-12 pb-12 md:mt-16 md:pb-16 lg:pb-20">

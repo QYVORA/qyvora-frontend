@@ -7,8 +7,6 @@ interface DocTocNavProps {
   sections: ToolDocSectionItem[];
 }
 
-const STICKY_BAR_HEIGHT = 60;
-
 const DocTocNav: React.FC<DocTocNavProps> = ({ sections }) => {
   const prefersReduced = useReducedMotion();
   const [activeId, setActiveId] = useState(sections[0]?.id ?? '');
@@ -16,7 +14,7 @@ const DocTocNav: React.FC<DocTocNavProps> = ({ sections }) => {
   useEffect(() => {
     if (!sections.length) return;
     let raf = 0;
-    const offset = 80 + STICKY_BAR_HEIGHT + 16;
+    const offset = 96;
     const update = () => {
       let current = sections[0].id;
       for (const section of sections) {
@@ -51,31 +49,24 @@ const DocTocNav: React.FC<DocTocNavProps> = ({ sections }) => {
   if (!sections.length) return null;
 
   return (
-    <div className="sticky top-[80px] z-[85] bg-canvas">
-      <div className="px-3 md:px-4 lg:px-6">
-        <nav
-          aria-label="On this page"
-          className="scroll-x no-scrollbar flex w-full flex-nowrap items-center gap-1.5 py-2"
+    <nav aria-label="On this page" className="mt-8 flex flex-wrap gap-2">
+      {sections.map((section) => (
+        <a
+          key={section.id}
+          href={`#${section.id}`}
+          onClick={jumpTo(section.id)}
+          aria-current={activeId === section.id ? 'true' : undefined}
+          className={cn(
+            'inline-flex min-h-[44px] items-center rounded-full border px-4 text-xs font-black uppercase tracking-widest transition-colors duration-150 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent',
+            activeId === section.id
+              ? 'border-accent/40 bg-accent/10 text-accent'
+              : 'border-border-subtle bg-surface-raised text-text-secondary hover:border-accent/40 hover:text-accent',
+          )}
         >
-          {sections.map((section) => (
-            <a
-              key={section.id}
-              href={`#${section.id}`}
-              onClick={jumpTo(section.id)}
-              aria-current={activeId === section.id ? 'true' : undefined}
-              className={cn(
-                'inline-flex min-h-[44px] shrink-0 items-center justify-center whitespace-nowrap rounded-xl px-2.5 text-xs font-black uppercase tracking-widest transition-colors sm:px-3',
-                activeId === section.id
-                  ? 'bg-accent text-on-accent'
-                  : 'border border-border bg-surface-raised text-text-muted hover:border-accent/50 hover:text-accent',
-              )}
-            >
-              {section.label}
-            </a>
-          ))}
-        </nav>
-      </div>
-    </div>
+          {section.label}
+        </a>
+      ))}
+    </nav>
   );
 };
 

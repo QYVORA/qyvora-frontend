@@ -17,18 +17,15 @@ import {
   Trophy,
   Hash,
   ChevronDown,
-  ArrowLeft,
+  Maximize,
+  Minimize,
 } from 'lucide-react';
-import { QyvoraMark, Logo } from '@/shared/components/brand';
 import { useAuth } from '@/core/contexts/AuthContext';
 import { useToast } from '@/core/contexts/ToastContext';
 import api from '@/core/services/api';
-import { useLearningContext } from '@/core/hooks/useLearningContext';
-import { LearningCurriculumTree } from '@/shared/components/learning/LearningCurriculumTree';
-import Button from '@/shared/components/ui/Button';
 import useStudentOverview from '@/features/student/hooks/useStudentOverview';
-import { extractCpBalance } from '@/shared/utils/cpBalance';
 import StreakIcon from '@/shared/components/icons/StreakIcon';
+import { useFullscreen } from '@/shared/hooks/useFullscreen';
 
 interface NavEntry {
   key: string;
@@ -91,8 +88,6 @@ const NAV_SECTIONS: NavSection[] = [
 ];
 
 interface StudentSidebarRedesignedProps {
-  collapsed?: boolean;
-  onToggleCollapse?: () => void;
   isMobileOpen?: boolean;
   onMobileClose?: () => void;
 }
@@ -107,14 +102,11 @@ interface StudentSidebarRedesignedProps {
  * - User profile section with avatar, name, rank
  * - Three statistics cards: Streak, CP Points, Rank
  * - Collapsible navigation sections (Practice, Compete, Develop)
- * - Learning mode curriculum tree
  * - Footer with Terminal, Network, Logout
  * 
  * Desktop (lg+): Hidden - desktop uses horizontal topbar navigation
  */
 const StudentSidebarRedesigned: React.FC<StudentSidebarRedesignedProps> = ({
-  collapsed = false,
-  onToggleCollapse,
   isMobileOpen = false,
   onMobileClose,
 }) => {
@@ -123,10 +115,7 @@ const StudentSidebarRedesigned: React.FC<StudentSidebarRedesignedProps> = ({
   const navigate = useNavigate();
   const location = useLocation();
   const [unread, setUnread] = useState(0);
-  // Detect if we're on a learning page
-  const learningContext = useLearningContext();
-  const isLearningMode = Boolean(learningContext);
-  
+  const { isFullscreen, toggleFullscreen } = useFullscreen();
   // Initialize collapsed sections state (sections can be collapsed by default)
   const [collapsedSections, setCollapsedSections] = useState<Set<string>>(() => {
     const initial = new Set<string>();
@@ -204,28 +193,6 @@ const StudentSidebarRedesigned: React.FC<StudentSidebarRedesignedProps> = ({
     });
   };
   
-  // Helper to get current curriculum item ID based on learning context
-  const getCurrentCurriculumItemId = (context: typeof learningContext) => {
-    if (!context) return '';
-    
-    if (context.type === 'bootcamp' && context.roomId) {
-      return context.roomId;
-    }
-    
-    if (context.type === 'course' && context.currentLessonIdx !== undefined) {
-      return `lesson-${context.currentLessonIdx}`;
-    }
-    
-    if (context.type === 'lab' && context.currentScenarioIdx !== undefined) {
-      return `scenario-${context.currentScenarioIdx}`;
-    }
-    
-    return '';
-  };
-  
-  // Calculate statistics
-  const streakDays = overview?.xpSummary?.streakDays ?? 0;
-  const cpBalance = extractCpBalance(overview?.xpSummary) ?? user?.cp ?? 0;
   const rankName = overview?.xpSummary?.progression?.rank ?? user?.rank ?? "Candidate";
   
   // Get user display info
@@ -244,14 +211,14 @@ const StudentSidebarRedesigned: React.FC<StudentSidebarRedesignedProps> = ({
     <>
       {/* Backdrop */}
       <div
-        className="fixed inset-0 z-[120] bg-canvas/80 backdrop-blur-sm lg:hidden"
+        className="fixed inset-x-0 bottom-0 top-[calc(5rem+env(safe-area-inset-top))] z-[90] bg-canvas/80 backdrop-blur-sm md:top-[calc(6rem+env(safe-area-inset-top))] lg:hidden"
         onClick={onMobileClose}
         aria-hidden="true"
       />
-      
-      {/* Sidebar */}
+
+      {/* Sidebar — starts below the fixed topbar so the dashboard header stays visible. */}
       <aside
-        className="fixed inset-y-0 left-0 z-[130] flex w-full flex-col border-r border-border-subtle bg-canvas lg:hidden"
+        className="fixed inset-x-0 bottom-0 left-0 top-[calc(5rem+env(safe-area-inset-top))] z-[95] flex w-full flex-col border-r border-border-subtle bg-canvas md:top-[calc(6rem+env(safe-area-inset-top))] lg:hidden"
         role="dialog"
         aria-modal="true"
         aria-label="Navigation menu"
@@ -266,46 +233,44 @@ const StudentSidebarRedesigned: React.FC<StudentSidebarRedesignedProps> = ({
     
     return (
       <>
-        {/* Brand Header */}
-        <div className={`flex h-16 items-center md:h-20 ${
-          showFullContent ? 'justify-between px-5' : 'justify-center px-0'
-        }`}>
-          <Link
-            to="/dashboard"
-            onClick={handleNavClick}
-            aria-label="QYVORA — Home"
-            className="group rounded-xl focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
-          >
-            {showFullContent ? (
-              <Logo
-                className="h-8 transition-transform duration-[var(--dur-fast)] ease-[var(--ease-smooth)] group-hover:scale-105"
-                aria-hidden="true"
-              />
-            ) : (
-              <QyvoraMark
-                className="h-8 w-8 shrink-0 transition-transform duration-[var(--dur-fast)] ease-[var(--ease-smooth)] group-hover:scale-105"
-                aria-hidden="true"
-              />
-            )}
-          </Link>
-          
-          {/* Close button (mobile only) */}
-          {isMobile && (
+        {/* Menu toolbar */}
+        <div className="flex h-16 items-center justify-between px-5">
+          <span className="type-label uppercase tracking-[0.12em] text-text-tertiary">
+            Menu
+          </span>
+
+          <div className="flex items-center gap-1">
             <button
               type="button"
-              onClick={onMobileClose}
-              aria-label="Close menu"
+              onClick={toggleFullscreen}
+              aria-label={isFullscreen ? 'Exit fullscreen' : 'Enter fullscreen'}
+              title={isFullscreen ? 'Exit fullscreen' : 'Enter fullscreen'}
               className="flex min-h-[48px] min-w-[48px] items-center justify-center rounded-xl text-text-secondary transition-colors hover:bg-surface-raised hover:text-accent focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-accent"
             >
-              <X className="h-6 w-6" aria-hidden="true" />
+              {isFullscreen ? (
+                <Minimize className="h-5 w-5" aria-hidden="true" />
+              ) : (
+                <Maximize className="h-5 w-5" aria-hidden="true" />
+              )}
             </button>
-          )}
+
+            {isMobile && (
+              <button
+                type="button"
+                onClick={onMobileClose}
+                aria-label="Close menu"
+                className="flex min-h-[48px] min-w-[48px] items-center justify-center rounded-xl text-text-secondary transition-colors hover:bg-surface-raised hover:text-accent focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-accent"
+              >
+                <X className="h-6 w-6" aria-hidden="true" />
+              </button>
+            )}
+          </div>
         </div>
         
         {/* Scrollable Content */}
         <div className="custom-scrollbar sidebar-scroll flex-1 overflow-y-auto">
           {/* User Profile Section (only when expanded/mobile) */}
-          {showFullContent && !isLearningMode && (
+          {showFullContent && (
             <div className="px-5 py-5">
               <Link
                 to="/dashboard/profile"
@@ -333,55 +298,9 @@ const StudentSidebarRedesigned: React.FC<StudentSidebarRedesignedProps> = ({
             </div>
           )}
           
-          {/* Statistics Cards (only when expanded/mobile, not in learning mode) - REMOVED */}
-          {/* We'll show stats naturally in the navigation flow instead */}
-          
           {/* Navigation */}
-          <nav aria-label={isLearningMode ? "Learning curriculum" : "Primary"} className="px-3 py-4">
-            {isLearningMode && learningContext ? (
-              /* ══════════════════════════════════════════════════════════════
-                 LEARNING MODE - Curriculum tree navigation
-                 ══════════════════════════════════════════════════════════════ */
-              <>
-                {/* Back to Dashboard button */}
-                {showFullContent && (
-                  <div className="mb-4">
-                    <Button
-                      variant="ghost"
-                      onClick={() => {
-                        navigate(learningContext.exitPath);
-                        handleNavClick();
-                      }}
-                      className="-ml-2 w-full justify-start gap-2 text-text-secondary hover:text-accent"
-                    >
-                      <ArrowLeft className="h-4 w-4" />
-                      Back to Dashboard
-                    </Button>
-                  </div>
-                )}
-                
-                {/* Context title */}
-                {showFullContent && (
-                  <div className="mb-3">
-                    <h3 className="type-label px-3 text-text-tertiary uppercase tracking-[0.12em]">
-                      {learningContext.title}
-                    </h3>
-                  </div>
-                )}
-                
-                {/* Curriculum tree */}
-                <LearningCurriculumTree
-                  items={learningContext.curriculum}
-                  activeId={getCurrentCurriculumItemId(learningContext)}
-                  collapsed={collapsed && !isMobile}
-                />
-              </>
-            ) : (
-              /* ══════════════════════════════════════════════════════════════
-                 DASHBOARD MODE - Standard navigation sections
-                 ══════════════════════════════════════════════════════════════ */
-              <>
-                {NAV_SECTIONS.map((section) => {
+          <nav aria-label="Primary" className="px-3 py-4">
+            {NAV_SECTIONS.map((section) => {
                   const isSectionCollapsed = collapsedSections.has(section.title);
                   const showSectionContent = !isSectionCollapsed || !showFullContent;
                   
@@ -444,19 +363,17 @@ const StudentSidebarRedesigned: React.FC<StudentSidebarRedesignedProps> = ({
                                 </NavLink>
                               </li>
                             );
-                          })}
+                      })}
                         </ul>
                       )}
                     </section>
                   );
                 })}
-              </>
-            )}
           </nav>
         </div>
         
         {/* Footer - Logout only */}
-        <div className="px-3 py-4">
+        <div className="px-3 pb-[calc(1rem+env(safe-area-inset-bottom))] pt-4">
           {/* Logout Button */}
           <button
             type="button"

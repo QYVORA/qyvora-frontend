@@ -1,20 +1,18 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { useParams, useSearchParams } from 'react-router-dom';
-import { ArrowLeft, ArrowRight, Lock } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Check, Lock } from 'lucide-react';
 import { FadeIn, EmptyState } from '@/shared/components/ui';
 import SEO from '@/shared/components/SEO';
 import { getCourseById, getCategoryById } from '@/features/student/data/courses';
 import { LearningContentRenderer, parseMarkdownToBlocks } from '@/shared/learning';
 import type { LearningBlock } from '@/shared/learning';
-import StepRenderer from '@/shared/components/learning/StepRenderer';
 import LearningWorkspaceShell from '@/shared/components/learning/LearningWorkspaceShell';
-import type { LearningOutlineItem } from '@/shared/components/learning/LearningWorkspaceShell';
-import LearningNav from '@/shared/components/learning/LearningNav';
+import { LearningTaskAccordion } from '@/shared/components/learning/LearningTaskAccordion';
+import type { LearningTask } from '@/shared/components/learning/LearningTaskAccordion';
 import { CourseLessonSkeleton } from '@/features/student/components/StudentSkeletons';
 import api from '@/core/services/api';
 import CelebrationModal from '@/shared/components/CelebrationModal';
 import { useCelebrationTrigger } from '@/shared/hooks/useCelebrationTrigger';
-import { useReducedMotion } from '@/shared/hooks/useReducedMotion';
 import Button from '@/shared/components/ui/Button';
 import type { Lesson } from '@/features/student/data/courses';
 
@@ -56,83 +54,6 @@ function buildLessonBlocks(lesson: Lesson, courseId?: string): LearningBlock[] {
 
   return parts;
 }
-
-function buildLessonOutline(blocks: LearningBlock[], fallback: string): LearningOutlineItem[] {
-  const items = blocks.flatMap((block) => {
-    const title = (block as { title?: string }).title;
-    return title ? [{ id: block.id, label: title }] : [];
-  });
-  if (items.length > 0) return items;
-  return blocks[0] ? [{ id: blocks[0].id, label: fallback }] : [];
-}
-
-interface LessonViewerProps {
-  lesson: Lesson;
-  number: number;
-  totalLessons: number;
-  isCompleted: boolean;
-  blocks: LearningBlock[];
-  onLessonComplete: () => void;
-  onPrevious: () => void;
-  onContinue: () => void;
-}
-
-const LessonViewer: React.FC<LessonViewerProps> = ({
-  lesson,
-  number,
-  totalLessons,
-  isCompleted,
-  blocks,
-  onLessonComplete,
-  onPrevious,
-  onContinue,
-}) => {
-  return (
-    <StepRenderer
-      stepNumber={number}
-      title={lesson.title}
-      isCompleted={isCompleted}
-      badges={
-        <>
-          {lesson.hasQuiz && (
-            <span className="px-1.5 py-0.5 rounded-lg bg-accent/10 text-xs font-black uppercase tracking-widest text-accent">CHECKPOINT</span>
-          )}
-          {lesson.hasCodePlayground && (
-            <span className="px-1.5 py-0.5 rounded-lg bg-accent/10 text-xs font-black uppercase tracking-widest text-accent">CODE</span>
-          )}
-        </>
-      }
-    >
-      <LearningContentRenderer
-        unit={{
-          id: lesson.id,
-          number,
-          title: lesson.title,
-          blocks,
-          completionType: lesson.hasQuiz ? 'checkpoint' : 'view',
-        }}
-        context={{
-          surface: 'course',
-          sequenceId: lesson.id,
-          unitId: lesson.id,
-          onComplete: onLessonComplete,
-        }}
-      />
-
-      <LearningNav
-        currentStep={number - 1}
-        totalSteps={totalLessons}
-        isLastStep={number === totalLessons}
-        isComplete={isCompleted}
-        onPrev={number > 1 ? onPrevious : undefined}
-        onNext={onContinue}
-        onComplete={onContinue}
-        nextLabel="Next Lesson"
-        completeLabel="Complete Lesson"
-      />
-    </StepRenderer>
-  );
-};
 
 const CourseLessonPage: React.FC = () => {
   const { courseId } = useParams<{ courseId: string }>();
@@ -176,20 +97,20 @@ const CourseLessonPage: React.FC = () => {
       : 0;
 
   const currentLesson = course?.lessons[currentLessonIdx];
-  const lessonBlocks = useMemo(
-    () => (currentLesson ? buildLessonBlocks(currentLesson, courseId) : []),
-    [currentLesson, courseId],
-  );
-  const lessonOutline = useMemo(
-    () => (currentLesson ? buildLessonOutline(lessonBlocks, currentLesson.title) : []),
-    [currentLesson, lessonBlocks],
-  );
+
+  const lessonBlocksById = useMemo(() => {
+    const entries = (course?.lessons ?? []).map((lesson) => [
+      lesson.id,
+      buildLessonBlocks(lesson, courseId),
+    ] as const);
+    return new Map(entries);
+  }, [course, courseId]);
 
   const completedCount = completedLessons.size;
   const progress = totalLessons > 0 ? Math.round((completedCount / totalLessons) * 100) : 0;
   const allComplete = totalLessons > 0 && completedLessons.size === totalLessons;
+  const nextIncompleteIdx = course?.lessons.findIndex((lesson) => !completedLessons.has(lesson.id)) ?? -1;
   const [celebrationOpen, setCelebrationOpen] = useCelebrationTrigger(allComplete);
-  const prefersReducedMotion = useReducedMotion();
 
   const selectLesson = useCallback((idx: number) => {
     if (totalLessons === 0) return;
@@ -199,8 +120,7 @@ const CourseLessonPage: React.FC = () => {
       next.set('lesson', String(clamped));
       return next;
     }, { replace: true });
-    window.scrollTo({ top: 0, behavior: prefersReducedMotion ? 'auto' : 'smooth' });
-  }, [totalLessons, setSearchParams, prefersReducedMotion]);
+  }, [totalLessons, setSearchParams]);
 
   const saveProgress = useCallback((lessons: Set<string>, idx: number) => {
     if (!courseId) return;
@@ -210,25 +130,14 @@ const CourseLessonPage: React.FC = () => {
     }));
   }, [courseId]);
 
-  const markComplete = useCallback(() => {
-    const lesson = course?.lessons[currentLessonIdx];
-    if (!lesson) return;
+  const markLessonComplete = useCallback((lesson: Lesson, idx: number) => {
     const next = new Set([...completedLessons, lesson.id]);
     setCompletedLessons(next);
-    saveProgress(next, currentLessonIdx);
+    saveProgress(next, idx);
     if (courseId && next.size === totalLessons) {
       api.post(`/student/courses/${encodeURIComponent(courseId)}/complete`).catch(() => {});
     }
-  }, [course, completedLessons, currentLessonIdx, saveProgress, courseId, totalLessons]);
-
-  const goPrev = useCallback(() => {
-    if (currentLessonIdx > 0) selectLesson(currentLessonIdx - 1);
-  }, [currentLessonIdx, selectLesson]);
-
-  const handleContinue = useCallback(() => {
-    markComplete();
-    if (currentLessonIdx < totalLessons - 1) selectLesson(currentLessonIdx + 1);
-  }, [markComplete, currentLessonIdx, totalLessons, selectLesson]);
+  }, [completedLessons, saveProgress, courseId, totalLessons]);
 
   useEffect(() => {
     window.dispatchEvent(new CustomEvent('course:updateMeta', {
@@ -281,6 +190,75 @@ const CourseLessonPage: React.FC = () => {
 
   const category = getCategoryById(course.categoryId);
 
+  const tasks: LearningTask[] = course.lessons.map((lesson, index) => {
+    const isCompleted = completedLessons.has(lesson.id);
+    const blocks = lessonBlocksById.get(lesson.id) ?? [];
+
+    return {
+      id: `lesson-${lesson.id}`,
+      title: lesson.title,
+      description: isCompleted
+        ? 'Completed'
+        : index === currentLessonIdx
+          ? `Lesson ${index + 1} of ${totalLessons} · current`
+          : `Lesson ${index + 1} of ${totalLessons}`,
+      completed: isCompleted,
+      meta: (
+        <span className="flex items-center gap-1.5">
+          {lesson.hasQuiz && (
+            <span className="rounded-md bg-accent/10 px-1.5 py-0.5 text-[10px] font-black uppercase tracking-widest text-accent">Quiz</span>
+          )}
+          {lesson.hasCodePlayground && (
+            <span className="rounded-md bg-accent/10 px-1.5 py-0.5 text-[10px] font-black uppercase tracking-widest text-accent">Code</span>
+          )}
+        </span>
+      ),
+      content: (
+        <div className="space-y-8">
+          <LearningContentRenderer
+            unit={{
+              id: lesson.id,
+              number: index + 1,
+              title: lesson.title,
+              blocks,
+              completionType: lesson.hasQuiz ? 'checkpoint' : 'view',
+            }}
+            context={{
+              surface: 'course',
+              sequenceId: lesson.id,
+              unitId: lesson.id,
+              onComplete: () => markLessonComplete(lesson, index),
+            }}
+          />
+
+          <div className="flex flex-wrap items-center gap-3 border-t border-border-subtle pt-6">
+            <Button
+              onClick={() => markLessonComplete(lesson, index)}
+              variant={isCompleted ? 'secondary' : 'primary'}
+            >
+              {isCompleted ? (
+                <>
+                  <Check className="h-4 w-4" aria-hidden="true" />
+                  {"Completed"}
+                </>
+              ) : (
+                "Mark complete"
+              )}
+            </Button>
+            {index < totalLessons - 1 && (
+              <Button variant="secondary" onClick={() => selectLesson(index + 1)}>
+                {"Next lesson"}
+                <ArrowRight className="h-4 w-4" aria-hidden="true" />
+              </Button>
+            )}
+          </div>
+        </div>
+      ),
+    };
+  });
+
+  const activeTaskId = currentLesson ? `lesson-${currentLesson.id}` : undefined;
+
   return (
     <FadeIn>
       <div className="w-full bg-canvas">
@@ -311,21 +289,21 @@ const CourseLessonPage: React.FC = () => {
             value: progress,
             label: `${completedCount}/${totalLessons}`,
           }}
-          outline={lessonOutline}
+          actions={
+            <Button onClick={() => selectLesson(nextIncompleteIdx >= 0 ? nextIncompleteIdx : 0)}>
+              {allComplete ? "Review course" : completedCount > 0 ? "Continue learning" : "Start learning"}
+              <ArrowRight className="h-4 w-4" aria-hidden="true" />
+            </Button>
+          }
         >
-          {currentLesson && (
-            <LessonViewer
-              key={currentLesson.id}
-              lesson={currentLesson}
-              number={currentLessonIdx + 1}
-              totalLessons={totalLessons}
-              isCompleted={completedLessons.has(currentLesson.id)}
-              blocks={lessonBlocks}
-              onLessonComplete={markComplete}
-              onPrevious={goPrev}
-              onContinue={handleContinue}
-            />
-          )}
+          <LearningTaskAccordion
+            tasks={tasks}
+            activeId={activeTaskId}
+            onActiveChange={(id) => {
+              const index = tasks.findIndex((task) => task.id === id);
+              if (index >= 0) selectLesson(index);
+            }}
+          />
         </LearningWorkspaceShell>
       </div>
     </FadeIn>

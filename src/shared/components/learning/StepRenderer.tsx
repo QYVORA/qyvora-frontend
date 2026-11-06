@@ -16,6 +16,7 @@ export interface StepRendererProps {
   afterContent?: React.ReactNode;
   footer?: React.ReactNode;
   className?: string;
+  hideHeader?: boolean;
 }
 
 const StepRenderer: React.FC<StepRendererProps> = ({
@@ -33,12 +34,14 @@ const StepRenderer: React.FC<StepRendererProps> = ({
   afterContent,
   footer,
   className = '',
+  hideHeader = false,
 }) => {
   return (
     <section className={`relative w-full py-6 md:py-8 ${className}`}>
       {headerAction}
-      <StepNumberHeader
-        stepNumber={stepNumber}
+      {!hideHeader && (
+        <StepNumberHeader
+          stepNumber={stepNumber}
         title={title}
         isActive={isActive}
         isCompleted={isCompleted}
@@ -46,8 +49,9 @@ const StepRenderer: React.FC<StepRendererProps> = ({
         badges={badges}
         backUrl={backUrl}
         backLabel={backLabel}
-        onBack={onBack}
-      />
+          onBack={onBack}
+        />
+      )}
 
       {children}
 
