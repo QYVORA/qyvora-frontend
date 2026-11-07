@@ -1,5 +1,7 @@
 # Hacker Protocol Bootcamp
 
+> **Scope note (2026-11-06):** This page documents HPB's learning architecture; it is not the QOSE launch/readiness source of truth. The QOSE registration and course-access audit is recorded in [`QOSE_READINESS_AUDIT_2026-11-06.md`](../../QOSE_READINESS_AUDIT_2026-11-06.md). QOSE source copy now uses registration 10–14 November (23:59 GMT cutoff) and classes from 15 November. Its form records a request only; the admin manually verifies payment and enrolment. The source has a registration-window guard; production deployment, QOSE course-content provisioning, and a full learner-path rehearsal remain to be verified.
+
 > **Status:** ✅ FULLY IMPLEMENTED (V2 Architecture Available)  
 > **Last Updated:** 2026-10-07  
 > **Config:** `src/features/student/constants/bootcampConfig.ts` (4028 lines, legacy)  

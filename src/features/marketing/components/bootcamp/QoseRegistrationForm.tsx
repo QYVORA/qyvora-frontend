@@ -21,9 +21,9 @@ const fieldLabel =
 /**
  * QOSE registration form (EX-BC-011).
  *
- * Captures a seat request — name, contact and source — for the QOSE cohort and
- * posts it to `/public/bootcamp-registration`. This records the request and
- * triggers payment instructions; it does not take payment (see EX-BC-007/EX-BC-008).
+ * Captures a seat request — name, contact and source — for the QOSE cohort.
+ * It does not take payment, reserve a seat, or create a student account; an
+ * operator follows up manually. Updated for the Nov 10–14 window on 2026-11-06.
  * A hidden honeypot field (`companyWebsite`) matches the backend's bot filter.
  */
 const QoseRegistrationForm: React.FC<QoseRegistrationFormProps> = ({
@@ -62,8 +62,9 @@ const QoseRegistrationForm: React.FC<QoseRegistrationFormProps> = ({
       >
         <CheckCircle2 className="h-6 w-6 text-accent" aria-hidden="true" />
         <p className="type-body-sm text-text-primary">
-          Your seat request is in. We will send payment instructions for the GH₵300
-          first instalment and confirm your place once it is received.
+          Your request has been received. The QYVORA team will contact you with
+          payment and account setup instructions. Your seat is confirmed only after
+          the first instalment is verified and your enrolment is recorded.
         </p>
       </div>
     );
@@ -132,9 +133,8 @@ const QoseRegistrationForm: React.FC<QoseRegistrationFormProps> = ({
       </Button>
 
       <p className="type-meta text-text-muted">
-        Registration begins with the GH₵300 first instalment. Submitting this form
-        does not take payment — we will send payment instructions and confirm your
-        seat once the first instalment is received.
+        This form only sends a seat request. It does not take payment, create an
+        account, or reserve a seat. The team will contact you with next steps.
       </p>
     </form>
   );

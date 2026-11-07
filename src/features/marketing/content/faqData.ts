@@ -92,22 +92,22 @@ export const FAQ_GROUPS: FaqGroup[] = [
         id: 'qose-dates',
         question: 'When does the next QOSE cohort start?',
         answer:
-          'Registration opens in November 2026 for the cohort starting on 1 December 2026. QOSE runs for three months.',
+          'Registration opens 10 November and closes 14 November 2026 at 23:59 GMT. Classes begin 15 November. QOSE runs for three months.',
         links: [{ label: 'QOSE dates and tuition', to: '/qose#qose-tuition-title' }],
       },
       {
         id: 'qose-fee',
         question: 'How much does QOSE cost?',
         answer:
-          'QOSE tuition is GH₵800, paid in three instalments: GH₵300 in month one, then GH₵250 in months two and three. The first instalment confirms your seat.',
+          'QOSE tuition is GH₵800, paid in three instalments: GH₵300 in month one, then GH₵250 in months two and three. The team confirms your seat after the first instalment is verified and recorded.',
         links: [{ label: 'See the QOSE breakdown', to: '/qose#qose-tuition-title' }],
       },
       {
         id: 'qose-payment',
         question: 'Does the QOSE registration form take payment?',
         answer:
-          'No. The form records your seat request. We then send payment instructions for the GH₵300 first instalment and confirm your place once it is received.',
-        links: [{ label: 'Reserve a QOSE seat', to: '/qose#qose-enrol' }],
+          'No. The form records a request only. The team contacts you with payment and account setup instructions. Your seat is confirmed only after the first instalment is verified and enrolment is recorded.',
+        links: [{ label: 'Submit a QOSE seat request', to: '/qose#qose-enrol' }],
       },
       {
         id: 'qose-prerequisite',

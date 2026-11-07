@@ -1,4 +1,5 @@
-import { ArrowRight, CalendarDays, CheckCircle2, Wallet } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { ArrowRight, CalendarDays, CheckCircle2, Clock, Wallet } from 'lucide-react';
 import SEO from '@/shared/components/SEO';
 import PublicContainer from '@/shared/components/layout/PublicContainer';
 import Button from '@/shared/components/ui/Button';
@@ -10,7 +11,7 @@ import BootcampFacts, { BootcampLogo } from '@/features/marketing/components/boo
 import ProgrammeHeroCard from '@/features/marketing/components/programmes/ProgrammeHeroCard';
 import ProgrammeCtaCard from '@/features/marketing/components/programmes/ProgrammeCtaCard';
 import QoseRegistrationForm from '@/features/marketing/components/bootcamp/QoseRegistrationForm';
-import { BOOTCAMPS } from '@/features/marketing/content/bootcampData';
+import { BOOTCAMPS, getQoseRegistrationState } from '@/features/marketing/content/bootcampData';
 import qoseHeaderBg from '@/assets/backgrounds/qose-header.webp';
 
 const QOSE = BOOTCAMPS.qose;
@@ -19,7 +20,7 @@ const QOSE_INSTALMENTS = [
   {
     month: 'Month 1',
     amount: 'GH₵300',
-    note: 'Confirms your seat and covers the first month of coursework, labs and cohort support.',
+    note: 'After payment is verified, the team confirms your seat and first month of coursework, labs and cohort support.',
   },
   {
     month: 'Month 2',
@@ -34,8 +35,8 @@ const QOSE_INSTALMENTS = [
 ];
 
 const QOSE_COHORT_DETAILS = [
-  'Registration opens November 2026',
-  'Cohort starts 1 December 2026',
+  'Registration: 10–14 November 2026 (closes 23:59 GMT)',
+  'Classes begin 15 November 2026',
   'Three months, delivered online',
   'Kali Linux, VMs and containerized labs',
   'Prerequisite: Hacker Protocol Bootcamp',
@@ -45,15 +46,22 @@ const QOSE_COHORT_DETAILS = [
  * QOSE — QYVORA Offensive Security Engineer Bootcamp.
  *
  * Programme facts, phases and audience come from the QOSE programme
- * documentation. Registration is open for the 1 December 2026 cohort: the page
- * states the dates and instalments plainly, and the registration form records
- * a seat request without taking payment.
+ * documentation. Cohort 1 registration is date-gated in UTC and the public
+ * form records a seat request only; it does not take payment or confirm a seat.
+ * Cohort date and copy alignment added 2026-11-06; see core readiness audit.
  *
  * Structure mirrors `/hpb` exactly: the same `ProgrammeHeroCard` over its own
  * mapped scene, the same facts strip, the same card primitives and the same
  * mapped CTA card.
  */
 const QosePage = () => {
+  // Refresh the date-gated CTA while the page remains open across a boundary.
+  const [registration, setRegistration] = useState(() => getQoseRegistrationState());
+  useEffect(() => {
+    const timer = window.setInterval(() => setRegistration(getQoseRegistrationState()), 30_000);
+    return () => window.clearInterval(timer);
+  }, []);
+
   return (
     <div className="w-full bg-canvas">
       <SEO
@@ -69,9 +77,11 @@ const QosePage = () => {
           kicker={"QYVORA · Bootcamp"}
           status={
             <>
-              <Badge variant="success" size="md">
-                <CheckCircle2 className="mr-1.5 h-3 w-3" aria-hidden="true" />
-                {QOSE.statusLabel}
+              <Badge variant={registration.status === 'open' ? 'success' : 'warning'} size="md">
+                {registration.status === 'open'
+                  ? <CheckCircle2 className="mr-1.5 h-3 w-3" aria-hidden="true" />
+                  : <Clock className="mr-1.5 h-3 w-3" aria-hidden="true" />}
+                {registration.statusLabel}
               </Badge>
               <span className="type-meta text-text-muted">{`${QOSE.acronym} · ${QOSE.name}`}</span>
             </>
@@ -79,14 +89,21 @@ const QosePage = () => {
           title={QOSE.name}
           description={QOSE.tagline}
           meta={
-            <p className="type-body-sm max-w-2xl text-text-secondary">{QOSE.statusNote}</p>
+            <p className="type-body-sm max-w-2xl text-text-secondary">{registration.statusNote}</p>
           }
           actions={
             <>
-              <Button href="#qose-enrol" size="lg">
-                {QOSE.ctaLabel}
-                <ArrowRight className="h-4 w-4" aria-hidden="true" />
-              </Button>
+              {registration.status === 'closed' ? (
+                <Button href={QOSE.whatsappUrl} external size="lg">
+                  {"Ask about the next cohort"}
+                  <ArrowRight className="h-4 w-4" aria-hidden="true" />
+                </Button>
+              ) : (
+                <Button href="#qose-enrol" size="lg">
+                  {registration.ctaLabel}
+                  <ArrowRight className="h-4 w-4" aria-hidden="true" />
+                </Button>
+              )}
               <Button to="/hpb" variant="secondary" size="lg">
                 {"Prerequisite: HPB"}
               </Button>
@@ -111,7 +128,7 @@ const QosePage = () => {
                 {"One programme. Three instalments."}
               </h2>
               <p className="type-body mt-3 max-w-2xl text-text-secondary">
-                {"Registration opens in November 2026 for the cohort starting 1 December 2026. The first instalment confirms your seat; the remaining two instalments cover months two and three."}
+                {"Registration opens 10 November and closes 14 November 2026 at 23:59 GMT. Classes begin 15 November. The first instalment is recorded by the team; a seat is confirmed only after payment is verified."}
               </p>
             </div>
 
@@ -291,14 +308,20 @@ const QosePage = () => {
               <div id="qose-enrol" className="scroll-mt-24">
                 <ProgrammeCtaCard
                   kicker={"Enrolment"}
-                  title={"Reserve your seat for 1 December 2026"}
-                  description={"Registration is open. Submit your details and we will send payment instructions for the GH₵300 first instalment. Your seat is confirmed once that payment is received."}
+                  title={registration.status === 'closed' ? "Registration closed" : "QOSE Cohort 1 · Classes begin 15 November 2026"}
+                  description={registration.status === 'open'
+                    ? "Submit a seat request during the registration window. This form does not take payment or reserve a seat; the team will contact you with payment and account setup instructions."
+                    : registration.status === 'pre-registration'
+                      ? "Registration opens 10 November and closes 14 November 2026 at 23:59 GMT. This cohort's classes begin 15 November."
+                      : "This cohort's registration window has closed. Contact the QOSE team about a future cohort."}
                 >
-                  <QoseRegistrationForm
-                    bootcampId="qose"
-                    source="qose_page"
-                    submitLabel="Reserve my seat"
-                  />
+                  {registration.status === 'open' ? (
+                    <QoseRegistrationForm
+                      bootcampId="qose"
+                      source="qose_page"
+                      submitLabel="Submit a seat request"
+                    />
+                  ) : null}
                   <Button
                     href={QOSE.whatsappUrl}
                     external

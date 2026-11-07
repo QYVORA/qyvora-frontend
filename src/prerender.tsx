@@ -794,9 +794,11 @@ const routeContent: Record<string, RouteContent> = {
   },
   '/qose': {
     title: 'Offensive Security Engineer Bootcamp (QOSE) | QYVORA',
-    description: 'QOSE is a 12-week, practical-first online bootcamp that turns Hacker Protocol Bootcamp graduates into entry-level offensive-security practitioners.',
+    // QOSE-COMPLETE (2026-11-06): keep static/prerendered copy aligned with the
+    // canonical Cohort 1 dates and the 3-month delivery model.
+    description: 'QOSE is a 3-month, practical-first online bootcamp that turns Hacker Protocol Bootcamp graduates into entry-level offensive-security practitioners.',
     h1: 'QYVORA Offensive Security Engineer Bootcamp',
-    lead: 'Three months from Hacker Protocol Bootcamp foundations to structured, authorized assessment work. QOSE is currently in pre-registration.',
+    lead: 'Three months from Hacker Protocol Bootcamp foundations to structured, authorized assessment work. Cohort 1 registration opens 10 November 2026.',
     sections: [
       {
         heading: 'What it covers',
@@ -807,8 +809,8 @@ const routeContent: Record<string, RouteContent> = {
         body: 'Learners who have completed the Hacker Protocol Bootcamp or hold equivalent grounding in the Linux terminal, networking, scripting, reconnaissance, web security and OSINT. Delivery is online, on Kali Linux with VMs and containerized labs.',
       },
       {
-        heading: 'Pre-registration',
-        body: 'QOSE is being prepared for launch and enrollment is not open on the website yet. Registration is being handled through the QOSE community group until the cohort opens.',
+        heading: 'Cohort 1 dates',
+        body: 'Registration opens 10 November and closes 14 November 2026 at 23:59 GMT. Classes begin 15 November 2026. The form records a request only; it does not take payment, create an account, or confirm a seat.',
       },
     ],
     links: [
@@ -1392,7 +1394,8 @@ const routeContent: Record<string, RouteContent> = {
     sections: [
       {
         heading: 'Bootcamps and registration',
-        body: 'QOSE registration is open for the 1 December 2026 cohort. The total fee is GH\u20b5800, payable in three instalments of GH\u20b5300, GH\u20b5250, and GH\u20b5250. Submitting the registration form reserves a seat request; it does not take payment.',
+        // Keep prerendered FAQ copy aligned with the live registration window.
+        body: 'QOSE registration opens 10 November and closes 14 November 2026 at 23:59 GMT; classes begin 15 November. Tuition is GH\u20b5800 in three instalments of GH\u20b5300, GH\u20b5250, and GH\u20b5250. The form records a request only; it does not take payment, create an account, or confirm a seat.',
       },
       {
         heading: 'Credentials and verification',

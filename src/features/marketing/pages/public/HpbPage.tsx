@@ -256,7 +256,9 @@ const HpbPage = () => {
               kicker={"Next level"}
               title={"Ready for the next level?"}
               description={
-                "QOSE is the 12-week offensive security engineer bootcamp built on top of HPB. Registration is open for the cohort starting 1 December 2026."
+                // QOSE-COMPLETE (2026-11-06): align duration with the canonical
+                // 3-month Cohort 1 plan and keep the registration dates visible.
+                "QOSE is the 3-month offensive security engineer bootcamp built on top of HPB. Cohort 1 registration opens 10 November and classes begin 15 November 2026."
               }
             >
               <Button to="/qose" size="lg">

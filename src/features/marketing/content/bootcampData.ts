@@ -49,7 +49,40 @@ export const BOOTCAMP_WHATSAPP_URLS = {
   },
 } as const;
 
-export type BootcampStatus = 'open' | 'pre-registration';
+export type BootcampStatus = 'open' | 'pre-registration' | 'closed';
+
+/**
+ * QOSE cohort 1 registration window. Keep these UTC instants aligned with the
+ * backend guard and QOSE cohort docs; Ghana observes GMT (UTC+00:00).
+ * QOSE cohort date window added 2026-11-06; see core/QOSE_READINESS_AUDIT_2026-11-06.md.
+ */
+export const QOSE_REGISTRATION_OPENS_AT = Date.UTC(2026, 10, 10, 0, 0, 0);
+export const QOSE_REGISTRATION_CLOSES_AT = Date.UTC(2026, 10, 15, 0, 0, 0);
+
+export const getQoseRegistrationState = (now = Date.now()) => {
+  if (now < QOSE_REGISTRATION_OPENS_AT) {
+    return {
+      status: 'pre-registration' as const,
+      statusLabel: 'Registration opens 10 November 2026',
+      statusNote: 'Registration opens 10 November and closes 14 November 2026 at 23:59 GMT. Classes begin 15 November. Submitting a request does not reserve a seat; QYVORA will contact you with payment and account setup steps.',
+      ctaLabel: 'Registration opens 10 Nov',
+    };
+  }
+  if (now < QOSE_REGISTRATION_CLOSES_AT) {
+    return {
+      status: 'open' as const,
+      statusLabel: 'Registration open · Closes 14 November 2026 at 23:59 GMT',
+      statusNote: 'Registration is open until 14 November 2026 at 23:59 GMT. Classes begin 15 November. Your request is not a confirmed seat; QYVORA will contact you with payment and account setup steps.',
+      ctaLabel: 'Submit a seat request',
+    };
+  }
+  return {
+    status: 'closed' as const,
+    statusLabel: 'Registration closed · Classes begin 15 November 2026',
+    statusNote: 'Registration for this cohort has closed. Contact QYVORA through the community group with questions about a future cohort.',
+    ctaLabel: 'Registration closed',
+  };
+};
 
 export interface BootcampFact {
   label: string;
@@ -182,16 +215,18 @@ export const BOOTCAMPS: Record<Bootcamp['id'], Bootcamp> = {
       'A practical-first offensive security programme that turns Hacker Protocol Bootcamp graduates into entry-level offensive-security practitioners capable of conducting structured, authorized security assessments. QOSE is not HPB 2.0 — it begins where HPB ends, with one premise: you know the tools, now learn how to conduct an engagement.',
     audience:
       'Learners who have completed the Hacker Protocol Bootcamp or hold equivalent grounding in the Linux terminal, networking, scripting, reconnaissance, web security, OSINT and basic privilege escalation. Delivery is online, on Kali Linux with VMs and containerized labs.',
-    status: 'open',
-    statusLabel: 'Registration open · Cohort starts 1 December 2026',
-    statusNote:
-      'Registration is open for the cohort starting 1 December 2026. Your seat is confirmed with the GH₵300 first instalment; the remaining two instalments are GH₵250 each. Submit the registration form and we will send payment instructions.',
+    // The getters keep QOSE status accurate across the registration window.
+    // Backend registration uses the same UTC boundaries as a server-side guard.
+    get status() { return getQoseRegistrationState().status; },
+    get statusLabel() { return getQoseRegistrationState().statusLabel; },
+    get statusNote() { return getQoseRegistrationState().statusNote; },
     logo: qoseLogo,
     logoWidth: LOGO_SIZE.width,
     logoHeight: LOGO_SIZE.height,
     logoAlt: 'QYVORA Offensive Security Engineer Bootcamp logo',
     facts: [
-      { label: 'Cohort starts', value: '1 December 2026' },
+      { label: 'Registration', value: '10–14 November 2026' },
+      { label: 'Classes begin', value: '15 November 2026' },
       { label: 'Duration', value: '3 months' },
       { label: 'Delivery', value: 'Online' },
       { label: 'Tuition', value: 'GH₵800 · 3 instalments' },
@@ -240,7 +275,7 @@ export const BOOTCAMPS: Record<Bootcamp['id'], Bootcamp> = {
     ],
     ethics: ETHICS_COMMON,
     whatsappUrl: BOOTCAMP_WHATSAPP_URLS.qose,
-    ctaLabel: 'Reserve your seat',
+    get ctaLabel() { return getQoseRegistrationState().ctaLabel; },
   },
 };
 
