@@ -82,7 +82,7 @@ export function LearningTaskAccordion({
   }, [taskIdsKey]);
 
   return (
-    <div className={cn('flex flex-col gap-4', className)}>
+    <div className={cn('flex flex-col gap-3 sm:gap-4', className)}>
       {tasks.map((task, index) => {
         const isOpen = !task.locked && task.id === openId;
         const panelId = `learning-task-panel-${task.id}`;
@@ -114,7 +114,7 @@ export function LearningTaskAccordion({
                 openTask(isOpen ? '' : task.id);
               }}
               className={cn(
-                'flex w-full items-center gap-4 p-6 text-left transition-colors duration-150',
+                'flex w-full items-center gap-3 p-4 text-left transition-colors duration-150 sm:gap-4 sm:p-6',
                 task.locked ? 'cursor-not-allowed' : 'cursor-pointer',
                 !task.locked && !isOpen && 'hover:bg-surface-raised/60',
               )}
@@ -122,7 +122,7 @@ export function LearningTaskAccordion({
               <span
                 aria-hidden="true"
                 className={cn(
-                  'flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border font-mono text-xs font-black',
+                  'flex h-7 w-7 shrink-0 items-center justify-center rounded-lg border font-mono text-xs font-black sm:h-8 sm:w-8',
                   task.completed
                     ? 'border-accent/30 bg-accent/10 text-accent'
                     : isOpen
@@ -134,7 +134,7 @@ export function LearningTaskAccordion({
               </span>
 
               <span className="min-w-0 flex-1">
-                <span className="block text-base font-bold leading-snug text-text-primary">
+                <span className="block text-sm font-bold leading-snug text-text-primary sm:text-base">
                   {task.title}
                 </span>
                 {task.description && (
@@ -166,7 +166,7 @@ export function LearningTaskAccordion({
             </button>
 
             {task.locked && (
-              <p id={`${panelId}-locked`} className="px-6 pb-5 pl-[4.5rem] text-sm text-text-tertiary">
+              <p id={`${panelId}-locked`} className="px-4 pb-4 pl-[3.25rem] text-sm text-text-tertiary sm:px-6 sm:pb-5 sm:pl-[4.5rem]">
                 {lockedMessage}
               </p>
             )}
@@ -184,7 +184,7 @@ export function LearningTaskAccordion({
                   transition={{ duration: prefersReducedMotion ? 0 : 0.2, ease: [0.16, 1, 0.3, 1] }}
                   className="overflow-hidden"
                 >
-                  <div className="border-t border-border-subtle px-6 pb-8 pt-6">
+                  <div className="border-t border-border-subtle px-4 pb-6 pt-5 sm:px-6 sm:pb-8 sm:pt-6">
                     <div className="min-w-0">{task.content}</div>
                   </div>
                 </motion.div>

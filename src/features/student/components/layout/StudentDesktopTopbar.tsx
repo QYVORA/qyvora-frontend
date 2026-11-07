@@ -80,6 +80,18 @@ const StudentDesktopTopbar: React.FC<StudentDesktopTopbarProps> = ({ onMobileMen
   const userDisplayName = user?.username || user?.email || "User";
   const userInitial = userDisplayName.charAt(0).toUpperCase();
 
+  /**
+   * Desktop nav buttons use icon-over-label so the five primary sections stay
+   * compact at lg widths. That prevents the right-hand utility cluster from
+   * being pushed out of the header on narrow laptops/tablets.
+   */
+  const desktopItemClass = (isActive: boolean) =>
+    `group flex min-h-[62px] min-w-[58px] flex-col items-center justify-center gap-1 rounded-xl px-2 py-1.5 text-[10px] font-bold uppercase tracking-wide transition-colors xl:min-w-[68px] xl:px-3 xl:text-[11px] xl:tracking-wider ${
+      isActive
+        ? 'bg-accent/10 text-accent'
+        : 'text-text-secondary hover:bg-surface-raised hover:text-text-primary'
+    }`;
+
   return (
     <>
       <a
@@ -90,7 +102,7 @@ const StudentDesktopTopbar: React.FC<StudentDesktopTopbarProps> = ({ onMobileMen
       </a>
 
       <header className="chrome-fixed chrome-fixed-overflow fixed top-0 inset-x-0 z-[100] border-b border-border-subtle bg-canvas pt-[env(safe-area-inset-top)]">
-        <div className="flex h-20 items-center gap-3 px-3 md:h-24 md:gap-4 md:px-4 lg:gap-6 lg:px-6">
+        <div className="flex h-20 min-w-0 items-center gap-2 px-3 md:h-24 md:gap-3 md:px-4 lg:gap-4 lg:px-6">
           {/* Mobile hamburger menu (hidden on desktop) */}
           <button
             type="button"
@@ -114,19 +126,9 @@ const StudentDesktopTopbar: React.FC<StudentDesktopTopbarProps> = ({ onMobileMen
           </Link>
 
           {/* Desktop Navigation Links (hidden on mobile) */}
-          <nav className="hidden items-center gap-1 overflow-visible lg:flex" aria-label="Primary">
+          <nav className="hidden min-w-0 items-center gap-0.5 overflow-visible lg:flex xl:gap-1" aria-label="Primary">
             {/* Dashboard */}
-            <NavLink
-              to="/dashboard"
-              end
-              className={({ isActive }) =>
-                `group flex min-h-[48px] items-center gap-2 rounded-xl px-4 py-2 text-sm transition-colors ${
-                  isActive
-                    ? 'bg-accent/10 font-bold text-accent'
-                    : 'text-text-secondary hover:bg-surface-raised hover:text-text-primary'
-                }`
-              }
-            >
+            <NavLink to="/dashboard" end className={({ isActive }) => desktopItemClass(isActive)}>
               {({ isActive }) => (
                 <>
                   <Home
@@ -140,16 +142,7 @@ const StudentDesktopTopbar: React.FC<StudentDesktopTopbarProps> = ({ onMobileMen
             </NavLink>
 
             {/* Learn */}
-            <NavLink
-              to="/dashboard/courses"
-              className={({ isActive }) =>
-                `group flex min-h-[48px] items-center gap-2 rounded-xl px-4 py-2 text-sm transition-colors ${
-                  isActive
-                    ? 'bg-accent/10 font-bold text-accent'
-                    : 'text-text-secondary hover:bg-surface-raised hover:text-text-primary'
-                }`
-              }
-            >
+            <NavLink to="/dashboard/courses" className={({ isActive }) => desktopItemClass(isActive)}>
               {({ isActive }) => (
                 <>
                   <BookOpen
@@ -164,16 +157,14 @@ const StudentDesktopTopbar: React.FC<StudentDesktopTopbarProps> = ({ onMobileMen
 
             {/* Practice Dropdown */}
             <div className="group relative z-[150]">
-              <button
-                type="button"
-                className="flex min-h-[48px] items-center gap-2 rounded-xl px-4 py-2 text-sm text-text-secondary transition-all duration-[var(--dur-fast)] hover:bg-surface-raised hover:text-text-primary hover:scale-[1.02] active:scale-[0.98] focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-accent"
-              >
-                <Target className="h-[18px] w-[18px] shrink-0 transition-transform duration-[var(--dur-fast)]" strokeWidth={2} aria-hidden="true" />
-                <span>Practice</span>
-                <ChevronDown className="h-4 w-4 transition-transform duration-[var(--dur-base)] group-hover:rotate-180" aria-hidden="true" />
+              <button type="button" className={desktopItemClass(false)}>
+                <Target className="h-[18px] w-[18px] shrink-0" strokeWidth={2} aria-hidden="true" />
+                <span className="flex items-center gap-1 whitespace-nowrap">
+                  Practice
+                  <ChevronDown className="h-3 w-3 transition-transform duration-[var(--dur-base)] group-hover:rotate-180" aria-hidden="true" />
+                </span>
               </button>
-              
-              {/* Dropdown menu */}
+
               <div className="absolute left-0 top-full hidden min-w-[200px] pt-2 group-hover:block group-focus-within:block">
                 <div className="animate-slide-down rounded-xl border border-border-subtle bg-canvas p-2 shadow-lg">
                   <Link
@@ -196,16 +187,14 @@ const StudentDesktopTopbar: React.FC<StudentDesktopTopbarProps> = ({ onMobileMen
 
             {/* Compete Dropdown */}
             <div className="group relative z-[150]">
-              <button
-                type="button"
-                className="flex min-h-[48px] items-center gap-2 rounded-xl px-4 py-2 text-sm text-text-secondary transition-all duration-[var(--dur-fast)] hover:bg-surface-raised hover:text-text-primary hover:scale-[1.02] active:scale-[0.98] focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-accent"
-              >
-                <Trophy className="h-[18px] w-[18px] shrink-0 transition-transform duration-[var(--dur-fast)]" strokeWidth={2} aria-hidden="true" />
-                <span>Compete</span>
-                <ChevronDown className="h-4 w-4 transition-transform duration-[var(--dur-base)] group-hover:rotate-180" aria-hidden="true" />
+              <button type="button" className={desktopItemClass(false)}>
+                <Trophy className="h-[18px] w-[18px] shrink-0" strokeWidth={2} aria-hidden="true" />
+                <span className="flex items-center gap-1 whitespace-nowrap">
+                  Compete
+                  <ChevronDown className="h-3 w-3 transition-transform duration-[var(--dur-base)] group-hover:rotate-180" aria-hidden="true" />
+                </span>
               </button>
-              
-              {/* Dropdown menu */}
+
               <div className="absolute left-0 top-full hidden min-w-[200px] pt-2 group-hover:block group-focus-within:block">
                 <div className="animate-slide-down rounded-xl border border-border-subtle bg-canvas p-2 shadow-lg">
                   <Link
@@ -221,16 +210,14 @@ const StudentDesktopTopbar: React.FC<StudentDesktopTopbarProps> = ({ onMobileMen
 
             {/* Develop Dropdown */}
             <div className="group relative z-[150]">
-              <button
-                type="button"
-                className="flex min-h-[48px] items-center gap-2 rounded-xl px-4 py-2 text-sm text-text-secondary transition-all duration-[var(--dur-fast)] hover:bg-surface-raised hover:text-text-primary hover:scale-[1.02] active:scale-[0.98] focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-accent"
-              >
-                <TerminalIcon className="h-[18px] w-[18px] shrink-0 transition-transform duration-[var(--dur-fast)]" strokeWidth={2} aria-hidden="true" />
-                <span>Develop</span>
-                <ChevronDown className="h-4 w-4 transition-transform duration-[var(--dur-base)] group-hover:rotate-180" aria-hidden="true" />
+              <button type="button" className={desktopItemClass(false)}>
+                <TerminalIcon className="h-[18px] w-[18px] shrink-0" strokeWidth={2} aria-hidden="true" />
+                <span className="flex items-center gap-1 whitespace-nowrap">
+                  Develop
+                  <ChevronDown className="h-3 w-3 transition-transform duration-[var(--dur-base)] group-hover:rotate-180" aria-hidden="true" />
+                </span>
               </button>
-              
-              {/* Dropdown menu */}
+
               <div className="absolute left-0 top-full hidden min-w-[200px] pt-2 group-hover:block group-focus-within:block">
                 <div className="animate-slide-down rounded-xl border border-border-subtle bg-canvas p-2 shadow-lg">
                   <Link
@@ -249,7 +236,7 @@ const StudentDesktopTopbar: React.FC<StudentDesktopTopbarProps> = ({ onMobileMen
           <div className="flex-1" aria-hidden="true" />
 
           {/* Right Side Utilities */}
-          <div className="flex shrink-0 items-center justify-end gap-1 sm:gap-1.5 md:gap-2">
+          <div className="flex shrink-0 items-center justify-end gap-0.5 sm:gap-1 md:gap-1.5 lg:gap-2">
             {/* Fullscreen (desktop) */}
             <button
               type="button"

@@ -1,36 +1,20 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { BookOpen, GraduationCap, Wrench, FlaskConical, ShieldCheck, CircleUserRound } from 'lucide-react';
-
-interface BottomNavItem {
-  key: string;
-  label: string;
-  icon: React.ElementType;
-  to: string;
-}
-
-const ITEMS: BottomNavItem[] = [
-  { key: 'learn', label: 'Learn', icon: BookOpen, to: '/learn' },
-  { key: 'bootcamp', label: 'Bootcamp', icon: GraduationCap, to: '/hpb' },
-  { key: 'tools', label: 'Tools', icon: Wrench, to: '/tools' },
-  { key: 'research', label: 'Research', icon: FlaskConical, to: '/blogs' },
-  { key: 'services', label: 'Services', icon: ShieldCheck, to: '/services' },
-  { key: 'about', label: 'About', icon: CircleUserRound, to: '/about' },
-];
+import { PUBLIC_PRIMARY_LINKS } from './publicNav';
 
 /**
- * PublicBottomNav — mobile-only bottom navigation for the public marketing
- * shell (Learn · Bootcamp · Tools · Research · Services · About), mirroring
- * the top PublicNavigation links. Fixed, safe-area aware, hidden on md+.
+ * PublicBottomNav — tablet/mobile bottom navigation for the public marketing
+ * shell. Reads the same PRIMARY_LINKS as PublicNavigation. Fixed, safe-area
+ * aware, hidden once the desktop top nav appears at lg+.
  */
 const PublicBottomNav: React.FC = () => (
   <>
     <nav
       aria-label="Primary"
-      className="chrome-fixed fixed inset-x-0 bottom-0 z-[90] border-t border-border-subtle bg-surface pb-[env(safe-area-inset-bottom)] md:hidden"
+      className="chrome-fixed fixed inset-x-0 bottom-0 z-[90] border-t border-border-subtle bg-surface pb-[env(safe-area-inset-bottom)] lg:hidden"
     >
       <div className="flex items-stretch justify-around gap-1.5 px-2">
-        {ITEMS.map((item) => {
+        {PUBLIC_PRIMARY_LINKS.map((item) => {
           const Icon = item.icon;
           return (
             <NavLink
@@ -55,7 +39,7 @@ const PublicBottomNav: React.FC = () => (
     </nav>
 
     {/* Spacer so page content clears the fixed bar and safe area */}
-    <div className="h-16 md:hidden" aria-hidden="true" />
+    <div className="h-16 lg:hidden" aria-hidden="true" />
   </>
 );
 

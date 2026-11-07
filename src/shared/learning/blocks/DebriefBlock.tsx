@@ -13,8 +13,9 @@ import type { BlockRendererProps } from '../utils/blockRegistry';
 export const DebriefBlockComponent: React.FC<BlockRendererProps<DebriefBlock>> = ({ block }) => {
   const title = block.title ?? 'Debrief';
   
+  // Flattened surface: no nested card around debrief text.
   return (
-    <div className="rounded-xl border border-border/20 bg-bg-elevated px-5 py-4">
+    <div className="border-l-2 border-border/50 pl-4">
       <div className="flex items-center gap-2 mb-3">
         <MessageSquare className="w-4 h-4 text-accent" aria-hidden="true" />
         <p className="text-xs font-black uppercase tracking-widest text-accent">

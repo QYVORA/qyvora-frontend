@@ -14,11 +14,10 @@ export const ConceptBlockComponent: React.FC<BlockRendererProps<ConceptBlock>> =
   const importance = block.importance ?? 'core';
   
   return (
+    // Flattened surface: this block already sits inside a task/deck card.
     <div
-      className={`rounded-xl border px-5 py-4 ${
-        importance === 'core'
-          ? 'border-accent/30 bg-accent/5'
-          : 'border-border/30 bg-bg-elevated'
+      className={`border-l-2 pl-4 ${
+        importance === 'core' ? 'border-accent/40' : 'border-border/50'
       }`}
     >
       <p

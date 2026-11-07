@@ -13,8 +13,9 @@ import type { BlockRendererProps } from '../utils/blockRegistry';
 export const DoBlockComponent: React.FC<BlockRendererProps<DoBlock>> = ({ block }) => {
   const title = block.title ?? 'Try It';
   
+  // Flattened surface: instructions stay in the reading flow, not a nested card.
   return (
-    <div className="rounded-xl border border-accent/20 bg-accent/5 px-5 py-4">
+    <div className="border-l-2 border-accent/40 pl-4">
       <div className="flex items-center gap-2 mb-4">
         <Play className="w-4 h-4 text-accent" aria-hidden="true" />
         <p className="text-xs font-black uppercase tracking-widest text-accent">

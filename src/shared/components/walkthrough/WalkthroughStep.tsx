@@ -71,17 +71,17 @@ export function WalkthroughStep({
         />
       )}
 
-      {/* Step Content — always visible */}
-      <div className="space-y-10 md:space-y-14 pb-14 md:pb-20">
-        {/* Mission */}
+      {/* Step Content — flat reading flow; the task accordion owns the only card. */}
+      <div className="space-y-8 pb-8 md:space-y-12 md:pb-16">
+        {/* Mission — flat callout; no nested card inside the task accordion. */}
         {mission && (
-          <div className="rounded-xl border border-accent/20 bg-accent/5 px-5 py-4 flex items-start gap-3">
-            <Target className="w-4 h-4 text-accent shrink-0 mt-0.5" />
-            <div>
-              <p className="text-xs font-black uppercase tracking-widest text-accent mb-1">Mission</p>
-              <p className="text-base font-mono text-text-secondary leading-[1.9] md:text-lg">{mission}</p>
+          <section aria-label="Mission" className="border-l-2 border-accent/40 pl-4">
+            <div className="mb-1.5 flex items-center gap-2">
+              <Target className="h-4 w-4 shrink-0 text-accent" aria-hidden="true" />
+              <p className="text-xs font-black uppercase tracking-widest text-accent">Mission</p>
             </div>
-          </div>
+            <p className="text-base font-mono text-text-secondary leading-[1.9] md:text-lg">{mission}</p>
+          </section>
         )}
 
         {/* Objectives — numbered vertical stepper */}
@@ -114,27 +114,27 @@ export function WalkthroughStep({
           <EducationalMarkdownRenderer text={narrative} />
         </div>
 
-        {/* Evidence — terminal-style log panel */}
+        {/* Evidence — flat terminal-style log; no nested panel surface. */}
         {evidence && evidence.length > 0 && (
-          <div className="wc-terminal rounded-xl border border-border/50 bg-bg overflow-hidden">
-            <div className="flex items-center justify-between px-4 py-2 border-b border-border/20 bg-bg-elevated">
+          <section aria-label="Evidence" className="border-l-2 border-border/50 pl-4">
+            <div className="mb-3 flex items-center justify-between gap-3">
               <div className="flex items-center gap-2">
-                <Search className="w-3 h-3 text-accent" />
+                <Search className="h-3 w-3 text-accent" aria-hidden="true" />
                 <p className="text-xs font-black uppercase tracking-widest text-accent">Evidence</p>
               </div>
               <span className="font-mono text-xs uppercase tracking-widest text-text-muted">
                 {evidence.length} {evidence.length === 1 ? 'entry' : 'entries'}
               </span>
             </div>
-            <ul className="p-4 space-y-1.5">
+            <ul className="space-y-1.5">
               {evidence.map((item, i) => (
-                <li key={i} className="flex items-start gap-2 font-mono text-sm md:text-base text-text-secondary leading-[1.9] md:leading-[2]">
-                  <span className="text-accent shrink-0 select-none">{'>'}</span>
-                  <span className="whitespace-pre-wrap break-words min-w-0">{item}</span>
+                <li key={i} className="flex items-start gap-2 font-mono text-sm leading-[1.9] text-text-secondary md:text-base md:leading-[2]">
+                  <span className="shrink-0 select-none text-accent">{'>'}</span>
+                  <span className="min-w-0 whitespace-pre-wrap break-words">{item}</span>
                 </li>
               ))}
             </ul>
-          </div>
+          </section>
         )}
 
         {/* Command Block */}
@@ -146,15 +146,15 @@ export function WalkthroughStep({
         {progressiveHints && progressiveHints.length > 0 && (
           <div className="space-y-2">
             {progressiveHints.slice(0, visibleHintLevel).map((ph) => (
-              <div key={ph.level} className="rounded-xl border border-warning/20 bg-warning/5 px-5 py-4 flex items-start gap-2">
-                <Lightbulb className="w-4 h-4 text-warning shrink-0 mt-0.5" />
-                <div>
-                  <p className="text-xs font-black uppercase tracking-widest text-warning/60 mb-1">
+              <section key={ph.level} className="border-l-2 border-warning/40 pl-4">
+                <div className="mb-1 flex items-center gap-2">
+                  <Lightbulb className="h-4 w-4 shrink-0 text-warning" aria-hidden="true" />
+                  <p className="text-xs font-black uppercase tracking-widest text-warning/60">
                     Hint {ph.level}, {HINT_LEVEL_LABELS[ph.level - 1]}
                   </p>
-                  <p className="text-base font-mono text-warning/80 leading-[1.9] md:text-lg md:leading-[2]">{ph.content}</p>
                 </div>
-              </div>
+                <p className="text-base font-mono leading-[1.9] text-warning/80 md:text-lg md:leading-[2]">{ph.content}</p>
+              </section>
             ))}
             {visibleHintLevel < progressiveHints.length && (
               <button
@@ -176,10 +176,13 @@ export function WalkthroughStep({
         {!progressiveHints && hint && (
           <div>
             {showHint ? (
-              <div className="rounded-xl border border-warning/20 bg-warning/5 px-5 py-4 flex items-start gap-2">
-                <Lightbulb className="w-4 h-4 text-warning shrink-0 mt-0.5" />
-                <p className="text-base font-mono text-warning/80 leading-[1.9] md:text-lg md:leading-[2]">{hint}</p>
-              </div>
+              <section className="border-l-2 border-warning/40 pl-4">
+                <div className="mb-2 flex items-center gap-2">
+                  <Lightbulb className="h-4 w-4 shrink-0 text-warning" aria-hidden="true" />
+                  <p className="text-xs font-black uppercase tracking-widest text-warning/60">Hint</p>
+                </div>
+                <p className="text-base font-mono leading-[1.9] text-warning/80 md:text-lg md:leading-[2]">{hint}</p>
+              </section>
             ) : (
               <button
                 type="button"
@@ -215,15 +218,15 @@ export function WalkthroughStep({
           />
         )}
 
-        {/* Reflection */}
+        {/* Reflection — flat reading section. */}
         {reflection && (
-          <div className="rounded-xl border border-border/20 bg-bg-elevated px-5 py-4">
-            <div className="flex items-center gap-2 mb-3">
-              <MessageSquare className="w-4 h-4 text-accent" />
+          <section aria-label="Reflection" className="border-l-2 border-border/50 pl-4">
+            <div className="mb-2 flex items-center gap-2">
+              <MessageSquare className="h-4 w-4 text-accent" aria-hidden="true" />
               <p className="text-xs font-black uppercase tracking-widest text-accent">Reflection</p>
             </div>
-            <p className="text-base font-mono text-text-secondary leading-[1.9] md:text-lg md:leading-[2] whitespace-pre-wrap">{reflection}</p>
-          </div>
+            <p className="whitespace-pre-wrap text-base font-mono leading-[1.9] text-text-secondary md:text-lg md:leading-[2]">{reflection}</p>
+          </section>
         )}
 
         {/* Flag Input — embedded naturally in the reading flow */}

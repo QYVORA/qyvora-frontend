@@ -4,74 +4,21 @@ import { Logo } from '@/shared/components/brand';
 import { IconArrowRight, IconMail } from '@/shared/components/icons';
 import PwaInstallButton from '@/shared/components/ui/PwaInstallButton';
 import { SOCIAL_LINKS } from './socialLinks';
-
-interface FooterCol {
-  title: string;
-  links: { key: string; label: string; to: string }[];
-}
-
-const COLS: FooterCol[] = [
-  {
-    title: 'Learning',
-    links: [
-      { key: 'learn', label: 'Learn', to: '/learn' },
-      { key: 'bootcamp', label: 'Bootcamp', to: '/hpb' },
-      { key: 'simulations', label: 'Simulations', to: '/simulations' },
-      { key: 'tools', label: 'All tools', to: '/tools' },
-      { key: 'resources', label: 'Cheat sheets', to: '/resources' },
-    ],
-  },
-  {
-    title: 'Tools',
-    links: [
-      { key: 'anansi', label: 'anansi', to: '/anansi' },
-      { key: 'shaka', label: 'shaka', to: '/shaka' },
-      { key: 'nzinga', label: 'nzinga', to: '/nzinga' },
-      { key: 'imhotep', label: 'imhotep', to: '/imhotep' },
-      { key: 'changelog', label: 'Changelog', to: '/changelog' },
-    ],
-  },
-  {
-    title: 'Company',
-    links: [
-      { key: 'team', label: 'Team', to: '/team' },
-      { key: 'leadership', label: 'Leadership', to: '/leadership' },
-      { key: 'services', label: 'Services', to: '/services' },
-      { key: 'about', label: 'About', to: '/about' },
-      { key: 'faq', label: 'FAQ', to: '/faq' },
-      { key: 'contact', label: 'Contact', to: '/contact' },
-      { key: 'credentials', label: 'Credentials', to: '/credentials' },
-      { key: 'verify', label: 'Verify a Credential', to: '/verify' },
-      { key: 'status', label: 'System Status', to: '/status' },
-    ],
-  },
-  {
-    title: 'Legal',
-    links: [
-      { key: 'privacy', label: 'Privacy Policy', to: '/privacy' },
-      { key: 'cookies', label: 'Cookie Policy', to: '/cookies' },
-      { key: 'security', label: 'Security', to: '/security' },
-      { key: 'refunds', label: 'Refund & Cancellation', to: '/refund-policy' },
-      { key: 'accessibility', label: 'Accessibility', to: '/accessibility' },
-      { key: 'acceptable-use', label: 'Community Guidelines', to: '/acceptable-use' },
-      { key: 'terms', label: 'Terms of Service', to: '/terms' },
-    ],
-  },
-];
+import { PUBLIC_FOOTER_COLUMNS } from './publicNav';
 
 const CURRENT_YEAR = new Date().getFullYear();
 
 /**
  * PublicFooter — structured brand footer. Brand + mission in the identity
- * column, grouped link columns, socials, and a quiet bottom bar that ties the
- * tagline back to the platform. Remains compact — this is wayfinding, not a
- * brochure.
+ * column, grouped link columns (including every legal/trust page), socials,
+ * and a quiet bottom bar that ties the tagline back to the platform. Remains
+ * compact — this is wayfinding, not a brochure.
  */
 const PublicFooter: React.FC = React.memo(() => {
   return (
     <footer className="border-t border-border-subtle bg-canvas" data-theme-persist="dark">
       <div className="px-3 py-10 md:px-4 lg:px-6">
-        <div className="grid grid-cols-1 gap-8 md:grid-cols-[minmax(0,340px)_1fr]">
+        <div className="grid grid-cols-1 gap-8 lg:grid-cols-[minmax(0,320px)_1fr]">
           <div>
             <Link to="/" aria-label="QYVORA" className="inline-block focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent">
               <Logo size="md" />
@@ -116,8 +63,8 @@ const PublicFooter: React.FC = React.memo(() => {
             </div>
           </div>
 
-          <nav aria-label="Footer" className="grid grid-cols-2 gap-x-6 gap-y-8 sm:grid-cols-4">
-            {COLS.map((col) => (
+          <nav aria-label="Footer" className="grid min-w-0 grid-cols-2 gap-x-5 gap-y-8 sm:grid-cols-4 lg:gap-x-6">
+            {PUBLIC_FOOTER_COLUMNS.map((col) => (
               <div key={col.title}>
                 <h3 className="type-label text-accent">{col.title}</h3>
                 <ul className="mt-3 space-y-0.5">

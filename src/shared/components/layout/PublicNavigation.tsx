@@ -9,27 +9,14 @@ import { useReducedMotion } from '@/shared/hooks/useReducedMotion';
 import Button from '@/shared/components/ui/Button';
 import IconButton from '@/shared/components/ui/IconButton';
 import PwaInstallButton from '@/shared/components/ui/PwaInstallButton';
-
-interface NavLinkDef {
-  key: string;
-  label: string;
-  to: string;
-}
-
-const LINKS: NavLinkDef[] = [
-  { key: 'learn', label: 'Learn', to: '/learn' },
-  { key: 'bootcamp', label: 'Bootcamp', to: '/hpb' },
-  { key: 'tools', label: 'Tools', to: '/tools' },
-  { key: 'research', label: 'Research', to: '/blogs' },
-  { key: 'services', label: 'Services', to: '/services' },
-  { key: 'about', label: 'About', to: '/about' },
-];
+import { PUBLIC_PRIMARY_LINKS } from './publicNav';
 
 /**
  * PublicNavigation — calm public nav. Six sections and one contextual CTA.
- * Desktop shows the section links inline; mobile relies on PublicBottomNav for
- * primary navigation, so the mobile trigger is an account-only menu (Dashboard
- * or Log In / Start learning) — never a second copy of the section links.
+ * Desktop shows icon-over-label links at lg+; tablets and phones rely on
+ * PublicBottomNav for primary navigation, so the mobile trigger is an
+ * account-only menu (Dashboard or Log In / Start learning) — never a second
+ * copy of the section links.
  * No glow, no border on links — borders stay on badges/status indicators only.
  */
 const PublicNavigation: React.FC = React.memo(() => {
@@ -98,7 +85,7 @@ const PublicNavigation: React.FC = React.memo(() => {
       <nav
         aria-label="Primary"
         className={[
-          'chrome-fixed fixed inset-x-0 top-0 z-[100] flex h-[80px] items-center',
+          'chrome-fixed fixed inset-x-0 top-0 z-[100] flex h-16 items-center lg:h-20',
           // Keep the hero visible at the top; add a blurred surface once content
           // scrolls beneath the navbar. The open mobile menu stays opaque.
           open
@@ -109,33 +96,38 @@ const PublicNavigation: React.FC = React.memo(() => {
           'transition-all duration-300',
         ].join(' ')}
       >
-        <div className="flex w-full items-center justify-between px-3 md:px-4 lg:px-6">
+        <div className="flex w-full items-center justify-between gap-3 px-3 md:px-4 lg:px-6">
           <Link to="/" aria-label="QYVORA home" className="relative z-[110] flex shrink-0 items-center">
             <Logo size="md" variant="full" className="hidden md:block" />
             <Logo size="md" variant="mark" className="md:hidden" />
           </Link>
 
-          <div className="hidden items-center md:flex">
-            {LINKS.map((link) => (
-              <NavLink
-                key={link.key}
-                to={link.to}
-                className={({ isActive }) =>
-                  [
-                    'group relative flex min-h-[48px] items-center gap-2 rounded-xl px-2 py-2 text-xs font-bold uppercase tracking-wide lg:px-4 lg:text-sm lg:tracking-widest',
-                    'transition-all duration-200 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent',
-                    isActive 
-                      ? 'bg-accent/10 text-accent' 
-                      : 'text-text-secondary hover:bg-surface-raised hover:text-text-primary',
-                  ].join(' ')
-                }
-              >
-                {link.label}
-              </NavLink>
-            ))}
+          {/* Desktop primary nav: icon above label keeps six sections compact. */}
+          <div className="hidden items-stretch gap-0.5 lg:flex xl:gap-1">
+            {PUBLIC_PRIMARY_LINKS.map((link) => {
+              const Icon = link.icon;
+              return (
+                <NavLink
+                  key={link.key}
+                  to={link.to}
+                  className={({ isActive }) =>
+                    [
+                      'group relative flex min-h-[56px] min-w-[56px] flex-col items-center justify-center gap-1 rounded-xl px-2 py-1.5 text-[10px] font-bold uppercase tracking-wide xl:min-w-[68px] xl:px-3 xl:text-[11px] xl:tracking-wider',
+                      'transition-all duration-200 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent',
+                      isActive
+                        ? 'bg-accent/10 text-accent'
+                        : 'text-text-secondary hover:bg-surface-raised hover:text-text-primary',
+                    ].join(' ')
+                  }
+                >
+                  <Icon className="h-4 w-4 shrink-0" strokeWidth={2} aria-hidden="true" />
+                  <span className="whitespace-nowrap">{link.label}</span>
+                </NavLink>
+              );
+            })}
           </div>
 
-          <div className="relative z-[110] flex shrink-0 items-center gap-3">
+          <div className="relative z-[110] flex shrink-0 items-center gap-2 sm:gap-3">
             <IconButton
               label={isFullscreen ? "Exit fullscreen" : "Fullscreen"}
               tooltip={false}
@@ -144,7 +136,8 @@ const PublicNavigation: React.FC = React.memo(() => {
               icon={isFullscreen ? <Minimize className="h-5 w-5" aria-hidden="true" /> : <Maximize className="h-5 w-5" aria-hidden="true" />}
               active={isFullscreen}
             />
-            <div className="hidden items-center gap-2 md:flex">
+            {/* Auth CTAs are visible from sm+; below that the account menu owns them. */}
+            <div className="hidden items-center gap-2 sm:flex">
               {user ? (
                 <Button to="/dashboard" size="sm">
                   {"Dashboard"}
@@ -164,7 +157,7 @@ const PublicNavigation: React.FC = React.memo(() => {
               label={"Account"}
               tooltip={false}
               variant="default"
-              className="md:hidden"
+              className="sm:hidden"
               onClick={() => setOpen((v) => !v)}
               icon={<User className="h-5 w-5" aria-hidden="true" />}
               active={open}
@@ -195,7 +188,7 @@ const PublicNavigation: React.FC = React.memo(() => {
               animate={{ opacity: 1, y: 0 }}
               exit={ctx}
               transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }}
-              className="fixed inset-x-0 top-[80px] z-[96] max-h-[calc(100dvh-80px)] overflow-y-auto border-t border-border-subtle bg-surface"
+              className="fixed inset-x-0 top-16 z-[96] max-h-[calc(100dvh-4rem)] overflow-y-auto border-t border-border-subtle bg-surface lg:top-20 lg:max-h-[calc(100dvh-5rem)]"
             >
               <nav aria-label={"Account"} className="flex flex-col gap-2 px-3 py-4 md:px-4">
                 {user ? (

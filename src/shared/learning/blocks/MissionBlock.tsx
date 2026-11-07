@@ -11,8 +11,9 @@ import type { MissionBlock } from '../types/blocks';
 import type { BlockRendererProps } from '../utils/blockRegistry';
 
 export const MissionBlockComponent: React.FC<BlockRendererProps<MissionBlock>> = ({ block }) => {
+  // Flattened surface: mission text belongs in the reading flow.
   return (
-    <div className="rounded-xl border border-accent/20 bg-accent/5 px-5 py-4 flex items-start gap-3">
+    <div className="flex items-start gap-3 border-l-2 border-accent/40 pl-4">
       <Target className="w-4 h-4 text-accent shrink-0 mt-0.5" aria-hidden="true" />
       <div>
         <p className="text-xs font-black uppercase tracking-widest text-accent mb-1">

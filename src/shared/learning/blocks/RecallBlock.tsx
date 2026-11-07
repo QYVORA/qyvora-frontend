@@ -13,8 +13,9 @@ import type { BlockRendererProps } from '../utils/blockRegistry';
 export const RecallBlockComponent: React.FC<BlockRendererProps<RecallBlock>> = ({ block }) => {
   const title = block.title ?? 'Remember';
   
+  // Flattened surface: avoid a nested card inside the task accordion.
   return (
-    <div className="rounded-xl border-2 border-accent/30 bg-accent/5 px-5 py-4">
+    <div className="border-l-2 border-accent/40 pl-4">
       <div className="flex items-center gap-2 mb-4">
         <Bookmark className="w-4 h-4 text-accent" aria-hidden="true" />
         <p className="text-xs font-black uppercase tracking-widest text-accent">
