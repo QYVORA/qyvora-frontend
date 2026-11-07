@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { ChevronDown, Lock } from 'lucide-react';
+import { Check, ChevronDown, Lock } from 'lucide-react';
 import { cn } from '@/shared/utils/cn';
 import { DifficultyBadge } from './LearningCard';
 
@@ -17,6 +17,7 @@ export interface LearningAccordionItem {
   onStart?: () => void;
   startLabel?: string;
   locked?: boolean;
+  completed?: boolean;
   cpCost?: number;
   onUnlock?: () => void;
 }
@@ -44,71 +45,93 @@ function StartButton({ label, onClick, locked, cpCost, onUnlock }: { label: stri
 }
 
 /**
- * Terms-page style strip accordion, reused for lab room listings.
- * - Desktop (md+): horizontal expandable strips — multiple can be open, first opens by default.
- * - Mobile (<md): stacked always-expanded terminal cards.
+ * Task-card accordion reused for lab room/challenge listings.
+ *
+ * Every breakpoint now uses the same one-at-a-time, click-to-toggle card. A
+ * completed item gets a green check, the open item gets an accent ring, and
+ * opening a new item closes the previous one. Mobile cards stay full-width so
+ * the reading column never gets squeezed on narrow screens.
  */
 export function LearningAccordion({ items, className, defaultOpen = 0 }: LearningAccordionProps) {
-  const [openSections, setOpenSections] = useState<Set<number>>(new Set([defaultOpen]));
+  const [openIndex, setOpenIndex] = useState<number | null>(
+    defaultOpen >= 0 && defaultOpen < items.length ? defaultOpen : null,
+  );
 
   const toggleSection = (idx: number) => {
-    setOpenSections((prev) => {
-      const next = new Set(prev);
-      if (next.has(idx)) {
-        next.delete(idx);
-      } else {
-        next.add(idx);
-      }
-      return next;
-    });
+    setOpenIndex((current) => (current === idx ? null : idx));
   };
 
   return (
-    <div className={cn('flex flex-col gap-2', className)}>
+    <div className={cn('flex w-full flex-col gap-3 sm:gap-4', className)}>
       {items.map((item, idx) => {
-        const isOpen = openSections.has(idx);
+        const isOpen = openIndex === idx;
         return (
-          <div
+          <section
             key={item.id}
-            className="hidden md:block rounded-2xl border border-border-subtle bg-surface overflow-hidden transition-colors hover:border-accent/40"
+            className={cn(
+              'w-full overflow-hidden rounded-lg border bg-surface transition-colors duration-150',
+              isOpen
+                ? 'border-accent/50'
+                : item.locked
+                  ? 'border-border-subtle opacity-75'
+                  : 'border-border-subtle hover:border-accent/35',
+            )}
           >
-            {/* Strip header — always visible */}
             <button
               type="button"
               onClick={() => toggleSection(idx)}
               aria-expanded={isOpen}
               aria-controls={`accordion-panel-${item.id}`}
-              className="w-full flex items-center justify-between gap-4 px-6 py-5 text-left group"
+              className={cn(
+                'flex w-full items-center gap-3 px-3 py-4 text-left transition-colors duration-150 sm:gap-4 sm:px-6 sm:py-5',
+                !isOpen && 'hover:bg-surface-raised/60',
+              )}
             >
-              <div className="flex items-center gap-4 min-w-0">
-                <span className="text-xs font-black text-accent/60 font-mono w-6 shrink-0">
-                  {String(idx + 1).padStart(2, '0')}
-                </span>
-                <div className="min-w-0">
-                  <h3 className="text-base font-black text-text-primary uppercase tracking-tight truncate">
-                    {item.title}
-                  </h3>
-                  {item.subtitle && (
-                    <p className="text-xs font-black uppercase tracking-widest text-accent/60 mt-0.5 truncate">
-                      {item.subtitle}
-                    </p>
-                  )}
-                </div>
-              </div>
-              <div className="flex items-center gap-3 shrink-0">
-                {item.difficulty && <DifficultyBadge difficulty={item.difficulty} />}
-                {item.locked && (
-                  <Lock className="w-4 h-4 text-text-muted" aria-hidden="true" />
+              <span
+                aria-hidden="true"
+                className={cn(
+                  'flex h-8 w-8 shrink-0 items-center justify-center rounded-full border font-mono text-xs font-black transition-colors duration-150',
+                  item.completed
+                    ? 'border-success/40 bg-success/10 text-success'
+                    : item.locked
+                      ? 'border-border-subtle bg-surface-raised text-text-muted'
+                      : isOpen
+                        ? 'border-accent/50 bg-accent/10 text-accent'
+                        : 'border-border-subtle bg-surface-raised text-text-tertiary',
                 )}
+              >
+                {item.completed ? (
+                  <Check className="h-4 w-4" />
+                ) : item.locked ? (
+                  <Lock className="h-3.5 w-3.5" />
+                ) : (
+                  String(idx + 1).padStart(2, '0')
+                )}
+              </span>
+
+              <span className="min-w-0 flex-1">
+                <span className="block text-[15px] font-black uppercase leading-snug tracking-tight text-text-primary sm:text-base">
+                  {item.title}
+                </span>
+                {item.subtitle && (
+                  <span className="mt-0.5 block text-[11px] font-black uppercase leading-relaxed tracking-widest text-accent/60 sm:text-xs">
+                    {item.subtitle}
+                  </span>
+                )}
+              </span>
+
+              <span className="hidden shrink-0 items-center gap-3 sm:flex">
+                {item.difficulty && <DifficultyBadge difficulty={item.difficulty} />}
                 {item.meta}
-                <ChevronDown
-                  size={16}
-                  className={cn('text-text-muted shrink-0 transition-transform duration-200', isOpen && 'rotate-180')}
-                />
-              </div>
+              </span>
+
+              <ChevronDown
+                size={16}
+                className={cn('shrink-0 text-text-muted transition-transform duration-200', isOpen && 'rotate-180')}
+                aria-hidden="true"
+              />
             </button>
 
-            {/* Expandable content */}
             <AnimatePresence initial={false}>
               {isOpen && (
                 <motion.div
@@ -118,58 +141,35 @@ export function LearningAccordion({ items, className, defaultOpen = 0 }: Learnin
                   transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
                   className="overflow-hidden"
                 >
-                  <div id={`accordion-panel-${item.id}`} role="region" className="px-6 pb-6 pl-15">
-                    <p className="text-base text-text-primary leading-[2] md:leading-[2.2] mb-4 pl-10 wc-prose">
+                  <div
+                    id={`accordion-panel-${item.id}`}
+                    role="region"
+                    className="px-3 pb-6 pt-1 sm:px-6 sm:pb-6 sm:pl-[4.5rem]"
+                  >
+                    <div className="mb-4 flex flex-wrap items-center gap-2 sm:hidden">
+                      {item.difficulty && <DifficultyBadge difficulty={item.difficulty} />}
+                      {item.meta}
+                    </div>
+                    <p className="mb-4 text-[15px] leading-7 text-text-primary sm:text-base sm:leading-[2]">
                       {item.description}
                     </p>
                     {item.body}
                     {item.onStart && (
-                      <div className="pl-10">
-                        <StartButton label={item.startLabel ?? 'Start'} onClick={item.onStart} locked={item.locked} cpCost={item.cpCost} onUnlock={item.onUnlock} />
-                      </div>
+                      <StartButton
+                        label={item.startLabel ?? 'Start'}
+                        onClick={item.onStart}
+                        locked={item.locked}
+                        cpCost={item.cpCost}
+                        onUnlock={item.onUnlock}
+                      />
                     )}
                   </div>
                 </motion.div>
               )}
             </AnimatePresence>
-          </div>
+          </section>
         );
       })}
-
-      {/* Mobile: stacked terminal cards (always expanded) */}
-      <div className="md:hidden flex flex-col gap-4">
-        {items.map((item, idx) => (
-          <div key={item.id} className="relative rounded-2xl border border-border-subtle bg-surface overflow-hidden">
-            <div className="relative p-5">
-              <div
-                className="absolute top-3 right-4 font-mono text-2xl font-black leading-none select-none pointer-events-none"
-                style={{ color: 'var(--color-accent-dim)' }}
-                aria-hidden="true"
-              >
-                {String(idx + 1).padStart(2, '0')}
-              </div>
-              <h3 className="text-base font-black text-text-primary mb-1 font-mono uppercase tracking-tight pr-10">
-                {item.title}
-              </h3>
-              {item.subtitle && (
-                <p className="text-xs font-black uppercase tracking-widest text-accent/60 mb-3">
-                  {item.subtitle}
-                </p>
-              )}
-              <div className="flex items-center gap-2 mb-4">
-                {item.difficulty && <DifficultyBadge difficulty={item.difficulty} />}
-                {item.locked && (
-                  <Lock className="w-4 h-4 text-text-muted" aria-hidden="true" />
-                )}
-                {item.meta}
-              </div>
-              <p className="text-base text-text-primary leading-[2] md:leading-[2.2]">{item.description}</p>
-              {item.body}
-              {item.onStart && <StartButton label={item.startLabel ?? 'Start'} onClick={item.onStart} locked={item.locked} cpCost={item.cpCost} onUnlock={item.onUnlock} />}
-            </div>
-          </div>
-        ))}
-      </div>
     </div>
   );
 }

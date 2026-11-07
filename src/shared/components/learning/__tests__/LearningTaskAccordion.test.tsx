@@ -52,6 +52,30 @@ describe('LearningTaskAccordion', () => {
     await waitFor(() => expect(screen.queryByText('Recon content')).not.toBeInTheDocument());
   });
 
+  it('closes an open task when its header is clicked again', async () => {
+    const user = userEvent.setup();
+    renderAccordion();
+
+    const header = screen.getByRole('button', { name: /Reconnaissance/i });
+    expect(header).toHaveAttribute('aria-expanded', 'true');
+
+    await user.click(header);
+
+    await waitFor(() => expect(screen.queryByText('Recon content')).not.toBeInTheDocument());
+    expect(header).toHaveAttribute('aria-expanded', 'false');
+  });
+
+  it('can close a controlled task without changing the requested parent id', async () => {
+    const user = userEvent.setup();
+    renderAccordion('task-1');
+
+    const header = screen.getByRole('button', { name: /Reconnaissance/i });
+    await user.click(header);
+
+    await waitFor(() => expect(screen.queryByText('Recon content')).not.toBeInTheDocument());
+    expect(header).toHaveAttribute('aria-expanded', 'false');
+  });
+
   it('does not open locked tasks and explains why', async () => {
     const user = userEvent.setup();
     renderAccordion();

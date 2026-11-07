@@ -71,7 +71,7 @@ const LearningWorkspaceShell: React.FC<LearningWorkspaceShellProps> = ({
 
   return (
     <div className="min-h-dvh w-full bg-canvas">
-      <div className="mx-auto w-full max-w-[1120px] px-4 pb-16 pt-6 sm:px-6 md:pb-20 md:pt-8 lg:px-8 lg:pb-24">
+      <div className="mx-auto w-full max-w-[1120px] px-3 pb-16 pt-6 sm:px-6 md:pb-20 md:pt-8 lg:px-8 lg:pb-24">
         <header className="flex flex-col gap-6">
           {(breadcrumb || defaultBreadcrumb || onBack) && (
             <div className="flex flex-wrap items-center gap-3">
