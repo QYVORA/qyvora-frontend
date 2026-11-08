@@ -9,6 +9,7 @@ import React, { useState } from 'react';
 import { Lightbulb, Check, X } from 'lucide-react';
 import type { ThinkBlock } from '../types/blocks';
 import type { BlockRendererProps } from '../utils/blockRegistry';
+import { GameProse } from './GameProse';
 
 export const ThinkBlockComponent: React.FC<BlockRendererProps<ThinkBlock>> = ({ block, context }) => {
   const [selectedOption, setSelectedOption] = useState<number | null>(null);
@@ -34,15 +35,13 @@ export const ThinkBlockComponent: React.FC<BlockRendererProps<ThinkBlock>> = ({ 
     <div className="rounded-xl border border-warning/20 bg-warning/5 px-5 py-4">
       <div className="flex items-center gap-2 mb-3">
         <Lightbulb className="w-4 h-4 text-warning" aria-hidden="true" />
-        <p className="text-xs font-black uppercase tracking-widest text-warning">
+        <p className="text-[10px] font-black uppercase tracking-[0.18em] text-warning">
           Think
         </p>
       </div>
       
       {/* Question */}
-      <p className="text-base md:text-lg font-mono text-text-primary leading-relaxed mb-4">
-        {block.question}
-      </p>
+      <GameProse text={block.question} className="mb-4 text-text-primary" />
       
       {/* Options (if provided) */}
       {hasOptions && !isOpenEnded && (
@@ -80,7 +79,7 @@ export const ThinkBlockComponent: React.FC<BlockRendererProps<ThinkBlock>> = ({ 
                       )}
                     </span>
                   )}
-                  <span className="text-base font-mono leading-relaxed">{option}</span>
+                  <GameProse text={option} className="min-w-0 flex-1 text-text-secondary" />
                 </div>
               </button>
             );
@@ -103,12 +102,10 @@ export const ThinkBlockComponent: React.FC<BlockRendererProps<ThinkBlock>> = ({ 
       {/* Explanation (revealed after answer or for open-ended) */}
       {(revealed || isOpenEnded) && block.explanation && (
         <div className="pt-4 mt-4 border-t border-warning/20">
-          <p className="text-xs font-black uppercase tracking-widest text-warning/60 mb-2">
+          <p className="text-[10px] font-black uppercase tracking-[0.18em] text-warning/60 mb-2">
             {isOpenEnded ? 'Consider This' : isCorrect ? 'Correct!' : 'Explanation'}
           </p>
-          <p className="text-base font-mono text-text-secondary leading-relaxed">
-            {block.explanation}
-          </p>
+          <GameProse text={block.explanation} />
         </div>
       )}
     </div>

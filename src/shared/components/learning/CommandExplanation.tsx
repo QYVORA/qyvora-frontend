@@ -12,7 +12,7 @@ interface CommandExplanationProps {
 function ExplanationBody({ explanation }: { explanation: CommandExplanationData }) {
   return (
     <div className="space-y-4">
-      <p className="text-base font-mono leading-relaxed text-text-secondary md:text-lg">
+      <p className="text-sm leading-6 text-text-secondary sm:text-[15px] sm:leading-7">
         {explanation.overview}
       </p>
 
@@ -20,12 +20,12 @@ function ExplanationBody({ explanation }: { explanation: CommandExplanationData 
         {explanation.parts.map((part, index) => (
           <div
             key={`${part.command}-${index}`}
-            className="rounded-xl border border-border/30 bg-bg/60 px-4 py-3"
+            className="rounded-xl border border-border/30 bg-bg/60 px-3.5 py-3"
           >
-            <code className="block overflow-x-auto whitespace-pre-wrap break-all font-mono text-sm font-bold text-accent md:text-base">
+            <code className="block overflow-x-auto whitespace-pre-wrap break-all font-mono text-xs font-bold text-accent sm:text-sm">
               {part.command}
             </code>
-            <p className="mt-2 text-base font-mono leading-relaxed text-text-secondary">
+            <p className="mt-2 text-sm leading-6 text-text-secondary">
               {part.summary}
             </p>
             {part.flags.length > 0 && (
@@ -48,7 +48,7 @@ function ExplanationBody({ explanation }: { explanation: CommandExplanationData 
       {explanation.caution && (
         <div className="flex items-start gap-2 rounded-xl border border-warning/30 bg-warning/5 px-4 py-3">
           <ShieldAlert className="mt-0.5 h-4 w-4 shrink-0 text-warning" aria-hidden="true" />
-          <p className="font-mono text-sm leading-relaxed text-warning md:text-base">
+          <p className="text-sm leading-6 text-warning">
             {explanation.caution}
           </p>
         </div>
@@ -64,7 +64,7 @@ export function CommandExplanation({ command, collapsible = false, className }: 
   if (collapsible) {
     return (
       <details className={cn('group border-t border-border/30 bg-bg-elevated/60', className)}>
-        <summary className="flex cursor-pointer list-none items-center justify-between gap-3 px-4 py-3 text-sm font-black uppercase tracking-widest text-text-secondary transition-colors hover:text-accent">
+        <summary className="flex cursor-pointer list-none items-center justify-between gap-3 px-4 py-3 text-xs font-black uppercase tracking-[0.16em] text-text-secondary transition-colors hover:text-accent">
           <span className="flex items-center gap-2">
             <BookOpen className="h-4 w-4 text-accent" aria-hidden="true" />
             Explain these commands
@@ -82,7 +82,7 @@ export function CommandExplanation({ command, collapsible = false, className }: 
     <div className={cn('rounded-xl border border-border/40 bg-bg-elevated/60 px-4 py-4', className)}>
       <div className="mb-3 flex items-center gap-2">
         <BookOpen className="h-4 w-4 text-accent" aria-hidden="true" />
-        <p className="text-xs font-black uppercase tracking-widest text-accent">Command breakdown</p>
+        <p className="text-[10px] font-black uppercase tracking-[0.18em] text-accent">Command breakdown</p>
       </div>
       <ExplanationBody explanation={explanation} />
     </div>

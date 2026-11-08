@@ -9,6 +9,7 @@ import React from 'react';
 import { ClipboardList } from 'lucide-react';
 import type { ObjectiveBlock } from '../types/blocks';
 import type { BlockRendererProps } from '../utils/blockRegistry';
+import { GameProse } from './GameProse';
 
 export const ObjectiveBlockComponent: React.FC<BlockRendererProps<ObjectiveBlock>> = ({ block }) => {
   const title = block.title ?? 'Objectives';
@@ -17,7 +18,7 @@ export const ObjectiveBlockComponent: React.FC<BlockRendererProps<ObjectiveBlock
     <div>
       <div className="flex items-center gap-2 mb-5">
         <ClipboardList className="w-4 h-4 text-accent" aria-hidden="true" />
-        <p className="text-xs font-black uppercase tracking-widest text-accent">
+        <p className="text-[10px] font-black uppercase tracking-[0.18em] text-accent">
           {title}
         </p>
       </div>
@@ -43,9 +44,7 @@ export const ObjectiveBlockComponent: React.FC<BlockRendererProps<ObjectiveBlock
               )}
             </div>
             
-            <p className="text-base md:text-lg font-mono text-text-secondary leading-relaxed pt-1 min-w-0">
-              {objective}
-            </p>
+            <GameProse text={objective} className="min-w-0 flex-1 pt-0.5" />
           </li>
         ))}
       </ol>

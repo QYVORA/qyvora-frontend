@@ -71,7 +71,7 @@ const LearningWorkspaceShell: React.FC<LearningWorkspaceShellProps> = ({
 
   return (
     <div className="min-h-dvh w-full bg-canvas">
-      <div className="mx-auto w-full max-w-[1120px] px-3 pb-16 pt-6 sm:px-6 md:pb-20 md:pt-8 lg:px-8 lg:pb-24">
+      <div className="mx-auto w-full max-w-[1240px] px-3 pb-16 pt-6 sm:px-6 md:pb-20 md:pt-8 lg:px-8 lg:pb-24">
         <header className="flex flex-col gap-6">
           {(breadcrumb || defaultBreadcrumb || onBack) && (
             <div className="flex flex-wrap items-center gap-3">
@@ -97,12 +97,12 @@ const LearningWorkspaceShell: React.FC<LearningWorkspaceShellProps> = ({
                     {icon}
                   </span>
                 )}
-                <h1 className="text-3xl font-black uppercase tracking-tight text-text-primary md:text-4xl lg:text-5xl">
+                <h1 className="font-display text-2xl font-bold leading-tight tracking-tight text-text-primary sm:text-3xl md:text-4xl lg:text-[42px]">
                   {title}
                 </h1>
               </div>
               {description && (
-                <p className="mt-3 max-w-2xl text-lg text-text-secondary md:text-xl">{description}</p>
+                <p className="mt-3 max-w-2xl text-sm leading-6 text-text-secondary sm:text-base sm:leading-7 md:text-lg">{description}</p>
               )}
             </div>
             {actions && <div className="flex flex-wrap items-center gap-3">{actions}</div>}

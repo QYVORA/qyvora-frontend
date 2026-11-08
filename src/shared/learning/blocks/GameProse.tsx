@@ -14,6 +14,7 @@ import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import rehypeSanitize from 'rehype-sanitize';
 import { SANITIZE_SCHEMA, isSafeUrl } from '@/shared/components/courses/markdown/sanitize';
+import { cn } from '@/shared/utils/cn';
 
 interface Props {
   text: string;
@@ -23,7 +24,11 @@ interface Props {
 export const GameProse: React.FC<Props> = ({ text, className }) => {
   return (
     <div
-      className={`w-full font-mono text-lg md:text-xl text-text-primary leading-8 md:leading-9 space-y-4 max-w-none ${className ?? ''}`}
+      className={cn(
+        'w-full max-w-none space-y-3 font-mono text-sm leading-6 text-text-secondary',
+        'sm:text-[15px] sm:leading-7 md:text-base md:leading-8',
+        className,
+      )}
     >
       <ReactMarkdown
         remarkPlugins={[remarkGfm]}
@@ -32,10 +37,10 @@ export const GameProse: React.FC<Props> = ({ text, className }) => {
         unwrapDisallowed
         components={{
           p: ({ children }) => <p className="m-0">{children}</p>,
-          strong: ({ children }) => <strong className="font-bold text-text-primary">{children}</strong>,
-          em: ({ children }) => <em className="italic text-text-secondary">{children}</em>,
+          strong: ({ children }) => <strong className="font-semibold text-text-primary">{children}</strong>,
+          em: ({ children }) => <em className="italic text-text-primary">{children}</em>,
           code: ({ children }) => (
-            <code className="mx-0.5 rounded-[4px] border border-border bg-code-bg px-1.5 py-px font-mono text-base text-accent">
+            <code className="mx-0.5 rounded-[4px] border border-border/70 bg-code-bg px-1.5 py-px font-mono text-[0.9em] text-accent">
               {children}
             </code>
           ),

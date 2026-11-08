@@ -78,6 +78,8 @@ type Segment =
 
 const CODE_FENCE = /^```([^\s`]*)/;
 const HEADING = /^(#{1,4})\s+(.+)$/;
+// Bootcamp/course copy often uses a standalone bold line as a sub-heading.
+const BOLD_HEADING = /^\s*\*\*(.+?)\*\*:?\s*$/;
 const BLOCKQUOTE = /^\s*>\s?(.*)$/;
 const HR = /^\s*([-*_])\1{2,}\s*$/;
 const UNORDERED = /^\s*[-*+]\s+(.+)$/;
@@ -136,7 +138,15 @@ function tokenize(markdown: string): Segment[] {
     const headingMatch = line.match(HEADING);
     if (headingMatch) {
       flushPara(); flushQuote(); flushList();
-      segments.push({ kind: 'heading', level: headingMatch[1].length, text: plainMarkdown(headingMatch[2]) });
+      segments.push({ kind: 'heading', level: headingMatch[1].length, text: cleanHeading(headingMatch[2]) });
+      i += 1;
+      continue;
+    }
+
+    const boldHeadingMatch = line.match(BOLD_HEADING);
+    if (boldHeadingMatch) {
+      flushPara(); flushQuote(); flushList();
+      segments.push({ kind: 'heading', level: 3, text: cleanHeading(boldHeadingMatch[1]) });
       i += 1;
       continue;
     }
@@ -190,7 +200,11 @@ function tokenize(markdown: string): Segment[] {
 // ── Assembly ─────────────────────────────────────────────────────────────────
 
 function isWhyQuote(text: string): boolean {
-  return /why this matters|^why\b/i.test(text);
+  return /why this matters|^why\b/i.test(plainMarkdown(text));
+}
+
+function cleanHeading(text: string): string {
+  return plainMarkdown(text).replace(/[:：]\s*$/, '').trim();
 }
 
 export interface MarkdownToBlocksOptions {
@@ -237,7 +251,7 @@ export function markdownToBlocks(
       }
 
       case 'blockquote': {
-        const quote = plainMarkdown(segment.text);
+        const quote = segment.text.trim();
         if (!quote) break;
         const isWhy = isWhyQuote(quote);
         const concept: ConceptBlock = {
@@ -266,7 +280,9 @@ export function markdownToBlocks(
       }
 
       case 'list': {
-        const items = segment.items.map((s) => plainMarkdown(s));
+        // Keep inline Markdown so bold, italics, and inline code survive inside
+        // Recall/Do items; the block renderers use the rich prose component.
+        const items = segment.items.map((s) => s.trim());
         if (segment.ordered) {
           const doBlock: DoBlock = {
             type: 'do',

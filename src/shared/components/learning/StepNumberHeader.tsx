@@ -61,8 +61,8 @@ export function StepNumberHeader({
           </span>
           <h2
             className={cn(
-              'font-black uppercase tracking-tight flex-1 min-w-0',
-              'text-2xl md:text-3xl',
+              'min-w-0 flex-1 font-display font-bold leading-tight tracking-tight',
+              'text-xl sm:text-2xl md:text-3xl',
               isActive || isCompleted ? 'text-text-primary' : 'text-text-muted'
             )}
           >

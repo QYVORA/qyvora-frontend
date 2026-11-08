@@ -1,17 +1,20 @@
 import React from 'react';
 
 // ── Typography (centralised QYVORA grammar) ───────────────────────────────────
-export const PARA_CLASS = 'text-base md:text-lg text-text-secondary font-mono leading-[1.9] md:leading-[2] mb-6 md:mb-8 max-w-none';
-export const LIST_CLASS = 'list-outside pl-5 space-y-3 md:space-y-4 text-base md:text-lg text-text-secondary font-mono leading-[1.9] md:leading-[2] mb-6 md:mb-8 max-w-none';
+export const PARA_CLASS = 'mb-5 max-w-none font-mono text-sm leading-7 text-text-secondary sm:text-[15px] sm:leading-8 md:text-base md:leading-8';
+export const LIST_CLASS = 'mb-5 max-w-none list-outside space-y-2.5 pl-5 font-mono text-sm leading-7 text-text-secondary sm:text-[15px] sm:leading-8 md:text-base md:leading-8';
 
 export const headingClass = (level: number): string => {
-  const size =
-    level === 1 ? 'text-2xl md:text-4xl mb-6 md:mb-8' :
-    level === 2 ? 'text-2xl md:text-4xl mb-6 md:mb-8' :
-    level === 3 ? 'text-2xl md:text-3xl text-accent mb-5 md:mb-6' :
-                  'text-lg md:text-xl mb-4 mt-4';
-  const color = level === 3 ? 'text-accent' : 'text-text-primary';
-  return `font-black uppercase tracking-tight ${size} ${color}`;
+  if (level === 1) {
+    return 'mb-5 font-display text-3xl font-bold leading-tight tracking-tight text-text-primary md:mb-6 md:text-4xl';
+  }
+  if (level === 2) {
+    return 'mb-4 mt-7 font-display text-2xl font-bold leading-tight tracking-tight text-text-primary first:mt-0 md:text-3xl';
+  }
+  if (level === 3) {
+    return 'mb-3 mt-6 font-display text-xl font-semibold leading-snug tracking-tight text-accent first:mt-0 md:text-2xl';
+  }
+  return 'mb-2 mt-5 text-sm font-black uppercase tracking-[0.18em] text-text-muted first:mt-0';
 };
 
 export const Heading = ({ level, children }: { level: number; children?: React.ReactNode }) => {

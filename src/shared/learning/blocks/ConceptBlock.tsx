@@ -21,14 +21,14 @@ export const ConceptBlockComponent: React.FC<BlockRendererProps<ConceptBlock>> =
       }`}
     >
       <p
-        className={`text-xs font-black uppercase tracking-widest mb-2 ${
+        className={`mb-2 text-[10px] font-black uppercase tracking-[0.18em] ${
           importance === 'core' ? 'text-accent' : 'text-text-muted'
         }`}
       >
         {importance === 'core' ? 'Core Concept' : 'Concept'}
       </p>
       
-      <h3 className="text-lg md:text-xl font-black text-text-primary tracking-tight mb-3">
+      <h3 className="mb-2.5 font-display text-lg font-bold leading-snug tracking-tight text-text-primary sm:text-xl md:text-2xl">
         {block.title}
       </h3>
       

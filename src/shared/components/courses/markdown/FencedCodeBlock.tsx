@@ -1,8 +1,10 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { Copy } from 'lucide-react';
 import { IconCheck, IconTerminal } from '@/shared/components/icons';
-import { tokeniseBash, TOKEN_CLASS } from './bashTokenizer';
 import { CommandExplanation } from '@/shared/components/learning/CommandExplanation';
+import { ShellCode } from './ShellCode';
+import { CommandNotes } from './CommandNotes';
+import { extractShellComments, isShellLanguage } from './shellComments';
 
 // ── Copy button ───────────────────────────────────────────────────────────────
 const CopyBtn: React.FC<{ text: string }> = ({ text }) => {
@@ -35,47 +37,42 @@ const CopyBtn: React.FC<{ text: string }> = ({ text }) => {
 
 // ── Fenced code block ─────────────────────────────────────────────────────────
 const FencedCodeBlock: React.FC<{ code: string; lang: string }> = ({ code, lang }) => {
-  const lines = code.split('\n');
-  const isBash = !lang || lang === 'bash' || lang === 'sh' || lang === 'shell';
+  const isShell = isShellLanguage(lang);
+  const { code: cleanCode, comments } = useMemo(
+    () => (isShell ? extractShellComments(code) : { code, comments: [] }),
+    [code, isShell],
+  );
+
+  if (!cleanCode.trim() && comments.length > 0) {
+    return (
+      <div className="my-6 rounded-xl border border-border/50 bg-bg-card px-4 py-4 md:my-8">
+        <CommandNotes comments={comments} />
+      </div>
+    );
+  }
 
   return (
-    <div className="wc-code my-10 md:my-14 rounded-xl border border-border overflow-hidden bg-code-bg">
+    <div className="wc-code my-6 overflow-hidden rounded-xl border border-border bg-code-bg md:my-8">
       {/* Header bar */}
-      <div className="flex items-center justify-between px-3 py-2 border-b border-border/60 bg-bg-card/80">
+      <div className="flex items-center justify-between border-b border-border/60 bg-bg-card/80 px-3 py-2">
         <div className="flex items-center gap-2">
           <IconTerminal size={14} className="text-accent opacity-70" />
-          <span className="text-xs font-black uppercase tracking-[0.25em] text-text-muted">
+          <span className="text-[10px] font-black uppercase tracking-[0.22em] text-text-muted sm:text-xs">
             {lang || 'bash'}
           </span>
         </div>
-        <CopyBtn text={code} />
+        <CopyBtn text={cleanCode} />
       </div>
 
-      {/* Code area */}
-      <div className="overflow-x-auto">
-        <pre className="px-4 py-4 text-base font-mono leading-relaxed md:text-lg">
-          {lines.map((line, lineIdx) => (
-            <div key={lineIdx} className="flex">
-              {/* Line number */}
-              <span className="mr-3 w-5 shrink-0 select-none text-right text-sm text-text-muted/30">
-                {lineIdx + 1}
-              </span>
-              {/* Tokenised line */}
-              <span>
-                {isBash
-                  ? tokeniseBash(line).map((tok, tokIdx) => (
-                      <span key={tokIdx} className={TOKEN_CLASS[tok.type]}>
-                        {tok.value}
-                      </span>
-                    ))
-                  : <span className="text-text-primary">{line}</span>
-                }
-              </span>
-            </div>
-          ))}
-        </pre>
-      </div>
-      {isBash && <CommandExplanation command={code} collapsible />}
+      <ShellCode code={cleanCode} language={lang} showLineNumbers />
+
+      {isShell && comments.length > 0 && (
+        <div className="border-t border-border/60 bg-bg-card/60 px-4 py-3">
+          <CommandNotes comments={comments} />
+        </div>
+      )}
+
+      {isShell && <CommandExplanation command={cleanCode} collapsible />}
     </div>
   );
 };

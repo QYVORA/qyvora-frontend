@@ -2,136 +2,126 @@
  * COMMAND BLOCK
  * =============
  * Terminal command with optional explanation and flag details.
- * Includes copy functionality and structured explanation sections.
+ * Comments are lifted out of the copyable command and shown as prose.
  */
 
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { Copy, Check, Terminal } from 'lucide-react';
 import type { CommandBlock } from '../types/blocks';
 import type { BlockRendererProps } from '../utils/blockRegistry';
 import { CommandExplanation } from '@/shared/components/learning/CommandExplanation';
+import { CommandNotes } from '@/shared/components/courses/markdown/CommandNotes';
+import { ShellCode } from '@/shared/components/courses/markdown/ShellCode';
+import { extractShellComments } from '@/shared/components/courses/markdown/shellComments';
 
 export const CommandBlockComponent: React.FC<BlockRendererProps<CommandBlock>> = ({ block }) => {
   const [copied, setCopied] = useState(false);
-  
+  const { code, comments } = useMemo(() => extractShellComments(block.command), [block.command]);
+
   const handleCopy = async () => {
     try {
-      await navigator.clipboard.writeText(block.command);
+      await navigator.clipboard.writeText(code);
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     } catch (err) {
       console.error('Failed to copy command:', err);
     }
   };
-  
+
   return (
-    <div className="wc-code rounded-xl border border-border/50 bg-bg overflow-hidden">
-      {/* Header with copy button */}
-      <div className="flex items-center justify-between px-3 py-1.5 border-b border-border/20 bg-bg-elevated">
+    <div className="wc-code overflow-hidden rounded-xl border border-border/50 bg-bg">
+      <div className="flex items-center justify-between border-b border-border/20 bg-bg-elevated px-3 py-1.5">
         <div className="flex items-center gap-2">
-          <Terminal className="w-3 h-3 text-accent" aria-hidden="true" />
-          <span className="text-xs font-black uppercase tracking-widest text-accent">
-            Command
+          <Terminal className="h-3 w-3 text-accent" aria-hidden="true" />
+          <span className="text-[10px] font-black uppercase tracking-[0.18em] text-accent">
+            Terminal
           </span>
         </div>
-        
+
         <button
           type="button"
           onClick={handleCopy}
-          className="rounded-lg border border-border/20 bg-bg px-2 py-1 text-xs font-black uppercase tracking-widest text-text-muted hover:text-accent hover:border-accent/40 transition-colors flex items-center gap-1.5"
+          className="flex items-center gap-1.5 rounded-lg border border-border/20 bg-bg px-2 py-1 text-[10px] font-black uppercase tracking-[0.16em] text-text-muted transition-colors hover:border-accent/40 hover:text-accent"
           aria-label="Copy command"
         >
-          {copied ? (
-            <>
-              <Check className="w-3 h-3" aria-hidden="true" />
-              Copied
-            </>
-          ) : (
-            <>
-              <Copy className="w-3 h-3" aria-hidden="true" />
-              Copy
-            </>
-          )}
+          {copied ? <Check className="h-3 w-3" aria-hidden="true" /> : <Copy className="h-3 w-3" aria-hidden="true" />}
+          {copied ? 'Copied' : 'Copy'}
         </button>
       </div>
-      
-      {/* Command */}
-      <pre className="px-4 py-3 font-mono text-sm md:text-base text-accent overflow-x-auto">
-        <code>{block.command}</code>
-      </pre>
+
+      <ShellCode code={code} language="bash" prompt />
+
+      {comments.length > 0 && (
+        <div className="border-t border-border/20 bg-bg-card/40 px-3 py-3">
+          <CommandNotes comments={comments} />
+        </div>
+      )}
 
       {!block.explanation && (
         <div className="border-t border-border/20 p-3">
-          <CommandExplanation command={block.command} />
+          <CommandExplanation command={code} />
         </div>
       )}
-      
-      {/* Explanation sections */}
+
       {block.explanation && (
-        <div className="px-3 py-3 space-y-3 border-t border-border/20 bg-bg-card/50">
+        <div className="space-y-3 border-t border-border/20 bg-bg-card/50 px-3 py-3">
           {block.explanation.what && (
             <div>
-              <p className="text-xs font-black uppercase tracking-widest text-text-muted mb-1">
+              <p className="mb-1 text-[10px] font-black uppercase tracking-[0.18em] text-text-muted">
                 What it does
               </p>
-              <p className="text-lg font-mono text-text-secondary leading-relaxed">
+              <p className="text-sm leading-6 text-text-secondary sm:text-[15px] sm:leading-7">
                 {block.explanation.what}
               </p>
             </div>
           )}
-          
+
           {block.explanation.why && (
             <div>
-              <p className="text-xs font-black uppercase tracking-widest text-text-muted mb-1">
+              <p className="mb-1 text-[10px] font-black uppercase tracking-[0.18em] text-text-muted">
                 Why
               </p>
-              <p className="text-lg font-mono text-text-secondary leading-relaxed">
+              <p className="text-sm leading-6 text-text-secondary sm:text-[15px] sm:leading-7">
                 {block.explanation.why}
               </p>
             </div>
           )}
-          
+
           {block.explanation.watch && (
             <div>
-              <p className="text-xs font-black uppercase tracking-widest text-text-muted mb-1">
+              <p className="mb-1 text-[10px] font-black uppercase tracking-[0.18em] text-text-muted">
                 What to watch for
               </p>
-              <p className="text-lg font-mono text-text-secondary leading-relaxed">
+              <p className="text-sm leading-6 text-text-secondary sm:text-[15px] sm:leading-7">
                 {block.explanation.watch}
               </p>
             </div>
           )}
         </div>
       )}
-      
-      {/* Flag details */}
+
       {block.flags && block.flags.length > 0 && (
-        <div className="px-3 py-3 border-t border-border/20 bg-bg-card/50">
-          <p className="text-xs font-black uppercase tracking-widest text-text-muted mb-2">
+        <div className="border-t border-border/20 bg-bg-card/50 px-3 py-3">
+          <p className="mb-2 text-[10px] font-black uppercase tracking-[0.18em] text-text-muted">
             Flags
           </p>
           <ul className="space-y-2" role="list">
             {block.flags.map((flag, index) => (
-              <li key={index} className="flex items-start gap-2 text-base font-mono">
-                <code className="text-accent shrink-0">{flag.flag}</code>
-                <span className="text-text-secondary leading-relaxed">
-                  {flag.description}
-                </span>
+              <li key={index} className="flex items-start gap-2 text-sm leading-6">
+                <code className="shrink-0 font-mono text-accent">{flag.flag}</code>
+                <span className="text-text-secondary">{flag.description}</span>
               </li>
             ))}
           </ul>
         </div>
       )}
-      
-      {/* Expected output */}
+
       {block.expectedOutput && (
-        <div className="px-3 py-3 border-t border-border/20 bg-bg-card/50">
-          <p className="text-xs font-black uppercase tracking-widest text-text-muted mb-2">
-            Expected Output
+        <div className="border-t border-border/20 bg-bg-card/50 px-3 py-3">
+          <p className="mb-2 text-[10px] font-black uppercase tracking-[0.18em] text-text-muted">
+            Expected output
           </p>
-          <pre className="text-xs md:text-lg font-mono text-text-secondary leading-relaxed overflow-x-auto">
-            <code>{block.expectedOutput}</code>
-          </pre>
+          <ShellCode code={block.expectedOutput} language="text" className="px-0 py-0" />
         </div>
       )}
     </div>

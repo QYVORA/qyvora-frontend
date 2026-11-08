@@ -9,6 +9,7 @@ import React from 'react';
 import { Play } from 'lucide-react';
 import type { DoBlock } from '../types/blocks';
 import type { BlockRendererProps } from '../utils/blockRegistry';
+import { GameProse } from './GameProse';
 
 export const DoBlockComponent: React.FC<BlockRendererProps<DoBlock>> = ({ block }) => {
   const title = block.title ?? 'Try It';
@@ -18,7 +19,7 @@ export const DoBlockComponent: React.FC<BlockRendererProps<DoBlock>> = ({ block 
     <div className="border-l-2 border-accent/40 pl-4">
       <div className="flex items-center gap-2 mb-4">
         <Play className="w-4 h-4 text-accent" aria-hidden="true" />
-        <p className="text-xs font-black uppercase tracking-widest text-accent">
+        <p className="text-[10px] font-black uppercase tracking-[0.18em] text-accent sm:text-xs">
           {title}
         </p>
       </div>
@@ -26,17 +27,14 @@ export const DoBlockComponent: React.FC<BlockRendererProps<DoBlock>> = ({ block 
       {/* Numbered instructions */}
       <ol className="space-y-3 mb-4" role="list">
         {block.instructions.map((instruction, index) => (
-          <li
-            key={index}
-            className="flex items-start gap-3 text-base md:text-lg font-mono text-text-secondary leading-relaxed"
-          >
+          <li key={index} className="flex items-start gap-3">
             <span
-              className="text-accent font-black shrink-0 select-none"
+              className="shrink-0 select-none pt-0.5 font-mono text-xs font-black text-accent"
               aria-label={`Step ${index + 1}`}
             >
               {index + 1}.
             </span>
-            <span>{instruction}</span>
+            <GameProse text={instruction} className="min-w-0 flex-1" />
           </li>
         ))}
       </ol>
@@ -44,24 +42,20 @@ export const DoBlockComponent: React.FC<BlockRendererProps<DoBlock>> = ({ block 
       {/* Expected result */}
       {block.expectedResult && (
         <div className="pt-3 border-t border-accent/20">
-          <p className="text-xs font-black uppercase tracking-widest text-accent/60 mb-1">
-            Expected Result
+          <p className="mb-1 text-[10px] font-black uppercase tracking-[0.18em] text-accent/70">
+            Expected result
           </p>
-          <p className="text-base font-mono text-text-secondary leading-relaxed">
-            {block.expectedResult}
-          </p>
+          <GameProse text={block.expectedResult} />
         </div>
       )}
       
       {/* Verification hint */}
       {block.verificationHint && (
         <div className="pt-3 mt-3 border-t border-accent/20">
-          <p className="text-xs font-black uppercase tracking-widest text-accent/60 mb-1">
-            How to Verify
+          <p className="mb-1 text-[10px] font-black uppercase tracking-[0.18em] text-accent/70">
+            How to verify
           </p>
-          <p className="text-base font-mono text-text-secondary leading-relaxed">
-            {block.verificationHint}
-          </p>
+          <GameProse text={block.verificationHint} />
         </div>
       )}
     </div>

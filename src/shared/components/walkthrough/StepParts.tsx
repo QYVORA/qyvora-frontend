@@ -1,45 +1,52 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { Copy, Terminal } from 'lucide-react';
 import { IconCheck } from '@/shared/components/icons';
 import { CommandExplanation } from '@/shared/components/learning/CommandExplanation';
+import { CommandNotes } from '@/shared/components/courses/markdown/CommandNotes';
+import { ShellCode } from '@/shared/components/courses/markdown/ShellCode';
+import { extractShellComments } from '@/shared/components/courses/markdown/shellComments';
 import { cn } from '@/shared/utils/cn';
 
 export function CommandBlock({ command, labId, showConnect = true }: { command: string; labId: string; showConnect?: boolean }) {
   const [copied, setCopied] = useState(false);
+  const { code, comments } = useMemo(() => extractShellComments(command), [command]);
+
   const handleCopy = async () => {
-    await navigator.clipboard.writeText(command);
+    await navigator.clipboard.writeText(code);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
   return (
-    <div className="space-y-1.5">
+    <div className="space-y-2">
       <div className="flex items-center gap-2">
         <Terminal size={12} className="text-accent" />
-        <span className="text-xs font-black uppercase tracking-widest text-text-muted">Run in terminal</span>
+        <span className="text-[10px] font-black uppercase tracking-[0.18em] text-text-muted">Run in terminal</span>
       </div>
-      <div className="rounded-xl border border-border/50 bg-bg-card overflow-hidden">
-        <div className="flex items-center justify-between px-3 py-1.5 border-b border-border/20 bg-bg-elevated">
-          <div className="flex items-center gap-2">
-            <span className="text-xs font-black uppercase tracking-widest text-accent">Terminal</span>
-          </div>
+      <div className="overflow-hidden rounded-xl border border-border/50 bg-bg-card">
+        <div className="flex items-center justify-between border-b border-border/20 bg-bg-elevated px-3 py-1.5">
+          <span className="text-[10px] font-black uppercase tracking-[0.18em] text-accent">Terminal</span>
           <button
             type="button"
             onClick={handleCopy}
-            className="rounded-lg p-1 text-text-muted hover:text-text-primary hover:bg-bg-elevated transition-colors"
+            className="rounded-lg p-1.5 text-text-muted transition-colors hover:bg-bg-elevated hover:text-text-primary"
             aria-label="Copy"
           >
             {copied ? <IconCheck size={12} className="text-accent" /> : <Copy size={12} />}
           </button>
         </div>
-        <div className="px-3 py-2 font-mono overflow-x-auto">
-          <div className="flex items-center gap-2 min-w-0">
-            <span className="text-accent shrink-0">$</span>
-            <code className="text-sm md:text-base text-accent break-all whitespace-pre-wrap">{command}</code>
+        <ShellCode code={code} language="bash" prompt />
+        {comments.length > 0 && (
+          <div className="border-t border-border/20 bg-bg-card/50 px-3 py-3">
+            <CommandNotes comments={comments} />
           </div>
-        </div>
+        )}
       </div>
-      <CommandExplanation command={command} />
-      {showConnect && <p className="text-sm text-text-muted font-mono">Connect: <span className="text-accent">qyvora connect {labId}</span></p>}
+      <CommandExplanation command={code} />
+      {showConnect && (
+        <p className="text-xs text-text-muted">
+          Connect: <span className="text-accent">qyvora connect {labId}</span>
+        </p>
+      )}
     </div>
   );
 }

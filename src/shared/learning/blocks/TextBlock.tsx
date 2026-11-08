@@ -12,9 +12,9 @@ import { GameProse } from './GameProse';
 
 export const TextBlockComponent: React.FC<BlockRendererProps<TextBlock>> = ({ block }) => {
   return (
-    <div className="space-y-3">
+    <div className="space-y-2.5">
       {block.title && (
-        <h2 className="text-lg md:text-xl font-black uppercase tracking-tight text-text-primary">
+        <h2 className="font-display text-xl font-bold leading-snug tracking-tight text-text-primary sm:text-2xl md:text-[26px]">
           {block.title}
         </h2>
       )}

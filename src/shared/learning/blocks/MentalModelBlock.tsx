@@ -18,7 +18,7 @@ export const MentalModelBlockComponent: React.FC<BlockRendererProps<MentalModelB
     <div className="rounded-2xl border border-border/50 bg-bg-card px-5 py-4">
       <div className="flex items-center gap-2 mb-4">
         <Network className="w-4 h-4 text-accent" aria-hidden="true" />
-        <p className="text-xs font-black uppercase tracking-widest text-accent">{title}</p>
+        <p className="text-[10px] font-black uppercase tracking-[0.18em] text-accent">{title}</p>
       </div>
 
       {block.nodes.length > 0 && (
@@ -28,9 +28,9 @@ export const MentalModelBlockComponent: React.FC<BlockRendererProps<MentalModelB
             return (
               <li key={node.id}>
                 <div className="rounded-xl border border-border/40 bg-bg-elevated px-4 py-3">
-                  <p className="text-base md:text-lg font-black text-text-primary">{node.label}</p>
+                  <p className="font-display text-base font-bold leading-snug text-text-primary sm:text-lg">{node.label}</p>
                   {node.description && (
-                    <p className="mt-1 text-base font-mono text-text-secondary leading-relaxed">{node.description}</p>
+                    <p className="mt-1 text-sm leading-6 text-text-secondary">{node.description}</p>
                   )}
                 </div>
                 {outgoing.length > 0 && (
@@ -60,7 +60,7 @@ export const MentalModelBlockComponent: React.FC<BlockRendererProps<MentalModelB
         </ul>
       )}
 
-      {block.caption && <p className="mt-4 text-base font-mono text-text-muted leading-relaxed">{block.caption}</p>}
+      {block.caption && <p className="mt-4 text-sm leading-6 text-text-muted">{block.caption}</p>}
     </div>
   );
 };

@@ -89,6 +89,32 @@ describe('parseMarkdownToBlocks', () => {
   it('returns an empty list for empty input', () => {
     expect(parseMarkdownToBlocks('', 'e')).toEqual([]);
   });
+
+  it('treats a standalone bold line as the heading for the next block', () => {
+    const blocks = parseMarkdownToBlocks([
+      '**1. Environmental Awareness:**',
+      '',
+      '```bash',
+      'uname -a',
+      '```',
+    ].join('\n'), 'bold-heading');
+
+    const code = blocks.find((b) => b.type === 'code');
+    expect(code?.type === 'code' ? code.filename : null).toBe('1. Environmental Awareness');
+  });
+
+  it('preserves inline markdown inside list items for rich rendering', () => {
+    const blocks = parseMarkdownToBlocks([
+      '- **Ports** reveal the service surface',
+      '- Run `nmap -sV` before version checks',
+    ].join('\n'), 'rich-list');
+
+    const recall = blocks.find((b) => b.type === 'recall');
+    expect(recall?.type === 'recall' ? recall.points : []).toEqual([
+      '**Ports** reveal the service surface',
+      'Run `nmap -sV` before version checks',
+    ]);
+  });
 });
 
 describe('chunkMarkdown', () => {

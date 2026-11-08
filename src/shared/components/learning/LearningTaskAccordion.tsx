@@ -130,7 +130,7 @@ export function LearningTaskAccordion({
                 openTask(isOpen ? '' : task.id);
               }}
               className={cn(
-                'flex w-full items-center gap-3 px-3 py-4 text-left transition-colors duration-150 sm:gap-4 sm:px-6 sm:py-6',
+                'flex w-full items-center gap-3 px-3 py-3.5 text-left transition-colors duration-150 sm:gap-4 sm:px-5 sm:py-4',
                 task.locked ? 'cursor-not-allowed' : 'cursor-pointer',
                 !task.locked && !isOpen && 'hover:bg-surface-raised/60',
               )}
@@ -150,11 +150,11 @@ export function LearningTaskAccordion({
               </span>
 
               <span className="min-w-0 flex-1">
-                <span className="block text-[15px] font-bold leading-snug text-text-primary sm:text-base">
+                <span className="block text-sm font-semibold leading-snug text-text-primary sm:text-[15px]">
                   {task.title}
                 </span>
                 {task.description && (
-                  <span className="mt-1 block text-[13px] leading-relaxed text-text-tertiary sm:text-sm">
+                  <span className="mt-0.5 block text-xs leading-5 text-text-tertiary sm:text-[13px]">
                     {task.description}
                   </span>
                 )}
@@ -200,7 +200,7 @@ export function LearningTaskAccordion({
                   transition={{ duration: prefersReducedMotion ? 0 : 0.2, ease: [0.16, 1, 0.3, 1] }}
                   className="overflow-hidden"
                 >
-                  <div className="border-t border-border-subtle px-3 pb-6 pt-5 sm:px-6 sm:pb-8 sm:pt-6">
+                  <div className="border-t border-border-subtle px-3 pb-5 pt-4 sm:px-5 sm:pb-7 sm:pt-5">
                     <div className="min-w-0">{task.content}</div>
                   </div>
                 </motion.div>

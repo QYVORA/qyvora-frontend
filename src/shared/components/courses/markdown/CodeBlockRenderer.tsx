@@ -58,17 +58,17 @@ const CodeBlockRenderer: React.FC<{ text: string }> = ({ text }) => {
         ul: ({ children }) => <ul className={LIST_CLASS}>{children}</ul>,
         ol: ({ children }) => <ol className={LIST_CLASS}>{children}</ol>,
         li: ({ children }) => (
-          <li className="leading-[2] md:leading-[2.2]">{children}</li>
+          <li className="leading-7 sm:leading-8">{children}</li>
         ),
         blockquote: ({ children }) => (
-          <blockquote className="border-l-2 border-accent/40 pl-4 md:pl-6 italic text-text-secondary font-mono text-base leading-[1.9] md:text-lg md:leading-[2] mb-6 md:mb-8 max-w-none">
+          <blockquote className="mb-5 max-w-none border-l-2 border-accent/40 pl-4 font-mono text-sm italic leading-7 text-text-secondary sm:text-[15px] sm:leading-8 md:pl-5">
             {children}
           </blockquote>
         ),
         hr: () => <hr className="my-10 md:my-12 border-border/30" />,
         table: ({ children }) => (
-          <div className="wc-table my-8 md:my-10 overflow-x-auto rounded-xl border border-border/50 bg-bg-card">
-            <table className="w-full min-w-[520px] border-collapse text-left text-base md:text-lg font-mono">
+          <div className="wc-table my-6 overflow-x-auto rounded-xl border border-border/50 bg-bg-card md:my-8">
+            <table className="w-full min-w-[520px] border-collapse text-left font-mono text-sm sm:text-[15px]">
               {children}
             </table>
           </div>
@@ -78,12 +78,12 @@ const CodeBlockRenderer: React.FC<{ text: string }> = ({ text }) => {
         ),
         tr: ({ children }) => <tr className="border-b border-border/30 last:border-b-0 even:bg-bg-elevated/40">{children}</tr>,
         th: ({ children }) => (
-          <th className="px-4 py-3 text-xs font-black uppercase tracking-widest text-accent whitespace-nowrap">
+          <th className="whitespace-nowrap px-4 py-2.5 text-[10px] font-black uppercase tracking-[0.16em] text-accent">
             {children}
           </th>
         ),
         td: ({ children }) => (
-          <td className="px-4 py-3 align-top text-text-secondary leading-[1.9]">{children}</td>
+          <td className="px-4 py-2.5 align-top leading-6 text-text-secondary">{children}</td>
         ),
         a: ({ node, href, children }) => {
           const safe = isSafeUrl(href);

@@ -72,15 +72,15 @@ export function WalkthroughStep({
       )}
 
       {/* Step Content — flat reading flow; the task accordion owns the only card. */}
-      <div className="space-y-8 pb-8 md:space-y-12 md:pb-16">
+      <div className="space-y-6 pb-6 md:space-y-8 md:pb-10">
         {/* Mission — flat callout; no nested card inside the task accordion. */}
         {mission && (
           <section aria-label="Mission" className="border-l-2 border-accent/40 pl-4">
             <div className="mb-1.5 flex items-center gap-2">
               <Target className="h-4 w-4 shrink-0 text-accent" aria-hidden="true" />
-              <p className="text-xs font-black uppercase tracking-widest text-accent">Mission</p>
+              <p className="text-[10px] font-black uppercase tracking-[0.18em] text-accent">Mission</p>
             </div>
-            <p className="text-base font-mono text-text-secondary leading-[1.9] md:text-lg">{mission}</p>
+            <p className="text-sm leading-6 text-text-secondary sm:text-[15px] sm:leading-7">{mission}</p>
           </section>
         )}
 
@@ -89,7 +89,7 @@ export function WalkthroughStep({
           <div>
             <div className="flex items-center gap-2 mb-5">
               <ClipboardList className="w-4 h-4 text-accent" />
-              <p className="text-xs font-black uppercase tracking-widest text-accent">Objectives</p>
+              <p className="text-[10px] font-black uppercase tracking-[0.18em] text-accent">Objectives</p>
             </div>
             <ol className="space-y-5">
               {objectives.map((obj, i) => (
@@ -102,7 +102,7 @@ export function WalkthroughStep({
                       <span aria-hidden="true" className="absolute top-7 -bottom-5 left-1/2 -translate-x-1/2 w-px bg-border/40" />
                     )}
                   </div>
-                  <p className="text-base md:text-lg font-mono text-text-secondary leading-[1.9] md:leading-[2] pt-1 min-w-0">{obj}</p>
+                  <p className="min-w-0 pt-0.5 text-sm leading-6 text-text-secondary sm:text-[15px] sm:leading-7">{obj}</p>
                 </li>
               ))}
             </ol>
@@ -110,7 +110,7 @@ export function WalkthroughStep({
         )}
 
         {/* Narrative — continuous reading flow */}
-        <div className="w-full text-base md:text-lg text-text-secondary font-mono leading-[1.9] md:leading-[2] mb-6 md:mb-8">
+        <div className="w-full">
           <EducationalMarkdownRenderer text={narrative} />
         </div>
 
@@ -120,7 +120,7 @@ export function WalkthroughStep({
             <div className="mb-3 flex items-center justify-between gap-3">
               <div className="flex items-center gap-2">
                 <Search className="h-3 w-3 text-accent" aria-hidden="true" />
-                <p className="text-xs font-black uppercase tracking-widest text-accent">Evidence</p>
+                <p className="text-[10px] font-black uppercase tracking-[0.18em] text-accent">Evidence</p>
               </div>
               <span className="font-mono text-xs uppercase tracking-widest text-text-muted">
                 {evidence.length} {evidence.length === 1 ? 'entry' : 'entries'}
@@ -149,11 +149,11 @@ export function WalkthroughStep({
               <section key={ph.level} className="border-l-2 border-warning/40 pl-4">
                 <div className="mb-1 flex items-center gap-2">
                   <Lightbulb className="h-4 w-4 shrink-0 text-warning" aria-hidden="true" />
-                  <p className="text-xs font-black uppercase tracking-widest text-warning/60">
+                  <p className="text-[10px] font-black uppercase tracking-[0.18em] text-warning/70">
                     Hint {ph.level}, {HINT_LEVEL_LABELS[ph.level - 1]}
                   </p>
                 </div>
-                <p className="text-base font-mono leading-[1.9] text-warning/80 md:text-lg md:leading-[2]">{ph.content}</p>
+                <p className="text-sm leading-6 text-warning/90 sm:text-[15px] sm:leading-7">{ph.content}</p>
               </section>
             ))}
             {visibleHintLevel < progressiveHints.length && (
@@ -179,9 +179,9 @@ export function WalkthroughStep({
               <section className="border-l-2 border-warning/40 pl-4">
                 <div className="mb-2 flex items-center gap-2">
                   <Lightbulb className="h-4 w-4 shrink-0 text-warning" aria-hidden="true" />
-                  <p className="text-xs font-black uppercase tracking-widest text-warning/60">Hint</p>
+                  <p className="text-[10px] font-black uppercase tracking-[0.18em] text-warning/70">Hint</p>
                 </div>
-                <p className="text-base font-mono leading-[1.9] text-warning/80 md:text-lg md:leading-[2]">{hint}</p>
+                <p className="text-sm leading-6 text-warning/90 sm:text-[15px] sm:leading-7">{hint}</p>
               </section>
             ) : (
               <button
@@ -223,9 +223,9 @@ export function WalkthroughStep({
           <section aria-label="Reflection" className="border-l-2 border-border/50 pl-4">
             <div className="mb-2 flex items-center gap-2">
               <MessageSquare className="h-4 w-4 text-accent" aria-hidden="true" />
-              <p className="text-xs font-black uppercase tracking-widest text-accent">Reflection</p>
+              <p className="text-[10px] font-black uppercase tracking-[0.18em] text-accent">Reflection</p>
             </div>
-            <p className="whitespace-pre-wrap text-base font-mono leading-[1.9] text-text-secondary md:text-lg md:leading-[2]">{reflection}</p>
+            <p className="whitespace-pre-wrap text-sm leading-6 text-text-secondary sm:text-[15px] sm:leading-7">{reflection}</p>
           </section>
         )}
 
