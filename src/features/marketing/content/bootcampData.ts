@@ -54,7 +54,7 @@ export type BootcampStatus = 'open' | 'pre-registration' | 'closed';
 /**
  * QOSE cohort 1 registration window. Keep these UTC instants aligned with the
  * backend guard and QOSE cohort docs; Ghana observes GMT (UTC+00:00).
- * QOSE cohort date window added 2026-11-06; see core/QOSE_READINESS_AUDIT_2026-11-06.md.
+ * QOSE cohort date window added 2026-11-06; see core/archive/QOSE_READINESS_AUDIT_2026-11-06.md.
  */
 export const QOSE_REGISTRATION_OPENS_AT = Date.UTC(2026, 10, 10, 0, 0, 0);
 export const QOSE_REGISTRATION_CLOSES_AT = Date.UTC(2026, 10, 15, 0, 0, 0);

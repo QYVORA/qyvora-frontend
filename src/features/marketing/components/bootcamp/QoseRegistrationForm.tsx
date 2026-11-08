@@ -24,12 +24,14 @@ const fieldLabel =
  * Captures a seat request — name, contact and source — for the QOSE cohort.
  * It does not take payment, reserve a seat, or create a student account; an
  * operator follows up manually. Updated for the Nov 10–14 window on 2026-11-06.
+ * [QOSE-LAUNCH 2026-11-07] Copy says "seat request", never "seat confirmed",
+ * until the first instalment is verified.
  * A hidden honeypot field (`companyWebsite`) matches the backend's bot filter.
  */
 const QoseRegistrationForm: React.FC<QoseRegistrationFormProps> = ({
   bootcampId,
   source,
-  submitLabel = 'Reserve my seat',
+  submitLabel = 'Submit a seat request',
 }) => {
   const [status, setStatus] = useState<RegStatus>('idle');
   const idp = `reg-${bootcampId}`;
@@ -63,7 +65,7 @@ const QoseRegistrationForm: React.FC<QoseRegistrationFormProps> = ({
         <CheckCircle2 className="h-6 w-6 text-accent" aria-hidden="true" />
         <p className="type-body-sm text-text-primary">
           Your request has been received. The QYVORA team will contact you with
-          payment and account setup instructions. Your seat is confirmed only after
+          payment and account setup instructions. Your seat is not reserved until
           the first instalment is verified and your enrolment is recorded.
         </p>
       </div>
