@@ -213,14 +213,14 @@ const StudentSidebarRedesigned: React.FC<StudentSidebarRedesignedProps> = ({
     <>
       {/* Backdrop */}
       <div
-        className="fixed inset-x-0 bottom-0 top-[calc(3.5rem+env(safe-area-inset-top))] z-[90] bg-canvas/80 backdrop-blur-sm md:top-[calc(4rem+env(safe-area-inset-top))] lg:hidden"
+        className="fixed inset-x-0 bottom-0 top-[calc(5rem+env(safe-area-inset-top))] z-[90] bg-canvas/80 backdrop-blur-sm md:top-[calc(6rem+env(safe-area-inset-top))] lg:hidden"
         onClick={onMobileClose}
         aria-hidden="true"
       />
 
       {/* Sidebar — starts below the fixed topbar so the dashboard header stays visible. */}
       <aside
-        className="fixed inset-x-0 bottom-0 left-0 top-[calc(3.5rem+env(safe-area-inset-top))] z-[95] flex w-full flex-col border-r border-border-subtle bg-canvas md:top-[calc(4rem+env(safe-area-inset-top))] lg:hidden"
+        className="fixed inset-x-0 bottom-0 left-0 top-[calc(5rem+env(safe-area-inset-top))] z-[95] flex w-full flex-col border-r border-border-subtle bg-canvas md:top-[calc(6rem+env(safe-area-inset-top))] lg:hidden"
         role="dialog"
         aria-modal="true"
         aria-label="Navigation menu"

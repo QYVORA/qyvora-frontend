@@ -22,6 +22,10 @@ vi.mock('@/shared/hooks/useFullscreen', () => ({
   useFullscreen: () => ({ isFullscreen: false, toggleFullscreen: vi.fn() }),
 }));
 
+vi.mock('@/features/student/hooks/useStudentOverview', () => ({
+  default: () => ({ data: { xpSummary: { streakDays: 12 } } }),
+}));
+
 const renderTopbar = () =>
   render(
     <MemoryRouter initialEntries={['/dashboard']}>
@@ -46,10 +50,11 @@ describe('StudentDesktopTopbar', () => {
     expect(screen.queryByRole('link', { name: /QYVORA/i })).not.toBeInTheDocument();
   });
 
-  it('keeps only fullscreen, notifications and profile in the utility cluster', () => {
+  it('shows the streak alongside fullscreen, notifications and profile', () => {
     renderTopbar();
 
     expect(screen.getByRole('button', { name: /Enter fullscreen/i })).toBeInTheDocument();
+    expect(screen.getByLabelText('Current streak: 12 days')).toBeInTheDocument();
     expect(screen.getByRole('button', { name: /Notifications/i })).toBeInTheDocument();
     expect(screen.getByRole('link', { name: /Profile/i })).toHaveAttribute('href', '/dashboard/profile');
     expect(screen.queryByRole('button', { name: /Search/i })).not.toBeInTheDocument();

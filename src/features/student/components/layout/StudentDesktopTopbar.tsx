@@ -19,6 +19,8 @@ import {
 import { useAuth } from '@/core/contexts/AuthContext';
 import api from '@/core/services/api';
 import { useFullscreen } from '@/shared/hooks/useFullscreen';
+import useStudentOverview from '@/features/student/hooks/useStudentOverview';
+import StreakIcon from '@/shared/components/icons/StreakIcon';
 
 interface StudentDesktopTopbarProps {
   onMobileMenuOpen?: () => void;
@@ -31,8 +33,8 @@ type TopbarMenu = 'practice' | 'develop';
  *
  * Dashboard chrome intentionally has no logo: the five primary sections
  * (Dashboard, Learn, Practice, Complete, Develop) are the visual anchor. The
- * utility cluster is limited to fullscreen, notifications and profile so the
- * header stays short and the nav never gets squeezed on narrow laptops.
+ * utility cluster keeps fullscreen, streak, notifications and profile visible
+ * across breakpoints so progress stays glanceable on desktop and mobile.
  *
  * Dropdowns are click-toggled (not hover-only) so they work for touch, keyboard
  * and pointer users alike. The five primary icons always use the accent colour;
@@ -45,6 +47,7 @@ const StudentDesktopTopbar: React.FC<StudentDesktopTopbarProps> = ({ onMobileMen
   const [unread, setUnread] = useState(0);
   const [openMenu, setOpenMenu] = useState<TopbarMenu | null>(null);
   const { isFullscreen, toggleFullscreen } = useFullscreen();
+  const { data: overview } = useStudentOverview();
   const navRef = useRef<HTMLElement | null>(null);
 
   useEffect(() => {
@@ -86,6 +89,7 @@ const StudentDesktopTopbar: React.FC<StudentDesktopTopbarProps> = ({ onMobileMen
 
   const userDisplayName = user?.username || user?.email || 'User';
   const userInitial = userDisplayName.charAt(0).toUpperCase();
+  const streakDays = overview?.xpSummary?.streakDays ?? 0;
   const isPracticeRoute =
     location.pathname.startsWith('/dashboard/bootcamps') ||
     location.pathname.startsWith('/dashboard/labs') ||
@@ -95,7 +99,7 @@ const StudentDesktopTopbar: React.FC<StudentDesktopTopbarProps> = ({ onMobileMen
     location.pathname.startsWith('/dashboard/tools');
 
   const desktopItemClass = (isActive: boolean) =>
-    `group flex h-12 min-w-[58px] flex-col items-center justify-center gap-0.5 rounded-xl px-2 text-[10px] font-bold uppercase tracking-wide transition-colors xl:min-w-[68px] xl:px-3 xl:text-[11px] xl:tracking-wider ${
+    `group flex min-h-[62px] min-w-[58px] flex-col items-center justify-center gap-1 rounded-xl px-2 py-1.5 text-[10px] font-bold uppercase tracking-wide transition-colors xl:min-w-[68px] xl:px-3 xl:text-[11px] xl:tracking-wider ${
       isActive
         ? 'bg-accent/10 text-accent'
         : 'text-text-secondary hover:bg-surface-raised hover:text-text-primary'
@@ -118,7 +122,7 @@ const StudentDesktopTopbar: React.FC<StudentDesktopTopbarProps> = ({ onMobileMen
       </a>
 
       <header className="chrome-fixed chrome-fixed-overflow fixed top-0 inset-x-0 z-[100] border-b border-border-subtle bg-canvas pt-[env(safe-area-inset-top)]">
-        <div className="flex h-14 min-w-0 items-center gap-2 px-3 md:h-16 md:gap-3 md:px-4 lg:px-6">
+        <div className="flex h-20 min-w-0 items-center gap-2 px-3 md:h-24 md:gap-3 md:px-4 lg:gap-4 lg:px-6">
           {/* Mobile hamburger menu (hidden on desktop) */}
           <button
             type="button"
@@ -266,7 +270,7 @@ const StudentDesktopTopbar: React.FC<StudentDesktopTopbarProps> = ({ onMobileMen
               onClick={toggleFullscreen}
               aria-label={isFullscreen ? 'Exit fullscreen' : 'Enter fullscreen'}
               title={isFullscreen ? 'Exit fullscreen' : 'Enter fullscreen'}
-              className="hidden h-10 w-10 shrink-0 items-center justify-center rounded-xl text-text-secondary transition-colors duration-150 hover:bg-surface-raised hover:text-accent focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-accent md:h-11 md:w-11 lg:flex"
+              className="hidden h-10 w-10 shrink-0 items-center justify-center rounded-xl text-text-secondary transition-colors duration-150 hover:bg-surface-raised hover:text-accent focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-accent md:h-12 md:w-12 lg:flex"
             >
               {isFullscreen ? (
                 <Minimize className="h-5 w-5" aria-hidden="true" />
@@ -278,7 +282,7 @@ const StudentDesktopTopbar: React.FC<StudentDesktopTopbarProps> = ({ onMobileMen
             <button
               type="button"
               onClick={() => navigate('/dashboard/notifications')}
-              className="relative flex h-10 w-10 shrink-0 items-center justify-center rounded-xl text-text-secondary transition-colors duration-150 hover:bg-surface-raised hover:text-accent focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-accent md:h-11 md:w-11"
+              className="relative flex h-10 w-10 shrink-0 items-center justify-center rounded-xl text-text-secondary transition-colors duration-150 hover:bg-surface-raised hover:text-accent focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-accent md:h-12 md:w-12"
               aria-label={`Notifications${unread > 0 ? ` (${unread} unread)` : ''}`}
             >
               <Bell className="h-5 w-5" aria-hidden="true" />
@@ -289,9 +293,18 @@ const StudentDesktopTopbar: React.FC<StudentDesktopTopbarProps> = ({ onMobileMen
               )}
             </button>
 
+            <div
+              className="flex shrink-0 items-center gap-1.5 rounded-lg px-0.5 text-text-primary sm:gap-2"
+              aria-label={`Current streak: ${streakDays} ${streakDays === 1 ? 'day' : 'days'}`}
+              title={`${streakDays} ${streakDays === 1 ? 'day' : 'days'} streak`}
+            >
+              <StreakIcon size={24} className="shrink-0" />
+              <span className="font-mono text-sm font-black tabular-nums sm:text-base">{streakDays}</span>
+            </div>
+
             <Link
               to="/dashboard/profile"
-              className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border-2 border-accent bg-surface text-sm font-black text-accent transition-colors duration-150 hover:bg-accent/10 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent md:h-11 md:w-11"
+              className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border-2 border-accent bg-surface text-sm font-black text-accent transition-colors duration-150 hover:bg-accent/10 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent md:h-12 md:w-12"
               aria-label="Profile"
             >
               {userInitial}
