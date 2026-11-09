@@ -16,6 +16,7 @@ import InboxTab from '../components/dashboard/InboxTab';
 import BroadcastTab from '../components/dashboard/BroadcastTab';
 import AuditLogTab from '../components/dashboard/AuditLogTab';
 import IncidentsTab from '../components/dashboard/IncidentsTab';
+import QoseTab from '../components/dashboard/QoseTab';
 import TemplatesPage from './certificates/TemplatesPage';
 import ADMIN_PATH from '@/shared/utils/adminPath';
 import { useAuth } from '@/core/contexts/AuthContext';
@@ -234,7 +235,7 @@ const AdminDashboardPage: React.FC = () => {
     zero_day: 'Market', cp: 'Points',
     inbox: 'Inbox', broadcast: 'Broadcast', audit: 'Audit',
     security: 'Security', incidents: 'Incidents',
-    certificates: 'Certificates',
+    certificates: 'Certificates', qose: 'QOSE',
   };
   const activeLabel = TAB_LABELS[activeTab] ?? 'Overview';
 
@@ -308,6 +309,9 @@ const AdminDashboardPage: React.FC = () => {
 
             {/* ── BOOTCAMPS ─────────────────────────────────────────────── */}
             {activeTab === 'bootcamps' && <BootcampAccessPanel addToast={addToast} />}
+
+            {/* ── QOSE REGISTRATIONS ────────────────────────────────────── */}
+            {activeTab === 'qose' && <QoseTab />}
 
             {activeTab === 'instructor' && <InstructorTab />}
 

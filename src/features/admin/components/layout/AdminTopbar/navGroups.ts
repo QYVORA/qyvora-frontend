@@ -1,5 +1,5 @@
 import type { ElementType } from 'react';
-import { Users, Database, Coins, Mail, Megaphone, OctagonAlert, ShieldCheck, Award, GraduationCap } from 'lucide-react';
+import { Users, Database, Coins, Mail, Megaphone, OctagonAlert, ShieldCheck, Award, GraduationCap, Wallet } from 'lucide-react';
 import { IconClock, IconWarning, IconDashboard } from '@/shared/components/icons';
 import ADMIN_PATH from '@/shared/utils/adminPath';
 
@@ -24,6 +24,7 @@ export const NAV_GROUPS: AdminNavGroup[] = [
       { label: 'Users', desc: 'Manage operators and access control', icon: Users, tab: 'users', path: `${ADMIN_PATH}/dashboard?tab=users` },
       { label: 'Bootcamps', desc: 'Phase admission and enrollment', icon: ShieldCheck, tab: 'bootcamps', path: `${ADMIN_PATH}/dashboard?tab=bootcamps` },
       { label: 'Instructor', desc: 'Cohort progress and escalations', icon: GraduationCap, tab: 'instructor', path: `${ADMIN_PATH}/dashboard?tab=instructor` },
+      { label: 'QOSE', desc: 'Paid registration and tuition ledger', icon: Wallet, tab: 'qose', path: `${ADMIN_PATH}/dashboard?tab=qose` },
     ],
   },
   {

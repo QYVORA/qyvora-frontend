@@ -1,0 +1,90 @@
+import { useEffect, useState } from 'react';
+import { ArrowRight, ShieldCheck } from 'lucide-react';
+import { Button, Card } from '@/shared/components/ui';
+import {
+  formatGhs,
+  getQoseRegistration,
+  type QoseRegistrationState,
+} from '../services/qose.service';
+
+/**
+ * Isolated dashboard promo/status card for QOSE.
+ *
+ * It owns its own request and silently disappears if the endpoint is
+ * unavailable, so it can never break the dashboard. It intentionally contains
+ * no payment mutation logic — all checkout happens on `/dashboard/qose`.
+ */
+const QoseDashboardCard = () => {
+  const [state, setState] = useState<QoseRegistrationState | null>(null);
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    let active = true;
+    getQoseRegistration()
+      .then((next) => {
+        if (!active) return;
+        setState(next);
+        setVisible(true);
+      })
+      .catch(() => {
+        if (active) setVisible(false);
+      });
+    return () => {
+      active = false;
+    };
+  }, []);
+
+  if (!visible || !state) return null;
+
+  const registered = state.registered;
+  const fullyPaid = registered && state.remainingMinor <= 0;
+  const partial = registered && state.amountPaidMinor > 0 && state.remainingMinor > 0;
+  const failed = registered && state.paymentStatus === 'failed';
+
+  const title = !registered
+    ? 'QOSE Cohort 1 is open'
+    : fullyPaid
+      ? 'QOSE seat secured'
+      : failed
+        ? 'QOSE payment needs attention'
+        : partial
+          ? 'Next QOSE instalment due'
+          : 'Finish your QOSE registration';
+
+  const body = !registered
+    ? 'The 12-week Offensive Security Engineer bootcamp follows HPB. Register and start with GH₵300.'
+    : fullyPaid
+      ? 'Tuition fully paid. Open your QOSE course and continue the programme.'
+      : failed
+        ? 'Your last checkout did not complete. Open QOSE to try again or contact the team.'
+        : `${formatGhs(state.remainingMinor)} remaining on your ${state.paymentPlan === 'full' ? 'full payment' : 'instalment'} plan.`;
+
+  return (
+    <Card className="flex flex-col gap-5 p-5 md:flex-row md:items-center md:justify-between md:gap-6 md:p-6">
+      <div className="flex min-w-0 items-start gap-4">
+        <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-accent/25 bg-accent/10">
+          <ShieldCheck className="h-5 w-5 text-accent" aria-hidden="true" />
+        </div>
+        <div className="min-w-0">
+          <p className="type-kicker uppercase tracking-[0.12em] text-accent">
+            {'QOSE · Cohort 1'}
+          </p>
+          <h2 className="mt-1 text-lg font-black uppercase tracking-tight text-text-primary md:text-xl">
+            {title}
+          </h2>
+          <p className="type-body-sm mt-1 text-text-secondary">{body}</p>
+        </div>
+      </div>
+      <Button
+        to={fullyPaid ? `/dashboard/bootcamps/${state.bootcampId}` : '/dashboard/qose'}
+        variant={fullyPaid ? 'secondary' : 'primary'}
+        trailingIcon={<ArrowRight className="h-4 w-4" aria-hidden="true" />}
+        className="shrink-0"
+      >
+        {fullyPaid ? 'Open QOSE' : registered ? 'Continue payment' : 'View QOSE'}
+      </Button>
+    </Card>
+  );
+};
+
+export default QoseDashboardCard;

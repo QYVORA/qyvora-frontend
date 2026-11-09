@@ -92,6 +92,7 @@ const AuthCallbackPage  = lazy(() => import('../features/auth/pages/AuthCallback
 
 // Student pages
 const DashboardPage     = lazy(() => import('../features/student/pages/DashboardPage'));
+const QoseRegistrationPage = lazy(() => import('../features/qose/pages/QoseRegistrationPage'));
 const MarketplacePage   = lazy(() => import('../features/student/pages/MarketplacePage'));
 
 const ProfilePage       = lazy(() => import('../features/student/pages/ProfilePage'));
@@ -308,6 +309,7 @@ export const AppRouter = () => {
             dashboard flash for unauthenticated visitors. */}
         <Route element={<StudentShellGate><AppShell /></StudentShellGate>}>
           <Route path="/dashboard" element={<Wrap scope="Dashboard"><StudentOnly><DashboardPage /></StudentOnly></Wrap>} />
+          <Route path="/dashboard/qose" element={<Wrap scope="QOSE Registration"><StudentOnly><QoseRegistrationPage /></StudentOnly></Wrap>} />
           
           {/* Learning V2 Demo - Architecture showcase */}
           <Route path="/dashboard/learning-v2-demo" element={<Wrap scope="Learning V2 Demo"><StudentOnly><LearningV2Demo /></StudentOnly></Wrap>} />

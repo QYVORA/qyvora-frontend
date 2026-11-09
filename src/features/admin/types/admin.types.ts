@@ -1,7 +1,50 @@
 export type AdminTab =
   | 'overview' | 'users' | 'bootcamps' | 'instructor' | 'zero_day' | 'cp'
   | 'inbox' | 'broadcast' | 'audit' | 'security' | 'incidents'
-  | 'certificates';
+  | 'certificates' | 'qose';
+
+export type QoseRegistrationPlan = 'full' | 'installment';
+export type QoseAdminPaymentStatus = 'unpaid' | 'pending' | 'partial' | 'paid' | 'failed';
+
+export type QoseAdminPayment = {
+  id: string;
+  stage: string;
+  plan: QoseRegistrationPlan | null;
+  amountMinor: number;
+  currency: string;
+  status: string;
+  provider: string;
+  method: string;
+  channel: string;
+  reference: string;
+  failureReason: string;
+  recordedAt: string | null;
+  verifiedAt: string | null;
+  createdAt: string | null;
+};
+
+export type QoseAdminRegistration = {
+  id: string;
+  user: {
+    id: string;
+    name: string;
+    email: string;
+    hackerHandle: string;
+    bootcampStatus: string;
+  };
+  bootcampId: string;
+  paymentPlan: QoseRegistrationPlan;
+  status: string;
+  paymentStatus: QoseAdminPaymentStatus | string;
+  totalTuitionMinor: number;
+  amountPaidMinor: number;
+  remainingMinor: number;
+  currency: string;
+  currentStage: string | null;
+  lastPaymentAt: string | null;
+  createdAt: string | null;
+  payments: QoseAdminPayment[];
+};
 
 export type AdminUser = {
   id: string;
