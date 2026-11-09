@@ -154,7 +154,8 @@ Content fills the viewport with consistent padding: `px-3 md:px-4 lg:px-6`.
 |---------|-----------|
 | Snap sections | `pt-24 md:pt-28 lg:pt-32`, bottom `pb-6 md:pb-8 lg:pb-10` |
 | Full-viewport section | `pt-24 md:pt-28 lg:pt-32` + `scroll-mt-24 md:scroll-mt-28` |
-| Student/admin topbar | `pt-20 md:pt-24` |
+| Student topbar | `pt-[calc(6rem+env(safe-area-inset-top))] md:pt-[calc(7rem+env(safe-area-inset-top))]` |
+| Admin topbar | `pt-20 md:pt-24` |
 | Sidebar sections | `py-12 sm:py-10 md:py-16 lg:py-20` |
 
 ### Snap Scrolling

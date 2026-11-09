@@ -294,22 +294,17 @@ Inline error display within pages/cards.
 
 ### 7b. Student Topbar
 
-- `z-[100]` (rail is the only other chrome), `h-20 md:h-24` (`BAR`), clearance `pt-20 md:pt-24`
-- Fixed, **transparent** (no background, no backdrop, no bottom border); sits over content
-- **Not a navigation surface**: primary nav is the sidebar rail (`lg+`) + `StudentBottomNav` (`<lg`); that rail owns exit navigation, so learning pages have **no topbar back button**
-- Left cluster depends on context:
-  - Dashboard: mobile logo (`Logo size="md" variant="mark"`, `lg:hidden`) + spacer
-  - Learning pages (room/course/lab): `Breadcrumb` — static context-only crumbs (ancestors muted, current `font-black`, `aria-current="page"`), no links, chevron separators
-- Right cluster:
-  - Dashboard context: CP stat (desktop `md+`, `tour-cp-desktop`), notifications bell (all screens), mobile CP badge (`md-`)
-  - Learning context (room/course/lab): course progress chip (lesson `n/N`) on `md+`, course pages only, + mobile CP badge (`md-`); no bell
-- Course page: `h-1` progress hairline under the bar (accent fill by `courseMeta.progress`)
-- Notifications: bell opens a desktop `NotificationsDialog` (`(min-width: 1024px)`) or mobile `BottomSheet`
+- Fixed, `z-[100]`, `h-24 md:h-28`; clearance `pt-[calc(6rem+env(safe-area-inset-top))] md:pt-[calc(7rem+env(safe-area-inset-top))]`
+- Desktop (`lg+`): horizontal primary navigation — Dashboard, Learn, Practice dropdown, Complete, Develop dropdown
+- Right utilities: fullscreen (`lg+`), notifications, streak, profile
+- Mobile/tablet (`<lg`): hamburger + notifications + streak + profile; hamburger opens `StudentSidebarRedesigned` as a full-screen `fixed inset-0 z-[111]` dialog covering the topbar
+- No desktop sidebar and no student bottom navigation; learning pages use the same topbar
+- Practice dropdown: Bootcamp, Labs, Competitive. Develop dropdown: Network, Terminal
 - Skip link: `#main-content`
 
 ### 7c. Admin Topbar
 
-- Same z/height as student
+- Same `z-[100]`; admin height stays `h-20 md:h-24`
 - `data-theme-persist="dark"` on layout root
 - Mobile bottom nav: `pb-[calc(68px+env(safe-area-inset-bottom,0px))] md:pb-6`
 
@@ -534,7 +529,8 @@ Prefer `ScrollReveal` over this pattern.
 | `z-[80]` | Dropdowns |
 | `z-[90]` | Mobile nav overlay |
 | `z-[100]` | Navbar / bottom nav |
-| `z-[110]` | Navbar logo/actions, student topbar |
+| `z-[110]` | Navbar logo/actions; student full-screen sidebar backdrop |
+| `z-[111]` | Student full-screen sidebar panel |
 | `z-[120]` | BottomSheet overlay |
 | `z-[130]` | BottomSheet content |
 | `z-[140]` | PwaStatus host (update / offline / install cards) |
@@ -585,7 +581,8 @@ Two-column on `md`: left hero (`AuthHero`), right form (`max-w-lg`). Mobile: sta
 
 ### 16e. Student/Admin Topbar Layout
 
-`pt-20 md:pt-24` clearance. Sidebar rail (`lg:pl-[264px]`, collapsed `lg:pl-[76px]`) + main content area. Topbar is fixed and transparent; the sidebar rail owns navigation (no back button in the topbar, on learning pages or otherwise).
+- **Student (`AppShell`)**: `pt-[calc(6rem+env(safe-area-inset-top))] md:pt-[calc(7rem+env(safe-area-inset-top))]` clearance; fixed `h-24 md:h-28` topbar with desktop horizontal navigation and a full-screen mobile sidebar. No desktop rail and no student bottom nav.
+- **Admin (`AdminLayout`)**: `pt-20 md:pt-24` clearance; fixed `h-20 md:h-24` topbar, sidebar rail, and mobile bottom nav.
 
 ---
 

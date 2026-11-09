@@ -38,7 +38,7 @@ h2 compact bento sections: **title only, no description**.
 ## Layout Rules
 
 - **No `max-w-*` on page-level containers**. Content fills viewport: `px-3 md:px-4 lg:px-6`
-- **Navbar clearance**: public sections `pt-24 md:pt-28 lg:pt-32`; topbar layouts `pt-20 md:pt-24`; sidebar sections `py-12 sm:py-10 md:py-16 lg:py-20`
+- **Navbar clearance**: public sections `pt-24 md:pt-28 lg:pt-32`; student topbar layouts `pt-[calc(6rem+env(safe-area-inset-top))] md:pt-[calc(7rem+env(safe-area-inset-top))]`; admin topbar layouts `pt-20 md:pt-24`; sidebar sections `py-12 sm:py-10 md:py-16 lg:py-20`
 - **Content grows**: never `h-dvh` on content sections, always `min-h-dvh`. Center short content with an inner `my-auto` wrapper (collapses to top-align on overflow)
 - **No strip-like sections**: every content section is a filled composition — header paired with substantive content (split layout, grid, or panel stack). Never ship a lone small card/banner centered in an otherwise empty viewport; if a section would be sparse, merge its content into an adjacent section or pair it with a complementary card
 - **Width constraints**: use `wc-*` classes (`wc-prose`, `wc-code`, `wc-terminal`, `wc-diagram`, `wc-table`, `wc-media`, `wc-interactive`), never ad-hoc `max-w-*`
@@ -122,7 +122,7 @@ h2 compact bento sections: **title only, no description**.
 - Fixed `lg:h-dvh` or `h-dvh` on content sections (always use `min-h-dvh`)
 - Navbar scroll-hide/invert behavior
 - `zustand` or `@tanstack/react-query` (installed but unused)
-- `StudentNavPanel` hamburger dropdown (sidebar rail + `StudentBottomNav` are the only dashboard navigation)
+- `StudentNavPanel` hamburger dropdown (the horizontal student topbar + full-screen mobile sidebar are the only dashboard navigation)
 - Settings-mode topbar variant in `StudentTopbar` (across the whole UI, incl. `tour-settings-nav`): settings pages use the standard dashboard topbar, never a Settings-mode topbar variant. Settings section navigation lives in-page on `SettingsPage`, not in the topbar. Do not reintroduce `isSettingsPage`/`settingsMatch`/`SETTINGS_SECTIONS` render variants in `StudentTopbar`.
 - Inline fullscreen buttons on walkthrough pages (walkthrough fullscreen toolbars are removed — keep interactive controls inside page content/sidebar)
 - Navbar link buttons with borders (borders only on badges and status indicators)
@@ -132,7 +132,7 @@ h2 compact bento sections: **title only, no description**.
 | Layout | Clearance | Notes |
 |--------|-----------|-------|
 | `PublicShell` | None (hero clears own space) | Public marketing + tool docs; owns `PublicNavigation` + `PublicFooter` + `PublicBottomNav`. Tool docs clear the navbar themselves (`ToolDocPage` `pt-24 md:pt-28 lg:pt-32`). |
-| `AppShell` | `pt-20 md:pt-24` | Student topbar + desktop rail (`lg:pl-[264px]`) + mobile bottom nav |
+| `AppShell` | `pt-[calc(6rem+env(safe-area-inset-top))] md:pt-[calc(7rem+env(safe-area-inset-top))]` | Student topbar (`h-24 md:h-28`) + full-screen mobile sidebar; no desktop rail, no student bottom nav |
 | `AdminLayout` | `pt-20 md:pt-24` | Forced dark, `data-theme-persist="dark"` |
 | `AuthFormLayout` | 2-col grid, `max-w-lg` form | Globe pinned bottom-right |
 

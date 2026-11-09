@@ -18,7 +18,8 @@ breakpoints: `sm` 640 · `md` 768 · `lg` 1024 · `xl` 1280 · `2xl` 1536.
 
 | Context | Clearance |
 |---|---|
-| Under a fixed topbar (`AppShell` / `AdminLayout`) | topbar provides `pt-20 md:pt-24` — pages add none |
+| Under the fixed student topbar (`AppShell`) | `pt-[calc(6rem+env(safe-area-inset-top))] md:pt-[calc(7rem+env(safe-area-inset-top))]` — pages add none |
+| Under the fixed admin topbar (`AdminLayout`) | `pt-20 md:pt-24` — pages add none |
 | Under `PublicNavigation` | sections `pt-24 md:pt-28 lg:pt-32` |
 | Sidebar sections | `py-12 sm:py-10 md:py-16 lg:py-20` |
 
@@ -42,8 +43,9 @@ never clipped at the section edge on any breakpoint.
 
 ## Navigation chrome
 
-- `StudentBottomNav` is the only dashboard navigation on mobile; the rail appears
-  at `lg+` (`lg:pl-[76px]` / `lg:pl-[264px]`).
+- Student dashboard: horizontal topbar at `lg+`; full-screen overlay sidebar below
+  `lg`. There is no student bottom navigation.
+- Admin dashboard: sidebar rail at `lg+`; `AdminBottomNav` below `lg`.
 - Dialogs: `Dialog` (Radix) on desktop, `BottomSheet` on mobile.
 
 ## Touch targets
