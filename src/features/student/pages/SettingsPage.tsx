@@ -257,6 +257,7 @@ const Settings: React.FC = () => {
 
         {/* Page header */}
         <PageHeader
+          hideText
           kicker={"Configure"}
           title={sectionHeader[activeSection].title}
           description={sectionHeader[activeSection].description}

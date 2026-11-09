@@ -126,6 +126,7 @@ const Marketplace: React.FC = () => {
       <SEO title={"Marketplace"} description={"Redeem your CyberPoints for gear, courses, and rewards."} noindex />
       <PageBody spacing="sections">
         <PageHeader
+          hideText
           kicker={"Marketplace"}
           title={"Marketplace"}
           description={"Redeem your CyberPoints."}

@@ -18,7 +18,7 @@ const PublicFooter: React.FC = React.memo(() => {
   return (
     <footer className="border-t border-border-subtle bg-canvas" data-theme-persist="dark">
       <div className="px-3 py-10 md:px-4 lg:px-6">
-        <div className="grid grid-cols-1 gap-8 lg:grid-cols-[minmax(0,320px)_1fr]">
+        <div className="grid grid-cols-1 gap-8 lg:grid-cols-[minmax(0,280px)_1fr]">
           <div>
             <Link to="/" aria-label="QYVORA" className="inline-block focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent">
               <Logo size="md" />
@@ -63,16 +63,16 @@ const PublicFooter: React.FC = React.memo(() => {
             </div>
           </div>
 
-          <nav aria-label="Footer" className="grid min-w-0 grid-cols-2 gap-x-5 gap-y-8 sm:grid-cols-4 lg:gap-x-6">
+          <nav aria-label="Footer" className="grid min-w-0 grid-cols-2 gap-x-5 gap-y-8 sm:grid-cols-3 lg:grid-cols-5 lg:gap-x-6">
             {PUBLIC_FOOTER_COLUMNS.map((col) => (
               <div key={col.title}>
                 <h3 className="type-label text-accent">{col.title}</h3>
-                <ul className="mt-3 space-y-0.5">
+                <ul className="mt-3 space-y-1">
                   {col.links.map((link) => (
                     <li key={link.key}>
                       <Link
                         to={link.to}
-                        className="inline-flex py-1 text-sm text-text-secondary transition-colors hover:text-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+                        className="inline-flex py-0.5 text-sm text-text-secondary transition-colors hover:text-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
                       >
                         {link.label}
                       </Link>

@@ -72,6 +72,7 @@ const NetworksPage = () => {
 
       <div className="w-full px-3 pb-16 pt-6 md:px-4 md:pb-20 md:pt-8 lg:px-6 lg:pb-24">
         <PageHeader
+          hideText
           kicker="QYVORA · Practice"
           title="Network Lab"
           description="Simulated corporate network environment for terminal practice"

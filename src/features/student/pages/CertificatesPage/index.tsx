@@ -129,6 +129,7 @@ const CertificatesPage = () => {
 
         <PageBody spacing="sections">
           <PageHeader
+            hideText
             kicker="Achievements"
             title="Certificates"
             description="Your verifiable credentials — view, verify and download each certificate of completion."

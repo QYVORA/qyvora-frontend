@@ -100,7 +100,7 @@ const Notifications: React.FC = () => {
       <div className="min-h-full bg-canvas">
         <SEO title={"Notifications"} description={"System alerts, mission updates, and activity notifications on QYVORA."} />
         <PageBody>
-          <PageHeader title={"Notifications"} />
+          <PageHeader title={"Notifications"} hideText />
           <div className="mt-8">
             <ErrorState title={"Failed to load notifications."} message={"Check your connection and try again."} />
           </div>
@@ -115,6 +115,7 @@ const Notifications: React.FC = () => {
 
       <PageBody>
         <PageHeader
+          hideText
           kicker={"Inbox"}
           title={"Notifications"}
           description={"System alerts and mission updates."}

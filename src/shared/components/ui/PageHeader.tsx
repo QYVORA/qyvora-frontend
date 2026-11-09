@@ -13,6 +13,12 @@ interface PageHeaderProps {
   /** `id` for the `h1` so an ancestor section can reference it via `aria-labelledby`. */
   titleId?: string;
   className?: string;
+  /**
+   * Student surfaces use the topbar as the visual section marker. Hiding the
+   * textual heading keeps the page title for assistive technology while leaving
+   * only the factual metadata and actions visible.
+   */
+  hideText?: boolean;
 }
 
 /**
@@ -27,31 +33,50 @@ const PageHeader: React.FC<PageHeaderProps> = ({
   metadata,
   titleId,
   className,
-}) => (
-  <div className={cn('flex flex-col gap-6', className)}>
-    <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
-      <div className="max-w-2xl">
-        {kicker && (
-          <p className="mb-2 type-label text-accent uppercase tracking-[0.12em]">{kicker}</p>
-        )}
-        <h1
-          id={titleId}
-          className="text-3xl font-black uppercase tracking-tight text-text-primary md:text-4xl lg:text-5xl"
-        >
+  hideText = false,
+}) => {
+  if (hideText) {
+    return (
+      <div className={cn('flex flex-wrap items-center justify-between gap-3', className)}>
+        <h1 id={titleId} className="sr-only">
           {title}
         </h1>
-        {description && (
-          <p className="mt-3 max-w-2xl text-base text-text-secondary md:text-lg">{description}</p>
+        {metadata && (
+          <div className="flex flex-wrap items-center gap-x-6 gap-y-2">{metadata}</div>
+        )}
+        {actions && (
+          <div className="ml-auto flex flex-wrap items-center gap-3">{actions}</div>
         )}
       </div>
-      {actions && <div className="flex flex-wrap items-center gap-3">{actions}</div>}
-    </div>
-    {metadata && (
-      <div className="flex flex-wrap items-center gap-x-6 gap-y-2 border-t border-border-subtle pt-4">
-        {metadata}
+    );
+  }
+
+  return (
+    <div className={cn('flex flex-col gap-6', className)}>
+      <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
+        <div className="max-w-2xl">
+          {kicker && (
+            <p className="mb-2 type-label text-accent uppercase tracking-[0.12em]">{kicker}</p>
+          )}
+          <h1
+            id={titleId}
+            className="text-3xl font-black uppercase tracking-tight text-text-primary md:text-4xl lg:text-5xl"
+          >
+            {title}
+          </h1>
+          {description && (
+            <p className="mt-3 max-w-2xl text-base text-text-secondary md:text-lg">{description}</p>
+          )}
+        </div>
+        {actions && <div className="flex flex-wrap items-center gap-3">{actions}</div>}
       </div>
-    )}
-  </div>
-);
+      {metadata && (
+        <div className="flex flex-wrap items-center gap-x-6 gap-y-2 border-t border-border-subtle pt-4">
+          {metadata}
+        </div>
+      )}
+    </div>
+  );
+};
 
 export default PageHeader;

@@ -170,6 +170,7 @@ const LabsPage = () => {
       />
       <PageBody spacing="sections">
         <PageHeader
+          hideText
           kicker="QYVORA · Learning"
           title="Labs"
           description="Choose any learning experience and jump straight into it. Your progress stays available when you return."

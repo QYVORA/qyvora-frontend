@@ -103,7 +103,7 @@ const StudentDesktopTopbar: React.FC<StudentDesktopTopbarProps> = ({ onMobileMen
     location.pathname.startsWith('/dashboard/tools');
 
   const desktopItemClass = (isActive: boolean) =>
-    `group flex min-h-[68px] min-w-[64px] flex-col items-center justify-center gap-1.5 rounded-xl px-2.5 py-2 text-[11px] font-bold uppercase tracking-wide transition-colors xl:min-w-[76px] xl:px-3.5 xl:text-xs xl:tracking-wider ${
+    `group flex h-[52px] w-[70px] flex-col items-center justify-center gap-1 rounded-xl px-2 py-1.5 text-[10px] font-bold uppercase tracking-wide transition-colors xl:w-[80px] xl:text-[11px] xl:tracking-wider ${
       isActive
         ? 'bg-accent/10 text-accent'
         : 'text-text-secondary hover:bg-surface-raised hover:text-text-primary'
@@ -126,28 +126,28 @@ const StudentDesktopTopbar: React.FC<StudentDesktopTopbarProps> = ({ onMobileMen
       </a>
 
       <header className="chrome-fixed chrome-fixed-overflow fixed top-0 inset-x-0 z-[100] border-b border-border-subtle bg-canvas pt-[env(safe-area-inset-top)]">
-        <div className="flex h-24 min-w-0 items-center gap-2 px-3 md:h-28 md:gap-3 md:px-4 lg:gap-4 lg:px-6">
+        <div className="flex h-16 min-w-0 items-center gap-2 px-3 md:h-[72px] md:gap-3 md:px-4 lg:gap-4 lg:px-6">
           {/* Mobile hamburger menu (hidden on desktop) */}
           <button
             type="button"
             onClick={onMobileMenuOpen}
             aria-label="Open menu"
-            className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl text-text-secondary transition-colors hover:bg-surface-raised hover:text-accent focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-accent lg:hidden"
+            className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl text-text-secondary transition-colors hover:bg-surface-raised hover:text-accent focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-accent lg:hidden"
           >
-            <Menu className="h-6 w-6" aria-hidden="true" />
+            <Menu className="h-5 w-5" aria-hidden="true" />
           </button>
 
           {/* Desktop navigation */}
           <nav
             ref={navRef}
-            className="hidden min-w-0 items-center gap-0.5 overflow-visible lg:flex xl:gap-1"
+            className="hidden min-w-0 items-center gap-1 overflow-visible lg:flex xl:gap-1.5"
             aria-label="Primary"
           >
             <NavLink to="/dashboard" end className={({ isActive }) => desktopItemClass(isActive)}>
               {({ isActive }) => (
                 <>
                   <Home
-                    className="h-5 w-5 shrink-0 text-accent xl:h-[22px] xl:w-[22px]"
+                    className="h-[18px] w-[18px] shrink-0 text-accent xl:h-5 xl:w-5"
                     strokeWidth={isActive ? 2.5 : 2}
                     aria-hidden="true"
                   />
@@ -160,7 +160,7 @@ const StudentDesktopTopbar: React.FC<StudentDesktopTopbarProps> = ({ onMobileMen
               {() => (
                 <>
                   <BookOpen
-                    className="h-5 w-5 shrink-0 text-accent xl:h-[22px] xl:w-[22px]"
+                    className="h-[18px] w-[18px] shrink-0 text-accent xl:h-5 xl:w-5"
                     strokeWidth={isLabsRoute ? 2.5 : 2}
                     aria-hidden="true"
                   />
@@ -179,7 +179,7 @@ const StudentDesktopTopbar: React.FC<StudentDesktopTopbarProps> = ({ onMobileMen
                 aria-controls="topbar-practice-menu"
                 className={desktopItemClass(isPracticeRoute)}
               >
-                <Target className="h-5 w-5 shrink-0 text-accent xl:h-[22px] xl:w-[22px]" strokeWidth={2} aria-hidden="true" />
+                <Target className="h-[18px] w-[18px] shrink-0 text-accent xl:h-5 xl:w-5" strokeWidth={2} aria-hidden="true" />
                 <span className="flex items-center gap-1 whitespace-nowrap">
                   Practice
                   <ChevronDown
@@ -212,7 +212,7 @@ const StudentDesktopTopbar: React.FC<StudentDesktopTopbarProps> = ({ onMobileMen
               {({ isActive }) => (
                 <>
                   <BadgeCheck
-                    className="h-5 w-5 shrink-0 text-accent xl:h-[22px] xl:w-[22px]"
+                    className="h-[18px] w-[18px] shrink-0 text-accent xl:h-5 xl:w-5"
                     strokeWidth={isActive ? 2.5 : 2}
                     aria-hidden="true"
                   />
@@ -231,7 +231,7 @@ const StudentDesktopTopbar: React.FC<StudentDesktopTopbarProps> = ({ onMobileMen
                 aria-controls="topbar-develop-menu"
                 className={desktopItemClass(isDevelopRoute)}
               >
-                <TerminalIcon className="h-5 w-5 shrink-0 text-accent xl:h-[22px] xl:w-[22px]" strokeWidth={2} aria-hidden="true" />
+                <TerminalIcon className="h-[18px] w-[18px] shrink-0 text-accent xl:h-5 xl:w-5" strokeWidth={2} aria-hidden="true" />
                 <span className="flex items-center gap-1 whitespace-nowrap">
                   Develop
                   <ChevronDown
@@ -264,15 +264,15 @@ const StudentDesktopTopbar: React.FC<StudentDesktopTopbarProps> = ({ onMobileMen
           <div className="flex-1" aria-hidden="true" />
 
           {/* Right side utilities */}
-          <div className="flex shrink-0 items-center justify-end gap-1.5 sm:gap-2 md:gap-2.5 lg:gap-3">
+          <div className="flex shrink-0 items-center justify-end gap-1.5 sm:gap-2 lg:gap-2.5">
             <button
               type="button"
               onClick={() => setSearchOpen(true)}
               aria-label="Search learning rooms"
               title="Search learning rooms (Ctrl+K)"
-              className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl text-text-secondary transition-colors duration-150 hover:bg-surface-raised hover:text-accent focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-accent md:h-14 md:w-14"
+              className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl text-text-secondary transition-colors duration-150 hover:bg-surface-raised hover:text-accent focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-accent md:h-11 md:w-11"
             >
-              <Search className="h-6 w-6 md:h-7 md:w-7" aria-hidden="true" />
+              <Search className="h-5 w-5 md:h-[22px] md:w-[22px]" aria-hidden="true" />
             </button>
 
             <button
@@ -280,41 +280,41 @@ const StudentDesktopTopbar: React.FC<StudentDesktopTopbarProps> = ({ onMobileMen
               onClick={toggleFullscreen}
               aria-label={isFullscreen ? 'Exit fullscreen' : 'Enter fullscreen'}
               title={isFullscreen ? 'Exit fullscreen' : 'Enter fullscreen'}
-              className="hidden h-12 w-12 shrink-0 items-center justify-center rounded-xl text-text-secondary transition-colors duration-150 hover:bg-surface-raised hover:text-accent focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-accent lg:flex lg:h-14 lg:w-14"
+              className="hidden h-10 w-10 shrink-0 items-center justify-center rounded-xl text-text-secondary transition-colors duration-150 hover:bg-surface-raised hover:text-accent focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-accent lg:flex md:h-11 md:w-11"
             >
               {isFullscreen ? (
-                <Minimize className="h-6 w-6" aria-hidden="true" />
+                <Minimize className="h-5 w-5" aria-hidden="true" />
               ) : (
-                <Maximize className="h-6 w-6" aria-hidden="true" />
+                <Maximize className="h-5 w-5" aria-hidden="true" />
               )}
             </button>
 
             <button
               type="button"
               onClick={() => navigate('/dashboard/notifications')}
-              className="relative flex h-12 w-12 shrink-0 items-center justify-center rounded-xl text-text-secondary transition-colors duration-150 hover:bg-surface-raised hover:text-accent focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-accent md:h-14 md:w-14"
+              className="relative flex h-10 w-10 shrink-0 items-center justify-center rounded-xl text-text-secondary transition-colors duration-150 hover:bg-surface-raised hover:text-accent focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-accent md:h-11 md:w-11"
               aria-label={`Notifications${unread > 0 ? ` (${unread} unread)` : ''}`}
             >
-              <Bell className="h-6 w-6 md:h-7 md:w-7" aria-hidden="true" />
+              <Bell className="h-5 w-5 md:h-[22px] md:w-[22px]" aria-hidden="true" />
               {unread > 0 && (
-                <span className="absolute -right-1.5 -top-1.5 flex h-6 min-w-6 items-center justify-center rounded-full bg-accent px-1 text-[11px] font-black leading-none text-on-accent tabular-nums md:h-6 md:min-w-6">
+                <span className="absolute -right-1 -top-1 flex h-5 min-w-5 items-center justify-center rounded-full bg-accent px-1 text-[10px] font-black leading-none text-on-accent tabular-nums">
                   {unread > 9 ? '9+' : unread}
                 </span>
               )}
             </button>
 
             <div
-              className="flex h-12 min-w-[68px] shrink-0 items-center justify-center gap-2 rounded-xl bg-surface-raised px-2.5 text-text-primary md:h-14 md:min-w-[82px] md:gap-2.5 md:px-3.5"
+              className="flex h-10 min-w-[58px] shrink-0 items-center justify-center gap-1.5 rounded-xl bg-surface-raised px-2 text-text-primary md:h-11 md:min-w-[68px] md:gap-2 md:px-3"
               aria-label={`Current streak: ${streakDays} ${streakDays === 1 ? 'day' : 'days'}`}
               title={`${streakDays} ${streakDays === 1 ? 'day' : 'days'} streak`}
             >
-              <StreakIcon size={28} className="shrink-0" />
-              <span className="font-mono text-base font-black tabular-nums md:text-lg">{streakDays}</span>
+              <StreakIcon size={22} className="shrink-0" />
+              <span className="font-mono text-sm font-black tabular-nums md:text-base">{streakDays}</span>
             </div>
 
             <Link
               to="/dashboard/profile"
-              className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full border-2 border-accent bg-surface text-base font-black text-accent transition-colors duration-150 hover:bg-accent/10 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent md:h-14 md:w-14 md:text-lg"
+              className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border-2 border-accent bg-surface text-sm font-black text-accent transition-colors duration-150 hover:bg-accent/10 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent md:h-11 md:w-11 md:text-base"
               aria-label="Profile"
             >
               {userInitial}

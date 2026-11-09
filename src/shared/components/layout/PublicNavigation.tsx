@@ -103,7 +103,7 @@ const PublicNavigation: React.FC = React.memo(() => {
           </Link>
 
           {/* Desktop primary nav: icon above label keeps six sections compact. */}
-          <div className="hidden items-stretch gap-0.5 lg:flex xl:gap-1">
+          <div className="hidden items-stretch gap-1 lg:flex xl:gap-1.5">
             {PUBLIC_PRIMARY_LINKS.map((link) => {
               const Icon = link.icon;
               return (
@@ -112,7 +112,7 @@ const PublicNavigation: React.FC = React.memo(() => {
                   to={link.to}
                   className={({ isActive }) =>
                     [
-                      'group relative flex min-h-[56px] min-w-[56px] flex-col items-center justify-center gap-1 rounded-xl px-2 py-1.5 text-[10px] font-bold uppercase tracking-wide xl:min-w-[68px] xl:px-3 xl:text-[11px] xl:tracking-wider',
+                      'group relative flex h-[52px] w-[70px] flex-col items-center justify-center gap-1 rounded-xl px-2 py-1.5 text-[10px] font-bold uppercase tracking-wide xl:w-[80px] xl:text-[11px] xl:tracking-wider',
                       'transition-all duration-200 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent',
                       isActive
                         ? 'bg-accent/10 text-accent'
