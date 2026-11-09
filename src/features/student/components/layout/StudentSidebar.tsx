@@ -4,7 +4,6 @@ import {
   Home,
   BookOpen,
   Terminal as TerminalIcon,
-  Bug,
   ShieldCheck,
   ShoppingBag,
   Swords,
@@ -40,9 +39,8 @@ const NAV_SECTIONS: { title: string; items: NavEntry[] }[] = [
     title: 'Main',
     items: [
       { key: 'dashboard', label: 'Home', icon: Home, to: '/dashboard' },
-      { key: 'courses', label: 'Courses', icon: BookOpen, to: '/dashboard/courses' },
+      { key: 'labs', label: 'Labs', icon: BookOpen, to: '/dashboard/labs' },
       { key: 'bootcamp', label: 'Bootcamp', icon: ShieldCheck, to: '/dashboard/bootcamps' },
-      { key: 'labs', label: 'Labs', icon: Bug, to: '/dashboard/labs' },
       { key: 'marketplace', label: 'Marketplace', icon: ShoppingBag, to: '/dashboard/marketplace' },
     ],
   },

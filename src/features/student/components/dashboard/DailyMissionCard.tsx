@@ -58,7 +58,7 @@ const DailyMissionCard = ({ engagement, loading }: DailyMissionCardProps) => {
         </div>
       ) : (
         <Button
-          to={mission.actionType === 'lab_flag' ? '/dashboard/labs' : '/dashboard/courses'}
+          to={'/dashboard/labs'}
           size="sm"
         >
           {"Start Mission"}

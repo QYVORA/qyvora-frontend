@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { useParams, useSearchParams } from 'react-router-dom';
-import { Edit3, User, TrendingUp, Calendar, Bug, BookOpen } from 'lucide-react';
+import { Edit3, User, TrendingUp, Calendar, Bug } from 'lucide-react';
 import { useAuth } from '../../../core/contexts/AuthContext';
 import { useToast } from '../../../core/contexts/ToastContext';
 import { useProfile } from '../../../shared/hooks/useProfile';
@@ -101,7 +101,9 @@ const Profile: React.FC = () => {
       sections.push('activity');
     }
     if (profile.completedRooms.length > 0) sections.push('labs');
-    if (profile.coursesCompleted > 0 || profile.completedCourseIds.length > 0) sections.push('courses');
+    if (profile.labsCompleted > 0 || profile.completedCourseIds.length > 0 || profile.completedLabIds.length > 0) {
+      sections.push('courses');
+    }
     if (isOwnProfile) sections.push('credentials');
     sections.push('trophy');
     return sections;
@@ -174,8 +176,7 @@ const Profile: React.FC = () => {
               <ProfileMetricsStrip metrics={[
                 { icon: <CpLogo className="w-5 h-5" />, value: profile.cp.toLocaleString(), accent: true, label: 'CP' },
                 { icon: <User className="w-5 h-5" />, value: profile.rank, label: 'Rank' },
-                { icon: <Bug className="w-5 h-5" />, value: profile.labsCompleted || profile.completedRooms.length, label: 'Labs' },
-                { icon: <BookOpen className="w-5 h-5" />, value: profile.coursesCompleted, label: 'Courses' },
+                { icon: <Bug className="w-5 h-5" />, value: profile.labsCompleted, label: 'Labs' },
                 { icon: <TrendingUp className="w-5 h-5" />, value: profile.xpLevel, label: 'Level' },
                 { icon: <Calendar className="w-5 h-5" />, value: profile.joinDate ? new Date(profile.joinDate).getFullYear() : '—', label: 'Since' },
               ]} />
@@ -183,10 +184,7 @@ const Profile: React.FC = () => {
 
             <section id="profile-section-achievements">
               <AchievementsSection
-                rooms={profile.completedRooms}
                 bootcampCompleted={profile.bootcampCompleted}
-                labsCompleted={profile.labsCompleted}
-                coursesCompleted={profile.coursesCompleted}
                 completedPhaseIds={profile.completedPhaseIds}
                 completedCourseIds={profile.completedCourseIds}
                 skillAchievements={skillAchievements}
@@ -209,8 +207,8 @@ const Profile: React.FC = () => {
             {visibleSections.includes('courses') && (
               <section id="profile-section-courses">
                 <CoursesModule
-                  coursesCompleted={profile.coursesCompleted}
-                  courseIds={profile.completedCourseIds}
+                  labsCompleted={profile.labsCompleted}
+                  labIds={[...profile.completedCourseIds, ...profile.completedLabIds]}
                 />
               </section>
             )}
@@ -219,7 +217,6 @@ const Profile: React.FC = () => {
               <section id="profile-section-labs">
                 <LabsModule
                   completedRooms={profile.completedRooms}
-                  labsCompleted={profile.labsCompleted}
                 />
               </section>
             )}

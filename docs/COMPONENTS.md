@@ -132,7 +132,7 @@ Location: `src/shared/components/ui/` (barrel `index.ts`).
 - sizes: `sm px-4 py-2.5 text-xs` · `md px-7 py-3 text-sm` · `lg px-8 py-3.5 text-sm`
 - **Shape:** `inline-flex items-center justify-center gap-2 rounded-xl uppercase tracking-[0.08em] font-black`, transition filter/transform/bg/color/shadow `--dur-base --ease-smooth`, `disabled:opacity-50`. `loading` shows a `Loader2 animate-spin` and sets `aria-busy`. Polymorphic: renders `<Link>` if `to`, `<a>` if `href` (external opens new tab), else `<button>`.
 
-**Used in:** ContactModal, ServiceRequestModal, CoursePurchaseModal, EditModal, SettingsPage, EmptyState, ErrorBoundary, admin pages, and every CTA across the app.
+**Used in:** ContactModal, ServiceRequestModal, EditModal, SettingsPage, EmptyState, ErrorBoundary, admin pages, and every CTA across the app.
 
 ### 2.2 `Input` — default export
 `src/shared/components/ui/Input.tsx`
@@ -163,7 +163,7 @@ ConfirmDialog: { open; onOpenChange; title; description; confirmLabel?; cancelLa
 
 **Shape:** Portal → overlay `fixed inset-0 z-[200] bg-black/70` → content `z-[201] centered terminal-card bg-bg-card border border-border rounded-2xl`, max-width dynamic (`max-w-sm`…`max-w-7xl`), sticky header `px-5 py-4 border-b backdrop-blur-md` (only navbar/menu, so use carefully) with `RadixDialog.Title` + `IconX` close (`min-h-[44px] min-w-[44px]`), scrollable body, `aria-describedby="dialog-description"`, Radix slide/zoom animations.
 
-**Used in:** ContactModal, ServiceRequestModal, ToolInstallModal, CoursePurchaseModal, QuizModal, QuizGateModal, ReportIssueModal, StepJumpMenu, EditModal, UsernameChangeModal, StudentOnboardingModal, ShareProfile, admin tabs (Broadcast, Inbox).
+**Used in:** ContactModal, ServiceRequestModal, ToolInstallModal, QuizModal, QuizGateModal, ReportIssueModal, StepJumpMenu, EditModal, UsernameChangeModal, StudentOnboardingModal, ShareProfile, admin tabs (Broadcast, Inbox).
 
 ### 2.5 `BottomSheet` / `BottomSheetContent` — named exports
 `src/shared/components/ui/BottomSheet.tsx` (Radix)

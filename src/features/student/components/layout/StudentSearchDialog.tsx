@@ -5,7 +5,7 @@ import { Dialog, DialogContent } from '@/shared/components/ui/Dialog';
 import Input from '@/shared/components/ui/Input';
 import { COURSES, ALL_LESSONS } from '@/features/student/data/courses';
 
-type SearchKind = 'Page' | 'Course' | 'Lesson' | 'Lab';
+type SearchKind = 'Page' | 'Lesson' | 'Lab';
 
 interface SearchEntry {
   id: string;
@@ -18,9 +18,8 @@ interface SearchEntry {
 
 const PAGE_ENTRIES: SearchEntry[] = [
   { id: 'page-dashboard', title: 'Dashboard', description: 'Your learning overview', to: '/dashboard', kind: 'Page' },
-  { id: 'page-courses', title: 'Courses', description: 'All available courses', to: '/dashboard/courses', kind: 'Page' },
   { id: 'page-bootcamps', title: 'Bootcamps', description: 'Your bootcamp programme and rooms', to: '/dashboard/bootcamps', kind: 'Page' },
-  { id: 'page-labs', title: 'Attack Labs', description: 'Hands-on offensive security labs', to: '/dashboard/labs', kind: 'Page' },
+  { id: 'page-labs', title: 'Labs', description: 'Every learning experience on QYVORA', to: '/dashboard/labs', kind: 'Page' },
   { id: 'page-competitive', title: 'Competitive', description: 'CTFs, events, and rankings', to: '/dashboard/competitive', kind: 'Page' },
   { id: 'page-networks', title: 'Networks', description: 'Network visualizer and tooling', to: '/dashboard/networks', kind: 'Page' },
   { id: 'page-marketplace', title: 'Marketplace', description: 'Spend CP on tools and resources', to: '/dashboard/marketplace', kind: 'Page' },
@@ -61,7 +60,7 @@ const SEARCH_INDEX: SearchEntry[] = [
     title: course.title,
     description: course.description,
     to: `/dashboard/courses/${course.id}`,
-    kind: 'Course' as const,
+    kind: 'Lab' as const,
     keywords: course.categoryId,
   })),
   ...COURSES.flatMap((course) =>
@@ -79,7 +78,6 @@ const SEARCH_INDEX: SearchEntry[] = [
 
 const KIND_ICON: Record<SearchKind, React.ComponentType<{ className?: string }>> = {
   Page: LayoutDashboard,
-  Course: BookOpen,
   Lesson: BookOpen,
   Lab: FlaskConical,
 };

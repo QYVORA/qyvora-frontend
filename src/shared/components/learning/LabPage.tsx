@@ -5,6 +5,7 @@ import { LabCelebration } from '@/shared/components/LabCelebration';
 import LearningWorkspaceShell from '@/shared/components/learning/LearningWorkspaceShell';
 
 export interface LabPageProps {
+  labId: string;
   title: string;
   accentWord: string;
   description?: string;
@@ -26,6 +27,7 @@ export interface LabPageProps {
 }
 
 const LabPage: React.FC<LabPageProps> = ({
+  labId,
   title,
   accentWord,
   description,
@@ -49,6 +51,7 @@ const LabPage: React.FC<LabPageProps> = ({
         trigger={celebrationShow}
         title={celebrationTitle}
         rewardCp={celebrationCp}
+        labId={labId}
       />
 
       {activeScenario ? (

@@ -78,7 +78,7 @@ export function useLearningContext(): LearningContext | null {
         currentLessonIdx,
         title: course.title,
         curriculum: buildCourseCurriculum(courseId, currentLessonIdx),
-        exitPath: '/dashboard/courses',
+        exitPath: '/dashboard/labs',
       };
     }
 

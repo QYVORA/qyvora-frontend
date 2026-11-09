@@ -19,6 +19,8 @@ interface CelebrationModalProps {
   open: boolean;
   onClose: () => void;
   badge?: string;
+  badgeImage?: string;
+  badgeImageAlt?: string;
   title: string;
   description?: React.ReactNode;
   rewardCp?: number;
@@ -32,6 +34,8 @@ const CelebrationModal: React.FC<CelebrationModalProps> = ({
   open,
   onClose,
   badge,
+  badgeImage,
+  badgeImageAlt,
   title,
   description,
   rewardCp,
@@ -133,6 +137,15 @@ const CelebrationModal: React.FC<CelebrationModalProps> = ({
               {/* Content */}
               <div className="relative z-10 p-8 md:p-10">
                 {mascot && <div className="mx-auto mb-6 flex items-center justify-center">{mascot}</div>}
+
+                {badgeImage && (
+                  <img
+                    src={badgeImage}
+                    alt={badgeImageAlt || 'Lab badge'}
+                    className="mx-auto mb-4 h-32 w-32 select-none object-contain drop-shadow-[0_10px_25px_rgba(0,0,0,0.35)]"
+                    draggable={false}
+                  />
+                )}
 
                 {badge && (
                   <span className="inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-black uppercase tracking-widest bg-accent/10 text-accent border border-accent/20 mb-4">

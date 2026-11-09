@@ -102,7 +102,6 @@ const NotificationsPage = lazy(() => import('../features/student/pages/Notificat
 const SettingsPage      = lazy(() => import('../features/student/pages/SettingsPage'));
 const BootcampCoursePage= lazy(() => import('../features/student/pages/BootcampCoursePage'));
 const BootcampRoomPage  = lazy(() => import('../features/student/pages/BootcampRoomPage'));
-const MyCoursesPage     = lazy(() => import('../features/student/pages/MyCoursesPage'));
 const CourseLessonPage  = lazy(() => import('../features/student/pages/CourseLessonPage'));
 const CompetitivePage   = lazy(() => import('../features/student/pages/CompetitivePage'));
 const NetworksPage      = lazy(() => import('../features/student/pages/NetworksPage'));
@@ -319,7 +318,7 @@ export const AppRouter = () => {
           <Route path="/dashboard/bootcamps/:bootcampId/modules/:moduleId/rooms/:roomId" element={<Wrap scope="Bootcamp Room"><StudentOnly><BootcampRoomPage /></StudentOnly></Wrap>} />
           <Route path="/dashboard/bootcamps/:bootcampId/phases/:phaseId/rooms/:roomId"  element={<Wrap scope="Bootcamp Room"><StudentOnly><BootcampRoomPage /></StudentOnly></Wrap>} />
 
-          <Route path="/dashboard/courses" element={<Wrap scope="Courses"><StudentOnly><MyCoursesPage /></StudentOnly></Wrap>} />
+          <Route path="/dashboard/courses" element={<Navigate to="/dashboard/labs" replace />} />
           <Route path="/dashboard/courses/:courseId" element={<Wrap scope="Course"><StudentOnly><CourseLessonPage /></StudentOnly></Wrap>} />
 
           <Route path="/dashboard/marketplace"   element={<Wrap scope="Market"><StudentOnly><MarketplacePage /></StudentOnly></Wrap>} />

@@ -72,6 +72,7 @@ const OsintLab = () => {
 
   return (
     <LabPage
+      labId="osint"
       title="OSINT Recon"
       accentWord="Challenge"
       description="Master open-source intelligence gathering with guided reconnaissance exercises."

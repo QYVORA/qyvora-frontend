@@ -84,6 +84,7 @@ const SqlInjectionLab = () => {
 
   return (
     <LabPage
+      labId="sqli"
       title="SQL Injection"
       accentWord="Deep Dive"
       description="Explore and exploit SQL injection vulnerabilities across different target systems."

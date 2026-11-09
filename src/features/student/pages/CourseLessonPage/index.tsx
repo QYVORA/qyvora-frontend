@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { useParams, useSearchParams } from 'react-router-dom';
-import { ArrowLeft, ArrowRight, Check, Lock } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Check } from 'lucide-react';
 import { FadeIn, EmptyState } from '@/shared/components/ui';
 import SEO from '@/shared/components/SEO';
 import { getCourseById, getCategoryById } from '@/features/student/data/courses';
@@ -9,12 +9,13 @@ import type { LearningBlock } from '@/shared/learning';
 import LearningWorkspaceShell from '@/shared/components/learning/LearningWorkspaceShell';
 import { LearningTaskAccordion } from '@/shared/components/learning/LearningTaskAccordion';
 import type { LearningTask } from '@/shared/components/learning/LearningTaskAccordion';
-import { CourseLessonSkeleton } from '@/features/student/components/StudentSkeletons';
 import api from '@/core/services/api';
+import { useToast } from '@/core/contexts/ToastContext';
 import CelebrationModal from '@/shared/components/CelebrationModal';
 import { useCelebrationTrigger } from '@/shared/hooks/useCelebrationTrigger';
 import Button from '@/shared/components/ui/Button';
 import type { Lesson } from '@/features/student/data/courses';
+import { getLabBadgeAsset } from '@/shared/learning/labBadges';
 
 const STORAGE_KEY = 'qyvora_course_progress';
 
@@ -58,17 +59,18 @@ function buildLessonBlocks(lesson: Lesson, courseId?: string): LearningBlock[] {
 const CourseLessonPage: React.FC = () => {
   const { courseId } = useParams<{ courseId: string }>();
   const [searchParams, setSearchParams] = useSearchParams();
+  const { addToast } = useToast();
   const course = getCourseById(courseId || '');
+  const badge = getLabBadgeAsset(courseId || '');
 
-  const [purchased, setPurchased] = useState<boolean | null>(null);
-  const [checkingAccess, setCheckingAccess] = useState(true);
   const [completedLessons, setCompletedLessons] = useState<Set<string>>(new Set());
   const [resumeIdx, setResumeIdx] = useState<number | null>(null);
+  const [completionAwarded, setCompletionAwarded] = useState(false);
 
   const totalLessons = course?.lessons.length ?? 0;
 
   useEffect(() => {
-    if (!courseId) { setCheckingAccess(false); return; }
+    if (!courseId) return;
     const saved = localStorage.getItem(`${STORAGE_KEY}_${courseId}`);
     if (saved) {
       try {
@@ -77,15 +79,6 @@ const CourseLessonPage: React.FC = () => {
         setResumeIdx(Number(parsed.lastLesson) || 0);
       } catch {}
     }
-    api.get('/cp/transactions?limit=100').then((r) => {
-      const items = Array.isArray(r.data?.items) ? r.data.items : [];
-      const purchasedIds = new Set(items.filter((tx: any) => tx.type === 'purchase').map((tx: any) => {
-        return tx.metadata?.slug || tx.metadata?.courseId || String(tx.productId);
-      }));
-      setPurchased(purchasedIds.has(courseId || ''));
-    }).catch(() => {
-      setPurchased(false);
-    }).finally(() => setCheckingAccess(false));
   }, [courseId]);
 
   const lessonParam = Number(searchParams.get('lesson'));
@@ -110,7 +103,7 @@ const CourseLessonPage: React.FC = () => {
   const progress = totalLessons > 0 ? Math.round((completedCount / totalLessons) * 100) : 0;
   const allComplete = totalLessons > 0 && completedLessons.size === totalLessons;
   const nextIncompleteIdx = course?.lessons.findIndex((lesson) => !completedLessons.has(lesson.id)) ?? -1;
-  const [celebrationOpen, setCelebrationOpen] = useCelebrationTrigger(allComplete);
+  const [celebrationOpen, setCelebrationOpen] = useCelebrationTrigger(completionAwarded);
 
   const selectLesson = useCallback((idx: number) => {
     if (totalLessons === 0) return;
@@ -135,9 +128,11 @@ const CourseLessonPage: React.FC = () => {
     setCompletedLessons(next);
     saveProgress(next, idx);
     if (courseId && next.size === totalLessons) {
-      api.post(`/student/courses/${encodeURIComponent(courseId)}/complete`).catch(() => {});
+      api.post(`/student/labs/${encodeURIComponent(courseId)}/complete`)
+        .then(() => setCompletionAwarded(true))
+        .catch(() => addToast('Could not save Lab completion. Please try again.', 'error'));
     }
-  }, [completedLessons, saveProgress, courseId, totalLessons]);
+  }, [completedLessons, saveProgress, courseId, totalLessons, addToast]);
 
   useEffect(() => {
     window.dispatchEvent(new CustomEvent('course:updateMeta', {
@@ -153,34 +148,12 @@ const CourseLessonPage: React.FC = () => {
     return (
       <div className="min-h-dvh w-full bg-canvas px-3 py-16 md:px-4 lg:px-6">
         <EmptyState
-          title={"Course not found."}
-          description={"The course you are looking for does not exist or was removed."}
+          title={"Lab not found."}
+          description={"This Lab does not exist or was removed."}
           action={
-            <Button to="/dashboard/courses" variant="secondary">
+            <Button to="/dashboard/labs" variant="secondary">
               <ArrowLeft className="h-4 w-4" aria-hidden="true" />
-              {"Back to My Courses"}
-            </Button>
-          }
-        />
-      </div>
-    );
-  }
-
-  if (checkingAccess) {
-    return <CourseLessonSkeleton />;
-  }
-
-  if (!purchased) {
-    return (
-      <div className="min-h-dvh w-full bg-canvas px-3 py-16 md:px-4 lg:px-6">
-        <EmptyState
-          icon={<Lock className="h-6 w-6" aria-hidden="true" />}
-          title={"Course Not Unlocked"}
-          description={`You have not unlocked ${course.title} yet. Unlock it from the marketplace to start learning.`}
-          action={
-            <Button to="/dashboard/marketplace">
-              {"Unlock Course"}
-              <ArrowRight className="h-4 w-4" aria-hidden="true" />
+              {"Back to Labs"}
             </Button>
           }
         />
@@ -267,8 +240,10 @@ const CourseLessonPage: React.FC = () => {
         <CelebrationModal
           open={celebrationOpen}
           onClose={() => setCelebrationOpen(false)}
-          badge={"Course Complete"}
-          title={"Course Complete"}
+          badge={"Lab Complete"}
+          badgeImage={badge?.image}
+          badgeImageAlt={badge ? `${badge.title} badge` : undefined}
+          title={"Lab Complete"}
           description={`You completed every lesson in ${course.title}. Outstanding work.`}
           ctaLabel={"Continue"}
         />
@@ -277,12 +252,12 @@ const CourseLessonPage: React.FC = () => {
           kicker={category?.name}
           title={course.title}
           description={course.description}
-          backTo="/dashboard/courses"
-          backLabel={"Back to My Courses"}
+          backTo="/dashboard/labs"
+          backLabel={"Back to Labs"}
           stats={[
             { label: "Progress", value: `${progress}%`, accent: true },
             { label: "Lessons", value: `${completedCount}/${totalLessons}` },
-            { label: "CP cost", value: `${course.cpCost} CP` },
+            { label: "Time", value: `${course.estimatedMinutes} min` },
             { label: "Level", value: course.skillLevel },
           ]}
           progress={{
@@ -291,7 +266,7 @@ const CourseLessonPage: React.FC = () => {
           }}
           actions={
             <Button onClick={() => selectLesson(nextIncompleteIdx >= 0 ? nextIncompleteIdx : 0)}>
-              {allComplete ? "Review course" : completedCount > 0 ? "Continue learning" : "Start learning"}
+              {allComplete ? "Review Lab" : completedCount > 0 ? "Continue learning" : "Start learning"}
               <ArrowRight className="h-4 w-4" aria-hidden="true" />
             </Button>
           }

@@ -26,19 +26,21 @@ describe('AchievementsSection', () => {
     expect(screen.getByRole('button', { name: /sql injection/i })).toBeInTheDocument();
   });
 
-  it('allows category tab filtering', () => {
+  it('groups completed courses and hands-on labs under one Labs tab without duplicates', () => {
     render(
       <AchievementsSection
         completedCourseIds={['linux-terminal-101']}
-        completedLabIds={['privesc']}
+        completedLabIds={['linux-terminal-101', 'privesc']}
       />
     );
 
-    const coursesTab = screen.getByRole('tab', { name: /courses \(1\)/i });
-    fireEvent.click(coursesTab);
+    const labsTab = screen.getByRole('tab', { name: /labs \(2\)/i });
+    fireEvent.click(labsTab);
 
     expect(screen.getByRole('button', { name: /linux terminal 101/i })).toBeInTheDocument();
-    expect(screen.queryByRole('button', { name: /privilege escalation/i })).not.toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /privilege escalation/i })).toBeInTheDocument();
+    expect(screen.getAllByRole('button', { name: /linux terminal 101/i })).toHaveLength(1);
+    expect(screen.queryByRole('tab', { name: /courses/i })).not.toBeInTheDocument();
   });
 
   it('renders skill achievements from the API-shaped prop (LEARN-BUG-001)', () => {

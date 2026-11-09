@@ -7,7 +7,6 @@ import {
   Settings,
   BookOpen,
   ShieldCheck,
-  Bug,
   ShoppingBag,
   Network,
   Award,
@@ -37,17 +36,16 @@ interface SheetLink {
 
 const PRIMARY_ITEMS: BottomNavItem[] = [
   { key: 'home', label: 'Home', icon: Home, to: '/dashboard' },
-  { key: 'learn', label: 'Learn', icon: BookOpen, sheet: 'learn' },
+  { key: 'learn', label: 'Labs', icon: BookOpen, sheet: 'learn' },
   { key: 'practice', label: 'Practice', icon: Swords, sheet: 'practice' },
   { key: 'profile', label: 'Profile', icon: User, to: '/dashboard/profile' },
   { key: 'settings', label: 'Settings', icon: Settings, to: '/dashboard/settings' },
 ];
 
 const LEARN_LINKS: SheetLink[] = [
-  { key: 'courses', label: 'My Courses', to: '/dashboard/courses', icon: BookOpen },
+  { key: 'labs', label: 'Labs', to: '/dashboard/labs', icon: BookOpen },
   { key: 'bootcamp', label: 'Bootcamp', to: '/dashboard/bootcamps', icon: ShieldCheck },
   { key: 'certificates', label: 'Certificates', to: '/dashboard/certificates', icon: Award },
-  { key: 'labs', label: 'Labs', to: '/dashboard/labs', icon: Bug },
   { key: 'marketplace', label: 'Marketplace', to: '/dashboard/marketplace', icon: ShoppingBag },
 ];
 
@@ -57,7 +55,7 @@ const PRACTICE_LINKS: SheetLink[] = [
 ];
 
 const SHEETS: Record<SheetKey, { label: string; links: SheetLink[] }> = {
-  learn: { label: 'Learn', links: LEARN_LINKS },
+  learn: { label: 'Labs', links: LEARN_LINKS },
   practice: { label: 'Practice', links: PRACTICE_LINKS },
 };
 

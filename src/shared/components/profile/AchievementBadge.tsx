@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import type { Achievement } from '@/shared/constants/achievements';
+import { getLabBadgeAsset } from '@/shared/learning/labBadges';
 import AchievementDetails from './AchievementDetails';
 
 interface AchievementBadgeProps {
@@ -24,6 +25,7 @@ export const AchievementBadge: React.FC<AchievementBadgeProps> = ({
   const [open, setOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
   const Icon = achievement.IconComponent;
+  const badgeAsset = getLabBadgeAsset(achievement.id);
 
   // Close when clicking outside
   useEffect(() => {
@@ -69,7 +71,18 @@ export const AchievementBadge: React.FC<AchievementBadgeProps> = ({
         className={`group relative flex items-center justify-center transition-transform duration-150 hover:scale-105 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg ${SIZES[size]} ${className}`}
       >
         <div className="relative flex h-full w-full items-center justify-center">
-          <Icon className="h-full w-full object-contain filter drop-shadow-[0_2px_8px_rgba(0,0,0,0.6)] transition-opacity duration-150 group-hover:opacity-100" />
+          {badgeAsset ? (
+            <img
+              src={badgeAsset.image}
+              alt=""
+              draggable={false}
+              loading="lazy"
+              decoding="async"
+              className="h-full w-full object-contain transition-opacity duration-150 group-hover:opacity-100"
+            />
+          ) : (
+            <Icon className="h-full w-full object-contain filter drop-shadow-[0_2px_8px_rgba(0,0,0,0.6)] transition-opacity duration-150 group-hover:opacity-100" />
+          )}
         </div>
       </button>
 

@@ -11,6 +11,7 @@ interface LabCardProps {
   cpReward: string;
   route: string;
   accentColor: string;
+  tags?: string[];
 }
 
 /**
@@ -34,7 +35,7 @@ const LAB_PREFIXES: Record<string, string> = {
   'attack-paths': 'apath-',
 };
 
-const LabCard: React.FC<LabCardProps> = ({ id, title, description, difficulty, cpReward, route, accentColor }) => {
+const LabCard: React.FC<LabCardProps> = ({ id, title, description, difficulty, cpReward, route, accentColor, tags }) => {
   const { user } = useAuth();
 
   const prefix = LAB_PREFIXES[id];
@@ -58,6 +59,7 @@ const LabCard: React.FC<LabCardProps> = ({ id, title, description, difficulty, c
       cpReward={cpReward}
       actionLabel={actionLabel}
       progress={completed ? 100 : undefined}
+      tags={tags}
     />
   );
 };

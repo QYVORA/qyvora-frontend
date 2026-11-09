@@ -42,7 +42,7 @@ describe('StudentDesktopTopbar', () => {
     renderTopbar();
 
     expect(screen.getByRole('link', { name: /Dashboard/i })).toHaveAttribute('href', '/dashboard');
-    expect(screen.getByRole('link', { name: /Learn/i })).toHaveAttribute('href', '/dashboard/courses');
+    expect(screen.getByRole('link', { name: /Labs/i })).toHaveAttribute('href', '/dashboard/labs');
     expect(screen.getByRole('button', { name: /Practice/i })).toBeInTheDocument();
     expect(screen.getByRole('link', { name: /Complete/i })).toHaveAttribute('href', '/dashboard/certificates');
     expect(screen.getByRole('button', { name: /Develop/i })).toBeInTheDocument();

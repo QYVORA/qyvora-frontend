@@ -144,8 +144,8 @@ export const PROFILE_SECTIONS: ProfileSection[] = [
   { id: 'stats',        label: 'Statistics' },
   { id: 'activity', label: 'Activity' },
   { id: 'achievements', label: 'Achievements' },
-  { id: 'labs',         label: 'Labs' },
-  { id: 'courses',      label: 'Courses' },
+  { id: 'labs',         label: 'Bootcamp' },
+  { id: 'courses',      label: 'Labs' },
   { id: 'credentials',  label: 'Certificates' },
   { id: 'trophy',       label: 'Trophy Cabinet' },
 ];

@@ -16,7 +16,7 @@ const CpEarnHint = ({ engagement, loading }: CpEarnHintProps) => {
   if (dailyStatus === 'not_started') {
     return (
       <Link
-        to={mission.actionType === 'lab_flag' ? '/dashboard/labs' : '/dashboard/courses'}
+        to={'/dashboard/labs'}
         className="flex items-center gap-3 px-4 py-3 rounded-xl bg-accent/5 border border-accent/10 text-sm font-mono text-accent hover:bg-accent/10 transition-colors"
       >
         <IconFire size={16} className="shrink-0" />
@@ -44,7 +44,7 @@ const CpEarnHint = ({ engagement, loading }: CpEarnHintProps) => {
       className="flex items-center gap-3 px-4 py-3 rounded-xl bg-accent/5 border border-accent/10 text-sm font-mono text-accent hover:bg-accent/10 transition-colors"
     >
       <IconFire size={16} className="shrink-0" />
-      <span>{"Complete labs and courses to earn CP"}</span>
+      <span>{"Complete Labs to earn CP"}</span>
     </Link>
   );
 };

@@ -50,7 +50,7 @@ const renderLabsPage = () =>
 describe('LabsPage', () => {
   it('renders the page title', () => {
     renderLabsPage();
-    expect(screen.getByText('Attack Labs')).toBeTruthy();
+    expect(screen.getByText('Labs')).toBeTruthy();
   });
 
   it('renders all lab cards', () => {

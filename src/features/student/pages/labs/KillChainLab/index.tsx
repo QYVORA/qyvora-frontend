@@ -127,6 +127,7 @@ const KillChainLab = () => {
 
   return (
     <LabPage
+      labId="killchain"
       title="Kill"
       accentWord="Chain"
       description="Execute full kill chain simulations, from reconnaissance to exfiltration."

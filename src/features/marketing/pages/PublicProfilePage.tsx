@@ -101,7 +101,9 @@ const PublicProfile: React.FC = () => {
       sections.push('activity');
     }
     if (profile.completedRooms.length > 0) sections.push('labs');
-    if (profile.coursesCompleted > 0 || profile.completedCourseIds.length > 0) sections.push('courses');
+    if (profile.labsCompleted > 0 || profile.completedCourseIds.length > 0 || profile.completedLabIds.length > 0) {
+      sections.push('courses');
+    }
     sections.push('trophy');
     return sections;
   }, [profile, activityDates]);
@@ -184,8 +186,7 @@ const PublicProfile: React.FC = () => {
               <ProfileMetricsStrip metrics={[
                 { icon: <CpLogo className="w-5 h-5" />, value: profile.cp.toLocaleString(), accent: true, label: 'CP' },
                 { icon: <User className="w-5 h-5" />, value: profile.rank, label: 'Rank' },
-                { icon: <QyvoraMark className="w-4 h-4" />, value: profile.labsCompleted || profile.completedRooms.length, label: 'Labs' },
-                { icon: <QyvoraMark className="w-4 h-4" />, value: profile.coursesCompleted, label: 'Courses' },
+                { icon: <QyvoraMark className="w-4 h-4" />, value: profile.labsCompleted, label: 'Labs' },
                 { icon: <TrendingUp className="w-5 h-5" />, value: profile.xpLevel, label: 'Level' },
                 { icon: <Calendar className="w-5 h-5" />, value: profile.joinDate ? new Date(profile.joinDate).getFullYear() : '—', label: 'Since' },
               ]} />
@@ -193,10 +194,7 @@ const PublicProfile: React.FC = () => {
 
             <section id="profile-section-achievements">
               <AchievementsSection
-                rooms={profile.completedRooms}
                 bootcampCompleted={profile.bootcampCompleted}
-                labsCompleted={profile.labsCompleted}
-                coursesCompleted={profile.coursesCompleted}
                 completedPhaseIds={profile.completedPhaseIds}
                 completedCourseIds={profile.completedCourseIds}
               />
@@ -218,8 +216,8 @@ const PublicProfile: React.FC = () => {
             {visibleSections.includes('courses') && (
               <section id="profile-section-courses">
                 <CoursesModule
-                  coursesCompleted={profile.coursesCompleted}
-                  courseIds={profile.completedCourseIds}
+                  labsCompleted={profile.labsCompleted}
+                  labIds={[...profile.completedCourseIds, ...profile.completedLabIds]}
                 />
               </section>
             )}
@@ -228,7 +226,6 @@ const PublicProfile: React.FC = () => {
               <section id="profile-section-labs">
                 <LabsModule
                   completedRooms={profile.completedRooms}
-                  labsCompleted={profile.labsCompleted}
                 />
               </section>
             )}

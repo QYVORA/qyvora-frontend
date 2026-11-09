@@ -55,7 +55,7 @@ export function buildCourseBreadcrumbs(
   const course = getCourseById(courseId);
   
   if (!course) {
-    return [{ label: 'Course' }];
+    return [{ label: 'Lab' }];
   }
   
   const currentLesson = course.lessons[currentLessonIdx];
@@ -63,7 +63,7 @@ export function buildCourseBreadcrumbs(
   const breadcrumbs: BreadcrumbItem[] = [
     {
       label: course.title,
-      href: '/dashboard/courses',
+      href: '/dashboard/labs',
     },
   ];
   

@@ -8,7 +8,6 @@ import {
   Trophy,
   Terminal as TerminalIcon,
   Network,
-  Bug,
   ShieldCheck,
   Bell,
   Menu,
@@ -90,9 +89,11 @@ const StudentDesktopTopbar: React.FC<StudentDesktopTopbarProps> = ({ onMobileMen
   const userDisplayName = user?.username || user?.email || 'User';
   const userInitial = userDisplayName.charAt(0).toUpperCase();
   const streakDays = overview?.xpSummary?.streakDays ?? 0;
+  const isLabsRoute =
+    location.pathname.startsWith('/dashboard/labs') ||
+    location.pathname.startsWith('/dashboard/courses');
   const isPracticeRoute =
     location.pathname.startsWith('/dashboard/bootcamps') ||
-    location.pathname.startsWith('/dashboard/labs') ||
     location.pathname.startsWith('/dashboard/competitive');
   const isDevelopRoute =
     location.pathname.startsWith('/dashboard/networks') ||
@@ -152,15 +153,15 @@ const StudentDesktopTopbar: React.FC<StudentDesktopTopbarProps> = ({ onMobileMen
               )}
             </NavLink>
 
-            <NavLink to="/dashboard/courses" className={({ isActive }) => desktopItemClass(isActive)}>
-              {({ isActive }) => (
+            <NavLink to="/dashboard/labs" className={() => desktopItemClass(isLabsRoute)}>
+              {() => (
                 <>
                   <BookOpen
                     className="h-5 w-5 shrink-0 text-accent xl:h-[22px] xl:w-[22px]"
-                    strokeWidth={isActive ? 2.5 : 2}
+                    strokeWidth={isLabsRoute ? 2.5 : 2}
                     aria-hidden="true"
                   />
-                  <span>Learn</span>
+                  <span>Labs</span>
                 </>
               )}
             </NavLink>
@@ -194,10 +195,6 @@ const StudentDesktopTopbar: React.FC<StudentDesktopTopbarProps> = ({ onMobileMen
                     <Link to="/dashboard/bootcamps" className={dropdownLinkClass}>
                       <ShieldCheck className="h-[18px] w-[18px] text-accent" aria-hidden="true" />
                       <span>Bootcamp</span>
-                    </Link>
-                    <Link to="/dashboard/labs" className={dropdownLinkClass}>
-                      <Bug className="h-[18px] w-[18px] text-accent" aria-hidden="true" />
-                      <span>Labs</span>
                     </Link>
                     <Link to="/dashboard/competitive" className={dropdownLinkClass}>
                       <Trophy className="h-[18px] w-[18px] text-accent" aria-hidden="true" />

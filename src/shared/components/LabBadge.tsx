@@ -1,4 +1,5 @@
 import React from 'react';
+import { getLabBadgeAsset } from '@/shared/learning/labBadges';
 
 interface LabBadgeProps {
   labId: string;
@@ -142,6 +143,33 @@ const LAB_BADGE_CONFIG: Record<string, {
  * dark circular interior → inner boundary → lab-specific illustration.
  */
 const LabBadge: React.FC<LabBadgeProps> = ({ labId, accentColor, className = '', glow = true }) => {
+  const asset = getLabBadgeAsset(labId);
+  if (asset) {
+    return (
+      <div
+        className={`relative inline-flex items-center justify-center ${className}`}
+        role="img"
+        aria-label={`${asset.title} badge`}
+      >
+        {glow && (
+          <div
+            className="absolute inset-0 rounded-full opacity-20 blur-md"
+            style={{ backgroundColor: accentColor || '#06B66F' }}
+            aria-hidden="true"
+          />
+        )}
+        <img
+          src={asset.image}
+          alt=""
+          className="relative z-10 h-full w-full select-none object-contain"
+          draggable={false}
+          loading="lazy"
+          decoding="async"
+        />
+      </div>
+    );
+  }
+
   const config = LAB_BADGE_CONFIG[labId];
   if (!config) return null;
 

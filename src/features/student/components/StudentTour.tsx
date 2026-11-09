@@ -161,7 +161,7 @@ export const StudentTour: React.FC<StudentTourProps> = ({
       {
         targetId: 'tour-nav',
         title: "Main navigation",
-        body: "Courses, Bootcamps, Labs and the Marketplace live in this bar. One tap to jump between them.",
+        body: "Labs, Bootcamps, the Marketplace and more live in this bar. One tap to jump between them.",
       },
       {
         targetId: 'tour-learning',

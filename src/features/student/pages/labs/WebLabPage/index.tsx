@@ -87,6 +87,7 @@ const WebLabPage: React.FC<WebLabPageProps> = ({
 
   return (
     <LabPage
+      labId={labId}
       title={title}
       accentWord={accentWord}
       description={description}

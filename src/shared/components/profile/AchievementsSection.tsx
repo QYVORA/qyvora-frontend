@@ -3,8 +3,6 @@ import { Award, Sparkles } from 'lucide-react';
 import AchievementBadge from './AchievementBadge';
 import {
   getAchievementById,
-  COURSE_ACHIEVEMENTS,
-  LAB_ACHIEVEMENTS,
   BOOTCAMP_PHASE_ACHIEVEMENTS,
   BOOTCAMP_GRADUATE_ACHIEVEMENT,
   type Achievement,
@@ -21,17 +19,13 @@ export interface SkillAchievementSummary {
 interface AchievementsSectionProps {
   completedCourseIds?: string[];
   completedLabIds?: string[];
-  completedRooms?: { roomId: number; title: string }[];
-  rooms?: { roomId: number; title: string }[];
   completedPhaseIds?: string[];
   bootcampCompleted?: boolean;
-  labsCompleted?: number;
-  coursesCompleted?: number;
   skillAchievements?: SkillAchievementSummary[];
   className?: string;
 }
 
-type TabType = 'all' | 'courses' | 'labs' | 'bootcamp' | 'skills';
+type TabType = 'all' | 'labs' | 'bootcamp' | 'skills';
 
 const RARITY_LABELS: Record<SkillAchievementSummary['rarity'], string> = {
   common: 'Common',
@@ -46,52 +40,27 @@ const INITIAL_VISIBLE_COUNT = 16;
 export const AchievementsSection: React.FC<AchievementsSectionProps> = ({
   completedCourseIds = [],
   completedLabIds = [],
-  completedRooms = [],
-  rooms,
   completedPhaseIds = [],
   bootcampCompleted = false,
-  labsCompleted = 0,
   skillAchievements = [],
   className = '',
 }) => {
   const [activeTab, setActiveTab] = useState<TabType>('all');
   const [showAll, setShowAll] = useState(false);
 
-  const actualRooms = completedRooms.length > 0 ? completedRooms : (rooms || []);
-
-  // 1. Resolve earned course achievements
-  const earnedCourses = useMemo(() => {
-    const courseMap = new Map(COURSE_ACHIEVEMENTS.map((c) => [c.id, c]));
-    return completedCourseIds
-      .map((id) => courseMap.get(id))
-      .filter((item): item is Achievement => Boolean(item));
-  }, [completedCourseIds]);
-
-  // 2. Resolve earned lab achievements
-  // Handles either explicit completedLabIds or completed flags/rooms
+  // Content and hands-on Labs share one earned collection.
   const earnedLabs = useMemo(() => {
-    const labMap = new Map(LAB_ACHIEVEMENTS.map((l) => [l.id, l]));
     const earned = new Map<string, Achievement>();
-
-    // From completedLabIds
-    completedLabIds.forEach((id) => {
-      const match = labMap.get(id) || getAchievementById(id);
-      if (match) earned.set(match.id, match);
+    [...completedCourseIds, ...completedLabIds].forEach((id) => {
+      const match = getAchievementById(id);
+      if (match && (match.type === 'course' || match.type === 'lab')) {
+        earned.set(match.id, match);
+      }
     });
-
-    // If rooms or labs were completed, ensure matching known lab IDs are included
-    const count = actualRooms.length > 0 ? actualRooms.length : labsCompleted;
-    if (earned.size === 0 && count > 0) {
-      // Map completed room counts to earned lab insignia if present
-      LAB_ACHIEVEMENTS.slice(0, Math.min(count, LAB_ACHIEVEMENTS.length)).forEach((lab) => {
-        earned.set(lab.id, lab);
-      });
-    }
-
     return Array.from(earned.values());
-  }, [completedLabIds, actualRooms, labsCompleted]);
+  }, [completedCourseIds, completedLabIds]);
 
-  // 3. Resolve earned bootcamp achievements (strictly preserving existing behavior)
+  // Bootcamp achievements remain distinct from Labs.
   const earnedBootcamp = useMemo(() => {
     const list: Achievement[] = [];
     if (bootcampCompleted) {
@@ -108,13 +77,13 @@ export const AchievementsSection: React.FC<AchievementsSectionProps> = ({
 
   // All earned achievements
   const allEarned = useMemo(() => {
-    return [...earnedCourses, ...earnedLabs, ...earnedBootcamp];
-  }, [earnedCourses, earnedLabs, earnedBootcamp]);
+    return Array.from(
+      new Map([...earnedLabs, ...earnedBootcamp].map((achievement) => [achievement.id, achievement])).values()
+    );
+  }, [earnedLabs, earnedBootcamp]);
 
   const displayedList = useMemo(() => {
     switch (activeTab) {
-      case 'courses':
-        return earnedCourses;
       case 'labs':
         return earnedLabs;
       case 'bootcamp':
@@ -122,7 +91,7 @@ export const AchievementsSection: React.FC<AchievementsSectionProps> = ({
       default:
         return allEarned;
     }
-  }, [activeTab, earnedCourses, earnedLabs, earnedBootcamp, allEarned]);
+  }, [activeTab, earnedLabs, earnedBootcamp, allEarned]);
 
   // LEARN-BUG-001: skill achievements come from /student/skill-achievements and
   // previously never rendered. They are a distinct badge type, not an
@@ -157,7 +126,7 @@ export const AchievementsSection: React.FC<AchievementsSectionProps> = ({
         </div>
         <div className="py-8 text-center">
           <p className="font-mono text-xs text-text-muted">
-            No achievements recorded yet. Complete courses and labs to unlock earned insignia.
+            No achievements recorded yet. Complete Labs to unlock earned insignia.
           </p>
         </div>
       </section>
@@ -199,21 +168,6 @@ export const AchievementsSection: React.FC<AchievementsSectionProps> = ({
           >
             All ({totalCount})
           </button>
-          {earnedCourses.length > 0 && (
-            <button
-              type="button"
-              role="tab"
-              aria-selected={activeTab === 'courses'}
-              onClick={() => { setActiveTab('courses'); setShowAll(false); }}
-              className={`rounded-lg px-2.5 py-1 font-mono text-[11px] font-bold uppercase tracking-wider transition-colors ${
-                activeTab === 'courses'
-                  ? 'bg-accent text-on-accent'
-                  : 'text-text-muted hover:bg-surface-raised hover:text-text-primary'
-              }`}
-            >
-              Courses ({earnedCourses.length})
-            </button>
-          )}
           {earnedLabs.length > 0 && (
             <button
               type="button"

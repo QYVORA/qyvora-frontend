@@ -108,6 +108,7 @@ const PasswordLab = () => {
 
   return (
     <LabPage
+      labId="passwords"
       title="Password"
       accentWord="Cracking"
       description="Extract and crack password hashes using John the Ripper and Hashcat."

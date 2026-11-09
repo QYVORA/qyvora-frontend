@@ -398,40 +398,6 @@ export const BootcampCourseSkeleton = () => (
   </div>
 );
 
-/* ─── My Courses Page Skeleton (hero renders as real content) ─────────────── */
-export const MyCoursesSkeleton = () => (
-  <div className="space-y-8">
-    {/* Filter strip */}
-    <div className="flex items-center gap-1 rounded-xl border border-border-subtle bg-surface-raised p-1.5">
-      <S className="h-10 flex-1 rounded-lg" />
-      <S className="h-10 flex-1 rounded-lg" />
-      <S className="h-10 flex-1 rounded-lg" />
-    </div>
-    {/* Search */}
-    <S className="h-12 w-full rounded-xl" />
-    {/* Course cards */}
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
-      {Array.from({ length: 6 }).map((_, i) => (
-        <CardShell key={i} className="overflow-hidden aspect-square flex flex-col p-4 sm:p-5">
-          <div className="flex items-center justify-between">
-            <S className="h-5 w-20 rounded-lg" />
-            <S className="h-3 w-16 rounded" />
-          </div>
-          <div className="mt-4 space-y-2">
-            <S className="h-5 w-3/4 rounded" />
-            <S className="h-3 w-full rounded" />
-          </div>
-          <div className="mt-auto space-y-2.5 pt-3">
-            <S className="h-2 w-24 rounded" />
-            <S className="h-1.5 w-full rounded-full" />
-            <S className="h-8 w-24 rounded-lg" />
-          </div>
-        </CardShell>
-      ))}
-    </div>
-  </div>
-);
-
 /* ─── Bootcamp Room Page Skeleton ─────────────────────────────────────────── */
 export const BootcampRoomSkeleton = () => (
   <div className="bg-canvas overflow-x-hidden">

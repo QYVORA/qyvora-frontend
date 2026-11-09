@@ -3,7 +3,6 @@ import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom';
 import {
   Home,
   BookOpen,
-  Bug,
   ShieldCheck,
   ShoppingBag,
   Swords,
@@ -48,7 +47,7 @@ const NAV_SECTIONS: NavSection[] = [
     title: 'Main',
     items: [
       { key: 'dashboard', label: 'Dashboard', icon: Home, to: '/dashboard' },
-      { key: 'courses', label: 'Learn', icon: BookOpen, to: '/dashboard/courses' },
+      { key: 'labs', label: 'Labs', icon: BookOpen, to: '/dashboard/labs' },
     ],
   },
   {
@@ -57,7 +56,6 @@ const NAV_SECTIONS: NavSection[] = [
     defaultCollapsed: false,
     items: [
       { key: 'bootcamp', label: 'Bootcamp', icon: ShieldCheck, to: '/dashboard/bootcamps' },
-      { key: 'labs', label: 'Labs', icon: Bug, to: '/dashboard/labs' },
     ],
   },
   {

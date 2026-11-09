@@ -3,6 +3,7 @@ import { render, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import { AuthProvider } from '@/core/contexts/AuthContext';
 import LabCard from '../LabsPage/LabCard';
+import { getLabBadgeImage } from '@/shared/learning/labBadges';
 
 const translations: Record<string, string> = {
   'student.labs.labCard.start': 'Start',
@@ -54,11 +55,10 @@ describe('LabCard', () => {
     expect(link.getAttribute('href')).toBe('/dashboard/labs/privesc');
   });
 
-  it('does not render images or numbered backgrounds', () => {
+  it('renders the official badge without numbered or decorative backgrounds', () => {
     renderCard();
     const link = screen.getByRole('link');
-    // No images
-    expect(link.querySelector('img')).toBeNull();
+    expect(link.querySelector('img')).toHaveAttribute('src', getLabBadgeImage('privesc'));
     // No numbered badges ("01", "02", etc.)
     expect(screen.queryByText('01')).toBeNull();
     // No radial-gradient backgrounds

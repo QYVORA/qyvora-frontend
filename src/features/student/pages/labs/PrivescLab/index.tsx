@@ -79,6 +79,7 @@ const PrivescLab = () => {
 
   return (
     <LabPage
+      labId="privesc"
       title="Privilege"
       accentWord="Escalation"
       description="Escalate from low-privilege user to root using Linux misconfigurations."

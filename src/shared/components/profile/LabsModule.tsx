@@ -7,36 +7,33 @@ import ModuleHeader from './ModuleHeader';
 
 interface LabsModuleProps {
   completedRooms: CompletedRoom[];
-  labsCompleted: number;
   className?: string;
 }
 
 const LabsModule: React.FC<LabsModuleProps> = ({
   completedRooms,
-  labsCompleted,
   className = '',
 }) => {
   const prefersReduced = useReducedMotion();
 
   const displayRooms = completedRooms.slice(-8).reverse();
-  const totalLabs = labsCompleted || completedRooms.length;
 
   return (
     <div className={`rounded-2xl border border-border-subtle bg-surface p-5 md:p-6 ${className}`}>
       <ModuleHeader
         icon={<Bug className="h-4 w-4" />}
-        title="Labs"
+        title="Bootcamp"
         trailing={
-          totalLabs > 0 ? (
+          completedRooms.length > 0 ? (
             <span className="rounded-md bg-accent/10 px-2 py-0.5 text-[10px] font-black uppercase tracking-widest text-accent">
-              {totalLabs}
+              {completedRooms.length}
             </span>
           ) : undefined
         }
       />
 
       {displayRooms.length === 0 ? (
-        <p className="py-4 text-center text-sm text-text-muted">No labs completed yet.</p>
+        <p className="py-4 text-center text-sm text-text-muted">No Bootcamp rooms completed yet.</p>
       ) : (
         <div className="space-y-2">
           {displayRooms.map((room, idx) => (

@@ -26,6 +26,7 @@ Welcome to the QYVORA Frontend documentation. This guide helps you navigate all 
 - **[ERROR_HANDLING.md](ERROR_HANDLING.md)** - Error boundaries, toasts, API errors
 
 ### Learning Systems
+- **[LABS.md](LABS.md)** - Unified Lab architecture, full Lab catalogue, route mapping
 - **[SIMULATIONS.md](SIMULATIONS.md)** - Complete simulation system reference (13 component types, 5 labs)
 - **[LEARNING_SYSTEM.md](LEARNING_SYSTEM.md)** - Labs, courses, bootcamp overview
 - **[BOOTCAMP.md](BOOTCAMP.md)** - Hacker Protocol Bootcamp details + recent room features
