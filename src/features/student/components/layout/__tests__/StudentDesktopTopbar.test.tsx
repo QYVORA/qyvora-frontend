@@ -56,8 +56,18 @@ describe('StudentDesktopTopbar', () => {
     expect(screen.getByRole('button', { name: /Enter fullscreen/i })).toBeInTheDocument();
     expect(screen.getByLabelText('Current streak: 12 days')).toBeInTheDocument();
     expect(screen.getByRole('button', { name: /Notifications/i })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /Search learning rooms/i })).toBeInTheDocument();
     expect(screen.getByRole('link', { name: /Profile/i })).toHaveAttribute('href', '/dashboard/profile');
-    expect(screen.queryByRole('button', { name: /Search/i })).not.toBeInTheDocument();
+  });
+
+  it('opens room search from the topbar button', async () => {
+    const user = userEvent.setup();
+    renderTopbar();
+
+    await user.click(screen.getByRole('button', { name: /Search learning rooms/i }));
+
+    expect(await screen.findByRole('dialog', { name: /Search learning experiences/i })).toBeInTheDocument();
+    expect(screen.getByPlaceholderText(/Search rooms, labs, courses, or lessons/i)).toBeInTheDocument();
   });
 
   it('opens and closes the Develop menu for Network and Terminal', async () => {

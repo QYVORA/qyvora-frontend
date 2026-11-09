@@ -1,11 +1,12 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { BookOpen, CornerDownLeft, FlaskConical, LayoutDashboard, Search } from 'lucide-react';
+import { BookOpen, CornerDownLeft, FlaskConical, LayoutDashboard, Search, ShieldCheck } from 'lucide-react';
 import { Dialog, DialogContent } from '@/shared/components/ui/Dialog';
 import Input from '@/shared/components/ui/Input';
 import { COURSES, ALL_LESSONS } from '@/features/student/data/courses';
+import { HACKER_PROTOCOL_BOOTCAMP_ID } from '@/features/student/constants/bootcampIds';
 
-type SearchKind = 'Page' | 'Lesson' | 'Lab';
+type SearchKind = 'Page' | 'Lesson' | 'Lab' | 'Room';
 
 interface SearchEntry {
   id: string;
@@ -14,6 +15,7 @@ interface SearchEntry {
   to: string;
   kind: SearchKind;
   keywords?: string;
+  meta?: string;
 }
 
 const PAGE_ENTRIES: SearchEntry[] = [
@@ -80,6 +82,7 @@ const KIND_ICON: Record<SearchKind, React.ComponentType<{ className?: string }>>
   Page: LayoutDashboard,
   Lesson: BookOpen,
   Lab: FlaskConical,
+  Room: ShieldCheck,
 };
 
 interface StudentSearchDialogProps {
@@ -97,6 +100,8 @@ const StudentSearchDialog: React.FC<StudentSearchDialogProps> = ({ open, onOpenC
   const inputRef = useRef<HTMLInputElement>(null);
   const [query, setQuery] = useState('');
   const [activeIndex, setActiveIndex] = useState(0);
+  const [roomEntries, setRoomEntries] = useState<SearchEntry[]>([]);
+  const [roomLoadError, setRoomLoadError] = useState(false);
 
   useEffect(() => {
     const handler = (event: KeyboardEvent) => {
@@ -116,12 +121,49 @@ const StudentSearchDialog: React.FC<StudentSearchDialogProps> = ({ open, onOpenC
     }
   }, [open]);
 
+  useEffect(() => {
+    if (!open) return;
+    let active = true;
+    setRoomLoadError(false);
+
+    void import('@/features/student/constants/bootcampConfig')
+      .then(({ BOOTCAMP_CONFIG }) => {
+        if (!active) return;
+        setRoomEntries(
+          BOOTCAMP_CONFIG.phases.flatMap((phase) =>
+            phase.rooms.map((room) => ({
+              id: `room-${phase.id}-${room.id}`,
+              title: room.title,
+              description: room.overview,
+              to: `/dashboard/bootcamps/${HACKER_PROTOCOL_BOOTCAMP_ID}/phases/${phase.id}/rooms/${room.id}`,
+              kind: 'Room' as const,
+              keywords: `${phase.title} ${phase.codename} bootcamp room`,
+              meta: `${phase.title} · ${room.estimatedMinutes} min`,
+            })),
+          ),
+        );
+        setRoomLoadError(false);
+      })
+      .catch(() => {
+        if (active) setRoomLoadError(true);
+      });
+
+    return () => {
+      active = false;
+    };
+  }, [open]);
+
+  const searchableEntries = useMemo(
+    () => [...SEARCH_INDEX, ...roomEntries],
+    [roomEntries],
+  );
+
   const results = useMemo(() => {
     const trimmed = query.trim().toLowerCase();
-    if (!trimmed) return PAGE_ENTRIES.slice(0, 8);
+    if (!trimmed) return [...roomEntries, ...LAB_ENTRIES].slice(0, 12);
     const tokens = trimmed.split(/\s+/);
 
-    return SEARCH_INDEX.map((entry) => {
+    return searchableEntries.map((entry) => {
       const title = entry.title.toLowerCase();
       const haystack = `${title} ${entry.description} ${entry.keywords ?? ''}`.toLowerCase();
       let score = 0;
@@ -137,7 +179,7 @@ const StudentSearchDialog: React.FC<StudentSearchDialogProps> = ({ open, onOpenC
       .sort((a, b) => b.score - a.score || a.entry.title.localeCompare(b.entry.title))
       .slice(0, 20)
       .map((result) => result.entry);
-  }, [query]);
+  }, [query, roomEntries, searchableEntries]);
 
   useEffect(() => {
     setActiveIndex(0);
@@ -168,9 +210,9 @@ const StudentSearchDialog: React.FC<StudentSearchDialogProps> = ({ open, onOpenC
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent
-        title="Search"
-        description="Search pages, courses, lessons, and labs."
-        maxWidth="max-w-2xl"
+        title="Search learning experiences"
+        description="Find a room, lab, course, lesson, or dashboard page."
+        maxWidth="max-w-4xl"
       >
         <div className="flex flex-col gap-4">
           <Input
@@ -179,7 +221,7 @@ const StudentSearchDialog: React.FC<StudentSearchDialogProps> = ({ open, onOpenC
             autoFocus
             autoComplete="off"
             spellCheck={false}
-            placeholder="Search courses, lessons, labs, or pages…"
+            placeholder="Search rooms, labs, courses, or lessons…"
             value={query}
             onChange={(event) => setQuery(event.target.value)}
             onKeyDown={handleKeyDown}
@@ -192,7 +234,7 @@ const StudentSearchDialog: React.FC<StudentSearchDialogProps> = ({ open, onOpenC
             <p className="type-meta text-text-muted" aria-live="polite">
               {query.trim()
                 ? `${results.length} result${results.length === 1 ? '' : 's'}`
-                : 'Quick links'}
+                : 'Rooms and popular labs'}
             </p>
             <p className="type-meta hidden items-center gap-1 text-text-tertiary sm:flex">
               <kbd className="rounded border border-border-subtle px-1.5 py-0.5 font-mono text-[10px]">
@@ -209,13 +251,13 @@ const StudentSearchDialog: React.FC<StudentSearchDialogProps> = ({ open, onOpenC
             <div className="rounded-xl border border-border-subtle bg-bg p-6 text-center">
               <p className="text-sm font-bold text-text-primary">No results</p>
               <p className="type-body-sm mt-1 text-text-secondary">
-                {`Nothing matches “${query.trim()}”. Try a course name, lab, or page.`}
+                {`Nothing matches “${query.trim()}”. Try a room, phase, course, or lab name.`}
               </p>
             </div>
           ) : (
             <ul
               id="student-search-results"
-              className="flex max-h-[min(55vh,460px)] flex-col gap-1 overflow-y-auto overscroll-contain"
+              className="grid max-h-[min(65vh,560px)] grid-cols-1 gap-3 overflow-y-auto overscroll-contain pr-1 sm:grid-cols-2"
               aria-label="Search results"
             >
               {results.map((entry, index) => {
@@ -227,40 +269,48 @@ const StudentSearchDialog: React.FC<StudentSearchDialogProps> = ({ open, onOpenC
                       type="button"
                       onClick={() => selectResult(entry)}
                       onMouseEnter={() => setActiveIndex(index)}
-                      className={`flex w-full items-center gap-3 rounded-xl border px-3 py-2.5 text-left transition-colors duration-[var(--dur-fast)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent ${
+                      className={`flex min-h-32 w-full flex-col items-stretch gap-3 rounded-xl border p-4 text-left transition-colors duration-[var(--dur-fast)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent ${
                         isActive
-                          ? 'border-accent/40 bg-accent/10'
-                          : 'border-transparent hover:border-border-subtle hover:bg-bg'
+                          ? 'border-accent/50 bg-accent/10 shadow-sm'
+                          : 'border-border-subtle bg-surface-raised hover:border-accent/40 hover:bg-bg'
                       }`}
                     >
-                      <span
-                        className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border ${
-                          isActive
-                            ? 'border-accent/40 bg-accent/10 text-accent'
-                            : 'border-border-subtle bg-bg text-text-muted'
-                        }`}
-                      >
-                        <Icon className="h-4 w-4" aria-hidden="true" />
+                      <span className="flex items-center justify-between gap-3">
+                        <span className="flex items-center gap-2">
+                          <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-border-subtle bg-bg text-accent">
+                            <Icon className="h-4 w-4" aria-hidden="true" />
+                          </span>
+                          <span className="type-meta uppercase tracking-wider text-text-tertiary">
+                            {entry.kind}
+                          </span>
+                        </span>
+                        {isActive && (
+                          <CornerDownLeft className="h-4 w-4 shrink-0 text-accent" aria-hidden="true" />
+                        )}
                       </span>
-                      <span className="min-w-0 flex-1">
-                        <span className="block truncate text-sm font-bold text-text-primary">
+                      <span className="min-w-0">
+                        <span className="block line-clamp-2 text-sm font-bold text-text-primary">
                           {entry.title}
                         </span>
-                        <span className="block truncate text-xs text-text-muted">
+                        <span className="mt-1 block line-clamp-2 text-xs leading-relaxed text-text-muted">
                           {entry.description}
                         </span>
                       </span>
-                      <span className="type-meta shrink-0 uppercase text-text-tertiary">
-                        {entry.kind}
-                      </span>
-                      {isActive && (
-                        <CornerDownLeft className="h-3.5 w-3.5 shrink-0 text-accent" aria-hidden="true" />
+                      {entry.meta && (
+                        <span className="mt-auto block truncate text-[11px] font-semibold text-accent">
+                          {entry.meta}
+                        </span>
                       )}
                     </button>
                   </li>
                 );
               })}
             </ul>
+          )}
+          {roomLoadError && (
+            <p role="alert" className="type-meta text-danger">
+              Room search could not load. Try again or browse Labs directly.
+            </p>
           )}
         </div>
       </DialogContent>

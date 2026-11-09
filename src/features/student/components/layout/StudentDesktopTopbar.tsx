@@ -14,12 +14,14 @@ import {
   ChevronDown,
   Maximize,
   Minimize,
+  Search,
 } from 'lucide-react';
 import { useAuth } from '@/core/contexts/AuthContext';
 import api from '@/core/services/api';
 import { useFullscreen } from '@/shared/hooks/useFullscreen';
 import useStudentOverview from '@/features/student/hooks/useStudentOverview';
 import StreakIcon from '@/shared/components/icons/StreakIcon';
+import StudentSearchDialog from './StudentSearchDialog';
 
 interface StudentDesktopTopbarProps {
   onMobileMenuOpen?: () => void;
@@ -45,6 +47,7 @@ const StudentDesktopTopbar: React.FC<StudentDesktopTopbarProps> = ({ onMobileMen
   const location = useLocation();
   const [unread, setUnread] = useState(0);
   const [openMenu, setOpenMenu] = useState<TopbarMenu | null>(null);
+  const [searchOpen, setSearchOpen] = useState(false);
   const { isFullscreen, toggleFullscreen } = useFullscreen();
   const { data: overview } = useStudentOverview();
   const navRef = useRef<HTMLElement | null>(null);
@@ -261,7 +264,17 @@ const StudentDesktopTopbar: React.FC<StudentDesktopTopbarProps> = ({ onMobileMen
           <div className="flex-1" aria-hidden="true" />
 
           {/* Right side utilities */}
-          <div className="flex shrink-0 items-center justify-end gap-2 md:gap-2.5 lg:gap-3">
+          <div className="flex shrink-0 items-center justify-end gap-1.5 sm:gap-2 md:gap-2.5 lg:gap-3">
+            <button
+              type="button"
+              onClick={() => setSearchOpen(true)}
+              aria-label="Search learning rooms"
+              title="Search learning rooms (Ctrl+K)"
+              className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl text-text-secondary transition-colors duration-150 hover:bg-surface-raised hover:text-accent focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-accent md:h-14 md:w-14"
+            >
+              <Search className="h-6 w-6 md:h-7 md:w-7" aria-hidden="true" />
+            </button>
+
             <button
               type="button"
               onClick={toggleFullscreen}
@@ -309,6 +322,7 @@ const StudentDesktopTopbar: React.FC<StudentDesktopTopbarProps> = ({ onMobileMen
           </div>
         </div>
       </header>
+      <StudentSearchDialog open={searchOpen} onOpenChange={setSearchOpen} />
     </>
   );
 };
