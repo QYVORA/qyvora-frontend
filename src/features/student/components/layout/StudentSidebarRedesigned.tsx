@@ -213,14 +213,14 @@ const StudentSidebarRedesigned: React.FC<StudentSidebarRedesignedProps> = ({
     <>
       {/* Backdrop */}
       <div
-        className="fixed inset-x-0 bottom-0 top-[calc(5rem+env(safe-area-inset-top))] z-[90] bg-canvas/80 backdrop-blur-sm md:top-[calc(6rem+env(safe-area-inset-top))] lg:hidden"
+        className="fixed inset-0 z-[110] bg-canvas/80 backdrop-blur-sm lg:hidden"
         onClick={onMobileClose}
         aria-hidden="true"
       />
 
-      {/* Sidebar — starts below the fixed topbar so the dashboard header stays visible. */}
+      {/* Full-screen sidebar — intentionally covers the topbar on mobile. */}
       <aside
-        className="fixed inset-x-0 bottom-0 left-0 top-[calc(5rem+env(safe-area-inset-top))] z-[95] flex w-full flex-col border-r border-border-subtle bg-canvas md:top-[calc(6rem+env(safe-area-inset-top))] lg:hidden"
+        className="fixed inset-0 z-[111] flex h-dvh w-full flex-col overflow-hidden border-r border-border-subtle bg-canvas pt-[env(safe-area-inset-top)] lg:hidden"
         role="dialog"
         aria-modal="true"
         aria-label="Navigation menu"
@@ -236,7 +236,7 @@ const StudentSidebarRedesigned: React.FC<StudentSidebarRedesignedProps> = ({
     return (
       <>
         {/* Menu toolbar */}
-        <div className="flex h-16 items-center justify-between px-5">
+        <div className="flex h-20 items-center justify-between px-5">
           <span className="type-label uppercase tracking-[0.12em] text-text-tertiary">
             Menu
           </span>
@@ -250,9 +250,9 @@ const StudentSidebarRedesigned: React.FC<StudentSidebarRedesignedProps> = ({
               className="flex min-h-[48px] min-w-[48px] items-center justify-center rounded-xl text-text-secondary transition-colors hover:bg-surface-raised hover:text-accent focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-accent"
             >
               {isFullscreen ? (
-                <Minimize className="h-5 w-5" aria-hidden="true" />
+                <Minimize className="h-6 w-6" aria-hidden="true" />
               ) : (
-                <Maximize className="h-5 w-5" aria-hidden="true" />
+                <Maximize className="h-6 w-6" aria-hidden="true" />
               )}
             </button>
 
@@ -263,7 +263,7 @@ const StudentSidebarRedesigned: React.FC<StudentSidebarRedesignedProps> = ({
                 aria-label="Close menu"
                 className="flex min-h-[48px] min-w-[48px] items-center justify-center rounded-xl text-text-secondary transition-colors hover:bg-surface-raised hover:text-accent focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-accent"
               >
-                <X className="h-6 w-6" aria-hidden="true" />
+                <X className="h-7 w-7" aria-hidden="true" />
               </button>
             )}
           </div>
