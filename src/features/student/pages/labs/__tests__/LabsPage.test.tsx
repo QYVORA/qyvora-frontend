@@ -2,6 +2,7 @@ import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import { AuthProvider } from '@/core/contexts/AuthContext';
+import { ToastProvider } from '@/core/contexts/ToastContext';
 import LabsPage from '../LabsPage';
 
 const translations: Record<string, string> = {
@@ -41,9 +42,11 @@ afterEach(() => {
 const renderLabsPage = () =>
   render(
     <AuthProvider>
-      <MemoryRouter>
-        <LabsPage />
-      </MemoryRouter>
+      <ToastProvider>
+        <MemoryRouter>
+          <LabsPage />
+        </MemoryRouter>
+      </ToastProvider>
     </AuthProvider>,
   );
 

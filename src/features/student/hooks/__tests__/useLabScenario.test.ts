@@ -9,6 +9,7 @@ import { verifyLabFlag } from '@/features/student/services/lab.service';
 import useLabScenario from '../useLabScenario';
 import { WEB_ACCESS_CONTROL_SCENARIOS } from '@/features/student/data/simulations';
 import type { WebLabScenario } from '@/features/student/data/simulations';
+import { getResumeLabScenario, markStepCompleted } from '@/features/student/utils/labProgress';
 
 const scenario: WebLabScenario = WEB_ACCESS_CONTROL_SCENARIOS[0];
 
@@ -29,6 +30,35 @@ beforeEach(() => {
 });
 
 describe('EX-BC-005 — new lab scenario completion is recorded', () => {
+  it('prefers a partially completed scenario over a fresh one', () => {
+    const inProgress = { ...scenario, id: `${scenario.id}-in-progress` };
+    markStepCompleted(inProgress.id, `${inProgress.id}-step-0`);
+
+    expect(
+      getResumeLabScenario([scenario, inProgress], (item) => item.id),
+    ).toEqual(inProgress);
+  });
+
+  it('opens the initial scenario directly and restores its saved steps', () => {
+    const stepId = `${scenario.id}-step-0`;
+    markStepCompleted(scenario.id, stepId);
+
+    const { result } = renderHook(() =>
+      useLabScenario<WebLabScenario>({
+        labId: 'web-access-control',
+        getScenarioId: (s) => s.id,
+        getStepIds: (s) => s.steps.map((_, i) => `${s.id}-step-${i}`),
+        initialScenario: scenario,
+      })
+    );
+
+    expect(result.current.activeScenario).toEqual(scenario);
+    expect(result.current.completedSteps.has(stepId)).toBe(true);
+
+    act(() => result.current.exitScenario());
+    expect(result.current.activeScenario).toBeNull();
+  });
+
   it('marks every step and the scenario complete when flags are correct', async () => {
     vi.mocked(verifyLabFlag).mockResolvedValue({ correct: true, message: 'ok' });
     const { result } = setup();

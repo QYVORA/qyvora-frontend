@@ -13,6 +13,7 @@ import { FlowDiagram } from '@/shared/components/diagrams/FlowDiagram';
 import { LabListingSkeleton } from '@/features/student/components/StudentSkeletons';
 import useLabAccess from '@/features/student/hooks/useLabAccess';
 import useLabScenario from '@/features/student/hooks/useLabScenario';
+import { getResumeLabScenario } from '@/features/student/utils/labProgress';
 import { getLabCpCost } from '@/features/student/data/simulations/labAccess';
 
 const PRIVESC_FLOW_NODES = [
@@ -29,13 +30,19 @@ const PRIVESC_FLOW_ARROWS = [
 ];
 
 const PrivescLab = () => {
+  const { isLocked, purchaseLab, loading } = useLabAccess();
   const { activeScenario, completedSteps, handleComplete, handleFlagSubmit, getStepState, allDone, startScenario, exitScenario } =
     useLabScenario<PrivescScenario>({
       labId: 'privesc',
       getScenarioId: (s) => s.id,
       getStepIds: (s) => (s.story?.chapters ?? []).map((ch) => ch.id),
+      initialScenario: loading
+        ? null
+        : getResumeLabScenario(
+            PRIVESC_SCENARIOS.filter((scenario) => !isLocked(scenario.id)),
+            (scenario) => scenario.id,
+          ),
     });
-  const { isLocked, purchaseLab, loading } = useLabAccess();
   const [viewStepIdx, setViewStepIdx] = useState<number | null>(null);
 
   const chapters = activeScenario?.story?.chapters ?? [];

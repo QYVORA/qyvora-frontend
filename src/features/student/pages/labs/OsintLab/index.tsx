@@ -10,18 +10,25 @@ import RelatedContent from '@/shared/components/RelatedContent';
 import { LabListingSkeleton } from '@/features/student/components/StudentSkeletons';
 import useLabAccess from '@/features/student/hooks/useLabAccess';
 import useLabScenario from '@/features/student/hooks/useLabScenario';
+import { getResumeLabScenario } from '@/features/student/utils/labProgress';
 import { getLabCpCost } from '@/features/student/data/simulations/labAccess';
 
 type OsintChallenge = typeof OSINT_CHALLENGES[number];
 
 const OsintLab = () => {
+  const { isLocked, purchaseLab, loading } = useLabAccess();
   const { activeScenario: activeChallenge, completedSteps, handleFlagSubmit, getStepState, allDone, startScenario, exitScenario } =
     useLabScenario<OsintChallenge>({
       labId: 'osint',
       getScenarioId: (c) => c.id,
       getStepIds: (c) => c.steps.map((_, i) => `${c.id}-step-${i}`),
+      initialScenario: loading
+        ? null
+        : getResumeLabScenario(
+            OSINT_CHALLENGES.filter((challenge) => !isLocked(challenge.id)),
+            (challenge) => challenge.id,
+          ),
     });
-  const { isLocked, purchaseLab, loading } = useLabAccess();
 
   const [viewStepIdx, setViewStepIdx] = useState<number | null>(null);
 

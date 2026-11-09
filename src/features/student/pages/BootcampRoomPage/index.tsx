@@ -63,6 +63,7 @@ const BootcampRoomPage: React.FC = () => {
 
   const [apiCourse, setApiCourse] = useState<ApiCourse | null>(null);
   const [apiLoading, setApiLoading] = useState(true);
+  const [courseLoadError, setCourseLoadError] = useState(false);
   const [searchParams, setSearchParams] = useSearchParams();
   const [currentStepIdx, setCurrentStepIdx] = useState(() => {
     const step = searchParams.get('step');
@@ -95,12 +96,18 @@ const BootcampRoomPage: React.FC = () => {
   })();
 
   const loadCourseData = useCallback(async () => {
+    setCourseLoadError(false);
     try {
       const query = bootcampId ? `?bootcampId=${encodeURIComponent(bootcampId)}` : '';
-      const courseRes = await api.get(`/student/course${query}`).catch(() => null);
+      const courseRes = await api.get(`/student/course${query}`);
       if (!mountedRef.current) return;
-      if (courseRes?.data) setApiCourse(courseRes.data as ApiCourse);
-    } catch { addToast("Failed to load course data", 'error'); }
+      setApiCourse(courseRes.data as ApiCourse);
+    } catch {
+      if (!mountedRef.current) return;
+      setApiCourse(null);
+      setCourseLoadError(true);
+      addToast("Failed to verify bootcamp access", 'error');
+    }
     finally { if (mountedRef.current) setApiLoading(false); }
   }, [bootcampId, addToast]);
 
@@ -165,7 +172,7 @@ const BootcampRoomPage: React.FC = () => {
   useEffect(() => {
     if (!apiLoading && bootcampStatus === 'not_enrolled' && redirectCountRef.current < MAX_REDIRECTS) {
       redirectCountRef.current += 1;
-      navigate('/dashboard/bootcamps', { replace: true });
+      navigate('/dashboard/labs', { replace: true });
     }
   }, [apiLoading, bootcampStatus, navigate]);
 
@@ -217,38 +224,34 @@ const BootcampRoomPage: React.FC = () => {
   }, [apiLoading, phaseId, roomId, currentStepIdx, prefersReducedMotion]);
 
   const completedRooms = new Set<string>();
-  const lockedRooms = new Set<string>();
   if (apiCourse) {
     apiCourse.modules.forEach((mod) => {
       const matchPhase = BOOTCAMP_CONFIG.phases.find((p) => p.title.toLowerCase() === mod.title.toLowerCase());
       if (matchPhase) {
-        if (mod.locked) matchPhase.rooms.forEach((r) => lockedRooms.add(`${matchPhase.id}:${r.id}`));
         mod.rooms.forEach((apiRoom) => {
           const matchRoom = matchPhase.rooms.find((r) => r.title.toLowerCase() === apiRoom.title.toLowerCase());
           if (matchRoom) {
             if (apiRoom.completed) completedRooms.add(`${matchPhase.id}:${matchRoom.id}`);
-            if (apiRoom.locked) lockedRooms.add(`${matchPhase.id}:${matchRoom.id}`);
           }
         });
       }
     });
   }
 
-  const allRooms: Array<{ phaseId: string; roomId: string; title: string }> = [];
-  BOOTCAMP_CONFIG.phases.forEach((p) => { p.rooms.forEach((r) => allRooms.push({ phaseId: p.id, roomId: r.id, title: r.title })); });
-
   const phase = BOOTCAMP_CONFIG.phases.find((p) => p.id === phaseId);
   const room = phase?.rooms.find((r) => r.id === roomId);
-  const isRoomLocked = lockedRooms.has(`${phaseId}:${roomId}`);
+  const moduleNumber = phaseId ? Number.parseInt(phaseId.replace('phase', ''), 10) : Number.NaN;
+  const apiModule = apiCourse?.modules.find((mod) => mod.moduleId === moduleNumber);
+  const apiRoom = apiModule?.rooms.find(
+    (apiRoomItem) => apiRoomItem.title.toLowerCase() === room?.title.toLowerCase(),
+  );
+  const isRoomLocked =
+    courseLoadError || !apiModule || !apiRoom || Boolean(apiModule.locked || apiRoom.locked);
   const isRoomComplete = completedRooms.has(`${phaseId}:${roomId}`);
-  const currentRoomIdx = allRooms.findIndex((r) => r.phaseId === phaseId && r.roomId === roomId);
-  const nextRoom = currentRoomIdx < allRooms.length - 1 ? allRooms[currentRoomIdx + 1] : null;
-  const apiModule = apiCourse?.modules.find((m) => m.title.toLowerCase() === phase?.title.toLowerCase());
   const quizModuleId = apiModule ? String(apiModule.moduleId) : '';
   const quizCourseId = apiCourse?.id || bootcampId || '';
   const quizRoomId = room ? String(phase?.rooms.findIndex((r) => r.id === roomId) + 1) : '';
 
-  const handleNavigate = (pId: string, rId: string) => navigate(`/dashboard/bootcamps/${bootcampId}/phases/${pId}/rooms/${rId}`);
   const goToStep = (idx: number) => {
     const isCheckpoint = Boolean(room && idx >= room.steps.length);
     setCurrentStepIdx(idx);
@@ -267,10 +270,11 @@ const BootcampRoomPage: React.FC = () => {
   const handleComplete = async () => {
     if (completing) return; setCompleting(true);
     try {
-      const allStepIdxs = room?.steps.map((_, i) => i) || [];
-      const allViewed = new Set(allStepIdxs);
-      persistViewedSteps(allViewed);
-      setViewedSteps(allViewed);
+      const nextUnviewedStep = room?.steps.findIndex((_, index) => !viewedSteps.has(index)) ?? -1;
+      if (nextUnviewedStep >= 0) {
+        goToStep(nextUnviewedStep);
+        return;
+      }
       if (!quizPassed && quizModuleId) {
         goToStep(room?.steps.length ?? 0);
         return;
@@ -299,21 +303,25 @@ const BootcampRoomPage: React.FC = () => {
                 title={"Room not found."}
                 description={"This room doesn't exist in the bootcamp config."}
                 action={
-                  <Button to={`/dashboard/bootcamps/${bootcampId}`} variant="secondary">
+                  <Button to="/dashboard/labs" variant="secondary">
                     <ArrowLeft className="h-4 w-4" aria-hidden="true" />
-                    {"Back to Bootcamp"}
+                    {"Back to Labs"}
                   </Button>
                 }
               />
             ) : (
               <EmptyState
                 icon={<Lock className="h-6 w-6" aria-hidden="true" />}
-                title={room.title}
-                description={"This room is locked. Your instructor will unlock it when it's time."}
+                title={courseLoadError ? "Access could not be verified" : room.title}
+                description={
+                  courseLoadError
+                    ? "Bootcamp access could not be confirmed. Refresh and try again."
+                    : "This room is locked. Your instructor will unlock it when it's time."
+                }
                 action={
-                  <Button to={`/dashboard/bootcamps/${bootcampId}`} variant="secondary">
+                  <Button to="/dashboard/labs" variant="secondary">
                     <ArrowLeft className="h-4 w-4" aria-hidden="true" />
-                    {"Back to Bootcamp"}
+                    {"Back to Labs"}
                   </Button>
                 }
               />
@@ -327,7 +335,7 @@ const BootcampRoomPage: React.FC = () => {
   const tasks: LearningTask[] = room.steps.map((step, index) => ({
     id: `${phaseId}-${roomId}-step-${index + 1}`,
     title: step.title,
-    description: viewedSteps.has(index) ? 'Completed' : index === currentStepIdx ? 'Current task' : `${index + 1} of ${room.steps.length}`,
+    description: viewedSteps.has(index) ? 'Viewed' : index === currentStepIdx ? 'Current task' : `${index + 1} of ${room.steps.length}`,
     completed: viewedSteps.has(index),
     content: (
       <StepCard
@@ -357,7 +365,8 @@ const BootcampRoomPage: React.FC = () => {
           onClose={() => {}}
           onPassed={() => {
             setQuizPassed(true);
-            if (phaseId && roomId) markRoomComplete(phaseId, roomId);
+            const allStepsViewed = room.steps.every((_, index) => viewedSteps.has(index));
+            if (allStepsViewed && phaseId && roomId) markRoomComplete(phaseId, roomId);
           }}
         />
       ),
@@ -387,8 +396,7 @@ const BootcampRoomPage: React.FC = () => {
         show={showCompleteOverlay} roomTitle={room.title} cpEarned={completionCpEarned}
         onClose={() => {
           setShowCompleteOverlay(false);
-          if (nextRoom && !lockedRooms.has(`${nextRoom.phaseId}:${nextRoom.roomId}`)) handleNavigate(nextRoom.phaseId, nextRoom.roomId);
-          else navigate(`/dashboard/bootcamps/${bootcampId}`);
+          navigate('/dashboard/labs');
         }}
       />
 
@@ -396,8 +404,8 @@ const BootcampRoomPage: React.FC = () => {
         kicker={`${phase.codename} - ${phase.title}`}
         title={room.title}
         description={room.overview}
-        backTo={`/dashboard/bootcamps/${bootcampId}`}
-        backLabel={"Back to Bootcamp"}
+        backTo="/dashboard/labs"
+        backLabel={"Back to Labs"}
         stats={[
           { label: "min", value: room.estimatedMinutes },
           { label: "steps", value: room.steps.length },

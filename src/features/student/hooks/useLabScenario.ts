@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect, useMemo } from 'react';
+import { useState, useCallback, useEffect, useMemo, useRef } from 'react';
 import { verifyLabFlag } from '@/features/student/services/lab.service';
 import {
   isLabCompleted,
@@ -11,6 +11,7 @@ interface UseLabScenarioOptions<T> {
   labId: string;
   getScenarioId: (scenario: T) => string;
   getStepIds: (scenario: T) => string[];
+  initialScenario?: T | null;
 }
 
 interface UseLabScenarioReturn<T> {
@@ -28,9 +29,25 @@ function useLabScenario<T>({
   labId,
   getScenarioId,
   getStepIds,
+  initialScenario = null,
 }: UseLabScenarioOptions<T>): UseLabScenarioReturn<T> {
   const [activeScenario, setActiveScenario] = useState<T | null>(null);
   const [completedSteps, setCompletedSteps] = useState<Set<string>>(new Set());
+  const initializedScenario = useRef(false);
+
+  useEffect(() => {
+    if (initializedScenario.current || !initialScenario) return;
+    initializedScenario.current = true;
+    setActiveScenario(initialScenario);
+
+    const scenarioId = getScenarioId(initialScenario);
+    const persisted = getCompletedSteps(scenarioId);
+    if (persisted.size > 0) {
+      setCompletedSteps(persisted);
+    } else if (isLabCompleted(scenarioId)) {
+      setCompletedSteps(new Set(getStepIds(initialScenario)));
+    }
+  }, [getScenarioId, getStepIds, initialScenario]);
 
   const handleComplete = useCallback(
     (stepId: string) => {

@@ -17,6 +17,8 @@ export {
   UNIFIED_LABS,
   CONTENT_LABS,
   PRACTICAL_LABS,
+  HACKER_PROTOCOL_BOOTCAMP_ID,
+  buildBootcampRoomLabs,
   LAB_FORMAT_LABELS,
   LAB_FORMAT_SHORT_LABELS,
   getUnifiedLabById,
@@ -24,4 +26,4 @@ export {
   getNewLabs,
   getLabsByFormat,
 } from './unified';
-export type { UnifiedLab, LabFormat } from './unified';
+export type { UnifiedLab, LabFormat, BootcampCatalogueCourse } from './unified';

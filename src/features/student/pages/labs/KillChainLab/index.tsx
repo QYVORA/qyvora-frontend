@@ -12,6 +12,7 @@ import { KillChainDiagramSimple } from '@/shared/components/diagrams/KillChainDi
 import { LabListingSkeleton } from '@/features/student/components/StudentSkeletons';
 import useLabAccess from '@/features/student/hooks/useLabAccess';
 import useLabScenario from '@/features/student/hooks/useLabScenario';
+import { getResumeLabScenario } from '@/features/student/utils/labProgress';
 import { getLabCpCost } from '@/features/student/data/simulations/labAccess';
 
 interface RequiredCommandStep {
@@ -41,6 +42,7 @@ const getRequiredCommandSteps = (scenario: KillChainScenario): RequiredCommandSt
 };
 
 const KillChainLab = () => {
+  const { isLocked, purchaseLab, loading } = useLabAccess();
   const {
     activeScenario,
     completedSteps,
@@ -55,8 +57,13 @@ const KillChainLab = () => {
     getScenarioId: (s) => s.id,
     getStepIds: (s) =>
       getRequiredCommandSteps(s).map((st) => `${st.phase.id}-${st.cmdIdx}`),
+    initialScenario: loading
+      ? null
+      : getResumeLabScenario(
+          KILL_CHAIN_SCENARIOS.filter((scenario) => !isLocked(scenario.id)),
+          (scenario) => scenario.id,
+        ),
   });
-  const { isLocked, purchaseLab, loading } = useLabAccess();
   const [viewStepIdx, setViewStepIdx] = useState<number | null>(null);
 
   const commandSteps = useMemo(

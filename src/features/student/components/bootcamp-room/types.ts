@@ -4,6 +4,7 @@ export interface ApiRoom {
   overview: string;
   locked: boolean;
   completed?: boolean;
+  cpReward?: number;
 }
 
 export interface ApiModule {

@@ -82,3 +82,18 @@ export function isLabCompleted(scenarioId: string): boolean {
   const data = readAll();
   return !!data[scenarioId]?.completed;
 }
+
+export function getResumeLabScenario<T>(
+  scenarios: readonly T[],
+  getScenarioId: (scenario: T) => string,
+): T | null {
+  return (
+    scenarios.find((scenario) => {
+      const id = getScenarioId(scenario);
+      return !isLabCompleted(id) && getCompletedSteps(id).size > 0;
+    }) ??
+    scenarios.find((scenario) => !isLabCompleted(getScenarioId(scenario))) ??
+    scenarios[0] ??
+    null
+  );
+}

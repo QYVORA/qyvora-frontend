@@ -8,7 +8,7 @@
 
 import { Suspense, lazy } from 'react';
 import type { ReactNode } from 'react';
-import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
+import { Routes, Route, Navigate, useLocation, useParams } from 'react-router-dom';
 import { AnimatePresence, motion } from 'motion/react';
 import { useAuth } from '../core/contexts/AuthContext';
 import ErrorBoundary from '../shared/components/ErrorBoundary';
@@ -137,6 +137,7 @@ import PageLoader, { DelayedPageLoader } from '../shared/components/PageLoader';
 import CommunityPopup from '../shared/components/CommunityPopup';
 
 import ADMIN_PATH from '@/shared/utils/adminPath';
+import { HACKER_PROTOCOL_BOOTCAMP_ID } from '@/features/student/constants/bootcampIds';
 
 // ─── Route wrapper ────────────────────────────────────────────────────────────
 const Wrap = ({ children, scope }: { children: ReactNode; scope?: string }) => (
@@ -170,6 +171,20 @@ const AdminOnly = ({ children }: { children: ReactNode }) => {
   if (!user) return <Navigate to={ADMIN_PATH} replace />;
   if (!user.isAdmin) return <Navigate to="/dashboard" replace />;
   return <>{children}</>;
+};
+
+const BootcampOverviewRoute = () => {
+  const { bootcampId } = useParams<{ bootcampId: string }>();
+
+  if (bootcampId === HACKER_PROTOCOL_BOOTCAMP_ID || bootcampId === 'hpb') {
+    return <Navigate to="/dashboard/labs" replace />;
+  }
+
+  return (
+    <Wrap scope="Bootcamp Course">
+      <StudentOnly><BootcampCoursePage /></StudentOnly>
+    </Wrap>
+  );
 };
 
 /**
@@ -313,8 +328,8 @@ export const AppRouter = () => {
           {/* Learning V2 Demo - Architecture showcase */}
           <Route path="/dashboard/learning-v2-demo" element={<Wrap scope="Learning V2 Demo"><StudentOnly><LearningV2Demo /></StudentOnly></Wrap>} />
           
-          <Route path="/dashboard/bootcamps" element={<Navigate to="/dashboard/bootcamps/bc_1775270338500" replace />} />
-          <Route path="/dashboard/bootcamps/:bootcampId" element={<Wrap scope="Bootcamp Course"><StudentOnly><BootcampCoursePage /></StudentOnly></Wrap>} />
+          <Route path="/dashboard/bootcamps" element={<Navigate to="/dashboard/labs" replace />} />
+          <Route path="/dashboard/bootcamps/:bootcampId" element={<BootcampOverviewRoute />} />
           <Route path="/dashboard/bootcamps/:bootcampId/modules/:moduleId/rooms/:roomId" element={<Wrap scope="Bootcamp Room"><StudentOnly><BootcampRoomPage /></StudentOnly></Wrap>} />
           <Route path="/dashboard/bootcamps/:bootcampId/phases/:phaseId/rooms/:roomId"  element={<Wrap scope="Bootcamp Room"><StudentOnly><BootcampRoomPage /></StudentOnly></Wrap>} />
 
@@ -349,7 +364,7 @@ export const AppRouter = () => {
           <Route path="/dashboard/labs/attack-paths" element={<Wrap scope="Attack Paths Lab"><StudentOnly><AttackPathsLab /></StudentOnly></Wrap>} />
 
           {/* Legacy redirects */}
-          <Route path="/bootcamps"        element={<Navigate to="/dashboard/bootcamps/bc_1775270338500" replace />} />
+          <Route path="/bootcamps"        element={<Navigate to="/dashboard/labs" replace />} />
           <Route path="/marketplace"      element={<Navigate to="/dashboard/marketplace" replace />} />
           <Route path="/profile"          element={<Navigate to="/dashboard/profile" replace />} />
           <Route path="/notifications"    element={<Navigate to="/dashboard/notifications" replace />} />

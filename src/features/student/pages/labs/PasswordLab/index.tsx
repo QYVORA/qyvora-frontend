@@ -11,6 +11,7 @@ import { FlowDiagram, type FlowNode, type FlowArrow } from '@/shared/components/
 import { LabListingSkeleton } from '@/features/student/components/StudentSkeletons';
 import useLabAccess from '@/features/student/hooks/useLabAccess';
 import useLabScenario from '@/features/student/hooks/useLabScenario';
+import { getResumeLabScenario } from '@/features/student/utils/labProgress';
 import { getLabCpCost } from '@/features/student/data/simulations/labAccess';
 
 const HASH_CRACKING_NODES: FlowNode[] = [
@@ -58,13 +59,19 @@ const PASSWORD_FLOWS: { nodes: FlowNode[]; arrows: FlowArrow[] }[] = [
 type PasswordExercise = typeof PASSWORD_EXERCISES[number];
 
 const PasswordLab = () => {
+  const { isLocked, purchaseLab, loading } = useLabAccess();
   const { activeScenario, completedSteps, handleFlagSubmit, getStepState, allDone, startScenario, exitScenario } =
     useLabScenario<PasswordExercise>({
       labId: 'passwords',
       getScenarioId: (s) => s.id,
       getStepIds: (s) => s.steps.map((_, i) => `${s.id}-step-${i}`),
+      initialScenario: loading
+        ? null
+        : getResumeLabScenario(
+            PASSWORD_EXERCISES.filter((scenario) => !isLocked(scenario.id)),
+            (scenario) => scenario.id,
+          ),
     });
-  const { isLocked, purchaseLab, loading } = useLabAccess();
 
   const [viewStepIdx, setViewStepIdx] = useState<number | null>(null);
 

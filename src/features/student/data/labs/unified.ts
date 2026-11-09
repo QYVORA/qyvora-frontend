@@ -14,9 +14,11 @@
  * The catalogue only unifies discovery, navigation and terminology.
  */
 import { LABS, type LabDef } from '@/features/student/constants/labs';
+import type { BootcampConfig } from '@/features/student/constants/bootcampStructure';
 import { COURSES } from '@/features/student/data/courses';
 import type { Course } from '@/features/student/data/courses/types';
 import { LAB_CATALOGUE } from './lab-module-matrix';
+export { HACKER_PROTOCOL_BOOTCAMP_ID } from '@/features/student/constants/bootcampIds';
 
 export type LabFormat = 'content' | 'hands-on' | 'hybrid';
 
@@ -26,7 +28,7 @@ export interface UnifiedLab {
   title: string;
   description: string;
   format: LabFormat;
-  difficulty: string;
+  difficulty?: string;
   route: string;
   accentColor?: string;
   cpReward?: string;
@@ -35,8 +37,25 @@ export interface UnifiedLab {
   /** Newly published practical Labs (from the lab ↔ module matrix). */
   isNew?: boolean;
   /** Where the underlying content comes from — kept for analytics only. */
-  source: 'content' | 'practical';
+  source: 'content' | 'practical' | 'bootcamp';
   tags: string[];
+  phaseId?: string;
+  phaseTitle?: string;
+  isLocked?: boolean;
+  isCompleted?: boolean;
+}
+
+export interface BootcampCatalogueCourse {
+  modules?: Array<{
+    moduleId: number;
+    locked?: boolean;
+    rooms?: Array<{
+      title: string;
+      locked?: boolean;
+      completed?: boolean;
+      cpReward?: number;
+    }>;
+  }>;
 }
 
 export const LAB_FORMAT_LABELS: Record<LabFormat, string> = {
@@ -86,6 +105,38 @@ export const PRACTICAL_LABS: UnifiedLab[] = LABS.map((lab: LabDef) => ({
 }));
 
 export const UNIFIED_LABS: UnifiedLab[] = [...PRACTICAL_LABS, ...CONTENT_LABS];
+
+export const buildBootcampRoomLabs = (
+  config: BootcampConfig,
+  bootcampId: string,
+  course?: BootcampCatalogueCourse,
+): UnifiedLab[] =>
+  config.phases.flatMap((phase, phaseIndex) => {
+    const module = course?.modules?.find((item) => item.moduleId === phaseIndex + 1);
+
+    return phase.rooms.map((room) => {
+      const apiRoom = module?.rooms?.find(
+        (item) => item.title.trim().toLowerCase() === room.title.trim().toLowerCase(),
+      );
+
+      return {
+        id: `${config.id}:${phase.id}:${room.id}`,
+        title: room.title,
+        description: room.overview,
+        format: 'hybrid',
+        route: `/dashboard/bootcamps/${bootcampId}/phases/${phase.id}/rooms/${room.id}`,
+        cpReward: apiRoom?.cpReward === undefined ? undefined : String(apiRoom.cpReward),
+        estimatedMinutes: room.estimatedMinutes,
+        lessonsCount: room.steps.length,
+        source: 'bootcamp',
+        tags: [phase.codename, phase.title],
+        phaseId: phase.id,
+        phaseTitle: phase.title,
+        isLocked: !module || !apiRoom || Boolean(module.locked || apiRoom.locked),
+        isCompleted: Boolean(apiRoom?.completed),
+      };
+    });
+  });
 
 export const getUnifiedLabById = (id: string): UnifiedLab | undefined =>
   UNIFIED_LABS.find((lab) => lab.id === id);

@@ -11,6 +11,7 @@ import { FlowDiagram } from '@/shared/components/diagrams/FlowDiagram';
 import { LabListingSkeleton } from '@/features/student/components/StudentSkeletons';
 import useLabAccess from '@/features/student/hooks/useLabAccess';
 import useLabScenario from '@/features/student/hooks/useLabScenario';
+import { getResumeLabScenario } from '@/features/student/utils/labProgress';
 import { getLabCpCost } from '@/features/student/data/simulations/labAccess';
 
 const SQL_ATTACK_FLOW_NODES = [
@@ -27,13 +28,19 @@ const SQL_ATTACK_FLOW_ARROWS = [
 type SqlInjectionTarget = typeof SQL_INJECTION_TARGETS[number];
 
 const SqlInjectionLab = () => {
+  const { isLocked, purchaseLab, loading } = useLabAccess();
   const { activeScenario: activeTarget, completedSteps, handleFlagSubmit, getStepState, allDone, startScenario, exitScenario } =
     useLabScenario<SqlInjectionTarget>({
       labId: 'sql-injection',
       getScenarioId: (t) => t.id,
       getStepIds: (t) => t.steps.map((_, i) => `${t.id}-step-${i}`),
+      initialScenario: loading
+        ? null
+        : getResumeLabScenario(
+            SQL_INJECTION_TARGETS.filter((target) => !isLocked(target.id)),
+            (target) => target.id,
+          ),
     });
-  const { isLocked, purchaseLab, loading } = useLabAccess();
 
   const [viewStepIdx, setViewStepIdx] = useState<number | null>(null);
 

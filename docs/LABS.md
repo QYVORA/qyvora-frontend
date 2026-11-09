@@ -3,8 +3,8 @@
 QYVORA has **one canonical learning entity: the Lab**.
 
 A learner does not choose between a course, a room and a lab. They find a Lab,
-open it, learn, practise and complete it. Bootcamp remains a branded programme
-that contains Labs; it is not a competing learning category.
+open it, learn, practise and complete it. Hacker Protocol bootcamp rooms are
+also individual Labs; phase names remain descriptive metadata.
 
 ```
 Find a Lab -> Open the Lab -> Learn -> Practise -> Complete
@@ -21,18 +21,21 @@ separate destination.
 | `hands-on` | Practical exercises, terminals, flags, simulations | `src/features/student/constants/labs.ts` + `pages/labs/*` |
 | `hybrid` | Theory plus hands-on practice in one Lab | Content Lab whose lessons include a terminal or code playground |
 
-The canonical catalogue lives in
-`src/features/student/data/labs/unified.ts`:
+The catalogue lives in `src/features/student/data/labs/unified.ts` and the Labs
+page combines its course/practical entries with bootcamp rooms generated from
+the existing bootcamp curriculum:
 
-- `UNIFIED_LABS` - every Lab (practical + content).
+- `UNIFIED_LABS` - every practical Lab and former course.
+- `buildBootcampRoomLabs` - one direct entry for each configured HPB room.
 - `CONTENT_LABS` - former courses, exposed as content/hybrid Labs.
 - `PRACTICAL_LABS` - former hands-on labs/rooms.
 - `LAB_FORMAT_LABELS` / `LAB_FORMAT_SHORT_LABELS` - display labels.
 - `getUnifiedLabById`, `getRecommendedLabs`, `getNewLabs`, `getLabsByFormat`.
 
 The learner-facing discovery surface is `/dashboard/labs`
-(`src/features/student/pages/labs/LabsPage`). Format is a filter tab, never a
-separate navigation entry.
+(`src/features/student/pages/labs/LabsPage`). It presents one searchable list;
+delivery format is not a learner-facing filter. Every card links directly to
+its content page or protected room walkthrough.
 
 ## 2. Route mapping
 
@@ -44,8 +47,15 @@ not the learning experiences themselves.
 | Lab discovery | `/dashboard/labs` |
 | Content Lab (former course) | `/dashboard/courses/:id` |
 | Hands-on Lab | `/dashboard/labs/:id` |
-| Bootcamp programme | `/dashboard/bootcamps` |
+| HPB room | `/dashboard/bootcamps/:bootcampId/phases/:phaseId/rooms/:roomId` |
+| Legacy HPB overview | `/dashboard/bootcamps/:bootcampId` -> `/dashboard/labs` |
 | Legacy courses listing | `/dashboard/courses` -> redirects to `/dashboard/labs` |
+
+HPB learners may open any unlocked room from the catalogue; completing one room
+does not navigate to or unlock another. Existing backend enrolment and
+administrator-controlled module entitlements remain authoritative. Other
+bootcamp overviews are retained until those programmes have frontend room
+walkthrough content that can be linked directly.
 
 ## 3. Content Labs (formerly courses)
 
@@ -149,9 +159,10 @@ separate learning products.
 
 ## 9. Navigation
 
-The student topbar, sidebar, mobile sidebar and search now expose **Labs** as
-the single learning destination. Bootcamp remains its own branded entry.
-Legacy `/dashboard/courses` links redirect to `/dashboard/labs`.
+The Labs catalogue is the learning discovery surface for courses, practical
+Labs and configured HPB rooms. Existing sidebar/topbar bootcamp links remain
+compatible and route HPB learners to Labs. Legacy `/dashboard/courses` links
+also redirect to `/dashboard/labs`.
 
 ## 10. Badge assets
 
