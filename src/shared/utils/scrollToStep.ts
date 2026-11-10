@@ -27,6 +27,8 @@ export function scrollToStepId(id: string, behavior: ScrollBehavior = 'smooth'):
   if (typeof document === 'undefined') return;
 
   const attempt = (tries: number) => {
+    if (typeof document === 'undefined') return;
+
     const el = document.getElementById(id);
     if (el) {
       el.scrollIntoView({ behavior, block: 'start' });
