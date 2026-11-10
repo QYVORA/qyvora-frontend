@@ -93,6 +93,54 @@ describe('QoseDashboardCard', () => {
     );
   });
 
+  it('shows the grace deadline when an instalment is overdue', async () => {
+    getRegistrationMock.mockResolvedValueOnce({
+      ...baseState,
+      inGrace: true,
+      graceUntil: '2026-12-20T00:00:00.000Z',
+      stages: [
+        {
+          stage: 'month2',
+          label: 'Month 2',
+          amountMinor: 25000,
+          currency: 'GHS',
+          status: 'overdue',
+          dueDate: '2026-12-15T00:00:00.000Z',
+          paidAt: null,
+          reference: '',
+        },
+      ],
+    });
+
+    renderCard();
+
+    expect(await screen.findByText('QOSE payment overdue')).toBeInTheDocument();
+    expect(screen.getByText(/Access stays open until/i)).toBeInTheDocument();
+  });
+
+  it('shows locked access after the grace period', async () => {
+    getRegistrationMock.mockResolvedValueOnce({
+      ...baseState,
+      stages: [
+        {
+          stage: 'month2',
+          label: 'Month 2',
+          amountMinor: 25000,
+          currency: 'GHS',
+          status: 'locked',
+          dueDate: '2026-12-15T00:00:00.000Z',
+          paidAt: null,
+          reference: '',
+        },
+      ],
+    });
+
+    renderCard();
+
+    expect(await screen.findByText('QOSE access locked')).toBeInTheDocument();
+    expect(screen.getByText(/past the grace period/i)).toBeInTheDocument();
+  });
+
   it('stays hidden when the registration endpoint fails', async () => {
     getRegistrationMock.mockRejectedValueOnce(new Error('network'));
 

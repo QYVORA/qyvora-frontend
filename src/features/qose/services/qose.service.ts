@@ -73,7 +73,8 @@ export interface QoseStageLedgerEntry {
   label: string;
   amountMinor: number;
   currency: string;
-  status: 'paid' | 'due' | 'upcoming';
+  status: 'paid' | 'due' | 'upcoming' | 'overdue' | 'locked';
+  dueDate: string | null;
   paidAt: string | null;
   reference: string;
 }
@@ -95,6 +96,10 @@ export interface QoseRegistrationState {
   progressPercent: number;
   payments: QosePayment[];
   stages: QoseStageLedgerEntry[];
+  dueDates?: Partial<Record<QoseStageId, string | null>>;
+  graceUntil?: string | null;
+  inGrace?: boolean;
+  gracePeriodDays?: number;
   lastPaymentAt?: string | null;
 }
 

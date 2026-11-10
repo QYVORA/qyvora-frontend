@@ -127,56 +127,91 @@ const PlanCard = ({
   </Card>
 );
 
-const StageLedger = ({ state }: { state: QoseRegistrationState }) => (
-  <Card className="p-5 md:p-6">
-    <SectionHeader title="Payment schedule" />
-    <ol className="mt-4 flex flex-col gap-2">
-      {state.stages.map((stage, index) => {
-        const paid = stage.status === 'paid';
-        const due = stage.status === 'due';
-        return (
-          <li
-            key={stage.stage}
-            className={`flex items-center gap-3 rounded-xl border px-4 py-3 ${
-              due
-                ? 'border-accent/30 bg-accent/5'
-                : paid
-                  ? 'border-border-subtle bg-surface-raised'
-                  : 'border-border-subtle bg-surface opacity-70'
-            }`}
-          >
-            <div
-              className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-xs font-black ${
-                paid
-                  ? 'bg-accent text-on-accent'
-                  : due
-                    ? 'border border-accent/40 text-accent'
-                    : 'border border-border text-text-muted'
+const StageLedger = ({ state }: { state: QoseRegistrationState }) => {
+  const overdue = state.stages.some((stage) => stage.status === 'overdue');
+  const locked = state.stages.some((stage) => stage.status === 'locked');
+
+  return (
+    <Card className="p-5 md:p-6">
+      <SectionHeader title="Payment schedule" />
+      {locked && (
+        <div className="mt-4">
+          <InlineAlert variant="danger" title="Programme access locked">
+            An instalment is overdue past the grace period. Pay the outstanding amount to restore
+            access.
+          </InlineAlert>
+        </div>
+      )}
+      {!locked && overdue && state.inGrace && state.graceUntil && (
+        <div className="mt-4">
+          <InlineAlert variant="warning" title="Grace period active">
+            Your payment is overdue. Access stays open until {formatDate(state.graceUntil)}.
+          </InlineAlert>
+        </div>
+      )}
+      <ol className="mt-4 flex flex-col gap-2">
+        {state.stages.map((stage, index) => {
+          const paid = stage.status === 'paid';
+          const due = stage.status === 'due';
+          const isOverdue = stage.status === 'overdue';
+          const isLocked = stage.status === 'locked';
+          const dueLabel = stage.dueDate ? formatDate(stage.dueDate) : '';
+          return (
+            <li
+              key={stage.stage}
+              className={`flex items-center gap-3 rounded-xl border px-4 py-3 ${
+                isLocked
+                  ? 'border-semantic-danger/30 bg-semantic-danger/5'
+                  : isOverdue
+                    ? 'border-semantic-warning/40 bg-semantic-warning/5'
+                    : due
+                      ? 'border-accent/30 bg-accent/5'
+                      : paid
+                        ? 'border-border-subtle bg-surface-raised'
+                        : 'border-border-subtle bg-surface opacity-70'
               }`}
             >
-              {paid ? <CheckCircle2 className="h-4 w-4" aria-hidden="true" /> : String(index + 1).padStart(2, '0')}
-            </div>
-            <div className="min-w-0 flex-1">
-              <p className="text-sm font-bold text-text-primary">
-                {STAGE_LABELS[stage.stage] || stage.label}
-              </p>
-              <p className="type-meta">
-                {paid
-                  ? `Paid ${formatDate(stage.paidAt)}`
-                  : due
-                    ? 'Next payment due'
-                    : 'Upcoming'}
-              </p>
-            </div>
-            <span className="shrink-0 font-mono text-sm font-bold text-text-primary">
-              {formatGhs(stage.amountMinor)}
-            </span>
-          </li>
-        );
-      })}
-    </ol>
-  </Card>
-);
+              <div
+                className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-xs font-black ${
+                  paid
+                    ? 'bg-accent text-on-accent'
+                    : isLocked
+                      ? 'border border-semantic-danger/40 text-semantic-danger'
+                      : isOverdue
+                        ? 'border border-semantic-warning/50 text-semantic-warning'
+                        : due
+                          ? 'border border-accent/40 text-accent'
+                          : 'border border-border text-text-muted'
+                }`}
+              >
+                {paid ? <CheckCircle2 className="h-4 w-4" aria-hidden="true" /> : String(index + 1).padStart(2, '0')}
+              </div>
+              <div className="min-w-0 flex-1">
+                <p className="text-sm font-bold text-text-primary">
+                  {STAGE_LABELS[stage.stage] || stage.label}
+                </p>
+                <p className="type-meta">
+                  {paid
+                    ? `Paid ${formatDate(stage.paidAt)}`
+                    : isLocked
+                      ? `Locked · overdue since ${dueLabel || 'the due date'}`
+                      : isOverdue
+                        ? `Overdue since ${dueLabel || 'the due date'}`
+                        : due
+                          ? `Next payment${dueLabel ? ` · due ${dueLabel}` : ' due'}`
+                          : `Upcoming${dueLabel ? ` · due ${dueLabel}` : ''}`}
+                </p>
+              </div>
+              <span className="shrink-0 font-mono text-sm font-bold text-text-primary">
+                {formatGhs(stage.amountMinor)}
+              </span>
+            </li>
+          );
+        })}
+      </ol>
+    </Card>
+  );
+};
 
 const PaymentHistory = ({ state }: { state: QoseRegistrationState }) => {
   if (state.payments.length === 0) return null;

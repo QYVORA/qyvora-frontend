@@ -7,7 +7,7 @@ import Button from '@/shared/components/ui/Button';
 import { Card } from '@/shared/components/ui/Card';
 import api from '@/core/services/api';
 
-type VerifyState = 'loading' | 'success' | 'failed' | 'error';
+type VerifyState = 'loading' | 'processing' | 'success' | 'failed' | 'timeout' | 'error';
 
 interface RegistrationState {
   id: string;
@@ -51,6 +51,10 @@ const PLAN_LABELS: Record<string, string> = {
   installment: 'Three instalments',
 };
 
+const POLL_INTERVAL_MS = 3_000;
+const POLL_TIMEOUT_MS = 60_000;
+const TERMINAL_STATUSES = new Set(['failed', 'abandoned', 'reversed', 'refunded']);
+
 const QosePaymentResultPage = () => {
   const [params] = useSearchParams();
   const reference = params.get('reference') || params.get('trxref') || '';
@@ -62,8 +66,24 @@ const QosePaymentResultPage = () => {
 
   useEffect(() => {
     let cancelled = false;
+    let timer: ReturnType<typeof setTimeout> | undefined;
+    const startedAt = Date.now();
+
+    const scheduleNext = () => {
+      if (cancelled) return;
+      if (Date.now() - startedAt >= POLL_TIMEOUT_MS) {
+        setState('timeout');
+        setMessage(
+          'Paystack has not confirmed this payment yet. If you were charged, keep this reference and contact the QYVORA team rather than paying again.'
+        );
+        return;
+      }
+      timer = setTimeout(() => void verify(), POLL_INTERVAL_MS);
+    };
 
     const verify = async () => {
+      if (cancelled) return;
+
       if (!reference) {
         setState('error');
         setMessage('No payment reference was supplied. Return to the QOSE page to start checkout.');
@@ -76,20 +96,46 @@ const QosePaymentResultPage = () => {
         );
         if (cancelled) return;
         setResult(data);
-        setState(data.verified ? 'success' : 'failed');
+
+        if (data.verified) {
+          setState('success');
+          return;
+        }
+
+        const status = String(data.status || '').toLowerCase();
+        if (TERMINAL_STATUSES.has(status)) {
+          setState('failed');
+          return;
+        }
+
+        setState('processing');
+        scheduleNext();
       } catch (err) {
         if (cancelled) return;
+        const response = (err as {
+          response?: { status?: number; data?: { error?: string } };
+        })?.response;
+        const retryable =
+          !response || response.status === 429 || Number(response.status || 0) >= 500;
+
+        if (retryable) {
+          setState('processing');
+          scheduleNext();
+          return;
+        }
+
         setState('error');
         setMessage(
-          (err as { response?: { data?: { error?: string } } })?.response?.data?.error ||
+          response?.data?.error ||
             'We could not verify this payment. If you were charged, contact the QYVORA team with your reference.'
         );
       }
     };
 
-    verify();
+    void verify();
     return () => {
       cancelled = true;
+      if (timer) clearTimeout(timer);
     };
   }, [reference]);
 
@@ -130,6 +176,19 @@ const QosePaymentResultPage = () => {
                   <h1 className="type-h2 text-text-primary">Verifying your payment</h1>
                   <p className="type-body-sm mt-2 text-text-secondary">
                     Please wait while we confirm the transaction with Paystack.
+                  </p>
+                </div>
+              </>
+            )}
+
+            {state === 'processing' && (
+              <>
+                <Clock3 className="h-8 w-8 text-accent" aria-hidden="true" />
+                <div>
+                  <h1 className="type-h2 text-text-primary">Payment is processing</h1>
+                  <p className="type-body mt-2 text-text-secondary">
+                    Paystack has not confirmed the transaction yet. Keep this page open — we check
+                    again every few seconds for up to a minute.
                   </p>
                 </div>
               </>
@@ -195,6 +254,24 @@ const QosePaymentResultPage = () => {
                     Paystack has not confirmed a successful payment for this reference.
                     You can return to the QOSE page and try again.
                   </p>
+                </div>
+              </>
+            )}
+
+            {state === 'timeout' && (
+              <>
+                <AlertCircle className="h-9 w-9 text-semantic-warning" aria-hidden="true" />
+                <div>
+                  <h1 className="type-h2 text-text-primary">Still waiting for confirmation</h1>
+                  <p className="type-body mt-2 text-text-secondary">{message}</p>
+                  <Button
+                    type="button"
+                    variant="secondary"
+                    className="mt-4"
+                    onClick={() => window.location.reload()}
+                  >
+                    Check again
+                  </Button>
                 </div>
               </>
             )}

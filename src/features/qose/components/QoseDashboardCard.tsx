@@ -40,24 +40,44 @@ const QoseDashboardCard = () => {
   const fullyPaid = registered && state.remainingMinor <= 0;
   const partial = registered && state.amountPaidMinor > 0 && state.remainingMinor > 0;
   const failed = registered && state.paymentStatus === 'failed';
+  const locked = registered && state.stages.some((stage) => stage.status === 'locked');
+  const overdue = registered && !locked && state.stages.some((stage) => stage.status === 'overdue');
+  const dueStage = registered
+    ? state.stages.find((stage) => stage.status === 'due' || stage.status === 'overdue')
+    : undefined;
+  const dueDate = dueStage?.dueDate
+    ? new Date(dueStage.dueDate).toLocaleDateString('en-GH', {
+        day: 'numeric',
+        month: 'short',
+        year: 'numeric',
+      })
+    : '';
 
   const title = !registered
     ? 'QOSE Cohort 1 is open'
     : fullyPaid
       ? 'QOSE seat secured'
-      : failed
-        ? 'QOSE payment needs attention'
-        : partial
-          ? 'Next QOSE instalment due'
-          : 'Finish your QOSE registration';
+      : locked
+        ? 'QOSE access locked'
+        : overdue
+          ? 'QOSE payment overdue'
+          : failed
+            ? 'QOSE payment needs attention'
+            : partial
+              ? 'Next QOSE instalment due'
+              : 'Finish your QOSE registration';
 
   const body = !registered
     ? 'The 12-week Offensive Security Engineer bootcamp follows HPB. Register and start with GH₵300.'
     : fullyPaid
       ? 'Tuition fully paid. Open your QOSE course and continue the programme.'
-      : failed
-        ? 'Your last checkout did not complete. Open QOSE to try again or contact the team.'
-        : `${formatGhs(state.remainingMinor)} remaining on your ${state.paymentPlan === 'full' ? 'full payment' : 'instalment'} plan.`;
+      : locked
+        ? 'An instalment is overdue past the grace period. Pay the outstanding amount to restore programme access.'
+        : overdue && state.inGrace && state.graceUntil
+          ? `${formatGhs(state.remainingMinor)} overdue. Access stays open until ${new Date(state.graceUntil).toLocaleDateString('en-GH')}.`
+          : failed
+            ? 'Your last checkout did not complete. Open QOSE to try again or contact the team.'
+            : `${formatGhs(state.remainingMinor)} remaining on your ${state.paymentPlan === 'full' ? 'full payment' : 'instalment'} plan${dueDate ? ` · next due ${dueDate}` : ''}.`;
 
   return (
     <Card className="flex flex-col gap-5 p-5 md:flex-row md:items-center md:justify-between md:gap-6 md:p-6">
