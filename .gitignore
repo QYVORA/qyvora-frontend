@@ -31,3 +31,7 @@ Thumbs.db
 
 # background image sources (large PNGs); webp builds are committed
 src/assets/backgrounds/*.png
+.diagram-fix-backup-*/
+error.md
+tree.txt
+typecheck-*.log
