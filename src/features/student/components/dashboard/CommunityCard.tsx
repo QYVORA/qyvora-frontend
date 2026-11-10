@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { Users } from 'lucide-react';
 import { useToast } from '@/core/contexts/ToastContext';
 import api from '@/core/services/api';
-import { CardBase as Card } from '@/shared/components/ui/Card';
+import { Card } from '@/shared/components/ui';
 import Button from '@/shared/components/ui/Button';
 import { BrandWhatsAppIcon } from '@/shared/components/icons';
 import { SOCIAL_LINKS } from '@/shared/components/layout/socialLinks';
@@ -33,18 +33,22 @@ const CommunityCard = () => {
   const { addToast } = useToast();
   const community = SOCIAL_LINKS.find((link) => link.key === 'whatsapp');
   const [data, setData] = useState<CommunityPayload | null>(null);
+  const [loading, setLoading] = useState(true);
   const [loadingId, setLoadingId] = useState('');
   const [error, setError] = useState('');
   const [relationship, setRelationship] = useState<Relationship | null>(null);
   const [relationshipItems, setRelationshipItems] = useState<CommunityStudent[]>([]);
 
   const loadCommunity = useCallback(async () => {
+    setLoading(true);
     try {
       const response = await api.get<CommunityPayload>('/student/community');
       setData(response.data);
       setError('');
     } catch {
       setError('Community activity is unavailable right now.');
+    } finally {
+      setLoading(false);
     }
   }, []);
 
@@ -89,7 +93,7 @@ const CommunityCard = () => {
   };
 
   return (
-    <Card className="p-5 md:p-6">
+    <Card as="section" className="p-5 md:p-6">
       <div className="mb-3 flex items-center gap-3">
         <span className="flex h-11 w-11 items-center justify-center rounded-xl border border-accent/25 bg-accent/10 text-accent">
           <Users className="h-5 w-5" aria-hidden="true" />
@@ -99,11 +103,18 @@ const CommunityCard = () => {
             Community
           </h2>
           <p className="type-meta mt-0.5">
-            {data?.followingCount ?? 0} following · {data?.followerCount ?? 0} followers
+            {loading && !data
+              ? 'Loading community…'
+              : error && !data
+                ? 'Community unavailable'
+                : `${data?.followingCount ?? 0} following · ${data?.followerCount ?? 0} followers`}
           </p>
         </div>
       </div>
 
+      {loading && !data && (
+        <p role="status" className="type-body-sm text-text-secondary">Loading community activity…</p>
+      )}
       {data && (
         <div className="mb-3 flex gap-2">
           <Button
@@ -144,10 +155,15 @@ const CommunityCard = () => {
         </div>
       )}
 
-      {error ? (
+      {error && !data ? (
         <p className="type-body-sm text-semantic-danger" role="status">{error}</p>
-      ) : (
+      ) : data ? (
         <>
+          {error && (
+            <p className="mb-3 type-meta text-semantic-danger" role="status">
+              Community could not be refreshed; showing the last loaded activity.
+            </p>
+          )}
           <div className="space-y-3" aria-live="polite">
             {data?.feed.slice(0, 3).map((activity) => (
               <div key={activity.id} className="border-t border-border-subtle pt-3">
@@ -197,7 +213,7 @@ const CommunityCard = () => {
             </div>
           )}
         </>
-      )}
+      ) : null}
 
       {community && (
         <Button

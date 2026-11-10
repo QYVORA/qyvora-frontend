@@ -34,6 +34,7 @@ Welcome to the QYVORA Frontend documentation. This guide helps you navigate all 
 ### UI/UX (canonical, enforced)
 - **[UI-PRINCIPLES.md](UI-PRINCIPLES.md)** - Enforced design rules (dark theme, accent, layout)
 - **[UI-PATTERN-INVENTORY.md](UI-PATTERN-INVENTORY.md)** - Existing pattern implementations
+- **[DASHBOARD_UI_AUDIT_AND_REDESIGN_PLAN.md](DASHBOARD_UI_AUDIT_AND_REDESIGN_PLAN.md)** - Student dashboard audit and implementation roadmap
 - **[TOKENS.md](TOKENS.md)** - Design token single source of truth (colors, spacing, radius, motion, z-index)
 - **[TYPOGRAPHY.md](TYPOGRAPHY.md)** - Heading scale source of truth
 - **[DESIGN_SYSTEM.md](DESIGN_SYSTEM.md)** - Colors, typography, buttons, spacing

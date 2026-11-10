@@ -5,7 +5,7 @@ import { usePopupManager } from '@/core/hooks/usePopupManager';
 import SpotlightTour, { TourStep } from '@/shared/components/tour/SpotlightTour';
 
 interface StudentTourProps {
-  cpBalance: number;
+  cpBalance?: number;
   username: string;
   /** External open control for replay. When provided, bypasses popup manager. */
   open?: boolean;
@@ -171,7 +171,9 @@ export const StudentTour: React.FC<StudentTourProps> = ({
       {
         targetId: 'tour-cp',
         title: "CyberPoints (CP)",
-        body: `Your balance: ${cpBalance.toLocaleString()} CP. CP is your spendable currency. Every room you complete earns CP and builds Progression Points that move you up the ranks.`,
+        body: typeof cpBalance === 'number'
+          ? `Your balance: ${cpBalance.toLocaleString()} CP. CP is your spendable currency. Every room you complete earns CP and builds Progression Points that move you up the ranks.`
+          : 'Your current CP balance appears here. Completing learning activities earns CP and builds Progression Points that move you up the ranks.',
       },
       {
         targetId: 'tour-profile',

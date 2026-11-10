@@ -1,4 +1,5 @@
 import React from 'react';
+import PageBody from '@/shared/components/layout/PageBody';
 
 const S = ({ className = '', circle = false, ...props }: { className?: string; circle?: boolean; [key: string]: any }) => (
   <div
@@ -8,34 +9,6 @@ const S = ({ className = '', circle = false, ...props }: { className?: string; c
   />
 );
 
-
-/* ─── Shared: Hero skeleton ───────────────────────────────────────────────── */
-const HeroSkeleton = ({ stats = 0, action = false }: { stats?: number; action?: boolean } = {}) => (
-  <div className="relative flex flex-col justify-center overflow-hidden">
-    <div className="absolute inset-0 opacity-10">
-      <div className="w-full h-full line-grid" />
-    </div>
-    <div className="relative z-10 px-3 md:px-4 lg:px-6 py-8 md:py-10">
-      <div className="w-full space-y-8">
-        <S className="h-16 md:h-20 lg:h-24 w-64 md:w-96 rounded-lg" />
-        <S className="h-4 md:h-5 w-72 md:w-[28rem] rounded" />
-        {stats > 0 && (
-          <div className="flex flex-wrap items-center gap-4 sm:gap-6">
-            {Array.from({ length: stats }).map((_, i) => (
-              <div key={i} className="flex items-center gap-2">
-                <S className="h-7 md:h-8 w-16 rounded" />
-                <S className="h-2.5 w-14 rounded" />
-              </div>
-            ))}
-          </div>
-        )}
-        {action && <S className="h-10 w-36 rounded-xl" />}
-      </div>
-    </div>
-  </div>
-);
-
-/* ─── Shared: Page section title skeleton ─────────────────────────────────── */
 const SectionTitleSkeleton = () => (
   <div className="space-y-1.5">
     <S className="h-2.5 w-20 rounded" />
@@ -51,148 +24,115 @@ const CardShell = ({ children, className = '' }: { children: React.ReactNode; cl
 /* ─── Dashboard Skeleton ──────────────────────────────────────────────────── */
 export const DashboardSkeleton = () => (
   <div className="min-h-full bg-canvas">
-    {/* 1. Continue — hero + daily mission */}
-    <div className="bg-canvas px-3 pt-8 pb-6 md:px-4 lg:px-6">
-      <div className="grid grid-cols-1 gap-4 lg:grid-cols-[1fr_340px] lg:gap-6">
-        <CardShell className="relative overflow-hidden p-6 sm:p-10 lg:p-14">
-          <div className="absolute inset-0 opacity-10 pointer-events-none">
-            <div className="w-full h-full line-grid" />
-          </div>
-          <div className="relative z-10 space-y-3">
-            <S className="h-3 w-40 rounded" />
-            <S className="h-8 lg:h-10 w-56 rounded-lg" />
-            <S className="h-3 w-36 rounded" />
-          </div>
-          <S className="relative z-10 mt-6 h-10 w-32 rounded-xl" />
-        </CardShell>
-        <CardShell className="p-5 flex flex-col justify-between gap-4">
-          <S className="h-3 w-28 rounded" />
-          <div className="space-y-2">
-            <S className="h-4 w-3/4 rounded" />
-            <S className="h-3 w-full rounded" />
-            <S className="h-3 w-2/3 rounded" />
-          </div>
-          <S className="h-9 w-full rounded-xl" />
-        </CardShell>
-      </div>
-    </div>
-
-    {/* 2. Today — weekly operation + streak */}
-    <div className="bg-canvas px-3 pb-6 md:px-4 lg:px-6">
-      <SectionTitleSkeleton />
-      <div className="mt-5 grid grid-cols-1 gap-4 lg:grid-cols-2 lg:gap-6">
-        {Array.from({ length: 2 }).map((_, i) => (
-          <CardShell key={i} className="p-5 md:p-6 space-y-3">
-            <S className="h-3 w-24 rounded" />
-            {i === 0 ? (
-              <div className="space-y-2.5">
-                <S className="h-[104px] w-full rounded-lg" />
-              </div>
-            ) : (
-              <div className="grid grid-cols-7 gap-2">
-                {Array.from({ length: 7 }).map((_, j) => (
-                  <div key={j} className="space-y-1.5">
-                    <S className="h-2 w-full rounded" />
-                    <S className="h-8 w-full rounded-lg" />
-                  </div>
-                ))}
-              </div>
-            )}
+    <PageBody spacing="sections">
+      <div className="grid min-w-0 grid-cols-1 items-start gap-5 xl:grid-cols-12 xl:gap-6">
+        <div className="min-w-0 space-y-5 xl:col-span-8">
+          <CardShell className="space-y-4 border-accent/25 bg-accent/[0.06] p-6 sm:p-7">
+            <S className="h-3 w-40" />
+            <S className="h-8 w-3/4 max-w-96" />
+            <S className="h-4 w-full max-w-2xl" />
+            <S className="h-11 w-36 rounded-xl" />
           </CardShell>
-        ))}
-      </div>
-      <div className="mt-5 rounded-xl border border-border-subtle bg-surface p-3 flex items-center gap-3">
-        <S className="h-6 w-6 rounded-lg shrink-0" />
-        <S className="h-3 flex-1 rounded" />
-        <S className="h-3 w-16 rounded" />
-      </div>
-    </div>
 
-    {/* 3. Three metrics — CP / rank / streak */}
-    <div className="bg-canvas px-3 pb-6 md:px-4 lg:px-6">
-      <div className="grid grid-cols-1 gap-4 md:gap-5 sm:grid-cols-3">
-        {Array.from({ length: 3 }).map((_, i) => (
-          <CardShell key={i} className="p-6 md:p-7 space-y-3">
-            <div className="flex items-center gap-3">
-              <S className="w-10 h-10 rounded-xl shrink-0" />
-              <S className="h-3 w-14 rounded" />
+          <CardShell className="space-y-4 p-5 md:p-6">
+            <div className="flex items-center justify-between gap-3">
+              <div className="space-y-2">
+                <S className="h-5 w-36" />
+                <S className="h-3 w-64 max-w-full" />
+              </div>
+              <S className="h-10 w-20 rounded-xl" />
             </div>
-            <S className="h-7 w-24 rounded-lg" />
-          </CardShell>
-        ))}
-      </div>
-    </div>
-
-    {/* 4. Recent learning — catalog */}
-    <div className="bg-canvas px-3 pb-10 md:px-4 lg:px-6">
-      <SectionTitleSkeleton />
-      <S className="mt-2 h-3 w-72 rounded" />
-
-      {['Bootcamp', 'Courses', 'Labs'].map((_, block) => (
-        <div key={block} className="mt-8">
-          <div className="mb-4 flex items-center justify-between">
-            <S className="h-3 w-20 rounded" />
-            <S className="h-4 w-16 rounded" />
-          </div>
-          {block === 0 ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              {Array.from({ length: 2 }).map((_, i) => (
-                <CardShell key={i} className="flex items-center gap-4 p-4">
-                  <S className="w-14 h-14 rounded-xl shrink-0" />
-                  <div className="flex-1 space-y-2">
-                    <S className="h-4 w-3/4 rounded" />
-                    <S className="h-2 w-full rounded-full" />
-                  </div>
-                </CardShell>
+            <div className="flex gap-2">
+              {Array.from({ length: 3 }).map((_, index) => (
+                <S key={index} className="h-11 w-24 rounded-xl" />
               ))}
             </div>
-          ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-              {Array.from({ length: 3 }).map((_, i) => (
-                <div key={i} className="rounded-2xl border border-border-subtle bg-surface p-4 flex flex-col">
-                  <div className="flex items-center gap-2 mb-3">
-                    <S className="w-14 h-7 rounded-lg shrink-0" />
-                    <S className="h-3 w-12 rounded" />
-                  </div>
-                  <S className="h-5 w-3/4 rounded" />
-                  <S className="h-3 w-full rounded mt-2" />
-                  <S className="h-8 w-24 rounded-lg mt-auto pt-0 self-start" />
+            {Array.from({ length: 3 }).map((_, index) => (
+              <div key={index} className="flex items-center gap-3 border-t border-border-subtle pt-3 first:border-0 first:pt-0">
+                <S circle className="h-12 w-12 shrink-0" />
+                <div className="min-w-0 flex-1 space-y-2">
+                  <S className="h-4 w-2/3 max-w-64" />
+                  <S className="h-3 w-full max-w-xl" />
+                  <S className="h-2 w-24 rounded-full" />
+                </div>
+                <S circle className="h-11 w-11 shrink-0" />
+              </div>
+            ))}
+          </CardShell>
+
+          <CardShell className="space-y-4 p-5 md:p-6">
+            <div className="flex items-center justify-between gap-3">
+              <S className="h-5 w-36" />
+              <S className="h-10 w-20 rounded-xl" />
+            </div>
+            <div className="flex gap-2">
+              {Array.from({ length: 2 }).map((_, index) => (
+                <S key={index} className="h-11 w-28 rounded-xl" />
+              ))}
+            </div>
+            {Array.from({ length: 2 }).map((_, index) => (
+              <div key={index} className="flex items-center gap-3 border-t border-border-subtle pt-3 first:border-0 first:pt-0">
+                <S circle className="h-12 w-12 shrink-0" />
+                <div className="min-w-0 flex-1 space-y-2">
+                  <S className="h-4 w-2/3 max-w-64" />
+                  <S className="h-3 w-full max-w-xl" />
+                </div>
+                <S circle className="h-11 w-11 shrink-0" />
+              </div>
+            ))}
+          </CardShell>
+        </div>
+
+        <aside className="min-w-0 space-y-5 xl:col-span-4">
+          <CardShell className="space-y-3 p-5 md:p-6">
+            <S className="h-3 w-32" />
+            <S className="h-6 w-3/4" />
+            <S className="h-3 w-full" />
+            <S className="h-2 w-full rounded-full" />
+            {Array.from({ length: 3 }).map((_, index) => (
+              <S key={index} className="h-4 w-full" />
+            ))}
+          </CardShell>
+
+          <CardShell className="space-y-4 p-5 md:p-6">
+            <div className="flex items-center gap-3">
+              <S circle className="h-10 w-10 shrink-0" />
+              <div className="min-w-0 flex-1 space-y-2">
+                <S className="h-4 w-32" />
+                <S className="h-3 w-40 max-w-full" />
+              </div>
+            </div>
+            <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
+              {Array.from({ length: 3 }).map((_, index) => (
+                <div key={index} className="space-y-2 border-t border-border-subtle pt-3">
+                  <S className="h-3 w-20" />
+                  <S className="h-5 w-16" />
                 </div>
               ))}
             </div>
-          )}
-        </div>
-      ))}
-    </div>
+          </CardShell>
 
-    {/* 5. Skill matrix */}
-    <div className="bg-canvas px-3 py-10 md:px-4 lg:px-6">
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-        <CardShell className="p-4 md:p-6 flex flex-col items-center justify-center min-h-[300px]">
-          <S circle className="w-64 h-64 md:w-72 md:h-72" />
-        </CardShell>
-        <CardShell className="p-4 md:p-6 flex flex-col justify-between gap-2.5 min-h-[300px]">
-          {Array.from({ length: 5 }).map((_, i) => (
-            <div key={i} className="flex items-center gap-3">
-              <S className="h-2.5 w-20 rounded" />
-              <S className="h-1.5 flex-1 rounded-full" />
-              <S className="h-2.5 w-10 rounded" />
-            </div>
-          ))}
-        </CardShell>
+          <CardShell className="space-y-3 p-5 md:p-6">
+            <S className="h-5 w-32" />
+            {Array.from({ length: 3 }).map((_, index) => (
+              <div key={index} className="flex items-center gap-3 border-t border-border-subtle pt-3 first:border-0 first:pt-0">
+                <S circle className="h-9 w-9 shrink-0" />
+                <div className="flex-1 space-y-2">
+                  <S className="h-3 w-3/4" />
+                  <S className="h-2.5 w-full" />
+                </div>
+              </div>
+            ))}
+          </CardShell>
+
+          <CardShell className="space-y-3 p-5 md:p-6">
+            <S className="h-5 w-40" />
+            <S className="h-3 w-3/4" />
+            <S className="h-3 w-full" />
+          </CardShell>
+        </aside>
       </div>
-    </div>
-
-    {/* 6. Progression */}
-    <div className="bg-canvas px-3 pb-20 pt-4 lg:px-6 lg:pb-24">
-      <CardShell className="p-6 md:p-8 lg:p-10 space-y-3">
-        <div className="flex items-center justify-between gap-4">
-          <S className="h-3 w-32 rounded" />
-          <S className="h-4 w-10 rounded" />
-        </div>
-        <S className="h-3 w-full rounded-full" />
-      </CardShell>
-    </div>
+    </PageBody>
   </div>
 );
 

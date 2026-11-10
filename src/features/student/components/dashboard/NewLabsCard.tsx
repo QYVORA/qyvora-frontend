@@ -1,51 +1,60 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, Compass } from 'lucide-react';
-import { CardBase as Card } from '@/shared/components/ui/Card';
+import { Card } from '@/shared/components/ui';
 import Button from '@/shared/components/ui/Button';
 import FilterTabs from '@/shared/components/ui/FilterTabs';
 import LabBadge from '@/shared/components/LabBadge';
 import { DifficultyBadge } from '@/shared/components/learning/LearningCard';
 import type { UnifiedLab } from '@/features/student/data/labs';
-import { markLabRecent } from '@/features/student/utils/savedLabs';
+import {
+  RECENT_LABS_EVENT,
+  getRecentLabIds,
+} from '@/features/student/utils/savedLabs';
+import { LearningBookmarkButton } from './MyLearningCard';
 
 interface NewLabsCardProps {
   labs: UnifiedLab[];
+  excludeLabIds?: string[];
 }
 
 type TabKey = 'recommended' | 'new';
 
-/**
- * NewLabsCard — one organized Lab discovery container.
- *
- * "Recommended" surfaces foundational content/hybrid Labs; "New" surfaces the
- * recently published practical Labs from the QOSE lab matrix. Selecting a Lab
- * navigates to its existing learning route and records it as recently opened.
- */
-const NewLabsCard = ({ labs }: NewLabsCardProps) => {
+const NewLabsCard = ({ labs, excludeLabIds = [] }: NewLabsCardProps) => {
   const [tab, setTab] = useState<TabKey>('recommended');
+  const [recentIds, setRecentIds] = useState<string[]>(() => getRecentLabIds());
 
-  const recommended = useMemo(
-    () => labs.filter((lab) => lab.format !== 'hands-on').slice(0, 3),
-    [labs],
+  useEffect(() => {
+    const syncRecent = () => setRecentIds(getRecentLabIds());
+    window.addEventListener(RECENT_LABS_EVENT, syncRecent);
+    return () => window.removeEventListener(RECENT_LABS_EVENT, syncRecent);
+  }, []);
+
+  const excludedIds = useMemo(
+    () => new Set([...excludeLabIds, ...recentIds]),
+    [excludeLabIds, recentIds],
   );
+  const recommended = useMemo(
+    () => labs
+      .filter((lab) => lab.format !== 'hands-on' && !excludedIds.has(lab.id))
+      .slice(0, 3),
+    [labs, excludedIds],
+  );
+  const hasContentLabs = labs.some((lab) => lab.format !== 'hands-on');
   const fresh = useMemo(
-    () => {
-      const newLabs = labs.filter((lab) => lab.isNew);
-      return (newLabs.length > 0 ? newLabs : labs.filter((lab) => lab.format === 'hands-on')).slice(0, 3);
-    },
-    [labs],
+    () => labs.filter((lab) => lab.isNew && !excludedIds.has(lab.id)).slice(0, 3),
+    [labs, excludedIds],
   );
 
   const visible = tab === 'recommended' ? recommended : fresh;
 
   return (
-    <Card className="flex flex-col p-5 md:p-6">
+    <Card as="section" className="flex flex-col p-5 md:p-6">
       <div className="mb-4 flex items-start justify-between gap-3">
         <div className="min-w-0">
           <h2 className="type-h2 text-text-primary">Discover Labs</h2>
           <p className="mt-1 type-body-sm text-text-secondary">
-            Find a Lab, open it, learn, practise and complete.
+            Explore learning that is not already in your recent activity.
           </p>
         </div>
         <Button to="/dashboard/labs" variant="ghost" size="sm" className="shrink-0">
@@ -55,61 +64,77 @@ const NewLabsCard = ({ labs }: NewLabsCardProps) => {
 
       <FilterTabs
         tabs={[
-          { key: 'recommended', label: 'Recommended', count: recommended.length },
+          { key: 'recommended', label: 'Content Labs', count: recommended.length },
           { key: 'new', label: 'New Labs', count: fresh.length },
         ]}
         activeKey={tab}
         onChange={(key) => setTab(key as TabKey)}
         size="sm"
-        className="mb-4"
+        className="mb-3"
       />
 
-      <ul className="space-y-2.5">
-        {visible.map((lab) => (
-          <li key={lab.id}>
-            <Link
-              to={lab.route}
-              onClick={() => markLabRecent(lab.id)}
-              className="group flex items-start gap-3 rounded-xl border border-border-subtle bg-surface-raised/40 p-3 transition-colors hover:border-accent/40 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
-            >
-              <LabBadge labId={lab.id} accentColor={lab.accentColor} className="h-11 w-11 shrink-0" />
-              <div className="min-w-0 flex-1">
-                <div className="flex flex-wrap items-center gap-1.5">
-                  <span className="text-sm font-black leading-snug text-text-primary transition-colors group-hover:text-accent">
-                    {lab.title}
+      {visible.length > 0 ? (
+        <ul>
+          {visible.map((lab) => (
+            <li key={lab.id} className="border-t border-border-subtle py-3 first:border-t-0 first:pt-0 last:pb-0">
+              <div className="flex min-w-0 items-center gap-2">
+                <Link
+                  to={lab.route}
+                  className="group flex min-w-0 flex-1 items-center gap-3 rounded-lg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+                >
+                  <span className="grid h-12 w-12 shrink-0 place-items-center overflow-hidden rounded-full border border-border-subtle bg-surface-raised">
+                    <LabBadge labId={lab.id} accentColor={lab.accentColor} className="h-full w-full" glow={false} />
                   </span>
-                  {lab.isNew && (
-                    <span className="rounded-md bg-accent px-1.5 py-0.5 text-[10px] font-black uppercase tracking-widest text-on-accent">
-                      New
+                  <span className="min-w-0 flex-1">
+                    <span className="flex flex-wrap items-center gap-x-2 gap-y-1">
+                      <span className="truncate text-sm font-bold leading-snug text-text-primary transition-colors group-hover:text-accent">
+                        {lab.title}
+                      </span>
+                      {lab.isNew && (
+                        <span className="rounded bg-accent px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-on-accent">
+                          New
+                        </span>
+                      )}
                     </span>
-                  )}
-                </div>
-                <p className="mt-1 line-clamp-2 text-xs leading-relaxed text-text-secondary">
-                  {lab.description}
-                </p>
-                <div className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1">
-                  <DifficultyBadge difficulty={lab.difficulty} />
-                  {lab.cpReward && (
-                    <span className="font-mono text-[10px] font-black uppercase tracking-widest text-accent">
-                      {lab.cpReward} CP
+                    <span className="mt-0.5 line-clamp-1 block text-xs leading-relaxed text-text-secondary">
+                      {lab.description}
                     </span>
-                  )}
-                  {lab.lessonsCount !== undefined && (
-                    <span className="font-mono text-[10px] text-text-muted">
-                      {lab.lessonsCount} lessons
+                    <span className="mt-1 flex flex-wrap items-center gap-x-3 gap-y-1">
+                      <DifficultyBadge difficulty={lab.difficulty} />
+                      {lab.cpReward && (
+                        <span className="font-mono text-[10px] font-bold text-text-muted">
+                          {lab.cpReward} CP
+                        </span>
+                      )}
+                      {lab.lessonsCount !== undefined && (
+                        <span className="font-mono text-[10px] text-text-muted">
+                          {lab.lessonsCount} lessons
+                        </span>
+                      )}
+                      <span className="inline-flex items-center gap-1 text-[10px] font-black uppercase tracking-wider text-accent">
+                        Open <ArrowRight className="h-3 w-3" aria-hidden="true" />
+                      </span>
                     </span>
-                  )}
-                </div>
+                  </span>
+                </Link>
+                <LearningBookmarkButton id={lab.id} title={lab.title} />
               </div>
-              <ArrowRight className="mt-1 h-4 w-4 shrink-0 text-text-muted transition-colors group-hover:text-accent" aria-hidden="true" />
-            </Link>
-          </li>
-        ))}
-      </ul>
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <p className="py-4 type-body-sm text-text-secondary">
+          {tab === 'new'
+            ? 'There are no new Labs to show right now.'
+            : hasContentLabs
+              ? 'You have opened these Content Labs recently. Browse all Labs to find another.'
+              : 'No Content Labs are available right now.'}
+        </p>
+      )}
 
-      <div className="mt-4 flex items-center gap-2 border-t border-border-subtle pt-3 text-[11px] font-black uppercase tracking-widest text-text-muted">
+      <div className="mt-3 flex items-center gap-2 border-t border-border-subtle pt-3 text-[11px] font-black uppercase tracking-widest text-text-muted">
         <Compass className="h-3.5 w-3.5 text-accent" aria-hidden="true" />
-        {tab === 'recommended' ? 'Recommended for your path' : 'Recently published Labs'}
+        {tab === 'recommended' ? 'Content Labs' : 'Recently published Labs'}
       </div>
     </Card>
   );

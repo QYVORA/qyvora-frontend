@@ -1,6 +1,5 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useAuth } from '@/core/contexts/AuthContext';
-import { useToast } from '@/core/contexts/ToastContext';
 import api from '@/core/services/api';
 import { extractCpBalance } from '@/shared/utils/cpBalance';
 import {
@@ -10,7 +9,7 @@ import {
 import { getContentLabProgress } from '@/features/student/utils/savedLabs';
 import useStudentOverview from '@/features/student/hooks/useStudentOverview';
 import useEngagement from '@/features/student/hooks/useEngagement';
-import { Card, ErrorState, FadeIn } from '@/shared/components/ui';
+import { Button, Card, FadeIn } from '@/shared/components/ui';
 import PageBody from '@/shared/components/layout/PageBody';
 import { DashboardSkeleton } from '@/features/student/components/StudentSkeletons';
 import SEO from '@/shared/components/SEO';
@@ -19,7 +18,6 @@ import StudentOnboardingModal from '@/features/student/components/StudentOnboard
 import {
   CommunityCard,
   DashboardHero,
-  LeagueCard,
   MyLearningCard,
   NewLabsCard,
   SessionPlannerCard,
@@ -28,135 +26,173 @@ import {
   YourStatsCard,
 } from '@/features/student/components/dashboard';
 import type { MyLearningBootcamp } from '@/features/student/components/dashboard/MyLearningCard';
-import CpEarnHint from '@/features/student/components/dashboard/CpEarnHint';
 import CertificateClaimBanner from '@/features/student/components/dashboard/CertificateClaimBanner';
 import QoseDashboardCard from '@/features/qose/components/QoseDashboardCard';
 import WeekActivity from '@/features/student/components/dashboard/WeekActivity';
-import SkillMatrix from '@/features/student/components/dashboard/SkillMatrix';
 import ScrollReveal from '@/shared/components/ScrollReveal';
 import { UNIFIED_LABS, CONTENT_LABS } from '@/features/student/data/labs';
 
 const BOOTCAMP_FALLBACK_PATH = '/dashboard/bootcamps';
 
-function pickCpBalance(userCp: number, overview: any, cpBalance: number | null): number {
+interface BootcampCatalogEntry {
+  id?: string | number;
+  title?: string;
+  description?: string;
+}
+
+function pickCpBalance(userCp: number | undefined, overview: any): number | undefined {
   const fromOverview = extractCpBalance(overview?.xpSummary) ?? extractCpBalance(overview);
   if (typeof fromOverview === 'number' && Number.isFinite(fromOverview)) return fromOverview;
-  if (typeof cpBalance === 'number' && Number.isFinite(cpBalance) && cpBalance > 0) return cpBalance;
+  if (typeof userCp === 'number' && Number.isFinite(userCp)) return userCp;
   return userCp;
 }
 
 /**
- * Student dashboard overview.
- *
- * A desktop-first, two-column composition. At `lg` and above the columns are
- * equal-width so cards do not get squeezed into a narrow rail; below `lg` the
- * cards stack. Columns flow independently so cards keep their natural height.
- * Data comes from `/student/overview`, `/student/engagement`,
- * `/student/community`, `/student/session-plans`, `/public/bootcamps` and
- * `/public/leaderboard`.
+ * Student dashboard overview. At wide desktop sizes, learning takes the
+ * primary two-thirds and supporting widgets use the remaining third; smaller
+ * screens retain a predictable single-column reading order.
  */
 const Dashboard = () => {
   const { user } = useAuth();
-  const { addToast } = useToast();
-  const { data: overview, loading: overviewLoading } = useStudentOverview();
-  const { data: engagement, loading: engagementLoading } = useEngagement();
+  const {
+    data: overview,
+    loading: overviewLoading,
+    error: overviewError,
+    refetch: refetchOverview,
+  } = useStudentOverview();
+  const {
+    data: engagement,
+    loading: engagementLoading,
+    error: engagementError,
+    refetch: refetchEngagement,
+  } = useEngagement();
 
-  const [bootcamps, setBootcamps] = useState<any[]>([]);
-  const [cpBalanceState, setCpBalance] = useState<number | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [syncError, setSyncError] = useState('');
+  const [bootcamps, setBootcamps] = useState<BootcampCatalogEntry[]>([]);
+  const [bootcampsLoading, setBootcampsLoading] = useState(true);
+  const [bootcampsError, setBootcampsError] = useState(false);
+  const mountedRef = useRef(true);
 
   useEffect(() => {
-    let mounted = true;
-    const load = async () => {
-      try {
-        const bcRes = await api
-          .get('/public/bootcamps')
-          .catch((err) => {
-            console.warn('[Dashboard] bootcamps failed:', err?.response?.status || err?.message);
-            return null;
-          });
-        if (!mounted) return;
-        setBootcamps(Array.isArray(bcRes?.data?.items) ? bcRes.data.items : []);
-        setCpBalance(user?.cp ?? 0);
-        setSyncError('');
-      } catch {
-        if (!mounted) return;
-        setSyncError('Could not sync. Showing cached data.');
-        addToast('Failed to load dashboard data', 'error');
-      } finally {
-        if (mounted) setLoading(false);
-      }
-    };
-    load();
-    return () => { mounted = false; };
-  }, [user?.uid, user?.cp, addToast]);
+    mountedRef.current = true;
+    return () => { mountedRef.current = false; };
+  }, []);
+
+  const loadBootcamps = useCallback(async () => {
+    if (!mountedRef.current) return;
+    setBootcampsLoading(true);
+    setBootcampsError(false);
+    try {
+      const bcRes = await api.get<{ items?: BootcampCatalogEntry[] }>('/public/bootcamps');
+      if (!mountedRef.current) return;
+      setBootcamps(Array.isArray(bcRes.data?.items) ? bcRes.data.items : []);
+    } catch (error) {
+      console.warn(
+        '[Dashboard] bootcamps failed:',
+        error instanceof Error ? error.message : 'Unknown error',
+      );
+      if (!mountedRef.current) return;
+      setBootcamps([]);
+      setBootcampsError(true);
+    } finally {
+      if (mountedRef.current) setBootcampsLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    void loadBootcamps();
+  }, [loadBootcamps, user?.uid]);
 
   const moduleProgressById = getBootcampProgressMap(overview);
-  const enrolledBootcamps = bootcamps
-    .map((item: any) => ({ item, prog: moduleProgressById.get(String(item.id || '')) }))
-    .filter(({ prog }) => prog !== undefined)
-    .slice(0, 4);
+  const isBootcampActive = (id: string) => {
+    const progress = moduleProgressById.get(id)?.progress;
+    return moduleProgressById.has(id) &&
+      (typeof progress !== 'number' || !Number.isFinite(progress) || progress < 100);
+  };
+  const myLearningBootcamps: MyLearningBootcamp[] = bootcamps.flatMap((item) => {
+    const id = String(item.id ?? '').trim();
+    const title = item.title?.trim();
+    if (!id || !title) return [];
+    const progress = moduleProgressById.get(id);
+    return [{
+      id,
+      title,
+      description: item.description?.trim() || undefined,
+      progress: progress?.progress,
+      to: `/dashboard/bootcamps/${id}`,
+      isActive: isBootcampActive(id),
+    }];
+  });
 
   const activeBootcamp = bootcamps.find(
-    (bc: any) => moduleProgressById.get(String(bc.id || '')) !== undefined,
+    (bc) => isBootcampActive(String(bc.id ?? '')),
   );
   const continuePath = activeBootcamp
-    ? resolveNextRoomPath(String(activeBootcamp.id || '')) || `/dashboard/bootcamps/${activeBootcamp.id}`
+    ? resolveNextRoomPath(String(activeBootcamp.id ?? '')) || `/dashboard/bootcamps/${activeBootcamp.id}`
     : BOOTCAMP_FALLBACK_PATH;
   const isEnrolled = (overview?.bootcampStatus || 'not_enrolled') !== 'not_enrolled';
-  const cpBalance = pickCpBalance(user?.cp ?? 0, overview, cpBalanceState);
+  const cpBalance = pickCpBalance(user?.cp, overview);
   const progression = overview?.xpSummary?.progression ?? null;
-  const effectiveRankName = progression?.rank || 'Candidate';
   const nextMission = (overview?.learningPath || []).find(
-    (m: any) => m.status === 'in-progress' || m.status === 'next',
+    (mission: any) => mission.status === 'in-progress' || mission.status === 'next',
   );
 
   const overviewModules = Array.isArray(overview?.modules) ? overview.modules : [];
   const totalRoomsDone = overviewModules.reduce(
-    (sum: number, m: any) => sum + Number(m.roomsCompleted || 0),
+    (sum: number, module: any) => sum + Number(module.roomsCompleted || 0),
     0,
   );
   const totalRooms = overviewModules.reduce(
-    (sum: number, m: any) => sum + Number(m.roomsTotal || 0),
+    (sum: number, module: any) => sum + Number(module.roomsTotal || 0),
     0,
   );
-  const allDone = isEnrolled && !nextMission && totalRoomsDone > 0;
-  const streakDays = overview?.xpSummary?.streakDays ?? 0;
-  const visitDates = overview?.xpSummary?.visitDates ?? [];
+  const allDone = isEnrolled && !nextMission && totalRooms > 0 && totalRoomsDone >= totalRooms;
+  const streakDaysValue = overview?.xpSummary?.streakDays;
+  const streakDays = typeof streakDaysValue === 'number' && Number.isFinite(streakDaysValue)
+    ? streakDaysValue
+    : undefined;
+  const visitDates = Array.isArray(overview?.xpSummary?.visitDates) ? overview.xpSummary.visitDates : [];
   const visitDurations = overview?.xpSummary?.visitDurations ?? {};
-  const rankName = effectiveRankName;
 
   const progressById = useMemo(() => {
-    const map: Record<string, number> = {};
+    const map: Record<string, number | undefined> = {};
     CONTENT_LABS.forEach((lab) => {
       map[lab.id] = getContentLabProgress(lab.id, lab.lessonsCount ?? 0);
     });
     return map;
   }, []);
 
-  const myLearningBootcamps: MyLearningBootcamp[] = enrolledBootcamps.map(({ item, prog }) => {
-    const id = String(item.id || '');
-    return {
-      id,
-      title: item.title || 'Bootcamp',
-      description: String(item.description || '').trim() ||
-        'A structured programme of guided Labs, live sessions and assessments.',
-      progress: Number(prog?.progress || 0),
-      to: id === String(activeBootcamp?.id || '') ? continuePath : `/dashboard/bootcamps/${id}`,
-    };
-  });
+  const activeContentLabIds = CONTENT_LABS
+    .filter((lab) => {
+      const progress = progressById[lab.id];
+      return progress !== undefined && progress > 0 && progress < 100;
+    })
+    .map((lab) => lab.id);
+  const activeContentLab = CONTENT_LABS.find((lab) => activeContentLabIds.includes(lab.id));
 
-  if (loading || overviewLoading) return <DashboardSkeleton />;
+  if (bootcampsLoading || overviewLoading) return <DashboardSkeleton />;
 
-  const hero = allDone
+  const hero = overviewError
     ? {
-        title: 'Every Lab complete',
-        body: 'You have completed every available room. Review the curriculum or pick up a new Lab to keep sharp.',
-        ctaLabel: 'Explore Labs',
+        title: 'Your learning overview is unavailable',
+        body: 'Your dashboard data could not be loaded. You can still browse Labs while we retry.',
+        ctaLabel: 'Browse Labs',
         continuePath: '/dashboard/labs',
       }
-    : isEnrolled
+    : activeContentLab && !activeBootcamp
+      ? {
+          title: activeContentLab.title,
+          body: activeContentLab.description,
+          ctaLabel: 'Continue learning',
+          continuePath: activeContentLab.route,
+        }
+      : allDone
+        ? {
+            title: 'Bootcamp programme complete',
+            body: 'You have completed the available rooms in your bootcamp programme. Continue with another Lab or review the curriculum.',
+            ctaLabel: 'Explore Labs',
+            continuePath: '/dashboard/labs',
+          }
+        : isEnrolled
       ? {
           title: nextMission?.title || overview?.progressMeta?.currentPhase?.title || 'Continue your training',
           body: nextMission?.overview ||
@@ -165,8 +201,8 @@ const Dashboard = () => {
           continuePath,
         }
       : {
-          title: 'Begin your first Lab',
-          body: 'Start with a foundational content Lab to build the fundamentals, then move into hands-on practice.',
+          title: 'Choose your next Lab',
+          body: 'Explore a content Lab or hands-on practice to build and apply your skills.',
           ctaLabel: 'Explore Labs',
           continuePath: '/dashboard/labs',
         };
@@ -179,110 +215,102 @@ const Dashboard = () => {
         <StudentTour cpBalance={cpBalance} username={user?.username ?? ''} />
 
         <PageBody spacing="sections">
-          {syncError && <ErrorState message={syncError} title="Sync Failed" />}
-
-          <CertificateClaimBanner />
-
-          <div className="mx-auto w-full max-w-[1360px]">
-            <div className="grid grid-cols-1 items-start gap-5 lg:grid-cols-2 lg:gap-6 xl:gap-7">
-              {/* ── LEFT COLUMN — the learner's path ─────────────────────── */}
-              <div className="flex min-w-0 flex-col gap-5">
-                <ScrollReveal>
-                  <DashboardHero
-                    username={user?.username}
-                    title={hero.title}
-                    body={hero.body}
-                    ctaLabel={hero.ctaLabel}
-                    continuePath={hero.continuePath}
-                    secondaryLabel={isEnrolled ? 'All Labs' : undefined}
-                    secondaryTo={isEnrolled ? '/dashboard/labs' : undefined}
-                  />
-                </ScrollReveal>
-
-                <QoseDashboardCard />
-
-                <ScrollReveal>
-                  <CommunityCard />
-                </ScrollReveal>
-
-                <ScrollReveal>
-                  <MyLearningCard
-                    bootcamps={myLearningBootcamps}
-                    labs={CONTENT_LABS}
-                    progressById={progressById}
-                  />
-                </ScrollReveal>
-
-                <ScrollReveal>
-                  <LeagueCard
-                    rankName={rankName}
-                    cp={cpBalance}
-                    streakDays={streakDays}
-                    progression={progression}
-                  />
-                </ScrollReveal>
-              </div>
-
-              {/* ── RIGHT COLUMN — engagement, stats and community ───────── */}
-              <div className="flex min-w-0 flex-col gap-5">
-                <ScrollReveal>
-                  {engagement ? (
-                    <WeeklyMissionCard engagement={engagement} loading={engagementLoading} />
-                  ) : (
-                    <Card className="flex flex-col justify-center p-5 md:p-6">
-                      <h2 className="type-h2 text-text-primary">Weekly Mission</h2>
-                      <p className="mt-2 type-body-sm text-text-secondary">
-                        No weekly mission is active right now. Complete a Lab to start earning CP.
-                      </p>
-                    </Card>
-                  )}
-                </ScrollReveal>
-
-                <ScrollReveal>
-                  <YourStatsCard
-                    username={user?.username || ''}
-                    rankName={rankName}
-                    cp={cpBalance}
-                    streakDays={streakDays}
-                    roomsCompleted={totalRoomsDone}
-                    roomsTotal={totalRooms}
-                    bootcampStatus={overview?.bootcampStatus || 'not_enrolled'}
-                    progression={progression}
-                  />
-                </ScrollReveal>
-
-                <ScrollReveal>
-                  <SessionPlannerCard />
-                </ScrollReveal>
-
-                <ScrollReveal>
-                  <TopOperatorsCard currentUserId={user?.uid} />
-                </ScrollReveal>
-
-                <ScrollReveal>
-                  <NewLabsCard labs={UNIFIED_LABS} />
-                </ScrollReveal>
-
-                {visitDates.length > 0 && (
-                  <ScrollReveal>
-                    <Card className="flex flex-col p-5 md:p-6">
-                      <h2 className="type-h2 mb-4 text-text-primary">This Week</h2>
-                      <WeekActivity visitDates={visitDates} visitDurations={visitDurations} />
-                    </Card>
-                  </ScrollReveal>
-                )}
-
-                <ScrollReveal>
-                  <CpEarnHint engagement={engagement} loading={engagementLoading} />
-                </ScrollReveal>
-              </div>
+          {overviewError && (
+            <div role="alert">
+              <Card className="flex flex-wrap items-center justify-between gap-3 p-4">
+                <p className="type-body-sm text-semantic-danger">
+                  Your progress and statistics could not be loaded.
+                </p>
+                <Button type="button" variant="secondary" size="sm" onClick={refetchOverview}>
+                  Retry
+                </Button>
+              </Card>
             </div>
-          </div>
+          )}
 
-          {/* Skill coverage needs the full content width for the radar chart. */}
-          <ScrollReveal>
-            <SkillMatrix modules={overviewModules} />
-          </ScrollReveal>
+          <div className="grid min-w-0 grid-cols-1 items-start gap-5 xl:grid-cols-12 xl:gap-6">
+            <div className="flex min-w-0 flex-col gap-5 xl:col-span-8">
+              <ScrollReveal>
+                <DashboardHero
+                  username={user?.username}
+                  title={hero.title}
+                  body={hero.body}
+                  ctaLabel={hero.ctaLabel}
+                  continuePath={hero.continuePath}
+                  secondaryLabel={isEnrolled && !overviewError ? 'All Labs' : undefined}
+                  secondaryTo={isEnrolled && !overviewError ? '/dashboard/labs' : undefined}
+                />
+              </ScrollReveal>
+
+              <ScrollReveal>
+                <MyLearningCard
+                  bootcamps={myLearningBootcamps.map((bootcamp) => (
+                    bootcamp.id === String(activeBootcamp?.id ?? '')
+                      ? { ...bootcamp, to: continuePath }
+                      : bootcamp
+                  ))}
+                  labs={UNIFIED_LABS}
+                  progressById={progressById}
+                  bootcampsError={bootcampsError}
+                  activeLearningError={Boolean(overviewError)}
+                  onRetryBootcamps={() => void loadBootcamps()}
+                />
+              </ScrollReveal>
+
+              <ScrollReveal>
+                <NewLabsCard labs={UNIFIED_LABS} excludeLabIds={activeContentLabIds} />
+              </ScrollReveal>
+            </div>
+
+            <aside className="flex min-w-0 flex-col gap-5 xl:col-span-4">
+              <ScrollReveal>
+                <WeeklyMissionCard
+                  engagement={engagement}
+                  loading={engagementLoading}
+                  error={engagementError}
+                  onRetry={refetchEngagement}
+                />
+              </ScrollReveal>
+
+              <ScrollReveal>
+                <YourStatsCard
+                  username={user?.username || ''}
+                  rankName={progression?.rank}
+                  cp={cpBalance}
+                  streakDays={streakDays}
+                  roomsCompleted={overview && overviewModules.length > 0 ? totalRoomsDone : undefined}
+                  roomsTotal={overview && overviewModules.length > 0 ? totalRooms : undefined}
+                  bootcampStatus={overview?.bootcampStatus}
+                  progression={progression}
+                  overviewError={Boolean(overviewError)}
+                />
+              </ScrollReveal>
+
+              <QoseDashboardCard />
+              <CertificateClaimBanner />
+
+              <ScrollReveal>
+                <CommunityCard />
+              </ScrollReveal>
+
+              <ScrollReveal>
+                <SessionPlannerCard />
+              </ScrollReveal>
+
+              <ScrollReveal>
+                <TopOperatorsCard currentUserId={user?.uid} />
+              </ScrollReveal>
+
+              {visitDates.length > 0 && (
+                <ScrollReveal>
+                  <Card className="flex flex-col p-5 md:p-6">
+                    <h2 className="type-h2 mb-4 text-text-primary">This Week</h2>
+                    <WeekActivity visitDates={visitDates} visitDurations={visitDurations} />
+                  </Card>
+                </ScrollReveal>
+              )}
+            </aside>
+          </div>
         </PageBody>
       </div>
     </FadeIn>

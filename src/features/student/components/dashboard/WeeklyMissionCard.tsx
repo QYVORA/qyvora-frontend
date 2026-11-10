@@ -3,8 +3,10 @@ import { Badge, Button, Card, Skeleton } from '@/shared/components/ui';
 import type { EngagementResponse } from '@/features/student/data/missions';
 
 interface WeeklyMissionCardProps {
-  engagement: EngagementResponse;
+  engagement: EngagementResponse | null;
   loading?: boolean;
+  error?: Error | null;
+  onRetry?: () => void;
 }
 
 const difficultyVariant = {
@@ -20,15 +22,53 @@ const difficultyVariant = {
  * bonus reward) with today's mission in one container. All values come from
  * `/student/engagement`; no mission, deadline or reward is invented here.
  */
-const WeeklyMissionCard = ({ engagement, loading }: WeeklyMissionCardProps) => {
+const WeeklyMissionCard = ({ engagement, loading, error, onRetry }: WeeklyMissionCardProps) => {
   if (loading) {
     return (
-      <Card className="p-5 md:p-6">
+      <Card as="section" className="p-5 md:p-6">
         <Skeleton className="mb-4 h-4 w-32" />
         <Skeleton className="mb-3 h-6 w-48" />
         <Skeleton className="mb-5 h-4 w-full" />
         <Skeleton className="mb-2 h-3 w-full" />
         <Skeleton className="h-10 w-28" />
+      </Card>
+    );
+  }
+
+  if (error) {
+    return (
+      <Card as="section" className="p-5 md:p-6">
+        <div role="alert">
+          <div className="flex items-center gap-2 text-xs font-black uppercase tracking-widest text-text-muted">
+            <Target className="h-3.5 w-3.5 text-accent" aria-hidden="true" />
+            Weekly Mission
+          </div>
+          <p className="mt-3 type-body-sm text-semantic-danger">
+            The mission could not be loaded. Please try again.
+          </p>
+          {onRetry && (
+            <Button type="button" variant="secondary" size="sm" className="mt-3" onClick={onRetry}>
+              Retry
+            </Button>
+          )}
+        </div>
+      </Card>
+    );
+  }
+
+  if (!engagement) {
+    return (
+      <Card as="section" className="p-5 md:p-6">
+        <div className="flex items-center gap-2 text-xs font-black uppercase tracking-widest text-text-muted">
+          <Target className="h-3.5 w-3.5 text-accent" aria-hidden="true" />
+          Weekly Mission
+        </div>
+        <p className="mt-3 type-body-sm text-text-secondary">
+          No mission is available right now. Explore a Lab when you are ready to learn.
+        </p>
+        <Button to="/dashboard/labs" variant="secondary" size="sm" className="mt-3">
+          Explore Labs
+        </Button>
       </Card>
     );
   }
@@ -48,9 +88,14 @@ const WeeklyMissionCard = ({ engagement, loading }: WeeklyMissionCardProps) => {
   const remainingCp = operation.steps
     .filter((step) => !step.completed)
     .reduce((sum, step) => sum + step.cpReward, 0);
+  const weeklyPercent = Number.isFinite(weeklyProgress)
+    && weeklyProgress >= 0
+    && weeklyProgress <= 1
+    ? weeklyProgress * 100
+    : undefined;
 
   return (
-    <Card className="flex flex-col p-5 md:p-6">
+    <Card as="section" className="flex flex-col p-5 md:p-6">
       <div className="mb-4 flex flex-wrap items-center gap-2">
         <span className="flex items-center gap-2 text-xs font-black uppercase tracking-widest text-text-muted">
           <Target className="h-3.5 w-3.5 text-accent" aria-hidden="true" />
@@ -60,9 +105,9 @@ const WeeklyMissionCard = ({ engagement, loading }: WeeklyMissionCardProps) => {
           <Clock className="mr-1 h-3 w-3" aria-hidden="true" />
           {weeklyDaysRemaining} {weeklyDaysRemaining === 1 ? 'day' : 'days'} left
         </Badge>
-        {weeklyStatus !== 'completed' && (
-          <Badge variant="accent" size="sm">Active</Badge>
-        )}
+        <Badge variant={weeklyStatus === 'completed' ? 'success' : 'accent'} size="sm">
+          {weeklyStatus === 'completed' ? 'Completed' : weeklyStatus === 'in_progress' ? 'In progress' : 'Not started'}
+        </Badge>
       </div>
 
       <h2 className="type-h2 text-text-primary">{operation.title}</h2>
@@ -76,12 +121,21 @@ const WeeklyMissionCard = ({ engagement, loading }: WeeklyMissionCardProps) => {
           +{operation.cpReward} CP bonus
         </span>
       </div>
-      <div className="mb-4 h-1.5 overflow-hidden rounded-full bg-surface-raised">
+      {weeklyPercent !== undefined && (
         <div
-          className="h-full rounded-full bg-accent transition-[width] duration-[var(--dur-slow)] ease-[var(--ease-smooth)]"
-          style={{ width: `${Math.min(weeklyProgress * 100, 100)}%` }}
-        />
-      </div>
+          className="mb-4 h-1.5 overflow-hidden rounded-full bg-surface-raised"
+          role="progressbar"
+          aria-label="Weekly mission progress"
+          aria-valuemin={0}
+          aria-valuemax={100}
+          aria-valuenow={weeklyPercent}
+        >
+          <div
+            className="h-full rounded-full bg-accent transition-[width] duration-[var(--dur-slow)] ease-[var(--ease-smooth)] motion-reduce:transition-none"
+            style={{ width: `${weeklyPercent}%` }}
+          />
+        </div>
+      )}
 
       <ul className="space-y-3">
         {operation.steps.map((step) => (
@@ -112,7 +166,7 @@ const WeeklyMissionCard = ({ engagement, loading }: WeeklyMissionCardProps) => {
         ) : (
           <>
             <Button to="/dashboard/labs" size="sm">
-              Continue mission
+              {weeklyStatus === 'in_progress' ? 'Continue mission' : 'Start mission'}
             </Button>
             <span className="type-meta">+{remainingCp} CP remaining</span>
           </>
@@ -142,7 +196,7 @@ const WeeklyMissionCard = ({ engagement, loading }: WeeklyMissionCardProps) => {
           </div>
         ) : (
           <Button to="/dashboard/labs" size="sm" variant="secondary" className="mt-3">
-            Start today's mission
+            {dailyStatus === 'in_progress' ? "Continue today's mission" : "Start today's mission"}
           </Button>
         )}
       </div>

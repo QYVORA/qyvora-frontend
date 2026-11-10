@@ -2,7 +2,7 @@ import { FormEvent, useCallback, useEffect, useState } from 'react';
 import { CalendarClock, Trash2 } from 'lucide-react';
 import { useToast } from '@/core/contexts/ToastContext';
 import api from '@/core/services/api';
-import { CardBase as Card } from '@/shared/components/ui/Card';
+import { Card } from '@/shared/components/ui';
 import Button from '@/shared/components/ui/Button';
 import Input from '@/shared/components/ui/Input';
 
@@ -27,15 +27,20 @@ const SessionPlannerCard = () => {
   const [startsAt, setStartsAt] = useState(defaultStartTime);
   const [durationMinutes, setDurationMinutes] = useState(60);
   const [loading, setLoading] = useState(false);
+  const [plansLoading, setPlansLoading] = useState(true);
+  const [formOpen, setFormOpen] = useState(false);
   const [error, setError] = useState('');
 
   const loadPlans = useCallback(async () => {
+    setPlansLoading(true);
     try {
       const response = await api.get<{ items: SessionPlan[] }>('/student/session-plans');
       setPlans(response.data.items || []);
       setError('');
     } catch {
       setError('Could not load your planned sessions.');
+    } finally {
+      setPlansLoading(false);
     }
   }, []);
 
@@ -54,6 +59,7 @@ const SessionPlannerCard = () => {
       });
       setTitle('');
       await loadPlans();
+      setFormOpen(false);
       addToast('Study session scheduled.', 'success');
     } catch {
       addToast('Could not schedule this session.', 'error');
@@ -71,90 +77,122 @@ const SessionPlannerCard = () => {
     }
   };
 
+  const upcomingPlans = plans
+    .filter((plan) => new Date(plan.startsAt).getTime() >= Date.now())
+    .sort((a, b) => new Date(a.startsAt).getTime() - new Date(b.startsAt).getTime())
+    .slice(0, 3);
+
   return (
-    <Card className="p-5 md:p-6">
-      <div className="mb-4 flex items-center gap-3">
-        <span className="flex h-11 w-11 items-center justify-center rounded-xl border border-accent/25 bg-accent/10 text-accent">
-          <CalendarClock className="h-5 w-5" aria-hidden="true" />
-        </span>
-        <h2 className="type-h2 text-text-primary">
-          Next study sessions
-        </h2>
-      </div>
-
-      <form className="space-y-3" onSubmit={(event) => void createPlan(event)}>
-        <label className="sr-only" htmlFor="session-plan-title">
-          Session title
-        </label>
-        <Input
-          id="session-plan-title"
-          value={title}
-          onChange={(event) => setTitle(event.target.value)}
-          placeholder="e.g. Practice network enumeration"
-          required
-          minLength={2}
-          maxLength={120}
-        />
-        <div className="grid grid-cols-[minmax(0,1fr)_8rem] gap-3">
-          <div>
-            <label className="type-meta mb-1 block" htmlFor="session-plan-start">
-              Start time
-            </label>
-            <Input
-              id="session-plan-start"
-              type="datetime-local"
-              value={startsAt}
-              onChange={(event) => setStartsAt(event.target.value)}
-              required
-            />
-          </div>
-          <div>
-            <label className="type-meta mb-1 block" htmlFor="session-plan-duration">
-              Minutes
-            </label>
-            <Input
-              id="session-plan-duration"
-              type="number"
-              min={15}
-              max={480}
-              step={15}
-              value={durationMinutes}
-              onChange={(event) => setDurationMinutes(Number(event.target.value))}
-              required
-            />
-          </div>
+    <Card as="section" className="p-5 md:p-6">
+      <div className="mb-4 flex items-center justify-between gap-3">
+        <div className="flex min-w-0 items-center gap-3">
+          <span className="flex h-11 w-11 items-center justify-center rounded-xl border border-accent/25 bg-accent/10 text-accent">
+            <CalendarClock className="h-5 w-5" aria-hidden="true" />
+          </span>
+          <h2 className="type-h2 text-text-primary">Next study sessions</h2>
         </div>
-        <Button type="submit" size="sm" loading={loading} className="w-full">
-          Schedule session
+        <Button
+          type="button"
+          variant={formOpen ? 'secondary' : 'ghost'}
+          size="sm"
+          aria-expanded={formOpen}
+          aria-controls="session-planner-form"
+          onClick={() => setFormOpen((open) => !open)}
+        >
+          {formOpen ? 'Cancel' : 'Plan session'}
         </Button>
-      </form>
-
-      {error && <p className="mt-3 type-body-sm text-semantic-danger" role="status">{error}</p>}
-      <div className="mt-4 space-y-3 border-t border-border-subtle pt-4" aria-live="polite">
-        {plans.slice(0, 3).map((plan) => (
-          <div key={plan._id} className="flex items-center justify-between gap-3">
-            <div className="min-w-0">
-              <p className="truncate type-body-sm font-bold text-text-primary">{plan.title}</p>
-              <p className="type-meta">
-                {new Date(plan.startsAt).toLocaleString()} · {plan.durationMinutes} min
-              </p>
-            </div>
-            <Button
-              variant="ghost"
-              size="sm"
-              ariaLabel="Remove session"
-              onClick={() => void removePlan(plan._id)}
-            >
-              <Trash2 className="h-4 w-4" aria-hidden="true" />
-            </Button>
-          </div>
-        ))}
-        {!error && plans.length === 0 && (
-          <p className="type-body-sm text-text-muted">
-            Plan a focused block for your next Lab.
-          </p>
-        )}
       </div>
+
+      {error && (
+        <div role="alert" className="mb-3">
+          <p className="type-body-sm text-semantic-danger">{error}</p>
+          <Button type="button" variant="ghost" size="sm" className="mt-1" onClick={() => void loadPlans()}>
+            Retry
+          </Button>
+        </div>
+      )}
+
+      <div className="space-y-3" aria-live="polite">
+        {plansLoading ? (
+          <p role="status" className="type-body-sm text-text-secondary">Loading planned sessions…</p>
+        ) : upcomingPlans.length > 0 ? (
+          <ul>
+            {upcomingPlans.map((plan) => (
+              <li key={plan._id} className="flex items-center justify-between gap-3 border-t border-border-subtle py-3 first:border-t-0 first:pt-0 last:pb-0">
+                <div className="min-w-0">
+                  <p className="truncate type-body-sm font-bold text-text-primary">{plan.title}</p>
+                  <p className="type-meta">
+                    {new Date(plan.startsAt).toLocaleString()} · {plan.durationMinutes} min
+                  </p>
+                </div>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  ariaLabel={`Remove ${plan.title}`}
+                  onClick={() => void removePlan(plan._id)}
+                >
+                  <Trash2 className="h-4 w-4" aria-hidden="true" />
+                </Button>
+              </li>
+            ))}
+          </ul>
+        ) : !error ? (
+          <p className="type-body-sm text-text-muted">No upcoming sessions planned.</p>
+        ) : null}
+      </div>
+
+      {formOpen && (
+        <form
+          id="session-planner-form"
+          className="mt-4 space-y-3 border-t border-border-subtle pt-4"
+          onSubmit={(event) => void createPlan(event)}
+        >
+          <label className="sr-only" htmlFor="session-plan-title">
+            Session title
+          </label>
+          <Input
+            id="session-plan-title"
+            value={title}
+            onChange={(event) => setTitle(event.target.value)}
+            placeholder="e.g. Practice network enumeration"
+            required
+            minLength={2}
+            maxLength={120}
+          />
+          <div className="grid grid-cols-[minmax(0,1fr)_8rem] gap-3">
+            <div>
+              <label className="type-meta mb-1 block" htmlFor="session-plan-start">
+                Start time
+              </label>
+              <Input
+                id="session-plan-start"
+                type="datetime-local"
+                value={startsAt}
+                onChange={(event) => setStartsAt(event.target.value)}
+                required
+              />
+            </div>
+            <div>
+              <label className="type-meta mb-1 block" htmlFor="session-plan-duration">
+                Minutes
+              </label>
+              <Input
+                id="session-plan-duration"
+                type="number"
+                min={15}
+                max={480}
+                step={15}
+                value={durationMinutes}
+                onChange={(event) => setDurationMinutes(Number(event.target.value))}
+                required
+              />
+            </div>
+          </div>
+          <Button type="submit" size="sm" loading={loading} className="w-full">
+            Schedule session
+          </Button>
+        </form>
+      )}
     </Card>
   );
 };

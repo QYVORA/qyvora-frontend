@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, Trophy } from 'lucide-react';
-import { CardBase as Card } from '@/shared/components/ui/Card';
+import { Card } from '@/shared/components/ui';
 import Button from '@/shared/components/ui/Button';
 import Skeleton from '@/shared/components/ui/Skeleton';
 import { Identicon } from '@/shared/components';
@@ -41,7 +41,7 @@ const TopOperatorsCard = ({ currentUserId }: TopOperatorsCardProps) => {
   }, []);
 
   return (
-    <Card className="flex flex-col p-5 md:p-6">
+    <Card as="section" className="flex flex-col p-5 md:p-6">
       <div className="mb-4 flex items-start justify-between gap-3">
         <div className="flex items-center gap-3">
           <span className="flex h-11 w-11 items-center justify-center rounded-xl border border-accent/25 bg-accent/10 text-accent">
@@ -84,15 +84,15 @@ const TopOperatorsCard = ({ currentUserId }: TopOperatorsCardProps) => {
       )}
 
       {!loading && !error && entries.length > 0 && (
-        <ul className="space-y-2">
+        <ul>
           {entries.map((entry) => {
             const handle = entry.hackerHandle || entry.name || 'operator';
             const isYou = currentUserId && entry.userId === currentUserId;
             return (
-              <li key={entry.userId}>
+              <li key={entry.userId} className="border-t border-border-subtle py-2.5 first:border-t-0">
                 <Link
                   to={`/@${entry.hackerHandle}`}
-                  className="flex items-center gap-3 rounded-xl border border-border-subtle bg-surface-raised/40 p-2.5 transition-colors hover:border-accent/40 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+                  className="flex items-center gap-3 rounded-lg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
                 >
                   <span className="flex h-9 w-9 shrink-0 items-center justify-center overflow-hidden rounded-lg border border-accent/30 bg-black [&_svg]:h-full [&_svg]:w-full">
                     <Identicon value={handle} size={36} />

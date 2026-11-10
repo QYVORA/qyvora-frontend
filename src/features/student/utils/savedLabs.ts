@@ -1,10 +1,10 @@
 /**
- * Local "saved Labs" store.
+ * Local store for bookmarked learning items.
  *
  * There is no server-side bookmark API yet, so saved Labs are persisted in the
  * browser. This is a genuine local preference (not mock content) and never
- * implies a backend write. A window event keeps every mounted dashboard card in
- * sync when a Lab is saved or removed.
+ * implies a backend write. A window event keeps mounted dashboard cards in
+ * sync when an item is saved or removed.
  */
 const SAVED_KEY = 'qyvora_saved_labs';
 export const SAVED_LABS_EVENT = 'qyvora:saved-labs-changed';
@@ -13,7 +13,9 @@ export function getSavedLabIds(): string[] {
   try {
     const raw = localStorage.getItem(SAVED_KEY);
     const parsed = raw ? JSON.parse(raw) : [];
-    return Array.isArray(parsed) ? parsed.filter((id): id is string => typeof id === 'string') : [];
+    return Array.isArray(parsed)
+      ? Array.from(new Set(parsed.filter((id): id is string => typeof id === 'string')))
+      : [];
   } catch {
     return [];
   }
@@ -50,7 +52,9 @@ export function getRecentLabIds(): string[] {
   try {
     const raw = localStorage.getItem(RECENT_KEY);
     const parsed = raw ? JSON.parse(raw) : [];
-    return Array.isArray(parsed) ? parsed.filter((id): id is string => typeof id === 'string') : [];
+    return Array.isArray(parsed)
+      ? Array.from(new Set(parsed.filter((id): id is string => typeof id === 'string')))
+      : [];
   } catch {
     return [];
   }
@@ -69,18 +73,30 @@ export function markLabRecent(id: string): void {
   }
 }
 
+export function recordRecentLearningPath(pathname: string): void {
+  const learningMatch = pathname.match(/^\/dashboard\/(?:courses|labs)\/([^/]+)/);
+  if (learningMatch) {
+    markLabRecent(learningMatch[1]);
+    return;
+  }
+
+  const bootcampMatch = pathname.match(/^\/dashboard\/bootcamps\/([^/]+)/);
+  if (bootcampMatch) markLabRecent(`bootcamp:${bootcampMatch[1]}`);
+}
+
 const COURSE_PROGRESS_KEY = 'qyvora_course_progress';
 
-/** Reads the local content-Lab progress percentage (0–100). */
-export function getContentLabProgress(labId: string, totalLessons: number): number {
-  if (!totalLessons) return 0;
+/** Reads known local content-Lab progress; undefined means no reliable value is available. */
+export function getContentLabProgress(labId: string, totalLessons: number): number | undefined {
+  if (!totalLessons) return undefined;
   try {
     const raw = localStorage.getItem(`${COURSE_PROGRESS_KEY}_${labId}`);
-    if (!raw) return 0;
+    if (!raw) return undefined;
     const parsed = JSON.parse(raw);
-    const completed = Array.isArray(parsed?.completedLessons) ? parsed.completedLessons.length : 0;
+    if (!Array.isArray(parsed?.completedLessons)) return undefined;
+    const completed = parsed.completedLessons.length;
     return Math.min(100, Math.round((completed / totalLessons) * 100));
   } catch {
-    return 0;
+    return undefined;
   }
 }

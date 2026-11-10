@@ -1,5 +1,5 @@
 import { useCallback, useState, useEffect } from 'react';
-import { Outlet, useMatch } from 'react-router-dom';
+import { Outlet, useLocation, useMatch } from 'react-router-dom';
 import StudentDesktopTopbar from '@/features/student/components/layout/StudentDesktopTopbar';
 import StudentSidebarRedesigned from '@/features/student/components/layout/StudentSidebarRedesigned';
 import UsernameChangeModal from '@/features/student/components/UsernameChangeModal';
@@ -10,6 +10,7 @@ import NetworkBuilder from '@/features/student/components/tools/NetworkBuilder';
 import PwaStatus from '@/shared/components/layout/PwaStatus';
 import { tryAutoSubscribePush } from '@/core/services/pwa';
 import type { TerminalContext } from '@/features/student/components/SimulatedTerminal/types';
+import { recordRecentLearningPath } from '@/features/student/utils/savedLabs';
 
 /**
  * AppShell — the student application shell.
@@ -30,6 +31,7 @@ import type { TerminalContext } from '@/features/student/components/SimulatedTer
  * triggers, Ctrl+` toggle, PWA status host and push subscription.
  */
 const AppShell = () => {
+  const { pathname } = useLocation();
   const roomMatch = useMatch('/dashboard/bootcamps/:bootcampId/phases/:phaseId/rooms/:roomId');
   const roomMatchLegacy = useMatch('/dashboard/bootcamps/:bootcampId/modules/:moduleId/rooms/:roomId');
   const courseMatch = useMatch('/dashboard/courses/:courseId');
@@ -41,6 +43,10 @@ const AppShell = () => {
   useEffect(() => {
     tryAutoSubscribePush();
   }, []);
+
+  useEffect(() => {
+    recordRecentLearningPath(pathname);
+  }, [pathname]);
 
   useEffect(() => {
     const handler = () => setTerminalOpen(true);
