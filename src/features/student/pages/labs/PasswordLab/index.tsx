@@ -8,6 +8,8 @@ import LabPage from '@/shared/components/learning/LabPage';
 import { getRelatedContentForLab } from '@/shared/constants/topicMap';
 import RelatedContent from '@/shared/components/RelatedContent';
 import { FlowDiagram, type FlowNode, type FlowArrow } from '@/shared/components/diagrams/FlowDiagram';
+import { Diagram } from '@/shared/components/diagrams';
+import type { DiagramDefinition } from '@/shared/components/diagrams';
 import { LabListingSkeleton } from '@/features/student/components/StudentSkeletons';
 import useLabAccess from '@/features/student/hooks/useLabAccess';
 import useLabScenario from '@/features/student/hooks/useLabScenario';
@@ -57,6 +59,32 @@ const PASSWORD_FLOWS: { nodes: FlowNode[]; arrows: FlowArrow[] }[] = [
 ];
 
 type PasswordExercise = typeof PASSWORD_EXERCISES[number];
+
+const passwordOverviewDiagram: DiagramDefinition = {
+  id: 'password-hashing-cracking',
+  type: 'process-flow',
+  renderer: 'react-flow',
+  title: 'Password Hashing & Cracking',
+  description: 'How passwords are stored and how attackers crack them',
+  nodes: [
+    { id: 'password', type: 'plaintext', label: 'Password', position: { x: 0, y: 0 }, state: 'normal' },
+    { id: 'hashfn', type: 'hash-function', label: 'Hash Function', position: { x: 220, y: 0 }, state: 'active' },
+    { id: 'hashval', type: 'ciphertext', label: 'Hash Value', position: { x: 440, y: 0 }, state: 'normal' },
+    { id: 'wordlist', type: 'data-store', label: 'Wordlist', position: { x: 0, y: 140 }, state: 'normal' },
+    { id: 'hashfn2', type: 'hash-function', label: 'Hash Function', position: { x: 220, y: 140 }, state: 'active' },
+    { id: 'compare', type: 'process', label: 'Compare', position: { x: 440, y: 140 }, state: 'warning' },
+    { id: 'cracked', type: 'vulnerability', label: 'Cracked!', position: { x: 660, y: 140 }, state: 'compromised' },
+  ],
+  edges: [
+    { id: 'e1', source: 'password', target: 'hashfn', type: 'data-flow', label: '' },
+    { id: 'e2', source: 'hashfn', target: 'hashval', type: 'transform', label: '' },
+    { id: 'e3', source: 'wordlist', target: 'hashfn2', type: 'data-flow', label: '' },
+    { id: 'e4', source: 'hashfn2', target: 'compare', type: 'transform', label: '' },
+    { id: 'e5', source: 'hashval', target: 'compare', type: 'data-flow', label: 'vs' },
+    { id: 'e6', source: 'compare', target: 'cracked', type: 'data-flow', label: 'Match' },
+  ],
+  interaction: { zoomable: true, pannable: true },
+};
 
 const PasswordLab = () => {
   const { isLocked, purchaseLab, loading } = useLabAccess();
@@ -124,7 +152,9 @@ const PasswordLab = () => {
       celebrationTitle={activeScenario?.title || ''}
       celebrationCp={activeScenario?.cpReward || 0}
       listingContent={
-        <LearningAccordion
+        <>
+          <Diagram definition={passwordOverviewDiagram} showControls={false} showLegend={false} className="mb-6" />
+          <LearningAccordion
           items={PASSWORD_EXERCISES.map((scenario) => {
             const cpCost = getLabCpCost(scenario.id);
             const locked = isLocked(scenario.id);
@@ -150,6 +180,7 @@ const PasswordLab = () => {
             };
           })}
         />
+        </>
       }
       relatedContent={<RelatedContent {...getRelatedContentForLab('passwords')} title="Continue This Topic" />}
       walkthroughContent={
