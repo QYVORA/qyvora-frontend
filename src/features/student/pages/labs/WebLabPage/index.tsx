@@ -20,6 +20,7 @@ export interface WebLabPageProps {
   icon: React.ReactNode;
   scenarios: WebLabScenario[];
   relatedLabId?: string;
+  diagram?: React.ReactNode;
 }
 
 const WebLabPage: React.FC<WebLabPageProps> = ({
@@ -30,6 +31,7 @@ const WebLabPage: React.FC<WebLabPageProps> = ({
   icon,
   scenarios,
   relatedLabId,
+  diagram,
 }) => {
   const { isLocked, purchaseLab, loading } = useLabAccess();
   const { activeScenario, completedSteps, handleFlagSubmit, getStepState, allDone, startScenario, exitScenario } =
@@ -103,7 +105,9 @@ const WebLabPage: React.FC<WebLabPageProps> = ({
       celebrationTitle={activeScenario?.name || ''}
       celebrationCp={activeScenario?.cpReward || 0}
       listingContent={
-        <LearningAccordion
+        <>
+          {diagram}
+          <LearningAccordion
           items={scenarios.map((scenario) => {
             const cpCost = getLabCpCost(scenario.id);
             const locked = isLocked(scenario.id);
@@ -129,6 +133,7 @@ const WebLabPage: React.FC<WebLabPageProps> = ({
             };
           })}
         />
+        </>
       }
       relatedContent={
         relatedLabId
