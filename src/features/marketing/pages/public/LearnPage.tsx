@@ -79,7 +79,7 @@ const LearnPage: React.FC = () => {
         return LABS.map((lab) => (
           <Card key={lab.id} to={lab.route} interactive className="flex min-h-[190px] flex-col gap-3 p-6">
             <div className="flex items-center gap-3">
-              <LabBadge labId={lab.id} accentColor={lab.accentColor} className="h-16 w-16 shrink-0" />
+              <LabBadge labId={lab.id} accentColor={lab.accentColor} className="h-24 w-24 shrink-0" />
               <span className="type-meta">{lab.difficulty}</span>
             </div>
             <h3 className="type-h3 font-black uppercase tracking-tight text-text-primary">
