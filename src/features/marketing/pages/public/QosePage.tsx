@@ -125,10 +125,10 @@ const QosePage = () => {
                 id="qose-tuition-title"
                 className="type-h2 mt-2 font-black uppercase tracking-tight text-text-primary"
               >
-                {"One programme. Three instalments."}
+                {"Full payment or three instalments."}
               </h2>
               <p className="type-body mt-3 max-w-2xl text-text-secondary">
-                {"Registration opens 10 November and closes 14 November 2026 at 23:59 GMT. Classes begin 15 November. The first instalment is recorded by the team; a seat is confirmed only after payment is verified."}
+                {"Registration opens 10 November and closes 14 November 2026 at 23:59 GMT. Classes begin 15 November. Pay the full GH₵800 or start with GH₵300, then GH₵250 in month 2 and GH₵250 in month 3. A seat is confirmed only after the payment is verified on our server."}
               </p>
             </div>
 
@@ -158,7 +158,7 @@ const QosePage = () => {
                   {'GH₵800'}
                 </p>
                 <p className="type-body-sm mt-2 text-text-secondary">
-                  {"Payable as GH₵300 in month one, then GH₵250 in months two and three. Submitting the registration form does not take payment — we send payment instructions and confirm your seat once the first instalment is received."}
+                  {"Choose full payment or the three-instalment plan in the form below. Pay securely through Paystack; your seat is confirmed once the first transaction is verified. Instalment payers can pay the next amount from the confirmation page."}
                 </p>
               </div>
               <div className="w-full max-w-md rounded-xl border border-border-subtle bg-surface-raised p-4">
@@ -310,7 +310,7 @@ const QosePage = () => {
                   kicker={"Enrolment"}
                   title={registration.status === 'closed' ? "Registration closed" : "QOSE Cohort 1 · Classes begin 15 November 2026"}
                   description={registration.status === 'open'
-                    ? "Submit a seat request during the registration window. This form does not take payment or reserve a seat; the team will contact you with payment and account setup instructions."
+                    ? "Register and pay GH₵800 in full, or start with GH₵300 and pay GH₵250 in each of the next two months. Your seat is confirmed after the first payment is verified."
                     : registration.status === 'pre-registration'
                       ? "Registration opens 10 November and closes 14 November 2026 at 23:59 GMT. This cohort's classes begin 15 November."
                       : "This cohort's registration window has closed. Contact the QOSE team about a future cohort."}
@@ -319,7 +319,7 @@ const QosePage = () => {
                     <QoseRegistrationForm
                       bootcampId="qose"
                       source="qose_page"
-                      submitLabel="Submit a seat request"
+                      submitLabel="Continue to secure payment"
                     />
                   ) : null}
                   <Button
