@@ -58,6 +58,7 @@ const BlogPostPage      = lazy(() => import('../features/marketing/pages/BlogsPa
 // Public marketing pages
 const HpbPage           = lazy(() => import('../features/marketing/pages/public/HpbPage'));
 const QosePage          = lazy(() => import('../features/marketing/pages/public/QosePage'));
+const QosePaymentResultPage = lazy(() => import('../features/marketing/pages/public/QosePaymentResultPage'));
 const ServicesPage      = lazy(() => import('../features/marketing/pages/public/ServicesPage'));
 const BasicPentestPage  = lazy(() => import('../features/marketing/pages/public/services/BasicPentestPage'));
 const StandardPentestPage = lazy(() => import('../features/marketing/pages/public/services/StandardPentestPage'));
@@ -249,6 +250,7 @@ export const AppRouter = () => {
           {/* Public marketing pages (formerly redirects to landing sections) */}
           <Route path="/hpb" element={<Wrap scope="HPB"><HpbPage /></Wrap>} />
           <Route path="/qose" element={<Wrap scope="QOSE"><QosePage /></Wrap>} />
+          <Route path="/qose/payment/callback" element={<Wrap scope="QOSE Payment"><QosePaymentResultPage /></Wrap>} />
           <Route path="/learn" element={<Wrap scope="Learn"><LearnPage /></Wrap>} />
           <Route path="/courses/:courseId" element={<Wrap scope="Course"><CoursePage /></Wrap>} />
           <Route path="/services" element={<Wrap scope="Services"><ServicesPage /></Wrap>} />
