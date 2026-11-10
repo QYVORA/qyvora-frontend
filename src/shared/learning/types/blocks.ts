@@ -111,12 +111,11 @@ export interface MentalModelBlock extends BaseBlock {
   caption?: string;
 }
 
-/** Generic diagram block */
+/** Interactive diagram block using QYVORA diagram system */
 export interface DiagramBlock extends BaseBlock {
   type: 'diagram';
   title?: string;
-  diagramType: 'flow' | 'sequence' | 'network' | 'custom';
-  content: any; // Diagram-specific data structure
+  content: any; // DiagramDefinition from @/shared/components/diagrams
   caption?: string;
 }
 
