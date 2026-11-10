@@ -48,13 +48,12 @@ function pickCpBalance(userCp: number, overview: any, cpBalance: number | null):
 /**
  * Student dashboard overview.
  *
- * A desktop-first, two-column masonry composition: the left column carries the
- * learner's path (continue banner, community, my learning, competitive, new
- * Labs, this week) and the right column carries engagement and social proof
- * (weekly mission, stats, community leaders). Columns flow independently so
- * cards keep their natural height. Data comes from `/student/overview`,
- * `/student/engagement`, `/student/community`, `/student/session-plans`,
- * `/public/bootcamps` and `/public/leaderboard`.
+ * A desktop-first, two-column composition. At `lg` and above the columns are
+ * equal-width so cards do not get squeezed into a narrow rail; below `lg` the
+ * cards stack. Columns flow independently so cards keep their natural height.
+ * Data comes from `/student/overview`, `/student/engagement`,
+ * `/student/community`, `/student/session-plans`, `/public/bootcamps` and
+ * `/public/leaderboard`.
  */
 const Dashboard = () => {
   const { user } = useAuth();
@@ -184,8 +183,8 @@ const Dashboard = () => {
 
           <CertificateClaimBanner />
 
-          <div className="mx-auto w-full max-w-[1120px]">
-            <div className="grid grid-cols-1 items-start gap-5 lg:grid-cols-[minmax(0,340px)_minmax(0,1fr)] lg:gap-6 xl:gap-7">
+          <div className="mx-auto w-full max-w-[1360px]">
+            <div className="grid grid-cols-1 items-start gap-5 lg:grid-cols-2 lg:gap-6 xl:gap-7">
               {/* ── LEFT COLUMN — the learner's path ─────────────────────── */}
               <div className="flex min-w-0 flex-col gap-5">
                 <ScrollReveal>
@@ -221,23 +220,6 @@ const Dashboard = () => {
                     streakDays={streakDays}
                     progression={progression}
                   />
-                </ScrollReveal>
-
-                <ScrollReveal>
-                  <NewLabsCard labs={UNIFIED_LABS} />
-                </ScrollReveal>
-
-                {visitDates.length > 0 && (
-                  <ScrollReveal>
-                    <Card className="flex flex-col p-5 md:p-6">
-                      <h2 className="type-h2 mb-4 text-text-primary">This Week</h2>
-                      <WeekActivity visitDates={visitDates} visitDurations={visitDurations} />
-                    </Card>
-                  </ScrollReveal>
-                )}
-
-                <ScrollReveal>
-                  <CpEarnHint engagement={engagement} loading={engagementLoading} />
                 </ScrollReveal>
               </div>
 
@@ -275,6 +257,23 @@ const Dashboard = () => {
 
                 <ScrollReveal>
                   <TopOperatorsCard currentUserId={user?.uid} />
+                </ScrollReveal>
+
+                <ScrollReveal>
+                  <NewLabsCard labs={UNIFIED_LABS} />
+                </ScrollReveal>
+
+                {visitDates.length > 0 && (
+                  <ScrollReveal>
+                    <Card className="flex flex-col p-5 md:p-6">
+                      <h2 className="type-h2 mb-4 text-text-primary">This Week</h2>
+                      <WeekActivity visitDates={visitDates} visitDurations={visitDurations} />
+                    </Card>
+                  </ScrollReveal>
+                )}
+
+                <ScrollReveal>
+                  <CpEarnHint engagement={engagement} loading={engagementLoading} />
                 </ScrollReveal>
               </div>
             </div>
