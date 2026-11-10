@@ -12,8 +12,36 @@ import useLabAccess from '@/features/student/hooks/useLabAccess';
 import useLabScenario from '@/features/student/hooks/useLabScenario';
 import { getResumeLabScenario } from '@/features/student/utils/labProgress';
 import { getLabCpCost } from '@/features/student/data/simulations/labAccess';
+import { Diagram } from '@/shared/components/diagrams';
+import type { DiagramDefinition } from '@/shared/components/diagrams';
 
 type OsintChallenge = typeof OSINT_CHALLENGES[number];
+
+const osintDiagram: DiagramDefinition = {
+  id: 'osint-data-sources',
+  type: 'process-flow',
+  renderer: 'react-flow',
+  title: 'OSINT Intelligence Gathering',
+  description: 'Open-source data sources converging into an analyst-built target profile',
+  nodes: [
+    { id: 'social', type: 'external-service', label: 'Social Media', position: { x: 0, y: 0 }, state: 'normal' },
+    { id: 'dns', type: 'external-service', label: 'DNS Records', position: { x: 0, y: 90 }, state: 'normal' },
+    { id: 'whois', type: 'external-service', label: 'WHOIS', position: { x: 0, y: 180 }, state: 'normal' },
+    { id: 'archive', type: 'external-service', label: 'Web Archives', position: { x: 0, y: 270 }, state: 'normal' },
+    { id: 'shodan', type: 'external-service', label: 'Shodan', position: { x: 0, y: 360 }, state: 'normal' },
+    { id: 'analyst', type: 'admin', label: 'OSINT Analyst', position: { x: 300, y: 180 }, state: 'active' },
+    { id: 'profile', type: 'data-store', label: 'Target Profile', position: { x: 580, y: 180 }, state: 'highlighted' },
+  ],
+  edges: [
+    { id: 'e1', source: 'social', target: 'analyst', type: 'data-flow', label: '' },
+    { id: 'e2', source: 'dns', target: 'analyst', type: 'data-flow', label: '' },
+    { id: 'e3', source: 'whois', target: 'analyst', type: 'data-flow', label: '' },
+    { id: 'e4', source: 'archive', target: 'analyst', type: 'data-flow', label: '' },
+    { id: 'e5', source: 'shodan', target: 'analyst', type: 'data-flow', label: '' },
+    { id: 'e6', source: 'analyst', target: 'profile', type: 'data-flow', label: 'Correlate' },
+  ],
+  interaction: { zoomable: true, pannable: true },
+};
 
 const OsintLab = () => {
   const { isLocked, purchaseLab, loading } = useLabAccess();
@@ -88,7 +116,9 @@ const OsintLab = () => {
       celebrationTitle={activeChallenge?.title || ''}
       celebrationCp={activeChallenge?.cpReward || 0}
       listingContent={
-        <LearningAccordion
+        <>
+          <Diagram definition={osintDiagram} showControls={false} showLegend={false} className="mb-6" />
+          <LearningAccordion
           items={OSINT_CHALLENGES.map((challenge) => {
             const cpCost = getLabCpCost(challenge.id);
             const locked = isLocked(challenge.id);
@@ -114,6 +144,7 @@ const OsintLab = () => {
             };
           })}
         />
+        </>
       }
       relatedContent={<RelatedContent {...getRelatedContentForLab('osint')} title="Continue This Topic" />}
       walkthroughContent={
