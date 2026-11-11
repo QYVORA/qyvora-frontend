@@ -31,7 +31,7 @@ const DayBar = ({ label, minutes, isToday, maxMinutes }: DayBarProps) => {
     >
       {/* Minutes value — reserved line so every bar shares one top edge */}
       <span
-        className={`mb-1.5 text-[10px] font-mono font-black transition-opacity duration-200 ${
+        className={`mb-1.5 text-[12px] font-medium tabular-nums transition-opacity duration-200 ${
           active ? 'text-accent opacity-100' : 'opacity-0'
         }`}
       >
@@ -55,7 +55,7 @@ const DayBar = ({ label, minutes, isToday, maxMinutes }: DayBarProps) => {
       {/* Day label */}
       <div className="flex flex-col items-center gap-1 pt-1.5">
         <span
-          className={`text-[11px] font-bold uppercase tracking-wider transition-colors ${
+          className={`text-[12px] font-medium transition-colors ${
             isToday ? 'text-accent' : active ? 'text-text-secondary' : 'text-text-muted/40'
           }`}
         >

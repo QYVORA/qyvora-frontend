@@ -76,7 +76,7 @@ const YourStatsCard = ({
         <div className="flex min-w-0 items-center gap-3">
           <ProfileAvatar handle={username || 'operator'} size="sm" />
           <div className="min-w-0">
-            <h3 className="truncate text-base font-black text-text-primary">@{username || 'operator'}</h3>
+            <h3 className="truncate text-base font-medium text-text-primary">@{username || 'operator'}</h3>
             <p className="mt-0.5 type-meta">
               {overviewError
                 ? 'Progress unavailable'
@@ -100,23 +100,20 @@ const YourStatsCard = ({
       </div>
 
       {metrics.length > 0 ? (
-        <dl className="flex flex-col gap-2 sm:flex-row">
+        <dl className="grid grid-cols-1 gap-2 sm:grid-cols-3">
           {metrics.map((metric) => (
             <div
               key={metric.key}
-              tabIndex={0}
-              className="group/stat flex min-w-0 flex-1 basis-0 items-center gap-2.5 overflow-hidden rounded-xl border border-border-subtle bg-surface-raised/40 px-3 py-2.5 transition-[flex-grow,background-color,border-color] duration-[var(--dur-base)] ease-[var(--ease-smooth)] hover:border-accent/30 hover:bg-accent/[0.06] focus-within:border-accent/30 focus-within:bg-accent/[0.06] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent sm:hover:grow-[2.4] sm:focus-within:grow-[2.4] motion-reduce:transition-none"
+              className="flex min-w-0 items-center gap-2.5 rounded-xl bg-canvas px-3 py-2.5"
             >
-              <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-accent/20 bg-accent/10">
+              <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-accent/10">
                 {metric.icon}
               </span>
-              <span className="flex min-w-0 flex-col-reverse">
-                <dt className="max-w-none overflow-hidden whitespace-nowrap type-meta text-text-secondary opacity-100 transition-[max-width,opacity] duration-[var(--dur-base)] ease-[var(--ease-smooth)] sm:max-w-0 sm:opacity-0 sm:group-hover/stat:max-w-40 sm:group-hover/stat:opacity-100 sm:group-focus-within/stat:max-w-40 sm:group-focus-within/stat:opacity-100 motion-reduce:transition-none">
-                  {metric.label}
-                </dt>
-                <dd className="font-mono text-base font-bold leading-tight tabular-nums text-text-primary sm:text-lg">
+              <span className="flex min-w-0 flex-col">
+                <dd className="text-base font-medium leading-tight tabular-nums text-text-primary">
                   {metric.value}
                 </dd>
+                <dt className="truncate text-sm text-text-muted">{metric.label}</dt>
               </span>
             </div>
           ))}

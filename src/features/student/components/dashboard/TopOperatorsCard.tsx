@@ -99,9 +99,9 @@ const TopOperatorsCard = ({ currentUserId }: TopOperatorsCardProps) => {
                   </span>
                   <span className="min-w-0 flex-1">
                     <span className="flex items-center gap-2">
-                      <span className="truncate text-sm font-black text-text-primary">@{handle}</span>
+                      <span className="truncate text-sm font-medium text-text-primary">@{handle}</span>
                       {isYou && (
-                        <span className="rounded bg-accent px-1.5 py-0.5 text-[10px] font-black uppercase tracking-widest text-on-accent">
+                        <span className="rounded-md bg-accent px-1.5 py-0.5 text-[12px] font-medium text-on-accent">
                           You
                         </span>
                       )}
@@ -110,7 +110,7 @@ const TopOperatorsCard = ({ currentUserId }: TopOperatorsCardProps) => {
                       {entry.progression?.rank || entry.rankLabel || 'Operator'} · {entry.cp.toLocaleString()} CP
                     </span>
                   </span>
-                  <span className="shrink-0 font-mono text-xs font-black text-text-muted">#{entry.rank}</span>
+                  <span className="shrink-0 text-xs font-medium tabular-nums text-text-muted">#{entry.rank}</span>
                 </Link>
               </li>
             );
@@ -120,7 +120,7 @@ const TopOperatorsCard = ({ currentUserId }: TopOperatorsCardProps) => {
 
       <Link
         to="/dashboard/competitive"
-        className="mt-4 inline-flex items-center gap-1 border-t border-border-subtle pt-3 text-[11px] font-black uppercase tracking-widest text-accent hover:underline"
+        className="mt-4 inline-flex items-center gap-1 border-t border-border-subtle pt-3 text-sm font-medium text-accent hover:underline"
       >
         View the full leaderboard <ArrowRight className="h-3 w-3" aria-hidden="true" />
       </Link>

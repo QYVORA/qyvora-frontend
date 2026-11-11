@@ -128,11 +128,11 @@ const LearningRow = ({
             <span className="truncate text-sm font-bold leading-snug text-text-primary transition-colors group-hover/link:text-accent sm:text-base">
               {item.title}
             </span>
-            <span className="shrink-0 text-[10px] font-bold uppercase tracking-wider text-text-muted">
+            <span className="shrink-0 text-[12px] font-medium text-text-muted">
               {item.typeLabel}
             </span>
             {item.isNew && (
-              <span className="rounded bg-accent px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-on-accent">
+              <span className="rounded-md bg-accent px-1.5 py-0.5 text-[12px] font-medium text-on-accent">
                 New
               </span>
             )}
@@ -153,12 +153,12 @@ const LearningRow = ({
                     style={{ width: `${item.progress}%` }}
                   />
                 </span>
-                <span className="font-mono text-[10px] font-bold text-text-secondary">
+                <span className="text-[12px] font-medium text-text-secondary">
                   {item.progress}% complete
                 </span>
               </>
             )}
-            <span className="inline-flex items-center gap-1 text-[10px] font-black uppercase tracking-wider text-accent">
+            <span className="inline-flex items-center gap-1 text-[12px] font-medium text-accent">
               {actionLabel} <ArrowRight className="h-3 w-3" aria-hidden="true" />
             </span>
           </span>

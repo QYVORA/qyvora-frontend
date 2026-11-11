@@ -39,7 +39,7 @@ const WeeklyMissionCard = ({ engagement, loading, error, onRetry }: WeeklyMissio
     return (
       <Card as="section" className="p-5 md:p-6">
         <div role="alert">
-          <div className="flex items-center gap-2 text-xs font-black uppercase tracking-widest text-text-muted">
+          <div className="flex items-center gap-2 text-sm font-medium text-text-muted">
             <Target className="h-3.5 w-3.5 text-accent" aria-hidden="true" />
             Weekly Mission
           </div>
@@ -59,7 +59,7 @@ const WeeklyMissionCard = ({ engagement, loading, error, onRetry }: WeeklyMissio
   if (!engagement) {
     return (
       <Card as="section" className="p-5 md:p-6">
-        <div className="flex items-center gap-2 text-xs font-black uppercase tracking-widest text-text-muted">
+        <div className="flex items-center gap-2 text-sm font-medium text-text-muted">
           <Target className="h-3.5 w-3.5 text-accent" aria-hidden="true" />
           Weekly Mission
         </div>
@@ -97,7 +97,7 @@ const WeeklyMissionCard = ({ engagement, loading, error, onRetry }: WeeklyMissio
   return (
     <Card as="section" className="flex flex-col p-5 md:p-6">
       <div className="mb-4 flex flex-wrap items-center gap-2">
-        <span className="flex items-center gap-2 text-xs font-black uppercase tracking-widest text-text-muted">
+        <span className="flex items-center gap-2 text-sm font-medium text-text-muted">
           <Target className="h-3.5 w-3.5 text-accent" aria-hidden="true" />
           Weekly Mission
         </span>
@@ -175,7 +175,7 @@ const WeeklyMissionCard = ({ engagement, loading, error, onRetry }: WeeklyMissio
 
       <div className="mt-5 border-t border-border-subtle pt-4">
         <div className="mb-2 flex flex-wrap items-center gap-2">
-          <span className="flex items-center gap-2 text-xs font-black uppercase tracking-widest text-text-muted">
+          <span className="flex items-center gap-2 text-sm font-medium text-text-muted">
             <Zap className="h-3.5 w-3.5 text-accent" aria-hidden="true" />
             Today's Mission
           </span>
@@ -183,7 +183,7 @@ const WeeklyMissionCard = ({ engagement, loading, error, onRetry }: WeeklyMissio
             {mission.difficulty}
           </Badge>
         </div>
-        <h3 className="text-base font-black leading-snug text-text-primary">{mission.title}</h3>
+        <h3 className="text-base font-medium leading-snug text-text-primary">{mission.title}</h3>
         <p className="mt-1 line-clamp-2 text-sm leading-relaxed text-text-secondary">{mission.brief}</p>
         <div className="mt-2 flex flex-wrap items-center gap-x-4 gap-y-1">
           <span className="type-meta">{mission.estimatedTime}</span>

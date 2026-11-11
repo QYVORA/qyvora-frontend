@@ -89,7 +89,7 @@ const NewLabsCard = ({ labs, excludeLabIds = [] }: NewLabsCardProps) => {
                         {lab.title}
                       </span>
                       {lab.isNew && (
-                        <span className="rounded bg-accent px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-on-accent">
+                        <span className="rounded-md bg-accent px-1.5 py-0.5 text-[12px] font-medium text-on-accent">
                           New
                         </span>
                       )}
@@ -106,7 +106,7 @@ const NewLabsCard = ({ labs, excludeLabIds = [] }: NewLabsCardProps) => {
                           {lab.lessonsCount} lessons
                         </span>
                       )}
-                      <span className="inline-flex items-center gap-1 text-[10px] font-black uppercase tracking-wider text-accent">
+                      <span className="inline-flex items-center gap-1 text-[12px] font-medium text-accent">
                         Open <ArrowRight className="h-3 w-3" aria-hidden="true" />
                       </span>
                     </span>
@@ -127,7 +127,7 @@ const NewLabsCard = ({ labs, excludeLabIds = [] }: NewLabsCardProps) => {
         </p>
       )}
 
-      <div className="mt-3 flex items-center gap-2 border-t border-border-subtle pt-3 text-[11px] font-black uppercase tracking-widest text-text-muted">
+      <div className="mt-3 flex items-center gap-2 border-t border-border-subtle pt-3 text-sm font-medium text-text-muted">
         <Compass className="h-3.5 w-3.5 text-accent" aria-hidden="true" />
         {tab === 'recommended' ? 'Content Labs' : 'Recently published Labs'}
       </div>
