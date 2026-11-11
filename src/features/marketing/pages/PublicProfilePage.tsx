@@ -151,7 +151,7 @@ const PublicProfile: React.FC = () => {
       <PublicContainer className="pt-24 md:pt-28 lg:pt-32 pb-20 lg:pb-24">
         <div className="grid gap-4 sm:gap-5 lg:grid-cols-12 lg:gap-8">
           <aside className="w-full min-w-0 lg:col-span-4">
-            <div className="w-full space-y-4 sm:space-y-5 lg:space-y-6 lg:sticky lg:top-24">
+            <div className="w-full space-y-4 sm:space-y-5 lg:space-y-6 lg:sticky lg:top-[calc(var(--app-topbar-offset,var(--app-topbar-h,80px))+24px)]">
               <section id="profile-section-identity">
                 <ProfileIdentityBlock
                   id={profile.id}

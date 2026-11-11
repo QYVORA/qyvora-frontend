@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom';
 import {
   BookOpen,
@@ -29,9 +29,11 @@ import { Logo } from '@/shared/components/brand';
 import { Avatar, Badge, Breadcrumb, Menu, MenuItem, MenuSeparator } from '@/shared/components/ui';
 import type { BreadcrumbItem } from '@/shared/components/ui';
 import StudentSearchDialog from './StudentSearchDialog';
+import { useScrollDirection } from '@/shared/hooks/useScrollDirection';
 
 interface StudentDesktopTopbarProps {
   onMobileMenuOpen?: () => void;
+  mobileMenuOpen?: boolean;
 }
 
 type TopbarMenu = 'practice' | 'develop';
@@ -79,7 +81,7 @@ function deriveBreadcrumbs(pathname: string): BreadcrumbItem[] {
  * settings, fullscreen, theme, sign out). No inline streak / fullscreen /
  * profile chips — those live in the menu.
  */
-const StudentDesktopTopbar: React.FC<StudentDesktopTopbarProps> = ({ onMobileMenuOpen }) => {
+const StudentDesktopTopbar: React.FC<StudentDesktopTopbarProps> = ({ onMobileMenuOpen, mobileMenuOpen = false }) => {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
@@ -91,6 +93,13 @@ const StudentDesktopTopbar: React.FC<StudentDesktopTopbarProps> = ({ onMobileMen
   const { isFullscreen, toggleFullscreen } = useFullscreen();
   const { mode, toggleTheme } = useThemeContext();
   const { data: overview } = useStudentOverview();
+  const headerRef = useRef<HTMLElement | null>(null);
+  const [focusWithin, setFocusWithin] = useState(false);
+  const barHidden = useScrollDirection({
+    disabled: mobileMenuOpen,
+    forceVisible: focusWithin || accountOpen || openMenu !== null || searchOpen,
+    resetKey: location.pathname,
+  });
 
   useEffect(() => {
     let mounted = true;
@@ -110,6 +119,7 @@ const StudentDesktopTopbar: React.FC<StudentDesktopTopbarProps> = ({ onMobileMen
   useEffect(() => {
     setOpenMenu(null);
     setAccountOpen(false);
+    setFocusWithin(false);
   }, [location.pathname]);
 
   const userDisplayName = user?.username || user?.email || 'User';
@@ -158,7 +168,17 @@ const StudentDesktopTopbar: React.FC<StudentDesktopTopbarProps> = ({ onMobileMen
         Skip to content
       </a>
 
-      <header className="chrome-fixed chrome-fixed-overflow fixed top-0 inset-x-0 z-[100] border-b border-border-subtle bg-surface pt-[env(safe-area-inset-top)]">
+      <header
+        ref={headerRef}
+        onFocusCapture={() => setFocusWithin(true)}
+        onBlurCapture={(event) => {
+          if (!headerRef.current?.contains(event.relatedTarget as Node | null)) {
+            setFocusWithin(false);
+          }
+        }}
+        style={{ transform: barHidden ? 'translateY(-100%)' : 'translateY(0)' }}
+        className="chrome-fixed chrome-fixed-overflow fixed top-0 inset-x-0 z-[100] border-b border-border-subtle bg-surface pt-[env(safe-area-inset-top)] transition-transform duration-200 ease-out motion-reduce:duration-0"
+      >
         <div className="flex h-[var(--app-topbar-h,4rem)] min-w-0 items-center gap-2 px-[var(--app-gutter,12px)] md:gap-3">
           <button
             type="button"

@@ -91,7 +91,10 @@ const AppShell = () => {
     <SimulationProvider>
       <div className="bg-canvas min-h-dvh">
         {/* Shared dashboard topbar for every page, including learning workspaces. */}
-        <StudentDesktopTopbar onMobileMenuOpen={() => setMobileSidebarOpen(true)} />
+        <StudentDesktopTopbar
+          onMobileMenuOpen={() => setMobileSidebarOpen(true)}
+          mobileMenuOpen={mobileSidebarOpen}
+        />
         
         {/* Mobile Sidebar - Only visible when open on mobile (<lg) */}
         <StudentSidebarRedesigned

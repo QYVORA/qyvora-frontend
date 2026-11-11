@@ -122,7 +122,7 @@ const Profile: React.FC = () => {
       <PageBody>
     <div className="grid gap-6 lg:grid-cols-12">
           <aside className="w-full min-w-0 lg:col-span-4">
-            <div className="w-full space-y-6 lg:sticky lg:top-[calc(var(--app-topbar-h,80px)+24px)]">
+            <div className="w-full space-y-6 lg:sticky lg:top-[calc(var(--app-topbar-offset,var(--app-topbar-h,80px))+24px)]">
               <section id="profile-section-identity">
                 <ProfileIdentityBlock
                   id={profile.id}
