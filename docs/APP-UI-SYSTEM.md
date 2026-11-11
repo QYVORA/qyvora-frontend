@@ -10,6 +10,15 @@ scope hook. `AppShell`, `AdminLayout`, public marketing pages and profile pages
 all resolve the same typography, radii, weights and layout rhythm. Legacy
 terminal-only chrome is retired.
 
+## Navigation
+
+`SiteTopbar` is the single bar for public and app surfaces: `--app-topbar-h`
+height, `bg-surface-raised`, 1px bottom border, logo left, icon-above-label
+items, shared `NavDropdown` groups and hide-on-scroll. `StudentDesktopTopbar`
+and `PublicNavigation` only supply items and the right cluster. `AvatarMenu`
+owns signed-in account actions; `MobileMenu` is the one hamburger drawer. There
+is no bottom navigation.
+
 ## Typography
 
 | Role | Font | Rule |

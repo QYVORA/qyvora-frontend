@@ -16,7 +16,7 @@ interface CurriculumBottomSheetProps {
  * CurriculumBottomSheet - Mobile curriculum navigation
  * 
  * Displays the learning curriculum tree in a bottom sheet on mobile devices.
- * Triggered from StudentBottomNav "Learn" button when in learning mode.
+ * Opened from learning surfaces when curriculum context is needed.
  * 
  * Features:
  * - Full curriculum tree navigation

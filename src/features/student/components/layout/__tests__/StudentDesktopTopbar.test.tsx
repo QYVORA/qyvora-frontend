@@ -74,7 +74,7 @@ describe('StudentDesktopTopbar', () => {
     expect(screen.getByRole('menuitem', { name: /Enter fullscreen/i })).toBeInTheDocument();
     expect(screen.getByRole('menuitem', { name: /Notifications/i })).toBeInTheDocument();
     expect(screen.getByRole('menuitem', { name: /Profile/i })).toHaveAttribute('href', '/dashboard/profile');
-    expect(screen.getByRole('menuitem', { name: /Sign out/i })).toBeInTheDocument();
+    expect(screen.getByRole('menuitem', { name: /Log out/i })).toBeInTheDocument();
   });
 
   it('opens room search from the topbar button', async () => {
@@ -96,11 +96,11 @@ describe('StudentDesktopTopbar', () => {
 
     await user.click(develop);
     expect(develop).toHaveAttribute('aria-expanded', 'true');
-    expect(screen.getByRole('link', { name: /Network/i })).toHaveAttribute('href', '/dashboard/networks');
-    expect(screen.getByRole('link', { name: /Terminal/i })).toHaveAttribute('href', '/dashboard/tools/terminal');
+    expect(screen.getByRole('menuitem', { name: /Network/i })).toHaveAttribute('href', '/dashboard/networks');
+    expect(screen.getByRole('menuitem', { name: /Terminal/i })).toHaveAttribute('href', '/dashboard/tools/terminal');
 
     await user.click(develop);
     expect(develop).toHaveAttribute('aria-expanded', 'false');
-    expect(screen.queryByRole('link', { name: /Terminal/i })).not.toBeInTheDocument();
+    expect(screen.queryByRole('menuitem', { name: /Terminal/i })).not.toBeInTheDocument();
   });
 });

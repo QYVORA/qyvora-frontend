@@ -126,7 +126,8 @@ h2 compact bento sections: **title only, no description**.
 ## Do Not Reintroduce
 
 - `useNavInvert` hook + `data-nav-invert` attributes
-- `PublicBottomNav`, `GoCodeCarousel`, `CardGrid` components
+- `PublicBottomNav`, `StudentBottomNav`, `GoCodeCarousel`, `CardGrid` components
+- Bottom navigation on any surface (mobile = shared topbar + hamburger `MobileMenu`)
 - `react-loading-skeleton` package imports
 - Dual walkthrough toolbars (`WalkthroughToolbar`)
 - A second overlay system (`OverlayManager` — overlay gating is `usePopupManager` only)
@@ -141,12 +142,20 @@ h2 compact bento sections: **title only, no description**.
 - Navbar link buttons with borders (borders only on badges and status indicators)
 - Legacy app styling in migrated files: `font-display`, `font-black`, `tracking-widest`, `shadow-lg`/`shadow-2xl`, `rounded-3xl` (`qyvora-local/no-legacy-app-style`)
 
+## Navigation
+
+- One `SiteTopbar` serves public and app surfaces. `StudentDesktopTopbar` and `PublicNavigation` are thin wrappers that pass items + right cluster; do not build a second bar.
+- Items render as icon-above-label (24px icon, 16px/500 sentence-case label). Groups use `NavDropdown` (same surface as the account menu).
+- The bar hides on scroll down and returns on scroll up (`useScrollDirection`); it stays visible while a menu, dialog or focus is inside it.
+- Mobile navigation is the hamburger + `MobileMenu` drawer. No bottom navigation anywhere.
+- Logged-in account actions live in `AvatarMenu`; "Dashboard" appears only outside `/dashboard`.
+
 ## Layouts Reference
 
 | Layout | Clearance | Notes |
 |--------|-----------|-------|
-| `PublicShell` | None (hero clears own space) | Public marketing + tool docs; owns `PublicNavigation` + `PublicFooter` + `PublicBottomNav`. Tool docs clear the navbar themselves (`ToolDocPage` `pt-24 md:pt-28 lg:pt-32`). |
-| `AppShell` | `pt-[calc(6rem+env(safe-area-inset-top))] md:pt-[calc(7rem+env(safe-area-inset-top))]` | Student topbar (`h-24 md:h-28`) + full-screen mobile sidebar; no desktop rail, no student bottom nav |
+| `PublicShell` | None (hero clears own space) | Public marketing + tool docs; owns `PublicNavigation` (shared `SiteTopbar`) + `PublicFooter`. Tool docs clear the navbar themselves (`ToolDocPage` `pt-24 md:pt-28 lg:pt-32`). |
+| `AppShell` | `pt-[calc(var(--app-topbar-h)+env(safe-area-inset-top))]` | Shared `SiteTopbar` (`StudentDesktopTopbar` wrapper) + full-screen mobile sidebar; no desktop rail, no bottom nav |
 | `AdminLayout` | `pt-20 md:pt-24` | Forced dark, `data-theme-persist="dark"` |
 | `AuthFormLayout` | 2-col grid, `max-w-lg` form | Globe pinned bottom-right |
 

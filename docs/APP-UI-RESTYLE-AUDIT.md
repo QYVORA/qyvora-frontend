@@ -201,3 +201,25 @@ locked), so it was not the culprit; the breakpoint was.
 **Mobile width.** The gutter is now 12px at <640px (was 16px), cards are
 `w-full`, and card padding is 16px at <640 / 20px 640–1023 / 24px ≥1024 via
 `--app-card-pad`.
+
+
+## 9. Navigation audit (Phase H)
+
+Before Phase H the site had two separate bars: `PublicNavigation` (uppercase
+10px icon labels, transparent/blurred scroll state, fullscreen button, inline
+Dashboard/auth buttons, its own account drawer) and `StudentDesktopTopbar`
+(breadcrumb, 14px labels, Practice/Develop dropdowns, search + account menu).
+Public pages also rendered `PublicBottomNav`; the student tree shipped an unused
+`StudentBottomNav`; admin and docs still render their own bottom bars.
+
+After Phase H:
+
+- `SiteTopbar` owns fixed positioning, height, border, logo, item rendering,
+  dropdown surface, hide-on-scroll and `--app-topbar-offset`.
+- `NavDropdown` is the shared group menu; `AvatarMenu` is the shared account
+  menu; `MobileMenu` is the shared drawer.
+- `PublicNavigation` and `StudentDesktopTopbar` are thin wrappers.
+- `PublicBottomNav` and `StudentBottomNav` are deleted; public pages have no
+  bottom navigation.
+- Remaining: `AdminBottomNav` and `DocsBottomNav` still exist because their
+  mobile navigation has not yet been converted to the shared hamburger drawer.

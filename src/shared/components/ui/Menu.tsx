@@ -8,6 +8,7 @@ interface MenuProps {
   children: React.ReactNode;
   className?: string;
   labelledBy?: string;
+  id?: string;
 }
 
 /**
@@ -15,7 +16,7 @@ interface MenuProps {
  * Handles Escape, outside click, first-item focus and Up/Down/Home/End.
  */
 const Menu = React.forwardRef<HTMLDivElement, MenuProps>(
-  ({ open, onClose, children, className, labelledBy }, ref) => {
+  ({ open, onClose, children, className, labelledBy, id }, ref) => {
     const internalRef = useRef<HTMLDivElement | null>(null);
 
     useEffect(() => {
@@ -78,6 +79,7 @@ const Menu = React.forwardRef<HTMLDivElement, MenuProps>(
           if (typeof ref === 'function') ref(node);
           else if (ref) (ref as React.MutableRefObject<HTMLDivElement | null>).current = node;
         }}
+        id={id}
         role="menu"
         aria-labelledby={labelledBy}
         onKeyDown={onKeyDown}

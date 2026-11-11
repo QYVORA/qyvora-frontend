@@ -65,7 +65,7 @@ const NAV_SECTIONS: { title: string; items: NavEntry[] }[] = [
 /**
  * StudentSidebar — desktop (lg+) fixed navigation rail. Main / Practice /
  * Account sections, utilities (terminal · code · network) and quick logout.
- * Companion to the mobile StudentBottomNav. `collapsed` narrows the rail to
+ * Desktop rail. `collapsed` narrows the rail to
  * icons only; the collapse control is owned by the App shell.
  */
 const StudentSidebar: React.FC<{ collapsed?: boolean; onToggleCollapse?: () => void }> = ({
