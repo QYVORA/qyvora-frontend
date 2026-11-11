@@ -81,7 +81,7 @@ const QoseDashboardCard = () => {
             : `${formatGhs(state.remainingMinor)} remaining on your ${state.paymentPlan === 'full' ? 'full payment' : 'instalment'} plan${dueDate ? ` · next due ${dueDate}` : ''}.`;
 
   return (
-    <Card className="flex flex-col gap-5 p-5 md:flex-row md:items-center md:justify-between md:gap-6 md:p-6">
+    <Card tone="feature" className="flex flex-col gap-5 p-[var(--app-card-pad)] md:flex-row md:items-center md:justify-between md:gap-6">
       <div className="flex min-w-0 items-start gap-4">
         <span className="flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-xl border border-border-subtle bg-surface-raised p-1.5">
           <img

@@ -27,7 +27,7 @@ const DashboardHero = ({
   secondaryLabel,
   secondaryTo,
 }: DashboardHeroProps) => (
-  <section className="relative min-h-[var(--app-hero-h,220px)] overflow-hidden rounded-2xl border border-border-subtle bg-surface p-6 sm:p-8">
+  <section className="relative min-h-[var(--app-hero-h,220px)] overflow-hidden rounded-2xl border border-border-subtle bg-gradient-hero p-6 sm:p-8">
     <div
       aria-hidden="true"
       className="pointer-events-none absolute -right-10 -top-10 h-40 w-40 rounded-full border border-accent/15"

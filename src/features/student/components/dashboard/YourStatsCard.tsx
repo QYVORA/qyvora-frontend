@@ -70,9 +70,10 @@ const YourStatsCard = ({
   ];
 
   return (
-    <Card as="section" className="p-5 md:p-6">
-      <h2 className="type-h2 mb-4 text-text-primary">Your Stats</h2>
-      <div className="mb-4 flex items-start justify-between gap-3">
+    <Card as="section" className="overflow-hidden p-0">
+      <div className="bg-gradient-feature p-[var(--app-card-pad)] pb-4">
+        <h2 className="type-h2 mb-4 text-text-primary">Your Stats</h2>
+        <div className="flex items-start justify-between gap-3">
         <div className="flex min-w-0 items-center gap-3">
           <ProfileAvatar handle={username || 'operator'} size="sm" />
           <div className="min-w-0">
@@ -97,8 +98,10 @@ const YourStatsCard = ({
         >
           <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
         </Link>
+        </div>
       </div>
 
+      <div className="p-[var(--app-card-pad)] pt-4">
       {metrics.length > 0 ? (
         <dl className="grid grid-cols-1 gap-2 sm:grid-cols-3">
           {metrics.map((metric) => (
@@ -149,6 +152,7 @@ const YourStatsCard = ({
           </div>
         </div>
       )}
+      </div>
     </Card>
   );
 };

@@ -740,6 +740,12 @@
     border-color: rgb(6 182 111 / 0.55);
   }
 
+  /* Featured gradient utilities — quiet accent mixes, never animated. */
+  .bg-gradient-feature { background-image: var(--gradient-feature); }
+  .bg-gradient-hero { background-image: var(--gradient-hero); }
+  .bg-gradient-strip { background-image: var(--gradient-strip); }
+  .bg-gradient-header { background-image: var(--gradient-header); }
+
   /* Learning hero wash — intentional gradient for lab and course page headers. */
   .learning-hero-wash {
     background:
@@ -1078,6 +1084,34 @@ html[data-animations="off"] * {
   --color-semantic-warning:   #fbbf24;
   --color-semantic-info:      #38bdf8;
   --color-semantic-success:   #06b66f;
+
+  /* ── Featured gradients (quiet accent mixes; light theme resolves via surfaces) ── */
+  --gradient-feature: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--color-accent) 16%, var(--color-surface)) 0%,
+    var(--color-surface) 60%
+  );
+  --gradient-hero: linear-gradient(
+    110deg,
+    color-mix(in srgb, var(--color-accent) 22%, var(--color-surface-raised)) 0%,
+    color-mix(in srgb, var(--color-accent) 6%, var(--color-surface)) 55%,
+    var(--color-surface) 100%
+  );
+  --gradient-strip: linear-gradient(
+    90deg,
+    color-mix(in srgb, var(--color-accent) 12%, var(--color-surface)) 0%,
+    var(--color-surface) 70%
+  );
+  --gradient-header: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--color-accent) 14%, var(--color-surface-raised)) 0%,
+    var(--color-surface-raised) 100%
+  );
+
+  --background-image-gradient-feature: var(--gradient-feature);
+  --background-image-gradient-hero: var(--gradient-hero);
+  --background-image-gradient-strip: var(--gradient-strip);
+  --background-image-gradient-header: var(--gradient-header);
 }
 
 /* ── Calm-system light theme overrides ────────────────────────────────────

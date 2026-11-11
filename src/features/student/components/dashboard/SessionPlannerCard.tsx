@@ -83,7 +83,7 @@ const SessionPlannerCard = () => {
     .slice(0, 3);
 
   return (
-    <Card as="section" className="p-5 md:p-6">
+    <Card as="section" tone="strip" className="p-[var(--app-card-pad)]">
       <div className="mb-4 flex items-center justify-between gap-3">
         <div className="flex min-w-0 items-center gap-3">
           <span className="flex h-11 w-11 items-center justify-center rounded-xl border border-accent/25 bg-accent/10 text-accent">

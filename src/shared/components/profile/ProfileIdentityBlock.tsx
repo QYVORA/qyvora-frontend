@@ -115,7 +115,7 @@ export const ProfileIdentityBlock: React.FC<ProfileIdentityBlockProps> = ({
       initial={prefersReduced ? false : { opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: prefersReduced ? 0 : 0.45, delay: prefersReduced ? 0 : 0.05 }}
-      className={`relative rounded-2xl border border-border-subtle bg-surface p-5 sm:p-6 ${className}`}
+      className={`relative rounded-2xl border border-border-subtle bg-gradient-hero p-5 sm:p-6 ${className}`}
     >
       <div className="flex items-start gap-4">
         <ProfileAvatar handle={handle} avatarUrl={avatarUrl} size="lg" />

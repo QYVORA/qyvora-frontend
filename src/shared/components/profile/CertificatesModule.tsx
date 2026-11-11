@@ -105,7 +105,7 @@ const CertificatesModule: React.FC<CertificatesModuleProps> = ({
   const reduced = useReducedMotion();
 
   return (
-    <div className={`rounded-2xl border border-border-subtle bg-surface p-5 md:p-6 ${className}`}>
+    <div className={`rounded-2xl border border-border-subtle bg-gradient-feature p-5 md:p-6 ${className}`}>
       <ModuleHeader
         icon={<Award className="h-4 w-4" />}
         title="Certificates"

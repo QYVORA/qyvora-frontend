@@ -261,6 +261,8 @@ export interface CardProps {
    * raised  — menus / collapsed accordion rows (bg-surface-raised, no border)
    */
   variant?: 'default' | 'nested' | 'raised';
+  /** Quiet accent gradient for featured surfaces only. */
+  tone?: 'feature' | 'hero' | 'strip' | 'header';
 }
 
 export const Card: React.FC<CardProps> = ({
@@ -277,6 +279,7 @@ export const Card: React.FC<CardProps> = ({
   muted,
   interactive,
   variant = 'default',
+  tone,
 }) => {
   const Tag = as as React.ElementType;
   const surface =
@@ -285,9 +288,17 @@ export const Card: React.FC<CardProps> = ({
       : variant === 'raised'
         ? 'bg-surface-raised'
         : 'bg-surface border border-border-subtle';
+  const toneClass = tone
+    ? {
+        feature: 'bg-gradient-feature border border-border-subtle',
+        hero: 'bg-gradient-hero border border-border-subtle',
+        strip: 'bg-gradient-strip border border-border-subtle',
+        header: 'bg-gradient-header border border-border-subtle',
+      }[tone]
+    : surface;
   const classes = [
     'rounded-2xl',
-    surface,
+    toneClass,
     selected ? 'border-accent/60 bg-accent/[0.06]' : '',
     interactive || onClick || to || href ? 'hover:border-text-muted/30' : '',
     muted ? 'opacity-55 cursor-default' : '',

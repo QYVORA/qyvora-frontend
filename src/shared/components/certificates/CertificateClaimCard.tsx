@@ -25,7 +25,8 @@ const CertificateClaimCard: React.FC<CertificateClaimCardProps> = ({
 }) => (
   <Card
     selected
-    className={`flex flex-col gap-4 p-5 md:flex-row md:items-center md:justify-between md:p-6 ${className}`}
+    tone="feature"
+    className={`flex flex-col gap-4 p-[var(--app-card-pad)] md:flex-row md:items-center md:justify-between ${className}`}
   >
     <div className="flex items-start gap-4">
       <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl border border-accent/40 bg-accent/10 text-accent">

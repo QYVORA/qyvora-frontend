@@ -95,7 +95,7 @@ const WeeklyMissionCard = ({ engagement, loading, error, onRetry }: WeeklyMissio
     : undefined;
 
   return (
-    <Card as="section" className="flex flex-col p-5 md:p-6">
+    <Card as="section" tone="header" className="flex flex-col p-[var(--app-card-pad)]">
       <div className="mb-4 flex flex-wrap items-center gap-2">
         <span className="flex items-center gap-2 text-sm font-medium text-text-muted">
           <Target className="h-3.5 w-3.5 text-accent" aria-hidden="true" />
