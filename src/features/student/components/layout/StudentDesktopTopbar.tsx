@@ -1,26 +1,33 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom';
 import {
-  Home,
   BookOpen,
-  Target,
   BadgeCheck,
   Trophy,
   Terminal as TerminalIcon,
   Network,
   ShieldCheck,
   Bell,
-  Menu,
+  Menu as MenuIcon,
   ChevronDown,
   Maximize,
   Minimize,
   Search,
+  User,
+  Settings,
+  LogOut,
+  Sun,
+  Moon,
 } from 'lucide-react';
 import { useAuth } from '@/core/contexts/AuthContext';
+import { useToast } from '@/core/contexts/ToastContext';
 import api from '@/core/services/api';
 import { useFullscreen } from '@/shared/hooks/useFullscreen';
 import useStudentOverview from '@/features/student/hooks/useStudentOverview';
-import StreakIcon from '@/shared/components/icons/StreakIcon';
+import { LIGHT_THEME_ENABLED, useThemeContext } from '@/core/contexts/ThemeContext';
+import { Logo } from '@/shared/components/brand';
+import { Avatar, Badge, Breadcrumb, Menu, MenuItem, MenuSeparator } from '@/shared/components/ui';
+import type { BreadcrumbItem } from '@/shared/components/ui';
 import StudentSearchDialog from './StudentSearchDialog';
 
 interface StudentDesktopTopbarProps {
@@ -29,28 +36,61 @@ interface StudentDesktopTopbarProps {
 
 type TopbarMenu = 'practice' | 'develop';
 
+const CRUMB_LABELS: Record<string, string> = {
+  dashboard: 'Dashboard',
+  labs: 'Labs',
+  courses: 'Courses',
+  bootcamps: 'Bootcamp',
+  competitive: 'Competitive',
+  certificates: 'Certificates',
+  notifications: 'Notifications',
+  profile: 'Profile',
+  settings: 'Settings',
+  marketplace: 'Marketplace',
+  networks: 'Network',
+  tools: 'Tools',
+  terminal: 'Terminal',
+  qose: 'QOSE',
+  'ui-kit': 'UI kit',
+};
+
+/** Section crumb + optional sub-page crumb for the topbar. */
+function deriveBreadcrumbs(pathname: string): BreadcrumbItem[] {
+  const parts = pathname.replace(/^\/+|\/+$/g, '').split('/');
+  if (parts[0] !== 'dashboard' || parts.length < 2) {
+    return [{ label: 'Dashboard', href: '/dashboard' }];
+  }
+  const section = parts[1];
+  const sectionLabel = CRUMB_LABELS[section] ?? section;
+  const items: BreadcrumbItem[] = [{ label: sectionLabel, href: `/dashboard/${section}` }];
+  const rest = parts.slice(2).filter((part) => !part.match(/^[0-9a-f-]{8,}$/i));
+  if (rest.length > 0) {
+    const last = rest[rest.length - 1];
+    items.push({ label: CRUMB_LABELS[last] ?? last.replace(/-/g, ' ') });
+  }
+  return items;
+}
+
 /**
- * StudentDesktopTopbar — compact horizontal dashboard navigation.
+ * StudentDesktopTopbar — signed-in app chrome.
  *
- * Dashboard chrome intentionally has no logo: the five primary sections
- * (Dashboard, Learn, Practice, Complete, Develop) are the visual anchor. The
- * utility cluster keeps fullscreen, streak, notifications and profile visible
- * across breakpoints so progress stays glanceable on desktop and mobile.
- *
- * Dropdowns are click-toggled (not hover-only) so they work for touch, keyboard
- * and pointer users alike. The five primary icons always use the accent colour;
- * only the labels change on active/hover states.
+ * Left: hamburger (mobile), logo, section breadcrumb. Centre: primary nav.
+ * Right: search and the account menu (identity, stats, profile, notifications,
+ * settings, fullscreen, theme, sign out). No inline streak / fullscreen /
+ * profile chips — those live in the menu.
  */
 const StudentDesktopTopbar: React.FC<StudentDesktopTopbarProps> = ({ onMobileMenuOpen }) => {
-  const { user } = useAuth();
+  const { user, logout } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
+  const { addToast, clearToasts } = useToast();
   const [unread, setUnread] = useState(0);
   const [openMenu, setOpenMenu] = useState<TopbarMenu | null>(null);
+  const [accountOpen, setAccountOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const { isFullscreen, toggleFullscreen } = useFullscreen();
+  const { mode, toggleTheme } = useThemeContext();
   const { data: overview } = useStudentOverview();
-  const navRef = useRef<HTMLElement | null>(null);
 
   useEffect(() => {
     let mounted = true;
@@ -69,29 +109,14 @@ const StudentDesktopTopbar: React.FC<StudentDesktopTopbarProps> = ({ onMobileMen
 
   useEffect(() => {
     setOpenMenu(null);
+    setAccountOpen(false);
   }, [location.pathname]);
 
-  useEffect(() => {
-    if (!openMenu) return;
-
-    const handlePointerDown = (event: PointerEvent) => {
-      if (!navRef.current?.contains(event.target as Node)) setOpenMenu(null);
-    };
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') setOpenMenu(null);
-    };
-
-    document.addEventListener('pointerdown', handlePointerDown);
-    document.addEventListener('keydown', handleKeyDown);
-    return () => {
-      document.removeEventListener('pointerdown', handlePointerDown);
-      document.removeEventListener('keydown', handleKeyDown);
-    };
-  }, [openMenu]);
-
   const userDisplayName = user?.username || user?.email || 'User';
-  const userInitial = userDisplayName.charAt(0).toUpperCase();
   const streakDays = overview?.xpSummary?.streakDays ?? 0;
+  const cp = user?.cp ?? overview?.xpSummary?.cp ?? 0;
+  const rank = overview?.xpSummary?.progression?.rank ?? user?.rank ?? 'Candidate';
+
   const isLabsRoute =
     location.pathname.startsWith('/dashboard/labs') ||
     location.pathname.startsWith('/dashboard/courses');
@@ -103,74 +128,70 @@ const StudentDesktopTopbar: React.FC<StudentDesktopTopbarProps> = ({ onMobileMen
     location.pathname.startsWith('/dashboard/tools');
 
   const desktopItemClass = (isActive: boolean) =>
-    `group flex h-[52px] w-[70px] flex-col items-center justify-center gap-1 rounded-xl px-2 py-1.5 text-[10px] font-bold uppercase tracking-wide transition-colors xl:w-[80px] xl:text-[11px] xl:tracking-wider ${
+    `flex h-9 items-center gap-1.5 rounded-lg px-3 text-sm transition-colors ${
       isActive
-        ? 'bg-accent/10 text-accent'
+        ? 'bg-accent/10 font-medium text-accent'
         : 'text-text-secondary hover:bg-surface-raised hover:text-text-primary'
     }`;
 
   const dropdownLinkClass =
-    'flex min-h-[44px] items-center gap-3 rounded-lg px-3 py-2.5 text-sm text-text-secondary transition-colors duration-150 hover:bg-surface-raised hover:text-text-primary focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-accent';
+    'flex min-h-[44px] items-center gap-3 rounded-lg px-3 py-2.5 text-sm text-text-secondary transition-colors hover:bg-surface hover:text-text-primary focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-accent';
 
   const toggleMenu = (menu: TopbarMenu) => {
     setOpenMenu((current) => (current === menu ? null : menu));
+  };
+
+  const handleLogout = async () => {
+    setAccountOpen(false);
+    await logout();
+    clearToasts();
+    addToast('Signed out successfully.', 'info');
+    navigate('/login');
   };
 
   return (
     <>
       <a
         href="#main-content"
-        className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-[100] focus:px-4 focus:py-2 focus:bg-accent focus:text-on-accent focus:rounded-lg focus:text-sm focus:font-bold focus:outline-none"
+        className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-[100] focus:px-4 focus:py-2 focus:bg-accent focus:text-on-accent focus:rounded-lg focus:text-sm focus:font-medium focus:outline-none"
       >
         Skip to content
       </a>
 
-      <header className="chrome-fixed chrome-fixed-overflow fixed top-0 inset-x-0 z-[100] border-b border-border-subtle bg-canvas pt-[env(safe-area-inset-top)]">
-        <div className="flex h-16 min-w-0 items-center gap-2 px-3 md:h-[72px] md:gap-3 md:px-4 lg:gap-4 lg:px-6">
-          {/* Mobile hamburger menu (hidden on desktop) */}
+      <header className="chrome-fixed chrome-fixed-overflow fixed top-0 inset-x-0 z-[100] border-b border-border-subtle bg-surface pt-[env(safe-area-inset-top)]">
+        <div className="flex h-[var(--app-topbar-h,4rem)] min-w-0 items-center gap-2 px-[var(--app-gutter,12px)] md:gap-3">
           <button
             type="button"
             onClick={onMobileMenuOpen}
             aria-label="Open menu"
-            className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl text-text-secondary transition-colors hover:bg-surface-raised hover:text-accent focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-accent lg:hidden"
+            className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg text-text-secondary transition-colors hover:bg-surface-raised hover:text-text-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent lg:hidden"
           >
-            <Menu className="h-5 w-5" aria-hidden="true" />
+            <MenuIcon className="h-5 w-5" aria-hidden="true" />
           </button>
 
-          {/* Desktop navigation */}
-          <nav
-            ref={navRef}
-            className="hidden min-w-0 items-center gap-1 overflow-visible lg:flex xl:gap-1.5"
-            aria-label="Primary"
+          <Link
+            to="/dashboard"
+            aria-label="QYVORA dashboard"
+            className="flex shrink-0 items-center rounded-lg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
           >
+            <Logo variant="mark" size="sm" className="lg:hidden" />
+            <Logo variant="full" size="sm" className="hidden lg:block" />
+          </Link>
+
+          <div className="hidden min-w-0 xl:flex">
+            <Breadcrumb items={deriveBreadcrumbs(location.pathname)} className="max-w-[240px]" />
+          </div>
+
+          <nav className="hidden min-w-0 flex-1 items-center justify-center gap-1 lg:flex" aria-label="Primary">
             <NavLink to="/dashboard" end className={({ isActive }) => desktopItemClass(isActive)}>
-              {({ isActive }) => (
-                <>
-                  <Home
-                    className="h-[18px] w-[18px] shrink-0 text-accent xl:h-5 xl:w-5"
-                    strokeWidth={isActive ? 2.5 : 2}
-                    aria-hidden="true"
-                  />
-                  <span>Dashboard</span>
-                </>
-              )}
+              Dashboard
             </NavLink>
 
             <NavLink to="/dashboard/labs" className={() => desktopItemClass(isLabsRoute)}>
-              {() => (
-                <>
-                  <BookOpen
-                    className="h-[18px] w-[18px] shrink-0 text-accent xl:h-5 xl:w-5"
-                    strokeWidth={isLabsRoute ? 2.5 : 2}
-                    aria-hidden="true"
-                  />
-                  <span>Labs</span>
-                </>
-              )}
+              Labs
             </NavLink>
 
-            {/* Practice dropdown — click/touch toggle, not hover-only. */}
-            <div className="relative z-[150]">
+            <div className="relative">
               <button
                 type="button"
                 onClick={() => toggleMenu('practice')}
@@ -179,22 +200,16 @@ const StudentDesktopTopbar: React.FC<StudentDesktopTopbarProps> = ({ onMobileMen
                 aria-controls="topbar-practice-menu"
                 className={desktopItemClass(isPracticeRoute)}
               >
-                <Target className="h-[18px] w-[18px] shrink-0 text-accent xl:h-5 xl:w-5" strokeWidth={2} aria-hidden="true" />
-                <span className="flex items-center gap-1 whitespace-nowrap">
-                  Practice
-                  <ChevronDown
-                    className={`h-3 w-3 transition-transform duration-200 ${openMenu === 'practice' ? 'rotate-180' : ''}`}
-                    aria-hidden="true"
-                  />
-                </span>
+                Practice
+                <ChevronDown
+                  className={`h-3.5 w-3.5 transition-transform ${openMenu === 'practice' ? 'rotate-180' : ''}`}
+                  aria-hidden="true"
+                />
               </button>
 
               {openMenu === 'practice' && (
-                <div
-                  id="topbar-practice-menu"
-                  className="absolute left-0 top-full min-w-[200px] pt-2"
-                >
-                  <div className="animate-slide-down rounded-xl border border-border-subtle bg-canvas p-2 shadow-lg">
+                <div id="topbar-practice-menu" className="absolute left-0 top-full min-w-[200px] pt-2">
+                  <div className="rounded-2xl border border-border-subtle bg-surface-raised p-1.5">
                     <Link to="/dashboard/bootcamps" className={dropdownLinkClass}>
                       <ShieldCheck className="h-[18px] w-[18px] text-accent" aria-hidden="true" />
                       <span>Bootcamp</span>
@@ -209,20 +224,10 @@ const StudentDesktopTopbar: React.FC<StudentDesktopTopbarProps> = ({ onMobileMen
             </div>
 
             <NavLink to="/dashboard/certificates" className={({ isActive }) => desktopItemClass(isActive)}>
-              {({ isActive }) => (
-                <>
-                  <BadgeCheck
-                    className="h-[18px] w-[18px] shrink-0 text-accent xl:h-5 xl:w-5"
-                    strokeWidth={isActive ? 2.5 : 2}
-                    aria-hidden="true"
-                  />
-                  <span>Complete</span>
-                </>
-              )}
+              Certificates
             </NavLink>
 
-            {/* Develop dropdown — Network and Terminal are real existing routes. */}
-            <div className="relative z-[150]">
+            <div className="relative">
               <button
                 type="button"
                 onClick={() => toggleMenu('develop')}
@@ -231,22 +236,16 @@ const StudentDesktopTopbar: React.FC<StudentDesktopTopbarProps> = ({ onMobileMen
                 aria-controls="topbar-develop-menu"
                 className={desktopItemClass(isDevelopRoute)}
               >
-                <TerminalIcon className="h-[18px] w-[18px] shrink-0 text-accent xl:h-5 xl:w-5" strokeWidth={2} aria-hidden="true" />
-                <span className="flex items-center gap-1 whitespace-nowrap">
-                  Develop
-                  <ChevronDown
-                    className={`h-3 w-3 transition-transform duration-200 ${openMenu === 'develop' ? 'rotate-180' : ''}`}
-                    aria-hidden="true"
-                  />
-                </span>
+                Develop
+                <ChevronDown
+                  className={`h-3.5 w-3.5 transition-transform ${openMenu === 'develop' ? 'rotate-180' : ''}`}
+                  aria-hidden="true"
+                />
               </button>
 
               {openMenu === 'develop' && (
-                <div
-                  id="topbar-develop-menu"
-                  className="absolute left-0 top-full min-w-[200px] pt-2"
-                >
-                  <div className="animate-slide-down rounded-xl border border-border-subtle bg-canvas p-2 shadow-lg">
+                <div id="topbar-develop-menu" className="absolute left-0 top-full min-w-[200px] pt-2">
+                  <div className="rounded-2xl border border-border-subtle bg-surface-raised p-1.5">
                     <Link to="/dashboard/networks" className={dropdownLinkClass}>
                       <Network className="h-[18px] w-[18px] text-accent" aria-hidden="true" />
                       <span>Network</span>
@@ -261,64 +260,114 @@ const StudentDesktopTopbar: React.FC<StudentDesktopTopbarProps> = ({ onMobileMen
             </div>
           </nav>
 
-          <div className="flex-1" aria-hidden="true" />
+          <div className="flex-1 lg:hidden" aria-hidden="true" />
 
-          {/* Right side utilities */}
-          <div className="flex shrink-0 items-center justify-end gap-1.5 sm:gap-2 lg:gap-2.5">
+          <div className="flex shrink-0 items-center justify-end gap-1">
             <button
               type="button"
               onClick={() => setSearchOpen(true)}
               aria-label="Search learning rooms"
               title="Search learning rooms (Ctrl+K)"
-              className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl text-text-secondary transition-colors duration-150 hover:bg-surface-raised hover:text-accent focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-accent md:h-11 md:w-11"
+              className="flex h-10 min-w-10 items-center justify-center gap-2 rounded-lg px-2.5 text-text-secondary transition-colors hover:bg-surface-raised hover:text-text-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent xl:min-w-[180px] xl:justify-start xl:border xl:border-border-subtle xl:bg-canvas"
             >
-              <Search className="h-5 w-5 md:h-[22px] md:w-[22px]" aria-hidden="true" />
+              <Search className="h-5 w-5 shrink-0" aria-hidden="true" />
+              <span className="hidden text-sm text-text-muted xl:inline">Search…</span>
             </button>
 
-            <button
-              type="button"
-              onClick={toggleFullscreen}
-              aria-label={isFullscreen ? 'Exit fullscreen' : 'Enter fullscreen'}
-              title={isFullscreen ? 'Exit fullscreen' : 'Enter fullscreen'}
-              className="hidden h-10 w-10 shrink-0 items-center justify-center rounded-xl text-text-secondary transition-colors duration-150 hover:bg-surface-raised hover:text-accent focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-accent lg:flex md:h-11 md:w-11"
-            >
-              {isFullscreen ? (
-                <Minimize className="h-5 w-5" aria-hidden="true" />
-              ) : (
-                <Maximize className="h-5 w-5" aria-hidden="true" />
-              )}
-            </button>
+            <div className="relative">
+              <button
+                type="button"
+                data-menu-trigger
+                onClick={() => setAccountOpen((open) => !open)}
+                aria-haspopup="menu"
+                aria-expanded={accountOpen}
+                aria-label="Account menu"
+                className="relative flex h-10 items-center gap-1.5 rounded-full pl-0.5 pr-2 transition-colors hover:bg-surface-raised focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+              >
+                <Avatar name={userDisplayName} size={32} />
+                <ChevronDown
+                  className={`h-4 w-4 text-text-muted transition-transform ${accountOpen ? 'rotate-180' : ''}`}
+                  aria-hidden="true"
+                />
+                {unread > 0 && (
+                  <span
+                    className="absolute right-1.5 top-1.5 h-2.5 w-2.5 rounded-full border-2 border-surface bg-accent"
+                    aria-label={`${unread} unread notifications`}
+                  />
+                )}
+              </button>
 
-            <button
-              type="button"
-              onClick={() => navigate('/dashboard/notifications')}
-              className="relative flex h-10 w-10 shrink-0 items-center justify-center rounded-xl text-text-secondary transition-colors duration-150 hover:bg-surface-raised hover:text-accent focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-accent md:h-11 md:w-11"
-              aria-label={`Notifications${unread > 0 ? ` (${unread} unread)` : ''}`}
-            >
-              <Bell className="h-5 w-5 md:h-[22px] md:w-[22px]" aria-hidden="true" />
-              {unread > 0 && (
-                <span className="absolute -right-1 -top-1 flex h-5 min-w-5 items-center justify-center rounded-full bg-accent px-1 text-[10px] font-black leading-none text-on-accent tabular-nums">
-                  {unread > 9 ? '9+' : unread}
-                </span>
-              )}
-            </button>
-
-            <div
-              className="flex h-10 min-w-[58px] shrink-0 items-center justify-center gap-1.5 rounded-xl bg-surface-raised px-2 text-text-primary md:h-11 md:min-w-[68px] md:gap-2 md:px-3"
-              aria-label={`Current streak: ${streakDays} ${streakDays === 1 ? 'day' : 'days'}`}
-              title={`${streakDays} ${streakDays === 1 ? 'day' : 'days'} streak`}
-            >
-              <StreakIcon size={22} className="shrink-0" />
-              <span className="font-mono text-sm font-black tabular-nums md:text-base">{streakDays}</span>
+              <Menu
+                open={accountOpen}
+                onClose={() => setAccountOpen(false)}
+                className="absolute right-0 top-full mt-2 w-[300px]"
+                labelledBy="account-menu-label"
+              >
+                <div id="account-menu-label" className="px-3 pb-3 pt-2">
+                  <div className="flex items-center gap-3">
+                    <Avatar name={userDisplayName} size={40} />
+                    <div className="min-w-0 flex-1">
+                      <p className="truncate text-[15px] font-medium text-text-primary">{userDisplayName}</p>
+                      <p className="truncate text-sm text-text-muted">{user?.email}</p>
+                    </div>
+                    <Badge variant="accent" pill>{rank}</Badge>
+                  </div>
+                  <dl className="mt-3 grid grid-cols-3 gap-2 border-t border-border-subtle pt-3">
+                    <div className="text-center">
+                      <dd className="text-base font-medium tabular-nums text-text-primary">{streakDays}</dd>
+                      <dt className="text-xs text-text-muted">Day streak</dt>
+                    </div>
+                    <div className="text-center">
+                      <dd className="text-base font-medium tabular-nums text-text-primary">{cp}</dd>
+                      <dt className="text-xs text-text-muted">CP</dt>
+                    </div>
+                    <div className="text-center">
+                      <dd className="truncate text-base font-medium text-text-primary">{rank}</dd>
+                      <dt className="text-xs text-text-muted">Rank</dt>
+                    </div>
+                  </dl>
+                </div>
+                <MenuSeparator />
+                <MenuItem icon={<User />} to="/dashboard/profile" onClick={() => setAccountOpen(false)}>
+                  Profile
+                </MenuItem>
+                <MenuItem
+                  icon={<Bell />}
+                  to="/dashboard/notifications"
+                  onClick={() => setAccountOpen(false)}
+                  trailing={unread > 0 ? unread : undefined}
+                >
+                  Notifications
+                </MenuItem>
+                <MenuItem icon={<Settings />} to="/dashboard/settings" onClick={() => setAccountOpen(false)}>
+                  Settings
+                </MenuItem>
+                <MenuSeparator />
+                <MenuItem icon={isFullscreen ? <Minimize /> : <Maximize />} onClick={toggleFullscreen}>
+                  {isFullscreen ? 'Exit fullscreen' : 'Enter fullscreen'}
+                </MenuItem>
+                {LIGHT_THEME_ENABLED && (
+                  <MenuItem icon={mode === 'dark' ? <Sun /> : <Moon />} onClick={toggleTheme}>
+                    {mode === 'dark' ? 'Light mode' : 'Dark mode'}
+                  </MenuItem>
+                )}
+                <MenuSeparator />
+                <MenuItem
+                  icon={<BadgeCheck />}
+                  to="/dashboard/certificates"
+                  onClick={() => setAccountOpen(false)}
+                >
+                  Certificates
+                </MenuItem>
+                <MenuItem icon={<BookOpen />} to="/dashboard/marketplace" onClick={() => setAccountOpen(false)}>
+                  Marketplace
+                </MenuItem>
+                <MenuSeparator />
+                <MenuItem icon={<LogOut />} danger onClick={handleLogout}>
+                  Sign out
+                </MenuItem>
+              </Menu>
             </div>
-
-            <Link
-              to="/dashboard/profile"
-              className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border-2 border-accent bg-surface text-sm font-black text-accent transition-colors duration-150 hover:bg-accent/10 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent md:h-11 md:w-11 md:text-base"
-              aria-label="Profile"
-            >
-              {userInitial}
-            </Link>
           </div>
         </div>
       </header>

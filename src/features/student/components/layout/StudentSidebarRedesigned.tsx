@@ -14,18 +14,13 @@ import {
   Settings,
   LogOut,
   X,
-  Trophy,
-  Hash,
   ChevronDown,
-  Maximize,
-  Minimize,
 } from 'lucide-react';
 import { useAuth } from '@/core/contexts/AuthContext';
 import { useToast } from '@/core/contexts/ToastContext';
 import api from '@/core/services/api';
 import useStudentOverview from '@/features/student/hooks/useStudentOverview';
-import StreakIcon from '@/shared/components/icons/StreakIcon';
-import { useFullscreen } from '@/shared/hooks/useFullscreen';
+import { Avatar } from '@/shared/components/ui';
 
 interface NavEntry {
   key: string;
@@ -44,7 +39,7 @@ interface NavSection {
 
 const NAV_SECTIONS: NavSection[] = [
   {
-    title: 'Main',
+    title: 'Learn',
     items: [
       { key: 'dashboard', label: 'Dashboard', icon: Home, to: '/dashboard' },
       { key: 'labs', label: 'Labs', icon: BookOpen, to: '/dashboard/labs' },
@@ -56,6 +51,8 @@ const NAV_SECTIONS: NavSection[] = [
     defaultCollapsed: false,
     items: [
       { key: 'bootcamp', label: 'Bootcamp', icon: ShieldCheck, to: '/dashboard/bootcamps' },
+      { key: 'networks', label: 'Network', icon: Network, to: '/dashboard/networks' },
+      { key: 'terminal', label: 'Terminal', icon: TerminalIcon, to: '/dashboard/tools/terminal' },
     ],
   },
   {
@@ -67,22 +64,13 @@ const NAV_SECTIONS: NavSection[] = [
     ],
   },
   {
-    title: 'Develop',
-    collapsible: true,
-    defaultCollapsed: false,
-    items: [
-      { key: 'networks', label: 'Network', icon: Network, to: '/dashboard/networks' },
-      { key: 'terminal', label: 'Terminal', icon: TerminalIcon, to: '/dashboard/tools/terminal' },
-    ],
-  },
-  {
     title: 'Account',
     items: [
       { key: 'profile', label: 'Profile', icon: User, to: '/dashboard/profile' },
       { key: 'certificates', label: 'Certificates', icon: Award, to: '/dashboard/certificates' },
       { key: 'notifications', label: 'Notifications', icon: Bell, to: '/dashboard/notifications', badgeKey: 'notifications' },
-      { key: 'settings', label: 'Settings', icon: Settings, to: '/dashboard/settings' },
       { key: 'marketplace', label: 'Marketplace', icon: ShoppingBag, to: '/dashboard/marketplace' },
+      { key: 'settings', label: 'Settings', icon: Settings, to: '/dashboard/settings' },
     ],
   },
 ];
@@ -115,7 +103,6 @@ const StudentSidebarRedesigned: React.FC<StudentSidebarRedesignedProps> = ({
   const navigate = useNavigate();
   const location = useLocation();
   const [unread, setUnread] = useState(0);
-  const { isFullscreen, toggleFullscreen } = useFullscreen();
   // Initialize collapsed sections state (sections can be collapsed by default)
   const [collapsedSections, setCollapsedSections] = useState<Set<string>>(() => {
     const initial = new Set<string>();
@@ -197,7 +184,6 @@ const StudentSidebarRedesigned: React.FC<StudentSidebarRedesignedProps> = ({
   
   // Get user display info
   const userDisplayName = user?.username || user?.email || "User";
-  const userInitial = userDisplayName.charAt(0).toUpperCase();
   
   // Handle navigation click on mobile
   const handleNavClick = () => {
@@ -211,14 +197,14 @@ const StudentSidebarRedesigned: React.FC<StudentSidebarRedesignedProps> = ({
     <>
       {/* Backdrop */}
       <div
-        className="fixed inset-0 z-[110] bg-canvas/80 backdrop-blur-sm lg:hidden"
+        className="fixed inset-0 z-[120] bg-canvas/80 backdrop-blur-sm lg:hidden"
         onClick={onMobileClose}
         aria-hidden="true"
       />
 
       {/* Full-screen sidebar — intentionally covers the topbar on mobile. */}
       <aside
-        className="fixed inset-0 z-[111] flex h-dvh w-full flex-col overflow-hidden border-r border-border-subtle bg-canvas pt-[env(safe-area-inset-top)] lg:hidden"
+        className="fixed inset-0 z-[130] flex h-dvh w-full flex-col overflow-hidden border-r border-border-subtle bg-surface pt-[env(safe-area-inset-top)] lg:hidden"
         role="dialog"
         aria-modal="true"
         aria-label="Navigation menu"
@@ -240,28 +226,14 @@ const StudentSidebarRedesigned: React.FC<StudentSidebarRedesignedProps> = ({
           </span>
 
           <div className="flex items-center gap-1">
-            <button
-              type="button"
-              onClick={toggleFullscreen}
-              aria-label={isFullscreen ? 'Exit fullscreen' : 'Enter fullscreen'}
-              title={isFullscreen ? 'Exit fullscreen' : 'Enter fullscreen'}
-              className="flex min-h-[48px] min-w-[48px] items-center justify-center rounded-xl text-text-secondary transition-colors hover:bg-surface-raised hover:text-accent focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-accent"
-            >
-              {isFullscreen ? (
-                <Minimize className="h-6 w-6" aria-hidden="true" />
-              ) : (
-                <Maximize className="h-6 w-6" aria-hidden="true" />
-              )}
-            </button>
-
             {isMobile && (
               <button
                 type="button"
                 onClick={onMobileClose}
                 aria-label="Close menu"
-                className="flex min-h-[48px] min-w-[48px] items-center justify-center rounded-xl text-text-secondary transition-colors hover:bg-surface-raised hover:text-accent focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-accent"
+                className="flex min-h-[48px] min-w-[48px] items-center justify-center rounded-lg text-text-secondary transition-colors hover:bg-surface-raised hover:text-text-primary focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-accent"
               >
-                <X className="h-7 w-7" aria-hidden="true" />
+                <X className="h-6 w-6" aria-hidden="true" />
               </button>
             )}
           </div>
@@ -278,19 +250,16 @@ const StudentSidebarRedesigned: React.FC<StudentSidebarRedesignedProps> = ({
                 className="group flex items-center gap-3 rounded-xl p-2 transition-colors hover:bg-surface-raised focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-accent"
               >
                 {/* Avatar */}
-                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full border-2 border-accent bg-surface text-lg font-black text-accent transition-all duration-200 group-hover:shadow-lg group-hover:shadow-accent/20">
-                  {userInitial}
-                </div>
-                
+                <Avatar name={userDisplayName} size={48} ring />
+
                 {/* User Info */}
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2">
-                    <p className="truncate font-mono text-sm font-bold text-text-primary">
+                    <p className="truncate text-[15px] font-medium text-text-primary">
                       {userDisplayName}
                     </p>
-                    <ChevronDown className="h-3 w-3 text-text-tertiary" aria-hidden="true" />
                   </div>
-                  <p className="type-meta text-text-muted">
+                  <p className="text-sm text-text-muted">
                     {rankName}
                   </p>
                 </div>
@@ -309,7 +278,7 @@ const StudentSidebarRedesigned: React.FC<StudentSidebarRedesignedProps> = ({
                       {showFullContent && (
                         <div className="mb-2 px-3">
                           <div className="flex items-center justify-between">
-                            <h3 className="text-xs font-black uppercase tracking-wider text-text-tertiary">
+                            <h3 className="text-xs font-medium uppercase tracking-[0.08em] text-text-muted">
                               {section.title}
                             </h3>
                             {section.collapsible && (
@@ -340,23 +309,18 @@ const StudentSidebarRedesigned: React.FC<StudentSidebarRedesignedProps> = ({
                                   to={item.to}
                                   onClick={handleNavClick}
                                   data-tour-id={item.key === 'profile' ? 'tour-profile-sidebar' : undefined}
-                                  className={`group relative flex min-h-[48px] items-center gap-3 rounded-xl px-3 py-2 text-sm transition-colors duration-[var(--dur-fast)] ease-[var(--ease-smooth)] focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-accent ${
+                                  className={`relative flex min-h-[48px] items-center gap-3 rounded-lg px-3 py-2 text-[15px] transition-colors focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-accent ${
                                     active ? 'bg-accent/10 font-medium text-accent' : 'text-text-secondary hover:bg-surface-raised hover:text-text-primary'
                                   }`}
                                 >
-                                  {active && (
-                                    <span className="absolute left-0 top-1/2 h-6 w-0.5 -translate-y-1/2 rounded-full bg-accent" aria-hidden="true" />
-                                  )}
                                   <Icon
-                                    className={`h-[18px] w-[18px] shrink-0 transition-all duration-200 group-hover:translate-x-0.5 group-hover:scale-110 ${
-                                      active ? 'text-accent' : 'text-accent/70'
-                                    }`}
-                                    strokeWidth={active ? 2.5 : 2}
+                                    className={`h-[18px] w-[18px] shrink-0 ${active ? 'text-accent' : 'text-text-muted'}`}
+                                    strokeWidth={active ? 2.2 : 1.8}
                                     aria-hidden="true"
                                   />
                                   <span className="flex-1 truncate">{item.label}</span>
                                   {item.badgeKey === 'notifications' && unread > 0 && (
-                                    <span className="flex h-5 min-w-5 items-center justify-center rounded-md bg-accent px-1 text-[10px] font-black text-on-accent tabular-nums">
+                                    <span className="flex h-5 min-w-5 items-center justify-center rounded-full bg-accent px-1 text-[11px] font-medium text-on-accent tabular-nums">
                                       {unread > 99 ? '99+' : unread}
                                     </span>
                                   )}
@@ -380,10 +344,10 @@ const StudentSidebarRedesigned: React.FC<StudentSidebarRedesignedProps> = ({
             onClick={handleLogout}
             title="Log out"
             aria-label="Log out"
-            className="flex min-h-[48px] w-full items-center gap-3 rounded-xl border border-semantic-danger/25 bg-semantic-danger/10 px-3 py-2 text-sm font-bold text-semantic-danger transition-colors hover:bg-semantic-danger/15 focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-semantic-danger"
+            className="flex min-h-[48px] w-full items-center gap-3 rounded-lg border border-semantic-danger/30 px-3 py-2 text-[15px] font-medium text-semantic-danger transition-colors hover:bg-semantic-danger/10 focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-semantic-danger"
           >
             <LogOut className="h-[18px] w-[18px] shrink-0" aria-hidden="true" />
-            <span>Log Out</span>
+            <span>Sign out</span>
           </button>
         </div>
       </>

@@ -1,15 +1,25 @@
 import { describe, expect, it, vi, beforeEach } from 'vitest';
-import { render, screen } from '@testing-library/react';
+import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { MemoryRouter } from 'react-router-dom';
 import StudentDesktopTopbar from '../StudentDesktopTopbar';
 
 const auth = vi.hoisted(() => ({
-  user: { username: 'operator', email: 'operator@example.com' },
+  user: { username: 'operator', email: 'operator@example.com', cp: 420, rank: 'Operator' },
+  logout: vi.fn(),
 }));
 
 vi.mock('@/core/contexts/AuthContext', () => ({
   useAuth: () => auth,
+}));
+
+vi.mock('@/core/contexts/ToastContext', () => ({
+  useToast: () => ({ addToast: vi.fn(), clearToasts: vi.fn() }),
+}));
+
+vi.mock('@/core/contexts/ThemeContext', () => ({
+  LIGHT_THEME_ENABLED: false,
+  useThemeContext: () => ({ mode: 'dark', toggleTheme: vi.fn() }),
 }));
 
 const api = vi.hoisted(() => ({
@@ -23,7 +33,7 @@ vi.mock('@/shared/hooks/useFullscreen', () => ({
 }));
 
 vi.mock('@/features/student/hooks/useStudentOverview', () => ({
-  default: () => ({ data: { xpSummary: { streakDays: 12 } } }),
+  default: () => ({ data: { xpSummary: { streakDays: 12, progression: { rank: 'Operator' } } } }),
 }));
 
 const renderTopbar = () =>
@@ -38,26 +48,33 @@ beforeEach(() => {
 });
 
 describe('StudentDesktopTopbar', () => {
-  it('renders the five compact primary destinations without a dashboard logo', () => {
+  it('renders the logo, breadcrumb and five primary destinations', () => {
     renderTopbar();
 
-    expect(screen.getByRole('link', { name: /Dashboard/i })).toHaveAttribute('href', '/dashboard');
-    expect(screen.getByRole('link', { name: /Labs/i })).toHaveAttribute('href', '/dashboard/labs');
+    expect(screen.getByRole('link', { name: /QYVORA dashboard/i })).toHaveAttribute('href', '/dashboard');
+    const nav = within(screen.getByRole('navigation', { name: 'Primary' }));
+    expect(nav.getByRole('link', { name: 'Dashboard' })).toHaveAttribute('href', '/dashboard');
+    expect(nav.getByRole('link', { name: 'Labs' })).toHaveAttribute('href', '/dashboard/labs');
     expect(screen.getByRole('button', { name: /Practice/i })).toBeInTheDocument();
-    expect(screen.getByRole('link', { name: /Complete/i })).toHaveAttribute('href', '/dashboard/certificates');
+    expect(screen.getByRole('link', { name: /Certificates/i })).toHaveAttribute('href', '/dashboard/certificates');
     expect(screen.getByRole('button', { name: /Develop/i })).toBeInTheDocument();
-
-    expect(screen.queryByRole('link', { name: /QYVORA/i })).not.toBeInTheDocument();
   });
 
-  it('shows the streak alongside fullscreen, notifications and profile', () => {
+  it('keeps the streak, fullscreen, notifications and profile inside the account menu', async () => {
+    const user = userEvent.setup();
     renderTopbar();
 
-    expect(screen.getByRole('button', { name: /Enter fullscreen/i })).toBeInTheDocument();
-    expect(screen.getByLabelText('Current streak: 12 days')).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: /Notifications/i })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: /Search learning rooms/i })).toBeInTheDocument();
-    expect(screen.getByRole('link', { name: /Profile/i })).toHaveAttribute('href', '/dashboard/profile');
+    expect(screen.queryByLabelText(/Current streak/i)).not.toBeInTheDocument();
+
+    await user.click(screen.getByRole('button', { name: /Account menu/i }));
+
+    expect(screen.getByText('Day streak')).toBeInTheDocument();
+    expect(screen.getByText('12')).toBeInTheDocument();
+    expect(screen.getByRole('menuitem', { name: /Enter fullscreen/i })).toBeInTheDocument();
+    expect(screen.getByRole('menuitem', { name: /Notifications/i })).toBeInTheDocument();
+    expect(screen.getByRole('menuitem', { name: /Profile/i })).toHaveAttribute('href', '/dashboard/profile');
+    expect(screen.getByRole('menuitem', { name: /Sign out/i })).toBeInTheDocument();
   });
 
   it('opens room search from the topbar button', async () => {
