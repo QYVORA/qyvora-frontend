@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
-import { ArrowRight, ShieldCheck } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
+import qoseLogo from '@/assets/bootcamp/QOSE-Logo.webp';
 import { Button, Card } from '@/shared/components/ui';
 import {
   formatGhs,
@@ -82,9 +83,15 @@ const QoseDashboardCard = () => {
   return (
     <Card className="flex flex-col gap-5 p-5 md:flex-row md:items-center md:justify-between md:gap-6 md:p-6">
       <div className="flex min-w-0 items-start gap-4">
-        <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-accent/25 bg-accent/10">
-          <ShieldCheck className="h-5 w-5 text-accent" aria-hidden="true" />
-        </div>
+        <span className="flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-xl border border-border-subtle bg-surface-raised p-1.5">
+          <img
+            src={qoseLogo}
+            alt=""
+            width={48}
+            height={48}
+            className="h-full w-full object-contain"
+          />
+        </span>
         <div className="min-w-0">
           <p className="type-kicker uppercase tracking-[0.12em] text-accent">
             {'QOSE · Cohort 1'}
