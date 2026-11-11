@@ -7,7 +7,13 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 ## [Unreleased]
 
 ### Added
-- **App UI System v2 for the signed-in product** — scoped `data-ui="app"` tokens and Ubuntu type, shared primitives (`SectionCard`, `StatStrip`, `Field`, `Textarea`, `Switch`, `Menu`, `Avatar`, tabs, `OptionTile`), a DEV `/dashboard/ui-kit` reference page, and restyled shell, dashboard, profile, learning and settings surfaces
+- **Unified App UI System v2 across public and signed-in surfaces** — one global `:root` rule set (no `data-ui` scope hook), `TwoColumn` page splits, shared 12/16/24/30px gutters and 16/20/24px card padding, and a single `SiteTopbar` for public and app navigation
+- **Quiet gradient system** — `--gradient-feature`, `--gradient-hero`, `--gradient-strip`, `--gradient-header`, matching `.bg-gradient-*` utilities, and `Card tone="feature" | "hero" | "strip" | "header"`
+- **Shared learning hero** — `LearningHero` full-bleed gradient band with the item's badge art slanted behind the title; used by labs, bootcamp rooms and content Labs
+- **Scroll-hide topbar** — `useScrollDirection` hides the shared bar on scroll down, reveals on scroll up, stays visible while a menu/dialog/focus is inside it, and publishes `--app-topbar-offset` for sticky rails
+- **Shared navigation primitives** — `SiteTopbar`, `NavDropdown`, `AvatarMenu` and `MobileMenu`; public and dashboard wrappers only supply items and the right cluster
+- **Profile banner layout** — `ProfileBanner`, `ProfileLayout`, borderless `ProfileIdentityBlock`, `RankLevelCard`, five-cell stats strip, heatmap card, achievement tabs and a 3-up Labs grid on both profile pages
+- **App UI System v2 primitives** — Ubuntu type, shared primitives (`SectionCard`, `StatStrip`, `Field`, `Textarea`, `Switch`, `Menu`, `Avatar`, tabs, `OptionTile`), a DEV `/dashboard/ui-kit` reference page, and restyled shell, dashboard, profile, learning and settings surfaces
 - `qyvora-local/no-legacy-app-style` ESLint rule — migrated app files fail on `font-display`, `font-black`, `tracking-widest`, `shadow-lg`/`shadow-2xl` or `rounded-3xl`; the rule's target list grows as files migrate
 - `docs/APP-UI-SYSTEM.md` — source of truth for app scope, type, tokens, primitives, layout, motion and the lint guard
 
@@ -24,6 +30,10 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - Corrected the shipped lab set to the **5** labs in `features/student/constants/labs.ts` (privesc, passwords, sql-injection, osint, kill-chain). The `[0.1.0]` entry's "10 attack labs" list over-stated what ships; the site and docs were already corrected to 5.
 
 ### Changed
+- Removed **Courses** as a user-facing product concept; former courses are Labs. `/dashboard/courses/:id` remains the canonical content-Lab lesson route and `/dashboard/courses` redirects to `/dashboard/labs`
+- Dashboard, profile and settings pages now use `TwoColumn` at `lg` (1024px) instead of ad-hoc `xl:grid-cols-12` splits, fixing the 1024–1279px single-column bug
+- Public marketing pages, auth screens, Learn, footer and page headers adopt the same Ubuntu type scale, sentence-case headings, radii and tokens as the app
+- Profile pages rebuilt around a full-bleed banner with a half-overlapping avatar; identity is borderless and rank/level/CP moved into `RankLevelCard`
 - PWA service moved from `features/student/services/pwa.ts` to `core/services/pwa.ts` (whole-site scope) with React bindings in `core/hooks/usePWA.ts` (`useInstallPrompt`, `useServiceWorkerUpdate`, `useOnlineStatus`) via `useSyncExternalStore`
 - Service worker registration moved from `AppShell` to the app entry (`app/main.tsx`) and is skipped in dev unless `VITE_ENABLE_SW_IN_DEV=true` — a worker caching Vite's module graph breaks HMR
 - `InstallBanner` moved to `shared/components/layout/`, rebuilt on `useInstallPrompt` (it previously polled a module-level flag every 2s from the dashboard and only reacted on unrelated re-renders)
@@ -55,6 +65,8 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - New **[docs/SEO.md](docs/SEO.md)** documenting the prerender + helmet SEO architecture and GSC verification
 
 ### Removed
+- `PublicBottomNav`, `StudentBottomNav`, `AdminBottomNav` and `DocsBottomNav`; mobile navigation is the shared topbar hamburger + `MobileMenu` drawer on every surface
+- `useAppUiScope` and the per-surface `data-ui="app"` token block; tokens now live globally in `:root`
 - `LabIcons.tsx` — 10 SVG shield badge illustrations (771 lines, never imported)
 - `AdinkraCardBg.tsx` — Adinkra symbol decorative backgrounds (never imported)
 - `DotMapBackground.tsx` — Dot map component (no remaining consumers)

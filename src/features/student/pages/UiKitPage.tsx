@@ -9,6 +9,9 @@ import {
   SegmentedTabs, Select, StatStrip, Switch, Textarea, Toggle, UnderlineTabs,
 } from '@/shared/components/ui';
 import { Card } from '@/shared/components/ui/Card';
+import TwoColumn from '@/shared/components/layout/TwoColumn';
+import LearningHero from '@/shared/components/learning/LearningHero';
+import { getLabBadgeAsset } from '@/shared/learning/labBadges';
 
 const Page: React.FC = () => {
   const [tab, setTab] = useState('overview');
@@ -18,6 +21,7 @@ const Page: React.FC = () => {
   const [level, setLevel] = useState('beginner');
   const [goal, setGoal] = useState('pentest');
   const [menuOpen, setMenuOpen] = useState(false);
+  const heroBadge = getLabBadgeAsset('privesc');
 
   return (
     <div className="mx-auto w-full space-y-6 px-[var(--app-gutter)] py-8">
@@ -200,6 +204,46 @@ const Page: React.FC = () => {
           </div>
         </div>
       </div>
+
+      <SectionCard title="Gradient tones" icon={<Flame />} description="The only sanctioned gradients — quiet accent mixes, no glow or animation.">
+        <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+          {(['feature', 'hero', 'strip', 'header'] as const).map((tone) => (
+            <Card key={tone} tone={tone} className="p-5">
+              <p className="type-h3 capitalize text-text-primary">{tone}</p>
+              <p className="type-body-sm mt-1 text-text-muted">{`Card tone="${tone}"`}</p>
+            </Card>
+          ))}
+        </div>
+      </SectionCard>
+
+      <SectionCard title="TwoColumn" icon={<Compass />} description="The one page split — stacks below lg, literal grid templates from lg.">
+        <TwoColumn split="profile">
+          <Card className="min-w-0 p-5">
+            <p className="type-h3 text-text-primary">Left rail</p>
+            <p className="type-body-sm mt-1 text-text-muted">4fr — identity, rank, trophy.</p>
+          </Card>
+          <Card className="min-w-0 p-5">
+            <p className="type-h3 text-text-primary">Main column</p>
+            <p className="type-body-sm mt-1 text-text-muted">7fr — stats, activity, achievements.</p>
+          </Card>
+        </TwoColumn>
+      </SectionCard>
+
+      <SectionCard title="Learning hero" icon={<Shield />} description="Full-bleed gradient band with the item badge slanted behind the title.">
+        <div className="overflow-hidden rounded-2xl border border-border-subtle">
+          <LearningHero
+            kicker="Hands-on lab"
+            icon={heroBadge ? <img src={heroBadge.image} alt="" /> : undefined}
+            title="Privilege escalation"
+            description="Enumerate, escalate and prove impact across a Linux target."
+            heroArtSrc={heroBadge?.image}
+            stats={[
+              { label: 'Difficulty', value: 'Intermediate' },
+              { label: 'Time', value: '45 min', accent: true },
+            ]}
+          />
+        </div>
+      </SectionCard>
 
       <SectionCard
         title="Menu"
