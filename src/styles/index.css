@@ -763,7 +763,7 @@
     background: linear-gradient(to bottom, transparent 55%, var(--color-canvas) 100%);
   }
   @media (min-width: 640px) {
-    .profile-banner { height: 160px; margin-bottom: 72px; }
+    .profile-banner { height: 160px; margin-bottom: 80px; }
   }
   @media (min-width: 1024px) {
     .profile-banner { height: 200px; margin-bottom: 91px; }
