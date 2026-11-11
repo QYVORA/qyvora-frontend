@@ -189,13 +189,11 @@ const Profile: React.FC = () => {
             ]} />
           </section>
 
-          {Object.keys(activityDates).length > 0 && (
-            <section id="profile-section-yearly">
-              <SectionCard title="Yearly activity">
-                <ContributionCalendar activityDates={activityDates} />
-              </SectionCard>
-            </section>
-          )}
+          <section id="profile-section-yearly">
+            <SectionCard title="Yearly activity">
+              <ContributionCalendar activityDates={activityDates} />
+            </SectionCard>
+          </section>
 
           <section id="profile-section-achievements">
             <AchievementsSection
