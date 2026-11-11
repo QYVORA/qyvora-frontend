@@ -33,7 +33,7 @@ export function StepNumberHeader({
       className="group mb-6 flex items-center gap-2 text-text-muted transition-colors hover:text-text-primary min-h-[44px] min-w-[44px]"
     >
       <IconArrowLeft size={16} className="transition-transform group-hover:-translate-x-0.5" />
-      <span className="text-xs font-black uppercase tracking-widest">{backLabel}</span>
+      <span className="text-sm font-medium">{backLabel}</span>
     </Link>
   ) : onBack ? (
     <button
@@ -42,7 +42,7 @@ export function StepNumberHeader({
       className="group mb-6 flex items-center gap-2 text-text-muted transition-colors hover:text-text-primary min-h-[44px] min-w-[44px]"
     >
       <IconArrowLeft size={16} className="transition-transform group-hover:-translate-x-0.5" />
-      <span className="text-xs font-black uppercase tracking-widest">{backLabel}</span>
+      <span className="text-sm font-medium">{backLabel}</span>
     </button>
   ) : null;
 
@@ -53,7 +53,7 @@ export function StepNumberHeader({
         <div className="flex items-baseline gap-3 flex-wrap">
           <span
             className={cn(
-              'font-mono text-sm font-bold',
+              'text-sm font-medium tabular-nums',
               isActive || isCompleted ? 'text-accent' : 'text-text-muted'
             )}
           >
@@ -61,7 +61,7 @@ export function StepNumberHeader({
           </span>
           <h2
             className={cn(
-              'min-w-0 flex-1 font-display font-bold leading-tight tracking-tight',
+              'min-w-0 flex-1 font-medium leading-tight tracking-tight',
               'text-xl sm:text-2xl md:text-3xl',
               isActive || isCompleted ? 'text-text-primary' : 'text-text-muted'
             )}
@@ -70,12 +70,12 @@ export function StepNumberHeader({
           </h2>
           {badges}
           {statusLabel && (
-            <span className="shrink-0 text-accent text-xs font-black uppercase tracking-widest">
+            <span className="shrink-0 text-[12px] font-medium text-accent">
               {statusLabel}
             </span>
           )}
           {isCompleted && !statusLabel && (
-            <span className="text-xs font-black uppercase tracking-widest text-accent">
+            <span className="text-[12px] font-medium text-accent">
               {"Done"}
             </span>
           )}

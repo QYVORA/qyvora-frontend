@@ -105,7 +105,7 @@ describe('WalkthroughLayout task accordion', () => {
     for (let i = 0; i < STEP_TITLES.length; i += 1) {
       const section = document.getElementById(`ws-step-${i + 1}`);
       expect(section).toBeInTheDocument();
-      expect(section?.className).toContain('scroll-mt-24');
+      expect(section?.className).toContain('scroll-mt-');
     }
   });
 

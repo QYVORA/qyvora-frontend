@@ -181,23 +181,19 @@ export function WalkthroughLayout({
         {/* Connection Banner */}
         {scenarioId && showConnectionGuide && (
           !isConnected ? (
-            <div className="flex items-center justify-between px-4 py-3 rounded-lg border border-border bg-bg-card mb-6">
+            <div className="mb-6 flex flex-wrap items-center justify-between gap-3 rounded-lg border border-border-subtle bg-surface px-4 py-3">
               <span className="text-sm text-text-secondary">
                 Connect to lab environment to begin
               </span>
-              <button
-                onClick={handleConnect}
-                disabled={isLoading}
-                className="btn-primary text-xs px-4 py-2 inline-flex items-center gap-2 min-h-[44px]"
-              >
-                {isLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : <IconTerminal size={16} />}
+              <Button onClick={handleConnect} disabled={isLoading} size="sm">
+                {isLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : <IconTerminal size={16} />}
                 {isLoading ? "Connecting..." : "Connect"}
-              </button>
+              </Button>
             </div>
           ) : (
-            <div className="flex items-center gap-3 px-4 py-2.5 rounded-lg bg-success/10 border border-success/20 mb-6">
-              <span className="w-2 h-2 rounded-full bg-success animate-pulse" />
-              <span className="text-xs font-mono text-success flex-1">
+            <div className="mb-6 flex flex-wrap items-center gap-3 rounded-lg border border-success/20 bg-success/10 px-4 py-2.5">
+              <span className="h-2 w-2 rounded-full bg-success" />
+              <span className="flex-1 text-[13px] tabular-nums text-success">
                 Connected: {connection?.targetIp}
               </span>
               <button
@@ -259,8 +255,8 @@ export function WalkthroughLayout({
         {progressContent}
 
         {allDone && (
-          <div className="rounded-xl border border-accent/20 bg-accent/5 px-6 py-5 text-center">
-            <span className="text-xs font-black uppercase tracking-widest text-accent">
+          <div className="rounded-lg border border-accent/20 bg-accent/5 px-6 py-5 text-center">
+            <span className="text-[13px] font-medium text-accent">
               {"Operation complete. Mission debrief available above."}
             </span>
           </div>

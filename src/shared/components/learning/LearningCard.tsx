@@ -55,7 +55,7 @@ export const DifficultyBadge: React.FC<{ difficulty: string }> = ({ difficulty }
   const baseDiff = difficulty.split('-')[0].toLowerCase();
   const diffClass = DIFFICULTY_CLASSES[baseDiff] || 'badge-accent';
   return (
-    <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-lg text-xs font-black uppercase tracking-widest shrink-0 border ${diffClass}`}>
+    <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[12px] font-medium shrink-0 border ${diffClass}`}>
       <Star className="h-2.5 w-2.5" /> {baseDiff}
     </span>
   );
@@ -109,7 +109,7 @@ export const LearningCard: React.FC<LearningCardProps> = ({
     (price !== undefined && !isFree);
 
   const containerClasses = [
-    'group/card relative rounded-2xl border border-border-subtle bg-surface transition-[border-color,box-shadow,background-color] duration-[var(--dur-base)] ease-[var(--ease-smooth)] flex flex-col text-left',
+    'group/card relative rounded-2xl border border-border-subtle bg-surface transition-colors duration-[var(--dur-base)] ease-[var(--ease-smooth)] flex flex-col text-left',
     active ? 'border-accent/60' : '',
     isExpanded ? 'p-4 md:p-5 gap-2' : 'h-full min-h-[220px] p-4 md:p-5 justify-between',
     muted ? 'opacity-60 cursor-default' : 'hover:border-accent/40',
@@ -124,7 +124,7 @@ export const LearningCard: React.FC<LearningCardProps> = ({
     }
     if (icon) {
       return (
-        <div className="w-14 h-14 rounded-xl bg-accent/10 border border-accent/20 flex items-center justify-center text-accent shrink-0">
+        <div className="w-14 h-14 flex h-14 w-14 shrink-0 items-center justify-center rounded-md bg-surface-raised text-accent">
           {icon}
         </div>
       );
@@ -138,7 +138,7 @@ export const LearningCard: React.FC<LearningCardProps> = ({
     }
     if (badgeText) {
       return (
-        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-lg text-xs font-black uppercase tracking-widest shrink-0 border badge-accent">
+        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[12px] font-medium shrink-0 border badge-accent">
           {badgeText}
         </span>
       );
@@ -149,12 +149,12 @@ export const LearningCard: React.FC<LearningCardProps> = ({
   // ── Action Button Render ──────────────────────────────────────────────────
   const renderAction = () => {
     if (!showAction) return null;
-    const defaultLabel = type === 'lab' ? 'Launch' : type === 'course' ? 'Start Course' : 'View';
+    const defaultLabel = type === 'lab' ? 'Launch' : type === 'course' ? 'Start course' : 'View';
     const label = actionLabel || defaultLabel;
 
     const actionContent = (
       <span
-        className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs sm:text-xs md:text-xs font-black uppercase tracking-widest bg-accent text-on-accent transition-[filter,transform] duration-[var(--dur-base)] group-hover/card:brightness-110 group-active:scale-95 ${
+        className={`inline-flex items-center gap-1.5 rounded-md bg-accent px-3 py-1.5 text-[13px] font-medium text-on-accent transition-colors hover:bg-accent/90 ${
           isActionDisabled ? 'opacity-50 pointer-events-none' : ''
         }`}
       >
@@ -197,22 +197,22 @@ export const LearningCard: React.FC<LearningCardProps> = ({
               <div className="flex items-center gap-2 mb-1.5 flex-wrap">
                 {renderDifficulty()}
                 {owned && (
-                  <span className="px-2 py-0.5 bg-accent text-on-accent rounded-lg text-xs font-black uppercase tracking-widest">
+                  <span className="rounded-md bg-accent/10 px-2 py-0.5 text-[12px] font-medium text-accent">
                     Owned
                   </span>
                 )}
                 {isFree && !owned && (
-                  <span className="px-2 py-0.5 bg-accent text-on-accent rounded-lg text-xs font-black uppercase tracking-widest">
+                  <span className="rounded-md bg-accent/10 px-2 py-0.5 text-[12px] font-medium text-accent">
                     Free
                   </span>
                 )}
                 {tags?.slice(0, 2).map((tag) => (
-                  <span key={tag} className="text-xs font-black uppercase tracking-widest text-text-muted">
+                  <span key={tag} className="text-[12px] font-medium text-text-muted">
                     #{tag}
                   </span>
                 ))}
               </div>
-              <h3 className="text-sm sm:text-base md:text-lg font-black text-text-primary group-hover/card:text-accent transition-colors leading-snug truncate">
+              <h3 className="text-base font-medium text-text-primary group-hover/card:text-accent transition-colors leading-snug truncate">
                 {title}
               </h3>
             </div>
@@ -221,22 +221,22 @@ export const LearningCard: React.FC<LearningCardProps> = ({
         </div>
 
         {description && (
-          <p className="text-xs sm:text-sm text-text-muted leading-relaxed line-clamp-2 font-mono">
+          <p className="text-xs sm:text-sm text-text-muted leading-relaxed text-text-secondary line-clamp-2">
             {description}
           </p>
         )}
 
         {typeof progress === 'number' && (
-          <div className="w-full bg-surface-raised h-1.5 rounded-full overflow-hidden my-1">
+          <div className="w-full bg-surface-raised h-1 rounded-full overflow-hidden my-1">
             <div className="bg-accent h-full rounded-full transition-[width] duration-[var(--dur-slow)] ease-[var(--ease-smooth)]" style={{ width: `${progress}%` }} />
           </div>
         )}
 
         {showAction || hasMeta ? (
-          <div className="flex items-center justify-between pt-2 border-t border-border/20">
-            <div className="flex items-center gap-3 text-xs font-mono text-text-muted">
+          <div className="flex items-center justify-between pt-2 border-t border-border-subtle">
+            <div className="flex items-center gap-3 text-[12px] tabular-nums text-text-muted">
               {cpReward !== undefined && (
-                <span className="font-black uppercase tracking-widest text-accent">
+                <span className="font-medium text-accent">
                   {cpReward} CP
                 </span>
               )}
@@ -244,7 +244,7 @@ export const LearningCard: React.FC<LearningCardProps> = ({
               {lessonsCount && <span>{lessonsCount} lessons</span>}
               {modulesCount && <span>{modulesCount} modules</span>}
               {price !== undefined && !isFree && (
-                <span className="font-black text-text-primary font-mono">{price}</span>
+                <span className="font-medium tabular-nums text-text-primary">{price}</span>
               )}
             </div>
             <div className="shrink-0">{renderAction()}</div>
@@ -283,22 +283,22 @@ export const LearningCard: React.FC<LearningCardProps> = ({
       <div>
         {/* Cover Image slot if present */}
         {image && (
-          <div className="relative aspect-[16/9] w-full rounded-xl overflow-hidden mb-3 border border-border/40 bg-accent/5">
+          <div className="relative aspect-[16/9] w-full rounded-lg overflow-hidden mb-3 border border-border-subtle bg-surface-raised">
             <img
               src={image}
               alt={imageAlt || title}
               width={640}
               height={360}
               loading="lazy"
-              className="w-full h-full object-cover transition-transform duration-500 ease-[var(--ease-smooth)] group-hover/card:scale-105"
+              className="w-full h-full object-cover"
             />
             {owned && (
-              <span className="absolute top-2 right-2 px-2 py-0.5 bg-accent text-on-accent rounded-lg text-xs font-black uppercase tracking-widest shadow-sm">
+              <span className="absolute top-2 right-2 rounded-md bg-accent/10 px-2 py-0.5 text-[12px] font-medium text-accent">
                 Owned
               </span>
             )}
             {isFree && !owned && (
-              <span className="absolute top-2 right-2 px-2 py-0.5 bg-accent text-on-accent rounded-lg text-xs font-black uppercase tracking-widest shadow-sm">
+              <span className="absolute top-2 right-2 rounded-md bg-accent/10 px-2 py-0.5 text-[12px] font-medium text-accent">
                 Free
               </span>
             )}
@@ -310,12 +310,12 @@ export const LearningCard: React.FC<LearningCardProps> = ({
           <div className="flex items-center gap-1.5 flex-wrap min-w-0">
             {renderDifficulty()}
             {!image && owned && (
-              <span className="px-2 py-0.5 bg-accent text-on-accent rounded-lg text-xs font-black uppercase tracking-widest">
+              <span className="rounded-md bg-accent/10 px-2 py-0.5 text-[12px] font-medium text-accent">
                 Owned
               </span>
             )}
             {!image && isFree && !owned && (
-              <span className="px-2 py-0.5 bg-accent text-on-accent rounded-lg text-xs font-black uppercase tracking-widest">
+              <span className="rounded-md bg-accent/10 px-2 py-0.5 text-[12px] font-medium text-accent">
                 Free
               </span>
             )}
@@ -324,20 +324,20 @@ export const LearningCard: React.FC<LearningCardProps> = ({
         </div>
 
         {/* Title */}
-        <h3 className="text-sm sm:text-base md:text-lg font-black text-text-primary group-hover/card:text-accent transition-colors leading-snug break-words mb-1">
+        <h3 className="text-base font-medium text-text-primary group-hover/card:text-accent transition-colors leading-snug break-words mb-1">
           {title}
         </h3>
 
         {/* Description */}
         {description && (
-          <p className="text-xs sm:text-sm text-text-muted leading-relaxed line-clamp-3 mb-2 font-mono">
+          <p className="text-xs sm:text-sm text-text-muted leading-relaxed text-text-secondary line-clamp-3 mb-2">
             {description}
           </p>
         )}
 
         {/* Progress Bar */}
         {typeof progress === 'number' && (
-          <div className="w-full bg-surface-raised h-1.5 rounded-full overflow-hidden my-2">
+          <div className="w-full bg-surface-raised h-1 rounded-full overflow-hidden my-2">
             <div className="bg-accent h-full rounded-full transition-[width] duration-[var(--dur-slow)] ease-[var(--ease-smooth)]" style={{ width: `${progress}%` }} />
           </div>
         )}
@@ -345,10 +345,10 @@ export const LearningCard: React.FC<LearningCardProps> = ({
 
       {/* Bottom Footer Row with Metadata and Action CTA */}
       {showAction || hasMeta ? (
-        <div className="flex items-center justify-between mt-auto pt-3 border-t border-border/20">
-          <div className="flex items-center gap-2 text-xs sm:text-xs font-mono text-text-muted">
+        <div className="flex items-center justify-between mt-auto pt-3 border-t border-border-subtle">
+          <div className="flex items-center gap-2 text-[12px] tabular-nums text-text-muted">
             {cpReward !== undefined && (
-              <span className="font-black uppercase tracking-widest text-accent">
+              <span className="font-medium text-accent">
                 {cpReward} CP
               </span>
             )}
@@ -356,7 +356,7 @@ export const LearningCard: React.FC<LearningCardProps> = ({
             {lessonsCount && <span>{lessonsCount} lessons</span>}
             {modulesCount && <span>{modulesCount} modules</span>}
             {price !== undefined && !isFree && (
-              <span className="font-black text-text-primary">{price}</span>
+              <span className="font-medium tabular-nums text-text-primary">{price}</span>
             )}
           </div>
           <div className="shrink-0">{renderAction()}</div>

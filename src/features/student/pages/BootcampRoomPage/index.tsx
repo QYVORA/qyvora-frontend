@@ -443,7 +443,7 @@ const BootcampRoomPage: React.FC = () => {
 
               <div className="mt-8 flex flex-wrap items-center justify-between gap-4 rounded-lg border border-border-subtle bg-surface px-6 py-5">
                 <p className="text-sm text-text-secondary">
-                  <span className="font-mono font-bold text-text-primary">{viewedSteps.size}</span>
+                  <span className="font-medium tabular-nums text-text-primary">{viewedSteps.size}</span>
                   {` of ${room.steps.length} tasks viewed`}
                 </p>
                 <div className="flex flex-wrap items-center gap-2">

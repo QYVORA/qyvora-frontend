@@ -58,7 +58,7 @@ function CurriculumItemComponent({ item, active, collapsed }: CurriculumItemProp
       aria-current={active ? 'page' : undefined}
       aria-disabled={isLocked}
       className={cn(
-        'group relative flex items-center rounded-xl py-2 text-sm transition-colors duration-[var(--dur-fast)] ease-[var(--ease-smooth)]',
+        'group relative flex items-center rounded-md py-2 text-sm transition-colors duration-[var(--dur-fast)] ease-[var(--ease-smooth)]',
         'focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-accent',
         collapsed ? 'h-12 w-12 justify-center px-0' : 'gap-3 px-3',
         active
@@ -87,7 +87,7 @@ function CurriculumItemComponent({ item, active, collapsed }: CurriculumItemProp
 
       <span
         className={cn(
-          'flex h-6 w-6 shrink-0 items-center justify-center rounded-md border font-mono text-xs font-black transition-colors',
+          'flex h-6 w-6 shrink-0 items-center justify-center rounded-md border text-xs font-medium tabular-nums transition-colors',
           isCompleted
             ? 'border-accent/40 bg-accent-dim/20 text-accent'
             : active
@@ -144,7 +144,7 @@ function CurriculumSection({ item, activeId, collapsed, expanded, onToggle }: Cu
         aria-expanded={expanded}
         aria-label={`${item.title}, ${item.children?.length || 0} items`}
         className={cn(
-          'group flex w-full items-center rounded-xl py-2 text-sm font-black uppercase tracking-wider transition-colors',
+          'group flex w-full items-center rounded-md py-2 text-sm font-medium transition-colors',
           'focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-accent',
           collapsed ? 'h-10 w-10 justify-center px-0 text-[10px]' : 'gap-2 px-3',
           isActive || hasActiveChild
@@ -172,7 +172,7 @@ function CurriculumSection({ item, activeId, collapsed, expanded, onToggle }: Cu
           </>
         )}
         {collapsed && (
-          <span className="font-mono">{item.number}</span>
+          <span className="tabular-nums">{item.number}</span>
         )}
       </button>
 

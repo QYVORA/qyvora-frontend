@@ -31,14 +31,14 @@ interface LearningAccordionProps {
 function StartButton({ label, onClick, locked, cpCost, onUnlock }: { label: string; onClick?: () => void; locked?: boolean; cpCost?: number; onUnlock?: () => void }) {
   if (locked && cpCost) {
     return (
-      <button type="button" onClick={onUnlock} className="btn-secondary !rounded-xl !text-xs px-5 py-2.5 mt-4 flex items-center gap-2">
+      <button type="button" onClick={onUnlock} className="btn-secondary px-5 py-2.5 mt-4 flex items-center gap-2">
         <Lock className="w-3 h-3" aria-hidden="true" />
         {`Unlock for ${cpCost} CP`}
       </button>
     );
   }
   return (
-    <button type="button" onClick={onClick} className="btn-primary !rounded-xl !text-xs px-5 py-2.5 mt-4">
+    <button type="button" onClick={onClick} className="btn-primary px-5 py-2.5 mt-4">
       {label}
     </button>
   );
@@ -90,7 +90,7 @@ export function LearningAccordion({ items, className, defaultOpen = 0 }: Learnin
               <span
                 aria-hidden="true"
                 className={cn(
-                  'flex h-8 w-8 shrink-0 items-center justify-center rounded-full border font-mono text-xs font-black transition-colors duration-150',
+                  'flex h-8 w-8 shrink-0 items-center justify-center rounded-full border text-xs font-medium tabular-nums transition-colors duration-150',
                   item.completed
                     ? 'border-success/40 bg-success/10 text-success'
                     : item.locked
@@ -110,11 +110,11 @@ export function LearningAccordion({ items, className, defaultOpen = 0 }: Learnin
               </span>
 
               <span className="min-w-0 flex-1">
-                <span className="block text-[15px] font-black uppercase leading-snug tracking-tight text-text-primary sm:text-base">
+                <span className="block text-[15px] font-medium leading-snug text-text-primary sm:text-base">
                   {item.title}
                 </span>
                 {item.subtitle && (
-                  <span className="mt-0.5 block text-[11px] font-black uppercase leading-relaxed tracking-widest text-accent/60 sm:text-xs">
+                  <span className="mt-0.5 block text-[12px] leading-relaxed text-accent/60">
                     {item.subtitle}
                   </span>
                 )}

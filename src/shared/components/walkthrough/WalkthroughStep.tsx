@@ -78,7 +78,7 @@ export function WalkthroughStep({
           <section aria-label="Mission" className="border-l-2 border-accent/40 pl-4">
             <div className="mb-1.5 flex items-center gap-2">
               <Target className="h-4 w-4 shrink-0 text-accent" aria-hidden="true" />
-              <p className="text-[10px] font-black uppercase tracking-[0.18em] text-accent">Mission</p>
+              <p className="text-[12px] font-medium uppercase tracking-[0.12em] text-accent">Mission</p>
             </div>
             <p className="text-sm leading-6 text-text-secondary sm:text-[15px] sm:leading-7">{mission}</p>
           </section>
@@ -89,13 +89,13 @@ export function WalkthroughStep({
           <div>
             <div className="flex items-center gap-2 mb-5">
               <ClipboardList className="w-4 h-4 text-accent" />
-              <p className="text-[10px] font-black uppercase tracking-[0.18em] text-accent">Objectives</p>
+              <p className="text-[12px] font-medium uppercase tracking-[0.12em] text-accent">Objectives</p>
             </div>
             <ol className="space-y-5">
               {objectives.map((obj, i) => (
                 <li key={i} className="flex items-start gap-4">
                   <div className="relative flex flex-col items-center self-stretch shrink-0">
-                    <span className="relative z-10 w-7 h-7 rounded-lg border border-accent/40 bg-bg flex items-center justify-center font-mono text-xs font-black text-accent">
+                    <span className="relative z-10 w-7 h-7 rounded-lg border border-accent/40 bg-canvas flex items-center justify-center text-xs font-medium tabular-nums text-accent">
                       {String(i + 1).padStart(2, '0')}
                     </span>
                     {i < objectives.length - 1 && (
@@ -120,9 +120,9 @@ export function WalkthroughStep({
             <div className="mb-3 flex items-center justify-between gap-3">
               <div className="flex items-center gap-2">
                 <Search className="h-3 w-3 text-accent" aria-hidden="true" />
-                <p className="text-[10px] font-black uppercase tracking-[0.18em] text-accent">Evidence</p>
+                <p className="text-[12px] font-medium uppercase tracking-[0.12em] text-accent">Evidence</p>
               </div>
-              <span className="font-mono text-xs uppercase tracking-widest text-text-muted">
+              <span className="text-[12px] text-text-muted">
                 {evidence.length} {evidence.length === 1 ? 'entry' : 'entries'}
               </span>
             </div>
@@ -149,7 +149,7 @@ export function WalkthroughStep({
               <section key={ph.level} className="border-l-2 border-warning/40 pl-4">
                 <div className="mb-1 flex items-center gap-2">
                   <Lightbulb className="h-4 w-4 shrink-0 text-warning" aria-hidden="true" />
-                  <p className="text-[10px] font-black uppercase tracking-[0.18em] text-warning/70">
+                  <p className="text-[12px] font-medium uppercase tracking-[0.12em] text-warning/70">
                     Hint {ph.level}, {HINT_LEVEL_LABELS[ph.level - 1]}
                   </p>
                 </div>
@@ -163,7 +163,7 @@ export function WalkthroughStep({
                   if (!showHint) setShowHint(true);
                   setVisibleHintLevel(prev => prev + 1);
                 }}
-                className="flex items-center gap-1.5 text-xs font-black uppercase tracking-widest text-text-muted hover:text-warning transition-colors"
+                className="flex items-center gap-1.5 text-[13px] font-medium text-text-muted transition-colors hover:text-warning"
               >
                 <Lightbulb className="w-3 h-3" />
                 {visibleHintLevel === 0 ? 'Need a hint?' : 'Need another hint?'}
@@ -179,7 +179,7 @@ export function WalkthroughStep({
               <section className="border-l-2 border-warning/40 pl-4">
                 <div className="mb-2 flex items-center gap-2">
                   <Lightbulb className="h-4 w-4 shrink-0 text-warning" aria-hidden="true" />
-                  <p className="text-[10px] font-black uppercase tracking-[0.18em] text-warning/70">Hint</p>
+                  <p className="text-[12px] font-medium uppercase tracking-[0.12em] text-warning/70">Hint</p>
                 </div>
                 <p className="text-sm leading-6 text-warning/90 sm:text-[15px] sm:leading-7">{hint}</p>
               </section>
@@ -187,7 +187,7 @@ export function WalkthroughStep({
               <button
                 type="button"
                 onClick={() => setShowHint(true)}
-                className="flex items-center gap-1.5 text-xs font-black uppercase tracking-widest text-text-muted hover:text-warning transition-colors"
+                className="flex items-center gap-1.5 text-[13px] font-medium text-text-muted transition-colors hover:text-warning"
               >
                 <Lightbulb className="w-3 h-3" />
                 Need a hint?
@@ -223,7 +223,7 @@ export function WalkthroughStep({
           <section aria-label="Reflection" className="border-l-2 border-border/50 pl-4">
             <div className="mb-2 flex items-center gap-2">
               <MessageSquare className="h-4 w-4 text-accent" aria-hidden="true" />
-              <p className="text-[10px] font-black uppercase tracking-[0.18em] text-accent">Reflection</p>
+              <p className="text-[12px] font-medium uppercase tracking-[0.12em] text-accent">Reflection</p>
             </div>
             <p className="whitespace-pre-wrap text-sm leading-6 text-text-secondary sm:text-[15px] sm:leading-7">{reflection}</p>
           </section>

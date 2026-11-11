@@ -103,22 +103,22 @@ const LearningCatalogue: React.FC<LearningCatalogueProps> = ({
             aria-label={searchPlaceholder}
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full bg-surface border border-border-subtle rounded-xl py-3 pl-11 pr-4 text-sm text-text-primary outline-none font-mono transition-colors focus:border-accent"
+            className="w-full bg-surface border border-border-subtle rounded-md py-3 pl-11 pr-4 text-sm text-text-primary outline-none transition-colors focus:border-accent"
           />
         </div>
       )}
 
-      <p className="mt-4 text-xs font-mono uppercase tracking-widest text-text-muted" role="status">
+      <p className="mt-4 text-[12px] text-text-muted" role="status">
         {`${filteredItems.length} items`}
       </p>
 
       {showEmpty ? (
         <div className="mt-6 flex flex-col items-start gap-2 rounded-2xl border border-border-subtle bg-surface p-8">
-          <h3 className="text-sm font-black uppercase tracking-tight text-text-primary">
+          <h3 className="text-lg font-medium text-text-primary">
             {emptyTitle ?? "No items match this filter"}
           </h3>
           {emptyDescription && (
-            <p className="text-sm font-mono text-text-muted">{emptyDescription}</p>
+            <p className="text-sm text-text-muted">{emptyDescription}</p>
           )}
         </div>
       ) : (

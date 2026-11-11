@@ -217,7 +217,7 @@ export const CardDeckSurface: React.FC<CardDeckSurfaceProps> = ({
         <div className="flex flex-wrap items-center gap-x-4 gap-y-2 rounded-2xl border border-border/40 bg-bg-card px-4 py-3 mb-6">
           <div className="flex items-center gap-1.5" title={deck.rank.nextName ? `${deck.rank.xpToNext} XP to ${deck.rank.nextName}` : 'Top rank'}>
             <Trophy className="w-3.5 h-3.5 text-accent" aria-hidden="true" />
-            <span className="text-xs font-black uppercase tracking-widest text-text-primary">{deck.rank.rank}</span>
+            <span className="text-[12px] font-medium text-text-primary">{deck.rank.rank}</span>
             {deck.rank.nextName && (
               <span className="hidden sm:inline-block h-1 w-16 rounded-full bg-bg-elevated overflow-hidden border border-border/30">
                 <span className="block h-full bg-accent" style={{ width: `${deck.rank.progressPct}%` }} />
@@ -238,14 +238,14 @@ export const CardDeckSurface: React.FC<CardDeckSurfaceProps> = ({
           </div>
 
           <div className="flex items-center gap-1.5">
-            <span className="text-xs font-black uppercase tracking-widest text-text-muted">Daily</span>
+            <span className="text-[12px] font-medium text-text-muted">Daily</span>
             <span className="text-xs font-mono text-accent">{deck.dailyXp}</span>
             <span className="text-xs font-mono text-text-muted">/{deck.dailyTarget} XP</span>
           </div>
 
           <div className="ml-auto flex items-center gap-3">
             {showingComplete ? (
-              <span className="flex items-center gap-1.5 rounded-lg bg-accent/10 border border-accent/30 px-2 py-1 text-xs font-black uppercase tracking-widest text-accent">
+              <span className="flex items-center gap-1.5 rounded-md bg-accent/10 border border-accent/20 px-2 py-1 text-[12px] font-medium text-accent">
                 <Check className="w-3 h-3" aria-hidden="true" />
                 Deck Clear
               </span>
@@ -266,16 +266,16 @@ export const CardDeckSurface: React.FC<CardDeckSurfaceProps> = ({
             {/* Card header */}
             <header className="border-b border-border/20 bg-bg-elevated/60 px-3 md:px-4 py-3">
               <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
-                <span className="font-mono text-xs font-black text-text-muted">{String(activeIdx + 1).padStart(2, '0')}/{String(totalCards).padStart(2, '0')}</span>
-                <span className="text-[10px] font-black uppercase tracking-widest text-accent">{blockLabel(current.type)}</span>
+                <span className="text-[12px] font-medium tabular-nums text-text-muted">{String(activeIdx + 1).padStart(2, '0')}/{String(totalCards).padStart(2, '0')}</span>
+                <span className="text-[12px] font-medium uppercase tracking-[0.12em] text-accent">{blockLabel(current.type)}</span>
                 <span className="truncate text-base font-mono text-text-primary min-w-0">{truncate(blockTitle(current))}</span>
                 {currentSolved && (
-                  <span className="flex items-center gap-1 rounded-lg bg-accent/10 border border-accent/30 px-2 py-0.5 text-[10px] font-black uppercase tracking-widest text-accent">
+                  <span className="flex items-center gap-1 rounded-md bg-accent/10 border border-accent/20 px-2 py-0.5 text-[12px] font-medium uppercase tracking-[0.12em] text-accent">
                     <Check className="w-3 h-3" aria-hidden="true" />
                     Solved
                   </span>
                 )}
-                <span className="ml-auto text-[10px] font-black uppercase tracking-widest text-text-muted shrink-0">+{blockXp(current)} XP</span>
+                <span className="ml-auto text-[12px] font-medium uppercase tracking-[0.12em] text-text-muted shrink-0">+{blockXp(current)} XP</span>
               </div>
             </header>
 
@@ -289,7 +289,7 @@ export const CardDeckSurface: React.FC<CardDeckSurfaceProps> = ({
               <Button variant="ghost" size="sm" icon={<ChevronLeft className="h-4 w-4" aria-hidden="true" />} onClick={handlePrev} disabled={activeIdx === 0} ariaLabel="Previous card">
                 <span className="hidden sm:inline">Prev</span>
               </Button>
-              <span className="mx-auto text-[10px] font-black uppercase tracking-widest text-text-muted" aria-hidden="true">
+              <span className="mx-auto text-[12px] font-medium uppercase tracking-[0.12em] text-text-muted" aria-hidden="true">
                 {showingComplete
                   ? onDeckComplete
                     ? 'Unit complete'
@@ -332,7 +332,7 @@ export const CardDeckSurface: React.FC<CardDeckSurfaceProps> = ({
 
         {/* XP toast */}
         {awardFlash && !showLevelUp && (
-          <div className="absolute right-2 top-16 rounded-xl border border-accent/30 bg-accent/10 px-3 py-2 font-mono text-xs font-black tracking-widest text-accent" role="status" aria-label="XP awarded" aria-live="polite">
+          <div className="absolute right-2 top-16 rounded-lg border border-accent/20 bg-accent/10 px-3 py-2 text-[12px] font-medium tabular-nums text-accent" role="status" aria-label="XP awarded" aria-live="polite">
             {awardFlash}
           </div>
         )}
@@ -343,10 +343,10 @@ export const CardDeckSurface: React.FC<CardDeckSurfaceProps> = ({
             <div className="rounded-2xl border-2 border-accent/50 bg-bg-card px-6 py-4 text-center" role="status" aria-live="polite">
               <div className="flex items-center justify-center gap-2 mb-1">
                 <Trophy className="w-5 h-5 text-accent" aria-hidden="true" />
-                <p className="text-sm font-black uppercase tracking-widest text-accent">Rank up</p>
+                <p className="text-[12px] font-medium uppercase tracking-[0.12em] text-accent">Rank up</p>
                 <X className="w-4 h-4 text-text-muted" aria-hidden="true" />
               </div>
-              <p className="text-2xl font-black text-text-primary">{levelUpRank}</p>
+              <p className="text-2xl font-medium text-text-primary">{levelUpRank}</p>
             </div>
           </div>
         )}

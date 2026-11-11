@@ -179,10 +179,10 @@ const CourseLessonPage: React.FC = () => {
       meta: (
         <span className="flex items-center gap-1.5">
           {lesson.hasQuiz && (
-            <span className="rounded-md bg-accent/10 px-1.5 py-0.5 text-[10px] font-black uppercase tracking-widest text-accent">Quiz</span>
+            <span className="rounded-md bg-accent/10 px-1.5 py-0.5 text-[12px] font-medium text-accent">Quiz</span>
           )}
           {lesson.hasCodePlayground && (
-            <span className="rounded-md bg-accent/10 px-1.5 py-0.5 text-[10px] font-black uppercase tracking-widest text-accent">Code</span>
+            <span className="rounded-md bg-accent/10 px-1.5 py-0.5 text-[12px] font-medium text-accent">Code</span>
           )}
         </span>
       ),

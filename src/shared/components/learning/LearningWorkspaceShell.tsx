@@ -74,29 +74,9 @@ const LearningWorkspaceShell: React.FC<LearningWorkspaceShellProps> = ({
 
   return (
     <div className="min-h-dvh w-full bg-canvas">
-      <div className="mx-auto w-full max-w-[1240px] px-3 pb-16 pt-6 sm:px-6 md:pb-20 md:pt-8 lg:px-8 lg:pb-24">
-        <header
-          className={
-            heroArt
-              ? 'relative isolate overflow-hidden rounded-2xl border border-accent/20 bg-surface px-5 py-6 sm:px-6 sm:py-7 md:px-8 md:py-8'
-              : 'flex flex-col gap-6'
-          }
-        >
-          {heroArt && (
-            <>
-              <div
-                aria-hidden="true"
-                className="learning-hero-wash pointer-events-none absolute inset-0"
-              />
-              <div
-                aria-hidden="true"
-                className="pointer-events-none absolute -right-20 top-1/2 h-72 w-72 -translate-y-1/2 rotate-6 opacity-20 sm:-right-16 sm:h-80 sm:w-80 md:h-96 md:w-96 lg:right-2 lg:h-[26rem] lg:w-[26rem] lg:opacity-30"
-              >
-                {heroArt}
-              </div>
-            </>
-          )}
-          <div className={heroArt ? 'relative z-10 flex flex-col gap-6' : 'contents'}>
+      <div className="w-full px-[var(--app-gutter,12px)] pb-16 pt-6 md:pb-20 md:pt-8 lg:pb-24">
+        <header className="relative isolate overflow-hidden rounded-2xl border border-border-subtle bg-surface px-5 py-6 sm:px-6 sm:py-7 md:px-8">
+          <div className="relative z-10 flex flex-col gap-6">
           {(breadcrumb || defaultBreadcrumb || onBack) && (
             <div className="flex flex-wrap items-center gap-3">
               {onBack ? (
@@ -110,30 +90,33 @@ const LearningWorkspaceShell: React.FC<LearningWorkspaceShellProps> = ({
             </div>
           )}
 
-          <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
-            <div className="max-w-2xl">
+          <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
+            <div className="min-w-0 max-w-2xl">
               {kicker && (
-                <p className="mb-2 type-label uppercase tracking-[0.12em] text-accent">{kicker}</p>
+                <p className="mb-2 text-[12px] font-medium uppercase tracking-[0.12em] text-accent">{kicker}</p>
               )}
               <div className="flex items-center gap-4">
                 {icon && (
-                  <span className="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl border border-border-subtle bg-surface-raised text-accent">
+                  <span className="flex h-14 w-14 shrink-0 items-center justify-center rounded-md bg-surface-raised text-accent">
                     {icon}
                   </span>
                 )}
-                <h1
-                  className={`font-display text-2xl font-bold leading-tight tracking-tight sm:text-3xl md:text-4xl lg:text-[42px] ${
-                    heroArt ? 'learning-hero-title' : 'text-text-primary'
-                  }`}
-                >
+                <h1 className="text-2xl font-medium leading-tight tracking-tight text-text-primary sm:text-3xl md:text-4xl">
                   {title}
                 </h1>
               </div>
               {description && (
-                <p className="mt-3 max-w-2xl text-sm leading-6 text-text-secondary sm:text-base sm:leading-7 md:text-lg">{description}</p>
+                <p className="mt-3 max-w-2xl text-sm leading-6 text-text-secondary sm:text-base">{description}</p>
               )}
             </div>
-            {actions && <div className="flex flex-wrap items-center gap-3">{actions}</div>}
+            <div className="flex flex-wrap items-center gap-4">
+              {actions && <div className="flex flex-wrap items-center gap-3">{actions}</div>}
+              {heroArt && (
+                <div aria-hidden="true" className="pointer-events-none hidden h-40 w-40 shrink-0 sm:block">
+                  {heroArt}
+                </div>
+              )}
+            </div>
           </div>
 
           {(stats || progress) && (
@@ -143,14 +126,14 @@ const LearningWorkspaceShell: React.FC<LearningWorkspaceShellProps> = ({
                   key={String(stat.label)}
                   className={`type-meta ${stat.accent ? 'text-accent' : 'text-text-tertiary'}`}
                 >
-                  <span className="font-mono text-sm font-black text-text-primary">{stat.value}</span>{' '}
+                  <span className="text-sm font-medium tabular-nums text-text-primary">{stat.value}</span>{' '}
                   {stat.label}
                 </span>
               ))}
               {progress && (
                 <div className="flex min-w-[180px] flex-1 items-center gap-3">
                   <div
-                    className="h-1.5 flex-1 overflow-hidden rounded-full bg-surface-raised"
+                    className="h-1 flex-1 overflow-hidden rounded-full bg-surface-raised"
                     role="progressbar"
                     aria-valuenow={progress.value}
                     aria-valuemin={0}
@@ -162,7 +145,7 @@ const LearningWorkspaceShell: React.FC<LearningWorkspaceShellProps> = ({
                       style={{ width: `${Math.max(0, Math.min(100, progress.value))}%` }}
                     />
                   </div>
-                  <span className="type-meta font-mono text-sm font-black text-text-primary">
+                  <span className="type-meta text-sm font-medium tabular-nums text-text-primary">
                     {progress.label}
                   </span>
                 </div>

@@ -110,7 +110,7 @@ export function LearningTaskAccordion({
             key={task.id}
             id={task.id}
             className={cn(
-              'w-full scroll-mt-24 overflow-hidden rounded-lg border bg-surface transition-colors duration-150',
+              'w-full scroll-mt-[calc(var(--app-topbar-h,80px)+16px)] overflow-hidden rounded-lg border bg-surface transition-colors duration-150',
               isOpen
                 ? 'border-accent/50'
                 : task.locked
@@ -138,7 +138,7 @@ export function LearningTaskAccordion({
               <span
                 aria-hidden="true"
                 className={cn(
-                  'flex h-8 w-8 shrink-0 items-center justify-center rounded-full border font-mono text-xs font-black transition-colors duration-150',
+                  'flex h-8 w-8 shrink-0 items-center justify-center rounded-full border text-xs font-medium tabular-nums transition-colors duration-150',
                   task.completed
                     ? 'border-success/40 bg-success/10 text-success'
                     : isOpen
@@ -150,7 +150,7 @@ export function LearningTaskAccordion({
               </span>
 
               <span className="min-w-0 flex-1">
-                <span className="block text-sm font-semibold leading-snug text-text-primary sm:text-[15px]">
+                <span className="block text-sm font-medium leading-snug text-text-primary sm:text-[15px]">
                   {task.title}
                 </span>
                 {task.description && (
@@ -163,7 +163,7 @@ export function LearningTaskAccordion({
               {task.meta && <span className="hidden shrink-0 sm:block">{task.meta}</span>}
 
               {task.completed && (
-                <span className="hidden shrink-0 text-xs font-bold uppercase tracking-widest text-accent sm:block">
+                <span className="hidden shrink-0 text-[12px] font-medium text-accent sm:block">
                   Complete
                 </span>
               )}

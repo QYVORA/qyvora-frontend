@@ -61,7 +61,7 @@ describe('WalkthroughStep — flag feedback', () => {
     await user.click(screen.getByRole('button', { name: 'Submit' }));
     await waitFor(() => expect(mockFlagSubmit).toHaveBeenCalledWith('step-1', 'QYVORA-ok'));
     expect(onComplete).toHaveBeenCalledWith('step-1');
-    expect(await screen.findByText('Step completed!')).toBeInTheDocument();
+    expect(await screen.findByText('Step completed')).toBeInTheDocument();
   });
 
   it('submits on Enter key', async () => {
@@ -81,7 +81,7 @@ describe('WalkthroughStep — flag feedback', () => {
     await user.click(screen.getByRole('button', { name: 'Submit' }));
     expect(await screen.findByText('Incorrect flag. Try again.')).toBeInTheDocument();
     expect(onComplete).not.toHaveBeenCalled();
-    expect(screen.queryByText('Step completed!')).not.toBeInTheDocument();
+    expect(screen.queryByText('Step completed')).not.toBeInTheDocument();
   });
 
   it('handles a failed submission gracefully without completing', async () => {
