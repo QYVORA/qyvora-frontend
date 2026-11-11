@@ -1140,6 +1140,35 @@ html[data-animations="off"] * {
   --z-loader: 9999;
 }
 
+/* ── App layout rhythm — single source for gutters and card padding ────────
+   12px / 16px / 24px / 30px gutters and 16px / 20px / 24px card padding.
+   Defined globally so public and app pages share the same measuring line. */
+:root {
+  --app-gutter: 12px;
+  --app-card-pad: 16px;
+  --app-gap: 24px;
+  --app-topbar-h: 64px;
+  --app-topbar-offset: var(--app-topbar-h);
+}
+@media (min-width: 640px) {
+  :root {
+    --app-gutter: 16px;
+    --app-card-pad: 20px;
+  }
+}
+@media (min-width: 1024px) {
+  :root {
+    --app-gutter: 24px;
+    --app-card-pad: 24px;
+    --app-topbar-h: 80px;
+  }
+}
+@media (min-width: 1280px) {
+  :root {
+    --app-gutter: 30px;
+  }
+}
+
 @layer components {
   /* ═══════ Typography tokens — visible text never below 12px ═══════
      .type-display   landing hero only, one per view
@@ -1408,9 +1437,9 @@ html.qyvora-cursor .cursor-help {
   --tracking-wider: 0.03em;
 
   /* App layout + control contract. */
-  --app-gutter: 16px;
+  --app-gutter: 12px;
   --app-gap: 24px;
-  --app-card-pad: 20px;
+  --app-card-pad: 16px;
   --app-topbar-h: 64px;
   --app-hero-h: 220px;
 
@@ -1428,18 +1457,25 @@ html.qyvora-cursor .cursor-help {
   --app-border-input: rgba(178, 193, 194, 0.24);
 }
 
-@media (min-width: 768px) {
+@media (min-width: 640px) {
   :root[data-ui="app"] {
-    --app-gutter: 24px;
-    --app-card-pad: 24px;
+    --app-gutter: 16px;
+    --app-card-pad: 20px;
   }
 }
 
 @media (min-width: 1024px) {
   :root[data-ui="app"] {
-    --app-gutter: 30px;
+    --app-gutter: 24px;
+    --app-card-pad: 24px;
     --app-topbar-h: 80px;
     --app-hero-h: 292px;
+  }
+}
+
+@media (min-width: 1280px) {
+  :root[data-ui="app"] {
+    --app-gutter: 30px;
   }
 }
 

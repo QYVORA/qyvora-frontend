@@ -101,12 +101,12 @@ const toBootcampItem = (bootcamp: MyLearningBootcamp): LearningItem => ({
 
 const LearningIdentity = ({ item }: { item: LearningItem }) => {
   if (item.kind === 'course') {
-    return <CourseBadge courseId={item.id} className="h-16 w-16 shrink-0" glow={false} />;
+    return <CourseBadge courseId={item.id} className="h-12 w-12 shrink-0 sm:h-[60px] sm:w-[60px]" glow={false} />;
   }
   if (item.kind === 'lab') {
-    return <LabBadge labId={item.id} className="h-16 w-16 shrink-0" glow={false} />;
+    return <LabBadge labId={item.id} className="h-12 w-12 shrink-0 sm:h-[60px] sm:w-[60px]" glow={false} />;
   }
-  return <HpbAvatar variant="phase1" size={64} className="h-16 w-16 shrink-0" />;
+  return <HpbAvatar variant="phase1" size={60} className="h-12 w-12 shrink-0 sm:h-[60px] sm:w-[60px]" />;
 };
 
 const LearningRow = ({
@@ -252,7 +252,7 @@ const MyLearningCard = ({
   ];
 
   return (
-    <Card as="section" className="p-5 md:p-6">
+    <Card as="section" className="p-[var(--app-card-pad)]">
       <div className="mb-4 flex items-center justify-between gap-3">
         <h2 className="type-h2 text-text-primary">My Learning</h2>
         <Button to="/dashboard/labs" variant="ghost" size="sm" className="shrink-0">

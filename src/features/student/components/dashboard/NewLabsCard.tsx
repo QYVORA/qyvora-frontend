@@ -49,7 +49,7 @@ const NewLabsCard = ({ labs, excludeLabIds = [] }: NewLabsCardProps) => {
   const visible = tab === 'recommended' ? recommended : fresh;
 
   return (
-    <Card as="section" className="flex flex-col p-5 md:p-6">
+    <Card as="section" className="flex flex-col p-[var(--app-card-pad)]">
       <div className="mb-4 flex items-center justify-between gap-3">
         <h2 className="type-h2 text-text-primary">Discover Labs</h2>
         <Button to="/dashboard/labs" variant="ghost" size="sm" className="shrink-0">
@@ -69,9 +69,9 @@ const NewLabsCard = ({ labs, excludeLabIds = [] }: NewLabsCardProps) => {
       />
 
       {visible.length > 0 ? (
-        <ul>
+        <ul className="grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {visible.map((lab) => (
-            <li key={lab.id} className="border-t border-border-subtle py-3 first:border-t-0 first:pt-0 last:pb-0">
+            <li key={lab.id} className="min-w-0 rounded-md border border-border-subtle bg-surface-raised/40 p-3">
               <div className="flex min-w-0 items-center gap-2">
                 <Link
                   to={lab.route}
@@ -97,12 +97,12 @@ const NewLabsCard = ({ labs, excludeLabIds = [] }: NewLabsCardProps) => {
                     <span className="mt-1 flex flex-wrap items-center gap-x-3 gap-y-1">
                       <DifficultyBadge difficulty={lab.difficulty} />
                       {lab.cpReward && (
-                        <span className="font-mono text-[10px] font-bold text-text-muted">
+                        <span className="text-[12px] font-medium text-text-muted">
                           {lab.cpReward} CP
                         </span>
                       )}
                       {lab.lessonsCount !== undefined && (
-                        <span className="font-mono text-[10px] text-text-muted">
+                        <span className="text-[12px] text-text-muted">
                           {lab.lessonsCount} lessons
                         </span>
                       )}

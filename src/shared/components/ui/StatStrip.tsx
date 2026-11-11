@@ -24,17 +24,18 @@ interface StatStripProps {
 const StatStrip: React.FC<StatStripProps> = ({ cells, className, label }) => (
   <Card className={cn('overflow-hidden', className)}>
     <dl
-      className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-[repeat(auto-fit,minmax(0,1fr))]"
+      className="grid grid-cols-2 sm:grid-cols-[repeat(auto-fit,minmax(0,1fr))]"
       aria-label={label}
     >
       {cells.map((cell, index) => (
         <div
           key={cell.key ?? index}
           className={cn(
-            'flex flex-col items-center justify-center gap-1 px-4 py-5 text-center',
+            'flex flex-col items-center justify-center gap-1 px-4 py-[var(--app-card-pad,20px)] text-center',
             'border-border-subtle',
-            index > 0 && 'border-t sm:border-t-0 sm:border-l',
-            index === 2 && 'sm:border-t lg:border-t-0',
+            index > 0 && 'border-t sm:border-t-0',
+            index % 2 === 1 && 'border-l',
+            index > 0 && 'sm:border-l',
           )}
         >
           {cell.icon && <span className="text-accent [&_svg]:h-4 [&_svg]:w-4">{cell.icon}</span>}

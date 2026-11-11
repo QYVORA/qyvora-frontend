@@ -11,6 +11,7 @@ import useStudentOverview from '@/features/student/hooks/useStudentOverview';
 import useEngagement from '@/features/student/hooks/useEngagement';
 import { Button, Card, FadeIn } from '@/shared/components/ui';
 import PageBody from '@/shared/components/layout/PageBody';
+import TwoColumn from '@/shared/components/layout/TwoColumn';
 import { DashboardSkeleton } from '@/features/student/components/StudentSkeletons';
 import SEO from '@/shared/components/SEO';
 import StudentTour from '@/features/student/components/StudentTour';
@@ -226,19 +227,25 @@ const Dashboard = () => {
             </div>
           )}
 
-          <div className="grid min-w-0 grid-cols-1 items-start gap-5 xl:grid-cols-12 xl:gap-6">
-            <div className="flex min-w-0 flex-col gap-5 xl:col-span-8">
-              <ScrollReveal>
-                <DashboardHero
-                  username={user?.username}
-                  title={hero.title}
-                  body={hero.body}
-                  ctaLabel={hero.ctaLabel}
-                  continuePath={hero.continuePath}
-                  secondaryLabel={isEnrolled && !overviewError ? 'All Labs' : undefined}
-                  secondaryTo={isEnrolled && !overviewError ? '/dashboard/labs' : undefined}
-                />
-              </ScrollReveal>
+          <TwoColumn split="dash">
+            <div className="flex min-w-0 flex-col gap-6">
+              <div className="grid min-w-0 grid-cols-1 gap-6 lg:grid-cols-[minmax(0,1fr)_280px]">
+                <ScrollReveal>
+                  <DashboardHero
+                    username={user?.username}
+                    title={hero.title}
+                    body={hero.body}
+                    ctaLabel={hero.ctaLabel}
+                    continuePath={hero.continuePath}
+                    secondaryLabel={isEnrolled && !overviewError ? 'All Labs' : undefined}
+                    secondaryTo={isEnrolled && !overviewError ? '/dashboard/labs' : undefined}
+                  />
+                </ScrollReveal>
+
+                <ScrollReveal>
+                  <CommunityCard />
+                </ScrollReveal>
+              </div>
 
               <ScrollReveal>
                 <MyLearningCard
@@ -258,9 +265,13 @@ const Dashboard = () => {
               <ScrollReveal>
                 <NewLabsCard labs={UNIFIED_LABS} excludeLabIds={activeContentLabIds} />
               </ScrollReveal>
+
+              <ScrollReveal>
+                <SessionPlannerCard />
+              </ScrollReveal>
             </div>
 
-            <aside className="flex min-w-0 flex-col gap-5 xl:col-span-4">
+            <aside className="flex min-w-0 flex-col gap-6">
               <ScrollReveal>
                 <WeeklyMissionCard
                   engagement={engagement}
@@ -288,27 +299,19 @@ const Dashboard = () => {
               <CertificateClaimBanner />
 
               <ScrollReveal>
-                <CommunityCard />
-              </ScrollReveal>
-
-              <ScrollReveal>
-                <SessionPlannerCard />
-              </ScrollReveal>
-
-              <ScrollReveal>
                 <TopOperatorsCard currentUserId={user?.uid} />
               </ScrollReveal>
 
               {visitDates.length > 0 && (
                 <ScrollReveal>
-                  <Card className="flex flex-col p-5 md:p-6">
+                  <Card className="flex flex-col p-[var(--app-card-pad)]">
                     <h2 className="type-h2 mb-4 text-text-primary">This Week</h2>
                     <WeekActivity visitDates={visitDates} visitDurations={visitDurations} />
                   </Card>
                 </ScrollReveal>
               )}
             </aside>
-          </div>
+          </TwoColumn>
         </PageBody>
       </div>
     </FadeIn>

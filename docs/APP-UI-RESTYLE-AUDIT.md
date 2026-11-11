@@ -165,3 +165,39 @@ existing utilities. The §4.2 fallback (per-utility overrides) is **not** needed
 
 None. Baseline typecheck/lint/test/build are green. Remaining legacy-style lint
 warnings introduced by the new guard rule are counted in Phase 7.
+
+---
+
+## 8. Layout stacking bug (Phase A audit)
+
+**Root cause.** The dashboard split used `xl:grid-cols-12` with `xl:col-span-8/4`
+children. `xl` is 1280px, so at the common 1024–1279 desktop range the page
+stacked into one column. `PageBody` itself is a plain `div` (not flex/block
+locked), so it was not the culprit; the breakpoint was.
+
+**Findings per surface:**
+
+- `DashboardPage/index.tsx:229` — `grid-cols-1 … xl:grid-cols-12`, children
+  `xl:col-span-8` / `xl:col-span-4`. Confirmed mismatch with the intended
+  `lg` (1024px) split. Replaced with `TwoColumn split="dash"`.
+- `ProfilePage.tsx:123` — `grid gap-6 lg:grid-cols-12` + `lg:col-span-4/8`.
+  Correct breakpoint but ad-hoc; replaced with `TwoColumn split="profile"`
+  (4fr/7fr ≈ 36/64).
+- `PublicProfilePage.tsx:152` — same `lg:grid-cols-12`; replaced with the
+  shared `ProfileLayout`.
+- `SettingsPage.tsx` — no split at all (single stack, section via route
+  param). Added a 306px in-page section rail via `TwoColumn split="rail"`.
+- `LearningWorkspaceShell.tsx` — no page split; it is a single content column
+  by design. It had no `max-w` cap on the outer shell (only the hero text used
+  `max-w-2xl`), so no stacking bug there.
+- `PageBody.tsx` — gutter came from `--app-gutter`; the variable was only
+  defined inside `:root[data-ui="app"]`, so any surface rendered outside that
+  scope collapsed the padding to the 12px fallback. The variable is now defined
+  globally with the 12/16/24/30px breakpoints.
+- Tailwind v4 scanning — the new splits use literal grid templates in
+  `TwoColumn.tsx` (`lg:grid-cols-[minmax(0,2fr)_minmax(0,1fr)]`, etc.), so they
+  are scanned and emitted. Verified in the built CSS.
+
+**Mobile width.** The gutter is now 12px at <640px (was 16px), cards are
+`w-full`, and card padding is 16px at <640 / 20px 640–1023 / 24px ≥1024 via
+`--app-card-pad`.

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { NavLink, useParams } from 'react-router-dom';
 import { Key, Eye, EyeOff, Loader2, Save, Copy, CheckCircle2, AlertTriangle, RefreshCw, Trash2, ChevronDown } from 'lucide-react';
 import api from '../../../core/services/api';
 import { useToast } from '../../../core/contexts/ToastContext';
@@ -10,6 +10,7 @@ import Switch from '../../../shared/components/ui/Switch';
 import FadeIn from '../../../shared/components/ui/FadeIn';
 import PageHeader from '../../../shared/components/ui/PageHeader';
 import PageBody from '@/shared/components/layout/PageBody';
+import TwoColumn from '@/shared/components/layout/TwoColumn';
 import SectionHeader from '../../../shared/components/ui/SectionHeader';
 import { SettingsSkeleton } from '../components/StudentSkeletons';
 import { usePreferences } from '../../../shared/hooks/usePreferences';
@@ -242,7 +243,33 @@ const Settings: React.FC = () => {
           description={sectionHeader[activeSection].description}
         />
 
-        <div className="w-full space-y-6 md:space-y-8">
+        <TwoColumn split="rail" className="mt-6">
+          <nav
+            aria-label="Settings sections"
+            className="flex min-w-0 flex-col gap-1 lg:sticky lg:top-[calc(var(--app-topbar-offset,var(--app-topbar-h,80px))+24px)] lg:transition-[top] lg:duration-200"
+          >
+            {SETTINGS_SECTIONS.map((section) => {
+              const Icon = section.icon;
+              return (
+                <NavLink
+                  key={section.id}
+                  to={section.path}
+                  className={({ isActive }) =>
+                    `flex min-h-[44px] items-center gap-3 rounded-md px-3 text-sm transition-colors ${
+                      isActive
+                        ? 'bg-accent/10 font-medium text-accent'
+                        : 'text-text-secondary hover:bg-surface-raised hover:text-text-primary'
+                    }`
+                  }
+                >
+                  <Icon className="h-[18px] w-[18px] shrink-0" aria-hidden="true" />
+                  {section.label}
+                </NavLink>
+              );
+            })}
+          </nav>
+
+          <div className="w-full space-y-6 md:space-y-8">
 
           {/* Appearance Section */}
           {activeSection === 'appearance' && (
@@ -496,7 +523,8 @@ const Settings: React.FC = () => {
             </div>
           )}
 
-        </div>
+          </div>
+        </TwoColumn>
       </PageBody>
     </>
     </FadeIn>
