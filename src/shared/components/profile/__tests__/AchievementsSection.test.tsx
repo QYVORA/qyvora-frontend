@@ -34,7 +34,7 @@ describe('AchievementsSection', () => {
       />
     );
 
-    const labsTab = screen.getByRole('tab', { name: /labs \(2\)/i });
+    const labsTab = screen.getByRole('tab', { name: /labs/i });
     fireEvent.click(labsTab);
 
     expect(screen.getByRole('button', { name: /linux terminal 101/i })).toBeInTheDocument();
@@ -60,7 +60,7 @@ describe('AchievementsSection', () => {
 
     expect(screen.getByText('Web Security')).toBeInTheDocument();
     expect(screen.getByText(/Rare · 4/)).toBeInTheDocument();
-    expect(screen.getByRole('tab', { name: /skills \(1\)/i })).toBeInTheDocument();
+    expect(screen.getByRole('tab', { name: /skills/i })).toBeInTheDocument();
   });
 
   it('does not render zero-scenario skill rows', () => {

@@ -6,7 +6,7 @@ import type { ActivityEvent, ProfileData } from '@/shared/types/profile';
 import { deriveActivityEvents } from '@/shared/utils/profileDerivations';
 import BootcampBadge from '@/shared/components/BootcampBadge';
 import CourseBadge from '@/shared/components/CourseBadge';
-import ModuleHeader from './ModuleHeader';
+import SectionCard from '@/shared/components/ui/SectionCard';
 
 interface ActivityTimelineProps {
   profile: ProfileData;
@@ -41,19 +41,16 @@ const ActivityTimeline: React.FC<ActivityTimelineProps> = ({ profile, className 
 
   if (events.length === 0) {
     return (
-      <div className={`rounded-2xl border border-border-subtle bg-surface p-5 md:p-6 ${className}`}>
-        <ModuleHeader icon={<History className="h-4 w-4" />} title="Recent Activity" />
+      <SectionCard title="Recent activity" icon={<History />} className={className}>
         <p className="py-4 text-center text-sm text-text-muted">
           No activity yet. Complete labs to see your timeline.
         </p>
-      </div>
+      </SectionCard>
     );
   }
 
   return (
-    <div className={`rounded-2xl border border-border-subtle bg-surface p-5 md:p-6 ${className}`}>
-      <ModuleHeader icon={<History className="h-4 w-4" />} title="Recent Activity" />
-
+    <SectionCard title="Recent activity" icon={<History />} className={className}>
       <div className="relative">
         <div className="absolute bottom-3 left-[15px] top-3 w-px bg-border/30" />
 
@@ -84,7 +81,7 @@ const ActivityTimeline: React.FC<ActivityTimelineProps> = ({ profile, className 
           ))}
         </div>
       </div>
-    </div>
+    </SectionCard>
   );
 };
 

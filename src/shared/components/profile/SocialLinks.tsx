@@ -1,5 +1,4 @@
 import React from 'react';
-import { ExternalLink } from 'lucide-react';
 import { BrandGithubIcon, BrandLinkedinIcon, BrandXIcon } from '@/shared/components/icons';
 import PortfolioLink, { sanitizePortfolioUrl } from './PortfolioLink';
 
@@ -61,11 +60,9 @@ export const SocialLinks: React.FC<SocialLinksProps> = ({
           target="_blank"
           rel="noopener noreferrer"
           aria-label="GitHub profile"
-          className="inline-flex min-h-[32px] items-center gap-1.5 rounded-md bg-surface-raised px-2.5 py-1 text-[13px] text-text-secondary transition-colors hover:text-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+          className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-surface-raised text-text-secondary transition-colors hover:text-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
         >
-          <BrandGithubIcon className="h-3.5 w-3.5 text-text-primary" />
-          <span>GitHub</span>
-          <ExternalLink className="h-2.5 w-2.5 text-text-muted" aria-hidden="true" />
+          <BrandGithubIcon className="h-4 w-4 text-text-primary" />
         </a>
       )}
 
@@ -75,11 +72,9 @@ export const SocialLinks: React.FC<SocialLinksProps> = ({
           target="_blank"
           rel="noopener noreferrer"
           aria-label="X (formerly Twitter) profile"
-          className="inline-flex min-h-[32px] items-center gap-1.5 rounded-md bg-surface-raised px-2.5 py-1 text-[13px] text-text-secondary transition-colors hover:text-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+          className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-surface-raised text-text-secondary transition-colors hover:text-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
         >
-          <BrandXIcon className="h-3.5 w-3.5 text-text-primary" />
-          <span>X</span>
-          <ExternalLink className="h-2.5 w-2.5 text-text-muted" aria-hidden="true" />
+          <BrandXIcon className="h-4 w-4 text-text-primary" />
         </a>
       )}
 
@@ -89,11 +84,9 @@ export const SocialLinks: React.FC<SocialLinksProps> = ({
           target="_blank"
           rel="noopener noreferrer"
           aria-label="LinkedIn profile"
-          className="inline-flex min-h-[32px] items-center gap-1.5 rounded-md bg-surface-raised px-2.5 py-1 text-[13px] text-text-secondary transition-colors hover:text-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+          className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-surface-raised text-text-secondary transition-colors hover:text-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
         >
-          <BrandLinkedinIcon className="h-3.5 w-3.5 text-text-primary" />
-          <span>LinkedIn</span>
-          <ExternalLink className="h-2.5 w-2.5 text-text-muted" aria-hidden="true" />
+          <BrandLinkedinIcon className="h-4 w-4 text-text-primary" />
         </a>
       )}
 

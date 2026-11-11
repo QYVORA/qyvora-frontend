@@ -3,7 +3,7 @@ import { useReducedMotion } from '@/shared/hooks/useReducedMotion';
 import { ExternalLink, Bug } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import type { CompletedRoom } from '@/shared/types/profile';
-import ModuleHeader from './ModuleHeader';
+import SectionCard from '@/shared/components/ui/SectionCard';
 
 interface LabsModuleProps {
   completedRooms: CompletedRoom[];
@@ -19,19 +19,18 @@ const LabsModule: React.FC<LabsModuleProps> = ({
   const displayRooms = completedRooms.slice(-8).reverse();
 
   return (
-    <div className={`rounded-2xl border border-border-subtle bg-surface p-5 md:p-6 ${className}`}>
-      <ModuleHeader
-        icon={<Bug className="h-4 w-4" />}
-        title="Bootcamp"
-        trailing={
-          completedRooms.length > 0 ? (
-            <span className="rounded-md bg-accent/10 px-2 py-0.5 text-[12px] font-medium text-accent">
-              {completedRooms.length}
-            </span>
-          ) : undefined
-        }
-      />
-
+    <SectionCard
+      title="Bootcamp"
+      icon={<Bug />}
+      actions={
+        completedRooms.length > 0 ? (
+          <span className="rounded-md bg-accent/10 px-2 py-0.5 text-[12px] font-medium text-accent">
+            {completedRooms.length}
+          </span>
+        ) : undefined
+      }
+      className={className}
+    >
       {displayRooms.length === 0 ? (
         <p className="py-4 text-center text-sm text-text-muted">No Bootcamp rooms completed yet.</p>
       ) : (
@@ -61,7 +60,7 @@ const LabsModule: React.FC<LabsModuleProps> = ({
           ))}
         </div>
       )}
-    </div>
+    </SectionCard>
   );
 };
 

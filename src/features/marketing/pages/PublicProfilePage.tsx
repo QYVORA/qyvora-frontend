@@ -7,17 +7,18 @@ import api from '@/core/services/api';
 import PageLoader from '@/shared/components/PageLoader';
 import SEO from '@/shared/components/SEO';
 import { buildPersonProfile, toAbsoluteUrl } from '@/shared/seo/schema';
-import PublicContainer from '@/shared/components/layout/PublicContainer';
 import ProfileIdentityBlock from '@/shared/components/profile/ProfileIdentityBlock';
+import ProfileLayout from '@/shared/components/profile/ProfileLayout';
+import RankLevelCard from '@/shared/components/profile/RankLevelCard';
 import CpLogo from '@/shared/components/CpLogo';
 import { QyvoraMark } from '@/shared/components/brand';
 import ProfileMetricsStrip from '@/shared/components/profile/ProfileMetricsStrip';
 import AchievementsSection from '@/shared/components/profile/AchievementsSection';
 import ContributionCalendar from '@/shared/components/profile/ContributionCalendar';
 import ActivityTimeline from '@/shared/components/profile/ActivityTimeline';
-import LabsModule from '@/shared/components/profile/LabsModule';
 import CoursesModule from '@/shared/components/profile/CoursesModule';
 import TrophyCabinet from '@/shared/components/profile/TrophyCabinet';
+import SectionCard from '@/shared/components/ui/SectionCard';
 import type { ProfileData, ProfileApiResponse, CompletedRoom, ProfileSectionId } from '@/shared/types/profile';
 
 const PublicProfile: React.FC = () => {
@@ -146,96 +147,91 @@ const PublicProfile: React.FC = () => {
         })}
       />
 
-      <PublicContainer className="pt-24 md:pt-28 lg:pt-32 pb-20 lg:pb-24">
-        <div className="grid gap-4 sm:gap-5 lg:grid-cols-12 lg:gap-8">
-          <aside className="w-full min-w-0 lg:col-span-4">
-            <div className="w-full space-y-4 sm:space-y-5 lg:space-y-6 lg:sticky lg:top-[calc(var(--app-topbar-offset,var(--app-topbar-h,80px))+24px)]">
-              <section id="profile-section-identity">
-                <ProfileIdentityBlock
-                  id={profile.id}
-                  handle={profile.username}
-                  name={profile.displayName || undefined}
-                  bio={profile.bio || undefined}
-                  rank={profile.rank}
-                  organization={profile.organization || undefined}
-                  actions={[
-                    { label: 'Back to Home', to: '/', icon: <IconArrowLeft className="w-3.5 h-3.5" /> },
-                  ]}
-                  showShare
-                  xpLevel={profile.xpLevel}
-                  xpCurrent={profile.xpCurrent}
-                  xpToNext={profile.xpToNext}
-                  joinDate={profile.joinDate || undefined}
-                  country={profile.country || undefined}
-                  website={profile.website || undefined}
-                  github={profile.github || undefined}
-                  githubConnected={profile.githubConnected}
-                  githubPublic={profile.githubPublic}
-                  githubProfileUrl={profile.githubProfileUrl}
-                  githubUsername={profile.githubUsername}
-                  linkedin={profile.linkedin || undefined}
-                  twitter={profile.twitter || undefined}
-                  cp={profile.cp}
-                />
-              </section>
-            </div>
-          </aside>
-
-          <main className="w-full min-w-0 space-y-4 sm:space-y-5 lg:col-span-8 lg:space-y-6">
-            <section id="profile-section-stats">
-              <ProfileMetricsStrip metrics={[
-                { icon: <CpLogo className="w-5 h-5" />, value: profile.cp.toLocaleString(), accent: true, label: 'CP' },
-                { icon: <User className="w-5 h-5" />, value: profile.rank, label: 'Rank' },
-                { icon: <QyvoraMark className="w-4 h-4" />, value: profile.labsCompleted, label: 'Labs' },
-                { icon: <TrendingUp className="w-5 h-5" />, value: profile.xpLevel, label: 'Level' },
-                { icon: <Calendar className="w-5 h-5" />, value: profile.joinDate ? new Date(profile.joinDate).getFullYear() : '—', label: 'Since' },
-              ]} />
-            </section>
-
-            <section id="profile-section-achievements">
-              <AchievementsSection
-                bootcampCompleted={profile.bootcampCompleted}
-                completedPhaseIds={profile.completedPhaseIds}
-                completedCourseIds={profile.completedCourseIds}
+      <ProfileLayout handle={profile.username} clearTopbar>
+        <aside className="w-full min-w-0">
+          <div className="w-full space-y-6 lg:sticky lg:top-[calc(var(--app-topbar-offset,var(--app-topbar-h,80px))+24px)]">
+            <section id="profile-section-identity">
+              <ProfileIdentityBlock
+                id={profile.id}
+                handle={profile.username}
+                name={profile.displayName || undefined}
+                bio={profile.bio || undefined}
+                organization={profile.organization || undefined}
+                actions={[
+                  { label: 'Back to home', to: '/', icon: <IconArrowLeft className="h-4 w-4" /> },
+                ]}
+                showShare
+                joinDate={profile.joinDate || undefined}
+                country={profile.country || undefined}
+                website={profile.website || undefined}
+                github={profile.github || undefined}
+                githubConnected={profile.githubConnected}
+                githubPublic={profile.githubPublic}
+                githubProfileUrl={profile.githubProfileUrl}
+                githubUsername={profile.githubUsername}
+                linkedin={profile.linkedin || undefined}
+                twitter={profile.twitter || undefined}
               />
             </section>
 
-            {visibleSections.includes('activity') && (
-              <section id="profile-section-activity">
-                <div className="space-y-6">
-                  <ActivityTimeline profile={profile} />
-                  {Object.keys(activityDates).length > 0 && (
-                    <div className="rounded-2xl border border-border-subtle bg-surface p-5 md:p-6">
-                      <ContributionCalendar activityDates={activityDates} />
-                    </div>
-                  )}
-                </div>
-              </section>
-            )}
-
-            {visibleSections.includes('courses') && (
-              <section id="profile-section-courses">
-                <CoursesModule
-                  labsCompleted={profile.labsCompleted}
-                  labIds={[...profile.completedCourseIds, ...profile.completedLabIds]}
-                />
-              </section>
-            )}
-
-            {visibleSections.includes('labs') && (
-              <section id="profile-section-labs">
-                <LabsModule
-                  completedRooms={profile.completedRooms}
-                />
-              </section>
-            )}
+            <RankLevelCard
+              rank={profile.rank}
+              xpLevel={profile.xpLevel}
+              xpCurrent={profile.xpCurrent}
+              xpToNext={profile.xpToNext}
+              cp={profile.cp}
+            />
 
             <section id="profile-section-trophy">
               <TrophyCabinet profile={profile} />
             </section>
-          </main>
-        </div>
-      </PublicContainer>
+          </div>
+        </aside>
+
+        <main className="w-full min-w-0 space-y-6">
+          <section id="profile-section-stats">
+            <ProfileMetricsStrip metrics={[
+              { icon: <CpLogo className="h-4 w-4" />, value: profile.cp.toLocaleString(), accent: true, label: 'CP' },
+              { icon: <User className="h-4 w-4" />, value: profile.rank, label: 'Rank' },
+              { icon: <QyvoraMark className="h-4 w-4" />, value: profile.labsCompleted, label: 'Labs' },
+              { icon: <TrendingUp className="h-4 w-4" />, value: profile.xpLevel, label: 'Level' },
+              { icon: <Calendar className="h-4 w-4" />, value: profile.joinDate ? new Date(profile.joinDate).getFullYear() : '—', label: 'Since' },
+            ]} />
+          </section>
+
+          {Object.keys(activityDates).length > 0 && (
+            <section id="profile-section-yearly">
+              <SectionCard title="Yearly activity">
+                <ContributionCalendar activityDates={activityDates} />
+              </SectionCard>
+            </section>
+          )}
+
+          <section id="profile-section-achievements">
+            <AchievementsSection
+              bootcampCompleted={profile.bootcampCompleted}
+              completedPhaseIds={profile.completedPhaseIds}
+              completedCourseIds={profile.completedCourseIds}
+            />
+          </section>
+
+          {visibleSections.includes('activity') && (
+            <section id="profile-section-activity">
+              <ActivityTimeline profile={profile} />
+            </section>
+          )}
+
+          {visibleSections.includes('courses') && (
+            <section id="profile-section-courses">
+              <CoursesModule
+                labsCompleted={profile.labsCompleted}
+                labIds={[...profile.completedCourseIds, ...profile.completedLabIds]}
+                showAllHref="/learn?tab=labs"
+              />
+            </section>
+          )}
+        </main>
+      </ProfileLayout>
     </div>
   );
 };

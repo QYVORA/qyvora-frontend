@@ -223,3 +223,28 @@ After Phase H:
   bottom navigation.
 - Remaining: `AdminBottomNav` and `DocsBottomNav` still exist because their
   mobile navigation has not yet been converted to the shared hamburger drawer.
+
+---
+
+## 10. Profile rebuild (Phase J)
+
+Both profile pages now share one composition:
+
+- `ProfileLayout` renders `ProfileBanner`, then `PageBody` (`!pt-0`) with
+  `TwoColumn split="profile"` (4fr/7fr). Public passes `clearTopbar`; the
+  signed-in page relies on `AppShell`'s topbar padding.
+- `ProfileBanner` is full-bleed (120/160/200px), `bg-gradient-hero` plus a 5%
+  `line-grid`, with a bottom fade to canvas. The circular `ProfileAvatar`
+  (`banner` size, 96/128/150px) sits at the gutter, half over the bottom edge
+  (`translate-y-1/2`, `ring-4 ring-canvas`). The banner reserves the avatar
+  radius + 16px in `margin-bottom`. No upload control.
+- `ProfileIdentityBlock` is borderless and avatar-free: 28px/700 name, accent
+  handle, 16px bio, 14px meta facts, 40px circular socials, then a two-column
+  action row (primary `Share profile` + secondary Edit/Back).
+- `RankLevelCard` (`Card tone="feature"`) owns rank, CP, level and XP progress.
+- Right column order: five-cell `StatStrip` (`ProfileMetricsStrip` now a thin
+  alias), yearly `ContributionCalendar` in `SectionCard`, `AchievementsSection`
+  in `SectionCard` with `UnderlineTabs`, `ActivityTimeline` in `SectionCard`,
+  Labs in a 3-up tile grid with `Show all`, and own-only credentials.
+- Left rail: identity, rank card, own-only social connection, trophy cabinet.
+  Sticky offset is `calc(var(--app-topbar-offset) + 24px)`.

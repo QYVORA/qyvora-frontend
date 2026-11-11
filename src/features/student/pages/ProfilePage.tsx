@@ -8,17 +8,18 @@ import { useSkillAchievements } from '../../../shared/hooks/useSkillAchievements
 import EditModal from '../components/profile/EditModal';
 import { ProfileSkeleton } from '../components/StudentSkeletons';
 import SEO from '../../../shared/components/SEO';
-import PageBody from '@/shared/components/layout/PageBody';
 import ProfileIdentityBlock from '../../../shared/components/profile/ProfileIdentityBlock';
+import ProfileLayout from '../../../shared/components/profile/ProfileLayout';
+import RankLevelCard from '../../../shared/components/profile/RankLevelCard';
 import SocialAccountConnection from '../../../shared/components/profile/SocialAccountConnection';
 import CpLogo from '../../../shared/components/CpLogo';
 import ProfileMetricsStrip from '../../../shared/components/profile/ProfileMetricsStrip';
 import AchievementsSection from '../../../shared/components/profile/AchievementsSection';
 import ContributionCalendar from '../../../shared/components/profile/ContributionCalendar';
 import ActivityTimeline from '../../../shared/components/profile/ActivityTimeline';
-import LabsModule from '../../../shared/components/profile/LabsModule';
 import CoursesModule from '../../../shared/components/profile/CoursesModule';
 import CertificatesModule from '../../../shared/components/profile/CertificatesModule';
+import SectionCard from '@/shared/components/ui/SectionCard';
 import { useUserCredentials } from '../../../shared/hooks/useUserCredentials';
 import TrophyCabinet from '../../../shared/components/profile/TrophyCabinet';
 import type { ProfileSectionId } from '../../../shared/types/profile';
@@ -119,124 +120,119 @@ const Profile: React.FC = () => {
         noindex
       />
 
-      <PageBody>
-    <div className="grid gap-6 lg:grid-cols-12">
-          <aside className="w-full min-w-0 lg:col-span-4">
-            <div className="w-full space-y-6 lg:sticky lg:top-[calc(var(--app-topbar-offset,var(--app-topbar-h,80px))+24px)]">
-              <section id="profile-section-identity">
-                <ProfileIdentityBlock
-                  id={profile.id}
-                  handle={profile.username}
-                  name={profile.displayName || undefined}
-                  bio={profile.bio || undefined}
-                  rank={profile.rank}
-                  organization={profile.organization || undefined}
-                  email={isOwnProfile ? profile.email : undefined}
-                  actions={isOwnProfile ? [
-                    { label: "Edit Profile", onClick: () => setEditOpen(true), icon: <Edit3 className="w-3.5 h-3.5" /> },
-                  ] : []}
-                  showShare
-                  showPublicView={isOwnProfile}
-                  publicViewPath={`/@${profile.username}`}
-                  xpLevel={profile.xpLevel}
-                  xpCurrent={profile.xpCurrent}
-                  xpToNext={profile.xpToNext}
-                  joinDate={profile.joinDate || undefined}
-                  country={profile.country || undefined}
-                  website={profile.website || undefined}
-                  github={profile.github || (profile.githubConnected ? profile.githubProfileUrl : '') || undefined}
-                  githubConnected={profile.githubConnected}
-                  githubPublic={profile.githubPublic}
-                  githubProfileUrl={profile.githubProfileUrl}
-                  githubUsername={profile.githubUsername}
-                  linkedin={profile.linkedin || undefined}
-                  twitter={profile.twitter || undefined}
-                  cp={profile.cp}
-                />
-              </section>
-
-              {isOwnProfile && (
-                <SocialAccountConnection
-                  githubConnected={profile.githubConnected}
-                  githubUsername={profile.githubUsername}
-                  githubProfileUrl={profile.githubProfileUrl}
-                  githubPublic={profile.githubPublic}
-                  passwordSet={profile.passwordSet}
-                  twitter={profile.twitter}
-                  linkedin={profile.linkedin}
-                  website={profile.website}
-                  onChanged={refetch}
-                />
-              )}
-            </div>
-          </aside>
-
-          <main className="w-full min-w-0 space-y-6 lg:col-span-8">
-            <section id="profile-section-stats">
-              <ProfileMetricsStrip metrics={[
-                { icon: <CpLogo className="w-5 h-5" />, value: profile.cp.toLocaleString(), accent: true, label: 'CP' },
-                { icon: <User className="w-5 h-5" />, value: profile.rank, label: 'Rank' },
-                { icon: <Bug className="w-5 h-5" />, value: profile.labsCompleted, label: 'Labs' },
-                { icon: <TrendingUp className="w-5 h-5" />, value: profile.xpLevel, label: 'Level' },
-                { icon: <Calendar className="w-5 h-5" />, value: profile.joinDate ? new Date(profile.joinDate).getFullYear() : '—', label: 'Since' },
-              ]} />
-            </section>
-
-            <section id="profile-section-achievements">
-              <AchievementsSection
-                bootcampCompleted={profile.bootcampCompleted}
-                completedPhaseIds={profile.completedPhaseIds}
-                completedCourseIds={profile.completedCourseIds}
-                skillAchievements={skillAchievements}
+      <ProfileLayout handle={profile.username} showCredentials={isOwnProfile}>
+        <aside className="w-full min-w-0">
+          <div className="w-full space-y-6 lg:sticky lg:top-[calc(var(--app-topbar-offset,var(--app-topbar-h,80px))+24px)]">
+            <section id="profile-section-identity">
+              <ProfileIdentityBlock
+                id={profile.id}
+                handle={profile.username}
+                name={profile.displayName || undefined}
+                bio={profile.bio || undefined}
+                organization={profile.organization || undefined}
+                email={isOwnProfile ? profile.email : undefined}
+                actions={isOwnProfile ? [
+                  { label: 'Edit profile', onClick: () => setEditOpen(true), icon: <Edit3 className="h-4 w-4" /> },
+                ] : []}
+                showShare
+                showPublicView={isOwnProfile}
+                publicViewPath={`/@${profile.username}`}
+                joinDate={profile.joinDate || undefined}
+                country={profile.country || undefined}
+                website={profile.website || undefined}
+                github={profile.github || (profile.githubConnected ? profile.githubProfileUrl : '') || undefined}
+                githubConnected={profile.githubConnected}
+                githubPublic={profile.githubPublic}
+                githubProfileUrl={profile.githubProfileUrl}
+                githubUsername={profile.githubUsername}
+                linkedin={profile.linkedin || undefined}
+                twitter={profile.twitter || undefined}
               />
             </section>
 
-            {visibleSections.includes('activity') && (
-              <section id="profile-section-activity">
-                <div className="space-y-6">
-                  <ActivityTimeline profile={profile} />
-                  {Object.keys(activityDates).length > 0 && (
-                    <div className="rounded-2xl border border-border-subtle bg-surface p-5 md:p-6">
-                      <ContributionCalendar activityDates={activityDates} />
-                    </div>
-                  )}
-                </div>
-              </section>
-            )}
+            <RankLevelCard
+              rank={profile.rank}
+              xpLevel={profile.xpLevel}
+              xpCurrent={profile.xpCurrent}
+              xpToNext={profile.xpToNext}
+              cp={profile.cp}
+            />
 
-            {visibleSections.includes('courses') && (
-              <section id="profile-section-courses">
-                <CoursesModule
-                  labsCompleted={profile.labsCompleted}
-                  labIds={[...profile.completedCourseIds, ...profile.completedLabIds]}
-                />
-              </section>
-            )}
-
-            {visibleSections.includes('labs') && (
-              <section id="profile-section-labs">
-                <LabsModule
-                  completedRooms={profile.completedRooms}
-                />
-              </section>
-            )}
-
-            {visibleSections.includes('credentials') && (
-              <section id="profile-section-credentials">
-                <CertificatesModule
-                  credentials={credentials}
-                  loading={credentialsLoading}
-                  error={credentialsError}
-                />
-              </section>
+            {isOwnProfile && (
+              <SocialAccountConnection
+                githubConnected={profile.githubConnected}
+                githubUsername={profile.githubUsername}
+                githubProfileUrl={profile.githubProfileUrl}
+                githubPublic={profile.githubPublic}
+                passwordSet={profile.passwordSet}
+                twitter={profile.twitter}
+                linkedin={profile.linkedin}
+                website={profile.website}
+                onChanged={refetch}
+              />
             )}
 
             <section id="profile-section-trophy">
               <TrophyCabinet profile={profile} />
             </section>
-          </main>
-        </div>
-      </PageBody>
+          </div>
+        </aside>
+
+        <main className="w-full min-w-0 space-y-6">
+          <section id="profile-section-stats">
+            <ProfileMetricsStrip metrics={[
+              { icon: <CpLogo className="h-4 w-4" />, value: profile.cp.toLocaleString(), accent: true, label: 'CP' },
+              { icon: <User className="h-4 w-4" />, value: profile.rank, label: 'Rank' },
+              { icon: <Bug className="h-4 w-4" />, value: profile.labsCompleted, label: 'Labs' },
+              { icon: <TrendingUp className="h-4 w-4" />, value: profile.xpLevel, label: 'Level' },
+              { icon: <Calendar className="h-4 w-4" />, value: profile.joinDate ? new Date(profile.joinDate).getFullYear() : '—', label: 'Since' },
+            ]} />
+          </section>
+
+          {Object.keys(activityDates).length > 0 && (
+            <section id="profile-section-yearly">
+              <SectionCard title="Yearly activity">
+                <ContributionCalendar activityDates={activityDates} />
+              </SectionCard>
+            </section>
+          )}
+
+          <section id="profile-section-achievements">
+            <AchievementsSection
+              bootcampCompleted={profile.bootcampCompleted}
+              completedPhaseIds={profile.completedPhaseIds}
+              completedCourseIds={profile.completedCourseIds}
+              skillAchievements={skillAchievements}
+            />
+          </section>
+
+          {visibleSections.includes('activity') && (
+            <section id="profile-section-activity">
+              <ActivityTimeline profile={profile} />
+            </section>
+          )}
+
+          {visibleSections.includes('courses') && (
+            <section id="profile-section-courses">
+              <CoursesModule
+                labsCompleted={profile.labsCompleted}
+                labIds={[...profile.completedCourseIds, ...profile.completedLabIds]}
+                showAllHref="/dashboard/labs"
+              />
+            </section>
+          )}
+
+          {visibleSections.includes('credentials') && (
+            <section id="profile-section-credentials">
+              <CertificatesModule
+                credentials={credentials}
+                loading={credentialsLoading}
+                error={credentialsError}
+              />
+            </section>
+          )}
+        </main>
+      </ProfileLayout>
 
       {isOwnProfile && (
         <EditModal

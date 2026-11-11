@@ -1,6 +1,8 @@
 import React, { useMemo, useState } from 'react';
 import { Award, Sparkles } from 'lucide-react';
 import AchievementBadge from './AchievementBadge';
+import SectionCard from '@/shared/components/ui/SectionCard';
+import UnderlineTabs, { type TabItem } from '@/shared/components/ui/UnderlineTabs';
 import {
   getAchievementById,
   BOOTCAMP_PHASE_ACHIEVEMENTS,
@@ -111,110 +113,45 @@ export const AchievementsSection: React.FC<AchievementsSectionProps> = ({
 
   if (totalCount === 0) {
     return (
-      <section
-        aria-labelledby="achievements-heading"
-        className={`rounded-2xl border border-border-subtle bg-surface p-5 md:p-6 ${className}`}
+      <SectionCard
+        id="achievements-heading"
+        title="Achievements"
+        icon={<Award />}
+        actions={<span className="text-sm text-text-muted">0 earned</span>}
+        className={className}
       >
-        <div className="flex items-center justify-between border-b border-border/60 pb-4">
-          <div className="flex items-center gap-2">
-            <Award className="h-4 w-4 text-accent" />
-            <h2 id="achievements-heading" className="text-lg font-medium text-text-primary">
-              Earned insignia
-            </h2>
-          </div>
-          <span className="text-xs text-text-muted">0 Earned</span>
-        </div>
-        <div className="py-8 text-center">
-          <p className="text-xs text-text-muted">
-            No achievements recorded yet. Complete Labs to unlock earned insignia.
-          </p>
-        </div>
-      </section>
+        <p className="py-6 text-center text-sm text-text-muted">
+          No achievements recorded yet. Complete Labs to unlock earned insignia.
+        </p>
+      </SectionCard>
     );
   }
 
   const visibleItems = showAll ? displayedList : displayedList.slice(0, INITIAL_VISIBLE_COUNT);
   const hasMore = displayedList.length > INITIAL_VISIBLE_COUNT;
 
-  return (
-    <section
-      aria-labelledby="achievements-heading"
-      className={`rounded-2xl border border-border bg-bg-card p-6 md:p-8 ${className}`}
-    >
-      {/* Section Header */}
-      <div className="flex flex-col gap-4 border-b border-border/60 pb-4 sm:flex-row sm:items-center sm:justify-between">
-        <div className="flex items-center gap-2.5">
-          <Award className="h-4 w-4 text-accent" />
-          <h2 id="achievements-heading" className="text-lg font-medium text-text-primary">
-            Earned insignia
-          </h2>
-          <span className="rounded-md bg-accent/10 px-2 py-0.5 text-[12px] font-medium text-accent">
-            {totalCount}
-          </span>
-        </div>
+  const tabs: TabItem[] = [
+    { value: 'all', label: 'All', count: totalCount },
+    ...(earnedLabs.length > 0 ? [{ value: 'labs', label: 'Labs', count: earnedLabs.length }] : []),
+    ...(earnedBootcamp.length > 0 ? [{ value: 'bootcamp', label: 'Bootcamp', count: earnedBootcamp.length }] : []),
+    ...(earnedSkills.length > 0 ? [{ value: 'skills', label: 'Skills', count: earnedSkills.length }] : []),
+  ];
 
-        {/* Filter Tabs */}
-        <div className="flex flex-wrap items-center gap-1.5" role="tablist" aria-label="Achievement categories">
-          <button
-            type="button"
-            role="tab"
-            aria-selected={activeTab === 'all'}
-            onClick={() => { setActiveTab('all'); setShowAll(false); }}
-            className={`rounded-md px-2.5 py-1 text-[13px] font-medium transition-colors ${
-              activeTab === 'all'
-                ? 'bg-accent/10 text-accent'
-                : 'text-text-muted hover:bg-surface-raised hover:text-text-primary'
-            }`}
-          >
-            All ({totalCount})
-          </button>
-          {earnedLabs.length > 0 && (
-            <button
-              type="button"
-              role="tab"
-              aria-selected={activeTab === 'labs'}
-              onClick={() => { setActiveTab('labs'); setShowAll(false); }}
-              className={`rounded-md px-2.5 py-1 text-[13px] font-medium transition-colors ${
-                activeTab === 'labs'
-                  ? 'bg-accent/10 text-accent'
-                  : 'text-text-muted hover:bg-surface-raised hover:text-text-primary'
-              }`}
-            >
-              Labs ({earnedLabs.length})
-            </button>
-          )}
-          {earnedBootcamp.length > 0 && (
-            <button
-              type="button"
-              role="tab"
-              aria-selected={activeTab === 'bootcamp'}
-              onClick={() => { setActiveTab('bootcamp'); setShowAll(false); }}
-              className={`rounded-md px-2.5 py-1 text-[13px] font-medium transition-colors ${
-                activeTab === 'bootcamp'
-                  ? 'bg-accent/10 text-accent'
-                  : 'text-text-muted hover:bg-surface-raised hover:text-text-primary'
-              }`}
-            >
-              Bootcamp ({earnedBootcamp.length})
-            </button>
-          )}
-          {earnedSkills.length > 0 && (
-            <button
-              type="button"
-              role="tab"
-              aria-selected={activeTab === 'skills'}
-              onClick={() => { setActiveTab('skills'); setShowAll(false); }}
-              className={`rounded-md px-2.5 py-1 text-[13px] font-medium transition-colors ${
-                activeTab === 'skills'
-                  ? 'bg-accent/10 text-accent'
-                  : 'text-text-muted hover:bg-surface-raised hover:text-text-primary'
-              }`}
-            >
-              Skills ({earnedSkills.length})
-            </button>
-          )}
-        </div>
-      </div>
+  return (
+    <SectionCard
+      id="achievements-heading"
+      title="Achievements"
+      icon={<Award />}
+      actions={<span className="text-sm text-text-muted">{totalCount} earned</span>}
+      className={className}
+    >
+      <UnderlineTabs
+        tabs={tabs}
+        value={activeTab}
+        onChange={(next) => { setActiveTab(next as TabType); setShowAll(false); }}
+        ariaLabel="Achievement categories"
+        className="mb-2"
+      />
 
       {/* 
         Badge Collection:
@@ -283,7 +220,7 @@ export const AchievementsSection: React.FC<AchievementsSectionProps> = ({
           </div>
         )}
       </div>
-    </section>
+    </SectionCard>
   );
 };
 

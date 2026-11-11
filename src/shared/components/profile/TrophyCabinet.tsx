@@ -8,7 +8,7 @@ import CourseBadge from '@/shared/components/CourseBadge';
 import type { ProfileData } from '@/shared/types/profile';
 import { TIER_STYLES } from '@/shared/types/profile';
 import { deriveTrophies } from '@/shared/utils/profileDerivations';
-import ModuleHeader from './ModuleHeader';
+import SectionCard from '@/shared/components/ui/SectionCard';
 
 interface TrophyCabinetProps {
   profile: ProfileData;
@@ -67,25 +67,23 @@ const TrophyCabinet: React.FC<TrophyCabinetProps> = ({ profile, className = '' }
 
   if (trophies.length === 0) {
     return (
-      <div className={`rounded-2xl border border-border-subtle bg-surface p-5 md:p-6 ${className}`}>
-        <ModuleHeader icon={<Trophy className="h-4 w-4" />} title="Trophy Cabinet" />
+      <SectionCard title="Trophy cabinet" icon={<Trophy />} className={className}>
         <p className="py-4 text-center text-sm text-text-muted">No trophies earned yet. Keep pushing!</p>
-      </div>
+      </SectionCard>
     );
   }
 
   return (
-    <div className={`rounded-2xl border border-border-subtle bg-surface p-5 md:p-6 ${className}`}>
-      <ModuleHeader
-        icon={<Trophy className="h-4 w-4" />}
-        title="Trophy Cabinet"
-        trailing={
-          <span className="rounded-md bg-accent/10 px-2 py-0.5 text-[12px] font-medium text-accent">
-            {trophies.length}
-          </span>
-        }
-      />
-
+    <SectionCard
+      title="Trophy cabinet"
+      icon={<Trophy />}
+      actions={
+        <span className="rounded-md bg-accent/10 px-2 py-0.5 text-[12px] font-medium text-accent">
+          {trophies.length}
+        </span>
+      }
+      className={className}
+    >
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
         {trophies.map((trophy, idx) => {
           const styles = TIER_STYLES[trophy.tier];
@@ -111,7 +109,7 @@ const TrophyCabinet: React.FC<TrophyCabinetProps> = ({ profile, className = '' }
           );
         })}
       </div>
-    </div>
+    </SectionCard>
   );
 };
 

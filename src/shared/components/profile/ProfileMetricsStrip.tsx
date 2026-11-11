@@ -1,43 +1,17 @@
-import { memo, type ReactNode } from 'react';
-import { Activity } from 'lucide-react';
-import { SectionCard } from '@/shared/components/ui';
-
-export interface ProfileMetric {
-  icon: ReactNode;
-  value: string | number;
-  accent?: boolean;
-  label?: string;
-}
+import React from 'react';
+import StatStrip, { type StatStripCell } from '@/shared/components/ui/StatStrip';
 
 interface ProfileMetricsStripProps {
-  metrics: ProfileMetric[];
+  metrics: StatStripCell[];
+  className?: string;
 }
 
-/** Overview card: labelled stat tiles on a flat grid with hairline rules. */
-const ProfileMetricsStrip: React.FC<ProfileMetricsStripProps> = ({ metrics }) => (
-  <SectionCard title="Overview" icon={<Activity className="h-5 w-5" />} bodyClassName="mt-1">
-    <dl className="grid grid-cols-2 gap-x-4 gap-y-5 sm:grid-cols-3 xl:grid-cols-5">
-      {metrics.map((metric, index) => (
-        <div key={index} className="flex min-w-0 flex-col gap-1.5">
-          <span className={metric.accent ? 'text-accent' : 'text-text-muted'} aria-hidden="true">
-            {metric.icon}
-          </span>
-          <dd
-            className={
-              metric.accent
-                ? 'truncate text-xl font-medium tabular-nums leading-tight text-accent'
-                : 'truncate text-xl font-medium tabular-nums leading-tight text-text-primary'
-            }
-          >
-            {metric.value}
-          </dd>
-          {metric.label && (
-            <dt className="truncate text-[13px] text-text-muted">{metric.label}</dt>
-          )}
-        </div>
-      ))}
-    </dl>
-  </SectionCard>
+/**
+ * Profile metrics — one five-cell StatStrip, no section header.
+ * Kept as a thin alias so both profile pages share the exact composition.
+ */
+const ProfileMetricsStrip: React.FC<ProfileMetricsStripProps> = ({ metrics, className }) => (
+  <StatStrip cells={metrics} label="Profile statistics" className={className} />
 );
 
-export default memo(ProfileMetricsStrip);
+export default ProfileMetricsStrip;
