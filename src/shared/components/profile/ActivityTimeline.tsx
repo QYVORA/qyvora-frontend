@@ -77,7 +77,7 @@ const ActivityTimeline: React.FC<ActivityTimelineProps> = ({ profile, className 
                 )}
               </div>
 
-              <span className="shrink-0 whitespace-nowrap pt-1 font-mono text-xs text-text-muted/60">
+              <span className="shrink-0 whitespace-nowrap pt-1 text-xs tabular-nums text-text-muted/60">
                 {formatTimestamp(event.timestamp)}
               </span>
             </motion.div>

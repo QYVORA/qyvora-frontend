@@ -76,16 +76,16 @@ export const SocialAccountConnection: React.FC<SocialAccountConnectionProps> = (
   return (
     <section
       aria-labelledby="social-connections-heading"
-      className={`rounded-2xl border border-border bg-bg-card p-5 sm:p-6 md:p-8 ${className}`}
+      className={`rounded-2xl border border-border-subtle bg-surface p-5 sm:p-6 ${className}`}
     >
       <div className="border-b border-border/60 pb-4">
         <h2
           id="social-connections-heading"
-          className="font-mono text-sm font-black uppercase tracking-wider text-text-primary"
+          className="text-lg font-medium text-text-primary"
         >
           Connected Accounts & External Identity
         </h2>
-        <p className="mt-1 font-mono text-xs text-text-muted">
+        <p className="mt-1 text-sm text-text-muted">
           Manage linked accounts and control what external credentials are shown publicly.
         </p>
       </div>
@@ -95,25 +95,25 @@ export const SocialAccountConnection: React.FC<SocialAccountConnectionProps> = (
         <div className="py-4 first:pt-0">
           <div className="flex flex-col gap-3">
             <div className="flex items-start gap-3">
-              <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-border bg-surface-raised text-text-primary">
+              <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-md bg-surface-raised text-text-primary">
                 <BrandGithubIcon className="h-5 w-5" />
               </span>
               <div className="min-w-0 flex-1">
                 <div className="flex flex-wrap items-center gap-2">
-                  <h3 className="font-mono text-sm font-black uppercase text-text-primary">GitHub</h3>
+                  <h3 className="text-base font-medium text-text-primary">GitHub</h3>
                   {githubConnected ? (
-                    <span className="inline-flex items-center gap-1 rounded bg-accent/10 px-1.5 py-0.5 font-mono text-[10px] font-bold uppercase text-accent">
+                    <span className="inline-flex items-center gap-1 rounded bg-accent/10 px-1.5 py-0.5 text-[12px] font-medium text-accent">
                       <ShieldCheck className="h-3 w-3" />
                       Verified
                     </span>
                   ) : (
-                    <span className="rounded bg-surface-raised px-1.5 py-0.5 font-mono text-[10px] text-text-muted">
+                    <span className="rounded bg-surface-raised px-1.5 py-0.5 text-[12px] text-text-muted">
                       Not Linked
                     </span>
                   )}
                 </div>
                 {githubConnected ? (
-                  <p className="mt-1 font-mono text-xs text-text-secondary">
+                  <p className="mt-1 text-sm text-text-secondary">
                     Linked to{' '}
                     <a
                       href={githubProfileUrl || `https://github.com/${githubUsername}`}
@@ -126,7 +126,7 @@ export const SocialAccountConnection: React.FC<SocialAccountConnectionProps> = (
                     </a>
                   </p>
                 ) : (
-                  <p className="mt-1 font-mono text-xs text-text-muted">
+                  <p className="mt-1 text-sm text-text-muted">
                     Connect GitHub to verify your developer identity and enable one-click sign-in.
                   </p>
                 )}
@@ -141,7 +141,7 @@ export const SocialAccountConnection: React.FC<SocialAccountConnectionProps> = (
                     size="sm"
                     onClick={() => goToGithubLink('/dashboard/profile')}
                     disabled={busy}
-                    className="!text-xs font-mono"
+                    className="!text-xs"
                   >
                     Reconnect
                   </Button>
@@ -151,7 +151,7 @@ export const SocialAccountConnection: React.FC<SocialAccountConnectionProps> = (
                     onClick={() => setConfirmGithubDisconnect(true)}
                     disabled={busy || !passwordSet}
                     title={!passwordSet ? 'Set a password before disconnecting GitHub' : undefined}
-                    className="!text-xs font-mono"
+                    className="!text-xs"
                   >
                     Disconnect
                   </Button>
@@ -162,7 +162,7 @@ export const SocialAccountConnection: React.FC<SocialAccountConnectionProps> = (
                   size="sm"
                   onClick={() => goToGithubLink('/dashboard/profile')}
                   disabled={busy}
-                  className="!text-xs font-mono"
+                  className="!text-xs"
                 >
                   <BrandGithubIcon className="h-3.5 w-3.5 mr-1" />
                   Connect GitHub
@@ -172,7 +172,7 @@ export const SocialAccountConnection: React.FC<SocialAccountConnectionProps> = (
           </div>
 
           {githubConnected && (
-            <div className="mt-4 rounded-xl border border-border/40 bg-surface/40 p-3">
+            <div className="mt-4 rounded-md border border-border-subtle p-3">
               <Toggle
                 label="Show GitHub on public profile"
                 description="When disabled, your GitHub identity remains verified but private."
@@ -181,7 +181,7 @@ export const SocialAccountConnection: React.FC<SocialAccountConnectionProps> = (
                 onCheckedChange={handleToggleGithubPublic}
               />
               {!passwordSet && (
-                <p className="mt-2 flex items-center gap-1.5 font-mono text-[11px] text-warning">
+                <p className="mt-2 flex items-center gap-1.5 text-[12px] text-warning">
                   <AlertCircle className="h-3 w-3 shrink-0" />
                   GitHub is your sole sign-in method. Set an account password in Settings before disconnecting.
                 </p>
@@ -194,29 +194,29 @@ export const SocialAccountConnection: React.FC<SocialAccountConnectionProps> = (
         <div className="py-4">
           <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
             <div className="flex items-start gap-3">
-              <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-border bg-surface-raised text-text-primary">
+              <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-md bg-surface-raised text-text-primary">
                 <BrandXIcon className="h-5 w-5" />
               </span>
               <div>
                 <div className="flex items-center gap-2">
-                  <h3 className="font-mono text-sm font-black uppercase text-text-primary">X</h3>
+                  <h3 className="text-base font-medium text-text-primary">X</h3>
                   {twitter ? (
-                    <span className="rounded bg-accent/10 px-1.5 py-0.5 font-mono text-[10px] font-bold text-accent">
+                    <span className="rounded bg-accent/10 px-1.5 py-0.5 text-[12px] font-medium text-accent">
                       Configured
                     </span>
                   ) : (
-                    <span className="rounded bg-surface-raised px-1.5 py-0.5 font-mono text-[10px] text-text-muted">
+                    <span className="rounded bg-surface-raised px-1.5 py-0.5 text-[12px] text-text-muted">
                       Unset
                     </span>
                   )}
                 </div>
                 {twitter ? (
-                  <p className="mt-1 font-mono text-xs text-text-secondary">
+                  <p className="mt-1 text-sm text-text-secondary">
                     Profile handle:{' '}
                     <span className="font-bold text-text-primary">{twitter}</span>
                   </p>
                 ) : (
-                  <p className="mt-1 font-mono text-xs text-text-muted">
+                  <p className="mt-1 text-sm text-text-muted">
                     Add your X handle in profile settings to display it on your public profile.
                   </p>
                 )}
@@ -229,29 +229,29 @@ export const SocialAccountConnection: React.FC<SocialAccountConnectionProps> = (
         <div className="py-4">
           <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
             <div className="flex items-start gap-3">
-              <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-border bg-surface-raised text-text-primary">
+              <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-md bg-surface-raised text-text-primary">
                 <BrandLinkedinIcon className="h-5 w-5" />
               </span>
               <div>
                 <div className="flex items-center gap-2">
-                  <h3 className="font-mono text-sm font-black uppercase text-text-primary">LinkedIn</h3>
+                  <h3 className="text-base font-medium text-text-primary">LinkedIn</h3>
                   {linkedin ? (
-                    <span className="rounded bg-accent/10 px-1.5 py-0.5 font-mono text-[10px] font-bold text-accent">
+                    <span className="rounded bg-accent/10 px-1.5 py-0.5 text-[12px] font-medium text-accent">
                       Configured
                     </span>
                   ) : (
-                    <span className="rounded bg-surface-raised px-1.5 py-0.5 font-mono text-[10px] text-text-muted">
+                    <span className="rounded bg-surface-raised px-1.5 py-0.5 text-[12px] text-text-muted">
                       Unset
                     </span>
                   )}
                 </div>
                 {linkedin ? (
-                  <p className="mt-1 font-mono text-xs text-text-secondary">
+                  <p className="mt-1 text-sm text-text-secondary">
                     Profile:{' '}
                     <span className="font-bold text-text-primary truncate max-w-xs inline-block align-bottom">{linkedin}</span>
                   </p>
                 ) : (
-                  <p className="mt-1 font-mono text-xs text-text-muted">
+                  <p className="mt-1 text-sm text-text-muted">
                     Add your LinkedIn profile in profile settings to link your professional network.
                   </p>
                 )}

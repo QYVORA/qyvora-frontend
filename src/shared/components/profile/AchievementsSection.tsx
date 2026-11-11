@@ -113,19 +113,19 @@ export const AchievementsSection: React.FC<AchievementsSectionProps> = ({
     return (
       <section
         aria-labelledby="achievements-heading"
-        className={`rounded-2xl border border-border bg-bg-card p-6 md:p-8 ${className}`}
+        className={`rounded-2xl border border-border-subtle bg-surface p-5 md:p-6 ${className}`}
       >
         <div className="flex items-center justify-between border-b border-border/60 pb-4">
           <div className="flex items-center gap-2">
             <Award className="h-4 w-4 text-accent" />
-            <h2 id="achievements-heading" className="font-mono text-sm font-black uppercase tracking-wider text-text-primary">
-              Earned Insignia
+            <h2 id="achievements-heading" className="text-lg font-medium text-text-primary">
+              Earned insignia
             </h2>
           </div>
-          <span className="font-mono text-xs text-text-muted">0 Earned</span>
+          <span className="text-xs text-text-muted">0 Earned</span>
         </div>
         <div className="py-8 text-center">
-          <p className="font-mono text-xs text-text-muted">
+          <p className="text-xs text-text-muted">
             No achievements recorded yet. Complete Labs to unlock earned insignia.
           </p>
         </div>
@@ -145,10 +145,10 @@ export const AchievementsSection: React.FC<AchievementsSectionProps> = ({
       <div className="flex flex-col gap-4 border-b border-border/60 pb-4 sm:flex-row sm:items-center sm:justify-between">
         <div className="flex items-center gap-2.5">
           <Award className="h-4 w-4 text-accent" />
-          <h2 id="achievements-heading" className="font-mono text-sm font-black uppercase tracking-wider text-text-primary">
-            Earned Insignia
+          <h2 id="achievements-heading" className="text-lg font-medium text-text-primary">
+            Earned insignia
           </h2>
-          <span className="rounded-md bg-accent/10 px-2 py-0.5 font-mono text-[10px] font-black text-accent">
+          <span className="rounded-md bg-accent/10 px-2 py-0.5 text-[12px] font-medium text-accent">
             {totalCount}
           </span>
         </div>
@@ -160,9 +160,9 @@ export const AchievementsSection: React.FC<AchievementsSectionProps> = ({
             role="tab"
             aria-selected={activeTab === 'all'}
             onClick={() => { setActiveTab('all'); setShowAll(false); }}
-            className={`rounded-lg px-2.5 py-1 font-mono text-[11px] font-bold uppercase tracking-wider transition-colors ${
+            className={`rounded-md px-2.5 py-1 text-[13px] font-medium transition-colors ${
               activeTab === 'all'
-                ? 'bg-accent text-on-accent'
+                ? 'bg-accent/10 text-accent'
                 : 'text-text-muted hover:bg-surface-raised hover:text-text-primary'
             }`}
           >
@@ -174,9 +174,9 @@ export const AchievementsSection: React.FC<AchievementsSectionProps> = ({
               role="tab"
               aria-selected={activeTab === 'labs'}
               onClick={() => { setActiveTab('labs'); setShowAll(false); }}
-              className={`rounded-lg px-2.5 py-1 font-mono text-[11px] font-bold uppercase tracking-wider transition-colors ${
+              className={`rounded-md px-2.5 py-1 text-[13px] font-medium transition-colors ${
                 activeTab === 'labs'
-                  ? 'bg-accent text-on-accent'
+                  ? 'bg-accent/10 text-accent'
                   : 'text-text-muted hover:bg-surface-raised hover:text-text-primary'
               }`}
             >
@@ -189,9 +189,9 @@ export const AchievementsSection: React.FC<AchievementsSectionProps> = ({
               role="tab"
               aria-selected={activeTab === 'bootcamp'}
               onClick={() => { setActiveTab('bootcamp'); setShowAll(false); }}
-              className={`rounded-lg px-2.5 py-1 font-mono text-[11px] font-bold uppercase tracking-wider transition-colors ${
+              className={`rounded-md px-2.5 py-1 text-[13px] font-medium transition-colors ${
                 activeTab === 'bootcamp'
-                  ? 'bg-accent text-on-accent'
+                  ? 'bg-accent/10 text-accent'
                   : 'text-text-muted hover:bg-surface-raised hover:text-text-primary'
               }`}
             >
@@ -204,9 +204,9 @@ export const AchievementsSection: React.FC<AchievementsSectionProps> = ({
               role="tab"
               aria-selected={activeTab === 'skills'}
               onClick={() => { setActiveTab('skills'); setShowAll(false); }}
-              className={`rounded-lg px-2.5 py-1 font-mono text-[11px] font-bold uppercase tracking-wider transition-colors ${
+              className={`rounded-md px-2.5 py-1 text-[13px] font-medium transition-colors ${
                 activeTab === 'skills'
-                  ? 'bg-accent text-on-accent'
+                  ? 'bg-accent/10 text-accent'
                   : 'text-text-muted hover:bg-surface-raised hover:text-text-primary'
               }`}
             >
@@ -225,7 +225,7 @@ export const AchievementsSection: React.FC<AchievementsSectionProps> = ({
         {showInsignia && (
           displayedList.length === 0 ? (
             (showSkills && earnedSkills.length > 0) ? null : (
-              <p className="py-4 text-center font-mono text-xs text-text-muted">
+              <p className="py-4 text-center text-xs text-text-muted">
                 No achievements in this category.
               </p>
             )
@@ -258,10 +258,10 @@ export const AchievementsSection: React.FC<AchievementsSectionProps> = ({
                   style={{ borderColor: `${skill.color}66` }}
                 >
                   <Sparkles className="h-3.5 w-3.5" style={{ color: skill.color }} aria-hidden="true" />
-                  <span className="font-mono text-[11px] font-bold text-text-primary">
+                  <span className="text-[11px] font-bold text-text-primary">
                     {skill.label}
                   </span>
-                  <span className="font-mono text-[10px] uppercase tracking-wider text-text-muted">
+                  <span className="text-[12px] text-text-muted">
                     {RARITY_LABELS[skill.rarity] || skill.rarity} · {skill.scenariosCompleted}
                   </span>
                 </li>
@@ -276,9 +276,9 @@ export const AchievementsSection: React.FC<AchievementsSectionProps> = ({
             <button
               type="button"
               onClick={() => setShowAll((prev) => !prev)}
-              className="rounded-lg border border-border px-3 py-1.5 font-mono text-xs font-bold uppercase tracking-wider text-text-secondary transition-colors hover:border-accent hover:text-accent focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent"
+              className="rounded-md border border-border-subtle px-3 py-1.5 text-[13px] font-medium text-text-secondary transition-colors hover:border-accent hover:text-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
             >
-              {showAll ? 'Show Fewer Insignia' : `Show All ${displayedList.length} Insignia`}
+              {showAll ? 'Show fewer insignia' : `Show all ${displayedList.length} insignia`}
             </button>
           </div>
         )}

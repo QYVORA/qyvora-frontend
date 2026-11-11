@@ -78,7 +78,7 @@ const GithubConnectionCard: React.FC<GithubConnectionCardProps> = ({
           <BrandGithubIcon className="h-5 w-5" />
         </span>
         <div className="min-w-0 flex-1">
-          <h2 className="text-base font-black uppercase tracking-tight text-text-primary">
+          <h2 className="text-lg font-medium text-text-primary">
             GitHub
           </h2>
           {connected ? (

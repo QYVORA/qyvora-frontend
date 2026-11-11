@@ -80,7 +80,7 @@ const TrophyCabinet: React.FC<TrophyCabinetProps> = ({ profile, className = '' }
         icon={<Trophy className="h-4 w-4" />}
         title="Trophy Cabinet"
         trailing={
-          <span className="rounded-md bg-accent/10 px-2 py-0.5 text-[10px] font-black uppercase tracking-widest text-accent">
+          <span className="rounded-md bg-accent/10 px-2 py-0.5 text-[12px] font-medium text-accent">
             {trophies.length}
           </span>
         }
@@ -98,13 +98,13 @@ const TrophyCabinet: React.FC<TrophyCabinetProps> = ({ profile, className = '' }
               className="flex flex-col items-center text-center p-4"
             >
               <TrophyVisual id={trophy.id} profile={profile} />
-              <h4 className="mt-3 mb-1 text-xs font-black uppercase tracking-widest leading-tight text-text-primary">
+              <h4 className="mt-3 mb-1 text-sm font-medium leading-tight text-text-primary">
                 {trophy.title}
               </h4>
               <p className="line-clamp-2 text-xs leading-snug text-text-muted">
                 {trophy.description}
               </p>
-              <span className={`mt-2 rounded-full px-1.5 py-0.5 text-[10px] font-black uppercase tracking-wider ${styles.text} ${styles.bg}`}>
+              <span className={`mt-2 rounded-full px-2 py-0.5 text-[12px] font-medium ${styles.text} ${styles.bg}`}>
                 {trophy.tier}
               </span>
             </motion.div>

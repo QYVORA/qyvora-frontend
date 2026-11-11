@@ -61,7 +61,7 @@ export const SocialLinks: React.FC<SocialLinksProps> = ({
           target="_blank"
           rel="noopener noreferrer"
           aria-label="GitHub profile"
-          className="inline-flex items-center gap-1.5 rounded-lg border border-border bg-bg-card px-2.5 py-1 font-mono text-xs text-text-secondary transition-colors hover:border-accent hover:text-accent focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent"
+          className="inline-flex min-h-[32px] items-center gap-1.5 rounded-md bg-surface-raised px-2.5 py-1 text-[13px] text-text-secondary transition-colors hover:text-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
         >
           <BrandGithubIcon className="h-3.5 w-3.5 text-text-primary" />
           <span>GitHub</span>
@@ -75,7 +75,7 @@ export const SocialLinks: React.FC<SocialLinksProps> = ({
           target="_blank"
           rel="noopener noreferrer"
           aria-label="X (formerly Twitter) profile"
-          className="inline-flex items-center gap-1.5 rounded-lg border border-border bg-bg-card px-2.5 py-1 font-mono text-xs text-text-secondary transition-colors hover:border-accent hover:text-accent focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent"
+          className="inline-flex min-h-[32px] items-center gap-1.5 rounded-md bg-surface-raised px-2.5 py-1 text-[13px] text-text-secondary transition-colors hover:text-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
         >
           <BrandXIcon className="h-3.5 w-3.5 text-text-primary" />
           <span>X</span>
@@ -89,7 +89,7 @@ export const SocialLinks: React.FC<SocialLinksProps> = ({
           target="_blank"
           rel="noopener noreferrer"
           aria-label="LinkedIn profile"
-          className="inline-flex items-center gap-1.5 rounded-lg border border-border bg-bg-card px-2.5 py-1 font-mono text-xs text-text-secondary transition-colors hover:border-accent hover:text-accent focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent"
+          className="inline-flex min-h-[32px] items-center gap-1.5 rounded-md bg-surface-raised px-2.5 py-1 text-[13px] text-text-secondary transition-colors hover:text-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
         >
           <BrandLinkedinIcon className="h-3.5 w-3.5 text-text-primary" />
           <span>LinkedIn</span>

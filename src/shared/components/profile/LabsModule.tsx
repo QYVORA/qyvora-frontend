@@ -25,7 +25,7 @@ const LabsModule: React.FC<LabsModuleProps> = ({
         title="Bootcamp"
         trailing={
           completedRooms.length > 0 ? (
-            <span className="rounded-md bg-accent/10 px-2 py-0.5 text-[10px] font-black uppercase tracking-widest text-accent">
+            <span className="rounded-md bg-accent/10 px-2 py-0.5 text-[12px] font-medium text-accent">
               {completedRooms.length}
             </span>
           ) : undefined
@@ -35,19 +35,19 @@ const LabsModule: React.FC<LabsModuleProps> = ({
       {displayRooms.length === 0 ? (
         <p className="py-4 text-center text-sm text-text-muted">No Bootcamp rooms completed yet.</p>
       ) : (
-        <div className="space-y-2">
+        <div className="divide-y divide-border-subtle">
           {displayRooms.map((room, idx) => (
             <motion.div
               key={room.roomId}
               initial={prefersReduced ? false : { opacity: 0, x: -8 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: prefersReduced ? 0 : 0.3, delay: prefersReduced ? 0 : idx * 0.04 }}
-              className="group flex w-full items-center gap-3 overflow-hidden rounded-xl border border-border-subtle bg-surface-raised/60 px-3 py-2.5 transition-colors hover:border-accent/30 hover:bg-surface-raised"
+              className="group flex w-full items-center gap-3 overflow-hidden py-3 transition-colors hover:text-accent"
             >
-              <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-surface text-accent">
+              <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md bg-surface-raised text-accent">
                 <Bug className="h-3.5 w-3.5" />
               </span>
-              <span className="flex-1 truncate text-sm font-bold text-text-primary">
+              <span className="flex-1 truncate text-sm font-medium text-text-primary group-hover:text-accent">
                 {room.title}
               </span>
               <Link

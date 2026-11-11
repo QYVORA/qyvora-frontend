@@ -21,11 +21,11 @@ export const ProfileRank: React.FC<ProfileRankProps> = ({
     <div className={`inline-flex items-center gap-2 ${className}`}>
       <RankInsignia rank={tier} size={size} />
       <div className="flex flex-col">
-        <span className="font-mono text-xs font-black uppercase tracking-wider text-text-primary">
+        <span className="text-sm font-medium text-text-primary">
           {info.label}
         </span>
         {showDescription && (
-          <span className="font-mono text-[10px] text-text-muted">
+          <span className="text-[12px] text-text-muted">
             {info.description}
           </span>
         )}

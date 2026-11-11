@@ -358,7 +358,7 @@ export const RankInsignia: React.FC<RankInsigniaProps> = ({
   return (
     <div className={`inline-flex items-center gap-1.5 ${className}`}>
       <InsigniaComponent className={sizeCls} />
-      <span className="font-mono text-xs font-black uppercase tracking-wider text-text-primary">
+      <span className="text-sm font-medium text-text-primary">
         {tier}
       </span>
     </div>

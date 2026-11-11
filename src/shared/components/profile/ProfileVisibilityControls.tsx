@@ -51,10 +51,10 @@ export const ProfileVisibilityControls: React.FC<ProfileVisibilityControlsProps>
       className={`rounded-2xl border border-border bg-bg-card p-5 sm:p-6 ${className}`}
     >
       <div className="border-b border-border/50 pb-3">
-        <h3 className="font-mono text-sm font-black uppercase tracking-wider text-text-primary">
+        <h3 className="text-lg font-medium text-text-primary">
           Public Profile Visibility
         </h3>
-        <p className="mt-1 font-mono text-xs text-text-muted">
+        <p className="mt-1 text-sm text-text-muted">
           Control which credentials and activity records appear on your shareable public profile.
         </p>
       </div>

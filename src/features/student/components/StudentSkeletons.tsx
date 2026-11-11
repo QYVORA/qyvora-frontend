@@ -142,7 +142,7 @@ export const ProfileSkeleton = () => (
     <div className="w-full px-3 pb-16 pt-6 md:px-4 md:pb-20 md:pt-8 lg:px-6 lg:pb-24">
       <div className="grid gap-6 lg:grid-cols-12 lg:gap-8">
         <aside className="lg:col-span-4">
-          <div className="space-y-6 lg:sticky lg:top-24">
+          <div className="space-y-6 lg:sticky lg:top-[calc(var(--app-topbar-h,80px)+24px)]">
             <CardShell className="p-5 sm:p-6 space-y-5">
               <div className="flex items-center gap-4">
                 <S className="h-20 w-20 shrink-0 rounded-2xl sm:h-24 sm:w-24" circle={false} />

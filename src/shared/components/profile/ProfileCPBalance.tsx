@@ -41,10 +41,10 @@ export const ProfileCPBalance: React.FC<ProfileCPBalanceProps> = ({
     <div className={`inline-flex items-center gap-2 ${className}`}>
       <CpLogo className={`${sizeCfg.coin} shrink-0`} alt="CP" />
       <div className="inline-flex items-baseline gap-1.5">
-        <span className={`font-mono ${sizeCfg.text} font-black tracking-tight text-text-primary`}>
+        <span className={`${sizeCfg.text} font-medium tabular-nums tracking-tight text-text-primary`}>
           {(cp || 0).toLocaleString()}
         </span>
-        <span className={`font-mono ${sizeCfg.label} font-bold uppercase tracking-wider text-accent`}>
+        <span className={`${sizeCfg.label} font-medium text-accent`}>
           CP
         </span>
       </div>

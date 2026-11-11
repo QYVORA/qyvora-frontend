@@ -30,14 +30,14 @@ const CoursesModule: React.FC<CoursesModuleProps> = ({
       initial={prefersReduced ? false : { opacity: 0, scale: 0.9 }}
       animate={{ opacity: 1, scale: 1 }}
       transition={{ duration: prefersReduced ? 0 : 0.3, delay: prefersReduced ? 0 : idx * 0.05 }}
-      className="flex min-w-0 items-center gap-4 rounded-xl border border-border-subtle bg-surface-raised/60 px-3 py-2.5"
+      className="flex min-w-0 items-center gap-3 py-2"
     >
       <img
         src={entry.badge.image}
         alt=""
         className="h-12 w-12 shrink-0 object-contain sm:h-14 sm:w-14"
       />
-      <p className="min-w-0 truncate text-xs font-black uppercase tracking-widest text-text-primary">
+      <p className="min-w-0 truncate text-sm font-medium text-text-primary">
         {entry.badge.title}
       </p>
     </motion.div>
@@ -50,7 +50,7 @@ const CoursesModule: React.FC<CoursesModuleProps> = ({
         title="Labs"
         trailing={
           labsCompleted > 0 ? (
-            <span className="rounded-md bg-accent/10 px-2 py-0.5 text-[10px] font-black uppercase tracking-widest text-accent">
+            <span className="rounded-md bg-accent/10 px-2 py-0.5 text-[12px] font-medium text-accent">
               {labsCompleted}
             </span>
           ) : undefined
@@ -69,7 +69,7 @@ const CoursesModule: React.FC<CoursesModuleProps> = ({
             <BookOpen className="h-6 w-6" />
           </span>
           <div className="min-w-0">
-            <p className="truncate text-xs font-black uppercase tracking-widest text-text-primary">
+            <p className="truncate text-sm font-medium text-text-primary">
               {`${labsCompleted} Labs completed`}
             </p>
           </div>

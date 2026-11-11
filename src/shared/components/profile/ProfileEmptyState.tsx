@@ -21,11 +21,11 @@ export const ProfileEmptyState: React.FC<ProfileEmptyStateProps> = ({
       className={`flex flex-col items-center justify-center rounded-2xl border border-border bg-bg-card p-6 text-center ${className}`}
     >
       {icon && <div className="mb-3 text-text-muted">{icon}</div>}
-      <h3 className="font-mono text-sm font-black uppercase tracking-wider text-text-primary">
+      <h3 className="text-lg font-medium text-text-primary">
         {title}
       </h3>
       {description && (
-        <p className="mt-1 max-w-sm font-mono text-xs leading-relaxed text-text-muted">
+        <p className="mt-1 max-w-sm text-sm leading-relaxed text-text-muted">
           {description}
         </p>
       )}

@@ -135,10 +135,10 @@ const ContributionCalendar: React.FC<ContributionCalendarProps> = ({
     <div className={className}>
       {/* Header */}
       <div className="mb-3 flex flex-wrap items-center justify-between gap-x-3 gap-y-1">
-        <h3 className="text-xs font-black uppercase tracking-widest text-text-muted">
+        <h3 className="text-sm font-medium text-text-muted">
           {"Activity"}
         </h3>
-        <span className="whitespace-nowrap text-xs font-mono text-text-muted/60">
+        <span className="whitespace-nowrap text-xs tabular-nums text-text-muted/60">
           {totalActivities} {"activities"} &middot; {activeDays} {"active days"}
         </span>
       </div>
@@ -209,12 +209,12 @@ const ContributionCalendar: React.FC<ContributionCalendarProps> = ({
         </svg>
       </div>
 
-      <p className="mt-1 text-[10px] font-mono uppercase tracking-widest text-text-muted/50 sm:hidden">
+      <p className="mt-1 text-[12px] text-text-muted/50 sm:hidden">
         {"Swipe the grid to see older activity"}
       </p>
 
       {/* Legend */}
-      <div className="mt-2 flex items-center gap-2 text-xs font-mono text-text-muted/50">
+      <div className="mt-2 flex items-center gap-2 text-xs tabular-nums text-text-muted/50">
         <span>{"Less"}</span>
         {INTENSITY_LEVELS.map((cls, i) => (
           <div key={i} className={`h-2.5 w-2.5 rounded-sm ${cls}`} />

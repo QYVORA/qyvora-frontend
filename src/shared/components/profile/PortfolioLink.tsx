@@ -51,7 +51,7 @@ export const PortfolioLink: React.FC<PortfolioLinkProps> = ({ url, className = '
       target="_blank"
       rel="noopener noreferrer"
       aria-label={`Portfolio website: ${safeUrl}`}
-      className={`inline-flex items-center gap-1.5 rounded-lg border border-border bg-bg-card px-2.5 py-1 font-mono text-xs text-text-secondary transition-colors hover:border-accent hover:text-accent focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent ${className}`}
+      className={`inline-flex min-h-[32px] items-center gap-1.5 rounded-md bg-surface-raised px-2.5 py-1 text-[13px] text-text-secondary transition-colors hover:text-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent ${className}`}
     >
       <Globe className="h-3.5 w-3.5 shrink-0 text-accent" aria-hidden="true" />
       <span className="truncate max-w-[140px] sm:max-w-[200px]">{display}</span>

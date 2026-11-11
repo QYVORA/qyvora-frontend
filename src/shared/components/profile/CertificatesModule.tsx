@@ -50,7 +50,7 @@ const CredentialRow: React.FC<{ credential: LearnerCredential; index: number; re
           className="h-12 w-12 shrink-0 object-contain sm:h-14 sm:w-14"
         />
         <div className="min-w-0">
-          <p className="truncate text-xs font-black uppercase tracking-widest text-text-primary">
+          <p className="truncate text-sm font-medium text-text-primary">
             {credential.programName || 'QYVORA program'}
           </p>
           <p className="truncate text-xs text-text-muted">
@@ -58,7 +58,7 @@ const CredentialRow: React.FC<{ credential: LearnerCredential; index: number; re
             {credential.result === 'PASS' ? ' · Completed' : ' · Not passed'}
           </p>
           {revoked && (
-            <span className="mt-1 inline-block rounded-md bg-danger/10 px-2 py-0.5 text-[10px] font-black uppercase tracking-widest text-danger">
+            <span className="mt-1 inline-block rounded-md bg-danger/10 px-2 py-0.5 text-[12px] font-medium text-danger">
               {credential.status}
             </span>
           )}
@@ -111,7 +111,7 @@ const CertificatesModule: React.FC<CertificatesModuleProps> = ({
         title="Certificates"
         trailing={
           credentials.length > 0 ? (
-            <span className="rounded-md bg-accent/10 px-2 py-0.5 text-[10px] font-black uppercase tracking-widest text-accent">
+            <span className="rounded-md bg-accent/10 px-2 py-0.5 text-[12px] font-medium text-accent">
               {credentials.length}
             </span>
           ) : undefined

@@ -28,10 +28,10 @@ export const AchievementDetails: React.FC<AchievementDetailsProps> = ({
             <Icon className="h-9 w-9 text-text-primary" />
           </div>
           <div className="min-w-0">
-            <span className="block font-mono text-[10px] font-black uppercase tracking-wider text-accent">
+            <span className="block text-[12px] font-medium text-accent">
               {achievement.category}
             </span>
-            <h4 className="truncate font-mono text-sm font-black text-text-primary">
+            <h4 className="truncate text-sm font-medium text-text-primary">
               {achievement.title}
             </h4>
           </div>
@@ -46,11 +46,11 @@ export const AchievementDetails: React.FC<AchievementDetailsProps> = ({
         </button>
       </div>
 
-      <p className="font-mono text-xs leading-relaxed text-text-secondary">
+      <p className="text-sm leading-relaxed text-text-secondary">
         {achievement.description}
       </p>
 
-      <div className="flex items-center justify-between border-t border-border-subtle/50 pt-2 font-mono text-[11px]">
+      <div className="flex items-center justify-between border-t border-border-subtle/50 pt-2 text-[12px] tabular-nums">
         <span className="inline-flex items-center gap-1 font-bold text-accent">
           <CheckCircle2 className="h-3.5 w-3.5" />
           <span>Earned Insignia</span>
