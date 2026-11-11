@@ -14,6 +14,7 @@ import { BootcampCourseSkeleton } from '@/features/student/components/StudentSke
 import { LearningAccordion, LearningFilterStrip } from '@/shared/components/learning';
 import type { LearningAccordionItem } from '@/shared/components/learning/LearningAccordion';
 import LearningWorkspaceShell from '@/shared/components/learning/LearningWorkspaceShell';
+import hpbLogo from '@/assets/bootcamp/HPB-logo.webp';
 import type { Course } from '@/features/student/components/bootcamp-course/types';
 
 /**
@@ -192,6 +193,8 @@ const BootcampCourse: React.FC = () => {
           description={syncError || 'One programme overview. Open any task to enter the protected room.'}
           backTo="/dashboard"
           backLabel="Back to Dashboard"
+          icon={<img src={hpbLogo} alt="" />}
+          heroArtSrc={hpbLogo}
           stats={[
             { label: 'progress', value: `${progressNum}%`, accent: true },
             { label: 'rooms', value: `${doneRooms}/${totalRooms}` },

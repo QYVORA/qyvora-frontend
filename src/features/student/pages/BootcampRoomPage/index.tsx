@@ -13,6 +13,7 @@ import StepCard from '@/features/student/components/bootcamp-room/StepCard';
 import QuizModal from '@/features/student/components/bootcamp-room/QuizModal';
 import RoomCompletionCelebration from '@/features/student/components/bootcamp-room/RoomCompletionCelebration';
 import LearningWorkspaceShell from '@/shared/components/learning/LearningWorkspaceShell';
+import hpbLogo from '@/assets/bootcamp/HPB-logo.webp';
 import { LearningTaskAccordion } from '@/shared/components/learning/LearningTaskAccordion';
 import type { LearningTask } from '@/shared/components/learning/LearningTaskAccordion';
 import { useReducedMotion } from '@/shared/hooks/useReducedMotion';
@@ -406,6 +407,8 @@ const BootcampRoomPage: React.FC = () => {
         description={room.overview}
         backTo="/dashboard/labs"
         backLabel={"Back to Labs"}
+        icon={<img src={hpbLogo} alt="" />}
+        heroArtSrc={hpbLogo}
         stats={[
           { label: "min", value: room.estimatedMinutes },
           { label: "steps", value: room.steps.length },

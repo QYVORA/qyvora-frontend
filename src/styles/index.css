@@ -746,6 +746,61 @@
   .bg-gradient-strip { background-image: var(--gradient-strip); }
   .bg-gradient-header { background-image: var(--gradient-header); }
 
+  /* ── Learning hero band (Phase D) ─────────────────────────────────────── */
+  .learning-hero-band {
+    --hero-art-rotate: -12deg;
+    position: relative;
+    display: flex;
+    width: 100%;
+    min-height: 220px;
+    overflow: hidden;
+    background-image: var(--gradient-hero);
+  }
+  @media (min-width: 640px) {
+    .learning-hero-band { height: 240px; }
+  }
+  @media (min-width: 1024px) {
+    .learning-hero-band { height: 292px; }
+  }
+
+  .learning-hero-art {
+    position: absolute;
+    right: -4%;
+    top: 50%;
+    height: 150%;
+    width: auto;
+    max-width: none;
+    transform: translateY(-50%) rotate(var(--hero-art-rotate)) scale(1.25);
+    object-fit: contain;
+    opacity: 0.26;
+    pointer-events: none;
+    mask-image: linear-gradient(to left, #000 20%, transparent 78%);
+    -webkit-mask-image: linear-gradient(to left, #000 20%, transparent 78%);
+  }
+
+  @media (max-width: 639px) {
+    .learning-hero-art {
+      right: -10%;
+      top: auto;
+      bottom: -8%;
+      height: 110%;
+      opacity: 0.18;
+      transform: rotate(var(--hero-art-rotate)) scale(1.1);
+    }
+  }
+
+  .learning-hero-shade {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: linear-gradient(
+      90deg,
+      color-mix(in srgb, var(--color-surface) 92%, transparent) 0%,
+      color-mix(in srgb, var(--color-surface) 55%, transparent) 45%,
+      transparent 82%
+    );
+  }
+
   /* Learning hero wash — intentional gradient for lab and course page headers. */
   .learning-hero-wash {
     background:

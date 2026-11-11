@@ -3,6 +3,7 @@ import SEO from '@/shared/components/SEO';
 import RelatedContent from '@/shared/components/RelatedContent';
 import { LabCelebration } from '@/shared/components/LabCelebration';
 import LabBadge from '@/shared/components/LabBadge';
+import { getLabBadgeAsset } from '@/shared/learning/labBadges';
 import LearningWorkspaceShell from '@/shared/components/learning/LearningWorkspaceShell';
 
 export interface LabPageProps {
@@ -65,6 +66,7 @@ const LabPage: React.FC<LabPageProps> = ({
           title={`${title} ${accentWord}`}
           description={description || `Master ${title.toLowerCase()} techniques through hands-on challenges`}
           heroArt={<LabBadge labId={labId} className="h-full w-full" glow={false} />}
+          heroArtSrc={getLabBadgeAsset(labId)?.image}
         >
           <div className="w-full space-y-10">
             {listingContent}

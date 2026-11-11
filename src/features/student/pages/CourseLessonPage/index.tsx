@@ -254,6 +254,8 @@ const CourseLessonPage: React.FC = () => {
           description={course.description}
           backTo="/dashboard/labs"
           backLabel={"Back to Labs"}
+          icon={badge?.image ? <img src={badge.image} alt="" /> : undefined}
+          heroArtSrc={badge?.image}
           stats={[
             { label: "Progress", value: `${progress}%`, accent: true },
             { label: "Lessons", value: `${completedCount}/${totalLessons}` },
