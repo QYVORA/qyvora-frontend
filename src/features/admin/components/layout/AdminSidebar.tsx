@@ -16,9 +16,8 @@ interface AdminSidebarProps {
 /**
  * AdminSidebar — desktop (lg+) fixed navigation rail for the admin console.
  * Mirror of the student dashboard rail: sectioned NAV_GROUPS catalogue, active
- * state driven by the `?tab=` URL param, collapsible 264↔76px. Companion to the
- * mobile AdminBottomNav (below lg). Replaces the topbar quick tabs on desktop,
- * which become tablet-only.
+ * state driven by the `?tab=` URL param, collapsible 264↔76px. Below lg the
+ * AdminTopbar hamburger opens the shared MobileMenu drawer instead.
  */
 const AdminSidebar = ({ collapsed = false, onToggleCollapse }: AdminSidebarProps) => {
   const { logout } = useAuth();

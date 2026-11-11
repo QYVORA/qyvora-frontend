@@ -221,8 +221,9 @@ After Phase H:
 - `PublicNavigation` and `StudentDesktopTopbar` are thin wrappers.
 - `PublicBottomNav` and `StudentBottomNav` are deleted; public pages have no
   bottom navigation.
-- Remaining: `AdminBottomNav` and `DocsBottomNav` still exist because their
-  mobile navigation has not yet been converted to the shared hamburger drawer.
+- `AdminBottomNav` and `DocsBottomNav` are deleted. Admin's topbar hamburger
+  opens `MobileMenu` with the `NAV_GROUPS` catalogue; docs' mobile identity bar
+  opens `MobileMenu` with the tool domains.
 
 ---
 

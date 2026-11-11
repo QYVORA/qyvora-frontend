@@ -1,20 +1,32 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Library } from 'lucide-react';
+import { BookOpen, Library, Menu } from 'lucide-react';
 import { QyvoraMark } from '@/shared/components/brand';
-import { getToolByPath } from '@/features/marketing/data/tools/registry';
+import { getToolByPath, TOOLS, TOOL_DOMAIN_LABELS, TOOL_DOMAIN_ORDER } from '@/features/marketing/data/tools/registry';
+import MobileMenu from '@/shared/components/layout/MobileMenu';
+import type { NavItem } from '@/shared/components/layout/NavDropdown';
 
 /**
  * DocsMobileNav — the small-screen header for documentation.
  *
- * Navigation lives in DocsBottomNav, so this bar carries identity only: the
- * site mark, and which tool the reader is in. Keeping it free of a menu button
- * means the header says where you are and the bar below says where you can go,
- * instead of hiding every destination behind one icon.
+ * Navigation lives in the shared MobileMenu drawer, opened from the hamburger
+ * here; the bar itself carries identity and the current tool.
  */
 const DocsMobileNav: React.FC = () => {
   const location = useLocation();
   const activeTool = getToolByPath(location.pathname);
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  const menuItems: NavItem[] = TOOL_DOMAIN_ORDER.map((domain) => ({
+    key: domain,
+    label: TOOL_DOMAIN_LABELS[domain],
+    icon: Library,
+    children: TOOLS.filter((tool) => tool.domain === domain).map((tool) => ({
+      label: tool.displayName,
+      to: tool.path,
+      icon: BookOpen,
+    })),
+  })).filter((item) => item.children && item.children.length > 0);
 
   return (
     <header className="sticky top-0 z-[90] flex h-14 items-center gap-3 border-b border-border-subtle bg-canvas/95 px-3 backdrop-blur-sm lg:hidden">
@@ -37,9 +49,26 @@ const DocsMobileNav: React.FC = () => {
         <Library className="h-5 w-5 shrink-0 text-accent" aria-hidden="true" />
       )}
 
-      <p className="min-w-0 flex-1 truncate text-sm font-black uppercase tracking-wide text-text-primary">
+      <p className="min-w-0 flex-1 truncate text-base font-medium text-text-primary">
         {activeTool ? activeTool.displayName : 'Documentation'}
       </p>
+
+      <button
+        type="button"
+        onClick={() => setMenuOpen(true)}
+        aria-label="Open documentation menu"
+        aria-expanded={menuOpen}
+        className="flex h-10 w-10 shrink-0 items-center justify-center rounded-md text-text-secondary transition-colors hover:bg-surface-raised hover:text-text-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+      >
+        <Menu className="h-5 w-5" aria-hidden="true" />
+      </button>
+
+      <MobileMenu
+        open={menuOpen}
+        onClose={() => setMenuOpen(false)}
+        items={menuItems}
+        title="Documentation"
+      />
     </header>
   );
 };

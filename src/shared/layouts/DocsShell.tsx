@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { Outlet } from 'react-router-dom';
-import DocsBottomNav from '@/shared/components/docs/DocsBottomNav';
 import DocsMobileNav from '@/shared/components/docs/DocsMobileNav';
 import DocsSidebar from '@/shared/components/docs/DocsSidebar';
 
@@ -24,8 +23,8 @@ const readCollapsed = (): boolean => {
  * carries onward movement) — only the reader needs are kept.
  *
  * The rail's collapse state lives here so the content column's left padding can
- * track it; on mobile the rail is replaced by an identity bar and a fixed
- * bottom navigation, so the content column also reserves space for that bar.
+ * track it; on mobile the rail is replaced by an identity bar whose hamburger
+ * opens the shared documentation drawer.
  */
 const DocsShell: React.FC = () => {
   const [collapsed, setCollapsed] = useState(readCollapsed);
@@ -56,9 +55,7 @@ const DocsShell: React.FC = () => {
       <main
         id="docs-main"
         className={[
-          'w-full',
-          // Clears the fixed bottom bar (and its safe area) on small screens.
-          'pb-[calc(4.5rem+env(safe-area-inset-bottom))] lg:pb-0',
+          'w-full pb-16 lg:pb-0',
           'transition-[padding-left] duration-[var(--dur-base)] ease-[var(--ease-smooth)]',
           collapsed ? 'lg:pl-[76px]' : 'lg:pl-[264px]',
         ].join(' ')}
@@ -66,7 +63,6 @@ const DocsShell: React.FC = () => {
         <Outlet />
       </main>
 
-      <DocsBottomNav />
     </div>
   );
 };

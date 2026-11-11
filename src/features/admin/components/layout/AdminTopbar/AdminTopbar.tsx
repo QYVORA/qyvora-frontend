@@ -1,5 +1,6 @@
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { LogOut } from 'lucide-react';
+import { LogOut, Menu } from 'lucide-react';
+import type { LucideIcon } from 'lucide-react';
 import { IconShield, IconNotification } from '@/shared/components/icons';
 import { useAuth } from '@/core/contexts/AuthContext';
 import { useToast } from '@/core/contexts/ToastContext';
@@ -8,6 +9,9 @@ import ADMIN_PATH from '@/shared/utils/adminPath';
 import { useEffect, useRef, useState } from 'react';
 import api from '@/core/services/api';
 import NotificationsDropdown from './NotificationsDropdown';
+import { NAV_GROUPS } from './navGroups';
+import MobileMenu from '@/shared/components/layout/MobileMenu';
+import type { NavItem } from '@/shared/components/layout/NavDropdown';
 import MobileNotificationsSheet from './MobileNotificationsSheet';
 import type { NotificationItem } from './types';
 
@@ -22,6 +26,7 @@ const AdminTopbar = ({ railCollapsed = false }: { railCollapsed?: boolean }) => 
   const [unreadCount, setUnreadCount] = useState(0);
   const [notifOpen, setNotifOpen] = useState(false);
   const [notifLoading, setNotifLoading] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
   const [notificationsPreview, setNotificationsPreview] = useState<NotificationItem[]>([]);
 
   const notifRef = useRef<HTMLDivElement>(null);
@@ -89,6 +94,17 @@ const AdminTopbar = ({ railCollapsed = false }: { railCollapsed?: boolean }) => 
 
   const overviewPath = `${ADMIN_PATH}/dashboard?tab=overview`;
 
+  const menuItems: NavItem[] = NAV_GROUPS.map((group) => ({
+    key: group.title,
+    label: group.title,
+    icon: group.items[0].icon as LucideIcon,
+    children: group.items.map((item) => ({
+      label: item.label,
+      to: item.path,
+      icon: item.icon as LucideIcon,
+    })),
+  }));
+
   return (
     <>
       {/* Skip to content */}
@@ -116,6 +132,15 @@ const AdminTopbar = ({ railCollapsed = false }: { railCollapsed?: boolean }) => 
 
           {/* Right actions */}
           <div className="flex items-center gap-1.5 md:gap-2.5 shrink-0 ml-auto">
+            <button
+              type="button"
+              onClick={() => setMenuOpen(true)}
+              aria-label="Open menu"
+              aria-expanded={menuOpen}
+              className="flex h-12 w-12 items-center justify-center rounded-md text-text-secondary transition-colors hover:bg-surface-raised hover:text-text-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent lg:hidden"
+            >
+              <Menu className="h-6 w-6" aria-hidden="true" />
+            </button>
             <div ref={notifRef} className="relative">
               <button
                 onClick={() => { const next = !notifOpen; setNotifOpen(next); if (next) loadNotificationsSnapshot(); }}
@@ -160,6 +185,23 @@ const AdminTopbar = ({ railCollapsed = false }: { railCollapsed?: boolean }) => 
           </div>
         </div>
       </header>
+
+      <MobileMenu
+        open={menuOpen}
+        onClose={() => setMenuOpen(false)}
+        items={menuItems}
+        title="Admin menu"
+        footer={
+          <button
+            type="button"
+            onClick={handleLogout}
+            className="flex min-h-[48px] w-full items-center gap-3 rounded-md px-3 text-base text-semantic-danger transition-colors hover:bg-semantic-danger/10 focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-semantic-danger"
+          >
+            <LogOut className="h-5 w-5" aria-hidden="true" />
+            Log out
+          </button>
+        }
+      />
 
       <MobileNotificationsSheet
         open={notifOpen}
