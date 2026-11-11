@@ -20,7 +20,6 @@ import {
 export interface MyLearningBootcamp {
   id: string;
   title: string;
-  description?: string;
   progress?: number;
   to: string;
   isActive: boolean;
@@ -41,7 +40,6 @@ type LearningKind = 'course' | 'lab' | 'bootcamp';
 interface LearningItem {
   id: string;
   title: string;
-  description?: string;
   to: string;
   kind: LearningKind;
   typeLabel: string;
@@ -85,7 +83,6 @@ const toLearningItem = (
 ): LearningItem => ({
   id: lab.id,
   title: lab.title,
-  description: lab.description || undefined,
   to: lab.route,
   kind: lab.source === 'content' ? 'course' : 'lab',
   typeLabel: LAB_FORMAT_SHORT_LABELS[lab.format],
@@ -96,34 +93,21 @@ const toLearningItem = (
 const toBootcampItem = (bootcamp: MyLearningBootcamp): LearningItem => ({
   id: `bootcamp:${bootcamp.id}`,
   title: bootcamp.title,
-  description: bootcamp.description,
   to: bootcamp.to,
   kind: 'bootcamp',
   typeLabel: 'Bootcamp',
   progress: progressValue(bootcamp.progress),
 });
 
-const LearningIdentity = ({ item }: { item: LearningItem }) => (
-  <span className="relative grid h-12 w-12 shrink-0 place-items-center overflow-hidden rounded-full border border-border-subtle bg-surface-raised">
-    {item.kind === 'course' ? (
-      <CourseBadge courseId={item.id} className="h-full w-full" glow={false} />
-    ) : item.kind === 'lab' ? (
-      <LabBadge labId={item.id} className="h-full w-full" glow={false} />
-    ) : (
-      <span role="img" aria-label={`${item.title} identity`} className="h-10 w-10 overflow-hidden rounded-full">
-        <HpbAvatar variant="phase1" size={40} />
-      </span>
-    )}
-    {item.progress !== undefined && (
-      <span
-        aria-hidden="true"
-        className="absolute inset-0 grid place-items-center rounded-full bg-surface/95 font-mono text-xs font-black text-accent opacity-0 transition-opacity duration-[var(--dur-base)] ease-[var(--ease-smooth)] group-hover:opacity-100 group-focus-visible:opacity-100 motion-reduce:transition-none"
-      >
-        {item.progress}%
-      </span>
-    )}
-  </span>
-);
+const LearningIdentity = ({ item }: { item: LearningItem }) => {
+  if (item.kind === 'course') {
+    return <CourseBadge courseId={item.id} className="h-16 w-16 shrink-0" glow={false} />;
+  }
+  if (item.kind === 'lab') {
+    return <LabBadge labId={item.id} className="h-16 w-16 shrink-0" glow={false} />;
+  }
+  return <HpbAvatar variant="phase1" size={64} className="h-16 w-16 shrink-0" />;
+};
 
 const LearningRow = ({
   item,
@@ -132,16 +116,16 @@ const LearningRow = ({
   item: LearningItem;
   actionLabel: string;
 }) => (
-  <li className="border-t border-border-subtle py-3 first:border-t-0 first:pt-0 last:pb-0">
-    <div className="flex min-w-0 items-center gap-2">
+  <li className="group relative overflow-hidden rounded-xl border border-border-subtle bg-surface-raised/45 transition-[background-color,border-color,box-shadow] duration-[var(--dur-base)] ease-[var(--ease-smooth)] hover:border-accent/30 hover:bg-accent/[0.055] focus-within:border-accent/40">
+    <div className="flex min-w-0 items-center gap-1.5 p-3 sm:gap-2 sm:p-4">
       <Link
         to={item.to}
-        className="group flex min-w-0 flex-1 items-center gap-3 rounded-lg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+        className="group/link flex min-w-0 flex-1 items-center gap-3 rounded-lg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
       >
         <LearningIdentity item={item} />
         <span className="min-w-0 flex-1">
           <span className="flex min-w-0 flex-wrap items-center gap-x-2 gap-y-1">
-            <span className="truncate text-sm font-bold leading-snug text-text-primary transition-colors group-hover:text-accent">
+            <span className="truncate text-sm font-bold leading-snug text-text-primary transition-colors group-hover/link:text-accent sm:text-base">
               {item.title}
             </span>
             <span className="shrink-0 text-[10px] font-bold uppercase tracking-wider text-text-muted">
@@ -153,16 +137,11 @@ const LearningRow = ({
               </span>
             )}
           </span>
-          {item.description && (
-            <span className="mt-0.5 line-clamp-1 block text-xs leading-relaxed text-text-secondary">
-              {item.description}
-            </span>
-          )}
-          <span className="mt-1 flex flex-wrap items-center gap-x-3 gap-y-1">
+          <span className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1.5">
             {item.progress !== undefined && (
               <>
                 <span
-                  className="h-1.5 w-16 overflow-hidden rounded-full bg-surface-raised"
+                  className="h-1.5 w-20 overflow-hidden rounded-full bg-surface-raised"
                   role="progressbar"
                   aria-label={`${item.title} completion`}
                   aria-valuemin={0}
@@ -274,13 +253,8 @@ const MyLearningCard = ({
 
   return (
     <Card as="section" className="p-5 md:p-6">
-      <div className="mb-4 flex items-start justify-between gap-3">
-        <div className="min-w-0">
-          <h2 className="type-h2 text-text-primary">My Learning</h2>
-          <p className="mt-1 type-body-sm text-text-secondary">
-            Continue active learning or return to something you have opened or saved.
-          </p>
-        </div>
+      <div className="mb-4 flex items-center justify-between gap-3">
+        <h2 className="type-h2 text-text-primary">My Learning</h2>
         <Button to="/dashboard/labs" variant="ghost" size="sm" className="shrink-0">
           View all
         </Button>
@@ -306,7 +280,7 @@ const MyLearningCard = ({
         {tab === 'current' && (
           <>
             {currentItems.length > 0 ? (
-              <ul>
+              <ul className="flex flex-col gap-2">
                 {currentItems.map((item) => (
                   <LearningRow key={item.id} item={item} actionLabel="Continue" />
                 ))}
@@ -351,7 +325,7 @@ const MyLearningCard = ({
 
         {tab === 'recent' && (
           recentItems.length > 0 ? (
-            <ul>
+            <ul className="flex flex-col gap-2">
               {recentItems.map((item) => (
                 <LearningRow key={item.id} item={item} actionLabel="Revisit" />
               ))}
@@ -366,7 +340,7 @@ const MyLearningCard = ({
 
         {tab === 'saved' && (
           savedItems.length > 0 ? (
-            <ul>
+            <ul className="flex flex-col gap-2">
               {savedItems.map((item) => (
                 <LearningRow key={item.id} item={item} actionLabel="Open" />
               ))}

@@ -10,7 +10,6 @@ const practicalLab = PRACTICAL_LABS[0];
 const bootcamp: MyLearningBootcamp = {
   id: 'bootcamp-test',
   title: 'Hacker Protocol Bootcamp',
-  description: 'Guided learning programme',
   progress: 40,
   to: '/dashboard/bootcamps/bootcamp-test',
   isActive: true,
@@ -45,6 +44,7 @@ describe('MyLearningCard', () => {
     expect(within(panel).getByText(courseLabs[0].title)).toBeInTheDocument();
     expect(within(panel).getByText('65% complete')).toBeInTheDocument();
     expect(within(panel).getByText(bootcamp.title)).toBeInTheDocument();
+    expect(within(panel).queryByText(courseLabs[0].description)).not.toBeInTheDocument();
     expect(within(panel).queryByText(courseLabs[1].title)).not.toBeInTheDocument();
     expect(within(panel).queryByText(courseLabs[2].title)).not.toBeInTheDocument();
   });

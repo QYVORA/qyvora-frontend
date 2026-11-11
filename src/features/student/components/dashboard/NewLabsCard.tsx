@@ -50,13 +50,8 @@ const NewLabsCard = ({ labs, excludeLabIds = [] }: NewLabsCardProps) => {
 
   return (
     <Card as="section" className="flex flex-col p-5 md:p-6">
-      <div className="mb-4 flex items-start justify-between gap-3">
-        <div className="min-w-0">
-          <h2 className="type-h2 text-text-primary">Discover Labs</h2>
-          <p className="mt-1 type-body-sm text-text-secondary">
-            Explore learning that is not already in your recent activity.
-          </p>
-        </div>
+      <div className="mb-4 flex items-center justify-between gap-3">
+        <h2 className="type-h2 text-text-primary">Discover Labs</h2>
         <Button to="/dashboard/labs" variant="ghost" size="sm" className="shrink-0">
           All Labs
         </Button>
@@ -82,9 +77,12 @@ const NewLabsCard = ({ labs, excludeLabIds = [] }: NewLabsCardProps) => {
                   to={lab.route}
                   className="group flex min-w-0 flex-1 items-center gap-3 rounded-lg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
                 >
-                  <span className="grid h-12 w-12 shrink-0 place-items-center overflow-hidden rounded-full border border-border-subtle bg-surface-raised">
-                    <LabBadge labId={lab.id} accentColor={lab.accentColor} className="h-full w-full" glow={false} />
-                  </span>
+                  <LabBadge
+                    labId={lab.id}
+                    accentColor={lab.accentColor}
+                    className="h-14 w-14 shrink-0 sm:h-16 sm:w-16"
+                    glow={false}
+                  />
                   <span className="min-w-0 flex-1">
                     <span className="flex flex-wrap items-center gap-x-2 gap-y-1">
                       <span className="truncate text-sm font-bold leading-snug text-text-primary transition-colors group-hover:text-accent">
@@ -95,9 +93,6 @@ const NewLabsCard = ({ labs, excludeLabIds = [] }: NewLabsCardProps) => {
                           New
                         </span>
                       )}
-                    </span>
-                    <span className="mt-0.5 line-clamp-1 block text-xs leading-relaxed text-text-secondary">
-                      {lab.description}
                     </span>
                     <span className="mt-1 flex flex-wrap items-center gap-x-3 gap-y-1">
                       <DifficultyBadge difficulty={lab.difficulty} />

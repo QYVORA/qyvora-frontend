@@ -37,7 +37,6 @@ const BOOTCAMP_FALLBACK_PATH = '/dashboard/bootcamps';
 interface BootcampCatalogEntry {
   id?: string | number;
   title?: string;
-  description?: string;
 }
 
 function pickCpBalance(userCp: number | undefined, overview: any): number | undefined {
@@ -116,7 +115,6 @@ const Dashboard = () => {
     return [{
       id,
       title,
-      description: item.description?.trim() || undefined,
       progress: progress?.progress,
       to: `/dashboard/bootcamps/${id}`,
       isActive: isBootcampActive(id),
