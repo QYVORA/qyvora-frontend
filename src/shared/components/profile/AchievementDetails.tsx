@@ -20,7 +20,7 @@ export const AchievementDetails: React.FC<AchievementDetailsProps> = ({
       role="dialog"
       aria-modal="false"
       aria-label={`${achievement.title} details`}
-      className="relative z-30 flex flex-col gap-3 rounded-xl border border-border-subtle bg-bg-card p-4 shadow-2xl animate-in fade-in zoom-in-95 duration-150 sm:max-w-xs"
+      className="relative z-30 flex flex-col gap-3 rounded-lg border border-border-subtle bg-surface p-4 sm:max-w-xs"
     >
       <div className="flex items-start justify-between gap-3">
         <div className="flex items-center gap-3">

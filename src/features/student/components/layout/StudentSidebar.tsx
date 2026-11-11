@@ -238,7 +238,7 @@ const StudentSidebar: React.FC<{ collapsed?: boolean; onToggleCollapse?: () => v
                         />
                         {!collapsed && <span className="flex-1 truncate">{item.label}</span>}
                         {item.badgeKey === 'notifications' && unread > 0 && (
-                          <span className="flex h-5 min-w-5 items-center justify-center rounded-md bg-accent px-1 text-[10px] font-black text-on-accent tabular-nums">
+                          <span className="flex h-5 min-w-5 items-center justify-center rounded-md bg-accent px-1 text-[12px] font-medium tabular-nums text-on-accent">
                             {unread > 99 ? '99+' : unread}
                           </span>
                         )}

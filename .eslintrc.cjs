@@ -69,5 +69,6 @@ module.exports = {
       { allow: [...QYVORA_COLOR_EXCEPTIONS, ...QYVORA_GITHUB_LANGUAGE_COLOR_PATH] },
     ],
     'qyvora-local/no-status-palette': ['error', { allow: QYVORA_COLOR_EXCEPTIONS }],
+    'qyvora-local/no-legacy-app-style': 'error',
   },
 };

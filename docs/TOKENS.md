@@ -1,5 +1,8 @@
 # Design Tokens — QYVORA (single source of truth)
 
+> **App surfaces:** the signed-in app (`AppShell`, `AdminLayout`, profiles, learning, settings) uses [App UI System v2](APP-UI-SYSTEM.md). That document overrides this page for app files; public marketing UI follows this page.
+
+
 Canonical reference for every design token. All values below live in
 `src/styles/index.css` (Tailwind CSS v4 `@theme` blocks). **Use the Tailwind
 utility, never a raw value** — the only raw-hex exceptions are listed in

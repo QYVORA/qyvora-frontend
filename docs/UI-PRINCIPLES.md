@@ -1,5 +1,8 @@
 # QYVORA UI Principles
 
+> **App surfaces:** the signed-in app (`AppShell`, `AdminLayout`, profiles, learning, settings) uses [App UI System v2](APP-UI-SYSTEM.md). That document overrides this page for app files; public marketing UI follows this page.
+
+
 Rules governing every UI decision in this codebase. These are enforced conventions, not suggestions.
 Source of truth: the code. Before writing UI, read `src/styles/index.css` and existing components.
 

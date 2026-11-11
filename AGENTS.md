@@ -2,6 +2,19 @@
 
 Operational rules for AI coding agents. Before writing any UI, read `src/styles/index.css` and look at existing implementations. Mirror what is already there — do not invent new patterns, tokens, or effects.
 
+## Signed-in App UI System v2 (read first)
+
+The signed-in app (`AppShell`, `AdminLayout`, `PublicProfilePage`) uses **App UI System v2** — read **[docs/APP-UI-SYSTEM.md](docs/APP-UI-SYSTEM.md)** before touching those surfaces. It overrides the legacy rules below for app files only:
+
+- Scope comes from `useAppUiScope()` (`data-ui="app"`), never a global theme change.
+- UI text is **Ubuntu** 400/500/700; JetBrains Mono is reserved for code, paths, IPs, tokens and terminal output.
+- Headings are **700, sentence case** (not `font-black`, not uppercase). Overlines may be uppercase only at ≤12px.
+- Radius: cards `rounded-2xl` (8px), controls `rounded-md` (6px), pills/avatars full.
+- Use the v2 primitives (`Button`, `Card`, `SectionCard`, `StatStrip`, `Input`/`Field`/`Select`/`Textarea`, `Switch`/`Toggle`, `Badge`, `Menu`, `Avatar`, tabs, `OptionTile`) and `--app-*` layout vars; no page `max-w-*`.
+- Flat surfaces only: no glow, gradient washes, hover scale, `backdrop-blur` panels, or `shadow-lg`/`shadow-2xl`.
+- `qyvora-local/no-legacy-app-style` fails migrated files that reintroduce the legacy display type/chrome. Add each newly migrated file to its target list.
+- Public marketing pages keep the original terminal-born identity; do not restyle them incidentally.
+
 ## Before You Start
 
 1. Read `src/styles/index.css` tokens and component classes
@@ -126,6 +139,7 @@ h2 compact bento sections: **title only, no description**.
 - Settings-mode topbar variant in `StudentTopbar` (across the whole UI, incl. `tour-settings-nav`): settings pages use the standard dashboard topbar, never a Settings-mode topbar variant. Settings section navigation lives in-page on `SettingsPage`, not in the topbar. Do not reintroduce `isSettingsPage`/`settingsMatch`/`SETTINGS_SECTIONS` render variants in `StudentTopbar`.
 - Inline fullscreen buttons on walkthrough pages (walkthrough fullscreen toolbars are removed — keep interactive controls inside page content/sidebar)
 - Navbar link buttons with borders (borders only on badges and status indicators)
+- Legacy app styling in migrated files: `font-display`, `font-black`, `tracking-widest`, `shadow-lg`/`shadow-2xl`, `rounded-3xl` (`qyvora-local/no-legacy-app-style`)
 
 ## Layouts Reference
 
@@ -166,4 +180,4 @@ h2 compact bento sections: **title only, no description**.
 
 ## Validation
 
-After changes, run: `npm run typecheck`, `npm run lint`, `npm run build`
+After changes, run: `npm run typecheck`, `npm run lint`, `npm test`, `npm run build`. App-UI changes must also pass `qyvora-local/no-legacy-app-style` (lint) and, when a new file joins the v2 system, be added to that rule's target list.

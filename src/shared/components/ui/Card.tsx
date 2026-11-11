@@ -194,11 +194,11 @@ export const CardStat: React.FC<CardStatProps> = ({
         </div>
       )}
       <div className="min-w-0">
-        <div className={`font-mono text-2xl md:text-xl font-black leading-none ${accent ? 'text-accent' : 'text-text-primary'}`}>
+        <div className={`text-2xl font-medium tabular-nums leading-none md:text-xl ${accent ? 'text-accent' : 'text-text-primary'}`}>
           {value}
         </div>
         {label && (
-          <div className="mt-1 text-xs md:text-xs font-bold uppercase tracking-widest text-text-muted truncate">
+          <div className="mt-1 truncate text-[12px] text-text-muted">
             {label}
           </div>
         )}

@@ -1,5 +1,8 @@
 # Typography — QYVORA (source of truth)
 
+> **App surfaces:** the signed-in app (`AppShell`, `AdminLayout`, profiles, learning, settings) uses [App UI System v2](APP-UI-SYSTEM.md). That document overrides this page for app files; public marketing UI follows this page.
+
+
 Single reference for type tokens, heading scale, and reading-text rules. Supersedes
 page-by-page size decisions; pages pick a **named variant from the scale below** and
 never invent sizes.

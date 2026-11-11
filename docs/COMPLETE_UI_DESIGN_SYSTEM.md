@@ -1,5 +1,8 @@
 # QYVORA Frontend — Complete UI Design System Specification
 
+> **App surfaces:** the signed-in app (`AppShell`, `AdminLayout`, profiles, learning, settings) uses [App UI System v2](APP-UI-SYSTEM.md). That document overrides this page for app files; public marketing UI follows this page.
+
+
 **Version:** 1.0  
 **Last Updated:** 2024  
 **Status:** ✅ Production Implementation  
