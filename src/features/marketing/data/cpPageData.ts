@@ -52,7 +52,7 @@ export const CP_PILLARS: CpPillar[] = [
     index: '01',
     icon: BookOpen,
     title: 'Learn',
-    description: 'Complete structured cybersecurity education across courses and phases.',
+    description: 'Complete structured cybersecurity education across labs and phases.',
   },
   {
     id: 'test',
@@ -107,7 +107,7 @@ export interface CpRewardActivity {
 }
 
 export const CP_REWARD_MATRIX: CpRewardActivity[] = [
-  { id: 'course', activity: 'Course Completed', category: 'EDUCATION', reward: '+ CP', status: 'VERIFIED' },
+  { id: 'lab', activity: 'Lab Completed', category: 'EDUCATION', reward: '+ CP', status: 'VERIFIED' },
   { id: 'quiz', activity: 'Quiz Passed', category: 'ASSESSMENT', reward: '+ CP', status: 'COMPLETED' },
   { id: 'phase', activity: 'Phase Completed', category: 'BOOTCAMP', reward: '+ CP', status: 'IN PROGRESS' },
   { id: 'lab', activity: 'Attack Lab Completed', category: 'EXECUTION', reward: '+ CP', status: 'VERIFIED' },

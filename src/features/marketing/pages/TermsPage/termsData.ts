@@ -62,7 +62,7 @@ export const termsData: TermsData = {
       shortTitle: "Training",
       body: "QYVORA offers structured training programs, hands-on laboratories, bootcamps, and certification pathways. All training content, lab environments, exercises, and associated materials are proprietary and protected under applicable intellectual property laws.",
       bullets: [
-        "Training materials, lab configurations, challenge designs, and course content are owned by QYVORA and may not be reproduced, distributed, or shared without explicit written permission.",
+        "Training materials, lab configurations, challenge designs, and lab content are owned by QYVORA and may not be reproduced, distributed, or shared without explicit written permission.",
         "Lab environments are provided for educational purposes only. Any activity conducted within these environments must remain within the designated boundaries of each exercise.",
         "QYVORA reserves the right to modify, update, or remove training content, labs, or certifications at any time without prior notice.",
         "Completion of training programs or laboratories does not guarantee employment, certification by third-party bodies, or any specific outcome.",

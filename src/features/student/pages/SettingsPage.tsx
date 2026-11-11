@@ -326,7 +326,7 @@ const Settings: React.FC = () => {
                 <SettingsRow label={"Push notifications"} description={"Receive push notifications"}>
                   <Toggle label={"Push notifications"} checked={preferences.notifications.push} onChange={(v) => updateNotification('push', v)} disabled={prefsSaving} />
                 </SettingsRow>
-                <SettingsRow label={"Mission updates"} description={"Course and mission updates"}>
+                <SettingsRow label={"Mission updates"} description={"Lab and mission updates"}>
                   <Toggle label={"Mission updates"} checked={preferences.notifications.courseUpdates} onChange={(v) => updateNotification('courseUpdates', v)} disabled={prefsSaving} />
                 </SettingsRow>
                 <SettingsRow label={"CP alerts"} description={"CyberPoints alerts"}>

@@ -37,7 +37,7 @@ const FeaturedLearningBlock: React.FC = () => {
                 {"Train. Practice. Prove."}
               </h2>
               <p className="type-body mt-2 max-w-prose">
-                {"Courses, attack labs, bootcamps, simulations, and Cyber Points earned for every skill you verify."}
+                {"Attack labs, bootcamps, simulations, and Cyber Points earned for every skill you verify."}
               </p>
             </div>
             <Button to="/learn" variant="ghost" className="shrink-0">
@@ -93,18 +93,18 @@ const FeaturedLearningBlock: React.FC = () => {
             </div>
           </Card>
 
-          {/* Courses */}
-          <Card to="/learn?tab=courses" interactive className="flex min-h-[240px] flex-col gap-3 p-6">
+          {/* Labs */}
+          <Card to="/learn?tab=labs" interactive className="flex min-h-[240px] flex-col gap-3 p-6">
             <span className="flex h-11 w-11 items-center justify-center rounded-xl border border-border-subtle bg-surface-raised text-accent">
               <BookOpen className="h-5 w-5" aria-hidden="true" />
             </span>
-            <p className="type-label mt-1 uppercase tracking-[0.12em] text-text-tertiary">{"Courses"}</p>
+            <p className="type-label mt-1 uppercase tracking-[0.12em] text-text-tertiary">{"Labs"}</p>
             <h3 className="type-h3 font-black uppercase tracking-tight text-text-primary">
               {"Self-paced foundations"}
             </h3>
-            <p className="type-body-sm flex-1">{COURSES.length} {"hands-on courses across the core security stack."}</p>
+            <p className="type-body-sm flex-1">{COURSES.length} {"hands-on labs across the core security stack."}</p>
             <div className="flex items-center justify-between">
-              <span className="type-meta">{COURSES.length} {"courses"}</span>
+              <span className="type-meta">{COURSES.length} {"labs"}</span>
               <span className="type-meta text-accent">{`up to 150 CP`}</span>
             </div>
           </Card>

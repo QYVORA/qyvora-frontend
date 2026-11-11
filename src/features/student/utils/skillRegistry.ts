@@ -97,7 +97,7 @@ function buildCourseItems(): LearningItem[] {
     items.push({
       id: `course:${course.id}`,
       source: 'course',
-      sourceLabel: 'Course',
+      sourceLabel: 'Lab',
       skillKey,
     });
   }

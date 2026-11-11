@@ -1,8 +1,7 @@
 import React from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { ArrowRight, BookOpen, Bug, ShieldCheck, Globe, Coins } from 'lucide-react';
-import { COURSES } from '@/features/student/data/courses';
-import { LABS } from '@/features/student/constants/labs';
+import { ArrowRight, Bug, ShieldCheck, Globe, Coins } from 'lucide-react';
+import { UNIFIED_LABS, LAB_FORMAT_SHORT_LABELS } from '@/features/student/data/labs';
 import { PHASES } from '@/features/marketing/data/learnData';
 import { BOOTCAMPS } from '@/features/marketing/content/bootcampData';
 import { Card } from '@/shared/components/ui/Card';
@@ -17,10 +16,9 @@ import ScrollReveal from '@/shared/components/ScrollReveal';
 import SEO from '@/shared/components/SEO';
 import Button from '@/shared/components/ui/Button';
 
-type TabId = 'courses' | 'labs' | 'bootcamp' | 'simulations' | 'cp';
+type TabId = 'labs' | 'bootcamp' | 'simulations' | 'cp';
 
 const TABS: { id: TabId; label: string; icon: React.ReactNode }[] = [
-  { id: 'courses', label: 'Courses', icon: <BookOpen className="h-4 w-4" aria-hidden="true" /> },
   { id: 'labs', label: 'Labs', icon: <Bug className="h-4 w-4" aria-hidden="true" /> },
   { id: 'bootcamp', label: 'Bootcamp', icon: <ShieldCheck className="h-4 w-4" aria-hidden="true" /> },
   { id: 'simulations', label: 'Simulations', icon: <Globe className="h-4 w-4" aria-hidden="true" /> },
@@ -28,7 +26,6 @@ const TABS: { id: TabId; label: string; icon: React.ReactNode }[] = [
 ];
 
 const TAB_CTA_LABELS: Record<TabId, string> = {
-  courses: 'Browse courses',
   labs: 'Browse labs',
   bootcamp: 'Explore the bootcamp',
   simulations: 'Open simulations',
@@ -36,7 +33,6 @@ const TAB_CTA_LABELS: Record<TabId, string> = {
 };
 
 const SUGGESTED_CTA: Record<TabId, string> = {
-  courses: '/register',
   labs: '/register',
   bootcamp: '/register',
   simulations: '/simulations',
@@ -54,42 +50,36 @@ const LearnPage: React.FC = () => {
   const [searchParams] = useSearchParams();
   const initialTab = searchParams.get('tab');
   const [active, setActive] = React.useState<TabId>(() =>
-    TAB_IDS.includes(initialTab as TabId) ? (initialTab as TabId) : 'courses',
+    TAB_IDS.includes(initialTab as TabId) ? (initialTab as TabId) : 'labs',
   );
 
   const renderItems = () => {
     switch (active) {
-      case 'courses':
-        return COURSES.map((course) => (
-          <Card key={course.id} to={`/courses/${course.id}`} interactive className="flex min-h-[190px] flex-col gap-3 p-6">
-            <div className="flex items-center gap-3">
-              <CourseBadge courseId={course.id} className="h-20 w-20 shrink-0 md:h-24 md:w-24" />
-              <span className="type-meta">{course.skillLevel}</span>
-            </div>
-            <h3 className="type-h3 font-black uppercase tracking-tight text-text-primary">{course.title}</h3>
-            <p className="type-body-sm flex-1 line-clamp-3">{course.overview}</p>
-            <div className="flex flex-wrap gap-x-5 gap-y-1">
-              <span className="type-meta">{course.lessons.length} lessons</span>
-              <span className="type-meta">{course.estimatedMinutes} min</span>
-              <span className="type-meta text-accent">{course.cpCost} CP</span>
-            </div>
-          </Card>
-        ));
       case 'labs':
-        return LABS.map((lab) => (
+        return UNIFIED_LABS.map((lab) => (
           <Card key={lab.id} to={lab.route} interactive className="flex min-h-[220px] flex-col gap-3 p-6">
             <div className="flex items-center gap-3">
-              <LabBadge labId={lab.id} accentColor={lab.accentColor} className="h-24 w-24 shrink-0 md:h-28 md:w-28" />
-              <span className="type-meta">{lab.difficulty}</span>
+              {lab.source === 'content' ? (
+                <CourseBadge courseId={lab.id} className="h-24 w-24 shrink-0 md:h-28 md:w-28" />
+              ) : (
+                <LabBadge labId={lab.id} accentColor={lab.accentColor} className="h-24 w-24 shrink-0 md:h-28 md:w-28" />
+              )}
+              <span className="type-meta">{LAB_FORMAT_SHORT_LABELS[lab.format]}</span>
             </div>
             <h3 className="type-h3 font-black uppercase tracking-tight text-text-primary">
               {lab.title}
             </h3>
             <p className="type-body-sm flex-1 line-clamp-3">
-              {lab.desc}
+              {lab.description}
             </p>
             <div className="flex flex-wrap items-center gap-x-5 gap-y-1 border-t border-border-subtle pt-3">
-              <span className="type-meta text-accent">{lab.cpReward} CP</span>
+              {lab.cpReward && <span className="type-meta text-accent">{lab.cpReward} CP</span>}
+              {lab.lessonsCount !== undefined && (
+                <span className="type-meta">{lab.lessonsCount} lessons</span>
+              )}
+              {lab.estimatedMinutes !== undefined && (
+                <span className="type-meta">{lab.estimatedMinutes} min</span>
+              )}
             </div>
           </Card>
         ));
@@ -153,13 +143,13 @@ const LearnPage: React.FC = () => {
     <div className="w-full bg-canvas">
       <SEO
         title={"Learn | QYVORA"}
-        description={"Courses, labs, the Hacker Protocol Bootcamp, and more."}
+        description={"Labs, the Hacker Protocol Bootcamp, simulations and more."}
       />
       <PublicContainer className="pb-20 pt-24 md:pb-24 md:pt-28 lg:pt-32">
         <PageHeader
           kicker="QYVORA"
           title={"Learn | QYVORA".replace(' | QYVORA', '')}
-          description={"Courses, labs, the Hacker Protocol Bootcamp, and more."}
+          description={"Labs, the Hacker Protocol Bootcamp, simulations and more."}
         />
 
         <div
@@ -193,7 +183,7 @@ const LearnPage: React.FC = () => {
           })}
         </div>
 
-        {(['courses', 'labs', 'bootcamp'] as TabId[]).includes(active) && (
+        {(['labs', 'bootcamp'] as TabId[]).includes(active) && (
           <div
             key={active}
             role="tabpanel"
@@ -248,7 +238,7 @@ const LearnPage: React.FC = () => {
                 <h3 className="type-h3 font-black uppercase tracking-tight text-text-primary">
                   {"Earn CyberPoints on-chain."}
                 </h3>
-                <p className="type-body-sm flex-1">{"Every verified achievement across courses, labs, and bootcamp rooms earns CP: a verifiable record of your skill."}</p>
+                <p className="type-body-sm flex-1">{"Every verified achievement across labs and bootcamp rooms earns CP: a verifiable record of your skill."}</p>
                 <span className="flex min-h-[48px] items-center gap-2 text-sm font-bold text-accent">
                   {"About CyberPoints"}
                   <ArrowRight className="h-4 w-4" aria-hidden="true" />

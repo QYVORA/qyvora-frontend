@@ -51,21 +51,21 @@ export function deriveTrophies(profile: ProfileData): Trophy[] {
     trophies.push({
       id: 'scholar',
       title: 'Scholar',
-      description: `${profile.coursesCompleted} courses completed`,
+      description: `${profile.coursesCompleted} labs completed`,
       tier: 'platinum',
     });
   } else if (profile.coursesCompleted >= 2) {
     trophies.push({
       id: 'course-graduate',
-      title: 'Course Graduate',
-      description: `${profile.coursesCompleted} courses completed`,
+      title: 'Lab Graduate',
+      description: `${profile.coursesCompleted} labs completed`,
       tier: 'silver',
     });
   } else if (profile.coursesCompleted >= 1) {
     trophies.push({
       id: 'first-course',
-      title: 'First Course',
-      description: 'Completed first course',
+      title: 'First Lab',
+      description: 'Completed first lab',
       tier: 'bronze',
     });
   }
@@ -120,13 +120,13 @@ export function deriveActivityEvents(profile: ProfileData): ActivityEvent[] {
     });
   }
 
-  // Courses completed
+  // Labs completed
   if (profile.coursesCompleted > 0) {
     events.push({
       id: 'courses-done',
       type: 'course_completed',
-      title: `${profile.coursesCompleted} course${profile.coursesCompleted !== 1 ? 's' : ''} completed`,
-      description: 'Course milestone reached',
+      title: `${profile.coursesCompleted} lab${profile.coursesCompleted !== 1 ? 's' : ''} completed`,
+      description: 'Lab milestone reached',
       timestamp: new Date(Date.now() - 14 * 86400000).toISOString(),
     });
   }

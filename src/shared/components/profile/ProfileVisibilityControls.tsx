@@ -83,7 +83,7 @@ export const ProfileVisibilityControls: React.FC<ProfileVisibilityControlsProps>
         <div className="py-3">
           <Toggle
             label="Show activity heat map"
-            description="Display your recent lab & course activity contributions publicly."
+            description="Display your recent lab activity contributions publicly."
             checked={current.activityPublic !== false}
             disabled={busy}
             onCheckedChange={(checked) => handleToggle('activityPublic', checked)}

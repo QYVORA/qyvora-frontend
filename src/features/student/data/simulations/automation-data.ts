@@ -39,7 +39,7 @@ export const AUTOMATION_SCENARIOS: WebLabScenario[] = [
       description:
         'An operations team that has never automated a single check and insists that "a technician will run through the list by hand".',
     },
-    narrative: `> **Valkyrie:** "Automation is the difference between an analyst and a technician. A technician runs one command and waits. An analyst writes the command once and lets it run across the whole range. This module is not a programming course — it is about making your offensive work faster and more reliable."
+    narrative: `> **Valkyrie:** "Automation is the difference between an analyst and a technician. A technician runs one command and waits. An analyst writes the command once and lets it run across the whole range. This module is not a programming class — it is about making your offensive work faster and more reliable."
 
 A **port scanner** is the canonical first tool. It teaches the loop every automation project shares: take input, do a network operation, collect the result, format it for a human. Write it once in Python and you will reuse the pattern for enumerators, collectors and report generators.
 

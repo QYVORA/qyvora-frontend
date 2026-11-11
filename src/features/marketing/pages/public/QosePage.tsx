@@ -20,12 +20,12 @@ const QOSE_INSTALMENTS = [
   {
     month: 'Month 1',
     amount: 'GH₵300',
-    note: 'After payment is verified, the team confirms your seat and first month of coursework, labs and cohort support.',
+    note: 'After payment is verified, the team confirms your seat and first month of labs and cohort support.',
   },
   {
     month: 'Month 2',
     amount: 'GH₵250',
-    note: 'Covers the second month of coursework, labs and assessments.',
+    note: 'Covers the second month of labs and assessments.',
   },
   {
     month: 'Month 3',

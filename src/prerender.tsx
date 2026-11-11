@@ -1,10 +1,9 @@
 import type { PrerenderArguments, PrerenderResult } from 'vite-prerender-plugin';
-import { buildCourse, buildOrganization } from '@/shared/seo/schema';
+import { buildOrganization } from '@/shared/seo/schema';
 import { canonicalUrl } from '@/shared/seo/metadata';
 import { loadToolSeoByPath } from '@/shared/seo/toolSeoForPrerender';
 import { SITE_CONFIG } from '@/features/marketing/content/siteConfig';
 import { TOOLS } from '@/features/marketing/data/tools/registry';
-import { getCourseById } from '@/features/student/data/courses';
 
 const SITE_URL = canonicalUrl('/');
 const DEFAULT_OG_IMAGE = `${SITE_URL}og-image.png`;
@@ -45,7 +44,7 @@ const routeContent: Record<string, RouteContent> = {
     sections: [
       {
         heading: 'Train Like a Hacker',
-        body: 'From the Hacker Protocol Bootcamp to structured courses and hands-on attack labs, QYVORA sharpens your skills from the ground up: privilege escalation, password cracking, SQL injection, OSINT, and the full kill chain.',
+        body: 'From the Hacker Protocol Bootcamp to structured content labs and hands-on attack labs, QYVORA sharpens your skills from the ground up: privilege escalation, password cracking, SQL injection, OSINT, and the full kill chain.',
       },
       {
         heading: 'Tools for Operators',
@@ -184,9 +183,9 @@ const routeContent: Record<string, RouteContent> = {
   },
   '/refund-policy': {
     title: 'Refund & Cancellation Policy | QYVORA',
-    description: 'How cancellations, refunds, and instalment payments work for QYVORA bootcamps, courses, and professional services.',
+    description: 'How cancellations, refunds, and instalment payments work for QYVORA bootcamps, labs, and professional services.',
     h1: 'Refund & Cancellation Policy',
-    lead: 'How cancellations, refunds, and instalment payments work for QYVORA bootcamps, courses, and professional services.',
+    lead: 'How cancellations, refunds, and instalment payments work for QYVORA bootcamps, labs, and professional services.',
     sections: [
       {
         heading: 'Bootcamp tuition and instalments',
@@ -201,8 +200,8 @@ const routeContent: Record<string, RouteContent> = {
         body: 'The instalment for a stage that has started is non-refundable. Future instalments that are not yet due can be cancelled, and paid-ahead months that have not started can be refunded.',
       },
       {
-        heading: 'Courses and professional services',
-        body: 'Self-paced digital courses are generally non-refundable once started. Professional engagements follow the cancellation and payment terms in the applicable statement of work.',
+        heading: 'Labs and professional services',
+        body: 'Self-paced digital labs are generally non-refundable once started. Professional engagements follow the cancellation and payment terms in the applicable statement of work.',
       },
       {
         heading: 'How to request a refund',
@@ -292,9 +291,9 @@ const routeContent: Record<string, RouteContent> = {
   },
   '/learn': {
     title: 'Learn | QYVORA',
-    description: 'Courses, labs, the Hacker Protocol Bootcamp, and more.',
+    description: 'Labs, the Hacker Protocol Bootcamp, simulations and more.',
     h1: 'Learn',
-    lead: 'Courses, labs, the Hacker Protocol Bootcamp, and more.',
+    lead: 'Labs, the Hacker Protocol Bootcamp, simulations and more.',
     sections: [
       {
         heading: 'What is here',
@@ -1287,7 +1286,7 @@ const routeContent: Record<string, RouteContent> = {
     sections: [
       {
         heading: 'A reward system built around capability',
-        body: 'Instead of rewarding passive engagement, QYVORA rewards operators for actually progressing through its ecosystem, completing courses, passing quizzes, finishing bootcamp phases, clearing attack labs, completing challenges, and reaching defined milestones.',
+        body: 'Instead of rewarding passive engagement, QYVORA rewards operators for actually progressing through its ecosystem, completing labs, passing quizzes, finishing bootcamp phases, clearing attack challenges, and reaching defined milestones.',
       },
       {
         heading: 'The philosophy',
@@ -1296,7 +1295,7 @@ const routeContent: Record<string, RouteContent> = {
       {
         heading: 'How you earn CP',
         bullets: [
-          'Course Completed - + CP',
+          'Lab Completed - + CP',
           'Quiz Passed - + CP',
           'Phase Completed - + CP',
           'Attack Lab Completed - + CP',
@@ -1367,7 +1366,7 @@ const routeContent: Record<string, RouteContent> = {
     sections: [
       {
         heading: 'How it works',
-        body: 'Operators earn CP through bootcamp phases, courses, attack labs, and competitive events. The leaderboard ranks them by total CP earned.',
+        body: 'Operators earn CP through bootcamp phases, content labs, attack labs, and competitive events. The leaderboard ranks them by total CP earned.',
       },
     ],
     links: [{ label: 'Zero Day Market', href: '/zero-day-market' }],
@@ -1381,7 +1380,7 @@ const routeContent: Record<string, RouteContent> = {
     sections: [
       {
         heading: 'How it works',
-        body: 'Operators earn CP through bootcamp phases, courses, attack labs, and competitive events. The leaderboard ranks them by total CP earned.',
+        body: 'Operators earn CP through bootcamp phases, content labs, attack labs, and competitive events. The leaderboard ranks them by total CP earned.',
       },
     ],
     links: [{ label: 'Zero Day Market', href: '/zero-day-market' }],
@@ -1573,45 +1572,6 @@ const routeContent: Record<string, RouteContent> = {
   },
 };
 
-const COURSE_PREFIX = '/courses/';
-
-/**
- * Prerendered copy for the public `/courses/:courseId` pages, derived from the
- * same course records the client page reads so the static head, the body and
- * the hydrated page can never drift apart. Only public fields are emitted —
- * lesson bodies, quizzes and answer keys stay out of the static HTML.
- */
-function loadCourseContent(path: string): RouteContent | undefined {
-  if (!path.startsWith(COURSE_PREFIX)) return undefined;
-  const course = getCourseById(path.slice(COURSE_PREFIX.length));
-  if (!course) return undefined;
-
-  const sections: Section[] = [
-    { heading: 'Overview', body: course.overview },
-  ];
-
-  if (course.learningObjectives.length > 0) {
-    sections.push({ heading: 'What you will learn', bullets: course.learningObjectives });
-  }
-
-  sections.push({
-    heading: 'Syllabus',
-    body: `A structured path through every lesson: ${course.lessons.map((lesson) => lesson.title).join(', ')}.`,
-  });
-
-  return {
-    title: `${course.title} | QYVORA`,
-    description: course.description || course.overview,
-    h1: course.title,
-    lead: course.description || course.overview,
-    sections,
-    links: [
-      { label: 'Course catalogue', href: '/learn' },
-      { label: 'Cyber Coin', href: '/cp' },
-    ],
-  };
-}
-
 function renderBody(content: RouteContent): string {
   const sections = (content.sections || [])
     .map((s) => {
@@ -1640,7 +1600,6 @@ export async function prerender(data: PrerenderArguments): Promise<PrerenderResu
   const { url } = data;
 
   const content =
-    loadCourseContent(url) ||
     routeContent[url] || {
       title: 'QYVORA | Africa\'s Offensive Security Platform',
       description: 'Building a strong cybersecurity ecosystem in Africa through offensive security training.',
@@ -1653,15 +1612,8 @@ export async function prerender(data: PrerenderArguments): Promise<PrerenderResu
   // never drift apart.
   const toolSeo = await loadToolSeoByPath(url);
 
-  // Course pages do the same from the course records: the course id in the
-  // path resolves to one source for the static head and the client head.
-  const courseSeo = url.startsWith(COURSE_PREFIX)
-    ? getCourseById(url.slice(COURSE_PREFIX.length))
-    : undefined;
-  const courseDescription = courseSeo ? courseSeo.description || courseSeo.overview : undefined;
-
-  const title = courseSeo ? `${courseSeo.title} | QYVORA` : toolSeo?.fullTitle ?? content.title;
-  const description = courseDescription ?? toolSeo?.description ?? content.description;
+  const title = toolSeo?.fullTitle ?? content.title;
+  const description = toolSeo?.description ?? content.description;
   const canonical = canonicalUrl(content.canonical || url);
   const ogImage = toolSeo?.image
     ? `${SITE_URL}${toolSeo.image}`
@@ -1689,7 +1641,6 @@ export async function prerender(data: PrerenderArguments): Promise<PrerenderResu
     buildOrganization(),
   ];
   if (toolSeo) schemas.push(toolSeo.schema);
-  if (courseSeo) schemas.push(buildCourse(courseSeo));
 
   // Check if this is a tool page
   const currentTool = TOOLS.find(tool => tool.path === url);

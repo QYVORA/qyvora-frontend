@@ -66,7 +66,7 @@ const HeroBlock: React.FC<HeroBlockProps> = ({ stats }) => {
           </h1>
 
           <p className="max-w-xl text-base text-text-secondary md:text-lg">
-            {"Hands-on courses, attack labs, and the Hacker Protocol Bootcamp — every skill you earn is verified and recorded in CyberPoints."}
+            {"Hands-on labs, attack challenges, and the Hacker Protocol Bootcamp — every skill you earn is verified and recorded in CyberPoints."}
           </p>
 
           <div className="flex flex-wrap items-center gap-3">

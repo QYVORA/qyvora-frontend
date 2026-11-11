@@ -29,7 +29,7 @@ export const privacyPolicy: LegalDocument = {
       bullets: [
         'Account data: name, email address, username or handle, avatar, and profile details you provide; GitHub account identifiers and profile data when you sign in with GitHub.',
         'Authentication and security data: password hash, session and refresh tokens, CSRF tokens, IP address, user agent, timestamps, rate-limit counters, and security-event logs.',
-        'Learning data: course, lab, simulation, and bootcamp progress; answers, submissions, and results; CyberPoints and leaderboard activity; certificates and credentials.',
+        'Learning data: lab, simulation, and bootcamp progress; answers, submissions, and results; CyberPoints and leaderboard activity; certificates and credentials.',
         'Programme and payment data: registration details and payment-confirmation references for paid programmes. Card and mobile-money details are processed by the payment provider you use; we do not store full card numbers.',
         'Credential data: the credential identifier, programme, issue and expiry dates, and revocation status needed to issue and verify credentials.',
         'Communications: messages you send through the contact form, email, WhatsApp, or support channels.',
@@ -42,7 +42,7 @@ export const privacyPolicy: LegalDocument = {
       body: 'We use personal data for the purposes below and only where we have a lawful basis to do so.',
       bullets: [
         'To create and secure your account, authenticate you, and prevent fraud, abuse, and unauthorised access.',
-        'To deliver courses, labs, simulations, bootcamps, certificates, credentials, and community features.',
+        'To deliver labs, simulations, bootcamps, certificates, credentials, and community features.',
         'To process registrations, confirm payments, and administer paid programmes and professional engagements.',
         'To issue, publish, and verify credentials, including displaying the credential information you choose to make public.',
         'To respond to enquiries, provide support, and send operational notices such as security alerts or programme updates.',

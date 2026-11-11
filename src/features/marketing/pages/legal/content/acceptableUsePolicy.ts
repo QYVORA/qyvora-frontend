@@ -16,7 +16,7 @@ export const acceptableUsePolicy: LegalDocument = {
     {
       title: 'Scope',
       shortTitle: 'Scope',
-      body: 'These guidelines apply to everyone who uses QYVORA services, including the website, student dashboard, courses, labs, simulations, bootcamps, credential verification, community groups, and any channel we operate. They sit alongside our Terms of Service; if there is a conflict, the Terms control.',
+      body: 'These guidelines apply to everyone who uses QYVORA services, including the website, student dashboard, labs, simulations, bootcamps, credential verification, community groups, and any channel we operate. They sit alongside our Terms of Service; if there is a conflict, the Terms control.',
       bullets: [
         'By using the services, you agree to follow these guidelines.',
         'Instructors, staff, and community moderators are expected to model the same standards.',

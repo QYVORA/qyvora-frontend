@@ -307,7 +307,7 @@ const MyLearningCard = ({
             ) : (
               <EmptyState
                 title="No active learning yet"
-                description="Choose a course or Lab to get started. It will appear here once progress is recorded."
+                description="Choose a Lab to get started. It will appear here once progress is recorded."
               />
             )}
             {currentItems.length > 0 && (bootcampsError || activeLearningError) && (
@@ -348,7 +348,7 @@ const MyLearningCard = ({
           ) : (
             <EmptyState
               title="No saved learning yet"
-              description="Bookmark any course, Lab or bootcamp to keep it here for later."
+              description="Bookmark any Lab or bootcamp to keep it here for later."
             />
           )
         )}

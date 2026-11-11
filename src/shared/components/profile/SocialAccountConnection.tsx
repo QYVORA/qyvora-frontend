@@ -265,7 +265,7 @@ export const SocialAccountConnection: React.FC<SocialAccountConnectionProps> = (
         open={confirmGithubDisconnect}
         onOpenChange={setConfirmGithubDisconnect}
         title="Disconnect GitHub?"
-        description="This removes your verified GitHub link from QYVORA. Your achievements, CP balance, and course progression remain unaffected."
+        description="This removes your verified GitHub link from QYVORA. Your achievements, CP balance, and lab progression remain unaffected."
         confirmLabel="Disconnect"
         destructive
         onConfirm={handleDisconnectGithub}

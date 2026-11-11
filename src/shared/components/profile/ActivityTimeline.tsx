@@ -44,7 +44,7 @@ const ActivityTimeline: React.FC<ActivityTimelineProps> = ({ profile, className 
       <div className={`rounded-2xl border border-border-subtle bg-surface p-5 md:p-6 ${className}`}>
         <ModuleHeader icon={<History className="h-4 w-4" />} title="Recent Activity" />
         <p className="py-4 text-center text-sm text-text-muted">
-          No activity yet. Complete labs and courses to see your timeline.
+          No activity yet. Complete labs to see your timeline.
         </p>
       </div>
     );

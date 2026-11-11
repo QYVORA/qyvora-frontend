@@ -184,7 +184,7 @@ const BootcampOverviewRoute = () => {
   }
 
   return (
-    <Wrap scope="Bootcamp Course">
+    <Wrap scope="Bootcamp">
       <StudentOnly><BootcampCoursePage /></StudentOnly>
     </Wrap>
   );
@@ -254,7 +254,8 @@ export const AppRouter = () => {
           <Route path="/qose" element={<Wrap scope="QOSE"><QosePage /></Wrap>} />
           <Route path="/qose/payment/callback" element={<Wrap scope="QOSE Payment"><QosePaymentResultPage /></Wrap>} />
           <Route path="/learn" element={<Wrap scope="Learn"><LearnPage /></Wrap>} />
-          <Route path="/courses/:courseId" element={<Wrap scope="Course"><CoursePage /></Wrap>} />
+          <Route path="/courses" element={<Navigate to="/learn?tab=labs" replace />} />
+          <Route path="/courses/:courseId" element={<Wrap scope="Lab"><CoursePage /></Wrap>} />
           <Route path="/services" element={<Wrap scope="Services"><ServicesPage /></Wrap>} />
           <Route path="/services/basic-web-application-pentest" element={<Wrap scope="Basic Pentest"><BasicPentestPage /></Wrap>} />
           <Route path="/services/standard-web-application-pentest" element={<Wrap scope="Standard Pentest"><StandardPentestPage /></Wrap>} />

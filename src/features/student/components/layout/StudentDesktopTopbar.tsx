@@ -39,7 +39,7 @@ type TopbarMenu = 'practice' | 'develop';
 const CRUMB_LABELS: Record<string, string> = {
   dashboard: 'Dashboard',
   labs: 'Labs',
-  courses: 'Courses',
+  courses: 'Labs',
   bootcamps: 'Bootcamp',
   competitive: 'Competitive',
   certificates: 'Certificates',

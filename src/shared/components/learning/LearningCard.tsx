@@ -149,7 +149,7 @@ export const LearningCard: React.FC<LearningCardProps> = ({
   // ── Action Button Render ──────────────────────────────────────────────────
   const renderAction = () => {
     if (!showAction) return null;
-    const defaultLabel = type === 'lab' ? 'Launch' : type === 'course' ? 'Start course' : 'View';
+    const defaultLabel = type === 'lab' ? 'Launch' : type === 'course' ? 'Start Lab' : 'View';
     const label = actionLabel || defaultLabel;
 
     const actionContent = (

@@ -13,7 +13,7 @@ interface RelatedContentProps {
 }
 
 const TYPE_CONFIG: Record<string, { label: string; icon: React.ElementType }> = {
-  course: { label: 'Course', icon: BookOpen },
+  course: { label: 'Lab', icon: BookOpen },
   lab: { label: 'Lab', icon: IconLabs },
   hpb: { label: 'HPB Room', icon: Swords },
 };

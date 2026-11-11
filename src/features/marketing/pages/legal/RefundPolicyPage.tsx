@@ -9,7 +9,7 @@ const RefundPolicyPage: React.FC = () => (
   <>
     <SEO
       title="Refund & Cancellation Policy | QYVORA"
-      description="How cancellations, refunds, and instalment payments work for QYVORA bootcamps, courses, and professional services."
+      description="How cancellations, refunds, and instalment payments work for QYVORA bootcamps, labs, and professional services."
       breadcrumbName="Refund & Cancellation Policy"
     />
     <LegalDocumentPage

@@ -211,7 +211,7 @@ const StudentSearchDialog: React.FC<StudentSearchDialogProps> = ({ open, onOpenC
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent
         title="Search learning experiences"
-        description="Find a room, lab, course, lesson, or dashboard page."
+        description="Find a room, lab, lesson, or dashboard page."
         maxWidth="max-w-4xl"
       >
         <div className="flex flex-col gap-4">
@@ -221,7 +221,7 @@ const StudentSearchDialog: React.FC<StudentSearchDialogProps> = ({ open, onOpenC
             autoFocus
             autoComplete="off"
             spellCheck={false}
-            placeholder="Search rooms, labs, courses, or lessons…"
+            placeholder="Search rooms, labs, or lessons…"
             value={query}
             onChange={(event) => setQuery(event.target.value)}
             onKeyDown={handleKeyDown}
@@ -251,7 +251,7 @@ const StudentSearchDialog: React.FC<StudentSearchDialogProps> = ({ open, onOpenC
             <div className="rounded-xl border border-border-subtle bg-bg p-6 text-center">
               <p className="text-sm font-bold text-text-primary">No results</p>
               <p className="type-body-sm mt-1 text-text-secondary">
-                {`Nothing matches “${query.trim()}”. Try a room, phase, course, or lab name.`}
+                {`Nothing matches “${query.trim()}”. Try a room, phase, or lab name.`}
               </p>
             </div>
           ) : (

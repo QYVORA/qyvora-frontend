@@ -25,7 +25,7 @@ export function buildDefaultFilesystem(): VFSNode {
       size: 160,
     }),
     createNode('welcome.txt', 'file', {
-      content: 'Welcome to QYVORA Simulated Terminal!\n\nThis environment mimics a Kali Linux terminal for educational purposes.\nType "help" to see available commands.\nType "qyvora-help" for course-specific commands.\n',
+      content: 'Welcome to QYVORA Simulated Terminal!\n\nThis environment mimics a Kali Linux terminal for educational purposes.\nType "help" to see available commands.\nType "qyvora-help" for lab-specific commands.\n',
       permissions: '-rw-r--r--',
       size: 185,
     }),

@@ -33,7 +33,7 @@ const CyberCoinPage: React.FC = () => {
               <span>{"CyberPoints (CP)"}</span>
             </span>
           }
-          description="QYVORA's learning verification system. Every point you earn represents verifiable proof of completed labs, challenges, and real-world cybersecurity work — not just course completion certificates."
+          description="QYVORA's learning verification system. Every point you earn represents verifiable proof of completed labs, challenges, and real-world cybersecurity work — not just completion certificates."
           actions={
             <>
               <Button size="lg" to="/register">
@@ -118,7 +118,7 @@ const CyberCoinPage: React.FC = () => {
                 {"Traditional cybersecurity certificates don't prove you can do the work. CP changes that by creating a transparent, verifiable record of every practical task you've completed."}
               </p>
               <p className="type-body mb-6 text-text-secondary">
-                {"Employers, clients, and teams can see exactly what you've accomplished — not just which courses you've taken, but which vulnerabilities you've found, which systems you've secured, and which challenges you've solved."}
+                {"Employers, clients, and teams can see exactly what you've accomplished — not just which labs you've completed, but which vulnerabilities you've found, which systems you've secured, and which challenges you've solved."}
               </p>
               <Button to="/verify" variant="secondary" size="lg">
                 {"Verify a Credential"}

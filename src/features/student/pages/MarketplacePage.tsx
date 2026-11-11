@@ -123,7 +123,7 @@ const Marketplace: React.FC = () => {
 
   return (
     <div className="min-h-full bg-canvas">
-      <SEO title={"Marketplace"} description={"Redeem your CyberPoints for gear, courses, and rewards."} noindex />
+      <SEO title={"Marketplace"} description={"Redeem your CyberPoints for gear and rewards."} noindex />
       <PageBody spacing="sections">
         <PageHeader
           hideText

@@ -8,7 +8,7 @@ export const refundPolicy: LegalDocument = {
   kicker: 'Legal · Payments',
   title: 'Refund & Cancellation Policy',
   summary:
-    'How cancellations, refunds, and instalment payments work for QYVORA bootcamps, courses, and professional services.',
+    'How cancellations, refunds, and instalment payments work for QYVORA bootcamps, labs, and professional services.',
   effectiveDate: '5 November 2026',
   lastUpdated: 'November 2026',
   jurisdiction: 'Republic of Ghana',
@@ -16,7 +16,7 @@ export const refundPolicy: LegalDocument = {
     {
       title: 'Scope',
       shortTitle: 'Scope',
-      body: 'This policy covers paid QYVORA bootcamps, courses, and professional services. It should be read with our Terms of Service and the programme page for the specific offering you purchased. Nothing in this policy limits a right you have under applicable consumer-protection law.',
+      body: 'This policy covers paid QYVORA bootcamps, labs, and professional services. It should be read with our Terms of Service and the programme page for the specific offering you purchased. Nothing in this policy limits a right you have under applicable consumer-protection law.',
       bullets: [
         'Where a separate written agreement or statement of work applies to a professional engagement, that agreement controls if it conflicts with this policy.',
         'Programme dates, inclusions, and tuition are published on the relevant programme page.',
@@ -54,12 +54,12 @@ export const refundPolicy: LegalDocument = {
       ],
     },
     {
-      title: 'Courses and digital content',
-      shortTitle: 'Courses',
-      body: 'Self-paced courses and digital materials are delivered immediately on purchase. Because access cannot be returned, they are generally non-refundable once you have started the course, except where the law requires a refund or where the content is materially defective.',
+      title: 'Labs and digital content',
+      shortTitle: 'Labs',
+      body: 'Self-paced labs and digital materials are delivered immediately on purchase. Because access cannot be returned, they are generally non-refundable once you have started the lab, except where the law requires a refund or where the content is materially defective.',
       bullets: [
-        'If you are charged in error or cannot access a course you paid for, contact us and we will investigate and correct it.',
-        'If a course is withdrawn before you start, we will refund the amount you paid for it.',
+        'If you are charged in error or cannot access a lab you paid for, contact us and we will investigate and correct it.',
+        'If a lab is withdrawn before you start, we will refund the amount you paid for it.',
       ],
     },
     {

@@ -21,6 +21,17 @@ const renderLearn = (tab: string) =>
   );
 
 describe('LearnPage lab cards', () => {
+  it('never exposes a Courses tab or heading', () => {
+    renderLearn('labs');
+    expect(screen.queryByRole('tab', { name: /courses/i })).toBeNull();
+    expect(screen.queryByRole('heading', { name: /courses/i })).toBeNull();
+  });
+
+  it('maps the legacy courses tab to labs', () => {
+    renderLearn('courses');
+    expect(screen.getByRole('tab', { name: /labs/i })).toHaveAttribute('aria-selected', 'true');
+  });
+
   it('renders every lab with its official badge artwork at the enlarged size', () => {
     renderLearn('labs');
 

@@ -84,7 +84,7 @@ describe('StudentDesktopTopbar', () => {
     await user.click(screen.getByRole('button', { name: /Search learning rooms/i }));
 
     expect(await screen.findByRole('dialog', { name: /Search learning experiences/i })).toBeInTheDocument();
-    expect(screen.getByPlaceholderText(/Search rooms, labs, courses, or lessons/i)).toBeInTheDocument();
+    expect(screen.getByPlaceholderText(/Search rooms, labs, or lessons/i)).toBeInTheDocument();
   });
 
   it('opens and closes the Develop menu for Network and Terminal', async () => {

@@ -2,7 +2,7 @@ export const SITE_CONFIG = {
   brand: {
     name: 'QYVORA',
     description:
-      'Africa’s offensive security platform: bootcamps, courses and attack labs, enterprise penetration testing, and open-source security tooling built for operators.',
+      'Africa’s offensive security platform: bootcamps, labs and enterprise penetration testing, with open-source security tooling built for operators.',
     /**
      * Canonical public origin. Single source of truth for every absolute
      * production URL (canonicals, Open Graph, Twitter, JSON-LD, sitemap).
@@ -112,7 +112,7 @@ export const SITE_CONFIG = {
         key: 'learning',
         label: 'Learning',
         items: [
-          { key: 'learn', label: 'Learn', path: '/learn', desc: 'Courses, labs and bootcamps' },
+          { key: 'learn', label: 'Learn', path: '/learn', desc: 'Labs and bootcamps' },
           { key: 'hpb', label: 'HPB', path: '/hpb', desc: 'Hacker Protocol Bootcamp' },
           { key: 'qose', label: 'QOSE', path: '/qose', desc: 'Offensive Security Engineer Bootcamp' },
           { key: 'simulations', label: 'Simulations', path: '/simulations', desc: 'Live tool demos' },
@@ -167,7 +167,7 @@ export const SITE_CONFIG = {
     ],
     platform: [
       { key: 'services', label: 'Services', path: '/services', desc: 'Enterprise security services' },
-      { key: 'learn', label: 'Learn', path: '/learn', desc: 'Courses, labs and bootcamps' },
+      { key: 'learn', label: 'Learn', path: '/learn', desc: 'Labs and bootcamps' },
       { key: 'hpb', label: 'HPB', path: '/hpb', desc: 'Hacker Protocol Bootcamp' },
       { key: 'qose', label: 'QOSE', path: '/qose', desc: 'Offensive Security Engineer Bootcamp' },
       { key: 'simulations', label: 'Simulations', path: '/simulations', desc: 'Live tool demos' },

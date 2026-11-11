@@ -71,7 +71,7 @@ const QoseDashboardCard = () => {
   const body = !registered
     ? 'The 12-week Offensive Security Engineer bootcamp follows HPB. Register and start with GH₵300.'
     : fullyPaid
-      ? 'Tuition fully paid. Open your QOSE course and continue the programme.'
+      ? 'Tuition fully paid. Open your QOSE programme and continue.'
       : locked
         ? 'An instalment is overdue past the grace period. Pay the outstanding amount to restore programme access.'
         : overdue && state.inGrace && state.graceUntil
