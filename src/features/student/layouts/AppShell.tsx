@@ -11,7 +11,6 @@ import PwaStatus from '@/shared/components/layout/PwaStatus';
 import { tryAutoSubscribePush } from '@/core/services/pwa';
 import type { TerminalContext } from '@/features/student/components/SimulatedTerminal/types';
 import { recordRecentLearningPath } from '@/features/student/utils/savedLabs';
-import { useAppUiScope } from '@/shared/hooks/useAppUiScope';
 
 /**
  * AppShell — the student application shell.
@@ -32,7 +31,6 @@ import { useAppUiScope } from '@/shared/hooks/useAppUiScope';
  * triggers, Ctrl+` toggle, PWA status host and push subscription.
  */
 const AppShell = () => {
-  useAppUiScope();
   const { pathname } = useLocation();
   const roomMatch = useMatch('/dashboard/bootcamps/:bootcampId/phases/:phaseId/rooms/:roomId');
   const roomMatchLegacy = useMatch('/dashboard/bootcamps/:bootcampId/modules/:moduleId/rooms/:roomId');

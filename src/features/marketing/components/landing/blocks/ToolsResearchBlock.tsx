@@ -32,7 +32,7 @@ const ToolsResearchBlock: React.FC = () => {
             <p className="type-label mb-1.5 uppercase tracking-[0.12em] text-accent">
               {"Tools and research"}
             </p>
-            <h2 className="type-h2 text-3xl font-black uppercase tracking-tight text-text-primary md:text-5xl">
+            <h2 className="type-h2 text-3xl font-bold text-text-primary md:text-5xl">
               {"Combat-ready open-source tooling."}
             </h2>
             <p className="type-body mt-2">{"Thirteen offensive security tools, built in the open and documented for operators."}</p>

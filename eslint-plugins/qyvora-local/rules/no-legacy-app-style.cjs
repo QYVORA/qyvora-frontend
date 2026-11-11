@@ -8,6 +8,19 @@ const { allStringChunks, findTokens } = require('./helpers.cjs');
  * later without a repo-wide failure.
  */
 const TARGET_FILES = [
+  'src/features/auth/components/AuthForm.tsx',
+  'src/features/marketing/components/landing/blocks/FinalCtaBlock.tsx',
+  'src/features/marketing/components/landing/blocks/FeaturedLearningBlock.tsx',
+  'src/features/marketing/components/landing/blocks/HeroBlock.tsx',
+  'src/features/marketing/components/landing/blocks/PathBlock.tsx',
+  'src/features/marketing/components/landing/blocks/ProofBlock.tsx',
+  'src/features/marketing/components/landing/blocks/ToolsResearchBlock.tsx',
+  'src/features/marketing/pages/LandingPage/index.tsx',
+  'src/features/marketing/pages/public/LearnPage.tsx',
+  'src/shared/components/layout/AuthFormLayout.tsx',
+  'src/shared/components/layout/PublicFooter.tsx',
+  'src/shared/components/layout/PublicNavigation.tsx',
+  'src/shared/components/ui/PageHeader.tsx',
   'src/features/admin/layouts/AdminLayout.tsx',
   'src/features/marketing/pages/PublicProfilePage.tsx',
   'src/features/student/components/StudentSkeletons.tsx',

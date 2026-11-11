@@ -21,11 +21,12 @@ const FinalCtaBlock: React.FC = () => {
               aria-hidden="true"
               className="pointer-events-none absolute inset-0 h-full w-full select-none object-cover"
             />
+            <div className="pointer-events-none absolute inset-0 bg-gradient-hero opacity-60" aria-hidden="true" />
             <div className="relative flex min-h-[360px] flex-col items-start justify-center gap-6 px-6 py-14 md:items-center md:px-12 md:py-16 md:text-center">
-              <p className="type-label uppercase tracking-[0.12em] text-accent">
+              <p className="text-[12px] font-medium uppercase tracking-[0.12em] text-accent">
                 {"Start learning"}
               </p>
-              <h2 className="type-h2 max-w-2xl text-3xl font-black uppercase tracking-tight text-text-primary md:text-5xl">
+              <h2 className="type-h2 max-w-2xl text-3xl font-bold text-text-primary md:text-5xl">
                 {"Your first module is minutes away."}
               </h2>
               <p className="type-body max-w-xl">{"Create a free account, pick a path, and earn your first CyberPoints today."}</p>

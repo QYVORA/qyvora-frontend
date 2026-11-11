@@ -32,7 +32,7 @@ const PathBlock: React.FC = () => {
               <p className="type-label mb-1.5 uppercase tracking-[0.12em] text-accent">
                 {"Choose your path"}
               </p>
-              <h2 className="type-h2 text-3xl font-black uppercase tracking-tight text-text-primary md:text-5xl">
+              <h2 className="type-h2 text-3xl font-bold text-text-primary md:text-5xl">
                 {"Learn. Practice. Prove."}
               </h2>
               <p className="type-body mt-2 max-w-prose">{"Three ways in. Your journey through the platform depends on what you want out of it."}</p>
@@ -40,10 +40,10 @@ const PathBlock: React.FC = () => {
           </div>
         </ScrollReveal>
 
-        <div className="grid gap-4 md:grid-cols-3">
+        <div className="grid gap-6 md:grid-cols-3">
           {PATHS.map((path) => (
-            <Card key={path.key} to={path.to} interactive className="flex min-h-[220px] flex-col gap-3 p-6">
-              <h3 className="type-h3 font-black uppercase tracking-tight text-text-primary">
+            <Card key={path.key} to={path.to} interactive tone="feature" className="flex min-h-[220px] flex-col gap-3 p-6">
+              <h3 className="type-h3 font-bold text-text-primary">
                 {path.title}
               </h3>
               <p className="type-body-sm flex-1">{path.desc}</p>

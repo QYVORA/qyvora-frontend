@@ -18,11 +18,9 @@ import ActivityTimeline from '@/shared/components/profile/ActivityTimeline';
 import LabsModule from '@/shared/components/profile/LabsModule';
 import CoursesModule from '@/shared/components/profile/CoursesModule';
 import TrophyCabinet from '@/shared/components/profile/TrophyCabinet';
-import { useAppUiScope } from '@/shared/hooks/useAppUiScope';
 import type { ProfileData, ProfileApiResponse, CompletedRoom, ProfileSectionId } from '@/shared/types/profile';
 
 const PublicProfile: React.FC = () => {
-  useAppUiScope();
   const { handle: rawHandle } = useParams<{ handle: string }>();
 
   const isValidHandle = rawHandle && rawHandle.startsWith('@');

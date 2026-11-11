@@ -6,14 +6,14 @@ Operational rules for AI coding agents. Before writing any UI, read `src/styles/
 
 The signed-in app (`AppShell`, `AdminLayout`, `PublicProfilePage`) uses **App UI System v2** — read **[docs/APP-UI-SYSTEM.md](docs/APP-UI-SYSTEM.md)** before touching those surfaces. It overrides the legacy rules below for app files only:
 
-- Scope comes from `useAppUiScope()` (`data-ui="app"`), never a global theme change.
+- One global rule set in `:root` (`src/styles/index.css`) governs public and app surfaces; there is no per-surface scope hook.
 - UI text is **Ubuntu** 400/500/700; JetBrains Mono is reserved for code, paths, IPs, tokens and terminal output.
 - Headings are **700, sentence case** (not `font-black`, not uppercase). Overlines may be uppercase only at ≤12px.
 - Radius: cards `rounded-2xl` (8px), controls `rounded-md` (6px), pills/avatars full.
 - Use the v2 primitives (`Button`, `Card`, `SectionCard`, `StatStrip`, `Input`/`Field`/`Select`/`Textarea`, `Switch`/`Toggle`, `Badge`, `Menu`, `Avatar`, tabs, `OptionTile`) and `--app-*` layout vars; no page `max-w-*`.
 - Flat surfaces only: no glow, gradient washes, hover scale, `backdrop-blur` panels, or `shadow-lg`/`shadow-2xl`.
 - `qyvora-local/no-legacy-app-style` fails migrated files that reintroduce the legacy display type/chrome. Add each newly migrated file to its target list.
-- Public marketing pages keep the original terminal-born identity; do not restyle them incidentally.
+- Public marketing pages share the same system; do not reintroduce terminal-only chrome.
 
 ## Before You Start
 

@@ -33,7 +33,7 @@ const FeaturedLearningBlock: React.FC = () => {
               <p className="type-label mb-1.5 uppercase tracking-[0.12em] text-accent">
                 {"The learning protocol"}
               </p>
-              <h2 className="type-h2 text-3xl font-black uppercase tracking-tight text-text-primary md:text-5xl">
+              <h2 className="type-h2 text-3xl font-bold text-text-primary md:text-5xl">
                 {"Train. Practice. Prove."}
               </h2>
               <p className="type-body mt-2 max-w-prose">
@@ -61,7 +61,7 @@ const FeaturedLearningBlock: React.FC = () => {
             </div>
 
             <div className="relative flex flex-wrap items-center gap-2">
-              <span className="inline-flex items-center gap-2 rounded-lg border border-accent/30 bg-accent/10 px-3 py-1 text-[10px] font-black uppercase tracking-widest text-accent">
+              <span className="inline-flex items-center gap-2 rounded-lg border border-accent/30 bg-accent/10 px-3 py-1 text-[12px] font-medium text-accent">
                 <GraduationCap className="h-3.5 w-3.5" aria-hidden="true" />
                 {"Featured bootcamp"}
               </span>
@@ -69,7 +69,7 @@ const FeaturedLearningBlock: React.FC = () => {
             </div>
 
             <div className="relative flex flex-col gap-3">
-              <h3 className="type-h2 max-w-xl font-black uppercase tracking-tight text-text-primary">
+              <h3 className="type-h2 max-w-xl font-bold text-text-primary">
                 {"Hacker Protocol Bootcamp"}
               </h3>
               <p className="type-body max-w-lg">
@@ -98,8 +98,8 @@ const FeaturedLearningBlock: React.FC = () => {
             <span className="flex h-11 w-11 items-center justify-center rounded-xl border border-border-subtle bg-surface-raised text-accent">
               <BookOpen className="h-5 w-5" aria-hidden="true" />
             </span>
-            <p className="type-label mt-1 uppercase tracking-[0.12em] text-text-tertiary">{"Labs"}</p>
-            <h3 className="type-h3 font-black uppercase tracking-tight text-text-primary">
+            <p className="text-[12px] font-medium uppercase tracking-[0.12em] text-text-tertiary">{"Labs"}</p>
+            <h3 className="type-h3 font-bold text-text-primary">
               {"Self-paced foundations"}
             </h3>
             <p className="type-body-sm flex-1">{COURSES.length} {"hands-on labs across the core security stack."}</p>
@@ -114,8 +114,8 @@ const FeaturedLearningBlock: React.FC = () => {
             <span className="flex h-11 w-11 items-center justify-center rounded-xl border border-border-subtle bg-surface-raised text-accent">
               <Bug className="h-5 w-5" aria-hidden="true" />
             </span>
-            <p className="type-label mt-1 uppercase tracking-[0.12em] text-text-tertiary">{"Labs"}</p>
-            <h3 className="type-h3 font-black uppercase tracking-tight text-text-primary">
+            <p className="text-[12px] font-medium uppercase tracking-[0.12em] text-text-tertiary">{"Labs"}</p>
+            <h3 className="type-h3 font-bold text-text-primary">
               {"Attack labs"}
             </h3>
             <p className="type-body-sm flex-1">{"Realistic exploitation scenarios with live simulated targets."}</p>
@@ -131,8 +131,8 @@ const FeaturedLearningBlock: React.FC = () => {
             <span className="flex h-11 w-11 items-center justify-center rounded-xl border border-border-subtle bg-surface-raised text-accent">
               <FlaskConical className="h-5 w-5" aria-hidden="true" />
             </span>
-            <p className="type-label mt-1 uppercase tracking-[0.12em] text-text-tertiary">{"Simulations"}</p>
-            <h3 className="type-h3 font-black uppercase tracking-tight text-text-primary">
+            <p className="text-[12px] font-medium uppercase tracking-[0.12em] text-text-tertiary">{"Simulations"}</p>
+            <h3 className="type-h3 font-bold text-text-primary">
               {"Live tool demos"}
             </h3>
             <p className="type-body-sm flex-1">{"Interactive browser-based reproductions of offensive workflows."}</p>
@@ -147,8 +147,8 @@ const FeaturedLearningBlock: React.FC = () => {
             <span className="flex h-14 w-14 items-center justify-center rounded-xl border border-border-subtle bg-surface-raised">
               <CpLogo className="h-9 w-9" />
             </span>
-            <p className="type-label mt-1 uppercase tracking-[0.12em] text-text-tertiary">{"Cyber Points"}</p>
-            <h3 className="type-h3 font-black uppercase tracking-tight text-text-primary">
+            <p className="text-[12px] font-medium uppercase tracking-[0.12em] text-text-tertiary">{"Cyber Points"}</p>
+            <h3 className="type-h3 font-bold text-text-primary">
               {"Prove it on-chain"}
             </h3>
             <p className="type-body-sm flex-1">{"Every verified achievement earns CP, a verifiable record of your skill."}</p>

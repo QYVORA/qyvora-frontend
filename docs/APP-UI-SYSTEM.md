@@ -1,18 +1,14 @@
-# App UI System v2
+# UI System v2
 
-Source of truth for the signed-in product surfaces. The public marketing site
-keeps the original terminal-born identity; the app moved to a calmer, flatter
-system built on the same accent and palette.
+Source of truth for **the whole site** — public marketing pages and the
+signed-in app share one rule set, one palette and one set of primitives.
 
 ## Scope
 
-`useAppUiScope()` sets `data-ui="app"` on `<html>` for:
-
-- `AppShell` (student dashboard, labs, learning, settings, profile)
-- `AdminLayout`
-- `PublicProfilePage` (public profile mirrors the student profile)
-
-Everything else is public marketing UI and is **not** governed by this document.
+The tokens live in `:root` in `src/styles/index.css`; there is no per-surface
+scope hook. `AppShell`, `AdminLayout`, public marketing pages and profile pages
+all resolve the same typography, radii, weights and layout rhythm. Legacy
+terminal-only chrome is retired.
 
 ## Typography
 
@@ -24,7 +20,7 @@ Everything else is public marketing UI and is **not** governed by this document.
 - Headings are weight **700** (`font-medium` in app scope; `font-black`/`extrabold` resolve to 700).
 - h1–h6 are **sentence case**; the app scope cancels legacy uppercase.
 - Overlines/kickers may be uppercase only at **12px or smaller**.
-- Never use `font-display`, `font-black`, or `tracking-widest` in app files.
+- Never use `font-display`, `font-black`, or `tracking-widest`.
 
 ## Tokens
 
@@ -49,7 +45,7 @@ Never use raw hexes. Code/terminal/brand exceptions remain exactly as in
 | Inputs/buttons/rows | `rounded-md` | 6px |
 | Pills/avatars | `rounded-full` | full |
 
-Never mix in `rounded-xl` (12px) or `rounded-3xl` on app surfaces.
+Never mix in `rounded-xl` (12px) or `rounded-3xl`.
 
 ## Primitives
 

@@ -11,6 +11,7 @@ import CourseBadge from '@/shared/components/CourseBadge';
 import HpbAvatar, { type HpbVariant } from '@/shared/components/HpbAvatar';
 import { SIMULATIONS } from '@/features/marketing/pages/public/SimulationsPage';
 import PageHeader from '@/shared/components/ui/PageHeader';
+import UnderlineTabs from '@/shared/components/ui/UnderlineTabs';
 import PublicContainer from '@/shared/components/layout/PublicContainer';
 import ScrollReveal from '@/shared/components/ScrollReveal';
 import SEO from '@/shared/components/SEO';
@@ -60,13 +61,13 @@ const LearnPage: React.FC = () => {
           <Card key={lab.id} to={lab.route} interactive className="flex min-h-[220px] flex-col gap-3 p-6">
             <div className="flex items-center gap-3">
               {lab.source === 'content' ? (
-                <CourseBadge courseId={lab.id} className="h-24 w-24 shrink-0 md:h-28 md:w-28" />
+                <CourseBadge courseId={lab.id} className="h-24 w-24 shrink-0" />
               ) : (
-                <LabBadge labId={lab.id} accentColor={lab.accentColor} className="h-24 w-24 shrink-0 md:h-28 md:w-28" />
+                <LabBadge labId={lab.id} accentColor={lab.accentColor} className="h-24 w-24 shrink-0" />
               )}
               <span className="type-meta">{LAB_FORMAT_SHORT_LABELS[lab.format]}</span>
             </div>
-            <h3 className="type-h3 font-black uppercase tracking-tight text-text-primary">
+            <h3 className="text-base font-bold text-text-primary">
               {lab.title}
             </h3>
             <p className="type-body-sm flex-1 line-clamp-3">
@@ -105,7 +106,7 @@ const LearnPage: React.FC = () => {
                 {BOOTCAMPS.qose.statusLabel}
               </Badge>
             </div>
-            <h3 className="type-h3 font-black uppercase tracking-tight text-text-primary">
+            <h3 className="text-base font-bold text-text-primary">
               {BOOTCAMPS.qose.name}
             </h3>
             <p className="type-body-sm flex-1 line-clamp-3">{BOOTCAMPS.qose.tagline}</p>
@@ -123,7 +124,7 @@ const LearnPage: React.FC = () => {
                   </div>
                   <span className="type-meta">Phase {phase.id}</span>
                 </div>
-                <h3 className="type-h3 font-black uppercase tracking-tight text-text-primary">
+                <h3 className="text-base font-bold text-text-primary">
                   {phase.name}
                 </h3>
                 <p className="type-body-sm flex-1 line-clamp-3">{phase.desc}</p>
@@ -152,36 +153,13 @@ const LearnPage: React.FC = () => {
           description={"Labs, the Hacker Protocol Bootcamp, simulations and more."}
         />
 
-        <div
-          role="tablist"
-          aria-label={"Learn | QYVORA"}
-          className="mb-8 mt-10 flex flex-wrap gap-2 border-b border-border-subtle pb-4"
-        >
-          {TABS.map((tab) => {
-            const selected = active === tab.id;
-            return (
-              <button
-                key={tab.id}
-                type="button"
-                role="tab"
-                id={`learn-tab-${tab.id}`}
-                aria-selected={selected}
-                aria-controls={`learn-panel-${tab.id}`}
-                onClick={() => setActive(tab.id)}
-                className={[
-                  'flex min-h-[44px] items-center gap-2 rounded-lg px-4 text-sm font-bold transition-colors',
-                  'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent',
-                  selected
-                    ? 'bg-accent/10 text-accent'
-                    : 'text-text-tertiary hover:bg-surface-raised hover:text-text-primary',
-                ].join(' ')}
-              >
-                {tab.icon}
-                {tab.label}
-              </button>
-            );
-          })}
-        </div>
+        <UnderlineTabs
+          tabs={TABS.map((tab) => ({ value: tab.id, label: tab.label, icon: tab.icon }))}
+          value={active}
+          onChange={(value) => setActive(value as TabId)}
+          ariaLabel="Learn sections"
+          className="mb-8 mt-10"
+        />
 
         {(['labs', 'bootcamp'] as TabId[]).includes(active) && (
           <div
@@ -189,7 +167,7 @@ const LearnPage: React.FC = () => {
             role="tabpanel"
             id={`learn-panel-${active}`}
             aria-labelledby={`learn-tab-${active}`}
-            className="grid gap-4 md:grid-cols-2 lg:grid-cols-3"
+            className="grid gap-6 md:grid-cols-2 xl:grid-cols-4"
           >
             {renderItems()}
           </div>
@@ -200,7 +178,7 @@ const LearnPage: React.FC = () => {
             role="tabpanel"
             id="learn-panel-simulations"
             aria-labelledby="learn-tab-simulations"
-            className="grid gap-4 md:grid-cols-2 lg:grid-cols-3"
+            className="grid gap-6 md:grid-cols-2 xl:grid-cols-4"
           >
             {SIMULATIONS.map((sim) => {
               const Icon = sim.icon;
@@ -212,7 +190,7 @@ const LearnPage: React.FC = () => {
                     </span>
                     <span className="type-meta">Live demo</span>
                   </div>
-                  <h3 className="type-h3 font-black uppercase tracking-tight text-text-primary">
+                  <h3 className="text-base font-bold text-text-primary">
                     {sim.title}
                   </h3>
                   <p className="type-body-sm flex-1 line-clamp-3">{sim.description}</p>
@@ -231,11 +209,11 @@ const LearnPage: React.FC = () => {
             role="tabpanel"
             id="learn-panel-cp"
             aria-labelledby="learn-tab-cp"
-            className="max-w-2xl"
+            
           >
             <ScrollReveal>
               <Card to="/cp" interactive className="flex min-h-[160px] flex-col gap-3 p-6">
-                <h3 className="type-h3 font-black uppercase tracking-tight text-text-primary">
+                <h3 className="text-base font-bold text-text-primary">
                   {"Earn CyberPoints on-chain."}
                 </h3>
                 <p className="type-body-sm flex-1">{"Every verified achievement across labs and bootcamp rooms earns CP: a verifiable record of your skill."}</p>

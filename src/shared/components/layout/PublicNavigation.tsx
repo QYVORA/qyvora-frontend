@@ -10,6 +10,7 @@ import Button from '@/shared/components/ui/Button';
 import IconButton from '@/shared/components/ui/IconButton';
 import PwaInstallButton from '@/shared/components/ui/PwaInstallButton';
 import { PUBLIC_PRIMARY_LINKS } from './publicNav';
+import { useScrollDirection } from '@/shared/hooks/useScrollDirection';
 
 /**
  * PublicNavigation — calm public nav. Six sections and one contextual CTA.
@@ -23,24 +24,13 @@ const PublicNavigation: React.FC = React.memo(() => {
   const { user } = useAuth();
   const [open, setOpen] = React.useState(false);
   const [isFullscreen, setIsFullscreen] = React.useState(false);
-  const [isScrolled, setIsScrolled] = React.useState(false);
   const location = useLocation();
   const prefersReduced = useReducedMotion();
   const panelRef = useRef<HTMLDivElement>(null);
+  const barHidden = useScrollDirection({ forceVisible: open, resetKey: location.pathname });
 
   useEffect(() => setOpen(false), [location.pathname]);
   useScrollLock(open);
-
-  useEffect(() => {
-    const updateScrollState = () => {
-      const scrolled = window.scrollY > 8;
-      setIsScrolled((current) => (current === scrolled ? current : scrolled));
-    };
-
-    updateScrollState();
-    window.addEventListener('scroll', updateScrollState, { passive: true });
-    return () => window.removeEventListener('scroll', updateScrollState);
-  }, []);
 
   useEffect(() => {
     const handleFullscreenChange = () => setIsFullscreen(Boolean(document.fullscreenElement));
@@ -84,17 +74,8 @@ const PublicNavigation: React.FC = React.memo(() => {
 
       <nav
         aria-label="Primary"
-        className={[
-          'chrome-fixed fixed inset-x-0 top-0 z-[100] flex h-16 items-center lg:h-20',
-          // Keep the hero visible at the top; add a blurred surface once content
-          // scrolls beneath the navbar. The open mobile menu stays opaque.
-          open
-            ? 'bg-surface'
-            : isScrolled
-              ? 'bg-bg/75 backdrop-blur-md'
-              : 'bg-transparent',
-          'transition-all duration-300',
-        ].join(' ')}
+        style={{ transform: barHidden ? 'translateY(-100%)' : 'translateY(0)' }}
+        className="chrome-fixed fixed inset-x-0 top-0 z-[100] flex h-[var(--app-topbar-h,4rem)] items-center border-b border-border-subtle bg-surface-raised transition-transform duration-200 ease-out motion-reduce:duration-0"
       >
         <div className="flex w-full items-center justify-between gap-3 px-3 md:px-4 lg:px-6">
           <Link to="/" aria-label="QYVORA home" className="relative z-[110] flex shrink-0 items-center">
@@ -112,7 +93,7 @@ const PublicNavigation: React.FC = React.memo(() => {
                   to={link.to}
                   className={({ isActive }) =>
                     [
-                      'group relative flex h-[52px] w-[70px] flex-col items-center justify-center gap-1 rounded-xl px-2 py-1.5 text-[10px] font-bold uppercase tracking-wide xl:w-[80px] xl:text-[11px] xl:tracking-wider',
+                      'group relative flex h-[52px] w-[84px] flex-col items-center justify-center gap-1 rounded-md px-2 py-1.5 text-base font-medium',
                       'transition-all duration-200 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent',
                       isActive
                         ? 'bg-accent/10 text-accent'
@@ -120,7 +101,7 @@ const PublicNavigation: React.FC = React.memo(() => {
                     ].join(' ')
                   }
                 >
-                  <Icon className="h-4 w-4 shrink-0" strokeWidth={2} aria-hidden="true" />
+                  <Icon className="h-6 w-6 shrink-0" strokeWidth={2} aria-hidden="true" />
                   <span className="whitespace-nowrap">{link.label}</span>
                 </NavLink>
               );
@@ -148,7 +129,7 @@ const PublicNavigation: React.FC = React.memo(() => {
                     {"Log In"}
                   </Button>
                   <Button to="/register" size="sm">
-                    {"Start learning"}
+                    {"Get started"}
                   </Button>
                 </>
               )}
@@ -198,7 +179,7 @@ const PublicNavigation: React.FC = React.memo(() => {
                 ) : (
                   <>
                     <Button to="/register" className="w-full">
-                      {"Start learning"}
+                      {"Get started"}
                     </Button>
                     <Button to="/login" variant="secondary" className="w-full">
                       {"Log In"}

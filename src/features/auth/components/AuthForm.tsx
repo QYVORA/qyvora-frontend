@@ -54,7 +54,7 @@ interface AuthFormProps {
 }
 
 const labels = {
-  base: 'type-label mb-2 block uppercase tracking-[0.12em] text-text-tertiary',
+  base: 'mb-2 block text-[12px] font-medium uppercase tracking-[0.12em] text-text-tertiary',
 };
 
 const AuthForm: React.FC<AuthFormProps> = ({
@@ -129,7 +129,7 @@ const AuthForm: React.FC<AuthFormProps> = ({
             className="w-full rounded-xl border border-border-subtle bg-surface p-5 sm:p-8"
           >
             <div className="mb-5 md:mb-8">
-              <h1 className="type-h2 mb-1 font-black uppercase tracking-tight text-text-primary">
+              <h1 className="type-h2 mb-1 text-text-primary">
                 {"Welcome back,"} <span className="text-accent">{"Operator"}</span>
               </h1>
               <p className="type-body-sm">{"Sign in to continue your training."}</p>
@@ -179,7 +179,7 @@ const AuthForm: React.FC<AuthFormProps> = ({
             className="w-full rounded-xl border border-border-subtle bg-surface p-5 sm:p-8"
           >
             <div className="mb-5 md:mb-8">
-              <h1 className="type-h2 mb-1 font-black uppercase tracking-tight text-text-primary">
+              <h1 className="type-h2 mb-1 text-text-primary">
                 {"Join"} <span className="text-accent">QYVORA</span>
               </h1>
               <p className="type-body-sm">{"Create your account to start learning."}</p>

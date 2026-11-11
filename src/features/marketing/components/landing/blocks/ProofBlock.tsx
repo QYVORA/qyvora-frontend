@@ -48,7 +48,7 @@ const ProofBlock: React.FC<ProofBlockProps> = ({ stats }) => {
             <p className="type-label mb-1.5 uppercase tracking-[0.12em] text-accent">
               {"Proof, not promises"}
             </p>
-            <h2 className="type-h2 text-3xl font-black uppercase tracking-tight text-text-primary md:text-5xl">
+            <h2 className="type-h2 text-3xl font-bold text-text-primary md:text-5xl">
               {"Built in Africa, for real defenders."}
             </h2>
             <p className="type-body mt-2">{"Every number below is earned by learners on the platform, not marketing filler."}</p>

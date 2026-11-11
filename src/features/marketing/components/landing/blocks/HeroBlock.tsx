@@ -49,11 +49,12 @@ const HeroBlock: React.FC<HeroBlockProps> = ({ stats }) => {
         aria-hidden="true"
         className="pointer-events-none absolute inset-0 block h-full w-full select-none object-cover object-bottom lg:hidden"
       />
+      <div className="pointer-events-none absolute inset-0 bg-gradient-hero opacity-50" aria-hidden="true" />
       <div className="relative flex w-full flex-col justify-center px-3 py-24 pt-32 md:px-4 md:py-28 lg:px-6">
         <div className="flex max-w-2xl flex-col items-start gap-6 md:gap-8">
-          <p className="type-label uppercase tracking-[0.12em] text-accent">{"Africa's Offensive Security Platform"}</p>
+          <p className="text-[12px] font-medium uppercase tracking-[0.12em] text-accent">{"Africa's Offensive Security Platform"}</p>
 
-          <h1 className="type-display text-4xl font-black uppercase tracking-tight text-text-primary sm:text-5xl lg:text-6xl">
+          <h1 className="type-display text-4xl font-bold text-text-primary sm:text-5xl lg:text-6xl">
             <span className="block">{"Train like a hacker,"}</span>
             <span className="relative block text-accent">
               <span aria-hidden="true" className="invisible block select-none pr-1.5">
@@ -85,8 +86,8 @@ const HeroBlock: React.FC<HeroBlockProps> = ({ stats }) => {
           </div>
 
           {trained > 0 && (
-            <p className="mt-2 type-label uppercase tracking-[0.12em] text-text-muted" role="text">
-              <span className="font-black text-text-primary">{`${trained.toLocaleString()}`}</span>
+            <p className="mt-2 text-[12px] font-medium uppercase tracking-[0.12em] text-text-muted" role="text">
+              <span className="font-bold text-text-primary">{`${trained.toLocaleString()}`}</span>
               {' '}{"professionals trained"}
             </p>
           )}

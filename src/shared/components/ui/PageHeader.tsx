@@ -56,11 +56,11 @@ const PageHeader: React.FC<PageHeaderProps> = ({
       <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
         <div className="max-w-2xl">
           {kicker && (
-            <p className="mb-2 type-label text-accent uppercase tracking-[0.12em]">{kicker}</p>
+            <p className="mb-2 text-[12px] font-medium uppercase tracking-[0.12em] text-accent">{kicker}</p>
           )}
           <h1
             id={titleId}
-            className="text-3xl font-black uppercase tracking-tight text-text-primary md:text-4xl lg:text-5xl"
+            className="text-3xl font-bold text-text-primary md:text-4xl lg:text-5xl"
           >
             {title}
           </h1>

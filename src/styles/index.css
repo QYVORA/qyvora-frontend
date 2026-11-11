@@ -1482,24 +1482,14 @@ html.qyvora-cursor .cursor-help {
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
-   APP UI SYSTEM v2 — signed-in application scope.
+   UI SYSTEM v2 — one rule set for the whole site.
 
-   `useAppUiScope()` sets `data-ui="app"` on <html> for AppShell, AdminLayout
-   and PublicProfilePage. Public marketing pages never set it, so the legacy
-   look is untouched. This block overrides theme variables so every existing
-   `rounded-*`, `font-black`, `uppercase` and `font-*` utility flips in the app
-   without editing each file. Source of truth: docs/APP-UI-SYSTEM.md.
+   These tokens flip every existing `rounded-*`, `font-black`, `uppercase` and
+   `font-*` utility across public pages and the signed-in app without editing
+   each file. Source of truth: docs/APP-UI-SYSTEM.md.
    ═══════════════════════════════════════════════════════════════════════════ */
 
-/* Legacy button contract (public site). The app scope re-maps these below. */
 :root {
-  --btn-border-width: 2px;
-  --btn-font-weight: 900;
-  --btn-transform: uppercase;
-  --btn-tracking: 0.08em;
-}
-
-:root[data-ui="app"] {
   /* Radii — every rounded-* utility resolves to the app scale. */
   --radius-md: 6px;
   --radius-lg: 6px;
@@ -1547,14 +1537,14 @@ html.qyvora-cursor .cursor-help {
 }
 
 @media (min-width: 640px) {
-  :root[data-ui="app"] {
+  :root {
     --app-gutter: 16px;
     --app-card-pad: 20px;
   }
 }
 
 @media (min-width: 1024px) {
-  :root[data-ui="app"] {
+  :root {
     --app-gutter: 24px;
     --app-card-pad: 24px;
     --app-topbar-h: 80px;
@@ -1563,114 +1553,114 @@ html.qyvora-cursor .cursor-help {
 }
 
 @media (min-width: 1280px) {
-  :root[data-ui="app"] {
+  :root {
     --app-gutter: 30px;
   }
 }
 
-:root[data-ui="app"] body {
+:root body {
   font-family: var(--font-sans);
 }
 
 /* Headings are sentence-case and 700 in the app; uppercase utilities on a
    heading are neutralised (overlines are spans, not headings). */
-:root[data-ui="app"] h1,
-:root[data-ui="app"] h2,
-:root[data-ui="app"] h3,
-:root[data-ui="app"] h4,
-:root[data-ui="app"] h5,
-:root[data-ui="app"] h6,
-:root[data-ui="app"] pre[role="heading"] {
+:root h1,
+:root h2,
+:root h3,
+:root h4,
+:root h5,
+:root h6,
+:root pre[role="heading"] {
   text-transform: none;
   font-weight: 700;
 }
 
 /* Quiet surfaces — no dot grid, beam, shimmer or hover-transform inside cards. */
-:root[data-ui="app"] .terminal-card::after,
-:root[data-ui="app"] .card-qyvora::after,
-:root[data-ui="app"] .border-beam::before,
-:root[data-ui="app"] .nav-border-beam::after {
+:root .terminal-card::after,
+:root .card-qyvora::after,
+:root .border-beam::before,
+:root .nav-border-beam::after {
   display: none;
 }
-:root[data-ui="app"] .card-qyvora:hover {
+:root .card-qyvora:hover {
   transform: none;
 }
-:root[data-ui="app"] .card-qyvora,
-:root[data-ui="app"] .card-qyvora:hover {
+:root .card-qyvora,
+:root .card-qyvora:hover {
   box-shadow: none;
 }
 
 /* Button contract shared by <Button> and the .btn-* classes. */
-:root[data-ui="app"] .qy-button,
-:root[data-ui="app"] .btn-primary,
-:root[data-ui="app"] .btn-secondary,
-:root[data-ui="app"] .btn-danger {
+:root .qy-button,
+:root .btn-primary,
+:root .btn-secondary,
+:root .btn-danger {
   font-weight: var(--btn-font-weight);
   text-transform: var(--btn-transform);
   letter-spacing: var(--btn-tracking);
   border-radius: var(--radius-xl);
 }
-:root[data-ui="app"] .btn-primary {
+:root .btn-primary {
   border-width: var(--btn-border-width);
   border-color: var(--color-on-accent);
 }
-:root[data-ui="app"] .btn-secondary {
+:root .btn-secondary {
   background-color: transparent;
   color: var(--color-text-primary);
   border-color: color-mix(in srgb, var(--color-text-muted) 40%, transparent);
 }
-:root[data-ui="app"] .btn-secondary:hover {
+:root .btn-secondary:hover {
   background-color: var(--color-surface-raised);
 }
 @media (min-width: 768px) {
-  :root[data-ui="app"] .qy-button[data-size="sm"] { min-height: 36px; }
-  :root[data-ui="app"] .qy-button[data-size="md"] { min-height: 40px; }
-  :root[data-ui="app"] .qy-button[data-size="lg"] { min-height: 48px; }
+  :root .qy-button[data-size="sm"] { min-height: 36px; }
+  :root .qy-button[data-size="md"] { min-height: 40px; }
+  :root .qy-button[data-size="lg"] { min-height: 48px; }
 }
 
 /* Type scale inside the app. */
-:root[data-ui="app"] .type-display {
+:root .type-display {
   font-size: 2.5rem;
   line-height: 1.1;
   font-weight: 700;
   letter-spacing: -0.02em;
 }
-:root[data-ui="app"] .type-h1 {
+:root .type-h1 {
   font-size: 2rem;
   line-height: 2.5rem;
   font-weight: 700;
   letter-spacing: -0.01em;
 }
-:root[data-ui="app"] .type-h2 {
+:root .type-h2 {
   font-size: 1.375rem;
   line-height: 1.75rem;
   font-weight: 700;
   letter-spacing: -0.005em;
 }
-:root[data-ui="app"] .type-h3 {
+:root .type-h3 {
   font-size: 1.125rem;
   line-height: 1.625rem;
   font-weight: 700;
   letter-spacing: 0;
 }
-:root[data-ui="app"] .type-body {
+:root .type-body {
   font-family: var(--font-sans);
   font-size: 1rem;
   line-height: 1.625rem;
 }
-:root[data-ui="app"] .type-body-sm {
+:root .type-body-sm {
   font-family: var(--font-sans);
   font-size: 0.9375rem;
   line-height: 1.375rem;
 }
-:root[data-ui="app"] .type-label {
+:root .type-label {
   font-family: var(--font-sans);
   font-size: 0.875rem;
   font-weight: 500;
   letter-spacing: 0;
   text-transform: none;
 }
-:root[data-ui="app"] .type-meta {
+:root .type-meta {
   font-family: var(--font-sans);
   font-size: 0.875rem;
   line-height: 1.25rem;
@@ -1679,7 +1669,7 @@ html.qyvora-cursor .cursor-help {
 }
 
 /* App controls: canvas fill, 1px subtle border, 6px radius, 44px mobile. */
-:root[data-ui="app"] .qy-input {
+:root .qy-input {
   background-color: var(--app-input);
   border-color: var(--app-border-input);
   border-radius: var(--radius-lg);
@@ -1687,16 +1677,16 @@ html.qyvora-cursor .cursor-help {
   font-size: 16px;
 }
 @media (min-width: 768px) {
-  :root[data-ui="app"] .qy-input {
+  :root .qy-input {
     min-height: 40px;
     font-size: 15px;
   }
 }
-:root[data-ui="app"] .qy-input::placeholder {
+:root .qy-input::placeholder {
   color: var(--color-text-tertiary);
 }
-:root[data-ui="app"] .qy-input:focus,
-:root[data-ui="app"] .qy-input:focus-visible {
+:root .qy-input:focus,
+:root .qy-input:focus-visible {
   border-color: var(--color-accent);
   outline: none;
   box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-accent) 18%, transparent);

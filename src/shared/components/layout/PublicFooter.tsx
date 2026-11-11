@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { Logo } from '@/shared/components/brand';
 import { IconArrowRight, IconMail } from '@/shared/components/icons';
 import PwaInstallButton from '@/shared/components/ui/PwaInstallButton';
+import Button from '@/shared/components/ui/Button';
 import { SOCIAL_LINKS } from './socialLinks';
 import { PUBLIC_FOOTER_COLUMNS } from './publicNav';
 
@@ -34,12 +35,9 @@ const PublicFooter: React.FC = React.memo(() => {
                 <IconMail size={14} aria-hidden="true" />
                 {"qyvorasec@gmail.com"}
               </a>
-              <Link
-                to="/register"
-                className="mt-1 inline-flex min-h-[44px] w-fit items-center gap-1.5 rounded-lg border border-accent/40 px-3 text-xs font-black uppercase tracking-widest text-accent transition-colors hover:bg-accent/10 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
-              >
-                {"Join the platform"} <IconArrowRight size={12} aria-hidden="true" />
-              </Link>
+              <Button to="/register" size="sm" className="mt-1 w-fit">
+                {"Join the platform"} <IconArrowRight size={14} aria-hidden="true" />
+              </Button>
               <PwaInstallButton 
                 variant="ghost" 
                 size="sm"
@@ -72,7 +70,7 @@ const PublicFooter: React.FC = React.memo(() => {
                     <li key={link.key}>
                       <Link
                         to={link.to}
-                        className="inline-flex py-0.5 text-sm text-text-secondary transition-colors hover:text-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+                        className="inline-flex py-1 text-[15px] text-text-secondary transition-colors hover:text-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
                       >
                         {link.label}
                       </Link>
