@@ -723,6 +723,29 @@
     border-color: rgb(6 182 111 / 0.55);
   }
 
+  /* Learning hero wash — intentional gradient for lab and course page headers. */
+  .learning-hero-wash {
+    background:
+      linear-gradient(
+        120deg,
+        color-mix(in srgb, var(--color-accent) 14%, transparent) 0%,
+        transparent 52%,
+        color-mix(in srgb, var(--color-info) 10%, transparent) 100%
+      );
+  }
+
+  .learning-hero-title {
+    background-image: linear-gradient(
+      90deg,
+      var(--color-text-primary) 0%,
+      color-mix(in srgb, var(--color-accent) 78%, var(--color-text-primary) 22%) 100%
+    );
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+  }
+
   .card-qyvora {
     @apply bg-transparent rounded-2xl cursor-default;
     transition-property: transform, box-shadow, border-color;

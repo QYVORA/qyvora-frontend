@@ -92,8 +92,14 @@ export const LAB_BADGES: LabBadgeAsset[] = [...CONTENT_BADGES, ...HANDS_ON_BADGE
 
 const badgeById = new Map(LAB_BADGES.map((badge) => [badge.id, badge]));
 
+/** Legacy route ids that point at the same canonical badge artwork. */
+const BADGE_ALIASES: Record<string, string> = {
+  'sql-injection': 'sqli',
+  'kill-chain': 'killchain',
+};
+
 export const getLabBadgeAsset = (labId: string): LabBadgeAsset | undefined =>
-  badgeById.get(labId);
+  badgeById.get(BADGE_ALIASES[labId] ?? labId);
 
 export const getLabBadgeImage = (labId: string): string | undefined =>
   badgeById.get(labId)?.image;

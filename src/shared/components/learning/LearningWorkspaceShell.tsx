@@ -33,6 +33,8 @@ interface LearningWorkspaceShellProps {
   progress?: WorkspaceProgress;
   /** Right-aligned primary/contextual action slot. */
   actions?: React.ReactNode;
+  /** Oversized identity artwork rendered as a decorative hero background. */
+  heroArt?: React.ReactNode;
   children?: React.ReactNode;
 }
 
@@ -56,6 +58,7 @@ const LearningWorkspaceShell: React.FC<LearningWorkspaceShellProps> = ({
   stats,
   progress,
   actions,
+  heroArt,
   children,
 }) => {
   const defaultBreadcrumb =
@@ -72,7 +75,28 @@ const LearningWorkspaceShell: React.FC<LearningWorkspaceShellProps> = ({
   return (
     <div className="min-h-dvh w-full bg-canvas">
       <div className="mx-auto w-full max-w-[1240px] px-3 pb-16 pt-6 sm:px-6 md:pb-20 md:pt-8 lg:px-8 lg:pb-24">
-        <header className="flex flex-col gap-6">
+        <header
+          className={
+            heroArt
+              ? 'relative isolate overflow-hidden rounded-2xl border border-accent/20 bg-surface px-5 py-6 sm:px-6 sm:py-7 md:px-8 md:py-8'
+              : 'flex flex-col gap-6'
+          }
+        >
+          {heroArt && (
+            <>
+              <div
+                aria-hidden="true"
+                className="learning-hero-wash pointer-events-none absolute inset-0"
+              />
+              <div
+                aria-hidden="true"
+                className="pointer-events-none absolute -right-20 top-1/2 h-72 w-72 -translate-y-1/2 rotate-6 opacity-20 sm:-right-16 sm:h-80 sm:w-80 md:h-96 md:w-96 lg:right-2 lg:h-[26rem] lg:w-[26rem] lg:opacity-30"
+              >
+                {heroArt}
+              </div>
+            </>
+          )}
+          <div className={heroArt ? 'relative z-10 flex flex-col gap-6' : 'contents'}>
           {(breadcrumb || defaultBreadcrumb || onBack) && (
             <div className="flex flex-wrap items-center gap-3">
               {onBack ? (
@@ -97,7 +121,11 @@ const LearningWorkspaceShell: React.FC<LearningWorkspaceShellProps> = ({
                     {icon}
                   </span>
                 )}
-                <h1 className="font-display text-2xl font-bold leading-tight tracking-tight text-text-primary sm:text-3xl md:text-4xl lg:text-[42px]">
+                <h1
+                  className={`font-display text-2xl font-bold leading-tight tracking-tight sm:text-3xl md:text-4xl lg:text-[42px] ${
+                    heroArt ? 'learning-hero-title' : 'text-text-primary'
+                  }`}
+                >
                   {title}
                 </h1>
               </div>
@@ -141,6 +169,7 @@ const LearningWorkspaceShell: React.FC<LearningWorkspaceShellProps> = ({
               )}
             </div>
           )}
+          </div>
         </header>
 
         <div className="mt-8 w-full md:mt-10">{children}</div>

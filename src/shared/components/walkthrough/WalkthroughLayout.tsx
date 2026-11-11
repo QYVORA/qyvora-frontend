@@ -4,6 +4,7 @@ import type { ReactElement, ReactNode } from 'react';
 import { IconTerminal } from '@/shared/components/icons';
 import type { FocusedStepListItem } from '@/shared/components/learning/FocusedStepList';
 import LearningWorkspaceShell from '@/shared/components/learning/LearningWorkspaceShell';
+import LabBadge from '@/shared/components/LabBadge';
 import type { WorkspaceStat } from '@/shared/components/learning/LearningWorkspaceShell';
 import Button from '@/shared/components/ui/Button';
 import LearningNav from '@/shared/components/learning/LearningNav';
@@ -156,6 +157,7 @@ export function WalkthroughLayout({
         onBack={onBack}
         backLabel={backLabel}
         stats={headerStats}
+        heroArt={<LabBadge labId={labId} className="h-full w-full" glow={false} />}
         progress={
           totalSteps > 0
             ? {

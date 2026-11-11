@@ -13,5 +13,10 @@ describe('official Lab badge registry', () => {
 
   it('uses the single supplied SQL Injection badge for both related Labs', () => {
     expect(getLabBadgeAsset('sql-injection-101')?.image).toBe(getLabBadgeAsset('sqli')?.image);
+    expect(getLabBadgeAsset('sql-injection')?.image).toBe(getLabBadgeAsset('sqli')?.image);
+  });
+
+  it('resolves legacy route ids to their canonical badge artwork', () => {
+    expect(getLabBadgeAsset('kill-chain')?.image).toBe(getLabBadgeAsset('killchain')?.image);
   });
 });
