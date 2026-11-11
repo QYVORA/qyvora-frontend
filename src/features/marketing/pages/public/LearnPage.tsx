@@ -61,9 +61,9 @@ const LearnPage: React.FC = () => {
     switch (active) {
       case 'courses':
         return COURSES.map((course) => (
-          <Card key={course.id} to={`/courses/${course.id}`} interactive className="flex min-h-[170px] flex-col gap-3 p-6">
+          <Card key={course.id} to={`/courses/${course.id}`} interactive className="flex min-h-[190px] flex-col gap-3 p-6">
             <div className="flex items-center gap-3">
-              <CourseBadge courseId={course.id} className="h-16 w-16 shrink-0" />
+              <CourseBadge courseId={course.id} className="h-20 w-20 shrink-0 md:h-24 md:w-24" />
               <span className="type-meta">{course.skillLevel}</span>
             </div>
             <h3 className="type-h3 font-black uppercase tracking-tight text-text-primary">{course.title}</h3>
@@ -77,9 +77,9 @@ const LearnPage: React.FC = () => {
         ));
       case 'labs':
         return LABS.map((lab) => (
-          <Card key={lab.id} to={lab.route} interactive className="flex min-h-[190px] flex-col gap-3 p-6">
+          <Card key={lab.id} to={lab.route} interactive className="flex min-h-[220px] flex-col gap-3 p-6">
             <div className="flex items-center gap-3">
-              <LabBadge labId={lab.id} accentColor={lab.accentColor} className="h-24 w-24 shrink-0" />
+              <LabBadge labId={lab.id} accentColor={lab.accentColor} className="h-24 w-24 shrink-0 md:h-28 md:w-28" />
               <span className="type-meta">{lab.difficulty}</span>
             </div>
             <h3 className="type-h3 font-black uppercase tracking-tight text-text-primary">
