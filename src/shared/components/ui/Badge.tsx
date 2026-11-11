@@ -7,6 +7,8 @@ type BadgeSize = 'sm' | 'md';
 interface BadgeProps extends React.HTMLAttributes<HTMLSpanElement> {
   variant?: BadgeVariant;
   size?: BadgeSize;
+  /** Pill radius for status labels (tags keep the 6px radius). */
+  pill?: boolean;
 }
 
 const variantClasses: Record<BadgeVariant, string> = {
@@ -20,19 +22,21 @@ const variantClasses: Record<BadgeVariant, string> = {
 
 const sizeClasses: Record<BadgeSize, string> = {
   sm: 'px-2 py-0.5 text-xs',
-  md: 'px-2.5 py-1 text-xs',
+  md: 'px-2.5 py-0.5 text-[13px]',
 };
 
 const Badge: React.FC<BadgeProps> = ({
   variant = 'default',
   size = 'md',
+  pill = false,
   className,
   children,
   ...props
 }) => (
   <span
     className={cn(
-      'inline-flex items-center rounded-lg font-black uppercase tracking-widest',
+      'inline-flex items-center font-medium leading-5',
+      pill ? 'rounded-full' : 'rounded-md',
       variantClasses[variant],
       sizeClasses[size],
       className,

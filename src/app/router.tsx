@@ -125,6 +125,8 @@ const AttackPathsLab    = lazy(() => import('../features/student/pages/labs/Atta
 
 // Learning V2 Demo
 const LearningV2Demo    = lazy(() => import('../features/student/pages/LearningV2Demo'));
+// DEV-only App UI System reference page
+const UiKitPage         = lazy(() => import('../features/student/pages/UiKitPage'));
 
 // Tool full-screen pages
 const TerminalToolPage    = lazy(() => import('../features/student/pages/tools/TerminalToolPage'));
@@ -329,6 +331,9 @@ export const AppRouter = () => {
           
           {/* Learning V2 Demo - Architecture showcase */}
           <Route path="/dashboard/learning-v2-demo" element={<Wrap scope="Learning V2 Demo"><StudentOnly><LearningV2Demo /></StudentOnly></Wrap>} />
+          {import.meta.env.DEV && (
+            <Route path="/dashboard/ui-kit" element={<Wrap scope="UI Kit"><StudentOnly><UiKitPage /></StudentOnly></Wrap>} />
+          )}
           
           <Route path="/dashboard/bootcamps" element={<Navigate to="/dashboard/labs" replace />} />
           <Route path="/dashboard/bootcamps/:bootcampId" element={<BootcampOverviewRoute />} />

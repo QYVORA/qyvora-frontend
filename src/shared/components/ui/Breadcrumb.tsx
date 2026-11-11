@@ -54,7 +54,7 @@ const Breadcrumb: React.FC<BreadcrumbProps> = ({ items, className, label = 'Brea
                 <Link
                   to={item.href!}
                   className={cn(
-                    'type-label truncate uppercase tracking-widest transition-colors hover:text-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent',
+                    'truncate text-sm transition-colors hover:text-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent',
                     'text-text-muted'
                   )}
                 >
@@ -64,8 +64,8 @@ const Breadcrumb: React.FC<BreadcrumbProps> = ({ items, className, label = 'Brea
                 <span
                   aria-current={isCurrent ? 'page' : undefined}
                   className={cn(
-                    'type-label truncate uppercase tracking-widest',
-                    isCurrent ? 'font-black text-text-primary' : 'text-text-muted',
+                    'truncate text-sm',
+                    isCurrent ? 'font-medium text-text-primary' : 'text-text-muted',
                   )}
                 >
                   {item.label}

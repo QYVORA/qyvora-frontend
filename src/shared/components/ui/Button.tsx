@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { Loader2 } from 'lucide-react';
 import { cn } from '@/shared/utils/cn';
 
-type ButtonVariant = 'primary' | 'secondary' | 'danger' | 'ghost';
+type ButtonVariant = 'primary' | 'secondary' | 'danger' | 'danger-solid' | 'danger-outline' | 'ghost';
 type ButtonSize = 'sm' | 'md' | 'lg';
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
@@ -31,6 +31,10 @@ const variantClasses: Record<ButtonVariant, string> = {
     'bg-bg-elevated text-accent font-bold border border-border hover:bg-bg-card',
   danger:
     'bg-danger/10 text-danger font-bold border border-danger/40 hover:bg-danger/20',
+  'danger-outline':
+    'bg-transparent text-danger font-bold border border-danger/50 hover:bg-danger/10',
+  'danger-solid':
+    'bg-danger text-black font-bold border border-danger hover:brightness-110',
   ghost:
     'bg-transparent text-text-secondary font-bold border border-transparent hover:bg-bg-elevated hover:text-text-primary',
 };
@@ -42,7 +46,7 @@ const sizeClasses: Record<ButtonSize, string> = {
 };
 
 const baseClasses =
-  'inline-flex items-center justify-center gap-2 rounded-xl cursor-pointer select-none whitespace-nowrap ' +
+  'qy-button inline-flex items-center justify-center gap-2 rounded-xl cursor-pointer select-none whitespace-nowrap ' +
   'min-h-[44px] ' +
   'transition-[filter,transform,background-color,color,border-color] duration-[var(--dur-base)] ease-[var(--ease-smooth)] ' +
   'active:scale-[0.97] ' +
@@ -65,7 +69,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     );
     if (to) {
       return (
-        <Link to={to} className={classes} aria-label={ariaLabel} {...(props as unknown as React.AnchorHTMLAttributes<HTMLAnchorElement>)}>
+        <Link to={to} className={classes} aria-label={ariaLabel} data-size={size} data-variant={variant} {...(props as unknown as React.AnchorHTMLAttributes<HTMLAnchorElement>)}>
           {content}
         </Link>
       );
@@ -76,6 +80,8 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
           href={href}
           className={classes}
           aria-label={ariaLabel}
+          data-size={size}
+          data-variant={variant}
           target={external ? '_blank' : undefined}
           rel={external ? 'noopener noreferrer' : undefined}
           {...(props as unknown as React.AnchorHTMLAttributes<HTMLAnchorElement>)}
@@ -90,6 +96,8 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         disabled={disabled || loading}
         aria-busy={loading || undefined}
         aria-label={ariaLabel}
+        data-size={size}
+        data-variant={variant}
         className={classes}
         {...props}
       >

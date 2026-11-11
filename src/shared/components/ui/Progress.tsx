@@ -7,8 +7,10 @@ interface ProgressProps {
   /** Accessible label for the progress bar. */
   label: string;
   showValue?: boolean;
-  /** Compact sizing for dense rows. */
-  size?: 'sm' | 'md';
+  /** strip = 4px flat bar with no radius (hero / summary use). */
+  size?: 'sm' | 'md' | 'strip';
+  /** Hide the label line (label still used for aria-label). */
+  hideLabel?: boolean;
   className?: string;
 }
 
@@ -22,18 +24,22 @@ const Progress: React.FC<ProgressProps> = ({
   label,
   showValue,
   size = 'md',
+  hideLabel,
   className,
 }) => {
   const pct = max > 0 ? Math.max(0, Math.min(100, (value / max) * 100)) : 0;
   const complete = pct >= 100;
+  const strip = size === 'strip';
   return (
     <div className={cn('w-full', className)}>
-      <div className="flex items-center justify-between gap-3">
-        <span className="type-label text-text-secondary">{label}</span>
-        {showValue && (
-          <span className="type-meta tabular-nums">{Math.round(pct)}%</span>
-        )}
-      </div>
+      {!hideLabel && (
+        <div className="flex items-center justify-between gap-3">
+          <span className="type-label text-text-secondary">{label}</span>
+          {showValue && (
+            <span className="type-meta tabular-nums">{Math.round(pct)}%</span>
+          )}
+        </div>
+      )}
       <div
         role="progressbar"
         aria-valuemin={0}
@@ -42,12 +48,14 @@ const Progress: React.FC<ProgressProps> = ({
         aria-valuetext={showValue ? `${Math.round(pct)}%` : undefined}
         aria-label={label}
         className={cn(
-          'mt-1.5 w-full overflow-hidden rounded-full bg-surface-raised border border-border-subtle',
-          size === 'sm' ? 'h-1.5' : 'h-2.5',
+          'w-full overflow-hidden bg-surface-raised',
+          strip
+            ? 'h-1 rounded-none'
+            : cn('mt-1.5 rounded-full border border-border-subtle', size === 'sm' ? 'h-1.5' : 'h-2.5'),
         )}
       >
         <div
-          className={cn('h-full rounded-full transition-[width] duration-[var(--dur-base)] ease-[var(--ease-smooth)]', complete ? 'bg-accent' : 'bg-accent/80')}
+          className={cn('h-full transition-[width] duration-[var(--dur-base)] ease-[var(--ease-smooth)]', strip ? 'rounded-none' : 'rounded-full', complete ? 'bg-accent' : 'bg-accent/80')}
           style={{ width: `${pct}%` }}
         />
       </div>

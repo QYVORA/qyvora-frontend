@@ -1,3 +1,8 @@
+/* Ubuntu — signed-in app UI typeface (latin subset only, self-hosted). */
+@import '@fontsource/ubuntu/latin-400.css';
+@import '@fontsource/ubuntu/latin-500.css';
+@import '@fontsource/ubuntu/latin-700.css';
+
 @font-face {
   font-family: 'JetBrains Mono';
   font-style: normal;

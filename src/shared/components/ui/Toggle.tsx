@@ -9,8 +9,8 @@ interface ToggleProps extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>
 }
 
 /**
- * Accessible switch. Rendered from a <button role="switch"> so it carries
- * native Enter/Space activation and a real aria-checked state.
+ * Labelled switch row: label + description on the left, bare Switch on the
+ * right. Keeps the `onCheckedChange` API.
  */
 const Toggle: React.FC<ToggleProps> = ({
   checked,
@@ -19,9 +19,14 @@ const Toggle: React.FC<ToggleProps> = ({
   description,
   className,
   disabled,
-  ...props
-}) => {
-  const control = (
+}) => (
+  <div className={cn('flex min-h-[44px] items-center gap-4 py-2', className)}>
+    <span className="flex-1 min-w-0">
+      <span className="block text-base font-medium text-text-primary">{label}</span>
+      {description && (
+        <span className="mt-0.5 block text-sm text-text-muted">{description}</span>
+      )}
+    </span>
     <button
       type="button"
       role="switch"
@@ -30,32 +35,21 @@ const Toggle: React.FC<ToggleProps> = ({
       disabled={disabled}
       onClick={() => onCheckedChange(!checked)}
       className={cn(
-        'relative h-[26px] w-[46px] shrink-0 rounded-full transition-colors',
+        'relative inline-flex h-[22px] w-10 shrink-0 items-center rounded-full transition-colors',
         checked ? 'bg-accent' : 'bg-surface-raised border border-border-subtle',
         'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent',
         'disabled:opacity-45 disabled:cursor-not-allowed',
-        className,
       )}
-      {...props}
     >
       <span
         className={cn(
-          'absolute top-[3px] h-[18px] w-[18px] rounded-full bg-text-primary transition-all',
-          checked ? 'left-[25px]' : 'left-[3px]',
+          'absolute h-4 w-4 rounded-full bg-text-primary transition-all',
+          checked ? 'left-[21px]' : 'left-[3px]',
         )}
+        aria-hidden="true"
       />
     </button>
-  );
-
-  return (
-    <label className="flex min-h-[44px] cursor-pointer items-center gap-4 rounded-lg p-1">
-      <span className="flex-1">
-        <span className="block text-body-sm text-text-primary">{label}</span>
-        {description && <span className="mt-0.5 block type-meta">{description}</span>}
-      </span>
-      {control}
-    </label>
-  );
-};
+  </div>
+);
 
 export default Toggle;

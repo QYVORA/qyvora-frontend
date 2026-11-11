@@ -8,11 +8,13 @@ import { Outlet } from 'react-router-dom';
 import AdminTopbar from '@/features/admin/components/layout/AdminTopbar';
 import AdminSidebar from '@/features/admin/components/layout/AdminSidebar';
 import AdminBottomNav from '@/features/admin/components/layout/AdminBottomNav';
+import { useAppUiScope } from '@/shared/hooks/useAppUiScope';
 
 const TOPBAR_H = 'pt-20 md:pt-24';
 const CONTENT_PB = 'md:pb-6';
 
 const AdminLayout = () => {
+  useAppUiScope();
   const [railCollapsed, setRailCollapsed] = useState(() => {
     try {
       return localStorage.getItem('qyvora:admin-sidebar-collapsed') === '1';

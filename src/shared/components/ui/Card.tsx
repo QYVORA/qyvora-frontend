@@ -255,6 +255,12 @@ export interface CardProps {
   muted?: boolean;
   /** Visibly indicate the whole card is the interactive target. */
   interactive?: boolean;
+  /**
+   * default — card on the page (bg-surface, 1px border)
+   * nested  — panel inside a card (bg-canvas, same border)
+   * raised  — menus / collapsed accordion rows (bg-surface-raised, no border)
+   */
+  variant?: 'default' | 'nested' | 'raised';
 }
 
 export const Card: React.FC<CardProps> = ({
@@ -270,12 +276,20 @@ export const Card: React.FC<CardProps> = ({
   ariaLabel,
   muted,
   interactive,
+  variant = 'default',
 }) => {
   const Tag = as as React.ElementType;
+  const surface =
+    variant === 'nested'
+      ? 'bg-canvas border border-border-subtle'
+      : variant === 'raised'
+        ? 'bg-surface-raised'
+        : 'bg-surface border border-border-subtle';
   const classes = [
-    'bg-surface rounded-2xl border border-border-subtle',
-    selected ? 'border-accent/60' : '',
-    interactive ? 'hover:border-border' : '',
+    'rounded-2xl',
+    surface,
+    selected ? 'border-accent/60 bg-accent/[0.06]' : '',
+    interactive || onClick || to || href ? 'hover:border-text-muted/30' : '',
     muted ? 'opacity-55 cursor-default' : '',
     onClick || to || href ? 'transition-colors duration-[var(--dur-fast)] ease-[var(--ease-smooth)]' : '',
     className,
