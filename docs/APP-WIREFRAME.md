@@ -472,7 +472,7 @@ ETHICS + NEXT LEVEL
 │ ProgrammeHeroCard over qose-header.webp                                      │
 │ QOSE · [Registration status badge]                                           │
 │ Title + tagline + status note                                                │
-│ [Submit a seat request] or [Ask about the next cohort]                       │
+│ [Register & pay] or [Ask about the next cohort]                              │
 │ Prerequisite: HPB                                                             │
 └──────────────────────────────────────────────────────────────────────────────┘
 │ BootcampFacts strip                                                          │

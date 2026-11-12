@@ -138,11 +138,11 @@ export const initializeQosePayment = async (stage?: QoseStageId): Promise<QoseCh
 export const verifyQosePayment = async (reference: string): Promise<QoseVerificationResult> =>
   data(await api.post<QoseVerificationResult>('/qose/payments/verify', { reference }));
 
-export const formatGhs = (amountMinor: number): string => {
+export const formatGhs = (amountMinor: number, currency = 'GHS'): string => {
   const amount = Number(amountMinor || 0) / 100;
   return new Intl.NumberFormat('en-GH', {
     style: 'currency',
-    currency: 'GHS',
+    currency: currency || 'GHS',
     maximumFractionDigits: amount % 1 === 0 ? 0 : 2,
   }).format(amount);
 };

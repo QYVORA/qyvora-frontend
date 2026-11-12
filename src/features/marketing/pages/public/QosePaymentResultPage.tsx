@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { AlertCircle, CheckCircle2, Clock3, XCircle } from 'lucide-react';
+import { AlertCircle, Check, CheckCircle2, Clock3, Copy, XCircle } from 'lucide-react';
 import SEO from '@/shared/components/SEO';
 import PublicContainer from '@/shared/components/layout/PublicContainer';
 import Button from '@/shared/components/ui/Button';
 import { Card } from '@/shared/components/ui/Card';
+import { useCopyToClipboard } from '@/shared/hooks/useCopyToClipboard';
 import api from '@/core/services/api';
 
 type VerifyState = 'loading' | 'processing' | 'success' | 'failed' | 'timeout' | 'error';
@@ -58,6 +59,7 @@ const TERMINAL_STATUSES = new Set(['failed', 'abandoned', 'reversed', 'refunded'
 const QosePaymentResultPage = () => {
   const [params] = useSearchParams();
   const reference = params.get('reference') || params.get('trxref') || '';
+  const { copied, copy } = useCopyToClipboard();
   const [state, setState] = useState<VerifyState>('loading');
   const [result, setResult] = useState<VerifyResponse | null>(null);
   const [message, setMessage] = useState('');
@@ -242,6 +244,23 @@ const QosePaymentResultPage = () => {
                     )}
                   </div>
                 )}
+
+                <div className="w-full rounded-xl border border-border-subtle bg-surface-raised p-4">
+                  <p className="text-sm font-bold text-text-primary">Keep proof of registration</p>
+                  <p className="type-body-sm mt-1 text-text-secondary">
+                    Save this reference and create a student account with the same email so QYVORA
+                    can link your payment to your dashboard. If you already have an account, sign in
+                    to manage the remaining instalments.
+                  </p>
+                  <div className="mt-3 flex flex-wrap gap-3">
+                    <Button to="/register" variant="secondary" size="sm">
+                      Create student account
+                    </Button>
+                    <Button to="/login" variant="secondary" size="sm">
+                      Sign in to manage payments
+                    </Button>
+                  </div>
+                </div>
               </>
             )}
 
@@ -290,7 +309,19 @@ const QosePaymentResultPage = () => {
               <dl className="grid w-full gap-3 rounded-xl border border-border-subtle bg-surface-raised p-4 type-body-sm sm:grid-cols-2">
                 <div>
                   <dt className="type-label uppercase tracking-[0.12em] text-text-tertiary">Reference</dt>
-                  <dd className="mt-1 break-all font-mono text-text-primary">{reference}</dd>
+                  <dd className="mt-1 flex flex-wrap items-center gap-2">
+                    <span className="break-all font-mono text-text-primary">{reference}</span>
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => void copy(reference)}
+                      ariaLabel="Copy payment reference"
+                      icon={copied ? <Check className="h-3.5 w-3.5" /> : <Copy className="h-3.5 w-3.5" />}
+                    >
+                      {copied ? 'Copied' : 'Copy'}
+                    </Button>
+                  </dd>
                 </div>
                 <div>
                   <dt className="type-label uppercase tracking-[0.12em] text-text-tertiary">Status</dt>

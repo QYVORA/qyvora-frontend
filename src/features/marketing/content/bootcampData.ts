@@ -64,7 +64,7 @@ export const getQoseRegistrationState = (now = Date.now()) => {
     return {
       status: 'pre-registration' as const,
       statusLabel: 'Registration opens 10 November 2026',
-      statusNote: 'Registration opens 10 November and closes 14 November 2026 at 23:59 GMT. Classes begin 15 November. Submitting a request does not reserve a seat; QYVORA will contact you with payment and account setup steps.',
+      statusNote: 'Registration opens 10 November and closes 14 November 2026 at 23:59 GMT. Classes begin 15 November. Choose full payment or three instalments; your seat is confirmed after the first payment is verified.',
       ctaLabel: 'Registration opens 10 Nov',
     };
   }
@@ -72,8 +72,8 @@ export const getQoseRegistrationState = (now = Date.now()) => {
     return {
       status: 'open' as const,
       statusLabel: 'Registration open · Closes 14 November 2026 at 23:59 GMT',
-      statusNote: 'Registration is open until 14 November 2026 at 23:59 GMT. Classes begin 15 November. Your request is not a confirmed seat; QYVORA will contact you with payment and account setup steps.',
-      ctaLabel: 'Submit a seat request',
+      statusNote: 'Registration is open until 14 November 2026 at 23:59 GMT. Classes begin 15 November. Choose full payment or three instalments; your seat is confirmed after the first payment is verified.',
+      ctaLabel: 'Register & pay',
     };
   }
   return {

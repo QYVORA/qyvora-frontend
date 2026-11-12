@@ -47,7 +47,8 @@ const QOSE_COHORT_DETAILS = [
  *
  * Programme facts, phases and audience come from the QOSE programme
  * documentation. Cohort 1 registration is date-gated in UTC and the public
- * form records a seat request only; it does not take payment or confirm a seat.
+ * form starts a Paystack checkout; the seat is confirmed only after the first
+ * payment is verified server-side.
  * Cohort date and copy alignment added 2026-11-06; see core readiness audit.
  *
  * Structure mirrors `/hpb` exactly: the same `ProgrammeHeroCard` over its own

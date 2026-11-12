@@ -14,7 +14,7 @@ describe('getQoseRegistrationState', () => {
   it('shows open from 10 November until the cutoff', () => {
     expect(getQoseRegistrationState(opens).status).toBe('open');
     expect(getQoseRegistrationState(closes - 1).status).toBe('open');
-    expect(getQoseRegistrationState(opens).ctaLabel).toBe('Submit a seat request');
+    expect(getQoseRegistrationState(opens).ctaLabel).toBe('Register & pay');
   });
 
   it('shows closed at the published cutoff', () => {

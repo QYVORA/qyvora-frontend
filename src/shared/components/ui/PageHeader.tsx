@@ -71,7 +71,7 @@ const PageHeader: React.FC<PageHeaderProps> = ({
         {actions && <div className="flex flex-wrap items-center gap-3">{actions}</div>}
       </div>
       {metadata && (
-        <div className="flex flex-wrap items-center gap-x-6 gap-y-2 border-t border-border-subtle pt-4">
+        <div className="flex flex-wrap items-center gap-x-6 gap-y-2">
           {metadata}
         </div>
       )}

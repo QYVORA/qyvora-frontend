@@ -106,8 +106,8 @@ export const FAQ_GROUPS: FaqGroup[] = [
         id: 'qose-payment',
         question: 'Does the QOSE registration form take payment?',
         answer:
-          'No. The form records a request only. The team contacts you with payment and account setup instructions. Your seat is confirmed only after the first instalment is verified and enrolment is recorded.',
-        links: [{ label: 'Submit a QOSE seat request', to: '/qose#qose-enrol' }],
+          'Yes. The registration form starts a secure Paystack checkout for the full amount or the first instalment. Your seat is confirmed only after the first payment is verified and enrolment is recorded.',
+        links: [{ label: 'Register and pay for QOSE', to: '/qose#qose-enrol' }],
       },
       {
         id: 'qose-prerequisite',

@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   ArrowRight,
@@ -36,6 +36,10 @@ import {
   type QoseRegistrationState,
   type QoseStageId,
 } from '../services/qose.service';
+
+const VERIFY_POLL_INTERVAL_MS = 3_000;
+const VERIFY_POLL_TIMEOUT_MS = 60_000;
+const TERMINAL_CHECKOUT_STATUSES = new Set(['failed', 'abandoned', 'reversed', 'refunded']);
 
 const STAGE_LABELS: Record<string, string> = {
   enrolment: 'Enrolment · Month 1',
@@ -78,9 +82,9 @@ const formatDateTime = (value: string | null | undefined): string => {
 };
 
 const planAmountLabel = (plan: QosePlan): string => {
-  if (plan.id === 'full') return formatGhs(plan.amountMinor);
+  if (plan.id === 'full') return formatGhs(plan.amountMinor, plan.currency);
   const first = plan.stages[0]?.amountMinor ?? 0;
-  return `${formatGhs(first)} now`;
+  return `${formatGhs(first, plan.currency)} now`;
 };
 
 const PlanCard = ({
@@ -110,7 +114,7 @@ const PlanCard = ({
         <li key={stage.stage} className="flex items-center justify-between gap-3">
           <span className="type-body-sm text-text-secondary">{stage.label}</span>
           <span className="font-mono text-sm font-bold text-text-primary">
-            {formatGhs(stage.amountMinor)}
+            {formatGhs(stage.amountMinor, plan.currency)}
           </span>
         </li>
       ))}
@@ -203,7 +207,7 @@ const StageLedger = ({ state }: { state: QoseRegistrationState }) => {
                 </p>
               </div>
               <span className="shrink-0 font-mono text-sm font-bold text-text-primary">
-                {formatGhs(stage.amountMinor)}
+                {formatGhs(stage.amountMinor, stage.currency)}
               </span>
             </li>
           );
@@ -236,7 +240,7 @@ const PaymentHistory = ({ state }: { state: QoseRegistrationState }) => {
             </div>
             <div className="flex shrink-0 items-center gap-3">
               <span className="font-mono text-sm font-bold text-text-primary">
-                {formatGhs(payment.amountMinor)}
+                {formatGhs(payment.amountMinor, payment.currency)}
               </span>
               <Badge variant={payment.status === 'recorded' ? 'success' : payment.status === 'failed' ? 'danger' : 'default'}>
                 {payment.status}
@@ -267,32 +271,66 @@ const QoseRegistrationPage = () => {
   const [actionError, setActionError] = useState('');
   const verificationStarted = useRef(false);
 
-  const verifyReturnedCheckout = useCallback(async () => {
-    const reference = getCheckoutReferenceFromUrl();
-    if (!reference || verificationStarted.current) return;
-    verificationStarted.current = true;
-
-    try {
-      const result = await verifyQosePayment(reference);
-      clearCheckoutReferenceFromUrl();
-      setState(result.state);
-      if (result.verified || result.duplicate) {
-        addToast('Payment confirmed. Your QOSE balance has been updated.', 'success');
-      } else {
-        addToast('We could not confirm that payment yet. Use refresh in a moment.', 'info');
-      }
-    } catch (err: any) {
-      clearCheckoutReferenceFromUrl();
-      addToast(err?.response?.data?.error || 'Could not verify the payment. Contact the QYVORA team if you were charged.', 'error');
-    }
-  }, [addToast, setState]);
-
   useEffect(() => {
     // Wait for the initial load so the verification result cannot be overwritten
     // by a registration read that started before the payment was recorded.
-    if (loading) return;
-    void verifyReturnedCheckout();
-  }, [loading, verifyReturnedCheckout]);
+    if (loading || verificationStarted.current) return;
+    const reference = getCheckoutReferenceFromUrl();
+    if (!reference) return;
+    verificationStarted.current = true;
+
+    let cancelled = false;
+    let timer: ReturnType<typeof setTimeout> | undefined;
+    const startedAt = Date.now();
+
+    const verify = async () => {
+      if (cancelled) return;
+      try {
+        const result = await verifyQosePayment(reference);
+        if (cancelled) return;
+        setState(result.state);
+
+        if (result.verified || result.duplicate) {
+          clearCheckoutReferenceFromUrl();
+          addToast('Payment confirmed. Your QOSE balance has been updated.', 'success');
+          return;
+        }
+
+        const status = String(result.status || result.state?.paymentStatus || '').toLowerCase();
+        if (TERMINAL_CHECKOUT_STATUSES.has(status)) {
+          clearCheckoutReferenceFromUrl();
+          addToast('That checkout was not completed. Start a new payment when you are ready.', 'error');
+          return;
+        }
+
+        if (Date.now() - startedAt >= VERIFY_POLL_TIMEOUT_MS) {
+          addToast('Paystack is still confirming this payment. Use Refresh status in a moment.', 'info');
+          return;
+        }
+
+        timer = setTimeout(() => void verify(), VERIFY_POLL_INTERVAL_MS);
+      } catch (err: any) {
+        if (cancelled) return;
+        const response = err?.response;
+        const retryable = !response || response.status === 429 || Number(response.status || 0) >= 500;
+        if (retryable && Date.now() - startedAt < VERIFY_POLL_TIMEOUT_MS) {
+          timer = setTimeout(() => void verify(), VERIFY_POLL_INTERVAL_MS);
+          return;
+        }
+        addToast(
+          err?.response?.data?.error ||
+            'Could not verify the payment. Contact the QYVORA team if you were charged.',
+          'error'
+        );
+      }
+    };
+
+    void verify();
+    return () => {
+      cancelled = true;
+      if (timer) clearTimeout(timer);
+    };
+  }, [loading, addToast, setState]);
 
   const handleChoosePlan = async (plan: QosePlanId) => {
     setActionError('');
@@ -314,9 +352,17 @@ const QoseRegistrationPage = () => {
     setStartingPayment(true);
     try {
       const checkout = await initializeQosePayment(state.nextStage);
-      window.location.assign(checkout.authorizationUrl);
+      const authorizationUrl = String(checkout.authorizationUrl || '');
+      if (!/^https:\/\//i.test(authorizationUrl)) {
+        throw new Error('The payment provider did not return a valid checkout URL.');
+      }
+      window.location.assign(authorizationUrl);
     } catch (err: any) {
-      setActionError(err?.response?.data?.error || 'Could not start the Paystack checkout.');
+      setActionError(
+        err?.response?.data?.error ||
+          err?.message ||
+          'Could not start the Paystack checkout.'
+      );
       setStartingPayment(false);
     }
   };
@@ -369,6 +415,7 @@ const QoseRegistrationPage = () => {
   const windowOpen = info.registrationWindow.isOpen;
   const statusBadge = registration?.paymentStatus ? PAYMENT_STATUS_BADGE[registration.paymentStatus] : null;
   const planLabel = registration?.paymentPlan === 'full' ? 'Full payment' : 'Three instalments';
+  const currency = registration?.currency || info.bootcamp.currency;
 
   return (
     <div className="min-h-full bg-canvas">
@@ -421,7 +468,7 @@ const QoseRegistrationPage = () => {
             <section aria-label="Choose a QOSE payment plan">
               <SectionHeader
                 title="Choose how to pay"
-                description="The total tuition is GH₵800 either way. Your plan is locked once a payment is recorded."
+                description={`The total tuition is ${formatGhs(info.bootcamp.totalTuitionMinor, info.bootcamp.currency)} either way. Your plan is locked once a payment is recorded.`}
               />
               <div className="mt-4 grid gap-4 md:grid-cols-2 md:gap-5">
                 {info.plans.map((plan) => (
@@ -461,15 +508,15 @@ const QoseRegistrationPage = () => {
                   <p className="type-body-sm mt-1 text-text-secondary">
                     {fullyPaid
                       ? 'Tuition fully paid. Your seat is confirmed.'
-                      : `Next payment: ${registration?.nextStage ? STAGE_LABELS[registration.nextStage] : 'none'} · ${formatGhs(registration?.nextAmountMinor || 0)}`}
+                      : `Next payment: ${registration?.nextStage ? STAGE_LABELS[registration.nextStage] : 'none'} · ${formatGhs(registration?.nextAmountMinor || 0, currency)}`}
                   </p>
                 </div>
                 {fullyPaid ? (
                   <Button
-                    to={`/dashboard/bootcamps/${registration?.bootcampId || info.bootcamp.id}`}
+                    to="/dashboard/labs"
                     trailingIcon={<ArrowRight className="h-4 w-4" aria-hidden="true" />}
                   >
-                    Open QOSE course
+                    Open QOSE labs
                   </Button>
                 ) : (
                   <Button
@@ -479,7 +526,7 @@ const QoseRegistrationPage = () => {
                     icon={<CreditCard className="h-4 w-4" aria-hidden="true" />}
                   >
                     {registration?.nextStage
-                      ? `Pay ${formatGhs(registration.nextAmountMinor)}`
+                      ? `Pay ${formatGhs(registration.nextAmountMinor, currency)}`
                       : 'No payment due'}
                   </Button>
                 )}
@@ -489,19 +536,19 @@ const QoseRegistrationPage = () => {
                 <div className="rounded-xl border border-border-subtle bg-surface-raised p-4">
                   <p className="type-meta">Total tuition</p>
                   <p className="mt-1 font-mono text-lg font-black text-text-primary">
-                    {formatGhs(registration?.totalTuitionMinor || info.bootcamp.totalTuitionMinor)}
+                    {formatGhs(registration?.totalTuitionMinor || info.bootcamp.totalTuitionMinor, currency)}
                   </p>
                 </div>
                 <div className="rounded-xl border border-border-subtle bg-surface-raised p-4">
                   <p className="type-meta">Paid</p>
                   <p className="mt-1 font-mono text-lg font-black text-accent">
-                    {formatGhs(registration?.amountPaidMinor || 0)}
+                    {formatGhs(registration?.amountPaidMinor || 0, currency)}
                   </p>
                 </div>
                 <div className="rounded-xl border border-border-subtle bg-surface-raised p-4">
                   <p className="type-meta">Remaining</p>
                   <p className="mt-1 font-mono text-lg font-black text-text-primary">
-                    {formatGhs(registration?.remainingMinor || 0)}
+                    {formatGhs(registration?.remainingMinor || 0, currency)}
                   </p>
                 </div>
               </div>

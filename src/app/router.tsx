@@ -179,7 +179,11 @@ const AdminOnly = ({ children }: { children: ReactNode }) => {
 const BootcampOverviewRoute = () => {
   const { bootcampId } = useParams<{ bootcampId: string }>();
 
-  if (bootcampId === HACKER_PROTOCOL_BOOTCAMP_ID || bootcampId === 'hpb') {
+  if (
+    bootcampId === HACKER_PROTOCOL_BOOTCAMP_ID ||
+    bootcampId === 'hpb' ||
+    bootcampId === 'qose'
+  ) {
     return <Navigate to="/dashboard/labs" replace />;
   }
 

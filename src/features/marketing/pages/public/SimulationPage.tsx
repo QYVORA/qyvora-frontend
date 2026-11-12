@@ -10,6 +10,7 @@ import Button from '@/shared/components/ui/Button';
 import { SimpleHeading } from '@/shared/components/ui';
 import { SimulationProvider } from '@/features/student/components/simulations';
 import RelatedContentSection from '@/shared/components/RelatedContentSection';
+import ScrollReveal from '@/shared/components/ScrollReveal';
 import { TerminalWrapper } from '@/shared/components/learning/TerminalWrapper';
 import NetworkBuilder from '@/features/student/components/tools/NetworkBuilder';
 import { getSimulationBySlug, SIMULATIONS } from '@/features/marketing/data/simulationsData';
@@ -39,7 +40,7 @@ const SimulationPage = () => {
   };
 
   return (
-    <div className="min-h-full w-full bg-canvas">
+    <div className="min-h-dvh w-full bg-canvas">
       <SEO
         title={`${sim.title} ${sim.titleAccent} - QYVORA`}
         description={sim.description}
@@ -47,15 +48,9 @@ const SimulationPage = () => {
       <SimulationProvider>
         <PublicContainer className="pb-20 pt-24 md:pb-24 md:pt-28 lg:pt-32">
           <PageHeader
-            kicker={"QYVORA · Simulations"}
+            kicker={`QYVORA · Simulations · ${sim.tag}`}
             title={`${sim.title} ${sim.titleAccent}`}
             description={sim.description}
-            metadata={
-              <span className="type-meta inline-flex items-center gap-1.5">
-                <span className="h-1.5 w-1.5 rounded-full bg-accent" aria-hidden="true" />
-                {sim.tag}
-              </span>
-            }
             actions={
               <>
                 <Button to="/register">
@@ -68,81 +63,87 @@ const SimulationPage = () => {
             }
           />
 
-          {/* Demo launcher — the live tool opens in a modal */}
-          <section className="w-full py-10 md:py-14" aria-label={sim.demoTitle}>
-            <div className="grid grid-cols-1 items-center gap-8 lg:grid-cols-2 lg:gap-12">
-              <div className="flex flex-col gap-5">
-                <span className="flex h-12 w-12 items-center justify-center md:h-14 md:w-14">
-                  <Icon className="h-6 w-6 text-accent md:h-7 md:w-7" aria-hidden="true" />
-                </span>
-                <div>
-                  <span className="type-meta mb-2 block font-black uppercase tracking-[0.3em] text-accent">
-                    {sim.tag}
-                  </span>
-                  <SimpleHeading
-                    text={sim.demoTitle}
-                    align="left"
+          <div className="mt-12 space-y-16 md:mt-16 md:space-y-20">
+            {/* Demo launcher — the live tool opens in a modal */}
+            <ScrollReveal>
+              <section className="w-full" aria-label={sim.demoTitle}>
+                <div className="grid grid-cols-1 items-center gap-8 lg:grid-cols-2 lg:gap-12">
+                  <div className="flex flex-col gap-5">
+                    <span className="flex h-12 w-12 items-center justify-center md:h-14 md:w-14">
+                      <Icon className="h-6 w-6 text-accent md:h-7 md:w-7" aria-hidden="true" />
+                    </span>
+                    <SimpleHeading
+                      compact
+                      text={sim.demoTitle}
+                      align="left"
+                      className="max-w-none"
+                    />
+                    <p className="font-mono text-base leading-relaxed text-text-secondary md:text-lg">
+                      {sim.demoDescription}
+                    </p>
+                    <div className="mt-2 flex flex-col gap-4 sm:flex-row sm:items-center">
+                      <Button onClick={openDemo}>
+                        <Play className="h-4 w-4" aria-hidden="true" /> {"Run the Demo"} <IconArrowRight size={14} />
+                      </Button>
+                      <span className="font-mono text-xs leading-snug text-text-muted">
+                        {"No account"} · live in your browser
+                      </span>
+                    </div>
+
+                    {demoError && (
+                      <p
+                        role="alert"
+                        className="rounded-xl border border-danger/40 bg-danger/10 px-4 py-3 font-mono text-sm text-danger"
+                      >
+                        {demoError}
+                      </p>
+                    )}
+                  </div>
+
+                  <CodeBlock
+                    code={sim.reference.code}
+                    lang="text"
+                    filename={sim.reference.filename}
+                    maxHeight="max-h-[50vh]"
                   />
                 </div>
-                <p className="wc-prose font-mono text-base leading-relaxed text-text-secondary sm:text-lg">
-                  {sim.demoDescription}
-                </p>
-                <div className="mt-2 flex flex-col gap-4 sm:flex-row sm:items-center">
-                  <Button onClick={openDemo}>
-                    <Play className="h-4 w-4" aria-hidden="true" /> {"Run the Demo"} <IconArrowRight size={14} />
-                  </Button>
-                  <span className="font-mono text-xs leading-snug text-text-muted">
-                    {"No account"} · live in your browser
-                  </span>
-                </div>
+              </section>
+            </ScrollReveal>
 
-                {demoError && (
-                  <p
-                    role="alert"
-                    className="rounded-xl border border-danger/40 bg-danger/10 px-4 py-3 font-mono text-sm text-danger"
-                  >
-                    {demoError}
-                  </p>
-                )}
-              </div>
-
-              <CodeBlock
-                code={sim.reference.code}
-                lang="text"
-                filename={sim.reference.filename}
-                maxHeight="max-h-[50vh]"
-              />
-            </div>
-          </section>
-
-          <section className="w-full py-10 md:py-14" aria-label="What you can do">
-            <div className="flex flex-col gap-6 lg:gap-8">
-              <SimpleHeading
-                text={"What you can do"}
-                align="left"
-              />
-              <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 md:gap-3">
-                {sim.features.map((feature) => (
-                  <div
-                    key={feature}
-                    className="card-accent flex items-center gap-3 bg-surface px-4 py-4"
-                  >
-                    <span className="flex h-6 w-6 shrink-0 items-center justify-center">
-                      <Zap className="h-3 w-3 text-accent" aria-hidden="true" />
-                    </span>
-                    <span className="font-mono text-xs leading-snug text-text-secondary md:text-sm">
-                      {feature}
-                    </span>
+            <ScrollReveal>
+              <section className="w-full" aria-label="What you can do">
+                <div className="flex flex-col gap-6 lg:gap-8">
+                  <SimpleHeading
+                    compact
+                    text="What you can do"
+                    accentWords={1}
+                    accentPlacement="end"
+                    align="left"
+                  />
+                  <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+                    {sim.features.map((feature) => (
+                      <div
+                        key={feature}
+                        className="flex items-start gap-3 rounded-xl border border-border-subtle bg-surface px-4 py-3"
+                      >
+                        <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center">
+                          <Zap className="h-4 w-4 text-accent" aria-hidden="true" />
+                        </span>
+                        <span className="flex-1 text-sm leading-relaxed text-text-secondary">
+                          {feature}
+                        </span>
+                      </div>
+                    ))}
                   </div>
-                ))}
-              </div>
-              <Button to="/register" variant="secondary" className="w-fit">
-                {"Start Training"} <IconArrowRight size={14} />
-              </Button>
-            </div>
-          </section>
+                  <Button to="/register" variant="secondary" className="w-fit">
+                    {"Start Training"} <IconArrowRight size={14} />
+                  </Button>
+                </div>
+              </section>
+            </ScrollReveal>
 
-          <RelatedContentSection items={otherSimulations} />
+            <RelatedContentSection items={otherSimulations} />
+          </div>
         </PublicContainer>
 
         {/* Live tool modals */}

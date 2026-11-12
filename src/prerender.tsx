@@ -809,7 +809,7 @@ const routeContent: Record<string, RouteContent> = {
       },
       {
         heading: 'Cohort 1 dates',
-        body: 'Registration opens 10 November and closes 14 November 2026 at 23:59 GMT. Classes begin 15 November 2026. The form records a request only; it does not take payment, create an account, or confirm a seat.',
+        body: 'Registration opens 10 November and closes 14 November 2026 at 23:59 GMT. Classes begin 15 November 2026. The form starts a secure Paystack checkout for full payment or the first instalment; a seat is confirmed only after the first payment is verified.',
       },
     ],
     links: [
@@ -1393,7 +1393,7 @@ const routeContent: Record<string, RouteContent> = {
       {
         heading: 'Bootcamps and registration',
         // Keep prerendered FAQ copy aligned with the live registration window.
-        body: 'QOSE registration opens 10 November and closes 14 November 2026 at 23:59 GMT; classes begin 15 November. Tuition is GH\u20b5800 in three instalments of GH\u20b5300, GH\u20b5250, and GH\u20b5250. The form records a request only; it does not take payment, create an account, or confirm a seat.',
+        body: 'QOSE registration opens 10 November and closes 14 November 2026 at 23:59 GMT; classes begin 15 November. Tuition is GH\u20b5800, payable in full or as GH\u20b5300 followed by GH\u20b5250 in each of the next two months. The form starts a secure Paystack checkout; a seat is confirmed only after the first payment is verified.',
       },
       {
         heading: 'Credentials and verification',
