@@ -159,6 +159,13 @@ for port in ports:
     print(f"Checking port {port}")
 \`\`\`
 
+\`\`\`breakdown
+1 | Create a list | what: A list of ports to check. | why: ordered collections keep scan targets in a predictable order.
+2-3 | Index from either end | what: \`ports[0]\` is the first item and \`ports[-1]\` the last. | why: negative indices read from the end without knowing the length.
+5-7 | Grow, shrink and measure | what: \`append\` adds, \`remove\` deletes, \`len\` counts. | why: tools build their target list as they discover ports.
+9-11 | Loop the list | what: Visits every port in order. | why: the loop is what turns a list into a scan.
+\`\`\`
+
 **Dictionaries** store key-value pairs (like a phonebook):
 
 \`\`\`python
@@ -175,6 +182,12 @@ print(target.get("os"))    # "Linux" (safe access)
 # Loop through dictionary
 for key, value in target.items():
     print(f"{key}: {value}")
+\`\`\`
+
+\`\`\`breakdown
+1-6 | Describe a target | what: A dictionary of named fields. | why: key-value pairs name each fact so the code reads like a report.
+8-9 | Read by key | what: \`target["ip"]\` is direct access, \`target.get("os")\` is safe access. | why: \`.get()\` returns \`None\` instead of crashing when a key is missing.
+11-13 | Loop the fields | what: \`.items()\` yields each key and value. | why: iterating fields lets you print any target without hard-coding field names.
 \`\`\`
 
 **Lists of dictionaries** are common in security tools:
@@ -276,6 +289,11 @@ result = scan_port("192.168.1.1", 80)
 print(f"Port 80 is open: {result}")
 \`\`\`
 
+\`\`\`breakdown
+1-5 | Define the function | what: A reusable \`scan_port\` that takes a host and a port. | why: defining the logic once lets you call it for one port or a million.
+7-9 | Call and use it | what: Calls the function and prints the returned value. | why: \`return\` hands the result back so callers can act on it.
+\`\`\`
+
 Functions keep your code organized. The \`def\` keyword defines a function, and \`return\` sends back a value.
 
 **Modules** are Python files you can import:
@@ -346,6 +364,14 @@ else:
     print(f"{host}:80 is CLOSED")
 \`\`\`
 
+\`\`\`breakdown
+1 | Import the toolbox | what: Loads Python's built-in \`socket\` library. | why: sockets are how Python opens raw TCP connections — the foundation of every custom scanner.
+3-5 | Define the scanner | what: A function that builds a TCP socket for IPv4. | why: wrapping the logic in a function lets you reuse it for one port or thousands.
+6 | Set a timeout | what: \`settimeout(1)\` gives each connection attempt one second. | why: without a timeout a filtered port can hang the scan for minutes.
+7-9 | Probe and report | what: \`connect_ex\` returns 0 on success, then the socket is closed. | why: \`connect_ex\` reports failures as codes instead of raising, so a closed port never crashes the scan.
+11-16 | Try it on port 80 | what: Tests one port against a legal target. | why: proving a single port works before scanning a range keeps debugging simple.
+\`\`\`
+
 \`connect_ex\` returns 0 if the connection succeeded (port is open), or an error code if it failed.
 
 Now scan multiple ports:
@@ -360,6 +386,12 @@ print(f"Scanning {host}...")
 for port in common_ports:
     if scan_port(host, port):
         print(f"  [+] {host}:{port} is OPEN")
+\`\`\`
+
+\`\`\`breakdown
+1-2 | The ports worth checking | what: 21 FTP — legacy file transfer, often left open; 22 SSH — remote shell, a top brute-force target; 23 Telnet — unencrypted remote login, never expose it; 25 SMTP — mail relay, abused for spam when open; 53 DNS — name resolution, leaks zone info; 80 HTTP — plain web traffic; 110 POP3 — unencrypted mail retrieval; 143 IMAP — mail access; 443 HTTPS — encrypted web traffic; 445 SMB — Windows file sharing, ransomware's favourite; 993/995 secure mail — IMAP/POP3 over TLS; 1433 MSSQL — Microsoft SQL Server; 1521 Oracle — Oracle database listener; 3306 MySQL — MySQL database; 3389 RDP — Windows remote desktop, a common breach point; 5432 PostgreSQL — PostgreSQL database; 8080/8443 alt web — proxies and admin panels. | why: these services most often leak access, so a scanner checks them first.
+4-5 | Set the target | what: Stores the host and prints a progress line. | why: showing what is being scanned makes the output easy to trust.
+7-9 | Loop and report | what: Calls \`scan_port\` for every port and prints the hits. | why: the loop turns a single check into a full scan.
 \`\`\`
 
 This is exactly how real port scanners work, they attempt TCP connections on each port and report which ones succeed. Try running this against \`scanme.nmap.org\` (a legal test target).
@@ -377,6 +409,13 @@ with ThreadPoolExecutor(max_workers=50) as executor:
     for port, is_open in results:
         if is_open:
             print(f"  [+] {port} is OPEN")
+\`\`\`
+
+\`\`\`breakdown
+1 | Import the thread pool | what: Loads \`ThreadPoolExecutor\` from \`concurrent.futures\`. | why: it runs many socket checks at once without hand-managing threads.
+3-4 | Choose the range | what: Scans the first 1024 well-known ports. | why: most exposed services live here, so it is the fastest useful sweep.
+6-7 | Fan out the work | what: \`max_workers=50\` runs 50 probes at a time and \`executor.map\` keeps results in port order. | why: 50 parallel sockets finish a 1024-port scan in seconds while staying under typical connection limits.
+8-10 | Collect the open ports | what: Iterates the results and prints every open port. | why: only open ports matter, so the loop filters out the noise.
 \`\`\`
 
 Threading lets you scan many ports simultaneously, making the process much faster.`,

@@ -121,6 +121,48 @@ describe('parseMarkdownToBlocks', () => {
     );
   });
 
+  it('merges a breakdown fence into the preceding code block', () => {
+    const md = [
+      '```python',
+      'import socket',
+      '',
+      's = socket.socket()',
+      '```',
+      '',
+      '```breakdown',
+      '1 | Import | what: Loads the socket library | why: sockets open connections',
+      '3 | Create socket | what: Builds a TCP socket',
+      '```',
+    ].join('\n');
+    const blocks = parseMarkdownToBlocks(md, 'bd');
+    const breakdown = blocks.find((b) => b.type === 'breakdown');
+    expect(breakdown?.type === 'breakdown' ? breakdown.code : null).toBe('import socket\n\ns = socket.socket()');
+    expect(breakdown?.type === 'breakdown' ? breakdown.parts.length : 0).toBe(2);
+    expect(breakdown?.type === 'breakdown' ? breakdown.parts[0].lines : null).toEqual([1, 1]);
+    expect(breakdown?.type === 'breakdown' ? breakdown.parts[0].what : null).toBe('Loads the socket library');
+  });
+
+  it('drops breakdown parts with invalid line ranges', () => {
+    const md = [
+      '```python',
+      'a = 1',
+      '```',
+      '```breakdown',
+      '9-12 | Out of range | what: nope',
+      '1 | Good | what: fine',
+      '```',
+    ].join('\n');
+    const blocks = parseMarkdownToBlocks(md, 'bd2');
+    const breakdown = blocks.find((b) => b.type === 'breakdown');
+    expect(breakdown?.type === 'breakdown' ? breakdown.parts.length : 0).toBe(1);
+    expect(breakdown?.type === 'breakdown' ? breakdown.parts[0].title : null).toBe('Good');
+  });
+
+  it('ignores a breakdown fence with no preceding code block', () => {
+    const blocks = parseMarkdownToBlocks('```breakdown\n1 | X | what: y\n```', 'bd3');
+    expect(blocks.find((b) => b.type === 'breakdown')).toBeUndefined();
+  });
+
   it('keeps multi-line shell scripts as code blocks', () => {
     const script = [
       '#!/bin/bash',

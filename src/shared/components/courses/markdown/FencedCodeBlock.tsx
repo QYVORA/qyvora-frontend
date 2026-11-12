@@ -42,6 +42,9 @@ const FencedCodeBlock: React.FC<{ code: string; lang: string }> = ({ code, lang 
     [code, isShell],
   );
 
+  // Structural fences are consumed by the learning chunker, not rendered raw.
+  if (lang === 'breakdown' || lang === 'diagram') return null;
+
   return (
     <div className="wc-code my-6 overflow-hidden rounded-xl border border-border bg-code-bg md:my-8">
       {/* Header bar */}

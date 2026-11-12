@@ -24,6 +24,7 @@ import MentalModelBlockComponent from './MentalModelBlock';
 import DiagramBlockComponent from './DiagramBlock';
 import HttpBlockComponent from './HttpBlock';
 import CodeSnippetBlockComponent from './CodeSnippetBlock';
+import CodeBreakdownBlockComponent from './CodeBreakdownBlock';
 import ComparisonBlockComponent from './ComparisonBlock';
 import HintBlockComponent from './HintBlock';
 import ChallengeBlockComponent from './ChallengeBlock';
@@ -128,6 +129,12 @@ blockRegistry.register({
 });
 
 blockRegistry.register({
+  type: 'breakdown',
+  component: CodeBreakdownBlockComponent,
+  description: 'Annotated code breakdown',
+});
+
+blockRegistry.register({
   type: 'comparison',
   component: ComparisonBlockComponent,
   description: 'Before/after side-by-side',
@@ -175,6 +182,7 @@ export {
   DiagramBlockComponent,
   HttpBlockComponent,
   CodeSnippetBlockComponent,
+  CodeBreakdownBlockComponent,
   ComparisonBlockComponent,
   HintBlockComponent,
   ChallengeBlockComponent,

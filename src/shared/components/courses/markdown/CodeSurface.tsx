@@ -57,6 +57,7 @@ export const CodeSurface: React.FC<CodeSurfaceProps> = ({
           return (
             <span
               key={index}
+              data-line={index + 1}
               className={cn(
                 'flex min-w-max rounded-sm',
                 highlighted && 'border-l-2 border-accent bg-accent-dim pl-1',

@@ -28,6 +28,7 @@ export const BLOCK_LABELS: Record<BlockType, string> = {
   command: 'Command',
   http: 'HTTP',
   code: 'Code',
+  breakdown: 'Breakdown',
   comparison: 'Compare',
   checkpoint: 'Checkpoint',
   hint: 'Hint',
@@ -46,6 +47,7 @@ const READ_TYPES: ReadonlySet<BlockType> = new Set<BlockType>([
   'observe',
   'evidence',
   'code',
+  'breakdown',
   'mental-model',
   'diagram',
 ]);
@@ -145,6 +147,8 @@ export function blockTitle(block: LearningBlock, fallback?: string): string {
       return block.request ? `${block.request.method} ${block.request.url}` : 'HTTP';
     case 'code':
       return block.filename ?? block.language;
+    case 'breakdown':
+      return block.title ?? block.filename ?? block.language;
     case 'comparison':
       return block.title ?? 'Before vs After';
     case 'checkpoint':

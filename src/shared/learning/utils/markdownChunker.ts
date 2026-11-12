@@ -21,6 +21,7 @@ import type {
   ConceptBlock,
   CodeBlock,
   CommandBlock,
+  BreakdownBlock,
   RecallBlock,
   DoBlock,
 } from '../types/blocks';
@@ -316,6 +317,83 @@ export function parseTerminalSession(code: string, kind: ShellKind): TerminalSes
   };
 }
 
+export interface ParsedBreakdownPart {
+  id: string;
+  lines: [number, number];
+  title: string;
+  what: string;
+  why?: string;
+  watch?: string;
+}
+
+function devWarn(message: string, detail?: unknown): void {
+  if (import.meta.env?.DEV) console.warn(`[markdownChunker] ${message}`, detail ?? '');
+}
+
+/**
+ * Parse a `breakdown` fence body. Each non-empty line is pipe-separated:
+ *   `1-2 | Import the toolbox | what: … | why: … | watch: …`
+ * Parts with an invalid or out-of-range line span are dropped.
+ */
+export function parseBreakdownParts(
+  text: string,
+  baseId: string,
+  totalLines: number,
+): ParsedBreakdownPart[] {
+  const parts: ParsedBreakdownPart[] = [];
+
+  for (const raw of text.split('\n')) {
+    const line = raw.trim();
+    if (!line) continue;
+    const fields = line.split('|').map((f) => f.trim());
+    if (fields.length < 2) {
+      devWarn('skipping malformed breakdown line', line);
+      continue;
+    }
+
+    const range = fields[0].match(/^(\d+)(?:\s*-\s*(\d+))?$/);
+    if (!range) {
+      devWarn('skipping breakdown part with invalid range', fields[0]);
+      continue;
+    }
+    const start = Number.parseInt(range[1], 10);
+    const end = range[2] ? Number.parseInt(range[2], 10) : start;
+    if (!Number.isFinite(start) || !Number.isFinite(end) || start < 1 || end < start || end > totalLines) {
+      devWarn(`skipping breakdown part with out-of-range span ${fields[0]} (code has ${totalLines} lines)`);
+      continue;
+    }
+
+    const title = fields[1];
+    if (!title) {
+      devWarn('skipping breakdown part without a title', line);
+      continue;
+    }
+
+    let what = '';
+    let why: string | undefined;
+    let watch: string | undefined;
+    for (const field of fields.slice(2)) {
+      const keyed = field.match(/^(what|why|watch)\s*:\s*([\s\S]*)$/i);
+      if (!keyed) continue;
+      const key = keyed[1].toLowerCase();
+      if (key === 'what') what = keyed[2].trim();
+      else if (key === 'why') why = keyed[2].trim();
+      else watch = keyed[2].trim();
+    }
+
+    parts.push({
+      id: `${baseId}-part-${parts.length}`,
+      lines: [start, end],
+      title,
+      what,
+      why,
+      watch,
+    });
+  }
+
+  return parts;
+}
+
 export interface MarkdownToBlocksOptions {
   /**
    * Preserve paragraph-level prose instead of splitting it into short card
@@ -377,6 +455,30 @@ export function markdownToBlocks(
 
       case 'code': {
         const lang = segment.lang || 'bash';
+
+        // A `breakdown` fence annotates the code fence immediately before it.
+        if (lang.trim().toLowerCase() === 'breakdown') {
+          const prev = blocks[blocks.length - 1];
+          if (prev && prev.type === 'code') {
+            const totalLines = prev.code.split('\n').length;
+            const parts = parseBreakdownParts(segment.code, prev.id, totalLines);
+            if (parts.length > 0) {
+              const breakdown: BreakdownBlock = {
+                type: 'breakdown',
+                id: prev.id,
+                language: prev.language,
+                filename: prev.filename,
+                code: prev.code,
+                parts,
+              };
+              blocks[blocks.length - 1] = breakdown;
+            }
+          } else {
+            devWarn('breakdown fence is not preceded by a code fence; ignoring it');
+          }
+          break;
+        }
+
         const shell = shellKindFor(lang);
         if (shell && isTerminalSession(segment.code, shell)) {
           const parsed = parseTerminalSession(segment.code, shell);

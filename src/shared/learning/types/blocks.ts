@@ -27,6 +27,7 @@ export type BlockType =
   | 'command'
   | 'http'
   | 'code'
+  | 'breakdown'
   | 'comparison'
   | 'checkpoint'
   | 'hint'
@@ -206,6 +207,24 @@ export interface CodeBlock extends BaseBlock {
   explanation?: string;
 }
 
+/** Annotated code breakdown — whole script plus explained parts */
+export interface BreakdownBlock extends BaseBlock {
+  type: 'breakdown';
+  title?: string;
+  language: string;
+  filename?: string;
+  code: string;
+  intro?: string;
+  parts: Array<{
+    id: string;
+    lines: [number, number];
+    title: string;
+    what: string;
+    why?: string;
+    watch?: string;
+  }>;
+}
+
 /** Before/after, vulnerable/safe comparison */
 export interface ComparisonBlock extends BaseBlock {
   type: 'comparison';
@@ -334,6 +353,7 @@ export type LearningBlock =
   | CommandBlock
   | HttpBlock
   | CodeBlock
+  | BreakdownBlock
   | ComparisonBlock
   | CheckpointBlock
   | HintBlock
@@ -365,6 +385,10 @@ export function isConceptBlock(block: LearningBlock): block is ConceptBlock {
 
 export function isCommandBlock(block: LearningBlock): block is CommandBlock {
   return block.type === 'command';
+}
+
+export function isBreakdownBlock(block: LearningBlock): block is BreakdownBlock {
+  return block.type === 'breakdown';
 }
 
 export function isCheckpointBlock(block: LearningBlock): block is CheckpointBlock {
