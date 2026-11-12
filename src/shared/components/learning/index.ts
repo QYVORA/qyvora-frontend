@@ -30,5 +30,3 @@ export type { FocusedStepListProps, FocusedStepListItem } from './FocusedStepLis
 export { LearningCurriculumTree, default as LearningCurriculumTreeComponent } from './LearningCurriculumTree';
 
 export { CurriculumBottomSheet, default as CurriculumBottomSheetComponent } from './CurriculumBottomSheet';
-
-export { DocsCodeBlock, DocsInlineCode, DocsCommandBlock } from './DocsCodeBlock';

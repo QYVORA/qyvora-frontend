@@ -2,8 +2,7 @@ import { useMemo, useState } from 'react';
 import { Copy } from 'lucide-react';
 import { IconCheck, IconTerminal } from '@/shared/components/icons';
 import { CommandExplanation } from '@/shared/components/learning/CommandExplanation';
-import { ShellCode } from './ShellCode';
-import { CommandNotes } from './CommandNotes';
+import { CodeSurface } from './CodeSurface';
 import { extractShellComments, isShellLanguage } from './shellComments';
 
 // ── Copy button ───────────────────────────────────────────────────────────────
@@ -38,18 +37,10 @@ const CopyBtn: React.FC<{ text: string }> = ({ text }) => {
 // ── Fenced code block ─────────────────────────────────────────────────────────
 const FencedCodeBlock: React.FC<{ code: string; lang: string }> = ({ code, lang }) => {
   const isShell = isShellLanguage(lang);
-  const { code: cleanCode, comments } = useMemo(
-    () => (isShell ? extractShellComments(code) : { code, comments: [] }),
+  const copyPayload = useMemo(
+    () => (isShell ? extractShellComments(code).code : code),
     [code, isShell],
   );
-
-  if (!cleanCode.trim() && comments.length > 0) {
-    return (
-      <div className="my-6 rounded-xl border border-border/50 bg-bg-card px-4 py-4 md:my-8">
-        <CommandNotes comments={comments} />
-      </div>
-    );
-  }
 
   return (
     <div className="wc-code my-6 overflow-hidden rounded-xl border border-border bg-code-bg md:my-8">
@@ -61,18 +52,12 @@ const FencedCodeBlock: React.FC<{ code: string; lang: string }> = ({ code, lang 
             {lang || 'bash'}
           </span>
         </div>
-        <CopyBtn text={cleanCode} />
+        <CopyBtn text={copyPayload} />
       </div>
 
-      <ShellCode code={cleanCode} language={lang} showLineNumbers />
+      <CodeSurface code={code} language={lang} />
 
-      {isShell && comments.length > 0 && (
-        <div className="border-t border-border/60 bg-bg-card/60 px-4 py-3">
-          <CommandNotes comments={comments} />
-        </div>
-      )}
-
-      {isShell && <CommandExplanation command={cleanCode} collapsible />}
+      {isShell && <CommandExplanation command={copyPayload} collapsible />}
     </div>
   );
 };

@@ -6,6 +6,8 @@ export interface Token { type: TokenType; value: string; }
 
 const KEYWORDS = /^(sudo|apt|apt-get|pip|pip3|python|python3|bash|sh|chmod|chown|mkdir|rm|cp|mv|ls|cat|grep|find|echo|export|source|cd|pwd|whoami|id|ps|kill|netstat|ss|ping|traceroute|curl|wget|nmap|sqlmap|hydra|nc|ncat|netcat|ssh|scp|git|docker|service|systemctl|useradd|usermod|passwd|su|env|set|unset|read|exit|return|if|then|else|fi|for|do|done|while|case|esac|function|local|declare|eval|exec|trap|wait|jobs|bg|fg|alias|unalias|history|man|help|which|type|file|stat|du|df|mount|umount|lsof|strace|ltrace|gdb|objdump|strings|xxd|hexdump|base64|openssl|gpg|tar|gzip|zip|unzip|awk|sed|sort|uniq|wc|head|tail|tee|xargs|cut|tr|diff|patch|make|gcc|g\+\+|javac|java|node|npm|yarn|php|ruby|perl|go|cargo|rustc)\b/;
 
+import { findCommentIndex } from './shellComments';
+
 export function tokeniseBash(line: string): Token[] {
   const tokens: Token[] = [];
 
@@ -14,6 +16,20 @@ export function tokeniseBash(line: string): Token[] {
     tokens.push({ type: 'comment', value: line });
     return tokens;
   }
+
+  // Inline trailing comment — tokenise the command, then the `# …` tail.
+  const commentIndex = findCommentIndex(line);
+  if (commentIndex >= 0) {
+    tokens.push(...tokeniseBashCommand(line.slice(0, commentIndex)));
+    tokens.push({ type: 'comment', value: line.slice(commentIndex) });
+    return tokens;
+  }
+
+  return tokeniseBashCommand(line);
+}
+
+function tokeniseBashCommand(line: string): Token[] {
+  const tokens: Token[] = [];
 
   // Tokenise word by word
   const parts = line.split(/(\s+|"[^"]*"|'[^']*'|`[^`]*`|--?[\w-]+=?[\w./]*|-[\w]+|\/[\w./~-]+|\d+)/g);
@@ -43,7 +59,7 @@ export function tokeniseBash(line: string): Token[] {
 export const TOKEN_CLASS: Record<TokenType, string> = {
   keyword: 'text-code-keyword font-bold',
   string:  'text-code-string',
-  comment: 'text-text-muted italic',
+  comment: 'text-code-comment italic',
   number:  'text-code-number',
   flag:    'text-code-flag',
   path:    'text-code-path',

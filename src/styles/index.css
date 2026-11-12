@@ -60,6 +60,10 @@
   --color-code-number:          #fbbf24; /* amber-400 */
   --color-code-flag:            #60a5fa; /* blue-400 */
   --color-code-path:            #a78bfa; /* purple-400 */
+  --color-code-comment:         #6a9955; /* editor green */
+  --color-code-func:            #dcdcaa; /* pale yellow */
+  --color-code-type:            #4ec9b0; /* teal */
+  --color-code-builtin:         #61afef; /* soft blue */
 
   /* ── Semantic status & difficulty tokens ── */
   --color-danger:                 #f87171; /* red-400 */
@@ -1037,6 +1041,10 @@ html[data-animations="off"] * {
   --color-code-number:    #b45309;
   --color-code-flag:      #2563eb;
   --color-code-path:      #7c3aed;
+  --color-code-comment:   #166534; /* contrast >= 4.5:1 on light code bg */
+  --color-code-func:      #795e26;
+  --color-code-type:      #267f99;
+  --color-code-builtin:   #0451a5;
   --card-shimmer:         inset 0 1px 0 rgba(255, 255, 255, 0.40);
   --card-shadow:          0 12px 40px rgba(20, 32, 24, 0.14);
   /* Calm-system tokens — light surfaces so migrated UI follows the OS theme */
@@ -1111,6 +1119,10 @@ html[data-animations="off"] * {
   --color-code-number: #fbbf24;
   --color-code-flag: #60a5fa;
   --color-code-path: #a78bfa;
+  --color-code-comment: #6a9955;
+  --color-code-func: #dcdcaa;
+  --color-code-type: #4ec9b0;
+  --color-code-builtin: #61afef;
   --card-shimmer: inset 0 1px 0 rgba(255, 255, 255, 0.05);
   --card-shadow: 0 12px 40px rgba(0, 0, 0, 0.30);
   /* Semantic status & difficulty — light-theme variants must not leak into

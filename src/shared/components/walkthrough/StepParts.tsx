@@ -2,14 +2,13 @@ import { useMemo, useState } from 'react';
 import { Copy, Terminal } from 'lucide-react';
 import { IconCheck } from '@/shared/components/icons';
 import { CommandExplanation } from '@/shared/components/learning/CommandExplanation';
-import { CommandNotes } from '@/shared/components/courses/markdown/CommandNotes';
-import { ShellCode } from '@/shared/components/courses/markdown/ShellCode';
+import { CodeSurface } from '@/shared/components/courses/markdown/CodeSurface';
 import { extractShellComments } from '@/shared/components/courses/markdown/shellComments';
 import { cn } from '@/shared/utils/cn';
 
 export function CommandBlock({ command, labId, showConnect = true }: { command: string; labId: string; showConnect?: boolean }) {
   const [copied, setCopied] = useState(false);
-  const { code, comments } = useMemo(() => extractShellComments(command), [command]);
+  const code = useMemo(() => extractShellComments(command).code, [command]);
 
   const handleCopy = async () => {
     await navigator.clipboard.writeText(code);
@@ -34,12 +33,7 @@ export function CommandBlock({ command, labId, showConnect = true }: { command: 
             {copied ? <IconCheck size={12} className="text-accent" /> : <Copy size={12} />}
           </button>
         </div>
-        <ShellCode code={code} language="bash" prompt />
-        {comments.length > 0 && (
-          <div className="border-t border-border-subtle px-3 py-3">
-            <CommandNotes comments={comments} />
-          </div>
-        )}
+        <CodeSurface code={command} language="bash" prompt />
       </div>
       <CommandExplanation command={code} />
       {showConnect && (

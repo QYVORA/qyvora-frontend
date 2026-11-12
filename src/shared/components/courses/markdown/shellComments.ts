@@ -30,7 +30,7 @@ export function isShellLanguage(language?: string): boolean {
  * A `#` only starts a comment at the beginning of a word, so values such as
  * `${#var}`, `$#`, and URL fragments remain untouched.
  */
-function findCommentIndex(line: string): number {
+export function findCommentIndex(line: string): number {
   let quote: '"' | "'" | '`' | null = null;
   let escaped = false;
 

@@ -25,8 +25,8 @@ export const GameProse: React.FC<Props> = ({ text, className }) => {
   return (
     <div
       className={cn(
-        'w-full max-w-none space-y-3 font-mono text-sm leading-6 text-text-secondary',
-        'sm:text-[15px] sm:leading-7 md:text-base md:leading-8',
+        'w-full max-w-none space-y-3 font-sans text-[15px] leading-7 text-text-secondary',
+        'md:text-base md:leading-7',
         className,
       )}
     >

@@ -10,13 +10,12 @@ import { Copy, Check, Terminal } from 'lucide-react';
 import type { CommandBlock } from '../types/blocks';
 import type { BlockRendererProps } from '../utils/blockRegistry';
 import { CommandExplanation } from '@/shared/components/learning/CommandExplanation';
-import { CommandNotes } from '@/shared/components/courses/markdown/CommandNotes';
-import { ShellCode } from '@/shared/components/courses/markdown/ShellCode';
+import { CodeSurface } from '@/shared/components/courses/markdown/CodeSurface';
 import { extractShellComments } from '@/shared/components/courses/markdown/shellComments';
 
 export const CommandBlockComponent: React.FC<BlockRendererProps<CommandBlock>> = ({ block }) => {
   const [copied, setCopied] = useState(false);
-  const { code, comments } = useMemo(() => extractShellComments(block.command), [block.command]);
+  const code = useMemo(() => extractShellComments(block.command).code, [block.command]);
 
   const handleCopy = async () => {
     try {
@@ -49,13 +48,7 @@ export const CommandBlockComponent: React.FC<BlockRendererProps<CommandBlock>> =
         </button>
       </div>
 
-      <ShellCode code={code} language="bash" prompt />
-
-      {comments.length > 0 && (
-        <div className="border-t border-border/20 bg-bg-card/40 px-3 py-3">
-          <CommandNotes comments={comments} />
-        </div>
-      )}
+      <CodeSurface code={block.command} language="bash" prompt />
 
       {!block.explanation && (
         <div className="border-t border-border/20 p-3">
@@ -121,7 +114,7 @@ export const CommandBlockComponent: React.FC<BlockRendererProps<CommandBlock>> =
           <p className="mb-2 text-[10px] font-black uppercase tracking-[0.18em] text-text-muted">
             Expected output
           </p>
-          <ShellCode code={block.expectedOutput} language="text" className="px-0 py-0" />
+          <CodeSurface code={block.expectedOutput} language="text" className="px-0 py-0" />
         </div>
       )}
     </div>

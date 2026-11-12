@@ -1,8 +1,8 @@
 import React from 'react';
 
 // ── Typography (centralised QYVORA grammar) ───────────────────────────────────
-export const PARA_CLASS = 'mb-5 max-w-none font-mono text-sm leading-7 text-text-secondary sm:text-[15px] sm:leading-8 md:text-base md:leading-8';
-export const LIST_CLASS = 'mb-5 max-w-none list-outside space-y-2.5 pl-5 font-mono text-sm leading-7 text-text-secondary sm:text-[15px] sm:leading-8 md:text-base md:leading-8';
+export const PARA_CLASS = 'mb-5 max-w-none font-sans text-[15px] leading-7 text-text-secondary md:text-base';
+export const LIST_CLASS = 'mb-5 max-w-none list-outside space-y-2.5 pl-5 font-sans text-[15px] leading-7 text-text-secondary md:text-base';
 
 export const headingClass = (level: number): string => {
   if (level === 1) {
