@@ -142,7 +142,7 @@ const CertificatesPage = () => {
               severity="error"
             />
           ) : loading ? (
-            <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3" role="status" aria-live="polite">
+            <div className="grid gap-4 sm:grid-cols-[repeat(2,minmax(0,1fr))] xl:grid-cols-[repeat(3,minmax(0,1fr))]" role="status" aria-live="polite">
               <span className="sr-only">Loading certificates…</span>
               {[0, 1, 2].map((i) => (
                 <Skeleton key={i} variant="card" className="h-56" />
@@ -160,7 +160,7 @@ const CertificatesPage = () => {
                     title="Your credentials"
                     description="Each credential carries a public verification link."
                   />
-                  <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+                  <div className="grid gap-4 sm:grid-cols-[repeat(2,minmax(0,1fr))] xl:grid-cols-[repeat(3,minmax(0,1fr))]">
                     {credentials.map((credential) => {
                       const program = credentialProgram(credential.programName);
                       const revoked = credential.status !== 'ACTIVE';

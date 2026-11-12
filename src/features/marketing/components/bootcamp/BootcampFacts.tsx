@@ -7,11 +7,11 @@ import type { Bootcamp, BootcampFact } from '@/features/marketing/content/bootca
  * decorative copy.
  */
 const BootcampFacts = ({ facts }: { facts: BootcampFact[] }) => (
-  <dl className="grid grid-cols-2 gap-px overflow-hidden rounded-2xl border border-border-subtle bg-border-subtle md:grid-cols-3 lg:grid-cols-5">
+  <dl className="grid grid-cols-2 gap-px overflow-hidden rounded-2xl border border-border-subtle bg-border-subtle md:grid-cols-[repeat(3,minmax(0,1fr))] lg:grid-cols-[repeat(5,minmax(0,1fr))]">
     {facts.map((fact) => (
-      <div key={fact.label} className="flex flex-col gap-2 bg-surface px-4 py-5">
-        <dt className="type-label uppercase tracking-[0.12em] text-accent">{fact.label}</dt>
-        <dd className="text-sm font-bold leading-snug text-text-primary">{fact.value}</dd>
+      <div key={fact.label} className="flex min-w-0 flex-col gap-2 bg-surface px-4 py-5">
+        <dt className="truncate type-label uppercase tracking-[0.12em] text-accent">{fact.label}</dt>
+        <dd className="truncate text-sm font-bold leading-snug text-text-primary">{fact.value}</dd>
       </div>
     ))}
   </dl>

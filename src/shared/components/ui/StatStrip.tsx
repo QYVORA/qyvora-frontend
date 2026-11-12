@@ -31,23 +31,23 @@ const StatStrip: React.FC<StatStripProps> = ({ cells, className, label }) => (
         <div
           key={cell.key ?? index}
           className={cn(
-            'flex flex-col items-center justify-center gap-1 px-4 py-[var(--app-card-pad,20px)] text-center',
+            'flex flex-col items-center justify-center gap-1 px-4 py-[var(--app-card-pad,20px)] text-center min-w-0',
             'border-border-subtle',
             index > 0 && 'border-t sm:border-t-0',
             index % 2 === 1 && 'border-l',
             index > 0 && 'sm:border-l',
           )}
         >
-          {cell.icon && <span className="text-accent [&_svg]:h-4 [&_svg]:w-4">{cell.icon}</span>}
+          {cell.icon && <span className="text-accent [&_svg]:h-4 [&_svg]:w-4 shrink-0">{cell.icon}</span>}
           <dd
             className={cn(
-              'type-h2 tabular-nums leading-none',
+              'truncate type-h2 tabular-nums leading-none w-full',
               cell.accent ? 'text-accent' : 'text-text-primary',
             )}
           >
             {cell.value}
           </dd>
-          <dt className="text-sm text-text-muted">{cell.label}</dt>
+          <dt className="truncate text-sm text-text-muted">{cell.label}</dt>
         </div>
       ))}
     </dl>

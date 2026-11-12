@@ -68,19 +68,19 @@ const StatCard = ({
         )}
         <span className="text-xs font-black uppercase tracking-widest text-text-tertiary">{label}</span>
       </div>
-      <div className="flex items-end gap-3">
-        <div className={`font-mono text-2xl font-black leading-none tabular-nums ${
+      <div className="flex items-end gap-3 min-w-0">
+        <div className={`font-mono truncate text-[clamp(14px,4.4vw,18px)] font-bold leading-none tabular-nums min-w-0 ${
           accent ? 'text-accent' : 'text-text-primary'
         }`}>
           {value}
         </div>
         {trend && (
-          <div className={`flex items-center gap-1 text-xs font-bold font-mono ${
+          <div className={`flex shrink-0 items-center gap-1 text-xs font-bold font-mono ${
             trend.direction === 'up' ? 'text-accent' : trend.direction === 'down' ? 'text-danger' : 'text-text-muted'
           }`}>
             <TrendIcon direction={trend.direction} />
-            {trend.value}
-            {trend.label && <span className="text-text-muted/60 text-xs">({trend.label})</span>}
+            <span className="truncate">{trend.value}</span>
+            {trend.label && <span className="text-text-muted/60 text-xs truncate">({trend.label})</span>}
           </div>
         )}
       </div>

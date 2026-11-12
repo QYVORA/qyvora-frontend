@@ -4,6 +4,7 @@ import { Identicon, BootcampBadge, StreakIcon } from '@/shared/components';
 import RankBadge from './RankBadge';
 import { TOP_THREE_COLORS } from './types';
 import type { LeaderboardEntry } from './types';
+import { formatCompact } from '@/shared/utils/formatCompact';
 
 interface LeaderboardRowProps {
   entry: LeaderboardEntry;
@@ -36,7 +37,7 @@ const LeaderboardRow = ({
     <Link
       to={`/@${entry.hackerHandle}`}
       className={`
-        grid grid-cols-[36px_1fr] md:grid-cols-[48px_1fr_140px_100px_80px] gap-2 md:gap-4 px-4 md:px-6 py-4 rounded-2xl border transition-[filter,transform,border-color,background-color,box-shadow] duration-[var(--dur-base)] ease-[var(--ease-smooth)] items-center
+        grid grid-cols-[36px_1fr] md:grid-cols-[48px_minmax(0,1fr)_140px_100px_80px] gap-2 md:gap-4 px-4 md:px-6 py-4 rounded-2xl border transition-[filter,transform,border-color,background-color,box-shadow] duration-[var(--dur-base)] ease-[var(--ease-smooth)] items-center
         ${isCurrentUser
           ? 'border-accent/40 bg-accent-dim/10'
           : isTopThree
@@ -88,9 +89,9 @@ const LeaderboardRow = ({
       </div>
 
       {/* CP (desktop) */}
-      <div className="hidden md:block text-right">
-        <span className="text-sm font-black font-mono text-text-primary">
-          {Number(entry.cp).toLocaleString()}
+      <div className="hidden md:block text-right min-w-0">
+        <span className="truncate text-sm font-black font-mono text-text-primary block">
+          {formatCompact(entry.cp)}
         </span>
       </div>
 
@@ -100,15 +101,15 @@ const LeaderboardRow = ({
       </div>
 
       {/* Mobile stats row */}
-      <div className="md:hidden col-span-2 flex items-center justify-between mt-1">
-        <div className="flex items-center gap-2">
+      <div className="md:hidden col-span-2 flex items-center justify-between mt-1 min-w-0">
+        <div className="flex items-center gap-2 min-w-0">
         <RankBadge label={rankLabel} />
-          <span className="text-xs font-mono text-text-muted/60">
+          <span className="text-xs font-mono text-text-muted/60 truncate">
             {entry.roomsCompleted} {roomsLabel}
           </span>
         </div>
-        <span className="text-sm font-black font-mono text-accent">
-          {Number(entry.cp).toLocaleString()} CP
+        <span className="text-sm font-black font-mono text-accent truncate shrink-0">
+          {formatCompact(entry.cp)} CP
         </span>
       </div>
     </Link>

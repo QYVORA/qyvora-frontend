@@ -240,7 +240,7 @@ const UsersTab: React.FC<UsersTabProps> = ({
 
   return (
     <div className="space-y-6">
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-[repeat(3,minmax(0,1fr))]">
         <StatCard icon={<IconShield size={20} className="text-text-muted" />} label={"Total Users"} value={Number((overview?.users as any)?.total || 0)} />
         <StatCard icon={<IconShield size={20} className="text-accent" />} label={"Active 24h"} value={Number((overview?.users as any)?.active24h || 0)} accent />
         <StatCard icon={<IconShield size={20} className="text-text-muted" />} label={"Admins"} value={adminsCount} />

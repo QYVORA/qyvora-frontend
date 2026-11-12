@@ -96,7 +96,7 @@ const CompetitivePage = () => {
         ) : (
           <div>
             {/* Desktop header row */}
-            <div className="hidden md:grid grid-cols-[48px_1fr_140px_100px_80px] gap-4 px-6 py-3 text-xs font-black uppercase tracking-widest text-text-muted/50 border-b border-border-subtle">
+            <div className="hidden md:grid grid-cols-[48px_minmax(0,1fr)_140px_100px_80px] gap-4 px-6 py-3 text-xs font-black uppercase tracking-widest text-text-muted/50 border-b border-border-subtle">
               <span>{"#"}</span>
               <span>{"Operator"}</span>
               <span>{"Rank"}</span>

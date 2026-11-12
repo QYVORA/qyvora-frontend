@@ -19,6 +19,7 @@ import { useToast } from '@/core/contexts/ToastContext';
 import { useFullscreen } from '@/shared/hooks/useFullscreen';
 import { LIGHT_THEME_ENABLED, useThemeContext } from '@/core/contexts/ThemeContext';
 import { Avatar, Badge, Menu, MenuItem, MenuSeparator } from '@/shared/components/ui';
+import { formatCompact } from '@/shared/utils/formatCompact';
 
 export interface AvatarMenuStats {
   streakDays: number;
@@ -103,18 +104,18 @@ const AvatarMenu: React.FC<AvatarMenuProps> = ({ unread = 0, stats }) => {
             {stats?.rank && <Badge variant="accent" pill>{stats.rank}</Badge>}
           </div>
           {stats && (
-            <dl className="mt-3 grid grid-cols-3 gap-2 border-t border-border-subtle pt-3">
-              <div className="text-center">
-                <dd className="text-base font-medium tabular-nums text-text-primary">{stats.streakDays}</dd>
-                <dt className="text-xs text-text-muted">Day streak</dt>
+            <dl className="mt-3 grid grid-cols-[repeat(3,minmax(0,1fr))] gap-2 border-t border-border-subtle pt-3">
+              <div className="text-center min-w-0">
+                <dd className="truncate text-base font-medium tabular-nums text-text-primary">{stats.streakDays}</dd>
+                <dt className="truncate text-xs text-text-muted">Day streak</dt>
               </div>
-              <div className="text-center">
-                <dd className="text-base font-medium tabular-nums text-text-primary">{stats.cp}</dd>
-                <dt className="text-xs text-text-muted">CP</dt>
+              <div className="text-center min-w-0">
+                <dd className="truncate text-base font-medium tabular-nums text-text-primary">{formatCompact(stats.cp)}</dd>
+                <dt className="truncate text-xs text-text-muted">CP</dt>
               </div>
-              <div className="text-center">
-                <dd className="truncate text-base font-medium text-text-primary">{stats.rank}</dd>
-                <dt className="text-xs text-text-muted">Rank</dt>
+              <div className="text-center min-w-0">
+                <dd className="truncate text-base font-medium text-text-primary" title={stats.rank}>{stats.rank}</dd>
+                <dt className="truncate text-xs text-text-muted">Rank</dt>
               </div>
             </dl>
           )}

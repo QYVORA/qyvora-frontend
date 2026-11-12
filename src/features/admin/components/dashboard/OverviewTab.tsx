@@ -105,14 +105,14 @@ const OverviewTab = ({ data, status, onRetry }: OverviewTabProps) => {
 
   return (
     <div className="space-y-8">
-      <StatSection title={"Platform"} className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      <StatSection title={"Platform"} className="grid grid-cols-1 gap-4 sm:grid-cols-[repeat(2,minmax(0,1fr))] lg:grid-cols-[repeat(3,minmax(0,1fr))]">
         {statCards.map((card) => (
           <StatCard key={card.label} icon={card.icon} label={card.label} value={card.value} accent={card.accent} />
         ))}
       </StatSection>
 
       {health && healthCards.length > 0 && (
-        <StatSection title={"System health"} className="grid grid-cols-2 gap-4 lg:grid-cols-4">
+        <StatSection title={"System health"} className="grid grid-cols-2 gap-4 lg:grid-cols-[repeat(4,minmax(0,1fr))]">
           {healthCards.map((card) => (
             <StatCard key={card.label} icon={card.icon} label={card.label} value={card.value} accent={card.accent} />
           ))}
@@ -120,7 +120,7 @@ const OverviewTab = ({ data, status, onRetry }: OverviewTabProps) => {
       )}
 
       {health?.bootcamp && (
-        <StatSection title={"Bootcamp health"} className="grid grid-cols-2 gap-4 lg:grid-cols-4">
+        <StatSection title={"Bootcamp health"} className="grid grid-cols-2 gap-4 lg:grid-cols-[repeat(4,minmax(0,1fr))]">
           <StatCard icon={<BookOpen className="w-5 h-5 text-text-muted" />} label={"Bootcamp enrolled"} value={health.bootcamp.enrolled} />
           <StatCard icon={<Activity className="w-5 h-5 text-accent" />} label={"Bootcamp active"} value={health.bootcamp.active} accent />
           <StatCard icon={<Users className="w-5 h-5 text-text-muted" />} label={"In current module"} value={health.bootcamp.engagementCurrentModule} />

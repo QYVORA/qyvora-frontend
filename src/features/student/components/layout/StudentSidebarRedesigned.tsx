@@ -20,6 +20,8 @@ import api from '@/core/services/api';
 import useStudentOverview from '@/features/student/hooks/useStudentOverview';
 import { Logo } from '@/shared/components/brand';
 import { Avatar } from '@/shared/components/ui';
+import { CompactStatCard } from '@/shared/components/ui/CompactStatCard';
+import { formatCompact } from '@/shared/utils/formatCompact';
 import { cn } from '@/shared/utils/cn';
 
 interface NavChild {
@@ -218,17 +220,15 @@ const StudentSidebarRedesigned: React.FC<StudentSidebarRedesignedProps> = ({
   const userDisplayName = user?.username || user?.email || 'User';
   const streakDays = overview?.xpSummary?.streakDays;
   const streakValue =
-    typeof streakDays === 'number' && Number.isFinite(streakDays) ? String(streakDays) : '-';
+    typeof streakDays === 'number' && Number.isFinite(streakDays) ? streakDays : null;
   const overviewCp = overview?.xpSummary?.cp;
   const cpValue = typeof user?.cp === 'number' ? user.cp : overviewCp;
-  const cpDisplay =
-    typeof cpValue === 'number' && Number.isFinite(cpValue) ? cpValue.toLocaleString() : '-';
   const rankDisplay = rankName || '-';
 
   const statCards = [
-    { key: 'streak', label: 'Streak', value: streakValue, icon: Flame, accent: true },
-    { key: 'cp', label: 'CP Points', value: cpDisplay, icon: Coins, accent: false },
-    { key: 'rank', label: 'Rank', value: rankDisplay, icon: Trophy, accent: false },
+    { key: 'streak', label: 'Streak', value: streakValue ?? '-', icon: Flame, accent: true, isRank: false },
+    { key: 'cp', label: 'Points', value: typeof cpValue === 'number' && Number.isFinite(cpValue) ? formatCompact(cpValue) : '-', icon: Coins, accent: false, isRank: false },
+    { key: 'rank', label: 'Rank', value: rankDisplay, icon: Trophy, accent: false, isRank: true },
   ];
 
   const handleNavClick = () => {
@@ -413,23 +413,16 @@ const StudentSidebarRedesigned: React.FC<StudentSidebarRedesignedProps> = ({
           <>
             <div className="px-5 pt-2">{renderUserRow()}</div>
 
-            <div className="mt-6 grid grid-cols-3 gap-[14px] px-5">
-              {statCards.map(({ key, label, value, icon: Icon, accent }) => (
-                <div
+            <div className="mt-6 grid grid-cols-[repeat(3,minmax(0,1fr))] gap-3 px-5">
+              {statCards.map(({ key, label, value, icon: Icon, accent, isRank }) => (
+                <CompactStatCard
                   key={key}
-                  className="flex h-[78px] flex-col items-center justify-center gap-1 rounded-xl border border-border-subtle bg-surface px-2"
-                >
-                  <span className="flex min-w-0 items-center gap-1.5">
-                    <Icon
-                      className={cn('h-4 w-4 shrink-0', accent ? 'text-accent' : 'text-text-muted')}
-                      aria-hidden="true"
-                    />
-                    <span className="truncate text-[19px] font-bold leading-none tabular-nums text-text-primary">
-                      {value}
-                    </span>
-                  </span>
-                  <span className="text-[14px] leading-none text-text-muted">{label}</span>
-                </div>
+                  label={label}
+                  value={value}
+                  icon={<Icon aria-hidden="true" />}
+                  accent={accent}
+                  isRank={isRank}
+                />
               ))}
             </div>
 

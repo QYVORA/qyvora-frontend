@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import { ArrowUpRight, CheckCircle2, Flame, Trophy, Zap } from 'lucide-react';
 import { Card } from '@/shared/components/ui';
 import { ProfileAvatar } from '@/shared/components/profile';
+import { formatCompact } from '@/shared/utils/formatCompact';
 
 interface YourStatsCardProps {
   username: string;
@@ -57,7 +58,7 @@ const YourStatsCard = ({
       key: 'cp',
       icon: <Zap className="h-4 w-4 text-accent" aria-hidden="true" />,
       label: 'CP balance',
-      value: cp.toLocaleString(),
+      value: formatCompact(cp),
     }] : []),
     ...(typeof roomsCompleted === 'number' ? [{
       key: 'rooms',
@@ -103,7 +104,7 @@ const YourStatsCard = ({
 
       <div className="p-[var(--app-card-pad)] pt-4">
       {metrics.length > 0 ? (
-        <dl className="grid grid-cols-1 gap-2 sm:grid-cols-3">
+        <dl className="grid grid-cols-1 gap-2 sm:grid-cols-[repeat(3,minmax(0,1fr))]">
           {metrics.map((metric) => (
             <div
               key={metric.key}
@@ -113,7 +114,7 @@ const YourStatsCard = ({
                 {metric.icon}
               </span>
               <span className="flex min-w-0 flex-col">
-                <dd className="text-base font-medium leading-tight tabular-nums text-text-primary">
+                <dd className="truncate text-base font-medium leading-tight tabular-nums text-text-primary">
                   {metric.value}
                 </dd>
                 <dt className="truncate text-sm text-text-muted">{metric.label}</dt>
