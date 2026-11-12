@@ -90,9 +90,7 @@ const PublicNavigation: React.FC = () => {
   const { user } = useAuth();
   const [open, setOpen] = useState(false);
 
-  const footer = user ? (
-    <AvatarMenu />
-  ) : (
+  const footer = user ? undefined : (
     <div className="flex flex-col gap-2">
       <Button to="/register" className="w-full">
         Get started
@@ -133,6 +131,8 @@ const PublicNavigation: React.FC = () => {
             items={PUBLIC_ITEMS}
             footer={footer}
             title="Menu"
+            variant="fullscreen"
+            activeMatcher={isActive}
           />
         }
       />

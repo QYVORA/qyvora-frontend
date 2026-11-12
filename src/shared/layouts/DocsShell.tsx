@@ -23,8 +23,8 @@ const readCollapsed = (): boolean => {
  * carries onward movement) — only the reader needs are kept.
  *
  * The rail's collapse state lives here so the content column's left padding can
- * track it; on mobile the rail is replaced by an identity bar whose hamburger
- * opens the shared documentation drawer.
+ * track it; on mobile the rail is replaced by the shared topbar-style bar whose
+ * hamburger opens the full-screen documentation menu.
  */
 const DocsShell: React.FC = () => {
   const [collapsed, setCollapsed] = useState(readCollapsed);
@@ -56,6 +56,7 @@ const DocsShell: React.FC = () => {
         id="docs-main"
         className={[
           'w-full pb-16 lg:pb-0',
+          'pt-[calc(var(--app-topbar-h,4rem)+var(--app-safe-top,0px))] lg:pt-0',
           'transition-[padding-left] duration-[var(--dur-base)] ease-[var(--ease-smooth)]',
           collapsed ? 'lg:pl-[76px]' : 'lg:pl-[264px]',
         ].join(' ')}

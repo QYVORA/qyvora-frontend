@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { render, screen } from '@testing-library/react';
+import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { MemoryRouter } from 'react-router-dom';
 import PublicNavigation from '../PublicNavigation';
@@ -47,6 +47,19 @@ describe('PublicNavigation', () => {
     expect(screen.getByRole('menuitem', { name: /View profile/i })).toHaveAttribute('href', '/dashboard/profile');
     expect(screen.getByRole('menuitem', { name: /Dashboard/i })).toHaveAttribute('href', '/dashboard');
     expect(screen.getByRole('menuitem', { name: /Log out/i })).toBeInTheDocument();
+  });
+
+  it('opens the full-screen public menu without dashboard identity chrome', async () => {
+    auth.user = { username: 'operator', email: 'operator@example.com', cp: 420, rank: 'Operator' };
+    const user = userEvent.setup();
+    renderNav('/');
+
+    await user.click(screen.getByRole('button', { name: /Open menu/i }));
+
+    const dialog = screen.getByRole('dialog', { name: 'Menu' });
+    expect(within(dialog).getByRole('button', { name: /Learn/i })).toHaveClass('min-h-[64px]');
+    expect(within(dialog).getByRole('link', { name: 'Blogs' })).toHaveAttribute('href', '/blogs');
+    expect(within(dialog).queryByRole('button', { name: /Account menu/i })).not.toBeInTheDocument();
   });
 
   it('omits the dashboard item when already inside the dashboard', async () => {
