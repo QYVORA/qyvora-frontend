@@ -75,7 +75,13 @@ export const Diagram = memo<DiagramProps>(({
   // Select renderer based on diagram type
   const renderDiagram = () => {
     switch (definition.renderer) {
-      case 'react-flow':
+      case 'svg':
+      case 'mermaid':
+        if (process.env.NODE_ENV === 'development') {
+          console.warn(
+            `[diagram] renderer "${definition.renderer}" is not implemented for "${definition.id}"; falling back to react-flow.`
+          );
+        }
         return (
           <ReactFlowRenderer
             diagram={animatedDiagram}
@@ -84,29 +90,14 @@ export const Diagram = memo<DiagramProps>(({
             className={isFullscreen ? 'diagram-canvas-fullscreen' : ''}
           />
         );
-      
-      case 'svg':
-        // TODO: Implement SVG renderer
-        return (
-          <div className="diagram-canvas flex items-center justify-center">
-            <p className="text-text-muted">SVG renderer coming soon</p>
-          </div>
-        );
-      
-      case 'mermaid':
-        // TODO: Implement Mermaid renderer
-        return (
-          <div className="diagram-canvas flex items-center justify-center">
-            <p className="text-text-muted">Mermaid renderer coming soon</p>
-          </div>
-        );
-      
+
       default:
         return (
           <ReactFlowRenderer
             diagram={animatedDiagram}
             onNodeClick={onNodeClick}
             onEdgeClick={onEdgeClick}
+            className={isFullscreen ? 'diagram-canvas-fullscreen' : ''}
           />
         );
     }

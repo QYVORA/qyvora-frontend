@@ -206,7 +206,12 @@ export interface DiagramDefinition {
   nodes: DiagramNode[];
   edges: DiagramEdge[];
   groups?: DiagramGroup[];
-  layout?: LayoutConfig;
+  /**
+   * Node layout mode. `'auto'` (default) restacks wide diagrams into a
+   * vertical column on narrow viewports; `'manual'` preserves authored
+   * positions exactly.
+   */
+  layout?: 'auto' | 'manual';
   animation?: AnimationConfig;
   interaction?: InteractionConfig;
   legend?: DiagramLegend;

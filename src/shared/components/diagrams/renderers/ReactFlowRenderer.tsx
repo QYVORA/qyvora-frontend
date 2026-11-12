@@ -6,7 +6,7 @@
  * Handles network topologies, architecture diagrams, and interactive graphs.
  */
 
-import React, { memo, useCallback, useMemo } from 'react';
+import React, { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import {
   ReactFlow,
   Background,
@@ -15,20 +15,19 @@ import {
   BackgroundVariant,
   type Node,
   type Edge,
-  type OnNodesChange,
-  type OnEdgesChange,
   type OnConnect,
+  type ReactFlowInstance,
   useNodesState,
   useEdgesState,
   addEdge,
 } from '@xyflow/react';
-import type { DiagramDefinition } from '../types';
+import type { DiagramDefinition, DiagramNode } from '../types';
 import { nodeTypeRegistry } from '../nodes/nodeRegistry';
 import { edgeTypeRegistry } from '../edges/edgeRegistry';
 import { diagramEdgesToReactFlowEdges } from '../utils/edgeUtils';
+import { responsiveLayout } from '../utils/responsiveLayout';
 import { getNodeColor } from '../theme/tokens';
 import type { BaseNodeData } from '../nodes/BaseNode';
-import type { BaseEdgeData } from '../edges/BaseEdge';
 
 export interface ReactFlowRendererProps {
   diagram: DiagramDefinition;
@@ -41,9 +40,9 @@ export interface ReactFlowRendererProps {
  * Convert DiagramNode to React Flow Node
  */
 function diagramNodesToReactFlowNodes(
-  diagram: DiagramDefinition
+  nodes: DiagramNode[]
 ): Node<BaseNodeData>[] {
-  return diagram.nodes.map((node, index) => ({
+  return nodes.map((node, index) => ({
     id: node.id,
     type: node.type,
     position: node.position || { x: index * 200, y: 100 },
@@ -66,10 +65,37 @@ export const ReactFlowRenderer = memo<ReactFlowRendererProps>(({
   onEdgeClick,
   className = '',
 }) => {
+  // Measure the container so we can restack wide diagrams on narrow viewports.
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [containerWidth, setContainerWidth] = useState(0);
+
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+    const update = () => setContainerWidth(el.clientWidth);
+    update();
+    if (typeof ResizeObserver === 'undefined') return;
+    const observer = new ResizeObserver(update);
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
+  // Responsive auto-layout: restack on narrow containers unless the author
+  // opted into manual positioning.
+  const layout = useMemo(
+    () =>
+      responsiveLayout(
+        diagram.nodes,
+        containerWidth || 1024,
+        diagram.layout === 'manual' ? 'manual' : 'auto'
+      ),
+    [diagram.nodes, diagram.layout, containerWidth]
+  );
+
   // Convert diagram definition to React Flow format
   const initialNodes = useMemo(
-    () => diagramNodesToReactFlowNodes(diagram),
-    [diagram]
+    () => diagramNodesToReactFlowNodes(layout.nodes),
+    [layout.nodes]
   );
   
   const initialEdges = useMemo(
@@ -79,6 +105,21 @@ export const ReactFlowRenderer = memo<ReactFlowRendererProps>(({
   
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
+
+  // Re-fit the viewport whenever the layout mode changes.
+  const rfInstance = useRef<ReactFlowInstance | null>(null);
+  const handleInit = useCallback((instance: ReactFlowInstance) => {
+    rfInstance.current = instance;
+  }, []);
+
+  useEffect(() => {
+    const instance = rfInstance.current;
+    if (!instance) return;
+    const frame = requestAnimationFrame(() => {
+      instance.fitView({ padding: 0.2, maxZoom: 1, duration: 200 });
+    });
+    return () => cancelAnimationFrame(frame);
+  }, [layout.stacked, containerWidth]);
   
   // Handle new connections (if interaction allows)
   const onConnect = useCallback<OnConnect>(
@@ -114,14 +155,26 @@ export const ReactFlowRenderer = memo<ReactFlowRendererProps>(({
   const miniMapNodeColor = useCallback((node: Node<BaseNodeData>) => {
     return getNodeColor(node.data.type, node.data.state);
   }, []);
-  
+
+  const isFullscreen = className.includes('diagram-canvas-fullscreen');
+
   return (
-    <div className={`diagram-canvas ${className}`}>
+    <div
+      ref={containerRef}
+      className={`diagram-canvas ${className}`}
+      style={
+        isFullscreen
+          ? undefined
+          : { height: `clamp(260px, ${Math.round(layout.canvasHeight)}px, 70dvh)` }
+      }
+    >
       <ReactFlow
+        key={`${diagram.id}-${layout.stacked ? 'v' : 'h'}`}
         nodes={nodes}
         edges={edges}
         nodeTypes={nodeTypeRegistry}
         edgeTypes={edgeTypeRegistry}
+        onInit={handleInit}
         onNodesChange={diagram.interaction?.draggable ? onNodesChange : undefined}
         onEdgesChange={diagram.interaction?.draggable ? onEdgesChange : undefined}
         onConnect={onConnect}
@@ -130,10 +183,12 @@ export const ReactFlowRenderer = memo<ReactFlowRendererProps>(({
         nodesDraggable={diagram.interaction?.draggable ?? false}
         nodesConnectable={diagram.interaction?.draggable ?? false}
         elementsSelectable={diagram.interaction?.selectable ?? true}
-        zoomOnScroll={diagram.interaction?.zoomable ?? true}
-        panOnScroll={diagram.interaction?.pannable ?? true}
-        panOnDrag={diagram.interaction?.pannable ?? true}
-        minZoom={0.25}
+        zoomOnScroll={false}
+        panOnScroll={false}
+        panOnDrag={layout.fits ? false : (diagram.interaction?.pannable ?? true)}
+        zoomOnDoubleClick={false}
+        preventScrolling={false}
+        minZoom={0.5}
         maxZoom={2}
         fitView
         fitViewOptions={{
