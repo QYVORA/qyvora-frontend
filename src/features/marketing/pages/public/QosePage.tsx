@@ -12,27 +12,15 @@ import ProgrammeHeroCard from '@/features/marketing/components/programmes/Progra
 import ProgrammeCtaCard from '@/features/marketing/components/programmes/ProgrammeCtaCard';
 import QoseRegistrationForm from '@/features/marketing/components/bootcamp/QoseRegistrationForm';
 import { BOOTCAMPS, getQoseRegistrationState } from '@/features/marketing/content/bootcampData';
+import {
+  FALLBACK_QOSE_PRICING,
+  buildQosePricing,
+  type QosePricing,
+} from '@/features/marketing/content/qosePricing';
+import { getQoseInfo } from '@/features/qose/services/qose.service';
 import qoseHeaderBg from '@/assets/backgrounds/qose-header.webp';
 
 const QOSE = BOOTCAMPS.qose;
-
-const QOSE_INSTALMENTS = [
-  {
-    month: 'Month 1',
-    amount: 'GH₵300',
-    note: 'After payment is verified, the team confirms your seat and first month of labs and cohort support.',
-  },
-  {
-    month: 'Month 2',
-    amount: 'GH₵250',
-    note: 'Covers the second month of labs and assessments.',
-  },
-  {
-    month: 'Month 3',
-    amount: 'GH₵250',
-    note: 'Covers the final month, the capstone and your professional report.',
-  },
-];
 
 const QOSE_COHORT_DETAILS = [
   'Registration: 10–14 November 2026 (closes 23:59 GMT)',
@@ -58,10 +46,28 @@ const QOSE_COHORT_DETAILS = [
 const QosePage = () => {
   // Refresh the date-gated CTA while the page remains open across a boundary.
   const [registration, setRegistration] = useState(() => getQoseRegistrationState());
+  const [pricing, setPricing] = useState<QosePricing>(FALLBACK_QOSE_PRICING);
+
   useEffect(() => {
     const timer = window.setInterval(() => setRegistration(getQoseRegistrationState()), 30_000);
     return () => window.clearInterval(timer);
   }, []);
+
+  useEffect(() => {
+    let cancelled = false;
+    getQoseInfo()
+      .then((info) => {
+        if (!cancelled) setPricing(buildQosePricing(info));
+      })
+      .catch(() => {
+        // Keep the canonical fallback prices when the catalogue is unavailable.
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  const [firstInstalment, secondInstalment, thirdInstalment] = pricing.instalments;
 
   return (
     <div className="w-full bg-canvas">
@@ -129,12 +135,12 @@ const QosePage = () => {
                 {"Full payment or three instalments."}
               </h2>
               <p className="type-body mt-3 max-w-2xl text-text-secondary">
-                {"Registration opens 10 November and closes 14 November 2026 at 23:59 GMT. Classes begin 15 November. Pay the full GH₵800 or start with GH₵300, then GH₵250 in month 2 and GH₵250 in month 3. A seat is confirmed only after the payment is verified on our server."}
+                {`Registration opens 10 November and closes 14 November 2026 at 23:59 GMT. Classes begin 15 November. Pay the full ${pricing.totalLabel} or start with ${firstInstalment?.amount || 'GH₵300'}, then ${secondInstalment?.amount || 'GH₵250'} in month 2 and ${thirdInstalment?.amount || 'GH₵250'} in month 3. A seat is confirmed only after the payment is verified on our server.`}
               </p>
             </div>
 
             <div className="grid gap-4 md:grid-cols-3">
-              {QOSE_INSTALMENTS.map((instalment) => (
+              {pricing.instalments.map((instalment) => (
                 <Card key={instalment.month} className="flex flex-col gap-3 p-6">
                   <div className="flex items-center justify-between gap-3">
                     <span className="type-label uppercase tracking-[0.12em] text-text-tertiary">
@@ -156,7 +162,7 @@ const QosePage = () => {
                   {"Total tuition"}
                 </span>
                 <p className="mt-2 text-3xl font-black tracking-tight text-text-primary">
-                  {'GH₵800'}
+                  {pricing.totalLabel}
                 </p>
                 <p className="type-body-sm mt-2 text-text-secondary">
                   {"Choose full payment or the three-instalment plan in the form below. Pay securely through Paystack; your seat is confirmed once the first transaction is verified. Instalment payers can pay the next amount from the confirmation page."}
@@ -311,7 +317,7 @@ const QosePage = () => {
                   kicker={"Enrolment"}
                   title={registration.status === 'closed' ? "Registration closed" : "QOSE Cohort 1 · Classes begin 15 November 2026"}
                   description={registration.status === 'open'
-                    ? "Register and pay GH₵800 in full, or start with GH₵300 and pay GH₵250 in each of the next two months. Your seat is confirmed after the first payment is verified."
+                    ? `Register and pay ${pricing.totalLabel} in full, or start with ${firstInstalment?.amount || 'GH₵300'} and pay ${secondInstalment?.amount || 'GH₵250'} in each of the next two months. Your seat is confirmed after the first payment is verified.`
                     : registration.status === 'pre-registration'
                       ? "Registration opens 10 November and closes 14 November 2026 at 23:59 GMT. This cohort's classes begin 15 November."
                       : "This cohort's registration window has closed. Contact the QOSE team about a future cohort."}
@@ -321,6 +327,7 @@ const QosePage = () => {
                       bootcampId="qose"
                       source="qose_page"
                       submitLabel="Continue to secure payment"
+                      plans={pricing.planOptions}
                     />
                   ) : null}
                   <Button
@@ -330,6 +337,13 @@ const QosePage = () => {
                     className="mt-3 text-sm"
                   >
                     {"Join the QOSE WhatsApp group"}
+                  </Button>
+                  <Button
+                    to="/qose/payment/callback"
+                    variant="ghost"
+                    className="mt-2 text-sm"
+                  >
+                    {"Already paid? Recover your receipt"}
                   </Button>
                 </ProgrammeCtaCard>
               </div>

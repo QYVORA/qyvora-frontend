@@ -71,7 +71,7 @@ const QoseDashboardCard = () => {
   const body = !registered
     ? 'The 12-week Offensive Security Engineer bootcamp follows HPB. Register and start with GH₵300.'
     : fullyPaid
-      ? 'Tuition fully paid. Open your QOSE labs and continue.'
+      ? 'Tuition fully paid. Open your QOSE programme and continue the weekly labs.'
       : locked
         ? 'An instalment is overdue past the grace period. Pay the outstanding amount to restore programme access.'
         : overdue && state.inGrace && state.graceUntil
@@ -103,12 +103,12 @@ const QoseDashboardCard = () => {
         </div>
       </div>
       <Button
-        to={fullyPaid ? '/dashboard/labs' : '/dashboard/qose'}
+        to={fullyPaid ? '/dashboard/bootcamps/qose' : '/dashboard/qose'}
         variant={fullyPaid ? 'secondary' : 'primary'}
         trailingIcon={<ArrowRight className="h-4 w-4" aria-hidden="true" />}
         className="shrink-0"
       >
-        {fullyPaid ? 'Open QOSE labs' : registered ? 'Continue payment' : 'View QOSE'}
+        {fullyPaid ? 'Open QOSE programme' : registered ? 'Continue payment' : 'View QOSE'}
       </Button>
     </Card>
   );

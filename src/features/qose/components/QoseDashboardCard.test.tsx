@@ -73,7 +73,7 @@ describe('QoseDashboardCard', () => {
     expect(screen.getByRole('link', { name: /Continue payment/i })).toHaveAttribute('href', '/dashboard/qose');
   });
 
-  it('opens the QOSE labs once tuition is fully paid', async () => {
+  it('opens the QOSE programme once tuition is fully paid', async () => {
     getRegistrationMock.mockResolvedValueOnce({
       ...baseState,
       amountPaidMinor: 80000,
@@ -87,9 +87,9 @@ describe('QoseDashboardCard', () => {
     renderCard();
 
     expect(await screen.findByText('QOSE seat secured')).toBeInTheDocument();
-    expect(screen.getByRole('link', { name: /Open QOSE labs/i })).toHaveAttribute(
+    expect(screen.getByRole('link', { name: /Open QOSE programme/i })).toHaveAttribute(
       'href',
-      '/dashboard/labs',
+      '/dashboard/bootcamps/qose',
     );
   });
 

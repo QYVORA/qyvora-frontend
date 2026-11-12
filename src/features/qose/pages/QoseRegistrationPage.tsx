@@ -513,10 +513,10 @@ const QoseRegistrationPage = () => {
                 </div>
                 {fullyPaid ? (
                   <Button
-                    to="/dashboard/labs"
+                    to="/dashboard/bootcamps/qose"
                     trailingIcon={<ArrowRight className="h-4 w-4" aria-hidden="true" />}
                   >
-                    Open QOSE labs
+                    Open QOSE programme
                   </Button>
                 ) : (
                   <Button

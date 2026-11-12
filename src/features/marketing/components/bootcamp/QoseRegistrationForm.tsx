@@ -3,29 +3,14 @@ import { AlertCircle, ArrowRight, ShieldCheck } from 'lucide-react';
 import Button from '@/shared/components/ui/Button';
 import Input from '@/shared/components/ui/Input';
 import api from '@/core/services/api';
+import {
+  FALLBACK_QOSE_PRICING,
+  type PublicQosePlanOption,
+} from '@/features/marketing/content/qosePricing';
 
 type RegStatus = 'idle' | 'sending' | 'redirecting' | 'error';
 type Plan = 'full' | 'installment';
 
-const PAYMENT_PLANS: Array<{
-  id: Plan;
-  label: string;
-  amount: string;
-  description: string;
-}> = [
-  {
-    id: 'full',
-    label: 'Pay in full',
-    amount: 'GH₵800',
-    description: 'One secure payment. Your seat is confirmed after verification.',
-  },
-  {
-    id: 'installment',
-    label: 'Three instalments',
-    amount: 'GH₵300 now',
-    description: 'Then GH₵250 in month 2 and GH₵250 in month 3.',
-  },
-];
 
 interface QoseRegistrationFormProps {
   /** Bootcamp programme id recorded with the registration, e.g. `qose`. */
@@ -34,6 +19,8 @@ interface QoseRegistrationFormProps {
   source: string;
   /** Copy shown on the submit button. */
   submitLabel?: string;
+  /** Server-driven plan amounts; falls back to the canonical QOSE prices. */
+  plans?: PublicQosePlanOption[];
 }
 
 const fieldLabel =
@@ -56,11 +43,13 @@ const QoseRegistrationForm: React.FC<QoseRegistrationFormProps> = ({
   bootcampId,
   source,
   submitLabel = 'Continue to secure payment',
+  plans,
 }) => {
   const [status, setStatus] = useState<RegStatus>('idle');
   const [error, setError] = useState('');
   const [plan, setPlan] = useState<Plan>('full');
   const idp = `reg-${bootcampId}`;
+  const planOptions = plans?.length ? plans : FALLBACK_QOSE_PRICING.planOptions;
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -100,7 +89,7 @@ const QoseRegistrationForm: React.FC<QoseRegistrationFormProps> = ({
       <fieldset className="space-y-2">
         <legend className={fieldLabel}>Payment plan</legend>
         <div className="grid gap-3 sm:grid-cols-2">
-          {PAYMENT_PLANS.map((option) => {
+          {planOptions.map((option) => {
             const selected = plan === option.id;
             return (
               <label

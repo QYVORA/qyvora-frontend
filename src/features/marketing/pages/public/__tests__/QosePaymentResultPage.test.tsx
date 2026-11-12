@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { act, render, screen } from '@testing-library/react';
+import { act, fireEvent, render, screen } from '@testing-library/react';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import QosePaymentResultPage from '../QosePaymentResultPage';
 import api from '@/core/services/api';
@@ -8,7 +8,18 @@ vi.mock('@/core/services/api', () => ({
   default: { get: vi.fn(), post: vi.fn() },
 }));
 
+let authUser: { id: string; isAdmin: boolean } | null = null;
+
+vi.mock('@/core/contexts/AuthContext', () => ({
+  useAuth: () => ({ user: authUser, loading: false }),
+}));
+
+vi.mock('@/core/contexts/ToastContext', () => ({
+  useToast: () => ({ addToast: vi.fn() }),
+}));
+
 const getMock = vi.mocked(api.get);
+const postMock = vi.mocked(api.post);
 
 const verifiedResponse = {
   verified: true,
@@ -52,6 +63,7 @@ const flush = async () => {
 describe('QosePaymentResultPage', () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    authUser = null;
     vi.useFakeTimers();
   });
 
@@ -104,5 +116,41 @@ describe('QosePaymentResultPage', () => {
 
     expect(screen.getByText('Payment not completed')).toBeInTheDocument();
     expect(getMock).toHaveBeenCalledTimes(1);
+  });
+
+  it('recovers a receipt from a pasted reference when none is in the URL', async () => {
+    getMock.mockResolvedValueOnce({ data: verifiedResponse });
+
+    render(
+      <MemoryRouter initialEntries={['/qose/payment/callback']}>
+        <Routes>
+          <Route path="/qose/payment/callback" element={<QosePaymentResultPage />} />
+        </Routes>
+      </MemoryRouter>
+    );
+
+    expect(screen.getByText('Recover a payment receipt')).toBeInTheDocument();
+    await act(async () => {
+      const input = screen.getByLabelText('Payment reference');
+      fireEvent.change(input, { target: { value: 'QOSE-RECOVER-1' } });
+      fireEvent.submit(input.closest('form')!);
+    });
+    await flush();
+
+    expect(getMock).toHaveBeenCalledWith('/qose/verify/QOSE-RECOVER-1');
+  });
+
+  it('links a verified public payment to the signed-in account', async () => {
+    authUser = { id: 'user-1', isAdmin: false };
+    getMock.mockResolvedValueOnce({ data: verifiedResponse });
+    postMock.mockResolvedValueOnce({ data: { ok: true } });
+
+    renderPage();
+    await flush();
+
+    fireEvent.click(screen.getByRole('button', { name: /link to my account/i }));
+    await flush();
+
+    expect(postMock).toHaveBeenCalledWith('/qose/claim', { reference: 'QOSE-TEST-1' });
   });
 });

@@ -1755,7 +1755,7 @@ Paystack notice card
 REGISTERED
 ┌ STATUS CARD ───────────────────────────────────────────────────────────────┐
 │ programme kicker · status badge · plan label                               │
-│ paid: “Tuition fully paid. Your seat is confirmed.” [Open QOSE course]     │
+│ paid: “Tuition fully paid. Your seat is confirmed.” [Open QOSE programme]  │
 │ unpaid: “Next payment: <stage> · <amount>” [Pay GH₵amount]                 │
 │ [Total tuition] [Paid] [Remaining]                                         │
 │ Progress: Tuition paid                                                     │
@@ -1770,6 +1770,31 @@ TWO-COLUMN PAYMENT DETAIL — lg:2
 SERVER-SIDE VERIFICATION CARD
 [View programme details → /qose]
 ```
+
+### 6.15b QOSE programme — `/dashboard/bootcamps/qose`
+
+```text
+LOADING
+Loading QOSE programme…
+
+NOT ENROLLED
+LearningWorkspaceShell (QOSE logo)
+EmptyState “QOSE access required”
+[View QOSE registration] [QOSE programme page]
+
+ENROLLED
+LearningWorkspaceShell (QOSE logo)
+  progress · weeks completed · rooms completed
+  [Continue QOSE labs]
+grid md:2 xl:3 — one card per QOSE week
+┌ Week N · module title ─────────────────────┐
+│ complete / locked / progress badge          │
+│ module description                          │
+│ [mapped lab] [mapped lab] …                 │
+└─────────────────────────────────────────────┘
+```
+
+Each week maps to `LAB_MODULE_MATRIX`; opening a lab uses the existing protected lab walkthrough. The page is the QOSE learning destination, not a redirect into the general lab catalogue.
 
 ### 6.16 Learning V2 demo — `/dashboard/learning-v2-demo`
 
@@ -2263,6 +2288,7 @@ MOBILE — bottom sheet
 |---|---|
 | `/dashboard` | Dashboard |
 | `/dashboard/qose` | QOSE registration |
+| `/dashboard/bootcamps/qose` | QOSE programme (weekly lab map) |
 | `/dashboard/learning-v2-demo` | Learning V2 demo |
 | `/dashboard/bootcamps` | Redirect to default bootcamp |
 | `/dashboard/bootcamps/:bootcampId` | Bootcamp course |

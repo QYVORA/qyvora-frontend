@@ -102,6 +102,7 @@ const PublicProfilePage = lazy(() => import('../features/marketing/pages/PublicP
 const NotificationsPage = lazy(() => import('../features/student/pages/NotificationsPage'));
 const SettingsPage      = lazy(() => import('../features/student/pages/SettingsPage'));
 const BootcampCoursePage= lazy(() => import('../features/student/pages/BootcampCoursePage'));
+const QoseCoursePage     = lazy(() => import('../features/student/pages/QoseCoursePage'));
 const BootcampRoomPage  = lazy(() => import('../features/student/pages/BootcampRoomPage'));
 const CourseLessonPage  = lazy(() => import('../features/student/pages/CourseLessonPage'));
 const CompetitivePage   = lazy(() => import('../features/student/pages/CompetitivePage'));
@@ -179,10 +180,17 @@ const AdminOnly = ({ children }: { children: ReactNode }) => {
 const BootcampOverviewRoute = () => {
   const { bootcampId } = useParams<{ bootcampId: string }>();
 
+  if (bootcampId === 'qose') {
+    return (
+      <Wrap scope="QOSE">
+        <StudentOnly><QoseCoursePage /></StudentOnly>
+      </Wrap>
+    );
+  }
+
   if (
     bootcampId === HACKER_PROTOCOL_BOOTCAMP_ID ||
-    bootcampId === 'hpb' ||
-    bootcampId === 'qose'
+    bootcampId === 'hpb'
   ) {
     return <Navigate to="/dashboard/labs" replace />;
   }

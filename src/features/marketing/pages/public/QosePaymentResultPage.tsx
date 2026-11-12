@@ -1,14 +1,17 @@
-import { useEffect, useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
-import { AlertCircle, Check, CheckCircle2, Clock3, Copy, XCircle } from 'lucide-react';
+import { useEffect, useState, type FormEvent } from 'react';
+import { useNavigate, useSearchParams } from 'react-router-dom';
+import { AlertCircle, Check, CheckCircle2, Clock3, Copy, Link2, XCircle } from 'lucide-react';
 import SEO from '@/shared/components/SEO';
 import PublicContainer from '@/shared/components/layout/PublicContainer';
 import Button from '@/shared/components/ui/Button';
+import Input from '@/shared/components/ui/Input';
 import { Card } from '@/shared/components/ui/Card';
 import { useCopyToClipboard } from '@/shared/hooks/useCopyToClipboard';
+import { useAuth } from '@/core/contexts/AuthContext';
+import { useToast } from '@/core/contexts/ToastContext';
 import api from '@/core/services/api';
 
-type VerifyState = 'loading' | 'processing' | 'success' | 'failed' | 'timeout' | 'error';
+type VerifyState = 'idle' | 'loading' | 'processing' | 'success' | 'failed' | 'timeout' | 'error';
 
 interface RegistrationState {
   id: string;
@@ -58,13 +61,19 @@ const TERMINAL_STATUSES = new Set(['failed', 'abandoned', 'reversed', 'refunded'
 
 const QosePaymentResultPage = () => {
   const [params] = useSearchParams();
+  const navigate = useNavigate();
+  const { user } = useAuth();
+  const { addToast } = useToast();
   const reference = params.get('reference') || params.get('trxref') || '';
   const { copied, copy } = useCopyToClipboard();
-  const [state, setState] = useState<VerifyState>('loading');
+  const [state, setState] = useState<VerifyState>(reference ? 'loading' : 'idle');
   const [result, setResult] = useState<VerifyResponse | null>(null);
   const [message, setMessage] = useState('');
   const [continuing, setContinuing] = useState(false);
   const [continueError, setContinueError] = useState('');
+  const [referenceInput, setReferenceInput] = useState(reference);
+  const [linking, setLinking] = useState(false);
+  const [linkError, setLinkError] = useState('');
 
   useEffect(() => {
     let cancelled = false;
@@ -83,14 +92,18 @@ const QosePaymentResultPage = () => {
       timer = setTimeout(() => void verify(), POLL_INTERVAL_MS);
     };
 
+    if (!reference) {
+      return () => {
+        cancelled = true;
+        if (timer) clearTimeout(timer);
+      };
+    }
+
+    setState('loading');
+    setMessage('');
+
     const verify = async () => {
       if (cancelled) return;
-
-      if (!reference) {
-        setState('error');
-        setMessage('No payment reference was supplied. Return to the QOSE page to start checkout.');
-        return;
-      }
 
       try {
         const { data } = await api.get<VerifyResponse>(
@@ -144,6 +157,32 @@ const QosePaymentResultPage = () => {
   const registration = result?.registration;
   const isPartial = state === 'success' && registration?.paymentStatus === 'partial';
   const hasNextInstalment = Boolean(isPartial && registration?.nextStage && registration.nextAmountMinor > 0);
+  const canLinkToAccount = Boolean(state === 'success' && registration && user && !user.isAdmin);
+
+  const recoverReceipt = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const next = referenceInput.trim();
+    if (!next) return;
+    navigate(`/qose/payment/callback?reference=${encodeURIComponent(next)}`);
+  };
+
+  const linkToAccount = async () => {
+    if (!reference) return;
+    setLinking(true);
+    setLinkError('');
+    try {
+      await api.post('/qose/claim', { reference });
+      addToast('Payment linked to your account.', 'success');
+      navigate('/dashboard/qose');
+    } catch (err) {
+      setLinkError(
+        (err as { response?: { data?: { error?: string } } })?.response?.data?.error ||
+          'Could not link this payment to your account. Sign in with the verified email used at checkout.'
+      );
+    } finally {
+      setLinking(false);
+    }
+  };
 
   const payNextInstalment = async () => {
     if (!registration?.id) return;
@@ -171,6 +210,35 @@ const QosePaymentResultPage = () => {
       <PublicContainer className="pb-20 pt-24 md:pb-24 md:pt-28 lg:pt-32">
         <div className="mx-auto max-w-2xl">
           <Card className="flex flex-col items-start gap-5 p-6 md:p-8">
+            {state === 'idle' && (
+              <>
+                <Clock3 className="h-8 w-8 text-accent" aria-hidden="true" />
+                <div className="w-full">
+                  <h1 className="type-h2 text-text-primary">Recover a payment receipt</h1>
+                  <p className="type-body mt-2 text-text-secondary">
+                    Enter the Paystack reference from your receipt or confirmation email. This does
+                    not start a new payment.
+                  </p>
+                  <form onSubmit={recoverReceipt} className="mt-5 flex flex-col gap-3 sm:flex-row">
+                    <label htmlFor="qose-recovery-reference" className="sr-only">
+                      Payment reference
+                    </label>
+                    <Input
+                      id="qose-recovery-reference"
+                      value={referenceInput}
+                      onChange={(event) => setReferenceInput(event.target.value)}
+                      placeholder="QOSE-PUB-…"
+                      autoComplete="off"
+                      className="flex-1"
+                    />
+                    <Button type="submit" disabled={!referenceInput.trim()}>
+                      Check receipt
+                    </Button>
+                  </form>
+                </div>
+              </>
+            )}
+
             {state === 'loading' && (
               <>
                 <Clock3 className="h-8 w-8 text-accent" aria-hidden="true" />
@@ -248,18 +316,38 @@ const QosePaymentResultPage = () => {
                 <div className="w-full rounded-xl border border-border-subtle bg-surface-raised p-4">
                   <p className="text-sm font-bold text-text-primary">Keep proof of registration</p>
                   <p className="type-body-sm mt-1 text-text-secondary">
-                    Save this reference and create a student account with the same email so QYVORA
-                    can link your payment to your dashboard. If you already have an account, sign in
-                    to manage the remaining instalments.
+                    Save this reference. {canLinkToAccount
+                      ? 'Link this payment to your account to manage it from your dashboard.'
+                      : 'Create a student account with the same email, then return here to link this payment to your dashboard.'}
                   </p>
                   <div className="mt-3 flex flex-wrap gap-3">
-                    <Button to="/register" variant="secondary" size="sm">
-                      Create student account
-                    </Button>
-                    <Button to="/login" variant="secondary" size="sm">
-                      Sign in to manage payments
-                    </Button>
+                    {canLinkToAccount ? (
+                      <Button
+                        type="button"
+                        size="sm"
+                        loading={linking}
+                        onClick={linkToAccount}
+                        icon={<Link2 className="h-3.5 w-3.5" />}
+                      >
+                        Link to my account
+                      </Button>
+                    ) : (
+                      <>
+                        <Button to="/register" variant="secondary" size="sm">
+                          Create student account
+                        </Button>
+                        <Button to="/login" variant="secondary" size="sm">
+                          Sign in to manage payments
+                        </Button>
+                      </>
+                    )}
                   </div>
+                  {linkError && (
+                    <p className="mt-3 flex items-start gap-2 type-body-sm text-semantic-danger" role="alert">
+                      <AlertCircle className="mt-0.5 h-4 w-4 shrink-0" aria-hidden="true" />
+                      <span>{linkError}</span>
+                    </p>
+                  )}
                 </div>
               </>
             )}
