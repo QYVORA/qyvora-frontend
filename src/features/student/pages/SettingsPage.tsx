@@ -419,7 +419,7 @@ const Settings: React.FC = () => {
                   ) : tokenAvailable ? (
                     <div className="space-y-4">
                       <div className="flex items-center gap-3 rounded-lg border border-border-subtle p-4">
-                        <div className="w-8 h-8 rounded-md bg-accent/10 flex items-center justify-center shrink-0"><Key className="w-4 h-4 text-accent" /></div>
+                        <div className="flex h-8 w-8 shrink-0 items-center justify-center"><Key className="w-4 h-4 text-accent" /></div>
                         <div className="min-w-0">
                           <div className="text-sm font-medium text-text-primary">{recoveryAcked ? "Token saved" : "Token exists"}</div>
                           {recoveryAcked && <div className="flex items-center gap-1 mt-0.5 text-[12px] font-medium text-accent"><CheckCircle2 className="w-3 h-3" /> {"Acknowledged"}</div>}

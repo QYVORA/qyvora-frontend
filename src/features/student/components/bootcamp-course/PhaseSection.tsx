@@ -49,7 +49,7 @@ const PhaseSection: React.FC<PhaseSectionProps> = ({
         <div className="px-0 pb-12">
           {isLocked ? (
             <div className="flex items-center gap-4 rounded-2xl bg-surface-raised/40 p-8 border border-border-subtle">
-              <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-surface-raised/50 text-text-muted opacity-40">
+              <div className="flex h-12 w-12 shrink-0 items-center justify-center text-text-muted opacity-40">
                 <IconLock size={20} />
               </div>
               <div>

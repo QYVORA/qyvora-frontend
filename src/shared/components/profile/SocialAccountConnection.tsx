@@ -95,7 +95,7 @@ export const SocialAccountConnection: React.FC<SocialAccountConnectionProps> = (
         <div className="py-4 first:pt-0">
           <div className="flex flex-col gap-3">
             <div className="flex items-start gap-3">
-              <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-md bg-surface-raised text-text-primary">
+              <span className="flex h-10 w-10 shrink-0 items-center justify-center text-text-primary">
                 <BrandGithubIcon className="h-5 w-5" />
               </span>
               <div className="min-w-0 flex-1">
@@ -194,7 +194,7 @@ export const SocialAccountConnection: React.FC<SocialAccountConnectionProps> = (
         <div className="py-4">
           <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
             <div className="flex items-start gap-3">
-              <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-md bg-surface-raised text-text-primary">
+              <span className="flex h-10 w-10 shrink-0 items-center justify-center text-text-primary">
                 <BrandXIcon className="h-5 w-5" />
               </span>
               <div>
@@ -229,7 +229,7 @@ export const SocialAccountConnection: React.FC<SocialAccountConnectionProps> = (
         <div className="py-4">
           <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
             <div className="flex items-start gap-3">
-              <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-md bg-surface-raised text-text-primary">
+              <span className="flex h-10 w-10 shrink-0 items-center justify-center text-text-primary">
                 <BrandLinkedinIcon className="h-5 w-5" />
               </span>
               <div>

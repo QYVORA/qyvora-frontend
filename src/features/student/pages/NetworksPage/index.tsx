@@ -22,7 +22,7 @@ const SubnetBadge = () => (
 
 const InfoCard = ({ icon, label, value }: { icon: React.ReactNode; label: string; value: string }) => (
   <div className="flex items-center gap-3 p-5 rounded-2xl border border-border-subtle bg-surface">
-    <div className="w-10 h-10 rounded-xl bg-accent/10 flex items-center justify-center text-accent shrink-0">
+    <div className="flex h-10 w-10 shrink-0 items-center justify-center text-accent">
       {icon}
     </div>
     <div className="min-w-0">

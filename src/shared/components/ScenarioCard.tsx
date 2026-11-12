@@ -21,7 +21,7 @@ const ScenarioCard = ({ title, difficulty, description, cpReward, subtitle, onSt
     className="group/card relative aspect-square card-accent bg-bg-card p-4 md:p-5 transition-[border-color,box-shadow,transform,background-color] duration-[var(--dur-base)] ease-[var(--ease-smooth)] flex flex-col text-left w-full"
   >
     <div className="flex items-center gap-2 mb-2">
-      <div className="w-8 h-8 rounded-xl flex items-center justify-center shrink-0 bg-accent/10 border border-accent/20">
+      <div className="flex h-8 w-8 shrink-0 items-center justify-center">
         <Swords className="w-4 h-4 text-accent" />
       </div>
     </div>

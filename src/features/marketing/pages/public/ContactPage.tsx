@@ -94,7 +94,7 @@ const ContactPage: React.FC = () => {
               return (
                 <Card key={channel.key} interactive className="flex flex-col gap-3 p-5 md:p-6">
                   <div className="flex items-center justify-between gap-3">
-                    <span className="flex h-11 w-11 items-center justify-center rounded-xl border border-border-subtle bg-surface-raised text-accent">
+                    <span className="flex h-11 w-11 items-center justify-center text-accent">
                       <Icon className="h-5 w-5" aria-hidden="true" />
                     </span>
                     <span className="type-meta">{channel.label}</span>
@@ -154,7 +154,7 @@ const ContactPage: React.FC = () => {
 
             {status === 'sent' ? (
               <div className="flex flex-col items-center justify-center gap-4 py-12 text-center">
-                <div className="flex h-14 w-14 items-center justify-center rounded-2xl border border-accent/30 bg-accent/10">
+                <div className="flex h-14 w-14 items-center justify-center">
                   <Mail className="h-6 w-6 text-accent" aria-hidden="true" />
                 </div>
                 <h3 className="text-base font-black uppercase tracking-tight text-text-primary">

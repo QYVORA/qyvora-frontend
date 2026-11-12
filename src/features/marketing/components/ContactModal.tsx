@@ -110,7 +110,7 @@ const ContactModalHost: React.FC = () => {
       >
         {status === 'sent' ? (
           <div className="flex flex-col items-center justify-center py-12 gap-5 text-center">
-            <div className="w-16 h-16 rounded-2xl bg-accent/10 border-2 border-accent/30 flex items-center justify-center">
+            <div className="flex h-16 w-16 items-center justify-center">
               <IconCheck size={32} className="text-accent" />
             </div>
             <h3 className="text-xl font-black text-text-primary uppercase tracking-wide">{"Message Sent!"}</h3>

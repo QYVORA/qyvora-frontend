@@ -16,12 +16,12 @@ interface CalloutProps {
 const VARIANT_STYLES: Record<CalloutVariant, { accent: string; tile: string; text: string }> = {
   warning: {
     accent: 'border-warning/30 bg-warning/5',
-    tile: 'bg-warning/10 border border-warning/20 text-warning',
+    tile: 'text-warning',
     text: 'text-text-secondary',
   },
   info: {
     accent: 'border-accent/30 bg-accent/5',
-    tile: 'bg-accent/10 border border-accent/20 text-accent',
+    tile: 'text-accent',
     text: 'text-text-secondary',
   },
 };

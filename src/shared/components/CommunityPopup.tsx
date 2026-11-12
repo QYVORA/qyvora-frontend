@@ -112,7 +112,7 @@ const CommunityPopup: React.FC = () => {
             </button>
 
             <div className="flex items-center gap-3 pr-8">
-              <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-accent/30 bg-accent-dim">
+              <span className="flex h-10 w-10 shrink-0 items-center justify-center">
                 <QyvoraMark aria-label="Community" className="h-6 w-6" />
               </span>
               <div className="min-w-0">

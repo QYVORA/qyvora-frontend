@@ -148,7 +148,7 @@ const InlineQuiz: React.FC<InlineQuizProps> = ({
     >
       <div className="mb-4 flex items-start justify-between gap-3">
         <div className="flex items-center gap-2.5">
-          <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-accent/30 bg-accent/10 text-accent">
+          <span className="flex h-8 w-8 shrink-0 items-center justify-center text-accent">
             <HelpCircle className="h-4 w-4" aria-hidden="true" />
           </span>
           <div>

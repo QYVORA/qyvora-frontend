@@ -18,7 +18,7 @@ const ModuleHeader: React.FC<ModuleHeaderProps> = ({
     <div className="mb-5 flex min-w-0 items-center justify-between gap-3">
       <div className="flex min-w-0 items-center gap-2.5">
         <span
-          className={`flex h-9 w-9 items-center justify-center rounded-md bg-surface-raised ${iconClassName}`}
+          className={`flex h-9 w-9 items-center justify-center ${iconClassName}`}
         >
           {icon}
         </span>

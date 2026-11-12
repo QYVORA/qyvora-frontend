@@ -33,7 +33,7 @@ const RoomCard: React.FC<RoomCardProps> = ({
       }`}
     >
       <div className="flex items-center gap-2 mb-2">
-        <div className="relative w-8 h-8 rounded-xl flex items-center justify-center shrink-0 bg-accent/10 border border-accent/20 overflow-hidden">
+        <div className="relative flex h-8 w-8 shrink-0 items-center justify-center overflow-hidden">
           {roomDone ? (
             <IconCheck size={16} className="text-accent" />
           ) : (

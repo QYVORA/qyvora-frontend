@@ -88,7 +88,7 @@ const StudentOnboardingModal: React.FC = () => {
       >
         <div className="flex flex-col items-center text-center gap-6 py-2">
           {/* Step icon */}
-          <div className="w-16 h-16 rounded-2xl flex items-center justify-center bg-accent/10 border border-accent/20">
+          <div className="flex h-16 w-16 items-center justify-center">
             {step === 0 && <IconShield size={32} className="text-accent" />}
             {step === 1 && <IconTarget size={32} className="text-accent" />}
             {step === 2 && <IconLeaderboard size={32} className="text-accent" />}

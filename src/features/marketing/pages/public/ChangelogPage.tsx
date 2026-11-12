@@ -79,7 +79,7 @@ const ChangelogPage: React.FC = () => (
             >
               <div className="flex min-w-0 items-center gap-3">
                 {release.tool.logo && (
-                  <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border border-border-subtle bg-surface-raised p-1.5">
+                  <span className="flex h-10 w-10 shrink-0 items-center justify-center">
                     <img
                       src={release.tool.logo}
                       alt=""
@@ -146,7 +146,7 @@ const ChangelogPage: React.FC = () => (
               <div className="flex items-start justify-between gap-3">
                 <div className="flex min-w-0 items-center gap-3">
                   {release.tool.logo && (
-                    <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border border-border-subtle bg-surface-raised p-1.5">
+                    <span className="flex h-10 w-10 shrink-0 items-center justify-center">
                       <img
                         src={release.tool.logo}
                         alt=""

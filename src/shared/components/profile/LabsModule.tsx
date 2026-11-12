@@ -43,7 +43,7 @@ const LabsModule: React.FC<LabsModuleProps> = ({
               transition={{ duration: prefersReduced ? 0 : 0.3, delay: prefersReduced ? 0 : idx * 0.04 }}
               className="group flex w-full items-center gap-3 overflow-hidden py-3 transition-colors hover:text-accent"
             >
-              <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md bg-surface-raised text-accent">
+              <span className="flex h-7 w-7 shrink-0 items-center justify-center text-accent">
                 <Bug className="h-3.5 w-3.5" />
               </span>
               <span className="flex-1 truncate text-sm font-medium text-text-primary group-hover:text-accent">

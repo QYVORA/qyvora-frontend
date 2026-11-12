@@ -49,7 +49,6 @@ const HeroBlock: React.FC<HeroBlockProps> = ({ stats }) => {
         aria-hidden="true"
         className="pointer-events-none absolute inset-0 block h-full w-full select-none object-cover object-bottom lg:hidden"
       />
-      <div className="pointer-events-none absolute inset-0 bg-gradient-hero opacity-50" aria-hidden="true" />
       <div className="relative flex w-full flex-col justify-center px-3 py-24 pt-32 md:px-4 md:py-28 lg:px-6">
         <div className="flex max-w-2xl flex-col items-start gap-6 md:gap-8">
           <p className="text-[12px] font-medium uppercase tracking-[0.12em] text-accent">{"Africa's Offensive Security Platform"}</p>

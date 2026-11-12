@@ -29,7 +29,7 @@ const CertificateClaimCard: React.FC<CertificateClaimCardProps> = ({
     className={`flex flex-col gap-4 p-[var(--app-card-pad)] md:flex-row md:items-center md:justify-between ${className}`}
   >
     <div className="flex items-start gap-4">
-      <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl border border-accent/40 bg-accent/10 text-accent">
+      <span className="flex h-12 w-12 shrink-0 items-center justify-center text-accent">
         <Award className="h-6 w-6" aria-hidden="true" />
       </span>
       <div className="min-w-0">

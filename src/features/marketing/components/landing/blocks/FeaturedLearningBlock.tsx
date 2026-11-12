@@ -80,7 +80,7 @@ const FeaturedLearningBlock: React.FC = () => {
                   <span
                     key={phase.id}
                     title={`Phase ${phase.id} · ${phase.name}`}
-                    className="flex h-14 w-14 items-center justify-center overflow-hidden rounded-xl border border-border-subtle bg-surface-raised p-1.5"
+                    className="flex h-14 w-14 items-center justify-center overflow-hidden"
                   >
                     <HpbAvatar variant={`phase${Number(phase.id)}` as HpbVariant} className="h-full w-auto object-contain" />
                   </span>
@@ -95,7 +95,7 @@ const FeaturedLearningBlock: React.FC = () => {
 
           {/* Labs */}
           <Card to="/learn?tab=labs" interactive className="flex min-h-[240px] flex-col gap-3 p-6">
-            <span className="flex h-11 w-11 items-center justify-center rounded-xl border border-border-subtle bg-surface-raised text-accent">
+            <span className="flex h-11 w-11 items-center justify-center text-accent">
               <BookOpen className="h-5 w-5" aria-hidden="true" />
             </span>
             <p className="text-[12px] font-medium uppercase tracking-[0.12em] text-text-tertiary">{"Labs"}</p>
@@ -111,7 +111,7 @@ const FeaturedLearningBlock: React.FC = () => {
 
           {/* Labs */}
           <Card to="/learn?tab=labs" interactive className="flex min-h-[240px] flex-col gap-3 p-6">
-            <span className="flex h-11 w-11 items-center justify-center rounded-xl border border-border-subtle bg-surface-raised text-accent">
+            <span className="flex h-11 w-11 items-center justify-center text-accent">
               <Bug className="h-5 w-5" aria-hidden="true" />
             </span>
             <p className="text-[12px] font-medium uppercase tracking-[0.12em] text-text-tertiary">{"Labs"}</p>
@@ -128,7 +128,7 @@ const FeaturedLearningBlock: React.FC = () => {
 
           {/* Simulations */}
           <Card to="/simulations" interactive className="flex min-h-[240px] flex-col gap-3 p-6">
-            <span className="flex h-11 w-11 items-center justify-center rounded-xl border border-border-subtle bg-surface-raised text-accent">
+            <span className="flex h-11 w-11 items-center justify-center text-accent">
               <FlaskConical className="h-5 w-5" aria-hidden="true" />
             </span>
             <p className="text-[12px] font-medium uppercase tracking-[0.12em] text-text-tertiary">{"Simulations"}</p>
@@ -144,7 +144,7 @@ const FeaturedLearningBlock: React.FC = () => {
 
           {/* Cyber Points */}
           <Card to="/cp" interactive className="flex min-h-[240px] flex-col gap-3 p-6">
-            <span className="flex h-14 w-14 items-center justify-center rounded-xl border border-border-subtle bg-surface-raised">
+            <span className="flex h-14 w-14 items-center justify-center">
               <CpLogo className="h-9 w-9" />
             </span>
             <p className="text-[12px] font-medium uppercase tracking-[0.12em] text-text-tertiary">{"Cyber Points"}</p>

@@ -101,7 +101,7 @@ const StudentDesktopTopbar: React.FC<StudentDesktopTopbarProps> = ({
               onClick={() => setSearchOpen(true)}
               aria-label="Search learning rooms"
               title="Search learning rooms (Ctrl+K)"
-              className="flex h-10 min-w-10 items-center justify-center gap-2 rounded-md px-2.5 text-text-secondary transition-colors hover:bg-surface hover:text-text-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent xl:min-w-[180px] xl:justify-start xl:border xl:border-border-subtle xl:bg-canvas"
+              className="flex h-12 min-w-12 items-center justify-center gap-2 rounded-md px-2.5 text-accent transition-colors hover:text-text-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent xl:min-w-[180px] xl:justify-start xl:border xl:border-border-subtle xl:bg-canvas"
             >
               <Search className="h-5 w-5 shrink-0" aria-hidden="true" />
               <span className="hidden text-sm text-text-muted xl:inline">Search…</span>

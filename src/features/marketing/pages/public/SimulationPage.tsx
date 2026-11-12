@@ -72,7 +72,7 @@ const SimulationPage = () => {
           <section className="w-full py-10 md:py-14" aria-label={sim.demoTitle}>
             <div className="grid grid-cols-1 items-center gap-8 lg:grid-cols-2 lg:gap-12">
               <div className="flex flex-col gap-5">
-                <span className="flex h-12 w-12 items-center justify-center rounded-2xl border border-accent/20 bg-accent/10 md:h-14 md:w-14">
+                <span className="flex h-12 w-12 items-center justify-center md:h-14 md:w-14">
                   <Icon className="h-6 w-6 text-accent md:h-7 md:w-7" aria-hidden="true" />
                 </span>
                 <div>
@@ -127,7 +127,7 @@ const SimulationPage = () => {
                     key={feature}
                     className="card-accent flex items-center gap-3 bg-surface px-4 py-4"
                   >
-                    <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-lg border border-accent/20 bg-accent/10">
+                    <span className="flex h-6 w-6 shrink-0 items-center justify-center">
                       <Zap className="h-3 w-3 text-accent" aria-hidden="true" />
                     </span>
                     <span className="font-mono text-xs leading-snug text-text-secondary md:text-sm">

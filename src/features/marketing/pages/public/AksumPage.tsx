@@ -102,8 +102,8 @@ const AksumPage = () => {
               'Never executes the target and never touches a network.',
               'Ships no executor; dynamic planning refuses without an explicit consent flag.',
             ].map((rule) => (
-              <div key={rule} className="flex items-start gap-3 rounded-xl border border-border/20 bg-bg-elevated px-4 py-3">
-                <span className="w-6 h-6 rounded-lg bg-accent/10 border border-accent/20 flex items-center justify-center shrink-0 mt-0.5">
+              <div key={rule} className="flex items-start gap-3 py-1.5">
+                <span className="flex h-6 w-6 shrink-0 items-center justify-center text-accent mt-0.5">
                   <ChevronRight className="w-3.5 h-3.5 text-accent" />
                 </span>
                 <span className="text-xs font-mono text-text-secondary leading-relaxed">{rule}</span>
@@ -127,7 +127,7 @@ const AksumPage = () => {
               className="flex flex-col gap-3"
             >
               <div className="flex items-center gap-3">
-                <div className="w-9 h-9 rounded-xl bg-accent/10 border border-accent/20 flex items-center justify-center shrink-0">
+                <div className="flex h-9 w-9 shrink-0 items-center justify-center text-accent">
                   <stage.icon size={16} className="text-accent" />
                 </div>
                 <div className="min-w-0">
@@ -268,7 +268,7 @@ const AksumPage = () => {
               <DottedMapOverlay className="rounded-2xl" />
               <div className="relative flex flex-col justify-between gap-4 p-5 md:p-6">
               <div className="flex items-start gap-3">
-                <div className="w-10 h-10 rounded-xl bg-accent/10 border border-accent/20 flex items-center justify-center shrink-0">
+                <div className="flex h-10 w-10 shrink-0 items-center justify-center text-accent">
                   <Download className="w-5 h-5 text-accent" />
                 </div>
                 <div>
@@ -290,7 +290,7 @@ const AksumPage = () => {
 
             <div className="rounded-2xl border border-border/50 bg-bg-card p-5 md:p-6 space-y-4">
               <div className="flex items-center gap-3">
-                <div className="w-9 h-9 rounded-xl bg-accent/10 border border-accent/20 flex items-center justify-center shrink-0">
+                <div className="flex h-9 w-9 shrink-0 items-center justify-center text-accent">
                   <Binary className="w-4 h-4 text-accent" />
                 </div>
                 <div>
@@ -300,7 +300,7 @@ const AksumPage = () => {
               </div>
               <ul className="space-y-1.5">
                 {REQUIREMENTS.map((req) => (
-                  <li key={req} className="flex items-start gap-2 rounded-lg border border-border/20 bg-bg px-3 py-2">
+                  <li key={req} className="flex items-start gap-2 py-1">
                     <ChevronRight className="w-3.5 h-3.5 text-accent shrink-0 mt-0.5" />
                     <span className="text-xs md:text-xs text-text-secondary leading-snug">{req}</span>
                   </li>
@@ -324,7 +324,7 @@ const AksumPage = () => {
 
           <div className="space-y-4">
             <div className="flex items-center gap-3">
-              <div className="w-9 h-9 rounded-xl bg-accent/10 border border-accent/20 flex items-center justify-center shrink-0">
+              <div className="flex h-9 w-9 shrink-0 items-center justify-center text-accent">
                 <GitBranch className="w-4 h-4 text-accent" />
               </div>
               <div className="min-w-0">

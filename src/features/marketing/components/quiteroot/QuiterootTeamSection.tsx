@@ -18,7 +18,7 @@ const QuiterootTeamSection = ({ team }: { team: QuiterootTeam }) => {
     <section aria-labelledby={headingId} className="mt-14 md:mt-20">
       <div className="flex flex-col gap-6 rounded-2xl border border-border-subtle bg-surface p-5 md:p-8 lg:flex-row lg:items-start lg:gap-10">
         <div className="flex shrink-0 flex-col items-center gap-4 lg:w-64">
-          <div className="flex h-40 w-40 items-center justify-center rounded-2xl border border-border-subtle bg-surface-raised p-4 md:h-48 md:w-48">
+          <div className="flex h-40 w-40 items-center justify-center p-4 md:h-48 md:w-48">
             <img
               src={team.logo}
               alt={`${team.name} logo`}

@@ -12,8 +12,8 @@ import img04 from '@/assets/blog/04-hpb-2026-online-class-screenshot.webp';
 import img05 from '@/assets/blog/05-hpb-2026-online-class-screenshot.webp';
 
 const StatRow = ({ icon, label, value }: { icon: React.ReactNode; label: string; value: string }) => (
-  <div className="flex items-center gap-4 p-4 rounded-xl bg-accent/5 border border-accent/10">
-    <div className="w-10 h-10 rounded-lg bg-accent/10 flex items-center justify-center shrink-0">
+  <div className="flex items-center gap-4 p-4">
+    <div className="flex h-10 w-10 shrink-0 items-center justify-center">
       {icon}
     </div>
     <div className="min-w-0">

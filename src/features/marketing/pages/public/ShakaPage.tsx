@@ -101,8 +101,8 @@ const ShakaPage = () => {
               'Includes a deterministic offline simulation engine (--sim) for testing and training.',
               'Emits JSONL events and structured reports (JSON, Markdown, HTML, YAML) with full evidence hashes.',
             ].map((rule) => (
-              <div key={rule} className="flex items-start gap-3 rounded-xl border border-border/20 bg-bg-elevated px-4 py-3">
-                <span className="w-6 h-6 rounded-lg bg-accent/10 border border-accent/20 flex items-center justify-center shrink-0 mt-0.5">
+              <div key={rule} className="flex items-start gap-3 py-1.5">
+                <span className="flex h-6 w-6 shrink-0 items-center justify-center text-accent mt-0.5">
                   <ChevronRight className="w-3.5 h-3.5 text-accent" />
                 </span>
                 <span className="text-xs font-mono text-text-secondary leading-relaxed">{rule}</span>
@@ -126,7 +126,7 @@ const ShakaPage = () => {
               className="flex flex-col gap-3"
             >
               <div className="flex items-center gap-3">
-                <div className="w-9 h-9 rounded-xl bg-accent/10 border border-accent/20 flex items-center justify-center shrink-0">
+                <div className="flex h-9 w-9 shrink-0 items-center justify-center text-accent">
                   <stage.icon size={16} className="text-accent" />
                 </div>
                 <div className="min-w-0">

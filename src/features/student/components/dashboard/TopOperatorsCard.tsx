@@ -44,7 +44,7 @@ const TopOperatorsCard = ({ currentUserId }: TopOperatorsCardProps) => {
     <Card as="section" className="flex flex-col p-5 md:p-6">
       <div className="mb-4 flex items-start justify-between gap-3">
         <div className="flex items-center gap-3">
-          <span className="flex h-11 w-11 items-center justify-center rounded-xl border border-accent/25 bg-accent/10 text-accent">
+          <span className="flex h-11 w-11 items-center justify-center text-accent">
             <Trophy className="h-5 w-5" aria-hidden="true" />
           </span>
           <div>

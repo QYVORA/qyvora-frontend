@@ -26,7 +26,7 @@ const ProfileLayout: React.FC<ProfileLayoutProps> = ({
   <div
     className={
       clearTopbar
-        ? 'min-h-full bg-canvas pt-[calc(var(--app-topbar-h,80px)+env(safe-area-inset-top))]'
+        ? 'min-h-full bg-canvas pt-[calc(var(--app-topbar-h,80px)+var(--app-safe-top,0px))]'
         : 'min-h-full bg-canvas'
     }
   >

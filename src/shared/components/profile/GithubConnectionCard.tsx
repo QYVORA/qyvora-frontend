@@ -74,7 +74,7 @@ const GithubConnectionCard: React.FC<GithubConnectionCardProps> = ({
       className="rounded-2xl border border-border-subtle bg-surface p-5 sm:p-6"
     >
       <div className="flex items-start gap-4">
-        <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-border-subtle bg-surface-raised text-text-secondary">
+        <span className="flex h-11 w-11 shrink-0 items-center justify-center text-text-secondary">
           <BrandGithubIcon className="h-5 w-5" />
         </span>
         <div className="min-w-0 flex-1">

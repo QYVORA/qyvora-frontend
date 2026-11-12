@@ -277,7 +277,7 @@ const StudentSearchDialog: React.FC<StudentSearchDialogProps> = ({ open, onOpenC
                     >
                       <span className="flex items-center justify-between gap-3">
                         <span className="flex items-center gap-2">
-                          <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-border-subtle bg-bg text-accent">
+                          <span className="flex h-9 w-9 shrink-0 items-center justify-center text-accent">
                             <Icon className="h-4 w-4" aria-hidden="true" />
                           </span>
                           <span className="type-meta uppercase tracking-wider text-text-tertiary">

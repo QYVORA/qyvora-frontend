@@ -49,7 +49,7 @@ const DocHeader: React.FC<DocHeaderProps> = ({ tool, summary, facts }) => {
         ) : (
           <span
             aria-hidden="true"
-            className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl border border-accent/20 bg-accent/10 md:h-14 md:w-14"
+            className="flex h-12 w-12 shrink-0 items-center justify-center md:h-14 md:w-14"
           >
             <Library className="h-6 w-6 text-accent md:h-7 md:w-7" />
           </span>

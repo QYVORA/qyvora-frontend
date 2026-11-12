@@ -143,7 +143,7 @@ const HpbPage = () => {
                   type="bootcamp"
                   onClick={scrollToRooms(anchorId)}
                   badge={
-                    <span className="flex h-14 w-14 items-center justify-center overflow-hidden rounded-xl border border-accent/20 bg-accent/10 p-1.5">
+                    <span className="flex h-14 w-14 items-center justify-center overflow-hidden">
                       <HpbAvatar
                         variant={`phase${phaseNumber}` as HpbVariant}
                         className="h-full w-auto max-h-full max-w-full object-contain"

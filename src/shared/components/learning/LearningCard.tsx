@@ -124,7 +124,7 @@ export const LearningCard: React.FC<LearningCardProps> = ({
     }
     if (icon) {
       return (
-        <div className="w-14 h-14 flex h-14 w-14 shrink-0 items-center justify-center rounded-md bg-surface-raised text-accent">
+        <div className="flex h-14 w-14 shrink-0 items-center justify-center text-accent">
           {icon}
         </div>
       );

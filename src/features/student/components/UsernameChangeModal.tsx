@@ -48,7 +48,7 @@ const UsernameChangeModal = () => {
       <DialogContent title={"Choose your hacker handle"} description={"This is how other operators will see you. Pick something unique."}>
         <div className="p-6 space-y-6">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-full bg-accent/10 flex items-center justify-center">
+            <div className="flex h-10 w-10 items-center justify-center">
               <User className="w-5 h-5 text-accent" />
             </div>
             <div>

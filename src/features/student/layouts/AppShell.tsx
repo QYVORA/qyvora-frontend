@@ -83,7 +83,7 @@ const AppShell = () => {
 
   // Every page uses the dashboard topbar. Mobile opens the overlay sidebar from it.
   // Height comes from --app-topbar-h (64px mobile / 80px desktop, set by the app scope).
-  const topbarPadding = 'pt-[calc(var(--app-topbar-h,4rem)+env(safe-area-inset-top))]';
+  const topbarPadding = 'pt-[calc(var(--app-topbar-h,4rem)+var(--app-safe-top,0px))]';
 
   return (
     <SimulationProvider>

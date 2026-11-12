@@ -27,7 +27,7 @@ const EmptyState: React.FC<EmptyStateProps> = ({
       className,
     )}
   >
-    <div className="flex h-12 w-12 items-center justify-center rounded-xl border border-border-subtle bg-surface-raised text-text-tertiary">
+    <div className="flex h-12 w-12 items-center justify-center text-text-tertiary">
       {icon ?? <Inbox className="h-5 w-5" aria-hidden="true" />}
     </div>
     <div className="space-y-1">

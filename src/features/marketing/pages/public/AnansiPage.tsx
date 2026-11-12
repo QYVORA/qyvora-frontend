@@ -90,7 +90,7 @@ const AnansiPage = () => {
                 className="flex flex-col gap-3"
               >
                 <div className="flex items-center gap-3">
-                  <div className="w-9 h-9 rounded-xl bg-accent/10 border border-accent/20 flex items-center justify-center shrink-0">
+                  <div className="flex h-9 w-9 shrink-0 items-center justify-center text-accent">
                     <Icon size={16} className="text-accent" />
                   </div>
                   <div className="min-w-0">
@@ -194,7 +194,7 @@ const AnansiPage = () => {
               <DottedMapOverlay className="rounded-2xl" />
               <div className="relative flex flex-col justify-between gap-4 p-5 md:p-6">
               <div className="flex items-start gap-3">
-                <div className="w-10 h-10 rounded-xl bg-accent/10 border border-accent/20 flex items-center justify-center shrink-0">
+                <div className="flex h-10 w-10 shrink-0 items-center justify-center text-accent">
                   <Download className="w-5 h-5 text-accent" />
                 </div>
                 <div>
@@ -216,7 +216,7 @@ const AnansiPage = () => {
 
             <div className="space-y-3">
               <div className="flex items-center gap-3">
-                <div className="w-9 h-9 rounded-xl bg-accent/10 border border-accent/20 flex items-center justify-center shrink-0">
+                <div className="flex h-9 w-9 shrink-0 items-center justify-center text-accent">
                   <Download className="w-4 h-4 text-accent" />
                 </div>
                 <div className="min-w-0">
@@ -239,7 +239,7 @@ const AnansiPage = () => {
           {/* Build from source */}
           <div className="space-y-4">
             <div className="flex items-center gap-3">
-              <div className="w-9 h-9 rounded-xl bg-accent/10 border border-accent/20 flex items-center justify-center shrink-0">
+              <div className="flex h-9 w-9 shrink-0 items-center justify-center text-accent">
                 <GitBranch className="w-4 h-4 text-accent" />
               </div>
               <div className="min-w-0">

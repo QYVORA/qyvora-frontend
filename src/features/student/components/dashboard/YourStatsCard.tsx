@@ -109,7 +109,7 @@ const YourStatsCard = ({
               key={metric.key}
               className="flex min-w-0 items-center gap-2.5 rounded-xl bg-canvas px-3 py-2.5"
             >
-              <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-accent/10">
+              <span className="flex h-9 w-9 shrink-0 items-center justify-center">
                 {metric.icon}
               </span>
               <span className="flex min-w-0 flex-col">

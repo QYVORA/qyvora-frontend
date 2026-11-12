@@ -70,7 +70,7 @@ const SiteTopbar: React.FC<SiteTopbarProps> = ({
           }
         }}
         style={{ transform: hidden ? 'translateY(-100%)' : 'translateY(0)' }}
-        className="chrome-fixed chrome-fixed-overflow fixed inset-x-0 top-0 z-[100] border-b border-border-subtle bg-surface-raised pt-[env(safe-area-inset-top)] transition-transform duration-200 ease-out motion-reduce:duration-0"
+        className="chrome-fixed chrome-fixed-overflow fixed inset-x-0 top-0 z-[100] border-b border-border-subtle bg-surface-raised pt-[var(--app-safe-top,0px)] transition-transform duration-200 ease-out motion-reduce:duration-0"
       >
         <div className="flex h-[var(--app-topbar-h,4rem)] min-w-0 items-center gap-2 px-[var(--app-gutter,12px)] md:gap-3">
           <button
@@ -78,7 +78,7 @@ const SiteTopbar: React.FC<SiteTopbarProps> = ({
             onClick={onMobileMenuOpen}
             aria-label="Open menu"
             aria-expanded={mobileMenuOpen}
-            className="flex h-10 w-10 shrink-0 items-center justify-center rounded-md text-text-secondary transition-colors hover:bg-surface hover:text-text-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent lg:hidden"
+            className="flex h-12 w-12 shrink-0 items-center justify-center rounded-md text-accent transition-colors hover:text-text-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent lg:hidden"
           >
             <MenuIcon className="h-5 w-5" aria-hidden="true" />
           </button>
@@ -88,11 +88,10 @@ const SiteTopbar: React.FC<SiteTopbarProps> = ({
             aria-label={logoLabel}
             className="flex shrink-0 items-center rounded-md focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
           >
-            <Logo variant="mark" size="sm" className="lg:hidden" />
-            <Logo variant="full" size="sm" className="hidden lg:block" />
+            <Logo variant="mark" size="sm" />
           </Link>
 
-          <nav className="hidden min-w-0 flex-1 items-center justify-center gap-1 lg:flex" aria-label="Primary">
+          <nav className="hidden min-w-0 flex-1 items-center justify-start gap-1.5 lg:flex xl:gap-2" aria-label="Primary">
             {items.map((item) => {
               const active = activeMatcher(item, pathname);
               if (item.children?.length) {
@@ -112,14 +111,14 @@ const SiteTopbar: React.FC<SiteTopbarProps> = ({
                   to={item.to ?? '/'}
                   className={() =>
                     [
-                      'flex h-[52px] w-[84px] flex-col items-center justify-center gap-1 rounded-md px-2 py-1.5 text-base font-medium transition-colors',
+                      'flex h-14 min-w-[84px] flex-col items-center justify-center gap-2 rounded-md px-3 text-base font-medium transition-colors',
                       'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent',
                       active ? 'text-text-primary' : 'text-text-secondary hover:text-text-primary',
                     ].join(' ')
                   }
                 >
                   <item.icon
-                    className={`h-6 w-6 shrink-0 ${active ? 'text-accent' : 'text-text-muted'}`}
+                    className={`h-6 w-6 shrink-0 text-accent transition-transform duration-200 ${active ? 'scale-110' : ''}`}
                     strokeWidth={2}
                     aria-hidden="true"
                   />
@@ -130,7 +129,7 @@ const SiteTopbar: React.FC<SiteTopbarProps> = ({
           </nav>
 
           <div className="flex flex-1 justify-end lg:flex-none">
-            <div className="flex shrink-0 items-center gap-1">{rightSlot}</div>
+            <div className="flex shrink-0 items-center gap-2">{rightSlot}</div>
           </div>
         </div>
       </header>

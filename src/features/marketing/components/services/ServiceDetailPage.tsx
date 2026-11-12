@@ -75,7 +75,7 @@ const ServiceDetailPage: React.FC<{ svc: ServiceConfig }> = ({ svc }) => {
               <div className="lg:col-span-7">
                 <div className="space-y-6">
                   <div className="flex items-start gap-3">
-                    <div className="mt-1 flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-accent/30 bg-accent/10">
+                    <div className="mt-1 flex h-10 w-10 shrink-0 items-center justify-center">
                       <Target className="h-5 w-5 text-accent" />
                     </div>
                     <p className="flex-1 text-base leading-relaxed text-text-secondary md:text-lg">
@@ -255,7 +255,7 @@ const ServiceDetailPage: React.FC<{ svc: ServiceConfig }> = ({ svc }) => {
                       key={deliverable.label}
                       className="flex gap-3 rounded-xl border border-border-subtle bg-surface p-4"
                     >
-                      <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-accent/30 bg-accent/10">
+                      <div className="flex h-8 w-8 shrink-0 items-center justify-center">
                         <FileText className="h-4 w-4 text-accent" />
                       </div>
                       <div className="flex-1">

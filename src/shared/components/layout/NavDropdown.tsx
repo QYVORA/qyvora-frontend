@@ -71,20 +71,23 @@ const NavDropdown: React.FC<NavDropdownProps> = ({ item, active, open, onOpenCha
           }
         }}
         className={cn(
-          'flex h-[52px] w-[84px] flex-col items-center justify-center gap-1 rounded-md px-2 py-1.5 text-base font-medium transition-colors',
+          'flex h-14 min-w-[84px] flex-col items-center justify-center gap-2 rounded-md px-3 text-base font-medium transition-colors',
           'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent',
           active ? 'text-text-primary' : 'text-text-secondary hover:text-text-primary',
         )}
       >
         <Icon
-          className={cn('h-6 w-6 shrink-0', active ? 'text-accent' : 'text-text-muted')}
+          className={cn(
+            'h-6 w-6 shrink-0 text-accent transition-transform duration-200',
+            active && 'scale-110',
+          )}
           strokeWidth={2}
           aria-hidden="true"
         />
-        <span className="flex items-center gap-1 whitespace-nowrap">
+        <span className="flex items-center gap-1.5 whitespace-nowrap">
           {item.label}
           <ChevronDown
-            className={cn('h-3.5 w-3.5 transition-transform', open && 'rotate-180')}
+            className={cn('h-3.5 w-3.5 text-accent transition-transform', open && 'rotate-180')}
             aria-hidden="true"
           />
         </span>

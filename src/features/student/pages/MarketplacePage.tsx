@@ -274,10 +274,8 @@ const Marketplace: React.FC = () => {
                   <div>
                     {visibleTxRows.map((tx, idx) => (
                       <div key={`${tx.id}-${idx}`} className="flex items-center gap-3 px-4 py-3.5 transition-colors hover:bg-accent-dim/5 sm:gap-4 sm:px-5 sm:py-4">
-                        <div className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border ${
-                          tx.value >= 0
-                            ? 'border-accent/20 bg-accent/10 text-accent'
-                            : 'border-danger/20 bg-danger/10 text-danger'
+                        <div className={`flex h-9 w-9 shrink-0 items-center justify-center ${
+                          tx.value >= 0 ? 'text-accent' : 'text-danger'
                         }`}>
                           {tx.value >= 0
                             ? <ArrowDownLeft className="h-4 w-4" />

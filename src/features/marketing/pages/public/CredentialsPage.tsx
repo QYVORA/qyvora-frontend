@@ -130,7 +130,7 @@ const CredentialsPage: React.FC = () => {
                 { icon: ScrollText, text: 'The certificate remains a human-readable keepsake.' },
               ].map(({ icon: Icon, text }) => (
                 <li key={text} className="flex items-start gap-3">
-                  <span className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-xl border border-accent/30 bg-accent/10">
+                  <span className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center">
                     <Icon className="h-4 w-4 text-accent" aria-hidden="true" />
                   </span>
                   <span className="type-body-sm text-text-secondary">{text}</span>
@@ -157,7 +157,7 @@ const CredentialsPage: React.FC = () => {
             {VERIFICATION_STEPS.map((step, index) => (
               <Card key={step.title} className="flex flex-col gap-3 p-5">
                 <div className="flex items-center gap-3">
-                  <span className="flex h-10 w-10 items-center justify-center rounded-xl border border-accent/30 bg-accent/10">
+                  <span className="flex h-10 w-10 items-center justify-center">
                     <step.icon className="h-5 w-5 text-accent" aria-hidden="true" />
                   </span>
                   <span className="type-meta font-mono text-text-muted">{`0${index + 1}`}</span>

@@ -204,7 +204,7 @@ const StudentSidebarRedesigned: React.FC<StudentSidebarRedesignedProps> = ({
 
       {/* Full-screen sidebar — intentionally covers the topbar on mobile. */}
       <aside
-        className="fixed inset-0 z-[130] flex h-dvh w-full flex-col overflow-hidden border-r border-border-subtle bg-surface pt-[env(safe-area-inset-top)] lg:hidden"
+        className="fixed inset-0 z-[130] flex h-dvh w-full flex-col overflow-hidden border-r border-border-subtle bg-surface pt-[var(--app-safe-top,0px)] lg:hidden"
         role="dialog"
         aria-modal="true"
         aria-label="Navigation menu"

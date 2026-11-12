@@ -371,9 +371,7 @@ export const Metric: React.FC<MetricProps> = ({
   const inner = (
     <div className={`flex items-start gap-3 ${className}`}>
       {icon && (
-        <span className={`mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border ${
-          accent ? 'border-accent/40 bg-accent/10 text-accent' : 'border-border-subtle bg-surface-raised text-text-secondary'
-        }`}>
+        <span className={`mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center ${accent ? 'text-accent' : 'text-text-secondary'}`}>
           {icon}
         </span>
       )}

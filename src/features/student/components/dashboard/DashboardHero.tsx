@@ -40,7 +40,7 @@ const DashboardHero = ({
         <h2 className="type-h1 text-text-primary">{title}</h2>
         <p className="mt-2 type-body text-text-secondary">{body}</p>
       </div>
-      <span className="hidden h-14 w-14 shrink-0 items-center justify-center rounded-2xl border border-accent/25 bg-accent/10 text-accent sm:flex">
+      <span className="hidden h-14 w-14 shrink-0 items-center justify-center text-accent sm:flex">
         <ShieldCheck className="h-7 w-7" aria-hidden="true" />
       </span>
     </div>

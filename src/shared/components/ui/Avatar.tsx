@@ -11,6 +11,8 @@ interface AvatarProps {
   size?: AvatarSize;
   /** Accent ring for the topbar / active states. */
   ring?: boolean;
+  /** Surface the ring gap should match (defaults to the page canvas). */
+  ringOffsetClassName?: string;
   className?: string;
 }
 
@@ -27,7 +29,14 @@ const SIZE_CLASS: Record<AvatarSize, string> = {
  * Circular avatar: image → identicon fallback → initial. 1px border by
  * default, optional accent ring.
  */
-const Avatar: React.FC<AvatarProps> = ({ name, src, size = 40, ring, className }) => {
+const Avatar: React.FC<AvatarProps> = ({
+  name,
+  src,
+  size = 40,
+  ring,
+  ringOffsetClassName = 'ring-offset-canvas',
+  className,
+}) => {
   const [broken, setBroken] = useState(false);
   const showImage = Boolean(src) && !broken;
 
@@ -35,7 +44,9 @@ const Avatar: React.FC<AvatarProps> = ({ name, src, size = 40, ring, className }
     <span
       className={cn(
         'relative inline-flex shrink-0 items-center justify-center overflow-hidden rounded-full bg-surface-raised',
-        ring ? 'ring-2 ring-accent ring-offset-2 ring-offset-canvas' : 'border border-border-subtle',
+        ring
+          ? cn('ring-2 ring-accent ring-offset-2', ringOffsetClassName)
+          : 'border border-border-subtle',
         SIZE_CLASS[size],
         className,
       )}

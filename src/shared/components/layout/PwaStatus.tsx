@@ -34,7 +34,7 @@ const UpdateCard: React.FC = () => {
       className="pointer-events-auto bg-bg-card border border-accent/40 rounded-2xl p-4"
     >
       <div className="flex items-start gap-3">
-        <div className="w-10 h-10 rounded-xl bg-accent/10 flex items-center justify-center shrink-0">
+        <div className="flex h-10 w-10 shrink-0 items-center justify-center">
           <IconRefresh size={20} className="text-accent" />
         </div>
         <div className="flex-1 min-w-0">

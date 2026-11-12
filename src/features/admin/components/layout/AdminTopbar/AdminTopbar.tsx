@@ -116,7 +116,7 @@ const AdminTopbar = ({ railCollapsed = false }: { railCollapsed?: boolean }) => 
       </a>
 
       <header
-        className={`chrome-fixed chrome-fixed-overflow fixed top-0 inset-x-0 z-[100] pt-[env(safe-area-inset-top)] transition-[left] duration-[var(--dur-base)] ease-[var(--ease-smooth)] ${
+        className={`chrome-fixed chrome-fixed-overflow fixed top-0 inset-x-0 z-[100] pt-[var(--app-safe-top,0px)] transition-[left] duration-[var(--dur-base)] ease-[var(--ease-smooth)] ${
           railCollapsed ? 'lg:left-[76px]' : 'lg:left-[264px]'
         }`}
       >
@@ -131,20 +131,20 @@ const AdminTopbar = ({ railCollapsed = false }: { railCollapsed?: boolean }) => 
           </Link>
 
           {/* Right actions */}
-          <div className="flex items-center gap-1.5 md:gap-2.5 shrink-0 ml-auto">
+          <div className="flex items-center gap-2 md:gap-3 shrink-0 ml-auto">
             <button
               type="button"
               onClick={() => setMenuOpen(true)}
               aria-label="Open menu"
               aria-expanded={menuOpen}
-              className="flex h-12 w-12 items-center justify-center rounded-md text-text-secondary transition-colors hover:bg-surface-raised hover:text-text-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent lg:hidden"
+              className="flex h-12 w-12 items-center justify-center rounded-md text-accent transition-colors hover:text-text-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent lg:hidden"
             >
               <Menu className="h-6 w-6" aria-hidden="true" />
             </button>
             <div ref={notifRef} className="relative">
               <button
                 onClick={() => { const next = !notifOpen; setNotifOpen(next); if (next) loadNotificationsSnapshot(); }}
-                className="relative p-3 md:p-3.5 min-h-12 min-w-12 flex items-center justify-center text-text-muted hover:text-accent transition-colors rounded-xl hover:bg-accent-dim/50"
+                className="relative flex h-12 w-12 items-center justify-center rounded-md text-accent transition-colors hover:text-text-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent md:h-[52px] md:w-[52px]"
                 aria-label={`Notifications${unreadCount > 0 ? ` (${unreadCount > 9 ? '9+' : unreadCount} unread)` : ''}`}
               >
                 <IconNotification size={24} />
@@ -168,7 +168,7 @@ const AdminTopbar = ({ railCollapsed = false }: { railCollapsed?: boolean }) => 
             {/* Admin profile chip — desktop */}
             <div
               aria-label={"Admin profile"}
-              className="hidden md:flex w-11 h-11 md:w-12 md:h-12 rounded-xl border border-accent/30 bg-accent-dim items-center justify-center text-accent font-black text-base flex-none"
+              className="hidden md:flex h-[52px] w-[52px] rounded-md border border-accent/30 bg-accent-dim items-center justify-center text-accent font-black text-base flex-none"
             >
               {(user?.username || user?.email || 'A').substring(0, 2).toUpperCase()}
             </div>
@@ -176,7 +176,7 @@ const AdminTopbar = ({ railCollapsed = false }: { railCollapsed?: boolean }) => 
             {/* Logout — desktop */}
             <button
               onClick={handleLogout}
-              className="hidden md:flex rounded-xl border border-semantic-danger/25 bg-semantic-danger/10 p-3 text-semantic-danger transition-colors hover:bg-semantic-danger/15 active:scale-95 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-semantic-danger md:p-3.5"
+              className="hidden md:flex h-[52px] w-[52px] items-center justify-center rounded-md border border-semantic-danger/25 bg-semantic-danger/10 text-semantic-danger transition-colors hover:bg-semantic-danger/15 active:scale-95 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-semantic-danger"
               title="Log out"
               aria-label={"Log out"}
             >

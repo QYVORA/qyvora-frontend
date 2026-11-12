@@ -93,7 +93,7 @@ const LearnPage: React.FC = () => {
             className="flex min-h-[190px] flex-col gap-3 p-6"
           >
             <div className="flex items-center gap-3">
-              <div className="flex h-16 w-16 shrink-0 items-center justify-center overflow-hidden rounded-xl border border-border-subtle bg-surface-raised p-1.5">
+              <div className="flex h-16 w-16 shrink-0 items-center justify-center overflow-hidden">
                 <img
                   src={BOOTCAMPS.qose.logo}
                   alt={BOOTCAMPS.qose.logoAlt}
@@ -119,7 +119,7 @@ const LearnPage: React.FC = () => {
             return (
               <Card key={phase.id} to="/hpb" interactive className="flex min-h-[190px] flex-col gap-3 p-6">
                 <div className="flex items-center gap-3">
-                  <div className="flex h-16 w-16 shrink-0 items-center justify-center overflow-hidden rounded-xl border border-border-subtle bg-surface-raised p-1.5">
+                  <div className="flex h-16 w-16 shrink-0 items-center justify-center overflow-hidden">
                     <HpbAvatar variant={hpbVariant} className="h-full w-auto max-h-full max-w-full object-contain" />
                   </div>
                   <span className="type-meta">Phase {phase.id}</span>
@@ -185,7 +185,7 @@ const LearnPage: React.FC = () => {
               return (
                 <Card key={sim.id} to={sim.slug} interactive className="flex min-h-[190px] flex-col gap-3 p-6">
                   <div className="flex items-center gap-3">
-                    <span className="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl border border-border-subtle bg-surface-raised text-accent">
+                    <span className="flex h-14 w-14 shrink-0 items-center justify-center text-accent">
                       <Icon className="h-7 w-7" aria-hidden="true" />
                     </span>
                     <span className="type-meta">Live demo</span>

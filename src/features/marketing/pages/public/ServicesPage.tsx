@@ -45,7 +45,7 @@ const ServiceCard: React.FC<{ svc: ServiceConfig }> = ({ svc }) => {
       className="flex h-full min-h-[240px] flex-col gap-3 p-6"
     >
       <div className="flex items-start justify-between gap-3">
-        <span className="flex h-11 w-11 items-center justify-center rounded-lg border border-border-subtle bg-surface-raised text-accent">
+        <span className="flex h-11 w-11 items-center justify-center text-accent">
           <Icon className="h-5 w-5" aria-hidden="true" />
         </span>
         {svc.featured && (

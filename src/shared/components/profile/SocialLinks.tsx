@@ -60,7 +60,7 @@ export const SocialLinks: React.FC<SocialLinksProps> = ({
           target="_blank"
           rel="noopener noreferrer"
           aria-label="GitHub profile"
-          className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-surface-raised text-text-secondary transition-colors hover:text-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+          className="inline-flex h-10 w-10 items-center justify-center text-text-secondary transition-colors hover:text-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
         >
           <BrandGithubIcon className="h-4 w-4 text-text-primary" />
         </a>
@@ -72,7 +72,7 @@ export const SocialLinks: React.FC<SocialLinksProps> = ({
           target="_blank"
           rel="noopener noreferrer"
           aria-label="X (formerly Twitter) profile"
-          className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-surface-raised text-text-secondary transition-colors hover:text-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+          className="inline-flex h-10 w-10 items-center justify-center text-text-secondary transition-colors hover:text-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
         >
           <BrandXIcon className="h-4 w-4 text-text-primary" />
         </a>
@@ -84,7 +84,7 @@ export const SocialLinks: React.FC<SocialLinksProps> = ({
           target="_blank"
           rel="noopener noreferrer"
           aria-label="LinkedIn profile"
-          className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-surface-raised text-text-secondary transition-colors hover:text-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+          className="inline-flex h-10 w-10 items-center justify-center text-text-secondary transition-colors hover:text-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
         >
           <BrandLinkedinIcon className="h-4 w-4 text-text-primary" />
         </a>

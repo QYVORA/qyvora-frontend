@@ -16,7 +16,7 @@ const RoomSection: React.FC<RoomSectionProps> = ({ room, roomIndex }) => {
       <div className="flex flex-col justify-center">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-6">
           <div className="flex items-center gap-3 min-w-0">
-            <span className="w-10 h-10 md:w-12 md:h-12 rounded-xl bg-accent/10 border border-accent/20 flex items-center justify-center shrink-0">
+            <span className="flex h-10 w-10 shrink-0 items-center justify-center md:h-12 md:w-12">
               <IconTerminal className="w-5 h-5 md:w-6 md:h-6 text-accent" />
             </span>
             <div className="min-w-0">

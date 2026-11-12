@@ -27,7 +27,7 @@ const CyberCoinPage: React.FC = () => {
           kicker="QYVORA · Economy"
           title={
             <span className="flex flex-col items-start gap-3 sm:flex-row sm:items-center">
-              <span className="flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl border border-accent/25 bg-accent/10 p-2.5">
+              <span className="flex h-16 w-16 shrink-0 items-center justify-center">
                 <CpLogo alt="CP" className="h-full w-full" />
               </span>
               <span>{"CyberPoints (CP)"}</span>
@@ -88,7 +88,7 @@ const CyberCoinPage: React.FC = () => {
           ].map((step, index) => (
             <ScrollReveal key={step.title} delay={0.05 * index}>
               <div className="flex h-full flex-col rounded-2xl border border-border-subtle bg-canvas p-6">
-                <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl border border-accent/25 bg-accent/10 text-accent">
+                <div className="mb-4 flex h-12 w-12 items-center justify-center text-accent">
                   {step.icon}
                 </div>
                 <h3 className="type-h3 mb-2 text-xl font-black uppercase tracking-tight text-text-primary">
@@ -130,7 +130,7 @@ const CyberCoinPage: React.FC = () => {
             <div className="rounded-2xl border border-border-subtle bg-surface p-8">
               <div className="mb-6 space-y-4">
                 <div className="flex items-start gap-4">
-                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-accent/10 text-accent">
+                  <div className="flex h-10 w-10 shrink-0 items-center justify-center text-accent">
                     <Users className="h-5 w-5" />
                   </div>
                   <div>
@@ -143,7 +143,7 @@ const CyberCoinPage: React.FC = () => {
                   </div>
                 </div>
                 <div className="flex items-start gap-4">
-                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-accent/10 text-accent">
+                  <div className="flex h-10 w-10 shrink-0 items-center justify-center text-accent">
                     <Trophy className="h-5 w-5" />
                   </div>
                   <div>
@@ -156,7 +156,7 @@ const CyberCoinPage: React.FC = () => {
                   </div>
                 </div>
                 <div className="flex items-start gap-4">
-                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-accent/10 text-accent">
+                  <div className="flex h-10 w-10 shrink-0 items-center justify-center text-accent">
                     <ShieldCheck className="h-5 w-5" />
                   </div>
                   <div>

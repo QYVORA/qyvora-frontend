@@ -60,7 +60,7 @@ const BootcampAccessModalHost: React.FC = () => {
       >
         <div className="flex flex-col gap-6">
           <div className="flex items-center gap-4 rounded-2xl border border-border-subtle bg-surface-raised p-4">
-            <div className="flex h-20 w-20 shrink-0 items-center justify-center rounded-xl border border-border-subtle bg-surface p-2">
+            <div className="flex h-20 w-20 shrink-0 items-center justify-center">
               <img
                 src={bootcamp.logo}
                 alt={bootcamp.logoAlt}

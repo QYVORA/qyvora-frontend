@@ -42,7 +42,7 @@ const ToolsResearchBlock: React.FC = () => {
         <div className="grid gap-4 md:grid-cols-2">
           {tiles.map((tile) => (
             <Card key={tile.key} to={tile.to} interactive className="flex min-h-[120px] items-center gap-4 p-6">
-              <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg border border-border-subtle bg-surface-raised text-accent">
+              <span className="flex h-11 w-11 shrink-0 items-center justify-center text-accent">
                 {tile.icon}
               </span>
               <span className="flex flex-1 items-center justify-between gap-3">

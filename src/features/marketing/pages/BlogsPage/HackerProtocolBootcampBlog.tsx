@@ -6,8 +6,8 @@ import HpbAvatar, { type HpbVariant } from '@/shared/components/HpbAvatar';
 import { Section, Heading, Body, Highlight, CodeBlock } from './shared';
 
 const StatRow = ({ icon, label, value }: { icon: React.ReactNode; label: string; value: string }) => (
-  <div className="flex items-center gap-4 p-4 rounded-xl bg-accent/5 border border-accent/10">
-    <div className="w-10 h-10 rounded-lg bg-accent/10 flex items-center justify-center shrink-0">
+  <div className="flex items-center gap-4 p-4">
+    <div className="flex h-10 w-10 shrink-0 items-center justify-center">
       {icon}
     </div>
     <div className="min-w-0">
@@ -166,7 +166,7 @@ export const HackerProtocolBootcampBlog: React.FC = () => {
               key={p.variant}
               className="p-5 md:p-6 rounded-xl border border-border/50 bg-bg-card flex flex-col sm:flex-row gap-5 md:gap-6 items-start hover:border-accent/50 transition-colors"
             >
-              <div className="w-28 h-28 md:w-36 md:h-36 shrink-0 rounded-xl border border-border/50 bg-bg-elevated flex items-center justify-center overflow-hidden">
+              <div className="flex h-28 w-28 shrink-0 items-center justify-center overflow-hidden md:h-36 md:w-36">
                 <HpbAvatar variant={p.variant} className="h-full w-auto max-h-full max-w-full" />
               </div>
               <div className="min-w-0 flex-1">

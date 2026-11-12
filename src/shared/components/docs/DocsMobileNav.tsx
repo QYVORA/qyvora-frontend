@@ -58,7 +58,7 @@ const DocsMobileNav: React.FC = () => {
         onClick={() => setMenuOpen(true)}
         aria-label="Open documentation menu"
         aria-expanded={menuOpen}
-        className="flex h-10 w-10 shrink-0 items-center justify-center rounded-md text-text-secondary transition-colors hover:bg-surface-raised hover:text-text-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+        className="flex h-11 w-11 shrink-0 items-center justify-center rounded-md text-accent transition-colors hover:text-text-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
       >
         <Menu className="h-5 w-5" aria-hidden="true" />
       </button>

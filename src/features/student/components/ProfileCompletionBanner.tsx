@@ -43,7 +43,7 @@ const ProfileCompletionBanner: React.FC<ProfileCompletionBannerProps> = ({ compl
         : 'border-accent/20 bg-accent/5'
     }`}>
       <div className="flex items-start gap-4">
-        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-surface">
+        <div className="flex h-10 w-10 shrink-0 items-center justify-center">
           {isLowCompletion ? (
             <AlertCircle className="h-5 w-5 text-danger" />
           ) : (

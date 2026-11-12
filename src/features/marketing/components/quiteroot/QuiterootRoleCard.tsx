@@ -52,7 +52,7 @@ const HolderPortrait = ({ holder }: { holder: QuiterootHolder }) => (
               target="_blank"
               rel="noopener noreferrer"
               aria-label={`${holder.name} on ${platform}`}
-              className="flex h-11 w-11 min-h-[44px] items-center justify-center rounded-lg border border-border-subtle text-text-muted transition-colors hover:border-accent/40 hover:text-accent"
+              className="flex h-11 w-11 min-h-[44px] items-center justify-center text-text-muted transition-colors hover:text-accent"
             >
               <Icon className="h-4 w-4" />
             </a>
@@ -71,7 +71,7 @@ const HolderPortrait = ({ holder }: { holder: QuiterootHolder }) => (
 const OpenPortrait = () => (
   <div className="flex aspect-[4/3] w-full items-center justify-center border-b border-border-subtle bg-surface-raised p-5">
     <div className="flex h-full w-full flex-col items-center justify-center gap-3 rounded-2xl border-2 border-dashed border-border-subtle">
-      <span className="flex h-16 w-16 items-center justify-center rounded-full border border-border-subtle bg-surface text-text-muted">
+      <span className="flex h-16 w-16 items-center justify-center text-text-muted">
         <UserRound className="h-8 w-8" aria-hidden="true" />
       </span>
       <span className="type-label uppercase tracking-[0.3em] text-text-muted">Position open</span>

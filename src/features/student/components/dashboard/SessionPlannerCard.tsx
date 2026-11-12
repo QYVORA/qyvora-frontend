@@ -86,7 +86,7 @@ const SessionPlannerCard = () => {
     <Card as="section" tone="strip" className="p-[var(--app-card-pad)]">
       <div className="mb-4 flex items-center justify-between gap-3">
         <div className="flex min-w-0 items-center gap-3">
-          <span className="flex h-11 w-11 items-center justify-center rounded-xl border border-accent/25 bg-accent/10 text-accent">
+          <span className="flex h-11 w-11 items-center justify-center text-accent">
             <CalendarClock className="h-5 w-5" aria-hidden="true" />
           </span>
           <h2 className="type-h2 text-text-primary">Next study sessions</h2>

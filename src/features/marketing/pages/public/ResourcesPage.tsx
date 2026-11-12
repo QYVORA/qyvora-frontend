@@ -20,7 +20,7 @@ const SheetCard: React.FC<{ sheet: CheatSheet; showDocs?: boolean }> = ({
   <Card className="flex h-full flex-col gap-3 p-5">
     <div className="flex items-start gap-3">
       {sheet.logo && (
-        <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-border-subtle bg-surface-raised p-1.5">
+        <span className="flex h-11 w-11 shrink-0 items-center justify-center">
           <img
             src={sheet.logo}
             alt=""

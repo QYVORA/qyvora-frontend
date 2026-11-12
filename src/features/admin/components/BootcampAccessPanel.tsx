@@ -142,7 +142,7 @@ const BootcampAccessPanel: React.FC<Props> = ({ addToast }) => {
                  {nextModule.title}
                </div>
              </div>
-            <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-accent/30 bg-accent-dim">
+            <div className="flex h-11 w-11 shrink-0 items-center justify-center">
               <Unlock className="h-5 w-5 text-accent" />
             </div>
           </button>

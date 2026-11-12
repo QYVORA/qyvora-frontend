@@ -35,7 +35,7 @@ const AboutPage: React.FC = () => {
         <div className="mt-10 grid gap-4 sm:grid-cols-2">
           {tiles.map((tile) => (
             <Card key={tile.key} to={tile.to} interactive className="flex h-full min-h-[160px] flex-col gap-3 p-6">
-              <span className="flex h-11 w-11 items-center justify-center rounded-lg border border-border-subtle bg-surface-raised text-accent">
+              <span className="flex h-11 w-11 items-center justify-center text-accent">
                 {tile.icon}
               </span>
               <h3 className="type-h3 font-black uppercase tracking-tight text-text-primary">

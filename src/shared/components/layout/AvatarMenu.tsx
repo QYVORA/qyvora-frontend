@@ -67,16 +67,21 @@ const AvatarMenu: React.FC<AvatarMenuProps> = ({ unread = 0, stats }) => {
         aria-haspopup="menu"
         aria-expanded={open}
         aria-label="Account menu"
-        className="relative flex h-10 items-center gap-1.5 rounded-full pl-0.5 pr-2 transition-colors hover:bg-surface focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+        className="relative flex h-12 items-center gap-2 rounded-full pl-1 pr-3 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
       >
-        <Avatar name={userDisplayName} size={32} />
+        <Avatar
+          name={userDisplayName}
+          size={40}
+          ring
+          ringOffsetClassName="ring-offset-surface-raised"
+        />
         <ChevronDown
-          className={`h-4 w-4 text-text-muted transition-transform ${open ? 'rotate-180' : ''}`}
+          className={`h-[18px] w-[18px] text-text-muted transition-transform ${open ? 'rotate-180' : ''}`}
           aria-hidden="true"
         />
         {unread > 0 && (
           <span
-            className="absolute right-1.5 top-1.5 h-2.5 w-2.5 rounded-full border-2 border-surface-raised bg-accent"
+            className="absolute right-2 top-2 h-2.5 w-2.5 rounded-full border-2 border-surface-raised bg-accent"
             aria-label={`${unread} unread notifications`}
           />
         )}

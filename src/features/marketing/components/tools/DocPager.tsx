@@ -24,7 +24,7 @@ const PagerMark: React.FC<{ tool: ToolEntry }> = ({ tool }) =>
   ) : (
     <span
       aria-hidden="true"
-      className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-accent/20 bg-accent/10"
+      className="flex h-9 w-9 shrink-0 items-center justify-center"
     >
       <Library className="h-4 w-4 text-accent" />
     </span>

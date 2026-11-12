@@ -39,7 +39,7 @@ const BroadcastTab = () => {
     <div className="space-y-6">
       <div className="rounded-2xl border border-border-subtle bg-surface p-6 md:p-8 space-y-5">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-surface-raised flex items-center justify-center">
+          <div className="flex h-10 w-10 items-center justify-center">
             <Megaphone className="w-5 h-5 text-accent" />
           </div>
           <div>

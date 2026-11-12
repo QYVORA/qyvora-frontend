@@ -121,7 +121,7 @@ const MobileMenu: React.FC<MobileMenuProps> = ({
                     }
                     className="flex min-h-[48px] w-full items-center gap-3 rounded-md px-3 text-base text-text-secondary transition-colors hover:bg-surface-raised hover:text-text-primary focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-accent"
                   >
-                    <Icon className="h-5 w-5 text-text-muted" aria-hidden="true" />
+                    <Icon className="h-5 w-5 text-accent" aria-hidden="true" />
                     <span className="flex-1 text-left">{item.label}</span>
                     <ChevronDown
                       className={cn('h-4 w-4 transition-transform', isExpanded && 'rotate-180')}
@@ -165,13 +165,23 @@ const MobileMenu: React.FC<MobileMenuProps> = ({
                     'flex min-h-[48px] items-center gap-3 rounded-md px-3 text-base transition-colors',
                     'focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-accent',
                     isActive
-                      ? 'border-l-2 border-accent bg-accent/10 text-accent'
+                      ? 'text-text-primary'
                       : 'text-text-secondary hover:bg-surface-raised hover:text-text-primary',
                   )
                 }
               >
-                <Icon className="h-5 w-5" aria-hidden="true" />
-                {item.label}
+                {({ isActive }) => (
+                  <>
+                    <Icon
+                      className={cn(
+                        'h-5 w-5 text-accent transition-transform duration-200',
+                        isActive && 'scale-110',
+                      )}
+                      aria-hidden="true"
+                    />
+                    {item.label}
+                  </>
+                )}
               </NavLink>
             );
           })}
