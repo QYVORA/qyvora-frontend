@@ -116,7 +116,7 @@ const LearningRow = ({
   item: LearningItem;
   actionLabel: string;
 }) => (
-  <li className="group relative overflow-hidden rounded-xl border border-border-subtle bg-surface-raised/45 transition-[background-color,border-color,box-shadow] duration-[var(--dur-base)] ease-[var(--ease-smooth)] hover:border-accent/30 hover:bg-accent/[0.055] focus-within:border-accent/40">
+  <li className="group relative min-w-0 rounded-xl transition-colors duration-[var(--dur-base)] ease-[var(--ease-smooth)] hover:bg-surface-raised/50 focus-within:bg-surface-raised/50">
     <div className="flex min-w-0 items-center gap-1.5 p-3 sm:gap-2 sm:p-4">
       <Link
         to={item.to}

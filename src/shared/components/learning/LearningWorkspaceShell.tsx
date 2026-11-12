@@ -84,7 +84,7 @@ const LearningWorkspaceShell: React.FC<LearningWorkspaceShellProps> = ({
 
       {progress && (
         <div className="w-full border-b border-border-subtle bg-surface/70">
-          <div className="flex items-center justify-center gap-3 px-[var(--app-gutter,12px)] py-3">
+          <div className="flex items-center justify-start gap-3 px-[var(--app-gutter,12px)] py-3">
             <span className="type-meta shrink-0 text-text-secondary">{progress.label}</span>
             <div
               className="h-1 w-full max-w-md overflow-hidden rounded-none bg-surface-raised"

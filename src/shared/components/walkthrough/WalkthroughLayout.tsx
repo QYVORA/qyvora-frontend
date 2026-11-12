@@ -72,6 +72,8 @@ export function WalkthroughLayout({
   stepIdPrefix,
 }: WalkthroughLayoutProps) {
   const allDone = totalSteps > 0 && completedCount === totalSteps;
+  const badgeAsset = getLabBadgeAsset(labId);
+  const heroBadge = <LabBadge labId={labId} className="h-full w-full" glow={false} />;
   const { connection, isConnected, isLoading, error, connect, disconnect } = useLabConnection();
   const { network, browser } = useSimulation();
   const prefersReducedMotion = useReducedMotion();
@@ -152,14 +154,14 @@ export function WalkthroughLayout({
   return (
     <div className="w-full bg-canvas min-h-dvh">
       <LearningWorkspaceShell
-        icon={icon}
+        icon={badgeAsset ? heroBadge : icon}
         title={title}
         description={subtitle}
         onBack={onBack}
         backLabel={backLabel}
         stats={headerStats}
-        heroArt={<LabBadge labId={labId} className="h-full w-full" glow={false} />}
-        heroArtSrc={getLabBadgeAsset(labId)?.image}
+        heroArt={badgeAsset ? heroBadge : undefined}
+        heroArtSrc={badgeAsset?.image}
         progress={
           totalSteps > 0
             ? {

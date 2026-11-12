@@ -6,7 +6,7 @@ import Button from '@/shared/components/ui/Button';
 import FilterTabs from '@/shared/components/ui/FilterTabs';
 import LabBadge from '@/shared/components/LabBadge';
 import { DifficultyBadge } from '@/shared/components/learning/LearningCard';
-import type { UnifiedLab } from '@/features/student/data/labs';
+import { LAB_FORMAT_LABELS, type UnifiedLab } from '@/features/student/data/labs';
 import {
   RECENT_LABS_EVENT,
   getRecentLabIds,
@@ -69,24 +69,27 @@ const NewLabsCard = ({ labs, excludeLabIds = [] }: NewLabsCardProps) => {
       />
 
       {visible.length > 0 ? (
-        <ul className="grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        <ul className="flex flex-col gap-1">
           {visible.map((lab) => (
-            <li key={lab.id} className="min-w-0 rounded-md border border-border-subtle bg-surface-raised/40 p-3">
-              <div className="flex min-w-0 items-center gap-2">
+            <li
+              key={lab.id}
+              className="group relative rounded-xl transition-colors duration-[var(--dur-fast)] ease-[var(--ease-smooth)] hover:bg-surface-raised/50 focus-within:bg-surface-raised/50"
+            >
+              <div className="flex min-w-0 items-start gap-2 p-3 sm:gap-3 sm:p-4">
                 <Link
                   to={lab.route}
-                  className="group flex min-w-0 flex-1 items-center gap-3 rounded-lg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+                  className="flex min-w-0 flex-1 items-start gap-3 rounded-lg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent sm:gap-4"
                 >
                   <LabBadge
                     labId={lab.id}
                     accentColor={lab.accentColor}
-                    className="h-14 w-14 shrink-0 sm:h-16 sm:w-16"
+                    className="h-16 w-16 shrink-0 sm:h-20 sm:w-20"
                     glow={false}
                   />
                   <span className="min-w-0 flex-1">
                     <span className="flex flex-wrap items-center gap-x-2 gap-y-1">
-                      <span className="truncate text-sm font-bold leading-snug text-text-primary transition-colors group-hover:text-accent">
-                        {lab.title}
+                      <span className="text-[12px] font-medium uppercase tracking-[0.12em] text-text-tertiary">
+                        {LAB_FORMAT_LABELS[lab.format]}
                       </span>
                       {lab.isNew && (
                         <span className="rounded-md bg-accent px-1.5 py-0.5 text-[12px] font-medium text-on-accent">
@@ -94,8 +97,20 @@ const NewLabsCard = ({ labs, excludeLabIds = [] }: NewLabsCardProps) => {
                         </span>
                       )}
                     </span>
-                    <span className="mt-1 flex flex-wrap items-center gap-x-3 gap-y-1">
-                      <DifficultyBadge difficulty={lab.difficulty} />
+                    <span className="mt-1 flex min-w-0 items-start gap-2">
+                      <span className="min-w-0 text-base font-bold leading-snug text-text-primary transition-colors group-hover:text-accent sm:text-lg">
+                        {lab.title}
+                      </span>
+                      <ArrowRight
+                        className="mt-1 h-4 w-4 shrink-0 text-text-tertiary transition-colors group-hover:text-accent"
+                        aria-hidden="true"
+                      />
+                    </span>
+                    <span className="mt-1.5 line-clamp-2 text-sm leading-6 text-text-secondary">
+                      {lab.description}
+                    </span>
+                    <span className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1.5">
+                      {lab.difficulty && <DifficultyBadge difficulty={lab.difficulty} />}
                       {lab.cpReward && (
                         <span className="text-[12px] font-medium text-text-muted">
                           {lab.cpReward} CP
@@ -106,9 +121,11 @@ const NewLabsCard = ({ labs, excludeLabIds = [] }: NewLabsCardProps) => {
                           {lab.lessonsCount} lessons
                         </span>
                       )}
-                      <span className="inline-flex items-center gap-1 text-[12px] font-medium text-accent">
-                        Open <ArrowRight className="h-3 w-3" aria-hidden="true" />
-                      </span>
+                      {lab.estimatedMinutes !== undefined && (
+                        <span className="text-[12px] text-text-muted">
+                          {lab.estimatedMinutes} min
+                        </span>
+                      )}
                     </span>
                   </span>
                 </Link>
