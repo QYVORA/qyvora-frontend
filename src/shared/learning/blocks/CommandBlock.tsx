@@ -11,11 +11,16 @@ import type { CommandBlock } from '../types/blocks';
 import type { BlockRendererProps } from '../utils/blockRegistry';
 import { CommandExplanation } from '@/shared/components/learning/CommandExplanation';
 import { CodeSurface } from '@/shared/components/courses/markdown/CodeSurface';
+import { TerminalSurface } from '@/shared/components/courses/markdown/TerminalSurface';
 import { extractShellComments } from '@/shared/components/courses/markdown/shellComments';
 
 export const CommandBlockComponent: React.FC<BlockRendererProps<CommandBlock>> = ({ block }) => {
   const [copied, setCopied] = useState(false);
   const code = useMemo(() => extractShellComments(block.command).code, [block.command]);
+  const session = useMemo(
+    () => block.session ?? [{ command: block.command, output: block.output }],
+    [block.session, block.command, block.output],
+  );
 
   const handleCopy = async () => {
     try {
@@ -48,12 +53,10 @@ export const CommandBlockComponent: React.FC<BlockRendererProps<CommandBlock>> =
         </button>
       </div>
 
-      <CodeSurface code={block.command} language="bash" prompt />
+      <TerminalSurface session={session} shell={block.shell} />
 
       {!block.explanation && (
-        <div className="border-t border-border/20 p-3">
-          <CommandExplanation command={code} />
-        </div>
+        <CommandExplanation command={code} collapsible />
       )}
 
       {block.explanation && (

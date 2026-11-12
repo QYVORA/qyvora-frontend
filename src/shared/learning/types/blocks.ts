@@ -152,6 +152,17 @@ export interface EvidenceBlock extends BaseBlock {
 export interface CommandBlock extends BaseBlock {
   type: 'command';
   command: string;
+  /** Optional title carried from the source heading. */
+  title?: string;
+  /** Shell family used to render the prompt. Defaults to bash. */
+  shell?: 'bash' | 'cmd' | 'powershell';
+  /** Output lines produced by the command(s). */
+  output?: string;
+  /**
+   * Ordered terminal session entries. When present, command and output are
+   * interleaved in the order they were authored.
+   */
+  session?: Array<{ command?: string; output?: string }>;
   explanation?: {
     what: string; // What this command does
     why?: string; // Why we're running it

@@ -20,6 +20,7 @@ import type {
   TextBlock,
   ConceptBlock,
   CodeBlock,
+  CommandBlock,
   RecallBlock,
   DoBlock,
 } from '../types/blocks';
@@ -207,6 +208,114 @@ function cleanHeading(text: string): string {
   return plainMarkdown(text).replace(/[:：]\s*$/, '').trim();
 }
 
+export type ShellKind = 'bash' | 'cmd' | 'powershell';
+
+const SHELL_LANGUAGES: Record<string, ShellKind> = {
+  bash: 'bash',
+  sh: 'bash',
+  shell: 'bash',
+  zsh: 'bash',
+  console: 'bash',
+  terminal: 'bash',
+  cmd: 'cmd',
+  batch: 'cmd',
+  bat: 'cmd',
+  powershell: 'powershell',
+  ps: 'powershell',
+  ps1: 'powershell',
+};
+
+/** Map a fence language to a shell family, or null when it is not a shell. */
+export function shellKindFor(lang: string | undefined): ShellKind | null {
+  if (!lang) return null;
+  return SHELL_LANGUAGES[lang.trim().toLowerCase()] ?? null;
+}
+
+const BASH_PROMPT = /^\s*\$\s/;
+const BASH_ROOT_PROMPT = /^\s*#\s/;
+const CMD_PROMPT = /^\s*[A-Za-z]:\\[^>]*>\s?/;
+const PS_PROMPT = /^\s*PS\s+[A-Za-z]:\\[^>]*>\s?/;
+
+/**
+ * A shell fence is treated as a live terminal session when it is short, has no
+ * shebang, and contains no multi-line control constructs (those are scripts,
+ * not commands to run one by one).
+ */
+export function isTerminalSession(code: string, kind: ShellKind): boolean {
+  const lines = code.split('\n').filter((l) => l.trim() !== '');
+  if (lines.length === 0) return false;
+  if (lines.length > 12) return false;
+  if (/^\s*#!/.test(lines[0])) return false;
+  if (lines.some((l) => /^\s*(if|for|while|function|case|do)\b/.test(l))) return false;
+  if (lines.some((l) => /\b(then|do|done|fi|esac)\b\s*$/.test(l))) return false;
+  // `#` is only a root prompt when the author also used an explicit `$` prompt.
+  void kind;
+  return true;
+}
+
+interface SessionEntry {
+  command?: string;
+  output?: string;
+}
+
+function isPromptLine(line: string, kind: ShellKind, hasDollar: boolean): boolean {
+  if (kind === 'cmd') return CMD_PROMPT.test(line);
+  if (kind === 'powershell') return PS_PROMPT.test(line);
+  if (BASH_PROMPT.test(line)) return true;
+  return hasDollar && BASH_ROOT_PROMPT.test(line);
+}
+
+function stripPrompt(line: string, kind: ShellKind): string {
+  if (kind === 'cmd') return line.replace(CMD_PROMPT, '').trim();
+  if (kind === 'powershell') return line.replace(PS_PROMPT, '').trim();
+  return line.replace(/^\s*(\$|#)\s?/, '').trim();
+}
+
+export interface TerminalSession {
+  command: string;
+  output?: string;
+  session: SessionEntry[];
+}
+
+/** Split a terminal fence into ordered command/output entries. */
+export function parseTerminalSession(code: string, kind: ShellKind): TerminalSession {
+  const lines = code.replace(/\s+$/, '').split('\n');
+  const hasDollar = lines.some((l) => BASH_PROMPT.test(l));
+  const usesPrompts = lines.some((l) => isPromptLine(l, kind, hasDollar));
+
+  if (!usesPrompts) {
+    const command = code.trim();
+    return { command, session: [{ command }] };
+  }
+
+  const session: SessionEntry[] = [];
+  let current: SessionEntry | null = null;
+
+  for (const line of lines) {
+    if (isPromptLine(line, kind, hasDollar)) {
+      if (current && (current.command || current.output)) session.push(current);
+      current = { command: stripPrompt(line, kind) };
+    } else {
+      if (!current) current = {};
+      current.output = current.output ? `${current.output}\n${line}` : line;
+    }
+  }
+  if (current && (current.command || current.output)) session.push(current);
+
+  const commands = session
+    .map((s) => s.command)
+    .filter((c): c is string => Boolean(c && c.trim()));
+  const outputs = session
+    .map((s) => s.output)
+    .filter((o): o is string => Boolean(o && o.trim()));
+
+  return {
+    command: commands.join('\n') || code.trim(),
+    output: outputs.length ? outputs.join('\n') : undefined,
+    session,
+  };
+}
+
 export interface MarkdownToBlocksOptions {
   /**
    * Preserve paragraph-level prose instead of splitting it into short card
@@ -267,10 +376,27 @@ export function markdownToBlocks(
       }
 
       case 'code': {
+        const lang = segment.lang || 'bash';
+        const shell = shellKindFor(lang);
+        if (shell && isTerminalSession(segment.code, shell)) {
+          const parsed = parseTerminalSession(segment.code, shell);
+          const command: CommandBlock = {
+            type: 'command',
+            id: nextId('command'),
+            command: parsed.command,
+            shell,
+            output: parsed.output,
+            session: parsed.session,
+          };
+          if (sectionTitle) command.title = sectionTitle;
+          blocks.push(command);
+          sectionTitle = null;
+          break;
+        }
         const code: CodeBlock = {
           type: 'code',
           id: nextId('code'),
-          language: segment.lang || 'bash',
+          language: lang,
           code: segment.code,
         };
         if (sectionTitle) code.filename = sectionTitle;

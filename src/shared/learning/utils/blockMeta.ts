@@ -140,7 +140,7 @@ export function blockTitle(block: LearningBlock, fallback?: string): string {
     case 'do':
       return block.title ?? 'Try It';
     case 'command':
-      return block.command;
+      return block.title ?? block.command.split('\n')[0];
     case 'http':
       return block.request ? `${block.request.method} ${block.request.url}` : 'HTTP';
     case 'code':

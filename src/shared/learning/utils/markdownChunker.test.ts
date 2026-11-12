@@ -69,15 +69,16 @@ describe('parseMarkdownToBlocks', () => {
     const types = blocks.map((b) => b.type);
     expect(types).toContain('text');
     expect(types).toContain('concept');
-    expect(types).toContain('code');
+    expect(types).toContain('command');
     expect(types).toContain('recall');
     expect(types).toContain('do');
 
     const concept = blocks.find((b) => b.type === 'concept');
     expect(concept?.type === 'concept' ? concept.importance : null).toBe('core');
 
-    const code = blocks.find((b) => b.type === 'code');
-    expect(code?.type === 'code' ? code.language : null).toBe('bash');
+    const command = blocks.find((b) => b.type === 'command');
+    expect(command?.type === 'command' ? command.command : null).toBe('nmap -sV target');
+    expect(command?.type === 'command' ? command.shell : null).toBe('bash');
   });
 
   it('uses the nearest heading as the following card title', () => {
@@ -99,8 +100,41 @@ describe('parseMarkdownToBlocks', () => {
       '```',
     ].join('\n'), 'bold-heading');
 
+    const command = blocks.find((b) => b.type === 'command');
+    expect(command?.type === 'command' ? command.title : null).toBe('1. Environmental Awareness');
+  });
+
+  it('splits a terminal session into a command with its output', () => {
+    const blocks = parseMarkdownToBlocks([
+      '```bash',
+      '$ nmap -sV 10.0.0.5',
+      'Starting Nmap 7.94',
+      'PORT   STATE SERVICE',
+      '22/tcp open  ssh',
+      '```',
+    ].join('\n'), 'term');
+
+    const command = blocks.find((b) => b.type === 'command');
+    expect(command?.type === 'command' ? command.command : null).toBe('nmap -sV 10.0.0.5');
+    expect(command?.type === 'command' ? command.output : null).toBe(
+      'Starting Nmap 7.94\nPORT   STATE SERVICE\n22/tcp open  ssh',
+    );
+  });
+
+  it('keeps multi-line shell scripts as code blocks', () => {
+    const script = [
+      '#!/bin/bash',
+      'for host in 10.0.0.1 10.0.0.2; do',
+      '  if ping -c1 "$host"; then',
+      '    echo "$host is up"',
+      '  fi',
+      'done',
+    ].join('\n');
+    const blocks = parseMarkdownToBlocks('```bash\n' + script + '\n```', 'script');
+
     const code = blocks.find((b) => b.type === 'code');
-    expect(code?.type === 'code' ? code.filename : null).toBe('1. Environmental Awareness');
+    expect(code?.type === 'code' ? code.language : null).toBe('bash');
+    expect(blocks.some((b) => b.type === 'command')).toBe(false);
   });
 
   it('preserves inline markdown inside list items for rich rendering', () => {
