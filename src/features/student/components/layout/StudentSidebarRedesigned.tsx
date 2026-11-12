@@ -4,76 +4,95 @@ import {
   Home,
   BookOpen,
   ShieldCheck,
-  ShoppingBag,
   Swords,
-  Network,
-  Terminal as TerminalIcon,
   User,
-  Bell,
-  Award,
   Settings,
   LogOut,
   X,
   ChevronDown,
+  Flame,
+  Coins,
+  Trophy,
 } from 'lucide-react';
 import { useAuth } from '@/core/contexts/AuthContext';
 import { useToast } from '@/core/contexts/ToastContext';
 import api from '@/core/services/api';
 import useStudentOverview from '@/features/student/hooks/useStudentOverview';
+import { Logo } from '@/shared/components/brand';
 import { Avatar } from '@/shared/components/ui';
+import { cn } from '@/shared/utils/cn';
 
-interface NavEntry {
+interface NavChild {
   key: string;
   label: string;
-  icon: React.ElementType;
   to: string;
   badgeKey?: 'notifications';
 }
 
-interface NavSection {
-  title: string;
-  items: NavEntry[];
-  collapsible?: boolean;
-  defaultCollapsed?: boolean;
+interface NavRow {
+  key: string;
+  label: string;
+  icon: React.ElementType;
+  to?: string;
+  children?: NavChild[];
 }
 
-const NAV_SECTIONS: NavSection[] = [
+const NAV_ROWS: NavRow[] = [
   {
-    title: 'Learn',
-    items: [
-      { key: 'dashboard', label: 'Dashboard', icon: Home, to: '/dashboard' },
-      { key: 'labs', label: 'Labs', icon: BookOpen, to: '/dashboard/labs' },
+    key: 'dashboard',
+    label: 'Dashboard',
+    icon: Home,
+    to: '/dashboard',
+  },
+  {
+    key: 'learn',
+    label: 'Learn',
+    icon: BookOpen,
+    children: [
+      { key: 'labs', label: 'Labs', to: '/dashboard/labs' },
     ],
   },
   {
-    title: 'Practice',
-    collapsible: true,
-    defaultCollapsed: false,
-    items: [
-      { key: 'bootcamp', label: 'Bootcamp', icon: ShieldCheck, to: '/dashboard/bootcamps' },
-      { key: 'networks', label: 'Network', icon: Network, to: '/dashboard/networks' },
-      { key: 'terminal', label: 'Terminal', icon: TerminalIcon, to: '/dashboard/tools/terminal' },
+    key: 'practice',
+    label: 'Practice',
+    icon: ShieldCheck,
+    children: [
+      { key: 'bootcamp', label: 'Bootcamp', to: '/dashboard/bootcamps' },
+      { key: 'networks', label: 'Network', to: '/dashboard/networks' },
+      { key: 'terminal', label: 'Terminal', to: '/dashboard/tools/terminal' },
     ],
   },
   {
-    title: 'Compete',
-    collapsible: true,
-    defaultCollapsed: false,
-    items: [
-      { key: 'competitive', label: 'Competitive', icon: Swords, to: '/dashboard/competitive' },
+    key: 'compete',
+    label: 'Compete',
+    icon: Swords,
+    children: [
+      { key: 'competitive', label: 'Competitive', to: '/dashboard/competitive' },
     ],
   },
   {
-    title: 'Account',
-    items: [
-      { key: 'profile', label: 'Profile', icon: User, to: '/dashboard/profile' },
-      { key: 'certificates', label: 'Certificates', icon: Award, to: '/dashboard/certificates' },
-      { key: 'notifications', label: 'Notifications', icon: Bell, to: '/dashboard/notifications', badgeKey: 'notifications' },
-      { key: 'marketplace', label: 'Marketplace', icon: ShoppingBag, to: '/dashboard/marketplace' },
-      { key: 'settings', label: 'Settings', icon: Settings, to: '/dashboard/settings' },
+    key: 'account',
+    label: 'Account',
+    icon: User,
+    children: [
+      { key: 'profile', label: 'Profile', to: '/dashboard/profile' },
+      { key: 'certificates', label: 'Certificates', to: '/dashboard/certificates' },
+      { key: 'notifications', label: 'Notifications', to: '/dashboard/notifications', badgeKey: 'notifications' },
+      { key: 'marketplace', label: 'Marketplace', to: '/dashboard/marketplace' },
+      { key: 'settings', label: 'Settings', to: '/dashboard/settings' },
     ],
   },
 ];
+
+const ACCOUNT_ITEMS = [
+  { key: 'profile', label: 'View Profile', icon: User, to: '/dashboard/profile' },
+  { key: 'settings', label: 'Settings', icon: Settings, to: '/dashboard/settings' },
+] as const;
+
+const matchesPath = (pathname: string, to: string) => {
+  if (to === '/dashboard') return pathname === '/dashboard';
+  return pathname === to || pathname.startsWith(`${to}/`);
+};
 
 interface StudentSidebarRedesignedProps {
   isMobileOpen?: boolean;
@@ -82,16 +101,16 @@ interface StudentSidebarRedesignedProps {
 
 /**
  * StudentSidebarRedesigned — Mobile-only sidebar for student dashboard
- * 
- * Mobile (<lg): Full-screen overlay sidebar with collapsible sections
+ *
+ * Mobile (<lg): Full-screen overlay sidebar
  * - Opens from hamburger in topbar
  * - Full viewport width and height
  * - Close X button, backdrop click, navigation selection, or Escape key
  * - User profile section with avatar, name, rank
  * - Three statistics cards: Streak, CP Points, Rank
- * - Collapsible navigation sections (Practice, Compete, Develop)
- * - Footer with Terminal, Network, Logout
- * 
+ * - Expandable navigation rows that preserve the app's real groups
+ * - User row toggles an account card with profile, settings and logout
+ *
  * Desktop (lg+): Hidden - desktop uses horizontal topbar navigation
  */
 const StudentSidebarRedesigned: React.FC<StudentSidebarRedesignedProps> = ({
@@ -103,18 +122,9 @@ const StudentSidebarRedesigned: React.FC<StudentSidebarRedesignedProps> = ({
   const navigate = useNavigate();
   const location = useLocation();
   const [unread, setUnread] = useState(0);
-  // Initialize collapsed sections state (sections can be collapsed by default)
-  const [collapsedSections, setCollapsedSections] = useState<Set<string>>(() => {
-    const initial = new Set<string>();
-    NAV_SECTIONS.forEach(section => {
-      if (section.collapsible && section.defaultCollapsed) {
-        initial.add(section.title);
-      }
-    });
-    return initial;
-  });
-  
-  // Fetch student statistics
+  const [accountOpen, setAccountOpen] = useState(false);
+  const [expandedRows, setExpandedRows] = useState<Set<string>>(() => new Set());
+
   const { data: overview } = useStudentOverview();
 
   useEffect(() => {
@@ -131,8 +141,26 @@ const StudentSidebarRedesigned: React.FC<StudentSidebarRedesignedProps> = ({
       mounted = false;
     };
   }, []);
-  
-  // Prevent background scrolling when mobile sidebar is open
+
+  useEffect(() => {
+    if (!isMobileOpen) {
+      setAccountOpen(false);
+    }
+  }, [isMobileOpen]);
+
+  useEffect(() => {
+    if (!isMobileOpen) return;
+    setExpandedRows((prev) => {
+      const next = new Set(prev);
+      NAV_ROWS.forEach((row) => {
+        if (row.children?.some((child) => matchesPath(location.pathname, child.to))) {
+          next.add(row.key);
+        }
+      });
+      return next;
+    });
+  }, [isMobileOpen, location.pathname]);
+
   useEffect(() => {
     if (isMobileOpen) {
       document.body.style.overflow = 'hidden';
@@ -141,8 +169,7 @@ const StudentSidebarRedesigned: React.FC<StudentSidebarRedesignedProps> = ({
       };
     }
   }, [isMobileOpen]);
-  
-  // Close mobile sidebar on Escape key
+
   useEffect(() => {
     if (!isMobileOpen) return;
     const handleEscape = (e: KeyboardEvent) => {
@@ -162,37 +189,261 @@ const StudentSidebarRedesigned: React.FC<StudentSidebarRedesignedProps> = ({
     onMobileClose?.();
   };
 
-  const isSectionActive = useCallback(
-    (to: string) =>
-      to === '/dashboard' ? location.pathname === '/dashboard' : location.pathname.startsWith(to),
+  const isPathActive = useCallback(
+    (to: string) => matchesPath(location.pathname, to),
     [location.pathname],
   );
-  
-  const toggleSection = (title: string) => {
-    setCollapsedSections(prev => {
+
+  const isRowActive = useCallback(
+    (row: NavRow) => {
+      if (row.to) return isPathActive(row.to);
+      return Boolean(row.children?.some((child) => isPathActive(child.to)));
+    },
+    [isPathActive],
+  );
+
+  const toggleRow = (key: string) => {
+    setExpandedRows((prev) => {
       const next = new Set(prev);
-      if (next.has(title)) {
-        next.delete(title);
+      if (next.has(key)) {
+        next.delete(key);
       } else {
-        next.add(title);
+        next.add(key);
       }
       return next;
     });
   };
-  
-  const rankName = overview?.xpSummary?.progression?.rank ?? user?.rank ?? "Candidate";
-  
-  // Get user display info
-  const userDisplayName = user?.username || user?.email || "User";
-  
-  // Handle navigation click on mobile
+
+  const rankName = overview?.xpSummary?.progression?.rank ?? user?.rank ?? null;
+  const userDisplayName = user?.username || user?.email || 'User';
+  const streakDays = overview?.xpSummary?.streakDays;
+  const streakValue =
+    typeof streakDays === 'number' && Number.isFinite(streakDays) ? String(streakDays) : '-';
+  const overviewCp = overview?.xpSummary?.cp;
+  const cpValue = typeof user?.cp === 'number' ? user.cp : overviewCp;
+  const cpDisplay =
+    typeof cpValue === 'number' && Number.isFinite(cpValue) ? cpValue.toLocaleString() : '-';
+  const rankDisplay = rankName || '-';
+
+  const statCards = [
+    { key: 'streak', label: 'Streak', value: streakValue, icon: Flame, accent: true },
+    { key: 'cp', label: 'CP Points', value: cpDisplay, icon: Coins, accent: false },
+    { key: 'rank', label: 'Rank', value: rankDisplay, icon: Trophy, accent: false },
+  ];
+
   const handleNavClick = () => {
     if (isMobileOpen) {
       onMobileClose?.();
     }
   };
-  
-  // Only render mobile sidebar (desktop uses horizontal topbar)
+
+  const renderUserRow = (inCard = false) => (
+    <button
+      type="button"
+      onClick={() => setAccountOpen((open) => !open)}
+      aria-expanded={accountOpen}
+      aria-controls="mobile-account-panel"
+      className={cn(
+        'flex w-full items-center gap-[14px] rounded-xl text-left transition-colors focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-accent',
+        inCard ? 'min-h-[60px]' : 'min-h-[60px] px-2 hover:bg-surface-raised',
+      )}
+    >
+      <Avatar name={userDisplayName} size={60} shape="square" />
+      <span className="min-w-0 flex-1">
+        <span className="block truncate text-[24px] font-bold leading-tight text-text-primary">
+          {userDisplayName}
+        </span>
+        <span className="mt-0.5 block truncate text-[16px] leading-tight text-text-muted">
+          {rankDisplay}
+        </span>
+      </span>
+      <ChevronDown
+        className={cn(
+          'h-6 w-6 shrink-0 text-text-muted transition-transform duration-150',
+          accountOpen && 'rotate-180',
+        )}
+        aria-hidden="true"
+      />
+    </button>
+  );
+
+  const renderNavRow = (row: NavRow) => {
+    const Icon = row.icon;
+    const active = isRowActive(row);
+    const hasChildren = Boolean(row.children?.length);
+    const expanded = expandedRows.has(row.key);
+    const rowClass = cn(
+      'flex min-h-[64px] w-full items-center gap-5 rounded-xl px-3 text-left transition-colors focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-accent',
+      active ? 'bg-accent/10 text-accent' : 'text-text-primary hover:bg-surface-raised',
+    );
+    const labelClass = 'flex-1 truncate text-[20px] font-semibold';
+
+    if (!hasChildren && row.to) {
+      return (
+        <NavLink
+          key={row.key}
+          to={row.to}
+          end={row.to === '/dashboard'}
+          onClick={handleNavClick}
+          className={rowClass}
+        >
+          <Icon className="h-[26px] w-[26px] shrink-0 text-accent" strokeWidth={2} aria-hidden="true" />
+          <span className={labelClass}>{row.label}</span>
+        </NavLink>
+      );
+    }
+
+    return (
+      <div key={row.key}>
+        <button
+          type="button"
+          onClick={() => toggleRow(row.key)}
+          aria-expanded={expanded}
+          aria-controls={`mobile-nav-${row.key}`}
+          className={rowClass}
+        >
+          <Icon className="h-[26px] w-[26px] shrink-0 text-accent" strokeWidth={2} aria-hidden="true" />
+          <span className={labelClass}>{row.label}</span>
+          <ChevronDown
+            className={cn(
+              'h-6 w-6 shrink-0 text-text-muted transition-transform duration-150',
+              expanded && 'rotate-180',
+            )}
+            aria-hidden="true"
+          />
+        </button>
+
+        {expanded && row.children?.length ? (
+          <ul id={`mobile-nav-${row.key}`} className="mt-1 space-y-1">
+            {row.children.map((child) => {
+              const childActive = isPathActive(child.to);
+              return (
+                <li key={child.key}>
+                  <NavLink
+                    to={child.to}
+                    onClick={handleNavClick}
+                    className={cn(
+                      'flex min-h-[56px] items-center gap-3 rounded-xl pl-[46px] pr-3 text-[18px] transition-colors focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-accent',
+                      childActive
+                        ? 'bg-accent/10 font-medium text-accent'
+                        : 'text-text-secondary hover:bg-surface-raised hover:text-text-primary',
+                    )}
+                  >
+                    <span className="flex-1 truncate">{child.label}</span>
+                    {child.badgeKey === 'notifications' && unread > 0 && (
+                      <span className="flex h-5 min-w-5 items-center justify-center rounded-full bg-accent px-1 text-[11px] font-medium tabular-nums text-on-accent">
+                        {unread > 99 ? '99+' : unread}
+                      </span>
+                    )}
+                  </NavLink>
+                </li>
+              );
+            })}
+          </ul>
+        ) : null}
+      </div>
+    );
+  };
+
+  const renderAccountCard = () => (
+    <div id="mobile-account-panel" className="px-3 pt-2">
+      <div className="rounded-xl border border-border-subtle bg-surface p-3.5">
+        {renderUserRow(true)}
+
+        <div className="mt-2 border-t border-border-subtle pt-2">
+          {ACCOUNT_ITEMS.map((item) => {
+            const Icon = item.icon;
+            return (
+              <NavLink
+                key={item.key}
+                to={item.to}
+                onClick={handleNavClick}
+                className={({ isActive }) =>
+                  cn(
+                    'flex min-h-[64px] items-center gap-5 rounded-xl px-2 text-[20px] font-medium transition-colors focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-accent',
+                    isActive ? 'text-accent' : 'text-text-primary hover:bg-surface-raised',
+                  )
+                }
+              >
+                <Icon className="h-[26px] w-[26px] shrink-0" strokeWidth={1.8} aria-hidden="true" />
+                <span className="flex-1 truncate">{item.label}</span>
+              </NavLink>
+            );
+          })}
+
+          <button
+            type="button"
+            onClick={handleLogout}
+            className="flex min-h-[64px] w-full items-center gap-5 rounded-xl px-2 text-left text-[20px] font-medium text-text-primary transition-colors hover:bg-surface-raised focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-accent"
+          >
+            <LogOut className="h-[26px] w-[26px] shrink-0" strokeWidth={1.8} aria-hidden="true" />
+            <span className="flex-1 truncate">Log Out</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+
+  const renderSidebarContent = () => (
+    <>
+      <div className="flex h-[120px] shrink-0 items-center justify-between px-5">
+        <Link
+          to="/dashboard"
+          onClick={handleNavClick}
+          aria-label="QYVORA dashboard"
+          className="flex items-center rounded-md focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+        >
+          <Logo variant="mark" size="lg" />
+        </Link>
+
+        <button
+          type="button"
+          onClick={onMobileClose}
+          aria-label="Close menu"
+          className="flex h-11 w-11 items-center justify-center rounded-lg text-text-secondary transition-colors hover:bg-surface-raised hover:text-text-primary focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-accent"
+        >
+          <X className="h-7 w-7" aria-hidden="true" />
+        </button>
+      </div>
+
+      <div className="custom-scrollbar sidebar-scroll flex-1 overflow-y-auto pb-[calc(1rem+env(safe-area-inset-bottom))]">
+        {accountOpen ? (
+          renderAccountCard()
+        ) : (
+          <>
+            <div className="px-5 pt-2">{renderUserRow()}</div>
+
+            <div className="mt-6 grid grid-cols-3 gap-[14px] px-5">
+              {statCards.map(({ key, label, value, icon: Icon, accent }) => (
+                <div
+                  key={key}
+                  className="flex h-[78px] flex-col items-center justify-center gap-1 rounded-xl border border-border-subtle bg-surface px-2"
+                >
+                  <span className="flex min-w-0 items-center gap-1.5">
+                    <Icon
+                      className={cn('h-4 w-4 shrink-0', accent ? 'text-accent' : 'text-text-muted')}
+                      aria-hidden="true"
+                    />
+                    <span className="truncate text-[19px] font-bold leading-none tabular-nums text-text-primary">
+                      {value}
+                    </span>
+                  </span>
+                  <span className="text-[14px] leading-none text-text-muted">{label}</span>
+                </div>
+              ))}
+            </div>
+
+            <p className="mb-3 mt-7 px-6 text-[14px] text-text-muted">Menu</p>
+
+            <nav aria-label="Primary" className="px-3">
+              {NAV_ROWS.map(renderNavRow)}
+            </nav>
+          </>
+        )}
+      </div>
+    </>
+  );
+
   const mobileSidebar = isMobileOpen && (
     <>
       {/* Backdrop */}
@@ -204,156 +455,16 @@ const StudentSidebarRedesigned: React.FC<StudentSidebarRedesignedProps> = ({
 
       {/* Full-screen sidebar — intentionally covers the topbar on mobile. */}
       <aside
-        className="fixed inset-0 z-[130] flex h-dvh w-full flex-col overflow-hidden border-r border-border-subtle bg-surface pt-[var(--app-safe-top,0px)] lg:hidden"
+        className="fixed inset-0 z-[130] flex h-dvh w-full flex-col overflow-hidden bg-canvas pt-[var(--app-safe-top,0px)] lg:hidden"
         role="dialog"
         aria-modal="true"
         aria-label="Navigation menu"
       >
-        {renderSidebarContent(true)}
+        {renderSidebarContent()}
       </aside>
     </>
   );
-  
-  function renderSidebarContent(isMobile: boolean) {
-    const showFullContent = true; // Mobile sidebar always shows full content
-    
-    return (
-      <>
-        {/* Menu toolbar */}
-        <div className="flex h-20 items-center justify-between px-5">
-          <span className="type-label uppercase tracking-[0.12em] text-text-tertiary">
-            Menu
-          </span>
 
-          <div className="flex items-center gap-1">
-            {isMobile && (
-              <button
-                type="button"
-                onClick={onMobileClose}
-                aria-label="Close menu"
-                className="flex min-h-[48px] min-w-[48px] items-center justify-center rounded-lg text-text-secondary transition-colors hover:bg-surface-raised hover:text-text-primary focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-accent"
-              >
-                <X className="h-6 w-6" aria-hidden="true" />
-              </button>
-            )}
-          </div>
-        </div>
-        
-        {/* Scrollable Content */}
-        <div className="custom-scrollbar sidebar-scroll flex-1 overflow-y-auto">
-          {/* User Profile Section (only when expanded/mobile) */}
-          {showFullContent && (
-            <div className="px-5 py-5">
-              <Link
-                to="/dashboard/profile"
-                onClick={handleNavClick}
-                className="group flex items-center gap-3 rounded-xl p-2 transition-colors hover:bg-surface-raised focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-accent"
-              >
-                {/* Avatar */}
-                <Avatar name={userDisplayName} size={48} ring />
-
-                {/* User Info */}
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-2">
-                    <p className="truncate text-[15px] font-medium text-text-primary">
-                      {userDisplayName}
-                    </p>
-                  </div>
-                  <p className="text-sm text-text-muted">
-                    {rankName}
-                  </p>
-                </div>
-              </Link>
-            </div>
-          )}
-          
-          {/* Navigation */}
-          <nav aria-label="Primary" className="px-3 py-4">
-            {NAV_SECTIONS.map((section) => {
-                  const isSectionCollapsed = collapsedSections.has(section.title);
-                  const showSectionContent = !isSectionCollapsed || !showFullContent;
-                  
-                  return (
-                    <section key={section.title} className="mb-6">
-                      {showFullContent && (
-                        <div className="mb-2 px-3">
-                          <div className="flex items-center justify-between">
-                            <h3 className="text-xs font-medium uppercase tracking-[0.08em] text-text-muted">
-                              {section.title}
-                            </h3>
-                            {section.collapsible && (
-                              <button
-                                type="button"
-                                onClick={() => toggleSection(section.title)}
-                                aria-expanded={!isSectionCollapsed}
-                                className="flex h-6 w-6 items-center justify-center rounded text-accent transition-all duration-200 hover:bg-accent/10 focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-accent"
-                              >
-                                <ChevronDown
-                                  className={`h-4 w-4 transition-transform duration-200 ${isSectionCollapsed ? '-rotate-90' : ''}`}
-                                  aria-hidden="true"
-                                />
-                              </button>
-                            )}
-                          </div>
-                        </div>
-                      )}
-                      
-                      {showSectionContent && (
-                        <ul className="space-y-0.5">
-                          {section.items.map((item) => {
-                            const Icon = item.icon;
-                            const active = isSectionActive(item.to);
-                            return (
-                              <li key={item.key}>
-                                <NavLink
-                                  to={item.to}
-                                  onClick={handleNavClick}
-                                  data-tour-id={item.key === 'profile' ? 'tour-profile-sidebar' : undefined}
-                                  className={`relative flex min-h-[48px] items-center gap-3 rounded-lg px-3 py-2 text-[15px] transition-colors focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-accent ${
-                                    active ? 'bg-accent/10 font-medium text-accent' : 'text-text-secondary hover:bg-surface-raised hover:text-text-primary'
-                                  }`}
-                                >
-                                  <Icon
-                                    className={`h-[18px] w-[18px] shrink-0 ${active ? 'text-accent' : 'text-text-muted'}`}
-                                    strokeWidth={active ? 2.2 : 1.8}
-                                    aria-hidden="true"
-                                  />
-                                  <span className="flex-1 truncate">{item.label}</span>
-                                  {item.badgeKey === 'notifications' && unread > 0 && (
-                                    <span className="flex h-5 min-w-5 items-center justify-center rounded-full bg-accent px-1 text-[11px] font-medium text-on-accent tabular-nums">
-                                      {unread > 99 ? '99+' : unread}
-                                    </span>
-                                  )}
-                                </NavLink>
-                              </li>
-                            );
-                      })}
-                        </ul>
-                      )}
-                    </section>
-                  );
-                })}
-          </nav>
-        </div>
-        
-        {/* Footer - Logout only */}
-        <div className="px-3 pb-[calc(1rem+env(safe-area-inset-bottom))] pt-4">
-          {/* Logout Button */}
-          <button
-            type="button"
-            onClick={handleLogout}
-            title="Log out"
-            aria-label="Log out"
-            className="flex min-h-[48px] w-full items-center gap-3 rounded-lg border border-semantic-danger/30 px-3 py-2 text-[15px] font-medium text-semantic-danger transition-colors hover:bg-semantic-danger/10 focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-semantic-danger"
-          >
-            <LogOut className="h-[18px] w-[18px] shrink-0" aria-hidden="true" />
-            <span>Sign out</span>
-          </button>
-        </div>
-      </>
-    );
-  }
-  
   return (
     <>
       {mobileSidebar}

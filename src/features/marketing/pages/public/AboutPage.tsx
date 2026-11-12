@@ -13,7 +13,7 @@ const AboutPage: React.FC = () => {
 
   const tiles = [
     { key: 'team', to: '/team', icon: <Users className="h-5 w-5" aria-hidden="true" />, title: 'The team', desc: 'Discover everyone working at QYVORA across leadership, security, and engineering.', cta: 'Meet the team' },
-    { key: 'leadership', to: '/leadership', icon: <Shield className="h-5 w-5" aria-hidden="true" />, title: 'Leadership', desc: 'The six founding and executive leaders steering QYVORA\'s mission and operations.', cta: 'Meet the leadership' },
+    { key: 'leadership', to: '/leadership', icon: <Shield className="h-5 w-5" aria-hidden="true" />, title: 'Leadership', desc: 'The five founding and executive leaders steering QYVORA\'s mission and operations.', cta: 'Meet the leadership' },
     { key: 'quiteroot', to: '/quiteroot', icon: <FlaskConical className="h-5 w-5" aria-hidden="true" />, title: 'Quiteroot', desc: 'QYVORA\'s technical team — a Tech Team and a Security Team, with every role published.', cta: 'Explore Quiteroot' },
     { key: 'contact', to: '/contact', icon: <PhoneCall className="h-5 w-5" aria-hidden="true" />, title: 'Contact', desc: 'Reach the desk directly: partnerships, services, and research inquiries.', cta: 'Contact the desk' },
     { key: 'legal', to: '/terms', icon: <ScrollText className="h-5 w-5" aria-hidden="true" />, title: 'Legal', desc: 'Terms of service governing use of the platform.', cta: 'Read the terms' },

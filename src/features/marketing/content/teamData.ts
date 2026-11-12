@@ -2,10 +2,9 @@ import wsuits6Img from '@/assets/team/wsuits6.webp';
 import sopt4Img from '@/assets/team/sopt4.webp';
 import ghostImg from '@/assets/quiteroot/WhatsApp Image 2026-07-16 at 10.45.41 PM.webp';
 import karimHamidImg from '@/assets/team/karim_hamid.webp';
-import mohammedRafiqImg from '@/assets/team/mohammed_rafiq.webp';
 
 /**
- * QYVORA leadership — the six founding and executive roles: CEO, COO, CFO, CMO, HRM, CM.
+ * QYVORA leadership — the five founding and executive roles: CEO, COO, CMO, HRM, CM.
  *
  * Quiteroot is QYVORA's technical community and is a separate structure, not
  * leadership. Its members are placed by assessed capability rather than by
@@ -33,9 +32,9 @@ export interface TeamMember {
   profile: string;
   disciplines: string[];
   location?: string;
-  image: string;
-  width: number;
-  height: number;
+  image?: string;
+  width?: number;
+  height?: number;
   socials: TeamSocials;
 }
 
@@ -108,28 +107,12 @@ export const teamData: TeamMember[] = [
     },
   },
   {
-    id: 'mohammedRafiq',
-    name: 'Mohammed Rafiq',
-    role: 'CFO',
-    bio: 'Chief Financial Officer managing QYVORA\'s financial strategy, budgets, and accounting operations.',
-    profile: 'Mohammed Rafiq serves as QYVORA\'s Chief Financial Officer, overseeing the company\'s financial planning, risk management, and record-keeping. His work ensures the business maintains sound financial health as it scales its platform and services across Africa.',
-    disciplines: ['Financial planning', 'Risk management', 'Business operations'],
-    location: 'Ghana',
-    image: mohammedRafiqImg,
-    width: 560,
-    height: 560,
-    socials: {},
-  },
-  {
     id: 'communityManager',
     name: 'Community Manager',
     role: 'CM',
     bio: 'Community Manager position - building and nurturing QYVORA\'s global cybersecurity community.',
     profile: 'The Community Manager role at QYVORA focuses on building engagement across the platform\'s user base, managing community forums, organizing events, and fostering a collaborative learning environment for security practitioners. This position is currently being filled.',
     disciplines: ['Community building', 'Content moderation', 'Event management'],
-    image: karimHamidImg, // Placeholder - will be updated when actual CM is appointed
-    width: 560,
-    height: 560,
     socials: {},
   },
 ];

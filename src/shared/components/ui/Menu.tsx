@@ -9,6 +9,7 @@ interface MenuProps {
   className?: string;
   labelledBy?: string;
   id?: string;
+  autoFocusFirst?: boolean;
 }
 
 /**
@@ -16,13 +17,13 @@ interface MenuProps {
  * Handles Escape, outside click, first-item focus and Up/Down/Home/End.
  */
 const Menu = React.forwardRef<HTMLDivElement, MenuProps>(
-  ({ open, onClose, children, className, labelledBy, id }, ref) => {
+  ({ open, onClose, children, className, labelledBy, id, autoFocusFirst = true }, ref) => {
     const internalRef = useRef<HTMLDivElement | null>(null);
 
     useEffect(() => {
       if (!open) return;
       const items = internalRef.current?.querySelectorAll<HTMLElement>('[role="menuitem"]');
-      items?.[0]?.focus();
+      if (autoFocusFirst) items?.[0]?.focus();
 
       const onPointerDown = (event: PointerEvent) => {
         const target = event.target as Node;
@@ -43,7 +44,7 @@ const Menu = React.forwardRef<HTMLDivElement, MenuProps>(
         document.removeEventListener('pointerdown', onPointerDown);
         document.removeEventListener('keydown', onKey);
       };
-    }, [open, onClose]);
+    }, [open, onClose, autoFocusFirst]);
 
     if (!open) return null;
 

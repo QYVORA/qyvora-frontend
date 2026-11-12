@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Identicon from '@/shared/components/Identicon';
 import { cn } from '@/shared/utils/cn';
 
-type AvatarSize = 24 | 32 | 40 | 48 | 64 | 80;
+type AvatarSize = 24 | 32 | 40 | 48 | 60 | 64 | 80;
 
 interface AvatarProps {
   /** Stable handle/name used for the identicon and alt text. */
@@ -13,6 +13,8 @@ interface AvatarProps {
   ring?: boolean;
   /** Surface the ring gap should match (defaults to the page canvas). */
   ringOffsetClassName?: string;
+  /** Shape of the avatar. Defaults to the canonical circle. */
+  shape?: 'circle' | 'square';
   className?: string;
 }
 
@@ -21,13 +23,15 @@ const SIZE_CLASS: Record<AvatarSize, string> = {
   32: 'h-8 w-8 text-xs',
   40: 'h-10 w-10 text-sm',
   48: 'h-12 w-12 text-base',
+  60: 'h-[60px] w-[60px] text-lg',
   64: 'h-16 w-16 text-lg',
   80: 'h-20 w-20 text-xl',
 };
 
 /**
- * Circular avatar: image → identicon fallback → initial. 1px border by
- * default, optional accent ring.
+ * Avatar: image → identicon fallback → initial. 1px border by default,
+ * optional accent ring. Circles are canonical; `shape="square"` is for
+ * surfaces that explicitly use an 8px-radius avatar tile.
  */
 const Avatar: React.FC<AvatarProps> = ({
   name,
@@ -35,6 +39,7 @@ const Avatar: React.FC<AvatarProps> = ({
   size = 40,
   ring,
   ringOffsetClassName = 'ring-offset-canvas',
+  shape = 'circle',
   className,
 }) => {
   const [broken, setBroken] = useState(false);
@@ -43,7 +48,8 @@ const Avatar: React.FC<AvatarProps> = ({
   return (
     <span
       className={cn(
-        'relative inline-flex shrink-0 items-center justify-center overflow-hidden rounded-full bg-surface-raised',
+        'relative inline-flex shrink-0 items-center justify-center overflow-hidden bg-surface-raised',
+        shape === 'square' ? 'rounded-lg' : 'rounded-full',
         ring
           ? cn('ring-2 ring-accent ring-offset-2', ringOffsetClassName)
           : 'border border-border-subtle',

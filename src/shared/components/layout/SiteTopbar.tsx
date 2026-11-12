@@ -86,7 +86,7 @@ const SiteTopbar: React.FC<SiteTopbarProps> = ({
           <Link
             to={logoTo}
             aria-label={logoLabel}
-            className="flex shrink-0 items-center rounded-md focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+            className="hidden shrink-0 items-center rounded-md focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent lg:flex"
           >
             <Logo variant="mark" size="sm" />
           </Link>
@@ -101,7 +101,9 @@ const SiteTopbar: React.FC<SiteTopbarProps> = ({
                     item={item}
                     active={active}
                     open={openKey === item.key}
-                    onOpenChange={(open) => setOpenKey(open ? item.key : null)}
+                    onOpenChange={(open) =>
+                      setOpenKey((current) => (open ? item.key : current === item.key ? null : current))
+                    }
                   />
                 );
               }

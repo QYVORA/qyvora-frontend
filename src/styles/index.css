@@ -1470,14 +1470,14 @@ html.qyvora-cursor .cursor-help {
   pointer-events: none;
 }
 
-/* Square click flash. This burst is only created for an enabled button click. */
+/* Circular click flash. This burst is only created for an enabled button click. */
 .cc-ripple {
   position: absolute;
   left: -20px;
   top: -20px;
   width: 40px;
   height: 40px;
-  border-radius: 8px;
+  border-radius: 50%;
   border: 1.5px solid var(--color-accent);
   opacity: 0;
   animation: cc-burst-ripple var(--cc-burst-duration, 380ms) var(--ease-smooth) forwards;
@@ -1489,7 +1489,7 @@ html.qyvora-cursor .cursor-help {
   top: -2.5px;
   width: 5px;
   height: 5px;
-  border-radius: 1px;
+  border-radius: 50%;
   background: var(--color-accent);
   opacity: 0;
   animation: cc-burst-spark var(--cc-burst-duration, 360ms) var(--ease-smooth) forwards;

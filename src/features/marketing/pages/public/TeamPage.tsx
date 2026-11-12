@@ -7,6 +7,7 @@ import PublicContainer from '@/shared/components/layout/PublicContainer';
 import Badge from '@/shared/components/ui/Badge';
 import { teamData, type TeamMember } from '@/features/marketing/content/teamData';
 import { QUITEROOT_TEAMS, type QuiterootRole, type QuiterootHolder } from '@/features/marketing/content/quiterootData';
+import TeamPortrait from '@/features/marketing/components/team/TeamPortrait';
 
 const SOCIAL_ICONS: Record<string, React.ElementType> = {
   github: BrandGithubIcon,
@@ -44,16 +45,12 @@ const SocialLinks = ({ member }: { member: TeamMember | QuiterootHolder }) => {
 
 const TeamMemberCard = ({ member, handle }: { member: TeamMember | QuiterootHolder; handle?: string }) => (
   <article className="flex h-full flex-col overflow-hidden rounded-2xl border border-border-subtle bg-surface">
-    <div className="relative aspect-[4/3] w-full overflow-hidden bg-surface-raised">
-      <img
-        src={'image' in member ? member.image : ''}
-        alt={member.name}
-        width={'imageWidth' in member ? member.imageWidth : 560}
-        height={'imageHeight' in member ? member.imageHeight : 560}
-        loading="lazy"
-        className="h-full w-full object-cover object-[center_20%] transition-transform duration-700 hover:scale-105"
-      />
-    </div>
+    <TeamPortrait
+      name={member.name}
+      image={member.image}
+      width={'role' in member ? member.width : member.imageWidth}
+      height={'role' in member ? member.height : member.imageHeight}
+    />
 
     <div className="flex flex-1 flex-col p-5">
       <div className="flex items-center justify-between gap-3">
@@ -156,7 +153,7 @@ const TeamPage = () => {
               Executive Team
             </h2>
             <p className="type-body text-text-secondary max-w-3xl">
-              QYVORA's founding and executive leadership — the six core positions responsible for the company's direction, operations, and growth.
+              QYVORA's founding and executive leadership — the five core positions responsible for the company's direction, operations, and growth.
             </p>
           </div>
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">

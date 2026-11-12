@@ -1324,7 +1324,7 @@ const routeContent: Record<string, RouteContent> = {
       {
         heading: 'Three organizational sections',
         bullets: [
-          'Founding & Leadership — Six executive positions steering the company',
+          'Founding & Leadership — Five executive positions steering the company',
           'QYVORA Security Team — Offensive security operators and researchers',
           'QYVORA Tech Team — Engineers and designers building the platform',
         ],
@@ -1337,16 +1337,15 @@ const routeContent: Record<string, RouteContent> = {
   },
   '/leadership': {
     title: 'Leadership | QYVORA',
-    description: 'QYVORA\'s founding and executive leadership team - the six core positions driving the company\'s vision and operations.',
+    description: 'QYVORA\'s founding and executive leadership team - the five core positions driving the company\'s vision and operations.',
     h1: 'Founding & Executive Team',
-    lead: 'The six founding and executive leaders steering QYVORA across Africa\'s cybersecurity landscape.',
+    lead: 'The five founding and executive leaders steering QYVORA across Africa\'s cybersecurity landscape.',
     sections: [
       {
         heading: 'Leadership positions',
         bullets: [
           'CEO - Chief Executive Officer',
           'COO - Chief Operating Officer',
-          'CFO - Chief Financial Officer',
           'CMO - Chief Marketing Officer',
           'HRM - Human Resources Manager',
           'CM - Community Manager',

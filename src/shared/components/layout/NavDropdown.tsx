@@ -34,6 +34,7 @@ interface NavDropdownProps {
 const NavDropdown: React.FC<NavDropdownProps> = ({ item, active, open, onOpenChange }) => {
   const triggerRef = useRef<HTMLButtonElement>(null);
   const hoverTimer = useRef<number | undefined>(undefined);
+  const openedByHover = useRef(false);
   const id = `site-nav-${item.key}-menu`;
   const Icon = item.icon;
 
@@ -44,7 +45,10 @@ const NavDropdown: React.FC<NavDropdownProps> = ({ item, active, open, onOpenCha
   const openOnHover = () => {
     if (!canHover()) return;
     window.clearTimeout(hoverTimer.current);
-    hoverTimer.current = window.setTimeout(() => onOpenChange(true), 120);
+    hoverTimer.current = window.setTimeout(() => {
+      openedByHover.current = true;
+      onOpenChange(true);
+    }, 120);
   };
 
   const closeOnHover = () => {
@@ -63,10 +67,14 @@ const NavDropdown: React.FC<NavDropdownProps> = ({ item, active, open, onOpenCha
         aria-haspopup="true"
         aria-expanded={open}
         aria-controls={id}
-        onClick={() => onOpenChange(!open)}
+        onClick={() => {
+          openedByHover.current = false;
+          onOpenChange(!open);
+        }}
         onKeyDown={(event) => {
           if (event.key === 'ArrowDown') {
             event.preventDefault();
+            openedByHover.current = false;
             onOpenChange(true);
           }
         }}
@@ -97,6 +105,7 @@ const NavDropdown: React.FC<NavDropdownProps> = ({ item, active, open, onOpenCha
         id={id}
         open={open}
         onClose={() => onOpenChange(false)}
+        autoFocusFirst={!openedByHover.current}
         className="absolute left-0 top-full mt-2 min-w-[240px]"
         labelledBy={`${id}-trigger`}
       >

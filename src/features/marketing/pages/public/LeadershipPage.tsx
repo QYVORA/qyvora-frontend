@@ -5,6 +5,7 @@ import SEO from '@/shared/components/SEO';
 import PageHeader from '@/shared/components/ui/PageHeader';
 import PublicContainer from '@/shared/components/layout/PublicContainer';
 import { teamData, type TeamMember } from '@/features/marketing/content/teamData';
+import TeamPortrait from '@/features/marketing/components/team/TeamPortrait';
 
 const SOCIAL_ICONS: Record<string, React.ElementType> = {
   github: BrandGithubIcon,
@@ -39,16 +40,7 @@ const SocialLinks = ({ member }: { member: TeamMember }) => (
 
 const LeaderCard = ({ member }: { member: TeamMember }) => (
   <article className="flex h-full flex-col overflow-hidden rounded-2xl border border-border-subtle bg-surface">
-    <div className="relative aspect-[4/3] w-full overflow-hidden bg-surface-raised">
-      <img
-        src={member.image}
-        alt={member.name}
-        width={member.width}
-        height={member.height}
-        loading="lazy"
-        className="h-full w-full object-cover object-[center_20%] transition-transform duration-700 hover:scale-105"
-      />
-    </div>
+    <TeamPortrait name={member.name} image={member.image} width={member.width} height={member.height} />
 
     <div className="flex flex-1 flex-col p-5">
       <div className="flex items-center justify-between gap-3">
@@ -110,7 +102,7 @@ const LeaderCard = ({ member }: { member: TeamMember }) => (
 /**
  * Leadership page — QYVORA's founding and executive team only.
  * 
- * The six core leadership positions responsible for the company's direction,
+ * The five core leadership positions responsible for the company's direction,
  * strategy, and operations. For the complete team directory including security
  * and tech teams, visit /team.
  */
@@ -119,14 +111,14 @@ const LeadershipPage = () => {
     <div className="min-h-dvh bg-canvas">
       <SEO
         title="Leadership - QYVORA"
-        description="QYVORA's founding and executive leadership team | the six core positions driving the company's vision and operations."
+        description="QYVORA's founding and executive leadership team | the five core positions driving the company's vision and operations."
         breadcrumbName="Leadership"
       />
       <PublicContainer className="pb-20 pt-24 md:pb-24 md:pt-28 lg:pt-32">
         <PageHeader
           kicker="QYVORA · Leadership"
           title="Founding & Executive Team"
-          description="The six founding and executive leaders steering QYVORA — responsible for the company's strategic direction, operational excellence, and organizational growth across Africa's cybersecurity landscape."
+          description="The five founding and executive leaders steering QYVORA — responsible for the company's strategic direction, operational excellence, and organizational growth across Africa's cybersecurity landscape."
           metadata={
             <span className="type-meta inline-flex items-center gap-2">
               <Users className="h-3.5 w-3.5 text-accent" aria-hidden="true" />
