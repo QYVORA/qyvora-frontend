@@ -38,6 +38,7 @@ const CommunityCard = () => {
   const [error, setError] = useState('');
   const [relationship, setRelationship] = useState<Relationship | null>(null);
   const [relationshipItems, setRelationshipItems] = useState<CommunityStudent[]>([]);
+  const [followedIds, setFollowedIds] = useState<Set<string>>(() => new Set());
 
   const loadCommunity = useCallback(async () => {
     setLoading(true);
@@ -57,10 +58,22 @@ const CommunityCard = () => {
   }, [loadCommunity]);
 
   const follow = async (student: CommunityStudent) => {
+    if (loadingId || followedIds.has(student.id)) return;
     setLoadingId(student.id);
     try {
       await api.post(`/student/community/${encodeURIComponent(student.id)}/follow`);
-      await loadCommunity();
+      // Optimistic update: keep the suggestion visible in a "Following" state
+      // instead of refetching (which made the whole list disappear).
+      setFollowedIds((ids) => new Set(ids).add(student.id));
+      setData((current) =>
+        current ? { ...current, followingCount: current.followingCount + 1 } : current,
+      );
+      setRelationshipItems((items) =>
+        relationship === 'following'
+          ? [student, ...items.filter((item) => item.id !== student.id)]
+          : items,
+      );
+      addToast(`Now following ${student.handle ? `@${student.handle}` : student.name}.`, 'success');
     } catch {
       addToast('Could not follow this operator.', 'error');
     } finally {
@@ -86,7 +99,17 @@ const CommunityCard = () => {
     try {
       await api.delete(`/student/community/${encodeURIComponent(student.id)}/follow`);
       setRelationshipItems((items) => items.filter((item) => item.id !== student.id));
-      await loadCommunity();
+      setFollowedIds((ids) => {
+        const next = new Set(ids);
+        next.delete(student.id);
+        return next;
+      });
+      setData((current) =>
+        current
+          ? { ...current, followingCount: Math.max(0, current.followingCount - 1) }
+          : current,
+      );
+      addToast(`Unfollowed ${student.handle ? `@${student.handle}` : student.name}.`, 'success');
     } catch {
       addToast('Could not unfollow this operator.', 'error');
     }
@@ -191,24 +214,28 @@ const CommunityCard = () => {
                 Suggested operators
               </h3>
               <div className="space-y-2">
-                {data.suggestions.slice(0, 3).map((student) => (
-                  <div key={student.id} className="flex items-center justify-between gap-3">
-                    <div className="min-w-0">
-                      <p className="truncate type-body-sm font-bold text-text-primary">
-                        {student.handle ? `@${student.handle}` : student.name}
-                      </p>
-                      <p className="type-meta">{student.cpPoints.toLocaleString()} CP</p>
+                {data.suggestions.slice(0, 3).map((student) => {
+                  const followed = followedIds.has(student.id);
+                  return (
+                    <div key={student.id} className="flex items-center justify-between gap-3">
+                      <div className="min-w-0">
+                        <p className="truncate type-body-sm font-bold text-text-primary">
+                          {student.handle ? `@${student.handle}` : student.name}
+                        </p>
+                        <p className="type-meta">{student.cpPoints.toLocaleString()} CP</p>
+                      </div>
+                      <Button
+                        size="sm"
+                        variant="secondary"
+                        loading={loadingId === student.id}
+                        disabled={followed}
+                        onClick={() => void follow(student)}
+                      >
+                        {followed ? 'Following' : 'Follow'}
+                      </Button>
                     </div>
-                    <Button
-                      size="sm"
-                      variant="secondary"
-                      loading={loadingId === student.id}
-                      onClick={() => void follow(student)}
-                    >
-                      Follow
-                    </Button>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             </div>
           )}
