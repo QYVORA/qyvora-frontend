@@ -18,7 +18,7 @@ export const SITE_NAME = SITE_CONFIG.brand.name;
 const ALL_SOCIAL_PROFILES = SITE_CONFIG.social.map(s => s.href);
 
 /** Public QYVORA properties for primary structured data (excludes WhatsApp community invite) */
-const REAL_SOCIAL_PROFILES = new Set(['x', 'linkedin', 'github', 'youtube', 'medium', 'tiktok']);
+const REAL_SOCIAL_PROFILES = new Set(['x', 'linkedin', 'github', 'youtube', 'medium', 'devto', 'tiktok']);
 
 export const toAbsoluteUrl = (pathOrUrl: string): string =>
   pathOrUrl.startsWith('http') ? pathOrUrl : `${SITE_URL}${pathOrUrl}`;

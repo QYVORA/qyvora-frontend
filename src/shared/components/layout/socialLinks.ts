@@ -6,6 +6,7 @@ import {
   BrandGithubIcon,
   BrandXIcon,
   BrandMediumIcon,
+  BrandDevToIcon,
   BrandTikTokIcon,
 } from '@/shared/components/icons';
 
@@ -22,6 +23,7 @@ export const SOCIAL_LINKS: SocialLink[] = [
   { key: 'github',   label: 'GitHub',   href: 'https://github.com/QYVORA',             Icon: BrandGithubIcon },
   { key: 'youtube',  label: 'YouTube',  href: 'https://www.youtube.com/@QYVORASEC',     Icon: BrandYoutubeIcon },
   { key: 'medium',   label: 'Medium',   href: 'https://medium.com/@qyvorasec',         Icon: BrandMediumIcon },
+  { key: 'devto',    label: 'DEV',      href: 'https://dev.to/qyvorasec',              Icon: BrandDevToIcon },
   { key: 'tiktok',   label: 'TikTok',   href: 'https://www.tiktok.com/@qyvorasecurity', Icon: BrandTikTokIcon },
   { key: 'whatsapp', label: 'WhatsApp', href: 'https://whatsapp.com/channel/0029Vb8Aw6L5EjxzLY6L2m1V', Icon: BrandWhatsAppIcon },
 ];

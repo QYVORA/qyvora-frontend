@@ -85,6 +85,7 @@ export { default as BrandYoutubeIcon } from './BrandYoutubeIcon';
 export { default as BrandGithubIcon } from './BrandGithubIcon';
 export { default as BrandGoogleIcon } from './BrandGoogleIcon';
 export { default as BrandMediumIcon } from './BrandMediumIcon';
+export { default as BrandDevToIcon } from './BrandDevToIcon';
 export { default as BrandTikTokIcon } from './BrandTikTokIcon';
 export { default as BrandInstagramIcon } from './BrandInstagramIcon';
 

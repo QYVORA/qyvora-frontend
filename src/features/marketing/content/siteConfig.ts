@@ -90,6 +90,14 @@ export const SITE_CONFIG = {
       action: 'Read',
     },
     {
+      key: 'devto',
+      label: 'Read on DEV',
+      handle: '@qyvorasec',
+      desc: 'Deep-dive tutorials, walkthroughs, and technical articles.',
+      href: 'https://dev.to/qyvorasec',
+      action: 'Read',
+    },
+    {
       key: 'tiktok',
       label: 'Follow on TikTok',
       handle: '@qyvorasecurity',
