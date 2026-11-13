@@ -2682,6 +2682,11 @@ grep -oE "\b([0-9]{1,3}\\.){3}[0-9]{1,3}\b" scan.txt | sort -u
               instruction:
                 `Nmap (Network Mapper) is more than a scanner; it's a protocol analyzer and service investigator. To train like a hacker is to understand exactly what each flag does to the wire and how the target reacts.
 
+\`\`\`diagram
+id: nmap-scan-types
+caption: Open, closed, and filtered — every scan result is one of these states.
+\`\`\`
+
 **Core Scan Archetypes:**
 \`\`\`bash
 # The Default 'Stealth' Scan (SYN Scan)
@@ -4053,6 +4058,11 @@ res.send("<h1>Hello " + encodeHTML(req.query.name) + "</h1>");
               title: 'The Architecture of the Injection',
               instruction:
                 `To train like a hacker is to understand the developer's assumptions. SQL Injection occurs when a program trusts user input too much, allowing that input to become part of the command itself.
+
+\`\`\`diagram
+id: sql-injection-flow
+caption: User input becomes part of the query — the flaw is the missing separation.
+\`\`\`
 
 **1. Dismantling the Query Logic:**
 Imagine a login query: \`SELECT * FROM users WHERE user = '$USER' AND pass = '$PASS'\`.
