@@ -22,6 +22,11 @@ There are two main types:
 
 Private IPs are not routable on the internet. Your router translates between private IPs (inside your network) and your public IP (outside) using a technique called NAT (Network Address Translation). This is why your phone and laptop can both browse the web at the same time through a single internet connection.
 
+\`\`\`diagram
+id: network-topology-basic
+caption: A home or office network — the internet reaches your devices through a firewall, router, and switch.
+\`\`\`
+
 Why do hackers need to understand networking? Because every attack travels over a network. To intercept traffic, you need to understand how data moves. To scan targets, you need to know about IP ranges and ports. To exploit services, you need to understand which ports are open and what protocols they speak. Networking is the foundation of everything in cybersecurity.
 
 A **port** is like a door on a computer. Each service listens on a specific port: imagine an office building where different departments have different room numbers. Port 80 is the "web department," port 22 is the "remote access department," and so on. When you connect to a server, you're not just connecting to the IP: you're connecting to a specific port where a specific service is waiting:
@@ -75,7 +80,17 @@ The practical layers you need to remember most:
 - **Layer 4 (Transport)** - TCP/UDP and ports
 - **Layer 7 (Application)**: the protocols you use daily
 
-Each layer adds its own header to the data as it travels down, like nesting envelopes inside envelopes. The receiving end strips them off layer by layer to reconstruct the original message.`, { hasQuiz: true, quiz: [
+\`\`\`diagram
+id: osi-model
+caption: Data flows down the stack on send and back up on receive.
+\`\`\`
+
+Each layer adds its own header to the data as it travels down, like nesting envelopes inside envelopes. The receiving end strips them off layer by layer to reconstruct the original message.
+
+\`\`\`diagram
+id: encapsulation
+caption: Each layer wraps the data with its own header as it travels down.
+\`\`\``, { hasQuiz: true, quiz: [
         { id: 'net-2-q1', question: 'At which OSI layer do IP addresses and routing operate?', options: ['Layer 2 (Data Link)', 'Layer 3 (Network)', 'Layer 4 (Transport)', 'Layer 7 (Application)'], correctIndex: 1, explanation: 'Layer 3 (Network) handles IP addressing and routing, determining the best path for data across networks.' },
         { id: 'net-2-q2', question: 'Which OSI layer is associated with TCP/UDP and port numbers?', options: ['Layer 3 (Network)', 'Layer 4 (Transport)', 'Layer 5 (Session)', 'Layer 6 (Presentation)'], correctIndex: 1, explanation: 'Layer 4 (Transport) handles TCP/UDP protocols and uses port numbers to direct data to the correct application.' },
         { id: 'net-2-q3', question: 'What type of attack targets the application level (HTTP, DNS) in the OSI model?', options: ['Layer 2 attack', 'Layer 3 attack', 'Layer 4 attack', 'Layer 7 attack'], correctIndex: 3, explanation: 'Layer 7 attacks target the application layer, including SQL injection, XSS, and HTTP floods.' },
@@ -92,6 +107,11 @@ Each layer adds its own header to the data as it travels down, like nesting enve
 3. ACK  → "Great, let's talk."
         → Data flows...
 4. FIN  → "Goodbye."
+\`\`\`
+
+\`\`\`diagram
+id: tcp-three-way-handshake
+caption: SYN → SYN-ACK → ACK must complete before any data flows.
 \`\`\`
 
 TCP is used for: web (HTTP), email (SMTP), SSH, file transfers (FTP).
@@ -142,6 +162,11 @@ Address: 142.250.80.46
 
 DNS uses UDP on port 53. The query goes to your configured DNS server (usually your router or an ISP), which finds the answer by asking other DNS servers.
 
+\`\`\`diagram
+id: dns-resolution
+caption: Your client asks once; the resolver does all the walking.
+\`\`\`
+
 > **Why this matters for hacking:** DNS is the backbone of internet navigation, and a frequent attack vector. DNS poisoning redirects users to malicious sites. DNS tunneling exfiltrates data by encoding it in subdomain queries. Zone transfers (\`dig axfr\`) reveal every DNS record for a domain if misconfigured, a goldmine for recon. The \`dig any\` query returns all record types, often revealing subdomains and services not otherwise visible.
 
 **Mini-challenge:** Run \`dig google.com ANY +short\` to see all DNS record types for a domain. Then \`dig google.com MX +short\` to find mail servers. Finally \`dig axfr @ns1.google.com google.com\` (this will fail — Google blocks zone transfers). Understanding which queries succeed vs fail teaches you DNS security posture.
@@ -183,6 +208,11 @@ Content-Type: text/html
 Content-Length: 1234
 
 <html>...
+\`\`\`
+
+\`\`\`diagram
+id: http-request-response
+caption: The browser sends a request; the server answers with a status, headers, and a body.
 \`\`\`
 
 **HTTP Methods:**

@@ -18,6 +18,11 @@ Here's the full process, broken down:
 
 4. Browser connects to that IP on port 443 (HTTPS). This involves a TCP three-way handshake (SYN, SYN-ACK, ACK) to establish a reliable connection, followed by a TLS handshake to negotiate encryption. Only after both handshakes complete can data flow securely.
 
+\`\`\`diagram
+id: tls-handshake
+caption: The TLS handshake negotiates encryption before any HTTP is sent.
+\`\`\`
+
 5. Browser sends an HTTP request: "Give me /". The request includes headers telling the server things like which browser you're using, what content types you accept, and cookies for authentication.
 
 6. Server processes the request and sends back HTML, CSS, and JavaScript. The response includes a status code (200 for success, 404 for not found, etc.) and the actual content.

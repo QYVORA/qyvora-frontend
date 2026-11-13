@@ -163,6 +163,40 @@ describe('parseMarkdownToBlocks', () => {
     expect(blocks.find((b) => b.type === 'breakdown')).toBeUndefined();
   });
 
+  it('emits a diagram block from a library id', () => {
+    const md = ['```diagram', 'id: osi-model', '```'].join('\n');
+    const blocks = parseMarkdownToBlocks(md, 'dg');
+    const diagram = blocks.find((b) => b.type === 'diagram');
+    expect(diagram?.type === 'diagram' ? diagram.content.id : null).toBe('osi-model');
+    expect(diagram?.type === 'diagram' ? diagram.title : null).toBe('The OSI Model');
+  });
+
+  it('lets a diagram marker override title and caption', () => {
+    const md = [
+      '```diagram',
+      'id: encapsulation',
+      'title: Wrapping Data',
+      'caption: Down the stack.',
+      '```',
+    ].join('\n');
+    const blocks = parseMarkdownToBlocks(md, 'dg2');
+    const diagram = blocks.find((b) => b.type === 'diagram');
+    expect(diagram?.type === 'diagram' ? diagram.title : null).toBe('Wrapping Data');
+    expect(diagram?.type === 'diagram' ? diagram.caption : null).toBe('Down the stack.');
+  });
+
+  it('ignores an unknown diagram id', () => {
+    const md = ['```diagram', 'id: does-not-exist', '```'].join('\n');
+    const blocks = parseMarkdownToBlocks(md, 'dg3');
+    expect(blocks.find((b) => b.type === 'diagram')).toBeUndefined();
+  });
+
+  it('ignores a diagram fence with no id', () => {
+    const md = ['```diagram', 'title: No id here', '```'].join('\n');
+    const blocks = parseMarkdownToBlocks(md, 'dg4');
+    expect(blocks.find((b) => b.type === 'diagram')).toBeUndefined();
+  });
+
   it('keeps multi-line shell scripts as code blocks', () => {
     const script = [
       '#!/bin/bash',

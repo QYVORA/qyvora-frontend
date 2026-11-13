@@ -322,6 +322,11 @@ nmap -sX target.com
 
 These work because closed ports respond with RST, but open ports ignore the packet (per RFC 793). They can bypass some stateless firewalls.
 
+\`\`\`diagram
+id: nmap-scan-types
+caption: The three port states you will see in every scan result.
+\`\`\`
+
 **ACK scan — map firewall rules:**
 \`\`\`bash
 # ACK scan, never identifies open ports, but maps firewall rules

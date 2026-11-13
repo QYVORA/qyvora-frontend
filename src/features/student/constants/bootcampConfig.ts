@@ -2031,6 +2031,11 @@ fi
 7.  **Layer 1 - Physical:** The terrain. The cables and radio waves.
     *   *Qyvora Focus:* RF Jamming, hardware implants.
 
+\`\`\`diagram
+id: osi-model
+caption: Data flows down the stack on send and back up on receive.
+\`\`\`
+
 **Command Line Reconnaissance:**
 \`\`\`bash
 # Check your local routing table (Layer 3)
@@ -2090,6 +2095,11 @@ ip link show eth0 | grep mtu
 1.  **SYN (Synchronize):** "Hello, I want to talk."
 2.  **SYN-ACK (Sync-Acknowledge):** "I hear you, let's talk."
 3.  **ACK (Acknowledge):** "Great, let's begin."
+
+\`\`\`diagram
+id: tcp-three-way-handshake
+caption: SYN → SYN-ACK → ACK must complete before any data flows.
+\`\`\`
 
 **Scanning with Precision:**
 \`\`\`bash
@@ -2318,6 +2328,11 @@ sudo tcpdump -n
               instruction:
                 `DNS (Domain Name System) is a goldmine for an Qyvora operative. It translates human names into IP addresses, but it often reveals much more about a target's internal infrastructure than intended.
 
+\`\`\`diagram
+id: dns-resolution
+caption: Your client asks once; the resolver does all the walking.
+\`\`\`
+
 **Standard Query Drills:**
 \`\`\`bash
 # Query the 'A' record (IPv4 address)
@@ -2405,6 +2420,11 @@ dig <target_domain> +noall +answer
               title: 'HTTP: The Backbone of the Web',
               instruction:
                 `To train like a hacker is to speak HTTP fluently. Every web attack starts with a request and ends with a response. You must learn to read the headers, understand the methods, and manipulate the state.
+
+\`\`\`diagram
+id: http-request-response
+caption: The browser sends a request; the server answers with a status, headers, and a body.
+\`\`\`
 
 **Mastering Curl (The Operative's Tool):**
 \`\`\`bash

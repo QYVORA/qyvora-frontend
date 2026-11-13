@@ -141,6 +141,11 @@ The first part \`-rwxr--r--\` breaks down as:
 - **Next 3**: group permissions (\`r--\` = read only)
 - **Next 3**: everyone else (\`r--\` = read only)
 
+\`\`\`diagram
+id: linux-permissions
+caption: One permission string, three sets of three bits.
+\`\`\`
+
 Change permissions with \`chmod\`:
 
 \`\`\`bash

@@ -275,6 +275,11 @@ This extracts the host, URI, and method from every HTTP request in the capture.`
     l('ws-6', 'Identifying Malicious Traffic',
       `Wireshark is an essential tool for network forensics. Here are patterns to look for.
 
+\`\`\`diagram
+id: arp-spoofing
+caption: ARP spoofing — the man-in-the-middle capture you will hunt for in Wireshark.
+\`\`\`
+
 **1. Unusual outbound connections:**
 
 \`\`\`bash

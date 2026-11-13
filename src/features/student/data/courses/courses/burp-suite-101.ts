@@ -75,6 +75,11 @@ Now all your traffic flows through Burp:
     l('burp-3', 'Intercepting Requests',
       `With the proxy running, you can **intercept** requests and modify them in real time before they reach the server.
 
+\`\`\`diagram
+id: proxy-intercept
+caption: The proxy sits between browser and server, so every message passes through your hands.
+\`\`\`
+
 When you submit a form or click a link, Burp pauses the request:
 
 \`\`\`http

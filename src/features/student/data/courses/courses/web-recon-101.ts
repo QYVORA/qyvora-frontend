@@ -8,6 +8,11 @@ export const LESSONS: Lesson[] = [
     l('recon-1', 'What is Reconnaissance?',
       `**Reconnaissance** (recon) is the first phase of any security assessment. It's about gathering information about your target before launching any attacks.
 
+\`\`\`diagram
+id: web-recon-flow
+caption: Recon is a pipeline — each step narrows the target.
+\`\`\`
+
 There are two types:
 
 **Passive Recon** — gathering information without directly interacting with the target:

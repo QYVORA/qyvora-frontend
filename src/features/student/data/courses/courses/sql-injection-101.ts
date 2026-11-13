@@ -107,6 +107,11 @@ SELECT * FROM users WHERE username = ''' AND password = 'x'
 
 The extra \`'\` breaks the string, causing a SQL syntax error. If the application shows an error, you've found a SQL injection.
 
+\`\`\`diagram
+id: sql-injection-flow
+caption: Untrusted input becomes part of the query — that is the whole bug.
+\`\`\`
+
 **Test payloads:**
 
 \`\`\`

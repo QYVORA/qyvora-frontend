@@ -22,9 +22,11 @@ import type {
   CodeBlock,
   CommandBlock,
   BreakdownBlock,
+  DiagramBlock,
   RecallBlock,
   DoBlock,
 } from '../types/blocks';
+import { getLibraryDiagram } from '../diagrams/library';
 
 // ── Helpers ──────────────────────────────────────────────────────────────────
 
@@ -394,6 +396,38 @@ export function parseBreakdownParts(
   return parts;
 }
 
+export interface ParsedDiagramMarker {
+  id: string;
+  title?: string;
+  caption?: string;
+}
+
+/**
+ * Parse a `diagram` fence body. Each non-empty line is `key: value`:
+ *
+ *   id: osi-model
+ *   title: The OSI Model
+ *   caption: Data flows down on send and back up on receive.
+ */
+export function parseDiagramMarker(text: string): ParsedDiagramMarker | null {
+  const fields: Record<string, string> = {};
+  for (const raw of text.split('\n')) {
+    const line = raw.trim();
+    if (!line) continue;
+    const match = line.match(/^([a-zA-Z]+)\s*:\s*(.+)$/);
+    if (!match) continue;
+    fields[match[1].toLowerCase()] = match[2].trim();
+  }
+
+  const id = fields.id;
+  if (!id) {
+    devWarn('diagram fence is missing an id');
+    return null;
+  }
+
+  return { id, title: fields.title, caption: fields.caption };
+}
+
 export interface MarkdownToBlocksOptions {
   /**
    * Preserve paragraph-level prose instead of splitting it into short card
@@ -475,6 +509,29 @@ export function markdownToBlocks(
             }
           } else {
             devWarn('breakdown fence is not preceded by a code fence; ignoring it');
+          }
+          break;
+        }
+
+        // A `diagram` fence references a reviewed definition in the library.
+        if (lang.trim().toLowerCase() === 'diagram') {
+          const marker = parseDiagramMarker(segment.code);
+          if (marker) {
+            const definition = getLibraryDiagram(marker.id);
+            if (definition) {
+              const diagram: DiagramBlock = {
+                type: 'diagram',
+                id: nextId('diagram'),
+                title: marker.title ?? definition.title,
+                caption: marker.caption,
+                content: definition,
+              };
+              if (!diagram.title && sectionTitle) diagram.title = sectionTitle;
+              blocks.push(diagram);
+              sectionTitle = null;
+            } else {
+              devWarn(`unknown diagram id "${marker.id}"; ignoring marker`);
+            }
           }
           break;
         }

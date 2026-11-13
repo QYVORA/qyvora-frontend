@@ -86,6 +86,11 @@ When a device connects to WPA2:
 
 An attacker who captures this handshake can attempt to crack the password offline.
 
+\`\`\`diagram
+id: wifi-4way-handshake
+caption: Four messages turn the passphrase into session keys.
+\`\`\`
+
 \`\`\`bash
 # Capture WPA2 handshake with airodump-ng (Linux, requires monitor mode)
 sudo airmon-ng start wlan0
