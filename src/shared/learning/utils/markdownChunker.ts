@@ -6,11 +6,15 @@
  *
  * Heuristics (in document order):
  *   - Headings start a new section; the next emitted block inherits it as a title.
- *   - Blockquotes become Concept cards ("Why This Matters" when flagged as such).
+ *   - Blockquotes become Concept cards ("Why This Matters" / "In plain English").
  *   - Fenced code blocks become Code cards.
- *   - Bullet lists become Recall cards; numbered lists become Do cards.
+ *   - Numbered lists become Do cards only when the surrounding text or the
+ *     items themselves read as actions; otherwise they stay Recall cards.
+ *     Bullet lists become Recall cards. Term/definition bullets become a
+ *     description list.
  *   - Prose is split into readable Text cards; the first card of a section
- *     carries its heading (hard cap per card ~320 chars).
+ *     carries its heading (hard cap per card ~700 chars). Paragraphs that end
+ *     with a colon (a list lead-in) are never split.
  *
  * Deterministic and dependency-free — safe to unit test.
  */
@@ -44,12 +48,15 @@ export function plainMarkdown(text: string): string {
     .trim();
 }
 
-export const MAX_PROSE_PER_CARD = 320;
+export const MAX_PROSE_PER_CARD = 700;
 
 /** Split a paragraph into sentence groups each under the prose cap. */
 export function splitProse(text: string, max = MAX_PROSE_PER_CARD): string[] {
   const cleaned = text.replace(/\s+/g, ' ').trim();
   if (!cleaned) return [];
+  // An intro that introduces a list ends with a colon — keep it intact with the
+  // list rather than orphaning the lead-in on its own card.
+  if (cleaned.endsWith(':')) return [cleaned];
   const sentences = cleaned.match(/[^.!?]+[.!?]+(?:\s|$)|[^.!?]+$/g) ?? [cleaned];
   const chunks: string[] = [];
   let current = '';
@@ -205,6 +212,33 @@ function tokenize(markdown: string): Segment[] {
 
 function isWhyQuote(text: string): boolean {
   return /why this matters|^why\b/i.test(plainMarkdown(text));
+}
+
+const INSTRUCTIONAL_HINT = /\b(steps?|try|run|do|tasks?|exercises?|follow|practice|lab|instructions?|procedures?)\b/i;
+const IMPERATIVE =
+  /^(run|open|click|type|use|install|create|add|set|go|navigate|start|stop|enter|execute|check|copy|paste|choose|select|connect|scan|ping|curl|nmap|nc|chmod|sudo|cd|ls|cat|grep|ssh|git|npm|pip|docker|visit|send|test|launch|configure|enable|disable|remove|delete|write|edit|read|find|list|record|download|upload|build|compile|restart|verify|inspect|monitor|capture|query|request|apply|review)\b/i;
+const DEFINITION_ITEM = /^\*\*[^*]+\*\*\s*[:.\-–—]/;
+
+/** A list is instructional only when context or its items look like actions. */
+function isInstructionalList(
+  items: string[],
+  sectionTitle: string | null,
+  lastParagraph: string | null,
+): boolean {
+  if (sectionTitle && INSTRUCTIONAL_HINT.test(sectionTitle)) return true;
+  if (lastParagraph && INSTRUCTIONAL_HINT.test(lastParagraph)) return true;
+  const actions = items.filter((item) => {
+    const plain = item.replace(/^[*_\s]+/, '');
+    return IMPERATIVE.test(plain) || /`[^`]+`/.test(item);
+  }).length;
+  return actions > items.length / 2;
+}
+
+/** Most items are `**Term**` + separator → a glossary, not a task list. */
+function isDefinitionList(items: string[]): boolean {
+  if (items.length === 0) return false;
+  const defs = items.filter((item) => DEFINITION_ITEM.test(item.trim())).length;
+  return defs > items.length / 2;
 }
 
 function cleanHeading(text: string): string {
@@ -444,6 +478,7 @@ export function markdownToBlocks(
   const segments = tokenize(markdown);
   const blocks: LearningBlock[] = [];
   let sectionTitle: string | null = null;
+  let lastParagraph: string | null = null;
   let index = 0;
 
   const nextId = (kind: string) => `${baseId}-${kind}-${index++}`;
@@ -468,6 +503,7 @@ export function markdownToBlocks(
     switch (segment.kind) {
       case 'heading': {
         sectionTitle = segment.text;
+        lastParagraph = null;
         break;
       }
 
@@ -475,20 +511,27 @@ export function markdownToBlocks(
         const quote = segment.text.trim();
         if (!quote) break;
         const isWhy = isWhyQuote(quote);
+        const isPlainEnglish = /^\s*\*\*in plain english\*\*/i.test(quote);
         const concept: ConceptBlock = {
           type: 'concept',
           id: nextId('concept'),
-          title: isWhy ? 'Why This Matters' : sectionTitle ?? 'Key Idea',
+          title: isPlainEnglish
+            ? 'In plain English'
+            : isWhy
+              ? 'Why This Matters'
+              : sectionTitle ?? 'Key Idea',
           content: quote,
           importance: isWhy ? 'core' : 'supporting',
         };
         blocks.push(concept);
         sectionTitle = null;
+        lastParagraph = null;
         break;
       }
 
       case 'code': {
         const lang = segment.lang || 'bash';
+        lastParagraph = null;
 
         // A `breakdown` fence annotates the code fence immediately before it.
         if (lang.trim().toLowerCase() === 'breakdown') {
@@ -568,7 +611,9 @@ export function markdownToBlocks(
         // Keep inline Markdown so bold, italics, and inline code survive inside
         // Recall/Do items; the block renderers use the rich prose component.
         const items = segment.items.map((s) => s.trim());
-        if (segment.ordered) {
+        const instructional = isInstructionalList(items, sectionTitle, lastParagraph);
+        const definition = !instructional && isDefinitionList(items);
+        if (segment.ordered && instructional) {
           const doBlock: DoBlock = {
             type: 'do',
             id: nextId('do'),
@@ -582,21 +627,28 @@ export function markdownToBlocks(
             id: nextId('recall'),
             title: sectionTitle ?? (/remember|key|takeaway/i.test(sectionTitle ?? '') ? 'Remember' : 'Key Points'),
             points: items,
+            ordered: segment.ordered,
+            variant: definition ? 'definition' : 'default',
           };
           blocks.push(recall);
         }
         sectionTitle = null;
+        lastParagraph = null;
         break;
       }
 
       case 'para': {
-        if (segment.text) pushText(segment.text);
+        if (segment.text) {
+          lastParagraph = segment.text;
+          pushText(segment.text);
+        }
         break;
       }
 
       case 'hr':
       default: {
         sectionTitle = null;
+        lastParagraph = null;
         break;
       }
     }

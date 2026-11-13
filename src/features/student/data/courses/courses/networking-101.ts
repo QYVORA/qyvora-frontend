@@ -8,6 +8,8 @@ export const LESSONS: Lesson[] = [
     l('net-1', 'What is a Network?',
       `A **network** is two or more computers connected together to share data. The **internet** is just a massive network of networks, millions of smaller networks linked together across the globe.
 
+> **In plain English**: a network is a set of devices with addresses that pass data to each other along paths, like houses sending letters.
+
 Think of a network like a postal system. Each house (computer) has an address, and mail (data) travels between houses through a series of roads and post offices (routers and switches). Just like you need an address to receive mail, every device on a network needs an identifier so other devices know where to send data.
 
 Every device on a network has an **IP address**, like a street address for your computer. IP addresses look like this:
@@ -50,7 +52,11 @@ curl ifconfig.me
       ] }),
 
     l('net-2', 'The OSI Model',
-      `The **OSI model** breaks network communication into 7 layers. Think of it like sending a package through a postal system, each layer handles a specific part of the journey:
+      `The **OSI model** breaks network communication into 7 layers.
+
+> **In plain English**: sending data is a relay of small jobs, from the wire up to the app, and each layer only worries about its own job.
+
+Think of it like sending a package through a postal system, each layer handles a specific part of the journey:
 
 1. **Physical (Layer 1)**: the actual cables, radio waves, and electrical signals. This is the road your mail truck drives on. If you unplug an Ethernet cable, you've broken Layer 1. Think fiber optic cables, Wi-Fi signals, and the physical hardware that carries bits as electrical pulses or light.
 
@@ -99,6 +105,8 @@ caption: Each layer wraps the data with its own header as it travels down.
     l('net-3', 'TCP/IP & UDP',
       `**TCP** and **UDP** are the two main transport protocols. They sit on top of IP.
 
+> **In plain English**: TCP is a phone call that confirms the other side heard you; UDP is shouting a message and moving on.
+
 **TCP (Transmission Control Protocol)** is reliable. It establishes a connection (called a "three-way handshake") before sending data and retransmits lost packets.
 
 \`\`\`
@@ -138,6 +146,8 @@ netstat -ulnp   # UDP ports
       `**DNS (Domain Name System)** translates human-readable domain names into IP addresses. When you type \`google.com\`, DNS finds the IP address so your computer knows where to connect.
 
 Think of it as the phonebook of the internet.
+
+> **In plain English**: DNS is the contact list that turns a name you remember into the number computers need.
 
 \`\`\`bash
 # Find the IP address of a domain
@@ -191,6 +201,8 @@ dig any google.com
 
     l('net-5', 'HTTP & HTTPS',
       `**HTTP** is the protocol your browser uses to talk to websites. It's a request-response protocol.
+
+> **In plain English**: your browser asks a question, the server answers with a page, and HTTPS is the same conversation inside a sealed envelope.
 
 A typical HTTP request looks like:
 

@@ -25,7 +25,7 @@ describe('splitProse', () => {
   });
 
   it('splits long paragraphs at sentence boundaries under the cap', () => {
-    const long = 'One. '.repeat(120);
+    const long = 'One. '.repeat(400);
     const chunks = splitProse(long);
     expect(chunks.length).toBeGreaterThan(1);
     for (const chunk of chunks) expect(chunk.length).toBeLessThanOrEqual(MAX_PROSE_PER_CARD * 1.5);
@@ -224,6 +224,46 @@ describe('parseMarkdownToBlocks', () => {
       '**Ports** reveal the service surface',
       'Run `nmap -sV` before version checks',
     ]);
+  });
+
+  it('renders a numbered glossary as a definition list, not a task', () => {
+    const blocks = parseMarkdownToBlocks([
+      '1. **Physical (Layer 1)**: the cables and radio waves.',
+      '2. **Network (Layer 3)** - IP addresses and routing.',
+    ].join('\n'), 'osi');
+
+    expect(blocks.find((b) => b.type === 'do')).toBeUndefined();
+    const recall = blocks.find((b) => b.type === 'recall');
+    expect(recall?.type === 'recall' ? recall.variant : null).toBe('definition');
+  });
+
+  it('keeps a numbered action list as a task', () => {
+    const blocks = parseMarkdownToBlocks([
+      '## Steps',
+      '',
+      '1. Run nmap against the target',
+      '2. Record the open ports',
+    ].join('\n'), 'steps');
+
+    const action = blocks.find((b) => b.type === 'do');
+    expect(action?.type === 'do' ? action.title : null).toBe('Steps');
+    expect(blocks.find((b) => b.type === 'recall')).toBeUndefined();
+  });
+
+  it('labels an In plain English blockquote', () => {
+    const blocks = parseMarkdownToBlocks(
+      '> **In plain English**: a port is a numbered door on a computer.',
+      'plain',
+    );
+    const concept = blocks.find((b) => b.type === 'concept');
+    expect(concept?.type === 'concept' ? concept.title : null).toBe('In plain English');
+  });
+
+  it('never splits a list lead-in paragraph that ends with a colon', () => {
+    const md = 'Here are the layers you must memorize, from the wire up to the app:';
+    const blocks = parseMarkdownToBlocks(md, 'lead-in');
+    const texts = blocks.filter((b) => b.type === 'text');
+    expect(texts.length).toBe(1);
   });
 });
 

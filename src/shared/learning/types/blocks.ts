@@ -89,6 +89,10 @@ export interface RecallBlock extends BaseBlock {
   type: 'recall';
   title?: string; // Default: "Remember"
   points: string[];
+  /** Source list was numbered; render as an ordered list. */
+  ordered?: boolean;
+  /** Term/definition pairs render as a description list. */
+  variant?: 'default' | 'definition';
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
