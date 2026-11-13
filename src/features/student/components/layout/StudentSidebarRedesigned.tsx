@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom';
+import { AnimatePresence, motion } from 'motion/react';
 import {
   Home,
   BookOpen,
@@ -237,16 +238,13 @@ const StudentSidebarRedesigned: React.FC<StudentSidebarRedesignedProps> = ({
     }
   };
 
-  const renderUserRow = (inCard = false) => (
+  const renderUserRow = () => (
     <button
       type="button"
       onClick={() => setAccountOpen((open) => !open)}
       aria-expanded={accountOpen}
       aria-controls="mobile-account-panel"
-      className={cn(
-        'flex w-full items-center gap-[14px] rounded-xl text-left transition-colors focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-accent',
-        inCard ? 'min-h-[60px]' : 'min-h-[60px] px-2 hover:bg-surface-raised',
-      )}
+      className="flex min-h-[60px] w-full items-center gap-[14px] rounded-xl px-2 text-left transition-colors hover:bg-surface-raised focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-accent"
     >
       <Avatar name={userDisplayName} size={60} shape="square" />
       <span className="min-w-0 flex-1">
@@ -345,41 +343,37 @@ const StudentSidebarRedesigned: React.FC<StudentSidebarRedesignedProps> = ({
     );
   };
 
-  const renderAccountCard = () => (
-    <div id="mobile-account-panel" className="px-3 pt-2">
-      <div className="rounded-xl border border-border-subtle bg-surface p-3.5">
-        {renderUserRow(true)}
+  const renderAccountPanel = () => (
+    <div className="px-5 pb-1 pt-2">
+      <div className="rounded-xl border border-border-subtle bg-surface p-2">
+        {ACCOUNT_ITEMS.map((item) => {
+          const Icon = item.icon;
+          return (
+            <NavLink
+              key={item.key}
+              to={item.to}
+              onClick={handleNavClick}
+              className={({ isActive }) =>
+                cn(
+                  'flex min-h-[64px] items-center gap-5 rounded-xl px-2 text-[20px] font-medium transition-colors focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-accent',
+                  isActive ? 'text-accent' : 'text-text-primary hover:bg-surface-raised',
+                )
+              }
+            >
+              <Icon className="h-[26px] w-[26px] shrink-0" strokeWidth={1.8} aria-hidden="true" />
+              <span className="flex-1 truncate">{item.label}</span>
+            </NavLink>
+          );
+        })}
 
-        <div className="mt-2 border-t border-border-subtle pt-2">
-          {ACCOUNT_ITEMS.map((item) => {
-            const Icon = item.icon;
-            return (
-              <NavLink
-                key={item.key}
-                to={item.to}
-                onClick={handleNavClick}
-                className={({ isActive }) =>
-                  cn(
-                    'flex min-h-[64px] items-center gap-5 rounded-xl px-2 text-[20px] font-medium transition-colors focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-accent',
-                    isActive ? 'text-accent' : 'text-text-primary hover:bg-surface-raised',
-                  )
-                }
-              >
-                <Icon className="h-[26px] w-[26px] shrink-0" strokeWidth={1.8} aria-hidden="true" />
-                <span className="flex-1 truncate">{item.label}</span>
-              </NavLink>
-            );
-          })}
-
-          <button
-            type="button"
-            onClick={handleLogout}
-            className="flex min-h-[64px] w-full items-center gap-5 rounded-xl px-2 text-left text-[20px] font-medium text-text-primary transition-colors hover:bg-surface-raised focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-accent"
-          >
-            <LogOut className="h-[26px] w-[26px] shrink-0" strokeWidth={1.8} aria-hidden="true" />
-            <span className="flex-1 truncate">Log Out</span>
-          </button>
-        </div>
+        <button
+          type="button"
+          onClick={handleLogout}
+          className="flex min-h-[64px] w-full items-center gap-5 rounded-xl px-2 text-left text-[20px] font-medium text-text-primary transition-colors hover:bg-surface-raised focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-accent"
+        >
+          <LogOut className="h-[26px] w-[26px] shrink-0" strokeWidth={1.8} aria-hidden="true" />
+          <span className="flex-1 truncate">Log Out</span>
+        </button>
       </div>
     </div>
   );
@@ -407,32 +401,43 @@ const StudentSidebarRedesigned: React.FC<StudentSidebarRedesignedProps> = ({
       </div>
 
       <div className="custom-scrollbar sidebar-scroll flex-1 overflow-y-auto pb-[calc(1rem+env(safe-area-inset-bottom))]">
-        {accountOpen ? (
-          renderAccountCard()
-        ) : (
-          <>
-            <div className="px-5 pt-2">{renderUserRow()}</div>
+        <div className="px-5 pt-2">{renderUserRow()}</div>
 
-            <div className="mt-6 grid grid-cols-[repeat(3,minmax(0,1fr))] gap-3 px-5">
-              {statCards.map(({ key, label, value, icon: Icon, accent, isRank }) => (
-                <CompactStatCard
-                  key={key}
-                  label={label}
-                  value={value}
-                  icon={<Icon aria-hidden="true" />}
-                  accent={accent}
-                  isRank={isRank}
-                />
-              ))}
-            </div>
+        <div id="mobile-account-panel">
+          <AnimatePresence initial={false}>
+            {accountOpen && (
+              <motion.div
+                key="mobile-account-panel-content"
+                initial={{ height: 0, opacity: 0 }}
+                animate={{ height: 'auto', opacity: 1 }}
+                exit={{ height: 0, opacity: 0 }}
+                transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }}
+                className="overflow-hidden"
+              >
+                {renderAccountPanel()}
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
 
-            <p className="mb-3 mt-7 px-6 text-[14px] text-text-muted">Menu</p>
+        <div className="mt-6 grid grid-cols-[repeat(3,minmax(0,1fr))] gap-3 px-5">
+          {statCards.map(({ key, label, value, icon: Icon, accent, isRank }) => (
+            <CompactStatCard
+              key={key}
+              label={label}
+              value={value}
+              icon={<Icon aria-hidden="true" />}
+              accent={accent}
+              isRank={isRank}
+            />
+          ))}
+        </div>
 
-            <nav aria-label="Primary" className="px-3">
-              {NAV_ROWS.map(renderNavRow)}
-            </nav>
-          </>
-        )}
+        <p className="mb-3 mt-7 px-6 text-[14px] text-text-muted">Menu</p>
+
+        <nav aria-label="Primary" className="px-3">
+          {NAV_ROWS.map(renderNavRow)}
+        </nav>
       </div>
     </>
   );
