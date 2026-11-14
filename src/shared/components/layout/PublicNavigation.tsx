@@ -143,7 +143,7 @@ const PublicNavigation: React.FC = () => {
       aria-label="QYVORA home"
       className="flex items-center rounded-md focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
     >
-      <Logo size="sm" />
+      <Logo variant="mark" size="md" />
     </Link>
   );
 

@@ -74,7 +74,9 @@ describe('PublicNavigation', () => {
     await user.click(screen.getByRole('button', { name: /Open menu/i }));
 
     const dialog = screen.getByRole('dialog', { name: 'Menu' });
-    expect(within(dialog).getByRole('link', { name: /QYVORA home/i })).toHaveAttribute('href', '/');
+    const home = within(dialog).getByRole('link', { name: /QYVORA home/i });
+    expect(home).toHaveAttribute('href', '/');
+    expect(within(home).getByRole('img', { name: 'QYVORA' })).toBeInTheDocument();
     expect(within(dialog).queryByRole('button', { name: /operator/i })).not.toBeInTheDocument();
     expect(within(dialog).queryByRole('button', { name: 'Log out' })).not.toBeInTheDocument();
   });
