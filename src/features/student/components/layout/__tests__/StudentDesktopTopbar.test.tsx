@@ -51,7 +51,9 @@ describe('StudentDesktopTopbar', () => {
   it('renders the logo, breadcrumb and five primary destinations', () => {
     renderTopbar();
 
-    expect(screen.getByRole('link', { name: /QYVORA dashboard/i })).toHaveAttribute('href', '/dashboard');
+    const logo = screen.getByRole('link', { name: /QYVORA dashboard/i });
+    expect(logo).toHaveAttribute('href', '/dashboard');
+    expect(logo.querySelector('[fill]')).toHaveAttribute('fill', 'var(--color-accent)');
     const nav = within(screen.getByRole('navigation', { name: 'Primary' }));
     expect(nav.getByRole('link', { name: 'Dashboard' })).toHaveAttribute('href', '/dashboard');
     expect(nav.getByRole('link', { name: 'Labs' })).toHaveAttribute('href', '/dashboard/labs');
