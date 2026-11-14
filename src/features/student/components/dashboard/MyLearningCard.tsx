@@ -17,6 +17,7 @@ import CourseBadge from '@/shared/components/CourseBadge';
 import HpbAvatar from '@/shared/components/HpbAvatar';
 import LabBadge from '@/shared/components/LabBadge';
 import type { UnifiedLab } from '@/features/student/data/labs';
+import { shortDescription } from '@/shared/learning/utils/shortDescription';
 import {
   RECENT_LABS_EVENT,
   SAVED_LABS_EVENT,
@@ -98,7 +99,7 @@ const toLearningItem = (
   title: lab.title,
   to: lab.route,
   kind: lab.source === 'content' ? 'course' : 'lab',
-  description: lab.description,
+  description: shortDescription(lab.description),
   progress: progressValue(progress),
 });
 

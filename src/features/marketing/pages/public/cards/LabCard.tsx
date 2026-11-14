@@ -1,6 +1,7 @@
 import React from 'react';
 import type { ViewMode } from '@/shared/components/card-collection';
 import LearningCard from '@/shared/components/learning/LearningCard';
+import { shortDescription } from '@/shared/learning/utils/shortDescription';
 
 export interface LabCardItem {
   id: string;
@@ -23,7 +24,7 @@ const LabCard: React.FC<LabCardProps> = ({ lab, view = 'grid' }) => {
       id={lab.id}
       type="lab"
       title={lab.title}
-      description={lab.description}
+      description={shortDescription(lab.description)}
       to={lab.route}
       difficulty={lab.difficulty}
       accentColor={lab.accentColor}

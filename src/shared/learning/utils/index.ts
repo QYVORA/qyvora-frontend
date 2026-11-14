@@ -40,6 +40,8 @@ export {
 
 export { interleavePractice, MAX_READ_RUN } from './interleavePractice';
 
+export { shortDescription } from './shortDescription';
+
 export {
   RANKS,
   rankFor,

@@ -4,6 +4,7 @@ import userEvent from '@testing-library/user-event';
 import { MemoryRouter } from 'react-router-dom';
 import MyLearningCard, { type MyLearningBootcamp } from './MyLearningCard';
 import { CONTENT_LABS, PRACTICAL_LABS } from '@/features/student/data/labs';
+import { shortDescription } from '@/shared/learning/utils/shortDescription';
 
 const courseLabs = CONTENT_LABS.slice(0, 3);
 const practicalLab = PRACTICAL_LABS[0];
@@ -49,7 +50,9 @@ describe('MyLearningCard', () => {
     expect(within(panel).getByText('40%')).toBeInTheDocument();
     expect(within(panel).getByRole('heading', { name: 'Labs & courses' })).toBeInTheDocument();
     expect(within(panel).getByText(courseLabs[0].title)).toBeInTheDocument();
-    expect(within(panel).getAllByText(courseLabs[0].description).length).toBeGreaterThan(0);
+    expect(
+      within(panel).getAllByText(shortDescription(courseLabs[0].description)).length,
+    ).toBeGreaterThan(0);
     expect(within(panel).queryByText(courseLabs[1].title)).not.toBeInTheDocument();
     expect(within(panel).queryByText(courseLabs[2].title)).not.toBeInTheDocument();
   });
@@ -69,7 +72,9 @@ describe('MyLearningCard', () => {
     expect(learningLinks[0]).toHaveAttribute('href', practicalLab.route);
     expect(learningLinks[1]).toHaveAttribute('href', courseLabs[0].route);
     expect(within(panel).queryByText(courseLabs[1].title)).not.toBeInTheDocument();
-    expect(within(panel).getAllByText(courseLabs[0].description).length).toBeGreaterThan(0);
+    expect(
+      within(panel).getAllByText(shortDescription(courseLabs[0].description)).length,
+    ).toBeGreaterThan(0);
   });
 
   it('resolves saved practical Labs and bootcamps', async () => {

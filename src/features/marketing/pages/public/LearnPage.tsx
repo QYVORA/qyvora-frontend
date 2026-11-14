@@ -2,6 +2,7 @@ import React from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { ArrowRight, Bug, ShieldCheck, Globe, Coins } from 'lucide-react';
 import { UNIFIED_LABS, LAB_FORMAT_SHORT_LABELS } from '@/features/student/data/labs';
+import { shortDescription } from '@/shared/learning/utils/shortDescription';
 import { PHASES } from '@/features/marketing/data/learnData';
 import { BOOTCAMPS } from '@/features/marketing/content/bootcampData';
 import { Card } from '@/shared/components/ui/Card';
@@ -71,7 +72,7 @@ const LearnPage: React.FC = () => {
               {lab.title}
             </h3>
             <p className="type-body-sm flex-1 line-clamp-3">
-              {lab.description}
+              {shortDescription(lab.description)}
             </p>
             <div className="flex flex-wrap items-center gap-x-5 gap-y-1 border-t border-border-subtle pt-3">
               {lab.cpReward && <span className="type-meta text-accent">{lab.cpReward} CP</span>}

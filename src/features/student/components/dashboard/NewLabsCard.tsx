@@ -7,6 +7,7 @@ import FilterTabs from '@/shared/components/ui/FilterTabs';
 import LabBadge from '@/shared/components/LabBadge';
 import { DifficultyBadge } from '@/shared/components/learning/LearningCard';
 import { LAB_FORMAT_LABELS, type UnifiedLab } from '@/features/student/data/labs';
+import { shortDescription } from '@/shared/learning/utils/shortDescription';
 import {
   RECENT_LABS_EVENT,
   getRecentLabIds,
@@ -107,7 +108,7 @@ const NewLabsCard = ({ labs, excludeLabIds = [] }: NewLabsCardProps) => {
                       />
                     </span>
                     <span className="mt-1.5 line-clamp-2 text-sm leading-6 text-text-secondary">
-                      {lab.description}
+                      {shortDescription(lab.description)}
                     </span>
                     <span className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1.5">
                       {lab.difficulty && <DifficultyBadge difficulty={lab.difficulty} />}

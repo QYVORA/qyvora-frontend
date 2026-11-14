@@ -83,7 +83,7 @@ const SiteTopbar: React.FC<SiteTopbarProps> = ({
             aria-expanded={mobileMenuOpen}
             className="flex h-12 w-12 shrink-0 items-center justify-center rounded-md text-accent transition-colors hover:text-text-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent lg:hidden"
           >
-            <MenuIcon className="h-6 w-6" aria-hidden="true" />
+            <MenuIcon className="h-10 w-10" aria-hidden="true" />
           </button>
 
           <Link

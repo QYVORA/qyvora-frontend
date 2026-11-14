@@ -17,6 +17,7 @@ import {
 } from '@/features/student/data/labs';
 import type { BootcampCatalogueCourse, UnifiedLab } from '@/features/student/data/labs';
 import { getContentLabProgress } from '@/features/student/utils/savedLabs';
+import { shortDescription } from '@/shared/learning/utils/shortDescription';
 import LabCard from './LabCard';
 
 const PRACTICAL_LAB_IDS = new Set(PRACTICAL_LABS.map((lab) => lab.id));
@@ -123,7 +124,7 @@ const LabsPage = () => {
           difficulty: lab.difficulty,
           cpReward: lab.cpReward,
           title: lab.title,
-          description: lab.description,
+          description: shortDescription(lab.description),
           duration: lab.estimatedMinutes ? `${lab.estimatedMinutes} min` : undefined,
           lessonsCount: lab.lessonsCount,
           tags:

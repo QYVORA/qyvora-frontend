@@ -31,7 +31,7 @@ const StudentSearchDialog: React.FC<StudentSearchDialogProps> = ({ open, onOpenC
   const [query, setQuery] = useState('');
   const [activeIndex, setActiveIndex] = useState(0);
 
-  const { results, isLoading, error, retry, isStale } = useLabSearch(query, open, 12);
+  const { results, isLoading, error, retry, isStale } = useLabSearch(query, open, 6);
   const waiting = (isLoading || isStale) && results.length === 0;
 
   useEffect(() => {
@@ -91,7 +91,7 @@ const StudentSearchDialog: React.FC<StudentSearchDialogProps> = ({ open, onOpenC
         description="Find a Lab by title, topic, difficulty, or delivery format."
         maxWidth="max-w-2xl"
       >
-        <div className="flex flex-col gap-3">
+        <div className="flex flex-col gap-4">
           <Input
             ref={inputRef}
             type="search"
@@ -166,7 +166,7 @@ const StudentSearchDialog: React.FC<StudentSearchDialogProps> = ({ open, onOpenC
               id="student-lab-search-results"
               role="listbox"
               aria-label="Labs"
-              className="max-h-[min(65vh,32rem)] space-y-1 overflow-y-auto overscroll-contain rounded-xl border border-border-subtle bg-surface-raised p-1.5"
+              className="max-h-[min(65vh,32rem)] space-y-1 overflow-y-auto overscroll-contain"
             >
               {results.map((lab, index) => (
                 <li key={lab.id} role="presentation">
@@ -176,6 +176,7 @@ const StudentSearchDialog: React.FC<StudentSearchDialogProps> = ({ open, onOpenC
                     active={index === activeIndex}
                     onSelect={selectResult}
                     onActive={() => setActiveIndex(index)}
+                    variant="dialog"
                   />
                 </li>
               ))}
