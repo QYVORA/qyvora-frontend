@@ -49,7 +49,7 @@ describe('PublicNavigation', () => {
     expect(screen.getByRole('menuitem', { name: /Log out/i })).toBeInTheDocument();
   });
 
-  it('opens the full-screen public menu without dashboard identity chrome', async () => {
+  it('shows the logo and signed-in identity in the full-screen public menu', async () => {
     auth.user = { username: 'operator', email: 'operator@example.com', cp: 420, rank: 'Operator' };
     const user = userEvent.setup();
     renderNav('/');
@@ -57,9 +57,26 @@ describe('PublicNavigation', () => {
     await user.click(screen.getByRole('button', { name: /Open menu/i }));
 
     const dialog = screen.getByRole('dialog', { name: 'Menu' });
+    expect(within(dialog).getByRole('link', { name: /QYVORA home/i })).toHaveAttribute('href', '/');
     expect(within(dialog).getByRole('button', { name: /Learn/i })).toHaveClass('min-h-[64px]');
     expect(within(dialog).getByRole('link', { name: 'Blogs' })).toHaveAttribute('href', '/blogs');
-    expect(within(dialog).queryByRole('button', { name: /Account menu/i })).not.toBeInTheDocument();
+
+    await user.click(within(dialog).getByRole('button', { name: /operator/i }));
+    expect(within(dialog).getByRole('link', { name: 'Dashboard' })).toHaveAttribute('href', '/dashboard');
+    expect(within(dialog).getByRole('link', { name: 'View profile' })).toHaveAttribute('href', '/dashboard/profile');
+    expect(within(dialog).getByRole('button', { name: 'Log out' })).toBeInTheDocument();
+  });
+
+  it('shows only the logo in the full-screen menu for logged-out visitors', async () => {
+    const user = userEvent.setup();
+    renderNav('/');
+
+    await user.click(screen.getByRole('button', { name: /Open menu/i }));
+
+    const dialog = screen.getByRole('dialog', { name: 'Menu' });
+    expect(within(dialog).getByRole('link', { name: /QYVORA home/i })).toHaveAttribute('href', '/');
+    expect(within(dialog).queryByRole('button', { name: /operator/i })).not.toBeInTheDocument();
+    expect(within(dialog).queryByRole('button', { name: 'Log out' })).not.toBeInTheDocument();
   });
 
   it('omits the dashboard item when already inside the dashboard', async () => {

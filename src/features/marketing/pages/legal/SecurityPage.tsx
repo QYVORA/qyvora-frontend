@@ -2,6 +2,8 @@ import React from 'react';
 import { ArrowRight } from 'lucide-react';
 import SEO from '@/shared/components/SEO';
 import Button from '@/shared/components/ui/Button';
+import PublicContainer from '@/shared/components/layout/PublicContainer';
+import CompliancePosture from '@/features/marketing/components/compliance/CompliancePosture';
 import { SITE_CONFIG } from '@/features/marketing/content/siteConfig';
 import LegalDocumentPage from './LegalDocumentPage';
 import { securityPolicy } from './content/securityPolicy';
@@ -11,9 +13,9 @@ const SECURITY_EMAIL = SITE_CONFIG.contact.securityDeskEmail;
 const SecurityPage: React.FC = () => (
   <>
     <SEO
-      title="Security & Responsible Disclosure | QYVORA"
-      description="How to report a security vulnerability to QYVORA, what is in scope, our safe-harbour commitment, and what you can expect from us."
-      breadcrumbName="Security & Responsible Disclosure"
+      title="Security, Compliance & Responsible Disclosure | QYVORA"
+      description="How to report a security vulnerability to QYVORA, our safe-harbour commitment, and the security, privacy, and quality frameworks we are evaluating."
+      breadcrumbName="Security, Compliance & Responsible Disclosure"
     />
     <LegalDocumentPage
       doc={securityPolicy}
@@ -37,6 +39,11 @@ const SecurityPage: React.FC = () => (
         { label: 'Terms of Service', to: '/terms' },
       ]}
     />
+    <div className="border-t border-border-subtle bg-canvas">
+      <PublicContainer className="py-12 md:py-16 lg:py-20">
+        <CompliancePosture />
+      </PublicContainer>
+    </div>
   </>
 );
 

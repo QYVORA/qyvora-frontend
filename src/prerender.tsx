@@ -149,10 +149,10 @@ const routeContent: Record<string, RouteContent> = {
     ],
   },
   '/security': {
-    title: 'Security & Responsible Disclosure | QYVORA',
-    description: 'How to report a security vulnerability to QYVORA, what is in scope, our safe-harbour commitment, and what you can expect from us.',
-    h1: 'Security & Responsible Disclosure',
-    lead: 'How to report a security vulnerability to QYVORA, what is in scope, our safe-harbour commitment, and what you can expect from us.',
+    title: 'Security, Compliance & Responsible Disclosure | QYVORA',
+    description: 'How to report a security vulnerability to QYVORA, our safe-harbour commitment, and the security, privacy, and quality frameworks we are evaluating.',
+    h1: 'Security, Compliance & Responsible Disclosure',
+    lead: 'How to report a security vulnerability to QYVORA, our safe-harbour commitment, and the security, privacy, and quality frameworks we are evaluating.',
     sections: [
       {
         heading: 'Report a vulnerability',
@@ -174,8 +174,13 @@ const routeContent: Record<string, RouteContent> = {
         heading: 'Our response',
         body: 'We aim to acknowledge reports within 3 business days and complete initial triage within 10 business days where the report is complete. We prefer coordinated disclosure and will agree a realistic timeline with you.',
       },
+      {
+        heading: 'Compliance posture',
+        body: 'We do not hold ISO/IEC 27001:2022, ISO/IEC 27701, ISO 9001:2015, ISO/IEC 42001:2023, or SOC 2 certification today. We are evaluating these frameworks and publish their status instead of displaying unearned badges. We handle personal data under the Ghana Data Protection Act 2012 (Act 843) and GDPR where relevant.',
+      },
     ],
     links: [
+      { label: 'Compliance posture', href: '/security#compliance' },
       { label: 'security.txt', href: '/.well-known/security.txt' },
       { label: 'Privacy Policy', href: '/privacy' },
       { label: 'Contact', href: '/contact' },
@@ -388,11 +393,19 @@ const routeContent: Record<string, RouteContent> = {
   },
   '/about': {
     title: 'About | QYVORA',
-    description: 'The team, the research collective, and the mission behind QYVORA.',
+    description: 'The team, research collective, security practices, and mission behind QYVORA.',
     h1: 'Built in Africa, for African defenders.',
-    lead: 'QYVORA is an offensive security training platform and services team. Get to know the people and mission driving it.',
+    lead: 'QYVORA is an offensive security training platform and services team. Get to know the people, mission, and security practices driving it.',
+    sections: [
+      {
+        heading: 'Security, privacy, and responsible technology',
+        body: 'We are building our formal security and privacy programme. We publish framework status on our Security page and do not display certification badges we have not earned. Personal data is handled under our Privacy Policy and applicable data-protection law.',
+      },
+    ],
     links: [
       { label: 'Team', href: '/team' },
+      { label: 'Security & compliance', href: '/security' },
+      { label: 'Privacy Policy', href: '/privacy' },
       { label: 'Contact', href: '/contact' },
       { label: 'Blog', href: '/blogs' },
     ],
@@ -1513,7 +1526,7 @@ const routeContent: Record<string, RouteContent> = {
       },
       {
         heading: 'Company and trust',
-        bullets: ['About', 'Team', 'Leadership', 'Services', 'Contact', 'FAQ', 'Credentials', 'Verify a credential', 'System status'],
+        bullets: ['About', 'Team', 'Leadership', 'Services', 'Contact', 'FAQ', 'Credentials', 'Verify a credential', 'System status', 'Security and responsible disclosure', 'Compliance posture'],
       },
       {
         heading: 'Legal',

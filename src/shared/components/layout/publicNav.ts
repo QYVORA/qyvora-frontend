@@ -39,25 +39,14 @@ export const PUBLIC_PRIMARY_LINKS: PublicPrimaryLink[] = [
  */
 export const PUBLIC_FOOTER_COLUMNS: PublicFooterColumn[] = [
   {
-    title: 'Learning',
+    title: 'Explore',
     links: [
       { key: 'learn', label: 'Learn', to: '/learn' },
       { key: 'bootcamp', label: 'HPB Bootcamp', to: '/hpb' },
       { key: 'qose', label: 'QOSE', to: '/qose' },
       { key: 'simulations', label: 'Simulations', to: '/simulations' },
-      { key: 'blogs', label: 'Blogs', to: '/blogs' },
-      { key: 'resources', label: 'Cheat sheets', to: '/resources' },
-    ],
-  },
-  {
-    title: 'Tools',
-    links: [
       { key: 'tools', label: 'All tools', to: '/tools' },
-      { key: 'anansi', label: 'anansi', to: '/anansi' },
-      { key: 'shaka', label: 'shaka', to: '/shaka' },
-      { key: 'nzinga', label: 'nzinga', to: '/nzinga' },
-      { key: 'imhotep', label: 'imhotep', to: '/imhotep' },
-      { key: 'changelog', label: 'Changelog', to: '/changelog' },
+      { key: 'services', label: 'Services', to: '/services' },
     ],
   },
   {
@@ -67,28 +56,37 @@ export const PUBLIC_FOOTER_COLUMNS: PublicFooterColumn[] = [
       { key: 'team', label: 'Team', to: '/team' },
       { key: 'leadership', label: 'Leadership', to: '/leadership' },
       { key: 'quiteroot', label: 'Quiteroot', to: '/quiteroot' },
-      { key: 'services', label: 'Services', to: '/services' },
       { key: 'contact', label: 'Contact', to: '/contact' },
+      { key: 'faq', label: 'FAQ', to: '/faq' },
     ],
   },
   {
-    title: 'Credentials',
+    title: 'Resources',
     links: [
+      { key: 'blogs', label: 'Blogs', to: '/blogs' },
+      { key: 'resources', label: 'Cheat sheets', to: '/resources' },
+      { key: 'changelog', label: 'Changelog', to: '/changelog' },
+      { key: 'status', label: 'System Status', to: '/status' },
       { key: 'credentials', label: 'Credentials', to: '/credentials' },
       { key: 'verify', label: 'Verify a Credential', to: '/verify' },
-      { key: 'status', label: 'System Status', to: '/status' },
-      { key: 'acceptable-use', label: 'Community Guidelines', to: '/acceptable-use' },
+    ],
+  },
+  {
+    title: 'Trust & Compliance',
+    links: [
+      { key: 'security', label: 'Security & Responsible Disclosure', to: '/security' },
+      { key: 'compliance', label: 'Compliance Posture', to: '/security#compliance' },
+      { key: 'privacy', label: 'Privacy Policy', to: '/privacy' },
+      { key: 'accessibility', label: 'Accessibility Statement', to: '/accessibility' },
     ],
   },
   {
     title: 'Legal',
     links: [
-      { key: 'privacy', label: 'Privacy Policy', to: '/privacy' },
-      { key: 'cookies', label: 'Cookie Policy', to: '/cookies' },
-      { key: 'security', label: 'Security', to: '/security' },
-      { key: 'refunds', label: 'Refund & Cancellation', to: '/refund-policy' },
-      { key: 'accessibility', label: 'Accessibility', to: '/accessibility' },
       { key: 'terms', label: 'Terms of Service', to: '/terms' },
+      { key: 'cookies', label: 'Cookie Policy', to: '/cookies' },
+      { key: 'refunds', label: 'Refund & Cancellation', to: '/refund-policy' },
+      { key: 'acceptable-use', label: 'Acceptable Use & Community Guidelines', to: '/acceptable-use' },
     ],
   },
 ];

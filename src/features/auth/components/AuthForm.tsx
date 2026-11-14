@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'motion/react';
 import { User, Mail } from 'lucide-react';
 import { cn } from '@/shared/utils/cn';
@@ -293,6 +294,24 @@ const AuthForm: React.FC<AuthFormProps> = ({
               <Button type="submit" size="lg" className="w-full" disabled={isLoading} loading={isLoading}>
                 {"Create Account"}
               </Button>
+
+              <p className="type-meta text-text-muted">
+                {"By creating an account, you agree to our "}
+                <Link
+                  to="/terms"
+                  className="font-bold text-text-secondary underline-offset-4 hover:text-accent hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+                >
+                  {"Terms of Service"}
+                </Link>
+                {" and "}
+                <Link
+                  to="/privacy"
+                  className="font-bold text-text-secondary underline-offset-4 hover:text-accent hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+                >
+                  {"Privacy Policy"}
+                </Link>
+                {"."}
+              </p>
 
               <div className="border-t border-border-subtle pt-4 md:pt-5">
                 <OAuthIcons onOAuthClick={handleOAuthClick} />

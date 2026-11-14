@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { AlertCircle, ArrowRight, ShieldCheck } from 'lucide-react';
 import Button from '@/shared/components/ui/Button';
 import Input from '@/shared/components/ui/Input';
@@ -220,6 +221,31 @@ const QoseRegistrationForm: React.FC<QoseRegistrationFormProps> = ({
         {submitLabel}
         <ArrowRight className="h-4 w-4" aria-hidden="true" />
       </Button>
+
+      <p className="type-meta text-text-muted">
+        {"By continuing, you agree to our "}
+        <Link
+          to="/terms"
+          className="font-bold text-text-secondary underline-offset-4 hover:text-accent hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+        >
+          {"Terms of Service"}
+        </Link>
+        {", "}
+        <Link
+          to="/privacy"
+          className="font-bold text-text-secondary underline-offset-4 hover:text-accent hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+        >
+          {"Privacy Policy"}
+        </Link>
+        {", and "}
+        <Link
+          to="/refund-policy"
+          className="font-bold text-text-secondary underline-offset-4 hover:text-accent hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+        >
+          {"Refund & Cancellation Policy"}
+        </Link>
+        {"."}
+      </p>
 
       <p className="flex items-start gap-2 type-meta text-text-muted">
         <ShieldCheck className="mt-0.5 h-4 w-4 shrink-0 text-accent" aria-hidden="true" />

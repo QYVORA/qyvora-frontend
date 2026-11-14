@@ -1,15 +1,25 @@
 import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import {
   BookOpen,
+  ChevronDown,
   CircleUserRound,
   FlaskConical,
   GraduationCap,
+  LayoutDashboard,
+  LogOut,
+  Settings,
   ShieldCheck,
+  User,
   Wrench,
 } from 'lucide-react';
 import Button from '@/shared/components/ui/Button';
 import PwaInstallButton from '@/shared/components/ui/PwaInstallButton';
+import { Avatar } from '@/shared/components/ui';
+import { Logo } from '@/shared/components/brand';
+import { cn } from '@/shared/utils/cn';
 import { useAuth } from '@/core/contexts/AuthContext';
+import { useToast } from '@/core/contexts/ToastContext';
 import SiteTopbar from './SiteTopbar';
 import type { NavItem } from './SiteTopbar';
 import MobileMenu from './MobileMenu';
@@ -82,13 +92,37 @@ const isActive = (item: NavItem, pathname: string) => {
   return pathname.startsWith(item.to ?? '');
 };
 
+const MOBILE_ACCOUNT_LINKS = [
+  { key: 'dashboard', label: 'Dashboard', to: '/dashboard', icon: LayoutDashboard },
+  { key: 'profile', label: 'View profile', to: '/dashboard/profile', icon: User },
+  { key: 'settings', label: 'Settings', to: '/dashboard/settings', icon: Settings },
+] as const;
+
 /**
  * PublicNavigation — thin wrapper around the shared SiteTopbar. Public items
  * only; the account slot shows auth CTAs or the shared AvatarMenu.
  */
 const PublicNavigation: React.FC = () => {
-  const { user } = useAuth();
+  const { user, logout } = useAuth();
+  const { addToast, clearToasts } = useToast();
+  const navigate = useNavigate();
   const [open, setOpen] = useState(false);
+  const [accountOpen, setAccountOpen] = useState(false);
+
+  const closeMenu = () => {
+    setOpen(false);
+    setAccountOpen(false);
+  };
+
+  const handleLogout = async () => {
+    await logout();
+    clearToasts();
+    addToast('Signed out successfully.', 'info');
+    closeMenu();
+    navigate('/login');
+  };
+
+  const userDisplayName = user?.username || user?.email || 'User';
 
   const footer = user ? undefined : (
     <div className="flex flex-col gap-2">
@@ -101,6 +135,74 @@ const PublicNavigation: React.FC = () => {
       <PwaInstallButton variant="ghost" size="md" label="Install app" className="w-full" />
     </div>
   );
+
+  const mobileBrand = (
+    <Link
+      to="/"
+      onClick={closeMenu}
+      aria-label="QYVORA home"
+      className="flex items-center rounded-md focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+    >
+      <Logo size="sm" />
+    </Link>
+  );
+
+  const mobileAccount = user ? (
+    <div className="rounded-xl border border-border-subtle bg-surface p-2">
+      <button
+        type="button"
+        onClick={() => setAccountOpen((current) => !current)}
+        aria-expanded={accountOpen}
+        aria-controls="public-mobile-account-panel"
+        className="flex min-h-[60px] w-full items-center gap-[14px] rounded-xl px-2 text-left transition-colors hover:bg-surface-raised focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-accent"
+      >
+        <Avatar name={userDisplayName} size={60} shape="square" />
+        <span className="min-w-0 flex-1">
+          <span className="block truncate text-[24px] font-bold leading-tight text-text-primary">
+            {userDisplayName}
+          </span>
+          <span className="mt-0.5 block truncate text-[16px] leading-tight text-text-muted">
+            {user.rank || 'Member'}
+          </span>
+        </span>
+        <ChevronDown
+          className={cn(
+            'h-6 w-6 shrink-0 text-text-muted transition-transform duration-150',
+            accountOpen && 'rotate-180',
+          )}
+          aria-hidden="true"
+        />
+      </button>
+
+      {accountOpen && (
+        <div id="public-mobile-account-panel" className="mt-1 border-t border-border-subtle pt-1">
+          {MOBILE_ACCOUNT_LINKS.map((item) => {
+            const Icon = item.icon;
+            return (
+              <Link
+                key={item.key}
+                to={item.to}
+                onClick={closeMenu}
+                className="flex min-h-[56px] items-center gap-5 rounded-xl px-2 text-[18px] font-medium text-text-primary transition-colors hover:bg-surface-raised focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-accent"
+              >
+                <Icon className="h-[24px] w-[24px] shrink-0 text-text-muted" strokeWidth={1.8} aria-hidden="true" />
+                <span className="flex-1 truncate">{item.label}</span>
+              </Link>
+            );
+          })}
+
+          <button
+            type="button"
+            onClick={handleLogout}
+            className="flex min-h-[56px] w-full items-center gap-5 rounded-xl px-2 text-left text-[18px] font-medium text-text-primary transition-colors hover:bg-surface-raised focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-accent"
+          >
+            <LogOut className="h-[24px] w-[24px] shrink-0 text-text-muted" strokeWidth={1.8} aria-hidden="true" />
+            <span className="flex-1 truncate">Log out</span>
+          </button>
+        </div>
+      )}
+    </div>
+  ) : undefined;
 
   const rightSlot = user ? (
     <AvatarMenu />
@@ -127,9 +229,11 @@ const PublicNavigation: React.FC = () => {
         mobileMenu={
           <MobileMenu
             open={open}
-            onClose={() => setOpen(false)}
+            onClose={closeMenu}
             items={PUBLIC_ITEMS}
             footer={footer}
+            brand={mobileBrand}
+            account={mobileAccount}
             title="Menu"
             variant="fullscreen"
             activeMatcher={isActive}

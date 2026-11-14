@@ -12,6 +12,10 @@ interface MobileMenuProps {
   onClose: () => void;
   items: NavItem[];
   footer?: React.ReactNode;
+  /** Brand slot shown at the left of the fullscreen header. */
+  brand?: React.ReactNode;
+  /** Signed-in identity/account slot shown above the menu groups. */
+  account?: React.ReactNode;
   title?: string;
   variant?: MobileMenuVariant;
   activeMatcher?: (item: NavItem, pathname: string) => boolean;
@@ -33,6 +37,8 @@ const MobileMenu: React.FC<MobileMenuProps> = ({
   onClose,
   items,
   footer,
+  brand,
+  account,
   title = 'Menu',
   variant = 'drawer',
   activeMatcher,
@@ -102,7 +108,8 @@ const MobileMenu: React.FC<MobileMenuProps> = ({
           aria-label={title}
           className="fixed inset-0 z-[130] flex h-dvh w-full flex-col overflow-hidden bg-canvas pt-[var(--app-safe-top,0px)] lg:hidden"
         >
-          <div className="flex h-[120px] shrink-0 items-center justify-end px-5">
+          <div className="flex h-[120px] shrink-0 items-center justify-between px-5">
+            {brand ?? <span />}
             <button
               type="button"
               onClick={onClose}
@@ -114,6 +121,7 @@ const MobileMenu: React.FC<MobileMenuProps> = ({
           </div>
 
           <div className="custom-scrollbar sidebar-scroll flex-1 overflow-y-auto pb-[calc(1rem+env(safe-area-inset-bottom))]">
+            {account && <div className="px-5 pt-2">{account}</div>}
             <p className="mb-3 mt-7 px-6 text-[14px] text-text-muted">{title}</p>
             <nav aria-label={title} className="px-3">
               {items.map((item) => {
