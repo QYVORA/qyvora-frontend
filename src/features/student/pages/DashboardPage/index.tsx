@@ -18,11 +18,12 @@ import StudentTour from '@/features/student/components/StudentTour';
 import StudentOnboardingModal from '@/features/student/components/StudentOnboardingModal';
 import {
   CommunityCard,
-  DashboardHero,
+  DashboardPromoRow,
   MyLearningCard,
   NewLabsCard,
   SessionPlannerCard,
   TopOperatorsCard,
+  WeeklyBonusCard,
   WeeklyMissionCard,
   YourStatsCard,
 } from '@/features/student/components/dashboard';
@@ -128,12 +129,8 @@ const Dashboard = () => {
   const continuePath = activeBootcamp
     ? resolveNextRoomPath(String(activeBootcamp.id ?? '')) || `/dashboard/bootcamps/${activeBootcamp.id}`
     : BOOTCAMP_FALLBACK_PATH;
-  const isEnrolled = (overview?.bootcampStatus || 'not_enrolled') !== 'not_enrolled';
   const cpBalance = pickCpBalance(user?.cp, overview);
   const progression = overview?.xpSummary?.progression ?? null;
-  const nextMission = (overview?.learningPath || []).find(
-    (mission: any) => mission.status === 'in-progress' || mission.status === 'next',
-  );
 
   const overviewModules = Array.isArray(overview?.modules) ? overview.modules : [];
   const totalRoomsDone = overviewModules.reduce(
@@ -144,7 +141,6 @@ const Dashboard = () => {
     (sum: number, module: any) => sum + Number(module.roomsTotal || 0),
     0,
   );
-  const allDone = isEnrolled && !nextMission && totalRooms > 0 && totalRoomsDone >= totalRooms;
   const streakDaysValue = overview?.xpSummary?.streakDays;
   const streakDays = typeof streakDaysValue === 'number' && Number.isFinite(streakDaysValue)
     ? streakDaysValue
@@ -166,45 +162,7 @@ const Dashboard = () => {
       return progress !== undefined && progress > 0 && progress < 100;
     })
     .map((lab) => lab.id);
-  const activeContentLab = CONTENT_LABS.find((lab) => activeContentLabIds.includes(lab.id));
-
   if (bootcampsLoading || overviewLoading) return <DashboardSkeleton />;
-
-  const hero = overviewError
-    ? {
-        title: 'Your learning overview is unavailable',
-        body: 'Your dashboard data could not be loaded. You can still browse Labs while we retry.',
-        ctaLabel: 'Browse Labs',
-        continuePath: '/dashboard/labs',
-      }
-    : activeContentLab && !activeBootcamp
-      ? {
-          title: activeContentLab.title,
-          body: activeContentLab.description,
-          ctaLabel: 'Continue learning',
-          continuePath: activeContentLab.route,
-        }
-      : allDone
-        ? {
-            title: 'Bootcamp programme complete',
-            body: 'You have completed the available rooms in your bootcamp programme. Continue with another Lab or review the curriculum.',
-            ctaLabel: 'Explore Labs',
-            continuePath: '/dashboard/labs',
-          }
-        : isEnrolled
-      ? {
-          title: nextMission?.title || overview?.progressMeta?.currentPhase?.title || 'Continue your training',
-          body: nextMission?.overview ||
-            'Pick up where you left off. Your next objective is waiting in the current programme.',
-          ctaLabel: 'Continue',
-          continuePath,
-        }
-      : {
-          title: 'Choose your next Lab',
-          body: 'Explore a content Lab or hands-on practice to build and apply your skills.',
-          ctaLabel: 'Explore Labs',
-          continuePath: '/dashboard/labs',
-        };
 
   return (
     <FadeIn>
@@ -229,23 +187,9 @@ const Dashboard = () => {
 
           <TwoColumn split="dash">
             <div className="flex min-w-0 flex-col gap-6">
-              <div className="grid min-w-0 grid-cols-1 gap-6 lg:grid-cols-[minmax(0,1fr)_280px]">
-                <ScrollReveal>
-                  <DashboardHero
-                    username={user?.username}
-                    title={hero.title}
-                    body={hero.body}
-                    ctaLabel={hero.ctaLabel}
-                    continuePath={hero.continuePath}
-                    secondaryLabel={isEnrolled && !overviewError ? 'All Labs' : undefined}
-                    secondaryTo={isEnrolled && !overviewError ? '/dashboard/labs' : undefined}
-                  />
-                </ScrollReveal>
-
-                <ScrollReveal>
-                  <CommunityCard />
-                </ScrollReveal>
-              </div>
+              <ScrollReveal>
+                <DashboardPromoRow />
+              </ScrollReveal>
 
               <ScrollReveal>
                 <MyLearningCard
@@ -260,6 +204,10 @@ const Dashboard = () => {
                   activeLearningError={Boolean(overviewError)}
                   onRetryBootcamps={() => void loadBootcamps()}
                 />
+              </ScrollReveal>
+
+              <ScrollReveal>
+                <CommunityCard />
               </ScrollReveal>
 
               <ScrollReveal>
@@ -280,6 +228,8 @@ const Dashboard = () => {
                   onRetry={refetchEngagement}
                 />
               </ScrollReveal>
+
+              <WeeklyBonusCard engagement={engagement} />
 
               <ScrollReveal>
                 <YourStatsCard

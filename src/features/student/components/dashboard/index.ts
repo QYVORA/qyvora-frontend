@@ -1,4 +1,5 @@
 export { default as DashboardHero } from './DashboardHero';
+export { default as DashboardPromoRow } from './DashboardPromoRow';
 export { default as ActiveDeployments } from './ActiveDeployments';
 export { default as WeekActivity } from './WeekActivity';
 export { default as DailyMissionCard } from './DailyMissionCard';
@@ -11,4 +12,5 @@ export { default as MyLearningCard } from './MyLearningCard';
 export { default as NewLabsCard } from './NewLabsCard';
 export { default as TopOperatorsCard } from './TopOperatorsCard';
 export { default as WeeklyMissionCard } from './WeeklyMissionCard';
+export { default as WeeklyBonusCard } from './WeeklyBonusCard';
 export { default as YourStatsCard } from './YourStatsCard';

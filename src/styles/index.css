@@ -32,11 +32,11 @@
   --text-overline:  8px;
   --text-micro:     7px;
   /* ── Dark theme (default) ── */
-  --color-bg:             #000000;
-  --color-canvas:         #0b0d0e;  /* page background (charcoal, not black) */
-  --color-bg-card:        #050505;
-  --color-bg-elevated:    #0b0b0b;
-  --color-bg-alt:         #080808;
+  --color-bg:             #161c27;
+  --color-canvas:         #1a202c;  /* page background (slate blue, not black) */
+  --color-bg-card:        #222a3b;
+  --color-bg-elevated:    #263044;
+  --color-bg-alt:         #1c2331;
   --color-accent:         #06B66F;
   --color-accent-text:    #06B66F;
   --color-accent-rgb:     6, 182, 111;
@@ -46,7 +46,7 @@
   --color-text-primary:   #EEF0EE;
   --color-text-secondary: rgba(238, 240, 238, 0.70);
   --color-text-muted:     rgba(238, 240, 238, 0.40);
-  --color-border:         rgba(171, 181, 192, 0.18);
+  --color-border:         rgba(163, 178, 197, 0.20);
   --color-border-strong:  rgba(6, 182, 111, 0.26);
   --dot-color:            rgba(6, 182, 111, 0.05);
   --color-hero-right-bg:  #000e08;
@@ -1164,10 +1164,10 @@ html[data-animations="off"] * {
   --font-sans: 'Space Grotesk', 'Inter', ui-sans-serif, system-ui, sans-serif;
 
   /* ── Surfaces & borders ── */
-  --color-canvas:             #0b0d0e;          /* page background (charcoal, not black) */
-  --color-surface:            #121617;          /* cards, form fields, static panels */
-  --color-surface-raised:     #181d1e;          /* menus, sheets, active utility panels */
-  --color-border-subtle:      rgba(178, 193, 194, 0.13);
+  --color-canvas:             #1a202c;          /* page background (slate blue, not black) */
+  --color-surface:            #222a3b;          /* cards, form fields, static panels */
+  --color-surface-raised:     #263044;          /* menus, sheets, active utility panels */
+  --color-border-subtle:      rgba(163, 178, 197, 0.16);
   --color-text-tertiary:      rgba(238, 240, 238, 0.55);
 
   /* ── Semantic states (paired with text/icon, never colour alone) ── */

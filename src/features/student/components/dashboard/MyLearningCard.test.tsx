@@ -33,7 +33,7 @@ describe('MyLearningCard', () => {
     localStorage.clear();
   });
 
-  it('shows only active current learning and exposes known progress', () => {
+  it('groups active current learning under headings with row descriptions', () => {
     renderCard({
       [courseLabs[0].id]: 65,
       [courseLabs[1].id]: 0,
@@ -41,10 +41,15 @@ describe('MyLearningCard', () => {
     }, [bootcamp]);
 
     const panel = screen.getByRole('tabpanel');
-    expect(within(panel).getByText(courseLabs[0].title)).toBeInTheDocument();
-    expect(within(panel).getByText('65% complete')).toBeInTheDocument();
     expect(within(panel).getByText(bootcamp.title)).toBeInTheDocument();
-    expect(within(panel).queryByText(courseLabs[0].description)).not.toBeInTheDocument();
+    expect(within(panel).getByText('Continue your bootcamp training')).toBeInTheDocument();
+    expect(
+      within(panel).getByRole('progressbar', { name: `${bootcamp.title} completion` }),
+    ).toHaveAttribute('aria-valuenow', '40');
+    expect(within(panel).getByText('40%')).toBeInTheDocument();
+    expect(within(panel).getByRole('heading', { name: 'Labs & courses' })).toBeInTheDocument();
+    expect(within(panel).getByText(courseLabs[0].title)).toBeInTheDocument();
+    expect(within(panel).getAllByText(courseLabs[0].description).length).toBeGreaterThan(0);
     expect(within(panel).queryByText(courseLabs[1].title)).not.toBeInTheDocument();
     expect(within(panel).queryByText(courseLabs[2].title)).not.toBeInTheDocument();
   });
@@ -64,10 +69,10 @@ describe('MyLearningCard', () => {
     expect(learningLinks[0]).toHaveAttribute('href', practicalLab.route);
     expect(learningLinks[1]).toHaveAttribute('href', courseLabs[0].route);
     expect(within(panel).queryByText(courseLabs[1].title)).not.toBeInTheDocument();
-    expect(within(panel).getByText('65% complete')).toBeInTheDocument();
+    expect(within(panel).getAllByText(courseLabs[0].description).length).toBeGreaterThan(0);
   });
 
-  it('resolves saved practical Labs and bootcamps and supports immediate removal', async () => {
+  it('resolves saved practical Labs and bootcamps', async () => {
     const user = userEvent.setup();
     localStorage.setItem(
       'qyvora_saved_labs',
@@ -79,9 +84,9 @@ describe('MyLearningCard', () => {
     const panel = screen.getByRole('tabpanel');
     expect(within(panel).getByText(practicalLab.title)).toBeInTheDocument();
     expect(within(panel).getByText(bootcamp.title)).toBeInTheDocument();
-
-    await user.click(within(panel).getByRole('button', { name: `Remove ${practicalLab.title} from saved learning` }));
-    expect(within(panel).queryByText(practicalLab.title)).not.toBeInTheDocument();
+    expect(
+      within(panel).queryByRole('button', { name: `Remove ${practicalLab.title} from saved learning` }),
+    ).not.toBeInTheDocument();
   });
 
   it('supports arrow-key navigation between learning tabs', async () => {

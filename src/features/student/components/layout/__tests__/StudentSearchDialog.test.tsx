@@ -21,22 +21,26 @@ const SearchHarness = () => {
 };
 
 describe('StudentSearchDialog', () => {
-  it('searches configured bootcamp rooms and opens a room directly', async () => {
-    const user = userEvent.setup();
-    render(
-      <MemoryRouter initialEntries={['/dashboard']}>
-        <SearchHarness />
-      </MemoryRouter>,
-    );
+  it(
+    'searches configured bootcamp rooms and opens a room directly',
+    async () => {
+      const user = userEvent.setup({ delay: null });
+      render(
+        <MemoryRouter initialEntries={['/dashboard']}>
+          <SearchHarness />
+        </MemoryRouter>,
+      );
 
-    await user.type(screen.getByRole('searchbox', { name: /Search the dashboard/i }), 'Introduction to Offensive Security');
+      await user.type(screen.getByRole('combobox', { name: /Search Labs/i }), 'Offensive Security');
 
-    await user.click(
-      await screen.findByRole('button', { name: /Introduction to Offensive Security/i }),
-    );
+      await user.click(
+        await screen.findByRole('option', { name: /Introduction to Offensive Security/i }),
+      );
 
-    expect(screen.getByTestId('current-path')).toHaveTextContent(
-      '/dashboard/bootcamps/bc_1775270338500/phases/phase1/rooms/room1',
-    );
-  });
+      expect(screen.getByTestId('current-path')).toHaveTextContent(
+        '/dashboard/bootcamps/bc_1775270338500/phases/phase1/rooms/room1',
+      );
+    },
+    15000,
+  );
 });

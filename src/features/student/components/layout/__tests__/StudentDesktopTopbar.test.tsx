@@ -64,7 +64,7 @@ describe('StudentDesktopTopbar', () => {
     const user = userEvent.setup();
     renderTopbar();
 
-    expect(screen.getByRole('button', { name: /Search learning rooms/i })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /Search Labs/i })).toBeInTheDocument();
     expect(screen.queryByLabelText(/Current streak/i)).not.toBeInTheDocument();
 
     await user.click(screen.getByRole('button', { name: /Account menu/i }));
@@ -77,14 +77,14 @@ describe('StudentDesktopTopbar', () => {
     expect(screen.getByRole('menuitem', { name: /Log out/i })).toBeInTheDocument();
   });
 
-  it('opens room search from the topbar button', async () => {
+  it('opens inline lab search from the topbar button', async () => {
     const user = userEvent.setup();
     renderTopbar();
 
-    await user.click(screen.getByRole('button', { name: /Search learning rooms/i }));
+    await user.click(screen.getByRole('button', { name: /Search Labs/i }));
 
-    expect(await screen.findByRole('dialog', { name: /Search learning experiences/i })).toBeInTheDocument();
-    expect(screen.getByPlaceholderText(/Search rooms, labs, or lessons/i)).toBeInTheDocument();
+    expect(await screen.findByRole('combobox', { name: /Search Labs/i })).toBeInTheDocument();
+    expect(screen.getByRole('listbox', { name: /Labs/i })).toBeInTheDocument();
   });
 
   it('opens and closes the Develop menu for Network and Terminal', async () => {

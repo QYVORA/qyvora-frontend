@@ -13,6 +13,8 @@ interface FilterTabsProps {
   activeKey: string;
   onChange: (key: string) => void;
   size?: 'sm' | 'md';
+  /** `pill` (default) is the boxed filter style; `underline` is section-style tabs. */
+  variant?: 'pill' | 'underline';
   className?: string;
   idPrefix?: string;
   ariaLabel?: string;
@@ -23,6 +25,7 @@ const FilterTabs: React.FC<FilterTabsProps> = ({
   activeKey,
   onChange,
   size = 'md',
+  variant = 'pill',
   className,
   idPrefix,
   ariaLabel,
@@ -30,10 +33,15 @@ const FilterTabs: React.FC<FilterTabsProps> = ({
   const sizeClasses = size === 'sm'
     ? 'px-4 min-h-[44px] rounded-xl text-xs'
     : 'px-5 min-h-[44px] rounded-xl text-xs';
+  const underline = variant === 'underline';
 
   return (
     <div
-      className={cn('flex items-center gap-2 flex-wrap', className)}
+      className={cn(
+        'flex items-center gap-2 flex-wrap',
+        underline && 'gap-4 border-b border-border-subtle',
+        className,
+      )}
       role="tablist"
       aria-label={ariaLabel}
     >
@@ -64,11 +72,19 @@ const FilterTabs: React.FC<FilterTabsProps> = ({
           aria-controls={idPrefix ? `${idPrefix}-panel` : undefined}
           tabIndex={idPrefix ? (activeKey === tab.key ? 0 : -1) : undefined}
           className={cn(
-            sizeClasses,
-            'font-black uppercase tracking-wider transition-[background-color,color,border-color,transform] duration-[var(--dur-base)] ease-[var(--ease-smooth)] active:scale-95 disabled:opacity-50 disabled:pointer-events-none',
+            underline
+              ? 'relative -mb-px min-h-[44px] border-b-2 px-1 pb-2 pt-1 text-sm transition-colors duration-[var(--dur-fast)] ease-[var(--ease-smooth)] disabled:opacity-50 disabled:pointer-events-none'
+              : cn(
+                  sizeClasses,
+                  'font-black uppercase tracking-wider transition-[background-color,color,border-color,transform] duration-[var(--dur-base)] ease-[var(--ease-smooth)] active:scale-95 disabled:opacity-50 disabled:pointer-events-none',
+                ),
             activeKey === tab.key
-              ? 'bg-accent text-on-accent'
-              : 'bg-bg-card border border-border text-text-muted hover:border-accent/50 hover:text-accent',
+              ? underline
+                ? 'border-accent font-medium text-text-primary'
+                : 'bg-accent text-on-accent'
+              : underline
+                ? 'border-transparent text-text-muted hover:text-text-secondary'
+                : 'bg-bg-card border border-border text-text-muted hover:border-accent/50 hover:text-accent',
           )}
         >
           <span className="inline-flex items-center gap-2">

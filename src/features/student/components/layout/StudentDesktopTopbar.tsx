@@ -7,6 +7,7 @@ import SiteTopbar from '@/shared/components/layout/SiteTopbar';
 import type { NavItem } from '@/shared/components/layout/SiteTopbar';
 import AvatarMenu from '@/shared/components/layout/AvatarMenu';
 import StudentSearchDialog from './StudentSearchDialog';
+import TopbarSearch from './TopbarSearch';
 
 interface StudentDesktopTopbarProps {
   onMobileMenuOpen?: () => void;
@@ -96,15 +97,18 @@ const StudentDesktopTopbar: React.FC<StudentDesktopTopbarProps> = ({
         logoLabel="QYVORA dashboard"
         rightSlot={
           <>
+            <div className="hidden lg:block">
+              <TopbarSearch />
+            </div>
             <button
               type="button"
               onClick={() => setSearchOpen(true)}
-              aria-label="Search learning rooms"
-              title="Search learning rooms (Ctrl+K)"
-              className="flex h-12 min-w-12 items-center justify-center gap-2 rounded-md px-2.5 text-accent transition-colors hover:text-text-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent xl:min-w-[180px] xl:justify-start xl:border xl:border-border-subtle xl:bg-canvas"
+              aria-label="Open search"
+              aria-controls="student-search-results"
+              title="Search Labs"
+              className="flex h-12 w-12 items-center justify-center rounded-md text-accent transition-colors hover:bg-surface hover:text-text-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent lg:hidden"
             >
               <Search className="h-5 w-5 shrink-0" aria-hidden="true" />
-              <span className="hidden text-sm text-text-muted xl:inline">Search…</span>
             </button>
             <AvatarMenu unread={unread} stats={stats} />
           </>
