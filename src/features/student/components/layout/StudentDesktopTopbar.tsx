@@ -95,6 +95,7 @@ const StudentDesktopTopbar: React.FC<StudentDesktopTopbarProps> = ({
         mobileMenuOpen={mobileMenuOpen}
         logoTo="/dashboard"
         logoLabel="QYVORA dashboard"
+        logoColor="var(--color-text-primary)"
         rightSlot={
           <>
             <div className="hidden lg:block">

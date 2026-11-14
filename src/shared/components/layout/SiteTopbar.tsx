@@ -17,6 +17,8 @@ interface SiteTopbarProps {
   mobileMenuOpen?: boolean;
   logoTo?: string;
   logoLabel?: string;
+  /** Logo fill. Public surfaces stay accent green; app surfaces use white. */
+  logoColor?: string;
 }
 
 /**
@@ -35,6 +37,7 @@ const SiteTopbar: React.FC<SiteTopbarProps> = ({
   mobileMenuOpen = false,
   logoTo = '/',
   logoLabel = 'QYVORA home',
+  logoColor = 'var(--color-accent)',
 }) => {
   const { pathname } = useLocation();
   const headerRef = useRef<HTMLElement | null>(null);
@@ -80,7 +83,7 @@ const SiteTopbar: React.FC<SiteTopbarProps> = ({
             aria-expanded={mobileMenuOpen}
             className="flex h-12 w-12 shrink-0 items-center justify-center rounded-md text-accent transition-colors hover:text-text-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent lg:hidden"
           >
-            <MenuIcon className="h-5 w-5" aria-hidden="true" />
+            <MenuIcon className="h-6 w-6" aria-hidden="true" />
           </button>
 
           <Link
@@ -88,7 +91,7 @@ const SiteTopbar: React.FC<SiteTopbarProps> = ({
             aria-label={logoLabel}
             className="hidden shrink-0 items-center rounded-md focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent lg:flex"
           >
-            <Logo variant="mark" size="sm" />
+            <Logo variant="mark" size="md" color={logoColor} />
           </Link>
 
           <nav className="hidden min-w-0 flex-1 items-center justify-start gap-1.5 lg:flex xl:gap-2" aria-label="Primary">

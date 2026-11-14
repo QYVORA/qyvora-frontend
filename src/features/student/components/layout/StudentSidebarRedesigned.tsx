@@ -387,7 +387,7 @@ const StudentSidebarRedesigned: React.FC<StudentSidebarRedesignedProps> = ({
           aria-label="QYVORA dashboard"
           className="flex items-center rounded-md focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
         >
-          <Logo variant="mark" size="lg" />
+          <Logo variant="mark" size="lg" color="var(--color-text-primary)" />
         </Link>
 
         <button
